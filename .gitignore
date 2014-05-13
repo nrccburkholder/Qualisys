@@ -5,6 +5,7 @@
 *.vsp
 bin/
 obj/
+x86/
 TestResults/
 FakesAssemblies/
 .nuget/
