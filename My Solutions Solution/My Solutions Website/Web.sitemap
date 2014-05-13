@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+    <siteMapNode url="~/eToolKit/Default.aspx"  title="eToolKit Home"  description="">
+      <siteMapNode url="~/eToolKit/DataSelection.aspx" title="Date/Service Type/Unit Selection"  description="">
+        <siteMapNode url="~/eToolKit/ViewSelection.aspx" title="Improvement Model"  description="" />
+        <siteMapNode url="~/eToolKit/ThemeSelection.aspx" title="Improvement Model"  description="">
+          <siteMapNode url="~/eToolKit/QuestionScores.aspx" title="Question Results" description="">
+            <siteMapNode url="~/eToolKit/QuestionContent.aspx" title="Improvement Information" description="" />
+          </siteMapNode>  
+        </siteMapNode>
+        <siteMapNode url="~/eToolKit/QuestionSelection.aspx" title="Choose a Question"  description="">
+          <siteMapNode url="~/eToolKit/QuestionSelectionContent.aspx" title="Improvement Information" description="" />
+        </siteMapNode>
+      </siteMapNode>
+      <siteMapNode url="~/eToolKit/ResourceSearch.aspx" title="Member Resources Search" description="" />
+      <siteMapNode url="~/eToolKit/Help/Default.aspx" title="Help" description="" />
+      <siteMapNode url="~/eToolKit/Help/SiteRequirements.aspx" title="Site Requirements" description="" />
+      <siteMapNode url="~/eToolKit/ContactUs.aspx" title="Contact Us" description="" />
+      <siteMapNode url="~/eToolKit/Preferences.aspx" title="Preferences" description="" />
+      <siteMapNode url="~/eToolKit/ResearchInquiry.aspx" title="Research Inquiry" description="" />
+      <siteMapNode url="~/eToolKit/Public/DimensionExperts.aspx" title="Dimension Experts" description="" />
+      <siteMapNode url="~/eToolKit/Public/WhatsNew.aspx" title="What's New" description="" />
+      <siteMapNode url="~/eToolKit/Public/SuccessStories.aspx" title="Featured Publications" description="" />
+      <siteMapNode url="~/eToolKit/Admin/Default.aspx" title="Administration">
+        <siteMapNode url="~/eToolKit/Admin/ContentManager.aspx" title="Content Manager" />
+        <siteMapNode url="~/eToolKit/Admin/QuestionContent.aspx" title="Question Content Manager" />
+        <siteMapNode url="~/eToolKit/Admin/ModelManager.aspx" title="Improvement Model Manager" />
+        <siteMapNode url="~/eToolKit/Admin/QuestionManager.aspx" title="Question Manager" />
+      </siteMapNode>
+    </siteMapNode>
+</siteMap>

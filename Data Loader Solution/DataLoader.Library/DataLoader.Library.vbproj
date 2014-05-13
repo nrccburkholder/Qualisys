@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4CFF8F1F-0634-45A1-9E69-06B0E28090CA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>NRC.DataLoader.Library</RootNamespace>
+    <AssemblyName>NRC.DataLoader.Library</AssemblyName>
+    <MyType>Windows</MyType>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>NRC.DataLoader.Library.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>C:\Program Files\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>NRC.DataLoader.Library.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>C:\Program Files\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Framework, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Framework.BusinessLogic, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.BusinessLogic.dll</HintPath>
+    </Reference>
+    <Reference Include="NRC.NRCAuthLib, Version=1.1.1.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\NRC.NRCAuthLib.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Business Objects\UploadFileHistory.vb" />
+    <Compile Include="Business Objects\UploadFilePackageNoteDisplay.vb" />
+    <Compile Include="Business Objects\UploadAction.vb" />
+    <Compile Include="Business Objects\UploadFile.vb" />
+    <Compile Include="Business Objects\UploadFilePackage.vb" />
+    <Compile Include="Business Objects\UploadFilePackageDisplay.vb" />
+    <Compile Include="Business Objects\UploadFileState.vb" />
+    <Compile Include="Business Objects\UploadFileTypeAction.vb" />
+    <Compile Include="Business Objects\UploadState.vb" />
+    <Compile Include="Collections\UploadFileHistoryCollection.vb" />
+    <Compile Include="Collections\UploadActionCollection.vb" />
+    <Compile Include="Collections\UploadedFileCollection.vb" />
+    <Compile Include="Collections\UploadFileCollection.vb" />
+    <Compile Include="Collections\UploadFilePackageCollection.vb" />
+    <Compile Include="Collections\UploadFilePackageDisplayCollection.vb" />
+    <Compile Include="Collections\UploadFilePackageNoteDisplayCollection.vb" />
+    <Compile Include="Collections\UploadFilePackageNoteCollection.vb" />
+    <Compile Include="Collections\UploadFileTypeActionCollection.vb" />
+    <Compile Include="Collections\UploadStateCollection.vb" />
+    <Compile Include="DataProviders\UploadActionsProvider.vb" />
+    <Compile Include="DataProviders\UploadFileHistoryProvider.vb" />
+    <Compile Include="DataProviders\UploadFilePackageNoteDisplayProvider.vb" />
+    <Compile Include="DataProviders\DataProviderFactory.vb" />
+    <Compile Include="DataProviders\UploadFilePackageDisplayProvider.vb" />
+    <Compile Include="DataProviders\UploadFilePackageNoteProvider.vb" />
+    <Compile Include="DataProviders\UploadFilePackageProvider.vb" />
+    <Compile Include="DataProviders\UploadFileProvider.vb" />
+    <Compile Include="DataProviders\UploadFileStateProvider.vb" />
+    <Compile Include="DataProviders\UploadFileTypeActionProvider.vb" />
+    <Compile Include="DataProviders\UploadStatesProvider.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Business Objects\UploadFilePackageNote.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\QualiSys Class Library Solution\Qualisys.QLoader.Library.SqlProvider\Qualisys.QLoader.Library.SqlProvider.vbproj">
+      <Project>{8C82B762-7494-478C-B8D6-E75958616F05}</Project>
+      <Name>Qualisys.QLoader.Library.SqlProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\QualiSys Class Library Solution\Qualisys.QLoader.Library\Qualisys.QLoader.Library.vbproj">
+      <Project>{9E12046E-7AB1-4BB4-89F8-D2ACAA7CD811}</Project>
+      <Name>Qualisys.QLoader.Library</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

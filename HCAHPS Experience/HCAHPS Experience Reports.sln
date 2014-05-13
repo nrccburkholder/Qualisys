@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "HCAHPS Experience Reports", "WindowsApplication2\HCAHPS Experience Reports.vbproj", "{B2F4AE28-BCD7-477C-9AF7-998AB7EFFC0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iTextHCAHPSPDFParser", "iTextHCAHPSPDFParser\iTextHCAHPSPDFParser.csproj", "{71380B2C-82EE-463D-85E3-A06756DF5A41}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://tfs.nationalresearch.com:8080/tfs/DefaultCollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = iTextHCAHPSPDFParser\\iTextHCAHPSPDFParser.csproj
+		SccProjectName1 = iTextHCAHPSPDFParser
+		SccLocalPath1 = iTextHCAHPSPDFParser
+		SccProjectUniqueName2 = WindowsApplication2\\HCAHPS\u0020Experience\u0020Reports.vbproj
+		SccProjectName2 = WindowsApplication2
+		SccLocalPath2 = WindowsApplication2
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B2F4AE28-BCD7-477C-9AF7-998AB7EFFC0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2F4AE28-BCD7-477C-9AF7-998AB7EFFC0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2F4AE28-BCD7-477C-9AF7-998AB7EFFC0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2F4AE28-BCD7-477C-9AF7-998AB7EFFC0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71380B2C-82EE-463D-85E3-A06756DF5A41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71380B2C-82EE-463D-85E3-A06756DF5A41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71380B2C-82EE-463D-85E3-A06756DF5A41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71380B2C-82EE-463D-85E3-A06756DF5A41}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="urn:MelissaDataGeoCodeService" elementFormDefault="qualified" targetNamespace="urn:MelissaDataGeoCodeService" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="https://geocoder.melissadata.net/v2/SOAP/Service.svc?xsd=xsd1" namespace="urn:mdWebServiceGeoCode" />
+  <xs:element name="doGeoCode">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="urn:mdWebServiceGeoCode" minOccurs="0" maxOccurs="1" name="Request" type="q1:RequestArray" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="doGeoCodeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="urn:mdWebServiceGeoCode" minOccurs="0" maxOccurs="1" name="doGeoCodeResult" type="q2:ResponseArray" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

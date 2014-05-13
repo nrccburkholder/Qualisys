@@ -1,0 +1,2 @@
+<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="FeaturedExpert.ascx.vb" Inherits="Nrc.MySolutions.eToolKit_UserControls_FeaturedExpert" %>
+<nrc:ManagedContentTeaser ID="ExpertsTeaser" runat="server" ContentCategory="Experts" DetailLinkText="Learn More" DetailPageUrl="~/eToolKit/Public/DimensionExperts.aspx#{1}" />

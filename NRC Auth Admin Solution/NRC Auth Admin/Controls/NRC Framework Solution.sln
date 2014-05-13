@@ -1,0 +1,59 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Nrc.Framework", "Nrc.Framework\Nrc.Framework.vbproj", "{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Sample Application", "Sample Application\Sample Application.vbproj", "{3D6E427B-44AF-4EB4-AA62-98BA2CA9BF12}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820} = {C5A6EE1A-D5BF-4059-87CF-ACA302979820}
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Nrc.Framework.BusinessLogic", "Nrc.Framework.BusinessLogic\Nrc.Framework.BusinessLogic.vbproj", "{C5A6EE1A-D5BF-4059-87CF-ACA302979820}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Nrc.Framework.Notification", "Nrc.Framework.Notification\Nrc.Framework.Notification.vbproj", "{27AB551E-D67F-4B03-BAB5-E7172E105217}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 5
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://perseus:8080/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Sample\u0020Application\\Sample\u0020Application.vbproj
+		SccProjectName1 = Sample\u0020Application
+		SccLocalPath1 = Sample\u0020Application
+		SccProjectUniqueName2 = Nrc.Framework.BusinessLogic\\Nrc.Framework.BusinessLogic.vbproj
+		SccProjectName2 = Nrc.Framework.BusinessLogic
+		SccLocalPath2 = Nrc.Framework.BusinessLogic
+		SccProjectUniqueName3 = Nrc.Framework\\Nrc.Framework.vbproj
+		SccProjectName3 = Nrc.Framework
+		SccLocalPath3 = Nrc.Framework
+		SccProjectUniqueName4 = Nrc.Framework.Notification\\Nrc.Framework.Notification.vbproj
+		SccProjectName4 = Nrc.Framework.Notification
+		SccLocalPath4 = Nrc.Framework.Notification
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D6E427B-44AF-4EB4-AA62-98BA2CA9BF12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D6E427B-44AF-4EB4-AA62-98BA2CA9BF12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D6E427B-44AF-4EB4-AA62-98BA2CA9BF12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D6E427B-44AF-4EB4-AA62-98BA2CA9BF12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27AB551E-D67F-4B03-BAB5-E7172E105217}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27AB551E-D67F-4B03-BAB5-E7172E105217}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27AB551E-D67F-4B03-BAB5-E7172E105217}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27AB551E-D67F-4B03-BAB5-E7172E105217}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

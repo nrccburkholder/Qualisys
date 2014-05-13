@@ -1,0 +1,220 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E26C036C-D15B-44A0-AC88-CFF749D93F3E}</ProjectGuid>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>NRC.NormsApplicationBusinessObjectsLibrary</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyMode>None</AssemblyOriginatorKeyMode>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionStrict>Off</OptionStrict>
+    <RootNamespace>NormsApplicationBusinessObjectsLibrary</RootNamespace>
+    <StartupObject>NormsApplicationBusinessObjectsLibrary.%28None%29</StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <MyType>Windows</MyType>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>NRC.NormsApplicationBusinessObjectsLibrary.xml</DocumentationFile>
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>
+    </DefineConstants>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>1</WarningLevel>
+    <NoWarn>42016,42017,42018,42019,42032</NoWarn>
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>NRC.NormsApplicationBusinessObjectsLibrary.xml</DocumentationFile>
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>
+    </DefineConstants>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>1</WarningLevel>
+    <NoWarn>42016,42017,42018,42019,42032</NoWarn>
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ObjectBuilder, Version=1.0.51205.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Microsoft.Practices.ObjectBuilder.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Framework, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Framework.BusinessLogic, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.BusinessLogic.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Config.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AssemblyInfo.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ComparisonDataQuery.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ComparisonDataQueryLightCollection.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Country.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CountryCollection.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataAccess.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dimension.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DimensionsCollection.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enumerations.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FilterColumn.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FilterColumnCollection.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Groupings.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GroupingsCollection.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NormUser.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NormUserCollection.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ParametersCollection.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="QPClient.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="QPClientCollection.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Question.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="QuestionGroup.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="QuestionGroupCollection.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="QuestionsCollection.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Survey.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SurveysCollection.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SurveyType.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SurveyTypesCollection.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="USComparisonType.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="USComparisonTypeCollection.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="USNormSetting.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="USNormSettingCollection.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Content Include="Change Scripts\Fix for ties in Norms for Top N.sql" />
+    <Content Include="Change Scripts\QPNorms Change Script v1.0.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="My Project\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

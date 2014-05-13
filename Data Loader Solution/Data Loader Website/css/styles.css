@@ -1,0 +1,136 @@
+﻿/************ Generic Default Styles ************/
+body
+{
+	margin: 0px;
+	font-family: Verdana, Arial, Sans-Serif;
+	font-size: 13px;
+	line-height: normal;
+}
+
+/*************************** Common Styles ***************************/
+
+.PageTitle,.SectionHeader
+{
+	color: #555555;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 140%;
+	font-weight: bolder;	
+}
+
+
+/*************************** Home Page Styles ***************************/
+.TabMenuItem
+{
+	background-color: #f7f3b5;
+	border-bottom: Solid 2px #636563;
+	padding: 4px;
+	color: #636563;
+}
+.TabMenuItem a,
+.TabMenuItem a:active,
+.TabMenuItem a:visted,
+.TabMenuItem a:hover
+{
+	font-weight: bold;
+	text-decoration: none;
+}
+
+.TabMenuItemSelected
+{
+	background-color: White;
+}
+
+.TabMenuItemHover
+{
+	background-color: #e7e7e7;
+	color: #636563;
+}
+.TabMenuContainer
+{
+	background-color: #636563;
+	padding-left: 1px;
+	padding-top: 2px;
+	margin-left: -11px;
+	width: 758px;
+}
+
+
+/*************************** Model Manager Styles ***************************/
+
+.PropertyTable {
+	WIDTH: 100%;
+}
+.PropertyTable TD {
+	PADDING-RIGHT: 3px; PADDING-LEFT: 3px; FONT-SIZE: xx-small; PADDING-BOTTOM: 3px; PADDING-TOP: 3px;
+}
+.PropertyLabel {
+	WIDTH: 175px; WHITE-SPACE: nowrap; BACKGROUND-COLOR: #dbe9e9; font-weight:bold;
+}
+.PropertyLabel1 {
+	WHITE-SPACE: nowrap; BACKGROUND-COLOR: #dbe9e9; font-weight:bold;
+}
+.DataGridHeader
+{
+	color:#003399;font-weight:bold;
+	WHITE-SPACE:nowrap; BACKGROUND-COLOR: #dbe9e9;
+}
+.DatagridAltClass
+{
+    WHITE-SPACE: nowrap;
+    background-color:Silver;
+}
+.DatagridClass
+{
+    WHITE-SPACE: nowrap; 
+}
+
+.RedPropertyLabel {
+	WIDTH: 175px; WHITE-SPACE: nowrap; BACKGROUND-COLOR: #EFD8D0; font-weight:bold;
+}
+
+
+
+.PropertyValue {
+	BORDER-TOP: #bdd6d6 1px solid; BORDER-LEFT: #bdd6d6 1px solid; BACKGROUND-COLOR: white;
+}
+.PropertyValue INPUT {
+	FONT-SIZE: x-small;
+}
+.PropertyValue SPAN {
+	FONT-SIZE: x-small;
+}
+.PropertyValue A {
+	FONT-SIZE: x-small;
+}
+.PanelTitle 
+{
+	font-size: 13px; background-color: #f5f5f5; font-weight: bold;
+}
+
+.TableTitle
+{
+	font-weight: bold;
+}
+
+.nonVisibleLabels
+{
+	display: none;
+}
+
+.disabledivstyle
+{
+	position:absolute;
+	left:0px;
+	top:0;
+	height:800;
+	width:800; 
+	background-color:transparent; 
+	min-height:800;
+    min-width:800;
+	
+}
+
+.theclass TD
+{
+	vertical-align:top;
+}

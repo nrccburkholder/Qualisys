@@ -1,0 +1,1 @@
+<%@ Application Inherits="WebDocumentPoster.Global" Language="VB" %>

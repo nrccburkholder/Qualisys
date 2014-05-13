@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "NRC Auth Admin", "NRC Auth Admin\NRC Auth Admin.vbproj", "{4CEA7E3C-44F4-460B-8A16-157A7275E36A}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Nrc.Framework", "..\NRC Framework Solution\Nrc.Framework\Nrc.Framework.vbproj", "{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Nrc.Framework.BusinessLogic", "..\NRC Framework Solution\Nrc.Framework.BusinessLogic\Nrc.Framework.BusinessLogic.vbproj", "{C5A6EE1A-D5BF-4059-87CF-ACA302979820}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "NRCAuthlib", "..\NRC Auth Solution\NRCAuthLib\NRCAuthlib.vbproj", "{6ED47CEB-9896-4BE5-A7F2-CF2A5693F1ED}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "NRC Class Library", "..\NRC Class Library Solution\NRC Class Library.vbproj", "{12BD4B86-4C6E-413C-B1CE-F023AAC40BB2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4CEA7E3C-44F4-460B-8A16-157A7275E36A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CEA7E3C-44F4-460B-8A16-157A7275E36A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CEA7E3C-44F4-460B-8A16-157A7275E36A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CEA7E3C-44F4-460B-8A16-157A7275E36A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6ED47CEB-9896-4BE5-A7F2-CF2A5693F1ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6ED47CEB-9896-4BE5-A7F2-CF2A5693F1ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6ED47CEB-9896-4BE5-A7F2-CF2A5693F1ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6ED47CEB-9896-4BE5-A7F2-CF2A5693F1ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12BD4B86-4C6E-413C-B1CE-F023AAC40BB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12BD4B86-4C6E-413C-B1CE-F023AAC40BB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12BD4B86-4C6E-413C-B1CE-F023AAC40BB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12BD4B86-4C6E-413C-B1CE-F023AAC40BB2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

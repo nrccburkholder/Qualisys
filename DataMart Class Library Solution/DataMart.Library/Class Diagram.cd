@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Tahoma" Size="8.25" />
+  <Class Name="Nrc.DataMart.Library.ExportSet">
+    <Position X="0.5" Y="3.75" Width="2.75" />
+    <TypeIdentifier>
+      <FileName>ExportSet.vb</FileName>
+      <HashCode>SAACkIBAAACQAAAAkAAJBAQkAIEAAAAMCggBQEBAACQ=</HashCode>
+    </TypeIdentifier>
+    <Members>
+      <Field Name="mCreatedDate" Hidden="true" />
+      <Field Name="mCreatedEmployeeName" Hidden="true" />
+      <Field Name="mEndDate" Hidden="true" />
+      <Field Name="mExportCount" Hidden="true" />
+      <Field Name="mId" Hidden="true" />
+      <Field Name="mIsDirty" Hidden="true" />
+      <Field Name="mName" Hidden="true" />
+      <Field Name="mReportDateField" Hidden="true" />
+      <Field Name="mStartDate" Hidden="true" />
+      <Field Name="mSurveyId" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="Nrc.DataMart.Library.Client">
+    <Position X="0.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <FileName>Client.vb</FileName>
+      <HashCode>AAACEAAAAAAQAAAGAAAIAAwAgAAAAAAAAAgDAABAAAQ=</HashCode>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Studies" />
+    </ShowAsCollectionAssociation>
+    <Members>
+      <Field Name="mId" Hidden="true" />
+      <Field Name="mIsDirty" Hidden="true" />
+      <Field Name="mName" Hidden="true" />
+      <Field Name="mStudies" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="Nrc.DataMart.Library.Client.PopulateDepth" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Client.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+  </Class>
+  <Class Name="Nrc.DataMart.Library.Study">
+    <Position X="3.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>Study.vb</FileName>
+      <HashCode>AAACUAAAQAAQAEAEgAAIAgQAgAAQAAAAAAgBQBAAAAQ=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Client" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Surveys" />
+    </ShowAsCollectionAssociation>
+    <Members>
+      <Field Name="mAccountDirectorName" Hidden="true" />
+      <Field Name="mClient" Hidden="true" />
+      <Field Name="mClientId" Hidden="true" />
+      <Field Name="mId" Hidden="true" />
+      <Field Name="mIsDirty" Hidden="true" />
+      <Field Name="mName" Hidden="true" />
+      <Field Name="mSurveys" Hidden="true" />
+    </Members>
+  </Class>
+  <Class Name="Nrc.DataMart.Library.Survey">
+    <Position X="6.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Survey.vb</FileName>
+      <HashCode>AAACUAACAAAQAABEAAAIhAQAgAAAAAAEAAgBAAAAAAQ=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Study" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Questions" />
+    </ShowAsCollectionAssociation>
+    <Members>
+      <Field Name="mId" Hidden="true" />
+      <Field Name="mIsDirty" Hidden="true" />
+      <Field Name="mName" Hidden="true" />
+      <Field Name="mQuestions" Hidden="true" />
+      <Field Name="mStudy" Hidden="true" />
+      <Field Name="mStudyId" Hidden="true" />
+    </Members>
+  </Class>
+  <Class Name="Nrc.DataMart.Library.ExportFile">
+    <Position X="4.5" Y="5" Width="2.25" />
+    <TypeIdentifier>
+      <FileName>ExportFile.vb</FileName>
+      <HashCode>AAACMggAAACQAAAAkAAoAAAIAAAAEAAAAwBAgQBAAEQ=</HashCode>
+    </TypeIdentifier>
+    <Members>
+      <Field Name="mCreatedDate" Hidden="true" />
+      <Field Name="mCreatedEmployeeName" Hidden="true" />
+      <Field Name="mExportSets" Hidden="true" />
+      <Field Name="mFilePartsCount" Hidden="true" />
+      <Field Name="mFilePath" Hidden="true" />
+      <Field Name="mFileType" Hidden="true" />
+      <Field Name="mId" Hidden="true" />
+      <Field Name="mIsDirty" Hidden="true" />
+      <Field Name="mRecordCount" Hidden="true" />
+    </Members>
+  </Class>
+  <Class Name="Nrc.DataMart.Library.Question">
+    <Position X="8.75" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <FileName>Question.vb</FileName>
+      <HashCode>ACACEBAEAAAQAAAAAAZBAQgAAAABCAAAABABQAAAQAQ=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Scale" />
+    </ShowAsAssociation>
+    <Members>
+      <Field Name="mFullLabel" Hidden="true" />
+      <Field Name="mID" Hidden="true" />
+      <Field Name="mIsDirty" Hidden="true" />
+      <Field Name="mMultipleResponse" Hidden="true" />
+      <Field Name="mReportlabel" Hidden="true" />
+      <Field Name="mScale" Hidden="true" />
+      <Field Name="mSurveyId" Hidden="true" />
+    </Members>
+  </Class>
+  <Class Name="Nrc.DataMart.Library.Scale">
+    <Position X="8.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Scale.vb</FileName>
+      <HashCode>AAACEAAIAABQAEAAAAABAAAAAAAAAAQAIAAAQAAAAAQ=</HashCode>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Responses" />
+    </ShowAsCollectionAssociation>
+    <Members>
+      <Field Name="mId" Hidden="true" />
+      <Field Name="mIsDirty" Hidden="true" />
+      <Field Name="mMaxScaleOrder" Hidden="true" />
+      <Field Name="mResponses" Hidden="true" />
+      <Field Name="mSurveyId" Hidden="true" />
+    </Members>
+  </Class>
+  <Class Name="Nrc.DataMart.Library.Response">
+    <Position X="10.75" Y="4.75" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>Response.vb</FileName>
+      <HashCode>AAEAAAAAMAAQAAAAAAAAAAAAAAAEAAAEAACgAAAAAIQ=</HashCode>
+    </TypeIdentifier>
+    <Members>
+      <Field Name="mIsDirty" Hidden="true" />
+      <Field Name="mLabel" Hidden="true" />
+      <Field Name="mMissing" Hidden="true" />
+      <Field Name="mOrder" Hidden="true" />
+      <Field Name="mValue" Hidden="true" />
+    </Members>
+  </Class>
+  <Enum Name="Nrc.DataMart.Library.ExportFileType">
+    <Position X="4.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ExportFileType.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAEAAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+</ClassDiagram>

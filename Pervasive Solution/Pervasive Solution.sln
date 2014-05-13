@@ -1,0 +1,136 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Pervasive Service", "Pervasive Service\Pervasive Service.vbproj", "{3D61C20A-D281-4802-8CBA-AF7B6472D0C3}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Pervasive Viewer", "Pervasive Viewer\Pervasive Viewer.vbproj", "{5A1394AD-C18B-4A8F-9F30-FEB3B22085FC}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "QualiSys.Pervasive.Library", "..\QualiSys Class Library Solution\QualiSys.Pervasive.Library\QualiSys.Pervasive.Library.vbproj", "{1BC993F6-721E-44A9-A1CD-CC2DECFC5464}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "QualiSys.Pervasive.Library.SqlDataProvider", "..\QualiSys Class Library Solution\QualiSys.Pervasive.Library.SqlDataProvider\QualiSys.Pervasive.Library.SqlDataProvider.vbproj", "{45342C2F-19EF-474C-B9BC-F8222CBABCC2}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Pervasive Service Installer", "Pervasive Service Installer\Pervasive Service Installer.vdproj", "{F26D3F81-AD75-4F32-80EB-08B59A74885A}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Pervasive Service Tester", "Pervasive Service Tester\Pervasive Service Tester.vbproj", "{9B9A59C5-61B1-4241-81A6-A36AD2BD0DED}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 7
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://perseus:8080/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Pervasive\u0020Service\\Pervasive\u0020Service.vbproj
+		SccProjectName1 = Pervasive\u0020Service
+		SccLocalPath1 = Pervasive\u0020Service
+		SccProjectUniqueName2 = Pervasive\u0020Viewer\\Pervasive\u0020Viewer.vbproj
+		SccProjectName2 = Pervasive\u0020Viewer
+		SccLocalPath2 = Pervasive\u0020Viewer
+		SccProjectUniqueName3 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Pervasive.Library\\QualiSys.Pervasive.Library.vbproj
+		SccProjectName3 = ../QualiSys\u0020Class\u0020Library\u0020Solution/QualiSys.Pervasive.Library
+		SccLocalPath3 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Pervasive.Library
+		SccProjectUniqueName4 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Pervasive.Library.SqlDataProvider\\QualiSys.Pervasive.Library.SqlDataProvider.vbproj
+		SccProjectName4 = ../QualiSys\u0020Class\u0020Library\u0020Solution/QualiSys.Pervasive.Library.SqlDataProvider
+		SccLocalPath4 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Pervasive.Library.SqlDataProvider
+		SccProjectUniqueName5 = Pervasive\u0020Service\u0020Installer\\Pervasive\u0020Service\u0020Installer.vdproj
+		SccProjectName5 = Pervasive\u0020Service\u0020Installer
+		SccLocalPath5 = Pervasive\u0020Service\u0020Installer
+		SccProjectUniqueName6 = Pervasive\u0020Service\u0020Tester\\Pervasive\u0020Service\u0020Tester.vbproj
+		SccProjectName6 = Pervasive\u0020Service\u0020Tester
+		SccLocalPath6 = Pervasive\u0020Service\u0020Tester
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Development|Any CPU = Development|Any CPU
+		Production|Any CPU = Production|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Staging|Any CPU = Staging|Any CPU
+		Testing|Any CPU = Testing|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3D61C20A-D281-4802-8CBA-AF7B6472D0C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D61C20A-D281-4802-8CBA-AF7B6472D0C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D61C20A-D281-4802-8CBA-AF7B6472D0C3}.Development|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D61C20A-D281-4802-8CBA-AF7B6472D0C3}.Development|Any CPU.Build.0 = Debug|Any CPU
+		{3D61C20A-D281-4802-8CBA-AF7B6472D0C3}.Production|Any CPU.ActiveCfg = Release|Any CPU
+		{3D61C20A-D281-4802-8CBA-AF7B6472D0C3}.Production|Any CPU.Build.0 = Release|Any CPU
+		{3D61C20A-D281-4802-8CBA-AF7B6472D0C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D61C20A-D281-4802-8CBA-AF7B6472D0C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D61C20A-D281-4802-8CBA-AF7B6472D0C3}.Staging|Any CPU.ActiveCfg = Release|Any CPU
+		{3D61C20A-D281-4802-8CBA-AF7B6472D0C3}.Staging|Any CPU.Build.0 = Release|Any CPU
+		{3D61C20A-D281-4802-8CBA-AF7B6472D0C3}.Testing|Any CPU.ActiveCfg = Release|Any CPU
+		{3D61C20A-D281-4802-8CBA-AF7B6472D0C3}.Testing|Any CPU.Build.0 = Release|Any CPU
+		{5A1394AD-C18B-4A8F-9F30-FEB3B22085FC}.Debug|Any CPU.ActiveCfg = Development|Any CPU
+		{5A1394AD-C18B-4A8F-9F30-FEB3B22085FC}.Debug|Any CPU.Build.0 = Development|Any CPU
+		{5A1394AD-C18B-4A8F-9F30-FEB3B22085FC}.Development|Any CPU.ActiveCfg = Development|Any CPU
+		{5A1394AD-C18B-4A8F-9F30-FEB3B22085FC}.Development|Any CPU.Build.0 = Development|Any CPU
+		{5A1394AD-C18B-4A8F-9F30-FEB3B22085FC}.Production|Any CPU.ActiveCfg = Production|Any CPU
+		{5A1394AD-C18B-4A8F-9F30-FEB3B22085FC}.Production|Any CPU.Build.0 = Production|Any CPU
+		{5A1394AD-C18B-4A8F-9F30-FEB3B22085FC}.Release|Any CPU.ActiveCfg = Production|Any CPU
+		{5A1394AD-C18B-4A8F-9F30-FEB3B22085FC}.Release|Any CPU.Build.0 = Production|Any CPU
+		{5A1394AD-C18B-4A8F-9F30-FEB3B22085FC}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
+		{5A1394AD-C18B-4A8F-9F30-FEB3B22085FC}.Staging|Any CPU.Build.0 = Staging|Any CPU
+		{5A1394AD-C18B-4A8F-9F30-FEB3B22085FC}.Testing|Any CPU.ActiveCfg = Testing|Any CPU
+		{5A1394AD-C18B-4A8F-9F30-FEB3B22085FC}.Testing|Any CPU.Build.0 = Testing|Any CPU
+		{1BC993F6-721E-44A9-A1CD-CC2DECFC5464}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BC993F6-721E-44A9-A1CD-CC2DECFC5464}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BC993F6-721E-44A9-A1CD-CC2DECFC5464}.Development|Any CPU.ActiveCfg = Debug|x86
+		{1BC993F6-721E-44A9-A1CD-CC2DECFC5464}.Production|Any CPU.ActiveCfg = Release|x86
+		{1BC993F6-721E-44A9-A1CD-CC2DECFC5464}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BC993F6-721E-44A9-A1CD-CC2DECFC5464}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BC993F6-721E-44A9-A1CD-CC2DECFC5464}.Staging|Any CPU.ActiveCfg = Release|x86
+		{1BC993F6-721E-44A9-A1CD-CC2DECFC5464}.Testing|Any CPU.ActiveCfg = Release|x86
+		{45342C2F-19EF-474C-B9BC-F8222CBABCC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45342C2F-19EF-474C-B9BC-F8222CBABCC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45342C2F-19EF-474C-B9BC-F8222CBABCC2}.Development|Any CPU.ActiveCfg = Debug|x86
+		{45342C2F-19EF-474C-B9BC-F8222CBABCC2}.Production|Any CPU.ActiveCfg = Release|x86
+		{45342C2F-19EF-474C-B9BC-F8222CBABCC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45342C2F-19EF-474C-B9BC-F8222CBABCC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45342C2F-19EF-474C-B9BC-F8222CBABCC2}.Staging|Any CPU.ActiveCfg = Release|x86
+		{45342C2F-19EF-474C-B9BC-F8222CBABCC2}.Testing|Any CPU.ActiveCfg = Release|x86
+		{F26D3F81-AD75-4F32-80EB-08B59A74885A}.Debug|Any CPU.ActiveCfg = Debug
+		{F26D3F81-AD75-4F32-80EB-08B59A74885A}.Development|Any CPU.ActiveCfg = Debug
+		{F26D3F81-AD75-4F32-80EB-08B59A74885A}.Production|Any CPU.ActiveCfg = Release
+		{F26D3F81-AD75-4F32-80EB-08B59A74885A}.Release|Any CPU.ActiveCfg = Release
+		{F26D3F81-AD75-4F32-80EB-08B59A74885A}.Staging|Any CPU.ActiveCfg = Release
+		{F26D3F81-AD75-4F32-80EB-08B59A74885A}.Testing|Any CPU.ActiveCfg = Release
+		{9B9A59C5-61B1-4241-81A6-A36AD2BD0DED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B9A59C5-61B1-4241-81A6-A36AD2BD0DED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B9A59C5-61B1-4241-81A6-A36AD2BD0DED}.Development|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B9A59C5-61B1-4241-81A6-A36AD2BD0DED}.Development|Any CPU.Build.0 = Debug|Any CPU
+		{9B9A59C5-61B1-4241-81A6-A36AD2BD0DED}.Production|Any CPU.ActiveCfg = Release|Any CPU
+		{9B9A59C5-61B1-4241-81A6-A36AD2BD0DED}.Production|Any CPU.Build.0 = Release|Any CPU
+		{9B9A59C5-61B1-4241-81A6-A36AD2BD0DED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B9A59C5-61B1-4241-81A6-A36AD2BD0DED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B9A59C5-61B1-4241-81A6-A36AD2BD0DED}.Staging|Any CPU.ActiveCfg = Release|Any CPU
+		{9B9A59C5-61B1-4241-81A6-A36AD2BD0DED}.Staging|Any CPU.Build.0 = Release|Any CPU
+		{9B9A59C5-61B1-4241-81A6-A36AD2BD0DED}.Testing|Any CPU.ActiveCfg = Release|Any CPU
+		{9B9A59C5-61B1-4241-81A6-A36AD2BD0DED}.Testing|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

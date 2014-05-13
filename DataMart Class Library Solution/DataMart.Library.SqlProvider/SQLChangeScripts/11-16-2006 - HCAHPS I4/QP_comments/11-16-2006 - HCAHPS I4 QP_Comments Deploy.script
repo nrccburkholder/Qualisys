@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sqlScript>
+  <scriptFile filePath="..\QP_Comments\Tables\dbo.ResponseRankOrder.sql" />
+  <scriptFile filePath="..\QP_Comments\Tables\dbo.lu_ResponseRankOrder_log.sql" />
+  <scriptFile filePath="..\QP_Comments\Tables\dbo.APB_wk_QuestionScaleRanking.sql" />
+  <scriptFile filePath="..\QP_Comments\Tables\dbo.APB_wk_Scales.sql" />
+  <scriptFile filePath="..\QP_Comments\Functions\dbo.APB_CM_MeasureLabelForMean.sql" />
+  <scriptFile filePath="..\QP_Comments\Functions\dbo.APB_CM_MeasureLabelForNSize.sql" />
+  <scriptFile filePath="..\QP_Comments\Functions\dbo.APB_CM_MeasureLabelForProportion.sql" />
+  <scriptFile filePath="..\QP_Comments\Functions\dbo.APB_CM_MeasureLabel.sql" />
+  <scriptFile filePath="..\QP_Comments\Functions\dbo.APB_CM_ConcateBreakoutSubset.sql" />
+  <scriptFile filePath="..\QP_Comments\SPs\dbo.APB_CM_TruncateWorkTable.sql" />
+  <scriptFile filePath="..\QP_Comments\SPs\dbo.APB_RI_BreakoutDefintion.sql" />
+  <scriptFile filePath="..\QP_Comments\SPs\dbo.APB_RI_ExtractLookupTable.sql" />
+  <scriptFile filePath="..\QP_Comments\SPs\dbo.APB_RI_ProportionDefinition.sql" />
+  <scriptFile filePath="..\QP_Comments\SPs\dbo.APB_CM_Constant.sql" />
+  <scriptFile filePath="..\QP_Comments\SPs\dbo.APB_OT_OverrideOldReport.sql" />
+  <scriptFile filePath="..\QP_Comments\SPs\dbo.APB_CM_SetMailing.sql" />
+	<scriptFile filePath="..\QP_Comments\SPs\dbo.sp_InsertUpdateResponseRankOrder.sql" />
+	<scriptFile filePath="..\QP_Comments\Scripts\Rank Order Assignment.sql" />
+</sqlScript>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ToolsVersion="2.0">
+  <State>$base64$PFNvdXJjZUNvbnRyb2xJbmZvIHhtbG5zOnhzZD0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEiIHhtbG5zOnhzaT0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEtaW5zdGFuY2UiIHhtbG5zOmRkbDI9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDAzL2VuZ2luZS8yIiB4bWxuczpkZGwyXzI9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDAzL2VuZ2luZS8yLzIiIHhtbG5zOmRkbDEwMF8xMDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDA4L2VuZ2luZS8xMDAvMTAwIiB4bWxuczpkZGwyMDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEwL2VuZ2luZS8yMDAiIHhtbG5zOmRkbDIwMF8yMDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEwL2VuZ2luZS8yMDAvMjAwIiB4bWxuczpkd2Q9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vRGF0YVdhcmVob3VzZS9EZXNpZ25lci8xLjAiPg0KICA8RW5hYmxlZD50cnVlPC9FbmFibGVkPg0KICA8UHJvamVjdE5hbWU+U0FLPC9Qcm9qZWN0TmFtZT4NCiAgPEF1eFBhdGg+U0FLPC9BdXhQYXRoPg0KICA8TG9jYWxQYXRoPlNBSzwvTG9jYWxQYXRoPg0KICA8UHJvdmlkZXI+U0FLPC9Qcm92aWRlcj4NCjwvU291cmNlQ29udHJvbEluZm8+</State>
+  <DataSources>
+    <ProjectItem>
+      <Name>NRCAuth.rds</Name>
+      <FullPath>NRCAuth.rds</FullPath>
+    </ProjectItem>
+  </DataSources>
+  <DataSets />
+  <Reports>
+    <ProjectItem>
+      <Name>Browser Usage.rdl</Name>
+      <FullPath>Browser Usage.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Current Sessions.rdl</Name>
+      <FullPath>Current Sessions.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Event Log.rdl</Name>
+      <FullPath>Event Log.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Find User.rdl</Name>
+      <FullPath>Find User.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Groups and Members.rdl</Name>
+      <FullPath>Groups and Members.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Learning Network Members.rdl</Name>
+      <FullPath>Learning Network Members.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Members and Groups.rdl</Name>
+      <FullPath>Members and Groups.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Most Active Organizations.rdl</Name>
+      <FullPath>Most Active Organizations.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Most Active Users.rdl</Name>
+      <FullPath>Most Active Users.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Self Registration.rdl</Name>
+      <FullPath>Self Registration.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Session Log.rdl</Name>
+      <FullPath>Session Log.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Sessions By Time.rdl</Name>
+      <FullPath>Sessions By Time.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>User Product Visit Details.rdl</Name>
+      <FullPath>User Product Visit Details.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>User Product Visits.rdl</Name>
+      <FullPath>User Product Visits.rdl</FullPath>
+    </ProjectItem>
+  </Reports>
+  <Configurations>
+    <Configuration>
+      <Name>Debug</Name>
+      <Platform>Win32</Platform>
+      <Options>
+        <OutputPath>bin\Debug</OutputPath>
+        <TargetServerVersion>SSRS2008</TargetServerVersion>
+        <TargetServerURL>http://corp/ReportServer</TargetServerURL>
+        <TargetFolder>Web Usage Reports/Prod</TargetFolder>
+        <OverwriteDataSources>true</OverwriteDataSources>
+        <StartItem>Session Log.rdl</StartItem>
+      </Options>
+    </Configuration>
+    <Configuration>
+      <Name>DebugLocal</Name>
+      <Platform>Win32</Platform>
+      <Options>
+        <OutputPath>bin\DebugLocal</OutputPath>
+        <TargetServerVersion>SSRS2008</TargetServerVersion>
+        <TargetFolder>NRCAuthReports</TargetFolder>
+      </Options>
+    </Configuration>
+    <Configuration>
+      <Name>Production</Name>
+      <Platform>Win32</Platform>
+      <Options>
+        <OutputPath>bin\Production</OutputPath>
+        <TargetServerVersion>SSRS2008</TargetServerVersion>
+        <TargetServerURL>http://corp/ReportServer</TargetServerURL>
+        <TargetFolder>Web Usage Reports/Prod</TargetFolder>
+      </Options>
+    </Configuration>
+  </Configurations>
+</Project>

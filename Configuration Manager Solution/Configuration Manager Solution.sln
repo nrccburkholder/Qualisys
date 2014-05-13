@@ -1,0 +1,66 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Configuration Manager", "Configuration Manager\Configuration Manager.vbproj", "{8C37EC27-D860-4529-AF17-E9E599A162C2}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "QualiSys.Library", "..\QualiSys Class Library Solution\QualiSys.Library\QualiSys.Library.vbproj", "{191D0C34-FF61-47A6-852F-7FD91D50AD72}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "QualiSys.Library.SqlDataProvider", "..\QualiSys Class Library Solution\QualiSys.Library.SqlDataProvider\QualiSys.Library.SqlDataProvider.vbproj", "{31F9022F-D830-410D-90AE-98C59F34E552}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://tfs.nationalresearch.com:8080/tfs/defaultcollection
+		SccProjectUniqueName0 = Configuration\u0020Manager\\Configuration\u0020Manager.vbproj
+		SccProjectName0 = Configuration\u0020Manager
+		SccAuxPath0 = http://tfs.nationalresearch.com:8080/tfs/defaultcollection
+		SccLocalPath0 = Configuration\u0020Manager
+		SccProvider0 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccProjectUniqueName1 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Library\\QualiSys.Library.vbproj
+		SccProjectName1 = ../QualiSys\u0020Class\u0020Library\u0020Solution/QualiSys.Library
+		SccAuxPath1 = http://tfs.nationalresearch.com:8080/tfs/defaultcollection
+		SccLocalPath1 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Library
+		SccProvider1 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccProjectUniqueName2 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Library.SqlDataProvider\\QualiSys.Library.SqlDataProvider.vbproj
+		SccProjectName2 = ../QualiSys\u0020Class\u0020Library\u0020Solution/QualiSys.Library.SqlDataProvider
+		SccAuxPath2 = http://tfs.nationalresearch.com:8080/tfs/defaultcollection
+		SccLocalPath2 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Library.SqlDataProvider
+		SccProvider2 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8C37EC27-D860-4529-AF17-E9E599A162C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C37EC27-D860-4529-AF17-E9E599A162C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C37EC27-D860-4529-AF17-E9E599A162C2}.Debug|x86.ActiveCfg = Debug|x86
+		{8C37EC27-D860-4529-AF17-E9E599A162C2}.Debug|x86.Build.0 = Debug|x86
+		{8C37EC27-D860-4529-AF17-E9E599A162C2}.Release|Any CPU.ActiveCfg = Release|x86
+		{8C37EC27-D860-4529-AF17-E9E599A162C2}.Release|Any CPU.Build.0 = Release|x86
+		{8C37EC27-D860-4529-AF17-E9E599A162C2}.Release|x86.ActiveCfg = Release|x86
+		{8C37EC27-D860-4529-AF17-E9E599A162C2}.Release|x86.Build.0 = Release|x86
+		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.Debug|x86.ActiveCfg = Debug|x86
+		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.Debug|x86.Build.0 = Debug|x86
+		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.Release|Any CPU.ActiveCfg = Release|x86
+		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.Release|Any CPU.Build.0 = Release|x86
+		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.Release|x86.ActiveCfg = Release|x86
+		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.Release|x86.Build.0 = Release|x86
+		{31F9022F-D830-410D-90AE-98C59F34E552}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31F9022F-D830-410D-90AE-98C59F34E552}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31F9022F-D830-410D-90AE-98C59F34E552}.Debug|x86.ActiveCfg = Debug|x86
+		{31F9022F-D830-410D-90AE-98C59F34E552}.Debug|x86.Build.0 = Debug|x86
+		{31F9022F-D830-410D-90AE-98C59F34E552}.Release|Any CPU.ActiveCfg = Release|x86
+		{31F9022F-D830-410D-90AE-98C59F34E552}.Release|Any CPU.Build.0 = Release|x86
+		{31F9022F-D830-410D-90AE-98C59F34E552}.Release|x86.ActiveCfg = Release|x86
+		{31F9022F-D830-410D-90AE-98C59F34E552}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

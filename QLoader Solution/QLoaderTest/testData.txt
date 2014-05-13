@@ -1,0 +1,51 @@
+MRN	FName	LName	Addr	City	ST	Zip5	Sex	AdmitDate	DischargeDate	Age	FacilityNum	LangID	VisitType	DischargeUnit	Surg	HVisitType	HServiceType	HAdmitAge	HAdmissionSource	HDischargeStatus
+11111	Jackson	Pollack	1329 O St.	Lincoln	NE	68508	M	08/29/2006	09/23/2006	40	A	1	I	1	Y	I	2	40	1	1
+11112	David	Bowie	1700 West O St.	Lincoln	NE	68508	M	08/06/2006	09/30/2006	55	B	1	I	2	Y	I	3	55	2	2
+11113	Charlotte	Smith	1339 O St.	Lincoln	NE	68508	F	08/23/2006	09/17/2006	18	A	1	I	1	Y	I	9	18	3	3
+11115	Vendetta	Jones	2631 E St.	Lincoln	NE	68508	F	08/22/2006	09/16/2006	60	B	1	I	2	Y	I	1	25	4	4
+11116	Veruca	Salt	850 N. 70th St.	Lincoln	NE	68505	F	08/24/2006	09/18/2006	70	A	1	I	1	Y	I	3	70	5	5
+11117	Betty	Crocker	401 Cascio Dr.	Bellevue	NE	68005	F	08/14/2006	09/08/2006	55	B	1	I	2	Y	I	1	30	6	6
+11118	Martha	Washington	5631 S. 56th St.	Lincoln	NE	68521	F	08/20/2006	09/14/2006	80	A	1	I	1	Y	I	1	20	7	7
+11119	Ward	Cleaver	200 W South St.	Lincoln	NE	68506	M	08/28/2006	09/22/2006	90	B	1	I	2	Y	I	3	90	8	20
+11120	Lewis	Carroll	4947 Holdrege St.	Lincoln	NE	68506	M	08/11/2006	09/05/2006	35	A	1	I	1	Y	I	9	35	9	41
+11121	A A	Milne	101 N. 14th St.	Lincoln	NE	68508	M	08/10/2006	09/04/2006	25	B	1	I	2	Y	I	2	25	1	43
+11122	Matilda	Wormwood	1345 S. 11th St. #1	Lincoln	NE	68502	F	08/22/2006	09/16/2006	90	A	1	I	1		I	3	90	2	50
+11123	Thomas	Jefferson	7020 O St.	Lincoln	NE	68508	M	08/18/2006	09/12/2006	40	B	1	I	2		I	9	40	3	51
+11124	Duncan	Kane	8340 Horseshoe Dr.	Lincoln	NE	68502	M	08/12/2006	09/06/2006	85	A	1	I	1		I	2	85	4	61
+11125	Jack	Black	3239 S. 13th St.	Lincoln	NE	68508	M	08/22/2006	09/16/2006	85	B	1	I	2		I	3	85	1	62
+11126	Cosmo	Kramer	831 N. 48th St.	Lincoln	NE	68508	M	08/27/2006	09/21/2006	40	A	1	I	1		I	9	40	2	64
+11127	George	Washington	5001 O St.	Lincoln	NE	68507	M	08/29/2006	09/23/2006	85	B	1	I	2		I	2	85	3	65
+11128	Jack	Bristow	321 N. Cotner Blvd	Lincoln	NE	68510	M	08/23/2006	09/17/2006	90	A	1	I	1		I	3	90	4	66
+11129	F Scott	Fitzgerald	1301 H St.	Lincoln	NE	68502	M	08/12/2006	09/06/2006	85	B	1	I	2		I	9	85	1	M
+11130	Seymour	Skinner	6213 Havelock Ave.	Lincoln	NE	68508	M	08/13/2006	09/07/2006	50	A	1	I	1		I	2	50	2	1
+11131	Ernest	Hemmingway	105 S. 25th St.	Lincoln	NE	68508	M	08/19/2006	09/13/2006	35	B	1	I	2		I	3	35	3	2
+11132	Clark	Kent	5200 S. 56th St.	Lincoln	NE	68508	M	08/26/2006	09/20/2006	30	A	1	I	1		I	9	30	4	3
+11133	Napoleon	Bonaparte	221 N. 66th St.	Lincoln	NE	68508	M	08/27/2006	09/21/2006	65	B	1	I	2		I	2	65	9	4
+11134	Dana	Druff	1245 Q. St.	Lincoln	NE	68508	F	08/29/2006	09/23/2006	50	A	1	I	1		I	3	50	9	M
+11135	Jack	Horner	3810 Old Cheney	Lincoln	NE	68508	M	08/24/2006	09/18/2006	65	B	1	I	2		I	9	65	9	1
+11136	Willa	Cather	7600 N. 70th St.	Lincoln	NE	68521	F	08/29/2006	09/23/2006	50	A	1	I	1		I	1	25	9	2
+11137	Jane	Jetson	2120 S. 7th St.	Lincoln	NE	68506	F	08/12/2006	09/06/2006	70	B	1	I	2		I	3	70	5	3
+11138	June	Cleaver	4940 N. 27th St.	Lincoln	NE	68506	F	08/28/2006	09/22/2006	70	A	1	I	1		I	1	30	6	4
+11139	Augustus	Gloop	200 N. 11th St.	Lincoln	NE	68502	M	08/11/2006	09/05/2006	20	B	1	I	2		I	2	20	7	1
+11140	Juan	Gris	2500 N. 11th St.	Lincoln	NE	68502	M	08/26/2006	09/20/2006	60	A	1	I	1		I	3	60	8	2
+11141	Ralph	Wiggum	1601 Normandy Ct.	Lincoln	NE	68508	M	08/09/2006	09/03/2006	18	B	1	I	1		I	9	18	9	3
+11142	Violet	Beauregarde	1111 S. 70th St.	Lincoln	NE	68502	F	08/26/2006	09/20/2006	80	A	1	I	2		I	2	80	1	1
+11143	Orson	Wells	313 N. 13th St.	Lincoln	NE	68508	M	08/29/2006	09/23/2006	45	B	1	I	1		I	3	45	2	2
+11144	Keith	Mars	6100 O St.	Lincoln	NE	68508	M	08/06/2006	09/30/2006	85	A	1	I	2		I	9	85	3	3
+11145	Doogie	Houser	3321 Pioneers Blvd.	Lincoln	NE	68507	M	08/10/2006	09/04/2006	75	B	1	I	1		I	2	75	4	1
+11146	Bobby	Brady	2740 South St.	Lincoln	NE	68510	M	08/09/2006	09/03/2006	60	A	1	I	3		I	3	60	1	2
+11147	Peter	Brady	1126 South St.	Lincoln	NE	68502	M	08/07/2006	09/01/2006	50	B	1	I	3		I	9	50	2	3
+11148	Greg	Brady	4700 Normal Blvd.	Lincoln	NE	68508	M	08/08/2006	09/02/2006	25	A	1	I	3		I	2	25	3	1
+11149	Henry	Miller	4502 O St.	Lincoln	NE	68508	M	08/14/2006	09/08/2006	45	B	1	I	3		I	3	45	4	2
+11150	Mike	Brady	247 N. 8th St.	Lincoln	NE	68508	M	08/24/2006	09/18/2006	18	A	1	I	3		I	9	18	1	3
+11151	Dee	Tweedle	621 N. 48th St.	Lincoln	NE	68508	F	08/09/2006	09/03/2006	70	B	1	I	3		I	2	70	2	5
+11152	Abe	Simpson	1407 Q St.	Lincoln	NE	68508	M	08/06/2006	09/30/2006	18	A	1	I	1		I	X	18	3	6
+11153	Hank	Hill	5940 Havelock Ave.	Lincoln	NE	68508	M	08/11/2006	09/05/2006	30	B	1	I	2		I	X	30	4	7
+11154	Lisa	Simpson	1213 Q St.	Lincoln	NE	68508	F	08/12/2006	09/06/2006	40	A	1	I	1		I	X	40	1	20
+11155	Maggie	Simpson	1140 N. 21st	Lincoln	NE	68506	F	08/14/2006	09/08/2006	20	B	1	I	2		I	X	20	2	41
+11156	Bill	Deautrive	4121 Pioneer Woods Dr.	Lincoln	NE	68506	M	08/15/2006	09/09/2006	60	A	1	I	1		I	X	60	3	43
+11157	Marsha	Brady	1401 Superior St.	Lincoln	NE	68502	F	08/19/2006	09/13/2006	75	B	1	I	2		I	X	75	4	1
+11158	Jan	Brady	1400 Pioneers Blvd	Lincoln	NE	68502	F	08/10/2006	09/04/2006	25	A	1	I	1		I	X	25	5	1
+11159	Johann	Bach	4800 West O St.	Lincoln	NE	68508	M	08/22/2006	09/16/2006	40	B	1	I	2		I	X	40	6	1
+11160	Briscoe	County Jr	1941 Y St.	Lincoln	NE	68502	M	08/19/2006	09/13/2006	80	A	1	I	1		I	X	80	7	M
+11161	Federico	Fellini	2840 S. 70th St.	Lincoln	NE	68508	M	08/22/2006	09/16/2006	50	B	1	I	2		I	X	50	8	M

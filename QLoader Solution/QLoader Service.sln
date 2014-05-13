@@ -1,0 +1,221 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2010
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AddressCleaner", "AddressCleaner\AddressCleaner.vbproj", "{0CE3DD3A-B828-473A-BF1B-6A4004062A92}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "FileLoader", "FileLoader\FileLoader.vbproj", "{D461D470-1413-44CD-BE17-530A820C091A}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "QLoader Service", "QLoader Service\QLoader Service.vbproj", "{9D7C689C-BCF7-477F-87A8-8FB8D28330BE}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "QLoader Service Installer", "QLoader Service Installer\QLoader Service Installer.vdproj", "{E235857B-EE22-4C4E-825B-5FA0CCBA931F}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "QLoader Service Test", "QLoader Service Test\QLoader Service Test.vbproj", "{0C7245EB-7BB9-454A-A4D7-88709E6EF259}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Qualisys.QLoader.Library", "..\QualiSys Class Library Solution\Qualisys.QLoader.Library\Qualisys.QLoader.Library.vbproj", "{9E12046E-7AB1-4BB4-89F8-D2ACAA7CD811}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Qualisys.QLoader.Library.SqlProvider", "..\QualiSys Class Library Solution\Qualisys.QLoader.Library.SqlProvider\Qualisys.QLoader.Library.SqlProvider.vbproj", "{8C82B762-7494-478C-B8D6-E75958616F05}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "QualiSys.Pervasive.Library", "..\QualiSys Class Library Solution\QualiSys.Pervasive.Library\QualiSys.Pervasive.Library.vbproj", "{1BC993F6-721E-44A9-A1CD-CC2DECFC5464}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "QualiSys.Pervasive.Library.SqlDataProvider", "..\QualiSys Class Library Solution\QualiSys.Pervasive.Library.SqlDataProvider\QualiSys.Pervasive.Library.SqlDataProvider.vbproj", "{45342C2F-19EF-474C-B9BC-F8222CBABCC2}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Address Cleaner Installer", "Address Cleaner Installer\Address Cleaner Installer.vdproj", "{8E57636F-91D7-4636-822C-42A9ACBF31BF}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "QualiSys.QLoader.Library20", "..\QualiSys Class Library Solution\QualiSys.QLoader.Library20\QualiSys.QLoader.Library20.vbproj", "{7993F3E7-29EE-48A0-9514-3C71D5867904}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "QualiSys.QLoader.Library20.SqlDataProvider", "..\QualiSys Class Library Solution\QualiSys.QLoader.Library20.SqlDataProvider\QualiSys.QLoader.Library20.SqlDataProvider.vbproj", "{C006A8BF-39A9-4B1B-8699-170C1B9FB13E}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 13
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://tfs.nationalresearch.com:8080/tfs/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = AddressCleaner\\AddressCleaner.vbproj
+		SccProjectName1 = AddressCleaner
+		SccLocalPath1 = AddressCleaner
+		SccProjectUniqueName2 = FileLoader\\FileLoader.vbproj
+		SccProjectName2 = FileLoader
+		SccLocalPath2 = FileLoader
+		SccProjectUniqueName3 = QLoader\u0020Service\u0020Installer\\QLoader\u0020Service\u0020Installer.vdproj
+		SccProjectName3 = QLoader\u0020Service\u0020Installer
+		SccLocalPath3 = QLoader\u0020Service\u0020Installer
+		SccProjectUniqueName4 = QLoader\u0020Service\u0020Test\\QLoader\u0020Service\u0020Test.vbproj
+		SccProjectName4 = QLoader\u0020Service\u0020Test
+		SccLocalPath4 = QLoader\u0020Service\u0020Test
+		SccProjectUniqueName5 = QLoader\u0020Service\\QLoader\u0020Service.vbproj
+		SccProjectName5 = QLoader\u0020Service
+		SccLocalPath5 = QLoader\u0020Service
+		SccProjectUniqueName6 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\Qualisys.QLoader.Library\\Qualisys.QLoader.Library.vbproj
+		SccProjectName6 = ../QualiSys\u0020Class\u0020Library\u0020Solution/Qualisys.QLoader.Library
+		SccLocalPath6 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\Qualisys.QLoader.Library
+		SccProjectUniqueName7 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\Qualisys.QLoader.Library.SqlProvider\\Qualisys.QLoader.Library.SqlProvider.vbproj
+		SccProjectName7 = ../QualiSys\u0020Class\u0020Library\u0020Solution/Qualisys.QLoader.Library.SqlProvider
+		SccLocalPath7 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\Qualisys.QLoader.Library.SqlProvider
+		SccProjectUniqueName8 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Pervasive.Library\\QualiSys.Pervasive.Library.vbproj
+		SccProjectName8 = ../QualiSys\u0020Class\u0020Library\u0020Solution/QualiSys.Pervasive.Library
+		SccLocalPath8 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Pervasive.Library
+		SccProjectUniqueName9 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Pervasive.Library.SqlDataProvider\\QualiSys.Pervasive.Library.SqlDataProvider.vbproj
+		SccProjectName9 = ../QualiSys\u0020Class\u0020Library\u0020Solution/QualiSys.Pervasive.Library.SqlDataProvider
+		SccLocalPath9 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Pervasive.Library.SqlDataProvider
+		SccProjectUniqueName10 = Address\u0020Cleaner\u0020Installer\\Address\u0020Cleaner\u0020Installer.vdproj
+		SccProjectName10 = Address\u0020Cleaner\u0020Installer
+		SccLocalPath10 = Address\u0020Cleaner\u0020Installer
+		SccProjectUniqueName11 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.QLoader.Library20\\QualiSys.QLoader.Library20.vbproj
+		SccProjectName11 = ../QualiSys\u0020Class\u0020Library\u0020Solution/QualiSys.QLoader.Library20
+		SccLocalPath11 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.QLoader.Library20
+		SccProjectUniqueName12 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.QLoader.Library20.SqlDataProvider\\QualiSys.QLoader.Library20.SqlDataProvider.vbproj
+		SccProjectName12 = ../QualiSys\u0020Class\u0020Library\u0020Solution/QualiSys.QLoader.Library20.SqlDataProvider
+		SccLocalPath12 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.QLoader.Library20.SqlDataProvider
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0CE3DD3A-B828-473A-BF1B-6A4004062A92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CE3DD3A-B828-473A-BF1B-6A4004062A92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CE3DD3A-B828-473A-BF1B-6A4004062A92}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{0CE3DD3A-B828-473A-BF1B-6A4004062A92}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{0CE3DD3A-B828-473A-BF1B-6A4004062A92}.Debug|x86.ActiveCfg = Debug|x86
+		{0CE3DD3A-B828-473A-BF1B-6A4004062A92}.Debug|x86.Build.0 = Debug|x86
+		{0CE3DD3A-B828-473A-BF1B-6A4004062A92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CE3DD3A-B828-473A-BF1B-6A4004062A92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CE3DD3A-B828-473A-BF1B-6A4004062A92}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{0CE3DD3A-B828-473A-BF1B-6A4004062A92}.Release|Mixed Platforms.Build.0 = Release|x86
+		{0CE3DD3A-B828-473A-BF1B-6A4004062A92}.Release|x86.ActiveCfg = Release|x86
+		{0CE3DD3A-B828-473A-BF1B-6A4004062A92}.Release|x86.Build.0 = Release|x86
+		{D461D470-1413-44CD-BE17-530A820C091A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D461D470-1413-44CD-BE17-530A820C091A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D461D470-1413-44CD-BE17-530A820C091A}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{D461D470-1413-44CD-BE17-530A820C091A}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{D461D470-1413-44CD-BE17-530A820C091A}.Debug|x86.ActiveCfg = Debug|x86
+		{D461D470-1413-44CD-BE17-530A820C091A}.Debug|x86.Build.0 = Debug|x86
+		{D461D470-1413-44CD-BE17-530A820C091A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D461D470-1413-44CD-BE17-530A820C091A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D461D470-1413-44CD-BE17-530A820C091A}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{D461D470-1413-44CD-BE17-530A820C091A}.Release|Mixed Platforms.Build.0 = Release|x86
+		{D461D470-1413-44CD-BE17-530A820C091A}.Release|x86.ActiveCfg = Release|x86
+		{D461D470-1413-44CD-BE17-530A820C091A}.Release|x86.Build.0 = Release|x86
+		{9D7C689C-BCF7-477F-87A8-8FB8D28330BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D7C689C-BCF7-477F-87A8-8FB8D28330BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D7C689C-BCF7-477F-87A8-8FB8D28330BE}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{9D7C689C-BCF7-477F-87A8-8FB8D28330BE}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{9D7C689C-BCF7-477F-87A8-8FB8D28330BE}.Debug|x86.ActiveCfg = Debug|x86
+		{9D7C689C-BCF7-477F-87A8-8FB8D28330BE}.Debug|x86.Build.0 = Debug|x86
+		{9D7C689C-BCF7-477F-87A8-8FB8D28330BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D7C689C-BCF7-477F-87A8-8FB8D28330BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D7C689C-BCF7-477F-87A8-8FB8D28330BE}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{9D7C689C-BCF7-477F-87A8-8FB8D28330BE}.Release|Mixed Platforms.Build.0 = Release|x86
+		{9D7C689C-BCF7-477F-87A8-8FB8D28330BE}.Release|x86.ActiveCfg = Release|x86
+		{9D7C689C-BCF7-477F-87A8-8FB8D28330BE}.Release|x86.Build.0 = Release|x86
+		{E235857B-EE22-4C4E-825B-5FA0CCBA931F}.Debug|Any CPU.ActiveCfg = Debug
+		{E235857B-EE22-4C4E-825B-5FA0CCBA931F}.Debug|Any CPU.Build.0 = Debug
+		{E235857B-EE22-4C4E-825B-5FA0CCBA931F}.Debug|Mixed Platforms.ActiveCfg = Debug
+		{E235857B-EE22-4C4E-825B-5FA0CCBA931F}.Debug|Mixed Platforms.Build.0 = Debug
+		{E235857B-EE22-4C4E-825B-5FA0CCBA931F}.Debug|x86.ActiveCfg = Debug
+		{E235857B-EE22-4C4E-825B-5FA0CCBA931F}.Release|Any CPU.ActiveCfg = Release
+		{E235857B-EE22-4C4E-825B-5FA0CCBA931F}.Release|Mixed Platforms.ActiveCfg = Release
+		{E235857B-EE22-4C4E-825B-5FA0CCBA931F}.Release|Mixed Platforms.Build.0 = Release
+		{E235857B-EE22-4C4E-825B-5FA0CCBA931F}.Release|x86.ActiveCfg = Release
+		{0C7245EB-7BB9-454A-A4D7-88709E6EF259}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C7245EB-7BB9-454A-A4D7-88709E6EF259}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C7245EB-7BB9-454A-A4D7-88709E6EF259}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{0C7245EB-7BB9-454A-A4D7-88709E6EF259}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{0C7245EB-7BB9-454A-A4D7-88709E6EF259}.Debug|x86.ActiveCfg = Debug|x86
+		{0C7245EB-7BB9-454A-A4D7-88709E6EF259}.Debug|x86.Build.0 = Debug|x86
+		{0C7245EB-7BB9-454A-A4D7-88709E6EF259}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C7245EB-7BB9-454A-A4D7-88709E6EF259}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C7245EB-7BB9-454A-A4D7-88709E6EF259}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{0C7245EB-7BB9-454A-A4D7-88709E6EF259}.Release|Mixed Platforms.Build.0 = Release|x86
+		{0C7245EB-7BB9-454A-A4D7-88709E6EF259}.Release|x86.ActiveCfg = Release|x86
+		{0C7245EB-7BB9-454A-A4D7-88709E6EF259}.Release|x86.Build.0 = Release|x86
+		{9E12046E-7AB1-4BB4-89F8-D2ACAA7CD811}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E12046E-7AB1-4BB4-89F8-D2ACAA7CD811}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E12046E-7AB1-4BB4-89F8-D2ACAA7CD811}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{9E12046E-7AB1-4BB4-89F8-D2ACAA7CD811}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{9E12046E-7AB1-4BB4-89F8-D2ACAA7CD811}.Debug|x86.ActiveCfg = Debug|x86
+		{9E12046E-7AB1-4BB4-89F8-D2ACAA7CD811}.Debug|x86.Build.0 = Debug|x86
+		{9E12046E-7AB1-4BB4-89F8-D2ACAA7CD811}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E12046E-7AB1-4BB4-89F8-D2ACAA7CD811}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E12046E-7AB1-4BB4-89F8-D2ACAA7CD811}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{9E12046E-7AB1-4BB4-89F8-D2ACAA7CD811}.Release|Mixed Platforms.Build.0 = Release|x86
+		{9E12046E-7AB1-4BB4-89F8-D2ACAA7CD811}.Release|x86.ActiveCfg = Release|x86
+		{9E12046E-7AB1-4BB4-89F8-D2ACAA7CD811}.Release|x86.Build.0 = Release|x86
+		{8C82B762-7494-478C-B8D6-E75958616F05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C82B762-7494-478C-B8D6-E75958616F05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C82B762-7494-478C-B8D6-E75958616F05}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{8C82B762-7494-478C-B8D6-E75958616F05}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{8C82B762-7494-478C-B8D6-E75958616F05}.Debug|x86.ActiveCfg = Debug|x86
+		{8C82B762-7494-478C-B8D6-E75958616F05}.Debug|x86.Build.0 = Debug|x86
+		{8C82B762-7494-478C-B8D6-E75958616F05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C82B762-7494-478C-B8D6-E75958616F05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C82B762-7494-478C-B8D6-E75958616F05}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{8C82B762-7494-478C-B8D6-E75958616F05}.Release|Mixed Platforms.Build.0 = Release|x86
+		{8C82B762-7494-478C-B8D6-E75958616F05}.Release|x86.ActiveCfg = Release|x86
+		{8C82B762-7494-478C-B8D6-E75958616F05}.Release|x86.Build.0 = Release|x86
+		{1BC993F6-721E-44A9-A1CD-CC2DECFC5464}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BC993F6-721E-44A9-A1CD-CC2DECFC5464}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BC993F6-721E-44A9-A1CD-CC2DECFC5464}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{1BC993F6-721E-44A9-A1CD-CC2DECFC5464}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{1BC993F6-721E-44A9-A1CD-CC2DECFC5464}.Debug|x86.ActiveCfg = Debug|x86
+		{1BC993F6-721E-44A9-A1CD-CC2DECFC5464}.Debug|x86.Build.0 = Debug|x86
+		{1BC993F6-721E-44A9-A1CD-CC2DECFC5464}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BC993F6-721E-44A9-A1CD-CC2DECFC5464}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BC993F6-721E-44A9-A1CD-CC2DECFC5464}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{1BC993F6-721E-44A9-A1CD-CC2DECFC5464}.Release|Mixed Platforms.Build.0 = Release|x86
+		{1BC993F6-721E-44A9-A1CD-CC2DECFC5464}.Release|x86.ActiveCfg = Release|x86
+		{1BC993F6-721E-44A9-A1CD-CC2DECFC5464}.Release|x86.Build.0 = Release|x86
+		{45342C2F-19EF-474C-B9BC-F8222CBABCC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45342C2F-19EF-474C-B9BC-F8222CBABCC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45342C2F-19EF-474C-B9BC-F8222CBABCC2}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{45342C2F-19EF-474C-B9BC-F8222CBABCC2}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{45342C2F-19EF-474C-B9BC-F8222CBABCC2}.Debug|x86.ActiveCfg = Debug|x86
+		{45342C2F-19EF-474C-B9BC-F8222CBABCC2}.Debug|x86.Build.0 = Debug|x86
+		{45342C2F-19EF-474C-B9BC-F8222CBABCC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45342C2F-19EF-474C-B9BC-F8222CBABCC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45342C2F-19EF-474C-B9BC-F8222CBABCC2}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{45342C2F-19EF-474C-B9BC-F8222CBABCC2}.Release|Mixed Platforms.Build.0 = Release|x86
+		{45342C2F-19EF-474C-B9BC-F8222CBABCC2}.Release|x86.ActiveCfg = Release|x86
+		{45342C2F-19EF-474C-B9BC-F8222CBABCC2}.Release|x86.Build.0 = Release|x86
+		{8E57636F-91D7-4636-822C-42A9ACBF31BF}.Debug|Any CPU.ActiveCfg = Debug
+		{8E57636F-91D7-4636-822C-42A9ACBF31BF}.Debug|Any CPU.Build.0 = Debug
+		{8E57636F-91D7-4636-822C-42A9ACBF31BF}.Debug|Mixed Platforms.ActiveCfg = Debug
+		{8E57636F-91D7-4636-822C-42A9ACBF31BF}.Debug|Mixed Platforms.Build.0 = Debug
+		{8E57636F-91D7-4636-822C-42A9ACBF31BF}.Debug|x86.ActiveCfg = Debug
+		{8E57636F-91D7-4636-822C-42A9ACBF31BF}.Release|Any CPU.ActiveCfg = Release
+		{8E57636F-91D7-4636-822C-42A9ACBF31BF}.Release|Mixed Platforms.ActiveCfg = Release
+		{8E57636F-91D7-4636-822C-42A9ACBF31BF}.Release|x86.ActiveCfg = Release
+		{7993F3E7-29EE-48A0-9514-3C71D5867904}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7993F3E7-29EE-48A0-9514-3C71D5867904}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7993F3E7-29EE-48A0-9514-3C71D5867904}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{7993F3E7-29EE-48A0-9514-3C71D5867904}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{7993F3E7-29EE-48A0-9514-3C71D5867904}.Debug|x86.ActiveCfg = Debug|x86
+		{7993F3E7-29EE-48A0-9514-3C71D5867904}.Debug|x86.Build.0 = Debug|x86
+		{7993F3E7-29EE-48A0-9514-3C71D5867904}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7993F3E7-29EE-48A0-9514-3C71D5867904}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7993F3E7-29EE-48A0-9514-3C71D5867904}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{7993F3E7-29EE-48A0-9514-3C71D5867904}.Release|Mixed Platforms.Build.0 = Release|x86
+		{7993F3E7-29EE-48A0-9514-3C71D5867904}.Release|x86.ActiveCfg = Release|x86
+		{7993F3E7-29EE-48A0-9514-3C71D5867904}.Release|x86.Build.0 = Release|x86
+		{C006A8BF-39A9-4B1B-8699-170C1B9FB13E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C006A8BF-39A9-4B1B-8699-170C1B9FB13E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C006A8BF-39A9-4B1B-8699-170C1B9FB13E}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{C006A8BF-39A9-4B1B-8699-170C1B9FB13E}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{C006A8BF-39A9-4B1B-8699-170C1B9FB13E}.Debug|x86.ActiveCfg = Debug|x86
+		{C006A8BF-39A9-4B1B-8699-170C1B9FB13E}.Debug|x86.Build.0 = Debug|x86
+		{C006A8BF-39A9-4B1B-8699-170C1B9FB13E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C006A8BF-39A9-4B1B-8699-170C1B9FB13E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C006A8BF-39A9-4B1B-8699-170C1B9FB13E}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{C006A8BF-39A9-4B1B-8699-170C1B9FB13E}.Release|Mixed Platforms.Build.0 = Release|x86
+		{C006A8BF-39A9-4B1B-8699-170C1B9FB13E}.Release|x86.ActiveCfg = Release|x86
+		{C006A8BF-39A9-4B1B-8699-170C1B9FB13E}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

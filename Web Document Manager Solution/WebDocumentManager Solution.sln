@@ -1,0 +1,68 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "NRCWebDocumentManager", "WebDocumentManager\NRCWebDocumentManager.vbproj", "{118219D0-CF71-4470-A77B-A8E51260A455}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DataMart.WebDocumentManager.Library", "..\DataMart Class Library Solution\DataMart.WebDocumentManager.Library\DataMart.WebDocumentManager.Library.vbproj", "{2A268387-1DF4-4EF6-A17B-1F924C4DAE20}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DataMart.WebDocumentManager.Library.SqlProvider", "..\DataMart Class Library Solution\DataMart.WebDocumentManager.Library.SqlProvider\DataMart.WebDocumentManager.Library.SqlProvider.vbproj", "{E59B81EF-D4C1-43F3-901D-23364060B9BA}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://perseus:8080/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = WebDocumentManager\\NRCWebDocumentManager.vbproj
+		SccProjectName1 = WebDocumentManager
+		SccLocalPath1 = WebDocumentManager
+		SccProjectUniqueName2 = ..\\DataMart\u0020Class\u0020Library\u0020Solution\\DataMart.WebDocumentManager.Library\\DataMart.WebDocumentManager.Library.vbproj
+		SccProjectName2 = ../DataMart\u0020Class\u0020Library\u0020Solution/DataMart.WebDocumentManager.Library
+		SccLocalPath2 = ..\\DataMart\u0020Class\u0020Library\u0020Solution\\DataMart.WebDocumentManager.Library
+		SccProjectUniqueName3 = ..\\DataMart\u0020Class\u0020Library\u0020Solution\\DataMart.WebDocumentManager.Library.SqlProvider\\DataMart.WebDocumentManager.Library.SqlProvider.vbproj
+		SccProjectName3 = ../DataMart\u0020Class\u0020Library\u0020Solution/DataMart.WebDocumentManager.Library.SqlProvider
+		SccLocalPath3 = ..\\DataMart\u0020Class\u0020Library\u0020Solution\\DataMart.WebDocumentManager.Library.SqlProvider
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|.NET = Debug|.NET
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Release|.NET = Release|.NET
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{118219D0-CF71-4470-A77B-A8E51260A455}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{118219D0-CF71-4470-A77B-A8E51260A455}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{118219D0-CF71-4470-A77B-A8E51260A455}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{118219D0-CF71-4470-A77B-A8E51260A455}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{118219D0-CF71-4470-A77B-A8E51260A455}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{118219D0-CF71-4470-A77B-A8E51260A455}.Release|.NET.ActiveCfg = Release|Any CPU
+		{118219D0-CF71-4470-A77B-A8E51260A455}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{118219D0-CF71-4470-A77B-A8E51260A455}.Release|Any CPU.Build.0 = Release|Any CPU
+		{118219D0-CF71-4470-A77B-A8E51260A455}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{118219D0-CF71-4470-A77B-A8E51260A455}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{2A268387-1DF4-4EF6-A17B-1F924C4DAE20}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{2A268387-1DF4-4EF6-A17B-1F924C4DAE20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A268387-1DF4-4EF6-A17B-1F924C4DAE20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A268387-1DF4-4EF6-A17B-1F924C4DAE20}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2A268387-1DF4-4EF6-A17B-1F924C4DAE20}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2A268387-1DF4-4EF6-A17B-1F924C4DAE20}.Release|.NET.ActiveCfg = Release|Any CPU
+		{2A268387-1DF4-4EF6-A17B-1F924C4DAE20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A268387-1DF4-4EF6-A17B-1F924C4DAE20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A268387-1DF4-4EF6-A17B-1F924C4DAE20}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2A268387-1DF4-4EF6-A17B-1F924C4DAE20}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{E59B81EF-D4C1-43F3-901D-23364060B9BA}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{E59B81EF-D4C1-43F3-901D-23364060B9BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E59B81EF-D4C1-43F3-901D-23364060B9BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E59B81EF-D4C1-43F3-901D-23364060B9BA}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{E59B81EF-D4C1-43F3-901D-23364060B9BA}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{E59B81EF-D4C1-43F3-901D-23364060B9BA}.Release|.NET.ActiveCfg = Release|Any CPU
+		{E59B81EF-D4C1-43F3-901D-23364060B9BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E59B81EF-D4C1-43F3-901D-23364060B9BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E59B81EF-D4C1-43F3-901D-23364060B9BA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{E59B81EF-D4C1-43F3-901D-23364060B9BA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

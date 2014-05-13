@@ -1,0 +1,18 @@
+None
+After you pressed the call button, how often did you get help as soon as you wanted it?
+Did doctors, nurses, or other hospital staff talk with you about whether you would have the help you needed when you left the hospital?
+Did you get information in writing about what symptoms or health problems to look out for after you left the hospital?
+How often did doctors explain things in a way you could understand?
+How often did doctors listen carefully to you?
+How often did doctors treat you with courtesy and respect?
+How often did hospital staff describe possible side effects in a way you could understand?
+How often did hospital staff do everything they could to help you with your pain?
+How often did hospital staff tell you what the medicine was for?
+How often did nurses explain things in a way you could understand?
+How often did nurses listen carefully to you?
+How often did nurses treat you with courtesy and respect?
+How often did you get help in getting to the bathroom or in using a bedpan?
+How often was the area around your room quiet at night?
+How often was your pain well controlled?
+How often were your room and bathroom kept clean?
+Other

@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Tahoma" Size="8.25" />
+  <Class Name="Nrc.Qualisys.ConfigurationManager.SamplePeriodsModule">
+    <Position X="11" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Configuration Modules\SamplePeriodsModule.vb</FileName>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAQAAAAAADAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.Qualisys.ConfigurationManager.ConfigurationModule">
+    <Position X="5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Classes\ConfigurationModule.vb</FileName>
+      <HashCode>IAEgAAAAAAAAAAAAAAEAAAQAAAAAABAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.Qualisys.ConfigurationManager.BusinessRulesModule">
+    <Position X="13.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Configuration Modules\BusinessRulesModule.vb</FileName>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAQAAAAAABAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.Qualisys.ConfigurationManager.DataStructureModule">
+    <Position X="15.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Configuration Modules\DataStructureModule.vb</FileName>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAQAAAAAABAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.Qualisys.ConfigurationManager.FormLayoutModule">
+    <Position X="17.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Configuration Modules\FormLayoutModule.vb</FileName>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAQAAAAAABAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.Qualisys.ConfigurationManager.MethodologyModule">
+    <Position X="20" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Configuration Modules\MethodologyModule.vb</FileName>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAQAAAAAABAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.Qualisys.ConfigurationManager.NewStudyModule">
+    <Position X="22.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Configuration Modules\NewStudyModule.vb</FileName>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAQAAAAAABAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.Qualisys.ConfigurationManager.NewSurveyModule">
+    <Position X="21.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Configuration Modules\NewSurveyModule.vb</FileName>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAQAAABAADAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.Qualisys.ConfigurationManager.PersonalizationModule">
+    <Position X="7.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Configuration Modules\PersonalizationModule.vb</FileName>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAQAAAAAABAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <InheritanceLine Type="Nrc.Qualisys.ConfigurationManager.ConfigurationModule" ManuallyRouted="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.75" Y="2.902" />
+        <Point X="5.75" Y="3.375" />
+        <Point X="7.97" Y="3.375" />
+        <Point X="7.97" Y="3.75" />
+        <Point X="8" Y="3.75" />
+      </Path>
+    </InheritanceLine>
+  </Class>
+  <Class Name="Nrc.Qualisys.ConfigurationManager.SamplePeriodsModuleNextVersion">
+    <Position X="6" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Configuration Modules\SamplePeriodsModuleNextVersion.vb</FileName>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAQAAABAADAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.Qualisys.ConfigurationManager.SamplePlanModule">
+    <Position X="8.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Configuration Modules\SamplePlanModule.vb</FileName>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAQAAAAAABAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.Qualisys.ConfigurationManager.SampleUnitMappingsModule">
+    <Position X="10.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Configuration Modules\SampleUnitMappingsModule.vb</FileName>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAQAAAAAABAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.Qualisys.ConfigurationManager.StudyAccessModule">
+    <Position X="12.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Configuration Modules\StudyAccessModule.vb</FileName>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAQAAAAAABAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.Qualisys.ConfigurationManager.StudyPropertiesModule">
+    <Position X="15" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Configuration Modules\StudyPropertiesModule.vb</FileName>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAQAAAAAABAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.Qualisys.ConfigurationManager.SurveyPropertiesModule">
+    <Position X="17.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Configuration Modules\SurveyPropertiesModule.vb</FileName>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAQAAAAAABAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.Qualisys.ConfigurationManager.TestPrintModule">
+    <Position X="9.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Configuration Modules\TestPrintModule.vb</FileName>
+      <HashCode>AAAgAAAAAAAAAAAAAAEAAAQAAAAAABAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <InheritanceLine Type="Nrc.Qualisys.ConfigurationManager.ConfigurationModule" ManuallyRouted="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.75" Y="2.902" />
+        <Point X="5.75" Y="3.375" />
+        <Point X="10" Y="3.375" />
+        <Point X="10" Y="3.75" />
+      </Path>
+    </InheritanceLine>
+  </Class>
+  <Class Name="Nrc.Qualisys.ConfigurationManager.ValidationModule">
+    <Position X="19.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Configuration Modules\ValidationModule.vb</FileName>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAQAAAAAABAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+</ClassDiagram>

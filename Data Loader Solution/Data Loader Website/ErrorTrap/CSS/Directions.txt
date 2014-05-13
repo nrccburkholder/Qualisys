@@ -1,0 +1,14 @@
+1. Copy the containing folder to the new website
+2. Add the following to the appconfig settings under the project properties.
+
+ExceptionFromAddress		String		Application		MySolutions@NationalResearch.com
+ExceptionToAddress		String		Application		MySolutionsExceptions@NationalResearch.com
+
+3. Make sure the web config has a value for the "SmtpServer" setting
+
+4. inherit the base class of  webErrorTrappingBaseClass on any page you want it to control 
+
+
+*Note: There is a test page called Exceptiontest.aspx. enter a exception message and click throw to test 
+the errorpage funcionality
+

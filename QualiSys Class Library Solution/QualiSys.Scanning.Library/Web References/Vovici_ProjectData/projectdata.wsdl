@@ -1,0 +1,2576 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.perseus.com/Pdc.WS" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://www.perseus.com/Pdc.WS" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Access to surveys and profiles.</wsdl:documentation>
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.perseus.com/Pdc.WS">
+      <s:element name="GetSurveyList">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="sharingType" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSurveyListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSurveyListResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCommonSurveyList">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="initialSource" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCommonSurveyListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCommonSurveyListResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetProfileList">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetProfileListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetProfileListResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateSurveyProject">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="projectName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="description" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="respondentSource" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateSurveyProjectResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CreateSurveyProjectResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreatePanelProfile">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="profileName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="description" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreatePanelProfileResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CreatePanelProfileResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetQuestionnaire">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetQuestionnaireResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetQuestionnaireResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPublishedQuestionnaire">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPublishedQuestionnaireResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPublishedQuestionnaireResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetQuestionnaire">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="surveyXml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetQuestionnaireResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SetQuestionnaireResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetQuestionnaireVersions">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetQuestionnaireVersionsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetQuestionnaireVersionsResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RevertQuestionnaire">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="versionId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RevertQuestionnaireResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetSurveyCustomProperties">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="columnName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSurveyCustomPropertiesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSurveyCustomPropertiesResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCustomPropertiesForSurveys">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="projectIds" type="tns:ArrayOfInt" />
+            <s:element minOccurs="0" maxOccurs="1" name="targetPropertyName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfInt">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="int" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetCustomPropertiesForSurveysResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCustomPropertiesForSurveysResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetSurveyCustomProperties">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="columnName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="propertiesXml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetSurveyCustomPropertiesResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetDataMap">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDataMapResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetDataMapResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetReportDataMap">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetReportDataMapResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetReportDataMapResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetColumnList">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetColumnListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetColumnListResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSurveyInformation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSurveyInformationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSurveyInformationResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSurveyFieldInformation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="columnName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSurveyFieldInformationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSurveyFieldInformationResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RepublishProject">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="publishMode" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RepublishProjectResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="SetEndPageURL">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="endPageType" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="URL" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetEndPageURLResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetProjectInformation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetProjectInformationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetProjectInformationResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetProjectInformation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="xmlString" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetProjectInformationResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="DeleteProject">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteProjectResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetResponseCount">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="completedOnly" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetResponseCountResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetResponseCountResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSurveyData">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSurveyDataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSurveyDataResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSurveyDataEx">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="dataMapXml" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="filterXml" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="startTime" nillable="true" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="endTime" nillable="true" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="completedOnly" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSurveyDataExResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSurveyDataExResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSurveyDataPaged">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="dataMapXml" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="filterXml" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="completedOnly" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="prevRecordId" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="recordCount" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSurveyDataPagedResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSurveyDataPagedResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="recordId" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetResponseResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetResponseResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ChangeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="recordId" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="columnName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="newValue" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ChangeResponseResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ChangeResponseResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ChangeMultipleResponses">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="dataString" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ChangeMultipleResponsesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ChangeMultipleResponsesResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="dataString" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddResponseResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AddResponseResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPreloadData">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="recordId" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPreloadDataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPreloadDataResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetPreloadData">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="dataString" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetPreloadDataResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="DeleteParticipant">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="recordId" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteParticipantResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="ClearResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="recordId" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ClearResponseResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetFrequencyInformation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="columnName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetFrequencyInformationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetFrequencyInformationResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetStatistics">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="columnName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetStatisticsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetStatisticsResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AuthorizeMultiplePanelistsForSurvey">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="panelistIdList" type="tns:ArrayOfInt" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AuthorizeMultiplePanelistsForSurveyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AuthorizeMultiplePanelistsForSurveyResult" type="tns:ArrayOfLong" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfLong">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="long" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AuthorizePanelistForSurvey">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="panelistID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="userkey1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userkey2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userkey3" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AuthorizePanelistForSurveyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AuthorizePanelistForSurveyResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AuthorizeParticipantForSurvey">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userkey1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userkey2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userkey3" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="culture" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AuthorizeParticipantForSurveyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AuthorizeParticipantForSurveyResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAuthorizedParticipantCount">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAuthorizedParticipantCountResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetAuthorizedParticipantCountResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetParticipantDataEx">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="inviteStatus" nillable="true" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="startTime" nillable="true" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="endTime" nillable="true" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="completedOnly" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetParticipantDataExResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetParticipantDataExResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetParticipantDataPaged">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="inviteStatus" nillable="true" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="surveyStatus" type="tns:ParticipantStatus" />
+            <s:element minOccurs="1" maxOccurs="1" name="startRecordId" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="recordCount" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:simpleType name="ParticipantStatus">
+        <s:restriction base="s:string">
+          <s:enumeration value="Any" />
+          <s:enumeration value="NotStarted" />
+          <s:enumeration value="Started" />
+          <s:enumeration value="Completed" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="GetParticipantDataPagedResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetParticipantDataPagedResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetParticipantData">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetParticipantDataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetParticipantDataResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetParticipantInformation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="recordId" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetParticipantInformationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetParticipantInformationResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetParticipantInformation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="dataString" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetParticipantInformationResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="FindPanelistRecord">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="panelistId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="key1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="key2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="key3" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FindPanelistRecordResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="FindPanelistRecordResult" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInvitationText">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="recordId" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="invitationType" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInvitationTextResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetInvitationTextResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInvitationTemplate">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="invitationType" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInvitationTemplateResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetInvitationTemplateResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetInvitationTemplate">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="subject" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="htmlBody" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="textBody" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="culture" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="invitationType" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetInvitationTemplateResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="SetInvitationStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="recordId" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="invitationType" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetInvitationStatusResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="SendInvitations">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="invitationType" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SendInvitationsResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="UpdateBorrowedQuestions">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="projectId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateBorrowedQuestionsResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="Ping">
+        <s:complexType />
+      </s:element>
+      <s:element name="PingResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="PingResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Login">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LoginResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LoginResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetSurveyListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSurveyList" />
+  </wsdl:message>
+  <wsdl:message name="GetSurveyListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSurveyListResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCommonSurveyListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCommonSurveyList" />
+  </wsdl:message>
+  <wsdl:message name="GetCommonSurveyListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCommonSurveyListResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetProfileListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetProfileList" />
+  </wsdl:message>
+  <wsdl:message name="GetProfileListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetProfileListResponse" />
+  </wsdl:message>
+  <wsdl:message name="CreateSurveyProjectSoapIn">
+    <wsdl:part name="parameters" element="tns:CreateSurveyProject" />
+  </wsdl:message>
+  <wsdl:message name="CreateSurveyProjectSoapOut">
+    <wsdl:part name="parameters" element="tns:CreateSurveyProjectResponse" />
+  </wsdl:message>
+  <wsdl:message name="CreatePanelProfileSoapIn">
+    <wsdl:part name="parameters" element="tns:CreatePanelProfile" />
+  </wsdl:message>
+  <wsdl:message name="CreatePanelProfileSoapOut">
+    <wsdl:part name="parameters" element="tns:CreatePanelProfileResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetQuestionnaireSoapIn">
+    <wsdl:part name="parameters" element="tns:GetQuestionnaire" />
+  </wsdl:message>
+  <wsdl:message name="GetQuestionnaireSoapOut">
+    <wsdl:part name="parameters" element="tns:GetQuestionnaireResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPublishedQuestionnaireSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPublishedQuestionnaire" />
+  </wsdl:message>
+  <wsdl:message name="GetPublishedQuestionnaireSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPublishedQuestionnaireResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetQuestionnaireSoapIn">
+    <wsdl:part name="parameters" element="tns:SetQuestionnaire" />
+  </wsdl:message>
+  <wsdl:message name="SetQuestionnaireSoapOut">
+    <wsdl:part name="parameters" element="tns:SetQuestionnaireResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetQuestionnaireVersionsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetQuestionnaireVersions" />
+  </wsdl:message>
+  <wsdl:message name="GetQuestionnaireVersionsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetQuestionnaireVersionsResponse" />
+  </wsdl:message>
+  <wsdl:message name="RevertQuestionnaireSoapIn">
+    <wsdl:part name="parameters" element="tns:RevertQuestionnaire" />
+  </wsdl:message>
+  <wsdl:message name="RevertQuestionnaireSoapOut">
+    <wsdl:part name="parameters" element="tns:RevertQuestionnaireResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSurveyCustomPropertiesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSurveyCustomProperties" />
+  </wsdl:message>
+  <wsdl:message name="GetSurveyCustomPropertiesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSurveyCustomPropertiesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCustomPropertiesForSurveysSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCustomPropertiesForSurveys" />
+  </wsdl:message>
+  <wsdl:message name="GetCustomPropertiesForSurveysSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCustomPropertiesForSurveysResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetSurveyCustomPropertiesSoapIn">
+    <wsdl:part name="parameters" element="tns:SetSurveyCustomProperties" />
+  </wsdl:message>
+  <wsdl:message name="SetSurveyCustomPropertiesSoapOut">
+    <wsdl:part name="parameters" element="tns:SetSurveyCustomPropertiesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetDataMapSoapIn">
+    <wsdl:part name="parameters" element="tns:GetDataMap" />
+  </wsdl:message>
+  <wsdl:message name="GetDataMapSoapOut">
+    <wsdl:part name="parameters" element="tns:GetDataMapResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetReportDataMapSoapIn">
+    <wsdl:part name="parameters" element="tns:GetReportDataMap" />
+  </wsdl:message>
+  <wsdl:message name="GetReportDataMapSoapOut">
+    <wsdl:part name="parameters" element="tns:GetReportDataMapResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetColumnListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetColumnList" />
+  </wsdl:message>
+  <wsdl:message name="GetColumnListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetColumnListResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSurveyInformationSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSurveyInformation" />
+  </wsdl:message>
+  <wsdl:message name="GetSurveyInformationSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSurveyInformationResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSurveyFieldInformationSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSurveyFieldInformation" />
+  </wsdl:message>
+  <wsdl:message name="GetSurveyFieldInformationSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSurveyFieldInformationResponse" />
+  </wsdl:message>
+  <wsdl:message name="RepublishProjectSoapIn">
+    <wsdl:part name="parameters" element="tns:RepublishProject" />
+  </wsdl:message>
+  <wsdl:message name="RepublishProjectSoapOut">
+    <wsdl:part name="parameters" element="tns:RepublishProjectResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetEndPageURLSoapIn">
+    <wsdl:part name="parameters" element="tns:SetEndPageURL" />
+  </wsdl:message>
+  <wsdl:message name="SetEndPageURLSoapOut">
+    <wsdl:part name="parameters" element="tns:SetEndPageURLResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectInformationSoapIn">
+    <wsdl:part name="parameters" element="tns:GetProjectInformation" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectInformationSoapOut">
+    <wsdl:part name="parameters" element="tns:GetProjectInformationResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetProjectInformationSoapIn">
+    <wsdl:part name="parameters" element="tns:SetProjectInformation" />
+  </wsdl:message>
+  <wsdl:message name="SetProjectInformationSoapOut">
+    <wsdl:part name="parameters" element="tns:SetProjectInformationResponse" />
+  </wsdl:message>
+  <wsdl:message name="DeleteProjectSoapIn">
+    <wsdl:part name="parameters" element="tns:DeleteProject" />
+  </wsdl:message>
+  <wsdl:message name="DeleteProjectSoapOut">
+    <wsdl:part name="parameters" element="tns:DeleteProjectResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetResponseCountSoapIn">
+    <wsdl:part name="parameters" element="tns:GetResponseCount" />
+  </wsdl:message>
+  <wsdl:message name="GetResponseCountSoapOut">
+    <wsdl:part name="parameters" element="tns:GetResponseCountResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSurveyDataSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSurveyData" />
+  </wsdl:message>
+  <wsdl:message name="GetSurveyDataSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSurveyDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSurveyDataExSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSurveyDataEx" />
+  </wsdl:message>
+  <wsdl:message name="GetSurveyDataExSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSurveyDataExResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSurveyDataPagedSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSurveyDataPaged" />
+  </wsdl:message>
+  <wsdl:message name="GetSurveyDataPagedSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSurveyDataPagedResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetResponseSoapIn">
+    <wsdl:part name="parameters" element="tns:GetResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetResponseSoapOut">
+    <wsdl:part name="parameters" element="tns:GetResponseResponse" />
+  </wsdl:message>
+  <wsdl:message name="ChangeResponseSoapIn">
+    <wsdl:part name="parameters" element="tns:ChangeResponse" />
+  </wsdl:message>
+  <wsdl:message name="ChangeResponseSoapOut">
+    <wsdl:part name="parameters" element="tns:ChangeResponseResponse" />
+  </wsdl:message>
+  <wsdl:message name="ChangeMultipleResponsesSoapIn">
+    <wsdl:part name="parameters" element="tns:ChangeMultipleResponses" />
+  </wsdl:message>
+  <wsdl:message name="ChangeMultipleResponsesSoapOut">
+    <wsdl:part name="parameters" element="tns:ChangeMultipleResponsesResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddResponseSoapIn">
+    <wsdl:part name="parameters" element="tns:AddResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddResponseSoapOut">
+    <wsdl:part name="parameters" element="tns:AddResponseResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPreloadDataSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPreloadData" />
+  </wsdl:message>
+  <wsdl:message name="GetPreloadDataSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPreloadDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetPreloadDataSoapIn">
+    <wsdl:part name="parameters" element="tns:SetPreloadData" />
+  </wsdl:message>
+  <wsdl:message name="SetPreloadDataSoapOut">
+    <wsdl:part name="parameters" element="tns:SetPreloadDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="DeleteParticipantSoapIn">
+    <wsdl:part name="parameters" element="tns:DeleteParticipant" />
+  </wsdl:message>
+  <wsdl:message name="DeleteParticipantSoapOut">
+    <wsdl:part name="parameters" element="tns:DeleteParticipantResponse" />
+  </wsdl:message>
+  <wsdl:message name="ClearResponseSoapIn">
+    <wsdl:part name="parameters" element="tns:ClearResponse" />
+  </wsdl:message>
+  <wsdl:message name="ClearResponseSoapOut">
+    <wsdl:part name="parameters" element="tns:ClearResponseResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetFrequencyInformationSoapIn">
+    <wsdl:part name="parameters" element="tns:GetFrequencyInformation" />
+  </wsdl:message>
+  <wsdl:message name="GetFrequencyInformationSoapOut">
+    <wsdl:part name="parameters" element="tns:GetFrequencyInformationResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetStatisticsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetStatistics" />
+  </wsdl:message>
+  <wsdl:message name="GetStatisticsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetStatisticsResponse" />
+  </wsdl:message>
+  <wsdl:message name="AuthorizeMultiplePanelistsForSurveySoapIn">
+    <wsdl:part name="parameters" element="tns:AuthorizeMultiplePanelistsForSurvey" />
+  </wsdl:message>
+  <wsdl:message name="AuthorizeMultiplePanelistsForSurveySoapOut">
+    <wsdl:part name="parameters" element="tns:AuthorizeMultiplePanelistsForSurveyResponse" />
+  </wsdl:message>
+  <wsdl:message name="AuthorizePanelistForSurveySoapIn">
+    <wsdl:part name="parameters" element="tns:AuthorizePanelistForSurvey" />
+  </wsdl:message>
+  <wsdl:message name="AuthorizePanelistForSurveySoapOut">
+    <wsdl:part name="parameters" element="tns:AuthorizePanelistForSurveyResponse" />
+  </wsdl:message>
+  <wsdl:message name="AuthorizeParticipantForSurveySoapIn">
+    <wsdl:part name="parameters" element="tns:AuthorizeParticipantForSurvey" />
+  </wsdl:message>
+  <wsdl:message name="AuthorizeParticipantForSurveySoapOut">
+    <wsdl:part name="parameters" element="tns:AuthorizeParticipantForSurveyResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAuthorizedParticipantCountSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAuthorizedParticipantCount" />
+  </wsdl:message>
+  <wsdl:message name="GetAuthorizedParticipantCountSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAuthorizedParticipantCountResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetParticipantDataExSoapIn">
+    <wsdl:part name="parameters" element="tns:GetParticipantDataEx" />
+  </wsdl:message>
+  <wsdl:message name="GetParticipantDataExSoapOut">
+    <wsdl:part name="parameters" element="tns:GetParticipantDataExResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetParticipantDataPagedSoapIn">
+    <wsdl:part name="parameters" element="tns:GetParticipantDataPaged" />
+  </wsdl:message>
+  <wsdl:message name="GetParticipantDataPagedSoapOut">
+    <wsdl:part name="parameters" element="tns:GetParticipantDataPagedResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetParticipantDataSoapIn">
+    <wsdl:part name="parameters" element="tns:GetParticipantData" />
+  </wsdl:message>
+  <wsdl:message name="GetParticipantDataSoapOut">
+    <wsdl:part name="parameters" element="tns:GetParticipantDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetParticipantInformationSoapIn">
+    <wsdl:part name="parameters" element="tns:GetParticipantInformation" />
+  </wsdl:message>
+  <wsdl:message name="GetParticipantInformationSoapOut">
+    <wsdl:part name="parameters" element="tns:GetParticipantInformationResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetParticipantInformationSoapIn">
+    <wsdl:part name="parameters" element="tns:SetParticipantInformation" />
+  </wsdl:message>
+  <wsdl:message name="SetParticipantInformationSoapOut">
+    <wsdl:part name="parameters" element="tns:SetParticipantInformationResponse" />
+  </wsdl:message>
+  <wsdl:message name="FindPanelistRecordSoapIn">
+    <wsdl:part name="parameters" element="tns:FindPanelistRecord" />
+  </wsdl:message>
+  <wsdl:message name="FindPanelistRecordSoapOut">
+    <wsdl:part name="parameters" element="tns:FindPanelistRecordResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetInvitationTextSoapIn">
+    <wsdl:part name="parameters" element="tns:GetInvitationText" />
+  </wsdl:message>
+  <wsdl:message name="GetInvitationTextSoapOut">
+    <wsdl:part name="parameters" element="tns:GetInvitationTextResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetInvitationTemplateSoapIn">
+    <wsdl:part name="parameters" element="tns:GetInvitationTemplate" />
+  </wsdl:message>
+  <wsdl:message name="GetInvitationTemplateSoapOut">
+    <wsdl:part name="parameters" element="tns:GetInvitationTemplateResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetInvitationTemplateSoapIn">
+    <wsdl:part name="parameters" element="tns:SetInvitationTemplate" />
+  </wsdl:message>
+  <wsdl:message name="SetInvitationTemplateSoapOut">
+    <wsdl:part name="parameters" element="tns:SetInvitationTemplateResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetInvitationStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:SetInvitationStatus" />
+  </wsdl:message>
+  <wsdl:message name="SetInvitationStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:SetInvitationStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="SendInvitationsSoapIn">
+    <wsdl:part name="parameters" element="tns:SendInvitations" />
+  </wsdl:message>
+  <wsdl:message name="SendInvitationsSoapOut">
+    <wsdl:part name="parameters" element="tns:SendInvitationsResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateBorrowedQuestionsSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateBorrowedQuestions" />
+  </wsdl:message>
+  <wsdl:message name="UpdateBorrowedQuestionsSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateBorrowedQuestionsResponse" />
+  </wsdl:message>
+  <wsdl:message name="PingSoapIn">
+    <wsdl:part name="parameters" element="tns:Ping" />
+  </wsdl:message>
+  <wsdl:message name="PingSoapOut">
+    <wsdl:part name="parameters" element="tns:PingResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoginSoapIn">
+    <wsdl:part name="parameters" element="tns:Login" />
+  </wsdl:message>
+  <wsdl:message name="LoginSoapOut">
+    <wsdl:part name="parameters" element="tns:LoginResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ProjectDataSoap">
+    <wsdl:operation name="GetSurveyList">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns an XML listing of surveys.  sharingType = 0 for only the current user's surveys; 1 for other people's surveys visible to the user; 2 for both.  Each Project node contains name and id attributes.</wsdl:documentation>
+      <wsdl:input message="tns:GetSurveyListSoapIn" />
+      <wsdl:output message="tns:GetSurveyListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCommonSurveyList">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns an XML listing of surveys created from a particular source: the name of a .que file, a template, or another survey.  Same output format as GetSurveyList.</wsdl:documentation>
+      <wsdl:input message="tns:GetCommonSurveyListSoapIn" />
+      <wsdl:output message="tns:GetCommonSurveyListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProfileList">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns an XML listing all active profiles visible to the logged-in user.</wsdl:documentation>
+      <wsdl:input message="tns:GetProfileListSoapIn" />
+      <wsdl:output message="tns:GetProfileListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateSurveyProject">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Creates a new blank survey with the given name and description.  Returns the new project id.  respondentSource 0 = open participation, 1 = workgroup panel, 2 = external email list, 3 = external access list.</wsdl:documentation>
+      <wsdl:input message="tns:CreateSurveyProjectSoapIn" />
+      <wsdl:output message="tns:CreateSurveyProjectSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CreatePanelProfile">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Creates a new blank panel profile with the given name and description. Returns the new project id.</wsdl:documentation>
+      <wsdl:input message="tns:CreatePanelProfileSoapIn" />
+      <wsdl:output message="tns:CreatePanelProfileSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetQuestionnaire">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns an XML representation of the questionnaire, as last modified.  If the survey has been modified since it was published, the questionnaire may not match the response data.</wsdl:documentation>
+      <wsdl:input message="tns:GetQuestionnaireSoapIn" />
+      <wsdl:output message="tns:GetQuestionnaireSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPublishedQuestionnaire">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns an XML representation of the questionnaire as last published; this corresponds to the response data.</wsdl:documentation>
+      <wsdl:input message="tns:GetPublishedQuestionnaireSoapIn" />
+      <wsdl:output message="tns:GetPublishedQuestionnaireSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetQuestionnaire">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Change the questionnaire as described in the XML.  The format is the same as returned by GetQuestionnaire.  No validation is done, so know what you're doing.  See also RevertQuestionnaire.  Returns the version number.</wsdl:documentation>
+      <wsdl:input message="tns:SetQuestionnaireSoapIn" />
+      <wsdl:output message="tns:SetQuestionnaireSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetQuestionnaireVersions">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Return information about the versions of the questionnaire.  Pass the versionid to RevertQuestionnaire to revert to that version.</wsdl:documentation>
+      <wsdl:input message="tns:GetQuestionnaireVersionsSoapIn" />
+      <wsdl:output message="tns:GetQuestionnaireVersionsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RevertQuestionnaire">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Return to an earlier version of the questionnaire.  Run GetQuestionnaireVersions to see what versions exist.</wsdl:documentation>
+      <wsdl:input message="tns:RevertQuestionnaireSoapIn" />
+      <wsdl:output message="tns:RevertQuestionnaireSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSurveyCustomProperties">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Return the custom properties for a question or, if no column name is passed, the survey.</wsdl:documentation>
+      <wsdl:input message="tns:GetSurveyCustomPropertiesSoapIn" />
+      <wsdl:output message="tns:GetSurveyCustomPropertiesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomPropertiesForSurveys">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Return the custom properties for a list of surveys.</wsdl:documentation>
+      <wsdl:input message="tns:GetCustomPropertiesForSurveysSoapIn" />
+      <wsdl:output message="tns:GetCustomPropertiesForSurveysSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetSurveyCustomProperties">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Set the custom properties for a question or, if no column name is passed, the survey.</wsdl:documentation>
+      <wsdl:input message="tns:SetSurveyCustomPropertiesSoapIn" />
+      <wsdl:output message="tns:SetSurveyCustomPropertiesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDataMap">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns an XML DataMap that maps the stored value for a choice with its label. All other fields are passed unchanged.</wsdl:documentation>
+      <wsdl:input message="tns:GetDataMapSoapIn" />
+      <wsdl:output message="tns:GetDataMapSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetReportDataMap">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns an XML DataMap that maps the report value for a choice with its label, if it has one, otherwise the raw value. All other fields are passed unchanged.</wsdl:documentation>
+      <wsdl:input message="tns:GetReportDataMapSoapIn" />
+      <wsdl:output message="tns:GetReportDataMapSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetColumnList">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Return the internal column names in a survey as an XML document (a list of Field nodes).</wsdl:documentation>
+      <wsdl:input message="tns:GetColumnListSoapIn" />
+      <wsdl:output message="tns:GetColumnListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSurveyInformation">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Return information about a survey's questions and fields as an XML document.</wsdl:documentation>
+      <wsdl:input message="tns:GetSurveyInformationSoapIn" />
+      <wsdl:output message="tns:GetSurveyInformationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSurveyFieldInformation">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Return question headings and choice text for one question (or all, if dbheading is blank).</wsdl:documentation>
+      <wsdl:input message="tns:GetSurveyFieldInformationSoapIn" />
+      <wsdl:output message="tns:GetSurveyFieldInformationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RepublishProject">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Open, republish or close the project.  publishMode = 0 (testing), 1 (open), or 2 (closed).  Returns blank for success, otherwise an error message.</wsdl:documentation>
+      <wsdl:input message="tns:RepublishProjectSoapIn" />
+      <wsdl:output message="tns:RepublishProjectSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetEndPageURL">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Sets the static destination URL for an end page (submission page (0), save &amp; resume page (1), exit page (2), closed page (3), invalid access (4), completed responses (5), quota reached (6), opt out (7)).</wsdl:documentation>
+      <wsdl:input message="tns:SetEndPageURLSoapIn" />
+      <wsdl:output message="tns:SetEndPageURLSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectInformation">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get an XML string giving basic information about a project.</wsdl:documentation>
+      <wsdl:input message="tns:GetProjectInformationSoapIn" />
+      <wsdl:output message="tns:GetProjectInformationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetProjectInformation">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Change basic information about a project: name, description, source, owner.  The input is an XML string in the same format as returned by GetProjectInformation.  Omit any nodes you are not changing.  source can be changed to Open Participation only.</wsdl:documentation>
+      <wsdl:input message="tns:SetProjectInformationSoapIn" />
+      <wsdl:output message="tns:SetProjectInformationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteProject">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Delete a survey or a panel profile.  This will close the survey if it's open.</wsdl:documentation>
+      <wsdl:input message="tns:DeleteProjectSoapIn" />
+      <wsdl:output message="tns:DeleteProjectSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetResponseCount">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns how many responses this survey has received.  A response must be started to be included; the completedOnly parameter restricts the count to completed responses.</wsdl:documentation>
+      <wsdl:input message="tns:GetResponseCountSoapIn" />
+      <wsdl:output message="tns:GetResponseCountSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSurveyData">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns a DataSet containing all of the responses for a survey.</wsdl:documentation>
+      <wsdl:input message="tns:GetSurveyDataSoapIn" />
+      <wsdl:output message="tns:GetSurveyDataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSurveyDataEx">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns a filtered DataSet of responses for a survey according to the given parameters. dataMapXml and filterXML can be null; DateTime parameters can be set to DateTime.MinValue or DateTime.MaxValue</wsdl:documentation>
+      <wsdl:input message="tns:GetSurveyDataExSoapIn" />
+      <wsdl:output message="tns:GetSurveyDataExSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSurveyDataPaged">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns a DataSet of survey responses giving one page of data according to the given parameters. dataMapXml and filterXML can be null; prevRecordId is 0 or the highest recordId from the previous call.</wsdl:documentation>
+      <wsdl:input message="tns:GetSurveyDataPagedSoapIn" />
+      <wsdl:output message="tns:GetSurveyDataPagedSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetResponse">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get the answers for one response, in the same format as ChangeResponse.</wsdl:documentation>
+      <wsdl:input message="tns:GetResponseSoapIn" />
+      <wsdl:output message="tns:GetResponseSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ChangeResponse">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Change the value of a cell.  See GetColumnList for the column names.  Returns blank if successful, otherwise an error message.</wsdl:documentation>
+      <wsdl:input message="tns:ChangeResponseSoapIn" />
+      <wsdl:output message="tns:ChangeResponseSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ChangeMultipleResponses">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Change multiple values, using the same XML format as returned by GetResponse.  See GetColumnList for the column names.  Returns blank if successful, otherwise an error message.</wsdl:documentation>
+      <wsdl:input message="tns:ChangeMultipleResponsesSoapIn" />
+      <wsdl:output message="tns:ChangeMultipleResponsesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddResponse">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Add a new response to a survey, and return the recordid.  If non-null, dataString will be used to set values; the format is the same as for ChangeMultipleResponses.</wsdl:documentation>
+      <wsdl:input message="tns:AddResponseSoapIn" />
+      <wsdl:output message="tns:AddResponseSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPreloadData">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Return the preload data for a participant.</wsdl:documentation>
+      <wsdl:input message="tns:GetPreloadDataSoapIn" />
+      <wsdl:output message="tns:GetPreloadDataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetPreloadData">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Preload data for one or more participants.  Same format as GetPreloadData, but response records are not created.</wsdl:documentation>
+      <wsdl:input message="tns:SetPreloadDataSoapIn" />
+      <wsdl:output message="tns:SetPreloadDataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteParticipant">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Delete a participant and their response.</wsdl:documentation>
+      <wsdl:input message="tns:DeleteParticipantSoapIn" />
+      <wsdl:output message="tns:DeleteParticipantSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ClearResponse">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Clear a response without deleting the participant.</wsdl:documentation>
+      <wsdl:input message="tns:ClearResponseSoapIn" />
+      <wsdl:output message="tns:ClearResponseSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFrequencyInformation">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get frequency data for a question.</wsdl:documentation>
+      <wsdl:input message="tns:GetFrequencyInformationSoapIn" />
+      <wsdl:output message="tns:GetFrequencyInformationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetStatistics">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get statistics data for a question.</wsdl:documentation>
+      <wsdl:input message="tns:GetStatisticsSoapIn" />
+      <wsdl:output message="tns:GetStatisticsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AuthorizeMultiplePanelistsForSurvey">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Add a set of panelists to a given project.  The output will be an array of longs of the same size, with the corresponding new recordid.</wsdl:documentation>
+      <wsdl:input message="tns:AuthorizeMultiplePanelistsForSurveySoapIn" />
+      <wsdl:output message="tns:AuthorizeMultiplePanelistsForSurveySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AuthorizePanelistForSurvey">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Add one panelist, with the given user keys, to a given project.  The output will be an array of longs of the same size, with the corresponding new recordid.</wsdl:documentation>
+      <wsdl:input message="tns:AuthorizePanelistForSurveySoapIn" />
+      <wsdl:output message="tns:AuthorizePanelistForSurveySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AuthorizeParticipantForSurvey">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Add a participant to an external email list or external access list survey.  Pass unused parameters as null.  Returns the new recordid.</wsdl:documentation>
+      <wsdl:input message="tns:AuthorizeParticipantForSurveySoapIn" />
+      <wsdl:output message="tns:AuthorizeParticipantForSurveySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAuthorizedParticipantCount">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Count the participants for this survey, whether or not they have responded.</wsdl:documentation>
+      <wsdl:input message="tns:GetAuthorizedParticipantCountSoapIn" />
+      <wsdl:output message="tns:GetAuthorizedParticipantCountSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetParticipantDataEx">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns an XML string containing the respondents for this survey and their completion status.</wsdl:documentation>
+      <wsdl:input message="tns:GetParticipantDataExSoapIn" />
+      <wsdl:output message="tns:GetParticipantDataExSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetParticipantDataPaged">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns an XML string containing the respondents for this survey and their completion status.</wsdl:documentation>
+      <wsdl:input message="tns:GetParticipantDataPagedSoapIn" />
+      <wsdl:output message="tns:GetParticipantDataPagedSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetParticipantData">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns an XML string containing the respondents for this survey and their completion status.</wsdl:documentation>
+      <wsdl:input message="tns:GetParticipantDataSoapIn" />
+      <wsdl:output message="tns:GetParticipantDataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetParticipantInformation">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns an XML string containing information about a single participant.  This includes the current URL.</wsdl:documentation>
+      <wsdl:input message="tns:GetParticipantInformationSoapIn" />
+      <wsdl:output message="tns:GetParticipantInformationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetParticipantInformation">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Accepts an XML string containing information about one or more participants and updates the participant table.</wsdl:documentation>
+      <wsdl:input message="tns:SetParticipantInformationSoapIn" />
+      <wsdl:output message="tns:SetParticipantInformationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FindPanelistRecord">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Return the recordid for this panelist, or -1 if not found.  Pass non-null values for the user keys only if they are used for this survey to distinguish multiple responses from one panelist.</wsdl:documentation>
+      <wsdl:input message="tns:FindPanelistRecordSoapIn" />
+      <wsdl:output message="tns:FindPanelistRecordSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetInvitationText">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns an XML representation of the invitation sent to this participant. (Invitations are not saved when sent; we use the current text of the invitation in the survey.)  invitationType must be 0-4 (where 0=initial, 1/2/3/4=1st/2nd/3rd/4th reminder).</wsdl:documentation>
+      <wsdl:input message="tns:GetInvitationTextSoapIn" />
+      <wsdl:output message="tns:GetInvitationTextSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetInvitationTemplate">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns an XML representation of the invitation template (that is, the invitation as created in the Invitation Designer for all participants). invitationType must be 0-4 (where 0=initial, 1/2/3/4=1st/2nd/3rd/4th reminder).</wsdl:documentation>
+      <wsdl:input message="tns:GetInvitationTemplateSoapIn" />
+      <wsdl:output message="tns:GetInvitationTemplateSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetInvitationTemplate">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Set the invitation template.  The components are those returned by GetInvitationTemplate.  invitationType must be 0-4 (where 0=initial, 1/2/3/4=1st/2nd/3rd/4th reminder).</wsdl:documentation>
+      <wsdl:input message="tns:SetInvitationTemplateSoapIn" />
+      <wsdl:output message="tns:SetInvitationTemplateSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetInvitationStatus">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Change the invitation status for a participant: 0 = not yet invited, 1 = invitation sent, 2 - 1st reminder sent, etc.</wsdl:documentation>
+      <wsdl:input message="tns:SetInvitationStatusSoapIn" />
+      <wsdl:output message="tns:SetInvitationStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SendInvitations">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Send out invitations of the given type: 0 = initial invite, 1 = 1st reminder, etc.</wsdl:documentation>
+      <wsdl:input message="tns:SendInvitationsSoapIn" />
+      <wsdl:output message="tns:SendInvitationsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateBorrowedQuestions">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Find questions borrowed from profiles, and send response data back to the profiles.</wsdl:documentation>
+      <wsdl:input message="tns:UpdateBorrowedQuestionsSoapIn" />
+      <wsdl:output message="tns:UpdateBorrowedQuestionsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Ping">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Confirm that the web service is active. Returns ACK.</wsdl:documentation>
+      <wsdl:input message="tns:PingSoapIn" />
+      <wsdl:output message="tns:PingSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Login">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Validate the account credentials and establish a session. This must be called before any other calls are made. Throws a SOAP Exception if login is unsuccessful.</wsdl:documentation>
+      <wsdl:input message="tns:LoginSoapIn" />
+      <wsdl:output message="tns:LoginSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ProjectDataSoap" type="tns:ProjectDataSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetSurveyList">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/GetSurveyList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCommonSurveyList">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/GetCommonSurveyList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProfileList">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/GetProfileList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateSurveyProject">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/CreateSurveyProject" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreatePanelProfile">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/CreatePanelProfile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetQuestionnaire">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/GetQuestionnaire" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPublishedQuestionnaire">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/GetPublishedQuestionnaire" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetQuestionnaire">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/SetQuestionnaire" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetQuestionnaireVersions">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/GetQuestionnaireVersions" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RevertQuestionnaire">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/RevertQuestionnaire" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSurveyCustomProperties">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/GetSurveyCustomProperties" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomPropertiesForSurveys">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/GetCustomPropertiesForSurveys" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetSurveyCustomProperties">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/SetSurveyCustomProperties" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDataMap">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/GetDataMap" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetReportDataMap">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/GetReportDataMap" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetColumnList">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/GetColumnList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSurveyInformation">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/GetSurveyInformation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSurveyFieldInformation">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/GetSurveyFieldInformation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RepublishProject">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/RepublishProject" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetEndPageURL">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/SetEndPageURL" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectInformation">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/GetProjectInformation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetProjectInformation">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/SetProjectInformation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteProject">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/DeleteProject" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetResponseCount">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/GetResponseCount" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSurveyData">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/GetSurveyData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSurveyDataEx">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/GetSurveyDataEx" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSurveyDataPaged">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/GetSurveyDataPaged" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetResponse">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/GetResponse" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangeResponse">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/ChangeResponse" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangeMultipleResponses">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/ChangeMultipleResponses" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddResponse">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/AddResponse" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPreloadData">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/GetPreloadData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetPreloadData">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/SetPreloadData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteParticipant">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/DeleteParticipant" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ClearResponse">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/ClearResponse" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFrequencyInformation">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/GetFrequencyInformation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetStatistics">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/GetStatistics" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AuthorizeMultiplePanelistsForSurvey">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/AuthorizeMultiplePanelistsForSurvey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AuthorizePanelistForSurvey">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/AuthorizePanelistForSurvey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AuthorizeParticipantForSurvey">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/AuthorizeParticipantForSurvey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAuthorizedParticipantCount">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/GetAuthorizedParticipantCount" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetParticipantDataEx">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/GetParticipantDataEx" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetParticipantDataPaged">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/GetParticipantDataPaged" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetParticipantData">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/GetParticipantData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetParticipantInformation">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/GetParticipantInformation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetParticipantInformation">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/SetParticipantInformation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FindPanelistRecord">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/FindPanelistRecord" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInvitationText">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/GetInvitationText" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInvitationTemplate">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/GetInvitationTemplate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetInvitationTemplate">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/SetInvitationTemplate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetInvitationStatus">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/SetInvitationStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendInvitations">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/SendInvitations" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateBorrowedQuestions">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/UpdateBorrowedQuestions" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Ping">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/Ping" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Login">
+      <soap:operation soapAction="http://www.perseus.com/Pdc.WS/Login" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ProjectDataSoap12" type="tns:ProjectDataSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetSurveyList">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/GetSurveyList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCommonSurveyList">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/GetCommonSurveyList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProfileList">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/GetProfileList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateSurveyProject">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/CreateSurveyProject" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreatePanelProfile">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/CreatePanelProfile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetQuestionnaire">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/GetQuestionnaire" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPublishedQuestionnaire">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/GetPublishedQuestionnaire" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetQuestionnaire">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/SetQuestionnaire" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetQuestionnaireVersions">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/GetQuestionnaireVersions" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RevertQuestionnaire">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/RevertQuestionnaire" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSurveyCustomProperties">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/GetSurveyCustomProperties" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomPropertiesForSurveys">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/GetCustomPropertiesForSurveys" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetSurveyCustomProperties">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/SetSurveyCustomProperties" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDataMap">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/GetDataMap" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetReportDataMap">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/GetReportDataMap" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetColumnList">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/GetColumnList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSurveyInformation">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/GetSurveyInformation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSurveyFieldInformation">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/GetSurveyFieldInformation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RepublishProject">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/RepublishProject" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetEndPageURL">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/SetEndPageURL" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectInformation">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/GetProjectInformation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetProjectInformation">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/SetProjectInformation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteProject">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/DeleteProject" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetResponseCount">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/GetResponseCount" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSurveyData">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/GetSurveyData" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSurveyDataEx">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/GetSurveyDataEx" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSurveyDataPaged">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/GetSurveyDataPaged" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetResponse">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/GetResponse" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangeResponse">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/ChangeResponse" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangeMultipleResponses">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/ChangeMultipleResponses" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddResponse">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/AddResponse" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPreloadData">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/GetPreloadData" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetPreloadData">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/SetPreloadData" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteParticipant">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/DeleteParticipant" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ClearResponse">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/ClearResponse" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFrequencyInformation">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/GetFrequencyInformation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetStatistics">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/GetStatistics" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AuthorizeMultiplePanelistsForSurvey">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/AuthorizeMultiplePanelistsForSurvey" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AuthorizePanelistForSurvey">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/AuthorizePanelistForSurvey" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AuthorizeParticipantForSurvey">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/AuthorizeParticipantForSurvey" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAuthorizedParticipantCount">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/GetAuthorizedParticipantCount" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetParticipantDataEx">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/GetParticipantDataEx" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetParticipantDataPaged">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/GetParticipantDataPaged" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetParticipantData">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/GetParticipantData" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetParticipantInformation">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/GetParticipantInformation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetParticipantInformation">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/SetParticipantInformation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FindPanelistRecord">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/FindPanelistRecord" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInvitationText">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/GetInvitationText" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInvitationTemplate">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/GetInvitationTemplate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetInvitationTemplate">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/SetInvitationTemplate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetInvitationStatus">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/SetInvitationStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendInvitations">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/SendInvitations" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateBorrowedQuestions">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/UpdateBorrowedQuestions" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Ping">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/Ping" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Login">
+      <soap12:operation soapAction="http://www.perseus.com/Pdc.WS/Login" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ProjectData">
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Access to surveys and profiles.</wsdl:documentation>
+    <wsdl:port name="ProjectDataSoap" binding="tns:ProjectDataSoap">
+      <soap:address location="https://efm.nrcsurveyor.net/ws/projectdata.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ProjectDataSoap12" binding="tns:ProjectDataSoap12">
+      <soap12:address location="https://efm.nrcsurveyor.net/ws/projectdata.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,808 @@
+<VisualStudioProject>
+    <VisualBasic
+        ProjectType = "Web"
+        ProductVersion = "7.10.3077"
+        SchemaVersion = "2.0"
+        ProjectGuid = "{C7115034-FA3B-421A-B7E0-5CC68F336653}"
+        SccProjectName = "SAK"
+        SccLocalPath = "SAK"
+        SccAuxPath = "SAK"
+        SccProvider = "SAK"
+    >
+        <Build>
+            <Settings
+                ApplicationIcon = ""
+                AssemblyKeyContainerName = ""
+                AssemblyName = "DataExchange"
+                AssemblyOriginatorKeyFile = ""
+                AssemblyOriginatorKeyMode = "None"
+                DefaultClientScript = "JScript"
+                DefaultHTMLPageLayout = "Flow"
+                DefaultTargetSchema = "IE50"
+                DelaySign = "false"
+                OutputType = "Library"
+                OptionCompare = "Binary"
+                OptionExplicit = "On"
+                OptionStrict = "Off"
+                RootNamespace = "DataExchange"
+                StartupObject = "DataExchange.(None)"
+            >
+                <Config
+                    Name = "Debug"
+                    BaseAddress = "285212672"
+                    ConfigurationOverrideFile = ""
+                    DefineConstants = ""
+                    DefineDebug = "true"
+                    DefineTrace = "true"
+                    DebugSymbols = "true"
+                    IncrementalBuild = "true"
+                    Optimize = "false"
+                    OutputPath = "bin\"
+                    RegisterForComInterop = "false"
+                    RemoveIntegerChecks = "false"
+                    TreatWarningsAsErrors = "false"
+                    WarningLevel = "1"
+                />
+                <Config
+                    Name = "Release"
+                    BaseAddress = "285212672"
+                    ConfigurationOverrideFile = ""
+                    DefineConstants = ""
+                    DefineDebug = "false"
+                    DefineTrace = "true"
+                    DebugSymbols = "false"
+                    IncrementalBuild = "false"
+                    Optimize = "true"
+                    OutputPath = "bin\"
+                    RegisterForComInterop = "false"
+                    RemoveIntegerChecks = "false"
+                    TreatWarningsAsErrors = "false"
+                    WarningLevel = "1"
+                />
+            </Settings>
+            <References>
+                <Reference
+                    Name = "System"
+                    AssemblyName = "System"
+                />
+                <Reference
+                    Name = "System.Data"
+                    AssemblyName = "System.Data"
+                />
+                <Reference
+                    Name = "System.Drawing"
+                    AssemblyName = "System.Drawing"
+                />
+                <Reference
+                    Name = "System.Web"
+                    AssemblyName = "System.Web"
+                />
+                <Reference
+                    Name = "System.XML"
+                    AssemblyName = "System.Xml"
+                />
+                <Reference
+                    Name = "eWorld.UI"
+                    AssemblyName = "eWorld.UI"
+                    HintPath = "..\..\..\Program Files\Excentrics World\eWorld.UI.dll"
+                    AssemblyFolderKey = "hklm\dn\excentrics world"
+                />
+                <Reference
+                    Name = "NRC"
+                    AssemblyName = "NRC"
+                    HintPath = "..\..\Referenced Assemblies\NRC.dll"
+                />
+                <Reference
+                    Name = "ABCUpload5"
+                    AssemblyName = "ABCUpload5"
+                    HintPath = "..\..\..\..\..\Program Files\WebSupergoo\ABCUpload .NET\Common\ABCUpload5.dll"
+                    AssemblyFolderKey = "hklm\dn\abcupload .net"
+                />
+            </References>
+            <Imports>
+                <Import Namespace = "Microsoft.VisualBasic" />
+                <Import Namespace = "System" />
+                <Import Namespace = "System.Collections" />
+                <Import Namespace = "System.Configuration" />
+                <Import Namespace = "System.Data" />
+                <Import Namespace = "System.Drawing" />
+                <Import Namespace = "System.Web" />
+                <Import Namespace = "System.Web.UI" />
+                <Import Namespace = "System.Web.UI.HtmlControls" />
+                <Import Namespace = "System.Web.UI.WebControls" />
+            </Imports>
+        </Build>
+        <Files>
+            <Include>
+                <File
+                    RelPath = "Admin.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Admin.aspx.vb"
+                    DependentUpon = "Admin.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Admin.aspx.resx"
+                    DependentUpon = "Admin.aspx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "AssemblyInfo.vb"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "changePassword.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "changePassword.aspx.vb"
+                    DependentUpon = "changePassword.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "changePassword.aspx.resx"
+                    DependentUpon = "changePassword.aspx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Default.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Default.aspx.vb"
+                    DependentUpon = "Default.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Default.aspx.resx"
+                    DependentUpon = "Default.aspx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Download.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Download.aspx.vb"
+                    DependentUpon = "Download.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Download.aspx.resx"
+                    DependentUpon = "Download.aspx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Error.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Error.aspx.vb"
+                    DependentUpon = "Error.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Error.aspx.resx"
+                    DependentUpon = "Error.aspx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Feedback.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Feedback.aspx.vb"
+                    DependentUpon = "Feedback.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Feedback.aspx.resx"
+                    DependentUpon = "Feedback.aspx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Global.asax"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Global.asax.vb"
+                    DependentUpon = "Global.asax"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Global.asax.resx"
+                    DependentUpon = "Global.asax.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "globalfunctions.js"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "GotCookies.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "GotCookies.aspx.vb"
+                    DependentUpon = "GotCookies.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "GotCookies.aspx.resx"
+                    DependentUpon = "GotCookies.aspx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "header.js"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "help.html"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "InstructionsCA.pdf"
+                    BuildAction = "None"
+                />
+                <File
+                    RelPath = "InstructionsUS.pdf"
+                    BuildAction = "None"
+                />
+                <File
+                    RelPath = "logoff.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "logoff.aspx.vb"
+                    DependentUpon = "logoff.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "logoff.aspx.resx"
+                    DependentUpon = "logoff.aspx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "openFile.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "openFile.aspx.vb"
+                    DependentUpon = "openFile.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "openFile.aspx.resx"
+                    DependentUpon = "openFile.aspx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "PostedFileLog.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "PostedFileLog.aspx.vb"
+                    DependentUpon = "PostedFileLog.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "PostedFileLog.aspx.resx"
+                    DependentUpon = "PostedFileLog.aspx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "PostFile.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "PostFile.aspx.vb"
+                    DependentUpon = "PostFile.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "PostFile.aspx.resx"
+                    DependentUpon = "PostFile.aspx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Privacy.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Privacy.aspx.vb"
+                    DependentUpon = "Privacy.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Privacy.aspx.resx"
+                    DependentUpon = "Privacy.aspx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Styles.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "terms.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "terms.aspx.vb"
+                    DependentUpon = "terms.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "terms.aspx.resx"
+                    DependentUpon = "terms.aspx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "ThankYou.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "ThankYou.aspx.vb"
+                    DependentUpon = "ThankYou.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ThankYou.aspx.resx"
+                    DependentUpon = "ThankYou.aspx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "ucFooter.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "ucFooter.ascx.vb"
+                    DependentUpon = "ucFooter.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ucFooter.ascx.resx"
+                    DependentUpon = "ucFooter.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "ucHeader.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "ucHeader.ascx.vb"
+                    DependentUpon = "ucHeader.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ucHeader.ascx.resx"
+                    DependentUpon = "ucHeader.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Upload.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Upload.aspx.vb"
+                    DependentUpon = "Upload.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Upload.aspx.resx"
+                    DependentUpon = "Upload.aspx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "uploadguide.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "uploadguide.aspx.vb"
+                    DependentUpon = "uploadguide.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "uploadguide.aspx.resx"
+                    DependentUpon = "uploadguide.aspx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "UploadLog.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UploadLog.aspx.vb"
+                    DependentUpon = "UploadLog.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UploadLog.aspx.resx"
+                    DependentUpon = "UploadLog.aspx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "UploadProgress.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UploadProgress.aspx.vb"
+                    DependentUpon = "UploadProgress.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UploadProgress.aspx.resx"
+                    DependentUpon = "UploadProgress.aspx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "UploadServer.vb"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UploadServer_US.txt"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UploadServerCA.txt"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Web.config"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "bin\eWorld.UI.dll"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Classes\AppConfig.vb"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Img\about_us_off.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\about_us_on.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\Calendar.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\contact_us_off.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\contact_us_on.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\DownArrow.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\downloadscreen.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\email.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\ExcelDoc.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\expand-closed.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\expand-open.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\footer_arrow.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\footer_gradient.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\ghost.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\Go.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\grad_bar.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\header_menu_spacer.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\header_search_body.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\header_search_corner.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\hRule_Red.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\hRule_White.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\login.jpg"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\logo_left.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\logo_right.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\my_solutions_off.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\my_solutions_on.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCLogo.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\PanelBg.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\postPage_2.jpg"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\products_off.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\products_on.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\Signout_off.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\Signout_on.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\tlogo_nrc_bot.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\tlogo_nrc_botb.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\tlogo_nrc_hrule.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\tlogo_nrc_hruleb.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\tlogo_nrc_top.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\TOCDataExchangeCA.jpg"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\TOCDataExchangeUS.jpg"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\AboutUs_off.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\AboutUs_on.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\Contact_off.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\Contact_on.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\eComments_off.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\eComments_on.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\eReports_off.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\eReports_on.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\eToolkit_off.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\eToolkit_on.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\footer_arrow.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\footer_gradient.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\ghost.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\grad_bar.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\hcahps_off.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\hcahps_on.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\header_menu_spacer.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\header_search_body.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\header_search_corner.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\HeaderLeftCA.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\HeaderLeftUS.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\HeaderMiddle.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\HeaderRight.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\ln_off.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\ln_on.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\logo_left.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\logo_right.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\my_accounts_off.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\my_accounts_on.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\my_groups_off.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\my_groups_on.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\my_solutions_off.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\my_solutions_on.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\Products_off.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\Products_on.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\Signout_off.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\Signout_on.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\TempHacker.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Img\NRCPicker\TempVerisign.gif"
+                    BuildAction = "Content"
+                />
+                <Folder RelPath = "Resources\" />
+            </Include>
+        </Files>
+    </VisualBasic>
+</VisualStudioProject>
+

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<discovery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/disco/">
+  <contractRef ref="http://localhost/WebDocumentPoster/FileManager.asmx?wsdl" docRef="http://localhost/WebDocumentPoster/FileManager.asmx" xmlns="http://schemas.xmlsoap.org/disco/scl/" />
+  <soap address="http://localhost/WebDocumentPoster/FileManager.asmx" xmlns:q1="http://tempuri.org/WebDocumentPoster/FileManager" binding="q1:FileManagerSoap" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+</discovery>

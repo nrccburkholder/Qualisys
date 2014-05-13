@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RptDataSource xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>NRCAuth</Name>
+  <DataSourceID>ada9df7d-e641-4f16-9881-2b09176a26fd</DataSourceID>
+  <ConnectionProperties>
+    <Extension>SQL</Extension>
+    <ConnectString>data source=Mercury;initial catalog=NRCAuth</ConnectString>
+  </ConnectionProperties>
+</RptDataSource>

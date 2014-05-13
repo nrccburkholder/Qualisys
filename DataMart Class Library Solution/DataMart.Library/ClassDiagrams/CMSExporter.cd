@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Tahoma" Size="8.25" />
+  <Class Name="Nrc.DataMart.Library.CmsExporter">
+    <Position X="0.5" Y="0.5" Width="3.25" />
+    <TypeIdentifier>
+      <FileName>CmsExporter.vb</FileName>
+      <HashCode>ACAEQABADAAAQACBAABAAAwAEAgABCAAAACAAChEAAA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="Nrc.DataMart.Library.CmsExporter.ExceptionReport" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>CmsExporter.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Nrc.DataMart.Library.CmsExporter.ExceptionReportRow" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>CmsExporter.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Nrc.DataMart.Library.CmsExporter.FrequencyTable" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>CmsExporter.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Nrc.DataMart.Library.CmsExporter.Frequency" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>CmsExporter.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Nrc.DataMart.Library.CmsExporter.TPSTable" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>CmsExporter.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+  </Class>
+</ClassDiagram>

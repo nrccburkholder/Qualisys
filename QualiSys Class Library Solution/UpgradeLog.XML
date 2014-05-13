@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="QualiSys Class Library Solution">
+</Property><Property Name="Solution File" Value="C:\TFS\NRCPicker\Production\QualiSys Class Library Solution\QualiSys Class Library Solution.sln">
+</Property><Property Name="Date" Value="Wednesday, March 19, 2014">
+</Property><Property Name="Time" Value="9:58 AM">
+</Property></Properties><Event ErrorLevel="1" Project="QualiSys.Library" Source="QualiSys.Library\QualiSys.Library.vbproj" Description="Your project is targeting .NET Framework 2.0 or 3.0. If your project uses assemblies requiring a newer .NET Framework, your project will fail to build. You can change the .NET Framework version by clicking Properties on the project menu and then selecting a new version in the '.NET Framework' dropdown box. (In Visual Basic, this is located on the Compile tab by clicking the 'Advanced Compiler Options...' button.)">
+</Event><Event ErrorLevel="0" Project="QualiSys.Library" Source="QualiSys.Library\QualiSys.Library.vbproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="QualiSys.Library" Source="QualiSys.Library\QualiSys.Library.vbproj" Description="Converted">
+</Event><Event ErrorLevel="1" Project="QualiSys.Library.SqlDataProvider" Source="QualiSys.Library.SqlDataProvider\QualiSys.Library.SqlDataProvider.vbproj" Description="Your project is targeting .NET Framework 2.0 or 3.0. If your project uses assemblies requiring a newer .NET Framework, your project will fail to build. You can change the .NET Framework version by clicking Properties on the project menu and then selecting a new version in the '.NET Framework' dropdown box. (In Visual Basic, this is located on the Compile tab by clicking the 'Advanced Compiler Options...' button.)">
+</Event><Event ErrorLevel="0" Project="QualiSys.Library.SqlDataProvider" Source="QualiSys.Library.SqlDataProvider\QualiSys.Library.SqlDataProvider.vbproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="QualiSys.Library.SqlDataProvider" Source="QualiSys.Library.SqlDataProvider\QualiSys.Library.SqlDataProvider.vbproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="Qualisys.Library.SQLDataProvider.UnitTests" Source="Qualisys.Library.SQLDataProvider.UnitTests\Qualisys.Library.SQLDataProvider.UnitTests.vbproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="Qualisys.Library.SQLDataProvider.UnitTests" Source="Qualisys.Library.SQLDataProvider.UnitTests\Qualisys.Library.SQLDataProvider.UnitTests.vbproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="QualiSys Class Library Solution.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="QualiSys Class Library Solution.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="QualiSys.Library" Source="QualiSys.Library\QualiSys.Library.vbproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="QualiSys.Library.SqlDataProvider" Source="QualiSys.Library.SqlDataProvider\QualiSys.Library.SqlDataProvider.vbproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="3" Project="" Source="localtestrun.testrunconfig" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="localtestrun.testrunconfig" Description="The file was converted to the current format.">
+</Event><Event ErrorLevel="3" Project="" Source="QualiSys Class Library Solution.vsmdi" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="QualiSys Class Library Solution.vsmdi" Description="The file was converted to the current format.">
+</Event><Event ErrorLevel="0" Project="Qualisys.Library.SQLDataProvider.UnitTests" Source="Qualisys.Library.SQLDataProvider.UnitTests\Qualisys.Library.SQLDataProvider.UnitTests.vbproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>

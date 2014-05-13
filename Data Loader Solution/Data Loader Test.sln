@@ -1,0 +1,182 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DataLoader.Library.SQLProvider", "DataLoader.Library.SQLProvider\DataLoader.Library.SQLProvider.vbproj", "{59AE7F31-D5B5-47AB-AA81-9780E2BD7C6A}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4380AB1A-1C94-47A3-91B9-7EB76A0A584D}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+	ProjectSection(SolutionItems) = preProject
+		Data Loader Test.vsmdi = Data Loader Test.vsmdi
+		Data Loader Test1.vsmdi = Data Loader Test1.vsmdi
+		C:\Documents and Settings\amnatsakanyan\My Documents\Visual Studio 2005\Projects\UploaderTest\localtestrun.testrunconfig = C:\Documents and Settings\amnatsakanyan\My Documents\Visual Studio 2005\Projects\UploaderTest\localtestrun.testrunconfig
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DataLoader.Library", "DataLoader.Library\DataLoader.Library.vbproj", "{4CFF8F1F-0634-45A1-9E69-06B0E28090CA}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Data Loader Admin", "Data Loader Admin\Data Loader Admin.vbproj", "{476EA171-A366-45A3-AD66-FF3E29DB7F2A}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Qualisys.QLoader.Library", "..\QualiSys Class Library Solution\Qualisys.QLoader.Library\Qualisys.QLoader.Library.vbproj", "{9E12046E-7AB1-4BB4-89F8-D2ACAA7CD811}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Qualisys.QLoader.Library.SqlProvider", "..\QualiSys Class Library Solution\Qualisys.QLoader.Library.SqlProvider\Qualisys.QLoader.Library.SqlProvider.vbproj", "{8C82B762-7494-478C-B8D6-E75958616F05}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "QualiSys.Library", "..\QualiSys Class Library Solution\QualiSys.Library\QualiSys.Library.vbproj", "{191D0C34-FF61-47A6-852F-7FD91D50AD72}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "QualiSys.Library.SqlDataProvider", "..\QualiSys Class Library Solution\QualiSys.Library.SqlDataProvider\QualiSys.Library.SqlDataProvider.vbproj", "{31F9022F-D830-410D-90AE-98C59F34E552}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 8
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://perseus:8080/
+		SccProjectUniqueName0 = DataLoader.Library.SQLProvider\\DataLoader.Library.SQLProvider.vbproj
+		SccProjectName0 = DataLoader.Library.SQLProvider
+		SccLocalPath0 = DataLoader.Library.SQLProvider
+		SccProjectUniqueName1 = DataLoader.Library\\DataLoader.Library.vbproj
+		SccProjectName1 = DataLoader.Library
+		SccLocalPath1 = DataLoader.Library
+		SccProjectUniqueName2 = Data\u0020Loader\u0020Admin\\Data\u0020Loader\u0020Admin.vbproj
+		SccProjectName2 = Data\u0020Loader\u0020Admin
+		SccLocalPath2 = Data\u0020Loader\u0020Admin
+		SccProjectUniqueName3 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\Qualisys.QLoader.Library\\Qualisys.QLoader.Library.vbproj
+		SccProjectName3 = ../QualiSys\u0020Class\u0020Library\u0020Solution/Qualisys.QLoader.Library
+		SccLocalPath3 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\Qualisys.QLoader.Library
+		SccProjectUniqueName4 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\Qualisys.QLoader.Library.SqlProvider\\Qualisys.QLoader.Library.SqlProvider.vbproj
+		SccProjectName4 = ../QualiSys\u0020Class\u0020Library\u0020Solution/Qualisys.QLoader.Library.SqlProvider
+		SccLocalPath4 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\Qualisys.QLoader.Library.SqlProvider
+		SccProjectUniqueName5 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Library\\QualiSys.Library.vbproj
+		SccProjectName5 = ../QualiSys\u0020Class\u0020Library\u0020Solution/QualiSys.Library
+		SccLocalPath5 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Library
+		SccProjectUniqueName6 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Library.SqlDataProvider\\QualiSys.Library.SqlDataProvider.vbproj
+		SccProjectName6 = ../QualiSys\u0020Class\u0020Library\u0020Solution/QualiSys.Library.SqlDataProvider
+		SccLocalPath6 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Library.SqlDataProvider
+		SccLocalPath7 = .
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Development|Any CPU = Development|Any CPU
+		Production|Any CPU = Production|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Staging|Any CPU = Staging|Any CPU
+		Testing|Any CPU = Testing|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{59AE7F31-D5B5-47AB-AA81-9780E2BD7C6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59AE7F31-D5B5-47AB-AA81-9780E2BD7C6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59AE7F31-D5B5-47AB-AA81-9780E2BD7C6A}.Development|Any CPU.ActiveCfg = Debug|Any CPU
+		{59AE7F31-D5B5-47AB-AA81-9780E2BD7C6A}.Development|Any CPU.Build.0 = Debug|Any CPU
+		{59AE7F31-D5B5-47AB-AA81-9780E2BD7C6A}.Production|Any CPU.ActiveCfg = Production|Any CPU
+		{59AE7F31-D5B5-47AB-AA81-9780E2BD7C6A}.Production|Any CPU.Build.0 = Production|Any CPU
+		{59AE7F31-D5B5-47AB-AA81-9780E2BD7C6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59AE7F31-D5B5-47AB-AA81-9780E2BD7C6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59AE7F31-D5B5-47AB-AA81-9780E2BD7C6A}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
+		{59AE7F31-D5B5-47AB-AA81-9780E2BD7C6A}.Staging|Any CPU.Build.0 = Staging|Any CPU
+		{59AE7F31-D5B5-47AB-AA81-9780E2BD7C6A}.Testing|Any CPU.ActiveCfg = Release|Any CPU
+		{59AE7F31-D5B5-47AB-AA81-9780E2BD7C6A}.Testing|Any CPU.Build.0 = Release|Any CPU
+		{4CFF8F1F-0634-45A1-9E69-06B0E28090CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CFF8F1F-0634-45A1-9E69-06B0E28090CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CFF8F1F-0634-45A1-9E69-06B0E28090CA}.Development|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CFF8F1F-0634-45A1-9E69-06B0E28090CA}.Development|Any CPU.Build.0 = Debug|Any CPU
+		{4CFF8F1F-0634-45A1-9E69-06B0E28090CA}.Production|Any CPU.ActiveCfg = Production|Any CPU
+		{4CFF8F1F-0634-45A1-9E69-06B0E28090CA}.Production|Any CPU.Build.0 = Production|Any CPU
+		{4CFF8F1F-0634-45A1-9E69-06B0E28090CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CFF8F1F-0634-45A1-9E69-06B0E28090CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CFF8F1F-0634-45A1-9E69-06B0E28090CA}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
+		{4CFF8F1F-0634-45A1-9E69-06B0E28090CA}.Staging|Any CPU.Build.0 = Staging|Any CPU
+		{4CFF8F1F-0634-45A1-9E69-06B0E28090CA}.Testing|Any CPU.ActiveCfg = Release|Any CPU
+		{4CFF8F1F-0634-45A1-9E69-06B0E28090CA}.Testing|Any CPU.Build.0 = Release|Any CPU
+		{476EA171-A366-45A3-AD66-FF3E29DB7F2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{476EA171-A366-45A3-AD66-FF3E29DB7F2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{476EA171-A366-45A3-AD66-FF3E29DB7F2A}.Development|Any CPU.ActiveCfg = Debug|Any CPU
+		{476EA171-A366-45A3-AD66-FF3E29DB7F2A}.Development|Any CPU.Build.0 = Debug|Any CPU
+		{476EA171-A366-45A3-AD66-FF3E29DB7F2A}.Production|Any CPU.ActiveCfg = Release|Any CPU
+		{476EA171-A366-45A3-AD66-FF3E29DB7F2A}.Production|Any CPU.Build.0 = Release|Any CPU
+		{476EA171-A366-45A3-AD66-FF3E29DB7F2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{476EA171-A366-45A3-AD66-FF3E29DB7F2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{476EA171-A366-45A3-AD66-FF3E29DB7F2A}.Staging|Any CPU.ActiveCfg = Release|Any CPU
+		{476EA171-A366-45A3-AD66-FF3E29DB7F2A}.Staging|Any CPU.Build.0 = Release|Any CPU
+		{476EA171-A366-45A3-AD66-FF3E29DB7F2A}.Testing|Any CPU.ActiveCfg = Release|Any CPU
+		{476EA171-A366-45A3-AD66-FF3E29DB7F2A}.Testing|Any CPU.Build.0 = Release|Any CPU
+		{9E12046E-7AB1-4BB4-89F8-D2ACAA7CD811}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E12046E-7AB1-4BB4-89F8-D2ACAA7CD811}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E12046E-7AB1-4BB4-89F8-D2ACAA7CD811}.Development|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E12046E-7AB1-4BB4-89F8-D2ACAA7CD811}.Development|Any CPU.Build.0 = Debug|Any CPU
+		{9E12046E-7AB1-4BB4-89F8-D2ACAA7CD811}.Production|Any CPU.ActiveCfg = Release|Any CPU
+		{9E12046E-7AB1-4BB4-89F8-D2ACAA7CD811}.Production|Any CPU.Build.0 = Release|Any CPU
+		{9E12046E-7AB1-4BB4-89F8-D2ACAA7CD811}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E12046E-7AB1-4BB4-89F8-D2ACAA7CD811}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E12046E-7AB1-4BB4-89F8-D2ACAA7CD811}.Staging|Any CPU.ActiveCfg = Release|Any CPU
+		{9E12046E-7AB1-4BB4-89F8-D2ACAA7CD811}.Staging|Any CPU.Build.0 = Release|Any CPU
+		{9E12046E-7AB1-4BB4-89F8-D2ACAA7CD811}.Testing|Any CPU.ActiveCfg = Release|Any CPU
+		{9E12046E-7AB1-4BB4-89F8-D2ACAA7CD811}.Testing|Any CPU.Build.0 = Release|Any CPU
+		{8C82B762-7494-478C-B8D6-E75958616F05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C82B762-7494-478C-B8D6-E75958616F05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C82B762-7494-478C-B8D6-E75958616F05}.Development|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C82B762-7494-478C-B8D6-E75958616F05}.Development|Any CPU.Build.0 = Debug|Any CPU
+		{8C82B762-7494-478C-B8D6-E75958616F05}.Production|Any CPU.ActiveCfg = Release|Any CPU
+		{8C82B762-7494-478C-B8D6-E75958616F05}.Production|Any CPU.Build.0 = Release|Any CPU
+		{8C82B762-7494-478C-B8D6-E75958616F05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C82B762-7494-478C-B8D6-E75958616F05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C82B762-7494-478C-B8D6-E75958616F05}.Staging|Any CPU.ActiveCfg = Release|Any CPU
+		{8C82B762-7494-478C-B8D6-E75958616F05}.Staging|Any CPU.Build.0 = Release|Any CPU
+		{8C82B762-7494-478C-B8D6-E75958616F05}.Testing|Any CPU.ActiveCfg = Release|Any CPU
+		{8C82B762-7494-478C-B8D6-E75958616F05}.Testing|Any CPU.Build.0 = Release|Any CPU
+		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.Development|Any CPU.ActiveCfg = Debug|Any CPU
+		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.Development|Any CPU.Build.0 = Debug|Any CPU
+		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.Production|Any CPU.ActiveCfg = Release|Any CPU
+		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.Production|Any CPU.Build.0 = Release|Any CPU
+		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.Staging|Any CPU.ActiveCfg = Release|Any CPU
+		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.Staging|Any CPU.Build.0 = Release|Any CPU
+		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.Testing|Any CPU.ActiveCfg = Release|Any CPU
+		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.Testing|Any CPU.Build.0 = Release|Any CPU
+		{31F9022F-D830-410D-90AE-98C59F34E552}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31F9022F-D830-410D-90AE-98C59F34E552}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31F9022F-D830-410D-90AE-98C59F34E552}.Development|Any CPU.ActiveCfg = Debug|Any CPU
+		{31F9022F-D830-410D-90AE-98C59F34E552}.Development|Any CPU.Build.0 = Debug|Any CPU
+		{31F9022F-D830-410D-90AE-98C59F34E552}.Production|Any CPU.ActiveCfg = Release|Any CPU
+		{31F9022F-D830-410D-90AE-98C59F34E552}.Production|Any CPU.Build.0 = Release|Any CPU
+		{31F9022F-D830-410D-90AE-98C59F34E552}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31F9022F-D830-410D-90AE-98C59F34E552}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31F9022F-D830-410D-90AE-98C59F34E552}.Staging|Any CPU.ActiveCfg = Release|Any CPU
+		{31F9022F-D830-410D-90AE-98C59F34E552}.Staging|Any CPU.Build.0 = Release|Any CPU
+		{31F9022F-D830-410D-90AE-98C59F34E552}.Testing|Any CPU.ActiveCfg = Release|Any CPU
+		{31F9022F-D830-410D-90AE-98C59F34E552}.Testing|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

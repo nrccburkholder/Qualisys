@@ -1,0 +1,662 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="OUH.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
+        <EntityContainer Name="OUHStoreContainer">
+          <EntitySet Name="ClientOrganization" EntityType="OUH.Store.ClientOrganization" store:Type="Tables" Schema="auth" />
+          <EntitySet Name="GroupOrganizationUnit" EntityType="OUH.Store.GroupOrganizationUnit" store:Type="Tables" Schema="auth" />
+          <EntitySet Name="MemberOrganizationUnit" EntityType="OUH.Store.MemberOrganizationUnit" store:Type="Tables" Schema="auth" />
+          <EntitySet Name="DimClient" EntityType="OUH.Store.DimClient" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="DimOrganization" EntityType="OUH.Store.DimOrganization" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="DimOrganizationCategory" EntityType="OUH.Store.DimOrganizationCategory" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="DimOrganizationUnit" EntityType="OUH.Store.DimOrganizationUnit" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="FFT_OrgUnitSampleUnit" EntityType="OUH.Store.FFT_OrgUnitSampleUnit" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="vw_OrganizationUnit" EntityType="OUH.Store.vw_OrganizationUnit" store:Type="Views" store:Schema="dbo" store:Name="vw_OrganizationUnit">
+            <DefiningQuery>SELECT 
+      [vw_OrganizationUnit].[OrganizationUnitID] AS [OrganizationUnitID], 
+      [vw_OrganizationUnit].[OrgUnitName] AS [OrgUnitName], 
+      [vw_OrganizationUnit].[OrganizationID] AS [OrganizationID], 
+      [vw_OrganizationUnit].[ParentOrgUnitID] AS [ParentOrgUnitID], 
+      [vw_OrganizationUnit].[LevelNum] AS [LevelNum], 
+      [vw_OrganizationUnit].[LevelName] AS [LevelName]
+      FROM [dbo].[vw_OrganizationUnit] AS [vw_OrganizationUnit]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_ClientOrganization_Client" Association="OUH.Store.FK_ClientOrganization_Client">
+            <End Role="DimClient" EntitySet="DimClient" />
+            <End Role="ClientOrganization" EntitySet="ClientOrganization" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ClientOrganization_Organization" Association="OUH.Store.FK_ClientOrganization_Organization">
+            <End Role="DimOrganization" EntitySet="DimOrganization" />
+            <End Role="ClientOrganization" EntitySet="ClientOrganization" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DimOrganizationUnit_OrganizationCategoryID" Association="OUH.Store.FK_DimOrganizationUnit_OrganizationCategoryID">
+            <End Role="DimOrganizationCategory" EntitySet="DimOrganizationCategory" />
+            <End Role="DimOrganizationUnit" EntitySet="DimOrganizationUnit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DimOrganizationUnit_OrganizationID" Association="OUH.Store.FK_DimOrganizationUnit_OrganizationID">
+            <End Role="DimOrganization" EntitySet="DimOrganization" />
+            <End Role="DimOrganizationUnit" EntitySet="DimOrganizationUnit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FFT_OrgUnitSampleUnit_OrganizationUnitID" Association="OUH.Store.FK_FFT_OrgUnitSampleUnit_OrganizationUnitID">
+            <End Role="DimOrganizationUnit" EntitySet="DimOrganizationUnit" />
+            <End Role="FFT_OrgUnitSampleUnit" EntitySet="FFT_OrgUnitSampleUnit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GroupOrganizationUnit_DimOrganizationUnit" Association="OUH.Store.FK_GroupOrganizationUnit_DimOrganizationUnit">
+            <End Role="DimOrganizationUnit" EntitySet="DimOrganizationUnit" />
+            <End Role="GroupOrganizationUnit" EntitySet="GroupOrganizationUnit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MemberOrganizationUnit_DimOrganizationUnit" Association="OUH.Store.FK_MemberOrganizationUnit_DimOrganizationUnit">
+            <End Role="DimOrganizationUnit" EntitySet="DimOrganizationUnit" />
+            <End Role="MemberOrganizationUnit" EntitySet="MemberOrganizationUnit" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="ClientOrganization">
+          <Key>
+            <PropertyRef Name="ClientID" />
+            <PropertyRef Name="OrganizationID" />
+          </Key>
+          <Property Name="ClientID" Type="int" Nullable="false" />
+          <Property Name="OrganizationID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GroupOrganizationUnit">
+          <Key>
+            <PropertyRef Name="GroupID" />
+            <PropertyRef Name="OrganizationUnitID" />
+          </Key>
+          <Property Name="GroupID" Type="int" Nullable="false" />
+          <Property Name="OrganizationUnitID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MemberOrganizationUnit">
+          <Key>
+            <PropertyRef Name="Member" />
+            <PropertyRef Name="OrganizationUnitID" />
+          </Key>
+          <Property Name="Member" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="MemberID" Type="int" Nullable="false" />
+          <Property Name="OrganizationUnitID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DimClient">
+          <Key>
+            <PropertyRef Name="ClientID" />
+          </Key>
+          <Property Name="ClientID" Type="int" Nullable="false" />
+          <Property Name="ClientName" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="SourceClientID" Type="nvarchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="DimOrganization">
+          <Key>
+            <PropertyRef Name="OrganizationID" />
+          </Key>
+          <Property Name="OrganizationID" Type="int" Nullable="false" />
+          <Property Name="OrganizationName" Type="nvarchar" Nullable="false" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="DimOrganizationCategory">
+          <Key>
+            <PropertyRef Name="OrganizationCategoryID" />
+          </Key>
+          <Property Name="OrganizationCategoryID" Type="int" Nullable="false" />
+          <Property Name="CategoryName" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="InternalOnly" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DimOrganizationUnit">
+          <Key>
+            <PropertyRef Name="OrganizationUnitID" />
+          </Key>
+          <Property Name="OrganizationUnitID" Type="int" Nullable="false" />
+          <Property Name="LevelName" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="LevelNum" Type="int" Nullable="false" />
+          <Property Name="IsLeaf" Type="bit" Nullable="false" />
+          <Property Name="OrgUnitName" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="OrganizationID" Type="int" Nullable="false" />
+          <Property Name="OrganizationName" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="OrganizationCategoryID" Type="int" Nullable="false" />
+          <Property Name="OrganizationCategoryName" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Level01OrgUnitID" Type="int" Nullable="false" />
+          <Property Name="Level01OrgUnitName" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Level02OrgUnitID" Type="int" />
+          <Property Name="Level02OrgUnitName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Level03OrgUnitID" Type="int" />
+          <Property Name="Level03OrgUnitName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Level04OrgUnitID" Type="int" />
+          <Property Name="Level04OrgUnitName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Level05OrgUnitID" Type="int" />
+          <Property Name="Level05OrgUnitName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Level06OrgUnitID" Type="int" />
+          <Property Name="Level06OrgUnitName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Level07OrgUnitID" Type="int" />
+          <Property Name="Level07OrgUnitName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Level08OrgUnitID" Type="int" />
+          <Property Name="Level08OrgUnitName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Level09OrgUnitID" Type="int" />
+          <Property Name="Level09OrgUnitName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Level10OrgUnitID" Type="int" />
+          <Property Name="Level10OrgUnitName" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="FFT_OrgUnitSampleUnit">
+          <Key>
+            <PropertyRef Name="OrgUnitSampleUnitID" />
+          </Key>
+          <Property Name="OrgUnitSampleUnitID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="OrganizationUnitID" Type="int" Nullable="false" />
+          <Property Name="SampleUnitID" Type="int" Nullable="false" />
+          <Property Name="SamplePopulationID" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'NRC_CatalystStar.dbo.vw_OrganizationUnit' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="vw_OrganizationUnit">
+          <Key>
+            <PropertyRef Name="OrganizationUnitID" />
+            <PropertyRef Name="OrgUnitName" />
+            <PropertyRef Name="OrganizationID" />
+            <PropertyRef Name="LevelNum" />
+            <PropertyRef Name="LevelName" />
+          </Key>
+          <Property Name="OrganizationUnitID" Type="int" Nullable="false" />
+          <Property Name="OrgUnitName" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="OrganizationID" Type="int" Nullable="false" />
+          <Property Name="ParentOrgUnitID" Type="int" />
+          <Property Name="LevelNum" Type="int" Nullable="false" />
+          <Property Name="LevelName" Type="nvarchar" Nullable="false" MaxLength="100" />
+        </EntityType>
+        <Association Name="FK_ClientOrganization_Client">
+          <End Role="DimClient" Type="OUH.Store.DimClient" Multiplicity="1" />
+          <End Role="ClientOrganization" Type="OUH.Store.ClientOrganization" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DimClient">
+              <PropertyRef Name="ClientID" />
+            </Principal>
+            <Dependent Role="ClientOrganization">
+              <PropertyRef Name="ClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ClientOrganization_Organization">
+          <End Role="DimOrganization" Type="OUH.Store.DimOrganization" Multiplicity="1" />
+          <End Role="ClientOrganization" Type="OUH.Store.ClientOrganization" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DimOrganization">
+              <PropertyRef Name="OrganizationID" />
+            </Principal>
+            <Dependent Role="ClientOrganization">
+              <PropertyRef Name="OrganizationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DimOrganizationUnit_OrganizationCategoryID">
+          <End Role="DimOrganizationCategory" Type="OUH.Store.DimOrganizationCategory" Multiplicity="1" />
+          <End Role="DimOrganizationUnit" Type="OUH.Store.DimOrganizationUnit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DimOrganizationCategory">
+              <PropertyRef Name="OrganizationCategoryID" />
+            </Principal>
+            <Dependent Role="DimOrganizationUnit">
+              <PropertyRef Name="OrganizationCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DimOrganizationUnit_OrganizationID">
+          <End Role="DimOrganization" Type="OUH.Store.DimOrganization" Multiplicity="1" />
+          <End Role="DimOrganizationUnit" Type="OUH.Store.DimOrganizationUnit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DimOrganization">
+              <PropertyRef Name="OrganizationID" />
+            </Principal>
+            <Dependent Role="DimOrganizationUnit">
+              <PropertyRef Name="OrganizationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FFT_OrgUnitSampleUnit_OrganizationUnitID">
+          <End Role="DimOrganizationUnit" Type="OUH.Store.DimOrganizationUnit" Multiplicity="1" />
+          <End Role="FFT_OrgUnitSampleUnit" Type="OUH.Store.FFT_OrgUnitSampleUnit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DimOrganizationUnit">
+              <PropertyRef Name="OrganizationUnitID" />
+            </Principal>
+            <Dependent Role="FFT_OrgUnitSampleUnit">
+              <PropertyRef Name="OrganizationUnitID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GroupOrganizationUnit_DimOrganizationUnit">
+          <End Role="DimOrganizationUnit" Type="OUH.Store.DimOrganizationUnit" Multiplicity="1" />
+          <End Role="GroupOrganizationUnit" Type="OUH.Store.GroupOrganizationUnit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DimOrganizationUnit">
+              <PropertyRef Name="OrganizationUnitID" />
+            </Principal>
+            <Dependent Role="GroupOrganizationUnit">
+              <PropertyRef Name="OrganizationUnitID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MemberOrganizationUnit_DimOrganizationUnit">
+          <End Role="DimOrganizationUnit" Type="OUH.Store.DimOrganizationUnit" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MemberOrganizationUnit" Type="OUH.Store.MemberOrganizationUnit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DimOrganizationUnit">
+              <PropertyRef Name="OrganizationUnitID" />
+            </Principal>
+            <Dependent Role="MemberOrganizationUnit">
+              <PropertyRef Name="OrganizationUnitID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="OUH" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
+        <EntityContainer Name="OUHModel">
+          <EntitySet Name="Client" EntityType="OUH.Client" />
+          <EntitySet Name="ClientOrganization" EntityType="OUH.ClientOrganization" />
+          <EntitySet Name="MemberOrganizationUnit" EntityType="OUH.MemberOrganizationUnit" />
+          <EntitySet Name="OrganizationSet" EntityType="OUH.Organization" />
+          <EntitySet Name="OrganizationCategorySet" EntityType="OUH.OrganizationCategory" />
+          <EntitySet Name="OrganizationUnitSet" EntityType="OUH.OrganizationUnit" />
+          <EntitySet Name="FFT_OrgUnitSampleUnit" EntityType="OUH.FFT_OrgUnitSampleUnit" />
+          <AssociationSet Name="FK_ClientOrganization_Client" Association="OUH.FK_ClientOrganization_Client">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="ClientOrganization" EntitySet="ClientOrganization" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ClientOrganization_Organization" Association="OUH.FK_ClientOrganization_Organization">
+            <End Role="DimOrganization" EntitySet="OrganizationSet" />
+            <End Role="ClientOrganization" EntitySet="ClientOrganization" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MemberOrganizationUnit_DimOrganizationUnit" Association="OUH.FK_MemberOrganizationUnit_DimOrganizationUnit">
+            <End Role="DimOrganizationUnit" EntitySet="OrganizationUnitSet" />
+            <End Role="MemberOrganizationUnit" EntitySet="MemberOrganizationUnit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DimOrganizationUnit_OrganizationID" Association="OUH.FK_DimOrganizationUnit_OrganizationID">
+            <End Role="DimOrganization" EntitySet="OrganizationSet" />
+            <End Role="DimOrganizationUnit" EntitySet="OrganizationUnitSet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DimOrganizationUnit_OrganizationCategoryID" Association="OUH.FK_DimOrganizationUnit_OrganizationCategoryID">
+            <End Role="DimOrganizationCategory" EntitySet="OrganizationCategorySet" />
+            <End Role="DimOrganizationUnit" EntitySet="OrganizationUnitSet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FFT_OrgUnitSampleUnit_OrganizationUnitID" Association="OUH.FK_FFT_OrgUnitSampleUnit_OrganizationUnitID">
+            <End Role="DimOrganizationUnit" EntitySet="OrganizationUnitSet" />
+            <End Role="FFT_OrgUnitSampleUnit" EntitySet="FFT_OrgUnitSampleUnit" />
+          </AssociationSet>
+          <EntitySet Name="vw_OrganizationUnit" EntityType="OUH.vw_OrganizationUnit" />
+          <EntitySet Name="GroupOrganizationUnit" EntityType="OUH.GroupOrganizationUnit" />
+          <AssociationSet Name="FK_GroupOrganizationUnit_DimOrganizationUnit" Association="OUH.FK_GroupOrganizationUnit_DimOrganizationUnit">
+            <End Role="OrganizationUnit" EntitySet="OrganizationUnitSet" />
+            <End Role="GroupOrganizationUnit" EntitySet="GroupOrganizationUnit" /></AssociationSet>
+          <AssociationSet Name="FK_ClientOrganization_Organization1" Association="OUH.FK_ClientOrganization_Organization1">
+            <End Role="Organization" EntitySet="OrganizationSet" />
+            <End Role="ClientOrganization" EntitySet="ClientOrganization" /></AssociationSet>
+          </EntityContainer>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="ClientID" />
+          </Key>
+          <Property Name="ClientID" Type="Int32" Nullable="false" />
+          <Property Name="ClientName" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="SourceClientID" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="ClientOrganization" Relationship="OUH.FK_ClientOrganization_Client" FromRole="Client" ToRole="ClientOrganization" />
+        </EntityType>
+        <EntityType Name="ClientOrganization">
+          <Key>
+            <PropertyRef Name="ClientID" />
+            <PropertyRef Name="OrganizationID" /></Key>
+          <NavigationProperty Name="Client" Relationship="OUH.FK_ClientOrganization_Client" FromRole="ClientOrganization" ToRole="Client" />
+          <NavigationProperty Name="Organization" Relationship="OUH.FK_ClientOrganization_Organization" FromRole="ClientOrganization" ToRole="DimOrganization" />
+          <NavigationProperty Name="DimOrganization" Relationship="OUH.FK_ClientOrganization_Organization1" FromRole="ClientOrganization" ToRole="Organization" />
+          <Property Name="ClientID" Type="Int32" Nullable="false" />
+          <Property Name="OrganizationID" Type="Int32" Nullable="false" /></EntityType>
+        <EntityType Name="MemberOrganizationUnit">
+          <Key>
+            <PropertyRef Name="Member" />
+            <PropertyRef Name="OrganizationUnitID" />
+          </Key>
+          <Property Name="Member" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="OrganizationUnitID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="OrganizationUnit" Relationship="OUH.FK_MemberOrganizationUnit_DimOrganizationUnit" FromRole="MemberOrganizationUnit" ToRole="DimOrganizationUnit" />
+          <Property Name="MemberID" Type="Int32" Nullable="false" /></EntityType>
+        <EntityType Name="Organization">
+          <Key>
+            <PropertyRef Name="OrganizationID" />
+          </Key>
+          <Property Name="OrganizationID" Type="Int32" Nullable="false" />
+          <Property Name="OrganizationName" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="ClientOrganization" Relationship="OUH.FK_ClientOrganization_Organization" FromRole="DimOrganization" ToRole="ClientOrganization" />
+          <NavigationProperty Name="OrganizationUnit" Relationship="OUH.FK_DimOrganizationUnit_OrganizationID" FromRole="DimOrganization" ToRole="DimOrganizationUnit" />
+          <NavigationProperty Name="ClientOrganization_1" Relationship="OUH.FK_ClientOrganization_Organization1" FromRole="Organization" ToRole="ClientOrganization" />
+          </EntityType>
+        <EntityType Name="OrganizationCategory">
+          <Key>
+            <PropertyRef Name="OrganizationCategoryID" />
+          </Key>
+          <Property Name="OrganizationCategoryID" Type="Int32" Nullable="false" />
+          <Property Name="CategoryName" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="InternalOnly" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="OrganizationUnit" Relationship="OUH.FK_DimOrganizationUnit_OrganizationCategoryID" FromRole="DimOrganizationCategory" ToRole="DimOrganizationUnit" />
+        </EntityType>
+        <EntityType Name="OrganizationUnit">
+          <Key>
+            <PropertyRef Name="OrganizationUnitID" />
+          </Key>
+          <Property Name="OrganizationUnitID" Type="Int32" Nullable="false" />
+          <Property Name="OrganizationCategoryName" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="OrganizationName" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="LevelName" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="OrgUnitName" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Level01OrgUnitID" Type="Int32" Nullable="false" />
+          <Property Name="Level01OrgUnitName" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Level02OrgUnitID" Type="Int32" />
+          <Property Name="Level02OrgUnitName" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Level03OrgUnitID" Type="Int32" />
+          <Property Name="Level03OrgUnitName" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Level04OrgUnitID" Type="Int32" />
+          <Property Name="Level04OrgUnitName" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Level05OrgUnitID" Type="Int32" />
+          <Property Name="Level05OrgUnitName" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Level06OrgUnitID" Type="Int32" />
+          <Property Name="Level06OrgUnitName" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Level07OrgUnitID" Type="Int32" />
+          <Property Name="Level07OrgUnitName" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Level08OrgUnitID" Type="Int32" />
+          <Property Name="Level08OrgUnitName" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Level09OrgUnitID" Type="Int32" />
+          <Property Name="Level09OrgUnitName" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Level10OrgUnitID" Type="Int32" />
+          <Property Name="Level10OrgUnitName" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="MemberOrganizationUnit" Relationship="OUH.FK_MemberOrganizationUnit_DimOrganizationUnit" FromRole="DimOrganizationUnit" ToRole="MemberOrganizationUnit" />
+          <NavigationProperty Name="Organization" Relationship="OUH.FK_DimOrganizationUnit_OrganizationID" FromRole="DimOrganizationUnit" ToRole="DimOrganization" />
+          <NavigationProperty Name="OrganizationCategory" Relationship="OUH.FK_DimOrganizationUnit_OrganizationCategoryID" FromRole="DimOrganizationUnit" ToRole="DimOrganizationCategory" />
+          <NavigationProperty Name="FFT_OrgUnitSampleUnit" Relationship="OUH.FK_FFT_OrgUnitSampleUnit_OrganizationUnitID" FromRole="DimOrganizationUnit" ToRole="FFT_OrgUnitSampleUnit" />
+          <NavigationProperty Name="GroupOrganizationUnit" Relationship="OUH.FK_GroupOrganizationUnit_DimOrganizationUnit" FromRole="OrganizationUnit" ToRole="GroupOrganizationUnit" />
+          <Property Name="LevelNum" Type="Int32" Nullable="false" />
+          <Property Name="IsLeaf" Type="Boolean" Nullable="false" /></EntityType>
+        <EntityType Name="FFT_OrgUnitSampleUnit">
+          <Key>
+            <PropertyRef Name="OrgUnitSampleUnitID" />
+          </Key>
+          <Property Name="OrgUnitSampleUnitID" Type="Int64" Nullable="false" />
+          <Property Name="SampleUnitID" Type="Int32" Nullable="false" />
+          <Property Name="SamplePopulationID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="OrganizationUnit" Relationship="OUH.FK_FFT_OrgUnitSampleUnit_OrganizationUnitID" FromRole="FFT_OrgUnitSampleUnit" ToRole="DimOrganizationUnit" />
+        </EntityType>
+        <Association Name="FK_ClientOrganization_Client">
+          <End Role="Client" Type="OUH.Client" Multiplicity="1" />
+          <End Role="ClientOrganization" Type="OUH.ClientOrganization" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="ClientID" /></Principal>
+            <Dependent Role="ClientOrganization">
+              <PropertyRef Name="ClientID" /></Dependent></ReferentialConstraint></Association>
+        <Association Name="FK_ClientOrganization_Organization">
+          <End Role="DimOrganization" Type="OUH.Organization" Multiplicity="1" />
+          <End Role="ClientOrganization" Type="OUH.ClientOrganization" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DimOrganization">
+              <PropertyRef Name="OrganizationID" /></Principal>
+            <Dependent Role="ClientOrganization">
+              <PropertyRef Name="OrganizationID" /></Dependent></ReferentialConstraint></Association>
+        <Association Name="FK_MemberOrganizationUnit_DimOrganizationUnit">
+          <End Role="DimOrganizationUnit" Type="OUH.OrganizationUnit" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MemberOrganizationUnit" Type="OUH.MemberOrganizationUnit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DimOrganizationUnit">
+              <PropertyRef Name="OrganizationUnitID" /></Principal>
+            <Dependent Role="MemberOrganizationUnit">
+              <PropertyRef Name="OrganizationUnitID" /></Dependent></ReferentialConstraint></Association>
+        <Association Name="FK_DimOrganizationUnit_OrganizationID">
+          <End Role="DimOrganization" Type="OUH.Organization" Multiplicity="1" />
+          <End Role="DimOrganizationUnit" Type="OUH.OrganizationUnit" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_DimOrganizationUnit_OrganizationCategoryID">
+          <End Role="DimOrganizationCategory" Type="OUH.OrganizationCategory" Multiplicity="1" />
+          <End Role="DimOrganizationUnit" Type="OUH.OrganizationUnit" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_FFT_OrgUnitSampleUnit_OrganizationUnitID">
+          <End Role="DimOrganizationUnit" Type="OUH.OrganizationUnit" Multiplicity="1" />
+          <End Role="FFT_OrgUnitSampleUnit" Type="OUH.FFT_OrgUnitSampleUnit" Multiplicity="*" />
+        </Association>
+        <EntityType Name="vw_OrganizationUnit">
+          <Key>
+            <PropertyRef Name="OrganizationUnitID" />
+            <PropertyRef Name="OrgUnitName" />
+            <PropertyRef Name="OrganizationID" />
+            <PropertyRef Name="LevelName" />
+            <PropertyRef Name="LevelNum" /></Key>
+          <Property Name="OrganizationUnitID" Type="Int32" Nullable="false" />
+          <Property Name="OrgUnitName" Type="String" Nullable="false" />
+          <Property Name="OrganizationID" Type="Int32" Nullable="false" />
+          <Property Name="ParentOrgUnitID" Type="Int32" Nullable="true" />
+          <Property Name="LevelNum" Type="Int32" Nullable="false" />
+          <Property Name="LevelName" Type="String" Nullable="false" /></EntityType>
+        <EntityType Name="GroupOrganizationUnit">
+          <Key>
+            <PropertyRef Name="GroupID" />
+            <PropertyRef Name="OrganizationUnitID" /></Key>
+          <Property Name="GroupID" Type="Int32" Nullable="false" />
+          <Property Name="OrganizationUnitID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="OrganizationUnit" Relationship="OUH.FK_GroupOrganizationUnit_DimOrganizationUnit" FromRole="GroupOrganizationUnit" ToRole="OrganizationUnit" /></EntityType>
+        <Association Name="FK_GroupOrganizationUnit_DimOrganizationUnit">
+          <End Type="OUH.OrganizationUnit" Role="OrganizationUnit" Multiplicity="1" />
+          <End Type="OUH.GroupOrganizationUnit" Role="GroupOrganizationUnit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrganizationUnit">
+              <PropertyRef Name="OrganizationUnitID" /></Principal>
+            <Dependent Role="GroupOrganizationUnit">
+              <PropertyRef Name="OrganizationUnitID" /></Dependent></ReferentialConstraint></Association>
+        <Association Name="FK_ClientOrganization_Organization1">
+          <End Type="OUH.Organization" Role="Organization" Multiplicity="1" />
+          <End Type="OUH.ClientOrganization" Role="ClientOrganization" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Organization">
+              <PropertyRef Name="OrganizationID" /></Principal>
+            <Dependent Role="ClientOrganization">
+              <PropertyRef Name="OrganizationID" /></Dependent></ReferentialConstraint></Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="urn:schemas-microsoft-com:windows:storage:mapping:CS">
+        <EntityContainerMapping StorageEntityContainer="OUHStoreContainer" CdmEntityContainer="OUHModel">
+          <EntitySetMapping Name="ClientOrganization">
+            <EntityTypeMapping TypeName="IsTypeOf(OUH.ClientOrganization)">
+              <MappingFragment StoreEntitySet="ClientOrganization">
+                <ScalarProperty Name="OrganizationID" ColumnName="OrganizationID" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MemberOrganizationUnit">
+            <EntityTypeMapping TypeName="IsTypeOf(OUH.MemberOrganizationUnit)">
+              <MappingFragment StoreEntitySet="MemberOrganizationUnit">
+                <ScalarProperty Name="MemberID" ColumnName="MemberID" />
+                <ScalarProperty Name="Member" ColumnName="Member" />
+                <ScalarProperty Name="OrganizationUnitID" ColumnName="OrganizationUnitID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrganizationSet">
+            <EntityTypeMapping TypeName="IsTypeOf(OUH.Organization)">
+              <MappingFragment StoreEntitySet="DimOrganization">
+                <ScalarProperty Name="OrganizationID" ColumnName="OrganizationID" />
+                <ScalarProperty Name="OrganizationName" ColumnName="OrganizationName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrganizationCategorySet">
+            <EntityTypeMapping TypeName="IsTypeOf(OUH.OrganizationCategory)">
+              <MappingFragment StoreEntitySet="DimOrganizationCategory">
+                <ScalarProperty Name="OrganizationCategoryID" ColumnName="OrganizationCategoryID" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="InternalOnly" ColumnName="InternalOnly" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrganizationUnitSet">
+            <EntityTypeMapping TypeName="IsTypeOf(OUH.OrganizationUnit)">
+              <MappingFragment StoreEntitySet="DimOrganizationUnit">
+                <ScalarProperty Name="IsLeaf" ColumnName="IsLeaf" />
+                <ScalarProperty Name="LevelNum" ColumnName="LevelNum" />
+                <ScalarProperty Name="OrganizationUnitID" ColumnName="OrganizationUnitID" />
+                <ScalarProperty Name="OrganizationCategoryName" ColumnName="OrganizationCategoryName" />
+                <ScalarProperty Name="OrganizationName" ColumnName="OrganizationName" />
+                <ScalarProperty Name="LevelName" ColumnName="LevelName" />
+                <ScalarProperty Name="OrgUnitName" ColumnName="OrgUnitName" />
+                <ScalarProperty Name="Level01OrgUnitID" ColumnName="Level01OrgUnitID" />
+                <ScalarProperty Name="Level01OrgUnitName" ColumnName="Level01OrgUnitName" />
+                <ScalarProperty Name="Level02OrgUnitID" ColumnName="Level02OrgUnitID" />
+                <ScalarProperty Name="Level02OrgUnitName" ColumnName="Level02OrgUnitName" />
+                <ScalarProperty Name="Level03OrgUnitID" ColumnName="Level03OrgUnitID" />
+                <ScalarProperty Name="Level03OrgUnitName" ColumnName="Level03OrgUnitName" />
+                <ScalarProperty Name="Level04OrgUnitID" ColumnName="Level04OrgUnitID" />
+                <ScalarProperty Name="Level04OrgUnitName" ColumnName="Level04OrgUnitName" />
+                <ScalarProperty Name="Level05OrgUnitID" ColumnName="Level05OrgUnitID" />
+                <ScalarProperty Name="Level05OrgUnitName" ColumnName="Level05OrgUnitName" />
+                <ScalarProperty Name="Level06OrgUnitID" ColumnName="Level06OrgUnitID" />
+                <ScalarProperty Name="Level06OrgUnitName" ColumnName="Level06OrgUnitName" />
+                <ScalarProperty Name="Level07OrgUnitID" ColumnName="Level07OrgUnitID" />
+                <ScalarProperty Name="Level07OrgUnitName" ColumnName="Level07OrgUnitName" />
+                <ScalarProperty Name="Level08OrgUnitID" ColumnName="Level08OrgUnitID" />
+                <ScalarProperty Name="Level08OrgUnitName" ColumnName="Level08OrgUnitName" />
+                <ScalarProperty Name="Level09OrgUnitID" ColumnName="Level09OrgUnitID" />
+                <ScalarProperty Name="Level09OrgUnitName" ColumnName="Level09OrgUnitName" />
+                <ScalarProperty Name="Level10OrgUnitID" ColumnName="Level10OrgUnitID" />
+                <ScalarProperty Name="Level10OrgUnitName" ColumnName="Level10OrgUnitName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FFT_OrgUnitSampleUnit">
+            <EntityTypeMapping TypeName="IsTypeOf(OUH.FFT_OrgUnitSampleUnit)">
+              <MappingFragment StoreEntitySet="FFT_OrgUnitSampleUnit">
+                <ScalarProperty Name="OrgUnitSampleUnitID" ColumnName="OrgUnitSampleUnitID" />
+                <ScalarProperty Name="SampleUnitID" ColumnName="SampleUnitID" />
+                <ScalarProperty Name="SamplePopulationID" ColumnName="SamplePopulationID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="FK_ClientOrganization_Client" TypeName="OUH.FK_ClientOrganization_Client" StoreEntitySet="ClientOrganization">
+            <EndProperty Name="ClientOrganization">
+              <ScalarProperty Name="OrganizationID" ColumnName="OrganizationID" />
+              <ScalarProperty Name="ClientID" ColumnName="ClientID" /></EndProperty>
+            <EndProperty Name="Client">
+              <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_ClientOrganization_Organization" TypeName="OUH.FK_ClientOrganization_Organization" StoreEntitySet="ClientOrganization">
+            <EndProperty Name="ClientOrganization">
+              <ScalarProperty Name="OrganizationID" ColumnName="OrganizationID" />
+              <ScalarProperty Name="ClientID" ColumnName="ClientID" /></EndProperty>
+            <EndProperty Name="DimOrganization">
+              <ScalarProperty Name="OrganizationID" ColumnName="OrganizationID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_MemberOrganizationUnit_DimOrganizationUnit" TypeName="OUH.FK_MemberOrganizationUnit_DimOrganizationUnit" StoreEntitySet="MemberOrganizationUnit">
+            <EndProperty Name="DimOrganizationUnit">
+              <ScalarProperty Name="OrganizationUnitID" ColumnName="OrganizationUnitID" />
+            </EndProperty>
+            <EndProperty Name="MemberOrganizationUnit">
+              <ScalarProperty Name="Member" ColumnName="Member" />
+              <ScalarProperty Name="OrganizationUnitID" ColumnName="OrganizationUnitID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_DimOrganizationUnit_OrganizationID" TypeName="OUH.FK_DimOrganizationUnit_OrganizationID" StoreEntitySet="DimOrganizationUnit">
+            <EndProperty Name="DimOrganization">
+              <ScalarProperty Name="OrganizationID" ColumnName="OrganizationID" />
+            </EndProperty>
+            <EndProperty Name="DimOrganizationUnit">
+              <ScalarProperty Name="OrganizationUnitID" ColumnName="OrganizationUnitID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_DimOrganizationUnit_OrganizationCategoryID" TypeName="OUH.FK_DimOrganizationUnit_OrganizationCategoryID" StoreEntitySet="DimOrganizationUnit">
+            <EndProperty Name="DimOrganizationCategory">
+              <ScalarProperty Name="OrganizationCategoryID" ColumnName="OrganizationCategoryID" />
+            </EndProperty>
+            <EndProperty Name="DimOrganizationUnit">
+              <ScalarProperty Name="OrganizationUnitID" ColumnName="OrganizationUnitID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_FFT_OrgUnitSampleUnit_OrganizationUnitID" TypeName="OUH.FK_FFT_OrgUnitSampleUnit_OrganizationUnitID" StoreEntitySet="FFT_OrgUnitSampleUnit">
+            <EndProperty Name="DimOrganizationUnit">
+              <ScalarProperty Name="OrganizationUnitID" ColumnName="OrganizationUnitID" />
+            </EndProperty>
+            <EndProperty Name="FFT_OrgUnitSampleUnit">
+              <ScalarProperty Name="OrgUnitSampleUnitID" ColumnName="OrgUnitSampleUnitID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="vw_OrganizationUnit">
+            <EntityTypeMapping TypeName="IsTypeOf(OUH.vw_OrganizationUnit)">
+              <MappingFragment StoreEntitySet="vw_OrganizationUnit">
+                <ScalarProperty Name="LevelName" ColumnName="LevelName" />
+                <ScalarProperty Name="LevelNum" ColumnName="LevelNum" />
+                <ScalarProperty Name="ParentOrgUnitID" ColumnName="ParentOrgUnitID" />
+                <ScalarProperty Name="OrganizationID" ColumnName="OrganizationID" />
+                <ScalarProperty Name="OrgUnitName" ColumnName="OrgUnitName" />
+                <ScalarProperty Name="OrganizationUnitID" ColumnName="OrganizationUnitID" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="GroupOrganizationUnit">
+            <EntityTypeMapping TypeName="IsTypeOf(OUH.GroupOrganizationUnit)">
+              <MappingFragment StoreEntitySet="GroupOrganizationUnit">
+                <ScalarProperty Name="OrganizationUnitID" ColumnName="OrganizationUnitID" />
+                <ScalarProperty Name="GroupID" ColumnName="GroupID" /></MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <AssociationSetMapping Name="FK_GroupOrganizationUnit_DimOrganizationUnit" TypeName="OUH.FK_GroupOrganizationUnit_DimOrganizationUnit" StoreEntitySet="GroupOrganizationUnit">
+            <EndProperty Name="GroupOrganizationUnit">
+              <ScalarProperty Name="OrganizationUnitID" ColumnName="OrganizationUnitID" />
+              <ScalarProperty Name="GroupID" ColumnName="GroupID" /></EndProperty>
+            <EndProperty Name="OrganizationUnit">
+              <ScalarProperty Name="OrganizationUnitID" ColumnName="OrganizationUnitID" /></EndProperty></AssociationSetMapping>
+          <AssociationSetMapping Name="FK_ClientOrganization_Organization1" TypeName="OUH.FK_ClientOrganization_Organization1" StoreEntitySet="ClientOrganization">
+            <EndProperty Name="ClientOrganization">
+              <ScalarProperty Name="OrganizationID" ColumnName="OrganizationID" />
+              <ScalarProperty Name="ClientID" ColumnName="ClientID" /></EndProperty>
+            <EndProperty Name="Organization">
+              <ScalarProperty Name="OrganizationID" ColumnName="OrganizationID" /></EndProperty></AssociationSetMapping>
+          <EntitySetMapping Name="Client">
+            <EntityTypeMapping TypeName="IsTypeOf(OUH.Client)">
+              <MappingFragment StoreEntitySet="DimClient">
+                <ScalarProperty Name="SourceClientID" ColumnName="SourceClientID" />
+                <ScalarProperty Name="ClientName" ColumnName="ClientName" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" /></MappingFragment></EntityTypeMapping></EntitySetMapping></EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2007/06/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="3fea8e1fc01541e5b2102b90b21af647" Name="Diagram1">
+        <EntityTypeShape EntityType="OUH.Client" Width="1.5" PointX="0.75" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="OUH.ClientOrganization" Width="1.5" PointX="3" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="OUH.MemberOrganizationUnit" Width="1.5" PointX="8.25" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="OUH.Organization" Width="1.5" PointX="0.75" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="OUH.OrganizationCategory" Width="1.5" PointX="3.75" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="OUH.OrganizationUnit" Width="1.5" PointX="6" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="OUH.FFT_OrgUnitSampleUnit" Width="1.5" PointX="8.25" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="OUH.vw_OrganizationUnit" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OUH.GroupOrganizationUnit" Width="1.5" PointX="8.25" PointY="8" IsExpanded="true" />
+        <AssociationConnector Association="OUH.FK_ClientOrganization_Client" ManuallyRouted="false" />
+        <AssociationConnector Association="OUH.FK_ClientOrganization_Organization" ManuallyRouted="false" />
+        <AssociationConnector Association="OUH.FK_MemberOrganizationUnit_DimOrganizationUnit" ManuallyRouted="false" />
+        <AssociationConnector Association="OUH.FK_DimOrganizationUnit_OrganizationID" ManuallyRouted="false" />
+        <AssociationConnector Association="OUH.FK_DimOrganizationUnit_OrganizationCategoryID" ManuallyRouted="false" />
+        <AssociationConnector Association="OUH.FK_FFT_OrgUnitSampleUnit_OrganizationUnitID" ManuallyRouted="false" />
+        <AssociationConnector Association="OUH.FK_GroupOrganizationUnit_DimOrganizationUnit" ManuallyRouted="false" />
+        <AssociationConnector Association="OUH.FK_ClientOrganization_Organization1" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

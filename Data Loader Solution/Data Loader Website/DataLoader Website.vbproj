@@ -1,0 +1,775 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7811F6B4-2AE7-472D-B1AB-5627CA12A0C4}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>NRC.DataLoader</RootNamespace>
+    <AssemblyName>NRC.DataLoader</AssemblyName>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>NRC.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>NRC.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Testing|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>NRC.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>C:\Program Files\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Development|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>NRC.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>C:\Program Files\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+    <CodeAnalysisRules>
+    </CodeAnalysisRules>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Staging|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>NRC.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>C:\Program Files\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ABCUpload6, Version=6.0.0.0, Culture=neutral, PublicKeyToken=572826f585f78c3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\ABCUpload6.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ActiveUp.Net.Mail, Version=3.0.3056.269, Culture=neutral, PublicKeyToken=851b9e39ef2572fb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\ActiveUp.Net.Mail.dll</HintPath>
+    </Reference>
+    <Reference Include="AjaxControlToolkit, Version=1.0.10301.0, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\AjaxControlToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Data.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.Web.ASPxDataControls.v6.3, Version=6.3.2.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.Web.ASPxEditors.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.Web.ASPxGrid.v6.3, Version=6.3.2.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.Web.ASPxGridView.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.Web.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NRC, Version=1.14.1.0, Culture=neutral, PublicKeyToken=0c9e538f562d9317">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\NRC.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Framework, Version=1.10.0.0, Culture=neutral, PublicKeyToken=7f65ae6d961bde9c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Framework.BusinessLogic, Version=1.0.5.0, Culture=neutral, PublicKeyToken=7f65ae6d961bde9c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.BusinessLogic.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Framework.Notification, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.Notification.dll</HintPath>
+    </Reference>
+    <Reference Include="NRC.NRCAuthLib, Version=1.1.1.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\NRC.NRCAuthLib.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Configuration">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Services">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.EnterpriseServices">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Mobile">
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="NRC.NRCAuthLib" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Collections.Specialized" />
+    <Import Include="System.Configuration" />
+    <Import Include="System.Text" />
+    <Import Include="System.Text.RegularExpressions" />
+    <Import Include="System.Web" />
+    <Import Include="System.Web.Caching" />
+    <Import Include="System.Web.SessionState" />
+    <Import Include="System.Web.Security" />
+    <Import Include="System.Web.Profile" />
+    <Import Include="System.Web.UI" />
+    <Import Include="System.Web.UI.WebControls" />
+    <Import Include="System.Web.UI.WebControls.WebParts" />
+    <Import Include="System.Web.UI.HtmlControls" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="css\styles.css" />
+    <Content Include="Default.aspx" />
+    <Content Include="ErrorTrap\StaticError.aspx" />
+    <Content Include="Global.asax" />
+    <Content Include="progressbar.aspx" />
+    <Content Include="SignIn.aspx" />
+    <Content Include="Upload.aspx" />
+    <Content Include="UserControls\ucFooter.ascx" />
+    <Content Include="UserControls\ucPageLogo.ascx" />
+    <Content Include="Web.config" />
+    <Content Include="_Scripts\Upload.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Classes\Config.vb" />
+    <Compile Include="Classes\CurrentUser.vb" />
+    <Compile Include="Classes\DataTableSetup.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Classes\PackageDisplayHandler.vb" />
+    <Compile Include="Classes\ParseBackSlashAndSpace.vb" />
+    <Compile Include="Classes\SortAnyListReturnNativeDataSet.vb" />
+    <Compile Include="Classes\UploadFileEmailClass.vb" />
+    <Compile Include="Classes\UploadFileHistory.vb">
+    </Compile>
+    <Compile Include="Classes\_UploadFile.vb">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Error.aspx.designer.vb">
+      <DependentUpon>Error.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Error.aspx.vb">
+      <DependentUpon>Error.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ErrorTrap\PublicMemberLibrary.vb" />
+    <Compile Include="ErrorTrap\SessionInformation.vb" />
+    <Compile Include="ErrorTrap\Img\WebErrorLogClass.vb">
+    </Compile>
+    <Compile Include="ErrorTrap\WebErrorTrappingBaseClass.vb">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Classes\EmailInfo.vb" />
+    <Compile Include="Classes\EmailInfoCollection.vb" />
+    <Compile Include="ErrorTrap\ExceptionManager.vb">
+    </Compile>
+    <Compile Include="Classes\MaintainScrollPositionModule.vb" />
+    <Compile Include="Classes\SessionInfo.vb" />
+    <Compile Include="Classes\SharedMethods.vb" />
+    <Compile Include="Classes\UploadEmailManager.vb" />
+    <Compile Include="Default.aspx.designer.vb">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.vb">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ErrorTrap\StaticError.aspx.designer.vb">
+      <DependentUpon>StaticError.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ErrorTrap\StaticError.aspx.vb">
+      <SubType>ASPXCodebehind</SubType>
+      <DependentUpon>StaticError.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Exceptions\BadFileStreamException.vb" />
+    <Compile Include="Exceptions\UploadQueueOutOfSyncException.vb" />
+    <Compile Include="ErrorTrap\ExceptionTest.aspx.designer.vb">
+      <DependentUpon>ExceptionTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ErrorTrap\ExceptionTest.aspx.vb">
+      <DependentUpon>ExceptionTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Global.asax.vb">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="MasterPage.Master.designer.vb">
+      <DependentUpon>MasterPage.Master</DependentUpon>
+    </Compile>
+    <Compile Include="MasterPage.Master.vb">
+      <DependentUpon>MasterPage.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="progressbar.aspx.designer.vb">
+      <DependentUpon>progressbar.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="progressbar.aspx.vb">
+      <SubType>ASPXCodebehind</SubType>
+      <DependentUpon>progressbar.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SignIn.aspx.designer.vb">
+      <DependentUpon>SignIn.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SignIn.aspx.vb">
+      <DependentUpon>SignIn.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Upload.aspx.designer.vb">
+      <DependentUpon>Upload.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Upload.aspx.vb">
+      <DependentUpon>Upload.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\ucHeader.ascx.designer.vb">
+      <DependentUpon>ucHeader.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ucHeader.ascx.vb">
+      <DependentUpon>ucHeader.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\ucFooter.ascx.designer.vb">
+      <DependentUpon>ucFooter.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ucFooter.ascx.vb">
+      <DependentUpon>ucFooter.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\ucPageLogo.ascx.designer.vb">
+      <DependentUpon>ucPageLogo.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ucPageLogo.ascx.vb">
+      <DependentUpon>ucPageLogo.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\ucSecurity.ascx.designer.vb">
+      <DependentUpon>ucSecurity.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ucSecurity.ascx.vb">
+      <DependentUpon>ucSecurity.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\licenses.licx" />
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Themes\BlackGlass\Editors\edtButtonBack.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtButtonBackC_16.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtButtonBackH_16.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtButtonBack_16.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtButtonCheckedBack.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtButtonEditBack.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtButtonEditBackC.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtButtonEditBackH.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtButtonEditButtonBack.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtButtonHoverBack.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtButtonPressedBack.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtCalendarFNNextYear.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtCalendarFNPrevYear.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtCalendarFootBtn.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtCalendarFootBtnH.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtCalendarFootBtnP.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtCalendarHeader.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtCalendarNextMonth.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtCalendarNextYear.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtCalendarPrevMonth.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtCalendarPrevYear.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtCheckBoxOff.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtCheckBoxOn.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtCheckBoxUndefined.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtDropDown.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtDropDownDisabled.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtEllipsis.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtEllipsisDisabled.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtRadioButtonOff.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtRadioButtonOn.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtSpinDecBtnBack.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtSpinEditDecrementImage.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtSpinEditDecrementImageDisabled.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtSpinEditIncrementImage.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtSpinEditIncrementImageDisabled.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtSpinEditLargeDecImage.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtSpinEditLargeDecImageDisabled.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtSpinEditLargeIncImage.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtSpinEditLargeIncImageDisabled.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtSpinIncBtnBack.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtSpinIncBtnHBack.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtSpinIncBtnPBack.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtSpinLargeIncBtnBack.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtSpinLargeIncBtnHBack.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\edtSpinLargeIncBtnPBack.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\Error.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\Loading.gif" />
+    <Content Include="App_Themes\BlackGlass\Editors\styles.css" />
+    <Content Include="App_Themes\BlackGlass\GridView\gvCollapsedButton.gif" />
+    <Content Include="App_Themes\BlackGlass\GridView\gvCollapsedButton.png" />
+    <Content Include="App_Themes\BlackGlass\GridView\gvDetailCollapsedButton.gif" />
+    <Content Include="App_Themes\BlackGlass\GridView\gvDetailCollapsedButton.png" />
+    <Content Include="App_Themes\BlackGlass\GridView\gvDetailExpandedButton.gif" />
+    <Content Include="App_Themes\BlackGlass\GridView\gvDetailExpandedButton.png" />
+    <Content Include="App_Themes\BlackGlass\GridView\gvDragAndDropArrowDown.gif" />
+    <Content Include="App_Themes\BlackGlass\GridView\gvDragAndDropArrowUp.gif" />
+    <Content Include="App_Themes\BlackGlass\GridView\gvDragAndDropHideColumn.gif" />
+    <Content Include="App_Themes\BlackGlass\GridView\gvExpandedButton.gif" />
+    <Content Include="App_Themes\BlackGlass\GridView\gvExpandedButton.png" />
+    <Content Include="App_Themes\BlackGlass\GridView\gvGroupPanelBackground.gif" />
+    <Content Include="App_Themes\BlackGlass\GridView\gvGroupPanelSelBackground.gif" />
+    <Content Include="App_Themes\BlackGlass\GridView\gvHeaderBackground.gif" />
+    <Content Include="App_Themes\BlackGlass\GridView\gvHeaderSortDown.gif" />
+    <Content Include="App_Themes\BlackGlass\GridView\gvHeaderSortUp.gif" />
+    <Content Include="App_Themes\BlackGlass\GridView\gvLoadingOnStatusBar.gif" />
+    <Content Include="App_Themes\BlackGlass\GridView\gvParentGroupRows.gif" />
+    <Content Include="App_Themes\BlackGlass\GridView\Loading.gif" />
+    <Content Include="App_Themes\BlackGlass\GridView\pAll.png" />
+    <Content Include="App_Themes\BlackGlass\GridView\pAllDisabled.png" />
+    <Content Include="App_Themes\BlackGlass\GridView\pFirst.png" />
+    <Content Include="App_Themes\BlackGlass\GridView\pFirstDisabled.png" />
+    <Content Include="App_Themes\BlackGlass\GridView\pLast.png" />
+    <Content Include="App_Themes\BlackGlass\GridView\pLastDisabled.png" />
+    <Content Include="App_Themes\BlackGlass\GridView\pNext.png" />
+    <Content Include="App_Themes\BlackGlass\GridView\pNextDisabled.png" />
+    <Content Include="App_Themes\BlackGlass\GridView\pPrev.png" />
+    <Content Include="App_Themes\BlackGlass\GridView\pPrevDisabled.png" />
+    <Content Include="App_Themes\BlackGlass\GridView\styles.css" />
+    <Content Include="App_Themes\BlackGlass\Web\Loading.gif" />
+    <Content Include="App_Themes\BlackGlass\Web\mHorizontalPopOut.png" />
+    <Content Include="App_Themes\BlackGlass\Web\mItemBack.gif" />
+    <Content Include="App_Themes\BlackGlass\Web\mItemBackH.gif" />
+    <Content Include="App_Themes\BlackGlass\Web\mItemBackLevel0.gif" />
+    <Content Include="App_Themes\BlackGlass\Web\mItemBackS.gif" />
+    <Content Include="App_Themes\BlackGlass\Web\mSubMenuItem.gif" />
+    <Content Include="App_Themes\BlackGlass\Web\mSubMenuItemChecked.gif" />
+    <Content Include="App_Themes\BlackGlass\Web\mVerticalItemBack.gif" />
+    <Content Include="App_Themes\BlackGlass\Web\mVerticalPopOut.gif" />
+    <Content Include="App_Themes\BlackGlass\Web\nbCollapse.gif" />
+    <Content Include="App_Themes\BlackGlass\Web\nbExpand.gif" />
+    <Content Include="App_Themes\BlackGlass\Web\nbItemBack.gif" />
+    <Content Include="App_Themes\BlackGlass\Web\nbItemBackH.gif" />
+    <Content Include="App_Themes\BlackGlass\Web\pAll.png" />
+    <Content Include="App_Themes\BlackGlass\Web\pAllDisabled.png" />
+    <Content Include="App_Themes\BlackGlass\Web\pcCloseButton.png" />
+    <Content Include="App_Themes\BlackGlass\Web\pcItemCloseButton.gif" />
+    <Content Include="App_Themes\BlackGlass\Web\pcItemFooter.gif" />
+    <Content Include="App_Themes\BlackGlass\Web\pcItemHeader.gif" />
+    <Content Include="App_Themes\BlackGlass\Web\pcModalBack.gif" />
+    <Content Include="App_Themes\BlackGlass\Web\pcSizeGrip.gif" />
+    <Content Include="App_Themes\BlackGlass\Web\pcTabBack.gif" />
+    <Content Include="App_Themes\BlackGlass\Web\pcTabBackH.gif" />
+    <Content Include="App_Themes\BlackGlass\Web\pFirst.png" />
+    <Content Include="App_Themes\BlackGlass\Web\pFirstDisabled.png" />
+    <Content Include="App_Themes\BlackGlass\Web\pLast.png" />
+    <Content Include="App_Themes\BlackGlass\Web\pLastDisabled.png" />
+    <Content Include="App_Themes\BlackGlass\Web\pNext.png" />
+    <Content Include="App_Themes\BlackGlass\Web\pNextDisabled.png" />
+    <Content Include="App_Themes\BlackGlass\Web\pPrev.png" />
+    <Content Include="App_Themes\BlackGlass\Web\pPrevDisabled.png" />
+    <Content Include="App_Themes\BlackGlass\Web\rpBottomLeftCorner.png" />
+    <Content Include="App_Themes\BlackGlass\Web\rpBottomRightCorner.png" />
+    <Content Include="App_Themes\BlackGlass\Web\rpContentBack.gif" />
+    <Content Include="App_Themes\BlackGlass\Web\rpContentBottomEdge.gif" />
+    <Content Include="App_Themes\BlackGlass\Web\rpContentLeftEdge.gif" />
+    <Content Include="App_Themes\BlackGlass\Web\rpContentRightEdge.gif" />
+    <Content Include="App_Themes\BlackGlass\Web\rpHeaderBack.gif" />
+    <Content Include="App_Themes\BlackGlass\Web\rpHeaderLeftEdge.png" />
+    <Content Include="App_Themes\BlackGlass\Web\rpHeaderRightEdge.png" />
+    <Content Include="App_Themes\BlackGlass\Web\rpNoHeaderTopLeftCorner.png" />
+    <Content Include="App_Themes\BlackGlass\Web\rpNoHeaderTopRightCorner.png" />
+    <Content Include="App_Themes\BlackGlass\Web\rpTopEdge.gif" />
+    <Content Include="App_Themes\BlackGlass\Web\rpTopLeftCorner.png" />
+    <Content Include="App_Themes\BlackGlass\Web\rpTopRightCorner.png" />
+    <Content Include="App_Themes\BlackGlass\Web\smBullet.png" />
+    <Content Include="App_Themes\BlackGlass\Web\styles.css" />
+    <Content Include="App_Themes\BlackGlass\Web\tcTabBack.gif" />
+    <Content Include="App_Themes\BlackGlass\Web\tcTabBackH.gif" />
+    <Content Include="App_Themes\BlackGlass\Web\tiItemBack.gif" />
+    <Content Include="App_Themes\Blue\Web\dvItemBack.gif" />
+    <Content Include="App_Themes\Blue\Web\dvLastDisabled.png" />
+    <Content Include="App_Themes\Blue\Web\hlTail.gif" />
+    <Content Include="App_Themes\Blue\Web\Loading.gif" />
+    <Content Include="App_Themes\Blue\Web\mHorizontalPopOut.gif" />
+    <Content Include="App_Themes\Blue\Web\mItemBack.gif" />
+    <Content Include="App_Themes\Blue\Web\mItemHBack.gif" />
+    <Content Include="App_Themes\Blue\Web\mItemSBack.gif" />
+    <Content Include="App_Themes\Blue\Web\mLargeItemBack.gif" />
+    <Content Include="App_Themes\Blue\Web\mLargeItemHBack.gif" />
+    <Content Include="App_Themes\Blue\Web\mLargeItemSBack.gif" />
+    <Content Include="App_Themes\Blue\Web\mPopupSeparatorBack.gif" />
+    <Content Include="App_Themes\Blue\Web\mSeparatorBack.gif" />
+    <Content Include="App_Themes\Blue\Web\mSubMenuItem.gif" />
+    <Content Include="App_Themes\Blue\Web\mSubMenuItemChecked.gif" />
+    <Content Include="App_Themes\Blue\Web\mVerticalPopOut.gif" />
+    <Content Include="App_Themes\Blue\Web\nbBack.gif" />
+    <Content Include="App_Themes\Blue\Web\nbCollapse.gif" />
+    <Content Include="App_Themes\Blue\Web\nbExpand.gif" />
+    <Content Include="App_Themes\Blue\Web\nbHeaderBack.gif" />
+    <Content Include="App_Themes\Blue\Web\nbHeaderBackCollapsed.gif" />
+    <Content Include="App_Themes\Blue\Web\nbHeaderHBack.gif" />
+    <Content Include="App_Themes\Blue\Web\ncBackToTop.png" />
+    <Content Include="App_Themes\Blue\Web\ncTail.gif" />
+    <Content Include="App_Themes\Blue\Web\pAll.png" />
+    <Content Include="App_Themes\Blue\Web\pAllDisabled.png" />
+    <Content Include="App_Themes\Blue\Web\pcCloseButton.png" />
+    <Content Include="App_Themes\Blue\Web\pcHeaderBack.gif" />
+    <Content Include="App_Themes\Blue\Web\pcModalBack.gif" />
+    <Content Include="App_Themes\Blue\Web\pcSizeGrip.gif" />
+    <Content Include="App_Themes\Blue\Web\pFirst.png" />
+    <Content Include="App_Themes\Blue\Web\pFirstDisabled.png" />
+    <Content Include="App_Themes\Blue\Web\pLast.png" />
+    <Content Include="App_Themes\Blue\Web\pLastDisabled.png" />
+    <Content Include="App_Themes\Blue\Web\pNext.png" />
+    <Content Include="App_Themes\Blue\Web\pNextDisabled.png" />
+    <Content Include="App_Themes\Blue\Web\pPrev.png" />
+    <Content Include="App_Themes\Blue\Web\pPrevDisabled.png" />
+    <Content Include="App_Themes\Blue\Web\rpBottomLeftCorner.png" />
+    <Content Include="App_Themes\Blue\Web\rpBottomRightCorner.png" />
+    <Content Include="App_Themes\Blue\Web\rpHeaderBack.png" />
+    <Content Include="App_Themes\Blue\Web\rpHeaderEdge.png" />
+    <Content Include="App_Themes\Blue\Web\rpNoHeaderTopLeftCorner.png" />
+    <Content Include="App_Themes\Blue\Web\rpNoHeaderTopRightCorner.png" />
+    <Content Include="App_Themes\Blue\Web\rpTopLeftCorner.png" />
+    <Content Include="App_Themes\Blue\Web\rpTopRightCorner.png" />
+    <Content Include="App_Themes\Blue\Web\smBack.gif" />
+    <Content Include="App_Themes\Blue\Web\smFirstLevelBack.gif" />
+    <Content Include="App_Themes\Blue\Web\smSecondLevelBullet.gif" />
+    <Content Include="App_Themes\Blue\Web\styles.css" />
+    <Content Include="App_Themes\Blue\Web\tcHTabBack.gif" />
+    <Content Include="App_Themes\Blue\Web\tcTabABack.gif" />
+    <Content Include="App_Themes\Blue\Web\tcTabBack.gif" />
+    <Content Include="App_Themes\Blue\Web\tiBackToTop.png" />
+    <Content Include="App_Themes\Blue\Web\tiContentBottom.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtButtonBack.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtButtonCheckedBack.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtButtonEditButtonBack.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtButtonHoverBack.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtButtonPressedBack.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtCalendarFNNextYear.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtCalendarFNPrevYear.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtCalendarNextMonth.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtCalendarNextYear.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtCalendarPrevMonth.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtCalendarPrevYear.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtCheckBoxOff.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtCheckBoxOn.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtCheckBoxUndefined.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtDropDown.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtDropDownButtonHoverBack.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtDropDownButtonPressedBack.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtDropDownDisabled.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtEllipsis.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtEllipsisDisabled.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtError.png" />
+    <Content Include="App_Themes\Glass\Editors\edtRadioButtonOff.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtRadioButtonOn.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtSpinDecBtnBack.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtSpinEditDecrementImage.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtSpinEditDecrementImageDisabled.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtSpinEditIncrementImage.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtSpinEditIncrementImageDisabled.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtSpinEditLargeDecImage.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtSpinEditLargeDecImageDisabled.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtSpinEditLargeIncImage.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtSpinEditLargeIncImageDisabled.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtSpinIncBtnBack.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtSpinIncBtnHBack.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtSpinIncBtnPBack.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtSpinLargeIncBtnBack.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtSpinLargeIncBtnHBack.gif" />
+    <Content Include="App_Themes\Glass\Editors\edtSpinLargeIncBtnPBack.gif" />
+    <Content Include="App_Themes\Glass\Editors\Loading.gif" />
+    <Content Include="App_Themes\Glass\Editors\styles.css" />
+    <Content Include="App_Themes\Glass\GridView\gvCollapsedButton.gif" />
+    <Content Include="App_Themes\Glass\GridView\gvCollapsedButton.png" />
+    <Content Include="App_Themes\Glass\GridView\gvDetailCollapsedButton.gif" />
+    <Content Include="App_Themes\Glass\GridView\gvDetailCollapsedButton.png" />
+    <Content Include="App_Themes\Glass\GridView\gvDetailExpandedButton.gif" />
+    <Content Include="App_Themes\Glass\GridView\gvDetailExpandedButton.png" />
+    <Content Include="App_Themes\Glass\GridView\gvDragAndDropArrowDown.gif" />
+    <Content Include="App_Themes\Glass\GridView\gvDragAndDropArrowUp.gif" />
+    <Content Include="App_Themes\Glass\GridView\gvDragAndDropHideColumn.gif" />
+    <Content Include="App_Themes\Glass\GridView\gvExpandedButton.gif" />
+    <Content Include="App_Themes\Glass\GridView\gvExpandedButton.png" />
+    <Content Include="App_Themes\Glass\GridView\gvGroupPanelBackground.gif" />
+    <Content Include="App_Themes\Glass\GridView\gvGroupPanelSelBackground.gif" />
+    <Content Include="App_Themes\Glass\GridView\gvHeaderBackground.gif" />
+    <Content Include="App_Themes\Glass\GridView\gvHeaderSortDown.gif" />
+    <Content Include="App_Themes\Glass\GridView\gvHeaderSortUp.gif" />
+    <Content Include="App_Themes\Glass\GridView\gvLoadingOnStatusBar.gif" />
+    <Content Include="App_Themes\Glass\GridView\gvParentGroupRows.gif" />
+    <Content Include="App_Themes\Glass\GridView\Loading.gif" />
+    <Content Include="App_Themes\Glass\GridView\styles.css" />
+    <Content Include="App_Themes\Glass\Web\hlTail.gif" />
+    <Content Include="App_Themes\Glass\Web\Loading.gif" />
+    <Content Include="App_Themes\Glass\Web\mHorizontalPopOut.gif" />
+    <Content Include="App_Themes\Glass\Web\mItemBack.gif" />
+    <Content Include="App_Themes\Glass\Web\mItemHBack.gif" />
+    <Content Include="App_Themes\Glass\Web\mItemSBack.gif" />
+    <Content Include="App_Themes\Glass\Web\mLargeItemBack.gif" />
+    <Content Include="App_Themes\Glass\Web\mLargeItemHBack.gif" />
+    <Content Include="App_Themes\Glass\Web\mLargeItemSBack.gif" />
+    <Content Include="App_Themes\Glass\Web\mSubMenuItem.gif" />
+    <Content Include="App_Themes\Glass\Web\mSubMenuItemChecked.gif" />
+    <Content Include="App_Themes\Glass\Web\mVerticalPopOut.gif" />
+    <Content Include="App_Themes\Glass\Web\mVItemBack.gif" />
+    <Content Include="App_Themes\Glass\Web\mVItemHBack.gif" />
+    <Content Include="App_Themes\Glass\Web\mVItemSBack.gif" />
+    <Content Include="App_Themes\Glass\Web\nbCollapse.png" />
+    <Content Include="App_Themes\Glass\Web\nbExpand.png" />
+    <Content Include="App_Themes\Glass\Web\nbHeaderBack.gif" />
+    <Content Include="App_Themes\Glass\Web\nbHeaderHBack.gif" />
+    <Content Include="App_Themes\Glass\Web\ncBackToTop.png" />
+    <Content Include="App_Themes\Glass\Web\ncTail.gif" />
+    <Content Include="App_Themes\Glass\Web\pAll.gif" />
+    <Content Include="App_Themes\Glass\Web\pAll.png" />
+    <Content Include="App_Themes\Glass\Web\pAllDisabled.gif" />
+    <Content Include="App_Themes\Glass\Web\pAllDisabled.png" />
+    <Content Include="App_Themes\Glass\Web\pcCloseButton.png" />
+    <Content Include="App_Themes\Glass\Web\pcContentBack.gif" />
+    <Content Include="App_Themes\Glass\Web\pcContentWithTabBottomBack.gif" />
+    <Content Include="App_Themes\Glass\Web\pcFooterBack.gif" />
+    <Content Include="App_Themes\Glass\Web\pcHeaderBack.gif" />
+    <Content Include="App_Themes\Glass\Web\pcModalBack.gif" />
+    <Content Include="App_Themes\Glass\Web\pcSizeGrip.png" />
+    <Content Include="App_Themes\Glass\Web\pFirst.gif" />
+    <Content Include="App_Themes\Glass\Web\pFirst.png" />
+    <Content Include="App_Themes\Glass\Web\pFirstDisabled.gif" />
+    <Content Include="App_Themes\Glass\Web\pFirstDisabled.png" />
+    <Content Include="App_Themes\Glass\Web\pLast.gif" />
+    <Content Include="App_Themes\Glass\Web\pLast.png" />
+    <Content Include="App_Themes\Glass\Web\pLastDisabled.gif" />
+    <Content Include="App_Themes\Glass\Web\pLastDisabled.png" />
+    <Content Include="App_Themes\Glass\Web\pNext.gif" />
+    <Content Include="App_Themes\Glass\Web\pNext.png" />
+    <Content Include="App_Themes\Glass\Web\pNextDisabled.gif" />
+    <Content Include="App_Themes\Glass\Web\pNextDisabled.png" />
+    <Content Include="App_Themes\Glass\Web\pPrev.gif" />
+    <Content Include="App_Themes\Glass\Web\pPrev.png" />
+    <Content Include="App_Themes\Glass\Web\pPrevDisabled.gif" />
+    <Content Include="App_Themes\Glass\Web\pPrevDisabled.png" />
+    <Content Include="App_Themes\Glass\Web\rpBottomLeftCorner.png" />
+    <Content Include="App_Themes\Glass\Web\rpBottomRightCorner.png" />
+    <Content Include="App_Themes\Glass\Web\rpContentBack.gif" />
+    <Content Include="App_Themes\Glass\Web\rpHeaderBack.gif" />
+    <Content Include="App_Themes\Glass\Web\rpHeaderLeftEdge.gif" />
+    <Content Include="App_Themes\Glass\Web\rpHeaderRightEdge.gif" />
+    <Content Include="App_Themes\Glass\Web\rpLeftRightEdge.gif" />
+    <Content Include="App_Themes\Glass\Web\rpNoHeaderTopLeftCorner.png" />
+    <Content Include="App_Themes\Glass\Web\rpNoHeaderTopRightCorner.png" />
+    <Content Include="App_Themes\Glass\Web\rpTopLeftCorner.png" />
+    <Content Include="App_Themes\Glass\Web\rpTopRightCorner.png" />
+    <Content Include="App_Themes\Glass\Web\smLevel0Back.gif" />
+    <Content Include="App_Themes\Glass\Web\styles.css" />
+    <Content Include="App_Themes\Glass\Web\tcATabBack.gif" />
+    <Content Include="App_Themes\Glass\Web\tcATabBottomBack.gif" />
+    <Content Include="App_Themes\Glass\Web\tcContentBack.gif" />
+    <Content Include="App_Themes\Glass\Web\tcHTabBack.gif" />
+    <Content Include="App_Themes\Glass\Web\tcHTabBottomBack.gif" />
+    <Content Include="App_Themes\Glass\Web\tcTabBack.gif" />
+    <Content Include="App_Themes\Glass\Web\tcTabBottomBack.gif" />
+    <Content Include="App_Themes\Glass\Web\tiBackToTop.png" />
+    <Content Include="App_Themes\Glass\Web\tiHeaderBack.gif" />
+    <Content Include="css\EReports.css" />
+    <Content Include="css\FileTypeInfo.css" />
+    <Content Include="Error.aspx" />
+    <Content Include="ErrorTrap\CSS\EReports.css" />
+    <Content Include="ErrorTrap\CSS\styles.css" />
+    <Content Include="ErrorTrap\Img\BackNav.gif" />
+    <Content Include="ErrorTrap\Log.txt" />
+    <Content Include="ErrorTrap\CSS\Directions.txt" />
+    <Content Include="ErrorTrap\_Scripts\Toggle.js" />
+    <Content Include="ErrorTrap\ExceptionTest.aspx" />
+    <Content Include="img\BackNav.gif" />
+    <Content Include="img\closebutton.jpg" />
+    <Content Include="img\DataLoader\DataLoader_off.gif" />
+    <Content Include="img\DataLoader\DataLoader_on.gif" />
+    <Content Include="img\DataLoader\TOC_DataLoader.gif" />
+    <Content Include="img\ghost.gif" />
+    <Content Include="img\hRule_Red.gif" />
+    <Content Include="img\icon_accept.png" />
+    <Content Include="img\icon_failure.png" />
+    <Content Include="img\icon_question.gif" />
+    <Content Include="img\icon_trash.gif" />
+    <Content Include="img\loading.gif" />
+    <Content Include="img\NRCPicker\DataLoader_off.gif" />
+    <Content Include="img\NRCPicker\DataLoader_on.gif" />
+    <Content Include="img\NRCPicker\eComments_off.gif" />
+    <Content Include="img\NRCPicker\eComments_on.gif" />
+    <Content Include="img\NRCPicker\eReports_off.gif" />
+    <Content Include="img\NRCPicker\eReports_on.gif" />
+    <Content Include="img\NRCPicker\eToolkit_off.gif" />
+    <Content Include="img\NRCPicker\eToolkit_on.gif" />
+    <Content Include="img\NRCPicker\footer_arrow.gif" />
+    <Content Include="img\NRCPicker\footer_gradient.gif" />
+    <Content Include="img\NRCPicker\ghost.gif" />
+    <Content Include="img\NRCPicker\grad_bar.gif" />
+    <Content Include="img\NRCPicker\HeaderLeft.gif" />
+    <Content Include="img\NRCPicker\HeaderMiddle.gif" />
+    <Content Include="img\NRCPicker\HeaderRight.gif" />
+    <Content Include="img\NRCPicker\header_menu_spacer.gif" />
+    <Content Include="img\NRCPicker\header_search_body.gif" />
+    <Content Include="img\NRCPicker\header_search_corner.gif" />
+    <Content Include="img\NRCPicker\LN_off.gif" />
+    <Content Include="img\NRCPicker\LN_on.gif" />
+    <Content Include="img\NRCPicker\logo_left.gif" />
+    <Content Include="img\NRCPicker\logo_right.gif" />
+    <Content Include="img\NRCPicker\my_accounts_off.gif" />
+    <Content Include="img\NRCPicker\my_accounts_on.gif" />
+    <Content Include="img\NRCPicker\my_groups_off.gif" />
+    <Content Include="img\NRCPicker\my_groups_on.gif" />
+    <Content Include="img\NRCPicker\my_solutions_off.gif" />
+    <Content Include="img\NRCPicker\my_solutions_on.gif" />
+    <Content Include="img\NRCPicker\Signout_off.gif" />
+    <Content Include="img\NRCPicker\Signout_on.gif" />
+    <Content Include="img\NRCPicker\TempHacker.gif" />
+    <Content Include="img\NRCPicker\TempVerisign.gif" />
+    <Content Include="img\SignIn.gif" />
+    <Content Include="img\tempVerisign.gif" />
+    <Content Include="Logs.txt" />
+    <Content Include="UserControls\ucHeader.ascx" />
+    <Content Include="UserControls\ucSecurity.ascx" />
+    <None Include="Help\Data Loader User Manual.pdf" />
+    <None Include="img\Data Loader User Manual.pdf" />
+    <None Include="img\DataLoader\DataLoader_off.gif.old" />
+    <None Include="img\NRCPicker\Thumbs.db" />
+    <Content Include="MasterPage.Master" />
+    <Content Include="_Scripts\JScript.js" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\QualiSys Class Library Solution\Qualisys.QLoader.Library.SqlProvider\Qualisys.QLoader.Library.SqlProvider.vbproj">
+      <Project>{8C82B762-7494-478C-B8D6-E75958616F05}</Project>
+      <Name>Qualisys.QLoader.Library.SqlProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\QualiSys Class Library Solution\Qualisys.QLoader.Library\Qualisys.QLoader.Library.vbproj">
+      <Project>{9E12046E-7AB1-4BB4-89F8-D2ACAA7CD811}</Project>
+      <Name>Qualisys.QLoader.Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataLoader.Library.SQLProvider\DataLoader.Library.SQLProvider.vbproj">
+      <Project>{59AE7F31-D5B5-47AB-AA81-9780E2BD7C6A}</Project>
+      <Name>DataLoader.Library.SQLProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataLoader.Library\DataLoader.Library.vbproj">
+      <Project>{4CFF8F1F-0634-45A1-9E69-06B0E28090CA}</Project>
+      <Name>DataLoader.Library</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Error\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v8.0\WebApplications\Microsoft.WebApplication.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>4468</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>https://localhost/DataLoader</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

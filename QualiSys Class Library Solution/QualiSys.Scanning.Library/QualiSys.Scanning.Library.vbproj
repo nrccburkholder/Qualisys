@@ -1,0 +1,337 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Development</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8ACF6F70-0A74-4443-BAD9-BD91CE4C5D39}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Nrc.QualiSys.Scanning.Library</RootNamespace>
+    <AssemblyName>Nrc.QualiSys.Scanning.Library</AssemblyName>
+    <MyType>Windows</MyType>
+    <OptionStrict>On</OptionStrict>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>QualiSys.ScannerInterface.Library.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>QualiSys.ScannerInterface.Library.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>C:\Program Files\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DocumentationFile>QualiSys.ScannerInterface.Library.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>C:\Program Files\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DocumentationFile>QualiSys.ScannerInterface.Library.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>C:\Program Files\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DiffieHellman, Version=0.0.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\NRCPROD\Referenced Assemblies\DiffieHellman.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Framework, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\NRCPROD\Referenced Assemblies\Nrc.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Framework.BusinessLogic, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\NRCPROD\Referenced Assemblies\Nrc.Framework.BusinessLogic.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Framework.Notification, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\NRCPROD\Referenced Assemblies\Nrc.Framework.Notification.dll</HintPath>
+    </Reference>
+    <Reference Include="Org.Mentalis.Security, Version=1.0.13.715, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\NRCPROD\Referenced Assemblies\Org.Mentalis.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="SoftekBarcodeLib, Version=6.1.0.0, Culture=neutral, PublicKeyToken=3c09a6b205d2b618">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\NRCPROD\Referenced Assemblies\SoftekBarcodeLib.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Tamir.SharpSSH, Version=1.1.1.13, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\NRCPROD\Referenced Assemblies\Tamir.SharpSSH.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Collections.ObjectModel" />
+    <Import Include="System.Diagnostics" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BadLitho.vb" />
+    <Compile Include="BarcodeSearchResult.vb" />
+    <Compile Include="Collections\BadLithoCollection.vb" />
+    <Compile Include="Collections\BarcodeSearchResultCollection.vb" />
+    <Compile Include="Collections\CommentCollection.vb" />
+    <Compile Include="Collections\DataEntryNavigatorTreeCollection.vb" />
+    <Compile Include="Collections\PopMappingCollection.vb" />
+    <Compile Include="Collections\QSIDataBatchCollection.vb" />
+    <Compile Include="Collections\QSIDataFormCollection.vb" />
+    <Compile Include="Collections\QSIDataResultCollection.vb" />
+    <Compile Include="Collections\QueuedVendorFileCollection.vb" />
+    <Compile Include="Collections\CultureToLanguageCollection.vb" />
+    <Compile Include="Collections\VendorFileNavigatorTreeCollection.vb" />
+    <Compile Include="Collections\DataLoadCollection.vb" />
+    <Compile Include="Collections\DispositionCollection.vb" />
+    <Compile Include="Collections\ErrorCodeCollection.vb" />
+    <Compile Include="Collections\HandEntryCollection.vb" />
+    <Compile Include="Collections\ImageCollection.vb" />
+    <Compile Include="Collections\LithoCodeCollection.vb" />
+    <Compile Include="Collections\VendorContactCollection.vb" />
+    <Compile Include="Collections\VendorFileCreationQueueCollection.vb" />
+    <Compile Include="Collections\VendorFileOutgoTypeCollection.vb" />
+    <Compile Include="Collections\VendorFileStatusCollection.vb" />
+    <Compile Include="Collections\VendorFileTrackingCollection.vb" />
+    <Compile Include="Collections\VendorFileTelematchLogCollection.vb" />
+    <Compile Include="Collections\VendorPhoneFile_DataCollection.vb" />
+    <Compile Include="Collections\VendorWebFile_DataCollection.vb" />
+    <Compile Include="Collections\VoviciDownloadLogCollection.vb" />
+    <Compile Include="Enums\LithoLookupTypes.vb" />
+    <Compile Include="QSIDataFormQuestionItem.vb" />
+    <Compile Include="QSIDataFormQuestion.vb" />
+    <Compile Include="DataEntryNavigatorTree.vb" />
+    <Compile Include="DataProviders\DataEntryNavigatorTreeProvider.vb" />
+    <Compile Include="DataProviders\QSIDataBatchProvider.vb" />
+    <Compile Include="DataProviders\QSIDataFormProvider.vb" />
+    <Compile Include="DataProviders\QSIDataResultProvider.vb" />
+    <Compile Include="Enums\DataEntryModes.vb" />
+    <Compile Include="LithoPopMappingDisplay.vb" />
+    <Compile Include="DataProviders\PopMappingProvider.vb" />
+    <Compile Include="DataProviders\QueuedVendorFileProvider.vb" />
+    <Compile Include="Modules\Global.vb" />
+    <Compile Include="PopMapping.vb" />
+    <Compile Include="QSIDataBatch.vb" />
+    <Compile Include="QSIDataForm.vb" />
+    <Compile Include="QSIDataResult.vb" />
+    <Compile Include="QueuedVendorFile.vb" />
+    <Compile Include="CultureToLanguage.vb" />
+    <Compile Include="DataProviders\CultureToLanguageProvider.vb" />
+    <Compile Include="DataProviders\VendorFileNavigatorTreeProvider.vb" />
+    <Compile Include="DataProviders\VendorFileOutgoTypeProvider.vb" />
+    <Compile Include="DataProviders\VendorFileTrackingProvider.vb" />
+    <Compile Include="DataProviders\VendorFileTelematchLogProvider.vb" />
+    <Compile Include="Enums\VendorFileStatusCodes.vb" />
+    <Compile Include="DataProviders\VoviciDownloadLogProvider.vb" />
+    <Compile Include="Enums\VendorFileTrackingActions.vb" />
+    <Compile Include="Translators\TranslatorCSVBedside.vb" />
+    <Compile Include="Translators\TranslatorVovici.vb" />
+    <Compile Include="VendorFileNavigatorTree.vb" />
+    <Compile Include="DataProviders\VendorContactProvider.vb" />
+    <Compile Include="DataProviders\VendorFileCreationQueueProvider.vb" />
+    <Compile Include="DataProviders\VendorFileStatusProvider.vb" />
+    <Compile Include="DataProviders\VendorPhoneFile_DataProvider.vb" />
+    <Compile Include="DataProviders\VendorWebFile_DataProvider.vb" />
+    <Compile Include="Enums\QSIServiceNames.vb" />
+    <Compile Include="Enums\TransferSortModes.vb" />
+    <Compile Include="Exceptions\MustHaveResultsException.vb" />
+    <Compile Include="LithoCodeDisplay.vb" />
+    <Compile Include="LithoCommentDisplay.vb" />
+    <Compile Include="LithoDispositionDisplay.vb" />
+    <Compile Include="LithoHandEntryDisplay.vb" />
+    <Compile Include="Collections\QuestionResultCollection.vb" />
+    <Compile Include="Collections\QueuedTransferFileCollection.vb" />
+    <Compile Include="Collections\SurveyDataLoadCollection.vb" />
+    <Compile Include="Collections\TranslationModuleCollection.vb" />
+    <Compile Include="Collections\VendorCollection.vb" />
+    <Compile Include="Collections\VendorDispositionCollection.vb" />
+    <Compile Include="Collections\TransferResultsNavigatorTreeCollection.vb" />
+    <Compile Include="Comment.vb" />
+    <Compile Include="DataLoad.vb" />
+    <Compile Include="DataProviders\BadLithoProvider.vb" />
+    <Compile Include="DataProviders\CommentProvider.vb" />
+    <Compile Include="DataProviders\DataLoadProvider.vb" />
+    <Compile Include="DataProviders\DataProviderFactory.vb" />
+    <Compile Include="DataProviders\DispositionProvider.vb" />
+    <Compile Include="DataProviders\ErrorCodeProvider.vb" />
+    <Compile Include="DataProviders\HandEntryProvider.vb" />
+    <Compile Include="DataProviders\LithoCodeProvider.vb" />
+    <Compile Include="DataProviders\QuestionResultProvider.vb" />
+    <Compile Include="DataProviders\SurveyDataLoadProvider.vb" />
+    <Compile Include="DataProviders\TranslationModuleProvider.vb" />
+    <Compile Include="DataProviders\TranslatorProvider.vb" />
+    <Compile Include="DataProviders\VendorDispositionProvider.vb" />
+    <Compile Include="DataProviders\TransferResultsNavigatorTreeProvider.vb" />
+    <Compile Include="DataProviders\VendorProvider.vb" />
+    <Compile Include="Disposition.vb" />
+    <Compile Include="Enums\FAQSSLocation.vb" />
+    <Compile Include="Enums\TransferErrorCodes.vb" />
+    <Compile Include="Enums\TransferFileLocations.vb" />
+    <Compile Include="Enums\UnusedReturnCodes.vb" />
+    <Compile Include="ErrorCode.vb" />
+    <Compile Include="EventArgs\BarcodeFileSearchBeginEventArgs.vb" />
+    <Compile Include="EventArgs\BarcodeFileSearchCompleteEventArgs.vb" />
+    <Compile Include="EventArgs\CreateDLVUpdateEventArgs.vb" />
+    <Compile Include="EventArgs\ProcessImageBeginEventArgs.vb" />
+    <Compile Include="EventArgs\ProcessImageCompleteEventArgs.vb" />
+    <Compile Include="Exceptions\InvalidFileException.vb" />
+    <Compile Include="Exceptions\InvalidColumnException.vb" />
+    <Compile Include="FixedColumn.vb" />
+    <Compile Include="HandEntry.vb" />
+    <Compile Include="Image.vb" />
+    <Compile Include="Litho.vb" />
+    <Compile Include="LithoCode.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="QuestionResult.vb" />
+    <Compile Include="QueuedTransferFile.vb" />
+    <Compile Include="SurveyDataLoad.vb" />
+    <Compile Include="Translators\TranslatorTABHorz.vb" />
+    <Compile Include="Translators\TranslatorCSVHorz.vb" />
+    <Compile Include="Translators\Translator.vb" />
+    <Compile Include="TranslationModule.vb" />
+    <Compile Include="Translators\TranslatorCSV.vb" />
+    <Compile Include="Translators\TranslatorError.vb" />
+    <Compile Include="Vendor.vb" />
+    <Compile Include="VendorContact.vb" />
+    <Compile Include="VendorDisposition.vb" />
+    <Compile Include="VendorFileCreationQueue.vb" />
+    <Compile Include="VendorFileOutgoType.vb" />
+    <Compile Include="VendorFileStatus.vb" />
+    <Compile Include="VendorFileTracking.vb" />
+    <Compile Include="VendorFileTelematchLog.vb" />
+    <Compile Include="VendorPhoneFile_Data.vb" />
+    <Compile Include="TransferResultsNavigatorTree.vb" />
+    <Compile Include="VendorWebFile_Data.vb" />
+    <Compile Include="VoviciDownloadLog.vb" />
+    <Compile Include="VoviciProjectData.vb" />
+    <Compile Include="Web References\Vovici_ProjectData\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Data\XSDSchema1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Data\XSDSchema1.xsx">
+      <DependentUpon>XSDSchema1.xsd</DependentUpon>
+    </None>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Web References\Vovici_ProjectData\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\QualiSys Class Library Solution\QualiSys.Library\QualiSys.Library.vbproj">
+      <Project>{191D0C34-FF61-47A6-852F-7FD91D50AD72}</Project>
+      <Name>QualiSys.Library</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="https://efm.nrcsurveyor.net/ws/projectdata.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\Vovici_ProjectData\</RelPath>
+      <UpdateFromURL>https://efm.nrcsurveyor.net/ws/projectdata.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>Nrc_QualiSys_Scanning_Library_Vovici_ProjectData_ProjectData</CachedSettingsPropName>
+    </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web References\Vovici_ProjectData\projectdata.disco" />
+    <None Include="Web References\Vovici_ProjectData\projectdata.wsdl" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

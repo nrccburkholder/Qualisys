@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sqlScript>
+  <scriptFile filePath="..\QP_Norms\Tables\dbo.Scales.sql" />
+  <scriptFile filePath="..\QP_Norms\Scripts\Update Rank Order.sql" />
+  <scriptFile filePath="..\QP_Norms\SPs\dbo.SP_NormAPP_GetPercentLabels.sql" />
+  <scriptFile filePath="..\QP_Norms\SPs\dbo.sp_NormApp_UpdateAllLookups.sql" />
+  <scriptFile filePath="..\QP_Norms\SPs\dbo.SP_NormApp_Averages.sql" />
+  <scriptFile filePath="..\QP_Norms\SPs\dbo.SP_NormApp_Percentiles.sql" />
+</sqlScript>

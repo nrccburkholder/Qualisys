@@ -1,0 +1,59 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "NRC Auth Admin", "NRC Auth Admin\NRC Auth Admin.vbproj", "{4CEA7E3C-44F4-460B-8A16-157A7275E36A}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Nrc.Framework", "..\NRC Framework Solution\Nrc.Framework\Nrc.Framework.vbproj", "{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Nrc.Framework.BusinessLogic", "..\NRC Framework Solution\Nrc.Framework.BusinessLogic\Nrc.Framework.BusinessLogic.vbproj", "{C5A6EE1A-D5BF-4059-87CF-ACA302979820}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://perseus:8080/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = NRC\u0020Auth\u0020Admin\\NRC\u0020Auth\u0020Admin.vbproj
+		SccProjectName1 = NRC\u0020Auth\u0020Admin
+		SccLocalPath1 = NRC\u0020Auth\u0020Admin
+		SccProjectUniqueName2 = ..\\NRC\u0020Framework\u0020Solution\\Nrc.Framework\\Nrc.Framework.vbproj
+		SccProjectName2 = ../NRC\u0020Framework\u0020Solution/Nrc.Framework
+		SccLocalPath2 = ..\\NRC\u0020Framework\u0020Solution\\Nrc.Framework
+		SccProjectUniqueName3 = ..\\NRC\u0020Framework\u0020Solution\\Nrc.Framework.BusinessLogic\\Nrc.Framework.BusinessLogic.vbproj
+		SccProjectName3 = ../NRC\u0020Framework\u0020Solution/Nrc.Framework.BusinessLogic
+		SccLocalPath3 = ..\\NRC\u0020Framework\u0020Solution\\Nrc.Framework.BusinessLogic
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4CEA7E3C-44F4-460B-8A16-157A7275E36A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CEA7E3C-44F4-460B-8A16-157A7275E36A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CEA7E3C-44F4-460B-8A16-157A7275E36A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CEA7E3C-44F4-460B-8A16-157A7275E36A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

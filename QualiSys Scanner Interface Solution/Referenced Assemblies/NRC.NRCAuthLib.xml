@@ -1,0 +1,449 @@
+<?xml version="1.0"?>
+<doc>
+  <assembly>
+    <name>NRC.NRCAuthLib</name>
+    <version>1.0.2425.15144</version>
+    <fullname>NRC.NRCAuthLib, Version=1.0.2425.15144, Culture=neutral, PublicKeyToken=null</fullname>
+  </assembly>
+  <members>
+    <member name="T:NRC.NRCAuthLib.Application">
+      <summary>
+ Represents an NRC application with secured access 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Application.ApplicationId">
+      <summary>
+ The database ID of the application 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Application.Name">
+      <summary>
+ The name of the application 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Application.Description">
+      <summary>
+ A description of the application 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Application.DeploymentType">
+      <summary>
+ Indicates the method for deploying this application 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Application.Path">
+      <summary>
+ Inidicates the path for accessing this application 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Application.ImageData">
+      <summary>
+ Indicates the icon to use for this application 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Application.Category">
+      <summary>
+ Indicates the icon to use for this application 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Application.IsInternalOnly">
+      <summary>
+ Inidicates if the application is used only internally at NRC 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Application.Privileges">
+      <summary>
+ The set of privileges for this application 
+ </summary>
+    </member>
+    <member name="T:NRC.NRCAuthLib.MemberCollection">
+      <summary>
+ Stores a collection of Member objects 
+ </summary>
+    </member>
+    <member name="M:NRC.NRCAuthLib.OrgUnitCollection.GetOrgUnitChildren(System.Int32)">
+      <summary>
+ Gets the collection of OrgUnits that are children of the specified OrgUnit 
+ </summary>
+    </member>
+    <member name="T:NRC.NRCAuthLib.PrivilegeCollection">
+      <summary>
+ A collection of privilege objects 
+ </summary>
+    </member>
+    <member name="T:NRC.NRCAuthLib.FormsAuth">
+      <summary>
+ A helper class for implementing ASP.NET forms authentication 
+ </summary>
+    </member>
+    <member name="M:NRC.NRCAuthLib.Group.HasPrivilege(System.String)">
+      <summary>
+ Returns true if the user has access to any privileges within the specified application 
+ </summary>
+ <param name="applicationName">The name of the application</param></member>
+    <member name="M:NRC.NRCAuthLib.Group.HasPrivilege(System.String,System.String)">
+      <summary>
+ Return true if the user has been granted a particular privilege to a given application 
+ </summary>
+ <param name="applicationName">The name of the application</param>
+ <param name="privilegeName">The name of the privilege</param></member>
+    <member name="T:NRC.NRCAuthLib.Member">
+      <summary>
+ Represents a Member user account 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Member.DateCreated">
+      <summary>
+ The date that this account was created 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Member.LastLoginDate">
+      <summary>
+ The date on which the user last logged in 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Member.IsAccountLocked">
+      <summary>
+ Indicates that the account has been locked and must be unlocked by an administrator before use 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Member.UserName">
+      <summary>
+ The User Name of the account 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Member.NTLoginName">
+      <summary>
+ The NRC Windows NT User Name of the account 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Member.LastPasswordChangeDate">
+      <summary>
+ The date on which the user last changed their password 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Member.IsPasswordExpired">
+      <summary>
+ Indicates that the password has expired and needs to be changed 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Member.SecretQuestion">
+      <summary>
+ The user's secret question for password recovery 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Member.MemberType">
+      <summary>
+ Indicates what type of member this is 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Member.OrgUnit">
+      <summary>
+ The organizational unit for which this user is a member of 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Member.DisplayLabel">
+      <summary>
+ The label that should be displayed for this user in the UI 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Member.FirstName">
+      <summary>
+ The user's first name 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Member.LastName">
+      <summary>
+ The user's last name 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Member.FullName">
+      <summary>
+ The user's full name 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Member.OccupationalTitle">
+      <summary>
+ The user's title 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Member.Facility">
+      <summary>
+ The user's facility 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Member.EmailAddress">
+      <summary>
+ The user's email address 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Member.PhoneNumber">
+      <summary>
+ The user's phone number 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Member.City">
+      <summary>
+ The user's city 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Member.State">
+      <summary>
+ The user's state 
+ </summary>
+    </member>
+    <member name="M:NRC.NRCAuthLib.Member.#ctor">
+      <summary>
+ Default constructor 
+ </summary>
+    </member>
+    <member name="M:NRC.NRCAuthLib.Member.Authenticate(System.String,System.String)">
+      <summary>
+ Verifies that a user name and password are correct for the user account 
+ </summary>
+ <remarks>Returns true if the user name and password password match 
+ Returns false otherwise</remarks>
+ <param name="userName">The account user name</param>
+ <param name="password">The user's password</param></member>
+    <member name="M:NRC.NRCAuthLib.Member.Authenticate(System.String,System.String,NRC.NRCAuthLib.Member@)">
+      <summary>
+ Verifies that a user name and password are correct for the user account 
+ </summary>
+ <remarks>Returns true if the user name and password password match 
+ Returns false otherwise</remarks>
+ <param name="userName">The account user name</param>
+ <param name="password">The user's password</param></member>
+    <member name="M:NRC.NRCAuthLib.Member.CreateNewMember(System.Int32,System.Int32,System.String,System.String,NRC.NRCAuthLib.Member.MemberTypeEnum,System.Boolean,System.String)">
+      <summary>
+ Creates a new user account 
+ </summary>
+ <param name="orgUnitId">The ID of the organizational unit that the new user will belong to</param>
+ <param name="userName">The User Name of the new account</param>
+ <param name="eMailAddress">The e-mail address of the new user</param>
+ <param name="memberType">The type of user account that should be created</param></member>
+    <member name="M:NRC.NRCAuthLib.Member.DeleteMember(System.Int32,System.Int32)">
+      <summary>
+ Deletes a user account from the database 
+ </summary>
+ <param name="userName">The User Name of the account to be deleted</param></member>
+    <member name="M:NRC.NRCAuthLib.Member.IsUserNameAvailable(System.String)">
+      <summary>
+ Checks if a particular string is available for use as a User Name 
+ </summary>
+    </member>
+    <member name="M:NRC.NRCAuthLib.Member.GetMember(System.String)">
+      <summary>
+ Returns an instance of Member for the specified User Name 
+ </summary>
+ <param name="userName">The User Name for the member that should be retrieved</param></member>
+    <member name="M:NRC.NRCAuthLib.Member.GetNTLoginMember(System.String)">
+      <summary>
+ Returns an instance of Member for the specified NT Login User Name 
+ </summary>
+ <param name="userName">The User Name for the member that should be retrieved</param></member>
+    <member name="M:NRC.NRCAuthLib.Member.ResetPassword(System.Boolean,System.Int32,System.String)">
+      <summary>
+ Resets the user's password to random value 
+ </summary>
+ <param name="sendEmail">Indicates if an email should be sent to the user indicating the new password.</param></member>
+    <member name="M:NRC.NRCAuthLib.Member.ChangePassword(System.String,System.Int32)">
+      <summary>
+ Resets the user's password to random value 
+ </summary>
+ <param name="sendEmail">Indicates if an email should be sent to the user indicating the new password.</param></member>
+    <member name="M:NRC.NRCAuthLib.Member.SetSecretQuestion(System.Int32,System.String,System.Int32)">
+      <summary>
+ Stores a secret question for the user 
+ </summary>
+ <param name="secretQuestionId">The ID of the secret question that the user has chosen</param>
+ <param name="secretAnswer">The plain-text answer that the user provided for the secret question</param></member>
+    <member name="M:NRC.NRCAuthLib.Member.UpdateProfile(System.Int32)">
+      <summary>
+ Persists all of the user profile information to the data store 
+ </summary>
+    </member>
+    <member name="M:NRC.NRCAuthLib.Member.VerifySecretAnswer(System.String)">
+      <summary>
+ Verifies that a particular string matches the stored secret answer 
+ </summary>
+ <param name="answer">The plain-text answer to be verified</param></member>
+    <member name="M:NRC.NRCAuthLib.Member.VerifyPassword(System.String)">
+      <summary>
+ Verifies that a string matches the stored password 
+ </summary>
+ <param name="password">The plain-text password to verify</param></member>
+    <member name="M:NRC.NRCAuthLib.Member.HasAccessToApplication(System.String)">
+      <summary>
+' Returns true if the user has access to any privileges within the specified application 
+' </summary>
+' <param name="applicationName">The name of the application</param>
+' <summary>
+' Return true if the user has been granted a particular privilege to a given application 
+' </summary>
+' <param name="applicationName">The name of the application</param>
+' <param name="privilegeName">The name of the privilege</param></member>
+    <member name="M:NRC.NRCAuthLib.Member.HasMemberPrivilege(System.String,System.String)">
+      <summary>
+ Return true if the user has been granted a particular privilege to a given application 
+ </summary>
+ <param name="applicationName">The name of the application</param>
+ <param name="privilegeName">The name of the privilege</param></member>
+    <member name="M:NRC.NRCAuthLib.Member.GetWebRoles">
+      <summary>
+ Returns a string indicating all of the users roles for Forms based authentication 
+ </summary>
+    </member>
+    <member name="M:NRC.NRCAuthLib.Member.GetWebRoles(System.Int32)">
+      <summary>
+ Returns a string indicating all of the users roles for Forms based authentication 
+ </summary>
+    </member>
+    <member name="M:NRC.NRCAuthLib.Member.EmailPasswordToUser(System.String,System.Boolean)">
+      <summary>
+ Sends a password notification email to the user 
+ </summary>
+    </member>
+    <member name="T:NRC.NRCAuthLib.OrgUnit">
+      <summary>
+ Represents an Organizational Unit that contains member accounts and certain privileges 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.OrgUnit.OrgUnitId">
+      <summary>
+ The database ID of the Organizational Unit 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.OrgUnit.Name">
+      <summary>
+ The name of the Organizational Unit 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.OrgUnit.Description">
+      <summary>
+ A description of the Organizational Unit 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.OrgUnit.OrgUnitType">
+      <summary>
+ The Organizational Unit type 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.OrgUnit.DateCreated">
+      <summary>
+ The date on which this Organizational Unit was created 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.OrgUnit.IPAddressFilter">
+      <summary>
+ The list of valid IP addresses for this Organizational Unit 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.OrgUnit.HasChildren">
+      <summary>
+ Indicates if this Organizational Unit has child units 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.OrgUnit.OrgUnits">
+      <summary>
+ The collection of child Organizational Units 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.OrgUnit.Members">
+      <summary>
+ The collection of members in this Organizational Unit 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.OrgUnit.Applications">
+      <summary>
+ The collection of applications that have been granted to the Organizational Unit 
+ </summary>
+    </member>
+    <member name="M:NRC.NRCAuthLib.OrgUnit.GetOrgUnit(System.Int32)">
+      <summary>
+ Returns an instance of OrgUnit for the specified OrgUnitId 
+ </summary>
+ <param name="orgUnitId">The database ID of the OrgUnit to be retrieved</param></member>
+    <member name="M:NRC.NRCAuthLib.OrgUnit.HasPrivilege(System.String)">
+      <summary>
+ Returns true if the Organizational Unit has access to any privileges within the specified application 
+ </summary>
+ <param name="applicationName">The name of the application</param></member>
+    <member name="M:NRC.NRCAuthLib.OrgUnit.HasPrivilege(System.String,System.String)">
+      <summary>
+ Return true if the Organizational Unit has been granted a particular privilege to a given application 
+ </summary>
+ <param name="applicationName">The name of the application</param>
+ <param name="privilegeName">The name of the privilege</param></member>
+    <member name="M:NRC.NRCAuthLib.PasswordHelper.HashPassword(System.String,System.String)">
+      <summary>
+ Converts a plain-text password to a base65 hashed string for secure storage 
+ </summary>
+ <param name="password">The plain-text password</param>
+ <param name="salt">The salt value to be appended to the password</param></member>
+    <member name="M:NRC.NRCAuthLib.PasswordHelper.HashString(System.String)">
+      <summary>
+ Hashes a string 
+ </summary>
+ <param name="plainText">The string to be hashed</param></member>
+    <member name="M:NRC.NRCAuthLib.PasswordHelper.HashString(System.Byte[])">
+      <summary>
+ Hashes a byte array and returns the string 
+ </summary>
+ <param name="plainTextBytes">The byte array to be hashed</param></member>
+    <member name="M:NRC.NRCAuthLib.PasswordHelper.GenerateSalt">
+      <summary>
+ Generates a random salt string 
+ </summary>
+    </member>
+    <member name="M:NRC.NRCAuthLib.PasswordHelper.GeneratePassword">
+      <summary>
+ Generates a random 12 character password string 
+ </summary>
+    </member>
+    <member name="M:NRC.NRCAuthLib.PasswordHelper.GeneratePassword(System.Int32)">
+      <summary>
+ Generates a random password string 
+ </summary>
+ <param name="length">The desired length of the password</param></member>
+    <member name="T:NRC.NRCAuthLib.Profile">
+      <summary>
+ Represents a users personal information 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Profile.FirstName">
+      <summary>
+ The user's first name 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Profile.LastName">
+      <summary>
+ The user's last name 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Profile.OccupationalTitle">
+      <summary>
+ The user's title 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Profile.EmailAddress">
+      <summary>
+ The user's email address 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Profile.PhoneNumber">
+      <summary>
+ The user's phone number 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Profile.City">
+      <summary>
+ The user's city 
+ </summary>
+    </member>
+    <member name="P:NRC.NRCAuthLib.Profile.State">
+      <summary>
+ The user's state 
+ </summary>
+    </member>
+  </members>
+</doc>

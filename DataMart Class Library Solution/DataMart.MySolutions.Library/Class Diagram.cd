@@ -1,0 +1,398 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Tahoma" Size="8.25" />
+  <Class Name="Nrc.DataMart.MySolutions.Library.CommentFilter">
+    <Position X="0.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>CommentFilter.vb</FileName>
+      <HashCode>EAQAIFAEAKEAAAAEEAQaAgQAABIAAAAAABgAAICAiCA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.DataMart.MySolutions.Library.CommentFilterCollection">
+    <Position X="0.75" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>CommentFilter.vb</FileName>
+      <HashCode>AAAAAABAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.DataMart.MySolutions.Library.DataProvider">
+    <Position X="36" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>DataProvider.vb</FileName>
+      <HashCode>EOEIGUAELghSsCACEJNIg0CRGAAWEAKAYgZAQAAwIRA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.DataMart.MySolutions.Library.DataProviderFactory">
+    <Position X="34.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>DataProviderFactory.vb</FileName>
+      <HashCode>AAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.DataMart.MySolutions.Library.IndexSearchResult" BaseTypeListCollapsed="true">
+    <Position X="18.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>IndexSearchResult.vb</FileName>
+      <HashCode>AKQDEEEAAAAAAEAAAAQAAgQAABAAAAAAAAAEAAAAmAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Nrc.DataMart.MySolutions.Library.IndexSearchResultCollection">
+    <Position X="14" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>IndexSearchResult.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.DataMart.MySolutions.Library.ToolKitDataAccessException">
+    <Position X="32.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Legacy\ToolKitDataAccessException.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.DataMart.MySolutions.Library.ManagedContent" BaseTypeListCollapsed="true">
+    <Position X="5.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ManagedContent.vb</FileName>
+      <HashCode>IASCMEAAAgAQAAQAMCQACgQAgBAAAAAFAkAECAAAiEA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Nrc.DataMart.MySolutions.Library.ManagedContentCollection">
+    <Position X="3" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ManagedContent.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAIAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.DataMart.MySolutions.Library.MemberResource" BaseTypeListCollapsed="true">
+    <Position X="12" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>MemberResource.vb</FileName>
+      <HashCode>ACQDEEABACAAEEIAgAQIAkQAABAAAAAAAEAEAgAAiEA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Nrc.DataMart.MySolutions.Library.MemberResourceCollection">
+    <Position X="7.25" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>MemberResource.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.DataMart.MySolutions.Library.OneClickDefinition" BaseTypeListCollapsed="true">
+    <Position X="30.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>OneClickDefinition.vb</FileName>
+      <HashCode>AAUAAEAAgAAQAwJAAAAAAgQgACEAAgQAAkiBAAKAAAQ=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Nrc.DataMart.MySolutions.Library.OneClickReport" BaseTypeListCollapsed="true">
+    <Position X="32.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>OneClickReport.vb</FileName>
+      <HashCode>AAUCEEAQAAAwAQBAAAgAAgQAACEAAAAAAkmDAAIAAAQ=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Nrc.DataMart.MySolutions.Library.OneClickType" BaseTypeListCollapsed="true">
+    <Position X="34.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>OneClickType.vb</FileName>
+      <HashCode>AAQAAEAAgAAQAIBAAAAAAgAAAAUABAQAAkABAAAAAAQ=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Nrc.DataMart.MySolutions.Library.QuestionContent" BaseTypeListCollapsed="true">
+    <Position X="32.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>QuestionContent.vb</FileName>
+      <HashCode>IEIAA8ABERCgQAIBgiVAAKKAEAEAEIiAAAAAAAwABAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Nrc.DataMart.MySolutions.Library.SampleUnitTreeNode">
+    <Position X="30.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>SampleUnitTreeNode.vb</FileName>
+      <HashCode>AAQikCAAAAgAEAAAAECCAAQAAAAACAAAQAgEAAAAQAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.DataMart.MySolutions.Library.ServiceType" BaseTypeListCollapsed="true">
+    <Position X="21" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ServiceType.vb</FileName>
+      <HashCode>AwQCkEAAEAAAAAAAAAwgAgQAABAAAAAAAigBIAAAiAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Nrc.DataMart.MySolutions.Library.ServiceTypeCollection">
+    <Position X="11.75" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ServiceType.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAgAAAAACAAAAAAAAAAIAAAAAg=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.DataMart.MySolutions.Library.StudyTable" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>StudyTable.vb</FileName>
+      <HashCode>AAACUAQQAAAgAABEAAAAAAUEAAAAAAAAAAgAAAgAgAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Nrc.DataMart.MySolutions.Library.StudyTableColumn" BaseTypeListCollapsed="true">
+    <Position X="9.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>StudyTableColumn.vb</FileName>
+      <HashCode>AkQAUARQCAIoAjBEAAAQAARAIAABBoQAYAgAAABAqQg=</HashCode>
+    </TypeIdentifier>
+    <NestedTypes>
+      <Enum Name="Nrc.DataMart.MySolutions.Library.StudyTableColumn.ColumnDataType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>StudyTableColumn.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Nrc.DataMart.MySolutions.Library.StudyTableColumnList">
+    <Position X="16.25" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>StudyTableColumnList.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.DataMart.MySolutions.Library.Theme" BaseTypeListCollapsed="true">
+    <Position X="14.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Theme.vb</FileName>
+      <HashCode>AAQCEEAAAAAAAAAAAAQIAgQAABAIAAAAAAgAAAgAiAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Nrc.DataMart.MySolutions.Library.ThemeCollection">
+    <Position X="5" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Theme.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.DataMart.MySolutions.Library.ThemeQuestion">
+    <Position X="3" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ThemeQuestion.vb</FileName>
+      <HashCode>MAYADEAUgAAxAABAgEZAQoAAQDAoAAEAAQACAQwgiAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.DataMart.MySolutions.Library.ThemeQuestionCollection">
+    <Position X="9.5" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ThemeQuestion.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.DataMart.MySolutions.Library.View" BaseTypeListCollapsed="true">
+    <Position X="16.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>View.vb</FileName>
+      <HashCode>AAQCEEAAAAAAAAhQAA4gAgQCABAIAAAAAAhBAAAAiAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Nrc.DataMart.MySolutions.Library.ViewCollection">
+    <Position X="18.5" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>View.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.DataMart.MySolutions.Library.Legacy.Config">
+    <Position X="30.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Legacy\ToolKitConfig.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAABAAAAAgAAABAAAAgACgAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.DataMart.MySolutions.Library.Legacy.ToolkitServer">
+    <Position X="38" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Legacy\ToolKitServer.vb</FileName>
+      <HashCode>zAoqCAgRKAMCBgABVAgGLEIkIOQBFABgIAKojEIMk5E=</HashCode>
+    </TypeIdentifier>
+    <NestedTypes>
+      <Struct Name="Nrc.DataMart.MySolutions.Library.Legacy.ToolkitServer.UnitStructure" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Legacy\ToolKitServer.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+      <Struct Name="Nrc.DataMart.MySolutions.Library.Legacy.ToolkitServer.UnitLookup" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Legacy\ToolKitServer.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+      <Enum Name="Nrc.DataMart.MySolutions.Library.Legacy.ToolkitServer.enuContentDataTypes" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Legacy\ToolKitServer.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="Nrc.DataMart.MySolutions.Library.Legacy.ToolkitServer.enuDataAnalysisTypes" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Legacy\ToolKitServer.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="Nrc.DataMart.MySolutions.Library.Legacy.ToolkitServer.EReportsChartType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Legacy\ToolKitServer.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="Nrc.DataMart.MySolutions.Library.Legacy.ToolkitServer.AnalysisVariable" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Legacy\ToolKitServer.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+  </Class>
+  <Class Name="Nrc.Framework.BusinessLogic.BusinessBase(Of T)">
+    <Position X="10.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Nrc.Framework.BusinessLogic.BusinessListBase(Of T, C)">
+    <Position X="9.5" Y="12.5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="Nrc.DataMart.MySolutions.Library.IIndexSearchResult">
+    <Position X="23.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>IndexSearchResult.vb</FileName>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Nrc.DataMart.MySolutions.Library.IManagedContent">
+    <Position X="25.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ManagedContent.vb</FileName>
+      <HashCode>AAACAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Nrc.DataMart.MySolutions.Library.IMemberResource">
+    <Position X="27" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>MemberResource.vb</FileName>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Nrc.DataMart.MySolutions.Library.IOneClickDefinition">
+    <Position X="28.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>OneClickDefinition.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Nrc.DataMart.MySolutions.Library.IOneClickReport">
+    <Position X="23.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>OneClickReport.vb</FileName>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Nrc.DataMart.MySolutions.Library.IOneClickType">
+    <Position X="25.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>OneClickType.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Nrc.DataMart.MySolutions.Library.IQuestionContent">
+    <Position X="27" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>QuestionContent.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAQAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Nrc.DataMart.MySolutions.Library.IServiceType">
+    <Position X="28.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ServiceType.vb</FileName>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Nrc.DataMart.MySolutions.Library.IStudyTable">
+    <Position X="23.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>StudyTable.vb</FileName>
+      <HashCode>AAACEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Nrc.DataMart.MySolutions.Library.IStudyTableColumn">
+    <Position X="25.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>StudyTableColumn.vb</FileName>
+      <HashCode>AAACQAAAAAIgAAAAAAAAAARAAAAAAAAAAAAAAAAAIAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Nrc.DataMart.MySolutions.Library.ITheme">
+    <Position X="27" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Theme.vb</FileName>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Nrc.DataMart.MySolutions.Library.IView">
+    <Position X="28.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>View.vb</FileName>
+      <HashCode>AAACAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Nrc.DataMart.MySolutions.Library.QuestionContentType">
+    <Position X="23.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>QuestionContentType.vb</FileName>
+      <HashCode>AAAAAAAAYAAAAAAAAAAAAAAAAAAAAAAEAAAAAAEAAQA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Nrc.DataMart.MySolutions.Library.SampleUnitTreeNodeType">
+    <Position X="25.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>SampleUnitTreeNodeType.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAIAAABAAAAAAAAAAAAACAAAEAAAQ=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Nrc.DataMart.MySolutions.Library.ThemeQuestionStatus">
+    <Position X="27" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ThemeQuestion.vb</FileName>
+      <HashCode>QAAABQAAAAAAAAAAAAAAAAABAAAAAABAAIAAAAEBAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Module Name="Nrc.DataMart.MySolutions.Library.Legacy.DatabaseHelper">
+    <Position X="23.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Legacy\DatabaseHelper.vb</FileName>
+      <HashCode>AAABgAAAAAAAACgAABAAAEAAAgAAABABAAAACAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <NestedTypes>
+      <Delegate Name="Nrc.DataMart.MySolutions.Library.Legacy.DatabaseHelper.FillMethod(Of T)" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Legacy\DatabaseHelper.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+  </Module>
+  <Module Name="Nrc.DataMart.MySolutions.Library.My.Resources.Resources">
+    <Position X="27" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Module>
+  <Module Name="Nrc.DataMart.MySolutions.Library.My.MySettingsProperty">
+    <Position X="25.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Module>
+</ClassDiagram>

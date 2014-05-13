@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<environmentSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" useUrlDetection="false" currentEnvironment="Testing">
+  <globalSetting name="NrcPickerRegKey" value="Software\NRCPicker" isEncrypted="false" />
+  <globalSetting name="ConfigConnectionKeyName" value="Configuration Connection" isEncrypted="false" />
+  <globalSetting name="SQLTimeOutKeyName" value="SQL Command Timeout" isEncrypted="false" />
+  <globalSetting name="SMTPServerKeyName" value="SMTP Server" isEncrypted="false" />
+  <globalSetting name="SuperAdminUsers" value="LlQvSBJel4qCApiAFhsQs/sl/7x2lgSkJYmTdJHNgP/oMrJtnq9dnnBjrlGTo0M2UPMA0YUaifeqMFun5qVUauI+ToWdAmorkpaatODTU93UFON8C/INAZa6QdxzvJr3LygCxlnLhgs=" isEncrypted="true" />
+  <environment name="Production" type="Production">
+    <setting name="SQLTimeOutValue" value="600" isEncrypted="false" />
+    <setting name="SMTPServer" value="6hOxZBLKKcJbZChPmt7P+k+iF64Su6up8UT/5OuZ+NU=" isEncrypted="true" />
+    <setting name="ConfigurationConnection" value="DO3tvHPYYDB+jVcrpKbZjaLljEzSBWrhJ0OLdWyd5z19Gv2oC8rfkcUiu0MFaJ6y8V7pBIbLxBNS0Ua3eoWGqZl8pu+ZJqhL" isEncrypted="true" />
+    <setting name="NrcAuthConnection" value="DO3tvHPYYDAZVgZpqOVehTQIe1k7CAiWp4p/GHqb8GyoP+ybu/8C2IcJtffaQYwQzNvGw1vQH8/MQdujcVe2eg==" isEncrypted="true"/>
+  </environment>
+  <environment name="Staging" type="Testing">
+    <setting name="SQLTimeOutValue" value="600" isEncrypted="false" />
+    <setting name="SMTPServer" value="uSnwHxJhoQ0=" isEncrypted="true" />
+    <setting name="ConfigurationConnection" value="DO3tvHPYYDAnundeRbzjYFXl0pKMzTektn/o5pRBLzA74UT1ii1i8TMwMUMxa9jZgRH7oPkwFpdKHMbJn7oi490VVO/rRjF4U6GfeEWrKGC0vA9w3kny9Pk7iCFHEIx8V0FKaPIf2UcgTpO8etkztnkcx50RZR3U47NImirgc2ai5x4Fgx/aKA==" isEncrypted="true" />
+    <setting name="NrcAuthConnection" value="DO3tvHPYYDBbxkyVwAVWOppis2MfMhBqZIsQWBSTRw7SpQgT4NY/sHVj5KlIKEE7YXIDwLz/wUZTWQlnGA7EsXIcB9XyI9B4sEWRfzQadJCqoKwavms7gYgPUc4c8l7P9QYXo2Fa18s=" isEncrypted="true"/>
+  </environment>
+  <environment name="Testing" type="Testing">
+    <setting name="SQLTimeOutValue" value="600" isEncrypted="false" />
+    <setting name="SMTPServer" value="Z7Vd3zc5wT3y9wwx3t3STw==" isEncrypted="true" />
+    <setting name="ConfigurationConnection" value="DO3tvHPYYDBSf21v+Y0PIi2fqUNRHrPHyzboWnuyVipWB6MMumsagMStLncBZuRtclKMr+JKHc02qAnNUFhtGHkrBqzGEjbGPExyOqQizAkMKIQFaGa50DChASZ93qtewyqFYtJOFgmrfN1xNrTDZ73zEZqcJa5A2F8acExwIa1JNrQintC3Ug==" isEncrypted="true" />
+    <setting name="NrcAuthConnection" value="DO3tvHPYYDAHgiCvmF6T37VRjxm+XrmjJ2pat/tR0Wc/vjyb/+qenqzWnPdSB3Q/i0ZAZ6gskn5VWv1f99gZAnpLG4rdGPAJGj665MrUG7ODBNqqUbTb0SbOrp0prmekMjRoe6ZAY5w=" isEncrypted="true"/>
+  </environment>
+  <environment name="Development" type="Testing">
+     <setting name="SQLTimeOutValue" value="600" isEncrypted="false" />
+    <setting name="SMTPServer" value="6hOxZBLKKcJbZChPmt7P+k+iF64Su6up8UT/5OuZ+NU=" isEncrypted="true" />
+    <setting name="ConfigurationConnection" value="DO3tvHPYYDBSf21v+Y0PIi2fqUNRHrPHyzboWnuyVipWB6MMumsagMStLncBZuRtclKMr+JKHc02qAnNUFhtGHkrBqzGEjbGPExyOqQizAkMKIQFaGa50DChASZ93qtewyqFYtJOFgmrfN1xNrTDZ73zEZqcJa5A2F8acExwIa1JNrQintC3Ug==" isEncrypted="true" />
+    <setting name="NrcAuthConnection" value="DO3tvHPYYDAHgiCvmF6T37VRjxm+XrmjJ2pat/tR0Wc/vjyb/+qenqzWnPdSB3Q/i0ZAZ6gskn5VWv1f99gZAnpLG4rdGPAJGj665MrUG7ODBNqqUbTb0SbOrp0prmekMjRoe6ZAY5w=" isEncrypted="true"/>
+  </environment>
+  <environment name="Custom" type="Testing">
+    <setting name="ConfigurationConnection" value="DO3tvHPYYDD/tnWZKniMq1IdUNAcNEXTuVqVQTjjvFE0ewEBUp4zUBKeLXWK7pbqT/s2e8zm/GtdSmW9BzEduARp5AozjpT1D20i2Zidsubkuadtoa9k9w==" isEncrypted="true" />
+    <setting name="SMTPServer" value="6hOxZBLKKcJbZChPmt7P+k+iF64Su6up8UT/5OuZ+NU=" isEncrypted="true" />
+    <setting name="SQLTimeOutValue" value="600" isEncrypted="false" />
+    <setting name="NrcAuthConnection" value="DO3tvHPYYDAHgiCvmF6T37VRjxm+XrmjJ2pat/tR0Wc/vjyb/+qenqzWnPdSB3Q/i0ZAZ6gskn5VWv1f99gZAnpLG4rdGPAJGj665MrUG7ODBNqqUbTb0SbOrp0prmekMjRoe6ZAY5w=" isEncrypted="true"/>
+  </environment>
+  <environment name="TestCA" type="Testing">
+    <setting name="ConfigurationConnection" value="DO3tvHPYYDCJnR83hAITqQXQi+JjOBsA4Jk8ZySBHmgyw7N6GjIVh3kP1yvhB34fHEfdSCf4HNmSQbBRFRafioklwlzoHxXyoWi/UUvq4JDt45Q95GvNGIlKSLpP/gNbi2qqbFFTIMc=" isEncrypted="true" />
+    <setting name="SMTPServer" value="77Ygly9HAwmRrLWyeNWGUA==" isEncrypted="true" />
+    <setting name="SQLTimeOutValue" value="600" isEncrypted="false" />
+    <setting name="NrcAuthConnection" value="DO3tvHPYYDAHgiCvmF6T37VRjxm+XrmjJ2pat/tR0Wc/vjyb/+qenqzWnPdSB3Q/i0ZAZ6gskn5VWv1f99gZAnpLG4rdGPAJGj665MrUG7ODBNqqUbTb0SbOrp0prmekMjRoe6ZAY5w=" isEncrypted="true"/>
+  </environment>
+</environmentSettings>

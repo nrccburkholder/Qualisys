@@ -1,0 +1,1362 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D9E23007-ADFC-4548-8280-884AD23D3B5F}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Nrc.MySolutions</RootNamespace>
+    <AssemblyName>Nrc.MySolutions</AssemblyName>
+    <OptionStrict>On</OptionStrict>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>Nrc.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>Nrc.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AjaxControlToolkit, Version=1.0.10301.0, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\AjaxControlToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="ChartFX.Base, Version=6.2.1342.0, Culture=neutral, PublicKeyToken=a1878e2052c08dce" />
+    <Reference Include="ChartFX.Borders, Version=6.2.1342.0, Culture=neutral, PublicKeyToken=a1878e2052c08dce" />
+    <Reference Include="ChartFX.Data, Version=6.2.1342.0, Culture=neutral, PublicKeyToken=a1878e2052c08dce" />
+    <Reference Include="ChartFX.Designer, Version=6.2.1342.0, Culture=neutral, PublicKeyToken=a1878e2052c08dce" />
+    <Reference Include="ChartFX.Internet, Version=6.2.1342.0, Culture=neutral, PublicKeyToken=a1878e2052c08dce" />
+    <Reference Include="FreeTextBox, Version=3.1.6.34851, Culture=neutral, PublicKeyToken=5962a4e684a48b87, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\FreeTextBox.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Framework, Version=1.7.2.0, Culture=neutral, PublicKeyToken=7f65ae6d961bde9c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Framework.BusinessLogic, Version=1.0.4.0, Culture=neutral, PublicKeyToken=7f65ae6d961bde9c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.BusinessLogic.dll</HintPath>
+    </Reference>
+    <Reference Include="NRC.NRCAuthLib, Version=1.0.2406.35323, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\NRC.NRCAuthLib.dll</HintPath>
+    </Reference>
+    <Reference Include="NRC.NRCWebDocumentManagerLibrary, Version=1.0.2594.26181, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\NRC.NRCWebDocumentManagerLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Collections.Specialized" />
+    <Import Include="System.Configuration" />
+    <Import Include="System.Text" />
+    <Import Include="System.Text.RegularExpressions" />
+    <Import Include="System.Web" />
+    <Import Include="System.Web.Caching" />
+    <Import Include="System.Web.SessionState" />
+    <Import Include="System.Web.Security" />
+    <Import Include="System.Web.Profile" />
+    <Import Include="System.Web.UI" />
+    <Import Include="System.Web.UI.WebControls" />
+    <Import Include="System.Web.UI.WebControls.WebParts" />
+    <Import Include="System.Web.UI.HtmlControls" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Default.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Classes\AppCache.vb" />
+    <Compile Include="Classes\Config.vb" />
+    <Compile Include="Classes\ContentNotification.vb" />
+    <Compile Include="Classes\CurrentUser.vb" />
+    <Compile Include="Classes\ExceptionManager.vb" />
+    <Compile Include="Classes\HtmlEntityRef.vb" />
+    <Compile Include="Classes\MySolutionsPage.vb">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Classes\ResourceManager.vb" />
+    <Compile Include="Classes\SessionInfo.vb" />
+    <Compile Include="Classes\SharedMethods.vb" />
+    <Compile Include="Classes\ToolKitPage.vb">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ManagedContentTeaser.vb" />
+    <Compile Include="Controls\MenuBox.vb" />
+    <Compile Include="Controls\MenuBoxItem.vb" />
+    <Compile Include="Controls\MenuBoxLink.vb" />
+    <Compile Include="Controls\MenuBoxSeparator.vb" />
+    <Compile Include="Controls\MenuBoxTitle.vb" />
+    <Compile Include="Controls\TreeViewEx.vb" />
+    <Compile Include="Error\Error.aspx.designer.vb">
+      <DependentUpon>Error.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Error\Error.aspx.vb">
+      <SubType>ASPXCodebehind</SubType>
+      <DependentUpon>Error.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Error\PageNotFound.aspx.designer.vb">
+      <DependentUpon>PageNotFound.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Error\PageNotFound.aspx.vb">
+      <SubType>ASPXCodebehind</SubType>
+      <DependentUpon>PageNotFound.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\Admin\ContentManager.aspx.designer.vb">
+      <DependentUpon>ContentManager.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\Admin\ContentManager.aspx.vb">
+      <DependentUpon>ContentManager.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="eToolkit\Admin\Default.aspx.designer.vb">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\Admin\Default.aspx.vb">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="eToolkit\Admin\ExceptionTest.aspx.designer.vb">
+      <DependentUpon>ExceptionTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\Admin\ExceptionTest.aspx.vb">
+      <DependentUpon>ExceptionTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="eToolkit\Admin\ResourceManager.aspx.designer.vb">
+      <DependentUpon>ResourceManager.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\Admin\ResourceManager.aspx.vb">
+      <DependentUpon>ResourceManager.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="eToolkit\Admin\ResourceManagerSelection.aspx.designer.vb">
+      <DependentUpon>ResourceManagerSelection.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\Admin\ResourceManagerSelection.aspx.vb">
+      <DependentUpon>ResourceManagerSelection.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="eToolkit\Admin\ThemeManager.aspx.designer.vb">
+      <DependentUpon>ThemeManager.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\Admin\ThemeManager.aspx.vb">
+      <DependentUpon>ThemeManager.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="eToolkit\Admin\QuestionManager.aspx.designer.vb">
+      <DependentUpon>QuestionManager.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\Admin\QuestionManager.aspx.vb">
+      <DependentUpon>QuestionManager.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="eToolkit\DefaultSelection.aspx.designer.vb">
+      <DependentUpon>DefaultSelection.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\DefaultSelection.aspx.vb">
+      <DependentUpon>DefaultSelection.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="eToolkit\Public\DimensionExperts.aspx.designer.vb">
+      <DependentUpon>DimensionExperts.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\Public\DimensionExperts.aspx.vb">
+      <DependentUpon>DimensionExperts.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="eToolkit\eCommentsBridge.ashx.vb">
+      <DependentUpon>eCommentsBridge.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\ContactUs.aspx.designer.vb">
+      <DependentUpon>ContactUs.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\ContactUs.aspx.vb">
+      <DependentUpon>ContactUs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="eToolkit\Default.aspx.designer.vb">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\Default.aspx.vb">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="eToolkit\eReportsBridge.ashx.vb">
+      <DependentUpon>eReportsBridge.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\Help\Default.aspx.designer.vb">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\Help\Default.aspx.vb">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="eToolkit\Movies\MoviePlayer.aspx.designer.vb">
+      <DependentUpon>MoviePlayer.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\Movies\MoviePlayer.aspx.vb">
+      <DependentUpon>MoviePlayer.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="eToolkit\Preferences.aspx.designer.vb">
+      <DependentUpon>Preferences.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\Preferences.aspx.vb">
+      <DependentUpon>Preferences.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="eToolkit\Help\SiteRequirements.aspx.designer.vb">
+      <DependentUpon>SiteRequirements.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\Help\SiteRequirements.aspx.vb">
+      <DependentUpon>SiteRequirements.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="eToolkit\DataSelection.aspx.designer.vb">
+      <DependentUpon>DataSelection.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\DataSelection.aspx.vb">
+      <DependentUpon>DataSelection.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="eToolkit\ModelSelection.aspx.designer.vb">
+      <DependentUpon>ModelSelection.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\ModelSelection.aspx.vb">
+      <DependentUpon>ModelSelection.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="eToolkit\Public\SuccessStories.aspx.designer.vb">
+      <DependentUpon>SuccessStories.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\Public\SuccessStories.aspx.vb">
+      <DependentUpon>SuccessStories.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="eToolkit\Public\WhatsNew.aspx.designer.vb">
+      <DependentUpon>WhatsNew.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\Public\WhatsNew.aspx.vb">
+      <DependentUpon>WhatsNew.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="eToolkit\QuestionScores.aspx.designer.vb">
+      <DependentUpon>QuestionScores.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\QuestionScores.aspx.vb">
+      <DependentUpon>QuestionScores.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="eToolkit\QuestionContent.aspx.designer.vb">
+      <DependentUpon>QuestionContent.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\QuestionContent.aspx.vb">
+      <DependentUpon>QuestionContent.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="eToolkit\QuestionSelection.aspx.designer.vb">
+      <DependentUpon>QuestionSelection.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\QuestionSelection.aspx.vb">
+      <DependentUpon>QuestionSelection.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="eToolkit\ResearchInquiry.aspx.designer.vb">
+      <DependentUpon>ResearchInquiry.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\ResearchInquiry.aspx.vb">
+      <DependentUpon>ResearchInquiry.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="eToolkit\ResourceSearch.aspx.designer.vb">
+      <DependentUpon>ResourceSearch.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\ResourceSearch.aspx.vb">
+      <DependentUpon>ResourceSearch.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="eToolkit\TestWebDocLib.aspx.designer.vb">
+      <DependentUpon>TestWebDocLib.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\TestWebDocLib.aspx.vb">
+      <DependentUpon>TestWebDocLib.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="eToolkit\UserControls\FeaturedExpert.ascx.designer.vb">
+      <DependentUpon>FeaturedExpert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\UserControls\FeaturedExpert.ascx.vb">
+      <DependentUpon>FeaturedExpert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="eToolkit\UserControls\PageLogo.ascx.designer.vb">
+      <DependentUpon>PageLogo.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\UserControls\PageLogo.ascx.vb">
+      <DependentUpon>PageLogo.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="eToolkit\UserControls\ResultsPerPage.ascx.designer.vb">
+      <DependentUpon>ResultsPerPage.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\UserControls\ResultsPerPage.ascx.vb">
+      <DependentUpon>ResultsPerPage.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\UserControls\ServiceTypeEditor.ascx.designer.vb">
+      <DependentUpon>ServiceTypeEditor.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\UserControls\ServiceTypeEditor.ascx.vb">
+      <DependentUpon>ServiceTypeEditor.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="eToolkit\UserControls\SideNav.ascx.designer.vb">
+      <DependentUpon>SideNav.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\UserControls\SideNav.ascx.vb">
+      <DependentUpon>SideNav.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="eToolkit\UserControls\ThemeEditor.ascx.designer.vb">
+      <DependentUpon>ThemeEditor.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\UserControls\ThemeEditor.ascx.vb">
+      <DependentUpon>ThemeEditor.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="eToolkit\UserControls\ThemeQuestionEditor.ascx.designer.vb">
+      <DependentUpon>ThemeQuestionEditor.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\UserControls\ThemeQuestionEditor.ascx.vb">
+      <DependentUpon>ThemeQuestionEditor.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="eToolkit\UserControls\ViewEditor.ascx.designer.vb">
+      <DependentUpon>ViewEditor.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="eToolkit\UserControls\ViewEditor.ascx.vb">
+      <DependentUpon>ViewEditor.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Global.asax.vb">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Login.aspx.designer.vb">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Login.aspx.vb">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="NrcPicker.master.designer.vb">
+      <DependentUpon>NrcPicker.master</DependentUpon>
+    </Compile>
+    <Compile Include="NrcPicker.master.vb">
+      <DependentUpon>NrcPicker.master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.vb">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.vb">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Shared\DownloadDocument.aspx.designer.vb">
+      <DependentUpon>DownloadDocument.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Shared\DownloadDocument.aspx.vb">
+      <DependentUpon>DownloadDocument.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\BreadCrumbs.ascx.designer.vb">
+      <DependentUpon>BreadCrumbs.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\BreadCrumbs.ascx.vb">
+      <DependentUpon>BreadCrumbs.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\CurrentUser.ascx.designer.vb">
+      <DependentUpon>CurrentUser.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\CurrentUser.ascx.vb">
+      <DependentUpon>CurrentUser.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\FooterControlCss.ascx.designer.vb">
+      <DependentUpon>FooterControlCss.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\FooterControlCss.ascx.vb">
+      <DependentUpon>FooterControlCss.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\HeaderControlCss.ascx.designer.vb">
+      <DependentUpon>HeaderControlCss.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\HeaderControlCss.ascx.vb">
+      <DependentUpon>HeaderControlCss.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\QuickGroupSelector.ascx.designer.vb">
+      <DependentUpon>QuickGroupSelector.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\QuickGroupSelector.ascx.vb">
+      <DependentUpon>QuickGroupSelector.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\TopNavGeneral.ascx.designer.vb">
+      <DependentUpon>TopNavGeneral.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\TopNavGeneral.ascx.vb">
+      <DependentUpon>TopNavGeneral.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebProfile.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\licenses.licx" />
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Error\Web.config" />
+    <Content Include="eToolkit\Admin\ContentManager.aspx" />
+    <Content Include="eToolkit\Admin\Default.aspx" />
+    <Content Include="eToolkit\Admin\ExceptionTest.aspx" />
+    <Content Include="eToolkit\Admin\ftb.imagegallery.aspx" />
+    <Content Include="eToolkit\Admin\HtmlNotification.xslt" />
+    <Content Include="eToolkit\Admin\PlainTextNotification.xslt" />
+    <Content Include="eToolkit\Admin\ResourceManager.aspx" />
+    <Content Include="eToolkit\Admin\ResourceManagerSelection.aspx" />
+    <Content Include="eToolkit\Admin\ThemeManager.aspx" />
+    <Content Include="eToolkit\Admin\QuestionManager.aspx" />
+    <Content Include="eToolkit\DefaultSelection.aspx" />
+    <Content Include="eToolkit\img\expert_Bleich.jpg" />
+    <Content Include="eToolkit\img\expert_buck.jpg" />
+    <Content Include="eToolkit\img\expert_carter.jpg" />
+    <Content Include="eToolkit\img\expert_falvo.jpg" />
+    <Content Include="eToolkit\img\expert_hewlett.jpg" />
+    <Content Include="eToolkit\img\expert_koerner.jpg" />
+    <Content Include="eToolkit\img\expert_lee.jpg" />
+    <Content Include="eToolkit\img\expert_leebov.jpg" />
+    <Content Include="eToolkit\img\expert_Meier.jpg" />
+    <Content Include="eToolkit\img\expert_nielsen.jpg" />
+    <Content Include="eToolkit\img\expert_pinkerton.jpg" />
+    <Content Include="eToolkit\img\expert_pugh.jpg" />
+    <Content Include="eToolkit\Public\DimensionExperts.aspx" />
+    <Content Include="eToolkit\eCommentsBridge.ashx" />
+    <Content Include="eToolkit\eReportsBridge.ashx" />
+    <Content Include="eToolkit\Admin\Web.config" />
+    <Content Include="eToolkit\Help\ControlChartTutorial.doc" />
+    <Content Include="eToolkit\Help\Web.config" />
+    <Content Include="eToolkit\Movies\Web.config" />
+    <Content Include="eToolkit\Public\Web.config" />
+    <Content Include="eToolkit\QuestionSelection.aspx" />
+    <Content Include="eToolkit\ResearchInquiry.aspx" />
+    <Content Include="eToolkit\ResourceSearch.aspx" />
+    <Content Include="eToolkit\TestWebDocLib.aspx" />
+    <Content Include="eToolkit\UserControls\FeaturedExpert.ascx" />
+    <Content Include="eToolkit\UserControls\ResultsPerPage.ascx" />
+    <Content Include="eToolkit\UserControls\ServiceTypeEditor.ascx" />
+    <Content Include="eToolkit\UserControls\ThemeEditor.ascx" />
+    <Content Include="eToolkit\UserControls\ThemeQuestionEditor.ascx" />
+    <Content Include="eToolkit\UserControls\ViewEditor.ascx" />
+    <Content Include="eToolkit\Web.config" />
+    <Content Include="eToolkit\ContactUs.aspx" />
+    <Content Include="eToolkit\Help\Default.aspx" />
+    <Content Include="eToolkit\img\ScreenShot1.jpg" />
+    <Content Include="eToolkit\img\ScreenShot2.jpg" />
+    <Content Include="eToolkit\img\ScreenShot3.jpg" />
+    <Content Include="eToolkit\img\ScreenShot4.jpg" />
+    <Content Include="eToolkit\img\ScreenShot5.jpg" />
+    <Content Include="eToolkit\Movies\Access.wmv" />
+    <Content Include="eToolkit\Movies\Comfort.wmv" />
+    <Content Include="eToolkit\Movies\Continuity.wmv" />
+    <Content Include="eToolkit\Movies\Coordination.wmv" />
+    <Content Include="eToolkit\Movies\Emotional.wmv" />
+    <Content Include="eToolkit\Movies\Family.wmv" />
+    <Content Include="eToolkit\Movies\Information.wmv" />
+    <Content Include="eToolkit\Movies\MoviePlayer.aspx" />
+    <Content Include="eToolkit\Movies\Respect.wmv" />
+    <Content Include="eToolkit\Preferences.aspx" />
+    <Content Include="eToolkit\Help\SiteRequirements.aspx" />
+    <Content Include="eToolkit\DataSelection.aspx" />
+    <Content Include="eToolkit\ModelSelection.aspx" />
+    <Content Include="eToolkit\Public\SuccessStories.aspx" />
+    <Content Include="eToolkit\Public\WhatsNew.aspx" />
+    <Content Include="eToolkit\QuestionScores.aspx" />
+    <Content Include="eToolkit\QuestionContent.aspx" />
+    <Content Include="eToolkit\UserControls\PageLogo.ascx" />
+    <Content Include="Global.asax" />
+    <Content Include="img\BackNav.gif" />
+    <Content Include="img\Caution.gif" />
+    <Content Include="img\ControlChart.gif" />
+    <Content Include="img\Delete16.gif" />
+    <Content Include="img\email_header.png" />
+    <Content Include="img\eToolKitAd.gif" />
+    <Content Include="img\eToolKitBackground.gif" />
+    <Content Include="img\eToolKitLogo.gif" />
+    <Content Include="img\ExpandCollapse.gif" />
+    <Content Include="img\ExpandExpand.gif" />
+    <Content Include="img\ExpandRight.gif" />
+    <Content Include="img\LeftNavPreview.gif" />
+    <Content Include="img\LegendBenchmarkScore.gif" />
+    <Content Include="img\LegendComparisonScore.gif" />
+    <Content Include="img\LegendCurrentScore.gif" />
+    <Content Include="img\MemberList.gif" />
+    <Content Include="img\MenuBox\collapsed.png" />
+    <Content Include="img\MenuBox\expanded.png" />
+    <Content Include="img\ModelShadowBottom.gif" />
+    <Content Include="img\ModelShadowCorner.gif" />
+    <Content Include="img\ModelShadowHoriz.gif" />
+    <Content Include="img\ModelShadowRight.gif" />
+    <Content Include="img\ModelShadowVert.gif" />
+    <Content Include="img\ModelSigBetter.gif" />
+    <Content Include="img\ModelSigWorse.gif" />
+    <Content Include="img\ModelUpTree.gif" />
+    <Content Include="img\NewContent.gif" />
+    <Content Include="img\PublicationTopRight.gif" />
+    <Content Include="img\ScoreChartPreview.gif" />
+    <Content Include="img\SignIn.gif" />
+    <Content Include="img\stp4_grn.gif" />
+    <Content Include="img\TempHacker.gif" />
+    <Content Include="img\TempVerisign.gif" />
+    <Content Include="img\TrendChart.gif" />
+    <Content Include="img\ViewDataButton.gif" />
+    <Content Include="img\WhatsNewTopRight.gif" />
+    <Content Include="js\FreeTextBox\FTB-FreeTextBox.js" />
+    <Content Include="js\FreeTextBox\FTB-ImageGallery.js" />
+    <Content Include="js\FreeTextBox\FTB-Pro.js" />
+    <Content Include="js\FreeTextBox\FTB-ToolbarItems.js" />
+    <Content Include="js\FreeTextBox\FTB-Utility.js" />
+    <Content Include="js\FreeTextBox\images\bold.gif" />
+    <Content Include="js\FreeTextBox\images\bulletedlist.gif" />
+    <Content Include="js\FreeTextBox\images\buttons.gif" />
+    <Content Include="js\FreeTextBox\images\buttons.png" />
+    <Content Include="js\FreeTextBox\images\copy.gif" />
+    <Content Include="js\FreeTextBox\images\createlink.gif" />
+    <Content Include="js\FreeTextBox\images\csharp.gif" />
+    <Content Include="js\FreeTextBox\images\css\toolbarbutton.off.out.gif" />
+    <Content Include="js\FreeTextBox\images\css\toolbarbutton.off.over.gif" />
+    <Content Include="js\FreeTextBox\images\css\toolbarbutton.on.out.gif" />
+    <Content Include="js\FreeTextBox\images\css\toolbarbutton.on.over.gif" />
+    <Content Include="js\FreeTextBox\images\css\toolbarbutton.over.gif" />
+    <Content Include="js\FreeTextBox\images\cut.gif" />
+    <Content Include="js\FreeTextBox\images\delete.gif" />
+    <Content Include="js\FreeTextBox\images\deletetablecolumn.gif" />
+    <Content Include="js\FreeTextBox\images\deletetablerow.gif" />
+    <Content Include="js\FreeTextBox\images\editstyle.gif" />
+    <Content Include="js\FreeTextBox\images\edittable.gif" />
+    <Content Include="js\FreeTextBox\images\edittablecell.gif" />
+    <Content Include="js\FreeTextBox\images\edittablerow.gif" />
+    <Content Include="js\FreeTextBox\images\fontbackcolorpicker.gif" />
+    <Content Include="js\FreeTextBox\images\fontforecolorpicker.gif" />
+    <Content Include="js\FreeTextBox\images\iespellcheck.gif" />
+    <Content Include="js\FreeTextBox\images\indent.gif" />
+    <Content Include="js\FreeTextBox\images\insertbutton.gif" />
+    <Content Include="js\FreeTextBox\images\insertcheckbox.gif" />
+    <Content Include="js\FreeTextBox\images\insertdate.gif" />
+    <Content Include="js\FreeTextBox\images\insertdiv.gif" />
+    <Content Include="js\FreeTextBox\images\insertdropdownlist.gif" />
+    <Content Include="js\FreeTextBox\images\insertform.gif" />
+    <Content Include="js\FreeTextBox\images\insertimage.gif" />
+    <Content Include="js\FreeTextBox\images\insertimagefromgallery.gif" />
+    <Content Include="js\FreeTextBox\images\insertlistbox.gif" />
+    <Content Include="js\FreeTextBox\images\insertradiobutton.gif" />
+    <Content Include="js\FreeTextBox\images\insertrule.gif" />
+    <Content Include="js\FreeTextBox\images\inserttable.gif" />
+    <Content Include="js\FreeTextBox\images\inserttablecolumn.gif" />
+    <Content Include="js\FreeTextBox\images\inserttablecolumnafter.gif" />
+    <Content Include="js\FreeTextBox\images\inserttablecolumnbefore.gif" />
+    <Content Include="js\FreeTextBox\images\inserttablerow.gif" />
+    <Content Include="js\FreeTextBox\images\inserttablerowafter.gif" />
+    <Content Include="js\FreeTextBox\images\inserttablerowbefore.gif" />
+    <Content Include="js\FreeTextBox\images\inserttextarea.gif" />
+    <Content Include="js\FreeTextBox\images\inserttextbox.gif" />
+    <Content Include="js\FreeTextBox\images\inserttime.gif" />
+    <Content Include="js\FreeTextBox\images\italic.gif" />
+    <Content Include="js\FreeTextBox\images\justifycenter.gif" />
+    <Content Include="js\FreeTextBox\images\justifyfull.gif" />
+    <Content Include="js\FreeTextBox\images\justifyleft.gif" />
+    <Content Include="js\FreeTextBox\images\justifyright.gif" />
+    <Content Include="js\FreeTextBox\images\mergecells.gif" />
+    <Content Include="js\FreeTextBox\images\mergecolumns.gif" />
+    <Content Include="js\FreeTextBox\images\mergerows.gif" />
+    <Content Include="js\FreeTextBox\images\misc\toolbarbuttoncss.off.out.gif" />
+    <Content Include="js\FreeTextBox\images\misc\toolbarbuttoncss.off.over.gif" />
+    <Content Include="js\FreeTextBox\images\misc\toolbarbuttoncss.on.out.gif" />
+    <Content Include="js\FreeTextBox\images\misc\toolbarbuttoncss.on.over.gif" />
+    <Content Include="js\FreeTextBox\images\mode.design.gif" />
+    <Content Include="js\FreeTextBox\images\mode.html.gif" />
+    <Content Include="js\FreeTextBox\images\netspell.gif" />
+    <Content Include="js\FreeTextBox\images\numberedlist.gif" />
+    <Content Include="js\FreeTextBox\images\outdent.gif" />
+    <Content Include="js\FreeTextBox\images\paste.gif" />
+    <Content Include="js\FreeTextBox\images\preview.gif" />
+    <Content Include="js\FreeTextBox\images\print.gif" />
+    <Content Include="js\FreeTextBox\images\redo.gif" />
+    <Content Include="js\FreeTextBox\images\removeformat.gif" />
+    <Content Include="js\FreeTextBox\images\save.gif" />
+    <Content Include="js\FreeTextBox\images\selectall.gif" />
+    <Content Include="js\FreeTextBox\images\separator.horizontal.gif" />
+    <Content Include="js\FreeTextBox\images\separator.vertical.gif" />
+    <Content Include="js\FreeTextBox\images\spacer.gif" />
+    <Content Include="js\FreeTextBox\images\spellcheck.gif" />
+    <Content Include="js\FreeTextBox\images\splitcells.gif" />
+    <Content Include="js\FreeTextBox\images\strikethrough.gif" />
+    <Content Include="js\FreeTextBox\images\subscript.gif" />
+    <Content Include="js\FreeTextBox\images\subs\bold.gif" />
+    <Content Include="js\FreeTextBox\images\subs\bulletedlist.gif" />
+    <Content Include="js\FreeTextBox\images\subs\copy.gif" />
+    <Content Include="js\FreeTextBox\images\subs\createlink.gif" />
+    <Content Include="js\FreeTextBox\images\subs\cut.gif" />
+    <Content Include="js\FreeTextBox\images\subs\delete.gif" />
+    <Content Include="js\FreeTextBox\images\subs\deletetablecolumn.gif" />
+    <Content Include="js\FreeTextBox\images\subs\deletetablerow.gif" />
+    <Content Include="js\FreeTextBox\images\subs\fontbackcolorpicker.gif" />
+    <Content Include="js\FreeTextBox\images\subs\fontforecolorpicker.gif" />
+    <Content Include="js\FreeTextBox\images\subs\indent.gif" />
+    <Content Include="js\FreeTextBox\images\subs\insertdate.gif" />
+    <Content Include="js\FreeTextBox\images\subs\insertimage.gif" />
+    <Content Include="js\FreeTextBox\images\subs\insertimagefromgallery.gif" />
+    <Content Include="js\FreeTextBox\images\subs\insertrule.gif" />
+    <Content Include="js\FreeTextBox\images\subs\inserttable.gif" />
+    <Content Include="js\FreeTextBox\images\subs\inserttablecolumn.gif" />
+    <Content Include="js\FreeTextBox\images\subs\inserttablerow.gif" />
+    <Content Include="js\FreeTextBox\images\subs\inserttime.gif" />
+    <Content Include="js\FreeTextBox\images\subs\italic.gif" />
+    <Content Include="js\FreeTextBox\images\subs\justifycenter.gif" />
+    <Content Include="js\FreeTextBox\images\subs\justifyfull.gif" />
+    <Content Include="js\FreeTextBox\images\subs\justifyleft.gif" />
+    <Content Include="js\FreeTextBox\images\subs\justifyright.gif" />
+    <Content Include="js\FreeTextBox\images\subs\mergecells.gif" />
+    <Content Include="js\FreeTextBox\images\subs\mergecolumns.gif" />
+    <Content Include="js\FreeTextBox\images\subs\numberedlist.gif" />
+    <Content Include="js\FreeTextBox\images\subs\outdent.gif" />
+    <Content Include="js\FreeTextBox\images\subs\paste.gif" />
+    <Content Include="js\FreeTextBox\images\subs\print.gif" />
+    <Content Include="js\FreeTextBox\images\subs\redo.gif" />
+    <Content Include="js\FreeTextBox\images\subs\removeformat.gif" />
+    <Content Include="js\FreeTextBox\images\subs\save.gif" />
+    <Content Include="js\FreeTextBox\images\subs\spellcheck.gif" />
+    <Content Include="js\FreeTextBox\images\subs\strikethrough.gif" />
+    <Content Include="js\FreeTextBox\images\subs\subscript.gif" />
+    <Content Include="js\FreeTextBox\images\subs\superscript.gif" />
+    <Content Include="js\FreeTextBox\images\subs\underline.gif" />
+    <Content Include="js\FreeTextBox\images\subs\undo.gif" />
+    <Content Include="js\FreeTextBox\images\subs\unlink.gif" />
+    <Content Include="js\FreeTextBox\images\subs\wordclean.gif" />
+    <Content Include="js\FreeTextBox\images\subs\wordcount.gif" />
+    <Content Include="js\FreeTextBox\images\superscript.gif" />
+    <Content Include="js\FreeTextBox\images\toolbar.horizontal.background.gif" />
+    <Content Include="js\FreeTextBox\images\toolbar.horizontal.end.gif" />
+    <Content Include="js\FreeTextBox\images\toolbar.horizontal.start.gif" />
+    <Content Include="js\FreeTextBox\images\toolbar.vertical.background.gif" />
+    <Content Include="js\FreeTextBox\images\toolbar.vertical.end.gif" />
+    <Content Include="js\FreeTextBox\images\toolbar.vertical.start.gif" />
+    <Content Include="js\FreeTextBox\images\toolbarbutton.background.gif" />
+    <Content Include="js\FreeTextBox\images\toolbarbutton.down.gif" />
+    <Content Include="js\FreeTextBox\images\toolbarbuttoncss.off.out.gif" />
+    <Content Include="js\FreeTextBox\images\toolbarbuttoncss.off.over.gif" />
+    <Content Include="js\FreeTextBox\images\toolbarbuttoncss.on.out.gif" />
+    <Content Include="js\FreeTextBox\images\toolbarbuttoncss.on.over.gif" />
+    <Content Include="js\FreeTextBox\images\underline.gif" />
+    <Content Include="js\FreeTextBox\images\undo.gif" />
+    <Content Include="js\FreeTextBox\images\unlink.gif" />
+    <Content Include="js\FreeTextBox\images\wordclean.gif" />
+    <Content Include="js\FreeTextBox\images\wordcount.gif" />
+    <Content Include="js\FreeTextBox\Languages\ar-SA.xml" />
+    <Content Include="js\FreeTextBox\Languages\ca-CA.xml" />
+    <Content Include="js\FreeTextBox\Languages\ca-ES.xml" />
+    <Content Include="js\FreeTextBox\Languages\cs-CZ.xml" />
+    <Content Include="js\FreeTextBox\Languages\da-DK.xml" />
+    <Content Include="js\FreeTextBox\Languages\de-DE.xml" />
+    <Content Include="js\FreeTextBox\Languages\el-GR.xml" />
+    <Content Include="js\FreeTextBox\Languages\en-US.xml" />
+    <Content Include="js\FreeTextBox\Languages\es-ES.xml" />
+    <Content Include="js\FreeTextBox\Languages\fa-IR.xml" />
+    <Content Include="js\FreeTextBox\Languages\fr-FR.xml" />
+    <Content Include="js\FreeTextBox\Languages\he-IL.xml" />
+    <Content Include="js\FreeTextBox\Languages\hu-HU.xml" />
+    <Content Include="js\FreeTextBox\Languages\it-IT.xml" />
+    <Content Include="js\FreeTextBox\Languages\ja-JP.xml" />
+    <Content Include="js\FreeTextBox\Languages\ko-kr.xml" />
+    <Content Include="js\FreeTextBox\Languages\Languages.xml" />
+    <Content Include="js\FreeTextBox\Languages\nb-NO.xml" />
+    <Content Include="js\FreeTextBox\Languages\nl-NL.xml" />
+    <Content Include="js\FreeTextBox\Languages\pl-PL.xml" />
+    <Content Include="js\FreeTextBox\Languages\pt-pt.xml" />
+    <Content Include="js\FreeTextBox\Languages\ro-RO.xml" />
+    <Content Include="js\FreeTextBox\Languages\ru-ru.xml" />
+    <Content Include="js\FreeTextBox\Languages\sv-se.xml" />
+    <Content Include="js\FreeTextBox\Languages\zh-cn.xml" />
+    <Content Include="js\FreeTextBox\Languages\zh-TW.xml" />
+    <Content Include="js\FreeTextBox\office2000\bold.gif" />
+    <Content Include="js\FreeTextBox\office2000\bulletedlist.gif" />
+    <Content Include="js\FreeTextBox\office2000\copy.gif" />
+    <Content Include="js\FreeTextBox\office2000\createlink.gif" />
+    <Content Include="js\FreeTextBox\office2000\cut.gif" />
+    <Content Include="js\FreeTextBox\office2000\delete.gif" />
+    <Content Include="js\FreeTextBox\office2000\deletetablecolumn.gif" />
+    <Content Include="js\FreeTextBox\office2000\deletetablerow.gif" />
+    <Content Include="js\FreeTextBox\office2000\editstyle.gif" />
+    <Content Include="js\FreeTextBox\office2000\edittable.gif" />
+    <Content Include="js\FreeTextBox\office2000\fontbackcolorpicker.gif" />
+    <Content Include="js\FreeTextBox\office2000\fontforecolorpicker.gif" />
+    <Content Include="js\FreeTextBox\office2000\iespellcheck.gif" />
+    <Content Include="js\FreeTextBox\office2000\indent.gif" />
+    <Content Include="js\FreeTextBox\office2000\insertbutton.gif" />
+    <Content Include="js\FreeTextBox\office2000\insertcheckbox.gif" />
+    <Content Include="js\FreeTextBox\office2000\insertdate.gif" />
+    <Content Include="js\FreeTextBox\office2000\insertdiv.gif" />
+    <Content Include="js\FreeTextBox\office2000\insertdropdownlist.gif" />
+    <Content Include="js\FreeTextBox\office2000\insertform.gif" />
+    <Content Include="js\FreeTextBox\office2000\insertimage.gif" />
+    <Content Include="js\FreeTextBox\office2000\insertimagefromgallery.gif" />
+    <Content Include="js\FreeTextBox\office2000\insertlistbox.gif" />
+    <Content Include="js\FreeTextBox\office2000\insertradiobutton.gif" />
+    <Content Include="js\FreeTextBox\office2000\insertrule.gif" />
+    <Content Include="js\FreeTextBox\office2000\inserttable.gif" />
+    <Content Include="js\FreeTextBox\office2000\inserttablecolumn.gif" />
+    <Content Include="js\FreeTextBox\office2000\inserttablecolumnafter.gif" />
+    <Content Include="js\FreeTextBox\office2000\inserttablecolumnbefore.gif" />
+    <Content Include="js\FreeTextBox\office2000\inserttablerow.gif" />
+    <Content Include="js\FreeTextBox\office2000\inserttablerowafter.gif" />
+    <Content Include="js\FreeTextBox\office2000\inserttablerowbefore.gif" />
+    <Content Include="js\FreeTextBox\office2000\inserttextarea.gif" />
+    <Content Include="js\FreeTextBox\office2000\inserttextbox.gif" />
+    <Content Include="js\FreeTextBox\office2000\inserttime.gif" />
+    <Content Include="js\FreeTextBox\office2000\italic.gif" />
+    <Content Include="js\FreeTextBox\office2000\justifycenter.gif" />
+    <Content Include="js\FreeTextBox\office2000\justifyfull.gif" />
+    <Content Include="js\FreeTextBox\office2000\justifyleft.gif" />
+    <Content Include="js\FreeTextBox\office2000\justifyright.gif" />
+    <Content Include="js\FreeTextBox\office2000\mergecells.gif" />
+    <Content Include="js\FreeTextBox\office2000\mergerows.gif" />
+    <Content Include="js\FreeTextBox\office2000\mode.design.gif" />
+    <Content Include="js\FreeTextBox\office2000\mode.html.gif" />
+    <Content Include="js\FreeTextBox\office2000\netspell.gif" />
+    <Content Include="js\FreeTextBox\office2000\normal.gif" />
+    <Content Include="js\FreeTextBox\office2000\normal.png" />
+    <Content Include="js\FreeTextBox\office2000\numberedlist.gif" />
+    <Content Include="js\FreeTextBox\office2000\outdent.gif" />
+    <Content Include="js\FreeTextBox\office2000\paste.gif" />
+    <Content Include="js\FreeTextBox\office2000\preview.gif" />
+    <Content Include="js\FreeTextBox\office2000\print.gif" />
+    <Content Include="js\FreeTextBox\office2000\redo.gif" />
+    <Content Include="js\FreeTextBox\office2000\removeformat.gif" />
+    <Content Include="js\FreeTextBox\office2000\save.gif" />
+    <Content Include="js\FreeTextBox\office2000\selectall.gif" />
+    <Content Include="js\FreeTextBox\office2000\separator.horizontal.gif" />
+    <Content Include="js\FreeTextBox\office2000\spacer.gif" />
+    <Content Include="js\FreeTextBox\office2000\spellcheck.gif" />
+    <Content Include="js\FreeTextBox\office2000\strikethrough.gif" />
+    <Content Include="js\FreeTextBox\office2000\subscript.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\bold.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\bulletedlist.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\copy.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\createlink.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\cut.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\delete.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\deletetablecolumn.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\deletetablerow.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\fontbackcolorpicker.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\fontforecolorpicker.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\indent.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\insertdate.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\insertimage.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\insertimagefromgallery.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\insertrule.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\inserttable.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\inserttablecolumn.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\inserttablerow.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\inserttime.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\italic.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\justifycenter.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\justifyfull.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\justifyleft.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\justifyright.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\mergecells.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\mergerows.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\numberedlist.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\outdent.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\paste.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\print.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\redo.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\removeformat.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\save.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\spellcheck.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\strikethrough.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\subscript.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\superscript.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\underline.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\undo.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\unlink.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\wordclean.gif" />
+    <Content Include="js\FreeTextBox\office2000\subs\wordcount.gif" />
+    <Content Include="js\FreeTextBox\office2000\superscript.gif" />
+    <Content Include="js\FreeTextBox\office2000\toolbar.horizontal.end.gif" />
+    <Content Include="js\FreeTextBox\office2000\toolbar.horizontal.start.gif" />
+    <Content Include="js\FreeTextBox\office2000\underline.gif" />
+    <Content Include="js\FreeTextBox\office2000\undo.gif" />
+    <Content Include="js\FreeTextBox\office2000\unlink.gif" />
+    <Content Include="js\FreeTextBox\office2000\wordclean.gif" />
+    <Content Include="js\FreeTextBox\office2000\wordcount.gif" />
+    <Content Include="js\FreeTextBox\officeMac\backcolorpicker.gif" />
+    <Content Include="js\FreeTextBox\officeMac\bold.gif" />
+    <Content Include="js\FreeTextBox\officeMac\bulletedlist.gif" />
+    <Content Include="js\FreeTextBox\officeMac\copy.gif" />
+    <Content Include="js\FreeTextBox\officeMac\createlink.gif" />
+    <Content Include="js\FreeTextBox\officeMac\cut.gif" />
+    <Content Include="js\FreeTextBox\officeMac\delete.gif" />
+    <Content Include="js\FreeTextBox\officeMac\deletetablecolumn.gif" />
+    <Content Include="js\FreeTextBox\officeMac\deletetablerow.gif" />
+    <Content Include="js\FreeTextBox\officeMac\editstyle.gif" />
+    <Content Include="js\FreeTextBox\officeMac\edittable.gif" />
+    <Content Include="js\FreeTextBox\officeMac\fontbackcolorpicker.gif" />
+    <Content Include="js\FreeTextBox\officeMac\fontforecolorpicker.gif" />
+    <Content Include="js\FreeTextBox\officeMac\forecolorpicker.gif" />
+    <Content Include="js\FreeTextBox\officeMac\iespellcheck.gif" />
+    <Content Include="js\FreeTextBox\officeMac\indent.gif" />
+    <Content Include="js\FreeTextBox\officeMac\insertbutton.gif" />
+    <Content Include="js\FreeTextBox\officeMac\insertcheckbox.gif" />
+    <Content Include="js\FreeTextBox\officeMac\insertdate.gif" />
+    <Content Include="js\FreeTextBox\officeMac\insertdiv.gif" />
+    <Content Include="js\FreeTextBox\officeMac\insertdropdownlist.gif" />
+    <Content Include="js\FreeTextBox\officeMac\insertform.gif" />
+    <Content Include="js\FreeTextBox\officeMac\insertimage.gif" />
+    <Content Include="js\FreeTextBox\officeMac\insertimagefromgallery.gif" />
+    <Content Include="js\FreeTextBox\officeMac\insertradiobutton.gif" />
+    <Content Include="js\FreeTextBox\officeMac\insertrule.gif" />
+    <Content Include="js\FreeTextBox\officeMac\inserttable.gif" />
+    <Content Include="js\FreeTextBox\officeMac\inserttablecolumnafter.gif" />
+    <Content Include="js\FreeTextBox\officeMac\inserttablecolumnbefore.gif" />
+    <Content Include="js\FreeTextBox\officeMac\inserttablerowafter.gif" />
+    <Content Include="js\FreeTextBox\officeMac\inserttablerowbefore.gif" />
+    <Content Include="js\FreeTextBox\officeMac\inserttextarea.gif" />
+    <Content Include="js\FreeTextBox\officeMac\inserttextbox.gif" />
+    <Content Include="js\FreeTextBox\officeMac\inserttime.gif" />
+    <Content Include="js\FreeTextBox\officeMac\italic.gif" />
+    <Content Include="js\FreeTextBox\officeMac\justifycenter.gif" />
+    <Content Include="js\FreeTextBox\officeMac\justifyfull.gif" />
+    <Content Include="js\FreeTextBox\officeMac\justifyleft.gif" />
+    <Content Include="js\FreeTextBox\officeMac\justifyright.gif" />
+    <Content Include="js\FreeTextBox\officeMac\mode.design.gif" />
+    <Content Include="js\FreeTextBox\officeMac\mode.html.gif" />
+    <Content Include="js\FreeTextBox\officeMac\netspell.gif" />
+    <Content Include="js\FreeTextBox\officeMac\new.gif" />
+    <Content Include="js\FreeTextBox\officeMac\numberedlist.gif" />
+    <Content Include="js\FreeTextBox\officeMac\outdent.gif" />
+    <Content Include="js\FreeTextBox\officeMac\paste.gif" />
+    <Content Include="js\FreeTextBox\officeMac\paste2.gif" />
+    <Content Include="js\FreeTextBox\officeMac\preview.gif" />
+    <Content Include="js\FreeTextBox\officeMac\print.gif" />
+    <Content Include="js\FreeTextBox\officeMac\redo.gif" />
+    <Content Include="js\FreeTextBox\officeMac\removeformat.gif" />
+    <Content Include="js\FreeTextBox\officeMac\save.gif" />
+    <Content Include="js\FreeTextBox\officeMac\selectall.gif" />
+    <Content Include="js\FreeTextBox\officeMac\separator.horizontal.gif" />
+    <Content Include="js\FreeTextBox\officeMac\strikethrough.gif" />
+    <Content Include="js\FreeTextBox\officeMac\subscript.gif" />
+    <Content Include="js\FreeTextBox\officeMac\superscript.gif" />
+    <Content Include="js\FreeTextBox\officeMac\toolbar.horizontal.background.gif" />
+    <Content Include="js\FreeTextBox\officeMac\toolbar.horizontal.end.gif" />
+    <Content Include="js\FreeTextBox\officeMac\toolbar.horizontal.end2.gif" />
+    <Content Include="js\FreeTextBox\officeMac\toolbar.horizontal.start.gif" />
+    <Content Include="js\FreeTextBox\officeMac\toolbarbuttoncss.off.normal.gif" />
+    <Content Include="js\FreeTextBox\officeMac\toolbarbuttoncss.off.over.gif" />
+    <Content Include="js\FreeTextBox\officeMac\toolbarbuttoncss.on.normal.gif" />
+    <Content Include="js\FreeTextBox\officeMac\toolbarbuttoncss.on.over.gif" />
+    <Content Include="js\FreeTextBox\officeMac\underline.gif" />
+    <Content Include="js\FreeTextBox\officeMac\undo.gif" />
+    <Content Include="js\FreeTextBox\officeMac\unlink.gif" />
+    <Content Include="js\FreeTextBox\officeMac\Untitled-2.png" />
+    <Content Include="js\FreeTextBox\officeMac\wordclean.gif" />
+    <Content Include="js\FreeTextBox\officeXP\bold.gif" />
+    <Content Include="js\FreeTextBox\officeXP\bold.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\bulletedlist.gif" />
+    <Content Include="js\FreeTextBox\officeXP\bulletedlist.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\copy.gif" />
+    <Content Include="js\FreeTextBox\officeXP\copy.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\createlink.gif" />
+    <Content Include="js\FreeTextBox\officeXP\createlink.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\cut.gif" />
+    <Content Include="js\FreeTextBox\officeXP\cut.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\delete.gif" />
+    <Content Include="js\FreeTextBox\officeXP\delete.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\deletetablecolumn.gif" />
+    <Content Include="js\FreeTextBox\officeXP\deletetablecolumn.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\deletetablerow.gif" />
+    <Content Include="js\FreeTextBox\officeXP\deletetablerow.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\editstyle.gif" />
+    <Content Include="js\FreeTextBox\officeXP\edittable.gif" />
+    <Content Include="js\FreeTextBox\officeXP\fontbackcolorpicker.gif" />
+    <Content Include="js\FreeTextBox\officeXP\fontbackcolorpicker.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\fontforecolorpicker.gif" />
+    <Content Include="js\FreeTextBox\officeXP\fontforecolorpicker.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\forumColumnBackground.gif" />
+    <Content Include="js\FreeTextBox\officeXP\iespellcheck.gif" />
+    <Content Include="js\FreeTextBox\officeXP\iespellcheck.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\indent.gif" />
+    <Content Include="js\FreeTextBox\officeXP\indent.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\insertbutton.gif" />
+    <Content Include="js\FreeTextBox\officeXP\insertcheckbox.gif" />
+    <Content Include="js\FreeTextBox\officeXP\insertdate.gif" />
+    <Content Include="js\FreeTextBox\officeXP\insertdate.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\insertdiv.gif" />
+    <Content Include="js\FreeTextBox\officeXP\insertdropdownlist.gif" />
+    <Content Include="js\FreeTextBox\officeXP\insertform.gif" />
+    <Content Include="js\FreeTextBox\officeXP\insertimage.gif" />
+    <Content Include="js\FreeTextBox\officeXP\insertimage.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\insertimagefromgallery.gif" />
+    <Content Include="js\FreeTextBox\officeXP\insertimagefromgallery.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\insertlistbox.gif" />
+    <Content Include="js\FreeTextBox\officeXP\insertradiobutton.gif" />
+    <Content Include="js\FreeTextBox\officeXP\insertrule.gif" />
+    <Content Include="js\FreeTextBox\officeXP\insertrule.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\inserttable.gif" />
+    <Content Include="js\FreeTextBox\officeXP\inserttable.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\inserttablecolumn.gif" />
+    <Content Include="js\FreeTextBox\officeXP\inserttablecolumn.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\inserttablecolumnafter.gif" />
+    <Content Include="js\FreeTextBox\officeXP\inserttablecolumnafter.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\inserttablecolumnbefore.gif" />
+    <Content Include="js\FreeTextBox\officeXP\inserttablecolumnbefore.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\inserttablerow.gif" />
+    <Content Include="js\FreeTextBox\officeXP\inserttablerow.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\inserttablerowafter.gif" />
+    <Content Include="js\FreeTextBox\officeXP\inserttablerowafter.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\inserttablerowbefore.gif" />
+    <Content Include="js\FreeTextBox\officeXP\inserttablerowbefore.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\inserttextarea.gif" />
+    <Content Include="js\FreeTextBox\officeXP\inserttextbox.gif" />
+    <Content Include="js\FreeTextBox\officeXP\inserttime.gif" />
+    <Content Include="js\FreeTextBox\officeXP\inserttime.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\italic.gif" />
+    <Content Include="js\FreeTextBox\officeXP\italic.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\justifycenter.gif" />
+    <Content Include="js\FreeTextBox\officeXP\justifycenter.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\justifyfull.gif" />
+    <Content Include="js\FreeTextBox\officeXP\justifyfull.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\justifyleft.gif" />
+    <Content Include="js\FreeTextBox\officeXP\justifyleft.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\justifyright.gif" />
+    <Content Include="js\FreeTextBox\officeXP\justifyright.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\mergecells.gif" />
+    <Content Include="js\FreeTextBox\officeXP\mergecells.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\mergerows.gif" />
+    <Content Include="js\FreeTextBox\officeXP\mergerows.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\mode.design.gif" />
+    <Content Include="js\FreeTextBox\officeXP\mode.html.gif" />
+    <Content Include="js\FreeTextBox\officeXP\netspell.gif" />
+    <Content Include="js\FreeTextBox\officeXP\netspell.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\normal.gif" />
+    <Content Include="js\FreeTextBox\officeXP\normal.png" />
+    <Content Include="js\FreeTextBox\officeXP\numberedlist.gif" />
+    <Content Include="js\FreeTextBox\officeXP\numberedlist.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\bgcolor.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\bold.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\bold.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\borders.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\bulletedlist.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\bulletedlist.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\changecase.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\changecase.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\copy.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\copy.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\createlink.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\createlink.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\cut.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\cut.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\delete.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\delete.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\deletetablecolumn.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\deletetablecolumn.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\deletetablerow.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\deletetablerow.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\details.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\find.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\find.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\fontbackcolorpicker.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\fontbackcolorpicker.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\indent.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\insertdate.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\insertdate.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\insertemail.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\insertemail.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\insertimage.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\insertimage.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\insertimagefromgallery.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\insertimagefromgallery.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\insertrule.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\insertrule.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\inserttable.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\inserttable.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\inserttablecolumn.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\inserttablecolumn.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\inserttablerow.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\inserttablerow.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\inserttime.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\inserttime.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\italic.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\italic.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\justifycenter.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\justifycenter.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\justifyfull.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\justifyfull.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\justifyleft.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\justifyleft.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\justifyright.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\justifyright.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\numberedlist.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\numberedlist.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\outdent.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\outdent.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\paste.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\paste.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\print.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\print.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\redo.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\redo.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\removeformat.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\removeformat.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\save.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\save.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\spellcheck.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\spellcheck.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\strikethrough.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\strikethrough.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\subscript.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\subscript.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\superscript.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\superscript.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\toggleborders.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\toggledetails.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\toggledetails.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\underline.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\underline.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\undo.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\undo.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\unlink.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\unlink.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\verse.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\verse.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\wordcount.gif" />
+    <Content Include="js\FreeTextBox\officeXP\old\wordcount.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\outdent.gif" />
+    <Content Include="js\FreeTextBox\officeXP\outdent.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\paste.gif" />
+    <Content Include="js\FreeTextBox\officeXP\paste.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\preview.gif" />
+    <Content Include="js\FreeTextBox\officeXP\print.gif" />
+    <Content Include="js\FreeTextBox\officeXP\print.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\redo.gif" />
+    <Content Include="js\FreeTextBox\officeXP\redo.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\removeformat.gif" />
+    <Content Include="js\FreeTextBox\officeXP\removeformat.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\save.gif" />
+    <Content Include="js\FreeTextBox\officeXP\save.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\selectall.gif" />
+    <Content Include="js\FreeTextBox\officeXP\separator.horizontal.gif" />
+    <Content Include="js\FreeTextBox\officeXP\spacer.gif" />
+    <Content Include="js\FreeTextBox\officeXP\spellcheck.gif" />
+    <Content Include="js\FreeTextBox\officeXP\spellcheck.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\strikethrough.gif" />
+    <Content Include="js\FreeTextBox\officeXP\strikethrough.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subscript.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subscript.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\bold.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\bold.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\bulletedlist.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\bulletedlist.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\copy.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\copy.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\createlink.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\createlink.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\cut.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\cut.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\delete.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\delete.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\deletetablecolumn.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\deletetablecolumn.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\deletetablerow.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\deletetablerow.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\fontbackcolorpicker.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\fontbackcolorpicker.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\fontforecolorpicker.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\fontforecolorpicker.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\indent.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\indent.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\insertdate.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\insertdate.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\insertimage.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\insertimage.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\insertimagefromgallery.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\insertimagefromgallery.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\insertrule.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\insertrule.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\inserttable.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\inserttable.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\inserttablecolumn.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\inserttablecolumn.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\inserttablerow.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\inserttablerow.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\inserttime.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\inserttime.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\italic.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\italic.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\justifycenter.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\justifycenter.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\justifyfull.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\justifyfull.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\justifyleft.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\justifyleft.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\justifyright.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\justifyright.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\mergecells.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\mergecells.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\mergerows.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\mergerows.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\numberedlist.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\numberedlist.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\outdent.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\outdent.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\paste.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\paste.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\print.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\print.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\redo.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\redo.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\removeformat.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\removeformat.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\save.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\save.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\spellcheck.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\spellcheck.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\strikethrough.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\strikethrough.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\subscript.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\subscript.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\superscript.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\superscript.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\underline.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\underline.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\undo.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\undo.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\unlink.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\unlink.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\wordclean.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\wordclean.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\wordcount.gif" />
+    <Content Include="js\FreeTextBox\officeXP\subs\wordcount.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\superscript.gif" />
+    <Content Include="js\FreeTextBox\officeXP\superscript.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\toolbar.horizontal.end.gif" />
+    <Content Include="js\FreeTextBox\officeXP\toolbar.horizontal.start.gif" />
+    <Content Include="js\FreeTextBox\officeXP\underline.gif" />
+    <Content Include="js\FreeTextBox\officeXP\underline.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\undo.gif" />
+    <Content Include="js\FreeTextBox\officeXP\undo.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\unlink.gif" />
+    <Content Include="js\FreeTextBox\officeXP\unlink.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\wordclean.gif" />
+    <Content Include="js\FreeTextBox\officeXP\wordclean.over.gif" />
+    <Content Include="js\FreeTextBox\officeXP\wordcount.gif" />
+    <Content Include="js\FreeTextBox\officeXP\wordcount.over.gif" />
+    <Content Include="js\FreeTextBox\utility\folder.big.gif" />
+    <Content Include="js\FreeTextBox\utility\folder.small.gif" />
+    <Content Include="js\FreeTextBox\utility\folder.up.gif" />
+    <Content Include="js\FreeTextBox\utility\image.gif" />
+    <Content Include="Shared\DownloadDocument.aspx" />
+    <Content Include="UserControls\BreadCrumbs.ascx" />
+    <Content Include="Web.sitemap" />
+    <None Include="js\FreeTextBox\images\css\Thumbs.db" />
+    <None Include="js\FreeTextBox\images\misc\buttonbackgrounds.psd" />
+    <None Include="js\FreeTextBox\images\misc\Image-Normal.psd" />
+    <None Include="js\FreeTextBox\images\misc\Picasa.ini" />
+    <None Include="js\FreeTextBox\images\misc\Thumbs.db" />
+    <None Include="js\FreeTextBox\images\misc\ToolbarButton-Background.psd" />
+    <None Include="js\FreeTextBox\images\Picasa.ini" />
+    <None Include="js\FreeTextBox\images\subs\Thumbs.db" />
+    <None Include="js\FreeTextBox\images\Thumbs.db" />
+    <None Include="js\FreeTextBox\Languages\_sgbak\de-de.xml.2005-03-22.10-39-30.0156" />
+    <None Include="js\FreeTextBox\Languages\_sgbak\Languages.xml.2005-03-17.21-30-04.5156" />
+    <None Include="js\FreeTextBox\Languages\_sgbak\Languages.xml.2005-03-22.10-39-19.7187" />
+    <None Include="js\FreeTextBox\office2000\subs\Thumbs.db" />
+    <None Include="js\FreeTextBox\office2000\Thumbs.db" />
+    <None Include="js\FreeTextBox\officeMac\Picasa.ini" />
+    <None Include="js\FreeTextBox\officeMac\Thumbs.db" />
+    <None Include="js\FreeTextBox\officeXP\old\Thumbs.db" />
+    <None Include="js\FreeTextBox\officeXP\subs\Thumbs.db" />
+    <None Include="js\FreeTextBox\officeXP\Thumbs.db" />
+    <None Include="js\FreeTextBox\utility\Thumbs.db" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <Content Include="css\Styles.css" />
+    <Content Include="Error\Error.aspx" />
+    <Content Include="Error\PageNotFound.aspx" />
+    <Content Include="eToolkit\Default.aspx" />
+    <Content Include="eToolkit\UserControls\SideNav.ascx" />
+    <Content Include="img\AboutUs_off.gif" />
+    <Content Include="img\AboutUs_on.gif" />
+    <Content Include="img\NextButton.gif" />
+    <Content Include="img\NextButtonHover.gif" />
+    <Content Include="img\TreeNodeChecked.gif" />
+    <Content Include="img\contact_off.gif" />
+    <Content Include="img\contact_on.gif" />
+    <Content Include="img\ExpandDown.gif" />
+    <Content Include="img\footer_arrow.gif" />
+    <Content Include="img\footer_gradient.gif" />
+    <Content Include="img\ghost.gif" />
+    <Content Include="img\grad_bar.gif" />
+    <Content Include="img\hcahps_off.gif" />
+    <Content Include="img\hcahps_on.gif" />
+    <Content Include="img\HeaderLeftCA.gif" />
+    <Content Include="img\HeaderLeftUS.gif" />
+    <Content Include="img\header_about_off.gif" />
+    <Content Include="img\header_about_on.gif" />
+    <Content Include="img\header_contact_off.gif" />
+    <Content Include="img\header_contact_on.gif" />
+    <Content Include="img\header_menu_corner.gif" />
+    <Content Include="img\header_menu_spacer.gif" />
+    <Content Include="img\header_mysolutions_off.gif" />
+    <Content Include="img\header_mysolutions_on.gif" />
+    <Content Include="img\header_products_off.gif" />
+    <Content Include="img\header_products_on.gif" />
+    <Content Include="img\header_search_body.gif" />
+    <Content Include="img\header_search_corner.gif" />
+    <Content Include="img\hRule_Red.gif" />
+    <Content Include="img\ln_off.gif" />
+    <Content Include="img\ln_on.gif" />
+    <Content Include="img\logo_left.gif" />
+    <Content Include="img\logo_right.gif" />
+    <Content Include="img\MenuBox\background.gif" />
+    <Content Include="img\MenuBox\bottom.gif" />
+    <Content Include="img\MenuBox\bottomleft.gif" />
+    <Content Include="img\MenuBox\bottomright.gif" />
+    <Content Include="img\MenuBox\left.gif" />
+    <Content Include="img\MenuBox\menubullet.gif" />
+    <Content Include="img\MenuBox\right.gif" />
+    <Content Include="img\MenuBox\top.gif" />
+    <Content Include="img\MenuBox\topleft.gif" />
+    <Content Include="img\MenuBox\topright.gif" />
+    <Content Include="img\my_solutions_off.gif" />
+    <Content Include="img\my_solutions_on.gif" />
+    <Content Include="img\Products_off.gif" />
+    <Content Include="img\Products_on.gif" />
+    <Content Include="img\Signout_off.gif" />
+    <Content Include="img\Signout_on.gif" />
+    <Content Include="img\stp1_grn.gif" />
+    <Content Include="img\stp2_grn.gif" />
+    <Content Include="img\stp3_grn.gif" />
+    <Content Include="img\TOC_etoolkit.gif" />
+    <Content Include="img\TreeNodeUnchecked.gif" />
+    <Content Include="js\Scripts.js" />
+    <Content Include="Login.aspx" />
+    <Content Include="UserControls\CurrentUser.ascx" />
+    <Content Include="UserControls\FooterControlCss.ascx" />
+    <Content Include="UserControls\HeaderControlCss.ascx" />
+    <Content Include="UserControls\QuickGroupSelector.ascx" />
+    <Content Include="NrcPicker.master" />
+    <Content Include="UserControls\TopNavGeneral.ascx" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\DataMart Class Library Solution\DataMart.MySolutions.Library.SqlProvider\DataMart.MySolutions.Library.SqlProvider.vbproj">
+      <Project>{8D1DD93B-49F7-4716-A67B-B5EAB3FA2BF9}</Project>
+      <Name>DataMart.MySolutions.Library.SqlProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DataMart Class Library Solution\DataMart.MySolutions.Library\DataMart.MySolutions.Library.vbproj">
+      <Project>{51CCD1D3-9613-471E-B395-BCC271B99EF7}</Project>
+      <Name>DataMart.MySolutions.Library</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="eToolkit\temp_img\" />
+    <Folder Include="img\Gallery\" />
+    <Folder Include="MemberResources\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/MySolutions</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

@@ -1,0 +1,503 @@
+/************ Generic Default Styles ************/
+body
+{
+	margin: 0px;
+	font-family: Verdana, Arial, Sans-Serif;
+	font-size: 13px;
+	line-height: normal;
+}
+
+/************ NRC+Picker Header / Footer Styles ************/
+#HeaderDiv{
+    margin-top: 0px;
+    margin-left: 0px;
+  /*margin-left: auto;
+    margin-right: auto;*/
+    font-family:Arial;
+    font-size: 11px;
+    color: #318991;
+    width: 760px;
+    position: relative;
+}
+#HeaderDiv A {color: #318991}
+#HeaderDiv A:visited {color: #318991;}
+#HeaderDiv A:hover {color: #318991;}
+#HeaderLogoDiv
+{
+	float:left;
+}
+#HeaderLinksDiv
+{
+	float:right;
+	margin-top:10px;
+}
+#HeaderCurrentUserDiv 
+{
+	position: absolute;
+	top: 58px;
+	right: 0px;
+	white-space:nowrap;
+	background-color: White;
+}
+#TopNavDiv {
+    background-color: #318991;
+    clear: both;
+    position: relative;
+    padding-top: 1px;
+    padding-bottom: 3px;
+    padding-left: 10px;
+    font-family: Arial Narrow;
+    font-size: 16px;
+    font-weight: bold;
+    color: #bddbde;
+}
+#TopNavDiv A {
+    text-decoration: none;
+    color: #bddbde;
+}
+#TopNavDiv A:visited {
+    color: #bddbde;
+}
+#TopNavDiv A:hover {
+    color: #ffffff;
+}
+#FooterDiv
+{
+    margin-left: 0px;
+  /*margin-left: auto;
+    margin-right: auto;*/
+	width: 760px;
+    font-family:Arial;
+    font-size: 11px;
+    color: #318991;	
+}
+#FooterDiv A {color: #318991}
+#FooterDiv A:visited {color: #318991;}
+#FooterDiv A:hover {color: #318991;}
+#FooterDiv HR
+{
+	color: #318991;
+	height: 8px;
+	background-color: #318991;
+	border-width: 0px;	
+}
+#FooterVersionDiv
+{
+	font-size: xx-small;
+	color: #dcdcdc;	
+}
+#PageContentBorder
+{
+	position: relative;
+	width: 736px;
+	border: Solid 2px #666666; 
+	margin-top: 2px; 
+	margin-bottom:0px; 
+    margin-left: 0px;
+  /*margin-left: auto;
+    margin-right: auto;*/
+	min-height: 290px;
+	padding: 10px;
+}
+/*************************** Common Styles ***************************/
+#BreadCrumbDiv,
+#BreadCrumbDiv a,
+#BreadCrumbDiv a:visited
+{
+	font-size: 10px;
+	color: Black;
+	text-decoration: none;
+	margin-bottom:10px;
+}
+#BreadCrumbDiv a:hover
+{
+	color: #318991;
+	text-decoration: underline;
+}
+.PageTitle,.SectionHeader
+{
+	color: #555555;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 140%;
+	font-weight: bolder;	
+}
+.InputPrompt
+{
+	font-family: Verdana;
+	font-weight:bold;
+	font-size: 10px;
+}
+.InputField,
+.InputField Select
+{
+	font-family:Verdana;
+	font-size: 10px;
+}
+.NextButton
+{
+	background-color: #b7d0d0;
+	color: White;
+	font-weight: bold;
+	background-image: url(../img/NextButton.gif);
+	background-position: right center;
+	background-repeat: no-repeat;
+	padding-right:15px;
+	font-family: Verdana;
+	border: Solid 1px #318991;
+	cursor: pointer;
+}
+.NextButton:hover
+{
+	background-color: #ffffff;
+	color: #b7d0d0;
+	background-image: url(../img/NextButtonHover.gif);
+}
+.DeleteCheckedButton 
+{
+	border: Solid 1px Gray;
+	background-color: #f7f7f7;
+	font-size: 10px;
+	color: Gray;
+	font-weight: bold;
+	background-image: url(../img/Delete16.gif);
+	background-position: left center;
+	background-repeat: no-repeat;
+	font-family: Verdana;
+	cursor: pointer;
+	padding: 3px 0px 3px 16px;
+}
+.DeleteCheckedButton:hover
+{
+	border: Solid 1px Gray;
+	background-color: #e7e7e7;
+}
+/*************************** Unit Selection Tree Styles ***************************/
+.UnitTreeNode
+{
+	cursor: pointer;
+	background-color: #ffffff;
+	padding: 1px;
+}
+.UnitTreeNode span
+{
+	display: inline-block;
+	/*padding: 1px 1px 0px 1px;*/
+	margin: 1px 1px 1px 0px;
+}
+.UnitTreeNode:hover
+{
+	color: Gray;
+}
+.UnitTreeNodeSelected
+{
+	cursor: pointer;
+	background-color: #ffffcc;
+	border: solid 1px #ff9900;
+	padding: 0px;
+}
+.UnitTreeNodeSelected span
+{
+	display: inline-block;
+	/*padding: 0px 0px 0px 1px;*/
+	margin: 0px 0px 2px 1px;
+}
+/*************************** Menu Box Styles ***************************/
+.MenuBoxContent
+{
+	font-family:Verdana; 
+	font-size: 13px;
+}
+.MenuBoxContent hr 
+{
+}
+.MenuBoxTitle
+{
+	font-weight:bold; 
+	text-align:left;
+	padding-bottom:5px;
+}
+.MenuBoxItem
+{
+	background-image: url(../img/MenuBox/menubullet.gif);
+	background-position: 0px 7px;
+	background-repeat: no-repeat;
+}
+.MenuBoxItem img
+{
+	border-style:none;
+}
+.MenuBoxItem a
+{
+	color: Black;
+	margin-left: 8px;
+	padding: 4px 2px 4px 2px;
+	text-decoration: none;
+	display: block;
+}
+.MenuBoxItem a:visited
+{
+	color: Black;
+}
+
+.MenuBoxItem a:hover
+{
+	background-color: #ffffcc;
+	background-position: -1px 6px;
+	color: Gray;
+	border: solid 1px #ff9900;
+	padding: 3px 1px 3px 1px;	
+}
+.SelectionTreeItem
+{
+	background-color: #f1f2f3; 
+	border: solid 1px #f1f2f3; 
+	cursor: hand;
+}
+.SelectionTreeItemHover 
+{
+	background-color: #ffffcc; 
+	border: solid 1px #ff9900; 
+	cursor: hand;
+}
+/*************************** Home Page Styles ***************************/
+.HomePagePanel
+{
+	font-family: Verdana;
+	font-size: 10px;
+	padding-left: 5px;
+	padding-right: 5px;
+	text-align: left;
+}
+.HomePagePanel h1
+{
+	font-size: 14px;
+	font-weight: 700;
+	text-align: left;
+	margin: 5px 0px 0px 10px;	
+}
+.HomePagePanel hr
+{
+	color: #000000;
+	background-color: #000000;
+	border-style: none;	
+	height: 1px;
+	margin: 0px 10px 0px 10px;
+}
+.HomePagePanel p
+{
+	margin-top: 2px;
+}
+.HomePagePanel a
+{
+	color: #005bbd;
+	text-decoration: none;
+}
+.HomePagePanel a:hover
+{
+	text-decoration: underline;
+}
+
+.HelpMe
+{
+	float: left;
+	clear: both;
+}
+
+#FeaturedPublicationDiv
+{
+	background-color: #dbe9df;
+	width: 190px;
+	background-image: url(../img/PublicationTopRight.gif);
+	background-repeat: no-repeat;
+	background-position: right top;
+	/* min-height: 387px; */
+	margin-right: 6px;
+	float: left;
+	margin-bottom: 5px;
+}
+#MemberResourcesDiv
+{
+	background-color: #dbe9df;
+	width: 190px;
+	background-image: url(../img/PublicationTopRight.gif);
+	background-repeat: no-repeat;
+	background-position: right top;
+	/* min-height: 387px; */
+	margin-right: 6px;
+	float: left;
+	margin-bottom: 5px;
+}
+#FeaturedExpertDiv
+{
+	width: 363px;
+	margin-bottom: 5px;
+}
+#WhatsNewDiv
+{
+	width: 363px;
+	background-color: #bdd7d6;
+	background-image: url(../img/WhatsNewTopRight.gif);
+	background-repeat: no-repeat;
+	background-position: right top;
+	padding-bottom: 30px;
+}
+#AdvertisementDiv
+{
+	float: right;
+	width: 150px;
+	min-height: 400px;
+}
+
+/*************************** Content Manager Styles ***************************/
+
+.TabButtonActive
+{
+	float:left;
+	padding: 4px;
+	width: 75px;
+	background-color: #d6d3ce;
+	border-left: solid 1px black;
+	border-top: solid 1px black;
+	border-right: solid 1px black;
+	text-align: center;
+	cursor: default;
+}
+.TabButtonInactive
+{
+	float:left;
+	padding: 4px 4px 3px 4px;
+	width: 75px;
+	background-color: #ffffcc;
+	border-left: solid 1px black;
+	border-top: solid 1px black;
+	border-right: solid 1px black;
+	border-bottom: solid 1px black;
+	text-align: center;
+	cursor: pointer;
+}
+.TabButtonInactive:hover
+{
+	background-color: #777777;
+}
+.TabButtonSpacer
+{
+	float:left;
+	width: 10px;
+	height: 22px;
+	border-bottom: solid 1px black;
+	background-color: #ffffff;
+}
+.TabButtonFiller
+{
+	float:left;
+	width: 550px;
+	height: 22px;
+	border-bottom: solid 1px black;
+	background-color: #ffffff;
+}
+.TabContent
+{
+	clear:both;
+	border-left: Solid 1px black;
+	border-right: Solid 1px black;
+	border-bottom: Solid 1px black;
+	background-color: #d6d3ce;
+}
+/*************************** Question Content Manager Styles ***************************/
+.TabMenuItem
+{
+	background-color: #f7f3b5;
+	border-bottom: Solid 2px #636563;
+	padding: 4px;
+	color: #636563;
+}
+.TabMenuItem a,
+.TabMenuItem a:active,
+.TabMenuItem a:visted,
+.TabMenuItem a:hover
+{
+	font-weight: bold;
+	text-decoration: none;
+}
+.TabMenuItem.TabMenuItemSelected
+{
+	border-bottom: Solid 2px White;
+}
+.TabMenuItemSelected
+{
+	background-color: White;
+}
+.TabMenuItemSelected.TabMenuItemHover
+{
+	background-color: White;
+}
+.TabMenuItemHover
+{
+	background-color: #e7e7e7;
+	color: #636563;
+}
+.TabMenuContainer
+{
+	background-color: #636563;
+	padding-left: 1px;
+	padding-top: 2px;
+	margin-left: -11px;
+	width: 758px;
+}
+
+.StackTracePanel,
+.StackTracePanel a,
+.StackTracePanel a:active,
+.StackTracePanel a:visited,
+.StackTracePanel a:hover
+{
+	font-size: 10px; 
+	color: #666666;
+	text-decoration: none;
+}
+/*************************** Question Scores Styles ***************************/
+.QuestionLink
+{
+	color: #003399;
+	text-decoration: none;
+}
+.QuestionLink:hover
+{
+	color: #990000;
+	text-decoration: underline;
+}
+
+/*************************** Model Manager Styles ***************************/
+.ModelManagerNode
+{
+	cursor: pointer;
+	padding: 1px;
+	font-size: 10px;
+}
+.ModelManagerNode a
+{
+	color: Black;
+	display: inline-block;
+	margin: 1px 1px 1px 0px;
+	white-space: normal;
+}
+.ModelManagerNode:hover
+{
+	color: Gray;
+}
+.ModelManagerNodeSelected
+{
+	cursor: pointer;
+	background-color: #ffffcc;
+	border: solid 1px #ff9900;
+	padding: 0px 1px 0px 0px;
+}
+.ModelManagerNodeSelected a
+{
+	display: inline-block;
+	margin: 2px 0px 2px 1px;
+}
+.ModelManagerGridHeader th
+{
+	padding: 0px 2px 0px 0px;
+}

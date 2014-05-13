@@ -1,0 +1,28 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Background Data Update System", "BackGround Data Updata System\Background Data Update System.vbproj", "{B024BFB8-B4CB-4A94-8011-5B2348915636}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 2
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://tfs.nationalresearch.com:8080/tfs/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = BackGround\u0020Data\u0020Updata\u0020System\\Background\u0020Data\u0020Update\u0020System.vbproj
+		SccProjectName1 = BackGround\u0020Data\u0020Updata\u0020System
+		SccLocalPath1 = BackGround\u0020Data\u0020Updata\u0020System
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B024BFB8-B4CB-4A94-8011-5B2348915636}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B024BFB8-B4CB-4A94-8011-5B2348915636}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B024BFB8-B4CB-4A94-8011-5B2348915636}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B024BFB8-B4CB-4A94-8011-5B2348915636}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

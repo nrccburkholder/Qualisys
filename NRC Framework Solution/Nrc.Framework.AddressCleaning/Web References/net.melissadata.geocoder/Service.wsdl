@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s0="urn:MelissaDataGeoCodeService/Imports" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="urn:MelissaDataGeoCodeService" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" targetNamespace="urn:MelissaDataGeoCodeService" name="Service" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema targetNamespace="urn:MelissaDataGeoCodeService/Imports">
+      <s:import schemaLocation="https://geocoder.melissadata.net/v2/SOAP/Service.svc?xsd=xsd0" namespace="urn:MelissaDataGeoCodeService" />
+      <s:import schemaLocation="https://geocoder.melissadata.net/v2/SOAP/Service.svc?xsd=xsd1" namespace="urn:mdWebServiceGeoCode" />
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="IService_doGeoCode_InputMessage">
+    <wsdl:part name="parameters" element="tns:doGeoCode" />
+  </wsdl:message>
+  <wsdl:message name="IService_doGeoCode_OutputMessage">
+    <wsdl:part name="parameters" element="tns:doGeoCodeResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IService">
+    <wsdl:operation name="doGeoCode">
+      <wsdl:input message="tns:IService_doGeoCode_InputMessage" />
+      <wsdl:output message="tns:IService_doGeoCode_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IService" type="tns:IService">
+    <wsp:PolicyReference URI="#BasicHttpBinding_IService_policy" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" />
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="doGeoCode">
+      <soap:operation soapAction="urn:MelissaDataGeoCodeService/IService/doGeoCode" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Service">
+    <wsdl:port name="BasicHttpBinding_IService" binding="tns:BasicHttpBinding_IService">
+      <soap:address location="https://geocoder.melissadata.net/v2/SOAP/Service.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org//InOut" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://tempuri.org//InOut" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org//InOut">
+      <s:element name="GetUserList">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetUserListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetUserListResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetStatusList">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetStatusListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetStatusListResult" type="tns:ArrayOfStatusInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfStatusInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="StatusInfo" nillable="true" type="tns:StatusInfo" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="StatusInfo">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="InOutStatusID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Status" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="IsAvailable" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="WebLabel" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetUserId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUserIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetUserIdResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUserStatusList">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetUserStatusListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetUserStatusListResult" type="tns:ArrayOfInOutInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfInOutInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="InOutInfo" nillable="true" type="tns:InOutInfo" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="InOutInfo">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="UserID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="FirstName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LastName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UserName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="StatusID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Status" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="IsAvailable" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="WebLabel" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="TeamID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="TeamName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PhoneExtension" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="OfficeID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="OfficeName" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetUserStatusById">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="userId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUserStatusByIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetUserStatusByIdResult" type="tns:InOutInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUserStatusByName">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUserStatusByNameResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetUserStatusByNameResult" type="tns:InOutInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetUserStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="userId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="statusId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetUserStatusResponse">
+        <s:complexType />
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetUserListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUserList" />
+  </wsdl:message>
+  <wsdl:message name="GetUserListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUserListResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetStatusListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetStatusList" />
+  </wsdl:message>
+  <wsdl:message name="GetStatusListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetStatusListResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetUserIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUserId" />
+  </wsdl:message>
+  <wsdl:message name="GetUserIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUserIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetUserStatusListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUserStatusList" />
+  </wsdl:message>
+  <wsdl:message name="GetUserStatusListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUserStatusListResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetUserStatusByIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUserStatusById" />
+  </wsdl:message>
+  <wsdl:message name="GetUserStatusByIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUserStatusByIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetUserStatusByNameSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUserStatusByName" />
+  </wsdl:message>
+  <wsdl:message name="GetUserStatusByNameSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUserStatusByNameResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetUserStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:SetUserStatus" />
+  </wsdl:message>
+  <wsdl:message name="SetUserStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:SetUserStatusResponse" />
+  </wsdl:message>
+  <wsdl:portType name="InOutSoap">
+    <wsdl:operation name="GetUserList">
+      <wsdl:input message="tns:GetUserListSoapIn" />
+      <wsdl:output message="tns:GetUserListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetStatusList">
+      <wsdl:input message="tns:GetStatusListSoapIn" />
+      <wsdl:output message="tns:GetStatusListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUserId">
+      <wsdl:input message="tns:GetUserIdSoapIn" />
+      <wsdl:output message="tns:GetUserIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUserStatusList">
+      <wsdl:input message="tns:GetUserStatusListSoapIn" />
+      <wsdl:output message="tns:GetUserStatusListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUserStatus">
+      <wsdl:input name="GetUserStatusById" message="tns:GetUserStatusByIdSoapIn" />
+      <wsdl:output name="GetUserStatusById" message="tns:GetUserStatusByIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUserStatus">
+      <wsdl:input name="GetUserStatusByName" message="tns:GetUserStatusByNameSoapIn" />
+      <wsdl:output name="GetUserStatusByName" message="tns:GetUserStatusByNameSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetUserStatus">
+      <wsdl:input message="tns:SetUserStatusSoapIn" />
+      <wsdl:output message="tns:SetUserStatusSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="InOutSoap" type="tns:InOutSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetUserList">
+      <soap:operation soapAction="http://tempuri.org//InOut/GetUserList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetStatusList">
+      <soap:operation soapAction="http://tempuri.org//InOut/GetStatusList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserId">
+      <soap:operation soapAction="http://tempuri.org//InOut/GetUserId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserStatusList">
+      <soap:operation soapAction="http://tempuri.org//InOut/GetUserStatusList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserStatus">
+      <soap:operation soapAction="http://tempuri.org//InOut/GetUserStatusById" style="document" />
+      <wsdl:input name="GetUserStatusById">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="GetUserStatusById">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserStatus">
+      <soap:operation soapAction="http://tempuri.org//InOut/GetUserStatusByName" style="document" />
+      <wsdl:input name="GetUserStatusByName">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="GetUserStatusByName">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetUserStatus">
+      <soap:operation soapAction="http://tempuri.org//InOut/SetUserStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="InOut">
+    <wsdl:port name="InOutSoap" binding="tns:InOutSoap">
+      <soap:address location="http://insidenrc/InOut/InOut.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

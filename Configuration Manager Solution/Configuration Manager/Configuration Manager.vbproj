@@ -1,0 +1,870 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8C37EC27-D860-4529-AF17-E9E599A162C2}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>Nrc.Qualisys.ConfigurationManager.My.MyApplication</StartupObject>
+    <RootNamespace>Nrc.Qualisys.ConfigurationManager</RootNamespace>
+    <AssemblyName>ConfigMan</AssemblyName>
+    <MyType>WindowsForms</MyType>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <ApplicationIcon>ConfigMan.ico</ApplicationIcon>
+    <OptionStrict>On</OptionStrict>
+    <SignManifests>true</SignManifests>
+    <ManifestCertificateThumbprint>CE0D475BC80C4D84E10B390B8B4A3A0E829981EA</ManifestCertificateThumbprint>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <GenerateManifests>true</GenerateManifests>
+    <SignAssembly>false</SignAssembly>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>\\mercury\QualisysApps\Prod\ConfigMan\</PublishUrl>
+    <Install>false</Install>
+    <InstallFrom>Unc</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ProductName>Configuration Manager</ProductName>
+    <PublisherName>National Research Corporation</PublisherName>
+    <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>3.1.0.2</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>ConfigMan.xml</DocumentationFile>
+    <NoWarn>42353,42354,42355</NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <CodeAnalysisRules>-Microsoft.Globalization#CA1301;-Microsoft.Globalization#CA1302;-Microsoft.Globalization#CA1303;-Microsoft.Globalization#CA1306;-Microsoft.Globalization#CA1304;-Microsoft.Globalization#CA1305;-Microsoft.Globalization#CA1300</CodeAnalysisRules>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>ConfigMan.xml</DocumentationFile>
+    <NoWarn>42353,42354,42355</NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>ConfigMan.xml</DocumentationFile>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <CodeAnalysisRuleAssemblies>\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisRules>-Microsoft.Globalization#CA1301;-Microsoft.Globalization#CA1302;-Microsoft.Globalization#CA1303;-Microsoft.Globalization#CA1306;-Microsoft.Globalization#CA1304;-Microsoft.Globalization#CA1305;-Microsoft.Globalization#CA1300</CodeAnalysisRules>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+    <NoWarn>42353,42354,42355</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>ConfigMan.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <CodeAnalysisRuleAssemblies>\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+    <NoWarn>42353,42354,42355</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AuditdotNET, Version=2.0.1495.15822, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\AuditdotNET.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Data.v9.3, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Utils.v9.3, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraEditors.v9.3, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraGrid.v9.3, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraScheduler.v9.3.Core, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraScheduler.v9.3, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="Interop.ADODB, Version=2.7.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Interop.ADODB.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.MailMethodClient, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Interop.MailMethodClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.MapSampleUnits, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Interop.MapSampleUnits.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.MSFlexGridLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Interop.MSFlexGridLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.nrcTagField, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Interop.nrcTagField.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.StudyDataClient, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Interop.StudyDataClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.ValidateSurvey, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Interop.ValidateSurvey.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=55cf2641107b9bd6">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Microsoft.ApplicationBlocks.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.stdformat, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Microsoft.NET\Primary Interop Assemblies\Microsoft.stdformat.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NRC, Version=1.14.1.0, Culture=neutral, PublicKeyToken=0c9e538f562d9317">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\NRC.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Framework, Version=1.1.0.0, Culture=neutral, PublicKeyToken=7f65ae6d961bde9c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Framework.BusinessLogic, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.BusinessLogic.dll</HintPath>
+    </Reference>
+    <Reference Include="NRC.NRCAuthLib, Version=1.0.2242.28354, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\NRC.NRCAuthLib.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="TestPrint, Version=1.0.2288.15241, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\TestPrint.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Collections.ObjectModel" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="Configuration Modules\ClientPropertiesModule.vb" />
+    <Compile Include="Configuration Modules\ClientGroupPropertiesModule.vb" />
+    <Compile Include="Configuration Modules\NewClientModule.vb" />
+    <Compile Include="Configuration Modules\NewClientGroupModule.vb" />
+    <Compile Include="Dialogs\CopyDataStructureDialog.Designer.vb">
+      <DependentUpon>CopyDataStructureDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\CopyDataStructureDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\ForceRecalculate.Designer.vb">
+      <DependentUpon>ForceRecalculate.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\ForceRecalculate.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\PropCalcHistory.Designer.vb">
+      <DependentUpon>PropCalcHistory.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\PropCalcHistory.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Enums\ConfigResultActions.vb" />
+    <Compile Include="EventArgs\MedicareSelectionChangingEventArgs.vb" />
+    <Compile Include="EventArgs\MedicareSelectionChangedEventArgs.vb" />
+    <Compile Include="EventArgs\ClientStudySurveySelectionChangedEventArgs.vb" />
+    <Compile Include="Exceptions\AccessDeniedException.vb" />
+    <Compile Include="Classes\ConfigurationModule.vb" />
+    <Compile Include="Classes\CurrentUser.vb" />
+    <Compile Include="EventArgs\FacilityViewModeChangedEventArgs.vb" />
+    <Compile Include="Classes\MultiSelectTreeView.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Classes\Navigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EventArgs\PrioritierViewModeChangedEventArgs.vb" />
+    <Compile Include="Configuration Modules\BusinessRulesModule.vb" />
+    <Compile Include="Configuration Modules\DataStructureModule.vb" />
+    <Compile Include="Configuration Modules\EditSurveyModule.vb" />
+    <Compile Include="Configuration Modules\FormLayoutModule.vb" />
+    <Compile Include="Configuration Modules\MethodologyModule.vb" />
+    <Compile Include="Configuration Modules\NewStudyModule.vb" />
+    <Compile Include="Configuration Modules\NewSurveyModule.vb" />
+    <Compile Include="Configuration Modules\PersonalizationModule.vb" />
+    <Compile Include="Configuration Modules\SamplePeriodsModule.vb" />
+    <Compile Include="Classes\Section.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Configuration Modules\SamplePlanModule.vb" />
+    <Compile Include="Configuration Modules\SampleUnitMappingsModule.vb" />
+    <Compile Include="Configuration Modules\StudyPropertiesModule.vb" />
+    <Compile Include="Configuration Modules\SurveyPropertiesModule.vb" />
+    <Compile Include="Classes\UIRelation.vb" />
+    <Compile Include="Configuration Modules\TestPrintModule.vb" />
+    <Compile Include="Configuration Modules\ValidationModule.vb" />
+    <Compile Include="Controls\BiMonthlyRecurrenceControl.Designer.vb">
+      <DependentUpon>BiMonthlyRecurrenceControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BiMonthlyRecurrenceControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Navigators\ClientNavigator.Designer.vb">
+      <DependentUpon>ClientNavigator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Navigators\ClientNavigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Navigators\ClientStudySurveyNavigator.Designer.vb">
+      <DependentUpon>ClientStudySurveyNavigator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Navigators\ClientStudySurveyNavigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ClientStudySelector.Designer.vb">
+      <DependentUpon>ClientStudySelector.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ClientStudySelector.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Navigators\HCAHPSMngrNavigator.Designer.vb">
+      <DependentUpon>HCAHPSMngrNavigator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Navigators\HCAHPSMngrNavigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Navigators\MedicareMngrNavigator.Designer.vb">
+      <DependentUpon>MedicareMngrNavigator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Navigators\MedicareMngrNavigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\BusinessRulesEditor.Designer.vb">
+      <DependentUpon>BusinessRulesEditor.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\BusinessRulesEditor.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\ClientSection.Designer.vb">
+      <DependentUpon>ClientSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\ClientSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\ConfigSection.Designer.vb">
+      <DependentUpon>ConfigSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\ConfigSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CriteriaEditor.Designer.vb">
+      <DependentUpon>CriteriaEditor.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CriteriaEditor.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\FacilityGrid.Designer.vb">
+      <DependentUpon>FacilityGrid.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FacilityGrid.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\FacilitySection.Designer.vb">
+      <DependentUpon>FacilitySection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\FacilitySection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\ClientGroupSection.Designer.vb">
+      <DependentUpon>ClientGroupSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\ClientGroupSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\HCAHPSMngrSection.Designer.vb">
+      <DependentUpon>HCAHPSMngrSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\HCAHPSMngrSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\MethodologyEditor.Designer.vb">
+      <DependentUpon>MethodologyEditor.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\MethodologyEditor.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\PeriodEditor.Designer.vb">
+      <DependentUpon>PeriodEditor.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\PeriodEditor.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PriorityGroupButton.designer.vb">
+      <DependentUpon>PriorityGroupButton.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PriorityGroupButton.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\PriorityUnitLabel.designer.vb">
+      <DependentUpon>PriorityUnitLabel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PriorityUnitLabel.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Sections\SamplePlanEditor.Designer.vb">
+      <DependentUpon>SamplePlanEditor.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\SamplePlanEditor.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\SampleUnitPrioritizer.Designer.vb">
+      <DependentUpon>SampleUnitPrioritizer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SampleUnitPrioritizer.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\SampleUnitSectionMappingEditor.Designer.vb">
+      <DependentUpon>SampleUnitSectionMappingEditor.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\SampleUnitSectionMappingEditor.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Scheduler.Designer.vb">
+      <DependentUpon>Scheduler.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Scheduler.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\SchedulingWizard.Designer.vb">
+      <DependentUpon>SchedulingWizard.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SchedulingWizard.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\StudySection.Designer.vb">
+      <DependentUpon>StudySection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\StudySection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\SurveyPropertiesEditor.Designer.vb">
+      <DependentUpon>SurveyPropertiesEditor.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\SurveyPropertiesEditor.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\InformationBar.Designer.vb">
+      <DependentUpon>InformationBar.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\InformationBar.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\SurveyValidator.Designer.vb">
+      <DependentUpon>SurveyValidator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\SurveyValidator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Dialogs\CriteriaEditorDialog.Designer.vb">
+      <DependentUpon>CriteriaEditorDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\CriteriaEditorDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\FilterDialog.Designer.vb">
+      <DependentUpon>FilterDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\FilterDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\MassSamplePeriodCreator.Designer.vb">
+      <DependentUpon>MassSamplePeriodCreator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\MassSamplePeriodCreator.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\SamplePeriodsSchedulingWizardDialog.Designer.vb">
+      <DependentUpon>SamplePeriodsSchedulingWizardDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\SamplePeriodsSchedulingWizardDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MainForm.Designer.vb">
+      <DependentUpon>MainForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MainForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Classes\Globals.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Sections\MedicareMngrSection.Designer.vb">
+      <DependentUpon>MedicareMngrSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\MedicareMngrSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Controls\BiMonthlyRecurrenceControl.resx">
+      <DependentUpon>BiMonthlyRecurrenceControl.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\CopyDataStructureDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CopyDataStructureDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Navigators\ClientNavigator.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ClientNavigator.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Navigators\ClientStudySurveyNavigator.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ClientStudySurveyNavigator.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ClientStudySelector.resx">
+      <DependentUpon>ClientStudySelector.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Navigators\MedicareMngrNavigator.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MedicareMngrNavigator.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\BusinessRulesEditor.resx">
+      <DependentUpon>BusinessRulesEditor.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\ClientGroupSection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ClientGroupSection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\ClientSection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ClientSection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\ConfigSection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ConfigSection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CriteriaEditor.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CriteriaEditor.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\FacilityGrid.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FacilityGrid.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\FacilitySection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FacilitySection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\HCAHPSMngrSection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>HCAHPSMngrSection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\InformationBar.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>InformationBar.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\MethodologyEditor.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MethodologyEditor.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\PeriodEditor.resx">
+      <DependentUpon>PeriodEditor.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\SamplePlanEditor.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SamplePlanEditor.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\SampleUnitPrioritizer.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SampleUnitPrioritizer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\SampleUnitSectionMappingEditor.resx">
+      <DependentUpon>SampleUnitSectionMappingEditor.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\SchedulingWizard.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SchedulingWizard.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\StudySection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>StudySection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\SurveyPropertiesEditor.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SurveyPropertiesEditor.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\SurveyValidator.resx">
+      <DependentUpon>SurveyValidator.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\CriteriaEditorDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CriteriaEditorDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\FilterDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FilterDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\ForceRecalculate.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ForceRecalculate.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\MassSamplePeriodCreator.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MassSamplePeriodCreator.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\PropCalcHistory.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PropCalcHistory.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\SamplePeriodsSchedulingWizardDialog.resx">
+      <DependentUpon>SamplePeriodsSchedulingWizardDialog.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MainForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MainForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\licenses.licx" />
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\MedicareMngrSection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MedicareMngrSection.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="stdole">
+      <Guid>{00020430-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <Private>False</Private>
+    </COMReference>
+    <COMReference Include="VBA">
+      <Guid>{000204EF-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>6</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>9</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Calendar16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TestPrint16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BusinessRules16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DataStructure16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Methodology16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Properties16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SamplePlan16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\personalization16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\StudyAccess16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Validation16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FormLayout16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SampleUnitMapping16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+    <None Include="My Project\DataSources\Nrc.QualiSys.Library.Facility.datasource" />
+    <None Include="Resources\New16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ConfigMan.ico" />
+    <None Include="app.config" />
+    <None Include="My Project\DataSources\Nrc.QualiSys.Library.ClientGroup.datasource" />
+    <None Include="My Project\DataSources\Nrc.QualiSys.Library.EmailBlast.datasource" />
+    <None Include="My Project\DataSources\Nrc.QualiSys.Library.EmailBlastOption.datasource" />
+    <None Include="My Project\DataSources\Nrc.QualiSys.Library.Employee.datasource" />
+    <None Include="My Project\DataSources\Nrc.QualiSys.Library.FacilityRegion.datasource" />
+    <None Include="My Project\DataSources\Nrc.QualiSys.Library.FacilityState.datasource" />
+    <None Include="My Project\DataSources\Nrc.QualiSys.Library.MedicareNumber1.datasource" />
+    <None Include="My Project\DataSources\Nrc.QualiSys.Library.SamplePeriod.datasource" />
+    <None Include="My Project\DataSources\Nrc.QualiSys.Library.SamplePeriodScheduledSample.datasource" />
+    <None Include="My Project\DataSources\Nrc.QualiSys.Library.SampleSet.datasource" />
+    <None Include="My Project\DataSources\Nrc.QualiSys.Library.STUDY_EMPLOYEE.datasource" />
+    <None Include="Resources\Caution16.png" />
+    <Content Include="Resources\AllHouseholding16.PNG" />
+    <Content Include="Resources\Contact16.png" />
+    <Content Include="Resources\cross.gif" />
+    <Content Include="Resources\Error.PNG" />
+    <None Include="Resources\Error16.png" />
+    <None Include="Resources\Filter161.png" />
+    <None Include="Resources\Globe161.png" />
+    <None Include="Resources\MagicButton.png" />
+    <None Include="Resources\GreenLight.png" />
+    <Content Include="Resources\MinorsOnlyHouseholding16.PNG" />
+    <Content Include="Resources\NoHouseholding16.PNG" />
+    <None Include="Resources\RoseBud.bmp" />
+    <None Include="Resources\Refresh.png" />
+    <Content Include="Resources\roseBud.ico" />
+    <None Include="Resources\YellowLight.png" />
+    <None Include="Resources\Numbers161.png" />
+    <None Include="Resources\Save16.png" />
+    <None Include="Resources\Undo16.png" />
+    <None Include="Resources\Folder16.png" />
+    <None Include="Resources\MoveToFolder16.png" />
+    <None Include="Resources\DeleteRed16.png" />
+    <None Include="Resources\InsertBelow16.png" />
+    <None Include="Resources\InsertAbove16.png" />
+    <None Include="Resources\DownTriangle16.png" />
+    <None Include="Resources\Ghost16.png" />
+    <None Include="Resources\UpTriangle16.png" />
+    <None Include="Resources\TreeAndList.png" />
+    <None Include="Resources\ListBox16.png" />
+    <None Include="Resources\Form16.png" />
+    <None Include="Resources\Delete16.png" />
+    <None Include="Resources\UpArrow16.png" />
+    <None Include="Resources\DownArrow16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <PublishFile Include="ActiveUp.Net.Dns">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="ActiveUp.Net.Mail">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="DevExpress.Data.v9.3">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="DevExpress.Utils.v9.3">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="DevExpress.XtraEditors.v9.3">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="DevExpress.XtraGrid.v9.3">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="DevExpress.XtraLayout.v9.3">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="DevExpress.XtraScheduler.v9.3">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="DevExpress.XtraScheduler.v9.3.Core">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="MSDATASRC">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="stdole">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\QualiSys Class Library Solution\QualiSys.Library.SqlDataProvider\QualiSys.Library.SqlDataProvider.vbproj">
+      <Project>{31F9022F-D830-410D-90AE-98C59F34E552}</Project>
+      <Name>QualiSys.Library.SqlDataProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\QualiSys Class Library Solution\QualiSys.Library\QualiSys.Library.vbproj">
+      <Project>{191D0C34-FF61-47A6-852F-7FD91D50AD72}</Project>
+      <Name>QualiSys.Library</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>rundll32 dfshim CleanOnlineAppCache</PostBuildEvent>
+  </PropertyGroup>
+</Project>

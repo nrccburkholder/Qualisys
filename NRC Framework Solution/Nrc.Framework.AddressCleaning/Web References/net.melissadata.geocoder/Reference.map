@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DiscoveryClientResultsFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Results>
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="https://geocoder.melissadata.net/v2/SOAP/Service.svc?wsdl" filename="Service.wsdl" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.DiscoveryDocumentReference" url="https://geocoder.melissadata.net/v2/SOAP/Service.svc?disco" filename="Service.disco" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="https://geocoder.melissadata.net/v2/SOAP/Service.svc?xsd=xsd1" filename="Service.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="https://geocoder.melissadata.net/v2/SOAP/Service.svc?xsd=xsd0" filename="Service0.xsd" />
+  </Results>
+</DiscoveryClientResultsFile>

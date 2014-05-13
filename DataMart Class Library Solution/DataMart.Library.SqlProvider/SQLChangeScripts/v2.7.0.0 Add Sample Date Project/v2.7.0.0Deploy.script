@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sqlScript>
+  <scriptFile filePath="..\v2.7.0.0 Add Sample Date Project\Tables\clientstudysurvey.sql" />
+  <scriptFile filePath="..\v2.7.0.0 Add Sample Date Project\SP\sp_Extract_Big_Table.sql" />
+  <scriptFile filePath="..\v2.7.0.0 Add Sample Date Project\SP\SP_Extract_ApplicationTables.sql" />
+  <scriptFile filePath="..\v2.7.0.0 Add Sample Date Project\SP\DCL_ExportInsertExportSet.sql" />
+  <scriptFile filePath="..\v2.7.0.0 Add Sample Date Project\SP\DCL_ExportCreateFile_Sub.sql" />
+   </sqlScript>

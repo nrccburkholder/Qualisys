@@ -1,0 +1,65 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Launch Pad", "Launch Pad\Launch Pad.vbproj", "{7835F071-F999-4711-AEE6-3582DA1267D0}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "LaunchPad.Library", "LaunchPad.Library\LaunchPad.Library.vbproj", "{C13D95CB-A07F-4465-B62A-89CCC687744D}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "LaunchPad.Library.NrcAuthProvider", "LaunchPad.Library.NrcAuthProvider\LaunchPad.Library.NrcAuthProvider.vbproj", "{0F02E245-A58C-441B-A3A1-E4D93A9E7402}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "LaunchPad.Library.CustomProvider", "LaunchPad.Library.CustomProvider\LaunchPad.Library.CustomProvider.vbproj", "{E30BC64B-E02F-46D4-869B-925064B4F0B5}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "LaunchPad.Library.GlobalProvider", "LaunchPad.Library.GlobalProvider\LaunchPad.Library.GlobalProvider.vbproj", "{7D43A37D-76CD-46C3-BD17-8CA0C0E35A9B}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 6
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://perseus:8080/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Launch\u0020Pad\\Launch\u0020Pad.vbproj
+		SccProjectName1 = Launch\u0020Pad
+		SccLocalPath1 = Launch\u0020Pad
+		SccProjectUniqueName2 = LaunchPad.Library.CustomProvider\\LaunchPad.Library.CustomProvider.vbproj
+		SccProjectName2 = LaunchPad.Library.CustomProvider
+		SccLocalPath2 = LaunchPad.Library.CustomProvider
+		SccProjectUniqueName3 = LaunchPad.Library.GlobalProvider\\LaunchPad.Library.GlobalProvider.vbproj
+		SccProjectName3 = LaunchPad.Library.GlobalProvider
+		SccLocalPath3 = LaunchPad.Library.GlobalProvider
+		SccProjectUniqueName4 = LaunchPad.Library.NrcAuthProvider\\LaunchPad.Library.NrcAuthProvider.vbproj
+		SccProjectName4 = LaunchPad.Library.NrcAuthProvider
+		SccLocalPath4 = LaunchPad.Library.NrcAuthProvider
+		SccProjectUniqueName5 = LaunchPad.Library\\LaunchPad.Library.vbproj
+		SccProjectName5 = LaunchPad.Library
+		SccLocalPath5 = LaunchPad.Library
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7835F071-F999-4711-AEE6-3582DA1267D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7835F071-F999-4711-AEE6-3582DA1267D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7835F071-F999-4711-AEE6-3582DA1267D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7835F071-F999-4711-AEE6-3582DA1267D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C13D95CB-A07F-4465-B62A-89CCC687744D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C13D95CB-A07F-4465-B62A-89CCC687744D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C13D95CB-A07F-4465-B62A-89CCC687744D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C13D95CB-A07F-4465-B62A-89CCC687744D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F02E245-A58C-441B-A3A1-E4D93A9E7402}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F02E245-A58C-441B-A3A1-E4D93A9E7402}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F02E245-A58C-441B-A3A1-E4D93A9E7402}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F02E245-A58C-441B-A3A1-E4D93A9E7402}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E30BC64B-E02F-46D4-869B-925064B4F0B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E30BC64B-E02F-46D4-869B-925064B4F0B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E30BC64B-E02F-46D4-869B-925064B4F0B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E30BC64B-E02F-46D4-869B-925064B4F0B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D43A37D-76CD-46C3-BD17-8CA0C0E35A9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D43A37D-76CD-46C3-BD17-8CA0C0E35A9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D43A37D-76CD-46C3-BD17-8CA0C0E35A9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D43A37D-76CD-46C3-BD17-8CA0C0E35A9B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

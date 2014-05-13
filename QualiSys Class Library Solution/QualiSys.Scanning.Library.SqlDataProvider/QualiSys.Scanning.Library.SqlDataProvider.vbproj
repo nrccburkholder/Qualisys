@@ -1,0 +1,280 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Development</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{43B1C31C-3D06-407A-AD35-30256C8B9C6E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Nrc.QualiSys.Scanning.Library.SqlDataProvider</RootNamespace>
+    <AssemblyName>Nrc.QualiSys.Scanning.Library.SqlDataProvider</AssemblyName>
+    <MyType>Windows</MyType>
+    <OptionStrict>On</OptionStrict>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>QualiSys.Scanning.Library.SqlDataProvider.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>QualiSys.Scanning.Library.SqlDataProvider.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>C:\Program Files\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DocumentationFile>QualiSys.Scanning.Library.SqlDataProvider.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>C:\Program Files\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DocumentationFile>QualiSys.Scanning.Library.SqlDataProvider.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>C:\Program Files\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\NRCPROD\Referenced Assemblies\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\NRCPROD\Referenced Assemblies\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ObjectBuilder, Version=1.0.51205.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\NRCPROD\Referenced Assemblies\Microsoft.Practices.ObjectBuilder.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Framework, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\NRCPROD\Referenced Assemblies\Nrc.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Framework.BusinessLogic, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\NRCPROD\Referenced Assemblies\Nrc.Framework.BusinessLogic.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BadLithoProvider.vb" />
+    <Compile Include="QSIDataBatchProvider.vb" />
+    <Compile Include="QSIDataFormProvider.vb" />
+    <Compile Include="QSIDataResultProvider.vb" />
+    <Compile Include="ScanDatabaseHelper.vb" />
+    <Compile Include="DataEntryNavigatorTreeProvider.vb" />
+    <Compile Include="PopMappingProvider.vb" />
+    <Compile Include="QueuedVendorFileProvider.vb" />
+    <Compile Include="StoredProcs\DataEntryNavigatorTree_SP.vb" />
+    <Compile Include="StoredProcs\PopMapping_SP.vb" />
+    <Compile Include="StoredProcs\QSIDataBatch_SP.vb" />
+    <Compile Include="StoredProcs\QSIDataForm_SP.vb" />
+    <Compile Include="StoredProcs\QSIDataResult_SP.vb" />
+    <Compile Include="StoredProcs\Translator_SP.vb" />
+    <Compile Include="StoredProcs\VendorFileOutgoType_SP.vb" />
+    <Compile Include="StoredProcs\VendorFileTracking_SP.vb" />
+    <Compile Include="CultureToLanguageProvider.vb" />
+    <Compile Include="StoredProcs\CultureToLanguage_SP.vb" />
+    <Compile Include="StoredProcs\VendorFileTelematchLog_SP.vb" />
+    <Compile Include="StoredProcs\VoviciDownloadLog_SP.vb" />
+    <Compile Include="VendorFileNavigatorTreeProvider.vb" />
+    <Compile Include="StoredProcs\BadLitho_SP.vb" />
+    <Compile Include="CommentProvider.vb" />
+    <Compile Include="StoredProcs\Comment_SP.vb" />
+    <Compile Include="QualiSysDatabaseHelper.vb" />
+    <Compile Include="DataLoadProvider.vb" />
+    <Compile Include="StoredProcs\VendorFileNavigatorTree_SP.vb" />
+    <Compile Include="StoredProcs\DataLoad_SP.vb" />
+    <Compile Include="DispositionProvider.vb" />
+    <Compile Include="StoredProcs\Disposition_SP.vb" />
+    <Compile Include="ErrorCodeProvider.vb" />
+    <Compile Include="StoredProcs\ErrorCode_SP.vb" />
+    <Compile Include="HandEntryProvider.vb" />
+    <Compile Include="StoredProcs\HandEntry_SP.vb" />
+    <Compile Include="LithoCodeProvider.vb" />
+    <Compile Include="StoredProcs\LithoCode_SP.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="QuestionResultProvider.vb" />
+    <Compile Include="StoredProcs\QuestionResult_SP.vb" />
+    <Compile Include="StoredProcs\SP.vb" />
+    <Compile Include="StoredProcs\VendorContact_SP.vb" />
+    <Compile Include="StoredProcs\VendorDisposition_SP.vb" />
+    <Compile Include="StoredProcs\VendorFileCreationQueue_SP.vb" />
+    <Compile Include="StoredProcs\VendorFileStatus_SP.vb" />
+    <Compile Include="StoredProcs\VendorPhoneFile_Data_SP.vb" />
+    <Compile Include="StoredProcs\TransferResultsNavigatorTree_SP.vb" />
+    <Compile Include="StoredProcs\VendorWebFile_Data_SP.vb" />
+    <Compile Include="StoredProcs\Vendor_SP.vb" />
+    <Compile Include="SurveyDataLoadProvider.vb" />
+    <Compile Include="StoredProcs\SurveyDataLoad_SP.vb" />
+    <Compile Include="TranslationModuleProvider.vb" />
+    <Compile Include="StoredProcs\TranslationModule_SP.vb" />
+    <Compile Include="TranslatorProvider.vb" />
+    <Compile Include="VendorContactProvider.vb" />
+    <Compile Include="VendorDispositionProvider.vb" />
+    <Compile Include="VendorFileCreationQueueProvider.vb" />
+    <Compile Include="VendorFileOutgoTypeProvider.vb" />
+    <Compile Include="VendorFileStatusProvider.vb" />
+    <Compile Include="VendorFileTrackingProvider.vb" />
+    <Compile Include="VendorFileTelematchLogProvider.vb" />
+    <Compile Include="VendorPhoneFile_DataProvider.vb" />
+    <Compile Include="TransferResultsNavigatorTreeProvider.vb" />
+    <Compile Include="VendorProvider.vb" />
+    <Compile Include="VendorWebFile_DataProvider.vb" />
+    <Compile Include="VoviciDownloadLogProvider.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\QualiSys Class Library Solution\QualiSys.Library\QualiSys.Library.vbproj">
+      <Project>{191D0C34-FF61-47A6-852F-7FD91D50AD72}</Project>
+      <Name>QualiSys.Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\QualiSys.Scanning.Library\QualiSys.Scanning.Library.vbproj">
+      <Project>{8ACF6F70-0A74-4443-BAD9-BD91CE4C5D39}</Project>
+      <Name>QualiSys.Scanning.Library</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\2008-10-24 - Alternate Methodology R1\BadLitho.sql" />
+    <Content Include="Scripts\2008-10-24 - Alternate Methodology R1\Comment.sql" />
+    <Content Include="Scripts\2008-10-24 - Alternate Methodology R1\DataLoad.sql" />
+    <Content Include="Scripts\2008-10-24 - Alternate Methodology R1\Disposition.sql" />
+    <Content Include="Scripts\2008-10-24 - Alternate Methodology R1\ErrorCode.sql" />
+    <Content Include="Scripts\2008-10-24 - Alternate Methodology R1\FRM_SelectAllParameters.sql" />
+    <Content Include="Scripts\2008-10-24 - Alternate Methodology R1\FRM_SelectParameter.sql" />
+    <Content Include="Scripts\2008-10-24 - Alternate Methodology R1\FRM_SelectParameterByName.sql" />
+    <Content Include="Scripts\2008-10-24 - Alternate Methodology R1\HandEntry.sql" />
+    <Content Include="Scripts\2008-10-24 - Alternate Methodology R1\HotFix 1\BackPopulateSurveyDataLoadHasErrors.sql" />
+    <Content Include="Scripts\2008-10-24 - Alternate Methodology R1\HotFix 1\SurveyDataLoad.sql" />
+    <Content Include="Scripts\2008-10-24 - Alternate Methodology R1\HotFix 1\SurveyDataLoadAddHasErrorsColumn.sql" />
+    <Content Include="Scripts\2008-10-24 - Alternate Methodology R1\HotFix 1\VendorFileSurveyTree.sql" />
+    <Content Include="Scripts\2008-10-24 - Alternate Methodology R1\LithoCode.sql" />
+    <Content Include="Scripts\2008-10-24 - Alternate Methodology R1\Notification Templates.sql" />
+    <Content Include="Scripts\2008-10-24 - Alternate Methodology R1\QualPro_Param Updates for Configuration.sql" />
+    <Content Include="Scripts\2008-10-24 - Alternate Methodology R1\QuestionResult.sql" />
+    <Content Include="Scripts\2008-10-24 - Alternate Methodology R1\ReceiptType.sql" />
+    <Content Include="Scripts\2008-10-24 - Alternate Methodology R1\SurveyDataLoad.sql" />
+    <Content Include="Scripts\2008-10-24 - Alternate Methodology R1\TranslationModule.sql" />
+    <Content Include="Scripts\2008-10-24 - Alternate Methodology R1\Vendor.sql" />
+    <Content Include="Scripts\2008-10-24 - Alternate Methodology R1\VendorDisposition.sql" />
+    <Content Include="Scripts\2009-02-26 Alt Meth R2\DL_ErrorCodes.sql" />
+    <Content Include="Scripts\2009-02-26 Alt Meth R2\DeleteFutureMailings.sql" />
+    <Content Include="Scripts\2009-02-26 Alt Meth R2\QSL_SaveDispositionToQualiSys.sql" />
+    <Content Include="Scripts\2009-02-26 Alt Meth R2\Notification Templates.sql" />
+    <Content Include="Scripts\2009-02-26 Alt Meth R2\QualPro_Params.sql" />
+    <Content Include="Scripts\2009-02-26 Alt Meth R2\Vendor.sql" />
+    <Content Include="Scripts\2009-02-26 Alt Meth R2\VendorContact.sql" />
+    <Content Include="Scripts\2009-02-26 Alt Meth R2\VendorDisposition.sql" />
+    <Content Include="Scripts\2009-02-26 Alt Meth R2\VendorFileSurveyTree.sql" />
+    <Content Include="Scripts\2009-02-26 Alt Meth R2\Vendors Table Updates.sql" />
+    <Content Include="Scripts\2009-04-14 Alt Meth FAQSS\LithoCode.sql" />
+    <Content Include="Scripts\2009-04-14 Alt Meth FAQSS\QualPro_Params.sql" />
+    <Content Include="Scripts\2009-04-22 Alt Meth R3\CultureToLanguage.sql" />
+    <Content Include="Scripts\2009-04-22 Alt Meth R3\Notification Templates.sql" />
+    <Content Include="Scripts\2009-04-22 Alt Meth R3\QualPro_Params.sql" />
+    <Content Include="Scripts\2009-04-22 Alt Meth R3\TransferResultsNavigatorTree.sql" />
+    <Content Include="Scripts\2009-04-22 Alt Meth R3\Vendor.sql" />
+    <Content Include="Scripts\2009-04-22 Alt Meth R3\VendorFileCreationQueue.sql" />
+    <Content Include="Scripts\2009-04-22 Alt Meth R3\VendorFileNavigatorTree.sql" />
+    <Content Include="Scripts\2009-04-22 Alt Meth R3\VendorFileOutgoType.sql" />
+    <Content Include="Scripts\2009-04-22 Alt Meth R3\VendorFileStatus.sql" />
+    <Content Include="Scripts\2009-04-22 Alt Meth R3\VendorFileTracking.sql" />
+    <Content Include="Scripts\2009-04-22 Alt Meth R3\VendorFileTelematchLog.sql" />
+    <Content Include="Scripts\2009-04-22 Alt Meth R3\VendorPhoneFile_Data.sql" />
+    <Content Include="Scripts\2009-04-22 Alt Meth R3\VendorSampleSetFile.sql" />
+    <Content Include="Scripts\2009-04-22 Alt Meth R3\VendorWebFile_Data.sql" />
+    <Content Include="Scripts\2009-04-22 Alt Meth R3\VoviciDownloadLog.sql" />
+    <Content Include="Scripts\2009-05-07 Alt Meth HotFix -9\Disposition.sql" />
+    <Content Include="Scripts\2009-05-07 Alt Meth HotFix -9\DL_ErrorCodes.sql" />
+    <Content Include="Scripts\2009-10-01- Alt Meth Hotfix01\QualPro_Params.sql" />
+    <Content Include="Scripts\2009-10-01- Alt Meth Hotfix01\Translator.sql" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

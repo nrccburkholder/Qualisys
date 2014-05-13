@@ -1,0 +1,556 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{09C8AFCE-3D7B-4F48-A067-DB8E68D4529F}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>Nrc.DataMart.ExportManager.My.MyApplication</StartupObject>
+    <RootNamespace>Nrc.DataMart.ExportManager</RootNamespace>
+    <AssemblyName>ExportManager</AssemblyName>
+    <MyType>WindowsForms</MyType>
+    <OptionStrict>On</OptionStrict>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <ApplicationIcon>ExportMan.ico</ApplicationIcon>
+    <ManifestCertificateThumbprint>E546A707707987346584DEFBEF012C06D9A1BEB0</ManifestCertificateThumbprint>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
+    <GenerateManifests>true</GenerateManifests>
+    <SignManifests>true</SignManifests>
+    <PublishUrl>\\mercury\QualisysApps\Prod\ExportManager\</PublishUrl>
+    <Install>false</Install>
+    <InstallFrom>Unc</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ProductName>Export Manager</ProductName>
+    <PublisherName>National Research Corporation</PublisherName>
+    <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
+    <ApplicationVersion>4.3.3.2</ApplicationVersion>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>ExportManager.xml</DocumentationFile>
+    <NoWarn>
+    </NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>ExportManager.xml</DocumentationFile>
+    <NoWarn>
+    </NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DocumentationFile>ExportManager.xml</DocumentationFile>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <CodeAnalysisRuleAssemblies>C:\Program Files (x86)\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DocumentationFile>ExportManager.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <CodeAnalysisRuleAssemblies>C:\Program Files (x86)\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Data.v9.3, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Utils.v9.3, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraEditors.v9.3, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraGrid.v9.3, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraLayout.v9.3, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="NRC, Version=1.14.1.0, Culture=neutral, PublicKeyToken=0c9e538f562d9317">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\NRC.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Framework, Version=1.10.0.0, Culture=neutral, PublicKeyToken=7f65ae6d961bde9c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Framework.BusinessLogic, Version=1.0.5.0, Culture=neutral, PublicKeyToken=7f65ae6d961bde9c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.BusinessLogic.dll</HintPath>
+    </Reference>
+    <Reference Include="NRC.NRCAuthLib, Version=1.1.1.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\NRC.NRCAuthLib.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.OracleClient" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Collections.ObjectModel" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="Classes\CurrentUser.vb" />
+    <Compile Include="Classes\ExportDateSet.vb" />
+    <Compile Include="Classes\FileTypeItem.vb" />
+    <Compile Include="Classes\Globals.vb" />
+    <Compile Include="Classes\ListViewColumnSorter.vb" />
+    <Compile Include="Classes\MonthListItem.vb" />
+    <Compile Include="Controls\MultiSelectTreeView.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Classes\UIRelation.vb" />
+    <Compile Include="Controls\DataGridViewCalendarCell.vb" />
+    <Compile Include="Controls\DataGridViewCalendarColumn.vb" />
+    <Compile Include="Controls\DataGridViewCalendarEditingControl.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="EventArgs\ExportSetTypeSelectionChangedEventArgs.vb" />
+    <Compile Include="EventArgs\SelectedNodeChangingEventArgs.vb" />
+    <Compile Include="Navigators\CAHPSNavigator.Designer.vb">
+      <DependentUpon>CAHPSNavigator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Navigators\CAHPSNavigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Navigators\ClientStudySurveyNavigator.Designer.vb">
+      <DependentUpon>ClientStudySurveyNavigator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Navigators\ClientStudySurveyNavigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\CAHPSDefinitionSection.Designer.vb">
+      <DependentUpon>CAHPSDefinitionSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\CAHPSDefinitionSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\CAHPSFileHistorySection.Designer.vb">
+      <DependentUpon>CAHPSFileHistorySection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\CAHPSFileHistorySection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\CMSDefinitionSection.Designer.vb">
+      <DependentUpon>CMSDefinitionSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\CMSDefinitionSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CreateDefinitionControl.Designer.vb">
+      <DependentUpon>CreateDefinitionControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CreateDefinitionControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ExistingDefinitionsControl.Designer.vb">
+      <DependentUpon>ExistingDefinitionsControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ExistingDefinitionsControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Navigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\ScheduledExportSection.Designer.vb">
+      <DependentUpon>ScheduledExportSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\ScheduledExportSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Section.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\StandardDefinitionSection.Designer.vb">
+      <DependentUpon>StandardDefinitionSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\StandardDefinitionSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\SpecialUpdatesSection.Designer.vb">
+      <DependentUpon>SpecialUpdatesSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\SpecialUpdatesSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Exceptions\AccessDeniedException.vb" />
+    <Compile Include="Forms\ExportHistoryDialog.Designer.vb">
+      <DependentUpon>ExportHistoryDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ExportHistoryDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ExportIndividualFilesErrorDialog.Designer.vb">
+      <DependentUpon>ExportIndividualFilesErrorDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ExportIndividualFilesErrorDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ExportManyFilesDialog.Designer.vb">
+      <DependentUpon>ExportManyFilesDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ExportManyFilesDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ORYX\AddOryxMeasurement.Designer.vb">
+      <DependentUpon>AddOryxMeasurement.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ORYX\AddOryxMeasurement.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ORYX\AddOryxClient.Designer.vb">
+      <DependentUpon>AddOryxClient.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ORYX\AddOryxClient.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ORYX\ExportOryxDialog.Designer.vb">
+      <DependentUpon>ExportOryxDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ORYX\ExportOryxDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ExportSingleFileDialog.designer.vb">
+      <DependentUpon>ExportSingleFileDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ExportSingleFileDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MainForm.Designer.vb">
+      <DependentUpon>MainForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MainForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ORYX\OryxClientSettingsForm.Designer.vb">
+      <DependentUpon>OryxClientSettingsForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ORYX\OryxClientSettingsForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ORYX\OryxMeasurementSettingsForm.Designer.vb">
+      <DependentUpon>OryxMeasurementSettingsForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ORYX\OryxMeasurementSettingsForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\PredefinitionWizardDialog.Designer.vb">
+      <DependentUpon>PredefinitionWizardDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\PredefinitionWizardDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SplashForm.Designer.vb">
+      <DependentUpon>SplashForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SplashForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\UpdateScheduledExportRunDateDialog.Designer.vb">
+      <DependentUpon>UpdateScheduledExportRunDateDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\UpdateScheduledExportRunDateDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Main.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <DependentUpon>Application.myapp</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\licenses.licx" />
+    <EmbeddedResource Include="Navigators\CAHPSNavigator.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CAHPSNavigator.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Navigators\ClientStudySurveyNavigator.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ClientStudySurveyNavigator.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\CAHPSDefinitionSection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CAHPSDefinitionSection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\CAHPSFileHistorySection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CAHPSFileHistorySection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\CMSDefinitionSection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CMSDefinitionSection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CreateDefinitionControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CreateDefinitionControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ExistingDefinitionsControl.resx">
+      <DependentUpon>ExistingDefinitionsControl.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\ScheduledExportSection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ScheduledExportSection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\SpecialUpdatesSection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SpecialUpdatesSection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\StandardDefinitionSection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>StandardDefinitionSection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ExportHistoryDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ExportHistoryDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ExportIndividualFilesErrorDialog.resx">
+      <DependentUpon>ExportIndividualFilesErrorDialog.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ExportManyFilesDialog.resx">
+      <DependentUpon>ExportManyFilesDialog.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ORYX\AddOryxClient.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AddOryxClient.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ORYX\AddOryxMeasurement.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AddOryxMeasurement.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ORYX\ExportOryxDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ExportOryxDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ExportSingleFileDialog.resx">
+      <DependentUpon>ExportSingleFileDialog.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MainForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MainForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ORYX\OryxClientSettingsForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>OryxClientSettingsForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ORYX\OryxMeasurementSettingsForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>OryxMeasurementSettingsForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PredefinitionWizardDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PredefinitionWizardDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SplashForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SplashForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\UpdateScheduledExportRunDateDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>UpdateScheduledExportRunDateDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\DataMart.mdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\DataMart_log.ldf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <DependentUpon>DataMart.mdf</DependentUpon>
+    </Content>
+    <Content Include="ExportMan.ico" />
+    <Content Include="Resources\Chart_Line_32.png" />
+    <Content Include="Resources\Export file.png" />
+    <Content Include="Resources\File export_32.png" />
+    <None Include="My Project\DataSources\Nrc.DataMart.Library.ExportFile.datasource" />
+    <None Include="My Project\DataSources\Nrc.DataMart.Library.ExportFileView.datasource" />
+    <None Include="My Project\DataSources\Nrc.DataMart.Library.MedicareExport.datasource" />
+    <None Include="Resources\Green_baseball_cap.png" />
+    <Content Include="Resources\Health &amp; Personal Care.png" />
+    <None Include="Resources\History.png" />
+    <Content Include="Resources\Home_32.png" />
+    <Content Include="Resources\Schedule.png" />
+    <Content Include="Resources\Update_32.png" />
+    <None Include="Resources\error1.bmp" />
+    <None Include="Resources\Error.ico" />
+    <None Include="Resources\Globe16.png" />
+    <None Include="Resources\Calendar_schedule.bmp" />
+    <None Include="Resources\Undo.ico" />
+    <None Include="Resources\Validation16.png" />
+    <None Include="Resources\New16.png" />
+    <None Include="Resources\DeleteRed16.png" />
+    <None Include="Resources\Filter.png" />
+    <None Include="Resources\Delete.ico" />
+    <None Include="Resources\calendar.gif" />
+    <None Include="Resources\GoLtr.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\DataMart Class Library Solution\DataMart.Library.SqlProvider\DataMart.Library.SqlProvider.vbproj">
+      <Project>{EA181BE1-8009-48A1-B389-02642319C079}</Project>
+      <Name>DataMart.Library.SqlProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DataMart Class Library Solution\DataMart.Library\DataMart.Library.vbproj">
+      <Project>{D94DDA87-FE09-4644-9416-2BF8FE136D93}</Project>
+      <Name>DataMart.Library</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PublishFile Include="Data\DataMart.mdf">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Exclude</PublishState>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="Data\DataMart_log.ldf">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Exclude</PublishState>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="DevExpress.Data.v9.3">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="DevExpress.Utils.v9.3">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="DevExpress.XtraEditors.v9.3">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="DevExpress.XtraGrid.v9.3">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="DevExpress.XtraLayout.v9.3">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

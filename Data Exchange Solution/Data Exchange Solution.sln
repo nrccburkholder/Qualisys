@@ -1,0 +1,44 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Data Exchange", "http://localhost/DataExchange/Data Exchange.vbproj", "{C7115034-FA3B-421A-B7E0-5CC68F336653}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "NRC Class Library", "..\..\NRC Class Library\NRC Class Library.vbproj", "{12BD4B86-4C6E-413C-B1CE-F023AAC40BB2}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 3
+		SccProjectUniqueName0 = http://localhost/DataExchange/Data\u0020Exchange.vbproj
+		SccProjectName0 = \u0022$/My\u0020Solutions\u0020Applications/Data\u0020Exchange\u0020Solution/DataExchange\u0022,\u0020EUPAAAAA
+		SccLocalPath0 = DataExchange
+		CanCheckoutShared = true
+		SccProjectEnlistmentChoice0 = 2
+		SccProjectUniqueName1 = ..\\..\\NRC\u0020Class\u0020Library\\NRC\u0020Class\u0020Library.vbproj
+		SccProjectName1 = \u0022$/NRC\u0020Class\u0020Library\u0022,\u0020BOVAAAAA
+		SccLocalPath1 = ..\\..\\NRC\u0020Class\u0020Library
+		CanCheckoutShared = true
+		SccLocalPath2 = .
+		CanCheckoutShared = true
+		SolutionUniqueID = {91DBF0EA-34D4-425C-8182-3E1681BDE757}
+	EndGlobalSection
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{C7115034-FA3B-421A-B7E0-5CC68F336653}.Debug.ActiveCfg = Debug|.NET
+		{C7115034-FA3B-421A-B7E0-5CC68F336653}.Debug.Build.0 = Debug|.NET
+		{C7115034-FA3B-421A-B7E0-5CC68F336653}.Release.ActiveCfg = Release|.NET
+		{C7115034-FA3B-421A-B7E0-5CC68F336653}.Release.Build.0 = Release|.NET
+		{12BD4B86-4C6E-413C-B1CE-F023AAC40BB2}.Debug.ActiveCfg = Debug|.NET
+		{12BD4B86-4C6E-413C-B1CE-F023AAC40BB2}.Debug.Build.0 = Debug|.NET
+		{12BD4B86-4C6E-413C-B1CE-F023AAC40BB2}.Release.ActiveCfg = Release|.NET
+		{12BD4B86-4C6E-413C-B1CE-F023AAC40BB2}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

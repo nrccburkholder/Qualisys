@@ -1,0 +1,2 @@
+<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="BreadCrumbs.ascx.vb" Inherits="Nrc.MySolutions.UserControls_BreadCrumbs" %>
+<div id="BreadCrumbDiv"><asp:SiteMapPath ID="SiteMapPath1" runat="server" PathSeparator=" | "></asp:SiteMapPath></div>

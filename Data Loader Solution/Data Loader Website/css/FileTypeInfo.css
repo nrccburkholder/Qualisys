@@ -1,0 +1,14 @@
+﻿
+
+#FileTypeInfo
+{
+border:solid 1px black;
+overflow:auto;
+width:215px;
+height:175px;
+position:absolute;
+background-color:white;
+display:none;
+padding:6px;
+text-align: justify;
+}

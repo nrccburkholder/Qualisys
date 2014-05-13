@@ -1,0 +1,990 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2003/10/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <RightMargin>0.25in</RightMargin>
+  <Body>
+    <ReportItems>
+      <Textbox Name="textbox8">
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>2pt</PaddingBottom>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingRight>2pt</PaddingRight>
+          <FontWeight>700</FontWeight>
+        </Style>
+        <ZIndex>7</ZIndex>
+        <Top>0.375in</Top>
+        <rd:DefaultName>textbox8</rd:DefaultName>
+        <Height>0.25in</Height>
+        <Width>1in</Width>
+        <CanGrow>true</CanGrow>
+        <Value>Organization:</Value>
+      </Textbox>
+      <Chart Name="chart2">
+        <ThreeDProperties>
+          <Rotation>30</Rotation>
+          <Inclination>30</Inclination>
+          <Shading>Simple</Shading>
+          <WallThickness>50</WallThickness>
+        </ThreeDProperties>
+        <ZIndex>6</ZIndex>
+        <Style>
+          <BackgroundColor>White</BackgroundColor>
+        </Style>
+        <Legend>
+          <Style>
+            <BorderStyle>
+              <Default>Solid</Default>
+            </BorderStyle>
+          </Style>
+          <Position>RightCenter</Position>
+        </Legend>
+        <Palette>Default</Palette>
+        <ChartData>
+          <ChartSeries>
+            <DataPoints>
+              <DataPoint>
+                <DataValues>
+                  <DataValue>
+                    <Value>=Code.SecondsToMin(Sum(Fields!Duration.Value))</Value>
+                  </DataValue>
+                </DataValues>
+                <DataLabel />
+                <Marker>
+                  <Size>6pt</Size>
+                </Marker>
+              </DataPoint>
+            </DataPoints>
+          </ChartSeries>
+        </ChartData>
+        <CategoryAxis>
+          <Axis>
+            <Title>
+              <Caption>Application</Caption>
+            </Title>
+            <MajorGridLines>
+              <Style>
+                <BorderStyle>
+                  <Default>Solid</Default>
+                </BorderStyle>
+              </Style>
+            </MajorGridLines>
+            <MinorGridLines>
+              <Style>
+                <BorderStyle>
+                  <Default>Solid</Default>
+                </BorderStyle>
+              </Style>
+            </MinorGridLines>
+            <MajorTickMarks>Outside</MajorTickMarks>
+            <Min>0</Min>
+            <Margin>true</Margin>
+            <Visible>true</Visible>
+          </Axis>
+        </CategoryAxis>
+        <DataSetName>ProductDurations</DataSetName>
+        <Type>Bar</Type>
+        <Top>3.625in</Top>
+        <Title />
+        <Width>7.5in</Width>
+        <CategoryGroupings>
+          <CategoryGrouping>
+            <DynamicCategories>
+              <Grouping Name="chart2_CategoryGroup2">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!Application.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+              <Label>=Fields!Application.Value</Label>
+            </DynamicCategories>
+          </CategoryGrouping>
+        </CategoryGroupings>
+        <Height>2.25in</Height>
+        <SeriesGroupings>
+          <SeriesGrouping>
+            <StaticSeries>
+              <StaticMember>
+                <Label>Duration</Label>
+              </StaticMember>
+            </StaticSeries>
+          </SeriesGrouping>
+        </SeriesGroupings>
+        <Subtype>Plain</Subtype>
+        <PlotArea>
+          <Style>
+            <BackgroundColor>LightGrey</BackgroundColor>
+            <BorderStyle>
+              <Default>Solid</Default>
+            </BorderStyle>
+          </Style>
+        </PlotArea>
+        <Left>0.25in</Left>
+        <ValueAxis>
+          <Axis>
+            <Title>
+              <Caption>Duration (min)</Caption>
+            </Title>
+            <MajorGridLines>
+              <ShowGridLines>true</ShowGridLines>
+              <Style>
+                <BorderStyle>
+                  <Default>Solid</Default>
+                </BorderStyle>
+              </Style>
+            </MajorGridLines>
+            <MinorGridLines>
+              <Style>
+                <BorderStyle>
+                  <Default>Solid</Default>
+                </BorderStyle>
+              </Style>
+            </MinorGridLines>
+            <MajorTickMarks>Outside</MajorTickMarks>
+            <Min>0</Min>
+            <Margin>true</Margin>
+            <Visible>true</Visible>
+            <Scalar>true</Scalar>
+          </Axis>
+        </ValueAxis>
+      </Chart>
+      <Chart Name="chart1">
+        <ThreeDProperties>
+          <Rotation>30</Rotation>
+          <Inclination>30</Inclination>
+          <Shading>Simple</Shading>
+          <WallThickness>50</WallThickness>
+        </ThreeDProperties>
+        <ZIndex>5</ZIndex>
+        <Style>
+          <BackgroundColor>White</BackgroundColor>
+        </Style>
+        <Legend>
+          <Style>
+            <BorderStyle>
+              <Default>Solid</Default>
+            </BorderStyle>
+          </Style>
+          <Position>RightCenter</Position>
+        </Legend>
+        <Palette>Default</Palette>
+        <ChartData>
+          <ChartSeries>
+            <DataPoints>
+              <DataPoint>
+                <DataValues>
+                  <DataValue>
+                    <Value>=Sum(Fields!Visits.Value)</Value>
+                  </DataValue>
+                </DataValues>
+                <DataLabel />
+                <Marker />
+              </DataPoint>
+            </DataPoints>
+          </ChartSeries>
+        </ChartData>
+        <CategoryAxis>
+          <Axis>
+            <Title>
+              <Caption>Application</Caption>
+            </Title>
+            <MajorGridLines>
+              <Style>
+                <BorderStyle>
+                  <Default>Solid</Default>
+                </BorderStyle>
+              </Style>
+            </MajorGridLines>
+            <MinorGridLines>
+              <Style>
+                <BorderStyle>
+                  <Default>Solid</Default>
+                </BorderStyle>
+              </Style>
+            </MinorGridLines>
+            <MajorTickMarks>Outside</MajorTickMarks>
+            <Min>0</Min>
+            <Margin>true</Margin>
+            <Visible>true</Visible>
+          </Axis>
+        </CategoryAxis>
+        <DataSetName>ProductVisits</DataSetName>
+        <Type>Bar</Type>
+        <Top>1in</Top>
+        <Title />
+        <Width>7.5in</Width>
+        <CategoryGroupings>
+          <CategoryGrouping>
+            <DynamicCategories>
+              <Grouping Name="chart1_CategoryGroup1">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!Application.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+              <Label>=Fields!Application.Value</Label>
+            </DynamicCategories>
+          </CategoryGrouping>
+        </CategoryGroupings>
+        <Height>2.5in</Height>
+        <Subtype>Plain</Subtype>
+        <PlotArea>
+          <Style>
+            <BackgroundColor>LightGrey</BackgroundColor>
+            <BorderStyle>
+              <Default>Solid</Default>
+            </BorderStyle>
+          </Style>
+        </PlotArea>
+        <Left>0.25in</Left>
+        <ValueAxis>
+          <Axis>
+            <Title>
+              <Caption>Product Visits</Caption>
+            </Title>
+            <MajorGridLines>
+              <ShowGridLines>true</ShowGridLines>
+              <Style>
+                <BorderStyle>
+                  <Default>Solid</Default>
+                </BorderStyle>
+              </Style>
+            </MajorGridLines>
+            <MinorGridLines>
+              <Style>
+                <BorderStyle>
+                  <Default>Solid</Default>
+                </BorderStyle>
+              </Style>
+            </MinorGridLines>
+            <MajorTickMarks>Outside</MajorTickMarks>
+            <Min>0</Min>
+            <Margin>true</Margin>
+            <Visible>true</Visible>
+            <Scalar>true</Scalar>
+          </Axis>
+        </ValueAxis>
+      </Chart>
+      <Textbox Name="textbox1">
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <BackgroundColor>Cornsilk</BackgroundColor>
+          <BorderWidth>
+            <Bottom>2pt</Bottom>
+            <Top>3pt</Top>
+          </BorderWidth>
+          <BorderColor>
+            <Bottom>Goldenrod</Bottom>
+            <Top>DarkGoldenrod</Top>
+          </BorderColor>
+          <BorderStyle>
+            <Bottom>Solid</Bottom>
+            <Top>Solid</Top>
+          </BorderStyle>
+          <FontSize>16pt</FontSize>
+          <TextAlign>Center</TextAlign>
+          <Color>OliveDrab</Color>
+          <PaddingBottom>2pt</PaddingBottom>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingRight>2pt</PaddingRight>
+          <FontWeight>700</FontWeight>
+        </Style>
+        <ZIndex>4</ZIndex>
+        <rd:DefaultName>textbox1</rd:DefaultName>
+        <Height>0.3in</Height>
+        <CanGrow>true</CanGrow>
+        <Value>="User Product Visits - " &amp; Parameters!datOccurredBeg.Value &amp; " to " &amp; Parameters!datOccurredEnd.Value</Value>
+      </Textbox>
+      <Matrix Name="matrix1">
+        <Corner>
+          <ReportItems>
+            <Textbox Name="textbox4">
+              <Style>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingBottom>2pt</PaddingBottom>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingRight>2pt</PaddingRight>
+              </Style>
+              <ZIndex>9</ZIndex>
+              <rd:DefaultName>textbox4</rd:DefaultName>
+              <CanGrow>true</CanGrow>
+              <Value />
+            </Textbox>
+          </ReportItems>
+        </Corner>
+        <Height>0.7in</Height>
+        <ZIndex>3</ZIndex>
+        <Style />
+        <MatrixRows>
+          <MatrixRow>
+            <MatrixCells>
+              <MatrixCell>
+                <ReportItems>
+                  <Textbox Name="textbox2">
+                    <Style>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <BorderColor>
+                        <Default>LightGrey</Default>
+                      </BorderColor>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <FontSize>8pt</FontSize>
+                      <TextAlign>Center</TextAlign>
+                      <PaddingBottom>2pt</PaddingBottom>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingRight>2pt</PaddingRight>
+                    </Style>
+                    <ZIndex>1</ZIndex>
+                    <rd:DefaultName>textbox2</rd:DefaultName>
+                    <CanGrow>true</CanGrow>
+                    <Value>=Sum(Fields!Visits.Value)</Value>
+                  </Textbox>
+                </ReportItems>
+              </MatrixCell>
+              <MatrixCell>
+                <ReportItems>
+                  <Textbox Name="textbox3">
+                    <Style>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <BorderColor>
+                        <Default>LightGrey</Default>
+                      </BorderColor>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <FontSize>8pt</FontSize>
+                      <TextAlign>Center</TextAlign>
+                      <PaddingBottom>2pt</PaddingBottom>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingRight>2pt</PaddingRight>
+                    </Style>
+                    <rd:DefaultName>textbox3</rd:DefaultName>
+                    <CanGrow>true</CanGrow>
+                    <Value>=Code.FormatSeconds(Sum(Fields!Duration_Sec.Value))</Value>
+                  </Textbox>
+                </ReportItems>
+              </MatrixCell>
+            </MatrixCells>
+            <Height>0.24in</Height>
+          </MatrixRow>
+        </MatrixRows>
+        <MatrixColumns>
+          <MatrixColumn>
+            <Width>0.5in</Width>
+          </MatrixColumn>
+          <MatrixColumn>
+            <Width>0.75in</Width>
+          </MatrixColumn>
+        </MatrixColumns>
+        <DataSetName>MatrixData</DataSetName>
+        <ColumnGroupings>
+          <ColumnGrouping>
+            <DynamicColumns>
+              <Grouping Name="matrix1_strApplication">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!Application.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+              <Sorting>
+                <SortBy>
+                  <SortExpression>=Fields!Application.Value</SortExpression>
+                  <Direction>Ascending</Direction>
+                </SortBy>
+              </Sorting>
+              <ReportItems>
+                <Textbox Name="strApplication">
+                  <Style>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <FontSize>8pt</FontSize>
+                    <TextAlign>Center</TextAlign>
+                    <Color>Green</Color>
+                    <PaddingBottom>2pt</PaddingBottom>
+                    <PaddingTop>2pt</PaddingTop>
+                    <PaddingRight>2pt</PaddingRight>
+                    <FontWeight>900</FontWeight>
+                  </Style>
+                  <ZIndex>8</ZIndex>
+                  <rd:DefaultName>strApplication</rd:DefaultName>
+                  <CanGrow>true</CanGrow>
+                  <Value>=Fields!Application.Value</Value>
+                </Textbox>
+              </ReportItems>
+              <Subtotal>
+                <ReportItems>
+                  <Textbox Name="textbox7">
+                    <Style>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <FontSize>8pt</FontSize>
+                      <TextAlign>Center</TextAlign>
+                      <Color>Green</Color>
+                      <PaddingBottom>2pt</PaddingBottom>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingRight>2pt</PaddingRight>
+                      <FontWeight>900</FontWeight>
+                    </Style>
+                    <ZIndex>7</ZIndex>
+                    <rd:DefaultName>textbox7</rd:DefaultName>
+                    <CanGrow>true</CanGrow>
+                    <Value>Total</Value>
+                  </Textbox>
+                </ReportItems>
+              </Subtotal>
+            </DynamicColumns>
+            <Height>0.24in</Height>
+          </ColumnGrouping>
+          <ColumnGrouping>
+            <Height>0.22in</Height>
+            <StaticColumns>
+              <StaticColumn>
+                <ReportItems>
+                  <Textbox Name="textbox5">
+                    <Style>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <BorderColor>
+                        <Default>LightGrey</Default>
+                      </BorderColor>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <FontSize>8pt</FontSize>
+                      <TextAlign>Center</TextAlign>
+                      <PaddingBottom>2pt</PaddingBottom>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingRight>2pt</PaddingRight>
+                    </Style>
+                    <ZIndex>6</ZIndex>
+                    <rd:DefaultName>textbox5</rd:DefaultName>
+                    <CanGrow>true</CanGrow>
+                    <Value>Visits</Value>
+                  </Textbox>
+                </ReportItems>
+              </StaticColumn>
+              <StaticColumn>
+                <ReportItems>
+                  <Textbox Name="textbox6">
+                    <Style>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <BorderColor>
+                        <Default>LightGrey</Default>
+                      </BorderColor>
+                      <BorderStyle>
+                        <Default>Solid</Default>
+                      </BorderStyle>
+                      <FontSize>8pt</FontSize>
+                      <TextAlign>Center</TextAlign>
+                      <PaddingBottom>2pt</PaddingBottom>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingRight>2pt</PaddingRight>
+                    </Style>
+                    <ZIndex>5</ZIndex>
+                    <rd:DefaultName>textbox6</rd:DefaultName>
+                    <CanGrow>true</CanGrow>
+                    <Value>Duration</Value>
+                  </Textbox>
+                </ReportItems>
+              </StaticColumn>
+            </StaticColumns>
+          </ColumnGrouping>
+        </ColumnGroupings>
+        <Width>7.5in</Width>
+        <Top>6in</Top>
+        <RowGroupings>
+          <RowGrouping>
+            <DynamicRows>
+              <Grouping Name="matrix1_strOrgUnit_nm">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!strOrgUnit_nm.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+              <Sorting>
+                <SortBy>
+                  <SortExpression>=Fields!strOrgUnit_nm.Value</SortExpression>
+                  <Direction>Ascending</Direction>
+                </SortBy>
+              </Sorting>
+              <ReportItems>
+                <Textbox Name="strOrgUnit_nm">
+                  <Style>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <BorderColor>
+                      <Default>LightGrey</Default>
+                    </BorderColor>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <FontSize>8pt</FontSize>
+                    <Color>Green</Color>
+                    <PaddingBottom>2pt</PaddingBottom>
+                    <PaddingTop>2pt</PaddingTop>
+                    <PaddingRight>2pt</PaddingRight>
+                    <FontWeight>900</FontWeight>
+                  </Style>
+                  <ZIndex>4</ZIndex>
+                  <rd:DefaultName>strOrgUnit_nm</rd:DefaultName>
+                  <CanGrow>true</CanGrow>
+                  <Value>=Fields!strOrgUnit_nm.Value</Value>
+                </Textbox>
+              </ReportItems>
+            </DynamicRows>
+            <Width>1.75in</Width>
+          </RowGrouping>
+          <RowGrouping>
+            <DynamicRows>
+              <Grouping Name="matrix1_Member">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!strMember_nm.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+              <Visibility>
+                <ToggleItem>strOrgUnit_nm</ToggleItem>
+                <Hidden>true</Hidden>
+              </Visibility>
+              <Sorting>
+                <SortBy>
+                  <SortExpression>=Fields!strMember_nm.Value</SortExpression>
+                  <Direction>Ascending</Direction>
+                </SortBy>
+              </Sorting>
+              <ReportItems>
+                <Textbox Name="Member">
+                  <Style>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <BorderColor>
+                      <Default>LightGrey</Default>
+                    </BorderColor>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <FontSize>8pt</FontSize>
+                    <PaddingBottom>2pt</PaddingBottom>
+                    <PaddingTop>2pt</PaddingTop>
+                    <PaddingRight>2pt</PaddingRight>
+                  </Style>
+                  <ZIndex>3</ZIndex>
+                  <rd:DefaultName>Member</rd:DefaultName>
+                  <CanGrow>true</CanGrow>
+                  <Value>=Fields!strMember_nm.Value &amp; " - " &amp; Fields!strTitle.Value</Value>
+                </Textbox>
+              </ReportItems>
+            </DynamicRows>
+            <Width>1.625in</Width>
+          </RowGrouping>
+          <RowGrouping>
+            <DynamicRows>
+              <Grouping Name="matrix1_RowGroup3">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!strMember_nm.Value &amp; " - " &amp; Fields!strTitle.Value</GroupExpression>
+                </GroupExpressions>
+              </Grouping>
+              <ReportItems>
+                <Textbox Name="textbox12">
+                  <Style>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <BorderColor>
+                      <Default>LightGrey</Default>
+                    </BorderColor>
+                    <BorderStyle>
+                      <Default>Solid</Default>
+                    </BorderStyle>
+                    <FontSize>8pt</FontSize>
+                    <PaddingBottom>2pt</PaddingBottom>
+                    <PaddingTop>2pt</PaddingTop>
+                    <PaddingRight>2pt</PaddingRight>
+                  </Style>
+                  <ZIndex>2</ZIndex>
+                  <rd:DefaultName>textbox12</rd:DefaultName>
+                  <CanGrow>true</CanGrow>
+                  <Value>=Fields!strEmail.Value</Value>
+                </Textbox>
+              </ReportItems>
+            </DynamicRows>
+            <Width>1.625in</Width>
+          </RowGrouping>
+        </RowGroupings>
+      </Matrix>
+      <Textbox Name="textbox9">
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>2pt</PaddingBottom>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingRight>2pt</PaddingRight>
+        </Style>
+        <ZIndex>2</ZIndex>
+        <Top>0.375in</Top>
+        <Height>0.25in</Height>
+        <Width>5.75in</Width>
+        <CanGrow>true</CanGrow>
+        <Value>= Parameters!OrgUnit_id.Label</Value>
+        <Left>1in</Left>
+      </Textbox>
+      <Textbox Name="textbox10">
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>2pt</PaddingBottom>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingRight>2pt</PaddingRight>
+        </Style>
+        <ZIndex>1</ZIndex>
+        <Top>0.625in</Top>
+        <Height>0.25in</Height>
+        <Width>5.75in</Width>
+        <CanGrow>true</CanGrow>
+        <Value>=Parameters!Group_id.Label</Value>
+        <Left>0.5in</Left>
+      </Textbox>
+      <Textbox Name="textbox11">
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingBottom>2pt</PaddingBottom>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingRight>2pt</PaddingRight>
+          <FontWeight>700</FontWeight>
+        </Style>
+        <Top>0.625in</Top>
+        <Height>0.25in</Height>
+        <Width>0.5in</Width>
+        <CanGrow>true</CanGrow>
+        <Value>Group:</Value>
+      </Textbox>
+    </ReportItems>
+    <Style />
+    <Height>6.75in</Height>
+  </Body>
+  <TopMargin>0.25in</TopMargin>
+  <DataSources>
+    <DataSource Name="NRCAuth">
+      <rd:DataSourceID>d9e8c0f0-4793-45d7-97b2-f7e7ebb48297</rd:DataSourceID>
+      <DataSourceReference>NRCAuth</DataSourceReference>
+    </DataSource>
+  </DataSources>
+  <Code>Function SecondsToMin(seconds as Integer) As Integer
+	Return (seconds/60)
+End Function
+
+Function FormatSeconds(seconds as Integer) as String
+If seconds = 0 Then
+	Return ""
+ElseIf seconds &lt; 60 Then
+	Return seconds &amp; " sec(s)"
+ElseIf seconds &lt; 3600 Then 
+	Return String.Format("{0:#.##} min(s)", (seconds/60))
+Else
+	Return String.Format("{0:#.##} hr(s)", (seconds/3600))
+End If
+
+End Function
+
+ReadOnly Property StartDate As DateTime
+Get
+	Return Date.Parse(Date.Now().AddMonths(-1).ToShortDateString())
+End Get
+End Property
+
+ReadOnly Property EndDate As DateTime
+Get
+	Return Date.Parse(Date.Now().ToShortDateString())
+End Get
+End Property</Code>
+  <Width>10.5in</Width>
+  <DataSets>
+    <DataSet Name="MatrixData">
+      <Fields>
+        <Field Name="strOrgUnit_nm">
+          <DataField>strOrgUnit_nm</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="strMember_nm">
+          <DataField>strMember_nm</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="strTitle">
+          <DataField>strTitle</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="strEmail">
+          <DataField>strEmail</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Application">
+          <DataField>Application</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Visits">
+          <DataField>Visits</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Duration_Sec">
+          <DataField>Duration_Sec</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>NRCAuth</DataSourceName>
+        <CommandType>StoredProcedure</CommandType>
+        <CommandText>Auth_Rep_ProductVisitOrgMember</CommandText>
+        <QueryParameters>
+          <QueryParameter Name="@datOccurredBeg">
+            <Value>=Parameters!datOccurredBeg.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@datOccurredEnd">
+            <Value>=Parameters!datOccurredEnd.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@OrgUnit_id">
+            <Value>=Parameters!OrgUnit_id.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@Group_id">
+            <Value>=Parameters!Group_id.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@bitInternal">
+            <Value>=Parameters!bitInternal.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@Application">
+            <Value>=Parameters!Application.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+      </Query>
+    </DataSet>
+    <DataSet Name="ProductDurations">
+      <Fields>
+        <Field Name="Application">
+          <DataField>Application</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Duration">
+          <DataField>Duration</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>NRCAuth</DataSourceName>
+        <CommandType>StoredProcedure</CommandType>
+        <CommandText>Auth_Rep_ProductVisitDurations</CommandText>
+        <QueryParameters>
+          <QueryParameter Name="@datOccurredBeg">
+            <Value>=Parameters!datOccurredBeg.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@datOccurredEnd">
+            <Value>=Parameters!datOccurredEnd.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@OrgUnit_id">
+            <Value>=Parameters!OrgUnit_id.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@Group_id">
+            <Value>=Parameters!Group_id.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@bitInternal">
+            <Value>=Parameters!bitInternal.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@Application">
+            <Value>=Parameters!Application.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+      </Query>
+    </DataSet>
+    <DataSet Name="ProductVisits">
+      <Fields>
+        <Field Name="Application">
+          <DataField>Application</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Visits">
+          <DataField>Visits</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>NRCAuth</DataSourceName>
+        <CommandType>StoredProcedure</CommandType>
+        <CommandText>Auth_Rep_ProductVisitCounts</CommandText>
+        <QueryParameters>
+          <QueryParameter Name="@datOccurredBeg">
+            <Value>=Parameters!datOccurredBeg.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@datOccurredEnd">
+            <Value>=Parameters!datOccurredEnd.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@orgunit_id">
+            <Value>=Parameters!OrgUnit_id.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@Group_id">
+            <Value>=Parameters!Group_id.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@bitInternal">
+            <Value>=Parameters!bitInternal.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@Application">
+            <Value>=Parameters!Application.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+      </Query>
+    </DataSet>
+    <DataSet Name="OrgUnitList">
+      <Fields>
+        <Field Name="Order">
+          <DataField>Order</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="OrgUnit_id">
+          <DataField>OrgUnit_id</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="strOrgUnit_nm">
+          <DataField>strOrgUnit_nm</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>NRCAuth</DataSourceName>
+        <CommandType>StoredProcedure</CommandType>
+        <CommandText>Auth_Rep_OrgUnitList</CommandText>
+      </Query>
+    </DataSet>
+    <DataSet Name="GroupList">
+      <Fields>
+        <Field Name="Order">
+          <DataField>Order</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Group_id">
+          <DataField>Group_id</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="strGroup_nm">
+          <DataField>strGroup_nm</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>NRCAuth</DataSourceName>
+        <CommandType>StoredProcedure</CommandType>
+        <CommandText>Auth_Rep_GroupList</CommandText>
+        <QueryParameters>
+          <QueryParameter Name="@OrgUnit_id">
+            <Value>=Parameters!OrgUnit_id.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+      </Query>
+    </DataSet>
+    <DataSet Name="Application">
+      <Fields>
+        <Field Name="Order">
+          <DataField>Order</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Application_id">
+          <DataField>Application_id</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="strApplication_nm">
+          <DataField>strApplication_nm</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>NRCAuth</DataSourceName>
+        <CommandType>StoredProcedure</CommandType>
+        <CommandText>Auth_Rep_ApplicationList</CommandText>
+      </Query>
+    </DataSet>
+  </DataSets>
+  <LeftMargin>0.25in</LeftMargin>
+  <rd:SnapToGrid>true</rd:SnapToGrid>
+  <PageHeight>8.5in</PageHeight>
+  <rd:DrawGrid>true</rd:DrawGrid>
+  <Description />
+  <PageWidth>11in</PageWidth>
+  <rd:ReportID>8b973ecb-8ba7-46c7-a529-a34f6484d2f8</rd:ReportID>
+  <BottomMargin>0.25in</BottomMargin>
+  <ReportParameters>
+    <ReportParameter Name="datOccurredBeg">
+      <DataType>DateTime</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>=Code.StartDate</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Start Date</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="datOccurredEnd">
+      <DataType>DateTime</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>=Code.EndDate</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>End Date</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="OrgUnit_id">
+      <DataType>Integer</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>0</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Organization</Prompt>
+      <ValidValues>
+        <DataSetReference>
+          <DataSetName>OrgUnitList</DataSetName>
+          <ValueField>OrgUnit_id</ValueField>
+          <LabelField>strOrgUnit_nm</LabelField>
+        </DataSetReference>
+      </ValidValues>
+    </ReportParameter>
+    <ReportParameter Name="Group_id">
+      <DataType>Integer</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>0</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Group</Prompt>
+      <ValidValues>
+        <DataSetReference>
+          <DataSetName>GroupList</DataSetName>
+          <ValueField>Group_id</ValueField>
+          <LabelField>strGroup_nm</LabelField>
+        </DataSetReference>
+      </ValidValues>
+    </ReportParameter>
+    <ReportParameter Name="bitInternal">
+      <DataType>Integer</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>0</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>NRC Filter</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>1</Value>
+            <Label>Show Internal</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>0</Value>
+            <Label>Exclude Internal</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+    </ReportParameter>
+    <ReportParameter Name="Application">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <DataSetReference>
+          <DataSetName>Application</DataSetName>
+          <ValueField>strApplication_nm</ValueField>
+        </DataSetReference>
+      </DefaultValue>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>Application</Prompt>
+      <ValidValues>
+        <DataSetReference>
+          <DataSetName>Application</DataSetName>
+          <ValueField>strApplication_nm</ValueField>
+          <LabelField>strApplication_nm</LabelField>
+        </DataSetReference>
+      </ValidValues>
+    </ReportParameter>
+  </ReportParameters>
+  <Language>en-US</Language>
+</Report>

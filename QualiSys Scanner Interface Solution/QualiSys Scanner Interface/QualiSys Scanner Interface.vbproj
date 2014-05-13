@@ -1,0 +1,726 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Development</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E1AC3AE7-1B49-4B1A-9CB8-BD11E0C1E1A9}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>Nrc.QualiSys_Scanner_Interface.My.MyApplication</StartupObject>
+    <RootNamespace>Nrc.QualiSys_Scanner_Interface</RootNamespace>
+    <AssemblyName>QualiSys Scanner Interface</AssemblyName>
+    <MyType>WindowsForms</MyType>
+    <OptionStrict>On</OptionStrict>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <ApplicationIcon>Scanner 2.ico</ApplicationIcon>
+    <SignManifests>true</SignManifests>
+    <ManifestCertificateThumbprint>CE0D475BC80C4D84E10B390B8B4A3A0E829981EA</ManifestCertificateThumbprint>
+    <GenerateManifests>true</GenerateManifests>
+    <PublishUrl>\\mercury\QualisysApps\Prod\QualiSysScannerInterface\</PublishUrl>
+    <Install>false</Install>
+    <InstallFrom>Unc</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
+    <ApplicationVersion>1.9.3.2</ApplicationVersion>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>QualiSys Scanner Interface.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>QualiSys Scanner Interface.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>C:\Program Files\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DocumentationFile>QualiSys Scanner Interface.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>C:\Program Files\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DocumentationFile>QualiSys Scanner Interface.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>C:\Program Files\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Data.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1" />
+    <Reference Include="DevExpress.Utils.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1" />
+    <Reference Include="DevExpress.XtraBars.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraEditors.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1" />
+    <Reference Include="DevExpress.XtraGrid.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1" />
+    <Reference Include="DevExpress.XtraLayout.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraNavBar.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1" />
+    <Reference Include="DevExpress.XtraPrinting.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL" />
+    <Reference Include="ExpTreeLib, Version=1.0.1918.39263, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\NRCPROD\Referenced Assemblies\ExpTreeLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="Nrc.Framework, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\NRCPROD\Referenced Assemblies\Nrc.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Framework.BusinessLogic, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\NRCPROD\Referenced Assemblies\Nrc.Framework.BusinessLogic.dll</HintPath>
+    </Reference>
+    <Reference Include="NRC.NRCAuthLib, Version=1.1.1.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\NRCPROD\Referenced Assemblies\NRC.NRCAuthLib.dll</HintPath>
+    </Reference>
+    <Reference Include="SoftekBarcodeLib, Version=6.1.0.0, Culture=neutral, PublicKeyToken=3c09a6b205d2b618">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\NRCPROD\Referenced Assemblies\SoftekBarcodeLib.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="Controls\DataEntryTemplateNode.vb" />
+    <Compile Include="Controls\DataEntryBatchNode.vb" />
+    <Compile Include="Controls\DataEntryVerifyQuestionControl.Designer.vb">
+      <DependentUpon>DataEntryVerifyQuestionControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DataEntryVerifyQuestionControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\VendorFileRootNode.vb" />
+    <Compile Include="Controls\VendorFileFileNode.vb" />
+    <Compile Include="Controls\VendorFileStudyNode.vb" />
+    <Compile Include="Controls\VendorFileClientNode.vb" />
+    <Compile Include="Controls\VendorFileSurveyNode.vb" />
+    <Compile Include="Controls\TransferResultsFileNode.vb" />
+    <Compile Include="Controls\TransferResultsSurveyNode.vb" />
+    <Compile Include="Controls\TransferResultsVendorNode.vb" />
+    <Compile Include="Dialogs\DataEntryBatchAddDialog.Designer.vb">
+      <DependentUpon>DataEntryBatchAddDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\DataEntryBatchAddDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\VendorMaintenenceImportDialog.Designer.vb">
+      <DependentUpon>VendorMaintenenceImportDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\VendorMaintenenceImportDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Enums\DataEntryImageKeys.vb" />
+    <Compile Include="Enums\VendorFileImageKeys.vb" />
+    <Compile Include="Enums\TransferResultsFilterModes.vb" />
+    <Compile Include="Enums\TransferResultsImageKeys.vb" />
+    <Compile Include="EventArgs\SelectedNodeChangedEventArgs.vb" />
+    <Compile Include="EventArgs\SelectedNodeChangingEventArgs.vb" />
+    <Compile Include="EventArgs\VendorChangedEventArgs.vb" />
+    <Compile Include="Exceptions\AccessDeniedException.vb" />
+    <Compile Include="EventArgs\FolderChangedEventArgs.vb" />
+    <Compile Include="Classes\Globals.vb" />
+    <Compile Include="Classes\UIRelation.vb" />
+    <Compile Include="Classes\CurrentUser.vb" />
+    <Compile Include="Dialogs\ImportListOutputDialog.Designer.vb">
+      <DependentUpon>ImportListOutputDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\ImportListOutputDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\UserSettingsDialog.Designer.vb">
+      <DependentUpon>UserSettingsDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\UserSettingsDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SplashScreen.Designer.vb">
+      <DependentUpon>SplashScreen.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SplashScreen.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ViewCommentForm.Designer.vb">
+      <DependentUpon>ViewCommentForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ViewCommentForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Navigators\BarcodeSearchNavigator.Designer.vb">
+      <DependentUpon>BarcodeSearchNavigator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Navigators\BarcodeSearchNavigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Navigators\DataEntryVerifyNavigator.Designer.vb">
+      <DependentUpon>DataEntryVerifyNavigator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Navigators\DataEntryVerifyNavigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Navigators\ImportNavigator.Designer.vb">
+      <DependentUpon>ImportNavigator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Navigators\ImportNavigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Navigators\SurveyVendorNavigator.Designer.vb">
+      <DependentUpon>SurveyVendorNavigator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Navigators\SurveyVendorNavigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Navigators\TransferResultsNavigator.Designer.vb">
+      <DependentUpon>TransferResultsNavigator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Navigators\TransferResultsNavigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Navigators\VendorFileValidationNavigator.Designer.vb">
+      <DependentUpon>VendorFileValidationNavigator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Navigators\VendorFileValidationNavigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Navigators\VendorMaintenanceNavigator.Designer.vb">
+      <DependentUpon>VendorMaintenanceNavigator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Navigators\VendorMaintenanceNavigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\BarcodeSearchSection.Designer.vb">
+      <DependentUpon>BarcodeSearchSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\BarcodeSearchSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Navigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\DataEntryVerifySection.Designer.vb">
+      <DependentUpon>DataEntryVerifySection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\DataEntryVerifySection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\ImportSection.Designer.vb">
+      <DependentUpon>ImportSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\ImportSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Section.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\MainForm.Designer.vb">
+      <DependentUpon>MainForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MainForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Sections\SurveyVendorSection.Designer.vb">
+      <DependentUpon>SurveyVendorSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\SurveyVendorSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\TransferResultsFileSection.Designer.vb">
+      <DependentUpon>TransferResultsFileSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\TransferResultsFileSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\TransferResultsSection.Designer.vb">
+      <DependentUpon>TransferResultsSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\TransferResultsSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\TransferResultsSurveySection.Designer.vb">
+      <DependentUpon>TransferResultsSurveySection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\TransferResultsSurveySection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\TransferResultsVendorSection.Designer.vb">
+      <DependentUpon>TransferResultsVendorSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\TransferResultsVendorSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\VendorFileValidationSection.Designer.vb">
+      <DependentUpon>VendorFileValidationSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\VendorFileValidationSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\VendorMaintenanceSection.Designer.vb">
+      <DependentUpon>VendorMaintenanceSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\VendorMaintenanceSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Controls\DataEntryVerifyQuestionControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DataEntryVerifyQuestionControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\DataEntryBatchAddDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DataEntryBatchAddDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\ImportListOutputDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ImportListOutputDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\UserSettingsDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>UserSettingsDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\VendorMaintenenceImportDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>VendorMaintenenceImportDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SplashScreen.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SplashScreen.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ViewCommentForm.resx">
+      <DependentUpon>ViewCommentForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\licenses.licx" />
+    <EmbeddedResource Include="Navigators\BarcodeSearchNavigator.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>BarcodeSearchNavigator.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Navigators\DataEntryVerifyNavigator.resx">
+      <DependentUpon>DataEntryVerifyNavigator.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Navigators\ImportNavigator.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ImportNavigator.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Navigators\SurveyVendorNavigator.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SurveyVendorNavigator.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Navigators\TransferResultsNavigator.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TransferResultsNavigator.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Navigators\VendorFileValidationNavigator.resx">
+      <DependentUpon>VendorFileValidationNavigator.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Navigators\VendorMaintenanceNavigator.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>VendorMaintenanceNavigator.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\BarcodeSearchSection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>BarcodeSearchSection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\DataEntryVerifySection.resx">
+      <DependentUpon>DataEntryVerifySection.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\ImportSection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ImportSection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MainForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MainForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\SurveyVendorSection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SurveyVendorSection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\TransferResultsFileSection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TransferResultsFileSection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\TransferResultsSection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TransferResultsSection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\TransferResultsSurveySection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TransferResultsSurveySection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\TransferResultsVendorSection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TransferResultsVendorSection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\VendorFileValidationSection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>VendorFileValidationSection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\VendorMaintenanceSection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>VendorMaintenanceSection.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Resources\GoLtr.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\QualiSys Class Library Solution\QualiSys.Library.SqlDataProvider\QualiSys.Library.SqlDataProvider.vbproj">
+      <Project>{31F9022F-D830-410D-90AE-98C59F34E552}</Project>
+      <Name>QualiSys.Library.SqlDataProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\QualiSys Class Library Solution\QualiSys.Library\QualiSys.Library.vbproj">
+      <Project>{191D0C34-FF61-47A6-852F-7FD91D50AD72}</Project>
+      <Name>QualiSys.Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\QualiSys Class Library Solution\QualiSys.Scanning.Library.SqlDataProvider\QualiSys.Scanning.Library.SqlDataProvider.vbproj">
+      <Project>{43B1C31C-3D06-407A-AD35-30256C8B9C6E}</Project>
+      <Name>QualiSys.Scanning.Library.SqlDataProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\QualiSys Class Library Solution\QualiSys.Scanning.Library\QualiSys.Scanning.Library.vbproj">
+      <Project>{8ACF6F70-0A74-4443-BAD9-BD91CE4C5D39}</Project>
+      <Name>QualiSys.Scanning.Library</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Import.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Zoom Out.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Rotate Clockwise.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Rotate Counterclockwise.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Zoom In.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SEARCH_00.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Search.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DeleteRed16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Excel16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Document16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Check.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\UnCheck.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\DataSources\Nrc.QualiSys.Library.CoverLetter.datasource" />
+    <None Include="My Project\DataSources\Nrc.QualiSys.Library.Disposition.datasource" />
+    <None Include="My Project\DataSources\Nrc.QualiSys.Library.EmailBlast.datasource" />
+    <None Include="My Project\DataSources\Nrc.QualiSys.Library.EmailBlastOption.datasource" />
+    <None Include="My Project\DataSources\Nrc.QualiSys.Library.Language.datasource" />
+    <None Include="My Project\DataSources\Nrc.QualiSys.Library.Methodology.datasource" />
+    <None Include="My Project\DataSources\Nrc.QualiSys.Library.MethodologyStep.datasource" />
+    <None Include="My Project\DataSources\Nrc.QualiSys.Library.StandardMethodology.datasource" />
+    <None Include="My Project\DataSources\Nrc.QualiSys.Scanning.Library.LithoCodeDisplay.datasource" />
+    <None Include="My Project\DataSources\Nrc.QualiSys.Scanning.Library.LithoHandEntryDisplay.datasource" />
+    <None Include="My Project\DataSources\Nrc.QualiSys.Scanning.Library.LithoPopMappingDisplay.datasource" />
+    <None Include="My Project\DataSources\Nrc.QualiSys.Scanning.Library.Vendor.datasource" />
+    <None Include="My Project\DataSources\Nrc.QualiSys.Scanning.Library.VendorContact.datasource" />
+    <None Include="My Project\DataSources\Nrc.QualiSys.Scanning.Library.VendorDisposition.datasource" />
+    <None Include="Resources\Member32.png" />
+    <None Include="Resources\NoWay16.png" />
+    <None Include="Resources\Validation16.png" />
+    <None Include="Resources\Refresh16.png" />
+    <None Include="Resources\pdf_16x16.gif" />
+    <None Include="Resources\DocumentYellow16.PNG" />
+    <None Include="Resources\DocumentGreen16.PNG" />
+    <None Include="Resources\DocumentRed16.PNG" />
+    <None Include="Resources\MoveUp.png" />
+    <None Include="Resources\MoveDown.png" />
+    <None Include="Resources\GroupCollapse15.png" />
+    <None Include="Resources\GroupExpand15.png" />
+    <None Include="Resources\GroupCollapse11.png" />
+    <None Include="Resources\GroupExpand11.png" />
+    <None Include="Resources\DownArrow16.png" />
+    <None Include="Resources\UpArrow16.png" />
+    <None Include="Resources\YellowLight.png" />
+    <None Include="Resources\GreenLight.png" />
+    <None Include="Resources\Save16.png" />
+    <None Include="Resources\Undo16.png" />
+    <None Include="Resources\Properties16.png" />
+    <None Include="Resources\Survey.png" />
+    <None Include="Resources\Study.png" />
+    <None Include="Resources\Phone.png" />
+    <None Include="Resources\Web.png" />
+    <None Include="Resources\IVR.png" />
+    <None Include="Resources\MailWeb.png" />
+    <None Include="Resources\Bedside.png" />
+    <None Include="Resources\Batch.png" />
+    <None Include="Resources\New16.png" />
+    <None Include="Resources\Lock.png" />
+    <None Include="Resources\LetterWeb.bmp" />
+    <None Include="Resources\LetterWeb.png" />
+    <Content Include="Scanner 2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <PublishFile Include="ActiveUp.Net.Dns">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="ActiveUp.Net.Mail">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="ADODB">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="DevExpress.Data.v7.3">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="DevExpress.Utils.v7.3">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="DevExpress.XtraBars.v7.3">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="DevExpress.XtraEditors.v7.3">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="DevExpress.XtraGrid.v7.3">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="DevExpress.XtraLayout.v7.3">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="DevExpress.XtraNavBar.v7.3">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="DevExpress.XtraPrinting.v7.3">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="DevExpress.XtraRichTextEdit.v7.3">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="Microsoft.ReportViewer.Common">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="Microsoft.ReportViewer.ProcessingObjectModel">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="Microsoft.ReportViewer.WinForms">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

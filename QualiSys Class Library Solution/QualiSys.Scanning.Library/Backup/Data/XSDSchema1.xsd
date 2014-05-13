@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="XSDSchema1" targetNamespace="http://tempuri.org/XSDSchema1.xsd" elementFormDefault="unqualified" xmlns="http://tempuri.org/XSDSchema1.xsd" xmlns:mstns="http://tempuri.org/XSDSchema1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" attributeFormDefault="unqualified">
+</xs:schema>

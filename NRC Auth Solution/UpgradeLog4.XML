@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="NRCAuth">
+</Property><Property Name="Solution File" Value="C:\TFS\NRCCorp\Production\NRC Auth Solution\NRCAuth.sln">
+</Property><Property Name="Date" Value="Friday, November 15, 2013">
+</Property><Property Name="Time" Value="13:56 PM">
+</Property><Property Name="Log Number" Value="4">
+</Property></Properties><Event ErrorLevel="0" Project="NRCAuthLib" Source="NRCAuthLib\NRCAuthLib.vbproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="NRCAuthLib" Source="NRCAuthLib\NRCAuthLib.vbproj" Description="Converted">
+</Event><Event ErrorLevel="1" Project="Nrc.Framework" Source="..\NRC Framework Solution\Nrc.Framework\Nrc.Framework.vbproj" Description="Your project is targeting .NET Framework 2.0 or 3.0. If your project uses assemblies requiring a newer .NET Framework, your project will fail to build. You can change the .NET Framework version by clicking Properties on the project menu and then selecting a new version in the '.NET Framework' dropdown box. (In Visual Basic, this is located on the Compile tab by clicking the 'Advanced Compiler Options...' button.)">
+</Event><Event ErrorLevel="0" Project="Nrc.Framework" Source="..\NRC Framework Solution\Nrc.Framework\Nrc.Framework.vbproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="Nrc.Framework" Source="..\NRC Framework Solution\Nrc.Framework\Nrc.Framework.vbproj" Description="Converted">
+</Event><Event ErrorLevel="1" Project="NRC Class Library" Source="..\NRC Class Library Solution\NRC Class Library.vbproj" Description="Your project is targeting .NET Framework 2.0 or 3.0. If your project uses assemblies requiring a newer .NET Framework, your project will fail to build. You can change the .NET Framework version by clicking Properties on the project menu and then selecting a new version in the '.NET Framework' dropdown box. (In Visual Basic, this is located on the Compile tab by clicking the 'Advanced Compiler Options...' button.)">
+</Event><Event ErrorLevel="0" Project="NRC Class Library" Source="..\NRC Class Library Solution\NRC Class Library.vbproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="NRC Class Library" Source="..\NRC Class Library Solution\NRC Class Library.vbproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="NRCAuth.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="NRCAuth.sln" Description="Converted">
+</Event><Event ErrorLevel="1" Project="NRCAuthLib" Source="NRCAuthLib\OUH\OUH.vb" Description="File not found.  Unable to determine whether the file requires upgrade.">
+</Event><Event ErrorLevel="3" Project="NRCAuthLib" Source="NRCAuthLib\OUH\OUH.vb" Description="Not Converted">
+</Event><Event ErrorLevel="1" Project="NRCAuthLib" Source="NRCAuthLib\App.Config" Description="File not found.  Unable to determine whether the file requires upgrade.">
+</Event><Event ErrorLevel="3" Project="NRCAuthLib" Source="NRCAuthLib\App.Config" Description="Not Converted">
+</Event><Event ErrorLevel="0" Project="NRCAuthLib" Source="NRCAuthLib\NRCAuthLib.vbproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="Nrc.Framework" Source="..\NRC Framework Solution\Nrc.Framework\Nrc.Framework.vbproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="NRC Class Library" Source="..\NRC Class Library Solution\NRC Class Library.vbproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>

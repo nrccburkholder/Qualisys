@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="urn:mdWebServiceName" elementFormDefault="qualified" targetNamespace="urn:mdWebServiceName" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="RequestArray">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="TransmissionReference" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CustomerID" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="OptCorrectSpelling" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="OptNameHint" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="OptGenderAggression" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="OptGenderPopulation" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="OptSalutationPrefix" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="OptSalutationSuffix" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="OptSalutationSlug" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Record">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="RecordID" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="FullName" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ResponseArray">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Version" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="TransmissionReference" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Results" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="TotalRecords" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Record">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="RecordID" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Results" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Name">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element minOccurs="0" maxOccurs="1" name="Prefix" type="xs:string" />
+                  <xs:element minOccurs="0" maxOccurs="1" name="Prefix2" type="xs:string" />
+                  <xs:element minOccurs="0" maxOccurs="1" name="First" type="xs:string" />
+                  <xs:element minOccurs="0" maxOccurs="1" name="First2" type="xs:string" />
+                  <xs:element minOccurs="0" maxOccurs="1" name="Middle" type="xs:string" />
+                  <xs:element minOccurs="0" maxOccurs="1" name="Middle2" type="xs:string" />
+                  <xs:element minOccurs="0" maxOccurs="1" name="Last" type="xs:string" />
+                  <xs:element minOccurs="0" maxOccurs="1" name="Last2" type="xs:string" />
+                  <xs:element minOccurs="0" maxOccurs="1" name="Suffix" type="xs:string" />
+                  <xs:element minOccurs="0" maxOccurs="1" name="Suffix2" type="xs:string" />
+                  <xs:element minOccurs="0" maxOccurs="1" name="Gender" type="xs:string" />
+                  <xs:element minOccurs="0" maxOccurs="1" name="Gender2" type="xs:string" />
+                  <xs:element minOccurs="0" maxOccurs="1" name="Salutation" type="xs:string" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

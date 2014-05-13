@@ -1,0 +1,120 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Sampling Tool", "Sampling Tool\Sampling Tool.vbproj", "{733DECDE-D3EC-4411-803A-4133AC759338}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "QualiSys.Library", "..\QualiSys Class Library Solution\QualiSys.Library\QualiSys.Library.vbproj", "{191D0C34-FF61-47A6-852F-7FD91D50AD72}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "QualiSys.Library.SqlDataProvider", "..\QualiSys Class Library Solution\QualiSys.Library.SqlDataProvider\QualiSys.Library.SqlDataProvider.vbproj", "{31F9022F-D830-410D-90AE-98C59F34E552}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Seeded Mailing Service", "Seeded Mailing Service\Seeded Mailing Service.vbproj", "{67AF70B2-620F-429F-8BED-112CD448E9DC}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Seeded Mailing Service Tester", "Seeded Mailing Service Tester\Seeded Mailing Service Tester.vbproj", "{F0026E67-6C9F-4C93-91A3-266E2FEF5076}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Seeded Mailing Service Installer", "Seeded Mailing Service Installer\Seeded Mailing Service Installer.vdproj", "{A2D1B1A7-679C-4661-93B3-C90F4465F7D3}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 7
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://tfs.nationalresearch.com:8080/tfs/DefaultCollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Library\\QualiSys.Library.vbproj
+		SccProjectName1 = ../QualiSys\u0020Class\u0020Library\u0020Solution/QualiSys.Library
+		SccLocalPath1 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Library
+		SccProjectUniqueName2 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Library.SqlDataProvider\\QualiSys.Library.SqlDataProvider.vbproj
+		SccProjectName2 = ../QualiSys\u0020Class\u0020Library\u0020Solution/QualiSys.Library.SqlDataProvider
+		SccLocalPath2 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Library.SqlDataProvider
+		SccProjectUniqueName3 = Sampling\u0020Tool\\Sampling\u0020Tool.vbproj
+		SccProjectName3 = Sampling\u0020Tool
+		SccLocalPath3 = Sampling\u0020Tool
+		SccProjectUniqueName4 = Seeded\u0020Mailing\u0020Service\\Seeded\u0020Mailing\u0020Service.vbproj
+		SccProjectName4 = Seeded\u0020Mailing\u0020Service
+		SccLocalPath4 = Seeded\u0020Mailing\u0020Service
+		SccProjectUniqueName5 = Seeded\u0020Mailing\u0020Service\u0020Tester\\Seeded\u0020Mailing\u0020Service\u0020Tester.vbproj
+		SccProjectName5 = Seeded\u0020Mailing\u0020Service\u0020Tester
+		SccLocalPath5 = Seeded\u0020Mailing\u0020Service\u0020Tester
+		SccProjectUniqueName6 = Seeded\u0020Mailing\u0020Service\u0020Installer\\Seeded\u0020Mailing\u0020Service\u0020Installer.vdproj
+		SccProjectName6 = Seeded\u0020Mailing\u0020Service\u0020Installer
+		SccLocalPath6 = Seeded\u0020Mailing\u0020Service\u0020Installer
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{733DECDE-D3EC-4411-803A-4133AC759338}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{733DECDE-D3EC-4411-803A-4133AC759338}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{733DECDE-D3EC-4411-803A-4133AC759338}.Debug|x86.ActiveCfg = Debug|x86
+		{733DECDE-D3EC-4411-803A-4133AC759338}.Debug|x86.Build.0 = Debug|x86
+		{733DECDE-D3EC-4411-803A-4133AC759338}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{733DECDE-D3EC-4411-803A-4133AC759338}.Release|Any CPU.Build.0 = Release|Any CPU
+		{733DECDE-D3EC-4411-803A-4133AC759338}.Release|x86.ActiveCfg = Release|x86
+		{733DECDE-D3EC-4411-803A-4133AC759338}.Release|x86.Build.0 = Release|x86
+		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.Debug|x86.ActiveCfg = Debug|x86
+		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.Debug|x86.Build.0 = Debug|x86
+		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.Release|x86.ActiveCfg = Release|x86
+		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.Release|x86.Build.0 = Release|x86
+		{31F9022F-D830-410D-90AE-98C59F34E552}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31F9022F-D830-410D-90AE-98C59F34E552}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31F9022F-D830-410D-90AE-98C59F34E552}.Debug|x86.ActiveCfg = Debug|x86
+		{31F9022F-D830-410D-90AE-98C59F34E552}.Debug|x86.Build.0 = Debug|x86
+		{31F9022F-D830-410D-90AE-98C59F34E552}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31F9022F-D830-410D-90AE-98C59F34E552}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31F9022F-D830-410D-90AE-98C59F34E552}.Release|x86.ActiveCfg = Release|x86
+		{31F9022F-D830-410D-90AE-98C59F34E552}.Release|x86.Build.0 = Release|x86
+		{67AF70B2-620F-429F-8BED-112CD448E9DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67AF70B2-620F-429F-8BED-112CD448E9DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67AF70B2-620F-429F-8BED-112CD448E9DC}.Debug|x86.ActiveCfg = Debug|x86
+		{67AF70B2-620F-429F-8BED-112CD448E9DC}.Debug|x86.Build.0 = Debug|x86
+		{67AF70B2-620F-429F-8BED-112CD448E9DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67AF70B2-620F-429F-8BED-112CD448E9DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67AF70B2-620F-429F-8BED-112CD448E9DC}.Release|x86.ActiveCfg = Release|x86
+		{67AF70B2-620F-429F-8BED-112CD448E9DC}.Release|x86.Build.0 = Release|x86
+		{F0026E67-6C9F-4C93-91A3-266E2FEF5076}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0026E67-6C9F-4C93-91A3-266E2FEF5076}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0026E67-6C9F-4C93-91A3-266E2FEF5076}.Debug|x86.ActiveCfg = Debug|x86
+		{F0026E67-6C9F-4C93-91A3-266E2FEF5076}.Debug|x86.Build.0 = Debug|x86
+		{F0026E67-6C9F-4C93-91A3-266E2FEF5076}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0026E67-6C9F-4C93-91A3-266E2FEF5076}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0026E67-6C9F-4C93-91A3-266E2FEF5076}.Release|x86.ActiveCfg = Release|x86
+		{F0026E67-6C9F-4C93-91A3-266E2FEF5076}.Release|x86.Build.0 = Release|x86
+		{A2D1B1A7-679C-4661-93B3-C90F4465F7D3}.Debug|Any CPU.ActiveCfg = Debug
+		{A2D1B1A7-679C-4661-93B3-C90F4465F7D3}.Debug|x86.ActiveCfg = Debug
+		{A2D1B1A7-679C-4661-93B3-C90F4465F7D3}.Release|Any CPU.ActiveCfg = Release
+		{A2D1B1A7-679C-4661-93B3-C90F4465F7D3}.Release|x86.ActiveCfg = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="urn:mdWebServiceGeoCode" elementFormDefault="qualified" targetNamespace="urn:mdWebServiceGeoCode" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="RequestArray">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="TransmissionReference" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CustomerID" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Record">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="RecordID" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="AddressKey" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ResponseArray">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Version" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="TransmissionReference" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Results" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="TotalRecords" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Record">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="RecordID" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Results" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Address">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element minOccurs="0" maxOccurs="1" name="County">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element minOccurs="0" maxOccurs="1" name="Name" type="xs:string" />
+                        <xs:element minOccurs="0" maxOccurs="1" name="Fips" type="xs:string" />
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element minOccurs="0" maxOccurs="1" name="Latitude" type="xs:string" />
+                  <xs:element minOccurs="0" maxOccurs="1" name="Longitude" type="xs:string" />
+                  <xs:element minOccurs="0" maxOccurs="1" name="Place">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element minOccurs="0" maxOccurs="1" name="Code" type="xs:string" />
+                        <xs:element minOccurs="0" maxOccurs="1" name="Name" type="xs:string" />
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element minOccurs="0" maxOccurs="1" name="TimeZone">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element minOccurs="0" maxOccurs="1" name="Name" type="xs:string" />
+                        <xs:element minOccurs="0" maxOccurs="1" name="Code" type="xs:string" />
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element minOccurs="0" maxOccurs="1" name="CBSA">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element minOccurs="0" maxOccurs="1" name="Code" type="xs:string" />
+                        <xs:element minOccurs="0" maxOccurs="1" name="Title" type="xs:string" />
+                        <xs:element minOccurs="0" maxOccurs="1" name="Level" type="xs:string" />
+                        <xs:element minOccurs="0" maxOccurs="1" name="CBSADivisionCode" type="xs:string" />
+                        <xs:element minOccurs="0" maxOccurs="1" name="CBSADivisionTitle" type="xs:string" />
+                        <xs:element minOccurs="0" maxOccurs="1" name="CBSADivisionLevel" type="xs:string" />
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element minOccurs="0" maxOccurs="1" name="Census">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element minOccurs="0" maxOccurs="1" name="Block" type="xs:string" />
+                        <xs:element minOccurs="0" maxOccurs="1" name="Tract" type="xs:string" />
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

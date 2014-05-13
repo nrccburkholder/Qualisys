@@ -1,0 +1,150 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Notification Admin", "Notification Admin\Notification Admin.vbproj", "{C4DE4069-9CE8-4B6B-B739-276E531D0967}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "NotificationAdmin.Library", "NotificationAdmin.Library\NotificationAdmin.Library.vbproj", "{64001665-895B-4DF1-B408-E504A0A87598}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "NotificationAdmin.Library.SqlDataProvider", "NotificationAdmin.Library.SqlDataProvider\NotificationAdmin.Library.SqlDataProvider.vbproj", "{FBB876A1-B72C-40CC-A639-57DECD40CC2F}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Nrc.Framework", "..\NRC Framework Solution\Nrc.Framework\Nrc.Framework.vbproj", "{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Nrc.Framework.BusinessLogic", "..\NRC Framework Solution\Nrc.Framework.BusinessLogic\Nrc.Framework.BusinessLogic.vbproj", "{C5A6EE1A-D5BF-4059-87CF-ACA302979820}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Nrc.Framework.Notification", "..\NRC Framework Solution\Nrc.Framework.Notification\Nrc.Framework.Notification.vbproj", "{27AB551E-D67F-4B03-BAB5-E7172E105217}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 7
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://perseus:8080/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Notification\u0020Admin\\Notification\u0020Admin.vbproj
+		SccProjectName1 = Notification\u0020Admin
+		SccLocalPath1 = Notification\u0020Admin
+		SccProjectUniqueName2 = NotificationAdmin.Library\\NotificationAdmin.Library.vbproj
+		SccProjectName2 = NotificationAdmin.Library
+		SccLocalPath2 = NotificationAdmin.Library
+		SccProjectUniqueName3 = NotificationAdmin.Library.SqlDataProvider\\NotificationAdmin.Library.SqlDataProvider.vbproj
+		SccProjectName3 = NotificationAdmin.Library.SqlDataProvider
+		SccLocalPath3 = NotificationAdmin.Library.SqlDataProvider
+		SccProjectUniqueName4 = ..\\NRC\u0020Framework\u0020Solution\\Nrc.Framework\\Nrc.Framework.vbproj
+		SccProjectName4 = ../NRC\u0020Framework\u0020Solution/Nrc.Framework
+		SccLocalPath4 = ..\\NRC\u0020Framework\u0020Solution\\Nrc.Framework
+		SccProjectUniqueName5 = ..\\NRC\u0020Framework\u0020Solution\\Nrc.Framework.BusinessLogic\\Nrc.Framework.BusinessLogic.vbproj
+		SccProjectName5 = ../NRC\u0020Framework\u0020Solution/Nrc.Framework.BusinessLogic
+		SccLocalPath5 = ..\\NRC\u0020Framework\u0020Solution\\Nrc.Framework.BusinessLogic
+		SccProjectUniqueName6 = ..\\NRC\u0020Framework\u0020Solution\\Nrc.Framework.Notification\\Nrc.Framework.Notification.vbproj
+		SccProjectName6 = ../NRC\u0020Framework\u0020Solution/Nrc.Framework.Notification
+		SccLocalPath6 = ..\\NRC\u0020Framework\u0020Solution\\Nrc.Framework.Notification
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Development|Any CPU = Development|Any CPU
+		Production|Any CPU = Production|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Staging|Any CPU = Staging|Any CPU
+		Testing|Any CPU = Testing|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C4DE4069-9CE8-4B6B-B739-276E531D0967}.Debug|Any CPU.ActiveCfg = Development|Any CPU
+		{C4DE4069-9CE8-4B6B-B739-276E531D0967}.Debug|Any CPU.Build.0 = Development|Any CPU
+		{C4DE4069-9CE8-4B6B-B739-276E531D0967}.Development|Any CPU.ActiveCfg = Development|Any CPU
+		{C4DE4069-9CE8-4B6B-B739-276E531D0967}.Development|Any CPU.Build.0 = Development|Any CPU
+		{C4DE4069-9CE8-4B6B-B739-276E531D0967}.Production|Any CPU.ActiveCfg = Production|Any CPU
+		{C4DE4069-9CE8-4B6B-B739-276E531D0967}.Production|Any CPU.Build.0 = Production|Any CPU
+		{C4DE4069-9CE8-4B6B-B739-276E531D0967}.Release|Any CPU.ActiveCfg = Production|Any CPU
+		{C4DE4069-9CE8-4B6B-B739-276E531D0967}.Release|Any CPU.Build.0 = Production|Any CPU
+		{C4DE4069-9CE8-4B6B-B739-276E531D0967}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
+		{C4DE4069-9CE8-4B6B-B739-276E531D0967}.Staging|Any CPU.Build.0 = Staging|Any CPU
+		{C4DE4069-9CE8-4B6B-B739-276E531D0967}.Testing|Any CPU.ActiveCfg = Testing|Any CPU
+		{C4DE4069-9CE8-4B6B-B739-276E531D0967}.Testing|Any CPU.Build.0 = Testing|Any CPU
+		{64001665-895B-4DF1-B408-E504A0A87598}.Debug|Any CPU.ActiveCfg = Development|Any CPU
+		{64001665-895B-4DF1-B408-E504A0A87598}.Debug|Any CPU.Build.0 = Development|Any CPU
+		{64001665-895B-4DF1-B408-E504A0A87598}.Development|Any CPU.ActiveCfg = Development|Any CPU
+		{64001665-895B-4DF1-B408-E504A0A87598}.Development|Any CPU.Build.0 = Development|Any CPU
+		{64001665-895B-4DF1-B408-E504A0A87598}.Production|Any CPU.ActiveCfg = Production|Any CPU
+		{64001665-895B-4DF1-B408-E504A0A87598}.Production|Any CPU.Build.0 = Production|Any CPU
+		{64001665-895B-4DF1-B408-E504A0A87598}.Release|Any CPU.ActiveCfg = Production|Any CPU
+		{64001665-895B-4DF1-B408-E504A0A87598}.Release|Any CPU.Build.0 = Production|Any CPU
+		{64001665-895B-4DF1-B408-E504A0A87598}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
+		{64001665-895B-4DF1-B408-E504A0A87598}.Staging|Any CPU.Build.0 = Staging|Any CPU
+		{64001665-895B-4DF1-B408-E504A0A87598}.Testing|Any CPU.ActiveCfg = Testing|Any CPU
+		{64001665-895B-4DF1-B408-E504A0A87598}.Testing|Any CPU.Build.0 = Testing|Any CPU
+		{FBB876A1-B72C-40CC-A639-57DECD40CC2F}.Debug|Any CPU.ActiveCfg = Development|Any CPU
+		{FBB876A1-B72C-40CC-A639-57DECD40CC2F}.Debug|Any CPU.Build.0 = Development|Any CPU
+		{FBB876A1-B72C-40CC-A639-57DECD40CC2F}.Development|Any CPU.ActiveCfg = Development|Any CPU
+		{FBB876A1-B72C-40CC-A639-57DECD40CC2F}.Development|Any CPU.Build.0 = Development|Any CPU
+		{FBB876A1-B72C-40CC-A639-57DECD40CC2F}.Production|Any CPU.ActiveCfg = Production|Any CPU
+		{FBB876A1-B72C-40CC-A639-57DECD40CC2F}.Production|Any CPU.Build.0 = Production|Any CPU
+		{FBB876A1-B72C-40CC-A639-57DECD40CC2F}.Release|Any CPU.ActiveCfg = Production|Any CPU
+		{FBB876A1-B72C-40CC-A639-57DECD40CC2F}.Release|Any CPU.Build.0 = Production|Any CPU
+		{FBB876A1-B72C-40CC-A639-57DECD40CC2F}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
+		{FBB876A1-B72C-40CC-A639-57DECD40CC2F}.Staging|Any CPU.Build.0 = Staging|Any CPU
+		{FBB876A1-B72C-40CC-A639-57DECD40CC2F}.Testing|Any CPU.ActiveCfg = Testing|Any CPU
+		{FBB876A1-B72C-40CC-A639-57DECD40CC2F}.Testing|Any CPU.Build.0 = Testing|Any CPU
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.Development|Any CPU.ActiveCfg = Debug|Any CPU
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.Development|Any CPU.Build.0 = Debug|Any CPU
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.Production|Any CPU.ActiveCfg = Release|Any CPU
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.Production|Any CPU.Build.0 = Release|Any CPU
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.Staging|Any CPU.ActiveCfg = Release|Any CPU
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.Staging|Any CPU.Build.0 = Release|Any CPU
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.Testing|Any CPU.ActiveCfg = Release|Any CPU
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.Testing|Any CPU.Build.0 = Release|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Development|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Development|Any CPU.Build.0 = Debug|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Production|Any CPU.ActiveCfg = Release|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Production|Any CPU.Build.0 = Release|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Staging|Any CPU.ActiveCfg = Release|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Staging|Any CPU.Build.0 = Release|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Testing|Any CPU.ActiveCfg = Release|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Testing|Any CPU.Build.0 = Release|Any CPU
+		{27AB551E-D67F-4B03-BAB5-E7172E105217}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27AB551E-D67F-4B03-BAB5-E7172E105217}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27AB551E-D67F-4B03-BAB5-E7172E105217}.Development|Any CPU.ActiveCfg = Debug|Any CPU
+		{27AB551E-D67F-4B03-BAB5-E7172E105217}.Development|Any CPU.Build.0 = Debug|Any CPU
+		{27AB551E-D67F-4B03-BAB5-E7172E105217}.Production|Any CPU.ActiveCfg = Release|Any CPU
+		{27AB551E-D67F-4B03-BAB5-E7172E105217}.Production|Any CPU.Build.0 = Release|Any CPU
+		{27AB551E-D67F-4B03-BAB5-E7172E105217}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27AB551E-D67F-4B03-BAB5-E7172E105217}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27AB551E-D67F-4B03-BAB5-E7172E105217}.Staging|Any CPU.ActiveCfg = Release|Any CPU
+		{27AB551E-D67F-4B03-BAB5-E7172E105217}.Staging|Any CPU.Build.0 = Release|Any CPU
+		{27AB551E-D67F-4B03-BAB5-E7172E105217}.Testing|Any CPU.ActiveCfg = Release|Any CPU
+		{27AB551E-D67F-4B03-BAB5-E7172E105217}.Testing|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

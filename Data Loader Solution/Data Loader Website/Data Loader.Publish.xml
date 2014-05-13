@@ -1,0 +1,29 @@
+<publishData>
+  <publishTarget publishUrl="\\flash\e$\WebSites\My Solutions\eLoader\">
+    <file relUrl="SignIn.aspx" publishTime="3/27/2008 2:58:25 PM" />
+    <file relUrl="bin/Nrc.Framework.BusinessLogic.dll" publishTime="3/19/2008 8:05:08 AM" />
+    <file relUrl="Web.config" publishTime="3/27/2008 2:11:55 PM" />
+    <file relUrl="bin/NRC.NRCAuthLib.pdb" publishTime="3/27/2008 4:14:09 PM" />
+    <file relUrl="img/SignIn.gif" publishTime="3/18/2008 3:57:40 PM" />
+    <file relUrl="bin/Nrc.Framework.pdb" publishTime="3/27/2008 4:14:08 PM" />
+    <file relUrl="bin/Nrc.Framework.xml" publishTime="3/27/2008 4:14:08 PM" />
+    <file relUrl="bin/NRC.NRCWebDocumentManagerLibrary.dll" publishTime="3/19/2008 8:05:08 AM" />
+    <file relUrl="bin/UploaderTest.xml" publishTime="3/26/2008 11:21:52 PM" />
+    <file relUrl="bin/Microsoft.Web.UI.WebControls.dll" publishTime="3/20/2008 9:56:10 AM" />
+    <file relUrl="bin/NRC.dll" publishTime="3/19/2008 8:05:08 AM" />
+    <file relUrl="bin/Nrc.Framework.dll" publishTime="3/27/2008 4:14:08 PM" />
+    <file relUrl="bin/Microsoft.Practices.EnterpriseLibrary.Data.dll" publishTime="3/19/2008 8:05:08 AM" />
+    <file relUrl="bin/NRC.NRCAuthLib.dll" publishTime="3/27/2008 4:14:09 PM" />
+    <file relUrl="bin/FreeTextBox.dll" publishTime="3/19/2008 8:05:08 AM" />
+    <file relUrl="bin/NRC.NRCAuthLib.xml" publishTime="3/27/2008 4:14:09 PM" />
+    <file relUrl="Default.aspx" publishTime="3/27/2008 3:05:36 PM" />
+    <file relUrl="bin/NRC.eLoader.pdb" publishTime="3/27/2008 4:14:10 PM" />
+    <file relUrl="bin/NRC.eLoader.dll" publishTime="3/27/2008 4:14:10 PM" />
+    <file relUrl="bin/UploaderTest.dll" publishTime="3/26/2008 11:21:52 PM" />
+    <file relUrl="bin/Microsoft.Practices.EnterpriseLibrary.Common.dll" publishTime="3/19/2008 8:05:08 AM" />
+    <file relUrl="bin/AjaxControlToolkit.dll" publishTime="3/19/2008 8:05:07 AM" />
+    <file relUrl="bin/UploaderTest.pdb" publishTime="3/26/2008 11:21:52 PM" />
+    <file relUrl="bin/NRC.xml" publishTime="3/27/2008 4:14:10 PM" />
+    <file relUrl="bin/Microsoft.Practices.ObjectBuilder.dll" publishTime="3/19/2008 8:05:08 AM" />
+  </publishTarget>
+</publishData>

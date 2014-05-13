@@ -1,0 +1,617 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{118219D0-CF71-4470-A77B-A8E51260A455}</ProjectGuid>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>Control Panel3.ico</ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>NormsApplication</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyMode>None</AssemblyOriginatorKeyMode>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>WinExe</OutputType>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionStrict>Off</OptionStrict>
+    <RootNamespace>NormsApplication</RootNamespace>
+    <StartupObject>NormsApplication.My.MyApplication</StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <MyType>WindowsForms</MyType>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <SignManifests>true</SignManifests>
+    <ManifestCertificateThumbprint>66498C516DD8CF5A170D333DA0F45E12B4C7BF4B</ManifestCertificateThumbprint>
+    <TargetZone>LocalIntranet</TargetZone>
+    <GenerateManifests>true</GenerateManifests>
+    <PublishUrl>\\mercury\QualisysApps\Prod\ComparisonDataApplication\</PublishUrl>
+    <Install>false</Install>
+    <InstallFrom>Unc</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Background</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationVersion>1.6.2.2</ApplicationVersion>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>NormsApplication.xml</DocumentationFile>
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>
+    </DefineConstants>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>1</WarningLevel>
+    <NoWarn>42016,42017,42018,42019,42032</NoWarn>
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>NormsApplication.xml</DocumentationFile>
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>
+    </DefineConstants>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>1</WarningLevel>
+    <NoWarn>42016,42017,42018,42019,42032</NoWarn>
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine">
+      <Name>CrystalDecisions.CrystalReports.Engine</Name>
+      <HintPath>..\..\..\..\..\..\Program Files\Common Files\Crystal Decisions\1.1\Managed\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
+      <AssemblyFolderKey>hklm\crystal.net</AssemblyFolderKey>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportSource">
+      <Name>CrystalDecisions.ReportSource</Name>
+      <HintPath>..\..\..\..\..\..\Program Files\Common Files\Crystal Decisions\1.1\Managed\CrystalDecisions.ReportSource.dll</HintPath>
+      <AssemblyFolderKey>hklm\crystal.net</AssemblyFolderKey>
+    </Reference>
+    <Reference Include="CrystalDecisions.Shared">
+      <Name>CrystalDecisions.Shared</Name>
+      <HintPath>..\..\..\..\..\..\Program Files\Common Files\Crystal Decisions\1.1\Managed\CrystalDecisions.Shared.dll</HintPath>
+      <AssemblyFolderKey>hklm\crystal.net</AssemblyFolderKey>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ObjectBuilder, Version=1.0.51205.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Microsoft.Practices.ObjectBuilder.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic">
+      <Name>Microsoft.VisualBasic</Name>
+    </Reference>
+    <Reference Include="NRC, Version=1.14.1.0, Culture=neutral, PublicKeyToken=0c9e538f562d9317">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\NRC.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Framework, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Framework.BusinessLogic, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.BusinessLogic.dll</HintPath>
+    </Reference>
+    <Reference Include="NRC.NRCAuthLib, Version=1.1.1.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\NRC.NRCAuthLib.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Web">
+      <Name>System.Web</Name>
+    </Reference>
+    <Reference Include="System.Web.Services">
+      <Name>system.web.services</Name>
+      <HintPath>..\..\..\..\..\..\windows\assembly\gac\system.web.services\1.0.5000.0__b03f5f7f11d50a3a\system.web.services.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <ProjectReference Include="..\NormsApplicationBusinessObjectsLibrary\NormsApplicationBusinessObjectsLibrary.vbproj">
+      <Name>NormsApplicationBusinessObjectsLibrary</Name>
+      <Project>{E26C036C-D15B-44A0-AC88-CFF749D93F3E}</Project>
+      <Package>{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</Package>
+    </ProjectReference>
+    <COMReference Include="AxSHDocVw">
+      <Guid>{EAB22AC0-30C1-11CF-A7EB-0000C05BAE0B}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>1</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>aximp</WrapperTool>
+    </COMReference>
+    <COMReference Include="SHDocVw">
+      <Guid>{EAB22AC0-30C1-11CF-A7EB-0000C05BAE0B}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>1</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="AssemblyInfo.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Classes\Config.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Classes\CanadaJob.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Classes\CanadaNormQueueController.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Classes\CanadaNormScheduleController.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Classes\CanadaNormSetting.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Classes\CanadaNormSettingApprove.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Classes\CanadaNormSettingApproveCollection.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Classes\CanadaNormSettingController.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Classes\CanadaRollupController.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Classes\ComparisonType.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Classes\ComparisonTypeCollection.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Classes\Enumerations.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Classes\Globals.vb" />
+    <Compile Include="Classes\ListBoxItem.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Classes\MapWizard.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Classes\MapWizardData.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Classes\CurrentUser.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Classes\Wizard.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controls\Administration.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\BackupNorms.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CanadaBenchmarkPerformer.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CanadaNormQueue.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CanadaNorms.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CanadaNormSchedule.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CanadaNormSettingWizard.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CanadaRollup.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ChangeSurveyCountry.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ComparisonReports.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CountriesEditor.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CountriesList.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CreateDimension.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ctlAverageScores.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ctlBaseComparisonControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ctlDemographicCounts.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ctlFrequencies.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ctlQuestionCounts.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ctlQuestionUsers.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Date Chooser.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DimensionSelector.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\EditDimension.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\EquivalentQuestions.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\FilterBuilder.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\LookupandDataUpdate.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\MeasureGroupSelector.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\MinClientCheck.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\NormList.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\NormsListDetailed.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Percentiles1to100.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PopulateNorms.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PromoteNorms.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\QuestionsbySurvey.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\QuestionSelector.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ScoresAndRank.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\SurveyTypesEditor.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\SurveyTypesList.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UseFacilitiesCheck.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UserOptions.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\USNormEditor.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\USNorms.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Dialogs\frmGetQueryInfo.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\frmReportReviewer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\InputDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\OpenSavedQuery.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\QueryLabelandDescriptionDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\TableColumnDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\UpdateQueryDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Exceptions\AccessDeniedException.vb" />
+    <Compile Include="Forms\frmMain.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmSplashScreen.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="modMain.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Content Include="Control Panel3.ico" />
+    <Content Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </Content>
+    <BaseApplicationManifest Include="My Project\app.manifest" />
+    <None Include="Resources\smiley2.png" />
+    <EmbeddedResource Include="Controls\Administration.resx">
+      <DependentUpon>Administration.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\BackupNorms.resx">
+      <DependentUpon>BackupNorms.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CanadaBenchmarkPerformer.resx">
+      <DependentUpon>CanadaBenchmarkPerformer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CanadaNormQueue.resx">
+      <DependentUpon>CanadaNormQueue.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CanadaNorms.resx">
+      <DependentUpon>CanadaNorms.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CanadaNormSchedule.resx">
+      <DependentUpon>CanadaNormSchedule.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CanadaNormSettingWizard.resx">
+      <DependentUpon>CanadaNormSettingWizard.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CanadaRollup.resx">
+      <DependentUpon>CanadaRollup.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ChangeSurveyCountry.resx">
+      <DependentUpon>ChangeSurveyCountry.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ComparisonReports.resx">
+      <DependentUpon>ComparisonReports.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CountriesEditor.resx">
+      <DependentUpon>CountriesEditor.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CountriesList.resx">
+      <DependentUpon>CountriesList.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CreateDimension.resx">
+      <DependentUpon>CreateDimension.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ctlAverageScores.resx">
+      <DependentUpon>ctlAverageScores.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ctlBaseComparisonControl.resx">
+      <DependentUpon>ctlBaseComparisonControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ctlDemographicCounts.resx">
+      <DependentUpon>ctlDemographicCounts.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ctlFrequencies.resx">
+      <DependentUpon>ctlFrequencies.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ctlQuestionCounts.resx">
+      <DependentUpon>ctlQuestionCounts.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ctlQuestionUsers.resx">
+      <DependentUpon>ctlQuestionUsers.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Date Chooser.resx">
+      <DependentUpon>Date Chooser.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\DimensionSelector.resx">
+      <DependentUpon>DimensionSelector.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\EditDimension.resx">
+      <DependentUpon>EditDimension.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\EquivalentQuestions.resx">
+      <DependentUpon>EquivalentQuestions.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\FilterBuilder.resx">
+      <DependentUpon>FilterBuilder.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\LookupandDataUpdate.resx">
+      <DependentUpon>LookupandDataUpdate.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\MeasureGroupSelector.resx">
+      <DependentUpon>MeasureGroupSelector.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\MinClientCheck.resx">
+      <DependentUpon>MinClientCheck.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\NormList.resx">
+      <DependentUpon>NormList.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\NormsListDetailed.resx">
+      <DependentUpon>NormsListDetailed.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Percentiles1to100.resx">
+      <DependentUpon>Percentiles1to100.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PopulateNorms.resx">
+      <DependentUpon>PopulateNorms.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PromoteNorms.resx">
+      <DependentUpon>PromoteNorms.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\QuestionsbySurvey.resx">
+      <DependentUpon>QuestionsbySurvey.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\QuestionSelector.resx">
+      <DependentUpon>QuestionSelector.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ScoresAndRank.resx">
+      <DependentUpon>ScoresAndRank.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\SurveyTypesEditor.resx">
+      <DependentUpon>SurveyTypesEditor.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\SurveyTypesList.resx">
+      <DependentUpon>SurveyTypesList.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\UseFacilitiesCheck.resx">
+      <DependentUpon>UseFacilitiesCheck.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\UserOptions.resx">
+      <DependentUpon>UserOptions.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\USNormEditor.resx">
+      <DependentUpon>USNormEditor.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\USNorms.resx">
+      <DependentUpon>USNorms.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\frmGetQueryInfo.resx">
+      <DependentUpon>frmGetQueryInfo.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\frmReportReviewer.resx">
+      <DependentUpon>frmReportReviewer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\InputDialog.resx">
+      <DependentUpon>InputDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\OpenSavedQuery.resx">
+      <DependentUpon>OpenSavedQuery.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\QueryLabelandDescriptionDialog.resx">
+      <DependentUpon>QueryLabelandDescriptionDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\TableColumnDialog.resx">
+      <DependentUpon>TableColumnDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\UpdateQueryDialog.resx">
+      <DependentUpon>UpdateQueryDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmMain.resx">
+      <DependentUpon>frmMain.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmSplashScreen.resx">
+      <DependentUpon>frmSplashScreen.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <SubType>Designer</SubType>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <PublishFile Include="CrystalDecisions.CrystalReports.Engine">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="CrystalDecisions.ReportSource">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="CrystalDecisions.Shared">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

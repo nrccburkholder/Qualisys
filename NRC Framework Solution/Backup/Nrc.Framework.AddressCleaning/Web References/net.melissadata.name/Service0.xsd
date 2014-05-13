@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="urn:MelissaDataNameCheckService" elementFormDefault="qualified" targetNamespace="urn:MelissaDataNameCheckService" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="https://name.melissadata.net/v2/SOAP/Service.svc?xsd=xsd1" namespace="urn:mdWebServiceName" />
+  <xs:element name="doNameCheck">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="urn:mdWebServiceName" minOccurs="0" maxOccurs="1" name="Request" type="q1:RequestArray" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="doNameCheckResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="urn:mdWebServiceName" minOccurs="0" maxOccurs="1" name="doNameCheckResult" type="q2:ResponseArray" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
