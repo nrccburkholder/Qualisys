@@ -1,0 +1,10 @@
+*.suo
+*.user
+*.dbmdl
+*.psess
+*.vsp
+bin/
+obj/
+TestResults/
+FakesAssemblies/
+.nuget/
