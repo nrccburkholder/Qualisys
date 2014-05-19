@@ -18,9 +18,8 @@
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
     <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DefineTrace>true</DefineTrace>
@@ -144,6 +143,7 @@
     <Compile Include="Collections\VendorWebFile_DataCollection.vb" />
     <Compile Include="Collections\VoviciDownloadLogCollection.vb" />
     <Compile Include="Enums\LithoLookupTypes.vb" />
+    <Compile Include="Enums\TranslatorTypes.vb" />
     <Compile Include="QSIDataFormQuestionItem.vb" />
     <Compile Include="QSIDataFormQuestion.vb" />
     <Compile Include="DataEntryNavigatorTree.vb" />
@@ -171,6 +171,7 @@
     <Compile Include="DataProviders\VoviciDownloadLogProvider.vb" />
     <Compile Include="Enums\VendorFileTrackingActions.vb" />
     <Compile Include="Translators\TranslatorCSVBedside.vb" />
+    <Compile Include="Translators\TranslatorTABCCAS.vb" />
     <Compile Include="Translators\TranslatorVovici.vb" />
     <Compile Include="VendorFileNavigatorTree.vb" />
     <Compile Include="DataProviders\VendorContactProvider.vb" />

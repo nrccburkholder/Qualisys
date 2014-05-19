@@ -132,6 +132,7 @@ Public MustInherit Class Translator
         Dim totalRecords As Integer = 0
         Dim totalDispositionRecords As Integer = 0
 
+
         'Create the DataLoad object
         Dim load As DataLoad = DataLoad.NewDataLoad
         With load
@@ -222,11 +223,16 @@ Public MustInherit Class Translator
 
                     'Process the bubble data
                     For Each bubbleRow As DataRow In respondentRow.GetChildRows("RespondentBubble")
+
+                        Dim bubbleValue As String
+
+                        bubbleValue = ReplaceValue(queueFile.Translator.ModuleName, bubbleRow("Value").ToString, {"-7", "-8", "-9"}, String.Empty)
+
                         'Add the QuestionResult object
                         bubble = QuestionResult.NewQuestionResult
                         With bubble
                             .QstnCore = CInt(bubbleRow("QstnCore"))
-                            .ResponseVal = bubbleRow("Value").ToString
+                            .ResponseVal = bubbleValue
                             .MultipleResponse = CBool(bubbleRow("MultipleResponse"))
                             .DateCreated = DateTime.Now
                         End With
@@ -237,12 +243,20 @@ Public MustInherit Class Translator
                     For Each commentRow As DataRow In respondentRow.GetChildRows("RespondentComment")
                         'Add the Comment object
                         If Not String.IsNullOrEmpty(commentRow("Value").ToString) Then
-                            cmnt = Comment.NewComment
-                            With cmnt
-                                .CmntNumber = CInt(commentRow("CmntID"))
-                                .CmntText = CleanString(commentRow("Value").ToString, False, False)
-                            End With
-                            litho.Comments.Add(cmnt)
+
+                            Dim commentValue As String
+
+                            commentValue = ReplaceValue(queueFile.Translator.ModuleName, commentRow("Value").ToString, {"-8"}, String.Empty)
+
+                            If Not String.IsNullOrEmpty(commentValue) Then
+
+                                cmnt = Comment.NewComment
+                                With cmnt
+                                    .CmntNumber = CInt(commentRow("CmntID"))
+                                    .CmntText = CleanString(commentValue, False, False)
+                                End With
+                                litho.Comments.Add(cmnt)
+                            End If
                         End If
                     Next
 
@@ -250,14 +264,20 @@ Public MustInherit Class Translator
                     For Each handRow As DataRow In respondentRow.GetChildRows("RespondentHandEntry")
                         'Add the HandEntry object
                         If Not String.IsNullOrEmpty(handRow("Value").ToString) Then
-                            hand = HandEntry.NewHandEntry
-                            With hand
-                                .QstnCore = CInt(handRow("QstnCore"))
-                                .ItemNumber = CInt(handRow("Item"))
-                                .LineNumber = CInt(handRow("Line"))
-                                .HandEntryText = CleanString(handRow("Value").ToString, True, False)
-                            End With
-                            litho.HandEntries.Add(hand)
+                            Dim handValue As String
+
+                            handValue = ReplaceValue(queueFile.Translator.ModuleName, handRow("Value").ToString, {"-7"}, String.Empty)
+
+                            If Not String.IsNullOrEmpty(handValue) Then
+                                hand = HandEntry.NewHandEntry
+                                With hand
+                                    .QstnCore = CInt(handRow("QstnCore"))
+                                    .ItemNumber = CInt(handRow("Item"))
+                                    .LineNumber = CInt(handRow("Line"))
+                                    .HandEntryText = CleanString(handValue, True, False)
+                                End With
+                                litho.HandEntries.Add(hand)
+                            End If
                         End If
                     Next
 
@@ -307,6 +327,22 @@ Public MustInherit Class Translator
 
         'Return the DataLoad
         Return load
+
+    End Function
+
+    Protected Function ReplaceValue(ByVal moduleName As String, ByVal origVal As String, ByVal arrayOfTargetValues() As String, ByVal replWith As String) As String
+
+        Dim returnVal As String = origVal
+
+        ' only check to see if we need to replace if translator is TranslatorTABCCAC
+        Select Case moduleName
+            Case "TranslatorTABCCAC"
+                If Array.IndexOf(arrayOfTargetValues, origVal.Trim()) >= 0 Then
+                    returnVal = replWith
+                End If
+        End Select
+
+        Return returnVal
 
     End Function
 
@@ -644,6 +680,8 @@ Public MustInherit Class Translator
         Return True
 
     End Function
+
+    
 
 #End Region
 

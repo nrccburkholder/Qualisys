@@ -21,12 +21,15 @@ Friend Class TranslatorProvider
 
 #Region " Private Members "
 
-    Private Enum TranslatorTypes
-        CSV = 0
-        CSVHorz = 1
-        TABHorz = 2
-        CSVBedside = 3
-    End Enum
+    ' TSB 02/06/2014
+    'This enum was moved to Qualisys.Scanning.Library/Enums/TranslatorTypes.vb to make to more accessible for future possible translators
+    'Private Enum TranslatorTypes
+    '    CSV = 0
+    '    CSVHorz = 1
+    '    TABHorz = 2
+    '    CSVBedside = 3
+    '    TABCCAS
+    'End Enum
 
 #End Region
 
@@ -134,7 +137,50 @@ Friend Class TranslatorProvider
 
 #End Region
 
+#Region "TranslatorTABCCAS Methods"
+
+    Public Overrides Function GetAdvanisLithoCode(ByVal ccacCode As String, ByVal uniqueClientNumber As String, ByVal studyID As Integer, ByVal surveyID As Integer) As String
+        Dim lithoCode As String = String.Empty
+
+        Using cmd As DbCommand = Db.GetStoredProcCommand(SP.GetAdvanisLithoCode, ccacCode, uniqueClientNumber, studyID, surveyID)
+            Using rdr As New SafeDataReader(QualiSysDatabaseHelper.ExecuteReader(cmd))
+                If Not rdr.Read Then
+                    lithoCode = String.Empty
+                Else
+                    lithoCode = rdr.GetString("strLithoCode")
+                End If
+            End Using
+
+            Return lithoCode
+        End Using
+    End Function
+
+    Public Overrides Function GetAdvanisSurveyID(ByVal ccacCode As String, ByVal uniqueClientNumber As String, ByVal studyID As Integer) As Integer
+        Dim surveyid As Integer = 0
+
+        Using cmd As DbCommand = Db.GetStoredProcCommand(SP.GetAdvanisSurveyID, ccacCode, uniqueClientNumber, studyID)
+            Using rdr As New SafeDataReader(QualiSysDatabaseHelper.ExecuteReader(cmd))
+                If Not rdr.Read Then
+                    surveyid = 0
+                Else
+                    surveyid = rdr.GetInteger("surveyid")
+                End If
+            End Using
+
+            Return surveyid
+        End Using
+    End Function
+
+#End Region
+
 #Region " Common Text File Methods "
+
+    Public Overrides Function GetDataTable(ByVal queueFile As QueuedTransferFile, ByVal translatorType As TranslatorTypes) As DataTable
+
+        Return GetDataTableTEXT(queueFile, translatorType)
+
+    End Function
+
 
     Private Function GetDataTableTEXT(ByVal queueFile As QueuedTransferFile, ByVal translatorType As TranslatorTypes) As DataTable
 
@@ -164,7 +210,7 @@ Friend Class TranslatorProvider
 
         'Determine the file version
         Select Case translatorType
-            Case TranslatorTypes.CSVBedside
+            Case TranslatorTypes.CSVBedside, TranslatorTypes.TABCCAC
                 fileVersion = 1.0
 
             Case Else
@@ -216,7 +262,7 @@ Friend Class TranslatorProvider
             Catch ex As InvalidFileException
                 Throw ex
             Catch ex As Exception
-                Throw New InvalidFileException("Unable to read file using Text ODBC driver.  File not processed!", queueFile.File.FullName, ex)           
+                Throw New InvalidFileException("Unable to read file using Text ODBC driver.  File not processed!", queueFile.File.FullName, ex)
             End Try
 
             'Check to see if all of the fixed columns are present
@@ -248,6 +294,10 @@ Friend Class TranslatorProvider
                     If Not TranslatorTABHorz.DoAllDispoColumnsExist(schema, message) Then
                         Throw New InvalidFileException(String.Format("Mismatched disposition columns found.  File not processed!{0}{1}", vbCrLf, message), queueFile.File.FullName)
                     End If
+                Case TranslatorTypes.TABCCAC
+                    If Not TranslatorTABCCAC.DoAllFixedColumnsExist(schema, missingColumns, fileVersion, queueFile) Then
+                        Throw New InvalidFileException(String.Format("Missing fixed columns found ({0}).  File not processed!", missingColumns), queueFile.File.FullName)
+                    End If
 
             End Select
         End If
@@ -277,7 +327,7 @@ Friend Class TranslatorProvider
                     Case TranslatorTypes.CSV, TranslatorTypes.CSVHorz, TranslatorTypes.CSVBedside
                         .WriteLine("Format=CSVDelimited")
 
-                    Case TranslatorTypes.TABHorz
+                    Case TranslatorTypes.TABHorz, TranslatorTypes.TABCCAC
                         With schemaFile
                             .WriteLine("Format=TabDelimited")
                         End With
@@ -302,6 +352,9 @@ Friend Class TranslatorProvider
 
                         Case TranslatorTypes.TABHorz
                             formatLine = TranslatorTABHorz.GetSchemaFormatLine(columnName)
+
+                        Case TranslatorTypes.TABCCAC
+                            formatLine = TranslatorTABCCAC.GetSchemaFormatLine(columnName, queueFile)
 
                     End Select
 

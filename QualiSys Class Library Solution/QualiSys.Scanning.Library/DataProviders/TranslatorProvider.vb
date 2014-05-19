@@ -38,6 +38,9 @@ Public MustInherit Class TranslatorProvider
     Public MustOverride Function GetBedsideLithoCodeByVisitNumAdmitDateVisitType(ByVal visitNum As String, ByVal admitDate As Date, ByVal visitType As String, ByVal studyID As Integer, ByVal surveyID As Integer) As String
     Public MustOverride Function SelectTranslationModuleMappings(ByVal translationModuleID As Integer) As DataTable
     Public MustOverride Function SelectTranslationModuleMappingRecodes(ByVal translationModuleMappingID As Integer) As DataTable
+    Public MustOverride Function GetDataTable(ByVal queueFile As QueuedTransferFile, ByVal translatorType As TranslatorTypes) As DataTable
+    Public MustOverride Function GetAdvanisLithoCode(ByVal ccacCode As String, ByVal uniqueClientNumber As String, ByVal studyID As Integer, ByVal surveyID As Integer) As String
+    Public MustOverride Function GetAdvanisSurveyID(ByVal ccacCode As String, ByVal uniqueClientNumber As String, ByVal studyID As Integer) As Integer
 
 #End Region
 

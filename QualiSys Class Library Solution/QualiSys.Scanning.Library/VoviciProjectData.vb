@@ -141,7 +141,8 @@ Public Class VoviciProjectData
             .WriteAttributeString("id", "Q4_1")
             .WriteAttributeString("type", "Varchar")
             If supressPiiFromVovici Then
-                .WriteValue("noreply@nationalresearch.com")
+                Dim toEmail As String = AppConfig.Params("QSIVoviciCanadaSurveyEmailAddress").StringValue
+                .WriteValue(toEmail)
             Else
                 .WriteValue(participantData.EmailAddr)
             End If

@@ -41,7 +41,9 @@ Public Class VendorPhoneFile_Data
 	Private mPhServInd9 As String = String.Empty
 	Private mPhServInd10 As String = String.Empty
 	Private mPhServInd11 As String = String.Empty
-	Private mPhServInd12 As String = String.Empty
+    Private mPhServInd12 As String = String.Empty
+    Private mProvince As String = String.Empty
+    Private mPostalCode As String = String.Empty
 #End Region
 
 #Region " Public Properties "
@@ -410,7 +412,30 @@ Public Class VendorPhoneFile_Data
 			End If
 		End Set
 	End Property
-
+    Public Property Province As String
+        Get
+            Return mProvince
+        End Get
+        Set(ByVal value As String)
+            If value Is Nothing Then value = String.Empty
+            If Not value = mProvince Then
+                mProvince = value
+                PropertyHasChanged("Province")
+            End If
+        End Set
+    End Property
+    Public Property PostalCode As String
+        Get
+            Return mPostalCode
+        End Get
+        Set(ByVal value As String)
+            If value Is Nothing Then value = String.Empty
+            If Not value = mPostalCode Then
+                mPostalCode = value
+                PropertyHasChanged("PostalCode")
+            End If
+        End Set
+    End Property
 #End Region
 
 #Region " Constructors "
