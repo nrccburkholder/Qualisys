@@ -126,7 +126,7 @@
     </Reference>
     <Reference Include="ExpTreeLib, Version=1.0.1918.39263, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\NRCPROD\Referenced Assemblies\ExpTreeLib.dll</HintPath>
+      <HintPath>..\Referenced Assemblies\ExpTreeLib.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ReportViewer.Common, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="Microsoft.ReportViewer.WinForms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
