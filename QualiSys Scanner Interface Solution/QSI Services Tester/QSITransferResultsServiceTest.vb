@@ -168,6 +168,7 @@ Public Class QSITransferResultsServiceTest
                 Dim translators As TranslationModuleCollection = TranslationModule.GetByVendorId(vend.VendorId)
                 For Each translator As TranslationModule In translators
                     'Check the translation module drop point to see if there are any files to be loaded
+                    Dim strWatchedFolderPath As String = translator.WatchedFolderPath
                     Dim folder As New DirectoryInfo(translator.WatchedFolderPath)
                     If folder.Exists Then
                         For Each file As FileInfo In folder.GetFiles(translator.FileType)
@@ -212,6 +213,9 @@ Public Class QSITransferResultsServiceTest
 
                 Case "TranslatorTABHorz"
                     translateEngine = New TranslatorTABHorz
+
+                Case "TranslatorTABCCAC"
+                    translateEngine = New TranslatorTABCCAC
 
             End Select
 

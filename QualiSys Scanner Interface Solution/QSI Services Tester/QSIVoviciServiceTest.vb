@@ -235,7 +235,7 @@ Public Class QSIVoviciServiceTest
 
                                             Dim emailForVovici As String
                                             If supressPiiFromVovici = True Then
-                                                emailForVovici = "noreply@nationalresearch.com"
+                                                emailForVovici = AppConfig.Params("QSIVoviciCanadaSurveyEmailAddress").StringValue
                                             Else
                                                 emailForVovici = participant.EmailAddr
                                             End If

@@ -159,6 +159,9 @@ Public Class QSITransferResultsService
                 Case "TranslatorTABHorz"
                     translateEngine = New TranslatorTABHorz
 
+                Case "TranslatorTABCCAC"
+                    translateEngine = New TranslatorTABCCAC
+
             End Select
 
             'Read and translate the file into a DataLoad object

@@ -143,6 +143,8 @@ Public Class QSIVendorFileService
 
     Private Sub PopulateQueues()
 
+        Dim skipTelematch As Boolean = QualisysParams.CountryCode = CountryCode.Canada
+
         'Get all of the approved files
         mSendTelematchQueue = New QueuedVendorFileCollection
         mSendFileQueue = New QueuedVendorFileCollection
@@ -160,8 +162,8 @@ Public Class QSIVendorFileService
                 'Get the vendor
                 Dim vendor As Vendor = vendor.Get(methStep.VendorID.Value)
 
-                'Determine if we are sending this for telematching
-                If methStep.StepMethodId = MailingStepMethodCodes.Phone Then
+                'Determine if we are sending this for telematching.  This will only happen if we are NOT Canada.
+                If methStep.StepMethodId = MailingStepMethodCodes.Phone And Not skipTelematch Then
                     'This needs to go to telematch
                     mSendTelematchQueue.Add(New QueuedVendorFile(file, vendor, methStep))
                 Else
@@ -171,27 +173,30 @@ Public Class QSIVendorFileService
             End If
         Next
 
-        'Get the files that are out being telematched
+        'Get the files that are out being telematched, but only if NOT Canada
         mRetrieveTelematchQueue = New QueuedVendorFileCollection
-        Dim retrieveLogs As VendorFileTelematchLogCollection = VendorFileTelematchLog.GetByNotReturned()
+        If Not skipTelematch Then
 
-        'Populate the retrieve queue
-        For Each log As VendorFileTelematchLog In retrieveLogs
-            'Get the vendor file
-            Dim file As VendorFileCreationQueue = VendorFileCreationQueue.Get(log.VendorFileId)
+            Dim retrieveLogs As VendorFileTelematchLogCollection = VendorFileTelematchLog.GetByNotReturned()
 
-            'Determine if the VendorFile is still in Telematching state
-            If file.VendorFileStatusId = VendorFileStatusCodes.Telematching Then
-                'Get the methodology step
-                Dim methStep As MethodologyStep = MethodologyStep.Get(file.MailingStepId)
+            'Populate the retrieve queue
+            For Each log As VendorFileTelematchLog In retrieveLogs
+                'Get the vendor file
+                Dim file As VendorFileCreationQueue = VendorFileCreationQueue.Get(log.VendorFileId)
 
-                'Get the vendor
-                Dim vendor As Vendor = vendor.Get(methStep.VendorID.Value)
+                'Determine if the VendorFile is still in Telematching state
+                If file.VendorFileStatusId = VendorFileStatusCodes.Telematching Then
+                    'Get the methodology step
+                    Dim methStep As MethodologyStep = MethodologyStep.Get(file.MailingStepId)
 
-                'Add the file to the queue
-                mRetrieveTelematchQueue.Add(New QueuedVendorFile(file, vendor, methStep, log))
-            End If
-        Next
+                    'Get the vendor
+                    Dim vendor As Vendor = vendor.Get(methStep.VendorID.Value)
+
+                    'Add the file to the queue
+                    mRetrieveTelematchQueue.Add(New QueuedVendorFile(file, vendor, methStep, log))
+                End If
+            Next
+        End If
 
     End Sub
 

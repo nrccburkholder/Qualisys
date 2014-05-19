@@ -21,6 +21,11 @@
     <SignManifests>true</SignManifests>
     <ManifestCertificateThumbprint>CE0D475BC80C4D84E10B390B8B4A3A0E829981EA</ManifestCertificateThumbprint>
     <GenerateManifests>true</GenerateManifests>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation />
     <PublishUrl>\\mercury\QualisysApps\Prod\QualiSysScannerInterface\</PublishUrl>
     <Install>false</Install>
     <InstallFrom>Unc</InstallFrom>
@@ -32,14 +37,10 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
+    <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.9.3.2</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <OldToolsVersion>2.0</OldToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DefineTrace>true</DefineTrace>
@@ -91,14 +92,38 @@
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DevExpress.Data.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1" />
-    <Reference Include="DevExpress.Utils.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1" />
-    <Reference Include="DevExpress.XtraBars.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.XtraEditors.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1" />
-    <Reference Include="DevExpress.XtraGrid.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1" />
-    <Reference Include="DevExpress.XtraLayout.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.XtraNavBar.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1" />
-    <Reference Include="DevExpress.XtraPrinting.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Data.v7.3, Version=7.3.13.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Developer Express .NET v7.3\Sources\DevExpress.DLL\DevExpress.Data.v7.3.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v7.3, Version=7.3.13.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Developer Express .NET v7.3\Sources\DevExpress.DLL\DevExpress.Utils.v7.3.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraBars.v7.3, Version=7.3.13.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Developer Express .NET v7.3\Sources\DevExpress.DLL\DevExpress.XtraBars.v7.3.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v7.3, Version=7.3.13.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Developer Express .NET v7.3\Sources\DevExpress.DLL\DevExpress.XtraEditors.v7.3.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v7.3, Version=7.3.13.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Developer Express .NET v7.3\Sources\DevExpress.DLL\DevExpress.XtraGrid.v7.3.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraLayout.v7.3, Version=7.3.13.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Developer Express .NET v7.3\Sources\DevExpress.DLL\DevExpress.XtraLayout.v7.3.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraNavBar.v7.3, Version=7.3.13.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Developer Express .NET v7.3\Sources\DevExpress.DLL\DevExpress.XtraNavBar.v7.3.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraPrinting.v7.3, Version=7.3.13.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Developer Express .NET v7.3\Sources\DevExpress.DLL\DevExpress.XtraPrinting.v7.3.dll</HintPath>
+    </Reference>
     <Reference Include="ExpTreeLib, Version=1.0.1918.39263, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\NRCPROD\Referenced Assemblies\ExpTreeLib.dll</HintPath>
@@ -463,10 +488,20 @@
     <None Include="Resources\GoLtr.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
       <Visible>False</Visible>
       <ProductName>.NET Framework 2.0</ProductName>
       <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
       <Visible>False</Visible>
@@ -586,6 +621,7 @@
       <TargetPath>
       </TargetPath>
       <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
       <FileType>Assembly</FileType>
     </PublishFile>
     <PublishFile Include="ActiveUp.Net.Mail">
@@ -595,6 +631,7 @@
       <TargetPath>
       </TargetPath>
       <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
       <FileType>Assembly</FileType>
     </PublishFile>
     <PublishFile Include="ADODB">
@@ -604,15 +641,7 @@
       <TargetPath>
       </TargetPath>
       <PublishState>Include</PublishState>
-      <FileType>Assembly</FileType>
-    </PublishFile>
-    <PublishFile Include="DevExpress.Data.v7.3">
-      <Visible>False</Visible>
-      <Group>
-      </Group>
-      <TargetPath>
-      </TargetPath>
-      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
       <FileType>Assembly</FileType>
     </PublishFile>
     <PublishFile Include="DevExpress.Utils.v7.3">
@@ -622,6 +651,7 @@
       <TargetPath>
       </TargetPath>
       <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
       <FileType>Assembly</FileType>
     </PublishFile>
     <PublishFile Include="DevExpress.XtraBars.v7.3">
@@ -631,6 +661,7 @@
       <TargetPath>
       </TargetPath>
       <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
       <FileType>Assembly</FileType>
     </PublishFile>
     <PublishFile Include="DevExpress.XtraEditors.v7.3">
@@ -640,6 +671,7 @@
       <TargetPath>
       </TargetPath>
       <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
       <FileType>Assembly</FileType>
     </PublishFile>
     <PublishFile Include="DevExpress.XtraGrid.v7.3">
@@ -649,6 +681,7 @@
       <TargetPath>
       </TargetPath>
       <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
       <FileType>Assembly</FileType>
     </PublishFile>
     <PublishFile Include="DevExpress.XtraLayout.v7.3">
@@ -658,6 +691,7 @@
       <TargetPath>
       </TargetPath>
       <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
       <FileType>Assembly</FileType>
     </PublishFile>
     <PublishFile Include="DevExpress.XtraNavBar.v7.3">
@@ -667,6 +701,7 @@
       <TargetPath>
       </TargetPath>
       <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
       <FileType>Assembly</FileType>
     </PublishFile>
     <PublishFile Include="DevExpress.XtraPrinting.v7.3">
@@ -676,6 +711,7 @@
       <TargetPath>
       </TargetPath>
       <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
       <FileType>Assembly</FileType>
     </PublishFile>
     <PublishFile Include="DevExpress.XtraRichTextEdit.v7.3">
@@ -685,6 +721,7 @@
       <TargetPath>
       </TargetPath>
       <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
       <FileType>Assembly</FileType>
     </PublishFile>
     <PublishFile Include="Microsoft.ReportViewer.Common">
@@ -694,6 +731,7 @@
       <TargetPath>
       </TargetPath>
       <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
       <FileType>Assembly</FileType>
     </PublishFile>
     <PublishFile Include="Microsoft.ReportViewer.ProcessingObjectModel">
@@ -703,6 +741,7 @@
       <TargetPath>
       </TargetPath>
       <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
       <FileType>Assembly</FileType>
     </PublishFile>
     <PublishFile Include="Microsoft.ReportViewer.WinForms">
@@ -712,6 +751,7 @@
       <TargetPath>
       </TargetPath>
       <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
       <FileType>Assembly</FileType>
     </PublishFile>
   </ItemGroup>

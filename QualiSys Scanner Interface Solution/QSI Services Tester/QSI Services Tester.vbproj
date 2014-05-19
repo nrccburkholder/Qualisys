@@ -19,9 +19,8 @@
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
     <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -66,25 +65,20 @@
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NRC, Version=1.14.1.0, Culture=neutral, PublicKeyToken=0c9e538f562d9317">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\NRCPROD\Referenced Assemblies\NRC.dll</HintPath>
+    <Reference Include="NRC">
+      <HintPath>..\..\Referenced Assemblies\NRC.dll</HintPath>
     </Reference>
-    <Reference Include="Nrc.Framework, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\NRCPROD\Referenced Assemblies\Nrc.Framework.dll</HintPath>
+    <Reference Include="Nrc.Framework">
+      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.dll</HintPath>
     </Reference>
-    <Reference Include="Nrc.Framework.BusinessLogic, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\NRCPROD\Referenced Assemblies\Nrc.Framework.BusinessLogic.dll</HintPath>
+    <Reference Include="Nrc.Framework.BusinessLogic">
+      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.BusinessLogic.dll</HintPath>
     </Reference>
-    <Reference Include="Nrc.Framework.Notification, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\NRCPROD\Referenced Assemblies\Nrc.Framework.Notification.dll</HintPath>
+    <Reference Include="Nrc.Framework.Notification">
+      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.Notification.dll</HintPath>
     </Reference>
-    <Reference Include="NRC.NRCAuthLib, Version=1.1.1.0, Culture=neutral">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\NRCPROD\Referenced Assemblies\NRC.NRCAuthLib.dll</HintPath>
+    <Reference Include="NRC.NRCAuthLib">
+      <HintPath>..\..\Referenced Assemblies\NRC.NRCAuthLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

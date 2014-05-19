@@ -251,6 +251,8 @@ Public Class QSIVendorFileServiceTest
 
     Private Sub PopulateQueues()
 
+        Dim skipTelematch As Boolean = QualisysParams.CountryCode = CountryCode.Canada
+
         'Get all of the approved files
         mSendTelematchQueue = New QueuedVendorFileCollection
         mSendFileQueue = New QueuedVendorFileCollection
@@ -269,7 +271,7 @@ Public Class QSIVendorFileServiceTest
                 Dim vendor As Vendor = vendor.Get(methStep.VendorID.Value)
 
                 'Determine if we are sending this for telematching.  This will only happen if we are NOT Canada.
-                If methStep.StepMethodId = MailingStepMethodCodes.Phone And QualisysParams.CountryCode <> CountryCode.Canada Then
+                If methStep.StepMethodId = MailingStepMethodCodes.Phone And Not skipTelematch Then
                     'This needs to go to telematch
                     mSendTelematchQueue.Add(New QueuedVendorFile(file, vendor, methStep))
                 Else
@@ -283,7 +285,7 @@ Public Class QSIVendorFileServiceTest
         mRetrieveTelematchQueue = New QueuedVendorFileCollection
 
         ' Only need to check for telematch files if NOT Canada
-        If QualisysParams.CountryCode <> CountryCode.Canada Then
+        If Not skipTelematch Then
 
             Dim retrieveLogs As VendorFileTelematchLogCollection = VendorFileTelematchLog.GetByNotReturned()
 
