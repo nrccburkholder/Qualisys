@@ -1,4 +1,7 @@
-﻿-- Modified 7/28/04 SJS (skip pattern recode) 
+﻿CREATE PROCEDURE [dbo].[sp_phase3_questionresult_for_extract] 
+AS 
+
+-- Modified 7/28/04 SJS (skip pattern recode) 
 -- Modified 11/2/05 BGD Removed skip pattern enforcement. Now in the SP_Extract_BubbleData procedure 
 -- Modified 11/16/05 BGD Calculate completeness for HCAHPS Surveys 
 -- Modified 2/22/06 BGD Also enforce skip if question is left blank or has an invalid response. 
@@ -26,10 +29,9 @@
 -- Modified 05/13/2013 DBG - added Survey_id in the link between cmnt_QuestionResult_work and skipidentifier in four places
 -- Modified 05/14/2013 DBG - modifications to account for overlapping skips
 -- Modified 01/14/2014 DBG - added check for ACO CAHPS usable partials and ACOCahps completeness check 
--- Modified 02/27/2014 CB - added -5 and -6 as non-response codes. Phone surveys can code -5 as "Refused" and -6 as "Don't Know"
+-- Modified 02/27/2014 CBC - added -5 and -6 as non-response codes. Phone surveys can code -5 as "Refused" and -6 as "Don't Know"
+-- Modified 05/16/2014 CBC - Remove ACO CAHPS logic for Incompletes/Usable Partials.  This code was moved to the Catalyst ETL.
 
-CREATE PROCEDURE [dbo].[sp_phase3_questionresult_for_extract] 
-AS 
     SET TRANSACTION isolation level READ uncommitted 
 
     INSERT INTO drm_tracktimes 
@@ -161,18 +163,22 @@ AS
 
     DROP TABLE #c 
 
+
+	-------------------------------------------------------------------
+	-- ccaouette 2014/04: Commented out and moved to Catalyst ETL
+	-------------------------------------------------------------------
     --END: Get the records that are MNCM so we can compute completeness  
 
-    INSERT INTO drm_tracktimes 
-    SELECT Getdate(), 'exec CheckForACOCAHPSUsablePartials' 
+ --   INSERT INTO drm_tracktimes 
+ --   SELECT Getdate(), 'exec CheckForACOCAHPSUsablePartials' 
 
-	exec dbo.CheckForACOCAHPSUsablePartials
+	--exec dbo.CheckForACOCAHPSUsablePartials
 
-    INSERT INTO drm_tracktimes 
-    SELECT Getdate(), 'exec CheckForACOCAHPSIncompletes' 
+ --   INSERT INTO drm_tracktimes 
+ --   SELECT Getdate(), 'exec CheckForACOCAHPSIncompletes' 
 
-	exec dbo.CheckForACOCAHPSIncompletes
-    --END: Get the records that are ACO so we can compute completeness  
+	--exec dbo.CheckForACOCAHPSIncompletes
+ --   --END: Get the records that are ACO so we can compute completeness  
 
     INSERT INTO drm_tracktimes 
     SELECT Getdate(), 'populate Cmnt_QuestionResult_Work' 
@@ -846,6 +852,5 @@ BEGIN
     WHERE  val IN ( 9991, 9992, 9995, 9994 ) --Modified 02/27/2014 CB - now including -5/-6 Refused/Don't Know
 
     SET nocount OFF 
-    SET TRANSACTION isolation level READ committed
-
+    SET TRANSACTION isolation level READ committed 
 

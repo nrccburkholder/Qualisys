@@ -1,12 +1,4 @@
-﻿-- =============================================
--- Author:	Kathi Nussralalh
--- Procedure Name: csp_GetQuestionFormExtractData
--- Create date: 3/01/2009 
--- Description:	Stored Procedure that extracts question form data from QP_Prod
--- History: 1.0  3/01/2009  by Kathi Nussralalh
---          1.1 modifed logic to handle DatUndeliverable changes
--- =============================================
-CREATE PROCEDURE [dbo].[csp_GetQuestionFormExtractData] 
+﻿CREATE PROCEDURE [dbo].[csp_GetQuestionFormExtractData] 
 	@ExtractFileID int 
 	
 --exec [dbo].[csp_GetQuestionFormExtractData]  2238
@@ -18,6 +10,20 @@ AS
 --
  --   declare @ExtractFileID int
 	--set @ExtractFileID = 539 -- 
+
+	---------------------------------------------------------------------------------------
+	-- ACO CAHPS Project
+	-- ccaouette: 2014-05
+	---------------------------------------------------------------------------------------
+	DECLARE @country VARCHAR(10)
+	SELECT @country = [STRPARAM_VALUE] FROM [QP_Prod].[dbo].[qualpro_params] WHERE STRPARAM_NM = 'Country'
+	select @country
+	IF @country = 'US'
+	BEGIN
+		EXEC [QP_Prod].[dbo].[CheckForACOCAHPSIncompletes] 
+		EXEC [QP_Prod].[dbo].[CheckForACOCAHPSUsablePartials]
+	END
+	
 
 	---------------------------------------------------------------------------------------
 	-- Load records to Insert/Update into a temp table
@@ -120,6 +126,7 @@ AS
 	                     and EntityTypeID = @EntityTypeID
 	                     and IsDeleted = 1 ) eh
 				Left join QP_Prod.dbo.QUESTIONFORM qf With (NOLOCK) on qf.QUESTIONFORM_ID = eh.PKey1 AND qf.DATRETURNED IS NULL--if datReturned is not NULL it is not a delete
-				Left join QP_Prod.dbo.SentMailing sm With (NOLOCK) on qf.SentMail_id = sm.SentMail_id
+				Left join QP_Prod.dbo.SentMailing sm With (NOLOCK) on qf.SentMail_id = sm.SentMail_id   
+				
 
-
+    

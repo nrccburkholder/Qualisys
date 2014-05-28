@@ -1,14 +1,36 @@
-﻿CREATE PROCEDURE dbo.CheckForACOCAHPSIncompletes
+﻿CREATE PROCEDURE [dbo].[CheckForACOCAHPSIncompletes]
 AS
+-- =============================================
+-- Author:	Dave Gilsdorf
+-- Procedure Name: CheckForACOCAHPSIncompletes
+-- Create date: 1/2014 
+-- Description:	Stored Procedure that extracts question form data from QP_Prod
+-- History: 1.0  1/2014  by Dave Gilsdorf
+--			1.1  5/27/2014 by C Caouette: Integrate logic into Catalyst ETL.
+-- =============================================
+
 
 /* PART 1 -- find people who are going through the ETL tonight and check their completeness. If their survey was partial or incomplete, reschedule their next mailstep. */
 
+DECLARE @MinDate DATE;
+SET @MinDate = DATEADD(DAY, -2, GETDATE());
+
+
+-- v1.1  5/27/2014 by C Caouette
+WITH CTE_Returns AS
+(
+	SELECT DISTINCT PKey1 
+	FROM NRC_DataMart_ETL.dbo.ExtractQueue eq
+	WHERE eq.ExtractFileID IS NULL AND eq.EntityTypeID = 11 AND eq.Created > @MinDate
+)
+
+--SELECT * FROM CTE_Returns
 -- list of everybody who returned an ACOCAHPS Survey today
 select qf.datReturned, qf.datResultsImported, sd.Survey_id, st.Surveytype_id, st.Surveytype_dsc, ms.intSequence
 , scm.*, qf.QuestionForm_id, sm.datExpire, convert(tinyint,null) as ACODisposition, convert(varchar(15),'') as DispositionAction
 into #TodaysReturns
-from QuestionForm_extract qfe
-inner join QuestionForm qf on qf.QuestionForm_id=qfe.QuestionForm_id
+from CTE_Returns eq
+inner join QuestionForm qf on qf.QuestionForm_id=eq.PKey1 
 inner join SentMailing sm on qf.SentMail_id=sm.SentMail_id
 inner join ScheduledMailing scm on sm.ScheduledMailing_id=scm.ScheduledMailing_id
 inner join Survey_def sd on qf.Survey_id=sd.Survey_id
@@ -22,7 +44,7 @@ order by qf.datResultsImported desc
 update #TodaysReturns
 set ACODisposition=dbo.ACOCAHPSCompleteness(QuestionForm_id)
 
-select * from #todaysreturns
+--select * from #todaysreturns
 -- ACO Disposition 10 = complete
 -- ACO Disposition 31 = partial
 -- ACO Disposition 34 = blank/incomplete
@@ -61,6 +83,18 @@ delete qre
 from QuestionForm_extract qre
 inner join #TodaysReturns tr on qre.QuestionForm_id=tr.QuestionForm_id
 where ACODisposition <> 10 
+
+/* ----------------------------------------------------------------------------------------
+--	v1.1  5/2014 by C Caouette:	Modified to logically remove partial and incomplete questionforms from
+								the Catalyst ExtractQueue table. 
+ ---------------------------------------------------------------------------------------- */
+--UPDATE eq
+--SET ExtractFileID = -1
+----DELETE eq
+----SELECT *
+--FROM NRC_DataMart_ETL.dbo.ExtractQueue eq
+--	INNER JOIN #TodaysReturns tr ON eq.PKey1=tr.QuestionForm_id AND eq.EntityTypeID = 11 AND eq.ExtractFileID IS NULL
+--WHERE ACODisposition <> 10 
 
 /*
 select unusedreturn_ID,count(*)
@@ -282,5 +316,8 @@ select ae.MAILINGSTEP_ID,ae.SAMPLEPOP_ID,NULL,ae.METHODOLOGY_ID,min(ams.DATGENER
 from #ACOEverybody ae
 inner join #ACOMailingSteps ams on ams.mailingstep_id=ae.mailingstep_id and ams.sampleset_id=ae.sampleset_id
 group by ae.MAILINGSTEP_ID,ae.SAMPLEPOP_ID,ae.METHODOLOGY_ID
+
+
+GO
 
 
