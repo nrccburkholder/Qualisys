@@ -1,0 +1,22 @@
+﻿CREATE FUNCTION dbo.LithoToWAC (@Litho VARCHAR(10))
+RETURNS VARCHAR(12)
+AS
+BEGIN
+
+DECLARE @WAC VARCHAR(12), @LookUpTable VARCHAR(30)
+
+SELECT @LookUpTable='ACDEFGHJKLMNPQRTUVWXY'
+
+SELECT @WAC=dbo.Crunch(@Litho,@LookUpTable)
+SELECT @WAC=@WAC+dbo.ComputeCheckDigit(@WAC,@LookUpTable)
+
+SELECT @WAC=SUBSTRING(@WAC,1,3)+'-'+SUBSTRING(@WAC,4,4)+'-'+SUBSTRING(@WAC,8,3)
+
+IF @Litho<>dbo.UnCrunch(@WAC,@LookUpTable)
+	SELECT @WAC=-1
+
+RETURN @WAC
+
+END
+
+

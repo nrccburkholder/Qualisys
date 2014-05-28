@@ -1,0 +1,12 @@
+﻿CREATE TABLE [dbo].[ds](
+	[DATASET_ID] [int] IDENTITY(1,1) NOT NULL,
+	[STUDY_ID] [int] NULL,
+	[DATLOAD_DT] [datetime] NULL,
+	[INTGOOD_RECS] [int] NULL,
+	[INTBAD_RECS] [int] NULL,
+	[INTADDRNOCHG] [int] NULL,
+	[INTADDRCLEANED] [int] NULL,
+	[INTADDRERROR] [int] NULL
+) ON [PRIMARY]
+
+

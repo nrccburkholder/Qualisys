@@ -1,0 +1,13 @@
+﻿CREATE PROCEDURE [dbo].[QCL_SelectAllMedicareGlobalReCalcDates]
+AS
+
+SET NOCOUNT ON
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+
+SELECT MedicareGlobalReCalcDate_id, MedicareGlobalRecalcDefault_id, ReCalcMonth
+FROM [dbo].MedicareGlobalReCalcDates
+
+SET NOCOUNT OFF
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+

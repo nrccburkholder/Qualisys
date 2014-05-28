@@ -1,0 +1,8 @@
+﻿CREATE NONCLUSTERED INDEX [idx_datestudyflag] ON [dbo].[QuestionForm_Extract]
+(
+	[datExtracted_DT] ASC,
+	[Study_ID] ASC,
+	[tiExtracted] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+
+

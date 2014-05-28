@@ -1,0 +1,11 @@
+5/1/2014 11:16:12 AM	This log contains information about the import operation of the script 'dbo.csp_CleanupEventTempTables.sql' into project 'NRC_Datamart_ETL' on computer 'WSCCAOUETTE' by user'ccaouette.
+5/1/2014 11:16:13 AM	Started importing file: C:\Users\ccaouette\AppData\Local\Temp\tmp3C62.tmp 
+5/1/2014 11:16:13 AM	File name C:\Users\ccaouette\AppData\Local\Temp\tmp3C62.tmp (size: 164185)
+5/1/2014 11:16:13 AM	Parsing import script
+5/1/2014 11:16:14 AM	Total number of batches in script: 136
+5/1/2014 11:16:14 AM	Total number of statements in script: 136
+5/1/2014 11:16:14 AM	The script was successfully imported into the project.
+5/1/2014 11:16:14 AM	Analyzing schema objects...
+5/1/2014 11:16:14 AM	In the script that you provided to the import operation, one or more statements were not fully understood. These statements were moved to the C:\Development\TFS\Development\NRC10Databases\NRC10\NRC_Datamart_ETL\Scripts\ScriptsIgnoredOnImport.sql file. Review the file contents for additional information.
+5/1/2014 11:16:14 AM	A summary of the import operation was saved to the log file C:\Development\TFS\Development\NRC10Databases\NRC10\NRC_Datamart_ETL\Import Script Logs\dbo_csp_CleanupEvent_20140501041612.log.
+5/1/2014 11:16:14 AM	Click Finish to continue...

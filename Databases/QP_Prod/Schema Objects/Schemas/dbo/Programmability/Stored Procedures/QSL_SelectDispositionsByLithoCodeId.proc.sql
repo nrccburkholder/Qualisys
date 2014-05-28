@@ -1,0 +1,15 @@
+﻿CREATE PROCEDURE [dbo].[QSL_SelectDispositionsByLithoCodeId]
+@DL_LithoCode_ID INT
+AS
+
+SET NOCOUNT ON
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+
+SELECT DL_Disposition_ID, DL_LithoCode_ID, DL_Error_ID, DispositionDate, VendorDispositionCode, IsFinal
+FROM DL_Dispositions
+WHERE DL_LithoCode_ID = @DL_LithoCode_ID
+
+SET NOCOUNT OFF
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+

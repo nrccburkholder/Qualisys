@@ -1,0 +1,7 @@
+﻿ALTER TABLE [dbo].[SURVEY_DEF]  WITH CHECK ADD  CONSTRAINT [FK_SampEncField_id] FOREIGN KEY([SampleEncounterField_id])
+REFERENCES [dbo].[METAFIELD] ([FIELD_ID])
+
+
+GO
+ALTER TABLE [dbo].[SURVEY_DEF] CHECK CONSTRAINT [FK_SampEncField_id]
+

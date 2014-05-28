@@ -1,0 +1,11 @@
+﻿CREATE TABLE [dbo].[ClientSUFacilityLookup](
+	[Client_id] [int] NOT NULL,
+	[SUFacility_id] [int] NOT NULL,
+ CONSTRAINT [PK_CFL_ClientFacility] PRIMARY KEY CLUSTERED 
+(
+	[Client_id] ASC,
+	[SUFacility_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 100) ON [PRIMARY]
+) ON [PRIMARY]
+
+

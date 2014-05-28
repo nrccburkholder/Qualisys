@@ -1,0 +1,11 @@
+﻿CREATE TABLE [dbo].[providerclinicTAGFIELD](
+	[TAGFIELD_ID] [int] IDENTITY(1,1) NOT NULL,
+	[TAG_ID] [int] NOT NULL,
+	[TABLE_ID] [int] NULL,
+	[FIELD_ID] [int] NULL,
+	[STUDY_ID] [int] NULL,
+	[REPLACEFIELD_FLG] [bit] NOT NULL,
+	[STRREPLACELITERAL] [varchar](40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+) ON [PRIMARY]
+
+

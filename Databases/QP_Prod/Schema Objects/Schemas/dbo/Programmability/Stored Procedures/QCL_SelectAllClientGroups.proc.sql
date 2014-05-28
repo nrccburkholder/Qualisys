@@ -1,0 +1,14 @@
+﻿CREATE PROCEDURE [dbo].[QCL_SelectAllClientGroups]
+AS
+
+SET NOCOUNT ON
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+
+SELECT ClientGroup_ID, ClientGroup_nm, ClientGroupReporting_nm, Active, DateCreated
+FROM [dbo].ClientGroups
+ORDER BY Active Desc, ClientGroup_nm
+
+SET NOCOUNT OFF
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+

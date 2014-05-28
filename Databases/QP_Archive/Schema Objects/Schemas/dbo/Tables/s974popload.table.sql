@@ -1,0 +1,31 @@
+﻿CREATE TABLE [dbo].[s974popload](
+	[Sex] [varchar](1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[Age] [int] NULL,
+	[NewRecordDate] [datetime] NULL,
+	[LangID] [int] NULL,
+	[pop_id] [int] NOT NULL,
+	[MRN] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[FName] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[NameStat] [varchar](10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[LName] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[Middle] [varchar](1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[Addr] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[City] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[Zip4] [varchar](4) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[AddrErr] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[ST] [varchar](2) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[Del_Pt] [varchar](3) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[ZIP5] [varchar](5) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[AddrStat] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[Addr2] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[DOB] [datetime] NULL,
+	[Marital] [varchar](3) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[PHONSTAT] [int] NULL,
+	[Phone] [varchar](10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[AreaCode] [varchar](3) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[SSN] [varchar](9) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[ServiceInd_2] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[Email_Address] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+) ON [PRIMARY]
+
+

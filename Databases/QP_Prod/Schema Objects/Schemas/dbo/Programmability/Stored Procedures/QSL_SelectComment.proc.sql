@@ -1,0 +1,15 @@
+﻿CREATE PROCEDURE [dbo].[QSL_SelectComment]
+@DataLoadCmnt_ID INT
+AS
+
+SET NOCOUNT ON
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+
+SELECT DataLoadCmnt_ID, DL_LithoCode_ID, DL_Error_ID, CmntNumber, cmntText, bitSubmitted
+FROM [dbo].DL_Comments
+WHERE DataLoadCmnt_ID = @DataLoadCmnt_ID
+
+SET NOCOUNT OFF
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+

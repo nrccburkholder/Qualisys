@@ -1,0 +1,7 @@
+﻿ALTER TABLE [dbo].[CLIENT]  WITH CHECK ADD  CONSTRAINT [FK_CLIENT_ClientGroups] FOREIGN KEY([ClientGroup_ID])
+REFERENCES [dbo].[ClientGroups] ([ClientGroup_ID])
+
+
+GO
+ALTER TABLE [dbo].[CLIENT] CHECK CONSTRAINT [FK_CLIENT_ClientGroups]
+

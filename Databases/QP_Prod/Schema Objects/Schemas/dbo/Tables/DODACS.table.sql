@@ -1,0 +1,48 @@
+﻿CREATE TABLE [dbo].[DODACS](
+	[ACS_id] [int] IDENTITY(1,1) NOT NULL,
+	[RecordTypeID] [int] NULL,
+	[SequenceNumber] [int] NULL,
+	[ParticipantCode] [varchar](7) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[KeyLine] [varchar](16) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[MoveEffectiveDate] [varchar](6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[MoveType] [varchar](1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[DeliverabilityCode] [varchar](1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[USPSSiteID] [int] NULL,
+	[LName] [varchar](20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[FName] [varchar](15) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[Prefix] [varchar](6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[Suffix] [varchar](6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[OldAddrType] [varchar](1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[OldUrbName] [varchar](28) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[OldPrimaryNumber] [varchar](10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[OldPreDirectional] [varchar](2) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[OldStreetName] [varchar](28) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[OldStreetSuffix] [varchar](4) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[OldPostDirectional] [varchar](2) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[OldUnitDesignator] [varchar](4) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[OldSecondaryNumber] [varchar](10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[OldCity] [varchar](28) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[OldState] [varchar](2) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[OldZip5] [varchar](5) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[NewAddrType] [varchar](1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[NewUrbName] [varchar](28) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[NewPrimaryNumber] [varchar](10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[NewPreDirectional] [varchar](2) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[NewStreetName] [varchar](28) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[NewStreetSuffix] [varchar](4) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[NewPostDirectional] [varchar](2) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[NewUnitDesignator] [varchar](4) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[NewSecondaryNumber] [varchar](10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[NewCity] [varchar](28) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[NewState] [varchar](2) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[NewZip5] [varchar](5) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[NewZip4] [varchar](4) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[NewDPBCInfo] [varchar](3) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[NewLabelFormat] [varchar](66) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+ CONSTRAINT [PK_DODACS] PRIMARY KEY CLUSTERED 
+(
+	[ACS_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+

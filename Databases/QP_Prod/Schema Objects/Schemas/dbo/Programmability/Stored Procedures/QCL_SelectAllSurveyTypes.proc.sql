@@ -1,0 +1,13 @@
+﻿CREATE PROCEDURE [dbo].[QCL_SelectAllSurveyTypes]
+AS
+
+SET NOCOUNT ON
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+
+SELECT SurveyType_ID, SurveyType_dsc, OptionType_id, SeedMailings, SeedSurveyPercent, SeedUnitField
+FROM [dbo].SurveyType
+
+SET NOCOUNT OFF
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+

@@ -1,0 +1,18 @@
+﻿CREATE TABLE [dbo].[Extract_Web_QuestionForm](
+	[Study_id] [int] NULL,
+	[Survey_ID] [int] NULL,
+	[QuestionForm_id] [int] NULL,
+	[SamplePop_id] [int] NULL,
+	[SampleUnit_id] [int] NULL,
+	[strLithoCode] [varchar](10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[SampleSet_id] [int] NULL,
+	[datReturned] [smalldatetime] NULL,
+	[bitComplete] [bit] NULL,
+	[DaysFromFirstMailing] [int] NULL,
+	[DaysFromCurrentMailing] [int] NULL,
+	[strUnitSelectType] [char](1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[LangID] [int] NULL,
+	[ReceiptType_ID] [int] NULL
+) ON [PRIMARY]
+
+

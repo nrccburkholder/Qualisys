@@ -1,0 +1,20 @@
+﻿CREATE PROCEDURE [dbo].[QCL_UpdateACOCAHPSDisposition]
+@ACOCAHPSDispositionID INT,
+@Disposition_ID INT,
+@ACOCAHPSValue VARCHAR(2),
+@ACOCAHPSHierarchy INT,
+@ACOCAHPSDesc VARCHAR(100)
+AS
+
+SET NOCOUNT ON
+
+UPDATE [dbo].ACOCAHPSDispositions SET
+	Disposition_ID = @Disposition_ID,
+	ACOCAHPSValue = @ACOCAHPSValue,
+	ACOCAHPSHierarchy = @ACOCAHPSHierarchy,
+	ACOCAHPSDesc = @ACOCAHPSDesc
+WHERE ACOCAHPSDispositionID = @ACOCAHPSDispositionID
+
+SET NOCOUNT OFF
+
+

@@ -1,0 +1,16 @@
+﻿CREATE PROCEDURE [dbo].[QCL_SelectStudy]
+@StudyId INT
+AS
+
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED  
+SET NOCOUNT ON  
+
+SELECT Study_id, strStudy_nm, strStudy_dsc, Client_id, ADEmployee_id,
+	DATCREATE_DT, BITCLEANADDR, bitProperCase, Active
+FROM Study 
+WHERE Study_id=@StudyId
+
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED  
+SET NOCOUNT OFF
+
+

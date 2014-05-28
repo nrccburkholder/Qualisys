@@ -1,0 +1,31 @@
+﻿CREATE TABLE [dbo].[capacity](
+	[dat_dt] [datetime] NULL,
+	[generated] [int] NULL,
+	[scheduled] [int] NULL,
+	[notformgened] [int] NULL,
+	[notpclgened] [int] NULL,
+	[formgenstart] [int] NULL,
+	[formgenend] [int] NULL,
+	[pclgenstart] [int] NULL,
+	[pclgenend] [int] NULL,
+	[univsampled] [int] NULL,
+	[actualsampled] [int] NULL,
+	[countsampled] [int] NULL,
+	[samples] [int] NULL,
+	[actualloaded] [int] NULL,
+	[countloaded] [int] NULL,
+	[loads] [int] NULL,
+	[countboth] [int] NULL,
+	[countimported] [int] NULL,
+	[countreturned] [int] NULL,
+	[countunused] [int] NULL,
+	[datasetmember_id] [int] NULL,
+	[samplepop_id] [int] NULL,
+	[sentmail_id] [int] NULL,
+	[NonDeliverables] [int] NULL,
+	[Ignored] [int] NULL,
+	[Rescanned] [int] NULL,
+	[NotTransferred] [int] NULL
+) ON [PRIMARY]
+
+

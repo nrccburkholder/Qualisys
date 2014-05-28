@@ -1,0 +1,11 @@
+﻿CREATE TABLE [dbo].[SampleSetDate](
+	[SampleSet_ID] [int] NOT NULL,
+	[MinReportDate] [datetime] NULL,
+	[MaxReportDate] [datetime] NULL,
+ CONSTRAINT [PK__SampleSetDate__664B26CC] PRIMARY KEY CLUSTERED 
+(
+	[SampleSet_ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+

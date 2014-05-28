@@ -1,0 +1,15 @@
+﻿CREATE PROCEDURE [dbo].[QCL_SelectClientsByClientGroupID]
+    @ClientGroupID INT
+AS
+
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+SET NOCOUNT ON
+
+SELECT Client_id, strClient_nm, Active, ClientGroup_ID 
+FROM [dbo].Client 
+WHERE ClientGroup_ID = @ClientGroupID
+
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+SET NOCOUNT OFF
+
+

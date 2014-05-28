@@ -1,0 +1,15 @@
+﻿CREATE PROCEDURE [dbo].[QSL_SelectVendorFileStatusById]
+@VendorFileStatus_ID INT
+AS
+
+SET NOCOUNT ON
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+
+SELECT VendorFileStatus_ID, VendorFileStatus_nm
+FROM VendorFileStatus
+WHERE VendorFileStatus_ID = @VendorFileStatus_ID
+
+SET NOCOUNT OFF
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+

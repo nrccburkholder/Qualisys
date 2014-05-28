@@ -1,0 +1,32 @@
+﻿CREATE TABLE [dbo].[s726popload](
+	[MRN] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[Addr] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[City] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[ST] [varchar](2) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[ZIP5] [varchar](5) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[AddrStat] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[AddrErr] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[Zip4] [varchar](4) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[NewRecordDate] [datetime] NULL,
+	[LangID] [int] NULL,
+	[Del_Pt] [varchar](3) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[Zip5_Foreign] [varchar](5) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[DOB] [datetime] NULL,
+	[Sex] [varchar](1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[Age] [int] NULL,
+	[GuarFirstName] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[GuarLastName] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[FinClass] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[GuarNameStat] [varchar](10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[ADRR] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[LName] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[FName] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[NameStat] [varchar](10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[ServiceInd_10] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[pop_id] [int] NOT NULL,
+	[SpanishMonth] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[SpanishDay] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[SpanishYear] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+) ON [PRIMARY]
+
+

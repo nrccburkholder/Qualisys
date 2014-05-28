@@ -1,0 +1,11 @@
+﻿CREATE TABLE [dbo].[CommentTypes](
+	[CmntType_id] [int] NOT NULL,
+	[strCmntType_Nm] [varchar](15) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[bitRetired] [bit] NOT NULL CONSTRAINT [DF_CommentTypes_bitRetired]  DEFAULT (0),
+ CONSTRAINT [PK_CommentTypes] PRIMARY KEY NONCLUSTERED 
+(
+	[CmntType_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+

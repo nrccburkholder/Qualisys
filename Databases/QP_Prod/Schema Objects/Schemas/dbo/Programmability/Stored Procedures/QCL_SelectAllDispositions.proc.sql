@@ -1,0 +1,13 @@
+﻿CREATE PROCEDURE [dbo].[QCL_SelectAllDispositions]
+AS
+
+SET NOCOUNT ON
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+
+SELECT Disposition_id, strDispositionLabel, Action_id, strReportLabel, MustHaveResults
+FROM [dbo].Disposition
+
+SET NOCOUNT OFF
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+

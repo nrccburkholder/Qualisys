@@ -1,0 +1,19 @@
+﻿CREATE FUNCTION dbo.WACToLitho (@WAC VARCHAR(12))
+RETURNS VARCHAR(15)
+AS
+BEGIN
+
+DECLARE @Litho VARCHAR(20), @LookUpTable VARCHAR(30)
+
+SELECT @LookUpTable='ACDEFGHJKLMNPQRTUVWXY', @WAC=REPLACE(@WAC,'-','')
+
+IF RIGHT(@WAC,2)<>dbo.ComputeCheckDigit(LEFT(@WAC,8),@LookUpTable)
+SELECT @Litho=-1
+ELSE
+SELECT @Litho=dbo.UnCrunch(@WAC,@LookUpTable)
+
+RETURN @Litho
+
+END
+
+

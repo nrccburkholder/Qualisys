@@ -1,0 +1,14 @@
+﻿CREATE TABLE [dbo].[ACOCAHPSDispositions](
+	[ACOCAHPSDispositionID] [int] IDENTITY(1,1) NOT NULL,
+	[Disposition_ID] [int] NULL,
+	[ACOCAHPSValue] [varchar](2) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[ACOCAHPSHierarchy] [int] NULL,
+	[ACOCAHPSDesc] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[ExportReportResponses] [bit] NULL CONSTRAINT [DF_ACOCAHPSDispositions_ExportReportResponses]  DEFAULT ((0)),
+ CONSTRAINT [PK_ACOCAHPSDispositions] PRIMARY KEY CLUSTERED 
+(
+	[ACOCAHPSDispositionID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 80) ON [PRIMARY]
+) ON [PRIMARY]
+
+

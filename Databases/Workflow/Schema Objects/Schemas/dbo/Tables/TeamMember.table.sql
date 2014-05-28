@@ -1,0 +1,13 @@
+﻿CREATE TABLE [dbo].[TeamMember](
+	[Team_ID] [int] NOT NULL,
+	[Employee_ID] [int] NOT NULL,
+	[Role_ID] [tinyint] NOT NULL,
+	[Addr_ID] [int] NOT NULL,
+ CONSTRAINT [PK_TeamMember] PRIMARY KEY CLUSTERED 
+(
+	[Team_ID] ASC,
+	[Employee_ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+

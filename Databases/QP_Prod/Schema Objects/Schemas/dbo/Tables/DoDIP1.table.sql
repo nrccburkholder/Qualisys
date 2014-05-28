@@ -1,0 +1,30 @@
+﻿CREATE TABLE [dbo].[DoDIP1](
+	[ID] [int] NOT NULL,
+	[RECAGE] [nvarchar](3) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[DMISSEX] [nvarchar](1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[PRIMPAY] [nvarchar](1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[DX] [nvarchar](6) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[PROCCD] [nvarchar](5) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[PRN] [nvarchar](7) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[ADMDATE] [nvarchar](8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[DISPDATE] [nvarchar](8) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[DISSVC] [nvarchar](1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[DMISCLN] [nvarchar](3) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[DRG] [nvarchar](3) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[MTF] [nvarchar](4) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[RECSPON] [nvarchar](1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[MANCARE] [nvarchar](1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[MDC] [nvarchar](2) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[ACV] [nvarchar](1) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[DEERSENR] [nvarchar](4) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[DMISBENF] [nvarchar](3) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[PN1STNM] [nvarchar](20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[PNLSTNM] [nvarchar](26) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[MALN1TX] [nvarchar](40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[MALN2TX] [nvarchar](40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[MACITYNM] [nvarchar](20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[MASTCD] [nvarchar](2) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[MAPRZIP] [nvarchar](5) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+) ON [PRIMARY]
+
+

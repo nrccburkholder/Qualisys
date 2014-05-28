@@ -1,0 +1,17 @@
+﻿CREATE PROCEDURE [dbo].[QCL_InsertHCAHPSDisposition]
+@Disposition_ID INT,
+@HCAHPSValue VARCHAR(2),
+@HCAHPSHierarchy INT,
+@HCAHPSDesc VARCHAR(100)
+AS
+
+SET NOCOUNT ON
+
+INSERT INTO [dbo].HCAHPSDispositions (Disposition_ID, HCAHPSValue, HCAHPSHierarchy, HCAHPSDesc)
+VALUES (@Disposition_ID, @HCAHPSValue, @HCAHPSHierarchy, @HCAHPSDesc)
+
+SELECT SCOPE_IDENTITY()
+
+SET NOCOUNT OFF
+
+

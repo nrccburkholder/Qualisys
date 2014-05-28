@@ -1,0 +1,12 @@
+﻿CREATE TABLE [dbo].[MAILINGSTEPMETHOD](
+	[MailingStepMethod_id] [int] IDENTITY(0,1) NOT NULL,
+	[MailingStepMethod_nm] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[CreateDataFileAtGeneration] [int] NULL,
+	[IsNonMailGeneration] [bit] NULL,
+ CONSTRAINT [PK_MAILINGSTEPMETHOD] PRIMARY KEY CLUSTERED 
+(
+	[MailingStepMethod_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+

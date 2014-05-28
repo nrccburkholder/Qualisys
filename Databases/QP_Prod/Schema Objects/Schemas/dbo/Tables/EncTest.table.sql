@@ -1,0 +1,31 @@
+﻿CREATE TABLE [dbo].[EncTest](
+	[enc_id] [int] IDENTITY(1,1) NOT NULL,
+	[NewRecordDate] [datetime] NULL,
+	[FacilityNum] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[VisitNum] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[ICD9] [varchar](10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[ICD9_2] [varchar](10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[ServiceDate] [datetime] NULL,
+	[AdmitDate] [datetime] NULL,
+	[AdmitTime] [varchar](5) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[DischargeDate] [datetime] NULL,
+	[DischargeTime] [varchar](5) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[DischargeUnit] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[DRG] [varchar](3) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[VisitType] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[ServiceInd_2] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[DischargeStatus] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[AdmitSource] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[DrID] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[ServiceIndicator] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[pop_id] [int] NULL,
+	[UtilizationCode] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[UnitName] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[ClinicNum] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[SpanishDay] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[SpanishMonth] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[SpanishYear] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[ServiceInd_3] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+) ON [PRIMARY]
+
+

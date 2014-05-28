@@ -1,0 +1,7 @@
+﻿CREATE TABLE [dbo].[pclobject](
+	[PCLOBJECT_ID] [int] IDENTITY(1,1) NOT NULL,
+	[PCLOBJECT_DSC] [varchar](30) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[PCLSTREAM] [image] NULL
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+

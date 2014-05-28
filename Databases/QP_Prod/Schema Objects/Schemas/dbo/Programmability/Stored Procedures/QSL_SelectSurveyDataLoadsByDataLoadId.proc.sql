@@ -1,0 +1,15 @@
+﻿CREATE PROCEDURE [dbo].[QSL_SelectSurveyDataLoadsByDataLoadId]
+@DataLoad_ID INT
+AS
+
+SET NOCOUNT ON
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+
+SELECT SurveyDataLoad_ID, DataLoad_ID, Survey_ID, DateCreated, Notes, bitHasErrors
+FROM DL_SurveyDataLoad
+WHERE DataLoad_ID = @DataLoad_ID
+
+SET NOCOUNT OFF
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+

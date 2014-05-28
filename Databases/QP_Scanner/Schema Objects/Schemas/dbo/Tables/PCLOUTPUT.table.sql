@@ -1,0 +1,13 @@
+﻿CREATE TABLE [dbo].[PCLOUTPUT](
+	[SENTMAIL_ID] [int] NOT NULL,
+	[INTSHEET_NUM] [int] NOT NULL,
+	[PAPERSIZE_ID] [int] NULL,
+	[INTPA] [int] NULL,
+	[INTPB] [int] NULL,
+	[INTPC] [int] NULL,
+	[INTPD] [int] NULL,
+	[PCLSTREAM] [image] NULL,
+	[BITCOVER] [bit] NOT NULL
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+

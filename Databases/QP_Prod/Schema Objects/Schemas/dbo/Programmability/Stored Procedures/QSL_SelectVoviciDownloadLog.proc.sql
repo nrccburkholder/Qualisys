@@ -1,0 +1,15 @@
+﻿CREATE PROCEDURE [dbo].[QSL_SelectVoviciDownloadLog]
+@VoviciDownload_ID INT
+AS
+
+SET NOCOUNT ON
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+
+SELECT VoviciDownload_ID, VoviciSurvey_ID, datLastDownload
+FROM [dbo].VoviciDownloadLog
+WHERE VoviciDownload_ID = @VoviciDownload_ID
+
+SET NOCOUNT OFF
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+

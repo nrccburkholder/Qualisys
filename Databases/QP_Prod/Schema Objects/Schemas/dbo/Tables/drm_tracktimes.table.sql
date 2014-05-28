@@ -1,0 +1,11 @@
+﻿CREATE TABLE [dbo].[drm_tracktimes](
+	[time_id] [int] IDENTITY(1,1) NOT NULL,
+	[time_stamp] [datetime] NULL,
+	[note] [varchar](250) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[time_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 80) ON [PRIMARY]
+) ON [PRIMARY]
+
+

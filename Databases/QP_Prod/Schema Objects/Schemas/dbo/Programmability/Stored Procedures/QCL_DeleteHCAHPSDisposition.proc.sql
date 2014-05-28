@@ -1,0 +1,12 @@
+﻿CREATE PROCEDURE [dbo].[QCL_DeleteHCAHPSDisposition]
+@HCAHPSDispositionID INT
+AS
+
+SET NOCOUNT ON
+
+DELETE [dbo].HCAHPSDispositions
+WHERE HCAHPSDispositionID = @HCAHPSDispositionID
+
+SET NOCOUNT OFF
+
+

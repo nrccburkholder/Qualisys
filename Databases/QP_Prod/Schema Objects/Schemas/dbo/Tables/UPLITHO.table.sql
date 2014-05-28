@@ -1,0 +1,7 @@
+﻿CREATE TABLE [dbo].[UPLITHO](
+	[STRLITHOCODE] [varchar](10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[SENTMAIL_ID] [int] NULL,
+	[QUESTIONFORM_ID] [int] NULL
+) ON [PRIMARY]
+
+

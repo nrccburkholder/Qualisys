@@ -1,0 +1,14 @@
+﻿CREATE TABLE [dbo].[drm_DATA_SET_INC0028463](
+	[DATASET_ID] [int] IDENTITY(1,1) NOT NULL,
+	[STUDY_ID] [int] NULL,
+	[DATLOAD_DT] [datetime] NULL,
+	[INTGOOD_RECS] [int] NULL,
+	[INTBAD_RECS] [int] NULL,
+	[INTADDRNOCHG] [int] NULL,
+	[INTADDRCLEANED] [int] NULL,
+	[INTADDRERROR] [int] NULL,
+	[RecordCount] [int] NULL,
+	[DATAPPLY_DT] [datetime] NULL
+) ON [PRIMARY]
+
+

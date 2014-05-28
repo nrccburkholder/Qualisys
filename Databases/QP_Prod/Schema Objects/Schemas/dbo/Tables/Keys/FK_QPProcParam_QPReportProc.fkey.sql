@@ -1,0 +1,9 @@
+﻿ALTER TABLE [dbo].[QPProcParam]  WITH CHECK ADD  CONSTRAINT [FK_QPProcParam_QPReportProc] FOREIGN KEY([QPReport_ID], [QPReportProc_ID])
+REFERENCES [dbo].[QPReportProc] ([QPReport_ID], [QPReportProc_ID])
+ON UPDATE CASCADE
+ON DELETE CASCADE
+
+
+GO
+ALTER TABLE [dbo].[QPProcParam] CHECK CONSTRAINT [FK_QPProcParam_QPReportProc]
+

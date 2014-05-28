@@ -1,0 +1,7 @@
+﻿ALTER TABLE [dbo].[VendorDisp_11042009150321000]  WITH CHECK ADD  CONSTRAINT [RefDL_SurveyDataLoad221] FOREIGN KEY([SurveyDataLoad_ID])
+REFERENCES [dbo].[DL_SurveyDataLoad] ([SurveyDataLoad_ID])
+
+
+GO
+ALTER TABLE [dbo].[VendorDisp_11042009150321000] CHECK CONSTRAINT [RefDL_SurveyDataLoad221]
+

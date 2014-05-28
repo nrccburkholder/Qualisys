@@ -1,0 +1,5 @@
+﻿CREATE TABLE [dbo].[MAXLITHO](
+	[MAXLITHOUSED] [int] NOT NULL
+) ON [PRIMARY]
+
+

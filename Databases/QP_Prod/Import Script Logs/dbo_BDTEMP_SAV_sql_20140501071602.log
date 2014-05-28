@@ -1,0 +1,10 @@
+5/1/2014 2:16:02 PM	This log contains information about the import operation of the script 'dbo.BDTEMP_SAV.sql' into project 'QP_Prod' on computer 'WSCCAOUETTE' by user'ccaouette.
+5/1/2014 2:16:03 PM	Started importing file: C:\Users\ccaouette\AppData\Local\Temp\tmpDDC4.tmp 
+5/1/2014 2:16:03 PM	File name C:\Users\ccaouette\AppData\Local\Temp\tmpDDC4.tmp (size: 73700)
+5/1/2014 2:16:03 PM	Parsing import script
+5/1/2014 2:16:03 PM	Total number of batches in script: 113
+5/1/2014 2:16:03 PM	Total number of statements in script: 113
+5/1/2014 2:16:03 PM	The script was successfully imported into the project.
+5/1/2014 2:16:04 PM	Analyzing schema objects...
+5/1/2014 2:16:04 PM	A summary of the import operation was saved to the log file C:\Development\TFS\Development\NRC10Databases\NRC10\QP_Prod\Import Script Logs\dbo_BDTEMP_SAV_sql_20140501071602.log.
+5/1/2014 2:16:04 PM	Click Finish to continue...

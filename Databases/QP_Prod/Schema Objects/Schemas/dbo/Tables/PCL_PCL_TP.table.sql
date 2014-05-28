@@ -1,0 +1,15 @@
+﻿CREATE TABLE [dbo].[PCL_PCL_TP](
+	[QPC_ID] [int] NOT NULL,
+	[SURVEY_ID] [int] NOT NULL,
+	[LANGUAGE] [int] NOT NULL,
+	[COVERID] [int] NULL,
+	[DESCRIPTION] [char](60) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[X] [int] NULL,
+	[Y] [int] NULL,
+	[WIDTH] [int] NULL,
+	[HEIGHT] [int] NULL,
+	[PCLSTREAM] [image] NULL,
+	[KNOWNDIMENSIONS] [bit] NOT NULL
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+

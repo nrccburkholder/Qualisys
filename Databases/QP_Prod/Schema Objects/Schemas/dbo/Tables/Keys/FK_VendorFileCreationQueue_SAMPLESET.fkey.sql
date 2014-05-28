@@ -1,0 +1,7 @@
+﻿ALTER TABLE [dbo].[VendorFileCreationQueue]  WITH CHECK ADD  CONSTRAINT [FK_VendorFileCreationQueue_SAMPLESET] FOREIGN KEY([SAMPLESET_ID])
+REFERENCES [dbo].[SAMPLESET] ([SAMPLESET_ID])
+
+
+GO
+ALTER TABLE [dbo].[VendorFileCreationQueue] CHECK CONSTRAINT [FK_VendorFileCreationQueue_SAMPLESET]
+

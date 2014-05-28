@@ -1,0 +1,14 @@
+﻿CREATE TABLE [dbo].[PUR_Attachment](
+	[PUReport_ID] [int] NOT NULL,
+	[SeqNum] [tinyint] NOT NULL,
+	[Label] [varchar](64) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[FileName] [varchar](256) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[URL] [varchar](256) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+ CONSTRAINT [PK_PUR_Attachment] PRIMARY KEY CLUSTERED 
+(
+	[PUReport_ID] ASC,
+	[SeqNum] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+

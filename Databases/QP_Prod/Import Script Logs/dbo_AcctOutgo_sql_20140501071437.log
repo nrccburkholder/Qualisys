@@ -1,0 +1,11 @@
+5/1/2014 2:14:37 PM	This log contains information about the import operation of the script 'dbo.AcctOutgo.sql' into project 'QP_Prod' on computer 'WSCCAOUETTE' by user'ccaouette.
+5/1/2014 2:14:42 PM	Started importing file: C:\Users\ccaouette\AppData\Local\Temp\tmp92FD.tmp 
+5/1/2014 2:14:42 PM	File name C:\Users\ccaouette\AppData\Local\Temp\tmp92FD.tmp (size: 648189)
+5/1/2014 2:14:42 PM	Parsing import script
+5/1/2014 2:14:44 PM	Total number of batches in script: 1331
+5/1/2014 2:14:44 PM	Total number of statements in script: 1331
+5/1/2014 2:14:44 PM	The script was successfully imported into the project.
+5/1/2014 2:14:47 PM	Analyzing schema objects...
+5/1/2014 2:14:52 PM	In the script that you provided to the import operation, one or more statements were not fully understood. These statements were moved to the C:\Development\TFS\Development\NRC10Databases\NRC10\QP_Prod\Scripts\ScriptsIgnoredOnImport.sql file. Review the file contents for additional information.
+5/1/2014 2:14:52 PM	A summary of the import operation was saved to the log file C:\Development\TFS\Development\NRC10Databases\NRC10\QP_Prod\Import Script Logs\dbo_AcctOutgo_sql_20140501071437.log.
+5/1/2014 2:14:52 PM	Click Finish to continue...

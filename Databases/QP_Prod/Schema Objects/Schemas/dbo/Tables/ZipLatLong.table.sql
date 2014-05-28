@@ -1,0 +1,13 @@
+﻿CREATE TABLE [dbo].[ZipLatLong](
+	[Zip] [char](5) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[State] [char](2) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[Lat] [decimal](8, 6) NOT NULL,
+	[Long] [decimal](9, 6) NOT NULL,
+ CONSTRAINT [PK_ZipLatLong] PRIMARY KEY CLUSTERED 
+(
+	[Zip] ASC,
+	[State] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+

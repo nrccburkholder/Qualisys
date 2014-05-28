@@ -1,0 +1,14 @@
+﻿CREATE PROCEDURE [dbo].[QCL_SelectAllContractedLanguages]
+AS
+
+SET NOCOUNT ON
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+
+SELECT LanguageCode, LanguageName, LangID, DisplayOrder
+FROM [dbo].ContractedLanguages
+ORDER BY DisplayOrder
+
+SET NOCOUNT OFF
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+
