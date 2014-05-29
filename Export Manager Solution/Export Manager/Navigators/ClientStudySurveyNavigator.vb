@@ -9,6 +9,7 @@ Public Class ClientStudySurveyNavigator
 
     Private mIsHcahps As Boolean
     Private mIsHHcahps As Boolean
+    Private mIsACOcahps As Boolean
     Private mIsCHART As Boolean
     Private mAllowMultiSelect As Boolean
     Public Event SelectionChanged As EventHandler
@@ -94,6 +95,7 @@ Public Class ClientStudySurveyNavigator
         mIsHcahps = False
         mIsHHcahps = False
         mIsCHART = False
+        mIsACOcahps = False
         mAllowMultiSelect = False
         Me.FilterToolStrip.Visible = False
         Me.SelectHeaderStrip.Visible = True
@@ -110,14 +112,22 @@ Public Class ClientStudySurveyNavigator
                 mIsHcahps = True
                 mIsHHcahps = False
                 mIsCHART = False
+                mIsACOcahps = False
             Case ExportSetType.CmsHHcahps
                 mIsHcahps = False
                 mIsHHcahps = True
                 mIsCHART = False
+                mIsACOcahps = False
             Case ExportSetType.CmsChart
                 mIsHcahps = False
                 mIsHHcahps = False
                 mIsCHART = True
+                mIsACOcahps = False
+            Case ExportSetType.CmsChart
+                mIsHcahps = False
+                mIsHHcahps = False
+                mIsCHART = False
+                mIsACOcahps = True
         End Select
         mAllowMultiSelect = allowMultiSelect
         Me.FilterToolStrip.Visible = False

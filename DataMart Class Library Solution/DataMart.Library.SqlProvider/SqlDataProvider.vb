@@ -146,6 +146,7 @@ Public Class SqlDataProvider
         Public Const SelectFileGUIDsByClientGroup As String = "DBO.DCL_ExportCreateFile_GetFileGUID_ByClientGroup"
         Public Const UpdateExportFileTracking As String = "DBO.DCL_UpdateExportFileTracking"
 
+        Public Const SelectAllACOCAHPSBySurveyId As String = "dbo.DCL_SelectACOCAHPSBySurveyId"
     End Class
 #End Region
 
@@ -860,8 +861,8 @@ Public Class SqlDataProvider
         End Using
     End Function
 
-    Public Overrides Function InsertExportFile(ByVal recordCount As Integer, ByVal createdEmployeeName As String, ByVal filePath As String, ByVal filePartsCount As Integer, ByVal fileType As ExportFileType, ByVal exportGuid As Guid, ByVal includeOnlyReturns As Boolean, ByVal includeOnlyDirects As Boolean, ByVal isScheduledExport As Boolean, ByVal exportSucceeded As Boolean, ByVal errorMessage As String, ByVal errorStack As String, ByVal isAwaitingNotification As Boolean, ByVal tpsFilePath As String, ByVal summaryFilePath As String, ByVal exceptionFilePath As String) As Integer
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.InsertExportFile, recordCount, createdEmployeeName, filePath, filePartsCount, CInt(fileType), exportGuid, includeOnlyReturns, includeOnlyDirects, isScheduledExport, exportSucceeded, errorMessage, errorStack, isAwaitingNotification, tpsFilePath, summaryFilePath, exceptionFilePath)
+    Public Overrides Function InsertExportFile(ByVal recordCount As Integer, ByVal createdEmployeeName As String, ByVal filePath As String, ByVal filePartsCount As Integer, ByVal fileType As ExportFileType, ByVal exportGuid As Guid, ByVal includeOnlyReturns As Boolean, ByVal includeOnlyDirects As Boolean, ByVal isScheduledExport As Boolean, ByVal exportSucceeded As Boolean, ByVal errorMessage As String, ByVal errorStack As String, ByVal isAwaitingNotification As Boolean, ByVal tpsFilePath As String, ByVal summaryFilePath As String, ByVal exceptionFilePath As String, Optional ByVal ignore As Boolean = False) As Integer
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.InsertExportFile, recordCount, createdEmployeeName, filePath, filePartsCount, CInt(fileType), exportGuid, includeOnlyReturns, includeOnlyDirects, isScheduledExport, exportSucceeded, errorMessage, errorStack, isAwaitingNotification, tpsFilePath, summaryFilePath, exceptionFilePath, ignore)
         Return ExecuteInteger(cmd)
     End Function
 
@@ -1663,6 +1664,11 @@ Public Class SqlDataProvider
         Else
             newObj.IsHHcahps = rdr.GetBoolean("bitHHCAHPS")
         End If
+        If rdr.IsDBNull("bitACOCAHPS") Then
+            newObj.IsACOcahps = (newObj.SurveyTypeId = 10)
+        Else
+            newObj.IsACOcahps = rdr.GetBoolean("bitACOCAHPS")
+        End If
         If rdr.IsDBNull("bitMNCM") Then
             newObj.IsMNCM = False
         Else
@@ -1679,6 +1685,8 @@ Public Class SqlDataProvider
         newObj.SampleUnitId = rdr.GetInteger("sampleunit_id")
         newObj.SampleUnitName = rdr.GetString("strSampleunit_Nm")
         newObj.SurveyId = rdr.GetInteger("Survey_ID")
+        newObj.ClientName = rdr.GetString("strClient_NM")
+        newObj.SurveyName = rdr.GetString("strSurvey_NM")
 
         Return newObj
     End Function
@@ -1691,8 +1699,8 @@ Public Class SqlDataProvider
         Return newObj
     End Function
 
-    Public Overrides Function SelectAllByDistinctMedicareNumber(ByVal exportSetType As ExportSetType) As System.Collections.ObjectModel.Collection(Of MedicareExport)
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectAllDistinctMedicareExport, exportSetType, False)
+    Public Overrides Function SelectAllByDistinctMedicareNumber(ByVal exportSetType As ExportSetType, ByVal activeOnly As Boolean) As System.Collections.ObjectModel.Collection(Of MedicareExport)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectAllDistinctMedicareExport, exportSetType, False, activeOnly)
 
         Using rdr As New SafeDataReader(ExecuteReader(cmd))
             Return PopulateCollection(Of MedicareExport)(rdr, AddressOf PopulateDistinctMedicareExport)
@@ -1778,6 +1786,164 @@ Public Class SqlDataProvider
         End Using
 
     End Function
+#End Region
+
+#Region "ACOCAHPS"
+
+    Public Overrides Function SelectAllACOCAHPSBySurveyId(ByVal survey_Id As Integer, ByVal startDate As DateTime, ByVal endDate As DateTime) As Collection(Of ACOCAHPSExport)
+
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectAllACOCAHPSBySurveyId, survey_Id, startDate, endDate)
+        Dim acoCAHPSExportList As New Collection(Of ACOCAHPSExport)
+
+        Using rdr As New SafeDataReader(ExecuteReader(cmd))
+            While rdr.Read
+                acoCAHPSExportList.Add(PopulateACOCAHPSExportFileData(rdr))
+            End While
+        End Using
+
+        Return acoCAHPSExportList
+
+    End Function
+
+    'Public Overrides Function SelectACOCAHPSExportSet(ByVal acoCAHPSId As Integer) As ACOCAHPSExportSet
+    '    Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectMedicareExportSet, medicareExportSetId)
+    '    Using rdr As New SafeDataReader(ExecuteReader(cmd))
+    '        If rdr.Read Then
+    '            Return PopulateACOCAHPSExportSet(rdr)
+    '        Else
+    '            Return Nothing
+    '        End If
+    '    End Using
+    'End Function
+
+    'Public Overrides Function InsertACOCAHPSExportSet(ByVal surveyID As Integer, ByVal surveyName As String, ByVal clientName As String, ByVal exportname As String, ByVal startDate As Date, ByVal endDate As Date, ByVal exportType As ExportSetType, ByVal createdEmployeeName As String) As Integer
+    '    Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.InsertExportFile, recordCount, createdEmployeeName, filePath, filePartsCount, CInt(fileType), exportGuid, includeOnlyReturns, includeOnlyDirects, isScheduledExport, exportSucceeded, errorMessage, errorStack, isAwaitingNotification, tpsFilePath, summaryFilePath, exceptionFilePath)
+    '    Return ExecuteInteger(cmd)
+    'End Function
+
+    Private Shared Function PopulateACOCAHPSExportFileData(ByVal rdr As SafeDataReader) As ACOCAHPSExport
+
+        Dim newObj As New ACOCAHPSExport
+        newObj.Qs = New List(Of String)
+        newObj.SurveyId = rdr.GetInteger("Survey_ID")
+        newObj.Finder = rdr.GetString("Finder")
+        newObj.ACO_Id = rdr.GetString("ACO_Id")
+        newObj.Dispositn = rdr.GetString("Dispositn", "10")
+        newObj.Mode = rdr.GetString("Mode", "8")
+        newObj.Dispo_Lang = rdr.GetString("Dispo_Lang", "8")
+        newObj.Received = rdr.GetString("Received", "88888888")
+        newObj.FocalType = rdr.GetString("FocalType", "1")
+        newObj.PRTitle = rdr.GetString("PRTitle")
+        newObj.PRFName = rdr.GetString("PRFName")
+        newObj.PRLName = rdr.GetString("PRLName")
+        newObj.BitComplete = rdr.GetNullableBoolean("bitComplete")
+        newObj.Qs.Add(rdr.GetInteger("Q01", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q02", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q03", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q04", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q05", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q06", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q07", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q08", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q09", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q10", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q11", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q12", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q13", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q14", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q15", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q16", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q17", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q18", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q19", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q20", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q21", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q22", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q23", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q24", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q25", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q26", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q27", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q28", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q29", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q30", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q31", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q32", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q33", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q34", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q35", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q36", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q37", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q38", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q39", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q40", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q41", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q42", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q43", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q44", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q45", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q46", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q47", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q48", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q49", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q50", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q51", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q52", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q53", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q54", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q55", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q56", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q57a", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q57b", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q57c", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q58", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q59", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q60", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q61", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q62", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q63", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q64", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q65", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q66", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q67", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q68", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q69", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q70", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q71", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q72", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q73", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q74", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q75", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q76", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q77", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q78", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q79a", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q79b", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q79c", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q79d", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q79d1", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q79d2", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q79d3", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q79d4", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q79d5", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q79d6", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q79d7", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q79e", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q79e1", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q79e2", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q79e3", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q79e4", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q80", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q81a", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q81b", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q81c", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q81d", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q81e", -9).ToString())
+
+        Return newObj
+
+    End Function
+
 #End Region
 
 #Region " Export File View "

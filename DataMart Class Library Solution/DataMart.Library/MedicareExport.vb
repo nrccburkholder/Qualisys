@@ -21,6 +21,7 @@ Public Class MedicareExport
     Private mSampleUnitName As String = String.Empty
     Private mIsHcahps As Boolean
     Private mIsHHcahps As Boolean
+    Private mIsACOcahps As Boolean
     Private mIsCHART As Boolean
     Private mIsMNCM As Boolean
     Private mIsSelected As Boolean
@@ -228,6 +229,15 @@ Public Class MedicareExport
         End Set
     End Property
 
+    Public Property IsACOcahps() As Boolean
+        Get
+            Return mIsACOcahps
+        End Get
+        Set(ByVal value As Boolean)
+            mIsACOcahps = value
+        End Set
+    End Property
+
     Public Property IsMNCM() As Boolean
         Get
             Return mIsMNCM
@@ -252,8 +262,8 @@ Public Class MedicareExport
 
 #Region " DB CRUD Methods "
 
-    Public Shared Function GetAllByDistinctMedicareNumber(ByVal exportSetType As ExportSetType) As Collection(Of MedicareExport)
-        Return DataProvider.Instance.SelectAllByDistinctMedicareNumber(exportSetType)
+    Public Shared Function GetAllByDistinctMedicareNumber(ByVal exportSetType As ExportSetType, ByVal activeOnly As Boolean) As Collection(Of MedicareExport)
+        Return DataProvider.Instance.SelectAllByDistinctMedicareNumber(exportSetType, activeOnly)
     End Function
 
     Public Shared Function GetAllByDistinctSampleUnit(ByVal exportSetType As ExportSetType) As Collection(Of MedicareExport)

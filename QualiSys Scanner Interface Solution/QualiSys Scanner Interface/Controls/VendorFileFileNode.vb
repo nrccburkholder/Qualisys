@@ -23,6 +23,15 @@ Public Class VendorFileFileNode
         End Get
     End Property
 
+    Public Property DateFileCreated() As Nullable(Of DateTime)
+        Get
+            Return mSource.DateFileCreated
+        End Get
+        Set(value As Nullable(Of DateTime))
+            mSource.DateFileCreated = value
+        End Set
+    End Property
+
 #End Region
 
 #Region " Friend ReadOnly Properties "
@@ -125,6 +134,19 @@ Public Class VendorFileFileNode
 
         'Log this action
         VendorFileTracking.LogAction(fileQueue.VendorFileId, VendorFileTrackingActions.Rollback, CurrentUser.MemberID)
+
+    End Sub
+
+    Friend Sub SetDateFileCreated(ByVal newDateFileCreated As DateTime)
+
+        Dim fileQueue As VendorFileCreationQueue = VendorFileCreationQueue.Get(mSource.VendorFileID)
+
+        'Set the date to the modified date and save it
+        fileQueue.DateFileCreated = newDateFileCreated
+        fileQueue.Save()
+
+        'Log this action
+        VendorFileTracking.LogAction(fileQueue.VendorFileId, VendorFileTrackingActions.SetDateFileCreated, CurrentUser.MemberID)
 
     End Sub
 

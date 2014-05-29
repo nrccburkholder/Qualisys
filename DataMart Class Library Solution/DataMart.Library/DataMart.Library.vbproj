@@ -68,9 +68,6 @@
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DevExpress.Data.v6.3, Version=6.3.2.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Utils.v6.3, Version=6.3.2.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.XtraEditors.v6.3, Version=6.3.2.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4, processorArchitecture=MSIL" />
     <Reference Include="Nrc.Framework, Version=1.10.0.0, Culture=neutral, PublicKeyToken=7f65ae6d961bde9c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Referenced Assemblies\Nrc.Framework.dll</HintPath>
@@ -108,6 +105,8 @@
     <Compile Include="CmsExporter.vb" />
     <Compile Include="CmsRecodeReader.vb" />
     <Compile Include="Config.vb" />
+    <Compile Include="ACOCAHPSExporter.vb" />
+    <Compile Include="ACOCAHPSExport.vb" />
     <Compile Include="CurrentUser.vb" />
     <Compile Include="DataProvider.vb" />
     <Compile Include="Dialog\ExportErrorDialog.Designer.vb">

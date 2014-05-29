@@ -219,8 +219,21 @@ Public Class VendorFileValidationSection
 
         End Select
 
+        If mCurrentFileNode.DateFileCreated.HasValue Then
+            DateFileCreatedDateTimePicker.Value = mCurrentFileNode.DateFileCreated.Value
+        Else
+            DateFileCreatedDateTimePicker.Value = Today
+        End If
+
     End Sub
 
 #End Region
 
+    Private Sub DateFileCreatedDateTimePicker_ValueChanged(sender As System.Object, e As System.EventArgs) Handles DateFileCreatedDateTimePicker.ValueChanged
+
+        mCurrentFileNode.SetDateFileCreated(DateFileCreatedDateTimePicker.Value)
+
+        mCurrentFileNode.DateFileCreated = DateFileCreatedDateTimePicker.Value
+
+    End Sub
 End Class

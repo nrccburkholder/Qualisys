@@ -225,11 +225,9 @@ Public Class QSITransferResultsService
 
     Private Sub LogEvent(ByVal eventData As String, ByVal entryType As EventLogEntryType)
 
-        'Check the length of the eventData. Cannot be longer than 32766 bytes.
-        'Originally this was capping the length at 32000, but even that was causing the dreaded 'The parameter is incorrect' failure in the event log.
-        'Reducing the cap to 31000.  TSB 05/09/2014
-        If eventData.Length > 31000 Then
-            eventData = eventData.Substring(0, 31000)
+        'Check the length of the eventData
+        If eventData.Length > 32000 Then
+            eventData = eventData.Substring(0, 32000)
         End If
 
         'Write the log entry

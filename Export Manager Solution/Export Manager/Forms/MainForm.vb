@@ -11,6 +11,7 @@ Public Class MainForm
     Private mChartNavigator As New ClientStudySurveyNavigator(ExportSetType.CmsChart, True)
     Private mScheduledFilesClientStudySurveyNavigator As New ClientStudySurveyNavigator(True, False, True)
     Private mCAHPSDefinitionNavigator As New CAHPSNavigator
+    Private mACOCAHPSDefinitionNavigator As New ACOCAHPSNavigator
 
     Private mStandardDefinitionSection As New StandardDefinitionSection(Library.ExportSetType.Standard)
     Private mCmsDefinitionSection As New StandardDefinitionSection(Library.ExportSetType.CmsHcahps)
@@ -18,6 +19,7 @@ Public Class MainForm
     Private mScheduledExportSection As New ScheduledExportSection
     Private mSpecialUpdatesSection As New SpecialUpdatesSection
     Private mCAHPSDefinitionSection As New CAHPSDefinitionSection
+    Private mACOCAHPSDefinitionSection As New ACOCAHPSDefinitionSection
     Private mCAHPSFileHistorySection As New CAHPSFileHistorySection
 
     Sub New()
@@ -46,6 +48,7 @@ Public Class MainForm
         mUIRelations.Add(CmsDefinitionTab, New UIRelation(mHcahpsNavigator, mCmsDefinitionSection))
         mUIRelations.Add(CHARTExportsTab, New UIRelation(mChartNavigator, mChartDefinitionSection))
         mUIRelations.Add(CAHPSExportsTab, New UIRelation(mCAHPSDefinitionNavigator, mCAHPSDefinitionSection))
+        mUIRelations.Add(ACOCAHPSExportsTab, New UIRelation(mACOCAHPSDefinitionNavigator, mACOCAHPSDefinitionSection))
         mUIRelations.Add(CAHPSFileHistoryTab, New UIRelation(mCAHPSDefinitionNavigator, mCAHPSFileHistorySection))
         mUIRelations.Add(ScheduledExportsTab, New UIRelation(mScheduledFilesClientStudySurveyNavigator, mScheduledExportSection))
 

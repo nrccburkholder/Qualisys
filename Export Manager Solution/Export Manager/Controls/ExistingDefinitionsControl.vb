@@ -613,7 +613,7 @@ Public Class ExistingDefinitionsControl
         'Keeps track of when we switch to a different medicare number
         Dim isCheckingNewMedicareNumber As Boolean = True
 
-        If Me.mExportSetType = Library.ExportSetType.CmsChart OrElse Me.mExportSetType = Library.ExportSetType.CmsHHcahps OrElse Me.mExportSetType = Library.ExportSetType.CmsHcahps Then
+        If Me.mExportSetType = Library.ExportSetType.CmsChart OrElse Me.mExportSetType = Library.ExportSetType.CmsHHcahps OrElse Me.mExportSetType = Library.ExportSetType.CmsHcahps OrElse Me.mExportSetType = Library.ExportSetType.ACOCAHPS Then
             'Check to see if any of the selected sets contain the same medicare number
             For i As Integer = exportList.Count - 1 To 0 Step -1
                 Dim unit As SampleUnit

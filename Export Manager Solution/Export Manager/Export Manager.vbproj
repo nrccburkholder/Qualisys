@@ -23,7 +23,7 @@
     </ManifestKeyFile>
     <GenerateManifests>true</GenerateManifests>
     <SignManifests>true</SignManifests>
-    <PublishUrl>\\mercury\QualisysApps\Prod\ExportManager\</PublishUrl>
+    <PublishUrl>\\huskers\NRCApplications\ExportManager\</PublishUrl>
     <Install>false</Install>
     <InstallFrom>Unc</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -36,7 +36,7 @@
     <ProductName>Export Manager</ProductName>
     <PublisherName>National Research Corporation</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationVersion>4.3.3.2</ApplicationVersion>
+    <ApplicationVersion>4.4.3.1</ApplicationVersion>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -164,6 +164,12 @@
     <Compile Include="Navigators\ClientStudySurveyNavigator.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Navigators\ACOCAHPSNavigator.Designer.vb">
+      <DependentUpon>ACOCAHPSNavigator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Navigators\ACOCAHPSNavigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Sections\CAHPSDefinitionSection.Designer.vb">
       <DependentUpon>CAHPSDefinitionSection.vb</DependentUpon>
     </Compile>
@@ -195,6 +201,12 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\Navigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\ACOCAHPSDefinitionSection.Designer.vb">
+      <DependentUpon>ACOCAHPSDefinitionSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\ACOCAHPSDefinitionSection.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Sections\ScheduledExportSection.Designer.vb">
@@ -324,6 +336,10 @@
       <SubType>Designer</SubType>
       <DependentUpon>ClientStudySurveyNavigator.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Navigators\ACOCAHPSNavigator.resx">
+      <DependentUpon>ACOCAHPSNavigator.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Sections\CAHPSDefinitionSection.resx">
       <SubType>Designer</SubType>
       <DependentUpon>CAHPSDefinitionSection.vb</DependentUpon>
@@ -342,6 +358,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ExistingDefinitionsControl.resx">
       <DependentUpon>ExistingDefinitionsControl.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\ACOCAHPSDefinitionSection.resx">
+      <DependentUpon>ACOCAHPSDefinitionSection.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Sections\ScheduledExportSection.resx">
@@ -455,6 +475,7 @@
     <Content Include="Resources\Health &amp; Personal Care.png" />
     <None Include="Resources\History.png" />
     <Content Include="Resources\Home_32.png" />
+    <None Include="Resources\Orange_baseball_cap.png" />
     <Content Include="Resources\Schedule.png" />
     <Content Include="Resources\Update_32.png" />
     <None Include="Resources\error1.bmp" />

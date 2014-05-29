@@ -394,6 +394,26 @@ Public Class ExportFile
 
     End Function
 
+    Public Shared Function CreateACOCAHPSExportFile(ByVal ACOCAHPSExportSets As System.Collections.ObjectModel.Collection(Of ExportSet), _
+                                               ByVal filePath As String, ByVal isScheduledExport As Boolean, ByVal isInterimFile As Boolean) As Integer
+        'TODO Create the fixed width ACOCAHPS file from the selected clients
+
+        If Not ACOCAHPSExportSets.Count > 0 Then
+            Throw New ArgumentException("The collection of ACOCHAPSExportSets objects must contain at least one ACOCAHPSExportSet")
+        End If
+
+        'Dim exportType As Integer = ACOCAHPSExportSets(0).ExportSetTypeID
+        'For Each export As ACOCAHPSExportSet In ACOCAHPSExportSets
+        '    If export.ExportSetTypeID <> exportType Then
+        '        Throw New InvalidOperationException("All of the MedicareExportSet objects in the collection must be of the same ExportSetType")
+        '    End If
+        'Next
+
+        Dim exp As ACOCAHPSExporter = CType(ACOCAHPSExporter.GetExporter(ExportSetType.ACOCAHPS), ACOCAHPSExporter)
+        Return exp.CreateExportFile(ACOCAHPSExportSets, filePath, ExportFileType.CustomFixedWidth, isScheduledExport, isInterimFile)
+
+    End Function
+
     Public Shared Function CreateOCSExportFile(ByVal ocsMedicareExportSet As MedicareExportSet, _
                                                ByVal medicareExportSets As System.Collections.ObjectModel.Collection(Of MedicareExportSet), _
                                                ByVal folderPath As String, ByVal fileExtension As String, ByVal fileType As ExportFileType, _

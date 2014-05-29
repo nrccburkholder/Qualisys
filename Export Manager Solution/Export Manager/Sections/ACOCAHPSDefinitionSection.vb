@@ -3,23 +3,22 @@ Imports DevExpress.XtraEditors
 Imports DevExpress.XtraGrid.Views.Grid
 Imports Nrc.Framework.BusinessLogic.Configuration
 
-Public Class CAHPSDefinitionSection
+Public Class ACOCAHPSDefinitionSection
 
-    Private WithEvents mNavigator As CAHPSNavigator
-    Private mExportSetType As ExportSetType
+    Private WithEvents mNavigator As ACOCAHPSNavigator
     Private mIsInitializing As Boolean
 
     Private Enum ViewType
-        MedicareOnly = 0
-        SampleUnit = 1
+        Active = 0
+        ShowAll = 1
     End Enum
 
 #Region " Base Class Overrides "
 
     Public Overrides Sub RegisterNavControl(ByVal navCtrl As Navigator)
-        mNavigator = TryCast(navCtrl, CAHPSNavigator)
+        mNavigator = TryCast(navCtrl, ACOCAHPSNavigator)
         If mNavigator Is Nothing Then
-            Throw New Exception("CAHPSDefinitionSection expects a navigation control of type CAHPSNavigator")
+            Throw New Exception("ACOCAHPSDefinitionSection expects a navigation control of type ACOCAHPSNavigator")
         End If
     End Sub
 
@@ -66,26 +65,20 @@ Public Class CAHPSDefinitionSection
     Private Sub mNavigator_ExportSetTypeSelectionChanged(ByVal sender As Object, ByVal e As ExportSetTypeSelectionChangedEventArgs) Handles mNavigator.ExportSetTypeSelectionChanged
 
         'Set member variables
-        mExportSetType = e.ExportSetType
+        'mExportSetType = e.ExportSetType
 
-        Select Case mExportSetType
-            Case ExportSetType.OCSClient, ExportSetType.OCSNonClient
-                OCSClientButton.Visible = True
-                OCSNonClientButton.Visible = True
-                ExportButton.Visible = False
-                CCNPanel.Visible = False
-                FileTypeLabel.Visible = False
-                FileTypeComboBox.Visible = False
+        'Select Case mExportSetType
+        '    Case ExportSetType.OCSClient, ExportSetType.OCSNonClient
+        '        ExportButton.Visible = False
+        '        CCNPanel.Visible = False
+        '        FileTypeComboBox.Visible = False
 
-            Case Else
-                OCSClientButton.Visible = False
-                OCSNonClientButton.Visible = False
-                ExportButton.Visible = True
-                CCNPanel.Visible = True
-                FileTypeLabel.Visible = True
-                FileTypeComboBox.Visible = True
+        '    Case Else
+        '        ExportButton.Visible = True
+        '        CCNPanel.Visible = True
+        '        FileTypeComboBox.Visible = True
 
-        End Select
+        'End Select
 
         'Populate definition
         InitializeMonthList()
@@ -104,23 +97,21 @@ Public Class CAHPSDefinitionSection
 
     Private Sub PopulateFileHistory()
 
-        Dim medicareExportSets As Collection(Of ExportFileView) = ExportFileView.GetByExportType(mExportSetType, FilterStartDate.Value.Date, FilterEndDate.Value.Date)
+        Dim ACOExportSets As Collection(Of ExportFileView) = ExportFileView.GetByExportType(ExportSetType.ACOCAHPS, FilterStartDate.Value.Date, FilterEndDate.Value.Date)
 
-        If mExportSetType = ExportSetType.OCSClient Then
-            For Each exportFile As ExportFileView In ExportFileView.GetByExportType(ExportSetType.OCSNonClient, FilterStartDate.Value.Date, FilterEndDate.Value.Date)
-                medicareExportSets.Add(exportFile)
-            Next
-        End If
+        'For Each exportFile As ExportFileView In ExportFileView.GetByExportType(ExportSetType.ACOCAHPS, FilterStartDate.Value.Date, FilterEndDate.Value.Date)
+        '    ACOExportSets.Add(exportFile)
+        'Next
 
-        FileHistoryBindingSource.DataSource = medicareExportSets
+        FileHistoryBindingSource.DataSource = ACOExportSets
 
         'Add Default sorting
-        FileHistoryGridView.Columns("IsInError").SortOrder = DevExpress.Data.ColumnSortOrder.Descending
+        'FileHistoryGridView.Columns("IsInError").SortOrder = DevExpress.Data.ColumnSortOrder.Descending
         FileHistoryGridView.Columns("CreatedDate").SortOrder = DevExpress.Data.ColumnSortOrder.Descending
-        FileHistoryGridView.Columns("MedicareNumber").SortOrder = DevExpress.Data.ColumnSortOrder.Ascending
+        'FileHistoryGridView.Columns("MedicareNumber").SortOrder = DevExpress.Data.ColumnSortOrder.Ascending
 
         'Add Default grouping
-        FileHistoryGridView.Columns("ClientGroupName").Group()
+        FileHistoryGridView.Columns("CreatedDate").Group()
         FileHistoryGridView.ExpandAllGroups()
 
     End Sub
@@ -173,8 +164,8 @@ Public Class CAHPSDefinitionSection
 
         mIsInitializing = True
         ViewToolStripComboBox.Items.Clear()
-        ViewToolStripComboBox.Items.Add(New ListItem(Of ViewType)("Medicare Number Only", ViewType.MedicareOnly))
-        ViewToolStripComboBox.Items.Add(New ListItem(Of ViewType)("With Sample Unit", ViewType.SampleUnit))
+        ViewToolStripComboBox.Items.Add(New ListItem(Of ViewType)("Active", ViewType.Active))
+        ViewToolStripComboBox.Items.Add(New ListItem(Of ViewType)("Show All", ViewType.ShowAll))
         ViewToolStripComboBox.SelectedIndex = 0
         mIsInitializing = False
 
@@ -182,49 +173,30 @@ Public Class CAHPSDefinitionSection
 
     Private Sub InitializeCCNList()
 
-        Select Case SelectedViewType()
-            Case ViewType.MedicareOnly
-                CCNBindingSource.DataSource = MedicareExport.GetAllByDistinctMedicareNumber(mExportSetType, True)
-                CCNGridView.Columns("SampleUnitId").Visible = False
-                CCNGridView.Columns("SampleUnitName").Visible = False
-
-            Case ViewType.SampleUnit
-                CCNBindingSource.DataSource = MedicareExport.GetAllByDistinctSampleUnit(mExportSetType)
-                CCNGridView.Columns("SampleUnitId").Visible = True
-                CCNGridView.Columns("SampleUnitName").Visible = True
-
-            Case Else
-                Throw New ArgumentOutOfRangeException("ViewType")
-
-        End Select
+        CCNBindingSource.DataSource = MedicareExport.GetAllByDistinctMedicareNumber(ExportSetType.ACOCAHPS, SelectedViewType() = ViewType.Active)
 
     End Sub
 
-    Private Function GetFileName(ByVal medicareName As String, ByVal medicareNumber As String) As String
+    Public Function GetFileName(ByVal path As String, ByVal fileExtension As String) As String
 
-        'Set export file name.
-        Select Case mExportSetType
-            Case ExportSetType.CmsHcahps, ExportSetType.CmsChart
-                Return String.Format("{0}_{1}_{2}_{3}", medicareName, medicareNumber, YearList.Text, MonthList.SelectedValue.ToString.PadLeft(2, "0"c))
+        If Not (IO.Directory.Exists(path + "\ACOCAHPS\")) Then
+            IO.Directory.CreateDirectory(path + "\ACOCAHPS\")
+        End If
+        Dim version As Integer = 1
+        Dim finalPath As String = path + "\ACOCAHPS\NationalResearch.submission" + version.ToString() + "." + Today.ToString("MMddyy") + fileExtension
+        While IO.File.Exists(finalPath) Or IO.File.Exists(finalPath.Replace("ACOCAHPS", "ACOCAHPS\ExportErrors"))
+            version += 1
+            finalPath = path + "\ACOCAHPS\NationalResearch.submission" + version.ToString() + "." + Today.ToString("MMddyy") + fileExtension
+        End While
 
-            Case ExportSetType.CmsHHcahps
-                Return String.Format("{0}_{1}_{2}_{3}_{4}", "HH", medicareName, medicareNumber, YearList.Text, MonthList.SelectedValue.ToString.PadLeft(2, "0"c))
-
-            Case ExportSetType.OCSClient, ExportSetType.OCSNonClient
-                Return String.Format("{0}_{1}_{2}", medicareName, YearList.Text, MonthList.SelectedValue.ToString.PadLeft(2, "0"c))
-
-            Case Else
-                Throw New ArgumentOutOfRangeException("mExportSetType")
-        End Select
+        Return finalPath
 
     End Function
 
     Private Function SelectedFileType() As FileTypeItem
-        If FileTypeComboBox.SelectedItem IsNot Nothing Then
-            Return TryCast(FileTypeComboBox.SelectedItem, FileTypeItem)
-        Else
-            Return New FileTypeItem(ExportFileType.Xml, "XML", "XML")
-        End If
+
+        Return New FileTypeItem(ExportFileType.CustomFixedWidth, "txt", "txt")
+
     End Function
 
     Private Function SelectedViewType() As ViewType
@@ -237,7 +209,8 @@ Public Class CAHPSDefinitionSection
 
     Private Sub CAHPSDefinitionSection_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
-        FilterStartDate.Value = Now.AddDays(-1)
+        FilterStartDate.Value = DateTime.Parse(Now.Month.ToString() + "/1/" + Now.Year.ToString())
+        FilterEndDate.Value = FilterStartDate.Value.AddMonths(1).AddDays(-1)
 
         'Populate file history
         PopulateFileHistory()
@@ -286,6 +259,7 @@ Public Class CAHPSDefinitionSection
                 selectCount += 1
             End If
         Next
+        Dim fileName As String = GetFileName(AppConfig.Params("EMCMSOutputFolderPath").StringValue, ".txt.pgp")
 
         If MessageBox.Show(String.Format("Generating {0} export(s) for {1} {2}.", selectCount, MonthList.Text, YearList.Text), "Create Export(s)", MessageBoxButtons.OKCancel, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1) = DialogResult.Cancel Then
             Exit Sub
@@ -296,119 +270,32 @@ Public Class CAHPSDefinitionSection
 
             Dim startDate As Date = Date.Parse(String.Format("{0}/1/{1}", CType(MonthList.SelectedValue, Integer), CType(YearList.SelectedItem, Integer)))
             Dim endDate As Date = startDate.AddMonths(1).AddDays(-1)
-            Dim medicareExportSets As New Collection(Of MedicareExportSet)
-            Dim exportSets As New Collection(Of ExportSet)
+            Dim ACOCAHPSExportSets As New Collection(Of ExportSet)
+            'Dim exportSets As New Collection(Of ExportSet)
 
             For x As Integer = 0 To CCNGridView.RowCount - 1
                 If CType(CCNGridView.GetRowCellValue(x, "Selected"), Boolean) = True Then
-                    Dim medicareNumber As String = CCNGridView.GetRowCellValue(x, "MedicareNumber").ToString
-                    Dim medicareName As String = CCNGridView.GetRowCellValue(x, "MedicareName").ToString
+                    'Dim medicareNumber As String = CCNGridView.GetRowCellValue(x, "MedicareNumber").ToString
+                    'Dim medicareName As String = CCNGridView.GetRowCellValue(x, "MedicareName").ToString
 
-                    Select Case SelectedViewType()
-                        Case ViewType.MedicareOnly
-                            medicareExportSets.Add(MedicareExportSet.CreateNewMedicareExportSet(medicareNumber, GetFileName(medicareName, medicareNumber), startDate, endDate, True, False, mExportSetType, CurrentUser.UserName))
-
-                        Case ViewType.SampleUnit
-                            Dim surveyID As Integer = CType(CCNGridView.GetRowCellValue(x, "SurveyId"), Integer)
-                            Dim sampleUnitID As Integer = CType(CCNGridView.GetRowCellValue(x, "SampleUnitId"), Integer)
-                            exportSets.Add(ExportSet.CreateNewExportSet(String.Format("{0}_{1}", GetFileName(medicareName, medicareNumber), sampleUnitID), surveyID, sampleUnitID, startDate, endDate, mExportSetType, CurrentUser.UserName))
-
-                        Case Else
-                            Throw New ArgumentOutOfRangeException("ViewType")
-
-                    End Select
+                    Dim surveyID As Integer = CType(CCNGridView.GetRowCellValue(x, "SurveyId"), Integer)
+                    Dim clientName As String = CType(CCNGridView.GetRowCellValue(x, "ClientName"), String)
+                    Dim surveyName As String = CType(CCNGridView.GetRowCellValue(x, "SurveyName"), String)
+                    ACOCAHPSExportSets.Add(ExportSet.CreateNewExportSet(clientName + " - " + surveyName, surveyID, startDate, endDate, ExportSetType.ACOCAHPS, CurrentUser.UserName))
                 End If
             Next
 
             Dim failedCount As Integer
-            Select Case SelectedViewType()
-                Case ViewType.MedicareOnly
-                    failedCount = ExportFile.CreateCMSExportFile(medicareExportSets, AppConfig.Params("EMCMSOutputFolderPath").StringValue, SelectedFileType.Extension, SelectedFileType.ExportFileType, False)
-
-                Case ViewType.SampleUnit
-                    failedCount = ExportFile.CreateCMSExportFile(exportSets, AppConfig.Params("EMCMSOutputFolderPath").StringValue, SelectedFileType.Extension, SelectedFileType.ExportFileType, True, False, False, CurrentUser.UserName, False)
-
-                Case Else
-                    Throw New ArgumentOutOfRangeException("ViewType")
-
-            End Select
+            failedCount = ExportFile.CreateACOCAHPSExportFile(ACOCAHPSExportSets, fileName, False, Me.InterimFileCheckBox.Checked)
 
             Dim crlf As String = vbCrLf & vbTab
-            Dim outputPath As String = String.Format("{0}\{1}\{2}", AppConfig.Params("EMCMSOutputFolderPath").StringValue, mExportSetType.ToString, startDate.ToString("yyyyMMM"))
-            Dim message As String = String.Format("Export process complete.{0}File count: {1}{0}File errors: {2}{0}File path: {3}", crlf, selectCount, failedCount, outputPath)
+            Dim message As String = String.Format("Export process complete.{0}File count: {1}{0}File errors: {2}{0}File path: {3}", crlf, selectCount, failedCount, fileName)
             MessageBox.Show(message, "Export", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
             PopulateFileHistory()
 
         Finally
             Cursor.Current = Cursors.Default
-        End Try
-
-    End Sub
-
-    Private Sub OCSClientButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles OCSClientButton.Click
-
-        If MessageBox.Show(String.Format("Generating OCS Client export(s) for {0} {1}.", MonthList.Text, YearList.Text), "Create Export(s)", MessageBoxButtons.OKCancel, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1) = DialogResult.Cancel Then
-            Exit Sub
-        End If
-
-        Try
-            Cursor.Current = Cursors.WaitCursor
-
-            Dim startDate As Date = Date.Parse(String.Format("{0}/1/{1}", CType(MonthList.SelectedValue, Integer), CType(YearList.SelectedItem, Integer)))
-            Dim endDate As Date = startDate.AddMonths(1).AddDays(-1)
-
-            'Build Export Set
-            Dim ocsMedicareExportSet As MedicareExportSet = MedicareExportSet.CreateNewMedicareExportSet(String.Empty, GetFileName("OCSClient", String.Empty), startDate, endDate, True, False, mExportSetType, CurrentUser.UserName)
-
-            'Get existing HHCAHPS export sets
-            Dim medicareExportSets As Collection(Of MedicareExportSet) = MedicareExportSet.GetFileGUIDsByClientGroup(SurveyType.HomeHCAHPS, "OCS", "=", startDate, endDate)
-
-            'Build OCS file
-            Dim fileCount As Integer = ExportFile.CreateOCSExportFile(ocsMedicareExportSet, medicareExportSets, AppConfig.Params("EMCMSOutputFolderPath").StringValue, SelectedFileType.Extension, SelectedFileType.ExportFileType, False)
-
-            Dim crlf As String = vbCrLf & vbTab
-            Dim outputPath As String = String.Format("{0}\OCS\{1}", AppConfig.Params("EMCMSOutputFolderPath").StringValue, startDate.ToString("yyyyMMM"))
-            Dim message As String = String.Format("OCS Client export process complete.{0}File count: {1}{0}File path: {2}", crlf, fileCount, outputPath)
-            MessageBox.Show(message, "Export", MessageBoxButtons.OK, MessageBoxIcon.Information)
-
-            PopulateFileHistory()
-
-        Finally
-            Cursor.Current = Cursors.Default
-        End Try
-
-    End Sub
-
-    Private Sub OCSNonClientButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles OCSNonClientButton.Click
-
-        If MessageBox.Show(String.Format("Generating OCS NonClient export(s) for {0} {1}.", MonthList.Text, YearList.Text), "Create Export(s)", MessageBoxButtons.OKCancel, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1) = DialogResult.Cancel Then
-            Exit Sub
-        End If
-
-        Try
-            Dim startDate As Date = Date.Parse(String.Format("{0}/1/{1}", CType(MonthList.SelectedValue, Integer), CType(YearList.SelectedItem, Integer)))
-            Dim endDate As Date = startDate.AddMonths(1).AddDays(-1)
-
-            'Build Export Set
-            Dim ocsMedicareExportSet As MedicareExportSet = MedicareExportSet.CreateNewMedicareExportSet(String.Empty, GetFileName("OCSNonClient", String.Empty), startDate, endDate, True, False, ExportSetType.OCSNonClient, CurrentUser.UserName)
-
-            'Get existing HHCAHPS export sets
-            Dim medicareExportSets As Collection(Of MedicareExportSet) = MedicareExportSet.GetFileGUIDsByClientGroup(SurveyType.HomeHCAHPS, "OCS", "<>", startDate, endDate)
-
-            'Build OCS file
-            Dim fileCount As Integer = ExportFile.CreateOCSExportFile(ocsMedicareExportSet, medicareExportSets, AppConfig.Params("EMCMSOutputFolderPath").StringValue, SelectedFileType.Extension, SelectedFileType.ExportFileType, False)
-
-            Dim crlf As String = vbCrLf & vbTab
-            Dim outputPath As String = String.Format("{0}\OCS\{1}", AppConfig.Params("EMCMSOutputFolderPath").StringValue, startDate.ToString("yyyyMMM"))
-            Dim message As String = String.Format("OCS NonClient export process complete.{0}File count: {1}{0}File path: {2}", crlf, fileCount, outputPath)
-            MessageBox.Show(message, "Export", MessageBoxButtons.OK, MessageBoxIcon.Information)
-
-            PopulateFileHistory()
-
-        Finally
-            Cursor.Current = Cursors.Default
-
         End Try
 
     End Sub

@@ -37,6 +37,7 @@ Friend Class VendorFileNavigatorTreeProvider
         newObject.ShowInTree = rdr.GetBoolean("ShowInTree")
         newObject.ErrorDesc = rdr.GetString("ErrorDesc")
         newObject.VendorID = rdr.GetNullableInteger("Vendor_ID")
+        newObject.DateFileCreated = rdr.GetNullableDate("DateFileCreated")
         newObject.EndPopulate()
 
         Return newObject

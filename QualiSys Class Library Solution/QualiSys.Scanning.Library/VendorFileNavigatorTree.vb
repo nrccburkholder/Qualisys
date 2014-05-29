@@ -31,6 +31,7 @@ Public Class VendorFileNavigatorTree
     Private mShowInTree As Boolean
     Private mErrorDesc As String = String.Empty
     Private mVendorID As Nullable(Of Integer)
+    Private mDateFileCreated As Nullable(Of DateTime)
 
 #End Region
 
@@ -230,6 +231,16 @@ Public Class VendorFileNavigatorTree
         Set(ByVal value As Nullable(Of Integer))
             mVendorID = value
             PropertyHasChanged("VendorID")
+        End Set
+    End Property
+
+    Public Property DateFileCreated() As Nullable(Of DateTime)
+        Get
+            Return mDateFileCreated
+        End Get
+        Set(value As Nullable(Of DateTime))
+            mDateFileCreated = value
+            PropertyHasChanged("DateFileCreated")
         End Set
     End Property
 #End Region

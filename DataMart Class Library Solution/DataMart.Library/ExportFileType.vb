@@ -7,4 +7,5 @@ Public Enum ExportFileType
     DBase = 1
     Csv = 2
     Xml = 3
+    CustomFixedWidth = 4
 End Enum

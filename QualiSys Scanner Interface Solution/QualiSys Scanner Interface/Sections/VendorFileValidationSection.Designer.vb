@@ -19,17 +19,19 @@ Partial Class VendorFileValidationSection
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.VendorFileSectionPanel = New Nrc.Framework.WinForms.SectionPanel
-        Me.VendorFilePanel = New System.Windows.Forms.Panel
-        Me.VendorFileRollbackButton = New System.Windows.Forms.Button
-        Me.VendorFileTabControl = New System.Windows.Forms.TabControl
-        Me.VendorFileValidationTabPage = New System.Windows.Forms.TabPage
-        Me.VendorFileValidationReportViewer = New Microsoft.Reporting.WinForms.ReportViewer
-        Me.VendorFileDataTabPage = New System.Windows.Forms.TabPage
-        Me.VendorFileDataGridControl = New DevExpress.XtraGrid.GridControl
-        Me.VendorFileDataGridView = New DevExpress.XtraGrid.Views.Grid.GridView
-        Me.VendorFileRemakeButton = New System.Windows.Forms.Button
-        Me.VendorFileApproveButton = New System.Windows.Forms.Button
+        Me.VendorFileSectionPanel = New Nrc.Framework.WinForms.SectionPanel()
+        Me.VendorFilePanel = New System.Windows.Forms.Panel()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.VendorFileRollbackButton = New System.Windows.Forms.Button()
+        Me.VendorFileTabControl = New System.Windows.Forms.TabControl()
+        Me.VendorFileValidationTabPage = New System.Windows.Forms.TabPage()
+        Me.VendorFileValidationReportViewer = New Microsoft.Reporting.WinForms.ReportViewer()
+        Me.VendorFileDataTabPage = New System.Windows.Forms.TabPage()
+        Me.VendorFileDataGridControl = New DevExpress.XtraGrid.GridControl()
+        Me.VendorFileDataGridView = New DevExpress.XtraGrid.Views.Grid.GridView()
+        Me.VendorFileRemakeButton = New System.Windows.Forms.Button()
+        Me.VendorFileApproveButton = New System.Windows.Forms.Button()
+        Me.DateFileCreatedDateTimePicker = New System.Windows.Forms.DateTimePicker()
         Me.VendorFileSectionPanel.SuspendLayout()
         Me.VendorFilePanel.SuspendLayout()
         Me.VendorFileTabControl.SuspendLayout()
@@ -55,8 +57,10 @@ Partial Class VendorFileValidationSection
         'VendorFilePanel
         '
         Me.VendorFilePanel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.VendorFilePanel.Controls.Add(Me.DateFileCreatedDateTimePicker)
+        Me.VendorFilePanel.Controls.Add(Me.Label1)
         Me.VendorFilePanel.Controls.Add(Me.VendorFileRollbackButton)
         Me.VendorFilePanel.Controls.Add(Me.VendorFileTabControl)
         Me.VendorFilePanel.Controls.Add(Me.VendorFileRemakeButton)
@@ -66,6 +70,15 @@ Partial Class VendorFileValidationSection
         Me.VendorFilePanel.Size = New System.Drawing.Size(801, 700)
         Me.VendorFilePanel.TabIndex = 0
         Me.VendorFilePanel.Visible = False
+        '
+        'Label1
+        '
+        Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label1.Location = New System.Drawing.Point(292, 679)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(78, 13)
+        Me.Label1.TabIndex = 8
+        Me.Label1.Text = "Date File Sent:"
         '
         'VendorFileRollbackButton
         '
@@ -80,8 +93,8 @@ Partial Class VendorFileValidationSection
         'VendorFileTabControl
         '
         Me.VendorFileTabControl.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.VendorFileTabControl.Controls.Add(Me.VendorFileValidationTabPage)
         Me.VendorFileTabControl.Controls.Add(Me.VendorFileDataTabPage)
         Me.VendorFileTabControl.Location = New System.Drawing.Point(4, 4)
@@ -104,14 +117,14 @@ Partial Class VendorFileValidationSection
         'VendorFileValidationReportViewer
         '
         Me.VendorFileValidationReportViewer.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.VendorFileValidationReportViewer.Location = New System.Drawing.Point(6, 6)
         Me.VendorFileValidationReportViewer.Name = "VendorFileValidationReportViewer"
         Me.VendorFileValidationReportViewer.ProcessingMode = Microsoft.Reporting.WinForms.ProcessingMode.Remote
         Me.VendorFileValidationReportViewer.ServerReport.DisplayName = "Vendor File Validation"
         Me.VendorFileValidationReportViewer.ServerReport.ReportPath = "/Pages/ReportViewer.aspx?%2fAlternativeMethodology%2fVendor+Outgoing+File+Validat" & _
-            "ion&rs%3aCommand=Render&VendorFile_ID=7"
+    "ion&rs%3aCommand=Render&VendorFile_ID=7"
         Me.VendorFileValidationReportViewer.ServerReport.ReportServerUrl = New System.Uri("http://ironman/ReportServer", System.UriKind.Absolute)
         Me.VendorFileValidationReportViewer.ShowBackButton = False
         Me.VendorFileValidationReportViewer.ShowDocumentMapButton = False
@@ -134,8 +147,8 @@ Partial Class VendorFileValidationSection
         'VendorFileDataGridControl
         '
         Me.VendorFileDataGridControl.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.VendorFileDataGridControl.EmbeddedNavigator.Name = ""
         Me.VendorFileDataGridControl.Location = New System.Drawing.Point(7, 7)
         Me.VendorFileDataGridControl.MainView = Me.VendorFileDataGridView
@@ -175,6 +188,15 @@ Partial Class VendorFileValidationSection
         Me.VendorFileApproveButton.Text = "Approve && Send"
         Me.VendorFileApproveButton.UseVisualStyleBackColor = True
         '
+        'DateFileCreatedDateTimePicker
+        '
+        Me.DateFileCreatedDateTimePicker.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.DateFileCreatedDateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.DateFileCreatedDateTimePicker.Location = New System.Drawing.Point(376, 674)
+        Me.DateFileCreatedDateTimePicker.Name = "DateFileCreatedDateTimePicker"
+        Me.DateFileCreatedDateTimePicker.Size = New System.Drawing.Size(100, 21)
+        Me.DateFileCreatedDateTimePicker.TabIndex = 9
+        '
         'VendorFileValidationSection
         '
         Me.Controls.Add(Me.VendorFileSectionPanel)
@@ -202,5 +224,7 @@ Partial Class VendorFileValidationSection
     Friend WithEvents VendorFileDataGridControl As DevExpress.XtraGrid.GridControl
     Friend WithEvents VendorFileDataGridView As DevExpress.XtraGrid.Views.Grid.GridView
     Friend WithEvents VendorFileRollbackButton As System.Windows.Forms.Button
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents DateFileCreatedDateTimePicker As System.Windows.Forms.DateTimePicker
 
 End Class

@@ -1247,7 +1247,7 @@ Public Class PredefinitionWizardDialog
 #End Region
 
     Private Sub cboTeam_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboTeam.SelectedIndexChanged
-        If mExportSetType = ExportSetType.CmsHcahps OrElse mExportSetType = ExportSetType.CmsHHcahps OrElse mExportSetType = ExportSetType.CmsChart Then
+        If mExportSetType = ExportSetType.CmsHcahps OrElse mExportSetType = ExportSetType.CmsHHcahps OrElse mExportSetType = ExportSetType.ACOCAHPS OrElse mExportSetType = ExportSetType.CmsChart Then
             Dim createToolItem As ToolStripItem = DefinedDefinitionToolStrip.Items("DefinedDefinitionCreateTSButton")
             'If Not String.IsNullOrEmpty(CreateDefinitionNameTextBox.Text) Then
             createToolItem.Visible = True

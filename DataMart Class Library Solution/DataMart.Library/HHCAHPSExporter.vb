@@ -334,6 +334,16 @@ Friend Class HHCAHPSExporter
         writer.WriteLine("<table class='NotifyTable'>")
         writer.WriteLine("<tr><td class='HeaderCell'>Field Name</td><td class='HeaderCell'>Value</td><td class='HeaderCell'>Count</td><td class='HeaderCell'>Percentage</td></tr>")
 
+        WriteCmsInnerHtml(freqTable, writer, fileName, exportType)
+
+        'Finish up the report HTML
+        writer.WriteLine("</table>")
+        writer.WriteLine("</body>")
+        writer.WriteLine("</html>")
+
+    End Sub
+
+    Protected Overridable Sub WriteCmsInnerHtml(ByVal freqTable As CAHPSExporter.FrequencyTable, ByVal writer As System.IO.TextWriter, ByVal fileName As String, ByVal exportType As ExportSetType)
         'Write contents of report
         WriteCmsSummaryRow(freqTable, writer, "patients-hha")
         WriteCmsSummaryRow(freqTable, writer, "number-vendor-submitted")
@@ -350,13 +360,8 @@ Friend Class HHCAHPSExporter
         WriteCmsSummaryRow(freqTable, writer, "language")
         WriteCmsSummaryRow(freqTable, writer, "gender", True, "M")
         WriteCmsSummaryRow(freqTable, writer, "patient-age", True, "M")
-
-        'Finish up the report HTML
-        writer.WriteLine("</table>")
-        writer.WriteLine("</body>")
-        writer.WriteLine("</html>")
-
     End Sub
+
 
     Protected Overrides Function GetCmsFileFrequencies(ByVal cmsFilePath As String, ByVal exportType As ExportSetType) As FrequencyTable
 

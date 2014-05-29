@@ -272,12 +272,13 @@ Public MustInherit Class DataProvider
     Public MustOverride Function SelectExportFileData(ByVal exportSetIds As Integer(), ByVal includeOnlyReturns As Boolean, ByVal includeOnlyDirects As Boolean, ByVal includePhoneFields As Boolean, ByVal exportGuid As Guid, ByVal saveData As Boolean, ByVal returnData As Boolean) As IDataReader
     Public MustOverride Function SelectExportFilesByExportSetId(ByVal exportSetId As Integer) As Collection(Of ExportFile)
     Public MustOverride Function SelectExportFilesAwaitingNotification() As Collection(Of ExportFile)
-    Public MustOverride Function InsertExportFile(ByVal recordCount As Integer, ByVal createdEmployeeName As String, ByVal filePath As String, ByVal filePartsCount As Integer, ByVal fileType As ExportFileType, ByVal exportGuid As Guid, ByVal includeOnlyReturns As Boolean, ByVal includeOnlyDirects As Boolean, ByVal isScheduledExport As Boolean, ByVal exportSucceeded As Boolean, ByVal errorMessage As String, ByVal errorStack As String, ByVal isAwaitingNotification As Boolean, ByVal tpsFilePath As String, ByVal summaryFilePath As String, ByVal exceptionFilePath As String) As Integer
+    Public MustOverride Function InsertExportFile(ByVal recordCount As Integer, ByVal createdEmployeeName As String, ByVal filePath As String, ByVal filePartsCount As Integer, ByVal fileType As ExportFileType, ByVal exportGuid As Guid, ByVal includeOnlyReturns As Boolean, ByVal includeOnlyDirects As Boolean, ByVal isScheduledExport As Boolean, ByVal exportSucceeded As Boolean, ByVal errorMessage As String, ByVal errorStack As String, ByVal isAwaitingNotification As Boolean, ByVal tpsFilePath As String, ByVal summaryFilePath As String, ByVal exceptionFilePath As String, Optional ByVal ignore As Boolean = False) As Integer
     Public MustOverride Sub InsertExportFileExportSet(ByVal exportSetId As Integer, ByVal medicareExportSetId As Integer, ByVal exportFileId As Integer)
     Public MustOverride Sub InsertExportFileExportSet(ByVal exportSetId As Integer, ByVal exportFileId As Integer)
     Public MustOverride Sub UpdateExportFile(ByVal file As ExportFile)
     Public MustOverride Sub UpdateExportFileErrorMessage(ByVal id As Integer, ByVal errrorMessage As String)
     Public MustOverride Function SelectMedicareExportFileData(ByVal medicareExportSetId As Integer, ByVal saveData As Boolean, ByVal returnData As Boolean) As IDataReader
+    'Public MustOverride Function SelectACOCAHPSExportFileData(ByVal SurveyId As Integer) As Collection(Of ACOCAHPSExport)
     Public MustOverride Function SelectOCSExportFileData(ByVal medicareExportFileGuid As Guid) As IDataReader
 
     Public Function InsertExportFile(ByVal recordCount As Integer, ByVal createdEmployeeName As String, ByVal filePath As String, ByVal filePartsCount As Integer, ByVal fileType As ExportFileType, ByVal exportGuid As Guid, ByVal includeOnlyReturns As Boolean, ByVal includeOnlyDirects As Boolean, ByVal isScheduledExport As Boolean, ByVal isAwaitingNotification As Boolean) As Integer
@@ -402,7 +403,7 @@ Public MustInherit Class DataProvider
 
 #Region " Medicare Export Methods "
 
-    Public MustOverride Function SelectAllByDistinctMedicareNumber(ByVal exportSetType As ExportSetType) As Collection(Of MedicareExport)
+    Public MustOverride Function SelectAllByDistinctMedicareNumber(ByVal exportSetType As ExportSetType, ByVal activeOnly As Boolean) As Collection(Of MedicareExport)
     Public MustOverride Function SelectAllByDistinctSampleUnit(ByVal exportSetType As ExportSetType) As Collection(Of MedicareExport)
     Public MustOverride Function SelectMedicareExport(ByVal medicareNumber As String) As MedicareExport
 
@@ -413,6 +414,18 @@ Public MustInherit Class DataProvider
     Public MustOverride Function SelectMedicareExportSet(ByVal medicareExportSetId As Integer) As MedicareExportSet
     Public MustOverride Function InsertMedicareExportSet(ByVal medicarenumber As String, ByVal exportname As String, ByVal startDate As Date, ByVal endDate As Date, ByVal directsOnly As Boolean, ByVal returnsOnly As Boolean, ByVal exportGuid As Guid, ByVal exportType As ExportSetType, ByVal createdEmployeeName As String) As Integer
     Public MustOverride Function SelectFileGUIDsByClientGroup(ByVal surveyType As SurveyType, ByVal clientGroupName As String, ByVal sign As String, ByVal startDate As Date, ByVal endDate As Date) As Collection(Of MedicareExportSet)
+#End Region
+
+#Region " ACOCAHPS Export Methods"
+
+    Public MustOverride Function SelectAllACOCAHPSBySurveyID(ByVal survey_Id As Integer, ByVal startDate As DateTime, ByVal endDate As DateTime) As Collection(Of ACOCAHPSExport)
+
+#End Region
+
+#Region " ACOCAHPS Export Set Methods "
+
+    'Public MustOverride Function SelectACOCAHPSExportSet(ByVal acoCAHPSId As Integer) As ACOCAHPSExportSet
+    'Public MustOverride Function InsertACOCAHPSExportSet(ByVal surveyID As Integer, ByVal surveyName As String, ByVal clientName As String, ByVal exportname As String, ByVal startDate As Date, ByVal endDate As Date, ByVal exportType As ExportSetType, ByVal createdEmployeeName As String) As Integer
 
 #End Region
 

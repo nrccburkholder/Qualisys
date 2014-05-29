@@ -1,5 +1,5 @@
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class CAHPSNavigator
+Partial Class ACOCAHPSNavigator
     Inherits DataMart.ExportManager.Navigator
 
     'Form overrides dispose to clean up the component list.
@@ -28,8 +28,8 @@ Partial Class CAHPSNavigator
         'ToolStripLabel1
         '
         Me.ToolStripLabel1.Name = "ToolStripLabel1"
-        Me.ToolStripLabel1.Size = New System.Drawing.Size(153, 15)
-        Me.ToolStripLabel1.Text = "Select a CAHPS export type."
+        Me.ToolStripLabel1.Size = New System.Drawing.Size(188, 15)
+        Me.ToolStripLabel1.Text = "Select an ACO CAHPS export type."
         '
         'SelectHeaderStrip
         '
@@ -42,7 +42,7 @@ Partial Class CAHPSNavigator
         Me.SelectHeaderStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table
         Me.SelectHeaderStrip.Location = New System.Drawing.Point(0, 0)
         Me.SelectHeaderStrip.Name = "SelectHeaderStrip"
-        Me.SelectHeaderStrip.Size = New System.Drawing.Size(234, 21)
+        Me.SelectHeaderStrip.Size = New System.Drawing.Size(234, 19)
         Me.SelectHeaderStrip.TabIndex = 6
         Me.SelectHeaderStrip.Text = "HeaderStrip1"
         '
@@ -51,19 +51,19 @@ Partial Class CAHPSNavigator
         Me.CAHPSTreeView.Dock = System.Windows.Forms.DockStyle.Fill
         Me.CAHPSTreeView.FullRowSelect = True
         Me.CAHPSTreeView.HideSelection = False
-        Me.CAHPSTreeView.Location = New System.Drawing.Point(0, 21)
+        Me.CAHPSTreeView.Location = New System.Drawing.Point(0, 19)
         Me.CAHPSTreeView.Name = "CAHPSTreeView"
         Me.CAHPSTreeView.ShowLines = False
         Me.CAHPSTreeView.ShowPlusMinus = False
         Me.CAHPSTreeView.ShowRootLines = False
-        Me.CAHPSTreeView.Size = New System.Drawing.Size(234, 380)
+        Me.CAHPSTreeView.Size = New System.Drawing.Size(234, 382)
         Me.CAHPSTreeView.TabIndex = 8
         '
-        'CAHPSNavigator
+        'ACOCAHPSNavigator
         '
         Me.Controls.Add(Me.CAHPSTreeView)
         Me.Controls.Add(Me.SelectHeaderStrip)
-        Me.Name = "CAHPSNavigator"
+        Me.Name = "ACOCAHPSNavigator"
         Me.Size = New System.Drawing.Size(234, 401)
         Me.SelectHeaderStrip.ResumeLayout(False)
         Me.SelectHeaderStrip.PerformLayout()

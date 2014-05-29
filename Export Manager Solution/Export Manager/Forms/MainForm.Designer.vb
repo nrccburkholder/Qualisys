@@ -34,6 +34,7 @@ Partial Class MainForm
         Me.CHARTExportsTab = New Nrc.Framework.WinForms.MultiPaneTab
         Me.CAHPSExportsTab = New Nrc.Framework.WinForms.MultiPaneTab
         Me.CAHPSFileHistoryTab = New Nrc.Framework.WinForms.MultiPaneTab
+        Me.ACOCAHPSExportsTab = New Nrc.Framework.WinForms.MultiPaneTab
         Me.ScheduledExportsTab = New Nrc.Framework.WinForms.MultiPaneTab
         Me.SpecialUpdatesTab = New Nrc.Framework.WinForms.MultiPaneTab
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip
@@ -64,11 +65,11 @@ Partial Class MainForm
         'ToolStripContainer1.ContentPanel
         '
         Me.ToolStripContainer1.ContentPanel.Controls.Add(Me.MainPanel)
-        Me.ToolStripContainer1.ContentPanel.Size = New System.Drawing.Size(628, 440)
+        Me.ToolStripContainer1.ContentPanel.Size = New System.Drawing.Size(628, 498)
         Me.ToolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.ToolStripContainer1.Location = New System.Drawing.Point(0, 0)
         Me.ToolStripContainer1.Name = "ToolStripContainer1"
-        Me.ToolStripContainer1.Size = New System.Drawing.Size(628, 488)
+        Me.ToolStripContainer1.Size = New System.Drawing.Size(628, 546)
         Me.ToolStripContainer1.TabIndex = 1
         Me.ToolStripContainer1.Text = "ToolStripContainer1"
         '
@@ -133,7 +134,7 @@ Partial Class MainForm
         'MainPanel.Panel2
         '
         Me.MainPanel.Panel2.Padding = New System.Windows.Forms.Padding(1)
-        Me.MainPanel.Size = New System.Drawing.Size(628, 440)
+        Me.MainPanel.Size = New System.Drawing.Size(628, 498)
         Me.MainPanel.SplitterDistance = 218
         Me.MainPanel.TabIndex = 0
         '
@@ -143,13 +144,14 @@ Partial Class MainForm
         Me.MultiPane.Location = New System.Drawing.Point(1, 1)
         Me.MultiPane.MaxShownTabs = 5
         Me.MultiPane.Name = "MultiPane"
-        Me.MultiPane.Size = New System.Drawing.Size(216, 438)
+        Me.MultiPane.Size = New System.Drawing.Size(216, 496)
         Me.MultiPane.TabIndex = 0
         Me.MultiPane.Tabs.Add(Me.StandardDefinitionTab)
         Me.MultiPane.Tabs.Add(Me.CmsDefinitionTab)
         Me.MultiPane.Tabs.Add(Me.CHARTExportsTab)
         Me.MultiPane.Tabs.Add(Me.CAHPSExportsTab)
         Me.MultiPane.Tabs.Add(Me.CAHPSFileHistoryTab)
+        Me.MultiPane.Tabs.Add(Me.ACOCAHPSExportsTab)
         Me.MultiPane.Tabs.Add(Me.ScheduledExportsTab)
         Me.MultiPane.Tabs.Add(Me.SpecialUpdatesTab)
         Me.MultiPane.Text = "MultiPane"
@@ -238,6 +240,23 @@ Partial Class MainForm
         Me.CAHPSFileHistoryTab.TabIndex = 5
         Me.CAHPSFileHistoryTab.Text = "OCS & HHCAHPS Export History"
         '
+        'ACOCAHPSExportsTab
+        '
+        Me.ACOCAHPSExportsTab.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.ACOCAHPSExportsTab.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.ACOCAHPSExportsTab.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Bold)
+        Me.ACOCAHPSExportsTab.Icon = Nothing
+        Me.ACOCAHPSExportsTab.Image = Global.Nrc.DataMart.ExportManager.My.Resources.Resources.Orange_baseball_cap
+        Me.ACOCAHPSExportsTab.IsActive = False
+        Me.ACOCAHPSExportsTab.Location = New System.Drawing.Point(106, 1)
+        Me.ACOCAHPSExportsTab.Name = "ACOCAHPSExportsTab"
+        Me.ACOCAHPSExportsTab.NavControlId = Nothing
+        Me.ACOCAHPSExportsTab.NavControlType = Nothing
+        Me.ACOCAHPSExportsTab.Size = New System.Drawing.Size(32, 32)
+        Me.ACOCAHPSExportsTab.TabIndex = 0
+        Me.ACOCAHPSExportsTab.Text = "ACO CAHPS Exports"
+        Me.ToolTip.SetToolTip(Me.ACOCAHPSExportsTab, "OCS & HHCAHPS Exports")
+        '
         'ScheduledExportsTab
         '
         Me.ScheduledExportsTab.Anchor = System.Windows.Forms.AnchorStyles.Right
@@ -325,7 +344,7 @@ Partial Class MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(628, 488)
+        Me.ClientSize = New System.Drawing.Size(628, 546)
         Me.Controls.Add(Me.ToolStripContainer1)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MainMenuStrip = Me.MenuStrip1
@@ -372,4 +391,5 @@ Partial Class MainForm
     Friend WithEvents CAHPSExportsTab As Nrc.Framework.WinForms.MultiPaneTab
     Friend WithEvents ToolTip As System.Windows.Forms.ToolTip
     Friend WithEvents CAHPSFileHistoryTab As Nrc.Framework.WinForms.MultiPaneTab
+    Friend WithEvents ACOCAHPSExportsTab As Nrc.Framework.WinForms.MultiPaneTab
 End Class

@@ -32,7 +32,7 @@ Partial Class ClientStudySurveyNavigator
         'SelectHeaderStrip
         '
         Me.SelectHeaderStrip.AutoSize = False
-        Me.SelectHeaderStrip.Font = New System.Drawing.Font("Tahoma", 8.25!)
+        Me.SelectHeaderStrip.Font = New System.Drawing.Font("Segoe UI", 9.0!)
         Me.SelectHeaderStrip.ForeColor = System.Drawing.Color.Black
         Me.SelectHeaderStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
         Me.SelectHeaderStrip.HeaderStyle = Nrc.Framework.WinForms.HeaderStripStyle.Small
@@ -40,24 +40,24 @@ Partial Class ClientStudySurveyNavigator
         Me.SelectHeaderStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table
         Me.SelectHeaderStrip.Location = New System.Drawing.Point(0, 0)
         Me.SelectHeaderStrip.Name = "SelectHeaderStrip"
-        Me.SelectHeaderStrip.Size = New System.Drawing.Size(232, 19)
+        Me.SelectHeaderStrip.Size = New System.Drawing.Size(232, 21)
         Me.SelectHeaderStrip.TabIndex = 2
         Me.SelectHeaderStrip.Text = "HeaderStrip1"
         '
         'ToolStripLabel1
         '
         Me.ToolStripLabel1.Name = "ToolStripLabel1"
-        Me.ToolStripLabel1.Size = New System.Drawing.Size(160, 13)
+        Me.ToolStripLabel1.Size = New System.Drawing.Size(168, 15)
         Me.ToolStripLabel1.Text = "Select a client, study or survey."
         '
         'ClientStudySurveyTree
         '
         Me.ClientStudySurveyTree.Dock = System.Windows.Forms.DockStyle.Fill
         Me.ClientStudySurveyTree.HideSelection = False
-        Me.ClientStudySurveyTree.Location = New System.Drawing.Point(0, 86)
+        Me.ClientStudySurveyTree.Location = New System.Drawing.Point(0, 69)
         Me.ClientStudySurveyTree.Name = "ClientStudySurveyTree"
         Me.ClientStudySurveyTree.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.ClientStudySurveyTree.Size = New System.Drawing.Size(232, 308)
+        Me.ClientStudySurveyTree.Size = New System.Drawing.Size(232, 325)
         Me.ClientStudySurveyTree.TabIndex = 3
         '
         'FilterToolStrip
@@ -66,9 +66,9 @@ Partial Class ClientStudySurveyNavigator
         Me.FilterToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
         Me.FilterToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ShowAllFilesButton, Me.FilterButton})
         Me.FilterToolStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.VerticalStackWithOverflow
-        Me.FilterToolStrip.Location = New System.Drawing.Point(0, 19)
+        Me.FilterToolStrip.Location = New System.Drawing.Point(0, 21)
         Me.FilterToolStrip.Name = "FilterToolStrip"
-        Me.FilterToolStrip.Size = New System.Drawing.Size(232, 67)
+        Me.FilterToolStrip.Size = New System.Drawing.Size(232, 48)
         Me.FilterToolStrip.TabIndex = 5
         Me.FilterToolStrip.Text = "ToolStrip1"
         '

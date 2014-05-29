@@ -26,7 +26,7 @@
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
     <UpgradeBackupLocation />
-    <PublishUrl>\\mercury\QualisysApps\Prod\QualiSysScannerInterface\</PublishUrl>
+    <PublishUrl>\\huskers\nrcapplications\QualiSysScannerInterface\</PublishUrl>
     <Install>false</Install>
     <InstallFrom>Unc</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -37,9 +37,10 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.9.3.2</ApplicationVersion>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>1.9.5.1</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -92,41 +93,17 @@
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DevExpress.Data.v7.3, Version=7.3.13.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\Developer Express .NET v7.3\Sources\DevExpress.DLL\DevExpress.Data.v7.3.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Utils.v7.3, Version=7.3.13.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\Developer Express .NET v7.3\Sources\DevExpress.DLL\DevExpress.Utils.v7.3.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.XtraBars.v7.3, Version=7.3.13.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\Developer Express .NET v7.3\Sources\DevExpress.DLL\DevExpress.XtraBars.v7.3.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.XtraEditors.v7.3, Version=7.3.13.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\Developer Express .NET v7.3\Sources\DevExpress.DLL\DevExpress.XtraEditors.v7.3.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.XtraGrid.v7.3, Version=7.3.13.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\Developer Express .NET v7.3\Sources\DevExpress.DLL\DevExpress.XtraGrid.v7.3.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.XtraLayout.v7.3, Version=7.3.13.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\Developer Express .NET v7.3\Sources\DevExpress.DLL\DevExpress.XtraLayout.v7.3.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.XtraNavBar.v7.3, Version=7.3.13.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\Developer Express .NET v7.3\Sources\DevExpress.DLL\DevExpress.XtraNavBar.v7.3.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.XtraPrinting.v7.3, Version=7.3.13.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\Developer Express .NET v7.3\Sources\DevExpress.DLL\DevExpress.XtraPrinting.v7.3.dll</HintPath>
-    </Reference>
+    <Reference Include="DevExpress.Data.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1" />
+    <Reference Include="DevExpress.Utils.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1" />
+    <Reference Include="DevExpress.XtraBars.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraEditors.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1" />
+    <Reference Include="DevExpress.XtraGrid.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1" />
+    <Reference Include="DevExpress.XtraLayout.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraNavBar.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1" />
+    <Reference Include="DevExpress.XtraPrinting.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL" />
     <Reference Include="ExpTreeLib, Version=1.0.1918.39263, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Referenced Assemblies\ExpTreeLib.dll</HintPath>
+      <HintPath>..\..\..\NRCPROD\Referenced Assemblies\ExpTreeLib.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ReportViewer.Common, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="Microsoft.ReportViewer.WinForms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
@@ -635,6 +612,16 @@
       <FileType>Assembly</FileType>
     </PublishFile>
     <PublishFile Include="ADODB">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="DevExpress.Data.v7.3">
       <Visible>False</Visible>
       <Group>
       </Group>

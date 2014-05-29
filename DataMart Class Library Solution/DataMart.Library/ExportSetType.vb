@@ -7,4 +7,5 @@ Public Enum ExportSetType
     MNCM = 5
     OCSClient = 6
     OCSNonClient = 7
+    ACOCAHPS = 8
 End Enum

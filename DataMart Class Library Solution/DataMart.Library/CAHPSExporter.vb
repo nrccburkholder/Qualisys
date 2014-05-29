@@ -19,6 +19,9 @@ Friend MustInherit Class CAHPSExporter
             Case ExportSetType.OCSClient, ExportSetType.OCSNonClient
                 Return New OCSExporter
 
+            Case ExportSetType.ACOCAHPS
+                Return New ACOCAHPSExporter
+
             Case Else
                 Throw New ArgumentOutOfRangeException("exportType")
 
@@ -32,6 +35,16 @@ Friend MustInherit Class CAHPSExporter
                                                  ByVal medicareExportSets As System.Collections.ObjectModel.Collection(Of MedicareExportSet), _
                                                  ByVal folderPath As String, ByVal fileExtension As String, ByVal fileType As ExportFileType, _
                                                  ByVal isScheduledExport As Boolean) As Integer
+
+        Throw New ExportFileCreationException("Accessing invalid CreateExportFile function in CAHPSExporter class")
+
+    End Function
+
+    'Used for ACOCAHPSExporter only
+    'ACOCAHPSExporter contains the overriding shadows method
+    Friend Overridable Function CreateExportFile(ByVal ACOCAHPSExportSets As System.Collections.ObjectModel.Collection(Of ExportSet), _
+                                             ByVal filePath As String, ByVal fileType As ExportFileType, _
+                                             ByVal isScheduledExport As Boolean, ByVal isInterimFile as Boolean) As Integer
 
         Throw New ExportFileCreationException("Accessing invalid CreateExportFile function in CAHPSExporter class")
 
@@ -363,6 +376,8 @@ Friend MustInherit Class CAHPSExporter
         Return failedCount
 
     End Function
+
+
 
 #Region " Protected Methods "
 
@@ -736,6 +751,20 @@ Friend MustInherit Class CAHPSExporter
 
         'Check to see if the sample dates cover the whole export date range
         mExceptionReport.CheckForMissingSampleDaysInExports(exportSets, sampleSets)
+
+        'Determine if we need to generate the exception report
+        If mExceptionReport.Count > 0 Then
+            Dim exceptionPath As String = IO.Path.ChangeExtension(cmsFilePath, ".exception.html")
+            Dim fileName As String = IO.Path.GetFileName(cmsFilePath)
+
+            Using writer As New IO.StreamWriter(exceptionPath, False)
+                WriteCmsExceptionHtml(writer, fileName)
+            End Using
+        End If
+
+    End Sub
+
+    Protected Sub CreateCmsExceptionFile(ByVal cmsFilePath As String)
 
         'Determine if we need to generate the exception report
         If mExceptionReport.Count > 0 Then
