@@ -44,6 +44,7 @@ Public Class VendorPhoneFile_Data
     Private mPhServInd12 As String = String.Empty
     Private mProvince As String = String.Empty
     Private mPostalCode As String = String.Empty
+    Private mAgeRange As String = String.Empty
 #End Region
 
 #Region " Public Properties "
