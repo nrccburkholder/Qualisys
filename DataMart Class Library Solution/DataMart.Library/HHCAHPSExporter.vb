@@ -137,8 +137,8 @@ Friend Class HHCAHPSExporter
         If Not Integer.TryParse(skilledVisitsString, skilledVisits) Then
             skilledVisits = 0
         End If
-        If Not Integer.TryParse(lbVisitsString, lbVisits) Then
-            lbVisits = 0
+        If Not Integer.TryParse(lbVisitsString, lbVisits) Then 'In case this comes through as 'M' use -1 to indicate not to report number of lookback visits < 2
+            lbVisits = -1
         End If
 
         'Check to see if we have any TPS conditions
@@ -148,7 +148,7 @@ Friend Class HHCAHPSExporter
 
         If skilledVisits < 1 Then mTPSReport.AddValue("number of skilled visits < 1")
 
-        If lbVisits < 2 Then mTPSReport.AddValue("number of lookback visits < 2")
+        If lbVisits > -1 And lbVisits < 2 Then mTPSReport.AddValue("number of lookback visits < 2")
 
         If medicare = "M" AndAlso medicaid = "M" Then mTPSReport.AddValue("medicare and medicaid equals M")
 
