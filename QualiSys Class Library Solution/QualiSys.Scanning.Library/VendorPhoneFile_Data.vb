@@ -437,6 +437,18 @@ Public Class VendorPhoneFile_Data
             End If
         End Set
     End Property
+    Public Property AgeRange As String
+        Get
+            Return mAgeRange
+        End Get
+        Set(ByVal value As String)
+            If value Is Nothing Then value = String.Empty
+            If Not value = mAgeRange Then
+                mAgeRange = value
+                PropertyHasChanged("AgeRange")
+            End If
+        End Set
+    End Property
 #End Region
 
 #Region " Constructors "
