@@ -44,6 +44,7 @@
     <ApplicationVersion>4.4.3.2</ApplicationVersion>
     <ApplicationVersion>4.5.0.0</ApplicationVersion>
     <ApplicationVersion>4.5.1.0</ApplicationVersion>
+    <ApplicationVersion>4.5.2.0</ApplicationVersion>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

@@ -332,7 +332,8 @@ Friend Class CmsRecodeReader
         AddResponseColumnAlias("race-hi-pacific-islander", "Q023296d")
         AddResponseColumnAlias("race-amer-indian-ak", "Q023296e")
         AddResponseColumnAlias("language-speak", "Q018952")
-        AddResponseColumnAlias("language-speak", "Q043350") '08-09-2011 JJF - Added new core for the language question
+        AddResponseColumnAlias("language-speak", "Q043350") '08-09-2011 JJF - Added new core for the language question (43350)
+        AddResponseColumnAlias("language-speak", "Q050860") '06-02-2014 CJB - Added new core for the language question (50860)
 
         AddResponseOptionalColumnAlias("ct-preferences", "Q046863")     '09-18-2012 JJF - Added new question
         AddResponseOptionalColumnAlias("ct-understanding", "Q046864")   '09-18-2012 JJF - Added new question
@@ -1221,7 +1222,7 @@ Friend Class CmsRecodeReader
                 'symptoms question
                 Return RecodeSkipable(value, "Q018929", 3, 1, 2)
 
-            Case "Q018952", "Q043350"
+            Case "Q018952", "Q043350", "Q050860"
                 'language-speak question
                 Return RecodeLanguageSpeak(columnName, value)
 
@@ -1406,43 +1407,9 @@ Friend Class CmsRecodeReader
         End Try
 
         Select Case intVal
-            Case 1 To 7, 20, 21, 41, 43, 50, 51, 61 To 66, 70
+            Case 1 To 7, 20, 21, 40, 41, 42, 43, 50, 51, 61 To 66, 69, 70, 81 To 95
+                '"01","1","02","2","03","3","04","4","05","5","06","6","07","7","20","21","40","41","42","43","50","51","61","62","63","64","65","66","69","70","81","82","83","84","85","86","87","88","89","90","91","92","93","94","95"
                 Return RemoveAllLeadingZeros(value.ToString)
-
-            Case 40, 42
-                Return "20" 'Expired
-            Case 69
-                Return "70" 'Discharged/transfer
-            Case 81
-                Return "1" 'Home care or self care
-            Case 82
-                Return "2" 'Short-term general hospital
-            Case 83
-                Return "3" 'Skilled nursing
-            Case 84
-                Return "4" 'Intermediate
-            Case 85
-                Return "5" 'Designated cancer
-            Case 86
-                Return "6" 'Home with home health
-            Case 87
-                Return "21" 'Discharged court/law
-            Case 88
-                Return "43" 'Federal healthcare
-            Case 89
-                Return "61" 'SNF swing bed
-            Case 90
-                Return "62" 'Inpatient rehab
-            Case 91
-                Return "63" 'Long-term care
-            Case 92
-                Return "64" 'Certified Medicaid
-            Case 93
-                Return "65" 'Psychiatric
-            Case 94
-                Return "66" 'Critical Access
-            Case 95
-                Return "70" 'Discharged/transfer to a heal care
 
             Case Else
                 Return "M"
@@ -1783,7 +1750,7 @@ Friend Class CmsRecodeReader
 
         'Determine how to recode based on date and core
         If dischargeDate < AppConfig.Params("LanguageSpeakQstnCore43350StartDate").DateValue Then
-            'This is before the cutoff date
+            'This is before the 43350 cutoff date
             If columnName = "Q018952" Then
                 'This is the old question
                 If intVal >= 1 AndAlso intVal <= 3 Then
@@ -1791,8 +1758,8 @@ Friend Class CmsRecodeReader
                 Else
                     Return "M"
                 End If
-            Else    'Q043350
-                'This is the new question
+            ElseIf columnName = "Q043350" Then
+                'This is the newer question
                 If intVal >= 1 AndAlso intVal <= 3 Then
                     Return intVal
                 ElseIf intVal > 3 AndAlso intVal <= 6 Then
@@ -1800,9 +1767,18 @@ Friend Class CmsRecodeReader
                 Else
                     Return "M"
                 End If
+            Else 'If columnName = "Q050860" Then
+                'This is the newest question
+                If intVal >= 1 AndAlso intVal <= 3 Then
+                    Return intVal
+                ElseIf intVal > 3 AndAlso intVal <= 7 Then
+                    Return 3
+                Else
+                    Return "M"
+                End If
             End If
-        Else
-            'This is after the cutoff date
+        ElseIf dischargeDate < AppConfig.Params("LanguageSpeakQstnCore50860StartDate").DateValue Then
+            'This is after the 43350 cutoff date and before the 50860 cutoff date
             If columnName = "Q018952" Then
                 'This is the old question
                 mLanguageSpeakOldCoreUsedTPS = True
@@ -1813,9 +1789,47 @@ Friend Class CmsRecodeReader
                 Else
                     Return "M"
                 End If
-            Else    'Q043350
-                'This is the new question
+            ElseIf columnName = "Q043350" Then
+                'This is the newer question
                 If intVal >= 1 AndAlso intVal <= 6 Then
+                    Return intVal
+                Else
+                    Return "M"
+                End If
+            Else 'If columnName = "Q050860" Then
+                'This is the newest question
+                If intVal >= 1 AndAlso intVal <= 6 Then
+                    Return intVal
+                ElseIf intVal = 7 Then
+                    Return 6
+                Else
+                    Return "M"
+                End If
+            End If
+        Else
+            'This is after the 50860 cutoff date
+            If columnName = "Q018952" Then
+                'This is the old question
+                mLanguageSpeakOldCoreUsedTPS = True
+                If intVal >= 1 AndAlso intVal <= 2 Then
+                    Return intVal
+                ElseIf intVal = 3 Then
+                    Return 7
+                Else
+                    Return "M"
+                End If
+            ElseIf columnName = "Q043350" Then
+                'This is the newer question
+                If intVal >= 1 AndAlso intVal <= 5 Then
+                    Return intVal
+                ElseIf intVal = 6 Then
+                    Return 7
+                Else
+                    Return "M"
+                End If
+            Else 'If columnName = "Q050860" Then
+                'This is the newest question
+                If intVal >= 1 AndAlso intVal <= 7 Then
                     Return intVal
                 Else
                     Return "M"
