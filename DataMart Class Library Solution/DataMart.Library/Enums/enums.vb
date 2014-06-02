@@ -16,4 +16,5 @@ Public Enum HCAHPSLanguages
     Chinese = 3
     Russian = 4
     Vietnamese = 5
+    Portuguese = 6
 End Enum

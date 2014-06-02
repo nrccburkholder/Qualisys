@@ -979,9 +979,9 @@ Friend Class CmsRecodeReader
                     'HCAHPS 2012 Audit Results. Requirement  2.
                     'There is not any condition that check Disposition.
                     'So, in case of a null or empty string will be return 1 (English)
-                    recoLanguage = CType(RecodeLanguage(mReader.Item("LangID"), mReader.Item("HNQLDesc")), Integer)
+                    recoLanguage = CType(RecodeLanguage(mReader.Item("LangID"), mReader.Item("HNQLDesc"), CType(mReader.Item("SmpEncDt"), Date)), Integer)
                 Catch ex As Exception
-                    recoLanguage = CType(RecodeLanguage(mReader.Item("LangID"), String.Empty), Integer)
+                    recoLanguage = CType(RecodeLanguage(mReader.Item("LangID"), String.Empty, CType(mReader.Item("SmpEncDt"), Date)), Integer)
                 End Try
                 If Method = CType(Mode.Telephone, String) Then
                     If Not (recoLanguage = 1 Or recoLanguage = 2) Then
@@ -1616,7 +1616,7 @@ Friend Class CmsRecodeReader
 
     End Function
 
-    Private Function RecodeLanguage(ByVal value As Object, ByVal langdesc As Object) As Object
+    Private Function RecodeLanguage(ByVal value As Object, ByVal langdesc As Object, ByVal sampleEncounterDate As Date) As Object
         'HCAHPS 2012 Audit Results
         '
         If value Is DBNull.Value Then
@@ -1628,11 +1628,15 @@ Friend Class CmsRecodeReader
         If langdesc IsNot DBNull.Value AndAlso langdesc.ToString.Trim <> String.Empty Then
             Select Case langdesc.ToString.ToUpper.Trim
                 Case HCAHPSLanguages.Chinese.ToString.ToUpper
-                    Return 3
+                    Return HCAHPSLanguages.Chinese
                 Case HCAHPSLanguages.Russian.ToString.ToUpper
-                    Return 4
+                    Return HCAHPSLanguages.Russian
                 Case HCAHPSLanguages.Vietnamese.ToString.ToUpper
-                    Return 5
+                    Return HCAHPSLanguages.Vietnamese
+                Case HCAHPSLanguages.Portuguese.ToString.ToUpper 'Portuguese as of July, 2014...TODO: Date Cut-off
+                    If sampleEncounterDate >= DateTime.Parse("7/1/2014") Then
+                        Return HCAHPSLanguages.Portuguese
+                    End If
             End Select
         End If
 
@@ -1648,6 +1652,8 @@ Friend Class CmsRecodeReader
                 Return HCAHPSLanguages.Russian
             Case 30         'Vietnamese
                 Return HCAHPSLanguages.Vietnamese
+            Case 14         'Portuguese as of July, 2014...TODO: Date Cut-off
+                Return IIf(sampleEncounterDate >= DateTime.Parse("7/1/2014"), HCAHPSLanguages.Portuguese, 8)
 
             Case Else
                 Return 8 '8 means missing
