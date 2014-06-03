@@ -1,6 +1,7 @@
 Imports System.Data.Odbc
 Imports System.IO
 Imports System.Collections.ObjectModel
+Imports Nrc.QualiSys.Library
 
 Friend Class QueuedVendorFileProvider
     Inherits QualiSys.Scanning.Library.QueuedVendorFileProvider
@@ -172,6 +173,8 @@ Friend Class QueuedVendorFileProvider
 
     Private Function GetFixedColumns() As Collection(Of FixedColumn)
 
+        Dim isCanada As Boolean = QualisysParams.CountryCode = CountryCode.Canada
+
         If mFixedColumns Is Nothing Then
             'Populate the fixed column collection
             mFixedColumns = New Collection(Of FixedColumn)
@@ -188,8 +191,13 @@ Friend Class QueuedVendorFileProvider
                 .Add(New FixedColumn("Addr", "Char Width 42"))
                 .Add(New FixedColumn("Addr2", "Char Width 42"))
                 .Add(New FixedColumn("City", "Char Width 42"))
-                .Add(New FixedColumn("St", "Char Width 2"))
-                .Add(New FixedColumn("Zip5", "Char Width 5"))
+                If isCanada Then
+                    .Add(New FixedColumn("Province", "Char Width 2"))
+                    .Add(New FixedColumn("PostalCode", "Char Width 7"))
+                Else
+                    .Add(New FixedColumn("St", "Char Width 2"))
+                    .Add(New FixedColumn("Zip5", "Char Width 5"))
+                End If    
                 .Add(New FixedColumn("PhServDate", "Char Width 22"))
                 .Add(New FixedColumn("LangID", "Integer"))
                 .Add(New FixedColumn("Telematch", "Char Width 15"))
@@ -205,7 +213,8 @@ Friend Class QueuedVendorFileProvider
                 .Add(New FixedColumn("PhServInd9", "Char Width 100"))
                 .Add(New FixedColumn("PhServInd10", "Char Width 100"))
                 .Add(New FixedColumn("PhServInd11", "Char Width 100"))
-                .Add(New FixedColumn("PhServInd12", "Char Width 100"))
+                .Add(New FixedColumn("PhServInd12", "Char Width 100"))                
+                .Add(New FixedColumn("AgeRange", "Char Width 10"))
             End With
         Else
             'Reset the quantity
