@@ -38,30 +38,6 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "DataMart Export Service Ins
 	EndProjectSection
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 7
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://tfs.nationalresearch.com:8080/tfs/DefaultCollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = ..\\DataMart\u0020Class\u0020Library\u0020Solution\\DataMart.Library\\DataMart.Library.vbproj
-		SccProjectName1 = ../DataMart\u0020Class\u0020Library\u0020Solution/DataMart.Library
-		SccLocalPath1 = ..\\DataMart\u0020Class\u0020Library\u0020Solution\\DataMart.Library
-		SccProjectUniqueName2 = ..\\DataMart\u0020Class\u0020Library\u0020Solution\\DataMart.Library.SqlProvider\\DataMart.Library.SqlProvider.vbproj
-		SccProjectName2 = ../DataMart\u0020Class\u0020Library\u0020Solution/DataMart.Library.SqlProvider
-		SccLocalPath2 = ..\\DataMart\u0020Class\u0020Library\u0020Solution\\DataMart.Library.SqlProvider
-		SccProjectUniqueName3 = Export\u0020Manager\\Export\u0020Manager.vbproj
-		SccProjectName3 = Export\u0020Manager
-		SccLocalPath3 = Export\u0020Manager
-		SccProjectUniqueName4 = ExportServiceTester\\ExportServiceTester.vbproj
-		SccProjectName4 = ExportServiceTester
-		SccLocalPath4 = ExportServiceTester
-		SccProjectUniqueName5 = DataMart\u0020Export\u0020Service\\DataMart\u0020Export\u0020Service.vbproj
-		SccProjectName5 = DataMart\u0020Export\u0020Service
-		SccLocalPath5 = DataMart\u0020Export\u0020Service
-		SccProjectUniqueName6 = DataMart\u0020Export\u0020Service\u0020Installer\\DataMart\u0020Export\u0020Service\u0020Installer.vdproj
-		SccProjectName6 = DataMart\u0020Export\u0020Service\u0020Installer
-		SccLocalPath6 = DataMart\u0020Export\u0020Service\u0020Installer
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
