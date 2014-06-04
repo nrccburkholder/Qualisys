@@ -29,6 +29,7 @@
     <SignManifests>true</SignManifests>
     <PublishUrl>\\mercury\QualisysApps\Prod\ExportManager\</PublishUrl>
     <PublishUrl>\\superman\NRCApplications\ExportManager\</PublishUrl>
+    <PublishUrl>\\huskers\NRCApplications\ExportManager\</PublishUrl>
     <Install>false</Install>
     <InstallFrom>Unc</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -45,6 +46,7 @@
     <ApplicationVersion>4.5.0.0</ApplicationVersion>
     <ApplicationVersion>4.5.1.0</ApplicationVersion>
     <ApplicationVersion>4.5.2.0</ApplicationVersion>
+    <ApplicationVersion>4.5.2.1</ApplicationVersion>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
