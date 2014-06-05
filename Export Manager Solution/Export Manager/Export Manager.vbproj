@@ -13,17 +13,21 @@
     <MyType>WindowsForms</MyType>
     <OptionStrict>On</OptionStrict>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <ApplicationIcon>ExportMan.ico</ApplicationIcon>
     <ManifestCertificateThumbprint>E546A707707987346584DEFBEF012C06D9A1BEB0</ManifestCertificateThumbprint>
     <ManifestKeyFile>
     </ManifestKeyFile>
     <GenerateManifests>true</GenerateManifests>
     <SignManifests>true</SignManifests>
-    <PublishUrl>\\huskers\NRCApplications\ExportManager\</PublishUrl>
+    <PublishUrl>\\mercury\QualisysApps\Prod\ExportManager\</PublishUrl>
     <Install>false</Install>
     <InstallFrom>Unc</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -36,7 +40,7 @@
     <ProductName>Export Manager</ProductName>
     <PublisherName>National Research Corporation</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationVersion>4.4.3.1</ApplicationVersion>
+    <ApplicationVersion>4.4.3.2</ApplicationVersion>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

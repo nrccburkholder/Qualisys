@@ -7,10 +7,10 @@
 "LanguageId" = "3:1033"
 "CodePage" = "3:1252"
 "UILanguageId" = "3:1033"
-"SccProjectName" = "8:SAK"
-"SccLocalPath" = "8:SAK"
-"SccAuxPath" = "8:SAK"
-"SccProvider" = "8:SAK"
+"SccProjectName" = "8:"
+"SccLocalPath" = "8:"
+"SccAuxPath" = "8:"
+"SccProvider" = "8:"
     "Hierarchy"
     {
         "Entry"
@@ -310,7 +310,11 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
+<<<<<<< HEAD
         "OwnerKey" = "8:_BC17FA424F5F028687EFFF658D3893B7"
+=======
+        "OwnerKey" = "8:_9C43F2878B7E982C23D68E18F4C4172B"
+>>>>>>> 995e0fb2b1a8a76d95eacaf8fbe04735e1d53277
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -406,7 +410,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_9C43F2878B7E982C23D68E18F4C4172B"
+        "OwnerKey" = "8:_99F8BDF520546C0E66B952CE8C10933B"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"

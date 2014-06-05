@@ -18,36 +18,6 @@ EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "QualiSys.Scanning.Library.SqlDataProvider", "..\QualiSys Class Library Solution\QualiSys.Scanning.Library.SqlDataProvider\QualiSys.Scanning.Library.SqlDataProvider.vbproj", "{43B1C31C-3D06-407A-AD35-30256C8B9C6E}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 9
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://tfs.nationalresearch.com:8080/tfs/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = QualiSys\u0020Scanner\u0020Interface\\QualiSys\u0020Scanner\u0020Interface.vbproj
-		SccProjectName1 = QualiSys\u0020Scanner\u0020Interface
-		SccLocalPath1 = QualiSys\u0020Scanner\u0020Interface
-		SccProjectUniqueName2 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Library\\QualiSys.Library.vbproj
-		SccProjectName2 = ../QualiSys\u0020Class\u0020Library\u0020Solution/QualiSys.Library
-		SccLocalPath2 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Library
-		SccProjectUniqueName3 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Library.SqlDataProvider\\QualiSys.Library.SqlDataProvider.vbproj
-		SccProjectName3 = ../QualiSys\u0020Class\u0020Library\u0020Solution/QualiSys.Library.SqlDataProvider
-		SccLocalPath3 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Library.SqlDataProvider
-		SccProjectUniqueName4 = QualiSys\u0020Scanner\u0020Interface\u0020Service\\QualiSys\u0020Scanner\u0020Interface\u0020Service.vbproj
-		SccProjectName4 = QualiSys\u0020Scanner\u0020Interface\u0020Service
-		SccLocalPath4 = QualiSys\u0020Scanner\u0020Interface\u0020Service
-		SccProjectUniqueName5 = QSI\u0020Service\u0020Installer\\QSI\u0020Service\u0020Installer.vdproj
-		SccProjectName5 = QSI\u0020Service\u0020Installer
-		SccLocalPath5 = QSI\u0020Service\u0020Installer
-		SccProjectUniqueName6 = QSI\u0020Services\u0020Tester\\QSI\u0020Services\u0020Tester.vbproj
-		SccProjectName6 = QSI\u0020Services\u0020Tester
-		SccLocalPath6 = QSI\u0020Services\u0020Tester
-		SccProjectUniqueName7 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Scanning.Library\\QualiSys.Scanning.Library.vbproj
-		SccProjectName7 = ../QualiSys\u0020Class\u0020Library\u0020Solution/QualiSys.Scanning.Library
-		SccLocalPath7 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Scanning.Library
-		SccProjectUniqueName8 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Scanning.Library.SqlDataProvider\\QualiSys.Scanning.Library.SqlDataProvider.vbproj
-		SccProjectName8 = ../QualiSys\u0020Class\u0020Library\u0020Solution/QualiSys.Scanning.Library.SqlDataProvider
-		SccLocalPath8 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Scanning.Library.SqlDataProvider
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
