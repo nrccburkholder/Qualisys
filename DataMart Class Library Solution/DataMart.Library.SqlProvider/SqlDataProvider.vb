@@ -1709,7 +1709,7 @@ Public Class SqlDataProvider
     End Function
 
     Public Overrides Function SelectAllByDistinctSampleUnit(ByVal exportSetType As ExportSetType) As System.Collections.ObjectModel.Collection(Of MedicareExport)
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectAllDistinctMedicareExport, exportSetType, True)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectAllDistinctMedicareExport, exportSetType, True, False)
 
         Using rdr As New SafeDataReader(ExecuteReader(cmd))
             Return PopulateCollection(Of MedicareExport)(rdr, AddressOf PopulateDistinctMedicareExport)
