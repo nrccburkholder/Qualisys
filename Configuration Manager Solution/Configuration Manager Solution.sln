@@ -8,26 +8,6 @@ EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "QualiSys.Library.SqlDataProvider", "..\QualiSys Class Library Solution\QualiSys.Library.SqlDataProvider\QualiSys.Library.SqlDataProvider.vbproj", "{31F9022F-D830-410D-90AE-98C59F34E552}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 3
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://tfs.nationalresearch.com:8080/tfs/defaultcollection
-		SccProjectUniqueName0 = Configuration\u0020Manager\\Configuration\u0020Manager.vbproj
-		SccProjectName0 = Configuration\u0020Manager
-		SccAuxPath0 = http://tfs.nationalresearch.com:8080/tfs/defaultcollection
-		SccLocalPath0 = Configuration\u0020Manager
-		SccProvider0 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName1 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Library\\QualiSys.Library.vbproj
-		SccProjectName1 = ../QualiSys\u0020Class\u0020Library\u0020Solution/QualiSys.Library
-		SccAuxPath1 = http://tfs.nationalresearch.com:8080/tfs/defaultcollection
-		SccLocalPath1 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Library
-		SccProvider1 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName2 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Library.SqlDataProvider\\QualiSys.Library.SqlDataProvider.vbproj
-		SccProjectName2 = ../QualiSys\u0020Class\u0020Library\u0020Solution/QualiSys.Library.SqlDataProvider
-		SccAuxPath2 = http://tfs.nationalresearch.com:8080/tfs/defaultcollection
-		SccLocalPath2 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Library.SqlDataProvider
-		SccProvider2 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86

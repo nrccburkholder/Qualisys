@@ -312,25 +312,11 @@ Public Class SurveyProvider
 
                     surveyId = ExecuteInteger(cmd, tran)
 
-                    'Add the required DQ rules
-                    If (surveyTypeId <> SurveyTypes.ACOcahps) Then
-                        Select Case surveyTypeId
-                            Case SurveyTypes.Hcahps
-                                cmd = Db.GetStoredProcCommand(SP.InsertHCAHPSDQRules, surveyId)
-
-                            Case SurveyTypes.HHcahps
-                                cmd = Db.GetStoredProcCommand(SP.InsertHHCAHPSDQRules, surveyId)
-
-                            Case SurveyTypes.Employee, SurveyTypes.Physician
-                                cmd = Db.GetStoredProcCommand(SP.InsertPhysEmpDQRules, surveyId)
-
-                            Case Else
-                                cmd = Db.GetStoredProcCommand(SP.InsertDefaultDQRules, surveyId)
-                        End Select
-                        ExecuteNonQuery(cmd, tran)
-                    End If
-
                     tran.Commit()
+
+                    'Add the required DQ rules
+                    cmd = Db.GetStoredProcCommand(SP.InsertDefaultDQRules, surveyId)
+                    ExecuteNonQuery(cmd)
 
                 Catch ex As Exception
                     tran.Rollback()
