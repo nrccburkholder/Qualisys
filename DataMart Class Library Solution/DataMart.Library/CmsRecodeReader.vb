@@ -1406,7 +1406,7 @@ Friend Class CmsRecodeReader
 
         End Try
 
-        If sampleEncounterDate >= Date.Parse("7/1/2014") Then
+        If sampleEncounterDate >= AppConfig.Params("LanguageSpeakQstnCore50860StartDate").DateValue Then
             Select Case intVal
                 Case 1 To 7, 20, 21, 40, 41, 42, 43, 50, 51, 61 To 66, 69, 70, 81 To 95
                     '"01","1","02","2","03","3","04","4","05","5","06","6","07","7","20","21","40","41","42","43","50","51","61","62","63","64","65","66","69","70","81","82","83","84","85","86","87","88","89","90","91","92","93","94","95"
@@ -1645,8 +1645,8 @@ Friend Class CmsRecodeReader
                     Return HCAHPSLanguages.Russian
                 Case HCAHPSLanguages.Vietnamese.ToString.ToUpper
                     Return HCAHPSLanguages.Vietnamese
-                Case HCAHPSLanguages.Portuguese.ToString.ToUpper 'Portuguese as of July, 2014...TODO: Date Cut-off
-                    If sampleEncounterDate >= DateTime.Parse("7/1/2014") Then
+                Case HCAHPSLanguages.Portuguese.ToString.ToUpper 'Portuguese as of July, 2014
+                    If sampleEncounterDate >= AppConfig.Params("LanguageSpeakQstnCore50860StartDate").DateValue Then
                         Return HCAHPSLanguages.Portuguese
                     End If
             End Select
@@ -1664,8 +1664,8 @@ Friend Class CmsRecodeReader
                 Return HCAHPSLanguages.Russian
             Case 30         'Vietnamese
                 Return HCAHPSLanguages.Vietnamese
-            Case 14         'Portuguese as of July, 2014...TODO: Date Cut-off
-                Return IIf(sampleEncounterDate >= DateTime.Parse("7/1/2014"), HCAHPSLanguages.Portuguese, 8)
+            Case 14         'Portuguese as of July, 2014
+                Return IIf(sampleEncounterDate >= AppConfig.Params("LanguageSpeakQstnCore50860StartDate").DateValue, HCAHPSLanguages.Portuguese, 8)
 
             Case Else
                 Return 8 '8 means missing

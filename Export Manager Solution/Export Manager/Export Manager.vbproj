@@ -27,10 +27,6 @@
     </ManifestKeyFile>
     <GenerateManifests>true</GenerateManifests>
     <SignManifests>true</SignManifests>
-    <PublishUrl>\\mercury\QualisysApps\Prod\ExportManager\</PublishUrl>
-    <PublishUrl>\\superman\NRCApplications\ExportManager\</PublishUrl>
-    <PublishUrl>\\huskers\NRCApplications\ExportManager\</PublishUrl>
-    <PublishUrl>\\superman\NRCApplications\ExportManager\</PublishUrl>
     <PublishUrl>\\huskers\NRCApplications\ExportManager\</PublishUrl>
     <Install>false</Install>
     <InstallFrom>Unc</InstallFrom>
@@ -44,13 +40,7 @@
     <ProductName>Export Manager</ProductName>
     <PublisherName>National Research Corporation</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationVersion>4.4.3.2</ApplicationVersion>
-    <ApplicationVersion>4.5.0.0</ApplicationVersion>
-    <ApplicationVersion>4.5.1.0</ApplicationVersion>
-    <ApplicationVersion>4.5.2.0</ApplicationVersion>
-    <ApplicationVersion>4.5.2.1</ApplicationVersion>
-    <ApplicationVersion>4.5.3.0</ApplicationVersion>
-    <ApplicationVersion>4.5.4.0</ApplicationVersion>
+    <ApplicationVersion>4.5.5.0</ApplicationVersion>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
