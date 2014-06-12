@@ -57,6 +57,7 @@ Friend Class VendorPhoneFile_DataProvider
         newObject.PhServInd12 = rdr.GetString("PhServInd12")
         newObject.Province = rdr.GetString("Province")
         newObject.PostalCode = rdr.GetString("PostalCode")
+        newObject.AgeRange = rdr.GetString("AgeRange")
         newObject.EndPopulate()
 
         Return newObject
@@ -118,14 +119,14 @@ Friend Class VendorPhoneFile_DataProvider
 
     Public Overrides Function InsertVendorPhoneFile_Data(ByVal instance As VendorPhoneFile_Data) As Integer
 
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.InsertVendorPhoneFile_Data, instance.VendorFileId, instance.HCAHPSSamp, instance.Litho, instance.SurveyId, instance.SamplesetId, instance.Phone, instance.AltPhone, instance.FName, instance.LName, instance.Addr, instance.Addr2, instance.City, instance.St, instance.Zip5, SafeDataReader.ToDBValue(instance.PhServDate), instance.LangID, instance.Telematch, instance.PhFacName, instance.PhServInd1, instance.PhServInd2, instance.PhServInd3, instance.PhServInd4, instance.PhServInd5, instance.PhServInd6, instance.PhServInd7, instance.PhServInd8, instance.PhServInd9, instance.PhServInd10, instance.PhServInd11, instance.PhServInd12, instance.Province, instance.PostalCode)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.InsertVendorPhoneFile_Data, instance.VendorFileId, instance.HCAHPSSamp, instance.Litho, instance.SurveyId, instance.SamplesetId, instance.Phone, instance.AltPhone, instance.FName, instance.LName, instance.Addr, instance.Addr2, instance.City, instance.St, instance.Zip5, SafeDataReader.ToDBValue(instance.PhServDate), instance.LangID, instance.Telematch, instance.PhFacName, instance.PhServInd1, instance.PhServInd2, instance.PhServInd3, instance.PhServInd4, instance.PhServInd5, instance.PhServInd6, instance.PhServInd7, instance.PhServInd8, instance.PhServInd9, instance.PhServInd10, instance.PhServInd11, instance.PhServInd12, instance.Province, instance.PostalCode, instance.AgeRange)
         Return QualiSysDatabaseHelper.ExecuteInteger(cmd)
 
     End Function
 
     Public Overrides Sub UpdateVendorPhoneFile_Data(ByVal instance As VendorPhoneFile_Data)
 
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.UpdateVendorPhoneFile_Data, instance.VendorFile_DataId, instance.VendorFileId, instance.HCAHPSSamp, instance.Litho, instance.SurveyId, instance.SamplesetId, instance.Phone, instance.AltPhone, instance.FName, instance.LName, instance.Addr, instance.Addr2, instance.City, instance.St, instance.Zip5, SafeDataReader.ToDBValue(instance.PhServDate), instance.LangID, instance.Telematch, instance.PhFacName, instance.PhServInd1, instance.PhServInd2, instance.PhServInd3, instance.PhServInd4, instance.PhServInd5, instance.PhServInd6, instance.PhServInd7, instance.PhServInd8, instance.PhServInd9, instance.PhServInd10, instance.PhServInd11, instance.PhServInd12, instance.Province, instance.PostalCode)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.UpdateVendorPhoneFile_Data, instance.VendorFile_DataId, instance.VendorFileId, instance.HCAHPSSamp, instance.Litho, instance.SurveyId, instance.SamplesetId, instance.Phone, instance.AltPhone, instance.FName, instance.LName, instance.Addr, instance.Addr2, instance.City, instance.St, instance.Zip5, SafeDataReader.ToDBValue(instance.PhServDate), instance.LangID, instance.Telematch, instance.PhFacName, instance.PhServInd1, instance.PhServInd2, instance.PhServInd3, instance.PhServInd4, instance.PhServInd5, instance.PhServInd6, instance.PhServInd7, instance.PhServInd8, instance.PhServInd9, instance.PhServInd10, instance.PhServInd11, instance.PhServInd12, instance.Province, instance.PostalCode, instance.AgeRange)
         QualiSysDatabaseHelper.ExecuteNonQuery(cmd)
 
     End Sub

@@ -44,6 +44,7 @@ Public Class VendorPhoneFile_Data
     Private mPhServInd12 As String = String.Empty
     Private mProvince As String = String.Empty
     Private mPostalCode As String = String.Empty
+    Private mAgeRange As String = String.Empty
 #End Region
 
 #Region " Public Properties "
@@ -433,6 +434,18 @@ Public Class VendorPhoneFile_Data
             If Not value = mPostalCode Then
                 mPostalCode = value
                 PropertyHasChanged("PostalCode")
+            End If
+        End Set
+    End Property
+    Public Property AgeRange As String
+        Get
+            Return mAgeRange
+        End Get
+        Set(ByVal value As String)
+            If value Is Nothing Then value = String.Empty
+            If Not value = mAgeRange Then
+                mAgeRange = value
+                PropertyHasChanged("AgeRange")
             End If
         End Set
     End Property
