@@ -12,6 +12,7 @@ Public Class SampleUnit
     Private mTarget As Integer
     Private mPriority As Integer
     Private mSelectionType As SampleSelectionType
+    'TODO: SurveyRules: remove these next 5
     Private mIsHCAHPS As Boolean
     Private mIsACOCAHPS As Boolean
     Private mIsHHCAHPS As Boolean
@@ -330,6 +331,7 @@ Public Class SampleUnit
 
     Public Property CAHPSType() As CAHPSType
         Get
+            'TODO: return SurveyRules.CAHPSType
             If mIsCHART Then
                 Return Library.CAHPSType.CHART
             ElseIf mIsHCAHPS Then
@@ -345,6 +347,7 @@ Public Class SampleUnit
             End If
         End Get
         Set(ByVal value As CAHPSType)
+            'TODO: Assign?
             Select Case value
                 Case Library.CAHPSType.CHART
                     mIsHCAHPS = True

@@ -20,26 +20,20 @@ Public Class MassSamplePeriodCreator
         Next
 
         'IF HCAHPS select Monthly and don't let it be edited.  
-        If Me.mSurvey.SurveyType = SurveyTypes.Hcahps OrElse Me.mSurvey.SurveyType = SurveyTypes.HHcahps Then
+        'TODO: If SurveyRules.IsMonthlyOnly
+        If mSurvey.IsMonthlyOnly Then
             Me.PeriodTimeSpanComboBoxEdit.SelectedIndex = 1
             Me.PeriodTimeSpanComboBoxEdit.Enabled = False
         Else
             Me.PeriodTimeSpanComboBoxEdit.SelectedIndex = 0
         End If
 
-        Me.FirstEncounterStartDateEdit.Visible = (Not Me.mSurvey.SurveyType = SurveyTypes.Hcahps OrElse Me.mSurvey.SurveyType = SurveyTypes.HHcahps)
-        Me.MonthEdit1.Visible = (Me.mSurvey.SurveyType = SurveyTypes.Hcahps OrElse Me.mSurvey.SurveyType = SurveyTypes.HHcahps)
-        Me.YearComboBoxEdit.Visible = (Me.mSurvey.SurveyType = SurveyTypes.Hcahps OrElse Me.mSurvey.SurveyType = SurveyTypes.HHcahps)
+        Me.FirstEncounterStartDateEdit.Visible = Not mSurvey.IsMonthlyOnly
+        Me.MonthEdit1.Visible = mSurvey.IsMonthlyOnly
+        Me.YearComboBoxEdit.Visible = mSurvey.IsMonthlyOnly
 
-        If QualisysParams.CountryCode = CountryCode.Canada Then
-            Dim smplMethodLbl As String = SampleSet.SamplingMethodLabel(SampleSet.SamplingMethod.SpecifyOutgo)
-            Me.SamplingMethodComboBoxEdit.EditValue = smplMethodLbl
-        ElseIf Me.mSurvey.SurveyType = SurveyTypes.ACOcahps Then
-            Me.SamplingMethodComboBoxEdit.EditValue = SampleSet.SamplingMethodLabel(SampleSet.SamplingMethod.Census)
-            Me.SamplingMethodComboBoxEdit.Enabled = False
-        Else
-            Me.SamplingMethodComboBoxEdit.SelectedIndex = 0
-        End If
+        Me.SamplingMethodComboBoxEdit.EditValue = SampleSet.SamplingMethodFromLabel(Me.mSurvey.SamplingMethodDefault)
+        Me.SamplingMethodComboBoxEdit.Enabled = Not Me.mSurvey.IsSamplingMethodDisabled
 
         Me.FirstEncounterStartDateEdit.DateTime = Today
         Me.MonthEdit1.SelectedIndex = Today.Month - 1
@@ -54,7 +48,7 @@ Public Class MassSamplePeriodCreator
         Dim newPeriod As SamplePeriod
         Dim expectedStartDate As Date
 
-        If Me.mSurvey.SurveyType = SurveyTypes.Hcahps OrElse Me.mSurvey.SurveyType = SurveyTypes.HHcahps Then
+        If Me.mSurvey.IsMonthlyOnly Then
             expectedStartDate = DateTime.Parse(String.Format("{0} {1}, {2}", Me.MonthEdit1.Text, "01", Me.YearComboBoxEdit.Text))
         Else
             expectedStartDate = Me.FirstEncounterStartDateEdit.DateTime
@@ -72,7 +66,8 @@ Public Class MassSamplePeriodCreator
                 Case "Quarterly"
                     newPeriod.ExpectedEndDate = newPeriod.ExpectedStartDate.Value.AddMonths(3).AddDays(-1)
             End Select
-            If Me.mSurvey.SurveyType = SurveyTypes.Hcahps OrElse Me.mSurvey.SurveyType = SurveyTypes.HHcahps Then
+            'TODO: If SurveyRules.IsMonthlyOnly
+            If Me.mSurvey.IsMonthlyOnly Then
                 newPeriod.Name = newPeriod.ExpectedStartDate.Value.ToString("MMM") & newPeriod.ExpectedStartDate.Value.ToString("yy")
             Else
                 newPeriod.Name = newPeriod.ExpectedStartDate.Value.ToShortDateString & " - " & newPeriod.ExpectedEndDate.Value.ToShortDateString

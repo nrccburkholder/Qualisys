@@ -37,80 +37,26 @@ Public Class SurveyPropertiesEditor
         Try
             If (SurveyTypeComboBox.SelectedIndex < 0) Then Return
             Dim surveyType As SurveyTypes = CType(SurveyTypeComboBox.SelectedValue, Library.SurveyTypes)
-
+            Dim survey As Survey = New Survey()
+            survey.SurveyType = surveyType
             'lblResurveyMethod.Enabled = False
             ResurveyMethodComboBox.Enabled = False
-            Select Case surveyType
-                Case Library.SurveyTypes.NrcPicker
-                    SamplingAlgorithmComboBox.SelectedValue = SamplingAlgorithm.StaticPlus
-                    EnforceSkipYesOption.Enabled = True
-                    EnforceSkipNoOption.Enabled = True
-                    lblEnforceSkipPattern.Enabled = True
-                    RespRateRecalcDaysNumeric.Value = 14
-                    ResurveyMethodComboBox.SelectedValue = ResurveyMethod.NumberOfDays
-                    ResurveyExcludionDaysNumeric.Value = Library.Survey.DefaultResurveyExcludeDay
-
-                Case Library.SurveyTypes.Hcahps
-                    SamplingAlgorithmComboBox.SelectedValue = SamplingAlgorithm.StaticPlus
-                    EnforceSkipYesOption.Checked = True
-                    EnforceSkipNoOption.Checked = False
-                    EnforceSkipYesOption.Enabled = False
-                    EnforceSkipNoOption.Enabled = False
-                    lblEnforceSkipPattern.Enabled = False
-                    RespRateRecalcDaysNumeric.Value = 14
-                    ResurveyMethodComboBox.SelectedValue = ResurveyMethod.CalendarMonths
-                    ResurveyExcludionDaysNumeric.Value = Library.Survey.DefaultResurveyExcludeMonth
-
-                Case Library.SurveyTypes.HHcahps
-                    SamplingAlgorithmComboBox.SelectedValue = SamplingAlgorithm.StaticPlus
-                    EnforceSkipYesOption.Checked = True
-                    EnforceSkipNoOption.Checked = False
-                    EnforceSkipYesOption.Enabled = False
-                    EnforceSkipNoOption.Enabled = False
-                    lblEnforceSkipPattern.Enabled = False
-                    RespRateRecalcDaysNumeric.Value = 45
-                    ResurveyMethodComboBox.SelectedValue = ResurveyMethod.CalendarMonths
-                    ResurveyExcludionDaysNumeric.Value = Library.Survey.DefaultResurveyExcludeMonthHHCahps
-
-                Case Library.SurveyTypes.MNCM
-                    SamplingAlgorithmComboBox.SelectedValue = SamplingAlgorithm.StaticPlus
-                    EnforceSkipYesOption.Checked = True
-                    EnforceSkipNoOption.Checked = False
-                    EnforceSkipYesOption.Enabled = False
-                    EnforceSkipNoOption.Enabled = False
-                    lblEnforceSkipPattern.Enabled = False
-                    RespRateRecalcDaysNumeric.Value = 14
-                    ResurveyMethodComboBox.SelectedValue = ResurveyMethod.NumberOfDays
-                    ResurveyExcludionDaysNumeric.Value = Library.Survey.DefaultResurveyExcludeDay
-
-                Case Library.SurveyTypes.Physician
-                    SamplingAlgorithmComboBox.SelectedValue = SamplingAlgorithm.StaticPlus
-                    EnforceSkipYesOption.Enabled = True
-                    EnforceSkipNoOption.Enabled = True
-                    lblEnforceSkipPattern.Enabled = True
-                    RespRateRecalcDaysNumeric.Value = 14
-                    ResurveyMethodComboBox.SelectedValue = ResurveyMethod.NumberOfDays
-                    ResurveyExcludionDaysNumeric.Value = Library.Survey.DefaultResurveyExcludeDayPhysician
-
-                Case Library.SurveyTypes.Employee
-                    SamplingAlgorithmComboBox.SelectedValue = SamplingAlgorithm.StaticPlus
-                    EnforceSkipYesOption.Enabled = True
-                    EnforceSkipNoOption.Enabled = True
-                    lblEnforceSkipPattern.Enabled = True
-                    RespRateRecalcDaysNumeric.Value = 14
-                    ResurveyMethodComboBox.SelectedValue = ResurveyMethod.NumberOfDays
-                    ResurveyExcludionDaysNumeric.Value = Library.Survey.DefaultResurveyExcludeDayEmployee
-
-                Case Library.SurveyTypes.ACOcahps
-                    SamplingAlgorithmComboBox.SelectedValue = SamplingAlgorithm.StaticPlus
-                    EnforceSkipYesOption.Enabled = True
-                    EnforceSkipNoOption.Enabled = True
-                    lblEnforceSkipPattern.Enabled = True
-                    RespRateRecalcDaysNumeric.Value = 14
-                    ResurveyMethodComboBox.SelectedValue = ResurveyMethod.NumberOfDays
-                    ResurveyExcludionDaysNumeric.Value = 0
-                    ResurveyExcludionDaysNumeric.Enabled = False
-            End Select
+            SamplingAlgorithmComboBox.SelectedValue = [Enum].Parse(GetType(SamplingAlgorithm), survey.SamplingAlgorithmDefault)
+            If survey.SkipEnforcementRequired Then
+                EnforceSkipYesOption.Checked = True
+                EnforceSkipNoOption.Checked = False
+                EnforceSkipYesOption.Enabled = False
+                EnforceSkipNoOption.Enabled = False
+                lblEnforceSkipPattern.Enabled = False
+            Else
+                EnforceSkipYesOption.Enabled = True
+                EnforceSkipNoOption.Enabled = True
+                lblEnforceSkipPattern.Enabled = True
+            End If
+            RespRateRecalcDaysNumeric.Value = survey.RespRateRecalsDaysNumericDefault
+            ResurveyMethodComboBox.SelectedValue = [Enum].Parse(GetType(ResurveyMethod), survey.ResurveyMethodDefault)
+            ResurveyExcludionDaysNumeric.Value = survey.ResurveyExclusionPeriodsNumericDefault
+            ResurveyExcludionDaysNumeric.Enabled = Not survey.IsResurveyExclusionPeriodsNumericDisabled
 
         Catch ex As System.InvalidCastException
             Return
@@ -133,33 +79,21 @@ Public Class SurveyPropertiesEditor
 
         End Try
 
+        'TODO: SurveyRules.SurveyType = CType(SurveyTypeComboBox.SelectedValue, Library.SurveyTypes)
+        Dim surveyType As SurveyTypes = CType(SurveyTypeComboBox.SelectedValue, Library.SurveyTypes)
+        Dim survey As Survey = New Survey()
+        survey.SurveyType = surveyType
+
         Select Case resurveyMethod
             Case Library.ResurveyMethod.NumberOfDays
                 ResurveyExcludionDaysPanel.Enabled = True
                 ResurveyExcludionDaysLabel.Text = "Resurvey Exclusion Days:"
-                Dim surveyType As SurveyTypes = CType(SurveyTypeComboBox.SelectedValue, Library.SurveyTypes)
-                Select Case surveyType
-                    Case Library.SurveyTypes.Employee
-                        ResurveyExcludionDaysNumeric.Value = Library.Survey.DefaultResurveyExcludeDayEmployee
-
-                    Case Library.SurveyTypes.Physician
-                        ResurveyExcludionDaysNumeric.Value = Library.Survey.DefaultResurveyExcludeDayPhysician
-
-                    Case Else
-                        ResurveyExcludionDaysNumeric.Value = Library.Survey.DefaultResurveyExcludeDay
-
-                End Select
+                ResurveyExcludionDaysNumeric.Value = survey.ResurveyExclusionPeriodsNumericDefault
 
             Case Library.ResurveyMethod.CalendarMonths
                 ResurveyExcludionDaysPanel.Enabled = True
                 ResurveyExcludionDaysLabel.Text = "Resurvey Exclusion Months:"
-                Dim surveyType As SurveyTypes = CType(SurveyTypeComboBox.SelectedValue, Library.SurveyTypes)
-                If surveyType = Library.SurveyTypes.HHcahps Then
-                    ResurveyExcludionDaysNumeric.Value = Library.Survey.DefaultResurveyExcludeMonthHHCahps
-                Else
-                    ResurveyExcludionDaysNumeric.Value = Library.Survey.DefaultResurveyExcludeMonth
-                End If
-
+                ResurveyExcludionDaysNumeric.Value = survey.ResurveyExclusionPeriodsNumericDefault
         End Select
 
         ResurveyExcludionDaysPanel.Enabled = (resurveyMethod = Library.ResurveyMethod.NumberOfDays)
@@ -317,7 +251,8 @@ Public Class SurveyPropertiesEditor
         If (ResurveyMethodComboBox.Items.Count > 0 AndAlso ResurveyMethodComboBox.SelectedIndex < 0) Then
             ResurveyMethodComboBox.SelectedIndex = 0
         End If
-        If (mModule.EditingSurvey.SurveyType = SurveyTypes.NrcPicker OrElse mModule.EditingSurvey.SurveyType = SurveyTypes.MNCM) Then
+        'TODO: drive by surveyrules
+        If (Not mModule.EditingSurvey.IsResurveyMethodDisabled) Then
             ResurveyMethodComboBox.SelectedValue = Library.ResurveyMethod.NumberOfDays
             ResurveyMethodComboBox.Enabled = False
         End If
@@ -522,34 +457,36 @@ Public Class SurveyPropertiesEditor
 
     Private Function SampleUnitCheck(ByVal unit As SampleUnit) As Boolean
 
+        'TODO: SurveyRules.SurveyType = CType(SurveyTypeComboBox.SelectedValue, Library.SurveyTypes)
         Dim surveyType As SurveyTypes = CType(SurveyTypeComboBox.SelectedValue, Library.SurveyTypes)
-        Select Case surveyType
-            Case Library.SurveyTypes.Hcahps
-                If unit.CAHPSType <> CAHPSType.HCAHPS AndAlso unit.CAHPSType <> CAHPSType.CHART AndAlso unit.CAHPSType <> CAHPSType.None Then
-                    Return False
-                End If
-
-            Case Library.SurveyTypes.ACOcahps
-                If unit.CAHPSType <> CAHPSType.ACOCAHPS AndAlso unit.CAHPSType <> CAHPSType.None Then
-                    Return False
-                End If
-
-            Case Library.SurveyTypes.HHcahps
-                If unit.CAHPSType <> CAHPSType.HHCAHPS AndAlso unit.CAHPSType <> CAHPSType.None Then
-                    Return False
-                End If
-
-            Case Library.SurveyTypes.MNCM
-                If unit.CAHPSType <> CAHPSType.MNCM AndAlso unit.CAHPSType <> CAHPSType.None Then
-                    Return False
-                End If
-
-            Case Else
-                If unit.CAHPSType <> CAHPSType.None Then
-                    Return False
-                End If
-
-        End Select
+        Dim survey As Survey = New Survey()
+        survey.SurveyType = surveyType
+        'TODO: SurveyRules.CAHPSTypeOptions
+        If survey.SurveyTypeName.Equals("HCAHPS") Then
+            If unit.CAHPSType <> CAHPSType.HCAHPS AndAlso unit.CAHPSType <> CAHPSType.CHART AndAlso unit.CAHPSType <> CAHPSType.None Then
+                Return False
+            End If
+        ElseIf survey.SurveyTypeName.Equals("ACOCAHPS") Then
+            If unit.CAHPSType <> CAHPSType.ACOCAHPS AndAlso unit.CAHPSType <> CAHPSType.None Then
+                Return False
+            End If
+        ElseIf survey.SurveyTypeName.Equals("Home Health CAHPS") Then
+            If unit.CAHPSType <> CAHPSType.HHCAHPS AndAlso unit.CAHPSType <> CAHPSType.None Then
+                Return False
+            End If
+        ElseIf survey.SurveyTypeName.Equals("CGCAHPS") Then
+            If unit.CAHPSType <> CAHPSType.MNCM AndAlso unit.CAHPSType <> CAHPSType.None Then
+                Return False
+            End If
+        ElseIf survey.SurveyTypeName.Contains("CAHPS") Then 'This is the generic CAHPS intended to work for any CAHPS going forward without code changes
+            If unit.CAHPSType <> CAHPSType.CAHPS AndAlso unit.CAHPSType <> CAHPSType.None Then
+                Return False
+            End If
+        Else
+            If unit.CAHPSType <> CAHPSType.None Then
+                Return False
+            End If
+        End If
 
         Return True
 

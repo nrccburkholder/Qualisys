@@ -644,7 +644,9 @@ Public Class SamplePlanEditor
         If CAHPSTypeComboBox.SelectedValue Is Nothing Then
             CAHPSTypeComboBox.SelectedValue = CAHPSType.None
         End If
-        If mModule.Survey.SurveyType <> SurveyTypes.Hcahps AndAlso mModule.Survey.SurveyType <> SurveyTypes.HHcahps AndAlso mModule.Survey.SurveyType <> SurveyTypes.MNCM AndAlso mModule.Survey.SurveyType <> SurveyTypes.ACOcahps Then
+        'TODO: SurveyRules instead
+
+        If Not mModule.Survey.IsCAHPS Then
             CAHPSTypeComboBox.SelectedValue = CAHPSType.None
             CAHPSTypeComboBox.Enabled = False
         End If

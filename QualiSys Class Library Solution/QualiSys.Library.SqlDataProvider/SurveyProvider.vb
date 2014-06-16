@@ -38,7 +38,7 @@ Public Class SurveyProvider
         newObj.SamplingAlgorithm = CType(rdr.GetInteger("SamplingAlgorithmId", SamplingAlgorithm.Static), SamplingAlgorithm)
         newObj.EnforceSkip = rdr.GetBoolean("bitEnforceSkip")
         newObj.ClientFacingName = rdr.GetString("strClientFacingName", String.Empty)
-        newObj.SurveyType = CType(rdr.GetInteger("SurveyType_Id", SurveyTypes.NrcPicker), SurveyTypes)
+        newObj.SurveyType = CType(rdr.GetInteger("SurveyType_Id", SurveyTypes.DefaultSurvey), SurveyTypes)
         newObj.SurveyTypeDefId = rdr.GetInteger("SurveyTypeDef_Id", 0)
         Select Case rdr.GetString("strHouseholdingType", String.Empty)
             Case "M"

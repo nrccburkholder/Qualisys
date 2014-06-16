@@ -484,14 +484,16 @@ Public Class SamplePeriod
         End If
 
         Dim survey As Survey = survey.Get(Me.SurveyId)
-        If Not survey Is Nothing AndAlso survey.SurveyType = SurveyTypes.Hcahps AndAlso HasSamplesPulled = False AndAlso _
+        'TODO: If SurveyRules.IsMonthlyOnly
+        If Not survey Is Nothing AndAlso survey.IsMonthlyOnly AndAlso HasSamplesPulled = False AndAlso _
             (ExpectedStartDate.HasValue = False OrElse ExpectedEndDate.HasValue = False) Then
             e.Description = "Periods for HCAHPS surveys cannot have null encounter dates"
             Return False
         End If
 
         'Only check HCAHPS setup for periods that have not been sampled for yet
-        If Not survey Is Nothing AndAlso survey.SurveyType = SurveyTypes.Hcahps AndAlso HasSamplesPulled = False AndAlso _
+        'TODO: If SurveyRules.IsMonthlyOnly
+        If Not survey Is Nothing AndAlso survey.IsMonthlyOnly AndAlso HasSamplesPulled = False AndAlso _
             (ExpectedStartDate.HasValue = True OrElse ExpectedEndDate.HasValue = True) Then
             If Me.ExpectedStartDate.Value.Day <> 1 OrElse Me.ExpectedEndDate.Value.AddDays(1).Day <> 1 AndAlso _
                 Me.ExpectedStartDate.Value.Month = Me.ExpectedEndDate.Value.Month AndAlso _
@@ -577,11 +579,7 @@ Public Class SamplePeriod
         samplePeriod.SurveyId = survey.Id
         samplePeriod.EmployeeId = employeeId
 
-        If QualisysParams.CountryCode = CountryCode.Canada Then
-            samplePeriod.SamplingMethod = SampleSet.SamplingMethod.SpecifyOutgo
-        ElseIf survey.SurveyType = SurveyTypes.ACOcahps Then
-            samplePeriod.SamplingMethod = SampleSet.SamplingMethod.Census
-        End If
+        samplePeriod.SamplingMethod = SampleSet.SamplingMethodFromLabel(survey.SamplingMethodDefault)
 
         If survey.SamplePeriods.Count = 0 Then
             samplePeriod.PeriodTimeFrame = TimeFrame.Active

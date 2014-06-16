@@ -31,13 +31,14 @@ Public Class PeriodEditor
         If Me.InformationBar.Information = String.Empty Then Me.WorkAreaPanel.Location = New Point(0, 0)
 
         'Hide date columns based on survey type
-        Me.colMonth.Visible = (Me.mModule.Survey.SurveyType = SurveyTypes.Hcahps OrElse Me.mModule.Survey.SurveyType = SurveyTypes.HHcahps)
-        Me.colYear.Visible = (Me.mModule.Survey.SurveyType = SurveyTypes.Hcahps OrElse Me.mModule.Survey.SurveyType = SurveyTypes.HHcahps)
-        Me.colExpectedEndDate.Visible = Not (Me.mModule.Survey.SurveyType = SurveyTypes.Hcahps OrElse Me.mModule.Survey.SurveyType = SurveyTypes.HHcahps)
-        Me.colExpectedStartDate.Visible = Not (Me.mModule.Survey.SurveyType = SurveyTypes.Hcahps OrElse Me.mModule.Survey.SurveyType = SurveyTypes.HHcahps)
+        'TODO: SurveyRules IsMonthly
+        Me.colMonth.Visible = Me.mModule.Survey.IsMonthlyOnly
+        Me.colYear.Visible = Me.mModule.Survey.IsMonthlyOnly
+        Me.colExpectedEndDate.Visible = Not Me.mModule.Survey.IsMonthlyOnly
+        Me.colExpectedStartDate.Visible = Not Me.mModule.Survey.IsMonthlyOnly
 
         'Disable sampling method based on ACOCAHPS
-        Me.colSamplingMethodLabel.ColumnEdit.ReadOnly = (Me.mModule.Survey.SurveyType = SurveyTypes.ACOcahps)
+        Me.colSamplingMethodLabel.ColumnEdit.ReadOnly = Not Me.mModule.Survey.IsSamplingMethodDisabled
 
         'Get a list of all sample periods for this survey
         'Me.mSamplePeriods = Me.mModule.Survey.SamplePeriodsActiveAndFuture
