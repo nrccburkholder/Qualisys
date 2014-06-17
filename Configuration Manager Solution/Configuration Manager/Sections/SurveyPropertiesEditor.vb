@@ -169,19 +169,7 @@ Public Class SurveyPropertiesEditor
 
         'Survey SubType list
         Dim surveyTypeID As Integer = CInt(SurveyTypeComboBox.SelectedValue)
-
         LoadSurveySubTypeComboBox(surveyTypeID)
-        'SurveySubTypeComboBox.DataSource = Survey.GetSurveySubTypes(surveyTypeID)
-
-        'If Not mModule.EditingSurvey.SurveySubType Is Nothing Then
-        '    SurveySubTypeComboBox.SelectedValue = mModule.EditingSurvey.SurveySubType.Id
-        'End If
-
-        'If (SurveySubTypeComboBox.Items.Count > 0 AndAlso SurveySubTypeComboBox.SelectedIndex < 0) Then
-        '    SurveySubTypeComboBox.SelectedIndex = 0
-        'End If
-
-        'SurveySubTypeComboBox.Enabled = mModule.EditingSurvey.IsSurveyTypeEditable
 
         'Facing name
         FacingNameTextBox.Text = mModule.EditingSurvey.ClientFacingName
