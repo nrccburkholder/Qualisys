@@ -34,13 +34,13 @@
 
 #Region " Constructors "
 
-    Private Sub New()
+    Public Sub New()
 
 
     End Sub
 
 
-    Private Sub New(ByVal Id As Integer, ByVal Desc As String)
+    Public Sub New(ByVal Id As Integer, ByVal Desc As String)
 
         mSurveySubType_Id = Id
         mDescription = Desc

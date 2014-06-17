@@ -29,6 +29,7 @@ Public Class Survey
     Private mResurveyMethod As ResurveyMethod
     Private mHouseHoldingType As HouseHoldingType
     Private mHouseHoldingColumns As StudyTableColumnCollection
+    Private mSurveySubtype As SurveySubType
 
     Private mIsDirty As Boolean
     Private mIsValidated As Boolean
@@ -397,6 +398,25 @@ Public Class Survey
                 mContractedLanguages = value
                 mIsDirty = True
             End If
+        End Set
+    End Property
+
+
+    <Logable()> _
+    Public Property SurveySubType() As SurveySubType
+        Get
+            Return mSurveySubtype
+        End Get
+        Set(ByVal value As SurveySubType)
+            If Not mSurveySubtype Is Nothing Then
+                If mSurveySubtype.Id <> value.Id Then
+                    mSurveySubtype = value
+                    mIsDirty = True
+                End If
+            Else
+                mSurveySubtype = value
+            End If
+
         End Set
     End Property
 
@@ -903,6 +923,17 @@ Public Class Survey
         SurveyProvider.Instance.Delete(surveyId)
 
     End Sub
+
+
+    Public Shared Function GetSurveySubTypes(ByVal surveytypeid As Integer) As List(Of SurveySubType)
+
+        Dim mSurveySubTypeList As New List(Of SurveySubType)
+
+        mSurveySubTypeList = SurveyProvider.Instance.SelectSurveySubTypes(surveytypeid)
+
+        Return mSurveySubTypeList
+
+    End Function
 #End Region
 
 #Region " ChangeLog Helper Functions "

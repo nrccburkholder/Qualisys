@@ -37,8 +37,12 @@ Public Class SurveyPropertiesEditor
         Try
             If (SurveyTypeComboBox.SelectedIndex < 0) Then Return
             Dim surveyType As SurveyTypes = CType(SurveyTypeComboBox.SelectedValue, Library.SurveyTypes)
+
             Dim survey As Survey = New Survey()
             survey.SurveyType = surveyType
+
+            LoadSurveySubTypeComboBox(surveyType)
+
             'lblResurveyMethod.Enabled = False
             ResurveyMethodComboBox.Enabled = False
             SamplingAlgorithmComboBox.SelectedValue = [Enum].Parse(GetType(SamplingAlgorithm), survey.SamplingAlgorithmDefault)
@@ -159,7 +163,25 @@ Public Class SurveyPropertiesEditor
         If (SurveyTypeComboBox.Items.Count > 0 AndAlso SurveyTypeComboBox.SelectedIndex < 0) Then
             SurveyTypeComboBox.SelectedIndex = 0
         End If
+
+
         SurveyTypeComboBox.Enabled = mModule.EditingSurvey.IsSurveyTypeEditable
+
+        'Survey SubType list
+        Dim surveyTypeID As Integer = CInt(SurveyTypeComboBox.SelectedValue)
+
+        LoadSurveySubTypeComboBox(surveyTypeID)
+        'SurveySubTypeComboBox.DataSource = Survey.GetSurveySubTypes(surveyTypeID)
+
+        'If Not mModule.EditingSurvey.SurveySubType Is Nothing Then
+        '    SurveySubTypeComboBox.SelectedValue = mModule.EditingSurvey.SurveySubType.Id
+        'End If
+
+        'If (SurveySubTypeComboBox.Items.Count > 0 AndAlso SurveySubTypeComboBox.SelectedIndex < 0) Then
+        '    SurveySubTypeComboBox.SelectedIndex = 0
+        'End If
+
+        'SurveySubTypeComboBox.Enabled = mModule.EditingSurvey.IsSurveyTypeEditable
 
         'Facing name
         FacingNameTextBox.Text = mModule.EditingSurvey.ClientFacingName
@@ -492,6 +514,18 @@ Public Class SurveyPropertiesEditor
 
     End Function
 
+
+    Private Sub LoadSurveySubTypeComboBox(ByVal surveytypeid As Integer)
+        SurveySubTypeComboBox.DataSource = Survey.GetSurveySubTypes(surveytypeid)
+        SurveySubTypeComboBox.DisplayMember = "Description"
+        SurveySubTypeComboBox.ValueMember = "Id"
+        SurveySubTypeComboBox.SelectedIndex = -1
+        If SurveySubTypeComboBox.Items.Count = 0 Then
+            SurveySubTypeComboBox.Enabled = False
+        Else
+            SurveySubTypeComboBox.Enabled = True
+        End If
+    End Sub
 #End Region
 
 End Class

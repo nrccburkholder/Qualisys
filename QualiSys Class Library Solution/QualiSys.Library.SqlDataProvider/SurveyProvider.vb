@@ -389,4 +389,22 @@ Public Class SurveyProvider
 
     End Function
 
+    Public Overrides Function SelectSurveySubTypes(ByVal surveytypeid As Integer) As List(Of SurveySubType)
+
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectSurveySubTypes, surveytypeid)
+
+        Using rdr As New SafeDataReader(ExecuteReader(cmd))
+            Dim items As New List(Of SurveySubType)
+            Dim Description As String
+            Dim Id As Integer
+            Do While rdr.Read
+                Description = rdr.GetString("Description")
+                Id = CType(rdr.GetInteger("id"), SurveyTypes)
+                items.Add(New SurveySubType(Id, Description))
+            Loop
+
+            Return items
+        End Using
+
+    End Function
 End Class

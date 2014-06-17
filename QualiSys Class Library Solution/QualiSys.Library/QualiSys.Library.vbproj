@@ -321,6 +321,7 @@
     <Compile Include="Survey.vb" />
     <Compile Include="Enums\SurveyCutoffFieldType.vb" />
     <Compile Include="Enums\SampleSelectionType.vb" />
+    <Compile Include="SurveySubType.vb" />
     <Compile Include="SurveyType.vb" />
     <Compile Include="SurveyValidationResult.vb" />
     <Compile Include="ToBeSeeded.vb" />

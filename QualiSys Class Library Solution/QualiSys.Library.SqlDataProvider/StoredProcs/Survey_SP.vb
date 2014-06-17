@@ -18,5 +18,6 @@ Partial Public NotInheritable Class SP
     Public Const AllowDeleteSurvey As String = "QCL_AllowDeleteSurvey"
     Public Const DeleteSurvey As String = "QCL_DeleteSurvey"
     Public Const ValidateSurvey As String = "QCL_ValidateSurvey"
+    Public Const SelectSurveySubTypes As String = "QCL_SelectSurveySubTypes"
 
 End Class
