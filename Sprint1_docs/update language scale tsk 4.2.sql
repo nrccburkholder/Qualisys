@@ -18,7 +18,7 @@ Languages used for the old question core in production
 
 DECLARE @DO_IT as bit
 
-SET @DO_IT = 1   -- set to 1 to do the actual updates, otherwise it will skip the update/insert/delete statements
+SET @DO_IT = 0   -- set to 1 to do the actual updates, otherwise it will skip the update/insert/delete statements
 
 DECLARE @OldQstnCore int
 DECLARE @NewQstnCore int
@@ -29,10 +29,13 @@ SET @NewQstnCore = 50860
 SET @NewScale_id = 8504
 
 -- the current list of surveys using the old question core
-SELECT *      
+SELECT sq.*      
   INTO #sel_qstns    
-  FROM [dbo].[SEL_QSTNS]
-where QSTNCORE = @OldQstnCore
+  FROM [dbo].[SEL_QSTNS] sq
+INNER JOIN [dbo].[MAILINGMETHODOLOGY] mm on (mm.SURVEY_ID = sq.SURVEY_ID)
+INNER JOIN [dbo].[StandardMethodology] sm ON (sm.StandardMethodologyID = mm.StandardMethodologyID)
+where sq.QSTNCORE = @OldQstnCore
+AND sm.MethodologyType <> 'Telephone Only'
 order by SURVEY_ID
 
 print 'sel_qstns with old QstnCore'
@@ -40,12 +43,9 @@ select sq.*
 FROM #sel_qstns sq
 order by sq.SELQSTNS_ID
   
---select sq.*
---FROM [dbo].[SEL_QSTNS] sq
---INNER JOIN #sel_qstns sqx on (sqx.[SELQSTNS_ID] = sq.[SELQSTNS_ID] AND sqx.SURVEY_ID = sq.SURVEY_ID and sqx.[LANGUAGE] = sq.[LANGUAGE])
---order by sq.SELQSTNS_ID
 
 -- temp table containing what will be the new first set of new sel_scls records - existing records with updated qpc_id and shifted item, val and scaleorder values
+print '---------------------------------------'
 print 'temp table containing what will be the new first set of new sel_scls records'
 select ss.SURVEY_ID
 	, @NewScale_id 'QPC_ID'
@@ -74,6 +74,7 @@ inner join (SELECT distinct survey_id, scaleid from #sel_qstns) sq on (ss.SURVEY
 
 -- temp table containing what will be the new second set of new sel_scls records -- the actual portuguese entries that we need to add
 -- For now, the Richtext values are just placeholders until we get the proper translations
+print '---------------------------------------'
 print 'temp table containing what will be the new second set of new sel_scls records'
 select ss.SURVEY_ID
 	, @NewScale_id 'QPC_ID'
@@ -124,11 +125,13 @@ select distinct *
 from #sel_scls_new
 order by SURVEY_ID, item, [language]
 
-print 'total records to be inserted'
+print '---------------------------------------'
+print 'total records to be inserted (#temp)'
 select * 
 from #temp
 
 -- rows to be deleted
+print '---------------------------------------'
 print 'rows to be deleted'
 select *
 from [dbo].[SEL_SCLS] ss
@@ -149,7 +152,7 @@ BEGIN
 			sq.NUMBUBBLECOUNT = 7
 	FROM [dbo].[SEL_QSTNS] sq
 	INNER JOIN #sel_qstns sqx on (sqx.[SELQSTNS_ID] = sq.[SELQSTNS_ID] AND sqx.SURVEY_ID = sq.SURVEY_ID and sqx.[LANGUAGE] = sq.[LANGUAGE])
-
+	print 'SQL_QSTNS updated'
 
 	-- Insert new records into sel_scls
 	INSERT INTO SEL_SCLS
@@ -158,12 +161,14 @@ BEGIN
 	select distinct *
 	from #sel_scls_new
 	order by SURVEY_ID, item, [language]
-
+	print 'new rows inserted into SEL_SCLS'
 
 	-- Delete all sel_scls records for surveys using the old question core 
 	delete ss
 	from [dbo].[SEL_SCLS] ss
 	inner join (SELECT distinct survey_id, scaleid from #sel_qstns) sq on (ss.SURVEY_ID = sq.SURVEY_ID and ss.QPC_ID = sq.SCALEID)
+	print 'rows deleted'
+	print ''
 	print 'We did it.  DO NOT FORGET TO COMMIT!!!!!'
 END else print 'We did NOT do it.'
 
