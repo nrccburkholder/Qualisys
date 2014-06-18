@@ -910,11 +910,11 @@ Public Class Survey
                                      ByVal samplingAlgorithmId As Integer, ByVal enforceSkip As Boolean, ByVal cutoffResponseCode As String, ByVal cutoffTableId As Integer, _
                                      ByVal cutoffFieldId As Integer, ByVal sampleEncounterField As StudyTableColumn, ByVal clientFacingName As String, _
                                      ByVal surveyTypeId As Integer, ByVal surveyTypeDefId As Integer, ByVal houseHoldingType As HouseHoldingType, _
-                                     ByVal contractNumber As String, ByVal isActive As Boolean, ByVal contractedLanguages As String) As Survey
+                                     ByVal contractNumber As String, ByVal isActive As Boolean, ByVal contractedLanguages As String, ByVal surveySubTypeId As Integer) As Survey
 
         Return SurveyProvider.Instance.Insert(studyId, name, description, responseRateRecalculationPeriod, resurveyMethodId, resurveyPeriod, surveyStartDate, surveyEndDate, _
                                               samplingAlgorithmId, enforceSkip, cutoffResponseCode, cutoffTableId, cutoffFieldId, sampleEncounterField, clientFacingName, _
-                                              surveyTypeId, surveyTypeDefId, houseHoldingType, contractNumber, isActive, contractedLanguages)
+                                              surveyTypeId, surveyTypeDefId, houseHoldingType, contractNumber, isActive, contractedLanguages, surveySubTypeId)
 
     End Function
 

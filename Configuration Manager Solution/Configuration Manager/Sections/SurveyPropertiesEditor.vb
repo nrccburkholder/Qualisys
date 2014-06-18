@@ -431,6 +431,7 @@ Public Class SurveyPropertiesEditor
             .EnforceSkip = EnforceSkipYesOption.Checked
             .SurveyStartDate = SurveyStartDatePicker.Value
             .SurveyEndDate = SurveyEndDatePicker.Value
+            .SurveySubType = CType(SurveySubTypeComboBox.SelectedItem, SurveySubType)
 
             Dim dateField As CutoffDateField = DirectCast(SampleEncounterDateComboBox.SelectedValue, CutoffDateField)
             If (dateField.CutoffDateFieldType = CutoffFieldType.NotApplicable) Then
@@ -501,7 +502,6 @@ Public Class SurveyPropertiesEditor
         Return True
 
     End Function
-
 
     Private Sub LoadSurveySubTypeComboBox(ByVal surveytypeid As Integer)
         SurveySubTypeComboBox.DataSource = Survey.GetSurveySubTypes(surveytypeid)

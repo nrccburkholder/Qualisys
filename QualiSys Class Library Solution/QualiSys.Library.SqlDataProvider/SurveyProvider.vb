@@ -274,7 +274,7 @@ Public Class SurveyProvider
                                                            SafeDataReader.ToDBValue(.CutoffTableId, -1), SafeDataReader.ToDBValue(.CutoffFieldId, -1), _
                                                            SafeDataReader.ToDBValue(sampleEncounterTableId, -1), SafeDataReader.ToDBValue(sampleEncounterFieldId, -1), _
                                                            .ClientFacingName, .SurveyType, .SurveyTypeDefId, GetHouseHoldingTypeCharacter(.HouseHoldingType), .IsValidated, _
-                                                           SafeDataReader.ToDBValue(.DateValidated), .IsFormGenReleased, .ContractNumber, .IsActive, .ContractedLanguages)
+                                                           SafeDataReader.ToDBValue(.DateValidated), .IsFormGenReleased, .ContractNumber, .IsActive, .ContractedLanguages, .SurveySubType.Id)
 
             ExecuteNonQuery(cmd, tran)
         End With
@@ -286,7 +286,7 @@ Public Class SurveyProvider
                                      ByVal samplingAlgorithmId As Integer, ByVal enforceSkip As Boolean, ByVal cutoffResponseCode As String, ByVal cutoffTableId As Integer, _
                                      ByVal cutoffFieldId As Integer, ByVal sampleEncounterField As StudyTableColumn, ByVal clientFacingName As String, ByVal surveyTypeId As Integer, _
                                      ByVal surveyTypeDefId As Integer, ByVal houseHoldingType As HouseHoldingType, ByVal contractNumber As String, ByVal isActive As Boolean, _
-                                     ByVal contractedLanguages As String) As Survey
+                                     ByVal contractedLanguages As String, ByVal surveySubTypeId As Integer) As Survey
 
         Dim surveyId As Integer
 
@@ -308,7 +308,7 @@ Public Class SurveyProvider
                                                                    cutoffResponseCode, SafeDataReader.ToDBValue(cutoffTableId, -1), SafeDataReader.ToDBValue(cutoffFieldId, -1), _
                                                                    SafeDataReader.ToDBValue(sampleEncounterTableId, -1), SafeDataReader.ToDBValue(sampleEncounterFieldId, -1), _
                                                                    clientFacingName, surveyTypeId, surveyTypeDefId, GetHouseHoldingTypeCharacter(houseHoldingType), _
-                                                                   contractNumber, isActive, contractedLanguages)
+                                                                   contractNumber, isActive, contractedLanguages, surveySubTypeId)
 
                     surveyId = ExecuteInteger(cmd, tran)
 

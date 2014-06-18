@@ -58,7 +58,8 @@ Namespace DataProvider
                                             ByVal houseHoldingType As HouseHoldingType, _
                                             ByVal contractNumber As String, _
                                             ByVal isActive As Boolean, _
-                                            ByVal contractedLanguages As String _
+                                            ByVal contractedLanguages As String,
+                                            ByVal surveySubTypeId As Integer _
                                            ) As Survey
         Public MustOverride Sub Delete(ByVal surveyId As Integer)
         Public MustOverride Function AllowDelete(ByVal surveyId As Integer) As Boolean
