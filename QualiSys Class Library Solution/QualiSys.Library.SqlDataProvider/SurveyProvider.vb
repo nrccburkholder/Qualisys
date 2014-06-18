@@ -398,11 +398,13 @@ Public Class SurveyProvider
             Dim Description As String
             Dim SurveySubType_Id As Integer
             Dim SurveyType_Id As Integer
-            Dim QuestionaireType_Id As Integer
+            Dim QuestionaireType_Id As Integer = 0
             Do While rdr.Read
                 Description = rdr.GetString("SubType_NM")
                 SurveySubType_Id = CType(rdr.GetInteger("SurveySubType_id"), SurveyTypes)
-                QuestionaireType_Id = rdr.GetInteger("QuestionaireType_ID")
+                If Not rdr.IsDBNull("QuestionaireType_ID") Then
+                    QuestionaireType_Id = rdr.GetShort("QuestionaireType_ID")
+                End If
                 SurveyType_Id = rdr.GetInteger("SurveyType_ID")
                 items.Add(New SurveySubType(SurveySubType_Id, SurveyType_Id, Description, QuestionaireType_Id))
             Loop
@@ -435,31 +437,4 @@ Public Class SurveyProvider
     End Function
 
 
-    Public Overrides Function SelectSurveySubType(ByVal surveysubtypeid As Integer) As SurveySubType
-
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectSurveySubTypeBySubTypeID, surveysubtypeid)
-
-        Dim ds As DataSet = ExecuteDataSet(cmd)
-
-        If ds.Tables.Count > 0 Then
-            If ds.Tables(0).Rows.Count > 0 Then
-                Dim Description As String
-                Dim SurveySubType_Id As Integer
-                Dim SurveyType_Id As Integer
-                Dim QuestionaireType_Id As Integer
-
-                Description = ds.Tables(0).Rows(0)("SubType_NM").ToString
-                SurveySubType_Id = CType(ds.Tables(0).Rows(0)("SurveySubType_id"), SurveyTypes)
-                QuestionaireType_Id = CInt(ds.Tables(0).Rows(0)("QuestionaireType_ID"))
-                SurveyType_Id = CInt(ds.Tables(0).Rows(0)("SurveyType_ID"))
-
-                Return New SurveySubType(SurveySubType_Id, SurveyType_Id, Description, QuestionaireType_Id)
-
-            End If
-        End If
-
-        Return Nothing
-
-
-    End Function
 End Class

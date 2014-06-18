@@ -965,16 +965,6 @@ Public Class Survey
 
     End Function
 
-    Public Shared Function GetSurveySubType(ByVal surveySubTypeId As Integer) As SurveySubType
-
-        Dim mSurveySubtype As SurveySubType
-
-        mSurveySubtype = SurveyProvider.Instance.SelectSurveySubType(surveySubTypeId)
-
-        Return mSurveySubtype
-
-    End Function
-
 #End Region
 
 #Region " ChangeLog Helper Functions "
