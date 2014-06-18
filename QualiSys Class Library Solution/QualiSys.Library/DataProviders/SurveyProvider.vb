@@ -33,6 +33,7 @@ Namespace DataProvider
         Public MustOverride Function SelectByStudy(ByVal study As Study) As Collection(Of Survey)
         Public MustOverride Function SelectBySurveyTypeMailOnly(ByVal srvyType As SurveyType) As Collection(Of Survey)
         Public MustOverride Function SelectSurveyTypes() As List(Of ListItem(Of SurveyTypes))
+        Public MustOverride Function SelectCAHPSTypes(ByVal surveyType As Integer) As List(Of ListItem(Of CAHPSType))
         Public MustOverride Function SelectSamplingAlgorithms() As List(Of ListItem(Of SamplingAlgorithm))
         Public MustOverride Function SelectResurveyMethod() As List(Of ListItem(Of ResurveyMethod))
         Public MustOverride Function IsSurveySampled(ByVal surveyId As Integer) As Boolean

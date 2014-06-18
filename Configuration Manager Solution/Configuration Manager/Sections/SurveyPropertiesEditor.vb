@@ -462,24 +462,25 @@ Public Class SurveyPropertiesEditor
         Dim survey As Survey = New Survey()
         survey.SurveyType = surveyType
         'TODO: SurveyRules.CAHPSTypeOptions
-        If survey.SurveyTypeName.Equals("HCAHPS") Then
-            If unit.CAHPSType <> CAHPSType.HCAHPS AndAlso unit.CAHPSType <> CAHPSType.CHART AndAlso unit.CAHPSType <> CAHPSType.None Then
-                Return False
-            End If
-        ElseIf survey.SurveyTypeName.Equals("ACOCAHPS") Then
-            If unit.CAHPSType <> CAHPSType.ACOCAHPS AndAlso unit.CAHPSType <> CAHPSType.None Then
-                Return False
-            End If
-        ElseIf survey.SurveyTypeName.Equals("Home Health CAHPS") Then
-            If unit.CAHPSType <> CAHPSType.HHCAHPS AndAlso unit.CAHPSType <> CAHPSType.None Then
-                Return False
-            End If
-        ElseIf survey.SurveyTypeName.Equals("CGCAHPS") Then
-            If unit.CAHPSType <> CAHPSType.MNCM AndAlso unit.CAHPSType <> CAHPSType.None Then
-                Return False
-            End If
-        ElseIf survey.SurveyTypeName.Contains("CAHPS") Then 'This is the generic CAHPS intended to work for any CAHPS going forward without code changes
-            If unit.CAHPSType <> CAHPSType.CAHPS AndAlso unit.CAHPSType <> CAHPSType.None Then
+        'If survey.SurveyTypeName.Equals("HCAHPS") Then
+        '    If unit.CAHPSType <> CAHPSType.HCAHPS AndAlso unit.CAHPSType <> CAHPSType.CHART AndAlso unit.CAHPSType <> CAHPSType.None Then
+        '        Return False
+        '    End If
+        'ElseIf survey.SurveyTypeName.Equals("ACOCAHPS") Then
+        '    If unit.CAHPSType <> CAHPSType.ACOCAHPS AndAlso unit.CAHPSType <> CAHPSType.None Then
+        '        Return False
+        '    End If
+        'ElseIf survey.SurveyTypeName.Equals("Home Health CAHPS") Then
+        '    If unit.CAHPSType <> CAHPSType.HHCAHPS AndAlso unit.CAHPSType <> CAHPSType.None Then
+        '        Return False
+        '    End If
+        'ElseIf survey.SurveyTypeName.Equals("CGCAHPS") Then
+        '    If unit.CAHPSType <> CAHPSType.MNCM AndAlso unit.CAHPSType <> CAHPSType.None Then
+        '        Return False
+        '    End If
+        'Else
+        If survey.SurveyTypeName.Contains("CAHPS") Then 'This is the generic CAHPS intended to work for any CAHPS going forward without code changes
+            If unit.CAHPSType <> survey.SurveyType AndAlso unit.CAHPSType <> CAHPSType.None Then
                 Return False
             End If
         Else

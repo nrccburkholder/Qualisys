@@ -120,6 +120,25 @@ Public Class SurveyProvider
 
     End Function
 
+    Public Overrides Function SelectCAHPSTypes(ByVal surveyType As Integer) As List(Of ListItem(Of CAHPSType))
+
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectCAHPSTypes, surveyType)
+
+        Using rdr As New SafeDataReader(ExecuteReader(cmd))
+            Dim items As New List(Of ListItem(Of CAHPSType))
+            Dim label As String
+            Dim cahpsType As CAHPSType
+            Do While rdr.Read
+                label = rdr.GetString("SurveyType_Dsc")
+                cahpsType = CType(rdr.GetInteger("CAHPSType_Id"), CAHPSType)
+                items.Add(New ListItem(Of CAHPSType)(label, cahpsType))
+            Loop
+
+            Return items
+        End Using
+
+    End Function
+
     Public Overrides Function SelectSamplingAlgorithms() As List(Of ListItem(Of SamplingAlgorithm))
 
         Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectSamplingAlgorithms)

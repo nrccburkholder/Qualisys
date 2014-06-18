@@ -305,7 +305,12 @@ Public Class SamplePlanEditor
 
     Private Sub CAHPSTypeComboBox_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles CAHPSTypeComboBox.SelectedIndexChanged
 
-        If (CType(CAHPSTypeComboBox.SelectedValue, CAHPSType) = CAHPSType.HCAHPS OrElse CType(CAHPSTypeComboBox.SelectedValue, CAHPSType) = CAHPSType.CHART) AndAlso _
+        'If (CType(CAHPSTypeComboBox.SelectedValue, CAHPSType) = CAHPSType.HCAHPS OrElse CType(CAHPSTypeComboBox.SelectedValue, CAHPSType) = CAHPSType.CHART) AndAlso _ 'CJB removed CHART 6/18/2014
+        'TODO: SurveyRules.CompliesWithSwitchToPropSamplingDate
+        Dim survey As New Survey()
+        survey.SurveyType = CType(CAHPSTypeComboBox.SelectedValue, SurveyTypes)
+
+        If survey.CompliesWithSwitchToPropSamplingDate AndAlso _
                 mModule.Survey.ActiveSamplePeriod IsNot Nothing AndAlso _
                 mModule.Survey.ActiveSamplePeriod.ExpectedStartDate.HasValue AndAlso _
                 mModule.Survey.ActiveSamplePeriod.ExpectedStartDate.Value >= AppConfig.Params("SwitchToPropSamplingDate").DateValue Then
@@ -730,16 +735,23 @@ Public Class SamplePlanEditor
             samplingMethod = mModule.Survey.ActiveSamplePeriod.SamplingMethod
         End If
 
+        Dim survey As New Survey()
+        survey.SurveyType = CType(CAHPSTypeComboBox.SelectedValue, SurveyTypes)
+
         Select Case samplingMethod
             Case SampleSet.SamplingMethod.Census, SampleSet.SamplingMethod.SpecifyOutgo
                 'force init RR to 100%
                 'JJF If (InitRespRateNumeric.Value <> 100) Then
-                If (InitRespRateNumeric.Value <> 100 AndAlso Not (CType(CAHPSTypeComboBox.SelectedValue, CAHPSType) = CAHPSType.HCAHPS OrElse CType(CAHPSTypeComboBox.SelectedValue, CAHPSType) = CAHPSType.CHART)) Then
+                'If (InitRespRateNumeric.Value <> 100 AndAlso Not (CType(CAHPSTypeComboBox.SelectedValue, CAHPSType) = CAHPSType.HCAHPS OrElse CType(CAHPSTypeComboBox.SelectedValue, CAHPSType) = CAHPSType.CHART)) Then 'CJB removed CHART 6/18/2014
+                'TODO: SurveyRules.BypassInitRespRateNumericEnforcement
+                If (InitRespRateNumeric.Value <> 100 AndAlso Not survey.BypassInitRespRateNumericEnforcement) Then
                     InitRespRateNumeric.Value = 100
                 End If
             Case Else
                 'JJF If (InitRespRateNumeric.Value = 0) Then
-                If (InitRespRateNumeric.Value = 0 AndAlso Not (CType(CAHPSTypeComboBox.SelectedValue, CAHPSType) = CAHPSType.HCAHPS OrElse CType(CAHPSTypeComboBox.SelectedValue, CAHPSType) = CAHPSType.CHART)) Then
+                'If (InitRespRateNumeric.Value = 0 AndAlso Not (CType(CAHPSTypeComboBox.SelectedValue, CAHPSType) = CAHPSType.HCAHPS OrElse CType(CAHPSTypeComboBox.SelectedValue, CAHPSType) = CAHPSType.CHART)) Then 'CJB removed CHART 6/18/2014
+                'TODO: SurveyRules.BypassInitRespRateNumericEnforcement
+                If (InitRespRateNumeric.Value = 0 AndAlso Not survey.BypassInitRespRateNumericEnforcement) Then
                     MessageBox.Show("Initial response rate must be larger than 0%", Me.Title, MessageBoxButtons.OK, MessageBoxIcon.Information)
                     SchedulerControl.ScheduleTask(10, callbackMethod, InitRespRateNumeric)
                     Return False
@@ -748,7 +760,9 @@ Public Class SamplePlanEditor
 
         'Medicare ID
         MedicareIdTextBox.Text = MedicareIdTextBox.Text.Trim
-        If ((Not CType(CAHPSTypeComboBox.SelectedValue, CAHPSType) = CAHPSType.None AndAlso Not CType(CAHPSTypeComboBox.SelectedValue, CAHPSType) = CAHPSType.MNCM AndAlso Not CType(CAHPSTypeComboBox.SelectedValue, CAHPSType) = CAHPSType.ACOCAHPS) AndAlso MedicareIdTextBox.Text = "") Then
+        'TODO: SurveyRules.MedicareIdTextMayBeBlank
+        'If ((Not CType(CAHPSTypeComboBox.SelectedValue, CAHPSType) = CAHPSType.None AndAlso Not CType(CAHPSTypeComboBox.SelectedValue, CAHPSType) = CAHPSType.MNCM AndAlso Not CType(CAHPSTypeComboBox.SelectedValue, CAHPSType) = CAHPSType.ACOCAHPS) AndAlso MedicareIdTextBox.Text = "") Then
+        If (Not CType(CAHPSTypeComboBox.SelectedValue, CAHPSType) = CAHPSType.None AndAlso Not survey.MedicareIdTextMayBeBlank AndAlso MedicareIdTextBox.Text = "") Then
             MessageBox.Show("You must select a facility with a valid Medicare ID!", Title, MessageBoxButtons.OK, MessageBoxIcon.Information)
             SchedulerControl.ScheduleTask(10, callbackMethod, FacilityComboBox)
             Return False

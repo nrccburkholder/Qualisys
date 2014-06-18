@@ -15,7 +15,7 @@ Friend Class SurveyTypeProvider
         newObject.BeginPopulate()
         privateInterface.Id = rdr.GetInteger("SurveyType_ID")
         newObject.Description = rdr.GetString("SurveyType_dsc")
-        newObject.OptionTypeId = rdr.GetInteger("OptionType_id")
+        newObject.CAHPSTypeId = rdr.GetInteger("CAHPSType_id")
         newObject.SeedMailings = rdr.GetBoolean("SeedMailings")
         newObject.SeedSurveyPercent = rdr.GetInteger("SeedSurveyPercent")
         newObject.SeedUnitField = rdr.GetString("SeedUnitField")
@@ -51,14 +51,14 @@ Friend Class SurveyTypeProvider
 
     Public Overrides Function InsertSurveyType(ByVal instance As SurveyType) As Integer
 
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.InsertSurveyType, instance.Description, instance.OptionTypeId, instance.SeedMailings, instance.SeedSurveyPercent, instance.SeedUnitField)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.InsertSurveyType, instance.Description, instance.CAHPSTypeId, instance.SeedMailings, instance.SeedSurveyPercent, instance.SeedUnitField)
         Return ExecuteInteger(cmd)
 
     End Function
 
     Public Overrides Sub UpdateSurveyType(ByVal instance As SurveyType)
 
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.UpdateSurveyType, instance.Id, instance.Description, instance.OptionTypeId, instance.SeedMailings, instance.SeedSurveyPercent, instance.SeedUnitField)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.UpdateSurveyType, instance.Id, instance.Description, instance.CAHPSTypeId, instance.SeedMailings, instance.SeedSurveyPercent, instance.SeedUnitField)
         ExecuteNonQuery(cmd)
 
     End Sub

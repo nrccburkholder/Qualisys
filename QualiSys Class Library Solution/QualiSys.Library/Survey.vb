@@ -56,6 +56,9 @@ Public Class Survey
     Private mHasReportability As Boolean = False
     Private mNotEditableIfSampled As Boolean = False
     Private mIsResurveyMethodDisabled As Boolean = False
+    Private mMedicareIdTextMayBeBlank As Boolean = False
+    Private mCompliesWithSwitchToPropSamplingDate As Boolean = False
+    Private mByPassInitRespRateNumericEnforcement As Boolean = False
 #End Region
 
     Private Shared mSurveyTypeList As List(Of ListItem(Of SurveyTypes))
@@ -767,6 +770,27 @@ Public Class Survey
         Get
             GetSurveyRule("IsResurveyMethodDisabled", mIsResurveyMethodDisabled)
             Return mIsResurveyMethodDisabled
+        End Get
+    End Property
+
+    Public ReadOnly Property MedicareIdTextMayBeBlank() As Boolean
+        Get
+            GetSurveyRule("MedicareIdTextMayBeBlank", mMedicareIdTextMayBeBlank)
+            Return mMedicareIdTextMayBeBlank
+        End Get
+    End Property
+
+    Public ReadOnly Property CompliesWithSwitchToPropSamplingDate() As Boolean
+        Get
+            GetSurveyRule("CompliesWithSwitchToPropSamplingDate", mCompliesWithSwitchToPropSamplingDate)
+            Return mCompliesWithSwitchToPropSamplingDate
+        End Get
+    End Property
+
+    Public ReadOnly Property BypassInitRespRateNumericEnforcement() As Boolean
+        Get
+            GetSurveyRule("BypassInitRespRateNumericEnforcement", mByPassInitRespRateNumericEnforcement)
+            Return mByPassInitRespRateNumericEnforcement
         End Get
     End Property
 

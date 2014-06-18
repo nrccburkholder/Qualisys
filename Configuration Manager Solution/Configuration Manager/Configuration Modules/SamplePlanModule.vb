@@ -1,4 +1,5 @@
-Imports Nrc.QualiSys.Library
+Imports Nrc.Qualisys.Library.DataProvider
+Imports Nrc.Qualisys.Library
 
 Public Class SamplePlanModule
     Inherits ConfigurationModule
@@ -113,6 +114,7 @@ Public Class SamplePlanModule
     End Property
 
     Private mEditor As SamplePlanEditor
+    Private Shared mCAHPSTypeList As List(Of ListItem(Of CAHPSType))
 
 #End Region
 
@@ -188,24 +190,31 @@ Public Class SamplePlanModule
     End Function
 
     Public Shared Function GetCAHPSTypes(ByVal survey As Library.Survey) As List(Of ListItem(Of CAHPSType))
-        Dim items As New List(Of ListItem(Of CAHPSType))
-        items.Add(New ListItem(Of CAHPSType)("None", CAHPSType.None))
-        'TODO: If SurveyRules.IsCAHPS then Add SurveyRules.Name
-        'TODO: If SurveyRules.HasOptionCHART then Add SurveyRules.Name + " + CHART"
-        If survey.SurveyTypeName.Equals("ACOCAHPS") Then
-            items.Add(New ListItem(Of CAHPSType)("ACO CAHPS", CAHPSType.ACOCAHPS))
-        ElseIf survey.SurveyTypeName.Equals("HCAHPS") Then
-            items.Add(New ListItem(Of CAHPSType)("HCAHPS", CAHPSType.HCAHPS))
-            'items.Add(New ListItem(Of CAHPSType)("HCAHPS + CHART", CAHPSType.CHART)) 'Dana confirmed that this is no longer needed going forward.
-        ElseIf survey.SurveyTypeName.Equals("Home Health CAHPS") Then
-            items.Add(New ListItem(Of CAHPSType)("Home Health CAHPS", CAHPSType.HHCAHPS))
-        ElseIf survey.SurveyTypeName.Equals("CGCAHPS") Then
-            items.Add(New ListItem(Of CAHPSType)("MNCM", CAHPSType.MNCM))
-        ElseIf survey.IsCAHPS Then
-            items.Add(New ListItem(Of CAHPSType)("CAHPS", CAHPSType.CAHPS)) 'This is the generic CAHPS intended to work for any CAHPS going forward without code changes
+
+        If (mCAHPSTypeList Is Nothing) Then
+            mCAHPSTypeList = SurveyProvider.Instance.SelectCAHPSTypes(CInt(survey.SurveyType))
         End If
 
-        Return items
+        Return mCAHPSTypeList
+
+        'Dim items As New List(Of ListItem(Of CAHPSType))
+        'items.Add(New ListItem(Of CAHPSType)("None", CAHPSType.None))
+        ''TODO: If SurveyRules.IsCAHPS then Add SurveyRules.Name
+        ''TODO: If SurveyRules.HasOptionCHART then Add SurveyRules.Name + " + CHART"
+        'If survey.SurveyTypeName.Equals("ACOCAHPS") Then
+        '    items.Add(New ListItem(Of CAHPSType)("ACO CAHPS", CAHPSType.ACOCAHPS))
+        'ElseIf survey.SurveyTypeName.Equals("HCAHPS") Then
+        '    items.Add(New ListItem(Of CAHPSType)("HCAHPS", CAHPSType.HCAHPS))
+        '    'items.Add(New ListItem(Of CAHPSType)("HCAHPS + CHART", CAHPSType.CHART)) 'Dana confirmed that this is no longer needed going forward.
+        'ElseIf survey.SurveyTypeName.Equals("Home Health CAHPS") Then
+        '    items.Add(New ListItem(Of CAHPSType)("Home Health CAHPS", CAHPSType.HHCAHPS))
+        'ElseIf survey.SurveyTypeName.Equals("CGCAHPS") Then
+        '    items.Add(New ListItem(Of CAHPSType)("MNCM", CAHPSType.MNCM))
+        'ElseIf survey.IsCAHPS Then
+        '    items.Add(New ListItem(Of CAHPSType)("CAHPS", CAHPSType.CAHPS)) 'This is the generic CAHPS intended to work for any CAHPS going forward without code changes
+        'End If
+
+        'Return items
     End Function
 
     Public Function NewSampleUnit(ByVal parentUnit As SampleUnit) As SampleUnit
@@ -286,11 +295,11 @@ Public Class SamplePlanModule
         unit.Priority = 1
         unit.SelectionType = SampleSelectionType.Exclusive
         'TODO:  Something else...
-        unit.IsHcahps = False
-        unit.IsACOcahps = False
-        unit.IsHHcahps = False
-        unit.IsCHART = False
-        unit.IsMNCM = False
+        'unit.IsHcahps = False
+        'unit.IsACOcahps = False
+        'unit.IsHHcahps = False
+        'unit.IsCHART = False
+        'unit.IsMNCM = False
         unit.Criteria = New Criteria(Me.Study.Id)
         If (parentUnit Is Nothing) Then
             Me.mSampleUnits.Add(unit)

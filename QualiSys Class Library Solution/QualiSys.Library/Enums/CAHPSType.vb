@@ -2,15 +2,15 @@
 ''' Enumerates the Qualisys supported CAHPS types
 ''' </summary>
 ''' <remarks></remarks>
-Public Enum CAHPSType
-    'FORMERTODO: remove completely (THESE ARE BEING LEFT IN HERE FOR LEGACY PURPOSES--NO NEW ADDITIONS ARE TO BE MADE HERE)
+Public Enum CAHPSType           'DO NOT ADD NEW ONES HERE!!!
+    'FORMERTODO: remove completely **Now we are leaving this here, but driving population of the selections from QCL_SelectCAHPSTypesBySurveyType CJB 6/18/2014
     None = 0
-    HCAHPS = 1
-    HHCAHPS = 2
-    CHART = 3
-    MNCM = 4
-    ACOCAHPS = 5
-    CAHPS = 6 'This is the generic CAHPS intended to work for any CAHPS going forward without code changes
+    'HCAHPS = 1
+    'HHCAHPS = 2
+    'CHART = 3
+    'MNCM = 4
+    'ACOCAHPS = 5
+    'CAHPS = 6 
     'PCMH = 6
     'MDPDPCAHPS = 7
 End Enum
