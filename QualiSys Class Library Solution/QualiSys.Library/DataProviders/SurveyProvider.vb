@@ -33,7 +33,6 @@ Namespace DataProvider
         Public MustOverride Function SelectByStudy(ByVal study As Study) As Collection(Of Survey)
         Public MustOverride Function SelectBySurveyTypeMailOnly(ByVal srvyType As SurveyType) As Collection(Of Survey)
         Public MustOverride Function SelectSurveyTypes() As List(Of ListItem(Of SurveyTypes))
-        Public MustOverride Function SelectSurveySubTypes(ByVal surveytypeid As Integer) As List(Of SurveySubType)
         Public MustOverride Function SelectSamplingAlgorithms() As List(Of ListItem(Of SamplingAlgorithm))
         Public MustOverride Function SelectResurveyMethod() As List(Of ListItem(Of ResurveyMethod))
         Public MustOverride Function IsSurveySampled(ByVal surveyId As Integer) As Boolean
@@ -64,6 +63,8 @@ Namespace DataProvider
         Public MustOverride Sub Delete(ByVal surveyId As Integer)
         Public MustOverride Function AllowDelete(ByVal surveyId As Integer) As Boolean
         Public MustOverride Function PerformSurveyValidation(ByVal surveyId As Integer) As SurveyValidationResult
+        Public MustOverride Function SelectSurveySubTypes(ByVal surveytypeid As Integer) As List(Of SurveySubType)
+        Public MustOverride Function SelectQuestionaireTypes(ByVal surveytypeid As Integer) As List(Of QuestionaireType)
 
 #End Region
 

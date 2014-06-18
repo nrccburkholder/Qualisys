@@ -30,6 +30,7 @@ Public Class Survey
     Private mHouseHoldingType As HouseHoldingType
     Private mHouseHoldingColumns As StudyTableColumnCollection
     Private mSurveySubtype As SurveySubType
+    Private mQuestionaireType As QuestionaireType
 
     Private mIsDirty As Boolean
     Private mIsValidated As Boolean
@@ -415,6 +416,25 @@ Public Class Survey
                 End If
             Else
                 mSurveySubtype = value
+            End If
+
+        End Set
+    End Property
+
+
+    <Logable()> _
+    Public Property QuestionaireType() As QuestionaireType
+        Get
+            Return mQuestionaireType
+        End Get
+        Set(ByVal value As QuestionaireType)
+            If Not mQuestionaireType Is Nothing Then
+                If mQuestionaireType.Id <> value.Id Then
+                    mQuestionaireType = value
+                    mIsDirty = True
+                End If
+            Else
+                mQuestionaireType = value
             End If
 
         End Set
@@ -934,6 +954,17 @@ Public Class Survey
         Return mSurveySubTypeList
 
     End Function
+
+    Public Shared Function GetQuestionaireTypes(ByVal surveytypeid As Integer) As List(Of QuestionaireType)
+
+        Dim mQuestionaireList As New List(Of QuestionaireType)
+
+        mQuestionaireList = SurveyProvider.Instance.SelectQuestionaireTypes(surveytypeid)
+
+        Return mQuestionaireList
+
+    End Function
+
 #End Region
 
 #Region " ChangeLog Helper Functions "

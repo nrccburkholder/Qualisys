@@ -42,6 +42,7 @@ Public Class SurveyPropertiesEditor
             survey.SurveyType = surveyType
 
             LoadSurveySubTypeComboBox(surveyType)
+            LoadQuestionaireTypeComboBox(surveyType)
 
             'lblResurveyMethod.Enabled = False
             ResurveyMethodComboBox.Enabled = False
@@ -170,6 +171,9 @@ Public Class SurveyPropertiesEditor
         'Survey SubType list
         Dim surveyTypeID As Integer = CInt(SurveyTypeComboBox.SelectedValue)
         LoadSurveySubTypeComboBox(surveyTypeID)
+
+        'Questionaire Type list
+        LoadQuestionaireTypeComboBox(surveyTypeID)
 
         'Facing name
         FacingNameTextBox.Text = mModule.EditingSurvey.ClientFacingName
@@ -512,6 +516,18 @@ Public Class SurveyPropertiesEditor
             SurveySubTypeComboBox.Enabled = False
         Else
             SurveySubTypeComboBox.Enabled = True
+        End If
+    End Sub
+
+    Private Sub LoadQuestionaireTypeComboBox(ByVal surveytypeid As Integer)
+        QuestionaireTypeComboBox.DataSource = Survey.GetQuestionaireTypes(surveytypeid)
+        QuestionaireTypeComboBox.DisplayMember = "Description"
+        QuestionaireTypeComboBox.ValueMember = "Id"
+        QuestionaireTypeComboBox.SelectedIndex = -1
+        If QuestionaireTypeComboBox.Items.Count = 0 Then
+            QuestionaireTypeComboBox.Enabled = False
+        Else
+            QuestionaireTypeComboBox.Enabled = True
         End If
     End Sub
 #End Region
