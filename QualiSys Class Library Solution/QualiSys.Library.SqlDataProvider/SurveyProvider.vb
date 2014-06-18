@@ -396,11 +396,15 @@ Public Class SurveyProvider
         Using rdr As New SafeDataReader(ExecuteReader(cmd))
             Dim items As New List(Of SurveySubType)
             Dim Description As String
-            Dim Id As Integer
+            Dim SurveySubType_Id As Integer
+            Dim SurveyType_Id As Integer
+            Dim QuestionaireType_Id As Integer
             Do While rdr.Read
-                Description = rdr.GetString("Description")
-                Id = CType(rdr.GetInteger("id"), SurveyTypes)
-                items.Add(New SurveySubType(Id, Description))
+                Description = rdr.GetString("SubType_NM")
+                SurveySubType_Id = CType(rdr.GetInteger("SurveySubType_id"), SurveyTypes)
+                QuestionaireType_Id = rdr.GetInteger("QuestionaireType_ID")
+                SurveyType_Id = rdr.GetInteger("SurveyType_ID")
+                items.Add(New SurveySubType(SurveySubType_Id, SurveyType_Id, Description, QuestionaireType_Id))
             Loop
 
             Return items
@@ -409,22 +413,53 @@ Public Class SurveyProvider
     End Function
 
 
-    Public Overrides Function SelectQuestionaireTypes(ByVal surveytypeid As Integer) As List(Of QuestionaireType)
+    Public Overrides Function SelectQuestionaireTypes(ByVal surveytypeid As Integer, ByVal questionairetypeid As Integer) As List(Of QuestionaireType)
 
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectQuestionaireTypes, surveytypeid)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectQuestionaireTypes, surveytypeid, questionairetypeid)
 
         Using rdr As New SafeDataReader(ExecuteReader(cmd))
             Dim items As New List(Of QuestionaireType)
             Dim Description As String
-            Dim Id As Integer
+            Dim QuestionaireType_id As Integer
+            Dim SurveyType_Id As Integer
             Do While rdr.Read
                 Description = rdr.GetString("Description")
-                Id = CType(rdr.GetInteger("id"), SurveyTypes)
-                items.Add(New QuestionaireType(Id, Description))
+                QuestionaireType_id = CType(rdr.GetInteger("QuestionaireType_id"), SurveyTypes)
+                SurveyType_Id = rdr.GetInteger("SurveyType_ID")
+                items.Add(New QuestionaireType(QuestionaireType_id, SurveyType_Id, Description))
             Loop
 
             Return items
         End Using
+
+    End Function
+
+
+    Public Overrides Function SelectSurveySubType(ByVal surveysubtypeid As Integer) As SurveySubType
+
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectSurveySubTypeBySubTypeID, surveysubtypeid)
+
+        Dim ds As DataSet = ExecuteDataSet(cmd)
+
+        If ds.Tables.Count > 0 Then
+            If ds.Tables(0).Rows.Count > 0 Then
+                Dim Description As String
+                Dim SurveySubType_Id As Integer
+                Dim SurveyType_Id As Integer
+                Dim QuestionaireType_Id As Integer
+
+                Description = ds.Tables(0).Rows(0)("SubType_NM").ToString
+                SurveySubType_Id = CType(ds.Tables(0).Rows(0)("SurveySubType_id"), SurveyTypes)
+                QuestionaireType_Id = CInt(ds.Tables(0).Rows(0)("QuestionaireType_ID"))
+                SurveyType_Id = CInt(ds.Tables(0).Rows(0)("SurveyType_ID"))
+
+                Return New SurveySubType(SurveySubType_Id, SurveyType_Id, Description, QuestionaireType_Id)
+
+            End If
+        End If
+
+        Return Nothing
+
 
     End Function
 End Class

@@ -955,13 +955,23 @@ Public Class Survey
 
     End Function
 
-    Public Shared Function GetQuestionaireTypes(ByVal surveytypeid As Integer) As List(Of QuestionaireType)
+    Public Shared Function GetQuestionaireTypes(ByVal surveytypeid As Integer, ByVal questionairetypeid As Integer) As List(Of QuestionaireType)
 
         Dim mQuestionaireList As New List(Of QuestionaireType)
 
-        mQuestionaireList = SurveyProvider.Instance.SelectQuestionaireTypes(surveytypeid)
+        mQuestionaireList = SurveyProvider.Instance.SelectQuestionaireTypes(surveytypeid, questionairetypeid)
 
         Return mQuestionaireList
+
+    End Function
+
+    Public Shared Function GetSurveySubType(ByVal surveySubTypeId As Integer) As SurveySubType
+
+        Dim mSurveySubtype As SurveySubType
+
+        mSurveySubtype = SurveyProvider.Instance.SelectSurveySubType(surveySubTypeId)
+
+        Return mSurveySubtype
 
     End Function
 

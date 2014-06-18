@@ -65,7 +65,8 @@ Namespace DataProvider
         Public MustOverride Function AllowDelete(ByVal surveyId As Integer) As Boolean
         Public MustOverride Function PerformSurveyValidation(ByVal surveyId As Integer) As SurveyValidationResult
         Public MustOverride Function SelectSurveySubTypes(ByVal surveytypeid As Integer) As List(Of SurveySubType)
-        Public MustOverride Function SelectQuestionaireTypes(ByVal surveytypeid As Integer) As List(Of QuestionaireType)
+        Public MustOverride Function SelectQuestionaireTypes(ByVal surveytypeid As Integer, ByVal questionairetypeid As Integer) As List(Of QuestionaireType)
+        Public MustOverride Function SelectSurveySubType(ByVal surveytypeid As Integer) As SurveySubType
 
 #End Region
 

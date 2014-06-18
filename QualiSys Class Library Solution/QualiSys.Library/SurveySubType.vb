@@ -2,7 +2,9 @@
 
 #Region "private fields"
     Private mSurveySubType_Id As Integer
+    Private mSurveyType_Id As Integer
     Private mDescription As String = String.Empty
+    Private mQuestionaireType_Id As Integer
 #End Region
 
 #Region "public properties"
@@ -30,6 +32,28 @@
         End Set
     End Property
 
+    Public Property SurveyTypeId() As Integer
+        Get
+            Return mSurveyType_Id
+        End Get
+        Private Set(ByVal value As Integer)
+            If Not value = mSurveyType_Id Then
+                mSurveyType_Id = value
+            End If
+        End Set
+    End Property
+
+    Public Property QuestionaireId() As Integer
+        Get
+            Return mQuestionaireType_Id
+        End Get
+        Private Set(ByVal value As Integer)
+            If Not value = mQuestionaireType_Id Then
+                mQuestionaireType_Id = value
+            End If
+        End Set
+    End Property
+
 #End Region
 
 #Region " Constructors "
@@ -40,10 +64,20 @@
     End Sub
 
 
-    Public Sub New(ByVal Id As Integer, ByVal Desc As String)
+    Public Sub New(ByVal Id As Integer, ByVal Desc As String, ByVal QuestionaireID As Integer)
 
         mSurveySubType_Id = Id
         mDescription = Desc
+        mQuestionaireType_Id = QuestionaireID
+
+    End Sub
+
+    Public Sub New(ByVal Id As Integer, ByVal SurveyID As Integer, ByVal Desc As String, ByVal QuestionaireID As Integer)
+
+        mSurveySubType_Id = Id
+        mDescription = Desc
+        mQuestionaireType_Id = QuestionaireID
+        mSurveyType_Id = SurveyID
 
     End Sub
 

@@ -42,7 +42,6 @@ Public Class SurveyPropertiesEditor
             survey.SurveyType = surveyType
 
             LoadSurveySubTypeComboBox(surveyType)
-            LoadQuestionaireTypeComboBox(surveyType)
 
             'lblResurveyMethod.Enabled = False
             ResurveyMethodComboBox.Enabled = False
@@ -173,7 +172,11 @@ Public Class SurveyPropertiesEditor
         LoadSurveySubTypeComboBox(surveyTypeID)
 
         'Questionaire Type list
-        LoadQuestionaireTypeComboBox(surveyTypeID)
+        Dim questionaireTypeID As Integer = 0
+        If Not mModule.EditingSurvey.SurveySubType Is Nothing Then
+            questionaireTypeID = mModule.EditingSurvey.SurveySubType.QuestionaireId
+        End If
+        LoadQuestionaireTypeComboBox(surveyTypeID, questionaireTypeID)
 
         'Facing name
         FacingNameTextBox.Text = mModule.EditingSurvey.ClientFacingName
@@ -436,6 +439,7 @@ Public Class SurveyPropertiesEditor
             .SurveyStartDate = SurveyStartDatePicker.Value
             .SurveyEndDate = SurveyEndDatePicker.Value
             .SurveySubType = CType(SurveySubTypeComboBox.SelectedItem, SurveySubType)
+            .QuestionaireType = CType(QuestionaireTypeComboBox.SelectedItem, QuestionaireType)
 
             Dim dateField As CutoffDateField = DirectCast(SampleEncounterDateComboBox.SelectedValue, CutoffDateField)
             If (dateField.CutoffDateFieldType = CutoffFieldType.NotApplicable) Then
@@ -519,8 +523,8 @@ Public Class SurveyPropertiesEditor
         End If
     End Sub
 
-    Private Sub LoadQuestionaireTypeComboBox(ByVal surveytypeid As Integer)
-        QuestionaireTypeComboBox.DataSource = Survey.GetQuestionaireTypes(surveytypeid)
+    Private Sub LoadQuestionaireTypeComboBox(ByVal surveytypeid As Integer, ByVal questionairetypeid As Integer)
+        QuestionaireTypeComboBox.DataSource = Survey.GetQuestionaireTypes(surveytypeid, questionairetypeid)
         QuestionaireTypeComboBox.DisplayMember = "Description"
         QuestionaireTypeComboBox.ValueMember = "Id"
         QuestionaireTypeComboBox.SelectedIndex = -1
@@ -532,4 +536,14 @@ Public Class SurveyPropertiesEditor
     End Sub
 #End Region
 
+    Private Sub SurveySubTypeComboBox_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles SurveySubTypeComboBox.SelectedIndexChanged
+
+        Dim SelectedSubType As SurveySubType = CType(SurveySubTypeComboBox.SelectedItem, SurveySubType)
+
+
+        LoadQuestionaireTypeComboBox(SelectedSubType.SurveyTypeId, SelectedSubType.QuestionaireId)
+
+
+
+    End Sub
 End Class
