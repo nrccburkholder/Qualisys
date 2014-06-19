@@ -405,24 +405,6 @@ Public Class Survey
     End Property
 
 
-    '<Logable()> _
-    'Public Property SurveySubType() As SurveySubType
-    '    Get
-    '        Return mSurveySubtype
-    '    End Get
-    '    Set(ByVal value As SurveySubType)
-    '        If Not mSurveySubtype Is Nothing Then
-    '            If mSurveySubtype.Id <> value.Id Then
-    '                mSurveySubtype = value
-    '                mIsDirty = True
-    '            End If
-    '        Else
-    '            mSurveySubtype = value
-    '        End If
-
-    '    End Set
-    'End Property
-
     <Logable()> _
     Public Property SurveySubType() As Integer
         Get
@@ -438,24 +420,6 @@ Public Class Survey
 
         End Set
     End Property
-
-    '<Logable()> _
-    'Public Property QuestionaireType() As QuestionaireType
-    '    Get
-    '        Return mQuestionaireType
-    '    End Get
-    '    Set(ByVal value As QuestionaireType)
-    '        If Not mQuestionaireType Is Nothing Then
-    '            If mQuestionaireType.Id <> value.Id Then
-    '                mQuestionaireType = value
-    '                mIsDirty = True
-    '            End If
-    '        Else
-    '            mQuestionaireType = value
-    '        End If
-
-    '    End Set
-    'End Property
 
     <Logable()> _
     Public Property QuestionaireType() As Integer

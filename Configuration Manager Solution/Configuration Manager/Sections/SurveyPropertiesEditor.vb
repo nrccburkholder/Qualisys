@@ -557,32 +557,12 @@ Public Class SurveyPropertiesEditor
             QuestionaireTypeComboBox.Enabled = False
         Else
             QuestionaireTypeComboBox.Enabled = True
-            'If QuestionaireTypeComboBox.Items.Count = 1 Then
-            '    ' if there is only 1 item, select it
-            '    QuestionaireTypeComboBox.SelectedIndex = 0
-            'End If
+
+            If Not mModule.EditingSurvey.QuestionaireType = Nothing Then
+                SurveySubTypeComboBox.SelectedValue = mModule.EditingSurvey.QuestionaireType
+            End If
         End If
     End Sub
-
-    'Private Function SetSurveySubType() As SurveySubType
-
-    '    If SurveySubTypeComboBox.SelectedItem Is Nothing Then
-    '        Return New SurveySubType(0, 0, String.Empty, 0)
-    '    Else
-    '        Return CType(SurveySubTypeComboBox.SelectedItem, SurveySubType)
-    '    End If
-
-    'End Function
-
-    'Private Function SetQuestionaireType() As QuestionaireType
-
-    '    If QuestionaireTypeComboBox.SelectedItem Is Nothing Then
-    '        Return New QuestionaireType()
-    '    Else
-    '        Return CType(QuestionaireTypeComboBox.SelectedItem, QuestionaireType)
-    '    End If
-
-    'End Function
 
 
     Private Function SetSurveySubType() As Integer
