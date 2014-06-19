@@ -14,6 +14,9 @@ Modified: MWB 5/19/2010
  Added delete from ExportSetCMSAvailableCount because
  with the change to using MedicareExportSets it is now possible to use the same GUID
  more than once.  Since we always want the data to be current we simply delete before the insert
+
+Modified: CJB 6/19/2014
+ Included Ineligible count (.big_table_view bt where HDisposition = ''03'') to be subtracted from AvailableCount (Export_HHCAHPSSampleunitAvailableCount)
           
 */            
 ALTER PROCEDURE [dbo].[DCL_ExportFileCMSAvailableCount]          
