@@ -29,8 +29,10 @@ Public Class Survey
     Private mResurveyMethod As ResurveyMethod
     Private mHouseHoldingType As HouseHoldingType
     Private mHouseHoldingColumns As StudyTableColumnCollection
-    Private mSurveySubtype As SurveySubType
-    Private mQuestionaireType As QuestionaireType
+    'Private mSurveySubtype As SurveySubType
+    'Private mQuestionaireType As QuestionaireType
+    Private mSurveySubtype As Integer = 0
+    Private mQuestionaireType As Integer = 0
 
     Private mIsDirty As Boolean
     Private mIsValidated As Boolean
@@ -403,39 +405,69 @@ Public Class Survey
     End Property
 
 
+    '<Logable()> _
+    'Public Property SurveySubType() As SurveySubType
+    '    Get
+    '        Return mSurveySubtype
+    '    End Get
+    '    Set(ByVal value As SurveySubType)
+    '        If Not mSurveySubtype Is Nothing Then
+    '            If mSurveySubtype.Id <> value.Id Then
+    '                mSurveySubtype = value
+    '                mIsDirty = True
+    '            End If
+    '        Else
+    '            mSurveySubtype = value
+    '        End If
+
+    '    End Set
+    'End Property
+
     <Logable()> _
-    Public Property SurveySubType() As SurveySubType
+    Public Property SurveySubType() As Integer
         Get
             Return mSurveySubtype
         End Get
-        Set(ByVal value As SurveySubType)
-            If Not mSurveySubtype Is Nothing Then
-                If mSurveySubtype.Id <> value.Id Then
-                    mSurveySubtype = value
-                    mIsDirty = True
-                End If
-            Else
+        Set(ByVal value As Integer)
+
+            If mSurveySubtype <> value Then
                 mSurveySubtype = value
+                mIsDirty = True
             End If
+
 
         End Set
     End Property
 
+    '<Logable()> _
+    'Public Property QuestionaireType() As QuestionaireType
+    '    Get
+    '        Return mQuestionaireType
+    '    End Get
+    '    Set(ByVal value As QuestionaireType)
+    '        If Not mQuestionaireType Is Nothing Then
+    '            If mQuestionaireType.Id <> value.Id Then
+    '                mQuestionaireType = value
+    '                mIsDirty = True
+    '            End If
+    '        Else
+    '            mQuestionaireType = value
+    '        End If
+
+    '    End Set
+    'End Property
 
     <Logable()> _
-    Public Property QuestionaireType() As QuestionaireType
+    Public Property QuestionaireType() As Integer
         Get
             Return mQuestionaireType
         End Get
-        Set(ByVal value As QuestionaireType)
-            If Not mQuestionaireType Is Nothing Then
-                If mQuestionaireType.Id <> value.Id Then
-                    mQuestionaireType = value
-                    mIsDirty = True
-                End If
-            Else
+        Set(ByVal value As Integer)
+            If mQuestionaireType <> value Then
                 mQuestionaireType = value
+                mIsDirty = True
             End If
+
 
         End Set
     End Property

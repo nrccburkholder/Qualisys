@@ -50,7 +50,8 @@ Public Class SurveyProvider
         End Select
         newObj.IsActive = rdr.GetBoolean("Active")
         newObj.ContractedLanguages = rdr.GetString("ContractedLanguages", String.Empty)
-
+        newObj.SurveySubType = rdr.GetInteger("SurveySubType_Id", 0)
+        newObj.QuestionaireType = rdr.GetInteger("QuestionaireType_Id", 0)
         newObj.ResetDirtyFlag()
 
         Return newObj
@@ -274,7 +275,7 @@ Public Class SurveyProvider
                                                            SafeDataReader.ToDBValue(.CutoffTableId, -1), SafeDataReader.ToDBValue(.CutoffFieldId, -1), _
                                                            SafeDataReader.ToDBValue(sampleEncounterTableId, -1), SafeDataReader.ToDBValue(sampleEncounterFieldId, -1), _
                                                            .ClientFacingName, .SurveyType, .SurveyTypeDefId, GetHouseHoldingTypeCharacter(.HouseHoldingType), .IsValidated, _
-                                                           SafeDataReader.ToDBValue(.DateValidated), .IsFormGenReleased, .ContractNumber, .IsActive, .ContractedLanguages, .SurveySubType.Id, .QuestionaireType.Id)
+                                                           SafeDataReader.ToDBValue(.DateValidated), .IsFormGenReleased, .ContractNumber, .IsActive, .ContractedLanguages, .SurveySubType, .QuestionaireType)
 
             ExecuteNonQuery(cmd, tran)
         End With

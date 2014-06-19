@@ -13,7 +13,7 @@
         Get
             Return mSurveySubType_Id
         End Get
-        Private Set(ByVal value As Integer)
+        Set(ByVal value As Integer)
             If Not value = mSurveySubType_Id Then
                 mSurveySubType_Id = value
             End If
@@ -36,7 +36,7 @@
         Get
             Return mSurveyType_Id
         End Get
-        Private Set(ByVal value As Integer)
+        Set(ByVal value As Integer)
             If Not value = mSurveyType_Id Then
                 mSurveyType_Id = value
             End If
@@ -47,7 +47,7 @@
         Get
             Return mQuestionaireType_Id
         End Get
-        Private Set(ByVal value As Integer)
+        Set(ByVal value As Integer)
             If Not value = mQuestionaireType_Id Then
                 mQuestionaireType_Id = value
             End If
