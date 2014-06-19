@@ -29,6 +29,10 @@ Public Class Survey
     Private mResurveyMethod As ResurveyMethod
     Private mHouseHoldingType As HouseHoldingType
     Private mHouseHoldingColumns As StudyTableColumnCollection
+    'Private mSurveySubtype As SurveySubType
+    'Private mQuestionaireType As QuestionaireType
+    Private mSurveySubtype As Integer = 0
+    Private mQuestionaireType As Integer = 0
 
     Private mIsDirty As Boolean
     Private mIsValidated As Boolean
@@ -400,6 +404,38 @@ Public Class Survey
                 mContractedLanguages = value
                 mIsDirty = True
             End If
+        End Set
+    End Property
+
+
+    <Logable()> _
+    Public Property SurveySubType() As Integer
+        Get
+            Return mSurveySubtype
+        End Get
+        Set(ByVal value As Integer)
+
+            If mSurveySubtype <> value Then
+                mSurveySubtype = value
+                mIsDirty = True
+            End If
+
+
+        End Set
+    End Property
+
+    <Logable()> _
+    Public Property QuestionaireType() As Integer
+        Get
+            Return mQuestionaireType
+        End Get
+        Set(ByVal value As Integer)
+            If mQuestionaireType <> value Then
+                mQuestionaireType = value
+                mIsDirty = True
+            End If
+
+
         End Set
     End Property
 
@@ -914,11 +950,11 @@ Public Class Survey
                                      ByVal samplingAlgorithmId As Integer, ByVal enforceSkip As Boolean, ByVal cutoffResponseCode As String, ByVal cutoffTableId As Integer, _
                                      ByVal cutoffFieldId As Integer, ByVal sampleEncounterField As StudyTableColumn, ByVal clientFacingName As String, _
                                      ByVal surveyTypeId As Integer, ByVal surveyTypeDefId As Integer, ByVal houseHoldingType As HouseHoldingType, _
-                                     ByVal contractNumber As String, ByVal isActive As Boolean, ByVal contractedLanguages As String) As Survey
+                                     ByVal contractNumber As String, ByVal isActive As Boolean, ByVal contractedLanguages As String, ByVal surveySubTypeId As Integer, ByVal questionaireId As Integer) As Survey
 
         Return SurveyProvider.Instance.Insert(studyId, name, description, responseRateRecalculationPeriod, resurveyMethodId, resurveyPeriod, surveyStartDate, surveyEndDate, _
                                               samplingAlgorithmId, enforceSkip, cutoffResponseCode, cutoffTableId, cutoffFieldId, sampleEncounterField, clientFacingName, _
-                                              surveyTypeId, surveyTypeDefId, houseHoldingType, contractNumber, isActive, contractedLanguages)
+                                              surveyTypeId, surveyTypeDefId, houseHoldingType, contractNumber, isActive, contractedLanguages, surveySubTypeId, questionaireId)
 
     End Function
 
@@ -927,6 +963,28 @@ Public Class Survey
         SurveyProvider.Instance.Delete(surveyId)
 
     End Sub
+
+
+    Public Shared Function GetSurveySubTypes(ByVal surveytypeid As Integer) As List(Of SurveySubType)
+
+        Dim mSurveySubTypeList As New List(Of SurveySubType)
+
+        mSurveySubTypeList = SurveyProvider.Instance.SelectSurveySubTypes(surveytypeid)
+
+        Return mSurveySubTypeList
+
+    End Function
+
+    Public Shared Function GetQuestionaireTypes(ByVal surveytypeid As Integer, ByVal questionairetypeid As Integer) As List(Of QuestionaireType)
+
+        Dim mQuestionaireList As New List(Of QuestionaireType)
+
+        mQuestionaireList = SurveyProvider.Instance.SelectQuestionaireTypes(surveytypeid, questionairetypeid)
+
+        Return mQuestionaireList
+
+    End Function
+
 #End Region
 
 #Region " ChangeLog Helper Functions "
@@ -1080,6 +1138,8 @@ Public Class Survey
             mBusinessRules = Nothing
             mIsActive = .mIsActive
             ContractedLanguages = .ContractedLanguages
+            mSurveySubtype = .mSurveySubtype
+            mQuestionaireType = .mQuestionaireType
         End With
 
         mIsDirty = False

@@ -50,7 +50,8 @@ Public Class SurveyProvider
         End Select
         newObj.IsActive = rdr.GetBoolean("Active")
         newObj.ContractedLanguages = rdr.GetString("ContractedLanguages", String.Empty)
-
+        newObj.SurveySubType = rdr.GetInteger("SurveySubType_Id", 0)
+        newObj.QuestionaireType = rdr.GetInteger("QuestionaireType_Id", 0)
         newObj.ResetDirtyFlag()
 
         Return newObj
@@ -293,7 +294,7 @@ Public Class SurveyProvider
                                                            SafeDataReader.ToDBValue(.CutoffTableId, -1), SafeDataReader.ToDBValue(.CutoffFieldId, -1), _
                                                            SafeDataReader.ToDBValue(sampleEncounterTableId, -1), SafeDataReader.ToDBValue(sampleEncounterFieldId, -1), _
                                                            .ClientFacingName, .SurveyType, .SurveyTypeDefId, GetHouseHoldingTypeCharacter(.HouseHoldingType), .IsValidated, _
-                                                           SafeDataReader.ToDBValue(.DateValidated), .IsFormGenReleased, .ContractNumber, .IsActive, .ContractedLanguages)
+                                                           SafeDataReader.ToDBValue(.DateValidated), .IsFormGenReleased, .ContractNumber, .IsActive, .ContractedLanguages, .SurveySubType, .QuestionaireType)
 
             ExecuteNonQuery(cmd, tran)
         End With
@@ -305,7 +306,7 @@ Public Class SurveyProvider
                                      ByVal samplingAlgorithmId As Integer, ByVal enforceSkip As Boolean, ByVal cutoffResponseCode As String, ByVal cutoffTableId As Integer, _
                                      ByVal cutoffFieldId As Integer, ByVal sampleEncounterField As StudyTableColumn, ByVal clientFacingName As String, ByVal surveyTypeId As Integer, _
                                      ByVal surveyTypeDefId As Integer, ByVal houseHoldingType As HouseHoldingType, ByVal contractNumber As String, ByVal isActive As Boolean, _
-                                     ByVal contractedLanguages As String) As Survey
+                                     ByVal contractedLanguages As String, ByVal surveySubTypeId As Integer, ByVal questionaireTypeId As Integer) As Survey
 
         Dim surveyId As Integer
 
@@ -327,7 +328,7 @@ Public Class SurveyProvider
                                                                    cutoffResponseCode, SafeDataReader.ToDBValue(cutoffTableId, -1), SafeDataReader.ToDBValue(cutoffFieldId, -1), _
                                                                    SafeDataReader.ToDBValue(sampleEncounterTableId, -1), SafeDataReader.ToDBValue(sampleEncounterFieldId, -1), _
                                                                    clientFacingName, surveyTypeId, surveyTypeDefId, GetHouseHoldingTypeCharacter(houseHoldingType), _
-                                                                   contractNumber, isActive, contractedLanguages)
+                                                                   contractNumber, isActive, contractedLanguages, surveySubTypeId, questionaireTypeId)
 
                     surveyId = ExecuteInteger(cmd, tran)
 
@@ -407,5 +408,53 @@ Public Class SurveyProvider
         Return result
 
     End Function
+
+    Public Overrides Function SelectSurveySubTypes(ByVal surveytypeid As Integer) As List(Of SurveySubType)
+
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectSurveySubTypes, surveytypeid)
+
+        Using rdr As New SafeDataReader(ExecuteReader(cmd))
+            Dim items As New List(Of SurveySubType)
+            Dim Description As String
+            Dim SurveySubType_Id As Integer
+            Dim SurveyType_Id As Integer
+            Dim QuestionaireType_Id As Integer = 0
+            Do While rdr.Read
+                Description = rdr.GetString("SubType_NM")
+                SurveySubType_Id = CType(rdr.GetInteger("SurveySubType_id"), SurveyTypes)
+                If Not rdr.IsDBNull("QuestionaireType_ID") Then
+                    QuestionaireType_Id = rdr.GetShort("QuestionaireType_ID")
+                End If
+                SurveyType_Id = rdr.GetInteger("SurveyType_ID")
+                items.Add(New SurveySubType(SurveySubType_Id, SurveyType_Id, Description, QuestionaireType_Id))
+            Loop
+
+            Return items
+        End Using
+
+    End Function
+
+
+    Public Overrides Function SelectQuestionaireTypes(ByVal surveytypeid As Integer, ByVal questionairetypeid As Integer) As List(Of QuestionaireType)
+
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectQuestionaireTypes, surveytypeid, questionairetypeid)
+
+        Using rdr As New SafeDataReader(ExecuteReader(cmd))
+            Dim items As New List(Of QuestionaireType)
+            Dim Description As String
+            Dim QuestionaireType_id As Integer
+            Dim SurveyType_Id As Integer
+            Do While rdr.Read
+                Description = rdr.GetString("Description")
+                QuestionaireType_id = CType(rdr.GetInteger("QuestionaireType_id"), SurveyTypes)
+                SurveyType_Id = rdr.GetInteger("SurveyType_ID")
+                items.Add(New QuestionaireType(QuestionaireType_id, SurveyType_Id, Description))
+            Loop
+
+            Return items
+        End Using
+
+    End Function
+
 
 End Class
