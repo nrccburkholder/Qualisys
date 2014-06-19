@@ -583,7 +583,6 @@ Public Class Survey
 
     Public Property IsReportable() As Boolean
         Get
-            'TODO: If SurveyRules.HasReportability
             If (Me.HasReportability) Then
                 If (mSurveyTypeDefId = ReportStatus.Reportable) Then
                     Return True
@@ -595,7 +594,6 @@ Public Class Survey
             End If
         End Get
         Set(ByVal value As Boolean)
-            'TODO: If SurveyRules.HasReportability
             If (Me.HasReportability) Then
                 If value Then
                     SurveyTypeDefId = ReportStatus.Reportable
@@ -624,7 +622,6 @@ Public Class Survey
 
     Public ReadOnly Property IsSurveyTypeEditable() As Boolean
         Get
-            'TODO: SurveyRules.NotEditableIfSampled
             If (Me.NotEditableIfSampled AndAlso IsSampled) Then
                 Return False
             Else

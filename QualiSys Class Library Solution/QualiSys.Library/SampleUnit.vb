@@ -12,12 +12,6 @@ Public Class SampleUnit
     Private mTarget As Integer
     Private mPriority As Integer
     Private mSelectionType As SampleSelectionType
-    'TODO: SurveyRules: remove these next 5
-    'Private mIsHCAHPS As Boolean
-    'Private mIsACOCAHPS As Boolean
-    'Private mIsHHCAHPS As Boolean
-    'Private mIsCHART As Boolean
-    'Private mIsMNCM As Boolean
     Private mIsSuppressed As Boolean
     Private mInitialResponseRate As Integer
     Private mCriteria As Criteria

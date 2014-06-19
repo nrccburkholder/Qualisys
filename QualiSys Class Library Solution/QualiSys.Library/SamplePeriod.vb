@@ -484,7 +484,6 @@ Public Class SamplePeriod
         End If
 
         Dim survey As Survey = survey.Get(Me.SurveyId)
-        'TODO: If SurveyRules.IsMonthlyOnly
         If Not survey Is Nothing AndAlso survey.IsMonthlyOnly AndAlso HasSamplesPulled = False AndAlso _
             (ExpectedStartDate.HasValue = False OrElse ExpectedEndDate.HasValue = False) Then
             e.Description = "Periods for HCAHPS surveys cannot have null encounter dates"
@@ -492,7 +491,6 @@ Public Class SamplePeriod
         End If
 
         'Only check HCAHPS setup for periods that have not been sampled for yet
-        'TODO: If SurveyRules.IsMonthlyOnly
         If Not survey Is Nothing AndAlso survey.IsMonthlyOnly AndAlso HasSamplesPulled = False AndAlso _
             (ExpectedStartDate.HasValue = True OrElse ExpectedEndDate.HasValue = True) Then
             If Me.ExpectedStartDate.Value.Day <> 1 OrElse Me.ExpectedEndDate.Value.AddDays(1).Day <> 1 AndAlso _

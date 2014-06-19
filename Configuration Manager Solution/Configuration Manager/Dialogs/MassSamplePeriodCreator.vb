@@ -20,7 +20,6 @@ Public Class MassSamplePeriodCreator
         Next
 
         'IF HCAHPS select Monthly and don't let it be edited.  
-        'TODO: If SurveyRules.IsMonthlyOnly
         If mSurvey.IsMonthlyOnly Then
             Me.PeriodTimeSpanComboBoxEdit.SelectedIndex = 1
             Me.PeriodTimeSpanComboBoxEdit.Enabled = False
@@ -66,7 +65,6 @@ Public Class MassSamplePeriodCreator
                 Case "Quarterly"
                     newPeriod.ExpectedEndDate = newPeriod.ExpectedStartDate.Value.AddMonths(3).AddDays(-1)
             End Select
-            'TODO: If SurveyRules.IsMonthlyOnly
             If Me.mSurvey.IsMonthlyOnly Then
                 newPeriod.Name = newPeriod.ExpectedStartDate.Value.ToString("MMM") & newPeriod.ExpectedStartDate.Value.ToString("yy")
             Else

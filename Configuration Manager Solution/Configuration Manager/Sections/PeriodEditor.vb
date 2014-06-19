@@ -31,7 +31,6 @@ Public Class PeriodEditor
         If Me.InformationBar.Information = String.Empty Then Me.WorkAreaPanel.Location = New Point(0, 0)
 
         'Hide date columns based on survey type
-        'TODO: SurveyRules IsMonthly
         Me.colMonth.Visible = Me.mModule.Survey.IsMonthlyOnly
         Me.colYear.Visible = Me.mModule.Survey.IsMonthlyOnly
         Me.colExpectedEndDate.Visible = Not Me.mModule.Survey.IsMonthlyOnly
