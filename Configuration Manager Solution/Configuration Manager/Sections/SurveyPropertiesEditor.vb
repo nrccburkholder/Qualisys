@@ -43,6 +43,14 @@ Public Class SurveyPropertiesEditor
 
             LoadSurveySubTypeComboBox(surveyType)
 
+
+            Dim surveytypeid As Integer = 0
+            Dim questionairetypeid As Integer = 0
+
+            surveytypeid = surveyType
+
+            LoadQuestionaireTypeComboBox(surveytypeid, questionairetypeid)
+
             'lblResurveyMethod.Enabled = False
             ResurveyMethodComboBox.Enabled = False
             SamplingAlgorithmComboBox.SelectedValue = [Enum].Parse(GetType(SamplingAlgorithm), survey.SamplingAlgorithmDefault)
@@ -189,8 +197,16 @@ Public Class SurveyPropertiesEditor
         SurveySubTypeComboBox.SelectedValue = mModule.EditingSurvey.SurveySubType
 
 
+
         'Questionaire Type list
-        LoadQuestionaireTypeComboBox(mModule.EditingSurvey.SurveySubType, mModule.EditingSurvey.QuestionaireType)
+        Dim questionaireTypeID As Integer = 0
+
+        If Not SurveySubTypeComboBox.SelectedItem Is Nothing Then
+            questionaireTypeID = CType(SurveySubTypeComboBox.SelectedItem, SurveySubType).QuestionaireId
+        End If
+
+
+        LoadQuestionaireTypeComboBox(surveyTypeID, questionaireTypeID)
         QuestionaireTypeComboBox.SelectedValue = mModule.EditingSurvey.QuestionaireType
 
         'Facing name
@@ -516,14 +532,13 @@ Public Class SurveyPropertiesEditor
         SurveySubTypeComboBox.SelectedIndex = -1
         If SurveySubTypeComboBox.Items.Count = 0 Then
             SurveySubTypeComboBox.Enabled = False
+            QuestionaireTypeComboBox.SelectedIndex = -1
         Else
             SurveySubTypeComboBox.Enabled = True
         End If
     End Sub
 
     Private Sub LoadQuestionaireTypeComboBox(ByVal surveytypeid As Integer, ByVal questionairetypeid As Integer)
-
-
         QuestionaireTypeComboBox.DataSource = Survey.GetQuestionaireTypes(surveytypeid, questionairetypeid)
         QuestionaireTypeComboBox.DisplayMember = "Description"
         QuestionaireTypeComboBox.ValueMember = "Id"
