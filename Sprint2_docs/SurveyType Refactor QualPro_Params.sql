@@ -27,6 +27,8 @@ insert into qualpro_params (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_V
 insert into qualpro_params (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, COMMENTS) VALUES
 ('SurveyRule: SamplingMethodDefault - ACOCAHPS','S','ACOCAHPS','Census','Rule to set default sampling method for Config Man')
 insert into qualpro_params (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, COMMENTS) VALUES
+('SurveyRule: SamplingMethodDefault - ICHCAHPS','S','ICHCAHPS','Census','Rule to set default sampling method for Config Man')
+insert into qualpro_params (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, COMMENTS) VALUES
 ('SurveyRule: SamplingMethodDefault','S','SurveyRules','Specify Targets','Rule to set default sampling method for Config Man')
 
 insert into qualpro_params (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, COMMENTS) VALUES
