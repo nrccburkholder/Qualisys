@@ -1,5 +1,7 @@
 use QP_Prod
 
+
+--truncate table  [dbo].SurveyTypeDispositions
 /*
 
 1	NRC/Picker
@@ -20,8 +22,8 @@ SELECT [Disposition_ID]
       ,[ACOCAHPSValue] 
       ,[ACOCAHPSHierarchy]
       ,[ACOCAHPSDesc] 
-	  ,NULL
       ,[ExportReportResponses]
+	  ,NULL
 	  ,10
   FROM [dbo].[ACOCAHPSDispositions]
 
@@ -29,9 +31,9 @@ INSERT INTO [dbo].SurveyTypeDispositions
 SELECT [Disposition_ID]
       ,[HCAHPSValue]
       ,[HCAHPSHierarchy]
-	  ,[HCAHPSDesc]
-      ,NULL
+	  ,[HCAHPSDesc]    
       ,[ExportReportResponses]
+	  ,NULL
 	  ,2
   FROM [dbo].[HCAHPSDispositions]
 
@@ -39,9 +41,9 @@ INSERT INTO [dbo].SurveyTypeDispositions
 SELECT [Disposition_ID]
       ,[HHCAHPSValue]
       ,[HHCAHPSHierarchy]
-      ,[HHCAHPSDesc]
-	  ,[ReceiptType_ID]
+      ,[HHCAHPSDesc]  
       ,[ExportReportResponses]
+	  ,[ReceiptType_ID]
 	  ,3
   FROM [dbo].[HHCAHPSDispositions]
 
@@ -49,9 +51,9 @@ SELECT [Disposition_ID]
 SELECT [Disposition_ID]
       ,[MNCMValue]
       ,[MNCMHierarchy]
-      ,[MNCMDesc]
-	  ,[ReceiptType_ID]
+      ,[MNCMDesc]	  
       ,[ExportReportResponses]
+	  ,[ReceiptType_ID]
 	  ,4
   FROM [dbo].[MNCMDispositions]
 
