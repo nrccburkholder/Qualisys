@@ -266,7 +266,7 @@
     <Compile Include="Navigation\SurveyNavNode.vb">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="QuestionaireType.vb" />
+    <Compile Include="QuestionnaireType.vb" />
     <Compile Include="QuestionSection.vb" />
     <Compile Include="SamplePeriodScheduledSample.vb" />
     <Compile Include="SampleUnitSectionMapping.vb" />

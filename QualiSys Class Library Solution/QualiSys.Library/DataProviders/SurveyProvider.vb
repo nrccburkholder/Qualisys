@@ -60,13 +60,13 @@ Namespace DataProvider
                                             ByVal isActive As Boolean,
                                             ByVal contractedLanguages As String,
                                             ByVal surveySubTypeId As Integer,
-                                            ByVal questionaireTypeId As Integer
+                                            ByVal questionnaireTypeId As Integer
                                            ) As Survey
         Public MustOverride Sub Delete(ByVal surveyId As Integer)
         Public MustOverride Function AllowDelete(ByVal surveyId As Integer) As Boolean
         Public MustOverride Function PerformSurveyValidation(ByVal surveyId As Integer) As SurveyValidationResult
         Public MustOverride Function SelectSurveySubTypes(ByVal surveytypeid As Integer) As List(Of SurveySubType)
-        Public MustOverride Function SelectQuestionaireTypes(ByVal surveytypeid As Integer, ByVal questionairetypeid As Integer) As List(Of QuestionaireType)
+        Public MustOverride Function SelectQuestionnaireTypes(ByVal surveytypeid As Integer, ByVal questionnairetypeid As Integer) As List(Of QuestionnaireType)
 
 #End Region
 

@@ -1,6 +1,6 @@
 USE QP_PROD
 
 
--- add QuestionaireType_ID to SURVEY_DEF
+-- add QuestionnaireType_ID to SURVEY_DEF
 ALTER TABLE SURVEY_DEF
-ADD QuestionaireType_ID int NULL
+ADD QuestionnaireType_ID int NULL

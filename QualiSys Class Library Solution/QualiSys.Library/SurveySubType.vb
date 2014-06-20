@@ -4,7 +4,7 @@
     Private mSurveySubType_Id As Integer
     Private mSurveyType_Id As Integer
     Private mDescription As String = String.Empty
-    Private mQuestionaireType_Id As Integer
+    Private mQuestionnaireType_Id As Integer
 #End Region
 
 #Region "public properties"
@@ -43,13 +43,13 @@
         End Set
     End Property
 
-    Public Property QuestionaireId() As Integer
+    Public Property QuestionnaireId() As Integer
         Get
-            Return mQuestionaireType_Id
+            Return mQuestionnaireType_Id
         End Get
         Set(ByVal value As Integer)
-            If Not value = mQuestionaireType_Id Then
-                mQuestionaireType_Id = value
+            If Not value = mQuestionnaireType_Id Then
+                mQuestionnaireType_Id = value
             End If
         End Set
     End Property
@@ -64,19 +64,19 @@
     End Sub
 
 
-    Public Sub New(ByVal Id As Integer, ByVal Desc As String, ByVal QuestionaireID As Integer)
+    Public Sub New(ByVal Id As Integer, ByVal Desc As String, ByVal QuestionnaireID As Integer)
 
         mSurveySubType_Id = Id
         mDescription = Desc
-        mQuestionaireType_Id = QuestionaireID
+        mQuestionnaireType_Id = QuestionnaireID
 
     End Sub
 
-    Public Sub New(ByVal Id As Integer, ByVal SurveyID As Integer, ByVal Desc As String, ByVal QuestionaireID As Integer)
+    Public Sub New(ByVal Id As Integer, ByVal SurveyID As Integer, ByVal Desc As String, ByVal QuestionnaireID As Integer)
 
         mSurveySubType_Id = Id
         mDescription = Desc
-        mQuestionaireType_Id = QuestionaireID
+        mQuestionnaireType_Id = QuestionnaireID
         mSurveyType_Id = SurveyID
 
     End Sub

@@ -30,9 +30,9 @@ Public Class Survey
     Private mHouseHoldingType As HouseHoldingType
     Private mHouseHoldingColumns As StudyTableColumnCollection
     'Private mSurveySubtype As SurveySubType
-    'Private mQuestionaireType As QuestionaireType
+    'Private mQuestionnaireType As QuestionnaireType
     Private mSurveySubtype As Integer = 0
-    Private mQuestionaireType As Integer = 0
+    Private mQuestionnaireType As Integer = 0
 
     Private mIsDirty As Boolean
     Private mIsValidated As Boolean
@@ -425,13 +425,13 @@ Public Class Survey
     End Property
 
     <Logable()> _
-    Public Property QuestionaireType() As Integer
+    Public Property QuestionnaireType() As Integer
         Get
-            Return mQuestionaireType
+            Return mQuestionnaireType
         End Get
         Set(ByVal value As Integer)
-            If mQuestionaireType <> value Then
-                mQuestionaireType = value
+            If mQuestionnaireType <> value Then
+                mQuestionnaireType = value
                 mIsDirty = True
             End If
 
@@ -947,11 +947,11 @@ Public Class Survey
                                      ByVal samplingAlgorithmId As Integer, ByVal enforceSkip As Boolean, ByVal cutoffResponseCode As String, ByVal cutoffTableId As Integer, _
                                      ByVal cutoffFieldId As Integer, ByVal sampleEncounterField As StudyTableColumn, ByVal clientFacingName As String, _
                                      ByVal surveyTypeId As Integer, ByVal surveyTypeDefId As Integer, ByVal houseHoldingType As HouseHoldingType, _
-                                     ByVal contractNumber As String, ByVal isActive As Boolean, ByVal contractedLanguages As String, ByVal surveySubTypeId As Integer, ByVal questionaireId As Integer) As Survey
+                                     ByVal contractNumber As String, ByVal isActive As Boolean, ByVal contractedLanguages As String, ByVal surveySubTypeId As Integer, ByVal questionnaireId As Integer) As Survey
 
         Return SurveyProvider.Instance.Insert(studyId, name, description, responseRateRecalculationPeriod, resurveyMethodId, resurveyPeriod, surveyStartDate, surveyEndDate, _
                                               samplingAlgorithmId, enforceSkip, cutoffResponseCode, cutoffTableId, cutoffFieldId, sampleEncounterField, clientFacingName, _
-                                              surveyTypeId, surveyTypeDefId, houseHoldingType, contractNumber, isActive, contractedLanguages, surveySubTypeId, questionaireId)
+                                              surveyTypeId, surveyTypeDefId, houseHoldingType, contractNumber, isActive, contractedLanguages, surveySubTypeId, questionnaireId)
 
     End Function
 
@@ -972,13 +972,13 @@ Public Class Survey
 
     End Function
 
-    Public Shared Function GetQuestionaireTypes(ByVal surveytypeid As Integer, ByVal questionairetypeid As Integer) As List(Of QuestionaireType)
+    Public Shared Function GetQuestionnaireTypes(ByVal surveytypeid As Integer, ByVal questionnairetypeid As Integer) As List(Of QuestionnaireType)
 
-        Dim mQuestionaireList As New List(Of QuestionaireType)
+        Dim mQuestionnaireList As New List(Of QuestionnaireType)
 
-        mQuestionaireList = SurveyProvider.Instance.SelectQuestionaireTypes(surveytypeid, questionairetypeid)
+        mQuestionnaireList = SurveyProvider.Instance.SelectQuestionnaireTypes(surveytypeid, questionnairetypeid)
 
-        Return mQuestionaireList
+        Return mQuestionnaireList
 
     End Function
 
@@ -1136,7 +1136,7 @@ Public Class Survey
             mIsActive = .mIsActive
             ContractedLanguages = .ContractedLanguages
             mSurveySubtype = .mSurveySubtype
-            mQuestionaireType = .mQuestionaireType
+            mQuestionnaireType = .mQuestionnaireType
         End With
 
         mIsDirty = False

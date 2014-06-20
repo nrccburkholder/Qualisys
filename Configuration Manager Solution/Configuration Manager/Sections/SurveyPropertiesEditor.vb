@@ -45,11 +45,11 @@ Public Class SurveyPropertiesEditor
 
 
             Dim surveytypeid As Integer = 0
-            Dim questionairetypeid As Integer = 0
+            Dim questionnairetypeid As Integer = 0
 
             surveytypeid = surveyType
 
-            LoadQuestionaireTypeComboBox(surveytypeid, questionairetypeid)
+            LoadQuestionnaireTypeComboBox(surveytypeid, questionnairetypeid)
 
             'lblResurveyMethod.Enabled = False
             ResurveyMethodComboBox.Enabled = False
@@ -134,14 +134,14 @@ Public Class SurveyPropertiesEditor
         Dim SelectedSubType As SurveySubType = CType(SurveySubTypeComboBox.SelectedItem, SurveySubType)
 
         Dim surveytypeid As Integer = 0
-        Dim questionairetypeid As Integer = 0
+        Dim questionnairetypeid As Integer = 0
 
         If Not SelectedSubType Is Nothing Then
             surveytypeid = SelectedSubType.SurveyTypeId
-            questionairetypeid = SelectedSubType.QuestionaireId
+            questionnairetypeid = SelectedSubType.QuestionnaireId
         End If
 
-        LoadQuestionaireTypeComboBox(surveytypeid, questionairetypeid)
+        LoadQuestionnaireTypeComboBox(surveytypeid, questionnairetypeid)
 
 
     End Sub
@@ -188,7 +188,6 @@ Public Class SurveyPropertiesEditor
             SurveyTypeComboBox.SelectedIndex = 0
         End If
 
-
         SurveyTypeComboBox.Enabled = mModule.EditingSurvey.IsSurveyTypeEditable
 
         'Survey SubType list
@@ -196,18 +195,15 @@ Public Class SurveyPropertiesEditor
         LoadSurveySubTypeComboBox(surveyTypeID)
         SurveySubTypeComboBox.SelectedValue = mModule.EditingSurvey.SurveySubType
 
-
-
-        'Questionaire Type list
-        Dim questionaireTypeID As Integer = 0
+        'questionnaire Type list
+        Dim questionnaireTypeID As Integer = 0
 
         If Not SurveySubTypeComboBox.SelectedItem Is Nothing Then
-            questionaireTypeID = CType(SurveySubTypeComboBox.SelectedItem, SurveySubType).QuestionaireId
+            questionnaireTypeID = CType(SurveySubTypeComboBox.SelectedItem, SurveySubType).QuestionnaireId
         End If
 
-
-        LoadQuestionaireTypeComboBox(surveyTypeID, questionaireTypeID)
-        QuestionaireTypeComboBox.SelectedValue = mModule.EditingSurvey.QuestionaireType
+        LoadQuestionnaireTypeComboBox(surveyTypeID, questionnaireTypeID)
+        QuestionnaireTypeComboBox.SelectedValue = mModule.EditingSurvey.QuestionnaireType
 
         'Facing name
         FacingNameTextBox.Text = mModule.EditingSurvey.ClientFacingName
@@ -469,7 +465,7 @@ Public Class SurveyPropertiesEditor
             .SurveyStartDate = SurveyStartDatePicker.Value
             .SurveyEndDate = SurveyEndDatePicker.Value
             .SurveySubType = SetSurveySubType()
-            .QuestionaireType = SetQuestionaireType()
+            .QuestionnaireType = SetQuestionnaireType()
 
             Dim dateField As CutoffDateField = DirectCast(SampleEncounterDateComboBox.SelectedValue, CutoffDateField)
             If (dateField.CutoffDateFieldType = CutoffFieldType.NotApplicable) Then
@@ -532,21 +528,21 @@ Public Class SurveyPropertiesEditor
         SurveySubTypeComboBox.SelectedIndex = -1
         If SurveySubTypeComboBox.Items.Count = 0 Then
             SurveySubTypeComboBox.Enabled = False
-            QuestionaireTypeComboBox.SelectedIndex = -1
+            QuestionnaireTypeComboBox.SelectedIndex = -1
         Else
             SurveySubTypeComboBox.Enabled = True
         End If
     End Sub
 
-    Private Sub LoadQuestionaireTypeComboBox(ByVal surveytypeid As Integer, ByVal questionairetypeid As Integer)
-        QuestionaireTypeComboBox.DataSource = Survey.GetQuestionaireTypes(surveytypeid, questionairetypeid)
-        QuestionaireTypeComboBox.DisplayMember = "Description"
-        QuestionaireTypeComboBox.ValueMember = "Id"
-        QuestionaireTypeComboBox.SelectedIndex = -1
-        If QuestionaireTypeComboBox.Items.Count = 0 Then
-            QuestionaireTypeComboBox.Enabled = False
+    Private Sub LoadQuestionnaireTypeComboBox(ByVal surveytypeid As Integer, ByVal questionnairetypeid As Integer)
+        QuestionnaireTypeComboBox.DataSource = Survey.GetQuestionnaireTypes(surveytypeid, questionnairetypeid)
+        QuestionnaireTypeComboBox.DisplayMember = "Description"
+        QuestionnaireTypeComboBox.ValueMember = "Id"
+        QuestionnaireTypeComboBox.SelectedIndex = -1
+        If QuestionnaireTypeComboBox.Items.Count = 0 Then
+            QuestionnaireTypeComboBox.Enabled = False
         Else
-            QuestionaireTypeComboBox.Enabled = True
+            QuestionnaireTypeComboBox.Enabled = True
         End If
     End Sub
 
@@ -561,16 +557,19 @@ Public Class SurveyPropertiesEditor
 
     End Function
 
-    Private Function SetQuestionaireType() As Integer
+    Private Function SetQuestionnaireType() As Integer
 
-        If QuestionaireTypeComboBox.SelectedItem Is Nothing Then
+        If QuestionnaireTypeComboBox.SelectedItem Is Nothing Then
             Return Nothing
         Else
-            Return CType(QuestionaireTypeComboBox.SelectedItem, QuestionaireType).Id
+            Return CType(QuestionnaireTypeComboBox.SelectedItem, QuestionnaireType).Id
         End If
 
     End Function
 #End Region
 
     
+    Private Sub WorkAreaPanel_Paint(sender As System.Object, e As System.Windows.Forms.PaintEventArgs) Handles WorkAreaPanel.Paint
+
+    End Sub
 End Class

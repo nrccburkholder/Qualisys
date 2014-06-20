@@ -24,7 +24,7 @@ Partial Class SurveyPropertiesEditor
         Me.BottomPanel = New System.Windows.Forms.Panel()
         Me.WorkAreaPanel = New System.Windows.Forms.Panel()
         Me.Label6 = New System.Windows.Forms.Label()
-        Me.QuestionaireTypeComboBox = New System.Windows.Forms.ComboBox()
+        Me.QuestionnaireTypeComboBox = New System.Windows.Forms.ComboBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.SurveySubTypeComboBox = New System.Windows.Forms.ComboBox()
         Me.ContractedLanguagesListBox = New System.Windows.Forms.CheckedListBox()
@@ -112,7 +112,7 @@ Partial Class SurveyPropertiesEditor
         '
         Me.WorkAreaPanel.AutoScroll = True
         Me.WorkAreaPanel.Controls.Add(Me.Label6)
-        Me.WorkAreaPanel.Controls.Add(Me.QuestionaireTypeComboBox)
+        Me.WorkAreaPanel.Controls.Add(Me.QuestionnaireTypeComboBox)
         Me.WorkAreaPanel.Controls.Add(Me.Label2)
         Me.WorkAreaPanel.Controls.Add(Me.SurveySubTypeComboBox)
         Me.WorkAreaPanel.Controls.Add(Me.ContractedLanguagesListBox)
@@ -162,21 +162,21 @@ Partial Class SurveyPropertiesEditor
         Me.Label6.AutoSize = True
         Me.Label6.Location = New System.Drawing.Point(5, 137)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(107, 13)
+        Me.Label6.Size = New System.Drawing.Size(113, 13)
         Me.Label6.TabIndex = 38
-        Me.Label6.Text = "Questionaire Version:"
+        Me.Label6.Text = "Questionnaire Version:"
         Me.Label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'QuestionaireTypeComboBox
+        'QuestionnaireTypeComboBox
         '
-        Me.QuestionaireTypeComboBox.DisplayMember = "Label"
-        Me.QuestionaireTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.QuestionaireTypeComboBox.FormattingEnabled = True
-        Me.QuestionaireTypeComboBox.Location = New System.Drawing.Point(176, 134)
-        Me.QuestionaireTypeComboBox.Name = "QuestionaireTypeComboBox"
-        Me.QuestionaireTypeComboBox.Size = New System.Drawing.Size(306, 21)
-        Me.QuestionaireTypeComboBox.TabIndex = 37
-        Me.QuestionaireTypeComboBox.ValueMember = "Value"
+        Me.QuestionnaireTypeComboBox.DisplayMember = "Label"
+        Me.QuestionnaireTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.QuestionnaireTypeComboBox.FormattingEnabled = True
+        Me.QuestionnaireTypeComboBox.Location = New System.Drawing.Point(176, 134)
+        Me.QuestionnaireTypeComboBox.Name = "QuestionnaireTypeComboBox"
+        Me.QuestionnaireTypeComboBox.Size = New System.Drawing.Size(306, 21)
+        Me.QuestionnaireTypeComboBox.TabIndex = 37
+        Me.QuestionnaireTypeComboBox.ValueMember = "Value"
         '
         'Label2
         '
@@ -680,6 +680,6 @@ Partial Class SurveyPropertiesEditor
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents SurveySubTypeComboBox As System.Windows.Forms.ComboBox
     Friend WithEvents Label6 As System.Windows.Forms.Label
-    Friend WithEvents QuestionaireTypeComboBox As System.Windows.Forms.ComboBox
+    Friend WithEvents QuestionnaireTypeComboBox As System.Windows.Forms.ComboBox
 
 End Class
