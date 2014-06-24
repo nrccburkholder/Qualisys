@@ -11,7 +11,7 @@ if object_id('tempdb..#aco') is not null
 	drop table #aco
 
 select sp.SAMPLEPOP_ID, sp.study_id
-, convert(tinyint,null) as ATACnt, convert(tinyint,null) as ATAComplete, convert(tinyint,null) as MeasuresCnt, convert(tinyint,null) as MeasuresComplete
+, convert(tinyint,null) as ATACnt, convert(tinyint,null) as ATAComplete, convert(tinyint,null) as MeasureCnt, convert(tinyint,null) as MeasureComplete
 , convert(tinyint,null) as ACODisposition, convert(tinyint,null) as RecalcACODisposition, convert(varchar(50), NULL) as TableName
 into #aco
 from qualisys.qp_prod.dbo.samplepop sp
@@ -55,7 +55,7 @@ alter procedure [dbo].[ACODispositionRecalc]
 AS
 BEGIN
 	-- declare @samplepop_id int set @samplepop_id=95467168
-	DECLARE @ATACnt INT, @Cnt INT, @ATAComplete bit, @MeasuresComplete bit, @study varchar(10), @SQL nvarchar(max), @Qtr varchar(10)
+	DECLARE @ATACnt INT, @Cnt INT, @ATAComplete bit, @MeasureComplete bit, @study varchar(10), @SQL nvarchar(max), @Qtr varchar(10)
 
 	set @sql=''
 	select @SQL = @SQL + '
@@ -141,7 +141,7 @@ BEGIN
 	-- * questionform_id has been changed to samplepop_id
 	-- * Disposition has been changed to RecalcACODisposition
 	-- * this version already has RecalcACODisposition populated for non-returns, so the assignment of RecalcACOdisposition=255 is a little different
-	update #ACO set ATAcnt=0, ATAcomplete=0, MeasuresCnt=0, MeasuresComplete=0
+	update #ACO set ATAcnt=0, ATAcomplete=0, MeasureCnt=0, MeasureComplete=0
 
 	update #ACO set RecalcACOdisposition=255
 	from #ACO qf
@@ -281,7 +281,7 @@ BEGIN
 		on qf.samplepop_id=sub.samplepop_id
 
 	update qf
-	set MeasuresCnt=sub.cnt, MeasuresComplete=case when sub.cnt >= 1 then 1 else 0 end
+	set MeasureCnt=sub.cnt, MeasureComplete=case when sub.cnt >= 1 then 1 else 0 end
 	from #ACO qf
 	inner join (SELECT samplepop_id, COUNT(distinct qstncore) as cnt
 				FROM #QR
@@ -330,9 +330,9 @@ BEGIN
 
 	update #ACO 
 	set RecalcACOdisposition=
-		case when ATAComplete=1 and MeasuresComplete=1
+		case when ATAComplete=1 and MeasureComplete=1
 			then 10 -- complete
-		when ATAComplete=0 and MeasuresComplete=1
+		when ATAComplete=0 and MeasureComplete=1
 			then 31 -- partial
 		else
 			34 -- blank/incomplete

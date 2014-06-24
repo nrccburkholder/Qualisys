@@ -18,8 +18,8 @@ BEGIN
 	-- questionform_id int
 	-- ATAcnt tinyint
 	-- ATAcomplete bit
-	-- MeasuresCnt tinyint
-	-- MeasuresComplete bit
+	-- MeasureCnt tinyint
+	-- MeasureComplete bit
 	-- Disposition tinyint 
 	
 
@@ -28,7 +28,7 @@ BEGIN
 			select qr.questionform_id, QstnCore,intResponseVal from QuestionResult qr, #ACOQF qf where qr.QuestionForm_id=qf.QuestionForm_id
 			union all select qr.questionform_id, QstnCore,intResponseVal from QuestionResult2 qr, #ACOQF qf where qr.QuestionForm_id=qf.QuestionForm_id
 	
-	update #ACOQF set ATAcnt=0, ATAcomplete=0, MeasuresCnt=0, MeasuresComplete=0, Disposition=0
+	update #ACOQF set ATAcnt=0, ATAcomplete=0, MeasureCnt=0, MeasureComplete=0, Disposition=0
 
 	update #ACOQF set disposition=255
 	from #ACOQF qf
@@ -167,7 +167,7 @@ BEGIN
 		on qf.questionform_id=sub.questionform_id
 
 	update qf
-	set MeasuresCnt=sub.cnt, MeasuresComplete=case when sub.cnt >= 1 then 1 else 0 end
+	set MeasureCnt=sub.cnt, MeasureComplete=case when sub.cnt >= 1 then 1 else 0 end
 	from #ACOQF qf
 	inner join (SELECT questionform_id, COUNT(distinct qstncore) as cnt
 				FROM #QR
@@ -216,9 +216,9 @@ BEGIN
 
 	update #ACOQF 
 	set Disposition=
-		case when ATAComplete=1 and MeasuresComplete=1
+		case when ATAComplete=1 and MeasureComplete=1
 			then 10 -- complete
-		when ATAComplete=0 and MeasuresComplete=1
+		when ATAComplete=0 and MeasureComplete=1
 			then 31 -- partial
 		else
 			34 -- blank/incomplete
@@ -751,7 +751,7 @@ AS
     WHERE  i.QuestionForm_id = cqw.QuestionForm_id 
 
     --ACO CAHPS Dispositions
-    select cqw.questionform_id, 0 as ATACnt, 0 as ATAComplete, 0 as MeasureCnt, 0 as MeasuresComplete, 0 as Disposition
+    select cqw.questionform_id, 0 as ATACnt, 0 as ATAComplete, 0 as MeasureCnt, 0 as MeasureComplete, 0 as Disposition
     into #ACOQF
     FROM   cmnt_QuestionResult_work cqw 
     inner join Surveytype st on cqw.Surveytype_id=st.Surveytype_id
@@ -1117,7 +1117,7 @@ where SamplePop_id in (	select SamplePop_id
 						group by SamplePop_id
 						having count(distinct isnull(unusedreturn_id,0)) > 1)
 
-select p.questionform_id, 0 as ATACnt, 0 as ATAComplete, 0 as MeasureCnt, 0 as MeasuresComplete, 0 as Disposition
+select questionform_id, 0 as ATACnt, 0 as ATAComplete, 0 as MeasureCnt, 0 as MeasureComplete, 0 as Disposition
 into #ACOQF
 from #partials
 where unusedreturn_id=5
@@ -1252,7 +1252,7 @@ and st.Surveytype_dsc='ACOCAHPS'
 and sm.datExpire > getdate()
 order by qf.datResultsImported desc
 
-select p.questionform_id, 0 as ATACnt, 0 as ATAComplete, 0 as MeasureCnt, 0 as MeasuresComplete, 0 as Disposition
+select questionform_id, 0 as ATACnt, 0 as ATAComplete, 0 as MeasureCnt, 0 as MeasureComplete, 0 as Disposition
 into #ACOQF
 from #TodaysReturns
 
