@@ -16,7 +16,7 @@ CREATE TABLE [dbo].[SurveySubTypes](
 	[SurveySubType_ID] [int] IDENTITY(1,1) NOT NULL,
 	[SurveyType_ID] [int] NOT NULL,
 	[SubType_NM] [varchar](50) NULL,
-	[QuestionnaireType_ID] [smallint] NULL
+	[QuestionaireType_ID] [smallint] NULL
  CONSTRAINT [PK_SurveySubTypes] PRIMARY KEY CLUSTERED 
 (
 	[SurveySubType_ID] ASC
