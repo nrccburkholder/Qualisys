@@ -12,11 +12,6 @@ Public Class SampleUnit
     Private mTarget As Integer
     Private mPriority As Integer
     Private mSelectionType As SampleSelectionType
-    Private mIsHCAHPS As Boolean
-    Private mIsACOCAHPS As Boolean
-    Private mIsHHCAHPS As Boolean
-    Private mIsCHART As Boolean
-    Private mIsMNCM As Boolean
     Private mIsSuppressed As Boolean
     Private mInitialResponseRate As Integer
     Private mCriteria As Criteria
@@ -25,6 +20,7 @@ Public Class SampleUnit
     Private mCriteriaStatementId As Nullable(Of Integer)
     Private mSamplePlanId As Integer
     Private mQuestionSections As New SampleUnitSectionMappingCollection
+    Private mCAHPSType As Integer
 #End Region
 
     Private mFacility As Facility
@@ -252,16 +248,16 @@ Public Class SampleUnit
     ''' <returns></returns>
     ''' <remarks></remarks>
     <Logable()> _
-    Public Property IsHcahps() As Boolean
+    Public ReadOnly Property IsHcahps() As Boolean
         Get
-            Return mIsHCAHPS
+            Return mCAHPSType = 2
         End Get
-        Set(ByVal value As Boolean)
-            If mIsHCAHPS <> value Then
-                mIsHCAHPS = value
-                mPropertiesAreDirty = True
-            End If
-        End Set
+        'Set(ByVal value As Boolean)
+        '    If mIsHCAHPS <> value Then
+        '        mIsHCAHPS = value
+        '        mPropertiesAreDirty = True
+        '    End If
+        'End Set
     End Property
 
     ''' <summary>
@@ -271,16 +267,16 @@ Public Class SampleUnit
     ''' <returns></returns>
     ''' <remarks></remarks>
     <Logable()> _
-    Public Property IsACOcahps() As Boolean
+    Public ReadOnly Property IsACOcahps() As Boolean
         Get
-            Return mIsACOCAHPS
+            Return mCAHPSType = 10
         End Get
-        Set(ByVal value As Boolean)
-            If mIsACOCAHPS <> value Then
-                mIsACOCAHPS = value
-                mPropertiesAreDirty = True
-            End If
-        End Set
+        'Set(ByVal value As Boolean)
+        '    If mIsACOCAHPS <> value Then
+        '        mIsACOCAHPS = value
+        '        mPropertiesAreDirty = True
+        '    End If
+        'End Set
     End Property
 
     ''' <summary>
@@ -290,99 +286,50 @@ Public Class SampleUnit
     ''' <returns></returns>
     ''' <remarks></remarks>
     <Logable()> _
-    Public Property IsHHcahps() As Boolean
+    Public ReadOnly Property IsHHcahps() As Boolean
         Get
-            Return mIsHHCAHPS
+            Return mCAHPSType = 3
         End Get
-        Set(ByVal value As Boolean)
-            If mIsHHCAHPS <> value Then
-                mIsHHCAHPS = value
-                mPropertiesAreDirty = True
-            End If
-        End Set
+        'Set(ByVal value As Boolean)
+        '    If mIsHHCAHPS <> value Then
+        '        mIsHHCAHPS = value
+        '        mPropertiesAreDirty = True
+        '    End If
+        'End Set
     End Property
 
     <Logable()> _
-    Public Property IsCHART() As Boolean
+    Public ReadOnly Property IsCHART() As Boolean
         Get
-            Return mIsCHART
+            Return False
         End Get
-        Set(ByVal value As Boolean)
-            If mIsCHART <> value Then
-                mIsCHART = value
-                mPropertiesAreDirty = True
-            End If
-        End Set
+        'Set(ByVal value As Boolean)
+        '    If mIsCHART <> value Then
+        '        mIsCHART = value
+        '        mPropertiesAreDirty = True
+        '    End If
+        'End Set
     End Property
 
     <Logable()> _
-    Public Property IsMNCM() As Boolean
+    Public ReadOnly Property IsMNCM() As Boolean
         Get
-            Return mIsMNCM
+            Return mCAHPSType = 4
         End Get
-        Set(ByVal value As Boolean)
-            If mIsMNCM <> value Then
-                mIsMNCM = value
-                mPropertiesAreDirty = True
-            End If
-        End Set
+        'Set(ByVal value As Boolean)
+        '    If mIsMNCM <> value Then
+        '        mIsMNCM = value
+        '        mPropertiesAreDirty = True
+        '    End If
+        'End Set
     End Property
 
     Public Property CAHPSType() As CAHPSType
         Get
-            If mIsCHART Then
-                Return Library.CAHPSType.CHART
-            ElseIf mIsHCAHPS Then
-                Return Library.CAHPSType.HCAHPS
-            ElseIf mIsACOCAHPS Then
-                Return Library.CAHPSType.ACOCAHPS
-            ElseIf mIsHHCAHPS Then
-                Return Library.CAHPSType.HHCAHPS
-            ElseIf mIsMNCM Then
-                Return Library.CAHPSType.MNCM
-            Else
-                Return Library.CAHPSType.None
-            End If
+            Return CType(mCAHPSType, CAHPSType)
         End Get
         Set(ByVal value As CAHPSType)
-            Select Case value
-                Case Library.CAHPSType.CHART
-                    mIsHCAHPS = True
-                    mIsCHART = True
-                    mIsACOCAHPS = False
-                    mIsHHCAHPS = False
-                    mIsMNCM = False
-                Case Library.CAHPSType.HCAHPS
-                    mIsHCAHPS = True
-                    mIsCHART = False
-                    mIsACOCAHPS = False
-                    mIsHHCAHPS = False
-                    mIsMNCM = False
-                Case Library.CAHPSType.ACOCAHPS
-                    mIsHCAHPS = False
-                    mIsCHART = False
-                    mIsACOCAHPS = True
-                    mIsHHCAHPS = False
-                    mIsMNCM = False
-                Case Library.CAHPSType.HHCAHPS
-                    mIsHCAHPS = False
-                    mIsCHART = False
-                    mIsACOCAHPS = False
-                    mIsHHCAHPS = True
-                    mIsMNCM = False
-                Case Library.CAHPSType.MNCM
-                    mIsHCAHPS = False
-                    mIsCHART = False
-                    mIsACOCAHPS = False
-                    mIsHHCAHPS = False
-                    mIsMNCM = True
-                Case Else
-                    mIsHCAHPS = False
-                    mIsCHART = False
-                    mIsACOCAHPS = False
-                    mIsHHCAHPS = False
-                    mIsMNCM = False
-            End Select
+            mCAHPSType = value
         End Set
     End Property
 

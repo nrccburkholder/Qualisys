@@ -17,7 +17,7 @@ Public Class SurveyType
     Private mInstanceGuid As Guid = Guid.NewGuid
     Private mId As Integer
     Private mDescription As String = String.Empty
-    Private mOptionTypeId As Integer
+    Private mCAHPSTypeId As Integer
     Private mSeedMailings As Boolean
     Private mSeedSurveyPercent As Integer
     Private mSeedUnitField As String = String.Empty
@@ -53,14 +53,14 @@ Public Class SurveyType
         End Set
     End Property
 
-    Public Property OptionTypeId() As Integer
+    Public Property CAHPSTypeId() As Integer
         Get
-            Return mOptionTypeId
+            Return mCAHPSTypeId
         End Get
         Set(ByVal value As Integer)
-            If Not value = mOptionTypeId Then
-                mOptionTypeId = value
-                PropertyHasChanged("OptionTypeId")
+            If Not value = mCAHPSTypeId Then
+                mCAHPSTypeId = value
+                PropertyHasChanged("CAHPSTypeId")
             End If
         End Set
     End Property

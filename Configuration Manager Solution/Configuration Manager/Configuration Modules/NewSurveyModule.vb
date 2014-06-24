@@ -26,13 +26,15 @@ Public Class NewSurveyModule
         Reset()
 
         Study = selectedStudy.GetStudy
+        Dim survey As Survey = New Survey()
+        survey.SurveyType = SurveyTypes.DefaultSurvey
         EditingSurvey = New Library.Survey(Study)
         With EditingSurvey
             .SurveyStartDate = Date.Today
             .SurveyEndDate = Date.Today.AddDays(1)
             .ResponseRateRecalculationPeriod = 14
             .ResurveyMethod = ResurveyMethod.NumberOfDays
-            .ResurveyPeriod = Library.Survey.DefaultResurveyExcludeDay
+            .ResurveyPeriod = survey.ResurveyExclusionPeriodsNumericDefault
             .IsActive = True
             .SamplingAlgorithm = SamplingAlgorithm.StaticPlus
         End With
@@ -54,7 +56,7 @@ Public Class NewSurveyModule
                                                                       .ResurveyPeriod, .SurveyStartDate, .SurveyEndDate, .SamplingAlgorithm, .EnforceSkip, _
                                                                       CStr(.CutoffResponseCode), .CutoffTableId, .CutoffFieldId, .SampleEncounterField, _
                                                                       .ClientFacingName, .SurveyType, .SurveyTypeDefId, .HouseHoldingType, .ContractNumber, _
-                                                                      .IsActive, .ContractedLanguages)
+                                                                      .IsActive, .ContractedLanguages, .SurveySubType, .QuestionnaireType)
                 End With
                 Study.Surveys.Add(EditingSurvey)
             End If

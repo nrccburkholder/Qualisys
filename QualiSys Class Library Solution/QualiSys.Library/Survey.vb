@@ -1,4 +1,5 @@
 Imports Nrc.QualiSys.Library.DataProvider
+Imports Nrc.Framework.BusinessLogic.Configuration
 
 Public Class Survey
 
@@ -28,6 +29,10 @@ Public Class Survey
     Private mResurveyMethod As ResurveyMethod
     Private mHouseHoldingType As HouseHoldingType
     Private mHouseHoldingColumns As StudyTableColumnCollection
+    'Private mSurveySubtype As SurveySubType
+    'Private mQuestionnaireType As QuestionnaireType
+    Private mSurveySubtype As Integer = 0
+    Private mQuestionnaireType As Integer = 0
 
     Private mIsDirty As Boolean
     Private mIsValidated As Boolean
@@ -38,6 +43,27 @@ Public Class Survey
     Private mCutoffTable As StudyTable
     Private mCutoffField As StudyTableColumn
     Private mBusinessRules As Collection(Of BusinessRule)
+
+#Region "private variables used as temporary stores of Survey Rules"
+
+    Private mIsCAHPS As Boolean = False
+    Private mHasOptionCHART As Boolean = False
+    Private mIsMonthlyOnly As Boolean = False
+    Private mSamplingMethodDefault As String = String.Empty
+    Private mIsSamplingMethodDisabled As Boolean = False
+    Private mSamplingAlgorithmDefault As String = String.Empty
+    Private mSkipEnforcementRequired As Boolean = False
+    Private mRespRateRecalsDaysNumericDefault As Integer = 0
+    Private mResurveyMethodDefault As String = String.Empty
+    Private mResurveyExclusionPeriodsNumericDefault As Integer = 0
+    Private mIsResurveyExclusionPeriodsNumericDisabled As Boolean = False
+    Private mHasReportability As Boolean = False
+    Private mNotEditableIfSampled As Boolean = False
+    Private mIsResurveyMethodDisabled As Boolean = False
+    Private mMedicareIdTextMayBeBlank As Boolean = False
+    Private mCompliesWithSwitchToPropSamplingDate As Boolean = False
+    Private mByPassInitRespRateNumericEnforcement As Boolean = False
+#End Region
 
     Private Shared mSurveyTypeList As List(Of ListItem(Of SurveyTypes))
     Private Shared mSamplingAlgorithmList As List(Of ListItem(Of SamplingAlgorithm))
@@ -381,6 +407,38 @@ Public Class Survey
         End Set
     End Property
 
+
+    <Logable()> _
+    Public Property SurveySubType() As Integer
+        Get
+            Return mSurveySubtype
+        End Get
+        Set(ByVal value As Integer)
+
+            If mSurveySubtype <> value Then
+                mSurveySubtype = value
+                mIsDirty = True
+            End If
+
+
+        End Set
+    End Property
+
+    <Logable()> _
+    Public Property QuestionnaireType() As Integer
+        Get
+            Return mQuestionnaireType
+        End Get
+        Set(ByVal value As Integer)
+            If mQuestionnaireType <> value Then
+                mQuestionnaireType = value
+                mIsDirty = True
+            End If
+
+
+        End Set
+    End Property
+
 #End Region
 
     Public Property DateValidated() As DateTime
@@ -525,7 +583,7 @@ Public Class Survey
 
     Public Property IsReportable() As Boolean
         Get
-            If (SurveyType = SurveyTypes.Hcahps) Then
+            If (Me.HasReportability) Then
                 If (mSurveyTypeDefId = ReportStatus.Reportable) Then
                     Return True
                 Else
@@ -536,7 +594,7 @@ Public Class Survey
             End If
         End Get
         Set(ByVal value As Boolean)
-            If (SurveyType = SurveyTypes.Hcahps) Then
+            If (Me.HasReportability) Then
                 If value Then
                     SurveyTypeDefId = ReportStatus.Reportable
                 Else
@@ -564,7 +622,7 @@ Public Class Survey
 
     Public ReadOnly Property IsSurveyTypeEditable() As Boolean
         Get
-            If (SurveyType = SurveyTypes.Hcahps AndAlso IsSampled) Then
+            If (Me.NotEditableIfSampled AndAlso IsSampled) Then
                 Return False
             Else
                 Return True
@@ -578,35 +636,228 @@ Public Class Survey
         End Get
     End Property
 
-    Public Shared ReadOnly Property DefaultResurveyExcludeDay() As Integer
+#Region "Survey rules generic getters currently hooked up to AppConfig / QualPro_Params"
+
+    Public ReadOnly Property SurveyTypeName() As String
         Get
-            Return 90
+            Return mSurveyTypeList(mSurveyType - 1).ToString()
         End Get
     End Property
 
-    Public Shared ReadOnly Property DefaultResurveyExcludeMonth() As Integer
+    Private Function SpecificRuleName(ByVal ruleName As String) As String
+        Try
+            Return "SurveyRule: " + ruleName + " - " + SurveyTypeName()
+        Catch ex As Exception
+            Return "SurveyRule: " + ruleName + " - " + SurveyType.ToString()
+        End Try
+    End Function
+
+    Private Function GenericRuleName(ByVal ruleName As String) As String
+        Return "SurveyRule: " + ruleName
+    End Function
+
+    Private Sub GetSurveyRule(ByVal ruleName As String, ByRef result As String)
+        Try
+            If SurveyType <> 0 Then
+                result = AppConfig.Params(SpecificRuleName(ruleName)).StringValue
+                Return
+            End If
+        Catch
+        End Try
+
+        Try
+            result = AppConfig.Params(GenericRuleName(ruleName)).StringValue
+        Catch
+            result = String.Empty
+        End Try
+    End Sub
+
+    Private Sub GetSurveyRule(ByVal ruleName As String, ByRef result As Integer)
+        Try
+            If SurveyType <> 0 Then
+                result = AppConfig.Params(SpecificRuleName(ruleName)).IntegerValue
+                Return
+            End If
+        Catch
+        End Try
+
+        Try
+            result = AppConfig.Params(GenericRuleName(ruleName)).IntegerValue
+        Catch
+            result = 0
+        End Try
+    End Sub
+
+    Private Sub GetSurveyRule(ByVal ruleName As String, ByRef result As Boolean)
+        Try
+            If SurveyType <> 0 Then
+                result = AppConfig.Params(SpecificRuleName(ruleName)).StringValue = "1"
+                Return
+            End If
+        Catch
+        End Try
+
+        Try
+            result = AppConfig.Params(GenericRuleName(ruleName)).StringValue = "1"
+        Catch
+            result = False
+        End Try
+    End Sub
+
+#End Region
+
+#Region "SurveyRules acessing generic Survey Rule API"
+
+    Public ReadOnly Property IsCAHPS() As Boolean
         Get
-            Return 1
+            GetSurveyRule("IsCahps", mIsCAHPS)
+            Return mIsCAHPS
         End Get
     End Property
 
-    Public Shared ReadOnly Property DefaultResurveyExcludeMonthHHCahps() As Integer
+    Public ReadOnly Property HasOptionCHART() As Boolean
         Get
-            Return 6
+            GetSurveyRule("HasOptionCHART", mHasOptionCHART)
+            Return mHasOptionCHART
         End Get
     End Property
 
-    Public Shared ReadOnly Property DefaultResurveyExcludeDayPhysician() As Integer
+    Public ReadOnly Property IsMonthlyOnly() As Boolean
         Get
-            Return 365
+            GetSurveyRule("IsMonthlyOnly", mIsMonthlyOnly)
+            Return mIsMonthlyOnly
         End Get
     End Property
 
-    Public Shared ReadOnly Property DefaultResurveyExcludeDayEmployee() As Integer
+    Public ReadOnly Property SamplingMethodDefault() As String
         Get
-            Return 365
+            GetSurveyRule("SamplingMethodDefault", mSamplingMethodDefault)
+            Return mSamplingMethodDefault
         End Get
     End Property
+
+    Public ReadOnly Property IsSamplingMethodDisabled() As Boolean
+        Get
+            GetSurveyRule("IsSamplingMethodDisabled", mIsSamplingMethodDisabled)
+            Return mIsSamplingMethodDisabled
+        End Get
+    End Property
+
+    Public ReadOnly Property SamplingAlgorithmDefault() As String
+        Get
+            GetSurveyRule("SamplingAlgorithmDefault", mSamplingAlgorithmDefault)
+            Return mSamplingAlgorithmDefault
+        End Get
+    End Property
+
+    Public ReadOnly Property SkipEnforcementRequired() As Boolean
+        Get
+            GetSurveyRule("SkipEnforcementRequired", mSkipEnforcementRequired)
+            Return mSkipEnforcementRequired
+        End Get
+    End Property
+
+    Public ReadOnly Property RespRateRecalsDaysNumericDefault() As Integer
+        Get
+            GetSurveyRule("RespRateRecalcDaysNumericDefault", mRespRateRecalsDaysNumericDefault)
+            Return mRespRateRecalsDaysNumericDefault
+        End Get
+    End Property
+
+    Public ReadOnly Property ResurveyMethodDefault() As String
+        Get
+            GetSurveyRule("ResurveyMethodDefault", mResurveyMethodDefault)
+            Return mResurveyMethodDefault
+        End Get
+    End Property
+
+    Public ReadOnly Property ResurveyExclusionPeriodsNumericDefault() As Integer
+        Get
+            GetSurveyRule("ResurveyExclusionPeriodsNumericDefault", mResurveyExclusionPeriodsNumericDefault)
+            Return mResurveyExclusionPeriodsNumericDefault
+        End Get
+    End Property
+
+    Public ReadOnly Property IsResurveyExclusionPeriodsNumericDisabled() As Boolean
+        Get
+            GetSurveyRule("IsResurveyExclusionPeriodsNumericDisabled", mIsResurveyExclusionPeriodsNumericDisabled)
+            Return mIsResurveyExclusionPeriodsNumericDisabled
+        End Get
+    End Property
+
+    Public ReadOnly Property HasReportability() As Boolean
+        Get
+            GetSurveyRule("HasReportability", mHasReportability)
+            Return mHasReportability
+        End Get
+    End Property
+
+    Public ReadOnly Property NotEditableIfSampled() As Boolean
+        Get
+            GetSurveyRule("NotEditableIfSampled", mNotEditableIfSampled)
+            Return mNotEditableIfSampled
+        End Get
+    End Property
+
+    Public ReadOnly Property IsResurveyMethodDisabled() As Boolean
+        Get
+            GetSurveyRule("IsResurveyMethodDisabled", mIsResurveyMethodDisabled)
+            Return mIsResurveyMethodDisabled
+        End Get
+    End Property
+
+    Public ReadOnly Property MedicareIdTextMayBeBlank() As Boolean
+        Get
+            GetSurveyRule("MedicareIdTextMayBeBlank", mMedicareIdTextMayBeBlank)
+            Return mMedicareIdTextMayBeBlank
+        End Get
+    End Property
+
+    Public ReadOnly Property CompliesWithSwitchToPropSamplingDate() As Boolean
+        Get
+            GetSurveyRule("CompliesWithSwitchToPropSamplingDate", mCompliesWithSwitchToPropSamplingDate)
+            Return mCompliesWithSwitchToPropSamplingDate
+        End Get
+    End Property
+
+    Public ReadOnly Property BypassInitRespRateNumericEnforcement() As Boolean
+        Get
+            GetSurveyRule("BypassInitRespRateNumericEnforcement", mByPassInitRespRateNumericEnforcement)
+            Return mByPassInitRespRateNumericEnforcement
+        End Get
+    End Property
+
+    'Public Shared ReadOnly Property DefaultResurveyExcludeDay() As Integer
+    '    Get
+    '        Return 90
+    '    End Get
+    'End Property
+
+    'Public Shared ReadOnly Property DefaultResurveyExcludeMonth() As Integer
+    '    Get
+    '        Return 1
+    '    End Get
+    'End Property
+
+    'Public Shared ReadOnly Property DefaultResurveyExcludeMonthHHCahps() As Integer
+    '    Get
+    '        Return 6
+    '    End Get
+    'End Property
+
+    'Public Shared ReadOnly Property DefaultResurveyExcludeDayPhysician() As Integer
+    '    Get
+    '        Return 365
+    '    End Get
+    'End Property
+
+    'Public Shared ReadOnly Property DefaultResurveyExcludeDayEmployee() As Integer
+    '    Get
+    '        Return 365
+    '    End Get
+    'End Property
+
+#End Region
 
     Public ReadOnly Property AllowDelete() As Boolean
         Get
@@ -696,11 +947,11 @@ Public Class Survey
                                      ByVal samplingAlgorithmId As Integer, ByVal enforceSkip As Boolean, ByVal cutoffResponseCode As String, ByVal cutoffTableId As Integer, _
                                      ByVal cutoffFieldId As Integer, ByVal sampleEncounterField As StudyTableColumn, ByVal clientFacingName As String, _
                                      ByVal surveyTypeId As Integer, ByVal surveyTypeDefId As Integer, ByVal houseHoldingType As HouseHoldingType, _
-                                     ByVal contractNumber As String, ByVal isActive As Boolean, ByVal contractedLanguages As String) As Survey
+                                     ByVal contractNumber As String, ByVal isActive As Boolean, ByVal contractedLanguages As String, ByVal surveySubTypeId As Integer, ByVal questionnaireId As Integer) As Survey
 
         Return SurveyProvider.Instance.Insert(studyId, name, description, responseRateRecalculationPeriod, resurveyMethodId, resurveyPeriod, surveyStartDate, surveyEndDate, _
                                               samplingAlgorithmId, enforceSkip, cutoffResponseCode, cutoffTableId, cutoffFieldId, sampleEncounterField, clientFacingName, _
-                                              surveyTypeId, surveyTypeDefId, houseHoldingType, contractNumber, isActive, contractedLanguages)
+                                              surveyTypeId, surveyTypeDefId, houseHoldingType, contractNumber, isActive, contractedLanguages, surveySubTypeId, questionnaireId)
 
     End Function
 
@@ -709,6 +960,28 @@ Public Class Survey
         SurveyProvider.Instance.Delete(surveyId)
 
     End Sub
+
+
+    Public Shared Function GetSurveySubTypes(ByVal surveytypeid As Integer) As List(Of SurveySubType)
+
+        Dim mSurveySubTypeList As New List(Of SurveySubType)
+
+        mSurveySubTypeList = SurveyProvider.Instance.SelectSurveySubTypes(surveytypeid)
+
+        Return mSurveySubTypeList
+
+    End Function
+
+    Public Shared Function GetQuestionnaireTypes(ByVal surveytypeid As Integer, ByVal questionnairetypeid As Integer) As List(Of QuestionnaireType)
+
+        Dim mQuestionnaireList As New List(Of QuestionnaireType)
+
+        mQuestionnaireList = SurveyProvider.Instance.SelectQuestionnaireTypes(surveytypeid, questionnairetypeid)
+
+        Return mQuestionnaireList
+
+    End Function
+
 #End Region
 
 #Region " ChangeLog Helper Functions "
@@ -862,6 +1135,8 @@ Public Class Survey
             mBusinessRules = Nothing
             mIsActive = .mIsActive
             ContractedLanguages = .ContractedLanguages
+            mSurveySubtype = .mSurveySubtype
+            mQuestionnaireType = .mQuestionnaireType
         End With
 
         mIsDirty = False

@@ -266,6 +266,7 @@
     <Compile Include="Navigation\SurveyNavNode.vb">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="QuestionnaireType.vb" />
     <Compile Include="QuestionSection.vb" />
     <Compile Include="SamplePeriodScheduledSample.vb" />
     <Compile Include="SampleUnitSectionMapping.vb" />
@@ -321,6 +322,7 @@
     <Compile Include="Survey.vb" />
     <Compile Include="Enums\SurveyCutoffFieldType.vb" />
     <Compile Include="Enums\SampleSelectionType.vb" />
+    <Compile Include="SurveySubType.vb" />
     <Compile Include="SurveyType.vb" />
     <Compile Include="SurveyValidationResult.vb" />
     <Compile Include="ToBeSeeded.vb" />

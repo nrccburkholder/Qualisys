@@ -204,7 +204,7 @@ Partial Public Class SampleSet
             For Each unit As SampleSetUnit In sampleSetUnits.Values
                 'Modified 02-17-09 JJF - Fixed so it checks to see if the Survey is an HCAHPS survey as well as the unit itself
                 'If unit.SampUnit.IsHcahps Then
-                If unit.SampUnit.IsHcahps AndAlso unit.SampUnit.Survey.SurveyType = SurveyTypes.Hcahps Then
+                If unit.SampUnit.IsHcahps AndAlso unit.SampUnit.Survey.SurveyTypeName.StartsWith("HCAHPS") Then
                     'Reset the update flag
                     updateSPW = False
                     If sampleHCAHPSUnit Then

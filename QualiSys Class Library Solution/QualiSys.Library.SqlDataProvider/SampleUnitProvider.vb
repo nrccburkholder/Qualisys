@@ -40,11 +40,11 @@ Public Class SampleUnitProvider
         newObj.SelectionType = CType(rdr.GetInteger("SampleSelectionType_id"), SampleSelectionType)
         newObj.InitialResponseRate = rdr.GetInteger("numInitResponseRate")
         newObj.HistoricalResponseRate = rdr.GetInteger("numResponseRate")
-        newObj.IsHcahps = rdr.GetBoolean("bitHCAHPS")
-        newObj.IsACOcahps = rdr.GetBoolean("bitACOCAHPS")
-        newObj.IsHHcahps = rdr.GetBoolean("bitHHCAHPS")
-        newObj.IsCHART = rdr.GetBoolean("bitCHART")
-        newObj.IsMNCM = rdr.GetBoolean("bitMNCM")
+        'newObj.IsHcahps = rdr.GetBoolean("bitHCAHPS")
+        'newObj.IsACOcahps = rdr.GetBoolean("bitACOCAHPS")
+        'newObj.IsHHcahps = rdr.GetBoolean("bitHHCAHPS")
+        'newObj.IsCHART = rdr.GetBoolean("bitCHART")
+        'newObj.IsMNCM = rdr.GetBoolean("bitMNCM")
         newObj.IsSuppressed = rdr.GetBoolean("bitSuppress")
         newObj.Priority = rdr.GetInteger("priority")
         newObj.FacilityId = rdr.GetInteger("sufacility_id")
@@ -59,6 +59,7 @@ Public Class SampleUnitProvider
             Case 3
                 newObj.SelectionType = SampleSelectionType.NonExclusive
         End Select
+        newObj.CAHPSType = CType(rdr.GetInteger("CAHPSType_Id"), CAHPSType)
 
         newObj.ResetDirtyFlag()
 
@@ -389,8 +390,9 @@ Public Class SampleUnitProvider
         unit.Criteria = Nothing 'This will force a repopulate if code checks property
         Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.InsertSampleUnit, unit.CriteriaStatementId, unit.SamplePlanId, _
                                                        parentSampleUnitId, unit.Name, unit.Target, unit.InitialResponseRate, _
-                                                       facilityId, unit.IsSuppressed, unit.IsHcahps, unit.IsACOcahps, unit.IsHHcahps, unit.IsCHART, unit.IsMNCM, unit.Priority, _
-                                                       selectionType, unit.DontSampleUnit)
+                                                       facilityId, unit.IsSuppressed, _
+                                                       unit.Priority, _
+                                                       selectionType, unit.DontSampleUnit, unit.CAHPSType)
         Using rdr As New SafeDataReader(ExecuteReader(cmd, tran))
             If rdr.Read Then
                 ReadOnlyAccessor.SampleUnitId(unit) = rdr.GetInteger("SampleUnit_id")
@@ -422,7 +424,7 @@ Public Class SampleUnitProvider
             Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.UpdateSampleUnit, unit.Id, unit.CriteriaStatementId.Value, _
                                                            unit.SamplePlanId, parentSampleUnitId, unit.Name, unit.Target, _
                                                            unit.InitialResponseRate, unit.FacilityId, unit.IsSuppressed, _
-                                                           unit.IsHcahps, unit.IsACOcahps, unit.IsHHcahps, unit.IsCHART, unit.IsMNCM, unit.Priority, selectionType, unit.DontSampleUnit)
+                                                           unit.Priority, selectionType, unit.DontSampleUnit, unit.CAHPSType)
             ExecuteNonQuery(cmd, tran)
             unit.ResetDirtyFlag()
         End If
