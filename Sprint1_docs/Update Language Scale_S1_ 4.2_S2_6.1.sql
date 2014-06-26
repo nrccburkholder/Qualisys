@@ -15,6 +15,7 @@ Languages used for the old question core in production
 
 */
 
+
 select *
 into bak_SEL_QSTNS_AllCAHPS_Release001
 from SEL_QSTNS
@@ -22,7 +23,6 @@ from SEL_QSTNS
 select *
 into bak_SEL_SCLS_AllCAHPS_Release001
 from SEL_SCLS
-
 
 
 DECLARE @DO_IT as bit
@@ -82,6 +82,7 @@ inner join (SELECT distinct survey_id, scaleid from #sel_qstns) sq on (ss.SURVEY
 
 
 -- temp table containing what will be the new second set of new sel_scls records -- the actual portuguese entries that we need to add
+-- For now, the Richtext values are just placeholders until we get the proper translations
 print '---------------------------------------'
 print 'temp table containing what will be the new second set of new sel_scls records'
 select ss.SURVEY_ID
