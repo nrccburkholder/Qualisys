@@ -33,6 +33,8 @@ insert into qualpro_params (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_V
 
 insert into qualpro_params (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, COMMENTS) VALUES
 ('SurveyRule: IsSamplingMethodDisabled - ACOCAHPS','S','ACOCAHPS','1','Rule to determine if sampling method is enabled for Config Man')
+insert into qualpro_params (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, COMMENTS) VALUES
+('SurveyRule: IsSamplingMethodDisabled - ICHCAHPS','S','ICHCAHPS','1','Rule to determine if sampling method is enabled for Config Man')
 
 insert into qualpro_params (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, COMMENTS) VALUES
 ('SurveyRule: SamplingAlgorithmDefault','S','SurveyRules','StaticPlus','Default sampling algorithm')
