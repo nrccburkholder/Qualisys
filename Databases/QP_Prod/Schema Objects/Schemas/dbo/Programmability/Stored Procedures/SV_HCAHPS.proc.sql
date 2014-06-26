@@ -299,27 +299,27 @@ CREATE TABLE #AlternateQuestionMappings
  QstnCore int,
  AlQstnCore int
 )
-insert into #AlternateQuestionMappings values ( 18952, 43350 )
-insert into #AlternateQuestionMappings values ( 43350, 18952 )
+insert into #AlternateQuestionMappings values ( 50860, 43350 )
+insert into #AlternateQuestionMappings values ( 43350, 50860 )
 -- aa setup a mapping for questions and alternative questions
 
 DECLARE @cnt43350 INT
-DECLARE @cnt18952 INT
+DECLARE @cnt50860 INT
 SELECT
  @cnt43350 = SUM( CASE s.QstnCore WHEN 43350 THEN 1 ELSE 0 END),
- @cnt18952 = SUM( CASE s.QstnCore WHEN 18952 THEN 1 ELSE 0 END)
+ @cnt50860 = SUM( CASE s.QstnCore WHEN 50860 THEN 1 ELSE 0 END)
 FROM #HCAHPS_SurveyTypeQuestionMappings s LEFT JOIN #CurrentForm t
 ON s.QstnCore=t.QstnCore
 WHERE s.SurveyType_id=2
    AND t.QstnCore IS NOT NULL
 
-IF @cnt43350 = 0 AND @cnt18952 = 0
+IF @cnt43350 = 0 AND @cnt50860 = 0
 BEGIN
- INSERT INTO #M VALUES (1, 'QstnCore 43350 and 18952 are both missing.  You must have either 43350 or 18952, but not both.')
+ INSERT INTO #M VALUES (1, 'QstnCore 43350 and 50860 are both missing.  You must have either 43350 or 50860, but not both.')
 END
-IF @cnt43350 > 0 AND @cnt18952 > 0
+IF @cnt43350 > 0 AND @cnt50860 > 0
 BEGIN
- INSERT INTO #M VALUES (1, 'QstnCore 43350 and 18952 are both assigned.  You must have either 43350 or 18952, but not both.')
+ INSERT INTO #M VALUES (1, 'QstnCore 43350 and 50860 are both assigned.  You must have either 43350 or 50860, but not both.')
 END
 
 INSERT INTO #M (Error, strMessage)
@@ -327,7 +327,7 @@ SELECT 1,'QstnCore '+LTRIM(STR(s.QstnCore))+' is missing from the form.'
 FROM #HCAHPS_SurveyTypeQuestionMappings s LEFT JOIN #CurrentForm t
 ON s.QstnCore=t.QstnCore
 WHERE s.SurveyType_id=2
-  AND t.QstnCore IS NULL and s.QstnCore NOT IN (43350,18952)
+  AND t.QstnCore IS NULL and s.QstnCore NOT IN (43350,50860)
 
 --Look for questions that are out of order.
 --First the questions that have to be at the beginning of the form.
@@ -547,36 +547,24 @@ ELSE
 --check for DQ_Dead rule
 if exists
     (SELECT BusinessRule_id
-           FROM BusinessRule br, CriteriaStmt cs, CriteriaClause cc, CriteriaInList ci, MetaField mf, Operator op
-           WHERE br.CriteriaStmt_id = cs.CriteriaStmt_id
-             AND cs.CriteriaStmt_id = cc.CriteriaStmt_id
-             AND cc.CriteriaClause_id = ci.CriteriaClause_id
-             AND cc.Field_id = mf.Field_id
-             AND cc.intOperator = op.Operator_Num
-             AND mf.strField_Nm = 'HDischargeStatus'
+           FROM BusinessRule br
+           inner join CriteriaStmt cs on br.CriteriaStmt_id = cs.CriteriaStmt_id
+           inner join CriteriaClause cc on cs.CriteriaStmt_id = cc.CriteriaStmt_id
+           inner join CriteriaInList ci on cc.CriteriaClause_id = ci.CriteriaClause_id
+           inner join MetaField mf on cc.Field_id = mf.Field_id
+           inner join Operator op on cc.intOperator = op.Operator_Num
+           WHERE mf.strField_Nm = 'HDischargeStatus'
              AND op.strOperator = 'IN'
-             AND ci.strListValue = '20'
              AND br.Survey_id = @Survey_id
+           group by BusinessRule_id, cc.criteriaclause_id
+           having count(*)=4 and min(strListValue) = '20' and max(strListValue)= '42' and round(stdev(convert(int,strlistvalue)),6)=10.531698
+           -- the STDEV of (20, 40, 41, 42) is 10.531698. Another combination of 4 integers that has 20 as the min and 40 as the max would come up with a different STDEV
    )
-AND exists
-    (SELECT BusinessRule_id
-           FROM BusinessRule br, CriteriaStmt cs, CriteriaClause cc, CriteriaInList ci, MetaField mf, Operator op
-     WHERE br.CriteriaStmt_id = cs.CriteriaStmt_id
-             AND cs.CriteriaStmt_id = cc.CriteriaStmt_id
-             AND cc.CriteriaClause_id = ci.CriteriaClause_id
-             AND cc.Field_id = mf.Field_id
-             AND cc.intOperator = op.Operator_Num
-             AND mf.strField_Nm = 'HDischargeStatus'
-             AND op.strOperator = 'IN'
-             AND ci.strListValue = '41'
-             AND br.Survey_id = @Survey_id
-   )
-
     INSERT INTO #M (Error, strMessage)
-    SELECT 0,'Survey has DQ_Dead rule (ENCOUNTERHDischargeStatus in ("20", "41")).'
+    SELECT 0,'Survey has DQ_Dead rule (ENCOUNTERHDischargeStatus in ("20", "40", "41", "42")).'
 ELSE
     INSERT INTO #M (Error, strMessage)
-    SELECT 1,'Survey does not have DQ_Dead rule (ENCOUNTERHDischargeStatus in ("20", "41")).'
+    SELECT 1,'Survey does not have DQ_Dead rule (ENCOUNTERHDischargeStatus in ("20", "40", "41", "42")).'
 
 
 --check for DQ_Hospc rule
@@ -614,77 +602,63 @@ ELSE
     SELECT 1,'Survey does not have DQ_Hospc rule (ENCOUNTERHDischargeStatus in ("50", "51")).'
 
 --check for DQ_Law rule
-IF EXISTS (SELECT BusinessRule_id
-           FROM BusinessRule br, CriteriaStmt cs, CriteriaClause cc, MetaField mf, Operator op
-           WHERE br.CriteriaStmt_id = cs.CriteriaStmt_id
-             AND cs.CriteriaStmt_id = cc.CriteriaStmt_id
-             AND cc.Field_id = mf.Field_id
-             AND cc.intOperator = op.Operator_Num
-             AND mf.strField_Nm = 'HAdmissionSource'
-             AND op.strOperator = '='
-             AND cc.strLowValue = '8'
-             AND br.Survey_id = @Survey_id
+IF EXISTS (	select *
+			from (SELECT BusinessRule_id, cc.CriteriaPhrase_id
+				   FROM BusinessRule br
+				   inner join CriteriaStmt cs on br.CriteriaStmt_id = cs.CriteriaStmt_id
+				   inner join CriteriaClause cc on cs.CriteriaStmt_id = cc.CriteriaStmt_id
+				   inner join MetaField mf on cc.Field_id = mf.Field_id
+				   inner join Operator op on cc.intOperator = op.Operator_Num
+				   WHERE mf.strField_Nm = 'HAdmissionSource'
+					 AND op.strOperator = '='
+					 AND cc.strLowValue = '8'
+					 AND br.Survey_id = @Survey_id
+					) admit
+			inner join (SELECT BusinessRule_id, cc.criteriaphrase_id
+					   FROM BusinessRule br
+					   inner join CriteriaStmt cs on br.CriteriaStmt_id = cs.CriteriaStmt_id
+					   inner join CriteriaClause cc on cs.CriteriaStmt_id = cc.CriteriaStmt_id
+					   inner join MetaField mf on cc.Field_id = mf.Field_id
+					   inner join Operator op on cc.intOperator = op.Operator_Num
+					   inner join CRITERIAINLIST ci on cc.criteriaclause_id=ci.criteriaclause_id
+					   WHERE mf.strField_Nm = 'HDischargeStatus'
+						 AND op.strOperator = 'IN'
+						 AND br.Survey_id = @Survey_id
+					   group by BusinessRule_id, cc.criteriaclause_id, cc.criteriaphrase_id
+					   having count(*)=2 and min(strListValue) = '21' and max(strListValue)= '87'
+					   ) dischg
+			 on admit.BusinessRule_id=dischg.BusinessRule_id 
+				and admit.CriteriaPhrase_id <> dischg.CriteriaPhrase_id --> different CriteriaPhrase_id's means they have an OR relationship.
    )
-and exists (SELECT BusinessRule_id
-           FROM BusinessRule br, CriteriaStmt cs, CriteriaClause cc, MetaField mf, Operator op
-           WHERE br.CriteriaStmt_id = cs.CriteriaStmt_id
-             AND cs.CriteriaStmt_id = cc.CriteriaStmt_id
-             AND cc.Field_id = mf.Field_id
-             AND cc.intOperator = op.Operator_Num
-             AND mf.strField_Nm = 'HDischargeStatus'
-             AND op.strOperator = '='
-             AND cc.strLowValue = '21'
-             AND br.Survey_id = @Survey_id
-   )
-
     INSERT INTO #M (Error, strMessage)
-    SELECT 0,'Survey has DQ_Law rule (ENCOUNTERHAdmissionSource = 8 OR ENCOUNTERHDischargeStatus = 21).'
+    SELECT 0,'Survey has DQ_Law rule (ENCOUNTERHAdmissionSource = 8 OR ENCOUNTERHDischargeStatus in ("21", "87")).'
 ELSE
     INSERT INTO #M (Error, strMessage)
-    SELECT 1,'Survey does not have DQ_Law rule (ENCOUNTERHAdmissionSource = 8 OR ENCOUNTERHDischargeStatus = 21).'
+    SELECT 1,'Survey does not have DQ_Law rule (ENCOUNTERHAdmissionSource = 8 OR ENCOUNTERHDischargeStatus in ("21", "87")).'
 
 -- AA 2011-05-26 Added check to make sure the DQ_SNF rules are in place --
 --check for DQ_SNF rule
 IF EXISTS
 (
- SELECT * FROM
- (
-  SELECT br.Survey_id, COUNT(*) as cnt
-  FROM BusinessRule br, CriteriaStmt cs, CriteriaClause cc, CriteriaInList ci, MetaField mf, Operator op
-  WHERE br.CriteriaStmt_id = cs.CriteriaStmt_id
-   AND cs.CriteriaStmt_id = cc.CriteriaStmt_id
-   AND cc.CriteriaClause_id = ci.CriteriaClause_id
-   AND cc.Field_id = mf.Field_id
-   AND cc.intOperator = op.Operator_Num
-   AND mf.strField_Nm = 'HDischargeStatus'
+ SELECT br.BUSINESSRULE_ID--, cs.strCriteriaStmt_nm, count(*), min(strListValue),max(strListValue),round(stdev(convert(int,strlistvalue)),6)
+  FROM BusinessRule br
+  inner join CriteriaStmt cs on br.CriteriaStmt_id = cs.CriteriaStmt_id
+  inner join CriteriaClause cc on cs.CriteriaStmt_id = cc.CriteriaStmt_id
+  inner join CriteriaInList ci on cc.CriteriaClause_id = ci.CriteriaClause_id
+  inner join MetaField mf on cc.Field_id = mf.Field_id
+  inner join Operator op on cc.intOperator = op.Operator_Num
+  WHERE mf.strField_Nm = 'HDischargeStatus'
    AND op.strOperator = 'IN'
-   AND ci.strListValue IN ( '3', '03', '61', '64' )
    AND br.Survey_id = @Survey_id
-  GROUP BY
-   br.Survey_id
- ) AS a
- inner join
- (
-  SELECT br.Survey_id, COUNT(*) as cnt
-  FROM BusinessRule br, CriteriaStmt cs, CriteriaClause cc, MetaField mf, Operator op
-  WHERE br.CriteriaStmt_id = cs.CriteriaStmt_id
-   AND cs.CriteriaStmt_id = cc.CriteriaStmt_id
-   AND cc.Field_id = mf.Field_id
-   AND cc.intOperator = op.Operator_Num
-   AND mf.strField_Nm = 'DischargeDate'
-   AND op.strOperator = '>='
-   AND STRLOWVALUE = '2011-07-01'
-   AND br.Survey_id = @Survey_id
-  GROUP BY
-   br.Survey_id
- ) AS b ON a.SURVEY_ID=b.SURVEY_ID
- where a.cnt = 4 and b.cnt =1
+  GROUP BY br.BUSINESSRULE_ID
+  having count(*)=6 and min(strListValue) = '03' and max(strListValue)= '92' and round(stdev(convert(int,strlistvalue)),6)=38.940981
+  -- the STDEV of (3, 3, 61, 64, 83, 92) is 38.940981. Another combination of 6 integers with 3 as the min and 92 as the max would come up with a different STDEV
 )
     INSERT INTO #M (Error, strMessage)
-    SELECT 0,'Survey has DQ_SNF rule (ENCOUNTERHDischargeStatus IN ("3","03","61","64")) AND (ENCOUNTERDischargeDate >= "2011-07-01").'
+    SELECT 0,'Survey has DQ_SNF rule (ENCOUNTERHDischargeStatus IN ("3","03","61","64","83","92")).'
 ELSE
     INSERT INTO #M (Error, strMessage)
-    SELECT 1,'Survey does not have DQ_SNF rule (ENCOUNTERHDischargeStatus IN ("3","03","61","64")) AND (ENCOUNTERDischargeDate >= "2011-07-01").'
+    SELECT 1,'Survey does not have DQ_SNF rule (ENCOUNTERHDischargeStatus IN ("3","03","61","64","83","92")).'
 -- AA --
 
 

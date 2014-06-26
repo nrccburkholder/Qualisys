@@ -6,6 +6,7 @@ SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 SET NOCOUNT ON
 
 /*** Change Log
+ **Modified triggering data in where clause for checking if the LookBack rule is in effect
  **Modified 10/01/2010 dmp - commented out check for QAS Batch addrerr rule,
  added code for Melissa Data addrerr rule.
  **Removed Householding check 5/9/2011 dmp
@@ -517,23 +518,24 @@ ELSE
 
 
 --Check for DQ_VisLk rules
-IF EXISTS (SELECT BusinessRule_id
-           FROM BusinessRule br, CriteriaStmt cs, CriteriaClause cc, MetaField mf, Operator op
-           WHERE br.CriteriaStmt_id = cs.CriteriaStmt_id
-             AND cs.CriteriaStmt_id = cc.CriteriaStmt_id
-             AND cc.Field_id = mf.Field_id
-             AND cc.intOperator = op.Operator_Num
-             AND mf.strField_Nm = 'HHLookBackCnt'
-             AND op.strOperator = '<'
-             AND cc.strLowValue = '2'
-             AND br.Survey_id = @Survey_id
-   )
-
-    INSERT INTO #M (Error, strMessage)
-    SELECT 0,'Survey has DQ_VisLk rule (ENCOUNTERHHLookbackCnt < 2).'
+if exists ( SELECT BusinessRule_id
+            FROM BusinessRule br
+            inner join CriteriaStmt cs on br.CriteriaStmt_id = cs.CriteriaStmt_id
+            inner join CriteriaClause cc on cs.CriteriaStmt_id = cc.CriteriaStmt_id
+            inner join MetaField mf on cc.Field_id = mf.Field_id
+            inner join Operator op on cc.intOperator = op.Operator_Num
+            inner join CRITERIAINLIST ci on cc.criteriaclause_id=ci.criteriaclause_id
+            WHERE mf.strField_Nm = 'HHLookBackCnt'
+            AND op.strOperator = 'IN'
+            --AND br.Survey_id = @Survey_id
+            group by BusinessRule_id
+            having count(*)=2 and min(strListValue) = '0' and max(strListValue)= '1'
+        )
+INSERT INTO #M (Error, strMessage)
+    SELECT 0,'Survey has DQ_VisLk rule (ENCOUNTERHHLookbackCnt IN (0,1) ).'
 ELSE
     INSERT INTO #M (Error, strMessage)
-    SELECT 1,'Survey does not have DQ_VisLk rule (ENCOUNTERHHLookbackCnt < 2).'
+    SELECT 1,'Survey does not have DQ_VisLk rule (ENCOUNTERHHLookbackCnt IN (0,1) ).'
 
 --Check for DQ_Age rules
 IF EXISTS (SELECT BusinessRule_id
