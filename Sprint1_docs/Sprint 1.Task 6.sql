@@ -1,5 +1,18 @@
 use qp_prod
 go
+select *
+into bak_CriteriaStmt_AllCAHPS_Release001
+from CRITERIAstmt 
+
+select *
+into bak_CRITERIACLAUSE_AllCAHPS_Release001
+from CRITERIACLAUSE 
+
+select *
+into bak_CRITERIAINLIST_AllCAHPS_Release001
+from CRITERIAINLIST 
+
+go
 ------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------
