@@ -16,13 +16,16 @@ Languages used for the old question core in production
 */
 
 
-select *
-into bak_SEL_QSTNS_AllCAHPS_Release001
-from SEL_QSTNS
+--select *
+--into bak_SEL_QSTNS_AllCAHPS_Release001
+--from SEL_QSTNS
 
-select *
-into bak_SEL_SCLS_AllCAHPS_Release001
-from SEL_SCLS
+--select *
+--into bak_SEL_SCLS_AllCAHPS_Release001
+--from SEL_SCLS
+
+--drop table bak_SEL_SCLS_AllCAHPS_Release001
+--drop table bak_SEL_QSTNS_AllCAHPS_Release001
 
 
 DECLARE @DO_IT as bit
