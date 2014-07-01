@@ -83,7 +83,7 @@ Friend Class QueuedVendorFileProvider
             .Add("PhServInd10", GetType(String))
             .Add("PhServInd11", GetType(String))
             .Add("PhServInd12", GetType(String))
-            .Add("AgeRange", GetType(String))
+            '.Add("AgeRange", GetType(String))
         End With
 
         'Populate the dataset
