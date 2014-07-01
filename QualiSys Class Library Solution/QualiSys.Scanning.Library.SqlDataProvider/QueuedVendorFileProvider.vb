@@ -16,6 +16,8 @@ Friend Class QueuedVendorFileProvider
 
     Public Overrides Function GetDataTable(ByVal filename As String) As DataTable
 
+        Dim isCanada As Boolean = QualisysParams.CountryCode = CountryCode.Canada
+
         'Get the information on the file to be loaded
         Dim fileInfo As New FileInfo(filename)
 
@@ -58,8 +60,13 @@ Friend Class QueuedVendorFileProvider
             .Add("Addr", GetType(String))
             .Add("Addr2", GetType(String))
             .Add("City", GetType(String))
-            .Add("St", GetType(String))
-            .Add("Zip5", GetType(String))
+            If isCanada Then
+                .Add("Province", GetType(String))
+                .Add("PostalCode", GetType(String))
+            Else
+                .Add("St", GetType(String))
+                .Add("Zip5", GetType(String))
+            End If        
             .Add("PhServDate", GetType(Date))
             .Add("LangID", GetType(Integer))
             .Add("Telematch", GetType(String))
@@ -76,6 +83,7 @@ Friend Class QueuedVendorFileProvider
             .Add("PhServInd10", GetType(String))
             .Add("PhServInd11", GetType(String))
             .Add("PhServInd12", GetType(String))
+            .Add("AgeRange", GetType(String))
         End With
 
         'Populate the dataset
@@ -214,7 +222,7 @@ Friend Class QueuedVendorFileProvider
                 .Add(New FixedColumn("PhServInd10", "Char Width 100"))
                 .Add(New FixedColumn("PhServInd11", "Char Width 100"))
                 .Add(New FixedColumn("PhServInd12", "Char Width 100"))                
-                .Add(New FixedColumn("AgeRange", "Char Width 10"))
+                '.Add(New FixedColumn("AgeRange", "Char Width 10"))
             End With
         Else
             'Reset the quantity
