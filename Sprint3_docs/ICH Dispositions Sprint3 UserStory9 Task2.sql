@@ -2,21 +2,25 @@ use [QP_Prod]
 
 --select * from Disposition
 
+SET IDENTITY_INSERT disposition ON
+
 if not exists (select 1 from disposition where strDispositionLabel = 'Returned Survey - Eligibility Unknown')
-insert into disposition (strDispositionLabel, strReportLabel, Action_id, MustHaveResults)
-values ('Returned Survey - Eligibility Unknown','Unable to determine eligibility from screener questions on returned survey',0,1)
+insert into disposition (Disposition_id, strDispositionLabel, strReportLabel, Action_id, MustHaveResults)
+values (32, 'Returned Survey - Eligibility Unknown','Unable to determine eligibility from screener questions on returned survey',0,1)
 
 if not exists (select 1 from disposition where strDispositionLabel = 'Ineligible - Not Receiving Care')
-insert into disposition (strDispositionLabel, strReportLabel, Action_id, MustHaveResults)
-values ('Ineligible - Not Receiving Care','The patient is no longer receiving care',0,0)
+insert into disposition (Disposition_id, strDispositionLabel, strReportLabel, Action_id, MustHaveResults)
+values (33, 'Ineligible - Not Receiving Care','The patient is no longer receiving care',0,0)
 
 if not exists (select 1 from disposition where strDispositionLabel = 'Ineligible - Not Receiving Care at Facility')
-insert into disposition (strDispositionLabel, strReportLabel, Action_id, MustHaveResults)
-values ('Ineligible - Not Receiving Care at Facility','The patient is not receiving care at the sampled facility',0,0)
+insert into disposition (Disposition_id, strDispositionLabel, strReportLabel, Action_id, MustHaveResults)
+values (34, 'Ineligible - Not Receiving Care at Facility','The patient is not receiving care at the sampled facility',0,0)
 
 if not exists (select 1 from disposition where strDispositionLabel = 'Proxy Return')
-insert into disposition (strDispositionLabel, strReportLabel, Action_id, MustHaveResults)
-values ('Proxy Return','The survey was completed by someone other than the intended recipient',0,1)
+insert into disposition (Disposition_id, strDispositionLabel, strReportLabel, Action_id, MustHaveResults)
+values (35, 'Proxy Return','The survey was completed by someone other than the intended recipient',0,1)
+
+SET IDENTITY_INSERT disposition OFF
 
 --select Value, [Desc], Hierarchy, Disposition_ID, ExportReportResponses, SurveyType_ID from surveytypedispositions order by surveytype_id, hierarchy, disposition_id
 
