@@ -57,14 +57,7 @@ Friend Class VendorPhoneFile_DataProvider
         newObject.PhServInd12 = rdr.GetString("PhServInd12")
         newObject.Province = rdr.GetString("Province")
         newObject.PostalCode = rdr.GetString("PostalCode")
-
-        Try
-            newObject.AgeRange = rdr.GetString("AgeRange")
-        Catch ex As Exception
-            'Swallowing exception, hotfix to be rolled back as soon as we figure out a way to have
-            'Telematch pass through the AgeRange field.
-        End Try
-
+        newObject.AgeRange = rdr.GetString("AgeRange")
         newObject.EndPopulate()
 
         Return newObject

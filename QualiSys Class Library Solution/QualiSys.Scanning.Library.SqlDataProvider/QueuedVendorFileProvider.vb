@@ -214,7 +214,7 @@ Friend Class QueuedVendorFileProvider
                 .Add(New FixedColumn("PhServInd10", "Char Width 100"))
                 .Add(New FixedColumn("PhServInd11", "Char Width 100"))
                 .Add(New FixedColumn("PhServInd12", "Char Width 100"))                
-                '.Add(New FixedColumn("AgeRange", "Char Width 10"))
+                .Add(New FixedColumn("AgeRange", "Char Width 10"))
             End With
         Else
             'Reset the quantity
