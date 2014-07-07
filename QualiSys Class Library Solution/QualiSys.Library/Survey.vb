@@ -640,6 +640,9 @@ Public Class Survey
 
     Public ReadOnly Property SurveyTypeName() As String
         Get
+            If mSurveyTypeList Is Nothing Then
+                GetSurveyTypes()
+            End If
             Return mSurveyTypeList(mSurveyType - 1).ToString()
         End Get
     End Property

@@ -9,7 +9,9 @@ insert into metafieldgroupdef (STRFIELDGROUP_NM, strAddrCleanType, bitAddrCleanD
 declare @FieldGroupId int
 select @FieldGroupId = fieldGroup_id from METAFIELDGROUPDEF where STRFIELDGROUP_NM = 'ICH CAHPS'
 
---select * from metafield
+--select * from metafield order by len(STRField_NM)
+--update metafield set STRFIELD_NM = 'ICH_FacilityAdd2' where STRFIELD_NM = 'ICH_FacilityAddr2' 
+
 if not exists(select 1 from metafield where strfield_nm= 'ICH_FacilityName')
 insert into metafield (STRFIELD_NM, STRFIELD_DSC, FIELDGROUP_ID, STRFIELDDATATYPE, INTFIELDLENGTH, STRFIELDEDITMASK, INTSPECIALFIELD_CD, STRFIELDSHORT_NM, BITSYSKEY, bitPhase1Field, intAddrCleanCode, intAddrCleanGroup, bitPII)
 values ('ICH_FacilityName','ICH facility name from CMS',@FieldGroupId,'S',64,NULL,NULL,'ICHFcNm',0,0,NULL,NULL,0)
@@ -18,9 +20,9 @@ if not exists(select 1 from metafield where strfield_nm= 'ICH_FacilityAddr')
 insert into metafield (STRFIELD_NM, STRFIELD_DSC, FIELDGROUP_ID, STRFIELDDATATYPE, INTFIELDLENGTH, STRFIELDEDITMASK, INTSPECIALFIELD_CD, STRFIELDSHORT_NM, BITSYSKEY, bitPhase1Field, intAddrCleanCode, intAddrCleanGroup, bitPII)
 values ('ICH_FacilityAddr','ICH facility address from CMS',@FieldGroupId,'S',64,NULL,NULL,'ICHFcAdd',0,0,NULL,NULL,0)
 
-if not exists(select 1 from metafield where strfield_nm= 'ICH_FacilityAddr2')
+if not exists(select 1 from metafield where strfield_nm= 'ICH_FacilityAdd2')
 insert into metafield (STRFIELD_NM, STRFIELD_DSC, FIELDGROUP_ID, STRFIELDDATATYPE, INTFIELDLENGTH, STRFIELDEDITMASK, INTSPECIALFIELD_CD, STRFIELDSHORT_NM, BITSYSKEY, bitPhase1Field, intAddrCleanCode, intAddrCleanGroup, bitPII)
-values ('ICH_FacilityAddr2','ICH facility secondary address from CMS',@FieldGroupId,'S',64,NULL,NULL,'ICHFcAd2',0,0,NULL,NULL,0)
+values ('ICH_FacilityAdd2','ICH facility secondary address from CMS',@FieldGroupId,'S',64,NULL,NULL,'ICHFcAd2',0,0,NULL,NULL,0)
 
 if not exists(select 1 from metafield where strfield_nm= 'ICH_FacilityCity')
 insert into metafield (STRFIELD_NM, STRFIELD_DSC, FIELDGROUP_ID, STRFIELDDATATYPE, INTFIELDLENGTH, STRFIELDEDITMASK, INTSPECIALFIELD_CD, STRFIELDSHORT_NM, BITSYSKEY, bitPhase1Field, intAddrCleanCode, intAddrCleanGroup, bitPII)

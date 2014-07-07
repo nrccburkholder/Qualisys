@@ -260,69 +260,69 @@ Public Class SampleUnit
         'End Set
     End Property
 
-    ''' <summary>
-    ''' Is this an HCAHPS compliant unit
-    ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    <Logable()> _
-    Public ReadOnly Property IsACOcahps() As Boolean
-        Get
-            Return mCAHPSType = 10
-        End Get
-        'Set(ByVal value As Boolean)
-        '    If mIsACOCAHPS <> value Then
-        '        mIsACOCAHPS = value
-        '        mPropertiesAreDirty = True
-        '    End If
-        'End Set
-    End Property
+    '''' <summary>
+    '''' Is this an HCAHPS compliant unit
+    '''' </summary>
+    '''' <value></value>
+    '''' <returns></returns>
+    '''' <remarks></remarks>
+    '<Logable()> _
+    'Public ReadOnly Property IsACOcahps() As Boolean
+    '    Get
+    '        Return mCAHPSType = 10
+    '    End Get
+    '    'Set(ByVal value As Boolean)
+    '    '    If mIsACOCAHPS <> value Then
+    '    '        mIsACOCAHPS = value
+    '    '        mPropertiesAreDirty = True
+    '    '    End If
+    '    'End Set
+    'End Property
 
-    ''' <summary>
-    ''' Is this an Home Health CAHPS compliant unit
-    ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    <Logable()> _
-    Public ReadOnly Property IsHHcahps() As Boolean
-        Get
-            Return mCAHPSType = 3
-        End Get
-        'Set(ByVal value As Boolean)
-        '    If mIsHHCAHPS <> value Then
-        '        mIsHHCAHPS = value
-        '        mPropertiesAreDirty = True
-        '    End If
-        'End Set
-    End Property
+    '''' <summary>
+    '''' Is this an Home Health CAHPS compliant unit
+    '''' </summary>
+    '''' <value></value>
+    '''' <returns></returns>
+    '''' <remarks></remarks>
+    '<Logable()> _
+    'Public ReadOnly Property IsHHcahps() As Boolean
+    '    Get
+    '        Return mCAHPSType = 3
+    '    End Get
+    '    'Set(ByVal value As Boolean)
+    '    '    If mIsHHCAHPS <> value Then
+    '    '        mIsHHCAHPS = value
+    '    '        mPropertiesAreDirty = True
+    '    '    End If
+    '    'End Set
+    'End Property
 
-    <Logable()> _
-    Public ReadOnly Property IsCHART() As Boolean
-        Get
-            Return False
-        End Get
-        'Set(ByVal value As Boolean)
-        '    If mIsCHART <> value Then
-        '        mIsCHART = value
-        '        mPropertiesAreDirty = True
-        '    End If
-        'End Set
-    End Property
+    '<Logable()> _
+    'Public ReadOnly Property IsCHART() As Boolean
+    '    Get
+    '        Return False
+    '    End Get
+    '    'Set(ByVal value As Boolean)
+    '    '    If mIsCHART <> value Then
+    '    '        mIsCHART = value
+    '    '        mPropertiesAreDirty = True
+    '    '    End If
+    '    'End Set
+    'End Property
 
-    <Logable()> _
-    Public ReadOnly Property IsMNCM() As Boolean
-        Get
-            Return mCAHPSType = 4
-        End Get
-        'Set(ByVal value As Boolean)
-        '    If mIsMNCM <> value Then
-        '        mIsMNCM = value
-        '        mPropertiesAreDirty = True
-        '    End If
-        'End Set
-    End Property
+    '<Logable()> _
+    'Public ReadOnly Property IsMNCM() As Boolean
+    '    Get
+    '        Return mCAHPSType = 4
+    '    End Get
+    '    'Set(ByVal value As Boolean)
+    '    '    If mIsMNCM <> value Then
+    '    '        mIsMNCM = value
+    '    '        mPropertiesAreDirty = True
+    '    '    End If
+    '    'End Set
+    'End Property
 
     Public Property CAHPSType() As CAHPSType
         Get
