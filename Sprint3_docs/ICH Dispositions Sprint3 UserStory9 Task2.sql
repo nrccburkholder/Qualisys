@@ -4,6 +4,25 @@ use [QP_Prod]
 
 SET IDENTITY_INSERT disposition ON
 
+if exists (select 1 from qualpro_params where strparam_nm ='Country' and STRPARAM_VALUE = 'CA')
+begin
+
+if not exists (select 1 from disposition where strDispositionLabel = 'Returned Survey - Eligibility Unknown')
+insert into disposition (Disposition_id, strDispositionLabel, strReportLabel, Action_id, MustHaveResults)
+values (36, 'Returned Survey - Eligibility Unknown','Unable to determine eligibility from screener questions on returned survey',0,1)
+
+if not exists (select 1 from disposition where strDispositionLabel = 'Ineligible - Not Receiving Care')
+insert into disposition (Disposition_id, strDispositionLabel, strReportLabel, Action_id, MustHaveResults)
+values (37, 'Ineligible - Not Receiving Care','The patient is no longer receiving care',0,0)
+
+if not exists (select 1 from disposition where strDispositionLabel = 'Ineligible - Not Receiving Care at Facility')
+insert into disposition (Disposition_id, strDispositionLabel, strReportLabel, Action_id, MustHaveResults)
+values (38, 'Ineligible - Not Receiving Care at Facility','The patient is not receiving care at the sampled facility',0,0)
+
+end
+else
+begin
+
 if not exists (select 1 from disposition where strDispositionLabel = 'Returned Survey - Eligibility Unknown')
 insert into disposition (Disposition_id, strDispositionLabel, strReportLabel, Action_id, MustHaveResults)
 values (32, 'Returned Survey - Eligibility Unknown','Unable to determine eligibility from screener questions on returned survey',0,1)
@@ -15,6 +34,8 @@ values (33, 'Ineligible - Not Receiving Care','The patient is no longer receivin
 if not exists (select 1 from disposition where strDispositionLabel = 'Ineligible - Not Receiving Care at Facility')
 insert into disposition (Disposition_id, strDispositionLabel, strReportLabel, Action_id, MustHaveResults)
 values (34, 'Ineligible - Not Receiving Care at Facility','The patient is not receiving care at the sampled facility',0,0)
+
+end
 
 if not exists (select 1 from disposition where strDispositionLabel = 'Proxy Return')
 insert into disposition (Disposition_id, strDispositionLabel, strReportLabel, Action_id, MustHaveResults)
