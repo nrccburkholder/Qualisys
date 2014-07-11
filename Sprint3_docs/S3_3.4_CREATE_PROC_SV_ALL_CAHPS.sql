@@ -172,7 +172,7 @@ BEGIN
 	INSERT INTO #M (Error, strMessage)
 	SELECT 0,'Skip Patterns are enforced'
 
-	IF @surveyType_id not in (@ICHCAHPS)
+	IF @surveyType_id in (@HCAHPS)
 	BEGIN
 		--Check the ReSurvey Method
 		INSERT INTO #M (Error, strMessage)
@@ -180,6 +180,60 @@ BEGIN
 		FROM Survey_def
 		WHERE Survey_id=@Survey_id
 		AND ReSurveyMethod_id<>2
+	END
+
+	IF @surveyType_id in (@HHCAHPS)
+	BEGIN
+
+		--Check the ReSurvey Method
+		INSERT INTO #M (Error, strMessage)
+		SELECT 1,'Resurvey Method is not set to Calendar Month.'
+		FROM Survey_def
+		WHERE Survey_id=@Survey_id
+		AND ReSurveyMethod_id<>2
+
+		--check resurvey Exclusion Type
+		INSERT INTO #M (Error, strMessage)
+		SELECT 1,'Your resurvey exclusion Method is not set to months.'
+		FROM Survey_def
+		WHERE Survey_id=@Survey_id
+		AND ReSurveyMethod_id<>2
+
+		--Check resurvey Exclusion months
+		INSERT INTO #M (Error, strMessage)
+		SELECT 1,'Your resurvey exclusion Month is not set to 6 months.'
+		FROM Survey_def
+		WHERE Survey_id=@Survey_id
+		AND INTRESURVEY_PERIOD<>6
+
+	END
+
+	IF @surveyType_id in (@ICHCAHPS)
+	BEGIN
+		--check resurvey Exclusion Type
+		INSERT INTO #M (Error, strMessage)
+		SELECT 1,'Your resurvey exclusion Method is not set to Days.'
+		FROM Survey_def
+		WHERE Survey_id=@Survey_id
+		AND ReSurveyMethod_id<>1
+
+		--Check resurvey Exclusion Period
+		INSERT INTO #M (Error, strMessage)
+		SELECT 1,'Your resurvey exclusion Period is not set to 0 Days.'
+		FROM Survey_def
+		WHERE Survey_id=@Survey_id
+		AND INTRESURVEY_PERIOD<>0
+	END
+
+
+	IF @surveyType_id in (@ACOCAHPS)
+	BEGIN
+		--Check the ReSurvey Method                                                         
+		INSERT INTO #M (Error, strMessage)
+		SELECT 1,'Resurvey Method is not set to Resurvey Days.'
+		FROM Survey_def
+		WHERE Survey_id=@Survey_id
+		AND ReSurveyMethod_id<>(select ReSurveyMethod_id from ReSurveyMethod where ReSurveyMethodName = 'Resurvey Days')
 	END
 
 
@@ -267,39 +321,7 @@ BEGIN
 		WHERE hhr.Survey_id=@Survey_id
 	END
 
-	IF @surveyType_id in (@HHCAHPS)
-	BEGIN
-		--check resurvey Exclusion Type
-		INSERT INTO #M (Error, strMessage)
-		SELECT 1,'Your resurvey exclusion Method is not set to months.'
-		FROM Survey_def
-		WHERE Survey_id=@Survey_id
-		AND ReSurveyMethod_id<>2
 
-		--Check resurvey Exclusion months
-		INSERT INTO #M (Error, strMessage)
-		SELECT 1,'Your resurvey exclusion Period is not set to 6 months.'
-		FROM Survey_def
-		WHERE Survey_id=@Survey_id
-		AND INTRESURVEY_PERIOD<>6
-	END
-
-	IF @surveyType_id in (@ICHCAHPS)
-	BEGIN
-		--check resurvey Exclusion Type
-		INSERT INTO #M (Error, strMessage)
-		SELECT 1,'Your resurvey exclusion Method is not set to Days.'
-		FROM Survey_def
-		WHERE Survey_id=@Survey_id
-		AND ReSurveyMethod_id<>1
-
-		--Check resurvey Exclusion Period
-		INSERT INTO #M (Error, strMessage)
-		SELECT 1,'Your resurvey exclusion Period is not set to 0 Days.'
-		FROM Survey_def
-		WHERE Survey_id=@Survey_id
-		AND INTRESURVEY_PERIOD<>0
-	END
 
 	IF @surveyType_id in (@HHCAHPS)
 	BEGIN
