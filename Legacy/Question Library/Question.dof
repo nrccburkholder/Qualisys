@@ -1,0 +1,79 @@
+[Compiler]
+A=1
+B=0
+C=1
+D=1
+E=0
+F=0
+G=1
+H=1
+I=1
+J=1
+K=0
+L=1
+M=0
+N=1
+O=1
+P=1
+Q=0
+R=0
+S=0
+T=0
+U=0
+V=1
+W=0
+X=1
+Y=0
+Z=1
+ShowHints=1
+ShowWarnings=1
+UnitAliases=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
+[Linker]
+MapFile=0
+OutputObjs=0
+ConsoleApp=1
+DebugInfo=0
+MinStackSize=16384
+MaxStackSize=1048576
+ImageBase=4194304
+ExeDescription=
+[Directories]
+OutputDir=C:\VSS\QualiSys\Question Library\bin
+UnitOutputDir=C:\VSS\QualiSys\Question Library\lib
+SearchPath=c:\program files\borland\delphi 3\ip3\lib;c:\program files\borland\delphi 3\qualpro;c:\cdk3;c:\program files\borland\delphi 3\edsvcl;c:\program files\borland\delphi 3\pp
+Packages=VCLX30;VCL30;VCLDB30;VCLDBX30;INETDB30;INET30;VCLSMP30;QRPT30;TEEUI30;TEEDB30;TEE30;DSS30;IBEVNT30;EAGLWK30;CDKSMP30;IP30
+Conditionals=
+DebugSourceDirs=
+UsePackages=0
+[Parameters]
+RunParams=e:\nrc\data\net
+HostApplication=
+[Version Info]
+IncludeVerInfo=1
+AutoIncBuild=1
+MajorVer=3
+MinorVer=0
+Release=0
+Build=4
+Debug=0
+PreRelease=0
+Special=0
+Private=0
+DLL=0
+Locale=1033
+CodePage=1252
+[Version Info Keys]
+CompanyName=
+FileDescription=
+FileVersion=3.0.0.4
+InternalName=
+LegalCopyright=
+LegalTrademarks=
+OriginalFilename=
+ProductName=
+ProductVersion=2.0.0.0
+Comments=When a question in English which has translation is edited, the program displays the translated question
+v2.6.0.2=Fixed the issue with translation question getting wiped out. If no code constants are defined for the selected lang, display a warning to the user. Unable to edit the Question Header when a code exists
+v2.8=1)Stopped using root drive for temp files. 2)Fixed updating the codes to SQL Tables
+v2.9.0.7=Scale Ranking
+v2.9.0.8=Removed the warning on scale change. ImportRanking menu is not visible anymore. Admin module for Language/users
