@@ -97,25 +97,53 @@ Global Const AAlreadyMailed = 67
 Global Const ADeleted = 68
 Global Const APrinting = 69
 
+Global Const RHospital = 70
+Global Const RConfiguration = 71
+Global Const RBundle = 72
+Global Const RFadedConfiguration = 73
+Global Const RGroupedPrintHospital = 74
+Global Const RGroupedPrintConfiguration = 75
+Global Const RCheckedHospital = 76
+Global Const RCheckedBundle = 77
+Global Const RCheckedConfiguration = 78
+Global Const RCheckedGroupedPrintHospital = 79
+Global Const RMailBundle = 80
+Global Const RAlreadyMailed = 81
+Global Const RDeleted = 82
+Global Const RPrinting = 83
+
 Public fMainForm As frmMain
 
 '01-19-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-Public Function IsHCAHPS(ByVal image As Integer) As Boolean
+Public Function IsCyan(ByVal image As Integer) As Boolean
     ' HCAHPS image starts at 28 (after conCheckedGroupedPrintHospital).
     'IsHCAHPS = IIf(image > conCheckedGroupedPrintHospital, True, False)
-    IsHCAHPS = IIf(image > conCheckedGroupedPrintHospital And image < HHHospital, True, False)
+    IsCyan = IIf(image > conCheckedGroupedPrintHospital And image < HHHospital, True, False)
 End Function
 ' *** end of addition
 
 '01-19-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-Public Function IsHHCAHPS(ByVal image As Integer) As Boolean
+Public Function IsPurple(ByVal image As Integer) As Boolean
     'HHCAHPS image starts at 42 (after HPrinting).
-    IsHHCAHPS = IIf(image > HPrinting And image < AHospital, True, False)
+    IsPurple = IIf(image > HPrinting And image < AHospital, True, False)
 End Function
 
-Public Function IsACOCAHPS(ByVal image As Integer) As Boolean
+Public Function IsOrange(ByVal image As Integer) As Boolean
     'HHCAHPS image starts at 56 (after HHPrinting).
-    IsACOCAHPS = IIf(image > HHPrinting, True, False)
+    IsOrange = IIf(image > HHPrinting And image <= APrinting, True, False)
+End Function
+
+Public Function IsRed(ByVal image As Integer) As Boolean
+    IsRed = IIf(image > APrinting, True, False)
+End Function
+
+Public Function IsManila(ByVal image As Integer) As Boolean
+    Select Case image
+        Case 6, 12, 13, 14, 16, 18, 19, 21, 22, 23, 24, 25, 26, 27
+            IsManila = True
+        Case Else
+            IsManila = False
+    End Select
 End Function
 
 ' *** end of addition
