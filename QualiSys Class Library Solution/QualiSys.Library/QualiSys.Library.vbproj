@@ -125,6 +125,7 @@
     <Compile Include="Collections\FacilityList.vb" />
     <Compile Include="Collections\HCAHPSDispositionCollection.vb" />
     <Compile Include="Collections\HHCAHPSDispositionCollection.vb" />
+    <Compile Include="Collections\MailingStepMethodCollection.vb" />
     <Compile Include="Collections\MedicareGlobalCalcDateCollection.vb" />
     <Compile Include="Collections\MedicareGlobalCalculationDefaultCollection.vb" />
     <Compile Include="Collections\MedicareNumberList.vb" />
@@ -132,6 +133,7 @@
     <Compile Include="Collections\MedicareRecalcHistoryCollection.vb" />
     <Compile Include="Collections\EmailBlastCollection.vb" />
     <Compile Include="Collections\EmailBlastOptionCollection.vb" />
+    <Compile Include="Collections\ModeSectionMappingCollection.vb" />
     <Compile Include="Collections\ReceiptTypeCollection.vb" />
     <Compile Include="Collections\SampleUnitSectionMappingCollection.vb" />
     <Compile Include="Collections\STUDY_EMPLOYEECollection.vb" />
@@ -152,6 +154,8 @@
     <Compile Include="DataProviders\MedicareRecalcHistoryProvider.vb" />
     <Compile Include="DataProviders\EmailBlastProvider.vb" />
     <Compile Include="DataProviders\EmailBlastOptionProvider.vb" />
+    <Compile Include="DataProviders\MailingStepMethodProvider.vb" />
+    <Compile Include="DataProviders\ModeSectionMappingProvider.vb" />
     <Compile Include="DataProviders\NavigationProvider.vb">
       <SubType>Code</SubType>
     </Compile>
@@ -235,9 +239,11 @@
     <Compile Include="MedicareRecalcHistory.vb" />
     <Compile Include="Methodology.vb" />
     <Compile Include="Collections\MethodologyStepCollection.vb" />
+    <Compile Include="MailingStepMethod.vb" />
     <Compile Include="MethodologyStepType.vb" />
     <Compile Include="EmailBlast.vb" />
     <Compile Include="EmailBlastOption.vb" />
+    <Compile Include="ModeSectionMapping.vb" />
     <Compile Include="Navigation\ClientNavNode.vb">
       <SubType>Code</SubType>
     </Compile>

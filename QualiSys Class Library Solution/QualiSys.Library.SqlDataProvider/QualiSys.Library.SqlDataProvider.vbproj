@@ -124,6 +124,8 @@
     <Compile Include="CriteriaProvider.vb" />
     <Compile Include="EmailBlastProvider.vb" />
     <Compile Include="EmailBlastOptionProvider.vb" />
+    <Compile Include="MailingStepMethodProvider.vb" />
+    <Compile Include="ModeSectionMappingProvider.vb" />
     <Compile Include="QDispositionProvider.vb" />
     <Compile Include="EmployeeProvider.vb" />
     <Compile Include="FacilityProvider.vb" />

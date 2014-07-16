@@ -1,14 +1,17 @@
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class SampleUnitSectionMappingEditor
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+Partial Class ModeSectionMappingEditor
     Inherits System.Windows.Forms.UserControl
 
     'UserControl overrides dispose to clean up the component list.
     <System.Diagnostics.DebuggerNonUserCode()> _
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-        If disposing AndAlso components IsNot Nothing Then
-            components.Dispose()
-        End If
-        MyBase.Dispose(disposing)
+        Try
+            If disposing AndAlso components IsNot Nothing Then
+                components.Dispose()
+            End If
+        Finally
+            MyBase.Dispose(disposing)
+        End Try
     End Sub
 
     'Required by the Windows Form Designer
@@ -20,22 +23,18 @@ Partial Class SampleUnitSectionMappingEditor
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Me.SampleUnitBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.BottomPanel = New System.Windows.Forms.Panel()
-        Me.ApplyButton = New System.Windows.Forms.Button()
-        Me.OKButton = New System.Windows.Forms.Button()
-        Me.CancelButton = New System.Windows.Forms.Button()
+        Me.MappedSectionsBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.BodyPanel = New System.Windows.Forms.SplitContainer()
-        Me.SampleUnitTreeView = New Nrc.Qualisys.ConfigurationManager.MultiSelectTreeView()
+        Me.AvailableSectionsTreeView = New Nrc.Qualisys.ConfigurationManager.MultiSelectTreeView()
         Me.HeaderStrip2 = New Nrc.Framework.WinForms.HeaderStrip()
         Me.ToolStripLabel2 = New System.Windows.Forms.ToolStripLabel()
         Me.SectionsPanel = New System.Windows.Forms.SplitContainer()
-        Me.AvailableSectionsGridControl = New DevExpress.XtraGrid.GridControl()
+        Me.AvailableMailingStepMethodsGridControl = New DevExpress.XtraGrid.GridControl()
         Me.MapContextMenuStrip = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.MapToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.AvailableSectionsBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.AvailableMailingMethodsBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.AvailableGridView = New DevExpress.XtraGrid.Views.Grid.GridView()
-        Me.colQuestionSectionId = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.GridColumn2 = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.AvailableSectionLabelLookUpEdit = New DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit()
         Me.QuestionSectionBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.HeaderStrip1 = New Nrc.Framework.WinForms.HeaderStrip()
@@ -45,20 +44,22 @@ Partial Class SampleUnitSectionMappingEditor
         Me.MappingSectionsGridControl = New DevExpress.XtraGrid.GridControl()
         Me.UnMapContextMenuStrip = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.UnMapToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.MappedSectionsBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.MappedGridView = New DevExpress.XtraGrid.Views.Grid.GridView()
-        Me.colSampleUnitId = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.GridColumn1 = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.GridColumn3 = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.SampleUnitLookUpEdit = New DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit()
-        Me.colQuestionSectionId1 = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.MappedSectionsLookupEdit = New DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit()
         Me.HeaderStrip3 = New Nrc.Framework.WinForms.HeaderStrip()
         Me.ToolStripLabel3 = New System.Windows.Forms.ToolStripLabel()
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.DeleteMappedSectionButton = New System.Windows.Forms.ToolStripButton()
         Me.InformationBar = New Nrc.Qualisys.ConfigurationManager.InformationBar()
+        Me.ApplyButton = New System.Windows.Forms.Button()
+        Me.OKButton = New System.Windows.Forms.Button()
+        Me.CancelButton = New System.Windows.Forms.Button()
+        Me.BottomPanel = New System.Windows.Forms.Panel()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        CType(Me.SampleUnitBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.BottomPanel.SuspendLayout()
+        CType(Me.MappedSectionsBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.BodyPanel.Panel1.SuspendLayout()
         Me.BodyPanel.Panel2.SuspendLayout()
         Me.BodyPanel.SuspendLayout()
@@ -66,67 +67,25 @@ Partial Class SampleUnitSectionMappingEditor
         Me.SectionsPanel.Panel1.SuspendLayout()
         Me.SectionsPanel.Panel2.SuspendLayout()
         Me.SectionsPanel.SuspendLayout()
-        CType(Me.AvailableSectionsGridControl, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.AvailableMailingStepMethodsGridControl, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.MapContextMenuStrip.SuspendLayout()
-        CType(Me.AvailableSectionsBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.AvailableMailingMethodsBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.AvailableGridView, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.AvailableSectionLabelLookUpEdit, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.QuestionSectionBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.HeaderStrip1.SuspendLayout()
         CType(Me.MappingSectionsGridControl, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.UnMapContextMenuStrip.SuspendLayout()
-        CType(Me.MappedSectionsBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MappedGridView, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.SampleUnitLookUpEdit, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MappedSectionsLookupEdit, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.HeaderStrip3.SuspendLayout()
+        Me.BottomPanel.SuspendLayout()
         Me.SuspendLayout()
         '
-        'SampleUnitBindingSource
+        'MappedSectionsBindingSource
         '
-        Me.SampleUnitBindingSource.DataSource = GetType(Nrc.Qualisys.Library.SampleUnit)
-        '
-        'BottomPanel
-        '
-        Me.BottomPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.BottomPanel.Controls.Add(Me.ApplyButton)
-        Me.BottomPanel.Controls.Add(Me.OKButton)
-        Me.BottomPanel.Controls.Add(Me.CancelButton)
-        Me.BottomPanel.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.BottomPanel.Location = New System.Drawing.Point(0, 500)
-        Me.BottomPanel.Name = "BottomPanel"
-        Me.BottomPanel.Size = New System.Drawing.Size(686, 35)
-        Me.BottomPanel.TabIndex = 1
-        '
-        'ApplyButton
-        '
-        Me.ApplyButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ApplyButton.Location = New System.Drawing.Point(378, 5)
-        Me.ApplyButton.Name = "ApplyButton"
-        Me.ApplyButton.Size = New System.Drawing.Size(75, 23)
-        Me.ApplyButton.TabIndex = 2
-        Me.ApplyButton.Text = "Apply"
-        Me.ApplyButton.UseVisualStyleBackColor = True
-        '
-        'OKButton
-        '
-        Me.OKButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.OKButton.Location = New System.Drawing.Point(524, 4)
-        Me.OKButton.Name = "OKButton"
-        Me.OKButton.Size = New System.Drawing.Size(75, 23)
-        Me.OKButton.TabIndex = 0
-        Me.OKButton.Text = "OK"
-        Me.OKButton.UseVisualStyleBackColor = True
-        '
-        'CancelButton
-        '
-        Me.CancelButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.CancelButton.Location = New System.Drawing.Point(605, 4)
-        Me.CancelButton.Name = "CancelButton"
-        Me.CancelButton.Size = New System.Drawing.Size(75, 23)
-        Me.CancelButton.TabIndex = 1
-        Me.CancelButton.Text = "Cancel"
-        Me.CancelButton.UseVisualStyleBackColor = True
+        Me.MappedSectionsBindingSource.DataSource = GetType(Nrc.QualiSys.Library.ModeSectionMappingCollection)
         '
         'BodyPanel
         '
@@ -137,7 +96,7 @@ Partial Class SampleUnitSectionMappingEditor
         '
         'BodyPanel.Panel1
         '
-        Me.BodyPanel.Panel1.Controls.Add(Me.SampleUnitTreeView)
+        Me.BodyPanel.Panel1.Controls.Add(Me.AvailableSectionsTreeView)
         Me.BodyPanel.Panel1.Controls.Add(Me.HeaderStrip2)
         '
         'BodyPanel.Panel2
@@ -145,20 +104,22 @@ Partial Class SampleUnitSectionMappingEditor
         Me.BodyPanel.Panel2.Controls.Add(Me.SectionsPanel)
         Me.BodyPanel.Size = New System.Drawing.Size(686, 480)
         Me.BodyPanel.SplitterDistance = 211
-        Me.BodyPanel.TabIndex = 37
+        Me.BodyPanel.TabIndex = 40
         '
-        'SampleUnitTreeView
+        'AvailableSectionsTreeView
         '
-        Me.SampleUnitTreeView.BackColor = System.Drawing.SystemColors.Window
-        Me.SampleUnitTreeView.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.SampleUnitTreeView.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.SampleUnitTreeView.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.SampleUnitTreeView.HideSelection = False
-        Me.SampleUnitTreeView.Location = New System.Drawing.Point(0, 21)
-        Me.SampleUnitTreeView.Name = "SampleUnitTreeView"
-        Me.SampleUnitTreeView.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.SampleUnitTreeView.Size = New System.Drawing.Size(209, 457)
-        Me.SampleUnitTreeView.TabIndex = 3
+        Me.AvailableSectionsTreeView.BackColor = System.Drawing.SystemColors.Window
+        Me.AvailableSectionsTreeView.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.AvailableSectionsTreeView.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.AvailableSectionsTreeView.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.AvailableSectionsTreeView.FullRowSelect = True
+        Me.AvailableSectionsTreeView.HideSelection = False
+        Me.AvailableSectionsTreeView.Location = New System.Drawing.Point(0, 21)
+        Me.AvailableSectionsTreeView.Name = "AvailableSectionsTreeView"
+        Me.AvailableSectionsTreeView.SelectionMode = System.Windows.Forms.SelectionMode.One
+        Me.AvailableSectionsTreeView.ShowLines = False
+        Me.AvailableSectionsTreeView.Size = New System.Drawing.Size(209, 457)
+        Me.AvailableSectionsTreeView.TabIndex = 3
         '
         'HeaderStrip2
         '
@@ -177,8 +138,8 @@ Partial Class SampleUnitSectionMappingEditor
         'ToolStripLabel2
         '
         Me.ToolStripLabel2.Name = "ToolStripLabel2"
-        Me.ToolStripLabel2.Size = New System.Drawing.Size(97, 18)
-        Me.ToolStripLabel2.Text = "Sample Unit Tree"
+        Me.ToolStripLabel2.Size = New System.Drawing.Size(102, 18)
+        Me.ToolStripLabel2.Text = "Available Sections"
         '
         'SectionsPanel
         '
@@ -190,7 +151,7 @@ Partial Class SampleUnitSectionMappingEditor
         'SectionsPanel.Panel1
         '
         Me.SectionsPanel.Panel1.AutoScroll = True
-        Me.SectionsPanel.Panel1.Controls.Add(Me.AvailableSectionsGridControl)
+        Me.SectionsPanel.Panel1.Controls.Add(Me.AvailableMailingStepMethodsGridControl)
         Me.SectionsPanel.Panel1.Controls.Add(Me.HeaderStrip1)
         '
         'SectionsPanel.Panel2
@@ -202,18 +163,18 @@ Partial Class SampleUnitSectionMappingEditor
         Me.SectionsPanel.SplitterDistance = 264
         Me.SectionsPanel.TabIndex = 0
         '
-        'AvailableSectionsGridControl
+        'AvailableMailingStepMethodsGridControl
         '
-        Me.AvailableSectionsGridControl.ContextMenuStrip = Me.MapContextMenuStrip
-        Me.AvailableSectionsGridControl.DataSource = Me.AvailableSectionsBindingSource
-        Me.AvailableSectionsGridControl.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.AvailableSectionsGridControl.Location = New System.Drawing.Point(0, 21)
-        Me.AvailableSectionsGridControl.MainView = Me.AvailableGridView
-        Me.AvailableSectionsGridControl.Name = "AvailableSectionsGridControl"
-        Me.AvailableSectionsGridControl.RepositoryItems.AddRange(New DevExpress.XtraEditors.Repository.RepositoryItem() {Me.AvailableSectionLabelLookUpEdit})
-        Me.AvailableSectionsGridControl.Size = New System.Drawing.Size(469, 243)
-        Me.AvailableSectionsGridControl.TabIndex = 3
-        Me.AvailableSectionsGridControl.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.AvailableGridView})
+        Me.AvailableMailingStepMethodsGridControl.ContextMenuStrip = Me.MapContextMenuStrip
+        Me.AvailableMailingStepMethodsGridControl.DataSource = Me.AvailableMailingMethodsBindingSource
+        Me.AvailableMailingStepMethodsGridControl.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.AvailableMailingStepMethodsGridControl.Location = New System.Drawing.Point(0, 21)
+        Me.AvailableMailingStepMethodsGridControl.MainView = Me.AvailableGridView
+        Me.AvailableMailingStepMethodsGridControl.Name = "AvailableMailingStepMethodsGridControl"
+        Me.AvailableMailingStepMethodsGridControl.RepositoryItems.AddRange(New DevExpress.XtraEditors.Repository.RepositoryItem() {Me.AvailableSectionLabelLookUpEdit})
+        Me.AvailableMailingStepMethodsGridControl.Size = New System.Drawing.Size(469, 243)
+        Me.AvailableMailingStepMethodsGridControl.TabIndex = 3
+        Me.AvailableMailingStepMethodsGridControl.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.AvailableGridView})
         '
         'MapContextMenuStrip
         '
@@ -227,16 +188,16 @@ Partial Class SampleUnitSectionMappingEditor
         Me.MapToolStripMenuItem.Size = New System.Drawing.Size(98, 22)
         Me.MapToolStripMenuItem.Text = "Map"
         '
-        'AvailableSectionsBindingSource
+        'AvailableMailingMethodsBindingSource
         '
-        Me.AvailableSectionsBindingSource.DataSource = GetType(Nrc.Qualisys.Library.SampleUnitSectionMapping)
+        Me.AvailableMailingMethodsBindingSource.DataSource = GetType(Nrc.QualiSys.Library.MailingStepMethodCollection)
         '
         'AvailableGridView
         '
         Me.AvailableGridView.Appearance.FocusedCell.BackColor = System.Drawing.SystemColors.MenuHighlight
         Me.AvailableGridView.Appearance.FocusedCell.Options.UseBackColor = True
-        Me.AvailableGridView.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.colQuestionSectionId})
-        Me.AvailableGridView.GridControl = Me.AvailableSectionsGridControl
+        Me.AvailableGridView.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.GridColumn2})
+        Me.AvailableGridView.GridControl = Me.AvailableMailingStepMethodsGridControl
         Me.AvailableGridView.Name = "AvailableGridView"
         Me.AvailableGridView.OptionsCustomization.AllowFilter = False
         Me.AvailableGridView.OptionsCustomization.AllowGroup = False
@@ -245,16 +206,14 @@ Partial Class SampleUnitSectionMappingEditor
         Me.AvailableGridView.OptionsView.ShowColumnHeaders = False
         Me.AvailableGridView.OptionsView.ShowFilterPanelMode = DevExpress.XtraGrid.Views.Base.ShowFilterPanelMode.Never
         Me.AvailableGridView.OptionsView.ShowGroupPanel = False
-        Me.AvailableGridView.SortInfo.AddRange(New DevExpress.XtraGrid.Columns.GridColumnSortInfo() {New DevExpress.XtraGrid.Columns.GridColumnSortInfo(Me.colQuestionSectionId, DevExpress.Data.ColumnSortOrder.Ascending)})
         '
-        'colQuestionSectionId
+        'GridColumn2
         '
-        Me.colQuestionSectionId.Caption = "Question Section"
-        Me.colQuestionSectionId.ColumnEdit = Me.AvailableSectionLabelLookUpEdit
-        Me.colQuestionSectionId.FieldName = "QuestionSectionId"
-        Me.colQuestionSectionId.Name = "colQuestionSectionId"
-        Me.colQuestionSectionId.Visible = True
-        Me.colQuestionSectionId.VisibleIndex = 0
+        Me.GridColumn2.Caption = "GridColumn2"
+        Me.GridColumn2.FieldName = "Name"
+        Me.GridColumn2.Name = "GridColumn2"
+        Me.GridColumn2.Visible = True
+        Me.GridColumn2.VisibleIndex = 0
         '
         'AvailableSectionLabelLookUpEdit
         '
@@ -268,7 +227,7 @@ Partial Class SampleUnitSectionMappingEditor
         '
         'QuestionSectionBindingSource
         '
-        Me.QuestionSectionBindingSource.DataSource = GetType(Nrc.Qualisys.Library.QuestionSection)
+        Me.QuestionSectionBindingSource.DataSource = GetType(Nrc.QualiSys.Library.QuestionSection)
         '
         'HeaderStrip1
         '
@@ -288,8 +247,8 @@ Partial Class SampleUnitSectionMappingEditor
         '
         Me.ToolStripLabel1.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Bold)
         Me.ToolStripLabel1.Name = "ToolStripLabel1"
-        Me.ToolStripLabel1.Size = New System.Drawing.Size(110, 18)
-        Me.ToolStripLabel1.Text = "Available Sections"
+        Me.ToolStripLabel1.Size = New System.Drawing.Size(99, 18)
+        Me.ToolStripLabel1.Text = "Available Modes"
         '
         'ToolStripSeparator2
         '
@@ -331,15 +290,11 @@ Partial Class SampleUnitSectionMappingEditor
         Me.UnMapToolStripMenuItem.Size = New System.Drawing.Size(113, 22)
         Me.UnMapToolStripMenuItem.Text = "UnMap"
         '
-        'MappedSectionsBindingSource
-        '
-        Me.MappedSectionsBindingSource.DataSource = GetType(Nrc.Qualisys.Library.SampleUnitSectionMapping)
-        '
         'MappedGridView
         '
         Me.MappedGridView.Appearance.FocusedCell.BackColor = System.Drawing.SystemColors.MenuHighlight
         Me.MappedGridView.Appearance.FocusedCell.Options.UseBackColor = True
-        Me.MappedGridView.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.colSampleUnitId, Me.colQuestionSectionId1})
+        Me.MappedGridView.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.GridColumn1, Me.GridColumn3})
         Me.MappedGridView.GridControl = Me.MappingSectionsGridControl
         Me.MappedGridView.Name = "MappedGridView"
         Me.MappedGridView.OptionsCustomization.AllowGroup = False
@@ -348,36 +303,32 @@ Partial Class SampleUnitSectionMappingEditor
         Me.MappedGridView.OptionsSelection.MultiSelect = True
         Me.MappedGridView.OptionsView.ShowAutoFilterRow = True
         Me.MappedGridView.OptionsView.ShowGroupPanel = False
-        Me.MappedGridView.SortInfo.AddRange(New DevExpress.XtraGrid.Columns.GridColumnSortInfo() {New DevExpress.XtraGrid.Columns.GridColumnSortInfo(Me.colSampleUnitId, DevExpress.Data.ColumnSortOrder.Ascending)})
         '
-        'colSampleUnitId
+        'GridColumn1
         '
-        Me.colSampleUnitId.Caption = "Sample Unit"
-        Me.colSampleUnitId.ColumnEdit = Me.SampleUnitLookUpEdit
-        Me.colSampleUnitId.FieldName = "SampleUnitId"
-        Me.colSampleUnitId.Name = "colSampleUnitId"
-        Me.colSampleUnitId.Visible = True
-        Me.colSampleUnitId.VisibleIndex = 0
+        Me.GridColumn1.Caption = "Question Section"
+        Me.GridColumn1.FieldName = "QuestionSectionLabel"
+        Me.GridColumn1.Name = "GridColumn1"
+        Me.GridColumn1.Visible = True
+        Me.GridColumn1.VisibleIndex = 0
+        '
+        'GridColumn3
+        '
+        Me.GridColumn3.Caption = "Mode"
+        Me.GridColumn3.FieldName = "MailingStepMethodName"
+        Me.GridColumn3.Name = "GridColumn3"
+        Me.GridColumn3.Visible = True
+        Me.GridColumn3.VisibleIndex = 1
         '
         'SampleUnitLookUpEdit
         '
         Me.SampleUnitLookUpEdit.AutoHeight = False
         Me.SampleUnitLookUpEdit.Columns.AddRange(New DevExpress.XtraEditors.Controls.LookUpColumnInfo() {New DevExpress.XtraEditors.Controls.LookUpColumnInfo("DisplayLabel", "DisplayLabel", 65, DevExpress.Utils.FormatType.None, "", True, DevExpress.Utils.HorzAlignment.Near)})
-        Me.SampleUnitLookUpEdit.DataSource = Me.SampleUnitBindingSource
         Me.SampleUnitLookUpEdit.DisplayMember = "DisplayLabel"
         Me.SampleUnitLookUpEdit.Name = "SampleUnitLookUpEdit"
         Me.SampleUnitLookUpEdit.ReadOnly = True
         Me.SampleUnitLookUpEdit.ShowDropDown = DevExpress.XtraEditors.Controls.ShowDropDown.Never
         Me.SampleUnitLookUpEdit.ValueMember = "Id"
-        '
-        'colQuestionSectionId1
-        '
-        Me.colQuestionSectionId1.Caption = "Question Section"
-        Me.colQuestionSectionId1.ColumnEdit = Me.MappedSectionsLookupEdit
-        Me.colQuestionSectionId1.FieldName = "QuestionSectionId"
-        Me.colQuestionSectionId1.Name = "colQuestionSectionId1"
-        Me.colQuestionSectionId1.Visible = True
-        Me.colQuestionSectionId1.VisibleIndex = 1
         '
         'MappedSectionsLookupEdit
         '
@@ -434,20 +385,61 @@ Partial Class SampleUnitSectionMappingEditor
         Me.InformationBar.Name = "InformationBar"
         Me.InformationBar.Padding = New System.Windows.Forms.Padding(1)
         Me.InformationBar.Size = New System.Drawing.Size(686, 20)
-        Me.InformationBar.TabIndex = 36
+        Me.InformationBar.TabIndex = 39
         Me.InformationBar.TabStop = False
         '
-        'SampleUnitSectionMappingEditor
+        'ApplyButton
+        '
+        Me.ApplyButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ApplyButton.Location = New System.Drawing.Point(378, 5)
+        Me.ApplyButton.Name = "ApplyButton"
+        Me.ApplyButton.Size = New System.Drawing.Size(75, 23)
+        Me.ApplyButton.TabIndex = 2
+        Me.ApplyButton.Text = "Apply"
+        Me.ApplyButton.UseVisualStyleBackColor = True
+        '
+        'OKButton
+        '
+        Me.OKButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.OKButton.Location = New System.Drawing.Point(524, 4)
+        Me.OKButton.Name = "OKButton"
+        Me.OKButton.Size = New System.Drawing.Size(75, 23)
+        Me.OKButton.TabIndex = 0
+        Me.OKButton.Text = "OK"
+        Me.OKButton.UseVisualStyleBackColor = True
+        '
+        'CancelButton
+        '
+        Me.CancelButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.CancelButton.Location = New System.Drawing.Point(605, 4)
+        Me.CancelButton.Name = "CancelButton"
+        Me.CancelButton.Size = New System.Drawing.Size(75, 23)
+        Me.CancelButton.TabIndex = 1
+        Me.CancelButton.Text = "Cancel"
+        Me.CancelButton.UseVisualStyleBackColor = True
+        '
+        'BottomPanel
+        '
+        Me.BottomPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.BottomPanel.Controls.Add(Me.ApplyButton)
+        Me.BottomPanel.Controls.Add(Me.OKButton)
+        Me.BottomPanel.Controls.Add(Me.CancelButton)
+        Me.BottomPanel.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.BottomPanel.Location = New System.Drawing.Point(0, 500)
+        Me.BottomPanel.Name = "BottomPanel"
+        Me.BottomPanel.Size = New System.Drawing.Size(686, 35)
+        Me.BottomPanel.TabIndex = 38
+        '
+        'ModeSectionMappingEditor
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.BodyPanel)
         Me.Controls.Add(Me.InformationBar)
         Me.Controls.Add(Me.BottomPanel)
-        Me.Name = "SampleUnitSectionMappingEditor"
+        Me.Name = "ModeSectionMappingEditor"
         Me.Size = New System.Drawing.Size(686, 535)
-        CType(Me.SampleUnitBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.BottomPanel.ResumeLayout(False)
+        CType(Me.MappedSectionsBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         Me.BodyPanel.Panel1.ResumeLayout(False)
         Me.BodyPanel.Panel2.ResumeLayout(False)
         Me.BodyPanel.ResumeLayout(False)
@@ -456,9 +448,9 @@ Partial Class SampleUnitSectionMappingEditor
         Me.SectionsPanel.Panel1.ResumeLayout(False)
         Me.SectionsPanel.Panel2.ResumeLayout(False)
         Me.SectionsPanel.ResumeLayout(False)
-        CType(Me.AvailableSectionsGridControl, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.AvailableMailingStepMethodsGridControl, System.ComponentModel.ISupportInitialize).EndInit()
         Me.MapContextMenuStrip.ResumeLayout(False)
-        CType(Me.AvailableSectionsBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.AvailableMailingMethodsBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.AvailableGridView, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.AvailableSectionLabelLookUpEdit, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.QuestionSectionBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
@@ -466,51 +458,50 @@ Partial Class SampleUnitSectionMappingEditor
         Me.HeaderStrip1.PerformLayout()
         CType(Me.MappingSectionsGridControl, System.ComponentModel.ISupportInitialize).EndInit()
         Me.UnMapContextMenuStrip.ResumeLayout(False)
-        CType(Me.MappedSectionsBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.MappedGridView, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.SampleUnitLookUpEdit, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.MappedSectionsLookupEdit, System.ComponentModel.ISupportInitialize).EndInit()
         Me.HeaderStrip3.ResumeLayout(False)
         Me.HeaderStrip3.PerformLayout()
+        Me.BottomPanel.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents BottomPanel As System.Windows.Forms.Panel
-    Friend WithEvents OKButton As System.Windows.Forms.Button
-    Friend WithEvents CancelButton As System.Windows.Forms.Button
-    Friend WithEvents InformationBar As Nrc.Qualisys.ConfigurationManager.InformationBar
-    Friend WithEvents BodyPanel As System.Windows.Forms.SplitContainer
-    Friend WithEvents SectionsPanel As System.Windows.Forms.SplitContainer
-    Friend WithEvents SampleUnitTreeView As MultiSelectTreeView
-    Friend WithEvents HeaderStrip2 As Nrc.Framework.WinForms.HeaderStrip
-    Friend WithEvents ToolStripLabel2 As System.Windows.Forms.ToolStripLabel
-    Friend WithEvents HeaderStrip1 As Nrc.Framework.WinForms.HeaderStrip
-    Friend WithEvents ToolStripLabel1 As System.Windows.Forms.ToolStripLabel
-    Friend WithEvents HeaderStrip3 As Nrc.Framework.WinForms.HeaderStrip
-    Friend WithEvents ToolStripLabel3 As System.Windows.Forms.ToolStripLabel
-    Friend WithEvents AvailableSectionsBindingSource As System.Windows.Forms.BindingSource
     Friend WithEvents MappedSectionsBindingSource As System.Windows.Forms.BindingSource
-    Friend WithEvents QuestionSectionBindingSource As System.Windows.Forms.BindingSource
-    Friend WithEvents AvailableSectionsGridControl As DevExpress.XtraGrid.GridControl
-    Friend WithEvents AvailableGridView As DevExpress.XtraGrid.Views.Grid.GridView
-    Friend WithEvents colQuestionSectionId As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents AvailableSectionLabelLookUpEdit As DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit
-    Friend WithEvents SampleUnitBindingSource As System.Windows.Forms.BindingSource
-    Friend WithEvents MappingSectionsGridControl As DevExpress.XtraGrid.GridControl
-    Friend WithEvents MappedGridView As DevExpress.XtraGrid.Views.Grid.GridView
-    Friend WithEvents colQuestionSectionId1 As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents colSampleUnitId As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents SampleUnitLookUpEdit As DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit
-    Friend WithEvents MappedSectionsLookupEdit As DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit
-    Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents DeleteMappedSectionButton As System.Windows.Forms.ToolStripButton
-    Friend WithEvents ToolTip1 As System.Windows.Forms.ToolTip
-    Friend WithEvents ApplyButton As System.Windows.Forms.Button
-    Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents AddMappedSectionButton As System.Windows.Forms.ToolStripButton
+    Friend WithEvents BodyPanel As System.Windows.Forms.SplitContainer
+    Friend WithEvents AvailableSectionsTreeView As NRC.QualiSys.ConfigurationManager.MultiSelectTreeView
+    Friend WithEvents HeaderStrip2 As NRC.Framework.WinForms.HeaderStrip
+    Friend WithEvents ToolStripLabel2 As System.Windows.Forms.ToolStripLabel
+    Friend WithEvents SectionsPanel As System.Windows.Forms.SplitContainer
+    Friend WithEvents AvailableMailingStepMethodsGridControl As DevExpress.XtraGrid.GridControl
     Friend WithEvents MapContextMenuStrip As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents MapToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents AvailableMailingMethodsBindingSource As System.Windows.Forms.BindingSource
+    Friend WithEvents AvailableGridView As DevExpress.XtraGrid.Views.Grid.GridView
+    Friend WithEvents AvailableSectionLabelLookUpEdit As DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit
+    Friend WithEvents QuestionSectionBindingSource As System.Windows.Forms.BindingSource
+    Friend WithEvents HeaderStrip1 As NRC.Framework.WinForms.HeaderStrip
+    Friend WithEvents ToolStripLabel1 As System.Windows.Forms.ToolStripLabel
+    Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents AddMappedSectionButton As System.Windows.Forms.ToolStripButton
+    Friend WithEvents MappingSectionsGridControl As DevExpress.XtraGrid.GridControl
     Friend WithEvents UnMapContextMenuStrip As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents UnMapToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents MappedGridView As DevExpress.XtraGrid.Views.Grid.GridView
+    Friend WithEvents SampleUnitLookUpEdit As DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit
+    Friend WithEvents MappedSectionsLookupEdit As DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit
+    Friend WithEvents HeaderStrip3 As NRC.Framework.WinForms.HeaderStrip
+    Friend WithEvents ToolStripLabel3 As System.Windows.Forms.ToolStripLabel
+    Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents DeleteMappedSectionButton As System.Windows.Forms.ToolStripButton
+    Friend WithEvents InformationBar As NRC.QualiSys.ConfigurationManager.InformationBar
+    Friend WithEvents ApplyButton As System.Windows.Forms.Button
+    Friend WithEvents OKButton As System.Windows.Forms.Button
+    Friend WithEvents CancelButton As System.Windows.Forms.Button
+    Friend WithEvents BottomPanel As System.Windows.Forms.Panel
+    Friend WithEvents ToolTip1 As System.Windows.Forms.ToolTip
+    Friend WithEvents GridColumn2 As DevExpress.XtraGrid.Columns.GridColumn
+    Friend WithEvents GridColumn1 As DevExpress.XtraGrid.Columns.GridColumn
+    Friend WithEvents GridColumn3 As DevExpress.XtraGrid.Columns.GridColumn
 
 End Class
