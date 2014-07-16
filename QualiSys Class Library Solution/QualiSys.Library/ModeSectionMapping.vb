@@ -196,9 +196,7 @@ Public Class ModeSectionMapping
     ''' will be an insert, update, delete, or nothing.
     ''' </summary>
     ''' <remarks></remarks>
-    Public Sub Update()
-
-
+    Public Sub UpdateObj()
 
         If Me.NeedsDelete Then
             ModeSectionMappingProvider.Instance.DeleteModeSectionMapping(Me)
@@ -210,6 +208,7 @@ Public Class ModeSectionMapping
 
         Dim changes As List(Of AuditLogChange) = GetChanges()
         AuditLog.LogChanges(changes)
+
     End Sub
 
 

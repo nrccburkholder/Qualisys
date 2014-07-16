@@ -199,7 +199,7 @@ Public Class ModeSectionMappingEditor
             'calling update on the root unit will traverse the tree calling update on
             'child units
             For Each MappedSection As ModeSectionMapping In Me.mMappedQuestionSections
-                MappedSection.Update()
+                MappedSection.UpdateObj()
             Next
         Catch ex As Exception
             Throw
