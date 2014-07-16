@@ -180,7 +180,7 @@ Partial Class ModeSectionMappingEditor
         '
         Me.MapContextMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MapToolStripMenuItem})
         Me.MapContextMenuStrip.Name = "MapContextMenuStrip"
-        Me.MapContextMenuStrip.Size = New System.Drawing.Size(99, 26)
+        Me.MapContextMenuStrip.Size = New System.Drawing.Size(153, 48)
         '
         'MapToolStripMenuItem
         '
@@ -199,6 +199,7 @@ Partial Class ModeSectionMappingEditor
         Me.AvailableGridView.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.GridColumn2})
         Me.AvailableGridView.GridControl = Me.AvailableMailingStepMethodsGridControl
         Me.AvailableGridView.Name = "AvailableGridView"
+        Me.AvailableGridView.OptionsBehavior.Editable = False
         Me.AvailableGridView.OptionsCustomization.AllowFilter = False
         Me.AvailableGridView.OptionsCustomization.AllowGroup = False
         Me.AvailableGridView.OptionsSelection.EnableAppearanceHideSelection = False
@@ -287,7 +288,7 @@ Partial Class ModeSectionMappingEditor
         'UnMapToolStripMenuItem
         '
         Me.UnMapToolStripMenuItem.Name = "UnMapToolStripMenuItem"
-        Me.UnMapToolStripMenuItem.Size = New System.Drawing.Size(113, 22)
+        Me.UnMapToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.UnMapToolStripMenuItem.Text = "UnMap"
         '
         'MappedGridView
@@ -297,11 +298,13 @@ Partial Class ModeSectionMappingEditor
         Me.MappedGridView.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.GridColumn1, Me.GridColumn3})
         Me.MappedGridView.GridControl = Me.MappingSectionsGridControl
         Me.MappedGridView.Name = "MappedGridView"
+        Me.MappedGridView.OptionsBehavior.Editable = False
         Me.MappedGridView.OptionsCustomization.AllowGroup = False
         Me.MappedGridView.OptionsFilter.ColumnFilterPopupRowCount = 4
         Me.MappedGridView.OptionsSelection.EnableAppearanceHideSelection = False
         Me.MappedGridView.OptionsSelection.MultiSelect = True
         Me.MappedGridView.OptionsView.ShowAutoFilterRow = True
+        Me.MappedGridView.OptionsView.ShowFilterPanelMode = DevExpress.XtraGrid.Views.Base.ShowFilterPanelMode.Never
         Me.MappedGridView.OptionsView.ShowGroupPanel = False
         '
         'GridColumn1

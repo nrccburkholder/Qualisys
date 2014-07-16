@@ -59,25 +59,7 @@ Public Class ModeSectionMappingEditor
     End Sub
 
     Private Sub DeleteMappedSectionButton_Click(sender As System.Object, e As System.EventArgs) Handles DeleteMappedSectionButton.Click
-        For Each row As Integer In Me.MappedGridView.GetSelectedRows
-            Dim child As ModeSectionMapping = DirectCast(Me.MappedGridView.GetRow(row), ModeSectionMapping)
-            For idx As Integer = 0 To mMappedQuestionSections.Count - 1
-                Dim ModeMapping As ModeSectionMapping = mMappedQuestionSections.Item(idx)
-                If ModeMapping.MailingStepMethodName = child.MailingStepMethodName And ModeMapping.QuestionSectionLabel = child.QuestionSectionLabel Then
-                    If ModeMapping.IsNew = False Then
-                        ' If this is an existing MappedQuestion, then flag it for deletion
-                        ModeMapping.NeedsDelete = True
-                    Else
-                        'otherwise, just remove it from the list
-                        mMappedQuestionSections.RemoveAt(idx)
-                    End If
-                    Exit For
-                End If
-            Next
-        Next
-        Me.MappedSectionsBindingSource.DataSource = mMappedQuestionSections
-        Me.MappedGridView.RefreshData()
-        UpdateAvailableModesCollection()
+        DeleteMapping()
     End Sub
 
     Private Sub AvailableGridView_SelectionChanged(sender As System.Object, e As DevExpress.Data.SelectionChangedEventArgs) Handles AvailableGridView.SelectionChanged
@@ -86,6 +68,15 @@ Public Class ModeSectionMappingEditor
 
     Private Sub MappedGridView_SelectionChanged(sender As System.Object, e As DevExpress.Data.SelectionChangedEventArgs) Handles MappedGridView.SelectionChanged
         ToggleDeleteButton()
+    End Sub
+
+
+    Private Sub UnMapContextMenuStrip_Click(sender As System.Object, e As System.EventArgs) Handles UnMapContextMenuStrip.Click
+        DeleteMapping()
+    End Sub
+
+    Private Sub MapContextMenuStrip_Click(sender As System.Object, e As System.EventArgs) Handles MapContextMenuStrip.Click
+        UpdateMappedSectionsCollection()
     End Sub
 
 #End Region
@@ -217,6 +208,28 @@ Public Class ModeSectionMappingEditor
     Private Sub ToggleDeleteButton()
         Me.DeleteMappedSectionButton.Enabled = (Me.mModule.IsEditable AndAlso Me.MappedGridView.SelectedRowsCount > 0)
         Me.UnMapContextMenuStrip.Enabled = (Me.mModule.IsEditable AndAlso Me.MappedGridView.SelectedRowsCount > 0)
+    End Sub
+
+    Private Sub DeleteMapping()
+        For Each row As Integer In Me.MappedGridView.GetSelectedRows
+            Dim child As ModeSectionMapping = DirectCast(Me.MappedGridView.GetRow(row), ModeSectionMapping)
+            For idx As Integer = 0 To mMappedQuestionSections.Count - 1
+                Dim ModeMapping As ModeSectionMapping = mMappedQuestionSections.Item(idx)
+                If ModeMapping.MailingStepMethodName = child.MailingStepMethodName And ModeMapping.QuestionSectionLabel = child.QuestionSectionLabel Then
+                    If ModeMapping.IsNew = False Then
+                        ' If this is an existing MappedQuestion, then flag it for deletion
+                        ModeMapping.NeedsDelete = True
+                    Else
+                        'otherwise, just remove it from the list
+                        mMappedQuestionSections.RemoveAt(idx)
+                    End If
+                    Exit For
+                End If
+            Next
+        Next
+        Me.MappedSectionsBindingSource.DataSource = mMappedQuestionSections
+        Me.MappedGridView.RefreshData()
+        UpdateAvailableModesCollection()
     End Sub
 
 #End Region
