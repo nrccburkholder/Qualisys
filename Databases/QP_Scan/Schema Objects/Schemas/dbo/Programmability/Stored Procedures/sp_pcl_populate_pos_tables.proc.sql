@@ -1,4 +1,7 @@
-﻿/* This stored procedure will populate the bubblepos, bublbleitempos, commentpos, and  
+﻿if object_id('qp_scan.dbo.sp_pcl_populate_pos_tables','p') is not null 
+	drop procedure dbo.sp_pcl_populate_pos_tables
+/*
+/* This stored procedure will populate the bubblepos, bublbleitempos, commentpos, and  
 ** commentlinepos tables.  This is because we can populate these tables quickly in  
 ** SQL vs. having Delphi (PCLGen) pass all the information via insert statements.  
 ** This procedure will be called by an automated agent that will watch a batch table  
@@ -271,5 +274,4 @@ as
 /* I was successful, delete the job that ran me */  
  DROP TABLE #MyQuestionForm  
  return 0
-
-
+*/

@@ -1,4 +1,7 @@
-﻿CREATE PROCEDURE dbo.sp_pcl_batch_populatepos
+﻿if object_id('qp_scan.dbo.sp_pcl_batch_populatepos','p') is not null 
+	drop procedure dbo.sp_pcl_batch_populatepos
+/*
+CREATE PROCEDURE dbo.sp_pcl_batch_populatepos
 AS
  declare @batch_id int, @rc int, @err int
  declare @starttime int, @stoptime int, @pause int, @nowtime int
@@ -66,5 +69,4 @@ AS
   select @sqlstr = 'SELECT * FROM dbo.PCLGenPosError WHERE datgenerated BETWEEN ''' + convert(varchar,@startdtime,101) + ''' AND ''' + convert(varchar,@enddtime,101) + ''''
   exec dbo.sp_RaiseError 2, 'PCLGenPos', @sqlstr
  end
-
-
+*/
