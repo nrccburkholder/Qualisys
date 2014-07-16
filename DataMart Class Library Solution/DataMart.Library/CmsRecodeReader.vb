@@ -1859,7 +1859,7 @@ Friend Class CmsRecodeReader
                 If intVal >= 1 AndAlso intVal <= 2 Then
                     Return intVal
                 ElseIf intVal = 3 Then
-                    Return 7
+                    Return 9
                 Else
                     Return "M"
                 End If
@@ -1868,14 +1868,16 @@ Friend Class CmsRecodeReader
                 If intVal >= 1 AndAlso intVal <= 5 Then
                     Return intVal
                 ElseIf intVal = 6 Then
-                    Return 7
+                    Return 9
                 Else
                     Return "M"
                 End If
             Else 'If columnName = "Q050860" Then
                 'This is the newest question
-                If intVal >= 1 AndAlso intVal <= 7 Then
+                If intVal >= 1 AndAlso intVal <= 6 Then
                     Return intVal
+                ElseIf intVal = 7 Then
+                    Return 9
                 Else
                     Return "M"
                 End If

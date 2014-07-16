@@ -54,7 +54,7 @@ Public Class OverSampleDialog
             Dim currentOversample As SampleDefinition = TryCast(row.DataBoundItem, SampleDefinition)
             Dim HCAPSOverSampleCell As DataGridViewCell = row.Cells("colHCAPSOverSample")
             Dim isOversample As Boolean = DirectCast(cell.Value, Boolean)
-            HCAPSOverSampleCell.ReadOnly = (Not CurrentUser.CanOversampleHCAHPS) Or (Not isOversample) Or (Not currentOversample.IsHCAHPS)
+            HCAPSOverSampleCell.ReadOnly = (Not CurrentUser.CanOversampleHCAHPS) Or (Not isOversample) Or (Not currentOversample.Survey.CompliesWithSwitchToPropSamplingDate) 'IsHCAHPS Then 'Possible TODO: create separate property for AllowDoOverSample CJB 7/3/2014
             If Not isOversample Then
                 HCAPSOverSampleCell.Value = False
             End If

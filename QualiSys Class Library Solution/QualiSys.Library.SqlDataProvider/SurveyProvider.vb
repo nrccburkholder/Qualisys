@@ -301,12 +301,30 @@ Public Class SurveyProvider
 
     End Sub
 
-    Public Overrides Function Insert(ByVal studyId As Integer, ByVal name As String, ByVal description As String, ByVal responseRateRecalculationPeriod As Integer, _
-                                     ByVal resurveyMethodId As ResurveyMethod, ByVal resurveyPeriod As Integer, ByVal surveyStartDate As Date, ByVal surveyEndDate As Date, _
-                                     ByVal samplingAlgorithmId As Integer, ByVal enforceSkip As Boolean, ByVal cutoffResponseCode As String, ByVal cutoffTableId As Integer, _
-                                     ByVal cutoffFieldId As Integer, ByVal sampleEncounterField As StudyTableColumn, ByVal clientFacingName As String, ByVal surveyTypeId As Integer, _
-                                     ByVal surveyTypeDefId As Integer, ByVal houseHoldingType As HouseHoldingType, ByVal contractNumber As String, ByVal isActive As Boolean, _
-                                     ByVal contractedLanguages As String, ByVal surveySubTypeId As Integer, ByVal questionnaireTypeId As Integer) As Survey
+    Public Overrides Function Insert(ByVal studyId As Integer, _
+                                     ByVal name As String, _
+                                     ByVal description As String, _
+                                     ByVal responseRateRecalculationPeriod As Integer, _
+                                     ByVal resurveyMethodId As ResurveyMethod, _
+                                     ByVal resurveyPeriod As Integer, _
+                                     ByVal surveyStartDate As Date, _
+                                     ByVal surveyEndDate As Date, _
+                                     ByVal samplingAlgorithmId As Integer, _
+                                     ByVal enforceSkip As Boolean, _
+                                     ByVal cutoffResponseCode As String, _
+                                     ByVal cutoffTableId As Integer, _
+                                     ByVal cutoffFieldId As Integer, _
+                                     ByVal sampleEncounterField As StudyTableColumn, _
+                                     ByVal clientFacingName As String, _
+                                     ByVal surveyTypeId As Integer, _
+                                     ByVal surveyTypeDefId As Integer, _
+                                     ByVal houseHoldingType As HouseHoldingType, _
+                                     ByVal contractNumber As String, _
+                                     ByVal isActive As Boolean, _
+                                     ByVal contractedLanguages As String, _
+                                     ByVal surveySubTypeId As Integer, _
+                                     ByVal questionnaireTypeId As Integer _
+                                    ) As Survey
 
         Dim surveyId As Integer
 

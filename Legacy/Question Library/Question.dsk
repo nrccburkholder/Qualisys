@@ -1,0 +1,321 @@
+[MainWindow]
+Create=1
+Visible=1
+State=2
+Left=0
+Top=0
+Width=600
+Height=114
+MaxLeft=0
+MaxTop=0
+MaxWidth=1272
+MaxHeight=114
+ClientWidth=1264
+ClientHeight=60
+
+[WatchWindow]
+Create=1
+Visible=1
+State=0
+Left=125
+Top=480
+Width=421
+Height=156
+MaxLeft=-1
+MaxTop=-1
+ClientWidth=413
+ClientHeight=122
+
+[ProjectManager]
+LargeButtons=1
+Column0Width=75
+Column1Width=125
+Column2Width=125
+
+[PropertyInspector]
+Create=1
+Visible=1
+State=0
+Left=1037
+Top=112
+Width=232
+Height=467
+MaxLeft=-1
+MaxTop=-1
+ClientWidth=224
+ClientHeight=441
+SplitPos=84
+
+[HistoryLists\hiWatchExpression]
+Count=32
+H0=modLibrary.srcTransQ.DataSet.FieldByName('HeadID').AsString
+H1=modLibrary.srcTransQ.DataSet.FieldByName('HeadID').Value
+H2=modLibrary.srcTransQ.DataSet.FieldByName('Head_ID').Value
+H3=modLibrary.srcTransQ.DataSet.FieldByName('Text').AsString
+H4=modLibrary.srcTransQ.DataSet.FieldByName('Text').Value
+H5=modlibrary.wtblQstnTextLangID.value
+H6=modlibrary.tblscaletext.filter
+H7=modlibrary.tblscaletext.filtered
+H8=modlibrary.tblvalues.filtered
+H9=modlibrary.tblvalues.filter
+H10=cldbrichcodebtn.lines[0]
+H11=modlibrary.tblValues.eof
+H12=modlibrary.tblValues.bof
+H13=modlibrary.tblValues.state
+H14=cldbrichcodebtn.lines
+H15=modlibrary.srcvalues.autoedit
+H16=modlibrary.tblvalues.autoedit
+H17=modlibrary.tblvaluesshort.autoedit
+H18=editshort.autoedit
+H19=modlibrary.tblvaluesshort.readonly
+H20=modlibrary.tblvaluesshort
+H21=modlibrary.tblvalues.readonly
+H22=modlibrary.srcvalues.dataset.name
+H23=modlibrary.srcvalues.dataset
+H24=modlibrary.srcvalues.readonly
+H25=modlibrary.srcvalues
+H26=moddata.srcvalues
+H27=srcvalues
+H28=editshort.datasource.name
+H29=editshort.datasource.enabled
+H30=editshort.datasource.readonly
+H31=editshort.datasource
+
+[HistoryLists\hiEvalExpression]
+Count=18
+H0=Ord('v')
+H1=memo1.text
+H2=memo1
+H3=modlibrary.tblProblemScores.FieldByName('short').value
+H4=modlibrary.tblProblemScores.FieldByName('val').value
+H5=modlibrary.tblProblemScores.FieldByName('Core').value
+H6=sl.count
+H7=sl
+H8=vForm.ActiveControl.Name
+H9=Name
+H10=ActiveControl
+H11=ND
+H12=modlibrary.ww_Query.Text
+H13=modLibrary.tblTransQ.Modified
+H14=result
+H15=0
+H16=modLibrary.ProblemScoresDefined
+H17=GetUser
+
+[HistoryLists\hiOpenFile]
+Count=23
+H0=e:\projects\qualisys\question library\uadmin.pas
+H1=e:\projects\qualisys\configuration manager\form layout\formlayout.dpr
+H2=e:\projects\qualisys\report manager\dashboard\dashboard.dpr
+H3=e:\projects\qualisys\delphi shared code\qf\dbrichedit.pas
+H4=e:\projects\qualisys\delphi shared code\fp\fileutil.pas
+H5=e:\projects\qualisys\dashboard\datajunkie.dpr
+H6=e:\projects\pdfgen\pdfgen.dpr
+H7=c:\dq\qpde\source\qpde.dpr
+H8=c:\dq\dynaquest\development\dynaquest.dpr
+H9=c:\dq\library\source\dbrichedit.pas
+H10=c:\dq\dynaquest\development\dopenq.pas
+H11=c:\program files\borland\delphi 3\qualpro\dbrichedit.pas
+H12=c:\dq\library\source\upers.pas
+H13=c:\dq\_data\pdox2sql\pdox2sql2.dpr
+H14=c:\dq\library\utilities\loadfulltext.dpr
+H15=c:\dq\utils\ftemplateusage.pas
+H16=c:\dq\pclgen\source\dpclgen.pas
+H17=d:\fscmerge\fscmerge.dpr
+H18=c:\dq\pclgen\source\fviewdata.pas
+H19=c:\dq\pclgen\source\pclgen.dpr
+H20=y:\dq\dynaquest\development\dopenq.pas
+H21=y:\dq\library\source\data.pas
+H22=y:\dq\library\source\code.pas
+
+[HistoryLists\hiRunParams]
+Count=4
+H0=e:\nrc\data\net
+H1=e:\dq\data\net
+H2=Y:\net
+H3=\\capmts\capgemini\nrc\data\net
+
+[HistoryLists\hiUnitAlias]
+Count=1
+H0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
+
+[HistoryLists\hiLibUnitAliases]
+Count=1
+H0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
+
+[HistoryLists\hiSearchMasks]
+Count=4
+H0=E:\Projects\QualiSys
+H1=E:\Projects\QualiSys\Configuration Manager\Form Layout
+H2=E:\Projects\QualiSys\Question Library
+H3=E:\Projects\PDFGen
+
+[Closed Files]
+File_0=SourceModule,'E:\Projects\QualiSys\Question Library\NewScale.pas',0,1,108,37,128,1,0
+File_1=SourceModule,'E:\Projects\QualiSys\Delphi Shared Code\QFP\Common.pas',0,1,395,23,417,0,0
+File_2=SourceModule,'E:\Projects\QualiSys\Delphi Shared Code\FP\DOpenQ.pas',0,1,3444,1,3459,0,0
+File_3=SourceModule,'E:\Projects\QualiSys\Delphi Shared Code\QF\DBRichEdit.pas',0,1,725,49,755,0,0
+File_4=SourceModule,'E:\Projects\QualiSys\Delphi Shared Code\FP\Fileutil.pas',0,1,1,1,1,0,0
+
+[Modules]
+Module0=C:\VSS\QualiSys\Question Library\EditCode.pas
+Module1=C:\VSS\QualiSys\Question Library\Lookup.pas
+Module2=C:\VSS\QualiSys\Question Library\Question.dpr
+Module3=C:\VSS\QualiSys\Question Library\Data.pas
+Module4=C:\VSS\QualiSys\Question Library\Code.pas
+Module5=C:\VSS\QualiSys\Delphi Shared Code\FP\Fileutil.pas
+Module6=C:\VSS\QualiSys\Question Library\Browse.pas
+Module7=C:\Program Files\Borland\Delphi 3\Lib\Wwdbcomb.pas
+Count=8
+EditWindowCount=1
+
+[C:\VSS\QualiSys\Question Library\EditCode.pas]
+ModuleType=SourceModule
+FormState=1
+FormOnTop=0
+
+[C:\VSS\QualiSys\Question Library\Lookup.pas]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[C:\VSS\QualiSys\Question Library\Question.dpr]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[C:\VSS\QualiSys\Question Library\Data.pas]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[C:\VSS\QualiSys\Question Library\Code.pas]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[C:\VSS\QualiSys\Delphi Shared Code\FP\Fileutil.pas]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[C:\VSS\QualiSys\Question Library\Browse.pas]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[C:\Program Files\Borland\Delphi 3\Lib\Wwdbcomb.pas]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[EditWindow0]
+Create=1
+Visible=1
+State=0
+Left=161
+Top=108
+Width=935
+Height=528
+MaxLeft=-1
+MaxTop=-1
+ClientWidth=927
+ClientHeight=494
+SplitPos=89
+MessagePane=1
+ViewCount=8
+CurrentView=3
+View0=0
+View1=1
+View2=2
+View3=3
+View4=4
+View5=5
+View6=6
+View7=7
+
+[View0]
+Module=C:\Program Files\Borland\Delphi 3\Lib\Wwdbcomb.pas
+CursorX=1
+CursorY=865
+TopLine=856
+LeftCol=1
+
+[View1]
+Module=C:\VSS\QualiSys\Question Library\Question.dpr
+CursorX=1
+CursorY=41
+TopLine=32
+LeftCol=1
+
+[View2]
+Module=C:\VSS\QualiSys\Question Library\Data.pas
+CursorX=1
+CursorY=926
+TopLine=915
+LeftCol=1
+
+[View3]
+Module=C:\VSS\QualiSys\Question Library\EditCode.pas
+CursorX=72
+CursorY=1103
+TopLine=1094
+LeftCol=1
+
+[View4]
+Module=C:\VSS\QualiSys\Question Library\Code.pas
+CursorX=3
+CursorY=65
+TopLine=59
+LeftCol=1
+
+[View5]
+Module=C:\VSS\QualiSys\Question Library\Browse.pas
+CursorX=10
+CursorY=226
+TopLine=220
+LeftCol=1
+
+[View6]
+Module=C:\VSS\QualiSys\Delphi Shared Code\FP\Fileutil.pas
+CursorX=30
+CursorY=278
+TopLine=270
+LeftCol=1
+
+[View7]
+Module=C:\VSS\QualiSys\Question Library\Lookup.pas
+CursorX=2
+CursorY=114
+TopLine=100
+LeftCol=1
+
+[Watches]
+Count=3
+Watch0='modlibrary.wtblQstnTextLangID.value',256,0,18,1
+Watch1='modLibrary.srcTransQ.DataSet.FieldByName(''Text'').AsString',256,0,18,1
+Watch2='modLibrary.srcTransQ.DataSet.FieldByName(''HeadID'').AsString',256,0,18,1
+
+[Breakpoints]
+Count=0
+
+[PVCS Browser]
+Left=325
+Top=158
+Width=625
+Height=393
+State=0
+Visible=0
+[PVCS VDiff]
+Left=354
+Top=28
+Width=591
+Height=608
+Layout=1
+Orientation=1
+State=0
+Visible=0
+File1Color=16711680
+File2Color=255
+SpaceColor=16776960
+TextColor=0
