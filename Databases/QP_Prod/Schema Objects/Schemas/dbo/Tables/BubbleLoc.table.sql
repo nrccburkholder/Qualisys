@@ -1,4 +1,7 @@
-﻿CREATE TABLE [dbo].[BubbleLoc](
+﻿if object_id('BubbleLoc','U') is not null
+	drop table [dbo].[BUBBLELOC]
+/*
+CREATE TABLE [dbo].[BubbleLoc](
 	[QuestionForm_id] [int] NOT NULL,
 	[SelQstns_id] [int] NOT NULL,
 	[Item] [int] NOT NULL,
@@ -16,5 +19,4 @@
 	[SampleUnit_id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 90) ON [PRIMARY]
 ) ON [PRIMARY]
-
-
+*/
