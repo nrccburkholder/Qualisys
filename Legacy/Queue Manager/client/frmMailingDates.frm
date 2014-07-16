@@ -130,7 +130,7 @@ Private Sub cmdOk_Click()
             n = frmMain.tvTreeView.SelectedItem.Child.index
             Counter = 0
             While n <> -1
-                If Not frmMain.IsBundle(frmMain.tvTreeView.Nodes(n).image) Then
+                If Not IsBundle(frmMain.tvTreeView.Nodes(n).image) Then
                     Counter = Counter + 1
                 End If
                 If n = frmMain.tvTreeView.Nodes(n).LastSibling.index Then
@@ -150,7 +150,7 @@ Private Sub cmdOk_Click()
                     Exit Sub
                 End If
             End If
-            If frmMain.IsGroupedPrintConfiguration(frmMain.tvTreeView.SelectedItem.image) Then
+            If IsGroupedPrintConfiguration(frmMain.tvTreeView.SelectedItem.image) Then
                 strID = frmMain.tvTreeView.SelectedItem.Key
                 If Mid(strID, 1, 19) = "GroupedPrintConfig=" Then
                     strID = Mid(strID, 20)
@@ -188,7 +188,7 @@ Private Sub cmdOk_Click()
             Set con = Nothing
             n = frmMain.tvTreeView.SelectedItem.Child.index
             While n <> -1
-                frmMain.tvTreeView.Nodes(n).image = frmMain.AlreadyMailed(frmMain.tvTreeView.Nodes(n).image)
+                frmMain.tvTreeView.Nodes(n).image = AlreadyMailed(frmMain.tvTreeView.Nodes(n).image)
                 strID = frmMain.tvTreeView.Nodes(n).Tag
                 If InStr(1, strID, "Not Mailed") > 0 Then
                     frmMain.tvTreeView.Nodes(n).Tag = Left(strID, InStr(1, strID, "Not Mailed") - 1) + txtMailDate.Text
@@ -205,7 +205,7 @@ Private Sub cmdOk_Click()
         Else
             n = frmMain.tvTreeView.SelectedItem.FirstSibling.index
             While n <> -1
-                If frmMain.IsMailBundle(frmMain.tvTreeView.Nodes(n).image) Then
+                If IsMailBundle(frmMain.tvTreeView.Nodes(n).image) Then
                     strID = frmMain.tvTreeView.Nodes(n).Tag
                     Survey_id = frmMain.NextValue(strID, vbTab)
                     PostalBundle = frmMain.NextValue(strID, vbTab)
@@ -232,7 +232,7 @@ Private Sub cmdOk_Click()
                     con.Close
                     Set con = Nothing
                     Set cmd = Nothing
-                    frmMain.tvTreeView.Nodes(n).image = frmMain.AlreadyMailed(frmMain.tvTreeView.Nodes(n).image)
+                    frmMain.tvTreeView.Nodes(n).image = AlreadyMailed(frmMain.tvTreeView.Nodes(n).image)
                     strID = frmMain.tvTreeView.Nodes(n).Tag
                     If InStr(1, strID, "Not Mailed") > 0 Then
                         frmMain.tvTreeView.Nodes(n).Tag = Left(strID, InStr(1, strID, "Not Mailed") - 1) + txtMailDate.Text

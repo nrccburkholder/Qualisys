@@ -922,6 +922,10 @@ Private Sub CheckConfiguration(nodParent As Node, ByVal lngSurveyId As Long)
                 nodConfiguration.Tag = strProperties & vbTab & varConfiguration(7, X)
             If n > -1 Then
                 nodConfiguration.Key = Mid(tvTreeView.Nodes(n).Key, 18)
+                ' 08-12-1999 DV
+                ' We will only get one level, and let the clicks to the rest.
+                ' However, we need to know the study id, which we are going to
+                ' store as the first child (which will eventually get deleted).
                 nodConfiguration.image = FadedConfiguration(nodConfiguration.image)
             Else
                 If Left(varConfiguration(0, X), InStr(varConfiguration(0, X), "  ")) <> "(unbundled) " Then
@@ -1101,8 +1105,6 @@ Private Sub mnuAddToGroupedPrint_Click()
     Dim strBundled, n As Long
     Dim Survey_id, SelectedConfig, Config_nm As String
     Dim dummy, strID As String
-    Dim bIsHCAHPS As Boolean
-    Dim bIsHHCAHPS, bIsACOCAHPS As Boolean   '01-08-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
     Dim sColor As String
 
     strID = tvTreeView.SelectedItem.Tag
@@ -1110,10 +1112,6 @@ Private Sub mnuAddToGroupedPrint_Click()
     SelectedConfig = NextValue(strID, vbTab) ' config_id
     strBundled = NextValue(strID, vbTab) ' strBundled
     Config_nm = Trim(Mid(tvTreeView.SelectedItem.Text, 1 + Len(strBundled)))
-    bIsHCAHPS = IIf(UCase(Left(NextValue(strID, vbTab), 6)) = "HCAHPS", True, False) ' survey type
-    '01-08-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-    bIsHHCAHPS = IIf(UCase(Left(NextValue(strID, vbTab), 11)) = "HOME HEALTH", True, False) ' survey type
-    bIsACOCAHPS = IIf(UCase(Left(NextValue(strID, vbTab), 8)) = "ACOCAHPS", True, False) ' survey type
     sColor = moQueueManager.FolderColor(Survey_id) 'Get Folder Color by Survey_id
     dummy = NextValue(strID, vbTab) ' number of pieces
    
@@ -1135,7 +1133,6 @@ Private Sub mnuAddToGroupedPrint_Click()
     If n = -1 Then
         Set nodProject = tvTreeView.Nodes.Add(tvTreeView.Nodes("GroupedPrintConfig=" & SelectedConfig), tvwChild, "GroupedPrintItem=" & tvTreeView.SelectedItem.Key, _
                          tvTreeView.SelectedItem.Parent.Text, sGroupedPrintHospital(sColor))
-                         'IIf(bIsHCAHPS, HGroupedPrintHospital, IIf(bIsHHCAHPS, HHGroupedPrintHospital, IIf(bIsACOCAHPS, AGroupedPrintHospital, conGroupedPrintHospital))))
         nodProject.Tag = tvTreeView.SelectedItem.Tag
         tvTreeView.SelectedItem.image = sFadedConfiguration(sColor)
         ' & remove any bundles
@@ -2105,10 +2102,10 @@ Public Function PrintBundles(nodSelected As Node) As String
     On Error GoTo NoPrint
     
     Me.MousePointer = vbHourglass
-    If frmMain.tvTreeView.SelectedItem.Expanded = False Then
+    If tvTreeView.SelectedItem.Expanded = False Then
         'need to expand tree
-        Set SelectedNode = frmMain.tvTreeView.SelectedItem
-        If frmMain.tvTreeView.SelectedItem.Text <> "" Then
+        Set SelectedNode = tvTreeView.SelectedItem
+        If nodSelected.Text <> "" Then
             frmMain.ButtonUsed = -1
             frmMain.ShowProperties nodSelected
             SelectedNode.Selected = True
@@ -2297,275 +2294,4 @@ Public Property Let ButtonUsed(ByVal lData As Long)
     mlButtonUsed = lData
     
 End Property
-
-'''''''''''''''''''''''''''''''
-'
-' The functions below like IsHospital take as a parameter an index of an icon
-' and return a boolean indicating if it is a Hospital icon of any color
-'
-'''''''''''''''''''''''''''''''
-
-Public Function IsHospital(index As Integer) As Boolean
-    Select Case index
-        Case conHospital, HHospital, HHHospital, AHospital, RHospital
-            IsHospital = True
-        Case Else
-            IsHospital = False
-    End Select
-End Function
-
-Public Function IsConfiguration(index As Integer) As Boolean
-    Select Case index
-        Case conConfiguration, HConfiguration, HHConfiguration, AConfiguration, RConfiguration
-            IsConfiguration = True
-        Case Else
-            IsConfiguration = False
-    End Select
-End Function
-
-Public Function IsBundle(index As Integer) As Boolean
-    Select Case index
-        Case conBundle, HBundle, HHBundle, ABundle, RBundle
-            IsBundle = True
-        Case Else
-            IsBundle = False
-    End Select
-End Function
-
-Public Function IsFadedConfiguration(index As Integer) As Boolean
-    Select Case index
-        Case conFadedConfiguration, HFadedConfiguration, HHFadedConfiguration, AFadedConfiguration, RFadedConfiguration
-            IsFadedConfiguration = True
-        Case Else
-            IsFadedConfiguration = False
-    End Select
-End Function
-
-Public Function IsGroupedPrintHospital(index As Integer) As Boolean
-    Select Case index
-        Case conGroupedPrintHospital, HGroupedPrintHospital, HHGroupedPrintHospital, AGroupedPrintHospital, RGroupedPrintHospital
-            IsGroupedPrintHospital = True
-        Case Else
-            IsGroupedPrintHospital = False
-    End Select
-End Function
-
-Public Function IsGroupedPrintConfiguration(index As Integer) As Boolean
-    Select Case index
-        Case conGroupedPrintConfiguration, HGroupedPrintConfiguration, HHGroupedPrintConfiguration, AGroupedPrintConfiguration, RGroupedPrintConfiguration
-            IsGroupedPrintConfiguration = True
-        Case Else
-            IsGroupedPrintConfiguration = False
-    End Select
-End Function
-
-Public Function IsCheckedHospital(index As Integer) As Boolean
-    Select Case index
-        Case conCheckedHospital, HCheckedHospital, HHCheckedHospital, ACheckedHospital, RCheckedHospital
-            IsCheckedHospital = True
-        Case Else
-            IsCheckedHospital = False
-    End Select
-End Function
-
-Public Function IsCheckedConfiguration(index As Integer) As Boolean
-    Select Case index
-        Case conCheckedConfiguration, HCheckedConfiguration, HHCheckedConfiguration, ACheckedConfiguration, RCheckedConfiguration
-            IsCheckedConfiguration = True
-        Case Else
-            IsCheckedConfiguration = False
-    End Select
-End Function
-
-Public Function IsCheckedGroupedPrintHospital(index As Integer) As Boolean
-    Select Case index
-        Case conCheckedGroupedPrintHospital, HCheckedGroupedPrintHospital, HHCheckedGroupedPrintHospital, ACheckedGroupedPrintHospital, RCheckedGroupedPrintHospital
-            IsCheckedGroupedPrintHospital = True
-        Case Else
-            IsCheckedGroupedPrintHospital = False
-    End Select
-End Function
-
-Public Function IsMailBundle(index As Integer) As Boolean
-    Select Case index
-        Case conMailBundle, HMailBundle, HHMailBundle, AMailBundle, RMailBundle
-            IsMailBundle = True
-        Case Else
-            IsMailBundle = False
-    End Select
-End Function
-
-Public Function IsAlreadyMailed(index As Integer) As Boolean
-    Select Case index
-        Case conAlreadyMailed, HAlreadyMailed, HHAlreadyMailed, AAlreadyMailed, RAlreadyMailed
-            IsAlreadyMailed = True
-        Case Else
-            IsAlreadyMailed = False
-    End Select
-End Function
-
-Public Function IsDeleted(index As Integer) As Boolean
-    Select Case index
-        Case conDeleted, HDeleted, HHDeleted, ADeleted, RDeleted
-            IsDeleted = True
-        Case Else
-            IsDeleted = False
-    End Select
-End Function
-
-Public Function IsPrinting(index As Integer) As Boolean
-    Select Case index
-        Case conPrinting, HPrinting, HHPrinting, APrinting, RPrinting
-            IsPrinting = True
-        Case Else
-            IsPrinting = False
-    End Select
-End Function
-
-'''''''''''''''''''''''''''''''
-'
-' The function sIconByColor takes a first parameter indicating the color,
-' and then an icon index of each color of any desired icon (Hospital, etc.)
-' and returns the icon from the list of the color passed in
-'
-'''''''''''''''''''''''''''''''
-
-Private Function sIconByColor(sColor As String, manilaIcon As Integer, cyanIcon As Integer, purpleIcon As Integer, orangeIcon As Integer, _
-                              redIcon As Integer) As Integer
-    If sColor = "Manila" Then
-        sIconByColor = manilaIcon
-    ElseIf sColor = "Cyan" Then
-        sIconByColor = cyanIcon
-    ElseIf sColor = "Purple" Then
-        sIconByColor = purpleIcon
-    ElseIf sColor = "Orange" Then
-        sIconByColor = orangeIcon
-    ElseIf sColor = "Red" Then
-        sIconByColor = redIcon
-    Else
-        sIconByColor = manilaIcon
-    End If
-End Function
-
-'''''''''''''''''''''''''''''''
-'
-' The function IconByIndex takes a first parameter of an icon index to color match,
-' and then an icon index of each color of any desired icon (Hospital, etc.)
-' and returns the icon from the list which matches the first parameter icon index color
-'
-'''''''''''''''''''''''''''''''
-
-Private Function IconByIndex(index As Integer, manilaIcon As Integer, cyanIcon As Integer, purpleIcon As Integer, orangeIcon As Integer, _
-                             redIcon As Integer) As Integer
-    If IsManila(index) Then
-        IconByIndex = manilaIcon
-    ElseIf IsCyan(index) Then
-        IconByIndex = cyanIcon
-    ElseIf IsPurple(index) Then
-        IconByIndex = purpleIcon
-    ElseIf IsOrange(index) Then
-        IconByIndex = orangeIcon
-    ElseIf IsRed(index) Then
-        IconByIndex = redIcon
-    Else
-        IconByIndex = manilaIcon
-    End If
-End Function
-
-'''''''''''''''''''''''''''''''
-'
-' The functions below of the form sIconType
-' return an icon type based on the name of the function
-' and of the color indicated by the sColor parameter
-'
-' The functions below of the form IconType
-' return an icon type based on the name of the function
-' which is the same color as the icon indicated by the index parameter
-'
-'''''''''''''''''''''''''''''''
-
-Public Function sHospital(sColor As String) As Integer
-    sHospital = sIconByColor(sColor, conHospital, HHospital, HHHospital, AHospital, RHospital)
-End Function
-
-Public Function Hospital(index As Integer) As Integer
-    Hospital = IconByIndex(index, conHospital, HHospital, HHHospital, AHospital, RHospital)
-End Function
-
-Public Function sConfiguration(sColor As String) As Integer
-    sConfiguration = sIconByColor(sColor, conConfiguration, HConfiguration, HHConfiguration, AConfiguration, RConfiguration)
-End Function
-
-Public Function Configuration(index As Integer) As Integer
-    Configuration = IconByIndex(index, conConfiguration, HConfiguration, HHConfiguration, AConfiguration, RConfiguration)
-End Function
-
-Public Function Bundle(index As Integer) As Integer
-    Bundle = IconByIndex(index, conBundle, HBundle, HHBundle, ABundle, RBundle)
-End Function
-
-Public Function sFadedConfiguration(sColor As String) As Integer
-    sFadedConfiguration = sIconByColor(sColor, conFadedConfiguration, HFadedConfiguration, HHFadedConfiguration, AFadedConfiguration, RFadedConfiguration)
-End Function
-
-Public Function FadedConfiguration(index As Integer) As Integer
-    FadedConfiguration = IconByIndex(index, conFadedConfiguration, HFadedConfiguration, HHFadedConfiguration, AFadedConfiguration, RFadedConfiguration)
-End Function
-
-Public Function sGroupedPrintHospital(sColor As String) As Integer
-    sGroupedPrintHospital = sIconByColor(sColor, conGroupedPrintHospital, HGroupedPrintHospital, HHGroupedPrintHospital, AGroupedPrintHospital, RGroupedPrintHospital)
-End Function
-
-Public Function GroupedPrintHospital(index As Integer) As Integer
-    GroupedPrintHospital = IconByIndex(index, conGroupedPrintHospital, HGroupedPrintHospital, HHGroupedPrintHospital, AGroupedPrintHospital, RGroupedPrintHospital)
-End Function
-
-Public Function sGroupedPrintConfiguration(sColor As String) As Integer
-    sGroupedPrintConfiguration = sIconByColor(sColor, conGroupedPrintConfiguration, HGroupedPrintConfiguration, HHGroupedPrintConfiguration, AGroupedPrintConfiguration, RGroupedPrintConfiguration)
-End Function
-
-Public Function sCheckedHospital(sColor As String) As Integer
-    sCheckedHospital = sIconByColor(sColor, conCheckedHospital, HCheckedHospital, HHCheckedHospital, ACheckedHospital, RCheckedHospital)
-End Function
-
-Public Function CheckedHospital(index As Integer) As Integer
-    CheckedHospital = IconByIndex(index, conCheckedHospital, HCheckedHospital, HHCheckedHospital, ACheckedHospital, RCheckedHospital)
-End Function
-
-Public Function sCheckedConfiguration(sColor As String) As Integer
-    sCheckedConfiguration = sIconByColor(sColor, conCheckedConfiguration, HCheckedConfiguration, HHCheckedConfiguration, ACheckedConfiguration, RCheckedConfiguration)
-End Function
-
-Public Function CheckedConfiguration(index As Integer) As Integer
-    CheckedConfiguration = IconByIndex(index, conCheckedConfiguration, HCheckedConfiguration, HHCheckedConfiguration, ACheckedConfiguration, RCheckedConfiguration)
-End Function
-
-Public Function sCheckedGroupedPrintHospital(sColor As String) As Integer
-    sCheckedGroupedPrintHospital = sIconByColor(sColor, conCheckedGroupedPrintHospital, HCheckedGroupedPrintHospital, HHCheckedGroupedPrintHospital, ACheckedGroupedPrintHospital, RCheckedGroupedPrintHospital)
-End Function
-
-Public Function CheckedGroupedPrintHospital(index As Integer) As Integer
-    CheckedGroupedPrintHospital = IconByIndex(index, conCheckedGroupedPrintHospital, HCheckedGroupedPrintHospital, HHCheckedGroupedPrintHospital, ACheckedGroupedPrintHospital, RCheckedGroupedPrintHospital)
-End Function
-
-Public Function sMailBundle(sColor As String) As Integer
-    sMailBundle = sIconByColor(sColor, conMailBundle, HMailBundle, HHMailBundle, AMailBundle, RMailBundle)
-End Function
-
-Public Function MailBundle(index As Integer) As Integer
-    MailBundle = IconByIndex(index, conMailBundle, HMailBundle, HHMailBundle, AMailBundle, RMailBundle)
-End Function
-
-Public Function AlreadyMailed(index As Integer) As Integer
-    AlreadyMailed = IconByIndex(index, conAlreadyMailed, HAlreadyMailed, HHAlreadyMailed, AAlreadyMailed, RAlreadyMailed)
-End Function
-
-Public Function Deleted(index As Integer) As Integer
-    Deleted = IconByIndex(index, conDeleted, HDeleted, HHDeleted, ADeleted, RDeleted)
-End Function
-
-Public Function Printing(index As Integer) As Integer
-    Printing = IconByIndex(index, conPrinting, HPrinting, HHPrinting, APrinting, RPrinting)
-End Function
-
 
