@@ -25,7 +25,7 @@ Partial Class ModeSectionMappingEditor
         Me.components = New System.ComponentModel.Container()
         Me.MappedSectionsBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.BodyPanel = New System.Windows.Forms.SplitContainer()
-        Me.AvailableSectionsTreeView = New Nrc.Qualisys.ConfigurationManager.MultiSelectTreeView()
+        Me.AvailableSectionsTreeView = New Nrc.QualiSys.ConfigurationManager.MultiSelectTreeView()
         Me.HeaderStrip2 = New Nrc.Framework.WinForms.HeaderStrip()
         Me.ToolStripLabel2 = New System.Windows.Forms.ToolStripLabel()
         Me.SectionsPanel = New System.Windows.Forms.SplitContainer()
@@ -53,7 +53,7 @@ Partial Class ModeSectionMappingEditor
         Me.ToolStripLabel3 = New System.Windows.Forms.ToolStripLabel()
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.DeleteMappedSectionButton = New System.Windows.Forms.ToolStripButton()
-        Me.InformationBar = New Nrc.Qualisys.ConfigurationManager.InformationBar()
+        Me.InformationBar = New Nrc.QualiSys.ConfigurationManager.InformationBar()
         Me.ApplyButton = New System.Windows.Forms.Button()
         Me.OKButton = New System.Windows.Forms.Button()
         Me.CancelButton = New System.Windows.Forms.Button()
@@ -82,10 +82,6 @@ Partial Class ModeSectionMappingEditor
         Me.HeaderStrip3.SuspendLayout()
         Me.BottomPanel.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'MappedSectionsBindingSource
-        '
-        Me.MappedSectionsBindingSource.DataSource = GetType(Nrc.QualiSys.Library.ModeSectionMappingCollection)
         '
         'BodyPanel
         '
@@ -180,7 +176,7 @@ Partial Class ModeSectionMappingEditor
         '
         Me.MapContextMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MapToolStripMenuItem})
         Me.MapContextMenuStrip.Name = "MapContextMenuStrip"
-        Me.MapContextMenuStrip.Size = New System.Drawing.Size(153, 48)
+        Me.MapContextMenuStrip.Size = New System.Drawing.Size(99, 26)
         '
         'MapToolStripMenuItem
         '
@@ -288,7 +284,7 @@ Partial Class ModeSectionMappingEditor
         'UnMapToolStripMenuItem
         '
         Me.UnMapToolStripMenuItem.Name = "UnMapToolStripMenuItem"
-        Me.UnMapToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.UnMapToolStripMenuItem.Size = New System.Drawing.Size(113, 22)
         Me.UnMapToolStripMenuItem.Text = "UnMap"
         '
         'MappedGridView

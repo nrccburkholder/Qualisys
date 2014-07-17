@@ -190,8 +190,6 @@ Public Class ModeSectionMappingEditor
     Private Sub SaveAllChanges()
         Try
             Me.Cursor = System.Windows.Forms.Cursors.WaitCursor
-            'calling update on the root unit will traverse the tree calling update on
-            'child units
             For Each MappedSection As ModeSectionMapping In Me.mMappedQuestionSections
                 MappedSection.UpdateObj()
             Next

@@ -133,7 +133,6 @@
     <Compile Include="Collections\MedicareRecalcHistoryCollection.vb" />
     <Compile Include="Collections\EmailBlastCollection.vb" />
     <Compile Include="Collections\EmailBlastOptionCollection.vb" />
-    <Compile Include="Collections\ModeSectionMappingCollection.vb" />
     <Compile Include="Collections\ReceiptTypeCollection.vb" />
     <Compile Include="Collections\SampleUnitSectionMappingCollection.vb" />
     <Compile Include="Collections\STUDY_EMPLOYEECollection.vb" />
