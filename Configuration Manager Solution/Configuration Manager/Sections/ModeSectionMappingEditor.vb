@@ -11,7 +11,7 @@ Public Class ModeSectionMappingEditor
     Private mAvailableModes As New MailingStepMethodCollection
     Private mMappedQuestionSections As New List(Of ModeSectionMapping)
     Private mSelectedQuestionSection As New QuestionSection
-
+    Private mSelectedQuestionIndex As Integer = 0
 #End Region
 
 #Region " Constructors "
@@ -129,7 +129,7 @@ Public Class ModeSectionMappingEditor
         AvailableSectionsTreeView.EndUpdate()
         If AvailableSectionsTreeView.Nodes().Count > 0 Then
             AvailableSectionsTreeView.Refresh()
-            AvailableSectionsTreeView.SelectedNode = AvailableSectionsTreeView.Nodes(0)
+            AvailableSectionsTreeView.SelectedNode = AvailableSectionsTreeView.Nodes(mSelectedQuestionIndex)
             mSelectedQuestionSection = DirectCast(AvailableSectionsTreeView.SelectedNode.Tag, QuestionSection)
             UpdateAvailableModesCollection()
         End If
@@ -139,6 +139,7 @@ Public Class ModeSectionMappingEditor
     Private Sub UpdateAvailableModesCollection()
         Me.mAvailableModes.Clear()
 
+        mSelectedQuestionIndex = AvailableSectionsTreeView.SelectedNode.Index
         mSelectedQuestionSection = DirectCast(AvailableSectionsTreeView.SelectedNode.Tag, QuestionSection)
 
         ' Based on the QuestionSection selected in the treeview, load the Modes that haven't been assigned to the section
@@ -159,6 +160,8 @@ Public Class ModeSectionMappingEditor
         Next
 
         AvailableMailingStepMethodsGridControl.DataSource = Me.mAvailableModes
+
+        Me.MappedGridView.ActiveFilter.NonColumnFilter = "[NeedsDelete] = false AND [QuestionSectionLabel] = '" & mSelectedQuestionSection.Label + "'"
 
         ToggleAddButton()
     End Sub
