@@ -22,7 +22,7 @@
     <ApplicationIcon>ConfigMan.ico</ApplicationIcon>
     <OptionStrict>On</OptionStrict>
     <SignManifests>true</SignManifests>
-    <ManifestCertificateThumbprint>C4A197BC9B34ECD5E7BB33F5F760862819B9A188</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>13E09AAD0FFC1E7667935AC08A3A46200504109E</ManifestCertificateThumbprint>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <GenerateManifests>true</GenerateManifests>
     <SignAssembly>false</SignAssembly>
@@ -47,8 +47,8 @@
     <ProductName>Configuration Manager</ProductName>
     <PublisherName>National Research Corporation</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>9</ApplicationRevision>
-    <ApplicationVersion>4.1.3.9</ApplicationVersion>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>4.2.1.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -205,6 +205,7 @@
     <Compile Include="ApplicationEvents.vb" />
     <Compile Include="Configuration Modules\ClientPropertiesModule.vb" />
     <Compile Include="Configuration Modules\ClientGroupPropertiesModule.vb" />
+    <Compile Include="Configuration Modules\ModeSectionMappingModule.vb" />
     <Compile Include="Configuration Modules\NewClientModule.vb" />
     <Compile Include="Configuration Modules\NewClientGroupModule.vb" />
     <Compile Include="Dialogs\CopyDataStructureDialog.Designer.vb">
@@ -347,6 +348,12 @@
       <DependentUpon>MethodologyEditor.vb</DependentUpon>
     </Compile>
     <Compile Include="Sections\MethodologyEditor.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\ModeSectionMappingEditor.Designer.vb">
+      <DependentUpon>ModeSectionMappingEditor.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\ModeSectionMappingEditor.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Sections\PeriodEditor.Designer.vb">
@@ -539,6 +546,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>MethodologyEditor.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Sections\ModeSectionMappingEditor.resx">
+      <DependentUpon>ModeSectionMappingEditor.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Sections\PeriodEditor.resx">
       <DependentUpon>PeriodEditor.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -616,6 +626,8 @@
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
     </None>
+    <None Include="My Project\DataSources\Nrc.QualiSys.Library.MailingStepMethodCollection.datasource" />
+    <None Include="My Project\DataSources\Nrc.QualiSys.Library.ModeSectionMappingCollection.datasource" />
     <None Include="My Project\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <CustomToolNamespace>My</CustomToolNamespace>
