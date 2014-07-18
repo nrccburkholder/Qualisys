@@ -62,8 +62,8 @@ Public Class ModeSectionMappingProvider
     ''' <summary>
     ''' Returns an instance of an existing unit.
     ''' </summary>
-    ''' <param name="sampleUnitId"></param>
-    ''' <param name="survey"></param>
+    ''' <param name="Id"></param>
+    ''' <param name="Survey_Id"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
     Public Overrides Function [Select](ByVal Id As Integer, ByVal Survey_Id As Integer) As ModeSectionMapping
