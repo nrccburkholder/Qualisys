@@ -325,5 +325,12 @@ Public Class MultiSelectTreeView
         Return GetNextNode(node, False)
     End Function
 #End Region
-   
+
+
+#Region "Public Methods"
+    Public Sub ClearSelections()
+        Me.SelectedNode = Nothing
+        Me.DeselectAllSelectedNodes()
+    End Sub
+#End Region
 End Class

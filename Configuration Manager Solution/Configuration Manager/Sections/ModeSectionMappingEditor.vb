@@ -70,7 +70,6 @@ Public Class ModeSectionMappingEditor
         ToggleDeleteButton()
     End Sub
 
-
     Private Sub UnMapContextMenuStrip_Click(sender As System.Object, e As System.EventArgs) Handles UnMapContextMenuStrip.Click
         DeleteMapping()
     End Sub
@@ -242,7 +241,7 @@ Public Class ModeSectionMappingEditor
 
     Private Sub ShowAllMappings()
 
-        ClearSelectedSectionsNodes()
+        AvailableSectionsTreeView.ClearSelections()
 
         Me.MappedGridView.ActiveFilter.NonColumnFilter = "[NeedsDelete] = false"
         Me.MappedGridView.ClearSelection()
@@ -253,24 +252,6 @@ Public Class ModeSectionMappingEditor
 
     End Sub
 
-    Private Sub ClearSelectedSectionsNodes()
-
-        'AvailableSectionsTreeView.SelectedNodes.Clear()
-        'AvailableSectionsTreeView.SelectedNode = Nothing
-
-        'For Each node As TreeNode In AvailableSectionsTreeView.SelectedNodes
-        '    node.BackColor = Me.BackColor
-        '    node.ForeColor = Me.ForeColor
-        'Next
-
-
-
-    End Sub
-
 #End Region
 
-
-    Private Sub AvailableSectionsTreeView_BeforeSelect(sender As System.Object, e As System.Windows.Forms.TreeViewCancelEventArgs) Handles AvailableSectionsTreeView.BeforeSelect
-
-    End Sub
 End Class
