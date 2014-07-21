@@ -8,6 +8,7 @@ Public Class ModeSectionMappingModule
     Private mInformation As String
     Private mSurvey As Survey
     Private mEndConfigCallBack As EndConfigCallBackMethod
+    Private mIsAccessible As Boolean
 
 #Region " Private/Public properties "
     Public Property Survey() As Library.Survey
@@ -54,6 +55,16 @@ Public Class ModeSectionMappingModule
             mEndConfigCallBack = value
         End Set
     End Property
+
+    Private Property IsAccessible() As Boolean
+        Get
+            Return mIsAccessible
+        End Get
+        Set(ByVal value As Boolean)
+            mIsAccessible = value
+        End Set
+    End Property
+
 #End Region
     Sub New(ByVal configPanel As Panel)
         MyBase.New(configPanel)

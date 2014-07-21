@@ -1,4 +1,5 @@
-﻿Imports Nrc.QualiSys.Library
+﻿Imports Nrc.Qualisys.Library
+Imports DevExpress
 
 
 Public Class ModeSectionMappingEditor
@@ -55,7 +56,7 @@ Public Class ModeSectionMappingEditor
     End Sub
 
     Private Sub AddMappedSectionButton_Click(sender As System.Object, e As System.EventArgs) Handles AddMappedSectionButton.Click
-        UpdateMappedSectionsCollection()
+        MapSections()
     End Sub
 
     Private Sub DeleteMappedSectionButton_Click(sender As System.Object, e As System.EventArgs) Handles DeleteMappedSectionButton.Click
@@ -76,7 +77,11 @@ Public Class ModeSectionMappingEditor
     End Sub
 
     Private Sub MapContextMenuStrip_Click(sender As System.Object, e As System.EventArgs) Handles MapContextMenuStrip.Click
-        UpdateMappedSectionsCollection()
+        MapSections()
+    End Sub
+
+    Private Sub ShowAllMappedSections_Click(sender As System.Object, e As System.EventArgs) Handles ShowAllMappedSections.Click
+        ShowAllMappings()
     End Sub
 
 #End Region
@@ -117,6 +122,7 @@ Public Class ModeSectionMappingEditor
     Private Sub PopulateSectionTree()
         AvailableSectionsTreeView.BeginUpdate()
         AvailableSectionsTreeView.Nodes.Clear()
+
         For Each unit As QuestionSection In mAllQuestionSections
 
             Dim rootNode As New TreeNode
@@ -137,6 +143,7 @@ Public Class ModeSectionMappingEditor
     End Sub
 
     Private Sub UpdateAvailableModesCollection()
+
         Me.mAvailableModes.Clear()
 
         mSelectedQuestionIndex = AvailableSectionsTreeView.SelectedNode.Index
@@ -166,7 +173,7 @@ Public Class ModeSectionMappingEditor
         ToggleAddButton()
     End Sub
 
-    Private Sub UpdateMappedSectionsCollection()
+    Private Sub MapSections()
 
         mSelectedQuestionSection = DirectCast(AvailableSectionsTreeView.SelectedNode.Tag, QuestionSection)
 
@@ -176,7 +183,7 @@ Public Class ModeSectionMappingEditor
             Dim newMapping As ModeSectionMapping = ModeSectionMapping.NewModeSectionMapping(Me.mModule.Survey.Id, 0, SelectedStepMethod.Id, SelectedStepMethod.Name, mSelectedQuestionSection.Id, mSelectedQuestionSection.Label)
             mMappedQuestionSections.Add(newMapping)
         Next
-        
+
         'Set the Binding Source for mapped sections grid
         Me.MappedSectionsBindingSource.DataSource = mMappedQuestionSections
         Me.MappedGridView.RefreshData()
@@ -233,8 +240,31 @@ Public Class ModeSectionMappingEditor
         UpdateAvailableModesCollection()
     End Sub
 
+
+    Private Sub ShowAllMappings()
+
+        ClearSelectedSectionsNodes()
+
+        Me.MappedGridView.ActiveFilter.NonColumnFilter = "[NeedsDelete] = false"
+        Me.MappedGridView.ClearSelection()
+        ' Sets focus on MappedGridView control to the filter box at the top
+        Me.MappedGridView.FocusedRowHandle = DevExpress.XtraGrid.GridControl.AutoFilterRowHandle
+
+        ToggleAddButton()
+
+    End Sub
+
+    Private Sub ClearSelectedSectionsNodes()
+
+        AvailableSectionsTreeView.SelectedNodes.Clear()
+        AvailableSectionsTreeView.SelectedNode = Nothing
+
+    End Sub
+
 #End Region
 
 
-  
+    Private Sub AvailableSectionsTreeView_BeforeSelect(sender As System.Object, e As System.Windows.Forms.TreeViewCancelEventArgs) Handles AvailableSectionsTreeView.BeforeSelect
+
+    End Sub
 End Class
