@@ -25,7 +25,7 @@ Partial Class ModeSectionMappingEditor
         Me.components = New System.ComponentModel.Container()
         Me.MappedSectionsBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.BodyPanel = New System.Windows.Forms.SplitContainer()
-        Me.AvailableSectionsTreeView = New Nrc.QualiSys.ConfigurationManager.MultiSelectTreeView()
+        Me.AvailableSectionsTreeView = New Nrc.Qualisys.ConfigurationManager.MultiSelectTreeView()
         Me.HeaderStrip2 = New Nrc.Framework.WinForms.HeaderStrip()
         Me.ToolStripLabel2 = New System.Windows.Forms.ToolStripLabel()
         Me.SectionsPanel = New System.Windows.Forms.SplitContainer()
@@ -53,7 +53,10 @@ Partial Class ModeSectionMappingEditor
         Me.ToolStripLabel3 = New System.Windows.Forms.ToolStripLabel()
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.DeleteMappedSectionButton = New System.Windows.Forms.ToolStripButton()
-        Me.InformationBar = New Nrc.QualiSys.ConfigurationManager.InformationBar()
+        Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ShowAllMappedSections = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
+        Me.InformationBar = New Nrc.Qualisys.ConfigurationManager.InformationBar()
         Me.ApplyButton = New System.Windows.Forms.Button()
         Me.OKButton = New System.Windows.Forms.Button()
         Me.CancelButton = New System.Windows.Forms.Button()
@@ -186,7 +189,7 @@ Partial Class ModeSectionMappingEditor
         '
         'AvailableMailingMethodsBindingSource
         '
-        Me.AvailableMailingMethodsBindingSource.DataSource = GetType(Nrc.QualiSys.Library.MailingStepMethodCollection)
+        Me.AvailableMailingMethodsBindingSource.DataSource = GetType(Nrc.Qualisys.Library.MailingStepMethodCollection)
         '
         'AvailableGridView
         '
@@ -224,7 +227,7 @@ Partial Class ModeSectionMappingEditor
         '
         'QuestionSectionBindingSource
         '
-        Me.QuestionSectionBindingSource.DataSource = GetType(Nrc.QualiSys.Library.QuestionSection)
+        Me.QuestionSectionBindingSource.DataSource = GetType(Nrc.Qualisys.Library.QuestionSection)
         '
         'HeaderStrip1
         '
@@ -347,7 +350,7 @@ Partial Class ModeSectionMappingEditor
         Me.HeaderStrip3.ForeColor = System.Drawing.Color.Black
         Me.HeaderStrip3.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
         Me.HeaderStrip3.HeaderStyle = Nrc.Framework.WinForms.HeaderStripStyle.Small
-        Me.HeaderStrip3.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripLabel3, Me.ToolStripSeparator1, Me.DeleteMappedSectionButton})
+        Me.HeaderStrip3.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripLabel3, Me.ToolStripSeparator1, Me.DeleteMappedSectionButton, Me.ToolStripSeparator3, Me.ShowAllMappedSections, Me.ToolStripSeparator4})
         Me.HeaderStrip3.Location = New System.Drawing.Point(0, 0)
         Me.HeaderStrip3.Name = "HeaderStrip3"
         Me.HeaderStrip3.Size = New System.Drawing.Size(469, 21)
@@ -374,6 +377,24 @@ Partial Class ModeSectionMappingEditor
         Me.DeleteMappedSectionButton.Size = New System.Drawing.Size(50, 18)
         Me.DeleteMappedSectionButton.Text = "UnMap"
         Me.DeleteMappedSectionButton.ToolTipText = "UnMap Selected Items"
+        '
+        'ToolStripSeparator3
+        '
+        Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
+        Me.ToolStripSeparator3.Size = New System.Drawing.Size(6, 21)
+        '
+        'ShowAllMappedSections
+        '
+        Me.ShowAllMappedSections.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.ShowAllMappedSections.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ShowAllMappedSections.Name = "ShowAllMappedSections"
+        Me.ShowAllMappedSections.Size = New System.Drawing.Size(151, 18)
+        Me.ShowAllMappedSections.Text = "Show All Mapped Sections"
+        '
+        'ToolStripSeparator4
+        '
+        Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
+        Me.ToolStripSeparator4.Size = New System.Drawing.Size(6, 21)
         '
         'InformationBar
         '
@@ -502,5 +523,8 @@ Partial Class ModeSectionMappingEditor
     Friend WithEvents GridColumn2 As DevExpress.XtraGrid.Columns.GridColumn
     Friend WithEvents GridColumn1 As DevExpress.XtraGrid.Columns.GridColumn
     Friend WithEvents GridColumn3 As DevExpress.XtraGrid.Columns.GridColumn
+    Friend WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents ShowAllMappedSections As System.Windows.Forms.ToolStripButton
+    Friend WithEvents ToolStripSeparator4 As System.Windows.Forms.ToolStripSeparator
 
 End Class
