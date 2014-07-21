@@ -20,9 +20,12 @@ Public MustInherit Class ConfigurationModule
 
     Public Overridable Function IsEnabled(ByVal ModuleName As String, ByVal selectedClientGroup As Navigation.ClientGroupNavNode, ByVal selectedStudy As Navigation.StudyNavNode, ByVal selectedSurvey As Navigation.SurveyNavNode, ByVal btn As ToolStripButton) As Boolean
 
-        If ModuleName = "Mode Section Mappings" And selectedSurvey.HasModeMapping = False Then
-            Return False
+        If Not selectedSurvey Is Nothing Then
+            If ModuleName = "Mode Section Mappings" And selectedSurvey.HasModeMapping = False Then
+                Return False
+            End If
         End If
+        
 
         Return True
 

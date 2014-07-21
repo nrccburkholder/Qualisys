@@ -51,7 +51,6 @@ Public Class ModeSectionMappingEditor
     End Sub
 
     Private Sub AvailableSectionsTreeView_AfterSelect(sender As System.Object, e As System.Windows.Forms.TreeViewEventArgs) Handles AvailableSectionsTreeView.AfterSelect
-        'Dim idx As Integer = Me.AvailableSectionsTreeView.SelectedNodes.Count
         UpdateAvailableModesCollection()
     End Sub
 
@@ -256,8 +255,15 @@ Public Class ModeSectionMappingEditor
 
     Private Sub ClearSelectedSectionsNodes()
 
-        AvailableSectionsTreeView.SelectedNodes.Clear()
-        AvailableSectionsTreeView.SelectedNode = Nothing
+        'AvailableSectionsTreeView.SelectedNodes.Clear()
+        'AvailableSectionsTreeView.SelectedNode = Nothing
+
+        'For Each node As TreeNode In AvailableSectionsTreeView.SelectedNodes
+        '    node.BackColor = Me.BackColor
+        '    node.ForeColor = Me.ForeColor
+        'Next
+
+
 
     End Sub
 
