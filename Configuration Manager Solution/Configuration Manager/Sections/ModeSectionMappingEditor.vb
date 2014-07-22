@@ -142,33 +142,36 @@ Public Class ModeSectionMappingEditor
 
     Private Sub UpdateAvailableModesCollection()
 
-        Me.mAvailableModes.Clear()
+        If Not AvailableSectionsTreeView.SelectedNode Is Nothing Then
 
-        mSelectedQuestionIndex = AvailableSectionsTreeView.SelectedNode.Index
-        mSelectedQuestionSection = DirectCast(AvailableSectionsTreeView.SelectedNode.Tag, QuestionSection)
+            Me.mAvailableModes.Clear()
 
-        ' Based on the QuestionSection selected in the treeview, load the Modes that haven't been assigned to the section
-        Me.mAvailableModes = MailingStepMethod.GetBySurveyID(Me.mModule.Survey.Id)
+            mSelectedQuestionIndex = AvailableSectionsTreeView.SelectedNode.Index
+            mSelectedQuestionSection = DirectCast(AvailableSectionsTreeView.SelectedNode.Tag, QuestionSection)
 
-        ' check the mapped mode list and remove anything that was added
-        For Each MappedSection As ModeSectionMapping In Me.mMappedQuestionSections
-            If mSelectedQuestionSection.Label = MappedSection.QuestionSectionLabel Then
-                For Each StepMethod As MailingStepMethod In mAvailableModes
-                    If StepMethod.Id = MappedSection.MailingStepMethodId Then
-                        If MappedSection.NeedsDelete = False Then
-                            mAvailableModes.Remove(StepMethod)
+            ' Based on the QuestionSection selected in the treeview, load the Modes that haven't been assigned to the section
+            Me.mAvailableModes = MailingStepMethod.GetBySurveyID(Me.mModule.Survey.Id)
+
+            ' check the mapped mode list and remove anything that was added
+            For Each MappedSection As ModeSectionMapping In Me.mMappedQuestionSections
+                If mSelectedQuestionSection.Label = MappedSection.QuestionSectionLabel Then
+                    For Each StepMethod As MailingStepMethod In mAvailableModes
+                        If StepMethod.Id = MappedSection.MailingStepMethodId Then
+                            If MappedSection.NeedsDelete = False Then
+                                mAvailableModes.Remove(StepMethod)
+                            End If
+                            Exit For
                         End If
-                        Exit For
-                    End If
-                Next
-            End If
-        Next
+                    Next
+                End If
+            Next
 
-        AvailableMailingStepMethodsGridControl.DataSource = Me.mAvailableModes
+            AvailableMailingStepMethodsGridControl.DataSource = Me.mAvailableModes
 
-        Me.MappedGridView.ActiveFilter.NonColumnFilter = "[NeedsDelete] = false AND [QuestionSectionLabel] = '" & mSelectedQuestionSection.Label + "'"
+            Me.MappedGridView.ActiveFilter.NonColumnFilter = "[NeedsDelete] = false AND [QuestionSectionLabel] = '" & mSelectedQuestionSection.Label + "'"
 
-        ToggleAddButton()
+            ToggleAddButton()
+        End If
     End Sub
 
     Private Sub MapSections()
