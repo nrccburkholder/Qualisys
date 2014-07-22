@@ -59,6 +59,7 @@ Begin VB.Form frmMain
          _Version        =   393217
          BackColor       =   -2147483644
          BorderStyle     =   0
+         Enabled         =   -1  'True
          HideSelection   =   0   'False
          ReadOnly        =   -1  'True
          DisableNoScroll =   -1  'True
@@ -823,7 +824,7 @@ Public Sub ShowProperties(nodSelected As Node)
     'On Error GoTo Skip
     
     oldmouse = Screen.MousePointer
-    frmMain.MousePointer = vbHourglass
+    Me.MousePointer = vbHourglass
     'DoEvents   '** Removed 03-31-00 JJF
 
     txtProperties.TextRTF = "{ "
@@ -832,7 +833,7 @@ Public Sub ShowProperties(nodSelected As Node)
             strKey = nodSelected.Child.Key
             If InStr(1, strKey, "QUERY=", vbTextCompare) > 0 And ButtonUsed < 0 Then
                 CheckConfiguration nodSelected, Mid(strKey, 7)
-                tvTreeView.Nodes.Remove nodSelected.Child.index
+                tvTreeView.Nodes.Remove nodSelected.Child.Index
             End If
             txtProperties.TextRTF = txtProperties.Text & nodSelected.Key
         ElseIf IsConfiguration(nodSelected.image) Or IsCheckedConfiguration(nodSelected.image) Then
@@ -853,7 +854,7 @@ Public Sub ShowProperties(nodSelected As Node)
                 mlUniqueKey = mlUniqueKey + 1
                 strProperties = strProperties & mlUniqueKey
                 nodSelected.Key = strProperties
-                tvTreeView.Nodes.Remove nodSelected.Child.index
+                tvTreeView.Nodes.Remove nodSelected.Child.Index
             End If
             txtProperties.TextRTF = txtProperties.Text & nodSelected.Key
         ElseIf IsBundle(nodSelected.image) Or IsMailBundle(nodSelected.image) Or IsAlreadyMailed(nodSelected.image) Then
@@ -881,7 +882,7 @@ Public Sub ShowProperties(nodSelected As Node)
         End If
     'End Select
 Skip:
-    frmMain.MousePointer = oldmouse
+    Me.MousePointer = oldmouse
     On Error GoTo 0
 End Sub
 
@@ -991,7 +992,7 @@ Private Function CheckBundleId(nodParent As Node, ByVal lngSurveyId As Long, ByV
             End If
             strProperties = strProperties & "{ \cell \ql Number of pieces: \tab \cell " & varBundle(5, X) & " \par }"
             strProperties = strProperties & "{ \cell \ql Use Letter Head: \tab \cell " & IIf(varBundle(6, X) = "1", "Yes", "No") & " \par }"
-            If frmMain.Caption = "Mailing Queue Manager" Then
+            If Me.Caption = "Mailing Queue Manager" Then
                 varLithoRange = moQueueManager.LithoRange(IIf(IsNull(varBundle(0, X)), " ", varBundle(0, X)), lngSurveyId, lngPaperConfig, strBundled)
                 If IsEmpty(varLithoRange) Then
                     strProperties = strProperties & "{ \cell \ql LithoCode Range: \tab \cell UnAssigned \par }"
@@ -1138,7 +1139,7 @@ Private Sub mnuAddToGroupedPrint_Click()
         ' & remove any bundles
         tvTreeView.SelectedItem.Expanded = False
         While tvTreeView.SelectedItem.Children > 0
-            tvTreeView.Nodes.Remove (tvTreeView.SelectedItem.Child.index)
+            tvTreeView.Nodes.Remove (tvTreeView.SelectedItem.Child.Index)
         Wend
         ' & check to see if its parent should be checked
         Set nodProject = tvTreeView.SelectedItem.FirstSibling
@@ -1157,7 +1158,7 @@ End Sub
 Private Sub mnuBundle_Click()
     Dim strMsg As String
     
-    frmMain.MousePointer = vbHourglass
+    Me.MousePointer = vbHourglass
     txtProperties.TextRTF = "{ "
     txtProperties.TextRTF = txtProperties.Text & "{\ul \b \qc \cell \fs25 Bundling in Progress... }"
     txtProperties.TextRTF = txtProperties.Text & "{ \b \qc \line \fs20 \line \line }"
@@ -1173,7 +1174,7 @@ Private Sub mnuBundle_Click()
     End If
         
     txtProperties.TextRTF = ""
-    frmMain.MousePointer = vbDefault
+    Me.MousePointer = vbDefault
 End Sub
 
 Private Sub mnuBundleFlats_Click()
@@ -1349,33 +1350,33 @@ Private Sub mnuRollbackGen_Click()
     strID = tvTreeView.SelectedItem.Tag
     surveyID = NextValue(strID, vbTab)
     
-    If IsConfiguration(frmMain.tvTreeView.SelectedItem.image) Then
+    If IsConfiguration(Me.tvTreeView.SelectedItem.image) Then
         Dim SelectedNode As ComctlLib.Node
         Dim n As Integer
         
         paperConfigID = NextValue(strID, vbTab)
         dateBundled = NextValue(strID, vbTab)
                 
-        If frmMain.tvTreeView.SelectedItem.Expanded = False Then
+        If Me.tvTreeView.SelectedItem.Expanded = False Then
             ' Need to expand tree
-            Set SelectedNode = frmMain.tvTreeView.SelectedItem
-            If frmMain.tvTreeView.SelectedItem.Text <> "" Then
-                frmMain.ButtonUsed = -1
-                frmMain.ShowProperties SelectedNode
+            Set SelectedNode = Me.tvTreeView.SelectedItem
+            If Me.tvTreeView.SelectedItem.Text <> "" Then
+                Me.ButtonUsed = -1
+                Me.ShowProperties SelectedNode
                 SelectedNode.Selected = True
             End If
         End If
 
         ' Check if any mailing date of any child is set.
-        If frmMain.tvTreeView.SelectedItem.Children <> 0 Then
-            n = frmMain.tvTreeView.SelectedItem.Child.index
+        If Me.tvTreeView.SelectedItem.Children <> 0 Then
+            n = Me.tvTreeView.SelectedItem.Child.Index
             Do While n >= 0
-                If IsAlreadyMailed(frmMain.tvTreeView.Nodes(n).image) Then
+                If IsAlreadyMailed(Me.tvTreeView.Nodes(n).image) Then
                     mailDateSet = True
                     Exit Do
                 End If
-                If n = frmMain.tvTreeView.Nodes(n).LastSibling.index Then Exit Do
-                n = frmMain.tvTreeView.Nodes(n).Next.index
+                If n = Me.tvTreeView.Nodes(n).LastSibling.Index Then Exit Do
+                n = Me.tvTreeView.Nodes(n).Next.Index
             Loop
         End If
     Else
@@ -1806,13 +1807,13 @@ Private Sub mnuPrint_Click()
                 If InStr(tvTreeView.SelectedItem.Tag, "(unbundled)") = 0 Then
                     Call PrintBundles(tvTreeView.SelectedItem)
                     moQueueManager.PrintingInstance_Remove
-                    tvTreeView.Nodes.Remove tvTreeView.SelectedItem.index
+                    tvTreeView.Nodes.Remove tvTreeView.SelectedItem.Index
                     Do While (Not (tvTreeView.SelectedItem Is Nothing))
                         If Not IsHospital(tvTreeView.SelectedItem.image) And Not IsConfiguration(tvTreeView.SelectedItem.image) Or _
                            (Not (tvTreeView.SelectedItem.Child Is Nothing)) Then
                             Exit Do
                         End If
-                        tvTreeView.Nodes.Remove tvTreeView.SelectedItem.index
+                        tvTreeView.Nodes.Remove tvTreeView.SelectedItem.Index
                     Loop
                 Else
                     MsgBox "You can't print unbundled surveys.", vbOKOnly
@@ -2058,12 +2059,12 @@ Public Sub GroupedPrintNode(NodeIndex As Long)
     strID = tvTreeView.Nodes(NodeIndex).Key
     If Mid(strID, 1, 19) = "GroupedPrintConfig=" Then
         PaperConfig = Val(Mid(strID, 20))
-        frmMain.tvTreeView.Nodes(NodeIndex).image = Printing(frmMain.tvTreeView.Nodes(NodeIndex).image)
+        Me.tvTreeView.Nodes(NodeIndex).image = Printing(Me.tvTreeView.Nodes(NodeIndex).image)
         moQueueManager.GroupedPrintRebundleAndSetLithos PaperConfig, PrintDate
         If Not moQueueManager.GetGroupedPrint(PaperConfig, False, PrintDate) Then
             MsgBox "No surveys were printed!", vbExclamation, "Print Warning"
         End If
-        frmMain.tvTreeView.Nodes(NodeIndex).image = Bundle(frmMain.tvTreeView.Nodes(NodeIndex).image)
+        Me.tvTreeView.Nodes(NodeIndex).image = Bundle(Me.tvTreeView.Nodes(NodeIndex).image)
     Else
         MsgBox "That doesn't appear to be a Grouped Print configuration", vbCritical, "Error"
     End If
@@ -2074,7 +2075,7 @@ Public Sub PrintNode(NodeIndex As Long)
     Dim PaperConfig, Page_num, Survey_id As Long
     Dim strBundled, PostalBundle, strID As String
     
-    strID = frmMain.tvTreeView.Nodes(NodeIndex).Tag
+    strID = Me.tvTreeView.Nodes(NodeIndex).Tag
     If mnuReprint.Caption = "View Print &Queue" Then
         mbReprint = True
     Else
@@ -2087,12 +2088,12 @@ Public Sub PrintNode(NodeIndex As Long)
     mvStartLitho = NextValue(strID, vbTab)
     mvEndLitho = NextValue(strID, vbTab)
     strBundled = NextValue(strID, vbTab)
-    frmMain.tvTreeView.Nodes(NodeIndex).image = Printing(frmMain.tvTreeView.Nodes(NodeIndex).image)
+    Me.tvTreeView.Nodes(NodeIndex).image = Printing(Me.tvTreeView.Nodes(NodeIndex).image)
     moQueueManager.SetLithoCodes mbReprint, Survey_id, PostalBundle, PaperConfig, Page_num, strBundled
     If Not moQueueManager.GetPrintBundle(Survey_id, PostalBundle, PaperConfig, Page_num, strBundled) Then
         MsgBox "No surveys were printed for the " & PostalBundle & " bundle!", vbExclamation, "Print Warning"
     End If
-    frmMain.tvTreeView.Nodes(NodeIndex).image = Bundle(frmMain.tvTreeView.Nodes(NodeIndex).image)
+    Me.tvTreeView.Nodes(NodeIndex).image = Bundle(Me.tvTreeView.Nodes(NodeIndex).image)
 End Sub
 
 Public Function PrintBundles(nodSelected As Node) As String
@@ -2102,28 +2103,28 @@ Public Function PrintBundles(nodSelected As Node) As String
     On Error GoTo NoPrint
     
     Me.MousePointer = vbHourglass
-    If tvTreeView.SelectedItem.Expanded = False Then
+    If Me.tvTreeView.SelectedItem.Expanded = False Then
         'need to expand tree
-        Set SelectedNode = tvTreeView.SelectedItem
-        If nodSelected.Text <> "" Then
-            frmMain.ButtonUsed = -1
-            frmMain.ShowProperties nodSelected
+        Set SelectedNode = Me.tvTreeView.SelectedItem
+        If Me.tvTreeView.SelectedItem.Text <> "" Then
+            Me.ButtonUsed = -1
+            Me.ShowProperties nodSelected
             SelectedNode.Selected = True
         End If
     End If
     If IsGroupedPrintConfiguration(nodSelected.image) Then
         'check to see if any surveys have been added to grouped print since the last time the tree was refreshed!
         '(write some code here)
-        GroupedPrintNode (nodSelected.index)
+        GroupedPrintNode (nodSelected.Index)
     ElseIf IsBundle(nodSelected.image) Then
-        PrintNode (nodSelected.index)
+        PrintNode (nodSelected.Index)
     ElseIf Not IsHospital(nodSelected.Parent.image) And Not IsCheckedHospital(nodSelected.Parent.image) Then
         Set nodSelected = nodSelected.Parent
-        PrintNode (nodSelected.index)
+        PrintNode (nodSelected.Index)
     Else
         lngTotalChildren = nodSelected.Children
         ' This will go through all the children for the selected paper configuration
-        For X = nodSelected.Child.index To nodSelected.Child.index + lngTotalChildren - 1
+        For X = nodSelected.Child.Index To nodSelected.Child.Index + lngTotalChildren - 1
             DoEvents
             PrintNode (X)
         Next X
@@ -2132,6 +2133,9 @@ Public Function PrintBundles(nodSelected As Node) As String
     nodSelected.image = Configuration(nodSelected.image)
     Exit Function
 NoPrint:
+    
+    MsgBox "Print failure!", vbExclamation, "Print Bundles Message"
+    MousePointer = vbNormal
     
 End Function
 
@@ -2176,12 +2180,12 @@ Public Function RePrintBundles(nodSelected As Node) As Boolean
     On Error GoTo NoPrint
     
     Me.MousePointer = vbHourglass
-    If frmMain.tvTreeView.SelectedItem.Expanded = False Then
+    If Me.tvTreeView.SelectedItem.Expanded = False Then
         'need to expand tree
-        Set SelectedNode = frmMain.tvTreeView.SelectedItem
-        If frmMain.tvTreeView.SelectedItem.Text <> "" Then
-            frmMain.ButtonUsed = -1
-            frmMain.ShowProperties SelectedNode
+        Set SelectedNode = Me.tvTreeView.SelectedItem
+        If Me.tvTreeView.SelectedItem.Text <> "" Then
+            Me.ButtonUsed = -1
+            Me.ShowProperties SelectedNode
             SelectedNode.Selected = True
         End If
     End If
@@ -2199,7 +2203,7 @@ Public Function RePrintBundles(nodSelected As Node) As Boolean
         Set AnotherNode = nodSelected
         Set nodSelected = nodSelected.Parent
         lngTotalChildren = 1
-        strID = frmMain.tvTreeView.SelectedItem.Tag
+        strID = Me.tvTreeView.SelectedItem.Tag
         Survey_id = NextValue(strID, vbTab)
         PostalBundle = NextValue(strID, vbTab)
         PaperConfig = NextValue(strID, vbTab)
@@ -2208,7 +2212,7 @@ Public Function RePrintBundles(nodSelected As Node) As Boolean
         mvEndLitho = NextValue(strID, vbTab)
         strBundled = NextValue(strID, vbTab)
         strMailedOn = NextValue(strID, vbTab)
-        n = frmMain.tvTreeView.SelectedItem.image
+        n = Me.tvTreeView.SelectedItem.image
         n = Printing(n)
         
         If Not oQueueManager.GetRePrintBundle(Survey_id, PostalBundle, PaperConfig, Page_num, strBundled) Then
@@ -2219,12 +2223,12 @@ Public Function RePrintBundles(nodSelected As Node) As Boolean
         Else
             n = AlreadyMailed(n)
         End If
-        frmMain.tvTreeView.SelectedItem.image = n
+        Me.tvTreeView.SelectedItem.image = n
     Else
         lngTotalChildren = nodSelected.Children
         Set AnotherNode = nodSelected
-        For X = nodSelected.Child.index To nodSelected.Child.index + lngTotalChildren - 1
-            strID = frmMain.tvTreeView.Nodes(X).Tag
+        For X = nodSelected.Child.Index To nodSelected.Child.Index + lngTotalChildren - 1
+            strID = Me.tvTreeView.Nodes(X).Tag
             Survey_id = NextValue(strID, vbTab)
             PostalBundle = NextValue(strID, vbTab)
             PaperConfig = NextValue(strID, vbTab)
@@ -2233,7 +2237,7 @@ Public Function RePrintBundles(nodSelected As Node) As Boolean
             mvEndLitho = NextValue(strID, vbTab)
             strBundled = NextValue(strID, vbTab)
             strMailedOn = NextValue(strID, vbTab)
-            n = frmMain.tvTreeView.Nodes(X).image
+            n = Me.tvTreeView.Nodes(X).image
             n = Printing(n)
             If Not oQueueManager.GetRePrintBundle(Survey_id, PostalBundle, PaperConfig, Page_num, strBundled) Then
                 MsgBox "No surveys were printed for the " & PostalBundle & " bundle!", vbExclamation, "Print Warning"
@@ -2243,7 +2247,7 @@ Public Function RePrintBundles(nodSelected As Node) As Boolean
             Else
                 n = AlreadyMailed(n)
             End If
-            frmMain.tvTreeView.Nodes(X).image = n
+            Me.tvTreeView.Nodes(X).image = n
         Next X
     End If
     ' This will go through all the children for
