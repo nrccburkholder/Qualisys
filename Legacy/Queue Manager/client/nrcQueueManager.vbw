@@ -1,0 +1,8 @@
+modQueueManager = 0, 0, 0, 0, C
+frmMain = 0, 0, 0, 0, C, 0, 0, 0, 0, C
+frmAbout = 0, 0, 0, 0, C, 0, 0, 0, 0, C
+frmMailingDates = 0, 0, 0, 0, C, 0, 0, 0, 0, C
+frmRePrintDates = 0, 0, 0, 0, C, 0, 0, 0, 0, C
+frmReprintIndiv = 0, 0, 0, 0, C, 0, 0, 0, 0, C
+frmRollbackMessage = 0, 0, 0, 0, C, 0, 0, 0, 0, C
+frmMailRoomSupport = 0, 0, 0, 0, C, 0, 0, 0, 0, C

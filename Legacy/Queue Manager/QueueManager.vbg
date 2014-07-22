@@ -1,0 +1,3 @@
+VBGROUP 5.0
+StartupProject=client\nrcQueueManager.VBP
+Project=MTS\QueueManager.VBP
