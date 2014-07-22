@@ -34,7 +34,7 @@
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
     <UpgradeBackupLocation />
-    <PublishUrl>\\superman\NRCApplications\ConfigMan\</PublishUrl>
+    <PublishUrl>\\Huskers\NRCApplications\ConfigMan\</PublishUrl>
     <Install>false</Install>
     <InstallFrom>Unc</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
