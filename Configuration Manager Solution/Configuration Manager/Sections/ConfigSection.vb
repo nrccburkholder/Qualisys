@@ -1,4 +1,5 @@
 Imports Nrc.QualiSys.Library
+Imports Nrc.QualiSys.Library.Navigation
 
 Public Class ConfigSection
 
@@ -168,7 +169,8 @@ Public Class ConfigSection
                     item.Tag = configModule
                     mToolStripMenuItems.Add(configModule, item)
                 End If
-                btn.Enabled = configModule.IsEnabled(mNavigator.SelectedClientGroup, mNavigator.SelectedStudy, mNavigator.SelectedSurvey, btn)
+                'btn.Enabled = configModule.IsEnabled(mNavigator.SelectedClientGroup, mNavigator.SelectedStudy, mNavigator.SelectedSurvey, btn)
+                btn.Enabled = configModule.IsEnabled(configModule.Name, mNavigator.SelectedClientGroup, mNavigator.SelectedStudy, mNavigator.SelectedSurvey, btn)
                 item.Enabled = btn.Enabled
 
                 ConfigToolStrip.Items.Add(btn)

@@ -109,6 +109,12 @@ Public NotInheritable Class SP
     Public Const TakeOffCallList As String = "QCL_TakeOffCallList"
     Public Const UnassignFacilityFromClient As String = "QCL_UnassignFacilityFromClient"
 
+    'Added 2014.07.18 All Cahps Teams - Sprint 4, User story 6 
+    Public Const SelectModeSectionMappingsBySurveyId As String = "QCL_SelectModeSectionMappingsBySurveyId"
+    Public Const InsertModeSectionMapping As String = "QCL_InsertModeSectionMapping"
+    Public Const DeleteModeSectionMapping As String = "QCL_DeleteModeSectionMapping"
+    Public Const UpdateModeSectionMapping As String = "QCL_UpdateModeSectionMapping"
+
 
 #Region "Legacy Sampling Procedures"
 

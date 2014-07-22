@@ -1,4 +1,5 @@
-﻿Imports Nrc.QualiSys.Library
+﻿Imports Nrc.Qualisys.Library
+Imports DevExpress
 
 
 Public Class ModeSectionMappingEditor
@@ -50,12 +51,11 @@ Public Class ModeSectionMappingEditor
     End Sub
 
     Private Sub AvailableSectionsTreeView_AfterSelect(sender As System.Object, e As System.Windows.Forms.TreeViewEventArgs) Handles AvailableSectionsTreeView.AfterSelect
-        'Dim idx As Integer = Me.AvailableSectionsTreeView.SelectedNodes.Count
         UpdateAvailableModesCollection()
     End Sub
 
     Private Sub AddMappedSectionButton_Click(sender As System.Object, e As System.EventArgs) Handles AddMappedSectionButton.Click
-        UpdateMappedSectionsCollection()
+        MapSections()
     End Sub
 
     Private Sub DeleteMappedSectionButton_Click(sender As System.Object, e As System.EventArgs) Handles DeleteMappedSectionButton.Click
@@ -70,13 +70,16 @@ Public Class ModeSectionMappingEditor
         ToggleDeleteButton()
     End Sub
 
-
     Private Sub UnMapContextMenuStrip_Click(sender As System.Object, e As System.EventArgs) Handles UnMapContextMenuStrip.Click
         DeleteMapping()
     End Sub
 
     Private Sub MapContextMenuStrip_Click(sender As System.Object, e As System.EventArgs) Handles MapContextMenuStrip.Click
-        UpdateMappedSectionsCollection()
+        MapSections()
+    End Sub
+
+    Private Sub ShowAllMappedSections_Click(sender As System.Object, e As System.EventArgs) Handles ShowAllMappedSections.Click
+        ShowAllMappings()
     End Sub
 
 #End Region
@@ -117,6 +120,7 @@ Public Class ModeSectionMappingEditor
     Private Sub PopulateSectionTree()
         AvailableSectionsTreeView.BeginUpdate()
         AvailableSectionsTreeView.Nodes.Clear()
+
         For Each unit As QuestionSection In mAllQuestionSections
 
             Dim rootNode As New TreeNode
@@ -137,36 +141,40 @@ Public Class ModeSectionMappingEditor
     End Sub
 
     Private Sub UpdateAvailableModesCollection()
-        Me.mAvailableModes.Clear()
 
-        mSelectedQuestionIndex = AvailableSectionsTreeView.SelectedNode.Index
-        mSelectedQuestionSection = DirectCast(AvailableSectionsTreeView.SelectedNode.Tag, QuestionSection)
+        If Not AvailableSectionsTreeView.SelectedNode Is Nothing Then
 
-        ' Based on the QuestionSection selected in the treeview, load the Modes that haven't been assigned to the section
-        Me.mAvailableModes = MailingStepMethod.GetBySurveyID(Me.mModule.Survey.Id)
+            Me.mAvailableModes.Clear()
 
-        ' check the mapped mode list and remove anything that was added
-        For Each MappedSection As ModeSectionMapping In Me.mMappedQuestionSections
-            If mSelectedQuestionSection.Label = MappedSection.QuestionSectionLabel Then
-                For Each StepMethod As MailingStepMethod In mAvailableModes
-                    If StepMethod.Id = MappedSection.MailingStepMethodId Then
-                        If MappedSection.NeedsDelete = False Then
-                            mAvailableModes.Remove(StepMethod)
+            mSelectedQuestionIndex = AvailableSectionsTreeView.SelectedNode.Index
+            mSelectedQuestionSection = DirectCast(AvailableSectionsTreeView.SelectedNode.Tag, QuestionSection)
+
+            ' Based on the QuestionSection selected in the treeview, load the Modes that haven't been assigned to the section
+            Me.mAvailableModes = MailingStepMethod.GetBySurveyID(Me.mModule.Survey.Id)
+
+            ' check the mapped mode list and remove anything that was added
+            For Each MappedSection As ModeSectionMapping In Me.mMappedQuestionSections
+                If mSelectedQuestionSection.Label = MappedSection.QuestionSectionLabel Then
+                    For Each StepMethod As MailingStepMethod In mAvailableModes
+                        If StepMethod.Id = MappedSection.MailingStepMethodId Then
+                            If MappedSection.NeedsDelete = False Then
+                                mAvailableModes.Remove(StepMethod)
+                            End If
+                            Exit For
                         End If
-                        Exit For
-                    End If
-                Next
-            End If
-        Next
+                    Next
+                End If
+            Next
 
-        AvailableMailingStepMethodsGridControl.DataSource = Me.mAvailableModes
+            AvailableMailingStepMethodsGridControl.DataSource = Me.mAvailableModes
 
-        Me.MappedGridView.ActiveFilter.NonColumnFilter = "[NeedsDelete] = false AND [QuestionSectionLabel] = '" & mSelectedQuestionSection.Label + "'"
+            Me.MappedGridView.ActiveFilter.NonColumnFilter = "[NeedsDelete] = false AND [QuestionSectionLabel] = '" & mSelectedQuestionSection.Label + "'"
 
-        ToggleAddButton()
+            ToggleAddButton()
+        End If
     End Sub
 
-    Private Sub UpdateMappedSectionsCollection()
+    Private Sub MapSections()
 
         mSelectedQuestionSection = DirectCast(AvailableSectionsTreeView.SelectedNode.Tag, QuestionSection)
 
@@ -176,7 +184,7 @@ Public Class ModeSectionMappingEditor
             Dim newMapping As ModeSectionMapping = ModeSectionMapping.NewModeSectionMapping(Me.mModule.Survey.Id, 0, SelectedStepMethod.Id, SelectedStepMethod.Name, mSelectedQuestionSection.Id, mSelectedQuestionSection.Label)
             mMappedQuestionSections.Add(newMapping)
         Next
-        
+
         'Set the Binding Source for mapped sections grid
         Me.MappedSectionsBindingSource.DataSource = mMappedQuestionSections
         Me.MappedGridView.RefreshData()
@@ -233,8 +241,20 @@ Public Class ModeSectionMappingEditor
         UpdateAvailableModesCollection()
     End Sub
 
+
+    Private Sub ShowAllMappings()
+
+        AvailableSectionsTreeView.ClearSelections()
+
+        Me.MappedGridView.ActiveFilter.NonColumnFilter = "[NeedsDelete] = false"
+        Me.MappedGridView.ClearSelection()
+        ' Sets focus on MappedGridView control to the filter box at the top
+        Me.MappedGridView.FocusedRowHandle = DevExpress.XtraGrid.GridControl.AutoFilterRowHandle
+
+        ToggleAddButton()
+
+    End Sub
+
 #End Region
 
-
-  
 End Class

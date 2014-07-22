@@ -25,7 +25,7 @@ Public Class ModeSectionMappingProvider
     End Function
 
     Public Overrides Function SelectModeSectionMappingsBySurveyId(ByVal SurveyId As Integer) As List(Of ModeSectionMapping) 'Collection
-        Dim cmd As DbCommand = Db.GetStoredProcCommand("QCL_SelectModeSectionMappingsBySurveyId", SurveyId)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectModeSectionMappingsBySurveyId, SurveyId)
         Using rdr As New SafeDataReader(ExecuteReader(cmd))
             'Return PopulateCollection(Of ModeSectionMappingCollection, ModeSectionMapping)(rdr, AddressOf PopulateModeSectionMapping)
             Return PopulateCollection(Of List(Of ModeSectionMapping), ModeSectionMapping)(rdr, AddressOf PopulateModeSectionMapping)
@@ -33,17 +33,17 @@ Public Class ModeSectionMappingProvider
     End Function
 
     Public Overrides Function InsertModeSectionMapping(ByVal instance As ModeSectionMapping) As Integer
-        Dim cmd As DbCommand = Db.GetStoredProcCommand("QCL_InsertModeSectionMapping", instance.SurveyId, instance.MailingStepMethodId, instance.MailingStepMethodName, instance.QuestionSectionId, instance.QuestionSectionLabel)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.InsertModeSectionMapping, instance.SurveyId, instance.MailingStepMethodId, instance.MailingStepMethodName, instance.QuestionSectionId, instance.QuestionSectionLabel)
         Return ExecuteInteger(cmd)
     End Function
 
     Public Overrides Sub DeleteModeSectionMapping(ByVal instance As ModeSectionMapping)
-        Dim cmd As DbCommand = Db.GetStoredProcCommand("QCL_DeleteModeSectionMapping", instance.Id)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.DeleteModeSectionMapping, instance.Id)
         ExecuteNonQuery(cmd)
     End Sub
 
     Public Overrides Sub UpdateModeSectionMapping(ByVal instance As ModeSectionMapping)
-        Dim cmd As DbCommand = Db.GetStoredProcCommand("QCL_UpdateModeSectionMapping", instance.Id, instance.MailingStepMethodId, instance.MailingStepMethodName, instance.QuestionSectionId, instance.QuestionSectionLabel)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.UpdateModeSectionMapping, instance.Id, instance.MailingStepMethodId, instance.MailingStepMethodName, instance.QuestionSectionId, instance.QuestionSectionLabel)
         ExecuteNonQuery(cmd)
     End Sub
 
