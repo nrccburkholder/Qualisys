@@ -31,7 +31,8 @@ Public Class MassSamplePeriodCreator
         Me.MonthEdit1.Visible = mSurvey.IsMonthlyOnly
         Me.YearComboBoxEdit.Visible = mSurvey.IsMonthlyOnly
 
-        Me.SamplingMethodComboBoxEdit.EditValue = SampleSet.SamplingMethodFromLabel(Me.mSurvey.SamplingMethodDefault)
+        'Me.SamplingMethodComboBoxEdit.EditValue = SampleSet.SamplingMethodFromLabel(Me.mSurvey.SamplingMethodDefault)
+        Me.SamplingMethodComboBoxEdit.EditValue = Me.mSurvey.SamplingMethodDefault
         Me.SamplingMethodComboBoxEdit.Enabled = Not Me.mSurvey.IsSamplingMethodDisabled
 
         Me.FirstEncounterStartDateEdit.DateTime = Today
