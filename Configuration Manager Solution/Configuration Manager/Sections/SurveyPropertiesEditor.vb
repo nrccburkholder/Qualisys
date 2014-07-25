@@ -53,17 +53,7 @@ Public Class SurveyPropertiesEditor
 
             'lblResurveyMethod.Enabled = False
             ResurveyMethodComboBox.Enabled = False
-            SamplingAlgorithmComboBox.SelectedValue = DirectCast([Enum].Parse(GetType(SamplingAlgorithm), survey.SamplingAlgorithmDefault), SamplingAlgorithm)
-            '            Select Case [Enum].Parse(GetType(SamplingAlgorithm), survey.SamplingAlgorithmDefault)
-            '-                Case SamplingAlgorithm.[Static]
-            '                    SamplingAlgorithmComboBox.SelectedValue = SamplingAlgorithm.Static 
-            '-                Case SamplingAlgorithm.Dynamic
-            '                    SamplingAlgorithmComboBox.SelectedValue = SamplingAlgorithm.Dynamic 
-            '-                Case SamplingAlgorithm.StaticPlus
-            '                    SamplingAlgorithmComboBox.SelectedValue = SamplingAlgorithm.StaticPlus
-            '                Case Else
-            '                    SamplingAlgorithmComboBox.SelectedValue = SamplingAlgorithm.None
-            '            End Select
+            SamplingAlgorithmComboBox.SelectedIndex = DirectCast([Enum].Parse(GetType(SamplingAlgorithm), survey.SamplingAlgorithmDefault), Integer) - 1
             If survey.SkipEnforcementRequired Then
                 EnforceSkipYesOption.Checked = True
                 EnforceSkipNoOption.Checked = False
@@ -76,7 +66,7 @@ Public Class SurveyPropertiesEditor
                 lblEnforceSkipPattern.Enabled = True
             End If
             RespRateRecalcDaysNumeric.Value = survey.RespRateRecalsDaysNumericDefault
-            ResurveyMethodComboBox.SelectedValue = DirectCast([Enum].Parse(GetType(ResurveyMethod), survey.ResurveyMethodDefault), ResurveyMethod)
+            ResurveyMethodComboBox.SelectedIndex = DirectCast([Enum].Parse(GetType(ResurveyMethod), survey.ResurveyMethodDefault), Integer) - 1
 
             ResurveyExcludionDaysNumeric.Value = survey.ResurveyExclusionPeriodsNumericDefault
             ResurveyExcludionDaysNumeric.Enabled = Not survey.IsResurveyExclusionPeriodsNumericDisabled
@@ -192,6 +182,10 @@ Public Class SurveyPropertiesEditor
         StudyNameLabel.Text = mModule.Study.Name
         StudyIdLabel.Text = mModule.Study.Id.ToString
 
+        'Must fill these combo boxes prior to SelectedIndexChanged call generated for SurveyType just ahead
+        SamplingAlgorithmComboBox.DataSource = Survey.GetSamplingAlgorithms
+        ResurveyMethodComboBox.DataSource = Survey.GetResurveyMethods
+
         'Survey type list
         SurveyTypeComboBox.DataSource = Survey.GetSurveyTypes
         SurveyTypeComboBox.SelectedValue = mModule.EditingSurvey.SurveyType
@@ -223,7 +217,6 @@ Public Class SurveyPropertiesEditor
         SurveyDescriptionTextBox.Text = mModule.EditingSurvey.Description
 
         'Sampling Algorithm
-        SamplingAlgorithmComboBox.DataSource = Survey.GetSamplingAlgorithms
         SamplingAlgorithmComboBox.SelectedValue = mModule.EditingSurvey.SamplingAlgorithm
         If (SamplingAlgorithmComboBox.Items.Count > 0 AndAlso SamplingAlgorithmComboBox.SelectedIndex < 0) Then
             SamplingAlgorithmComboBox.SelectedIndex = 0
@@ -301,7 +294,6 @@ Public Class SurveyPropertiesEditor
         SetNumericField(RespRateRecalcDaysNumeric, mModule.EditingSurvey.ResponseRateRecalculationPeriod)
 
         'Resurvey method
-        ResurveyMethodComboBox.DataSource = Survey.GetResurveyMethods
         ResurveyMethodComboBox.SelectedValue = mModule.EditingSurvey.ResurveyMethod
         If (ResurveyMethodComboBox.Items.Count > 0 AndAlso ResurveyMethodComboBox.SelectedIndex < 0) Then
             ResurveyMethodComboBox.SelectedIndex = 0

@@ -412,7 +412,6 @@ Partial Class SurveyPropertiesEditor
         Me.SamplingAlgorithmComboBox.DisplayMember = "Label"
         Me.SamplingAlgorithmComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.SamplingAlgorithmComboBox.FormattingEnabled = True
-        Me.SamplingAlgorithmComboBox.Items.AddRange(New Object() {"Static", "Dynamic", "Static Plus"})
         Me.SamplingAlgorithmComboBox.Location = New System.Drawing.Point(176, 250)
         Me.SamplingAlgorithmComboBox.Name = "SamplingAlgorithmComboBox"
         Me.SamplingAlgorithmComboBox.Size = New System.Drawing.Size(107, 21)
