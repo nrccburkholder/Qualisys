@@ -11,10 +11,12 @@ Public Class ClientStudySurveySelectionChangedEventArgs
         End Get
     End Property
 
+
     Sub New(ByVal type As NavigationNodeType)
 
         mSelectionType = type
 
     End Sub
+
 
 End Class

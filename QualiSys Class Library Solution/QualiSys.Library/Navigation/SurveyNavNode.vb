@@ -17,6 +17,8 @@ Namespace Navigation
         Private mChildNodes As New NavigationNodeList
         Private mStudy As StudyNavNode
 
+        Private mHasModeMapping As Boolean
+
 #End Region
 
 #Region " Public Properties "
@@ -64,6 +66,12 @@ Namespace Navigation
             Set(ByVal value As Boolean)
                 mIsActive = value
             End Set
+        End Property
+
+        Public ReadOnly Property HasModeMapping() As Boolean
+            Get
+                Return MailingStepMethod.GetBySurveyID(mId).Count > 1
+            End Get
         End Property
 
 #End Region

@@ -1,14 +1,14 @@
 USE [QP_Prod]
 GO
 
-/****** Object:  StoredProcedure [dbo].[SV_ALL_CAHPS]    Script Date: 7/24/2014 1:38:23 PM ******/
+/****** Object:  StoredProcedure [dbo].[SV_ALL_CAHPS]    Script Date: 7/22/2014 8:58:59 AM ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
 
-ALTER PROCEDURE [dbo].[SV_ALL_CAHPS]
+CREATE PROCEDURE [dbo].[SV_ALL_CAHPS]
     @Survey_id INT
 AS
 
@@ -116,6 +116,59 @@ END
 DROP TABLE #ActiveMethodology
 
 
+----Validate Mode Mapping
+DECLARE @MappedCount INT
+
+SELECT @MappedCount = Count(*)
+FROM ModeSectionMapping
+WHERE Survey_Id = @Survey_Id
+
+IF @MappedCount > 0
+BEGIN
+
+	CREATE TABLE #MailingStepMethod (Survey_Id INT, MailingStepMethod_id INT, MailingStepMethod_nm varchar(60))
+
+	INSERT INTO #MailingStepMethod
+	select distinct mm.SURVEY_ID, msm.MailingStepMethod_id, msm.MailingStepMethod_nm
+	from mailingstepmethod msm
+	INNER JOIN mailingstep ms ON msm.mailingstepmethod_id = ms.mailingstepmethod_id
+	INNER JOIN mailingmethodology mm ON ms.methodology_id = mm.methodology_id
+	where mm.bitactivemethodology = 1
+	and (ms.bitsendsurvey = 1 or msm.isnonmailgeneration = 1)
+	and mm.survey_id =  @Survey_Id
+
+	CREATE TABLE #MappedModes (ModeName varchar(60))
+
+	INSERT INTO #MappedModes
+	select distinct msm.MailingStepMethod_nm
+	from #mailingstepmethod msm
+	LEFT JOIN ModeSectionMapping mode on (msm.MailingStepMethod_id = mode.MailingStepMethod_Id and mode.Survey_Id = @Survey_Id)
+	where mode.ID is null
+
+	DECLARE @ModeName varchar(60)
+
+	SELECT TOP 1 @ModeName = ModeName
+	FROM #MappedModes
+
+	WHILE @@rowcount>0
+	BEGIN
+
+		INSERT INTO #M (Error, strMessage)
+			SELECT 2,'Mode Type "'+ LTRIM(RTRIM(@ModeName)) +'" exists and is not mapped to a Question section. '
+		 
+		DELETE
+		FROM #MappedModes
+		WHERE ModeName=@ModeName
+
+		SELECT TOP 1 @ModeName = ModeName
+		FROM #MappedModes
+
+	END
+
+	DROP TABLE #MailingStepMethod
+	DROP TABLE #MappedModes
+
+END
 
 -- Now we only work with Non-CGCAHPS stuff
 IF @surveyType_id in (@ACOCAHPS, @HHCAHPS, @HCAHPS, @ICHCAHPS)
@@ -309,7 +362,7 @@ BEGIN
 		IF @@ROWCOUNT=0
 			INSERT INTO #M (Error, strMessage)
 			SELECT 0,'Sample Encounter Date Field is set to ICH_FieldDate.'
-	EN
+	END
 
 	IF @surveyType_id in (@ACOCAHPS, @ICHCAHPS)
 	BEGIN
@@ -1126,4 +1179,5 @@ SELECT * FROM #M
 DROP TABLE #M
 
 GO
+
 
