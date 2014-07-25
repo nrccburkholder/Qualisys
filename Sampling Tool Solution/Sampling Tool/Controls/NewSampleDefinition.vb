@@ -768,7 +768,7 @@ Public Class NewSampleDefinition
         'isHCAHPS = (srvy.SurveyType = SurveyTypes.Hcahps OrElse srvy.SurveyType = SurveyTypes.HHcahps)
         row.Cells(Me.NewSampleSetOrderColumn.Index).Value = (i + 1).ToString
         row.Cells(Me.NewSampleSetSurveyColumn.Index).Value = srvy.DisplayLabel
-        row.Cells(Me.NewSampleSetCAHPSColumn.Index).Value = srvy.IsCAHPS 'isHCAHPS CJB 7/3/2014 refactor causes all CAHPS to be applied here not just HCAHPS and HHCAHPS
+        row.Cells(Me.NewSampleSetCAHPSColumn.Index).Value = srvy.IsMonthlyOnly  'isHCAHPS CJB 7/25/2014 using an HCAHPS and HHCAHPS for the right effect here...bad call on 7/3/2014 | CJB 7/3/2014 refactor causes all CAHPS to be applied here not just HCAHPS and HHCAHPS
         row.Cells(Me.NewSampleEncounterFieldColumn.Index).Value = sampleEncounterDateFieldLabel
         row.Cells(Me.NewSampleSetSpecifyDatesColumn.Index).Value = True
         If srvy.SampleablePeriods.Count > 0 Then
