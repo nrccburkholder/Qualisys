@@ -6,7 +6,7 @@
 	[jn_notes] [varchar](240) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	[jn_SPID] [smallint] NULL,
 	[PARAM_ID] [int] NOT NULL,
-	[STRPARAM_NM] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[STRPARAM_NM] [varchar](75) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	[STRPARAM_TYPE] [char](1) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	[STRPARAM_GRP] [varchar](40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	[STRPARAM_VALUE] [varchar](255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,

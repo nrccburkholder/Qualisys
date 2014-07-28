@@ -4,37 +4,30 @@
 @ParentSampleUnit_id INT,
 @strSampleUnit_nm VARCHAR(42),
 @intTargetReturn INT,
---@intMinConfidence INT,
---@intMaxMargin INT,
 @numInitResponseRate INT,
---@numResponseRate INT,
---@Reporting_Hierarchy_id INT,
 @SUFacility_id INT,
---@SUServices VARCHAR(300),
 @bitSuppress BIT,
-@bitHCAHPS BIT,
-@bitACOCAHPS BIT,
-@bitHHCAHPS BIT,
-@bitCHART BIT,
-@bitMNCM BIT,
---@MedicareNumber VARCHAR(20),
---@AHANumber INT,
---@FacilityState VARCHAR(42),
+--@bitHCAHPS BIT,
+--@bitACOCAHPS BIT,
+--@bitHHCAHPS BIT,
+--@bitCHART BIT,
+--@bitMNCM BIT,
 @Priority INT,
 @SampleSelectionType_id INT,
-@DontSampleUnit tinyint
+@DontSampleUnit tinyint,
+@CAHPSType_id INT
 AS
 BEGIN
 	DECLARE @su INT
 
 	INSERT INTO SampleUnit (CriteriaStmt_id, SamplePlan_id, ParentSampleUnit_id, strSampleUnit_nm,
-	  intTargetReturn, /*intMinConfidence, intMaxMargin,*/ numInitResponseRate, /*numResponseRate, 
-	  Reporting_Hierarchy_id,*/ SUFacility_id, /*SUServices,*/ bitSuppress, bitHCAHPS, bitACOCAHPS, bitHHCAHPS, bitCHART, bitMNCM, /*MedicareNumber,
-	  AHANumber, FacilityState,*/ Priority, SampleSelectionType_id, DontSampleUnit)
+	  intTargetReturn, numInitResponseRate, SUFacility_id, bitSuppress, 
+	  --bitHCAHPS, bitACOCAHPS, bitHHCAHPS, bitCHART, bitMNCM, 
+	  Priority, SampleSelectionType_id, DontSampleUnit, CAHPSType_id)
 	SELECT @CriteriaStmt_id, @SamplePlan_id, @ParentSampleUnit_id, @strSampleUnit_nm,
-	  @intTargetReturn, /*@intMinConfidence, @intMaxMargin, */@numInitResponseRate, /*@numResponseRate, 
-	  @Reporting_Hierarchy_id,*/ @SUFacility_id, /*@SUServices, */@bitSuppress, @bitHCAHPS, @bitACOCAHPS, @bitHHCAHPS, @bitCHART, @bitMNCM, /*@MedicareNumber,
-	  @AHANumber, @FacilityState,*/ @Priority, @SampleSelectionType_id, @DontSampleUnit
+	  @intTargetReturn, @numInitResponseRate, @SUFacility_id, @bitSuppress, 
+	  --@bitHCAHPS, @bitACOCAHPS, @bitHHCAHPS, @bitCHART, @bitMNCM, 
+	  @Priority, @SampleSelectionType_id, @DontSampleUnit, @CAHPSType_id
 
 	SELECT @su=SCOPE_IDENTITY()
 
@@ -54,5 +47,3 @@ BEGIN
 
 
 END
-
-

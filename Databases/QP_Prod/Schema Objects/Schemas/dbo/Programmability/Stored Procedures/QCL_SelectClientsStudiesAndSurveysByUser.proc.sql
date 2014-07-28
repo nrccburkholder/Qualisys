@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[QCL_SelectClientsStudiesAndSurveysByUser]  
+﻿CREATE  PROCEDURE [dbo].[QCL_SelectClientsStudiesAndSurveysByUser]  
     @UserName VARCHAR(42),  
     @ShowAllClients BIT = 0  
 AS  
@@ -62,7 +62,7 @@ SELECT s.Survey_id, s.strSurvey_nm, s.strSurvey_dsc, s.Study_id, s.strCutoffResp
        s.INTRESPONSE_RECALC_PERIOD, s.intResurvey_Period, s.datSurvey_Start_dt,  
        s.datSurvey_End_dt, s.SamplingAlgorithmID, s.bitEnforceSkip, s.strClientFacingName,  
        s.SurveyType_id, s.SurveyTypeDef_id, s.ReSurveyMethod_id, s.strHouseholdingType,
-	   s.Contract, s.Active, s.ContractedLanguages
+	   s.Contract, s.Active, s.ContractedLanguages, s.SurveySubType_ID, s.QuestionnaireType_ID
   FROM #EmpStudy t  
        JOIN Survey_def s  
          ON t.Study_id = s.Study_id  
@@ -75,5 +75,3 @@ DROP TABLE #EmpStudy
   
 SET TRANSACTION ISOLATION LEVEL READ COMMITTED  
 SET NOCOUNT OFF
-
-

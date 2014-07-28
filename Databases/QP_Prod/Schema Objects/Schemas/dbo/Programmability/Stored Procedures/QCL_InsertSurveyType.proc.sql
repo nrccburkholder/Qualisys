@@ -14,5 +14,3 @@ VALUES (@SurveyType_dsc, @CAHPSType_id, @SeedMailings, @SeedSurveyPercent, @Seed
 SELECT SCOPE_IDENTITY()
 
 SET NOCOUNT OFF
-
-

@@ -14,7 +14,7 @@ AS
 	,sampleUnit.SAMPLEUNIT_ID as [sampleUnit!1!id]
 	,sp.SURVEY_ID as [sampleUnit!1!surveyid]
 	,sampleUnit.strSampleUnit_NM as  [sampleUnit!1!name]
-	,Case When IsNull(sampleUnit.bitHCAHPS,0) = 0 And IsNull(SampleUnit.bitHHCAHPS,0) = 0 Then 0 Else 1 End  as [sampleUnit!1!isCahps]
+	,Case When IsNull(sampleUnit.CAHPSType_id,0) = 0 Then 0 Else 1 End  as [sampleUnit!1!isCahps]
 	,sampleUnit.bitSuppress as [sampleUnit!1!isSuppressedOnWeb]
 	,sampleUnit.PARENTSAMPLEUNIT_ID as [sampleUnit!1!parentUnitID]
 	,'false' as [sampleUnit!1!deleteEntity]
