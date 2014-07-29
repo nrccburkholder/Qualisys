@@ -124,7 +124,7 @@ Public Function IsPurple(ByVal image As Integer) As Boolean
 End Function
 
 Public Function IsOrange(ByVal image As Integer) As Boolean
-    IsOrange = IIf(image > HHPrinting And image <= APrinting, True, False)
+    IsOrange = IIf(image > HHPrinting And image < RHospital, True, False)
 End Function
 
 Public Function IsRed(ByVal image As Integer) As Boolean

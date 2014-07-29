@@ -1,11 +1,14 @@
 USE [QP_Prod]
 GO
-/****** Object:  StoredProcedure [dbo].[SV_ALL_HCAHPS]    Script Date: 7/08/2014 4:04:12 PM ******/
+
+/****** Object:  StoredProcedure [dbo].[SV_ALL_CAHPS]    Script Date: 7/24/2014 1:38:23 PM ******/
 SET ANSI_NULLS ON
 GO
+
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE PROCEDURE [dbo].[SV_ALL_CAHPS]
+
+ALTER PROCEDURE [dbo].[SV_ALL_CAHPS]
     @Survey_id INT
 AS
 
@@ -110,8 +113,9 @@ BEGIN
   SELECT 2,'Survey does not use a standard ' + @SurveyTypeDescription + ' methodology.'   -- a warning     
 END
 
-
 DROP TABLE #ActiveMethodology
+
+
 
 -- Now we only work with Non-CGCAHPS stuff
 IF @surveyType_id in (@ACOCAHPS, @HHCAHPS, @HCAHPS, @ICHCAHPS)
@@ -305,7 +309,7 @@ BEGIN
 		IF @@ROWCOUNT=0
 			INSERT INTO #M (Error, strMessage)
 			SELECT 0,'Sample Encounter Date Field is set to ICH_FieldDate.'
-	END
+	EN
 
 	IF @surveyType_id in (@ACOCAHPS, @ICHCAHPS)
 	BEGIN
@@ -747,7 +751,28 @@ BEGIN
 
 	-- Check DQ Rules
 	----Now check for Addr Error DQ rule
-	IF @surveyType_id in (@HCAHPS, @HHCAHPS)
+	IF @surveyType_id in (@HCAHPS)
+	BEGIN
+
+		IF EXISTS (SELECT BusinessRule_id
+				   FROM BusinessRule br, CriteriaStmt cs, CriteriaClause cc, MetaField mf, Operator op
+				   WHERE br.CriteriaStmt_id = cs.CriteriaStmt_id
+					 AND cs.CriteriaStmt_id = cc.CriteriaStmt_id
+					 AND cc.Field_id = mf.Field_id
+					 AND cc.intOperator = op.Operator_Num
+					 AND mf.strField_Nm = 'AddrErr'
+					 AND op.strOperator = '='
+					 AND cc.strLowValue = 'FO'
+					 AND br.Survey_id = @Survey_id
+		   )
+			INSERT INTO #M (Error, strMessage)
+			SELECT 0,'Survey has DQ rule (AddrErr = "FO").'
+		ELSE
+			INSERT INTO #M (Error, strMessage)
+			SELECT 1,'Survey does not have DQ rule (AddrErr = "FO").'
+	END
+
+	IF @surveyType_id in (@HHCAHPS)
 	BEGIN
 
 		IF EXISTS (SELECT BusinessRule_id
@@ -917,7 +942,12 @@ BEGIN
 			SELECT 1,'Survey does not have DQ_Mat rule (ENCOUNTERHHMaternity = "Y").'
 		END
 
-
+		IF EXISTS (SELECT Field_id
+           FROM dbo.MetaData_View
+           WHERE Table_id = @EncTable_ID
+			AND Study_id = @Study_id
+			AND strField_nm = 'HHNoPub')
+		BEGIN
 		   --Check for DQ_NoPub rules
 			 IF EXISTS (SELECT BusinessRule_id
 				  FROM BusinessRule br, CriteriaStmt cs, CriteriaClause cc, MetaField mf, Operator op
@@ -937,6 +967,7 @@ BEGIN
 			  INSERT INTO #M (Error, strMessage)
 			  SELECT 1,'Survey does not have DQ_NoPub rule (ENCOUNTERHHNoPub = "Y").'
 
+		END
 		-- Check for DQ_Dead
 		IF EXISTS (SELECT Field_id
 			   FROM dbo.MetaData_View
@@ -1093,3 +1124,6 @@ END
 SELECT * FROM #M
 
 DROP TABLE #M
+
+GO
+

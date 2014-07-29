@@ -8,14 +8,15 @@
 @numInitResponseRate INT,
 @SUFacility_id INT,
 @bitSuppress BIT,
-@bitHCAHPS BIT,
-@bitACOCAHPS BIT,
-@bitHHCAHPS BIT,
-@bitCHART BIT,
-@bitMNCM BIT,
+--@bitHCAHPS BIT,
+--@bitACOCAHPS BIT,
+--@bitHHCAHPS BIT,
+--@bitCHART BIT,
+--@bitMNCM BIT,
 @Priority INT,
 @SampleSelectionType_id INT,
-@DontSampleUnit tinyint
+@DontSampleUnit tinyint,
+@CAHPSType_id INT
 AS
 
 UPDATE SampleUnit 
@@ -23,10 +24,9 @@ SET CriteriaStmt_id=@CriteriaStmt_id, SamplePlan_id=@SamplePlan_id,
   ParentSampleUnit_id=@ParentSampleUnit_id, strSampleUnit_nm=@strSampleUnit_nm,
   intTargetReturn=@intTargetReturn, numInitResponseRate=@numInitResponseRate, 
   SUFacility_id=@SUFacility_id, bitSuppress=@bitSuppress, 
-  bitHCAHPS=@bitHCAHPS, bitACOCAHPS=@bitACOCAHPS, bitHHCAHPS=@bitHHCAHPS, bitCHART = @bitCHART,
-  bitMNCM = @bitMNCM, Priority=@Priority,
+  --bitHCAHPS=@bitHCAHPS, bitACOCAHPS=@bitACOCAHPS, bitHHCAHPS=@bitHHCAHPS, bitCHART = @bitCHART, bitMNCM = @bitMNCM, 
+  Priority=@Priority,
   SampleSelectionType_id=@SampleSelectionType_id,
-  DontSampleUnit=@DontSampleUnit
+  DontSampleUnit=@DontSampleUnit,
+  CAHPSType_id=@CAHPSType_id
 WHERE SampleUnit_id=@SampleUnit_id
-
-
