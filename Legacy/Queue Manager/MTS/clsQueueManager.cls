@@ -3365,9 +3365,7 @@ End Function
 
 Public Function FolderColor(ByVal survey_id As String) As String
     
-    If strFilePath = "" Then
-        Initialize
-    End If
+    Initialize
     
     Dim rs As New ADODB.Recordset
     rs.Open "Select dbo.SurveyProperty( 'FolderColor', null, " & survey_id & ") FolderColor", moConn, adOpenForwardOnly
