@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSurveyEmailService", "WebSurveyEmailService\WebSurveyEmailService.csproj", "{550FF3D7-BAF2-475C-99CA-5A6721B42728}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSurveyLibrary", "WebSurveyLibrary\WebSurveyLibrary.csproj", "{45FE84D3-4AED-4E31-8B3F-1E3F8560B161}"
@@ -10,24 +12,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuartzScheduler", "QuartzScheduler\QuartzScheduler.csproj", "{A6C4FF58-BEE7-4C5E-89E5-842680AF720E}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 5
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://tfs.nationalresearch.com:8080/tfs/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = WebSurveyEmailService\\WebSurveyEmailService.csproj
-		SccProjectName1 = WebSurveyEmailService
-		SccLocalPath1 = WebSurveyEmailService
-		SccProjectUniqueName2 = WebSurveyLibrary\\WebSurveyLibrary.csproj
-		SccProjectName2 = WebSurveyLibrary
-		SccLocalPath2 = WebSurveyLibrary
-		SccProjectUniqueName3 = WebSurveyEmailProcessTestApplication\\WebSurveyEmailProcessTestApplication.csproj
-		SccProjectName3 = WebSurveyEmailProcessTestApplication
-		SccLocalPath3 = WebSurveyEmailProcessTestApplication
-		SccProjectUniqueName4 = QuartzScheduler\\QuartzScheduler.csproj
-		SccProjectName4 = QuartzScheduler
-		SccLocalPath4 = QuartzScheduler
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		CD_ROM|Any CPU = CD_ROM|Any CPU
 		Debug|Any CPU = Debug|Any CPU

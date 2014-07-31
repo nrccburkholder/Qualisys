@@ -63,7 +63,7 @@
       <HintPath>..\packages\NLog.2.1.0\lib\net40\NLog.dll</HintPath>
     </Reference>
     <Reference Include="Nrc.Framework.BusinessLogic">
-      <HintPath>..\..\..\..\Staging\Referenced Assemblies\Nrc.Framework.BusinessLogic.dll</HintPath>
+      <HintPath>..\..\..\Referenced Assemblies\Nrc.Framework.BusinessLogic.dll</HintPath>
     </Reference>
     <Reference Include="Quartz">
       <HintPath>..\packages\Quartz.2.2.3\lib\net40\Quartz.dll</HintPath>
