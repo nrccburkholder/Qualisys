@@ -65,7 +65,10 @@ namespace WebSurveyEmailService
 
             string cronExpression = AppConfig.Params["WebSurveyCleanupInterval"].StringValue;
 
-            ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
+            NameValueCollection properties = new NameValueCollection { { "quartz.threadPool.threadCount", "1" } };
+
+            ISchedulerFactory schedulerFactory = new StdSchedulerFactory(properties);
+
 
             _scheduler = schedulerFactory.GetScheduler();
 
