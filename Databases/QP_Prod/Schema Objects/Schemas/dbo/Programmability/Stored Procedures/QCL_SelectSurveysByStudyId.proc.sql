@@ -11,12 +11,10 @@ SELECT sd.Survey_id, sd.strSurvey_Nm, sd.strSurvey_Dsc, sd.Study_id, sd.strCutof
        sd.intResponse_Recalc_Period, sd.intResurvey_Period, sd.datSurvey_Start_Dt, sd.datSurvey_End_Dt,
        sd.SamplingAlgorithmID, sd.bitEnforceSkip, sd.strClientFacingName, sd.SurveyType_id,
        sd.SurveyTypeDef_id, sd.ReSurveyMethod_id, sd.strHouseholdingType, sd.Contract, sd.Active, 
-       sd.ContractedLanguages
+       sd.ContractedLanguages, sd.SurveySubType_ID, sd.QuestionnaireType_ID
 FROM Survey_Def sd, SamplePlan sp
 WHERE sd.Study_id = @StudyId
   AND sd.survey_id = sp.survey_id
 
 SET TRANSACTION ISOLATION LEVEL READ COMMITTED
 SET NOCOUNT OFF
-
-
