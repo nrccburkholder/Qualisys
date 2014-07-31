@@ -151,7 +151,16 @@ namespace WebSurveyLibrary
                         }
 
                         FolderId fid = GetFolderId(service, foldername);
-                        message.Move(fid);
+                        try
+                        {
+                            message.Move(fid);
+                        }
+                        catch
+                        {
+                            errorList.Add(new WebSurveyError(-1, -1, "", "Unable to move message to " + foldername));
+                            Logs.Info("Unable to move message to " + foldername);
+
+                        }
 
                     }
 
@@ -327,17 +336,9 @@ namespace WebSurveyLibrary
 
             if (email != string.Empty)
             {
-                Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+                bool isEmail = Regex.IsMatch(email, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase);
 
-                Match match = regex.Match(email);
-
-                if (match.Success)
-
-                    return true;
-
-                else
-
-                    return false;
+                return isEmail;
             }
             else return false;
         }

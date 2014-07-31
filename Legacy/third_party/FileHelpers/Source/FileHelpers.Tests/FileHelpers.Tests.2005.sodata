@@ -1,0 +1,7 @@
+<Files>
+  <File Name=".\Tests\Common\InheritedTests.cs">
+    <Region Caption="AmexOffset" State="1">
+      <TextSpan StartLine="358" StartIndex="0" EndLine="517" EndIndex="8" />
+    </Region>
+  </File>
+</Files>

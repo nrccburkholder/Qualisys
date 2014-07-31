@@ -1,0 +1,83 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSurveyEmailService", "WebSurveyEmailService\WebSurveyEmailService.csproj", "{550FF3D7-BAF2-475C-99CA-5A6721B42728}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSurveyLibrary", "WebSurveyLibrary\WebSurveyLibrary.csproj", "{45FE84D3-4AED-4E31-8B3F-1E3F8560B161}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSurveyEmailProcessTestApplication", "WebSurveyEmailProcessTestApplication\WebSurveyEmailProcessTestApplication.csproj", "{D1162412-6F4B-47B7-83B4-5C906DF0E23A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuartzScheduler", "QuartzScheduler\QuartzScheduler.csproj", "{A6C4FF58-BEE7-4C5E-89E5-842680AF720E}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 5
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://tfs.nationalresearch.com:8080/tfs/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = WebSurveyEmailService\\WebSurveyEmailService.csproj
+		SccProjectName1 = WebSurveyEmailService
+		SccLocalPath1 = WebSurveyEmailService
+		SccProjectUniqueName2 = WebSurveyLibrary\\WebSurveyLibrary.csproj
+		SccProjectName2 = WebSurveyLibrary
+		SccLocalPath2 = WebSurveyLibrary
+		SccProjectUniqueName3 = WebSurveyEmailProcessTestApplication\\WebSurveyEmailProcessTestApplication.csproj
+		SccProjectName3 = WebSurveyEmailProcessTestApplication
+		SccLocalPath3 = WebSurveyEmailProcessTestApplication
+		SccProjectUniqueName4 = QuartzScheduler\\QuartzScheduler.csproj
+		SccProjectName4 = QuartzScheduler
+		SccLocalPath4 = QuartzScheduler
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		CD_ROM|Any CPU = CD_ROM|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		DVD-5|Any CPU = DVD-5|Any CPU
+		Release|Any CPU = Release|Any CPU
+		SingleImage|Any CPU = SingleImage|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{550FF3D7-BAF2-475C-99CA-5A6721B42728}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
+		{550FF3D7-BAF2-475C-99CA-5A6721B42728}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
+		{550FF3D7-BAF2-475C-99CA-5A6721B42728}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{550FF3D7-BAF2-475C-99CA-5A6721B42728}.Debug|Any CPU.Build.0 = Debug|x86
+		{550FF3D7-BAF2-475C-99CA-5A6721B42728}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
+		{550FF3D7-BAF2-475C-99CA-5A6721B42728}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
+		{550FF3D7-BAF2-475C-99CA-5A6721B42728}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{550FF3D7-BAF2-475C-99CA-5A6721B42728}.Release|Any CPU.Build.0 = Release|Any CPU
+		{550FF3D7-BAF2-475C-99CA-5A6721B42728}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
+		{550FF3D7-BAF2-475C-99CA-5A6721B42728}.SingleImage|Any CPU.Build.0 = Release|Any CPU
+		{45FE84D3-4AED-4E31-8B3F-1E3F8560B161}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
+		{45FE84D3-4AED-4E31-8B3F-1E3F8560B161}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
+		{45FE84D3-4AED-4E31-8B3F-1E3F8560B161}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{45FE84D3-4AED-4E31-8B3F-1E3F8560B161}.Debug|Any CPU.Build.0 = Debug|x86
+		{45FE84D3-4AED-4E31-8B3F-1E3F8560B161}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
+		{45FE84D3-4AED-4E31-8B3F-1E3F8560B161}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
+		{45FE84D3-4AED-4E31-8B3F-1E3F8560B161}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45FE84D3-4AED-4E31-8B3F-1E3F8560B161}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45FE84D3-4AED-4E31-8B3F-1E3F8560B161}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
+		{45FE84D3-4AED-4E31-8B3F-1E3F8560B161}.SingleImage|Any CPU.Build.0 = Release|Any CPU
+		{D1162412-6F4B-47B7-83B4-5C906DF0E23A}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
+		{D1162412-6F4B-47B7-83B4-5C906DF0E23A}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
+		{D1162412-6F4B-47B7-83B4-5C906DF0E23A}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{D1162412-6F4B-47B7-83B4-5C906DF0E23A}.Debug|Any CPU.Build.0 = Debug|x86
+		{D1162412-6F4B-47B7-83B4-5C906DF0E23A}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1162412-6F4B-47B7-83B4-5C906DF0E23A}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
+		{D1162412-6F4B-47B7-83B4-5C906DF0E23A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1162412-6F4B-47B7-83B4-5C906DF0E23A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1162412-6F4B-47B7-83B4-5C906DF0E23A}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
+		{D1162412-6F4B-47B7-83B4-5C906DF0E23A}.SingleImage|Any CPU.Build.0 = Release|Any CPU
+		{A6C4FF58-BEE7-4C5E-89E5-842680AF720E}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
+		{A6C4FF58-BEE7-4C5E-89E5-842680AF720E}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
+		{A6C4FF58-BEE7-4C5E-89E5-842680AF720E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6C4FF58-BEE7-4C5E-89E5-842680AF720E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6C4FF58-BEE7-4C5E-89E5-842680AF720E}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6C4FF58-BEE7-4C5E-89E5-842680AF720E}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
+		{A6C4FF58-BEE7-4C5E-89E5-842680AF720E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6C4FF58-BEE7-4C5E-89E5-842680AF720E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6C4FF58-BEE7-4C5E-89E5-842680AF720E}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
+		{A6C4FF58-BEE7-4C5E-89E5-842680AF720E}.SingleImage|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
