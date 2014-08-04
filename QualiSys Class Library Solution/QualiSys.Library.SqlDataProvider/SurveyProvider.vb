@@ -13,7 +13,9 @@ Public Class SurveyProvider
 
         Dim newObj As New Survey(parentStudy)
 
-        ReadOnlyAccessor.SurveyId(newObj) = rdr.GetInteger("Survey_id")
+        Dim survey_id As Integer = rdr.GetInteger("Survey_id")
+
+        ReadOnlyAccessor.SurveyId(newObj) = survey_id
         newObj.Name = rdr.GetString("strSurvey_nm", String.Empty).Trim
         newObj.ContractNumber = rdr.GetString("Contract", String.Empty).Trim
         newObj.Description = rdr.GetString("strSurvey_dsc", String.Empty)
@@ -50,8 +52,16 @@ Public Class SurveyProvider
         End Select
         newObj.IsActive = rdr.GetBoolean("Active")
         newObj.ContractedLanguages = rdr.GetString("ContractedLanguages", String.Empty)
-        newObj.SurveySubType = rdr.GetInteger("SurveySubType_Id", 0)
-        newObj.QuestionnaireType = rdr.GetInteger("QuestionnaireType_Id", 0)
+
+        Dim questionnaireSubType As SubType = SelectSurveyQuestionnaireType(survey_id, SubtypeCategories.QuestionnaireType)
+        If questionnaireSubType IsNot Nothing Then
+            questionnaireSubType.ResetDirtyFlag()
+        End If
+        newObj.QuestionnaireType = questionnaireSubType
+
+        newObj.SurveySubTypes = SelectSurveySubTypes(survey_id, SubtypeCategories.Subtype)
+        newObj.SurveySubTypes.ResetDirtyFlag()
+
         newObj.ResetDirtyFlag()
 
         Return newObj
@@ -241,6 +251,25 @@ Public Class SurveyProvider
                         Next
                     End If
 
+                    ' Now handle the subtype subtypes
+                    If srvy.SurveySubTypes.IsDirty Then
+                        '    DeleteSurveySubtypes(srvy.Id, SubtypeCategories.Subtype, tran)
+                        For Each st As SubType In srvy.SurveySubTypes
+                            If st.IsNew Then
+                                SurveyProvider.InsertSurveySubType(srvy.Id, st.SubTypeId, tran)
+                            ElseIf st.NeedsDeleted Then
+                                SurveyProvider.DeleteSurveySubtype(srvy.Id, st.SubTypeId, SubtypeCategories.Subtype, tran)
+                            End If
+                        Next
+                    End If
+
+                    ' Now handle the questionnairetype subtypes
+                    If srvy.QuestionnaireType IsNot Nothing Then
+                        If srvy.QuestionnaireType.SubTypeId > 0 Then
+                            SurveyProvider.UpdateSurveySubType(srvy.Id, srvy.QuestionnaireType.SubTypeId, SubtypeCategories.QuestionnaireType, tran)
+                        End If
+                    End If
+
                     tran.Commit()
 
                 Catch ex As Exception
@@ -257,6 +286,7 @@ Public Class SurveyProvider
                     Next
                 End If
                 If srvy.HouseHoldingFields IsNot Nothing Then srvy.HouseHoldingFields.ResetDirtyFlag()
+                If srvy.SurveySubTypes IsNot Nothing Then srvy.SurveySubTypes.ResetDirtyFlag()
             End Using
         End Using
 
@@ -294,7 +324,7 @@ Public Class SurveyProvider
                                                            SafeDataReader.ToDBValue(.CutoffTableId, -1), SafeDataReader.ToDBValue(.CutoffFieldId, -1), _
                                                            SafeDataReader.ToDBValue(sampleEncounterTableId, -1), SafeDataReader.ToDBValue(sampleEncounterFieldId, -1), _
                                                            .ClientFacingName, .SurveyType, .SurveyTypeDefId, GetHouseHoldingTypeCharacter(.HouseHoldingType), .IsValidated, _
-                                                           SafeDataReader.ToDBValue(.DateValidated), .IsFormGenReleased, .ContractNumber, .IsActive, .ContractedLanguages, .SurveySubType, .QuestionnaireType)
+                                                           SafeDataReader.ToDBValue(.DateValidated), .IsFormGenReleased, .ContractNumber, .IsActive, .ContractedLanguages)
 
             ExecuteNonQuery(cmd, tran)
         End With
@@ -322,8 +352,8 @@ Public Class SurveyProvider
                                      ByVal contractNumber As String, _
                                      ByVal isActive As Boolean, _
                                      ByVal contractedLanguages As String, _
-                                     ByVal surveySubTypeId As Integer, _
-                                     ByVal questionnaireTypeId As Integer _
+                                     ByVal surveysubtypes As SubTypeList,
+                                     ByVal questionnairesubtype As SubType
                                     ) As Survey
 
         Dim surveyId As Integer
@@ -346,9 +376,31 @@ Public Class SurveyProvider
                                                                    cutoffResponseCode, SafeDataReader.ToDBValue(cutoffTableId, -1), SafeDataReader.ToDBValue(cutoffFieldId, -1), _
                                                                    SafeDataReader.ToDBValue(sampleEncounterTableId, -1), SafeDataReader.ToDBValue(sampleEncounterFieldId, -1), _
                                                                    clientFacingName, surveyTypeId, surveyTypeDefId, GetHouseHoldingTypeCharacter(houseHoldingType), _
-                                                                   contractNumber, isActive, contractedLanguages, surveySubTypeId, questionnaireTypeId)
+                                                                   contractNumber, isActive, contractedLanguages)
 
                     surveyId = ExecuteInteger(cmd, tran)
+
+
+
+                    ' Now handle the subtype subtypes
+                    If surveysubtypes.IsDirty Then
+                        '    DeleteSurveySubtypes(srvy.Id, SubtypeCategories.Subtype, tran)
+                        For Each st As SubType In surveysubtypes
+                            If st.IsNew Then
+                                SurveyProvider.InsertSurveySubType(surveyId, st.SubTypeId, tran)
+                            ElseIf st.NeedsDeleted Then
+                                SurveyProvider.DeleteSurveySubtype(surveyId, st.SubTypeId, SubtypeCategories.Subtype, tran)
+                            End If
+                        Next
+                    End If
+
+                    ' Now handle the questionnairetype subtypes
+                    If questionnairesubtype IsNot Nothing Then
+                        If questionnairesubtype.SubTypeId > 0 Then
+                            SurveyProvider.UpdateSurveySubType(surveyId, questionnairesubtype.SubTypeId, SubtypeCategories.QuestionnaireType, tran)
+                        End If
+                    End If
+
 
                     tran.Commit()
 
@@ -427,24 +479,30 @@ Public Class SurveyProvider
 
     End Function
 
-    Public Overrides Function SelectSurveySubTypes(ByVal surveytypeid As Integer) As List(Of SurveySubType)
+    Public Overrides Function SelectSubTypes(ByVal surveytypeid As Integer, ByVal categorytype As SubtypeCategories, ByVal surveyid As Integer) As SubTypeList
 
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectSurveySubTypes, surveytypeid)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand("QCL_SelectSubTypes", surveytypeid, categorytype, surveyid)
 
         Using rdr As New SafeDataReader(ExecuteReader(cmd))
-            Dim items As New List(Of SurveySubType)
-            Dim Description As String
-            Dim SurveySubType_Id As Integer
+            Dim items As New SubTypeList
+            Dim SubType_Id As Integer
             Dim SurveyType_Id As Integer
-            Dim QuestionnaireType_Id As Integer = 0
+            Dim SubType_NM As String
+            Dim SubtypeCategory_Id As Integer
+            Dim SubtypeCategory_NM As String
+            Dim isMultiselect As Boolean
+            Dim isRuleOverride As Boolean
+            Dim isSelected As Boolean
             Do While rdr.Read
-                Description = rdr.GetString("SubType_NM")
-                SurveySubType_Id = CType(rdr.GetInteger("SurveySubType_id"), SurveyTypes)
-                If Not rdr.IsDBNull("QuestionnaireType_ID") Then
-                    QuestionnaireType_Id = rdr.GetShort("QuestionnaireType_ID")
-                End If
+                SubType_NM = rdr.GetString("SubType_NM")
+                SubType_Id = rdr.GetInteger("SubType_id")
                 SurveyType_Id = rdr.GetInteger("SurveyType_ID")
-                items.Add(New SurveySubType(SurveySubType_Id, SurveyType_Id, Description, QuestionnaireType_Id))
+                SubtypeCategory_Id = rdr.GetInteger("SubtypeCategory_ID")
+                SubtypeCategory_NM = rdr.GetString("Subtypecategory_NM")
+                isMultiselect = rdr.GetBoolean("bitMultiSelect")
+                isRuleOverride = rdr.GetBoolean("bitRuleOverride")
+                isSelected = rdr.GetInteger("bitSelected") = 1
+                items.Add(New SubType(SubType_Id, SurveyType_Id, SubType_NM, isRuleOverride, isSelected))
             Loop
 
             Return items
@@ -452,27 +510,67 @@ Public Class SurveyProvider
 
     End Function
 
+    Private Shared Function SelectSurveySubTypes(ByVal surveyid As Integer, ByVal categorytype As SubtypeCategories) As SubTypeList
 
-    Public Overrides Function SelectQuestionnaireTypes(ByVal surveytypeid As Integer, ByVal questionnairetypeid As Integer) As List(Of QuestionnaireType)
-
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectQuestionnaireTypes, surveytypeid, questionnairetypeid)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand("QCL_SelectSurveySubtypes", surveyid, categorytype)
 
         Using rdr As New SafeDataReader(ExecuteReader(cmd))
-            Dim items As New List(Of QuestionnaireType)
-            Dim Description As String
-            Dim QuestionnaireType_id As Integer
-            Dim SurveyType_Id As Integer
+            Dim items As New SubTypeList
+            Dim SubType_Id As Integer
+            Dim SubType_NM As String
+            Dim isRuleOverride As Boolean
             Do While rdr.Read
-                Description = rdr.GetString("Description")
-                QuestionnaireType_id = CType(rdr.GetInteger("QuestionnaireType_id"), SurveyTypes)
-                SurveyType_Id = rdr.GetInteger("SurveyType_ID")
-                items.Add(New QuestionnaireType(QuestionnaireType_id, SurveyType_Id, Description))
+                SubType_NM = rdr.GetString("SubType_NM")
+                SubType_Id = rdr.GetInteger("SubType_id")
+                isRuleOverride = rdr.GetBoolean("bitRuleOverride")
+                items.Add(New SubType(SubType_Id, SubType_NM, isRuleOverride, True))
             Loop
 
             Return items
         End Using
 
     End Function
+
+    Private Shared Function SelectSurveyQuestionnaireType(ByVal surveyid As Integer, ByVal categorytype As SubtypeCategories) As SubType
+        ' there will only be one questionnaire subtype in the list
+
+        Dim list As SubTypeList = SelectSurveySubTypes(surveyid, categorytype)
+        If list.Count > 0 Then
+            Return list.Item(0)
+        Else
+            Return Nothing
+        End If
+
+    End Function
+
+
+    Private Shared Sub InsertSurveySubType(ByVal surveyId As Integer, ByVal subtypeId As Integer, ByVal tran As DbTransaction)
+
+        Dim cmd As DbCommand = Db.GetStoredProcCommand("QCL_InsertSurveySubType", surveyId, subtypeId)
+        ExecuteNonQuery(cmd, tran)
+
+    End Sub
+
+    Private Shared Sub UpdateSurveySubType(ByVal surveyId As Integer, ByVal subtypeid As Integer, ByVal categoryId As Integer, ByVal tran As DbTransaction)
+
+        Dim cmd As DbCommand = Db.GetStoredProcCommand("QCL_UpdateSurveySubType", surveyId, subtypeid, categoryId)
+        ExecuteNonQuery(cmd, tran)
+
+    End Sub
+
+    Public Shared Sub DeleteSurveySubtype(ByVal surveyId As Integer, ByVal subtypeid As Integer, ByVal categorytype_id As Integer, ByVal tran As DbTransaction)
+
+        Dim cmd As DbCommand = Db.GetStoredProcCommand("QCL_DeleteSurveySubtype", surveyId, subtypeid, categorytype_id)
+        ExecuteNonQuery(cmd, tran)
+
+    End Sub
+
+    'Public Shared Sub DeleteSurveySubtypes(ByVal surveyId As Integer, ByVal categorytype_id As Integer, ByVal tran As DbTransaction)
+
+    '    Dim cmd As DbCommand = Db.GetStoredProcCommand("QCL_DeleteSurveySubtypes", surveyId, categorytype_id)
+    '    ExecuteNonQuery(cmd, tran)
+
+    'End Sub
 
 
 End Class
