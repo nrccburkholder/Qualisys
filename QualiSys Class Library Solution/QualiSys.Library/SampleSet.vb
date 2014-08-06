@@ -442,8 +442,8 @@ Public Class SampleSet
             Case "Census"
                 Return SamplingMethod.Census
 
-            Case Else
-                Throw New Exception("Method '" & method.ToString & "' is not a valid sampling method.")
+                'Case Else
+                '    Throw New Exception("Method '" & method.ToString & "' is not a valid sampling method.")
 
         End Select
 

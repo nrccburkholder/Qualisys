@@ -170,14 +170,15 @@ Partial Class SurveyPropertiesEditor
         '
         'SurveySubTypeListBox
         '
-        Me.SurveySubTypeListBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.SurveySubTypeListBox.CheckOnClick = True
         Me.SurveySubTypeListBox.ColumnWidth = 150
         Me.SurveySubTypeListBox.FormattingEnabled = True
+        Me.SurveySubTypeListBox.IntegralHeight = False
         Me.SurveySubTypeListBox.Items.AddRange(New Object() {"MNCM", "MIPEC", "WCHQ", "ABCDE", "VWXYZ", "ABCD", "EFGH", "IJKLM", "NOPQ", "RSTUV"})
         Me.SurveySubTypeListBox.Location = New System.Drawing.Point(176, 110)
+        Me.SurveySubTypeListBox.Margin = New System.Windows.Forms.Padding(3, 0, 3, 0)
         Me.SurveySubTypeListBox.Name = "SurveySubTypeListBox"
-        Me.SurveySubTypeListBox.Size = New System.Drawing.Size(306, 92)
+        Me.SurveySubTypeListBox.Size = New System.Drawing.Size(306, 80)
         Me.SurveySubTypeListBox.TabIndex = 39
         '
         'Label6

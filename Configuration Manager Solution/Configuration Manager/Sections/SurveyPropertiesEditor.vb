@@ -168,6 +168,23 @@ Public Class SurveyPropertiesEditor
 
     End Sub
 
+    Private Sub QuestionnaireTypeComboBox_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles QuestionnaireTypeComboBox.SelectedIndexChanged
+
+        If Not mIsLoading Then
+            Dim selectedItem As SubType = CType(QuestionnaireTypeComboBox.SelectedItem, SubType)
+
+            If mModule.EditingSurvey.QuestionnaireType IsNot Nothing Then
+                If selectedItem.SubTypeId <> mModule.EditingSurvey.QuestionnaireType.SubTypeId Then
+                    If selectedItem.SubTypeId = 0 Then selectedItem.NeedsDeleted = True
+                    selectedItem.IsDirty = True
+                Else
+                    selectedItem.IsDirty = False
+                End If
+            End If
+            
+        End If
+    End Sub
+
 
 #End Region
 
@@ -546,10 +563,10 @@ Public Class SurveyPropertiesEditor
 
         If SurveySubTypeListBox.Items.Count = 0 Then
             SurveySubTypeListBox.Enabled = False
-            QuestionnaireTypeComboBox.SelectedIndex = -1
+            SurveySubTypeListBox.BackColor = Color.FromKnownColor(KnownColor.Control)
         Else
             SurveySubTypeListBox.Enabled = True
-
+            SurveySubTypeListBox.BackColor = Color.FromKnownColor(KnownColor.Window)
             Dim i As Integer
             For i = 0 To SurveySubTypeListBox.Items.Count - 1
                 If CType(SurveySubTypeListBox.Items(i), SubType).WasSelected Then
@@ -564,13 +581,20 @@ Public Class SurveyPropertiesEditor
         QuestionnaireTypeComboBox.DataSource = Survey.GetSubTypes(surveytypeid, SubtypeCategories.QuestionnaireType, surveyid)
         QuestionnaireTypeComboBox.DisplayMember = "SubtypeName"
         QuestionnaireTypeComboBox.ValueMember = "SubTypeId"
-        QuestionnaireTypeComboBox.SelectedIndex = -1
-        If QuestionnaireTypeComboBox.Items.Count = 0 Then
+        QuestionnaireTypeComboBox.SelectedIndex = 0
+        If QuestionnaireTypeComboBox.Items.Count < 2 Then
             QuestionnaireTypeComboBox.Enabled = False
         Else
             QuestionnaireTypeComboBox.Enabled = True
             If mModule.EditingSurvey.QuestionnaireType IsNot Nothing Then
-                QuestionnaireTypeComboBox.SelectedValue = mModule.EditingSurvey.QuestionnaireType.SubTypeId
+                If mModule.EditingSurvey.QuestionnaireType.SubTypeId = 0 Then
+
+                    QuestionnaireTypeComboBox.SelectedIndex = 0
+                Else
+                    QuestionnaireTypeComboBox.SelectedValue = mModule.EditingSurvey.QuestionnaireType.SubTypeId
+                End If
+
+
             End If
         End If
     End Sub
@@ -613,4 +637,5 @@ Public Class SurveyPropertiesEditor
 
   
    
+    
 End Class

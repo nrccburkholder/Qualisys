@@ -1,7 +1,5 @@
 Imports Nrc.QualiSys.Library.DataProvider
 Imports Nrc.Framework.BusinessLogic.Configuration
-Imports LinqBridge
-
 
 Public Class Survey
 
@@ -32,7 +30,7 @@ Public Class Survey
     Private mHouseHoldingType As HouseHoldingType
     Private mHouseHoldingColumns As StudyTableColumnCollection
     Private mSurveySubtypes As SubTypeList
-    Private mQuestionnaireType As New SubType()
+    Private mQuestionnaireType As SubType
 
     Private mIsDirty As Boolean
     Private mIsValidated As Boolean
@@ -430,6 +428,10 @@ Public Class Survey
                     mQuestionnaireType = value
                     mIsDirty = True
                 End If
+            ElseIf mQuestionnaireType Is Nothing And value IsNot Nothing Then
+                mQuestionnaireType = New SubType()
+                mQuestionnaireType = value
+                mIsDirty = False
             End If
         End Set
     End Property

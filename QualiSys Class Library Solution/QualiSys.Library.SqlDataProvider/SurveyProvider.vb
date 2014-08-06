@@ -53,11 +53,8 @@ Public Class SurveyProvider
         newObj.IsActive = rdr.GetBoolean("Active")
         newObj.ContractedLanguages = rdr.GetString("ContractedLanguages", String.Empty)
 
-        Dim questionnaireSubType As SubType = SelectSurveyQuestionnaireType(survey_id, SubtypeCategories.QuestionnaireType)
-        If questionnaireSubType IsNot Nothing Then
-            questionnaireSubType.ResetDirtyFlag()
-        End If
-        newObj.QuestionnaireType = questionnaireSubType
+        newObj.QuestionnaireType = SelectSurveyQuestionnaireType(survey_id, SubtypeCategories.QuestionnaireType)
+        newObj.QuestionnaireType.ResetDirtyFlag()
 
         newObj.SurveySubTypes = SelectSurveySubTypes(survey_id, SubtypeCategories.Subtype)
         newObj.SurveySubTypes.ResetDirtyFlag()
@@ -265,9 +262,13 @@ Public Class SurveyProvider
 
                     ' Now handle the questionnairetype subtypes
                     If srvy.QuestionnaireType IsNot Nothing Then
-                        If srvy.QuestionnaireType.SubTypeId > 0 Then
-                            SurveyProvider.UpdateSurveySubType(srvy.Id, srvy.QuestionnaireType.SubTypeId, SubtypeCategories.QuestionnaireType, tran)
-                        End If
+                        If srvy.QuestionnaireType.IsDirty Then
+                            If srvy.QuestionnaireType.SubTypeId > 0 Then
+                                SurveyProvider.UpdateSurveySubType(srvy.Id, srvy.QuestionnaireType.SubTypeId, SubtypeCategories.QuestionnaireType, tran)
+                            ElseIf srvy.QuestionnaireType.NeedsDeleted Then
+                                SurveyProvider.DeleteSurveyQuestionnaireSubtype(srvy.Id, SubtypeCategories.QuestionnaireType, tran)
+                            End If
+                        End If                   
                     End If
 
                     tran.Commit()
@@ -493,6 +494,12 @@ Public Class SurveyProvider
             Dim isMultiselect As Boolean
             Dim isRuleOverride As Boolean
             Dim isSelected As Boolean
+
+            
+            If categorytype = SubtypeCategories.QuestionnaireType Then
+                items.Add(New SubType(0, -1, "N/A", False, False))
+            End If
+
             Do While rdr.Read
                 SubType_NM = rdr.GetString("SubType_NM")
                 SubType_Id = rdr.GetInteger("SubType_id")
@@ -502,6 +509,7 @@ Public Class SurveyProvider
                 isMultiselect = rdr.GetBoolean("bitMultiSelect")
                 isRuleOverride = rdr.GetBoolean("bitRuleOverride")
                 isSelected = rdr.GetInteger("bitSelected") = 1
+
                 items.Add(New SubType(SubType_Id, SurveyType_Id, SubType_NM, isRuleOverride, isSelected))
             Loop
 
@@ -535,11 +543,12 @@ Public Class SurveyProvider
         ' there will only be one questionnaire subtype in the list
 
         Dim list As SubTypeList = SelectSurveySubTypes(surveyid, categorytype)
-        If list.Count > 0 Then
-            Return list.Item(0)
-        Else
-            Return Nothing
+
+        If list.Count = 0 Then
+            list.Add(New SubType(0, -1, "N/A", False, False))
         End If
+
+        Return list.Item(0)
 
     End Function
 
@@ -561,6 +570,13 @@ Public Class SurveyProvider
     Public Shared Sub DeleteSurveySubtype(ByVal surveyId As Integer, ByVal subtypeid As Integer, ByVal categorytype_id As Integer, ByVal tran As DbTransaction)
 
         Dim cmd As DbCommand = Db.GetStoredProcCommand("QCL_DeleteSurveySubtype", surveyId, subtypeid, categorytype_id)
+        ExecuteNonQuery(cmd, tran)
+
+    End Sub
+
+    Public Shared Sub DeleteSurveyQuestionnaireSubtype(ByVal surveyId As Integer, ByVal categorytype_id As Integer, ByVal tran As DbTransaction)
+
+        Dim cmd As DbCommand = Db.GetStoredProcCommand("QCL_DeleteSurveyQuestionnaireSubtype", surveyId, categorytype_id)
         ExecuteNonQuery(cmd, tran)
 
     End Sub
