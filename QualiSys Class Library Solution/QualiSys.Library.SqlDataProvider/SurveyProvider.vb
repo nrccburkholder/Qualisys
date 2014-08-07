@@ -353,8 +353,8 @@ Public Class SurveyProvider
                                      ByVal contractNumber As String, _
                                      ByVal isActive As Boolean, _
                                      ByVal contractedLanguages As String, _
-                                     ByVal surveysubtypes As SubTypeList,
-                                     ByVal questionnairesubtype As SubType
+                                     ByVal surveysubtypes As SubTypeList, _
+                                     ByVal questionnairesubtype As SubType _
                                     ) As Survey
 
         Dim surveyId As Integer
@@ -495,7 +495,6 @@ Public Class SurveyProvider
             Dim isRuleOverride As Boolean
             Dim isSelected As Boolean
 
-            
             If categorytype = SubtypeCategories.QuestionnaireType Then
                 items.Add(New SubType(0, -1, "N/A", False, False))
             End If
