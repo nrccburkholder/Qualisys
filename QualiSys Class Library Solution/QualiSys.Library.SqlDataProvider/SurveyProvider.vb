@@ -354,8 +354,13 @@ Public Class SurveyProvider
                                      ByVal isActive As Boolean, _
                                      ByVal contractedLanguages As String, _
 <<<<<<< HEAD
+<<<<<<< HEAD
                                      ByVal surveysubtypes As SubTypeList,
                                      ByVal questionnairesubtype As SubType
+=======
+                                     ByVal surveysubtypes As SubTypeList, _
+                                     ByVal questionnairesubtype As SubType _
+>>>>>>> sprint5
 =======
                                      ByVal surveysubtypes As SubTypeList, _
                                      ByVal questionnairesubtype As SubType _
@@ -501,7 +506,11 @@ Public Class SurveyProvider
             Dim isSelected As Boolean
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             
+=======
+
+>>>>>>> sprint5
 =======
 
 >>>>>>> sprint5

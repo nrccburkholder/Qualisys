@@ -32,8 +32,13 @@ Imports System.Runtime.InteropServices
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 <Assembly: AssemblyVersion("4.2.8.7")> 
 <Assembly: AssemblyFileVersion("4.2.8.7")> 
+=======
+<Assembly: AssemblyVersion("4.2.8.5")> 
+<Assembly: AssemblyFileVersion("4.2.8.5")> 
+>>>>>>> sprint5
 =======
 <Assembly: AssemblyVersion("4.2.8.5")> 
 <Assembly: AssemblyFileVersion("4.2.8.5")> 

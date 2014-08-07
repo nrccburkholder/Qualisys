@@ -59,13 +59,8 @@ Namespace DataProvider
                                             ByVal contractNumber As String, _
                                             ByVal isActive As Boolean, _
                                             ByVal contractedLanguages As String, _
-<<<<<<< HEAD
-                                            ByVal surveysubtypes As SubTypeList,
-                                            ByVal questionnairesubtype As SubType
-=======
                                             ByVal surveysubtypes As SubTypeList, _
                                             ByVal questionnairesubtype As SubType _
->>>>>>> sprint5
                                            ) As Survey
         Public MustOverride Sub Delete(ByVal surveyId As Integer)
         Public MustOverride Function AllowDelete(ByVal surveyId As Integer) As Boolean
