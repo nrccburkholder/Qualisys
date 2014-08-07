@@ -345,7 +345,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="packages.config" />
     <None Include="QualisysLibraryClassDiagram.cd" />
     <None Include="Diagrams\ClassDiagram.cd" />
     <None Include="Diagrams\Enumerations.cd" />
