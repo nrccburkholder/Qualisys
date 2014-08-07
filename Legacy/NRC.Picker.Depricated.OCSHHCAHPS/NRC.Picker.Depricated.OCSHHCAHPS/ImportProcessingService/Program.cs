@@ -17,7 +17,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessingService
     class Program : TimerService
     {
         Settings settings = ConfigManager.Load<Settings>(new ConfigOptions { CreateMissingDirectories = true });
-        private static Logger _logger = Logger.GetLogger();
+        private static Logger _logger = Logger.GetLogger("NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor");
 
         #region TimerService Overrides
         protected override int IntervalSecs
