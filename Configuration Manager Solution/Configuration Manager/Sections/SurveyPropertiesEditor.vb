@@ -6,6 +6,7 @@ Public Class SurveyPropertiesEditor
 
     Private mModule As SurveyPropertiesModule
     Private mEndConfigCallBack As EndConfigCallBackMethod
+    Private mIsLoading As Boolean = False
 
 #End Region
 
@@ -27,9 +28,9 @@ Public Class SurveyPropertiesEditor
 #Region " Event Handlers "
 
     Private Sub SurveyPropertiesEditor_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-
+        mIsLoading = True
         DisplayData()
-
+        mIsLoading = False
     End Sub
 
     Private Sub SurveyTypeComboBox_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SurveyTypeComboBox.SelectedIndexChanged
@@ -41,15 +42,14 @@ Public Class SurveyPropertiesEditor
             Dim survey As Survey = New Survey()
             survey.SurveyType = surveyType
 
-            LoadSurveySubTypeComboBox(surveyType)
-
+            LoadSurveySubTypeListBox(surveyType, survey.Id)
 
             Dim surveytypeid As Integer = 0
             Dim questionnairetypeid As Integer = 0
 
             surveytypeid = surveyType
 
-            LoadQuestionnaireTypeComboBox(surveytypeid, questionnairetypeid)
+            LoadQuestionnaireTypeComboBox(surveytypeid, questionnairetypeid, survey.Id)
 
             'lblResurveyMethod.Enabled = False
             ResurveyMethodComboBox.Enabled = False
@@ -130,22 +130,61 @@ Public Class SurveyPropertiesEditor
 
     End Sub
 
-    Private Sub SurveySubTypeComboBox_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles SurveySubTypeComboBox.SelectedIndexChanged
+    Private Sub SurveySubTypeListBox_ItemCheck(sender As System.Object, e As System.Windows.Forms.ItemCheckEventArgs) Handles SurveySubTypeListBox.ItemCheck
 
-        Dim SelectedSubType As SurveySubType = CType(SurveySubTypeComboBox.SelectedItem, SurveySubType)
+        If Not mIsLoading Then
 
-        Dim surveytypeid As Integer = 0
-        Dim questionnairetypeid As Integer = 0
+            Dim idx As Integer = e.Index
+            Dim selectedItem As SubType = CType(SurveySubTypeListBox.Items(idx), SubType)
 
-        If Not SelectedSubType Is Nothing Then
-            surveytypeid = SelectedSubType.SurveyTypeId
-            questionnairetypeid = SelectedSubType.QuestionnaireId
+            Dim iRuleOverrideCount As Integer = GetSubtypeBitRuleOverrideCount()
+
+            If selectedItem.IsRuleOverride Then
+                If e.NewValue = CheckState.Checked Then
+                    iRuleOverrideCount += 1
+                Else : iRuleOverrideCount -= 1
+                End If
+            End If
+
+            If iRuleOverrideCount > 1 Then
+                e.NewValue = e.CurrentValue
+                MessageBox.Show("You can't have more than one sub-type with a Rule Override!", "Illegal Sub-Type Selection", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Exit Sub
+            End If
+
+            If e.NewValue = CheckState.Checked And Not selectedItem.WasSelected Then
+                selectedItem.IsNew = True
+                selectedItem.IsDirty = True
+            ElseIf e.NewValue = CheckState.Unchecked And selectedItem.WasSelected Then
+                selectedItem.NeedsDeleted = True
+                selectedItem.IsDirty = True
+            Else
+                selectedItem.NeedsDeleted = False
+                selectedItem.IsNew = False
+                selectedItem.IsDirty = False
+            End If
+
         End If
 
-        LoadQuestionnaireTypeComboBox(surveytypeid, questionnairetypeid)
-
-
     End Sub
+
+    Private Sub QuestionnaireTypeComboBox_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles QuestionnaireTypeComboBox.SelectedIndexChanged
+
+        If Not mIsLoading Then
+            Dim selectedItem As SubType = CType(QuestionnaireTypeComboBox.SelectedItem, SubType)
+
+            If mModule.EditingSurvey.QuestionnaireType IsNot Nothing Then
+                If selectedItem.SubTypeId <> mModule.EditingSurvey.QuestionnaireType.SubTypeId Then
+                    If selectedItem.SubTypeId = 0 Then selectedItem.NeedsDeleted = True
+                    selectedItem.IsDirty = True
+                Else
+                    selectedItem.IsDirty = False
+                End If
+            End If
+            
+        End If
+    End Sub
+
 
 #End Region
 
@@ -197,19 +236,12 @@ Public Class SurveyPropertiesEditor
 
         'Survey SubType list
         Dim surveyTypeID As Integer = CInt(SurveyTypeComboBox.SelectedValue)
-        LoadSurveySubTypeComboBox(surveyTypeID)
-        SurveySubTypeComboBox.SelectedValue = mModule.EditingSurvey.SurveySubType
+        LoadSurveySubTypeListBox(surveyTypeID, mModule.EditingSurvey.Id)
 
         'questionnaire Type list
         Dim questionnaireTypeID As Integer = 0
-
-        If Not SurveySubTypeComboBox.SelectedItem Is Nothing Then
-            questionnaireTypeID = CType(SurveySubTypeComboBox.SelectedItem, SurveySubType).QuestionnaireId
-        End If
-
-        LoadQuestionnaireTypeComboBox(surveyTypeID, questionnaireTypeID)
-        QuestionnaireTypeComboBox.SelectedValue = mModule.EditingSurvey.QuestionnaireType
-
+        LoadQuestionnaireTypeComboBox(surveyTypeID, questionnaireTypeID, mModule.EditingSurvey.Id)
+       
         'Facing name
         FacingNameTextBox.Text = mModule.EditingSurvey.ClientFacingName
 
@@ -467,7 +499,7 @@ Public Class SurveyPropertiesEditor
             .EnforceSkip = EnforceSkipYesOption.Checked
             .SurveyStartDate = SurveyStartDatePicker.Value
             .SurveyEndDate = SurveyEndDatePicker.Value
-            .SurveySubType = SetSurveySubType()
+            .SurveySubTypes = SetSurveySubTypes()
             .QuestionnaireType = SetQuestionnaireType()
 
             Dim dateField As CutoffDateField = DirectCast(SampleEncounterDateComboBox.SelectedValue, CutoffDateField)
@@ -523,56 +555,87 @@ Public Class SurveyPropertiesEditor
 
     End Function
 
-    Private Sub LoadSurveySubTypeComboBox(ByVal surveytypeid As Integer)
-        SurveySubTypeComboBox.DataSource = Survey.GetSurveySubTypes(surveytypeid)
-        SurveySubTypeComboBox.DisplayMember = "Description"
-        SurveySubTypeComboBox.ValueMember = "Id"
+    Private Sub LoadSurveySubTypeListBox(ByVal surveytypeid As Integer, ByVal surveyid As Integer)
 
-        SurveySubTypeComboBox.SelectedIndex = -1
-        If SurveySubTypeComboBox.Items.Count = 0 Then
-            SurveySubTypeComboBox.Enabled = False
-            QuestionnaireTypeComboBox.SelectedIndex = -1
+        SurveySubTypeListBox.DataSource = Survey.GetSubTypes(surveytypeid, SubtypeCategories.Subtype, surveyid)
+        SurveySubTypeListBox.DisplayMember = "DisplayName"
+        SurveySubTypeListBox.ValueMember = "SubTypeId"
+
+        If SurveySubTypeListBox.Items.Count = 0 Then
+            SurveySubTypeListBox.Enabled = False
+            SurveySubTypeListBox.BackColor = Color.FromKnownColor(KnownColor.Control)
         Else
-            SurveySubTypeComboBox.Enabled = True
+            SurveySubTypeListBox.Enabled = True
+            SurveySubTypeListBox.BackColor = Color.FromKnownColor(KnownColor.Window)
+            Dim i As Integer
+            For i = 0 To SurveySubTypeListBox.Items.Count - 1
+                If CType(SurveySubTypeListBox.Items(i), SubType).WasSelected Then
+                    SurveySubTypeListBox.SetItemChecked(i, True)
+                End If
+            Next
         End If
+
     End Sub
 
-    Private Sub LoadQuestionnaireTypeComboBox(ByVal surveytypeid As Integer, ByVal questionnairetypeid As Integer)
-        QuestionnaireTypeComboBox.DataSource = Survey.GetQuestionnaireTypes(surveytypeid, questionnairetypeid)
-        QuestionnaireTypeComboBox.DisplayMember = "Description"
-        QuestionnaireTypeComboBox.ValueMember = "Id"
-        QuestionnaireTypeComboBox.SelectedIndex = -1
-        If QuestionnaireTypeComboBox.Items.Count = 0 Then
+    Private Sub LoadQuestionnaireTypeComboBox(ByVal surveytypeid As Integer, ByVal questionnairetypeid As Integer, ByVal surveyid As Integer)
+        QuestionnaireTypeComboBox.DataSource = Survey.GetSubTypes(surveytypeid, SubtypeCategories.QuestionnaireType, surveyid)
+        QuestionnaireTypeComboBox.DisplayMember = "SubtypeName"
+        QuestionnaireTypeComboBox.ValueMember = "SubTypeId"
+        QuestionnaireTypeComboBox.SelectedIndex = 0
+        If QuestionnaireTypeComboBox.Items.Count < 2 Then
             QuestionnaireTypeComboBox.Enabled = False
         Else
             QuestionnaireTypeComboBox.Enabled = True
+            If mModule.EditingSurvey.QuestionnaireType IsNot Nothing Then
+                If mModule.EditingSurvey.QuestionnaireType.SubTypeId = 0 Then
+
+                    QuestionnaireTypeComboBox.SelectedIndex = 0
+                Else
+                    QuestionnaireTypeComboBox.SelectedValue = mModule.EditingSurvey.QuestionnaireType.SubTypeId
+                End If
+
+
+            End If
         End If
     End Sub
 
 
-    Private Function SetSurveySubType() As Integer
+    Private Function SetSurveySubTypes() As SubTypeList
 
-        If SurveySubTypeComboBox.SelectedItem Is Nothing Then
-            Return Nothing
-        Else
-            Return CType(SurveySubTypeComboBox.SelectedItem, SurveySubType).Id
-        End If
+        Dim items As SubTypeList = New SubTypeList
+        For Each st As SubType In SurveySubTypeListBox.Items
+            items.Add(st)
+        Next
+
+        Return items
 
     End Function
 
-    Private Function SetQuestionnaireType() As Integer
+    Private Function SetQuestionnaireType() As SubType
 
         If QuestionnaireTypeComboBox.SelectedItem Is Nothing Then
             Return Nothing
         Else
-            Return CType(QuestionnaireTypeComboBox.SelectedItem, QuestionnaireType).Id
+            Return CType(QuestionnaireTypeComboBox.SelectedItem, SubType)
         End If
 
     End Function
+
+    Private Function GetSubtypeBitRuleOverrideCount() As Integer
+
+        Dim iRuleOverrideCount As Integer = 0
+
+        For Each st As SubType In SurveySubTypeListBox.CheckedItems
+            If st.IsRuleOverride Then iRuleOverrideCount += 1
+        Next
+
+        Return iRuleOverrideCount
+
+    End Function
+
 #End Region
 
+  
+   
     
-    Private Sub WorkAreaPanel_Paint(sender As System.Object, e As System.Windows.Forms.PaintEventArgs) Handles WorkAreaPanel.Paint
-
-    End Sub
 End Class
