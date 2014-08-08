@@ -2,8 +2,8 @@ use NRC_Datamart
 go
 update NRC_Datamart.dbo.CahpsDispositionMapping set isDefaultDisposition=1 where cahpsdispositionid=5250 and dispositionid=25
 go
-alter PROCEDURE [dbo].[etl_ProcessSamplePopulationDispositionLogRecords] 
-	/*@DataFileID*/20 int,
+alter PROCEDURE [dbo].[etl_ProcessSamplePopulationDispositionLogRecords]
+	/*@DataFileID*/27 int,
 	@DataSourceID int
 	--,@ReturnMessage As NVarChar(500) Output
 AS 
@@ -14,8 +14,8 @@ AS
    --DECLARE @DataSourceID INT
    --SET @DataSourceID = 1--QPUS
    
-   --DECLARE /*@DataFileID*/20 INT
-   --SET /*@DataFileID*/20 = 16
+   --DECLARE /*@DataFileID*/27 INT
+   --SET /*@DataFileID*/27 = 16
      
      UPDATE LOAD_TABLES.SamplePopulation
      SET CahpsTypeID = v.CahpsTypeID
@@ -26,7 +26,7 @@ AS
 	               FROM SelectedSample WITH (NOLOCK) GROUP BY SamplePopulationID) ss
 	    ON ss.SamplePopulationID = sp.SamplePopulationID           
 	  INNER JOIN dbo.v_ClientStudySurveySampleUnit v WITH (NOLOCK) ON ss.SampleUnitID = v.SampleUnitID
-	 WHERE sp.DataFileID = /*@DataFileID*/20 AND sp.isDelete = 0
+	 WHERE sp.DataFileID = /*@DataFileID*/27 AND sp.isDelete = 0
 
     --Set the default CahpsDispositionID for NEW sample pops added
     UPDATE LOAD_TABLES.SamplePopulation
@@ -35,7 +35,7 @@ AS
      --select ltsp.datafileid, ltsp.id, mapping.CahpsDispositionID, mapping.DispositionID
      FROM LOAD_TABLES.SamplePopulation ltsp WITH (NOLOCK)
       INNER JOIN CahpsDispositionMapping mapping WITH (NOLOCK) ON ltsp.CahpsTypeID = mapping.CahpsTypeID 
-     WHERE ltsp.DataFileID = /*@DataFileID*/20 AND ( ltsp.isInsert = 1 OR CahpsDispositionID_initial = 0)
+     WHERE ltsp.DataFileID = /*@DataFileID*/27 AND ( ltsp.isInsert = 1 OR CahpsDispositionID_initial = 0)
        AND ltsp.CahpsTypeID > 0
        AND mapping.IsDefaultDisposition = 1         
 
@@ -46,21 +46,21 @@ AS
      ,DispositionID = 0
      --select ltsp.datafileid, ltsp.id
      FROM LOAD_TABLES.SamplePopulation ltsp WITH (NOLOCK)        
-     WHERE ltsp.DataFileID = /*@DataFileID*/20 AND ltsp.isInsert = 1
+     WHERE ltsp.DataFileID = /*@DataFileID*/27 AND ltsp.isInsert = 1
        AND ltsp.CahpsTypeID = 0;
     
-	with CTE_SampPopDisp (SamplePopulationID, CahpsHierarchy, datLogged)
+	with CTE_SampPopDisp (DataFileID, SamplePopulationID, CahpsHierarchy, datLogged)
 	as
 	(
-		SELECT SamplePopulationID,CahpsHierarchy,MAX(lt.datLogged) AS datLogged
+		SELECT lt.DataFileID, SamplePopulationID,CahpsHierarchy,MAX(lt.datLogged) AS datLogged
 		FROM LOAD_TABLES.SamplePopulationDispositionLog lt WITH (NOLOCK)
 		INNER JOIN v_CahpsDispositionMapping mapping WITH (NOLOCK) 
 				ON lt.CahpsTypeID = mapping.CahpsTypeID 
 				  AND lt.DispositionID = mapping.DispositionID
 				  AND CASE WHEN Mapping.ReceiptTypeID = -1 THEN  -1 ELSE lt.ReceiptTypeID END = Mapping.ReceiptTypeID    
-		WHERE lt.DataFileID = /*@DataFileID*/20
+		WHERE lt.DataFileID = /*@DataFileID*/27
 		AND DaysFromFirst <= mapping.NumberCutoffDays AND lt.isDelete = 0
-		GROUP BY SamplePopulationID,CahpsHierarchy
+		GROUP BY lt.DataFileID, SamplePopulationID,CahpsHierarchy
 	)
 	SELECT lt.SamplePopulationID,lt.DispositionID,CahpsDispositionID,CahpsHierarchy,lt.ReceiptTypeID,lt.CahpsTypeID,lt.StudyNum,lt.SamplePop_id
     INTO #temp
@@ -125,9 +125,8 @@ AS
 		insert into @eligibilityOverride values (3,4,1,32,5130)	-- Do not currently rec'v (3) / 5 years+ (4)					--> Completed Mail Questionnaire—Survey Eligibility Unknown
 		insert into @eligibilityOverride values (3,5,1,32,5130)	-- Do not currently rec'v (3) / No longer at this facility (5)	--> Completed Mail Questionnaire—Survey Eligibility Unknown
 
-		--using differnt core numbers for testing in production
 		declare @override table (SamplepopulationID int, DispositionOverride int, CahpsDispositionOverride int)
-		insert into @override
+--		insert into @override
 		select SamplepopulationID, DispositionOverride, CahpsDispositionOverride
 		from (select qf.samplepopulationid
 				, max(	case when masterquestioncore =51198 then 
@@ -165,26 +164,44 @@ AS
 			
 		delete from @override
 		
+		-- inserting disposition records for returned surveys into #temp, so the 'insert into @override' query (below) works properly
+		insert into #temp
+		select distinct t.samplepopulationID
+			, 1234 as DispositionID			-- using 1234 as a disposition code for 'returned'. We're not sure what mode was returned, but for the zombie
+			, 1234 as CahpsDispositionID	-- analysis, we don't care. All we care about is whether there's a returned survey or not.
+			, 5 as CahpsHierarchy
+			, t.receipttypeID
+			, t.CahpsTypeID
+			, t.StudyNum
+			, t.SamplePop_id
+		from #temp t
+		inner join load_tables.questionform qf on t.samplepopulationid=qf.samplepopulationid
+		where qf.returndate is not null
+
+		
 		declare @zombie table (bitReturned bit, bitProxy bit, bitDead bit, DispositionOverride int, CahpsDispositionOverride int, bitIncludeResponses bit)
 		insert into @zombie values (1,1,0,35,5199,1)
 		insert into @zombie values (1,1,1, 3,5150,0)
 		insert into @zombie values (0,0,1, 3,5150,0)
 
-		insert into @override
+--		insert into @override
 		select SamplePopulationID, z.DispositionOverride, z.CahpsDispositionOverride 
 		from (	select t.SamplePopulationID
-				, max(case when t.dispositionid in (13,19,20,21,22,29,30) then 1 else 0 end) as bitReturned
+				, max(case when t.dispositionid = 1234 then 1 else 0 end) as bitReturned
 				, max(case when masterquestioncore =47214 and responsevalue = 3 then 1 else 0 end) as bitProxy 
 				, max(case when t.dispositionid in (3) then 1 else 0 end) as bitDead
 				from #temp t
 				inner join load_tables.questionform qf on t.SamplePopulationID=qf.SamplePopulationID	
 				LEFT OUTER join load_tables.responsebubble rb on rb.QuestionFormID=qf.QuestionFormID AND rb.masterquestioncore in (47214)
-				where t.dispositionid in (3,13,19,20,21,22,29,30)
+				where t.dispositionid in (3,1234)
 				and t.CahpsTypeID=5
 				group by t.SamplePopulationID) r
 		inner join @zombie z on r.bitReturned=z.bitReturned and r.bitDead=z.bitDead and r.bitProxy=z.bitProxy
 
+		delete from #temp where DispositionID=1234
+
 		update t set CahpsDispositionID=o.CahpsDispositionOverride, DispositionID=o.DispositionOverride, CahpsHierarchy=0
+		--select o.samplepopulationid, t.CahpsDispositionID, o.CahpsDispositionOverride, t.DispositionID, o.DispositionOverride, t.CahpsHierarchy, 0
 		from @override o
 		inner join #temp t on o.samplepopulationid=t.samplepopulationid
 	end
@@ -207,7 +224,7 @@ AS
 	        
       --insert rows for sample popS that need to updated becuase rows in the disposition log        
      INSERT INTO LOAD_TABLES.SamplePopulation (DataFileID,id,SamplePopulationID,SampleSetID,CahpsTypeID,StudyNum,CahpsDispositionID_initial,isInsert,isDelete,sampleset_id,DispositionID)
-     SELECT DISTINCT /*@DataFileID*/20,temp.SamplePop_id,temp.SamplePopulationID,SamplePopulation.SampleSetID
+     SELECT DISTINCT /*@DataFileID*/27,temp.SamplePop_id,temp.SamplePopulationID,SamplePopulation.SampleSetID
          ,temp.CahpsTypeID,temp.StudyNum
          ,CASE WHEN SamplePopulation.CahpsDispositionID = 0 THEN mapping.CahpsDispositionID ELSE SamplePopulation.CahpsDispositionID END AS CahpsDispositionID                         
          ,0,0,-99
@@ -219,7 +236,7 @@ AS
 					FROM CahpsDispositionMapping mapping WITH (NOLOCK) 
 					WHERE mapping.IsDefaultDisposition = 1
 					GROUP BY mapping.CahpsTypeID ) AS mapping ON temp.CahpsTypeID = mapping.CahpsTypeID
-        LEFT JOIN LOAD_TABLES.SamplePopulation lt WITH (NOLOCK) ON temp.SamplePopulationID = lt.SamplePopulationID AND lt.DataFileID = /*@DataFileID*/20
+        LEFT JOIN LOAD_TABLES.SamplePopulation lt WITH (NOLOCK) ON temp.SamplePopulationID = lt.SamplePopulationID AND lt.DataFileID = /*@DataFileID*/27
       WHERE lt.SamplePopulationID IS NULL 
       --and SamplePopulation.DispositionID  = 0
       --AND temp.SamplePopulationid in (97460771,97462455,97463588,97464134,97465240)
@@ -237,7 +254,7 @@ AS
         ON lt.CahpsTypeID = mapping.CahpsTypeID      
          AND lt.DispositionID = mapping.DispositionID  
           --ON lt.CahpsDispositionID_initial = mapping.CahpsDispositionID          
-      WHERE lt.DataFileID = /*@DataFileID*/20
+      WHERE lt.DataFileID = /*@DataFileID*/27
       AND temp.CahpsHierarchy <= mapping.CahpsHierarchy 
        --and  temp.SamplePopulationid in (97460771,97462455,97463588,97464134,97465240)       
           
@@ -252,7 +269,7 @@ AS
                    WHERE IsCahpsDispositionComplete = 1) CahpsDisposition 
            ON IsNull(lt.CahpsDispositionID_updated,lt.CahpsDispositionID_initial)= CahpsDisposition.CahpsDispositionID
         LEFT JOIN QuestionForm qf WITH (NOLOCK) ON lt.SamplePopulationID = qf.SamplePopulationID AND qf.IsActive = 1 
-	  WHERE lt.DataFileID = /*@DataFileID*/20 AND (qf.SamplePopulationID IS NULL OR qf.IsCahpsComplete <> 1 )
+	  WHERE lt.DataFileID = /*@DataFileID*/27 AND (qf.SamplePopulationID IS NULL OR qf.IsCahpsComplete <> 1 )
    
 	  UPDATE SamplePopulation
 	  SET CahpsDispositionID = IsNull(lt.CahpsDispositionID_updated,lt.CahpsDispositionID_initial)
@@ -261,7 +278,7 @@ AS
 	  FROM LOAD_TABLES.SamplePopulation lt WITH (NOLOCK)
 	   INNER JOIN SamplePopulation WITH (NOLOCK) ON lt.SamplePopulationID = SamplePopulation.SamplePopulationID
 	   LEFT JOIN #temp3 temp ON lt.SamplePopulationID = temp.SamplePopulationID -- EXCLUDE SAMPLE POPs with incomplete question forms
-	  WHERE lt.DataFileID = /*@DataFileID*/20 
+	  WHERE lt.DataFileID = /*@DataFileID*/27 
 	   AND lt.CahpsTypeID > 0 AND temp.SamplePopulationID IS NULL
 	   AND ( IsNull(lt.CahpsDispositionID_updated,lt.CahpsDispositionID_initial) <> SamplePopulation.CahpsDispositionID 
 	    OR  IsNull(lt.DispositionID_updated,lt.DispositionID) <> SamplePopulation.DispositionID )
@@ -278,7 +295,7 @@ AS
        LEFT JOIN (SELECT CahpsDispositionID 
                   FROM CahpsDisposition WITH (NOLOCK) 
                   WHERE IsCahpsDispositionComplete = 1) CahpsDisposition ON sp.CahpsDispositionID = CahpsDisposition.CahpsDispositionID
-	  WHERE ltsp.DataFileID = /*@DataFileID*/20        		  
+	  WHERE ltsp.DataFileID = /*@DataFileID*/27        		  
  
 	 --per 5/26 email from Mike, not updating
 	 -- UPDATE SamplePopulation
@@ -287,7 +304,7 @@ AS
 		--FROM LOAD_TABLES.SamplePopulationDispositionLog lt WITH (NOLOCK)          
 		--  INNER JOIN (SELECT lt.SamplePopulationID,MAX(lt.datLogged) AS datLogged
 		--			   FROM LOAD_TABLES.SamplePopulationDispositionLog lt WITH (NOLOCK)
-		--			   WHERE lt.DataFileID = /*@DataFileID*/20 AND lt.isDelete = 0
+		--			   WHERE lt.DataFileID = /*@DataFileID*/27 AND lt.isDelete = 0
 		--			   GROUP BY lt.SamplePopulationID) MaxdatLogged
 		--	ON lt.SamplePopulationID = MaxdatLogged.SamplePopulationID AND lt.datLogged = MaxdatLogged.datLogged
 		--   INNER JOIN SamplePopulation WITH (NOLOCK) ON lt.SamplePopulationID = SamplePopulation.SamplePopulationID 
@@ -299,23 +316,19 @@ AS
 		 --select *
 		 FROM LOAD_TABLES.SamplePopulation lt WITH (NOLOCK)
 		 INNER JOIN SamplePopulation sp WITH (NOLOCK) ON lt.SamplePopulationID = sp.SamplePopulationID
-		 WHERE DataFileID = /*@DataFileID*/20 
+		 WHERE DataFileID = /*@DataFileID*/27 
 		  AND cahpsDispositionID_initial = 0 AND cahpstypeid <>  0 AND isInsert = 0 AND IsDelete = 0     
 		 
 		INSERT INTO [LOAD_TABLES].[SamplePopulationDispositionLog_Cumulative]
 		SELECT *
 		FROM [LOAD_TABLES].[SamplePopulationDispositionLog] WITH (NOLOCK)
-		WHERE DataFileID = /*@DataFileID*/20		
+		WHERE DataFileID = /*@DataFileID*/27		
 				
 		INSERT INTO [LOAD_TABLES].[SamplePopulation_Cumulative]
 		SELECT [DataFileID],[id],[sampleset_id],[SamplePopulationID],[SampleSetID],[CahpsTypeID]
          ,[StudyNum],[CahpsDispositionID_initial],[CahpsDispositionID_updated],[isInsert],[isDelete]
 		FROM [LOAD_TABLES].[SamplePopulation] WITH (NOLOCK)
-		WHERE DataFileID = /*@DataFileID*/20      	
+		WHERE DataFileID = /*@DataFileID*/27      	
 						
        SET NOCOUNT OFF
 go
-
-drop table #temp
-drop table #temp2
-drop table #temp3
