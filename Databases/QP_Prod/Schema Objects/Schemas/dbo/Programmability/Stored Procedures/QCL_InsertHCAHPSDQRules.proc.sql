@@ -7,7 +7,9 @@
 **      
 ** Modified: 11/16/2006 - Jeffrey J. Fleming - Initial Release.      
 ** 5/20/2011 - Amir Aliabadi - HCAHPS 2011 changes added the HDischargeStatus and DischargeDate (B-01313)
+** 2014.06.26  Dave Gilsdorf   Depreciated and dropped during AllCAHPS Sprint 1
 **********************************************************************************************************************************/      
+/*
 CREATE PROCEDURE [dbo].[QCL_InsertHCAHPSDQRules]      
  @Survey_id INT      
 AS      
@@ -152,5 +154,4 @@ BEGIN
 		  
 END
 -- B-01313 ---------
-
-
+*/

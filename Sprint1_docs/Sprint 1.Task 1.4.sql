@@ -1,4 +1,10 @@
-﻿/*********************************************************************************************************************************
+use qp_prod
+go
+drop procedure [dbo].[QCL_InsertHCAHPSDQRules]
+drop procedure [dbo].[QCL_InsertHHCAHPSDQRules]
+drop procedure [dbo].[QCL_InsertPhysEmpDQRules]
+go
+/*********************************************************************************************************************************
   ** Copyright (c) National Research Corporation
   ** Stored Procedure:  dbo.QCL_InsertDefaultDQRules
   ** Description:  Called by ConfigManagerUI.vbp, this SP calls dbo.QCL_InsertCriteriaStmt,
@@ -26,7 +32,7 @@
   ** Modified 01/07/2014 - Dave Hansen - Added 'NU' to default values for CriteriaStmt for AddrErr DQ_MDAE Rule - INC0028553
   ** Modified 06/02/2014 - Dave Gilsdorf - Removed the hard coded DQ rules and starting using Default Criteria tables
 **********************************************************************************************************************************/
-CREATE PROCEDURE [dbo].[QCL_InsertDefaultDQRules]
+alter PROCEDURE [dbo].[QCL_InsertDefaultDQRules]
 	@Survey_id INT
 AS
 
@@ -183,4 +189,4 @@ drop table #DefaultCriteriaClause
 drop table #DefaultCriteriaStmt
 
 set nocount off
-
+go

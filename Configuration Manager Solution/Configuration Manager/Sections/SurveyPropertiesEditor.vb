@@ -53,7 +53,17 @@ Public Class SurveyPropertiesEditor
 
             'lblResurveyMethod.Enabled = False
             ResurveyMethodComboBox.Enabled = False
-            SamplingAlgorithmComboBox.SelectedValue = [Enum].Parse(GetType(SamplingAlgorithm), survey.SamplingAlgorithmDefault)
+            SamplingAlgorithmComboBox.SelectedValue = DirectCast([Enum].Parse(GetType(SamplingAlgorithm), survey.SamplingAlgorithmDefault), SamplingAlgorithm)
+            '            Select Case [Enum].Parse(GetType(SamplingAlgorithm), survey.SamplingAlgorithmDefault)
+            '-                Case SamplingAlgorithm.[Static]
+            '                    SamplingAlgorithmComboBox.SelectedValue = SamplingAlgorithm.Static 
+            '-                Case SamplingAlgorithm.Dynamic
+            '                    SamplingAlgorithmComboBox.SelectedValue = SamplingAlgorithm.Dynamic 
+            '-                Case SamplingAlgorithm.StaticPlus
+            '                    SamplingAlgorithmComboBox.SelectedValue = SamplingAlgorithm.StaticPlus
+            '                Case Else
+            '                    SamplingAlgorithmComboBox.SelectedValue = SamplingAlgorithm.None
+            '            End Select
             If survey.SkipEnforcementRequired Then
                 EnforceSkipYesOption.Checked = True
                 EnforceSkipNoOption.Checked = False
@@ -66,7 +76,8 @@ Public Class SurveyPropertiesEditor
                 lblEnforceSkipPattern.Enabled = True
             End If
             RespRateRecalcDaysNumeric.Value = survey.RespRateRecalsDaysNumericDefault
-            ResurveyMethodComboBox.SelectedValue = [Enum].Parse(GetType(ResurveyMethod), survey.ResurveyMethodDefault)
+            ResurveyMethodComboBox.SelectedValue = DirectCast([Enum].Parse(GetType(ResurveyMethod), survey.ResurveyMethodDefault), ResurveyMethod)
+
             ResurveyExcludionDaysNumeric.Value = survey.ResurveyExclusionPeriodsNumericDefault
             ResurveyExcludionDaysNumeric.Enabled = Not survey.IsResurveyExclusionPeriodsNumericDisabled
 
@@ -295,7 +306,7 @@ Public Class SurveyPropertiesEditor
         If (ResurveyMethodComboBox.Items.Count > 0 AndAlso ResurveyMethodComboBox.SelectedIndex < 0) Then
             ResurveyMethodComboBox.SelectedIndex = 0
         End If
-        If (Not mModule.EditingSurvey.IsResurveyMethodDisabled) Then
+        If (mModule.EditingSurvey.IsResurveyMethodDisabled) Then
             ResurveyMethodComboBox.SelectedValue = Library.ResurveyMethod.NumberOfDays
             ResurveyMethodComboBox.Enabled = False
         End If

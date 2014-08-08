@@ -27,7 +27,7 @@
     </ManifestKeyFile>
     <GenerateManifests>true</GenerateManifests>
     <SignManifests>true</SignManifests>
-    <PublishUrl>\\huskers\NRCApplications\ExportManager\</PublishUrl>
+    <PublishUrl>\\superman\NRCApplications\ExportManager\</PublishUrl>
     <Install>false</Install>
     <InstallFrom>Unc</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -40,7 +40,7 @@
     <ProductName>Export Manager</ProductName>
     <PublisherName>National Research Corporation</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationVersion>4.5.5.0</ApplicationVersion>
+    <ApplicationVersion>4.5.5.9</ApplicationVersion>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
