@@ -29,10 +29,8 @@ Public Class Survey
     Private mResurveyMethod As ResurveyMethod
     Private mHouseHoldingType As HouseHoldingType
     Private mHouseHoldingColumns As StudyTableColumnCollection
-    'Private mSurveySubtype As SurveySubType
-    'Private mQuestionnaireType As QuestionnaireType
-    Private mSurveySubtype As Integer = 0
-    Private mQuestionnaireType As Integer = 0
+    Private mSurveySubtypes As SubTypeList
+    Private mQuestionnaireType As SubType
 
     Private mIsDirty As Boolean
     Private mIsValidated As Boolean
@@ -409,33 +407,32 @@ Public Class Survey
 
 
     <Logable()> _
-    Public Property SurveySubType() As Integer
+    Public Property SurveySubTypes() As SubTypeList
         Get
-            Return mSurveySubtype
+            Return mSurveySubtypes
         End Get
-        Set(ByVal value As Integer)
-
-            If mSurveySubtype <> value Then
-                mSurveySubtype = value
-                mIsDirty = True
-            End If
-
-
+        Set(ByVal value As SubTypeList)
+            mSurveySubtypes = value
+            mIsDirty = mSurveySubtypes.IsDirty
         End Set
     End Property
 
     <Logable()> _
-    Public Property QuestionnaireType() As Integer
+    Public Property QuestionnaireType() As SubType
         Get
             Return mQuestionnaireType
         End Get
-        Set(ByVal value As Integer)
-            If mQuestionnaireType <> value Then
+        Set(ByVal value As SubType)
+            If mQuestionnaireType IsNot Nothing And value IsNot Nothing Then
+                If mQuestionnaireType.SubTypeId <> value.SubTypeId Then
+                    mQuestionnaireType = value
+                    mIsDirty = True
+                End If
+            ElseIf mQuestionnaireType Is Nothing And value IsNot Nothing Then
+                mQuestionnaireType = New SubType()
                 mQuestionnaireType = value
-                mIsDirty = True
+                mIsDirty = False
             End If
-
-
         End Set
     End Property
 
@@ -950,11 +947,11 @@ Public Class Survey
                                      ByVal samplingAlgorithmId As Integer, ByVal enforceSkip As Boolean, ByVal cutoffResponseCode As String, ByVal cutoffTableId As Integer, _
                                      ByVal cutoffFieldId As Integer, ByVal sampleEncounterField As StudyTableColumn, ByVal clientFacingName As String, _
                                      ByVal surveyTypeId As Integer, ByVal surveyTypeDefId As Integer, ByVal houseHoldingType As HouseHoldingType, _
-                                     ByVal contractNumber As String, ByVal isActive As Boolean, ByVal contractedLanguages As String, ByVal surveySubTypeId As Integer, ByVal questionnaireId As Integer) As Survey
+                                     ByVal contractNumber As String, ByVal isActive As Boolean, ByVal contractedLanguages As String, ByVal srvySubTypes As SubTypeList, ByVal questionnairesubtype As SubType) As Survey
 
         Return SurveyProvider.Instance.Insert(studyId, name, description, responseRateRecalculationPeriod, resurveyMethodId, resurveyPeriod, surveyStartDate, surveyEndDate, _
                                               samplingAlgorithmId, enforceSkip, cutoffResponseCode, cutoffTableId, cutoffFieldId, sampleEncounterField, clientFacingName, _
-                                              surveyTypeId, surveyTypeDefId, houseHoldingType, contractNumber, isActive, contractedLanguages, surveySubTypeId, questionnaireId)
+                                              surveyTypeId, surveyTypeDefId, houseHoldingType, contractNumber, isActive, contractedLanguages, srvySubTypes, questionnairesubtype)
 
     End Function
 
@@ -965,23 +962,15 @@ Public Class Survey
     End Sub
 
 
-    Public Shared Function GetSurveySubTypes(ByVal surveytypeid As Integer) As List(Of SurveySubType)
+    Public Shared Function GetSubTypes(ByVal surveytypeid As Integer, ByVal categoryid As SubtypeCategories, ByVal surveyid As Integer) As SubTypeList
 
-        Dim mSurveySubTypeList As New List(Of SurveySubType)
+        Dim mSurveySubTypeList As New SubTypeList
 
-        mSurveySubTypeList = SurveyProvider.Instance.SelectSurveySubTypes(surveytypeid)
+        mSurveySubTypeList = SurveyProvider.Instance.SelectSubTypes(surveytypeid, categoryid, surveyid)
+
+        mSurveySubTypeList.ResetDirtyFlag()
 
         Return mSurveySubTypeList
-
-    End Function
-
-    Public Shared Function GetQuestionnaireTypes(ByVal surveytypeid As Integer, ByVal questionnairetypeid As Integer) As List(Of QuestionnaireType)
-
-        Dim mQuestionnaireList As New List(Of QuestionnaireType)
-
-        mQuestionnaireList = SurveyProvider.Instance.SelectQuestionnaireTypes(surveytypeid, questionnairetypeid)
-
-        Return mQuestionnaireList
 
     End Function
 
@@ -1138,7 +1127,7 @@ Public Class Survey
             mBusinessRules = Nothing
             mIsActive = .mIsActive
             ContractedLanguages = .ContractedLanguages
-            mSurveySubtype = .mSurveySubtype
+            mSurveySubtypes = .mSurveySubtypes
             mQuestionnaireType = .mQuestionnaireType
         End With
 

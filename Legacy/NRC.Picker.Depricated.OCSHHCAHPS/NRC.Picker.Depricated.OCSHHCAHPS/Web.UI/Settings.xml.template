@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<settings>
+  <_QP_DataLoadConnectionString>Server=BUMBLEBEE.testnrcus.nationalresearch.com;Database=QP_DataLoad;user id=qpsa;password=qpsa</_QP_DataLoadConnectionString>
+  <QP_DataLoadConnectionString>Server=MINERVA;Database=QP_DataLoad;user id=qpsa;password=qpsa</QP_DataLoadConnectionString>
+  <!-- QP_DataLoadConnectionString>Server=NBAALIABADI;Database=QP_DataLoad;Trusted_Connection=TRUE;</QP_DataLoadConnectionString -->
+
+  <UploadFailureDirectory>\\minerva\OCS\UploadFailure</UploadFailureDirectory>
+  <AbandonedUploadsDirectory>\\minerva\OCS\AbandonedUploads</AbandonedUploadsDirectory>
+  
+</settings>
