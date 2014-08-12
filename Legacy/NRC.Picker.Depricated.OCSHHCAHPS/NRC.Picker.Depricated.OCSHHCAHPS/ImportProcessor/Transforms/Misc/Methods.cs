@@ -75,7 +75,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Transforms.Misc
                 DateTime startDate = DateTime.Parse(strDOB);
                 DateTime endDate = new DateTime(    Convert.ToInt32(Year), 
                                                     Convert.ToInt32(Month), 
-                                                    GetEOM(startDate.Month.ToString(), Year).Day ); 
+                                                    GetEOM(Month, Year).Day ); 
 
                 return Methods.YearsBetween(startDate.ToString(), endDate.ToString());
             }
@@ -84,10 +84,16 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Transforms.Misc
                 return 999;
             }
         }
+
+        /// <summary>
+        /// Returns last day of month for the month indicated
+        /// </summary>
+        /// <param name="strMonth"></param>
+        /// <param name="strYear"></param>
+        /// <returns></returns>
         public static DateTime GetEOM(string strMonth, string strYear)
         {
-            DateTime dt = new DateTime(Convert.ToInt32(strYear), Convert.ToInt32(strMonth), 1);
-            return dt.AddDays(-1.0);
+            return new DateTime(Convert.ToInt32(strYear), Convert.ToInt32(strMonth), DateTime.DaysInMonth(Convert.ToInt32(strYear), Convert.ToInt32(strMonth)));
         }
         public static bool IsLeapyear(string iYear)
         {

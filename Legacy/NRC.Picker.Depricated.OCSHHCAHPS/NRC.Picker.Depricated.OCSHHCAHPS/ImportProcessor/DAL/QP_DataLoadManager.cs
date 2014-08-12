@@ -25,6 +25,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL
         {
             _connectionString = connectionString;
         }
+
         public static QP_DataLoadManager Create(string connectionString)
         {
             return new QP_DataLoadManager(connectionString);
