@@ -36,8 +36,16 @@ Public Class PeriodEditor
         Me.colExpectedEndDate.Visible = Not Me.mModule.Survey.IsMonthlyOnly
         Me.colExpectedStartDate.Visible = Not Me.mModule.Survey.IsMonthlyOnly
 
-        'Disable sampling method based on ACOCAHPS
-        Me.colSamplingMethodLabel.ColumnEdit.ReadOnly = Me.mModule.Survey.IsSamplingMethodDisabled
+        Dim override As String = vbNullString
+        If mModule.Survey.SurveySubTypes IsNot Nothing Then
+            For Each subtype As SubType In mModule.Survey.SurveySubTypes
+                If subtype.IsRuleOverride Then
+                    override = subtype.SubTypeName
+                End If
+            Next
+        End If
+
+        Me.colSamplingMethodLabel.ColumnEdit.ReadOnly = Me.mModule.Survey.IsSamplingMethodDisabled(override)
 
         'Get a list of all sample periods for this survey
         'Me.mSamplePeriods = Me.mModule.Survey.SamplePeriodsActiveAndFuture

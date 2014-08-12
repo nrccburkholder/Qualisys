@@ -31,9 +31,18 @@ Public Class MassSamplePeriodCreator
         Me.MonthEdit1.Visible = mSurvey.IsMonthlyOnly
         Me.YearComboBoxEdit.Visible = mSurvey.IsMonthlyOnly
 
+        Dim override As String = vbNullString
+        If mSurvey.SurveySubTypes IsNot Nothing Then
+            For Each subtype As SubType In mSurvey.SurveySubTypes
+                If subtype.IsRuleOverride Then
+                    override = subtype.SubTypeName
+                End If
+            Next
+        End If
+
         'Me.SamplingMethodComboBoxEdit.EditValue = SampleSet.SamplingMethodFromLabel(Me.mSurvey.SamplingMethodDefault)
-        Me.SamplingMethodComboBoxEdit.EditValue = Me.mSurvey.SamplingMethodDefault
-        Me.SamplingMethodComboBoxEdit.Enabled = Not Me.mSurvey.IsSamplingMethodDisabled
+        Me.SamplingMethodComboBoxEdit.EditValue = Me.mSurvey.SamplingMethodDefault(override)
+        Me.SamplingMethodComboBoxEdit.Enabled = Not Me.mSurvey.IsSamplingMethodDisabled(override)
 
         Me.FirstEncounterStartDateEdit.DateTime = Today
         Me.MonthEdit1.SelectedIndex = Today.Month - 1

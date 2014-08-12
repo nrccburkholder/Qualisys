@@ -644,9 +644,13 @@ Public Class Survey
         End Get
     End Property
 
-    Private Function SpecificRuleName(ByVal ruleName As String) As String
+    Private Function SpecificRuleName(ByVal ruleName As String, Optional ByVal override As String = vbNullString) As String
         Try
-            Return "SurveyRule: " + ruleName + " - " + SurveyTypeName()
+            If String.IsNullOrEmpty(override) Then
+                Return "SurveyRule: " + ruleName + " - " + SurveyTypeName()
+            Else
+                Return "SurveyRule: " + ruleName + " - " + override
+            End If
         Catch ex As Exception
             Return "SurveyRule: " + ruleName + " - " + SurveyType.ToString()
         End Try
@@ -656,10 +660,10 @@ Public Class Survey
         Return "SurveyRule: " + ruleName
     End Function
 
-    Private Sub GetSurveyRule(ByVal ruleName As String, ByRef result As String)
+    Private Sub GetSurveyRule(ByVal ruleName As String, ByRef result As String, Optional ByVal override As String = vbNullString)
         Try
             If SurveyType <> 0 Then
-                result = AppConfig.Params(SpecificRuleName(ruleName)).StringValue
+                result = AppConfig.Params(SpecificRuleName(ruleName, override)).StringValue
                 Return
             End If
         Catch
@@ -672,10 +676,10 @@ Public Class Survey
         End Try
     End Sub
 
-    Private Sub GetSurveyRule(ByVal ruleName As String, ByRef result As Integer)
+    Private Sub GetSurveyRule(ByVal ruleName As String, ByRef result As Integer, Optional ByVal override As String = vbNullString)
         Try
             If SurveyType <> 0 Then
-                result = AppConfig.Params(SpecificRuleName(ruleName)).IntegerValue
+                result = AppConfig.Params(SpecificRuleName(ruleName, override)).IntegerValue
                 Return
             End If
         Catch
@@ -688,10 +692,10 @@ Public Class Survey
         End Try
     End Sub
 
-    Private Sub GetSurveyRule(ByVal ruleName As String, ByRef result As Boolean)
+    Private Sub GetSurveyRule(ByVal ruleName As String, ByRef result As Boolean, Optional ByVal override As String = vbNullString)
         Try
             If SurveyType <> 0 Then
-                result = AppConfig.Params(SpecificRuleName(ruleName)).StringValue = "1"
+                result = AppConfig.Params(SpecificRuleName(ruleName, override)).StringValue = "1"
                 Return
             End If
         Catch
@@ -708,154 +712,124 @@ Public Class Survey
 
 #Region "SurveyRules acessing generic Survey Rule API"
 
-    Public ReadOnly Property IsCAHPS() As Boolean
+    Public ReadOnly Property IsCAHPS(Optional ByVal override As String = vbNullString) As Boolean
         Get
-            GetSurveyRule("IsCahps", mIsCAHPS)
+            GetSurveyRule("IsCahps", mIsCAHPS, override)
             Return mIsCAHPS
         End Get
     End Property
 
-    Public ReadOnly Property HasOptionCHART() As Boolean
+    Public ReadOnly Property HasOptionCHART(Optional ByVal override As String = vbNullString) As Boolean
         Get
-            GetSurveyRule("HasOptionCHART", mHasOptionCHART)
+            GetSurveyRule("HasOptionCHART", mHasOptionCHART, override)
             Return mHasOptionCHART
         End Get
     End Property
 
-    Public ReadOnly Property IsMonthlyOnly() As Boolean
+    Public ReadOnly Property IsMonthlyOnly(Optional ByVal override As String = vbNullString) As Boolean
         Get
-            GetSurveyRule("IsMonthlyOnly", mIsMonthlyOnly)
+            GetSurveyRule("IsMonthlyOnly", mIsMonthlyOnly, override)
             Return mIsMonthlyOnly
         End Get
     End Property
 
-    Public ReadOnly Property SamplingMethodDefault() As String
+    Public ReadOnly Property SamplingMethodDefault(Optional ByVal override As String = vbNullString) As String
         Get
-            GetSurveyRule("SamplingMethodDefault", mSamplingMethodDefault)
+            GetSurveyRule("SamplingMethodDefault", mSamplingMethodDefault, override)
             Return mSamplingMethodDefault
         End Get
     End Property
 
-    Public ReadOnly Property IsSamplingMethodDisabled() As Boolean
+    Public ReadOnly Property IsSamplingMethodDisabled(Optional ByVal override As String = vbNullString) As Boolean
         Get
-            GetSurveyRule("IsSamplingMethodDisabled", mIsSamplingMethodDisabled)
+            GetSurveyRule("IsSamplingMethodDisabled", mIsSamplingMethodDisabled, override)
             Return mIsSamplingMethodDisabled
         End Get
     End Property
 
-    Public ReadOnly Property SamplingAlgorithmDefault() As String
+    Public ReadOnly Property SamplingAlgorithmDefault(Optional ByVal override As String = vbNullString) As String
         Get
-            GetSurveyRule("SamplingAlgorithmDefault", mSamplingAlgorithmDefault)
+            GetSurveyRule("SamplingAlgorithmDefault", mSamplingAlgorithmDefault, override)
             Return mSamplingAlgorithmDefault
         End Get
     End Property
 
-    Public ReadOnly Property SkipEnforcementRequired() As Boolean
+    Public ReadOnly Property SkipEnforcementRequired(Optional ByVal override As String = vbNullString) As Boolean
         Get
-            GetSurveyRule("SkipEnforcementRequired", mSkipEnforcementRequired)
+            GetSurveyRule("SkipEnforcementRequired", mSkipEnforcementRequired, override)
             Return mSkipEnforcementRequired
         End Get
     End Property
 
-    Public ReadOnly Property RespRateRecalsDaysNumericDefault() As Integer
+    Public ReadOnly Property RespRateRecalsDaysNumericDefault(Optional ByVal override As String = vbNullString) As Integer
         Get
-            GetSurveyRule("RespRateRecalcDaysNumericDefault", mRespRateRecalsDaysNumericDefault)
+            GetSurveyRule("RespRateRecalcDaysNumericDefault", mRespRateRecalsDaysNumericDefault, override)
             Return mRespRateRecalsDaysNumericDefault
         End Get
     End Property
 
-    Public ReadOnly Property ResurveyMethodDefault() As String
+    Public ReadOnly Property ResurveyMethodDefault(Optional ByVal override As String = vbNullString) As String
         Get
-            GetSurveyRule("ResurveyMethodDefault", mResurveyMethodDefault)
+            GetSurveyRule("ResurveyMethodDefault", mResurveyMethodDefault, override)
             Return mResurveyMethodDefault
         End Get
     End Property
 
-    Public ReadOnly Property ResurveyExclusionPeriodsNumericDefault() As Integer
+    Public ReadOnly Property ResurveyExclusionPeriodsNumericDefault(Optional ByVal override As String = vbNullString) As Integer
         Get
-            GetSurveyRule("ResurveyExclusionPeriodsNumericDefault", mResurveyExclusionPeriodsNumericDefault)
+            GetSurveyRule("ResurveyExclusionPeriodsNumericDefault", mResurveyExclusionPeriodsNumericDefault, override)
             Return mResurveyExclusionPeriodsNumericDefault
         End Get
     End Property
 
-    Public ReadOnly Property IsResurveyExclusionPeriodsNumericDisabled() As Boolean
+    Public ReadOnly Property IsResurveyExclusionPeriodsNumericDisabled(Optional ByVal override As String = vbNullString) As Boolean
         Get
-            GetSurveyRule("IsResurveyExclusionPeriodsNumericDisabled", mIsResurveyExclusionPeriodsNumericDisabled)
+            GetSurveyRule("IsResurveyExclusionPeriodsNumericDisabled", mIsResurveyExclusionPeriodsNumericDisabled, override)
             Return mIsResurveyExclusionPeriodsNumericDisabled
         End Get
     End Property
 
-    Public ReadOnly Property HasReportability() As Boolean
+    Public ReadOnly Property HasReportability(Optional ByVal override As String = vbNullString) As Boolean
         Get
-            GetSurveyRule("HasReportability", mHasReportability)
+            GetSurveyRule("HasReportability", mHasReportability, override)
             Return mHasReportability
         End Get
     End Property
 
-    Public ReadOnly Property NotEditableIfSampled() As Boolean
+    Public ReadOnly Property NotEditableIfSampled(Optional ByVal override As String = vbNullString) As Boolean
         Get
-            GetSurveyRule("NotEditableIfSampled", mNotEditableIfSampled)
+            GetSurveyRule("NotEditableIfSampled", mNotEditableIfSampled, override)
             Return mNotEditableIfSampled
         End Get
     End Property
 
-    Public ReadOnly Property IsResurveyMethodDisabled() As Boolean
+    Public ReadOnly Property IsResurveyMethodDisabled(Optional ByVal override As String = vbNullString) As Boolean
         Get
-            GetSurveyRule("IsResurveyMethodDisabled", mIsResurveyMethodDisabled)
+            GetSurveyRule("IsResurveyMethodDisabled", mIsResurveyMethodDisabled, override)
             Return mIsResurveyMethodDisabled
         End Get
     End Property
 
-    Public ReadOnly Property MedicareIdTextMayBeBlank() As Boolean
+    Public ReadOnly Property MedicareIdTextMayBeBlank(Optional ByVal override As String = vbNullString) As Boolean
         Get
-            GetSurveyRule("MedicareIdTextMayBeBlank", mMedicareIdTextMayBeBlank)
+            GetSurveyRule("MedicareIdTextMayBeBlank", mMedicareIdTextMayBeBlank, override)
             Return mMedicareIdTextMayBeBlank
         End Get
     End Property
 
-    Public ReadOnly Property CompliesWithSwitchToPropSamplingDate() As Boolean
+    Public ReadOnly Property CompliesWithSwitchToPropSamplingDate(Optional ByVal override As String = vbNullString) As Boolean
         Get
-            GetSurveyRule("CompliesWithSwitchToPropSamplingDate", mCompliesWithSwitchToPropSamplingDate)
+            GetSurveyRule("CompliesWithSwitchToPropSamplingDate", mCompliesWithSwitchToPropSamplingDate, override)
             Return mCompliesWithSwitchToPropSamplingDate
         End Get
     End Property
 
-    Public ReadOnly Property BypassInitRespRateNumericEnforcement() As Boolean
+    Public ReadOnly Property BypassInitRespRateNumericEnforcement(Optional ByVal override As String = vbNullString) As Boolean
         Get
-            GetSurveyRule("BypassInitRespRateNumericEnforcement", mByPassInitRespRateNumericEnforcement)
+            GetSurveyRule("BypassInitRespRateNumericEnforcement", mByPassInitRespRateNumericEnforcement, override)
             Return mByPassInitRespRateNumericEnforcement
         End Get
     End Property
-
-    'Public Shared ReadOnly Property DefaultResurveyExcludeDay() As Integer
-    '    Get
-    '        Return 90
-    '    End Get
-    'End Property
-
-    'Public Shared ReadOnly Property DefaultResurveyExcludeMonth() As Integer
-    '    Get
-    '        Return 1
-    '    End Get
-    'End Property
-
-    'Public Shared ReadOnly Property DefaultResurveyExcludeMonthHHCahps() As Integer
-    '    Get
-    '        Return 6
-    '    End Get
-    'End Property
-
-    'Public Shared ReadOnly Property DefaultResurveyExcludeDayPhysician() As Integer
-    '    Get
-    '        Return 365
-    '    End Get
-    'End Property
-
-    'Public Shared ReadOnly Property DefaultResurveyExcludeDayEmployee() As Integer
-    '    Get
-    '        Return 365
-    '    End Get
-    'End Property
 
 #End Region
 
