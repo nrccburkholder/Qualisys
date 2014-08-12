@@ -483,6 +483,18 @@ Public Class SurveyPropertiesEditor
             Return False
         End If
 
+        ' Check to make sure if PCMN subtype selected the user has selected a QuestionnaireType
+        For Each st As SubType In SurveySubTypeListBox.CheckedItems
+            If st.SubTypeName = "PCMH" Then
+                ' If PCMH, then we need to make sure that a QuestionnaireType was selected.
+                If CType(QuestionnaireTypeComboBox.SelectedItem, SubType).SubTypeId = 0 Then
+                    QuestionnaireTypeComboBox.Focus()
+                    MessageBox.Show("For a PCMH Sub-Type you must select a Questionnaire Type!", title, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    Return False
+                End If
+            End If
+        Next
+
         Return True
 
     End Function
@@ -632,6 +644,7 @@ Public Class SurveyPropertiesEditor
         Return iRuleOverrideCount
 
     End Function
+
 
 #End Region
 
