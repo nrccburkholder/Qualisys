@@ -139,10 +139,21 @@ Public Class SurveyPropertiesEditor
 
             Dim iRuleOverrideCount As Integer = GetSubtypeBitRuleOverrideCount()
 
+            Dim surveyType As SurveyTypes = CType(SurveyTypeComboBox.SelectedValue, Library.SurveyTypes)
+            Dim survey As Survey = New Survey()
+            survey.SurveyType = surveyType
+
             If selectedItem.IsRuleOverride Then
                 If e.NewValue = CheckState.Checked Then
                     iRuleOverrideCount += 1
-                Else : iRuleOverrideCount -= 1
+                    If iRuleOverrideCount = 1 Then
+                        ResurveyExcludionDaysNumeric.Value = survey.ResurveyExclusionPeriodsNumericDefault(selectedItem.SubTypeName)
+                        ResurveyExcludionDaysNumeric.Enabled = Not survey.IsResurveyExclusionPeriodsNumericDisabled(selectedItem.SubTypeName)
+                    End If
+                Else
+                    iRuleOverrideCount -= 1
+                    ResurveyExcludionDaysNumeric.Value = survey.ResurveyExclusionPeriodsNumericDefault
+                    ResurveyExcludionDaysNumeric.Enabled = Not survey.IsResurveyExclusionPeriodsNumericDisabled
                 End If
             End If
 
@@ -242,6 +253,17 @@ Public Class SurveyPropertiesEditor
         Dim questionnaireTypeID As Integer = 0
         LoadQuestionnaireTypeComboBox(surveyTypeID, questionnaireTypeID, mModule.EditingSurvey.Id)
        
+        'Set up disabled controls based on survey subtype (not a value saved with the survey, per se)
+        Dim override As String = vbNullString
+        If mModule.EditingSurvey.SurveySubTypes IsNot Nothing Then
+            For Each subtype As SubType In mModule.EditingSurvey.SurveySubTypes
+                If subtype.IsRuleOverride Then
+                    override = subtype.SubTypeName
+                End If
+            Next
+        End If
+        ResurveyExcludionDaysNumeric.Enabled = Not mModule.EditingSurvey.IsResurveyExclusionPeriodsNumericDisabled(override)
+
         'Facing name
         FacingNameTextBox.Text = mModule.EditingSurvey.ClientFacingName
 
