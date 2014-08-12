@@ -22,7 +22,7 @@
     <ApplicationIcon>ConfigMan.ico</ApplicationIcon>
     <OptionStrict>On</OptionStrict>
     <SignManifests>true</SignManifests>
-    <ManifestCertificateThumbprint>C4A197BC9B34ECD5E7BB33F5F760862819B9A188</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>13E09AAD0FFC1E7667935AC08A3A46200504109E</ManifestCertificateThumbprint>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <GenerateManifests>true</GenerateManifests>
     <SignAssembly>false</SignAssembly>
@@ -34,7 +34,7 @@
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
     <UpgradeBackupLocation />
-    <PublishUrl>\\huskers\NRCApplications\ConfigMan\</PublishUrl>
+    <PublishUrl>\\superman\NRCApplications\ConfigMan\</PublishUrl>
     <Install>false</Install>
     <InstallFrom>Unc</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -48,7 +48,7 @@
     <PublisherName>National Research Corporation</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>4.1.7.0</ApplicationVersion>
+    <ApplicationVersion>4.1.8.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
