@@ -413,7 +413,9 @@ Public Class Survey
         End Get
         Set(ByVal value As SubTypeList)
             mSurveySubtypes = value
-            mIsDirty = mSurveySubtypes.IsDirty
+            If mSurveySubtypes.IsDirty Then
+                mIsDirty = True
+            End If
         End Set
     End Property
 
