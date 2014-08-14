@@ -577,7 +577,16 @@ Public Class SamplePeriod
         samplePeriod.SurveyId = survey.Id
         samplePeriod.EmployeeId = employeeId
 
-        samplePeriod.SamplingMethod = SampleSet.SamplingMethodFromLabel(survey.SamplingMethodDefault)
+        Dim override As String = vbNullString
+        If survey.SurveySubTypes IsNot Nothing Then
+            For Each subtype As SubType In survey.SurveySubTypes
+                If subtype.IsRuleOverride Then
+                    override = subtype.SubTypeName
+                End If
+            Next
+        End If
+
+        samplePeriod.SamplingMethod = SampleSet.SamplingMethodFromLabel(survey.SamplingMethodDefault(override))
 
         If survey.SamplePeriods.Count = 0 Then
             samplePeriod.PeriodTimeFrame = TimeFrame.Active
