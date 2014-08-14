@@ -30,6 +30,13 @@ BEGIN
 	Declare @NumParam int
 	Declare @DatParam datetime
 	DECLARE @SurveyType varchar(20)
+	
+	Declare @Override varchar(50) = null
+	if @Survey_id is not null
+		select @Override = st.Subtype_nm  
+		from surveysubtype sst 
+		inner join subtype st on sst.Subtype_id = st.Subtype_id 
+		where survey_id = @Survey_id and st.bitRuleOverride = 1
 
 	if @surveytype_id is not null
 	select @surveyType = SurveyType_dsc from SurveyType where surveytype_id = @SurveyType_id
@@ -39,6 +46,9 @@ BEGIN
 	else
 	select @surveyType = ''
 
+	if exists (Select 1 from qualpro_params where STRPARAM_NM = 'SurveyRule: ' + @PropertyName + ' - ' + @Override)
+	Select @StrParam = STRPARAM_VALUE, @NumParam = NUMPARAM_VALUE, @DatParam = DATPARAM_VALUE from qualpro_params where STRPARAM_NM = 'SurveyRule: ' + @PropertyName + ' - ' + @Override
+	else
 	if exists (Select 1 from qualpro_params where STRPARAM_NM = 'SurveyRule: ' + @PropertyName + ' - ' + @SurveyType)
 	Select @StrParam = STRPARAM_VALUE, @NumParam = NUMPARAM_VALUE, @DatParam = DATPARAM_VALUE from qualpro_params where STRPARAM_NM = 'SurveyRule: ' + @PropertyName + ' - ' + @SurveyType
 	else
@@ -73,6 +83,9 @@ END
 GO
 
 /*
+select dbo.SurveyProperty('ResurveyExclusionPeriodsNumericDefault', null, 15717) _15717,
+dbo.SurveyProperty('ResurveyExclusionPeriodsNumericDefault', null, 15741) _15741
+
 select dbo.SurveyProperty('FolderColor', 8, null) ICH_CAHPS,
 dbo.SurveyProperty('FolderColor', 10, null) ACO_CAHPS,
 dbo.SurveyProperty('FolderColor', 4, null) CGCAHPS,
@@ -88,7 +101,7 @@ dbo.QMFolderColorByPriority(11392)
 
 delete 
 --select *
-from qualpro_params where StrParam_GRP = 'QueueManagerRules'
+from qualpro_params where StrParam_GRP = 'SurveyRules' and StrParam_NM like '%FolderColor%'
 
 /* QueueManager STRParam_NM values
 QueueManager
@@ -104,23 +117,26 @@ QManSamplePath
 */
 
 insert into qualpro_params (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, COMMENTS) VALUES
-('SurveyRule: FolderColor - HCAHPS IP','S','QueueManagerRules','Cyan','Rule to assign icon color for survey type from pre-defined icon sets')
+('SurveyRule: FolderColor - HCAHPS IP','S','SurveyRules','Cyan','Rule to assign icon color for survey type from pre-defined icon sets')
 
 insert into qualpro_params (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, COMMENTS) VALUES
-('SurveyRule: FolderColor - Home Health CAHPS','S','QueueManagerRules','Purple','Rule to assign icon color for survey type from pre-defined icon sets')
+('SurveyRule: FolderColor - Home Health CAHPS','S','SurveyRules','Purple','Rule to assign icon color for survey type from pre-defined icon sets')
 
 insert into qualpro_params (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, COMMENTS) VALUES
-('SurveyRule: FolderColor - ACOCAHPS','S','QueueManagerRules','Orange','Rule to assign icon color for survey type from pre-defined icon sets')
+('SurveyRule: FolderColor - ACOCAHPS','S','SurveyRules','Orange','Rule to assign icon color for survey type from pre-defined icon sets')
 
 insert into qualpro_params (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, COMMENTS) VALUES
-('SurveyRule: FolderColor - ICHCAHPS','S','QueueManagerRules','Orange','Rule to assign icon color for survey type from pre-defined icon sets')
+('SurveyRule: FolderColor - ICHCAHPS','S','SurveyRules','Orange','Rule to assign icon color for survey type from pre-defined icon sets')
 
 insert into qualpro_params (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, COMMENTS) VALUES
-('SurveyRule: FolderColor','S','QueueManagerRules','Manila','Rule to assign icon color for survey type from pre-defined icon sets')
+('SurveyRule: FolderColor','S','SurveyRules','Manila','Rule to assign icon color for survey type from pre-defined icon sets')
 
 /*
+update qualpro_params set StrParam_Grp = 'SurveyRules'
+where StrParam_Grp = 'QueueManagerRules'
+
 insert into qualpro_params (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, COMMENTS) VALUES
-('SurveyRule: FolderColor - CGCAHPS','S','QueueManagerRules','Red','Rule to assign icon color for survey type from pre-defined icon sets')
+('SurveyRule: FolderColor - CGCAHPS','S','SurveyRules','Red','Rule to assign icon color for survey type from pre-defined icon sets')
 
 update qualpro_params set strparam_value='Manila' where strparam_nm = 'SurveyRule: FolderColor - CGCAHPS'
 update qualpro_params set strparam_value='Orange' where strparam_nm = 'SurveyRule: FolderColor - CGCAHPS'
