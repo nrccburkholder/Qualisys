@@ -577,14 +577,7 @@ Public Class SamplePeriod
         samplePeriod.SurveyId = survey.Id
         samplePeriod.EmployeeId = employeeId
 
-        Dim override As String = vbNullString
-        If survey.SurveySubTypes IsNot Nothing Then
-            For Each subtype As SubType In survey.SurveySubTypes
-                If subtype.IsRuleOverride Then
-                    override = subtype.SubTypeName
-                End If
-            Next
-        End If
+        Dim override As String = survey.SurveySubTypeOverrideName() 'will retrieve PCMH for example CJB 8/14/2014
 
         samplePeriod.SamplingMethod = SampleSet.SamplingMethodFromLabel(survey.SamplingMethodDefault(override))
 

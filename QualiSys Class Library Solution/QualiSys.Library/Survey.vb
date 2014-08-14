@@ -637,6 +637,26 @@ Public Class Survey
 
 #Region "Survey rules generic getters currently hooked up to AppConfig / QualPro_Params"
 
+    ''' <summary>
+    ''' Introduces the ability to override survey type with survey sub type for rule look-ups
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns>the name of any overriding sub type if selected</returns>
+    ''' <remarks>will retrieve PCMH for example CJB 8/14/2014</remarks>
+    Public ReadOnly Property SurveySubTypeOverrideName() As String
+        Get
+            Dim override As String = vbNullString
+            If SurveySubTypes IsNot Nothing Then
+                For Each subtype As SubType In SurveySubTypes
+                    If subtype.IsRuleOverride Then
+                        override = subtype.SubTypeName
+                    End If
+                Next
+            End If
+            Return override
+        End Get
+    End Property
+
     Public ReadOnly Property SurveyTypeName() As String
         Get
             If mSurveyTypeList Is Nothing Then

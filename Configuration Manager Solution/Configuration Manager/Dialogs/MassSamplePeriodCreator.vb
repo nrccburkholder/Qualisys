@@ -31,14 +31,7 @@ Public Class MassSamplePeriodCreator
         Me.MonthEdit1.Visible = mSurvey.IsMonthlyOnly
         Me.YearComboBoxEdit.Visible = mSurvey.IsMonthlyOnly
 
-        Dim override As String = vbNullString
-        If mSurvey.SurveySubTypes IsNot Nothing Then
-            For Each subtype As SubType In mSurvey.SurveySubTypes
-                If subtype.IsRuleOverride Then
-                    override = subtype.SubTypeName
-                End If
-            Next
-        End If
+        Dim override As String = mSurvey.SurveySubTypeOverrideName() 'will retrieve PCMH for example CJB 8/14/2014
 
         'Me.SamplingMethodComboBoxEdit.EditValue = SampleSet.SamplingMethodFromLabel(Me.mSurvey.SamplingMethodDefault)
         Me.SamplingMethodComboBoxEdit.EditValue = Me.mSurvey.SamplingMethodDefault(override)

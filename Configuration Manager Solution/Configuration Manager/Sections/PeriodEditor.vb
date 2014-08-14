@@ -36,14 +36,7 @@ Public Class PeriodEditor
         Me.colExpectedEndDate.Visible = Not Me.mModule.Survey.IsMonthlyOnly
         Me.colExpectedStartDate.Visible = Not Me.mModule.Survey.IsMonthlyOnly
 
-        Dim override As String = vbNullString
-        If mModule.Survey.SurveySubTypes IsNot Nothing Then
-            For Each subtype As SubType In mModule.Survey.SurveySubTypes
-                If subtype.IsRuleOverride Then
-                    override = subtype.SubTypeName
-                End If
-            Next
-        End If
+        Dim override As String = mModule.Survey.SurveySubTypeOverrideName() 'will retrieve PCMH for example CJB 8/14/2014
 
         Me.colSamplingMethodLabel.ColumnEdit.ReadOnly = Me.mModule.Survey.IsSamplingMethodDisabled(override)
 

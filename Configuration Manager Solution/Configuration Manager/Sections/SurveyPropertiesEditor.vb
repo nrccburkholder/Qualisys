@@ -254,14 +254,8 @@ Public Class SurveyPropertiesEditor
         LoadQuestionnaireTypeComboBox(surveyTypeID, questionnaireTypeID, mModule.EditingSurvey.Id)
        
         'Set up disabled controls based on survey subtype (not a value saved with the survey, per se)
-        Dim override As String = vbNullString
-        If mModule.EditingSurvey.SurveySubTypes IsNot Nothing Then
-            For Each subtype As SubType In mModule.EditingSurvey.SurveySubTypes
-                If subtype.IsRuleOverride Then
-                    override = subtype.SubTypeName
-                End If
-            Next
-        End If
+        Dim override As String = mModule.EditingSurvey.SurveySubTypeOverrideName() 'will retrieve PCMH for example CJB 8/14/2014
+
         ResurveyExcludionDaysNumeric.Enabled = Not mModule.EditingSurvey.IsResurveyExclusionPeriodsNumericDisabled(override)
 
         'Facing name
