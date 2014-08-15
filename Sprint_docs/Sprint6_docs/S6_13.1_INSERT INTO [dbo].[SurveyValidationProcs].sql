@@ -11,16 +11,7 @@ declare @intOrder int
 
 begin tran
 
--- delete the previous single cahps validation proc from the list
-DELETE [dbo].[SurveyValidationProcs]
-WHERE ProcedureName = 'SV_ALL_CAHPS'
 
-
---DELETE [dbo].[SurveyValidationProcs]
---WHERE ProcedureName = 'SV_ModeMapping'
-
---DELETE [dbo].[SurveyValidationProcs]
---WHERE ProcedureName like 'SV_CAHPS_%'
 
 truncate table SurveyValidationProcsBySurveyType
 
@@ -215,6 +206,7 @@ BEGIN
 END
 INSERT INTO [dbo].[SurveyValidationProcsBySurveyType]([SurveyValidationProcs_id],[CAHPSType_ID])VALUES(@svpid,2)
 INSERT INTO [dbo].[SurveyValidationProcsBySurveyType]([SurveyValidationProcs_id],[CAHPSType_ID])VALUES(@svpid,3)
+INSERT INTO [dbo].[SurveyValidationProcsBySurveyType]([SurveyValidationProcs_id],[CAHPSType_ID])VALUES(@svpid,8)
 INSERT INTO [dbo].[SurveyValidationProcsBySurveyType]([SurveyValidationProcs_id],[CAHPSType_ID])VALUES(@svpid,10)
 INSERT INTO [dbo].[SurveyValidationProcsBySurveyType]([SurveyValidationProcs_id],[CAHPSType_ID],[SubType_Id])VALUES(@svpid,4,9)
 Select @intOrder = Max(intOrder) + 1 from SurveyValidationProcs
