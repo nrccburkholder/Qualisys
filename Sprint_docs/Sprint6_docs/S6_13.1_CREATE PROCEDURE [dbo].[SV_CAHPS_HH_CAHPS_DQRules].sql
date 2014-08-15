@@ -145,7 +145,7 @@ CREATE TABLE #M (Error TINYINT, strMessage VARCHAR(200))
 					inner join CRITERIAINLIST ci on cc.criteriaclause_id=ci.criteriaclause_id
 					WHERE mf.strField_Nm = 'HHLookBackCnt'
 					AND op.strOperator = 'IN'
-					--AND br.Survey_id = @Survey_id
+					AND br.Survey_id = @Survey_id
 					group by BusinessRule_id
 					having count(*)=2 and min(strListValue) = '0' and max(strListValue)= '1'
 					)

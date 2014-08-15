@@ -1,13 +1,10 @@
 USE [QP_Prod]
 GO
-
 /****** Object:  StoredProcedure [dbo].[SV_CAHPS_RequiredEncounterFields]    Script Date: 8/13/2014 1:42:24 PM ******/
 SET ANSI_NULLS ON
 GO
-
 SET QUOTED_IDENTIFIER ON
 GO
-
 CREATE PROCEDURE [dbo].[SV_CAHPS_RequiredEncounterFields]
     @Survey_id INT
 AS
@@ -89,7 +86,7 @@ CREATE TABLE #M (Error TINYINT, strMessage VARCHAR(200))
 
 --Make sure required fields are a part of the study (Encounter Fields)
 	INSERT INTO #M (Error, strMessage)
-	SELECT 1,a.strField_nm+' is not a field in the data structure.'
+	SELECT 1,a.strField_nm+' is not an Encounter field in the data structure.'
 	FROM (SELECT Field_id, strField_nm
 		  FROM MetaField
 		  WHERE strField_nm IN (SELECT [ColumnName] 

@@ -69,7 +69,7 @@ CREATE TABLE #M (Error TINYINT, strMessage VARCHAR(200))
 
 --Make sure the required fields are a part of the study (Population Fields)
 INSERT INTO #M (Error, strMessage)
-SELECT 1,a.strField_nm+' is not a field in the data structure.'
+SELECT 1,a.strField_nm+' is not a Population field in the data structure.'
 FROM (SELECT Field_id, strField_nm
 		FROM MetaField
 		WHERE strField_nm IN (SELECT [ColumnName] 
