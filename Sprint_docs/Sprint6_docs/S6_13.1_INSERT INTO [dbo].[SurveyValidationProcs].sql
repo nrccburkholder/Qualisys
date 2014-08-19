@@ -35,6 +35,9 @@ begin tran
 
 truncate table SurveyValidationProcsBySurveyType
 
+delete from SurveyValidationProcs
+where ProcedureName = 'SV_ALL_CAHPS'
+
 Select @intOrder = Max(intOrder) + 1 from SurveyValidationProcs
 
 -- now insert the discrete validation procs
@@ -200,7 +203,7 @@ Select @intOrder = Max(intOrder) + 1 from SurveyValidationProcs
 SELECT @svpid = SurveyValidationProcs_id FROM SurveyValidationProcs WHERE ProcedureName = 'SV_CAHPS_FacilityStatePopulated'
 IF @@ROWCOUNT = 0	
 BEGIN
-	INSERT INTO [dbo].[SurveyValidationProcs]([ProcedureName],[ValidMessage],[intOrder]) VALUES('SV_CAHPS_FacilityStatePopulated','Check that FacilityState is populated for the *CAHPS units',@HHCAHPS0)
+	INSERT INTO [dbo].[SurveyValidationProcs]([ProcedureName],[ValidMessage],[intOrder]) VALUES('SV_CAHPS_FacilityStatePopulated','Check that FacilityState is populated for the *CAHPS units',@intOrder)
 	set @svpid=scope_identity()
 END
 INSERT INTO [dbo].[SurveyValidationProcsBySurveyType]([SurveyValidationProcs_id],[CAHPSType_ID])VALUES(@svpid,@HHCAHPS)
