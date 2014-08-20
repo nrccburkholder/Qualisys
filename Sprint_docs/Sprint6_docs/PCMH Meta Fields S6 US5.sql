@@ -1,3 +1,5 @@
+use [qp_prod]
+
 --select * from metafieldgroupdef
 --select * from metafield
 
@@ -84,6 +86,7 @@ update qualpro_params set numparam_value = 3
 --select * from qualpro_params
 where strparam_grp = 'SurveyRules' and strparam_value = 'StaticPlus'
 
+GO
 --UPDATED SURVEYPROPERTY FUNCTION to handle PCMH surveysubtype for accessing survey properties
 
 -- =============================================
