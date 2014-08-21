@@ -19,23 +19,26 @@ set @SMid=scope_identity()
 
 insert into StandardMethodologyBySurveyType (StandardMethodologyID,SurveyType_id,SubType_ID) values (@SMid, @SurveyTypeid,@subtype_id)	
 																										
-set @SMSid=scope_identity()	
+	
 																												
 insert into StandardMailingStep (StandardMethodologyID	,intSequence	,strMailingStep_nm	,intIntervalDays	,ExpireInDays	,ExpireFromStep	,bitSurveyInLine	,bitSendSurvey	,bitThankYouItem	,bitFirstSurvey	,MailingStepMethod_id	,DaysInField	,NumberOfAttempts	,WeekDay_Day_Call	,WeekDay_Eve_Call	,Sat_Day_Call	,Sat_Eve_Call	,Sun_Day_Call	,Sun_Eve_Call			,CallBackOtherLang	,CallbackUsingTTY		,AcceptPartial			,SendEmailBlast, Quota_ID		)
-values (@SMid	,'1'	,'1st Survey'	,'0'	,'42'	,'1'	,'0'	,'1'	,'0'	,'1'	,'0'	,NULL	,NULL	,NULL	,NULL	,NULL	,NULL	,NULL	,NULL			,NULL	,NULL		,NULL			,NULL, 1		)
+values (@SMid	,'1'	,'1st Survey'	,'0'	,'42'	,'-1'	,'0'	,'1'	,'0'	,'1'	,'0'	,NULL	,NULL	,NULL	,NULL	,NULL	,NULL	,NULL	,NULL			,NULL	,NULL		,NULL			,NULL, 1		)
+set @SMSid=scope_identity()
 insert into StandardMailingStep (StandardMethodologyID	,intSequence	,strMailingStep_nm	,intIntervalDays	,ExpireInDays	,ExpireFromStep	,bitSurveyInLine	,bitSendSurvey	,bitThankYouItem	,bitFirstSurvey	,MailingStepMethod_id	,DaysInField	,NumberOfAttempts	,WeekDay_Day_Call	,WeekDay_Eve_Call	,Sat_Day_Call	,Sat_Eve_Call	,Sun_Day_Call	,Sun_Eve_Call			,CallBackOtherLang	,CallbackUsingTTY		,AcceptPartial			,SendEmailBlast, Quota_ID		)
-values (@SMid	,'2'	,'Phone'	,'18'	,'42'	,'1'	,'0'	,'1'	,'0'	,'0'	,'1'	,'21'	,'5'	,'1'	,'1'	,'1'	,'1'	,'1'	,'1'			,'1'	,'0'		,NULL			,NULL, 1		)
+values (@SMid	,'2'	,'Phone'	,'18'	,'42'	,'-1'	,'0'	,'1'	,'0'	,'0'	,'1'	,'21'	,'5'	,'1'	,'1'	,'1'	,'1'	,'1'	,'1'			,'1'	,'0'		,NULL			,NULL, 1		)
 
 insert into StandardMethodology (strStandardMethodology_nm,bitCustom,MethodologyType) values ('PCMH Mail Only',0,' Mail Only')																													
 set @SMid=scope_identity()	
 
+update StandardMailingStep set ExpireFromStep=@SMSid where ExpireFromStep=-1
+
 insert into StandardMethodologyBySurveyType (StandardMethodologyID,SurveyType_id,SubType_ID) values (@SMid, @SurveyTypeid,@subtype_id)																												
 insert into StandardMailingStep (StandardMethodologyID	,intSequence	,strMailingStep_nm	,intIntervalDays	,ExpireInDays	,ExpireFromStep	,bitSurveyInLine	,bitSendSurvey	,bitThankYouItem	,bitFirstSurvey	,MailingStepMethod_id	,DaysInField	,NumberOfAttempts	,WeekDay_Day_Call	,WeekDay_Eve_Call	,Sat_Day_Call	,Sat_Eve_Call	,Sun_Day_Call	,Sun_Eve_Call			,CallBackOtherLang	,CallbackUsingTTY		,AcceptPartial			,SendEmailBlast, Quota_ID		)
-values (@SMid	,'1'	,'1st Survey'	,'0'	,'42'	,'1'	,'0'	,'1'	,'0'	,'1'	,'0'	,NULL	,NULL	,NULL	,NULL	,NULL	,NULL	,NULL	,NULL			,NULL	,NULL		,NULL			,NULL, 0		)
+values (@SMid	,'1'	,'1st Survey'	,'0'	,'42'	,'-1'	,'0'	,'1'	,'0'	,'1'	,'0'	,NULL	,NULL	,NULL	,NULL	,NULL	,NULL	,NULL	,NULL			,NULL	,NULL		,NULL			,NULL, 0		)
 set @SMSid=scope_identity()	
 																												
 insert into StandardMailingStep (StandardMethodologyID	,intSequence	,strMailingStep_nm	,intIntervalDays	,ExpireInDays	,ExpireFromStep	,bitSurveyInLine	,bitSendSurvey	,bitThankYouItem	,bitFirstSurvey	,MailingStepMethod_id	,DaysInField	,NumberOfAttempts	,WeekDay_Day_Call	,WeekDay_Eve_Call	,Sat_Day_Call	,Sat_Eve_Call	,Sun_Day_Call	,Sun_Eve_Call			,CallBackOtherLang	,CallbackUsingTTY		,AcceptPartial			,SendEmailBlast, Quota_ID		)
-values (@SMid	,'2'	,'2nd Survey'	,'18'	,'42'	,'1'	,'0'	,'1'	,'0'	,'0'	,'0'	,NULL	,NULL	,NULL	,NULL	,NULL	,NULL	,NULL	,NULL			,NULL	,NULL		,NULL			,NULL, 0		)
+values (@SMid	,'2'	,'2nd Survey'	,'18'	,'42'	,'-1'	,'0'	,'1'	,'0'	,'0'	,'0'	,NULL	,NULL	,NULL	,NULL	,NULL	,NULL	,NULL	,NULL			,NULL	,NULL		,NULL			,NULL, 0		)
 update StandardMailingStep set ExpireFromStep=@SMSid where ExpireFromStep=-1	
 
 																												
@@ -46,7 +49,7 @@ insert into StandardMethodologyBySurveyType (StandardMethodologyID,SurveyType_id
 set @SMSid=scope_identity()	
 																												
 insert into StandardMailingStep (StandardMethodologyID	,intSequence	,strMailingStep_nm	,intIntervalDays	,ExpireInDays	,ExpireFromStep	,bitSurveyInLine	,bitSendSurvey	,bitThankYouItem	,bitFirstSurvey	,MailingStepMethod_id	,DaysInField	,NumberOfAttempts	,WeekDay_Day_Call	,WeekDay_Eve_Call	,Sat_Day_Call	,Sat_Eve_Call	,Sun_Day_Call	,Sun_Eve_Call			,CallBackOtherLang	,CallbackUsingTTY		,AcceptPartial			,SendEmailBlast, Quota_ID		)
-values (@SMid	,'1'	,'Phone'	,'0'	,'42'	,'1'	,'0'	,'1'	,'0'	,'0'	,'1'	,'41'	,'5'	,'1'	,'1'	,'1'	,'1'	,'1'	,'1'			,'1'	,'0'		,NULL			,NULL, 1		)
+values (@SMid	,'1'	,'Phone'	,'0'	,'42'	,'-1'	,'0'	,'1'	,'0'	,'0'	,'1'	,'41'	,'5'	,'1'	,'1'	,'1'	,'1'	,'1'	,'1'			,'1'	,'0'		,NULL			,NULL, 1		)
 update StandardMailingStep set ExpireFromStep=@SMSid where ExpireFromStep=-1																													
 
 /*
@@ -71,4 +74,6 @@ from StandardMethodologyBySurveyType where StandardMethodologyID in (
 	select StandardMethodologyID
 	from StandardMethodology where strStandardMethodology_nm like 'PCMH%'
 )
+
+-- Will need to double-check the ExpireFromStep in StandardMailingStep to make sure the values match the appropriate StandardMailingStepID
 
