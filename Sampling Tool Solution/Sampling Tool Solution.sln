@@ -89,6 +89,7 @@ Global
 		{A2D1B1A7-679C-4661-93B3-C90F4465F7D3}.Debug|x86.ActiveCfg = Debug
 		{A2D1B1A7-679C-4661-93B3-C90F4465F7D3}.Release|Any CPU.ActiveCfg = Release
 		{A2D1B1A7-679C-4661-93B3-C90F4465F7D3}.Release|x86.ActiveCfg = Release
+		{A2D1B1A7-679C-4661-93B3-C90F4465F7D3}.Release|x86.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
