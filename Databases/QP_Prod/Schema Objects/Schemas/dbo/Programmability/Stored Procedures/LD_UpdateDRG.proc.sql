@@ -10,6 +10,7 @@ begin
  -- ReOrganized by MWB 10/25/07: This procedure is now the driver for DRG and MSDRG updates.  It will check the QLoader    
  --        Qualisys DB to make sure the fields exist.  if they do then the appopriate DRG update    
  --        worker (_Updater) procedure is called, if not it is skipped.    
+ -- Modified by DRH 3/3/2014: added section that calls the new LD_UpdateAPRDRG_Updater proc
  -- Purpose: Update Study background data in Qualysis and Datamart for a specified Study and Datafile in the QP_Load DB.        
     
      
@@ -19,7 +20,7 @@ begin
     
  if exists (select 'x' from MetaData_view where Study_ID = @Study_ID and strField_nm = 'DRG')    
   begin    
-   exec LD_UpdateDRG_Updater @Study_ID , @DataFile_id     
+   exec LD_UpdateDRG_Updater @Study_ID , @DataFile_id, 'DRG'
   end     
  else    
   insert into #log (RecordType, RecordsValue) values ('DRG Update Failed', 'Your study does not contain a DRG field.')    
@@ -27,15 +28,19 @@ begin
     
  if exists (select 'x' from MetaData_view where Study_ID = @Study_ID and strField_nm = 'MSDRG')    
   begin    
-   exec LD_UpdateMSDRG_Updater @Study_ID , @DataFile_id     
+   exec LD_UpdateDRG_Updater @Study_ID , @DataFile_id, 'MSDRG'
   end     
  else    
   insert into #log (RecordType, RecordsValue) values ('MSDRG Update Failed', 'Your study does not contain a MSDRG field.')    
      
+if exists (select 'x' from MetaData_view where Study_ID = @Study_ID and strField_nm = 'APRDRG')    
+  begin    
+   exec LD_UpdateDRG_Updater @Study_ID , @DataFile_id, 'APRDRG'
+  end     
+ else    
+  insert into #log (RecordType, RecordsValue) values ('APRDRG Update Failed', 'Your study does not contain a APRDRG field.')    
     
  SELECT * FROM #LOG    
  drop table #log    
     
 end
-
-
