@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<settings>
+  <smtp-server>exnet.nationalresearch.com</smtp-server>
+  <mailer-address>mailer@nationalresearch.com</mailer-address>
+</settings>
+

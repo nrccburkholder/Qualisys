@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package-list>
+	<package>
+		<name>SamplingService</name>
+		<package-version>1.0.1</package-version>
+		<framework-version>4.0</framework-version>
+		<applications>
+			<application type="service" source="NRC.Picker.SamplingService.Autosampler">autosampler</application>
+			<application type="service" source="NRC.Picker.SamplingService.QueueService">queueservice</application>
+		</applications>
+		<templates>
+			<template>autosampler\settings.xml.template</template>
+			<template>queueservice\settings.xml.template</template>
+		</templates>
+	</package>
+</package-list>

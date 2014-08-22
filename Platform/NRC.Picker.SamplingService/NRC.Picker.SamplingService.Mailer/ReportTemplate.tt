@@ -1,0 +1,187 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".html" #>
+
+<#@ assembly name="$(TargetDir)\NRC.Picker.SamplingService.Store.dll" #>
+<#@ assembly name="$(TargetDir)\Nrc.QualiSys.Library.dll" #>
+
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="NRC.Picker.SamplingService.Store.Models" #>
+<#@ import namespace="Nrc.QualiSys.Library" #>
+
+<#@ parameter name="result" type="NRC.Picker.SamplingService.Store.Models.DatasetResult" #>
+
+<html>
+<head>
+<style type="text/css">
+<#@ include file="Style.css" #>
+</style>
+</head>
+<body>
+<center>
+
+<p>
+<#
+if (result.Check())
+{
+#>
+<h1>Sampling Service successfully completed sampling.</h1>
+<h2>No MSM action required.</h2>
+<#
+}
+else
+{
+#>
+<h1 class="alert">ERROR: Sampling Service encountered (<#= result.FailedSamples.Count() #>) exceptions during sampling.</h1>
+<h2 class="alert">MSM action is required.</h2>
+<#
+}
+#>
+</p>
+
+<p>
+<table>
+<tr>
+	<th>Client</th>
+	<th>MSM</th>
+	<th>Record Count</th>
+</tr>
+<tr>
+	<td><#= result.Dataset.Client.Name #></td>
+	<td><#= result.Dataset.Study.AccountDirector.FullName #> (<#= result.Dataset.Study.AccountDirector.Email #>)</td>
+	<td><#= result.Dataset.StudyDataset.RecordCount #></td>
+</tr>
+<tr>
+	<th>Total Sample Count</th>
+	<th>Successful Samples</th>
+	<th>Failed Samples</th>
+</tr>
+<tr>
+	<td><#= result.AllSamples.Count() #></td>
+	<td><#= result.SuccessfulSamples.Count() #></td>
+	<#
+    if (result.Check())
+    {
+#>
+	<td>
+<#
+    }
+    else
+    {
+#>
+	<td class="alert">
+<#
+    }
+#>
+	<#= result.FailedSamples.Count() #></td>
+</tr>
+</table>
+</p>
+
+<#
+foreach (Nrc.QualiSys.Library.Survey survey in result.Surveys.Where(survey => survey.IsValidated))
+{
+#>
+
+<h2>Survey: <#= survey.ClientFacingName #></h2>
+<h3>Dataset Range: <#=result.Dataset.GetStudyDatasetDateRange(survey).MinimumDate.ToShortDateString() #> - <#=result.Dataset.GetStudyDatasetDateRange(survey).MaximumDate.ToShortDateString() #></h3>
+
+<#
+    foreach (NRC.Picker.SamplingService.Store.Models.SampleResult sampleResult in result.GetResultsForSurvey(survey))
+    {
+#>
+<p>
+<table>
+<tr>
+	<th colspan="3">Sample Success</th>
+	<th class="field">Period Range</th>
+	<th class="field">Sample Range</th>
+	<th class="field">Date Coverage</th>
+</tr>
+<tr>
+<#
+    if (sampleResult.Check(result.SampleCountThreshold))
+    {
+#>
+		<td colspan="3">Successfully scheduled!  No MSM action required.</td>
+<#
+    }
+    else
+    {
+#>  
+		<td class="alert" colspan="3">Sample failed!  Not scheduled.  Please schedule manually.</td>
+<#
+    }
+#>
+	<td class="field"><#= sampleResult.DateRange.Period.ExpectedStartDate.Value.ToShortDateString() #> - <#= sampleResult.DateRange.Period.ExpectedEndDate.Value.ToShortDateString() #></td>
+	<td class="field"><#= sampleResult.DateRange.Start.Date.ToShortDateString() #> - <#= sampleResult.DateRange.End.Date.ToShortDateString() #></td>
+	<td class="field"><#= (int) (sampleResult.DateRange.CoverageFraction * 100) #>%</td>
+</tr>
+<tr>
+	<th>Sample Unit Name</th>
+	<th class="field">Prior Outgo</th>
+	<th class="field">Outgo Needed</th>
+	<th class="field">Available</th>
+	<th class="field">Sampled</th>
+	<th class="field">Sample Coverage</th>
+</tr>
+<#
+    foreach (NRC.Picker.SamplingService.Store.Models.SampleUnitResult sampleUnitResult in sampleResult.SampleUnitResults)
+    {
+#>
+<tr>
+	<td><#= sampleUnitResult.SampleUnit.Name #></td>
+	<td class="field"><#= sampleUnitResult.PriorOutgo #></td>
+	<td class="field"><#= sampleUnitResult.RealTarget #></td>
+	<td class="field"><#= sampleUnitResult.Available #></td>
+<#
+    if (sampleUnitResult.Check(result.SampleCountThreshold))
+    {
+#>
+	<td class="field">
+<#
+    }
+    else
+    {
+#>
+	<td class="alert field">
+<#
+    }
+#>
+		<#= sampleUnitResult.Actual #>
+	</td>
+<#
+    if (sampleUnitResult.Threshold(result.SampleCountThreshold))
+    {
+#>
+	<td class="field">
+<#
+    }
+    else
+    {
+#>
+	<td class="alert field">
+<#
+    }
+#>
+	<#    if (sampleUnitResult.RealTarget == 0) { #>
+		100%
+	<#    } else {#>
+		<#=    (int)(sampleUnitResult.SampleCoverage * 100) #>%
+	<#    } #>
+	</td>
+</tr>
+<#
+    }
+#>
+</table>
+</p>
+<br/>
+<#
+    }
+}
+#>
+
+</center>
+</body>
+</html>
