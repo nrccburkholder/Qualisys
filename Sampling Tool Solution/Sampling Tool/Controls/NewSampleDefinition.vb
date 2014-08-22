@@ -743,7 +743,7 @@ Public Class NewSampleDefinition
             For Each srvy In Me.mSurveys
                 Me.AddNewSampleRow(srvy)
             Next
-            Me.NewSampleGridView.Sort(Me.NewSampleSetCAHPSColumn, System.ComponentModel.ListSortDirection.Descending)
+            Me.NewSampleGridView.Sort(Me.NewSampleSetPriorityColumn, System.ComponentModel.ListSortDirection.Ascending)
 
             Me.PopulateNewSampleRowNumbers()
 
@@ -768,7 +768,6 @@ Public Class NewSampleDefinition
         'isHCAHPS = (srvy.SurveyType = SurveyTypes.Hcahps OrElse srvy.SurveyType = SurveyTypes.HHcahps)
         row.Cells(Me.NewSampleSetOrderColumn.Index).Value = (i + 1).ToString
         row.Cells(Me.NewSampleSetSurveyColumn.Index).Value = srvy.DisplayLabel
-        row.Cells(Me.NewSampleSetCAHPSColumn.Index).Value = IIf(srvy.SamplingToolPriority < 99, True, False) 'CJB 8/21/2014 survey properties now control which survey types bubble to the top
         row.Cells(Me.NewSampleEncounterFieldColumn.Index).Value = sampleEncounterDateFieldLabel
         row.Cells(Me.NewSampleSetSpecifyDatesColumn.Index).Value = True
         row.Cells(Me.NewSampleSetPriorityColumn.Index).Value = srvy.SamplingToolPriority

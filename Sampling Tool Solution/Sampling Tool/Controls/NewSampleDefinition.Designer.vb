@@ -60,10 +60,9 @@ Partial Class NewSampleDefinition
         Me.DataGridViewTextBoxColumn7 = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.CalendarColumn1 = New Nrc.Qualisys.SamplingTool.CalendarColumn
         Me.CalendarColumn2 = New Nrc.Qualisys.SamplingTool.CalendarColumn
-        Me.NewSampleSetPriorityColumn = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.NewSampleSetOrderColumn = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.NewSampleSetSurveyColumn = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.NewSampleSetCAHPSColumn = New System.Windows.Forms.DataGridViewCheckBoxColumn
+        Me.NewSampleSetPriorityColumn = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.NewSampleEncounterFieldColumn = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.NewSampleSetPeriodColumn = New System.Windows.Forms.DataGridViewComboBoxColumn
         Me.NewSampleSetMethodColumn = New System.Windows.Forms.DataGridViewTextBoxColumn
@@ -179,7 +178,7 @@ Partial Class NewSampleDefinition
         DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
         Me.NewSampleGridView.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle2
         Me.NewSampleGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.NewSampleGridView.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.NewSampleSetPriorityColumn, Me.NewSampleSetOrderColumn, Me.NewSampleSetSurveyColumn, Me.NewSampleSetCAHPSColumn, Me.NewSampleEncounterFieldColumn, Me.NewSampleSetPeriodColumn, Me.NewSampleSetMethodColumn, Me.NewSampleSetPeriodStatusColumn, Me.NewSampleSetSpecifyDatesColumn, Me.NewSampleSetStartDateColumn, Me.NewSampleSetEndDateColumn})
+        Me.NewSampleGridView.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.NewSampleSetOrderColumn, Me.NewSampleSetSurveyColumn, Me.NewSampleSetPriorityColumn, Me.NewSampleEncounterFieldColumn, Me.NewSampleSetPeriodColumn, Me.NewSampleSetMethodColumn, Me.NewSampleSetPeriodStatusColumn, Me.NewSampleSetSpecifyDatesColumn, Me.NewSampleSetStartDateColumn, Me.NewSampleSetEndDateColumn})
         Me.NewSampleGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter
         Me.NewSampleGridView.Location = New System.Drawing.Point(0, 30)
         Me.NewSampleGridView.Name = "NewSampleGridView"
@@ -437,12 +436,6 @@ Partial Class NewSampleDefinition
         Me.CalendarColumn2.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
         Me.CalendarColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
         '
-        'NewSampleSetPriorityColumn
-        '
-        Me.NewSampleSetPriorityColumn.HeaderText = "Priority"
-        Me.NewSampleSetPriorityColumn.Name = "NewSampleSetPriorityColumn"
-        Me.NewSampleSetPriorityColumn.Visible = False
-        '
         'NewSampleSetOrderColumn
         '
         Me.NewSampleSetOrderColumn.HeaderText = "Order"
@@ -458,13 +451,12 @@ Partial Class NewSampleDefinition
         Me.NewSampleSetSurveyColumn.ReadOnly = True
         Me.NewSampleSetSurveyColumn.Width = 66
         '
-        'NewSampleSetCAHPSColumn
+        'NewSampleSetPriorityColumn
         '
-        Me.NewSampleSetCAHPSColumn.HeaderText = "CAHPS"
-        Me.NewSampleSetCAHPSColumn.Name = "NewSampleSetCAHPSColumn"
-        Me.NewSampleSetCAHPSColumn.ReadOnly = True
-        Me.NewSampleSetCAHPSColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
-        Me.NewSampleSetCAHPSColumn.Width = 60
+        Me.NewSampleSetPriorityColumn.HeaderText = "Priority"
+        Me.NewSampleSetPriorityColumn.Name = "NewSampleSetPriorityColumn"
+        Me.NewSampleSetPriorityColumn.ReadOnly = True
+        Me.NewSampleSetPriorityColumn.Width = 50
         '
         'NewSampleEncounterFieldColumn
         '
@@ -578,10 +570,9 @@ Partial Class NewSampleDefinition
     Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents SampleSeedSpecifiedLabel As System.Windows.Forms.Label
     Friend WithEvents SampleSeedSpecifiedTextBox As System.Windows.Forms.TextBox
-    Friend WithEvents NewSampleSetPriorityColumn As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents NewSampleSetOrderColumn As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents NewSampleSetSurveyColumn As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents NewSampleSetCAHPSColumn As System.Windows.Forms.DataGridViewCheckBoxColumn
+    Friend WithEvents NewSampleSetPriorityColumn As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents NewSampleEncounterFieldColumn As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents NewSampleSetPeriodColumn As System.Windows.Forms.DataGridViewComboBoxColumn
     Friend WithEvents NewSampleSetMethodColumn As System.Windows.Forms.DataGridViewTextBoxColumn
