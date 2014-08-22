@@ -47,6 +47,7 @@ Public Class Survey
     Private mIsCAHPS As Boolean = False
     Private mHasOptionCHART As Boolean = False
     Private mIsMonthlyOnly As Boolean = False
+    Private mSamplingToolPriority As Integer = 0
     Private mSamplingMethodDefault As String = String.Empty
     Private mIsSamplingMethodDisabled As Boolean = False
     Private mSamplingAlgorithmDefault As String = String.Empty
@@ -752,6 +753,13 @@ Public Class Survey
         Get
             GetSurveyRule("IsMonthlyOnly", mIsMonthlyOnly, override)
             Return mIsMonthlyOnly
+        End Get
+    End Property
+
+    Public ReadOnly Property SamplingToolPriority(Optional ByVal override As String = vbNullString) As Integer
+        Get
+            GetSurveyRule("SamplingToolPriority", mSamplingToolPriority, override)
+            Return mSamplingToolPriority
         End Get
     End Property
 
