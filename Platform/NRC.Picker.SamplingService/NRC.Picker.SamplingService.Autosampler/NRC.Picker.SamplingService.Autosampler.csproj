@@ -49,9 +49,6 @@
       <HintPath>..\..\Referenced Assemblies\Microsoft.VisualStudio.TextTemplating.Interfaces.10.0.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Nrc.QualiSys.Library.SqlDataProvider">
-      <HintPath>..\..\Referenced Assemblies\Nrc.QualiSys.Library.SqlDataProvider.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
@@ -63,6 +60,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\QualiSys Class Library Solution\QualiSys.Library.SqlDataProvider\QualiSys.Library.SqlDataProvider.vbproj">
+      <Project>{31f9022f-d830-410d-90ae-98c59f34e552}</Project>
+      <Name>QualiSys.Library.SqlDataProvider</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\NRC.Common\NRC.Common.csproj">
       <Project>{FCC95A8B-8FE0-482D-A09E-E9EB2CB7C890}</Project>
       <Name>NRC.Common</Name>
