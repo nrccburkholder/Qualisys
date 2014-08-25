@@ -43,9 +43,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\ThirdParty\Json40r1\Bin\Net35\Newtonsoft.Json.Net35.dll</HintPath>
     </Reference>
-    <Reference Include="NRC.Common">
-      <HintPath>..\NRC.Common\bin\Debug\NRC.Common.dll</HintPath>
-    </Reference>
     <Reference Include="PostSharp, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\ThirdParty\PostSharp\.NET Framework 2.0\PostSharp.dll</HintPath>
@@ -70,6 +67,12 @@
     <Compile Include="APIService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TemporaryFilePathResult.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NRC.Common\NRC.Common.csproj">
+      <Project>{fcc95a8b-8fe0-482d-a09e-e9eb2cb7c890}</Project>
+      <Name>NRC.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
