@@ -41,10 +41,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Nrc.Framework.BusinessLogic, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\NRC Framework Solution\Nrc.Framework.BusinessLogic\bin\x86\Debug\Nrc.Framework.BusinessLogic.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
@@ -59,6 +55,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\NRC Framework Solution\Nrc.Framework.BusinessLogic\Nrc.Framework.BusinessLogic.vbproj">
+      <Project>{c5a6ee1a-d5bf-4059-87cf-aca302979820}</Project>
+      <Name>Nrc.Framework.BusinessLogic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\QualiSys Class Library Solution\QualiSys.Library.SqlDataProvider\QualiSys.Library.SqlDataProvider.vbproj">
       <Project>{31f9022f-d830-410d-90ae-98c59f34e552}</Project>
       <Name>QualiSys.Library.SqlDataProvider</Name>

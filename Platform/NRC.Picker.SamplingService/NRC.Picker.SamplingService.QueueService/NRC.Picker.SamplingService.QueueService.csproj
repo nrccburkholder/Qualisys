@@ -44,17 +44,6 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Nrc.Framework.BusinessLogic, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.BusinessLogic.dll</HintPath>
-    </Reference>
-    <Reference Include="Nrc.QualiSys.Library, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\Nrc.QualiSys.Library.dll</HintPath>
-    </Reference>
-    <Reference Include="Nrc.QualiSys.Library.SqlDataProvider">
-      <HintPath>..\..\Referenced Assemblies\Nrc.QualiSys.Library.SqlDataProvider.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
@@ -79,6 +68,18 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\NRC Framework Solution\Nrc.Framework.BusinessLogic\Nrc.Framework.BusinessLogic.vbproj">
+      <Project>{c5a6ee1a-d5bf-4059-87cf-aca302979820}</Project>
+      <Name>Nrc.Framework.BusinessLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\QualiSys Class Library Solution\QualiSys.Library.SqlDataProvider\QualiSys.Library.SqlDataProvider.vbproj">
+      <Project>{31f9022f-d830-410d-90ae-98c59f34e552}</Project>
+      <Name>QualiSys.Library.SqlDataProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\QualiSys Class Library Solution\QualiSys.Library\QualiSys.Library.vbproj">
+      <Project>{191d0c34-ff61-47a6-852f-7fd91d50ad72}</Project>
+      <Name>QualiSys.Library</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\NRC.Common\NRC.Common.csproj">
       <Project>{fcc95a8b-8fe0-482d-a09e-e9eb2cb7c890}</Project>
       <Name>NRC.Common</Name>
