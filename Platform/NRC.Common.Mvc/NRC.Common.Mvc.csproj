@@ -41,13 +41,14 @@
   <ItemGroup>
     <Reference Include="Newtonsoft.Json.Net35, Version=4.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\third_party\Json40r1\Bin\Net35\Newtonsoft.Json.Net35.dll</HintPath>
+      <HintPath>..\..\ThirdParty\Json40r1\Bin\Net35\Newtonsoft.Json.Net35.dll</HintPath>
     </Reference>
     <Reference Include="NRC.Common">
       <HintPath>..\NRC.Common\bin\Debug\NRC.Common.dll</HintPath>
     </Reference>
-    <Reference Include="PostSharp">
-      <HintPath>..\third_party\PostSharp\.NET Framework 2.0\PostSharp.dll</HintPath>
+    <Reference Include="PostSharp, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ThirdParty\PostSharp\.NET Framework 2.0\PostSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
