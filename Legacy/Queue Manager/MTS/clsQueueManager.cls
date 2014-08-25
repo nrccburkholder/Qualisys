@@ -1538,7 +1538,7 @@ BundleUpError:
 
 End Function
 
-Private Function GetBundle(ByVal survey_id As Long, _
+Private Function GetBundle(ByVal Survey_id As Long, _
                            strPostalBundle_id As String, _
                            ByVal lngPaperconfig_id As Long, _
                            ByVal intPage_num As Long) As Variant
@@ -1584,7 +1584,7 @@ Retry:
           "FROM " & strQueue & "NPSentMailing SM, pcloutput PO, " & _
           strQueue & "PaperSize PS, " & strQueue & "MailingMethodology MM " & _
           "WHERE SM.Methodology_id = MM.Methodology_id " & _
-          "      AND MM.Survey_id = " & survey_id & _
+          "      AND MM.Survey_id = " & Survey_id & _
           "      AND PO.SentMail_id = SM.SentMail_id " & _
           "      AND PO.PaperSize_id = PS.PaperSize_id " & _
           "      AND SM.PaperConfig_id = " & lngPaperconfig_id & _
@@ -1702,7 +1702,7 @@ BadFile:
 End Function
 
 Public Function SetLithoCodes(ByVal pbolReprint As Boolean, _
-                              ByVal survey_id As Long, _
+                              ByVal Survey_id As Long, _
                               ByVal strPostalBundle_id As String, _
                               ByVal lngPaperconfig_id As Long, _
                               ByVal intPage_num As Long, _
@@ -1719,7 +1719,7 @@ Public Function SetLithoCodes(ByVal pbolReprint As Boolean, _
     On Error GoTo BadLitho
     
     strSQL = "exec dbo.sp_queue_setlitho " & _
-             "@survey_id = " & survey_id & ", " & _
+             "@survey_id = " & Survey_id & ", " & _
              "@strpostalbundle_id = '" & strPostalBundle_id & "', " & _
              "@paperconfig_id = " & lngPaperconfig_id & ", " & _
              "@reprint = " & CLng(pbolReprint) & ", " & _
@@ -1741,7 +1741,7 @@ BadLitho:
 
 End Function
 
-Public Function AddToGroupedPrint(ByVal survey_id As Long, _
+Public Function AddToGroupedPrint(ByVal Survey_id As Long, _
                                   ByVal lngPaperconfig_id As Long, _
                                   ByVal strBundled As String) As Boolean
     
@@ -1762,7 +1762,7 @@ Public Function AddToGroupedPrint(ByVal survey_id As Long, _
         .Parameters.Append .CreateParameter("datBundled", adDBTimeStamp, adParamInput)
     
         'Set the values
-        .Parameters("Survey_id") = survey_id
+        .Parameters("Survey_id") = Survey_id
         .Parameters("PaperConfig_id") = lngPaperconfig_id
         .Parameters("datBundled") = datBundled
         
@@ -1772,7 +1772,7 @@ Public Function AddToGroupedPrint(ByVal survey_id As Long, _
 
 End Function
 
-Public Function RemoveFromGroupedPrint(ByVal survey_id As Long, _
+Public Function RemoveFromGroupedPrint(ByVal Survey_id As Long, _
                                        ByVal lngPaperconfig_id As Long, _
                                        ByVal strBundled As String) As Boolean
     
@@ -1793,7 +1793,7 @@ Public Function RemoveFromGroupedPrint(ByVal survey_id As Long, _
         .Parameters.Append .CreateParameter("datBundled", adDBTimeStamp, adParamInput)
     
         'Set the values
-        .Parameters("Survey_id") = survey_id
+        .Parameters("Survey_id") = Survey_id
         .Parameters("PaperConfig_id") = lngPaperconfig_id
         .Parameters("datBundled") = datBundled
         
@@ -1933,7 +1933,7 @@ Public Function GetGroupedPrint(ByVal lngPaperconfig_id As Long, bolReprint As B
     Terminate
 End Function
 
-Public Function GetPrintBundle(ByVal survey_id As Long, _
+Public Function GetPrintBundle(ByVal Survey_id As Long, _
                                ByVal strPostalBundle_id As String, _
                                ByVal lngPaperconfig_id As Long, _
                                ByVal intPage_num As Long, _
@@ -1966,7 +1966,7 @@ Public Function GetPrintBundle(ByVal survey_id As Long, _
     
     strFromWhere = " FROM pcloutput P, " & strQueue & "PaperSize Z, " & _
                    strQueue & "NPSentMailing S, " & strQueue & "MailingMethodology MM " & _
-                   " WHERE MM.survey_id = " & survey_id & _
+                   " WHERE MM.survey_id = " & Survey_id & _
                    "       AND S.strPostalBundle = '" & strPostalBundle_id & "'" & _
                    "       AND MM.Methodology_id = S.Methodology_id " & _
                    "       AND S.PaperConfig_id = " & lngPaperconfig_id & _
@@ -2004,13 +2004,13 @@ Public Function GetPrintBundle(ByVal survey_id As Long, _
         
         strSQL = Replace(strSQL, "P.PCLStream", "(s.strLithoCode-" & minLithoCode & ") / " & numSheetsPerSplit & " as intSplit, P.PCLStream") & strFromWhere & " ORDER BY strLithoCode, intSheet_Num "
         
-        strFileHeader = survey_id & "_" & strPostalBundle_id & "_" & Format(datBundled, "yyyymmdd_hhmm") & _
+        strFileHeader = Survey_id & "_" & strPostalBundle_id & "_" & Format(datBundled, "yyyymmdd_hhmm") & _
                     "_" & lngPaperconfig_id
         GetPrintBundle = PrintBundle(strSQL, strFileHeader, Array("strSizeCode", "intSheet_num", "intSplit"))
         
     Else
         strSQL = strSQL & strFromWhere & " ORDER BY strLithoCode, intSheet_Num "
-        strFileHeader = survey_id & "_" & strPostalBundle_id & "_" & Format(datBundled, "yyyymmdd_hhmm") & _
+        strFileHeader = Survey_id & "_" & strPostalBundle_id & "_" & Format(datBundled, "yyyymmdd_hhmm") & _
                     "_" & lngPaperconfig_id
         GetPrintBundle = PrintBundle(strSQL, strFileHeader, Array("strSizeCode", "intSheet_num"))
     End If
@@ -2028,7 +2028,7 @@ Public Function GetPrintBundle(ByVal survey_id As Long, _
             .Parameters.Append .CreateParameter("datBundled", adDBTimeStamp, adParamInput)
         
             'Set the values
-            .Parameters("Survey_id") = survey_id
+            .Parameters("Survey_id") = Survey_id
             .Parameters("strPostalBundle") = strPostalBundle_id
             .Parameters("PaperConfig") = lngPaperconfig_id
             .Parameters("datBundled") = strBundled
@@ -2199,14 +2199,14 @@ ErrorCond:
 
 End Function
 
-Public Function BundleFlats(ByVal survey_id As Long, _
+Public Function BundleFlats(ByVal Survey_id As Long, _
                             ByVal lngPaperconfig_id As Long, _
                             ByVal datBundled As Date, _
                             ByVal lngN As Long) As Boolean
     
  '   On Error GoTo BundleUpError
     Call Initialize
-    BundleFlats = RunFlats(survey_id, lngPaperconfig_id, datBundled, lngN)
+    BundleFlats = RunFlats(Survey_id, lngPaperconfig_id, datBundled, lngN)
     moConn.Close
     Set moConn = Nothing
     Call Terminate
@@ -2216,7 +2216,7 @@ Public Function BundleFlats(ByVal survey_id As Long, _
 
 End Function
 
-Public Function RunFlats(ByVal survey_id As Long, _
+Public Function RunFlats(ByVal Survey_id As Long, _
                          ByVal lngPaperconfig_id As Long, _
                          ByVal datBundled As String, _
                          ByVal lngN As Long) As Boolean
@@ -2238,7 +2238,7 @@ Public Function RunFlats(ByVal survey_id As Long, _
     ' Create and Append each Parameter to the
     ' Command Object
     ' ---------------------------------------------
-    Set pParmADO = pcmADO.CreateParameter("Survey_id", adInteger, adParamInput, 4, survey_id)
+    Set pParmADO = pcmADO.CreateParameter("Survey_id", adInteger, adParamInput, 4, Survey_id)
     pcmADO.Parameters.Append pParmADO
     Set pParmADO = pcmADO.CreateParameter("PaperConfig_id", adInteger, adParamInput, 4, lngPaperconfig_id)
     pcmADO.Parameters.Append pParmADO
@@ -2295,7 +2295,7 @@ ErrHandler:
     Err.Raise Err.Number, Err.Source, Err.Description
 End Sub
 
-Public Function PrintSample(ByVal survey_id As Long, _
+Public Function PrintSample(ByVal Survey_id As Long, _
                             ByVal strPostalBundle_id As String, _
         ByVal lngPaperconfig_id As Long, _
         ByVal strBundled As String, _
@@ -2331,7 +2331,7 @@ Public Function PrintSample(ByVal survey_id As Long, _
     
     strFromWhere = " FROM pcloutput P, " & strQueue & "PaperSize Z, " & strQueue & _
                    "NPSentMailing S, " & strQueue & "MailingMethodology MM " & _
-                   " WHERE MM.survey_id = " & survey_id
+                   " WHERE MM.survey_id = " & Survey_id
     
     If strPostalBundle_id <> "" Then
         strFromWhere = strFromWhere & " AND S.strPostalBundle = '" & strPostalBundle_id & "'"
@@ -2347,7 +2347,7 @@ Public Function PrintSample(ByVal survey_id As Long, _
     
     strSQL = strSQL & strFromWhere & " ORDER BY strLithoCode, S.SentMail_id, intSheet_num " & Chr(13) & "SET ROWCOUNT 0"
 
-    strFileHeader = "Sample" & "_" & survey_id
+    strFileHeader = "Sample" & "_" & Survey_id
     
     If strPostalBundle_id <> "" Then
         strFileHeader = strFileHeader & "_" & strPostalBundle_id
@@ -2401,7 +2401,7 @@ Public Function PrintSample(ByVal survey_id As Long, _
 
 End Function
 
-Public Function GetRePrintBundle(ByVal survey_id As Long, _
+Public Function GetRePrintBundle(ByVal Survey_id As Long, _
                                  strPostalBundle_id As String, _
                                  ByVal lngPaperconfig_id As Long, _
                                  ByVal intPage_num As Long, _
@@ -2421,7 +2421,7 @@ Public Function GetRePrintBundle(ByVal survey_id As Long, _
     
     strFromWhere = " FROM pcloutput P, " & strQueue & "PaperSize Z, " & strQueue & _
                    "SentMailing S, " & strQueue & "MailingMethodology MM " & _
-                   " WHERE MM.survey_id = " & survey_id & _
+                   " WHERE MM.survey_id = " & Survey_id & _
                    "       AND S.strPostalBundle = '" & strPostalBundle_id & "'" & _
                    "       AND MM.Methodology_id = S.Methodology_id " & _
                    "       AND S.PaperConfig_id = " & lngPaperconfig_id & _
@@ -2432,7 +2432,7 @@ Public Function GetRePrintBundle(ByVal survey_id As Long, _
                    
     strSQL = strSQL & strFromWhere & " ORDER BY strLithoCode, intSheet_num "
 
-    strFileHeader = "RePrint" & "_" & survey_id & "_" & strPostalBundle_id & "_" & Format(datBundled, "yyyymmdd_hhmm") & _
+    strFileHeader = "RePrint" & "_" & Survey_id & "_" & strPostalBundle_id & "_" & Format(datBundled, "yyyymmdd_hhmm") & _
                     "_" & lngPaperconfig_id
                     
     GetRePrintBundle = PrintBundle(strSQL, strFileHeader, Array("strSizeCode", "intSheet_num"))
@@ -2440,7 +2440,7 @@ Public Function GetRePrintBundle(ByVal survey_id As Long, _
     If GetRePrintBundle = True Then
         strFromWhere = " FROM " & strPCL & " P, PaperSize Z, " & _
                        "SentMailing S, MailingMethodology MM " & _
-                       " WHERE MM.survey_id = " & survey_id & _
+                       " WHERE MM.survey_id = " & Survey_id & _
                        "       AND S.strPostalBundle = '" & strPostalBundle_id & "'" & _
                        "       AND MM.Methodology_id = S.Methodology_id " & _
                        "       AND S.PaperConfig_id = " & lngPaperconfig_id & _
@@ -2738,7 +2738,7 @@ End Function
 
 '***Modified 04-23-2003 SH
 'Private Function CreateLithoText(ByVal lngLithoCode As Long, ByVal strPostalBundle As String, ByVal strGroupDest As String, ByVal intPA As String, ByVal intPB As String, ByVal intPC As String, ByVal intPD As String) As String
-Private Function CreateLithoText(ByVal survey_id As Long, _
+Private Function CreateLithoText(ByVal Survey_id As Long, _
                                  ByVal lngLithoCode As Long, _
                                  ByVal strPostalBundle As String, _
                                  ByVal strGroupDest As String, _
@@ -2796,14 +2796,14 @@ Private Function CreateLithoText(ByVal survey_id As Long, _
              Chr(27) & "&f1X" & _
              Chr(27) & "&f500y0X" & _
              lngLithoCode & _
-             "  " & survey_id & _
+             "  " & Survey_id & _
              Chr(27) & "&f1X"
     '***End of modification 04-23-2003 SH
     
     PassCode = PassCodeCrunch(lngLithoCode)
     PassCode = PassCode & PassCodeComputeCheckDigit(PassCode)
     tmpStr = tmpStr & Chr(27) & "&f496y0X" & Format(PassCode, "@@@-@@@@-@@@") & Chr(27) & "&f1X"
-
+    
     If Val(intPA) <> 0 Then
         intPageNum = CLng(intPA)
         intPA = CrunchPageNum(intPageNum)
@@ -2819,9 +2819,9 @@ Private Function CreateLithoText(ByVal survey_id As Long, _
         End If
         tmpStr = tmpStr & Chr(27) & "&f" & 500 + intPageNum & "y0X" & Right("00000000" & strCrunch, 8) & Chr(27) & "&f1X"
     End If
- 
+    
     strCrunch = SaveCrunch
- 
+    
     If Val(intPB) <> 0 Then
         intPageNum = CLng(intPB)
         intPB = CrunchPageNum(intPageNum)
@@ -2837,9 +2837,9 @@ Private Function CreateLithoText(ByVal survey_id As Long, _
         End If
         tmpStr = tmpStr & Chr(27) & "&f" & 500 + intPageNum & "y0X" & Right("00000000" & strCrunch, 8) & Chr(27) & "&f1X"
     End If
-   
+    
     strCrunch = SaveCrunch
-
+    
     If Val(intPC) <> 0 Then
         intPageNum = CLng(intPC)
         intPC = CrunchPageNum(intPageNum)
@@ -2855,9 +2855,9 @@ Private Function CreateLithoText(ByVal survey_id As Long, _
         End If
         tmpStr = tmpStr & Chr(27) & "&f" & 500 + intPageNum & "y0X" & Right("00000000" & strCrunch, 8) & Chr(27) & "&f1X"
     End If
- 
+    
     strCrunch = SaveCrunch
- 
+    
     If Val(intPD) <> 0 Then
         intPageNum = CLng(intPD)
         intPD = CrunchPageNum(intPageNum)
@@ -2873,7 +2873,7 @@ Private Function CreateLithoText(ByVal survey_id As Long, _
         End If
         tmpStr = tmpStr & Chr(27) & "&f" & 500 + intPageNum & "y0X" & Right("00000000" & strCrunch, 8) & Chr(27) & "&f1X"
     End If
- 
+    
     CreateLithoText = tmpStr
     
 End Function
@@ -2958,7 +2958,7 @@ Private Function PrintBundle(ByVal strBundleSQL As String, _
             '    IIf(Val(IIf(IsNull(rs!intPC), "", rs!intPC)) = 0, "", IIf(IsNull(rs!intPC), "", rs!intPC)), _
             '    IIf(Val(IIf(IsNull(rs!intPD), "", rs!intPD)) = 0, "", IIf(IsNull(rs!intPD), "", rs!intPD)) _
             '    )
-            tmpStr = CreateLithoText(rs!survey_id, rs!strLithoCode, rs!strPostalBundle, IIf(IsNull(rs!strGroupDest), "", rs!strGroupDest), _
+            tmpStr = CreateLithoText(rs!Survey_id, rs!strLithoCode, rs!strPostalBundle, IIf(IsNull(rs!strGroupDest), "", rs!strGroupDest), _
                      IIf(Val(IIf(IsNull(rs!intPA), "", rs!intPA)) = 0, "", IIf(IsNull(rs!intPA), "", rs!intPA)), _
                      IIf(Val(IIf(IsNull(rs!intPB), "", rs!intPB)) = 0, "", IIf(IsNull(rs!intPB), "", rs!intPB)), _
                      IIf(Val(IIf(IsNull(rs!intPC), "", rs!intPC)) = 0, "", IIf(IsNull(rs!intPC), "", rs!intPC)), _
@@ -3363,17 +3363,5 @@ Public Function ShowGroupedPrint() As Boolean
   
 End Function
 
-Public Function FolderColor(ByVal survey_id As String) As String
-    
-    Initialize
-    
-    Dim rs As New ADODB.Recordset
-    rs.Open "Select dbo.SurveyProperty( 'FolderColor', null, " & survey_id & ") FolderColor", moConn, adOpenForwardOnly
-    
-    If Not rs.EOF And Not rs.BOF Then
-        FolderColor = rs!FolderColor
-    Else
-        FolderColor = "Manila"
-    End If
-End Function
+
 

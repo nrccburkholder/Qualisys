@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<package-list>
+	<package>
+		<name>MailerService</name>
+		<package-version>1.0.0</package-version>
+		<framework-version>4.0</framework-version>
+		<applications>
+			<application type="web" source="NRC.Platform.Mailer.Web" />
+		</applications>
+		<templates>
+			<template>Web\settings.xml.template</template>
+		</templates>
+	</package>
+</package-list>

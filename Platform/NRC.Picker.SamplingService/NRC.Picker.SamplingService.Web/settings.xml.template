@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<settings>
+	<autosampler-threads>###AUTOSAMPLER_THREADS###</autosampler-threads>
+	<sample-count-threshold>###SAMPLE_COUNT_THRESHOLD###</sample-count-threshold>
+	<mailer-url>###MAILER_URL###</mailer-url>
+	<enable-scheduling>###ENABLE_SCHEDULING###</enable-scheduling>
+</settings>

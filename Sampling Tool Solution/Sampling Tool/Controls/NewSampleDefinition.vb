@@ -743,7 +743,7 @@ Public Class NewSampleDefinition
             For Each srvy In Me.mSurveys
                 Me.AddNewSampleRow(srvy)
             Next
-            Me.NewSampleGridView.Sort(Me.NewSampleSetCAHPSColumn, System.ComponentModel.ListSortDirection.Descending)
+            Me.NewSampleGridView.Sort(Me.NewSampleSetPriorityColumn, System.ComponentModel.ListSortDirection.Ascending)
 
             Me.PopulateNewSampleRowNumbers()
 
@@ -768,9 +768,9 @@ Public Class NewSampleDefinition
         'isHCAHPS = (srvy.SurveyType = SurveyTypes.Hcahps OrElse srvy.SurveyType = SurveyTypes.HHcahps)
         row.Cells(Me.NewSampleSetOrderColumn.Index).Value = (i + 1).ToString
         row.Cells(Me.NewSampleSetSurveyColumn.Index).Value = srvy.DisplayLabel
-        row.Cells(Me.NewSampleSetCAHPSColumn.Index).Value = srvy.IsMonthlyOnly  'isHCAHPS CJB 7/25/2014 using an HCAHPS and HHCAHPS for the right effect here...bad call on 7/3/2014 | CJB 7/3/2014 refactor causes all CAHPS to be applied here not just HCAHPS and HHCAHPS
         row.Cells(Me.NewSampleEncounterFieldColumn.Index).Value = sampleEncounterDateFieldLabel
         row.Cells(Me.NewSampleSetSpecifyDatesColumn.Index).Value = True
+        row.Cells(Me.NewSampleSetPriorityColumn.Index).Value = srvy.SamplingToolPriority
         If srvy.SampleablePeriods.Count > 0 Then
             periodList.DataSource = srvy.SampleablePeriods
             periodList.DisplayMember = "Name"
@@ -906,5 +906,6 @@ Public Class NewSampleDefinition
     End Function
 
 #End Region
+
 
 End Class
