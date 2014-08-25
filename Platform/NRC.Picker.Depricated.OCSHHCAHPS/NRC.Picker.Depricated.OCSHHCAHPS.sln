@@ -15,24 +15,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NRC.Common", "..\NRC.Common\NRC.Common.csproj", "{FCC95A8B-8FE0-482D-A09E-E9EB2CB7C890}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 5
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://oma0pnrctfs01.nationalresearch.com:8080/tfs/nrc_git
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = ImportProcessor\\NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.csproj
-		SccProjectName1 = ImportProcessor
-		SccLocalPath1 = ImportProcessor
-		SccProjectUniqueName2 = ImportProcessingService\\NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessingService.csproj
-		SccProjectName2 = ImportProcessingService
-		SccLocalPath2 = ImportProcessingService
-		SccProjectUniqueName3 = Web.UI\\NRC.Picker.Depricated.OCSHHCAHPS.Web.UI.csproj
-		SccProjectName3 = Web.UI
-		SccLocalPath3 = Web.UI
-		SccProjectUniqueName4 = ..\\NRC.Common\\NRC.Common.csproj
-		SccProjectName4 = ../NRC.Common
-		SccLocalPath4 = ..\\NRC.Common
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
