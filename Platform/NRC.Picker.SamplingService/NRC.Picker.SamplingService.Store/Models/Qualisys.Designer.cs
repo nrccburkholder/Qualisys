@@ -253,7 +253,7 @@ namespace NRC.Picker.SamplingService.Store.Models
 
         #endregion
 
-        #region Simple Properties
+        #region Primitive Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -272,7 +272,7 @@ namespace NRC.Picker.SamplingService.Store.Models
                 {
                     OnClientIdChanging(value);
                     ReportPropertyChanging("ClientId");
-                    _ClientId = StructuralObject.SetValidValue(value, "ClientId");
+                    _ClientId = StructuralObject.SetValidValue(value);
                     ReportPropertyChanged("ClientId");
                     OnClientIdChanged();
                 }
@@ -297,7 +297,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnClientNameChanging(value);
                 ReportPropertyChanging("ClientName");
-                _ClientName = StructuralObject.SetValidValue(value, true, "ClientName");
+                _ClientName = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("ClientName");
                 OnClientNameChanged();
             }
@@ -321,7 +321,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnActiveChanging(value);
                 ReportPropertyChanging("Active");
-                _Active = StructuralObject.SetValidValue(value, "Active");
+                _Active = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("Active");
                 OnActiveChanged();
             }
@@ -332,6 +332,7 @@ namespace NRC.Picker.SamplingService.Store.Models
 
         #endregion
 
+    
     }
     
     /// <summary>
@@ -357,7 +358,7 @@ namespace NRC.Picker.SamplingService.Store.Models
 
         #endregion
 
-        #region Simple Properties
+        #region Primitive Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -376,7 +377,7 @@ namespace NRC.Picker.SamplingService.Store.Models
                 {
                     OnDatasetIDChanging(value);
                     ReportPropertyChanging("DatasetID");
-                    _DatasetID = StructuralObject.SetValidValue(value, "DatasetID");
+                    _DatasetID = StructuralObject.SetValidValue(value);
                     ReportPropertyChanged("DatasetID");
                     OnDatasetIDChanged();
                 }
@@ -401,7 +402,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnStudyIDChanging(value);
                 ReportPropertyChanging("StudyID");
-                _StudyID = StructuralObject.SetValidValue(value, "StudyID");
+                _StudyID = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("StudyID");
                 OnStudyIDChanged();
             }
@@ -425,7 +426,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnLoadDateChanging(value);
                 ReportPropertyChanging("LoadDate");
-                _LoadDate = StructuralObject.SetValidValue(value, "LoadDate");
+                _LoadDate = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("LoadDate");
                 OnLoadDateChanged();
             }
@@ -449,7 +450,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnRecordCountChanging(value);
                 ReportPropertyChanging("RecordCount");
-                _RecordCount = StructuralObject.SetValidValue(value, "RecordCount");
+                _RecordCount = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("RecordCount");
                 OnRecordCountChanged();
             }
@@ -473,7 +474,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnApplyDateChanging(value);
                 ReportPropertyChanging("ApplyDate");
-                _ApplyDate = StructuralObject.SetValidValue(value, "ApplyDate");
+                _ApplyDate = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("ApplyDate");
                 OnApplyDateChanged();
             }
@@ -484,6 +485,7 @@ namespace NRC.Picker.SamplingService.Store.Models
 
         #endregion
 
+    
         #region Navigation Properties
     
         /// <summary>
@@ -615,7 +617,7 @@ namespace NRC.Picker.SamplingService.Store.Models
 
         #endregion
 
-        #region Simple Properties
+        #region Primitive Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -634,7 +636,7 @@ namespace NRC.Picker.SamplingService.Store.Models
                 {
                     OnStudyIDChanging(value);
                     ReportPropertyChanging("StudyID");
-                    _StudyID = StructuralObject.SetValidValue(value, "StudyID");
+                    _StudyID = StructuralObject.SetValidValue(value);
                     ReportPropertyChanged("StudyID");
                     OnStudyIDChanged();
                 }
@@ -659,7 +661,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnNameChanging(value);
                 ReportPropertyChanging("Name");
-                _Name = StructuralObject.SetValidValue(value, false, "Name");
+                _Name = StructuralObject.SetValidValue(value, false);
                 ReportPropertyChanged("Name");
                 OnNameChanged();
             }
@@ -683,7 +685,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnSTRBBS_USERNAMEChanging(value);
                 ReportPropertyChanging("STRBBS_USERNAME");
-                _STRBBS_USERNAME = StructuralObject.SetValidValue(value, true, "STRBBS_USERNAME");
+                _STRBBS_USERNAME = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("STRBBS_USERNAME");
                 OnSTRBBS_USERNAMEChanged();
             }
@@ -707,7 +709,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnSTRBBS_PASSWORDChanging(value);
                 ReportPropertyChanging("STRBBS_PASSWORD");
-                _STRBBS_PASSWORD = StructuralObject.SetValidValue(value, true, "STRBBS_PASSWORD");
+                _STRBBS_PASSWORD = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("STRBBS_PASSWORD");
                 OnSTRBBS_PASSWORDChanged();
             }
@@ -731,7 +733,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnDATCREATE_DTChanging(value);
                 ReportPropertyChanging("DATCREATE_DT");
-                _DATCREATE_DT = StructuralObject.SetValidValue(value, "DATCREATE_DT");
+                _DATCREATE_DT = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("DATCREATE_DT");
                 OnDATCREATE_DTChanged();
             }
@@ -755,7 +757,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnDATCLOSE_DTChanging(value);
                 ReportPropertyChanging("DATCLOSE_DT");
-                _DATCLOSE_DT = StructuralObject.SetValidValue(value, "DATCLOSE_DT");
+                _DATCLOSE_DT = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("DATCLOSE_DT");
                 OnDATCLOSE_DTChanged();
             }
@@ -779,7 +781,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnINTARCHIVE_MONTHSChanging(value);
                 ReportPropertyChanging("INTARCHIVE_MONTHS");
-                _INTARCHIVE_MONTHS = StructuralObject.SetValidValue(value, "INTARCHIVE_MONTHS");
+                _INTARCHIVE_MONTHS = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("INTARCHIVE_MONTHS");
                 OnINTARCHIVE_MONTHSChanged();
             }
@@ -803,7 +805,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnBITSTUDYONGOINGChanging(value);
                 ReportPropertyChanging("BITSTUDYONGOING");
-                _BITSTUDYONGOING = StructuralObject.SetValidValue(value, "BITSTUDYONGOING");
+                _BITSTUDYONGOING = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("BITSTUDYONGOING");
                 OnBITSTUDYONGOINGChanged();
             }
@@ -827,7 +829,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnINTAP_NUMREPORTSChanging(value);
                 ReportPropertyChanging("INTAP_NUMREPORTS");
-                _INTAP_NUMREPORTS = StructuralObject.SetValidValue(value, "INTAP_NUMREPORTS");
+                _INTAP_NUMREPORTS = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("INTAP_NUMREPORTS");
                 OnINTAP_NUMREPORTSChanged();
             }
@@ -851,7 +853,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnINTAP_CONFINTERVALChanging(value);
                 ReportPropertyChanging("INTAP_CONFINTERVAL");
-                _INTAP_CONFINTERVAL = StructuralObject.SetValidValue(value, "INTAP_CONFINTERVAL");
+                _INTAP_CONFINTERVAL = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("INTAP_CONFINTERVAL");
                 OnINTAP_CONFINTERVALChanged();
             }
@@ -875,7 +877,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnINTAP_ERRORMARGINChanging(value);
                 ReportPropertyChanging("INTAP_ERRORMARGIN");
-                _INTAP_ERRORMARGIN = StructuralObject.SetValidValue(value, "INTAP_ERRORMARGIN");
+                _INTAP_ERRORMARGIN = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("INTAP_ERRORMARGIN");
                 OnINTAP_ERRORMARGINChanged();
             }
@@ -899,7 +901,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnINTAP_CUTOFFTARGETChanging(value);
                 ReportPropertyChanging("INTAP_CUTOFFTARGET");
-                _INTAP_CUTOFFTARGET = StructuralObject.SetValidValue(value, "INTAP_CUTOFFTARGET");
+                _INTAP_CUTOFFTARGET = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("INTAP_CUTOFFTARGET");
                 OnINTAP_CUTOFFTARGETChanged();
             }
@@ -923,7 +925,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnSTROBJECTIVES_TXTChanging(value);
                 ReportPropertyChanging("STROBJECTIVES_TXT");
-                _STROBJECTIVES_TXT = StructuralObject.SetValidValue(value, true, "STROBJECTIVES_TXT");
+                _STROBJECTIVES_TXT = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("STROBJECTIVES_TXT");
                 OnSTROBJECTIVES_TXTChanged();
             }
@@ -947,7 +949,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnDATOBJECTIVESIGNOFF_DTChanging(value);
                 ReportPropertyChanging("DATOBJECTIVESIGNOFF_DT");
-                _DATOBJECTIVESIGNOFF_DT = StructuralObject.SetValidValue(value, "DATOBJECTIVESIGNOFF_DT");
+                _DATOBJECTIVESIGNOFF_DT = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("DATOBJECTIVESIGNOFF_DT");
                 OnDATOBJECTIVESIGNOFF_DTChanged();
             }
@@ -971,7 +973,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnCURBUDGETAMTChanging(value);
                 ReportPropertyChanging("CURBUDGETAMT");
-                _CURBUDGETAMT = StructuralObject.SetValidValue(value, "CURBUDGETAMT");
+                _CURBUDGETAMT = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("CURBUDGETAMT");
                 OnCURBUDGETAMTChanged();
             }
@@ -995,7 +997,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnCURTOTALSPENTChanging(value);
                 ReportPropertyChanging("CURTOTALSPENT");
-                _CURTOTALSPENT = StructuralObject.SetValidValue(value, "CURTOTALSPENT");
+                _CURTOTALSPENT = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("CURTOTALSPENT");
                 OnCURTOTALSPENTChanged();
             }
@@ -1019,7 +1021,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnSTRAP_BELOWQUOTAChanging(value);
                 ReportPropertyChanging("STRAP_BELOWQUOTA");
-                _STRAP_BELOWQUOTA = StructuralObject.SetValidValue(value, true, "STRAP_BELOWQUOTA");
+                _STRAP_BELOWQUOTA = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("STRAP_BELOWQUOTA");
                 OnSTRAP_BELOWQUOTAChanged();
             }
@@ -1043,7 +1045,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnINTPOPULATIONTABLEIDChanging(value);
                 ReportPropertyChanging("INTPOPULATIONTABLEID");
-                _INTPOPULATIONTABLEID = StructuralObject.SetValidValue(value, "INTPOPULATIONTABLEID");
+                _INTPOPULATIONTABLEID = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("INTPOPULATIONTABLEID");
                 OnINTPOPULATIONTABLEIDChanged();
             }
@@ -1067,7 +1069,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnINTENCOUNTERTABLEIDChanging(value);
                 ReportPropertyChanging("INTENCOUNTERTABLEID");
-                _INTENCOUNTERTABLEID = StructuralObject.SetValidValue(value, "INTENCOUNTERTABLEID");
+                _INTENCOUNTERTABLEID = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("INTENCOUNTERTABLEID");
                 OnINTENCOUNTERTABLEIDChanged();
             }
@@ -1091,7 +1093,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnINTPROVIDERTABLEIDChanging(value);
                 ReportPropertyChanging("INTPROVIDERTABLEID");
-                _INTPROVIDERTABLEID = StructuralObject.SetValidValue(value, "INTPROVIDERTABLEID");
+                _INTPROVIDERTABLEID = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("INTPROVIDERTABLEID");
                 OnINTPROVIDERTABLEIDChanged();
             }
@@ -1115,7 +1117,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnSTRREPORTLEVELSChanging(value);
                 ReportPropertyChanging("STRREPORTLEVELS");
-                _STRREPORTLEVELS = StructuralObject.SetValidValue(value, true, "STRREPORTLEVELS");
+                _STRREPORTLEVELS = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("STRREPORTLEVELS");
                 OnSTRREPORTLEVELSChanged();
             }
@@ -1139,7 +1141,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnSTROBJECTIVEDELIVERABLESChanging(value);
                 ReportPropertyChanging("STROBJECTIVEDELIVERABLES");
-                _STROBJECTIVEDELIVERABLES = StructuralObject.SetValidValue(value, true, "STROBJECTIVEDELIVERABLES");
+                _STROBJECTIVEDELIVERABLES = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("STROBJECTIVEDELIVERABLES");
                 OnSTROBJECTIVEDELIVERABLESChanged();
             }
@@ -1163,7 +1165,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnADEMPLOYEE_IDChanging(value);
                 ReportPropertyChanging("ADEMPLOYEE_ID");
-                _ADEMPLOYEE_ID = StructuralObject.SetValidValue(value, "ADEMPLOYEE_ID");
+                _ADEMPLOYEE_ID = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("ADEMPLOYEE_ID");
                 OnADEMPLOYEE_IDChanged();
             }
@@ -1187,7 +1189,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnBITCLEANADDRChanging(value);
                 ReportPropertyChanging("BITCLEANADDR");
-                _BITCLEANADDR = StructuralObject.SetValidValue(value, "BITCLEANADDR");
+                _BITCLEANADDR = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("BITCLEANADDR");
                 OnBITCLEANADDRChanged();
             }
@@ -1211,7 +1213,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnDATARCHIVEDChanging(value);
                 ReportPropertyChanging("DATARCHIVED");
-                _DATARCHIVED = StructuralObject.SetValidValue(value, "DATARCHIVED");
+                _DATARCHIVED = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("DATARCHIVED");
                 OnDATARCHIVEDChanged();
             }
@@ -1235,7 +1237,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnDATCONTRACTSTARTChanging(value);
                 ReportPropertyChanging("DATCONTRACTSTART");
-                _DATCONTRACTSTART = StructuralObject.SetValidValue(value, "DATCONTRACTSTART");
+                _DATCONTRACTSTART = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("DATCONTRACTSTART");
                 OnDATCONTRACTSTARTChanged();
             }
@@ -1259,7 +1261,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnDATCONTRACTENDChanging(value);
                 ReportPropertyChanging("DATCONTRACTEND");
-                _DATCONTRACTEND = StructuralObject.SetValidValue(value, "DATCONTRACTEND");
+                _DATCONTRACTEND = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("DATCONTRACTEND");
                 OnDATCONTRACTENDChanged();
             }
@@ -1283,7 +1285,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnBITCHECKPHONChanging(value);
                 ReportPropertyChanging("BITCHECKPHON");
-                _BITCHECKPHON = StructuralObject.SetValidValue(value, "BITCHECKPHON");
+                _BITCHECKPHON = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("BITCHECKPHON");
                 OnBITCHECKPHONChanged();
             }
@@ -1307,7 +1309,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnbitProperCaseChanging(value);
                 ReportPropertyChanging("bitProperCase");
-                _bitProperCase = StructuralObject.SetValidValue(value, "bitProperCase");
+                _bitProperCase = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("bitProperCase");
                 OnbitProperCaseChanged();
             }
@@ -1331,7 +1333,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnBITMULTADDRChanging(value);
                 ReportPropertyChanging("BITMULTADDR");
-                _BITMULTADDR = StructuralObject.SetValidValue(value, "BITMULTADDR");
+                _BITMULTADDR = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("BITMULTADDR");
                 OnBITMULTADDRChanged();
             }
@@ -1355,7 +1357,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnCountry_idChanging(value);
                 ReportPropertyChanging("Country_id");
-                _Country_id = StructuralObject.SetValidValue(value, "Country_id");
+                _Country_id = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("Country_id");
                 OnCountry_idChanged();
             }
@@ -1379,7 +1381,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnbitNCOAChanging(value);
                 ReportPropertyChanging("bitNCOA");
-                _bitNCOA = StructuralObject.SetValidValue(value, "bitNCOA");
+                _bitNCOA = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("bitNCOA");
                 OnbitNCOAChanged();
             }
@@ -1403,7 +1405,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnbitExtractToDatamartChanging(value);
                 ReportPropertyChanging("bitExtractToDatamart");
-                _bitExtractToDatamart = StructuralObject.SetValidValue(value, "bitExtractToDatamart");
+                _bitExtractToDatamart = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("bitExtractToDatamart");
                 OnbitExtractToDatamartChanged();
             }
@@ -1427,7 +1429,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnActiveChanging(value);
                 ReportPropertyChanging("Active");
-                _Active = StructuralObject.SetValidValue(value, "Active");
+                _Active = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("Active");
                 OnActiveChanged();
             }
@@ -1451,7 +1453,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnbitAutosampleChanging(value);
                 ReportPropertyChanging("bitAutosample");
-                _bitAutosample = StructuralObject.SetValidValue(value, "bitAutosample");
+                _bitAutosample = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("bitAutosample");
                 OnbitAutosampleChanged();
             }
@@ -1462,6 +1464,7 @@ namespace NRC.Picker.SamplingService.Store.Models
 
         #endregion
 
+    
         #region Navigation Properties
     
         /// <summary>
@@ -1555,7 +1558,7 @@ namespace NRC.Picker.SamplingService.Store.Models
 
         #endregion
 
-        #region Simple Properties
+        #region Primitive Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1574,7 +1577,7 @@ namespace NRC.Picker.SamplingService.Store.Models
                 {
                     OnDatasetQueueIDChanging(value);
                     ReportPropertyChanging("DatasetQueueID");
-                    _DatasetQueueID = StructuralObject.SetValidValue(value, "DatasetQueueID");
+                    _DatasetQueueID = StructuralObject.SetValidValue(value);
                     ReportPropertyChanged("DatasetQueueID");
                     OnDatasetQueueIDChanged();
                 }
@@ -1599,7 +1602,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnDatasetIDChanging(value);
                 ReportPropertyChanging("DatasetID");
-                _DatasetID = StructuralObject.SetValidValue(value, "DatasetID");
+                _DatasetID = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("DatasetID");
                 OnDatasetIDChanged();
             }
@@ -1623,7 +1626,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnStateStringChanging(value);
                 ReportPropertyChanging("StateString");
-                _StateString = StructuralObject.SetValidValue(value, false, "StateString");
+                _StateString = StructuralObject.SetValidValue(value, false);
                 ReportPropertyChanged("StateString");
                 OnStateStringChanged();
             }
@@ -1647,7 +1650,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnSampleStartTimeChanging(value);
                 ReportPropertyChanging("SampleStartTime");
-                _SampleStartTime = StructuralObject.SetValidValue(value, "SampleStartTime");
+                _SampleStartTime = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("SampleStartTime");
                 OnSampleStartTimeChanged();
             }
@@ -1671,7 +1674,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnSampleEndTimeChanging(value);
                 ReportPropertyChanging("SampleEndTime");
-                _SampleEndTime = StructuralObject.SetValidValue(value, "SampleEndTime");
+                _SampleEndTime = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("SampleEndTime");
                 OnSampleEndTimeChanged();
             }
@@ -1682,6 +1685,7 @@ namespace NRC.Picker.SamplingService.Store.Models
 
         #endregion
 
+    
         #region Navigation Properties
     
         /// <summary>
@@ -1751,7 +1755,7 @@ namespace NRC.Picker.SamplingService.Store.Models
 
         #endregion
 
-        #region Simple Properties
+        #region Primitive Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1770,7 +1774,7 @@ namespace NRC.Picker.SamplingService.Store.Models
                 {
                     OnSampleIDChanging(value);
                     ReportPropertyChanging("SampleID");
-                    _SampleID = StructuralObject.SetValidValue(value, "SampleID");
+                    _SampleID = StructuralObject.SetValidValue(value);
                     ReportPropertyChanged("SampleID");
                     OnSampleIDChanged();
                 }
@@ -1797,7 +1801,7 @@ namespace NRC.Picker.SamplingService.Store.Models
                 {
                     OnDatasetIDChanging(value);
                     ReportPropertyChanging("DatasetID");
-                    _DatasetID = StructuralObject.SetValidValue(value, "DatasetID");
+                    _DatasetID = StructuralObject.SetValidValue(value);
                     ReportPropertyChanged("DatasetID");
                     OnDatasetIDChanged();
                 }
@@ -1809,6 +1813,7 @@ namespace NRC.Picker.SamplingService.Store.Models
 
         #endregion
 
+    
         #region Navigation Properties
     
         /// <summary>
@@ -1882,7 +1887,7 @@ namespace NRC.Picker.SamplingService.Store.Models
 
         #endregion
 
-        #region Simple Properties
+        #region Primitive Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1901,7 +1906,7 @@ namespace NRC.Picker.SamplingService.Store.Models
                 {
                     OnSamplePlanWorksheet_idChanging(value);
                     ReportPropertyChanging("SamplePlanWorksheet_id");
-                    _SamplePlanWorksheet_id = StructuralObject.SetValidValue(value, "SamplePlanWorksheet_id");
+                    _SamplePlanWorksheet_id = StructuralObject.SetValidValue(value);
                     ReportPropertyChanged("SamplePlanWorksheet_id");
                     OnSamplePlanWorksheet_idChanged();
                 }
@@ -1926,7 +1931,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnSampleIDChanging(value);
                 ReportPropertyChanging("SampleID");
-                _SampleID = StructuralObject.SetValidValue(value, "SampleID");
+                _SampleID = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("SampleID");
                 OnSampleIDChanged();
             }
@@ -1950,7 +1955,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnSampleUnitIDChanging(value);
                 ReportPropertyChanging("SampleUnitID");
-                _SampleUnitID = StructuralObject.SetValidValue(value, "SampleUnitID");
+                _SampleUnitID = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("SampleUnitID");
                 OnSampleUnitIDChanged();
             }
@@ -1974,7 +1979,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnDQChanging(value);
                 ReportPropertyChanging("DQ");
-                _DQ = StructuralObject.SetValidValue(value, "DQ");
+                _DQ = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("DQ");
                 OnDQChanged();
             }
@@ -1998,7 +2003,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnAvailableUniverseChanging(value);
                 ReportPropertyChanging("AvailableUniverse");
-                _AvailableUniverse = StructuralObject.SetValidValue(value, "AvailableUniverse");
+                _AvailableUniverse = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("AvailableUniverse");
                 OnAvailableUniverseChanged();
             }
@@ -2022,7 +2027,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnPeriodReturnTargetChanging(value);
                 ReportPropertyChanging("PeriodReturnTarget");
-                _PeriodReturnTarget = StructuralObject.SetValidValue(value, "PeriodReturnTarget");
+                _PeriodReturnTarget = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("PeriodReturnTarget");
                 OnPeriodReturnTargetChanged();
             }
@@ -2046,7 +2051,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnDefaultResponseRateChanging(value);
                 ReportPropertyChanging("DefaultResponseRate");
-                _DefaultResponseRate = StructuralObject.SetValidValue(value, "DefaultResponseRate");
+                _DefaultResponseRate = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("DefaultResponseRate");
                 OnDefaultResponseRateChanged();
             }
@@ -2070,7 +2075,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnHistoricResponseRateChanging(value);
                 ReportPropertyChanging("HistoricResponseRate");
-                _HistoricResponseRate = StructuralObject.SetValidValue(value, "HistoricResponseRate");
+                _HistoricResponseRate = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("HistoricResponseRate");
                 OnHistoricResponseRateChanged();
             }
@@ -2094,7 +2099,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnTotalPriorPeriodOutgoChanging(value);
                 ReportPropertyChanging("TotalPriorPeriodOutgo");
-                _TotalPriorPeriodOutgo = StructuralObject.SetValidValue(value, "TotalPriorPeriodOutgo");
+                _TotalPriorPeriodOutgo = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("TotalPriorPeriodOutgo");
                 OnTotalPriorPeriodOutgoChanged();
             }
@@ -2118,7 +2123,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnAnticipatedTPPOReturnsChanging(value);
                 ReportPropertyChanging("AnticipatedTPPOReturns");
-                _AnticipatedTPPOReturns = StructuralObject.SetValidValue(value, "AnticipatedTPPOReturns");
+                _AnticipatedTPPOReturns = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("AnticipatedTPPOReturns");
                 OnAnticipatedTPPOReturnsChanged();
             }
@@ -2142,7 +2147,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnAdditionalReturnsNeededChanging(value);
                 ReportPropertyChanging("AdditionalReturnsNeeded");
-                _AdditionalReturnsNeeded = StructuralObject.SetValidValue(value, "AdditionalReturnsNeeded");
+                _AdditionalReturnsNeeded = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("AdditionalReturnsNeeded");
                 OnAdditionalReturnsNeededChanged();
             }
@@ -2166,7 +2171,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnSamplesAlreadyPulledChanging(value);
                 ReportPropertyChanging("SamplesAlreadyPulled");
-                _SamplesAlreadyPulled = StructuralObject.SetValidValue(value, "SamplesAlreadyPulled");
+                _SamplesAlreadyPulled = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("SamplesAlreadyPulled");
                 OnSamplesAlreadyPulledChanged();
             }
@@ -2190,7 +2195,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnSamplesInPeriodChanging(value);
                 ReportPropertyChanging("SamplesInPeriod");
-                _SamplesInPeriod = StructuralObject.SetValidValue(value, "SamplesInPeriod");
+                _SamplesInPeriod = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("SamplesInPeriod");
                 OnSamplesInPeriodChanged();
             }
@@ -2214,7 +2219,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnSamplesLeftInPeriodChanging(value);
                 ReportPropertyChanging("SamplesLeftInPeriod");
-                _SamplesLeftInPeriod = StructuralObject.SetValidValue(value, "SamplesLeftInPeriod");
+                _SamplesLeftInPeriod = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("SamplesLeftInPeriod");
                 OnSamplesLeftInPeriodChanged();
             }
@@ -2238,7 +2243,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnAdditionalPeriodOutgoNeededChanging(value);
                 ReportPropertyChanging("AdditionalPeriodOutgoNeeded");
-                _AdditionalPeriodOutgoNeeded = StructuralObject.SetValidValue(value, "AdditionalPeriodOutgoNeeded");
+                _AdditionalPeriodOutgoNeeded = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("AdditionalPeriodOutgoNeeded");
                 OnAdditionalPeriodOutgoNeededChanged();
             }
@@ -2262,7 +2267,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnOutgoNeededNowChanging(value);
                 ReportPropertyChanging("OutgoNeededNow");
-                _OutgoNeededNow = StructuralObject.SetValidValue(value, "OutgoNeededNow");
+                _OutgoNeededNow = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("OutgoNeededNow");
                 OnOutgoNeededNowChanged();
             }
@@ -2286,7 +2291,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnSampleCountChanging(value);
                 ReportPropertyChanging("SampleCount");
-                _SampleCount = StructuralObject.SetValidValue(value, "SampleCount");
+                _SampleCount = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("SampleCount");
                 OnSampleCountChanged();
             }
@@ -2310,7 +2315,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnIndirectSampleCountChanging(value);
                 ReportPropertyChanging("IndirectSampleCount");
-                _IndirectSampleCount = StructuralObject.SetValidValue(value, "IndirectSampleCount");
+                _IndirectSampleCount = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("IndirectSampleCount");
                 OnIndirectSampleCountChanged();
             }
@@ -2334,7 +2339,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnShortfallChanging(value);
                 ReportPropertyChanging("Shortfall");
-                _Shortfall = StructuralObject.SetValidValue(value, "Shortfall");
+                _Shortfall = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("Shortfall");
                 OnShortfallChanged();
             }
@@ -2358,7 +2363,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnCriteriaChanging(value);
                 ReportPropertyChanging("Criteria");
-                _Criteria = StructuralObject.SetValidValue(value, true, "Criteria");
+                _Criteria = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("Criteria");
                 OnCriteriaChanged();
             }
@@ -2382,7 +2387,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnMinimumEncounterDateChanging(value);
                 ReportPropertyChanging("MinimumEncounterDate");
-                _MinimumEncounterDate = StructuralObject.SetValidValue(value, "MinimumEncounterDate");
+                _MinimumEncounterDate = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("MinimumEncounterDate");
                 OnMinimumEncounterDateChanged();
             }
@@ -2406,7 +2411,7 @@ namespace NRC.Picker.SamplingService.Store.Models
             {
                 OnMaximumEncounterDateChanging(value);
                 ReportPropertyChanging("MaximumEncounterDate");
-                _MaximumEncounterDate = StructuralObject.SetValidValue(value, "MaximumEncounterDate");
+                _MaximumEncounterDate = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("MaximumEncounterDate");
                 OnMaximumEncounterDateChanged();
             }
@@ -2432,7 +2437,7 @@ namespace NRC.Picker.SamplingService.Store.Models
                 {
                     OnBadPhoneCountChanging(value);
                     ReportPropertyChanging("BadPhoneCount");
-                    _BadPhoneCount = StructuralObject.SetValidValue(value, "BadPhoneCount");
+                    _BadPhoneCount = StructuralObject.SetValidValue(value);
                     ReportPropertyChanged("BadPhoneCount");
                     OnBadPhoneCountChanged();
                 }
@@ -2459,7 +2464,7 @@ namespace NRC.Picker.SamplingService.Store.Models
                 {
                     OnBadAddressCountChanging(value);
                     ReportPropertyChanging("BadAddressCount");
-                    _BadAddressCount = StructuralObject.SetValidValue(value, "BadAddressCount");
+                    _BadAddressCount = StructuralObject.SetValidValue(value);
                     ReportPropertyChanged("BadAddressCount");
                     OnBadAddressCountChanged();
                 }
@@ -2486,7 +2491,7 @@ namespace NRC.Picker.SamplingService.Store.Models
                 {
                     OnHcahpsDirectSampledCountChanging(value);
                     ReportPropertyChanging("HcahpsDirectSampledCount");
-                    _HcahpsDirectSampledCount = StructuralObject.SetValidValue(value, "HcahpsDirectSampledCount");
+                    _HcahpsDirectSampledCount = StructuralObject.SetValidValue(value);
                     ReportPropertyChanged("HcahpsDirectSampledCount");
                     OnHcahpsDirectSampledCountChanged();
                 }
@@ -2498,8 +2503,10 @@ namespace NRC.Picker.SamplingService.Store.Models
 
         #endregion
 
+    
     }
 
     #endregion
 
+    
 }

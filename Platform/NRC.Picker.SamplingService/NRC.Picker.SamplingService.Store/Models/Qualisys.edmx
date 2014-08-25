@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
   <!-- EF Runtime content -->
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="QP_ProdModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="QP_ProdModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="QP_ProdModelStoreContainer">
           <EntitySet Name="CLIENT" EntityType="QP_ProdModel.Store.CLIENT" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
           <EntitySet Name="DATA_SET" EntityType="QP_ProdModel.Store.DATA_SET" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
@@ -237,7 +237,7 @@
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="QP_ProdModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="QP_ProdModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
         <EntityContainer Name="QualisysEntities" annotation:LazyLoadingEnabled="true" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
           <EntitySet Name="SamplePlanWorksheets" EntityType="QP_ProdModel.SamplePlanWorksheet" />
           <EntitySet Name="SampleDatasets" EntityType="QP_ProdModel.SampleDataset" />
@@ -422,7 +422,7 @@
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
-      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="QP_ProdModelStoreContainer" CdmEntityContainer="QualisysEntities">
           <EntitySetMapping Name="SamplePlanWorksheets"><EntityTypeMapping TypeName="QP_ProdModel.SamplePlanWorksheet"><MappingFragment StoreEntitySet="SamplePlanWorksheet">
             <ScalarProperty Name="SamplePlanWorksheet_id" ColumnName="SamplePlanWorksheet_id" />
@@ -544,7 +544,7 @@
     </edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
-  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
     <Connection>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />

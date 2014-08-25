@@ -19,7 +19,7 @@ namespace NRC.Picker.SamplingService.Mailer
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+    #line 1 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "11.0.0.0")]
     public partial class ReportTemplate : ReportTemplateBase
     {
@@ -74,7 +74,7 @@ th, td
 ");
             this.Write("\r\n</style>\r\n</head>\r\n<body>\r\n<center>\r\n\r\n<p>\r\n");
             
-            #line 24 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 24 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
 
 if (result.Check())
 {
@@ -85,7 +85,7 @@ if (result.Check())
             this.Write("<h1>Sampling Service successfully completed sampling.</h1>\r\n<h2>No MSM action req" +
                     "uired.</h2>\r\n");
             
-            #line 30 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 30 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
 
 }
 else
@@ -96,7 +96,7 @@ else
             #line hidden
             this.Write("<h1 class=\"alert\">ERROR: Sampling Service encountered (");
             
-            #line 35 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 35 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(result.FailedSamples.Count()));
             
             #line default
@@ -104,7 +104,7 @@ else
             this.Write(") exceptions during sampling.</h1>\r\n<h2 class=\"alert\">MSM action is required.</h2" +
                     ">\r\n");
             
-            #line 37 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 37 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
 
 }
 
@@ -114,28 +114,28 @@ else
             this.Write("</p>\r\n\r\n<p>\r\n<table>\r\n<tr>\r\n\t<th>Client</th>\r\n\t<th>MSM</th>\r\n\t<th>Record Count</t" +
                     "h>\r\n</tr>\r\n<tr>\r\n\t<td>");
             
-            #line 50 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 50 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(result.Dataset.Client.Name));
             
             #line default
             #line hidden
             this.Write("</td>\r\n\t<td>");
             
-            #line 51 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 51 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(result.Dataset.Study.AccountDirector.FullName));
             
             #line default
             #line hidden
             this.Write(" (");
             
-            #line 51 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 51 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(result.Dataset.Study.AccountDirector.Email));
             
             #line default
             #line hidden
             this.Write(")</td>\r\n\t<td>");
             
-            #line 52 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 52 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(result.Dataset.StudyDataset.RecordCount));
             
             #line default
@@ -143,21 +143,21 @@ else
             this.Write("</td>\r\n</tr>\r\n<tr>\r\n\t<th>Total Sample Count</th>\r\n\t<th>Successful Samples</th>\r\n\t" +
                     "<th>Failed Samples</th>\r\n</tr>\r\n<tr>\r\n\t<td>");
             
-            #line 60 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 60 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(result.AllSamples.Count()));
             
             #line default
             #line hidden
             this.Write("</td>\r\n\t<td>");
             
-            #line 61 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 61 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(result.SuccessfulSamples.Count()));
             
             #line default
             #line hidden
             this.Write("</td>\r\n\t");
             
-            #line 62 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 62 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
 
     if (result.Check())
     {
@@ -167,7 +167,7 @@ else
             #line hidden
             this.Write("\t<td>\r\n");
             
-            #line 67 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 67 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
 
     }
     else
@@ -178,7 +178,7 @@ else
             #line hidden
             this.Write("\t<td class=\"alert\">\r\n");
             
-            #line 73 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 73 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
 
     }
 
@@ -187,14 +187,14 @@ else
             #line hidden
             this.Write("\t");
             
-            #line 76 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 76 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(result.FailedSamples.Count()));
             
             #line default
             #line hidden
             this.Write("</td>\r\n</tr>\r\n</table>\r\n</p>\r\n\r\n");
             
-            #line 81 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 81 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
 
 foreach (Nrc.QualiSys.Library.Survey survey in result.Surveys.Where(survey => survey.IsValidated))
 {
@@ -204,28 +204,28 @@ foreach (Nrc.QualiSys.Library.Survey survey in result.Surveys.Where(survey => su
             #line hidden
             this.Write("\r\n<h2>Survey: ");
             
-            #line 86 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 86 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(survey.ClientFacingName));
             
             #line default
             #line hidden
             this.Write("</h2>\r\n<h3>Dataset Range: ");
             
-            #line 87 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 87 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(result.Dataset.GetStudyDatasetDateRange(survey).MinimumDate.ToShortDateString()));
             
             #line default
             #line hidden
             this.Write(" - ");
             
-            #line 87 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 87 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(result.Dataset.GetStudyDatasetDateRange(survey).MaximumDate.ToShortDateString()));
             
             #line default
             #line hidden
             this.Write("</h3>\r\n\r\n");
             
-            #line 89 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 89 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
 
     foreach (NRC.Picker.SamplingService.Store.Models.SampleResult sampleResult in result.GetResultsForSurvey(survey))
     {
@@ -237,7 +237,7 @@ foreach (Nrc.QualiSys.Library.Survey survey in result.Surveys.Where(survey => su
                     "od Range</th>\r\n\t<th class=\"field\">Sample Range</th>\r\n\t<th class=\"field\">Date Cov" +
                     "erage</th>\r\n</tr>\r\n<tr>\r\n");
             
-            #line 102 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 102 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
 
     if (sampleResult.Check(result.SampleCountThreshold))
     {
@@ -247,7 +247,7 @@ foreach (Nrc.QualiSys.Library.Survey survey in result.Surveys.Where(survey => su
             #line hidden
             this.Write("\t\t<td colspan=\"3\">Successfully scheduled!  No MSM action required.</td>\r\n");
             
-            #line 107 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 107 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
 
     }
     else
@@ -259,7 +259,7 @@ foreach (Nrc.QualiSys.Library.Survey survey in result.Surveys.Where(survey => su
             this.Write("  \r\n\t\t<td class=\"alert\" colspan=\"3\">Sample failed!  Not scheduled.  Please schedu" +
                     "le manually.</td>\r\n");
             
-            #line 113 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 113 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
 
     }
 
@@ -268,35 +268,35 @@ foreach (Nrc.QualiSys.Library.Survey survey in result.Surveys.Where(survey => su
             #line hidden
             this.Write("\t<td class=\"field\">");
             
-            #line 116 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 116 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(sampleResult.DateRange.Period.ExpectedStartDate.Value.ToShortDateString()));
             
             #line default
             #line hidden
             this.Write(" - ");
             
-            #line 116 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 116 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(sampleResult.DateRange.Period.ExpectedEndDate.Value.ToShortDateString()));
             
             #line default
             #line hidden
             this.Write("</td>\r\n\t<td class=\"field\">");
             
-            #line 117 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 117 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(sampleResult.DateRange.Start.Date.ToShortDateString()));
             
             #line default
             #line hidden
             this.Write(" - ");
             
-            #line 117 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 117 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(sampleResult.DateRange.End.Date.ToShortDateString()));
             
             #line default
             #line hidden
             this.Write("</td>\r\n\t<td class=\"field\">");
             
-            #line 118 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 118 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture((int) (sampleResult.DateRange.CoverageFraction * 100)));
             
             #line default
@@ -305,7 +305,7 @@ foreach (Nrc.QualiSys.Library.Survey survey in result.Surveys.Where(survey => su
                     "th>\r\n\t<th class=\"field\">Outgo Needed</th>\r\n\t<th class=\"field\">Available</th>\r\n\t<" +
                     "th class=\"field\">Sampled</th>\r\n\t<th class=\"field\">Sample Coverage</th>\r\n</tr>\r\n");
             
-            #line 128 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 128 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
 
     foreach (NRC.Picker.SamplingService.Store.Models.SampleUnitResult sampleUnitResult in sampleResult.SampleUnitResults)
     {
@@ -315,35 +315,35 @@ foreach (Nrc.QualiSys.Library.Survey survey in result.Surveys.Where(survey => su
             #line hidden
             this.Write("<tr>\r\n\t<td>");
             
-            #line 133 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 133 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(sampleUnitResult.SampleUnit.Name));
             
             #line default
             #line hidden
             this.Write("</td>\r\n\t<td class=\"field\">");
             
-            #line 134 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 134 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(sampleUnitResult.PriorOutgo));
             
             #line default
             #line hidden
             this.Write("</td>\r\n\t<td class=\"field\">");
             
-            #line 135 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 135 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(sampleUnitResult.RealTarget));
             
             #line default
             #line hidden
             this.Write("</td>\r\n\t<td class=\"field\">");
             
-            #line 136 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 136 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(sampleUnitResult.Available));
             
             #line default
             #line hidden
             this.Write("</td>\r\n");
             
-            #line 137 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 137 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
 
     if (sampleUnitResult.Check(result.SampleCountThreshold))
     {
@@ -353,7 +353,7 @@ foreach (Nrc.QualiSys.Library.Survey survey in result.Surveys.Where(survey => su
             #line hidden
             this.Write("\t<td class=\"field\">\r\n");
             
-            #line 142 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 142 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
 
     }
     else
@@ -364,7 +364,7 @@ foreach (Nrc.QualiSys.Library.Survey survey in result.Surveys.Where(survey => su
             #line hidden
             this.Write("\t<td class=\"alert field\">\r\n");
             
-            #line 148 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 148 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
 
     }
 
@@ -373,14 +373,14 @@ foreach (Nrc.QualiSys.Library.Survey survey in result.Surveys.Where(survey => su
             #line hidden
             this.Write("\t\t");
             
-            #line 151 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 151 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(sampleUnitResult.Actual));
             
             #line default
             #line hidden
             this.Write("\r\n\t</td>\r\n");
             
-            #line 153 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 153 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
 
     if (sampleUnitResult.Threshold(result.SampleCountThreshold))
     {
@@ -390,7 +390,7 @@ foreach (Nrc.QualiSys.Library.Survey survey in result.Surveys.Where(survey => su
             #line hidden
             this.Write("\t<td class=\"field\">\r\n");
             
-            #line 158 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 158 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
 
     }
     else
@@ -401,7 +401,7 @@ foreach (Nrc.QualiSys.Library.Survey survey in result.Surveys.Where(survey => su
             #line hidden
             this.Write("\t<td class=\"alert field\">\r\n");
             
-            #line 164 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 164 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
 
     }
 
@@ -410,35 +410,35 @@ foreach (Nrc.QualiSys.Library.Survey survey in result.Surveys.Where(survey => su
             #line hidden
             this.Write("\t");
             
-            #line 167 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 167 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
     if (sampleUnitResult.RealTarget == 0) { 
             
             #line default
             #line hidden
             this.Write("\t\t100%\r\n\t");
             
-            #line 169 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 169 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
     } else {
             
             #line default
             #line hidden
             this.Write("\t\t");
             
-            #line 170 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 170 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture((int)(sampleUnitResult.SampleCoverage * 100)));
             
             #line default
             #line hidden
             this.Write("%\r\n\t");
             
-            #line 171 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 171 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
     } 
             
             #line default
             #line hidden
             this.Write("\t</td>\r\n</tr>\r\n");
             
-            #line 174 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 174 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
 
     }
 
@@ -447,7 +447,7 @@ foreach (Nrc.QualiSys.Library.Survey survey in result.Surveys.Where(survey => su
             #line hidden
             this.Write("</table>\r\n</p>\r\n<br/>\r\n");
             
-            #line 180 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+            #line 180 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
 
     }
 }
@@ -459,7 +459,7 @@ foreach (Nrc.QualiSys.Library.Survey survey in result.Surveys.Where(survey => su
             return this.GenerationEnvironment.ToString();
         }
         
-        #line 1 "C:\TFS13GIT\Qualisys\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
+        #line 1 "C:\GIT\Platform\NRC.Picker.SamplingService\NRC.Picker.SamplingService.Mailer\ReportTemplate.tt"
 
 private global::NRC.Picker.SamplingService.Store.Models.DatasetResult _resultField;
 
