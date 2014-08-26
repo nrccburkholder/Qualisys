@@ -70,6 +70,8 @@ Partial Class SurveyPropertiesEditor
         Me.FacingNameTextBox = New System.Windows.Forms.TextBox()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.InformationBar = New Nrc.Qualisys.ConfigurationManager.InformationBar()
+        Me.UseUSPSAddrChangeServiceLabel = New System.Windows.Forms.Label()
+        Me.UseUSPSAddrChangeServiceCheckBox = New System.Windows.Forms.CheckBox()
         Me.BottomPanel.SuspendLayout()
         Me.WorkAreaPanel.SuspendLayout()
         Me.Panel1.SuspendLayout()
@@ -112,6 +114,8 @@ Partial Class SurveyPropertiesEditor
         'WorkAreaPanel
         '
         Me.WorkAreaPanel.AutoScroll = True
+        Me.WorkAreaPanel.Controls.Add(Me.UseUSPSAddrChangeServiceLabel)
+        Me.WorkAreaPanel.Controls.Add(Me.UseUSPSAddrChangeServiceCheckBox)
         Me.WorkAreaPanel.Controls.Add(Me.Label12)
         Me.WorkAreaPanel.Controls.Add(Me.SurveySubTypeListBox)
         Me.WorkAreaPanel.Controls.Add(Me.Label6)
@@ -622,6 +626,24 @@ Partial Class SurveyPropertiesEditor
         Me.InformationBar.TabIndex = 0
         Me.InformationBar.TabStop = False
         '
+        'UseUSPSAddrChangeServiceLabel
+        '
+        Me.UseUSPSAddrChangeServiceLabel.AutoSize = True
+        Me.UseUSPSAddrChangeServiceLabel.Location = New System.Drawing.Point(6, 598)
+        Me.UseUSPSAddrChangeServiceLabel.Name = "UseUSPSAddrChangeServiceLabel"
+        Me.UseUSPSAddrChangeServiceLabel.Size = New System.Drawing.Size(165, 13)
+        Me.UseUSPSAddrChangeServiceLabel.TabIndex = 42
+        Me.UseUSPSAddrChangeServiceLabel.Text = "Use USPS Addr Change Service:"
+        '
+        'UseUSPSAddrChangeServiceCheckBox
+        '
+        Me.UseUSPSAddrChangeServiceCheckBox.AutoSize = True
+        Me.UseUSPSAddrChangeServiceCheckBox.Location = New System.Drawing.Point(177, 598)
+        Me.UseUSPSAddrChangeServiceCheckBox.Name = "UseUSPSAddrChangeServiceCheckBox"
+        Me.UseUSPSAddrChangeServiceCheckBox.Size = New System.Drawing.Size(15, 14)
+        Me.UseUSPSAddrChangeServiceCheckBox.TabIndex = 41
+        Me.UseUSPSAddrChangeServiceCheckBox.UseVisualStyleBackColor = True
+        '
         'SurveyPropertiesEditor
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -694,5 +716,7 @@ Partial Class SurveyPropertiesEditor
     Friend WithEvents QuestionnaireTypeComboBox As System.Windows.Forms.ComboBox
     Friend WithEvents SurveySubTypeListBox As System.Windows.Forms.CheckedListBox
     Friend WithEvents Label12 As System.Windows.Forms.Label
+    Friend WithEvents UseUSPSAddrChangeServiceLabel As System.Windows.Forms.Label
+    Friend WithEvents UseUSPSAddrChangeServiceCheckBox As System.Windows.Forms.CheckBox
 
 End Class

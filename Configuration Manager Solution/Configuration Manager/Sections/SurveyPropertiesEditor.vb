@@ -71,6 +71,8 @@ Public Class SurveyPropertiesEditor
             ResurveyExcludionDaysNumeric.Value = survey.ResurveyExclusionPeriodsNumericDefault
             ResurveyExcludionDaysNumeric.Enabled = Not survey.IsResurveyExclusionPeriodsNumericDisabled
 
+            UseUSPSAddrChangeServiceCheckBox.Checked = survey.UseUSPSAddrChangeServiceDefault
+
         Catch ex As System.InvalidCastException
             Return
 
@@ -375,6 +377,8 @@ Public Class SurveyPropertiesEditor
             ContractedLanguagesListBox.Visible = False
         End If
 
+        UseUSPSAddrChangeServiceCheckBox.Checked = mModule.EditingSurvey.UseUSPSAddrChangeService
+
         'Disable all the fields when viewing properties
         WorkAreaPanel.Enabled = mModule.IsEditable
         OKButton.Enabled = mModule.IsEditable
@@ -552,6 +556,8 @@ Public Class SurveyPropertiesEditor
             .ResurveyPeriod = CInt(ResurveyExcludionDaysNumeric.Value)
             .IsActive = Not InActivateCheckBox.Checked
             .ContractedLanguages = ContractedLanguages
+            .UseUSPSAddrChangeService = UseUSPSAddrChangeServiceCheckBox.Checked
+
         End With
 
     End Sub
