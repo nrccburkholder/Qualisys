@@ -65,7 +65,7 @@ Public Class MethodologyEditor
             methCollection = Methodology.GetBySurveyId(mSurvey.Id)
 
             'Build the methodology types combo box collection
-            Dim methTypeCollection As Collection(Of StandardMethodology) = StandardMethodology.GetBySurveyType(mSurvey.SurveyType)
+            Dim methTypeCollection As Collection(Of StandardMethodology) = StandardMethodology.GetBySurveyType(mSurvey.SurveyType, mSurvey.SurveySubTypes)
             With MethTypeColumn
                 .DataSource = methTypeCollection
                 .DisplayMember = "Name"
@@ -126,7 +126,7 @@ Public Class MethodologyEditor
                         MessageBox.Show(message, "Invalid Methodology Type Encountered", MessageBoxButtons.OK, MessageBoxIcon.Warning)
 
                         'Set the methodology type to 'Custom'
-                        meth.ResetMethodologyTypeToCustom(mSurvey.SurveyType)
+                        meth.ResetMethodologyTypeToCustom(mSurvey.SurveyType, mSurvey.SurveySubTypes)
                     End If
 
                     'Add this methodology to the screen
@@ -244,8 +244,10 @@ Public Class MethodologyEditor
         'Get a name for the new methodology
         Dim methName As String = String.Empty
 
+
+
         'Get the default standard methodology for the new methodology
-        Dim stdMeth As StandardMethodology = StandardMethodology.GetBySurveyType(mSurvey.SurveyType).Item(0)
+        Dim stdMeth As StandardMethodology = StandardMethodology.GetBySurveyType(mSurvey.SurveyType, mSurvey.SurveySubTypes).Item(0)
 
         'Create the new methodology
         Dim meth As Methodology = Methodology.CreateFromStandard(mSurvey.Id, methName, stdMeth)

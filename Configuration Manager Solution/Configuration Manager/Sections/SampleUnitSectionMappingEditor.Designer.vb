@@ -19,43 +19,43 @@ Partial Class SampleUnitSectionMappingEditor
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Me.SampleUnitBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.BottomPanel = New System.Windows.Forms.Panel
-        Me.ApplyButton = New System.Windows.Forms.Button
-        Me.OKButton = New System.Windows.Forms.Button
-        Me.CancelButton = New System.Windows.Forms.Button
-        Me.BodyPanel = New System.Windows.Forms.SplitContainer
-        Me.SampleUnitTreeView = New Nrc.Qualisys.ConfigurationManager.MultiSelectTreeView
-        Me.HeaderStrip2 = New Nrc.Framework.WinForms.HeaderStrip
-        Me.ToolStripLabel2 = New System.Windows.Forms.ToolStripLabel
-        Me.SectionsPanel = New System.Windows.Forms.SplitContainer
-        Me.AvailableSectionsGridControl = New DevExpress.XtraGrid.GridControl
+        Me.BottomPanel = New System.Windows.Forms.Panel()
+        Me.ApplyButton = New System.Windows.Forms.Button()
+        Me.OKButton = New System.Windows.Forms.Button()
+        Me.CancelButton = New System.Windows.Forms.Button()
+        Me.BodyPanel = New System.Windows.Forms.SplitContainer()
+        Me.SampleUnitTreeView = New Nrc.Qualisys.ConfigurationManager.MultiSelectTreeView()
+        Me.HeaderStrip2 = New Nrc.Framework.WinForms.HeaderStrip()
+        Me.ToolStripLabel2 = New System.Windows.Forms.ToolStripLabel()
+        Me.SectionsPanel = New System.Windows.Forms.SplitContainer()
+        Me.AvailableSectionsGridControl = New DevExpress.XtraGrid.GridControl()
         Me.MapContextMenuStrip = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.MapToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.MapToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AvailableSectionsBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.AvailableGridView = New DevExpress.XtraGrid.Views.Grid.GridView
-        Me.colQuestionSectionId = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.AvailableSectionLabelLookUpEdit = New DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit
+        Me.AvailableGridView = New DevExpress.XtraGrid.Views.Grid.GridView()
+        Me.colQuestionSectionId = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.AvailableSectionLabelLookUpEdit = New DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit()
         Me.QuestionSectionBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.HeaderStrip1 = New Nrc.Framework.WinForms.HeaderStrip
-        Me.ToolStripLabel1 = New System.Windows.Forms.ToolStripLabel
-        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
-        Me.AddMappedSectionButton = New System.Windows.Forms.ToolStripButton
-        Me.MappingSectionsGridControl = New DevExpress.XtraGrid.GridControl
+        Me.HeaderStrip1 = New Nrc.Framework.WinForms.HeaderStrip()
+        Me.ToolStripLabel1 = New System.Windows.Forms.ToolStripLabel()
+        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
+        Me.AddMappedSectionButton = New System.Windows.Forms.ToolStripButton()
+        Me.MappingSectionsGridControl = New DevExpress.XtraGrid.GridControl()
         Me.UnMapContextMenuStrip = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.UnMapToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.UnMapToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MappedSectionsBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.MappedGridView = New DevExpress.XtraGrid.Views.Grid.GridView
-        Me.colSampleUnitId = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.SampleUnitLookUpEdit = New DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit
-        Me.colQuestionSectionId1 = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.MappedSectionsLookupEdit = New DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit
-        Me.HeaderStrip3 = New Nrc.Framework.WinForms.HeaderStrip
-        Me.ToolStripLabel3 = New System.Windows.Forms.ToolStripLabel
-        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
-        Me.DeleteMappedSectionButton = New System.Windows.Forms.ToolStripButton
-        Me.InformationBar = New Nrc.Qualisys.ConfigurationManager.InformationBar
+        Me.MappedGridView = New DevExpress.XtraGrid.Views.Grid.GridView()
+        Me.colSampleUnitId = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.SampleUnitLookUpEdit = New DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit()
+        Me.colQuestionSectionId1 = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.MappedSectionsLookupEdit = New DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit()
+        Me.HeaderStrip3 = New Nrc.Framework.WinForms.HeaderStrip()
+        Me.ToolStripLabel3 = New System.Windows.Forms.ToolStripLabel()
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.DeleteMappedSectionButton = New System.Windows.Forms.ToolStripButton()
+        Me.InformationBar = New Nrc.Qualisys.ConfigurationManager.InformationBar()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         CType(Me.SampleUnitBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.BottomPanel.SuspendLayout()
@@ -154,30 +154,30 @@ Partial Class SampleUnitSectionMappingEditor
         Me.SampleUnitTreeView.Dock = System.Windows.Forms.DockStyle.Fill
         Me.SampleUnitTreeView.ForeColor = System.Drawing.SystemColors.ControlText
         Me.SampleUnitTreeView.HideSelection = False
-        Me.SampleUnitTreeView.Location = New System.Drawing.Point(0, 19)
+        Me.SampleUnitTreeView.Location = New System.Drawing.Point(0, 21)
         Me.SampleUnitTreeView.Name = "SampleUnitTreeView"
         Me.SampleUnitTreeView.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.SampleUnitTreeView.Size = New System.Drawing.Size(209, 459)
+        Me.SampleUnitTreeView.Size = New System.Drawing.Size(209, 457)
         Me.SampleUnitTreeView.TabIndex = 3
         '
         'HeaderStrip2
         '
         Me.HeaderStrip2.AutoSize = False
-        Me.HeaderStrip2.Font = New System.Drawing.Font("Tahoma", 8.25!)
+        Me.HeaderStrip2.Font = New System.Drawing.Font("Segoe UI", 9.0!)
         Me.HeaderStrip2.ForeColor = System.Drawing.Color.Black
         Me.HeaderStrip2.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
         Me.HeaderStrip2.HeaderStyle = Nrc.Framework.WinForms.HeaderStripStyle.Small
         Me.HeaderStrip2.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripLabel2})
         Me.HeaderStrip2.Location = New System.Drawing.Point(0, 0)
         Me.HeaderStrip2.Name = "HeaderStrip2"
-        Me.HeaderStrip2.Size = New System.Drawing.Size(209, 19)
+        Me.HeaderStrip2.Size = New System.Drawing.Size(209, 21)
         Me.HeaderStrip2.TabIndex = 2
         Me.HeaderStrip2.Text = "HeaderStrip2"
         '
         'ToolStripLabel2
         '
         Me.ToolStripLabel2.Name = "ToolStripLabel2"
-        Me.ToolStripLabel2.Size = New System.Drawing.Size(88, 16)
+        Me.ToolStripLabel2.Size = New System.Drawing.Size(97, 18)
         Me.ToolStripLabel2.Text = "Sample Unit Tree"
         '
         'SectionsPanel
@@ -207,12 +207,11 @@ Partial Class SampleUnitSectionMappingEditor
         Me.AvailableSectionsGridControl.ContextMenuStrip = Me.MapContextMenuStrip
         Me.AvailableSectionsGridControl.DataSource = Me.AvailableSectionsBindingSource
         Me.AvailableSectionsGridControl.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.AvailableSectionsGridControl.EmbeddedNavigator.Name = ""
-        Me.AvailableSectionsGridControl.Location = New System.Drawing.Point(0, 19)
+        Me.AvailableSectionsGridControl.Location = New System.Drawing.Point(0, 21)
         Me.AvailableSectionsGridControl.MainView = Me.AvailableGridView
         Me.AvailableSectionsGridControl.Name = "AvailableSectionsGridControl"
         Me.AvailableSectionsGridControl.RepositoryItems.AddRange(New DevExpress.XtraEditors.Repository.RepositoryItem() {Me.AvailableSectionLabelLookUpEdit})
-        Me.AvailableSectionsGridControl.Size = New System.Drawing.Size(469, 245)
+        Me.AvailableSectionsGridControl.Size = New System.Drawing.Size(469, 243)
         Me.AvailableSectionsGridControl.TabIndex = 3
         Me.AvailableSectionsGridControl.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.AvailableGridView})
         '
@@ -220,12 +219,12 @@ Partial Class SampleUnitSectionMappingEditor
         '
         Me.MapContextMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MapToolStripMenuItem})
         Me.MapContextMenuStrip.Name = "MapContextMenuStrip"
-        Me.MapContextMenuStrip.Size = New System.Drawing.Size(106, 26)
+        Me.MapContextMenuStrip.Size = New System.Drawing.Size(99, 26)
         '
         'MapToolStripMenuItem
         '
         Me.MapToolStripMenuItem.Name = "MapToolStripMenuItem"
-        Me.MapToolStripMenuItem.Size = New System.Drawing.Size(105, 22)
+        Me.MapToolStripMenuItem.Size = New System.Drawing.Size(98, 22)
         Me.MapToolStripMenuItem.Text = "Map"
         '
         'AvailableSectionsBindingSource
@@ -245,7 +244,6 @@ Partial Class SampleUnitSectionMappingEditor
         Me.AvailableGridView.OptionsSelection.MultiSelect = True
         Me.AvailableGridView.OptionsView.ShowColumnHeaders = False
         Me.AvailableGridView.OptionsView.ShowFilterPanelMode = DevExpress.XtraGrid.Views.Base.ShowFilterPanelMode.Never
-        'Me.AvailableGridView.OptionsView.ShowFilterPanel = False
         Me.AvailableGridView.OptionsView.ShowGroupPanel = False
         Me.AvailableGridView.SortInfo.AddRange(New DevExpress.XtraGrid.Columns.GridColumnSortInfo() {New DevExpress.XtraGrid.Columns.GridColumnSortInfo(Me.colQuestionSectionId, DevExpress.Data.ColumnSortOrder.Ascending)})
         '
@@ -275,14 +273,14 @@ Partial Class SampleUnitSectionMappingEditor
         'HeaderStrip1
         '
         Me.HeaderStrip1.AutoSize = False
-        Me.HeaderStrip1.Font = New System.Drawing.Font("Tahoma", 8.25!)
+        Me.HeaderStrip1.Font = New System.Drawing.Font("Segoe UI", 9.0!)
         Me.HeaderStrip1.ForeColor = System.Drawing.Color.Black
         Me.HeaderStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
         Me.HeaderStrip1.HeaderStyle = Nrc.Framework.WinForms.HeaderStripStyle.Small
         Me.HeaderStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripLabel1, Me.ToolStripSeparator2, Me.AddMappedSectionButton})
         Me.HeaderStrip1.Location = New System.Drawing.Point(0, 0)
         Me.HeaderStrip1.Name = "HeaderStrip1"
-        Me.HeaderStrip1.Size = New System.Drawing.Size(469, 19)
+        Me.HeaderStrip1.Size = New System.Drawing.Size(469, 21)
         Me.HeaderStrip1.TabIndex = 3
         Me.HeaderStrip1.Text = "Available Sections"
         '
@@ -290,13 +288,13 @@ Partial Class SampleUnitSectionMappingEditor
         '
         Me.ToolStripLabel1.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Bold)
         Me.ToolStripLabel1.Name = "ToolStripLabel1"
-        Me.ToolStripLabel1.Size = New System.Drawing.Size(110, 16)
+        Me.ToolStripLabel1.Size = New System.Drawing.Size(110, 18)
         Me.ToolStripLabel1.Text = "Available Sections"
         '
         'ToolStripSeparator2
         '
         Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-        Me.ToolStripSeparator2.Size = New System.Drawing.Size(6, 19)
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(6, 21)
         '
         'AddMappedSectionButton
         '
@@ -304,7 +302,7 @@ Partial Class SampleUnitSectionMappingEditor
         Me.AddMappedSectionButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
         Me.AddMappedSectionButton.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.AddMappedSectionButton.Name = "AddMappedSectionButton"
-        Me.AddMappedSectionButton.Size = New System.Drawing.Size(31, 16)
+        Me.AddMappedSectionButton.Size = New System.Drawing.Size(35, 18)
         Me.AddMappedSectionButton.Text = "Map"
         Me.AddMappedSectionButton.ToolTipText = "Map Selected Sections to Selected Sample Units"
         '
@@ -313,12 +311,11 @@ Partial Class SampleUnitSectionMappingEditor
         Me.MappingSectionsGridControl.ContextMenuStrip = Me.UnMapContextMenuStrip
         Me.MappingSectionsGridControl.DataSource = Me.MappedSectionsBindingSource
         Me.MappingSectionsGridControl.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.MappingSectionsGridControl.EmbeddedNavigator.Name = ""
-        Me.MappingSectionsGridControl.Location = New System.Drawing.Point(0, 19)
+        Me.MappingSectionsGridControl.Location = New System.Drawing.Point(0, 21)
         Me.MappingSectionsGridControl.MainView = Me.MappedGridView
         Me.MappingSectionsGridControl.Name = "MappingSectionsGridControl"
         Me.MappingSectionsGridControl.RepositoryItems.AddRange(New DevExpress.XtraEditors.Repository.RepositoryItem() {Me.SampleUnitLookUpEdit, Me.MappedSectionsLookupEdit})
-        Me.MappingSectionsGridControl.Size = New System.Drawing.Size(469, 191)
+        Me.MappingSectionsGridControl.Size = New System.Drawing.Size(469, 189)
         Me.MappingSectionsGridControl.TabIndex = 3
         Me.MappingSectionsGridControl.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.MappedGridView})
         '
@@ -326,12 +323,12 @@ Partial Class SampleUnitSectionMappingEditor
         '
         Me.UnMapContextMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.UnMapToolStripMenuItem})
         Me.UnMapContextMenuStrip.Name = "UnMapContextMenuStrip"
-        Me.UnMapContextMenuStrip.Size = New System.Drawing.Size(119, 26)
+        Me.UnMapContextMenuStrip.Size = New System.Drawing.Size(114, 26)
         '
         'UnMapToolStripMenuItem
         '
         Me.UnMapToolStripMenuItem.Name = "UnMapToolStripMenuItem"
-        Me.UnMapToolStripMenuItem.Size = New System.Drawing.Size(118, 22)
+        Me.UnMapToolStripMenuItem.Size = New System.Drawing.Size(113, 22)
         Me.UnMapToolStripMenuItem.Text = "UnMap"
         '
         'MappedSectionsBindingSource
@@ -396,14 +393,14 @@ Partial Class SampleUnitSectionMappingEditor
         'HeaderStrip3
         '
         Me.HeaderStrip3.AutoSize = False
-        Me.HeaderStrip3.Font = New System.Drawing.Font("Tahoma", 8.25!)
+        Me.HeaderStrip3.Font = New System.Drawing.Font("Segoe UI", 9.0!)
         Me.HeaderStrip3.ForeColor = System.Drawing.Color.Black
         Me.HeaderStrip3.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
         Me.HeaderStrip3.HeaderStyle = Nrc.Framework.WinForms.HeaderStripStyle.Small
         Me.HeaderStrip3.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripLabel3, Me.ToolStripSeparator1, Me.DeleteMappedSectionButton})
         Me.HeaderStrip3.Location = New System.Drawing.Point(0, 0)
         Me.HeaderStrip3.Name = "HeaderStrip3"
-        Me.HeaderStrip3.Size = New System.Drawing.Size(469, 19)
+        Me.HeaderStrip3.Size = New System.Drawing.Size(469, 21)
         Me.HeaderStrip3.TabIndex = 3
         Me.HeaderStrip3.Text = "HeaderStrip3"
         '
@@ -411,20 +408,20 @@ Partial Class SampleUnitSectionMappingEditor
         '
         Me.ToolStripLabel3.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Bold)
         Me.ToolStripLabel3.Name = "ToolStripLabel3"
-        Me.ToolStripLabel3.Size = New System.Drawing.Size(103, 16)
+        Me.ToolStripLabel3.Size = New System.Drawing.Size(103, 18)
         Me.ToolStripLabel3.Text = "Mapped Sections"
         '
         'ToolStripSeparator1
         '
         Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 19)
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 21)
         '
         'DeleteMappedSectionButton
         '
         Me.DeleteMappedSectionButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
         Me.DeleteMappedSectionButton.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.DeleteMappedSectionButton.Name = "DeleteMappedSectionButton"
-        Me.DeleteMappedSectionButton.Size = New System.Drawing.Size(44, 16)
+        Me.DeleteMappedSectionButton.Size = New System.Drawing.Size(50, 18)
         Me.DeleteMappedSectionButton.Text = "UnMap"
         Me.DeleteMappedSectionButton.ToolTipText = "UnMap Selected Items"
         '

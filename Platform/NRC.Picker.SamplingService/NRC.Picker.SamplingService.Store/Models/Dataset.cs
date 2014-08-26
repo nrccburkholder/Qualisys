@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -234,7 +234,8 @@ namespace NRC.Picker.SamplingService.Store.Models
                 }
 
                 // this is a hack for HHCAHPS, where all data entries are often the first of the month
-                if (survey.SurveyType == SurveyTypes.HHcahps)
+                // TODO: analyze survey rules need for new property here or not
+                if (survey.get_IsMonthlyOnly() && survey.get_ResurveyExclusionPeriodsNumericDefault() == 6 ) //(survey.SurveyType == SurveyTypes.HHcahps)
                 {
                     dateRanges.Add(new DateRange(periodStart, periodEnd, period));
                 }
@@ -249,36 +250,38 @@ namespace NRC.Picker.SamplingService.Store.Models
 
         private void CheckHCHAPS()
         {
-            foreach (Survey survey in Surveys
-                                      .Where(s => s.SurveyType == SurveyTypes.Hcahps))
-            {
-                DateTime dataStart = GetStudyDatasetDateRange(survey).MinimumDate;
-                SampleSet lastSample = QualisysAdapter.GetMostRecentSampleSetForSurvey(survey);
-                if (lastSample != null)
+            foreach (Survey survey in Surveys)
+                                      //.Where(s => s.SurveyType == SurveyTypes.Hcahps))
+                // TODO: analyze survey rules need for new property here or not
+                if (survey.get_IsMonthlyOnly() && survey.get_ResurveyExclusionPeriodsNumericDefault() == 6)
                 {
-                    int daysBetweenSamples = (dataStart - lastSample.SampleEndDate).Days;
-                    if (daysBetweenSamples > 1)
+                    DateTime dataStart = GetStudyDatasetDateRange(survey).MinimumDate;
+                    SampleSet lastSample = QualisysAdapter.GetMostRecentSampleSetForSurvey(survey);
+                    if (lastSample != null)
                     {
-                        throw new HCAHPSGapException();
+                        int daysBetweenSamples = (dataStart - lastSample.SampleEndDate).Days;
+                        if (daysBetweenSamples > 1)
+                        {
+                            throw new HCAHPSGapException();
+                        }
+                    }
+
+                    MedicareNumberList medicareNumberList = MedicareNumber.GetBySurveyID(survey.Id);
+                    foreach (MedicareNumber medicareNumber in medicareNumberList)
+                    {
+                        bool failed = false;
+                        medicareNumber.RecalculateProportion(dataStart, Study.AccountDirectorEmployeeId, ref failed);
+                        if (failed)
+                        {
+                            throw new CAHPSRecalculationFailedException();
+                        }
+                    }
+
+                    if (MedicareNumber.GetSamplingLockedBySurveyIDs(survey.Id.ToString()).Rows.Count != 0)
+                    {
+                        throw new CAHPSCCNLockedException();
                     }
                 }
-
-                MedicareNumberList medicareNumberList = MedicareNumber.GetBySurveyID(survey.Id);
-                foreach (MedicareNumber medicareNumber in medicareNumberList)
-                {
-                    bool failed = false;
-                    medicareNumber.RecalculateProportion(dataStart, Study.AccountDirectorEmployeeId, ref failed);
-                    if (failed)
-                    {
-                        throw new CAHPSRecalculationFailedException();
-                    }
-                }
-
-                if (MedicareNumber.GetSamplingLockedBySurveyIDs(survey.Id.ToString()).Rows.Count != 0)
-                {
-                    throw new CAHPSCCNLockedException();
-                }
-            }
         }
 
         public StudyDatasetDateRange GetStudyDatasetDateRange(Survey survey)

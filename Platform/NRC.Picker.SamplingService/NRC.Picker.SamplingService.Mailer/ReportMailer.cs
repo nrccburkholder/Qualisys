@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
-using NRC.Common;
+using NRC.Common ;
 using NRC.Picker.SamplingService.Store.Models;
 using NRC.Platform.Mailer.API;
 

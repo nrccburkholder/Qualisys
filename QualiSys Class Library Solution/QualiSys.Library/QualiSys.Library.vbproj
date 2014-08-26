@@ -90,6 +90,10 @@
     <NoWarn>42353,42354,42355</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Platform\NRC.Picker.SamplingService\packages\Newtonsoft.Json.6.0.4\lib\net20\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Nrc.Framework, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Referenced Assemblies\Nrc.Framework.dll</HintPath>
@@ -125,6 +129,7 @@
     <Compile Include="Collections\FacilityList.vb" />
     <Compile Include="Collections\HCAHPSDispositionCollection.vb" />
     <Compile Include="Collections\HHCAHPSDispositionCollection.vb" />
+    <Compile Include="Collections\MailingStepMethodCollection.vb" />
     <Compile Include="Collections\MedicareGlobalCalcDateCollection.vb" />
     <Compile Include="Collections\MedicareGlobalCalculationDefaultCollection.vb" />
     <Compile Include="Collections\MedicareNumberList.vb" />
@@ -135,6 +140,7 @@
     <Compile Include="Collections\ReceiptTypeCollection.vb" />
     <Compile Include="Collections\SampleUnitSectionMappingCollection.vb" />
     <Compile Include="Collections\STUDY_EMPLOYEECollection.vb" />
+    <Compile Include="Collections\SubTypeList.vb" />
     <Compile Include="Collections\SurveyTypeCollection.vb" />
     <Compile Include="Collections\ToBeSeededCollection.vb" />
     <Compile Include="Collections\VendorFile_VoviciDetailCollection.vb" />
@@ -152,6 +158,8 @@
     <Compile Include="DataProviders\MedicareRecalcHistoryProvider.vb" />
     <Compile Include="DataProviders\EmailBlastProvider.vb" />
     <Compile Include="DataProviders\EmailBlastOptionProvider.vb" />
+    <Compile Include="DataProviders\MailingStepMethodProvider.vb" />
+    <Compile Include="DataProviders\ModeSectionMappingProvider.vb" />
     <Compile Include="DataProviders\NavigationProvider.vb">
       <SubType>Code</SubType>
     </Compile>
@@ -193,6 +201,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Enums\StudyTableColumnDataTypes.vb" />
+    <Compile Include="Enums\SubtypeCategories.vb" />
     <Compile Include="Enums\SurveyTypes.vb">
       <SubType>Code</SubType>
     </Compile>
@@ -235,9 +244,11 @@
     <Compile Include="MedicareRecalcHistory.vb" />
     <Compile Include="Methodology.vb" />
     <Compile Include="Collections\MethodologyStepCollection.vb" />
+    <Compile Include="MailingStepMethod.vb" />
     <Compile Include="MethodologyStepType.vb" />
     <Compile Include="EmailBlast.vb" />
     <Compile Include="EmailBlastOption.vb" />
+    <Compile Include="ModeSectionMapping.vb" />
     <Compile Include="Navigation\ClientNavNode.vb">
       <SubType>Code</SubType>
     </Compile>
@@ -322,7 +333,7 @@
     <Compile Include="Survey.vb" />
     <Compile Include="Enums\SurveyCutoffFieldType.vb" />
     <Compile Include="Enums\SampleSelectionType.vb" />
-    <Compile Include="SurveySubType.vb" />
+    <Compile Include="SubType.vb" />
     <Compile Include="SurveyType.vb" />
     <Compile Include="SurveyValidationResult.vb" />
     <Compile Include="ToBeSeeded.vb" />
@@ -338,6 +349,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="packages.config" />
     <None Include="QualisysLibraryClassDiagram.cd" />
     <None Include="Diagrams\ClassDiagram.cd" />
     <None Include="Diagrams\Enumerations.cd" />

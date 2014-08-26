@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("National Research Corporation")> 
 <Assembly: AssemblyProduct("Qualisys Configuration Manager")> 
-<Assembly: AssemblyCopyright("Copyright ©  2013")> 
+<Assembly: AssemblyCopyright("Copyright ©  2014")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
@@ -31,5 +31,7 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("4.1.8.0")> 
-<Assembly: AssemblyFileVersion("4.1.8.0")> 
+
+<Assembly: AssemblyVersion("4.3.0.0")> 
+<Assembly: AssemblyFileVersion("4.3.0.0")> 
+

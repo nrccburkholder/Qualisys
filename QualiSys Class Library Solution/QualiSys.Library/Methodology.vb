@@ -463,10 +463,10 @@ Public Class Methodology
     ''' Resets the methodology type to the first customizable type for the specified survey type without changing the currently configured steps.
     ''' </summary>
     ''' <remarks>The user should understand that existing references to the MethodologySteps will remain unchanged</remarks>
-    Public Sub ResetMethodologyTypeToCustom(ByVal surveyType As Nrc.QualiSys.Library.SurveyTypes)
+    Public Sub ResetMethodologyTypeToCustom(ByVal surveyType As Nrc.QualiSys.Library.SurveyTypes, ByVal subTypes As SubTypeList)
 
         'Get a the available types
-        Dim stdMeths As Collection(Of StandardMethodology) = Library.StandardMethodology.GetBySurveyType(surveyType)
+        Dim stdMeths As Collection(Of StandardMethodology) = Library.StandardMethodology.GetBySurveyType(surveyType, subTypes)
 
         'Find the first custom type
         Dim customMeth As StandardMethodology = Nothing

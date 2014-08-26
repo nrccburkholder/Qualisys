@@ -23,10 +23,11 @@ Partial Class SurveyPropertiesEditor
         Me.cnclButton = New System.Windows.Forms.Button()
         Me.BottomPanel = New System.Windows.Forms.Panel()
         Me.WorkAreaPanel = New System.Windows.Forms.Panel()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.SurveySubTypeListBox = New System.Windows.Forms.CheckedListBox()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.QuestionnaireTypeComboBox = New System.Windows.Forms.ComboBox()
         Me.Label2 = New System.Windows.Forms.Label()
-        Me.SurveySubTypeComboBox = New System.Windows.Forms.ComboBox()
         Me.ContractedLanguagesListBox = New System.Windows.Forms.CheckedListBox()
         Me.ContractedLanguagesLabel = New System.Windows.Forms.Label()
         Me.InActivateLabel = New System.Windows.Forms.Label()
@@ -69,6 +70,8 @@ Partial Class SurveyPropertiesEditor
         Me.FacingNameTextBox = New System.Windows.Forms.TextBox()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.InformationBar = New Nrc.Qualisys.ConfigurationManager.InformationBar()
+        Me.UseUSPSAddrChangeServiceLabel = New System.Windows.Forms.Label()
+        Me.UseUSPSAddrChangeServiceCheckBox = New System.Windows.Forms.CheckBox()
         Me.BottomPanel.SuspendLayout()
         Me.WorkAreaPanel.SuspendLayout()
         Me.Panel1.SuspendLayout()
@@ -103,7 +106,7 @@ Partial Class SurveyPropertiesEditor
         Me.BottomPanel.Controls.Add(Me.OKButton)
         Me.BottomPanel.Controls.Add(Me.cnclButton)
         Me.BottomPanel.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.BottomPanel.Location = New System.Drawing.Point(0, 576)
+        Me.BottomPanel.Location = New System.Drawing.Point(0, 639)
         Me.BottomPanel.Name = "BottomPanel"
         Me.BottomPanel.Size = New System.Drawing.Size(522, 35)
         Me.BottomPanel.TabIndex = 2
@@ -111,10 +114,13 @@ Partial Class SurveyPropertiesEditor
         'WorkAreaPanel
         '
         Me.WorkAreaPanel.AutoScroll = True
+        Me.WorkAreaPanel.Controls.Add(Me.UseUSPSAddrChangeServiceLabel)
+        Me.WorkAreaPanel.Controls.Add(Me.UseUSPSAddrChangeServiceCheckBox)
+        Me.WorkAreaPanel.Controls.Add(Me.Label12)
+        Me.WorkAreaPanel.Controls.Add(Me.SurveySubTypeListBox)
         Me.WorkAreaPanel.Controls.Add(Me.Label6)
         Me.WorkAreaPanel.Controls.Add(Me.QuestionnaireTypeComboBox)
         Me.WorkAreaPanel.Controls.Add(Me.Label2)
-        Me.WorkAreaPanel.Controls.Add(Me.SurveySubTypeComboBox)
         Me.WorkAreaPanel.Controls.Add(Me.ContractedLanguagesListBox)
         Me.WorkAreaPanel.Controls.Add(Me.ContractedLanguagesLabel)
         Me.WorkAreaPanel.Controls.Add(Me.InActivateLabel)
@@ -154,13 +160,35 @@ Partial Class SurveyPropertiesEditor
         Me.WorkAreaPanel.Dock = System.Windows.Forms.DockStyle.Fill
         Me.WorkAreaPanel.Location = New System.Drawing.Point(0, 20)
         Me.WorkAreaPanel.Name = "WorkAreaPanel"
-        Me.WorkAreaPanel.Size = New System.Drawing.Size(522, 556)
+        Me.WorkAreaPanel.Size = New System.Drawing.Size(522, 619)
         Me.WorkAreaPanel.TabIndex = 1
+        '
+        'Label12
+        '
+        Me.Label12.Location = New System.Drawing.Point(175, 193)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(258, 13)
+        Me.Label12.TabIndex = 40
+        Me.Label12.Text = "* Survey sub-type rules will override survey type rules."
+        Me.Label12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'SurveySubTypeListBox
+        '
+        Me.SurveySubTypeListBox.CheckOnClick = True
+        Me.SurveySubTypeListBox.ColumnWidth = 150
+        Me.SurveySubTypeListBox.FormattingEnabled = True
+        Me.SurveySubTypeListBox.IntegralHeight = False
+        Me.SurveySubTypeListBox.Items.AddRange(New Object() {"MNCM", "MIPEC", "WCHQ", "ABCDE", "VWXYZ", "ABCD", "EFGH", "IJKLM", "NOPQ", "RSTUV"})
+        Me.SurveySubTypeListBox.Location = New System.Drawing.Point(176, 110)
+        Me.SurveySubTypeListBox.Margin = New System.Windows.Forms.Padding(3, 0, 3, 0)
+        Me.SurveySubTypeListBox.Name = "SurveySubTypeListBox"
+        Me.SurveySubTypeListBox.Size = New System.Drawing.Size(306, 80)
+        Me.SurveySubTypeListBox.TabIndex = 39
         '
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(5, 137)
+        Me.Label6.Location = New System.Drawing.Point(6, 229)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(113, 13)
         Me.Label6.TabIndex = 38
@@ -172,7 +200,7 @@ Partial Class SurveyPropertiesEditor
         Me.QuestionnaireTypeComboBox.DisplayMember = "Label"
         Me.QuestionnaireTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.QuestionnaireTypeComboBox.FormattingEnabled = True
-        Me.QuestionnaireTypeComboBox.Location = New System.Drawing.Point(176, 134)
+        Me.QuestionnaireTypeComboBox.Location = New System.Drawing.Point(177, 226)
         Me.QuestionnaireTypeComboBox.Name = "QuestionnaireTypeComboBox"
         Me.QuestionnaireTypeComboBox.Size = New System.Drawing.Size(306, 21)
         Me.QuestionnaireTypeComboBox.TabIndex = 37
@@ -188,22 +216,11 @@ Partial Class SurveyPropertiesEditor
         Me.Label2.Text = "Survey Sub-Type:"
         Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'SurveySubTypeComboBox
-        '
-        Me.SurveySubTypeComboBox.DisplayMember = "Label"
-        Me.SurveySubTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.SurveySubTypeComboBox.FormattingEnabled = True
-        Me.SurveySubTypeComboBox.Location = New System.Drawing.Point(176, 107)
-        Me.SurveySubTypeComboBox.Name = "SurveySubTypeComboBox"
-        Me.SurveySubTypeComboBox.Size = New System.Drawing.Size(306, 21)
-        Me.SurveySubTypeComboBox.TabIndex = 35
-        Me.SurveySubTypeComboBox.ValueMember = "Value"
-        '
         'ContractedLanguagesListBox
         '
         Me.ContractedLanguagesListBox.CheckOnClick = True
         Me.ContractedLanguagesListBox.FormattingEnabled = True
-        Me.ContractedLanguagesListBox.Location = New System.Drawing.Point(314, 419)
+        Me.ContractedLanguagesListBox.Location = New System.Drawing.Point(315, 511)
         Me.ContractedLanguagesListBox.Name = "ContractedLanguagesListBox"
         Me.ContractedLanguagesListBox.Size = New System.Drawing.Size(168, 94)
         Me.ContractedLanguagesListBox.TabIndex = 34
@@ -211,7 +228,7 @@ Partial Class SurveyPropertiesEditor
         'ContractedLanguagesLabel
         '
         Me.ContractedLanguagesLabel.AutoSize = True
-        Me.ContractedLanguagesLabel.Location = New System.Drawing.Point(311, 403)
+        Me.ContractedLanguagesLabel.Location = New System.Drawing.Point(312, 495)
         Me.ContractedLanguagesLabel.Name = "ContractedLanguagesLabel"
         Me.ContractedLanguagesLabel.Size = New System.Drawing.Size(118, 13)
         Me.ContractedLanguagesLabel.TabIndex = 33
@@ -221,7 +238,7 @@ Partial Class SurveyPropertiesEditor
         'InActivateLabel
         '
         Me.InActivateLabel.AutoSize = True
-        Me.InActivateLabel.Location = New System.Drawing.Point(5, 484)
+        Me.InActivateLabel.Location = New System.Drawing.Point(6, 576)
         Me.InActivateLabel.Name = "InActivateLabel"
         Me.InActivateLabel.Size = New System.Drawing.Size(94, 13)
         Me.InActivateLabel.TabIndex = 32
@@ -230,7 +247,7 @@ Partial Class SurveyPropertiesEditor
         'InActivateCheckBox
         '
         Me.InActivateCheckBox.AutoSize = True
-        Me.InActivateCheckBox.Location = New System.Drawing.Point(176, 484)
+        Me.InActivateCheckBox.Location = New System.Drawing.Point(177, 576)
         Me.InActivateCheckBox.Name = "InActivateCheckBox"
         Me.InActivateCheckBox.Size = New System.Drawing.Size(15, 14)
         Me.InActivateCheckBox.TabIndex = 31
@@ -241,7 +258,7 @@ Partial Class SurveyPropertiesEditor
         Me.SampleEncounterDateComboBox.DisplayMember = "Label"
         Me.SampleEncounterDateComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.SampleEncounterDateComboBox.FormattingEnabled = True
-        Me.SampleEncounterDateComboBox.Location = New System.Drawing.Point(176, 349)
+        Me.SampleEncounterDateComboBox.Location = New System.Drawing.Point(177, 441)
         Me.SampleEncounterDateComboBox.Name = "SampleEncounterDateComboBox"
         Me.SampleEncounterDateComboBox.Size = New System.Drawing.Size(306, 21)
         Me.SampleEncounterDateComboBox.TabIndex = 23
@@ -250,7 +267,7 @@ Partial Class SurveyPropertiesEditor
         'Label11
         '
         Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(5, 352)
+        Me.Label11.Location = New System.Drawing.Point(6, 444)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(122, 13)
         Me.Label11.TabIndex = 22
@@ -262,7 +279,7 @@ Partial Class SurveyPropertiesEditor
         Me.Panel1.Controls.Add(Me.EnforceSkipNoOption)
         Me.Panel1.Controls.Add(Me.EnforceSkipYesOption)
         Me.Panel1.Controls.Add(Me.lblEnforceSkipPattern)
-        Me.Panel1.Location = New System.Drawing.Point(0, 272)
+        Me.Panel1.Location = New System.Drawing.Point(1, 364)
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(483, 21)
         Me.Panel1.TabIndex = 17
@@ -353,7 +370,7 @@ Partial Class SurveyPropertiesEditor
         '
         Me.ResurveyExcludionDaysPanel.Controls.Add(Me.ResurveyExcludionDaysNumeric)
         Me.ResurveyExcludionDaysPanel.Controls.Add(Me.ResurveyExcludionDaysLabel)
-        Me.ResurveyExcludionDaysPanel.Location = New System.Drawing.Point(0, 453)
+        Me.ResurveyExcludionDaysPanel.Location = New System.Drawing.Point(1, 545)
         Me.ResurveyExcludionDaysPanel.Name = "ResurveyExcludionDaysPanel"
         Me.ResurveyExcludionDaysPanel.Size = New System.Drawing.Size(284, 25)
         Me.ResurveyExcludionDaysPanel.TabIndex = 30
@@ -391,7 +408,7 @@ Partial Class SurveyPropertiesEditor
         Me.ResurveyMethodComboBox.DisplayMember = "Label"
         Me.ResurveyMethodComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ResurveyMethodComboBox.FormattingEnabled = True
-        Me.ResurveyMethodComboBox.Location = New System.Drawing.Point(176, 429)
+        Me.ResurveyMethodComboBox.Location = New System.Drawing.Point(177, 521)
         Me.ResurveyMethodComboBox.Name = "ResurveyMethodComboBox"
         Me.ResurveyMethodComboBox.Size = New System.Drawing.Size(107, 21)
         Me.ResurveyMethodComboBox.TabIndex = 29
@@ -400,7 +417,7 @@ Partial Class SurveyPropertiesEditor
         'lblResurveyMethod
         '
         Me.lblResurveyMethod.AutoSize = True
-        Me.lblResurveyMethod.Location = New System.Drawing.Point(5, 432)
+        Me.lblResurveyMethod.Location = New System.Drawing.Point(6, 524)
         Me.lblResurveyMethod.Name = "lblResurveyMethod"
         Me.lblResurveyMethod.Size = New System.Drawing.Size(94, 13)
         Me.lblResurveyMethod.TabIndex = 28
@@ -412,8 +429,7 @@ Partial Class SurveyPropertiesEditor
         Me.SamplingAlgorithmComboBox.DisplayMember = "Label"
         Me.SamplingAlgorithmComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.SamplingAlgorithmComboBox.FormattingEnabled = True
-        Me.SamplingAlgorithmComboBox.Items.AddRange(New Object() {"Static", "Dynamic", "Static Plus"})
-        Me.SamplingAlgorithmComboBox.Location = New System.Drawing.Point(176, 250)
+        Me.SamplingAlgorithmComboBox.Location = New System.Drawing.Point(177, 342)
         Me.SamplingAlgorithmComboBox.Name = "SamplingAlgorithmComboBox"
         Me.SamplingAlgorithmComboBox.Size = New System.Drawing.Size(107, 21)
         Me.SamplingAlgorithmComboBox.TabIndex = 16
@@ -432,7 +448,7 @@ Partial Class SurveyPropertiesEditor
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(5, 301)
+        Me.Label7.Location = New System.Drawing.Point(6, 393)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(94, 13)
         Me.Label7.TabIndex = 18
@@ -442,7 +458,7 @@ Partial Class SurveyPropertiesEditor
         'Label10
         '
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(5, 405)
+        Me.Label10.Location = New System.Drawing.Point(6, 497)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(171, 13)
         Me.Label10.TabIndex = 26
@@ -452,14 +468,14 @@ Partial Class SurveyPropertiesEditor
         'SurveyEndDatePicker
         '
         Me.SurveyEndDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.SurveyEndDatePicker.Location = New System.Drawing.Point(176, 323)
+        Me.SurveyEndDatePicker.Location = New System.Drawing.Point(177, 415)
         Me.SurveyEndDatePicker.Name = "SurveyEndDatePicker"
         Me.SurveyEndDatePicker.Size = New System.Drawing.Size(107, 20)
         Me.SurveyEndDatePicker.TabIndex = 21
         '
         'SurveyDescriptionTextBox
         '
-        Me.SurveyDescriptionTextBox.Location = New System.Drawing.Point(176, 187)
+        Me.SurveyDescriptionTextBox.Location = New System.Drawing.Point(177, 279)
         Me.SurveyDescriptionTextBox.MaxLength = 40
         Me.SurveyDescriptionTextBox.Multiline = True
         Me.SurveyDescriptionTextBox.Name = "SurveyDescriptionTextBox"
@@ -469,7 +485,7 @@ Partial Class SurveyPropertiesEditor
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(5, 165)
+        Me.Label3.Location = New System.Drawing.Point(6, 257)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(138, 13)
         Me.Label3.TabIndex = 11
@@ -479,7 +495,7 @@ Partial Class SurveyPropertiesEditor
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(5, 189)
+        Me.Label4.Location = New System.Drawing.Point(6, 281)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(99, 13)
         Me.Label4.TabIndex = 13
@@ -504,7 +520,7 @@ Partial Class SurveyPropertiesEditor
         '
         'RespRateRecalcDaysNumeric
         '
-        Me.RespRateRecalcDaysNumeric.Location = New System.Drawing.Point(176, 403)
+        Me.RespRateRecalcDaysNumeric.Location = New System.Drawing.Point(177, 495)
         Me.RespRateRecalcDaysNumeric.Maximum = New Decimal(New Integer() {9999, 0, 0, 0})
         Me.RespRateRecalcDaysNumeric.Name = "RespRateRecalcDaysNumeric"
         Me.RespRateRecalcDaysNumeric.Size = New System.Drawing.Size(108, 20)
@@ -515,7 +531,7 @@ Partial Class SurveyPropertiesEditor
         Me.CutoffDateComboBox.DisplayMember = "Label"
         Me.CutoffDateComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CutoffDateComboBox.FormattingEnabled = True
-        Me.CutoffDateComboBox.Location = New System.Drawing.Point(176, 376)
+        Me.CutoffDateComboBox.Location = New System.Drawing.Point(177, 468)
         Me.CutoffDateComboBox.Name = "CutoffDateComboBox"
         Me.CutoffDateComboBox.Size = New System.Drawing.Size(306, 21)
         Me.CutoffDateComboBox.TabIndex = 25
@@ -524,7 +540,7 @@ Partial Class SurveyPropertiesEditor
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(5, 327)
+        Me.Label8.Location = New System.Drawing.Point(6, 419)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(91, 13)
         Me.Label8.TabIndex = 20
@@ -534,7 +550,7 @@ Partial Class SurveyPropertiesEditor
         'SurveyStartDatePicker
         '
         Me.SurveyStartDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.SurveyStartDatePicker.Location = New System.Drawing.Point(176, 297)
+        Me.SurveyStartDatePicker.Location = New System.Drawing.Point(177, 389)
         Me.SurveyStartDatePicker.Name = "SurveyStartDatePicker"
         Me.SurveyStartDatePicker.Size = New System.Drawing.Size(107, 20)
         Me.SurveyStartDatePicker.TabIndex = 19
@@ -542,7 +558,7 @@ Partial Class SurveyPropertiesEditor
         'Label9
         '
         Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(5, 379)
+        Me.Label9.Location = New System.Drawing.Point(6, 471)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(89, 13)
         Me.Label9.TabIndex = 24
@@ -582,7 +598,7 @@ Partial Class SurveyPropertiesEditor
         '
         'FacingNameTextBox
         '
-        Me.FacingNameTextBox.Location = New System.Drawing.Point(176, 161)
+        Me.FacingNameTextBox.Location = New System.Drawing.Point(177, 253)
         Me.FacingNameTextBox.MaxLength = 42
         Me.FacingNameTextBox.Name = "FacingNameTextBox"
         Me.FacingNameTextBox.Size = New System.Drawing.Size(306, 20)
@@ -591,7 +607,7 @@ Partial Class SurveyPropertiesEditor
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(5, 254)
+        Me.Label5.Location = New System.Drawing.Point(6, 346)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(99, 13)
         Me.Label5.TabIndex = 15
@@ -610,6 +626,24 @@ Partial Class SurveyPropertiesEditor
         Me.InformationBar.TabIndex = 0
         Me.InformationBar.TabStop = False
         '
+        'UseUSPSAddrChangeServiceLabel
+        '
+        Me.UseUSPSAddrChangeServiceLabel.AutoSize = True
+        Me.UseUSPSAddrChangeServiceLabel.Location = New System.Drawing.Point(6, 598)
+        Me.UseUSPSAddrChangeServiceLabel.Name = "UseUSPSAddrChangeServiceLabel"
+        Me.UseUSPSAddrChangeServiceLabel.Size = New System.Drawing.Size(165, 13)
+        Me.UseUSPSAddrChangeServiceLabel.TabIndex = 42
+        Me.UseUSPSAddrChangeServiceLabel.Text = "Use USPS Addr Change Service:"
+        '
+        'UseUSPSAddrChangeServiceCheckBox
+        '
+        Me.UseUSPSAddrChangeServiceCheckBox.AutoSize = True
+        Me.UseUSPSAddrChangeServiceCheckBox.Location = New System.Drawing.Point(177, 598)
+        Me.UseUSPSAddrChangeServiceCheckBox.Name = "UseUSPSAddrChangeServiceCheckBox"
+        Me.UseUSPSAddrChangeServiceCheckBox.Size = New System.Drawing.Size(15, 14)
+        Me.UseUSPSAddrChangeServiceCheckBox.TabIndex = 41
+        Me.UseUSPSAddrChangeServiceCheckBox.UseVisualStyleBackColor = True
+        '
         'SurveyPropertiesEditor
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -618,7 +652,7 @@ Partial Class SurveyPropertiesEditor
         Me.Controls.Add(Me.InformationBar)
         Me.Controls.Add(Me.BottomPanel)
         Me.Name = "SurveyPropertiesEditor"
-        Me.Size = New System.Drawing.Size(522, 611)
+        Me.Size = New System.Drawing.Size(522, 674)
         Me.BottomPanel.ResumeLayout(False)
         Me.WorkAreaPanel.ResumeLayout(False)
         Me.WorkAreaPanel.PerformLayout()
@@ -678,8 +712,11 @@ Partial Class SurveyPropertiesEditor
     Friend WithEvents ContractedLanguagesListBox As System.Windows.Forms.CheckedListBox
     Friend WithEvents ContractedLanguagesLabel As System.Windows.Forms.Label
     Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents SurveySubTypeComboBox As System.Windows.Forms.ComboBox
     Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents QuestionnaireTypeComboBox As System.Windows.Forms.ComboBox
+    Friend WithEvents SurveySubTypeListBox As System.Windows.Forms.CheckedListBox
+    Friend WithEvents Label12 As System.Windows.Forms.Label
+    Friend WithEvents UseUSPSAddrChangeServiceLabel As System.Windows.Forms.Label
+    Friend WithEvents UseUSPSAddrChangeServiceCheckBox As System.Windows.Forms.CheckBox
 
 End Class

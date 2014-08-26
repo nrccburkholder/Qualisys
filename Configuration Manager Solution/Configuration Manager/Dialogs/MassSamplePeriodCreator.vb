@@ -31,9 +31,11 @@ Public Class MassSamplePeriodCreator
         Me.MonthEdit1.Visible = mSurvey.IsMonthlyOnly
         Me.YearComboBoxEdit.Visible = mSurvey.IsMonthlyOnly
 
+        Dim override As String = mSurvey.SurveySubTypeOverrideName() 'will retrieve PCMH for example CJB 8/14/2014
+
         'Me.SamplingMethodComboBoxEdit.EditValue = SampleSet.SamplingMethodFromLabel(Me.mSurvey.SamplingMethodDefault)
-        Me.SamplingMethodComboBoxEdit.EditValue = Me.mSurvey.SamplingMethodDefault
-        Me.SamplingMethodComboBoxEdit.Enabled = Not Me.mSurvey.IsSamplingMethodDisabled
+        Me.SamplingMethodComboBoxEdit.EditValue = Me.mSurvey.SamplingMethodDefault(override)
+        Me.SamplingMethodComboBoxEdit.Enabled = Not Me.mSurvey.IsSamplingMethodDisabled(override)
 
         Me.FirstEncounterStartDateEdit.DateTime = Today
         Me.MonthEdit1.SelectedIndex = Today.Month - 1

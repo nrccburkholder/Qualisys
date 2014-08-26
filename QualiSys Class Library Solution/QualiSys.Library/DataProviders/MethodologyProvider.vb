@@ -28,7 +28,7 @@ Namespace DataProvider
         Public MustOverride Function SelectMethodologyStepsByMethodologyId(ByVal methodologyId As Integer) As MethodologyStepCollection
         Public MustOverride Function SelectStandardMethodologySteps(ByVal standardMethodologyId As Integer) As MethodologyStepCollection
         Public MustOverride Function SelectStandardMethodology(ByVal standardMethodologyId As Integer) As StandardMethodology
-        Public MustOverride Function SelectStandardMethodologiesBySurveyType(ByVal srvyType As SurveyTypes) As Collection(Of StandardMethodology)
+        'Public MustOverride Function SelectStandardMethodologiesBySurveyType(ByVal srvyType As SurveyTypes) As Collection(Of StandardMethodology)
         Public MustOverride Function SelectAllMethodologyStepTypes() As Collection(Of MethodologyStepType)
         Public MustOverride Function SelectMethodologyStep(ByVal Id As Integer) As MethodologyStep
 
@@ -39,6 +39,8 @@ Namespace DataProvider
         Public MustOverride Sub UpdateActiveState(ByVal methodologyId As Integer, ByVal isActive As Boolean)
 
         Public MustOverride Sub Delete(ByVal methodologyId As Integer)
+
+        Public MustOverride Function SelectStandardMethodologiesBySurveyType(ByVal srvyType As SurveyTypes, ByVal subType As SubType) As Collection(Of StandardMethodology)
 
         Protected Shared Function CreateMethodology(ByVal id As Integer, ByVal surveyId As Integer, ByVal allowEdit As Boolean, ByVal isCustomizable As Boolean, ByVal dateCreated As DateTime, ByVal standardMethodologyId As Integer) As Methodology
 

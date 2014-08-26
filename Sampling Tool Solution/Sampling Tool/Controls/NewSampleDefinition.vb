@@ -126,7 +126,7 @@ Public Class NewSampleDefinition
             sampleDef = New SampleDefinition(Me, row)
 
             'Add this sample definition to the collection
-            If sampleDef.IsHCAHPS Then
+            If sampleDef.Survey.CompliesWithSwitchToPropSamplingDate Then 'IsHCAHPS Then 'Possible TODO: create separate property for CheckMedicareProportion CJB 7/3/2014
                 'This is an HCAHPS survey so recalculate the Medicare Proportion(s)
                 If sampleDef.RecalcMedicareProportion() Then
                     'Recalculation succeeded so add the sample definition to the collection
@@ -743,7 +743,7 @@ Public Class NewSampleDefinition
             For Each srvy In Me.mSurveys
                 Me.AddNewSampleRow(srvy)
             Next
-            Me.NewSampleGridView.Sort(Me.NewSampleSetCAHPSColumn, System.ComponentModel.ListSortDirection.Descending)
+            Me.NewSampleGridView.Sort(Me.NewSampleSetPriorityColumn, System.ComponentModel.ListSortDirection.Ascending)
 
             Me.PopulateNewSampleRowNumbers()
 
@@ -760,17 +760,17 @@ Public Class NewSampleDefinition
     Private Sub AddNewSampleRow(ByVal srvy As Survey)
 
         Dim i As Integer = Me.NewSampleGridView.Rows.Add
-        Dim isHCAHPS As Boolean
+        'Dim isHCAHPS As Boolean
         Dim row As DataGridViewRow = Me.NewSampleGridView.Rows(i)
         Dim periodList As DataGridViewComboBoxCell = DirectCast(row.Cells(Me.NewSampleSetPeriodColumn.Index), DataGridViewComboBoxCell)
         Dim sampleEncounterDateFieldLabel As String = "N/A"
         If srvy.SampleEncounterField IsNot Nothing Then sampleEncounterDateFieldLabel = String.Format("{0}.{1}", StudyTable.Get(srvy.SampleEncounterField.TableId).Name, srvy.SampleEncounterField.Name)
-        isHCAHPS = (srvy.SurveyType = SurveyTypes.Hcahps OrElse srvy.SurveyType = SurveyTypes.HHcahps)
+        'isHCAHPS = (srvy.SurveyType = SurveyTypes.Hcahps OrElse srvy.SurveyType = SurveyTypes.HHcahps)
         row.Cells(Me.NewSampleSetOrderColumn.Index).Value = (i + 1).ToString
         row.Cells(Me.NewSampleSetSurveyColumn.Index).Value = srvy.DisplayLabel
-        row.Cells(Me.NewSampleSetCAHPSColumn.Index).Value = isHCAHPS
         row.Cells(Me.NewSampleEncounterFieldColumn.Index).Value = sampleEncounterDateFieldLabel
         row.Cells(Me.NewSampleSetSpecifyDatesColumn.Index).Value = True
+        row.Cells(Me.NewSampleSetPriorityColumn.Index).Value = srvy.SamplingToolPriority
         If srvy.SampleablePeriods.Count > 0 Then
             periodList.DataSource = srvy.SampleablePeriods
             periodList.DisplayMember = "Name"
@@ -906,5 +906,6 @@ Public Class NewSampleDefinition
     End Function
 
 #End Region
+
 
 End Class

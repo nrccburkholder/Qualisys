@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[QCL_UpdateSurvey]    
+CREATE PROCEDURE [dbo].[QCL_UpdateSurvey]    
     @Survey_id                 INT,    
     @strSurvey_Nm              VARCHAR(10),    
     @strSurvey_Dsc             VARCHAR(40),    
@@ -23,7 +23,9 @@
     @IsFormGenReleased         BIT,
     @Contract                  VARCHAR(9) = NULL,
     @Active                    BIT, 
-    @ContractedLanguages       VARCHAR(50)
+    @ContractedLanguages       VARCHAR(50),
+	@SurveySubType_id		   INT = NULL,
+	@QuestionnaireType_ID	   INT = NULL
 AS
     
 UPDATE Survey_Def    
@@ -51,7 +53,11 @@ SET strSurvey_Nm = @strSurvey_Nm,
     bitFormGenRelease = @IsFormGenReleased,
     Contract = @Contract,
     Active = @Active, 
-    ContractedLanguages = @ContractedLanguages
+    ContractedLanguages = @ContractedLanguages,
+	SurveySubType_ID = @SurveySubType_id,
+	QuestionnaireType_ID = @QuestionnaireType_ID
 WHERE Survey_id = @Survey_id
+
+
 
 

@@ -56,11 +56,11 @@ Public Class SampleDefinition
         End Get
     End Property
 
-    Public ReadOnly Property IsHCAHPS() As Boolean
-        Get
-            Return (mSurvey.SurveyType = SurveyTypes.Hcahps)
-        End Get
-    End Property
+    'Public ReadOnly Property IsHCAHPS() As Boolean
+    '    Get
+    '        Return (mSurvey.SurveyType = SurveyTypes.Hcahps)
+    '    End Get
+    'End Property
 
     Public ReadOnly Property IsOverSample() As Boolean
         Get
@@ -88,7 +88,7 @@ Public Class SampleDefinition
         'DoHCAHPSOversample can be set to True only when
         'DoOverSample and IsHCAHPS are True
         Set(ByVal value As Boolean)
-            If IsHCAHPS AndAlso DoOverSample Then
+            If mSurvey.CompliesWithSwitchToPropSamplingDate AndAlso DoOverSample Then 'IsHCAHPS Then 'Possible TODO: create separate property for AllowDoOverSample CJB 7/3/2014
                 mDoHCAHPSOverSample = value
             Else
                 mDoHCAHPSOverSample = False

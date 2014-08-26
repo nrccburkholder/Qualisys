@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[QCL_SelectSurvey]      
+CREATE PROCEDURE [dbo].[QCL_SelectSurvey]      
     @SurveyId INT      
 AS      
       
@@ -16,11 +16,12 @@ SELECT Survey_id, strSurvey_Nm, strSurvey_Dsc, Study_id, strCutoffResponse_Cd, C
        datValidated, bitFormGenRelease, @intSamplePlan_id as SamplePlan_id, intResponse_Recalc_Period,  
        intResurvey_Period, datSurvey_Start_Dt, datSurvey_End_Dt, SamplingAlgorithmID, bitEnforceSkip,
        strClientFacingName, SurveyType_id, SurveyTypeDef_id, ReSurveyMethod_id, strHouseholdingType,  
-	   Contract, Active, ContractedLanguages
+	   Contract, Active, ContractedLanguages, SurveySubType_ID, QuestionnaireType_ID
 FROM Survey_Def 
 WHERE Survey_id = @SurveyId 
           
 SET TRANSACTION ISOLATION LEVEL READ COMMITTED          
 SET NOCOUNT OFF
+
 
 

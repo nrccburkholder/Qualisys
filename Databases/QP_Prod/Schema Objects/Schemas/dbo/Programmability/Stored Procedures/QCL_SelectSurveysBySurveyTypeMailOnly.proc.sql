@@ -11,7 +11,7 @@ SELECT distinct sd.Survey_id, sd.strSurvey_Nm, sd.strSurvey_Dsc, sd.Study_id, sd
        sd.intResponse_Recalc_Period, sd.intResurvey_Period, sd.datSurvey_Start_Dt, sd.datSurvey_End_Dt,
        sd.SamplingAlgorithmID, sd.bitEnforceSkip, sd.strClientFacingName, sd.SurveyType_id,
        sd.SurveyTypeDef_id, sd.ReSurveyMethod_id, sd.strHouseholdingType, sd.Contract, sd.Active, 
-       sd.ContractedLanguages
+       sd.ContractedLanguages, sd.SurveySubType_ID, sd.QuestionnaireType_ID
 FROM Client cl, Study st, Survey_Def sd, SamplePlan sp, MailingMethodology ma, MailingStep ms, MailingStepMethod mm
 WHERE cl.Client_id = st.Client_id
   AND st.Study_id = sd.Study_id
@@ -29,5 +29,3 @@ WHERE cl.Client_id = st.Client_id
 
 SET NOCOUNT OFF
 SET TRANSACTION ISOLATION LEVEL READ COMMITTED
-
-

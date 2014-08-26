@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[QSL_UpdateVendorPhoneFile_Data]
+CREATE PROCEDURE [dbo].[QSL_UpdateVendorPhoneFile_Data]
 @VendorFile_Data_ID INT,
 @VendorFile_ID INT,
 @HCAHPSSamp INT,
@@ -29,7 +29,10 @@
 @PhServInd9 VARCHAR(100),
 @PhServInd10 VARCHAR(100),
 @PhServInd11 VARCHAR(100),
-@PhServInd12 VARCHAR(100)
+@PhServInd12 VARCHAR(100),
+@Province VARCHAR(2) = null,
+@PostalCode VARCHAR(7) = null,
+@AgeRange VARCHAR(10) = NULL
 AS
 
 SET NOCOUNT ON
@@ -64,9 +67,13 @@ UPDATE [dbo].VendorPhoneFile_Data SET
 	PhServInd9 = @PhServInd9,
 	PhServInd10 = @PhServInd10,
 	PhServInd11 = @PhServInd11,
-	PhServInd12 = @PhServInd12
+	PhServInd12 = @PhServInd12,
+	Province = @Province,
+	PostalCode = @PostalCode,
+	AgeRange = @AgeRange
 WHERE VendorFile_Data_ID = @VendorFile_Data_ID
 
 SET NOCOUNT OFF
+
 
 

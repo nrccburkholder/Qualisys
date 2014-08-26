@@ -52,11 +52,11 @@ Public Class NewSurveyModule
         Try
             If (action = ConfigResultActions.SurveyRefresh) Then
                 With EditingSurvey
-                    EditingSurvey = Qualisys.Library.Survey.CreateNew(.StudyId, .Name, .Description, .ResponseRateRecalculationPeriod, .ResurveyMethod, _
+                    EditingSurvey = QualiSys.Library.Survey.CreateNew(.StudyId, .Name, .Description, .ResponseRateRecalculationPeriod, .ResurveyMethod, _
                                                                       .ResurveyPeriod, .SurveyStartDate, .SurveyEndDate, .SamplingAlgorithm, .EnforceSkip, _
                                                                       CStr(.CutoffResponseCode), .CutoffTableId, .CutoffFieldId, .SampleEncounterField, _
                                                                       .ClientFacingName, .SurveyType, .SurveyTypeDefId, .HouseHoldingType, .ContractNumber, _
-                                                                      .IsActive, .ContractedLanguages, .SurveySubType, .QuestionnaireType)
+                                                                      .IsActive, .ContractedLanguages, .SurveySubTypes, .QuestionnaireType, .UseUSPSAddrChangeService)
                 End With
                 Study.Surveys.Add(EditingSurvey)
             End If

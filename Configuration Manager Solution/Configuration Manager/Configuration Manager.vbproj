@@ -23,6 +23,7 @@
     <OptionStrict>On</OptionStrict>
     <SignManifests>true</SignManifests>
     <ManifestCertificateThumbprint>13E09AAD0FFC1E7667935AC08A3A46200504109E</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>9436CB108833414C35632158A892AE46C7DB73DF</ManifestCertificateThumbprint>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <GenerateManifests>true</GenerateManifests>
     <SignAssembly>false</SignAssembly>
@@ -49,6 +50,7 @@
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>4.1.8.0</ApplicationVersion>
+    <ApplicationVersion>4.3.0.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -101,6 +103,9 @@
     <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
     <NoWarn>42353,42354,42355</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AuditdotNET, Version=2.0.1495.15822, Culture=neutral">
@@ -205,6 +210,7 @@
     <Compile Include="ApplicationEvents.vb" />
     <Compile Include="Configuration Modules\ClientPropertiesModule.vb" />
     <Compile Include="Configuration Modules\ClientGroupPropertiesModule.vb" />
+    <Compile Include="Configuration Modules\ModeSectionMappingModule.vb" />
     <Compile Include="Configuration Modules\NewClientModule.vb" />
     <Compile Include="Configuration Modules\NewClientGroupModule.vb" />
     <Compile Include="Dialogs\CopyDataStructureDialog.Designer.vb">
@@ -347,6 +353,12 @@
       <DependentUpon>MethodologyEditor.vb</DependentUpon>
     </Compile>
     <Compile Include="Sections\MethodologyEditor.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\ModeSectionMappingEditor.Designer.vb">
+      <DependentUpon>ModeSectionMappingEditor.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\ModeSectionMappingEditor.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Sections\PeriodEditor.Designer.vb">
@@ -539,6 +551,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>MethodologyEditor.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Sections\ModeSectionMappingEditor.resx">
+      <DependentUpon>ModeSectionMappingEditor.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Sections\PeriodEditor.resx">
       <DependentUpon>PeriodEditor.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -612,10 +627,13 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="My Project\app.manifest" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
     </None>
+    <None Include="My Project\DataSources\Nrc.QualiSys.Library.MailingStepMethodCollection.datasource" />
+    <None Include="My Project\DataSources\Nrc.QualiSys.Library.ModeSectionMappingCollection.datasource" />
     <None Include="My Project\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <CustomToolNamespace>My</CustomToolNamespace>
