@@ -30,25 +30,25 @@ if not exists(select 1 from METAFIELD where strField_nm = 'PCMH_Age')
 insert into METAFIELD (strField_nm,	strField_dsc, fieldGroup_id, strFieldDataType, strFieldEditMask, intSpecialField_cd, strFieldShort_nm, bitSysKey, bitPhase1Field, intAddrCleanCode, intAddrCleanGroup, bitPII)
 values ('PCMH_Age','Patient age on last day of measurement period',@PCMHid,'I',NULL,NULL,'PCMHAge',0,0,NULL,NULL,0)
 
-if not exists(select 1 from QUALPRO_PARAMS where STRPARAM_NM = 'SurveyRule: ResurveyExclusionPeriodsNumericDefault - PCMH')
+if not exists(select 1 from QUALPRO_PARAMS where STRPARAM_NM = 'SurveyRule: ResurveyExclusionPeriodsNumericDefault - PCMH Distinction')
 insert into QUALPRO_PARAMS (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, NUMPARAM_VALUE, DATPARAM_VALUE, COMMENTS)
-values ('SurveyRule: ResurveyExclusionPeriodsNumericDefault - PCMH', 'N', 'SurveyRules', NULL, 365, NULL, 'PCMH Resurvey Exclusion Days default for Config Man')
+values ('SurveyRule: ResurveyExclusionPeriodsNumericDefault - PCMH Distinction', 'N', 'SurveyRules', NULL, 365, NULL, 'PCMH Resurvey Exclusion Days default for Config Man')
 
-if not exists(select 1 from QUALPRO_PARAMS where STRPARAM_NM = 'SurveyRule: IsResurveyExclusionPeriodsNumericDisabled - PCMH')
+if not exists(select 1 from QUALPRO_PARAMS where STRPARAM_NM = 'SurveyRule: IsResurveyExclusionPeriodsNumericDisabled - PCMH Distinction')
 insert into QUALPRO_PARAMS (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, NUMPARAM_VALUE, DATPARAM_VALUE, COMMENTS)
-values ('SurveyRule: IsResurveyExclusionPeriodsNumericDisabled - PCMH', 'S', 'SurveyRules', 1, NULL, NULL, 'PCMH Resurvey Exclusion Days disabled for Config Man')
+values ('SurveyRule: IsResurveyExclusionPeriodsNumericDisabled - PCMH Distinction', 'S', 'SurveyRules', 1, NULL, NULL, 'PCMH Resurvey Exclusion Days disabled for Config Man')
 
-if not exists(select 1 from QUALPRO_PARAMS where STRPARAM_NM = 'SurveyRule: SamplingMethodDefault - PCMH')
+if not exists(select 1 from QUALPRO_PARAMS where STRPARAM_NM = 'SurveyRule: SamplingMethodDefault - PCMH Distinction')
 insert into QUALPRO_PARAMS (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, NUMPARAM_VALUE, DATPARAM_VALUE, COMMENTS)
-values ('SurveyRule: SamplingMethodDefault - PCMH', 'S', 'SurveyRules', 'Specify Outgo', NULL, NULL, 'Rule to set default sampling method for Config Man')
+values ('SurveyRule: SamplingMethodDefault - PCMH Distinction', 'S', 'SurveyRules', 'Specify Outgo', NULL, NULL, 'Rule to set default sampling method for Config Man')
 
-if not exists(select 1 from QUALPRO_PARAMS where STRPARAM_NM = 'SurveyRule: IsSamplingMethodDisabled - PCMH')
+if not exists(select 1 from QUALPRO_PARAMS where STRPARAM_NM = 'SurveyRule: IsSamplingMethodDisabled - PCMH Distinction')
 insert into QUALPRO_PARAMS (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, NUMPARAM_VALUE, DATPARAM_VALUE, COMMENTS)
-values ('SurveyRule: IsSamplingMethodDisabled - PCMH', 'S', 'SurveyRules', '1', NULL, NULL, 'Rule to determine if sampling method is enabled for Config Man')
+values ('SurveyRule: IsSamplingMethodDisabled - PCMH Distinction', 'S', 'SurveyRules', '1', NULL, NULL, 'Rule to determine if sampling method is enabled for Config Man')
 
-if not exists(select 1 from QUALPRO_PARAMS where STRPARAM_NM = 'SurveyRule: SkipEnforcementRequired - PCMH')
+if not exists(select 1 from QUALPRO_PARAMS where STRPARAM_NM = 'SurveyRule: SkipEnforcementRequired - PCMH Distinction')
 insert into QUALPRO_PARAMS (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, NUMPARAM_VALUE, DATPARAM_VALUE, COMMENTS)
-values ('SurveyRule: SkipEnforcementRequired - PCMH', 'S', 'SurveyRules', '1', NULL, NULL, 'Skip Enforcement is required and controls are not enabled in Config Man')
+values ('SurveyRule: SkipEnforcementRequired - PCMH Distinction', 'S', 'SurveyRules', '1', NULL, NULL, 'Skip Enforcement is required and controls are not enabled in Config Man')
 
 /*
 --select * from qualpro_params where strparam_grp = 'SurveyRules' and STRPARAM_NM like '%Enforce%'

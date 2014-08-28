@@ -112,8 +112,8 @@ namespace NRC.Picker.SamplingService.Autosampler
                 try
                 {
                     _logger.Info(String.Format("dataset ({0}) sampling failed", dataset.ID));
-                    ReportMailer.SendAbortReport(dataset, _config.MailerUrl, exception);
                     _logger.Error(String.Format("dataset ({0}) encountered a fatal error", dataset.ID), exception);
+                    ReportMailer.SendAbortReport(dataset, _config.MailerUrl, exception);
                 }
                 catch (Exception e)
                 {

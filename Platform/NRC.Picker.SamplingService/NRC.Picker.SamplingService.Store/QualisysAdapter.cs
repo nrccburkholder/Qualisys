@@ -113,8 +113,8 @@ namespace NRC.Picker.SamplingService.Store
 
         private enum SurveyOrder
         {
-            HCAHPS,
-            HHCAHPS,
+            Primary,
+            Secondary,
             Inpatient,
             Outpatient,
             EmergencyRoom,
@@ -124,13 +124,15 @@ namespace NRC.Picker.SamplingService.Store
 
         private static SurveyOrder GetOrderForSurvey(Survey survey)
         {
-            switch (survey.SurveyType)
-            {
-                case SurveyTypes.Hcahps:
-                    return SurveyOrder.HCAHPS;
-                case SurveyTypes.HHcahps:
-                    return SurveyOrder.HHCAHPS;
-            }
+            // TODO: analyze survey rules need for new property here or not
+            if (survey.get_IsMonthlyOnly())
+                switch (survey.get_ResurveyExclusionPeriodsNumericDefault())
+                {
+                    case 1:
+                        return SurveyOrder.Primary;
+                    case 6:
+                        return SurveyOrder.Secondary;
+                }
 
             if (survey.SamplePeriods[0].SamplingMethod == SampleSet.SamplingMethod.Census)
             {
