@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:intf="http://epf.usps.com" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns1="http://rpc.xml.coldfusion" xmlns:impl="http://epf.usps.com" targetNamespace="http://epf.usps.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://rpc.xml.coldfusion">
+      <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+      <xsd:complexType name="CFCInvocationException">
+        <xsd:sequence />
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="loginResponse">
+    <wsdl:part name="loginReturn" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="getListRequest">
+    <wsdl:part name="authToken" type="xsd:string" />
+    <wsdl:part name="view_all" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="getFileResponse">
+    <wsdl:part name="getFileReturn" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="loginRequest">
+    <wsdl:part name="username" type="xsd:string" />
+    <wsdl:part name="password" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="getEpfVersionResponse">
+    <wsdl:part name="getEpfVersionReturn" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="setStatusRequest">
+    <wsdl:part name="authToken" type="xsd:string" />
+    <wsdl:part name="product_key" type="xsd:string" />
+    <wsdl:part name="status" type="xsd:string" />
+    <wsdl:part name="file_id" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="getFileRequest">
+    <wsdl:part name="authToken" type="xsd:string" />
+    <wsdl:part name="product_key" type="xsd:string" />
+    <wsdl:part name="file_id" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="getEpfVersionRequest" />
+  <wsdl:message name="setStatusResponse">
+    <wsdl:part name="setStatusReturn" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="getListResponse">
+    <wsdl:part name="getListReturn" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="CFCInvocationException">
+    <wsdl:part name="fault" type="tns1:CFCInvocationException" />
+  </wsdl:message>
+  <wsdl:portType name="filedownload">
+    <wsdl:operation name="getFile" parameterOrder="authToken product_key file_id">
+      <wsdl:input name="getFileRequest" message="impl:getFileRequest" />
+      <wsdl:output name="getFileResponse" message="impl:getFileResponse" />
+      <wsdl:fault name="CFCInvocationException" message="impl:CFCInvocationException" />
+    </wsdl:operation>
+    <wsdl:operation name="setStatus" parameterOrder="authToken product_key status file_id">
+      <wsdl:input name="setStatusRequest" message="impl:setStatusRequest" />
+      <wsdl:output name="setStatusResponse" message="impl:setStatusResponse" />
+      <wsdl:fault name="CFCInvocationException" message="impl:CFCInvocationException" />
+    </wsdl:operation>
+    <wsdl:operation name="login" parameterOrder="username password">
+      <wsdl:input name="loginRequest" message="impl:loginRequest" />
+      <wsdl:output name="loginResponse" message="impl:loginResponse" />
+      <wsdl:fault name="CFCInvocationException" message="impl:CFCInvocationException" />
+    </wsdl:operation>
+    <wsdl:operation name="getList" parameterOrder="authToken view_all">
+      <wsdl:input name="getListRequest" message="impl:getListRequest" />
+      <wsdl:output name="getListResponse" message="impl:getListResponse" />
+      <wsdl:fault name="CFCInvocationException" message="impl:CFCInvocationException" />
+    </wsdl:operation>
+    <wsdl:operation name="getEpfVersion">
+      <wsdl:input name="getEpfVersionRequest" message="impl:getEpfVersionRequest" />
+      <wsdl:output name="getEpfVersionResponse" message="impl:getEpfVersionResponse" />
+      <wsdl:fault name="CFCInvocationException" message="impl:CFCInvocationException" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="filedownload.cfcSoapBinding" type="impl:filedownload">
+    <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <wsdl:operation name="getFile">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="getFileRequest">
+        <wsdlsoap:body use="encoded" namespace="http://epf.usps.com" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="getFileResponse">
+        <wsdlsoap:body use="encoded" namespace="http://epf.usps.com" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+      <wsdl:fault name="CFCInvocationException">
+        <wsdlsoap:fault use="encoded" name="CFCInvocationException" namespace="http://epf.usps.com" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="setStatus">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="setStatusRequest">
+        <wsdlsoap:body use="encoded" namespace="http://epf.usps.com" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="setStatusResponse">
+        <wsdlsoap:body use="encoded" namespace="http://epf.usps.com" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+      <wsdl:fault name="CFCInvocationException">
+        <wsdlsoap:fault use="encoded" name="CFCInvocationException" namespace="http://epf.usps.com" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="login">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="loginRequest">
+        <wsdlsoap:body use="encoded" namespace="http://epf.usps.com" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="loginResponse">
+        <wsdlsoap:body use="encoded" namespace="http://epf.usps.com" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+      <wsdl:fault name="CFCInvocationException">
+        <wsdlsoap:fault use="encoded" name="CFCInvocationException" namespace="http://epf.usps.com" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getList">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="getListRequest">
+        <wsdlsoap:body use="encoded" namespace="http://epf.usps.com" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="getListResponse">
+        <wsdlsoap:body use="encoded" namespace="http://epf.usps.com" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+      <wsdl:fault name="CFCInvocationException">
+        <wsdlsoap:fault use="encoded" name="CFCInvocationException" namespace="http://epf.usps.com" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getEpfVersion">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="getEpfVersionRequest">
+        <wsdlsoap:body use="encoded" namespace="http://epf.usps.com" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="getEpfVersionResponse">
+        <wsdlsoap:body use="encoded" namespace="http://epf.usps.com" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+      <wsdl:fault name="CFCInvocationException">
+        <wsdlsoap:fault use="encoded" name="CFCInvocationException" namespace="http://epf.usps.com" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="filedownload">
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+EPF Web Service to download subscription products as they become available.  </wsdl:documentation>
+    <wsdl:port name="filedownload.cfc" binding="impl:filedownload.cfcSoapBinding">
+      <wsdlsoap:address location="https://epf.usps.gov/com/usps/epf/filedownload.cfc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
