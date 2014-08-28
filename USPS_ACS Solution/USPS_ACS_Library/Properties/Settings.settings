@@ -1,0 +1,9 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="USPS_ACS_Library.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="USPS_ACS_Library_gov_usps_epf_filedownload" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">https://epf.usps.gov/com/usps/epf/filedownload.cfc</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

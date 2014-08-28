@@ -17,6 +17,9 @@ go
 if not exists (select * from qualpro_params where STRPARAM_NM='SurveyRule: UseUSPSAddrChangeServiceDefault - ACOCAHPS')
 	insert into qualpro_params (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, NUMPARAM_VALUE ,DATPARAM_VALUE ,COMMENTS)
 	values ('SurveyRule: UseUSPSAddrChangeServiceDefault - ACOCAHPS','S','SurveyRules','1', NULL, NULL, 'Rule to set the default state of UseUSPSAddrChangeServiceCheckBox')
+if not exists (select * from qualpro_params where STRPARAM_NM='SurveyRule: UseUSPSAddrChangeServiceDefault - ICHCAHPS')
+	insert into qualpro_params (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, NUMPARAM_VALUE ,DATPARAM_VALUE ,COMMENTS)
+	values ('SurveyRule: UseUSPSAddrChangeServiceDefault - ICHCAHPS','S','SurveyRules','1', NULL, NULL, 'Rule to set the default state of UseUSPSAddrChangeServiceCheckBox')
 go
 ALTER PROCEDURE [dbo].[QCL_InsertSurvey]
     @Study_id                  INT,        

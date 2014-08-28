@@ -101,7 +101,7 @@ AS
 		 LEFT JOIN  LOAD_TABLES.SamplePopulationDispositionLog ltsapd 
 		  ON lt.DataFileID = ltsapd.DataFileID AND lt.SamplePopulationID = ltsapd.SamplePopulationID 
 		    AND Mapping.DispositionID = ltsapd.DispositionID AND lt.ReturnDate = ltsapd.datLogged
-		  LEFT JOIN LOAD_TABLES.ResponseBubble ltrb ON lt.QuestionFormID = ltrb.QuestionFormID AND ltrb.DataFileID =  @DataFileID
+		  LEFT JOIN LOAD_TABLES.ResponseBubble ltrb ON lt.QuestionFormID = ltrb.QuestionFormID AND ltrb.responseValue>=0 AND ltrb.DataFileID =  @DataFileID
 		  LEFT JOIN LOAD_TABLES.ResponseComment ltrc ON lt.QuestionFormID = ltrc.QuestionFormID AND ltrc.DataFileID =  @DataFileID
 		WHERE lt.DataFileID = @DataFileID AND lt.isDelete = 0--lt.isInsert = 1 
 		AND lt.QuestionFormID IS NOT NULL AND lt.IsComplete = 1 
