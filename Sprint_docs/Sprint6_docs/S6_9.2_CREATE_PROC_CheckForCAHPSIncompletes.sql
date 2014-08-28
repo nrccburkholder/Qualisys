@@ -1,12 +1,16 @@
 use qp_prod
 go
-drop procedure [dbo].[CheckForACOCAHPSIncompletes]
+if exists (select * from sys.procedures where name = 'CheckForACOCAHPSIncompletes')
+	drop procedure [dbo].[CheckForACOCAHPSIncompletes]
+go
+if exists (select * from sys.procedures where name = 'CheckForCAHPSIncompletes')
+	drop procedure [dbo].[CheckForCAHPSIncompletes]
 go
 CREATE PROCEDURE [dbo].[CheckForCAHPSIncompletes]
 AS
 -- =============================================
 -- Author:	Dave Gilsdorf
--- Procedure Name: CheckForACOCAHPSIncompletes
+-- Procedure Name: CheckForCAHPSIncompletes (original name: CheckForACOCAHPSIncompletes)
 -- Create date: 1/2014 
 -- Description:	Stored Procedure that extracts question form data from QP_Prod
 -- History: 1.0  1/2014  by Dave Gilsdorf
@@ -34,7 +38,7 @@ WITH CTE_Returns AS
 -- list of everybody who returned an ACOCAHPS or ICHCAHPS survey today
 select qf.datReturned, qf.datResultsImported, sd.Survey_id, st.Surveytype_id, st.Surveytype_dsc, ms.intSequence
 , scm.*, qf.QuestionForm_id, sm.datExpire, convert(tinyint,null) as ACODisposition, convert(varchar(15),'') as DispositionAction
-, qf.ReceiptType_id, ms.strMailingStep_nm, 0 as bitETLThisReturn, 0 as bitContinueWithMailings
+, qf.ReceiptType_id, ms.strMailingStep_nm, qf.bitComplete, 0 as bitETLThisReturn, 0 as bitContinueWithMailings
 into #TodaysReturns
 from CTE_Returns eq
 inner join QuestionForm qf on qf.QuestionForm_id=eq.PKey1 
@@ -59,6 +63,8 @@ update tr
 set ACODisposition=qf.disposition
 	, bitContinueWithMailings = case when qf.disposition in (31,34) then 1 else 0 end
 	, bitETLThisReturn        = case when qf.disposition in (31,34) then 0 else 1 end
+	, bitComplete             = case when qf.disposition = 10 then 1 else 0 end
+--select tr.questionform_id, tr.ACODisposition, qf.disposition, tr.bitContinueWithMailings, tr.bitETLThisReturn, qf.disposition 
 from #TodaysReturns tr
 inner join #ACOQF qf on tr.questionform_id=qf.questionform_id
 
@@ -97,25 +103,29 @@ inner join #ACOQF qf on tr.questionform_id=qf.questionform_id
 
 			insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_id,datLogged,LoggedBy)
 			select sentmail_id, samplepop_id, 25, receipttype_id, getdate(), 'CheckForCAHPSIncompletes'
+			--, strMailingStep_nm, ResponseCount
 			from #qfResponseCount rc
 			where strMailingStep_nm='1st Survey'
 			and ResponseCount=0
 
 			insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_id,datLogged,LoggedBy)
 			select sentmail_id, samplepop_id, 26, receipttype_id, getdate(), 'CheckForCAHPSIncompletes'
+			--, strMailingStep_nm, ResponseCount
 			from #qfResponseCount rc
 			where strMailingStep_nm='2nd Survey'
 			and ResponseCount=0
 			
 			update rc
 			set FutureScheduledMailing=1
+			-- select scm.*--rc.samplepop_id, scm.sentmail_id, rc.FutureScheduledMailing
 			from #qfResponseCount rc
 			inner join scheduledMailing scm on rc.samplepop_id=scm.samplepop_id
 			where scm.sentmail_id is null
-			
+
 			-- samplepops with mailsteps that haven't been accounted for yet:
 			update rc
 			set AllMailStepsAreBack=0
+			-- select rc.samplepop_id, qf.sentmail_id, qf.datreturned, qf.datunusedreturn, sm.datundeliverable, rc.AllMailStepsAreBack
 			from #qfResponseCount rc
 			inner join questionform qf on rc.samplepop_id=qf.samplepop_id
 			inner join sentmailing sm on qf.sentmail_id=sm.sentmail_id
@@ -124,35 +134,169 @@ inner join #ACOQF qf on tr.questionform_id=qf.questionform_id
 			-- we can etl a return if the samplepop meets these criteria:
 			update tr
 			set bitETLThisReturn=1, bitContinueWithMailings=0
+			-- select tr.questionform_id, rc.AllMailStepsAreBack, rc.FutureScheduledMailing, tr.bitETLThisReturn, tr.bitContinueWithMailings
 			from #TodaysReturns tr
 			inner join #qfResponseCount rc on tr.questionform_id=rc.questionform_id
 			where rc.AllMailStepsAreBack=1 
 			and rc.FutureScheduledMailing=0
+			
+			if @@rowcount>0
+			begin
+				-- if we're ETLing something, check to see if any other returned mailsteps had more questions answered. If so, ETL the other mailstep
+				insert into #qfresponsecount (questionform_id, sentmail_id, samplepop_id, receipttype_id, strMailingStep_nm, ResponseCount, FutureScheduledMailing, AllMailStepsAreBack)
+				select qf.questionform_id, qf.sentmail_id, qf.samplepop_id, qf.receipttype_id, ms.strmailingStep_nm, null as ResponseCount, 0 as FutureScheduledMailing, 1 as AllMailStepsAreBack
+				from #TodaysReturns tr
+				inner join questionform qf on tr.questionform_id=qf.questionform_id
+				inner join ScheduledMailing scm on qf.sentmail_id=scm.sentmail_id
+				inner join MailingStep ms on scm.Methodology_id=ms.Methodology_id and scm.MailingStep_id=ms.MailingStep_id
+				where tr.bitETLThisReturn=1
+				and qf.UnusedReturn_id=5
+				
+				if @@rowcount>0
+				begin				
+					exec dbo.QFResponseCount
+
+					-- list of samplepops that have multiple returns
+					select rc.questionform_id, rc.samplepop_id, ResponseCount, isnull(qf.datreturned,qf.datUnusedReturn) as datReturned, isnull(tr.bitETLThisReturn,0) as orgBitETLThisReturn, 0 as newBitETLThisReturn
+					into #takeBest
+					from #qfresponsecount rc
+					inner join questionform qf on rc.questionform_id=qf.questionform_id
+					left join #todaysreturns tr on rc.questionform_id=tr.questionform_id
+
+					-- we want to ETL the return with the most answers
+					update tb
+					set newBitETLThisReturn=1
+					from #takebest tb
+					inner join (select samplepop_id, max(ResponseCount) as mostAnswers
+								from #TakeBest
+								group by samplepop_id) most
+						on tb.samplepop_id=most.samplepop_id and tb.ResponseCount = most.mostAnswers
+
+					-- if a respondent has more than one return with the same number of answers, we want to ETL the return that was returned first
+					update tb
+					set newBitETLThisReturn=0
+					from #takebest tb
+					inner join (select samplepop_id, min(datreturned) as firstReturned 
+								from #takebest 
+								where newBitETLThisReturn=1 
+								group by samplepop_id 
+								having count(*)>1) frst
+						on tb.samplepop_id=frst.samplepop_id and tb.datReturned>frst.firstReturned 
+
+					-- if newBitETLThisReturn is the same return as orgBitETLThisReturn, we don't need to adjust #TodaysReturn.bitETLThisReturn
+					-- but we do need to change the non-ETL'd return from UnusedReturn_id=5 to UnusedReturn_id=6 (i.e. from "we might use it" to "we're never gonna use it")
+					update qf
+					set unusedreturn_id=6
+					from #takebest tb
+					inner join questionform qf on tb.questionform_id=qf.questionform_id
+					where orgBitETLThisReturn=0 and newBitETLThisReturn=0
+
+					delete from #takebest where orgBitETLThisReturn=newBitETLThisReturn
+
+					-- if newBitETLThisReturn is the NOT same return as orgBitETLThisReturn, we need to:
+					-- change today's return to an unused return
+					update qf
+					set unusedreturn_id=6, datUnusedReturn=qf.datReturned, datReturned=NULL
+					from #takebest tb
+					inner join questionform qf on tb.questionform_id=qf.questionform_id
+					where orgBitETLThisReturn=1 and newBitETLThisReturn=0
+					
+					-- move today's return's results from questionresult to questionresult2
+					insert into QuestionResult2 (QUESTIONFORM_ID,SAMPLEUNIT_ID,QSTNCORE,INTRESPONSEVAL)
+					select qr.QUESTIONFORM_ID,SAMPLEUNIT_ID,QSTNCORE,INTRESPONSEVAL
+					from #takebest tb
+					inner join questionresult qr on tb.questionform_id=qr.questionform_id
+					where orgBitETLThisReturn=1 and newBitETLThisReturn=0
+					
+					-- change the previous return back into a used return
+					update qf
+					set unusedreturn_id=0, datReturned=qf.datUnusedReturn, qf.datUnusedReturn=NULL
+					from #takebest tb
+					inner join questionform qf on tb.questionform_id=qf.questionform_id
+					where orgBitETLThisReturn=0 and newBitETLThisReturn=1
+					
+					-- move the previous return's results from questionresult2 to questionresult
+					insert into QuestionResult (QUESTIONFORM_ID,SAMPLEUNIT_ID,QSTNCORE,INTRESPONSEVAL)
+					select qr.QUESTIONFORM_ID,SAMPLEUNIT_ID,QSTNCORE,INTRESPONSEVAL
+					from #takebest tb
+					inner join questionresult2 qr on tb.questionform_id=qr.questionform_id
+					where orgBitETLThisReturn=0 and newBitETLThisReturn=1
+				
+					-- change the record in #todaysreturns to bitETLThisReturn=0
+					update tr
+					set bitETLThisReturn=0
+					from #takebest tb
+					inner join #todaysreturns tr on tb.questionform_id=tr.questionform_id
+					where tb.newbitETLThisReturn=0
+					
+					-- insert the previous return into #todaysreturns
+					insert into #todaysReturns (datReturned, datResultsImported, Survey_id, Surveytype_id, Surveytype_dsc, intSequence, SCHEDULEDMAILING_ID, MAILINGSTEP_ID, SAMPLEPOP_ID, 
+						OVERRIDEITEM_ID, SENTMAIL_ID, METHODOLOGY_ID, DATGENERATE, QuestionForm_id, datExpire, ACODisposition, DispositionAction, ReceiptType_id, 
+						strMailingStep_nm, bitComplete, bitETLThisReturn, bitContinueWithMailings)
+					select qf.datReturned, qf.datResultsImported, qf.Survey_id, sd.Surveytype_id, st.Surveytype_dsc, ms.intSequence, scm.SCHEDULEDMAILING_ID, ms.MAILINGSTEP_ID, qf.SAMPLEPOP_ID, 
+						scm.OVERRIDEITEM_ID, qf.SENTMAIL_ID, scm.METHODOLOGY_ID, scm.DATGENERATE, qf.QuestionForm_id, sm.datExpire, null as ACODisposition, null as DispositionAction, qf.ReceiptType_id, 
+						ms.strMailingStep_nm, qf.bitComplete, tb.newbitETLThisReturn, 0 as bitContinueWithMailings
+					from #takeBest tb
+					inner join questionform qf on tb.questionform_id=qf.questionform_id
+					inner join survey_def sd on qf.survey_id=sd.survey_id
+					inner join surveytype st on sd.surveytype_id=st.surveytype_id
+					inner join sentmailing sm on qf.sentmail_id=sm.sentmail_id
+					inner join scheduledmailing scm on qf.sentmail_id=scm.sentmail_id
+					inner join mailingstep ms on scm.mailingstep_id=ms.mailingstep_id
+					where tb.newBitETLThisReturn=1
+					
+					-- insert it into the medusa queue
+					insert into QuestionForm_extract (Questionform_id, tiExtracted)
+					select Questionform_id, 0
+					from #todaysreturns
+					where bitETLThisReturn=1
+					and questionform_id not in (select questionform_id from QuestionForm_extract where datExtracted_dt is null)
+					
+					-- insert it into the catalyst queue
+					insert into NRC_DataMart_ETL.dbo.ExtractQueue (EntityTypeID,PKey1,PKey2,IsMetaData,ExtractFileID,IsDeleted,Created,Source)
+					select 11 as EntityTypeID,QUESTIONFORM_ID, strlithocode, 0 as isMetaData, null as ExtractFileID, 0 as isDeleted, getdate(), 'CheckForCAHPSIncompletes'
+					from #todaysreturns tr
+					inner join sentmailing sm on tr.sentmail_id=sm.sentmail_id
+					where bitETLThisReturn=1
+				end
+			end
+			
+			update tr
+			set bitComplete=case when ATACnt>=19 then 1 else 0 end
+			from #TodaysReturns tr
+			inner join (select rc.questionform_id, count(distinct isnull(qr.qstncore,qr2.qstncore)) as ATACnt
+						from #qfResponseCount rc
+						left join questionresult qr on rc.questionform_id=qr.questionform_id
+						left join questionresult2 qr2 on rc.questionform_id=qr2.questionform_id
+						where isnull(qr.qstncore,qr2.qstncore) in (51198,51199,47159,47160,47161,47162,47163,47164,47165,47166,47167,47168,47169,47170,47171,47172
+								,47173,47174,47175,47176,47178,47179,47181,47182,47183,47184,47185,47186,47187,47188,47189,47190,47191,47192,47193,47195,47196,47197)
+						and isnull(qr.intResponseVal, qr2.intResponseval) >= 0
+						group by rc.questionform_id) rc
+					on tr.questionform_id=rc.questionform_id
 
 			update tr
-			set bitETLThisReturn=0, bitContinueWithMailings=1
+			set bitETLThisReturn=0, bitContinueWithMailings=1, bitComplete=0
+			-- select tr.questionform_id, rc.ResponseCount, rc.strMailingStep_nm, rc.AllMailStepsAreBack, tr.bitETLThisReturn, tr.bitContinueWithMailings
 			from #TodaysReturns tr
 			inner join #qfResponseCount rc on tr.questionform_id=rc.questionform_id
-			where rc.ResponseCount=0
-			and rc.strMailingStep_nm='1st Survey'
-			and rc.AllMailStepsAreBack=0
+			where rc.ResponseCount=0			
 		
 			/* end addition */
 
 -- for complete surveys, set QuestionForm.bitComplete=1
 update qf 
-set bitComplete = 1
+set bitComplete = tr.bitComplete
+-- select qf.QuestionForm_id, tr.ACODisposition, qf.bitcomplete, tr.bitcomplete
 from #TodaysReturns tr
 inner join QuestionForm qf on qf.QuestionForm_id=tr.QuestionForm_id
-where ACODisposition = 10 
---- note: ICH completeness is based on 50% of the ATA questions. All we're concerned with here is whether the surveys are blank or not.  
---- so we're not setting bitComplete for ICH surveys
+
 
 -- for blank/incomplete or partial Surveys, set bitComplete=0, move datReturned to datUnusedReturn, blank out datResultsImported,
 -- and set UnusedReturn_id=5, which means a partial return that isn't used for now (it might be used later if it ends up being the only return we ever get)
 -- fyi: UnusedReturn_id=6 means a partial return whose fate we have decided (either we ignored it because a better return came in or we used it because it's the best we got.)
 update qf 
 set bitComplete = 0, datReturned=null, UnusedReturn_id=5, datUnusedReturn=qf.datReturned, datResultsImported = NULL
+-- select qf.QuestionForm_id, tr.bitETLThisReturn, qf.bitComplete, qf.datReturned, qf.UnusedReturn_id, qf.datUnusedReturn, qf.datResultsImported 
 from #TodaysReturns tr
 inner join QuestionForm qf on qf.QuestionForm_id=tr.QuestionForm_id
 where bitETLThisReturn=0
@@ -166,12 +310,14 @@ where bitETLThisReturn=0
 
 -- delete blank/incomplete and partial results from QuestionResult
 delete qr
+-- select qr.*, tr.bitETLThisReturn
 from QuestionResult qr
 inner join #TodaysReturns tr on qr.QuestionForm_id=tr.QuestionForm_id
 where bitETLThisReturn=0
 
 -- remove blank/incomplete and partial Surveys from the ETL queue
 delete qre
+-- select qre.*, tr.bitETLThisReturn
 from QuestionForm_extract qre
 inner join #TodaysReturns tr on qre.QuestionForm_id=tr.QuestionForm_id
 where bitETLThisReturn=0
@@ -203,12 +349,10 @@ NULL			1200636
 88				1457
 */
 
-
-																														delete from #TodaysReturns where ACODisposition = 10 
-
 -- remove anybody who has one of the following Dispositions
 update tr 
 set bitContinueWithMailings=0
+-- select tr.SamplePop_id, dl.Disposition_id, tr.bitContinueWithMailings
 from #TodaysReturns tr
 inner join DispositionLog dl on tr.SamplePop_id=dl.SamplePop_id
 inner join Disposition d on dl.Disposition_id=d.Disposition_id
@@ -223,12 +367,14 @@ where dl.Disposition_id in (
 
 -- identify respondents who have Methodology-specific Dispositions
 update tr set DispositionAction='No Mail '
+-- select tr.SamplePop_id, dl.Disposition_id, tr.DispositionAction
 from #TodaysReturns tr
 inner join DispositionLog dl on tr.SamplePop_id=dl.SamplePop_id
 inner join Disposition d on dl.Disposition_id=d.Disposition_id
 where dl.Disposition_id=5 --	The intended respondent is not at this address
 
 update tr set DispositionAction=DispositionAction+'No Phone'
+-- select tr.SamplePop_id, dl.Disposition_id, tr.DispositionAction
 from #TodaysReturns tr
 inner join DispositionLog dl on tr.SamplePop_id=dl.SamplePop_id
 inner join Disposition d on dl.Disposition_id=d.Disposition_id
@@ -268,7 +414,11 @@ while @@rowcount>0
 	where tr.intSequence+1 = ms.intSequence
 	and bitContinueWithMailings=1
 
-update #TodaysReturns set bitContinueWithMailings=0 where MailingStep_id=@maxint 
+update tr
+set bitContinueWithMailings=0 
+-- select tr.MailingStep_id, tr.bitContinueWithMailings
+from #TodaysReturns tr 
+where tr.MailingStep_id=@maxint 
 
 -- list of ScheduledMailing records that need to be re-created
 select ms.MailingStep_id, tr.SamplePop_id, null as OverrideItem_id, NULL as SentMail_id, tr.Methodology_id, convert(datetime,null) as datGenerate, ms.intSequence, ms.intIntervalDays, tr.DispositionAction
@@ -282,19 +432,21 @@ order by tr.SamplePop_id, ms.intSequence
 
 -- remove respondents with Methodology-specific Dispositions
 delete nsm
+-- select nsm.*
 from #NewScheduledMailing nsm
 inner join #ms ms on nsm.MailingStep_id=ms.MailingStep_id
 where nsm.DispositionAction like '%No Mail%'
 and ms.MailingStepMethod_nm='Mail'
 
 delete nsm
+-- select nsm.*
 from #NewScheduledMailing nsm
 inner join #ms ms on nsm.MailingStep_id=ms.MailingStep_id
 where nsm.DispositionAction like '%No Phone%'
 and ms.MailingStepMethod_nm='Phone'
 
 update nsm set datGenerate=dateadd(day,nsm.intIntervalDays,convert(datetime,floor(convert(float,sm.datMailed))))
---select scm.*, ms.*, sm.datMailed, nsm.intIntervalDays, dateadd(day,nsm.intIntervalDays,sm.datMailed)
+--select scm.SamplePop_id, scm.MailingStep_id, scm.SentMail_id, ms.intSequence, nsm.intSequence, nsm.datGenerate, dateadd(day,nsm.intIntervalDays,convert(datetime,floor(convert(float,sm.datMailed))))
 from #NewScheduledMailing nsm
 inner join ScheduledMailing scm on nsm.SamplePop_id=scm.SamplePop_id 
 inner join #ms ms on scm.MailingStep_id=ms.MailingStep_id
@@ -317,8 +469,8 @@ from #NewScheduledMailing
 drop table #NewScheduledMailing
 drop table #ms
 drop table #TodaysReturns
-
-
+drop table #ACOQF
+drop table #qfResponseCount 
 
 /* PART 2  Now we want to look at the sampleset/mailing steps that are being generated tonight, and check to see if there 
    is anyone in the sampleset who should be getting generated tonight, but isn't in ScheduledMailing for whatever reason

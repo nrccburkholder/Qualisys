@@ -52,6 +52,7 @@ Public Class SurveyProvider
         End Select
         newObj.IsActive = rdr.GetBoolean("Active")
         newObj.ContractedLanguages = rdr.GetString("ContractedLanguages", String.Empty)
+        newObj.UseUSPSAddrChangeService = rdr.GetBoolean("UseUSPSAddrChangeService")
 
         newObj.QuestionnaireType = SelectSurveyQuestionnaireType(survey_id, SubtypeCategories.QuestionnaireType)
         newObj.QuestionnaireType.ResetDirtyFlag()
@@ -325,7 +326,7 @@ Public Class SurveyProvider
                                                            SafeDataReader.ToDBValue(.CutoffTableId, -1), SafeDataReader.ToDBValue(.CutoffFieldId, -1), _
                                                            SafeDataReader.ToDBValue(sampleEncounterTableId, -1), SafeDataReader.ToDBValue(sampleEncounterFieldId, -1), _
                                                            .ClientFacingName, .SurveyType, .SurveyTypeDefId, GetHouseHoldingTypeCharacter(.HouseHoldingType), .IsValidated, _
-                                                           SafeDataReader.ToDBValue(.DateValidated), .IsFormGenReleased, .ContractNumber, .IsActive, .ContractedLanguages)
+                                                           SafeDataReader.ToDBValue(.DateValidated), .IsFormGenReleased, .ContractNumber, .IsActive, .ContractedLanguages, .UseUSPSAddrChangeService)
 
             ExecuteNonQuery(cmd, tran)
         End With
@@ -354,7 +355,8 @@ Public Class SurveyProvider
                                      ByVal isActive As Boolean, _
                                      ByVal contractedLanguages As String, _
                                      ByVal surveysubtypes As SubTypeList, _
-                                     ByVal questionnairesubtype As SubType _
+                                     ByVal questionnairesubtype As SubType, _
+                                     ByVal useUSPSAddrChangeService As Boolean _
                                     ) As Survey
 
         Dim surveyId As Integer
@@ -377,7 +379,7 @@ Public Class SurveyProvider
                                                                    cutoffResponseCode, SafeDataReader.ToDBValue(cutoffTableId, -1), SafeDataReader.ToDBValue(cutoffFieldId, -1), _
                                                                    SafeDataReader.ToDBValue(sampleEncounterTableId, -1), SafeDataReader.ToDBValue(sampleEncounterFieldId, -1), _
                                                                    clientFacingName, surveyTypeId, surveyTypeDefId, GetHouseHoldingTypeCharacter(houseHoldingType), _
-                                                                   contractNumber, isActive, contractedLanguages)
+                                                                   contractNumber, isActive, contractedLanguages, useUSPSAddrChangeService)
 
                     surveyId = ExecuteInteger(cmd, tran)
 

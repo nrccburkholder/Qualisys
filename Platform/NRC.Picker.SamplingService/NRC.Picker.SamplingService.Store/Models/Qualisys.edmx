@@ -1,0 +1,588 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="QP_ProdModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="QP_ProdModelStoreContainer">
+          <EntitySet Name="CLIENT" EntityType="QP_ProdModel.Store.CLIENT" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="DATA_SET" EntityType="QP_ProdModel.Store.DATA_SET" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="DATASET_QUEUE" EntityType="QP_ProdModel.Store.DATASET_QUEUE" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="SAMPLEDATASET" EntityType="QP_ProdModel.Store.SAMPLEDATASET" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="SamplePlanWorksheet" EntityType="QP_ProdModel.Store.SamplePlanWorksheet" store:Type="Tables" store:Schema="dbo" store:Name="SamplePlanWorksheet" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator">
+            <DefiningQuery>SELECT 
+      [SamplePlanWorksheet].[SamplePlanWorksheet_id] AS [SamplePlanWorksheet_id], 
+      [SamplePlanWorksheet].[Sampleset_id] AS [Sampleset_id], 
+      [SamplePlanWorksheet].[SampleUnit_id] AS [SampleUnit_id], 
+      [SamplePlanWorksheet].[strSampleUnit_nm] AS [strSampleUnit_nm], 
+      [SamplePlanWorksheet].[ParentSampleUnit_id] AS [ParentSampleUnit_id], 
+      [SamplePlanWorksheet].[intTier] AS [intTier], 
+      [SamplePlanWorksheet].[intUniverseCount] AS [intUniverseCount], 
+      [SamplePlanWorksheet].[intDQ] AS [intDQ], 
+      [SamplePlanWorksheet].[intAvailableUniverse] AS [intAvailableUniverse], 
+      [SamplePlanWorksheet].[intPeriodReturnTarget] AS [intPeriodReturnTarget], 
+      [SamplePlanWorksheet].[numDefaultResponseRate] AS [numDefaultResponseRate], 
+      [SamplePlanWorksheet].[numHistoricResponseRate] AS [numHistoricResponseRate], 
+      [SamplePlanWorksheet].[intTotalPriorPeriodOutgo] AS [intTotalPriorPeriodOutgo], 
+      [SamplePlanWorksheet].[intAnticipatedTPPOReturns] AS [intAnticipatedTPPOReturns], 
+      [SamplePlanWorksheet].[intAdditionalReturnsNeeded] AS [intAdditionalReturnsNeeded], 
+      [SamplePlanWorksheet].[intSamplesAlreadyPulled] AS [intSamplesAlreadyPulled], 
+      [SamplePlanWorksheet].[intSamplesInPeriod] AS [intSamplesInPeriod], 
+      [SamplePlanWorksheet].[intSamplesLeftInPeriod] AS [intSamplesLeftInPeriod], 
+      [SamplePlanWorksheet].[numAdditionalPeriodOutgoNeeded] AS [numAdditionalPeriodOutgoNeeded], 
+      [SamplePlanWorksheet].[intOutgoNeededNow] AS [intOutgoNeededNow], 
+      [SamplePlanWorksheet].[intSampledNow] AS [intSampledNow], 
+      [SamplePlanWorksheet].[intIndirectSampledNow] AS [intIndirectSampledNow], 
+      [SamplePlanWorksheet].[intShortfall] AS [intShortfall], 
+      [SamplePlanWorksheet].[strCriteria] AS [strCriteria], 
+      [SamplePlanWorksheet].[minenc_dt] AS [minenc_dt], 
+      [SamplePlanWorksheet].[maxenc_dt] AS [maxenc_dt], 
+      [SamplePlanWorksheet].[badphonecount] AS [badphonecount], 
+      [SamplePlanWorksheet].[BadAddressCount] AS [BadAddressCount], 
+      [SamplePlanWorksheet].[HcahpsDirectSampledCount] AS [HcahpsDirectSampledCount]
+      FROM [dbo].[SamplePlanWorksheet] AS [SamplePlanWorksheet]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="STUDY" EntityType="QP_ProdModel.Store.STUDY" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <AssociationSet Name="FK_DATA_SET_REF_87_STUDY" Association="QP_ProdModel.Store.FK_DATA_SET_REF_87_STUDY">
+            <End Role="STUDY" EntitySet="STUDY" />
+            <End Role="DATA_SET" EntitySet="DATA_SET" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DATASET_ID" Association="QP_ProdModel.Store.FK_DATASET_ID">
+            <End Role="DATA_SET" EntitySet="DATA_SET" />
+            <End Role="DATASET_QUEUE" EntitySet="DATASET_QUEUE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAMPLEDA_REF_59320_DATA_SET" Association="QP_ProdModel.Store.FK_SAMPLEDA_REF_59320_DATA_SET">
+            <End Role="DATA_SET" EntitySet="DATA_SET" />
+            <End Role="SAMPLEDATASET" EntitySet="SAMPLEDATASET" />
+          </AssociationSet>
+          <AssociationSet Name="FK_STUDY_CLIENT" Association="QP_ProdModel.Store.FK_STUDY_CLIENT">
+            <End Role="CLIENT" EntitySet="CLIENT" />
+            <End Role="STUDY" EntitySet="STUDY" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="CLIENT">
+          <Key>
+            <PropertyRef Name="CLIENT_ID" />
+          </Key>
+          <Property Name="CLIENT_ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="STRCLIENT_NM" Type="varchar" MaxLength="40" />
+          <Property Name="Active" Type="bit" />
+          <Property Name="ClientGroup_ID" Type="int" />
+        </EntityType>
+        <EntityType Name="DATA_SET">
+          <Key>
+            <PropertyRef Name="DATASET_ID" />
+          </Key>
+          <Property Name="DATASET_ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="STUDY_ID" Type="int" />
+          <Property Name="DATLOAD_DT" Type="datetime" />
+          <Property Name="INTGOOD_RECS" Type="int" />
+          <Property Name="INTBAD_RECS" Type="int" />
+          <Property Name="INTADDRNOCHG" Type="int" />
+          <Property Name="INTADDRCLEANED" Type="int" />
+          <Property Name="INTADDRERROR" Type="int" />
+          <Property Name="RecordCount" Type="int" />
+          <Property Name="DATAPPLY_DT" Type="datetime" />
+        </EntityType>
+        <EntityType Name="DATASET_QUEUE">
+          <Key>
+            <PropertyRef Name="DATASET_QUEUE_ID" />
+          </Key>
+          <Property Name="DATASET_QUEUE_ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="DATASET_ID" Type="int" Nullable="false" />
+          <Property Name="strSTATE" Type="nvarchar" Nullable="false" MaxLength="10" />
+          <Property Name="datSTART_DT" Type="datetime" />
+          <Property Name="datEND_DT" Type="datetime" />
+        </EntityType>
+        <EntityType Name="SAMPLEDATASET">
+          <Key>
+            <PropertyRef Name="SAMPLESET_ID" />
+            <PropertyRef Name="DATASET_ID" />
+          </Key>
+          <Property Name="SAMPLESET_ID" Type="int" Nullable="false" />
+          <Property Name="DATASET_ID" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'QP_Prod.dbo.SamplePlanWorksheet' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="SamplePlanWorksheet">
+          <Key>
+            <PropertyRef Name="SamplePlanWorksheet_id" />
+            <PropertyRef Name="badphonecount" />
+            <PropertyRef Name="BadAddressCount" />
+            <PropertyRef Name="HcahpsDirectSampledCount" />
+          </Key>
+          <Property Name="SamplePlanWorksheet_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Sampleset_id" Type="int" />
+          <Property Name="SampleUnit_id" Type="int" />
+          <Property Name="strSampleUnit_nm" Type="varchar" MaxLength="255" />
+          <Property Name="ParentSampleUnit_id" Type="int" />
+          <Property Name="intTier" Type="int" />
+          <Property Name="intUniverseCount" Type="int" />
+          <Property Name="intDQ" Type="int" />
+          <Property Name="intAvailableUniverse" Type="int" />
+          <Property Name="intPeriodReturnTarget" Type="int" />
+          <Property Name="numDefaultResponseRate" Type="real" />
+          <Property Name="numHistoricResponseRate" Type="real" />
+          <Property Name="intTotalPriorPeriodOutgo" Type="int" />
+          <Property Name="intAnticipatedTPPOReturns" Type="int" />
+          <Property Name="intAdditionalReturnsNeeded" Type="int" />
+          <Property Name="intSamplesAlreadyPulled" Type="int" />
+          <Property Name="intSamplesInPeriod" Type="int" />
+          <Property Name="intSamplesLeftInPeriod" Type="int" />
+          <Property Name="numAdditionalPeriodOutgoNeeded" Type="real" />
+          <Property Name="intOutgoNeededNow" Type="int" />
+          <Property Name="intSampledNow" Type="int" />
+          <Property Name="intIndirectSampledNow" Type="int" />
+          <Property Name="intShortfall" Type="int" />
+          <Property Name="strCriteria" Type="varchar" MaxLength="3000" />
+          <Property Name="minenc_dt" Type="datetime" />
+          <Property Name="maxenc_dt" Type="datetime" />
+          <Property Name="badphonecount" Type="int" Nullable="false" />
+          <Property Name="BadAddressCount" Type="int" Nullable="false" />
+          <Property Name="HcahpsDirectSampledCount" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="STUDY">
+          <Key>
+            <PropertyRef Name="STUDY_ID" />
+          </Key>
+          <Property Name="STUDY_ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CLIENT_ID" Type="int" Nullable="false" />
+          <Property Name="STRACCOUNTING_CD" Type="char" MaxLength="10" />
+          <Property Name="STRSTUDY_NM" Type="char" Nullable="false" MaxLength="10" />
+          <Property Name="STRSTUDY_DSC" Type="varchar" MaxLength="255" />
+          <Property Name="STRBBS_USERNAME" Type="char" MaxLength="8" />
+          <Property Name="STRBBS_PASSWORD" Type="char" MaxLength="8" />
+          <Property Name="DATCREATE_DT" Type="datetime" Nullable="false" />
+          <Property Name="DATCLOSE_DT" Type="datetime" Nullable="false" />
+          <Property Name="INTARCHIVE_MONTHS" Type="int" />
+          <Property Name="BITSTUDYONGOING" Type="bit" Nullable="false" />
+          <Property Name="INTAP_NUMREPORTS" Type="int" />
+          <Property Name="INTAP_CONFINTERVAL" Type="int" />
+          <Property Name="INTAP_ERRORMARGIN" Type="int" />
+          <Property Name="INTAP_CUTOFFTARGET" Type="int" />
+          <Property Name="STROBJECTIVES_TXT" Type="text" />
+          <Property Name="DATOBJECTIVESIGNOFF_DT" Type="datetime" />
+          <Property Name="CURBUDGETAMT" Type="money" />
+          <Property Name="CURTOTALSPENT" Type="money" />
+          <Property Name="STRAP_BELOWQUOTA" Type="varchar" MaxLength="255" />
+          <Property Name="INTPOPULATIONTABLEID" Type="int" />
+          <Property Name="INTENCOUNTERTABLEID" Type="int" />
+          <Property Name="INTPROVIDERTABLEID" Type="int" />
+          <Property Name="STRREPORTLEVELS" Type="text" />
+          <Property Name="STROBJECTIVEDELIVERABLES" Type="text" />
+          <Property Name="ADEMPLOYEE_ID" Type="int" />
+          <Property Name="BITCLEANADDR" Type="bit" Nullable="false" />
+          <Property Name="DATARCHIVED" Type="datetime" />
+          <Property Name="DATCONTRACTSTART" Type="datetime" />
+          <Property Name="DATCONTRACTEND" Type="datetime" />
+          <Property Name="BITCHECKPHON" Type="bit" Nullable="false" />
+          <Property Name="bitProperCase" Type="bit" Nullable="false" />
+          <Property Name="BITMULTADDR" Type="bit" Nullable="false" />
+          <Property Name="Country_id" Type="int" />
+          <Property Name="bitNCOA" Type="bit" Nullable="false" />
+          <Property Name="bitExtractToDatamart" Type="bit" />
+          <Property Name="Active" Type="bit" />
+          <Property Name="bitAutosample" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_DATA_SET_REF_87_STUDY">
+          <End Role="STUDY" Type="QP_ProdModel.Store.STUDY" Multiplicity="0..1" />
+          <End Role="DATA_SET" Type="QP_ProdModel.Store.DATA_SET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STUDY">
+              <PropertyRef Name="STUDY_ID" />
+            </Principal>
+            <Dependent Role="DATA_SET">
+              <PropertyRef Name="STUDY_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DATASET_ID">
+          <End Role="DATA_SET" Type="QP_ProdModel.Store.DATA_SET" Multiplicity="1" />
+          <End Role="DATASET_QUEUE" Type="QP_ProdModel.Store.DATASET_QUEUE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DATA_SET">
+              <PropertyRef Name="DATASET_ID" />
+            </Principal>
+            <Dependent Role="DATASET_QUEUE">
+              <PropertyRef Name="DATASET_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAMPLEDA_REF_59320_DATA_SET">
+          <End Role="DATA_SET" Type="QP_ProdModel.Store.DATA_SET" Multiplicity="1" />
+          <End Role="SAMPLEDATASET" Type="QP_ProdModel.Store.SAMPLEDATASET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DATA_SET">
+              <PropertyRef Name="DATASET_ID" />
+            </Principal>
+            <Dependent Role="SAMPLEDATASET">
+              <PropertyRef Name="DATASET_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_STUDY_CLIENT">
+          <End Role="CLIENT" Type="QP_ProdModel.Store.CLIENT" Multiplicity="1" />
+          <End Role="STUDY" Type="QP_ProdModel.Store.STUDY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLIENT">
+              <PropertyRef Name="CLIENT_ID" />
+            </Principal>
+            <Dependent Role="STUDY">
+              <PropertyRef Name="CLIENT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="QP_ProdModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="QualisysEntities" annotation:LazyLoadingEnabled="true" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+          <EntitySet Name="SamplePlanWorksheets" EntityType="QP_ProdModel.SamplePlanWorksheet" />
+          <EntitySet Name="SampleDatasets" EntityType="QP_ProdModel.SampleDataset" />
+          <EntitySet Name="QueuedDatasets" EntityType="QP_ProdModel.QueuedDataset" />
+          <EntitySet Name="QualisysDatasets" EntityType="QP_ProdModel.QualisysDataset" />
+          <AssociationSet Name="FK_DATASET_ID" Association="QP_ProdModel.FK_DATASET_ID">
+            <End Role="DATA_SET" EntitySet="QualisysDatasets" />
+            <End Role="QueuedDataset" EntitySet="QueuedDatasets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SAMPLEDA_REF_59320_DATA_SET" Association="QP_ProdModel.FK_SAMPLEDA_REF_59320_DATA_SET">
+            <End Role="DATA_SET" EntitySet="QualisysDatasets" />
+            <End Role="SampleDataset" EntitySet="SampleDatasets" />
+          </AssociationSet>
+          <EntitySet Name="QualisysStudies" EntityType="QP_ProdModel.QualisysStudy" />
+          <AssociationSet Name="FK_DATA_SET_REF_87_STUDY" Association="QP_ProdModel.FK_DATA_SET_REF_87_STUDY">
+            <End Role="STUDY" EntitySet="QualisysStudies" />
+            <End Role="QualisysDataset" EntitySet="QualisysDatasets" />
+          </AssociationSet>
+          <EntitySet Name="QualisysClients" EntityType="QP_ProdModel.QualisysClient" />
+          <AssociationSet Name="FK_STUDY_CLIENT" Association="QP_ProdModel.FK_STUDY_CLIENT">
+            <End Role="CLIENT" EntitySet="QualisysClients" />
+            <End Role="QualisysStudy" EntitySet="QualisysStudies" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="SamplePlanWorksheet">
+          <Key>
+            <PropertyRef Name="SamplePlanWorksheet_id" />
+            <PropertyRef Name="BadPhoneCount" />
+            <PropertyRef Name="BadAddressCount" />
+            <PropertyRef Name="HcahpsDirectSampledCount" />
+          </Key>
+          <Property Name="SamplePlanWorksheet_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Name="SampleID" Type="Int32" />
+          <Property Name="SampleUnitID" Type="Int32" />
+          <Property Name="DQ" Type="Int32" />
+          <Property Name="AvailableUniverse" Type="Int32" />
+          <Property Name="PeriodReturnTarget" Type="Int32" />
+          <Property Name="DefaultResponseRate" Type="Single" />
+          <Property Name="HistoricResponseRate" Type="Single" />
+          <Property Name="TotalPriorPeriodOutgo" Type="Int32" />
+          <Property Name="AnticipatedTPPOReturns" Type="Int32" />
+          <Property Name="AdditionalReturnsNeeded" Type="Int32" />
+          <Property Name="SamplesAlreadyPulled" Type="Int32" />
+          <Property Name="SamplesInPeriod" Type="Int32" />
+          <Property Name="SamplesLeftInPeriod" Type="Int32" />
+          <Property Name="AdditionalPeriodOutgoNeeded" Type="Single" />
+          <Property Name="OutgoNeededNow" Type="Int32" />
+          <Property Name="SampleCount" Type="Int32" />
+          <Property Name="IndirectSampleCount" Type="Int32" />
+          <Property Name="Shortfall" Type="Int32" />
+          <Property Name="Criteria" Type="String" MaxLength="3000" Unicode="false" FixedLength="false" />
+          <Property Name="MinimumEncounterDate" Type="DateTime" />
+          <Property Name="MaximumEncounterDate" Type="DateTime" />
+          <Property Name="BadPhoneCount" Type="Int32" Nullable="false" />
+          <Property Name="BadAddressCount" Type="Int32" Nullable="false" />
+          <Property Name="HcahpsDirectSampledCount" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SampleDataset">
+          <Key>
+            <PropertyRef Name="SampleID" />
+            <PropertyRef Name="DatasetID" />
+          </Key>
+          <Property Type="Int32" Name="SampleID" Nullable="false" />
+          <Property Type="Int32" Name="DatasetID" Nullable="false" />
+          <NavigationProperty Name="DATA_SET" Relationship="QP_ProdModel.FK_SAMPLEDA_REF_59320_DATA_SET" FromRole="SampleDataset" ToRole="DATA_SET" />
+        </EntityType>
+        <EntityType Name="QueuedDataset">
+          <Key>
+            <PropertyRef Name="DatasetQueueID" />
+          </Key>
+          <Property Type="Int32" Name="DatasetQueueID" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Type="Int32" Name="DatasetID" Nullable="false" />
+          <Property Type="String" Name="StateString" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" ConcurrencyMode="Fixed" />
+          <Property Type="DateTime" Name="SampleStartTime" />
+          <Property Type="DateTime" Name="SampleEndTime" />
+          <NavigationProperty Name="Dataset" Relationship="QP_ProdModel.FK_DATASET_ID" FromRole="QueuedDataset" ToRole="DATA_SET" />
+        </EntityType>
+        <EntityType Name="QualisysDataset">
+          <Key>
+            <PropertyRef Name="DatasetID" />
+          </Key>
+          <Property Type="Int32" Name="DatasetID" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Type="Int32" Name="StudyID" />
+          <Property Type="DateTime" Name="LoadDate" />
+          <Property Type="Int32" Name="RecordCount" />
+          <NavigationProperty Name="QueuedDataset" Relationship="QP_ProdModel.FK_DATASET_ID" FromRole="DATA_SET" ToRole="QueuedDataset" />
+          <NavigationProperty Name="SampleDataset" Relationship="QP_ProdModel.FK_SAMPLEDA_REF_59320_DATA_SET" FromRole="DATA_SET" ToRole="SampleDataset" />
+          <NavigationProperty Name="Study" Relationship="QP_ProdModel.FK_DATA_SET_REF_87_STUDY" FromRole="QualisysDataset" ToRole="STUDY" />
+          <Property Type="DateTime" Name="ApplyDate" />
+        </EntityType>
+        <Association Name="FK_DATASET_ID">
+          <End Type="QP_ProdModel.QualisysDataset" Role="DATA_SET" Multiplicity="1" />
+          <End Type="QP_ProdModel.QueuedDataset" Role="QueuedDataset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DATA_SET">
+              <PropertyRef Name="DatasetID" />
+            </Principal>
+            <Dependent Role="QueuedDataset">
+              <PropertyRef Name="DatasetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SAMPLEDA_REF_59320_DATA_SET">
+          <End Type="QP_ProdModel.QualisysDataset" Role="DATA_SET" Multiplicity="1" />
+          <End Type="QP_ProdModel.SampleDataset" Role="SampleDataset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DATA_SET">
+              <PropertyRef Name="DatasetID" />
+            </Principal>
+            <Dependent Role="SampleDataset">
+              <PropertyRef Name="DatasetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="QualisysStudy">
+          <Key>
+            <PropertyRef Name="StudyID" />
+          </Key>
+          <Property Type="Int32" Name="StudyID" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="STRBBS_USERNAME" MaxLength="8" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="STRBBS_PASSWORD" MaxLength="8" FixedLength="true" Unicode="false" />
+          <Property Type="DateTime" Name="DATCREATE_DT" Nullable="false" />
+          <Property Type="DateTime" Name="DATCLOSE_DT" Nullable="false" />
+          <Property Type="Int32" Name="INTARCHIVE_MONTHS" />
+          <Property Type="Boolean" Name="BITSTUDYONGOING" Nullable="false" />
+          <Property Type="Int32" Name="INTAP_NUMREPORTS" />
+          <Property Type="Int32" Name="INTAP_CONFINTERVAL" />
+          <Property Type="Int32" Name="INTAP_ERRORMARGIN" />
+          <Property Type="Int32" Name="INTAP_CUTOFFTARGET" />
+          <Property Type="String" Name="STROBJECTIVES_TXT" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="DATOBJECTIVESIGNOFF_DT" />
+          <Property Type="Decimal" Name="CURBUDGETAMT" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="CURTOTALSPENT" Precision="19" Scale="4" />
+          <Property Type="String" Name="STRAP_BELOWQUOTA" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="INTPOPULATIONTABLEID" />
+          <Property Type="Int32" Name="INTENCOUNTERTABLEID" />
+          <Property Type="Int32" Name="INTPROVIDERTABLEID" />
+          <Property Type="String" Name="STRREPORTLEVELS" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="STROBJECTIVEDELIVERABLES" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="ADEMPLOYEE_ID" />
+          <Property Type="Boolean" Name="BITCLEANADDR" Nullable="false" />
+          <Property Type="DateTime" Name="DATARCHIVED" />
+          <Property Type="DateTime" Name="DATCONTRACTSTART" />
+          <Property Type="DateTime" Name="DATCONTRACTEND" />
+          <Property Type="Boolean" Name="BITCHECKPHON" Nullable="false" />
+          <Property Type="Boolean" Name="bitProperCase" Nullable="false" />
+          <Property Type="Boolean" Name="BITMULTADDR" Nullable="false" />
+          <Property Type="Int32" Name="Country_id" />
+          <Property Type="Boolean" Name="bitNCOA" Nullable="false" />
+          <Property Type="Boolean" Name="bitExtractToDatamart" />
+          <Property Type="Boolean" Name="Active" />
+          <Property Type="Boolean" Name="bitAutosample" Nullable="false" />
+          <NavigationProperty Name="Dataset" Relationship="QP_ProdModel.FK_DATA_SET_REF_87_STUDY" FromRole="STUDY" ToRole="QualisysDataset" />
+          <NavigationProperty Name="Client" Relationship="QP_ProdModel.FK_STUDY_CLIENT" FromRole="QualisysStudy" ToRole="CLIENT" />
+        </EntityType>
+        <Association Name="FK_DATA_SET_REF_87_STUDY">
+          <End Type="QP_ProdModel.QualisysStudy" Role="STUDY" Multiplicity="0..1" />
+          <End Type="QP_ProdModel.QualisysDataset" Role="QualisysDataset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STUDY">
+              <PropertyRef Name="StudyID" />
+            </Principal>
+            <Dependent Role="QualisysDataset">
+              <PropertyRef Name="StudyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="QualisysClient">
+          <Key>
+            <PropertyRef Name="ClientId" />
+          </Key>
+          <Property Name="ClientId" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Type="String" Name="ClientName" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Type="Boolean" Name="Active" />
+        </EntityType>
+        <Association Name="FK_STUDY_CLIENT">
+          <End Type="QP_ProdModel.QualisysClient" Role="CLIENT" Multiplicity="1" />
+          <End Type="QP_ProdModel.QualisysStudy" Role="QualisysStudy" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="QP_ProdModelStoreContainer" CdmEntityContainer="QualisysEntities">
+          <EntitySetMapping Name="SamplePlanWorksheets"><EntityTypeMapping TypeName="QP_ProdModel.SamplePlanWorksheet"><MappingFragment StoreEntitySet="SamplePlanWorksheet">
+            <ScalarProperty Name="SamplePlanWorksheet_id" ColumnName="SamplePlanWorksheet_id" />
+            <ScalarProperty Name="SampleID" ColumnName="Sampleset_id" />
+            <ScalarProperty Name="SampleUnitID" ColumnName="SampleUnit_id" />
+            <ScalarProperty Name="DQ" ColumnName="intDQ" />
+            <ScalarProperty Name="AvailableUniverse" ColumnName="intAvailableUniverse" />
+            <ScalarProperty Name="PeriodReturnTarget" ColumnName="intPeriodReturnTarget" />
+            <ScalarProperty Name="DefaultResponseRate" ColumnName="numDefaultResponseRate" />
+            <ScalarProperty Name="HistoricResponseRate" ColumnName="numHistoricResponseRate" />
+            <ScalarProperty Name="TotalPriorPeriodOutgo" ColumnName="intTotalPriorPeriodOutgo" />
+            <ScalarProperty Name="AnticipatedTPPOReturns" ColumnName="intAnticipatedTPPOReturns" />
+            <ScalarProperty Name="AdditionalReturnsNeeded" ColumnName="intAdditionalReturnsNeeded" />
+            <ScalarProperty Name="SamplesAlreadyPulled" ColumnName="intSamplesAlreadyPulled" />
+            <ScalarProperty Name="SamplesInPeriod" ColumnName="intSamplesInPeriod" />
+            <ScalarProperty Name="SamplesLeftInPeriod" ColumnName="intSamplesLeftInPeriod" />
+            <ScalarProperty Name="AdditionalPeriodOutgoNeeded" ColumnName="numAdditionalPeriodOutgoNeeded" />
+            <ScalarProperty Name="OutgoNeededNow" ColumnName="intOutgoNeededNow" />
+            <ScalarProperty Name="SampleCount" ColumnName="intSampledNow" />
+            <ScalarProperty Name="IndirectSampleCount" ColumnName="intIndirectSampledNow" />
+            <ScalarProperty Name="Shortfall" ColumnName="intShortfall" />
+            <ScalarProperty Name="Criteria" ColumnName="strCriteria" />
+            <ScalarProperty Name="MinimumEncounterDate" ColumnName="minenc_dt" />
+            <ScalarProperty Name="MaximumEncounterDate" ColumnName="maxenc_dt" />
+            <ScalarProperty Name="BadPhoneCount" ColumnName="badphonecount" />
+            <ScalarProperty Name="BadAddressCount" ColumnName="BadAddressCount" />
+            <ScalarProperty Name="HcahpsDirectSampledCount" ColumnName="HcahpsDirectSampledCount" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="SampleDatasets">
+            <EntityTypeMapping TypeName="QP_ProdModel.SampleDataset">
+              <MappingFragment StoreEntitySet="SAMPLEDATASET">
+                <ScalarProperty Name="DatasetID" ColumnName="DATASET_ID" />
+                <ScalarProperty Name="SampleID" ColumnName="SAMPLESET_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QueuedDatasets">
+            <EntityTypeMapping TypeName="QP_ProdModel.QueuedDataset">
+              <MappingFragment StoreEntitySet="DATASET_QUEUE">
+                <ScalarProperty Name="SampleEndTime" ColumnName="datEND_DT" />
+                <ScalarProperty Name="SampleStartTime" ColumnName="datSTART_DT" />
+                <ScalarProperty Name="StateString" ColumnName="strSTATE" />
+                <ScalarProperty Name="DatasetID" ColumnName="DATASET_ID" />
+                <ScalarProperty Name="DatasetQueueID" ColumnName="DATASET_QUEUE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QualisysDatasets">
+            <EntityTypeMapping TypeName="QP_ProdModel.QualisysDataset">
+              <MappingFragment StoreEntitySet="DATA_SET">
+                <ScalarProperty Name="ApplyDate" ColumnName="DATAPPLY_DT" />
+                <ScalarProperty Name="RecordCount" ColumnName="RecordCount" />
+                <ScalarProperty Name="LoadDate" ColumnName="DATLOAD_DT" />
+                <ScalarProperty Name="StudyID" ColumnName="STUDY_ID" />
+                <ScalarProperty Name="DatasetID" ColumnName="DATASET_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QualisysStudies">
+            <EntityTypeMapping TypeName="QP_ProdModel.QualisysStudy">
+              <MappingFragment StoreEntitySet="STUDY">
+                <ScalarProperty Name="bitAutosample" ColumnName="bitAutosample" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="bitExtractToDatamart" ColumnName="bitExtractToDatamart" />
+                <ScalarProperty Name="bitNCOA" ColumnName="bitNCOA" />
+                <ScalarProperty Name="Country_id" ColumnName="Country_id" />
+                <ScalarProperty Name="BITMULTADDR" ColumnName="BITMULTADDR" />
+                <ScalarProperty Name="bitProperCase" ColumnName="bitProperCase" />
+                <ScalarProperty Name="BITCHECKPHON" ColumnName="BITCHECKPHON" />
+                <ScalarProperty Name="DATCONTRACTEND" ColumnName="DATCONTRACTEND" />
+                <ScalarProperty Name="DATCONTRACTSTART" ColumnName="DATCONTRACTSTART" />
+                <ScalarProperty Name="DATARCHIVED" ColumnName="DATARCHIVED" />
+                <ScalarProperty Name="BITCLEANADDR" ColumnName="BITCLEANADDR" />
+                <ScalarProperty Name="ADEMPLOYEE_ID" ColumnName="ADEMPLOYEE_ID" />
+                <ScalarProperty Name="STROBJECTIVEDELIVERABLES" ColumnName="STROBJECTIVEDELIVERABLES" />
+                <ScalarProperty Name="STRREPORTLEVELS" ColumnName="STRREPORTLEVELS" />
+                <ScalarProperty Name="INTPROVIDERTABLEID" ColumnName="INTPROVIDERTABLEID" />
+                <ScalarProperty Name="INTENCOUNTERTABLEID" ColumnName="INTENCOUNTERTABLEID" />
+                <ScalarProperty Name="INTPOPULATIONTABLEID" ColumnName="INTPOPULATIONTABLEID" />
+                <ScalarProperty Name="STRAP_BELOWQUOTA" ColumnName="STRAP_BELOWQUOTA" />
+                <ScalarProperty Name="CURTOTALSPENT" ColumnName="CURTOTALSPENT" />
+                <ScalarProperty Name="CURBUDGETAMT" ColumnName="CURBUDGETAMT" />
+                <ScalarProperty Name="DATOBJECTIVESIGNOFF_DT" ColumnName="DATOBJECTIVESIGNOFF_DT" />
+                <ScalarProperty Name="STROBJECTIVES_TXT" ColumnName="STROBJECTIVES_TXT" />
+                <ScalarProperty Name="INTAP_CUTOFFTARGET" ColumnName="INTAP_CUTOFFTARGET" />
+                <ScalarProperty Name="INTAP_ERRORMARGIN" ColumnName="INTAP_ERRORMARGIN" />
+                <ScalarProperty Name="INTAP_CONFINTERVAL" ColumnName="INTAP_CONFINTERVAL" />
+                <ScalarProperty Name="INTAP_NUMREPORTS" ColumnName="INTAP_NUMREPORTS" />
+                <ScalarProperty Name="BITSTUDYONGOING" ColumnName="BITSTUDYONGOING" />
+                <ScalarProperty Name="INTARCHIVE_MONTHS" ColumnName="INTARCHIVE_MONTHS" />
+                <ScalarProperty Name="DATCLOSE_DT" ColumnName="DATCLOSE_DT" />
+                <ScalarProperty Name="DATCREATE_DT" ColumnName="DATCREATE_DT" />
+                <ScalarProperty Name="STRBBS_PASSWORD" ColumnName="STRBBS_PASSWORD" />
+                <ScalarProperty Name="STRBBS_USERNAME" ColumnName="STRBBS_USERNAME" />
+                <ScalarProperty Name="Name" ColumnName="STRSTUDY_NM" />
+                <ScalarProperty Name="StudyID" ColumnName="STUDY_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QualisysClients">
+            <EntityTypeMapping TypeName="QP_ProdModel.QualisysClient">
+              <MappingFragment StoreEntitySet="CLIENT">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="ClientName" ColumnName="STRCLIENT_NM" />
+                <ScalarProperty Name="ClientId" ColumnName="CLIENT_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="FK_STUDY_CLIENT" TypeName="QP_ProdModel.FK_STUDY_CLIENT" StoreEntitySet="STUDY">
+            <EndProperty Name="QualisysStudy">
+              <ScalarProperty Name="StudyID" ColumnName="STUDY_ID" />
+            </EndProperty>
+            <EndProperty Name="CLIENT">
+              <ScalarProperty Name="ClientId" ColumnName="CLIENT_ID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="SamplePlanWorksheet" ZoomLevel="77">
+        <EntityTypeShape EntityType="QP_ProdModel.SamplePlanWorksheet" Width="2.875" PointX="0.75" PointY="0.75" Height="5.8263151041666656" IsExpanded="true" />
+        <EntityTypeShape EntityType="QP_ProdModel.SampleDataset" Width="1.5" PointX="4.375" PointY="0.75" Height="1.4033821614583335" />
+        <EntityTypeShape EntityType="QP_ProdModel.QueuedDataset" Width="1.5" PointX="6.5" PointY="4" Height="2.1725878906249996" />
+        <EntityTypeShape EntityType="QP_ProdModel.QualisysDataset" Width="1.5" PointX="6.5" PointY="0.75" Height="2.5571907552083331" />
+        <AssociationConnector Association="QP_ProdModel.FK_DATASET_ID">
+          <ConnectorPoint PointX="7.25" PointY="3.3071907552083331" />
+          <ConnectorPoint PointX="7.25" PointY="4" />
+        </AssociationConnector>
+        <AssociationConnector Association="QP_ProdModel.FK_SAMPLEDA_REF_59320_DATA_SET">
+          <ConnectorPoint PointX="6.5" PointY="1.5478417968750002" />
+          <ConnectorPoint PointX="5.875" PointY="1.5478417968750002" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="QP_ProdModel.QualisysStudy" Width="1.5" PointX="8.75" PointY="0.75" Height="8.1339322916666656" />
+        <AssociationConnector Association="QP_ProdModel.FK_DATA_SET_REF_87_STUDY">
+          <ConnectorPoint PointX="8.75" PointY="2.0285953776041667" />
+          <ConnectorPoint PointX="8" PointY="2.0285953776041667" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="QP_ProdModel.QualisysClient" Width="1.5" PointX="6.5" PointY="6.875" Height="1.5956835937499996" />
+        <AssociationConnector Association="QP_ProdModel.FK_STUDY_CLIENT">
+          <ConnectorPoint PointX="8" PointY="7.672841796875" />
+          <ConnectorPoint PointX="8.75" PointY="7.672841796875" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

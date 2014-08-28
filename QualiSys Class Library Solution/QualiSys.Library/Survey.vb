@@ -21,6 +21,7 @@ Public Class Survey
     Private mSurveyEndDate As Date
     Private mSamplingAlgorithm As SamplingAlgorithm
     Private mIsActive As Boolean
+    Private mUseUSPSAddrChangeService As Boolean
     Private mContractedLanguages As String = String.Empty
     Private mEnforceSkip As Boolean = True
     Private mClientFacingName As String = String.Empty
@@ -47,6 +48,7 @@ Public Class Survey
     Private mIsCAHPS As Boolean = False
     Private mHasOptionCHART As Boolean = False
     Private mIsMonthlyOnly As Boolean = False
+    Private mSamplingToolPriority As Integer = 0
     Private mSamplingMethodDefault As String = String.Empty
     Private mIsSamplingMethodDisabled As Boolean = False
     Private mSamplingAlgorithmDefault As String = String.Empty
@@ -61,6 +63,8 @@ Public Class Survey
     Private mMedicareIdTextMayBeBlank As Boolean = False
     Private mCompliesWithSwitchToPropSamplingDate As Boolean = False
     Private mByPassInitRespRateNumericEnforcement As Boolean = False
+    Private mUseUSPSAddrChangeServiceDefault As Boolean = False
+
 #End Region
 
     Private Shared mSurveyTypeList As List(Of ListItem(Of SurveyTypes))
@@ -387,6 +391,19 @@ Public Class Survey
         Set(ByVal value As Boolean)
             If mIsActive <> value Then
                 mIsActive = value
+                mIsDirty = True
+            End If
+        End Set
+    End Property
+
+    <Logable()> _
+    Public Property UseUSPSAddrChangeService() As Boolean
+        Get
+            Return mUseUSPSAddrChangeService
+        End Get
+        Set(ByVal value As Boolean)
+            If mUseUSPSAddrChangeService <> value Then
+                mUseUSPSAddrChangeService = value
                 mIsDirty = True
             End If
         End Set
@@ -755,6 +772,13 @@ Public Class Survey
         End Get
     End Property
 
+    Public ReadOnly Property SamplingToolPriority(Optional ByVal override As String = vbNullString) As Integer
+        Get
+            GetSurveyRule("SamplingToolPriority", mSamplingToolPriority, override)
+            Return mSamplingToolPriority
+        End Get
+    End Property
+
     Public ReadOnly Property SamplingMethodDefault(Optional ByVal override As String = vbNullString) As String
         Get
             GetSurveyRule("SamplingMethodDefault", mSamplingMethodDefault, override)
@@ -808,6 +832,13 @@ Public Class Survey
         Get
             GetSurveyRule("IsResurveyExclusionPeriodsNumericDisabled", mIsResurveyExclusionPeriodsNumericDisabled, override)
             Return mIsResurveyExclusionPeriodsNumericDisabled
+        End Get
+    End Property
+
+    Public ReadOnly Property UseUSPSAddrChangeServiceDefault(Optional ByVal override As String = vbNullString) As Boolean
+        Get
+            GetSurveyRule("UseUSPSAddrChangeServiceDefault", mUseUSPSAddrChangeServiceDefault, override)
+            Return mUseUSPSAddrChangeServiceDefault
         End Get
     End Property
 
@@ -943,11 +974,13 @@ Public Class Survey
                                      ByVal samplingAlgorithmId As Integer, ByVal enforceSkip As Boolean, ByVal cutoffResponseCode As String, ByVal cutoffTableId As Integer, _
                                      ByVal cutoffFieldId As Integer, ByVal sampleEncounterField As StudyTableColumn, ByVal clientFacingName As String, _
                                      ByVal surveyTypeId As Integer, ByVal surveyTypeDefId As Integer, ByVal houseHoldingType As HouseHoldingType, _
-                                     ByVal contractNumber As String, ByVal isActive As Boolean, ByVal contractedLanguages As String, ByVal srvySubTypes As SubTypeList, ByVal questionnairesubtype As SubType) As Survey
+                                     ByVal contractNumber As String, ByVal isActive As Boolean, ByVal contractedLanguages As String, ByVal srvySubTypes As SubTypeList, _
+                                     ByVal questionnairesubtype As SubType, ByVal UseUSPSAddrChangeService As Boolean) As Survey
 
         Return SurveyProvider.Instance.Insert(studyId, name, description, responseRateRecalculationPeriod, resurveyMethodId, resurveyPeriod, surveyStartDate, surveyEndDate, _
                                               samplingAlgorithmId, enforceSkip, cutoffResponseCode, cutoffTableId, cutoffFieldId, sampleEncounterField, clientFacingName, _
-                                              surveyTypeId, surveyTypeDefId, houseHoldingType, contractNumber, isActive, contractedLanguages, srvySubTypes, questionnairesubtype)
+                                              surveyTypeId, surveyTypeDefId, houseHoldingType, contractNumber, isActive, contractedLanguages, srvySubTypes, questionnairesubtype, _
+                                              UseUSPSAddrChangeService)
 
     End Function
 
