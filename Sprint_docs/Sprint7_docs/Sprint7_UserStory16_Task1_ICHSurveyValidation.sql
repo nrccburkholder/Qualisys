@@ -625,6 +625,34 @@ BEGIN
 	else
 	insert into #M (Error, strMessage)
 		select 0,'This survey does have USPS Address Change Service turned on as it should'
+
+	declare @FirstStepCover varchar(42)
+
+	select @firstStepCover=rtrim(description)
+	from (                  select distinct st.CoverID, st.Language, sc.description
+							from sel_cover sc
+							inner join sel_textbox st on sc.survey_id=st.survey_id and sc.selcover_id=st.coverid
+							inner join mailingmethodology mm on st.survey_id=mm.survey_id
+							inner join mailingstep ms on mm.methodology_id=ms.methodology_id and st.coverid=ms.selcover_id
+							where st.survey_id=@survey_id
+							and ms.intSequence=1) coverlang
+	left outer join (select distinct st.CoverID, st.Language
+							from sel_textbox st 
+							inner join mailingmethodology mm on st.survey_id=mm.survey_id
+							inner join mailingstep ms on mm.methodology_id=ms.methodology_id and st.coverid=ms.selcover_id
+							where st.survey_id=@survey_id
+							and ms.intSequence=1
+							and st.richtext like '%ELECTRONIC SERVICE REQUESTED%') esr
+		  on coverlang.coverid=esr.coverid and coverlang.language=esr.language
+	where esr.coverid is null
+
+	if @@rowcount>0
+	  	insert into #M (Error, strMessage)
+		select 1,'The phrase "ELECTRONIC SERVICE REQUESTED" isn''t on the "'+@firstStepCover+'" cover letter'
+	else
+	  	insert into #M (Error, strMessage)
+		select 0,'The phrase "ELECTRONIC SERVICE REQUESTED" was found on the first letter'
+
 END
     
 SELECT * FROM #M    
