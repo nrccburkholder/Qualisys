@@ -1,3 +1,11 @@
+/*
+Sprint 7, Story 11: As an Operations Associate, I want the system to automatically process Address Change Service data from the USPS, so that I do not have to do this work manually
+Task 4 - Write the service, create the table, figure out where the data goes, put it where it should go.
+
+* create the USPS_ACS_ExtractFile_PartialMatch table, which will hold records from USPS_ACS_extractfile_work for any partial or multiple matches
+* create the USPS_ACS_ProcessFile procedure, which attempts to match records from a given USPS_ACS_ExtractFileLog_ID to the various POPULATION tables
+
+*/
 use qp_prod
 go
 if exists (select * from sys.tables where name = 'USPS_ACS_ExtractFile_PartialMatch')
@@ -202,7 +210,7 @@ select m.Study_id,m.Pop_id,m.[Status],m.FullMatch,m.popFname,m.popLname,m.popAdd
 	w.PrimaryNumberNew,w.PreDirectionalNew,w.StreetNameNew,w.StreetSuffixNew,w.PostDirectionalNew,w.UnitDesignatorNew,w.SecondaryNumberNew,w.CityNew,w.StateNew,w.Zip5New,w.Plus4ZipNew,w.AddressNew,w.Address2New
 from #matches m
 inner join USPS_ACS_extractfile_work w on m.USPS_ACS_ExtractFile_Work_ID=w.USPS_ACS_ExtractFile_Work_ID
-where m.[status]='PartialMatch'
+where m.[status] in ('PartialMatch','MultipleMatches')
 
 select top 1 @study=study_id from #Matches where [status]='Completed'
 while @@rowcount>0
