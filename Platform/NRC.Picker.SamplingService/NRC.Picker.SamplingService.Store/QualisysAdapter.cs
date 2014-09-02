@@ -124,13 +124,13 @@ namespace NRC.Picker.SamplingService.Store
 
         private static SurveyOrder GetOrderForSurvey(Survey survey)
         {
-            // TODO: analyze survey rules need for new property here or not
-            if (survey.get_IsMonthlyOnly())
+            // Done: analyzed survey rules need for new property here or not; non-HCAHPS is more complicated than this service is able to handle (needs work)
+            if (survey.get_IsMonthlyOnly()) // HCAHPS or HHCAHPS only
                 switch (survey.get_ResurveyExclusionPeriodsNumericDefault())
                 {
-                    case 1:
+                    case 1: // HCAHPS
                         return SurveyOrder.Primary;
-                    case 6:
+                    case 6: // HHCAHPS
                         return SurveyOrder.Secondary;
                 }
 

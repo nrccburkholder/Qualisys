@@ -234,8 +234,8 @@ namespace NRC.Picker.SamplingService.Store.Models
                 }
 
                 // this is a hack for HHCAHPS, where all data entries are often the first of the month
-                // TODO: analyze survey rules need for new property here or not
-                if (survey.get_IsMonthlyOnly() && survey.get_ResurveyExclusionPeriodsNumericDefault() == 6 ) //(survey.SurveyType == SurveyTypes.HHcahps)
+                // Done: analyzed survey rules need for new property here or not; non-HCAHPS is more complicated than this service is able to handle (needs work)
+                if (survey.get_IsMonthlyOnly() && survey.get_ResurveyExclusionPeriodsNumericDefault() == 6) //HHCAHPS
                 {
                     dateRanges.Add(new DateRange(periodStart, periodEnd, period));
                 }
@@ -252,8 +252,8 @@ namespace NRC.Picker.SamplingService.Store.Models
         {
             foreach (Survey survey in Surveys)
                                       //.Where(s => s.SurveyType == SurveyTypes.Hcahps))
-                // TODO: analyze survey rules need for new property here or not
-                if (survey.get_IsMonthlyOnly() && survey.get_ResurveyExclusionPeriodsNumericDefault() == 6)
+                // Done: analyzed survey rules need for new property here or not; non-HCAHPS is more complicated than this service is able to handle (needs work)
+                if (survey.get_IsMonthlyOnly() && survey.get_ResurveyExclusionPeriodsNumericDefault() == 1) //HCAHPS
                 {
                     DateTime dataStart = GetStudyDatasetDateRange(survey).MinimumDate;
                     SampleSet lastSample = QualisysAdapter.GetMostRecentSampleSetForSurvey(survey);

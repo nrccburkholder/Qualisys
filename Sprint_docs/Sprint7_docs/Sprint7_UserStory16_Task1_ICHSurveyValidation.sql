@@ -449,10 +449,12 @@ CREATE TABLE #M (Error TINYINT, strMessage VARCHAR(200))
 		  WHERE stqm.SurveyType_id=@surveyType_id AND Q.QstnCore IS NULL
 		  AND (not exists (select 1 from sel_qstns s1 inner join sel_qstns s2 on s1.section_id = s2.section_id and s1.survey_id = s2.survey_id and s2.subtype = 3 
 			where s1.qstncore = stqm.qstncore and s1.survey_id = @survey_id and s2.label like '%phone%') 
-			OR exists (select 1 from MAILINGSTEP where survey_id = @survey_id and STRMAILINGSTEP_NM like '%Phone%'))
+			OR exists (select 1 from mailingstepmethod msm inner join mailingstep ms on ms.MailingStepMethod_id = msm.MailingStepMethod_id 
+					where survey_id = @survey_id and msm.mailingstepmethod_nm = 'Phone'))
 		  AND (not exists (select 1 from sel_qstns s1 inner join sel_qstns s2 on s1.section_id = s2.section_id and s1.survey_id = s2.survey_id and s2.subtype = 3 
 			where s1.qstncore = stqm.qstncore and s1.survey_id = @survey_id and s2.label like '%mail%') 
-			OR exists (select 1 from MAILINGSTEP where survey_id = @survey_id and STRMAILINGSTEP_NM like '%1st Survey%'))
+			OR exists (select 1 from mailingstepmethod msm inner join mailingstep ms on ms.MailingStepMethod_id = msm.MailingStepMethod_id 
+					where survey_id = @survey_id and msm.mailingstepmethod_nm = 'Mail'))
 		  AND not exists (select 1 from sel_qstns s1 inner join sel_qstns s2 on s1.section_id = s2.section_id and s1.survey_id = s2.survey_id and s2.subtype = 3 
 			where s1.qstncore = stqm.qstncore and s1.survey_id = @survey_id and s2.label like '%dummy%') 
 		 ) AS a
@@ -513,8 +515,10 @@ AND  NOT EXISTS
 (SELECT * FROM SampleUnitSection SUS
 WHERE SUS.SelQstnsSection = SQ.Section_ID
 AND SUS.SELQSTNSSURVEY_ID=@Survey_id)
-AND (SQ.LABEL not like '%phone%' OR exists (select 1 from MAILINGSTEP where survey_id = @survey_id and STRMAILINGSTEP_NM like '%Phone%'))
-AND (SQ.LABEL not like '%mail%' OR exists (select 1 from MAILINGSTEP where survey_id = @survey_id and STRMAILINGSTEP_NM like '%1st Survey%'))
+AND (SQ.LABEL not like '%phone%' OR exists (select 1 from mailingstepmethod msm inner join mailingstep ms on ms.MailingStepMethod_id = msm.MailingStepMethod_id 
+									where survey_id = @survey_id and msm.mailingstepmethod_nm = 'Phone'))
+AND (SQ.LABEL not like '%mail%' OR exists (select 1 from mailingstepmethod msm inner join mailingstep ms on ms.MailingStepMethod_id = msm.MailingStepMethod_id 
+									where survey_id = @survey_id and msm.mailingstepmethod_nm = 'Mail'))
 GROUP BY Section_ID, Label
 IF @@ROWCOUNT=0
 SELECT 0 bitError, 'Sections validation' strMessage
@@ -658,5 +662,62 @@ END
 SELECT * FROM #M    
     
 DROP TABLE #M
+
+GO
+
+ALTER PROCEDURE [dbo].[QCL_SelectAllSurveyTypes]
+AS
+
+SET NOCOUNT ON
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+
+SELECT SurveyType_ID, SurveyType_dsc, CAHPSType_id, SeedMailings, SeedSurveyPercent, SeedUnitField--, CAHPSType_id as OptionType_id -- <--added to repair Seeded Mailing Service (to be removed) CJB 7/25/2014 OptionType_id was removed 8/21/2014
+FROM [dbo].SurveyType
+
+SET NOCOUNT OFF
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+GO
+
+USE [QP_Prod]
+GO
+/****** Object:  StoredProcedure [dbo].[QCL_SelectSampleUnitsBySurveyId]    Script Date: 8/25/2014 4:56:57 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER PROCEDURE [dbo].[QCL_SelectSampleUnitsBySurveyId]
+@SurveyId INT
+AS
+
+/*
+2014-0815 CAMELINCKX Re-enabling return of fields:
+					 su.bitHCAHPS, su.bitACOCAHPS, su.bitHHCAHPS, su.bitCHART, su.bitMNCM
+					 having to cast them as bit since the computed columns were made ints
+*/
+
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+SET NOCOUNT ON
+
+SELECT su.SampleUnit_id, su.ParentSampleUnit_id, sp.Survey_id, 
+ su.strSampleUnit_nm, su.intTargetReturn, su.priority, 
+ su.SampleSelectionType_id, su.CriteriaStmt_id, su.numInitResponseRate,
+ su.numResponseRate, su.Reporting_Hierarchy_id, su.SUFacility_id, 
+ su.SUServices, su.bitSuppress, 
+/* 
+ CAST(su.bitHCAHPS AS bit) AS bitHCAHPS,
+ CAST(su.bitACOCAHPS AS bit) AS bitACOCAHPS,
+ CAST(su.bitHHCAHPS AS bit) AS bitHHCAHPS,
+ CAST(su.bitCHART AS bit) AS bitCHART,
+ CAST(su.bitMNCM AS bit) AS bitMNCM,
+*/ 
+ su.CAHPSType_id, su.SampleSelectionType_id, su.samplePlan_id, su.DontSampleUnit
+FROM SampleUnit su, SamplePlan sp
+WHERE su.SamplePlan_id = sp.SamplePlan_id
+AND sp.Survey_id = @SurveyId
+
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+SET NOCOUNT OFF
 
 GO
