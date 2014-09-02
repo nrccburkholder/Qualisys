@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
@@ -50,45 +51,52 @@ namespace USPS_ACS_Service
 
         private void CreateSchedule()
         {
+            try { 
 
-            string downloadCron = AppConfig.Params["USPS_ACS_ServiceDownloadInterval"].StringValue;
-            string extractCron = AppConfig.Params["USPS_ACS_ServiceExtractInterval"].StringValue;
+                string downloadCron = AppConfig.Params["USPS_ACS_ServiceDownloadInterval"].StringValue;
+                string extractCron = AppConfig.Params["USPS_ACS_ServiceExtractInterval"].StringValue;
 
-            ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
+                NameValueCollection properties = new NameValueCollection { { "quartz.threadPool.threadCount", "1" } };
 
-            _scheduler = schedulerFactory.GetScheduler();
+                ISchedulerFactory schedulerFactory = new StdSchedulerFactory(properties);
 
-            // Create job detail for main DoWork call
-            IJobDetail job = JobBuilder.Create<DownloadJob>()
-                    .WithIdentity("main", "g1")
-                    .Build();
+                _scheduler = schedulerFactory.GetScheduler();
 
-            // Create trigger
-            ITrigger trigger1 = TriggerBuilder.Create()
-            .WithIdentity("t1", "g1")
-            .WithCronSchedule(downloadCron)
-            .Build();
+                // Create job detail for the file downloads from USPS
+                IJobDetail job = JobBuilder.Create<DownloadJob>()
+                        .WithIdentity("main", "g1")
+                        .Build();
 
-            // Add job and trigger to schedule
-            _scheduler.ScheduleJob(job, trigger1);
+                // Create trigger
+                ITrigger trigger1 = TriggerBuilder.Create()
+                .WithIdentity("t1", "g1")
+                .WithCronSchedule(downloadCron)
+                .Build();
 
-
-
-            // Create job detail for the mailbox folder cleanup 
-            IJobDetail extractJob = JobBuilder.Create<ExtractJob>()
-                    .WithIdentity("cleanup", "g2")
-                    .Build();
-
-            //Create another trigger for the job
-            ITrigger trigger2 = TriggerBuilder.Create()
-            .WithIdentity("t2", "g2")
-            .WithCronSchedule(extractCron)
-            .Build();
-
-            // add trigger to schedule
-            _scheduler.ScheduleJob(extractJob, trigger2);
+                // Add job and trigger to schedule
+                _scheduler.ScheduleJob(job, trigger1);
 
 
+
+                // Create job detail for processing the extracted files  
+                IJobDetail extractJob = JobBuilder.Create<ExtractJob>()
+                        .WithIdentity("cleanup", "g2")
+                        .Build();
+
+                //Create another trigger for the job
+                ITrigger trigger2 = TriggerBuilder.Create()
+                .WithIdentity("t2", "g2")
+                .WithCronSchedule(extractCron)
+                .Build();
+
+                // add trigger to schedule
+                _scheduler.ScheduleJob(extractJob, trigger2);
+
+            }
+            catch (Exception ex)
+            {
+                Logs.LogException("Error in CreateScheduler", ex);
+            }
         }
 
         internal class DownloadJob : IJob

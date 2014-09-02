@@ -156,25 +156,14 @@ namespace USPS_ACS_Library
 
         }
 
-        public static List<UpdateResult> UpdateAddress(params object[] args)
+        public static int UpdateAddress(params object[] args)
         {
-            string proc = "USPS_ASC_UpdateAddress";
+            string proc = "USPS_ACS_ProcessFile";
             DbCommand cmd = Db.GetStoredProcCommand(proc, args);
 
             try
             {
-                List<UpdateResult> results = new List<UpdateResult>();
-                using (SafeDataReader rdr = new SafeDataReader(Db.ExecuteReader(cmd)))
-                {
-                    while (rdr.Read())
-                    {
-                        results.Add(new UpdateResult(rdr.GetInteger("Status"), rdr.GetString("Message")));
-                    }
-                }
-
-                
-                return results;
-
+                return Convert.ToInt32(Db.ExecuteScalar(cmd));
             }
             catch (Exception ex)
             {
@@ -182,5 +171,24 @@ namespace USPS_ACS_Library
             }
 
         }
+
+
+        public static DataTable SelectPartialMatches()
+        {
+            string proc = "USPS_ASC_SelectExtractFileRecordsByStatus";
+            DbCommand cmd = Db.GetStoredProcCommand(proc);
+
+            try
+            {
+                return Db.ExecuteDataSet(cmd).Tables[0];
+            }
+            catch (Exception ex)
+            {
+                throw new SqlCommandException(cmd, ex);
+            }
+
+        }
+
+
     }
 }

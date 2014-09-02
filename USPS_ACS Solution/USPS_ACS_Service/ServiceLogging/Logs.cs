@@ -38,7 +38,7 @@ namespace ServiceLogging
             string message = info + " " + String.Format(
             "(Application {0}) {1}", "Get version", exc.Message);
 
-            _logger.FatalException(message, exc);
+            _logger.Fatal(message, exc);
         }
         /// <summary>
         /// Logs informational messages.

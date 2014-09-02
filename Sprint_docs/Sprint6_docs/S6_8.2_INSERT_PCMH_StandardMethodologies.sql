@@ -52,12 +52,10 @@ insert into StandardMailingStep (StandardMethodologyID	,intSequence	,strMailingS
 values (@SMid	,'1'	,'Phone'	,'0'	,'42'	,'-1'	,'0'	,'1'	,'0'	,'0'	,'1'	,'41'	,'5'	,'1'	,'1'	,'1'	,'1'	,'1'	,'1'			,'1'	,'0'		,NULL			,NULL, 1		)
 update StandardMailingStep set ExpireFromStep=@SMSid where ExpireFromStep=-1																													
 
-/*
-  rollback tran
 
   commit tran
 
-*/
+
 
 
 select *
