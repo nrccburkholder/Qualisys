@@ -156,20 +156,23 @@ namespace USPS_ACS_Library
                         int downloadLog_id = USPS_ACS_DataProvider.InsertDownloadLog(key, fileId, fileName, status, size, code, name, fulfilled, modified, fileURL, Enum.GetName(typeof(DownloadStatus), DownloadStatus.New));
 
                         string downloadStatus;
+                        string fstatus;
                         if (DownloadFile(fileURL, fileName))
                         {
                             // Set the status of the file. By default when a file URL is retrieved from the webservice by calling getFile(),
                             // the status is set to ‘S’. Acceptable values are N=New, S=Started, C=Completed, or X=Canceled. Any other
                             // values passed are defaulted to C. 
                             downloadStatus = "C"; // completed
+                            fstatus = "Completed";
                         }
                         else
                         {
                             downloadStatus = "N";  //mark as canceled
+                            fstatus = "New";
                         }
                         fdl.setStatus(authToken, key, fileId, downloadStatus);
                         Logs.Info(String.Format("DownloadFile: {0} -- status {1}", fileName , downloadStatus));
-                        USPS_ACS_DataProvider.UpdateDownloadLogStatus(downloadStatus);
+                        USPS_ACS_DataProvider.UpdateDownloadLogStatus(fstatus);
                     }
 
                     stopwatch.Stop();
@@ -392,8 +395,8 @@ namespace USPS_ACS_Library
             string folderPath = Path.Combine(Path.GetDirectoryName(currentFile), status.ToString(), Path.GetFileName(currentFile));
             try 
             {
-                MoveFile(currentFile, folderPath);
-
+                MoveFile(currentFile, folderPath,1);
+                Logs.Info(String.Format("{0} moved to {1}", Path.GetFileName(currentFile), Path.GetDirectoryName(folderPath)));
              } 
             catch(Exception ex)
             {
@@ -619,8 +622,9 @@ namespace USPS_ACS_Library
 
             try
             {
-                 MoveFile(currentFile, folderPath);
-                
+                MoveFile(currentFile, folderPath,1);
+                Logs.Info(String.Format("{0} moved to {1}", Path.GetFileName(currentFile), Path.GetDirectoryName(folderPath)));
+               
             } catch(Exception ex)
             {
                 errorList.Add(new USPS_ACS_Error(ErrorType.Extract, string.Empty, Path.GetFileName(currentFile), ex.Message));
@@ -713,24 +717,28 @@ namespace USPS_ACS_Library
 
                                 throw new Exception("File failed to copy successfully");
                             }
+                            result = true;
                         }
 
                         // everything went ok, so break out of the loop
-                        result = true;
-                        break;
+                        if (result) break;
+
                     }
                     catch (Exception ex)
                     {
                         Exception newException = new Exception("Error Copying File From [" + currentLocation + "] To [" + copyToLocation + "] after " + i + " Attempts.", ex);
                         System.Threading.Thread.Sleep(1000);
+                        throw newException;
                     }
 
                 } // end of loop
                 return result;
             }
-            catch
+            catch (Exception ex1)
             {
-                return false;
+                Exception newException = new Exception("Error Copying File From [" + currentLocation + "] To [" + copyToLocation + "].", ex1);
+                System.Threading.Thread.Sleep(1000);
+                throw newException;
             }
             finally
             {
