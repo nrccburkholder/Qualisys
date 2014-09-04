@@ -19,6 +19,7 @@ AS
 	-- Modified 06/16/2014 TSB - update *CAHPSDisposition table references to use SurveyTypeDispositions table
 	-- Modified 09/04/2014 DBG - replaced references to @Server with Qualisys, removed old commented out code
 	--                           reformated for readability 
+	--                           modified the UPDATE Snnn.Study_Results_work command to accomodate skipped multiple-response responses
 	/**************************************************************************************************************************************************/
       SET nocount ON
       SET arithabort ON
@@ -290,10 +291,9 @@ AS
                           ON q.study_id = t.study_id
                              AND q.qstncore = t.qstncore
                              AND ( q.val = t.val
-                                    OR q.val - 10000 = t.val )
-      -- We add 10000 to any responses that should have been skipped.
+                                    OR q.val - 10000 = t.val ) -- We add 10000 to any responses that should have been skipped.
       WHERE  t.val IS NULL
-             AND q.val NOT IN ( -9, -8, -7, -6, -5 )
+             AND q.val NOT IN ( -9,-8,-7,-6,-5 )
              --Modified 02/27/2014 CB - now including -5/-6 Refused/Don't Know
              AND q.val IS NOT NULL
 
@@ -307,7 +307,7 @@ AS
                              AND ( q.val = t.val
                                     OR q.val - 10000 = t.val )
       WHERE  t.val IS NULL
-             AND q.val NOT IN ( -9, -8, -7, -6, -5 )
+             AND q.val NOT IN ( -9,-8,-7,-6,-5 )
              --Modified 02/27/2014 CB - now including -5/-6 Refused/Don't Know
              AND q.val IS NOT NULL
 
@@ -1010,7 +1010,7 @@ AS
 									  WHERE s.SamplePop_id=t.SamplePop_id
 									  AND s.SampleUnit_id=t.SampleUnit_id
 									  AND t.QstnCore='+CONVERT(VARCHAR,@Core)+'
-									  AND t.intresponseVal=' + CONVERT(VARCHAR, @Cnt)
+									  AND t.intresponseVal % 10000 =' + CONVERT(VARCHAR, @Cnt)
 
                   EXEC Sp_executesql @Nstrsql
 
