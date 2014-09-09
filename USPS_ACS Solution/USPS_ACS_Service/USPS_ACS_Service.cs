@@ -32,7 +32,7 @@ namespace USPS_ACS_Service
             eventLog.Source = "USPS_ACS_Service";
             eventLog.Log = "Application";
 
-            Logs.Info("USPS_ACS_Servic Started");
+            Logs.Info("USPS_ACS_Service Started");
 
             CreateSchedule();
             _scheduler.Start();
