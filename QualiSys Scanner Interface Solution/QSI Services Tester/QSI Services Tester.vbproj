@@ -69,24 +69,11 @@
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NRC">
-      <HintPath>..\..\Referenced Assemblies\NRC.dll</HintPath>
-    </Reference>
-    <Reference Include="Nrc.Framework">
-      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.dll</HintPath>
-    </Reference>
     <Reference Include="Nrc.Framework.BusinessLogic">
       <HintPath>..\..\Referenced Assemblies\Nrc.Framework.BusinessLogic.dll</HintPath>
     </Reference>
-    <Reference Include="Nrc.Framework.Notification">
-      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.Notification.dll</HintPath>
-    </Reference>
-    <Reference Include="NRC.NRCAuthLib">
-      <HintPath>..\..\Referenced Assemblies\NRC.NRCAuthLib.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Windows.Forms" />
@@ -200,17 +187,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\QualiSys Class Library Solution\QualiSys.Library.SqlDataProvider\QualiSys.Library.SqlDataProvider.vbproj">
-      <Project>{31F9022F-D830-410D-90AE-98C59F34E552}</Project>
-      <Name>QualiSys.Library.SqlDataProvider</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\QualiSys Class Library Solution\QualiSys.Library\QualiSys.Library.vbproj">
       <Project>{191D0C34-FF61-47A6-852F-7FD91D50AD72}</Project>
       <Name>QualiSys.Library</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\QualiSys Class Library Solution\QualiSys.Scanning.Library.SqlDataProvider\QualiSys.Scanning.Library.SqlDataProvider.vbproj">
-      <Project>{43B1C31C-3D06-407A-AD35-30256C8B9C6E}</Project>
-      <Name>QualiSys.Scanning.Library.SqlDataProvider</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\QualiSys Class Library Solution\QualiSys.Scanning.Library\QualiSys.Scanning.Library.vbproj">
       <Project>{8ACF6F70-0A74-4443-BAD9-BD91CE4C5D39}</Project>
