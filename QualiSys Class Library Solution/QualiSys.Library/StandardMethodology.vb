@@ -65,11 +65,14 @@ Public Class StandardMethodology
 
         Dim SubType As SubType = New SubType(0, "", False)
 
-        For Each st As SubType In subTypes
-            If st.IsRuleOverride Then
-                SubType = st
-            End If
-        Next
+        If (Not subTypes Is Nothing) Then
+            For Each st As SubType In subTypes
+                If st.IsRuleOverride Then
+                    SubType = st
+                End If
+            Next
+        End If
+
 
         Return MethodologyProvider.Instance.SelectStandardMethodologiesBySurveyType(srvyType, SubType)
     End Function

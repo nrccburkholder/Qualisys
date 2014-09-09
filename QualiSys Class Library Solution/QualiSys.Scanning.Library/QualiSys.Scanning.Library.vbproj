@@ -75,6 +75,10 @@
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DiffieHellman, Version=0.0.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\NRCPROD\Referenced Assemblies\DiffieHellman.dll</HintPath>
+    </Reference>
     <Reference Include="Nrc.Framework, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\NRCPROD\Referenced Assemblies\Nrc.Framework.dll</HintPath>
@@ -87,12 +91,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\NRCPROD\Referenced Assemblies\Nrc.Framework.Notification.dll</HintPath>
     </Reference>
+    <Reference Include="Org.Mentalis.Security, Version=1.0.13.715, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\NRCPROD\Referenced Assemblies\Org.Mentalis.Security.dll</HintPath>
+    </Reference>
     <Reference Include="SoftekBarcodeLib, Version=6.1.0.0, Culture=neutral, PublicKeyToken=3c09a6b205d2b618">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\NRCPROD\Referenced Assemblies\SoftekBarcodeLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml" />
     <Reference Include="Tamir.SharpSSH, Version=1.1.1.13, Culture=neutral">
