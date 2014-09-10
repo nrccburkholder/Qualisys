@@ -1052,13 +1052,13 @@ namespace USPS_ACS_Library
 
             try
             {
-                partialMatchMessage += "Partial and Multiple match summary<BR><BR>";
+                partialMatchMessage += "<SPAN style='font-size:11pt;font-family:\"Calibri\";'><P>Partial and Multiple match summary<BR><BR>";
 
                 DataTable dt = USPS_ACS_DataProvider.SelectPartialMatches(true);
 
                 // Add Partial Match header and detail lines
 
-                partialMatchMessage += "Partial Matches identified<BR><BR>";
+                partialMatchMessage += "Partial Matches identified<BR><BR><TABLE style='font-size:10pt;font-family:\"Tahoma\";'>";
 
                 foreach (DataRow dr in dt.Rows)
                     if (dr["Status"].ToString().Equals("PartialMatch"))
@@ -1066,11 +1066,13 @@ namespace USPS_ACS_Library
 
                 // Add Multiple Match header and detail lines
 
-                partialMatchMessage += "Multiple Matches identified<BR><BR>";
+                partialMatchMessage += "</TABLE><BR><BR>Multiple Matches identified<BR><BR><TABLE style='font-size:10pt;font-family:\"Tahoma\";'>";
 
                 foreach (DataRow dr in dt.Rows)
                     if (dr["Status"].ToString().Equals("MultipleMatches"))
                         partialMatchMessage = BuildMatchDetail(partialMatchMessage, dr);
+
+                partialMatchMessage += "</TABLE></P></SPAN>";
 
                 string sendTo = AppConfig.Params["USPS_ACS_SendStatusNotificationTo"].StringValue;
                 string sendBcc = AppConfig.Params["USPS_ACS_SendStatusNotificationBcc"].StringValue;
@@ -1151,15 +1153,15 @@ namespace USPS_ACS_Library
 
         private static string BuildMatchDetail(string partialMatchMessage, DataRow dr)
         {
-            partialMatchMessage += string.Format("Study_id: <b>{0}</b> Pop_id: <b>{1}</b><BR>", dr["Study_id"].ToString(), dr["Pop_id"].ToString());
-            partialMatchMessage += string.Format("Pop: '{0}' '{1}' '{2}' '{3}' '{4}' '{5}'<BR>",
+            partialMatchMessage += string.Format("<TR><TD colspan=6><BR>Study_id: <b>{0}</b> Pop_id: <b>{1}</b></TD></TR>", dr["Study_id"].ToString(), dr["Pop_id"].ToString());
+            partialMatchMessage += string.Format("<TR><TD>Pop:</TD><TD>{0}</TD><TD>{1}</TD><TD>{2}</TD><TD>{3}</TD><TD>{4}</TD><TD>{5}</TD></TR>",
                 dr["popFName"].ToString(), dr["popLName"].ToString(), dr["popAddr"].ToString(),
                 dr["popCity"].ToString(), dr["PopSt"].ToString(), dr["popZip5"].ToString());
-            partialMatchMessage += string.Format("Old: '{0}' '{1}' '{2}' '{3}' '{4}' '{5}'<BR>",
+            partialMatchMessage += string.Format("<TR><TD>Old:</TD><TD>{0}</TD><TD>{1}</TD><TD>{2}</TD><TD>{3}</TD><TD>{4}</TD><TD>{5}</TD></TR>",
                 dr["FName"].ToString(), dr["LName"].ToString(), dr["PrimaryNumberOld"].ToString() + " " + dr["PreDirectionalOld"].ToString() + " " + dr["StreetNameOld"].ToString() + " " + dr["StreetSuffixOld"].ToString() +
                 " " + dr["PostDirectionalOld"].ToString() + " " + dr["UnitDesignatorOld"].ToString() + " " + dr["SecondaryNumberOld"].ToString(),
                 dr["CityOld"].ToString(), dr["StateOld"].ToString(), dr["Zip5Old"].ToString());
-            partialMatchMessage += string.Format("New: '{0}' '{1}' '{2}' '{3}' '{4}' '{5}'<BR><BR>",
+            partialMatchMessage += string.Format("<TR><TD>New:</TD><TD>{0}</TD><TD>{1}</TD><TD>{2}</TD><TD>{3}</TD><TD>{4}</TD><TD>{5}</TD></TR>",
                 dr["FName"].ToString(), dr["LName"].ToString(), dr["PrimaryNumberNew"].ToString() + " " + dr["PreDirectionalNew"].ToString() + " " + dr["StreetNameNew"].ToString() + " " + dr["StreetSuffixOld"].ToString() +
                 " " + dr["PostDirectionalNew"].ToString() + " " + dr["UnitDesignatorNew"].ToString() + " " + dr["SecondaryNumberNew"].ToString(),
                 dr["CityNew"].ToString(), dr["StateNew"].ToString(), dr["Zip5New"].ToString() + "-" + dr["Plus4ZipNew"].ToString()); 
