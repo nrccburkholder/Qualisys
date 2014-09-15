@@ -1,4 +1,15 @@
-﻿CREATE PROCEDURE [dbo].[QCL_SelectSurveysBySurveyTypeMailOnly]
+USE [QP_Prod]
+GO
+
+/****** Object:  StoredProcedure [dbo].[QCL_SelectSurveysBySurveyTypeMailOnly]    Script Date: 8/18/2014 8:37:50 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+--EXEC sp_helptext 'dbo.QCL_SelectSurveysBySurveyTypeMailOnly'
+ALTER PROCEDURE [dbo].[QCL_SelectSurveysBySurveyTypeMailOnly]
     @SurveyType_id INT
 AS
 
@@ -11,7 +22,7 @@ SELECT distinct sd.Survey_id, sd.strSurvey_Nm, sd.strSurvey_Dsc, sd.Study_id, sd
        sd.intResponse_Recalc_Period, sd.intResurvey_Period, sd.datSurvey_Start_Dt, sd.datSurvey_End_Dt,
        sd.SamplingAlgorithmID, sd.bitEnforceSkip, sd.strClientFacingName, sd.SurveyType_id,
        sd.SurveyTypeDef_id, sd.ReSurveyMethod_id, sd.strHouseholdingType, sd.Contract, sd.Active, 
-       sd.ContractedLanguages, sd.SurveySubType_ID, sd.QuestionnaireType_ID
+       sd.ContractedLanguages
 FROM Client cl, Study st, Survey_Def sd, SamplePlan sp, MailingMethodology ma, MailingStep ms, MailingStepMethod mm
 WHERE cl.Client_id = st.Client_id
   AND st.Study_id = sd.Study_id
@@ -29,3 +40,8 @@ WHERE cl.Client_id = st.Client_id
 
 SET NOCOUNT OFF
 SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+
+GO
+
+
