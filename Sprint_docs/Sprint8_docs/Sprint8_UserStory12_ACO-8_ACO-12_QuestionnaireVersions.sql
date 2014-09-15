@@ -636,6 +636,10 @@ select 10, 1, 0, '1900-01-01 00:00:00.000', '2999-12-31 00:00:00.000', @ACO8, 85
 GO
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 ALTER PROCEDURE [dbo].[SV_CAHPS_FormQuestions]
     @Survey_id INT
 AS
@@ -643,6 +647,8 @@ AS
 	8/28/2014 -- CJB Introduced into "not mapped to sampleunit" where clause criteria to prevent errors about phone section questions if
 				no phone maling step is present, and about mail section questions if no 1st survey mailing step is present, 
 				and about dummy section questions
+	9/15/2014 -- CJB accommodated for SubType_id to be NOT NULL in temp table here.  Also adjusted clumsy logic based on SurveyType so 
+				ACOCAHPS follows a path closer to PCMH 
 */
 
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
@@ -760,7 +766,7 @@ CREATE TABLE #M (Error TINYINT, strMessage VARCHAR(200))
 	[bitFirstOnForm] [bit] NULL,
 	[SubType_id] [INT] NOT NULL)
 
-	IF @surveyType_id in (@ACOCAHPS, @HCAHPS)
+	IF @surveyType_id in (@HCAHPS)
 	BEGIN
 
 		select @bitExpanded = isnull((select top 1 1 from #currentform where qstncore in (46863,46864,46865,46866,46867)),0) 
@@ -880,7 +886,7 @@ CREATE TABLE #M (Error TINYINT, strMessage VARCHAR(200))
 	END
 
 	--Look for questions missing from the form.
-	IF @surveyType_id IN (@ACOCAHPS)
+/*	IF @surveyType_id IN (@ACOCAHPS)
 	BEGIN
 
 		DECLARE @cnt50715 INT
@@ -902,7 +908,7 @@ CREATE TABLE #M (Error TINYINT, strMessage VARCHAR(200))
 		  AND t.QstnCore IS NULL and s.QstnCore NOT IN (50715,50255)
 
 	END
-
+*/
 	IF @surveyType_id IN (@HCAHPS)
 	BEGIN
 
@@ -954,7 +960,7 @@ CREATE TABLE #M (Error TINYINT, strMessage VARCHAR(200))
 		OrderDiff INT
 	)
 
-	IF @surveyType_id in (@CGCAHPS) AND @subtype_id = @PCMHSubType
+	IF (@surveyType_id in (@CGCAHPS) AND @subtype_id = @PCMHSubType) OR (@SurveyType_id = @ACOCAHPS)
 	BEGIN
 
 		INSERT INTO #M (Error, strMessage)
