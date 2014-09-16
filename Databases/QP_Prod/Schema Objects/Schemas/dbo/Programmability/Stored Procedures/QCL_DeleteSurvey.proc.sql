@@ -1,4 +1,14 @@
-﻿CREATE PROCEDURE QCL_DeleteSurvey    
+USE [QP_Prod]
+GO
+
+/****** Object:  StoredProcedure [dbo].[QCL_DeleteSurvey]    Script Date: 8/18/2014 8:38:23 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER PROCEDURE [dbo].[QCL_DeleteSurvey]    
 @SurveyID INT    
 AS    
     
@@ -336,7 +346,19 @@ BEGIN TRANSACTION
    ROLLBACK TRANSACTION    
    RAISERROR ('Problem deleting HouseHoldRule.',16,1)    
    RETURN    
-  END    
+  END 
+  
+-- Delete Sub-types from SurveySubType
+DELETE FROM [dbo].[SurveySubtype]
+      WHERE Survey_id=@SurveyID  
+ IF @@ERROR <> 0    
+  BEGIN    
+   ROLLBACK TRANSACTION    
+   RAISERROR ('Problem deleting SubTypes.',16,1)    
+   RETURN    
+  END 
+
+   
     
 --  print 'Deleting from Survey_def'    
  DELETE FROM dbo.Survey_def    
@@ -349,5 +371,7 @@ BEGIN TRANSACTION
   END    
     
 COMMIT TRAN
+
+GO
 
 

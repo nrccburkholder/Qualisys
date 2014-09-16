@@ -66,7 +66,7 @@ namespace USPS_ACS_Library
 
         public static DataSet SelectSchema(params string[] args)
         {
-            string proc = "USPS_ASC_SelectSchema";
+            string proc = "USPS_ACS_SelectSchema";
             DbCommand cmd = Db.GetStoredProcCommand(proc, args);
 
             try
@@ -139,10 +139,10 @@ namespace USPS_ACS_Library
                 throw new SqlCommandException(cmd, ex);
             }
         }
-
+/*
         public static DataTable SelectExtractFileRecordsByStatus(params string[] args)
         {
-            string proc = "USPS_ASC_SelectExtractFileRecordsByStatus";
+            string proc = "USPS_ACS_SelectExtractFilesByStatus";
             DbCommand cmd = Db.GetStoredProcCommand(proc, args);
 
             try
@@ -155,7 +155,7 @@ namespace USPS_ACS_Library
             }
 
         }
-
+*/
         public static int UpdateAddress(params object[] args)
         {
             string proc = "USPS_ACS_ProcessFile";
@@ -172,11 +172,15 @@ namespace USPS_ACS_Library
 
         }
 
-
-        public static DataTable SelectPartialMatches()
+        /// <summary>
+        /// Query for reporting details of entries in USPS_ACS_ExtractFile_PartialMatch which include Partial Match and Multiple Match records
+        /// </summary>
+        /// <param name="args">This must include one bit parameter (@MarkNotified) which is set to 1 if selected records are to be marked as processed, or 0 otherwise</param>
+        /// <returns>A DataTable of Rows not yet processed from the USPS_ACS_ExtractFile_PartialMatch table</returns>
+        public static DataTable SelectPartialMatches(params object[] args)
         {
-            string proc = "USPS_ASC_SelectExtractFileRecordsByStatus";
-            DbCommand cmd = Db.GetStoredProcCommand(proc);
+            string proc = "USPS_ACS_SelectPartialMatches";
+            DbCommand cmd = Db.GetStoredProcCommand(proc, args);
 
             try
             {

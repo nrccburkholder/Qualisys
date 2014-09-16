@@ -203,7 +203,7 @@ Public Class SurveyVendorSection
     Private Sub PopulateMethType()
 
         'Populate the standard methology types
-        Dim meths As System.Collections.ObjectModel.Collection(Of StandardMethodology) = StandardMethodology.GetBySurveyType(SelectedSurvey.SurveyType)
+        Dim meths As System.Collections.ObjectModel.Collection(Of StandardMethodology) = StandardMethodology.GetBySurveyType(SelectedSurvey.SurveyType, SelectedSurvey.SurveySubTypes)
         StandardMethBindingSource.DataSource = meths
 
     End Sub
