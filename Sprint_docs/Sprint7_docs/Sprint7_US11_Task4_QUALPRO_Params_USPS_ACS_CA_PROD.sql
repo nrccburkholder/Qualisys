@@ -16,7 +16,7 @@ begin tran
 
 SET @strparam_nm = 'USPS_ACS_Webservice_username'
 SET @strparam_type = 'S'
-SET @strparam_value = 'kanstine@nationalresearch.com'
+SET @strparam_value = ''
 SET @numparam_value = NULL
 SET @dataparam_value = NULL
 SET @comments = 'Username for connecting to USPS ACS Download Web Service'
@@ -62,7 +62,7 @@ END
 
 SET @strparam_nm = 'USPS_ACS_Webservice_password'
 SET @strparam_type = 'S'
-SET @strparam_value = 'NatlRes1245'
+SET @strparam_value = ''
 SET @dataparam_value = NULL
 SET @comments = 'Password for connecting to USPS ACS Download Web Service'
 
@@ -107,7 +107,7 @@ END
 
 SET @strparam_nm = 'USPS_ACS_ResultFiles_Path'
 SET @strparam_type = 'S'
-SET @strparam_value = '\\argus\Production\USPS_ACS\Downloads' --'\\lnk0pfil01\Teams\Client Services\Audit Team\Accountable Care Organizations\ACS result files'
+SET @strparam_value = '' --'\\lnk0pfil01\Teams\Client Services\Audit Team\Accountable Care Organizations\ACS result files'
 SET @dataparam_value = NULL
 SET @comments = 'Location to download USPS ACS zip files'
 
@@ -249,7 +249,7 @@ END
 
 SET @strparam_nm = 'USPS_ACS_FileExtractionPassword'
 SET @strparam_type = 'S'
-SET @strparam_value = '9@1&1Y2A0D4S0E4U2t'
+SET @strparam_value = ''
 SET @numparam_value = NULL
 SET @dataparam_value = NULL
 SET @comments = 'Password for extracting files from USPS zips'
@@ -296,7 +296,7 @@ END
 
 SET @strparam_nm = 'USPS_ACS_FileExtractionPath'
 SET @strparam_type = 'S'
-SET @strparam_value = '\\argus\Production\USPS_ACS\ExtractedFiles'
+SET @strparam_value = ''
 SET @numparam_value = NULL
 SET @dataparam_value = NULL
 SET @comments = 'Location to which files are extracted from USPS zip files'
