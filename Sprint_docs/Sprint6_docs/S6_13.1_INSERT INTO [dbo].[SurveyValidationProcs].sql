@@ -299,10 +299,9 @@ INSERT INTO [dbo].[SurveyValidationProcsBySurveyType]([SurveyValidationProcs_id]
 Select @intOrder = Max(intOrder) + 1 from SurveyValidationProcs
 
 
-/*
+
 commit tran
-rollback tran
-*/
+
 select *
 FROM SurveyValidationProcs_View
 order by SurveyValidationProcs_id
