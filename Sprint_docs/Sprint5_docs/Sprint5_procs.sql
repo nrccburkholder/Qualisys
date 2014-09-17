@@ -87,9 +87,9 @@ begin
 	INSERT INTO dbo.SurveyTypeSubtype VALUES (4,4)
 	INSERT INTO dbo.SurveyTypeSubtype VALUES (4,5)
 	INSERT INTO dbo.SurveyTypeSubtype VALUES (4,6)
-	INSERT INTO dbo.SurveyTypeSubtype VALUES (4,7)
-	INSERT INTO dbo.SurveyTypeSubtype VALUES (4,8)
-	INSERT INTO dbo.SurveyTypeSubtype VALUES (4,9)
+	--INSERT INTO dbo.SurveyTypeSubtype VALUES (4,7)
+	--INSERT INTO dbo.SurveyTypeSubtype VALUES (4,8)
+	--INSERT INTO dbo.SurveyTypeSubtype VALUES (4,9)
 end
 go
 INSERT INTO dbo.surveysubtype (survey_id, subtype_id)
