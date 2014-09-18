@@ -29,18 +29,18 @@ AS
       DECLARE @Nstrsql  NVARCHAR--(4000),
               @strsql   VARCHAR--(8000),
               @user     VARCHAR--(10),
-              @Study    INT,
-              @Survey   INT,
+              @Study   ,
+              @Survey  ,
               @strfield VARCHAR--(42)
-      DECLARE @cnt     INT,
-              @core    INT,
+      DECLARE @cnt    ,
+              @core   ,
               @strCore VARCHAR--(20),
               @Gen     DATETIME
-      DECLARE @HCAHPS_Complete       INT,
-              @HCAHPS_NotComplete    INT,
-              @HHCAHPS_NotComplete   INT,
-              @HHCAHPS_CompleteMail  INT,
-              @HHCAHPS_CompletePhone INT
+      DECLARE @HCAHPS_Complete      ,
+              @HCAHPS_NotComplete   ,
+              @HHCAHPS_NotComplete  ,
+              @HHCAHPS_CompleteMail ,
+              @HHCAHPS_CompletePhone
 
       SELECT @HCAHPS_NotComplete = d.disposition_id
       FROM   disposition d,
@@ -77,7 +77,7 @@ AS
              AND hd.value = '120'
              AND hd.surveytype_id = 3
 
-      INSERT INTO drm_tracktimes
+      insert into drm_tracktimes
       SELECT Getdate--(), 'Call SP_Phase3_QuestionResult_For_Extract'
 
       EXEC qualisys.qp_prod.dbo.Sp_phase3_questionresult_for_extract
@@ -89,27 +89,27 @@ AS
       CREATE TABLE #coreflds
         --(
            strfield_nm VARCHAR--(20),
-           qstncore    INT,
-           val         INT,
+           qstncore   ,
+           val        ,
            bitsingle   BIT,
            bitused     BIT
         )
 
       CREATE TABLE #updatebigtable
         --(
-           samplepop_id           INT,
+           samplepop_id          ,
            tableschema            VARCHAR--(10),
            tablename              VARCHAR--(200),
            bitcomplete            BIT,
-           daysfromfirstmailing   INT,
-           daysfromcurrentmailing INT,
-           langid                 INT
+           daysfromfirstmailing  ,
+           daysfromcurrentmailing,
+           langid                
         )
 
       -- CREATE TABLE #TableCheck --(TableSchema VARCHAR--(10), TableName VARCHAR--(200))
       PRINT 'updating QuestionResult_Work'
 
-      INSERT INTO questionresult_work
+      insert into questionresult_work
                   --(questionform_id,
                    strlithocode,
                    samplepop_id,
@@ -137,16 +137,16 @@ AS
       --************************************************************************************************
       --mwb 7/18/2011
       --for performance testing going to track numbers for the extract
-      DECLARE @studyCount     INT,
-              @surveyCount    INT,
-              @samplepopCount INT
+      DECLARE @studyCount    ,
+              @surveyCount   ,
+              @samplepopCount
 
       SELECT @StudyCount = Count--(DISTINCT study_id),
              @SurveyCount = Count--(DISTINCT survey_id),
              @SamplePopCount = Count--(DISTINCT samplepop_id)
       FROM   questionresult_work
 
-      INSERT INTO extract_processingcounts
+      insert into extract_processingcounts
                   --(datrun,
                    studiesprocessed,
                    surveysprocessed,
@@ -158,7 +158,7 @@ AS
 
       --mwb 12/28/2012
       --further performance code to tract survey Types by day
-      INSERT INTO extract_surveycounts
+      insert into extract_surveycounts
                   --(surveytype,
                    surveycounts)
       SELECT st.surveytype_dsc,
@@ -172,14 +172,14 @@ AS
 
       --select * from Extract_processingCounts
       --************************************************************************************************
-      INSERT INTO drm_tracktimes
-      SELECT Getdate--(), 'INSERT INTO Extract_SR_NonQuestion'
+      insert into drm_tracktimes
+      SELECT Getdate--(), 'insert into Extract_SR_NonQuestion'
 
       PRINT 'Updating Extract_SR_NonQuestion'
 
       --Now to insert into Extract_SR_NonQuestion for the datamart
       --This is used at a later step in the extract
-      INSERT INTO extract_sr_nonquestion
+      insert into extract_sr_nonquestion
                   --(study_id,
                    survey_id,
                    questionform_id,
@@ -236,10 +236,10 @@ AS
 
       SELECT DISTINCT study_id,
                       qstncore
-      INTO   #study
+     O   #study
       FROM   questionresult_work
 
-      INSERT INTO drm_tracktimes
+      insert into drm_tracktimes
       SELECT Getdate--(), 'Get distinct valid qstncores and vals'
 
       --get the distinct QstnCore/Val that are Valid for each Study
@@ -247,7 +247,7 @@ AS
                       t.qstncore,
                       val,
                       nummarkcount
-      INTO   #valid
+     O   #valid
       FROM   #study t,
              clientstudysurvey css,
              questions q,
@@ -263,11 +263,11 @@ AS
       CREATE INDEX tmpvalid
         ON #valid --(study_id, qstncore, val)
 
-      INSERT INTO drm_tracktimes
+      insert into drm_tracktimes
       SELECT Getdate--(), 'Log the inValid responses'
 
       --Log the inValid responses
-      INSERT INTO invalid_entries
+      insert into invalid_entries
                   --(questionform_id,
                    strlithocode,
                    samplepop_id,
@@ -311,13 +311,13 @@ AS
              --Modified 02/27/2014 CB - now including -5/-6 Refused/Don't Know
              AND q.val IS NOT NULL
 
-      INSERT INTO drm_tracktimes
+      insert into drm_tracktimes
       SELECT Getdate--(), 'Delete duplicate returns'
 
       --Delete duplicate returns that are in the same extract
       SELECT samplepop_id,
              Min--(strlithocode) Litho
-      INTO   #keep
+     O   #keep
       FROM   extract_sr_nonquestion
       GROUP  BY samplepop_id,
                 sampleunit_id
@@ -342,7 +342,7 @@ AS
 
       DROP TABLE #keep
 
-      INSERT INTO drm_tracktimes
+      insert into drm_tracktimes
       SELECT Getdate--(), 'Populate datReportDate'
 
       PRINT 'populating datReportDate'
@@ -350,7 +350,7 @@ AS
       --Need to Populate datReportDate with the return date for Surveys that report on return date
       --First get the SampleUnits for the given Surveys
       SELECT sampleunit_id
-      INTO   #rd
+     O   #rd
       FROM   sampleunit su,
              clientstudysurvey css
       WHERE  css.strreportdatefield = 'ReturnDate'
@@ -371,7 +371,7 @@ AS
       SELECT study_id,
              samplepop_id,
              datreportdate
-      INTO   #move
+     O   #move
       FROM   extract_sr_nonquestion nq
       WHERE  datreportdate IS NOT NULL
              AND EXISTS --(SELECT DISTINCT CONVERT--(INT, Substring--(table_schema, 2, 10)) AS Study_id
@@ -381,7 +381,7 @@ AS
                                 AND nq.study_id = CONVERT--(INT, Substring--(table_schema, 2, 10)))
 
       -- Identify and include ONLY studies that have a Big_Table_NULL to move data from...... Mod 6/24/04 SS
-      INSERT INTO drm_tracktimes
+      insert into drm_tracktimes
       SELECT Getdate--(), 'Start looping through studies'
 
       PRINT 'Starting loop Thru Studies'
@@ -393,10 +393,10 @@ AS
             SELECT TOP 1 @Study = study_id
             FROM   #move
 
-            INSERT INTO drm_tracktimes
+            insert into drm_tracktimes
             SELECT Getdate--(), 'Big_table_null'
 
-            --We will move the records back into a work table and then run the movefromwork
+            --We will move the records backo a work table and then run the movefromwork
             SET @strsql='UPDATE b '+CHAR--(10)+
 					  ' SET b.datReportDate=t.datReportDate '+CHAR--(10)+
 					  ' FROM S'+CONVERT--(VARCHAR,@Study)+'.Big_Table_NULL b, #move t '+CHAR--(10)+
@@ -411,7 +411,7 @@ AS
                  col VARCHAR--(42)
               )
 
-            INSERT INTO #retcolumns
+            insert into #retcolumns
             SELECT sc.name
             FROM   dbo.sql2kobjects so,
                    dbo.sql2kusers su,
@@ -442,7 +442,7 @@ AS
               END
 
             SET @strsql='SET QUOTED_IDENTIFIER ON SELECT dbo.YearQtr--(datReportDate) QtrTable'+@selcol+CHAR--(10)+
-					  ' INTO S'+CONVERT--(VARCHAR,@Study)+'.Big_Table_Work '+CHAR--(10)+
+					  'O S'+CONVERT--(VARCHAR,@Study)+'.Big_Table_Work '+CHAR--(10)+
 					  ' FROM S'+CONVERT--(VARCHAR,@Study)+'.Big_Table_NULL '+CHAR--(10)+
 					  ' WHERE datReportDate IS NOT NULL '+CHAR--(10)+
 					  ' DELETE S'+CONVERT--(VARCHAR,@Study)+'.Big_Table_NULL '+CHAR--(10)+
@@ -460,7 +460,7 @@ AS
         --end the loop
         END
 
-      INSERT INTO drm_tracktimes
+      insert into drm_tracktimes
       SELECT Getdate--(), 'MoveFromWork big_table'
 
       --use the movefromwork procedure to put the records in the appropriate table
@@ -470,7 +470,7 @@ AS
       DROP TABLE #move
       DROP TABLE #rd
 
-      INSERT INTO drm_tracktimes
+      insert into drm_tracktimes
       SELECT Getdate--(), 'Begin loop to build vert table'
 
       --Loop through the studies to first build the vertical table and then use it to Populate the horizontal table
@@ -535,10 +535,10 @@ AS
 
             --  TRUNCATE TABLE #TableCheck
             --mb here
-            INSERT INTO drm_tracktimes
-            SELECT Getdate--(), 'Insert into #updatebigtable'
+            insert into drm_tracktimes
+            SELECT Getdate--(), 'insert into #updatebigtable'
 
-            INSERT INTO #updatebigtable
+            insert into #updatebigtable
                         --(samplepop_id,
                          tableschema,
                          tablename,
@@ -572,7 +572,7 @@ AS
             PRINT @strsql
             EXEC --(@strsql)
 
-            INSERT INTO drm_tracktimes
+            insert into drm_tracktimes
             SELECT Getdate--(), 'Update respratecount'
 
             PRINT 'Updating RespRateCount'
@@ -583,8 +583,8 @@ AS
                    sampleunit_id,
                    daysfromfirstmailing,
                    daysfromcurrentmailing,
-                   Count--(*)           intReturned
-            INTO   #returns
+                   Count--(*)          Returned
+           O   #returns
             FROM   extract_sr_nonquestion
             WHERE  study_id = @Study
             GROUP  BY sampleset_id,
@@ -622,24 +622,24 @@ AS
                    AND t.daysfromfirstmailing = rr.daysfromfirstmailing
                    AND t.daysfromcurrentmailing = rr.daysfromcurrentmailing
 
-            INSERT INTO rr_returncountbydays
+            insert into rr_returncountbydays
                         --(survey_id,
                          sampleset_id,
                          sampleunit_id,
                          daysfromfirstmailing,
                          daysfromcurrentmailing,
-                         intreturned)
+                        returned)
             SELECT survey_id,
                    sampleset_id,
                    sampleunit_id,
                    daysfromfirstmailing,
                    daysfromcurrentmailing,
-                   intreturned
+                  returned
             FROM   #returns
 
             DROP TABLE #returns
 
-            INSERT INTO drm_tracktimes
+            insert into drm_tracktimes
             SELECT Getdate--(), 'On to Study_resuls_vertical_work'
 
             PRINT 'UID is ' + @user
@@ -652,7 +652,7 @@ AS
 
             --identify all of the needed fields to add to the work table
             --This is also a list of Valid cores needed for the Population of the Vertical table.
-            INSERT INTO #coreflds
+            insert into #coreflds
             SELECT DISTINCT 'Q' + RIGHT--('00000'+CONVERT--(VARCHAR, qstncore), 6),
                             qstncore,
                             0,
@@ -680,13 +680,13 @@ AS
               BEGIN
                   --loop4
                   SET @strsql='CREATE TABLE S'+CONVERT--(VARCHAR,@Study)+'.Study_Results_Vertical_Work --('+
-							   ' QtrTable VARCHAR--(10), SamplePop_id INT, SampleUnit_id INT, strLithoCode VARCHAR--(10), SampleSet_id INT, datReturned DATETIME, '+
-							   ' QstnCore INT, intResponseVal INT, datReportDate DATETIME, bitComplete BIT)'
+							   ' QtrTable VARCHAR--(10), SamplePop_id, SampleUnit_id, strLithoCode VARCHAR--(10), SampleSet_id, datReturned DATETIME, '+
+							   ' QstnCore,ResponseVal, datReportDate DATETIME, bitComplete BIT)'
                   PRINT @strsql
                   EXEC --(@strsql)
               END --loop4
 
-            SET @strsql='INSERT INTO s'+CONVERT--(VARCHAR,@Study)+'.Study_Results_Vertical_Work  '+
+            SET @strsql='insert into s'+CONVERT--(VARCHAR,@Study)+'.Study_Results_Vertical_Work  '+
 					  ' --(QtrTable, SamplePop_id,SampleUnit_id,strLithoCode,SampleSet_id,datreturned,QstnCore,intresponseVal,datreportdate,bitComplete ) '+
 					  ' SELECT dbo.YearQtr--(datReportDate), w.SamplePop_id, n.SampleUnit_id, n.strLithoCode, n.Sampleset_id, n.datReturned, QstnCore, Val, datReportDate,bitComplete '+
 					  ' FROM QuestionResult_work w, extract_sr_nonQuestion n'+
@@ -699,22 +699,22 @@ AS
             PRINT @strsql
             EXEC --(@strsql)
 
-            SET @strsql='CREATE INDEX DedupValues ON S'+CONVERT--(VARCHAR,@Study)+'.Study_Results_Vertical_Work --(SamplePop_id, SampleUnit_id, QstnCore, intresponseVal)'
+            SET @strsql='CREATE INDEX DedupValues ON S'+CONVERT--(VARCHAR,@Study)+'.Study_Results_Vertical_Work --(SamplePop_id, SampleUnit_id, QstnCore,responseVal)'
 
             --Need to make sure we only have one response for each SamplePop/SampleUnit/QstnCore combination for single response Questions
             CREATE TABLE #dedup
               --(
-                 samplepop_id  INT,
-                 sampleunit_id INT,
-                 qstncore      INT,
+                 samplepop_id ,
+                 sampleunit_id,
+                 qstncore     ,
                  datreportdate DATETIME,
-                 sampleset_id  INT,
+                 sampleset_id ,
                  datreturned   DATETIME,
                  bitcomplete   BIT
               )
 
             --Find the duplicates
-            SET @strsql='INSERT INTO #Dedup select SamplePop_id, SampleUnit_id, w.QstnCore, w.datReportDate, SampleSet_id, datReturned, bitComplete '+CHAR--(10)+
+            SET @strsql='insert into #Dedup select SamplePop_id, SampleUnit_id, w.QstnCore, w.datReportDate, SampleSet_id, datReturned, bitComplete '+CHAR--(10)+
 					  ' FROM s'+CONVERT--(VARCHAR,@Study)+'.Study_Results_Vertical_Work w, #CoreFlds t '+CHAR--(10)+
 					  ' WHERE w.QstnCore=t.QstnCore '+CHAR--(10)+
 					  ' AND t.bitSingle=1 '+CHAR--(10)+
@@ -734,7 +734,7 @@ AS
                   EXEC --(@strsql)
 
                   --Insert where the SampleUnits match
-                  SET @strsql='INSERT INTO s'+convert--(varchar,@Study)+'.Study_Results_Vertical_Work '+CHAR--(10)+
+                  SET @strsql='insert into s'+convert--(varchar,@Study)+'.Study_Results_Vertical_Work '+CHAR--(10)+
 							  ' SELECT dbo.YearQtr--(datReportDate), t.SamplePop_id, t.SampleUnit_id, q.strLithoCode, t.Sampleset_id, '+CHAR--(10)+
 							  ' t.datReturned, t.QstnCore, Val, t.datReportDate, bitComplete '+CHAR--(10)+
 							  ' FROM QuestionResult_Work q, #Dedup t '+CHAR--(10)+
@@ -759,7 +759,7 @@ AS
                   WHILE @@rowcount > 0
                     BEGIN
                         --update with another Valid Value.  This is the same update statement as when we Populate the horizontal table.
-                        SET @strsql='INSERT INTO s'+convert--(varchar,@Study)+'.Study_Results_Vertical_Work '+CHAR--(10)+
+                        SET @strsql='insert into s'+convert--(varchar,@Study)+'.Study_Results_Vertical_Work '+CHAR--(10)+
 									' SELECT TOP 1 dbo.YearQtr--(datReportDate), t.SamplePop_id, t.SampleUnit_id, q.strLithoCode, t.Sampleset_id, '+CHAR--(10)+
 									' t.datReturned, t.QstnCore, Val, t.datReportDate, bitComplete '+CHAR--(10)+
 									' FROM QuestionResult_Work q, #Dedup t '+CHAR--(10)+
@@ -785,7 +785,7 @@ AS
                   WHILE @@rowcount > 0
                     BEGIN
                         --update with another Value.  This is the same update statement as when we Populate the horizontal table.
-                        SET @strsql='INSERT INTO s'+convert--(varchar,@Study)+'.Study_Results_Vertical_Work '+CHAR--(10)+
+                        SET @strsql='insert into s'+convert--(varchar,@Study)+'.Study_Results_Vertical_Work '+CHAR--(10)+
 									'SELECT TOP 1 dbo.YearQtr--(datReportDate), t.SamplePop_id, t.SampleUnit_id, q.strLithoCode, t.Sampleset_id, '+CHAR--(10)+
 									't.datReturned, t.QstnCore, Val, t.datReportDate, bitComplete '+CHAR--(10)+
 									'FROM QuestionResult_Work q, #Dedup t '+CHAR--(10)+
@@ -818,7 +818,7 @@ AS
                                   AND si.name = 'AggValues'
                                   AND su.name = 'S' + CONVERT--(VARCHAR, @Study))
               BEGIN
-                  SET @strsql='CREATE INDEX AggValues ON S'+CONVERT--(VARCHAR,@Study)+'.Study_Results_Vertical_Work --(datReportDate, SampleUnit_id, QstnCore, intresponseVal)'
+                  SET @strsql='CREATE INDEX AggValues ON S'+CONVERT--(VARCHAR,@Study)+'.Study_Results_Vertical_Work --(datReportDate, SampleUnit_id, QstnCore,responseVal)'
                   EXEC --(@strsql)
               END
 
@@ -836,7 +836,7 @@ AS
                   EXEC --(@strsql)
               END
 
-            INSERT INTO drm_tracktimes
+            insert into drm_tracktimes
             SELECT Getdate--(), 'Study_results_work'
 
             IF NOT EXISTS --(SELECT *
@@ -847,8 +847,8 @@ AS
                   -- SRW loop
                   PRINT 'Create ' + CONVERT--(VARCHAR, @Study) + ' table ' + CONVERT--(VARCHAR, Getdate--())
                   SET @strsql='CREATE TABLE S'+CONVERT--(VARCHAR,@Study)+'.Study_Results_Work '+
-							  ' --(QtrTable VARCHAR--(10), SamplePop_id INT NOT NULL, SampleUnit_id INT NOT NULL, strLithoCode VARCHAR--(10), '+
-							  ' SampleSet_id INT, datReturned SMALLDATETIME, datReportDate SMALLDATETIME, bitComplete BIT)'
+							  ' --(QtrTable VARCHAR--(10), SamplePop_id NOT NULL, SampleUnit_id NOT NULL, strLithoCode VARCHAR--(10), '+
+							  ' SampleSet_id, datReturned SMALLDATETIME, datReportDate SMALLDATETIME, bitComplete BIT)'
                   PRINT @strsql
                   EXEC --(@strsql)
 
@@ -859,7 +859,7 @@ AS
 							  'PRIMARY KEY  CLUSTERED --(SamplePop_id, SampleUnit_id)  ON [PRIMARY]'
                   EXEC --(@strsql)
 
-                  SET @strsql='INSERT INTO S'+CONVERT--(VARCHAR,@Study)+'.Study_Results_Work --( '+
+                  SET @strsql='insert into S'+CONVERT--(VARCHAR,@Study)+'.Study_Results_Work --( '+
 							  'QtrTable, SamplePop_id, SampleUnit_id, strLithoCode, SampleSet_id, datReturned, '+
 							  'datReportDate, bitComplete) '+
 							  'SELECT DISTINCT dbo.YearQtr--(datReportDate), SamplePop_id, SampleUnit_id, strLithoCode, SampleSet_id, '+
@@ -868,7 +868,7 @@ AS
                   PRINT @strsql
                   EXEC --(@strsql)
 
-                  PRINT 'Inserted into Study_Results_work ' + CONVERT--(VARCHAR, Getdate--())
+                  PRINT 'Insertedo Study_Results_work ' + CONVERT--(VARCHAR, Getdate--())
 
                   SET @strsql='ALTER TABLE S' + CONVERT--(VARCHAR, @Study) + '.Study_Results_work ADD '
 
@@ -883,9 +883,9 @@ AS
                                       WHERE  bitused = 0)
 
                         IF RIGHT--(@strsql, 4) = 'ADD '
-                          SET @strsql=@strsql + @strCore + ' INT '
+                          SET @strsql=@strsql + @strCore + ' '
                         ELSE
-                          SET @strsql=@strsql + ', ' + @strCore + ' INT '
+                          SET @strsql=@strsql + ', ' + @strCore + ' '
 
                         --execute the alter statement if it is longer than 6000 characters
                         IF Len--(@strsql) > 6000
@@ -897,7 +897,7 @@ AS
                               BEGIN catch
                                   PRINT @strsql
 
-                                  INSERT INTO drm_tmp_coreflds
+                                  insert into drm_tmp_coreflds
                                               --(section,
                                                study,
                                                strfield_nm,
@@ -937,7 +937,7 @@ AS
                   BEGIN catch
                       PRINT @strsql
 
-                      INSERT INTO drm_tmp_coreflds
+                      insert into drm_tmp_coreflds
                                   --(section,
                                    study,
                                    strfield_nm,
@@ -966,7 +966,7 @@ AS
 
             OPEN curqstn
 
-            FETCH next FROM curqstn INTO @strCore, @Core
+            FETCH next FROM curqstnO @strCore, @Core
 
             WHILE @@FETCH_STATUS = 0
               BEGIN
@@ -978,14 +978,14 @@ AS
 
                   EXEC Sp_executesql @Nstrsql
 
-                  FETCH next FROM curqstn INTO @strCore, @Core
+                  FETCH next FROM curqstnO @strCore, @Core
               END
 
             CLOSE curqstn
 
             DEALLOCATE curqstn
 
-            INSERT INTO drm_tracktimes
+            insert into drm_tracktimes
             SELECT Getdate--(), 'Updating MR cores'
 
             PRINT 'Updating the MR cores ' + CONVERT--(VARCHAR, Getdate--())
@@ -1000,7 +1000,7 @@ AS
 
             OPEN curqstn
 
-            FETCH next FROM curqstn INTO @strCore, @Core, @Cnt
+            FETCH next FROM curqstnO @strCore, @Core, @Cnt
 
             WHILE @@FETCH_STATUS = 0
               BEGIN
@@ -1014,7 +1014,7 @@ AS
 
                   EXEC Sp_executesql @Nstrsql
 
-                  FETCH next FROM curqstn INTO @strCore, @Core, @Cnt
+                  FETCH next FROM curqstnO @strCore, @Core, @Cnt
               END
 
             CLOSE curqstn
@@ -1022,13 +1022,13 @@ AS
 
             ---------------------------------------------------------------------------------------------------------------------------------------------------------
             -- Response Rate PART 2 of 3 --(New Returns Update)
-            INSERT INTO drm_tracktimes
+            insert into drm_tracktimes
             SELECT Getdate--(), 'sp_extract_resprate'
 
             EXEC Sp_extract_resprate @Study, @procpart=2
 
             ---------------------------------------------------------------------------------------------------------------------------------------------------------
-            INSERT INTO drm_tracktimes
+            insert into drm_tracktimes
             SELECT Getdate--(), 'Update qualisys'
 
             PRINT 'Updating Qualysis: Study=' + CONVERT--(VARCHAR, @Study) + ' Processed. [' + CONVERT--(VARCHAR, Getdate--()) + ']'
@@ -1044,7 +1044,7 @@ AS
             PRINT 'Get New Study to Process. [End of Loop3]'
         END --loop3
 
-      INSERT INTO drm_tracktimes
+      insert into drm_tracktimes
       SELECT Getdate--(), 'SP_DBM_Comments_Extract_to_History'
 
       EXEC qualisys.qp_prod.dbo.Sp_dbm_comments_extract_to_history
