@@ -8,7 +8,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-ALTER PROCEDURE [dbo].[QCL_DeleteSurvey]    
+CREATE PROCEDURE [dbo].[QCL_DeleteSurvey]    
 @SurveyID INT    
 AS    
     

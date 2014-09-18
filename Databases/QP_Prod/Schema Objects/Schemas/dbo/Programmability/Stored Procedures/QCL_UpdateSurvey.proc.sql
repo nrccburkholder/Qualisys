@@ -8,7 +8,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-ALTER PROCEDURE [dbo].[QCL_UpdateSurvey]    
+CREATE PROCEDURE [dbo].[QCL_UpdateSurvey]    
     @Survey_id                 INT,    
     @strSurvey_Nm              VARCHAR(10),    
     @strSurvey_Dsc             VARCHAR(40),    
@@ -33,7 +33,8 @@ ALTER PROCEDURE [dbo].[QCL_UpdateSurvey]
     @IsFormGenReleased         BIT,
     @Contract                  VARCHAR(9) = NULL,
     @Active                    BIT, 
-    @ContractedLanguages       VARCHAR(50)
+    @ContractedLanguages       VARCHAR(50),
+    @UseUSPSAddrChangeService   BIT
 AS
     
 UPDATE Survey_Def    
@@ -61,7 +62,8 @@ SET strSurvey_Nm = @strSurvey_Nm,
     bitFormGenRelease = @IsFormGenReleased,
     Contract = @Contract,
     Active = @Active, 
-    ContractedLanguages = @ContractedLanguages
+    ContractedLanguages = @ContractedLanguages,
+    UseUSPSAddrChangeService = @UseUSPSAddrChangeService
 WHERE Survey_id = @Survey_id
 
 GO

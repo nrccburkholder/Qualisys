@@ -71,8 +71,8 @@ begin
 	INSERT INTO dbo.subtype VALUES ('Visit Adult 2.0',2,0)
 	INSERT INTO dbo.subtype VALUES ('12-month Adult 2.0',2,0)
 	INSERT INTO dbo.subtype VALUES ('12-month Child 2.0',2,0)
-	--INSERT INTO dbo.subtype VALUES ('12-month Adult 2.0 w/ PCMH',2,0) 
-	--INSERT INTO dbo.subtype VALUES ('12-month Child 2.0 w/ PCMH',2,0) 
+	INSERT INTO dbo.subtype VALUES ('12-month Adult 2.0 w/ PCMH',2,0) 
+	INSERT INTO dbo.subtype VALUES ('12-month Child 2.0 w/ PCMH',2,0) 
 	--INSERT INTO dbo.subtype VALUES ('PCMH',1,0)
 
 	INSERT INTO dbo.SurveyTypeSubtype VALUES (4,1)
@@ -81,8 +81,8 @@ begin
 	INSERT INTO dbo.SurveyTypeSubtype VALUES (4,4)
 	INSERT INTO dbo.SurveyTypeSubtype VALUES (4,5)
 	INSERT INTO dbo.SurveyTypeSubtype VALUES (4,6)
-	--INSERT INTO dbo.SurveyTypeSubtype VALUES (4,7)
-	--INSERT INTO dbo.SurveyTypeSubtype VALUES (4,8)
+	INSERT INTO dbo.SurveyTypeSubtype VALUES (4,7)
+	INSERT INTO dbo.SurveyTypeSubtype VALUES (4,8)
 	--INSERT INTO dbo.SurveyTypeSubtype VALUES (4,9)
 end
 go
@@ -965,5 +965,9 @@ DROP PROCEDURE [dbo].[QCL_SelectQuestionnaireTypes]
 GO
 
 
+-- removed SurveySubType_ID and QuestionnaireType_ID from SURVEY_DEF
+ALTER TABLE SURVEY_DEF
+drop column SurveySubType_ID,
+			QuestionnaireType_ID 
 
-
+GO
