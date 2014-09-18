@@ -1,4 +1,7 @@
-﻿CREATE PROCEDURE [dbo].[CheckForACOCAHPSIncompletes]
+﻿if exists (select * from sys.procedures where schema_id=1 and name='CheckForACOCAHPSIncompletes')
+	drop PROCEDURE [dbo].[CheckForACOCAHPSIncompletes]
+/*
+CREATE PROCEDURE [dbo].[CheckForACOCAHPSIncompletes]
 AS
 -- =============================================
 -- Author:	Dave Gilsdorf
@@ -316,7 +319,7 @@ select ae.MAILINGSTEP_ID,ae.SAMPLEPOP_ID,NULL,ae.METHODOLOGY_ID,min(ams.DATGENER
 from #ACOEverybody ae
 inner join #ACOMailingSteps ams on ams.mailingstep_id=ae.mailingstep_id and ams.sampleset_id=ae.sampleset_id
 group by ae.MAILINGSTEP_ID,ae.SAMPLEPOP_ID,ae.METHODOLOGY_ID
-
+*/
 
 GO
 
