@@ -2,25 +2,19 @@ use NRC_Datamart
 go
 update NRC_Datamart.dbo.CahpsDispositionMapping set isDefaultDisposition=1 where cahpsdispositionid=5250 and dispositionid=25
 go
-begin tran
-select * from dbo.samplepopulation where samplepopulationid=333600
-select * from dbo.questionform where samplepopulationid=333600
-select * from dbo.responsebubble where questionformid=334181 and responsevalue
-rollback tran
-
-alter PROCEDURE [dbo].[etl_ProcessSamplePopulationDispositionLogRecords]
-	49/*@DataFileID*/ int,
+CREATE PROCEDURE [dbo].[etl_ProcessSamplePopulationDispositionLogRecords]
+	@DataFileID int,
 	@DataSourceID int
 	--,@ReturnMessage As NVarChar(500) Output
 AS 
    --exec etl_ProcessSamplePopulationDispositionLogRecords 809,1
    SET NOCOUNT ON 
-begin tran	
+	
    --DECLARE @DataSourceID INT
    --SET @DataSourceID = 1--QPUS
    
-   --DECLARE 49/*@DataFileID*/ INT
-   --SET 49/*@DataFileID*/ = 16
+   --DECLARE @DataFileID INT
+   --SET @DataFileID = 16
 
      UPDATE LOAD_TABLES.SamplePopulation
      SET CahpsTypeID = v.CahpsTypeID
@@ -31,7 +25,7 @@ begin tran
 	               FROM SelectedSample WITH (NOLOCK) GROUP BY SamplePopulationID) ss
 	    ON ss.SamplePopulationID = sp.SamplePopulationID           
 	  INNER JOIN dbo.v_ClientStudySurveySampleUnit v WITH (NOLOCK) ON ss.SampleUnitID = v.SampleUnitID
-	 WHERE sp.DataFileID = 49/*@DataFileID*/ AND sp.isDelete = 0
+	 WHERE sp.DataFileID = @DataFileID AND sp.isDelete = 0
 
     --Set the default CahpsDispositionID for NEW sample pops added
     UPDATE LOAD_TABLES.SamplePopulation
@@ -40,7 +34,7 @@ begin tran
      --select ltsp.datafileid, ltsp.id as samplepop_id, mapping.CahpsDispositionID, mapping.DispositionID
      FROM LOAD_TABLES.SamplePopulation ltsp WITH (NOLOCK)
       INNER JOIN CahpsDispositionMapping mapping WITH (NOLOCK) ON ltsp.CahpsTypeID = mapping.CahpsTypeID 
-     WHERE ltsp.DataFileID = 49/*@DataFileID*/ AND ( ltsp.isInsert = 1 OR CahpsDispositionID_initial = 0)
+     WHERE ltsp.DataFileID = @DataFileID AND ( ltsp.isInsert = 1 OR CahpsDispositionID_initial = 0)
        AND ltsp.CahpsTypeID > 0
        AND mapping.IsDefaultDisposition = 1         
 
@@ -51,7 +45,7 @@ begin tran
      ,DispositionID = 0
      --select ltsp.datafileid, ltsp.id
      FROM LOAD_TABLES.SamplePopulation ltsp WITH (NOLOCK)        
-     WHERE ltsp.DataFileID = 49/*@DataFileID*/ AND ltsp.isInsert = 1
+     WHERE ltsp.DataFileID = @DataFileID AND ltsp.isInsert = 1
        AND ltsp.CahpsTypeID = 0;
     
 	with CTE_SampPopDisp (DataFileID, SamplePopulationID, CahpsHierarchy, datLogged)
@@ -63,7 +57,7 @@ begin tran
 				ON lt.CahpsTypeID = mapping.CahpsTypeID 
 				  AND lt.DispositionID = mapping.DispositionID
 				  AND CASE WHEN Mapping.ReceiptTypeID = -1 THEN  -1 ELSE lt.ReceiptTypeID END = Mapping.ReceiptTypeID    
-		WHERE lt.DataFileID = 49/*@DataFileID*/
+		WHERE lt.DataFileID = @DataFileID
 		AND DaysFromFirst <= mapping.NumberCutoffDays AND lt.isDelete = 0
 		GROUP BY lt.DataFileID, SamplePopulationID,CahpsHierarchy
 	)
@@ -87,60 +81,60 @@ begin tran
 
 	if exists (select * from #temp where CahpsTypeID=5) -- ICH-CAHPS
 	begin
-		declare #eligibilityOverride table (Q1 int, Q2 int, Q3to44Answers int, AnyAnswers int, DispositionOverride int, CahpsDispositionOverride int)
-		insert into #eligibilityOverride values (-9,-9,0,1,32,5130)	-- [blank] (-9) / [blank] (-9)									--> Completed Mail Questionnaire—Survey Eligibility Unknown
-		insert into #eligibilityOverride values (-9,1,0,1,8,5160)	-- [blank] (-9) / < 3 months (1)								--> Ineligible: Does Not Meet Eligibility Criteria
+		declare @eligibilityOverride table (Q1 int, Q2 int, Q3to44Answers int, AnyAnswers int, DispositionOverride int, CahpsDispositionOverride int)
+		insert into @eligibilityOverride values (-9,-9,0,1,32,5130)	-- [blank] (-9) / [blank] (-9)									--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (-9,1,0,1,8,5160)	-- [blank] (-9) / < 3 months (1)								--> Ineligible: Does Not Meet Eligibility Criteria
 																	-- [blank] (-9) / 3 months+ (2-4*)								--> No override - use original heirarchical disposition
-		insert into #eligibilityOverride values (-9,5,0,1,34,5190)	-- [blank] (-9) / No longer at this facility (5)				--> Ineligible: No Longer Receiving Care at Sampled Facility
-		insert into #eligibilityOverride values (1,-9,0,1,8,5160)	-- At home (1) / [blank] (-9)									--> Ineligible: Does Not Meet Eligibility Criteria
-		insert into #eligibilityOverride values (1,1,0,1,32,5130)	-- At home (1) / < 3 months (1)									--> Completed Mail Questionnaire—Survey Eligibility Unknown
-		insert into #eligibilityOverride values (1,2,0,1,32,5130)	-- At home (1) / 3-12 months (2)								--> Completed Mail Questionnaire—Survey Eligibility Unknown
-		insert into #eligibilityOverride values (1,3,0,1,32,5130)	-- At home (1) / 1-5 years (3)									--> Completed Mail Questionnaire—Survey Eligibility Unknown
-		insert into #eligibilityOverride values (1,4,0,1,32,5130)	-- At home (1) / 5 years + (4)									--> Completed Mail Questionnaire—Survey Eligibility Unknown
-		insert into #eligibilityOverride values (1,5,0,1,32,5130)	-- At home (1) / No longer at this facility (5)					--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (-9,5,0,1,34,5190)	-- [blank] (-9) / No longer at this facility (5)				--> Ineligible: No Longer Receiving Care at Sampled Facility
+		insert into @eligibilityOverride values (1,-9,0,1,8,5160)	-- At home (1) / [blank] (-9)									--> Ineligible: Does Not Meet Eligibility Criteria
+		insert into @eligibilityOverride values (1,1,0,1,32,5130)	-- At home (1) / < 3 months (1)									--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (1,2,0,1,32,5130)	-- At home (1) / 3-12 months (2)								--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (1,3,0,1,32,5130)	-- At home (1) / 1-5 years (3)									--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (1,4,0,1,32,5130)	-- At home (1) / 5 years + (4)									--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (1,5,0,1,32,5130)	-- At home (1) / No longer at this facility (5)					--> Completed Mail Questionnaire—Survey Eligibility Unknown
 																	-- At the dialysis ctr (2) / [blank] (-9)						--> No override - use original heirarchical disposition
-		insert into #eligibilityOverride values (2,1,0,1,8,5160)	-- At the dialysis ctr (2) / < 3 months (1)						--> Ineligible: Does Not Meet Eligibility Criteria
+		insert into @eligibilityOverride values (2,1,0,1,8,5160)	-- At the dialysis ctr (2) / < 3 months (1)						--> Ineligible: Does Not Meet Eligibility Criteria
 																	-- At the dialysis ctr (2) / 3 months+ (2-4*)					--> No override - use original heirarchical disposition
-		insert into #eligibilityOverride values (2,5,0,1,34,5190)	-- At the dialysis ctr (2) / No longer at this facility (5)		--> Ineligible: No Longer Receiving Care at Sampled Facility
-		insert into #eligibilityOverride values (3,-9,0,1,33,5140)	-- Do not currently rec'v (3) / [blank] (-9)					--> Ineligible: Not Receiving Dialysis
-		insert into #eligibilityOverride values (3,1,0,1,32,5130)	-- Do not currently rec'v (3) / < 3 months (1)					--> Completed Mail Questionnaire—Survey Eligibility Unknown
-		insert into #eligibilityOverride values (3,2,0,1,32,5130)	-- Do not currently rec'v (3) / 3-12 months (2)					--> Completed Mail Questionnaire—Survey Eligibility Unknown
-		insert into #eligibilityOverride values (3,3,0,1,32,5130)	-- Do not currently rec'v (3) / 1-5 years (3)					--> Completed Mail Questionnaire—Survey Eligibility Unknown
-		insert into #eligibilityOverride values (3,4,0,1,32,5130)	-- Do not currently rec'v (3) / 5 years+ (4)					--> Completed Mail Questionnaire—Survey Eligibility Unknown
-		insert into #eligibilityOverride values (3,5,0,1,32,5130)	-- Do not currently rec'v (3) / No longer at this facility (5)	--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (2,5,0,1,34,5190)	-- At the dialysis ctr (2) / No longer at this facility (5)		--> Ineligible: No Longer Receiving Care at Sampled Facility
+		insert into @eligibilityOverride values (3,-9,0,1,33,5140)	-- Do not currently rec'v (3) / [blank] (-9)					--> Ineligible: Not Receiving Dialysis
+		insert into @eligibilityOverride values (3,1,0,1,32,5130)	-- Do not currently rec'v (3) / < 3 months (1)					--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (3,2,0,1,32,5130)	-- Do not currently rec'v (3) / 3-12 months (2)					--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (3,3,0,1,32,5130)	-- Do not currently rec'v (3) / 1-5 years (3)					--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (3,4,0,1,32,5130)	-- Do not currently rec'v (3) / 5 years+ (4)					--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (3,5,0,1,32,5130)	-- Do not currently rec'v (3) / No longer at this facility (5)	--> Completed Mail Questionnaire—Survey Eligibility Unknown
 				
-		insert into #eligibilityOverride values (-9,-9,1,1,32,5130)	-- [blank] (-9) / [blank] (-9)									--> Completed Mail Questionnaire—Survey Eligibility Unknown
-		insert into #eligibilityOverride values (-9,1,1,1,32,5130)	-- [blank] (-9) / < 3 months (1)								--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (-9,-9,1,1,32,5130)	-- [blank] (-9) / [blank] (-9)									--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (-9,1,1,1,32,5130)	-- [blank] (-9) / < 3 months (1)								--> Completed Mail Questionnaire—Survey Eligibility Unknown
 																	-- [blank] (-9) / 3 months+ (2-4*)								--> No override - use original heirarchical disposition
-		insert into #eligibilityOverride values (-9,5,1,1,32,5130)	-- [blank] (-9) / No longer at this facility (5)				--> Completed Mail Questionnaire—Survey Eligibility Unknown
-		insert into #eligibilityOverride values (1,-9,1,1,32,5130)	-- At home (1) / [blank] (-9)									--> Completed Mail Questionnaire—Survey Eligibility Unknown
-		insert into #eligibilityOverride values (1,1,1,1,32,5130)	-- At home (1) / < 3 months (1)									--> Completed Mail Questionnaire—Survey Eligibility Unknown
-		insert into #eligibilityOverride values (1,2,1,1,32,5130)	-- At home (1) / 3-12 months (2)								--> Completed Mail Questionnaire—Survey Eligibility Unknown
-		insert into #eligibilityOverride values (1,3,1,1,32,5130)	-- At home (1) / 1-5 years (3)									--> Completed Mail Questionnaire—Survey Eligibility Unknown
-		insert into #eligibilityOverride values (1,4,1,1,32,5130)	-- At home (1) / 5 years+ (4)									--> Completed Mail Questionnaire—Survey Eligibility Unknown
-		insert into #eligibilityOverride values (1,5,1,1,32,5130)	-- At home (1) / No longer at this facility (5)					--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (-9,5,1,1,32,5130)	-- [blank] (-9) / No longer at this facility (5)				--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (1,-9,1,1,32,5130)	-- At home (1) / [blank] (-9)									--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (1,1,1,1,32,5130)	-- At home (1) / < 3 months (1)									--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (1,2,1,1,32,5130)	-- At home (1) / 3-12 months (2)								--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (1,3,1,1,32,5130)	-- At home (1) / 1-5 years (3)									--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (1,4,1,1,32,5130)	-- At home (1) / 5 years+ (4)									--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (1,5,1,1,32,5130)	-- At home (1) / No longer at this facility (5)					--> Completed Mail Questionnaire—Survey Eligibility Unknown
 																	-- At the dialysis ctr (2) / [blank] (-9)						--> No override - use original heirarchical disposition
-		insert into #eligibilityOverride values (2,1,1,1,32,5130)	-- At the dialysis ctr (2) / < 3 months (1)						--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (2,1,1,1,32,5130)	-- At the dialysis ctr (2) / < 3 months (1)						--> Completed Mail Questionnaire—Survey Eligibility Unknown
 																	-- At the dialysis ctr (2) / 3 months+ (2-4*)					--> No override - use original heirarchical disposition
-		insert into #eligibilityOverride values (2,5,1,1,32,5130)	-- At the dialysis ctr (2) / No longer at this facility (5)		--> Completed Mail Questionnaire—Survey Eligibility Unknown
-		insert into #eligibilityOverride values (3,-9,1,1,32,5130)	-- Do not currently rec'v (3) / [blank] (-9)					--> Completed Mail Questionnaire—Survey Eligibility Unknown
-		insert into #eligibilityOverride values (3,1,1,1,32,5130)	-- Do not currently rec'v (3) / < 3 months (1)					--> Completed Mail Questionnaire—Survey Eligibility Unknown
-		insert into #eligibilityOverride values (3,2,1,1,32,5130)	-- Do not currently rec'v (3) / 3-12 months (2)					--> Completed Mail Questionnaire—Survey Eligibility Unknown
-		insert into #eligibilityOverride values (3,3,1,1,32,5130)	-- Do not currently rec'v (3) / 1-5 years (3)					--> Completed Mail Questionnaire—Survey Eligibility Unknown
-		insert into #eligibilityOverride values (3,4,1,1,32,5130)	-- Do not currently rec'v (3) / 5 years+ (4)					--> Completed Mail Questionnaire—Survey Eligibility Unknown
-		insert into #eligibilityOverride values (3,5,1,1,32,5130)	-- Do not currently rec'v (3) / No longer at this facility (5)	--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (2,5,1,1,32,5130)	-- At the dialysis ctr (2) / No longer at this facility (5)		--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (3,-9,1,1,32,5130)	-- Do not currently rec'v (3) / [blank] (-9)					--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (3,1,1,1,32,5130)	-- Do not currently rec'v (3) / < 3 months (1)					--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (3,2,1,1,32,5130)	-- Do not currently rec'v (3) / 3-12 months (2)					--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (3,3,1,1,32,5130)	-- Do not currently rec'v (3) / 1-5 years (3)					--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (3,4,1,1,32,5130)	-- Do not currently rec'v (3) / 5 years+ (4)					--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (3,5,1,1,32,5130)	-- Do not currently rec'v (3) / No longer at this facility (5)	--> Completed Mail Questionnaire—Survey Eligibility Unknown
 
-		declare #override table (SamplepopulationID int, DispositionOverride int, CahpsDispositionOverride int)
-		insert into #override
+		declare @override table (SamplepopulationID int, DispositionOverride int, CahpsDispositionOverride int)
+		insert into @override
 		select SamplepopulationID, DispositionOverride, CahpsDispositionOverride
 		from (select qf.samplepopulationid
 				, max(	case when masterquestioncore =51198 then 
-							case when responsevalue < 0 then -9 else responsevalue end -- recode anything less than zero to -9, so it'll join with #eligibilityOverride 
+							case when responsevalue < 0 then -9 else responsevalue end -- recode anything less than zero to -9, so it'll join with @eligibilityOverride 
 						else 
 							-9 
 						end) as Q1
 				, max(	case when masterquestioncore =51199 then 
-							case when responsevalue < 0 then -9 else responsevalue end -- recode anything less than zero to -9, so it'll join with #eligibilityOverride 
+							case when responsevalue < 0 then -9 else responsevalue end -- recode anything less than zero to -9, so it'll join with @eligibilityOverride 
 						else 
 							-9 
 						end) as Q2
@@ -166,15 +160,15 @@ begin tran
 			--								47176,47177,47178,47179,47180,47181,47182,47183,47184,47185,47186,47187,47188,47189,47190,47191,47192,
 			--								47193,47194,47195,47196,47197,47198,47199,47200) --Q3-44
 			group by qf.samplepopulationid) r
-		inner join #eligibilityOverride eo on r.q1=eo.q1 and r.q2=eo.q2 and r.Q3to44Answers=eo.Q3to44Answers and r.AnyAnswers=eo.AnyAnswers
+		inner join @eligibilityOverride eo on r.q1=eo.q1 and r.q2=eo.q2 and r.Q3to44Answers=eo.Q3to44Answers and r.AnyAnswers=eo.AnyAnswers
 		
 		update t set CahpsDispositionID=o.CahpsDispositionOverride, DispositionID=o.DispositionOverride, CahpsHierarchy=0
-		from #override o
+		from @override o
 		inner join #temp t on o.samplepopulationid=t.samplepopulationid
 			
-		delete from #override
+		delete from @override
 		
-		-- inserting disposition records for returned surveys into #temp, so the 'insert into #override' query (below) works properly
+		-- inserting disposition records for returned surveys into #temp, so the 'insert into @override' query (below) works properly
 		insert into #temp
 		select distinct t.samplepopulationID
 			, 1234 as DispositionID			-- using 1234 as a disposition code for 'returned'. We're not sure what mode was returned, but for the zombie
@@ -189,12 +183,12 @@ begin tran
 		where qf.returndate is not null
 
 		
-		create table #zombie (bitReturned bit, bitProxy bit, bitDead bit, DispositionOverride int, CahpsDispositionOverride int, bitIncludeResponses bit)
-		insert into #zombie values (1,1,0,35,5199,1)
-		insert into #zombie values (1,1,1, 3,5150,0)
-		insert into #zombie values (0,0,1, 3,5150,0)
+		declare @zombie table (bitReturned bit, bitProxy bit, bitDead bit, DispositionOverride int, CahpsDispositionOverride int, bitIncludeResponses bit)
+		insert into @zombie values (1,1,0,35,5199,1)
+		insert into @zombie values (1,1,1, 3,5150,0)
+		insert into @zombie values (0,0,1, 3,5150,0)
 
-		insert into #override
+		insert into @override
 		select SamplePopulationID, z.DispositionOverride, z.CahpsDispositionOverride 
 		from (	select t.SamplePopulationID
 				, max(case when t.dispositionid = 1234 then 1 else 0 end) as bitReturned
@@ -206,13 +200,13 @@ begin tran
 				where t.dispositionid in (3,1234)
 				and t.CahpsTypeID=5
 				group by t.SamplePopulationID) r
-		inner join #zombie z on r.bitReturned=z.bitReturned and r.bitDead=z.bitDead and r.bitProxy=z.bitProxy
+		inner join @zombie z on r.bitReturned=z.bitReturned and r.bitDead=z.bitDead and r.bitProxy=z.bitProxy
 
 		delete from #temp where DispositionID=1234
 
 		update t set CahpsDispositionID=o.CahpsDispositionOverride, DispositionID=o.DispositionOverride, CahpsHierarchy=0
 		--select o.samplepopulationid, t.CahpsDispositionID, o.CahpsDispositionOverride, t.DispositionID, o.DispositionOverride, t.CahpsHierarchy, 0
-		from #override o
+		from @override o
 		inner join #temp t on o.samplepopulationid=t.samplepopulationid
 	end
 
@@ -234,7 +228,7 @@ begin tran
 	        
       --insert rows for sample popS that need to updated becuase rows in the disposition log        
      INSERT INTO LOAD_TABLES.SamplePopulation (DataFileID,id,SamplePopulationID,SampleSetID,CahpsTypeID,StudyNum,CahpsDispositionID_initial,isInsert,isDelete,sampleset_id,DispositionID)
-     SELECT DISTINCT 49/*@DataFileID*/,temp.SamplePop_id,temp.SamplePopulationID,SamplePopulation.SampleSetID
+     SELECT DISTINCT @DataFileID,temp.SamplePop_id,temp.SamplePopulationID,SamplePopulation.SampleSetID
          ,temp.CahpsTypeID,temp.StudyNum
          ,CASE WHEN SamplePopulation.CahpsDispositionID = 0 THEN mapping.CahpsDispositionID ELSE SamplePopulation.CahpsDispositionID END AS CahpsDispositionID                         
          ,0,0,-99
@@ -246,7 +240,7 @@ begin tran
 					FROM CahpsDispositionMapping mapping WITH (NOLOCK) 
 					WHERE mapping.IsDefaultDisposition = 1
 					GROUP BY mapping.CahpsTypeID ) AS mapping ON temp.CahpsTypeID = mapping.CahpsTypeID
-        LEFT JOIN LOAD_TABLES.SamplePopulation lt WITH (NOLOCK) ON temp.SamplePopulationID = lt.SamplePopulationID AND lt.DataFileID = 49/*@DataFileID*/
+        LEFT JOIN LOAD_TABLES.SamplePopulation lt WITH (NOLOCK) ON temp.SamplePopulationID = lt.SamplePopulationID AND lt.DataFileID = @DataFileID
       WHERE lt.SamplePopulationID IS NULL 
       --and SamplePopulation.DispositionID  = 0
       --AND temp.SamplePopulationid in (97460771,97462455,97463588,97464134,97465240)
@@ -264,7 +258,7 @@ begin tran
         ON lt.CahpsTypeID = mapping.CahpsTypeID      
          AND lt.DispositionID = mapping.DispositionID  
           --ON lt.CahpsDispositionID_initial = mapping.CahpsDispositionID          
-      WHERE lt.DataFileID = 49/*@DataFileID*/
+      WHERE lt.DataFileID = @DataFileID
       AND temp.CahpsHierarchy <= mapping.CahpsHierarchy 
        --and  temp.SamplePopulationid in (97460771,97462455,97463588,97464134,97465240)       
           
@@ -279,7 +273,7 @@ begin tran
                    WHERE IsCahpsDispositionComplete = 1) CahpsDisposition 
            ON IsNull(lt.CahpsDispositionID_updated,lt.CahpsDispositionID_initial)= CahpsDisposition.CahpsDispositionID
         LEFT JOIN QuestionForm qf WITH (NOLOCK) ON lt.SamplePopulationID = qf.SamplePopulationID AND qf.IsActive = 1 
-	  WHERE lt.DataFileID = 49/*@DataFileID*/ AND (qf.SamplePopulationID IS NULL OR qf.IsCahpsComplete <> 1 )
+	  WHERE lt.DataFileID = @DataFileID AND (qf.SamplePopulationID IS NULL OR qf.IsCahpsComplete <> 1 )
    
 	  UPDATE SamplePopulation
 	  SET CahpsDispositionID = IsNull(lt.CahpsDispositionID_updated,lt.CahpsDispositionID_initial)
@@ -288,7 +282,7 @@ begin tran
 	  FROM LOAD_TABLES.SamplePopulation lt WITH (NOLOCK)
 	   INNER JOIN SamplePopulation WITH (NOLOCK) ON lt.SamplePopulationID = SamplePopulation.SamplePopulationID
 	   LEFT JOIN #temp3 temp ON lt.SamplePopulationID = temp.SamplePopulationID -- EXCLUDE SAMPLE POPs with incomplete question forms
-	  WHERE lt.DataFileID = 49/*@DataFileID*/ 
+	  WHERE lt.DataFileID = @DataFileID 
 	   AND lt.CahpsTypeID > 0 AND temp.SamplePopulationID IS NULL
 	   AND ( IsNull(lt.CahpsDispositionID_updated,lt.CahpsDispositionID_initial) <> SamplePopulation.CahpsDispositionID 
 	    OR  IsNull(lt.DispositionID_updated,lt.DispositionID) <> SamplePopulation.DispositionID )
@@ -305,7 +299,7 @@ begin tran
        LEFT JOIN (SELECT CahpsDispositionID 
                   FROM CahpsDisposition WITH (NOLOCK) 
                   WHERE IsCahpsDispositionComplete = 1) CahpsDisposition ON sp.CahpsDispositionID = CahpsDisposition.CahpsDispositionID
-	  WHERE ltsp.DataFileID = 49/*@DataFileID*/        		  
+	  WHERE ltsp.DataFileID = @DataFileID        		  
    
 	 --per 5/26 email from Mike, not updating
 	 -- UPDATE SamplePopulation
@@ -314,7 +308,7 @@ begin tran
 		--FROM LOAD_TABLES.SamplePopulationDispositionLog lt WITH (NOLOCK)          
 		--  INNER JOIN (SELECT lt.SamplePopulationID,MAX(lt.datLogged) AS datLogged
 		--			   FROM LOAD_TABLES.SamplePopulationDispositionLog lt WITH (NOLOCK)
-		--			   WHERE lt.DataFileID = 49/*@DataFileID*/ AND lt.isDelete = 0
+		--			   WHERE lt.DataFileID = @DataFileID AND lt.isDelete = 0
 		--			   GROUP BY lt.SamplePopulationID) MaxdatLogged
 		--	ON lt.SamplePopulationID = MaxdatLogged.SamplePopulationID AND lt.datLogged = MaxdatLogged.datLogged
 		--   INNER JOIN SamplePopulation WITH (NOLOCK) ON lt.SamplePopulationID = SamplePopulation.SamplePopulationID 
@@ -326,20 +320,19 @@ begin tran
 		 --select lt.SamplePopulationID, cahpsDispositionID_initial, cahpstypeid, isInsert, IsDelete, CahpsDispositionID 
 		 FROM LOAD_TABLES.SamplePopulation lt WITH (NOLOCK)
 		 INNER JOIN SamplePopulation sp WITH (NOLOCK) ON lt.SamplePopulationID = sp.SamplePopulationID
-		 WHERE DataFileID = 49/*@DataFileID*/ 
+		 WHERE DataFileID = @DataFileID 
 		  AND cahpsDispositionID_initial = 0 AND cahpstypeid <>  0 AND isInsert = 0 AND IsDelete = 0     
 		 
 		INSERT INTO [LOAD_TABLES].[SamplePopulationDispositionLog_Cumulative]
 		SELECT *
 		FROM [LOAD_TABLES].[SamplePopulationDispositionLog] WITH (NOLOCK)
-		WHERE DataFileID = 49/*@DataFileID*/		
+		WHERE DataFileID = @DataFileID		
 				
 		INSERT INTO [LOAD_TABLES].[SamplePopulation_Cumulative]
 		SELECT [DataFileID],[id],[sampleset_id],[SamplePopulationID],[SampleSetID],[CahpsTypeID]
          ,[StudyNum],[CahpsDispositionID_initial],[CahpsDispositionID_updated],[isInsert],[isDelete]
 		FROM [LOAD_TABLES].[SamplePopulation] WITH (NOLOCK)
-		WHERE DataFileID = 49/*@DataFileID*/      	
+		WHERE DataFileID = @DataFileID      	
 						
        SET NOCOUNT OFF
 go
-rollback tran

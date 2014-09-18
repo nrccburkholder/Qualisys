@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>USPS_ACS_Library</RootNamespace>
     <AssemblyName>USPS_ACS_Library</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -63,8 +64,10 @@
     <Compile Include="Enums\Enums.cs" />
     <Compile Include="Objects\DownloadLog.cs" />
     <Compile Include="Objects\ExtractLog.cs" />
+    <Compile Include="Objects\PopAddress.cs" />
     <Compile Include="Objects\SchemaMapping.cs" />
     <Compile Include="Objects\UpdateResult.cs" />
+    <Compile Include="Objects\USPSAddress.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -73,6 +76,7 @@
     <Compile Include="USPS_ACS_DataProvider.cs" />
     <Compile Include="ServiceWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="USPS_ACS_Notification.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="Web References\gov.usps.epf\Reference.cs">
       <AutoGen>True</AutoGen>

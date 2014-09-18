@@ -3,9 +3,10 @@
 	[QstnCore] [int] NOT NULL,
 	[intOrder] [int] NULL,
 	[bitFirstOnForm] [bit] NULL,
-	[bitExpanded] [bit] NOT NULL DEFAULT ((0)),
+	[bitExpanded] [bit] NOT NULL,
 	[datEncounterStart_dt] [datetime] NULL,
 	[datEncounterEnd_dt] [datetime] NULL,
+	[SubType_ID] [int] NULL,
  CONSTRAINT [PK_SurveyTypeQuestionMappings] PRIMARY KEY CLUSTERED 
 (
 	[SurveyType_id] ASC,

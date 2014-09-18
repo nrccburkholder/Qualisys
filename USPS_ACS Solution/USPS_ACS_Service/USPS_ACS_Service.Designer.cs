@@ -28,8 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
-            this.ServiceName = "Service1";
+            // 
+            // USPS_ACS_Service
+            // 
+            this.ServiceName = "USPS_ACS_Service";
+
         }
 
         #endregion

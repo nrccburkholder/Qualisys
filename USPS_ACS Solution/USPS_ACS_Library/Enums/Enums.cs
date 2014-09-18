@@ -19,6 +19,7 @@ namespace USPS_ACS_Library.Enums
         New,
         Started,
         Completed,
+        Completed_w_Errors,
         Canceled,
         Archived
     }
@@ -29,6 +30,7 @@ namespace USPS_ACS_Library.Enums
         No_Header_Record,
         Empty_File,
         Processing_Error,
+        Completed_w_Errors,
         Completed,
         Archived
     }
@@ -37,8 +39,9 @@ namespace USPS_ACS_Library.Enums
     {
         New,
         Not_Found,
+        PartialMatch,
         MultipleMatches,
-        Updated,
+        Completed,
         Error
     }
 }

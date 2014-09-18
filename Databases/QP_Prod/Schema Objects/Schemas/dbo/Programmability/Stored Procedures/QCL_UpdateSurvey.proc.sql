@@ -1,3 +1,13 @@
+USE [QP_Prod]
+GO
+
+/****** Object:  StoredProcedure [dbo].[QCL_UpdateSurvey]    Script Date: 8/18/2014 8:56:39 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
 CREATE PROCEDURE [dbo].[QCL_UpdateSurvey]    
     @Survey_id                 INT,    
     @strSurvey_Nm              VARCHAR(10),    
@@ -24,8 +34,7 @@ CREATE PROCEDURE [dbo].[QCL_UpdateSurvey]
     @Contract                  VARCHAR(9) = NULL,
     @Active                    BIT, 
     @ContractedLanguages       VARCHAR(50),
-	@SurveySubType_id		   INT = NULL,
-	@QuestionnaireType_ID	   INT = NULL
+    @UseUSPSAddrChangeService   BIT
 AS
     
 UPDATE Survey_Def    
@@ -54,10 +63,9 @@ SET strSurvey_Nm = @strSurvey_Nm,
     Contract = @Contract,
     Active = @Active, 
     ContractedLanguages = @ContractedLanguages,
-	SurveySubType_ID = @SurveySubType_id,
-	QuestionnaireType_ID = @QuestionnaireType_ID
+    UseUSPSAddrChangeService = @UseUSPSAddrChangeService
 WHERE Survey_id = @Survey_id
 
-
+GO
 
 
