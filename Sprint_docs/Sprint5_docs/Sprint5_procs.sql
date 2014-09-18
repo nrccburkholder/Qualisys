@@ -1,12 +1,6 @@
 USE [QP_Prod]
 GO
 
--- removed SurveySubType_ID and QuestionnaireType_ID from SURVEY_DEF
-ALTER TABLE SURVEY_DEF
-drop column SurveySubType_ID,
-			QuestionnaireType_ID 
-
-GO
 
 
 CREATE TABLE dbo.SubtypeCategory (
@@ -110,6 +104,12 @@ DROP TABLE dbo.questionnairetypes
 
 GO
 
+-- removed SurveySubType_ID and QuestionnaireType_ID from SURVEY_DEF
+ALTER TABLE SURVEY_DEF
+drop column SurveySubType_ID,
+			QuestionnaireType_ID 
+
+GO
 
 
 /****** Object:  StoredProcedure [dbo].[QCL_SelectClientsStudiesAndSurveysByUser]    Script Date: 8/18/2014 8:40:03 AM ******/
