@@ -8,7 +8,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-ALTER PROCEDURE [dbo].[QCL_SelectSurveySubTypes]      
+CREATE PROCEDURE [dbo].[QCL_SelectSurveySubTypes]      
     @SurveyId INT,
 	@SubtypeCategory_id INT     
 AS      

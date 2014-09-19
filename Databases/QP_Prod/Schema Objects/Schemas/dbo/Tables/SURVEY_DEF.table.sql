@@ -54,8 +54,7 @@ CREATE TABLE [dbo].[SURVEY_DEF](
 	[Active] [bit] NULL,
 	[PervasiveMapName] [varchar](255) NULL,
 	[ContractedLanguages] [varchar](50) NULL,
-	[SurveySubType_ID] [int] NULL,
-	[QuestionnaireType_ID] [int] NULL,
+	[UseUSPSAddrChangeService] [bit] NULL,
  CONSTRAINT [PK_SURVEY_DEF] PRIMARY KEY CLUSTERED 
 (
 	[SURVEY_ID] ASC

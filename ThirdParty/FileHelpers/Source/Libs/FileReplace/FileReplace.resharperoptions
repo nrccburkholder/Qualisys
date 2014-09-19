@@ -1,0 +1,17 @@
+<Configuration>
+  <CompletionStatisticsManager>
+    <ItemStatistics item="Qualified:@">
+      <Item value="Replace" priority="0" />
+    </ItemStatistics>
+  </CompletionStatisticsManager>
+  <SettingsComponent>
+    <string />
+    <integer />
+    <boolean />
+  </SettingsComponent>
+  <RecentFilesTracker>
+    <RecentFilesTracker>
+      <TrackedFile location="D:\_FileInserter\FileReplace\Main.cs" offset="895" line="18" column="0" />
+    </RecentFilesTracker>
+  </RecentFilesTracker>
+</Configuration>

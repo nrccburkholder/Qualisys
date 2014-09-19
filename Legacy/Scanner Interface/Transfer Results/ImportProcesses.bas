@@ -31,6 +31,7 @@ Option Explicit
     Private msLogFilePath           As String       '** Added 09-06-00 JJF
     Private msCAUnProcessedFilePath As String       '** Added 05-27-05 JJF
     
+    
     'Local constants used to retrieve paths from QualPro_Params
     Private Const mksScanImportProcRet      As String = "ScanImportProcRet"
     Private Const mksScanImportUnProcRet    As String = "ScanImportUnProcRet"
