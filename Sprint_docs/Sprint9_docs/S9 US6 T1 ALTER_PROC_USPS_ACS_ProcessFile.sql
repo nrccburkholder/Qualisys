@@ -75,7 +75,7 @@ select top 1 @study=study_id from #StudyList where flag=0
 while @@rowcount>0
 begin
 	set @SQL = 'insert into #pop (study_id, pop_id, strLithocode, fname, lname, addr, addr2, city, st, zip5, zip4)
-	select '+@study+', p.pop_id, sm.strLithocode, p.Fname, p.Lname, p.addr, p.addr2, p.city, p.st, p.zip5, p.zip4
+	select '+@study+', p.pop_id, min(sm.strLithocode), p.Fname, p.Lname, p.addr, p.addr2, p.city, p.st, p.zip5, p.zip4
 	from s'+@study+'.population p
 	inner join samplepop sp on p.pop_id=sp.pop_id and sp.study_id='+@study+'
 	inner join #studylist sl on sp.study_id=sl.study_id and sp.sampleset_id=sl.sampleset_id
