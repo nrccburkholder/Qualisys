@@ -1153,7 +1153,7 @@ namespace USPS_ACS_Library
 
         private static string BuildMatchDetail(string partialMatchMessage, DataRow dr)
         {
-            partialMatchMessage += string.Format("<TR><TD colspan=6><BR>Study_id: <b>{0}</b> Pop_id: <b>{1}</b></TD></TR>", dr["Study_id"].ToString(), dr["Pop_id"].ToString());
+            partialMatchMessage += string.Format("<TR><TD colspan=6><BR>Study_id: <b>{0}</b> Pop_id: <b>{1}</b> Lithocode: <B>{2}</b></TD></TR>", dr["Study_id"].ToString(), dr["Pop_id"].ToString(), dr["strLithocode"].ToString());
             partialMatchMessage += string.Format("<TR><TD>Pop:</TD><TD>{0}</TD><TD>{1}</TD><TD>{2}</TD><TD>{3}</TD><TD>{4}</TD><TD>{5}</TD></TR>",
                 dr["popFName"].ToString(), dr["popLName"].ToString(), dr["popAddr"].ToString(),
                 dr["popCity"].ToString(), dr["PopSt"].ToString(), dr["popZip5"].ToString());
