@@ -144,7 +144,7 @@ type
     fontsize:integer;
     fontstyle:tFontStyles;
     SubType : byte;
-    BorderWidth:integer;
+    iBorderWidth:integer;
   end;
   trDQLabel = record
     Panel,top,left,scalepos,item:integer;
@@ -1530,15 +1530,15 @@ begin
       SplitText(PlainText,QstnLines,width{-75},dummy,false);
       height := LineSpacing * QstnLines;
 
-      BorderWidth:=0;
+      iBorderWidth:=0;
       if subtype=stComment then begin
         inc(top,30);
         scaleid := wwt_QstnsHeight.value;
 
         if not varisnull(wwT_QstnsWidth.AsVariant) then
-          BorderWidth := wwT_QstnsWidth.value
+          iBorderWidth := wwT_QstnsWidth.value
         else if scaleid > 0 then
-          BorderWidth := 1;
+          iBorderWidth := 1;
 
         if (not varisnull(wwT_QstnsScaleFlipped.asVariant)) and (scaleid = 0) then
           Color    := wwT_QstnsScaleFlipped.value
@@ -2551,9 +2551,9 @@ begin
       if (Subtype <> stComment) or
         ((Subtype = stComment) and (scaleid=0))
       then begin
-        if (color <> clwhite) or ((Subtype = stComment) and (BorderWidth>0)) then
+        if (color <> clwhite) or ((Subtype = stComment) and (iBorderWidth>0)) then
           r := r + PCLPopPush + PCLRelXY(15-left,-round(0.75*linespacing)) +
-              PCLBox(color,BorderWidth,-1,-1,width+(left-15),height-dmOpenQ.ExtraSpace);
+              PCLBox(color,iBorderWidth,-1,-1,width+(left-15),height-dmOpenQ.ExtraSpace);
         //if Subtype=stSubsection then begin
         //  include(Curstyle,fsBold);
         //  r := r + PCLFont(curFont,curSize,curStyle,1);
@@ -2603,11 +2603,11 @@ begin
         end;
 
       end else {rDQRichedit[i].subtype=stComment} begin
-        if BorderWidth > 0 then
+        if iBorderWidth > 0 then
         begin
           r := r + ESC + '*p+2x-2X' + PCLPopPush + PCLRelXY(5-left,-round(0.75*linespacing)) +
-              PCLBox(clWhite,BorderWidth,-1,-1,((PageWidth-(ColumnGutter*(ColumnCnt-1))) div ColumnCnt) - 25,height - dmOpenQ.ExtraSpace); //GN17
-          left:=left+BorderWidth;
+              PCLBox(clWhite,iBorderWidth,-1,-1,((PageWidth-(ColumnGutter*(ColumnCnt-1))) div ColumnCnt) - 25,height - dmOpenQ.ExtraSpace); //GN17
+          left:=left+iBorderWidth;
         end;
         if (Qchar=' ') and (QNmbr>0) then  {1}
           rDQRichedit[i].width := ((PageWidth-(ColumnGutter*(ColumnCnt-1))) div ColumnCnt) - 258

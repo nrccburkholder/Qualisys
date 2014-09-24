@@ -275,6 +275,8 @@ type
     wwT_ProblemScoresShort: TStringField;
     wwT_ProblemScoresTransferred: TIntegerField;
     sp_QPProd: TStoredProc;
+    wwT_TextBoxLabel: TStringField;
+    wwt_TransTBLabel: TStringField;
     procedure tabledef(var tbl:twwtable; TblType: TDQTableType; WithIndex:boolean);
     procedure DMOpenQCreate(Sender: TObject);
     procedure wwT_QstnsFilterRecord(DataSet: TDataSet;
@@ -1838,9 +1840,9 @@ begin
       try
         lblBlankLines.visible := true;
         editBlankLines.visible := true;
-        BorderWidth.Visible := true;
+        seBorderWidth.Visible := true;
         Label2.Visible := true;
-        BorderWidth.Visible := true;
+        seBorderWidth.Visible := true;
         btnLeftJustify.visible := false;
         btnCenter.visible := false;
         btnRightJustify.visible := false;
@@ -1849,7 +1851,7 @@ begin
         btnSpellCheck.left := 109;
         DBEdit1.Visible := true;
         editblanklines.value := 0;
-        BorderWidth.Value := 0;
+        seBorderWidth.Value := 0;
         pnlShading.Color := clWhite;
         pnlShading.Visible := true;
         wtText.Edit;
@@ -1921,7 +1923,7 @@ begin
           wwt_QstnsSubType.value := stComment;
           wwt_QstnsHeight.value := editblanklines.value;
 
-          wwT_QstnsWidth.value := BorderWidth.value;
+          wwT_QstnsWidth.value := seBorderWidth.value;
           wwT_QstnsScaleFlipped.Value := pnlShading.Color;
 
           wwt_QstnsScaleID.value := 0;
@@ -1961,7 +1963,7 @@ begin
       btnSpellCheck.left := 117;
       DBEdit1.Visible := true;
       editblanklines.value := wwt_QstnsHeight.value;
-      BorderWidth.Visible := true;
+      seBorderWidth.Visible := true;
       Label2.Visible := true;
       pnlShading.Visible := true;
       if varisnull(wwT_QstnsScaleFlipped.asVariant) then
@@ -1972,9 +1974,9 @@ begin
       editBlankLinesChange(pnlShading);
 
       if not varisnull(wwT_QstnsWidth.AsVariant) then
-         BorderWidth.Value := wwT_QstnsWidth.value
+         seBorderWidth.Value := wwT_QstnsWidth.value
       else if editblanklines.value > 0 then
-        BorderWidth.Value := 1;
+        seBorderWidth.Value := 1;
 
       wtText.Edit;
       wtTextText.LoadFromFile(tempdir+'\RichEdit.rtf');
@@ -1984,7 +1986,7 @@ begin
       if ShowModal = mrOK then begin
         Edit;
 
-        w:=inttostr(BorderWidth.value);
+        w:=inttostr(seBorderWidth.value);
         h:=inttostr(editblanklines.value);
         s:=inttostr(pnlShading.Color);
         q:=wwT_QstnsID.value;
@@ -3507,13 +3509,13 @@ begin
     //s1 := s2;
     if s1<>s2 then
     begin
-      if (UserID='dgilsdorf') or (UserID='gnelson') or (UserID='pernesti') then begin
+      if (UserID='dgilsdorf') or (UserID='cburkholder') or (UserID='jwilley') or (UserID='dpetersen') then begin
         if MessageDlg('Your version of FormLayout (v'+s1+') is outdated!'#13#10#10'Do you want to run this version anyway?.',mtConfirmation,[mbYes,mbNo],0)<>mrYes then begin
-          MessageDlg('Please reboot your PC to upgrade to version '+s2+'.',mtInformation,[mbOK],0);
+          MessageDlg('Please launch FormLayout from LaunchPad to upgrade to version '+s2+'.',mtInformation,[mbOK],0);
           exit;
         end;
       end else begin
-        MessageDlg('Your version of FormLayout (v'+s1+') is outdated!'#13#10#10'Please reboot your PC to upgrade to version '+s2+'.',mtError,[mbOK],0);
+        MessageDlg('Your version of FormLayout (v'+s1+') is outdated!'#13#10#10'Please launch FormLayout from LaunchPad to upgrade to version '+s2+'.',mtError,[mbOK],0);
         exit;
       end;
     end;
@@ -4088,6 +4090,7 @@ begin
             fieldbyname('Border').value := wwt_TextBoxBorder.value;
             fieldbyname('Shading').value := wwt_TextBoxShading.value;
             fieldbyname('bitLangReview').value := true;
+            fieldbyname('Label').value := wwt_TextBoxLabel.value;
             post;
           end;
           result := 't';
@@ -4408,7 +4411,7 @@ var CurrentLanguageName,s:string;
           {make sure Foreign TextBox's x,y,width,height,etc are same as English's}
 
           wwt_TransTB.Edit;
-          dup_fields(wwt_TextBox,wwt_TransTB,['CoverID','Type','X','Y','Width','Height','Border','Shading']);
+          dup_fields(wwt_TextBox,wwt_TransTB,['CoverID','Type','X','Y','Width','Height','Border','Shading','Label']);
           wwt_TransTB.post;
         end;
         next;
@@ -5729,7 +5732,7 @@ begin
   if result then begin
     F_DynaQ.MyMessage('Survey was saved successfully.');
   end else begin
-    messagedlg(s+#13+'The above items did not save properly.  To avoid loosing any work, please save as a template.',mterror,[mbok],0);
+    messagedlg(s+#13+'The above items did not save properly.  To avoid losing any work, please save as a template.',mterror,[mbok],0);
   end;
 end;
 
@@ -5882,7 +5885,7 @@ begin
   if not OKTextBox then s := s + 'TextBoxes, ';
   if not OKLogo then s := s + 'Bitmaps, ';
   if not OKPCL then s := s + 'PCLs, ';
-  delete(s,length(s)-2,2);
+  delete(s,length(s)-1,2);
   result := S;
 end;
 
@@ -6061,8 +6064,8 @@ var ExePath,SafetyNet : string;
         sql.add('  RETURN');
         sql.add('end');
 
-        sql.add('INSERT INTO Sel_TextBox ('+qpc_ID+',Survey_id,Language,CoverID,X,Y,Width,Height,RichText,Border,Shading,bitLangReview)');
-        sql.add('  SELECT '+qpc_ID+',Survey_id,Language,CoverID,X,Y,Width,Height,RichText,Border,Shading,bitLangReview');
+        sql.add('INSERT INTO Sel_TextBox ('+qpc_ID+',Survey_id,Language,CoverID,X,Y,Width,Height,RichText,Border,Shading,bitLangReview,Label)');
+        sql.add('  SELECT '+qpc_ID+',Survey_id,Language,CoverID,X,Y,Width,Height,RichText,Border,Shading,bitLangReview,Label');
         sql.add('    FROM #MySel_TextBox');
 
         sql.add('if @@error <> 0');

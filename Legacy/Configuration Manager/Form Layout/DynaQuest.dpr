@@ -31,7 +31,7 @@ uses
   fPssWrd in 'fPssWrd.pas' {frmPassWord},
   fLogoRef in 'fLogoRef.pas' {frmLogoRef},
   fValidMsg in 'fValidMsg.pas' {frmValidMsg},
-  fViewData in '..\..\Delphi Shared Code\FQP\fViewData.pas' {frmViewData},
+  fViewData in '..\..\Delphi Shared Code\QFP\fViewData.pas' {frmViewData},
   uPCLString in '..\..\Delphi Shared Code\FP\uPCLString.pas',
   f_ShowProps in 'f_ShowProps.pas' {ShowProps};
 
