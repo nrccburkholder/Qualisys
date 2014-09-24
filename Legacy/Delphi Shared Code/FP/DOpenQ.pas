@@ -3681,15 +3681,19 @@ begin
 
     with ww_Query do begin
       close;
+(* 9/24/2014 CJB We will always want to pull the TABLEDEF fields from QualPro, even in template("laptop") mode
       if laptop then begin
         Databasename := 'DataLib';
         sql.clear;
         sql.add('Select * from TableDef');
       end else begin
+*)
         Databasename := '_QualPro';
         sql.clear;
         sql.add('Select '+QPC_ID+', strFull, FieldType, FieldLen, FieldRequired, Question, Scale, Logo, TextBox, PCL, Cover, '+qpc_Skip+' from TableDef');
+(*
       end;
+*)
       open;
       wwt_TableDef.batchMove(ww_Query, batAppend);
       localQuery('update tabledef set Scale="'+QPC_ID+'" where Scale="ID"',true);
