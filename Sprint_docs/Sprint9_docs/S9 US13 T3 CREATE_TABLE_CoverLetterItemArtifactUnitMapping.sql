@@ -81,9 +81,16 @@ as
 
 SET NOCOUNT ON
 
-SELECT CoverLetterItemArtifactUnitMapping_id, Survey_id, SampleUnit_id, CoverLetterItemType_id, CoverID, CoverLetterItem_id, CoverLetterItem_label, ArtifactPage_id, Artifact_id, Artifact_label
-FROM dbo.CoverLetterItemArtifactUnitMapping 
-WHERE Survey_id=@Survey_id
+SELECT m.CoverLetterItemArtifactUnitMapping_id, m.Survey_id
+	, m.SampleUnit_id, su.strSampleUnit_nm
+	, m.CoverLetterItemType_id
+	, m.CoverID, sc.Description as CoverLetter_dsc, m.CoverLetterItem_id, m.CoverLetterItem_label
+	, m.ArtifactPage_id, ac.Description as ArtifactPage_dsc, m.Artifact_id, m.Artifact_label
+FROM dbo.CoverLetterItemArtifactUnitMapping m
+inner join sampleunit su on m.SampleUnit_id=su.SampleUnit_id
+inner join sel_cover sc on m.survey_id=sc.survey_id and m.CoverID=sc.selcover_id
+inner join sel_cover ac on m.survey_id=ac.survey_id and m.ArtifactPage_id=ac.selcover_id
+WHERE m.Survey_id=@Survey_id
 
 SET NOCOUNT OFF
 go
