@@ -14,7 +14,6 @@ type
     ImagePanel: TPanel;
     btnOK: TButton;
     Button2: TButton;
-    btnHelp: TButton;
     btnLoad: TButton;
     btnSave: TButton;
     btnClear: TButton;
@@ -25,6 +24,7 @@ type
     lblDimAt600: TLabel;
     SaveDialog: TSaveDialog;
     Label3: TLabel;
+    lblFileName: TLabel;
     procedure btnLoadClick(Sender: TObject);
     procedure btnClearClick(Sender: TObject);
     procedure btnSaveClick(Sender: TObject);
@@ -92,6 +92,7 @@ begin
     CalcDimensions;
     SetPath('Load Logo', ExtractFilePath(OpenDialog.Filename));
     FileName := ExtractFileName(OpenDialog.Filename);
+    lblFileName.Caption := FileName;
   end;
 end;
 
@@ -103,6 +104,7 @@ begin
   btnSave.Enabled := false;
   btnClear.Enabled := false;
   btnOK.enabled := false;
+  lblFileName.Caption := '';
   ImagePanel.caption := '(none)';
 end;
 
