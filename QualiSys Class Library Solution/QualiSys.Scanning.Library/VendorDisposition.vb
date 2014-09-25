@@ -22,6 +22,7 @@ Public Class VendorDisposition
     Private mVendorDispositionDesc As String = String.Empty
     Private mDateCreated As Date
     Private mQCLDisposition As QualiSys.Library.Disposition = Nothing
+    Private misFinal As Integer
 
 #End Region
 
@@ -122,6 +123,18 @@ Public Class VendorDisposition
 
             Return mQCLDisposition
         End Get
+    End Property
+
+    Public Property isFinal() As Integer
+        Get
+            Return misFinal
+        End Get
+        Set(ByVal value As Integer)
+            If Not value = misFinal Then
+                misFinal = value
+                PropertyHasChanged("isFinal")
+            End If
+        End Set
     End Property
 
 #End Region

@@ -327,7 +327,7 @@ Public Class SurveyDataLoad
             For Each dispo As Disposition In litho.Dispositions
                 'Save the VendorDispo of the disposition
                 Dim dispoInterface As IDisposition = dispo
-                dispoInterface.VendorDispo = vendorDispos.GetByVendorDispositionCode(dispo.VendorDispositionCode)
+                dispoInterface.VendorDispo = vendorDispos.GetByVendorDispositionCode(dispo.VendorDispositionCode, dispo.IsFinal)
 
                 'Validate this disposition
                 If dispo.VendorDispo Is Nothing Then
