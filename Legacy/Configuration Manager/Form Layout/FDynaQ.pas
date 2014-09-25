@@ -21,7 +21,7 @@ Date        ID     Description
 }
 
 
-{ DEFINE GraphicsTab}
+{$DEFINE GraphicsTab}
 
 interface
 
@@ -1237,17 +1237,18 @@ var i,curTag:   integer;
           fieldbyname(qpc_ID).value := curTag;
           fieldbyname('Type').value := 'TextBox';
           fieldbyname('bitLangReview').value := false;
+          fieldbyname('Label').value := TextBoxName;
         end;
         tDQPanel(elementlist[i]).modified := false;
         fieldbyname('Language').value := 1;
         fieldbyname('RichText').value := GetRawText(tRichEdit(controls[0]));
         post;
         s:=Format('UPDATE %s set CoverID = %d, X = %d, Y = %d, Width = %d, Height = %d,'+
-                  'Shading = %d, Border = %d, bitLangReview = false '+
+                  'Shading = %d, Border = %d, Label = ''%s'', bitLangReview = false '+
                   'where Survey_ID = %d and %s= %d and Type = ''TextBox''',
                   [DMOpenQ.wwT_TextBox.tablename,pg,Left+ScrollboxCovers.horzScrollBar.Position,
                    Top+ScrollboxCovers.VertScrollBar.Position,Width,Height,
-                   integer(tRichEdit(controls[0]).color),BorderWidth,DMOpenQ.glbSurveyID,
+                   integer(tRichEdit(controls[0]).color),BorderWidth,TextBoxName,DMOpenQ.glbSurveyID,
                    qpc_ID,curTag]);
          dopenq.DMOpenQ.cn.execute(s);
       end;
@@ -2447,6 +2448,9 @@ begin
     frmREEdit := TfrmREEdit.Create( Self );
     with frmREEdit do
     try
+      lblTextBoxName.Visible := true;
+      edTextBoxName.Visible := true;
+      edTextBoxName.Text := tDQPanel(WLKHandle.children[0]).TextBoxName;
       wtText.Edit;
       wtTextText.LoadFromFile(dmOpenQ.tempdir+'\RichEdit.rtf');
       wtText.Post;
@@ -2454,11 +2458,14 @@ begin
       if ShowModal = mrOK then begin
         dmOpenQ.SaveDialog.tag := 2;
         tDQPanel(WLKHandle.children[0]).modified := true;
+        tDQPanel(WLKHandle.children[0]).TextBoxName := edTextBoxName.Text;
         with tRichEdit(tDQPanel(WLKHandle.Children[0]).Controls[0]) do begin
           lines.LoadFromFile(dmOpenQ.tempdir+'\RichEdit.rtf');
           refresh;
         end;
       end;
+      lblTextBoxName.Visible := false;
+      edTextBoxName.Visible := false;
     finally
       Release;
     end;
@@ -2758,6 +2765,8 @@ var I : integer;
         Width := fieldbyname('Width').value;
         Height := fieldbyname('Height').value;
         BorderWidth := fieldbyname('Border').value;
+        if not fieldbyname('Label').isnull then
+           TextBoxName := fieldbyname('Label').value;
         Language := fieldbyname('Language').value;
         tBlobField(fieldbyname('RichText')).SaveTofile(dmOpenQ.tempdir+'\RichEdit.rtf');
         with tRichEdit(controls[0]) do begin
@@ -3762,6 +3771,7 @@ begin
             fieldbyname('Width').value := wwt_TextBoxWidth.value;
             fieldbyname('Height').value := wwt_TextBoxHeight.value;
             fieldbyname('Border').value := wwt_TextBoxBorder.value;
+            fieldbyname('Label').value := wwt_TextBoxLabel.value;
             fieldbyname('Shading').value := wwt_TextBoxShading.value;
             fieldbyname('bitLangReview').value := true;
             post;

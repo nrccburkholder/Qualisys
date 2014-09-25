@@ -46,13 +46,13 @@ Conditionals=FormLayout
 DebugSourceDirs=
 UsePackages=0
 [Parameters]
-RunParams=12303
+RunParams=
 HostApplication=
 [Version Info]
 IncludeVerInfo=1
 AutoIncBuild=0
 MajorVer=3
-MinorVer=0
+MinorVer=2
 Release=0
 Build=0
 Debug=0
@@ -65,7 +65,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=National Research Corporation
 FileDescription=Configuration Manager - Form Layout
-FileVersion=3.0.0.0
+FileVersion=3.2.0.0
 InternalName=
 LegalCopyright=
 LegalTrademarks=
