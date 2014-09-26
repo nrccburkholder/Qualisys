@@ -117,6 +117,7 @@
     <Compile Include="BusinessRuleProvider.vb" />
     <Compile Include="ClientGroupProvider.vb" />
     <Compile Include="ContractedLanguageProvider.vb" />
+    <Compile Include="CoverLetterMappingProvider.vb" />
     <Compile Include="DispositionProvider.vb" />
     <Compile Include="HCAHPSDispositionProvider.vb" />
     <Compile Include="HHCAHPSDispositionProvider.vb" />
