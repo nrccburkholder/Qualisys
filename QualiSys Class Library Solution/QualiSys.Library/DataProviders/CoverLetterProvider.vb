@@ -20,11 +20,23 @@ Namespace DataProvider
         End Sub
 
         Public MustOverride Function SelectBySurveyId(ByVal surveyId As Integer) As Collection(Of CoverLetter)
+        Public MustOverride Function SelectBySurveyIdAndPageType(ByVal surveyId As Integer, ByVal pageType As Integer) As Collection(Of CoverLetter)
 
         Protected Shared Function CreateCoverLetter(ByVal id As Integer, ByVal name As String) As CoverLetter
             Dim letter As New CoverLetter
             letter.Id = id
             letter.Name = name
+
+            Return letter
+        End Function
+
+        Protected Shared Function CreateCoverLetter(ByVal id As Integer, ByVal surveyid As Integer, ByVal name As String, ByVal items As List(Of CoverLetterItem)) As CoverLetter
+            Dim letter As New CoverLetter
+
+            letter.Id = id
+            letter.Survey_Id = surveyid
+            letter.Name = name
+            letter.Items = items
 
             Return letter
         End Function

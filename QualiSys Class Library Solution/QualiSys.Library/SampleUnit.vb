@@ -21,6 +21,7 @@ Public Class SampleUnit
     Private mSamplePlanId As Integer
     Private mQuestionSections As New SampleUnitSectionMappingCollection
     Private mCAHPSType As Integer
+    Private mCAHPSTypeName As String
 #End Region
 
     Private mFacility As Facility
@@ -494,6 +495,12 @@ Public Class SampleUnit
         End Get
     End Property
 
+    Public ReadOnly Property SampleUnitName As String
+        Get
+            Return mName
+        End Get
+    End Property
+
     ''' <summary>
     ''' The Parent Sample Unit object associated with this sample unit
     ''' </summary>
@@ -623,6 +630,19 @@ Public Class SampleUnit
             End If
             Return False
         End Get
+    End Property
+
+    ''' <summary>
+    ''' The name of the sample unit
+    ''' </summary>
+    <Logable()> _
+    Public Property CAHPSTypeName() As String
+        Get
+            Return mCAHPSTypeName
+        End Get
+        Set(value As String)
+            mCAHPSTypeName = value
+        End Set
     End Property
 
 #End Region

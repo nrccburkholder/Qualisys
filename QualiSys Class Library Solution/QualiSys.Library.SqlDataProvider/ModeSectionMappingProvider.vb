@@ -47,7 +47,6 @@ Public Class ModeSectionMappingProvider
         ExecuteNonQuery(cmd)
     End Sub
 
-
     Friend Function PopulateCollection(Of C As {List(Of T), New}, T)(ByVal rdr As SafeDataReader, ByVal populateMethod As FillMethod(Of T)) As C
         Dim list As New C
 
