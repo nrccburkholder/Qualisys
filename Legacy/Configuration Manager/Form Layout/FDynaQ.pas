@@ -21,7 +21,7 @@ Date        ID     Description
 }
 
 
-{$DEFINE GraphicsTab}
+{ DEFINE GraphicsTab}
 
 interface
 
@@ -485,7 +485,7 @@ const
   ptLetter = 1;
   ptLetterCard = 2;
   ptLegalCard = 3;
-  ptGraphics = 4;
+  ptArtifacts = 4;
 
 function GetWin(Handle: HWND; LParam: Longint): Bool; stdcall;
 var
@@ -2043,11 +2043,14 @@ begin
     clearpagetabs;
     i := 0;
     tabset1.tabs.add('Graphics');
-    pagetabs[0].pagetype:=ptGraphics;
+    pagetabs[0].pagetype:=ptArtifacts;
     pagetabs[0].description := 'Graphics';
     while not eof do begin
       inc(i);
-      tabset1.tabs.add(fieldbyname('Description').text);
+      if fieldbyname('PageType').value = ptArtifacts then
+        tabset1.tabs.add('[' + fieldbyname('Description').text + ']')
+      else
+        tabset1.tabs.add(fieldbyname('Description').text);
       with pagetabs[i] do begin
         integrated := fieldbyname('Integrated').value;
         letterhead := fieldbyname('bitLetterhead').value;
@@ -2583,6 +2586,7 @@ begin
       with frmOpenPictureDialog do
       try
         Image.Picture := tDQImage(tDQPanel(WLKHandle.children[0]).controls[0]).picture;
+        lblFileName.Caption := tDQPanel(WLKHandle.children[0]).caption;
         SaveDialog.filename := tDQPanel(WLKHandle.children[0]).caption;
         if ShowModal = mrOK then begin
           tDQImage(tDQPanel(WLKHandle.children[0]).controls[0]).picture := Image.Picture;
@@ -2973,7 +2977,7 @@ begin
         pnlIndicia.left := 473-ScrollboxCovers.horzscrollbar.position;
         PageBreak1.enabled := false;
       end;
-    ptGraphics:
+    ptArtifacts:
       begin
         pnlAddress.visible := false;
         pnlAddress.height := 0;
@@ -2987,18 +2991,18 @@ begin
         printmockup1.enabled := false;
       end;
   end;
-  btnTextBox.Enabled := (pagetabs[pg].pagetype <> ptGraphics);
-  btnPCLBox.Enabled := (pagetabs[pg].pagetype <> ptGraphics);
+  btnTextBox.Enabled := (pagetabs[pg].pagetype <> ptArtifacts);
+  btnPCLBox.Enabled := (pagetabs[pg].pagetype <> ptArtifacts);
 {$IFDEF GraphicsTab}
-  btnLogo.visible := (pagetabs[pg].pagetype = ptGraphics);
+  btnLogo.visible := (pagetabs[pg].pagetype = ptArtifacts);
   btnLogoRef.visible := not btnlogo.visible;
   if btnlogo.visible then
     graphic1.OnClick := btnLogoClick
   else
     graphic1.OnClick := btnLogoRefClick;
 {$ENDIF}
-  textbox1.enabled := (pagetabs[pg].pagetype <> ptGraphics);
-  pclcode1.enabled := (pagetabs[pg].pagetype <> ptGraphics);
+  textbox1.enabled := (pagetabs[pg].pagetype <> ptArtifacts);
+  pclcode1.enabled := (pagetabs[pg].pagetype <> ptArtifacts);
   Coverborder2.height := Coverborder1.height;
   Coverborder3.left := 0-ScrollboxCovers.horzscrollbar.position;
   Coverborder3.top := Coverborder2.height-ScrollboxCovers.vertscrollbar.position;
@@ -3166,7 +3170,12 @@ begin
   with frmPageAttributes do
   try
     with Pagetabs[tabset1.tabindex] do begin
-      edPagename.text := tabset1.tabs[tabset1.tabindex];
+      cbArtifactsPage.checked := (pagetype = ptArtifacts);
+      if cbArtifactsPage.checked then
+        edPagename.text := copy(tabset1.tabs[tabset1.tabindex],2,length(tabset1.tabs[tabset1.tabindex])-2)
+      else
+        edPagename.text := tabset1.tabs[tabset1.tabindex];
+
       if pagetype = ptLetter then
         rgPaperType.itemindex := 0
       else begin
@@ -3183,15 +3192,23 @@ begin
         rgIntegrated.itemindex := 1;
       if ShowModal = mrOK then begin
         dmOpenQ.SaveDialog.tag := 2;
-        tabset1.tabs[tabset1.tabindex] := edPageName.text;
+
         description := edPageName.text;
-        if rgPaperType.Itemindex = 0 then
-          pagetype := ptLetter
+        tabset1.tabs[tabset1.tabindex] := edPageName.text;
+
+        if cbArtifactsPage.checked then
+        begin
+          tabset1.tabs[tabset1.tabindex] := '[' + edPageName.text + ']';
+          pagetype := ptArtifacts
+        end
         else
-          if rgPostcardsize.itemindex = 0 then
-            pagetype := ptLetterCard
+          if rgPaperType.Itemindex = 0 then
+            pagetype := ptLetter
           else
-            pagetype := ptLegalCard;
+            if rgPostcardsize.itemindex = 0 then
+              pagetype := ptLetterCard
+            else
+              pagetype := ptLegalCard;
         Integrated := (rgIntegrated.itemindex = 0);
         Letterhead := (rgIntegrated.itemindex = 2);
         with dmOpenQ.wwt_cover do
