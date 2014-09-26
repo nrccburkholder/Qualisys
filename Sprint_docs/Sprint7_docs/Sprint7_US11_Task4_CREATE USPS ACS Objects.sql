@@ -178,7 +178,6 @@ GO
 SET ANSI_PADDING ON
 GO
 
-DROP TABLE [dbo].[USPS_ACS_ExtractFile_Work]
 
 CREATE TABLE [dbo].[USPS_ACS_ExtractFile_Work](
 	[USPS_ACS_ExtractFile_Work_ID] [int] IDENTITY(1,1) NOT NULL,
