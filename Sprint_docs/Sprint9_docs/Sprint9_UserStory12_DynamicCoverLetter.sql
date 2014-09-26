@@ -11,7 +11,7 @@ ADD LABEL char(60) NOT NULL
 DEFAULT ''
 
 
-update QualPro_Params set strparam_value = '3.3' where STRPARAM_NM = 'FormLayoutVersion'
+update QualPro_Params set strparam_value = '3.4' where STRPARAM_NM = 'FormLayoutVersion'
 --update QualPro_Params set strparam_value = '3.0' 
 --select * from Qualpro_params where STRPARAM_NM = 'FormLayoutVersion'
 
