@@ -1,17 +1,41 @@
-Use [QP_Prod]
+/*
+S9.US12	As a Client Services team member I want to be able to label text boxes in formlayout so that I can map text boxes to sample units. 
 
+12.1	Add a name field to the textbox edit window. 
+12.2	Save label to Qualisys in TextBox table and load label from Qualisys
+12.3	Save label to Template/load from template
+12.4	Cover letter labeled as "Not a Cover Letter" save to and pull from qualisys and Delphi file template
+12.5	Cover letter remove header etc. so it's obvious it's an artifact and not a real cover letter. 
+12.6	A dropdown selector at the top in the tool bar
+12.7	Remove artifact coverletters from PrintMockup
+
+
+Chris Burkholder
+
+update table [dbo].[TABLEDEF]
+ALTER TABLE [dbo].[SEL_TEXTBOX]
+ALTER PROCEDURE [dbo].[sp_FL_SaveSurvey]
+*/
+
+Use [QP_Prod]
+go
+Begin Tran
+go
 update TABLEDEF set TEXTBOX = 'Label' 
 --select * from TABLEDEF
-where STRFULL = 'Label'
+where STRFULL = 'Label' and TEXTBOX <> 'Label'
 
 --select * from SEL_TEXTBOX
 
+IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS
+    WHERE TABLE_NAME = 'SEL_TEXTBOX' AND COLUMN_NAME = 'LABEL')
 ALTER TABLE SEL_TEXTBOX 
 ADD LABEL char(60) NOT NULL 
 DEFAULT ''
 
 
 update QualPro_Params set strparam_value = '3.4' where STRPARAM_NM = 'FormLayoutVersion'
+					 and strparam_value <> '3.4'
 --update QualPro_Params set strparam_value = '3.0' 
 --select * from Qualpro_params where STRPARAM_NM = 'FormLayoutVersion'
 
@@ -231,3 +255,4 @@ EXEC sp_helptext 'dbo.sp_FL_SaveSurvey'
 
 */
 
+Commit Tran
