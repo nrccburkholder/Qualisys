@@ -271,6 +271,7 @@ type
     mniDeletePLogo: TMenuItem;
     mniDeleteAllLogos: TMenuItem;
     mniAdmin: TMenuItem;
+    cbItemSelector: TComboBox;
    procedure OKBtnClick(Sender: TObject);
    procedure CancelBtnClick(Sender: TObject);
    procedure wwDBLookup_ThemesCloseUp(Sender: TObject; LookupTable,
@@ -354,6 +355,7 @@ type
     procedure N300Click(Sender: TObject);
     procedure N600Click(Sender: TObject);
     procedure ChangeLogoClick(Sender: TObject);
+    procedure AssignItemSelector(selection : string);
     procedure RichEdit1MouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure Logo1MouseDown(Sender: TObject; Button: TMouseButton;
@@ -443,6 +445,7 @@ type
     procedure mniDeletePLogoClick(Sender: TObject);
     procedure mniDeleteAllLogosClick(Sender: TObject);
     procedure mniAdminClick(Sender: TObject);
+    procedure cbItemSelectorClick(Sender: TObject);
   private
    { Private declarations }
     curServID, curThemID, curLangID: integer;
@@ -963,7 +966,11 @@ begin
       end;
       with tDQPanel(WLKHandle.children[0]) do begin
         if OpenDialog.Filename <> '' then
+        begin
           caption := ExtractFileName(OpenDialog.filename);
+          if cbItemSelector.Items.IndexOf(caption) = -1 then
+            cbItemSelector.Items.Add(caption);
+        end;
         GraphicsPage := (tabset1.tabindex=0);
         with tDQImage(Controls[0]) do begin
           picture := Image.Picture;
@@ -1013,6 +1020,8 @@ begin
       with tRichEdit(tDQPanel(Elementlist[i]).Controls[0]).lines do begin
         LoadFromFile(dmOpenQ.tempdir+'\RichEdit.rtf');
       end;
+
+      cbItemSelector.Items.Add(frmREEdit.edTextBoxName.Text);
     end;
   finally
     Release;
@@ -1769,6 +1778,8 @@ begin
     LeavingCoverPage;
     Pagecontrol1.ActivePage := Selection;
     PageControl1Change(Sender);
+    cbItemSelector.Visible := false;
+    cbItemSelector.Items.Clear;
   end;
 end;
 
@@ -1777,7 +1788,9 @@ begin
   if Pagecontrol1.ActivePage <> CoverSheets then begin
     ClearElementList;
     Pagecontrol1.ActivePage := CoverSheets;
+    cbItemSelector.Items.Clear;
     PageControl1Change(Sender);
+    cbItemSelector.Visible := true;
   end;
 end;
 
@@ -2606,12 +2619,22 @@ begin
     end;
 end;
 
+procedure TF_DynaQ.AssignItemSelector(selection : string);
+var
+  i : integer;
+begin
+  i := cbItemSelector.Items.Count - 1;
+  while ((i >= 0) and (cbItemSelector.Items[i] <> selection)) do
+    dec(i);
+  cbItemSelector.ItemIndex := i;
+end;
 
 procedure TF_DynaQ.RichEdit1MouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
   if not (ssShift in shift) then WLKHandle.detach;
   WLKHandle.attach(tDQPanel(Sender));
+  AssignItemSelector(tDQPanel(Sender).TextBoxName);
 end;
 
 procedure TF_DynaQ.Logo1MouseDown(Sender: TObject; Button: TMouseButton;
@@ -2620,6 +2643,7 @@ begin
   if not (ssShift in shift) then WLKHandle.detach;
   WLKHandle.attach(tcontrol(Sender));
   WLKHandle.Resizable := false;
+  AssignItemSelector(tDQPanel(Sender).caption);
 end;
 
 procedure TF_DynaQ.Logo2MouseDown(Sender: TObject; Button: TMouseButton;
@@ -2770,7 +2794,11 @@ var I : integer;
         Height := fieldbyname('Height').value;
         BorderWidth := fieldbyname('Border').value;
         if not fieldbyname('Label').isnull then
+        begin
            TextBoxName := fieldbyname('Label').value;
+           if TextBoxName <> '' then
+              cbItemSelector.Items.Add(TextBoxName);
+        end;
         Language := fieldbyname('Language').value;
         tBlobField(fieldbyname('RichText')).SaveTofile(dmOpenQ.tempdir+'\RichEdit.rtf');
         with tRichEdit(controls[0]) do begin
@@ -2841,6 +2869,8 @@ var I : integer;
       with tDQPanel(Elementlist[i]), DMOpenQ.wwt_Logo do begin
         GraphicsPage := (fieldbyname('CoverID').value=0);
         caption := fieldbyname('Description').value;
+        if cbItemSelector.Items.IndexOf(caption) = -1 then
+          cbItemSelector.Items.Add(caption);
         Left := fieldbyname('X').value-ScrollboxCovers.horzScrollBar.Position;
         Top := fieldbyname('Y').value-ScrollboxCovers.VertScrollBar.Position;
         with tDQImage(Controls[0]) do begin
@@ -2981,8 +3011,8 @@ begin
       begin
         pnlAddress.visible := false;
         pnlAddress.height := 0;
-        CoverBorder1.left := 710-ScrollboxCovers.horzscrollbar.position;
-        CoverBorder2.left := 710-ScrollboxCovers.horzscrollbar.position;
+        CoverBorder1.left := 1710-ScrollboxCovers.horzscrollbar.position;
+        CoverBorder2.left := 1710-ScrollboxCovers.horzscrollbar.position;
         Coverborder1.height := 1008;
         shapeRegPt.visible := false;
         ImageMatchCode.visible := false;
@@ -3001,7 +3031,7 @@ begin
   else
     graphic1.OnClick := btnLogoRefClick;
 {$ENDIF}
-  textbox1.enabled := (pagetabs[pg].pagetype <> ptArtifacts);
+//  textbox1.enabled := (pagetabs[pg].pagetype <> ptArtifacts);
   pclcode1.enabled := (pagetabs[pg].pagetype <> ptArtifacts);
   Coverborder2.height := Coverborder1.height;
   Coverborder3.left := 0-ScrollboxCovers.horzscrollbar.position;
@@ -3021,6 +3051,7 @@ begin
     if FireTabChangeEvent then begin
       SaveCover(tabset1.tabindex);
       AllowChange := true;
+      cbItemSelector.Items.Clear;
       LoadCover(newTab);
     end;
 end;
@@ -4555,6 +4586,39 @@ begin
       DMOpenQ.qpQuery('Update QualPro_Params set STRPARAM_VALUE = ' + QuotedStr(sInput) + ' where STRPARAM_NM = ''FormLayoutVersion''',True);
    end;
 
+end;
+
+procedure TF_DynaQ.cbItemSelectorClick(Sender: TObject);
+var
+  foundTextBoxName : boolean;
+  i : integer;
+  SenderToActivate : TObject;
+
+begin
+//TODO CJB select the highlighted item on the page
+  SenderToActivate := Sender; //use this as a not found value
+  foundTextBoxName := false;
+  i := 0;
+  while ((i < ElementList.count) and (SenderToActivate = Sender)) do begin
+    if tDQPanel(elementlist[i]).TextBoxName = cbItemSelector.Items[cbItemSelector.ItemIndex] then
+    begin
+      foundTextBoxName := true;
+      SenderToActivate := elementList[i];
+    end
+    else
+      if tDQPanel(elementlist[i]).caption = cbItemSelector.Items[cbItemSelector.ItemIndex] then
+        SenderToActivate := elementList[i];
+    inc(i);
+  end;
+
+  if (SenderToActivate <> Sender) then
+  begin
+    WLKHandle.detach;
+    if foundTextBoxName then
+      WLKHandle.attach(tDQPanel(SenderToActivate))
+    else
+      WLKHandle.attach(tcontrol(SenderToActivate));
+  end;
 end;
 
 end.
