@@ -57,7 +57,7 @@ Public Class SampleUnitCoverLetterMappingEditor
                 Case MappingStatus.IsNew
                     e.Appearance.ForeColor = Color.Green
                 Case MappingStatus.Duplicate
-                    e.Appearance.BackColor = Color.Red
+                    e.Appearance.ForeColor = Color.Red
             End Select
 
         End If
@@ -71,11 +71,11 @@ Public Class SampleUnitCoverLetterMappingEditor
 
             Select Case status
                 Case MappingStatus.OK
-                    e.Value = ImageCollection1.Images(0)
+                    e.Value = My.Resources.GreenLight
                 Case MappingStatus.IsNew
-                    e.Value = ImageCollection1.Images(1)
+                    e.Value = My.Resources.New16
                 Case MappingStatus.Duplicate
-                    e.Value = ImageCollection1.Images(2)
+                    e.Value = My.Resources.Error16
             End Select
 
         End If

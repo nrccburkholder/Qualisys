@@ -83,7 +83,6 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.NeedDelete = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.UniqueID = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.RepositoryItemImageEdit1 = New DevExpress.XtraEditors.Repository.RepositoryItemImageEdit()
-        Me.ImageCollection1 = New DevExpress.Utils.ImageCollection(Me.components)
         Me.HeaderStrip4 = New Nrc.Framework.WinForms.HeaderStrip()
         Me.ToolStripLabel4 = New System.Windows.Forms.ToolStripLabel()
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
@@ -95,7 +94,7 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.btnUnmap = New System.Windows.Forms.Button()
         Me.btnMap = New System.Windows.Forms.Button()
-        Me.InformationBar = New Nrc.QualiSys.ConfigurationManager.InformationBar()
+        Me.InformationBar = New Nrc.Qualisys.ConfigurationManager.InformationBar()
         Me.BottomPanel.SuspendLayout()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -123,7 +122,6 @@ Partial Class SampleUnitCoverLetterMappingEditor
         CType(Me.gvMappings, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.RepositoryItemPictureEdit1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.RepositoryItemImageEdit1, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.ImageCollection1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.HeaderStrip4.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
@@ -653,20 +651,8 @@ Partial Class SampleUnitCoverLetterMappingEditor
         '
         Me.RepositoryItemImageEdit1.AutoHeight = False
         Me.RepositoryItemImageEdit1.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
-        Me.RepositoryItemImageEdit1.Images = Me.ImageCollection1
         Me.RepositoryItemImageEdit1.Name = "RepositoryItemImageEdit1"
         Me.RepositoryItemImageEdit1.NullText = """"""
-        '
-        'ImageCollection1
-        '
-        Me.ImageCollection1.ImageStream = CType(resources.GetObject("ImageCollection1.ImageStream"), DevExpress.Utils.ImageCollectionStreamer)
-        Me.ImageCollection1.Images.SetKeyName(0, "GreenLight.png")
-        Me.ImageCollection1.Images.SetKeyName(1, "New16.png")
-        Me.ImageCollection1.Images.SetKeyName(2, "Error16.png")
-        Me.ImageCollection1.Images.SetKeyName(3, "Error.PNG")
-        Me.ImageCollection1.Images.SetKeyName(4, "DownArrow16.png")
-        Me.ImageCollection1.Images.SetKeyName(5, "Save16.png")
-        Me.ImageCollection1.Images.SetKeyName(6, "Validation16.png")
         '
         'HeaderStrip4
         '
@@ -810,7 +796,6 @@ Partial Class SampleUnitCoverLetterMappingEditor
         CType(Me.gvMappings, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.RepositoryItemPictureEdit1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.RepositoryItemImageEdit1, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.ImageCollection1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.HeaderStrip4.ResumeLayout(False)
         Me.HeaderStrip4.PerformLayout()
         Me.Panel1.ResumeLayout(False)
@@ -885,7 +870,6 @@ Partial Class SampleUnitCoverLetterMappingEditor
     Friend WithEvents btnCoverLettersClearnSelections As System.Windows.Forms.ToolStripButton
     Friend WithEvents btnArtifactsClearSelections As System.Windows.Forms.ToolStripButton
     Friend WithEvents RepositoryItemImageEdit1 As DevExpress.XtraEditors.Repository.RepositoryItemImageEdit
-    Friend WithEvents ImageCollection1 As DevExpress.Utils.ImageCollection
     Friend WithEvents colStatusImage As DevExpress.XtraGrid.Columns.GridColumn
     Friend WithEvents RepositoryItemPictureEdit1 As DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit
     Friend WithEvents UniqueID As DevExpress.XtraGrid.Columns.GridColumn
