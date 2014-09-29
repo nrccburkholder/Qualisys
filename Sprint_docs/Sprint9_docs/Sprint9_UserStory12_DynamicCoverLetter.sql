@@ -33,9 +33,10 @@ ALTER TABLE SEL_TEXTBOX
 ADD LABEL char(60) NOT NULL 
 DEFAULT ''
 
+GO
 
-update QualPro_Params set strparam_value = '3.4' where STRPARAM_NM = 'FormLayoutVersion'
-					 and strparam_value <> '3.4'
+update QualPro_Params set strparam_value = '3.5' where STRPARAM_NM = 'FormLayoutVersion'
+					 and strparam_value <> '3.5'
 --update QualPro_Params set strparam_value = '3.0' 
 --select * from Qualpro_params where STRPARAM_NM = 'FormLayoutVersion'
 

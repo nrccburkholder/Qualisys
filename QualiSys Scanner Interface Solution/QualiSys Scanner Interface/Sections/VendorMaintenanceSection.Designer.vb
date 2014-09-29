@@ -19,80 +19,81 @@ Partial Class VendorMaintenanceSection
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(VendorMaintenanceSection))
-        Me.VendorInfoSectionPanel = New Nrc.Framework.WinForms.SectionPanel
-        Me.VendorInfoTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel
-        Me.VendorInfoRightPanel = New System.Windows.Forms.Panel
-        Me.chkAutoLoad = New System.Windows.Forms.CheckBox
-        Me.lblSkipResponseChar = New System.Windows.Forms.Label
-        Me.txtSkipResponseChar = New System.Windows.Forms.TextBox
-        Me.lblMultiRespItemNotPickedChar = New System.Windows.Forms.Label
-        Me.txtMultiRespItemNotPickedChar = New System.Windows.Forms.TextBox
-        Me.lblNoResponseChar = New System.Windows.Forms.Label
-        Me.txtNoResponseChar = New System.Windows.Forms.TextBox
-        Me.lblAutoLoad = New System.Windows.Forms.Label
-        Me.VendorInfoLeftPanel = New System.Windows.Forms.Panel
-        Me.cboOutgoingFileType = New System.Windows.Forms.ComboBox
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.txtLocalFTPLoginName = New System.Windows.Forms.TextBox
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.txtVendorName = New System.Windows.Forms.TextBox
-        Me.txtVendorCode = New System.Windows.Forms.TextBox
-        Me.lblVendorName = New System.Windows.Forms.Label
-        Me.lblVendorCode = New System.Windows.Forms.Label
-        Me.VendorSplitContainer = New System.Windows.Forms.SplitContainer
-        Me.VendorDetailSectionPanel = New Nrc.Framework.WinForms.SectionPanel
-        Me.BottomPanel = New System.Windows.Forms.Panel
-        Me.ButtonPanel = New System.Windows.Forms.Panel
-        Me.Cancel_Button = New System.Windows.Forms.Button
-        Me.ApplyButton = New System.Windows.Forms.Button
-        Me.VendorDetailTabControl = New System.Windows.Forms.TabControl
-        Me.ContactsTabPage = New System.Windows.Forms.TabPage
-        Me.ContactsGridControl = New DevExpress.XtraGrid.GridControl
+        Me.VendorInfoSectionPanel = New Nrc.Framework.WinForms.SectionPanel()
+        Me.VendorInfoTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
+        Me.VendorInfoRightPanel = New System.Windows.Forms.Panel()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.txtRefusedResponseChar = New System.Windows.Forms.TextBox()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.txtDontKnowResponseChar = New System.Windows.Forms.TextBox()
+        Me.chkAutoLoad = New System.Windows.Forms.CheckBox()
+        Me.lblSkipResponseChar = New System.Windows.Forms.Label()
+        Me.txtSkipResponseChar = New System.Windows.Forms.TextBox()
+        Me.lblMultiRespItemNotPickedChar = New System.Windows.Forms.Label()
+        Me.txtMultiRespItemNotPickedChar = New System.Windows.Forms.TextBox()
+        Me.lblNoResponseChar = New System.Windows.Forms.Label()
+        Me.txtNoResponseChar = New System.Windows.Forms.TextBox()
+        Me.lblAutoLoad = New System.Windows.Forms.Label()
+        Me.VendorInfoLeftPanel = New System.Windows.Forms.Panel()
+        Me.cboOutgoingFileType = New System.Windows.Forms.ComboBox()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.txtLocalFTPLoginName = New System.Windows.Forms.TextBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.txtVendorName = New System.Windows.Forms.TextBox()
+        Me.txtVendorCode = New System.Windows.Forms.TextBox()
+        Me.lblVendorName = New System.Windows.Forms.Label()
+        Me.lblVendorCode = New System.Windows.Forms.Label()
+        Me.VendorSplitContainer = New System.Windows.Forms.SplitContainer()
+        Me.VendorDetailSectionPanel = New Nrc.Framework.WinForms.SectionPanel()
+        Me.BottomPanel = New System.Windows.Forms.Panel()
+        Me.ButtonPanel = New System.Windows.Forms.Panel()
+        Me.Cancel_Button = New System.Windows.Forms.Button()
+        Me.ApplyButton = New System.Windows.Forms.Button()
+        Me.VendorDetailTabControl = New System.Windows.Forms.TabControl()
+        Me.ContactsTabPage = New System.Windows.Forms.TabPage()
+        Me.ContactsGridControl = New DevExpress.XtraGrid.GridControl()
         Me.ContactsContextMenuStrip = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.DeleteRecordToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.DeleteRecordToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.VendorContactBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.ContactsGridView = New DevExpress.XtraGrid.Views.Grid.GridView
-        Me.colVendorContactId = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.colVendorId = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.colType = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.colFirstName = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.colLastName = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.colemailAddr1 = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.colemailAddr2 = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.colSendFileArrivalEmail = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.colPhone1 = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.Phone1TextEdit = New DevExpress.XtraEditors.Repository.RepositoryItemTextEdit
-        Me.colPhone2 = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.Phone2TextEdit = New DevExpress.XtraEditors.Repository.RepositoryItemTextEdit
-        Me.colNotes = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.ContactsExportGridView = New DevExpress.XtraGrid.Views.Grid.GridView
-        Me.TableTabPage = New System.Windows.Forms.TabPage
-        Me.DispsitionTableToolStrip = New System.Windows.Forms.ToolStrip
-        Me.btnDispoImportFile = New System.Windows.Forms.ToolStripButton
-        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
-        Me.btnDispoExportFile = New System.Windows.Forms.ToolStripButton
-        Me.DispositionGridControl = New DevExpress.XtraGrid.GridControl
+        Me.ContactsGridView = New DevExpress.XtraGrid.Views.Grid.GridView()
+        Me.colVendorContactId = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colVendorId = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colType = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colFirstName = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colLastName = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colemailAddr1 = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colemailAddr2 = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colSendFileArrivalEmail = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colPhone1 = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.Phone1TextEdit = New DevExpress.XtraEditors.Repository.RepositoryItemTextEdit()
+        Me.colPhone2 = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.Phone2TextEdit = New DevExpress.XtraEditors.Repository.RepositoryItemTextEdit()
+        Me.colNotes = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.ContactsExportGridView = New DevExpress.XtraGrid.Views.Grid.GridView()
+        Me.TableTabPage = New System.Windows.Forms.TabPage()
+        Me.DispsitionTableToolStrip = New System.Windows.Forms.ToolStrip()
+        Me.btnDispoImportFile = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.btnDispoExportFile = New System.Windows.Forms.ToolStripButton()
+        Me.DispositionGridControl = New DevExpress.XtraGrid.GridControl()
         Me.VendorDespositionBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.DispositionGridView = New DevExpress.XtraGrid.Views.Grid.GridView
-        Me.colVendorDispositionCode = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.colVendorDispositionLabel = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.colVendorDispositionDesc = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.colNRCDispo = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.NRCDispoLookUpEdit = New DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit
+        Me.DispositionGridView = New DevExpress.XtraGrid.Views.Grid.GridView()
+        Me.colVendorDispositionCode = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colVendorDispositionLabel = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colVendorDispositionDesc = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colNRCDispo = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.NRCDispoLookUpEdit = New DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit()
         Me.DispositionBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.colHCAHPSDispos = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.HCAHPSDisposLookUpEdit = New DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit
-        Me.colHHCAHPSDispos = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.HHCAHPSDisposLookUpEdit = New DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit
-        Me.SaveFileDialog = New System.Windows.Forms.SaveFileDialog
-        Me.OpenFileDialog = New System.Windows.Forms.OpenFileDialog
+        Me.colHCAHPSDispos = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.HCAHPSDisposLookUpEdit = New DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit()
+        Me.colHHCAHPSDispos = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.HHCAHPSDisposLookUpEdit = New DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit()
+        Me.colIsFinal = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.SaveFileDialog = New System.Windows.Forms.SaveFileDialog()
+        Me.OpenFileDialog = New System.Windows.Forms.OpenFileDialog()
         Me.VendorErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.txtDontKnowResponseChar = New System.Windows.Forms.TextBox
-        Me.Label4 = New System.Windows.Forms.Label
-        Me.txtRefusedResponseChar = New System.Windows.Forms.TextBox
         Me.VendorInfoSectionPanel.SuspendLayout()
         Me.VendorInfoTableLayoutPanel.SuspendLayout()
         Me.VendorInfoRightPanel.SuspendLayout()
@@ -140,8 +141,8 @@ Partial Class VendorMaintenanceSection
         'VendorInfoTableLayoutPanel
         '
         Me.VendorInfoTableLayoutPanel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.VendorInfoTableLayoutPanel.ColumnCount = 2
         Me.VendorInfoTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.VendorInfoTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 330.0!))
@@ -174,6 +175,42 @@ Partial Class VendorMaintenanceSection
         Me.VendorInfoRightPanel.Name = "VendorInfoRightPanel"
         Me.VendorInfoRightPanel.Size = New System.Drawing.Size(324, 113)
         Me.VendorInfoRightPanel.TabIndex = 1
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(187, 39)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(80, 13)
+        Me.Label4.TabIndex = 10
+        Me.Label4.Text = "Refused Value:"
+        '
+        'txtRefusedResponseChar
+        '
+        Me.txtRefusedResponseChar.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
+        Me.txtRefusedResponseChar.Location = New System.Drawing.Point(283, 36)
+        Me.txtRefusedResponseChar.MaxLength = 1
+        Me.txtRefusedResponseChar.Name = "txtRefusedResponseChar"
+        Me.txtRefusedResponseChar.Size = New System.Drawing.Size(31, 21)
+        Me.txtRefusedResponseChar.TabIndex = 11
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(187, 10)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(94, 13)
+        Me.Label3.TabIndex = 8
+        Me.Label3.Text = "Don't Know Value:"
+        '
+        'txtDontKnowResponseChar
+        '
+        Me.txtDontKnowResponseChar.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
+        Me.txtDontKnowResponseChar.Location = New System.Drawing.Point(283, 7)
+        Me.txtDontKnowResponseChar.MaxLength = 1
+        Me.txtDontKnowResponseChar.Name = "txtDontKnowResponseChar"
+        Me.txtDontKnowResponseChar.Size = New System.Drawing.Size(31, 21)
+        Me.txtDontKnowResponseChar.TabIndex = 9
         '
         'chkAutoLoad
         '
@@ -268,7 +305,7 @@ Partial Class VendorMaintenanceSection
         'cboOutgoingFileType
         '
         Me.cboOutgoingFileType.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cboOutgoingFileType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboOutgoingFileType.FormattingEnabled = True
         Me.cboOutgoingFileType.Location = New System.Drawing.Point(121, 87)
@@ -288,7 +325,7 @@ Partial Class VendorMaintenanceSection
         'txtLocalFTPLoginName
         '
         Me.txtLocalFTPLoginName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtLocalFTPLoginName.Location = New System.Drawing.Point(107, 59)
         Me.txtLocalFTPLoginName.MaxLength = 20
         Me.txtLocalFTPLoginName.Name = "txtLocalFTPLoginName"
@@ -307,7 +344,7 @@ Partial Class VendorMaintenanceSection
         'txtVendorName
         '
         Me.txtVendorName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtVendorName.Location = New System.Drawing.Point(107, 33)
         Me.txtVendorName.MaxLength = 100
         Me.txtVendorName.Name = "txtVendorName"
@@ -317,7 +354,7 @@ Partial Class VendorMaintenanceSection
         'txtVendorCode
         '
         Me.txtVendorCode.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtVendorCode.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
         Me.txtVendorCode.Location = New System.Drawing.Point(107, 7)
         Me.txtVendorCode.MaxLength = 25
@@ -421,8 +458,8 @@ Partial Class VendorMaintenanceSection
         'VendorDetailTabControl
         '
         Me.VendorDetailTabControl.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.VendorDetailTabControl.Controls.Add(Me.ContactsTabPage)
         Me.VendorDetailTabControl.Controls.Add(Me.TableTabPage)
         Me.VendorDetailTabControl.Location = New System.Drawing.Point(7, 38)
@@ -649,8 +686,8 @@ Partial Class VendorMaintenanceSection
         'DispositionGridControl
         '
         Me.DispositionGridControl.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.DispositionGridControl.DataSource = Me.VendorDespositionBindingSource
         Me.DispositionGridControl.EmbeddedNavigator.Name = ""
         Me.DispositionGridControl.EmbeddedNavigator.TextStringFormat = ""
@@ -670,7 +707,7 @@ Partial Class VendorMaintenanceSection
         'DispositionGridView
         '
         Me.DispositionGridView.ActiveFilterEnabled = False
-        Me.DispositionGridView.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.colVendorDispositionCode, Me.colVendorDispositionLabel, Me.colVendorDispositionDesc, Me.colNRCDispo, Me.colHCAHPSDispos, Me.colHHCAHPSDispos})
+        Me.DispositionGridView.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.colVendorDispositionCode, Me.colVendorDispositionLabel, Me.colVendorDispositionDesc, Me.colNRCDispo, Me.colHCAHPSDispos, Me.colHHCAHPSDispos, Me.colIsFinal})
         Me.DispositionGridView.GridControl = Me.DispositionGridControl
         Me.DispositionGridView.Name = "DispositionGridView"
         Me.DispositionGridView.NewItemRowText = "Click Here to Add a New Disposition"
@@ -766,6 +803,14 @@ Partial Class VendorMaintenanceSection
         Me.HHCAHPSDisposLookUpEdit.Name = "HHCAHPSDisposLookUpEdit"
         Me.HHCAHPSDisposLookUpEdit.ValueMember = "Id"
         '
+        'colIsFinal
+        '
+        Me.colIsFinal.Caption = "Is Final"
+        Me.colIsFinal.FieldName = "IsFinalDisplayText"
+        Me.colIsFinal.Name = "colIsFinal"
+        Me.colIsFinal.Visible = True
+        Me.colIsFinal.VisibleIndex = 6
+        '
         'OpenFileDialog
         '
         Me.OpenFileDialog.FileName = "OpenFileDialog1"
@@ -774,42 +819,6 @@ Partial Class VendorMaintenanceSection
         '
         Me.VendorErrorProvider.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink
         Me.VendorErrorProvider.ContainerControl = Me
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(187, 10)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(94, 13)
-        Me.Label3.TabIndex = 8
-        Me.Label3.Text = "Don't Know Value:"
-        '
-        'txtDontKnowResponseChar
-        '
-        Me.txtDontKnowResponseChar.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
-        Me.txtDontKnowResponseChar.Location = New System.Drawing.Point(283, 7)
-        Me.txtDontKnowResponseChar.MaxLength = 1
-        Me.txtDontKnowResponseChar.Name = "txtDontKnowResponseChar"
-        Me.txtDontKnowResponseChar.Size = New System.Drawing.Size(31, 21)
-        Me.txtDontKnowResponseChar.TabIndex = 9
-        '
-        'Label4
-        '
-        Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(187, 39)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(80, 13)
-        Me.Label4.TabIndex = 10
-        Me.Label4.Text = "Refused Value:"
-        '
-        'txtRefusedResponseChar
-        '
-        Me.txtRefusedResponseChar.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
-        Me.txtRefusedResponseChar.Location = New System.Drawing.Point(283, 36)
-        Me.txtRefusedResponseChar.MaxLength = 1
-        Me.txtRefusedResponseChar.Name = "txtRefusedResponseChar"
-        Me.txtRefusedResponseChar.Size = New System.Drawing.Size(31, 21)
-        Me.txtRefusedResponseChar.TabIndex = 11
         '
         'VendorMaintenanceSection
         '
@@ -925,5 +934,6 @@ Partial Class VendorMaintenanceSection
     Friend WithEvents txtRefusedResponseChar As System.Windows.Forms.TextBox
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents txtDontKnowResponseChar As System.Windows.Forms.TextBox
+    Friend WithEvents colIsFinal As DevExpress.XtraGrid.Columns.GridColumn
 
 End Class

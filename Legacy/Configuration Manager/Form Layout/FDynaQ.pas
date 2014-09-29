@@ -355,7 +355,6 @@ type
     procedure N300Click(Sender: TObject);
     procedure N600Click(Sender: TObject);
     procedure ChangeLogoClick(Sender: TObject);
-    procedure AssignItemSelector(selection : string);
     procedure RichEdit1MouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure Logo1MouseDown(Sender: TObject; Button: TMouseButton;
@@ -1010,6 +1009,8 @@ begin
     wtText.post;
     clDBRichCodeBtn1.font := ScrollboxCovers.font;
     caption := 'New Text Box';
+    lblTextBoxName.Visible := true;
+    edTextBoxName.Visible := true;
     if ShowModal = mrOK then begin
       I := newTextBox(0);
       with WLKHandle do begin
@@ -1020,8 +1021,21 @@ begin
       with tRichEdit(tDQPanel(Elementlist[i]).Controls[0]).lines do begin
         LoadFromFile(dmOpenQ.tempdir+'\RichEdit.rtf');
       end;
+      tDQPanel(Elementlist[i]).TextBoxName := edTextBoxName.Text;
 
-      cbItemSelector.Items.Add(frmREEdit.edTextBoxName.Text);
+      if (edTextBoxName.Text <> '') then
+      begin
+        if cbItemSelector.Items.IndexOf(edTextBoxName.Text) = -1 then
+          cbItemSelector.Items.Add(edTextBoxName.Text)
+        else
+        begin
+          showmessage('Please correct duplicate Text Box Name: ' + edTextBoxName.Text);
+          tDQPanel(Elementlist[i]).TextBoxName := '';
+        end
+      end;
+      cbItemSelector.ItemIndex := cbItemSelector.Items.IndexOf(edTextBoxName.Text);
+      lblTextBoxName.Visible := false;
+      edTextBoxName.Visible := false;
     end;
   finally
     Release;
@@ -2358,6 +2372,7 @@ begin
           if controlcount > 0 then
             for j := controlcount-1 downto 0 do
               controls[j].free;
+          cbItemSelector.Items.Delete(cbItemSelector.Items.IndexOf(TextBoxName));
           free;
         end;
         elementlist[i] := nil;
@@ -2467,6 +2482,8 @@ begin
       lblTextBoxName.Visible := true;
       edTextBoxName.Visible := true;
       edTextBoxName.Text := tDQPanel(WLKHandle.children[0]).TextBoxName;
+      if edTextBoxName.Text <> '' then
+        cbItemSelector.Items.Delete(cbItemSelector.Items.IndexOf(edTextBoxName.Text));
       wtText.Edit;
       wtTextText.LoadFromFile(dmOpenQ.tempdir+'\RichEdit.rtf');
       wtText.Post;
@@ -2479,7 +2496,21 @@ begin
           lines.LoadFromFile(dmOpenQ.tempdir+'\RichEdit.rtf');
           refresh;
         end;
-      end;
+      end
+      else
+        edTextBoxName.Text := tDQPanel(WLKHandle.children[0]).TextBoxName;
+      if edTextBoxName.Text <> '' then
+        if cbItemSelector.Items.IndexOf(edTextBoxName.Text) = -1 then
+        begin
+          cbItemSelector.Items.Add(edTextBoxName.Text);
+          cbItemSelector.ItemIndex := cbItemSelector.Items.IndexOf(edTextBoxName.Text);
+        end
+        else
+        begin
+          showmessage('Please correct duplicate Text Box Name: ' + edTextBoxName.Text);
+          tDQPanel(WLKHandle.children[0]).TextBoxName := ''; //knock out the value so we don't delete the original next time we edit
+        end;
+
       lblTextBoxName.Visible := false;
       edTextBoxName.Visible := false;
     finally
@@ -2619,22 +2650,12 @@ begin
     end;
 end;
 
-procedure TF_DynaQ.AssignItemSelector(selection : string);
-var
-  i : integer;
-begin
-  i := cbItemSelector.Items.Count - 1;
-  while ((i >= 0) and (cbItemSelector.Items[i] <> selection)) do
-    dec(i);
-  cbItemSelector.ItemIndex := i;
-end;
-
 procedure TF_DynaQ.RichEdit1MouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
   if not (ssShift in shift) then WLKHandle.detach;
   WLKHandle.attach(tDQPanel(Sender));
-  AssignItemSelector(tDQPanel(Sender).TextBoxName);
+  cbItemSelector.ItemIndex := cbItemSelector.Items.IndexOf(tDQPanel(Sender).TextBoxName);
 end;
 
 procedure TF_DynaQ.Logo1MouseDown(Sender: TObject; Button: TMouseButton;
@@ -2643,7 +2664,7 @@ begin
   if not (ssShift in shift) then WLKHandle.detach;
   WLKHandle.attach(tcontrol(Sender));
   WLKHandle.Resizable := false;
-  AssignItemSelector(tDQPanel(Sender).caption);
+  cbItemSelector.ItemIndex := cbItemSelector.Items.IndexOf(tDQPanel(Sender).caption);
 end;
 
 procedure TF_DynaQ.Logo2MouseDown(Sender: TObject; Button: TMouseButton;
@@ -2797,7 +2818,13 @@ var I : integer;
         begin
            TextBoxName := fieldbyname('Label').value;
            if TextBoxName <> '' then
-              cbItemSelector.Items.Add(TextBoxName);
+              if cbItemSelector.Items.IndexOf(TextBoxName) = -1 then
+                cbItemSelector.Items.Add(TextBoxName)
+              else
+              begin
+                showmessage('Please correct duplicate Text Box Name: ' + TextBoxName);
+                TextBoxName := '';
+              end;
         end;
         Language := fieldbyname('Language').value;
         tBlobField(fieldbyname('RichText')).SaveTofile(dmOpenQ.tempdir+'\RichEdit.rtf');
@@ -4595,7 +4622,6 @@ var
   SenderToActivate : TObject;
 
 begin
-//TODO CJB select the highlighted item on the page
   SenderToActivate := Sender; //use this as a not found value
   foundTextBoxName := false;
   i := 0;
