@@ -45,7 +45,6 @@ Public Class SampleUnitCoverLetterMappingEditor
     End Sub
 #End Region
 
-
 #Region "event handlers"
 
     Private Sub gvMappings_CustomDrawCell(sender As Object, e As DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs) Handles gvMappings.CustomDrawCell
@@ -54,7 +53,7 @@ Public Class SampleUnitCoverLetterMappingEditor
 
             Select Case status
                 Case MappingStatus.OK
-                    e.Appearance.ForeColor = Color.Black
+                    e.Appearance.ForeColor = Color.Blue
                 Case MappingStatus.IsNew
                     e.Appearance.ForeColor = Color.Green
                 Case MappingStatus.Duplicate
@@ -100,7 +99,7 @@ Public Class SampleUnitCoverLetterMappingEditor
 
     Private Sub btnSampleUnitsClearSelections_Click(sender As Object, e As System.EventArgs) Handles btnSampleUnitsClearSelections.Click
         SampleUnitTreeView.Selection.Clear()
-        'UpdateMappingsFilter()
+        UpdateMappingsFilter()
     End Sub
 
     Private Sub btnArtifactsClearSelections_Click(sender As System.Object, e As System.EventArgs) Handles btnArtifactsClearSelections.Click
@@ -129,6 +128,7 @@ Public Class SampleUnitCoverLetterMappingEditor
     End Sub
 
     Public Sub IdleEvent(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
         btnMap.Enabled = SampleUnitTreeView.Selection.Count > 0 And gvCoverLetters.SelectedRowsCount > 0 And gvArtifacts.SelectedRowsCount > 0
         btnUnmap.Enabled = gvMappings.SelectedRowsCount > 0
 
@@ -152,6 +152,7 @@ Public Class SampleUnitCoverLetterMappingEditor
 #End Region
 
 #Region "private methods"
+
     Private Sub Initialize()
 
         ' Information bar
@@ -176,6 +177,8 @@ Public Class SampleUnitCoverLetterMappingEditor
 
         PopulateUnitTree()
 
+        SampleUnitTreeView.Selection.Clear()
+
     End Sub
 
     Private Sub PopulateMappings()
@@ -184,6 +187,8 @@ Public Class SampleUnitCoverLetterMappingEditor
         mMappings = CoverLetterMapping.GetCoverLetterMappingsBySurveyId(Me.mModule.Survey.Id)
         'Set the binding source for the sampleunit lookup
         Me.SampleUnitBindingSource.DataSource = mMappings
+
+
     End Sub
 
     Private Sub PopulateUnitTree()
@@ -283,8 +288,8 @@ Public Class SampleUnitCoverLetterMappingEditor
 
                     Dim artifactpagename As String = gvArtifacts.GetRowCellValue(gvArtifacts.FocusedRowHandle, "CoverLetterName").ToString().Trim()
                     Dim artifactitemname As String = gvArtifacts.GetRowCellValue(gvArtifacts.FocusedRowHandle, "Label").ToString().Trim()
-                    Dim artifactCoverID As Integer = Convert.ToInt32(gvCoverLetters.GetRowCellValue(rowHandle, "CoverID"))
-                    Dim artifactitem_Id As Integer = Convert.ToInt32(gvCoverLetters.GetRowCellValue(rowHandle, "ItemID"))
+                    Dim artifactCoverID As Integer = Convert.ToInt32(gvArtifacts.GetRowCellValue(rowHandle, "CoverID"))
+                    Dim artifactitem_Id As Integer = Convert.ToInt32(gvArtifacts.GetRowCellValue(rowHandle, "ItemID"))
 
 
                     Dim mappedUnit As CoverLetterMapping = CoverLetterMapping.NewCoverLetterMapping(-1, Me.mModule.Survey.Id, sUnit.Id, sampleUnitName, CoverLetterItemType.TEXTBOX, coverLetterCoverID, coverLetterName, coverLetterItem_Id, coverLetterTextBoxName, artifactCoverID, artifactpagename, artifactitem_Id, artifactitemname)
@@ -326,6 +331,7 @@ Public Class SampleUnitCoverLetterMappingEditor
                     If mappedItem.IsNew = False Then
                         ' If this is an existing MappedQuestion, then flag it for deletion
                         mappedItem.NeedsDelete = True
+                        ResetDuplicate(mappedItem)
                     Else
                         'otherwise, just remove it from the list
                         mMappings.RemoveAt(idx)
@@ -336,14 +342,22 @@ Public Class SampleUnitCoverLetterMappingEditor
         Next
 
         SampleUnitBindingSource.DataSource = mMappings
-
         SampleUnitBindingSource.ResetBindings(False)
-
         gvMappings.ClearSelection()
-
         UpdateMappingsFilter()
 
     End Sub
+
+    Private Sub ResetDuplicate(ByVal mapping As CoverLetterMapping)
+
+        For Each item As CoverLetterMapping In mMappings
+            If item.Equals(mapping) And item.Status = MappingStatus.Duplicate Then
+                item.Status = MappingStatus.IsNew
+            End If
+        Next
+
+    End Sub
+
 
     Private Sub ShowAllMappings()
         gvMappings.ActiveFilter.NonColumnFilter = "[NeedsDelete] = false"
