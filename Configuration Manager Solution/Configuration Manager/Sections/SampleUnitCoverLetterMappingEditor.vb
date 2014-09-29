@@ -75,7 +75,7 @@ Public Class SampleUnitCoverLetterMappingEditor
                 Case MappingStatus.IsNew
                     e.Value = My.Resources.New16
                 Case MappingStatus.Duplicate
-                    e.Value = My.Resources.Error16
+                    e.Value = My.Resources.NoWay16
             End Select
 
         End If
@@ -385,7 +385,7 @@ Public Class SampleUnitCoverLetterMappingEditor
         Dim result As Boolean = True
 
         For Each mapping As CoverLetterMapping In mMappings
-            If mapping.Equals(mapping) Then
+            If mapping.Equals(unit) Then
                 result = False
             End If
         Next
