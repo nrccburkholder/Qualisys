@@ -30,7 +30,7 @@ Friend Class VendorDispositionProvider
         newObject.VendorDispositionLabel = rdr.GetString("VendorDispositionLabel")
         newObject.VendorDispositionDesc = rdr.GetString("VendorDispositionDesc")
         newObject.DateCreated = rdr.GetDate("DateCreated")
-        newObject.isFinal = rdr.getInteger("isFinal")
+        newObject.isFinal = rdr.GetByte("isFinal")
         newObject.EndPopulate()
 
         Return newObject

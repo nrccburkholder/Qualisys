@@ -23,6 +23,7 @@ Public Class VendorDisposition
     Private mDateCreated As Date
     Private mQCLDisposition As QualiSys.Library.Disposition = Nothing
     Private misFinal As Integer
+    Private mIsFinalDisplayText As String = String.Empty
 
 #End Region
 
@@ -137,6 +138,21 @@ Public Class VendorDisposition
         End Set
     End Property
 
+    Public ReadOnly Property IsFinalDisplayText As String
+        Get
+            Dim value As String = String.Empty
+            Select Case misFinal
+                Case 0
+                    value = "False"
+                Case 1
+                    value = "True"
+                Case Else
+                    value = "Don't Care"
+            End Select
+
+            Return value
+        End Get
+    End Property
 #End Region
 
 #Region " Constructors "
