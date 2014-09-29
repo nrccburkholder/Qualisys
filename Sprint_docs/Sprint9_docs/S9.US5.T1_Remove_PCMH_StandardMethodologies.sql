@@ -84,8 +84,6 @@ begin
 	from StandardMethodology
 	WHERE strStandardMethodology_nm = 'PCMH Phone Only'
 		
-	if @StandardMethodologyID is not null
-	begin	
 	if @StandardMethodologyID is null 
 	begin
 		print '"PCMH Phone Only" already doesn''t exist'
