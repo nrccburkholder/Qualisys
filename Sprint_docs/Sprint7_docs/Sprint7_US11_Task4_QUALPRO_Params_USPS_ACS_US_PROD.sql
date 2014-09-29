@@ -342,7 +342,7 @@ END
 
 SET @strparam_nm = 'USPS_ACS_SendErrorNotificationTo'
 SET @strparam_type = 'S'
-SET @strparam_value = 'USPS_ACS_Results@nrcpicker.com'
+SET @strparam_value = 'USPS_ACS_Results@nationalresearch.com'
 SET @numparam_value = NULL
 SET @dataparam_value = NULL
 SET @comments = 'Email address to send error notification to'
@@ -435,7 +435,7 @@ END
 
 SET @strparam_nm = 'USPS_ACS_SendStatusNotificationTo'
 SET @strparam_type = 'S'
-SET @strparam_value = 'USPS_ACS_Results@nrcpicker.com'
+SET @strparam_value = 'USPS_ACS_Results@nationalresearch.com'
 SET @numparam_value = NULL
 SET @dataparam_value = NULL
 SET @comments = 'Email address to send status notification to'
