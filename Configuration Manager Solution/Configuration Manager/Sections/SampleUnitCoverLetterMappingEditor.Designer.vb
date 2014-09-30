@@ -95,6 +95,8 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.btnUnmap = New System.Windows.Forms.Button()
         Me.btnMap = New System.Windows.Forms.Button()
         Me.InformationBar = New Nrc.Qualisys.ConfigurationManager.InformationBar()
+        Me.statusStripMappings = New System.Windows.Forms.StatusStrip()
+        Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.BottomPanel.SuspendLayout()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -123,6 +125,7 @@ Partial Class SampleUnitCoverLetterMappingEditor
         CType(Me.RepositoryItemPictureEdit1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.HeaderStrip4.SuspendLayout()
         Me.Panel1.SuspendLayout()
+        Me.statusStripMappings.SuspendLayout()
         Me.SuspendLayout()
         '
         'BottomPanel
@@ -267,6 +270,7 @@ Partial Class SampleUnitCoverLetterMappingEditor
         '
         'SplitContainer2.Panel2
         '
+        Me.SplitContainer2.Panel2.Controls.Add(Me.statusStripMappings)
         Me.SplitContainer2.Panel2.Controls.Add(Me.gcMappings)
         Me.SplitContainer2.Panel2.Controls.Add(Me.HeaderStrip4)
         Me.SplitContainer2.Panel2.Controls.Add(Me.Panel1)
@@ -763,6 +767,21 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.InformationBar.TabIndex = 1
         Me.InformationBar.TabStop = False
         '
+        'statusStripMappings
+        '
+        Me.statusStripMappings.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1})
+        Me.statusStripMappings.Location = New System.Drawing.Point(0, 213)
+        Me.statusStripMappings.Name = "statusStripMappings"
+        Me.statusStripMappings.Size = New System.Drawing.Size(561, 22)
+        Me.statusStripMappings.TabIndex = 6
+        Me.statusStripMappings.Text = "StatusStrip1"
+        '
+        'ToolStripStatusLabel1
+        '
+        Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
+        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(16, 17)
+        Me.ToolStripStatusLabel1.Text = "..."
+        '
         'SampleUnitCoverLetterMappingEditor
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -782,6 +801,7 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.HeaderStrip2.PerformLayout()
         Me.SplitContainer2.Panel1.ResumeLayout(False)
         Me.SplitContainer2.Panel2.ResumeLayout(False)
+        Me.SplitContainer2.Panel2.PerformLayout()
         Me.SplitContainer2.ResumeLayout(False)
         Me.SplitContainer3.Panel1.ResumeLayout(False)
         Me.SplitContainer3.Panel2.ResumeLayout(False)
@@ -805,6 +825,8 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.HeaderStrip4.ResumeLayout(False)
         Me.HeaderStrip4.PerformLayout()
         Me.Panel1.ResumeLayout(False)
+        Me.statusStripMappings.ResumeLayout(False)
+        Me.statusStripMappings.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -879,5 +901,7 @@ Partial Class SampleUnitCoverLetterMappingEditor
     Friend WithEvents UniqueID As DevExpress.XtraGrid.Columns.GridColumn
     Friend WithEvents UnMapContextMenu As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents UnMapToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents statusStripMappings As System.Windows.Forms.StatusStrip
+    Friend WithEvents ToolStripStatusLabel1 As System.Windows.Forms.ToolStripStatusLabel
 
 End Class

@@ -149,6 +149,7 @@ Public Class SampleUnitCoverLetterMappingEditor
 
     Private Sub btnShowAllMappings_Click(sender As System.Object, e As System.EventArgs) Handles btnShowAllMappings.Click
         ShowAllMappings()
+        SampleUnitTreeView.Selection.Clear()
     End Sub
 
     Public Sub IdleEvent(ByVal sender As System.Object, ByVal e As System.EventArgs)
@@ -158,6 +159,14 @@ Public Class SampleUnitCoverLetterMappingEditor
 
         ApplyButton.Enabled = IsValidMappings()
         OKButton.Enabled = IsValidMappings()
+
+        Dim pos As Integer = gvMappings.ActiveFilter.NonColumnFilter.IndexOf("[SampleUnit_Id]")
+        If pos >= 0 Then
+            ToolStripStatusLabel1.Text = gvMappings.ActiveFilter.NonColumnFilter.Substring(pos)
+        Else
+            ToolStripStatusLabel1.Text = ""
+        End If
+
 
     End Sub
 
@@ -260,7 +269,7 @@ Public Class SampleUnitCoverLetterMappingEditor
             'Me.mSelectedSampleUnits.Add(DirectCast(node.Tag, SampleUnit))
             Dim sunit As SampleUnit = DirectCast(node.Tag, SampleUnit)
             If sunit IsNot Nothing Then
-                inList = inList & sunit.Id.ToString() & ","
+                inList = String.Concat(inList, sunit.Id.ToString(), ",")
             End If
 
         Next
@@ -272,7 +281,7 @@ Public Class SampleUnitCoverLetterMappingEditor
         End If
 
         gvMappings.ActiveFilter.NonColumnFilter = "[NeedsDelete] = false" & criteriaString
-
+        gvMappings.ClearSelection()
     End Sub
 
     Private Function GetCoverLetters(ByVal coverLetters As Collection(Of CoverLetter)) As List(Of MyCoverLetter)
@@ -317,7 +326,6 @@ Public Class SampleUnitCoverLetterMappingEditor
                     Dim artifactCoverID As Integer = Convert.ToInt32(gvArtifacts.GetRowCellValue(rowHandle, "CoverID"))
                     Dim artifactitem_Id As Integer = Convert.ToInt32(gvArtifacts.GetRowCellValue(rowHandle, "ItemID"))
 
-
                     Dim mappedUnit As CoverLetterMapping = CoverLetterMapping.NewCoverLetterMapping(-1, Me.mModule.Survey.Id, sUnit.Id, sampleUnitName, CoverLetterItemType.TEXTBOX, coverLetterCoverID, coverLetterName, coverLetterItem_Id, coverLetterTextBoxName, artifactCoverID, artifactpagename, artifactitem_Id, artifactitemname)
 
                     ' check to see if this mapping already exists
@@ -349,25 +357,46 @@ Public Class SampleUnitCoverLetterMappingEditor
 
     Private Sub DeleteMapping()
 
-        For Each rowHandle As Integer In gvMappings.GetSelectedRows()
-            Dim item As CoverLetterMapping = DirectCast(gvMappings.GetRow(rowHandle), CoverLetterMapping)
-            For idx As Integer = 0 To mMappings.Count - 1
-                Dim mappedItem As CoverLetterMapping = mMappings.Item(idx)
-                If mappedItem.UniqueID = item.UniqueID Then
-                    mappedItem.NeedsDelete = True
-                    ResetDuplicate(mappedItem)
-                    Exit For
-                End If
-            Next
-        Next
+        'For Each rowHandle As Integer In gvMappings.GetSelectedRows()
+        '    Dim item As CoverLetterMapping = DirectCast(gvMappings.GetRow(rowHandle), CoverLetterMapping)
+        '    For idx As Integer = 0 To mMappings.Count - 1
+        '        Dim mappedItem As CoverLetterMapping = mMappings.Item(idx)
+        '        If mappedItem.UniqueID = item.UniqueID Then
+        '            mappedItem.NeedsDelete = True
+        '            ResetDuplicate(mappedItem)
+        '            Exit For
+        '        End If
+        '    Next
+        'Next
+        ''  Now remove those items from the mapping list where IsNew = True and flagged as NeedsDelete
+        ''  We will not be removing any existing (that is previously stored" records because we need 
+        ''  to delete those from the database.
+        'For x As Integer = mMappings.Count - 1 To 0 Step -1
+        '    Dim m As CoverLetterMapping = mMappings.Item(x)
+        '    If m.IsNew And m.NeedsDelete Then
+        '        mMappings.RemoveAt(x)
+        '    End If
+        'Next
 
-        '  Now remove those items from the mapping list where IsNew = True and flagged as NeedsDelete
-        '  We will not be removing any existing (that is previously stored" records because we need 
-        '  to delete those from the database.
-        For x As Integer = mMappings.Count - 1 To 0 Step -1
-            Dim m As CoverLetterMapping = mMappings.Item(x)
-            If m.IsNew And m.NeedsDelete Then
-                mMappings.RemoveAt(x)
+        ' this method starts from the bottom of the grid and list and works its way up to avoid index out of range errors
+        For i As Integer = gvMappings.SelectedRowsCount - 1 To 0 Step -1
+            If gvMappings.GetSelectedRows()(i) >= 0 Then
+                Dim item As CoverLetterMapping = DirectCast(gvMappings.GetRow(gvMappings.GetSelectedRows()(i)), CoverLetterMapping)
+                For idx As Integer = mMappings.Count - 1 To 0 Step -1
+                    Dim mappedItem As CoverLetterMapping = mMappings.Item(idx)
+                    If mappedItem.UniqueID = item.UniqueID Then
+                        mappedItem.NeedsDelete = True
+                        ResetDuplicate(mappedItem)
+                        If mappedItem.IsNew = False Then
+                            ' If this is an existing MappedQuestion, then flag it for deletion
+                            mappedItem.NeedsDelete = True
+                        Else
+                            'otherwise, just remove it from the list
+                            mMappings.RemoveAt(idx)
+                        End If
+                        Exit For
+                    End If
+                Next
             End If
         Next
 
