@@ -20,6 +20,7 @@ Public Class CoverLetterMapping
     Private mNeedsDelete As Boolean
     Private mStatus As Integer
     Private mUniqueID As Guid
+    Private mIsDirty As Boolean
 
 
 #Region "Public Properties"
@@ -42,6 +43,7 @@ Public Class CoverLetterMapping
         End Set
     End Property
 
+    <Logable()> _
     Public Property Artifact_Id As Integer
         Get
             Return mArtifact_Id
@@ -51,7 +53,7 @@ Public Class CoverLetterMapping
         End Set
     End Property
 
-
+    <Logable()> _
     Public Property CoverLetterItem_label As String
         Get
             Return mCoverLetterItem_label
@@ -61,6 +63,7 @@ Public Class CoverLetterMapping
         End Set
     End Property
 
+    <Logable()> _
     Public Property Id As Integer
         Get
             Return mId
@@ -70,21 +73,32 @@ Public Class CoverLetterMapping
         End Set
     End Property
 
+    <Logable()> _
     Public Property Survey_Id As Integer
         Get
             Return mSurvey_Id
         End Get
         Set(value As Integer)
-            mSurvey_Id = value
+            If mSurvey_Id <> value Then
+                mSurvey_Id = value
+                mIsDirty = True
+            End If
+
+
         End Set
     End Property
 
+    <Logable()> _
     Public Property SampleUnit_Id As Integer
         Get
             Return mSampleUnit_Id
         End Get
         Set(value As Integer)
-            mSampleUnit_Id = value
+            If mSampleUnit_Id <> value Then
+                mSampleUnit_Id = value
+                mIsDirty = True
+            End If
+
         End Set
     End Property
 
@@ -112,6 +126,7 @@ Public Class CoverLetterMapping
         End Set
     End Property
 
+    <Logable()> _
     Public Property CoverId As Integer
         Get
             Return mCoverId
@@ -121,6 +136,7 @@ Public Class CoverLetterMapping
         End Set
     End Property
 
+    <Logable()> _
     Public Property CoverLetter_name As String
         Get
             Return mCoverLetter_name
@@ -139,6 +155,7 @@ Public Class CoverLetterMapping
         End Set
     End Property
 
+    <Logable()> _
     Public Property Artifact_name As String
         Get
             Return mArtifact_name
@@ -148,6 +165,7 @@ Public Class CoverLetterMapping
         End Set
     End Property
 
+    <Logable()> _
     Public Property ArtifactPage_Id As Integer
         Get
             Return mArtifactPage_Id
@@ -157,6 +175,7 @@ Public Class CoverLetterMapping
         End Set
     End Property
 
+    <Logable()> _
     Public Property Artifact_label As String
         Get
             Return mArtifact_label
@@ -173,6 +192,12 @@ Public Class CoverLetterMapping
         Set(ByVal value As Boolean)
             mNeedsDelete = value
         End Set
+    End Property
+
+    Public ReadOnly Property IsDirty() As Boolean
+        Get
+            Return mIsDirty
+        End Get
     End Property
 #End Region
 

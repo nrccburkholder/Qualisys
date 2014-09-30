@@ -31,7 +31,6 @@ Public Class SampleUnitCoverLetterMappingEditor
     Private mCoverLetterList As New Collection(Of CoverLetter)
     Private mArtifactList As New Collection(Of CoverLetter)
     Private mMappings As New List(Of CoverLetterMapping)
-    'Private mSelectedSampleUnits As New Collection(Of SampleUnit)
     Private mAllSampleUnits As Collection(Of SampleUnit)
     Private newRepositoryItem As New DevExpress.XtraEditors.Repository.RepositoryItem
 #End Region
@@ -154,9 +153,11 @@ Public Class SampleUnitCoverLetterMappingEditor
 
     Public Sub IdleEvent(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
+        ' only map if 
         btnMap.Enabled = SampleUnitTreeView.Selection.Count > 0 And gvCoverLetters.SelectedRowsCount > 0 And gvArtifacts.SelectedRowsCount > 0
         btnUnmap.Enabled = gvMappings.SelectedRowsCount > 0
 
+        'Don't allow save unless all mappings are valid (that is, they are not duplicates)
         ApplyButton.Enabled = IsValidMappings()
         OKButton.Enabled = IsValidMappings()
 
@@ -323,8 +324,8 @@ Public Class SampleUnitCoverLetterMappingEditor
 
                     Dim artifactpagename As String = gvArtifacts.GetRowCellValue(gvArtifacts.FocusedRowHandle, "CoverLetterName").ToString().Trim()
                     Dim artifactitemname As String = gvArtifacts.GetRowCellValue(gvArtifacts.FocusedRowHandle, "Label").ToString().Trim()
-                    Dim artifactCoverID As Integer = Convert.ToInt32(gvArtifacts.GetRowCellValue(rowHandle, "CoverID"))
-                    Dim artifactitem_Id As Integer = Convert.ToInt32(gvArtifacts.GetRowCellValue(rowHandle, "ItemID"))
+                    Dim artifactCoverID As Integer = Convert.ToInt32(gvArtifacts.GetRowCellValue(gvArtifacts.FocusedRowHandle, "CoverID"))
+                    Dim artifactitem_Id As Integer = Convert.ToInt32(gvArtifacts.GetRowCellValue(gvArtifacts.FocusedRowHandle, "ItemID"))
 
                     Dim mappedUnit As CoverLetterMapping = CoverLetterMapping.NewCoverLetterMapping(-1, Me.mModule.Survey.Id, sUnit.Id, sampleUnitName, CoverLetterItemType.TEXTBOX, coverLetterCoverID, coverLetterName, coverLetterItem_Id, coverLetterTextBoxName, artifactCoverID, artifactpagename, artifactitem_Id, artifactitemname)
 
@@ -385,11 +386,10 @@ Public Class SampleUnitCoverLetterMappingEditor
                 For idx As Integer = mMappings.Count - 1 To 0 Step -1
                     Dim mappedItem As CoverLetterMapping = mMappings.Item(idx)
                     If mappedItem.UniqueID = item.UniqueID Then
-                        mappedItem.NeedsDelete = True
-                        ResetDuplicate(mappedItem)
                         If mappedItem.IsNew = False Then
                             ' If this is an existing MappedQuestion, then flag it for deletion
                             mappedItem.NeedsDelete = True
+                            ResetDuplicate(mappedItem)
                         Else
                             'otherwise, just remove it from the list
                             mMappings.RemoveAt(idx)
