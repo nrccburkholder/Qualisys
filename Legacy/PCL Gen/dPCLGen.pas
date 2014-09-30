@@ -508,7 +508,7 @@ begin
     '','',wwt_LocalSelScls);
 
   LoadSQL('Select T.Survey_ID, T.QPC_ID, T.Language, T.CoverID, '+
-    '''Textbox'' as Type, T.X, T.Y, T.Width, T.Height, T.RichText, T.Border, '+
+    '''Textbox'' as Type, ''dont care'' as Label, T.X, T.Y, T.Width, T.Height, T.RichText, T.Border, '+
     'T.Shading, T.bitLangReview '+
     'From PCL_TextBox'+strTP+' T, (select distinct Survey_id, SelCover_id, Language From #MyPCLNeeded where Batch_id='+inttostr(currentBatch)+') P '+
     'where T.Survey_id = P.Survey_id and T.CoverID=P.SelCover_id and T.Language=P.Language',
