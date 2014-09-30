@@ -25,7 +25,7 @@ update TABLEDEF set TEXTBOX = 'Label'
 --select * from TABLEDEF
 where STRFULL = 'Label' and TEXTBOX <> 'Label'
 
---select * from SEL_TEXTBOX
+--select top 10 * from SEL_TEXTBOX
 
 IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS
     WHERE TABLE_NAME = 'SEL_TEXTBOX' AND COLUMN_NAME = 'LABEL')
@@ -35,8 +35,8 @@ DEFAULT ''
 
 GO
 
-update QualPro_Params set strparam_value = '3.5' where STRPARAM_NM = 'FormLayoutVersion'
-					 and strparam_value <> '3.5'
+update QualPro_Params set strparam_value = '3.6' where STRPARAM_NM = 'FormLayoutVersion'
+					 and strparam_value <> '3.6'
 --update QualPro_Params set strparam_value = '3.0' 
 --select * from Qualpro_params where STRPARAM_NM = 'FormLayoutVersion'
 

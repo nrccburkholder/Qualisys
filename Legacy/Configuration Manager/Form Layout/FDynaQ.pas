@@ -3175,6 +3175,7 @@ begin
     with Tabset1 do begin
       SaveCover(tabindex);
       if NewPage(tabs.count,s,pagetabs[tabindex].integrated,pagetabs[tabindex].letterhead,1) then begin
+        cbItemSelector.Items.Clear;
         if elementlist.count > 0 then
           if MessageDlg('Do you want to copy everything from '+tabs[tabindex]+'?',
               mtConfirmation, [mbYes, mbNo], 0) = mrYes then begin

@@ -52,7 +52,7 @@ HostApplication=
 IncludeVerInfo=1
 AutoIncBuild=0
 MajorVer=3
-MinorVer=5
+MinorVer=6
 Release=0
 Build=0
 Debug=0
@@ -65,7 +65,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=National Research Corporation
 FileDescription=Configuration Manager - Form Layout
-FileVersion=3.5.0.0
+FileVersion=3.6.0.0
 InternalName=
 LegalCopyright=
 LegalTrademarks=
