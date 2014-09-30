@@ -2825,7 +2825,9 @@ var I : integer;
                 showmessage('Please correct duplicate Text Box Name: ' + TextBoxName);
                 TextBoxName := '';
               end;
-        end;
+        end
+        else
+          TextBoxName := '';
         Language := fieldbyname('Language').value;
         tBlobField(fieldbyname('RichText')).SaveTofile(dmOpenQ.tempdir+'\RichEdit.rtf');
         with tRichEdit(controls[0]) do begin
@@ -3280,6 +3282,7 @@ begin
             post;
           end;
         SaveCover(tabset1.tabindex);
+        cbItemSelector.Items.Clear;
         LoadCover(tabset1.tabindex);
         outside := 0;
         NeedToDelete := -1;
