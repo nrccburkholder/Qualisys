@@ -574,6 +574,11 @@
             "AssemblyAsmDisplayName" = "8:Microsoft.Practices.EnterpriseLibrary.Common, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_1A2B222B981802E97AB6C6CCB336614D"
+                    {
+                    "Name" = "8:Microsoft.Practices.EnterpriseLibrary.Common.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Microsoft.Practices.EnterpriseLibrary.Common.dll"
             "TargetName" = "8:"
@@ -662,6 +667,11 @@
             "AssemblyAsmDisplayName" = "8:Nrc.QualiSys.Library, Version=1.1.0.0, Culture=neutral, processorArchitecture=x86"
                 "ScatterAssemblies"
                 {
+                    "_5444B9B57EBB207028BD83EAAA120C1F"
+                    {
+                    "Name" = "8:Nrc.QualiSys.Library.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Nrc.QualiSys.Library.dll"
             "TargetName" = "8:"
@@ -843,6 +853,11 @@
             "AssemblyAsmDisplayName" = "8:Microsoft.Practices.EnterpriseLibrary.Data, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_9C62CDA84B7C64C7E022C07493858B4E"
+                    {
+                    "Name" = "8:Microsoft.Practices.EnterpriseLibrary.Data.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Microsoft.Practices.EnterpriseLibrary.Data.dll"
             "TargetName" = "8:"
@@ -869,6 +884,11 @@
             "AssemblyAsmDisplayName" = "8:Nrc.QualiSys.Library.SqlDataProvider, Version=1.2.0.0, Culture=neutral, processorArchitecture=x86"
                 "ScatterAssemblies"
                 {
+                    "_A27453864D5E23C51C0BA5FE9261FC7A"
+                    {
+                    "Name" = "8:Nrc.QualiSys.Library.SqlDataProvider.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Nrc.QualiSys.Library.SqlDataProvider.dll"
             "TargetName" = "8:"
@@ -895,6 +915,11 @@
             "AssemblyAsmDisplayName" = "8:Microsoft.Practices.ObjectBuilder, Version=1.0.51205.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_B8ECCE9A418383B3625DBACBB84E5C40"
+                    {
+                    "Name" = "8:Microsoft.Practices.ObjectBuilder.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Microsoft.Practices.ObjectBuilder.dll"
             "TargetName" = "8:"
@@ -921,6 +946,11 @@
             "AssemblyAsmDisplayName" = "8:Nrc.QualiSys.Scanning.Library.SqlDataProvider, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86"
                 "ScatterAssemblies"
                 {
+                    "_BC17FA424F5F028687EFFF658D3893B7"
+                    {
+                    "Name" = "8:Nrc.QualiSys.Scanning.Library.SqlDataProvider.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Nrc.QualiSys.Scanning.Library.SqlDataProvider.dll"
             "TargetName" = "8:"
@@ -1009,6 +1039,11 @@
             "AssemblyAsmDisplayName" = "8:Nrc.QualiSys.Scanning.Library, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86"
                 "ScatterAssemblies"
                 {
+                    "_F8A68BCA54C6D201298E28CEE402AA9E"
+                    {
+                    "Name" = "8:Nrc.QualiSys.Scanning.Library.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Nrc.QualiSys.Scanning.Library.dll"
             "TargetName" = "8:"
@@ -1085,7 +1120,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:QualiSys Scanner Interface Service"
         "ProductCode" = "8:{44B8359F-E543-43F4-8388-715CF8012576}"
-        "PackageCode" = "8:{0077702E-2FC8-4556-9CE5-973F968AEB1A}"
+        "PackageCode" = "8:{6955CB3A-4C7B-4F19-9564-E12BB673883D}"
         "UpgradeCode" = "8:{23858F39-2870-4CC2-B171-00E213EDF04B}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
