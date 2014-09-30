@@ -63,7 +63,8 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
         Me.btnArtifactsClearSelections = New System.Windows.Forms.ToolStripButton()
         Me.gcMappings = New DevExpress.XtraGrid.GridControl()
-        Me.SampleUnitBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.UnMapContextMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.UnMapToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.gvMappings = New DevExpress.XtraGrid.Views.Grid.GridView()
         Me.colStatusImage = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.RepositoryItemPictureEdit1 = New DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit()
@@ -82,8 +83,6 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.CoverLetterItemArtifactUnitMapping_id = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.NeedDelete = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.UniqueID = New DevExpress.XtraGrid.Columns.GridColumn()
-        Me.RepositoryItemImageEdit1 = New DevExpress.XtraEditors.Repository.RepositoryItemImageEdit()
-        Me.ImageCollection1 = New DevExpress.Utils.ImageCollection(Me.components)
         Me.HeaderStrip4 = New Nrc.Framework.WinForms.HeaderStrip()
         Me.ToolStripLabel4 = New System.Windows.Forms.ToolStripLabel()
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
@@ -95,7 +94,7 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.btnUnmap = New System.Windows.Forms.Button()
         Me.btnMap = New System.Windows.Forms.Button()
-        Me.InformationBar = New Nrc.QualiSys.ConfigurationManager.InformationBar()
+        Me.InformationBar = New Nrc.Qualisys.ConfigurationManager.InformationBar()
         Me.BottomPanel.SuspendLayout()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -119,11 +118,9 @@ Partial Class SampleUnitCoverLetterMappingEditor
         CType(Me.RepositoryItemLookUpEdit1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.HeaderStrip3.SuspendLayout()
         CType(Me.gcMappings, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.SampleUnitBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.UnMapContextMenu.SuspendLayout()
         CType(Me.gvMappings, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.RepositoryItemPictureEdit1, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.RepositoryItemImageEdit1, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.ImageCollection1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.HeaderStrip4.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
@@ -318,13 +315,12 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.gvCoverLetters.OptionsBehavior.Editable = False
         Me.gvCoverLetters.OptionsBehavior.ReadOnly = True
         Me.gvCoverLetters.OptionsCustomization.AllowFilter = False
-        Me.gvCoverLetters.OptionsCustomization.AllowGroup = False
         Me.gvCoverLetters.OptionsDetail.ShowDetailTabs = False
         Me.gvCoverLetters.OptionsSelection.EnableAppearanceFocusedCell = False
         Me.gvCoverLetters.OptionsSelection.EnableAppearanceHideSelection = False
         Me.gvCoverLetters.OptionsSelection.MultiSelect = True
         Me.gvCoverLetters.OptionsView.EnableAppearanceEvenRow = True
-        Me.gvCoverLetters.OptionsView.ShowFilterPanelMode = DevExpress.XtraGrid.Views.Base.ShowFilterPanelMode.Never
+        Me.gvCoverLetters.OptionsView.ShowAutoFilterRow = True
         '
         'GridColumn3
         '
@@ -419,12 +415,10 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.gvArtifacts.OptionsBehavior.Editable = False
         Me.gvArtifacts.OptionsBehavior.ReadOnly = True
         Me.gvArtifacts.OptionsCustomization.AllowFilter = False
-        Me.gvArtifacts.OptionsCustomization.AllowGroup = False
         Me.gvArtifacts.OptionsSelection.EnableAppearanceFocusedCell = False
         Me.gvArtifacts.OptionsSelection.EnableAppearanceHideSelection = False
-        Me.gvArtifacts.OptionsSelection.MultiSelect = True
         Me.gvArtifacts.OptionsView.EnableAppearanceEvenRow = True
-        Me.gvArtifacts.OptionsView.ShowFilterPanelMode = DevExpress.XtraGrid.Views.Base.ShowFilterPanelMode.Never
+        Me.gvArtifacts.OptionsView.ShowAutoFilterRow = True
         Me.gvArtifacts.SortInfo.AddRange(New DevExpress.XtraGrid.Columns.GridColumnSortInfo() {New DevExpress.XtraGrid.Columns.GridColumnSortInfo(Me.GridColumn1, DevExpress.Data.ColumnSortOrder.Ascending)})
         '
         'GridColumn1
@@ -500,31 +494,44 @@ Partial Class SampleUnitCoverLetterMappingEditor
         '
         'gcMappings
         '
-        Me.gcMappings.DataSource = Me.SampleUnitBindingSource
+        Me.gcMappings.ContextMenuStrip = Me.UnMapContextMenu
         Me.gcMappings.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gcMappings.Location = New System.Drawing.Point(0, 55)
         Me.gcMappings.MainView = Me.gvMappings
         Me.gcMappings.Name = "gcMappings"
-        Me.gcMappings.RepositoryItems.AddRange(New DevExpress.XtraEditors.Repository.RepositoryItem() {Me.RepositoryItemImageEdit1, Me.RepositoryItemPictureEdit1})
+        Me.gcMappings.RepositoryItems.AddRange(New DevExpress.XtraEditors.Repository.RepositoryItem() {Me.RepositoryItemPictureEdit1})
         Me.gcMappings.Size = New System.Drawing.Size(561, 180)
         Me.gcMappings.TabIndex = 5
         Me.gcMappings.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.gvMappings})
+        '
+        'UnMapContextMenu
+        '
+        Me.UnMapContextMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.UnMapToolStripMenuItem})
+        Me.UnMapContextMenu.Name = "UnMapContextMenu"
+        Me.UnMapContextMenu.Size = New System.Drawing.Size(114, 26)
+        '
+        'UnMapToolStripMenuItem
+        '
+        Me.UnMapToolStripMenuItem.Name = "UnMapToolStripMenuItem"
+        Me.UnMapToolStripMenuItem.Size = New System.Drawing.Size(113, 22)
+        Me.UnMapToolStripMenuItem.Text = "UnMap"
         '
         'gvMappings
         '
         Me.gvMappings.Appearance.FocusedCell.BackColor = System.Drawing.SystemColors.MenuHighlight
         Me.gvMappings.Appearance.FocusedCell.Options.UseBackColor = True
+        Me.gvMappings.Appearance.FocusedRow.ForeColor = System.Drawing.Color.White
+        Me.gvMappings.Appearance.FocusedRow.Options.UseForeColor = True
         Me.gvMappings.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.colStatusImage, Me.SampleUnit_name, Me.CoverLetter_name, Me.CoverLetterItem_label, Me.Artifact_name, Me.Artifact_label, Me.SampleUnit_Id, Me.SEL_Cover_CoverID, Me.CoverLetterItem_id, Me.SEL_Cover_CoverID_Artifact, Me.SEL_TextBox_QPC_ID_Artifact, Me.CoverLetterItemType_id, Me.Survey_Id, Me.CoverLetterItemArtifactUnitMapping_id, Me.NeedDelete, Me.UniqueID})
         Me.gvMappings.GridControl = Me.gcMappings
         Me.gvMappings.Name = "gvMappings"
         Me.gvMappings.OptionsBehavior.Editable = False
-        Me.gvMappings.OptionsBehavior.ReadOnly = True
         Me.gvMappings.OptionsCustomization.AllowFilter = False
-        Me.gvMappings.OptionsCustomization.AllowGroup = False
         Me.gvMappings.OptionsSelection.EnableAppearanceFocusedCell = False
         Me.gvMappings.OptionsSelection.EnableAppearanceHideSelection = False
         Me.gvMappings.OptionsSelection.MultiSelect = True
         Me.gvMappings.OptionsView.EnableAppearanceEvenRow = True
+        Me.gvMappings.OptionsView.ShowAutoFilterRow = True
         Me.gvMappings.OptionsView.ShowFilterPanelMode = DevExpress.XtraGrid.Views.Base.ShowFilterPanelMode.Never
         Me.gvMappings.SortInfo.AddRange(New DevExpress.XtraGrid.Columns.GridColumnSortInfo() {New DevExpress.XtraGrid.Columns.GridColumnSortInfo(Me.SampleUnit_name, DevExpress.Data.ColumnSortOrder.Ascending)})
         '
@@ -534,7 +541,11 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.colStatusImage.FieldName = "Image"
         Me.colStatusImage.Name = "colStatusImage"
         Me.colStatusImage.OptionsColumn.AllowEdit = False
+        Me.colStatusImage.OptionsColumn.ReadOnly = True
         Me.colStatusImage.OptionsColumn.ShowCaption = False
+        Me.colStatusImage.OptionsFilter.AllowAutoFilter = False
+        Me.colStatusImage.OptionsFilter.AllowFilter = False
+        Me.colStatusImage.OptionsFilter.ImmediateUpdateAutoFilter = False
         Me.colStatusImage.UnboundType = DevExpress.Data.UnboundColumnType.[Object]
         Me.colStatusImage.Visible = True
         Me.colStatusImage.VisibleIndex = 0
@@ -543,6 +554,7 @@ Partial Class SampleUnitCoverLetterMappingEditor
         'RepositoryItemPictureEdit1
         '
         Me.RepositoryItemPictureEdit1.Name = "RepositoryItemPictureEdit1"
+        Me.RepositoryItemPictureEdit1.ReadOnly = True
         '
         'SampleUnit_name
         '
@@ -648,25 +660,6 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.UniqueID.Caption = "Unique ID"
         Me.UniqueID.FieldName = "UniqueID"
         Me.UniqueID.Name = "UniqueID"
-        '
-        'RepositoryItemImageEdit1
-        '
-        Me.RepositoryItemImageEdit1.AutoHeight = False
-        Me.RepositoryItemImageEdit1.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
-        Me.RepositoryItemImageEdit1.Images = Me.ImageCollection1
-        Me.RepositoryItemImageEdit1.Name = "RepositoryItemImageEdit1"
-        Me.RepositoryItemImageEdit1.NullText = """"""
-        '
-        'ImageCollection1
-        '
-        Me.ImageCollection1.ImageStream = CType(resources.GetObject("ImageCollection1.ImageStream"), DevExpress.Utils.ImageCollectionStreamer)
-        Me.ImageCollection1.Images.SetKeyName(0, "GreenLight.png")
-        Me.ImageCollection1.Images.SetKeyName(1, "New16.png")
-        Me.ImageCollection1.Images.SetKeyName(2, "Error16.png")
-        Me.ImageCollection1.Images.SetKeyName(3, "Error.PNG")
-        Me.ImageCollection1.Images.SetKeyName(4, "DownArrow16.png")
-        Me.ImageCollection1.Images.SetKeyName(5, "Save16.png")
-        Me.ImageCollection1.Images.SetKeyName(6, "Validation16.png")
         '
         'HeaderStrip4
         '
@@ -806,11 +799,9 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.HeaderStrip3.ResumeLayout(False)
         Me.HeaderStrip3.PerformLayout()
         CType(Me.gcMappings, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.SampleUnitBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.UnMapContextMenu.ResumeLayout(False)
         CType(Me.gvMappings, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.RepositoryItemPictureEdit1, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.RepositoryItemImageEdit1, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.ImageCollection1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.HeaderStrip4.ResumeLayout(False)
         Me.HeaderStrip4.PerformLayout()
         Me.Panel1.ResumeLayout(False)
@@ -847,7 +838,6 @@ Partial Class SampleUnitCoverLetterMappingEditor
     Friend WithEvents gcMappings As DevExpress.XtraGrid.GridControl
     Friend WithEvents gvMappings As DevExpress.XtraGrid.Views.Grid.GridView
     Friend WithEvents SampleUnit_name As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents SampleUnitBindingSource As System.Windows.Forms.BindingSource
     Friend WithEvents SampleUnitTreeView As DevExpress.XtraTreeList.TreeList
     Friend WithEvents TreeListColumn1 As DevExpress.XtraTreeList.Columns.TreeListColumn
     Friend WithEvents TreeListColumn2 As DevExpress.XtraTreeList.Columns.TreeListColumn
@@ -884,10 +874,10 @@ Partial Class SampleUnitCoverLetterMappingEditor
     Friend WithEvents btnSampleUnitsClearSelections As System.Windows.Forms.ToolStripButton
     Friend WithEvents btnCoverLettersClearnSelections As System.Windows.Forms.ToolStripButton
     Friend WithEvents btnArtifactsClearSelections As System.Windows.Forms.ToolStripButton
-    Friend WithEvents RepositoryItemImageEdit1 As DevExpress.XtraEditors.Repository.RepositoryItemImageEdit
-    Friend WithEvents ImageCollection1 As DevExpress.Utils.ImageCollection
     Friend WithEvents colStatusImage As DevExpress.XtraGrid.Columns.GridColumn
     Friend WithEvents RepositoryItemPictureEdit1 As DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit
     Friend WithEvents UniqueID As DevExpress.XtraGrid.Columns.GridColumn
+    Friend WithEvents UnMapContextMenu As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents UnMapToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 
 End Class

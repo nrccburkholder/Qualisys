@@ -49,7 +49,7 @@
     <PublisherName>National Research Corporation</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>4.4.1.0</ApplicationVersion>
+    <ApplicationVersion>4.4.6.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -734,6 +734,7 @@
     <Content Include="Resources\NoHouseholding16.PNG" />
     <None Include="Resources\RoseBud.bmp" />
     <None Include="Resources\Refresh.png" />
+    <None Include="Resources\NoWay16.png" />
     <Content Include="Resources\roseBud.ico" />
     <None Include="Resources\YellowLight.png" />
     <None Include="Resources\Numbers161.png" />

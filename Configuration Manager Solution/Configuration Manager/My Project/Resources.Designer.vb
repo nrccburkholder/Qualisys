@@ -63,6 +63,16 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property _Error() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("_Error", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property AllHouseholding16() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("AllHouseholding16", resourceCulture)
@@ -346,6 +356,16 @@ Namespace My.Resources
         Friend ReadOnly Property NoHouseholding16() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("NoHouseholding16", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property NoWay16() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("NoWay16", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
