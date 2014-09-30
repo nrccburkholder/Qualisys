@@ -30,13 +30,13 @@ where STRFULL = 'Label' and TEXTBOX <> 'Label'
 IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS
     WHERE TABLE_NAME = 'SEL_TEXTBOX' AND COLUMN_NAME = 'LABEL')
 ALTER TABLE SEL_TEXTBOX 
-ADD LABEL char(60) NOT NULL 
+ADD LABEL char(60) NULL 
 DEFAULT ''
 
 GO
 
-update QualPro_Params set strparam_value = '3.6' where STRPARAM_NM = 'FormLayoutVersion'
-					 and strparam_value <> '3.6'
+update QualPro_Params set strparam_value = '3.7' where STRPARAM_NM = 'FormLayoutVersion'
+					 and strparam_value <> '3.7'
 --update QualPro_Params set strparam_value = '3.0' 
 --select * from Qualpro_params where STRPARAM_NM = 'FormLayoutVersion'
 
