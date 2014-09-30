@@ -1,6 +1,10 @@
 ﻿Imports Nrc.QualiSys.Library
 Imports DevExpress.XtraTreeList.Nodes
 Imports DevExpress.XtraTreeList.Columns
+Imports DevExpress.XtraGrid.Views.Base
+Imports DevExpress.XtraGrid.Views.Base.ViewInfo
+Imports DevExpress.XtraGrid.Views.Grid.ViewInfo
+Imports System.Text.RegularExpressions
 
 Public Class SampleUnitCoverLetterMappingEditor
 
@@ -29,6 +33,7 @@ Public Class SampleUnitCoverLetterMappingEditor
     Private mMappings As New List(Of CoverLetterMapping)
     'Private mSelectedSampleUnits As New Collection(Of SampleUnit)
     Private mAllSampleUnits As Collection(Of SampleUnit)
+    Private newRepositoryItem As New DevExpress.XtraEditors.Repository.RepositoryItem
 #End Region
 
 #Region " Constructors "
@@ -47,35 +52,54 @@ Public Class SampleUnitCoverLetterMappingEditor
 
 #Region "event handlers"
 
+    Private Sub UnMapContextMenu_Click(sender As System.Object, e As System.EventArgs) Handles UnMapContextMenu.Click
+        DeleteMapping()
+    End Sub
+
     Private Sub gvMappings_CustomDrawCell(sender As Object, e As DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs) Handles gvMappings.CustomDrawCell
+
+        ' need this here otherwise the grid blows up and the application closes.
+        If e.RowHandle = DevExpress.XtraGrid.GridControl.AutoFilterRowHandle Then
+            Exit Sub
+        End If
+
         If e.Column.Name <> "colStatusImage" Then
+
             Dim status As MappingStatus = DirectCast(gvMappings.GetRowCellValue(e.RowHandle, "Status"), MappingStatus)
 
             Select Case status
-                Case MappingStatus.OK
-                    e.Appearance.ForeColor = Color.Blue
-                Case MappingStatus.IsNew
-                    e.Appearance.ForeColor = Color.Green
+                'Case MappingStatus.OK
+                '    e.Appearance.ForeColor = Color.Blue
+                'Case(MappingStatus.IsNew)
+                '    e.Appearance.ForeColor = Color.Green
                 Case MappingStatus.Duplicate
-                    e.Appearance.BackColor = Color.Red
+                    e.Appearance.ForeColor = Color.Red
             End Select
 
         End If
     End Sub
 
+    Private Sub gvMappings_CustomRowCellEdit(sender As Object, e As DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventArgs) Handles gvMappings.CustomRowCellEdit
+
+        If gvMappings.IsFilterRow(e.RowHandle) AndAlso e.Column.FieldName = "Image" Then
+            e.RepositoryItem = newRepositoryItem
+        End If
+
+    End Sub
+
     Private Sub gvMappings_CustomUnboundColumnData(sender As Object, e As DevExpress.XtraGrid.Views.Base.CustomColumnDataEventArgs) Handles gvMappings.CustomUnboundColumnData
 
-        If e.Column.Name = "colStatusImage" AndAlso e.IsGetData Then
+        If String.Compare(e.Column.Name, "colStatusImage", False) = 0 AndAlso e.IsGetData Then
 
             Dim status As MappingStatus = DirectCast(gvMappings.GetRowCellValue(e.RowHandle, "Status"), MappingStatus)
 
             Select Case status
                 Case MappingStatus.OK
-                    e.Value = ImageCollection1.Images(0)
+                    e.Value = My.Resources.GreenLight
                 Case MappingStatus.IsNew
-                    e.Value = ImageCollection1.Images(1)
+                    e.Value = My.Resources.New16
                 Case MappingStatus.Duplicate
-                    e.Value = ImageCollection1.Images(2)
+                    e.Value = My.Resources.NoWay16
             End Select
 
         End If
@@ -186,8 +210,8 @@ Public Class SampleUnitCoverLetterMappingEditor
         mMappings.Clear()
         mMappings = CoverLetterMapping.GetCoverLetterMappingsBySurveyId(Me.mModule.Survey.Id)
         'Set the binding source for the sampleunit lookup
-        Me.SampleUnitBindingSource.DataSource = mMappings
-
+        'Me.SampleUnitBindingSource.DataSource = mMappings
+        gcMappings.DataSource = mMappings
 
     End Sub
 
@@ -244,7 +268,7 @@ Public Class SampleUnitCoverLetterMappingEditor
         If Not inList.Equals(String.Empty) Then
             ' remove the last comma from the IN statement
             inList = inList.Substring(0, inList.Length - 1)
-            criteriaString = " AND [SampleUnit_Id] IN (" & inList & ")"
+            criteriaString = String.Format(" AND [SampleUnit_Id] IN ({0})", inList)
         End If
 
         gvMappings.ActiveFilter.NonColumnFilter = "[NeedsDelete] = false" & criteriaString
@@ -275,6 +299,8 @@ Public Class SampleUnitCoverLetterMappingEditor
 
         If SampleUnitTreeView.Selection.Count > 0 And gvCoverLetters.SelectedRowsCount > 0 And gvArtifacts.SelectedRowsCount > 0 Then
 
+            Dim hasDuplicate As Boolean = False
+
             For Each node As TreeListNode In SampleUnitTreeView.Selection
                 Dim sUnit As SampleUnit = DirectCast(node.Tag, SampleUnit)
                 Dim sampleUnitName As String = sUnit.SampleUnitName
@@ -299,9 +325,8 @@ Public Class SampleUnitCoverLetterMappingEditor
 
                         mappedUnit.Status = MappingStatus.IsNew
                     Else
-                        'MsgBox("Duplicate Cover Letter Mapping!", MsgBoxStyle.Critical, "Cover Letter Mapping Error")
-
                         mappedUnit.Status = MappingStatus.Duplicate
+                        hasDuplicate = True
 
                     End If
 
@@ -310,9 +335,12 @@ Public Class SampleUnitCoverLetterMappingEditor
                 Next
             Next
 
-            SampleUnitBindingSource.DataSource = mMappings
+            If hasDuplicate Then
+                MsgBox("One or more Cover Letter Mappings are duplicates!", MsgBoxStyle.Critical, "Cover Letter Mapping Error")
+            End If
 
-            SampleUnitBindingSource.ResetBindings(False)
+            gcMappings.DataSource = mMappings
+            gcMappings.RefreshDataSource()
 
             gvMappings.ClearSelection()
 
@@ -322,27 +350,29 @@ Public Class SampleUnitCoverLetterMappingEditor
     Private Sub DeleteMapping()
 
         For Each rowHandle As Integer In gvMappings.GetSelectedRows()
-
-            Dim child As CoverLetterMapping = DirectCast(gvMappings.GetRow(rowHandle), CoverLetterMapping)
-
+            Dim item As CoverLetterMapping = DirectCast(gvMappings.GetRow(rowHandle), CoverLetterMapping)
             For idx As Integer = 0 To mMappings.Count - 1
                 Dim mappedItem As CoverLetterMapping = mMappings.Item(idx)
-                If mappedItem.UniqueID = child.UniqueID Then
-                    If mappedItem.IsNew = False Then
-                        ' If this is an existing MappedQuestion, then flag it for deletion
-                        mappedItem.NeedsDelete = True
-                        ResetDuplicate(mappedItem)
-                    Else
-                        'otherwise, just remove it from the list
-                        mMappings.RemoveAt(idx)
-                    End If
+                If mappedItem.UniqueID = item.UniqueID Then
+                    mappedItem.NeedsDelete = True
+                    ResetDuplicate(mappedItem)
                     Exit For
                 End If
             Next
         Next
 
-        SampleUnitBindingSource.DataSource = mMappings
-        SampleUnitBindingSource.ResetBindings(False)
+        '  Now remove those items from the mapping list where IsNew = True and flagged as NeedsDelete
+        '  We will not be removing any existing (that is previously stored" records because we need 
+        '  to delete those from the database.
+        For x As Integer = mMappings.Count - 1 To 0 Step -1
+            Dim m As CoverLetterMapping = mMappings.Item(x)
+            If m.IsNew And m.NeedsDelete Then
+                mMappings.RemoveAt(x)
+            End If
+        Next
+
+        gcMappings.DataSource = mMappings
+        gcMappings.RefreshDataSource()
         gvMappings.ClearSelection()
         UpdateMappingsFilter()
 
@@ -357,7 +387,6 @@ Public Class SampleUnitCoverLetterMappingEditor
         Next
 
     End Sub
-
 
     Private Sub ShowAllMappings()
         gvMappings.ActiveFilter.NonColumnFilter = "[NeedsDelete] = false"
@@ -385,7 +414,7 @@ Public Class SampleUnitCoverLetterMappingEditor
         Dim result As Boolean = True
 
         For Each mapping As CoverLetterMapping In mMappings
-            If mapping.Equals(mapping) Then
+            If mapping.Equals(unit) Then
                 result = False
             End If
         Next
