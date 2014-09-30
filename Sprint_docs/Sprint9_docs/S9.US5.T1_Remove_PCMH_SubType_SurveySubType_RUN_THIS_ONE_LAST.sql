@@ -20,17 +20,19 @@ from surveytypesubtype stst
 inner join subtype st on st.subtype_id = stst.subtype_id
 where st.Subtype_nm = 'PCMH'
 
-DELETE FROM [dbo].[SurveySubtype]
-WHERE Subtype_id = @SubType_id
+if exists (select * from survey_def where surveytype_id = @Surveytypeid and survey_id in (select survey_id from surveysubtype where subtype_id=@Subtype_id))
+	print 'There are still surveys that use the PCMH subtype. Aborting'
+else
+begin
+	DELETE FROM [dbo].[SurveySubtype]
+	WHERE Subtype_id = @SubType_id
 
+	DELETE FROM [dbo].[SurveyTypeSubtype]
+	WHERE Subtype_id = @SubType_id
 
-DELETE FROM [dbo].[SurveyTypeSubtype]
-WHERE Subtype_id = @SubType_id
-
-
-DELETE dbo.subtype
-WHERE [Subtype_nm] = 'PCMH'
-																						
+	DELETE dbo.subtype
+	WHERE [Subtype_nm] = 'PCMH'
+end																						
 /*
 
   go
