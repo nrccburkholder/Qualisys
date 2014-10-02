@@ -275,8 +275,8 @@ type
     wwT_ProblemScoresShort: TStringField;
     wwT_ProblemScoresTransferred: TIntegerField;
     sp_QPProd: TStoredProc;
-    wwT_TextBoxLabel: TStringField;
     wwt_TransTBLabel: TStringField;
+    wwT_TextBoxLabel: TStringField;
     procedure tabledef(var tbl:twwtable; TblType: TDQTableType; WithIndex:boolean);
     procedure DMOpenQCreate(Sender: TObject);
     procedure wwT_QstnsFilterRecord(DataSet: TDataSet;
@@ -6221,6 +6221,7 @@ begin
       MoveFlds(L,wwT_Logo);
       myMessage('Saving '+inttostr(glbSurveyID)+' Text Boxes');
       cn.execute('delete from sel_TextBox where Type is null');
+      cn.execute('update sel_TextBox set Label = ''## NO LABEL ##'' where Label = '''' or Label is null'); // 10/2/2014 CJB these labels get turned back to blanks in SP_FL_SaveSurvey
       MoveFlds(T,wwT_TextBox);
       myMessage('Saving '+inttostr(glbSurveyID)+' PCL Inserts');
       MoveFlds(P,wwT_PCL);
