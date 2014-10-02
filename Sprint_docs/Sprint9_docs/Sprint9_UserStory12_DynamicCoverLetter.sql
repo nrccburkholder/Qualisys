@@ -35,8 +35,8 @@ DEFAULT ''
 
 GO
 
-update QualPro_Params set strparam_value = '3.7' where STRPARAM_NM = 'FormLayoutVersion'
-					 and strparam_value <> '3.7'
+update QualPro_Params set strparam_value = '3.8' where STRPARAM_NM = 'FormLayoutVersion'
+					 and strparam_value <> '3.8'
 --update QualPro_Params set strparam_value = '3.0' 
 --select * from Qualpro_params where STRPARAM_NM = 'FormLayoutVersion'
 
@@ -45,6 +45,7 @@ GO
 /****** Object:  Stored Procedure dbo.sp_FL_SaveSurvey    Script Date: 6/9/99 4:36:35 PM ******/
 /******  Modified 6/16/3 BD  Added a procedure to populate strFullQuestion in Sel_Qstns       ******/
 /******  Modified 9/24/2014 CJB Added Label to MySel_TextBox insert to Sel_TextBox ***/
+/******  Modified 10/2/2014 CJB Made a replacement on the Label for MySel_TextBox in order not to lose the rows ***/
 ALTER PROCEDURE [dbo].[sp_FL_SaveSurvey]
  @survey_id int
 as
@@ -111,7 +112,7 @@ as
   INSERT INTO Sel_TextBox
       (QPC_ID,Survey_id,Language,CoverID,X,Y,Width,Height,RichText,Border,Shading,bitLangReview,Label)
   SELECT 
-      QPC_ID,Survey_id,Language,CoverID,X,Y,Width,Height,RichText,Border,Shading,bitLangReview,Label 
+      QPC_ID,Survey_id,Language,CoverID,X,Y,Width,Height,RichText,Border,Shading,bitLangReview,Replace(Label, '## NO LABEL ##', '') 
       FROM #MySel_TextBox
   if @@error <> 0
   begin
