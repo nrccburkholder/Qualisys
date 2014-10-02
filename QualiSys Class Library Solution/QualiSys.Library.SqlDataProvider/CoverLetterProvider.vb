@@ -25,8 +25,33 @@ Public Class CoverLetterProvider
         End Using
     End Function
 
+
     Public Overrides Function SelectBySurveyIdAndPageType(surveyId As Integer, pageType As Integer) As System.Collections.ObjectModel.Collection(Of CoverLetter)
+
+
+
         Dim cmd As DbCommand = Db.GetStoredProcCommand("QCL_SelectCoverLettersBySurveyIdAndPageType", surveyId, pageType)
+
+        Using rdr As New SafeDataReader(ExecuteReader(cmd))
+            Return PopulateCollection(Of CoverLetter)(rdr, AddressOf PopulateCoverLetterWithItems)
+        End Using
+
+    End Function
+
+    Public Overrides Function SelectBySurveyIdAndPageTypes(surveyId As Integer, pageTypes As Integer()) As System.Collections.ObjectModel.Collection(Of CoverLetter)
+
+        Dim sPageTypes As String = String.Empty
+
+        For i As Integer = 0 To pageTypes.Length - 1
+            sPageTypes += pageTypes(i).ToString() + ","
+        Next
+
+        If Not sPageTypes.Equals(String.Empty) Then
+            ' remove the last comma from the list
+            sPageTypes = sPageTypes.Substring(0, sPageTypes.Length - 1)
+        End If
+
+        Dim cmd As DbCommand = Db.GetStoredProcCommand("QCL_SelectCoverLettersBySurveyIdAndPageTypes", surveyId, sPageTypes)
 
         Using rdr As New SafeDataReader(ExecuteReader(cmd))
             Return PopulateCollection(Of CoverLetter)(rdr, AddressOf PopulateCoverLetterWithItems)
