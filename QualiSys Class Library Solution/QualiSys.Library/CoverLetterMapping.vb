@@ -9,13 +9,9 @@ Public Class CoverLetterMapping
     Private mSampleUnit_Id As Integer
     Private mSampleUnit_name As String
     Private mCoverLetterItemType_Id As Integer
-    Private mCoverId As Integer
-    Private mCoverLetter_name As String
-    Private mCoverLetterItem_Id As Integer
+    Private mCoverLetter_dsc As String
     Private mCoverLetterItem_label As String
-    Private mArtifactPage_Id As Integer
-    Private mArtifact_Id As Integer
-    Private mArtifact_name As String
+    Private mArtifact_dsc As String
     Private mArtifact_label As String
     Private mNeedsDelete As Boolean
     Private mStatus As Integer
@@ -43,15 +39,7 @@ Public Class CoverLetterMapping
         End Set
     End Property
 
-    <Logable()> _
-    Public Property Artifact_Id As Integer
-        Get
-            Return mArtifact_Id
-        End Get
-        Set(value As Integer)
-            mArtifact_Id = value
-        End Set
-    End Property
+
 
     <Logable()> _
     Public Property CoverLetterItem_label As String
@@ -126,57 +114,33 @@ Public Class CoverLetterMapping
         End Set
     End Property
 
-    <Logable()> _
-    Public Property CoverId As Integer
-        Get
-            Return mCoverId
-        End Get
-        Set(value As Integer)
-            mCoverId = value
-        End Set
-    End Property
+
 
     <Logable()> _
     Public Property CoverLetter_name As String
         Get
-            Return mCoverLetter_name
+            Return mCoverLetter_dsc
         End Get
         Set(value As String)
-            mCoverLetter_name = value
+            mCoverLetter_dsc = value
         End Set
     End Property
 
-    Public Property CoverLetterItem_Id As Integer
-        Get
-            Return mCoverLetterItem_Id
-        End Get
-        Set(value As Integer)
-            mCoverLetterItem_Id = value
-        End Set
-    End Property
 
     <Logable()> _
     Public Property Artifact_name As String
         Get
-            Return mArtifact_name
+            Return mArtifact_dsc
         End Get
         Set(value As String)
-            mArtifact_name = value
+            mArtifact_dsc = value
         End Set
     End Property
 
-    <Logable()> _
-    Public Property ArtifactPage_Id As Integer
-        Get
-            Return mArtifactPage_Id
-        End Get
-        Set(value As Integer)
-            mArtifactPage_Id = value
-        End Set
-    End Property
+
 
     <Logable()> _
-    Public Property Artifact_label As String
+    Public Property ArtifactItem_label As String
         Get
             Return mArtifact_label
         End Get
@@ -214,36 +178,19 @@ Public Class CoverLetterMapping
         Return obj
     End Function
 
-    Public Shared Function NewCoverLetterMapping(ByVal fId As Integer, ByVal fSurvey_Id As Integer, ByVal fSampleUnit_Id As Integer, ByVal fSampleUnit_name As String, ByVal fCoverLetterItemType_Id As Integer, ByVal fCoverId As Integer, ByVal fCoverLetter_name As String, ByVal fCoverLetterItem_Id As Integer, ByVal fCoverLetterItem_label As String, ByVal fArtifactPage_Id As Integer, ByVal fArtifact_name As String, ByVal fArtifact_Id As Integer, ByVal fArtifact_label As String) As CoverLetterMapping
+    Public Shared Function NewCoverLetterMapping(ByVal fId As Integer, ByVal fSurvey_Id As Integer, ByVal fSampleUnit_Id As Integer, ByVal fSampleUnit_name As String, ByVal fCoverLetterItemType_Id As Integer, ByVal fCoverLetter_name As String, ByVal fCoverLetterItem_label As String, ByVal fArtifact_name As String, ByVal fArtifact_label As String) As CoverLetterMapping
         Dim obj As New CoverLetterMapping
 
-        'obj.Id = fId
-        'obj.Survey_Id = fSurvey_Id
-        'obj.SampleUnit_Id = fSampleUnit_Id
-        'obj.SampleUnit_name = fSampleUnit_name
-        'obj.CoverLetterItemType_Id = fCoverLetterItemType_Id(1 = TextBox, 2 = Graphic)
-        'obj.CoverId = fCoverId(SEL_Cover.CoverID)
-        'obj.CoverLetter_name = fCoverLetter_name(SEL_Cover.Description)
-        'obj.CoverLetterItem_Id = fCoverLetterItem_Id(SEL_TextBox.QPC_ID)
-        'obj.CoverLetterItem_label = fCoverLetterItem_label(SEL_TextBox.Label)
-        'obj.ArtifactPage_Id = fArtifactPage_Id(SEL_Cover.CoverID)
-        'obj.Artifact_name = fArtifact_name(SEL_Cover.Description)
-        'obj.Artifact_Id = fArtifact_Id(SEL_TextBox.QPC_ID)
-        'obj.Artifact_label = fArtifact_label(SEL_TextBox.Label)
 
         obj.Id = fId
         obj.Survey_Id = fSurvey_Id
         obj.SampleUnit_Id = fSampleUnit_Id
         obj.SampleUnit_name = fSampleUnit_name
         obj.CoverLetterItemType_Id = fCoverLetterItemType_Id
-        obj.CoverId = fCoverId
         obj.CoverLetter_name = fCoverLetter_name
-        obj.CoverLetterItem_Id = fCoverLetterItem_Id
         obj.CoverLetterItem_label = fCoverLetterItem_label
-        obj.ArtifactPage_Id = fArtifactPage_Id
         obj.Artifact_name = fArtifact_name
-        obj.Artifact_Id = fArtifact_Id
-        obj.Artifact_label = fArtifact_label
+        obj.ArtifactItem_label = fArtifact_label
         obj.UniqueID = Guid.NewGuid
 
         Return obj
@@ -322,8 +269,8 @@ Public Class CoverLetterMapping
         Dim result As Boolean
 
         result = mSurvey_Id = mapping.Survey_Id And mSampleUnit_Id = mapping.SampleUnit_Id And mCoverLetterItemType_Id = mapping.CoverLetterItemType_Id And _
-            mCoverLetter_name = mapping.CoverLetter_name And mCoverLetterItem_label = mapping.CoverLetterItem_label And _
-            mArtifact_name = mapping.Artifact_name And mArtifact_label = mapping.Artifact_label
+            mCoverLetter_dsc = mapping.CoverLetter_name And mCoverLetterItem_label = mapping.CoverLetterItem_label And _
+            mArtifact_dsc = mapping.Artifact_name And mArtifact_label = mapping.ArtifactItem_label
 
         Return result
 

@@ -43,8 +43,6 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.gvCoverLetters = New DevExpress.XtraGrid.Views.Grid.GridView()
         Me.GridColumn3 = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.GridColumn4 = New DevExpress.XtraGrid.Columns.GridColumn()
-        Me.GridColumn10 = New DevExpress.XtraGrid.Columns.GridColumn()
-        Me.GridColumn11 = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.AvailableSectionLabelLookUpEdit = New DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit()
         Me.HeaderStrip1 = New Nrc.Framework.WinForms.HeaderStrip()
         Me.ToolStripLabel1 = New System.Windows.Forms.ToolStripLabel()
@@ -55,13 +53,13 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.gvArtifacts = New DevExpress.XtraGrid.Views.Grid.GridView()
         Me.GridColumn1 = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.GridColumn5 = New DevExpress.XtraGrid.Columns.GridColumn()
-        Me.GridColumn12 = New DevExpress.XtraGrid.Columns.GridColumn()
-        Me.GridColumn13 = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.RepositoryItemLookUpEdit1 = New DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit()
         Me.HeaderStrip3 = New Nrc.Framework.WinForms.HeaderStrip()
         Me.ToolStripLabel3 = New System.Windows.Forms.ToolStripLabel()
         Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
         Me.btnArtifactsClearSelections = New System.Windows.Forms.ToolStripButton()
+        Me.statusStripMappings = New System.Windows.Forms.StatusStrip()
+        Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.gcMappings = New DevExpress.XtraGrid.GridControl()
         Me.UnMapContextMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.UnMapToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -74,10 +72,6 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.Artifact_name = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.Artifact_label = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.SampleUnit_Id = New DevExpress.XtraGrid.Columns.GridColumn()
-        Me.SEL_Cover_CoverID = New DevExpress.XtraGrid.Columns.GridColumn()
-        Me.CoverLetterItem_id = New DevExpress.XtraGrid.Columns.GridColumn()
-        Me.SEL_Cover_CoverID_Artifact = New DevExpress.XtraGrid.Columns.GridColumn()
-        Me.SEL_TextBox_QPC_ID_Artifact = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.CoverLetterItemType_id = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.Survey_Id = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.CoverLetterItemArtifactUnitMapping_id = New DevExpress.XtraGrid.Columns.GridColumn()
@@ -91,12 +85,13 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.btnUnselectAllMappings = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator6 = New System.Windows.Forms.ToolStripSeparator()
         Me.btnShowAllMappings = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator7 = New System.Windows.Forms.ToolStripSeparator()
+        Me.tsbtnExportToExcel = New System.Windows.Forms.ToolStripButton()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.btnUnmap = New System.Windows.Forms.Button()
         Me.btnMap = New System.Windows.Forms.Button()
         Me.InformationBar = New Nrc.Qualisys.ConfigurationManager.InformationBar()
-        Me.statusStripMappings = New System.Windows.Forms.StatusStrip()
-        Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
         Me.BottomPanel.SuspendLayout()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -119,13 +114,13 @@ Partial Class SampleUnitCoverLetterMappingEditor
         CType(Me.gvArtifacts, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.RepositoryItemLookUpEdit1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.HeaderStrip3.SuspendLayout()
+        Me.statusStripMappings.SuspendLayout()
         CType(Me.gcMappings, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.UnMapContextMenu.SuspendLayout()
         CType(Me.gvMappings, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.RepositoryItemPictureEdit1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.HeaderStrip4.SuspendLayout()
         Me.Panel1.SuspendLayout()
-        Me.statusStripMappings.SuspendLayout()
         Me.SuspendLayout()
         '
         'BottomPanel
@@ -239,8 +234,9 @@ Partial Class SampleUnitCoverLetterMappingEditor
         '
         'ToolStripLabel2
         '
+        Me.ToolStripLabel2.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold)
         Me.ToolStripLabel2.Name = "ToolStripLabel2"
-        Me.ToolStripLabel2.Size = New System.Drawing.Size(76, 18)
+        Me.ToolStripLabel2.Size = New System.Drawing.Size(80, 18)
         Me.ToolStripLabel2.Text = "Sample Units"
         '
         'ToolStripSeparator2
@@ -313,7 +309,7 @@ Partial Class SampleUnitCoverLetterMappingEditor
         '
         Me.gvCoverLetters.Appearance.FocusedCell.BackColor = System.Drawing.SystemColors.MenuHighlight
         Me.gvCoverLetters.Appearance.FocusedCell.Options.UseBackColor = True
-        Me.gvCoverLetters.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.GridColumn3, Me.GridColumn4, Me.GridColumn10, Me.GridColumn11})
+        Me.gvCoverLetters.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.GridColumn3, Me.GridColumn4})
         Me.gvCoverLetters.GridControl = Me.gcCoverLetters
         Me.gvCoverLetters.Name = "gvCoverLetters"
         Me.gvCoverLetters.OptionsBehavior.Editable = False
@@ -342,18 +338,6 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.GridColumn4.Visible = True
         Me.GridColumn4.VisibleIndex = 1
         '
-        'GridColumn10
-        '
-        Me.GridColumn10.Caption = "GridColumn10"
-        Me.GridColumn10.FieldName = "CoverID"
-        Me.GridColumn10.Name = "GridColumn10"
-        '
-        'GridColumn11
-        '
-        Me.GridColumn11.Caption = "GridColumn11"
-        Me.GridColumn11.FieldName = "ItemID"
-        Me.GridColumn11.Name = "GridColumn11"
-        '
         'AvailableSectionLabelLookUpEdit
         '
         Me.AvailableSectionLabelLookUpEdit.AutoHeight = False
@@ -379,8 +363,9 @@ Partial Class SampleUnitCoverLetterMappingEditor
         '
         'ToolStripLabel1
         '
+        Me.ToolStripLabel1.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold)
         Me.ToolStripLabel1.Name = "ToolStripLabel1"
-        Me.ToolStripLabel1.Size = New System.Drawing.Size(76, 18)
+        Me.ToolStripLabel1.Size = New System.Drawing.Size(83, 18)
         Me.ToolStripLabel1.Text = "Cover Letters"
         '
         'ToolStripSeparator3
@@ -413,7 +398,7 @@ Partial Class SampleUnitCoverLetterMappingEditor
         '
         Me.gvArtifacts.Appearance.FocusedCell.BackColor = System.Drawing.SystemColors.MenuHighlight
         Me.gvArtifacts.Appearance.FocusedCell.Options.UseBackColor = True
-        Me.gvArtifacts.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.GridColumn1, Me.GridColumn5, Me.GridColumn12, Me.GridColumn13})
+        Me.gvArtifacts.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.GridColumn1, Me.GridColumn5})
         Me.gvArtifacts.GridControl = Me.gcArtifacts
         Me.gvArtifacts.Name = "gvArtifacts"
         Me.gvArtifacts.OptionsBehavior.Editable = False
@@ -441,18 +426,6 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.GridColumn5.Visible = True
         Me.GridColumn5.VisibleIndex = 1
         '
-        'GridColumn12
-        '
-        Me.GridColumn12.Caption = "GridColumn12"
-        Me.GridColumn12.FieldName = "CoverID"
-        Me.GridColumn12.Name = "GridColumn12"
-        '
-        'GridColumn13
-        '
-        Me.GridColumn13.Caption = "GridColumn13"
-        Me.GridColumn13.FieldName = "ItemID"
-        Me.GridColumn13.Name = "GridColumn13"
-        '
         'RepositoryItemLookUpEdit1
         '
         Me.RepositoryItemLookUpEdit1.AutoHeight = False
@@ -478,8 +451,9 @@ Partial Class SampleUnitCoverLetterMappingEditor
         '
         'ToolStripLabel3
         '
+        Me.ToolStripLabel3.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold)
         Me.ToolStripLabel3.Name = "ToolStripLabel3"
-        Me.ToolStripLabel3.Size = New System.Drawing.Size(51, 18)
+        Me.ToolStripLabel3.Size = New System.Drawing.Size(55, 18)
         Me.ToolStripLabel3.Text = "Artifacts"
         '
         'ToolStripSeparator4
@@ -495,6 +469,21 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.btnArtifactsClearSelections.Name = "btnArtifactsClearSelections"
         Me.btnArtifactsClearSelections.Size = New System.Drawing.Size(94, 18)
         Me.btnArtifactsClearSelections.Text = "Clear Selections"
+        '
+        'statusStripMappings
+        '
+        Me.statusStripMappings.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1})
+        Me.statusStripMappings.Location = New System.Drawing.Point(0, 213)
+        Me.statusStripMappings.Name = "statusStripMappings"
+        Me.statusStripMappings.Size = New System.Drawing.Size(561, 22)
+        Me.statusStripMappings.TabIndex = 6
+        Me.statusStripMappings.Text = "StatusStrip1"
+        '
+        'ToolStripStatusLabel1
+        '
+        Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
+        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(16, 17)
+        Me.ToolStripStatusLabel1.Text = "..."
         '
         'gcMappings
         '
@@ -526,7 +515,7 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.gvMappings.Appearance.FocusedCell.Options.UseBackColor = True
         Me.gvMappings.Appearance.FocusedRow.ForeColor = System.Drawing.Color.White
         Me.gvMappings.Appearance.FocusedRow.Options.UseForeColor = True
-        Me.gvMappings.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.colStatusImage, Me.SampleUnit_name, Me.CoverLetter_name, Me.CoverLetterItem_label, Me.Artifact_name, Me.Artifact_label, Me.SampleUnit_Id, Me.SEL_Cover_CoverID, Me.CoverLetterItem_id, Me.SEL_Cover_CoverID_Artifact, Me.SEL_TextBox_QPC_ID_Artifact, Me.CoverLetterItemType_id, Me.Survey_Id, Me.CoverLetterItemArtifactUnitMapping_id, Me.NeedDelete, Me.UniqueID})
+        Me.gvMappings.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.colStatusImage, Me.SampleUnit_name, Me.CoverLetter_name, Me.CoverLetterItem_label, Me.Artifact_name, Me.Artifact_label, Me.SampleUnit_Id, Me.CoverLetterItemType_id, Me.Survey_Id, Me.CoverLetterItemArtifactUnitMapping_id, Me.NeedDelete, Me.UniqueID})
         Me.gvMappings.GridControl = Me.gcMappings
         Me.gvMappings.Name = "gvMappings"
         Me.gvMappings.OptionsBehavior.Editable = False
@@ -599,7 +588,7 @@ Partial Class SampleUnitCoverLetterMappingEditor
         'Artifact_label
         '
         Me.Artifact_label.Caption = "Artifact Item"
-        Me.Artifact_label.FieldName = "Artifact_label"
+        Me.Artifact_label.FieldName = "ArtifactItem_label"
         Me.Artifact_label.Name = "Artifact_label"
         Me.Artifact_label.Visible = True
         Me.Artifact_label.VisibleIndex = 5
@@ -610,30 +599,6 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.SampleUnit_Id.Caption = "Sample Unit ID"
         Me.SampleUnit_Id.FieldName = "SampleUnit_Id"
         Me.SampleUnit_Id.Name = "SampleUnit_Id"
-        '
-        'SEL_Cover_CoverID
-        '
-        Me.SEL_Cover_CoverID.Caption = "Cover ID"
-        Me.SEL_Cover_CoverID.FieldName = "CoverId"
-        Me.SEL_Cover_CoverID.Name = "SEL_Cover_CoverID"
-        '
-        'CoverLetterItem_id
-        '
-        Me.CoverLetterItem_id.Caption = "Cover Letter Item ID"
-        Me.CoverLetterItem_id.FieldName = "CoverLetterItem_Id"
-        Me.CoverLetterItem_id.Name = "CoverLetterItem_id"
-        '
-        'SEL_Cover_CoverID_Artifact
-        '
-        Me.SEL_Cover_CoverID_Artifact.Caption = "Artifact Page Id"
-        Me.SEL_Cover_CoverID_Artifact.FieldName = "ArtifactPage_Id"
-        Me.SEL_Cover_CoverID_Artifact.Name = "SEL_Cover_CoverID_Artifact"
-        '
-        'SEL_TextBox_QPC_ID_Artifact
-        '
-        Me.SEL_TextBox_QPC_ID_Artifact.Caption = "GridColumn18"
-        Me.SEL_TextBox_QPC_ID_Artifact.FieldName = "Artifact_Id"
-        Me.SEL_TextBox_QPC_ID_Artifact.Name = "SEL_TextBox_QPC_ID_Artifact"
         '
         'CoverLetterItemType_id
         '
@@ -672,7 +637,7 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.HeaderStrip4.ForeColor = System.Drawing.Color.Black
         Me.HeaderStrip4.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
         Me.HeaderStrip4.HeaderStyle = Nrc.Framework.WinForms.HeaderStripStyle.Small
-        Me.HeaderStrip4.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripLabel4, Me.ToolStripSeparator1, Me.btnSelectAllMappings, Me.ToolStripSeparator5, Me.btnUnselectAllMappings, Me.ToolStripSeparator6, Me.btnShowAllMappings})
+        Me.HeaderStrip4.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripLabel4, Me.ToolStripSeparator1, Me.btnSelectAllMappings, Me.ToolStripSeparator5, Me.btnUnselectAllMappings, Me.ToolStripSeparator6, Me.btnShowAllMappings, Me.ToolStripSeparator7, Me.tsbtnExportToExcel})
         Me.HeaderStrip4.Location = New System.Drawing.Point(0, 34)
         Me.HeaderStrip4.Name = "HeaderStrip4"
         Me.HeaderStrip4.Size = New System.Drawing.Size(561, 21)
@@ -681,8 +646,9 @@ Partial Class SampleUnitCoverLetterMappingEditor
         '
         'ToolStripLabel4
         '
+        Me.ToolStripLabel4.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold)
         Me.ToolStripLabel4.Name = "ToolStripLabel4"
-        Me.ToolStripLabel4.Size = New System.Drawing.Size(172, 18)
+        Me.ToolStripLabel4.Size = New System.Drawing.Size(181, 18)
         Me.ToolStripLabel4.Text = "Mapped Sample Units/Artifacts"
         '
         'ToolStripSeparator1
@@ -727,6 +693,21 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.btnShowAllMappings.Size = New System.Drawing.Size(60, 18)
         Me.btnShowAllMappings.Text = "Show All "
         '
+        'ToolStripSeparator7
+        '
+        Me.ToolStripSeparator7.Name = "ToolStripSeparator7"
+        Me.ToolStripSeparator7.Size = New System.Drawing.Size(6, 21)
+        '
+        'tsbtnExportToExcel
+        '
+        Me.tsbtnExportToExcel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.tsbtnExportToExcel.Image = Global.Nrc.Qualisys.ConfigurationManager.My.Resources.Resources.Excel16
+        Me.tsbtnExportToExcel.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbtnExportToExcel.Name = "tsbtnExportToExcel"
+        Me.tsbtnExportToExcel.Size = New System.Drawing.Size(23, 18)
+        Me.tsbtnExportToExcel.Text = "ToolStripButton1"
+        Me.tsbtnExportToExcel.ToolTipText = "Export To Excel"
+        '
         'Panel1
         '
         Me.Panel1.Controls.Add(Me.btnUnmap)
@@ -767,20 +748,10 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.InformationBar.TabIndex = 1
         Me.InformationBar.TabStop = False
         '
-        'statusStripMappings
+        'SaveFileDialog1
         '
-        Me.statusStripMappings.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1})
-        Me.statusStripMappings.Location = New System.Drawing.Point(0, 213)
-        Me.statusStripMappings.Name = "statusStripMappings"
-        Me.statusStripMappings.Size = New System.Drawing.Size(561, 22)
-        Me.statusStripMappings.TabIndex = 6
-        Me.statusStripMappings.Text = "StatusStrip1"
-        '
-        'ToolStripStatusLabel1
-        '
-        Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
-        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(16, 17)
-        Me.ToolStripStatusLabel1.Text = "..."
+        Me.SaveFileDialog1.DefaultExt = "xlsx"
+        Me.SaveFileDialog1.Filter = "Excel files (*.xlsx)|*.xlsx"
         '
         'SampleUnitCoverLetterMappingEditor
         '
@@ -818,6 +789,8 @@ Partial Class SampleUnitCoverLetterMappingEditor
         CType(Me.RepositoryItemLookUpEdit1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.HeaderStrip3.ResumeLayout(False)
         Me.HeaderStrip3.PerformLayout()
+        Me.statusStripMappings.ResumeLayout(False)
+        Me.statusStripMappings.PerformLayout()
         CType(Me.gcMappings, System.ComponentModel.ISupportInitialize).EndInit()
         Me.UnMapContextMenu.ResumeLayout(False)
         CType(Me.gvMappings, System.ComponentModel.ISupportInitialize).EndInit()
@@ -825,8 +798,6 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.HeaderStrip4.ResumeLayout(False)
         Me.HeaderStrip4.PerformLayout()
         Me.Panel1.ResumeLayout(False)
-        Me.statusStripMappings.ResumeLayout(False)
-        Me.statusStripMappings.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -880,15 +851,7 @@ Partial Class SampleUnitCoverLetterMappingEditor
     Friend WithEvents CoverLetterItem_label As DevExpress.XtraGrid.Columns.GridColumn
     Friend WithEvents Artifact_name As DevExpress.XtraGrid.Columns.GridColumn
     Friend WithEvents Artifact_label As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents GridColumn10 As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents GridColumn11 As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents GridColumn12 As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents GridColumn13 As DevExpress.XtraGrid.Columns.GridColumn
     Friend WithEvents SampleUnit_Id As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents SEL_Cover_CoverID As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents CoverLetterItem_id As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents SEL_Cover_CoverID_Artifact As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents SEL_TextBox_QPC_ID_Artifact As DevExpress.XtraGrid.Columns.GridColumn
     Friend WithEvents CoverLetterItemType_id As DevExpress.XtraGrid.Columns.GridColumn
     Friend WithEvents Survey_Id As DevExpress.XtraGrid.Columns.GridColumn
     Friend WithEvents CoverLetterItemArtifactUnitMapping_id As DevExpress.XtraGrid.Columns.GridColumn
@@ -903,5 +866,8 @@ Partial Class SampleUnitCoverLetterMappingEditor
     Friend WithEvents UnMapToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents statusStripMappings As System.Windows.Forms.StatusStrip
     Friend WithEvents ToolStripStatusLabel1 As System.Windows.Forms.ToolStripStatusLabel
+    Friend WithEvents ToolStripSeparator7 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents tsbtnExportToExcel As System.Windows.Forms.ToolStripButton
+    Friend WithEvents SaveFileDialog1 As System.Windows.Forms.SaveFileDialog
 
 End Class

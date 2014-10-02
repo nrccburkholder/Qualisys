@@ -16,14 +16,10 @@ Public Class CoverLetterMappingProvider
         newObject.SampleUnit_Id = rdr.GetInteger("SampleUnit_id")
         newObject.SampleUnit_name = rdr.GetString("strSampleUnit_nm").Trim()
         newObject.CoverLetterItemType_Id = rdr.GetByte("CoverLetterItemType_id")
-        newObject.CoverId = rdr.GetInteger("CoverID")
         newObject.CoverLetter_name = rdr.GetString("CoverLetter_dsc").Trim()
-        newObject.CoverLetterItem_Id = rdr.GetInteger("CoverLetterItem_id")
         newObject.CoverLetterItem_label = rdr.GetString("CoverLetterItem_label").Trim()
-        newObject.ArtifactPage_Id = rdr.GetInteger("ArtifactPage_id")
-        newObject.Artifact_name = rdr.GetString("ArtifactPage_dsc").Trim()
-        newObject.Artifact_Id = rdr.GetInteger("Artifact_id")
-        newObject.Artifact_label = rdr.GetString("Artifact_label").Trim()
+        newObject.Artifact_name = rdr.GetString("Artifact_dsc").Trim()
+        newObject.ArtifactItem_label = rdr.GetString("ArtifactItem_label").Trim()
         newObject.UniqueID = Guid.NewGuid
         newObject.EndPopulate()
 
@@ -50,7 +46,7 @@ Public Class CoverLetterMappingProvider
     End Function
 
     Public Overrides Function InsertCoverLetterMapping(ByVal instance As CoverLetterMapping) As Integer
-        Dim cmd As DbCommand = Db.GetStoredProcCommand("QCL_InsertCoverLetterItemArtifactUnitMapping", instance.Survey_Id, instance.SampleUnit_Id, instance.CoverLetterItemType_Id, instance.CoverId, instance.CoverLetterItem_Id, instance.CoverLetterItem_label, instance.ArtifactPage_Id, instance.Artifact_Id, instance.Artifact_label)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand("QCL_InsertCoverLetterItemArtifactUnitMapping", instance.Survey_Id, instance.SampleUnit_Id, instance.CoverLetterItemType_Id, instance.CoverLetter_name, instance.CoverLetterItem_label, instance.Artifact_name, instance.ArtifactItem_label)
         Return ExecuteInteger(cmd)
     End Function
 
@@ -60,7 +56,7 @@ Public Class CoverLetterMappingProvider
     End Sub
 
     Public Overrides Sub UpdateCoverLetterMapping(ByVal instance As CoverLetterMapping)
-        Dim cmd As DbCommand = Db.GetStoredProcCommand("QCL_UpdateCoverLetterItemArtifactUnitMapping", instance.Id, instance.SampleUnit_Id, instance.CoverLetterItemType_Id, instance.CoverId, instance.CoverLetterItem_Id, instance.CoverLetterItem_label, instance.ArtifactPage_Id, instance.Artifact_Id, instance.Artifact_label)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand("QCL_UpdateCoverLetterItemArtifactUnitMapping", instance.Id, instance.SampleUnit_Id, instance.CoverLetterItemType_Id, instance.CoverLetter_name, instance.CoverLetterItem_label, instance.Artifact_name, instance.ArtifactItem_label)
         ExecuteNonQuery(cmd)
     End Sub
 
