@@ -42,7 +42,7 @@ type
     Label1: TLabel;
     wTTextLabel: TStringField;
     DBEdit1: TDBEdit;
-    BorderWidth: TSpinEdit;
+    seBorderWidth: TSpinEdit;
     Label2: TLabel;
     clDBRichCodeBtn1: TclDBRichCodeBtn;
     pnlShading: TPanel;
@@ -55,6 +55,8 @@ type
     Panel7: TPanel;
     Panel9: TPanel;
     Panel11: TPanel;
+    lblTextboxName: TLabel;
+    edTextBoxName: TEdit;
     procedure btnCodeClick(Sender: TObject);
     procedure tCodeTextFilterRecord(DataSet: TDataSet;
       var Accept: Boolean);

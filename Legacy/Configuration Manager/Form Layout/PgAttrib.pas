@@ -18,8 +18,10 @@ type
     rgPaperType: TRadioGroup;
     rgPostcardSize: TRadioGroup;
     rgIntegrated: TRadioGroup;
+    cbArtifactsPage: TCheckBox;
     procedure rgPaperTypeClick(Sender: TObject);
     procedure edPageNameExit(Sender: TObject);
+    procedure cbArtifactsPageClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -49,6 +51,26 @@ begin
     messagebeep(0);
     messagedlg('The Page Name cannot be empty!',mterror,[mbok],0);
     frmPageAttributes.activecontrol := edPageName;
+  end;
+end;
+
+procedure TfrmPageAttributes.cbArtifactsPageClick(Sender: TObject);
+begin
+  if cbArtifactsPage.Checked then
+  begin
+    rgPaperType.ItemIndex := 0;
+    rgPaperType.Enabled := false;
+
+    rgIntegrated.ItemIndex := -1;
+    rgIntegrated.Enabled := false;
+
+    rgPostcardSize.ItemIndex := -1;
+    rgPostcardSize.Enabled := false;
+  end
+  else
+  begin
+    rgPapertype.Enabled := true;
+    rgPaperTypeClick(sender);
   end;
 end;
 

@@ -84,7 +84,7 @@ Partial Class SampleUnitSectionMappingEditor
         '
         'SampleUnitBindingSource
         '
-        Me.SampleUnitBindingSource.DataSource = GetType(Nrc.Qualisys.Library.SampleUnit)
+        Me.SampleUnitBindingSource.DataSource = GetType(Nrc.QualiSys.Library.SampleUnit)
         '
         'BottomPanel
         '
@@ -229,7 +229,7 @@ Partial Class SampleUnitSectionMappingEditor
         '
         'AvailableSectionsBindingSource
         '
-        Me.AvailableSectionsBindingSource.DataSource = GetType(Nrc.Qualisys.Library.SampleUnitSectionMapping)
+        Me.AvailableSectionsBindingSource.DataSource = GetType(Nrc.QualiSys.Library.SampleUnitSectionMapping)
         '
         'AvailableGridView
         '
@@ -268,7 +268,7 @@ Partial Class SampleUnitSectionMappingEditor
         '
         'QuestionSectionBindingSource
         '
-        Me.QuestionSectionBindingSource.DataSource = GetType(Nrc.Qualisys.Library.QuestionSection)
+        Me.QuestionSectionBindingSource.DataSource = GetType(Nrc.QualiSys.Library.QuestionSection)
         '
         'HeaderStrip1
         '
@@ -333,7 +333,7 @@ Partial Class SampleUnitSectionMappingEditor
         '
         'MappedSectionsBindingSource
         '
-        Me.MappedSectionsBindingSource.DataSource = GetType(Nrc.Qualisys.Library.SampleUnitSectionMapping)
+        Me.MappedSectionsBindingSource.DataSource = GetType(Nrc.QualiSys.Library.SampleUnitSectionMapping)
         '
         'MappedGridView
         '

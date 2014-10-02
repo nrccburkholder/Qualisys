@@ -22,6 +22,7 @@ type
     { Private declarations }
     FModified: boolean;
     FKnownDimensions: boolean;
+    FTextBoxName: string;
     FPCL: string;
     FLanguage: integer;
     FIndent: integer;
@@ -34,6 +35,7 @@ type
     destructor Destroy; override;
     property Modified: boolean read FModified write FModified default false;  { Run-time access only }
     property KnownDimensions: boolean read FKnownDimensions write FKnownDimensions default false;  { Run-time access only }
+    property TextBoxName: string read FTextBoxName write FTextBoxName;  { Run-time access only }
     property PCL: string read FPCL write FPCL;  { Run-time access only }
     property Language: integer read FLanguage write FLanguage;  { Run-time access only }
   published
@@ -61,11 +63,12 @@ begin
   inherited Destroy;
 end;  { Destroy }
 
-constructor TDQPanel.Create(AOwner: TComponent); 
+constructor TDQPanel.Create(AOwner: TComponent);
 { Creates an object of type TDQPanel, and initializes properties. }
 begin
   inherited Create(AOwner);
   { Initialize properties with default values: }
+  FTextBoxName := '';
   FModified := false;
   FKnownDimensions := false;
   FIndent := 0;

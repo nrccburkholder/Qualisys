@@ -146,8 +146,11 @@
     <Compile Include="Collections\VendorFile_VoviciDetailCollection.vb" />
     <Compile Include="ClientGroup.vb" />
     <Compile Include="ContractedLanguage.vb" />
+    <Compile Include="CoverLetterItem.vb" />
+    <Compile Include="CoverLetterMapping.vb" />
     <Compile Include="DataProviders\ClientGroupProvider.vb" />
     <Compile Include="DataProviders\ContractedLanguageProvider.vb" />
+    <Compile Include="DataProviders\CoverLetterMappingProvider.vb" />
     <Compile Include="DataProviders\DispositionProvider.vb" />
     <Compile Include="DataProviders\HCAHPSDispositionProvider.vb" />
     <Compile Include="DataProviders\HHCAHPSDispositionProvider.vb" />
@@ -190,6 +193,7 @@
     <Compile Include="DataProviders\SampleUnitServiceTypeProvider.vb" />
     <Compile Include="DataProviders\FacilityProvider.vb" />
     <Compile Include="Enums\CAHPSType.vb" />
+    <Compile Include="Enums\CoverLetterItemType.vb" />
     <Compile Include="Enums\HouseHoldingType.vb" />
     <Compile Include="Enums\MailingStepMethodCodes.vb" />
     <Compile Include="Enums\MedicareProportionCalcTypes.vb" />

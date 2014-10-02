@@ -60,7 +60,7 @@ Public Class SampleUnitProvider
                 newObj.SelectionType = SampleSelectionType.NonExclusive
         End Select
         newObj.CAHPSType = CType(rdr.GetInteger("CAHPSType_Id"), CAHPSType)
-
+        newObj.CAHPSTypeName = GetCAHPSTypeName(rdr.GetInteger("CAHPSType_Id"))
         newObj.ResetDirtyFlag()
 
         Return newObj
@@ -483,6 +483,22 @@ Public Class SampleUnitProvider
             Return True
         End If
 
+    End Function
+
+    Private Function GetCAHPSTypeName(ByVal surveytype_id As Integer) As String
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectSurveyType, surveytype_id)
+
+        Dim ds As DataSet = Db.ExecuteDataSet(cmd)
+        Dim cahpsTypeName As String = String.Empty
+
+        If ds.Tables.Count > 0 Then
+            If ds.Tables(0).Rows.Count > 0 Then
+                cahpsTypeName = ds.Tables(0).Rows(0)("SurveyType_dsc").ToString()
+            End If
+
+        End If
+
+        Return cahpsTypeName
     End Function
 
 End Class

@@ -342,7 +342,7 @@ END
 
 SET @strparam_nm = 'USPS_ACS_SendErrorNotificationTo'
 SET @strparam_type = 'S'
-SET @strparam_value = 'TransferResultsErrors@nrcpicker.com'
+SET @strparam_value = 'USPS_ACS_Results@nationalresearch.com'
 SET @numparam_value = NULL
 SET @dataparam_value = NULL
 SET @comments = 'Email address to send error notification to'
@@ -435,7 +435,7 @@ END
 
 SET @strparam_nm = 'USPS_ACS_SendStatusNotificationTo'
 SET @strparam_type = 'S'
-SET @strparam_value = 'TransferResultsErrors@nrcpicker.com'
+SET @strparam_value = 'USPS_ACS_Results@nationalresearch.com'
 SET @numparam_value = NULL
 SET @dataparam_value = NULL
 SET @comments = 'Email address to send status notification to'
@@ -623,7 +623,7 @@ END
 SET @strparam_nm = 'USPS_ACS_DoDownload'
 SET @strparam_type = 'N'
 SET @strparam_value = NULL
-SET @numparam_value = '0'
+SET @numparam_value = '1'
 SET @dataparam_value = NULL
 SET @comments = 'Indicates whether the USPS_ACS_Service should execute the Zip download when it runs. 0 = false, 1 = true'
 

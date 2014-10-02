@@ -15,6 +15,7 @@ Public NotInheritable Class AuditLogObject
         SamplePeriodScheduledSample = 11
         EmailBlast = 12
         ModeSectionMapping = 13
+        CoverLetterMapping = 14
     End Enum
 
     Private mObjectType As AuditLogObjectType
@@ -102,6 +103,12 @@ Public NotInheritable Class AuditLogObject
     Public Shared ReadOnly Property ModeSectionMapping() As AuditLogObject
         Get
             Return New AuditLogObject(AuditLogObjectType.ModeSectionMapping)
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property CoverLetterMapping() As AuditLogObject
+        Get
+            Return New AuditLogObject(AuditLogObjectType.CoverLetterMapping)
         End Get
     End Property
 
