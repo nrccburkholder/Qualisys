@@ -8,7 +8,9 @@
 ** Modified: 10/08/2009 - Michael Beltz - Initial Release.      
 ** 2011.06.02  Amir Aliabadi   B-01376 remvoed the FO DQ rule   
 ** 2011.08.04  Don Mayhew      B-01410 Changed DQ_Payer rule
+** 2014.06.26  Dave Gilsdorf   Depreciated and dropped during AllCAHPS Sprint 1
 **********************************************************************************************************************************/        
+/*
 CREATE PROCEDURE [dbo].[QCL_InsertHHCAHPSDQRules]        
  @Survey_id INT        
 AS        
@@ -201,3 +203,4 @@ END
 -- AA B-01376 --
 
 
+*/

@@ -38,30 +38,6 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Seeded Mailing Service Inst
 	EndProjectSection
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 7
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://tfs.nationalresearch.com:8080/tfs/DefaultCollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Library\\QualiSys.Library.vbproj
-		SccProjectName1 = ../QualiSys\u0020Class\u0020Library\u0020Solution/QualiSys.Library
-		SccLocalPath1 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Library
-		SccProjectUniqueName2 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Library.SqlDataProvider\\QualiSys.Library.SqlDataProvider.vbproj
-		SccProjectName2 = ../QualiSys\u0020Class\u0020Library\u0020Solution/QualiSys.Library.SqlDataProvider
-		SccLocalPath2 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.Library.SqlDataProvider
-		SccProjectUniqueName3 = Sampling\u0020Tool\\Sampling\u0020Tool.vbproj
-		SccProjectName3 = Sampling\u0020Tool
-		SccLocalPath3 = Sampling\u0020Tool
-		SccProjectUniqueName4 = Seeded\u0020Mailing\u0020Service\\Seeded\u0020Mailing\u0020Service.vbproj
-		SccProjectName4 = Seeded\u0020Mailing\u0020Service
-		SccLocalPath4 = Seeded\u0020Mailing\u0020Service
-		SccProjectUniqueName5 = Seeded\u0020Mailing\u0020Service\u0020Tester\\Seeded\u0020Mailing\u0020Service\u0020Tester.vbproj
-		SccProjectName5 = Seeded\u0020Mailing\u0020Service\u0020Tester
-		SccLocalPath5 = Seeded\u0020Mailing\u0020Service\u0020Tester
-		SccProjectUniqueName6 = Seeded\u0020Mailing\u0020Service\u0020Installer\\Seeded\u0020Mailing\u0020Service\u0020Installer.vdproj
-		SccProjectName6 = Seeded\u0020Mailing\u0020Service\u0020Installer
-		SccLocalPath6 = Seeded\u0020Mailing\u0020Service\u0020Installer
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
@@ -113,6 +89,7 @@ Global
 		{A2D1B1A7-679C-4661-93B3-C90F4465F7D3}.Debug|x86.ActiveCfg = Debug
 		{A2D1B1A7-679C-4661-93B3-C90F4465F7D3}.Release|Any CPU.ActiveCfg = Release
 		{A2D1B1A7-679C-4661-93B3-C90F4465F7D3}.Release|x86.ActiveCfg = Release
+		{A2D1B1A7-679C-4661-93B3-C90F4465F7D3}.Release|x86.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

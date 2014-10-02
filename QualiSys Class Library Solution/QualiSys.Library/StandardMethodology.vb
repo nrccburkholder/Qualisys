@@ -61,8 +61,20 @@ Public Class StandardMethodology
     ''' </summary>
     ''' <param name="srvyType">The Survey Type</param>
     ''' <returns></returns>
-    Public Shared Function GetBySurveyType(ByVal srvyType As SurveyTypes) As Collection(Of StandardMethodology)
-        Return MethodologyProvider.Instance.SelectStandardMethodologiesBySurveyType(srvyType)
+    Public Shared Function GetBySurveyType(ByVal srvyType As SurveyTypes, ByVal subTypes As SubTypeList) As Collection(Of StandardMethodology)
+
+        Dim SubType As SubType = New SubType(0, "", False)
+
+        If (Not subTypes Is Nothing) Then
+            For Each st As SubType In subTypes
+                If st.IsRuleOverride Then
+                    SubType = st
+                End If
+            Next
+        End If
+
+
+        Return MethodologyProvider.Instance.SelectStandardMethodologiesBySurveyType(srvyType, SubType)
     End Function
 
 

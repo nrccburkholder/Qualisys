@@ -8,7 +8,9 @@
 ** Modified: 10/26/2010 - Don Mayhew - Initial Release.      
 ** Modified 01/07/2014 - Dave Hansen - Added 'NU' to default values for CriteriaStmt for AddrErr DQ_MDAE Rule - INC0028553
 **										NOTE: also added 'FO' which seemed to be mistakenly missing
+** 2014.06.26  Dave Gilsdorf   Depreciated and dropped during AllCAHPS Sprint 1
 **********************************************************************************************************************************/        
+/*
 CREATE PROCEDURE [dbo].[QCL_InsertPhysEmpDQRules]        
  @Survey_id INT        
 AS        
@@ -236,5 +238,4 @@ if (@SurveyType_ID in (select surveytype_id from #PhysEmp where surveytype_dsc =
  END       
 
 drop table #PhysEmp
-
-
+*/

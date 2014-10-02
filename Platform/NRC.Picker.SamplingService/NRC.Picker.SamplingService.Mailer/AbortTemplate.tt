@@ -1,0 +1,50 @@
+﻿<#@ template language="C#" hostspecific="True" #>
+<#@ output extension=".html" #>
+
+<#@ Assembly Name="System.Core, Version=4.0.0.0, Culture=neutral" #>
+<#@ Assembly Name="Microsoft.CSharp, Version=4.0.0.0, Culture=neutral" #>
+
+<#@ assembly name="$(TargetDir)\NRC.Picker.SamplingService.Store.dll" #>
+<#@ assembly name="$(TargetDir)\Nrc.QualiSys.Library.dll" #>
+<#@ assembly name="$(TargetDir)\Nrc.Framework.BusinessLogic.dll" #>
+
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.IO" #>
+
+<#@ import namespace="NRC.Picker.SamplingService.Store.Models" #>
+<#@ import namespace="Nrc.QualiSys.Library" #>
+
+<#@ parameter name="result" type="NRC.Picker.SamplingService.Store.Models.DatasetResult" #>
+<#@ parameter name="exception" type="System.Exception" #>
+
+
+<html>
+<head>
+<style type="text/css">
+<#@ include file="Style.css" #>
+</style>
+</head>
+<body>
+<center>
+<h1 class="alert">ERROR: Sampling Service encountered a fatal error during sampling.</h1>
+<h2>Please contact the Autosampling administrator for resolution.</h2>
+<p><#= exception.Message.ToString() #></p>
+<#
+    if (exception.InnerException != null)
+    {
+#>
+<p><#=    exception.InnerException.Message.ToString() #></p>
+<#
+    }
+#>
+<#
+    if (exception.StackTrace != null)
+    {
+#>
+<p><#=    exception.StackTrace.ToString() #></p>
+<#
+    }
+#>
+</center>
+</body>
+</html>

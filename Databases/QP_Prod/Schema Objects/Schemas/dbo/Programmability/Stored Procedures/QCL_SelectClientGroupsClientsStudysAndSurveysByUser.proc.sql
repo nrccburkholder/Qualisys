@@ -95,7 +95,7 @@ SELECT sd.Survey_id, sd.strSurvey_nm, sd.strSurvey_dsc, sd.Study_id, sd.strCutof
        sd.INTRESPONSE_RECALC_PERIOD, sd.intResurvey_Period, sd.datSurvey_Start_dt,  
        sd.datSurvey_End_dt, sd.SamplingAlgorithmID, sd.bitEnforceSkip, sd.strClientFacingName,  
        sd.SurveyType_id, sd.SurveyTypeDef_id, sd.ReSurveyMethod_id, sd.strHouseholdingType,
-	   sd.Contract, sd.Active, sd.ContractedLanguages
+	   sd.Contract, sd.Active, sd.ContractedLanguages, sd.UseUSPSAddrChangeService
   FROM #EmpStudy es  
        JOIN Survey_def sd  
          ON es.Study_id = sd.Study_id  

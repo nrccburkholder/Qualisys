@@ -1,6 +1,10 @@
 VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
+  Persistable = 0  'NotPersistable
+  DataBindingBehavior = 0  'vbNone
+  DataSourceBehavior  = 0  'vbNone
+  MTSTransactionMode  = 0  'NotAnMTSObject
 END
 Attribute VB_Name = "CQuestionaires"
 Attribute VB_GlobalNameSpace = False
@@ -1537,57 +1541,68 @@ End Property
 '\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 Public Function VerifyBatchImageCount() As Boolean
     
-    Dim sImageRoot  As String
-    Dim sGroupName  As String
-    Dim sFileName   As String
-    Dim nGroupCnt   As Integer
+    '** Added 08-06-14 CAA
+    Dim nDoVerifyBatchImageCount As Integer
+    OpenDBConnection oConn:=goConn, sConnString:=goRegMainDBConnString.Value
+    nDoVerifyBatchImageCount = GetQualProParamNum(sParamName:="DoVerifyImageCount", oConn:=goConn)
     
-    Dim asImageGroups() As String
-    
-    'Set the error trap
-    On Error GoTo ErrorHandler
-    
-    'Get the root path to the images
-    sImageRoot = BatchImageFilePath
-    
-    'Get all of the image groups
-    nGroupCnt = 0
-    ReDim asImageGroups(nGroupCnt) As String
-    
-    sGroupName = Dir$(sImageRoot, vbDirectory)
-    Do Until Len(sGroupName) = 0
-        '** Modified 10-21-04 JJF
-        'If Left(sGroupName, 1) <> "." Then
-        If Left(sGroupName, 1) <> "." And IsNumeric(sGroupName) Then
-        '** End of modification 10-21-04 JJF
-            'Add this group
-            nGroupCnt = nGroupCnt + 1
-            ReDim Preserve asImageGroups(nGroupCnt) As String
-            asImageGroups(nGroupCnt) = sImageRoot & sGroupName & "\"
-        End If
+    'Assume count matches
+    VerifyBatchImageCount = True
         
-        'Prepare for next pass
-        sGroupName = Dir$()
-    Loop
-    
-    'Determine the quantity of images in this batch
-    mnQtyImagesFound = 0
-    For nGroupCnt = 1 To UBound(asImageGroups)
-        sFileName = Dir$(asImageGroups(nGroupCnt) & "*.*", vbNormal)
-        Do Until Len(sFileName) = 0
-            'Increment the image count
-            mnQtyImagesFound = mnQtyImagesFound + 1
+    If nDoVerifyBatchImageCount = 1 Then
+        
+        Dim sImageRoot  As String
+        Dim sGroupName  As String
+        Dim sFileName   As String
+        Dim nGroupCnt   As Integer
+        
+        Dim asImageGroups() As String
+        
+        'Set the error trap
+        On Error GoTo ErrorHandler
+        
+        'Get the root path to the images
+        sImageRoot = BatchImageFilePath
+        
+        'Get all of the image groups
+        nGroupCnt = 0
+        ReDim asImageGroups(nGroupCnt) As String
+        
+        sGroupName = Dir$(sImageRoot, vbDirectory)
+        Do Until Len(sGroupName) = 0
+            '** Modified 10-21-04 JJF
+            'If Left(sGroupName, 1) <> "." Then
+            If Left(sGroupName, 1) <> "." And IsNumeric(sGroupName) Then
+            '** End of modification 10-21-04 JJF
+                'Add this group
+                nGroupCnt = nGroupCnt + 1
+                ReDim Preserve asImageGroups(nGroupCnt) As String
+                asImageGroups(nGroupCnt) = sImageRoot & sGroupName & "\"
+            End If
             
             'Prepare for next pass
-            sFileName = Dir$()
+            sGroupName = Dir$()
         Loop
-    Next nGroupCnt
-    
-    'Cleanup
-    Erase asImageGroups
-    
-    'Set return value
-    VerifyBatchImageCount = (mnQtyImagesFound = (Count * QtyImagesPerQuestionaire))
+        
+        'Determine the quantity of images in this batch
+        mnQtyImagesFound = 0
+        For nGroupCnt = 1 To UBound(asImageGroups)
+            sFileName = Dir$(asImageGroups(nGroupCnt) & "*.*", vbNormal)
+            Do Until Len(sFileName) = 0
+                'Increment the image count
+                mnQtyImagesFound = mnQtyImagesFound + 1
+                
+                'Prepare for next pass
+                sFileName = Dir$()
+            Loop
+        Next nGroupCnt
+        
+        'Cleanup
+        Erase asImageGroups
+        
+        'Set return value
+        VerifyBatchImageCount = (mnQtyImagesFound = (Count * QtyImagesPerQuestionaire))
+    End If
     
 Exit Function
 

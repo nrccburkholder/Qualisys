@@ -308,8 +308,16 @@ Public Class MethodologyProvider
         End Using
     End Function
 
-    Public Overrides Function SelectStandardMethodologiesBySurveyType(ByVal srvyType As SurveyTypes) As System.Collections.ObjectModel.Collection(Of StandardMethodology)
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectStandardMethodologiesBySurveyTypeId, srvyType)
+    'Public Overrides Function SelectStandardMethodologiesBySurveyType(ByVal srvyType As SurveyTypes) As System.Collections.ObjectModel.Collection(Of StandardMethodology)
+    '    Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectStandardMethodologiesBySurveyTypeId, srvyType, Nothing)
+
+    '    Using rdr As New SafeDataReader(ExecuteReader(cmd))
+    '        Return PopulateCollection(Of StandardMethodology)(rdr, AddressOf PopulateStandardMethodology)
+    '    End Using
+    'End Function
+
+    Public Overrides Function SelectStandardMethodologiesBySurveyType(ByVal srvyType As SurveyTypes, ByVal subType As SubType) As System.Collections.ObjectModel.Collection(Of StandardMethodology)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectStandardMethodologiesBySurveyTypeId, srvyType, SubType.SubTypeId)
 
         Using rdr As New SafeDataReader(ExecuteReader(cmd))
             Return PopulateCollection(Of StandardMethodology)(rdr, AddressOf PopulateStandardMethodology)

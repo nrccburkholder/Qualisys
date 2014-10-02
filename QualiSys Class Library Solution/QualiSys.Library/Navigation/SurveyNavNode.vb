@@ -13,9 +13,12 @@ Namespace Navigation
         Private mIsActive As Boolean
         Private mIsValidated As Boolean
         Private mSurveyType As SurveyTypes
+        Private mSurveySubtypes As SubTypeList
 
         Private mChildNodes As New NavigationNodeList
         Private mStudy As StudyNavNode
+
+        Private mHasModeMapping As Boolean
 
 #End Region
 
@@ -57,6 +60,16 @@ Namespace Navigation
             End Set
         End Property
 
+
+        Public Property SurveySubTypes() As SubTypeList
+            Get
+                Return mSurveySubtypes
+            End Get
+            Set(ByVal value As SubTypeList)
+                mSurveySubtypes = value
+            End Set
+        End Property
+
         Public Overrides Property IsActive() As Boolean
             Get
                 Return mIsActive
@@ -64,6 +77,12 @@ Namespace Navigation
             Set(ByVal value As Boolean)
                 mIsActive = value
             End Set
+        End Property
+
+        Public ReadOnly Property HasModeMapping() As Boolean
+            Get
+                Return MailingStepMethod.GetBySurveyID(mId).Count > 1
+            End Get
         End Property
 
 #End Region
@@ -138,6 +157,7 @@ Namespace Navigation
             mIsValidated = srvy.IsValidated
             mSurveyType = srvy.SurveyType
             IsActive = srvy.IsActive
+            mSurveySubtypes = srvy.SurveySubTypes
 
         End Sub
 

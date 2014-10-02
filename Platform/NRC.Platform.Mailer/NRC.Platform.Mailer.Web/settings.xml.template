@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<settings>
+  <smtp-server>###SMTP_SERVER###</smtp-server>
+  <mailer-address>###MAILER_ADDRESS###</mailer-address>
+</settings>
+

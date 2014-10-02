@@ -1,4 +1,14 @@
-﻿CREATE PROCEDURE [dbo].[csp_GetQuestionFormExtractData] 
+﻿-- =============================================
+-- Author:	Kathi Nussralalh
+-- Procedure Name: csp_GetQuestionFormExtractData
+-- Create date: 3/01/2009 
+-- Description:	Stored Procedure that extracts question form data from QP_Prod
+-- History: 1.0  3/01/2009  by Kathi Nussralalh
+--          1.1 modifed logic to handle DatUndeliverable changes
+--			1.2 by ccaouette: ACO CAHPS Project
+--          1.3 by dgilsdorf: CheckForACOCAHPSIncompletes changed to CheckForCAHPSIncompletes
+-- =============================================
+CREATE PROCEDURE [dbo].[csp_GetQuestionFormExtractData] 
 	@ExtractFileID int 
 	
 --exec [dbo].[csp_GetQuestionFormExtractData]  2238
@@ -20,7 +30,7 @@ AS
 	select @country
 	IF @country = 'US'
 	BEGIN
-		EXEC [QP_Prod].[dbo].[CheckForACOCAHPSIncompletes] 
+		EXEC [QP_Prod].[dbo].[CheckForCAHPSIncompletes] 
 		EXEC [QP_Prod].[dbo].[CheckForACOCAHPSUsablePartials]
 	END
 	
@@ -59,7 +69,7 @@ AS
 -- Add code to determine days from first mailing as well as days from current mailing until the return    
 -- Get all of the maildates for the samplepops were are extracting    
 ---------------------------------------------------------------------------------------
-	SELECT e.SamplePop_id, strLithoCode, MailingStep_id, CONVERT(DATETIME,CONVERT(VARCHAR(10),ISNULL(datMailed,datPrinted),120)) datMailed    
+	SELECT e.SamplePop_id, strLithoCode, MailingStep_id, CONVERT(DATETIME,CONVERT(VARCHAR(10),ISNULL(datMailed,datPrinted),120)) datMailed  
 	INTO #Mail    
 	FROM (SELECT SamplePop_id FROM QuestionFormTemp WITH (NOLOCK) WHERE ExtractFileID = @ExtractFileID GROUP BY SamplePop_id) e
 	INNER JOIN QP_Prod.dbo.ScheduledMailing schm WITH (NOLOCK) ON e.SamplePop_id=schm.SamplePop_id  
@@ -126,7 +136,4 @@ AS
 	                     and EntityTypeID = @EntityTypeID
 	                     and IsDeleted = 1 ) eh
 				Left join QP_Prod.dbo.QUESTIONFORM qf With (NOLOCK) on qf.QUESTIONFORM_ID = eh.PKey1 AND qf.DATRETURNED IS NULL--if datReturned is not NULL it is not a delete
-				Left join QP_Prod.dbo.SentMailing sm With (NOLOCK) on qf.SentMail_id = sm.SentMail_id   
-				
-
-    
+				Left join QP_Prod.dbo.SentMailing sm With (NOLOCK) on qf.SentMail_id = sm.SentMail_id

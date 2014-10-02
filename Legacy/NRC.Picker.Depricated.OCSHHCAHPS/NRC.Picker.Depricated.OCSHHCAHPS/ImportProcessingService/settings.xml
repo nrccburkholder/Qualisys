@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<settings>
+  <IntervalSecs>30</IntervalSecs>
+
+  <IncomingDirectory>c:\FTP_Server\OCS\UploadFiles</IncomingDirectory>
+
+  <ZipQueueDirectory>c:\NEPTUNE_FS\OCS\ZipQueue</ZipQueueDirectory>
+  <ZipArchiveDirectory>c:\NEPTUNE_FS\OCS\ZipArchive</ZipArchiveDirectory>
+  <ZipFailureDirectory>c:\NEPTUNE_FS\OCS\ZipFailure</ZipFailureDirectory>
+
+  <UploadQueueDirectory>c:\NEPTUNE_FS\OCS\UploadQueue</UploadQueueDirectory>
+  <UploadFailureDirectory>c:\NEPTUNE_FS\OCS\UploadFailure</UploadFailureDirectory>
+  <AbandonedUploadsDirectory>c:\NEPTUNE_FS\OCS\AbandonedUploads</AbandonedUploadsDirectory>
+
+  <ImportQueueDirectory>c:\NEPTUNE_FS\OCS\ImportQueue</ImportQueueDirectory>
+
+  <ClientsDirectory>c:\NEPTUNE_FS\Prod</ClientsDirectory>
+
+  <QP_DataLoadConnectionString>Server=BUMBLEBEE;Database=QP_DataLoad;user id=qpsa;password=qpsa</QP_DataLoadConnectionString>
+  <!-- QP_DataLoadConnectionString>Server=BUMBLEBEE.testnrcus.nationalresearch.com;Database=AA_QP_DataLoad;Trusted_Connection=TRUE;</QP_DataLoadConnectionString -->
+
+  <SaveXMLFiles>true</SaveXMLFiles>
+
+  <AddressCleanerPath>C:\Program Files (x86)\QualiSys\Address Cleaner\AddressCleaner.exe</AddressCleanerPath>
+
+</settings>

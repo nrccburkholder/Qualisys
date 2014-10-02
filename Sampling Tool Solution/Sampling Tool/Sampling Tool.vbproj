@@ -11,19 +11,23 @@
     <RootNamespace>Nrc.Qualisys.SamplingTool</RootNamespace>
     <AssemblyName>SamplingTool</AssemblyName>
     <MyType>WindowsForms</MyType>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <ApplicationIcon>SampTool.ico</ApplicationIcon>
     <OptionStrict>On</OptionStrict>
     <SignManifests>true</SignManifests>
-    <ManifestCertificateThumbprint>AFBFD0EF99E1CC4BA07531FE06EC83BA8EA743D8</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>C4A197BC9B34ECD5E7BB33F5F760862819B9A188</ManifestCertificateThumbprint>
     <SignAssembly>false</SignAssembly>
     <TargetZone>LocalIntranet</TargetZone>
     <GenerateManifests>true</GenerateManifests>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>\\mercury\QualisysApps\Prod\SamplingTool\</PublishUrl>
+    <PublishUrl>\\superman\NRCApplications\SamplingTool\</PublishUrl>
     <Install>false</Install>
     <InstallFrom>Unc</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -36,7 +40,7 @@
     <ProductName>Sampling Tool</ProductName>
     <PublisherName>National Research Corporation</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationVersion>3.5.4.3</ApplicationVersion>
+    <ApplicationVersion>4.0.4.0</ApplicationVersion>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

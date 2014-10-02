@@ -577,7 +577,9 @@ Public Class SamplePeriod
         samplePeriod.SurveyId = survey.Id
         samplePeriod.EmployeeId = employeeId
 
-        samplePeriod.SamplingMethod = SampleSet.SamplingMethodFromLabel(survey.SamplingMethodDefault)
+        Dim override As String = survey.SurveySubTypeOverrideName() 'will retrieve PCMH for example CJB 8/14/2014
+
+        samplePeriod.SamplingMethod = SampleSet.SamplingMethodFromLabel(survey.SamplingMethodDefault(override))
 
         If survey.SamplePeriods.Count = 0 Then
             samplePeriod.PeriodTimeFrame = TimeFrame.Active

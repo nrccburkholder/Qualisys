@@ -21,6 +21,7 @@ Public Class Survey
     Private mSurveyEndDate As Date
     Private mSamplingAlgorithm As SamplingAlgorithm
     Private mIsActive As Boolean
+    Private mUseUSPSAddrChangeService As Boolean
     Private mContractedLanguages As String = String.Empty
     Private mEnforceSkip As Boolean = True
     Private mClientFacingName As String = String.Empty
@@ -29,10 +30,8 @@ Public Class Survey
     Private mResurveyMethod As ResurveyMethod
     Private mHouseHoldingType As HouseHoldingType
     Private mHouseHoldingColumns As StudyTableColumnCollection
-    'Private mSurveySubtype As SurveySubType
-    'Private mQuestionnaireType As QuestionnaireType
-    Private mSurveySubtype As Integer = 0
-    Private mQuestionnaireType As Integer = 0
+    Private mSurveySubtypes As SubTypeList
+    Private mQuestionnaireType As SubType
 
     Private mIsDirty As Boolean
     Private mIsValidated As Boolean
@@ -49,6 +48,7 @@ Public Class Survey
     Private mIsCAHPS As Boolean = False
     Private mHasOptionCHART As Boolean = False
     Private mIsMonthlyOnly As Boolean = False
+    Private mSamplingToolPriority As Integer = 0
     Private mSamplingMethodDefault As String = String.Empty
     Private mIsSamplingMethodDisabled As Boolean = False
     Private mSamplingAlgorithmDefault As String = String.Empty
@@ -63,6 +63,8 @@ Public Class Survey
     Private mMedicareIdTextMayBeBlank As Boolean = False
     Private mCompliesWithSwitchToPropSamplingDate As Boolean = False
     Private mByPassInitRespRateNumericEnforcement As Boolean = False
+    Private mUseUSPSAddrChangeServiceDefault As Boolean = False
+
 #End Region
 
     Private Shared mSurveyTypeList As List(Of ListItem(Of SurveyTypes))
@@ -395,6 +397,19 @@ Public Class Survey
     End Property
 
     <Logable()> _
+    Public Property UseUSPSAddrChangeService() As Boolean
+        Get
+            Return mUseUSPSAddrChangeService
+        End Get
+        Set(ByVal value As Boolean)
+            If mUseUSPSAddrChangeService <> value Then
+                mUseUSPSAddrChangeService = value
+                mIsDirty = True
+            End If
+        End Set
+    End Property
+
+    <Logable()> _
     Public Property ContractedLanguages() As String
         Get
             Return mContractedLanguages
@@ -409,33 +424,34 @@ Public Class Survey
 
 
     <Logable()> _
-    Public Property SurveySubType() As Integer
+    Public Property SurveySubTypes() As SubTypeList
         Get
-            Return mSurveySubtype
+            Return mSurveySubtypes
         End Get
-        Set(ByVal value As Integer)
-
-            If mSurveySubtype <> value Then
-                mSurveySubtype = value
+        Set(ByVal value As SubTypeList)
+            mSurveySubtypes = value
+            If mSurveySubtypes.IsDirty Then
                 mIsDirty = True
             End If
-
-
         End Set
     End Property
 
     <Logable()> _
-    Public Property QuestionnaireType() As Integer
+    Public Property QuestionnaireType() As SubType
         Get
             Return mQuestionnaireType
         End Get
-        Set(ByVal value As Integer)
-            If mQuestionnaireType <> value Then
+        Set(ByVal value As SubType)
+            If mQuestionnaireType IsNot Nothing And value IsNot Nothing Then
+                If mQuestionnaireType.SubTypeId <> value.SubTypeId Then
+                    mQuestionnaireType = value
+                    mIsDirty = True
+                End If
+            ElseIf mQuestionnaireType Is Nothing And value IsNot Nothing Then
+                mQuestionnaireType = New SubType()
                 mQuestionnaireType = value
-                mIsDirty = True
+                mIsDirty = False
             End If
-
-
         End Set
     End Property
 
@@ -638,15 +654,42 @@ Public Class Survey
 
 #Region "Survey rules generic getters currently hooked up to AppConfig / QualPro_Params"
 
+    ''' <summary>
+    ''' Introduces the ability to override survey type with survey sub type for rule look-ups
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns>the name of any overriding sub type if selected</returns>
+    ''' <remarks>will retrieve PCMH for example CJB 8/14/2014</remarks>
+    Public ReadOnly Property SurveySubTypeOverrideName() As String
+        Get
+            Dim override As String = vbNullString
+            If SurveySubTypes IsNot Nothing Then
+                For Each subtype As SubType In SurveySubTypes
+                    If subtype.IsRuleOverride Then
+                        override = subtype.SubTypeName
+                    End If
+                Next
+            End If
+            Return override
+        End Get
+    End Property
+
     Public ReadOnly Property SurveyTypeName() As String
         Get
+            If mSurveyTypeList Is Nothing Then
+                GetSurveyTypes()
+            End If
             Return mSurveyTypeList(mSurveyType - 1).ToString()
         End Get
     End Property
 
-    Private Function SpecificRuleName(ByVal ruleName As String) As String
+    Private Function SpecificRuleName(ByVal ruleName As String, Optional ByVal override As String = vbNullString) As String
         Try
-            Return "SurveyRule: " + ruleName + " - " + SurveyTypeName()
+            If String.IsNullOrEmpty(override) Then
+                Return "SurveyRule: " + ruleName + " - " + SurveyTypeName()
+            Else
+                Return "SurveyRule: " + ruleName + " - " + override
+            End If
         Catch ex As Exception
             Return "SurveyRule: " + ruleName + " - " + SurveyType.ToString()
         End Try
@@ -656,10 +699,10 @@ Public Class Survey
         Return "SurveyRule: " + ruleName
     End Function
 
-    Private Sub GetSurveyRule(ByVal ruleName As String, ByRef result As String)
+    Private Sub GetSurveyRule(ByVal ruleName As String, ByRef result As String, Optional ByVal override As String = vbNullString)
         Try
             If SurveyType <> 0 Then
-                result = AppConfig.Params(SpecificRuleName(ruleName)).StringValue
+                result = AppConfig.Params(SpecificRuleName(ruleName, override)).StringValue
                 Return
             End If
         Catch
@@ -672,10 +715,10 @@ Public Class Survey
         End Try
     End Sub
 
-    Private Sub GetSurveyRule(ByVal ruleName As String, ByRef result As Integer)
+    Private Sub GetSurveyRule(ByVal ruleName As String, ByRef result As Integer, Optional ByVal override As String = vbNullString)
         Try
             If SurveyType <> 0 Then
-                result = AppConfig.Params(SpecificRuleName(ruleName)).IntegerValue
+                result = AppConfig.Params(SpecificRuleName(ruleName, override)).IntegerValue
                 Return
             End If
         Catch
@@ -688,10 +731,10 @@ Public Class Survey
         End Try
     End Sub
 
-    Private Sub GetSurveyRule(ByVal ruleName As String, ByRef result As Boolean)
+    Private Sub GetSurveyRule(ByVal ruleName As String, ByRef result As Boolean, Optional ByVal override As String = vbNullString)
         Try
             If SurveyType <> 0 Then
-                result = AppConfig.Params(SpecificRuleName(ruleName)).StringValue = "1"
+                result = AppConfig.Params(SpecificRuleName(ruleName, override)).StringValue = "1"
                 Return
             End If
         Catch
@@ -708,154 +751,138 @@ Public Class Survey
 
 #Region "SurveyRules acessing generic Survey Rule API"
 
-    Public ReadOnly Property IsCAHPS() As Boolean
+    Public ReadOnly Property IsCAHPS(Optional ByVal override As String = vbNullString) As Boolean
         Get
-            GetSurveyRule("IsCahps", mIsCAHPS)
+            GetSurveyRule("IsCahps", mIsCAHPS, override)
             Return mIsCAHPS
         End Get
     End Property
 
-    Public ReadOnly Property HasOptionCHART() As Boolean
+    Public ReadOnly Property HasOptionCHART(Optional ByVal override As String = vbNullString) As Boolean
         Get
-            GetSurveyRule("HasOptionCHART", mHasOptionCHART)
+            GetSurveyRule("HasOptionCHART", mHasOptionCHART, override)
             Return mHasOptionCHART
         End Get
     End Property
 
-    Public ReadOnly Property IsMonthlyOnly() As Boolean
+    Public ReadOnly Property IsMonthlyOnly(Optional ByVal override As String = vbNullString) As Boolean
         Get
-            GetSurveyRule("IsMonthlyOnly", mIsMonthlyOnly)
+            GetSurveyRule("IsMonthlyOnly", mIsMonthlyOnly, override)
             Return mIsMonthlyOnly
         End Get
     End Property
 
-    Public ReadOnly Property SamplingMethodDefault() As String
+    Public ReadOnly Property SamplingToolPriority(Optional ByVal override As String = vbNullString) As Integer
         Get
-            GetSurveyRule("SamplingMethodDefault", mSamplingMethodDefault)
+            GetSurveyRule("SamplingToolPriority", mSamplingToolPriority, override)
+            Return mSamplingToolPriority
+        End Get
+    End Property
+
+    Public ReadOnly Property SamplingMethodDefault(Optional ByVal override As String = vbNullString) As String
+        Get
+            GetSurveyRule("SamplingMethodDefault", mSamplingMethodDefault, override)
             Return mSamplingMethodDefault
         End Get
     End Property
 
-    Public ReadOnly Property IsSamplingMethodDisabled() As Boolean
+    Public ReadOnly Property IsSamplingMethodDisabled(Optional ByVal override As String = vbNullString) As Boolean
         Get
-            GetSurveyRule("IsSamplingMethodDisabled", mIsSamplingMethodDisabled)
+            GetSurveyRule("IsSamplingMethodDisabled", mIsSamplingMethodDisabled, override)
             Return mIsSamplingMethodDisabled
         End Get
     End Property
 
-    Public ReadOnly Property SamplingAlgorithmDefault() As String
+    Public ReadOnly Property SamplingAlgorithmDefault(Optional ByVal override As String = vbNullString) As String
         Get
-            GetSurveyRule("SamplingAlgorithmDefault", mSamplingAlgorithmDefault)
+            GetSurveyRule("SamplingAlgorithmDefault", mSamplingAlgorithmDefault, override)
             Return mSamplingAlgorithmDefault
         End Get
     End Property
 
-    Public ReadOnly Property SkipEnforcementRequired() As Boolean
+    Public ReadOnly Property SkipEnforcementRequired(Optional ByVal override As String = vbNullString) As Boolean
         Get
-            GetSurveyRule("SkipEnforcementRequired", mSkipEnforcementRequired)
+            GetSurveyRule("SkipEnforcementRequired", mSkipEnforcementRequired, override)
             Return mSkipEnforcementRequired
         End Get
     End Property
 
-    Public ReadOnly Property RespRateRecalsDaysNumericDefault() As Integer
+    Public ReadOnly Property RespRateRecalsDaysNumericDefault(Optional ByVal override As String = vbNullString) As Integer
         Get
-            GetSurveyRule("RespRateRecalcDaysNumericDefault", mRespRateRecalsDaysNumericDefault)
+            GetSurveyRule("RespRateRecalcDaysNumericDefault", mRespRateRecalsDaysNumericDefault, override)
             Return mRespRateRecalsDaysNumericDefault
         End Get
     End Property
 
-    Public ReadOnly Property ResurveyMethodDefault() As String
+    Public ReadOnly Property ResurveyMethodDefault(Optional ByVal override As String = vbNullString) As String
         Get
-            GetSurveyRule("ResurveyMethodDefault", mResurveyMethodDefault)
+            GetSurveyRule("ResurveyMethodDefault", mResurveyMethodDefault, override)
             Return mResurveyMethodDefault
         End Get
     End Property
 
-    Public ReadOnly Property ResurveyExclusionPeriodsNumericDefault() As Integer
+    Public ReadOnly Property ResurveyExclusionPeriodsNumericDefault(Optional ByVal override As String = vbNullString) As Integer
         Get
-            GetSurveyRule("ResurveyExclusionPeriodsNumericDefault", mResurveyExclusionPeriodsNumericDefault)
+            GetSurveyRule("ResurveyExclusionPeriodsNumericDefault", mResurveyExclusionPeriodsNumericDefault, override)
             Return mResurveyExclusionPeriodsNumericDefault
         End Get
     End Property
 
-    Public ReadOnly Property IsResurveyExclusionPeriodsNumericDisabled() As Boolean
+    Public ReadOnly Property IsResurveyExclusionPeriodsNumericDisabled(Optional ByVal override As String = vbNullString) As Boolean
         Get
-            GetSurveyRule("IsResurveyExclusionPeriodsNumericDisabled", mIsResurveyExclusionPeriodsNumericDisabled)
+            GetSurveyRule("IsResurveyExclusionPeriodsNumericDisabled", mIsResurveyExclusionPeriodsNumericDisabled, override)
             Return mIsResurveyExclusionPeriodsNumericDisabled
         End Get
     End Property
 
-    Public ReadOnly Property HasReportability() As Boolean
+    Public ReadOnly Property UseUSPSAddrChangeServiceDefault(Optional ByVal override As String = vbNullString) As Boolean
         Get
-            GetSurveyRule("HasReportability", mHasReportability)
+            GetSurveyRule("UseUSPSAddrChangeServiceDefault", mUseUSPSAddrChangeServiceDefault, override)
+            Return mUseUSPSAddrChangeServiceDefault
+        End Get
+    End Property
+
+    Public ReadOnly Property HasReportability(Optional ByVal override As String = vbNullString) As Boolean
+        Get
+            GetSurveyRule("HasReportability", mHasReportability, override)
             Return mHasReportability
         End Get
     End Property
 
-    Public ReadOnly Property NotEditableIfSampled() As Boolean
+    Public ReadOnly Property NotEditableIfSampled(Optional ByVal override As String = vbNullString) As Boolean
         Get
-            GetSurveyRule("NotEditableIfSampled", mNotEditableIfSampled)
+            GetSurveyRule("NotEditableIfSampled", mNotEditableIfSampled, override)
             Return mNotEditableIfSampled
         End Get
     End Property
 
-    Public ReadOnly Property IsResurveyMethodDisabled() As Boolean
+    Public ReadOnly Property IsResurveyMethodDisabled(Optional ByVal override As String = vbNullString) As Boolean
         Get
-            GetSurveyRule("IsResurveyMethodDisabled", mIsResurveyMethodDisabled)
+            GetSurveyRule("IsResurveyMethodDisabled", mIsResurveyMethodDisabled, override)
             Return mIsResurveyMethodDisabled
         End Get
     End Property
 
-    Public ReadOnly Property MedicareIdTextMayBeBlank() As Boolean
+    Public ReadOnly Property MedicareIdTextMayBeBlank(Optional ByVal override As String = vbNullString) As Boolean
         Get
-            GetSurveyRule("MedicareIdTextMayBeBlank", mMedicareIdTextMayBeBlank)
+            GetSurveyRule("MedicareIdTextMayBeBlank", mMedicareIdTextMayBeBlank, override)
             Return mMedicareIdTextMayBeBlank
         End Get
     End Property
 
-    Public ReadOnly Property CompliesWithSwitchToPropSamplingDate() As Boolean
+    Public ReadOnly Property CompliesWithSwitchToPropSamplingDate(Optional ByVal override As String = vbNullString) As Boolean
         Get
-            GetSurveyRule("CompliesWithSwitchToPropSamplingDate", mCompliesWithSwitchToPropSamplingDate)
+            GetSurveyRule("CompliesWithSwitchToPropSamplingDate", mCompliesWithSwitchToPropSamplingDate, override)
             Return mCompliesWithSwitchToPropSamplingDate
         End Get
     End Property
 
-    Public ReadOnly Property BypassInitRespRateNumericEnforcement() As Boolean
+    Public ReadOnly Property BypassInitRespRateNumericEnforcement(Optional ByVal override As String = vbNullString) As Boolean
         Get
-            GetSurveyRule("BypassInitRespRateNumericEnforcement", mByPassInitRespRateNumericEnforcement)
+            GetSurveyRule("BypassInitRespRateNumericEnforcement", mByPassInitRespRateNumericEnforcement, override)
             Return mByPassInitRespRateNumericEnforcement
         End Get
     End Property
-
-    'Public Shared ReadOnly Property DefaultResurveyExcludeDay() As Integer
-    '    Get
-    '        Return 90
-    '    End Get
-    'End Property
-
-    'Public Shared ReadOnly Property DefaultResurveyExcludeMonth() As Integer
-    '    Get
-    '        Return 1
-    '    End Get
-    'End Property
-
-    'Public Shared ReadOnly Property DefaultResurveyExcludeMonthHHCahps() As Integer
-    '    Get
-    '        Return 6
-    '    End Get
-    'End Property
-
-    'Public Shared ReadOnly Property DefaultResurveyExcludeDayPhysician() As Integer
-    '    Get
-    '        Return 365
-    '    End Get
-    'End Property
-
-    'Public Shared ReadOnly Property DefaultResurveyExcludeDayEmployee() As Integer
-    '    Get
-    '        Return 365
-    '    End Get
-    'End Property
 
 #End Region
 
@@ -947,11 +974,13 @@ Public Class Survey
                                      ByVal samplingAlgorithmId As Integer, ByVal enforceSkip As Boolean, ByVal cutoffResponseCode As String, ByVal cutoffTableId As Integer, _
                                      ByVal cutoffFieldId As Integer, ByVal sampleEncounterField As StudyTableColumn, ByVal clientFacingName As String, _
                                      ByVal surveyTypeId As Integer, ByVal surveyTypeDefId As Integer, ByVal houseHoldingType As HouseHoldingType, _
-                                     ByVal contractNumber As String, ByVal isActive As Boolean, ByVal contractedLanguages As String, ByVal surveySubTypeId As Integer, ByVal questionnaireId As Integer) As Survey
+                                     ByVal contractNumber As String, ByVal isActive As Boolean, ByVal contractedLanguages As String, ByVal srvySubTypes As SubTypeList, _
+                                     ByVal questionnairesubtype As SubType, ByVal UseUSPSAddrChangeService As Boolean) As Survey
 
         Return SurveyProvider.Instance.Insert(studyId, name, description, responseRateRecalculationPeriod, resurveyMethodId, resurveyPeriod, surveyStartDate, surveyEndDate, _
                                               samplingAlgorithmId, enforceSkip, cutoffResponseCode, cutoffTableId, cutoffFieldId, sampleEncounterField, clientFacingName, _
-                                              surveyTypeId, surveyTypeDefId, houseHoldingType, contractNumber, isActive, contractedLanguages, surveySubTypeId, questionnaireId)
+                                              surveyTypeId, surveyTypeDefId, houseHoldingType, contractNumber, isActive, contractedLanguages, srvySubTypes, questionnairesubtype, _
+                                              UseUSPSAddrChangeService)
 
     End Function
 
@@ -962,23 +991,15 @@ Public Class Survey
     End Sub
 
 
-    Public Shared Function GetSurveySubTypes(ByVal surveytypeid As Integer) As List(Of SurveySubType)
+    Public Shared Function GetSubTypes(ByVal surveytypeid As Integer, ByVal categoryid As SubtypeCategories, ByVal surveyid As Integer) As SubTypeList
 
-        Dim mSurveySubTypeList As New List(Of SurveySubType)
+        Dim mSurveySubTypeList As New SubTypeList
 
-        mSurveySubTypeList = SurveyProvider.Instance.SelectSurveySubTypes(surveytypeid)
+        mSurveySubTypeList = SurveyProvider.Instance.SelectSubTypes(surveytypeid, categoryid, surveyid)
+
+        mSurveySubTypeList.ResetDirtyFlag()
 
         Return mSurveySubTypeList
-
-    End Function
-
-    Public Shared Function GetQuestionnaireTypes(ByVal surveytypeid As Integer, ByVal questionnairetypeid As Integer) As List(Of QuestionnaireType)
-
-        Dim mQuestionnaireList As New List(Of QuestionnaireType)
-
-        mQuestionnaireList = SurveyProvider.Instance.SelectQuestionnaireTypes(surveytypeid, questionnairetypeid)
-
-        Return mQuestionnaireList
 
     End Function
 
@@ -1135,7 +1156,7 @@ Public Class Survey
             mBusinessRules = Nothing
             mIsActive = .mIsActive
             ContractedLanguages = .ContractedLanguages
-            mSurveySubtype = .mSurveySubtype
+            mSurveySubtypes = .mSurveySubtypes
             mQuestionnaireType = .mQuestionnaireType
         End With
 

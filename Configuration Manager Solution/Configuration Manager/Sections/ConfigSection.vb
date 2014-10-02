@@ -1,4 +1,5 @@
 Imports Nrc.QualiSys.Library
+Imports Nrc.QualiSys.Library.Navigation
 
 Public Class ConfigSection
 
@@ -63,6 +64,7 @@ Public Class ConfigSection
         mSurveyModules.Add(New FormLayoutModule(ConfigPanel))
         mSurveyModules.Add(New SampleUnitMappingsModule(ConfigPanel))
         mSurveyModules.Add(New MethodologyModule(ConfigPanel))
+        mSurveyModules.Add(New ModeSectionMappingModule(ConfigPanel))
         mSurveyModules.Add(New PersonalizationModule(ConfigPanel))
         mSurveyModules.Add(New ValidationModule(ConfigPanel))
         mSurveyModules.Add(New TestPrintModule(ConfigPanel))

@@ -38,35 +38,35 @@ Namespace DataProvider
         Public MustOverride Function SelectResurveyMethod() As List(Of ListItem(Of ResurveyMethod))
         Public MustOverride Function IsSurveySampled(ByVal surveyId As Integer) As Boolean
         Public MustOverride Sub Update(ByVal survey As Survey)
-        Public MustOverride Function Insert(ByVal studyId As Integer,
-                                            ByVal name As String,
+        Public MustOverride Function Insert(ByVal studyId As Integer, _
+                                            ByVal name As String, _
                                             ByVal description As String, _
-                                            ByVal responseRateRecalculationPeriod As Integer,
-                                            ByVal resurveyMethodId As ResurveyMethod,
-                                            ByVal resurveyPeriod As Integer,
-                                            ByVal surveyStartDate As Date,
-                                            ByVal surveyEndDate As Date,
-                                            ByVal samplingAlgorithmId As Integer,
-                                            ByVal enforceSkip As Boolean,
-                                            ByVal cutoffResponseCode As String,
-                                            ByVal cutoffTableId As Integer,
-                                            ByVal cutoffFieldId As Integer,
-                                            ByVal SampleEncounterField As StudyTableColumn,
-                                            ByVal clientFacingName As String,
-                                            ByVal surveyTypeId As Integer,
+                                            ByVal responseRateRecalculationPeriod As Integer, _
+                                            ByVal resurveyMethodId As ResurveyMethod, _
+                                            ByVal resurveyPeriod As Integer, _
+                                            ByVal surveyStartDate As Date, _
+                                            ByVal surveyEndDate As Date, _
+                                            ByVal samplingAlgorithmId As Integer, _
+                                            ByVal enforceSkip As Boolean, _
+                                            ByVal cutoffResponseCode As String, _
+                                            ByVal cutoffTableId As Integer, _
+                                            ByVal cutoffFieldId As Integer, _
+                                            ByVal SampleEncounterField As StudyTableColumn, _
+                                            ByVal clientFacingName As String, _
+                                            ByVal surveyTypeId As Integer, _
                                             ByVal surveyTypeDefId As Integer, _
-                                            ByVal houseHoldingType As HouseHoldingType,
-                                            ByVal contractNumber As String,
-                                            ByVal isActive As Boolean,
-                                            ByVal contractedLanguages As String,
-                                            ByVal surveySubTypeId As Integer,
-                                            ByVal questionnaireTypeId As Integer
+                                            ByVal houseHoldingType As HouseHoldingType, _
+                                            ByVal contractNumber As String, _
+                                            ByVal isActive As Boolean, _
+                                            ByVal contractedLanguages As String, _
+                                            ByVal surveysubtypes As SubTypeList, _
+                                            ByVal questionnairesubtype As SubType, _
+                                            ByVal UseUSPSAddrChangeService As Boolean _
                                            ) As Survey
         Public MustOverride Sub Delete(ByVal surveyId As Integer)
         Public MustOverride Function AllowDelete(ByVal surveyId As Integer) As Boolean
         Public MustOverride Function PerformSurveyValidation(ByVal surveyId As Integer) As SurveyValidationResult
-        Public MustOverride Function SelectSurveySubTypes(ByVal surveytypeid As Integer) As List(Of SurveySubType)
-        Public MustOverride Function SelectQuestionnaireTypes(ByVal surveytypeid As Integer, ByVal questionnairetypeid As Integer) As List(Of QuestionnaireType)
+        Public MustOverride Function SelectSubTypes(ByVal surveytypeid As Integer, ByVal categorytype_id As SubtypeCategories, ByVal survey_id As Integer) As SubTypeList
 
 #End Region
 

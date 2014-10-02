@@ -1,0 +1,38 @@
+﻿body
+{
+    font-family: sans-serif;
+}
+h1
+{
+    font-size: 20px;
+}
+h2
+{
+    font-size: 17px;
+}
+h3
+{
+    font-size: 15px;
+}
+table
+{
+    width: 1000px;
+    border: solid 1px black;
+    font-size: 13px;
+}
+th, td
+{
+    border: solid 1px black;
+    padding: 3px;
+    text-align: center;
+}
+.field
+{
+    width: 120px;
+}
+
+.alert
+{
+    font-weight: bold;
+    color: red;
+}
