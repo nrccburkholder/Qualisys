@@ -44,6 +44,7 @@ type
     integrated : boolean;
     letterhead : boolean;
     description : string;
+    existingTextBoxMappings : string;
   end;
   TF_DynaQ = class(TForm)
     MainMenu1: TMainMenu;
@@ -465,6 +466,7 @@ type
     procedure updatecorelist;
     Function GetRawText(r:trichedit):string;
     procedure DeleteAllForeignRecs(const Lang:string);
+    function DuplicatePageName(pageName : string; index : integer) : boolean;
   public
    procedure ShowProps;
    function LunchWithHandle(s:string):boolean;
@@ -2060,6 +2062,7 @@ procedure TF_DynaQ.SetTabs;
         letterhead := false;
         PageType := -1;
         description := '';
+        existingTextBoxMappings := '';
       end;
   end;
 var i : integer;
@@ -2828,6 +2831,7 @@ var I : integer;
         end
         else
           TextBoxName := '';
+        TextBoxMappings := '';                           // To be filled in down in GetTextBoxMappings
         Language := fieldbyname('Language').value;
         tBlobField(fieldbyname('RichText')).SaveTofile(dmOpenQ.tempdir+'\RichEdit.rtf');
         with tRichEdit(controls[0]) do begin
@@ -2984,12 +2988,20 @@ var I : integer;
     end;
   end;
 
+  procedure getTextBoxMappings;
+  begin
+  //TODO CJB collect all mappings by survey_id
+  //TODO CJB assign mappings for TextBoxes TextBoxMappings property
+  //TODO CJB assign mappings of TextBoxes to Cover Letter existingTextBoxMappings
+  end;
+
 begin
   ScrollboxCovers.visible := false;
   printmockup1.enabled := true;
   ClearElementList;
   PageBreak1.enabled := true;
   getTextBoxes;
+  getTextBoxMappings;
   getLogos;
   getPCL;
   case pagetabs[pg].pagetype of
@@ -3148,6 +3160,17 @@ begin
   end;
 end;
 
+function TF_DynaQ.DuplicatePageName(pageName : string; index : integer) : boolean;
+var i : integer;
+begin
+  result := false;
+
+  for i := 0 to 9 do
+    if i <> index then
+      if pagetabs[i].description = pageName then
+        result := true;
+end;
+
 procedure TF_DynaQ.CoverLetter1Click(Sender: TObject);
 var s : string;
     i : integer;
@@ -3173,7 +3196,8 @@ var s : string;
   end;
 begin
   s := InputBox('Enter Name','What''s the new letter''s name?','Cover'+inttostr(tabset1.tabs.count+1));
-  if s <> '' then
+  if (s <> '') and not DuplicatePageName(s,-1) and
+    not DuplicatePageName('['+s+']',-1) and (pos('[',s) = 0) and (pos(']',s) = 0) then
     with Tabset1 do begin
       SaveCover(tabindex);
       if NewPage(tabs.count,s,pagetabs[tabindex].integrated,pagetabs[tabindex].letterhead,1) then begin
@@ -3190,7 +3214,9 @@ begin
         FireTabChangeEvent := true;
         LoadCover(tabs.count-1);
       end;
-    end;
+    end
+  else
+    showmessage('Cover Letter Name Invalid: ' + s);
 end;
 
 procedure TF_DynaQ.Delete3Click(Sender: TObject);
@@ -3254,22 +3280,31 @@ begin
       if ShowModal = mrOK then begin
         dmOpenQ.SaveDialog.tag := 2;
 
-        description := edPageName.text;
-        tabset1.tabs[tabset1.tabindex] := edPageName.text;
-
-        if cbArtifactsPage.checked then
+        if not DuplicatePageName(edPagename.text, tabset1.tabindex) and
+          not DuplicatePageName('[' + edPagename.text +']', tabset1.tabindex) and
+          (pos('[',edPagename.text) = 0) and
+          (pos(']',edPagename.text) = 0) then
         begin
-          tabset1.tabs[tabset1.tabindex] := '[' + edPageName.text + ']';
-          pagetype := ptArtifacts
+          description := edPageName.text;
+          tabset1.tabs[tabset1.tabindex] := edPageName.text;
+
+          if cbArtifactsPage.checked then
+          begin
+            tabset1.tabs[tabset1.tabindex] := '[' + edPageName.text + ']';
+            pagetype := ptArtifacts
+          end
+          else
+            if rgPaperType.Itemindex = 0 then
+              pagetype := ptLetter
+            else
+              if rgPostcardsize.itemindex = 0 then
+                pagetype := ptLetterCard
+              else
+                pagetype := ptLegalCard;
         end
         else
-          if rgPaperType.Itemindex = 0 then
-            pagetype := ptLetter
-          else
-            if rgPostcardsize.itemindex = 0 then
-              pagetype := ptLetterCard
-            else
-              pagetype := ptLegalCard;
+          showmessage('Duplicate/Invalid Cover Letter name not allowed: ' + edPageName.Text);
+
         Integrated := (rgIntegrated.itemindex = 0);
         Letterhead := (rgIntegrated.itemindex = 2);
         with dmOpenQ.wwt_cover do

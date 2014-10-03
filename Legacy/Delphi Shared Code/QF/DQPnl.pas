@@ -11,7 +11,7 @@ uses
   Classes, 
   Graphics, 
   Controls, 
-  Forms, 
+  Forms,
   Dialogs, 
   Menus, 
   ExtCtrls;
@@ -23,6 +23,7 @@ type
     FModified: boolean;
     FKnownDimensions: boolean;
     FTextBoxName: string;
+    FTextBoxMappings: string;
     FPCL: string;
     FLanguage: integer;
     FIndent: integer;
@@ -36,6 +37,7 @@ type
     property Modified: boolean read FModified write FModified default false;  { Run-time access only }
     property KnownDimensions: boolean read FKnownDimensions write FKnownDimensions default false;  { Run-time access only }
     property TextBoxName: string read FTextBoxName write FTextBoxName;  { Run-time access only }
+    property TextBoxMappings: string read FTextBoxMappings write FTextBoxMappings;  { Run-time access only }
     property PCL: string read FPCL write FPCL;  { Run-time access only }
     property Language: integer read FLanguage write FLanguage;  { Run-time access only }
   published

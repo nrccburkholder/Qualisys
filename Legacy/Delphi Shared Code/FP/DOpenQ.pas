@@ -6223,6 +6223,7 @@ begin
       cn.execute('delete from sel_TextBox where Type is null');
       cn.execute('update sel_TextBox set Label = ''## NO LABEL ##'' where Label = '''' or Label is null'); // 10/2/2014 CJB these labels get turned back to blanks in SP_FL_SaveSurvey
       MoveFlds(T,wwT_TextBox);
+      cn.execute('update sel_TextBox set Label = '''' where Label = ''## NO LABEL ##'' or Label is null'); // 10/2/2014 CJB these labels get turned back to blanks in SP_FL_SaveSurvey
       myMessage('Saving '+inttostr(glbSurveyID)+' PCL Inserts');
       MoveFlds(P,wwT_PCL);
       myMessage('Saving '+inttostr(glbSurveyID)+' Cover Letters && Postcards');
