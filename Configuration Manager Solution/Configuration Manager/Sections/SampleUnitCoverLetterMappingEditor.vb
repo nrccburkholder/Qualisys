@@ -45,6 +45,12 @@ Public Class SampleUnitCoverLetterMappingEditor
 
 #Region "event handlers"
 
+    Private Sub gvMappings_CustomRowCellEdit(sender As Object, e As DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventArgs) Handles gvMappings.CustomRowCellEdit
+        If gvMappings.IsFilterRow(e.RowHandle) AndAlso e.Column.FieldName = "Image" Then
+            e.RepositoryItem = newRepositoryItem
+        End If
+    End Sub
+
     Private Sub gvMappings_RowClick(sender As Object, e As DevExpress.XtraGrid.Views.Grid.RowClickEventArgs) Handles gvMappings.RowClick
 
         Dim mapping As CoverLetterMapping = DirectCast(gvMappings.GetRow(e.RowHandle), CoverLetterMapping)
@@ -85,7 +91,7 @@ Public Class SampleUnitCoverLetterMappingEditor
                 '    e.Appearance.ForeColor = Color.Green
                 Case MappingStatus.Duplicate
                     e.Appearance.ForeColor = Color.Red
-                Case MappingStatus.NeedsDelete
+                    'Case MappingStatus.NeedsDelete
                     'e.Appearance.Font = New Font(e.Appearance.Font, e.Appearance.Font.Style Or FontStyle.Strikeout)
             End Select
 
