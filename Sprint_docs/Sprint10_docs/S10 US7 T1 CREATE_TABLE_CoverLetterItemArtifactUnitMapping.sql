@@ -78,7 +78,8 @@ as
 SET NOCOUNT ON
 
 SELECT m.CoverLetterItemArtifactUnitMapping_id, m.Survey_id
-	, m.SampleUnit_id, su.strSampleUnit_nm
+	, m.SampleUnit_id
+	, su.strSampleUnit_nm
 	, m.CoverLetterItemType_id
 	, m.CoverLetter_dsc
 	, m.CoverLetterItem_label
