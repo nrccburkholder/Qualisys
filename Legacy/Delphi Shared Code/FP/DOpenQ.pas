@@ -304,6 +304,7 @@ type
     procedure FoxProPRG(fn:string);
 {$IFDEF FormLayout}
     function MappedSections:boolean;
+    function MappedTextBoxesByCL(coverLetter : string) : string;
     procedure CodeReport(const fn:string);
     function FindNextUntranslated:char;
     function QuestionProperties:boolean;
@@ -1098,6 +1099,30 @@ begin
   rs.close;
   rs:=unassigned;
 end;
+
+function TDMOpenQ.MappedTextBoxesByCL(coverLetter : string) : string;
+begin
+  result := '';
+
+  if not laptop then
+    {with ww_Query do }begin
+      {ww_Query.close;}
+      ww_Query.databasename := '_QualPro';
+      ww_Query.sql.clear;
+      ww_Query.sql.add('select CoverLetter_dsc, CoverLetterItem_label, Artifact_dsc, ArtifactItem_label'+
+              ' from CoverLetterItemArtifactUnitMapping' +
+              ' where survey_id = ' + inttostr(glbSurveyID) +
+              ' and ((CoverLetter_dsc = ''' + coverLetter + ''')' +
+              ' or (Artifact_dsc = ''' + coverLetter + '''))');
+      ww_Query.open;
+      while not ww_Query.eof do begin
+        result := result + ww_Query.fieldbyname('CoverLetter_dsc').AsString + '.' + ww_Query.fieldbyname('CoverLetterItem_label').AsString + '<=';
+        result := result + ww_Query.fieldbyname('Artifact_dsc').AsString + '.' + ww_Query.fieldbyname('ArtifactItem_label').AsString + '! ';
+        ww_Query.next;
+      end;
+      ww_Query.close;
+    end;
+end ;
 
 procedure TDMOpenQ.DeleteThis;
 var

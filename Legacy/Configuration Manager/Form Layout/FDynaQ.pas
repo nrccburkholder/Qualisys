@@ -2485,6 +2485,8 @@ begin
       lblTextBoxName.Visible := true;
       edTextBoxName.Visible := true;
       edTextBoxName.Text := tDQPanel(WLKHandle.children[0]).TextBoxName;
+      edTextBoxName.Enabled := (tDQPanel(WLKHandle.children[0]).TextBoxMappings = '');
+      lblTextBoxName.Hint := tDQPanel(WLKHandle.children[0]).TextBoxMappings;
       if edTextBoxName.Text <> '' then
         cbItemSelector.Items.Delete(cbItemSelector.Items.IndexOf(edTextBoxName.Text));
       wtText.Edit;
@@ -2989,10 +2991,30 @@ var I : integer;
   end;
 
   procedure getTextBoxMappings;
+  var
+    sThisMapping, sMappings : string;
+    i : integer;
   begin
-  //TODO CJB collect all mappings by survey_id
-  //TODO CJB assign mappings for TextBoxes TextBoxMappings property
-  //TODO CJB assign mappings of TextBoxes to Cover Letter existingTextBoxMappings
+    pagetabs[pg].existingTextBoxMappings := dmOpenQ.MappedTextBoxesByCL(pagetabs[pg].description);
+    sMappings := pagetabs[pg].existingTextBoxMappings;
+
+    while sMappings <> '' do
+    begin
+      sThisMapping := Copy(sMappings, 1, Pos('! ',sMappings) + 1);
+
+      for i := 0 to ElementList.count-1 do
+        if isTextBox(ElementList[i]) then
+          if (tDQPanel(ElementList[i]).TextBoxName <> '') and
+             ((Pos(pagetabs[pg].description + '.' + tDQPanel(ElementList[i]).TextBoxName, sThisMapping) = 1) or
+             (Pos(pagetabs[pg].description + '.' + tDQPanel(ElementList[i]).TextBoxName, sThisMapping) =
+              Pos('<=',sThisMapping) + 2)) then
+            begin
+              tDQPanel(ElementList[i]).TextBoxMappings := tDQPanel(ElementList[i]).TextBoxMappings + sThisMapping;
+              break;
+            end;
+
+      sMappings := Copy(sMappings, Pos('! ',sMappings) + 2, Length(sMappings) - Pos('! ',sMappings) + 1);
+    end;
   end;
 
 begin
@@ -3262,6 +3284,8 @@ begin
         edPagename.text := copy(tabset1.tabs[tabset1.tabindex],2,length(tabset1.tabs[tabset1.tabindex])-2)
       else
         edPagename.text := tabset1.tabs[tabset1.tabindex];
+      edPagename.Enabled := (existingTextBoxMappings = '');
+      Label1.Hint := existingTextBoxMappings;
 
       if pagetype = ptLetter then
         rgPaperType.itemindex := 0
