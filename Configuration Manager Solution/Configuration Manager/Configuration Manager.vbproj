@@ -49,7 +49,7 @@
     <PublisherName>National Research Corporation</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>4.4.10.0</ApplicationVersion>
+    <ApplicationVersion>4.4.11.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -159,10 +159,6 @@
     <Reference Include="Interop.ValidateSurvey, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Referenced Assemblies\Interop.ValidateSurvey.dll</HintPath>
-    </Reference>
-    <Reference Include="Interop.VBA">
-      <HintPath>..\..\..\TFS\NRCPicker\2013-12-10 ACO CAHPS\Configuration Manager Solution\Configuration Manager\bin\Release\Interop.VBA.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=55cf2641107b9bd6">
       <SpecificVersion>False</SpecificVersion>

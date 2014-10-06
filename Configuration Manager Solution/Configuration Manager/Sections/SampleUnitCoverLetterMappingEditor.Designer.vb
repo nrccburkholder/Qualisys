@@ -92,6 +92,7 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.btnMap = New System.Windows.Forms.Button()
         Me.InformationBar = New Nrc.Qualisys.ConfigurationManager.InformationBar()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
+        Me.ToolTipController1 = New DevExpress.Utils.ToolTipController(Me.components)
         Me.BottomPanel.SuspendLayout()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -495,6 +496,7 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.gcMappings.RepositoryItems.AddRange(New DevExpress.XtraEditors.Repository.RepositoryItem() {Me.RepositoryItemPictureEdit1})
         Me.gcMappings.Size = New System.Drawing.Size(561, 180)
         Me.gcMappings.TabIndex = 5
+        Me.gcMappings.ToolTipController = Me.ToolTipController1
         Me.gcMappings.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.gvMappings})
         '
         'UnMapContextMenu
@@ -753,6 +755,9 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.SaveFileDialog1.DefaultExt = "xlsx"
         Me.SaveFileDialog1.Filter = "Excel files (*.xlsx)|*.xlsx"
         '
+        'ToolTipController1
+        '
+        '
         'SampleUnitCoverLetterMappingEditor
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -869,5 +874,6 @@ Partial Class SampleUnitCoverLetterMappingEditor
     Friend WithEvents ToolStripSeparator7 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents tsbtnExportToExcel As System.Windows.Forms.ToolStripButton
     Friend WithEvents SaveFileDialog1 As System.Windows.Forms.SaveFileDialog
+    Friend WithEvents ToolTipController1 As DevExpress.Utils.ToolTipController
 
 End Class
