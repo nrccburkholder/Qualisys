@@ -5,17 +5,15 @@ Imports DevExpress.XtraGrid.Views.Base
 Imports DevExpress.XtraGrid.Views.Base.ViewInfo
 Imports DevExpress.XtraGrid.Views.Grid.ViewInfo
 Imports System.Text.RegularExpressions
+Imports DevExpress.Utils
+Imports DevExpress.XtraGrid.Views.Grid
+Imports DevExpress.XtraGrid.Columns
 
 Public Class SampleUnitCoverLetterMappingEditor
 
 #Region "Enums"
 
-    Public Enum MappingStatus
-        OK = 0
-        IsNew = 1
-        Duplicate = 2
-        NeedsDelete = 3
-    End Enum
+
 
 #End Region
 
@@ -44,6 +42,55 @@ Public Class SampleUnitCoverLetterMappingEditor
 #End Region
 
 #Region "event handlers"
+
+    Private Sub ToolTipController1_GetActiveObjectInfo(sender As System.Object, e As DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventArgs) Handles ToolTipController1.GetActiveObjectInfo
+        If Not e.SelectedControl Is gcMappings Then Return
+
+        Dim info As ToolTipControlInfo = Nothing
+        'Get the view at the current mouse position
+        Dim view As GridView = CType(gcMappings.GetViewAt(e.ControlMousePosition), GridView)
+        If view Is Nothing Then Return
+        'Get the view's element information that resides at the current position
+        Dim hitInfo As GridHitInfo = view.CalcHitInfo(e.ControlMousePosition)
+        'Display a hint for row indicator cells
+
+        If hitInfo.InRow Then
+
+            If hitInfo.RowHandle = DevExpress.XtraGrid.GridControl.AutoFilterRowHandle Then
+                Exit Sub
+            End If
+
+            Dim col As GridColumn = hitInfo.Column
+
+            If col IsNot Nothing Then
+
+                If col.FieldName = "Image" Then
+                    Dim status As CoverLetterMappingStatusCodes = DirectCast(gvMappings.GetRowCellValue(hitInfo.RowHandle, "Status"), CoverLetterMappingStatusCodes)
+                    Dim tipText As String = String.Empty
+                    Dim o As Object = hitInfo.HitTest.ToString() + hitInfo.RowHandle.ToString()
+                    Select Case status
+                        Case CoverLetterMappingStatusCodes.None
+                            tipText = "OK"
+                            info = New ToolTipControlInfo(o, tipText)
+                        Case (CoverLetterMappingStatusCodes.IsNew)
+                            tipText = "New"
+                            info = New ToolTipControlInfo(o, tipText)
+                        Case CoverLetterMappingStatusCodes.Duplicate
+                            tipText = "Duplicate Mapping"
+                            info = New ToolTipControlInfo(o, tipText)
+                        Case CoverLetterMappingStatusCodes.NeedsDelete
+                            tipText = "Flagged for Deletion"
+                            info = New ToolTipControlInfo(o, tipText)
+                    End Select
+
+                End If
+            End If
+
+        End If
+
+        'Supply tooltip information if applicable, otherwise preserve default tooltip (if any)
+        If Not info Is Nothing Then e.Info = info
+    End Sub
 
     Private Sub gvMappings_CustomRowCellEdit(sender As Object, e As DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventArgs) Handles gvMappings.CustomRowCellEdit
         If gvMappings.IsFilterRow(e.RowHandle) AndAlso e.Column.FieldName = "Image" Then
@@ -82,38 +129,36 @@ Public Class SampleUnitCoverLetterMappingEditor
 
         If e.Column.Name <> "colStatusImage" Then
 
-            Dim status As MappingStatus = DirectCast(gvMappings.GetRowCellValue(e.RowHandle, "Status"), MappingStatus)
+            Dim status As CoverLetterMappingStatusCodes = DirectCast(gvMappings.GetRowCellValue(e.RowHandle, "Status"), CoverLetterMappingStatusCodes)
 
             Select Case status
                 'Case MappingStatus.OK
                 '    e.Appearance.ForeColor = Color.Blue
                 'Case(MappingStatus.IsNew)
                 '    e.Appearance.ForeColor = Color.Green
-                Case MappingStatus.Duplicate
+                Case CoverLetterMappingStatusCodes.Duplicate
                     e.Appearance.ForeColor = Color.Red
-                    'Case MappingStatus.NeedsDelete
+                Case CoverLetterMappingStatusCodes.NeedsDelete
                     'e.Appearance.Font = New Font(e.Appearance.Font, e.Appearance.Font.Style Or FontStyle.Strikeout)
             End Select
 
         End If
     End Sub
 
-
-
     Private Sub gvMappings_CustomUnboundColumnData(sender As Object, e As DevExpress.XtraGrid.Views.Base.CustomColumnDataEventArgs) Handles gvMappings.CustomUnboundColumnData
 
         If String.Compare(e.Column.Name, "colStatusImage", False) = 0 AndAlso e.IsGetData Then
 
-            Dim status As MappingStatus = DirectCast(gvMappings.GetRowCellValue(e.RowHandle, "Status"), MappingStatus)
+            Dim status As CoverLetterMappingStatusCodes = DirectCast(gvMappings.GetRowCellValue(e.RowHandle, "Status"), CoverLetterMappingStatusCodes)
 
             Select Case status
-                Case MappingStatus.OK
+                Case CoverLetterMappingStatusCodes.None
                     e.Value = My.Resources.Validation16
-                Case MappingStatus.IsNew
+                Case CoverLetterMappingStatusCodes.IsNew
                     e.Value = My.Resources.New16
-                Case MappingStatus.Duplicate
+                Case CoverLetterMappingStatusCodes.Duplicate
                     e.Value = My.Resources.NoWay16
-                Case MappingStatus.NeedsDelete
+                Case CoverLetterMappingStatusCodes.NeedsDelete
                     e.Value = My.Resources.DeleteRed16
             End Select
 
@@ -133,11 +178,11 @@ Public Class SampleUnitCoverLetterMappingEditor
     End Sub
 
     Private Sub SampleUnitTreeView_BeforeFocusNode(sender As Object, e As DevExpress.XtraTreeList.BeforeFocusNodeEventArgs) Handles SampleUnitTreeView.BeforeFocusNode
-        If e.Node IsNot Nothing Then
-            If e.Node.ParentNode Is Nothing Then
-                e.CanFocus = False ' prevents the root node from being selected
-            End If
-        End If
+        'If e.Node IsNot Nothing Then
+        '    If e.Node.ParentNode Is Nothing Then
+        '        e.CanFocus = False ' prevents the root node from being selected
+        '    End If
+        'End If
 
     End Sub
 
@@ -178,8 +223,12 @@ Public Class SampleUnitCoverLetterMappingEditor
 
     Public Sub IdleEvent(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
-        ' only map if 
-        btnMap.Enabled = SampleUnitTreeView.Selection.Count > 0 And gvCoverLetters.SelectedRowsCount > 0 And gvArtifacts.SelectedRowsCount > 0
+
+        Dim isRootNodeSelected As Boolean = SampleUnitTreeView.Nodes(0).Selected
+
+        ' only map if there is a sample unit, cover letter and artifact selected, unless the sample unit is the root.  Then the map button will be disabled.
+        btnMap.Enabled = SampleUnitTreeView.Selection.Count > 0 And gvCoverLetters.SelectedRowsCount > 0 And gvArtifacts.SelectedRowsCount > 0 And Not isRootNodeSelected
+
         btnUnmap.Enabled = gvMappings.SelectedRowsCount > 0
 
         'Don't allow save unless all mappings are valid (that is, they are not duplicates)
@@ -262,7 +311,6 @@ Public Class SampleUnitCoverLetterMappingEditor
                 Dim parentForRootNodes As TreeListNode = Nothing
                 Dim rootNode As TreeListNode = SampleUnitTreeView.AppendNode(New Object() {unit.DisplayLabel, unit.CAHPSTypeName}, parentForRootNodes)
                 rootNode.Tag = unit
-                rootNode.Visible = False
                 PopulateChildTreeNodes(rootNode)
             End If
         Next
@@ -294,13 +342,19 @@ Public Class SampleUnitCoverLetterMappingEditor
         Dim criteriaString As String = String.Empty
         Dim inList As String = String.Empty
 
-        For Each node As TreeListNode In Me.SampleUnitTreeView.Selection
-            'Me.mSelectedSampleUnits.Add(DirectCast(node.Tag, SampleUnit))
-            Dim sunit As SampleUnit = DirectCast(node.Tag, SampleUnit)
-            If sunit IsNot Nothing Then
-                inList = String.Concat(inList, sunit.Id.ToString(), ",")
-            End If
 
+        ' if there are multiple selections, but one of the selections is the root, unselect the root
+        If SampleUnitTreeView.Selection.Count > 1 Then
+            If SampleUnitTreeView.Nodes(0).Selected Then SampleUnitTreeView.Nodes(0).Selected = False
+        End If
+
+        For Each node As TreeListNode In Me.SampleUnitTreeView.Selection
+            If Not node.ParentNode Is Nothing Then  ' this will exclude the root node
+                Dim sunit As SampleUnit = DirectCast(node.Tag, SampleUnit)
+                If sunit IsNot Nothing Then
+                    inList = String.Concat(inList, sunit.Id.ToString(), ",")
+                End If
+            End If
         Next
 
         If Not inList.Equals(String.Empty) Then
@@ -362,9 +416,9 @@ Public Class SampleUnitCoverLetterMappingEditor
                     ' check to see if this mapping already exists
                     If ValidateMapping(mappedUnit) Then
 
-                        mappedUnit.Status = MappingStatus.IsNew
+                        mappedUnit.Status = CoverLetterMappingStatusCodes.IsNew
                     Else
-                        mappedUnit.Status = MappingStatus.Duplicate
+                        mappedUnit.Status = CoverLetterMappingStatusCodes.Duplicate
                         hasDuplicate = True
 
                     End If
@@ -419,7 +473,7 @@ Public Class SampleUnitCoverLetterMappingEditor
                         If mappedItem.IsNew = False Then
                             ' If this is an existing MappedQuestion, then flag it for deletion
                             mappedItem.NeedsDelete = True
-                            mappedItem.Status = MappingStatus.NeedsDelete
+                            mappedItem.Status = CoverLetterMappingStatusCodes.NeedsDelete
                             ResetDuplicate(mappedItem)
                         Else
                             'otherwise, just remove it from the list
@@ -441,8 +495,8 @@ Public Class SampleUnitCoverLetterMappingEditor
     Private Sub ResetDuplicate(ByVal mapping As CoverLetterMapping)
 
         For Each item As CoverLetterMapping In mMappings
-            If item.Equals(mapping) And item.Status = MappingStatus.Duplicate Then
-                item.Status = MappingStatus.IsNew
+            If item.Equals(mapping) And item.Status = CoverLetterMappingStatusCodes.Duplicate Then
+                item.Status = CoverLetterMappingStatusCodes.IsNew
             End If
         Next
 
@@ -476,6 +530,7 @@ Public Class SampleUnitCoverLetterMappingEditor
         For Each mapping As CoverLetterMapping In mMappings
             If Not mapping.NeedsDelete Then ' ignore mappings that have already been marked as NeedsDelete
                 If mapping.Equals(unit) Then
+                    mapping.Status = CoverLetterMappingStatusCodes.Duplicate
                     result = False
                 End If
             End If
@@ -491,7 +546,7 @@ Public Class SampleUnitCoverLetterMappingEditor
 
         For Each MappedItem As CoverLetterMapping In mMappings
 
-            If MappedItem.Status = MappingStatus.Duplicate Then
+            If MappedItem.Status = CoverLetterMappingStatusCodes.Duplicate Then
                 result = False
                 Exit For
             End If
@@ -550,6 +605,11 @@ Public Class SampleUnitCoverLetterMappingEditor
     End Function
 
 #End Region
+
+    Private Function MappingStatus() As Object
+        Throw New NotImplementedException
+    End Function
+
 End Class
 
 Friend Class MyCoverLetter
@@ -580,7 +640,7 @@ Friend Class MyCoverLetter
         End Set
     End Property
 
-    
+
 
     Public Property Label As String
         Get
