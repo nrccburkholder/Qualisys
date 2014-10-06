@@ -145,8 +145,6 @@ Public Class SampleUnitCoverLetterMappingEditor
         End If
     End Sub
 
-
-
     Private Sub gvMappings_CustomUnboundColumnData(sender As Object, e As DevExpress.XtraGrid.Views.Base.CustomColumnDataEventArgs) Handles gvMappings.CustomUnboundColumnData
 
         If String.Compare(e.Column.Name, "colStatusImage", False) = 0 AndAlso e.IsGetData Then
@@ -180,11 +178,11 @@ Public Class SampleUnitCoverLetterMappingEditor
     End Sub
 
     Private Sub SampleUnitTreeView_BeforeFocusNode(sender As Object, e As DevExpress.XtraTreeList.BeforeFocusNodeEventArgs) Handles SampleUnitTreeView.BeforeFocusNode
-        If e.Node IsNot Nothing Then
-            If e.Node.ParentNode Is Nothing Then
-                e.CanFocus = False ' prevents the root node from being selected
-            End If
-        End If
+        'If e.Node IsNot Nothing Then
+        '    If e.Node.ParentNode Is Nothing Then
+        '        e.CanFocus = False ' prevents the root node from being selected
+        '    End If
+        'End If
 
     End Sub
 
@@ -225,8 +223,12 @@ Public Class SampleUnitCoverLetterMappingEditor
 
     Public Sub IdleEvent(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
-        ' only map if 
-        btnMap.Enabled = SampleUnitTreeView.Selection.Count > 0 And gvCoverLetters.SelectedRowsCount > 0 And gvArtifacts.SelectedRowsCount > 0
+
+        Dim isRootNodeSelected As Boolean = SampleUnitTreeView.Nodes(0).Selected
+
+        ' only map if there is a sample unit, cover letter and artifact selected, unless the sample unit is the root.  Then the map button will be disabled.
+        btnMap.Enabled = SampleUnitTreeView.Selection.Count > 0 And gvCoverLetters.SelectedRowsCount > 0 And gvArtifacts.SelectedRowsCount > 0 And Not isRootNodeSelected
+
         btnUnmap.Enabled = gvMappings.SelectedRowsCount > 0
 
         'Don't allow save unless all mappings are valid (that is, they are not duplicates)
@@ -309,7 +311,6 @@ Public Class SampleUnitCoverLetterMappingEditor
                 Dim parentForRootNodes As TreeListNode = Nothing
                 Dim rootNode As TreeListNode = SampleUnitTreeView.AppendNode(New Object() {unit.DisplayLabel, unit.CAHPSTypeName}, parentForRootNodes)
                 rootNode.Tag = unit
-                rootNode.Visible = False
                 PopulateChildTreeNodes(rootNode)
             End If
         Next
@@ -341,13 +342,19 @@ Public Class SampleUnitCoverLetterMappingEditor
         Dim criteriaString As String = String.Empty
         Dim inList As String = String.Empty
 
-        For Each node As TreeListNode In Me.SampleUnitTreeView.Selection
-            'Me.mSelectedSampleUnits.Add(DirectCast(node.Tag, SampleUnit))
-            Dim sunit As SampleUnit = DirectCast(node.Tag, SampleUnit)
-            If sunit IsNot Nothing Then
-                inList = String.Concat(inList, sunit.Id.ToString(), ",")
-            End If
 
+        ' if there are multiple selections, but one of the selections is the root, unselect the root
+        If SampleUnitTreeView.Selection.Count > 1 Then
+            If SampleUnitTreeView.Nodes(0).Selected Then SampleUnitTreeView.Nodes(0).Selected = False
+        End If
+
+        For Each node As TreeListNode In Me.SampleUnitTreeView.Selection
+            If Not node.ParentNode Is Nothing Then  ' this will exclude the root node
+                Dim sunit As SampleUnit = DirectCast(node.Tag, SampleUnit)
+                If sunit IsNot Nothing Then
+                    inList = String.Concat(inList, sunit.Id.ToString(), ",")
+                End If
+            End If
         Next
 
         If Not inList.Equals(String.Empty) Then
