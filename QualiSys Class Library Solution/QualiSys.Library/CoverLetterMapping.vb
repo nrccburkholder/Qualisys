@@ -17,6 +17,7 @@ Public Class CoverLetterMapping
     Private mStatus As Integer
     Private mUniqueID As Guid
     Private mIsDirty As Boolean
+    Private mErrorId As CoverLetterMappingStatusCodes
 
 
 #Region "Public Properties"
@@ -162,6 +163,18 @@ Public Class CoverLetterMapping
         Get
             Return mIsDirty
         End Get
+    End Property
+
+    Public Property ErrorId() As CoverLetterMappingStatusCodes
+        Get
+            Return mErrorId
+        End Get
+        Set(ByVal value As CoverLetterMappingStatusCodes)
+            If Not value = mErrorId Then
+                mErrorId = value
+                PropertyHasChanged("ErrorId")
+            End If
+        End Set
     End Property
 #End Region
 
