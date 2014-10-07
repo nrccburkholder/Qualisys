@@ -277,13 +277,36 @@ Public Class CoverLetterMapping
 #End Region
 
 #Region "Public Methods"
+    ''' <summary>
+    ''' Compares each element of the cover letter for matches.  Returns true if all elements are the same
+    ''' </summary>
+    ''' <param name="mapping"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Function Equals(ByVal mapping As CoverLetterMapping) As Boolean
 
         Dim result As Boolean
 
-        result = mSurvey_Id = mapping.Survey_Id And mSampleUnit_Id = mapping.SampleUnit_Id And mCoverLetterItemType_Id = mapping.CoverLetterItemType_Id And _
-            mCoverLetter_dsc = mapping.CoverLetter_name And mCoverLetterItem_label = mapping.CoverLetterItem_label And _
-            mArtifact_dsc = mapping.Artifact_name And mArtifact_label = mapping.ArtifactItem_label
+        result = mSurvey_Id = mapping.Survey_Id And mSampleUnit_Id = mapping.SampleUnit_Id And mCoverLetterItemType_Id = mapping.CoverLetterItemType_Id _
+            And mCoverLetter_dsc = mapping.CoverLetter_name And mCoverLetterItem_label = mapping.CoverLetterItem_label _
+            And mArtifact_dsc = mapping.Artifact_name And mArtifact_label = mapping.ArtifactItem_label
+
+        Return result
+
+    End Function
+
+    ''' <summary>
+    ''' Checks whether this cover letter has a match 
+    ''' </summary>
+    ''' <param name="mapping"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Function HasMatchingCoverLetterItems(ByVal mapping As CoverLetterMapping) As Boolean
+
+        Dim result As Boolean
+
+        result = mSurvey_Id = mapping.Survey_Id And mSampleUnit_Id = mapping.SampleUnit_Id And mCoverLetterItemType_Id = mapping.CoverLetterItemType_Id _
+            And mCoverLetter_dsc = mapping.CoverLetter_name And mCoverLetterItem_label = mapping.CoverLetterItem_label
 
         Return result
 

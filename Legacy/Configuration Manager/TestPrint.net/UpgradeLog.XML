@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="TestPrint">
+</Property><Property Name="Solution File" Value="C:\gitrepos\Qualisys\Legacy\Configuration Manager\TestPrint.net\TestPrint.sln">
+</Property><Property Name="Date" Value="Tuesday, October 7, 2014">
+</Property><Property Name="Time" Value="10:08 AM">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="TestPrint.sln" Description="File successfully backed up as C:\gitrepos\Qualisys\Legacy\Configuration Manager\TestPrint.net\Backup\TestPrint.sln">
+</Event><Event ErrorLevel="0" Project="TestPrint" Source="TestPrint.vbproj" Description="Project file successfully backed up as C:\gitrepos\Qualisys\Legacy\Configuration Manager\TestPrint.net\Backup\TestPrint.vbproj">
+</Event><Event ErrorLevel="0" Project="TestPrint" Source="AssemblyInfo.vb" Description="File successfully backed up as C:\gitrepos\Qualisys\Legacy\Configuration Manager\TestPrint.net\Backup\AssemblyInfo.vb">
+</Event><Event ErrorLevel="0" Project="TestPrint" Source="Globals.vb" Description="File successfully backed up as C:\gitrepos\Qualisys\Legacy\Configuration Manager\TestPrint.net\Backup\Globals.vb">
+</Event><Event ErrorLevel="0" Project="TestPrint" Source="nrcTestPrints.vb" Description="File successfully backed up as C:\gitrepos\Qualisys\Legacy\Configuration Manager\TestPrint.net\Backup\nrcTestPrints.vb">
+</Event><Event ErrorLevel="0" Project="TestPrint" Source="PickedPrints.vb" Description="File successfully backed up as C:\gitrepos\Qualisys\Legacy\Configuration Manager\TestPrint.net\Backup\PickedPrints.vb">
+</Event><Event ErrorLevel="0" Project="TestPrint" Source="TestPrint.vb" Description="File successfully backed up as C:\gitrepos\Qualisys\Legacy\Configuration Manager\TestPrint.net\Backup\TestPrint.vb">
+</Event><Event ErrorLevel="0" Project="TestPrint" Source="TestPrint2.vb" Description="File successfully backed up as C:\gitrepos\Qualisys\Legacy\Configuration Manager\TestPrint.net\Backup\TestPrint2.vb">
+</Event><Event ErrorLevel="0" Project="TestPrint" Source="TestPrint.resx" Description="File successfully backed up as C:\gitrepos\Qualisys\Legacy\Configuration Manager\TestPrint.net\Backup\TestPrint.resx">
+</Event><Event ErrorLevel="0" Project="TestPrint" Source="TestPrint2.resx" Description="File successfully backed up as C:\gitrepos\Qualisys\Legacy\Configuration Manager\TestPrint.net\Backup\TestPrint2.resx">
+</Event><Event ErrorLevel="0" Project="TestPrint" Source="TestPrint.vbproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="TestPrint" Source="TestPrint.vbproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="TestPrint.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="TestPrint.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="TestPrint" Source="TestPrint.vbproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>
