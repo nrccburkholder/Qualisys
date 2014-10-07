@@ -45,7 +45,7 @@ Public Class nrcTestPrint
         frmMain.objCommand.CommandTimeout = 0 'wait 15 minutes
         frmMain.objConnection.Open()
         frmMain.objCommand.Connection = frmMain.objConnection
-        frmMain.objCommand.CommandText = "select Description as Description,SelCover_ID as SelCover_ID from sel_cover where PageType <> 4 and survey_id = " + CStr(Survey_id)
+        frmMain.objCommand.CommandText = "select Description as Description,SelCover_ID as SelCover_ID from sel_cover where survey_id = " + CStr(Survey_id)
         frmMain.objDataAdapter.SelectCommand = frmMain.objCommand
         frmMain.objDataAdapter.Fill(frmMain.objdata, "cover")
         frmMain.objCommand.CommandText = "select Language as Language, sl.LangID as LangID from surveylanguage sl inner join languages l on sl.langid = l.langid where survey_id = " + CStr(Survey_id)

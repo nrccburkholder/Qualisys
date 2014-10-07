@@ -22,13 +22,12 @@ Partial Class SampleUnitCoverLetterMappingEditor
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(SampleUnitCoverLetterMappingEditor))
         Me.BottomPanel = New System.Windows.Forms.Panel()
         Me.ApplyButton = New System.Windows.Forms.Button()
         Me.OKButton = New System.Windows.Forms.Button()
         Me.CancelButton = New System.Windows.Forms.Button()
-        Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
+        Me.SplitContainerMainView = New System.Windows.Forms.SplitContainer()
         Me.SampleUnitTreeView = New DevExpress.XtraTreeList.TreeList()
         Me.TreeListColumn1 = New DevExpress.XtraTreeList.Columns.TreeListColumn()
         Me.TreeListColumn2 = New DevExpress.XtraTreeList.Columns.TreeListColumn()
@@ -39,7 +38,7 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.SplitContainer2 = New System.Windows.Forms.SplitContainer()
         Me.SplitContainer3 = New System.Windows.Forms.SplitContainer()
         Me.gcCoverLetters = New DevExpress.XtraGrid.GridControl()
-        Me.CoverLetterBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.CoverLetterBindingSource = New System.Windows.Forms.BindingSource()
         Me.gvCoverLetters = New DevExpress.XtraGrid.Views.Grid.GridView()
         Me.GridColumn3 = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.GridColumn4 = New DevExpress.XtraGrid.Columns.GridColumn()
@@ -49,7 +48,7 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
         Me.btnCoverLettersClearnSelections = New System.Windows.Forms.ToolStripButton()
         Me.gcArtifacts = New DevExpress.XtraGrid.GridControl()
-        Me.ArtifactBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.ArtifactBindingSource = New System.Windows.Forms.BindingSource()
         Me.gvArtifacts = New DevExpress.XtraGrid.Views.Grid.GridView()
         Me.GridColumn1 = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.GridColumn5 = New DevExpress.XtraGrid.Columns.GridColumn()
@@ -61,8 +60,6 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.statusStripMappings = New System.Windows.Forms.StatusStrip()
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.gcMappings = New DevExpress.XtraGrid.GridControl()
-        Me.UnMapContextMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.UnMapToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.gvMappings = New DevExpress.XtraGrid.Views.Grid.GridView()
         Me.colStatusImage = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.RepositoryItemPictureEdit1 = New DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit()
@@ -77,6 +74,7 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.CoverLetterItemArtifactUnitMapping_id = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.NeedDelete = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.UniqueID = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.ToolTipController1 = New DevExpress.Utils.ToolTipController()
         Me.HeaderStrip4 = New Nrc.Framework.WinForms.HeaderStrip()
         Me.ToolStripLabel4 = New System.Windows.Forms.ToolStripLabel()
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
@@ -92,11 +90,11 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.btnMap = New System.Windows.Forms.Button()
         Me.InformationBar = New Nrc.Qualisys.ConfigurationManager.InformationBar()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
-        Me.ToolTipController1 = New DevExpress.Utils.ToolTipController(Me.components)
+        Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip()
         Me.BottomPanel.SuspendLayout()
-        Me.SplitContainer1.Panel1.SuspendLayout()
-        Me.SplitContainer1.Panel2.SuspendLayout()
-        Me.SplitContainer1.SuspendLayout()
+        Me.SplitContainerMainView.Panel1.SuspendLayout()
+        Me.SplitContainerMainView.Panel2.SuspendLayout()
+        Me.SplitContainerMainView.SuspendLayout()
         CType(Me.SampleUnitTreeView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.HeaderStrip2.SuspendLayout()
         Me.SplitContainer2.Panel1.SuspendLayout()
@@ -117,7 +115,6 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.HeaderStrip3.SuspendLayout()
         Me.statusStripMappings.SuspendLayout()
         CType(Me.gcMappings, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.UnMapContextMenu.SuspendLayout()
         CType(Me.gvMappings, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.RepositoryItemPictureEdit1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.HeaderStrip4.SuspendLayout()
@@ -166,24 +163,24 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.CancelButton.Text = "Cancel"
         Me.CancelButton.UseVisualStyleBackColor = True
         '
-        'SplitContainer1
+        'SplitContainerMainView
         '
-        Me.SplitContainer1.BackColor = System.Drawing.SystemColors.Control
-        Me.SplitContainer1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.SplitContainer1.Location = New System.Drawing.Point(0, 20)
-        Me.SplitContainer1.Name = "SplitContainer1"
+        Me.SplitContainerMainView.BackColor = System.Drawing.SystemColors.Control
+        Me.SplitContainerMainView.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.SplitContainerMainView.Location = New System.Drawing.Point(0, 20)
+        Me.SplitContainerMainView.Name = "SplitContainerMainView"
         '
-        'SplitContainer1.Panel1
+        'SplitContainerMainView.Panel1
         '
-        Me.SplitContainer1.Panel1.Controls.Add(Me.SampleUnitTreeView)
-        Me.SplitContainer1.Panel1.Controls.Add(Me.HeaderStrip2)
+        Me.SplitContainerMainView.Panel1.Controls.Add(Me.SampleUnitTreeView)
+        Me.SplitContainerMainView.Panel1.Controls.Add(Me.HeaderStrip2)
         '
-        'SplitContainer1.Panel2
+        'SplitContainerMainView.Panel2
         '
-        Me.SplitContainer1.Panel2.Controls.Add(Me.SplitContainer2)
-        Me.SplitContainer1.Size = New System.Drawing.Size(686, 480)
-        Me.SplitContainer1.SplitterDistance = 121
-        Me.SplitContainer1.TabIndex = 38
+        Me.SplitContainerMainView.Panel2.Controls.Add(Me.SplitContainer2)
+        Me.SplitContainerMainView.Size = New System.Drawing.Size(686, 480)
+        Me.SplitContainerMainView.SplitterDistance = 121
+        Me.SplitContainerMainView.TabIndex = 38
         '
         'SampleUnitTreeView
         '
@@ -488,7 +485,6 @@ Partial Class SampleUnitCoverLetterMappingEditor
         '
         'gcMappings
         '
-        Me.gcMappings.ContextMenuStrip = Me.UnMapContextMenu
         Me.gcMappings.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gcMappings.Location = New System.Drawing.Point(0, 55)
         Me.gcMappings.MainView = Me.gvMappings
@@ -498,18 +494,6 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.gcMappings.TabIndex = 5
         Me.gcMappings.ToolTipController = Me.ToolTipController1
         Me.gcMappings.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.gvMappings})
-        '
-        'UnMapContextMenu
-        '
-        Me.UnMapContextMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.UnMapToolStripMenuItem})
-        Me.UnMapContextMenu.Name = "UnMapContextMenu"
-        Me.UnMapContextMenu.Size = New System.Drawing.Size(114, 26)
-        '
-        'UnMapToolStripMenuItem
-        '
-        Me.UnMapToolStripMenuItem.Name = "UnMapToolStripMenuItem"
-        Me.UnMapToolStripMenuItem.Size = New System.Drawing.Size(113, 22)
-        Me.UnMapToolStripMenuItem.Text = "UnMap"
         '
         'gvMappings
         '
@@ -632,6 +616,9 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.UniqueID.FieldName = "UniqueID"
         Me.UniqueID.Name = "UniqueID"
         '
+        'ToolTipController1
+        '
+        '
         'HeaderStrip4
         '
         Me.HeaderStrip4.AutoSize = False
@@ -703,7 +690,7 @@ Partial Class SampleUnitCoverLetterMappingEditor
         'tsbtnExportToExcel
         '
         Me.tsbtnExportToExcel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.tsbtnExportToExcel.Image = Global.Nrc.Qualisys.ConfigurationManager.My.Resources.Resources.Excel16
+        Me.tsbtnExportToExcel.Image = Global.Nrc.QualiSys.ConfigurationManager.My.Resources.Resources.Excel16
         Me.tsbtnExportToExcel.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbtnExportToExcel.Name = "tsbtnExportToExcel"
         Me.tsbtnExportToExcel.Size = New System.Drawing.Size(23, 18)
@@ -755,23 +742,25 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.SaveFileDialog1.DefaultExt = "xlsx"
         Me.SaveFileDialog1.Filter = "Excel files (*.xlsx)|*.xlsx"
         '
-        'ToolTipController1
+        'ContextMenuStrip1
         '
+        Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(61, 4)
         '
         'SampleUnitCoverLetterMappingEditor
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Control
-        Me.Controls.Add(Me.SplitContainer1)
+        Me.Controls.Add(Me.SplitContainerMainView)
         Me.Controls.Add(Me.InformationBar)
         Me.Controls.Add(Me.BottomPanel)
         Me.Name = "SampleUnitCoverLetterMappingEditor"
         Me.Size = New System.Drawing.Size(686, 535)
         Me.BottomPanel.ResumeLayout(False)
-        Me.SplitContainer1.Panel1.ResumeLayout(False)
-        Me.SplitContainer1.Panel2.ResumeLayout(False)
-        Me.SplitContainer1.ResumeLayout(False)
+        Me.SplitContainerMainView.Panel1.ResumeLayout(False)
+        Me.SplitContainerMainView.Panel2.ResumeLayout(False)
+        Me.SplitContainerMainView.ResumeLayout(False)
         CType(Me.SampleUnitTreeView, System.ComponentModel.ISupportInitialize).EndInit()
         Me.HeaderStrip2.ResumeLayout(False)
         Me.HeaderStrip2.PerformLayout()
@@ -797,7 +786,6 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.statusStripMappings.ResumeLayout(False)
         Me.statusStripMappings.PerformLayout()
         CType(Me.gcMappings, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.UnMapContextMenu.ResumeLayout(False)
         CType(Me.gvMappings, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.RepositoryItemPictureEdit1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.HeaderStrip4.ResumeLayout(False)
@@ -811,7 +799,7 @@ Partial Class SampleUnitCoverLetterMappingEditor
     Friend WithEvents OKButton As System.Windows.Forms.Button
     Friend WithEvents CancelButton As System.Windows.Forms.Button
     Friend WithEvents InformationBar As Nrc.Qualisys.ConfigurationManager.InformationBar
-    Friend WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
+    Friend WithEvents SplitContainerMainView As System.Windows.Forms.SplitContainer
     Friend WithEvents HeaderStrip2 As Nrc.Framework.WinForms.HeaderStrip
     Friend WithEvents ToolStripLabel2 As System.Windows.Forms.ToolStripLabel
     Friend WithEvents SplitContainer2 As System.Windows.Forms.SplitContainer
@@ -867,13 +855,12 @@ Partial Class SampleUnitCoverLetterMappingEditor
     Friend WithEvents colStatusImage As DevExpress.XtraGrid.Columns.GridColumn
     Friend WithEvents RepositoryItemPictureEdit1 As DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit
     Friend WithEvents UniqueID As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents UnMapContextMenu As System.Windows.Forms.ContextMenuStrip
-    Friend WithEvents UnMapToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents statusStripMappings As System.Windows.Forms.StatusStrip
     Friend WithEvents ToolStripStatusLabel1 As System.Windows.Forms.ToolStripStatusLabel
     Friend WithEvents ToolStripSeparator7 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents tsbtnExportToExcel As System.Windows.Forms.ToolStripButton
     Friend WithEvents SaveFileDialog1 As System.Windows.Forms.SaveFileDialog
     Friend WithEvents ToolTipController1 As DevExpress.Utils.ToolTipController
+    Friend WithEvents ContextMenuStrip1 As System.Windows.Forms.ContextMenuStrip
 
 End Class

@@ -8,14 +8,11 @@ Imports System.Text.RegularExpressions
 Imports DevExpress.Utils
 Imports DevExpress.XtraGrid.Views.Grid
 Imports DevExpress.XtraGrid.Columns
+Imports System.Windows.Forms
+
 
 Public Class SampleUnitCoverLetterMappingEditor
 
-#Region "Enums"
-
-
-
-#End Region
 
 #Region " Private Fields "
     Private mModule As SampleUnitCoverLetterMappingModule
@@ -23,6 +20,7 @@ Public Class SampleUnitCoverLetterMappingEditor
     Private mCoverLetterList As New Collection(Of CoverLetter)
     Private mArtifactList As New Collection(Of CoverLetter)
     Private mMappings As New List(Of CoverLetterMapping)
+    Private mDuplicates As New List(Of CoverLetterMapping)
     Private mAllSampleUnits As Collection(Of SampleUnit)
     Private newRepositoryItem As New DevExpress.XtraEditors.Repository.RepositoryItem
 #End Region
@@ -42,6 +40,75 @@ Public Class SampleUnitCoverLetterMappingEditor
 #End Region
 
 #Region "event handlers"
+
+    Private Sub gvMappings_ShowGridMenu(sender As Object, e As DevExpress.XtraGrid.Views.Grid.GridMenuEventArgs) Handles gvMappings.ShowGridMenu
+
+        Dim View As GridView = CType(sender, GridView)
+
+        Dim hitInfo As GridHitInfo
+
+        hitInfo = View.CalcHitInfo(e.Point)
+
+        If hitInfo.InRow Then
+
+            View.FocusedRowHandle = hitInfo.RowHandle
+
+            ContextMenuStrip1.Items.Clear()
+
+            If hitInfo.InRow Then
+
+                If hitInfo.RowHandle = DevExpress.XtraGrid.GridControl.AutoFilterRowHandle Then
+                    Exit Sub
+                End If
+
+                Dim col As GridColumn = hitInfo.Column
+
+                If col IsNot Nothing Then
+
+                    'If col.FieldName = "Image" Then
+
+                    Dim mySubMenuItem As New ToolStripMenuItem
+
+                    Dim status As CoverLetterMappingStatusCodes = DirectCast(gvMappings.GetRowCellValue(hitInfo.RowHandle, "Status"), CoverLetterMappingStatusCodes)
+                    Dim tipText As String = String.Empty
+                    Dim o As Object = hitInfo.HitTest.ToString() + hitInfo.RowHandle.ToString()
+                    Select Case status
+                        Case CoverLetterMappingStatusCodes.NeedsDelete
+                            mySubMenuItem.Name = "CancelDelete_" & hitInfo.RowHandle.ToString()
+                            mySubMenuItem.Text = "Cancel Delete"
+                            mySubMenuItem.Tag = hitInfo.RowHandle.ToString()
+                            AddHandler (mySubMenuItem.Click), AddressOf MyUndeleteContextMenu_Click
+                            ContextMenuStrip1.Items.Add(mySubMenuItem)
+                        Case Else
+                            mySubMenuItem.Name = "UnMap_" & hitInfo.RowHandle.ToString()
+                            mySubMenuItem.Text = "UnMap"
+                            mySubMenuItem.Tag = hitInfo.RowHandle.ToString()
+                            AddHandler (mySubMenuItem.Click), AddressOf MyUnMapContextMenu_Click
+                            ContextMenuStrip1.Items.Add(mySubMenuItem)
+                    End Select
+
+                    'End If
+                End If
+
+            End If
+
+            ContextMenuStrip1.Show(View.GridControl, e.Point)
+        End If
+
+
+    End Sub
+
+    Private Sub MyUnMapContextMenu_Click(sender As System.Object, e As System.EventArgs)
+        DeleteMapping()
+    End Sub
+
+    Private Sub MyUndeleteContextMenu_Click(sender As System.Object, e As System.EventArgs)
+
+        Dim mySubMenuItem As ToolStripMenuItem = DirectCast(sender, ToolStripMenuItem)
+        Dim mapping As CoverLetterMapping = DirectCast(gvMappings.GetRow(CInt(mySubMenuItem.Tag)), CoverLetterMapping)
+        UndoDelete(mapping)
+
+    End Sub
 
     Private Sub ToolTipController1_GetActiveObjectInfo(sender As System.Object, e As DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventArgs) Handles ToolTipController1.GetActiveObjectInfo
         If Not e.SelectedControl Is gcMappings Then Return
@@ -116,7 +183,7 @@ Public Class SampleUnitCoverLetterMappingEditor
         ExportMappingsToExcel()
     End Sub
 
-    Private Sub UnMapContextMenu_Click(sender As System.Object, e As System.EventArgs) Handles UnMapContextMenu.Click
+    Private Sub UnMapContextMenu_Click(sender As System.Object, e As System.EventArgs)
         DeleteMapping()
     End Sub
 
@@ -132,14 +199,11 @@ Public Class SampleUnitCoverLetterMappingEditor
             Dim status As CoverLetterMappingStatusCodes = DirectCast(gvMappings.GetRowCellValue(e.RowHandle, "Status"), CoverLetterMappingStatusCodes)
 
             Select Case status
-                'Case MappingStatus.OK
-                '    e.Appearance.ForeColor = Color.Blue
-                'Case(MappingStatus.IsNew)
-                '    e.Appearance.ForeColor = Color.Green
-                Case CoverLetterMappingStatusCodes.Duplicate
-                    e.Appearance.ForeColor = Color.Red
                 Case CoverLetterMappingStatusCodes.NeedsDelete
-                    'e.Appearance.Font = New Font(e.Appearance.Font, e.Appearance.Font.Style Or FontStyle.Strikeout)
+                    e.Appearance.Font = New Font(e.Appearance.Font, e.Appearance.Font.Style Or FontStyle.Strikeout)
+                Case Else
+                    e.Appearance.ForeColor = Color.Black
+                    e.Appearance.Font = New Font(e.Appearance.Font, e.Appearance.Font.Style Or FontStyle.Regular)
             End Select
 
         End If
@@ -157,7 +221,7 @@ Public Class SampleUnitCoverLetterMappingEditor
                 Case CoverLetterMappingStatusCodes.IsNew
                     e.Value = My.Resources.New16
                 Case CoverLetterMappingStatusCodes.Duplicate
-                    e.Value = My.Resources.NoWay16
+                    e.Value = My.Resources.Caution16
                 Case CoverLetterMappingStatusCodes.NeedsDelete
                     e.Value = My.Resources.DeleteRed16
             End Select
@@ -218,11 +282,9 @@ Public Class SampleUnitCoverLetterMappingEditor
 
     Private Sub btnShowAllMappings_Click(sender As System.Object, e As System.EventArgs) Handles btnShowAllMappings.Click
         ShowAllMappings()
-        SampleUnitTreeView.Selection.Clear()
     End Sub
 
     Public Sub IdleEvent(ByVal sender As System.Object, ByVal e As System.EventArgs)
-
 
         Dim isRootNodeSelected As Boolean = SampleUnitTreeView.Nodes(0).Selected
 
@@ -232,16 +294,15 @@ Public Class SampleUnitCoverLetterMappingEditor
         btnUnmap.Enabled = gvMappings.SelectedRowsCount > 0
 
         'Don't allow save unless all mappings are valid (that is, they are not duplicates)
-        ApplyButton.Enabled = IsValidMappings()
-        OKButton.Enabled = IsValidMappings()
+        ApplyButton.Enabled = IsValidMappings() And mModule.IsEditable
+        OKButton.Enabled = IsValidMappings() And mModule.IsEditable
 
         Dim pos As Integer = gvMappings.ActiveFilter.NonColumnFilter.IndexOf("[SampleUnit_Id]")
         If pos >= 0 Then
             ToolStripStatusLabel1.Text = gvMappings.ActiveFilter.NonColumnFilter.Substring(pos)
         Else
-            ToolStripStatusLabel1.Text = ""
+            ToolStripStatusLabel1.Text = "Showing All"
         End If
-
 
     End Sub
 
@@ -283,10 +344,11 @@ Public Class SampleUnitCoverLetterMappingEditor
         PopulateMappings()
 
         'Don't allow save if module is not editable
-        Me.OKButton.Enabled = Me.mModule.IsEditable
-        Me.ApplyButton.Enabled = Me.mModule.IsEditable
+        SplitContainerMainView.Enabled = mModule.IsEditable
+        OKButton.Enabled = mModule.IsEditable
+        ApplyButton.Enabled = mModule.IsEditable
 
-        SampleUnitTreeView.Selection.Clear()
+        'SampleUnitTreeView.Selection.Clear()
 
     End Sub
 
@@ -295,8 +357,8 @@ Public Class SampleUnitCoverLetterMappingEditor
         mMappings.Clear()
         mMappings = CoverLetterMapping.GetCoverLetterMappingsBySurveyId(Me.mModule.Survey.Id)
         'Set the binding source for the sampleunit lookup
-        'Me.SampleUnitBindingSource.DataSource = mMappings
         gcMappings.DataSource = mMappings
+        gvMappings.ClearSelection()
 
     End Sub
 
@@ -366,7 +428,7 @@ Public Class SampleUnitCoverLetterMappingEditor
 
         'gvMappings.ActiveFilter.NonColumnFilter = "[NeedsDelete] = false" & criteriaString
         gvMappings.ActiveFilter.NonColumnFilter = criteriaString
-        gvMappings.ClearSelection()
+        '
     End Sub
 
     Private Function GetCoverLetters(ByVal coverLetters As Collection(Of CoverLetter)) As List(Of MyCoverLetter)
@@ -393,7 +455,10 @@ Public Class SampleUnitCoverLetterMappingEditor
 
         If SampleUnitTreeView.Selection.Count > 0 And gvCoverLetters.SelectedRowsCount > 0 And gvArtifacts.SelectedRowsCount > 0 Then
 
+            mDuplicates.Clear()
+
             Dim hasDuplicate As Boolean = False
+
 
             For Each node As TreeListNode In SampleUnitTreeView.Selection
                 Dim sUnit As SampleUnit = DirectCast(node.Tag, SampleUnit)
@@ -403,65 +468,53 @@ Public Class SampleUnitCoverLetterMappingEditor
 
                     Dim coverLetterName As String = gvCoverLetters.GetRowCellValue(rowHandle, "CoverLetterName").ToString().Trim()
                     Dim coverLetterTextBoxName As String = gvCoverLetters.GetRowCellValue(rowHandle, "Label").ToString().Trim()
-                    'Dim coverLetterCoverID As Integer = Convert.ToInt32(gvCoverLetters.GetRowCellValue(rowHandle, "CoverID"))
-                    'Dim coverLetterItem_Id As Integer = Convert.ToInt32(gvCoverLetters.GetRowCellValue(rowHandle, "ItemID"))
 
                     Dim artifactpagename As String = gvArtifacts.GetRowCellValue(gvArtifacts.FocusedRowHandle, "CoverLetterName").ToString().Trim()
                     Dim artifactitemname As String = gvArtifacts.GetRowCellValue(gvArtifacts.FocusedRowHandle, "Label").ToString().Trim()
-                    'Dim artifactCoverID As Integer = Convert.ToInt32(gvArtifacts.GetRowCellValue(gvArtifacts.FocusedRowHandle, "CoverID"))
-                    'Dim artifactitem_Id As Integer = Convert.ToInt32(gvArtifacts.GetRowCellValue(gvArtifacts.FocusedRowHandle, "ItemID"))
 
                     Dim mappedUnit As CoverLetterMapping = CoverLetterMapping.NewCoverLetterMapping(-1, Me.mModule.Survey.Id, sUnit.Id, sampleUnitName, CoverLetterItemType.TEXTBOX, coverLetterName, coverLetterTextBoxName, artifactpagename, artifactitemname)
 
                     ' check to see if this mapping already exists
-                    If ValidateMapping(mappedUnit) Then
-
-                        mappedUnit.Status = CoverLetterMappingStatusCodes.IsNew
-                    Else
-                        mappedUnit.Status = CoverLetterMappingStatusCodes.Duplicate
+                    If CheckForDuplicates(mappedUnit) Then
+                        'mappedUnit.Status = CoverLetterMappingStatusCodes.IsNew_Duplicate
                         hasDuplicate = True
-
+                    Else
+                        mappedUnit.Status = CoverLetterMappingStatusCodes.IsNew
+                        mMappings.Add(mappedUnit)
                     End If
-
-                    mMappings.Add(mappedUnit)
-
+                    'mMappings.Add(mappedUnit)
                 Next
             Next
 
-            If hasDuplicate Then
-                MsgBox("One or more Cover Letter Mappings are duplicates!", MsgBoxStyle.Critical, "Cover Letter Mapping Error")
-            End If
-
-            gcMappings.DataSource = mMappings
-            gcMappings.RefreshDataSource()
-
+            RefreshMappingDataSource()
             gvMappings.ClearSelection()
+
+            If hasDuplicate Then
+
+                Dim msg As String = "One or more Cover Letters are already mapped for the selected Sample Unit(s): " & vbCrLf & vbCrLf
+
+                For Each dup As CoverLetterMapping In mDuplicates
+                    msg = msg & vbTab & Chr(149) & " " & dup.SampleUnit_name & " - " & dup.CoverLetter_name & "." & dup.CoverLetterItem_label & vbCrLf
+                Next
+
+                MessageBox.Show(msg, "Cover Letter Mapping Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+
+                'highlight the duplicates
+                For i As Integer = 0 To gvMappings.RowCount - 1
+                    For Each dup As CoverLetterMapping In mDuplicates
+                        Dim uid As String = gvMappings.GetRowCellValue(i, UniqueID).ToString()
+                        If uid = dup.UniqueID.ToString() Then
+                            gvMappings.SelectRow(i)
+                        End If
+                    Next
+                Next
+
+            End If
 
         End If
     End Sub
 
     Private Sub DeleteMapping()
-
-        'For Each rowHandle As Integer In gvMappings.GetSelectedRows()
-        '    Dim item As CoverLetterMapping = DirectCast(gvMappings.GetRow(rowHandle), CoverLetterMapping)
-        '    For idx As Integer = 0 To mMappings.Count - 1
-        '        Dim mappedItem As CoverLetterMapping = mMappings.Item(idx)
-        '        If mappedItem.UniqueID = item.UniqueID Then
-        '            mappedItem.NeedsDelete = True
-        '            ResetDuplicate(mappedItem)
-        '            Exit For
-        '        End If
-        '    Next
-        'Next
-        ''  Now remove those items from the mapping list where IsNew = True and flagged as NeedsDelete
-        ''  We will not be removing any existing (that is previously stored" records because we need 
-        ''  to delete those from the database.
-        'For x As Integer = mMappings.Count - 1 To 0 Step -1
-        '    Dim m As CoverLetterMapping = mMappings.Item(x)
-        '    If m.IsNew And m.NeedsDelete Then
-        '        mMappings.RemoveAt(x)
-        '    End If
-        'Next
 
         ' this method starts from the bottom of the grid and list and works its way up to avoid index out of range errors
         For i As Integer = gvMappings.SelectedRowsCount - 1 To 0 Step -1
@@ -474,9 +527,10 @@ Public Class SampleUnitCoverLetterMappingEditor
                             ' If this is an existing MappedQuestion, then flag it for deletion
                             mappedItem.NeedsDelete = True
                             mappedItem.Status = CoverLetterMappingStatusCodes.NeedsDelete
-                            ResetDuplicate(mappedItem)
+                            'ResetDuplicate(mappedItem)
                         Else
                             'otherwise, just remove it from the list
+                            'ResetDuplicate(mappedItem)
                             mMappings.RemoveAt(idx)
                         End If
                         Exit For
@@ -485,25 +539,30 @@ Public Class SampleUnitCoverLetterMappingEditor
             End If
         Next
 
-        gcMappings.DataSource = mMappings
-        gcMappings.RefreshDataSource()
-        gvMappings.ClearSelection()
+        RefreshMappingDataSource()
         UpdateMappingsFilter()
+        gvMappings.ClearSelection()
 
     End Sub
 
-    Private Sub ResetDuplicate(ByVal mapping As CoverLetterMapping)
+    'Private Sub ResetDuplicate(ByVal mappedItem As CoverLetterMapping)
 
-        For Each item As CoverLetterMapping In mMappings
-            If item.Equals(mapping) And item.Status = CoverLetterMappingStatusCodes.Duplicate Then
-                item.Status = CoverLetterMappingStatusCodes.IsNew
-            End If
-        Next
+    '    For Each item As CoverLetterMapping In mMappings
+    '        If item.HasMatchingCoverLetterItems(mappedItem) Then
+    '            If item.Status = CoverLetterMappingStatusCodes.IsNew_Duplicate Then
+    '                item.Status = CoverLetterMappingStatusCodes.IsNew
+    '            ElseIf item.Status = CoverLetterMappingStatusCodes.Duplicate Then
+    '                item.Status = CoverLetterMappingStatusCodes.None
+    '            End If
+    '        End If
+    '    Next
 
-    End Sub
+    'End Sub
 
     Private Sub ShowAllMappings()
-        gvMappings.ActiveFilter.NonColumnFilter = "[NeedsDelete] = false"
+        'gvMappings.ActiveFilter.NonColumnFilter = ""
+        SampleUnitTreeView.Selection.Clear()
+        SampleUnitTreeView.SetFocusedNode(SampleUnitTreeView.Nodes(0))
         gvMappings.ClearSelection()
         ' Sets focus on MappedGridView control to the filter box at the top
         gvMappings.FocusedRowHandle = DevExpress.XtraGrid.GridControl.AutoFilterRowHandle
@@ -523,15 +582,20 @@ Public Class SampleUnitCoverLetterMappingEditor
 
     End Sub
 
-    Private Function ValidateMapping(ByVal unit As CoverLetterMapping) As Boolean
-        ' return true if mapping does not match a current mapping, false if it matches
-        Dim result As Boolean = True
+    Private Function CheckForDuplicates(ByVal unit As CoverLetterMapping) As Boolean
+        ' return false if mapping does not match a current mapping, true if it matches
+        Dim result As Boolean = False
 
         For Each mapping As CoverLetterMapping In mMappings
             If Not mapping.NeedsDelete Then ' ignore mappings that have already been marked as NeedsDelete
-                If mapping.Equals(unit) Then
-                    mapping.Status = CoverLetterMappingStatusCodes.Duplicate
-                    result = False
+                If mapping.HasMatchingCoverLetterItems(unit) Then
+                    'If mapping.IsNew Then
+                    '    mapping.Status = CoverLetterMappingStatusCodes.IsNew_Duplicate
+                    'Else
+                    '    mapping.Status = CoverLetterMappingStatusCodes.Duplicate
+                    'End If
+                    mDuplicates.Add(mapping)
+                    result = True
                 End If
             End If
         Next
@@ -546,7 +610,7 @@ Public Class SampleUnitCoverLetterMappingEditor
 
         For Each MappedItem As CoverLetterMapping In mMappings
 
-            If MappedItem.Status = CoverLetterMappingStatusCodes.Duplicate Then
+            If MappedItem.Status = CoverLetterMappingStatusCodes.Duplicate Then 'Or MappedItem.Status = CoverLetterMappingStatusCodes.IsNew_Duplicate Then
                 result = False
                 Exit For
             End If
@@ -575,7 +639,7 @@ Public Class SampleUnitCoverLetterMappingEditor
 
         If HasUnsavedChanges() Then
 
-            If MsgBox("Exit without saving changes?", MsgBoxStyle.YesNo, "Cover Letter Mapping") = MsgBoxResult.No Then
+            If MessageBox.Show("Exit without saving changes?", "Cover Letter Mapping", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then
                 Exit Sub
             End If
         End If
@@ -604,12 +668,18 @@ Public Class SampleUnitCoverLetterMappingEditor
         Return Nothing
     End Function
 
+    Private Sub UndoDelete(ByVal mapping As CoverLetterMapping)
+        mapping.NeedsDelete = False
+        mapping.Status = CoverLetterMappingStatusCodes.None
+        RefreshMappingDataSource()
+        gvMappings.ClearSelection()
+    End Sub
+
+    Private Sub RefreshMappingDataSource()
+        gcMappings.DataSource = mMappings
+        gcMappings.RefreshDataSource()
+    End Sub
 #End Region
-
-    Private Function MappingStatus() As Object
-        Throw New NotImplementedException
-    End Function
-
 End Class
 
 Friend Class MyCoverLetter
