@@ -40,6 +40,7 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.gcCoverLetters = New DevExpress.XtraGrid.GridControl()
         Me.CoverLetterBindingSource = New System.Windows.Forms.BindingSource()
         Me.gvCoverLetters = New DevExpress.XtraGrid.Views.Grid.GridView()
+        Me.GridColumn2 = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.GridColumn3 = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.GridColumn4 = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.AvailableSectionLabelLookUpEdit = New DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit()
@@ -88,9 +89,10 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.btnUnmap = New System.Windows.Forms.Button()
         Me.btnMap = New System.Windows.Forms.Button()
-        Me.InformationBar = New Nrc.Qualisys.ConfigurationManager.InformationBar()
+        Me.InformationBar = New NRC.QualiSys.ConfigurationManager.InformationBar()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
         Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip()
+        Me.GridColumn6 = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.BottomPanel.SuspendLayout()
         Me.SplitContainerMainView.Panel1.SuspendLayout()
         Me.SplitContainerMainView.Panel2.SuspendLayout()
@@ -222,7 +224,7 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.HeaderStrip2.Font = New System.Drawing.Font("Segoe UI", 9.0!)
         Me.HeaderStrip2.ForeColor = System.Drawing.Color.Black
         Me.HeaderStrip2.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.HeaderStrip2.HeaderStyle = Nrc.Framework.WinForms.HeaderStripStyle.Small
+        Me.HeaderStrip2.HeaderStyle = NRC.Framework.WinForms.HeaderStripStyle.Small
         Me.HeaderStrip2.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripLabel2, Me.ToolStripSeparator2, Me.btnSampleUnitsClearSelections})
         Me.HeaderStrip2.Location = New System.Drawing.Point(0, 0)
         Me.HeaderStrip2.Name = "HeaderStrip2"
@@ -307,7 +309,7 @@ Partial Class SampleUnitCoverLetterMappingEditor
         '
         Me.gvCoverLetters.Appearance.FocusedCell.BackColor = System.Drawing.SystemColors.MenuHighlight
         Me.gvCoverLetters.Appearance.FocusedCell.Options.UseBackColor = True
-        Me.gvCoverLetters.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.GridColumn3, Me.GridColumn4})
+        Me.gvCoverLetters.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.GridColumn2, Me.GridColumn3, Me.GridColumn4})
         Me.gvCoverLetters.GridControl = Me.gcCoverLetters
         Me.gvCoverLetters.Name = "gvCoverLetters"
         Me.gvCoverLetters.OptionsBehavior.Editable = False
@@ -319,6 +321,12 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.gvCoverLetters.OptionsSelection.MultiSelect = True
         Me.gvCoverLetters.OptionsView.EnableAppearanceEvenRow = True
         Me.gvCoverLetters.OptionsView.ShowAutoFilterRow = True
+        '
+        'GridColumn2
+        '
+        Me.GridColumn2.Caption = "GridColumn2"
+        Me.GridColumn2.FieldName = "Status"
+        Me.GridColumn2.Name = "GridColumn2"
         '
         'GridColumn3
         '
@@ -351,7 +359,7 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.HeaderStrip1.Font = New System.Drawing.Font("Segoe UI", 9.0!)
         Me.HeaderStrip1.ForeColor = System.Drawing.Color.Black
         Me.HeaderStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.HeaderStrip1.HeaderStyle = Nrc.Framework.WinForms.HeaderStripStyle.Small
+        Me.HeaderStrip1.HeaderStyle = NRC.Framework.WinForms.HeaderStripStyle.Small
         Me.HeaderStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripLabel1, Me.ToolStripSeparator3, Me.btnCoverLettersClearnSelections})
         Me.HeaderStrip1.Location = New System.Drawing.Point(0, 0)
         Me.HeaderStrip1.Name = "HeaderStrip1"
@@ -396,7 +404,7 @@ Partial Class SampleUnitCoverLetterMappingEditor
         '
         Me.gvArtifacts.Appearance.FocusedCell.BackColor = System.Drawing.SystemColors.MenuHighlight
         Me.gvArtifacts.Appearance.FocusedCell.Options.UseBackColor = True
-        Me.gvArtifacts.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.GridColumn1, Me.GridColumn5})
+        Me.gvArtifacts.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.GridColumn6, Me.GridColumn1, Me.GridColumn5})
         Me.gvArtifacts.GridControl = Me.gcArtifacts
         Me.gvArtifacts.Name = "gvArtifacts"
         Me.gvArtifacts.OptionsBehavior.Editable = False
@@ -439,7 +447,7 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.HeaderStrip3.Font = New System.Drawing.Font("Segoe UI", 9.0!)
         Me.HeaderStrip3.ForeColor = System.Drawing.Color.Black
         Me.HeaderStrip3.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.HeaderStrip3.HeaderStyle = Nrc.Framework.WinForms.HeaderStripStyle.Small
+        Me.HeaderStrip3.HeaderStyle = NRC.Framework.WinForms.HeaderStripStyle.Small
         Me.HeaderStrip3.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripLabel3, Me.ToolStripSeparator4, Me.btnArtifactsClearSelections})
         Me.HeaderStrip3.Location = New System.Drawing.Point(0, 0)
         Me.HeaderStrip3.Name = "HeaderStrip3"
@@ -625,7 +633,7 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.HeaderStrip4.Font = New System.Drawing.Font("Segoe UI", 9.0!)
         Me.HeaderStrip4.ForeColor = System.Drawing.Color.Black
         Me.HeaderStrip4.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.HeaderStrip4.HeaderStyle = Nrc.Framework.WinForms.HeaderStripStyle.Small
+        Me.HeaderStrip4.HeaderStyle = NRC.Framework.WinForms.HeaderStripStyle.Small
         Me.HeaderStrip4.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripLabel4, Me.ToolStripSeparator1, Me.btnSelectAllMappings, Me.ToolStripSeparator5, Me.btnUnselectAllMappings, Me.ToolStripSeparator6, Me.btnShowAllMappings, Me.ToolStripSeparator7, Me.tsbtnExportToExcel})
         Me.HeaderStrip4.Location = New System.Drawing.Point(0, 34)
         Me.HeaderStrip4.Name = "HeaderStrip4"
@@ -690,7 +698,7 @@ Partial Class SampleUnitCoverLetterMappingEditor
         'tsbtnExportToExcel
         '
         Me.tsbtnExportToExcel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.tsbtnExportToExcel.Image = Global.Nrc.QualiSys.ConfigurationManager.My.Resources.Resources.Excel16
+        Me.tsbtnExportToExcel.Image = Global.NRC.QualiSys.ConfigurationManager.My.Resources.Resources.Excel16
         Me.tsbtnExportToExcel.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbtnExportToExcel.Name = "tsbtnExportToExcel"
         Me.tsbtnExportToExcel.Size = New System.Drawing.Size(23, 18)
@@ -747,6 +755,12 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
         Me.ContextMenuStrip1.Size = New System.Drawing.Size(61, 4)
         '
+        'GridColumn6
+        '
+        Me.GridColumn6.Caption = "GridColumn6"
+        Me.GridColumn6.FieldName = "Status"
+        Me.GridColumn6.Name = "GridColumn6"
+        '
         'SampleUnitCoverLetterMappingEditor
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -798,7 +812,7 @@ Partial Class SampleUnitCoverLetterMappingEditor
     Friend WithEvents ApplyButton As System.Windows.Forms.Button
     Friend WithEvents OKButton As System.Windows.Forms.Button
     Friend WithEvents CancelButton As System.Windows.Forms.Button
-    Friend WithEvents InformationBar As Nrc.Qualisys.ConfigurationManager.InformationBar
+    Friend WithEvents InformationBar As Nrc.QualiSys.ConfigurationManager.InformationBar
     Friend WithEvents SplitContainerMainView As System.Windows.Forms.SplitContainer
     Friend WithEvents HeaderStrip2 As Nrc.Framework.WinForms.HeaderStrip
     Friend WithEvents ToolStripLabel2 As System.Windows.Forms.ToolStripLabel
@@ -862,5 +876,7 @@ Partial Class SampleUnitCoverLetterMappingEditor
     Friend WithEvents SaveFileDialog1 As System.Windows.Forms.SaveFileDialog
     Friend WithEvents ToolTipController1 As DevExpress.Utils.ToolTipController
     Friend WithEvents ContextMenuStrip1 As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents GridColumn2 As DevExpress.XtraGrid.Columns.GridColumn
+    Friend WithEvents GridColumn6 As DevExpress.XtraGrid.Columns.GridColumn
 
 End Class
