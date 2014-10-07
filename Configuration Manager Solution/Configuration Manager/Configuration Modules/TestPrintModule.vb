@@ -14,7 +14,8 @@ Public Class TestPrintModule
 
         If selectedSurvey.IsValidated = False Then
             MessageBox.Show("You have to validate the survey before running test prints.", "Survey Unvalidated", MessageBoxButtons.OK, MessageBoxIcon.Information)
-        Else : testPrint.GetPrints(surveyId, employeeID)
+        Else
+            testPrint.GetPrints(surveyId, employeeID)
         End If
 
         endConfigCallback(ConfigResultActions.SurveyRefresh, Nothing)
