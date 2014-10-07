@@ -2661,6 +2661,8 @@ begin
   if not (ssShift in shift) then WLKHandle.detach;
   WLKHandle.attach(tDQPanel(Sender));
   cbItemSelector.ItemIndex := cbItemSelector.Items.IndexOf(tDQPanel(Sender).TextBoxName);
+  delete2.Enabled := (tDQPanel(Sender).TextBoxMappings = '');
+  deleteBox.Enabled := delete2.Enabled;
 end;
 
 procedure TF_DynaQ.Logo1MouseDown(Sender: TObject; Button: TMouseButton;
@@ -2997,6 +2999,7 @@ var I : integer;
   begin
     pagetabs[pg].existingTextBoxMappings := dmOpenQ.MappedTextBoxesByCL(pagetabs[pg].description);
     sMappings := pagetabs[pg].existingTextBoxMappings;
+    delete3.Enabled := (sMappings = '');
 
     while sMappings <> '' do
     begin
