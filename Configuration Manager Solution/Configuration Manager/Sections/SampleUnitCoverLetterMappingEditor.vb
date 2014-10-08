@@ -697,7 +697,7 @@ Public Class SampleUnitCoverLetterMappingEditor
     Private Function CheckChildNodeForMismatchedArtifacts(ByVal node As TreeListNode, ByVal unit As CoverLetterMapping) As Boolean
 
         Dim result As Boolean = False
-        ' now get the node's parent 
+
         If node IsNot Nothing Then
             If node.HasChildren Then
                 For Each childNode As TreeListNode In node.Nodes
@@ -727,7 +727,6 @@ Public Class SampleUnitCoverLetterMappingEditor
     End Function
 
 #End Region
-
 
     Private Function IsValidMappings() As Boolean
 
