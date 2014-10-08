@@ -1,4 +1,21 @@
+/*
+S8.US13	Create New Standard Methodology for ACO CAHPS
+	As an Operations or Survey Management associate, I want the mail and phone steps to generate at the appropriate time, so that we can field according to the new schedule
+
+T13.1	Add triggers to record the changes in the ChangeLog
+T13.2	Update the existing methodology
+
+Dave Gilsdorf
+
+CREATE TRIGGER [dbo].[trg_Upd_dbo_StandardMailingStep] 
+UPDATE StandardMailingStep
+INSERT INTO ChangeLog
+UPDATE MailingStep
+*/
 use qp_prod
+go
+begin tran
+go
 if exists (select * from sys.objects where type='tr' and name = 'trg_Upd_dbo_StandardMailingStep')
 	drop trigger [dbo].[trg_Upd_dbo_StandardMailingStep] 
 go
