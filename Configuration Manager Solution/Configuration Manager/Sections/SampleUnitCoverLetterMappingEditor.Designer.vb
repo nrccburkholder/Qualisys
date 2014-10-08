@@ -40,8 +40,10 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.gcCoverLetters = New DevExpress.XtraGrid.GridControl()
         Me.CoverLetterBindingSource = New System.Windows.Forms.BindingSource()
         Me.gvCoverLetters = New DevExpress.XtraGrid.Views.Grid.GridView()
+        Me.GridColumn2 = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.GridColumn3 = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.GridColumn4 = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.GridColumn7 = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.AvailableSectionLabelLookUpEdit = New DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit()
         Me.HeaderStrip1 = New Nrc.Framework.WinForms.HeaderStrip()
         Me.ToolStripLabel1 = New System.Windows.Forms.ToolStripLabel()
@@ -50,8 +52,10 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.gcArtifacts = New DevExpress.XtraGrid.GridControl()
         Me.ArtifactBindingSource = New System.Windows.Forms.BindingSource()
         Me.gvArtifacts = New DevExpress.XtraGrid.Views.Grid.GridView()
+        Me.GridColumn6 = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.GridColumn1 = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.GridColumn5 = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.GridColumn8 = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.RepositoryItemLookUpEdit1 = New DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit()
         Me.HeaderStrip3 = New Nrc.Framework.WinForms.HeaderStrip()
         Me.ToolStripLabel3 = New System.Windows.Forms.ToolStripLabel()
@@ -88,7 +92,7 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.btnUnmap = New System.Windows.Forms.Button()
         Me.btnMap = New System.Windows.Forms.Button()
-        Me.InformationBar = New Nrc.Qualisys.ConfigurationManager.InformationBar()
+        Me.InformationBar = New Nrc.QualiSys.ConfigurationManager.InformationBar()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
         Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip()
         Me.BottomPanel.SuspendLayout()
@@ -307,7 +311,7 @@ Partial Class SampleUnitCoverLetterMappingEditor
         '
         Me.gvCoverLetters.Appearance.FocusedCell.BackColor = System.Drawing.SystemColors.MenuHighlight
         Me.gvCoverLetters.Appearance.FocusedCell.Options.UseBackColor = True
-        Me.gvCoverLetters.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.GridColumn3, Me.GridColumn4})
+        Me.gvCoverLetters.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.GridColumn2, Me.GridColumn3, Me.GridColumn4, Me.GridColumn7})
         Me.gvCoverLetters.GridControl = Me.gcCoverLetters
         Me.gvCoverLetters.Name = "gvCoverLetters"
         Me.gvCoverLetters.OptionsBehavior.Editable = False
@@ -319,6 +323,12 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.gvCoverLetters.OptionsSelection.MultiSelect = True
         Me.gvCoverLetters.OptionsView.EnableAppearanceEvenRow = True
         Me.gvCoverLetters.OptionsView.ShowAutoFilterRow = True
+        '
+        'GridColumn2
+        '
+        Me.GridColumn2.Caption = "GridColumn2"
+        Me.GridColumn2.FieldName = "Status"
+        Me.GridColumn2.Name = "GridColumn2"
         '
         'GridColumn3
         '
@@ -335,6 +345,12 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.GridColumn4.Name = "GridColumn4"
         Me.GridColumn4.Visible = True
         Me.GridColumn4.VisibleIndex = 1
+        '
+        'GridColumn7
+        '
+        Me.GridColumn7.Caption = "Item Type"
+        Me.GridColumn7.FieldName = "ItemType"
+        Me.GridColumn7.Name = "GridColumn7"
         '
         'AvailableSectionLabelLookUpEdit
         '
@@ -396,7 +412,7 @@ Partial Class SampleUnitCoverLetterMappingEditor
         '
         Me.gvArtifacts.Appearance.FocusedCell.BackColor = System.Drawing.SystemColors.MenuHighlight
         Me.gvArtifacts.Appearance.FocusedCell.Options.UseBackColor = True
-        Me.gvArtifacts.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.GridColumn1, Me.GridColumn5})
+        Me.gvArtifacts.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.GridColumn6, Me.GridColumn1, Me.GridColumn5, Me.GridColumn8})
         Me.gvArtifacts.GridControl = Me.gcArtifacts
         Me.gvArtifacts.Name = "gvArtifacts"
         Me.gvArtifacts.OptionsBehavior.Editable = False
@@ -407,6 +423,12 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.gvArtifacts.OptionsView.EnableAppearanceEvenRow = True
         Me.gvArtifacts.OptionsView.ShowAutoFilterRow = True
         Me.gvArtifacts.SortInfo.AddRange(New DevExpress.XtraGrid.Columns.GridColumnSortInfo() {New DevExpress.XtraGrid.Columns.GridColumnSortInfo(Me.GridColumn1, DevExpress.Data.ColumnSortOrder.Ascending)})
+        '
+        'GridColumn6
+        '
+        Me.GridColumn6.Caption = "GridColumn6"
+        Me.GridColumn6.FieldName = "Status"
+        Me.GridColumn6.Name = "GridColumn6"
         '
         'GridColumn1
         '
@@ -423,6 +445,12 @@ Partial Class SampleUnitCoverLetterMappingEditor
         Me.GridColumn5.Name = "GridColumn5"
         Me.GridColumn5.Visible = True
         Me.GridColumn5.VisibleIndex = 1
+        '
+        'GridColumn8
+        '
+        Me.GridColumn8.Caption = "Item Type"
+        Me.GridColumn8.FieldName = "ItemType"
+        Me.GridColumn8.Name = "GridColumn8"
         '
         'RepositoryItemLookUpEdit1
         '
@@ -798,7 +826,7 @@ Partial Class SampleUnitCoverLetterMappingEditor
     Friend WithEvents ApplyButton As System.Windows.Forms.Button
     Friend WithEvents OKButton As System.Windows.Forms.Button
     Friend WithEvents CancelButton As System.Windows.Forms.Button
-    Friend WithEvents InformationBar As Nrc.Qualisys.ConfigurationManager.InformationBar
+    Friend WithEvents InformationBar As Nrc.QualiSys.ConfigurationManager.InformationBar
     Friend WithEvents SplitContainerMainView As System.Windows.Forms.SplitContainer
     Friend WithEvents HeaderStrip2 As Nrc.Framework.WinForms.HeaderStrip
     Friend WithEvents ToolStripLabel2 As System.Windows.Forms.ToolStripLabel
@@ -862,5 +890,9 @@ Partial Class SampleUnitCoverLetterMappingEditor
     Friend WithEvents SaveFileDialog1 As System.Windows.Forms.SaveFileDialog
     Friend WithEvents ToolTipController1 As DevExpress.Utils.ToolTipController
     Friend WithEvents ContextMenuStrip1 As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents GridColumn2 As DevExpress.XtraGrid.Columns.GridColumn
+    Friend WithEvents GridColumn6 As DevExpress.XtraGrid.Columns.GridColumn
+    Friend WithEvents GridColumn7 As DevExpress.XtraGrid.Columns.GridColumn
+    Friend WithEvents GridColumn8 As DevExpress.XtraGrid.Columns.GridColumn
 
 End Class
