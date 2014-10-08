@@ -15,7 +15,7 @@ begin tran
 go
 ALTER PROCEDURE [dbo].[sp_TestPrints]    
 @survey_id INT, @Sexes CHAR(2)='DC', @Ages CHAR(2)='DC',  -- DC=Don't Care    
-@bitSchedule BIT=0, @bitMockup BIT=1, @Languages VARCHAR(20)='1', /*'1,2'*/@covers VARCHAR(20)='',    
+@bitSchedule BIT=0, @bitMockup BIT=1, @Languages VARCHAR(20)='1', @covers VARCHAR(20)='',    
 @Employee_id INT=0, @eMail VARCHAR(50)=''    
 AS    
 
@@ -25,8 +25,8 @@ declare @survey_id INT, @Sexes CHAR(2), @Ages CHAR(2),
 @Employee_id INT, @eMail VARCHAR(50)
 
 select @survey_id=15788, @Sexes='DC', @Ages='DC',  
-@bitSchedule =0, @bitMockup=1, @Languages ='1', @covers ='1,2',    
-@Employee_id =0, @eMail=''    
+@bitSchedule =1, @bitMockup=1, @Languages ='1', @covers ='1,2',    
+@Employee_id =90, @eMail='dgilsdorf@nationalresearch.com'
 -- */
 
 
@@ -37,13 +37,13 @@ FROM Survey_def
 WHERE Survey_id=/*15788*/@survey_id    
     
 IF @Valid=0    
-	RETURN --1    -- survey not validated
+	RETURN 1    -- survey not validated
     
 IF NOT EXISTS (	SELECT *     
 				FROM sysobjects     
 				WHERE id=object_id(N'[s'+CONVERT(VARCHAR,@Study_id)+'].[Population]')     
 				AND OBJECTPROPERTY(id, N'IsTable')=1)    
-	RETURN --2    -- study's population table doesn't exist
+	RETURN 2    -- study's population table doesn't exist
 	
 CREATE TABLE #SampleSet (SampleSet_id INT, intcount INT)    
     
@@ -53,7 +53,7 @@ WHERE Survey_id=/*15788*/@survey_id
     
 IF @SampleSet_id IS NULL -- i.e. no samples have been pulled for the Survey yet    
 BEGIN    
-	RETURN --3    -- no samples have been pulled yet
+	RETURN 3    -- no samples have been pulled yet
 END    
 ELSE     
 BEGIN    
@@ -160,7 +160,7 @@ exec dbo.CoverVariationGetMap /*15788*/@survey_id
 if exists (select * from #CoverLetterItemArtifactUnitMapping where coverItem_id=-1 or Artifact_id=-1 or ArtifactPage_id=-1)
 begin
 	RAISERROR ('One or more of the named cover letter items or artifacts don''t exist.',15,1)    
-	RETURN --8
+	RETURN 8
 end
 
 -- get the list of all possible cover letter variations by calling CoverVariationList for each of the survey's Cover Letters 
@@ -199,7 +199,7 @@ begin
 	order by map.cover_id, map.coverItem_id, map.sampleunit_id
 	*/
 	RAISERROR ('One or more of the named cover letter items are mapped to different artifacts for the same sample unit.',15,1)    
-	RETURN --8
+	RETURN 8
 end			
 
 
@@ -217,6 +217,7 @@ select distinct st.survey_id, st.coverid, st.qpc_id --> list of all textboxes on
 into #CoverLetterTextboxes
 from sel_textbox st
 inner join (select distinct selcover_id from #spCoverVariation) mc on st.coverid=mc.selcover_id
+inner join #CoverLetterItemArtifactUnitMapping map on st.coverid=map.cover_id and st.qpc_id=map.coveritem_id
 where st.survey_id=/*15788*/@survey_id
 
 -- cycle through each item on the cover letters and determine which (if any) artifact each samplepop should use instead.
@@ -376,7 +377,7 @@ BEGIN
 		WHERE sl.Survey_id= /*15788*/@survey_id 
 		AND l.Langid IN (select items from dbo.split(@languages,','))
 	IF @@ROWCOUNT=0    
-		RETURN --4    -- the survey hasn't been set up for any of the languages passed into the @languages parameter 
+		RETURN 4    -- the survey hasn't been set up for any of the languages passed into the @languages parameter 
 
 	CREATE TABLE #Cover (Cover_id INT, MailingStep_id INT)    
 	insert into #Cover
@@ -386,13 +387,13 @@ BEGIN
 		AND selCover_id IN (select items from dbo.split(/*'1,2'*/@covers,','))
 		GROUP BY selCover_id
 	IF @@ROWCOUNT=0    
-		RETURN --5    -- the survey doesn't have a cover letter defined for any of the covers passed into the @covers parameter
+		RETURN 5    -- the survey doesn't have a cover letter defined for any of the covers passed into the @covers parameter
 
 	IF NOT EXISTS (SELECT * FROM Employee WHERE Employee_id=@Employee_id)    
-		RETURN --6    -- the associate doesn't exist in the employee table
+		RETURN 6    -- the associate doesn't exist in the employee table
 
 	IF NOT EXISTS (SELECT * FROM Employee WHERE streMail=@eMail)    
-		RETURN --7    -- the associates email isn't registered in the employee table
+		RETURN 7    -- the associates email isn't registered in the employee table
 
 	BEGIN TRANSACTION    
 	INSERT INTO Scheduled_TP (Study_id, Survey_id, SampleSet_id, Pop_id,    
@@ -412,7 +413,7 @@ BEGIN
 	BEGIN    
 		ROLLBACK TRAN    
 		RAISERROR ('Unable to schedule test prints.  Please verify that an active mailing methodology exists.',15,1)    
-		RETURN --8    
+		RETURN 8    
 	END    
 	WAITFOR DELAY '00:00:00.01'    
 
@@ -429,6 +430,6 @@ drop table #CoverLetterTextboxes
 drop table #spCoverMap
 drop table #CoverLetterItemArtifactUnitMapping
 
-RETURN --0
+RETURN 0
 go
 commit tran
