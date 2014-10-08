@@ -1,3 +1,20 @@
+/*
+Sprint8_UserStory12_ACO-8_ACO-12_QuestionnaireVersions
+
+12.1	Build List of Questions for each version
+12.2	Insert questions in to sub types table and survey type question mapping tables
+
+Note:   This also has been updated to reflect the SV_CAHPS_FormQuestions change in production on 9/23/2014
+
+Chris Burkholder
+
+UPDATE [dbo].[SurveyTypeQuestionMappings]
+ALTER TABLE [dbo].[SurveyTypeQuestionMappings]
+ALTER TABLE [dbo].[SurveyTypeQuestionMappings] DROP/ADD  CONSTRAINT [PK_SurveyTypeQuestionMappings]
+insert into SurveyTypeQuestionMappings 
+ALTER PROCEDURE [dbo].[SV_CAHPS_FormQuestions]
+*/
+
 USE [QP_Prod]
 GO
 
@@ -1023,9 +1040,11 @@ CREATE TABLE #M (Error TINYINT, strMessage VARCHAR(200))
 	WHERE OverAllOrder=1
 
 	INSERT INTO #M (Error, strMessage)
-	SELECT 1,'QstnCore '+LTRIM(STR(QstnCore))+' is out of order on the form.'
+	SELECT 1,'QstnCore '+LTRIM(STR(a.QstnCore))+' is out of order on the form.' FROM
+	(select QstnCore
 	FROM #OrderCheck
-	WHERE OrderDiff<>@OrderDifference
+	WHERE OrderDiff<>@OrderDifference) AS a
+		 LEFT JOIN AlternateQuestionMappings AS b ON a.QstnCore=b.QstnCore where (b.QstnCore is null)
 
 	DROP TABLE #OrderCheck
 	
