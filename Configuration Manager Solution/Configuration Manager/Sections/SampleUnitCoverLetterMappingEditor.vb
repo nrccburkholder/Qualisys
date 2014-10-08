@@ -43,7 +43,6 @@ Public Class SampleUnitCoverLetterMappingEditor
 
 #Region "event handlers"
 
-
     Private Sub gvCoverLetters_CustomDrawCell(sender As Object, e As DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs) Handles gvCoverLetters.CustomDrawCell, gvArtifacts.CustomDrawCell
 
         '  Nothing is really happening here.  It was just something I was playing around with.
