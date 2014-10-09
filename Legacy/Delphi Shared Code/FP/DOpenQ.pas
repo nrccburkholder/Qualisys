@@ -377,6 +377,7 @@ type
     procedure DeleteSQLSurvey;
     function ValidateCodes:boolean;
     function ValidateSkips:boolean;
+    function LabelOrID(id : TIntegerField; name : TStringField) : string;
     function ValidateTranslation:boolean;
     procedure wwt_QstnsUpdateLangInfo;
     function getItemsinSubsection:integer;
@@ -4192,7 +4193,11 @@ var aStream:tMemoryStream;
     LangString : string;
     elc : integer;
   procedure CorruptCodeErrorMessage(eType,LangID:integer);
+  var
+    coverName : string;
   begin
+    coverName := F_DynaQ.TabSet1.Tabs[wwt_TextBoxCoverID.value];
+
     if t_Language.FindKey([LangID]) then
       LangString := trim(t_language.fieldbyname('language').asstring)
     else
@@ -4210,7 +4215,7 @@ var aStream:tMemoryStream;
       stAddress {6} :
         errorlist.add('Address  ('+LangString+') contains a corrupted code');
       7 :
-        errorlist.add('TextBox '+wwt_textboxid.asstring+' (CoverID='+wwt_TextBoxCoverID.asstring+', '+LangString+') contains a corrupted code');
+        errorlist.add('TextBox "'+LabelOrId(wwt_textboxid, wwt_textboxlabel)+'" (Cover Name="'+coverName+'", '+LangString+') contains a corrupted code');
       8 : begin
             LocalQuery('select qstncore,'+qpc_section+',subsection from sel_qstns where subtype=1 and scaleid='+wwt_sclsID.AsString,false);
             errorlist.add('Scale for question #'+ww_Query.fieldbyname('qstncore').asstring+
@@ -4418,25 +4423,35 @@ begin
    end;
 end;
 
+function TDMOpenQ.LabelOrID(id : TIntegerField; name : TStringField) : string;
+begin
+  if name.AsString <> '' then
+    result := name.AsString
+  else
+    result := id.AsString ;
+end;
 
 function TDMOpenQ.ValidateTranslation:boolean;
 var CurrentLanguageName,s:string;
     i : integer;
   procedure checkTB;
+  var
+    coverName : string;
   begin
     with wwt_TextBox do begin
       first;
       while (not eof) do begin
+        coverName := F_DynaQ.TabSet1.Tabs[wwt_TextBoxCoverID.value];
         if (not wwt_transTB.findkey([glbSurveyID,wwt_TextBoxID.value,currentLanguage])) then
-          errorlist.add('TextBox '+wwt_textboxid.asstring+' (CoverID='+wwt_TextBoxCoverID.asstring+') needs translated ('+CurrentLanguageName+')')
+          errorlist.add('TextBox "'+LabelOrId(wwt_textboxid, wwt_textboxlabel)+'" (Cover Letter="'+coverName+'") needs to be translated ('+CurrentLanguageName+')')
         else begin
 
           if (wwt_TransTB.fieldbyname('bitLangReview').isnull) or (wwt_TransTB.fieldbyname('bitLangReview').asBoolean) then
-            errorlist.add('TextBox '+wwt_textboxid.asstring+' (CoverID='+wwt_TextBoxCoverID.asstring+') needs reviewed ('+CurrentLanguageName+')');
+            errorlist.add('TextBox "'+LabelOrId(wwt_textboxid, wwt_textboxlabel)+'" (Cover Letter="'+coverName+'") needs to be reviewed ('+CurrentLanguageName+')');
 
-          //GN13: If the user clears the translation text, the record still exists in the database  
+          //GN13: If the user clears the translation text, the record still exists in the database
           if GetPlainText(wwt_TransTBRichText) = '' then
-             errorlist.add('TextBox '+wwt_textboxid.asstring+' (CoverID='+wwt_TextBoxCoverID.asstring+') needs translated ('+CurrentLanguageName+')');
+             errorlist.add('TextBox "'+LabelOrId(wwt_textboxid, wwt_textboxlabel)+'" (Cover Letter="'+coverName+'") needs to be translated ('+CurrentLanguageName+')');
           {make sure Foreign TextBox's x,y,width,height,etc are same as English's}
 
           wwt_TransTB.Edit;
@@ -4487,7 +4502,7 @@ var CurrentLanguageName,s:string;
         with dqDataModule.wwT_HeadText do begin
           if findkey([wwt_Qstns.fieldbyname('QstnCore').value,currentLanguage]) then begin
             if fieldbyname('Review').asboolean then
-              errorlist.add('Header #'+wwt_Qstns.fieldbyname('QstnCore').asstring+' needs reviewing  ('+CurrentLanguageName+')')
+              errorlist.add('Header #'+wwt_Qstns.fieldbyname('QstnCore').asstring+' needs to be reviewed  ('+CurrentLanguageName+')')
             else begin
               newRec := not wwt_transQ.findkey([glbSurveyID,wwt_QstnsID.value,currentLanguage]);
               if NewRec then
@@ -4522,7 +4537,7 @@ var CurrentLanguageName,s:string;
       with dqDataModule.wwT_QuestionText do begin
         if findkey([wwt_Qstns.fieldbyname('QstnCore').value,currentLanguage]) then begin
           if fieldbyname('Review').asboolean then
-            errorlist.add('Question #'+wwt_Qstns.fieldbyname('QstnCore').asString+' needs reviewing ('+CurrentLanguageName+')')
+            errorlist.add('Question #'+wwt_Qstns.fieldbyname('QstnCore').asString+' needs to be reviewed ('+CurrentLanguageName+')')
           else begin
             newRec := not wwt_TransQ.findkey([glbSurveyID,wwt_QstnsID.value,currentLanguage]);
             if not newRec and (GetPlainText(wwt_TransQRichText) = '') then //GN09
@@ -4559,10 +4574,10 @@ var CurrentLanguageName,s:string;
     procedure checkcomment;
     begin
       if not wwt_transQ.findkey([glbSurveyid,wwt_QstnsID.value,currentLanguage]) then
-        errorlist.add('Comment in Section '+wwt_QstnsSection.asstring+'.'+wwt_qstnsSubsection.asstring+' needs translated ('+CurrentLanguageName+')')
+        errorlist.add('Comment in Section '+wwt_QstnsSection.asstring+'.'+wwt_qstnsSubsection.asstring+' needs to be translated ('+CurrentLanguageName+')')
       else begin
         if (wwt_TransQ.fieldbyname('bitLangReview').isnull) or (wwt_TransQ.fieldbyname('bitLangReview').asBoolean) then
-          errorlist.add('Comment in Section '+wwt_QstnsSection.asstring+'.'+wwt_qstnsSubsection.asstring+' needs reviewed ('+CurrentLanguageName+')');
+          errorlist.add('Comment in Section '+wwt_QstnsSection.asstring+'.'+wwt_qstnsSubsection.asstring+' needs to be reviewed ('+CurrentLanguageName+')');
         wwt_TransQ.edit;
         dup_fields(wwt_Qstns,wwt_TransQ,[qpc_Section,'Subsection','Item','Label',
            'Subtype','ScaleID','Height','QstnCore','ScalePos','numMarkCount',
@@ -4576,7 +4591,7 @@ var CurrentLanguageName,s:string;
       if not wwt_transQ.findkey([glbSurveyid,wwt_QstnsID.value,currentLanguage]) then
         errorlist.add('Address needs setup with '+CurrentLanguageName+' codes')
       else if (wwt_TransQ.fieldbyname('bitLangReview').isnull) or (wwt_TransQ.fieldbyname('bitLangReview').asBoolean) then
-        errorlist.add('Address needs reviewed ('+CurrentLanguageName+')');
+        errorlist.add('Address needs to be reviewed ('+CurrentLanguageName+')');
     end;
 
   var subtype : integer;
