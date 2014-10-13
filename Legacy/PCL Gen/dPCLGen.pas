@@ -487,6 +487,7 @@ end;
 
 procedure tdmPCLGen.LoadStaticTables;
 var vID,vCover,vSurvey : integer;
+    vBitmapName : string;
 begin
   frmPCLGeneration.ProgressReport('Load Static Tables','','');
   LoadSQL('Select Q.Survey_ID, Q.SelQstns_ID, '+
@@ -532,7 +533,8 @@ begin
       vID := fieldbyname(qpc_ID).value;
       vCover := fieldbyname('CoverID').value;
       vSurvey := fieldbyname('Survey_id').value;
-      frmPCLGeneration.ProgressReport(format('  Loading Logo %d-%d',[vSurvey,vCover]),'','');
+      vBitmapName := fieldbyname('Description').value;
+      frmPCLGeneration.ProgressReport(format('  Loading Logo %d-%d-%d (%s)',[vSurvey,vCover,vID,vBitmapName]),'','');
       dmOpenQ.t_Logo_SQL.findkey([vID,vCover,vSurvey]);
       edit;
       fieldbyname('Bitmap').assign(dmopenq.t_logo_sql.fieldbyname('Bitmap'));
