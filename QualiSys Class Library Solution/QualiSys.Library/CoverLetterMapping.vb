@@ -320,9 +320,22 @@ Public Class CoverLetterMapping
         Dim artifact1 As String = String.Format("{0}.{1}", mArtifact_dsc, mArtifact_label)
         Dim artifact2 As String = String.Format("{0}.{1}", mapping.Artifact_name, mapping.ArtifactItem_label)
 
-        result = mSurvey_Id = mapping.Survey_Id And mCoverLetterItemType_Id = mapping.CoverLetterItemType_Id _
-            And mCoverLetter_dsc = mapping.CoverLetter_name And mCoverLetterItem_label = mapping.CoverLetterItem_label _
+        result = mCoverLetter_dsc = mapping.CoverLetter_name And mCoverLetterItem_label = mapping.CoverLetterItem_label _
             And artifact1 <> artifact2
+
+        Return result
+
+    End Function
+
+    Public Function HasMatchedArtifactItems(ByVal mapping As CoverLetterMapping) As Boolean
+
+        Dim result As Boolean
+
+        Dim artifact1 As String = String.Format("{0}.{1}", mArtifact_dsc, mArtifact_label)
+        Dim artifact2 As String = String.Format("{0}.{1}", mapping.Artifact_name, mapping.ArtifactItem_label)
+
+        result = mCoverLetter_dsc = mapping.CoverLetter_name And mCoverLetterItem_label = mapping.CoverLetterItem_label _
+            And artifact1 = artifact2
 
         Return result
 
