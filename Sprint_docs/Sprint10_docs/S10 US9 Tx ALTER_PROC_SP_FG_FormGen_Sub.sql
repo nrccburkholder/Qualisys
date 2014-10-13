@@ -260,7 +260,6 @@ CREATE TABLE #CoverLetterItemArtifactUnitMapping (
 	[Artifact_id] [int] NULL
 )
 
-
 declare @cover_id int
 
 SELECT TOP 1 @Survey=Survey_id FROM #Survey
@@ -304,18 +303,19 @@ select distinct survey_id, samplepop_id, 0 as CoverVariation_id, mw.selcover_id,
 into #spCoverVariation
 from #FG_MailingWork mw
 
--- get the list of all the items on the cover letter(s) we're examining
+-- get the list of all the items that might get swapped out on the cover letter(s) we're examining
 select distinct st.survey_id, st.coverid, st.qpc_id --> list of all textboxes on all the cover letters
 into #CoverLetterTextboxes
 from sel_textbox st
 inner join (select distinct survey_id, selcover_id from #spCoverVariation) mc on st.survey_id=mc.survey_id and st.coverid=mc.selcover_id
+inner join #CoverLetterItemArtifactUnitMapping map on st.coverid=map.cover_id and st.qpc_id=map.coveritem_id and st.survey_id=map.survey_id
 
 
 -- cycle through each item on the cover letters and determine which (if any) artifact each samplepop should use instead.
 select mw.samplepop_id, map.Survey_id, map.SampleUnit_id, map.CoverLetterItemType_id
 	, mw.selcover_id as CoverID, map.CoverLetter_dsc, map.CoverItem_id, map.CoverLetterItem_label
 	, map.ArtifactPage_id, map.Artifact_dsc, map.Artifact_id, map.ArtifactItem_label
-into #spCoverMap
+into #spArtifactSwap
 from #fg_mailingwork mw
 inner join samplepop sp on mw.samplepop_id=sp.samplepop_id
 inner join selectedsample ss on sp.sampleset_id=ss.sampleset_id and sp.pop_id=ss.pop_id
@@ -346,12 +346,16 @@ begin
 				set @sql_join = @sql_join + ' and isnull(sp.tb_'+@i+',0)=isnull(cv.tb_'+@i+',0)'
 			end
 			
+			set @SQL = 'update #spCoverVariation set TB_'+@i+'='+convert(varchar,@tb)+' where selcover_id='+convert(varchar,@cvr)+' and survey_id='+convert(varchar,@survey)
+			print @SQL
+			exec (@SQL)
+
 			set @SQL = 'update cv
 			set TB_'+@i+'='+@tb+', Art_'+@i+'=Artifact_id
 			from #spCoverVariation cv
-			inner join #spCoverMap map on cv.samplepop_id=map.samplepop_id
+			inner join #spArtifactSwap swap on cv.samplepop_id=swap.samplepop_id
 			where cv.selcover_id='+convert(varchar,@cvr)+'
-			and map.coveritem_id='+@tb
+			and swap.coveritem_id='+@tb
 			print @SQL
 			exec (@SQL)
 			
@@ -405,10 +409,10 @@ begin
 	--declare @SQL varchar(max)
 	set @sql=''
 	select @sql=@sql+'
-		update tb set Richtext=st.Richtext, qpc_id=cv.'+name+'
+		update tb set Richtext=st.Richtext, qpc_id=cv.'+name+', Shading=st.Shading, Border=st.Border
 		from #CV_textbox tb
 		inner join #surveyCoverVariation cv on tb.coverid=cv.CoverVariation_id and tb.survey_id=cv.survey_id and tb.qpc_id=cv.'+replace(name,'Art','TB')+'
-		inner join sel_textbox st on st.survey_id=cv.survey_id and st.qpc_id=cv.'+name+'
+		inner join sel_textbox st on st.survey_id=cv.survey_id and st.qpc_id=cv.'+name+' and tb.language=st.language
 		where tb.coverid>100'
 	from tempdb.sys.columns sc 
 	where sc.object_id = object_id('Tempdb..#surveyCoverVariation')
@@ -416,6 +420,14 @@ begin
 	print @SQL
 	exec (@SQL)
 
+	-- PCLGen needs QPC_id to be unique within each survey_id. QPC_id's generally don't get into triple digits, 
+	-- so to make it unique we add the CoverVariation_id (which is the CoverID in this table)
+	-- e.g. CoverVariation_id=206, QPC_id=43 ==> new QPC_id=206043
+/**
+	update #CV_textbox set qpc_id = (coverID*1000)+qpc_id
+	update #CV_logo set qpc_id = (coverID*1000)+qpc_id
+	update #CV_PCL set qpc_id = (coverID*1000)+qpc_id
+**/	
 	if @bitTP=0
 	begin
 		-- remove any records from the #CV_xxx temp tables that are already in the permanent PCL_xxxx tables
@@ -462,7 +474,7 @@ begin
 
 		delete cv
 		from #CV_Textbox cv
-		inner join pcl_Textbox_tp p on cv.survey_id=p.survey_id and cv.coverid=p.coverid and cv.qpc_id=p.qpc_id
+		inner join pcl_Textbox_tp p on cv.survey_id=p.survey_id and cv.coverid=p.coverid and cv.qpc_id=p.qpc_id and cv.language=p.language
 
 		delete cv
 		from #CV_Logo cv
@@ -470,7 +482,7 @@ begin
 
 		delete cv
 		from #CV_Pcl cv
-		inner join pcl_Pcl_tp p on cv.survey_id=p.survey_id and cv.coverid=p.coverid and cv.qpc_id=p.qpc_id
+		inner join pcl_Pcl_tp p on cv.survey_id=p.survey_id and cv.coverid=p.coverid and cv.qpc_id=p.qpc_id and cv.language=p.language
 
 		-- insert anything still in the #CV_xxx temp tables into the permanent PCL_xxx_tp tables
 		insert into pcl_Cover_tp (SelCover_id, Survey_id, PageType, Description, Integrated, bitLetterHead)
@@ -490,12 +502,27 @@ begin
 		from #CV_Pcl
 	end
 
-	-- note: there's nothing we need to do with CodeTxtBox. The QPC_Id in pcl_textbox has been updated to point to the artifact and CodeTxtBox doesn't reference CoverID
-	--select *
-	--from pcl_textbox ptb
-	--left join CodeTxtBox ctb on ptb.survey_id=ctb.survey_id and ptb.qpc_id=ctb.qpc_id
-	--where ptb.coverid>100
-
+/**
+	-- The QPC_Id's in pcl_textbox(_tp) have been updated to incorporate the CoverVariation_ID. So we need to add entries to CodeTxtBox 
+	-- that use the CoverVariation specific QPC_id's 
+	select cvtb.QPC_ID, ctb.SURVEY_ID, ctb.LANGUAGE, ctb.CODE, ctb.INTSTARTPOS, ctb.INTLENGTH
+	into #CV_CodeTxtBox 
+	from #CV_Textbox cvtb
+	inner join CodeTxtBox ctb on cvtb.survey_id=ctb.survey_id and cvtb.language=ctb.language and cvtb.qpc_id%1000=ctb.qpc_id
+	where cvtb.coverid>100
+	
+	delete cvctb
+	from #CV_CodeTxtBox cvctb
+	inner join CodeTxtBox ctb 
+			on  ctb.QPC_ID   =cvctb.QPC_ID
+			and ctb.SURVEY_ID=cvctb.SURVEY_ID
+			and ctb.LANGUAGE =cvctb.LANGUAGE
+			and ctb.CODE	 =cvctb.CODE
+	
+	insert into CodeTxtBox (QPC_ID, SURVEY_ID, LANGUAGE, CODE, INTSTARTPOS, INTLENGTH)
+	select QPC_ID, SURVEY_ID, LANGUAGE, CODE, INTSTARTPOS, INTLENGTH
+	from #CV_CodeTxtBox 
+**/
 	drop table #CV_Cover
 	drop table #CV_Textbox
 	drop table #CV_Logo
@@ -508,23 +535,22 @@ end
 update mw set selcover_id=cv.CoverVariation_id
 --select mw.samplepop_id, mw.selcover_id, cv.CoverVariation_id
 from #fg_mailingwork mw
-inner join #spCoverVariation cv on mw.samplepop_id=cv.samplepop_id
+inner join #spCoverVariation cv on mw.samplepop_id=cv.samplepop_id and mw.selcover_id=cv.selcover_id
 
-
-
+--select mw.survey_id, mw.samplepop_id, mw.langid,mw.selcover_id from #fg_mailingwork mw
 --select * from #CoverVariation 
 --select * from #SurveyCoverVariation 
 --select * from #CoverLetterItemArtifactUnitMapping
 --select * from #spCoverVariation
 --select * from #CoverLetterTextBoxes
---select * from #spCoverMap
+--select * from #spArtifactSwap
 
 drop table #CoverVariation 
 drop table #SurveyCoverVariation 
 drop table #CoverLetterItemArtifactUnitMapping
 drop table #spCoverVariation
 drop table #CoverLetterTextBoxes
-drop table #spCoverMap
+drop table #spArtifactSwap
 
 -- /DYNAMIC COVER LETTERS
 
@@ -576,8 +602,7 @@ GROUP  BY mw.scheduledmailing_id,
           mw.bitmockup, 
           mw.mailingstep_id 
 
-CREATE INDEX ndx_temppopsection 
-  ON #popsection (samplepop_id, sampleunit_id) 
+CREATE INDEX ndx_tempPopSection ON #PopSection (SamplePop_id, SampleUnit_id)
 
 -- remove records from #PopSection if the section is mapped to a mode other than what is currently being generated.
 DELETE ps 
@@ -605,8 +630,7 @@ SELECT mw.scheduledmailing_id,
 INTO   #popcover 
 FROM   #fg_mailingwork mw 
 
-DECLARE @BVJoin VARCHAR(255), @SQL VARCHAR(max), @AllBVFields VARCHAR(max)
-DECLARE @SQL2 VARCHAR(max), @SQL3 VARCHAR(max), @SQL4 VARCHAR(max)
+DECLARE @BVJoin VARCHAR(255), @AllBVFields VARCHAR(max)
 DECLARE @SexCol VARCHAR(50), @AgeCol VARCHAR(50), @Group_IndvCol VARCHAR(50)
 
 -- Added 1/22/04 SS (Get todays date to substitute for actual date when generating a mockup test print)
@@ -638,7 +662,7 @@ WHERE	TABLE_SCHEMA = 's'+CONVERT(VARCHAR,@Study) and
 
 DECLARE @type Varchar(15), @fld_nm VARCHAR(100), @len INT
 OPEN curBVFields
-FETCH next FROM curbvfields INTO @type, @len, @fld_nm 
+FETCH NEXT FROM curBVFields INTO @type, @len, @fld_nm
 
 WHILE @@FETCH_STATUS = 0 
   BEGIN 
@@ -657,8 +681,8 @@ WHILE @@FETCH_STATUS = 0
 
       FETCH next FROM curbvfields INTO @type, @len, @fld_nm 
   END 
-CLOSE curBVFields
-DEALLOCATE curBVFields
+CLOSE curbvfields 
+DEALLOCATE curbvfields 
 
 SELECT @SexCol=strTable_nm+strField_nm
 FROM MetaTable mt, MetaStructure ms, MetaField mf
@@ -686,7 +710,7 @@ WHERE mt.Table_id= ms.Table_id
 
 IF @SexCol IS NULL 
   BEGIN 
-      ALTER TABLE #bvuk ADD sex__ CHAR(1) DEFAULT 'M' 
+      ALTER TABLE #BVUK ADD Sex__ CHAR(1) DEFAULT 'M'
       SET @SexCol='Sex__' 
   END 
 
@@ -701,7 +725,6 @@ IF @Group_IndvCol IS NULL
       ALTER TABLE #BVUK ADD Group_Indv__ CHAR(1) DEFAULT 'G'
       SET @Group_IndvCol='Group_Indv__'
   END
-
 
 --Start of Modification 6/1/4 BD
 IF @bitTP = 0
@@ -785,16 +808,16 @@ IF @bitTP = 0
       WHERE  sl.langid IS NULL 
   END 
 
-UPDATE ps 
-SET    langid = mw.langid 
-FROM   #popsection ps, #fg_mailingwork mw 
-WHERE  mw.scheduledmailing_id = ps.scheduledmailing_id 
+UPDATE ps
+SET Langid=mw.Langid
+FROM #popSection ps, #FG_MailingWork mw
+WHERE mw.ScheduledMailing_id=ps.ScheduledMailing_id
 --AND mw.Survey_id=@Survey 
 
-UPDATE pc 
-SET    langid = mw.langid 
-FROM   #popcover pc, #fg_mailingwork mw 
-WHERE  mw.scheduledmailing_id = pc.scheduledmailing_id 
+UPDATE pc
+SET Langid=mw.Langid
+FROM #popCover pc, #FG_MailingWork mw
+WHERE mw.ScheduledMailing_id=pc.ScheduledMailing_id
 --AND mw.Survey_id=@Survey 
 
 CREATE INDEX ndx_tempPopSection2 ON #PopSection (Survey_id, Section_id, Langid)
@@ -802,40 +825,78 @@ CREATE INDEX ndx_tempPopSection2 ON #PopSection (Survey_id, Section_id, Langid)
 -- What are the Code values needed?
 CREATE TABLE #PopCode (ScheduledMailing_id INT, SamplePop_id INT, Survey_id INT, SampleUnit_id INT, Language INT,
      Code INT, Age CHAR(1), sex CHAR(1), doctor CHAR(1), Codetext_id INT, Codetext VARCHAR(255), bitUseNurse BIT, bitMockup BIT)
-INSERT INTO #PopCode
-SELECT DISTINCT ps.ScheduledMailing_id, ps.SamplePop_id, ps.Survey_id, ps.SampleUnit_id, sq.Language, cq.Code, NULL, NULL, NULL, NULL, NULL, 0, ps.bitMockup
-FROM #PopSection ps, PCL_Qstns sq, CodeQstns cq
-WHERE ps.Survey_id=sq.Survey_id
-  AND ps.Section_id=sq.Section_id
-  AND ps.Langid=sq.Language
-  AND sq.SelQstns_id=cq.SelQstns_id
-  AND sq.Survey_id=cq.Survey_id
-  AND sq.Language=cq.Language
-UNION
-SELECT DISTINCT ps.ScheduledMailing_id, ps.SamplePop_id, ps.Survey_id, ps.SampleUnit_id, sq.Language, cs.Code, NULL, NULL, NULL, NULL, NULL, 0, ps.bitMockup
-FROM #PopSection ps, PCL_Qstns sq, CodeScls cs
-WHERE ps.Survey_id=sq.Survey_id
-  AND ps.Section_id=sq.Section_id
-  AND ps.Langid=sq.Language
-  AND sq.Scaleid=cs.QPC_id
-  AND sq.Survey_id=cs.Survey_id
-  AND sq.Language=cs.Language
-  AND sq.SubType=1
-UNION
--- Modified 2/26/2 BD added UNION to eliminate duplicate Codes between Cover letter AND questionaire
---INSERT INTO #PopCode
-SELECT DISTINCT mw.ScheduledMailing_id, mw.SamplePop_id, mw.Survey_id, su.SampleUnit_id, mw.Langid, ctb.Code, NULL, NULL, NULL, NULL, NULL, 0, mw.bitMockup
-FROM #FG_MailingWork mw, PCL_TextBox st, CodeTxtBox ctb, SamplePlan sp, SampleUnit su
-WHERE mw.Survey_id=st.Survey_id
-AND mw.Langid=st.Language
-AND mw.SelCover_id=st.Coverid
-AND st.QPC_id=ctb.QPC_id
-AND st.Survey_id=ctb.Survey_id
-AND st.Language=ctb.Language
-AND st.Survey_id=sp.Survey_id
-AND sp.SamplePlan_id=su.SamplePlan_id
-AND su.ParentSampleUnit_id IS NULL
---AND mw.Survey_id=@Survey
+if @bitTP=0
+	INSERT INTO #PopCode
+	SELECT DISTINCT ps.ScheduledMailing_id, ps.SamplePop_id, ps.Survey_id, ps.SampleUnit_id, sq.Language, cq.Code, NULL, NULL, NULL, NULL, NULL, 0, ps.bitMockup
+	FROM #PopSection ps, PCL_Qstns sq, CodeQstns cq
+	WHERE ps.Survey_id=sq.Survey_id
+	  AND ps.Section_id=sq.Section_id
+	  AND ps.Langid=sq.Language
+	  AND sq.SelQstns_id=cq.SelQstns_id
+	  AND sq.Survey_id=cq.Survey_id
+	  AND sq.Language=cq.Language
+	UNION
+	SELECT DISTINCT ps.ScheduledMailing_id, ps.SamplePop_id, ps.Survey_id, ps.SampleUnit_id, sq.Language, cs.Code, NULL, NULL, NULL, NULL, NULL, 0, ps.bitMockup
+	FROM #PopSection ps, PCL_Qstns sq, CodeScls cs
+	WHERE ps.Survey_id=sq.Survey_id
+	  AND ps.Section_id=sq.Section_id
+	  AND ps.Langid=sq.Language
+	  AND sq.Scaleid=cs.QPC_id
+	  AND sq.Survey_id=cs.Survey_id
+	  AND sq.Language=cs.Language
+	  AND sq.SubType=1
+	UNION
+	-- Modified 2/26/2 BD added UNION to eliminate duplicate Codes between Cover letter AND questionaire
+	--INSERT INTO #PopCode
+	SELECT DISTINCT mw.ScheduledMailing_id, mw.SamplePop_id, mw.Survey_id, su.SampleUnit_id, mw.Langid, ctb.Code, NULL, NULL, NULL, NULL, NULL, 0, mw.bitMockup
+	FROM #FG_MailingWork mw, PCL_TextBox st, CodeTxtBox ctb, SamplePlan sp, SampleUnit su
+	WHERE mw.Survey_id=st.Survey_id
+	AND mw.Langid=st.Language
+	AND mw.SelCover_id=st.Coverid
+	AND st.QPC_id=ctb.QPC_id
+	AND st.Survey_id=ctb.Survey_id
+	AND st.Language=ctb.Language
+	AND st.Survey_id=sp.Survey_id
+	AND sp.SamplePlan_id=su.SamplePlan_id
+	AND su.ParentSampleUnit_id IS NULL
+	--AND mw.Survey_id=@survey
+
+if @bitTP=1
+	INSERT INTO #PopCode
+	SELECT DISTINCT ps.ScheduledMailing_id, ps.SamplePop_id, ps.Survey_id, ps.SampleUnit_id, sq.Language, cq.Code, NULL, NULL, NULL, NULL, NULL, 0, ps.bitMockup
+	FROM #PopSection ps, PCL_Qstns_tp sq, CodeQstns cq
+	WHERE ps.Survey_id=sq.Survey_id
+	  AND ps.Section_id=sq.Section_id
+	  AND ps.Langid=sq.Language
+	  AND sq.SelQstns_id=cq.SelQstns_id
+	  AND sq.Survey_id=cq.Survey_id
+	  AND sq.Language=cq.Language
+	UNION
+	SELECT DISTINCT ps.ScheduledMailing_id, ps.SamplePop_id, ps.Survey_id, ps.SampleUnit_id, sq.Language, cs.Code, NULL, NULL, NULL, NULL, NULL, 0, ps.bitMockup
+	FROM #PopSection ps, PCL_Qstns_tp sq, CodeScls cs
+	WHERE ps.Survey_id=sq.Survey_id
+	  AND ps.Section_id=sq.Section_id
+	  AND ps.Langid=sq.Language
+	  AND sq.Scaleid=cs.QPC_id
+	  AND sq.Survey_id=cs.Survey_id
+	  AND sq.Language=cs.Language
+	  AND sq.SubType=1
+	UNION
+	-- Modified 2/26/2 BD added UNION to eliminate duplicate Codes between Cover letter AND questionaire
+	--INSERT INTO #PopCode
+	SELECT DISTINCT mw.ScheduledMailing_id, mw.SamplePop_id, mw.Survey_id, su.SampleUnit_id, mw.Langid, ctb.Code, NULL, NULL, NULL, NULL, NULL, 0, mw.bitMockup
+	FROM #FG_MailingWork mw, PCL_TextBox_tp st, CodeTxtBox ctb, SamplePlan sp, SampleUnit su
+	WHERE mw.Survey_id=st.Survey_id
+	AND mw.Langid=st.Language
+	AND mw.SelCover_id=st.Coverid
+	AND st.QPC_id=ctb.QPC_id
+	AND st.Survey_id=ctb.Survey_id
+	AND st.Language=ctb.Language
+	AND st.Survey_id=sp.Survey_id
+	AND sp.SamplePlan_id=su.SamplePlan_id
+	AND su.ParentSampleUnit_id IS NULL
+	--AND mw.Survey_id=@survey
+
 
 
 CREATE INDEX ndx_temppopCode ON #PopCode (SamplePop_id,SampleUnit_id)
@@ -889,19 +950,24 @@ WHERE fm.SamplePop_id=sp.SamplePop_id
 
 SET @SQL=
 'UPDATE pc 
-SET    age = CASE 
-               WHEN bvuk.'+@agecol+' < 18 THEN ''M'' 
+SET    age = 
+       CASE 
+               WHEN bvuk.'+@AgeCol+'<18 THEN ''M'' 
                ELSE ''A'' 
              END, 
-       sex = CASE 
-               WHEN bvuk.'+@sexcol+' = ''M'' THEN ''M'' 
+       sex = 
+       CASE 
+               WHEN bvuk.'+@SexCol+'=''M'' THEN ''M'' 
                ELSE ''F'' 
              END, 
-       doctor = CASE 
-                  WHEN bvuk.'+@group_indvcol+' = ''G'' THEN ''G'' 
+       doctor = 
+       CASE 
+                  WHEN bvuk.'+@Group_IndvCol+'=''G'' THEN ''G'' 
                   ELSE ''D'' 
                 END 
-FROM   #popcode pc, #fg_mailingwork mw, #bvuk bvuk 
+FROM   #popcode pc, 
+       #fg_mailingwork mw, 
+       #bvuk bvuk 
 WHERE  pc.samplepop_id = mw.samplepop_id 
        AND mw.pop_id = bvuk.populationpop_id 
        AND pc.sampleunit_id = bvuk.sampleunit_id'
@@ -935,23 +1001,25 @@ WHILE @@ROWCOUNT > 0
 
       SET @SQL= '
       UPDATE pc 
-      SET    age="A" 
-      FROM   #popcode pc, #fg_mailingwork mw, #bvuk bv 
+      SET    age = ''A''
+      FROM   #popcode pc, 
+             #fg_mailingwork mw, 
+             #bvuk bv 
       WHERE  pc.samplepop_id=mw.samplepop_id 
       AND    mw.pop_id=bv.populationpop_id 
       AND    pc.sampleunit_id=bv.sampleunit_id 
       AND    mw.survey_id = ' + convert(varchar,@survey) + ' 
-      AND    ( '+@sql+')' 
+      AND    ( '+@SQL+')' 
 
       EXEC (@SQL) 
 
       TRUNCATE TABLE #criters 
 
-      DELETE #s 
-      WHERE  survey_id = @Survey 
+      DELETE #S 
+      WHERE  Survey_id=@Survey 
 
-      SELECT TOP 1 @Survey = survey_id 
-      FROM   #s 
+      SELECT TOP 1 @Survey = Survey_id 
+      FROM   #S 
   END 
 
 UPDATE pc
@@ -997,7 +1065,8 @@ UNION
 SELECT DISTINCT ctt.codetext_id, 
                 ctt.intstartpos, 
                 ctt.intlength, 
-                'CONVERT(VARCHAR,bvuk.' + mt.strtable_nm + mf.strfield_nm + ')' strFieldInfo, 
+                'CONVERT(VARCHAR,bvuk.' + mt.strtable_nm 
+                + mf.strfield_nm + ')' strFieldInfo, 
                 mf.strfield_nm, 
                 pc.bitmockup 
 FROM   #popcode pc, 
@@ -1015,11 +1084,12 @@ UNION
 SELECT DISTINCT ctt.codetext_id, 
                 ctt.intstartpos, 
                 ctt.intlength, 
-                CASE  WHEN pc.bitMockup = 1 THEN
+                CASE
+                  WHEN pc.bitmockup = 1 THEN
                    'datename(month,'+''''+@MockDate+''''+')+'' ''+CONVERT(VARCHAR,day('+''''+@MockDate+''''+'))+'', ''++CONVERT(VARCHAR,year('+''''+@MockDate+''''+'))'
-                ELSE
-                   'datename(month,bvuk.'+mt.strTable_nm+mf.strField_nm+')+'' ''+CONVERT(VARCHAR,day(bvuk.'+mt.strTable_nm+mf.strField_nm+'))+'', ''+CONVERT(VARCHAR,year(bvuk.'+mt.strTable_nm+mf.strField_nm+'))'
-                END strFieldInfo, 
+                  ELSE
+                   'datename(month,bvuk.' + mt.strtable_nm + mf.strfield_nm + ')+'' ''+CONVERT(VARCHAR,day(bvuk.' + mt.strtable_nm + mf.strfield_nm + '))+'', ''+CONVERT(VARCHAR,year(bvuk.' + mt.strtable_nm + mf.strfield_nm + '))' 
+                  END strFieldInfo, 
                 mf.strfield_nm, 
                 pc.bitmockup 
 FROM   #popcode pc, 
@@ -1087,7 +1157,10 @@ DECLARE @CT_id INT, @Start INT, @Length INT, @Field_nm VARCHAR(255), @bitMockup 
 IF @bitTP = 0 
   BEGIN 
       DECLARE curtag CURSOR FOR 
-        SELECT codetext_id, intstartpos, intlength, strfieldinfo 
+        SELECT codetext_id, 
+               intstartpos, 
+               intlength, 
+               strfieldinfo 
         FROM   #curtag 
       OPEN curtag 
 
@@ -1095,14 +1168,14 @@ IF @bitTP = 0
 
       WHILE @@FETCH_STATUS = 0 
         BEGIN 
-            SET @SQL= 'SET QUOTED_IDENTIFIER OFF    
-            UPDATE pc    
-            SET Codetext = LEFT(pc.CodeText,'+ CONVERT(VARCHAR, @Start-1) + ')+ISNULL(' + @Field_nm + ','''')+SUBSTRING(pc.CodeText,' + CONVERT(VARCHAR, @Start+@Length) + ',255)    
-            FROM #PopCode pc, #FG_MailingWork mw, #BVUK bvuk    
-            WHERE pc.SamplePop_id=mw.SamplePop_id
-              AND mw.Pop_id=bvuk.PopulationPop_id
-              AND mw.SampleSet_ID = bvuk.SampleSet_ID
-              AND pc.SampleUnit_id=bvuk.SampleUnit_id
+            SET @SQL= 'SET quoted_identifier OFF
+            UPDATE pc 
+			SET    codetext = LEFT(pc.codetext, '+convert(varchar,@start-1)+') + Isnull('+@field_nm+', '''') + Substring(pc.codetext, '+convert(varchar,@start+@length)+', 255) 
+			FROM   #popcode pc, #fg_mailingwork mw, #bvuk bvuk 
+            WHERE pc.samplepop_id = mw.samplepop_id
+              AND mw.pop_id = bvuk.populationpop_id
+              AND mw.sampleset_id = bvuk.sampleset_id
+              AND pc.sampleunit_id = bvuk.sampleunit_id
               AND pc.CodeText_id=' + CONVERT(VARCHAR, @CT_id)
             EXEC (@SQL) 
 
@@ -1113,37 +1186,38 @@ IF @bitTP = 0
       DEALLOCATE curtag 
   END 
   
+SET quoted_identifier OFF
+
 IF @bitTP = 1 
   BEGIN 
-      DECLARE curtag CURSOR FOR 
-        SELECT codetext_id, intstartpos, intlength, strfieldinfo, bitmockup 
-        FROM   #curtag 
+      DECLARE curTag CURSOR FOR 
+        SELECT CodeText_id, intStartPos, intLength, strFieldInfo, bitMockup 
+        FROM   #curTag 
 
-      OPEN curtag 
-      FETCH next FROM curtag INTO @CT_id, @Start, @Length, @Field_nm, @bitMockup 
+      OPEN curTag 
+      FETCH NEXT FROM curTag INTO @CT_id, @Start, @Length, @Field_nm, @bitMockup
 
       WHILE @@FETCH_STATUS = 0 
         BEGIN 
             SET @SQL=  
-             'SET QUOTED_IDENTIFIER OFF
+             'SET quoted_identifier OFF
               UPDATE pc
-              SET Codetext=LEFT(pc.CodeText,'+CONVERT(VARCHAR,@Start-1)+')+ISNULL('+@Field_nm+','''')+SUBSTRING(pc.CodeText,'+CONVERT(VARCHAR,@Start+@Length)+',255)
-              FROM #PopCode pc, #FG_MailingWork mw, #BVUK bvuk
-              WHERE pc.SamplePop_id=mw.SamplePop_id
-                AND mw.Pop_id=bvuk.PopulationPop_id
-                AND mw.SampleSet_ID = bvuk.SampleSet_ID
-                AND pc.SampleUnit_id=bvuk.SampleUnit_id 
-                AND pc.CodeText_id='+CONVERT(VARCHAR,@CT_id) + '
-                AND pc.bitMockup = mw.bitMockup 
-                AND pc.bitMockup = ' + STR(@bitMockup,1,0)
+              SET    codetext = LEFT(pc.codetext, '+convert(varchar,@start-1)+') + Isnull('+@field_nm+', '''') + Substring(pc.codetext, '+convert(varchar,@start+@length)+', 255)
+              FROM   #popcode pc, #fg_mailingwork mw, #bvuk bvuk
+              WHERE  pc.samplepop_id = mw.samplepop_id 
+			  AND mw.pop_id = bvuk.populationpop_id 
+			  AND mw.sampleset_id = bvuk.sampleset_id 
+              AND pc.sampleunit_id = bvuk.sampleunit_id 
+			  AND pc.codetext_id = '+convert(varchar,@ct_id)+ '
+			  AND pc.bitmockup = mw.bitmockup
+              AND pc.bitMockup = ' + STR(@bitMockup,1,0)
             EXEC (@SQL) 
 
-            FETCH next FROM curtag INTO @CT_id, @Start, @Length, @Field_nm, 
-            @bitMockup 
+            FETCH NEXT FROM curTag INTO @CT_id, @Start, @Length, @Field_nm, @bitMockup 
         END 
 
-      CLOSE curtag 
-      DEALLOCATE curtag 
+      CLOSE curTag 
+      DEALLOCATE curTag 
   END 
 
 
@@ -1155,9 +1229,8 @@ set CodeText=case when PatIndex('%-',CodeText)=Len(CodeText) then Left(CodeText,
 WHERE Code=30
 
 -- Modified 3/29/04 SS - Replaces Male fname with femanle fname for mockups (bitMockup = 1) and sex = 'F'
-UPDATE #PopCode 
-SET codetext = REPLACE(codetext,'Christopher','Christina') 
-WHERE bitMockup = 1 AND sex = 'F'
+UPDATE #PopCode SET codetext = REPLACE(codetext,'Christopher','Christina') WHERE bitMockup = 1 AND sex = 'F'
+
 
 --  INSERT INTO SS_POPCODE SELECT *  FROM #POPCODE
 
@@ -1172,47 +1245,45 @@ SELECT @GetDate=GETDATE()
 -- MOD 1/20/04 SS (Flow Logic for Production = 0 / Ttest prints = 1)
 IF @bitTP = 0 
   BEGIN 
-      -- Add to SentMailing 
-      INSERT INTO sentmailing (datgenerated, methodology_id, scheduledmailing_id, langid, questionnairetype_id) 
-      SELECT @GetDate, methodology_id, scheduledmailing_id, langid, questionnairetype_id 
-      FROM   #fg_mailingwork 
-
+    -- Add to SentMailing 
+	INSERT INTO SentMailing(datGenerated, Methodology_id, ScheduledMailing_id, Langid, QuestionnaireType_ID)
+	SELECT @GetDate, Methodology_id, ScheduledMailing_id, Langid, QuestionnaireType_ID
+	FROM #FG_MailingWork
       --WHERE #FG_MailingWork.Survey_id=@Survey 
+      
       IF @@ERROR <> 0 
         BEGIN 
             ROLLBACK TRANSACTION 
-            INSERT INTO formgenerror (scheduledmailing_id, datgenerated, fgerrortype_id) 
-            SELECT scheduledmailing_id, Getdate(), 3 
-            FROM   #fg_mailingwork 
+            INSERT INTO FormGenError (ScheduledMailing_id,datGenerated,FGErrorType_id)
+            SELECT ScheduledMailing_id, GETDATE(), 3 
+            FROM #FG_MailingWork
 
-            TRUNCATE TABLE #fg_mailingwork 
+            TRUNCATE TABLE #FG_MailingWork 
             RETURN 
         END 
 
-      SELECT DISTINCT survey_id 
-      INTO   #tt 
-      FROM   #fg_mailingwork 
+      SELECT DISTINCT Survey_id INTO #TT FROM #FG_MailingWork 
 
-      SELECT TOP 1 @Survey = survey_id FROM #tt 
+      SELECT TOP 1 @Survey=Survey_id FROM #TT
 
-      WHILE @@ROWCOUNT > 0 
-        BEGIN 
-            --We will generate the skip pattern information for all outgo, even postcards because of Canada. 
-            EXEC Sp_fg_populateskippatterns @Survey, @GetDate 
+	  WHILE @@ROWCOUNT>0
+	    BEGIN
+		  --We will generate the skip pattern information for all outgo, even postcards because of Canada.
+		  EXEC SP_FG_PopulateSkipPatterns @Survey, @GetDate
 
-            DELETE #tt WHERE survey_id = @Survey 
+		  DELETE #TT WHERE Survey_id=@Survey
 
-            SELECT TOP 1 @Survey = survey_id FROM #tt 
-        END 
+		  SELECT TOP 1 @Survey=Survey_id FROM #TT
+	    END
 
       IF @@ERROR <> 0 
         BEGIN 
             ROLLBACK TRANSACTION 
-            INSERT INTO formgenerror (scheduledmailing_id, datgenerated, fgerrortype_id) 
-            SELECT scheduledmailing_id, Getdate(), 3 
-            FROM   #fg_mailingwork 
+            INSERT INTO FormGenError (ScheduledMailing_id,datGenerated,FGErrorType_id)
+            SELECT ScheduledMailing_id, GETDATE(), 3 
+            FROM #FG_MailingWork
 
-            TRUNCATE TABLE #fg_mailingwork 
+            TRUNCATE TABLE #FG_MailingWork
             RETURN 
         END 
 
@@ -1227,24 +1298,22 @@ IF @bitTP = 0
       IF @@ERROR <> 0 
         BEGIN 
             ROLLBACK TRANSACTION 
+            INSERT INTO FormGenError (ScheduledMailing_id,datGenerated,FGErrorType_id)
+            SELECT ScheduledMailing_id, GETDATE(), 3 
+            FROM #FG_MailingWork
 
-            INSERT INTO formgenerror (scheduledmailing_id, datgenerated, fgerrortype_id) 
-            SELECT scheduledmailing_id, Getdate(), 3 
-            FROM   #fg_mailingwork 
-
-            TRUNCATE TABLE #fg_mailingwork 
-
+            TRUNCATE TABLE #FG_MailingWork
             RETURN 
         END 
 
       --Start of Modification BD 9/13/4 
       --Save off the bundling code fields 
-      CREATE TABLE #bundlingcodecolumns (needcolumn VARCHAR(60), hascolumn  BIT) 
+      CREATE TABLE #BundlingCodeColumns (NeedColumn VARCHAR(60), HasColumn BIT)
 
-      INSERT INTO #bundlingcodecolumns (needcolumn, hascolumn) 
-      SELECT 'POPULATION' + strfield_nm, 0 
-      FROM   metafield 
-      WHERE  strfield_nm IN ( 'Zip5', 'Zip4', 'Postal_Code' ) 
+      INSERT INTO #BundlingCodeColumns (NeedColumn, HasColumn)
+      SELECT 'POPULATION'+strField_nm,0
+      FROM MetaField
+      WHERE strField_nm IN ('Zip5','Zip4','Postal_Code')
 
       --What columns do we have? 
       UPDATE t 
@@ -1279,17 +1348,17 @@ IF @bitTP = 0
         BEGIN 
             ROLLBACK TRANSACTION 
 
-            INSERT INTO formgenerror (scheduledmailing_id, datgenerated, fgerrortype_id) 
-            SELECT scheduledmailing_id, Getdate(), 38 
-            FROM   #fg_mailingwork 
+            INSERT INTO FormGenError (ScheduledMailing_id,datGenerated,FGErrorType_id)
+            SELECT ScheduledMailing_id, GETDATE(), 38 
+            FROM #FG_MailingWork
 
-            TRUNCATE TABLE #fg_mailingwork 
+            TRUNCATE TABLE #FG_MailingWork
             RETURN 
         END 
-
       --End of Modification BD 9/13/4 
-      SELECT @MaxQF = Max(questionform_id) 
-      FROM   dbo.questionform 
+      
+      select @MaxQF = max(questionform_id)
+      from dbo.QuestionForm
 
       -- Add to QuestionForm 
       INSERT INTO questionform (sentmail_id, samplepop_id, survey_id) 
@@ -1335,56 +1404,57 @@ IF @bitTP = 0
             RETURN 
         END 
 
-      INSERT INTO fgpopsection (sentmail_id, survey_id, sampleunit_id, section_id, langid) 
-      SELECT sentmail_id, survey_id, sampleunit_id, section_id, langid 
-      FROM   #popsection p, 
-             scheduledmailing schm 
-      WHERE  p.scheduledmailing_id = schm.scheduledmailing_id 
+  	  INSERT INTO FGPopSection (SentMail_id, Survey_id, SampleUnit_id, Section_id, Langid)
+      SELECT SentMail_id, Survey_id, SampleUnit_id, Section_id, Langid
+	  FROM #PopSection p, 
+	       ScheduledMailing schm
+      WHERE p.ScheduledMailing_id = schm.ScheduledMailing_id
 
       IF @@ERROR <> 0 
         BEGIN 
             ROLLBACK TRANSACTION 
 
-            INSERT INTO formgenerror (scheduledmailing_id, datgenerated, fgerrortype_id) 
-            SELECT scheduledmailing_id, Getdate(), 3 
-            FROM   #fg_mailingwork 
+            INSERT INTO FormGenError (ScheduledMailing_id,datGenerated,FGErrorType_id)
+            SELECT ScheduledMailing_id, GETDATE(), 3 
+            FROM #FG_MailingWork
 
-            TRUNCATE TABLE #fg_mailingwork 
+            TRUNCATE TABLE #FG_MailingWork
             RETURN 
         END 
 
-      INSERT INTO fgpopcover (sentmail_id, survey_id, selcover_id, langid) 
-      SELECT sentmail_id, survey_id, selcover_id, langid 
-      FROM   #popcover p, 
-             scheduledmailing schm 
-      WHERE  p.scheduledmailing_id = schm.scheduledmailing_id 
+      INSERT INTO FGPopCover (SentMail_id, Survey_id, SelCover_id, Langid)
+      SELECT SentMail_id, Survey_id, SelCover_id, Langid
+      FROM   #PopCover p, 
+             ScheduledMailing schm
+      WHERE  p.ScheduledMailing_id = schm.ScheduledMailing_id
 
       IF @@ERROR <> 0 
         BEGIN 
             ROLLBACK TRANSACTION 
 
-            INSERT INTO formgenerror (scheduledmailing_id, datgenerated, fgerrortype_id) 
-            SELECT scheduledmailing_id, Getdate(), 3 
-            FROM   #fg_mailingwork 
+            INSERT INTO FormGenError (ScheduledMailing_id,datGenerated,FGErrorType_id)
+            SELECT ScheduledMailing_id, GETDATE(), 3 
+            FROM #FG_MailingWork
 
-            TRUNCATE TABLE #fg_mailingwork 
+            TRUNCATE TABLE #FG_MailingWork
             RETURN 
         END 
 
-      INSERT INTO fgpopcode (sentmail_id, survey_id, sampleunit_id, language, code, codetext) 
-      SELECT sentmail_id, survey_id, sampleunit_id, language, code, codetext 
-      FROM   #popcode p, scheduledmailing schm 
-      WHERE  p.scheduledmailing_id = schm.scheduledmailing_id 
+      INSERT INTO FGPopCode (SentMail_id, Survey_id, SampleUnit_id, Language, Code, Codetext)
+      SELECT SentMail_id, Survey_id, SampleUnit_id, Language, Code, Codetext
+      FROM   #PopCode p, 
+             ScheduledMailing schm
+      WHERE  p.ScheduledMailing_id = schm.ScheduledMailing_id
 
       IF @@ERROR <> 0 
         BEGIN 
             ROLLBACK TRANSACTION 
 
-            INSERT INTO formgenerror (scheduledmailing_id, datgenerated, fgerrortype_id) 
-            SELECT scheduledmailing_id, Getdate(), 3 
-            FROM   #fg_mailingwork 
+            INSERT INTO FormGenError (ScheduledMailing_id,datGenerated,FGErrorType_id)
+            SELECT ScheduledMailing_id, GETDATE(), 3 
+            FROM #FG_MailingWork
 
-            TRUNCATE TABLE #fg_mailingwork 
+            TRUNCATE TABLE #FG_MailingWork
             RETURN 
         END 
   END 
@@ -1468,11 +1538,13 @@ COMMIT TRANSACTION
 --these tables hold a snapshot of what sel_qstns and sel_scles looks like when the survey is generated
 IF @bitTP = 0 
   BEGIN 
-      SELECT DISTINCT survey_id, sampleset_id 
+      SELECT DISTINCT survey_id, 
+                      sampleset_id 
       INTO   #surveysset 
       FROM   #fg_mailingwork 
 
-      SELECT TOP 1 @Survey = survey_id, @SampleSet = sampleset_id 
+      SELECT TOP 1 @Survey = survey_id, 
+                   @SampleSet = sampleset_id 
       FROM   #surveysset 
 
       WHILE @@ROWCOUNT > 0 
