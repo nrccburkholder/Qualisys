@@ -43,6 +43,11 @@ Public Class SampleUnitCoverLetterMappingEditor
 
 #Region "event handlers"
 
+    Private Sub btnArtifactsClearSelections_Click(sender As System.Object, e As System.EventArgs)
+        'gvArtifacts.ClearSelection()
+        gvArtifacts.FocusedRowHandle = DevExpress.XtraGrid.GridControl.InvalidRowHandle
+    End Sub
+
     Private Sub gvCoverLetters_CustomDrawCell(sender As Object, e As DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs) Handles gvCoverLetters.CustomDrawCell, gvArtifacts.CustomDrawCell
 
         '  Nothing is really happening here.  It was just something I was playing around with.
@@ -295,9 +300,6 @@ Public Class SampleUnitCoverLetterMappingEditor
         UpdateMappingsFilter()
     End Sub
 
-    Private Sub btnArtifactsClearSelections_Click(sender As System.Object, e As System.EventArgs) Handles btnArtifactsClearSelections.Click
-        gvArtifacts.ClearSelection()
-    End Sub
 
     Private Sub btnCoverLettersClearnSelections_Click(sender As System.Object, e As System.EventArgs) Handles btnCoverLettersClearnSelections.Click
         gvCoverLetters.ClearSelection()
@@ -369,11 +371,15 @@ Public Class SampleUnitCoverLetterMappingEditor
 
         'Get a list of all the coverletters for this survey
         mCoverLetterList = CoverLetter.GetBySurveyIdAndPageType(Me.mModule.Survey.Id, CoverLetterPageType.CoverLetter)
-        CoverLetterBindingSource.DataSource = GetCoverLetters(mCoverLetterList)
+        gcCoverLetters.DataSource = GetCoverLetters(mCoverLetterList)
+        gvCoverLetters.ClearSelection()
 
         'Get a list of all the artifacts for this survey
         mArtifactList = CoverLetter.GetBySurveyIdAndPageType(Me.mModule.Survey.Id, CoverLetterPageType.Artifact)
-        ArtifactBindingSource.DataSource = GetCoverLetters(mArtifactList)
+        gcArtifacts.DataSource = GetCoverLetters(mArtifactList)
+        'gvArtifacts.ClearSelection()
+        gvArtifacts.FocusedRowHandle = DevExpress.XtraGrid.GridControl.InvalidRowHandle
+
 
         PopulateUnitTree()
 
@@ -384,7 +390,7 @@ Public Class SampleUnitCoverLetterMappingEditor
         OKButton.Enabled = mModule.IsEditable
         ApplyButton.Enabled = mModule.IsEditable
 
-        'SampleUnitTreeView.Selection.Clear()
+        'gvArtifacts.FocusedRowHandle = DevExpress.XtraGrid.GridControl.InvalidRowHandle
 
     End Sub
 

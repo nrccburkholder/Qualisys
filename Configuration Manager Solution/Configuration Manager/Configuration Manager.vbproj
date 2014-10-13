@@ -224,6 +224,9 @@
     <Compile Include="Configuration Modules\ModeSectionMappingModule.vb" />
     <Compile Include="Configuration Modules\NewClientModule.vb" />
     <Compile Include="Configuration Modules\NewClientGroupModule.vb" />
+    <Compile Include="Controls\CustomControls.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Dialogs\CopyDataStructureDialog.Designer.vb">
       <DependentUpon>CopyDataStructureDialog.vb</DependentUpon>
     </Compile>
