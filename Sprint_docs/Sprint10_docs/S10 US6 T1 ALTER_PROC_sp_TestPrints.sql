@@ -24,7 +24,7 @@ declare @survey_id INT, @Sexes CHAR(2), @Ages CHAR(2),
 @bitSchedule BIT, @bitMockup BIT, @Languages VARCHAR(20), @covers VARCHAR(20),    
 @Employee_id INT, @eMail VARCHAR(50)
 
-select @survey_id=15788, @Sexes='DC', @Ages='DC',  
+select @survey_id=11392, @Sexes='DC', @Ages='DC',  
 @bitSchedule =1, @bitMockup=1, @Languages ='1', @covers ='1,2',    
 @Employee_id =90, @eMail='dgilsdorf@nationalresearch.com'
 -- */
@@ -34,7 +34,7 @@ DECLARE @SampleSet_id INT, @Study_id INT, @sql VARCHAR(max), @Valid BIT
     
 SELECT @Study_id=Study_id, @Valid=bitValidated_flg    
 FROM Survey_def    
-WHERE Survey_id=/*15788*/@survey_id    
+WHERE Survey_id=@survey_id    
     
 IF @Valid=0    
 	RETURN 1    -- survey not validated
@@ -49,7 +49,7 @@ CREATE TABLE #SampleSet (SampleSet_id INT, intcount INT)
     
 SELECT @SampleSet_id=MAX(ss.SampleSet_id)    
 FROM SampleSet ss INNER JOIN SamplePop sp ON sp.SampleSet_id=ss.SampleSet_id    
-WHERE Survey_id=/*15788*/@survey_id    
+WHERE Survey_id=@survey_id    
     
 IF @SampleSet_id IS NULL -- i.e. no samples have been pulled for the Survey yet    
 BEGIN    
@@ -70,13 +70,14 @@ BEGIN
 			SELECT @SampleSet_id=MAX(ss.SampleSet_id)    
 			FROM SampleSet ss 
 				INNER JOIN SamplePop sp ON sp.SampleSet_id=ss.SampleSet_id    
-			WHERE Survey_id=/*15788*/@survey_id    
+			WHERE Survey_id=@survey_id    
 			AND ss.SampleSet_id NOT IN (SELECT SampleSet_id FROM #SampleSet)    
-			AND datSampleCreate_dt>(SELECT MAX(datChanged)     
-									FROM auditlog     
-									WHERE Survey_id=/*15788*/@survey_id    
-									AND module_nm='SampleEditor'    
-									AND audittype_id=1)    
+			AND datSampleCreate_dt>(select max(datChanged)
+									from changelog 
+									where idname in ('SectionMapping','CoverLetterMapping')
+									and property in ('surveyid','Survey_id')
+									and actiontype = 'A'
+									and newvalue=convert(varchar,@survey_id))
 		END 
 		ELSE     
 			SET @SampleSet_id=NULL    
@@ -94,7 +95,7 @@ SELECT DISTINCT SelQstnsSection, 0 intFlag
 INTO #Sections    
 FROM SampleUnitSection sus
 	INNER JOIN Sel_Qstns sq ON sus.SelQstnsSurvey_id=sq.Survey_id AND sus.SelQstnsSection=sq.Section_id 
-WHERE sus.SelQstnsSurvey_ID=/*15788*/@survey_id     
+WHERE sus.SelQstnsSurvey_ID=@survey_id     
 AND sus.SelQstnsSection>-1    
 ORDER BY 1    
     
@@ -155,7 +156,7 @@ CREATE TABLE #CoverLetterItemArtifactUnitMapping (
 	[ArtifactPage_id] [int] NULL,
 	[Artifact_id] [int] NULL
 )
-exec dbo.CoverVariationGetMap /*15788*/@survey_id
+exec dbo.CoverVariationGetMap @survey_id
 
 if exists (select * from #CoverLetterItemArtifactUnitMapping where coverItem_id=-1 or Artifact_id=-1 or ArtifactPage_id=-1)
 begin
@@ -173,13 +174,13 @@ while @cover_id is not null
 begin
 	select @cover_id=min(selcover_id) 
 	from sel_cover
-	where survey_id=/*15788*/@survey_id
+	where survey_id=@survey_id
 	and PageType <> 4
 	and SelCover_id not in (select Cover_id from #CoverVariation)
-	and Description in (select CoverLetter_Dsc from dbo.CoverLetterItemArtifactUnitMapping where survey_id=/*15788*/@survey_id)
+	and Description in (select CoverLetter_Dsc from dbo.CoverLetterItemArtifactUnitMapping where survey_id=@survey_id)
 
 	if @Cover_id is not null
-		exec dbo.CoverVariationList /*15788*/@survey_id, @cover_id
+		exec dbo.CoverVariationList @survey_id, @cover_id
 end
 
 if exists (	select Sampleunit_id, Cover_id, CoverItem_id, count(distinct Artifact_id) 
@@ -208,28 +209,29 @@ end
 select distinct samplepop_id, 0 as CoverVariation_id, selcover_id, intFlag
 into #spCoverVariation
 from #UniqueSections us, sel_cover sc
-where sc.survey_id=/*15788*/@survey_id
-and sc.selcover_id in (select items from dbo.split(/*'1,2'*/@covers,','))
+where sc.survey_id=@survey_id
+and sc.selcover_id in (select items from dbo.split(@covers,','))
 and sc.pagetype <> 4
 
--- get the list of all the items on the cover letter(s) we're examining
+-- get the list of all the items that might get swapped out on the cover letter(s) we're examining
 select distinct st.survey_id, st.coverid, st.qpc_id --> list of all textboxes on all the cover letters
 into #CoverLetterTextboxes
 from sel_textbox st
 inner join (select distinct selcover_id from #spCoverVariation) mc on st.coverid=mc.selcover_id
 inner join #CoverLetterItemArtifactUnitMapping map on st.coverid=map.cover_id and st.qpc_id=map.coveritem_id
-where st.survey_id=/*15788*/@survey_id
+where st.survey_id=@survey_id
 
 -- cycle through each item on the cover letters and determine which (if any) artifact each samplepop should use instead.
 select mw.samplepop_id, map.Survey_id, map.SampleUnit_id, map.CoverLetterItemType_id
 	, mw.selcover_id as CoverID, map.CoverLetter_dsc, map.CoverItem_id, map.CoverLetterItem_label
 	, map.ArtifactPage_id, map.Artifact_dsc, map.Artifact_id, map.ArtifactItem_label
-into #spCoverMap
+into #spArtifactSwap
 from #spCoverVariation mw
 inner join samplepop sp on mw.samplepop_id=sp.samplepop_id
 inner join selectedsample ss on sp.sampleset_id=ss.sampleset_id and sp.pop_id=ss.pop_id
 inner join #CoverLetterItemArtifactUnitMapping map on ss.sampleunit_id=map.sampleunit_id and mw.selcover_id=map.Cover_ID
 
+--declare @sql varchar(max)
 declare @cvr int, @tb varchar(10), @i varchar(10), @sql_join varchar(max)
 select @sql_join=''
 select @cvr=min(coverid) from #CoverLetterTextboxes
@@ -246,16 +248,20 @@ begin
 		begin
 			set @SQL = 'alter table #spCoverVariation add TB_'+@i+' int, Art_'+@i+' int'
 			print @SQL
-			exec (@SQL)
+			exec (@SQL)			
 			set @sql_join = @sql_join + ' and isnull(sp.tb_'+@i+',0)=isnull(cv.tb_'+@i+',0)'
 		end
+		
+		set @SQL = 'update #spCoverVariation set TB_'+@i+'='+convert(varchar,@tb)+' where selcover_id='+convert(varchar,@cvr)
+		print @SQL
+		exec (@SQL)
 		
 		set @SQL = 'update cv
 		set TB_'+@i+'='+@tb+', Art_'+@i+'=Artifact_id
 		from #spCoverVariation cv
-		inner join #spCoverMap map on cv.samplepop_id=map.samplepop_id
+		inner join #spArtifactSwap swap on cv.samplepop_id=swap.samplepop_id
 		where cv.selcover_id='+convert(varchar,@cvr)+'
-		and map.coveritem_id='+@tb
+		and swap.coveritem_id='+@tb
 		print @SQL
 		exec (@SQL)
 		
@@ -281,7 +287,6 @@ update us
 set CoverVariation_id=sp.CoverVariation_id
 from #UniqueSections us
 inner join #spCoverVariation sp on us.samplepop_id=sp.samplepop_id
---where us.intFlag=1
 
 -- get rid of variations that are already selected to get a testprint:
 delete 
@@ -327,7 +332,7 @@ BEGIN
 --	INNER JOIN Tag t ON 
 	INNER JOIN TagField tf ON ctt.Tag_id=tf.Tag_id
 	INNER JOIN MetaField mf ON tf.Field_id=mf.Field_id   
-	WHERE cq.Survey_id=/*15788*/@survey_id    	
+	WHERE cq.Survey_id=@survey_id    	
 	AND sq.Section_id=-1    
 	AND sq.Language=1    
 	AND sq.subtype=6    
@@ -345,7 +350,7 @@ BEGIN
 	INNER JOIN CodeTextTag ctt ON ct.CodeText_id=ctt.CodeText_id
 	--INNER JOIN Tag t ON 
 	INNER JOIN TagField tf ON ctt.Tag_id=tf.Tag_id
-	WHERE cq.Survey_id=/*15788*/@survey_id    
+	WHERE cq.Survey_id=@survey_id    
 	AND sq.Section_id=-1    
 	AND sq.Language=1    
 	AND sq.label='Address information'    
@@ -355,7 +360,7 @@ BEGIN
 	GROUP BY strReplaceLiteral    
 	ORDER BY MIN(ctt.intStartpos)    
 
-	SET @SQL='SELECT '+CONVERT(VARCHAR,/*15788*/@survey_id)+' Survey_id, sp.Study_id,    
+	SET @SQL='SELECT '+CONVERT(VARCHAR,@survey_id)+' Survey_id, sp.Study_id,    
 	p.Pop_id, sp.SamplePop_id,     
 	'+@SQL+' name, Age, Sex, Sections, CoverVariation_id    
 	FROM #UniqueSections us
@@ -374,7 +379,7 @@ BEGIN
 		SELECT l.LangID, l.Language     
 		FROM Languages l 
 		INNER JOIN SurveyLanguage sl ON l.Langid=sl.Langid
-		WHERE sl.Survey_id= /*15788*/@survey_id 
+		WHERE sl.Survey_id= @survey_id 
 		AND l.Langid IN (select items from dbo.split(@languages,','))
 	IF @@ROWCOUNT=0    
 		RETURN 4    -- the survey hasn't been set up for any of the languages passed into the @languages parameter 
@@ -383,8 +388,8 @@ BEGIN
 	insert into #Cover
 		SELECT SelCover_id, MIN(MailingStep_id)     
 		FROM MailingStep 
-		WHERE Survey_id=/*15788*/@survey_id
-		AND selCover_id IN (select items from dbo.split(/*'1,2'*/@covers,','))
+		WHERE Survey_id=@survey_id
+		AND selCover_id IN (select items from dbo.split(@covers,','))
 		GROUP BY selCover_id
 	IF @@ROWCOUNT=0    
 		RETURN 5    -- the survey doesn't have a cover letter defined for any of the covers passed into the @covers parameter
@@ -399,7 +404,7 @@ BEGIN
 	INSERT INTO Scheduled_TP (Study_id, Survey_id, SampleSet_id, Pop_id,    
 		methodology_id, MailingStep_id, OverRideItem_id, [Language], bitMockup,    
 		strSections, streMail, Employee_id, bitDone, datScheduled)    
-	SELECT @Study_id, /*15788*/@survey_id, s.SampleSet_id, sp.Pop_id, methodology_id,    
+	SELECT @Study_id, @survey_id, s.SampleSet_id, sp.Pop_id, methodology_id,    
 		c.MailingStep_id, NULL, l.Langid, @bitMockup, Sections, @eMail, @Employee_id,     
 		0, GETDATE()    
 	FROM #Cover c, #Language L, MailingMethodology mm, #UniqueSections us   --> cartesian joins. i'm not thrilled with this (dbg)
@@ -407,7 +412,7 @@ BEGIN
 	INNER JOIN #SampleSet s ON sp.SampleSet_id=s.SampleSet_id
 	WHERE us.intFlag=1    
 	AND sp.Study_id=@Study_id    
-	AND mm.Survey_id=/*15788*/@survey_id
+	AND mm.Survey_id=@survey_id
 	AND mm.bitActiveMethodology=1    
 	IF @@ROWCOUNT=0    
 	BEGIN    
@@ -421,13 +426,13 @@ BEGIN
 	DROP TABLE #Cover
 	DROP TABLE #Language
 END    
-    
+
 DROP TABLE #UniqueSections
 DROP TABLE #SampleSet
 drop table #CoverVariation
 drop table #spCoverVariation
 drop table #CoverLetterTextboxes
-drop table #spCoverMap
+drop table #spArtifactSwap
 drop table #CoverLetterItemArtifactUnitMapping
 
 RETURN 0

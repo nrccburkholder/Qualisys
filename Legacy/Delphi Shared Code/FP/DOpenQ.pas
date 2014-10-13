@@ -1112,13 +1112,15 @@ begin
       ww_Query.sql.clear;
       ww_Query.sql.add('select CoverLetter_dsc, CoverLetterItem_label, Artifact_dsc, ArtifactItem_label'+
               ' from CoverLetterItemArtifactUnitMapping' +
-              ' where survey_id = ' + inttostr(glbSurveyID) +
-              ' and ((CoverLetter_dsc = ''' + coverLetter + ''')' +
-              ' or (Artifact_dsc = ''' + coverLetter + '''))');
+              ' where survey_id = ' + inttostr(glbSurveyID));
+      if coverLetter <> '' then
+         ww_Query.sql.add(' and ((CoverLetter_dsc = ''' + coverLetter + ''')' +
+                 ' or (Artifact_dsc = ''' + coverLetter + '''))');
+      ww_Query.sql.add(' order by CoverLetter_dsc, CoverLetterItem_label');
       ww_Query.open;
       while not ww_Query.eof do begin
-        result := result + ww_Query.fieldbyname('CoverLetter_dsc').AsString + '.' + ww_Query.fieldbyname('CoverLetterItem_label').AsString + '<=';
-        result := result + ww_Query.fieldbyname('Artifact_dsc').AsString + '.' + ww_Query.fieldbyname('ArtifactItem_label').AsString + '! ';
+        result := result + trimright(ww_Query.fieldbyname('CoverLetter_dsc').AsString) + '.' + trimright(ww_Query.fieldbyname('CoverLetterItem_label').AsString) + '<=';
+        result := result + trimright(ww_Query.fieldbyname('Artifact_dsc').AsString) + '.' + trimright(ww_Query.fieldbyname('ArtifactItem_label').AsString) + '! ';
         ww_Query.next;
       end;
       ww_Query.close;
@@ -2146,11 +2148,11 @@ begin
         if TblType = F then        Add('ByID', 'Survey_ID;ID;Language;Section;Type', [ixPrimary])
         else if TblType = S then   Add('ByID', 'Survey_ID;'+QPC_ID+';Item;Language', [ixPrimary])
         else if TblType = Q then   Add('ByID', 'Survey_ID;SelQstns_ID;Language', [ixPrimary])
-        else if (TblType=L) then   Add('ByID', 'Survey_ID;'+qpc_ID, [ixPrimary])
+        else if (TblType=L) then   Add('ByID', 'Survey_ID;'+qpc_ID+';CoverID', [ixPrimary])
         else if (TblType=C) then   Add('ByID', 'Survey_ID;SelCover_ID', [ixPrimary])
         else if (TblType=K) then   add('ByID', 'Survey_ID;SelQstns_ID;SelScls_ID;ScaleItem', [ixPrimary])
-        else if (TblType=T) then   Add('ByID', 'Survey_ID;'+QPC_ID+';Language', [ixPrimary])
-        else                       Add('ByID', 'Survey_ID;'+qpc_ID+';Language', [ixPrimary]);
+        else if (TblType=T) then   Add('ByID', 'Survey_ID;'+QPC_ID+';Language;CoverID', [ixPrimary])
+        else                       Add('ByID', 'Survey_ID;'+qpc_ID+';Language;CoverID', [ixPrimary]);
         if TblType = Q then begin
           Add('ScaleID', 'ScaleID', []);
           Add('BySection', qpc_Section+';SubSection;Item', []);
@@ -5234,6 +5236,8 @@ begin
       ProgressBar.Position := 0;
       ProgressBar.left := StatusPanel.Width - 160;
       ProgressBar.Visible := true;
+      fromanothersurvey1.Enabled := (MappedTextBoxesByCL('') = '');
+      fromatemplate1.Enabled := fromanothersurvey1.Enabled;
       OpenAllSQLTables(SID);
       CheckItemNumbering;
       myMessage('');
