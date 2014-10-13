@@ -1033,9 +1033,14 @@ begin
         begin
           showmessage('Please correct duplicate Text Box Name: ' + edTextBoxName.Text);
           tDQPanel(Elementlist[i]).TextBoxName := '';
-        end
+        end;
+        cbItemSelector.ItemIndex := cbItemSelector.Items.IndexOf(edTextBoxName.Text);
+      end
+      else
+      begin
+        cbItemSelector.Items.Add(inttostr(tDQPanel(elementlist[i]).tag));
+        cbItemSelector.ItemIndex := cbItemSelector.Items.IndexOf(inttostr(tDQPanel(elementlist[i]).tag));
       end;
-      cbItemSelector.ItemIndex := cbItemSelector.Items.IndexOf(edTextBoxName.Text);
       lblTextBoxName.Visible := false;
       edTextBoxName.Visible := false;
     end;
@@ -2375,7 +2380,10 @@ begin
           if controlcount > 0 then
             for j := controlcount-1 downto 0 do
               controls[j].free;
-          cbItemSelector.Items.Delete(cbItemSelector.Items.IndexOf(TextBoxName));
+          if TextBoxName <> '' then
+            cbItemSelector.Items.Delete(cbItemSelector.Items.IndexOf(TextBoxName))
+          else
+            cbItemSelector.Items.Delete(cbItemSelector.Items.IndexOf(inttostr(Tag)));
           free;
         end;
         elementlist[i] := nil;
@@ -2488,7 +2496,9 @@ begin
       edTextBoxName.Enabled := (tDQPanel(WLKHandle.children[0]).TextBoxMappings = '');
       lblTextBoxName.Hint := tDQPanel(WLKHandle.children[0]).TextBoxMappings;
       if edTextBoxName.Text <> '' then
-        cbItemSelector.Items.Delete(cbItemSelector.Items.IndexOf(edTextBoxName.Text));
+        cbItemSelector.Items.Delete(cbItemSelector.Items.IndexOf(edTextBoxName.Text))
+      else
+        cbItemSelector.Items.Delete(cbItemSelector.Items.IndexOf(inttostr(tDQPanel(WLKHandle.children[0]).tag)));
       wtText.Edit;
       wtTextText.LoadFromFile(dmOpenQ.tempdir+'\RichEdit.rtf');
       wtText.Post;
@@ -2514,7 +2524,12 @@ begin
         begin
           showmessage('Please correct duplicate Text Box Name: ' + edTextBoxName.Text);
           tDQPanel(WLKHandle.children[0]).TextBoxName := ''; //knock out the value so we don't delete the original next time we edit
-        end;
+        end
+      else
+      begin
+        cbItemSelector.Items.Add(inttostr(tDQPanel(WLKHandle.children[0]).tag));
+        cbItemSelector.ItemIndex := cbItemSelector.Items.IndexOf(inttostr(tDQPanel(WLKHandle.children[0]).tag));
+      end;
 
       lblTextBoxName.Visible := false;
       edTextBoxName.Visible := false;
@@ -2660,7 +2675,10 @@ procedure TF_DynaQ.RichEdit1MouseDown(Sender: TObject; Button: TMouseButton;
 begin
   if not (ssShift in shift) then WLKHandle.detach;
   WLKHandle.attach(tDQPanel(Sender));
-  cbItemSelector.ItemIndex := cbItemSelector.Items.IndexOf(tDQPanel(Sender).TextBoxName);
+  if tDQPanel(Sender).TextBoxName <> '' then
+    cbItemSelector.ItemIndex := cbItemSelector.Items.IndexOf(tDQPanel(Sender).TextBoxName)
+  else
+    cbItemSelector.ItemIndex := cbItemSelector.Items.IndexOf(inttostr(tDQPanel(Sender).Tag));
   delete2.Enabled := (tDQPanel(Sender).TextBoxMappings = '');
   deleteBox.Enabled := delete2.Enabled;
 end;
@@ -2831,10 +2849,16 @@ var I : integer;
               begin
                 showmessage('Please correct duplicate Text Box Name: ' + TextBoxName);
                 TextBoxName := '';
-              end;
+              end
+           else
+              cbItemSelector.Items.Add(intToStr(tDQPanel(Elementlist[i]).Tag))
         end
         else
+        begin
           TextBoxName := '';
+          cbItemSelector.Items.Add(intToStr(tDQPanel(Elementlist[i]).Tag));
+        end;
+
         TextBoxMappings := '';                           // To be filled in down in GetTextBoxMappings
         Language := fieldbyname('Language').value;
         tBlobField(fieldbyname('RichText')).SaveTofile(dmOpenQ.tempdir+'\RichEdit.rtf');
@@ -3288,6 +3312,7 @@ begin
       else
         edPagename.text := tabset1.tabs[tabset1.tabindex];
       edPagename.Enabled := (existingTextBoxMappings = '');
+      cbArtifactsPage.Enabled := edPagename.Enabled;
       Label1.Hint := existingTextBoxMappings;
 
       if pagetype = ptLetter then
@@ -4692,7 +4717,9 @@ begin
   foundTextBoxName := false;
   i := 0;
   while ((i < ElementList.count) and (SenderToActivate = Sender)) do begin
-    if tDQPanel(elementlist[i]).TextBoxName = cbItemSelector.Items[cbItemSelector.ItemIndex] then
+    if IsTextBox(elementlist[i]) and
+       ((tDQPanel(elementlist[i]).TextBoxName = cbItemSelector.Items[cbItemSelector.ItemIndex]) or
+       (inttostr(tDQPanel(elementlist[i]).Tag) = cbItemSelector.Items[cbItemSelector.ItemIndex])) then
     begin
       foundTextBoxName := true;
       SenderToActivate := elementList[i];
