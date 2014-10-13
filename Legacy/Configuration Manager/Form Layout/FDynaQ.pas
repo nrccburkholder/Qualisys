@@ -2077,9 +2077,9 @@ begin
     tabset1.tabs.clear;
     clearpagetabs;
     i := 0;
-    tabset1.tabs.add('Artifacts');
+    tabset1.tabs.add('DeprecatedGraphics');
     pagetabs[0].pagetype:=ptArtifacts;
-    pagetabs[0].description := 'Artifacts';
+    pagetabs[0].description := 'DeprecatedGraphics';
     while not eof do begin
       inc(i);
       if fieldbyname('PageType').value = ptArtifacts then
@@ -3280,7 +3280,7 @@ procedure TF_DynaQ.Delete3Click(Sender: TObject);
 var i : integer;
 begin
   if tabset1.tabindex=0 then
-    messagedlg('You can''t delete the "Artifacts" tab.',mterror,[mbok],0)
+    messagedlg('You can''t delete the "DeprecatedGraphics" tab.',mterror,[mbok],0)
   else if tabset1.tabs.count=2 then
     messagedlg('You must keep at least one cover letter',mterror,[mbok],0)
   else begin
