@@ -2146,11 +2146,11 @@ begin
         if TblType = F then        Add('ByID', 'Survey_ID;ID;Language;Section;Type', [ixPrimary])
         else if TblType = S then   Add('ByID', 'Survey_ID;'+QPC_ID+';Item;Language', [ixPrimary])
         else if TblType = Q then   Add('ByID', 'Survey_ID;SelQstns_ID;Language', [ixPrimary])
-        else if (TblType=L) then   Add('ByID', 'Survey_ID;'+qpc_ID, [ixPrimary])
+        else if (TblType=L) then   Add('ByID', 'Survey_ID;'+qpc_ID+';CoverID', [ixPrimary])
         else if (TblType=C) then   Add('ByID', 'Survey_ID;SelCover_ID', [ixPrimary])
         else if (TblType=K) then   add('ByID', 'Survey_ID;SelQstns_ID;SelScls_ID;ScaleItem', [ixPrimary])
-        else if (TblType=T) then   Add('ByID', 'Survey_ID;'+QPC_ID+';Language', [ixPrimary])
-        else                       Add('ByID', 'Survey_ID;'+qpc_ID+';Language', [ixPrimary]);
+        else if (TblType=T) then   Add('ByID', 'Survey_ID;'+QPC_ID+';Language;CoverID', [ixPrimary])
+        else                       Add('ByID', 'Survey_ID;'+qpc_ID+';Language;CoverID', [ixPrimary]);
         if TblType = Q then begin
           Add('ScaleID', 'ScaleID', []);
           Add('BySection', qpc_Section+';SubSection;Item', []);
