@@ -2077,7 +2077,7 @@ begin
     tabset1.tabs.clear;
     clearpagetabs;
     i := 0;
-    tabset1.tabs.add('DeprecatedGraphics');
+    tabset1.tabs.add('Graph1cs');
     pagetabs[0].pagetype:=ptArtifacts;
     pagetabs[0].description := 'DeprecatedGraphics';
     while not eof do begin
