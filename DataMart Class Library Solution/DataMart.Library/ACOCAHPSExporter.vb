@@ -715,6 +715,11 @@ Friend Class ACOCAHPSExporter
             LogValidationException(acoCAHPSExport, "Record is missing Provider LName")
         End If
 
+        '   Record has a NULL or empty QVersion
+        If String.IsNullOrEmpty(acoCAHPSExport.QVersion) Then
+            LogValidationException(acoCAHPSExport, "Record is missing Version")
+        End If
+
         '   Record w/ dispo 10, 31, or 34 has any question w/ a NULL or empty string
         If ((acoCAHPSExport.Dispositn = "10") Or (acoCAHPSExport.Dispositn = "31") Or (acoCAHPSExport.Dispositn = "34")) Then
             Dim iQuestion As Integer = 0
@@ -751,6 +756,10 @@ Friend Class ACOCAHPSExporter
         stream.Write(String.Format("{0,-35}", acoCAHPSExport.PRTitle))
         stream.Write(String.Format("{0,-30}", acoCAHPSExport.PRFName))
         stream.Write(String.Format("{0,-50}", acoCAHPSExport.PRLName))
+        If (acoCAHPSExport.QVersion <> "NA") Then
+            stream.Write(String.Format("{0,2}", acoCAHPSExport.QVersion))
+        End If
+
         For Each qx As String In acoCAHPSExport.Qs
             stream.Write(String.Format("{0,-2}", qx))
         Next
