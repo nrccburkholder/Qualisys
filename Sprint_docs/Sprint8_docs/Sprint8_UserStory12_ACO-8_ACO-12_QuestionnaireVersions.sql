@@ -385,6 +385,8 @@ select 10, 1, 0, '1900-01-01 00:00:00.000', '2999-12-31 00:00:00.000', @ACO12,94
 insert into SurveyTypeQuestionMappings (surveytype_id, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID, intOrder, qstncore)
 select 10, 1, 0, '1900-01-01 00:00:00.000', '2999-12-31 00:00:00.000', @ACO12,95,	50256
 
+insert into SurveyTypeQuestionMappings (surveytype_id, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID, intOrder, qstncore)
+select 10, 1, 0, '1900-01-01 00:00:00.000', '2999-12-31 00:00:00.000', @ACO12,96,	50744
 
 /*
 
