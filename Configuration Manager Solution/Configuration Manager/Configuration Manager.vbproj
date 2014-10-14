@@ -49,7 +49,7 @@
     <PublisherName>National Research Corporation</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>4.4.17.0</ApplicationVersion>
+    <ApplicationVersion>4.4.18.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -360,6 +360,7 @@
     <Compile Include="Controls\FacilityGrid.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Classes\CoverLetterEx.vb" />
     <Compile Include="Sections\FacilitySection.Designer.vb">
       <DependentUpon>FacilitySection.vb</DependentUpon>
     </Compile>
