@@ -4452,7 +4452,7 @@ var CurrentLanguageName,s:string;
             errorlist.add('TextBox "'+LabelOrId(wwt_textboxid, wwt_textboxlabel)+'" (Cover Letter="'+coverName+'") needs to be reviewed ('+CurrentLanguageName+')');
 
           //GN13: If the user clears the translation text, the record still exists in the database
-          if GetPlainText(wwt_TransTBRichText) = '' then
+          if (GetPlainText(wwt_TransTBRichText) = '') and (GetPlainText(wwt_TextBoxRichText) <> '') then
              errorlist.add('TextBox "'+LabelOrId(wwt_textboxid, wwt_textboxlabel)+'" (Cover Letter="'+coverName+'") needs to be translated ('+CurrentLanguageName+')');
           {make sure Foreign TextBox's x,y,width,height,etc are same as English's}
 
