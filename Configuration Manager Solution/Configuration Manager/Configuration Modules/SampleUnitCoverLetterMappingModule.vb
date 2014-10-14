@@ -77,7 +77,7 @@ Public Class SampleUnitCoverLetterMappingModule
                 Dim lock As ConcurrencyLock = ConcurrencyManager.ViewLock(lockCategory, surveyId)
                 Dim lockCategoryName As String = System.Enum.GetName(lock.LockCategory.GetType, lockCategory)
                 Me.Information = lockCategoryName & " Locked by " & lock.UserName & "; process=" & lock.ProcessName & "; machineID=" & lock.MachineName
-                'IsEditable = False
+                IsEditable = False
             End If
         End If
 

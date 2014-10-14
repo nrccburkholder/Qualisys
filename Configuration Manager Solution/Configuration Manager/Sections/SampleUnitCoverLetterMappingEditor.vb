@@ -43,7 +43,11 @@ Public Class SampleUnitCoverLetterMappingEditor
 
 #Region "event handlers"
 
-    Private Sub gvCoverLetters_CustomDrawCell(sender As Object, e As DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs) Handles gvCoverLetters.CustomDrawCell, gvArtifacts.CustomDrawCell
+    Private Sub btnArtifactsClearSelection_Click(sender As System.Object, e As System.EventArgs) Handles btnArtifactsClearSelection.Click
+        gvArtifacts.FocusedRowHandle = DevExpress.XtraGrid.GridControl.InvalidRowHandle
+    End Sub
+
+    Private Sub gvCoverLetters_CustomDrawCell(sender As Object, e As DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs) Handles gvCoverLetters.CustomDrawCell
 
         '  Nothing is really happening here.  It was just something I was playing around with.
         '  The intent was to change the backcolor of the selected row in the Cover Letters and Artifacts grids if the status was set to Selected.
@@ -288,15 +292,12 @@ Public Class SampleUnitCoverLetterMappingEditor
 
     Private Sub SampleUnitTreeView_SelectionChanged(sender As System.Object, e As System.EventArgs) Handles SampleUnitTreeView.SelectionChanged
         UpdateMappingsFilter()
+        gvMappings.ClearSelection()
     End Sub
 
     Private Sub btnSampleUnitsClearSelections_Click(sender As Object, e As System.EventArgs) Handles btnSampleUnitsClearSelections.Click
         SampleUnitTreeView.Selection.Clear()
         UpdateMappingsFilter()
-    End Sub
-
-    Private Sub btnArtifactsClearSelections_Click(sender As System.Object, e As System.EventArgs) Handles btnArtifactsClearSelections.Click
-        gvArtifacts.ClearSelection()
     End Sub
 
     Private Sub btnCoverLettersClearnSelections_Click(sender As System.Object, e As System.EventArgs) Handles btnCoverLettersClearnSelections.Click
@@ -330,8 +331,8 @@ Public Class SampleUnitCoverLetterMappingEditor
         btnUnmap.Enabled = gvMappings.SelectedRowsCount > 0
 
         'Don't allow save unless all mappings are valid (that is, they are not duplicates)
-        ApplyButton.Enabled = IsValidMappings() And mModule.IsEditable
-        OKButton.Enabled = IsValidMappings() And mModule.IsEditable
+        ApplyButton.Enabled = mModule.IsEditable
+        OKButton.Enabled = mModule.IsEditable
 
         Dim pos As Integer = gvMappings.ActiveFilter.NonColumnFilter.IndexOf("[SampleUnit_Id]")
         If pos >= 0 Then
@@ -369,11 +370,17 @@ Public Class SampleUnitCoverLetterMappingEditor
 
         'Get a list of all the coverletters for this survey
         mCoverLetterList = CoverLetter.GetBySurveyIdAndPageType(Me.mModule.Survey.Id, CoverLetterPageType.CoverLetter)
-        CoverLetterBindingSource.DataSource = GetCoverLetters(mCoverLetterList)
+        gcCoverLetters.DataSource = GetCoverLetters(mCoverLetterList)
+        gvCoverLetters.ClearSelection()
 
         'Get a list of all the artifacts for this survey
         mArtifactList = CoverLetter.GetBySurveyIdAndPageType(Me.mModule.Survey.Id, CoverLetterPageType.Artifact)
-        ArtifactBindingSource.DataSource = GetCoverLetters(mArtifactList)
+        gcArtifacts.DataSource = GetCoverLetters(mArtifactList)
+        'gvArtifacts.ClearSelection()
+        gvArtifacts.FocusedRowHandle = DevExpress.XtraGrid.GridControl.InvalidRowHandle
+
+        gcArtifacts.DataSource = GetCoverLetters(mArtifactList)
+        gvArtifacts.FocusedRowHandle = DevExpress.XtraGrid.GridControl.InvalidRowHandle
 
         PopulateUnitTree()
 
@@ -384,7 +391,7 @@ Public Class SampleUnitCoverLetterMappingEditor
         OKButton.Enabled = mModule.IsEditable
         ApplyButton.Enabled = mModule.IsEditable
 
-        'SampleUnitTreeView.Selection.Clear()
+        'gvArtifacts.FocusedRowHandle = DevExpress.XtraGrid.GridControl.InvalidRowHandle
 
     End Sub
 
@@ -435,7 +442,6 @@ Public Class SampleUnitCoverLetterMappingEditor
     End Sub
 
     Private Sub UpdateMappingsFilter()
-        'Me.mSelectedSampleUnits.Clear()
 
         If IsShowingDiscreteMappingElements Then
             Exit Sub
@@ -468,7 +474,7 @@ Public Class SampleUnitCoverLetterMappingEditor
 
         'gvMappings.ActiveFilter.NonColumnFilter = "[NeedsDelete] = false" & criteriaString
         gvMappings.ActiveFilter.NonColumnFilter = criteriaString
-        '
+
     End Sub
 
     Private Function GetCoverLetters(ByVal coverLetters As Collection(Of CoverLetter)) As List(Of MyCoverLetter)
@@ -535,7 +541,7 @@ Public Class SampleUnitCoverLetterMappingEditor
                 Next
 
                 For Each dup As CoverLetterMapping In mMisMatchedArtifacts
-                    msg = String.Format("{0}{1} MISMATCH:   {2} - {3}.{4}{5}", msg, Chr(149), dup.SampleUnit_name, dup.CoverLetter_name, dup.CoverLetterItem_label, vbCrLf)
+                    msg = String.Format("{0}{1} PARENT-CHILD MISMATCH:   {2} - {3}.{4}{5}", msg, Chr(149), dup.SampleUnit_name, dup.CoverLetter_name, dup.CoverLetterItem_label, vbCrLf)
                 Next
 
                 MessageBox.Show(msg, "Cover Letter Mapping Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -609,141 +615,6 @@ Public Class SampleUnitCoverLetterMappingEditor
 
     End Sub
 
-#Region "mapping validation methods"
-
-    Private Function HasMappingErrors(ByVal unit As CoverLetterMapping) As Boolean
-        Return CheckForDuplicates(unit) Or ValidateAncestors(unit) Or ValidateDescendants(unit)
-    End Function
-
-    Private Function CheckForDuplicates(ByVal unit As CoverLetterMapping) As Boolean
-        ' return false if mapping does not match a current mapping, true if it matches
-        Dim result As Boolean = False
-
-        For Each mapping As CoverLetterMapping In mMappings
-            If Not mapping.NeedsDelete Then ' ignore mappings that have already been marked as NeedsDelete
-                If mapping.HasMatchingCoverLetterItems(unit) Then
-                    'If mapping.IsNew Then
-                    '    mapping.Status = CoverLetterMappingStatusCodes.IsNew_Duplicate
-                    'Else
-                    '    mapping.Status = CoverLetterMappingStatusCodes.Duplicate
-                    'End If
-                    mDuplicateMappings.Add(mapping)
-                    result = True
-                End If
-            End If
-        Next
-        Return result
-    End Function
-
-    Private Function ValidateAncestors(ByVal unit As CoverLetterMapping) As Boolean
-
-        ' this looks at the parents of the node that we are mapping
-
-        Dim sampleUnit_name As String = unit.SampleUnit_name
-
-        ' get the node with this sampleunit name
-        Dim node As TreeListNode = TraverseTheTree(SampleUnitTreeView.Nodes, sampleUnit_name)
-
-        ' now we check the parent nodes
-        Return CheckParentNodeForMismatchedArtifacts(node.ParentNode, unit)
-
-    End Function
-
-    Private Function CheckParentNodeForMismatchedArtifacts(ByVal node As TreeListNode, ByVal unit As CoverLetterMapping) As Boolean
-
-        Dim result As Boolean = False
-        ' now get the node's parent 
-        If node IsNot Nothing Then
-
-            If node.Level = 0 Then
-                Return False
-            End If
-
-            Dim sunit As SampleUnit = DirectCast(node.Tag, SampleUnit)
-
-            Dim mappedUnit As CoverLetterMapping = CoverLetterMapping.NewCoverLetterMapping(-1, Me.mModule.Survey.Id, sunit.Id, sunit.SampleUnitName, unit.CoverLetterItemType_Id, unit.CoverLetter_name, unit.CoverLetterItem_label, unit.Artifact_name, unit.ArtifactItem_label)
-
-            For Each mapping As CoverLetterMapping In mMappings
-                If Not mapping.NeedsDelete Then ' ignore mappings that have already been marked as NeedsDelete
-                    If mapping.HasMismatchedArtifactItems(unit) Then
-                        mMisMatchedArtifacts.Add(mapping)
-                        result = True
-                    Else
-                        result = CheckParentNodeForMismatchedArtifacts(node.ParentNode, unit)
-                    End If
-                End If
-            Next
-
-        End If
-
-        Return result
-
-    End Function
-
-    Private Function ValidateDescendants(ByVal unit As CoverLetterMapping) As Boolean
-
-        ' this looks at the children of the node we are mapping
-
-        Dim sampleUnit_name As String = unit.SampleUnit_name
-
-        ' get the node for the sample unit because that's where we will start checking for Mismatches
-        Dim node As TreeListNode = TraverseTheTree(SampleUnitTreeView.Nodes, sampleUnit_name)
-
-        Return CheckChildNodeForMismatchedArtifacts(node, unit)
-
-    End Function
-
-    Private Function CheckChildNodeForMismatchedArtifacts(ByVal node As TreeListNode, ByVal unit As CoverLetterMapping) As Boolean
-
-        Dim result As Boolean = False
-
-        If node IsNot Nothing Then
-            If node.HasChildren Then
-                For Each childNode As TreeListNode In node.Nodes
-                    Dim sunit As SampleUnit = DirectCast(childNode.Tag, SampleUnit)
-                    Dim mappedUnit As CoverLetterMapping = CoverLetterMapping.NewCoverLetterMapping(-1, Me.mModule.Survey.Id, sunit.Id, sunit.SampleUnitName, unit.CoverLetterItemType_Id, unit.CoverLetter_name, unit.CoverLetterItem_label, unit.Artifact_name, unit.ArtifactItem_label)
-                    For Each mapping As CoverLetterMapping In mMappings
-                        If Not mapping.NeedsDelete Then ' ignore mappings that have already been marked as NeedsDelete
-                            ' find the sampleunit node for this mapping
-                            Dim sampleUnitNode As TreeListNode = TraverseTheTree(SampleUnitTreeView.Nodes, mapping.SampleUnit_name)
-                            ' We don't care about mappings whose sample unit isn't on the same branch of the tree 
-                            If sampleUnitNode.ParentNode.Id = childNode.ParentNode.Id Then
-                                If mapping.HasMismatchedArtifactItems(unit) Then
-                                    mMisMatchedArtifacts.Add(mapping)
-                                    result = True
-                                Else
-                                    result = CheckChildNodeForMismatchedArtifacts(childNode, unit)
-                                End If
-                            End If
-                        End If
-                    Next
-                Next
-            End If
-        End If
-
-        Return result
-
-    End Function
-
-#End Region
-
-    Private Function IsValidMappings() As Boolean
-
-        Dim result As Boolean = True
-
-        For Each MappedItem As CoverLetterMapping In mMappings
-
-            If MappedItem.Status = CoverLetterMappingStatusCodes.Duplicate Then 'Or MappedItem.Status = CoverLetterMappingStatusCodes.IsNew_Duplicate Then
-                result = False
-                Exit For
-            End If
-
-        Next
-
-        Return result
-
-    End Function
-
     Private Function HasUnsavedChanges() As Boolean
         Dim result As Boolean = False
 
@@ -772,23 +643,43 @@ Public Class SampleUnitCoverLetterMappingEditor
     End Sub
 
     Private Sub ExportMappingsToExcel()
+        SaveFileDialog1.Filter = "Excel 97-2003 (*.xls)|*.xls|Excel Files (*.xlsx)|*.xlsx"
+
         If SaveFileDialog1.ShowDialog = DialogResult.OK Then
+
             gvMappings.ExportToXlsx(SaveFileDialog1.FileName)
+
         End If
     End Sub
 
-    Private Function TraverseTheTree(ByVal nodes As TreeListNodes, ByVal sampleUnitName As String) As TreeListNode
-        For Each node As TreeListNode In nodes
-            Dim name As String = DirectCast(node.Tag, SampleUnit).Name
-            If name = sampleUnitName Then
-                Return node
-            Else
-                If node.HasChildren Then
-                    Return TraverseTheTree(node.Nodes, sampleUnitName)
+    Private Function FindSampleUnitNodeByName(ByVal currentNode As TreeListNode, ByVal sampleUnitName As String) As TreeListNode
+
+        Dim returnNode As TreeListNode = Nothing
+
+        Dim oSampleUnit As SampleUnit = DirectCast(currentNode.Tag, SampleUnit)
+        If oSampleUnit.Name = sampleUnitName Then
+            Return currentNode
+        Else
+            For Each traversedNode As TreeListNode In currentNode.Nodes
+                oSampleUnit = DirectCast(traversedNode.Tag, SampleUnit)
+
+                If oSampleUnit.Name = sampleUnitName Then
+                    returnNode = traversedNode
+                    Exit For
+                Else
+                    If traversedNode.Nodes.Count > 0 Then
+                        returnNode = FindSampleUnitNodeByName(traversedNode, sampleUnitName)
+                        If returnNode IsNot Nothing Then
+                            Exit For
+                        End If
+                    End If
                 End If
-            End If
-        Next
-        Return Nothing
+
+            Next
+        End If
+
+        Return returnNode
+
     End Function
 
     Private Sub SelectSampleUnitNodeByName(ByVal nodes As TreeListNodes, ByVal sampleUnitName As String)
@@ -856,7 +747,125 @@ Public Class SampleUnitCoverLetterMappingEditor
 
         Next
     End Sub
+
+#Region "mapping validation methods"
+
+    Private Function GetSampleUnitMappings(ByVal sampleunitName As String) As List(Of CoverLetterMapping)
+
+        Dim fMappings As New List(Of CoverLetterMapping)
+
+        For Each mapping As CoverLetterMapping In mMappings
+            ' ignore mappings that have already been marked as NeedsDelete or are mappings that don't belong to this parent node
+            If Not mapping.NeedsDelete And mapping.SampleUnit_name = sampleunitName Then
+                fMappings.Add(mapping)
+            End If
+        Next
+        Return fMappings
+
+    End Function
+
+    Private Function HasMappingErrors(ByVal unit As CoverLetterMapping) As Boolean
+
+        Dim HasDuplicates As Boolean = CheckForDuplicates(unit)
+
+        ' if no duplicates, then check for the mismatches
+        If Not HasDuplicates Then
+            ValidateAncestors(unit)
+            ValidateDescendants(unit)
+        End If
+
+        Return HasDuplicates Or mMisMatchedArtifacts.Count > 0
+    End Function
+
+    Private Function CheckForDuplicates(ByVal unit As CoverLetterMapping) As Boolean
+        ' return false if mapping does not match a current mapping, true if it matches
+        Dim result As Boolean = False
+
+        For Each mapping As CoverLetterMapping In mMappings
+            If Not mapping.NeedsDelete Then ' ignore mappings that have already been marked as NeedsDelete
+                If mapping.HasMatchingCoverLetterItems(unit) Then
+                    mDuplicateMappings.Add(mapping)
+                    result = True
+                End If
+            End If
+        Next
+        Return result
+    End Function
+
+    Private Sub ValidateAncestors(ByVal unit As CoverLetterMapping)
+
+        ' this looks at the parents of the node that we are mapping
+        Dim sampleUnit_name As String = unit.SampleUnit_name
+
+        ' get the node with this sampleunit name
+        Dim node As TreeListNode = FindSampleUnitNodeByName(SampleUnitTreeView.Nodes(0), sampleUnit_name)
+
+        ' now we check the parent nodes
+        CheckParentNodeForMismatchedArtifacts(node.ParentNode, unit)
+
+    End Sub
+
+    Private Sub CheckParentNodeForMismatchedArtifacts(ByVal node As TreeListNode, ByVal unit As CoverLetterMapping)
+
+        ' now get the node's parent 
+        If node IsNot Nothing Then
+            If node.Level = 0 Then ' if we've reached the root of the tree, get out
+                Exit Sub
+            End If
+            Dim sunit As SampleUnit = DirectCast(node.Tag, SampleUnit) ' parent node's sample unit
+            Dim mappings As List(Of CoverLetterMapping) = GetSampleUnitMappings(sunit.Name)
+            For Each mapping As CoverLetterMapping In mappings
+                If mapping.CoverLetter_name = unit.CoverLetter_name And mapping.CoverLetterItem_label = unit.CoverLetterItem_label Then
+                    'cover letter is already mapped for this sample unit.
+                    If mapping.HasMismatchedArtifactItems(unit) Then
+                        mMisMatchedArtifacts.Add(mapping)
+                    End If
+                End If
+            Next
+            CheckParentNodeForMismatchedArtifacts(node.ParentNode, unit)
+        End If
+
+    End Sub
+
+    Private Sub ValidateDescendants(ByVal unit As CoverLetterMapping)
+
+        ' this looks at the children of the node we are mapping
+
+        Dim sampleUnit_name As String = unit.SampleUnit_name
+
+        ' get the node for the sample unit because that's where we will start checking for Mismatches
+        Dim node As TreeListNode = FindSampleUnitNodeByName(SampleUnitTreeView.Nodes(0), sampleUnit_name)
+
+        CheckChildNodeForMismatchedArtifacts(node, unit)
+
+    End Sub
+
+    Private Sub CheckChildNodeForMismatchedArtifacts(ByVal node As TreeListNode, ByVal unit As CoverLetterMapping)
+
+        If node IsNot Nothing Then
+            If node.HasChildren Then
+                For Each childNode As TreeListNode In node.Nodes
+                    Dim sunit As SampleUnit = DirectCast(childNode.Tag, SampleUnit)
+                    Dim mappings As List(Of CoverLetterMapping) = GetSampleUnitMappings(sunit.Name)
+                    For Each mapping As CoverLetterMapping In mappings
+                        If mapping.CoverLetter_name = unit.CoverLetter_name And mapping.CoverLetterItem_label = unit.CoverLetterItem_label Then
+                            'cover letter is already mapped for this sample unit.
+                            If mapping.HasMismatchedArtifactItems(unit) Then
+                                mMisMatchedArtifacts.Add(mapping)
+                            End If
+                        End If
+                    Next
+                    CheckChildNodeForMismatchedArtifacts(childNode, unit)
+                Next
+            End If
+        End If
+
+    End Sub
+
 #End Region
+
+#End Region
+
 End Class
 
 Friend Class MyCoverLetter
