@@ -1112,13 +1112,15 @@ begin
       ww_Query.sql.clear;
       ww_Query.sql.add('select CoverLetter_dsc, CoverLetterItem_label, Artifact_dsc, ArtifactItem_label'+
               ' from CoverLetterItemArtifactUnitMapping' +
-              ' where survey_id = ' + inttostr(glbSurveyID) +
-              ' and ((CoverLetter_dsc = ''' + coverLetter + ''')' +
-              ' or (Artifact_dsc = ''' + coverLetter + '''))');
+              ' where survey_id = ' + inttostr(glbSurveyID));
+      if coverLetter <> '' then
+         ww_Query.sql.add(' and ((CoverLetter_dsc = ''' + coverLetter + ''')' +
+                 ' or (Artifact_dsc = ''' + coverLetter + '''))');
+      ww_Query.sql.add(' order by CoverLetter_dsc, CoverLetterItem_label');
       ww_Query.open;
       while not ww_Query.eof do begin
-        result := result + ww_Query.fieldbyname('CoverLetter_dsc').AsString + '.' + ww_Query.fieldbyname('CoverLetterItem_label').AsString + '<=';
-        result := result + ww_Query.fieldbyname('Artifact_dsc').AsString + '.' + ww_Query.fieldbyname('ArtifactItem_label').AsString + '! ';
+        result := result + trimright(ww_Query.fieldbyname('CoverLetter_dsc').AsString) + '.' + trimright(ww_Query.fieldbyname('CoverLetterItem_label').AsString) + '<=';
+        result := result + trimright(ww_Query.fieldbyname('Artifact_dsc').AsString) + '.' + trimright(ww_Query.fieldbyname('ArtifactItem_label').AsString) + '! ';
         ww_Query.next;
       end;
       ww_Query.close;
@@ -4450,7 +4452,7 @@ var CurrentLanguageName,s:string;
             errorlist.add('TextBox "'+LabelOrId(wwt_textboxid, wwt_textboxlabel)+'" (Cover Letter="'+coverName+'") needs to be reviewed ('+CurrentLanguageName+')');
 
           //GN13: If the user clears the translation text, the record still exists in the database
-          if GetPlainText(wwt_TransTBRichText) = '' then
+          if (GetPlainText(wwt_TransTBRichText) = '') and (GetPlainText(wwt_TextBoxRichText) <> '') then
              errorlist.add('TextBox "'+LabelOrId(wwt_textboxid, wwt_textboxlabel)+'" (Cover Letter="'+coverName+'") needs to be translated ('+CurrentLanguageName+')');
           {make sure Foreign TextBox's x,y,width,height,etc are same as English's}
 
@@ -5234,6 +5236,8 @@ begin
       ProgressBar.Position := 0;
       ProgressBar.left := StatusPanel.Width - 160;
       ProgressBar.Visible := true;
+      fromanothersurvey1.Enabled := (MappedTextBoxesByCL('') = '');
+      fromatemplate1.Enabled := fromanothersurvey1.Enabled;
       OpenAllSQLTables(SID);
       CheckItemNumbering;
       myMessage('');

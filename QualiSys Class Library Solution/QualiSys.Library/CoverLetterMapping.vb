@@ -3,64 +3,23 @@ Imports Nrc.QualiSys.Library.DataProvider
 
 Public Class CoverLetterMapping
     Inherits BusinessBase(Of CoverLetterMapping)
-
-    Private mId As Integer
     Private mSurvey_Id As Integer
     Private mSampleUnit_Id As Integer
-    Private mSampleUnit_name As String
-    Private mCoverLetterItemType_Id As Integer
-    Private mCoverLetter_dsc As String
-    Private mCoverLetterItem_label As String
-    Private mArtifact_dsc As String
-    Private mArtifact_label As String
-    Private mNeedsDelete As Boolean
-    Private mStatus As Integer
-    Private mUniqueID As Guid
     Private mIsDirty As Boolean
     Private mErrorId As CoverLetterMappingStatusCodes
 
 
 #Region "Public Properties"
 
-    Public Property UniqueID As Guid
-        Get
-            Return mUniqueID
-        End Get
-        Set(value As Guid)
-            mUniqueID = value
-        End Set
-    End Property
+    Public Property UniqueID() As Guid
 
-    Public Property Status As Integer
-        Get
-            Return mStatus
-        End Get
-        Set(value As Integer)
-            mStatus = value
-        End Set
-    End Property
-
-
+    Public Property Status() As Integer
 
     <Logable()> _
-    Public Property CoverLetterItem_label As String
-        Get
-            Return mCoverLetterItem_label
-        End Get
-        Set(value As String)
-            mCoverLetterItem_label = value
-        End Set
-    End Property
+    Public Property CoverLetterItem_label() As String
 
     <Logable()> _
-    Public Property Id As Integer
-        Get
-            Return mId
-        End Get
-        Set(value As Integer)
-            mId = value
-        End Set
-    End Property
+    Public Property Id() As Integer
 
     <Logable()> _
     Public Property Survey_Id As Integer
@@ -91,73 +50,26 @@ Public Class CoverLetterMapping
         End Set
     End Property
 
-    Public Property SampleUnit_name As String
-        Get
-            Return mSampleUnit_name
-        End Get
-        Set(value As String)
-            mSampleUnit_name = value
-        End Set
-    End Property
+    Public Property SampleUnit_name() As String
 
     Public ReadOnly Property SampleUnitDisplayName As String
         Get
-            Return String.Format("{0} ({1})", mSampleUnit_name, mSampleUnit_Id)
+            Return String.Format("{0} ({1})", SampleUnit_name, mSampleUnit_Id)
         End Get
     End Property
 
-    Public Property CoverLetterItemType_Id As Integer
-        Get
-            Return mCoverLetterItemType_Id
-        End Get
-        Set(value As Integer)
-            mCoverLetterItemType_Id = value
-        End Set
-    End Property
-
-
+    Public Property CoverLetterItemType_Id() As Integer
 
     <Logable()> _
-    Public Property CoverLetter_name As String
-        Get
-            Return mCoverLetter_dsc
-        End Get
-        Set(value As String)
-            mCoverLetter_dsc = value
-        End Set
-    End Property
-
+    Public Property CoverLetter_name() As String
 
     <Logable()> _
-    Public Property Artifact_name As String
-        Get
-            Return mArtifact_dsc
-        End Get
-        Set(value As String)
-            mArtifact_dsc = value
-        End Set
-    End Property
-
-
+    Public Property Artifact_name() As String
 
     <Logable()> _
-    Public Property ArtifactItem_label As String
-        Get
-            Return mArtifact_label
-        End Get
-        Set(value As String)
-            mArtifact_label = value
-        End Set
-    End Property
+    Public Property ArtifactItem_label() As String
 
     Public Property NeedsDelete() As Boolean
-        Get
-            Return mNeedsDelete
-        End Get
-        Set(ByVal value As Boolean)
-            mNeedsDelete = value
-        End Set
-    End Property
 
     Public ReadOnly Property IsDirty() As Boolean
         Get
@@ -179,13 +91,6 @@ Public Class CoverLetterMapping
 
 #End Region
 
-#Region "Constructors"
-
-    Public Sub New()
-
-    End Sub
-#End Region
-
 #Region "Factory Methods"
     Public Shared Function NewCoverLetterMapping() As CoverLetterMapping
         Dim obj As New CoverLetterMapping
@@ -193,19 +98,7 @@ Public Class CoverLetterMapping
     End Function
 
     Public Shared Function NewCoverLetterMapping(ByVal fId As Integer, ByVal fSurvey_Id As Integer, ByVal fSampleUnit_Id As Integer, ByVal fSampleUnit_name As String, ByVal fCoverLetterItemType_Id As Integer, ByVal fCoverLetter_name As String, ByVal fCoverLetterItem_label As String, ByVal fArtifact_name As String, ByVal fArtifact_label As String) As CoverLetterMapping
-        Dim obj As New CoverLetterMapping
-
-
-        obj.Id = fId
-        obj.Survey_Id = fSurvey_Id
-        obj.SampleUnit_Id = fSampleUnit_Id
-        obj.SampleUnit_name = fSampleUnit_name
-        obj.CoverLetterItemType_Id = fCoverLetterItemType_Id
-        obj.CoverLetter_name = fCoverLetter_name
-        obj.CoverLetterItem_label = fCoverLetterItem_label
-        obj.Artifact_name = fArtifact_name
-        obj.ArtifactItem_label = fArtifact_label
-        obj.UniqueID = Guid.NewGuid
+        Dim obj As New CoverLetterMapping() With {.Id = fId, .Survey_Id = fSurvey_Id, .SampleUnit_Id = fSampleUnit_Id, .SampleUnit_name = fSampleUnit_name, .CoverLetterItemType_Id = fCoverLetterItemType_Id, .CoverLetter_name = fCoverLetter_name, .CoverLetterItem_label = fCoverLetterItem_label, .Artifact_name = fArtifact_name, .ArtifactItem_label = fArtifact_label, .UniqueID = Guid.NewGuid}
 
         Return obj
     End Function
@@ -235,10 +128,10 @@ Public Class CoverLetterMapping
     ''' <remarks></remarks>
     Public Sub UpdateObj()
 
-        If Me.NeedsDelete Then
+        If NeedsDelete Then
             CoverLetterMappingProvider.Instance.DeleteCoverLetterMapping(Me)
-        ElseIf Me.IsNew Then
-            Me.Id = CoverLetterMappingProvider.Instance.InsertCoverLetterMapping(Me)
+        ElseIf IsNew Then
+            Id = CoverLetterMappingProvider.Instance.InsertCoverLetterMapping(Me)
         Else
             CoverLetterMappingProvider.Instance.UpdateCoverLetterMapping(Me)
         End If
@@ -258,13 +151,13 @@ Public Class CoverLetterMapping
     Friend Function GetChanges() As List(Of AuditLogChange)
         Dim changes As New List(Of AuditLogChange)
 
-        If Me.IsNew = False And Me.NeedsDelete Then
+        If IsNew = False And NeedsDelete Then
             'Delete
             changes.AddRange(AuditLog.CompareObjects(Of CoverLetterMapping)(Me, Nothing, "Id", AuditLogObject.CoverLetterMapping))
-        ElseIf Me.IsNew = False Then
+        ElseIf IsNew = False Then
             'Update
             If IsDirty Then
-                Dim original As CoverLetterMapping = CoverLetterMapping.Get(Me.Id)
+                Dim original As CoverLetterMapping = CoverLetterMapping.Get(Id)
                 changes.AddRange(AuditLog.CompareObjects(Of CoverLetterMapping)(original, Me, "Id", AuditLogObject.CoverLetterMapping))
             End If
         Else
@@ -286,11 +179,9 @@ Public Class CoverLetterMapping
     ''' <remarks></remarks>
     Public Function Equals(ByVal mapping As CoverLetterMapping) As Boolean
 
-        Dim result As Boolean
-
-        result = mSurvey_Id = mapping.Survey_Id And mSampleUnit_Id = mapping.SampleUnit_Id And mCoverLetterItemType_Id = mapping.CoverLetterItemType_Id _
-            And mCoverLetter_dsc = mapping.CoverLetter_name And mCoverLetterItem_label = mapping.CoverLetterItem_label _
-            And mArtifact_dsc = mapping.Artifact_name And mArtifact_label = mapping.ArtifactItem_label
+        Dim result As Boolean = mSurvey_Id = mapping.Survey_Id And mSampleUnit_Id = mapping.SampleUnit_Id And CoverLetterItemType_Id = mapping.CoverLetterItemType_Id _
+            And CoverLetter_name = mapping.CoverLetter_name And CoverLetterItem_label = mapping.CoverLetterItem_label _
+            And Artifact_name = mapping.Artifact_name And ArtifactItem_label = mapping.ArtifactItem_label
 
         Return result
 
@@ -304,10 +195,8 @@ Public Class CoverLetterMapping
     ''' <remarks></remarks>
     Public Function HasMatchingCoverLetterItems(ByVal mapping As CoverLetterMapping) As Boolean
 
-        Dim result As Boolean
-
-        result = mSurvey_Id = mapping.Survey_Id And mSampleUnit_Id = mapping.SampleUnit_Id And mCoverLetterItemType_Id = mapping.CoverLetterItemType_Id _
-            And mCoverLetter_dsc = mapping.CoverLetter_name And mCoverLetterItem_label = mapping.CoverLetterItem_label
+        Dim result As Boolean = mSurvey_Id = mapping.Survey_Id And mSampleUnit_Id = mapping.SampleUnit_Id And CoverLetterItemType_Id = mapping.CoverLetterItemType_Id _
+            And CoverLetter_name = mapping.CoverLetter_name And CoverLetterItem_label = mapping.CoverLetterItem_label
 
         Return result
 
@@ -317,12 +206,25 @@ Public Class CoverLetterMapping
 
         Dim result As Boolean
 
-        Dim artifact1 As String = String.Format("{0}.{1}", mArtifact_dsc, mArtifact_label)
+        Dim artifact1 As String = String.Format("{0}.{1}", Artifact_name, ArtifactItem_label)
         Dim artifact2 As String = String.Format("{0}.{1}", mapping.Artifact_name, mapping.ArtifactItem_label)
 
-        result = mSurvey_Id = mapping.Survey_Id And mCoverLetterItemType_Id = mapping.CoverLetterItemType_Id _
-            And mCoverLetter_dsc = mapping.CoverLetter_name And mCoverLetterItem_label = mapping.CoverLetterItem_label _
+        result = CoverLetter_name = mapping.CoverLetter_name And CoverLetterItem_label = mapping.CoverLetterItem_label _
             And artifact1 <> artifact2
+
+        Return result
+
+    End Function
+
+    Public Function HasMatchedArtifactItems(ByVal mapping As CoverLetterMapping) As Boolean
+
+        Dim result As Boolean
+
+        Dim artifact1 As String = String.Format("{0}.{1}", Artifact_name, ArtifactItem_label)
+        Dim artifact2 As String = String.Format("{0}.{1}", mapping.Artifact_name, mapping.ArtifactItem_label)
+
+        result = CoverLetter_name = mapping.CoverLetter_name And CoverLetterItem_label = mapping.CoverLetterItem_label _
+            And artifact1 = artifact2
 
         Return result
 

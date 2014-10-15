@@ -1836,6 +1836,7 @@ Public Class SqlDataProvider
         newObj.PRTitle = rdr.GetString("PRTitle")
         newObj.PRFName = rdr.GetString("PRFName")
         newObj.PRLName = rdr.GetString("PRLName")
+        newObj.QVersion = rdr.GetString("qversion")
         newObj.BitComplete = rdr.GetNullableBoolean("bitComplete")
         newObj.Qs.Add(rdr.GetInteger("Q01", -9).ToString())
         newObj.Qs.Add(rdr.GetInteger("Q02", -9).ToString())
