@@ -17,6 +17,12 @@ use qp_prod
 go
 begin tran
 go
+if object_id('CoverVariationLog_spCoverVariation') is NOT NULL
+	drop table dbo.CoverVariationLog_spCoverVariation 
+go
+if object_id('CoverVariationLog_SurveyCoverVariation') is NOT NULL
+	drop table dbo.CoverVariationLog_SurveyCoverVariation 
+go
 /*
    This stored PROCEDURE has been modified to allow multiple MailingSteps for a single person
    to be generated ON the same night.
