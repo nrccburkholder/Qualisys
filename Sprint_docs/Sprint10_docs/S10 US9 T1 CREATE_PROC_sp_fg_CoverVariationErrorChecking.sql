@@ -26,6 +26,11 @@ go
 CREATE PROCEDURE dbo.sp_fg_CoverVariationErrorChecking
 as
 
+if object_id('CoverVariationLog_spCoverVariation') is NOT NULL
+	delete from CoverVariationLog_spCoverVariation where CV_RunDate < dateadd(month,-3,getdate())
+if object_id('CoverVariationLog_SurveyCoverVariation') is NOT NULL
+	delete from CoverVariationLog_SurveyCoverVariation where CV_RunDate < dateadd(month,-3,getdate())
+
 SELECT DISTINCT Survey_id
 INTO #Survey
 FROM FG_PreMailingWork
