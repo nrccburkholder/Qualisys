@@ -12,10 +12,18 @@ T9.6	Address any processes that are specific to test prints
 Dave Gilsdorf
 
 ALTER PROCEDURE [dbo].[SP_FG_FormGen_Sub]
+CREATE TABLE [dbo].[CoverVariationLog_spCoverVariation]
+CREATE TABLE [dbo].[CoverVariationLog_SurveyCoverVariation]
 */
 use qp_prod
 go
 begin tran
+go
+if object_id('CoverVariationLog_spCoverVariation') is NULL
+	create table dbo.CoverVariationLog_spCoverVariation (CV_RunDate datetime, bitTP bit, survey_id int, samplepop_id int, CoverVariation_id int, selcover_id int, intFlag int)
+go
+if object_id('CoverVariationLog_SurveyCoverVariation') is NULL
+	create table dbo.CoverVariationLog_SurveyCoverVariation (CV_RunDate datetime, bitTP bit, SurveyCoverVariation_id int, CoverVariation_id int, survey_id int, cover_id int)
 go
 /*
    This stored PROCEDURE has been modified to allow multiple MailingSteps for a single person
@@ -64,6 +72,9 @@ SET QUOTED_IDENTIFIER OFF
 --Need to check and see if a newer version of the form exists
 DECLARE @ValidationDate DATETIME, @LastValidationDate DATETIME, @ResetForm BIT
 DECLARE @Sampleset int, @MaxQF int
+
+declare @CV_RunDate datetime 
+set @CV_RunDate=getdate()
 
 SELECT @ResetForm=0
 IF @bitTP = 1 
@@ -356,6 +367,28 @@ begin
 					set @sql_join = @sql_join + ' and isnull(sp.tb_'+@i+',0)=isnull(cv.tb_'+@i+',0)'
 				end
 
+						-- CoverVariationLogging
+						if not exists (	select *
+										from sys.columns sc 
+										where sc.object_id = object_id('CoverVariationLog_spCoverVariation')
+										and name='Art_'+@i)
+						begin
+							set @SQL_cv = 'alter table CoverVariationLog_spCoverVariation add TB_'+@i+' int, Art_'+@i+' int'
+							print @SQL_cv
+							exec (@SQL_cv)
+						end
+
+						if not exists (	select *
+										from sys.columns sc 
+										where sc.object_id = object_id('CoverVariationLog_SurveyCoverVariation')
+										and name='Art_'+@i)
+						begin
+							set @SQL_cv = 'alter table CoverVariationLog_SurveyCoverVariation add TB_'+@i+' int, Art_'+@i+' int'
+							print @SQL_cv
+							exec (@SQL_cv)
+						end
+						-- /CoverVariationLogging
+				
 				set @SQL_cv = 'update #spCoverVariation set TB_'+@i+'='+convert(nvarchar,@tb)+' where selcover_id='+convert(nvarchar,@cvr)+' and survey_id='+convert(nvarchar,@survey)
 				print @SQL_cv
 				exec (@SQL_cv)
@@ -387,6 +420,30 @@ begin
 		
 		select @survey=min(survey_id) from #CoverLetterTextboxes
 	end
+	
+			-- CoverVariationLogging
+			set @sql_cv=''
+			select @SQL_CV=@sql_CV+','+name
+			from tempdb.sys.columns sc 
+			where sc.object_id = object_id('Tempdb..#spCoverVariation')
+
+			set @sql_cv = 'insert into CoverVariationLog_spCoverVariation (CV_RunDate,bitTP'+@sql_cv+')
+			select '''+convert(varchar,@CV_RunDate,109)+''', '+convert(varchar,@bittp)+@sql_cv+'
+			from #spCoverVariation'
+			print @sql_cv
+			exec (@sql_cv)
+
+			set @sql_cv=''
+			select @SQL_CV=@sql_CV+','+name
+			from tempdb.sys.columns sc 
+			where sc.object_id = object_id('Tempdb..#SurveyCoverVariation')
+
+			set @sql_cv = 'insert into CoverVariationLog_SurveyCoverVariation (CV_RunDate,bitTP'+@sql_cv+')
+			select '''+convert(varchar,@CV_RunDate,109)+''', '+convert(varchar,@bittp)+@sql_cv+'
+			from #SurveyCoverVariation '
+			print @sql_cv
+			exec (@sql_cv)
+			-- /CoverVariationLogging
 
 	-- delete samplepops that are getting the default cover letter 
 	delete from #spCoverVariation where CoverVariation_id=selcover_id
