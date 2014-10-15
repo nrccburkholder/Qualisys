@@ -761,7 +761,9 @@ Friend Class ACOCAHPSExporter
         End If
 
         For Each qx As String In acoCAHPSExport.Qs
-            stream.Write(String.Format("{0,-2}", qx))
+            If (qx <> "-3") Then
+                stream.Write(String.Format("{0,-2}", qx))
+            End If
         Next
         stream.WriteLine()
     End Sub
