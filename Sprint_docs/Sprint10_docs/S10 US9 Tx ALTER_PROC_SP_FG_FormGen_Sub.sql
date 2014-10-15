@@ -65,7 +65,6 @@ SET QUOTED_IDENTIFIER OFF
 DECLARE @ValidationDate DATETIME, @LastValidationDate DATETIME, @ResetForm BIT
 DECLARE @Sampleset int, @MaxQF int
 
-
 SELECT @ResetForm=0
 IF @bitTP = 1 
   BEGIN 
@@ -105,22 +104,25 @@ BEGIN
 			  SELECT SelCover_id,Survey_id,PageType,Description,Integrated,bitLetterHead
 			  FROM Sel_Cover
 			  WHERE Survey_id=@Survey
+			  and PageType <> 4
 		END
 
 		IF NOT EXISTS (SELECT TOP 1 * FROM PCL_Logo WHERE Survey_id=@Survey)
 		BEGIN
 		  INSERT INTO PCL_Logo (QPC_ID,CoverID,Survey_ID,DESCRIPTION,X,Y,WIDTH,HEIGHT,SCALING,BITMAP,VISIBLE)
-			  SELECT QPC_ID,CoverID,Survey_ID,DESCRIPTION,X,Y,WIDTH,HEIGHT,SCALING,BITMAP,VISIBLE
-			  FROM Sel_Logo
-			  WHERE Survey_id=@Survey
+			  SELECT sl.QPC_ID,sl.CoverID,sl.Survey_ID,sl.DESCRIPTION,sl.X,sl.Y,sl.WIDTH,sl.HEIGHT,sl.SCALING,sl.BITMAP,sl.VISIBLE
+			  FROM Sel_Logo sl
+			  inner join PCL_Cover pc on sl.CoverID=pc.SelCover_id and sl.survey_id=pc.survey_id
+			  WHERE sl.Survey_id=@Survey
 		END
 
 		IF NOT EXISTS (SELECT TOP 1 * FROM PCL_PCL WHERE Survey_id=@Survey)
 		BEGIN
 		  INSERT INTO PCL_PCL (QPC_ID,Survey_ID,Language,CoverID,DESCRIPTION,X,Y,WIDTH,HEIGHT,PCLSTREAM,KNOWNDIMENSIONS)
-			  SELECT QPC_ID,Survey_ID,Language,CoverID,DESCRIPTION,X,Y,WIDTH,HEIGHT,PCLSTREAM,KNOWNDIMENSIONS
-			  FROM Sel_PCL
-			  WHERE Survey_id=@Survey
+			  SELECT sp.QPC_ID,sp.Survey_ID,sp.Language,sp.CoverID,sp.DESCRIPTION,sp.X,sp.Y,sp.WIDTH,sp.HEIGHT,sp.PCLSTREAM,sp.KNOWNDIMENSIONS
+			  FROM Sel_PCL sp
+			  inner join PCL_Cover pc on sp.CoverID=pc.SelCover_id and sp.survey_id=pc.survey_id
+			  WHERE sp.Survey_id=@Survey
 		END
 
 		IF NOT EXISTS (SELECT TOP 1 * FROM PCL_Qstns WHERE Survey_id=@Survey)
@@ -152,9 +154,10 @@ BEGIN
 		IF NOT EXISTS (SELECT TOP 1 * FROM PCL_textbox WHERE Survey_id=@Survey)
 		BEGIN
 		  INSERT INTO PCL_textbox (QPC_ID,Survey_ID,Language,CoverID,X,Y,WIDTH,HEIGHT,RICHTEXT,BORDER,SHADING,BITLANGREVIEW)
-			  SELECT QPC_ID,Survey_ID,Language,CoverID,X,Y,WIDTH,HEIGHT,RICHTEXT,BORDER,SHADING,BITLANGREVIEW
-			  FROM Sel_TextBox
-			  WHERE Survey_id=@Survey
+			  SELECT st.QPC_ID,st.Survey_ID,st.Language,st.CoverID,st.X,st.Y,st.WIDTH,st.HEIGHT,st.RICHTEXT,st.BORDER,st.SHADING,st.BITLANGREVIEW
+			  FROM Sel_TextBox st
+			  inner join PCL_Cover pc on st.CoverID=pc.SelCover_id and st.survey_id=pc.survey_id
+			  WHERE st.Survey_id=@Survey
 		END
 	END
 
@@ -178,22 +181,25 @@ BEGIN
 			 SELECT SelCover_id,Survey_id,PageType,Description,Integrated,bitLetterHead,@ValidationDate
 			 FROM Sel_Cover
 			 WHERE Survey_id=@Survey
+			 AND PageType <> 4
 		END
 
 		IF NOT EXISTS (SELECT TOP 1 * FROM PCL_Logo_TP WHERE Survey_id=@Survey)
 		BEGIN
 		  INSERT INTO PCL_Logo_TP (QPC_ID,CoverID,Survey_ID,DESCRIPTION,X,Y,WIDTH,HEIGHT,SCALING,BITMAP,VISIBLE)
-			  SELECT QPC_ID,CoverID,Survey_ID,DESCRIPTION,X,Y,WIDTH,HEIGHT,SCALING,BITMAP,VISIBLE
-			  FROM Sel_Logo
-			  WHERE Survey_id=@Survey
+			  SELECT sl.QPC_ID,sl.CoverID,sl.Survey_ID,sl.DESCRIPTION,sl.X,sl.Y,sl.WIDTH,sl.HEIGHT,sl.SCALING,sl.BITMAP,sl.VISIBLE
+			  FROM Sel_Logo sl
+			  inner join PCL_Cover_TP pc on sl.CoverID=pc.SelCover_id and sl.survey_id=pc.survey_id
+			  WHERE sl.Survey_id=@Survey
 		END
 
 		IF NOT EXISTS (SELECT TOP 1 * FROM PCL_PCL_TP WHERE Survey_id=@Survey)
 		BEGIN
 		  INSERT INTO PCL_PCL_TP (QPC_ID,Survey_ID,Language,CoverID,DESCRIPTION,X,Y,WIDTH,HEIGHT,PCLSTREAM,KNOWNDIMENSIONS)
-			  SELECT QPC_ID,Survey_ID,Language,CoverID,DESCRIPTION,X,Y,WIDTH,HEIGHT,PCLSTREAM,KNOWNDIMENSIONS
-			  FROM Sel_PCL
-			  WHERE Survey_id=@Survey
+			  SELECT sp.QPC_ID,sp.Survey_ID,sp.Language,sp.CoverID,sp.DESCRIPTION,sp.X,sp.Y,sp.WIDTH,sp.HEIGHT,sp.PCLSTREAM,sp.KNOWNDIMENSIONS
+			  FROM Sel_PCL sp
+			  inner join PCL_Cover_TP pc on sp.CoverID=pc.SelCover_id and sp.survey_id=pc.survey_id
+			  WHERE sp.Survey_id=@Survey
 		END
 
 		IF NOT EXISTS (SELECT TOP 1 * FROM PCL_Qstns_TP WHERE Survey_id=@Survey)
@@ -225,9 +231,10 @@ BEGIN
 		IF NOT EXISTS (SELECT TOP 1 * FROM PCL_textbox_TP WHERE Survey_id=@Survey)
 		BEGIN
 		  INSERT INTO PCL_textbox_TP (QPC_ID,Survey_ID,Language,CoverID,X,Y,WIDTH,HEIGHT,RICHTEXT,BORDER,SHADING,BITLANGREVIEW)
-			  SELECT QPC_ID,Survey_ID,Language,CoverID,X,Y,WIDTH,HEIGHT,RICHTEXT,BORDER,SHADING,BITLANGREVIEW
-			  FROM Sel_TextBox
-			  WHERE Survey_id=@Survey
+			  SELECT st.QPC_ID,st.Survey_ID,st.Language,st.CoverID,st.X,st.Y,st.WIDTH,st.HEIGHT,st.RICHTEXT,st.BORDER,st.SHADING,st.BITLANGREVIEW
+			  FROM Sel_TextBox st
+			  inner join PCL_Cover_TP pc on st.CoverID=pc.SelCover_id and st.survey_id=pc.survey_id
+			  WHERE st.Survey_id=@Survey
 		END
 	END -- ADDED 1/20/04 SS (test prints) -- end
 
@@ -241,322 +248,326 @@ END
 -- get the list of all possible cover letter variations by calling CoverVariationList for each of the survey's Cover Letters 
 --   that have one or more items mapped to an artifact	
 INSERT INTO #Survey
-SELECT DISTINCT Survey_id
-FROM #FG_MailingWork
+SELECT DISTINCT mw.Survey_id
+FROM #FG_MailingWork mw
+inner join CoverLetterItemArtifactUnitMapping map on mw.survey_id = map.survey_id 
 
-create table #CoverVariation (CoverVariation_id int identity(101,1), survey_id int, cover_id int)
-create table #SurveyCoverVariation (SurveyCoverVariation_id int identity(1,1), CoverVariation_id int, survey_id int, cover_id int)
-CREATE TABLE #CoverLetterItemArtifactUnitMapping (
-	[Survey_id] [int] NULL,
-	[SampleUnit_id] [int] NULL,
-	[CoverLetterItemType_id] [tinyint] NULL,
-	[CoverLetter_dsc] [varchar](60) NULL,
-	[CoverLetterItem_label] [varchar](60) NULL,
-	[Artifact_dsc] [varchar](60) NULL,
-	[ArtifactItem_label] [varchar](60) NULL,
-	[Cover_id] [int] NULL,
-	[CoverItem_id] [int] NULL,
-	[ArtifactPage_id] [int] NULL,
-	[Artifact_id] [int] NULL
-)
+if @@rowcount>0 
+begin
+	create table #CoverVariation (CoverVariation_id int identity(101,1), survey_id int, cover_id int)
+	create table #SurveyCoverVariation (SurveyCoverVariation_id int identity(1,1), CoverVariation_id int, survey_id int, cover_id int)
+	CREATE TABLE #CoverLetterItemArtifactUnitMapping (
+		[Survey_id] [int] NULL,
+		[SampleUnit_id] [int] NULL,
+		[CoverLetterItemType_id] [tinyint] NULL,
+		[CoverLetter_dsc] [varchar](60) NULL,
+		[CoverLetterItem_label] [varchar](60) NULL,
+		[Artifact_dsc] [varchar](60) NULL,
+		[ArtifactItem_label] [varchar](60) NULL,
+		[Cover_id] [int] NULL,
+		[CoverItem_id] [int] NULL,
+		[ArtifactPage_id] [int] NULL,
+		[Artifact_id] [int] NULL
+	)
 
-declare @cover_id int
+	declare @cover_id int
 
-SELECT TOP 1 @Survey=Survey_id FROM #Survey
-WHILE @@ROWCOUNT>0
-BEGIN
-	-- get a list of the survey's current mappings. CoverVariationGetMap adds current Cover_IDs and QPC_IDs (textbox_IDs)	
-	exec dbo.CoverVariationGetMap @survey
-
-	truncate table #CoverVariation
-	set @cover_id=0
-	while @cover_id is not null
-	begin
-		select @cover_id=min(selcover_id) 
-		from sel_cover
-		where survey_id=@survey
-		and PageType <> 4
-		and SelCover_id not in (select Cover_id from #CoverVariation)
-		and Description in (select CoverLetter_Dsc from dbo.CoverLetterItemArtifactUnitMapping where survey_id=@survey)
-
-		if @Cover_id is not null
-			exec dbo.CoverVariationList @survey, @cover_id
-	end
-	insert into #SurveyCoverVariation 
-	select *
-	from #CoverVariation
-	order by CoverVariation_id
-
-	DELETE #Survey WHERE Survey_id=@Survey
 	SELECT TOP 1 @Survey=Survey_id FROM #Survey
-END
+	WHILE @@ROWCOUNT>0
+	BEGIN
+		-- get a list of the survey's current mappings. CoverVariationGetMap adds current Cover_IDs and QPC_IDs (textbox_IDs)	
+		exec dbo.CoverVariationGetMap @survey
 
-/*
-select * from #CoverVariation 
-select * from #SurveyCoverVariation 
-select * from #CoverLetterItemArtifactUnitMapping
-*/
-
--- figure out which cover letter variation each samplepop in #FG_MailingWork should get
--- get the list off samplepops being generated 
-select distinct survey_id, samplepop_id, 0 as CoverVariation_id, mw.selcover_id, 0 as intFlag
-into #spCoverVariation
-from #FG_MailingWork mw
-
--- get the list of all the items that might get swapped out on the cover letter(s) we're examining
-select distinct st.survey_id, st.coverid, st.qpc_id --> list of all textboxes on all the cover letters
-into #CoverLetterTextboxes
-from sel_textbox st
-inner join (select distinct survey_id, selcover_id from #spCoverVariation) mc on st.survey_id=mc.survey_id and st.coverid=mc.selcover_id
-inner join #CoverLetterItemArtifactUnitMapping map on st.coverid=map.cover_id and st.qpc_id=map.coveritem_id and st.survey_id=map.survey_id
-
-
--- cycle through each item on the cover letters and determine which (if any) artifact each samplepop should use instead.
-select mw.samplepop_id, map.Survey_id, map.SampleUnit_id, map.CoverLetterItemType_id
-	, mw.selcover_id as CoverID, map.CoverLetter_dsc, map.CoverItem_id, map.CoverLetterItem_label
-	, map.ArtifactPage_id, map.Artifact_dsc, map.Artifact_id, map.ArtifactItem_label
-into #spArtifactSwap
-from #fg_mailingwork mw
-inner join samplepop sp on mw.samplepop_id=sp.samplepop_id
-inner join selectedsample ss on sp.sampleset_id=ss.sampleset_id and sp.pop_id=ss.pop_id
-inner join #CoverLetterItemArtifactUnitMapping map on ss.sampleunit_id=map.sampleunit_id and mw.selcover_id=map.Cover_ID
-
-
--- declare @survey int
-declare @cvr int, @tb varchar(10), @i varchar(10), @sql_join varchar(max), @sql varchar(max)
-select @survey=min(survey_id) from #CoverLetterTextboxes
-while @survey is not null
-begin
-	select @sql_join=''
-	select @cvr=min(coverid) from #CoverLetterTextboxes where survey_id=@survey
-	while @cvr is not null
-	begin
-		set @i='0'
-		select @tb=min(qpc_id), @i=@i+1 from #CoverLetterTextboxes where coverid=@cvr and survey_id=@survey
-		while @tb is not null
+		truncate table #CoverVariation
+		set @cover_id=0
+		while @cover_id is not null
 		begin
-			if not exists (	select *
-							from tempdb.sys.columns sc 
-							where sc.object_id = object_id('Tempdb..#spCoverVariation')
-							and name='Art_'+@i)
-			begin
-				set @SQL = 'alter table #spCoverVariation add TB_'+@i+' int, Art_'+@i+' int'
-				print @SQL
-				exec (@SQL)
-				set @sql_join = @sql_join + ' and isnull(sp.tb_'+@i+',0)=isnull(cv.tb_'+@i+',0)'
-			end
-			
-			set @SQL = 'update #spCoverVariation set TB_'+@i+'='+convert(varchar,@tb)+' where selcover_id='+convert(varchar,@cvr)+' and survey_id='+convert(varchar,@survey)
-			print @SQL
-			exec (@SQL)
+			select @cover_id=min(selcover_id) 
+			from sel_cover
+			where survey_id=@survey
+			and PageType <> 4
+			and SelCover_id not in (select Cover_id from #CoverVariation)
+			and Description in (select CoverLetter_Dsc from dbo.CoverLetterItemArtifactUnitMapping where survey_id=@survey)
 
-			set @SQL = 'update cv
-			set TB_'+@i+'='+@tb+', Art_'+@i+'=Artifact_id
-			from #spCoverVariation cv
-			inner join #spArtifactSwap swap on cv.samplepop_id=swap.samplepop_id
-			where cv.selcover_id='+convert(varchar,@cvr)+'
-			and swap.coveritem_id='+@tb
-			print @SQL
-			exec (@SQL)
-			
-			delete from #CoverLetterTextboxes where @tb=qpc_id and survey_id=@survey
-			select @tb=min(qpc_id), @i=@i+1 from #CoverLetterTextboxes where coverid=@cvr and survey_id=@survey
+			if @Cover_id is not null
+				exec dbo.CoverVariationList @survey, @cover_id
 		end
-		select @cvr=min(coverid) from #CoverLetterTextboxes where survey_id=@survey
-	end
+		insert into #SurveyCoverVariation 
+		select *
+		from #CoverVariation
+		order by CoverVariation_id
 
-	set @sql = 'update sp
-	set CoverVariation_id=cv.CoverVariation_id
-	from #SurveyCoverVariation cv
-	inner join #spCoverVariation sp on cv.cover_id=sp.selcover_id and cv.survey_id=sp.survey_id
-	' + @sql_Join + '
-	' + replace(@sql_join,'tb','art')
+		DELETE #Survey WHERE Survey_id=@Survey
+		SELECT TOP 1 @Survey=Survey_id FROM #Survey
+	END
 
-	print @sql
-	exec (@sql)
+	/*
+	select * from #CoverVariation 
+	select * from #SurveyCoverVariation 
+	select * from #CoverLetterItemArtifactUnitMapping
+	*/
 
+	-- figure out which cover letter variation each samplepop in #FG_MailingWork should get
+	-- get the list off samplepops being generated 
+	select distinct survey_id, samplepop_id, 0 as CoverVariation_id, mw.selcover_id, 0 as intFlag
+	into #spCoverVariation
+	from #FG_MailingWork mw
+
+	-- get the list of all the items that might get swapped out on the cover letter(s) we're examining
+	select distinct st.survey_id, st.coverid, st.qpc_id --> list of all textboxes on all the cover letters
+	into #CoverLetterTextboxes
+	from sel_textbox st
+	inner join (select distinct survey_id, selcover_id from #spCoverVariation) mc on st.survey_id=mc.survey_id and st.coverid=mc.selcover_id
+	inner join #CoverLetterItemArtifactUnitMapping map on st.coverid=map.cover_id and st.qpc_id=map.coveritem_id and st.survey_id=map.survey_id
+
+
+	-- cycle through each item on the cover letters and determine which (if any) artifact each samplepop should use instead.
+	select mw.samplepop_id, map.Survey_id, map.SampleUnit_id, map.CoverLetterItemType_id
+		, mw.selcover_id as CoverID, map.CoverLetter_dsc, map.CoverItem_id, map.CoverLetterItem_label
+		, map.ArtifactPage_id, map.Artifact_dsc, map.Artifact_id, map.ArtifactItem_label
+	into #spArtifactSwap
+	from #fg_mailingwork mw
+	inner join samplepop sp on mw.samplepop_id=sp.samplepop_id
+	inner join selectedsample ss on sp.sampleset_id=ss.sampleset_id and sp.pop_id=ss.pop_id
+	inner join #CoverLetterItemArtifactUnitMapping map on ss.sampleunit_id=map.sampleunit_id and mw.selcover_id=map.Cover_ID
+
+
+	-- declare @survey int
+	declare @cvr int, @tb nvarchar(20), @i nvarchar(20), @sql_join nvarchar(max), @sql_cv nvarchar(max)
 	select @survey=min(survey_id) from #CoverLetterTextboxes
-end
-
--- delete samplepops that are getting the default cover letter 
-delete from #spCoverVariation where CoverVariation_id=selcover_id
-
--- if there is anybody who needs a variation, assemble it now.
-if exists (select * from #spCoverVariation)
-begin
-	-- create a copy of the default cover letters for each variation
-	select cv.CoverVariation_id as SelCover_id, c.Survey_id, c.PageType, c.Description, c.Integrated, c.bitLetterHead
-	into #CV_Cover
-	from (select distinct survey_id, selcover_id, CoverVariation_id from #spCoverVariation) cv
-	inner join sel_cover c on cv.survey_id=c.survey_id and cv.selcover_id=c.selcover_id
-
-	select tb.QPC_ID, tb.SURVEY_ID, tb.LANGUAGE, cv.CoverVariation_id as COVERID, tb.X, tb.Y, tb.WIDTH, tb.HEIGHT, tb.RICHTEXT, tb.BORDER, tb.SHADING, tb.BITLANGREVIEW
-	into #CV_TextBox
-	from (select distinct survey_id, selcover_id, CoverVariation_id from #spCoverVariation) cv
-	inner join sel_textbox tb on cv.survey_id=tb.survey_id and cv.selcover_id=tb.coverid
-
-	select L.QPC_ID, cv.CoverVariation_id as COVERID, L.SURVEY_ID, L.DESCRIPTION, L.X, L.Y, L.WIDTH, L.HEIGHT, L.SCALING, L.BITMAP, L.VISIBLE
-	into #CV_Logo
-	from (select distinct survey_id, selcover_id, CoverVariation_id from #spCoverVariation) cv
-	inner join sel_logo L on cv.survey_id=L.survey_id and cv.selcover_id=L.coverid
-
-	select P.QPC_ID, P.SURVEY_ID, P.LANGUAGE, cv.CoverVariation_id as COVERID, P.DESCRIPTION, P.X, P.Y, P.WIDTH, P.HEIGHT, P.PCLSTREAM, P.KNOWNDIMENSIONS
-	into #CV_PCL
-	from (select distinct survey_id, selcover_id, CoverVariation_id from #spCoverVariation) cv
-	inner join sel_PCL p on cv.survey_id=p.survey_id and cv.selcover_id=p.coverid
-	
-	-- replace textboxes with mapped artifacts
-	--declare @SQL varchar(max)
-	set @sql=''
-	select @sql=@sql+'
-		update tb set Richtext=st.Richtext, qpc_id=cv.'+name+', Shading=st.Shading, Border=st.Border
-		from #CV_textbox tb
-		inner join #surveyCoverVariation cv on tb.coverid=cv.CoverVariation_id and tb.survey_id=cv.survey_id and tb.qpc_id=cv.'+replace(name,'Art','TB')+'
-		inner join sel_textbox st on st.survey_id=cv.survey_id and st.qpc_id=cv.'+name+' and tb.language=st.language
-		where tb.coverid>100'
-	from tempdb.sys.columns sc 
-	where sc.object_id = object_id('Tempdb..#surveyCoverVariation')
-	and name like 'art[_]%'
-	print @SQL
-	exec (@SQL)
-
-	-- PCLGen needs QPC_id to be unique within each survey_id. QPC_id's generally don't get into triple digits, 
-	-- so to make it unique we add the CoverVariation_id (which is the CoverID in this table)
-	-- e.g. CoverVariation_id=206, QPC_id=43 ==> new QPC_id=206043
-/**
-	update #CV_textbox set qpc_id = (coverID*1000)+qpc_id
-	update #CV_logo set qpc_id = (coverID*1000)+qpc_id
-	update #CV_PCL set qpc_id = (coverID*1000)+qpc_id
-**/	
-	if @bitTP=0
+	while @survey is not null
 	begin
-		-- remove any records from the #CV_xxx temp tables that are already in the permanent PCL_xxxx tables
-		delete cv
-		from #CV_Cover cv
-		inner join pcl_Cover p on cv.survey_id=p.survey_id and cv.selcover_id=p.selcover_id
+		select @sql_join=''
+		select @cvr=min(coverid) from #CoverLetterTextboxes where survey_id=@survey
+		while @cvr is not null
+		begin
+			set @i='0'
+			select @tb=min(qpc_id), @i=@i+1 from #CoverLetterTextboxes where coverid=@cvr and survey_id=@survey
+			while @tb is not null
+			begin
+				if not exists (	select *
+								from tempdb.sys.columns sc 
+								where sc.object_id = object_id('Tempdb..#spCoverVariation')
+								and name='Art_'+@i)
+				begin
+					set @SQL_cv = 'alter table #spCoverVariation add TB_'+@i+' int, Art_'+@i+' int'
+					print @SQL_cv
+					exec (@SQL_cv)
+					set @sql_join = @sql_join + ' and isnull(sp.tb_'+@i+',0)=isnull(cv.tb_'+@i+',0)'
+				end
 
-		delete cv
-		from #CV_Textbox cv
-		inner join pcl_Textbox p on cv.survey_id=p.survey_id and cv.coverid=p.coverid and cv.qpc_id=p.qpc_id
+				set @SQL_cv = 'update #spCoverVariation set TB_'+@i+'='+convert(nvarchar,@tb)+' where selcover_id='+convert(nvarchar,@cvr)+' and survey_id='+convert(nvarchar,@survey)
+				print @SQL_cv
+				exec (@SQL_cv)
 
-		delete cv
-		from #CV_Logo cv
-		inner join pcl_Logo p on cv.survey_id=p.survey_id and cv.coverid=p.coverid and cv.qpc_id=p.qpc_id
+				set @SQL_cv = 'update cv
+				set TB_'+@i+'='+@tb+', Art_'+@i+'=Artifact_id
+				from #spCoverVariation cv
+				inner join #spArtifactSwap swap on cv.samplepop_id=swap.samplepop_id
+				where cv.selcover_id='+convert(varchar,@cvr)+'
+				and swap.coveritem_id='+@tb
+				print @SQL_cv
+				exec (@SQL_cv)
+				
+				delete from #CoverLetterTextboxes where @tb=qpc_id and survey_id=@survey
+				select @tb=min(qpc_id), @i=@i+1 from #CoverLetterTextboxes where coverid=@cvr and survey_id=@survey
+			end
+			select @cvr=min(coverid) from #CoverLetterTextboxes where survey_id=@survey
+		end
 
-		delete cv
-		from #CV_Pcl cv
-		inner join pcl_Pcl p on cv.survey_id=p.survey_id and cv.coverid=p.coverid and cv.qpc_id=p.qpc_id
+		set @sql_cv = 'update sp
+		set CoverVariation_id=cv.CoverVariation_id
+		from #SurveyCoverVariation cv
+		inner join #spCoverVariation sp on cv.cover_id=sp.selcover_id and cv.survey_id=sp.survey_id
+		' + @sql_Join + '
+		' + replace(@sql_join,'tb','art')
 
-		-- insert anything still in the #CV_xxx temp tables into the permanent PCL_xxx tables
-		insert into pcl_Cover (SelCover_id, Survey_id, PageType, Description, Integrated, bitLetterHead)
-		select SelCover_id, Survey_id, PageType, Description, Integrated, bitLetterHead
-		from #CV_Cover
-
-		insert into pcl_textbox (QPC_ID, SURVEY_ID, LANGUAGE, COVERID, X, Y, WIDTH, HEIGHT, RICHTEXT, BORDER, SHADING, BITLANGREVIEW)
-		select QPC_ID, SURVEY_ID, LANGUAGE, COVERID, X, Y, WIDTH, HEIGHT, RICHTEXT, BORDER, SHADING, BITLANGREVIEW
-		from #CV_textbox
-
-		insert into pcl_logo (QPC_ID, COVERID, SURVEY_ID, DESCRIPTION, X, Y, WIDTH, HEIGHT, SCALING, BITMAP, VISIBLE)
-		select QPC_ID, COVERID, SURVEY_ID, DESCRIPTION, X, Y, WIDTH, HEIGHT, SCALING, BITMAP, VISIBLE
-		from #CV_Logo
-
-		insert into pcl_pcl (QPC_ID, SURVEY_ID, LANGUAGE, COVERID, DESCRIPTION, X, Y, WIDTH, HEIGHT, PCLSTREAM, KNOWNDIMENSIONS)
-		select QPC_ID, SURVEY_ID, LANGUAGE, COVERID, DESCRIPTION, X, Y, WIDTH, HEIGHT, PCLSTREAM, KNOWNDIMENSIONS
-		from #CV_Pcl
-	end
-	
-	if @bitTP=1
-	begin
-		-- remove any records from the #CV_xxx temp tables that are already in the permanent PCL_xxxx_tp tables
-		delete cv
-		from #CV_Cover cv
-		inner join pcl_Cover_tp p on cv.survey_id=p.survey_id and cv.selcover_id=p.selcover_id
-
-		delete cv
-		from #CV_Textbox cv
-		inner join pcl_Textbox_tp p on cv.survey_id=p.survey_id and cv.coverid=p.coverid and cv.qpc_id=p.qpc_id and cv.language=p.language
-
-		delete cv
-		from #CV_Logo cv
-		inner join pcl_Logo_tp p on cv.survey_id=p.survey_id and cv.coverid=p.coverid and cv.qpc_id=p.qpc_id
-
-		delete cv
-		from #CV_Pcl cv
-		inner join pcl_Pcl_tp p on cv.survey_id=p.survey_id and cv.coverid=p.coverid and cv.qpc_id=p.qpc_id and cv.language=p.language
-
-		-- insert anything still in the #CV_xxx temp tables into the permanent PCL_xxx_tp tables
-		insert into pcl_Cover_tp (SelCover_id, Survey_id, PageType, Description, Integrated, bitLetterHead)
-		select SelCover_id, Survey_id, PageType, Description, Integrated, bitLetterHead
-		from #CV_Cover
-
-		insert into pcl_textbox_tp (QPC_ID, SURVEY_ID, LANGUAGE, COVERID, X, Y, WIDTH, HEIGHT, RICHTEXT, BORDER, SHADING, BITLANGREVIEW)
-		select QPC_ID, SURVEY_ID, LANGUAGE, COVERID, X, Y, WIDTH, HEIGHT, RICHTEXT, BORDER, SHADING, BITLANGREVIEW
-		from #CV_textbox
-
-		insert into pcl_logo_tp (QPC_ID, COVERID, SURVEY_ID, DESCRIPTION, X, Y, WIDTH, HEIGHT, SCALING, BITMAP, VISIBLE)
-		select QPC_ID, COVERID, SURVEY_ID, DESCRIPTION, X, Y, WIDTH, HEIGHT, SCALING, BITMAP, VISIBLE
-		from #CV_Logo
-
-		insert into pcl_pcl_tp (QPC_ID, SURVEY_ID, LANGUAGE, COVERID, DESCRIPTION, X, Y, WIDTH, HEIGHT, PCLSTREAM, KNOWNDIMENSIONS)
-		select QPC_ID, SURVEY_ID, LANGUAGE, COVERID, DESCRIPTION, X, Y, WIDTH, HEIGHT, PCLSTREAM, KNOWNDIMENSIONS
-		from #CV_Pcl
+		print @sql_cv
+		exec (@sql_cv)
+		
+		select @survey=min(survey_id) from #CoverLetterTextboxes
 	end
 
-/**
-	-- The QPC_Id's in pcl_textbox(_tp) have been updated to incorporate the CoverVariation_ID. So we need to add entries to CodeTxtBox 
-	-- that use the CoverVariation specific QPC_id's 
-	select cvtb.QPC_ID, ctb.SURVEY_ID, ctb.LANGUAGE, ctb.CODE, ctb.INTSTARTPOS, ctb.INTLENGTH
-	into #CV_CodeTxtBox 
-	from #CV_Textbox cvtb
-	inner join CodeTxtBox ctb on cvtb.survey_id=ctb.survey_id and cvtb.language=ctb.language and cvtb.qpc_id%1000=ctb.qpc_id
-	where cvtb.coverid>100
-	
-	delete cvctb
-	from #CV_CodeTxtBox cvctb
-	inner join CodeTxtBox ctb 
-			on  ctb.QPC_ID   =cvctb.QPC_ID
-			and ctb.SURVEY_ID=cvctb.SURVEY_ID
-			and ctb.LANGUAGE =cvctb.LANGUAGE
-			and ctb.CODE	 =cvctb.CODE
-	
-	insert into CodeTxtBox (QPC_ID, SURVEY_ID, LANGUAGE, CODE, INTSTARTPOS, INTLENGTH)
-	select QPC_ID, SURVEY_ID, LANGUAGE, CODE, INTSTARTPOS, INTLENGTH
-	from #CV_CodeTxtBox 
-**/
-	drop table #CV_Cover
-	drop table #CV_Textbox
-	drop table #CV_Logo
-	drop table #CV_PCL
+	-- delete samplepops that are getting the default cover letter 
+	delete from #spCoverVariation where CoverVariation_id=selcover_id
+
+	-- if there is anybody who needs a variation, assemble it now.
+	if exists (select * from #spCoverVariation)
+	begin
+		-- create a copy of the default cover letters for each variation
+		select cv.CoverVariation_id as SelCover_id, c.Survey_id, c.PageType, c.Description, c.Integrated, c.bitLetterHead
+		into #CV_Cover
+		from (select distinct survey_id, selcover_id, CoverVariation_id from #spCoverVariation) cv
+		inner join sel_cover c on cv.survey_id=c.survey_id and cv.selcover_id=c.selcover_id
+
+		select tb.QPC_ID, tb.SURVEY_ID, tb.LANGUAGE, cv.CoverVariation_id as COVERID, tb.X, tb.Y, tb.WIDTH, tb.HEIGHT, tb.RICHTEXT, tb.BORDER, tb.SHADING, tb.BITLANGREVIEW
+		into #CV_TextBox
+		from (select distinct survey_id, selcover_id, CoverVariation_id from #spCoverVariation) cv
+		inner join sel_textbox tb on cv.survey_id=tb.survey_id and cv.selcover_id=tb.coverid
+
+		select L.QPC_ID, cv.CoverVariation_id as COVERID, L.SURVEY_ID, L.DESCRIPTION, L.X, L.Y, L.WIDTH, L.HEIGHT, L.SCALING, L.BITMAP, L.VISIBLE
+		into #CV_Logo
+		from (select distinct survey_id, selcover_id, CoverVariation_id from #spCoverVariation) cv
+		inner join sel_logo L on cv.survey_id=L.survey_id and cv.selcover_id=L.coverid
+
+		select P.QPC_ID, P.SURVEY_ID, P.LANGUAGE, cv.CoverVariation_id as COVERID, P.DESCRIPTION, P.X, P.Y, P.WIDTH, P.HEIGHT, P.PCLSTREAM, P.KNOWNDIMENSIONS
+		into #CV_PCL
+		from (select distinct survey_id, selcover_id, CoverVariation_id from #spCoverVariation) cv
+		inner join sel_PCL p on cv.survey_id=p.survey_id and cv.selcover_id=p.coverid
+		
+		-- replace textboxes with mapped artifacts
+		--declare @SQL_cv nvarchar(max)
+		set @sql_cv=''
+		select @sql_cv=@sql_cv+'
+			update tb set Richtext=st.Richtext, qpc_id=cv.'+name+', Shading=st.Shading, Border=st.Border
+			from #CV_textbox tb
+			inner join #surveyCoverVariation cv on tb.coverid=cv.CoverVariation_id and tb.survey_id=cv.survey_id and tb.qpc_id=cv.'+replace(name,'Art','TB')+'
+			inner join sel_textbox st on st.survey_id=cv.survey_id and st.qpc_id=cv.'+name+' and tb.language=st.language
+			where tb.coverid>100'
+		from tempdb.sys.columns sc 
+		where sc.object_id = object_id('Tempdb..#surveyCoverVariation')
+		and name like 'art[_]%'
+		print @SQL_cv
+		exec (@SQL_cv)
+
+		-- PCLGen needs QPC_id to be unique within each survey_id. QPC_id's generally don't get into triple digits, 
+		-- so to make it unique we add the CoverVariation_id (which is the CoverID in this table)
+		-- e.g. CoverVariation_id=206, QPC_id=43 ==> new QPC_id=206043
+	/**
+		update #CV_textbox set qpc_id = (coverID*1000)+qpc_id
+		update #CV_logo set qpc_id = (coverID*1000)+qpc_id
+		update #CV_PCL set qpc_id = (coverID*1000)+qpc_id
+	**/	
+		if @bitTP=0
+		begin
+			-- remove any records from the #CV_xxx temp tables that are already in the permanent PCL_xxxx tables
+			delete cv
+			from #CV_Cover cv
+			inner join pcl_Cover p on cv.survey_id=p.survey_id and cv.selcover_id=p.selcover_id
+
+			delete cv
+			from #CV_Textbox cv
+			inner join pcl_Textbox p on cv.survey_id=p.survey_id and cv.coverid=p.coverid and cv.qpc_id=p.qpc_id
+
+			delete cv
+			from #CV_Logo cv
+			inner join pcl_Logo p on cv.survey_id=p.survey_id and cv.coverid=p.coverid and cv.qpc_id=p.qpc_id
+
+			delete cv
+			from #CV_Pcl cv
+			inner join pcl_Pcl p on cv.survey_id=p.survey_id and cv.coverid=p.coverid and cv.qpc_id=p.qpc_id
+
+			-- insert anything still in the #CV_xxx temp tables into the permanent PCL_xxx tables
+			insert into pcl_Cover (SelCover_id, Survey_id, PageType, Description, Integrated, bitLetterHead)
+			select SelCover_id, Survey_id, PageType, Description, Integrated, bitLetterHead
+			from #CV_Cover
+
+			insert into pcl_textbox (QPC_ID, SURVEY_ID, LANGUAGE, COVERID, X, Y, WIDTH, HEIGHT, RICHTEXT, BORDER, SHADING, BITLANGREVIEW)
+			select QPC_ID, SURVEY_ID, LANGUAGE, COVERID, X, Y, WIDTH, HEIGHT, RICHTEXT, BORDER, SHADING, BITLANGREVIEW
+			from #CV_textbox
+
+			insert into pcl_logo (QPC_ID, COVERID, SURVEY_ID, DESCRIPTION, X, Y, WIDTH, HEIGHT, SCALING, BITMAP, VISIBLE)
+			select QPC_ID, COVERID, SURVEY_ID, DESCRIPTION, X, Y, WIDTH, HEIGHT, SCALING, BITMAP, VISIBLE
+			from #CV_Logo
+
+			insert into pcl_pcl (QPC_ID, SURVEY_ID, LANGUAGE, COVERID, DESCRIPTION, X, Y, WIDTH, HEIGHT, PCLSTREAM, KNOWNDIMENSIONS)
+			select QPC_ID, SURVEY_ID, LANGUAGE, COVERID, DESCRIPTION, X, Y, WIDTH, HEIGHT, PCLSTREAM, KNOWNDIMENSIONS
+			from #CV_Pcl
+		end
+		
+		if @bitTP=1
+		begin
+			-- remove any records from the #CV_xxx temp tables that are already in the permanent PCL_xxxx_tp tables
+			delete cv
+			from #CV_Cover cv
+			inner join pcl_Cover_tp p on cv.survey_id=p.survey_id and cv.selcover_id=p.selcover_id
+
+			delete cv
+			from #CV_Textbox cv
+			inner join pcl_Textbox_tp p on cv.survey_id=p.survey_id and cv.coverid=p.coverid and cv.qpc_id=p.qpc_id and cv.language=p.language
+
+			delete cv
+			from #CV_Logo cv
+			inner join pcl_Logo_tp p on cv.survey_id=p.survey_id and cv.coverid=p.coverid and cv.qpc_id=p.qpc_id
+
+			delete cv
+			from #CV_Pcl cv
+			inner join pcl_Pcl_tp p on cv.survey_id=p.survey_id and cv.coverid=p.coverid and cv.qpc_id=p.qpc_id and cv.language=p.language
+
+			-- insert anything still in the #CV_xxx temp tables into the permanent PCL_xxx_tp tables
+			insert into pcl_Cover_tp (SelCover_id, Survey_id, PageType, Description, Integrated, bitLetterHead)
+			select SelCover_id, Survey_id, PageType, Description, Integrated, bitLetterHead
+			from #CV_Cover
+
+			insert into pcl_textbox_tp (QPC_ID, SURVEY_ID, LANGUAGE, COVERID, X, Y, WIDTH, HEIGHT, RICHTEXT, BORDER, SHADING, BITLANGREVIEW)
+			select QPC_ID, SURVEY_ID, LANGUAGE, COVERID, X, Y, WIDTH, HEIGHT, RICHTEXT, BORDER, SHADING, BITLANGREVIEW
+			from #CV_textbox
+
+			insert into pcl_logo_tp (QPC_ID, COVERID, SURVEY_ID, DESCRIPTION, X, Y, WIDTH, HEIGHT, SCALING, BITMAP, VISIBLE)
+			select QPC_ID, COVERID, SURVEY_ID, DESCRIPTION, X, Y, WIDTH, HEIGHT, SCALING, BITMAP, VISIBLE
+			from #CV_Logo
+
+			insert into pcl_pcl_tp (QPC_ID, SURVEY_ID, LANGUAGE, COVERID, DESCRIPTION, X, Y, WIDTH, HEIGHT, PCLSTREAM, KNOWNDIMENSIONS)
+			select QPC_ID, SURVEY_ID, LANGUAGE, COVERID, DESCRIPTION, X, Y, WIDTH, HEIGHT, PCLSTREAM, KNOWNDIMENSIONS
+			from #CV_Pcl
+		end
+
+	/**
+		-- The QPC_Id's in pcl_textbox(_tp) have been updated to incorporate the CoverVariation_ID. So we need to add entries to CodeTxtBox 
+		-- that use the CoverVariation specific QPC_id's 
+		select cvtb.QPC_ID, ctb.SURVEY_ID, ctb.LANGUAGE, ctb.CODE, ctb.INTSTARTPOS, ctb.INTLENGTH
+		into #CV_CodeTxtBox 
+		from #CV_Textbox cvtb
+		inner join CodeTxtBox ctb on cvtb.survey_id=ctb.survey_id and cvtb.language=ctb.language and cvtb.qpc_id%1000=ctb.qpc_id
+		where cvtb.coverid>100
+		
+		delete cvctb
+		from #CV_CodeTxtBox cvctb
+		inner join CodeTxtBox ctb 
+				on  ctb.QPC_ID   =cvctb.QPC_ID
+				and ctb.SURVEY_ID=cvctb.SURVEY_ID
+				and ctb.LANGUAGE =cvctb.LANGUAGE
+				and ctb.CODE	 =cvctb.CODE
+		
+		insert into CodeTxtBox (QPC_ID, SURVEY_ID, LANGUAGE, CODE, INTSTARTPOS, INTLENGTH)
+		select QPC_ID, SURVEY_ID, LANGUAGE, CODE, INTSTARTPOS, INTLENGTH
+		from #CV_CodeTxtBox 
+	**/
+		drop table #CV_Cover
+		drop table #CV_Textbox
+		drop table #CV_Logo
+		drop table #CV_PCL
+	end
+
+	-- done assembling the various cover variations used in this FormGen run
+
+	-- update #fg_mailingwork so each samplepop uses their appropriate CoverVariation
+	update mw set selcover_id=cv.CoverVariation_id
+	--select mw.samplepop_id, mw.selcover_id, cv.CoverVariation_id
+	from #fg_mailingwork mw
+	inner join #spCoverVariation cv on mw.samplepop_id=cv.samplepop_id and mw.selcover_id=cv.selcover_id
+
+	--select mw.survey_id, mw.samplepop_id, mw.langid,mw.selcover_id from #fg_mailingwork mw
+	--select * from #CoverVariation 
+	--select * from #SurveyCoverVariation 
+	--select * from #CoverLetterItemArtifactUnitMapping
+	--select * from #spCoverVariation
+	--select * from #CoverLetterTextBoxes
+	--select * from #spArtifactSwap
+
+	drop table #CoverVariation 
+	drop table #SurveyCoverVariation 
+	drop table #CoverLetterItemArtifactUnitMapping
+	drop table #spCoverVariation
+	drop table #CoverLetterTextBoxes
+	drop table #spArtifactSwap
+
 end
-
--- done assembling the various cover variations used in this FormGen run
-
--- update #fg_mailingwork so each samplepop uses their appropriate CoverVariation
-update mw set selcover_id=cv.CoverVariation_id
---select mw.samplepop_id, mw.selcover_id, cv.CoverVariation_id
-from #fg_mailingwork mw
-inner join #spCoverVariation cv on mw.samplepop_id=cv.samplepop_id and mw.selcover_id=cv.selcover_id
-
---select mw.survey_id, mw.samplepop_id, mw.langid,mw.selcover_id from #fg_mailingwork mw
---select * from #CoverVariation 
---select * from #SurveyCoverVariation 
---select * from #CoverLetterItemArtifactUnitMapping
---select * from #spCoverVariation
---select * from #CoverLetterTextBoxes
---select * from #spArtifactSwap
-
-drop table #CoverVariation 
-drop table #SurveyCoverVariation 
-drop table #CoverLetterItemArtifactUnitMapping
-drop table #spCoverVariation
-drop table #CoverLetterTextBoxes
-drop table #spArtifactSwap
-
 -- /DYNAMIC COVER LETTERS
 
 
 
-
+DECLARE @SQL varchar(max)
 
 CREATE TABLE #criters (CriteriaStmt_id INT, strCriteriaStmt VARCHAR(2550), dummy_line INT)
 
