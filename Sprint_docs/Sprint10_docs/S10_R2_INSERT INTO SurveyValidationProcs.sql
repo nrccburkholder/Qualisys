@@ -62,8 +62,6 @@ where ProcedureName in (
 ,'SV_CAHPS_PCMH_CAHPS_DQRules'
 )
 
-select *
-from SurveyValidationProcs_view
 
 GO
 
