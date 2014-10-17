@@ -44,6 +44,7 @@ type
     integrated : boolean;
     letterhead : boolean;
     description : string;
+    existingTextBoxMappings : string;
   end;
   TF_DynaQ = class(TForm)
     MainMenu1: TMainMenu;
@@ -465,6 +466,7 @@ type
     procedure updatecorelist;
     Function GetRawText(r:trichedit):string;
     procedure DeleteAllForeignRecs(const Lang:string);
+    function DuplicatePageName(pageName : string; index : integer) : boolean;
   public
    procedure ShowProps;
    function LunchWithHandle(s:string):boolean;
@@ -1031,9 +1033,14 @@ begin
         begin
           showmessage('Please correct duplicate Text Box Name: ' + edTextBoxName.Text);
           tDQPanel(Elementlist[i]).TextBoxName := '';
-        end
+        end;
+        cbItemSelector.ItemIndex := cbItemSelector.Items.IndexOf(edTextBoxName.Text);
+      end
+      else
+      begin
+        cbItemSelector.Items.Add(inttostr(tDQPanel(elementlist[i]).tag));
+        cbItemSelector.ItemIndex := cbItemSelector.Items.IndexOf(inttostr(tDQPanel(elementlist[i]).tag));
       end;
-      cbItemSelector.ItemIndex := cbItemSelector.Items.IndexOf(edTextBoxName.Text);
       lblTextBoxName.Visible := false;
       edTextBoxName.Visible := false;
     end;
@@ -2060,6 +2067,7 @@ procedure TF_DynaQ.SetTabs;
         letterhead := false;
         PageType := -1;
         description := '';
+        existingTextBoxMappings := '';
       end;
   end;
 var i : integer;
@@ -2069,9 +2077,9 @@ begin
     tabset1.tabs.clear;
     clearpagetabs;
     i := 0;
-    tabset1.tabs.add('Graphics');
+    tabset1.tabs.add('Graph1cs');
     pagetabs[0].pagetype:=ptArtifacts;
-    pagetabs[0].description := 'Graphics';
+    pagetabs[0].description := 'DeprecatedGraphics';
     while not eof do begin
       inc(i);
       if fieldbyname('PageType').value = ptArtifacts then
@@ -2372,7 +2380,10 @@ begin
           if controlcount > 0 then
             for j := controlcount-1 downto 0 do
               controls[j].free;
-          cbItemSelector.Items.Delete(cbItemSelector.Items.IndexOf(TextBoxName));
+          if TextBoxName <> '' then
+            cbItemSelector.Items.Delete(cbItemSelector.Items.IndexOf(TextBoxName))
+          else
+            cbItemSelector.Items.Delete(cbItemSelector.Items.IndexOf(inttostr(Tag)));
           free;
         end;
         elementlist[i] := nil;
@@ -2482,8 +2493,12 @@ begin
       lblTextBoxName.Visible := true;
       edTextBoxName.Visible := true;
       edTextBoxName.Text := tDQPanel(WLKHandle.children[0]).TextBoxName;
+      edTextBoxName.Enabled := (tDQPanel(WLKHandle.children[0]).TextBoxMappings = '');
+      lblTextBoxName.Hint := tDQPanel(WLKHandle.children[0]).TextBoxMappings;
       if edTextBoxName.Text <> '' then
-        cbItemSelector.Items.Delete(cbItemSelector.Items.IndexOf(edTextBoxName.Text));
+        cbItemSelector.Items.Delete(cbItemSelector.Items.IndexOf(edTextBoxName.Text))
+      else
+        cbItemSelector.Items.Delete(cbItemSelector.Items.IndexOf(inttostr(tDQPanel(WLKHandle.children[0]).tag)));
       wtText.Edit;
       wtTextText.LoadFromFile(dmOpenQ.tempdir+'\RichEdit.rtf');
       wtText.Post;
@@ -2509,7 +2524,12 @@ begin
         begin
           showmessage('Please correct duplicate Text Box Name: ' + edTextBoxName.Text);
           tDQPanel(WLKHandle.children[0]).TextBoxName := ''; //knock out the value so we don't delete the original next time we edit
-        end;
+        end
+      else
+      begin
+        cbItemSelector.Items.Add(inttostr(tDQPanel(WLKHandle.children[0]).tag));
+        cbItemSelector.ItemIndex := cbItemSelector.Items.IndexOf(inttostr(tDQPanel(WLKHandle.children[0]).tag));
+      end;
 
       lblTextBoxName.Visible := false;
       edTextBoxName.Visible := false;
@@ -2655,7 +2675,12 @@ procedure TF_DynaQ.RichEdit1MouseDown(Sender: TObject; Button: TMouseButton;
 begin
   if not (ssShift in shift) then WLKHandle.detach;
   WLKHandle.attach(tDQPanel(Sender));
-  cbItemSelector.ItemIndex := cbItemSelector.Items.IndexOf(tDQPanel(Sender).TextBoxName);
+  if tDQPanel(Sender).TextBoxName <> '' then
+    cbItemSelector.ItemIndex := cbItemSelector.Items.IndexOf(tDQPanel(Sender).TextBoxName)
+  else
+    cbItemSelector.ItemIndex := cbItemSelector.Items.IndexOf(inttostr(tDQPanel(Sender).Tag));
+  delete2.Enabled := (tDQPanel(Sender).TextBoxMappings = '');
+  deleteBox.Enabled := delete2.Enabled;
 end;
 
 procedure TF_DynaQ.Logo1MouseDown(Sender: TObject; Button: TMouseButton;
@@ -2824,10 +2849,17 @@ var I : integer;
               begin
                 showmessage('Please correct duplicate Text Box Name: ' + TextBoxName);
                 TextBoxName := '';
-              end;
+              end
+           else
+              cbItemSelector.Items.Add(intToStr(tDQPanel(Elementlist[i]).Tag))
         end
         else
+        begin
           TextBoxName := '';
+          cbItemSelector.Items.Add(intToStr(tDQPanel(Elementlist[i]).Tag));
+        end;
+
+        TextBoxMappings := '';                           // To be filled in down in GetTextBoxMappings
         Language := fieldbyname('Language').value;
         tBlobField(fieldbyname('RichText')).SaveTofile(dmOpenQ.tempdir+'\RichEdit.rtf');
         with tRichEdit(controls[0]) do begin
@@ -2984,12 +3016,41 @@ var I : integer;
     end;
   end;
 
+  procedure getTextBoxMappings;
+  var
+    sThisMapping, sMappings : string;
+    i : integer;
+  begin
+    pagetabs[pg].existingTextBoxMappings := dmOpenQ.MappedTextBoxesByCL(pagetabs[pg].description);
+    sMappings := pagetabs[pg].existingTextBoxMappings;
+    delete3.Enabled := (sMappings = '');
+
+    while sMappings <> '' do
+    begin
+      sThisMapping := Copy(sMappings, 1, Pos('! ',sMappings) + 1);
+
+      for i := 0 to ElementList.count-1 do
+        if isTextBox(ElementList[i]) then
+          if (tDQPanel(ElementList[i]).TextBoxName <> '') and
+             ((Pos(pagetabs[pg].description + '.' + tDQPanel(ElementList[i]).TextBoxName, sThisMapping) = 1) or
+             (Pos(pagetabs[pg].description + '.' + tDQPanel(ElementList[i]).TextBoxName, sThisMapping) =
+              Pos('<=',sThisMapping) + 2)) then
+            begin
+              tDQPanel(ElementList[i]).TextBoxMappings := tDQPanel(ElementList[i]).TextBoxMappings + sThisMapping;
+              break;
+            end;
+
+      sMappings := Copy(sMappings, Pos('! ',sMappings) + 2, Length(sMappings) - Pos('! ',sMappings) + 1);
+    end;
+  end;
+
 begin
   ScrollboxCovers.visible := false;
   printmockup1.enabled := true;
   ClearElementList;
   PageBreak1.enabled := true;
   getTextBoxes;
+  getTextBoxMappings;
   getLogos;
   getPCL;
   case pagetabs[pg].pagetype of
@@ -3148,6 +3209,17 @@ begin
   end;
 end;
 
+function TF_DynaQ.DuplicatePageName(pageName : string; index : integer) : boolean;
+var i : integer;
+begin
+  result := false;
+
+  for i := 0 to 9 do
+    if i <> index then
+      if pagetabs[i].description = pageName then
+        result := true;
+end;
+
 procedure TF_DynaQ.CoverLetter1Click(Sender: TObject);
 var s : string;
     i : integer;
@@ -3173,7 +3245,8 @@ var s : string;
   end;
 begin
   s := InputBox('Enter Name','What''s the new letter''s name?','Cover'+inttostr(tabset1.tabs.count+1));
-  if s <> '' then
+  if (s <> '') and not DuplicatePageName(s,-1) and
+    not DuplicatePageName('['+s+']',-1) and (pos('[',s) = 0) and (pos(']',s) = 0) then
     with Tabset1 do begin
       SaveCover(tabindex);
       if NewPage(tabs.count,s,pagetabs[tabindex].integrated,pagetabs[tabindex].letterhead,1) then begin
@@ -3190,7 +3263,9 @@ begin
         FireTabChangeEvent := true;
         LoadCover(tabs.count-1);
       end;
-    end;
+    end
+  else
+    showmessage('Cover Letter Name Invalid: ' + s);
 end;
 
 procedure TF_DynaQ.Delete3Click(Sender: TObject);
@@ -3205,7 +3280,7 @@ procedure TF_DynaQ.Delete3Click(Sender: TObject);
 var i : integer;
 begin
   if tabset1.tabindex=0 then
-    messagedlg('You can''t delete the "Graphics" tab.',mterror,[mbok],0)
+    messagedlg('You can''t delete the "DeprecatedGraphics" tab.',mterror,[mbok],0)
   else if tabset1.tabs.count=2 then
     messagedlg('You must keep at least one cover letter',mterror,[mbok],0)
   else begin
@@ -3236,6 +3311,9 @@ begin
         edPagename.text := copy(tabset1.tabs[tabset1.tabindex],2,length(tabset1.tabs[tabset1.tabindex])-2)
       else
         edPagename.text := tabset1.tabs[tabset1.tabindex];
+      edPagename.Enabled := (existingTextBoxMappings = '');
+      cbArtifactsPage.Enabled := edPagename.Enabled;
+      Label1.Hint := existingTextBoxMappings;
 
       if pagetype = ptLetter then
         rgPaperType.itemindex := 0
@@ -3254,22 +3332,31 @@ begin
       if ShowModal = mrOK then begin
         dmOpenQ.SaveDialog.tag := 2;
 
-        description := edPageName.text;
-        tabset1.tabs[tabset1.tabindex] := edPageName.text;
-
-        if cbArtifactsPage.checked then
+        if not DuplicatePageName(edPagename.text, tabset1.tabindex) and
+          not DuplicatePageName('[' + edPagename.text +']', tabset1.tabindex) and
+          (pos('[',edPagename.text) = 0) and
+          (pos(']',edPagename.text) = 0) then
         begin
-          tabset1.tabs[tabset1.tabindex] := '[' + edPageName.text + ']';
-          pagetype := ptArtifacts
+          description := edPageName.text;
+          tabset1.tabs[tabset1.tabindex] := edPageName.text;
+
+          if cbArtifactsPage.checked then
+          begin
+            tabset1.tabs[tabset1.tabindex] := '[' + edPageName.text + ']';
+            pagetype := ptArtifacts
+          end
+          else
+            if rgPaperType.Itemindex = 0 then
+              pagetype := ptLetter
+            else
+              if rgPostcardsize.itemindex = 0 then
+                pagetype := ptLetterCard
+              else
+                pagetype := ptLegalCard;
         end
         else
-          if rgPaperType.Itemindex = 0 then
-            pagetype := ptLetter
-          else
-            if rgPostcardsize.itemindex = 0 then
-              pagetype := ptLetterCard
-            else
-              pagetype := ptLegalCard;
+          showmessage('Duplicate/Invalid Cover Letter name not allowed: ' + edPageName.Text);
+
         Integrated := (rgIntegrated.itemindex = 0);
         Letterhead := (rgIntegrated.itemindex = 2);
         with dmOpenQ.wwt_cover do
@@ -4630,7 +4717,9 @@ begin
   foundTextBoxName := false;
   i := 0;
   while ((i < ElementList.count) and (SenderToActivate = Sender)) do begin
-    if tDQPanel(elementlist[i]).TextBoxName = cbItemSelector.Items[cbItemSelector.ItemIndex] then
+    if IsTextBox(elementlist[i]) and
+       ((tDQPanel(elementlist[i]).TextBoxName = cbItemSelector.Items[cbItemSelector.ItemIndex]) or
+       (inttostr(tDQPanel(elementlist[i]).Tag) = cbItemSelector.Items[cbItemSelector.ItemIndex])) then
     begin
       foundTextBoxName := true;
       SenderToActivate := elementList[i];

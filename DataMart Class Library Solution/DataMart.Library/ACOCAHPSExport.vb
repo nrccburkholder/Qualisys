@@ -14,6 +14,7 @@ Public Class ACOCAHPSExport
     Private mPRTitle As String = String.Empty '27 35
     Private mPRFName As String = String.Empty '62 30
     Private mPRLName As String = String.Empty '92 50
+    Private mQVersion As String = String.Empty '142 2 <- new with version from late 2014
     Private mBitComplete As System.Nullable(Of Boolean) = Nothing
     Private mQs As List(Of String) = Nothing
 
@@ -131,6 +132,15 @@ Public Class ACOCAHPSExport
         End Get
         Set(ByVal value As String)
             mPRLName = value
+        End Set
+    End Property
+
+    Public Property QVersion() As String
+        Get
+            Return mQVersion
+        End Get
+        Set(ByVal value As String)
+            mQVersion = value
         End Set
     End Property
 

@@ -1176,6 +1176,18 @@ Public Class Survey
 
     End Function
 
+    Public Function GetCoverLettersByPageType(ByVal PageType As Integer) As Collection(Of CoverLetter)
+
+        Return CoverLetter.GetBySurveyIdAndPageType(mId, PageType)
+
+    End Function
+
+    Public Function GetCoverLettersByPageTypes(ByVal PageTypes As Integer()) As Collection(Of CoverLetter)
+
+        Return CoverLetter.GetBySurveyIdAndPageTypes(mId, PageTypes)
+
+    End Function
+
     Public Function PerformSurveyValidation() As SurveyValidationResult
 
         Return SurveyProvider.Instance.PerformSurveyValidation(mId)

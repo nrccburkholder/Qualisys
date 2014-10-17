@@ -81,7 +81,7 @@ Public Class MethodologyEditor
             End With
 
             'Build the cover letter collections
-            mCoverLetterCollection = mSurvey.GetCoverLetters()
+            mCoverLetterCollection = mSurvey.GetCoverLettersByPageTypes(New Integer() {CoverLetterPageType.CoverLetter, CoverLetterPageType.PostCard, CoverLetterPageType.Legal})
             mNoCoverLetterCollection = New Collection(Of CoverLetter)
             mNoCoverLetterCollection.Add(New CoverLetter(0, "N/A"))
 

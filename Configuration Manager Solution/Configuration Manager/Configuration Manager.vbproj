@@ -49,7 +49,7 @@
     <PublisherName>National Research Corporation</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>4.4.7.0</ApplicationVersion>
+    <ApplicationVersion>4.4.18.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -117,10 +117,25 @@
     <Reference Include="DevExpress.Utils.v9.3, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <Private>True</Private>
     </Reference>
+    <Reference Include="DevExpress.XtraBars.v9.3, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\DevExpress.XtraBars.v9.3.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="DevExpress.XtraEditors.v9.3, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.XtraGrid.v9.3, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraPrinting.v9.3, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\DevExpress.XtraPrinting.v9.3.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraRichEdit.v9.3, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\DevExpress.XtraRichEdit.v9.3.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.XtraScheduler.v9.3.Core, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
@@ -159,10 +174,6 @@
     <Reference Include="Interop.ValidateSurvey, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Referenced Assemblies\Interop.ValidateSurvey.dll</HintPath>
-    </Reference>
-    <Reference Include="Interop.VBA">
-      <HintPath>..\..\..\TFS\NRCPicker\2013-12-10 ACO CAHPS\Configuration Manager Solution\Configuration Manager\bin\Release\Interop.VBA.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=55cf2641107b9bd6">
       <SpecificVersion>False</SpecificVersion>
@@ -228,6 +239,9 @@
     <Compile Include="Configuration Modules\ModeSectionMappingModule.vb" />
     <Compile Include="Configuration Modules\NewClientModule.vb" />
     <Compile Include="Configuration Modules\NewClientGroupModule.vb" />
+    <Compile Include="Controls\CustomGridControl.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Dialogs\CopyDataStructureDialog.Designer.vb">
       <DependentUpon>CopyDataStructureDialog.vb</DependentUpon>
     </Compile>
@@ -346,6 +360,7 @@
     <Compile Include="Controls\FacilityGrid.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Classes\CoverLetterEx.vb" />
     <Compile Include="Sections\FacilitySection.Designer.vb">
       <DependentUpon>FacilitySection.vb</DependentUpon>
     </Compile>
@@ -511,6 +526,9 @@
     <EmbeddedResource Include="Controls\BiMonthlyRecurrenceControl.resx">
       <DependentUpon>BiMonthlyRecurrenceControl.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CustomGridControl.resx">
+      <DependentUpon>CustomGridControl.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\CopyDataStructureDialog.resx">
       <SubType>Designer</SubType>
@@ -730,6 +748,8 @@
     <None Include="Resources\Globe161.png" />
     <None Include="Resources\MagicButton.png" />
     <None Include="Resources\GreenLight.png" />
+    <None Include="Resources\Excel16.png" />
+    <None Include="Resources\Excel32.png" />
     <Content Include="Resources\MinorsOnlyHouseholding16.PNG" />
     <Content Include="Resources\NoHouseholding16.PNG" />
     <None Include="Resources\RoseBud.bmp" />

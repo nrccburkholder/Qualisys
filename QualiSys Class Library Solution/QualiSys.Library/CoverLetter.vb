@@ -81,8 +81,13 @@ Public Class CoverLetter
         Return CoverLetterProvider.Instance.SelectBySurveyId(surveyId)
     End Function
 
+
     Public Shared Function GetBySurveyIdAndPageType(ByVal surveyId As Integer, ByVal pagetype As Integer) As Collection(Of CoverLetter)
         Return CoverLetterProvider.Instance.SelectBySurveyIdAndPageType(surveyId, pagetype)
+    End Function
+
+    Public Shared Function GetBySurveyIdAndPageTypes(ByVal surveyId As Integer, ByVal pagetypes As Integer()) As Collection(Of CoverLetter)
+        Return CoverLetterProvider.Instance.SelectBySurveyIdAndPageTypes(surveyId, pagetypes)
     End Function
 #End Region
 

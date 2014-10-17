@@ -13,6 +13,7 @@ Friend Class ACOCAHPSExporter
     Dim _99 As String = "99"
     Dim _88 As String = "88"
     Dim _M As String = "M "
+    Dim NA2 As String = "-3"
 
     ''' <summary>
     ''' Integer enum mapping Question Reponse to integer slot in the Qs array
@@ -284,14 +285,16 @@ Friend Class ACOCAHPSExporter
     ''' <param name="dontSkipFor98and99">Switch to turn off Skip processing on 98 and 99</param>
     ''' <remarks>When both are called it comes after Set88Step1</remarks>
     Private Sub Set88step2(ByRef Qs As List(Of String), ByVal target As Integer, ByVal driver As Integer, ByVal checkVal As String, Optional ByVal dontSkipFor98and99 As Boolean = False)
-        If dontSkipFor98and99 Then
-            If (Qs(target).ToString = _M) And (Qs(driver).ToString = checkVal) Then
-                Qs(target) = _88
-            End If
-        Else
-            If ((Qs(target).ToString = _98) Or (Qs(target).ToString = _99) _
-            Or (Qs(target).ToString = _M)) And (Qs(driver).ToString = checkVal) Then
-                Qs(target) = _88
+        If (Qs(target) <> NA2) Then
+            If dontSkipFor98and99 Then
+                If (Qs(target).ToString = _M) And (Qs(driver).ToString = checkVal) Then
+                    Qs(target) = _88
+                End If
+            Else
+                If ((Qs(target).ToString = _98) Or (Qs(target).ToString = _99) _
+                Or (Qs(target).ToString = _M)) And (Qs(driver).ToString = checkVal) Then
+                    Qs(target) = _88
+                End If
             End If
         End If
     End Sub
@@ -304,8 +307,10 @@ Friend Class ACOCAHPSExporter
     ''' <param name="driver">Parent of skip relationship</param>
     ''' <remarks>When both are called it comes before Set88Step2</remarks>
     Private Sub Set88Step1(ByRef Qs As List(Of String), ByVal target As Integer, ByVal driver As Integer)
-        If (Qs(driver).ToString = _98) Or (Qs(driver).ToString = _99) Then
-            Qs(target) = _88
+        If (Qs(target) <> NA2) Then
+            If ((Qs(driver).ToString = _98) Or (Qs(driver).ToString = _99)) Then
+                Qs(target) = _88
+            End If
         End If
     End Sub
 
@@ -715,6 +720,11 @@ Friend Class ACOCAHPSExporter
             LogValidationException(acoCAHPSExport, "Record is missing Provider LName")
         End If
 
+        '   Record has a NULL or empty QVersion
+        If String.IsNullOrEmpty(acoCAHPSExport.QVersion) Then
+            LogValidationException(acoCAHPSExport, "Record is missing Version")
+        End If
+
         '   Record w/ dispo 10, 31, or 34 has any question w/ a NULL or empty string
         If ((acoCAHPSExport.Dispositn = "10") Or (acoCAHPSExport.Dispositn = "31") Or (acoCAHPSExport.Dispositn = "34")) Then
             Dim iQuestion As Integer = 0
@@ -751,8 +761,14 @@ Friend Class ACOCAHPSExporter
         stream.Write(String.Format("{0,-35}", acoCAHPSExport.PRTitle))
         stream.Write(String.Format("{0,-30}", acoCAHPSExport.PRFName))
         stream.Write(String.Format("{0,-50}", acoCAHPSExport.PRLName))
+        If (acoCAHPSExport.QVersion <> "NA") Then
+            stream.Write(String.Format("{0,2}", acoCAHPSExport.QVersion))
+        End If
+
         For Each qx As String In acoCAHPSExport.Qs
-            stream.Write(String.Format("{0,-2}", qx))
+            If (qx <> NA2) Then
+                stream.Write(String.Format("{0,-2}", qx))
+            End If
         Next
         stream.WriteLine()
     End Sub

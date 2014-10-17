@@ -304,6 +304,7 @@ type
     procedure FoxProPRG(fn:string);
 {$IFDEF FormLayout}
     function MappedSections:boolean;
+    function MappedTextBoxesByCL(coverLetter : string) : string;
     procedure CodeReport(const fn:string);
     function FindNextUntranslated:char;
     function QuestionProperties:boolean;
@@ -376,6 +377,7 @@ type
     procedure DeleteSQLSurvey;
     function ValidateCodes:boolean;
     function ValidateSkips:boolean;
+    function LabelOrID(id : TIntegerField; name : TStringField) : string;
     function ValidateTranslation:boolean;
     procedure wwt_QstnsUpdateLangInfo;
     function getItemsinSubsection:integer;
@@ -1098,6 +1100,32 @@ begin
   rs.close;
   rs:=unassigned;
 end;
+
+function TDMOpenQ.MappedTextBoxesByCL(coverLetter : string) : string;
+begin
+  result := '';
+
+  if not laptop then
+    {with ww_Query do }begin
+      {ww_Query.close;}
+      ww_Query.databasename := '_QualPro';
+      ww_Query.sql.clear;
+      ww_Query.sql.add('select CoverLetter_dsc, CoverLetterItem_label, Artifact_dsc, ArtifactItem_label'+
+              ' from CoverLetterItemArtifactUnitMapping' +
+              ' where survey_id = ' + inttostr(glbSurveyID));
+      if coverLetter <> '' then
+         ww_Query.sql.add(' and ((CoverLetter_dsc = ''' + coverLetter + ''')' +
+                 ' or (Artifact_dsc = ''' + coverLetter + '''))');
+      ww_Query.sql.add(' order by CoverLetter_dsc, CoverLetterItem_label');
+      ww_Query.open;
+      while not ww_Query.eof do begin
+        result := result + trimright(ww_Query.fieldbyname('CoverLetter_dsc').AsString) + '.' + trimright(ww_Query.fieldbyname('CoverLetterItem_label').AsString) + '<=';
+        result := result + trimright(ww_Query.fieldbyname('Artifact_dsc').AsString) + '.' + trimright(ww_Query.fieldbyname('ArtifactItem_label').AsString) + '! ';
+        ww_Query.next;
+      end;
+      ww_Query.close;
+    end;
+end ;
 
 procedure TDMOpenQ.DeleteThis;
 var
@@ -2120,11 +2148,11 @@ begin
         if TblType = F then        Add('ByID', 'Survey_ID;ID;Language;Section;Type', [ixPrimary])
         else if TblType = S then   Add('ByID', 'Survey_ID;'+QPC_ID+';Item;Language', [ixPrimary])
         else if TblType = Q then   Add('ByID', 'Survey_ID;SelQstns_ID;Language', [ixPrimary])
-        else if (TblType=L) then   Add('ByID', 'Survey_ID;'+qpc_ID, [ixPrimary])
+        else if (TblType=L) then   Add('ByID', 'Survey_ID;'+qpc_ID+';CoverID', [ixPrimary])
         else if (TblType=C) then   Add('ByID', 'Survey_ID;SelCover_ID', [ixPrimary])
         else if (TblType=K) then   add('ByID', 'Survey_ID;SelQstns_ID;SelScls_ID;ScaleItem', [ixPrimary])
-        else if (TblType=T) then   Add('ByID', 'Survey_ID;'+QPC_ID+';Language', [ixPrimary])
-        else                       Add('ByID', 'Survey_ID;'+qpc_ID+';Language', [ixPrimary]);
+        else if (TblType=T) then   Add('ByID', 'Survey_ID;'+QPC_ID+';Language;CoverID', [ixPrimary])
+        else                       Add('ByID', 'Survey_ID;'+qpc_ID+';Language;CoverID', [ixPrimary]);
         if TblType = Q then begin
           Add('ScaleID', 'ScaleID', []);
           Add('BySection', qpc_Section+';SubSection;Item', []);
@@ -4167,7 +4195,11 @@ var aStream:tMemoryStream;
     LangString : string;
     elc : integer;
   procedure CorruptCodeErrorMessage(eType,LangID:integer);
+  var
+    coverName : string;
   begin
+    coverName := F_DynaQ.TabSet1.Tabs[wwt_TextBoxCoverID.value];
+
     if t_Language.FindKey([LangID]) then
       LangString := trim(t_language.fieldbyname('language').asstring)
     else
@@ -4185,7 +4217,7 @@ var aStream:tMemoryStream;
       stAddress {6} :
         errorlist.add('Address  ('+LangString+') contains a corrupted code');
       7 :
-        errorlist.add('TextBox '+wwt_textboxid.asstring+' (CoverID='+wwt_TextBoxCoverID.asstring+', '+LangString+') contains a corrupted code');
+        errorlist.add('TextBox "'+LabelOrId(wwt_textboxid, wwt_textboxlabel)+'" (Cover Name="'+coverName+'", '+LangString+') contains a corrupted code');
       8 : begin
             LocalQuery('select qstncore,'+qpc_section+',subsection from sel_qstns where subtype=1 and scaleid='+wwt_sclsID.AsString,false);
             errorlist.add('Scale for question #'+ww_Query.fieldbyname('qstncore').asstring+
@@ -4393,25 +4425,35 @@ begin
    end;
 end;
 
+function TDMOpenQ.LabelOrID(id : TIntegerField; name : TStringField) : string;
+begin
+  if name.AsString <> '' then
+    result := name.AsString
+  else
+    result := id.AsString ;
+end;
 
 function TDMOpenQ.ValidateTranslation:boolean;
 var CurrentLanguageName,s:string;
     i : integer;
   procedure checkTB;
+  var
+    coverName : string;
   begin
     with wwt_TextBox do begin
       first;
       while (not eof) do begin
+        coverName := F_DynaQ.TabSet1.Tabs[wwt_TextBoxCoverID.value];
         if (not wwt_transTB.findkey([glbSurveyID,wwt_TextBoxID.value,currentLanguage])) then
-          errorlist.add('TextBox '+wwt_textboxid.asstring+' (CoverID='+wwt_TextBoxCoverID.asstring+') needs translated ('+CurrentLanguageName+')')
+          errorlist.add('TextBox "'+LabelOrId(wwt_textboxid, wwt_textboxlabel)+'" (Cover Letter="'+coverName+'") needs to be translated ('+CurrentLanguageName+')')
         else begin
 
           if (wwt_TransTB.fieldbyname('bitLangReview').isnull) or (wwt_TransTB.fieldbyname('bitLangReview').asBoolean) then
-            errorlist.add('TextBox '+wwt_textboxid.asstring+' (CoverID='+wwt_TextBoxCoverID.asstring+') needs reviewed ('+CurrentLanguageName+')');
+            errorlist.add('TextBox "'+LabelOrId(wwt_textboxid, wwt_textboxlabel)+'" (Cover Letter="'+coverName+'") needs to be reviewed ('+CurrentLanguageName+')');
 
-          //GN13: If the user clears the translation text, the record still exists in the database  
-          if GetPlainText(wwt_TransTBRichText) = '' then
-             errorlist.add('TextBox '+wwt_textboxid.asstring+' (CoverID='+wwt_TextBoxCoverID.asstring+') needs translated ('+CurrentLanguageName+')');
+          //GN13: If the user clears the translation text, the record still exists in the database
+          if (GetPlainText(wwt_TransTBRichText) = '') and (GetPlainText(wwt_TextBoxRichText) <> '') then
+             errorlist.add('TextBox "'+LabelOrId(wwt_textboxid, wwt_textboxlabel)+'" (Cover Letter="'+coverName+'") needs to be translated ('+CurrentLanguageName+')');
           {make sure Foreign TextBox's x,y,width,height,etc are same as English's}
 
           wwt_TransTB.Edit;
@@ -4462,7 +4504,7 @@ var CurrentLanguageName,s:string;
         with dqDataModule.wwT_HeadText do begin
           if findkey([wwt_Qstns.fieldbyname('QstnCore').value,currentLanguage]) then begin
             if fieldbyname('Review').asboolean then
-              errorlist.add('Header #'+wwt_Qstns.fieldbyname('QstnCore').asstring+' needs reviewing  ('+CurrentLanguageName+')')
+              errorlist.add('Header #'+wwt_Qstns.fieldbyname('QstnCore').asstring+' needs to be reviewed  ('+CurrentLanguageName+')')
             else begin
               newRec := not wwt_transQ.findkey([glbSurveyID,wwt_QstnsID.value,currentLanguage]);
               if NewRec then
@@ -4497,7 +4539,7 @@ var CurrentLanguageName,s:string;
       with dqDataModule.wwT_QuestionText do begin
         if findkey([wwt_Qstns.fieldbyname('QstnCore').value,currentLanguage]) then begin
           if fieldbyname('Review').asboolean then
-            errorlist.add('Question #'+wwt_Qstns.fieldbyname('QstnCore').asString+' needs reviewing ('+CurrentLanguageName+')')
+            errorlist.add('Question #'+wwt_Qstns.fieldbyname('QstnCore').asString+' needs to be reviewed ('+CurrentLanguageName+')')
           else begin
             newRec := not wwt_TransQ.findkey([glbSurveyID,wwt_QstnsID.value,currentLanguage]);
             if not newRec and (GetPlainText(wwt_TransQRichText) = '') then //GN09
@@ -4534,10 +4576,10 @@ var CurrentLanguageName,s:string;
     procedure checkcomment;
     begin
       if not wwt_transQ.findkey([glbSurveyid,wwt_QstnsID.value,currentLanguage]) then
-        errorlist.add('Comment in Section '+wwt_QstnsSection.asstring+'.'+wwt_qstnsSubsection.asstring+' needs translated ('+CurrentLanguageName+')')
+        errorlist.add('Comment in Section '+wwt_QstnsSection.asstring+'.'+wwt_qstnsSubsection.asstring+' needs to be translated ('+CurrentLanguageName+')')
       else begin
         if (wwt_TransQ.fieldbyname('bitLangReview').isnull) or (wwt_TransQ.fieldbyname('bitLangReview').asBoolean) then
-          errorlist.add('Comment in Section '+wwt_QstnsSection.asstring+'.'+wwt_qstnsSubsection.asstring+' needs reviewed ('+CurrentLanguageName+')');
+          errorlist.add('Comment in Section '+wwt_QstnsSection.asstring+'.'+wwt_qstnsSubsection.asstring+' needs to be reviewed ('+CurrentLanguageName+')');
         wwt_TransQ.edit;
         dup_fields(wwt_Qstns,wwt_TransQ,[qpc_Section,'Subsection','Item','Label',
            'Subtype','ScaleID','Height','QstnCore','ScalePos','numMarkCount',
@@ -4551,7 +4593,7 @@ var CurrentLanguageName,s:string;
       if not wwt_transQ.findkey([glbSurveyid,wwt_QstnsID.value,currentLanguage]) then
         errorlist.add('Address needs setup with '+CurrentLanguageName+' codes')
       else if (wwt_TransQ.fieldbyname('bitLangReview').isnull) or (wwt_TransQ.fieldbyname('bitLangReview').asBoolean) then
-        errorlist.add('Address needs reviewed ('+CurrentLanguageName+')');
+        errorlist.add('Address needs to be reviewed ('+CurrentLanguageName+')');
     end;
 
   var subtype : integer;
@@ -5194,6 +5236,8 @@ begin
       ProgressBar.Position := 0;
       ProgressBar.left := StatusPanel.Width - 160;
       ProgressBar.Visible := true;
+      fromanothersurvey1.Enabled := (MappedTextBoxesByCL('') = '');
+      fromatemplate1.Enabled := fromanothersurvey1.Enabled;
       OpenAllSQLTables(SID);
       CheckItemNumbering;
       myMessage('');
@@ -6223,6 +6267,7 @@ begin
       cn.execute('delete from sel_TextBox where Type is null');
       cn.execute('update sel_TextBox set Label = ''## NO LABEL ##'' where Label = '''' or Label is null'); // 10/2/2014 CJB these labels get turned back to blanks in SP_FL_SaveSurvey
       MoveFlds(T,wwT_TextBox);
+      cn.execute('update sel_TextBox set Label = '''' where Label = ''## NO LABEL ##'' or Label is null'); // 10/2/2014 CJB these labels get turned back to blanks in SP_FL_SaveSurvey
       myMessage('Saving '+inttostr(glbSurveyID)+' PCL Inserts');
       MoveFlds(P,wwT_PCL);
       myMessage('Saving '+inttostr(glbSurveyID)+' Cover Letters && Postcards');
