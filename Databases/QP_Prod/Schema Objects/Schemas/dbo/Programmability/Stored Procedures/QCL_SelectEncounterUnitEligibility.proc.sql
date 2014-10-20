@@ -1067,6 +1067,27 @@ AS
                WHERE    Removed_Rule = 0
                         AND su.sampleunit_id = s.sampleunit_id
                         AND s.bitHCAHPS = 1                             
+
+--------------9/10/2014 CJB Adding code to populate number inserted into HCAHPSEligibleEncLog into HcahpsEligibleEncLogCount in SPW
+	  --Update the EncLog count in SPW                                                 
+	  declare @HcahpsEligibleEncLogCount int = 0
+
+	  select @HcahpsEligibleEncLogCount = count(*) 
+            FROM     SamplePlanWorkSheet spw,
+					 HCAHPSEligibleEncLog eec
+                     WHERE spw.sampleset_id = @sampleSet_id
+					 and spw.SampleUnit_id = eec.sampleunit_id 
+					 and spw.sampleset_id = eec.sampleset_id
+
+        UPDATE   spw
+        SET      HcahpsEligibleEncLogCount = @HcahpsEligibleEncLogCount
+        FROM     SamplePlanWorkSheet spw,
+				 sampleunit s
+        WHERE	 spw.sampleset_id = @sampleSet_id
+			AND  spw.SampleUnit_id = s.SAMPLEUNIT_ID 
+			AND  s.bitHCAHPS = 1
+
+--------------9/10/2014 
                                                         
       IF @SamplingLogInsert = 1 
          BEGIN                          

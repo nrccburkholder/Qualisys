@@ -28,6 +28,7 @@
 	[badphonecount] [int] NOT NULL DEFAULT (0),
 	[BadAddressCount] [int] NOT NULL DEFAULT (0),
 	[HcahpsDirectSampledCount] [int] NOT NULL DEFAULT (0),
+	[HcahpsEligibleEncLogCount] [int] NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[SamplePlanWorksheet_id] ASC

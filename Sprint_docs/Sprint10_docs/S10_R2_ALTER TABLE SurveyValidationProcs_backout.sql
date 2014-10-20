@@ -3,5 +3,5 @@ GO
 
 
 ALTER TABLE [dbo].[SurveyValidationProcs]
-	DROP Column Active 
+	DROP Column bitActive 
  

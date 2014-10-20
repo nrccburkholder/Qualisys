@@ -9,13 +9,14 @@ AS
 --			1.1  5/27/2014 by C Caouette: Integrate logic into Catalyst ETL.
 --          1.2  6/18/2014 by D Gilsdorf: Refactored ACOCAHPSCompleteness as a procedure instead of a function.
 --          1.3  8/7/2014 by D Gilsdorf: added ICHCAHPS processing and renamed to CheckForCAHPSIncompletes
+--          1.4  9/26/2014 by D Gilsdorf: added HCAHPS processing 
 -- =============================================
 
 
 /* PART 1 -- find people who are going through the ETL tonight and check their completeness. If their survey was partial or incomplete, reschedule their next mailstep. */
 
 DECLARE @MinDate DATE;
-SET @MinDate = DATEADD(DAY, -2, GETDATE());
+SET @MinDate = DATEADD(DAY, -4, GETDATE());
 
 
 -- v1.1  5/27/2014 by C Caouette
@@ -40,10 +41,11 @@ inner join Survey_def sd on qf.Survey_id=sd.Survey_id
 inner join SurveyType st on sd.Surveytype_id=st.Surveytype_id
 inner join MailingStep ms on scm.Methodology_id=ms.Methodology_id and scm.MailingStep_id=ms.MailingStep_id
 where qf.datResultsImported is not null
-and st.Surveytype_dsc in ('ACOCAHPS','ICHCAHPS')			--> was: and st.Surveytype_dsc = 'ACOCAHPS'
+and st.Surveytype_dsc in ('HCAHPS IP','ACOCAHPS','ICHCAHPS')			
 and sm.datExpire > getdate()
 order by qf.datResultsImported desc
 
+-- ACO CAHPS Processing
 select questionform_id, 0 as ATACnt, 0 as ATAComplete, 0 as MeasureCnt, 0 as MeasureComplete, 0 as Disposition
 into #ACOQF
 from #TodaysReturns
@@ -65,6 +67,8 @@ inner join #ACOQF qf on tr.questionform_id=qf.questionform_id
 -- ACO Disposition 31 = partial
 -- ACO Disposition 34 = blank/incomplete
 
+
+			-- ICH CAHPS processing
 			/* begin addition */
 			select questionform_id, sentmail_id, samplepop_id, receipttype_id, strMailingStep_nm, 0 as ResponseCount, 0 as FutureScheduledMailing, 1 as AllMailStepsAreBack----, convert(datetime,null) as GenDate1st, convert(datetime,null) as GenDate2nd
 			into #QFResponseCount
@@ -100,7 +104,7 @@ inner join #ACOQF qf on tr.questionform_id=qf.questionform_id
 			where strMailingStep_nm='1st Survey'
 			and ResponseCount=0
 
-			insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_id,datLogged,LoggedBy)
+ 			insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_id,datLogged,LoggedBy)
 			select sentmail_id, samplepop_id, 26, receipttype_id, getdate(), 'CheckForCAHPSIncompletes'
 			--, strMailingStep_nm, ResponseCount
 			from #qfResponseCount rc
@@ -303,6 +307,38 @@ inner join #ACOQF qf on tr.questionform_id=qf.questionform_id
 			where rc.ResponseCount=0			
 		
 			/* end addition */
+
+	-- HCAHPS processing - if a blank return comes in, continue data collection protocol
+	delete from #QFResponseCount
+	insert into #QFResponseCount
+	select questionform_id, sentmail_id, samplepop_id, receipttype_id, strMailingStep_nm, 0 as ResponseCount, 0 as FutureScheduledMailing, 1 as AllMailStepsAreBack----, convert(datetime,null) as GenDate1st, convert(datetime,null) as GenDate2nd
+	from #TodaysReturns
+	where Surveytype_dsc='HCAHPS IP'
+
+	exec dbo.QFResponseCount
+
+	update tr 
+	set bitETLThisReturn=0, bitComplete=0, bitContinueWithMailings= case when rc.strMailingStep_nm = '1st Survey' then 1 else 0 end
+	-- select tr.questionform_id, tr.surveytype_dsc, rc.ResponseCount, tr.bitETLThisReturn, tr.bitComplete, tr.bitContinueWithMailings, rc.strMailingStep_nm
+	from #todaysreturns tr
+	inner join #QFresponsecount rc on tr.questionform_id=rc.questionform_id
+	where tr.surveytype_dsc='HCAHPS IP'
+	and rc.ResponseCount=0
+
+	insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_id,datLogged,LoggedBy)
+	select sentmail_id, samplepop_id, 25, receipttype_id, getdate(), 'CheckForCAHPSIncompletes'
+	--, strMailingStep_nm, ResponseCount
+	from #qfResponseCount rc
+	where strMailingStep_nm='1st Survey'
+	and ResponseCount=0
+
+	insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_id,datLogged,LoggedBy)
+	select sentmail_id, samplepop_id, 26, receipttype_id, getdate(), 'CheckForCAHPSIncompletes'
+	--, strMailingStep_nm, ResponseCount
+	from #qfResponseCount rc
+	where strMailingStep_nm='2nd Survey'
+	and ResponseCount=0
+
 
 -- for complete surveys, set QuestionForm.bitComplete=1
 update qf 

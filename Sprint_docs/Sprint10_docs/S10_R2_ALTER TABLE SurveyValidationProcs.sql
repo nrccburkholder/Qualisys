@@ -3,5 +3,5 @@ GO
 
 
 ALTER TABLE [dbo].[SurveyValidationProcs]
-	add Active bit NOT NULL DEFAULT(1)
+	add bitActive bit NOT NULL DEFAULT(1)
  
