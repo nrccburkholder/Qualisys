@@ -17,7 +17,7 @@ begin tran
 go
 
 ALTER TABLE [dbo].[SurveyValidationProcs]
-	add Active bit NOT NULL DEFAULT(1)
+	add bitActive bit NOT NULL DEFAULT(1)
  
  GO
 
@@ -27,12 +27,12 @@ AS
 	SELECT svp.SurveyValidationProcs_id, svp.ProcedureName, svp.intOrder, svpst.CAHPSType_ID, svpst.SubType_ID
 	FROM SurveyValidationProcs svp
 	LEFT JOIN SurveyValidationProcsBySurveyType svpst on (svpst.SurveyValidationProcs_id = svp.SurveyValidationProcs_id)
-	WHERE svpst.CAHPSType_Id is null and svp.Active = 1
+	WHERE svpst.CAHPSType_Id is null and svp.bitActive = 1
 	UNION
 	select svp.SurveyValidationProcs_id, svp.ProcedureName, svp.intOrder, svpst.CAHPSType_ID, svpst.SubType_ID
 	from SurveyValidationProcsBySurveyType svpst
 	INNER JOIN SurveyValidationProcs svp ON (svp.SurveyValidationProcs_id = svpst.SurveyValidationProcs_id)
-	WHERE svp.Active = 1
+	WHERE svp.bitActive = 1
 
 GO
 
@@ -73,7 +73,7 @@ INSERT INTO [dbo].[SurveyValidationProcsBySurveyType]([SurveyValidationProcs_id]
 Select @intOrder = Max(intOrder) + 1 from SurveyValidationProcs
 
 update [dbo].[SurveyValidationProcs]
-	set Active = 0
+	set bitActive = 0
 where ProcedureName in (
 'SV_CAHPS_HH_CAHPS_DQRules'
 ,'SV_CAHPS_H_CAHPS_DQRules'

@@ -15,12 +15,12 @@ AS
 	SELECT svp.SurveyValidationProcs_id, svp.ProcedureName, svp.intOrder, svpst.CAHPSType_ID, svpst.SubType_ID
 	FROM SurveyValidationProcs svp
 	LEFT JOIN SurveyValidationProcsBySurveyType svpst on (svpst.SurveyValidationProcs_id = svp.SurveyValidationProcs_id)
-	WHERE svpst.CAHPSType_Id is null and svp.Active = 1
+	WHERE svpst.CAHPSType_Id is null and svp.bitActive = 1
 	UNION
 	select svp.SurveyValidationProcs_id, svp.ProcedureName, svp.intOrder, svpst.CAHPSType_ID, svpst.SubType_ID
 	from SurveyValidationProcsBySurveyType svpst
 	INNER JOIN SurveyValidationProcs svp ON (svp.SurveyValidationProcs_id = svpst.SurveyValidationProcs_id)
-	WHERE svp.Active = 1
+	WHERE svp.bitActive = 1
 
 
 

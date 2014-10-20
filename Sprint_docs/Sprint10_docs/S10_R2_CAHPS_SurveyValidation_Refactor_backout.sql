@@ -44,7 +44,7 @@ exec sp_executesql @sql
 GO
 
 ALTER TABLE [dbo].[SurveyValidationProcs]
-	DROP Column Active 
+	DROP Column bitActive 
  GO
 
  CREATE VIEW [dbo].[SurveyValidationProcs_view]      

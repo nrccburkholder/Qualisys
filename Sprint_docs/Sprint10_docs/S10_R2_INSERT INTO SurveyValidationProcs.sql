@@ -55,7 +55,7 @@ Select @intOrder = Max(intOrder) + 1 from SurveyValidationProcs
 
 
 update [dbo].[SurveyValidationProcs]
-	set Active = 0
+	set bitActive = 0
 where ProcedureName in (
 'SV_CAHPS_HH_CAHPS_DQRules'
 ,'SV_CAHPS_H_CAHPS_DQRules'
