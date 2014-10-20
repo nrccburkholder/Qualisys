@@ -6,10 +6,11 @@
 	[bitExpanded] [bit] NOT NULL,
 	[datEncounterStart_dt] [datetime] NULL,
 	[datEncounterEnd_dt] [datetime] NULL,
-	[SubType_ID] [int] NULL,
+	[SubType_ID] [int] NOT NULL,
  CONSTRAINT [PK_SurveyTypeQuestionMappings] PRIMARY KEY CLUSTERED 
 (
 	[SurveyType_id] ASC,
+	[SubType_ID] ASC,
 	[QstnCore] ASC,
 	[bitExpanded] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 80) ON [PRIMARY]
