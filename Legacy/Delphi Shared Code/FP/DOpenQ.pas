@@ -5238,6 +5238,7 @@ begin
       ProgressBar.Visible := true;
       fromanothersurvey1.Enabled := (MappedTextBoxesByCL('') = '');
       fromatemplate1.Enabled := fromanothersurvey1.Enabled;
+      clear1.Enabled := fromanothersurvey1.Enabled;
       OpenAllSQLTables(SID);
       CheckItemNumbering;
       myMessage('');
