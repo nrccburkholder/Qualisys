@@ -1,0 +1,60 @@
+﻿@model Nrc.CatalystExporter.DataContracts.UserSetting
+@{
+    ViewBag.Title = "Settings";
+}
+@section scripts{
+    <script src="@Url.Content("~/Scripts/jstree/jquery.jstree.min.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#navigation").jstree({
+                "themes": {
+                    "theme": "default",
+                    "dots": true,
+                    "icons": false
+                },
+                "ui": { "select_limit": 1 },
+                "json_data": {
+                    "data": [
+                    {
+                        "attr": { "id": "@(Model.NetworkLocationStart)" },
+                        "data":
+                        {
+                            "title": "@(Model.NetworkLocationStart)"
+                        },
+                        "state": "closed"
+                    }],
+                    "ajax": {
+                        "url": '@Url.Action("FindSubdirectories")',
+                        "data": function (n) {
+                            return { directory: n.attr ? n.attr("id").replace(/\s/g, "%20") : 0 };
+                        }
+                    },
+                    "progressive_render": true
+                },
+                "plugins": ["themes", "json_data", "ui"]
+            });
+            $("#navigation").bind("select_node.jstree", function (node, refnode) {
+                var path = $.jstree._focused().get_selected().attr("id");
+                $("#NetworkLocation").val(path);
+                $("#newPath").text(path);
+            });
+        });
+    </script>
+}
+<h2>
+    Settings for @Model.Username</h2>
+@using (Html.BeginForm("Settings", "Home", FormMethod.Post))
+{
+    <button type="submit">
+        Save</button>
+    @Html.HiddenFor(m => m.Username)
+    <div>
+        Network Location</div>
+    @:Current: @Model.NetworkLocation
+    <br />
+    @:New: <span id="newPath" style="font-weight: bold;"></span>@Html.HiddenFor(m => m.NetworkLocation)
+    <div id="navigation">
+    </div>
+    <button type="submit">
+        Save</button>
+}

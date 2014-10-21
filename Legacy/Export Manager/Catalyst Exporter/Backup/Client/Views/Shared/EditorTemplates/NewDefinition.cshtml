@@ -1,0 +1,261 @@
+﻿@model Nrc.CatalystExporter.ExportClient.Models.NewDefinition
+<fieldset class="studySet" id="studySet@(Model.Surveys.First().StudyID)">
+    <legend></legend>
+    <div>
+        Surveys:
+        @for (int j = 0; j < Model.Surveys.Count(); j++)
+        {
+            <div>
+                @(Model.Surveys.ElementAt(j).ClientName)&nbsp;-&nbsp;@(Model.Surveys.ElementAt(j).StudyName)&nbsp;-&nbsp;@(Model.Surveys.ElementAt(j).SurveyName)
+                @Html.Hidden("SurveyIds[" + j + "]", Model.Surveys.ElementAt(j).SurveyID)
+            </div>
+        }
+    </div>
+    <br />
+    <div>
+        Demographic Fields
+            <button onclick="$('#demoFields@(Model.Surveys.First().StudyID)').children('option').attr('selected', 'selected'); moveOptionsRight(@(Model.Surveys.First().StudyID), 'Definitions[{j}]', 'demo');" type="button">
+                Move All ></button>
+        </div>
+    <div style="height: 300px; overflow-x:auto;overflow-y: hidden; white-space:nowrap;">
+        @Html.ListBoxFor(m => m.DemographicFields, new SelectList(Model.DemographicFields), new { id = "demoFields" + Model.Surveys.First().StudyID, @class = "fieldSelect" })
+        <div style="display: inline-block; vertical-align: bottom; height: 60%;">
+            <input type="button" value=">" style="font-weight: bold;" onclick="moveOptionsRight(@Model.Surveys.First().StudyID, 'Definitions[{j}]', 'demo')" />
+            <br />
+            <br />
+            <input type="button" value="<" style="font-weight: bold;" onclick="moveOptionsLeft(@Model.Surveys.First().StudyID, 'demo')" />
+        </div>
+        <div style="display: inline-block; height: 100%; overflow-x: auto; overflow-y: auto;
+            vertical-align: top; width: auto;">
+            <table class="selectedFields" id="demoSelectedFields@(Model.Surveys.First().StudyID)">
+                <thead>
+                    <tr>
+                        <th>
+                            <input id="demoSelectAll@(Model.Surveys.First().StudyID)" type="checkbox" onclick="selectAll(@Model.Surveys.First().StudyID, 'demo')" />
+                        </th>
+                        <th>
+                            Field Name
+                        </th>
+                        <th>
+                            Display Name
+                        </th>
+                        <th>
+                            Column Text Replacement
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="demoColumnDefs@(Model.Surveys.First().StudyID)">
+                    @foreach (var column in Model.Columns.Where(c => !c.IsCommentData() && !c.IsQuestionData()).OrderBy(c => c.ColumnOrder))
+                    {
+                        <tr class="row@(Model.Surveys.First().StudyID)">
+                            <td>
+                                <input type="checkbox" />
+                            </td>
+                            <td>
+                                @(column.FieldName)
+                                <input name="Definitions[{j}].Columns[{i}].Id" type="hidden" value="0" />
+                                <input class="hiddenName" name="Definitions[{j}].Columns[{i}].FieldName" type="hidden" value="@(column.FieldName)" />
+                                <input name="Definitions[{j}].Columns[{i}].ColumnOrder" type="hidden" value="{i}" />
+                            </td>
+                            <td>
+                                <input name="Definitions[{j}].Columns[{i}].DisplayName" type="text" value="@(column.DisplayName ?? column.FieldName)" />
+                            </td>
+                            <td>
+                                <table>
+                                    @{int i = 0;
+                                      foreach (var replace in column.Replacements)
+                                      { 
+                                        <tr>
+                                            <td>
+                                                <input name="Definitions[{j}].Columns[{i}].Replacements[@i].Id" type="hidden" value="@(replace.Id)" />
+                                                <input name="Definitions[{j}].Columns[{i}].Replacements[@i].ColumnDefinitionId" type="hidden" value="@(replace.ColumnDefinitionId)" />
+                                                <input name="Definitions[{j}].Columns[{i}].Replacements[@i].OldText" type="text" value="@(replace.OldText)" />
+                                            </td>
+                                            <td>
+                                                <input name="Definitions[{j}].Columns[{i}].Replacements[@i].NewText" type="text" value="@(replace.NewText)" />
+                                            </td>
+                                        </tr>
+                                          i++;
+                                      }
+                                    }
+                                </table>
+                                <a href="#" class="addReplacement" onclick="addReplacement($(this), 'Definitions[{j}]'); return false;">
+                                    + Add Replacement </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div style="display: inline-block; vertical-align: bottom; height: 60%;">
+            <input type="button" style="font-weight: bold;" value="&#x2C4;" onclick="moveOptionsUp($('#demoColumnDefs@(Model.Surveys.First().StudyID)'))" />
+            <br />
+            <br />
+            <input type="button" style="font-weight: bold;" value="&#x2C5;" onclick="moveOptionsDown($('#demoColumnDefs@(Model.Surveys.First().StudyID)'))" />
+        </div>
+    </div>
+    <div>
+        Question Response Fields
+            <button onclick="$('#questionFields@(Model.Surveys.First().StudyID)').children('option').attr('selected', 'selected'); moveOptionsRight(@(Model.Surveys.First().StudyID), 'Definitions[{j}]', 'question');" type="button">
+                Move All ></button>
+        </div>
+    <div style="height: 200px; overflow-x:auto;overflow-y: hidden; white-space:nowrap;">
+        @Html.ListBoxFor(m => m.QuestionFields, new SelectList(Model.QuestionFields), new { id = "questionFields" + Model.Surveys.First().StudyID, @class = "fieldSelect" })
+        <div style="display: inline-block; vertical-align: bottom; height: 60%;">
+            <input type="button" value=">" style="font-weight: bold;" onclick="moveOptionsRight(@Model.Surveys.First().StudyID, 'Definitions[{j}]', 'question')" />
+            <br />
+            <br />
+            <input type="button" value="<" style="font-weight: bold;" onclick="moveOptionsLeft(@Model.Surveys.First().StudyID, 'question')" />
+        </div>
+        <div style="display: inline-block; height: 100%; overflow-x: auto; overflow-y: auto;
+            vertical-align: top; width: auto;">
+            <table class="selectedFields" id="questionSelectedFields@(Model.Surveys.First().StudyID)">
+                <thead>
+                    <tr>
+                        <th>
+                            <input id="questionSelectAll@(Model.Surveys.First().StudyID)" type="checkbox" onclick="selectAll(@Model.Surveys.First().StudyID, 'question')" />
+                        </th>
+                        <th>
+                            Field Name
+                        </th>
+                        <th>
+                            Display Name
+                        </th>
+                        <th>
+                            Column Text Replacement
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="questionColumnDefs@(Model.Surveys.First().StudyID)">
+                    @foreach (var column in Model.Columns.Where(c => c.IsQuestionData()).OrderBy(c => c.ColumnOrder))
+                    {
+                        <tr class="row@(Model.Surveys.First().StudyID)">
+                            <td>
+                                <input type="checkbox" />
+                            </td>
+                            <td>
+                                @(column.FieldName)
+                                <input name="Definitions[{j}].Columns[{i}].Id" type="hidden" value="0" />
+                                <input class="hiddenName" name="Definitions[{j}].Columns[{i}].FieldName" type="hidden" value="@(column.FieldName)" />
+                                <input name="Definitions[{j}].Columns[{i}].ColumnOrder" type="hidden" value="{i}" />
+                            </td>
+                            <td>
+                                <input name="Definitions[{j}].Columns[{i}].DisplayName" type="text" value="@(column.DisplayName ?? column.FieldName)" />
+                            </td>
+                            <td>
+                                <table>
+                                    @{int i = 0;
+                                      foreach (var replace in column.Replacements)
+                                      { 
+                                        <tr>
+                                            <td>
+                                                <input name="Definitions[{j}].Columns[{i}].Replacements[@i].Id" type="hidden" value="@(replace.Id)" />
+                                                <input name="Definitions[{j}].Columns[{i}].Replacements[@i].ColumnDefinitionId" type="hidden" value="@(replace.ColumnDefinitionId)" />
+                                                <input name="Definitions[{j}].Columns[{i}].Replacements[@i].OldText" type="text" value="@(replace.OldText)" />
+                                            </td>
+                                            <td>
+                                                <input name="Definitions[{j}].Columns[{i}].Replacements[@i].NewText" type="text" value="@(replace.NewText)" />
+                                            </td>
+                                        </tr>
+                                          i++;
+                                      }
+                                    }
+                                </table>
+                                <a href="#" class="addReplacement" onclick="addReplacement($(this), 'Definitions[{j}]'); return false;">
+                                    + Add Replacement </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div style="display: inline-block; vertical-align: bottom; height: 60%;">
+            <input type="button" style="font-weight: bold;" value="&#x2C4;" onclick="moveOptionsUp($('#questionColumnDefs@(Model.Surveys.First().StudyID)'))" />
+            <br />
+            <br />
+            <input type="button" style="font-weight: bold;" value="&#x2C5;" onclick="moveOptionsDown($('#questionColumnDefs@(Model.Surveys.First().StudyID)'))" />
+        </div>
+    </div>
+    <div>
+        Comment Fields
+            <button onclick="$('#commentFields@(Model.Surveys.First().StudyID)').children('option').attr('selected', 'selected'); moveOptionsRight(@(Model.Surveys.First().StudyID), 'Definitions[{j}]', 'comment');" type="button">
+                Move All ></button>
+        </div>
+    <div style="height: 100px; overflow-x:auto;overflow-y: hidden; white-space:nowrap;">
+        @Html.ListBoxFor(m => m.CommentFields, new SelectList(Model.CommentFields), new { id = "commentFields" + Model.Surveys.First().StudyID, @class = "fieldSelect" })
+        <div style="display: inline-block; height: 85px; vertical-align: bottom;">
+            <input type="button" value=">" style="font-weight: bold;" onclick="moveOptionsRight(@Model.Surveys.First().StudyID, 'Definitions[{j}]', 'comment')" />
+            <br />
+            <br />
+            <input type="button" value="<" style="font-weight: bold;" onclick="moveOptionsLeft(@Model.Surveys.First().StudyID, 'comment')" />
+        </div>
+        <div style="display: inline-block; height: 100%; overflow-x: auto; overflow-y: auto;
+            vertical-align: top; width: auto;">
+            <table class="selectedFields" id="commentSelectedFields@(Model.Surveys.First().StudyID)">
+                <thead>
+                    <tr>
+                        <th>
+                            <input id="commentSelectAll@(Model.Surveys.First().StudyID)" type="checkbox" onclick="selectAll(@Model.Surveys.First().StudyID, 'comment')" />
+                        </th>
+                        <th>
+                            Field Name
+                        </th>
+                        <th>
+                            Display Name
+                        </th>
+                        <th>
+                            Column Text Replacement
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="commentColumnDefs@(Model.Surveys.First().StudyID)">
+                    @foreach (var column in Model.Columns.Where(c => c.IsCommentData()).OrderBy(c => c.ColumnOrder))
+                    {
+                        <tr class="row@(Model.Surveys.First().StudyID)">
+                            <td>
+                                <input type="checkbox" />
+                            </td>
+                            <td>
+                                @(column.FieldName)
+                                <input name="Definitions[{j}].Columns[{i}].Id" type="hidden" value="0" />
+                                <input class="hiddenName" name="Definitions[{j}].Columns[{i}].FieldName" type="hidden" value="@(column.FieldName)" />
+                                <input name="Definitions[{j}].Columns[{i}].ColumnOrder" type="hidden" value="{i}" />
+                            </td>
+                            <td>
+                                <input name="Definitions[{j}].Columns[{i}].DisplayName" type="text" value="@(column.DisplayName ?? column.FieldName)" />
+                            </td>
+                            <td>
+                                <table>
+                                    @{int i = 0;
+                                      foreach (var replace in column.Replacements)
+                                      { 
+                                        <tr>
+                                            <td>
+                                                <input name="Definitions[{j}].Columns[{i}].Replacements[@i].Id" type="hidden" value="@(replace.Id)" />
+                                                <input name="Definitions[{j}].Columns[{i}].Replacements[@i].ColumnDefinitionId" type="hidden" value="@(replace.ColumnDefinitionId)" />
+                                                <input name="Definitions[{j}].Columns[{i}].Replacements[@i].OldText" type="text" value="@(replace.OldText)" />
+                                            </td>
+                                            <td>
+                                                <input name="Definitions[{j}].Columns[{i}].Replacements[@i].NewText" type="text" value="@(replace.NewText)" />
+                                            </td>
+                                        </tr>
+                                          i++;
+                                      }
+                                    }
+                                </table>
+                                <a href="#" class="addReplacement" onclick="addReplacement($(this), 'Definitions[{j}]'); return false;">
+                                    + Add Replacement </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div style="display: inline-block; height: 85px; vertical-align: bottom;">
+            <input type="button" style="font-weight: bold;" value="&#x2C4;" onclick="moveOptionsUp($('#commentColumnDefs@(Model.Surveys.First().StudyID)'))" />
+            <br />
+            <br />
+            <input type="button" style="font-weight: bold;" value="&#x2C5;" onclick="moveOptionsDown($('#commentColumnDefs@(Model.Surveys.First().StudyID)'))" />
+        </div>
+    </div>
+</fieldset>
