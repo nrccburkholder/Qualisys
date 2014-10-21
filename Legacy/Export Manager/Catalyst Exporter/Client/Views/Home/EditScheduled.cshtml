@@ -1,0 +1,398 @@
+﻿@model Nrc.CatalystExporter.ExportClient.Models.EditScheduleModel
+@{
+    ViewBag.Title = "Edit Scheduled Definition";
+}
+@section scripts{
+    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/fileDefinitionEditing.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(":selected").removeAttr("selected");
+            
+            $("#Schedule_NextRunDate").datepicker({ minDate: 1 });
+            $("#Schedule_DataStartDate").datepicker({ minDate: -9125 });
+            $("#Schedule_FileDefinition_FileType").change(showDelimiter);
+
+            $("#submitBtn").click(function () {
+                AdjustNameIndexes();
+                $("#createNewForm").submit();
+            });
+
+            $("#Schedule_RunInterval").val(@(Model.Schedule.RunInterval));
+            $("#Schedule_DataInterval").val(@(Model.Schedule.DataInterval));
+
+            $("#Schedule_FileDefinition_FileType").val(@(Model.Schedule.FileDefinitions[0].FileType));
+            showDelimiter();
+
+            $("#Schedule_FileDefinition_ExportDateType").val(@(Model.Schedule.FileDefinitions[0].ExportDateType));
+            $("#Schedule_FileDefinition_FileStructureType").val(@(Model.Schedule.FileDefinitions[0].FileStructureType));
+        });
+
+        function showDelimiter() {
+            if ($("#Schedule_FileDefinition_FileType").val() == 9) {
+                $("#Schedule_FileDefinition_Delimiter").css("display", "inline-block");
+            } else {
+                $("#Schedule_FileDefinition_Delimiter").css("display", "none");
+                $("#delimValidation").html("");
+            }
+        }
+    </script>
+}
+<h2>
+    Edit Scheduled Definition</h2>
+@using (Html.BeginForm("EditScheduled", "Home", FormMethod.Post, new { id = "createNewForm" }))
+{
+    <div style="display: inline-block; padding-right: 40px;">
+        @Html.HiddenFor(m => m.Schedule.Id)
+        <div>
+            <label>
+                File Name:
+            </label>@Html.EditorFor(m => m.Schedule.FileDefinitions[0].Name)
+            @Html.ValidationMessageFor(m => m.Schedule.FileDefinitions[0].Name)
+        </div>
+        <div>
+            <label>
+                Next Run Date:
+            </label>@Html.EditorFor(m => m.Schedule.NextRunDate)
+            @Html.ValidationMessageFor(m => m.Schedule.NextRunDate)
+        </div>
+        <div>
+            <label>
+                Start data on:
+            </label>@Html.EditorFor(m => m.Schedule.DataStartDate)
+            @Html.ValidationMessageFor(m => m.Schedule.DataStartDate)
+        </div>
+        <div>
+            <label>
+                Rolling:
+            </label>@Html.CheckBoxFor(m => m.Schedule.IsRolling)
+            @Html.ValidationMessageFor(m => m.Schedule.IsRolling)
+        </div>
+        <div>
+            <label>
+                Run every
+            </label>
+            @Html.EditorFor(m => m.Schedule.RunIntervalCount)
+            @Html.DropDownListFor(m => m.Schedule.RunInterval, Model.Intervals)
+            @Html.ValidationMessageFor(m => m.Schedule.RunIntervalCount)
+            @Html.ValidationMessageFor(m => m.Schedule.RunInterval)
+        </div>
+        <div>
+            <label>
+                Include
+            </label>
+            @Html.EditorFor(m => m.Schedule.DataIntervalCount)
+            @Html.DropDownListFor(m => m.Schedule.DataInterval, Model.Intervals)
+            <label>
+                of data
+            </label>
+        </div>
+        <div>
+            @Html.ValidationMessageFor(m => m.Schedule.DataIntervalCount)
+            @Html.ValidationMessageFor(m => m.Schedule.DataInterval)
+        </div>
+        <div>
+            <label>
+                File Type:</label>
+            @Html.DropDownListFor(m => m.Schedule.FileDefinitions[0].FileType, Model.FileTypes)
+            @Html.TextBoxFor(m => m.Schedule.FileDefinitions[0].Delimiter, new { maxlength = "2", style = "display: none; width: 20px;", title = "tab = \\t" })
+            &nbsp;<span id="delimValidation"></span>
+        </div>
+        <div>
+            <label>
+                Date Type:</label>
+            @Html.DropDownListFor(m => m.Schedule.FileDefinitions[0].ExportDateType, Model.DateTypes)
+            @Html.ValidationMessageFor(m => m.Schedule.FileDefinitions[0].ExportDateType)
+        </div>
+        <div>
+            <label>
+                File Structure:</label>
+            @Html.DropDownListFor(m => m.Schedule.FileDefinitions[0].FileStructureType, Model.FileStructureTypes)
+            @Html.ValidationMessageFor(m => m.Schedule.FileDefinitions[0].FileStructureType)
+        </div>
+        <br />
+    </div>
+    <div style="display: inline-block; vertical-align: top;">
+        <label>
+            Client:</label>
+        @Model.Survey.ClientName (@Model.Survey.Client_ID)
+        <br />
+        <label>
+            Study:</label>
+        @Model.Survey.StudyName (@Model.Survey.Study_ID)
+        <br />
+        <label>
+            Survey:</label>
+        @Model.Survey.SurveyName (@Model.Survey.Survey_ID)
+        <br />
+        <label>
+            Created By:</label>
+        @Model.Schedule.CreatedBy
+        <br />
+        <label>
+            Created Date:</label>
+        @Model.Schedule.CreationDate
+        <br />
+    </div>
+    
+    <fieldset class="studySet" id="studySet@(Model.Survey.StudyID)">
+        <legend></legend>
+        <div class="clear">
+            Demographic Fields
+            <button onclick="$('#demoFields@(Model.Survey.StudyID)').children('option').attr('selected', 'selected'); moveOptionsRight(@(Model.Survey.StudyID), 'Schedule.FileDefinitions[0]', 'demo');" type="button">
+                Move All ></button>
+        </div>
+        <div style="height: 300px; overflow-x: auto; overflow-y: hidden; white-space: nowrap;">
+            @Html.ListBoxFor(m => m.DemographicFields, new SelectList(Model.DemographicFields), new { id = "demoFields" + Model.Survey.StudyID, @class = "fieldSelect" })
+            <div style="display: inline-block; vertical-align: bottom; height: 60%;">
+                <input type="button" value=">" style="font-weight: bold;" onclick="moveOptionsRight(@Model.Survey.StudyID, 'Schedule.FileDefinitions[0]', 'demo')" />
+                <br />
+                <br />
+                <input type="button" value="<" style="font-weight: bold;" onclick="moveOptionsLeft(@Model.Survey.StudyID, 'demo')" />
+            </div>
+            <div class="selectedDiv">
+                <table class="selectedFields" id="demoSelectedFields@(Model.Survey.StudyID)">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input id="demoSelectAll@(Model.Survey.StudyID)" type="checkbox" onclick="selectAll(@Model.Survey.StudyID, 'demo')" />
+                            </th>
+                            <th>
+                                Field Name
+                            </th>
+                            <th>
+                                Display Name
+                            </th>
+                            <th>
+                                Column Text Replacement
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="demoColumnDefs@(Model.Survey.StudyID)">
+                        @foreach (var column in Model.Schedule.FileDefinitions[0].Columns.Where(c => !c.IsCommentData() && !c.IsQuestionData()).OrderBy(c => c.ColumnOrder))
+                        {
+                            <tr class="row@(Model.Survey.StudyID)">
+                                <td>
+                                    <input type="checkbox" />
+                                </td>
+                                <td>
+                                    @(column.FieldName)
+                                    <input name="Schedule.FileDefinitions[0].Columns[{i}].Id" type="hidden" value="0" />
+                                    <input class="hiddenName" name="Schedule.FileDefinitions[0].Columns[{i}].FieldName" type="hidden" value="@(column.FieldName)" />
+                                    <input name="Schedule.FileDefinitions[0].Columns[{i}].ColumnOrder" type="hidden"
+                                        value="{i}" />
+                                </td>
+                                <td>
+                                    <input name="Schedule.FileDefinitions[0].Columns[{i}].DisplayName" type="text" value="@(column.DisplayName ?? column.FieldName)" />
+                                </td>
+                                <td>
+                                    <table>
+                                        @foreach (var replace in column.Replacements)
+                                        { 
+                                            <tr>
+                                                <td>
+                                                    <input name="Schedule.FileDefinitions[0].Columns[{i}].Replacements[{x}].Id" type="hidden" value="@(replace.Id)" />
+                                                    <input name="Schedule.FileDefinitions[0].Columns[{i}].Replacements[{x}].ColumnDefinitionId" type="hidden" value="@(replace.ColumnDefinitionId)" />
+                                                    <input name="Schedule.FileDefinitions[0].Columns[{i}].Replacements[{x}].OldText" type="text" value="@(replace.OldText)" />
+                                                </td>
+                                                <td>
+                                                    <input name="Schedule.FileDefinitions[0].Columns[{i}].Replacements[{x}].NewText" type="text" value="@(replace.NewText)" />
+                                                </td>
+                                                <td>
+                                                    <a href="#" onclick="removeReplacement($(this).parent('td').parent('tr')); return false;">
+                                                        X</a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </table>
+                                    <a href="#" class="addReplacement" onclick="addReplacement($(this), 'Schedule.FileDefinitions[0]'); return false;">
+                                        + Add Replacement </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div style="display: inline-block; vertical-align: bottom; height: 60%;">
+                <input type="button" style="font-weight: bold;" value="&#x2C4;" onclick="moveOptionsUp($('#demoColumnDefs@(Model.Survey.StudyID)'))" />
+                <br />
+                <br />
+                <input type="button" style="font-weight: bold;" value="&#x2C5;" onclick="moveOptionsDown($('#demoColumnDefs@(Model.Survey.StudyID)'))" />
+            </div>
+        </div>
+        <div class="clear">
+            Question Response Fields
+            <button onclick="$('#questionFields@(Model.Survey.StudyID)').children('option').attr('selected', 'selected'); moveOptionsRight(@(Model.Survey.StudyID), 'Schedule.FileDefinitions[0]', 'question');" type="button">
+                Move All ></button>
+        </div>
+        <div style="height: 200px; overflow-x: auto; overflow-y: hidden; white-space: nowrap;">
+            @Html.ListBoxFor(m => m.QuestionFields, new SelectList(Model.QuestionFields), new { id = "questionFields" + Model.Survey.StudyID, @class = "fieldSelect" })
+            <div style="display: inline-block; vertical-align: bottom; height: 60%;">
+                <input type="button" value=">" style="font-weight: bold;" onclick="moveOptionsRight(@Model.Survey.StudyID, 'Schedule.FileDefinitions[0]', 'question')" />
+                <br />
+                <br />
+                <input type="button" value="<" style="font-weight: bold;" onclick="moveOptionsLeft(@Model.Survey.StudyID, 'question')" />
+            </div>
+            <div class="selectedDiv">
+                <table class="selectedFields" id="questionSelectedFields@(Model.Survey.StudyID)">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input id="questionSelectAll@(Model.Survey.StudyID)" type="checkbox" onclick="selectAll(@Model.Survey.StudyID, 'question')" />
+                            </th>
+                            <th>
+                                Field Name
+                            </th>
+                            <th>
+                                Display Name
+                            </th>
+                            <th>
+                                Column Text Replacement
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="questionColumnDefs@(Model.Survey.StudyID)">
+                        @foreach (var column in Model.Schedule.FileDefinitions[0].Columns.Where(c => c.IsQuestionData()).OrderBy(c => c.ColumnOrder))
+                        {
+                            <tr class="row@(Model.Survey.StudyID)">
+                                <td>
+                                    <input type="checkbox" />
+                                </td>
+                                <td>
+                                    @(column.FieldName)
+                                    <input name="Schedule.FileDefinitions[0].Columns[{i}].Id" type="hidden" value="0" />
+                                    <input class="hiddenName" name="Schedule.FileDefinitions[0].Columns[{i}].FieldName" type="hidden" value="@(column.FieldName)" />
+                                    <input name="Schedule.FileDefinitions[0].Columns[{i}].ColumnOrder" type="hidden"
+                                        value="{i}" />
+                                </td>
+                                <td>
+                                    <input name="Schedule.FileDefinitions[0].Columns[{i}].DisplayName" type="text" value="@(column.DisplayName ?? column.FieldName)" />
+                                </td>
+                                <td>
+                                    <table>
+                                        @{int i = 0;
+                                          foreach (var replace in column.Replacements)
+                                          { 
+                                            <tr>
+                                                <td>
+                                                    <input name="Schedule.FileDefinitions[0].Columns[{i}].Replacements[{x}].Id" type="hidden" value="@(replace.Id)" />
+                                                    <input name="Schedule.FileDefinitions[0].Columns[{i}].Replacements[{x}].ColumnDefinitionId" type="hidden" value="@(replace.ColumnDefinitionId)" />
+                                                    <input name="Schedule.FileDefinitions[0].Columns[{i}].Replacements[{x}].OldText" type="text" value="@(replace.OldText)" />
+                                                </td>
+                                                <td>
+                                                    <input name="Schedule.FileDefinitions[0].Columns[{i}].Replacements[{x}].NewText" type="text" value="@(replace.NewText)" />
+                                                </td>
+                                            </tr>
+                                              i++;
+                                          }
+                                        }
+                                    </table>
+                                    <a href="#" class="addReplacement" onclick="addReplacement($(this), 'Schedule.FileDefinitions[0]'); return false;">
+                                        + Add Replacement </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div style="display: inline-block; vertical-align: bottom; height: 60%;">
+                <input type="button"  style="font-weight: bold;" value="&#x2C4;" onclick="moveOptionsUp($('#questionColumnDefs@(Model.Survey.StudyID)'))" />
+                <br />
+                <br />
+                <input type="button"  style="font-weight: bold;" value="&#x2C5;" onclick="moveOptionsDown($('#questionColumnDefs@(Model.Survey.StudyID)'))" />
+            </div>
+        </div>
+        <div class="clear">
+            Comment Fields
+            <button onclick="$('#commentFields@(Model.Survey.StudyID)').children('option').attr('selected', 'selected'); moveOptionsRight(@(Model.Survey.StudyID), 'Schedule.FileDefinitions[0]', 'comment');" type="button">
+                Move All ></button>
+        </div>
+        <div style="height: 100px; overflow-x: auto; overflow-y: hidden; white-space: nowrap;">
+            @Html.ListBoxFor(m => m.CommentFields, new SelectList(Model.CommentFields), new { id = "commentFields" + Model.Survey.StudyID, @class = "fieldSelect" })
+            <div style="display: inline-block; height: 85px; vertical-align: bottom;">
+                <input type="button" value=">" style="font-weight: bold;" onclick="moveOptionsRight(@Model.Survey.StudyID, 'Schedule.FileDefinitions[0]', 'comment')" />
+                <br />
+                <br />
+                <input type="button" value="<" style="font-weight: bold;" onclick="moveOptionsLeft(@Model.Survey.StudyID, 'comment')" />
+            </div>
+            <div class="selectedDiv">
+                <table class="selectedFields" id="commentSelectedFields@(Model.Survey.StudyID)">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input id="commentSelectAll@(Model.Survey.StudyID)" type="checkbox" onclick="selectAll(@Model.Survey.StudyID, 'comment')" />
+                            </th>
+                            <th>
+                                Field Name
+                            </th>
+                            <th>
+                                Display Name
+                            </th>
+                            <th>
+                                Column Text Replacement
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="commentColumnDefs@(Model.Survey.StudyID)">
+                        @foreach (var column in Model.Schedule.FileDefinitions[0].Columns.Where(c => c.IsCommentData()).OrderBy(c => c.ColumnOrder))
+                        {
+                            <tr class="row@(Model.Survey.StudyID)">
+                                <td>
+                                    <input type="checkbox" />
+                                </td>
+                                <td>
+                                    @(column.FieldName)
+                                    <input name="Schedule.FileDefinitions[0].Columns[{i}].Id" type="hidden" value="0" />
+                                    <input class="hiddenName" name="Schedule.FileDefinitions[0].Columns[{i}].FieldName" type="hidden" value="@(column.FieldName)" />
+                                    <input name="Schedule.FileDefinitions[0].Columns[{i}].ColumnOrder" type="hidden"
+                                        value="{i}" />
+                                </td>
+                                <td>
+                                    <input name="Schedule.FileDefinitions[0].Columns[{i}].DisplayName" type="text" value="@(column.DisplayName ?? column.FieldName)" />
+                                </td>
+                                <td>
+                                    <table>
+                                        @{int i = 0;
+                                          foreach (var replace in column.Replacements)
+                                          { 
+                                            <tr>
+                                                <td>
+                                                    <input name="Schedule.FileDefinitions[0].Columns[{i}].Replacements[{x}].Id" type="hidden" value="@(replace.Id)" />
+                                                    <input name="Schedule.FileDefinitions[0].Columns[{i}].Replacements[{x}].ColumnDefinitionId" type="hidden" value="@(replace.ColumnDefinitionId)" />
+                                                    <input name="Schedule.FileDefinitions[0].Columns[{i}].Replacements[{x}].OldText" type="text" value="@(replace.OldText)" />
+                                                </td>
+                                                <td>
+                                                    <input name="Schedule.FileDefinitions[0].Columns[{i}].Replacements[{x}].NewText" type="text" value="@(replace.NewText)" />
+                                                </td>
+                                            </tr>
+                                              i++;
+                                          }
+                                        }
+                                    </table>
+                                    <a href="#" class="addReplacement" onclick="addReplacement($(this), 'Schedule.FileDefinitions[0]'); return false;">
+                                        + Add Replacement </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div style="display: inline-block; height: 85px; vertical-align: bottom;">
+                <input type="button"  style="font-weight: bold;" value="&#x2C4;" onclick="moveOptionsUp($('#commentColumnDefs@(Model.Survey.StudyID)'))" />
+                <br />
+                <br />
+                <input type="button"  style="font-weight: bold;" value="&#x2C5;" onclick="moveOptionsDown($('#commentColumnDefs@(Model.Survey.StudyID)'))" />
+            </div>
+        </div>
+    </fieldset>
+
+    
+    
+    <div>
+        <button id="submitBtn" type="button">
+            Submit</button>
+        - <a href="@Url.Action("ScheduledDefinitions")">Back to list</a> - <a href="@Url.Action("Index")">
+            Home</a>
+    </div>   
+}
