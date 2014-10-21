@@ -1,6 +1,6 @@
 USE QP_Comments
 go
-CREATE PROCEDURE [dbo].[Sp_extract_bubbledata]
+ALTER PROCEDURE [dbo].[Sp_extract_bubbledata]
 AS
   BEGIN
 	/**************************************************************************************************************************************************/
