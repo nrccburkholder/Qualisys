@@ -117,7 +117,8 @@
                     for (var i = 0; i < nodes.length; i++) {
                         ids.push($(nodes[i]).attr("id").substr(1));
                     }
-                    $('#historyTable').setPostDataItem('survIds', ids);
+                    //$('#historyTable').setPostDataItem('survIds', ids);
+                    $('#historyTable').setGridParam('survIds', ids);
                     $('#historyTable').trigger('reloadGrid');
                     $("#messageExists").css("display", "none");
                     $("#copyOld").attr("disabled", "disabled");

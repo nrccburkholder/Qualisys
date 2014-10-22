@@ -156,7 +156,7 @@ namespace USPS_ACS_Library
                         string fileURL = fdl.getFile(authToken, key, fileId);
 
                         // write to the USPS_ACS_DowloadLog
-                        int downloadLog_id = USPS_ACS_DataProvider.InsertDownloadLog(key, fileId, fileName, status, size, code, name, fulfilled, modified, fileURL, Enum.GetName(typeof(DownloadStatus), DownloadStatus.New));
+                        int downloadLog_id = USPS_ACS_DataProvider.InsertDownloadLog(key, fileId, fileName, size, code, name, fulfilled, modified, fileURL, Enum.GetName(typeof(DownloadStatus), DownloadStatus.New));
 
                         string downloadStatus;
                         string fstatus;
@@ -175,7 +175,7 @@ namespace USPS_ACS_Library
                         }
                         fdl.setStatus(authToken, key, fileId, downloadStatus);
                         Logs.Info(String.Format("DownloadFile: {0} -- status {1}", fileName , downloadStatus));
-                        USPS_ACS_DataProvider.UpdateDownloadLogStatus(fstatus);
+                        USPS_ACS_DataProvider.UpdateDownloadLogStatus(fileName,fstatus);
                     }
 
                     stopwatch.Stop();
@@ -233,7 +233,7 @@ namespace USPS_ACS_Library
 
             if (Directory.Exists(path))
             {
-                string[] extensions = new string[1] { ".zip" };
+                string[] extensions = new string[2] { ".zip",".ZIP" };
                 FileSearch searcher = new FileSearch(false);
                 searcher.SearchExtensions.AddRange(extensions);
                 FileInfo[] files = searcher.Search(path);
@@ -1167,6 +1167,7 @@ namespace USPS_ACS_Library
                 dr["CityNew"].ToString(), dr["StateNew"].ToString(), dr["Zip5New"].ToString() + "-" + dr["Plus4ZipNew"].ToString()); 
             return partialMatchMessage;
         }
+
 
     }
 }

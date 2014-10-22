@@ -13,6 +13,7 @@ using Quartz.Impl;
 using Nrc.Framework.BusinessLogic.Configuration;
 using USPS_ACS_Library;
 using ServiceLogging;
+using System.Reflection;
 
 namespace USPS_ACS_Service
 {
@@ -28,11 +29,16 @@ namespace USPS_ACS_Service
 
         protected override void OnStart(string[] args)
         {
+
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+            string version = fvi.FileVersion;
+
             eventLog = new EventLog();
             eventLog.Source = "USPS_ACS_Service";
             eventLog.Log = "Application";
 
-            Logs.Info("USPS_ACS_Service Started");
+            Logs.Info(string.Format("USPS_ACS_Service v{0} Started", version));
 
             CreateSchedule();
             _scheduler.Start();
