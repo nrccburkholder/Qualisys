@@ -36,7 +36,9 @@ namespace ServiceTester_Console
         {
 
             Logs.Info("USPS_ACS_Service Begin Work");
-            USPS_ACS_Library.ServiceWorker.DoExtractWork();
+
+            USPS_ACS_Library.ServiceWorker.DoDownloadWork();
+            //USPS_ACS_Library.ServiceWorker.DoExtractWork();
 
             //CreateSchedule();
             //_scheduler.Start();

@@ -173,7 +173,8 @@ namespace USPS_ACS_Library
                             downloadStatus = "N";  //mark as canceled
                             fstatus = "New";
                         }
-                        fdl.setStatus(authToken, key, fileId, downloadStatus);
+
+                        fdl.setStatus(authToken, key, downloadStatus, fileId);
                         Logs.Info(String.Format("DownloadFile: {0} -- status {1}", fileName , downloadStatus));
                         USPS_ACS_DataProvider.UpdateDownloadLogStatus(fileName,fstatus);
                     }
