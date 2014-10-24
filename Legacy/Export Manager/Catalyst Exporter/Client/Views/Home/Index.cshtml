@@ -1,0 +1,328 @@
+﻿@model Nrc.CatalystExporter.ExportClient.Models.IndexModel
+@{
+    ViewBag.Title = "Home Page";
+}
+@section scripts{
+    <script src="@Url.Content("~/Scripts/jstree/jquery.jstree.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/grid.locale-en.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.jqGrid.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/grid.postext.min.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.ajaxSettings.traditional = true;
+
+            $("#start").datepicker();
+            $("#end").datepicker();
+            $("#saveNew").attr("disabled", "disabled");
+            $("#scheduleNew").attr("disabled", "disabled");
+            $("#copyOld").attr("disabled", "disabled");
+
+            $("#saveNew").click(function () {
+                var nodes = $("#navigation").jstree("get_checked", null, true);
+                if (nodes.length == 0)
+                    return;
+
+                var ids = new Array();
+                for (var i = 0; i < nodes.length; i++) {
+                    ids.push($(nodes[i]).attr("id").substr(1));
+                }
+
+                window.location = '@Url.Action("CreateNew")?survIds=' + ids + "&scheduled=false";
+
+            });
+            $("#scheduleNew").click(function () {
+                var nodes = $("#navigation").jstree("get_checked", null, true);
+                if (nodes.length == 0)
+                    return;
+
+                var ids = new Array();
+                for (var i = 0; i < nodes.length; i++) {
+                    ids.push($(nodes[i]).attr("id").substr(1));
+                }
+
+                window.location = '@Url.Action("CreateNew")?survIds=' + ids + "&scheduled=true";
+
+            });
+
+            $("#copyOld").click(function () {
+                var grid = $("#historyTable");
+                var rows = grid.getGridParam('selarrrow');
+                for (var i = 0; i < rows.length; i++) {
+                    rows[i] = grid.jqGrid('getCell', rows[i], 'LogId');
+                }
+
+                var name = $("#name").val().replace(/[!?\/\\&@@<>#]/g, "");
+                var start = $("#start").val();
+                var end = $("#end").val();
+                var type = $("#FileTypes").val();
+
+                window.location = '@Url.Action("CreateFromExisting")?fileName=' + name + '&startDate=' + start + '&endDate=' + end + '&logIds=' + rows;
+            });
+
+
+            $("#search").click(function () {
+                $("#navigation").jstree("refresh");
+            });
+            $("#searchText").keyup(function (e) {
+                var code = e.which;
+                if (code == 13) {
+                    $("#navigation").jstree("refresh");
+                }
+            });
+
+
+            $("#navigation").jstree({
+                "themes": {
+                    "theme": "default",
+                    "dots": true,
+                    "icons": false
+                },
+                "ui": { "selected_parent_close": false },
+                "checkbox": { "override_ui": true, "two_state": true },
+                "json_data": {
+                    "ajax": {
+                        "url": '@Url.Action("FindNav")',
+                        "data": function (n) {
+                            return { "search": $("#searchText").val(), "id": n.attr ? n.attr("id") : 0 };
+                        }
+                    }
+                },
+                "plugins": ["themes", "json_data", "ui", "checkbox"]
+            });
+            $("#navigation").delegate("span", "click", function (e) {
+                e.preventDefault();
+                this.blur();
+                $("#navigation").jstree("toggle_node", this);
+
+                if ($("#navigation").jstree("is_closed", this)) {
+                    $("#navigation").unbind("change_state.jstree", updateChecked);
+                    $.each($(this).parent().find("a"), function () {
+                        $("#navigation").jstree("uncheck_node", this);
+                    });
+                    $("#navigation").bind("change_state.jstree", updateChecked);
+                    var nodes = $("#navigation").jstree("get_checked", null, true);
+
+                    if (nodes.length > 0) {
+                        $("#fileCount").html(nodes.length);
+                        $("#message").css("display", "inline");
+                        $("#saveNew").removeAttr("disabled");
+                        $("#scheduleNew").removeAttr("disabled");
+                    } else {
+                        $("#message").css("display", "none");
+                        $("#saveNew").attr("disabled", "disabled");
+                        $("#scheduleNew").attr("disabled", "disabled");
+                    }
+
+                    var ids = new Array();
+                    for (var i = 0; i < nodes.length; i++) {
+                        ids.push($(nodes[i]).attr("id").substr(1));
+                    }
+                    //$('#historyTable').setPostDataItem('survIds', ids);
+                    $('#historyTable').setGridParam('survIds', ids);
+                    $('#historyTable').trigger('reloadGrid');
+                    $("#messageExists").css("display", "none");
+                    $("#copyOld").attr("disabled", "disabled");
+                }
+            });
+            $("#navigation").bind("change_state.jstree", updateChecked);
+
+            $('#historyTable').jqGrid({
+                url: '@Url.Action("FindLogs")',
+                datatype: 'json',
+                mtype: 'POST',
+                colNames: ['LogId', 'Client', 'Study', 'Survey', 'Name', 'Creation Date', 'File Completion Time', 'Start Date', 'End Date', 'Cutoff Field'],
+                colModel: [
+                    { name: 'LogId', index: '0', width: 40, sortable: false, hidden: true },
+                    { name: 'Client', index: '1', width: 100, sortable: false },
+                    { name: 'Study', index: '2', width: 100, sortable: false },
+                    { name: 'Survey', index: '3', width: 100, sortable: false },
+                    { name: 'Name', index: '4', width: 100, sortable: false },
+                    { name: 'CreationDate', index: '5', width: 100, align: 'center', sortable: false },
+                    { name: 'FileCreationCompleteTime', index: '5', width: 100, align: 'center', sortable: false },
+                    { name: 'StartDate', index: '6', width: 90, align: 'center', sortable: false },
+                    { name: 'EndDate', index: '7', width: 90, align: 'center', sortable: false },
+                    { name: 'CutoffField', index: '8', width: 100, sortable: false }
+                ],
+                loadComplete: function () {
+                    $("#lui_historyTable").hide();
+                    $("#load_historyTable").hide();
+                },
+                loadError: function () {
+                    $("#lui_historyTable").hide();
+                    $("#load_historyTable").hide();
+                },
+                pager: '#pager',
+                rowNum: 20,
+                rowList: [10, 20, 50],
+                scrollOffset: 0,
+                autowidth: true,
+                shrinkToFit: true,
+                height: 'auto',
+                grouping: true,
+                groupingView: {
+                    groupField: ['Survey'],
+                    groupDataSorted: true
+                },
+                multiselect: true,
+                onSelectRow: function () {
+                    var rows = $("#historyTable").getGridParam('selarrrow');
+
+                    if (rows.length > 0) {
+                        $("#fileCountExists").html(rows.length);
+                        $("#messageExists").css("display", "inline");
+                        $("#copyOld").removeAttr("disabled");
+                    } else {
+                        $("#messageExists").css("display", "none");
+                        $("#copyOld").attr("disabled", "disabled");
+                    }
+                },
+                onSelectAll: function () {
+                    var rows = $("#historyTable").getGridParam('selarrrow');
+
+                    if (rows.length > 0) {
+                        $("#fileCountExists").html(rows.length);
+                        $("#messageExists").css("display", "inline");
+                        $("#copyOld").removeAttr("disabled");
+                    } else {
+                        $("#messageExists").css("display", "none");
+                        $("#copyOld").attr("disabled", "disabled");
+                    }
+                },
+                subGrid: true,
+                subGridModel: [
+                { name: ['Order', 'Field Name'],
+                    width: [80, 300],
+                    align: ['left', 'left'],
+                    params: ['LogId']
+                }],
+                subGridOptions: {
+                    plusicon: 'ui-icon-carat-1-e',
+                    minusicon: 'ui-icon-carat-1-s',
+                    openicon: 'ui-icon-carat-1-sw',
+                    expandOnLoad: false,
+                    selectOnExpand: false,
+                    reloadOnExpand: false
+                },
+                subgridtype: function (rowidprm) {
+                    jQuery.ajax({
+                        data: rowidprm,
+                        url: '@Url.Action("FindFields")?logId=' + rowidprm.LogId,
+                        dataType: "json",
+                        complete: function (jsondata, stat) {
+                            if (stat == "success") {
+                                var thegrid = $("#historyTable")[0];
+                                thegrid.subGridJson(eval("(" + jsondata.responseText + ")"), rowidprm.id);
+                            }
+                        }
+                    });
+                }
+            });
+
+        });
+
+        function updateChecked(event, data) {
+            var tagName = data.args[0].tagName;
+            var refreshing = data.inst.data.core.refreshing;
+            if ((tagName == "A" || tagName == "INS") && (refreshing != true && refreshing != "undefined")) {
+                var nodes = $("#navigation").jstree("get_checked", null, true);
+
+                if (nodes.length > 0) {
+                    $("#fileCount").html(nodes.length);
+                    $("#message").css("display", "inline");
+                    $("#saveNew").removeAttr("disabled");
+                    $("#scheduleNew").removeAttr("disabled");
+                } else {
+                    $("#message").css("display", "none");
+                    $("#saveNew").attr("disabled", "disabled");
+                    $("#scheduleNew").attr("disabled", "disabled");
+                }
+
+                var ids = new Array();
+                for (var i = 0; i < nodes.length; i++) {
+                    ids.push($(nodes[i]).attr("id").substr(1));
+                }
+                $('#historyTable').setPostDataItem('survIds', ids);
+                $('#historyTable').trigger('reloadGrid');
+                $("#messageExists").css("display", "none");
+                $("#copyOld").attr("disabled", "disabled");
+            }
+        }
+    </script>
+}
+<div style="float: left; height: 550px; overflow: hidden; right: 265px; width: 270px;">
+    <div>
+        <input id="searchText" style="width: 150px;" type="text" />
+        <button id="search" type="button">
+            Search</button>
+    </div>
+    <div id="navigation" style="height: 94%; overflow: auto; width: 100%;">
+    </div>
+</div>
+<div style="margin-left: 285px;">
+    @if (Model.FileLocations != null && Model.FileLocations.Count() > 0)
+    {
+        <div>
+            The exports are being created in the following locations. <b>File creation could take
+                several minutes.</b><br />
+            @foreach (var file in Model.FileLocations)
+            { 
+                @(file)<br />
+            }
+        </div>
+        <br />
+    }
+    @if (Model.ScheduledSavedCount != null)
+    {
+        <div>
+            @(Model.ScheduledSavedCount)&nbsp;exports have been successfully scheduled.
+        </div>
+        <br />
+    }
+    <div id="newSection" style="margin-bottom: 10px;">
+        <div style="display: inline-block; vertical-align: top; width: 49%;">
+            <h3 style="margin: 0px;">
+                Create new definitions</h3>
+            <span>Select surveys to the left</span>
+            <br />
+            <button id="saveNew">
+                Run definitions</button><span id="message" style="display: none;"> <span id="fileCount">
+                </span>&nbsp;new files will be created. </span>
+            <br />
+            <button id="scheduleNew">
+                Schedule definitions</button>
+            <br />
+        </div>
+        <div style="display: inline-block; width: 49%;">
+            <h3 style="margin: 0px;">
+                Re-Run existing definitions</h3>
+            <span>Select export logs below</span>
+            <br />
+            <label>
+                Name:</label>
+            <input id="name" type="text" /><br />
+            <label>
+                Start Date:</label>
+            <input id="start" type="text" /><br />
+            <label>
+                End Date:</label>
+            <input id="end" type="text" /><br />
+            <button id="copyOld">
+                Run</button>
+            <div id="messageExists" style="display: none;">
+                <span id="fileCountExists"></span>&nbsp;new files will be created.</div>
+        </div>
+        <br />
+    </div>
+    <hr />
+    <div id="historySection">
+        <h3>
+            Existing Export Definitions</h3>
+        <table id="historyTable">
+        </table>
+        <div id="pager">
+        </div>
+        <div style="margin-top:10px;color:gray;font-style:italic;font-size:small;">* Indicates combined files</div>
+    </div>
+</div>
+<div style="clear: both;">
+</div>
