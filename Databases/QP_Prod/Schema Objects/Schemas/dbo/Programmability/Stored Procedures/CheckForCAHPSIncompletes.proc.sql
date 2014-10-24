@@ -317,6 +317,10 @@ inner join #ACOQF qf on tr.questionform_id=qf.questionform_id
 
 	exec dbo.QFResponseCount
 
+	update #todaysreturns 
+	set bitETLThisReturn=1, bitComplete=1, bitContinueWithMailings=0
+	where surveytype_dsc='HCAHPS IP'
+
 	update tr 
 	set bitETLThisReturn=0, bitComplete=0, bitContinueWithMailings= case when rc.strMailingStep_nm = '1st Survey' then 1 else 0 end
 	-- select tr.questionform_id, tr.surveytype_dsc, rc.ResponseCount, tr.bitETLThisReturn, tr.bitComplete, tr.bitContinueWithMailings, rc.strMailingStep_nm

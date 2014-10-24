@@ -94,7 +94,6 @@ Begin VB.Form frmScanExport
             Bevel           =   0
             Object.Width           =   176
             MinWidth        =   176
-            TextSave        =   ""
             Key             =   "Spacer1"
             Object.Tag             =   ""
          EndProperty
@@ -110,7 +109,6 @@ Begin VB.Form frmScanExport
          BeginProperty Panel5 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
             AutoSize        =   1
             Object.Width           =   5450
-            TextSave        =   ""
             Key             =   "OutputLevel"
             Object.Tag             =   ""
          EndProperty

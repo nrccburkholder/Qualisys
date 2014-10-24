@@ -238,22 +238,54 @@ End Property
 '\\
 '\\ Revisions:
 '\\     Date        By      Description
+'\\     08-24-12    JJF     Added nMaxLength and lNextLitho so we can
+'\\                         loop through the collection and never make
+'\\                         the sInList longer than the nMaxLength.
 '\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-Private Function LithoInList() As String
+'Private Function LithoInList() As String                                                       'Removed 08-24-12 JJF
+Private Function LithoInList(ByVal nMaxLength As Integer, ByRef lNextLitho As Long) As String   'Added 08-24-12 JJF
     
     Dim sInList         As String
     Dim oQuestionaire   As CQuestionaire
+    Dim lCnt            As Integer                              'Added 08-24-12 JJF
     
     'Build a comma delimited list of the LithoCodes
-    For Each oQuestionaire In moQuestionaires
+    'For Each oQuestionaire In moQuestionaires                  'Removed 08-24-12 JJF
+    '    With oQuestionaire
+    '        If Len(sInList) = 0 Then
+    '            sInList = "'" & .LithoCode & "'"
+    '        Else
+    '            sInList = sInList & ",'" & .LithoCode & "'"
+    '        End If
+    '    End With
+    'Next oQuestionaire
+    For lCnt = lNextLitho To moQuestionaires.Count              'Added 08-24-12 JJF
+        'Get the questionaire
+        Set oQuestionaire = moQuestionaires(lCnt)
+        
         With oQuestionaire
+            'Add this litho to the list
             If Len(sInList) = 0 Then
                 sInList = "'" & .LithoCode & "'"
             Else
                 sInList = sInList & ",'" & .LithoCode & "'"
             End If
+            
+            'Determine if we are done yet
+            If lCnt < moQuestionaires.Count Then
+                'We have not reached the end of the collection yet so check the length of the string
+                If (Len(sInList) + Len(moQuestionaires(lCnt + 1).LithoCode) + 3) > nMaxLength Then
+                    'We have reached the maximum lenth for the list so we are out of here
+                    lNextLitho = lCnt + 1
+                    Exit For
+                End If
+            Else
+                'We have reached the end of the collection so we are out of here
+                lNextLitho = -1
+                Exit For
+            End If
         End With
-    Next oQuestionaire
+    Next lCnt
     
     'Cleanup
     Set oQuestionaire = Nothing
@@ -363,6 +395,9 @@ End Property
 '\\     04-03-02    JJF     Added datReturned to the query.
 '\\     08-18-06    JJF   * Changed to use stored procedure.
 '\\                       * Removed revision notes.
+'\\     08-24-12    JJF     Changed code to make sure the parameter to
+'\\                         stored procedure never exceeds the
+'\\                         knMaxLithoInList length.
 '\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 Public Sub GetAdditionalInfo()
     
@@ -371,6 +406,9 @@ Public Sub GetAdditionalInfo()
     Dim oQuestionaire   As CQuestionaire
     Dim lCurRec         As Long
     Dim oInfoCm         As ADODB.Command
+    Dim lNextLitho      As Long                 'Added 08-24-12 JJF
+    
+    Const knMaxLithoInList As Integer = 7000    'Added 08-24-12 JJF
     
     'Set the error trap
     On Error GoTo ErrorHandler
@@ -388,37 +426,43 @@ Public Sub GetAdditionalInfo()
         .CommandType = adCmdStoredProc
         .CommandTimeout = 0
         .ActiveConnection = goConn
-        .Parameters.Append .CreateParameter("LithoInList", adVarChar, adParamInput, 7000)
+        '.Parameters.Append .CreateParameter("LithoInList", adVarChar, adParamInput, 7000)              'Removed 08-24-12 JJF
+        .Parameters.Append .CreateParameter("LithoInList", adVarChar, adParamInput, knMaxLithoInList)   'Added 08-24-12 JJF
     End With 'oInfoCm
     
     'Get the remaining info from the database
-    oInfoCm.Parameters("LithoInList") = LithoInList
-    Set oTempRs = oInfoCm.Execute
-    
-    'Loop through the recordset
-    lCurRec = 0
-    With oTempRs
-        Do Until .EOF
-            'Get a reference to the Questionaire
-            lCurRec = lCurRec + 1
-            goProgressBar.Progress = (lCurRec / Count) * 100
-            Set oQuestionaire = Item("LC" & !strLithoCode)
-            
-            'Set the properties
-            If Not (oQuestionaire Is Nothing) Then
-                oQuestionaire.SentMailID = IIf(IsNull(!SentMail_id), -1, !SentMail_id)
-                oQuestionaire.QuestionFormID = IIf(IsNull(!QuestionForm_Id), -1, !QuestionForm_Id)
-                oQuestionaire.DateReturned = IIf(IsNull(!datReturned), #1/1/1900#, !datReturned)
-            End If
-            
-            'Prepare for the next pass
-            Set oQuestionaire = Nothing
-            .MoveNext
-        Loop
-    End With
-    
-    'Cleanup
-    oTempRs.Close: Set oTempRs = Nothing
+    lNextLitho = 1                                      'Added 08-24-12 JJF
+    lCurRec = 0                                         'Added 08-24-12 JJF
+    'oInfoCm.Parameters("LithoInList") = LithoInList    'Removed 08-24-12 JJF
+    Do While lNextLitho > -1                            'Added 08-24-12 JJF
+        oInfoCm.Parameters("LithoInList") = LithoInList(knMaxLithoInList, lNextLitho)  'Added 08-24-12 JJF
+        Set oTempRs = oInfoCm.Execute
+        
+        'Loop through the recordset
+        'lCurRec = 0                                    'Removed 08-24-12 JJF
+        With oTempRs
+            Do Until .EOF
+                'Get a reference to the Questionaire
+                lCurRec = lCurRec + 1
+                goProgressBar.Progress = (lCurRec / Count) * 100
+                Set oQuestionaire = Item("LC" & !strLithoCode)
+                
+                'Set the properties
+                If Not (oQuestionaire Is Nothing) Then
+                    oQuestionaire.SentMailID = IIf(IsNull(!SentMail_id), -1, !SentMail_id)
+                    oQuestionaire.QuestionFormID = IIf(IsNull(!QuestionForm_Id), -1, !QuestionForm_Id)
+                    oQuestionaire.DateReturned = IIf(IsNull(!datReturned), #1/1/1900#, !datReturned)
+                End If
+                
+                'Prepare for the next pass
+                Set oQuestionaire = Nothing
+                .MoveNext
+            Loop
+        End With
+        
+        'Cleanup
+        oTempRs.Close: Set oTempRs = Nothing
+    Loop        'Added 08-24-12 JJF
     
 Exit Sub
 
