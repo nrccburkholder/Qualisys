@@ -16,23 +16,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess.Test", "DataAccess.Test\DataAccess.Test.csproj", "{F9F9FA6B-726A-41BE-A337-41DAFD657268}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{31C44A49-5525-4C83-98F9-3D10057D9412}"
-	ProjectSection(SolutionItems) = preProject
-		Catalyst Exporter1.vsmdi = Catalyst Exporter1.vsmdi
-		Externals\EntityFramework.dll = Externals\EntityFramework.dll
-		Externals\EPPlus.dll = Externals\EPPlus.dll
-		Externals\Ionic.Zip.dll = Externals\Ionic.Zip.dll
-		Local.testsettings = Local.testsettings
-		Externals\Microsoft.Practices.EnterpriseLibrary.Common.dll = Externals\Microsoft.Practices.EnterpriseLibrary.Common.dll
-		Externals\Microsoft.Practices.EnterpriseLibrary.Data.dll = Externals\Microsoft.Practices.EnterpriseLibrary.Data.dll
-		Externals\Microsoft.Practices.EnterpriseLibrary.Logging.Database.dll = Externals\Microsoft.Practices.EnterpriseLibrary.Logging.Database.dll
-		Externals\Microsoft.Practices.EnterpriseLibrary.Logging.dll = Externals\Microsoft.Practices.EnterpriseLibrary.Logging.dll
-		Externals\Microsoft.Practices.ServiceLocation.dll = Externals\Microsoft.Practices.ServiceLocation.dll
-		Externals\Microsoft.Practices.Unity.dll = Externals\Microsoft.Practices.Unity.dll
-		Externals\Microsoft.Practices.Unity.Interception.dll = Externals\Microsoft.Practices.Unity.Interception.dll
-		Externals\NPOI.dll = Externals\NPOI.dll
-		SolutionStructureNotes.pptx = SolutionStructureNotes.pptx
-		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileCreationService", "FileCreationService\FileCreationService.csproj", "{3A4117B0-21D8-4DAC-B563-B2403138A160}"
 EndProject
@@ -42,7 +25,7 @@ Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 10
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://tfs.nationalresearch.com:8080/tfs/defaultcollection
+		SccTeamFoundationServer = http://oma0pnrctfs01.nationalresearch.com:8080/tfs/nrc_git
 		SccLocalPath0 = .
 		SccProjectUniqueName1 = Client\\ExportClient.csproj
 		SccProjectName1 = Client
