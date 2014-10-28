@@ -156,7 +156,7 @@ namespace USPS_ACS_Library
                         string fileURL = fdl.getFile(authToken, key, fileId);
 
                         // write to the USPS_ACS_DowloadLog
-                        int downloadLog_id = USPS_ACS_DataProvider.InsertDownloadLog(key, fileId, fileName, status, size, code, name, fulfilled, modified, fileURL, Enum.GetName(typeof(DownloadStatus), DownloadStatus.New));
+                        int downloadLog_id = USPS_ACS_DataProvider.InsertDownloadLog(key, fileId, fileName, size, code, name, fulfilled, modified, fileURL, Enum.GetName(typeof(DownloadStatus), DownloadStatus.New));
 
                         string downloadStatus;
                         string fstatus;
@@ -173,9 +173,10 @@ namespace USPS_ACS_Library
                             downloadStatus = "N";  //mark as canceled
                             fstatus = "New";
                         }
-                        fdl.setStatus(authToken, key, fileId, downloadStatus);
+
+                        fdl.setStatus(authToken, key, downloadStatus, fileId);
                         Logs.Info(String.Format("DownloadFile: {0} -- status {1}", fileName , downloadStatus));
-                        USPS_ACS_DataProvider.UpdateDownloadLogStatus(fstatus);
+                        USPS_ACS_DataProvider.UpdateDownloadLogStatus(fileName,fstatus);
                     }
 
                     stopwatch.Stop();
@@ -233,7 +234,7 @@ namespace USPS_ACS_Library
 
             if (Directory.Exists(path))
             {
-                string[] extensions = new string[1] { ".zip" };
+                string[] extensions = new string[2] { ".zip",".ZIP" };
                 FileSearch searcher = new FileSearch(false);
                 searcher.SearchExtensions.AddRange(extensions);
                 FileInfo[] files = searcher.Search(path);
@@ -287,7 +288,7 @@ namespace USPS_ACS_Library
 
                 USPS_ACS_DataProvider.UpdateDownloadLogStatus(Path.GetFileName(zipFile), status.ToString());
 
-                Logs.Info(String.Format("{0} Files extracted from {1}",extractCount.ToString(),Path.GetFileName(zipFile)));
+                Logs.Info(String.Format("{0} File(s) extracted from {1}",extractCount.ToString(),Path.GetFileName(zipFile)));
 
                 MoveZipFile(zipFile, status);
 
@@ -1052,95 +1053,99 @@ namespace USPS_ACS_Library
 
             try
             {
-                partialMatchMessage += "<SPAN style='font-size:11pt;font-family:\"Calibri\";'><P>Partial and Multiple match summary<BR><BR>";
 
                 DataTable dt = USPS_ACS_DataProvider.SelectPartialMatches(true);
 
-                // Add Partial Match header and detail lines
+                if (dt.Rows.Count > 0) {
 
-                partialMatchMessage += "Partial Matches identified<BR><BR><TABLE style='font-size:10pt;font-family:\"Tahoma\";'>";
+                    partialMatchMessage += "<SPAN style='font-size:11pt;font-family:\"Calibri\";'><P>Partial and Multiple match summary<BR><BR>";
+       
+                    // Add Partial Match header and detail lines
 
-                foreach (DataRow dr in dt.Rows)
-                    if (dr["Status"].ToString().Equals("PartialMatch"))
-                        partialMatchMessage = BuildMatchDetail(partialMatchMessage, dr);
+                    partialMatchMessage += "Partial Matches identified<BR><BR><TABLE style='font-size:10pt;font-family:\"Tahoma\";'>";
 
-                // Add Multiple Match header and detail lines
+                    foreach (DataRow dr in dt.Rows)
+                        if (dr["Status"].ToString().Equals("PartialMatch"))
+                            partialMatchMessage = BuildMatchDetail(partialMatchMessage, dr);
 
-                partialMatchMessage += "</TABLE><BR><BR>Multiple Matches identified<BR><BR><TABLE style='font-size:10pt;font-family:\"Tahoma\";'>";
+                    // Add Multiple Match header and detail lines
 
-                foreach (DataRow dr in dt.Rows)
-                    if (dr["Status"].ToString().Equals("MultipleMatches"))
-                        partialMatchMessage = BuildMatchDetail(partialMatchMessage, dr);
+                    partialMatchMessage += "</TABLE><BR><BR>Multiple Matches identified<BR><BR><TABLE style='font-size:10pt;font-family:\"Tahoma\";'>";
 
-                partialMatchMessage += "</TABLE></P></SPAN>";
+                    foreach (DataRow dr in dt.Rows)
+                        if (dr["Status"].ToString().Equals("MultipleMatches"))
+                            partialMatchMessage = BuildMatchDetail(partialMatchMessage, dr);
 
-                string sendTo = AppConfig.Params["USPS_ACS_SendStatusNotificationTo"].StringValue;
-                string sendBcc = AppConfig.Params["USPS_ACS_SendStatusNotificationBcc"].StringValue;
+                    partialMatchMessage += "</TABLE></P></SPAN>";
 
-                toList.Add(sendTo);
-                bccList.Add(sendBcc);
+                    string sendTo = AppConfig.Params["USPS_ACS_SendStatusNotificationTo"].StringValue;
+                    string sendBcc = AppConfig.Params["USPS_ACS_SendStatusNotificationBcc"].StringValue;
 
-                if (AppConfig.EnvironmentType != EnvironmentTypes.Production)
-                {
-                    // not in production
-                    recipientNoteText = String.Format("{0}{0}Production To:{0}", System.Environment.NewLine);
+                    toList.Add(sendTo);
+                    bccList.Add(sendBcc);
+
+                    if (AppConfig.EnvironmentType != EnvironmentTypes.Production)
+                    {
+                        // not in production
+                        recipientNoteText = String.Format("{0}{0}Production To:{0}", System.Environment.NewLine);
+                        foreach (string email in toList)
+                        {
+                            recipientNoteText += email;
+                        }
+
+                        recipientNoteText += String.Format("{0}Production CC:{0}", System.Environment.NewLine);
+                        foreach (string email in ccList)
+                        {
+                            recipientNoteText += email;
+                        }
+
+                        recipientNoteText += String.Format("{0}Production BCC:{0}", System.Environment.NewLine);
+                        foreach (string email in bccList)
+                        {
+                            recipientNoteText += email;
+                        }
+                        recipientNoteHtml = recipientNoteText.Replace(System.Environment.NewLine, "<BR>");
+
+                        toList.Clear();
+                        ccList.Clear();
+                        bccList.Clear();
+
+                        toList.Add(sendBcc);
+                        environmentName = String.Format("({0})", AppConfig.EnvironmentName);
+                    }
+
+                    string smtpServer = AppConfig.SMTPServer;
+                    Message mailMessage = new Message("USPS_ACS_PartialMatchReport", AppConfig.SMTPServer);
+
+
                     foreach (string email in toList)
                     {
-                        recipientNoteText += email;
+                        mailMessage.To.Add(email);
                     }
 
-                    recipientNoteText += String.Format("{0}Production CC:{0}", System.Environment.NewLine);
                     foreach (string email in ccList)
                     {
-                        recipientNoteText += email;
+                        mailMessage.Cc.Add(email);
                     }
 
-                    recipientNoteText += String.Format("{0}Production BCC:{0}", System.Environment.NewLine);
                     foreach (string email in bccList)
                     {
-                        recipientNoteText += email;
+                        mailMessage.Bcc.Add(email);
                     }
-                    recipientNoteHtml = recipientNoteText.Replace(System.Environment.NewLine, "<BR>");
 
-                    toList.Clear();
-                    ccList.Clear();
-                    bccList.Clear();
+                    mailMessage.ReplacementValues.Add("ServiceName", serviceName);
+                    mailMessage.ReplacementValues.Add("Environment", environmentName); ;
+                    mailMessage.ReplacementValues.Add("Message", partialMatchMessage);
+                    mailMessage.ReplacementValues.Add("DateOccurred", DateTime.Now.ToString());
+                    mailMessage.ReplacementValues.Add("MachineName", Environment.MachineName);
 
-                    toList.Add(sendBcc);
-                    environmentName = String.Format("({0})", AppConfig.EnvironmentName);
+                    //Merge the template
+                    mailMessage.MergeTemplate();
+
+                    bodyText = mailMessage.BodyText;
+
+                    mailMessage.Send();
                 }
-
-                string smtpServer = AppConfig.SMTPServer;
-                Message mailMessage = new Message("USPS_ACS_PartialMatchReport", AppConfig.SMTPServer);
-
-
-                foreach (string email in toList)
-                {
-                    mailMessage.To.Add(email);
-                }
-
-                foreach (string email in ccList)
-                {
-                    mailMessage.Cc.Add(email);
-                }
-
-                foreach (string email in bccList)
-                {
-                    mailMessage.Bcc.Add(email);
-                }
-
-                mailMessage.ReplacementValues.Add("ServiceName", serviceName);
-                mailMessage.ReplacementValues.Add("Environment", environmentName); ;
-                mailMessage.ReplacementValues.Add("Message", partialMatchMessage);
-                mailMessage.ReplacementValues.Add("DateOccurred", DateTime.Now.ToString());
-                mailMessage.ReplacementValues.Add("MachineName", Environment.MachineName);
-
-                //Merge the template
-                mailMessage.MergeTemplate();
-
-                bodyText = mailMessage.BodyText;
-
-                mailMessage.Send();
 
             }
             catch (Exception ex)
@@ -1167,6 +1172,7 @@ namespace USPS_ACS_Library
                 dr["CityNew"].ToString(), dr["StateNew"].ToString(), dr["Zip5New"].ToString() + "-" + dr["Plus4ZipNew"].ToString()); 
             return partialMatchMessage;
         }
+
 
     }
 }
