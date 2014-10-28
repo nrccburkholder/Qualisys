@@ -4198,7 +4198,8 @@ var aStream:tMemoryStream;
   var
     coverName : string;
   begin
-    coverName := F_DynaQ.TabSet1.Tabs[wwt_TextBoxCoverID.value];
+    wwT_Cover.FindKey([glbSurveyId,wwt_TextBoxCoverID.value]);
+    coverName := wwT_Cover.fieldbyname('Description').text;
 
     if t_Language.FindKey([LangID]) then
       LangString := trim(t_language.fieldbyname('language').asstring)
@@ -4443,7 +4444,9 @@ var CurrentLanguageName,s:string;
     with wwt_TextBox do begin
       first;
       while (not eof) do begin
-        coverName := F_DynaQ.TabSet1.Tabs[wwt_TextBoxCoverID.value];
+        wwT_Cover.FindKey([glbSurveyId,wwt_TextBoxCoverID.value]);
+        coverName := wwT_Cover.fieldbyname('Description').text;
+
         if (not wwt_transTB.findkey([glbSurveyID,wwt_TextBoxID.value,currentLanguage])) then
           errorlist.add('TextBox "'+LabelOrId(wwt_textboxid, wwt_textboxlabel)+'" (Cover Letter="'+coverName+'") needs to be translated ('+CurrentLanguageName+')')
         else begin
