@@ -1,7 +1,7 @@
 VERSION 5.00
-Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.3#0"; "COMCTL32.OCX"
+Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.3#0"; "comctl32.ocx"
 Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.OCX"
-Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
 Begin VB.Form frmMain 
    Caption         =   "Print Queue Manager"
    ClientHeight    =   7170
@@ -59,6 +59,7 @@ Begin VB.Form frmMain
          _Version        =   393217
          BackColor       =   -2147483644
          BorderStyle     =   0
+         Enabled         =   -1  'True
          HideSelection   =   0   'False
          ReadOnly        =   -1  'True
          DisableNoScroll =   -1  'True
@@ -156,7 +157,7 @@ Begin VB.Form frmMain
       MaskColor       =   12632256
       _Version        =   327682
       BeginProperty Images {0713E8C2-850A-101B-AFC0-4210102A8DA7} 
-         NumListImages   =   68
+         NumListImages   =   69
          BeginProperty ListImage1 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
             Picture         =   "frmMain.frx":16CC
             Key             =   ""
@@ -429,6 +430,10 @@ Begin VB.Form frmMain
             Picture         =   "frmMain.frx":10842
             Key             =   ""
          EndProperty
+         BeginProperty ListImage69 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":10B94
+            Key             =   ""
+         EndProperty
       EndProperty
    End
    Begin VB.Menu mnuTreeViewPopUp 
@@ -616,7 +621,7 @@ Public Sub CheckQueue()
             '01-08-2010 JJF - Added HHCAHPS
             bIsHHCAHPS = IIf(UCase(Left(vHospitalQueue(3, lQueueCnt), 11)) = "HOME HEALTH", True, False)
             '01-09-2014 CJB - Added ACOCAHPS
-            bIsACOCAHPS = IIf(UCase(Left(vHospitalQueue(3, lQueueCnt), 8)) = "ACOCAHPS", True, False)
+            bIsACOCAHPS = IIf((UCase(Left(vHospitalQueue(3, lQueueCnt), 8)) = "ACOCAHPS") Or (UCase(Left(vHospitalQueue(3, lQueueCnt), 8)) = "ICHCAHPS"), True, False)
             ' I am hold the description of the node in the
             ' key value of the node.  this is what is
             ' displayed when clicked on in the tree
@@ -685,7 +690,7 @@ Public Sub CheckQueue()
             '01-08-2010 JJF - Added HHCAHPS
             bIsHHCAHPS = IIf(UCase(Left(vHospitalQueue(6, lQueueCnt), 11)) = "HOME HEALTH", True, False)
             '01-09-2014 CJB - Added ACOCAHPS
-            bIsACOCAHPS = IIf(UCase(Left(vHospitalQueue(6, lQueueCnt), 8)) = "ACOCAHPS", True, False)
+            bIsACOCAHPS = IIf((UCase(Left(vHospitalQueue(6, lQueueCnt), 8)) = "ACOCAHPS") Or (UCase(Left(vHospitalQueue(6, lQueueCnt), 8)) = "ICHCAHPS"), True, False)
             'add the paperconfig node if it isn't already there
             'key is defined by paperconfig_id (plus datPrinted for the mail queue)
             lNodeIndex = FindNodeByKey("GroupedPrintConfig=" & Trim(vHospitalQueue(1, lQueueCnt)) & IIf(mbReprint, vbTab & vHospitalQueue(2, lQueueCnt), ""))
@@ -1154,7 +1159,7 @@ Private Sub mnuAddToGroupedPrint_Click()
     bIsHCAHPS = IIf(UCase(Left(NextValue(strID, vbTab), 6)) = "HCAHPS", True, False) ' survey type
     '01-08-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
     bIsHHCAHPS = IIf(UCase(Left(NextValue(strID, vbTab), 11)) = "HOME HEALTH", True, False) ' survey type
-    bIsACOCAHPS = IIf(UCase(Left(NextValue(strID, vbTab), 8)) = "ACOCAHPS", True, False) ' survey type
+    bIsACOCAHPS = IIf((UCase(Left(NextValue(strID, vbTab), 8)) = "ACOCAHPS") Or (UCase(Left(NextValue(strID, vbTab), 8)) = "ICHCAHPS"), True, False) ' survey type
     dummy = NextValue(strID, vbTab) ' number of pieces
    
     n = FindNodeByKey("GroupedPrint")
@@ -1406,7 +1411,7 @@ Private Sub mnuRemoveFromGroupedPrint_Click()
     bIsHCAHPS = IIf(UCase(Left(NextValue(strX, vbTab), 6)) = "HCAHPS", True, False) ' survey type
     '01-08-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
     bIsHHCAHPS = IIf(UCase(Left(NextValue(strX, vbTab), 11)) = "HOME HEALTH", True, False) ' survey type
-    bIsACOCAHPS = IIf(UCase(Left(NextValue(strX, vbTab), 8)) = "ACOCAHPS", True, False) ' survey type
+    bIsACOCAHPS = IIf((UCase(Left(NextValue(strX, vbTab), 8)) = "ACOCAHPS") Or (UCase(Left(NextValue(strX, vbTab), 8)) = "ICHCAHPS"), True, False) ' survey type
     dummy = NextValue(strX, vbTab) ' number of pieces
     
     tvTreeView.Nodes(n).Parent.Tag = tvTreeView.Nodes(n).Parent.Tag - Val(dummy)
@@ -2350,7 +2355,7 @@ Public Function PrintBundles(nodSelected As Node) As String
     Dim X, lngTotalChildren As Long
     Dim SelectedNode As Node
     
-    On Error GoTo NoPrint
+'    On Error GoTo NoPrint
     
     Me.MousePointer = vbHourglass
     If frmMain.tvTreeView.SelectedItem.Expanded = False Then

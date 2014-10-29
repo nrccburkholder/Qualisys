@@ -1,0 +1,518 @@
+[MainWindow]
+Create=1
+Visible=1
+State=2
+Left=0
+Top=0
+Width=1024
+Height=114
+MaxLeft=0
+MaxTop=2
+MaxWidth=1288
+MaxHeight=114
+ClientWidth=1280
+ClientHeight=60
+
+[WatchWindow]
+Create=1
+Visible=1
+State=0
+Left=21
+Top=219
+Width=342
+Height=196
+MaxLeft=-1
+MaxTop=-1
+ClientWidth=334
+ClientHeight=162
+
+[ProjectManager]
+Create=1
+Visible=1
+State=0
+Left=2
+Top=417
+Width=337
+Height=239
+MaxLeft=-1
+MaxTop=-1
+ClientWidth=329
+ClientHeight=213
+LargeButtons=1
+Column0Width=75
+Column1Width=125
+Column2Width=125
+
+[PropertyInspector]
+Create=1
+Visible=1
+State=0
+Left=-2
+Top=105
+Width=290
+Height=554
+MaxLeft=-1
+MaxTop=-1
+ClientWidth=282
+ClientHeight=528
+SplitPos=124
+
+[HistoryLists\hiWatchExpression]
+Count=22
+H0=rs2.eof
+H1=morehbars
+H2=s
+H3=r
+H4=w
+H5=p
+H6=i
+H7=MaxCompCnt
+H8=MaxPrevCnt
+H9=l
+H10=inch*2
+H11=HbarPos+inch*2
+H12=(ColPos[CurrCol+1]-ColPos[CurrCol-1] )*0.5
+H13=ColPos[CurrCol+1]-ColPos[CurrCol-1]
+H14=ColPos[CurrCol+1]-ColPos[CurrCol]
+H15=ColPos[CurrCol-1]+ColPos[CurrCol+1]
+H16=ColPos[CurrCol-1]-ColPos[CurrCol+1]
+H17=ColPos[CurrCol]
+H18=ColPos[CurrCol-1]
+H19=ColPos[CurrCol+1]
+H20=MaxLegenWidth
+H21=thisy-yGlobal
+
+[HistoryLists\hiEvalExpression]
+Count=32
+H0=MoreHBars
+H1=s
+H2=rs2
+H3=NrcLogoPath
+H4=strCC
+H5=aprs.fields['mailing'].value
+H6=aprs.fields['notify'].value
+H7=cn.Errors[0].Description
+H8=cn.Errors[2].Description
+H9=cn.Errors[1].Description
+H10=cn.Errors[0].Number
+H11=cn.Errors.Count
+H12=cn
+H13=ExtractLateHtml
+H14=strSubject
+H15=strFrom
+H16=strTo
+H17=strBody
+H18=MilliSecondsToWait
+H19=HBarLength
+H20=i
+H21=Job_id
+H22=Componentid
+H23=v
+H24=rs.fields['Col2'].value
+H25=rs.fields['Col2'].asstring
+H26=rs.fields['Col1'].value
+H27=rs.fields['Col'+inttostr(1)].value
+H28=rs.fields['Col'+inttostr(j)].value
+H29=j
+H30=MeasureType
+H31=rs.fields['MaxValue'].value
+
+[HistoryLists\hiEvalNewValue]
+Count=32
+H0=false
+H1=''
+H2=0
+H3='0 0 0 RG 2 2 2 rg'
+H4='SELECT Column_ID,Row_ID, [Value] into #detail FROM APO_HSRankingFinalDetail WHERE Job_id = 126987 and component_id = 1 and page_number = 13 '
+H5=10
+H6=20.571428571
+H7=230
+H8=306
+H9=100
+H10='Respect for Patient Preferences (POV Adult) Respect for Patient Preferences (POV Adult)Respect for Patient Preferences (POV Adult)'
+H11='Had OP Surg questions not discussed And I want this to be a long label'
+H12='Had OP Surg questions not discussed Had OP Surg questions not discussed Had OP Surg questions not discussed'
+H13='Pain level during OP visit Pain level during OP visit Pain level during OP visit'
+H14=colWidth
+H15=500
+H16='select Value as _value,c.ColumnType,i.interval_id,c.columnLabel from APO_CntlFinal f inner join APO_cntlFinalColumn c on f.job_id = c.job_id and f.Page_number = c.Page_number and f.Component_id = c.Component_id inner join APO_CntlFinalDetailCurrent d on c.job_id = d.job_id and c.Page_number = d.Page_number and c.Component_id = d.Component_id  and c.ColumnType = d.columnType inner join APO_CntlFinalInterval i on d.job_id = i.job_id and d.Page_number = i.Page_number and d.Component_id = i.Component_id and d.interval_id = i.interval_id where f.job_id = 37197 and f.component_id = 2 and f.Page_number = 11 order by d.ColumnType, i.Interval_ID'
+H17='\\neptune\qualisys\sasphase2\html\Testhtml\REVIEW\_132\DAN_TEST_BOX_PLOT___DELIGHTED_AP1320501180000\'
+H18='scores. '
+H19=480.6
+H20='2'
+H21='1'
+H22=8
+H23=inch*0.33
+H24=inch*33
+H25='SELECT ComponentTitle,Paragraph FROM APO_NarrativeFinal WHERE Job_id = 37171 and component_id = 1 and page_number = 1'
+H26='ap0630304140003'
+H27='0630304140003'
+H28=true
+H29='fgomez'
+H30=-1
+H31='select min(ColumnType) as firstcol, max(ColumnType) as lastcol from APO_cntlFinalColumn where job_id = 62 and component_id = 1 and Page_number = 1
+
+[HistoryLists\hiOpenFile]
+Count=32
+H0=e:\projects\pdfgen\hbarpcs.pas
+H1=e:\projects\pdfgen\hbarmns.pas
+H2=e:\projects\pdfgen\fileutil.pas
+H3=e:\projects\qualisys\report manager\dashboard\dashboard.dpr
+H4=e:\projects\qualisys\pcl gen\pclgen.dpr
+H5=e:\projects\pdfgen\plotcharts.pas
+H6=e:\projects\pdfgen\hsrankingreport.pas
+H7=e:\projects\pdfgen\zlibstr.pas
+H8=e:\projects\pdfgen\zlib.pas
+H9=e:\projects\pdfgen\vbars.pas
+H10=e:\projects\pdfgen\textmeasure.pas
+H11=e:\projects\pdfgen\tabulartitle.pas
+H12=e:\projects\pdfgen\tabularranking.pas
+H13=e:\projects\pdfgen\stackedbars.pas
+H14=e:\projects\pdfgen\scalelabels.pas
+H15=e:\projects\pdfgen\rankingreport.pas
+H16=e:\projects\pdfgen\quadchart.pas
+H17=e:\projects\pdfgen\narrative.pas
+H18=e:\projects\pdfgen\main.pas
+H19=e:\projects\pdfgen\jpgreader.pas
+H20=e:\projects\pdfgen\hbheaders.pas
+H21=e:\projects\pdfgen\hbars.pas
+H22=e:\projects\pdfgen\gifbitmap.pas
+H23=e:\projects\pdfgen\fontreader.pas
+H24=e:\projects\pdfgen\drawing.pas
+H25=e:\projects\pdfgen\divlines.pas
+H26=e:\projects\pdfgen\controlcharts.pas
+H27=e:\projects\pdfgen\constants.pas
+H28=e:\projects\pdfgen\arrows.pas
+H29=e:\projects\pdfgen\appath.pas
+H30=e:\projects\pdfgen\addnewpage.pas
+H31=e:\projects\qualisys\export interface\exportinterface.dpr
+
+[HistoryLists\hiRunParams]
+Count=4
+H0=DEBUGMODE
+H1=AUTO
+H2=DEBUGMODEx
+H3=AUTOx
+
+[HistoryLists\hiUnitAlias]
+Count=1
+H0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
+
+[HistoryLists\hiLibUnitAliases]
+Count=1
+H0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
+
+[HistoryLists\hiSearchMasks]
+Count=7
+H0=E:\Projects\QualiSys
+H1=E:\Projects\PDFGen
+H2=E:\Projects\QualiSys\Question Library
+H3=C:\dq\dynaquest\
+H4=C:\program files\borland\delphi 3\source
+H5=C:\FgomezTemp\Programming Samples\Delphi\SQL PDFGen
+H6=*.pas
+
+[Closed Files]
+File_0=SourceModule,'E:\Projects\PDFGen\ControlCharts.pas',0,1,630,70,643,0,0
+File_1=SourceModule,'E:\Projects\PDFGen\psapiunit.pas',0,1,3,24,21,0,0
+File_2=SourceModule,'E:\Projects\PDFGen\PlotCharts.pas',0,1,1,2,2,0,0
+File_3=SourceModule,'E:\Projects\PDFGen\HSRankingReport.pas',0,1,548,44,581,0,0
+File_4=SourceModule,'E:\Projects\PDFGen\constants.pas',0,1,33,37,62,0,0
+File_5=SourceModule,'E:\Projects\PDFGen\ScaleLabels.pas',0,1,1,1,1,0,0
+File_6=SourceModule,'E:\Projects\PDFGen\HBHeaders.pas',0,1,52,19,53,0,0
+File_7=SourceModule,'E:\Projects\PDFGen\QuadChart.pas',0,1,2,1,49,0,0
+
+[Modules]
+Module0=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\HBarpcs.pas
+Module1=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\Main.pas
+Module2=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\HBarmns.pas
+Module3=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\Fileutil.pas
+Module4=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\constants.pas
+Module5=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\PdfGen.dpr
+Module6=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\TabularTitle.pas
+Module7=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\PlotCharts.pas
+Module8=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\JpgReader.pas
+Module9=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\zlibStr.pas
+Module10=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\zlib.pas
+Module11=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\arrows.pas
+Module12=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\AddNewPage.pas
+Module13=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\ControlCharts.pas
+Module14=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\TextMeasure.pas
+Module15=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\divLines.pas
+Module16=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\Drawing.pas
+Module17=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\appath.pas
+Module18=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\fontreader.pas
+Count=19
+EditWindowCount=1
+
+[\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\HBarpcs.pas]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\Main.pas]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\HBarmns.pas]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\Fileutil.pas]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\constants.pas]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\PdfGen.dpr]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\TabularTitle.pas]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\PlotCharts.pas]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\JpgReader.pas]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\zlibStr.pas]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\zlib.pas]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\arrows.pas]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\AddNewPage.pas]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\ControlCharts.pas]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\TextMeasure.pas]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\divLines.pas]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\Drawing.pas]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\appath.pas]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\fontreader.pas]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[EditWindow0]
+Create=1
+Visible=1
+State=0
+Left=214
+Top=126
+Width=1033
+Height=534
+MaxLeft=-1
+MaxTop=-1
+ClientWidth=1025
+ClientHeight=500
+SplitPos=100
+MessagePane=1
+ViewCount=18
+CurrentView=15
+View0=0
+View1=1
+View2=2
+View3=3
+View4=4
+View5=5
+View6=6
+View7=7
+View8=8
+View9=9
+View10=10
+View11=11
+View12=12
+View13=13
+View14=14
+View15=15
+View16=16
+View17=17
+
+[View0]
+Module=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\constants.pas
+CursorX=1
+CursorY=173
+TopLine=161
+LeftCol=1
+
+[View1]
+Module=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\fontreader.pas
+CursorX=1
+CursorY=29
+TopLine=17
+LeftCol=1
+
+[View2]
+Module=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\appath.pas
+CursorX=1
+CursorY=55
+TopLine=43
+LeftCol=1
+
+[View3]
+Module=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\Drawing.pas
+CursorX=1
+CursorY=116
+TopLine=104
+LeftCol=1
+
+[View4]
+Module=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\divLines.pas
+CursorX=1
+CursorY=15
+TopLine=1
+LeftCol=1
+
+[View5]
+Module=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\TextMeasure.pas
+CursorX=1
+CursorY=479
+TopLine=467
+LeftCol=1
+
+[View6]
+Module=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\ControlCharts.pas
+CursorX=1
+CursorY=688
+TopLine=676
+LeftCol=1
+
+[View7]
+Module=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\AddNewPage.pas
+CursorX=1
+CursorY=77
+TopLine=65
+LeftCol=1
+
+[View8]
+Module=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\arrows.pas
+CursorX=1
+CursorY=25
+TopLine=1
+LeftCol=1
+
+[View9]
+Module=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\zlib.pas
+CursorX=1
+CursorY=528
+TopLine=516
+LeftCol=1
+
+[View10]
+Module=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\zlibStr.pas
+CursorX=1
+CursorY=35
+TopLine=23
+LeftCol=1
+
+[View11]
+Module=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\JpgReader.pas
+CursorX=1
+CursorY=108
+TopLine=96
+LeftCol=1
+
+[View12]
+Module=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\PlotCharts.pas
+CursorX=1
+CursorY=529
+TopLine=517
+LeftCol=1
+
+[View13]
+Module=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\TabularTitle.pas
+CursorX=1
+CursorY=69
+TopLine=57
+LeftCol=1
+
+[View14]
+Module=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\Main.pas
+CursorX=1
+CursorY=2019
+TopLine=2010
+LeftCol=1
+
+[View15]
+Module=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\HBarpcs.pas
+CursorX=1
+CursorY=295
+TopLine=283
+LeftCol=1
+
+[View16]
+Module=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\HBarmns.pas
+CursorX=1
+CursorY=418
+TopLine=409
+LeftCol=1
+
+[View17]
+Module=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\Fileutil.pas
+CursorX=1
+CursorY=277
+TopLine=277
+LeftCol=1
+
+[Watches]
+Count=6
+Watch0='p',256,0,18,1
+Watch1='w',256,0,18,1
+Watch2='r',256,0,18,1
+Watch3='s',256,0,18,1
+Watch4='morehbars',256,0,18,1
+Watch5='rs2.eof',256,0,18,1
+
+[Breakpoints]
+Count=3
+Breakpoint0='\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\HBarpcs.pas',292,'',0,1
+Breakpoint1='\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\HBarpcs.pas',136,'',0,1
+Breakpoint2='\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\HBarpcs.pas',38,'',0,1
+
