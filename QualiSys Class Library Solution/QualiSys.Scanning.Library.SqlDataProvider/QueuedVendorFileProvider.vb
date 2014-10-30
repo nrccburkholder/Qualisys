@@ -83,7 +83,7 @@ Friend Class QueuedVendorFileProvider
             .Add("PhServInd10", GetType(String))
             .Add("PhServInd11", GetType(String))
             .Add("PhServInd12", GetType(String))
-            '.Add("AgeRange", GetType(String))
+            .Add("AgeRange", GetType(String))
         End With
 
         'Populate the dataset
@@ -222,7 +222,7 @@ Friend Class QueuedVendorFileProvider
                 .Add(New FixedColumn("PhServInd10", "Char Width 100"))
                 .Add(New FixedColumn("PhServInd11", "Char Width 100"))
                 .Add(New FixedColumn("PhServInd12", "Char Width 100"))                
-                '.Add(New FixedColumn("AgeRange", "Char Width 10"))
+                .Add(New FixedColumn("AgeRange", "Char Width 10"))
             End With
         Else
             'Reset the quantity
