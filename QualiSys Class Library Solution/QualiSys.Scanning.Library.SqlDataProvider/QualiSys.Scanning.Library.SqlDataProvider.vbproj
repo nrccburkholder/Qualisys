@@ -212,6 +212,10 @@
       <Project>{191D0C34-FF61-47A6-852F-7FD91D50AD72}</Project>
       <Name>QualiSys.Library</Name>
     </ProjectReference>
+    <ProjectReference Include="..\QualiSys.Scanning.Library\QualiSys.Scanning.Library.vbproj">
+      <Project>{8ACF6F70-0A74-4443-BAD9-BD91CE4C5D39}</Project>
+      <Name>QualiSys.Scanning.Library</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\2008-10-24 - Alternate Methodology R1\BadLitho.sql" />

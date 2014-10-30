@@ -679,9 +679,16 @@ Public Class Survey
             If mSurveyTypeList Is Nothing Then
                 GetSurveyTypes()
             End If
-            Return mSurveyTypeList(mSurveyType - 1).ToString()
+
+            For Each st As Nrc.QualiSys.Library.ListItem(Of SurveyTypes) In mSurveyTypeList
+                If st.Value.Equals(mSurveyType) Then
+                    Return st.ToString()
+                End If
+            Next
+            Return String.Empty
         End Get
     End Property
+
 
     Private Function SpecificRuleName(ByVal ruleName As String, Optional ByVal override As String = vbNullString) As String
         Try
