@@ -653,10 +653,10 @@ Friend Class ACOCAHPSExporter
             End If
         End If
 
-        '	Record has bitComplete = 0 and dispo <> 31 or 34
-        If acoCAHPSExport.BitComplete.HasValue Then
-            If (acoCAHPSExport.BitComplete.Value = False) And Not ((acoCAHPSExport.Dispositn = "31") Or (acoCAHPSExport.Dispositn = "34")) Then
-                LogValidationException(acoCAHPSExport, "Record has bitComplete = 0, but disposition is not 31 or 34")
+        '	Record has dispo = 31 or 34 and bitComplete is 0
+        If acoCAHPSExport.BitComplete.HasValue And ((acoCAHPSExport.Dispositn = "31") Or (acoCAHPSExport.Dispositn = "34")) Then
+            If (acoCAHPSExport.BitComplete.Value = True) Then
+                LogValidationException(acoCAHPSExport, "Record disposition is 31 or 34, but bitComplete = 1 ")
             End If
         End If
 

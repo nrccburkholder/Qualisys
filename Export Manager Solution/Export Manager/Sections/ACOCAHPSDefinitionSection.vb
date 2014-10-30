@@ -259,7 +259,7 @@ Public Class ACOCAHPSDefinitionSection
                 selectCount += 1
             End If
         Next
-        Dim fileName As String = GetFileName(AppConfig.Params("EMCMSOutputFolderPath").StringValue, ".txt.pgp")
+        Dim fileName As String = GetFileName(AppConfig.Params("EMCMSOutputFolderPath").StringValue, ".txt")
 
         If MessageBox.Show(String.Format("Generating {0} export(s) for {1} {2}.", selectCount, MonthList.Text, YearList.Text), "Create Export(s)", MessageBoxButtons.OKCancel, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1) = DialogResult.Cancel Then
             Exit Sub
