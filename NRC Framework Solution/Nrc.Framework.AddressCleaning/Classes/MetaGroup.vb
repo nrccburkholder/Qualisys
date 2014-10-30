@@ -379,7 +379,7 @@ Public Class MetaGroup
                             End If
 
                         Case "FieldAddrFipsCounty"
-                            If address.GeoCode.CountyFIPS.Length > 6 Then
+                            If address.GeoCode.CountyFIPS.Length >= 6 Then
                                 thisField = String.Format("{0} = {1}", .FieldName, GetFieldValue(address.GeoCode.CountyFIPS).Substring(3, 3))
                             Else
                                 thisField = String.Format("{0} = {1}", .FieldName, "0")

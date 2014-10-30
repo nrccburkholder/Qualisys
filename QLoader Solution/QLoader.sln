@@ -22,27 +22,6 @@ EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "QualiSys.QLoader.Library20.SqlDataProvider", "..\QualiSys Class Library Solution\QualiSys.QLoader.Library20.SqlDataProvider\QualiSys.QLoader.Library20.SqlDataProvider.vbproj", "{C006A8BF-39A9-4B1B-8699-170C1B9FB13E}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 6
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://oma0pnrctfs01.nationalresearch.com:8080/tfs/nrc_git
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = QLoader\\QLoader.vbproj
-		SccProjectName1 = QLoader
-		SccLocalPath1 = QLoader
-		SccProjectUniqueName2 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\Qualisys.QLoader.Library\\Qualisys.QLoader.Library.vbproj
-		SccProjectName2 = ../QualiSys\u0020Class\u0020Library\u0020Solution/Qualisys.QLoader.Library
-		SccLocalPath2 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\Qualisys.QLoader.Library
-		SccProjectUniqueName3 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\Qualisys.QLoader.Library.SqlProvider\\Qualisys.QLoader.Library.SqlProvider.vbproj
-		SccProjectName3 = ../QualiSys\u0020Class\u0020Library\u0020Solution/Qualisys.QLoader.Library.SqlProvider
-		SccLocalPath3 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\Qualisys.QLoader.Library.SqlProvider
-		SccProjectUniqueName4 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.QLoader.Library20\\QualiSys.QLoader.Library20.vbproj
-		SccProjectName4 = ../QualiSys\u0020Class\u0020Library\u0020Solution/QualiSys.QLoader.Library20
-		SccLocalPath4 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.QLoader.Library20
-		SccProjectUniqueName5 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.QLoader.Library20.SqlDataProvider\\QualiSys.QLoader.Library20.SqlDataProvider.vbproj
-		SccProjectName5 = ../QualiSys\u0020Class\u0020Library\u0020Solution/QualiSys.QLoader.Library20.SqlDataProvider
-		SccLocalPath5 = ..\\QualiSys\u0020Class\u0020Library\u0020Solution\\QualiSys.QLoader.Library20.SqlDataProvider
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|.NET = Debug|.NET
 		Debug|Any CPU = Debug|Any CPU

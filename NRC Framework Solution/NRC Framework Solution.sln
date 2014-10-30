@@ -17,30 +17,6 @@ EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AddressCleaningTest", "AddressCleaningTest\AddressCleaningTest.vbproj", "{2BA2719C-B0A8-4880-BDF4-1F9B328B22C9}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 7
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://tfs.nationalresearch.com:8080/tfs/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Sample\u0020Application\\Sample\u0020Application.vbproj
-		SccProjectName1 = Sample\u0020Application
-		SccLocalPath1 = Sample\u0020Application
-		SccProjectUniqueName2 = Nrc.Framework.BusinessLogic\\Nrc.Framework.BusinessLogic.vbproj
-		SccProjectName2 = Nrc.Framework.BusinessLogic
-		SccLocalPath2 = Nrc.Framework.BusinessLogic
-		SccProjectUniqueName3 = Nrc.Framework\\Nrc.Framework.vbproj
-		SccProjectName3 = Nrc.Framework
-		SccLocalPath3 = Nrc.Framework
-		SccProjectUniqueName4 = Nrc.Framework.Notification\\Nrc.Framework.Notification.vbproj
-		SccProjectName4 = Nrc.Framework.Notification
-		SccLocalPath4 = Nrc.Framework.Notification
-		SccProjectUniqueName5 = Nrc.Framework.AddressCleaning\\Nrc.Framework.AddressCleaning.vbproj
-		SccProjectName5 = Nrc.Framework.AddressCleaning
-		SccLocalPath5 = Nrc.Framework.AddressCleaning
-		SccProjectUniqueName6 = AddressCleaningTest\\AddressCleaningTest.vbproj
-		SccProjectName6 = AddressCleaningTest
-		SccLocalPath6 = AddressCleaningTest
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
