@@ -39,18 +39,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_4D331EB3DB21579105266F97197C7EAA"
-        "OwnerKey" = "8:_75213002D27814F27917A936C0CCAAF7"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_4D331EB3DB21579105266F97197C7EAA"
-        "OwnerKey" = "8:_C9DA90A5030A4FC3978108301A2E2E2F"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_5444B9B57EBB207028BD83EAAA120C1F"
         "OwnerKey" = "8:_A27453864D5E23C51C0BA5FE9261FC7A"
         "MsmSig" = "8:_UNDEFINED"
@@ -149,6 +137,18 @@
         {
         "MsmKey" = "8:_5532646FA953400FB822885D6760D9CE"
         "OwnerKey" = "8:_8E60677C357EE5C443320427B18175ED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_6BF4019ABC04242F759A1FF74953801D"
+        "OwnerKey" = "8:_75213002D27814F27917A936C0CCAAF7"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_6BF4019ABC04242F759A1FF74953801D"
+        "OwnerKey" = "8:_C9DA90A5030A4FC3978108301A2E2E2F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -267,13 +267,13 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_CE3E9B493DB7AFB5C0DA8BA0B37D885A"
+        "MsmKey" = "8:_EE0C8644DA5023C474DB9DD0B9A5BE1C"
         "OwnerKey" = "8:_75213002D27814F27917A936C0CCAAF7"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_CE3E9B493DB7AFB5C0DA8BA0B37D885A"
+        "MsmKey" = "8:_EE0C8644DA5023C474DB9DD0B9A5BE1C"
         "OwnerKey" = "8:_C9DA90A5030A4FC3978108301A2E2E2F"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -328,13 +328,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_CE3E9B493DB7AFB5C0DA8BA0B37D885A"
+        "OwnerKey" = "8:_6BF4019ABC04242F759A1FF74953801D"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_4D331EB3DB21579105266F97197C7EAA"
+        "OwnerKey" = "8:_EE0C8644DA5023C474DB9DD0B9A5BE1C"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -406,7 +406,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_99F8BDF520546C0E66B952CE8C10933B"
+        "OwnerKey" = "8:_9C43F2878B7E982C23D68E18F4C4172B"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -418,7 +418,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_9C43F2878B7E982C23D68E18F4C4172B"
+        "OwnerKey" = "8:_99F8BDF520546C0E66B952CE8C10933B"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -559,7 +559,7 @@
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
-                "FrameworkVersion" = "8:2.0.50727   "
+                "FrameworkVersion" = "8:2.0.50727    "
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=9832"
                 }
@@ -612,37 +612,6 @@
                     }
                 }
             "SourcePath" = "8:SoftekBarcodeLib.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_930DDE5C87D649D7B5FCCB22679CC832"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_4D331EB3DB21579105266F97197C7EAA"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:DiffieHellman, Version=0.0.0.0, Culture=neutral"
-                "ScatterAssemblies"
-                {
-                    "_4D331EB3DB21579105266F97197C7EAA"
-                    {
-                    "Name" = "8:DiffieHellman.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:DiffieHellman.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_930DDE5C87D649D7B5FCCB22679CC832"
@@ -736,6 +705,37 @@
                     }
                 }
             "SourcePath" = "8:Nrc.Framework.BusinessLogic.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_930DDE5C87D649D7B5FCCB22679CC832"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_6BF4019ABC04242F759A1FF74953801D"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Org.Mentalis.Security, Version=1.0.13.715, Culture=neutral"
+                "ScatterAssemblies"
+                {
+                    "_6BF4019ABC04242F759A1FF74953801D"
+                    {
+                    "Name" = "8:Org.Mentalis.Security.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Org.Mentalis.Security.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_930DDE5C87D649D7B5FCCB22679CC832"
@@ -970,20 +970,20 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_CE3E9B493DB7AFB5C0DA8BA0B37D885A"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_EE0C8644DA5023C474DB9DD0B9A5BE1C"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Org.Mentalis.Security, Version=1.0.13.715, Culture=neutral"
+            "AssemblyAsmDisplayName" = "8:DiffieHellman, Version=0.0.0.0, Culture=neutral"
                 "ScatterAssemblies"
                 {
-                    "_CE3E9B493DB7AFB5C0DA8BA0B37D885A"
+                    "_EE0C8644DA5023C474DB9DD0B9A5BE1C"
                     {
-                    "Name" = "8:Org.Mentalis.Security.dll"
+                    "Name" = "8:DiffieHellman.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:Org.Mentalis.Security.dll"
+            "SourcePath" = "8:DiffieHellman.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_930DDE5C87D649D7B5FCCB22679CC832"
@@ -1119,15 +1119,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:QualiSys Scanner Interface Service"
-        "ProductCode" = "8:{44B8359F-E543-43F4-8388-715CF8012576}"
-        "PackageCode" = "8:{6955CB3A-4C7B-4F19-9564-E12BB673883D}"
+        "ProductCode" = "8:{F15D7D9D-1C42-4937-8E19-56DB9DDAFE21}"
+        "PackageCode" = "8:{6069384D-1B2F-4CA9-9463-A93027047F5A}"
         "UpgradeCode" = "8:{23858F39-2870-4CC2-B171-00E213EDF04B}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.28.3"
+        "ProductVersion" = "8:1.28.4"
         "Manufacturer" = "8:National Research Corporation"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
