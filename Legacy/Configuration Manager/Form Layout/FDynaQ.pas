@@ -303,7 +303,7 @@ type
    procedure wwDBLookup_LanguagesCloseUp(Sender: TObject; LookupTable,
     FillTable: TDataSet; modified: Boolean);
    procedure SaveCover(const pg:integer);
-    procedure ShowQstnBtnClick(Sender: TObject);
+   procedure ShowQstnBtnClick(Sender: TObject);
     procedure wwDBEditAvailCoreChange(Sender: TObject);
     procedure ppFullQstnMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
@@ -1250,7 +1250,7 @@ end;
 procedure TF_DynaQ.SaveCover(const pg:integer);
 var i,curTag:   integer;
 
-  procedure UpdateTextBoxes;
+  procedure UpdateTextBoxes; 
   var s:string;
   begin
    {look for record, if there edit else append}
@@ -1284,40 +1284,49 @@ var i,curTag:   integer;
       end;
     end;
   end;
-  (*
-  procedure UpdateTextBoxes;
+
+  procedure UpdateTextBoxForLanguage(langId: integer; translation: string);
+  var s:string;
   begin
    {look for record, if there edit else append}
-    with tDQPanel(elementlist[i]), DMOpenQ.wwt_TextBox do begin
+    with tDQPanel(elementlist[i]), DMOpenQ.wwt_TransTB do begin
       if CurTag = 0 then
-        messagedlg('TextBox "'+copy(tRichEdit(controls[0]).lines[0],1,20)+'..." doesn''t have an ID# and will not be saved',mtError,[mbOK],0);
+      begin
+        messagedlg('TextBox "'+copy(tRichEdit(controls[0]).lines[0],1,20)+
+                   '..." doesn''t have an ID# and will not be saved',mtError,[mbOK],0);
+        tDQPanel(elementlist[i]).modified := false;
+      end
+      else
+        tDQPanel(elementlist[i]).modified := true;
       if tDQPanel(elementlist[i]).modified then begin
-        if findkey([DMOpenQ.glbSurveyID,curTag]) then
+        if findkey([DMOpenQ.glbSurveyID,curTag,langID]) then
           edit
         else begin
           append;
           fieldbyname('Survey_ID').value := DMOpenQ.glbSurveyID;
           fieldbyname(qpc_ID).value := curTag;
           fieldbyname('Type').value := 'TextBox';
-          fieldbyname('bitLangReview').value := false;
+          fieldbyname('bitLangReview').value := (translation = '');
+          fieldbyname('Label').value := TextBoxName;
         end;
-        fieldbyname('CoverID').value := pg;
-        fieldbyname('Language').value := 1;
-        fieldbyname('X').value := Left+ScrollboxCovers.horzScrollBar.Position;
-        fieldbyname('Y').value := Top+ScrollboxCovers.VertScrollBar.Position;
-        fieldbyname('Width').value := Width;
-        fieldbyname('Height').value := Height;
-        fieldbyname('Shading').value := tRichEdit(controls[0]).color;
-        fieldbyname('Border').value := BorderWidth;
-        fieldbyname('bitLangReview').value := false;
-        tRichEdit(controls[0]).lines.savetofile(dmOpenQ.tempdir+'\RichEdit.rtf');
-        tBlobField(fieldbyname('RichText')).loadfromfile(dmOpenQ.tempdir+'\RichEdit.rtf');
-         post;
         tDQPanel(elementlist[i]).modified := false;
+        fieldbyname('Language').value := langId;
+        if translation <> '' then
+          fieldbyname('RichText').value := translation;
+
+        post;
+        s:=Format('UPDATE %s set CoverID = %d, X = %d, Y = %d, Width = %d, Height = %d,'+
+                  'Shading = %d, Border = %d, Label = ''%s'' '+
+                  'where Survey_ID = %d and %s= %d and Type = ''TextBox'' and Language = %d',
+                  [DMOpenQ.wwT_TextBox.tablename,pg,Left+ScrollboxCovers.horzScrollBar.Position,
+                   Top+ScrollboxCovers.VertScrollBar.Position,Width,Height,
+                   integer(tRichEdit(controls[0]).color),BorderWidth,TextBoxName,DMOpenQ.glbSurveyID,
+                   qpc_ID,curTag,langID]);
+         dopenq.DMOpenQ.cn.execute(s);
       end;
     end;
   end;
-   *)
+
   procedure UpdateLogoRefs;
   var SelLogoID,PersCode:integer;
       s,CodeName : string;
@@ -1431,6 +1440,9 @@ var i,curTag:   integer;
     end;
   end;
 
+var
+  formerTranslation : string;
+  j : integer;
 begin
   WLKHandle.detach;
   if ElementList.count > 0 then
@@ -1444,6 +1456,27 @@ begin
         updateLogos
       else if isPCL(ElementList[i]) then
         updatePCL;
+
+      // ** Save Translations **
+      if isTextBox(ElementList[i]) and (tDQPanel(ElementList[i]).FormerTag > 0) then
+        with dmOpenQ.t_Language do begin
+          First;
+          Next;  {Skip 'English'}
+          for j := 2 to RecordCount do begin
+            if fieldbyname('UseLang').asboolean then begin
+              if DMOpenQ.wwt_TransTB.findkey([DMOpenQ.glbSurveyID, tDQPanel(ElementList[i]).FormerTag, fieldbyname('LangID').asinteger]) then
+                formerTranslation := DMOpenQ.wwt_TransTB.fieldbyname('RichText').value
+              else
+                formerTranslation := '';
+              UpdateTextBoxForLanguage(fieldbyname('LangID').asinteger, formerTranslation);
+            end;
+
+            Next;
+          end;
+          tDQPanel(ElementList[i]).FormerTag := 0;
+        end;
+      // ** END Save Translations **
+
     end;
 end;
 
@@ -1816,13 +1849,20 @@ begin
 end;
 
 procedure TF_DynaQ.Options1Click(Sender: TObject);
+var
+  i : integer;
 begin
   with TF_options.create(application) do
     try
       showModal;
       //GN03: Save the options only when the user clicks OK
-      if ModalResult = mrOK then
+      if ModalResult = mrOK then begin
          SaveOptionInfo;
+
+         for i := 0 to ElementList.count-1 do
+            if isTextBox(ElementList[i]) then
+               tDQPanel(ElementList[i]).FormerTag := tDQPanel(ElementList[i]).Tag; //causes creation of blank translation records for newly added languages
+      end;
     finally
       free;
     end;
@@ -3227,6 +3267,7 @@ var s : string;
   begin
     if isTextBox(elementlist[ii]) then begin
       DMOpenQ.wwt_TextBox.tag := DMOpenQ.wwt_TextBox.tag + 1;
+      tDQPanel(elementlist[ii]).FormerTag := tDQPanel(elementlist[ii]).tag; //save prior tag in order to copy translations
       tDQPanel(elementlist[ii]).tag := DMOpenQ.wwt_TextBox.tag;
       tDQPanel(elementlist[ii]).modified := true;
     end else if isLogoRef(elementlist[ii]) then begin

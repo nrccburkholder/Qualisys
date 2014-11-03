@@ -35,8 +35,8 @@ DEFAULT ''
 
 GO
 
-update QualPro_Params set strparam_value = '3.18' where STRPARAM_NM = 'FormLayoutVersion'
-					 and strparam_value <> '3.18'
+update QualPro_Params set strparam_value = '3.19' where STRPARAM_NM = 'FormLayoutVersion'
+					 and strparam_value <> '3.19'
 --update QualPro_Params set strparam_value = '3.0' 
 --select * from Qualpro_params where STRPARAM_NM = 'FormLayoutVersion'
 

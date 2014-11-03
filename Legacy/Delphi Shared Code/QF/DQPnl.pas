@@ -25,6 +25,7 @@ type
     FTextBoxName: string;
     FTextBoxMappings: string;
     FPCL: string;
+    FFormerTag : integer;
     FLanguage: integer;
     FIndent: integer;
     procedure SetIndent(newValue: integer);
@@ -39,6 +40,7 @@ type
     property TextBoxName: string read FTextBoxName write FTextBoxName;  { Run-time access only }
     property TextBoxMappings: string read FTextBoxMappings write FTextBoxMappings;  { Run-time access only }
     property PCL: string read FPCL write FPCL;  { Run-time access only }
+    property FormerTag: integer read FFormerTag write FFormerTag;  { Run-time access only; used for copying translations }
     property Language: integer read FLanguage write FLanguage;  { Run-time access only }
   published
     { Published properties and events }
