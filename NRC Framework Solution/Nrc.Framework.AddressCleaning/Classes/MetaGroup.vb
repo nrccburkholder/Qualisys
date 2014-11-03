@@ -372,18 +372,18 @@ Public Class MetaGroup
                             thisField = String.Format("{0} = {1}", .FieldName, GetFieldValue(address.GeoCode.TimeZoneName))
 
                         Case "FieldAddrFipsState"
-                            If address.GeoCode.CountyFIPS.Length > 2 Then
+                            Try
                                 thisField = String.Format("{0} = {1}", .FieldName, GetFieldValue(address.GeoCode.CountyFIPS).Substring(1, 2))
-                            Else
+                            Catch
                                 thisField = String.Format("{0} = {1}", .FieldName, "0")
-                            End If
+                            End Try
 
                         Case "FieldAddrFipsCounty"
-                            If address.GeoCode.CountyFIPS.Length >= 6 Then
+                            Try
                                 thisField = String.Format("{0} = {1}", .FieldName, GetFieldValue(address.GeoCode.CountyFIPS).Substring(3, 3))
-                            Else
+                            Catch
                                 thisField = String.Format("{0} = {1}", .FieldName, "0")
-                            End If
+                            End Try
 
                     End Select
 
