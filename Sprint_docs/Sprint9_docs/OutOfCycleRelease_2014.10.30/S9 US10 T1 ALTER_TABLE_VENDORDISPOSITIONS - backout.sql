@@ -20,7 +20,7 @@ if exists (	SELECT 1
 			WHERE  st.schema_id = 1 
 				   AND st.NAME = 'vendordispositions' 
 				   AND sc.NAME = 'isFinal' )
-	alter table [dbo].[vendordispositions] drop column isFinal tinyint
+	alter table [dbo].[vendordispositions] drop column isFinal 
 go
 if exists (select * from disposition where strDispositionLabel='Non Response, Still Attempting')
 begin
@@ -39,4 +39,6 @@ begin
 end
 go
 commit tran
+
+
 

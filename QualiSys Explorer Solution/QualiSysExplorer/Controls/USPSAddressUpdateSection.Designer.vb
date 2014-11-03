@@ -20,6 +20,7 @@ Partial Class USPSAddressUpdateSection
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim GridLevelNode1 As DevExpress.XtraGrid.GridLevelNode = New DevExpress.XtraGrid.GridLevelNode()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(USPSAddressUpdateSection))
         Me.gvOldAddresses = New DevExpress.XtraGrid.Views.Grid.GridView()
         Me.GridColumn13 = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.GridColumn14 = New DevExpress.XtraGrid.Columns.GridColumn()
@@ -48,6 +49,12 @@ Partial Class USPSAddressUpdateSection
         Me.RepositoryItemCheckEdit2 = New DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit()
         Me.RepositoryItemCheckedComboBoxEdit1 = New DevExpress.XtraEditors.Repository.RepositoryItemCheckedComboBoxEdit()
         Me.gvNewAddresses = New DevExpress.XtraGrid.Views.Grid.GridView()
+        Me.BottomPanel = New System.Windows.Forms.Panel()
+        Me.btnApply = New System.Windows.Forms.Button()
+        Me.USPSSectionPanel = New Nrc.Framework.WinForms.SectionPanel()
+        Me.ActionPanel = New System.Windows.Forms.Panel()
+        Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
+        Me.btnExpandAll = New System.Windows.Forms.ToolStripButton()
         CType(Me.gvOldAddresses, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.gcPartialMatches, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.gvPartialMatches, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -56,6 +63,10 @@ Partial Class USPSAddressUpdateSection
         CType(Me.RepositoryItemCheckEdit2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.RepositoryItemCheckedComboBoxEdit1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.gvNewAddresses, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.BottomPanel.SuspendLayout()
+        Me.USPSSectionPanel.SuspendLayout()
+        Me.ActionPanel.SuspendLayout()
+        Me.ToolStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'gvOldAddresses
@@ -142,19 +153,24 @@ Partial Class USPSAddressUpdateSection
         '
         'gcPartialMatches
         '
+        Me.gcPartialMatches.Dock = System.Windows.Forms.DockStyle.Fill
         GridLevelNode1.LevelTemplate = Me.gvOldAddresses
         GridLevelNode1.RelationName = "FK_PopAddress_OldAddress"
         Me.gcPartialMatches.LevelTree.Nodes.AddRange(New DevExpress.XtraGrid.GridLevelNode() {GridLevelNode1})
-        Me.gcPartialMatches.Location = New System.Drawing.Point(12, 19)
+        Me.gcPartialMatches.Location = New System.Drawing.Point(0, 0)
         Me.gcPartialMatches.MainView = Me.gvPartialMatches
         Me.gcPartialMatches.Name = "gcPartialMatches"
         Me.gcPartialMatches.RepositoryItems.AddRange(New DevExpress.XtraEditors.Repository.RepositoryItem() {Me.RepositoryItemRadioGroup1, Me.RepositoryItemCheckEdit1, Me.RepositoryItemCheckEdit2, Me.RepositoryItemCheckedComboBoxEdit1})
-        Me.gcPartialMatches.Size = New System.Drawing.Size(944, 656)
-        Me.gcPartialMatches.TabIndex = 0
+        Me.gcPartialMatches.Size = New System.Drawing.Size(975, 619)
+        Me.gcPartialMatches.TabIndex = 1
         Me.gcPartialMatches.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.gvPartialMatches, Me.gvNewAddresses, Me.gvOldAddresses})
         '
         'gvPartialMatches
         '
+        Me.gvPartialMatches.Appearance.EvenRow.BackColor = System.Drawing.Color.Khaki
+        Me.gvPartialMatches.Appearance.EvenRow.Options.UseBackColor = True
+        Me.gvPartialMatches.Appearance.OddRow.BackColor = System.Drawing.Color.LightBlue
+        Me.gvPartialMatches.Appearance.OddRow.Options.UseBackColor = True
         Me.gvPartialMatches.Appearance.Row.BackColor = System.Drawing.Color.White
         Me.gvPartialMatches.Appearance.Row.BorderColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
         Me.gvPartialMatches.Appearance.Row.Options.UseBackColor = True
@@ -164,7 +180,6 @@ Partial Class USPSAddressUpdateSection
         Me.gvPartialMatches.DetailTabHeaderLocation = DevExpress.XtraTab.TabHeaderLocation.Left
         Me.gvPartialMatches.GridControl = Me.gcPartialMatches
         Me.gvPartialMatches.Name = "gvPartialMatches"
-        Me.gvPartialMatches.OptionsDetail.AllowOnlyOneMasterRowExpanded = True
         Me.gvPartialMatches.OptionsDetail.ShowDetailTabs = False
         Me.gvPartialMatches.RowHeight = 40
         '
@@ -312,9 +327,69 @@ Partial Class USPSAddressUpdateSection
         Me.gvNewAddresses.OptionsView.ShowFilterPanelMode = DevExpress.XtraGrid.Views.Base.ShowFilterPanelMode.Never
         Me.gvNewAddresses.OptionsView.ShowGroupPanel = False
         '
+        'BottomPanel
+        '
+        Me.BottomPanel.Controls.Add(Me.btnApply)
+        Me.BottomPanel.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.BottomPanel.Location = New System.Drawing.Point(0, 647)
+        Me.BottomPanel.Name = "BottomPanel"
+        Me.BottomPanel.Size = New System.Drawing.Size(977, 49)
+        Me.BottomPanel.TabIndex = 1
+        '
+        'btnApply
+        '
+        Me.btnApply.Location = New System.Drawing.Point(726, 6)
+        Me.btnApply.Name = "btnApply"
+        Me.btnApply.Size = New System.Drawing.Size(75, 23)
+        Me.btnApply.TabIndex = 0
+        Me.btnApply.Text = "Apply"
+        Me.btnApply.UseVisualStyleBackColor = True
+        '
+        'USPSSectionPanel
+        '
+        Me.USPSSectionPanel.BorderColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(45, Byte), Integer), CType(CType(150, Byte), Integer))
+        Me.USPSSectionPanel.Caption = "Update Addresses"
+        Me.USPSSectionPanel.Controls.Add(Me.ActionPanel)
+        Me.USPSSectionPanel.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.USPSSectionPanel.Location = New System.Drawing.Point(0, 0)
+        Me.USPSSectionPanel.Name = "USPSSectionPanel"
+        Me.USPSSectionPanel.Padding = New System.Windows.Forms.Padding(1)
+        Me.USPSSectionPanel.ShowCaption = True
+        Me.USPSSectionPanel.Size = New System.Drawing.Size(977, 647)
+        Me.USPSSectionPanel.TabIndex = 4
+        '
+        'ActionPanel
+        '
+        Me.ActionPanel.Controls.Add(Me.ToolStrip1)
+        Me.ActionPanel.Controls.Add(Me.gcPartialMatches)
+        Me.ActionPanel.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ActionPanel.Location = New System.Drawing.Point(1, 27)
+        Me.ActionPanel.Name = "ActionPanel"
+        Me.ActionPanel.Size = New System.Drawing.Size(975, 619)
+        Me.ActionPanel.TabIndex = 1
+        '
+        'ToolStrip1
+        '
+        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnExpandAll})
+        Me.ToolStrip1.Location = New System.Drawing.Point(0, 0)
+        Me.ToolStrip1.Name = "ToolStrip1"
+        Me.ToolStrip1.Size = New System.Drawing.Size(975, 25)
+        Me.ToolStrip1.TabIndex = 2
+        Me.ToolStrip1.Text = "ToolStrip1"
+        '
+        'btnExpandAll
+        '
+        Me.btnExpandAll.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.btnExpandAll.Image = CType(resources.GetObject("btnExpandAll.Image"), System.Drawing.Image)
+        Me.btnExpandAll.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.btnExpandAll.Name = "btnExpandAll"
+        Me.btnExpandAll.Size = New System.Drawing.Size(66, 22)
+        Me.btnExpandAll.Text = "Expand All"
+        '
         'USPSAddressUpdateSection
         '
-        Me.Controls.Add(Me.gcPartialMatches)
+        Me.Controls.Add(Me.USPSSectionPanel)
+        Me.Controls.Add(Me.BottomPanel)
         Me.Name = "USPSAddressUpdateSection"
         Me.Size = New System.Drawing.Size(977, 696)
         CType(Me.gvOldAddresses, System.ComponentModel.ISupportInitialize).EndInit()
@@ -325,11 +400,31 @@ Partial Class USPSAddressUpdateSection
         CType(Me.RepositoryItemCheckEdit2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.RepositoryItemCheckedComboBoxEdit1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.gvNewAddresses, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.BottomPanel.ResumeLayout(False)
+        Me.USPSSectionPanel.ResumeLayout(False)
+        Me.ActionPanel.ResumeLayout(False)
+        Me.ActionPanel.PerformLayout()
+        Me.ToolStrip1.ResumeLayout(False)
+        Me.ToolStrip1.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
+    Friend WithEvents BottomPanel As System.Windows.Forms.Panel
+    Friend WithEvents USPSSectionPanel As Nrc.Framework.WinForms.SectionPanel
+    Friend WithEvents ActionPanel As System.Windows.Forms.Panel
+    Friend WithEvents ToolStrip1 As System.Windows.Forms.ToolStrip
     Friend WithEvents gcPartialMatches As DevExpress.XtraGrid.GridControl
+    Friend WithEvents gvOldAddresses As DevExpress.XtraGrid.Views.Grid.GridView
+    Friend WithEvents GridColumn13 As DevExpress.XtraGrid.Columns.GridColumn
+    Friend WithEvents GridColumn14 As DevExpress.XtraGrid.Columns.GridColumn
+    Friend WithEvents GridColumn15 As DevExpress.XtraGrid.Columns.GridColumn
+    Friend WithEvents GridColumn16 As DevExpress.XtraGrid.Columns.GridColumn
+    Friend WithEvents GridColumn17 As DevExpress.XtraGrid.Columns.GridColumn
+    Friend WithEvents GridColumn18 As DevExpress.XtraGrid.Columns.GridColumn
+    Friend WithEvents GridColumn19 As DevExpress.XtraGrid.Columns.GridColumn
+    Friend WithEvents GridColumn20 As DevExpress.XtraGrid.Columns.GridColumn
     Friend WithEvents gvPartialMatches As DevExpress.XtraGrid.Views.Grid.GridView
+    Friend WithEvents GridColumn1 As DevExpress.XtraGrid.Columns.GridColumn
     Friend WithEvents GridColumn2 As DevExpress.XtraGrid.Columns.GridColumn
     Friend WithEvents GridColumn3 As DevExpress.XtraGrid.Columns.GridColumn
     Friend WithEvents GridColumn4 As DevExpress.XtraGrid.Columns.GridColumn
@@ -340,21 +435,13 @@ Partial Class USPSAddressUpdateSection
     Friend WithEvents GridColumn9 As DevExpress.XtraGrid.Columns.GridColumn
     Friend WithEvents GridColumn10 As DevExpress.XtraGrid.Columns.GridColumn
     Friend WithEvents GridColumn11 As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents gvOldAddresses As DevExpress.XtraGrid.Views.Grid.GridView
-    Friend WithEvents gvNewAddresses As DevExpress.XtraGrid.Views.Grid.GridView
     Friend WithEvents GridColumn12 As DevExpress.XtraGrid.Columns.GridColumn
     Friend WithEvents RepositoryItemRadioGroup1 As DevExpress.XtraEditors.Repository.RepositoryItemRadioGroup
     Friend WithEvents RepositoryItemCheckEdit1 As DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit
     Friend WithEvents RepositoryItemCheckEdit2 As DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit
     Friend WithEvents RepositoryItemCheckedComboBoxEdit1 As DevExpress.XtraEditors.Repository.RepositoryItemCheckedComboBoxEdit
-    Friend WithEvents GridColumn13 As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents GridColumn14 As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents GridColumn15 As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents GridColumn16 As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents GridColumn17 As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents GridColumn18 As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents GridColumn19 As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents GridColumn20 As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents GridColumn1 As DevExpress.XtraGrid.Columns.GridColumn
+    Friend WithEvents gvNewAddresses As DevExpress.XtraGrid.Views.Grid.GridView
+    Friend WithEvents btnApply As System.Windows.Forms.Button
+    Friend WithEvents btnExpandAll As System.Windows.Forms.ToolStripButton
 
 End Class
