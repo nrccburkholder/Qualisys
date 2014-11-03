@@ -19,24 +19,25 @@ Partial Class MainForm
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
-        Me.StatusBar = New System.Windows.Forms.StatusStrip
-        Me.StatusLabel = New System.Windows.Forms.ToolStripStatusLabel
-        Me.UserNameLabel = New System.Windows.Forms.ToolStripStatusLabel
-        Me.VersionLabel = New System.Windows.Forms.ToolStripStatusLabel
-        Me.EnvironmentLabel = New System.Windows.Forms.ToolStripStatusLabel
-        Me.MainMenu = New System.Windows.Forms.MenuStrip
-        Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.ExitMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.StatusBar = New System.Windows.Forms.StatusStrip()
+        Me.StatusLabel = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.UserNameLabel = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.VersionLabel = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.EnvironmentLabel = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.MainMenu = New System.Windows.Forms.MenuStrip()
+        Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ExitMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.imgToolbar = New System.Windows.Forms.ImageList(Me.components)
-        Me.mnuSaveMenu = New System.Windows.Forms.ContextMenu
-        Me.mnuSaveAs = New System.Windows.Forms.MenuItem
-        Me.SplitContainer = New System.Windows.Forms.SplitContainer
-        Me.MultiPane = New Nrc.Framework.WinForms.MultiPane
-        Me.DispositionTab = New Nrc.Framework.WinForms.MultiPaneTab
-        Me.SearchTab = New Nrc.Framework.WinForms.MultiPaneTab
-        Me.MainPanel = New System.Windows.Forms.Panel
+        Me.mnuSaveMenu = New System.Windows.Forms.ContextMenu()
+        Me.mnuSaveAs = New System.Windows.Forms.MenuItem()
+        Me.SplitContainer = New System.Windows.Forms.SplitContainer()
+        Me.MultiPane = New Nrc.Framework.WinForms.MultiPane()
+        Me.DispositionTab = New Nrc.Framework.WinForms.MultiPaneTab()
+        Me.SearchTab = New Nrc.Framework.WinForms.MultiPaneTab()
+        Me.USPSAddressUpdatesTab = New Nrc.Framework.WinForms.MultiPaneTab()
+        Me.MainPanel = New System.Windows.Forms.Panel()
         Me.StatusBar.SuspendLayout()
         Me.MainMenu.SuspendLayout()
         Me.SplitContainer.Panel1.SuspendLayout()
@@ -47,9 +48,9 @@ Partial Class MainForm
         'StatusBar
         '
         Me.StatusBar.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.StatusLabel, Me.UserNameLabel, Me.VersionLabel, Me.EnvironmentLabel})
-        Me.StatusBar.Location = New System.Drawing.Point(0, 617)
+        Me.StatusBar.Location = New System.Drawing.Point(0, 615)
         Me.StatusBar.Name = "StatusBar"
-        Me.StatusBar.Size = New System.Drawing.Size(592, 22)
+        Me.StatusBar.Size = New System.Drawing.Size(592, 24)
         Me.StatusBar.TabIndex = 9
         Me.StatusBar.Text = "StatusStrip1"
         '
@@ -58,7 +59,7 @@ Partial Class MainForm
         Me.StatusLabel.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right
         Me.StatusLabel.BorderStyle = System.Windows.Forms.Border3DStyle.Etched
         Me.StatusLabel.Name = "StatusLabel"
-        Me.StatusLabel.Size = New System.Drawing.Size(419, 17)
+        Me.StatusLabel.Size = New System.Drawing.Size(413, 19)
         Me.StatusLabel.Spring = True
         Me.StatusLabel.Text = "Ready"
         Me.StatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -68,7 +69,7 @@ Partial Class MainForm
         Me.UserNameLabel.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right
         Me.UserNameLabel.BorderStyle = System.Windows.Forms.Border3DStyle.Etched
         Me.UserNameLabel.Name = "UserNameLabel"
-        Me.UserNameLabel.Size = New System.Drawing.Size(35, 17)
+        Me.UserNameLabel.Size = New System.Drawing.Size(36, 19)
         Me.UserNameLabel.Text = "JDoe"
         '
         'VersionLabel
@@ -76,13 +77,13 @@ Partial Class MainForm
         Me.VersionLabel.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right
         Me.VersionLabel.BorderStyle = System.Windows.Forms.Border3DStyle.Etched
         Me.VersionLabel.Name = "VersionLabel"
-        Me.VersionLabel.Size = New System.Drawing.Size(53, 17)
+        Me.VersionLabel.Size = New System.Drawing.Size(50, 19)
         Me.VersionLabel.Text = "v0.0.0.0"
         '
         'EnvironmentLabel
         '
         Me.EnvironmentLabel.Name = "EnvironmentLabel"
-        Me.EnvironmentLabel.Size = New System.Drawing.Size(70, 17)
+        Me.EnvironmentLabel.Size = New System.Drawing.Size(78, 19)
         Me.EnvironmentLabel.Text = "Development"
         '
         'MainMenu
@@ -98,7 +99,7 @@ Partial Class MainForm
         '
         Me.FileToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ExitMenuItem})
         Me.FileToolStripMenuItem.Name = "FileToolStripMenuItem"
-        Me.FileToolStripMenuItem.Size = New System.Drawing.Size(35, 20)
+        Me.FileToolStripMenuItem.Size = New System.Drawing.Size(37, 20)
         Me.FileToolStripMenuItem.Text = "&File"
         '
         'ExitMenuItem
@@ -132,7 +133,7 @@ Partial Class MainForm
         'SplitContainer.Panel1
         '
         Me.SplitContainer.Panel1.Controls.Add(Me.MultiPane)
-        Me.SplitContainer.Size = New System.Drawing.Size(590, 592)
+        Me.SplitContainer.Size = New System.Drawing.Size(590, 590)
         Me.SplitContainer.SplitterDistance = 217
         Me.SplitContainer.TabIndex = 10
         '
@@ -143,10 +144,11 @@ Partial Class MainForm
         Me.MultiPane.Location = New System.Drawing.Point(0, 0)
         Me.MultiPane.MaxShownTabs = 4
         Me.MultiPane.Name = "MultiPane"
-        Me.MultiPane.Size = New System.Drawing.Size(217, 592)
+        Me.MultiPane.Size = New System.Drawing.Size(217, 590)
         Me.MultiPane.TabIndex = 1
         Me.MultiPane.Tabs.Add(Me.DispositionTab)
         Me.MultiPane.Tabs.Add(Me.SearchTab)
+        Me.MultiPane.Tabs.Add(Me.USPSAddressUpdatesTab)
         '
         'DispositionTab
         '
@@ -154,6 +156,7 @@ Partial Class MainForm
         Me.DispositionTab.Cursor = System.Windows.Forms.Cursors.Hand
         Me.DispositionTab.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Bold)
         Me.DispositionTab.Icon = CType(resources.GetObject("DispositionTab.Icon"), System.Drawing.Icon)
+        Me.DispositionTab.Image = CType(resources.GetObject("DispositionTab.Image"), System.Drawing.Image)
         Me.DispositionTab.IsActive = True
         Me.DispositionTab.Location = New System.Drawing.Point(0, 0)
         Me.DispositionTab.Name = "DispositionTab"
@@ -169,6 +172,7 @@ Partial Class MainForm
         Me.SearchTab.Cursor = System.Windows.Forms.Cursors.Hand
         Me.SearchTab.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Bold)
         Me.SearchTab.Icon = CType(resources.GetObject("SearchTab.Icon"), System.Drawing.Icon)
+        Me.SearchTab.Image = CType(resources.GetObject("SearchTab.Image"), System.Drawing.Image)
         Me.SearchTab.IsActive = False
         Me.SearchTab.Location = New System.Drawing.Point(0, 32)
         Me.SearchTab.Name = "SearchTab"
@@ -178,6 +182,22 @@ Partial Class MainForm
         Me.SearchTab.TabIndex = 1
         Me.SearchTab.Text = "Respondant Search"
         '
+        'USPSAddressUpdatesTab
+        '
+        Me.USPSAddressUpdatesTab.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.USPSAddressUpdatesTab.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.USPSAddressUpdatesTab.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Bold)
+        Me.USPSAddressUpdatesTab.Icon = Nothing
+        Me.USPSAddressUpdatesTab.Image = CType(resources.GetObject("USPSAddressUpdatesTab.Image"), System.Drawing.Image)
+        Me.USPSAddressUpdatesTab.IsActive = False
+        Me.USPSAddressUpdatesTab.Location = New System.Drawing.Point(0, 64)
+        Me.USPSAddressUpdatesTab.Name = "USPSAddressUpdatesTab"
+        Me.USPSAddressUpdatesTab.NavControlId = Nothing
+        Me.USPSAddressUpdatesTab.NavControlType = Nothing
+        Me.USPSAddressUpdatesTab.Size = New System.Drawing.Size(217, 32)
+        Me.USPSAddressUpdatesTab.TabIndex = 2
+        Me.USPSAddressUpdatesTab.Text = "USPS Address Updates"
+        '
         'MainPanel
         '
         Me.MainPanel.Controls.Add(Me.SplitContainer)
@@ -185,7 +205,7 @@ Partial Class MainForm
         Me.MainPanel.Location = New System.Drawing.Point(0, 24)
         Me.MainPanel.Name = "MainPanel"
         Me.MainPanel.Padding = New System.Windows.Forms.Padding(1, 0, 1, 1)
-        Me.MainPanel.Size = New System.Drawing.Size(592, 593)
+        Me.MainPanel.Size = New System.Drawing.Size(592, 591)
         Me.MainPanel.TabIndex = 11
         '
         'MainForm
@@ -226,4 +246,5 @@ Partial Class MainForm
     Friend WithEvents DispositionTab As Nrc.Framework.WinForms.MultiPaneTab
     Friend WithEvents SearchTab As Nrc.Framework.WinForms.MultiPaneTab
     Friend WithEvents MainPanel As System.Windows.Forms.Panel
+    Friend WithEvents USPSAddressUpdatesTab As Nrc.Framework.WinForms.MultiPaneTab
 End Class

@@ -172,6 +172,7 @@
     <Compile Include="DataProviders\STUDY_EMPLOYEEProvider.vb" />
     <Compile Include="DataProviders\SurveyTypeProvider.vb" />
     <Compile Include="DataProviders\ToBeSeededProvider.vb" />
+    <Compile Include="DataProviders\USPS_ACS_Provider.vb" />
     <Compile Include="DataProviders\VendorFile_VoviciDetailProvider.vb" />
     <Compile Include="Disposition.vb" />
     <Compile Include="Enums\ApprovalModes.vb" />
@@ -343,6 +344,8 @@
     <Compile Include="SurveyType.vb" />
     <Compile Include="SurveyValidationResult.vb" />
     <Compile Include="ToBeSeeded.vb" />
+    <Compile Include="USPS_Address.vb" />
+    <Compile Include="USPS_PartialMatch.vb" />
     <Compile Include="VendorFile_VoviciDetail.vb" />
   </ItemGroup>
   <ItemGroup>
