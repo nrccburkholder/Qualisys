@@ -8,11 +8,13 @@ Public Class MainForm
     Private WithEvents popManSect As SearchWizardSection
     Private WithEvents dispoSect As DispositionSection
     'Private WithEvents adminSect As AdminSection
+    Private WithEvents uspsSect As USPSAddressUpdateSection
 
     'Navigational Controls
     Private WithEvents studyNav As StudyNavigator
     Private WithEvents dispoNav As DispositionNavigator
     Private WithEvents adminNav As AdminNavigator
+    Private WithEvents uspsNav As USPSAddressUpdateNavigator
 
     '
     Private relations As New UIRelationCollection
@@ -118,13 +120,17 @@ Public Class MainForm
         popManSect = New SearchWizardSection
         dispoSect = New DispositionSection
         'adminSect = New AdminSection
+        uspsSect = New USPSAddressUpdateSection
+
 
         studyNav = New StudyNavigator
         dispoNav = New DispositionNavigator
         adminNav = New AdminNavigator
+        uspsNav = New USPSAddressUpdateNavigator
 
         relations.Add(New UIRelation(DispositionTab, dispoNav, dispoSect))
         relations.Add(New UIRelation(SearchTab, studyNav, popManSect))
+        relations.Add(New UIRelation(USPSAddressUpdatesTab, uspsNav, uspsSect))
 
         'Initialize the selected tab
         If Me.MultiPane.Tabs.Count > 0 Then

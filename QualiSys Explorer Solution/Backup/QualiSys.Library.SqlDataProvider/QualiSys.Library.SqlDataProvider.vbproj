@@ -1,0 +1,283 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{31F9022F-D830-410D-90AE-98C59F34E552}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Nrc.QualiSys.Library.SqlDataProvider</RootNamespace>
+    <AssemblyName>Nrc.QualiSys.Library.SqlDataProvider</AssemblyName>
+    <MyType>Windows</MyType>
+    <OptionStrict>On</OptionStrict>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>QualiSys.Library.SqlDataProvider.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <Optimize>true</Optimize>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <DefineTrace>true</DefineTrace>
+    <NoWarn>42353,42354,42355</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>QualiSys.Library.SqlDataProvider.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>C:\Program Files\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Release\</OutputPath>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>C:\Program Files (x86)\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+    <NoWarn>42353,42354,42355</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Platform\NRC.Picker.SamplingService\packages\Newtonsoft.Json.6.0.4\lib\net20\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Framework, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Framework.BusinessLogic, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.BusinessLogic.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Collections.ObjectModel" />
+    <Import Include="System.Data" />
+    <Import Include="System.Data.Common" />
+    <Import Include="System.Diagnostics" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AuditLogProvider.vb" />
+    <Compile Include="ClientProvider.vb" />
+    <Compile Include="ConcurrencyLockProvider.vb" />
+    <Compile Include="BusinessRuleProvider.vb" />
+    <Compile Include="ClientGroupProvider.vb" />
+    <Compile Include="ContractedLanguageProvider.vb" />
+    <Compile Include="CoverLetterMappingProvider.vb" />
+    <Compile Include="DispositionProvider.vb" />
+    <Compile Include="HCAHPSDispositionProvider.vb" />
+    <Compile Include="HHCAHPSDispositionProvider.vb" />
+    <Compile Include="MedicareGlobalCalcDateProvider.vb" />
+    <Compile Include="MedicareGlobalCalculationDefaultProvider.vb" />
+    <Compile Include="MedicarePropCalcTypeProvider.vb" />
+    <Compile Include="MedicareProvider.vb" />
+    <Compile Include="CoverLetterProvider.vb" />
+    <Compile Include="CriteriaProvider.vb" />
+    <Compile Include="EmailBlastProvider.vb" />
+    <Compile Include="EmailBlastOptionProvider.vb" />
+    <Compile Include="MailingStepMethodProvider.vb" />
+    <Compile Include="ModeSectionMappingProvider.vb" />
+    <Compile Include="QDispositionProvider.vb" />
+    <Compile Include="EmployeeProvider.vb" />
+    <Compile Include="FacilityProvider.vb" />
+    <Compile Include="FormGenJobProvider.vb" />
+    <Compile Include="Globals.vb" />
+    <Compile Include="LanguageProvider.vb" />
+    <Compile Include="LegacySampleSetProvider.vb" />
+    <Compile Include="MailingProvider.vb" />
+    <Compile Include="MedicareRecalcHistoryProvider.vb" />
+    <Compile Include="MethodologyProvider.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="NavigationProvider.vb" />
+    <Compile Include="QualisysParamsProvider.vb" />
+    <Compile Include="QuestionSectionProvider.vb" />
+    <Compile Include="ReceiptTypeProvider.vb" />
+    <Compile Include="SamplePeriodProvider.vb" />
+    <Compile Include="SamplePeriodScheduledSampleProvider.vb" />
+    <Compile Include="SampleSetProvider.vb" />
+    <Compile Include="SampleUnitLinkingProvider.vb" />
+    <Compile Include="SampleUnitProvider.vb" />
+    <Compile Include="SampleUnitSectionMappingProvider.vb" />
+    <Compile Include="SampleUnitServiceTypeProvider.vb" />
+    <Compile Include="StoredProcs\Client_SP.vb" />
+    <Compile Include="StoredProcs\ClientGroup_SP.vb" />
+    <Compile Include="StoredProcs\ContractedLanguage_SP.vb" />
+    <Compile Include="StoredProcs\Disposition_SP.vb" />
+    <Compile Include="StoredProcs\EmailBlastOption_SP.vb" />
+    <Compile Include="StoredProcs\EmailBlast_SP.vb" />
+    <Compile Include="StoredProcs\HCAHPSDisposition_SP.vb" />
+    <Compile Include="StoredProcs\HHCAHPSDisposition_SP.vb" />
+    <Compile Include="StoredProcs\MedicareGlobalCalcDate_SP.vb" />
+    <Compile Include="StoredProcs\MedicareGlobalCalculationDefault_SP.vb" />
+    <Compile Include="StoredProcs\MedicareNumber_SP.vb" />
+    <Compile Include="StoredProcs\MedicarePropCalcType_SP.vb" />
+    <Compile Include="StoredProcs\MedicareRecalcHistory_SP.vb" />
+    <Compile Include="StoredProcs\QDisposition_SP.vb" />
+    <Compile Include="StoredProcs\ReceiptType_SP.vb" />
+    <Compile Include="StoredProcs\SampleSet_SP.vb" />
+    <Compile Include="StoredProcs\SampleUnit_SP.vb" />
+    <Compile Include="StoredProcs\SP.vb" />
+    <Compile Include="StoredProcs\STUDY_EMPLOYEE_SP.vb" />
+    <Compile Include="StoredProcs\Study_SP.vb" />
+    <Compile Include="StoredProcs\SurveyType_SP.vb" />
+    <Compile Include="StoredProcs\Survey_SP.vb" />
+    <Compile Include="StoredProcs\ToBeSeeded_SP.vb" />
+    <Compile Include="StoredProcs\VendorFile_VoviciDetail_SP.vb" />
+    <Compile Include="StudyDatasetProvider.vb" />
+    <Compile Include="StudyProvider.vb" />
+    <Compile Include="StudyTableProvider.vb" />
+    <Compile Include="STUDY_EMPLOYEEProvider.vb" />
+    <Compile Include="SurveyProvider.vb" />
+    <Compile Include="SurveyTypeProvider.vb" />
+    <Compile Include="ToBeSeededProvider.vb" />
+    <Compile Include="VendorFile_VoviciDetailProvider.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+    <None Include="SqlChangeScripts\v2.7.0.0 Add Sample Date Project\SP\QCL_InsertSurvey.sql" />
+    <None Include="SqlChangeScripts\v2.7.0.0 Add Sample Date Project\SP\QCL_SelectClientsStudiesAndSurveysByUser.sql" />
+    <None Include="SqlChangeScripts\v2.7.0.0 Add Sample Date Project\SP\QCL_SelectSurvey.sql" />
+    <None Include="SqlChangeScripts\v2.7.0.0 Add Sample Date Project\SP\QCL_SelectSurveysByStudyId.sql" />
+    <None Include="SqlChangeScripts\v2.7.0.0 Add Sample Date Project\SP\QCL_UpdateSurvey.sql" />
+    <None Include="SqlChangeScripts\v2.7.0.0 Add Sample Date Project\v2.7.0.0Deploy.script" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SqlChangeScripts\11-16-2006 - HCAHPS I4\Insert E501 Rule.sql" />
+    <Content Include="SqlChangeScripts\11-16-2006 - HCAHPS I4\QP_Prod.sql" />
+    <Content Include="SqlChangeScripts\2009-03-05 HCAHPS Hotfix\Notification Template.sql" />
+    <Content Include="SqlChangeScripts\2009-02-26 Alt Meth R2\Disposition.sql" />
+    <Content Include="SqlChangeScripts\2009-04-22 Alt Meth R3\Methodology Change Scripts.sql" />
+    <Content Include="SqlChangeScripts\2009-04-22 Alt Meth R3\MM_EmailBlast.sql" />
+    <Content Include="SqlChangeScripts\2009-04-22 Alt Meth R3\MM_EmailBlast_Option.sql" />
+    <Content Include="SqlChangeScripts\2009-04-22 Alt Meth R3\Notification Templates.sql" />
+    <Content Include="SqlChangeScripts\2009-04-22 Alt Meth R3\VendorFile_VoviciDetail.sql" />
+    <Content Include="SqlChangeScripts\v1.2 Change Script.sql" />
+    <Content Include="SqlChangeScripts\v1.1 Change Script.sql" />
+    <Content Include="SqlChangeScripts\V1.3 HCAHPS I3\Facility Migration Script.sql" />
+    <Content Include="SqlChangeScripts\V1.3 HCAHPS I3\ReValidateSurveys.sql" />
+    <Content Include="SqlChangeScripts\V1.3 HCAHPS I3\v1.3 Change Script.sql" />
+    <Content Include="SqlChangeScripts\v2.7.0.0 Add Sample Date Project\SP\Export_SampleunitAvailableCount.sql" />
+    <Content Include="SqlChangeScripts\v2.7.0.0 Add Sample Date Project\SP\QCL_InsertSampleSet.sql" />
+    <Content Include="SqlChangeScripts\v2.7.0.0 Add Sample Date Project\SP\QCL_InsertSelectedSample.sql" />
+    <Content Include="SqlChangeScripts\v2.7.0.0 Add Sample Date Project\SP\QCL_SampleSetResurveyExclusion.sql" />
+    <Content Include="SqlChangeScripts\v2.7.0.0 Add Sample Date Project\SP\QCL_SelectEncounterUnitEligibility.sql" />
+    <Content Include="SqlChangeScripts\v2.7.0.0 Add Sample Date Project\SP\QCL_SamplesetResurveyExclusion_StaticPlus.sql" />
+    <Content Include="SqlChangeScripts\v2.7.0.0 Add Sample Date Project\SP\QP_Rep_SamplePlanWorkSheetTitle.sql" />
+    <Content Include="SqlChangeScripts\v2.7.0.0 Add Sample Date Project\SP\QP_Rep_SurveyConfig01.sql" />
+    <Content Include="SqlChangeScripts\v2.7.0.0 Add Sample Date Project\SP\sp_Phase4_Big_View_Web.sql" />
+    <Content Include="SqlChangeScripts\v2.7.0.0 Add Sample Date Project\SP\sp_Samp_AddSampleSetV2.sql" />
+    <Content Include="SqlChangeScripts\v2.7.0.0 Add Sample Date Project\SP\sp_Samp_CreateTempTables.sql" />
+    <Content Include="SqlChangeScripts\v2.7.0.0 Add Sample Date Project\SP\SP_Samp_DefineDateRange.sql" />
+    <Content Include="SqlChangeScripts\v2.7.0.0 Add Sample Date Project\SP\SP_Samp_PersistantAssignment.sql" />
+    <Content Include="SqlChangeScripts\v2.7.0.0 Add Sample Date Project\SP\sp_Samp_Populate_Sampleunit_Universe.sql" />
+    <Content Include="SqlChangeScripts\v2.7.0.0 Add Sample Date Project\SP\sp_Samp_UpdateSelectedSample.sql" />
+    <Content Include="SqlChangeScripts\v2.7.0.0 Add Sample Date Project\SP\SV_HCAHPS.sql" />
+    <Content Include="SqlChangeScripts\v2.7.0.0 Add Sample Date Project\SP\SV_SurveyProperties.sql" />
+    <Content Include="SqlChangeScripts\v2.7.0.0 Add Sample Date Project\Tables\SelectedSample.sql" />
+    <Content Include="SqlChangeScripts\v2.7.0.0 Add Sample Date Project\Tables\SurveyValidationProcs.sql" />
+    <Content Include="SqlChangeScripts\v2.6.1.0 Facility Manager Hotfix\FacilityManagerHotFix.sql" />
+    <Content Include="SqlChangeScripts\v2.9 QLoader and QDE Enhancements\QP_Load.sql" />
+    <Content Include="SqlChangeScripts\v2.9 QLoader and QDE Enhancements\QP_Prod.sql" />
+    <Content Include="SqlChangeScripts\v2.7.0.0 Add Sample Date Project\Tables\Survey_Def.sql" />
+    <Content Include="SqlChangeScripts\v2.7.0.0 Add Sample Date Project\Views\Web_ClientStudySurvey_View.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\QualiSys.Library\QualiSys.Library.vbproj">
+      <Project>{191D0C34-FF61-47A6-852F-7FD91D50AD72}</Project>
+      <Name>QualiSys.Library</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

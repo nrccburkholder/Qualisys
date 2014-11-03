@@ -1,0 +1,404 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{191D0C34-FF61-47A6-852F-7FD91D50AD72}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Nrc.QualiSys.Library</RootNamespace>
+    <AssemblyName>Nrc.QualiSys.Library</AssemblyName>
+    <MyType>Windows</MyType>
+    <OptionStrict>On</OptionStrict>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>NationalResearch.snk</AssemblyOriginatorKeyFile>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>QualiSys.Library.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRules>-Microsoft.Globalization#CA1303;-Microsoft.Globalization#CA1305</CodeAnalysisRules>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <Optimize>true</Optimize>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <DefineTrace>true</DefineTrace>
+    <NoWarn>42353,42354,42355</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>QualiSys.Library.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>C:\Program Files\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisRules>-Microsoft.Globalization#CA1303;-Microsoft.Globalization#CA1305</CodeAnalysisRules>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Release\</OutputPath>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>C:\Program Files (x86)\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+    <NoWarn>42353,42354,42355</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Platform\NRC.Picker.SamplingService\packages\Newtonsoft.Json.6.0.4\lib\net20\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Framework, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Framework.BusinessLogic, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.BusinessLogic.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Framework.Notification, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.Notification.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Collections.ObjectModel" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AuditLog.vb" />
+    <Compile Include="AuditLogChange.vb" />
+    <Compile Include="Collections\ContractedLanguageCollection.vb" />
+    <Compile Include="Collections\DispositionCollection.vb" />
+    <Compile Include="Collections\EmployeeCollection.vb" />
+    <Compile Include="Collections\FacilityList.vb" />
+    <Compile Include="Collections\HCAHPSDispositionCollection.vb" />
+    <Compile Include="Collections\HHCAHPSDispositionCollection.vb" />
+    <Compile Include="Collections\MailingStepMethodCollection.vb" />
+    <Compile Include="Collections\MedicareGlobalCalcDateCollection.vb" />
+    <Compile Include="Collections\MedicareGlobalCalculationDefaultCollection.vb" />
+    <Compile Include="Collections\MedicareNumberList.vb" />
+    <Compile Include="Collections\MedicarePropCalcTypeCollection.vb" />
+    <Compile Include="Collections\MedicareRecalcHistoryCollection.vb" />
+    <Compile Include="Collections\EmailBlastCollection.vb" />
+    <Compile Include="Collections\EmailBlastOptionCollection.vb" />
+    <Compile Include="Collections\ReceiptTypeCollection.vb" />
+    <Compile Include="Collections\SampleUnitSectionMappingCollection.vb" />
+    <Compile Include="Collections\STUDY_EMPLOYEECollection.vb" />
+    <Compile Include="Collections\SubTypeList.vb" />
+    <Compile Include="Collections\SurveyTypeCollection.vb" />
+    <Compile Include="Collections\ToBeSeededCollection.vb" />
+    <Compile Include="Collections\VendorFile_VoviciDetailCollection.vb" />
+    <Compile Include="ClientGroup.vb" />
+    <Compile Include="ContractedLanguage.vb" />
+    <Compile Include="CoverLetterItem.vb" />
+    <Compile Include="CoverLetterMapping.vb" />
+    <Compile Include="DataProviders\ClientGroupProvider.vb" />
+    <Compile Include="DataProviders\ContractedLanguageProvider.vb" />
+    <Compile Include="DataProviders\CoverLetterMappingProvider.vb" />
+    <Compile Include="DataProviders\DispositionProvider.vb" />
+    <Compile Include="DataProviders\HCAHPSDispositionProvider.vb" />
+    <Compile Include="DataProviders\HHCAHPSDispositionProvider.vb" />
+    <Compile Include="DataProviders\MedicarePropCalcTypeProvider.vb" />
+    <Compile Include="DataProviders\MedicareProvider.vb" />
+    <Compile Include="DataProviders\MedicareGlobalCalcDateProvider.vb" />
+    <Compile Include="DataProviders\MedicareGlobalCalculationDefaultProvider.vb" />
+    <Compile Include="DataProviders\MedicareRecalcHistoryProvider.vb" />
+    <Compile Include="DataProviders\EmailBlastProvider.vb" />
+    <Compile Include="DataProviders\EmailBlastOptionProvider.vb" />
+    <Compile Include="DataProviders\MailingStepMethodProvider.vb" />
+    <Compile Include="DataProviders\ModeSectionMappingProvider.vb" />
+    <Compile Include="DataProviders\NavigationProvider.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataProviders\QuestionSectionProvider.vb" />
+    <Compile Include="DataProviders\SamplePeriodScheduledSampleProvider.vb" />
+    <Compile Include="DataProviders\SampleUnitSectionMappingProvider.vb" />
+    <Compile Include="DataProviders\STUDY_EMPLOYEEProvider.vb" />
+    <Compile Include="DataProviders\SurveyTypeProvider.vb" />
+    <Compile Include="DataProviders\ToBeSeededProvider.vb" />
+    <Compile Include="DataProviders\VendorFile_VoviciDetailProvider.vb" />
+    <Compile Include="Disposition.vb" />
+    <Compile Include="Enums\ApprovalModes.vb" />
+    <Compile Include="Enums\AuditLogChangeType.vb" />
+    <Compile Include="AuditLogObject.vb" />
+    <Compile Include="Collections\BusinessCollection.vb" />
+    <Compile Include="BusinessRule.vb" />
+    <Compile Include="CoverLetter.vb" />
+    <Compile Include="Criteria.vb" />
+    <Compile Include="DataProviders\AuditLogProvider.vb" />
+    <Compile Include="DataProviders\BusinessRuleProvider.vb" />
+    <Compile Include="DataProviders\CoverLetterProvider.vb" />
+    <Compile Include="DataProviders\CriteriaProvider.vb" />
+    <Compile Include="CriteriaClause.vb" />
+    <Compile Include="CriteriaInValue.vb" />
+    <Compile Include="CriteriaPhrase.vb" />
+    <Compile Include="DataProviders\FormGenJobProvider.vb" />
+    <Compile Include="DataProviders\MethodologyProvider.vb" />
+    <Compile Include="DataProviders\SampleUnitServiceTypeProvider.vb" />
+    <Compile Include="DataProviders\FacilityProvider.vb" />
+    <Compile Include="Enums\CAHPSType.vb" />
+    <Compile Include="Enums\CoverLetterItemType.vb" />
+    <Compile Include="Enums\CoverLetterMappingStatusCodes.vb" />
+    <Compile Include="Enums\CoverLetterPageType.vb" />
+    <Compile Include="Enums\HouseHoldingType.vb" />
+    <Compile Include="Enums\MailingStepMethodCodes.vb" />
+    <Compile Include="Enums\MedicareProportionCalcTypes.vb" />
+    <Compile Include="Enums\MedicareProportionDataTypes.vb" />
+    <Compile Include="Enums\PopulateDepth.vb" />
+    <Compile Include="Enums\ReportStatus.vb" />
+    <Compile Include="Enums\ResurveyMethod.vb" />
+    <Compile Include="Enums\SamplingAlgorithm.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\StudyTableColumnDataTypes.vb" />
+    <Compile Include="Enums\SubtypeCategories.vb" />
+    <Compile Include="Enums\SurveyTypes.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Exceptions\DataAccessException.vb" />
+    <Compile Include="Exceptions\DatasetRollbackException.vb" />
+    <Compile Include="Exceptions\FacilityDeletionException.vb" />
+    <Compile Include="Exceptions\InvalidMethodologyException.vb" />
+    <Compile Include="Facility.vb" />
+    <Compile Include="FacilityRegion.vb" />
+    <Compile Include="FacilityState.vb" />
+    <Compile Include="FormGenJob.vb" />
+    <Compile Include="HCAHPSDisposition.vb" />
+    <Compile Include="HHCAHPSDisposition.vb" />
+    <Compile Include="ListItem.vb" />
+    <Compile Include="Client.vb" />
+    <Compile Include="ConcurrencyLock.vb" />
+    <Compile Include="Enums\ConcurrencyLockCategory.vb" />
+    <Compile Include="ConcurrencyManager.vb" />
+    <Compile Include="DataProviders\ClientProvider.vb" />
+    <Compile Include="DataProviders\ConcurrencyLockProvider.vb" />
+    <Compile Include="DataProviders\DataProviderFactory.vb" />
+    <Compile Include="DataProviders\QDispositionProvider.vb" />
+    <Compile Include="DataProviders\EmployeeProvider.vb" />
+    <Compile Include="DataProviders\LanguageProvider.vb" />
+    <Compile Include="DataProviders\LegacySampleSetProvider.vb" />
+    <Compile Include="DataProviders\MailingProvider.vb" />
+    <Compile Include="DataProviders\QualisysParamsProvider.vb" />
+    <Compile Include="DataProviders\ReceiptTypeProvider.vb" />
+    <Compile Include="DataProviders\SamplePeriodProvider.vb" />
+    <Compile Include="DataProviders\SampleSetProvider.vb" />
+    <Compile Include="DataProviders\SampleUnitLinkingProvider.vb" />
+    <Compile Include="DataProviders\SampleUnitProvider.vb" />
+    <Compile Include="DataProviders\StudyDatasetProvider.vb" />
+    <Compile Include="DataProviders\StudyProvider.vb" />
+    <Compile Include="DataProviders\StudyTableProvider.vb" />
+    <Compile Include="MedicareGlobalCalcDate.vb" />
+    <Compile Include="MedicareGlobalCalculationDefault.vb" />
+    <Compile Include="MedicareNumber.vb" />
+    <Compile Include="MedicarePropCalcType.vb" />
+    <Compile Include="MedicareRecalcHistory.vb" />
+    <Compile Include="Methodology.vb" />
+    <Compile Include="Collections\MethodologyStepCollection.vb" />
+    <Compile Include="MailingStepMethod.vb" />
+    <Compile Include="MethodologyStepType.vb" />
+    <Compile Include="EmailBlast.vb" />
+    <Compile Include="EmailBlastOption.vb" />
+    <Compile Include="ModeSectionMapping.vb" />
+    <Compile Include="Navigation\ClientNavNode.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Navigation\ClientGroupNavNode.vb" />
+    <Compile Include="Navigation\InitialPopulationDepth.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Navigation\NavigationNode.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Navigation\NavigationNodeList.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Navigation\NavigationNodeType.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Navigation\NavigationTree.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Navigation\SampleUnit.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Navigation\StudyNavNode.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Navigation\SurveyNavNode.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="QuestionnaireType.vb" />
+    <Compile Include="QuestionSection.vb" />
+    <Compile Include="SamplePeriodScheduledSample.vb" />
+    <Compile Include="SampleUnitSectionMapping.vb" />
+    <Compile Include="SortComparer.vb" />
+    <Compile Include="StandardMethodology.vb" />
+    <Compile Include="StaticPlusAlgorithm.vb" />
+    <Compile Include="LegacySampleSet.vb" />
+    <Compile Include="CutoffDateField.vb" />
+    <Compile Include="DataProviders\SurveyProvider.vb" />
+    <Compile Include="Enums\CountryCode.vb" />
+    <Compile Include="QDisposition.vb" />
+    <Compile Include="Enums\DispositionAction.vb" />
+    <Compile Include="Collections\QDispositionCollection.vb" />
+    <Compile Include="Employee.vb" />
+    <Compile Include="Exceptions\ConcurrencyLockException.vb" />
+    <Compile Include="Exceptions\InvalidSampleUnitMappingException.vb" />
+    <Compile Include="Language.vb" />
+    <Compile Include="LockRenewalFailedEventArgs.vb" />
+    <Compile Include="LogableAttribute.vb" />
+    <Compile Include="Mailing.vb" />
+    <Compile Include="MethodologyStep.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="QualiSysParam.vb" />
+    <Compile Include="QualiSysParams.vb" />
+    <Compile Include="ReceiptType.vb" />
+    <Compile Include="SamplePeriod.vb" />
+    <Compile Include="SampleSet.vb" />
+    <Compile Include="SampleUnit.vb" />
+    <Compile Include="SampleUnitLinking.vb" />
+    <Compile Include="Collections\SampleUnitLinkingCollection.vb" />
+    <Compile Include="SampleUnitServiceType.vb" />
+    <Compile Include="Study.vb" />
+    <Compile Include="StudyDataset.vb" />
+    <Compile Include="StudyDatasetDateRange.vb" />
+    <Compile Include="StudyTable.vb" />
+    <Compile Include="StudyTableColumn.vb" />
+    <Compile Include="Collections\StudyTableColumnCollection.vb" />
+    <Compile Include="STUDY_EMPLOYEE.vb" />
+    <Compile Include="Survey.vb" />
+    <Compile Include="Enums\SurveyCutoffFieldType.vb" />
+    <Compile Include="Enums\SampleSelectionType.vb" />
+    <Compile Include="SubType.vb" />
+    <Compile Include="SurveyType.vb" />
+    <Compile Include="SurveyValidationResult.vb" />
+    <Compile Include="ToBeSeeded.vb" />
+    <Compile Include="VendorFile_VoviciDetail.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="QualisysLibraryClassDiagram.cd" />
+    <None Include="Diagrams\ClassDiagram.cd" />
+    <None Include="Diagrams\Enumerations.cd" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="NationalResearch.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SamplingLocked16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SamplingUnlocked16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

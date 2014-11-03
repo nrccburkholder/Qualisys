@@ -340,10 +340,6 @@ Public Class SampleUnitCoverLetterMappingEditor
 
         'Get a list of all the artifacts for this survey
         mArtifactList = CoverLetter.GetBySurveyIdAndPageType(mModule.Survey.Id, CoverLetterPageType.Artifact)
-        gcArtifacts.DataSource = GetCoverLetters(mArtifactList)
-        'gvArtifacts.ClearSelection()
-        gvArtifacts.FocusedRowHandle = DevExpress.XtraGrid.GridControl.InvalidRowHandle
-
 
         ' gcArtifacts is a custom control (Controls/CustomGridControl.vb) inheriting the DevExpress GridControl.
         ' It is used because the base GridControl did not allow clearing of selected row

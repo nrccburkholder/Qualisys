@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Tahoma" Size="8.25" />
+  <Comment CommentText="Qualisys Class Library Enumerations">
+    <Position X="2.896" Y="0.635" Height="0.438" Width="2.065" />
+  </Comment>
+  <Enum Name="Nrc.QualiSys.Library.ConcurrencyLockCategory">
+    <Position X="3" Y="1.5" Width="2" />
+    <TypeIdentifier>
+      <FileName>Enums\ConcurrencyLockCategory.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAABAAAAAAAAAAQAACAIAEAAAQ=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Nrc.QualiSys.Library.CountryCode">
+    <Position X="5.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Enums\CountryCode.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAABAAAAAEAAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Nrc.QualiSys.Library.DispositionAction">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Enums\DispositionAction.vb</FileName>
+      <HashCode>AAAACACACQAAAAAAAgAAAABAAAAAAAAAAAAAAAEAAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Nrc.QualiSys.Library.SamplingAlgorithm">
+    <Position X="3" Y="5.75" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>Enums\SamplingAlgorithm.vb</FileName>
+      <HashCode>AAAAACAAAAAAAAABAAAAAAAAAAAAAAAEAAAAAAEAAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Nrc.QualiSys.Library.CutoffFieldType">
+    <Position X="7.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Enums\SurveyCutoffFieldType.vb</FileName>
+      <HashCode>BAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Nrc.QualiSys.Library.AuditLogChangeType">
+    <Position X="0.5" Y="1.5" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>Enums\AuditLogChangeType.vb</FileName>
+      <HashCode>AAYAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAEAAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Nrc.QualiSys.Library.HouseHoldingType">
+    <Position X="3" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Enums\HouseHoldingType.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAEAACA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Nrc.QualiSys.Library.ReportStatus">
+    <Position X="5.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Enums\ReportStatus.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAIAAAAEAAAAAAAAAAAAAEAAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Nrc.QualiSys.Library.ResurveyMethod">
+    <Position X="7.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Enums\ResurveyMethod.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUAAAI=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Nrc.QualiSys.Library.SampleSelectionType">
+    <Position X="0.5" Y="5.75" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>Enums\SampleSelectionType.vb</FileName>
+      <HashCode>AQAACAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAEAAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Nrc.QualiSys.Library.SurveyType">
+    <Position X="5.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Enums\SurveyType.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAECCAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+</ClassDiagram>

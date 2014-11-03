@@ -1,0 +1,27 @@
+Partial Public NotInheritable Class SP
+
+    Public Const SelectSampleSet As String = "QCL_SelectSampleSet"
+    Public Const SelectSampleSetsByPeriod As String = "QCL_SelectSampleSetsByPeriod"
+    Public Const SelectExistingSampleSetsBySurvey As String = "QCL_SelectExistingSampleSetsBySurvey"
+    Public Const SelectEncounterUnitEligibility As String = "QCL_SelectEncounterUnitEligibility"
+    Public Const SelectOutGoNeeded As String = "QCL_SelectOutGoNeeded"
+    Public Const SelectHCAHPSEligibleEncountersBySampleSetID As String = "QCL_GetHCAHPSEligibleCount"
+    Public Const InsertSampleSet As String = "QCL_InsertSampleSet"
+    Public Const InsertSamplePop As String = "QCL_InsertSamplePop"
+    Public Const InsertSelectedSample As String = "QCL_InsertSelectedSample"
+    Public Const InsertSampleDataSet As String = "QCL_InsertSampleDataSet"
+    Public Const InsertSampleSetInPeriod As String = "QCL_InsertSampleSetInPeriod"
+    Public Const InsertDQRuleIntoSPWDQCOUNTS As String = "QCL_InsertDQRuleIntoSPWDQCOUNTS"
+    Public Const InsertRemovedRulesIntoSPWDQCOUNTS As String = "QCL_InsertRemovedRulesIntoSPWDQCOUNTS"
+    Public Const DeleteSampleSet As String = "QCL_DeleteSampleSet"
+    Public Const UpdateSamplePlanWorksheet As String = "QCL_UpdateSamplePlanWorksheet"
+    Public Const UpdateSampleSetPostSample As String = "QCL_UpdateSampleSetPostSample"
+    Public Const ScheduleSampleSetGeneration As String = "QCL_Samp_ScheduleSampleSetGeneration"
+    Public Const UnscheduleSampleSetGeneration As String = "QCL_Samp_UnscheduleSampleSetGeneration"
+    Public Const UpdateSampleSetUnitTarget As String = "QCL_UpdateSampleSetUnitTarget"
+    Public Const InsertSampleSetMedicareCalcLookup As String = "QCL_InsertSampleSetMedicareCalcLookup"
+    Public Const InsertSampleSetExclusionLog As String = "QCL_InsertSampleSetExclusionLog"
+    Public Const InsertSamplingLog As String = "QCL_InsertSamplingLog"
+    Public Const PopulateSeedMailingInfo As String = "QCL_PopulateSeedMailingInfo"
+
+End Class

@@ -198,6 +198,7 @@
     <Compile Include="SurveyProvider.vb" />
     <Compile Include="SurveyTypeProvider.vb" />
     <Compile Include="ToBeSeededProvider.vb" />
+    <Compile Include="USPS_ACS_Provider.vb" />
     <Compile Include="VendorFile_VoviciDetailProvider.vb" />
   </ItemGroup>
   <ItemGroup>
