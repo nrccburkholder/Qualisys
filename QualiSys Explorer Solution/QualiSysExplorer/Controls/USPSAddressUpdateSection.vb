@@ -1,5 +1,11 @@
 ﻿Imports Nrc.QualiSys.Library
 Imports System.Collections.Generic
+Imports DevExpress.XtraGrid.Views.Base
+Imports DevExpress.XtraGrid.Views.Grid.ViewInfo
+Imports DevExpress.Utils
+Imports DevExpress.XtraGrid.Views.Grid
+Imports DevExpress.XtraGrid.Columns
+Imports DevExpress.XtraEditors.Repository
 
 Public Class USPSAddressUpdateSection
 
@@ -7,10 +13,22 @@ Public Class USPSAddressUpdateSection
 
     Private mUSPS_PartialMatchesList As New List(Of USPS_PartialMatch)
     Private mIsExpanded As Boolean = False
+    Private newRepositoryItem As New DevExpress.XtraEditors.Repository.RepositoryItem
 #End Region
 
 #Region "event handlers"
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks>Suppresses the RadioGroup column in the filterRow</remarks>
+    Private Sub gvPartialMatches_CustomRowCellEdit(sender As Object, e As DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventArgs) Handles gvPartialMatches.CustomRowCellEdit
+        If gvPartialMatches.IsFilterRow(e.RowHandle) AndAlso e.Column.FieldName = "Action" Then
+            e.RepositoryItem = newRepositoryItem
+        End If
+    End Sub
 
     Private Sub btnExpandAll_Click(sender As System.Object, e As System.EventArgs) Handles btnExpandAll.Click
         If mIsExpanded Then
