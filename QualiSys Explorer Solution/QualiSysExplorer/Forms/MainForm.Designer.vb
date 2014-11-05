@@ -196,7 +196,7 @@ Partial Class MainForm
         Me.USPSAddressUpdatesTab.NavControlType = Nothing
         Me.USPSAddressUpdatesTab.Size = New System.Drawing.Size(217, 32)
         Me.USPSAddressUpdatesTab.TabIndex = 2
-        Me.USPSAddressUpdatesTab.Text = "USPS Address Updates"
+        Me.USPSAddressUpdatesTab.Text = "USPS Address Update"
         '
         'MainPanel
         '
