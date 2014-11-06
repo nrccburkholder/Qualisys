@@ -323,22 +323,22 @@ Public Class ChangeAddressPanel
 
             'Set the address objects values
             With addr
-                .StreetLine1 = Address1.Text
-                .StreetLine2 = Address2.Text
-                .City = City.Text
+                .OriginalAddress.StreetLine1 = Address1.Text
+                .OriginalAddress.StreetLine2 = Address2.Text
+                .OriginalAddress.City = City.Text
             End With
 
             Select Case SelectedCountry
                 Case CountryIDs.US
                     With addr
-                        .State = SelectedState.Value
-                        .Zip5 = PostalCode.Text
+                        .OriginalAddress.State = SelectedState.Value
+                        .OriginalAddress.Zip5 = PostalCode.Text
                     End With
 
                 Case CountryIDs.Canada
                     With addr
-                        .Province = SelectedState.Value
-                        .Postal = PostalCode.Text
+                        .OriginalAddress.Province = SelectedState.Value
+                        .OriginalAddress.Postal = PostalCode.Text
                     End With
 
                 Case Else
@@ -354,24 +354,24 @@ Public Class ChangeAddressPanel
 
             'Set the returned address
             With addr
-                Address1.Text = .NewStreetLine1
-                Address2.Text = .NewStreetLine2
-                City.Text = .NewCity
+                Address1.Text = .CleanedAddress.StreetLine1
+                Address2.Text = .CleanedAddress.StreetLine2
+                City.Text = .CleanedAddress.City
 
                 Select Case SelectedCountry
                     Case CountryIDs.US
-                        PostalCode.Text = String.Format("{0}-{1}", .NewZip5, .NewZip4)
-                        SetState(addr.NewState)
+                        PostalCode.Text = String.Format("{0}-{1}", .CleanedAddress.Zip5, .CleanedAddress.Zip4)
+                        SetState(.CleanedAddress.State)
 
                         'Change address USA
-                        Mailing.ChangeRespondentAddress(Disposition.Id, ReceiptType.Id, CurrentUser.UserName, .NewStreetLine1, .NewStreetLine2, .NewCity, .DeliveryPoint, .NewState, .NewZip5, .NewZip4, .AddressStatus, .AddressError)
+                        Mailing.ChangeRespondentAddress(Disposition.Id, ReceiptType.Id, CurrentUser.UserName, .CleanedAddress.StreetLine1, .CleanedAddress.StreetLine2, .CleanedAddress.City, .CleanedAddress.DeliveryPoint, .CleanedAddress.State, .CleanedAddress.Zip5, .CleanedAddress.Zip4, .CleanedAddress.AddressStatus, .CleanedAddress.AddressError)
 
                     Case CountryIDs.Canada
-                        PostalCode.Text = .NewPostal
-                        SetState(.NewProvince)
+                        PostalCode.Text = .CleanedAddress.Postal
+                        SetState(.CleanedAddress.Province)
 
                         'Change address CA
-                        Mailing.ChangeRespondentAddress(Disposition.Id, ReceiptType.Id, CurrentUser.UserName, .NewStreetLine1, .NewStreetLine2, .NewCity, .DeliveryPoint, .NewProvince, .NewPostal, .AddressStatus, .AddressError)
+                        Mailing.ChangeRespondentAddress(Disposition.Id, ReceiptType.Id, CurrentUser.UserName, .CleanedAddress.StreetLine1, .CleanedAddress.StreetLine2, .CleanedAddress.City, .CleanedAddress.DeliveryPoint, .CleanedAddress.Province, .CleanedAddress.Postal, .CleanedAddress.AddressStatus, .CleanedAddress.AddressError)
 
                 End Select
 
