@@ -467,6 +467,7 @@ type
     Function GetRawText(r:trichedit):string;
     procedure DeleteAllForeignRecs(const Lang:string);
     function DuplicatePageName(pageName : string; index : integer) : boolean;
+    procedure NewCoverLetter(s : string; forceCopy : boolean);
   public
    procedure ShowProps;
    function LunchWithHandle(s:string):boolean;
@@ -3072,7 +3073,8 @@ var I : integer;
       for i := 0 to ElementList.count-1 do
         if isTextBox(ElementList[i]) then
           if (tDQPanel(ElementList[i]).TextBoxName <> '') and
-             ((Pos(pagetabs[pg].description + '.' + tDQPanel(ElementList[i]).TextBoxName, sThisMapping) = 1) or
+             ((Pos(pagetabs[pg].description + '.' + tDQPanel(ElementList[i]).TextBoxName, sThisMapping) =
+              Pos('->',sThisMapping) + 2) or
              (Pos(pagetabs[pg].description + '.' + tDQPanel(ElementList[i]).TextBoxName, sThisMapping) =
               Pos('<=',sThisMapping) + 2)) then
             begin
@@ -3260,9 +3262,8 @@ begin
         result := true;
 end;
 
-procedure TF_DynaQ.CoverLetter1Click(Sender: TObject);
-var s : string;
-    i : integer;
+procedure TF_DynaQ.NewCoverLetter(s : string; forceCopy : boolean);
+var i : integer;
   procedure AssignNewID(const ii:integer);
   begin
     if isTextBox(elementlist[ii]) then begin
@@ -3285,26 +3286,35 @@ var s : string;
     end;
   end;
 begin
-  s := InputBox('Enter Name','What''s the new letter''s name?','Cover'+inttostr(tabset1.tabs.count+1));
-  if (s <> '') and not DuplicatePageName(s,-1) and
-    not DuplicatePageName('['+s+']',-1) and (pos('[',s) = 0) and (pos(']',s) = 0) then
     with Tabset1 do begin
       SaveCover(tabindex);
       if NewPage(tabs.count,s,pagetabs[tabindex].integrated,pagetabs[tabindex].letterhead,1) then begin
         cbItemSelector.Items.Clear;
-        if elementlist.count > 0 then
-          if MessageDlg('Do you want to copy everything from '+tabs[tabindex]+'?',
-              mtConfirmation, [mbYes, mbNo], 0) = mrYes then begin
+        if elementlist.count > 0 then begin
+          if not forceCopy then
+             forceCopy := (MessageDlg('Do you want to copy everything from '+tabs[tabindex]+'?',
+              mtConfirmation, [mbYes, mbNo], 0) = mrYes);
+          if forceCopy then begin
             for i := 0 to elementlist.count-1 do
               AssignNewID(i);
             SaveCover(tabs.count-1);
           end;
+        end;
         FireTabChangeEvent := false;
         TabIndex := tabs.count-1;
         FireTabChangeEvent := true;
         LoadCover(tabs.count-1);
       end;
     end
+end;
+
+procedure TF_DynaQ.CoverLetter1Click(Sender: TObject);
+var s : string;
+begin
+  s := InputBox('Enter Name','What''s the new letter''s name?','Cover'+inttostr(tabset1.tabs.count+1));
+  if (s <> '') and not DuplicatePageName(s,-1) and
+    not DuplicatePageName('['+s+']',-1) and (pos('[',s) = 0) and (pos(']',s) = 0) then
+    NewCoverLetter(s, false)
   else
     showmessage('Cover Letter Name Invalid: ' + s);
 end;

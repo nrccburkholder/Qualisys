@@ -304,6 +304,7 @@ type
     procedure FoxProPRG(fn:string);
 {$IFDEF FormLayout}
     function MappedSections:boolean;
+    function MappedSampleUnitsByCL(coverLetter : string) : string;
     function MappedTextBoxesByCL(coverLetter : string) : string;
     procedure CodeReport(const fn:string);
     function FindNextUntranslated:char;
@@ -1101,6 +1102,31 @@ begin
   rs:=unassigned;
 end;
 
+function TDMOpenQ.MappedSampleUnitsByCL(coverLetter : string) : string;
+begin
+  result := '';
+
+  if not laptop then
+    {with ww_Query do }begin
+      {ww_Query.close;}
+      ww_Query.databasename := '_QualPro';
+      ww_Query.sql.clear;
+      ww_Query.sql.add('select SampleUnit_ID, STRSampleUnit_NM from SampleUnit where sampleunit_id in'+
+              ' (select SampleUnit_id from CoverLetterItemArtifactUnitMapping where survey_id = ' + inttostr(glbSurveyID) );
+      if coverLetter <> '' then
+         ww_Query.sql.add(' and (CoverLetter_dsc = ''' + coverLetter + ''')' );
+      ww_Query.sql.add(')');
+      ww_Query.sql.add(' order by STRSampleUnit_NM');
+      ww_Query.open;
+      while not ww_Query.eof do begin
+         result := result + trimright(ww_Query.fieldbyname('SampleUnit_id').AsString) + '=';
+         result := result + trimright(ww_Query.fieldbyname('STRSampleUnit_NM').AsString) + ';';
+         ww_Query.next;
+      end;
+      ww_Query.close;
+    end;
+end ;
+
 function TDMOpenQ.MappedTextBoxesByCL(coverLetter : string) : string;
 begin
   result := '';
@@ -1110,15 +1136,16 @@ begin
       {ww_Query.close;}
       ww_Query.databasename := '_QualPro';
       ww_Query.sql.clear;
-      ww_Query.sql.add('select CoverLetter_dsc, CoverLetterItem_label, Artifact_dsc, ArtifactItem_label'+
+      ww_Query.sql.add('select SampleUnit_id, CoverLetter_dsc, CoverLetterItem_label, Artifact_dsc, ArtifactItem_label'+
               ' from CoverLetterItemArtifactUnitMapping' +
-              ' where survey_id = ' + inttostr(glbSurveyID));
+              ' where CoverLetterItemType_id = 1 and survey_id = ' + inttostr(glbSurveyID));
       if coverLetter <> '' then
          ww_Query.sql.add(' and ((CoverLetter_dsc = ''' + coverLetter + ''')' +
                  ' or (Artifact_dsc = ''' + coverLetter + '''))');
       ww_Query.sql.add(' order by CoverLetter_dsc, CoverLetterItem_label');
       ww_Query.open;
       while not ww_Query.eof do begin
+        result := result + trimright(ww_Query.fieldbyname('SampleUnit_id').AsString) + '->' ;
         result := result + trimright(ww_Query.fieldbyname('CoverLetter_dsc').AsString) + '.' + trimright(ww_Query.fieldbyname('CoverLetterItem_label').AsString) + '<=';
         result := result + trimright(ww_Query.fieldbyname('Artifact_dsc').AsString) + '.' + trimright(ww_Query.fieldbyname('ArtifactItem_label').AsString) + '! ';
         ww_Query.next;

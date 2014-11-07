@@ -48,6 +48,8 @@ type
     Label1: TLabel;
     seCopies: TSpinEdit;
     btnPreview: TButton;
+    checkListSampleUnits: TCheckListBox;
+    lblSampleUnits: TLabel;
     procedure btnChangePrinterClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ComboCoverLtrChange(Sender: TObject);
@@ -61,7 +63,7 @@ type
     procedure seCopiesExit(Sender: TObject);
   private
     { Private declarations }
-    SectionID,CoverID : array[0..100] of integer;
+    SectionID,CoverID,SampleUnitID : array[0..100] of integer;
     PageType : array[0..100] of byte;
     procedure IncludeQstns(const PT:integer);
     procedure CheckListSectionsEnable(const en:boolean);
@@ -70,7 +72,7 @@ type
     procedure SetCover;
     procedure ResetCover;
     function installDQCalcPrn : Boolean;
-
+    procedure SetupSampleUnits(coverLetterName : string);
   public
     { Public declarations }
   end;
@@ -170,11 +172,31 @@ begin
     filtered := true;
     EnableControls;
   end;
+  //TODO CJB Populate new checklistSampleUnits from mappings for the selected cover letter from dmOpenQ.MappedSampleUnitsByCL
+  SetupSampleUnits(ComboCoverLtr.Items[ComboCoverLtr.ItemIndex]);
+end;
+
+procedure TfrmMyPrintDlg.SetupSampleUnits(coverLetterName : string);
+var sSampleUnits : string;
+    i : integer;
+begin
+   sSampleUnits := dmOpenQ.MappedSampleUnitsByCL(coverLetterName);
+   checklistSampleUnits.Items.Clear();
+   i := 0;
+   while sSampleUnits <> '' do begin
+      SampleUnitId[i] := StrToInt(Copy(sSampleUnits,0,Pos('=',sSampleUnits) - 1));
+      checkListSampleUnits.Items.add(Copy(sSampleUnits,Pos('=',sSampleUnits) + 1, Pos(';',sSampleUnits) - Pos('=',sSampleUnits) - 1));
+
+      sSampleUnits := Copy(sSampleUnits, Pos(';', sSampleUnits) + 1, length(sSampleUnits) - Pos(';', sSampleUnits));
+      inc(i);
+   end ;
 end;
 
 procedure TfrmMyPrintDlg.ComboCoverLtrChange(Sender: TObject);
 begin
   IncludeQstns(PageType[ComboCoverLtr.itemindex]);
+  //TODO CJB update checklistSampleUnits from mappings for the selected cover letter
+  SetupSampleUnits(ComboCoverLtr.Items[ComboCoverLtr.ItemIndex]);
 end;
 
 procedure TfrmMyPrintDlg.cbIncludeQstnsClick(Sender: TObject);
