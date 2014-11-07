@@ -228,7 +228,7 @@ Public Class ChangeAddressPanel
 
     Private ReadOnly Property SelectedCountry() As CountryIDs
         Get
-            Select Case Country.Text.ToUpper
+            Select Case Country.Text.ToUpper()
                 Case "UNITED STATES"
                     Return CountryIDs.US
 
@@ -345,6 +345,7 @@ Public Class ChangeAddressPanel
                     Throw New ArgumentException("Unable to determine a valid country code.")
 
             End Select
+
 
             'Determine if we need to use a web proxy
             Dim forceProxy As Boolean = ((AppConfig.Params("WebServiceProxyRequiredClient").IntegerValue = 1) OrElse System.Diagnostics.Debugger.IsAttached)

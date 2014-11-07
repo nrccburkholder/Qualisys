@@ -176,6 +176,14 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\block.png" />
+    <None Include="Resources\greencheck.png" />
+    <None Include="Resources\usps_icon4_disabled.png" />
+    <None Include="Resources\usps_icon4.png" />
+    <None Include="Resources\questionmark.png" />
+    <None Include="Resources\questionmark.jpg" />
+    <None Include="Resources\block.jpg" />
+    <None Include="Resources\cancel.bmp" />
     <None Include="Resources\Filter16.png" />
     <EmbeddedResource Include="Controls\USPSAddressUpdateNavigator.resx">
       <DependentUpon>USPSAddressUpdateNavigator.vb</DependentUpon>
@@ -204,6 +212,17 @@
     </Compile>
     <Compile Include="Classes\ExpandableList.vb">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Classes\FillGridColumn.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Classes\FillGridColumnCollection.vb" />
+    <Compile Include="Classes\FillGridInfoRegistrator.vb" />
+    <Compile Include="Classes\FillGridView.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Classes\GridControlOverride.vb">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Classes\GroupItem.vb">
       <SubType>Code</SubType>

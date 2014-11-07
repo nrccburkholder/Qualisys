@@ -19,6 +19,7 @@ Partial Class USPSAddressUpdateSection
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim GridLevelNode1 As DevExpress.XtraGrid.GridLevelNode = New DevExpress.XtraGrid.GridLevelNode()
         Me.gvOldAddresses = New DevExpress.XtraGrid.Views.Grid.GridView()
         Me.GridColumn21 = New DevExpress.XtraGrid.Columns.GridColumn()
@@ -30,23 +31,20 @@ Partial Class USPSAddressUpdateSection
         Me.GridColumn18 = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.GridColumn19 = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.GridColumn20 = New DevExpress.XtraGrid.Columns.GridColumn()
-        Me.gcPartialMatches = New DevExpress.XtraGrid.GridControl()
-        Me.gvPartialMatches = New DevExpress.XtraGrid.Views.Grid.GridView()
-        Me.GridColumn1 = New DevExpress.XtraGrid.Columns.GridColumn()
-        Me.GridColumn23 = New DevExpress.XtraGrid.Columns.GridColumn()
-        Me.GridColumn2 = New DevExpress.XtraGrid.Columns.GridColumn()
-        Me.GridColumn3 = New DevExpress.XtraGrid.Columns.GridColumn()
-        Me.GridColumn4 = New DevExpress.XtraGrid.Columns.GridColumn()
-        Me.GridColumn5 = New DevExpress.XtraGrid.Columns.GridColumn()
-        Me.GridColumn6 = New DevExpress.XtraGrid.Columns.GridColumn()
-        Me.GridColumn7 = New DevExpress.XtraGrid.Columns.GridColumn()
-        Me.GridColumn8 = New DevExpress.XtraGrid.Columns.GridColumn()
-        Me.GridColumn9 = New DevExpress.XtraGrid.Columns.GridColumn()
-        Me.GridColumn10 = New DevExpress.XtraGrid.Columns.GridColumn()
-        Me.GridColumn11 = New DevExpress.XtraGrid.Columns.GridColumn()
-        Me.GridColumn22 = New DevExpress.XtraGrid.Columns.GridColumn()
-        Me.GridColumn12 = New DevExpress.XtraGrid.Columns.GridColumn()
-        Me.RepositoryItemRadioGroup1 = New DevExpress.XtraEditors.Repository.RepositoryItemRadioGroup()
+        Me.gcPartialMatches = New Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.GridControlOverride()
+        Me.gvPartialMatches = New Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridView()
+        Me.colStatusImage = New Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridColumn()
+        Me.RepositoryItemPictureEdit1 = New DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit()
+        Me.colPartialMatchId = New Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridColumn()
+        Me.colPartialMatchDateReceived = New Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridColumn()
+        Me.colPartialMatchStudyId = New Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridColumn()
+        Me.colPartialMatchPopId = New Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridColumn()
+        Me.colPartialMatchLithocode = New Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridColumn()
+        Me.colPartialMatchUpdate = New Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridColumn()
+        Me.RepositoryItemCheckEdit1 = New DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit()
+        Me.colPartialMatchIgnore = New Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridColumn()
+        Me.FillGridColumn1 = New Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridColumn()
+        Me.colRightFill = New Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridColumn()
         Me.gvNewAddresses = New DevExpress.XtraGrid.Views.Grid.GridView()
         Me.GridView1 = New DevExpress.XtraGrid.Views.Grid.GridView()
         Me.BottomPanel = New System.Windows.Forms.Panel()
@@ -54,26 +52,28 @@ Partial Class USPSAddressUpdateSection
         Me.USPSSectionPanel = New Nrc.Framework.WinForms.SectionPanel()
         Me.ActionPanel = New System.Windows.Forms.Panel()
         Me.TopPanel = New System.Windows.Forms.Panel()
-        Me.btnClearnUpdateIgnore = New System.Windows.Forms.Button()
-        Me.rbtnIgnoreAll = New System.Windows.Forms.RadioButton()
-        Me.rbtnUpdateAll = New System.Windows.Forms.RadioButton()
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.btnApplyDateRangeFilter = New System.Windows.Forms.Button()
-        Me.DateTimePicker2 = New System.Windows.Forms.DateTimePicker()
         Me.Label2 = New System.Windows.Forms.Label()
-        Me.DateTimePicker1 = New System.Windows.Forms.DateTimePicker()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.chkIgnoreAll = New DevExpress.XtraEditors.CheckEdit()
+        Me.chkUpdateAll = New DevExpress.XtraEditors.CheckEdit()
         Me.btnExpandAll = New System.Windows.Forms.Button()
+        Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
         CType(Me.gvOldAddresses, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.gcPartialMatches, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.gvPartialMatches, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.RepositoryItemRadioGroup1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.RepositoryItemPictureEdit1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.RepositoryItemCheckEdit1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.gvNewAddresses, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.GridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.BottomPanel.SuspendLayout()
         Me.USPSSectionPanel.SuspendLayout()
         Me.ActionPanel.SuspendLayout()
         Me.TopPanel.SuspendLayout()
-        Me.GroupBox1.SuspendLayout()
+        CType(Me.chkIgnoreAll.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.chkUpdateAll.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.ContextMenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'gvOldAddresses
@@ -102,6 +102,7 @@ Partial Class USPSAddressUpdateSection
         Me.GridColumn21.OptionsColumn.ShowCaption = False
         Me.GridColumn21.Visible = True
         Me.GridColumn21.VisibleIndex = 0
+        Me.GridColumn21.Width = 50
         '
         'GridColumn13
         '
@@ -171,12 +172,12 @@ Partial Class USPSAddressUpdateSection
         '
         Me.gcPartialMatches.Dock = System.Windows.Forms.DockStyle.Fill
         GridLevelNode1.LevelTemplate = Me.gvOldAddresses
-        GridLevelNode1.RelationName = "FK_PopAddress_OldAddress"
+        GridLevelNode1.RelationName = "FK_Master_Detail"
         Me.gcPartialMatches.LevelTree.Nodes.AddRange(New DevExpress.XtraGrid.GridLevelNode() {GridLevelNode1})
         Me.gcPartialMatches.Location = New System.Drawing.Point(0, 81)
         Me.gcPartialMatches.MainView = Me.gvPartialMatches
         Me.gcPartialMatches.Name = "gcPartialMatches"
-        Me.gcPartialMatches.RepositoryItems.AddRange(New DevExpress.XtraEditors.Repository.RepositoryItem() {Me.RepositoryItemRadioGroup1})
+        Me.gcPartialMatches.RepositoryItems.AddRange(New DevExpress.XtraEditors.Repository.RepositoryItem() {Me.RepositoryItemPictureEdit1, Me.RepositoryItemCheckEdit1})
         Me.gcPartialMatches.Size = New System.Drawing.Size(975, 538)
         Me.gcPartialMatches.TabIndex = 5
         Me.gcPartialMatches.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.gvPartialMatches, Me.gvNewAddresses, Me.GridView1, Me.gvOldAddresses})
@@ -191,155 +192,151 @@ Partial Class USPSAddressUpdateSection
         Me.gvPartialMatches.Appearance.Row.BorderColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
         Me.gvPartialMatches.Appearance.Row.Options.UseBackColor = True
         Me.gvPartialMatches.Appearance.Row.Options.UseBorderColor = True
-        Me.gvPartialMatches.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.GridColumn1, Me.GridColumn23, Me.GridColumn2, Me.GridColumn3, Me.GridColumn4, Me.GridColumn5, Me.GridColumn6, Me.GridColumn7, Me.GridColumn8, Me.GridColumn9, Me.GridColumn10, Me.GridColumn11, Me.GridColumn22, Me.GridColumn12})
+        Me.gvPartialMatches.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.colStatusImage, Me.colPartialMatchId, Me.colPartialMatchDateReceived, Me.colPartialMatchStudyId, Me.colPartialMatchPopId, Me.colPartialMatchLithocode, Me.colPartialMatchUpdate, Me.colPartialMatchIgnore, Me.colRightFill, Me.FillGridColumn1})
         Me.gvPartialMatches.DetailHeight = 550
         Me.gvPartialMatches.DetailTabHeaderLocation = DevExpress.XtraTab.TabHeaderLocation.Left
         Me.gvPartialMatches.GridControl = Me.gcPartialMatches
         Me.gvPartialMatches.Name = "gvPartialMatches"
         Me.gvPartialMatches.OptionsDetail.ShowDetailTabs = False
+        Me.gvPartialMatches.OptionsView.ColumnAutoWidth = False
         Me.gvPartialMatches.OptionsView.ShowAutoFilterRow = True
         Me.gvPartialMatches.OptionsView.ShowFooter = True
-        Me.gvPartialMatches.RowHeight = 40
+        Me.gvPartialMatches.RowHeight = 24
         '
-        'GridColumn1
+        'colStatusImage
         '
-        Me.GridColumn1.Caption = "Id"
-        Me.GridColumn1.FieldName = "Id"
-        Me.GridColumn1.Name = "GridColumn1"
-        Me.GridColumn1.OptionsFilter.AllowAutoFilter = False
-        Me.GridColumn1.OptionsFilter.AllowFilter = False
-        Me.GridColumn1.Visible = True
-        Me.GridColumn1.VisibleIndex = 0
-        Me.GridColumn1.Width = 74
+        Me.colStatusImage.AppearanceHeader.Options.UseTextOptions = True
+        Me.colStatusImage.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center
+        Me.colStatusImage.Caption = "Status"
+        Me.colStatusImage.ColumnEdit = Me.RepositoryItemPictureEdit1
+        Me.colStatusImage.FieldName = "Image"
+        Me.colStatusImage.FillEmptySpace = False
+        Me.colStatusImage.Name = "colStatusImage"
+        Me.colStatusImage.OptionsColumn.AllowEdit = False
+        Me.colStatusImage.UnboundType = DevExpress.Data.UnboundColumnType.[Object]
+        Me.colStatusImage.Visible = True
+        Me.colStatusImage.VisibleIndex = 0
+        Me.colStatusImage.Width = 49
         '
-        'GridColumn23
+        'RepositoryItemPictureEdit1
         '
-        Me.GridColumn23.Caption = "Date Received"
-        Me.GridColumn23.FieldName = "DateCreated"
-        Me.GridColumn23.Name = "GridColumn23"
-        Me.GridColumn23.OptionsColumn.AllowEdit = False
-        Me.GridColumn23.OptionsFilter.ShowEmptyDateFilter = True
-        Me.GridColumn23.Visible = True
-        Me.GridColumn23.VisibleIndex = 1
-        Me.GridColumn23.Width = 74
+        Me.RepositoryItemPictureEdit1.Name = "RepositoryItemPictureEdit1"
         '
-        'GridColumn2
+        'colPartialMatchId
         '
-        Me.GridColumn2.Caption = "Study Id"
-        Me.GridColumn2.FieldName = "Study_id"
-        Me.GridColumn2.Name = "GridColumn2"
-        Me.GridColumn2.Visible = True
-        Me.GridColumn2.VisibleIndex = 2
-        Me.GridColumn2.Width = 60
+        Me.colPartialMatchId.AppearanceHeader.Options.UseTextOptions = True
+        Me.colPartialMatchId.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center
+        Me.colPartialMatchId.Caption = "Id"
+        Me.colPartialMatchId.FieldName = "Id"
+        Me.colPartialMatchId.FillEmptySpace = False
+        Me.colPartialMatchId.Name = "colPartialMatchId"
+        Me.colPartialMatchId.OptionsFilter.AllowAutoFilter = False
+        Me.colPartialMatchId.OptionsFilter.AllowFilter = False
+        Me.colPartialMatchId.Visible = True
+        Me.colPartialMatchId.VisibleIndex = 1
+        Me.colPartialMatchId.Width = 55
         '
-        'GridColumn3
+        'colPartialMatchDateReceived
         '
-        Me.GridColumn3.Caption = "Pop Id"
-        Me.GridColumn3.FieldName = "Pop_id"
-        Me.GridColumn3.Name = "GridColumn3"
-        Me.GridColumn3.Visible = True
-        Me.GridColumn3.VisibleIndex = 3
-        Me.GridColumn3.Width = 64
+        Me.colPartialMatchDateReceived.AppearanceHeader.Options.UseTextOptions = True
+        Me.colPartialMatchDateReceived.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center
+        Me.colPartialMatchDateReceived.Caption = "Date Received"
+        Me.colPartialMatchDateReceived.FieldName = "DateCreated"
+        Me.colPartialMatchDateReceived.FillEmptySpace = False
+        Me.colPartialMatchDateReceived.Name = "colPartialMatchDateReceived"
+        Me.colPartialMatchDateReceived.OptionsColumn.AllowEdit = False
+        Me.colPartialMatchDateReceived.OptionsFilter.ShowEmptyDateFilter = True
+        Me.colPartialMatchDateReceived.Visible = True
+        Me.colPartialMatchDateReceived.VisibleIndex = 2
+        Me.colPartialMatchDateReceived.Width = 100
         '
-        'GridColumn4
+        'colPartialMatchStudyId
         '
-        Me.GridColumn4.Caption = "Lithocode"
-        Me.GridColumn4.FieldName = "Lithocode"
-        Me.GridColumn4.Name = "GridColumn4"
-        Me.GridColumn4.Visible = True
-        Me.GridColumn4.VisibleIndex = 4
-        Me.GridColumn4.Width = 64
+        Me.colPartialMatchStudyId.AppearanceHeader.Options.UseTextOptions = True
+        Me.colPartialMatchStudyId.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center
+        Me.colPartialMatchStudyId.Caption = "Study Id"
+        Me.colPartialMatchStudyId.FieldName = "Study_id"
+        Me.colPartialMatchStudyId.FillEmptySpace = False
+        Me.colPartialMatchStudyId.Name = "colPartialMatchStudyId"
+        Me.colPartialMatchStudyId.Visible = True
+        Me.colPartialMatchStudyId.VisibleIndex = 3
+        Me.colPartialMatchStudyId.Width = 67
         '
-        'GridColumn5
+        'colPartialMatchPopId
         '
-        Me.GridColumn5.Caption = "First Name"
-        Me.GridColumn5.FieldName = "FirstName"
-        Me.GridColumn5.Name = "GridColumn5"
-        Me.GridColumn5.Visible = True
-        Me.GridColumn5.VisibleIndex = 5
-        Me.GridColumn5.Width = 64
+        Me.colPartialMatchPopId.AppearanceHeader.Options.UseTextOptions = True
+        Me.colPartialMatchPopId.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center
+        Me.colPartialMatchPopId.Caption = "Pop Id"
+        Me.colPartialMatchPopId.FieldName = "Pop_id"
+        Me.colPartialMatchPopId.FillEmptySpace = False
+        Me.colPartialMatchPopId.Name = "colPartialMatchPopId"
+        Me.colPartialMatchPopId.Visible = True
+        Me.colPartialMatchPopId.VisibleIndex = 4
+        Me.colPartialMatchPopId.Width = 69
         '
-        'GridColumn6
+        'colPartialMatchLithocode
         '
-        Me.GridColumn6.Caption = "Last Name"
-        Me.GridColumn6.FieldName = "LastName"
-        Me.GridColumn6.Name = "GridColumn6"
-        Me.GridColumn6.Visible = True
-        Me.GridColumn6.VisibleIndex = 6
-        Me.GridColumn6.Width = 64
+        Me.colPartialMatchLithocode.AppearanceHeader.Options.UseTextOptions = True
+        Me.colPartialMatchLithocode.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center
+        Me.colPartialMatchLithocode.Caption = "Lithocode"
+        Me.colPartialMatchLithocode.FieldName = "Lithocode"
+        Me.colPartialMatchLithocode.FillEmptySpace = False
+        Me.colPartialMatchLithocode.Name = "colPartialMatchLithocode"
+        Me.colPartialMatchLithocode.Visible = True
+        Me.colPartialMatchLithocode.VisibleIndex = 5
+        Me.colPartialMatchLithocode.Width = 102
         '
-        'GridColumn7
+        'colPartialMatchUpdate
         '
-        Me.GridColumn7.Caption = "Address"
-        Me.GridColumn7.FieldName = "Addr"
-        Me.GridColumn7.Name = "GridColumn7"
-        Me.GridColumn7.Visible = True
-        Me.GridColumn7.VisibleIndex = 7
-        Me.GridColumn7.Width = 64
+        Me.colPartialMatchUpdate.AppearanceHeader.Options.UseTextOptions = True
+        Me.colPartialMatchUpdate.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center
+        Me.colPartialMatchUpdate.Caption = "Update"
+        Me.colPartialMatchUpdate.ColumnEdit = Me.RepositoryItemCheckEdit1
+        Me.colPartialMatchUpdate.FieldName = "Updated"
+        Me.colPartialMatchUpdate.FillEmptySpace = False
+        Me.colPartialMatchUpdate.Name = "colPartialMatchUpdate"
+        Me.colPartialMatchUpdate.Visible = True
+        Me.colPartialMatchUpdate.VisibleIndex = 6
+        Me.colPartialMatchUpdate.Width = 87
         '
-        'GridColumn8
+        'RepositoryItemCheckEdit1
         '
-        Me.GridColumn8.Caption = "Address 2"
-        Me.GridColumn8.FieldName = "Addr2"
-        Me.GridColumn8.Name = "GridColumn8"
-        Me.GridColumn8.Visible = True
-        Me.GridColumn8.VisibleIndex = 8
-        Me.GridColumn8.Width = 64
+        Me.RepositoryItemCheckEdit1.AutoHeight = False
+        Me.RepositoryItemCheckEdit1.Name = "RepositoryItemCheckEdit1"
+        Me.RepositoryItemCheckEdit1.ValueChecked = "1"
+        Me.RepositoryItemCheckEdit1.ValueUnchecked = "0"
         '
-        'GridColumn9
+        'colPartialMatchIgnore
         '
-        Me.GridColumn9.Caption = "City"
-        Me.GridColumn9.FieldName = "City"
-        Me.GridColumn9.Name = "GridColumn9"
-        Me.GridColumn9.Visible = True
-        Me.GridColumn9.VisibleIndex = 9
-        Me.GridColumn9.Width = 115
+        Me.colPartialMatchIgnore.AppearanceHeader.Options.UseTextOptions = True
+        Me.colPartialMatchIgnore.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center
+        Me.colPartialMatchIgnore.Caption = "Ignore"
+        Me.colPartialMatchIgnore.ColumnEdit = Me.RepositoryItemCheckEdit1
+        Me.colPartialMatchIgnore.FieldName = "Ignored"
+        Me.colPartialMatchIgnore.FillEmptySpace = False
+        Me.colPartialMatchIgnore.Name = "colPartialMatchIgnore"
+        Me.colPartialMatchIgnore.Visible = True
+        Me.colPartialMatchIgnore.VisibleIndex = 7
+        Me.colPartialMatchIgnore.Width = 89
         '
-        'GridColumn10
+        'FillGridColumn1
         '
-        Me.GridColumn10.Caption = "State"
-        Me.GridColumn10.FieldName = "State"
-        Me.GridColumn10.Name = "GridColumn10"
-        Me.GridColumn10.Visible = True
-        Me.GridColumn10.VisibleIndex = 10
-        Me.GridColumn10.Width = 57
+        Me.FillGridColumn1.Caption = "FillGridColumn1"
+        Me.FillGridColumn1.FieldName = "UpdateStatus"
+        Me.FillGridColumn1.FillEmptySpace = False
+        Me.FillGridColumn1.Name = "FillGridColumn1"
         '
-        'GridColumn11
+        'colRightFill
         '
-        Me.GridColumn11.Caption = "Zip5"
-        Me.GridColumn11.FieldName = "Zip"
-        Me.GridColumn11.Name = "GridColumn11"
-        Me.GridColumn11.Visible = True
-        Me.GridColumn11.VisibleIndex = 11
-        Me.GridColumn11.Width = 32
-        '
-        'GridColumn22
-        '
-        Me.GridColumn22.Caption = "Date Updated"
-        Me.GridColumn22.FieldName = "DateUpdated"
-        Me.GridColumn22.Name = "GridColumn22"
-        Me.GridColumn22.Visible = True
-        Me.GridColumn22.VisibleIndex = 12
-        Me.GridColumn22.Width = 73
-        '
-        'GridColumn12
-        '
-        Me.GridColumn12.Caption = "Action"
-        Me.GridColumn12.ColumnEdit = Me.RepositoryItemRadioGroup1
-        Me.GridColumn12.FieldName = "Action"
-        Me.GridColumn12.Name = "GridColumn12"
-        Me.GridColumn12.OptionsFilter.AllowAutoFilter = False
-        Me.GridColumn12.OptionsFilter.AllowFilter = False
-        Me.GridColumn12.OptionsFilter.ImmediateUpdateAutoFilter = False
-        Me.GridColumn12.Visible = True
-        Me.GridColumn12.VisibleIndex = 13
-        Me.GridColumn12.Width = 85
-        '
-        'RepositoryItemRadioGroup1
-        '
-        Me.RepositoryItemRadioGroup1.Columns = 1
-        Me.RepositoryItemRadioGroup1.Items.AddRange(New DevExpress.XtraEditors.Controls.RadioGroupItem() {New DevExpress.XtraEditors.Controls.RadioGroupItem("1", "Update"), New DevExpress.XtraEditors.Controls.RadioGroupItem("2", "Ignore")})
-        Me.RepositoryItemRadioGroup1.Name = "RepositoryItemRadioGroup1"
+        Me.colRightFill.AppearanceCell.BorderColor = System.Drawing.Color.White
+        Me.colRightFill.AppearanceCell.Options.UseBorderColor = True
+        Me.colRightFill.Caption = "GridColumn6"
+        Me.colRightFill.FillEmptySpace = True
+        Me.colRightFill.Name = "colRightFill"
+        Me.colRightFill.OptionsColumn.ShowCaption = False
+        Me.colRightFill.Visible = True
+        Me.colRightFill.VisibleIndex = 8
+        Me.colRightFill.Width = 336
         '
         'gvNewAddresses
         '
@@ -399,10 +396,10 @@ Partial Class USPSAddressUpdateSection
         '
         'TopPanel
         '
-        Me.TopPanel.Controls.Add(Me.btnClearnUpdateIgnore)
-        Me.TopPanel.Controls.Add(Me.rbtnIgnoreAll)
-        Me.TopPanel.Controls.Add(Me.rbtnUpdateAll)
-        Me.TopPanel.Controls.Add(Me.GroupBox1)
+        Me.TopPanel.Controls.Add(Me.Label2)
+        Me.TopPanel.Controls.Add(Me.Label1)
+        Me.TopPanel.Controls.Add(Me.chkIgnoreAll)
+        Me.TopPanel.Controls.Add(Me.chkUpdateAll)
         Me.TopPanel.Controls.Add(Me.btnExpandAll)
         Me.TopPanel.Dock = System.Windows.Forms.DockStyle.Top
         Me.TopPanel.Location = New System.Drawing.Point(0, 0)
@@ -410,87 +407,41 @@ Partial Class USPSAddressUpdateSection
         Me.TopPanel.Size = New System.Drawing.Size(975, 81)
         Me.TopPanel.TabIndex = 4
         '
-        'btnClearnUpdateIgnore
-        '
-        Me.btnClearnUpdateIgnore.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnClearnUpdateIgnore.Location = New System.Drawing.Point(893, 51)
-        Me.btnClearnUpdateIgnore.Name = "btnClearnUpdateIgnore"
-        Me.btnClearnUpdateIgnore.Size = New System.Drawing.Size(75, 23)
-        Me.btnClearnUpdateIgnore.TabIndex = 9
-        Me.btnClearnUpdateIgnore.Text = "Clear Action"
-        Me.btnClearnUpdateIgnore.UseVisualStyleBackColor = True
-        '
-        'rbtnIgnoreAll
-        '
-        Me.rbtnIgnoreAll.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.rbtnIgnoreAll.AutoSize = True
-        Me.rbtnIgnoreAll.Location = New System.Drawing.Point(893, 28)
-        Me.rbtnIgnoreAll.Name = "rbtnIgnoreAll"
-        Me.rbtnIgnoreAll.Size = New System.Drawing.Size(69, 17)
-        Me.rbtnIgnoreAll.TabIndex = 8
-        Me.rbtnIgnoreAll.TabStop = True
-        Me.rbtnIgnoreAll.Text = "Ignore All"
-        Me.rbtnIgnoreAll.UseVisualStyleBackColor = True
-        '
-        'rbtnUpdateAll
-        '
-        Me.rbtnUpdateAll.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.rbtnUpdateAll.AutoSize = True
-        Me.rbtnUpdateAll.Location = New System.Drawing.Point(893, 3)
-        Me.rbtnUpdateAll.Name = "rbtnUpdateAll"
-        Me.rbtnUpdateAll.Size = New System.Drawing.Size(74, 17)
-        Me.rbtnUpdateAll.TabIndex = 7
-        Me.rbtnUpdateAll.TabStop = True
-        Me.rbtnUpdateAll.Text = "Update All"
-        Me.rbtnUpdateAll.UseVisualStyleBackColor = True
-        '
-        'GroupBox1
-        '
-        Me.GroupBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.GroupBox1.Controls.Add(Me.btnApplyDateRangeFilter)
-        Me.GroupBox1.Controls.Add(Me.DateTimePicker2)
-        Me.GroupBox1.Controls.Add(Me.Label2)
-        Me.GroupBox1.Controls.Add(Me.DateTimePicker1)
-        Me.GroupBox1.Location = New System.Drawing.Point(100, 26)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(299, 49)
-        Me.GroupBox1.TabIndex = 6
-        Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Date Received Range Filter"
-        '
-        'btnApplyDateRangeFilter
-        '
-        Me.btnApplyDateRangeFilter.Image = Global.Nrc.QualiSys.QualiSysExplorer.My.Resources.Resources.Filter16
-        Me.btnApplyDateRangeFilter.Location = New System.Drawing.Point(261, 16)
-        Me.btnApplyDateRangeFilter.Name = "btnApplyDateRangeFilter"
-        Me.btnApplyDateRangeFilter.Size = New System.Drawing.Size(31, 24)
-        Me.btnApplyDateRangeFilter.TabIndex = 9
-        Me.btnApplyDateRangeFilter.UseVisualStyleBackColor = True
-        '
-        'DateTimePicker2
-        '
-        Me.DateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.DateTimePicker2.Location = New System.Drawing.Point(151, 19)
-        Me.DateTimePicker2.Name = "DateTimePicker2"
-        Me.DateTimePicker2.Size = New System.Drawing.Size(104, 20)
-        Me.DateTimePicker2.TabIndex = 8
-        '
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(129, 26)
+        Me.Label2.Location = New System.Drawing.Point(567, 43)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(16, 13)
-        Me.Label2.TabIndex = 7
-        Me.Label2.Text = "to"
+        Me.Label2.Size = New System.Drawing.Size(51, 13)
+        Me.Label2.TabIndex = 6
+        Me.Label2.Text = "Ignore All"
         '
-        'DateTimePicker1
+        'Label1
         '
-        Me.DateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.DateTimePicker1.Location = New System.Drawing.Point(7, 20)
-        Me.DateTimePicker1.Name = "DateTimePicker1"
-        Me.DateTimePicker1.Size = New System.Drawing.Size(116, 20)
-        Me.DateTimePicker1.TabIndex = 6
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(473, 43)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(56, 13)
+        Me.Label1.TabIndex = 5
+        Me.Label1.Text = "Update All"
+        '
+        'chkIgnoreAll
+        '
+        Me.chkIgnoreAll.Location = New System.Drawing.Point(556, 59)
+        Me.chkIgnoreAll.Name = "chkIgnoreAll"
+        Me.chkIgnoreAll.Properties.Caption = "CheckEdit2"
+        Me.chkIgnoreAll.Properties.GlyphAlignment = DevExpress.Utils.HorzAlignment.Center
+        Me.chkIgnoreAll.Size = New System.Drawing.Size(75, 19)
+        Me.chkIgnoreAll.TabIndex = 4
+        '
+        'chkUpdateAll
+        '
+        Me.chkUpdateAll.Location = New System.Drawing.Point(465, 59)
+        Me.chkUpdateAll.Name = "chkUpdateAll"
+        Me.chkUpdateAll.Properties.Caption = "CheckEdit1"
+        Me.chkUpdateAll.Properties.GlyphAlignment = DevExpress.Utils.HorzAlignment.Center
+        Me.chkUpdateAll.Size = New System.Drawing.Size(75, 19)
+        Me.chkUpdateAll.TabIndex = 3
         '
         'btnExpandAll
         '
@@ -502,6 +453,24 @@ Partial Class USPSAddressUpdateSection
         Me.btnExpandAll.Text = "Expand All"
         Me.btnExpandAll.UseVisualStyleBackColor = True
         '
+        'ToolStripMenuItem1
+        '
+        Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(183, 22)
+        Me.ToolStripMenuItem1.Text = "ToolStripMenuItem1"
+        '
+        'ToolStripMenuItem2
+        '
+        Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
+        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(183, 22)
+        Me.ToolStripMenuItem2.Text = "ToolStripMenuItem2"
+        '
+        'ContextMenuStrip1
+        '
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem1, Me.ToolStripMenuItem2})
+        Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(184, 48)
+        '
         'USPSAddressUpdateSection
         '
         Me.Controls.Add(Me.USPSSectionPanel)
@@ -511,7 +480,8 @@ Partial Class USPSAddressUpdateSection
         CType(Me.gvOldAddresses, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.gcPartialMatches, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.gvPartialMatches, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.RepositoryItemRadioGroup1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.RepositoryItemPictureEdit1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.RepositoryItemCheckEdit1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.gvNewAddresses, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.GridView1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.BottomPanel.ResumeLayout(False)
@@ -519,8 +489,9 @@ Partial Class USPSAddressUpdateSection
         Me.ActionPanel.ResumeLayout(False)
         Me.TopPanel.ResumeLayout(False)
         Me.TopPanel.PerformLayout()
-        Me.GroupBox1.ResumeLayout(False)
-        Me.GroupBox1.PerformLayout()
+        CType(Me.chkIgnoreAll.Properties, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.chkUpdateAll.Properties, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.ContextMenuStrip1.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -528,7 +499,6 @@ Partial Class USPSAddressUpdateSection
     Friend WithEvents USPSSectionPanel As Nrc.Framework.WinForms.SectionPanel
     Friend WithEvents btnUpdate As System.Windows.Forms.Button
     Friend WithEvents ActionPanel As System.Windows.Forms.Panel
-    Friend WithEvents gcPartialMatches As DevExpress.XtraGrid.GridControl
     Friend WithEvents gvOldAddresses As DevExpress.XtraGrid.Views.Grid.GridView
     Friend WithEvents GridColumn21 As DevExpress.XtraGrid.Columns.GridColumn
     Friend WithEvents GridColumn13 As DevExpress.XtraGrid.Columns.GridColumn
@@ -539,33 +509,30 @@ Partial Class USPSAddressUpdateSection
     Friend WithEvents GridColumn18 As DevExpress.XtraGrid.Columns.GridColumn
     Friend WithEvents GridColumn19 As DevExpress.XtraGrid.Columns.GridColumn
     Friend WithEvents GridColumn20 As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents gvPartialMatches As DevExpress.XtraGrid.Views.Grid.GridView
-    Friend WithEvents GridColumn1 As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents GridColumn23 As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents GridColumn2 As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents GridColumn3 As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents GridColumn4 As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents GridColumn5 As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents GridColumn6 As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents GridColumn7 As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents GridColumn8 As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents GridColumn9 As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents GridColumn10 As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents GridColumn11 As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents GridColumn22 As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents GridColumn12 As DevExpress.XtraGrid.Columns.GridColumn
-    Friend WithEvents RepositoryItemRadioGroup1 As DevExpress.XtraEditors.Repository.RepositoryItemRadioGroup
     Friend WithEvents gvNewAddresses As DevExpress.XtraGrid.Views.Grid.GridView
     Friend WithEvents TopPanel As System.Windows.Forms.Panel
-    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
-    Friend WithEvents btnApplyDateRangeFilter As System.Windows.Forms.Button
-    Friend WithEvents DateTimePicker2 As System.Windows.Forms.DateTimePicker
-    Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents DateTimePicker1 As System.Windows.Forms.DateTimePicker
     Friend WithEvents btnExpandAll As System.Windows.Forms.Button
     Friend WithEvents GridView1 As DevExpress.XtraGrid.Views.Grid.GridView
-    Friend WithEvents btnClearnUpdateIgnore As System.Windows.Forms.Button
-    Friend WithEvents rbtnIgnoreAll As System.Windows.Forms.RadioButton
-    Friend WithEvents rbtnUpdateAll As System.Windows.Forms.RadioButton
+    Friend WithEvents RepositoryItemPictureEdit1 As DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit
+    Friend WithEvents colRightFill As Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridColumn
+    Friend WithEvents colPartialMatchId As Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridColumn
+    Friend WithEvents colPartialMatchDateReceived As Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridColumn
+    Friend WithEvents colPartialMatchStudyId As Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridColumn
+    Friend WithEvents colPartialMatchPopId As Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridColumn
+    Friend WithEvents colPartialMatchLithocode As Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridColumn
+    Friend WithEvents colStatusImage As Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridColumn
+    Friend WithEvents gcPartialMatches As Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.GridControlOverride
+    Friend WithEvents gvPartialMatches As Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridView
+    Friend WithEvents RepositoryItemCheckEdit1 As DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit
+    Friend WithEvents colPartialMatchUpdate As Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridColumn
+    Friend WithEvents colPartialMatchIgnore As Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridColumn
+    Friend WithEvents ToolStripMenuItem1 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem2 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ContextMenuStrip1 As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents chkIgnoreAll As DevExpress.XtraEditors.CheckEdit
+    Friend WithEvents chkUpdateAll As DevExpress.XtraEditors.CheckEdit
+    Friend WithEvents FillGridColumn1 As Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridColumn
 
 End Class
