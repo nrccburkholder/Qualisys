@@ -43,8 +43,8 @@ Partial Class USPSAddressUpdateSection
         Me.colPartialMatchUpdate = New Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridColumn()
         Me.RepositoryItemCheckEdit1 = New DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit()
         Me.colPartialMatchIgnore = New Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridColumn()
-        Me.FillGridColumn1 = New Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridColumn()
         Me.colRightFill = New Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridColumn()
+        Me.FillGridColumn1 = New Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridColumn()
         Me.gvNewAddresses = New DevExpress.XtraGrid.Views.Grid.GridView()
         Me.GridView1 = New DevExpress.XtraGrid.Views.Grid.GridView()
         Me.BottomPanel = New System.Windows.Forms.Panel()
@@ -52,6 +52,7 @@ Partial Class USPSAddressUpdateSection
         Me.USPSSectionPanel = New Nrc.Framework.WinForms.SectionPanel()
         Me.ActionPanel = New System.Windows.Forms.Panel()
         Me.TopPanel = New System.Windows.Forms.Panel()
+        Me.Button1 = New System.Windows.Forms.Button()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.chkIgnoreAll = New DevExpress.XtraEditors.CheckEdit()
@@ -60,6 +61,7 @@ Partial Class USPSAddressUpdateSection
         Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
         CType(Me.gvOldAddresses, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.gcPartialMatches, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.gvPartialMatches, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -174,11 +176,11 @@ Partial Class USPSAddressUpdateSection
         GridLevelNode1.LevelTemplate = Me.gvOldAddresses
         GridLevelNode1.RelationName = "FK_Master_Detail"
         Me.gcPartialMatches.LevelTree.Nodes.AddRange(New DevExpress.XtraGrid.GridLevelNode() {GridLevelNode1})
-        Me.gcPartialMatches.Location = New System.Drawing.Point(0, 81)
+        Me.gcPartialMatches.Location = New System.Drawing.Point(0, 44)
         Me.gcPartialMatches.MainView = Me.gvPartialMatches
         Me.gcPartialMatches.Name = "gcPartialMatches"
         Me.gcPartialMatches.RepositoryItems.AddRange(New DevExpress.XtraEditors.Repository.RepositoryItem() {Me.RepositoryItemPictureEdit1, Me.RepositoryItemCheckEdit1})
-        Me.gcPartialMatches.Size = New System.Drawing.Size(975, 538)
+        Me.gcPartialMatches.Size = New System.Drawing.Size(975, 575)
         Me.gcPartialMatches.TabIndex = 5
         Me.gcPartialMatches.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.gvPartialMatches, Me.gvNewAddresses, Me.GridView1, Me.gvOldAddresses})
         '
@@ -198,6 +200,7 @@ Partial Class USPSAddressUpdateSection
         Me.gvPartialMatches.GridControl = Me.gcPartialMatches
         Me.gvPartialMatches.Name = "gvPartialMatches"
         Me.gvPartialMatches.OptionsDetail.ShowDetailTabs = False
+        Me.gvPartialMatches.OptionsPrint.PrintDetails = True
         Me.gvPartialMatches.OptionsView.ColumnAutoWidth = False
         Me.gvPartialMatches.OptionsView.ShowAutoFilterRow = True
         Me.gvPartialMatches.OptionsView.ShowFooter = True
@@ -319,13 +322,6 @@ Partial Class USPSAddressUpdateSection
         Me.colPartialMatchIgnore.VisibleIndex = 7
         Me.colPartialMatchIgnore.Width = 89
         '
-        'FillGridColumn1
-        '
-        Me.FillGridColumn1.Caption = "FillGridColumn1"
-        Me.FillGridColumn1.FieldName = "UpdateStatus"
-        Me.FillGridColumn1.FillEmptySpace = False
-        Me.FillGridColumn1.Name = "FillGridColumn1"
-        '
         'colRightFill
         '
         Me.colRightFill.AppearanceCell.BorderColor = System.Drawing.Color.White
@@ -337,6 +333,13 @@ Partial Class USPSAddressUpdateSection
         Me.colRightFill.Visible = True
         Me.colRightFill.VisibleIndex = 8
         Me.colRightFill.Width = 336
+        '
+        'FillGridColumn1
+        '
+        Me.FillGridColumn1.Caption = "FillGridColumn1"
+        Me.FillGridColumn1.FieldName = "UpdateStatus"
+        Me.FillGridColumn1.FillEmptySpace = False
+        Me.FillGridColumn1.Name = "FillGridColumn1"
         '
         'gvNewAddresses
         '
@@ -396,6 +399,7 @@ Partial Class USPSAddressUpdateSection
         '
         'TopPanel
         '
+        Me.TopPanel.Controls.Add(Me.Button1)
         Me.TopPanel.Controls.Add(Me.Label2)
         Me.TopPanel.Controls.Add(Me.Label1)
         Me.TopPanel.Controls.Add(Me.chkIgnoreAll)
@@ -404,13 +408,26 @@ Partial Class USPSAddressUpdateSection
         Me.TopPanel.Dock = System.Windows.Forms.DockStyle.Top
         Me.TopPanel.Location = New System.Drawing.Point(0, 0)
         Me.TopPanel.Name = "TopPanel"
-        Me.TopPanel.Size = New System.Drawing.Size(975, 81)
+        Me.TopPanel.Size = New System.Drawing.Size(975, 44)
         Me.TopPanel.TabIndex = 4
+        '
+        'Button1
+        '
+        Me.Button1.Image = Global.Nrc.QualiSys.QualiSysExplorer.My.Resources.Resources.Excel16
+        Me.Button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button1.Location = New System.Drawing.Point(111, 15)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(101, 23)
+        Me.Button1.TabIndex = 7
+        Me.Button1.Text = "Export to Excel"
+        Me.Button1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button1.UseVisualStyleBackColor = True
         '
         'Label2
         '
+        Me.Label2.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(567, 43)
+        Me.Label2.Location = New System.Drawing.Point(567, 6)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(51, 13)
         Me.Label2.TabIndex = 6
@@ -418,8 +435,9 @@ Partial Class USPSAddressUpdateSection
         '
         'Label1
         '
+        Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(473, 43)
+        Me.Label1.Location = New System.Drawing.Point(473, 6)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(56, 13)
         Me.Label1.TabIndex = 5
@@ -427,7 +445,8 @@ Partial Class USPSAddressUpdateSection
         '
         'chkIgnoreAll
         '
-        Me.chkIgnoreAll.Location = New System.Drawing.Point(556, 59)
+        Me.chkIgnoreAll.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.chkIgnoreAll.Location = New System.Drawing.Point(556, 22)
         Me.chkIgnoreAll.Name = "chkIgnoreAll"
         Me.chkIgnoreAll.Properties.Caption = "CheckEdit2"
         Me.chkIgnoreAll.Properties.GlyphAlignment = DevExpress.Utils.HorzAlignment.Center
@@ -436,7 +455,8 @@ Partial Class USPSAddressUpdateSection
         '
         'chkUpdateAll
         '
-        Me.chkUpdateAll.Location = New System.Drawing.Point(465, 59)
+        Me.chkUpdateAll.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.chkUpdateAll.Location = New System.Drawing.Point(465, 22)
         Me.chkUpdateAll.Name = "chkUpdateAll"
         Me.chkUpdateAll.Properties.Caption = "CheckEdit1"
         Me.chkUpdateAll.Properties.GlyphAlignment = DevExpress.Utils.HorzAlignment.Center
@@ -446,7 +466,7 @@ Partial Class USPSAddressUpdateSection
         'btnExpandAll
         '
         Me.btnExpandAll.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnExpandAll.Location = New System.Drawing.Point(19, 52)
+        Me.btnExpandAll.Location = New System.Drawing.Point(19, 15)
         Me.btnExpandAll.Name = "btnExpandAll"
         Me.btnExpandAll.Size = New System.Drawing.Size(75, 23)
         Me.btnExpandAll.TabIndex = 0
@@ -470,6 +490,10 @@ Partial Class USPSAddressUpdateSection
         Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem1, Me.ToolStripMenuItem2})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
         Me.ContextMenuStrip1.Size = New System.Drawing.Size(184, 48)
+        '
+        'SaveFileDialog1
+        '
+        Me.SaveFileDialog1.Filter = "Excel 97-2003 (*.xls)|*.xls|Excel Files (*.xlsx)|*.xlsx"
         '
         'USPSAddressUpdateSection
         '
@@ -534,5 +558,7 @@ Partial Class USPSAddressUpdateSection
     Friend WithEvents chkIgnoreAll As DevExpress.XtraEditors.CheckEdit
     Friend WithEvents chkUpdateAll As DevExpress.XtraEditors.CheckEdit
     Friend WithEvents FillGridColumn1 As Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridColumn
+    Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents SaveFileDialog1 As System.Windows.Forms.SaveFileDialog
 
 End Class

@@ -610,10 +610,10 @@ Public Class SampleUnitCoverLetterMappingEditor
         SaveFileDialog1.Filter = "Excel 97-2003 (*.xls)|*.xls|Excel Files (*.xlsx)|*.xlsx"
         SaveFileDialog1.FilterIndex = 2
         If SaveFileDialog1.ShowDialog = DialogResult.OK Then
-            Dim tempFileName As String = Path.Combine(Path.GetTempPath, String.Format("{0}{1}", Guid.NewGuid.ToString(), Path.GetExtension(SaveFileDialog1.FileName)))
+            'Dim tempFileName As String = Path.Combine(Path.GetTempPath, String.Format("{0}{1}", Guid.NewGuid.ToString(), Path.GetExtension(SaveFileDialog1.FileName)))
 
 
-            gvMappings.ExportToXlsx(tempFileName)
+            gvMappings.ExportToXlsx(SaveFileDialog1.FileName)
 
 
 

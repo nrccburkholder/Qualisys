@@ -1,20 +1,12 @@
 ﻿Imports Nrc.QualiSys.Library
 Imports System.Collections.Generic
-Imports DevExpress.XtraGrid.Views.Base
-Imports DevExpress.XtraGrid.Views.Grid.ViewInfo
-Imports DevExpress.Utils
 Imports DevExpress.XtraGrid.Views.Grid
-Imports DevExpress.XtraGrid.Columns
-Imports DevExpress.XtraEditors.Repository
 Imports Nrc.Framework.AddressCleaning
-Imports Nrc.Framework.BusinessLogic.Configuration
 Imports System.Drawing
-Imports DevExpress.XtraEditors.Drawing
-Imports DevExpress.XtraEditors.ViewInfo
-Imports DevExpress.Utils.Drawing
+Imports DevExpress.XtraPrinting
 
 
-Imports System.Text
+
 
 Public Class USPSAddressUpdateSection
 
@@ -50,6 +42,10 @@ Public Class USPSAddressUpdateSection
     End Property
 #End Region
 #Region "event handlers"
+
+    Private Sub Button1_Click(sender As System.Object, e As System.EventArgs) Handles Button1.Click
+        ExportMappingsToExcel()
+    End Sub
 
     Private Sub gvPartialMatches_CustomDrawCell(sender As Object, e As DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs) Handles gvPartialMatches.CustomDrawCell
 
@@ -389,10 +385,20 @@ Public Class USPSAddressUpdateSection
 
             LoadData(mSearchStatus, mFromDate, mToDate)
         End Try
-        
+
 
     End Sub
 
+
+    Private Sub ExportMappingsToExcel()
+        SaveFileDialog1.Filter = "Excel 97-2003 (*.xls)|*.xls|Excel Files (*.xlsx)|*.xlsx"
+        SaveFileDialog1.FilterIndex = 2
+        If SaveFileDialog1.ShowDialog = DialogResult.OK Then
+
+            gvPartialMatches.ExportToXlsx(SaveFileDialog1.FileName)
+
+        End If
+    End Sub
 
 #End Region
 End Class
