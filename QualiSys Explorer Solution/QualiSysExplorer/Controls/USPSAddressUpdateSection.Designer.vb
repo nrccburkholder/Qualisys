@@ -20,7 +20,7 @@ Partial Class USPSAddressUpdateSection
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim GridLevelNode1 As DevExpress.XtraGrid.GridLevelNode = New DevExpress.XtraGrid.GridLevelNode()
+        Dim GridLevelNode2 As DevExpress.XtraGrid.GridLevelNode = New DevExpress.XtraGrid.GridLevelNode()
         Me.gvOldAddresses = New DevExpress.XtraGrid.Views.Grid.GridView()
         Me.GridColumn21 = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.GridColumn13 = New DevExpress.XtraGrid.Columns.GridColumn()
@@ -52,7 +52,7 @@ Partial Class USPSAddressUpdateSection
         Me.USPSSectionPanel = New Nrc.Framework.WinForms.SectionPanel()
         Me.ActionPanel = New System.Windows.Forms.Panel()
         Me.TopPanel = New System.Windows.Forms.Panel()
-        Me.Button1 = New System.Windows.Forms.Button()
+        Me.btnExportToExcel = New System.Windows.Forms.Button()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.chkIgnoreAll = New DevExpress.XtraEditors.CheckEdit()
@@ -173,9 +173,9 @@ Partial Class USPSAddressUpdateSection
         'gcPartialMatches
         '
         Me.gcPartialMatches.Dock = System.Windows.Forms.DockStyle.Fill
-        GridLevelNode1.LevelTemplate = Me.gvOldAddresses
-        GridLevelNode1.RelationName = "FK_Master_Detail"
-        Me.gcPartialMatches.LevelTree.Nodes.AddRange(New DevExpress.XtraGrid.GridLevelNode() {GridLevelNode1})
+        GridLevelNode2.LevelTemplate = Me.gvOldAddresses
+        GridLevelNode2.RelationName = "FK_Master_Detail"
+        Me.gcPartialMatches.LevelTree.Nodes.AddRange(New DevExpress.XtraGrid.GridLevelNode() {GridLevelNode2})
         Me.gcPartialMatches.Location = New System.Drawing.Point(0, 44)
         Me.gcPartialMatches.MainView = Me.gvPartialMatches
         Me.gcPartialMatches.Name = "gcPartialMatches"
@@ -399,7 +399,7 @@ Partial Class USPSAddressUpdateSection
         '
         'TopPanel
         '
-        Me.TopPanel.Controls.Add(Me.Button1)
+        Me.TopPanel.Controls.Add(Me.btnExportToExcel)
         Me.TopPanel.Controls.Add(Me.Label2)
         Me.TopPanel.Controls.Add(Me.Label1)
         Me.TopPanel.Controls.Add(Me.chkIgnoreAll)
@@ -411,17 +411,17 @@ Partial Class USPSAddressUpdateSection
         Me.TopPanel.Size = New System.Drawing.Size(975, 44)
         Me.TopPanel.TabIndex = 4
         '
-        'Button1
+        'btnExportToExcel
         '
-        Me.Button1.Image = Global.Nrc.QualiSys.QualiSysExplorer.My.Resources.Resources.Excel16
-        Me.Button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button1.Location = New System.Drawing.Point(111, 15)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(101, 23)
-        Me.Button1.TabIndex = 7
-        Me.Button1.Text = "Export to Excel"
-        Me.Button1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.btnExportToExcel.Image = Global.Nrc.QualiSys.QualiSysExplorer.My.Resources.Resources.Excel16
+        Me.btnExportToExcel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnExportToExcel.Location = New System.Drawing.Point(111, 15)
+        Me.btnExportToExcel.Name = "btnExportToExcel"
+        Me.btnExportToExcel.Size = New System.Drawing.Size(101, 23)
+        Me.btnExportToExcel.TabIndex = 7
+        Me.btnExportToExcel.Text = "Export to Excel"
+        Me.btnExportToExcel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnExportToExcel.UseVisualStyleBackColor = True
         '
         'Label2
         '
@@ -558,7 +558,7 @@ Partial Class USPSAddressUpdateSection
     Friend WithEvents chkIgnoreAll As DevExpress.XtraEditors.CheckEdit
     Friend WithEvents chkUpdateAll As DevExpress.XtraEditors.CheckEdit
     Friend WithEvents FillGridColumn1 As Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridColumn
-    Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents btnExportToExcel As System.Windows.Forms.Button
     Friend WithEvents SaveFileDialog1 As System.Windows.Forms.SaveFileDialog
 
 End Class

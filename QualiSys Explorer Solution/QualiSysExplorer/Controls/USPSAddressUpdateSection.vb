@@ -29,7 +29,6 @@ Public Class USPSAddressUpdateSection
 
     Private mReceiptTypes As New ReceiptTypeCollection
 
-
     Protected ReadOnly Property ReceiptType() As ReceiptType
         Get
             For Each recType As ReceiptType In mReceiptTypes
@@ -43,7 +42,7 @@ Public Class USPSAddressUpdateSection
 #End Region
 #Region "event handlers"
 
-    Private Sub Button1_Click(sender As System.Object, e As System.EventArgs) Handles Button1.Click
+    Private Sub Button1_Click(sender As System.Object, e As System.EventArgs) Handles btnExportToExcel.Click
         ExportMappingsToExcel()
     End Sub
 
@@ -85,7 +84,6 @@ Public Class USPSAddressUpdateSection
             Return False
         End Try
     End Function
-
 
     Private Sub btnUpdate_Click(sender As System.Object, e As System.EventArgs) Handles btnUpdate.Click
         SaveData()
@@ -201,6 +199,8 @@ Public Class USPSAddressUpdateSection
                 btnExpandAll.Text = "Collapse All"
         End Select
 
+        'btnUpdate.Enabled = IsCheckBoxChecked()
+
     End Sub
 #End Region
 
@@ -234,8 +234,6 @@ Public Class USPSAddressUpdateSection
         mReceiptTypes = ReceiptType.GetAll()
 
     End Sub
-
-
 
     Private Sub LoadData(ByVal status As Integer, ByVal fromDate As Object, ByVal toDate As Object)
 
@@ -291,10 +289,7 @@ Public Class USPSAddressUpdateSection
 
         'Set the cursor
         ParentForm.Cursor = Cursors.WaitCursor
-
         Try
-
-
             For i As Integer = 0 To gvPartialMatches.DataRowCount - 1 ' loop through masterview
 
                 Dim id As Integer = Convert.ToInt32(gvPartialMatches.GetRowCellValue(i, gvPartialMatches.Columns("Id")))
@@ -389,7 +384,6 @@ Public Class USPSAddressUpdateSection
 
     End Sub
 
-
     Private Sub ExportMappingsToExcel()
         SaveFileDialog1.Filter = "Excel 97-2003 (*.xls)|*.xls|Excel Files (*.xlsx)|*.xlsx"
         SaveFileDialog1.FilterIndex = 2
@@ -400,5 +394,21 @@ Public Class USPSAddressUpdateSection
         End If
     End Sub
 
+    'Private Function IsCheckBoxChecked() As Boolean
+    '    Dim mIsCheckBoxChecked As Boolean = False
+
+    '    Dim dataRowCount As Integer = gvPartialMatches.DataRowCount
+    '    For i As Integer = 0 To dataRowCount - 1
+    '        Dim isFlaggedForUpdate As Boolean = Convert.ToInt32(gvPartialMatches.GetRowCellValue(i, gvPartialMatches.Columns("Updated"))) = 1
+    '        Dim isFlaggedForIgnore As Boolean = Convert.ToInt32(gvPartialMatches.GetRowCellValue(i, gvPartialMatches.Columns("Ignored"))) = 1
+
+    '        If isFlaggedForIgnore Or isFlaggedForIgnore Then
+    '            mIsCheckBoxChecked = True
+    '            Exit For
+    '        End If
+    '    Next
+
+    '    Return mIsCheckBoxChecked
+    'End Function
 #End Region
 End Class
