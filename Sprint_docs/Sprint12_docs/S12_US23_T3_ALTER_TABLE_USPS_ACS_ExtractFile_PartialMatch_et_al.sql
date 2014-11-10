@@ -38,8 +38,9 @@ if not exists (	SELECT 1
 	alter table [dbo].[USPS_ACS_ExtractFile_PartialMatch] add DateUpdated datetime
 go
 commit tran
+go
 
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USPS_ACS_FormatUSPSAddress1]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))	
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USPS_ACS_FormatUSPSAddress1]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))	
 	DROP FUNCTION [dbo].[USPS_ACS_FormatUSPSAddress1]
 GO
 
@@ -89,7 +90,7 @@ BEGIN
 END
 GO
 
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USPS_ACS_FormatUSPSAddress2]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))	
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USPS_ACS_FormatUSPSAddress2]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))	
 	DROP FUNCTION [dbo].[USPS_ACS_FormatUSPSAddress2]
 GO
 
@@ -131,16 +132,17 @@ begin tran
 go
 
 
-INSERT INTO [dbo].[ReceiptType]
-           ([ReceiptType_nm]
-           ,[ReceiptType_dsc]
-           ,[bitUIDisplay]
-           ,[TranslationCode])
-     VALUES
-           ('USPS Address Change'
-           ,'USPS Address Change'
-           ,0
-           ,NULL)
+IF NOT EXISTS(Select 1 FROM [dbo].[ReceiptType] WHERE ReceiptType_nm = 'USPS Address Change')
+	INSERT INTO [dbo].[ReceiptType]
+			   ([ReceiptType_nm]
+			   ,[ReceiptType_dsc]
+			   ,[bitUIDisplay]
+			   ,[TranslationCode])
+		 VALUES
+			   ('USPS Address Change'
+			   ,'USPS Address Change'
+			   ,0
+			   ,NULL)
 GO
 commit tran
 

@@ -53,8 +53,9 @@ GO
 begin tran
 go
 
-DELETE FROM [dbo].[ReceiptType]
-WHERE ReceiptType_nm = 'USPS Address Change'
+IF EXISTS(Select 1 FROM [dbo].[ReceiptType] WHERE ReceiptType_nm = 'USPS Address Change')
+	DELETE FROM [dbo].[ReceiptType]
+	WHERE ReceiptType_nm = 'USPS Address Change'
 
 commit tran
 

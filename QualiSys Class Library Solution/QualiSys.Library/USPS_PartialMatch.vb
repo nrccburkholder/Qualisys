@@ -190,9 +190,6 @@ Public Class USPS_PartialMatch
 #End Region
 
 #Region "Public Methods"
-    Public Shared Function GetPartialMatches(ByVal status As Integer) As List(Of USPS_PartialMatch)
-        Return USPS_ACS_Provider.Instance.SelectByStatus(status)
-    End Function
 
     Public Shared Function GetPartialMatchesDataSet(ByVal status As Integer, ByVal fromDate As String, ByVal toDate As String) As DataSet
 
