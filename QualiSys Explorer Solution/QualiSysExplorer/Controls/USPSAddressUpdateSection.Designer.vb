@@ -20,7 +20,7 @@ Partial Class USPSAddressUpdateSection
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim GridLevelNode2 As DevExpress.XtraGrid.GridLevelNode = New DevExpress.XtraGrid.GridLevelNode()
+        Dim GridLevelNode1 As DevExpress.XtraGrid.GridLevelNode = New DevExpress.XtraGrid.GridLevelNode()
         Me.gvOldAddresses = New DevExpress.XtraGrid.Views.Grid.GridView()
         Me.GridColumn21 = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.GridColumn13 = New DevExpress.XtraGrid.Columns.GridColumn()
@@ -173,9 +173,9 @@ Partial Class USPSAddressUpdateSection
         'gcPartialMatches
         '
         Me.gcPartialMatches.Dock = System.Windows.Forms.DockStyle.Fill
-        GridLevelNode2.LevelTemplate = Me.gvOldAddresses
-        GridLevelNode2.RelationName = "FK_Master_Detail"
-        Me.gcPartialMatches.LevelTree.Nodes.AddRange(New DevExpress.XtraGrid.GridLevelNode() {GridLevelNode2})
+        GridLevelNode1.LevelTemplate = Me.gvOldAddresses
+        GridLevelNode1.RelationName = "FK_Master_Detail"
+        Me.gcPartialMatches.LevelTree.Nodes.AddRange(New DevExpress.XtraGrid.GridLevelNode() {GridLevelNode1})
         Me.gcPartialMatches.Location = New System.Drawing.Point(0, 44)
         Me.gcPartialMatches.MainView = Me.gvPartialMatches
         Me.gcPartialMatches.Name = "gcPartialMatches"
@@ -330,6 +330,9 @@ Partial Class USPSAddressUpdateSection
         Me.colRightFill.FillEmptySpace = True
         Me.colRightFill.Name = "colRightFill"
         Me.colRightFill.OptionsColumn.ShowCaption = False
+        Me.colRightFill.SummaryItem.DisplayFormat = "Record Count = {0:n0}"
+        Me.colRightFill.SummaryItem.FieldName = "Id"
+        Me.colRightFill.SummaryItem.SummaryType = DevExpress.Data.SummaryItemType.Count
         Me.colRightFill.Visible = True
         Me.colRightFill.VisibleIndex = 8
         Me.colRightFill.Width = 336
