@@ -34,10 +34,10 @@ Partial Class MainForm
         Me.mnuSaveAs = New System.Windows.Forms.MenuItem()
         Me.SplitContainer = New System.Windows.Forms.SplitContainer()
         Me.MultiPane = New Nrc.Framework.WinForms.MultiPane()
+        Me.MainPanel = New System.Windows.Forms.Panel()
         Me.DispositionTab = New Nrc.Framework.WinForms.MultiPaneTab()
         Me.SearchTab = New Nrc.Framework.WinForms.MultiPaneTab()
         Me.USPSAddressUpdatesTab = New Nrc.Framework.WinForms.MultiPaneTab()
-        Me.MainPanel = New System.Windows.Forms.Panel()
         Me.StatusBar.SuspendLayout()
         Me.MainMenu.SuspendLayout()
         Me.SplitContainer.Panel1.SuspendLayout()
@@ -150,6 +150,16 @@ Partial Class MainForm
         Me.MultiPane.Tabs.Add(Me.SearchTab)
         Me.MultiPane.Tabs.Add(Me.USPSAddressUpdatesTab)
         '
+        'MainPanel
+        '
+        Me.MainPanel.Controls.Add(Me.SplitContainer)
+        Me.MainPanel.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.MainPanel.Location = New System.Drawing.Point(0, 24)
+        Me.MainPanel.Name = "MainPanel"
+        Me.MainPanel.Padding = New System.Windows.Forms.Padding(1, 0, 1, 1)
+        Me.MainPanel.Size = New System.Drawing.Size(592, 591)
+        Me.MainPanel.TabIndex = 11
+        '
         'DispositionTab
         '
         Me.DispositionTab.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -188,7 +198,7 @@ Partial Class MainForm
         Me.USPSAddressUpdatesTab.Cursor = System.Windows.Forms.Cursors.Hand
         Me.USPSAddressUpdatesTab.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Bold)
         Me.USPSAddressUpdatesTab.Icon = Nothing
-        Me.USPSAddressUpdatesTab.Image = CType(resources.GetObject("USPSAddressUpdatesTab.Image"), System.Drawing.Image)
+        Me.USPSAddressUpdatesTab.Image = Global.Nrc.QualiSys.QualiSysExplorer.My.Resources.Resources.usps_icon4
         Me.USPSAddressUpdatesTab.IsActive = False
         Me.USPSAddressUpdatesTab.Location = New System.Drawing.Point(0, 64)
         Me.USPSAddressUpdatesTab.Name = "USPSAddressUpdatesTab"
@@ -197,16 +207,6 @@ Partial Class MainForm
         Me.USPSAddressUpdatesTab.Size = New System.Drawing.Size(217, 32)
         Me.USPSAddressUpdatesTab.TabIndex = 2
         Me.USPSAddressUpdatesTab.Text = "USPS Address Update"
-        '
-        'MainPanel
-        '
-        Me.MainPanel.Controls.Add(Me.SplitContainer)
-        Me.MainPanel.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.MainPanel.Location = New System.Drawing.Point(0, 24)
-        Me.MainPanel.Name = "MainPanel"
-        Me.MainPanel.Padding = New System.Windows.Forms.Padding(1, 0, 1, 1)
-        Me.MainPanel.Size = New System.Drawing.Size(592, 591)
-        Me.MainPanel.TabIndex = 11
         '
         'MainForm
         '
