@@ -52,7 +52,7 @@ Partial Class USPSAddressUpdateSection
         Me.USPSSectionPanel = New Nrc.Framework.WinForms.SectionPanel()
         Me.ActionPanel = New System.Windows.Forms.Panel()
         Me.TopPanel = New System.Windows.Forms.Panel()
-        Me.Button1 = New System.Windows.Forms.Button()
+        Me.btnExportToExcel = New System.Windows.Forms.Button()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.chkIgnoreAll = New DevExpress.XtraEditors.CheckEdit()
@@ -101,6 +101,7 @@ Partial Class USPSAddressUpdateSection
         Me.GridColumn21.Caption = "GridColumn21"
         Me.GridColumn21.FieldName = "AddressType"
         Me.GridColumn21.Name = "GridColumn21"
+        Me.GridColumn21.OptionsColumn.AllowEdit = False
         Me.GridColumn21.OptionsColumn.ShowCaption = False
         Me.GridColumn21.Visible = True
         Me.GridColumn21.VisibleIndex = 0
@@ -111,6 +112,7 @@ Partial Class USPSAddressUpdateSection
         Me.GridColumn13.Caption = "First Name"
         Me.GridColumn13.FieldName = "FName"
         Me.GridColumn13.Name = "GridColumn13"
+        Me.GridColumn13.OptionsColumn.AllowEdit = False
         Me.GridColumn13.Visible = True
         Me.GridColumn13.VisibleIndex = 1
         '
@@ -119,6 +121,7 @@ Partial Class USPSAddressUpdateSection
         Me.GridColumn14.Caption = "Last Name"
         Me.GridColumn14.FieldName = "LName"
         Me.GridColumn14.Name = "GridColumn14"
+        Me.GridColumn14.OptionsColumn.AllowEdit = False
         Me.GridColumn14.Visible = True
         Me.GridColumn14.VisibleIndex = 2
         '
@@ -127,6 +130,7 @@ Partial Class USPSAddressUpdateSection
         Me.GridColumn15.Caption = "Address"
         Me.GridColumn15.FieldName = "Addr"
         Me.GridColumn15.Name = "GridColumn15"
+        Me.GridColumn15.OptionsColumn.AllowEdit = False
         Me.GridColumn15.Visible = True
         Me.GridColumn15.VisibleIndex = 3
         '
@@ -135,6 +139,7 @@ Partial Class USPSAddressUpdateSection
         Me.GridColumn16.Caption = "Address 2"
         Me.GridColumn16.FieldName = "Addr2"
         Me.GridColumn16.Name = "GridColumn16"
+        Me.GridColumn16.OptionsColumn.AllowEdit = False
         Me.GridColumn16.Visible = True
         Me.GridColumn16.VisibleIndex = 4
         '
@@ -143,6 +148,7 @@ Partial Class USPSAddressUpdateSection
         Me.GridColumn17.Caption = "City"
         Me.GridColumn17.FieldName = "City"
         Me.GridColumn17.Name = "GridColumn17"
+        Me.GridColumn17.OptionsColumn.AllowEdit = False
         Me.GridColumn17.Visible = True
         Me.GridColumn17.VisibleIndex = 5
         '
@@ -151,6 +157,7 @@ Partial Class USPSAddressUpdateSection
         Me.GridColumn18.Caption = "State"
         Me.GridColumn18.FieldName = "State"
         Me.GridColumn18.Name = "GridColumn18"
+        Me.GridColumn18.OptionsColumn.AllowEdit = False
         Me.GridColumn18.Visible = True
         Me.GridColumn18.VisibleIndex = 6
         '
@@ -159,6 +166,7 @@ Partial Class USPSAddressUpdateSection
         Me.GridColumn19.Caption = "Zip5"
         Me.GridColumn19.FieldName = "Zip5"
         Me.GridColumn19.Name = "GridColumn19"
+        Me.GridColumn19.OptionsColumn.AllowEdit = False
         Me.GridColumn19.Visible = True
         Me.GridColumn19.VisibleIndex = 7
         '
@@ -167,6 +175,7 @@ Partial Class USPSAddressUpdateSection
         Me.GridColumn20.Caption = "Plus 4 Zip"
         Me.GridColumn20.FieldName = "Plus4Zip"
         Me.GridColumn20.Name = "GridColumn20"
+        Me.GridColumn20.OptionsColumn.AllowEdit = False
         Me.GridColumn20.Visible = True
         Me.GridColumn20.VisibleIndex = 8
         '
@@ -233,6 +242,7 @@ Partial Class USPSAddressUpdateSection
         Me.colPartialMatchId.FieldName = "Id"
         Me.colPartialMatchId.FillEmptySpace = False
         Me.colPartialMatchId.Name = "colPartialMatchId"
+        Me.colPartialMatchId.OptionsColumn.AllowEdit = False
         Me.colPartialMatchId.OptionsFilter.AllowAutoFilter = False
         Me.colPartialMatchId.OptionsFilter.AllowFilter = False
         Me.colPartialMatchId.Visible = True
@@ -261,6 +271,7 @@ Partial Class USPSAddressUpdateSection
         Me.colPartialMatchStudyId.FieldName = "Study_id"
         Me.colPartialMatchStudyId.FillEmptySpace = False
         Me.colPartialMatchStudyId.Name = "colPartialMatchStudyId"
+        Me.colPartialMatchStudyId.OptionsColumn.AllowEdit = False
         Me.colPartialMatchStudyId.Visible = True
         Me.colPartialMatchStudyId.VisibleIndex = 3
         Me.colPartialMatchStudyId.Width = 67
@@ -273,6 +284,7 @@ Partial Class USPSAddressUpdateSection
         Me.colPartialMatchPopId.FieldName = "Pop_id"
         Me.colPartialMatchPopId.FillEmptySpace = False
         Me.colPartialMatchPopId.Name = "colPartialMatchPopId"
+        Me.colPartialMatchPopId.OptionsColumn.AllowEdit = False
         Me.colPartialMatchPopId.Visible = True
         Me.colPartialMatchPopId.VisibleIndex = 4
         Me.colPartialMatchPopId.Width = 69
@@ -285,6 +297,7 @@ Partial Class USPSAddressUpdateSection
         Me.colPartialMatchLithocode.FieldName = "Lithocode"
         Me.colPartialMatchLithocode.FillEmptySpace = False
         Me.colPartialMatchLithocode.Name = "colPartialMatchLithocode"
+        Me.colPartialMatchLithocode.OptionsColumn.AllowEdit = False
         Me.colPartialMatchLithocode.Visible = True
         Me.colPartialMatchLithocode.VisibleIndex = 5
         Me.colPartialMatchLithocode.Width = 102
@@ -329,10 +342,14 @@ Partial Class USPSAddressUpdateSection
         Me.colRightFill.Caption = "GridColumn6"
         Me.colRightFill.FillEmptySpace = True
         Me.colRightFill.Name = "colRightFill"
+        Me.colRightFill.OptionsColumn.AllowEdit = False
         Me.colRightFill.OptionsColumn.ShowCaption = False
+        Me.colRightFill.SummaryItem.DisplayFormat = "Record Count = {0:n0}"
+        Me.colRightFill.SummaryItem.FieldName = "Id"
+        Me.colRightFill.SummaryItem.SummaryType = DevExpress.Data.SummaryItemType.Count
         Me.colRightFill.Visible = True
         Me.colRightFill.VisibleIndex = 8
-        Me.colRightFill.Width = 336
+        Me.colRightFill.Width = 319
         '
         'FillGridColumn1
         '
@@ -399,7 +416,7 @@ Partial Class USPSAddressUpdateSection
         '
         'TopPanel
         '
-        Me.TopPanel.Controls.Add(Me.Button1)
+        Me.TopPanel.Controls.Add(Me.btnExportToExcel)
         Me.TopPanel.Controls.Add(Me.Label2)
         Me.TopPanel.Controls.Add(Me.Label1)
         Me.TopPanel.Controls.Add(Me.chkIgnoreAll)
@@ -411,17 +428,17 @@ Partial Class USPSAddressUpdateSection
         Me.TopPanel.Size = New System.Drawing.Size(975, 44)
         Me.TopPanel.TabIndex = 4
         '
-        'Button1
+        'btnExportToExcel
         '
-        Me.Button1.Image = Global.Nrc.QualiSys.QualiSysExplorer.My.Resources.Resources.Excel16
-        Me.Button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button1.Location = New System.Drawing.Point(111, 15)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(101, 23)
-        Me.Button1.TabIndex = 7
-        Me.Button1.Text = "Export to Excel"
-        Me.Button1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.btnExportToExcel.Image = Global.Nrc.QualiSys.QualiSysExplorer.My.Resources.Resources.Excel16
+        Me.btnExportToExcel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnExportToExcel.Location = New System.Drawing.Point(111, 15)
+        Me.btnExportToExcel.Name = "btnExportToExcel"
+        Me.btnExportToExcel.Size = New System.Drawing.Size(101, 23)
+        Me.btnExportToExcel.TabIndex = 7
+        Me.btnExportToExcel.Text = "Export to Excel"
+        Me.btnExportToExcel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnExportToExcel.UseVisualStyleBackColor = True
         '
         'Label2
         '
@@ -558,7 +575,7 @@ Partial Class USPSAddressUpdateSection
     Friend WithEvents chkIgnoreAll As DevExpress.XtraEditors.CheckEdit
     Friend WithEvents chkUpdateAll As DevExpress.XtraEditors.CheckEdit
     Friend WithEvents FillGridColumn1 As Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridColumn
-    Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents btnExportToExcel As System.Windows.Forms.Button
     Friend WithEvents SaveFileDialog1 As System.Windows.Forms.SaveFileDialog
 
 End Class
