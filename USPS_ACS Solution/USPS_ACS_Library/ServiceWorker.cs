@@ -1054,28 +1054,37 @@ namespace USPS_ACS_Library
             try
             {
 
-                DataTable dt = USPS_ACS_DataProvider.SelectPartialMatches(true);
+                DataTable dt = USPS_ACS_DataProvider.SelectPendingPartialMatches(true);
 
                 if (dt.Rows.Count > 0) {
 
                     partialMatchMessage += "<SPAN style='font-size:11pt;font-family:\"Calibri\";'><P>Partial and Multiple match summary<BR><BR>";
        
                     // Add Partial Match header and detail lines
+                    IEnumerable<DataRow> partialMatches = from myRow in dt.AsEnumerable() where myRow.Field<string>("Status") == "PartialMatch" select myRow;
+                    
+                    if (partialMatches.ToList().Count > 0)
+                    {
+                        partialMatchMessage += "Partial Matches identified<BR><BR><TABLE style='font-size:10pt;font-family:\"Tahoma\";'>";
 
-                    partialMatchMessage += "Partial Matches identified<BR><BR><TABLE style='font-size:10pt;font-family:\"Tahoma\";'>";
+                        if (partialMatches.ToList().Where(x => x.Field<int>("AgeAlert") == 0).Count() > 0)
+                            partialMatchMessage += string.Format("<TR><TD colspan=6><BR>New: <b>{0}</b></TD></TR>", partialMatches.ToList().Where(x => x.Field<int>("AgeAlert") == 0).Count());
 
-                    foreach (DataRow dr in dt.Rows)
-                        if (dr["Status"].ToString().Equals("PartialMatch"))
+
+                        foreach (DataRow dr in partialMatches)
                             partialMatchMessage = BuildMatchDetail(partialMatchMessage, dr);
-
+                    }
                     // Add Multiple Match header and detail lines
+                   
+                    IEnumerable<DataRow> multipleMatches = from myRow in dt.AsEnumerable() where myRow.Field<string>("Status") == "MultipleMatches" select myRow;
+                    if (multipleMatches.ToList().Count > 0) 
+                    {
+                        partialMatchMessage += "</TABLE><BR><BR>Multiple Matches identified<BR><BR><TABLE style='font-size:10pt;font-family:\"Tahoma\";'>";
 
-                    partialMatchMessage += "</TABLE><BR><BR>Multiple Matches identified<BR><BR><TABLE style='font-size:10pt;font-family:\"Tahoma\";'>";
-
-                    foreach (DataRow dr in dt.Rows)
-                        if (dr["Status"].ToString().Equals("MultipleMatches"))
+                        foreach (DataRow dr in multipleMatches)
                             partialMatchMessage = BuildMatchDetail(partialMatchMessage, dr);
-
+                    }
+                
                     partialMatchMessage += "</TABLE></P></SPAN>";
 
                     string sendTo = AppConfig.Params["USPS_ACS_SendStatusNotificationTo"].StringValue;
