@@ -1058,14 +1058,14 @@ namespace USPS_ACS_Library
 
                 if (dt.Rows.Count > 0) {
 
-                    partialMatchMessage += "<SPAN style='font-size:11pt;font-family:\"Calibri\";'><P>Partial and Multiple match summary<BR><BR>";
+                    partialMatchMessage += "<span><P>Partial and Multiple match summary<BR><BR>";
 
                     IEnumerable<DataRow> partialMatches = from myRow in dt.AsEnumerable() where myRow.Field<string>("Status") == "PartialMatch" select myRow;
                     IEnumerable<DataRow> multipleMatches = from myRow in dt.AsEnumerable() where myRow.Field<string>("Status") == "MultipleMatches" select myRow;
 
-                    partialMatchMessage += "<table width='500px' border='1px' style='font-family: Tahoma, Verdana, Arial; font-size:X-Small' width='100%' cellpadding='0' cellspacing='1'>";
+                    partialMatchMessage += "<table border='1'>";
                     partialMatchMessage += "<tr><th>&nbsp</th><th colspan='6'>Days Pending</tr>";
-                    partialMatchMessage += "<tr><th>&nbsp</th><th>0 - 7</th><th>8 - 14</th><th>15 - 21</th><th>22 - 28</th><th>29 - 35</th><th>36+</th></tr>";
+                    partialMatchMessage += "<tr><th>Match Type</th><th>0 - 7</th><th>8 - 14</th><th>15 - 21</th><th>22 - 28</th><th>29 - 35</th><th>36+</th></tr>";
 
                     // Add Partial Match header and detail lines
                     if (partialMatches.ToList().Count > 0)
@@ -1097,7 +1097,7 @@ namespace USPS_ACS_Library
                     }
 
 
-                    partialMatchMessage += "</table></P></SPAN><BR><BR>";
+                    partialMatchMessage += "</table></P><BR><BR></span>";
 
                     string sendTo = "tbutler@nationalresearch.com";//AppConfig.Params["USPS_ACS_SendStatusNotificationTo"].StringValue;
                     string sendBcc = "tbutler@nationalresearch.com";//AppConfig.Params["USPS_ACS_SendStatusNotificationBcc"].StringValue;
