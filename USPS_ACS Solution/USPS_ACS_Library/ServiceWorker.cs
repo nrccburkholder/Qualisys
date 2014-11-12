@@ -103,7 +103,7 @@ namespace USPS_ACS_Library
             {
                 stopwatch.Stop();
                 Logs.Info(String.Format("USPS ACS Processing Elapsed Time: {0} seconds.", (stopwatch.ElapsedMilliseconds / 1000).ToString()));
-                SendStatusNotification("USPS_ACS_Service.DoExtractWork", new List<USPS_ACS_Notification>());
+                //SendStatusNotification("USPS_ACS_Service.DoExtractWork", new List<USPS_ACS_Notification>());
             }
 
         }
@@ -1059,36 +1059,48 @@ namespace USPS_ACS_Library
                 if (dt.Rows.Count > 0) {
 
                     partialMatchMessage += "<SPAN style='font-size:11pt;font-family:\"Calibri\";'><P>Partial and Multiple match summary<BR><BR>";
-       
-                    // Add Partial Match header and detail lines
+
                     IEnumerable<DataRow> partialMatches = from myRow in dt.AsEnumerable() where myRow.Field<string>("Status") == "PartialMatch" select myRow;
-                    
+                    IEnumerable<DataRow> multipleMatches = from myRow in dt.AsEnumerable() where myRow.Field<string>("Status") == "MultipleMatches" select myRow;
+
+                    partialMatchMessage += "<table width='500px' border='1px' style='font-family: Tahoma, Verdana, Arial; font-size:X-Small' width='100%' cellpadding='0' cellspacing='1'>";
+                    partialMatchMessage += "<tr><th>&nbsp</th><th colspan='6'>Days Pending</tr>";
+                    partialMatchMessage += "<tr><th>&nbsp</th><th>0 - 7</th><th>8 - 14</th><th>15 - 21</th><th>22 - 28</th><th>29 - 35</th><th>36+</th></tr>";
+
+                    // Add Partial Match header and detail lines
                     if (partialMatches.ToList().Count > 0)
                     {
-                        partialMatchMessage += "Partial Matches identified<BR><BR><TABLE style='font-size:10pt;font-family:\"Tahoma\";'>";
+                        //partialMatchMessage += "Partial Matches identified<BR><BR><TABLE style='font-size:10pt;font-family:\"Tahoma\";'>";
 
-                        if (partialMatches.ToList().Where(x => x.Field<int>("AgeAlert") == 0).Count() > 0)
-                            partialMatchMessage += string.Format("<TR><TD colspan=6><BR>New: <b>{0}</b></TD></TR>", partialMatches.ToList().Where(x => x.Field<int>("AgeAlert") == 0).Count());
+                        string sPM0 = string.Format("<td align='center'>{0}</td>",partialMatches.ToList().Where(x => x.Field<int>("AgeAlert") == 0).Count().ToString());
+                        string sPM1 = string.Format("<td align='center'>{0}</td>",partialMatches.ToList().Where(x => x.Field<int>("AgeAlert") == 1).Count().ToString());
+                        string sPM2 = string.Format("<td align='center'>{0}</td>",partialMatches.ToList().Where(x => x.Field<int>("AgeAlert") == 2).Count().ToString());
+                        string sPM3 = string.Format("<td align='center'>{0}</td>",partialMatches.ToList().Where(x => x.Field<int>("AgeAlert") == 3).Count().ToString());
+                        string sPM4 = string.Format("<td align='center'>{0}</td>",partialMatches.ToList().Where(x => x.Field<int>("AgeAlert") == 4).Count().ToString());
+                        string sPM5 = string.Format("<td align='center'>{0}</td>",partialMatches.ToList().Where(x => x.Field<int>("AgeAlert") == 5).Count().ToString());
 
+                        partialMatchMessage += string.Format("<tr><td>Partial Matches</td>{0}{1}{2}{3}{4}{5}</tr>", sPM0, sPM1, sPM2, sPM3, sPM4, sPM5);
 
-                        foreach (DataRow dr in partialMatches)
-                            partialMatchMessage = BuildMatchDetail(partialMatchMessage, dr);
                     }
-                    // Add Multiple Match header and detail lines
-                   
-                    IEnumerable<DataRow> multipleMatches = from myRow in dt.AsEnumerable() where myRow.Field<string>("Status") == "MultipleMatches" select myRow;
+
+                    // Add Multiple Match header and detail lines                    
                     if (multipleMatches.ToList().Count > 0) 
                     {
-                        partialMatchMessage += "</TABLE><BR><BR>Multiple Matches identified<BR><BR><TABLE style='font-size:10pt;font-family:\"Tahoma\";'>";
+                        string sMM0 = string.Format("<td align='center'>{0}</td>", multipleMatches.ToList().Where(x => x.Field<int>("AgeAlert") == 0).Count().ToString());
+                        string sMM1 = string.Format("<td align='center'>{0}</td>", multipleMatches.ToList().Where(x => x.Field<int>("AgeAlert") == 1).Count().ToString());
+                        string sMM2 = string.Format("<td align='center'>{0}</td>", multipleMatches.ToList().Where(x => x.Field<int>("AgeAlert") == 2).Count().ToString());
+                        string sMM3 = string.Format("<td align='center'>{0}</td>", multipleMatches.ToList().Where(x => x.Field<int>("AgeAlert") == 3).Count().ToString());
+                        string sMM4 = string.Format("<td align='center'>{0}</td>", multipleMatches.ToList().Where(x => x.Field<int>("AgeAlert") == 4).Count().ToString());
+                        string sMM5 = string.Format("<td align='center'>{0}</td>", multipleMatches.ToList().Where(x => x.Field<int>("AgeAlert") == 5).Count().ToString());
 
-                        foreach (DataRow dr in multipleMatches)
-                            partialMatchMessage = BuildMatchDetail(partialMatchMessage, dr);
+                        partialMatchMessage += string.Format("<tr><td>Multiple Matches</td>{0}{1}{2}{3}{4}{5}</td></tr>", sMM0, sMM1, sMM2, sMM3, sMM4, sMM5);
                     }
-                
-                    partialMatchMessage += "</TABLE></P></SPAN>";
 
-                    string sendTo = AppConfig.Params["USPS_ACS_SendStatusNotificationTo"].StringValue;
-                    string sendBcc = AppConfig.Params["USPS_ACS_SendStatusNotificationBcc"].StringValue;
+
+                    partialMatchMessage += "</table></P></SPAN><BR><BR>";
+
+                    string sendTo = "tbutler@nationalresearch.com";//AppConfig.Params["USPS_ACS_SendStatusNotificationTo"].StringValue;
+                    string sendBcc = "tbutler@nationalresearch.com";//AppConfig.Params["USPS_ACS_SendStatusNotificationBcc"].StringValue;
 
                     toList.Add(sendTo);
                     bccList.Add(sendBcc);
