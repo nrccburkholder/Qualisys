@@ -1063,9 +1063,10 @@ namespace USPS_ACS_Library
                     IEnumerable<DataRow> partialMatches = from myRow in dt.AsEnumerable() where myRow.Field<string>("Status") == "PartialMatch" select myRow;
                     IEnumerable<DataRow> multipleMatches = from myRow in dt.AsEnumerable() where myRow.Field<string>("Status") == "MultipleMatches" select myRow;
 
-                    partialMatchMessage += "<table border='1'>";
-                    partialMatchMessage += "<tr><th>&nbsp</th><th colspan='6'>Days Pending</tr>";
-                    partialMatchMessage += "<tr><th>Match Type</th><th>0 - 7</th><th>8 - 14</th><th>15 - 21</th><th>22 - 28</th><th>29 - 35</th><th>36+</th></tr>";
+                    partialMatchMessage += "<table border='1' width='700px'>";
+                    //partialMatchMessage += "<col width='130'><col width='80'><col width='80'><col width='80'><col width='80'><col width='80'><col width='80'>";
+                    partialMatchMessage += "<tr><th>&nbsp</th><th colspan='6'>Days Since Received</tr>";
+                    partialMatchMessage += "<tr><th width='18%'>Match Type</th><th width='12%'>0 - 7</th><th width='12%'>8 - 14</th><th width='12%'>15 - 21</th><th width='12%'>22 - 28</th><th width='12%'>29 - 35</th><th width='12%'>36+</th></tr>";
 
                     // Add Partial Match header and detail lines
                     if (partialMatches.ToList().Count > 0)

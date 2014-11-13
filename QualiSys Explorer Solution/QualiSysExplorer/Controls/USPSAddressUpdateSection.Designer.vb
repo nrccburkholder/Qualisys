@@ -455,7 +455,7 @@ Partial Class USPSAddressUpdateSection
         '
         Me.Label2.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(567, 6)
+        Me.Label2.Location = New System.Drawing.Point(649, 6)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(51, 13)
         Me.Label2.TabIndex = 6
@@ -465,7 +465,7 @@ Partial Class USPSAddressUpdateSection
         '
         Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(473, 6)
+        Me.Label1.Location = New System.Drawing.Point(555, 6)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(56, 13)
         Me.Label1.TabIndex = 5
@@ -474,7 +474,7 @@ Partial Class USPSAddressUpdateSection
         'chkIgnoreAll
         '
         Me.chkIgnoreAll.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.chkIgnoreAll.Location = New System.Drawing.Point(556, 22)
+        Me.chkIgnoreAll.Location = New System.Drawing.Point(640, 22)
         Me.chkIgnoreAll.Name = "chkIgnoreAll"
         Me.chkIgnoreAll.Properties.Caption = "CheckEdit2"
         Me.chkIgnoreAll.Properties.GlyphAlignment = DevExpress.Utils.HorzAlignment.Center
@@ -484,7 +484,7 @@ Partial Class USPSAddressUpdateSection
         'chkUpdateAll
         '
         Me.chkUpdateAll.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.chkUpdateAll.Location = New System.Drawing.Point(465, 22)
+        Me.chkUpdateAll.Location = New System.Drawing.Point(548, 22)
         Me.chkUpdateAll.Name = "chkUpdateAll"
         Me.chkUpdateAll.Properties.Caption = "CheckEdit1"
         Me.chkUpdateAll.Properties.GlyphAlignment = DevExpress.Utils.HorzAlignment.Center
