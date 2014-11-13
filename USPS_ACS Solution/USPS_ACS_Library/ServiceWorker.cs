@@ -103,7 +103,7 @@ namespace USPS_ACS_Library
             {
                 stopwatch.Stop();
                 Logs.Info(String.Format("USPS ACS Processing Elapsed Time: {0} seconds.", (stopwatch.ElapsedMilliseconds / 1000).ToString()));
-                //SendStatusNotification("USPS_ACS_Service.DoExtractWork", new List<USPS_ACS_Notification>());
+                SendStatusNotification("USPS_ACS_Service.DoExtractWork", new List<USPS_ACS_Notification>());
             }
 
         }
@@ -1064,15 +1064,12 @@ namespace USPS_ACS_Library
                     IEnumerable<DataRow> multipleMatches = from myRow in dt.AsEnumerable() where myRow.Field<string>("Status") == "MultipleMatches" select myRow;
 
                     partialMatchMessage += "<table border='1' width='700px'>";
-                    //partialMatchMessage += "<col width='130'><col width='80'><col width='80'><col width='80'><col width='80'><col width='80'><col width='80'>";
                     partialMatchMessage += "<tr><th>&nbsp</th><th colspan='6'>Days Since Received</tr>";
-                    partialMatchMessage += "<tr><th width='18%'>Match Type</th><th width='12%'>0 - 7</th><th width='12%'>8 - 14</th><th width='12%'>15 - 21</th><th width='12%'>22 - 28</th><th width='12%'>29 - 35</th><th width='12%'>36+</th></tr>";
+                    partialMatchMessage += "<tr><th width='18%'>Match Type</th><th width='12%'>0 - 7</th><th width='12%'>8 - 14</th><th width='12%'>15 - 21</th><th width='12%'>22 - 28</th><th width='12%'>29 - 56</th><th width='12%'>57+</th></tr>";
 
                     // Add Partial Match header and detail lines
                     if (partialMatches.ToList().Count > 0)
                     {
-                        //partialMatchMessage += "Partial Matches identified<BR><BR><TABLE style='font-size:10pt;font-family:\"Tahoma\";'>";
-
                         string sPM0 = string.Format("<td align='center'>{0}</td>",partialMatches.ToList().Where(x => x.Field<int>("AgeAlert") == 0).Count().ToString());
                         string sPM1 = string.Format("<td align='center'>{0}</td>",partialMatches.ToList().Where(x => x.Field<int>("AgeAlert") == 1).Count().ToString());
                         string sPM2 = string.Format("<td align='center'>{0}</td>",partialMatches.ToList().Where(x => x.Field<int>("AgeAlert") == 2).Count().ToString());
@@ -1081,7 +1078,6 @@ namespace USPS_ACS_Library
                         string sPM5 = string.Format("<td align='center'>{0}</td>",partialMatches.ToList().Where(x => x.Field<int>("AgeAlert") == 5).Count().ToString());
 
                         partialMatchMessage += string.Format("<tr><td>Partial Matches</td>{0}{1}{2}{3}{4}{5}</tr>", sPM0, sPM1, sPM2, sPM3, sPM4, sPM5);
-
                     }
 
                     // Add Multiple Match header and detail lines                    
@@ -1100,8 +1096,8 @@ namespace USPS_ACS_Library
 
                     partialMatchMessage += "</table></P><BR><BR></span>";
 
-                    string sendTo = "tbutler@nationalresearch.com";//AppConfig.Params["USPS_ACS_SendStatusNotificationTo"].StringValue;
-                    string sendBcc = "tbutler@nationalresearch.com";//AppConfig.Params["USPS_ACS_SendStatusNotificationBcc"].StringValue;
+                    string sendTo = AppConfig.Params["USPS_ACS_SendStatusNotificationTo"].StringValue;
+                    string sendBcc = AppConfig.Params["USPS_ACS_SendStatusNotificationBcc"].StringValue;
 
                     toList.Add(sendTo);
                     bccList.Add(sendBcc);
