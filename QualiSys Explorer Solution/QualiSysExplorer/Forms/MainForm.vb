@@ -132,6 +132,18 @@ Public Class MainForm
         relations.Add(New UIRelation(SearchTab, studyNav, popManSect))
         relations.Add(New UIRelation(USPSAddressUpdatesTab, uspsNav, uspsSect))
 
+        'enable for US only
+        If AppConfig.CountryID = CountryIDs.US Then
+            USPSAddressUpdatesTab.Enabled = True
+            USPSAddressUpdatesTab.Image = My.Resources.usps_icon4
+            USPSAddressUpdatesTab.ForeColor = Color.Black
+        Else
+            'disabled for non-US countries
+            USPSAddressUpdatesTab.Enabled = False
+            USPSAddressUpdatesTab.Image = My.Resources.usps_icon4_disabled
+            USPSAddressUpdatesTab.ForeColor = Color.LightSlateGray
+        End If
+
         'Initialize the selected tab
         If Me.MultiPane.Tabs.Count > 0 Then
             Dim relation As UIRelation = relations(MultiPane.Tabs(0))
@@ -155,5 +167,4 @@ Public Class MainForm
     End Sub
 
 #End Region
-
 End Class

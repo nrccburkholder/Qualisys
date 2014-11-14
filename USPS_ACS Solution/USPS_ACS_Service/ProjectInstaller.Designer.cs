@@ -41,6 +41,7 @@
             // 
             this.serviceInstaller1.DisplayName = "USPS Address Correction Service";
             this.serviceInstaller1.ServiceName = "USPS_ACS_Service";
+            this.serviceInstaller1.AfterInstall += new System.Configuration.Install.InstallEventHandler(this.serviceInstaller1_AfterInstall);
             // 
             // ProjectInstaller
             // 

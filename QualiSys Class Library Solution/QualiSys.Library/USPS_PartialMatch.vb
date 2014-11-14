@@ -190,27 +190,27 @@ Public Class USPS_PartialMatch
 #End Region
 
 #Region "Public Methods"
-    Public Shared Function GetPartialMatches(ByVal status As Integer) As List(Of USPS_PartialMatch)
-        Return USPS_ACS_Provider.Instance.SelectByStatus(status)
-    End Function
 
-    Public Shared Function GetPartialMatchesDataSet(ByVal status As Integer) As DataSet
+    Public Shared Function GetPartialMatchesDataSet(ByVal status As Integer, ByVal fromDate As String, ByVal toDate As String) As DataSet
 
         Dim ds As New DataSet()
-        ds = USPS_ACS_Provider.Instance.SelectPartialMatchesByStatus(status)
+        ds = USPS_ACS_Provider.Instance.SelectPartialMatchesByStatus(status, fromDate, toDate)
 
         'Set up a master-detail relationship between the DataTables
         Dim keyColumn As DataColumn = ds.Tables(0).Columns("Id")
         Dim foreignKeyColumn1 As DataColumn = ds.Tables(1).Columns("Id")
-        'Dim foreignKeyColumn2 As DataColumn = ds.Tables(2).Columns("USPS_ACS_ExtractFile_PartialMatch_id")
 
-        ds.Relations.Add("FK_PopAddress_OldAddress", keyColumn, foreignKeyColumn1)
-        'ds.Relations.Add("FK_PopAddress_NewAddress", keyColumn, foreignKeyColumn2)
+        ds.Relations.Add("FK_Master_Detail", keyColumn, foreignKeyColumn1)
 
 
         Return ds
 
     End Function
+
+    Public Shared Sub UpdatePartialMatchStatus(ByVal id As Integer, ByVal status As Integer)
+        USPS_ACS_Provider.Instance.UpdatePartialMatchStatus(id, status)
+    End Sub
+
 #End Region
 
 End Class

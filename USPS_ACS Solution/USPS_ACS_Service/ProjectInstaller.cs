@@ -15,5 +15,10 @@ namespace USPS_ACS_Service
         {
             InitializeComponent();
         }
+
+        private void serviceInstaller1_AfterInstall(object sender, InstallEventArgs e)
+        {
+
+        }
     }
 }

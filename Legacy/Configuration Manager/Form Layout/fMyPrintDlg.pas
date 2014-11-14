@@ -157,10 +157,11 @@ begin
     ComboCoverLtr.Items.clear;
     first;
     while not eof do begin
-      if (wwt_Cover.fieldbyname('PageType').value <> 4 {ptArtifacts}) then
+      if (wwt_Cover.fieldbyname('PageType').value <> 4 {ptArtifacts}) then begin
         ComboCoverLtr.Items.add(fieldbyname('Description').value);
-      CoverID[ComboCoverLtr.Items.count-1] := wwt_Cover.fieldbyname('SelCover_ID').value;
-      PageType[ComboCoverLtr.Items.count-1] := wwt_Cover.fieldbyname('PageType').value;
+        CoverID[ComboCoverLtr.Items.count-1] := wwt_Cover.fieldbyname('SelCover_ID').value;
+        PageType[ComboCoverLtr.Items.count-1] := wwt_Cover.fieldbyname('PageType').value;
+      end;
       next;
     end;
     ComboCoverLtr.ItemIndex := 0;
