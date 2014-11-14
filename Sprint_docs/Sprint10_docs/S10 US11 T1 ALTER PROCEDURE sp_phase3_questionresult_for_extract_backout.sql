@@ -43,7 +43,7 @@ go
 -- Modified 02/27/2014 CB - added -5 and -6 as non-response codes. Phone surveys can code -5 as "Refused" and -6 as "Don't Know"
 -- Modified 06/18/2014 DBG - refactored ACOCAHPSCompleteness as a procedure instead of a function.
 
-CREATE PROCEDURE [dbo].[sp_phase3_questionresult_for_extract] 
+ALTER PROCEDURE [dbo].[sp_phase3_questionresult_for_extract] 
 AS 
     SET TRANSACTION isolation level READ uncommitted 
 

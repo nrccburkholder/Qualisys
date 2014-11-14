@@ -1,5 +1,6 @@
-CREATE PROCEDURE [dbo].[QCL_SelectCoverLettersBySurveyID]
-@SurveyID INT
+CREATE PROCEDURE [dbo].[QCL_SelectCoverLettersBySurveyIdAndPageType]
+@SurveyID INT,
+@PageType INT
 AS
 
 SET NOCOUNT ON
@@ -8,6 +9,9 @@ SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 SELECT SelCover_id, [Description], Survey_id
 FROM Sel_Cover 
 WHERE Survey_id=@SurveyID
+AND PageType = @PageType
 
 SET NOCOUNT OFF
 SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+

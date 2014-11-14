@@ -35,6 +35,7 @@ Partial Class USPSAddressUpdateSection
         Me.gvPartialMatches = New Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridView()
         Me.colStatusImage = New Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridColumn()
         Me.RepositoryItemPictureEdit1 = New DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit()
+        Me.colMatchType = New Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridColumn()
         Me.colPartialMatchId = New Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridColumn()
         Me.colPartialMatchDateReceived = New Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridColumn()
         Me.colPartialMatchStudyId = New Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridColumn()
@@ -203,7 +204,7 @@ Partial Class USPSAddressUpdateSection
         Me.gvPartialMatches.Appearance.Row.BorderColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
         Me.gvPartialMatches.Appearance.Row.Options.UseBackColor = True
         Me.gvPartialMatches.Appearance.Row.Options.UseBorderColor = True
-        Me.gvPartialMatches.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.colStatusImage, Me.colPartialMatchId, Me.colPartialMatchDateReceived, Me.colPartialMatchStudyId, Me.colPartialMatchPopId, Me.colPartialMatchLithocode, Me.colPartialMatchUpdate, Me.colPartialMatchIgnore, Me.colRightFill, Me.FillGridColumn1})
+        Me.gvPartialMatches.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.colStatusImage, Me.colMatchType, Me.colPartialMatchId, Me.colPartialMatchDateReceived, Me.colPartialMatchStudyId, Me.colPartialMatchPopId, Me.colPartialMatchLithocode, Me.colPartialMatchUpdate, Me.colPartialMatchIgnore, Me.colRightFill, Me.FillGridColumn1})
         Me.gvPartialMatches.DetailHeight = 550
         Me.gvPartialMatches.DetailTabHeaderLocation = DevExpress.XtraTab.TabHeaderLocation.Left
         Me.gvPartialMatches.GridControl = Me.gcPartialMatches
@@ -234,6 +235,16 @@ Partial Class USPSAddressUpdateSection
         '
         Me.RepositoryItemPictureEdit1.Name = "RepositoryItemPictureEdit1"
         '
+        'colMatchType
+        '
+        Me.colMatchType.Caption = "Match Type"
+        Me.colMatchType.FieldName = "Status"
+        Me.colMatchType.FillEmptySpace = False
+        Me.colMatchType.Name = "colMatchType"
+        Me.colMatchType.Visible = True
+        Me.colMatchType.VisibleIndex = 1
+        Me.colMatchType.Width = 85
+        '
         'colPartialMatchId
         '
         Me.colPartialMatchId.AppearanceHeader.Options.UseTextOptions = True
@@ -246,7 +257,7 @@ Partial Class USPSAddressUpdateSection
         Me.colPartialMatchId.OptionsFilter.AllowAutoFilter = False
         Me.colPartialMatchId.OptionsFilter.AllowFilter = False
         Me.colPartialMatchId.Visible = True
-        Me.colPartialMatchId.VisibleIndex = 1
+        Me.colPartialMatchId.VisibleIndex = 2
         Me.colPartialMatchId.Width = 55
         '
         'colPartialMatchDateReceived
@@ -260,7 +271,7 @@ Partial Class USPSAddressUpdateSection
         Me.colPartialMatchDateReceived.OptionsColumn.AllowEdit = False
         Me.colPartialMatchDateReceived.OptionsFilter.ShowEmptyDateFilter = True
         Me.colPartialMatchDateReceived.Visible = True
-        Me.colPartialMatchDateReceived.VisibleIndex = 2
+        Me.colPartialMatchDateReceived.VisibleIndex = 3
         Me.colPartialMatchDateReceived.Width = 100
         '
         'colPartialMatchStudyId
@@ -273,7 +284,7 @@ Partial Class USPSAddressUpdateSection
         Me.colPartialMatchStudyId.Name = "colPartialMatchStudyId"
         Me.colPartialMatchStudyId.OptionsColumn.AllowEdit = False
         Me.colPartialMatchStudyId.Visible = True
-        Me.colPartialMatchStudyId.VisibleIndex = 3
+        Me.colPartialMatchStudyId.VisibleIndex = 4
         Me.colPartialMatchStudyId.Width = 67
         '
         'colPartialMatchPopId
@@ -286,7 +297,7 @@ Partial Class USPSAddressUpdateSection
         Me.colPartialMatchPopId.Name = "colPartialMatchPopId"
         Me.colPartialMatchPopId.OptionsColumn.AllowEdit = False
         Me.colPartialMatchPopId.Visible = True
-        Me.colPartialMatchPopId.VisibleIndex = 4
+        Me.colPartialMatchPopId.VisibleIndex = 5
         Me.colPartialMatchPopId.Width = 69
         '
         'colPartialMatchLithocode
@@ -299,7 +310,7 @@ Partial Class USPSAddressUpdateSection
         Me.colPartialMatchLithocode.Name = "colPartialMatchLithocode"
         Me.colPartialMatchLithocode.OptionsColumn.AllowEdit = False
         Me.colPartialMatchLithocode.Visible = True
-        Me.colPartialMatchLithocode.VisibleIndex = 5
+        Me.colPartialMatchLithocode.VisibleIndex = 6
         Me.colPartialMatchLithocode.Width = 102
         '
         'colPartialMatchUpdate
@@ -312,7 +323,7 @@ Partial Class USPSAddressUpdateSection
         Me.colPartialMatchUpdate.FillEmptySpace = False
         Me.colPartialMatchUpdate.Name = "colPartialMatchUpdate"
         Me.colPartialMatchUpdate.Visible = True
-        Me.colPartialMatchUpdate.VisibleIndex = 6
+        Me.colPartialMatchUpdate.VisibleIndex = 7
         Me.colPartialMatchUpdate.Width = 87
         '
         'RepositoryItemCheckEdit1
@@ -332,7 +343,7 @@ Partial Class USPSAddressUpdateSection
         Me.colPartialMatchIgnore.FillEmptySpace = False
         Me.colPartialMatchIgnore.Name = "colPartialMatchIgnore"
         Me.colPartialMatchIgnore.Visible = True
-        Me.colPartialMatchIgnore.VisibleIndex = 7
+        Me.colPartialMatchIgnore.VisibleIndex = 8
         Me.colPartialMatchIgnore.Width = 89
         '
         'colRightFill
@@ -348,8 +359,8 @@ Partial Class USPSAddressUpdateSection
         Me.colRightFill.SummaryItem.FieldName = "Id"
         Me.colRightFill.SummaryItem.SummaryType = DevExpress.Data.SummaryItemType.Count
         Me.colRightFill.Visible = True
-        Me.colRightFill.VisibleIndex = 8
-        Me.colRightFill.Width = 319
+        Me.colRightFill.VisibleIndex = 9
+        Me.colRightFill.Width = 251
         '
         'FillGridColumn1
         '
@@ -444,7 +455,7 @@ Partial Class USPSAddressUpdateSection
         '
         Me.Label2.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(567, 6)
+        Me.Label2.Location = New System.Drawing.Point(649, 6)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(51, 13)
         Me.Label2.TabIndex = 6
@@ -454,7 +465,7 @@ Partial Class USPSAddressUpdateSection
         '
         Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(473, 6)
+        Me.Label1.Location = New System.Drawing.Point(555, 6)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(56, 13)
         Me.Label1.TabIndex = 5
@@ -463,7 +474,7 @@ Partial Class USPSAddressUpdateSection
         'chkIgnoreAll
         '
         Me.chkIgnoreAll.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.chkIgnoreAll.Location = New System.Drawing.Point(556, 22)
+        Me.chkIgnoreAll.Location = New System.Drawing.Point(640, 22)
         Me.chkIgnoreAll.Name = "chkIgnoreAll"
         Me.chkIgnoreAll.Properties.Caption = "CheckEdit2"
         Me.chkIgnoreAll.Properties.GlyphAlignment = DevExpress.Utils.HorzAlignment.Center
@@ -473,7 +484,7 @@ Partial Class USPSAddressUpdateSection
         'chkUpdateAll
         '
         Me.chkUpdateAll.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.chkUpdateAll.Location = New System.Drawing.Point(465, 22)
+        Me.chkUpdateAll.Location = New System.Drawing.Point(548, 22)
         Me.chkUpdateAll.Name = "chkUpdateAll"
         Me.chkUpdateAll.Properties.Caption = "CheckEdit1"
         Me.chkUpdateAll.Properties.GlyphAlignment = DevExpress.Utils.HorzAlignment.Center
@@ -577,5 +588,6 @@ Partial Class USPSAddressUpdateSection
     Friend WithEvents FillGridColumn1 As Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridColumn
     Friend WithEvents btnExportToExcel As System.Windows.Forms.Button
     Friend WithEvents SaveFileDialog1 As System.Windows.Forms.SaveFileDialog
+    Friend WithEvents colMatchType As Nrc.QualiSys.QualiSysExplorer.FillEmptySpaceGridColumn.FillGridColumn
 
 End Class
