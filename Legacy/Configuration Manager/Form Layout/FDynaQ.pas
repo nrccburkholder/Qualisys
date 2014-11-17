@@ -32,7 +32,7 @@ uses
   Wwdbcomb, Wwdbigrd, Wwdbgrid, Menus, DBCtrls, Ppmain, Ppext,
   WKHandle, DQCommon, CDK_Comp, DBRichEdit, Wwfltdlg, wwidlg,
   fSearch, Spin, Tabs, DQPnl, DQImg, DQRchEdt, TrackBar2, Printers,
-  DBGrids, dbpwdlg,fileutil,f_ShowProps;
+  DBGrids, dbpwdlg,fileutil,f_ShowProps,tMapping;
 
 const
   printPixelsPerInch = 600;
@@ -467,8 +467,10 @@ type
     Function GetRawText(r:trichedit):string;
     procedure DeleteAllForeignRecs(const Lang:string);
     function DuplicatePageName(pageName : string; index : integer) : boolean;
-    procedure NewCoverLetter(s : string; forceCopy : boolean);
   public
+   procedure DeleteCL(i : integer);
+   procedure NewCoverLetter(sCoverLetterName : string; forceCopy : boolean);
+   procedure SubstituteTextBoxContentsForSampleUnits( SelectedSampleUnitIDs : array of integer; CLMappings : MappingSet );
    procedure ShowProps;
    function LunchWithHandle(s:string):boolean;
    { Public declarations }
@@ -506,8 +508,8 @@ end;
 
 function TF_DynaQ.LunchWithHandle(s:string):boolean;
 var
-   msg: TMsg;
-   ret: DWORD;
+   //msg: TMsg;
+   //ret: DWORD;
    SUInfo: TStartupInfo;
    ProcInfo: TProcessInformation;
 begin
@@ -2213,7 +2215,7 @@ end;
 procedure TF_DynaQ.Saveas1Click(Sender: TObject);
 var orgfiltered : boolean;
     orgindex : string;
-    RichEdit:tRichedit;
+    //RichEdit:tRichedit;
     s:tMemoryStream;
 
 begin
@@ -2490,7 +2492,7 @@ end;
 
 //GN04: to remove the phantom logo from the cover letter
 procedure TF_DynaQ.mniDeletePLogoClick(Sender: TObject);
-var I,J : integer;
+var I : integer;
 begin
 
   //use this to delete only the phantom logo
@@ -2504,7 +2506,7 @@ begin
   begin
     if (elementList[i]<>nil) {and (tDQPanel(elementlist[i]).BevelWidth = 10)} then
     begin
-      j := 0;
+      //j := 0;
       if isLogo(elementlist[i]) then
       begin
          with DMOpenQ.wwT_Logo do
@@ -2652,7 +2654,7 @@ var sellogoid,perscode : integer;
 begin
   if (WLKHandle.childcount = 1) then
     if isLogoRef(WLKHandle.children[0]) then begin
-      perscode := -1;
+      //perscode := -1;
       dmopenq.LocalQuery('Select Description,Bitmap,scaling,'+qpc_ID+' from sel_logo where coverID=0 order by description',false);
       s := tDQPanel(WLKHandle.children[0]).caption;
       delete(s,1,7);
@@ -3059,30 +3061,36 @@ var I : integer;
 
   procedure getTextBoxMappings;
   var
-    sThisMapping, sMappings : string;
-    i : integer;
+    sThisMapping : BasicMapping;
+    sMappings : MappingSet;
+    i, iMap : integer;
   begin
-    pagetabs[pg].existingTextBoxMappings := dmOpenQ.MappedTextBoxesByCL(pagetabs[pg].description);
-    sMappings := pagetabs[pg].existingTextBoxMappings;
-    delete3.Enabled := (sMappings = '');
+    pagetabs[pg].existingTextBoxMappings := '';
 
-    while sMappings <> '' do
+    sMappings := dmOpenQ.MappedTextBoxesByCL(pagetabs[pg].description);
+    delete3.Enabled := (sMappings[0].SampleUnit = 0);
+
+    iMap := 0;
+    while sMappings[iMap].SampleUnit <> 0 do
     begin
-      sThisMapping := Copy(sMappings, 1, Pos('! ',sMappings) + 1);
+      pagetabs[pg].existingTextBoxMappings := pagetabs[pg].existingTextBoxMappings +
+        FormattedMapping(sMappings[iMap]);
+
+      sThisMapping := sMappings[iMap];
 
       for i := 0 to ElementList.count-1 do
         if isTextBox(ElementList[i]) then
           if (tDQPanel(ElementList[i]).TextBoxName <> '') and
-             ((Pos(pagetabs[pg].description + '.' + tDQPanel(ElementList[i]).TextBoxName, sThisMapping) =
-              Pos('->',sThisMapping) + 2) or
-             (Pos(pagetabs[pg].description + '.' + tDQPanel(ElementList[i]).TextBoxName, sThisMapping) =
-              Pos('<=',sThisMapping) + 2)) then
+             (((pagetabs[pg].description = sThisMapping.CoverLetterName) and
+               (tDQPanel(ElementList[i]).TextBoxName = sThisMapping.CoverLetterTextBox)) or
+              ((pagetabs[pg].description = sThisMapping.ArtifactName) and
+               (tDQPanel(ElementList[i]).TextBoxName = sThisMapping.ArtifactTextBox))) then
             begin
-              tDQPanel(ElementList[i]).TextBoxMappings := tDQPanel(ElementList[i]).TextBoxMappings + sThisMapping;
+              tDQPanel(ElementList[i]).TextBoxMappings := tDQPanel(ElementList[i]).TextBoxMappings + FormattedMapping(sThisMapping);
               break;
             end;
 
-      sMappings := Copy(sMappings, Pos('! ',sMappings) + 2, Length(sMappings) - Pos('! ',sMappings) + 1);
+      inc(iMap);
     end;
   end;
 
@@ -3262,7 +3270,69 @@ begin
         result := true;
 end;
 
-procedure TF_DynaQ.NewCoverLetter(s : string; forceCopy : boolean);
+procedure TF_DynaQ.SubstituteTextBoxContentsForSampleUnits( SelectedSampleUnitIDs : array of integer; CLMappings : MappingSet );
+var
+  iMap, i : integer;
+  found : boolean;
+  language : integer;
+  newRichText : string;
+  idToUpdate,
+  newBorder,
+  newShading : integer;
+  mappings : MappingSet;
+  thisMapping : BasicMapping;
+begin
+  language := dmOpenQ.CurrentLanguage ;
+  mappings := CLMappings ;
+
+  iMap := 0;
+  while mappings[iMap].SampleUnit <> 0 do begin
+    thisMapping := mappings[iMap];
+
+    i := 0;
+    found := false;
+    while (i < 100) and (SelectedSampleUnitIds[i] <> 0) and not found do begin
+      if thisMapping.SampleUnit = SelectedSampleUnitIds[i] then
+        found := true;
+      inc(i);
+    end;
+
+    if found then begin
+       dmopenq.localquery( 'select b.richtext, b.border, b.shading, a.bitlangreview, a.qpc_id'+
+                           ' from sel_textbox a inner join sel_textbox b'+
+	                   ' on a.survey_id = b.survey_id and a.language = b.language'+
+                           ' inner join sel_cover d on b.coverid = d.selcover_id and b.SURVEY_ID = d.Survey_id' +
+                           ' where a.survey_id = '+ inttostr(DMOpenQ.glbSurveyID) +
+                           ' and language = ' + inttostr(language) +
+                           ' and a.Label = ''' + thisMapping.CoverLetterTextBox + '''' +
+                           ' and b.Label = ''' + thisMapping.ArtifactTextBox + '''' +
+                           ' and a.coverid = ' + inttostr(TabSet1.tabs.count - 1) +
+                           ' and d.description = ''' + thisMapping.ArtifactName  +''''
+                           ,false);
+       newRichText := dmopenq.ww_Query.FieldByName('richtext').AsString;
+       newBorder := dmopenq.ww_Query.FieldByName('border').AsInteger;
+       newShading := dmopenq.ww_Query.FieldByName('shading').AsInteger;
+       idToUpdate := dmopenq.ww_Query.FieldByName('qpc_id').AsInteger;
+
+       if dmopenq.ww_Query.FieldByName('bitLangReview').AsBoolean then
+          showmessage('Already Mapped: ' + thisMapping.CoverLetterName + '.' + thisMapping.CoverLetterTextBox)
+       else
+       with DMOpenQ.wwt_TextBox do begin
+         if findkey([DMOpenQ.glbSurveyID,idToUpdate]) then begin
+           edit;
+           fieldbyname('RichText').value := newRichText;
+           fieldbyname('Shading').value := newShading;
+           fieldbyname('Border').value := newBorder;
+           fieldbyname('bitLangReview').value := true;
+           post;
+         end;
+       end;
+    end;
+    inc(iMap);
+  end;
+end;
+
+procedure TF_DynaQ.NewCoverLetter(sCoverLetterName : string; forceCopy : boolean);
 var i : integer;
   procedure AssignNewID(const ii:integer);
   begin
@@ -3288,7 +3358,7 @@ var i : integer;
 begin
     with Tabset1 do begin
       SaveCover(tabindex);
-      if NewPage(tabs.count,s,pagetabs[tabindex].integrated,pagetabs[tabindex].letterhead,1) then begin
+      if NewPage(tabs.count,sCoverLetterName,pagetabs[tabindex].integrated,pagetabs[tabindex].letterhead,1) then begin
         cbItemSelector.Items.Clear;
         if elementlist.count > 0 then begin
           if not forceCopy then
@@ -3309,17 +3379,17 @@ begin
 end;
 
 procedure TF_DynaQ.CoverLetter1Click(Sender: TObject);
-var s : string;
+var sCoverLetterName : string;
 begin
-  s := InputBox('Enter Name','What''s the new letter''s name?','Cover'+inttostr(tabset1.tabs.count+1));
-  if (s <> '') and not DuplicatePageName(s,-1) and
-    not DuplicatePageName('['+s+']',-1) and (pos('[',s) = 0) and (pos(']',s) = 0) then
-    NewCoverLetter(s, false)
+  sCoverLetterName := InputBox('Enter Name','What''s the new letter''s name?','Cover'+inttostr(tabset1.tabs.count+1));
+  if (sCoverLetterName <> '') and not DuplicatePageName(sCoverLetterName,-1) and
+    not DuplicatePageName('['+sCoverLetterName+']',-1) and (pos('[',sCoverLetterName) = 0) and (pos(']',sCoverLetterName) = 0) then
+    NewCoverLetter(sCoverLetterName, false)
   else
-    showmessage('Cover Letter Name Invalid: ' + s);
+    showmessage('Cover Letter Name Invalid: ' + sCoverLetterName);
 end;
 
-procedure TF_DynaQ.Delete3Click(Sender: TObject);
+procedure TF_DynaQ.DeleteCL(i : integer);
   procedure DeleteAllAfter(const tbl:string; const fld:string; const cvrID:integer);
   var s : string;
   begin
@@ -3328,17 +3398,12 @@ procedure TF_DynaQ.Delete3Click(Sender: TObject);
     s := 'update ' + tbl + ' set ' + fld + '=' + fld + '-1 where ' + fld + '>' + inttostr(cvrID);
     dmOpenQ.cn.execute(s);
   end;
-var i : integer;
 begin
-  if tabset1.tabindex=0 then
-    messagedlg('You can''t delete the "DeprecatedGraphics" tab.',mterror,[mbok],0)
-  else if tabset1.tabs.count=2 then
-    messagedlg('You must keep at least one cover letter',mterror,[mbok],0)
-  else begin
-    DeleteAllAfter('Sel_Cover','SelCover_ID',tabset1.tabindex);
-    DeleteAllAfter('Sel_TextBox','CoverID',tabset1.tabindex);
-    DeleteAllAfter('Sel_PCL','CoverID',tabset1.tabindex);
-    DeleteAllAfter('Sel_Logo','CoverID',tabset1.tabindex);
+    DeleteAllAfter('Sel_Cover','SelCover_ID', i);
+    DeleteAllAfter('Sel_TextBox','CoverID', i);
+    DeleteAllAfter('Sel_PCL','CoverID', i);
+    DeleteAllAfter('Sel_Logo','CoverID', i);
+
     if tabset1.tabindex < 9 then
       for i := tabset1.tabindex to 8 do
         Pagetabs[i] := pagetabs[i+1];
@@ -3347,6 +3412,16 @@ begin
     Loadcover(tabset1.tabindex);
     FireTabChangeEvent := true;
     dmOpenQ.SaveDialog.tag := 2;
+end;
+
+procedure TF_DynaQ.Delete3Click(Sender: TObject);
+begin
+  if tabset1.tabindex=0 then
+    messagedlg('You can''t delete the "DeprecatedGraphics" tab.',mterror,[mbok],0)
+  else if tabset1.tabs.count=2 then
+    messagedlg('You must keep at least one cover letter',mterror,[mbok],0)
+  else begin
+    DeleteCL(tabset1.tabindex);
   end;
 end;
 

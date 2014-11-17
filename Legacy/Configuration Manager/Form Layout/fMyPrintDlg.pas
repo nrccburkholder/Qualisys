@@ -14,7 +14,7 @@ Date        ID     Name            Description
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, DBRichEdit, Buttons, checklst, printers, ExtCtrls, Spin, ShellAPI;
+  StdCtrls, DBRichEdit, Buttons, checklst, printers, ExtCtrls, Spin, ShellAPI, tMapping;
 
 type
   TfrmMyPrintDlg = class(TForm)
@@ -65,8 +65,11 @@ type
     { Private declarations }
     SectionID,CoverID,SampleUnitID : array[0..100] of integer;
     PageType : array[0..100] of byte;
+    CLMappings : MappingSet;
+    dirtyTag : integer;
     procedure IncludeQstns(const PT:integer);
     procedure CheckListSectionsEnable(const en:boolean);
+    function SetLanguage : integer;
     procedure SetSections;
     procedure ResetSections;
     procedure SetCover;
@@ -183,6 +186,7 @@ begin
    sSampleUnits := dmOpenQ.MappedSampleUnitsByCL(coverLetterName);
    checklistSampleUnits.Items.Clear();
    i := 0;
+   fillchar(SampleUnitId, sizeof(SampleUnitId), #0);
    while sSampleUnits <> '' do begin
       SampleUnitId[i] := StrToInt(Copy(sSampleUnits,0,Pos('=',sSampleUnits) - 1));
       checkListSampleUnits.Items.add(Copy(sSampleUnits,Pos('=',sSampleUnits) + 1, Pos(';',sSampleUnits) - Pos('=',sSampleUnits) - 1));
@@ -265,7 +269,7 @@ procedure TfrmMyPrintDlg.btnPrintClick(Sender: TObject);
 
 var PrinterOn:boolean;
     src2,cvr,prn : string;
-    copies, i : integer;
+    copies : integer;
     isPreview : boolean;
 begin
   try
@@ -359,9 +363,29 @@ begin
 end;
 
 procedure tfrmMyPrintDlg.SetCover;
+var
+  i,j : integer;
+  SelectedSampleUnitID : array[0..100] of integer;
 begin
   with dmOpenQ do begin
-    wwT_Cover.findkey([glbSurveyID,CoverID[ComboCoverLtr.Itemindex]]);
+    CurrentLanguage := SetLanguage;
+// TODO CJB copy desired cover letter to new cover letter which will include mapping substitutions
+    CLMappings := MappedTextBoxesByCL(ComboCoverLtr.Items[ComboCoverLtr.ItemIndex]);
+    if CLMappings[0].SampleUnit <> 0 then begin
+       dirtyTag := dmOpenQ.SaveDialog.Tag;
+       F_DynaQ.NewCoverLetter('[DynamicMockup]',true);
+       wwT_Cover.findkey([glbSurveyID,F_DynaQ.TabSet1.tabs.count - 1]);
+       fillchar(SelectedSampleUnitID, sizeof(SelectedSampleUnitID), #0);
+       j := 0;
+       for i := 0 to checkListSampleUnits.Items.Count - 1 do
+          if checkListSampleUnits.Checked[i] then begin
+            SelectedSampleUnitID[j] := SampleUnitId[i];
+            inc(j);
+          end;
+       F_DynaQ.SubstituteTextBoxContentsForSampleUnits(SelectedSampleUnitID, CLMappings);
+    end
+    else
+       wwT_Cover.findkey([glbSurveyID,CoverID[ComboCoverLtr.Itemindex]]);
     wwt_Logo.IndexName := 'ByCover';
     wwt_PCL.IndexName := 'ByCover';
     wwt_TextBox.IndexName := 'ByCover';
@@ -374,7 +398,7 @@ begin
   end;
 end;
 
-procedure tfrmMyPrintDlg.SetSections;
+function tfrmMyPrintDlg.SetLanguage : integer;
 var i : integer;
 begin
   with cbMockupLanguage do
@@ -382,7 +406,14 @@ begin
       i := strtointdef(trim(copy(items[itemindex],length(items[itemindex])-1,2)),1)
     else
       i := 1;
-  dmOpenQ.CurrentLanguage := i;
+  result := i;
+end;
+
+procedure tfrmMyPrintDlg.SetSections;
+var
+  i : integer;
+begin
+  i := SetLanguage;
   if frmLayoutCalc.IncludeQstns then
     with dmOpenq.ww_Query do begin
       close;
@@ -412,6 +443,10 @@ begin
     wwt_Logo.IndexFieldnames := '';
     wwt_PCL.IndexFieldnames := '';
     wwt_TextBox.IndexFieldnames := '';
+    if CLMappings[0].SampleUnit <> 0 then begin
+      F_DynaQ.DeleteCL(F_DynaQ.TabSet1.tabs.count - 1);
+      dmOpenQ.SaveDialog.Tag := dirtyTag;
+    end ;
   end;
 end;
 
@@ -447,10 +482,11 @@ function TfrmMyPrintDlg.installDQCalcPrn : Boolean;
 var
   i        : integer;
   SEInfo   : TShellExecuteInfo;
-  ExitCode : DWORD;
+//  ExitCode : DWORD;
   ExecuteFile,
-  ParamString,
-  StartInString: string;
+  ParamString  : string;
+//  StartInString
+
 
 begin
 
