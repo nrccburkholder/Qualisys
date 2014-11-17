@@ -1,6 +1,12 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AA7E9049-F854-4AF3-8B2D-0D25FEBA9796}"
+	ProjectSection(SolutionItems) = preProject
+		DataMart Class Library Solution.vsmdi = DataMart Class Library Solution.vsmdi
+		localtestrun.testrunconfig = localtestrun.testrunconfig
+	EndProjectSection
+EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DataMart.Library", "DataMart.Library\DataMart.Library.vbproj", "{D94DDA87-FE09-4644-9416-2BF8FE136D93}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DataMart.Library.SqlProvider", "DataMart.Library.SqlProvider\DataMart.Library.SqlProvider.vbproj", "{EA181BE1-8009-48A1-B389-02642319C079}"
@@ -11,17 +17,11 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DataMart.MySolutions.Librar
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DataMart.MySolutions.Library.Tests", "DataMart.MySolutions.Library.Tests\DataMart.MySolutions.Library.Tests.vbproj", "{A37B8F16-038F-4183-B89E-217DDB9FDDC6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AA7E9049-F854-4AF3-8B2D-0D25FEBA9796}"
-	ProjectSection(SolutionItems) = preProject
-		DataMart Class Library Solution.vsmdi = DataMart Class Library Solution.vsmdi
-		localtestrun.testrunconfig = localtestrun.testrunconfig
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 6
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://perseus:8080/
+		SccTeamFoundationServer = http://oma0pnrctfs01.nationalresearch.com:8080/tfs/nrc_git
 		SccLocalPath0 = .
 		SccProjectUniqueName1 = DataMart.Library.SqlProvider\\DataMart.Library.SqlProvider.vbproj
 		SccProjectName1 = DataMart.Library.SqlProvider

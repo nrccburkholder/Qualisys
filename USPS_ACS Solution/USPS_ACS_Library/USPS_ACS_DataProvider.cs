@@ -194,5 +194,21 @@ namespace USPS_ACS_Library
         }
 
 
+        public static DataTable SelectPendingPartialMatches(params object[] args)
+        {
+            string proc = "USPS_ACS_SelectPendingPartialMatches";
+            DbCommand cmd = Db.GetStoredProcCommand(proc, args);
+
+            try
+            {
+                return Db.ExecuteDataSet(cmd).Tables[0];
+            }
+            catch (Exception ex)
+            {
+                throw new SqlCommandException(cmd, ex);
+            }
+
+        }
+
     }
 }

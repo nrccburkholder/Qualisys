@@ -1,4 +1,4 @@
-﻿create procedure dbo.sp_TP_PopInfo1
+﻿CREATE procedure [dbo].[sp_TP_PopInfo1]
 @survey_id int, @tp_id int
 as
 set nocount on
@@ -39,10 +39,30 @@ from clientstudysurvey_view where survey_id=@survey_id
 
 insert into #result 
 select 'Cover Letter: ' + sc.Description
-from testprint_log tpl, sel_cover sc
-where tpl.selcover_id=sc.selcover_id 
-and tpl.survey_id=sc.survey_id
-and tp_id=@tp_id
+from testprint_log tpl
+inner join mailingstep ms on tpl.mailingstep_id=ms.mailingstep_id
+inner join sel_cover sc on ms.SelCover_ID=sc.selcover_ID and ms.survey_id=sc.survey_id
+where tp_id=@tp_id
+
+declare @artifacts table (row_id int identity(1,1), ArtifactItem_label varchar(60))
+
+insert into @artifacts (ArtifactItem_label)
+select distinct map.ArtifactItem_label
+from testprint_log tpl
+inner join mailingstep ms on tpl.mailingstep_id=ms.mailingstep_id
+inner join sel_cover sc on ms.SelCover_ID=sc.selcover_ID and ms.survey_id=sc.survey_id
+inner join samplepop sp on tpl.samplepop_id=sp.samplepop_id
+inner join selectedsample ss on sp.sampleset_id=ss.sampleset_id and sp.pop_id=ss.pop_id
+inner join CoverLetterItemArtifactUnitMapping map on ss.sampleunit_id=map.sampleunit_id and rtrim(sc.description)=rtrim(map.CoverLetter_dsc)
+where tpl.tp_id=@tp_id
+
+update @artifacts set ArtifactItem_label=left('Cover Alterations: '+ArtifactItem_label,60) where row_id=1
+update @artifacts set ArtifactItem_label=left(' & '+ArtifactItem_label,60) where row_id>1
+
+insert into #result 
+select ArtifactItem_label
+from @artifacts
+order by row_id
 
 insert into #result 
 select top 1 'Language: ' + l.Language 
