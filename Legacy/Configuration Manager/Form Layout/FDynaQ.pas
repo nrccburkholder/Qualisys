@@ -1309,7 +1309,7 @@ var i,curTag:   integer;
           fieldbyname('Survey_ID').value := DMOpenQ.glbSurveyID;
           fieldbyname(qpc_ID).value := curTag;
           fieldbyname('Type').value := 'TextBox';
-          fieldbyname('bitLangReview').value := (translation = '');
+          fieldbyname('bitLangReview').value := false; //11/18/2014 CJB copied cover pages are exempt from this
           fieldbyname('Label').value := TextBoxName;
         end;
         tDQPanel(elementlist[i]).modified := false;
@@ -2382,6 +2382,8 @@ end;
 procedure TF_DynaQ.DeleteBoxClick(Sender: TObject);
 var I,J : integer;
 begin
+  if (MessageDlg('Are you sure?', mtConfirmation, [mbYes, mbNo], 0) <> mrYes) then
+    exit;
   with WLKHandle do begin
     for i := 0 to childcount-1 do
       tDQPanel(children[i]).bevelWidth := 10;

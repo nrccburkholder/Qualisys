@@ -373,6 +373,7 @@ begin
     CLMappings := MappedTextBoxesByCL(ComboCoverLtr.Items[ComboCoverLtr.ItemIndex]);
     if CLMappings[0].SampleUnit <> 0 then begin
        dirtyTag := dmOpenQ.SaveDialog.Tag;
+       F_DynaQ.TabSet1.TabIndex := CoverID[ComboCoverLtr.Itemindex]; //CJB 11/18/2014 need this to copy from right cover letter
        F_DynaQ.NewCoverLetter('[DynamicMockup]',true);
        wwT_Cover.findkey([glbSurveyID,F_DynaQ.TabSet1.tabs.count - 1]);
        fillchar(SelectedSampleUnitID, sizeof(SelectedSampleUnitID), #0);
