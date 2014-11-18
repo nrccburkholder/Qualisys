@@ -33,7 +33,8 @@ uses
   fValidMsg in 'fValidMsg.pas' {frmValidMsg},
   fViewData in '..\..\Delphi Shared Code\QFP\fViewData.pas' {frmViewData},
   uPCLString in '..\..\Delphi Shared Code\FP\uPCLString.pas',
-  f_ShowProps in 'f_ShowProps.pas' {ShowProps};
+  f_ShowProps in 'f_ShowProps.pas' {ShowProps},
+  tMapping in 'tMapping.pas';
 
 {$R *.RES}
 
