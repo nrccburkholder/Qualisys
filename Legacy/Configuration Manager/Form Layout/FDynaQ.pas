@@ -3319,8 +3319,8 @@ begin
        if dmopenq.ww_Query.FieldByName('bitLangReview').AsBoolean then
           showmessage('Already Mapped: ' + thisMapping.CoverLetterName + '.' + thisMapping.CoverLetterTextBox)
        else
-       with DMOpenQ.wwt_TextBox do begin
-         if findkey([DMOpenQ.glbSurveyID,idToUpdate]) then begin
+       with DMOpenQ.wwt_TransTB do begin
+         if findkey([DMOpenQ.glbSurveyID, idToUpdate, language]) then begin
            edit;
            fieldbyname('RichText').value := newRichText;
            fieldbyname('Shading').value := newShading;
