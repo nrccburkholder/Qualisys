@@ -1443,6 +1443,47 @@ var i,curTag:   integer;
     end;
   end;
 
+  procedure UpdatePCLForLanguage(langId: integer; translation: string);
+  var s:string;
+  begin
+   {look for record, if there edit else append}
+    with tDQPanel(elementlist[i]), DMOpenQ.wwt_TransP do begin
+      if CurTag = 0 then
+      begin
+        messagedlg('TextBox "'+copy(tRichEdit(controls[0]).lines[0],1,20)+
+                   '..." doesn''t have an ID# and will not be saved',mtError,[mbOK],0);
+        tDQPanel(elementlist[i]).modified := false;
+      end
+      else
+        tDQPanel(elementlist[i]).modified := true;
+      if tDQPanel(elementlist[i]).modified then begin
+        if findkey([DMOpenQ.glbSurveyID,curTag,langID]) then
+          edit
+        else begin
+          append;
+          fieldbyname('Survey_ID').value := DMOpenQ.glbSurveyID;
+          fieldbyname(qpc_ID).value := curTag;
+          fieldbyname('Type').value := 'PCL';
+        end;
+        fieldbyname('CoverID').value := pg;
+        if color=clBlue then
+          fieldbyname('Description').value := '*PageBreak*'
+        else
+          fieldbyname('Description').value := caption;
+        fieldbyname('Language').value := langId;
+        fieldbyname('X').value := Left+ScrollboxCovers.horzScrollBar.Position;
+        fieldbyname('Y').value := Top+ScrollboxCovers.VertScrollBar.Position;
+        fieldbyname('KnownDimensions').value := KnownDimensions;
+        fieldbyname('Width').value := width;
+        fieldbyname('Height').value := height;
+        fieldbyname('PCLStream').value := translation;
+        post;
+        tDQPanel(elementlist[i]).modified := false;
+      end;
+    end;
+  end;
+
+
 var
   formerTranslation : string;
   j : integer;
@@ -1461,19 +1502,26 @@ begin
         updatePCL;
 
       // ** Save Translations **
-      if isTextBox(ElementList[i]) and (tDQPanel(ElementList[i]).FormerTag > 0) then
+      if (tDQPanel(ElementList[i]).FormerTag > 0) then
         with dmOpenQ.t_Language do begin
           First;
           Next;  {Skip 'English'}
           for j := 2 to RecordCount do begin
-            if fieldbyname('UseLang').asboolean then begin
-              if DMOpenQ.wwt_TransTB.findkey([DMOpenQ.glbSurveyID, tDQPanel(ElementList[i]).FormerTag, fieldbyname('LangID').asinteger]) then
-                formerTranslation := DMOpenQ.wwt_TransTB.fieldbyname('RichText').value
-              else
-                formerTranslation := '';
-              UpdateTextBoxForLanguage(fieldbyname('LangID').asinteger, formerTranslation);
-            end;
-
+            if fieldbyname('UseLang').asboolean then
+              if isTextBox(ElementList[i]) then begin
+                if DMOpenQ.wwt_TransTB.findkey([DMOpenQ.glbSurveyID, tDQPanel(ElementList[i]).FormerTag, fieldbyname('LangID').asinteger]) then
+                  formerTranslation := DMOpenQ.wwt_TransTB.fieldbyname('RichText').value
+                else
+                  formerTranslation := '';
+                UpdateTextBoxForLanguage(fieldbyname('LangID').asinteger, formerTranslation);
+              end
+              else if isPCL(ElementList[i]) then begin
+                if DMOpenQ.wwt_TransP.findkey([DMOpenQ.glbSurveyID, tDQPanel(ElementList[i]).FormerTag, fieldbyname('LangID').asinteger]) then
+                  formerTranslation := DMOpenQ.wwt_TransP.fieldbyname('PCLStream').value
+                else
+                  formerTranslation := '';
+                UpdatePCLForLanguage(fieldbyname('LangID').asinteger, formerTranslation);
+              end;
             Next;
           end;
           tDQPanel(ElementList[i]).FormerTag := 0;
@@ -3353,6 +3401,7 @@ var i : integer;
       tDQPanel(elementlist[ii]).modified := true;
     end else if isPCL(elementlist[ii]) then begin
       DMOpenQ.wwt_PCL.tag := DMOpenQ.wwt_PCL.tag + 1;
+      tDQPanel(elementlist[ii]).FormerTag := tDQPanel(elementlist[ii]).tag; //save prior tag in order to copy translations
       tDQPanel(elementlist[ii]).tag := DMOpenQ.wwt_PCL.tag;
       tDQPanel(elementlist[ii]).modified := true;
     end;
