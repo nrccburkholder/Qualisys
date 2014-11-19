@@ -11,8 +11,8 @@ Only updating QualPro_Param
 
 use [QP_Prod]
 
-update QualPro_Params set strparam_value = '3.23' where STRPARAM_NM = 'FormLayoutVersion'
-					 and strparam_value <> '3.23'
+update QualPro_Params set strparam_value = '3.24' where STRPARAM_NM = 'FormLayoutVersion'
+					 and strparam_value <> '3.24'
 --update QualPro_Params set strparam_value = '3.0' 
 --select * from Qualpro_params where STRPARAM_NM = 'FormLayoutVersion'
 
