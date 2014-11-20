@@ -3208,7 +3208,7 @@ begin
         ImageMatchCode.visible := false;
         pnlIndicia.visible := false;
         PageBreak1.enabled := false;
-        printmockup1.enabled := false;
+//        printmockup1.enabled := false;
       end;
   end;
   btnTextBox.Enabled := (pagetabs[pg].pagetype <> ptArtifacts);
@@ -3365,7 +3365,8 @@ begin
        idToUpdate := dmopenq.ww_Query.FieldByName('qpc_id').AsInteger;
 
        if dmopenq.ww_Query.FieldByName('bitLangReview').AsBoolean then
-          showmessage('Already Mapped: ' + thisMapping.CoverLetterName + '.' + thisMapping.CoverLetterTextBox)
+          showmessage( thisMapping.CoverLetterName + '.' + thisMapping.CoverLetterTextBox + ' has already been mapped. Artifact ' +
+                       thisMapping.ArtifactName + '.' + thisMapping.ArtifactTextBox + ' will not be mapped.')
        else
        with DMOpenQ.wwt_TransTB do begin
          if findkey([DMOpenQ.glbSurveyID, idToUpdate, language]) then begin
