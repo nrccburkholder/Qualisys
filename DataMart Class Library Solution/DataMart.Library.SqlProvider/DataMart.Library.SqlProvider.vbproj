@@ -11,10 +11,14 @@
     <AssemblyName>Nrc.DataMart.Library.SqlProvider</AssemblyName>
     <MyType>Windows</MyType>
     <OptionStrict>On</OptionStrict>
-    <SccProjectName>%24/Qualisys/DataMart Class Library Solution/DataMart.Library.SqlProvider</SccProjectName>
-    <SccLocalPath>.</SccLocalPath>
-    <SccAuxPath>http://oma0pnrctfs01.nationalresearch.com:8080/tfs/nrc_git</SccAuxPath>
-    <SccProvider>{4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>NationalResearch.snk</AssemblyOriginatorKeyFile>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
