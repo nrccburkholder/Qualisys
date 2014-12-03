@@ -1474,3 +1474,32 @@ from #Vendors
         
 GO
 
+IF EXISTS (SELECT *
+           FROM   sys.objects
+           WHERE  object_id = OBJECT_ID(N'[dbo].[fn_ACOCAHPSUpdateForVersion]')
+                  AND type IN ( N'FN', N'IF', N'TF', N'FS', N'FT' ))
+DROP FUNCTION [dbo].[fn_ACOCAHPSUpdateForVersion]
+GO
+
+IF OBJECT_ID('ACOCAHPS_FixDispositionsBySurveyId', 'P') IS NOT NULL
+DROP PROCEDURE [dbo].[ACOCAHPS_FixDispositionsBySurveyId]
+GO
+
+/****** Object:  Table [dbo].[SurveySubtype]    Script Date: 10/9/2014 2:15:50 PM ******/
+IF (EXISTS (SELECT * 
+             FROM INFORMATION_SCHEMA.TABLES 
+             WHERE TABLE_SCHEMA = 'dbo' 
+             AND  TABLE_NAME = 'SurveySubType'))
+/****** Object:  Table [dbo].[SurveySubtype]    Script Date: 10/9/2014 2:42:02 PM ******/
+DROP TABLE [dbo].[SurveySubtype]
+GO
+
+/****** Object:  Table [dbo].[SurveySubtype]    Script Date: 10/9/2014 2:15:50 PM ******/
+IF (EXISTS (SELECT * 
+             FROM INFORMATION_SCHEMA.TABLES 
+             WHERE TABLE_SCHEMA = 'dbo' 
+             AND  TABLE_NAME = 'SurveyTypeQuestionMappings'))
+/****** Object:  Table [dbo].[SurveyTypeQuestionMappings]    Script Date: 10/9/2014 2:42:02 PM ******/
+DROP TABLE [dbo].[SurveyTypeQuestionMappings]
+GO
+
