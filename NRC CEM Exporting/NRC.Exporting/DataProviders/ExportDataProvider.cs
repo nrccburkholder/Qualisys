@@ -24,18 +24,8 @@ namespace NRC.Exporting.DataProviders
 
         #region public methods
 
-        public static IDataReader Select(int? ExportQueueID, int? ExportTemplateID)
-        {
 
-            SqlParameter[] param = new SqlParameter[] {new SqlParameter("@ExportqueueID",ExportQueueID),
-                                                        new SqlParameter("@ExportTemplateID", ExportTemplateID)
-                                                        };
-           
-            return SqlProvider.ExecuteReader("CEM.SelectExportData", CommandType.StoredProcedure, param);
-
-        }
-
-        public static DataSet SelectDataSet(int? ExportQueueID, int? ExportTemplateID)
+        public static DataSet Select(int? ExportQueueID, int? ExportTemplateID)
         {
 
             SqlParameter[] param = new SqlParameter[] {new SqlParameter("@ExportqueueID",ExportQueueID),
