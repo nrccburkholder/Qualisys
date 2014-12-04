@@ -56,7 +56,6 @@
     <Compile Include="DataProviders\ExportTemplateProvider.cs" />
     <Compile Include="ExportColumn.cs" />
     <Compile Include="ExportColumnResponse.cs" />
-    <Compile Include="Exporter.cs" />
     <Compile Include="ExportQueue.cs" />
     <Compile Include="ExportQueueFile.cs" />
     <Compile Include="ExportQueueSurvey.cs" />
