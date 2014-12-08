@@ -13,6 +13,8 @@ using System.Reflection;
 using Quartz;
 using Quartz.Impl;
 using System.Configuration;
+using CEM.FileMaker.ServiceWorker;
+
 
 namespace CEM.FileMaker
 {
@@ -57,9 +59,10 @@ namespace CEM.FileMaker
         {
             string schedulerCron = ConfigurationManager.AppSettings["SchedulerCron"].ToString();
 
-            NameValueCollection properties = new NameValueCollection { { "quartz.threadPool.threadCount", "1" } };
+            //NameValueCollection properties = new NameValueCollection { { "quartz.threadPool.threadCount", "1" } };
+            //ISchedulerFactory schedulerFactory = new StdSchedulerFactory(properties);
 
-            ISchedulerFactory schedulerFactory = new StdSchedulerFactory(properties);
+            ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
 
             _scheduler = schedulerFactory.GetScheduler();
 
@@ -71,13 +74,25 @@ namespace CEM.FileMaker
             // Create trigger
             ITrigger trigger1 = TriggerBuilder.Create()
             .WithIdentity("t1", "g1")
-            .WithCronSchedule(schedulerCron)
+            .WithCronSchedule(schedulerCron)  // we don't have to use a cron expression.  If it is a consistent interval, could use something like the SimpleSchedule below
             .Build();
+
+
+            /*
+            // Create trigger
+            ITrigger trigger = TriggerBuilder.Create()
+            .WithIdentity("t1", "g2")
+            .WithSimpleSchedule(x => x
+                .WithIntervalInHours(4) // runs every four hours
+                .RepeatForever())
+            .Build();
+            */
 
             // Add job and trigger to schedule
             _scheduler.ScheduleJob(job, trigger1);
         }
 
+        [DisallowConcurrentExecutionAttribute]
         internal class FileMakerJob : IJob
         {
             public void Execute(IJobExecutionContext context)
@@ -86,7 +101,7 @@ namespace CEM.FileMaker
                 {
                     // Do the scheduled work here.
                     Logs.Info("FileMakerService Begin Work");
-                    NRC.Exporting.FileMakerServiceWorker.Run();
+                    ServiceWorker.MakeFiles();
                     Logs.Info("FileMakerService End Work");
                 }
                 catch (JobExecutionException ex)

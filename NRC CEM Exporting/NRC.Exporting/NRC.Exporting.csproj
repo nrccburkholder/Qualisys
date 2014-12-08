@@ -63,8 +63,13 @@
     <Compile Include="ExportSection.cs" />
     <Compile Include="ExportTemplate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="FileMakerServiceWorker.cs" />
     <Compile Include="XMLExporter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\NRC Service Logging\ServiceLogging\ServiceLogging.csproj">
+      <Project>{ab8e5762-338c-4d65-8d9e-0648aedd9bd5}</Project>
+      <Name>ServiceLogging</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NRC.Exporting;
 using NRC.Exporting.DataProviders;
 using System.Data;
 using System.IO;
@@ -12,19 +13,15 @@ using System.Xml.Schema;
 using System.Xml.Serialization;
 using System.Configuration;
 using ServiceLogging;
+using System.Configuration;
 
-namespace NRC.Exporting
+namespace CEM.FileMaker
 {
-    public static class FileMakerServiceWorker
+    public static class ServiceWorker
     {
 
-        public static void Run()
-        {
-            MakeFiles();
-        }
 
-
-        private static void  MakeFiles()
+        public static void MakeFiles()
         {
             string fileLocation = ConfigurationManager.AppSettings["FileLocation"].ToString();
             List<ExportQueueFile> queuefiles = ExportQueueFileProvider.Select(new ExportQueueFile());
@@ -54,7 +51,7 @@ namespace NRC.Exporting
 
                         if (ValidateXML(xmlDoc, template.XMLSchemaDefinition))
                         {
-                            
+
                             //Update ExportQueueFile with FileName and FileMakerDate
                             queuefile.FileMakerName = filepath;
                             queuefile.FileMakerDate = DateTime.Now;
@@ -96,6 +93,7 @@ namespace NRC.Exporting
 
             return isValid;
         }
+
 
 
     }
