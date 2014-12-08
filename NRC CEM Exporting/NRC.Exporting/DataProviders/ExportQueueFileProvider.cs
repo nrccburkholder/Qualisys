@@ -22,7 +22,7 @@ namespace NRC.Exporting.DataProviders
 
         #region private methods
 
-        private static ExportQueueFile PopulateExportQueueFile(DataRow dr)
+        private static ExportQueueFile PopulateExportQueueFile(DataRow dr) 
         {
             ExportQueueFile queuefile = new ExportQueueFile();
 
@@ -75,6 +75,24 @@ namespace NRC.Exporting.DataProviders
             {
                 return PopulateQueueFileList(ds);
             }
+
+        }
+
+
+
+        public static void Update(ExportQueueFile queuefile)
+        {
+            SqlParameter[] param = new SqlParameter[] {new SqlParameter("@ExportQueueFileID",queuefile.ExportQueueFileID),
+                                                       new SqlParameter("@SubmissionDate", queuefile.SubmissionDate),
+                                                       new SqlParameter("@SubmissionBy", queuefile.SubmissionBy),
+                                                       new SqlParameter("@CMSResponseCode", queuefile.CMSResponseCode),
+                                                       new SqlParameter("@CMSResponseDate", queuefile.CMSResponseDate),
+                                                       new SqlParameter("@FileMakerType", queuefile.FileMakerType),
+                                                       new SqlParameter("@FileMakerName", queuefile.FileMakerName),
+                                                       new SqlParameter("@FileMakerDate",queuefile.FileMakerDate)
+                                                       };
+
+            SqlProvider.ExecuteNonQuery("CEM.UpdateExportQueueFile", CommandType.StoredProcedure, param);
 
         }
 

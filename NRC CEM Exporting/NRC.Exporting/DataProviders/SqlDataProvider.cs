@@ -7,6 +7,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Data.Common;
 using System.Xml;
+using System.Configuration;
 
 namespace NRC.Exporting.DataProviders
 {
@@ -50,7 +51,7 @@ namespace NRC.Exporting.DataProviders
             get
             {
                 // TODO: get the connection string from a param
-                return "Data Source=LNK0TCATSQL01\\CATDB2;Initial Catalog=NRC_DataMart;Persist Security Info=True;User ID=nrc;Password=nrc;MultipleActiveResultSets=True;";
+                return ConfigurationManager.ConnectionStrings["CEMConnection"].ConnectionString;
             }
         }
 

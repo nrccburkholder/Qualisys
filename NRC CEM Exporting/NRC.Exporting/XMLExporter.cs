@@ -8,6 +8,7 @@ using System.Xml;
 using System.IO;
 using System.Data;
 using System.Xml.Schema;
+using System.Text.RegularExpressions;
 //using System.Xml.Serialization;
 
 
@@ -16,9 +17,11 @@ namespace NRC.Exporting
     public static class XMLExporter
     {
 
-        public static int CreateExportXMLFile(DataSet ds, ExportTemplate template)
+        public static int CreateExportXMLFile(DataSet ds, ExportTemplate template, out string filepath)
         {
             int recordCount = 0;
+
+            filepath = string.Empty;
 
             if (ds.Tables.Count > 0)
             {
@@ -26,7 +29,7 @@ namespace NRC.Exporting
 
                 SetFileName(ref filename, ds.Tables[0]);
 
-                string filepath = Path.Combine(@"C:\Users\tbutler\Documents\", filename + ".xml");
+                filepath = Path.Combine(@"C:\Users\tbutler\Documents\", filename + ".xml");
 
                 Encoding encoding = new UTF8Encoding(false);
 
@@ -68,123 +71,53 @@ namespace NRC.Exporting
             return recordCount;
         }
 
+        public static XmlDocument MakeExportXMLDocument(DataSet ds, ExportTemplate template)
+        {
+            int recordCount = 0;
 
 
-        //public static int CreateExportXMLFile(IDataReader reader, string filepath, string schemadefinition)
-        //{
-        //    int recordCount = 0;
+            if (ds.Tables.Count > 0)
+            {
+               
+                Encoding encoding = new UTF8Encoding(false);
 
-        //    Encoding encoding = new UTF8Encoding(false);
+                XmlSchema schema = XmlSchema.Read(new StringReader(template.XMLSchemaDefinition), new ValidationEventHandler(ValidationCallBack));
 
+                schema.Compile(ValidationCallBack);
 
-        //    XmlSchema schema = XmlSchema.Read(new StringReader(schemadefinition), new ValidationEventHandler(ValidationCallBack));
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.LoadXml(GenerateEmptyXMLFromSchema(schema));
 
-        //    schema.Compile(ValidationCallBack);
+                XmlNode headerNode = xmlDoc.GetElementsByTagName("header")[0];
+                XmlNode patientLevelNode = xmlDoc.GetElementsByTagName("patientleveldata")[0];
 
-        //    XmlDocument xmlDoc = new XmlDocument();
-        //    xmlDoc.LoadXml(GenerateEmptyXMLFromSchema(schema));
+                    using (XMLWriter writer = new XMLWriter())
+                    {
+                        XmlSchemaElement root = schema.Items[0] as XmlSchemaElement;
+                        writer.StartElement(root.Name);
+                        writer.WriteAttribute("xmlns", schema.TargetNamespace);
+                        writer.WriteAttribute("xmlns:xs", "http://www.w3.org/2001/XMLSchema-instance");
 
-        //    XmlNode headerNode = xmlDoc.GetElementsByTagName("header")[0];
-        //    XmlNode patientLevelNode = xmlDoc.GetElementsByTagName("patientleveldata")[0];
+                        WriteHeaderSection(ds.Tables[0], writer, headerNode);
 
-        //    using (StreamWriter stream = new StreamWriter(filepath, false, encoding))
-        //    {
-        //        using (XMLWriter writer = new XMLWriter(stream))
-        //        {
-        //            XmlSchemaElement root = schema.Items[0] as XmlSchemaElement;
-        //            writer.StartElement(root.Name);
-        //            writer.WriteAttribute("xmlns", schema.TargetNamespace);
-        //            writer.WriteAttribute("xmlns:xs", "http://www.w3.org/2001/XMLSchema-instance");
+                        if (ds.Tables.Count < 2)
+                        {
+                            throw new Exception("Patient level result set is missing.");
+                        }
 
-        //            WriteHeaderSection(reader, writer, headerNode);
+                        recordCount = WritePatientLevelSection(ds.Tables[1], writer, patientLevelNode);
 
-        //            if (!reader.NextResult())
-        //            {
-        //                throw new Exception("Patient level result set is missing.");
-        //            }
+                        writer.EndElement();
 
-        //            recordCount = WritePatientLevelSection(reader, writer, patientLevelNode);
+                        XmlDocument returnXMLdoc = new XmlDocument();
+                        returnXMLdoc.LoadXml(writer.XmlString);
 
-        //            writer.EndElement();
+                        return returnXMLdoc;
+                    }
 
-        //            writer.Flush();
-        //            writer.Close();
-        //        }
-        //    }
+            } else return null;
 
-        //    return recordCount;
-        //}
-
-
-        //private static void WriteHeaderSection(IDataReader reader, XMLWriter writer, XmlNode node)
-        //{
-        //    //read the header record
-        //    reader.Read();
-
-        //    writer.StartElement(node.Name);
-
-        //    foreach (XmlNode childnode in node.ChildNodes)
-        //    {
-        //        WriteElementString(reader, string.Format("{0}.{1}",node.Name, childnode.Name),childnode.Name, writer);
-        //    }
-
-        //    writer.EndElement();
-        //}
-
-        //private static int WritePatientLevelSection(IDataReader reader, XMLWriter writer, XmlNode node)
-        //{
-        //    int count = 0;
-
-        //    while (reader.Read())
-        //    {
-        //        writer.StartElement(node.Name);
-                
-        //        WriteAdminSection(reader, writer, node.FirstChild);
-        //        WritePatientResponseSection(reader, writer, node.LastChild);
-
-        //        writer.EndElement();
-
-        //        count += 1;
-        //    }
-
-        //    return count;
-        //}
-
-        //private static void WriteAdminSection(IDataReader reader, XMLWriter writer, XmlNode node)
-        //{
-        //    writer.StartElement(node.Name);
-
-        //    foreach (XmlNode childnode in node.ChildNodes)
-        //    {
-        //        WriteElementString(reader, string.Format("{0}.{1}", node.Name, childnode.Name), childnode.Name, writer);
-        //    }
-
-        //    writer.EndElement();
-        //}
-
-        //private static void WritePatientResponseSection(IDataReader reader, XMLWriter writer, XmlNode node)
-        //{
-        //    writer.StartElement(node.Name);
-
-        //    foreach (XmlNode childnode in node.ChildNodes)
-        //    {
-        //        WriteElementString(reader, string.Format("{0}.{1}", node.Name, childnode.Name), childnode.Name, writer);
-        //    }
-
-        //    writer.EndElement();
-        //}
-
-        //private static void WriteElementString(IDataReader reader, string fieldname, string nodename, XMLWriter writer)
-        //{
-        //    try
-        //    {
-        //        writer.WriteElementString(nodename, reader[fieldname] == DBNull.Value ? "m" : reader[fieldname].ToString());
-        //    }
-        //    catch { }
-
-        //}
-
-
+        }
 
         private static void WriteHeaderSection(DataTable dt, XMLWriter writer, XmlNode node)
         {
@@ -246,7 +179,8 @@ namespace NRC.Exporting
         {
             try
             {
-                writer.WriteElementString(nodename, dr[fieldname] == DBNull.Value ? "m" : dr[fieldname].ToString());
+                string value = writer.SanitizeElement(dr[fieldname].ToString());
+                writer.WriteElementString(nodename, dr[fieldname] == DBNull.Value ? "m" : value);
             }
             catch { }
 
@@ -339,26 +273,13 @@ namespace NRC.Exporting
             Console.WriteLine("\tValidation error: {0}", args.Message);
         }
 
-        private static void ReplaceText(ref string sourcestring, string replacewith, int occurence)
-        {
-            string wac = string.Empty;
-
-            if (sourcestring.Contains("{"))
-            {
-                int iBracketStart = sourcestring.IndexOf("{");
-                int iBracketEnd = sourcestring.IndexOf("}", iBracketStart);
-                int iPlaceHolderLength = (iBracketEnd - iBracketStart) + 1;
-                sourcestring = sourcestring.Replace(sourcestring.Substring(iBracketStart, iPlaceHolderLength), replacewith);
-            }
-        }
-
         /// <summary>
         /// Sets the filename using the template's defaultnamingconvention and replaces the placeholders
         /// with the data values from the header record.
         /// </summary>
         /// <param name="defaultname"></param>
         /// <param name="dt"></param>
-        private static void SetFileName(ref string defaultname, DataTable dt)
+        public static void SetFileName(ref string defaultname, DataTable dt)
         {
             int iBracketStart = 0;
             int iBracketEnd = 0;
@@ -400,8 +321,20 @@ namespace NRC.Exporting
 
         private XmlTextWriter writer;
 
+        private StringWriter mStringWriter;
+
         private XmlTextWriter Writer { get { return writer; } }
 
+        public string XmlString 
+        { 
+            get 
+            {
+                StringBuilder sb = new StringBuilder();
+                sb = mStringWriter.GetStringBuilder();
+                writer.Close();
+                return sb.ToString();
+            } 
+        }
 
         #endregion
 
@@ -448,6 +381,7 @@ namespace NRC.Exporting
             temp = temp.Replace(">", "&gt;");
             temp = temp.Replace("'", "&apos;");
             temp = temp.Replace(@"""", "&quot;");
+            temp = temp.Replace("\a", ""); 
 
             return temp;
         }
@@ -465,6 +399,14 @@ namespace NRC.Exporting
         #endregion
 
         #region constructors
+
+        public XMLWriter()
+        {
+            mStringWriter = new StringWriter();
+            writer = new XmlTextWriter(mStringWriter);
+            writer.Formatting = Formatting.Indented;
+            writer.WriteRaw(@"<?xml version=""1.0"" encoding=""UTF-8""?>");
+        }
 
         public XMLWriter(StreamWriter stream)
         {

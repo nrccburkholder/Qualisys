@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NRC.Exporting.DataProviders;
 
 namespace NRC.Exporting
 {
@@ -24,6 +25,15 @@ namespace NRC.Exporting
         {
 
         }
+
+        #region public methods
+
+        public void Save()
+        {
+            ExportQueueFileProvider.Update(this);
+        }
+
+        #endregion
 
     }
 }

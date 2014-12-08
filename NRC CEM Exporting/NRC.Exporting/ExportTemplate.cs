@@ -68,7 +68,7 @@ namespace NRC.Exporting
             return mIsValid;
         }
 
-        internal void WalkXSD()
+        private void WalkXSD()
         {
             MissingColumns.Clear();
 
@@ -93,7 +93,7 @@ namespace NRC.Exporting
 
         }
 
-        internal void WalkXSDChildren(XmlSchemaObject xso, string parentName)
+        private void WalkXSDChildren(XmlSchemaObject xso, string parentName)
         {
 
             if (xso.GetType().Equals(typeof(XmlSchemaElement)))
@@ -145,7 +145,7 @@ namespace NRC.Exporting
             }
         }
 
-        internal XmlSchemaElement GetParentElement(XmlSchemaObject xse)
+        private XmlSchemaElement GetParentElement(XmlSchemaObject xse)
         {
             XmlSchemaObject xso = xse.Parent;
 
@@ -159,7 +159,7 @@ namespace NRC.Exporting
             }
         }
 
-        internal void ValidationCallBack(object sender, ValidationEventArgs args){}
+        private void ValidationCallBack(object sender, ValidationEventArgs args){}
 
         public bool IsExist(string name)
         {
@@ -182,7 +182,7 @@ namespace NRC.Exporting
             return b;
         }
 
-        internal bool IsColumn(ExportSection section, string name)
+        private bool IsColumn(ExportSection section, string name)
         {
             bool b = false;
 
@@ -203,7 +203,7 @@ namespace NRC.Exporting
             return b;
         }
 
-        internal bool IsColumnResponse(ExportColumn column, string name)
+        private bool IsColumnResponse(ExportColumn column, string name)
         {
             bool b = false;
 
