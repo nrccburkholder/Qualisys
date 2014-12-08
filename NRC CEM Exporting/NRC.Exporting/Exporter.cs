@@ -4,165 +4,93 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NRC.Exporting.DataProviders;
-using System.Data.SqlClient;
 using System.Data;
+using System.IO;
+using System.Xml.Linq;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
+using System.Configuration;
+using ServiceLogging;
 
 namespace NRC.Exporting
 {
-    public class Exporter
+    public static class Exporter
     {
 
-        #region private members
-
-        private SqlDataProvider ExporterDataProvider;
-
-        #endregion
-
-        #region constructors
-
-        public Exporter()
+        public static void  MakeFiles()
         {
-            ExporterDataProvider = new SqlDataProvider();
-        }
+            string fileLocation = ConfigurationManager.AppSettings["FileLocation"].ToString();
+            List<ExportQueueFile> queuefiles = ExportQueueFileProvider.Select(new ExportQueueFile());
 
-        #endregion
-
-        #region public methods
-
-        public ExportTemplate GetExportTemplate(int TemplateID)
-        {
-            return LoadTemplate(TemplateID);
-        }
-
-        public List<ExportTemplate> GetExportTemplates()
-        {
-            return LoadTemplates();
-        }
-
-        #endregion
-
-        #region private methods
-
-            #region templates
-            internal ExportTemplate PopulateExportTemplate(DataRow dr)
+            foreach (ExportQueueFile queuefile in queuefiles.Where(x => x.FileMakerDate == null))
             {
-                ExportTemplate template = new ExportTemplate();
+                List<ExportQueue> queues = ExportQueueProvider.Select(new ExportQueue { ExportQueueID = queuefile.ExportQueueID });
 
-                template.ExportTemplateID = (int)dr["ExportTemplateID"];
-                template.ExportTemplateName = dr["ExportTemplateName"].ToString();
-                template.XMLSchemaDefinition = dr["XMLSchemaDefinition"].ToString();
-                //TODO -- add the rest of the property assignments
-
-                foreach (DataRow cr in dr.GetChildRows("ExportSections"))
+                foreach (ExportQueue queue in queues)
                 {
-                    template.Sections.Add(PopulateExportSection(cr));
+                    ExportTemplate template = ExportTemplateProvider.Select(new ExportTemplate { ExportTemplateVersionMajor = queue.ExportTemplateVersionMajor, ExportTemplateVersionMinor = queue.ExportTemplateVersionMinor }).First();
+
+                    DataSet ds = ExportDataProvider.Select(queue.ExportQueueID, template.ExportTemplateID);
+
+                    if (ds.Tables.Count > 0)
+                    {
+                        //TODO:  will need to check the expected filetype and create the file based on that.  For now, just handling XML.
+
+                        string filename = template.DefaultNamingConvention;
+                        XMLExporter.SetFileName(ref filename, ds.Tables[0]);
+
+                        string filepath = Path.Combine(fileLocation, filename + ".xml");
+
+                        XmlDocument xmlDoc = new XmlDocument();
+                        xmlDoc = XMLExporter.MakeExportXMLDocument(ds, template);
+                        xmlDoc.Save(filepath);
+
+                        if (ValidateXML(xmlDoc, template.XMLSchemaDefinition))
+                        {
+                            
+                            //Update ExportQueueFile with FileName and FileMakerDate
+                            queuefile.FileMakerName = filepath;
+                            queuefile.FileMakerDate = DateTime.Now;
+                            queuefile.Save();
+                        }
+
+                    }
                 }
 
-                return template;
             }
 
-            internal ExportSection PopulateExportSection(DataRow dr)
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="xmlDoc"></param>
+        /// <param name="xsd"></param>
+        /// <returns></returns>
+        private static bool ValidateXML(XmlDocument xmlDoc, string xsd)
+        {
+            bool isValid = true;
+
+            XmlSchema schema = XmlSchema.Read(new StringReader(xsd), null);
+            string ns = schema.TargetNamespace;
+
+            XmlSchemaSet schemas = new XmlSchemaSet();
+            schemas.Add(ns, XmlReader.Create(new StringReader(xsd)));
+
+            XDocument xDoc = XDocument.Parse(xmlDoc.OuterXml);
+
+            xDoc.Validate(schemas, (o, e) =>
             {
-                ExportSection section = new ExportSection();
+                //TODO:  Log validations errors
+                Console.WriteLine("\tValidation error: {0}", e.Message);
+                isValid = false;
+            });
 
-                section.ExportTemplateSectionID = (int)dr["ExportTemplateSectionID"];
-                section.ExportTemplateSectionName = dr["ExportTemplateSectionName"].ToString();
-                section.ExportTemplateID = (int)dr["ExportTemplateID"];
-                section.DefaultNamingConvention = dr["DefaultNamingConvention"].ToString();
+            return isValid;
+        }
 
-                foreach (DataRow cr in dr.GetChildRows("ExportColumns"))
-                {
-                    section.ExportColumns.Add(PopulateExportColumn(cr));
-                }
 
-                return section;
-            }
-
-            internal ExportColumn PopulateExportColumn(DataRow dr)
-            {
-                ExportColumn column = new ExportColumn();
-                column.ExportTemplateSectionID = (int)dr["ExportTemplateSectionID"];
-                column.ExportTemplateColumnID = (int)dr["ExportTemplateColumnID"];
-                column.ExportTemplateColumnDescription = dr["ExportTemplateColumnDescription"].ToString();
-                column.ColumnOrder = (int)dr["ColumnOrder"];
-                column.DataSourceID = (int)dr["DatasourceID"];
-                column.ExportColumnName = dr["ExportColumnName"].ToString();
-                column.DispositionProcessID = dr["DispositionProcessID"] == DBNull.Value ? null : (int?)dr["DispositionProcessID"];
-                column.FixedWidthLength = dr["FixedWidthLength"] == DBNull.Value ? null : (int?)dr["FixedWidthLength"];
-                column.ColumnSetKey = dr["ColumnSetKey"] == DBNull.Value ? null : (int?)dr["ColumnSetKey"];
-                column.FormatID = dr["FormatID"] == DBNull.Value ? null : (int?)dr["FormatID"];
-                column.MissingThreshholdPercentage = dr["MissingThresholdPercentage"] == DBNull.Value ? null : (double?)dr["MissingThresholdPercentage"];
-                column.CheckFrequencies = (bool)dr["CheckFrequencies"];
-
-                foreach (DataRow cr in dr.GetChildRows("ExportResponses"))
-                {
-                    column.ColumnResponses.Add(PopulateExportColumnResponse(cr));
-                }
-
-                return column;
-            }
-
-            internal ExportColumnResponse PopulateExportColumnResponse(DataRow dr)
-            {
-                ExportColumnResponse response = new ExportColumnResponse();
-
-                response.ExportTemplateColumnResponseID = (int)dr["ExportTemplateColumnResponseID"];
-                response.ExportColumnName = dr["ExportColumnname"] == DBNull.Value ? string.Empty : dr["ExportColumnname"].ToString();
-                response.RawValue = (int)dr["RawValue"];
-                response.RecodeValue = dr["RecodeValue"].ToString();
-                response.ResponseLabel = dr["ResponseLabel"].ToString();
-
-                return response;
-            }
-
-            internal ExportTemplate LoadTemplate(int templateId)
-            {
-
-                ExportTemplate template = new ExportTemplate();
-
-                //using (DataSet ds = ExportTemplateDataProvider.LoadExportTemplateByID(templateId))
-                //{
-
-                //    ds.Relations.Add("ExportSections", ds.Tables[0].Columns["ExportTemplateID"], ds.Tables[1].Columns["ExportTemplateID"]);
-                //    ds.Relations.Add("ExportColumns", ds.Tables[1].Columns["ExportTemplateSectionID"], ds.Tables[2].Columns["ExportTemplateSectionID"]);
-                //    ds.Relations.Add("ExportResponses", ds.Tables[2].Columns["ExportTemplateColumnID"], ds.Tables[3].Columns["ExportTemplateColumnID"]);
-
-                //    foreach (DataRow dr in ds.Tables[0].Rows)
-                //    {
-                //        template = PopulateExportTemplate(dr);
-                //    }
-                //}
-
-                return template;
-            }
-
-            internal List<ExportTemplate> LoadTemplates()
-            {
-                //List<ExportTemplate> templates = new List<ExportTemplate>();
-
-                //using (DataSet ds = ExportTemplateDataProvider.LoadExportTemplates())
-                //{
-                //    if (ds.Tables.Count > 0)
-                //    {
-                //        ExportTemplate template = new ExportTemplate();
-
-                //        ds.Relations.Add("ExportSections", ds.Tables[0].Columns["ExportTemplateID"], ds.Tables[1].Columns["ExportTemplateID"]);
-                //        ds.Relations.Add("ExportColumns", ds.Tables[1].Columns["ExportTemplateSectionID"], ds.Tables[2].Columns["ExportTemplateSectionID"]);
-                //        ds.Relations.Add("ExportResponses", ds.Tables[2].Columns["ExportTemplateColumnID"], ds.Tables[3].Columns["ExportTemplateColumnID"]);
-
-                //        foreach (DataRow dr in ds.Tables[0].Rows)
-                //        {
-                //            templates.Add(PopulateExportTemplate(dr));
-                //        }
-                //    }
-
-                //}
-
-                return ExportTemplateProvider.Select(null);
-            }
-
-            #endregion
-
-        #endregion
     }
 }
