@@ -63,7 +63,7 @@
     <Compile Include="ExportSection.cs" />
     <Compile Include="ExportTemplate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceWorker.cs" />
+    <Compile Include="FileMakerServiceWorker.cs" />
     <Compile Include="XMLExporter.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

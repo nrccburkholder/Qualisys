@@ -10,10 +10,11 @@ using System.Xml.Linq;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using System.Configuration;
 
 namespace NRC.Exporting
 {
-    public static class ServiceWorker
+    public static class FileMakerServiceWorker
     {
 
         public static void Run()
@@ -24,6 +25,7 @@ namespace NRC.Exporting
 
         private static void  MakeFiles()
         {
+            string fileLocation = ConfigurationManager.AppSettings["FileLocation"].ToString();
             List<ExportQueueFile> queuefiles = ExportQueueFileProvider.Select(new ExportQueueFile());
 
             foreach (ExportQueueFile queuefile in queuefiles.Where(x => x.FileMakerDate == null))
@@ -41,20 +43,21 @@ namespace NRC.Exporting
                         string filename = template.DefaultNamingConvention;
                         XMLExporter.SetFileName(ref filename, ds.Tables[0]);
 
-                        string filepath = Path.Combine(@"C:\Users\tbutler\Documents\", filename + ".xml");
+                        string filepath = Path.Combine(fileLocation, filename + ".xml");
 
                         XmlDocument xmlDoc = new XmlDocument();
                         xmlDoc = XMLExporter.MakeExportXMLDocument(ds, template);
+                        xmlDoc.Save(filepath);
 
                         if (ValidateXML(xmlDoc, template.XMLSchemaDefinition))
                         {
-                            xmlDoc.Save(filepath);
+                            
                             //Update ExportQueueFile with FileName and FileMakerDate
                             queuefile.FileMakerName = filepath;
                             queuefile.FileMakerDate = DateTime.Now;
                             queuefile.Save();
                         }
-                        else Console.WriteLine("Validation errors encountered! File NOT created.");
+                        else Console.WriteLine("Validation errors encountered!");
 
                     }
                 }
