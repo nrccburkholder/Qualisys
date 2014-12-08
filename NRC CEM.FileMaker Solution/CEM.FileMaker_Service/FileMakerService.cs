@@ -13,7 +13,7 @@ using System.Reflection;
 using Quartz;
 using Quartz.Impl;
 using System.Configuration;
-using CEM.FileMaker.ServiceWorker;
+using NRC.Exporting;
 
 
 namespace CEM.FileMaker
@@ -101,7 +101,7 @@ namespace CEM.FileMaker
                 {
                     // Do the scheduled work here.
                     Logs.Info("FileMakerService Begin Work");
-                    ServiceWorker.MakeFiles();
+                    Exporter.MakeFiles();
                     Logs.Info("FileMakerService End Work");
                 }
                 catch (JobExecutionException ex)

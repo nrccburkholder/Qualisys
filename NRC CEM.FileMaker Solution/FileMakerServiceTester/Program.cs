@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using ServiceLogging;
 using NRC.Exporting;
-using CEM.FileMaker;
 
 namespace FileMakerServiceTester
 {
@@ -29,7 +28,7 @@ namespace FileMakerServiceTester
             {
                 // Do the scheduled work here.
                 Logs.Info("FileMakerService Tester Begin Work");
-                ServiceWorker.MakeFiles();
+                Exporter.MakeFiles();
                 Logs.Info("FileMakerService Tester End Work");
             }
             catch (Exception ex)
