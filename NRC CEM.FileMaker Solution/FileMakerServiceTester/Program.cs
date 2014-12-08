@@ -29,7 +29,6 @@ namespace FileMakerServiceTester
             {
                 // Do the scheduled work here.
                 Logs.Info("FileMakerService Tester Begin Work");
-                //NRC.Exporting.FileMakerServiceWorker.Run();
                 ServiceWorker.MakeFiles();
                 Logs.Info("FileMakerService Tester End Work");
             }

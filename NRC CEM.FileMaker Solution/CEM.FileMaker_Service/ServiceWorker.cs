@@ -21,15 +21,18 @@ namespace CEM.FileMaker
 
         public  static void MakeFiles()
         {
+            //TODO:  change the location where fileLocation is stored from the appconfig to a param table
             string fileLocation = ConfigurationManager.AppSettings["FileLocation"].ToString();
-            List<ExportQueueFile> queuefiles = ExportQueueFileProvider.Select(new ExportQueueFile());
 
-            foreach (ExportQueueFile queuefile in queuefiles.Where(x => x.FileMakerDate == null))
+            List<ExportQueueFile> queuefiles = ExportQueueFileProvider.Select(new ExportQueueFile());  // retrieves all queuefiles.  TODO: extend Select so that it returns only records where FileMakerDate is null
+
+            foreach (ExportQueueFile queuefile in queuefiles.Where(x => x.FileMakerDate == null))  // will get only records of files not yet processed
             {
                 List<ExportQueue> queues = ExportQueueProvider.Select(new ExportQueue { ExportQueueID = queuefile.ExportQueueID });
 
                 foreach (ExportQueue queue in queues)
                 {
+                    // currently, the only way to retrieve a template based on the queue info is to use Major and Minor version, but I think we might need another key, such as template name.
                     ExportTemplate template = ExportTemplateProvider.Select(new ExportTemplate { ExportTemplateVersionMajor = queue.ExportTemplateVersionMajor, ExportTemplateVersionMinor = queue.ExportTemplateVersionMinor }).First();
 
                     DataSet ds = ExportDataProvider.Select(queue.ExportQueueID, template.ExportTemplateID);
@@ -37,12 +40,14 @@ namespace CEM.FileMaker
                     if (ds.Tables.Count > 0)
                     {
                         string filename = template.DefaultNamingConvention;
-                        XMLExporter.SetFileName(ref filename, ds.Tables[0]);
+                        XMLExporter.SetFileName(ref filename, ds.Tables[0]); // We get the subsitution info from the "header" record
 
                         string filepath = Path.Combine(fileLocation, filename + ".xml");
 
                         XmlDocument xmlDoc = new XmlDocument();
                         xmlDoc = XMLExporter.MakeExportXMLDocument(ds, template);
+
+                        //TODO:  decide if we save the file even if it doesn't validate.
                         xmlDoc.Save(filepath);
 
                         Logs.Info("FileMakerService Tester Begin Work");
@@ -55,7 +60,10 @@ namespace CEM.FileMaker
                             queuefile.FileMakerDate = DateTime.Now;
                             queuefile.Save();
                         }
-                        else Console.WriteLine("Validation errors encountered!");
+                        else
+                        {
+                            Console.WriteLine("Validation errors encountered!");
+                        }
 
                     }
                 }
@@ -85,6 +93,7 @@ namespace CEM.FileMaker
 
             xDoc.Validate(schemas, (o, e) =>
             {
+                //TODO:  log validation errors
                 Console.WriteLine("\tValidation error: {0}", e.Message);
                 isValid = false;
             });
@@ -97,4 +106,5 @@ namespace CEM.FileMaker
 
 
     }
+
 }
