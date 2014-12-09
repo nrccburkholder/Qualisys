@@ -78,6 +78,23 @@ namespace NRC.Exporting.DataProviders
 
         }
 
+      /// <summary>
+      /// Returns a DataSet where FileMakerName and FileMakerDate is NULL
+      /// </summary>
+      /// <returns></returns>
+        public static List<ExportQueueFile> SelectPendingQueueFiles()
+        {
+
+            DataSet ds = new DataSet();
+            SqlProvider.Fill(ref ds, "CEM.SelectPendingExportQueueFiles", CommandType.StoredProcedure);
+
+            using (ds)
+            {
+                return PopulateQueueFileList(ds);
+            }
+
+        }
+
 
 
         public static void Update(ExportQueueFile queuefile)

@@ -14,62 +14,8 @@ using System.Text.RegularExpressions;
 
 namespace NRC.Exporting
 {
-    public static class XMLExporter
+    internal static class XMLExporter
     {
-
-        public static int CreateExportXMLFile(DataSet ds, ExportTemplate template, out string filepath)
-        {
-            int recordCount = 0;
-
-            filepath = string.Empty;
-
-            if (ds.Tables.Count > 0)
-            {
-                string filename = template.DefaultNamingConvention;
-
-                SetFileName(ref filename, ds.Tables[0]);
-
-                filepath = Path.Combine(@"C:\Users\tbutler\Documents\", filename + ".xml");
-
-                Encoding encoding = new UTF8Encoding(false);
-
-                XmlSchema schema = XmlSchema.Read(new StringReader(template.XMLSchemaDefinition), new ValidationEventHandler(ValidationCallBack));
-
-                schema.Compile(ValidationCallBack);
-
-                XmlDocument xmlDoc = new XmlDocument();
-                xmlDoc.LoadXml(GenerateEmptyXMLFromSchema(schema));
-
-                XmlNode headerNode = xmlDoc.GetElementsByTagName("header")[0];
-                XmlNode patientLevelNode = xmlDoc.GetElementsByTagName("patientleveldata")[0];
-
-                using (StreamWriter stream = new StreamWriter(filepath, false, encoding))
-                {
-                    using (XMLWriter writer = new XMLWriter(stream))
-                    {
-                        XmlSchemaElement root = schema.Items[0] as XmlSchemaElement;
-                        writer.StartElement(root.Name);
-                        writer.WriteAttribute("xmlns", schema.TargetNamespace);
-                        writer.WriteAttribute("xmlns:xs", "http://www.w3.org/2001/XMLSchema-instance");
-
-                        WriteHeaderSection(ds.Tables[0], writer, headerNode);
-
-                        if (ds.Tables.Count < 2)
-                        {
-                            throw new Exception("Patient level result set is missing.");
-                        }
-
-                        recordCount = WritePatientLevelSection(ds.Tables[1], writer, patientLevelNode);
-
-                        writer.EndElement();
-
-                        writer.Flush();
-                        writer.Close();
-                    }
-                }
-            }
-            return recordCount;
-        }
 
         public static XmlDocument MakeExportXMLDocument(DataSet ds, ExportTemplate template)
         {
@@ -273,45 +219,7 @@ namespace NRC.Exporting
             Console.WriteLine("\tValidation error: {0}", args.Message);
         }
 
-        /// <summary>
-        /// Sets the filename using the template's defaultnamingconvention and replaces the placeholders
-        /// with the data values from the header record.
-        /// </summary>
-        /// <param name="defaultname"></param>
-        /// <param name="dt"></param>
-        public static void SetFileName(ref string defaultname, DataTable dt)
-        {
-            int iBracketStart = 0;
-            int iBracketEnd = 0;
-
-            if (dt.Rows.Count > 0)
-            {
-                DataRow dr = dt.Rows[0];
-                if (defaultname.Contains("{"))
-                {
-                    iBracketStart = defaultname.IndexOf("{");
-                    
-                    while (iBracketStart != -1)
-                    {
-                        iBracketEnd = defaultname.IndexOf("}", iBracketStart);
-
-                        int iPlaceHolderLength = (iBracketEnd - iBracketStart) + 1;
-
-                        string fieldname = defaultname.Substring(iBracketStart + 1, (iBracketEnd - iBracketStart) - 1);
-
-                        string replacementValue = dr[fieldname].ToString();
-
-                        defaultname = defaultname.Replace(defaultname.Substring(iBracketStart, iPlaceHolderLength), replacementValue);
-
-                        iBracketStart = defaultname.IndexOf("{");
-
-                    }
-                }
-            }
-        }
-
     }
-
 
 
     internal class XMLWriter: IDisposable
@@ -443,8 +351,6 @@ namespace NRC.Exporting
             }
         }
         #endregion
-
-
 
     }
 }
