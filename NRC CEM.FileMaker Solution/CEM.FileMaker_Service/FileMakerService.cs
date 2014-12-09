@@ -8,7 +8,6 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
-using ServiceLogging;
 using System.Reflection;
 using Quartz;
 using Quartz.Impl;
@@ -20,6 +19,8 @@ namespace CEM.FileMaker
 {
     public partial class FileMakerService : ServiceBase
     {
+
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
         private EventLog eventLog;
         private IScheduler _scheduler;
 
@@ -39,7 +40,7 @@ namespace CEM.FileMaker
             eventLog.Source = "FileMakerService";
             eventLog.Log = "Application";
 
-            Logs.Info(string.Format("FileMakerService v{0} Started", version));
+            logger.Info(string.Format("FileMakerService v{0} Started", version));
 
             CreateSchedule();
             _scheduler.Start();
@@ -52,7 +53,7 @@ namespace CEM.FileMaker
             {
                 _scheduler.Shutdown();
             }
-            Logs.Info("FileMakerService Stopped");
+            logger.Info("FileMakerService Stopped");
         }
 
         private void CreateSchedule()
@@ -100,13 +101,13 @@ namespace CEM.FileMaker
                 try
                 {
                     // Do the scheduled work here.
-                    Logs.Info("FileMakerService Begin Work");
+                    logger.Info("FileMakerService Begin Work");
                     Exporter.MakeFiles();
-                    Logs.Info("FileMakerService End Work");
+                    logger.Info("FileMakerService End Work");
                 }
                 catch (JobExecutionException ex)
                 {
-                    Logs.Info("Quartz: Error executing job - " + ex.Message + ' ' + DateTime.UtcNow.ToString());
+                    logger.Info("Quartz: Error executing job - " + ex.Message + ' ' + DateTime.UtcNow.ToString());
                 }
 
             }

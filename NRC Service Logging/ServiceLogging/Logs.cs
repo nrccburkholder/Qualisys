@@ -11,7 +11,7 @@ namespace ServiceLogging
     public static class Logs
     {
 
-        private static Logger _logger = LogManager.GetCurrentClassLogger();
+        private static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 
         public static string FormatMessage(string msg)
         {
@@ -58,6 +58,7 @@ namespace ServiceLogging
         {
             _logger.Log(NLog.LogLevel.Trace, info);
         }
+
 
         /// <summary>
         /// Logs warning messages.
@@ -135,6 +136,7 @@ namespace ServiceLogging
             }
             return nloglevel;
         }
+
 
     }
 }
