@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ServiceLogging;
 using NRC.Exporting;
+
 
 namespace FileMakerServiceTester
 {
     class Program
     {
+
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         static void Main(string[] args)
         {
             Console.WriteLine("Press return to start");
@@ -26,14 +29,15 @@ namespace FileMakerServiceTester
         {
             try
             {
+
                 // Do the scheduled work here.
-                Logs.Info("FileMakerService Tester Begin Work");
+                logger.Info("FileMakerService Tester Begin Work");
                 Exporter.MakeFiles();
-                Logs.Info("FileMakerService Tester End Work");
+                logger.Info("FileMakerService Tester End Work");
             }
             catch (Exception ex)
             {
-                Logs.Info("Quartz: Error executing job - " + ex.Message + ' ' + DateTime.UtcNow.ToString());
+                logger.Info("Quartz: Error executing job - " + ex.Message + ' ' + DateTime.UtcNow.ToString());
             }
         }
     }

@@ -11,13 +11,15 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 using System.Configuration;
-using ServiceLogging;
+
+
 
 namespace NRC.Exporting
 {
     public static class Exporter
     {
 
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Creates and saves files
@@ -61,20 +63,18 @@ namespace NRC.Exporting
                                     Console.WriteLine("{0}. {1}: {2}", iCounter.ToString(), eve.FileName, eve.ErrorDescription);
                                 }
 
-                                Logs.Info(string.Format("{0} created with validation errors.", queuefile.FileMakerName));
+                                logger.Info(string.Format("{0} created with validation errors.", queuefile.FileMakerName));
                             }
                             else 
                             {
-                                Logs.Info(string.Format("{0} created successfully.", queuefile.FileMakerName));
+                                logger.Info(string.Format("{0} created successfully.", queuefile.FileMakerName));
                             }
                         }
-
                     }
                 }
             }
 
-            Logs.Info(string.Format("Export.MakeFiles: {0} files processed.", iCnt.ToString()));
-
+            logger.Info(string.Format("Export.MakeFiles: {0} files processed.", iCnt.ToString()));
         } 
            
 

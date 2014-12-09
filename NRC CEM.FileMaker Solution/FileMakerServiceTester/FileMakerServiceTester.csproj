@@ -46,13 +46,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\NRC Service Logging\ServiceLogging\ServiceLogging.csproj">
-      <Project>{ab8e5762-338c-4d65-8d9e-0648aedd9bd5}</Project>
-      <Name>ServiceLogging</Name>
-    </ProjectReference>
     <ProjectReference Include="C:\gitrepos\Qualisys\NRC CEM Exporting\NRC.Exporting\NRC.Exporting.csproj">
       <Project>{080ea113-e647-416f-8358-106b7dcd1674}</Project>
       <Name>NRC.Exporting</Name>
