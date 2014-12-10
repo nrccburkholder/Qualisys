@@ -9,13 +9,14 @@ using System.IO;
 using System.Data;
 using System.Xml.Schema;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
 namespace NRC.Exporting
 {
     internal static class XMLExporter
     {
 
-        public static XmlDocument MakeExportXMLDocument(DataSet ds, ExportTemplate template)
+        public static XmlDocumentEx MakeExportXMLDocument(DataSet ds, ExportTemplate template)
         {
             int recordCount = 0;
 
@@ -53,8 +54,10 @@ namespace NRC.Exporting
 
                         writer.EndElement();
 
-                        XmlDocument returnXMLdoc = new XmlDocument();
+                        XmlDocumentEx returnXMLdoc = new XmlDocumentEx();
                         returnXMLdoc.LoadXml(writer.XmlString);
+
+                        returnXMLdoc.Validate(template.XMLSchemaDefinition);
 
                         return returnXMLdoc;
                     }
@@ -217,6 +220,26 @@ namespace NRC.Exporting
             Console.WriteLine("\tValidation error: {0}", args.Message);
         }
 
+        private static bool ValidateXML(XmlDocumentEx xmlDoc, string xsd)
+        {
+            bool isValid = true;
+
+            XmlSchema schema = XmlSchema.Read(new StringReader(xsd), null);
+            string ns = schema.TargetNamespace;
+
+            XmlSchemaSet schemas = new XmlSchemaSet();
+            schemas.Add(ns, XmlReader.Create(new StringReader(xsd)));
+
+            XDocument xDoc = XDocument.Parse(xmlDoc.OuterXml);
+
+            xDoc.Validate(schemas, (o, e) =>
+            {
+                xmlDoc.ValidationErrorList.Add(new ExportValidationError(e.Message));
+                isValid = false;
+            });
+
+            return isValid;
+        }
     }
 
 

@@ -43,8 +43,6 @@ namespace NRC.Exporting
         public List<ExportSection> Sections { get; set; }
         public bool IsValid { get {return mIsValid;}}
         public List<string> MissingColumns { get; set; }
-       
-
 
         #endregion
 
@@ -61,7 +59,7 @@ namespace NRC.Exporting
 
         #region Validation
 
-        public bool ValidateAgainstXSD()
+        public bool ValidateTemplateAgainstXSD()
         {
             WalkXSD();
             mIsValid = MissingColumns.Count == 0;

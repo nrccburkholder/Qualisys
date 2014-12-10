@@ -19,6 +19,7 @@ namespace NRC.Exporting
         public int? FileMakerType { get; set; }
         public string FileMakerName { get; set; }
         public DateTime? FileMakerDate { get; set; }
+        public ExportTemplate Template { get; set; }
         public List<ExportValidationError> ValidationErrorList { get; set; }
         public bool IsValid { get { return ValidationErrorList.Count == 0;  } }
 

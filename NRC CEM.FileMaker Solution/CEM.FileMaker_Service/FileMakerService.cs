@@ -107,7 +107,7 @@ namespace CEM.FileMaker
                 }
                 catch (JobExecutionException ex)
                 {
-                    logger.Info("Quartz: Error executing job - " + ex.Message + ' ' + DateTime.UtcNow.ToString());
+                    logger.Info("Error executing job.",ex.Message);
                 }
 
             }

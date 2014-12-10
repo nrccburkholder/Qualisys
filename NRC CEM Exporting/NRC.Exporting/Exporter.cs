@@ -31,9 +31,9 @@ namespace NRC.Exporting
             //TODO:  read targetFileLocation from Params table.
             string targetFileLocation = ConfigurationManager.AppSettings["FileLocation"].ToString();
 
-            List<ExportQueueFile> queuefiles = ExportQueueFileProvider.SelectPendingQueueFiles();
+            //List<ExportQueueFile> queuefiles = ExportQueueFileProvider.Select(new ExportQueueFile()); // this would return ALL ExportQueueFiles regardless of their status.  We only want those that haven't been processed yet.
             //foreach (ExportQueueFile queuefile in queuefiles.Where(x => x.FileMakerDate == null))
-            foreach (ExportQueueFile queuefile in queuefiles)
+            foreach (ExportQueueFile queuefile in ExportQueueFileProvider.SelectPendingQueueFiles())
             {
                 List<ExportQueue> queues = ExportQueueProvider.Select(new ExportQueue { ExportQueueID = queuefile.ExportQueueID });
 
@@ -47,36 +47,25 @@ namespace NRC.Exporting
                     {                       
                         string filename = template.DefaultNamingConvention;
                         SetFileName(ref filename, ds.Tables[0]);
-                        
-                        //TODO:  will need to check the expected filetype and create the file based on that.  For now, just handling XML.
-                       
-                        if (MakeXMLFile(ds, filename, targetFileLocation, template, queuefile))
-                        {
-                            int iCounter = 0;
 
-                            if (!queuefile.IsValid) 
-                            { 
-                                foreach (ExportValidationError eve in queuefile.ValidationErrorList)
+                        switch (queuefile.FileMakerType)
+	                    {
+                            case (int)Enums.ExportFileTypes.Xml:
+                                if (MakeXMLFile(ds, filename, targetFileLocation, template, queuefile))
                                 {
-                                    iCounter += 1;
-                                    //TODO:  what do we want to do with the validation messages?
-                                    Console.WriteLine("{0}. {1}: {2}", iCounter.ToString(), eve.FileName, eve.ErrorDescription);
+                                    iCnt += 1;
                                 }
+                                break;
 
-                                logger.Info(string.Format("{0} created with validation errors.", queuefile.FileMakerName));
-                            }
-                            else 
-                            {
-                                logger.Info(string.Format("{0} created successfully.", queuefile.FileMakerName));
-                            }
-                        }
+		                    default:
+                                break;
+	                    }
                     }
                 }
             }
 
-            logger.Info(string.Format("Export.MakeFiles: {0} files processed.", iCnt.ToString()));
-        } 
-           
+            logger.Info(string.Format("{0} file(s) processed.", iCnt.ToString()));
+        }
 
         /// <summary>
         /// Creates an XML file from the ExportDataSet.  Returns boolean indicating if the file was created successfully or not.
@@ -91,22 +80,12 @@ namespace NRC.Exporting
         {
             bool b = false;
             string filepath = string.Empty;
-           // ValidationErrorList.Clear();
-
             try
             {
-                XmlDocument xmlDoc = new XmlDocument();
+                XmlDocumentEx xmlDoc = new XmlDocumentEx();
                 xmlDoc = XMLExporter.MakeExportXMLDocument(ds, template);
 
-                if (ValidateXML(xmlDoc, template, filename, queuefile))
-                {
-                    filepath = fileLocation;
-                }
-                else
-                {
-                    // xml did not validate.  set filepath so the file gets written to the error folder
-                    filepath = Path.Combine(fileLocation, "error");
-                }
+                filepath = xmlDoc.IsValid == true ? fileLocation : Path.Combine(fileLocation, "error");
 
                 if (!Directory.Exists(filepath))
                 {
@@ -117,50 +96,40 @@ namespace NRC.Exporting
 
                 xmlDoc.Save(filepath);
 
+                int iCounter = 0;
+
+                if (!xmlDoc.IsValid)
+                {
+                    foreach (ExportValidationError eve in xmlDoc.ValidationErrorList)
+                    {
+                        iCounter += 1;
+                        //TODO:  what do we want to do with the validation messages?  Database?
+                        logger.Info("{0}. {1}: {2} {3}", iCounter.ToString(), template.ExportTemplateName, filepath, eve.ErrorDescription);
+                    }
+
+                    logger.Info(string.Format("{0} created with validation errors.", filepath));
+                }
+                else
+                {
+                    logger.Info(string.Format("{0} created successfully.", filepath));
+                }
+
+                // Update the ExportQueueFile record to mark is a complete.
                 queuefile.FileMakerName = filepath;
                 queuefile.FileMakerDate = DateTime.Now;
+                queuefile.Template = template;
                 queuefile.Save();
 
                 b = true;
             }
             catch (Exception ex)
             {
-                throw ex;
+                logger.Error("Error Creating XML file.", ex);
             }
+
             return b;
         }
 
-        /// <summary>
-        /// Validates the XML against the template's xsd.
-        /// </summary>
-        /// <param name="xmlDoc"></param>
-        /// <param name="template"></param>
-        /// <param name="filename"></param>
-        /// <param name="queuefile"></param>
-        /// <returns></returns>
-        private static bool ValidateXML(XmlDocument xmlDoc, ExportTemplate template, string filename, ExportQueueFile queuefile)
-        {
-            bool isValid = true;
-            string xsd = template.XMLSchemaDefinition;
-
-            XmlSchema schema = XmlSchema.Read(new StringReader(xsd), null);
-            string ns = schema.TargetNamespace;
-
-            XmlSchemaSet schemas = new XmlSchemaSet();
-            schemas.Add(ns, XmlReader.Create(new StringReader(xsd)));
-
-            XDocument xDoc = XDocument.Parse(xmlDoc.OuterXml);
-
-            xDoc.Validate(schemas, (o, e) =>
-            {
-                //TODO:  Log validations errors
-                //Console.WriteLine("\tValidation error: {0}", e.Message);
-                queuefile.ValidationErrorList.Add(new ExportValidationError(filename, e.Message, template));
-                isValid = false;
-            });
-
-            return isValid;
-        }
 
         /// <summary>
         /// Sets the filename using the template's defaultnamingconvention and replaces the placeholders

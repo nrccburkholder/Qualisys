@@ -12,19 +12,20 @@ namespace NRC.Exporting
         public string FileName { get; set; }
         public string ErrorDescription { get; set; }
 
-        public ExportTemplate Template { get; set; }
-
         public ExportValidationError()
         {
 
         }
 
+        public ExportValidationError(string errordescription)
+        {
+            ErrorDescription = errordescription;
+        }
 
-        public ExportValidationError(string filename, string errordescription, ExportTemplate template)
+        public ExportValidationError(string filename, string errordescription)
         {
             FileName = filename;
             ErrorDescription = errordescription;
-            Template = template;
         }
     }
 }
