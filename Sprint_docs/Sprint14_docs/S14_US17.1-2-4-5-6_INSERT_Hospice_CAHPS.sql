@@ -199,26 +199,29 @@ values ('HSP_DecdAge','Age at death of hospice decedent',@PopId,'I',NULL,NULL,'H
 insert into MetaField (STRFIELD_NM, STRFIELD_DSC, FIELDGROUP_ID, STRFIELDDATATYPE, STRFIELDEDITMASK, INTSPECIALFIELD_CD, STRFIELDSHORT_NM, BITSYSKEY, bitPhase1Field, intAddrCleanCode, intAddrCleanGroup, bitPII)
 values ('HSP_HE_Lang','Hand-entry field for the Hospice CAHPS Language question',@PopId,'S',NULL,NULL,'HSPLang',0,0,NULL,NULL,0)
 
+--declare @hospiceMethodologyId int, @hospiceId int
+select @hospiceId = SurveyType_Id from SurveyType where SurveyType_dsc = 'Hospice CAHPS'
+
 insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
-values (147, 11, null)
+values (147, @hospiceId, null)
 insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
-values (148, 11, null)
+values (148, @hospiceId, null)
 insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
-values (149, 11, null)
+values (149, @hospiceId, null)
 insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
-values (150, 11, null)
+values (150, @hospiceId, null)
 insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
-values (151, 11, null)
+values (151, @hospiceId, null)
 insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
-values (153, 11, null)
+values (153, @hospiceId, null)
 insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
-values (155, 11, null)
+values (155, @hospiceId, null)
 insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
-values (156, 11, null)
+values (156, @hospiceId, null)
 insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
-values (158, 11, null)
+values (158, @hospiceId, null)
 insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
-values (162, 11, null)
+values (162, @hospiceId, null)
 
 commit tran
 
