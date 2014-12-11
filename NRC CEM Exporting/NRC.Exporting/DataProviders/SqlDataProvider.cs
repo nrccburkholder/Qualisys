@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using System.Data.Common;
 using System.Xml;
 using System.Configuration;
+using NRC.Exporting.Configuration;
 
 namespace NRC.Exporting.DataProviders
 {
@@ -50,7 +51,7 @@ namespace NRC.Exporting.DataProviders
         {
             get
             {
-                // TODO: get the connection string from a param
+                // TODO: get the connection string from registry?
                 return ConfigurationManager.ConnectionStrings["CEMConnection"].ConnectionString;
             }
         }

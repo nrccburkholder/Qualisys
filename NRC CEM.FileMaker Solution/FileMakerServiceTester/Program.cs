@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NRC.Exporting;
+using NRC.Exporting.Configuration;
 
 namespace FileMakerServiceTester
 {
@@ -30,12 +31,13 @@ namespace FileMakerServiceTester
             {
                 // Do the scheduled work here.
                 logger.Info(string.Format("FileMakerService Tester Begin Work"));
+                string schedulerCron = SystemParams.Params.GetParam("ServiceInterval").StringValue;
                 Exporter.MakeFiles();
                 logger.Info(string.Format("FileMakerService Tester End Work"));
             }
             catch (Exception ex)
             {
-                logger.Info("Error executing job.",ex);
+                logger.Error("Error executing job.",ex);
             }
         }
     }

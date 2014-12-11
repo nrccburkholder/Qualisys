@@ -11,6 +11,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 using System.Configuration;
+using NRC.Exporting.Configuration;
 
 
 
@@ -21,6 +22,7 @@ namespace NRC.Exporting
 
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
+
         /// <summary>
         /// Creates and saves files
         /// </summary>
@@ -29,7 +31,9 @@ namespace NRC.Exporting
             int iCnt = 0; // file counter
 
             //TODO:  read targetFileLocation from Params table.
-            string targetFileLocation = ConfigurationManager.AppSettings["FileLocation"].ToString();
+            //string targetFileLocation = ConfigurationManager.AppSettings["FileLocation"].ToString();
+
+            string targetFileLocation = SystemParams.Params.GetParam("FileLocation").StringValue;
 
             //List<ExportQueueFile> queuefiles = ExportQueueFileProvider.Select(new ExportQueueFile()); // this would return ALL ExportQueueFiles regardless of their status.  We only want those that haven't been processed yet.
             //foreach (ExportQueueFile queuefile in queuefiles.Where(x => x.FileMakerDate == null))

@@ -13,6 +13,7 @@ using Quartz;
 using Quartz.Impl;
 using System.Configuration;
 using NRC.Exporting;
+using NRC.Exporting.Configuration;
 
 
 namespace CEM.FileMaker
@@ -37,10 +38,10 @@ namespace CEM.FileMaker
             string version = fvi.FileVersion;
 
             eventLog = new EventLog();
-            eventLog.Source = "FileMakerService";
+            eventLog.Source = "CEM.FileMakerService";
             eventLog.Log = "Application";
 
-            logger.Info(string.Format("FileMakerService v{0} Started", version));
+            logger.Info(string.Format("CEM.FileMakerService v{0} Started", version));
 
             CreateSchedule();
             _scheduler.Start();
@@ -53,12 +54,12 @@ namespace CEM.FileMaker
             {
                 _scheduler.Shutdown();
             }
-            logger.Info("FileMakerService Stopped");
+            logger.Info("CEM.FileMakerService Stopped");
         }
 
         private void CreateSchedule()
         {
-            string schedulerCron = ConfigurationManager.AppSettings["SchedulerCron"].ToString();
+            string schedulerCron = SystemParams.Params.GetParam("ServiceInterval").StringValue;
 
             //NameValueCollection properties = new NameValueCollection { { "quartz.threadPool.threadCount", "1" } };
             //ISchedulerFactory schedulerFactory = new StdSchedulerFactory(properties);
@@ -107,7 +108,7 @@ namespace CEM.FileMaker
                 }
                 catch (JobExecutionException ex)
                 {
-                    logger.Info("Error executing job.",ex.Message);
+                    logger.Error("Error executing job.",ex.Message);
                 }
 
             }
