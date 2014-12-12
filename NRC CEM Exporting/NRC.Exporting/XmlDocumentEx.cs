@@ -22,26 +22,19 @@ namespace NRC.Exporting
             ValidationErrorList = new List<ExportValidationError>();
         }
 
-
-        public bool Validate(string xsd)
+        public bool Validate()
         {
             bool isValid = true;
 
-            XmlSchema schema = XmlSchema.Read(new StringReader(xsd), null);
-            string ns = schema.TargetNamespace;
-
-            XmlSchemaSet schemas = new XmlSchemaSet();
-            schemas.Add(ns, XmlReader.Create(new StringReader(xsd)));
-
             XDocument xDoc = XDocument.Parse(this.OuterXml);
 
-            xDoc.Validate(schemas, (o, e) =>
+            xDoc.Validate(this.Schemas, (o, e) =>
             {
                 ValidationErrorList.Add(new ExportValidationError(e.Message));
                 isValid = false;
             });
 
             return isValid;
-        }
+        } 
     }
 }
