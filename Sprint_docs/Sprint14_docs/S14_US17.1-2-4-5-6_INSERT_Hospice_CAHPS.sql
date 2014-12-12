@@ -199,6 +199,27 @@ values ('HSP_DecdAge','Age at death of hospice decedent',@PopId,'I',NULL,NULL,'H
 insert into MetaField (STRFIELD_NM, STRFIELD_DSC, FIELDGROUP_ID, STRFIELDDATATYPE, STRFIELDEDITMASK, INTSPECIALFIELD_CD, STRFIELDSHORT_NM, BITSYSKEY, bitPhase1Field, intAddrCleanCode, intAddrCleanGroup, bitPII)
 values ('HSP_HE_Lang','Hand-entry field for the Hospice CAHPS Language question',@PopId,'S',NULL,NULL,'HSPLang',0,0,NULL,NULL,0)
 
+update metafield set intFieldLength = 50 where STRFIELDSHORT_NM = 'HspNm'
+update metafield set intFieldLength = 42 where STRFIELDSHORT_NM = 'DecdID'
+update metafield set intFieldLength = 42 where STRFIELDSHORT_NM = 'DecdFNm'
+update metafield set intFieldLength = 42 where STRFIELDSHORT_NM = 'DecdLNm'
+update metafield set intFieldLength = 1	where STRFIELDSHORT_NM = 'DecdMid'
+update metafield set intFieldLength = 42 where STRFIELDSHORT_NM = 'DecdTitl'
+update metafield set intFieldLength = 42 where STRFIELDSHORT_NM = 'DecdSufx'
+update metafield set intFieldLength = 1 where STRFIELDSHORT_NM = 'DecdSex'
+update metafield set intFieldLength = 1 where STRFIELDSHORT_NM = 'DecdHisp'
+update metafield set intFieldLength = 1 where STRFIELDSHORT_NM = 'DecdRace'
+update metafield set intFieldLength = 2 where STRFIELDSHORT_NM = 'LastLoc'
+update metafield set intFieldLength = 1 where STRFIELDSHORT_NM = 'HspPayr1'
+update metafield set intFieldLength = 1 where STRFIELDSHORT_NM = 'HspPayr2'
+update metafield set intFieldLength = 1 where STRFIELDSHORT_NM = 'HspPayr3'
+update metafield set intFieldLength = 42 where STRFIELDSHORT_NM = 'CsMgrFNm'
+update metafield set intFieldLength = 42 where STRFIELDSHORT_NM = 'CsMgrLNm'
+update metafield set intFieldLength = 50 where STRFIELDSHORT_NM = 'RefrSrc'
+update metafield set intFieldLength = 1 where STRFIELDSHORT_NM = 'HspReltn'
+update metafield set intFieldLength = 1 where STRFIELDSHORT_NM = 'HspGuard'
+update metafield set intFieldLength = 50 where STRFIELDSHORT_NM = 'HSPLang'
+
 --declare @hospiceMethodologyId int, @hospiceId int
 select @hospiceId = SurveyType_Id from SurveyType where SurveyType_dsc = 'Hospice CAHPS'
 
