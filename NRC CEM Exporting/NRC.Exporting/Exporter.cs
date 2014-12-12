@@ -12,7 +12,7 @@ using System.Xml.Schema;
 using System.Xml.Serialization;
 using System.Configuration;
 using NRC.Exporting.Configuration;
-
+using NLog;
 
 
 namespace NRC.Exporting
@@ -29,9 +29,6 @@ namespace NRC.Exporting
         public static void  MakeFiles()
         {
             int iCnt = 0; // file counter
-
-            //TODO:  read targetFileLocation from Params table.
-            //string targetFileLocation = ConfigurationManager.AppSettings["FileLocation"].ToString();
 
             string targetFileLocation = SystemParams.Params.GetParam("FileLocation").StringValue;
 
@@ -52,10 +49,11 @@ namespace NRC.Exporting
                         string filename = template.DefaultNamingConvention;
                         SetFileName(ref filename, ds.Tables[0]);
 
+                        // Depending on the file type, we call the appropriate File Maker Methods
                         switch (queuefile.FileMakerType)
 	                    {
                             case (int)Enums.ExportFileTypes.Xml:
-                                if (MakeXMLFile(ds, filename, targetFileLocation, template, queuefile))
+                                if (MakeFile_XML(ds, filename, targetFileLocation, template, queuefile))
                                 {
                                     iCnt += 1;
                                 }
@@ -80,7 +78,7 @@ namespace NRC.Exporting
         /// <param name="template"></param>
         /// <param name="queuefile"></param>
         /// <returns>Boolean indicating if the file was created successfully or not.</returns>
-        private static bool MakeXMLFile(DataSet ds, string filename, string fileLocation, ExportTemplate template, ExportQueueFile queuefile)
+        private static bool MakeFile_XML(DataSet ds, string filename, string fileLocation, ExportTemplate template, ExportQueueFile queuefile)
         {
             bool b = false;
             string filepath = string.Empty;
@@ -96,21 +94,22 @@ namespace NRC.Exporting
                     Directory.CreateDirectory(filepath);
                 }
 
-                filepath = Path.Combine(filepath, filename + ".xml");
+                filepath = Path.Combine(filepath, Path.ChangeExtension(filename,"xml"));
 
                 xmlDoc.Save(filepath);
-
-                int iCounter = 0;
 
                 if (!xmlDoc.IsValid)
                 {
                     foreach (ExportValidationError eve in xmlDoc.ValidationErrorList)
                     {
-                        iCounter += 1;
-                        //TODO:  what do we want to do with the validation messages?  Database?
-                        logger.Info("{0}. {1}: {2} {3}", iCounter.ToString(), template.ExportTemplateName, filepath, eve.ErrorDescription);
+                        //Logging to the database.  The elements of the message are pipe delimited, with the template name, queueid, queuefileid, the file name, and the validation error description
+                        LogEventInfo logEvent = new LogEventInfo(LogLevel.Warn,"",string.Format("{0}|{1}|{2}|{3}|{4}",template.ExportTemplateName, queuefile.ExportQueueID.ToString(),queuefile.ExportQueueFileID.ToString(), Path.GetFileName(filepath), eve.ErrorDescription));
+                        logEvent.Properties["event-type"] = "Xml validation error";
+                        logEvent.Properties["event-source"] = "CEM.FileMaker_Service";
+                        logEvent.Properties["event-class"] = "Exporter";
+                        logEvent.Properties["event-method"] = "MakeXMLFile";
+                        logger.Log(logEvent);
                     }
-
                     logger.Info(string.Format("{0} created with validation errors.", filepath));
                 }
                 else
@@ -127,13 +126,12 @@ namespace NRC.Exporting
                 b = true;
             }
             catch (Exception ex)
-            {
+            {            
                 logger.Error("Error Creating XML file.", ex);
             }
 
             return b;
         }
-
 
         /// <summary>
         /// Sets the filename using the template's defaultnamingconvention and replaces the placeholders

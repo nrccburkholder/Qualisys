@@ -22,12 +22,10 @@ namespace NRC.Exporting
 
 
             if (ds.Tables.Count > 0)
-            {
-               
+            {               
                 Encoding encoding = new UTF8Encoding(false);
 
-                XmlSchema schema = XmlSchema.Read(new StringReader(template.XMLSchemaDefinition), new ValidationEventHandler(ValidationCallBack));
-
+                XmlSchema schema = XmlSchema.Read(new StringReader(template.XMLSchemaDefinition), null);
                 schema.Compile(ValidationCallBack);
 
                 XmlDocument xmlDoc = new XmlDocument();
@@ -55,15 +53,15 @@ namespace NRC.Exporting
                         writer.EndElement();
 
                         XmlDocumentEx returnXMLdoc = new XmlDocumentEx();
+                        returnXMLdoc.Schemas.Add(schema);
                         returnXMLdoc.LoadXml(writer.XmlString);
 
-                        returnXMLdoc.Validate(template.XMLSchemaDefinition);
+                        returnXMLdoc.Validate();
 
                         return returnXMLdoc;
                     }
 
             } else return null;
-
         }
 
         private static void WriteHeaderSection(DataTable dt, XMLWriter writer, XmlNode node)
@@ -217,29 +215,33 @@ namespace NRC.Exporting
 
         private static void ValidationCallBack(object sender, ValidationEventArgs args)
         {
-            Console.WriteLine("\tValidation error: {0}", args.Message);
+            //Console.WriteLine("\tValidation error: {0}", args.Message);
+
+            XmlDocumentEx xmlDoc = (XmlDocumentEx)sender;
+
+            xmlDoc.ValidationErrorList.Add(new ExportValidationError(args.Message));
         }
 
-        private static bool ValidateXML(XmlDocumentEx xmlDoc, string xsd)
-        {
-            bool isValid = true;
+        //private static bool ValidateXML(XmlDocumentEx xmlDoc, string xsd)
+        //{
+        //    bool isValid = true;
 
-            XmlSchema schema = XmlSchema.Read(new StringReader(xsd), null);
-            string ns = schema.TargetNamespace;
+        //    XmlSchema schema = XmlSchema.Read(new StringReader(xsd), null);
+        //    string ns = schema.TargetNamespace;
 
-            XmlSchemaSet schemas = new XmlSchemaSet();
-            schemas.Add(ns, XmlReader.Create(new StringReader(xsd)));
+        //    XmlSchemaSet schemas = new XmlSchemaSet();
+        //    schemas.Add(ns, XmlReader.Create(new StringReader(xsd)));
 
-            XDocument xDoc = XDocument.Parse(xmlDoc.OuterXml);
+        //    XDocument xDoc = XDocument.Parse(xmlDoc.OuterXml);
 
-            xDoc.Validate(schemas, (o, e) =>
-            {
-                xmlDoc.ValidationErrorList.Add(new ExportValidationError(e.Message));
-                isValid = false;
-            });
+        //    xDoc.Validate(schemas, (o, e) =>
+        //    {
+        //        xmlDoc.ValidationErrorList.Add(new ExportValidationError(e.Message));
+        //        isValid = false;
+        //    });
 
-            return isValid;
-        }
+        //    return isValid;
+        //}
     }
 
 
