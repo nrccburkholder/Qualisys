@@ -59,6 +59,11 @@ namespace ServiceLogging
             _logger.Log(NLog.LogLevel.Trace, info);
         }
 
+        public static void Error(string info, Exception ex)
+        {
+            _logger.Log(NLog.LogLevel.Error, info,ex);
+        }
+
 
         /// <summary>
         /// Logs warning messages.
@@ -67,6 +72,17 @@ namespace ServiceLogging
         public static void Warn(string info)
         {
             _logger.Log(NLog.LogLevel.Warn, info);
+        }
+
+        public static void Warn(string message, string eventType, string eventSource, string eventClass, string eventMethod)
+        {
+            LogEventInfo logEvent = new LogEventInfo(NLog.LogLevel.Warn, "", message);
+            logEvent.Properties["event-type"] = eventType;
+            logEvent.Properties["event-source"] = eventSource;
+            logEvent.Properties["event-class"] = eventClass;
+            logEvent.Properties["event-method"] = eventMethod;
+            _logger.Log(logEvent);
+
         }
 
         /// <summary>

@@ -131,7 +131,7 @@ namespace NRC.Exporting
             try
             {
                 string value = dr[fieldname].ToString();
-                writer.WriteElementString(nodename, dr[fieldname] == DBNull.Value ? "M" : value);
+                writer.WriteElementString(nodename, dr[fieldname] == DBNull.Value ? "NULL" : value);
             }
             catch { }
 

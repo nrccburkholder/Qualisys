@@ -15,6 +15,7 @@ using NRC.Exporting.Configuration;
 using NLog;
 
 
+
 namespace NRC.Exporting
 {
     public static class Exporter
@@ -23,7 +24,7 @@ namespace NRC.Exporting
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         /// <summary>
-        /// Creates and saves files
+        /// Creates and saves Export files
         /// </summary>
         public static void  MakeFiles()
         {
@@ -31,15 +32,15 @@ namespace NRC.Exporting
 
             string targetFileLocation = SystemParams.Params.GetParam("FileLocation").StringValue;
 
-            List<ExportQueueFile> queuefiles = ExportQueueFileProvider.Select(new ExportQueueFile(), true);
+            List<ExportQueueFile> queuefiles = ExportQueueFile.Select(new ExportQueueFile(), true);
 
             foreach (ExportQueueFile queuefile in queuefiles)
             {
-                List<ExportQueue> queues = ExportQueueProvider.Select(new ExportQueue { ExportQueueID = queuefile.ExportQueueID });
+                List<ExportQueue> queues = ExportQueue.Select(new ExportQueue { ExportQueueID = queuefile.ExportQueueID });
 
                 foreach (ExportQueue queue in queues)
                 {
-                    ExportTemplate template = ExportTemplateProvider.Select(new ExportTemplate { ExportTemplateVersionMajor = queue.ExportTemplateVersionMajor, ExportTemplateVersionMinor = queue.ExportTemplateVersionMinor }).First();
+                    ExportTemplate template = ExportTemplate.Select(new ExportTemplate { ExportTemplateVersionMajor = queue.ExportTemplateVersionMajor, ExportTemplateVersionMinor = queue.ExportTemplateVersionMinor }).First();
 
                     List<ExportSection> sections = ExportSection.Select(new ExportSection { ExportTemplateID = template.ExportTemplateID });
 
@@ -105,7 +106,8 @@ namespace NRC.Exporting
                     foreach (ExportValidationError eve in xmlDoc.ValidationErrorList)
                     {
                         //Logging to the database.  The elements of the message are pipe delimited, with the template name, queueid, queuefileid, the file name, and the validation error description
-                        LogEventInfo logEvent = new LogEventInfo(LogLevel.Warn,"",string.Format("{0}|{1}|{2}|{3}|{4}",template.ExportTemplateName, queuefile.ExportQueueID.ToString(),queuefile.ExportQueueFileID.ToString(), Path.GetFileName(filepath), eve.ErrorDescription));
+                        string message = string.Format("{0}|{1}|{2}|{3}|{4}", template.ExportTemplateName, queuefile.ExportQueueID.ToString(), queuefile.ExportQueueFileID.ToString(), Path.GetFileName(filepath), eve.ErrorDescription);
+                        LogEventInfo logEvent = new LogEventInfo(LogLevel.Warn, "", message);
                         logEvent.Properties["event-type"] = "Xml validation error";
                         logEvent.Properties["event-source"] = "CEM.FileMaker_Service";
                         logEvent.Properties["event-class"] = "Exporter";
@@ -134,7 +136,6 @@ namespace NRC.Exporting
 
             return b;
         }
-
 
         private static void SetFileName(ref string defaultname, ExportDataSet ds)
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NRC.Exporting.DataProviders;
 
 namespace NRC.Exporting
 {
@@ -29,6 +30,12 @@ namespace NRC.Exporting
         public ExportColumn()
         {
             ColumnResponses = new List<ExportColumnResponse>();
+        }
+
+
+        public List<ExportColumn> SelectSelect(ExportColumn Column, bool IncludeChildProperties = false)
+        {
+            return ExportColumnProvider.Select(Column, IncludeChildProperties);
         }
     }
 }

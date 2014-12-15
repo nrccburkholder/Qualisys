@@ -9,7 +9,7 @@ using System.Data.Common;
 
 namespace NRC.Exporting.DataProviders
 {
-    public class ExportDataSetProvider
+    internal class ExportDataSetProvider
     {
 
         private static SqlDataProvider SqlProvider
@@ -22,7 +22,7 @@ namespace NRC.Exporting.DataProviders
 
         #region public methods
 
-        public static DataSet Select(int? ExportQueueID, int? ExportTemplateID)
+        internal static DataSet Select(int? ExportQueueID, int? ExportTemplateID)
         {
 
             SqlParameter[] param = new SqlParameter[] {new SqlParameter("@ExportqueueID",ExportQueueID),
@@ -35,7 +35,7 @@ namespace NRC.Exporting.DataProviders
 
         }
 
-        public static ExportDataSet Select(int? ExportQueueID, int? ExportTemplateID, string sectionName, bool oneRecordPerPatient)
+        internal static ExportDataSet Select(int? ExportQueueID, int? ExportTemplateID, string sectionName, bool oneRecordPerPatient)
         {
 
             ExportDataSet exportDataSet = new ExportDataSet();

@@ -9,7 +9,7 @@ using System.Data.Common;
 
 namespace NRC.Exporting.DataProviders
 {
-    public static class ExportTemplateProvider
+    internal static class ExportTemplateProvider
     {
         private static SqlDataProvider mSDP;
 
@@ -84,7 +84,7 @@ namespace NRC.Exporting.DataProviders
 
         #region public methods
 
-        public static List<ExportTemplate>Select(ExportTemplate template, bool IncludeChildProperties = false)
+        internal static List<ExportTemplate>Select(ExportTemplate template, bool IncludeChildProperties = false)
         {
             SqlParameter[] param = new SqlParameter[] {new SqlParameter("@ExportTemplateID",template.ExportTemplateID),
                                                        new SqlParameter("@SurveyTypeId", template.SurveyTypeID),

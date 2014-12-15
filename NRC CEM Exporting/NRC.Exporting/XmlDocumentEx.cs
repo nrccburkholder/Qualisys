@@ -9,6 +9,9 @@ using System.Xml.Schema;
 
 namespace NRC.Exporting
 {
+    /// <summary>
+    /// This is an extension of the XmlDocument class.  It contains a Validate method that writes all the validation errors to a list.
+    /// </summary>
     public class XmlDocumentEx: XmlDocument
     {
 

@@ -38,11 +38,4 @@ namespace NRC.Exporting
 
     }
 
-
-    public class ExportDataSetList : List<ExportDataSet>
-    {
-
-
-
-    }
 }
