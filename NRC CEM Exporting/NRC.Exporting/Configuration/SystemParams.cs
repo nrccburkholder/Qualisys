@@ -75,7 +75,6 @@ namespace NRC.Exporting.Configuration
 
     }
 
-    [System.Serializable]
     public class ParamCollection : List<Param>
     {
         public  Param GetParam(string name)

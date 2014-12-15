@@ -9,7 +9,7 @@ using System.Data.Common;
 
 namespace NRC.Exporting.DataProviders
 {
-    public class ExportQueueProvider
+    internal class ExportQueueProvider
     {
 
         private static SqlDataProvider SqlProvider
@@ -65,7 +65,7 @@ namespace NRC.Exporting.DataProviders
 
         #region public methods
 
-        public static List<ExportQueue> Select(ExportQueue queue)
+        internal static List<ExportQueue> Select(ExportQueue queue)
         {
 
             SqlParameter[] param = new SqlParameter[] {new SqlParameter("@ExportQueueID",queue.ExportQueueID),

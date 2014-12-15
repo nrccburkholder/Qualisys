@@ -9,6 +9,7 @@ using System.Xml.Schema;
 using System.Xml.Serialization;
 using System.Xml.Linq;
 using System.IO;
+using NRC.Exporting.DataProviders;
 
 namespace NRC.Exporting
 {
@@ -55,6 +56,15 @@ namespace NRC.Exporting
             MissingColumns = new List<string>();
         }
 
+        #endregion
+
+        #region public methods
+
+        public static List<ExportTemplate>Select(ExportTemplate template, bool IncludeChildProperties = false)
+        {
+            return ExportTemplateProvider.Select(template, IncludeChildProperties);
+        }
+            
         #endregion
 
         #region Validation

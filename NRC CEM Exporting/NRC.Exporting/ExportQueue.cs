@@ -29,5 +29,11 @@ namespace NRC.Exporting
 
         }
 
+        public static List<ExportQueue> Select(ExportQueue queue)
+        {
+            return DataProviders.ExportQueueProvider.Select(queue);
+        }
+
+
     }
 }

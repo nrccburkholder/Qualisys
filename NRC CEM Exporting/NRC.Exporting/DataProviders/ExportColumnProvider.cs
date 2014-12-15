@@ -9,7 +9,7 @@ using System.Data.Common;
 
 namespace NRC.Exporting.DataProviders
 {
-    public static class ExportColumnProvider
+    internal static class ExportColumnProvider
     {
 
 
@@ -71,7 +71,7 @@ namespace NRC.Exporting.DataProviders
 
         #region public methods
 
-        public static List<ExportColumn> Select(ExportColumn Column, bool IncludeChildProperties = false)
+        internal static List<ExportColumn> Select(ExportColumn Column, bool IncludeChildProperties = false)
         {
             SqlParameter[] param = new SqlParameter[] {new SqlParameter("@ExportTemplateID",Column.ExportTemplateID),
                                                        new SqlParameter("@ExportTemplateSectionID", Column.ExportTemplateSectionID),

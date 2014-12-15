@@ -35,6 +35,11 @@ namespace NRC.Exporting
             ExportQueueFileProvider.Update(this);
         }
 
+        public static List<ExportQueueFile> Select(ExportQueueFile queuefile, bool ReturnPendingOnly = false)
+        {
+            return DataProviders.ExportQueueFileProvider.Select(queuefile, ReturnPendingOnly);
+        }
+
         #endregion
 
     }

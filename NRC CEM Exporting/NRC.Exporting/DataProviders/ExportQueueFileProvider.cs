@@ -9,7 +9,7 @@ using System.Data.Common;
 
 namespace NRC.Exporting.DataProviders
 {
-    public class ExportQueueFileProvider
+    internal class ExportQueueFileProvider
     {
 
         private static SqlDataProvider SqlProvider
@@ -63,10 +63,11 @@ namespace NRC.Exporting.DataProviders
 
         #region public methods
 
-        public static List<ExportQueueFile> Select(ExportQueueFile queuefile)
+        internal static List<ExportQueueFile> Select(ExportQueueFile queuefile, bool ReturnPendingOnly = false)
         {
 
-            SqlParameter[] param = new SqlParameter[] { new SqlParameter("@ExportQueueID", queuefile.ExportQueueID) };
+            SqlParameter[] param = new SqlParameter[] { new SqlParameter("@ExportQueueID", queuefile.ExportQueueID),
+                                                        new SqlParameter("@ReturnPendingOnly", ReturnPendingOnly)};
 
             DataSet ds = new DataSet();
             SqlProvider.Fill(ref ds, "CEM.SelectExportQueueFile", CommandType.StoredProcedure, param);
@@ -82,7 +83,7 @@ namespace NRC.Exporting.DataProviders
       /// Returns a DataSet where FileMakerName and FileMakerDate is NULL
       /// </summary>
       /// <returns></returns>
-        public static List<ExportQueueFile> SelectPendingQueueFiles()
+        internal static List<ExportQueueFile> SelectPendingQueueFiles()
         {
 
             DataSet ds = new DataSet();
@@ -97,7 +98,7 @@ namespace NRC.Exporting.DataProviders
 
 
 
-        public static void Update(ExportQueueFile queuefile)
+        internal static void Update(ExportQueueFile queuefile)
         {
             SqlParameter[] param = new SqlParameter[] {new SqlParameter("@ExportQueueFileID",queuefile.ExportQueueFileID),
                                                        new SqlParameter("@SubmissionDate", queuefile.SubmissionDate),

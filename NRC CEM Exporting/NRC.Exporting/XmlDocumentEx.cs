@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Schema;
-using System.IO;
 
 namespace NRC.Exporting
 {
+    /// <summary>
+    /// This is an extension of the XmlDocument class.  It contains a Validate method that writes all the validation errors to a list.
+    /// </summary>
     public class XmlDocumentEx: XmlDocument
     {
 
@@ -30,7 +32,8 @@ namespace NRC.Exporting
 
             xDoc.Validate(this.Schemas, (o, e) =>
             {
-                ValidationErrorList.Add(new ExportValidationError(e.Message));
+                XElement element = (XElement)o;
+                ValidationErrorList.Add(new ExportValidationError(element.Name.ToString(), element.Value, e.Message, e.Severity));
                 isValid = false;
             });
 
