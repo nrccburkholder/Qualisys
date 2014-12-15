@@ -244,5 +244,57 @@ values (158, @hospiceId, null)
 insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
 values (162, @hospiceId, null)
 
+--declare @hospiceMethodologyId int, @hospiceId int
+select @hospiceId = SurveyType_Id from SurveyType where SurveyType_dsc = 'Hospice CAHPS'
+declare @DCStmtId int, @FieldId int
+
+--select * from surveytypedefaultcriteria select * from defaultcriteriastmt select * from DefaultCriteriaClause
+
+insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
+values ('DQ_Age', '(POPULATIONHSP_DecdAge < 18)', 'Q')
+select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCriteriaStmt_nm = 'DQ_Age'
+insert into SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteriaStmt_id, Subtype_id)
+values (@hospiceId, 1, @DCStmtId, null)
+select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'HSP_DecdAge'
+insert into DefaultCriteriaClause (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm, Field_id, intOperator, strLowValue, strHighValue)
+values (@DCStmtId, 1, 'POPULATION', @Fieldid, 5, '18', '')
+
+insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
+values ('DQ_LOS', '(ENCOUNTERLengthOfStay < 2)', 'Q')
+select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCriteriaStmt_nm = 'DQ_LOS'
+insert into SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteriaStmt_id, Subtype_id)
+values (@hospiceId, 1, @DCStmtId, null)
+select @Fieldid = 75
+insert into DefaultCriteriaClause (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm, Field_id, intOperator, strLowValue, strHighValue)
+values (@DCStmtId, 1, 'ENCOUNTER', @Fieldid, 5, '2', '')
+
+insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
+values ('DQ_Rel', '(POPULATIONHSP_CaregiverRelatn = 6)', 'Q')
+select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCriteriaStmt_nm = 'DQ_Rel'
+insert into SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteriaStmt_id, Subtype_id)
+values (@hospiceId, 1, @DCStmtId, null)
+select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'HSP_CaregiverRelatn'
+insert into DefaultCriteriaClause (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm, Field_id, intOperator, strLowValue, strHighValue)
+values (@DCStmtId, 1, 'POPULATION', @Fieldid, 1, '6', '')
+
+insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
+values ('DQ_Guar', '(POPULATIONHSP_GuardFlg = 1)', 'Q')
+select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCriteriaStmt_nm = 'DQ_Guar'
+insert into SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteriaStmt_id, Subtype_id)
+values (@hospiceId, 1, @DCStmtId, null)
+select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'HSP_GuardFlg'
+insert into DefaultCriteriaClause (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm, Field_id, intOperator, strLowValue, strHighValue)
+values (@DCStmtId, 1, 'POPULATION', @Fieldid, 1, '1', '')
+
+
+insert into SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteriaStmt_id, Subtype_id)
+values (@hospiceId, 1, 1, null)
+insert into SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteriaStmt_id, Subtype_id)
+values (@hospiceId, 1, 2, null)
+insert into SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteriaStmt_id, Subtype_id)
+values (@hospiceId, 1, 19, null)
+
+
+
 commit tran
 
