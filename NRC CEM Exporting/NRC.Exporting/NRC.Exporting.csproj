@@ -53,7 +53,7 @@
   <ItemGroup>
     <Compile Include="DataProviders\ExportColumnProvider.cs" />
     <Compile Include="DataProviders\ExportColumnResponseProvider.cs" />
-    <Compile Include="DataProviders\ExportDataProvider.cs" />
+    <Compile Include="DataProviders\ExportDataSetProvider.cs" />
     <Compile Include="DataProviders\ExportQueueFileProvider.cs" />
     <Compile Include="DataProviders\ExportQueueProvider.cs" />
     <Compile Include="DataProviders\ExportSectionProvider.cs" />
@@ -63,6 +63,7 @@
     <Compile Include="Enums\ExportFileTypes.cs" />
     <Compile Include="ExportColumn.cs" />
     <Compile Include="ExportColumnResponse.cs" />
+    <Compile Include="ExportDataSet.cs" />
     <Compile Include="ExportQueue.cs" />
     <Compile Include="ExportQueueFile.cs" />
     <Compile Include="ExportQueueSurvey.cs" />
@@ -71,7 +72,7 @@
     <Compile Include="Exporter.cs" />
     <Compile Include="ExportValidationError.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SystemParams.cs" />
+    <Compile Include="Configuration\SystemParams.cs" />
     <Compile Include="XmlDocumentEx.cs" />
     <Compile Include="XMLExporter.cs" />
   </ItemGroup>

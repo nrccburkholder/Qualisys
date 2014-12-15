@@ -15,13 +15,11 @@ namespace FileMakerServiceTester
 
         static void Main(string[] args)
         {
+            Console.WriteLine();
             Console.WriteLine("Press return to start");
             Console.ReadLine();
 
             Start();
-
-            Console.WriteLine("Press return to exit");
-            Console.ReadLine();
 
         }
 
@@ -32,8 +30,22 @@ namespace FileMakerServiceTester
                 // Do the scheduled work here.
                 logger.Info(string.Format("FileMakerService Tester Begin Work"));
                 string schedulerCron = SystemParams.Params.GetParam("ServiceInterval").StringValue;
+
                 Exporter.MakeFiles();
+
                 logger.Info(string.Format("FileMakerService Tester End Work"));
+
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine("Do you want to run it again? (Y or just hit return>");
+                string answer = Console.ReadLine().ToLower();
+                if (answer.IndexOf("y") == 0)
+                {
+                    Start();
+                }
+                Console.WriteLine();
+                Console.WriteLine("Goodbye!");
+
             }
             catch (Exception ex)
             {

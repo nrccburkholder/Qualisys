@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace NRC.Exporting
 {
     [System.Serializable]
@@ -20,6 +21,12 @@ namespace NRC.Exporting
         {
             ExportColumns = new List<ExportColumn>();
         }
+
+        public static List<ExportSection> Select(ExportSection section, bool IncludeChildProperties = false)
+        {
+            return DataProviders.ExportSectionProvider.Select (section, IncludeChildProperties);
+        }
+
 
     }
 }

@@ -63,10 +63,11 @@ namespace NRC.Exporting.DataProviders
 
         #region public methods
 
-        public static List<ExportQueueFile> Select(ExportQueueFile queuefile)
+        public static List<ExportQueueFile> Select(ExportQueueFile queuefile, bool ReturnPendingOnly = false)
         {
 
-            SqlParameter[] param = new SqlParameter[] { new SqlParameter("@ExportQueueID", queuefile.ExportQueueID) };
+            SqlParameter[] param = new SqlParameter[] { new SqlParameter("@ExportQueueID", queuefile.ExportQueueID),
+                                                        new SqlParameter("@ReturnPendingOnly", ReturnPendingOnly)};
 
             DataSet ds = new DataSet();
             SqlProvider.Fill(ref ds, "CEM.SelectExportQueueFile", CommandType.StoredProcedure, param);
