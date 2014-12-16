@@ -27,9 +27,9 @@ namespace NRC.Exporting.DataProviders
             ExportQueue queue = new ExportQueue();
 
             queue.ExportQueueID = (int)dr["ExportQueueID"];
+            queue.ExportTemplateName = dr["ExportTemplateName"].ToString();
             queue.ExportTemplateVersionMajor = dr["ExportTemplateVersionMajor"].ToString();
             queue.ExportTemplateVersionMinor = dr["ExportTemplateVersionMinor"] == DBNull.Value ? null : (int?)dr["ExportTemplateVersionMinor"];
-            queue.ExportDateType = dr["ExportDateType"] == DBNull.Value ? null : (int?)dr["ExportDateType"];
             queue.ExportDateStart = dr["ExportDateStart"] == DBNull.Value ? null : (DateTime?)dr["ExportDateStart"];
             queue.ExportDateEnd = dr["ExportDateEnd"] == DBNull.Value ? null : (DateTime?)dr["ExportDateEnd"];
             queue.ReturnsOnly = dr["ReturnsOnly"] == DBNull.Value ? false : (bool)dr["ReturnsOnly"];
@@ -69,6 +69,7 @@ namespace NRC.Exporting.DataProviders
         {
 
             SqlParameter[] param = new SqlParameter[] {new SqlParameter("@ExportQueueID",queue.ExportQueueID),
+                                                       new SqlParameter("@ExportTemplateName", queue.ExportTemplateName),
                                                        new SqlParameter("@ExportTemplateVersionMajor", queue.ExportTemplateVersionMajor),
                                                        new SqlParameter("@ExportTemplateVersionMinor",queue.ExportTemplateVersionMinor)
                                                        };

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using NLog;
 using NLog.Targets;
 
-namespace ServiceLogging
+namespace NRC.Logging
 {
     public static class Logs
     {
@@ -50,6 +51,16 @@ namespace ServiceLogging
             _logger.Log(NLog.LogLevel.Info, info);
         }
 
+        public static void Info(LogEventInfo logevent)
+        {
+            _logger.Log(logevent);
+        }
+
+        public static void Info(string loggername, string eventtype, string message, string eventsource, string eventclass, string eventmethod)
+        {
+            _logger.Log(logevent(LogLevel.Info, loggername, eventtype, message, eventsource, eventclass, eventmethod));
+        }
+
         /// <summary>
         /// Logs Trace level messages.
         /// </summary>
@@ -59,11 +70,30 @@ namespace ServiceLogging
             _logger.Log(NLog.LogLevel.Trace, info);
         }
 
-        public static void Error(string info, Exception ex)
+        public static void Trace(LogEventInfo logevent)
         {
-            _logger.Log(NLog.LogLevel.Error, info,ex);
+            _logger.Log(logevent);
         }
 
+        public static void Trace(string loggername, string eventtype, string message, string eventsource, string eventclass, string eventmethod)
+        {
+            _logger.Log(logevent(LogLevel.Trace, loggername, eventtype, message, eventsource, eventclass, eventmethod));
+        }
+
+        public static void Error(string info, Exception ex)
+        {
+            _logger.Log(NLog.LogLevel.Error, info, ex);
+        }
+
+        public static void Error(LogEventInfo logevent)
+        {
+            _logger.Log(logevent);
+        }
+
+        public static void Error(string loggername, string eventtype, string message, string eventsource, string eventclass, string eventmethod, Exception ex)
+        {
+            _logger.Log(logevent(LogLevel.Error, loggername, eventtype, message, eventsource, eventclass, eventmethod,ex));
+        }
 
         /// <summary>
         /// Logs warning messages.
@@ -74,14 +104,14 @@ namespace ServiceLogging
             _logger.Log(NLog.LogLevel.Warn, info);
         }
 
-        public static void Warn(string message, string eventType, string eventSource, string eventClass, string eventMethod)
+        public static void Warn(LogEventInfo logevent)
         {
-            LogEventInfo logEvent = new LogEventInfo(NLog.LogLevel.Warn, "", message);
-            logEvent.Properties["event-type"] = eventType;
-            logEvent.Properties["event-source"] = eventSource;
-            logEvent.Properties["event-class"] = eventClass;
-            logEvent.Properties["event-method"] = eventMethod;
-            _logger.Log(logEvent);
+            _logger.Log(logevent);
+        }
+
+        public static void Warn(string loggername, string eventtype, string message, string eventsource, string eventclass, string eventmethod)
+        {        
+            _logger.Log(logevent(LogLevel.Warn,loggername,eventtype,message,eventsource,eventclass,eventmethod));
         }
 
         /// <summary>
@@ -92,6 +122,11 @@ namespace ServiceLogging
         public static void Log(LogLevel nrcLogLevel, string msg)
         {
             _logger.Log(nrcLogLevel.ToNLogLogLevel(), msg);
+        }
+
+        public static void Log(LogLevel nrcLogLevel, string loggername, string eventtype, string message, string eventsource, string eventclass, string eventmethod)
+        {
+            _logger.Log(logevent(nrcLogLevel, loggername, eventtype, message, eventsource, eventclass, eventmethod));
         }
 
         /// <summary>
@@ -152,9 +187,9 @@ namespace ServiceLogging
             return nloglevel;
         }
 
-        private static LogEventInfo logevent(NLog.LogLevel level, string loggername, string eventtype, string message, string eventsource, string eventclass, string eventmethod, Exception ex = null)
+        private static LogEventInfo logevent(LogLevel level, string loggername, string eventtype, string message, string eventsource, string eventclass, string eventmethod, Exception ex = null)
         {
-            LogEventInfo logEvent = new LogEventInfo(level, loggername, message);
+            LogEventInfo logEvent = new LogEventInfo(level.ToNLogLogLevel(), loggername, message);
             logEvent.Properties["event-type"] = eventtype;
             logEvent.Properties["event-source"] = eventsource;
             logEvent.Properties["event-class"] = eventclass;

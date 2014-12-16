@@ -37,7 +37,7 @@ namespace NRC.Exporting.DataProviders
             template.ExportTemplateName = dr["ExportTemplateName"].ToString();           
             template.SurveyTypeID = dr["SurveyTypeID"] == DBNull.Value ? null : (int?)dr["SurveyTypeID"];
             template.SurveySubTypeID = dr["SurveySubTypeID"] == DBNull.Value ? null : (int?)dr["SurveySubTypeID"];
-            template.ValidDateType = dr["ValidDateType"] == DBNull.Value ? null : (int?)dr["ValidDateType"];
+            template.ValidDateColumnID = dr["ValidDateColumnID"] == DBNull.Value ? null : (int?)dr["ValidDateColumnID"];
             template.ValidStartDate = dr["ValidStartDate"] == DBNull.Value ? null : (DateTime?)dr["ValidStartDate"];
             template.ValidEndDate = dr["ValidEndDate"] == DBNull.Value ? null : (DateTime?)dr["ValidEndDate"];
             template.ExportTemplateVersionMajor = dr["ExportTemplateVersionMajor"].ToString();

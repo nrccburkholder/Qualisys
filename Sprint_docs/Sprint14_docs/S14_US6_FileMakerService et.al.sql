@@ -82,6 +82,7 @@ GO
 
 CREATE PROCEDURE [CEM].[SelectExportQueue]
 	@ExportQueueID int = null,
+	@ExportTemplateName varchar(200) = null,
 	@ExportTemplateVersionMajor varchar(100) = null,
 	@ExportTemplateVersionMinor int = null,
 	@ExportDateStart datetime = null,
@@ -94,9 +95,9 @@ BEGIN
 	SET NOCOUNT ON;
 
     SELECT [ExportQueueID]
+	  ,[ExportTemplateName]
       ,[ExportTemplateVersionMajor]
       ,[ExportTemplateVersionMinor]
-      ,[ExportDateType]
       ,[ExportDateStart]
       ,[ExportDateEnd]
       ,[ReturnsOnly]
@@ -108,6 +109,7 @@ BEGIN
       ,[ValidationCode]
   FROM [NRC_Datamart].[CEM].[ExportQueue]
   WHERE ((@ExportQueueID is null) or (ExportQueueID = @ExportQueueID)) and
+		((@ExportTemplateName is null) or (ExportTemplateName = @ExportTemplateName)) and
 		((@ExportTemplateVersionMajor is null) or (ExportTemplateVersionMajor = @ExportTemplateVersionMajor)) and
 	    ((@ExportTemplateVersionMinor is null) or (ExportTemplateVersionMinor = @ExportTemplateVersionMinor))
 END
@@ -136,6 +138,7 @@ GO
 CREATE PROCEDURE [CEM].[SelectTemplate]
 	@exportTemplateId int = null,
 	@SurveyTypeId int = null,
+	@ExportTemplateName varchar(200) = null,
 	@ExportTemplateVersionMajor varchar(100) = null,
 	@ExportTemplateVersionMinor int = null,
 	@ClientId int = null
@@ -151,7 +154,7 @@ BEGIN
 		  ,[ExportTemplateName]
 		  ,[SurveyTypeID]
 		  ,[SurveySubTypeID]
-		  ,[ValidDateType]
+          ,[ValidDateColumnID]
 		  ,[ValidStartDate]
 		  ,[ValidEndDate]
 		  ,[ExportTemplateVersionMajor]
@@ -170,6 +173,7 @@ BEGIN
 	  FROM [CEM].[ExportTemplate] 
 	  WHERE ((@exportTemplateId is null) or (ExportTemplateID = @exportTemplateId)) and
 	        ((@SurveyTypeId is null) or (SurveyTypeId = @SurveyTypeId)) and
+			((@ExportTemplateName is null) or (ExportTemplateName = @ExportTemplateName)) and
 			((@ExportTemplateVersionMajor is null) or (ExportTemplateVersionMajor = @ExportTemplateVersionMajor)) and
 			((@ExportTemplateVersionMinor is null) or (ExportTemplateVersionMinor = @ExportTemplateVersionMinor)) and
 			((@ClientId is null) or (ClientId = @ClientId))
@@ -195,6 +199,7 @@ GO
 
 CREATE PROCEDURE [CEM].[UpdateExportQueueFile]
 	@ExportQueueFileID int,
+	@FileState smallint,
 	@SubmissionDate datetime = null,
 	@SubmissionBy varchar(100) = null,
 	@CMSResponseCode varchar(100) = null,
@@ -210,7 +215,8 @@ BEGIN
 	SET NOCOUNT ON;
 
 	UPDATE [CEM].[ExportQueueFile]
-	   SET [SubmissionDate] = @SubmissionDate
+	   SET [FileState] = @FileState
+		  ,[SubmissionDate] = @SubmissionDate
 		  ,[SubmissionBy] = @SubmissionBy
 		  ,[CMSResponseCode] = @CMSResponseCode
 		  ,[CMSResponseDate] = @CMSResponseDate
@@ -253,6 +259,7 @@ BEGIN
 
 	INSERT INTO [CEM].[ExportQueueFile]
            ([ExportQueueID]
+		   ,[FileState]
            ,[SubmissionDate]
            ,[SubmissionBy]
            ,[CMSResponseCode]
@@ -262,6 +269,7 @@ BEGIN
            ,[FileMakerDate])
      VALUES
            (@ExportQueueID
+		   ,0
            ,@SubmissionDate
            ,@SubmissionBy
            ,@CMSResponseCode
@@ -293,14 +301,14 @@ GO
 CREATE PROCEDURE [CEM].[SelectExportQueueFile]
 	@ExportQueueFileID int = null,
 	@ExportQueueID int = null,
+	@FileState smallint = null,
 	@SubmissionDate datetime = null,
 	@SubmissionBy varchar(100) = null,
 	@CMSResponseCode varchar(100) = null,
 	@CMSResponseDate datetime = null,
 	@FileMakerType int = null,
 	@FileMakerName varchar(200) = null,
-	@FileMakerDate datetime = null,
-	@ReturnPendingOnly bit = 0
+	@FileMakerDate datetime = null
 	
 AS
 BEGIN
@@ -308,40 +316,23 @@ BEGIN
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
-	IF (@ReturnPendingOnly = 1)
-	BEGIN
-		SELECT [ExportQueueFileID]
-			  ,[ExportQueueID]
-			  ,[SubmissionDate]
-			  ,[SubmissionBy]
-			  ,[CMSResponseCode]
-			  ,[CMSResponseDate]
-			  ,[FileMakerType]
-			  ,[FileMakerName]
-			  ,[FileMakerDate]
-		  FROM [CEM].[ExportQueueFile]
-		   WHERE ((@ExportQueueFileID is null) or (ExportQueueFileID = @ExportQueueFileID)) and
-			((@ExportQueueID is null) or (ExportQueueID = @ExportQueueID)) and
-			((@FileMakerName is null) or (FileMakerName = @FileMakerName)) and 
-			[FileMakerName] is null and
-			[FileMakerDate] is null
-	END
-	ELSE
-	BEGIN
-		SELECT [ExportQueueFileID]
-			  ,[ExportQueueID]
-			  ,[SubmissionDate]
-			  ,[SubmissionBy]
-			  ,[CMSResponseCode]
-			  ,[CMSResponseDate]
-			  ,[FileMakerType]
-			  ,[FileMakerName]
-			  ,[FileMakerDate]
-		  FROM [CEM].[ExportQueueFile]
-		   WHERE ((@ExportQueueFileID is null) or (ExportQueueFileID = @ExportQueueFileID)) and
-			((@ExportQueueID is null) or (ExportQueueID = @ExportQueueID)) and
-			((@FileMakerName is null) or (FileMakerName = @FileMakerName))
-	END
+
+	SELECT [ExportQueueFileID]
+			,[ExportQueueID]
+			,[FileState]
+			,[SubmissionDate]
+			,[SubmissionBy]
+			,[CMSResponseCode]
+			,[CMSResponseDate]
+			,[FileMakerType]
+			,[FileMakerName]
+			,[FileMakerDate]
+		FROM [CEM].[ExportQueueFile]
+		WHERE ((@ExportQueueFileID is null) or (ExportQueueFileID = @ExportQueueFileID)) and
+		((@ExportQueueID is null) or (ExportQueueID = @ExportQueueID)) and
+		((@FileMakerName is null) or (FileMakerName = @FileMakerName)) and
+		((@FileState is null) or (FileState = @FileState))
+
 
 END
 GO

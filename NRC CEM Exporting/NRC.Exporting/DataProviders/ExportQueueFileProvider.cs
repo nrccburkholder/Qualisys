@@ -28,14 +28,14 @@ namespace NRC.Exporting.DataProviders
 
             queuefile.ExportQueueFileID = (int)dr["ExportQueueFileID"];
             queuefile.ExportQueueID = (int)dr["ExportQueueID"];
-            queuefile.CMSResponseCode = dr["CMSResponseCode"].ToString();
-            queuefile.FileMakerName = dr["FileMakerName"].ToString();
-            queuefile.FileMakerType = dr["FileMakerType"] == DBNull.Value ? null : (int?)dr["FileMakerType"];
+            queuefile.FileState = (Int16)dr["FileState"];
             queuefile.SubmissionDate = dr["SubmissionDate"] == DBNull.Value ? null : (DateTime?)dr["SubmissionDate"];
+            queuefile.SubmissionBy = dr["SubmissionBy"] == DBNull.Value ? null : dr["SubmissionBy"].ToString();
+            queuefile.CMSResponseCode = dr["CMSResponseCode"] == DBNull.Value ? null : dr["CMSResponseCode"].ToString();
+            queuefile.CMSResponseDate = dr["CMSResponseDate"] == DBNull.Value ? null : (DateTime?)dr["CMSResponseDate"];       
+            queuefile.FileMakerType = dr["FileMakerType"] == DBNull.Value ? null : (int?)dr["FileMakerType"];
+            queuefile.FileMakerName = dr["FileMakerName"] == DBNull.Value ? null : dr["FileMakerName"].ToString();
             queuefile.FileMakerDate = dr["FileMakerDate"] == DBNull.Value ? null : (DateTime?)dr["FileMakerDate"];
-            queuefile.CMSResponseDate = dr["CMSResponseDate"] == DBNull.Value ? null : (DateTime?)dr["CMSResponseDate"];
-            queuefile.SubmissionBy = dr["SubmissionBy"].ToString();
-
             return queuefile;
         }
 
@@ -63,11 +63,11 @@ namespace NRC.Exporting.DataProviders
 
         #region public methods
 
-        internal static List<ExportQueueFile> Select(ExportQueueFile queuefile, bool ReturnPendingOnly = false)
+        internal static List<ExportQueueFile> Select(ExportQueueFile queuefile)
         {
 
             SqlParameter[] param = new SqlParameter[] { new SqlParameter("@ExportQueueID", queuefile.ExportQueueID),
-                                                        new SqlParameter("@ReturnPendingOnly", ReturnPendingOnly)};
+                                                        new SqlParameter("@FileState", queuefile.FileState)};
 
             DataSet ds = new DataSet();
             SqlProvider.Fill(ref ds, "CEM.SelectExportQueueFile", CommandType.StoredProcedure, param);
@@ -79,28 +79,11 @@ namespace NRC.Exporting.DataProviders
 
         }
 
-      /// <summary>
-      /// Returns a DataSet where FileMakerName and FileMakerDate is NULL
-      /// </summary>
-      /// <returns></returns>
-        internal static List<ExportQueueFile> SelectPendingQueueFiles()
-        {
-
-            DataSet ds = new DataSet();
-            SqlProvider.Fill(ref ds, "CEM.SelectPendingExportQueueFiles", CommandType.StoredProcedure);
-
-            using (ds)
-            {
-                return PopulateQueueFileList(ds);
-            }
-
-        }
-
-
 
         internal static void Update(ExportQueueFile queuefile)
         {
             SqlParameter[] param = new SqlParameter[] {new SqlParameter("@ExportQueueFileID",queuefile.ExportQueueFileID),
+                                                       new SqlParameter("@FileState", queuefile.FileState),
                                                        new SqlParameter("@SubmissionDate", queuefile.SubmissionDate),
                                                        new SqlParameter("@SubmissionBy", queuefile.SubmissionBy),
                                                        new SqlParameter("@CMSResponseCode", queuefile.CMSResponseCode),

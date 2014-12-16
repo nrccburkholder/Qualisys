@@ -3,18 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 using NRC.Exporting;
 using NRC.Exporting.Configuration;
+using NRC.Logging;
 
 namespace FileMakerServiceTester
 {
     public class Program
     {
 
-       private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+       private static EventLog eventLog;
+
 
         static void Main(string[] args)
         {
+
+            eventLog = new EventLog();
+            eventLog.Source = "CEM.FileMaker_Service";
+            eventLog.Log = "Application";
+
             Console.WriteLine();
             Console.WriteLine("Press return to start");
             Console.ReadLine();
@@ -28,12 +36,13 @@ namespace FileMakerServiceTester
             try
             {
                 // Do the scheduled work here.
-                logger.Info(string.Format("FileMakerService Tester Begin Work"));
+                
+                Logs.Info(string.Format("FileMakerService Tester Begin Work"));
                 string schedulerCron = SystemParams.Params.GetParam("ServiceInterval").StringValue;
 
                 Exporter.MakeFiles();
 
-                logger.Info(string.Format("FileMakerService Tester End Work"));
+                Logs.Info(string.Format("FileMakerService Tester End Work"));
 
                 Console.WriteLine();
                 Console.WriteLine();
@@ -49,7 +58,7 @@ namespace FileMakerServiceTester
             }
             catch (Exception ex)
             {
-                logger.Error("Error executing job.",ex);
+                Logs.Error("Error executing job.",ex);
             }
         }
     }

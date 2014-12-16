@@ -25,7 +25,7 @@ namespace NRC.Exporting
         public string ExportTemplateName { get; set; }
         public int? SurveyTypeID { get; set; }
         public int? SurveySubTypeID { get; set; }
-        public int? ValidDateType { get; set; }
+        public int? ValidDateColumnID { get; set; }
         public DateTime? ValidStartDate { get; set; }
         public DateTime? ValidEndDate { get; set; }
         public string ExportTemplateVersionMajor { get; set; }

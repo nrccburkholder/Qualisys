@@ -10,9 +10,9 @@ namespace NRC.Exporting
     {
 
         public int? ExportQueueID { get; set; }
+        public string ExportTemplateName { get; set; }
         public string ExportTemplateVersionMajor { get; set; }
         public int? ExportTemplateVersionMinor { get; set; }
-        public int? ExportDateType { get; set; }
         public DateTime? ExportDateStart { get; set; }
         public DateTime? ExportDateEnd { get; set; }
         public bool? ReturnsOnly { get; set; }

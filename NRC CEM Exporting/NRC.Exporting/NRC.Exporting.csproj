@@ -79,6 +79,12 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\NRC.Logging\NRC.Logging\NRC.Logging.csproj">
+      <Project>{5c081429-0534-4cfa-87da-a37736e71cd6}</Project>
+      <Name>NRC.Logging</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

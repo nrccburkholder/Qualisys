@@ -13,6 +13,7 @@ using System.Xml.Linq;
 
 namespace NRC.Exporting
 {
+
     internal static class XMLExporter
     {
 
@@ -40,14 +41,18 @@ namespace NRC.Exporting
                         writer.WriteAttribute("xmlns", schema.TargetNamespace);
                         writer.WriteAttribute("xmlns:xs", "http://www.w3.org/2001/XMLSchema-instance");
 
-                        WriteHeaderSection(ds[0].DataTable, writer, headerNode);
-
-                        if (ds.Count < 2)
+                        if (ds[0].DataTable.Rows.Count > 0)
                         {
-                            throw new Exception("Patient level result set is missing.");
-                        }
+                            WriteHeaderSection(ds[0].DataTable, writer, headerNode);
 
-                        recordCount = WritePatientLevelSection(ds, writer, patientLevelNode);
+                            if (ds.Count < 2)
+                            {
+                                throw new Exception("Patient level result set is missing.");
+                            }
+
+                            recordCount = WritePatientLevelSection(ds, writer, patientLevelNode);
+                        }
+                        else throw new Exception("Header level result set is missing");
 
                         writer.EndElement();
 

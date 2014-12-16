@@ -12,7 +12,7 @@ using System.Xml.Schema;
 using System.Xml.Serialization;
 using System.Configuration;
 using NRC.Exporting.Configuration;
-using NLog;
+using NRC.Logging;
 
 
 
@@ -21,7 +21,8 @@ namespace NRC.Exporting
     public static class Exporter
     {
 
-        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private static string EventSource = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
+        private static string EventClass = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name;
 
         /// <summary>
         /// Creates and saves Export files
@@ -32,7 +33,7 @@ namespace NRC.Exporting
 
             string targetFileLocation = SystemParams.Params.GetParam("FileLocation").StringValue;
 
-            List<ExportQueueFile> queuefiles = ExportQueueFile.Select(new ExportQueueFile(), true);
+            List<ExportQueueFile> queuefiles = ExportQueueFile.Select(new ExportQueueFile { FileState = 0});
 
             foreach (ExportQueueFile queuefile in queuefiles)
             {
@@ -40,7 +41,7 @@ namespace NRC.Exporting
 
                 foreach (ExportQueue queue in queues)
                 {
-                    ExportTemplate template = ExportTemplate.Select(new ExportTemplate { ExportTemplateVersionMajor = queue.ExportTemplateVersionMajor, ExportTemplateVersionMinor = queue.ExportTemplateVersionMinor }).First();
+                    ExportTemplate template = ExportTemplate.Select(new ExportTemplate { ExportTemplateName = queue.ExportTemplateName, ExportTemplateVersionMajor = queue.ExportTemplateVersionMajor, ExportTemplateVersionMinor = queue.ExportTemplateVersionMinor }).First();
 
                     List<ExportSection> sections = ExportSection.Select(new ExportSection { ExportTemplateID = template.ExportTemplateID });
 
@@ -66,7 +67,7 @@ namespace NRC.Exporting
                 }
             }
 
-            logger.Info(string.Format("{0} file(s) processed.", iCnt.ToString()));
+            Logs.Info("", "FILEMAKERSTATUS", string.Format("{0} file(s) processed.", iCnt.ToString()), EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
         }
 
         /// <summary>
@@ -84,6 +85,7 @@ namespace NRC.Exporting
             string filepath = string.Empty;
             try
             {
+
                 string filename = template.DefaultNamingConvention;
                 SetFileName(ref filename, ds.Where(x => x.Section.ExportTemplateSectionName == "header").First());
 
@@ -101,27 +103,30 @@ namespace NRC.Exporting
 
                 xmlDoc.Save(filepath);
 
+                Int16 fileState = 0;
+
                 if (!xmlDoc.IsValid)
                 {
                     foreach (ExportValidationError eve in xmlDoc.ValidationErrorList)
                     {
                         //Logging to the database.  The elements of the message are pipe delimited, with the template name, queueid, queuefileid, the file name, and the validation error description
                         string message = string.Format("{0}|{1}|{2}|{3}|{4}", template.ExportTemplateName, queuefile.ExportQueueID.ToString(), queuefile.ExportQueueFileID.ToString(), Path.GetFileName(filepath), eve.ErrorDescription);
-                        LogEventInfo logEvent = new LogEventInfo(LogLevel.Warn, "", message);
-                        logEvent.Properties["event-type"] = "Xml validation error";
-                        logEvent.Properties["event-source"] = "CEM.FileMaker_Service";
-                        logEvent.Properties["event-class"] = "Exporter";
-                        logEvent.Properties["event-method"] = "MakeXMLFile";
-                        logger.Log(logEvent);
+                        // TODO:  come up with standard EventTypes for the logging
+                        //logger.Log(logevent(NLog.LogLevel.Warn, "", "XMLVALIDATIONERR", message));
+
+                        Logs.Warn("", "XMLVALIDATIONERR", message, EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
                     }
-                    logger.Info(string.Format("{0} created with validation errors.", filepath));
+                    Logs.Info("", "FILEMAKERSTATUS", string.Format("{0} created with validation errors.", filepath), EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
+                    fileState = 2;
                 }
                 else
                 {
-                    logger.Info(string.Format("{0} created successfully.", filepath));
+                    Logs.Info("", "FILEMAKERSTATUS", string.Format("{0} created successfully.", filepath), EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
+                    fileState = 1;
                 }
 
                 // Update the ExportQueueFile record to mark is a complete.
+                queuefile.FileState = 1;
                 queuefile.FileMakerName = filepath;
                 queuefile.FileMakerDate = DateTime.Now;
                 queuefile.Template = template;
@@ -130,10 +135,9 @@ namespace NRC.Exporting
                 b = true;
             }
             catch (Exception ex)
-            {            
-                logger.Error("Error Creating XML file.", ex);
+            {
+                Logs.Error("", "XMLFILECREATIONERR", "Error Creating XML file.", EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name, ex);
             }
-
             return b;
         }
 
@@ -167,6 +171,18 @@ namespace NRC.Exporting
                 }
             }
         }
+
+        ////TODO:  put this somewhere else where it is available to other classes and make it more "flexible."
+        //private static LogEventInfo logevent(NLog.LogLevel level, string loggername, string eventtype, string message, Exception ex = null)
+        //{
+        //    LogEventInfo logEvent = new LogEventInfo(level, loggername, message);
+        //    logEvent.Properties["event-type"] = eventtype;
+        //    logEvent.Properties["event-source"] = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
+        //    logEvent.Properties["event-class"] = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name;
+        //    logEvent.Properties["event-method"] = System.Reflection.MethodBase.GetCurrentMethod().Name;
+        //    logEvent.Exception = ex;
+        //    return logEvent;
+        //}
 
     }
 

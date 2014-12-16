@@ -12,6 +12,7 @@ namespace NRC.Exporting
 
         public int? ExportQueueFileID { get; set; }
         public int? ExportQueueID { get; set; }
+        public Int16 FileState { get; set; }
         public DateTime? SubmissionDate { get; set; }
         public string SubmissionBy { get; set; }
         public string CMSResponseCode { get; set; }
@@ -35,9 +36,9 @@ namespace NRC.Exporting
             ExportQueueFileProvider.Update(this);
         }
 
-        public static List<ExportQueueFile> Select(ExportQueueFile queuefile, bool ReturnPendingOnly = false)
+        public static List<ExportQueueFile> Select(ExportQueueFile queuefile)
         {
-            return DataProviders.ExportQueueFileProvider.Select(queuefile, ReturnPendingOnly);
+            return DataProviders.ExportQueueFileProvider.Select(queuefile);
         }
 
         #endregion

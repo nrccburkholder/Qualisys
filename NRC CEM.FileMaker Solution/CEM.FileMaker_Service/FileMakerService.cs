@@ -14,6 +14,7 @@ using Quartz.Impl;
 using System.Configuration;
 using NRC.Exporting;
 using NRC.Exporting.Configuration;
+using NRC.Logging;
 
 
 namespace CEM.FileMaker
@@ -21,9 +22,11 @@ namespace CEM.FileMaker
     public partial class FileMakerService : ServiceBase
     {
 
-        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private EventLog eventLog;
         private IScheduler _scheduler;
+        private static string EventSource = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
+        private static string EventClass = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name;
 
         public FileMakerService()
         {
@@ -38,10 +41,10 @@ namespace CEM.FileMaker
             string version = fvi.FileVersion;
 
             eventLog = new EventLog();
-            eventLog.Source = "CEM.FileMakerService";
+            eventLog.Source = "CEM.FileMaker_Service";
             eventLog.Log = "Application";
 
-            logger.Info(string.Format("CEM.FileMakerService v{0} Started", version));
+            Logs.Info(string.Format("CEM.FileMakerService v{0} Started", version));
 
             CreateSchedule();
             _scheduler.Start();
@@ -54,7 +57,7 @@ namespace CEM.FileMaker
             {
                 _scheduler.Shutdown();
             }
-            logger.Info("CEM.FileMakerService Stopped");
+            Logs.Info("CEM.FileMakerService Stopped");
         }
 
         private void CreateSchedule()
@@ -102,13 +105,13 @@ namespace CEM.FileMaker
                 try
                 {
                     // Do the scheduled work here.
-                    logger.Info("FileMakerService Begin Work");
+                    Logs.Info("FileMakerService Begin Work");
                     Exporter.MakeFiles();
-                    logger.Info("FileMakerService End Work");
+                    Logs.Info("FileMakerService End Work");
                 }
                 catch (JobExecutionException ex)
                 {
-                    logger.Error("Error executing job.",ex.Message);
+                    Logs.Error("Error executing job.",ex);
                 }
 
             }
