@@ -384,31 +384,25 @@ BEGIN
 	declare @columnlist nvarchar(max)
 	declare @sqlCommand nvarchar(max)
 	
-	SET @columnlist = ''
+	if (@OneRecordPerPatient = 1)
+		SET @columnlist = '[SamplePopulationID],'
+	ELSE SET @columnlist = ''
+
 	select top 1 @ExportTemplateColumnID=ExportTemplateColumnID, @ExportColumnName=ExportColumnName from #Columns
 	while @@rowcount>0
 	begin
-		-- Check to see if the column is in the table. If not, we add it, but force its value to be null
+		-- Check to see if the column is in the table. If not, skip it.
 		if exists(select * from sys.columns 
             where Name = LTRIM(RTRIM(@ExportColumnName)) and Object_ID = Object_ID(@tablename))
 		begin
 			SET @columnlist = @columnlist + '[' + LTRIM(RTRIM(@ExportColumnName)) + '],'
 		end
-		else 
-		begin
-			SET @columnlist = @columnlist + 'null [' + LTRIM(RTRIM(@ExportColumnName)) + '],'
-		end 
-
+		
 		delete from #Columns where ExportColumnName=@ExportColumnName
 		select top 1 @ExportTemplateColumnID=ExportTemplateColumnID, @ExportColumnName=ExportColumnName from #Columns
 	end
 	
-
-
-	if (@OneRecordPerPatient = 1)
-		Set @sqlCommand = 'SELECT [SamplePopulationID], ' + @columnlist + ''' ''' + ' from ' + @tableName + ' WHERE ExportQueueID = ' + CAST(@ExportQueueID as varchar)
-	else
-		Set @sqlCommand = 'SELECT distinct ' + @columnlist + ''' ''' + ' from ' + @tableName + ' WHERE ExportQueueID = ' + CAST(@ExportQueueID as varchar)
+	Set @sqlCommand = 'SELECT distinct ' + @columnlist + ''' ''' + ' from ' + @tableName + ' WHERE ExportQueueID = ' + CAST(@ExportQueueID as varchar) + ' AND FileMakerName = ' + @FileMakerName 
 	 
 	exec sp_executesql  @sqlCommand
 

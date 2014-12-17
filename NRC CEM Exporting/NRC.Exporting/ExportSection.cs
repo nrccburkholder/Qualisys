@@ -15,7 +15,11 @@ namespace NRC.Exporting
         public string ExportTemplateSectionName{ get; set; }
         public int? ExportTemplateID{ get; set; }
         public string DefaultNamingConvention{ get; set; }
-        public List<ExportColumn> ExportColumns{ get; set; }
+        public List<ExportColumn> ExportColumns{ get; set; }    
+        public bool OneRecordPerPatient {
+            // TODO figure out how to determine OneRecordPerPatient without hard-coding "header"
+            get { return ExportTemplateSectionName.ToLower() != "header"; }
+        }
 
         public ExportSection()
         {

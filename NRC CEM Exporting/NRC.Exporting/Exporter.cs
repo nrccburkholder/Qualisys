@@ -45,7 +45,7 @@ namespace NRC.Exporting
 
                     List<ExportSection> sections = ExportSection.Select(new ExportSection { ExportTemplateID = template.ExportTemplateID });
 
-                    List<ExportDataSet> ds = ExportDataSet.Select(sections,queue.ExportQueueID);
+                    List<ExportDataSet> ds = ExportDataSet.Select(new ExportDataSet { ExportQueueID = queue.ExportQueueID, FileMakerName = queuefile.FileMakerName}, sections);
 
                     if (ds.Count > 0)
                     {
@@ -66,7 +66,6 @@ namespace NRC.Exporting
                     }
                 }
             }
-
             Logs.Info("", "FILEMAKERSTATUS", string.Format("{0} file(s) processed.", iCnt.ToString()), EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
         }
 
@@ -85,9 +84,8 @@ namespace NRC.Exporting
             string filepath = string.Empty;
             try
             {
-
-                string filename = template.DefaultNamingConvention;
-                SetFileName(ref filename, ds.Where(x => x.Section.ExportTemplateSectionName == "header").First());
+                //string filename = template.DefaultNamingConvention;
+                //SetFileName(ref filename, ds.Where(x => x.Section.ExportTemplateSectionName == "header").First());
 
                 XmlDocumentEx xmlDoc = new XmlDocumentEx();
                 xmlDoc = XMLExporter.MakeExportXMLDocument(ds, template);
@@ -99,7 +97,7 @@ namespace NRC.Exporting
                     Directory.CreateDirectory(filepath);
                 }
 
-                filepath = Path.Combine(filepath, Path.ChangeExtension(filename,"xml"));
+                filepath = Path.Combine(filepath, Path.ChangeExtension(queuefile.FileMakerName,"xml"));
 
                 xmlDoc.Save(filepath);
 
@@ -112,8 +110,6 @@ namespace NRC.Exporting
                         //Logging to the database.  The elements of the message are pipe delimited, with the template name, queueid, queuefileid, the file name, and the validation error description
                         string message = string.Format("{0}|{1}|{2}|{3}|{4}", template.ExportTemplateName, queuefile.ExportQueueID.ToString(), queuefile.ExportQueueFileID.ToString(), Path.GetFileName(filepath), eve.ErrorDescription);
                         // TODO:  come up with standard EventTypes for the logging
-                        //logger.Log(logevent(NLog.LogLevel.Warn, "", "XMLVALIDATIONERR", message));
-
                         Logs.Warn("", "XMLVALIDATIONERR", message, EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
                     }
                     Logs.Info("", "FILEMAKERSTATUS", string.Format("{0} created with validation errors.", filepath), EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
@@ -126,8 +122,7 @@ namespace NRC.Exporting
                 }
 
                 // Update the ExportQueueFile record to mark is a complete.
-                queuefile.FileState = 1;
-                queuefile.FileMakerName = filepath;
+                queuefile.FileState = fileState;
                 queuefile.FileMakerDate = DateTime.Now;
                 queuefile.Template = template;
                 queuefile.Save();
@@ -171,19 +166,6 @@ namespace NRC.Exporting
                 }
             }
         }
-
-        ////TODO:  put this somewhere else where it is available to other classes and make it more "flexible."
-        //private static LogEventInfo logevent(NLog.LogLevel level, string loggername, string eventtype, string message, Exception ex = null)
-        //{
-        //    LogEventInfo logEvent = new LogEventInfo(level, loggername, message);
-        //    logEvent.Properties["event-type"] = eventtype;
-        //    logEvent.Properties["event-source"] = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
-        //    logEvent.Properties["event-class"] = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name;
-        //    logEvent.Properties["event-method"] = System.Reflection.MethodBase.GetCurrentMethod().Name;
-        //    logEvent.Exception = ex;
-        //    return logEvent;
-        //}
-
     }
 
 }

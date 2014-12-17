@@ -22,33 +22,20 @@ namespace NRC.Exporting.DataProviders
 
         #region public methods
 
-        internal static DataSet Select(int? ExportQueueID, int? ExportTemplateID)
+        internal static ExportDataSet Select(int? ExportQueueID, int? ExportTemplateID, string sectionName, string filemakername, bool oneRecordPerPatient)
         {
-
-            SqlParameter[] param = new SqlParameter[] {new SqlParameter("@ExportqueueID",ExportQueueID),
-                                                        new SqlParameter("@ExportTemplateID", ExportTemplateID)
-                                                        };
-            DataSet ds = new DataSet();
-            SqlProvider.Fill(ref ds,"CEM.SelectExportData", CommandType.StoredProcedure, param);
-
-            return ds;
-
-        }
-
-        internal static ExportDataSet Select(int? ExportQueueID, int? ExportTemplateID, string sectionName, bool oneRecordPerPatient)
-        {
-
             ExportDataSet exportDataSet = new ExportDataSet();
 
             SqlParameter[] param = new SqlParameter[] {new SqlParameter("@ExportqueueID",ExportQueueID),
                                                         new SqlParameter("@ExportTemplateID", ExportTemplateID),
                                                         new SqlParameter("@SectionName", sectionName),
+                                                        new SqlParameter("@FileMakerName", filemakername),
                                                         new SqlParameter("@OneRecordPerPatient", oneRecordPerPatient)
                                                         };
             DataSet ds = new DataSet();
             SqlProvider.Fill(ref ds, "CEM.SelectExportData", CommandType.StoredProcedure, param);
             if (ds.Tables.Count > 0)
-                exportDataSet.DataTable = ds.Tables[0]; 
+                exportDataSet.DataTable = ds.Tables[0];
 
             return exportDataSet;
         }

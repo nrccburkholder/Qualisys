@@ -37,10 +37,6 @@
     <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data">
       <HintPath>C:\gitrepos\Qualisys\Referenced Assemblies\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
     </Reference>
-    <Reference Include="NLog, Version=3.1.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\NRC CEM.FileMaker Solution\NRC_CEM.FileMaker_Solution\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -75,9 +71,6 @@
     <Compile Include="Configuration\SystemParams.cs" />
     <Compile Include="XmlDocumentEx.cs" />
     <Compile Include="XMLExporter.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\NRC.Logging\NRC.Logging\NRC.Logging.csproj">

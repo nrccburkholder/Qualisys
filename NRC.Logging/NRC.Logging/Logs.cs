@@ -48,13 +48,9 @@ namespace NRC.Logging
         /// <param name="info"></param>
         public static void Info(string info)
         {
-            _logger.Log(NLog.LogLevel.Info, info);
+            _logger.Log(LogLevel.Info.ToNLogLogLevel(), info);
         }
 
-        public static void Info(LogEventInfo logevent)
-        {
-            _logger.Log(logevent);
-        }
 
         public static void Info(string loggername, string eventtype, string message, string eventsource, string eventclass, string eventmethod)
         {
@@ -70,10 +66,6 @@ namespace NRC.Logging
             _logger.Log(NLog.LogLevel.Trace, info);
         }
 
-        public static void Trace(LogEventInfo logevent)
-        {
-            _logger.Log(logevent);
-        }
 
         public static void Trace(string loggername, string eventtype, string message, string eventsource, string eventclass, string eventmethod)
         {
@@ -85,10 +77,6 @@ namespace NRC.Logging
             _logger.Log(NLog.LogLevel.Error, info, ex);
         }
 
-        public static void Error(LogEventInfo logevent)
-        {
-            _logger.Log(logevent);
-        }
 
         public static void Error(string loggername, string eventtype, string message, string eventsource, string eventclass, string eventmethod, Exception ex)
         {
@@ -104,10 +92,6 @@ namespace NRC.Logging
             _logger.Log(NLog.LogLevel.Warn, info);
         }
 
-        public static void Warn(LogEventInfo logevent)
-        {
-            _logger.Log(logevent);
-        }
 
         public static void Warn(string loggername, string eventtype, string message, string eventsource, string eventclass, string eventmethod)
         {        
@@ -198,4 +182,5 @@ namespace NRC.Logging
             return logEvent;
         }
     }
+
 }

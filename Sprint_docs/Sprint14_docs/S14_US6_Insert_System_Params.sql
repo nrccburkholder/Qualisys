@@ -65,7 +65,7 @@ begin tran
 
 SET @strparam_nm = 'FileLocation'
 SET @strparam_type = 'S'
-SET @strparam_value = '\\superman\Production\CEMFiles' --'\\lnk0pfil01\Teams\Client Services\Audit Team\Accountable Care Organizations\ACS result files'
+SET @strparam_value = '\\huskers\Production\CEMFiles' --'\\lnk0pfil01\Teams\Client Services\Audit Team\Accountable Care Organizations\ACS result files'
 SET @dataparam_value = NULL
 SET @comments = 'Location to download files'
 
