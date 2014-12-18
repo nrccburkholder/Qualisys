@@ -172,8 +172,18 @@ insert into MetaField (STRFIELD_NM, STRFIELD_DSC, FIELDGROUP_ID, STRFIELDDATATYP
 values ('HSP_DecdHisp','Is hospice decedent Hispanic or Latino?',@PopId,'S',NULL,NULL,'DecdHisp',0,0,NULL,NULL,0)
 insert into MetaField (STRFIELD_NM, STRFIELD_DSC, FIELDGROUP_ID, STRFIELDDATATYPE, STRFIELDEDITMASK, INTSPECIALFIELD_CD, STRFIELDSHORT_NM, BITSYSKEY, bitPhase1Field, intAddrCleanCode, intAddrCleanGroup, bitPII)
 values ('HSP_DecdRace','Hospice decedent''s race',@PopId,'S',NULL,NULL,'DecdRace',0,0,NULL,NULL,0)
+--begin block delete clean-up for 'HSP_DateOfDeath'
+delete from metastructure where field_id in (select field_id from metafield where STRFIELD_NM = 'HSP_DateOfDeath')
+update sd set sd.SampleEncounterField_id = 117
+--select * 
+from survey_def sd where sd.SampleEncounterField_id in (select field_id from metafield where STRFIELD_NM = 'HSP_DateOfDeath')
+delete 
+--select *
+from Metafield where STRFIELD_NM = 'HSP_DateOfDeath' --removed per Dana 12/16/2014
+/* select * from metafield where STRFIELD_NM in ('HSP_DateOfDeath', 'ServiceDate') select * from metastructure select * from survey_def where SampleEncounterField_id = 1675
 insert into MetaField (STRFIELD_NM, STRFIELD_DSC, FIELDGROUP_ID, STRFIELDDATATYPE, STRFIELDEDITMASK, INTSPECIALFIELD_CD, STRFIELDSHORT_NM, BITSYSKEY, bitPhase1Field, intAddrCleanCode, intAddrCleanGroup, bitPII)
-values ('HSP_DateOfDeath','Hospice decedent''s date of death',@PopId,'D',NULL,NULL,'DecdDOD',0,0,NULL,NULL,1)
+values ('HSP_DateOfDeath','Hospice decedent''s date of death',@PopId,'D',NULL,NULL,'DecdDOD',0,0,NULL,NULL,1)*/
+--end block delete clean-up for 'HSP_DateOfDeath'
 insert into MetaField (STRFIELD_NM, STRFIELD_DSC, FIELDGROUP_ID, STRFIELDDATATYPE, STRFIELDEDITMASK, INTSPECIALFIELD_CD, STRFIELDSHORT_NM, BITSYSKEY, bitPhase1Field, intAddrCleanCode, intAddrCleanGroup, bitPII)
 values ('HSP_LastLoc','Last location of hospice care',@EncId,'S',NULL,NULL,'LastLoc',0,0,NULL,NULL,0)
 insert into MetaField (STRFIELD_NM, STRFIELD_DSC, FIELDGROUP_ID, STRFIELDDATATYPE, STRFIELDEDITMASK, INTSPECIALFIELD_CD, STRFIELDSHORT_NM, BITSYSKEY, bitPhase1Field, intAddrCleanCode, intAddrCleanGroup, bitPII)
@@ -250,7 +260,7 @@ declare @DCStmtId int, @FieldId int
 
 insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
 values ('DQ_Age', '(POPULATIONHSP_DecdAge < 18)', 'Q')
-select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCriteriaStmt_nm = 'DQ_Age'
+select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCriteriaStmt_nm = 'DQ_Age' and strCriteriaString = '(POPULATIONHSP_DecdAge < 18)'
 insert into SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteriaStmt_id)
 values (@hospiceId, 1, @DCStmtId)
 select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'HSP_DecdAge'
@@ -259,7 +269,7 @@ values (@DCStmtId, 1, 'POPULATION', @Fieldid, 5, '18', '')
 
 insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
 values ('DQ_LOS', '(ENCOUNTERLengthOfStay < 2)', 'Q')
-select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCriteriaStmt_nm = 'DQ_LOS'
+select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCriteriaStmt_nm = 'DQ_LOS' and strCriteriaString = '(ENCOUNTERLengthOfStay < 2)'
 insert into SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteriaStmt_id)
 values (@hospiceId, 1, @DCStmtId)
 select @Fieldid = 75
@@ -268,7 +278,7 @@ values (@DCStmtId, 1, 'ENCOUNTER', @Fieldid, 5, '2', '')
 
 insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
 values ('DQ_Rel', '(POPULATIONHSP_CaregiverRelatn = 6)', 'Q')
-select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCriteriaStmt_nm = 'DQ_Rel'
+select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCriteriaStmt_nm = 'DQ_Rel' and strCriteriaString = '(POPULATIONHSP_CaregiverRelatn = 6)'
 insert into SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteriaStmt_id)
 values (@hospiceId, 1, @DCStmtId)
 select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'HSP_CaregiverRelatn'
@@ -277,7 +287,7 @@ values (@DCStmtId, 1, 'POPULATION', @Fieldid, 1, '6', '')
 
 insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
 values ('DQ_Guar', '(POPULATIONHSP_GuardFlg = 1)', 'Q')
-select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCriteriaStmt_nm = 'DQ_Guar'
+select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCriteriaStmt_nm = 'DQ_Guar' and strCriteriaString = '(POPULATIONHSP_GuardFlg = 1)'
 insert into SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteriaStmt_id)
 values (@hospiceId, 1, @DCStmtId)
 select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'HSP_GuardFlg'
