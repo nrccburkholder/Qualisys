@@ -2109,7 +2109,9 @@ begin
       DeleteBoxClick(Sender);
   end else begin
     if ActiveControl=wwDBGrid1 then begin
-      {GN01 
+      if (MessageDlg('Are you sure?', mtConfirmation, [mbYes, mbNo], 0) <> mrYes) then
+        exit;
+      {GN01
       if (DMOpenQ.glbSurveyID > 0) and (DMOpenQ.wwt_qstnsSubType.value = stSection) then  begin
         if DMOpenQ.MappedSections then
            if MessageBox(Screen.ActiveForm.Handle,
