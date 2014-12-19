@@ -311,10 +311,14 @@ values (@hospiceId, 1, 19)
 --declare @hospiceId int
 select @hospiceId = SurveyType_Id from SurveyType where SurveyType_dsc = 'Hospice CAHPS'
 
+delete from SurveyValidationProcsBySurveyType where surveyvalidationprocs_id = 166 and CAHPSType_ID = @hospiceId
+
 insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
 values (163, @hospiceId, null)
-insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
+/*insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
 values (166, @hospiceId, null)
+*/
+
 
 USE [QP_Prod]
 GO
@@ -565,6 +569,175 @@ DROP TABLE #M
 
 GO
 
+USE [QP_Prod]
+GO
+
+/****** Object:  StoredProcedure [dbo].[SV_CAHPS_Hospice_CAHPS_DQRules]    Script Date: 12/19/2014 4:00:10 PM ******/
+IF object_id('SV_CAHPS_Hospice_CAHPS_DQRules') IS NULL
+    EXEC ('create procedure dbo.SV_CAHPS_Hospice_CAHPS_DQRules as select 1')
+GO
+
+ALTER PROCEDURE [dbo].[SV_CAHPS_Hospice_CAHPS_DQRules]
+    @Survey_id INT
+AS
+
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+SET NOCOUNT ON
+
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+SET NOCOUNT ON
+
+declare @surveyType_id int
+declare @subtype_id int
+
+SELECT  @surveyType_id = SurveyType_id
+from SURVEY_DEF
+where SURVEY_ID = @Survey_id
+
+-- only going to get subtypes where there is a bitOverride set, otherwise we'll just use the SurveyType validation
+select @subtype_id = sst.subtype_id 
+from SurveySubtype sst
+inner join Subtype st on st.Subtype_id = sst.Subtype_id
+where survey_id = @Survey_id
+and st.SubtypeCategory_id = 1
+and st.bitRuleOverride = 1
+
+IF @SurveyType_id not in (select SurveyType_ID from surveytype where CAHPSType_id is not null)
+BEGIN
+    RETURN
+END
+
+DECLARE @SurveyTypeDescription varchar(20)
+
+
+if @SubType_id is null
+BEGIN
+	SELECT @SurveyTypeDescription = [SurveyType_dsc]
+	FROM [dbo].[SurveyType] 
+	WHERE SurveyType_ID = @surveyType_id
+END
+ELSE
+BEGIN
+	SELECT @SurveyTypeDescription = SubType_nm
+	FROM [dbo].[Subtype]
+	WHERE SubType_id = @subtype_id
+END
+
+
+declare @study_ID int, @EncTable_ID int
+Select @study_ID = study_ID from SURVEY_DEF where SURVEY_ID = @Survey_id
+
+--Need a temp table to store the messages.  We will select them at the end.
+--0=Passed,1=Error,2=Warning
+CREATE TABLE #M (Error TINYINT, strMessage VARCHAR(200))
+
+--get Encounter MetaTable_ID this is so we can check for field existance before we check for
+		--DQ rules.  If the field is not in the data structure we do not want to check for the error.
+		SELECT @EncTable_ID = mt.Table_id
+		FROM dbo.MetaTable mt
+		WHERE mt.strTable_nm = 'ENCOUNTER'
+		  AND mt.Study_id = @Study_id
+
+
+		--check for DQ_L NM Rule
+		If exists  (select BusinessRule_id
+		 from BUSINESSRULE br, CRITERIASTMT cs
+		 where br.CRITERIASTMT_ID = cs.CRITERIASTMT_ID
+		 and cs.STRCRITERIASTMT_NM = 'DQ_L NM'
+		 and br.SURVEY_ID = @Survey_id)
+
+			INSERT INTO #M (Error, strMessage)
+			SELECT 0,'Survey has DQ rule (LName IS NULL).'
+		ELSE
+		 INSERT INTO #M (Error, strMessage)
+		 SELECT 1,'Survey does not have DQ rule (LName IS NULL).'
+
+
+		--check for DQ_F NM Rule
+		If exists  (select BusinessRule_id
+		 from BUSINESSRULE br, CRITERIASTMT cs
+		 where br.CRITERIASTMT_ID = cs.CRITERIASTMT_ID
+		 and cs.STRCRITERIASTMT_NM = 'DQ_F NM'
+		 and br.SURVEY_ID = @Survey_id)
+
+			INSERT INTO #M (Error, strMessage)
+			SELECT 0,'Survey has DQ rule (FName IS NULL).'
+		ELSE
+		 INSERT INTO #M (Error, strMessage)
+		 SELECT 1,'Survey does not have DQ rule (FName IS NULL).'
+
+		--check for DQ_MDFA Rule
+		If exists  (select BusinessRule_id
+		 from BUSINESSRULE br, CRITERIASTMT cs
+		 where br.CRITERIASTMT_ID = cs.CRITERIASTMT_ID
+		 and cs.STRCRITERIASTMT_NM = 'DQ_MDFA'
+		 and br.SURVEY_ID = @Survey_id)
+
+			INSERT INTO #M (Error, strMessage)
+			SELECT 0,'Survey has DQ rule (AddrErr = ''FO'').'
+		ELSE
+		 INSERT INTO #M (Error, strMessage)
+		 SELECT 1,'Survey does not have DQ rule (AddrErr = ''FO'').'
+
+
+		--check for DQ_Age Rule
+		If exists  (select BusinessRule_id
+		 from BUSINESSRULE br, CRITERIASTMT cs
+		 where br.CRITERIASTMT_ID = cs.CRITERIASTMT_ID
+		 and cs.STRCRITERIASTMT_NM = 'DQ_Age'
+		 and br.SURVEY_ID = @Survey_id)
+
+			INSERT INTO #M (Error, strMessage)
+			SELECT 0,'Survey has DQ rule (HSP_DecdAge < 18).'
+		ELSE
+		 INSERT INTO #M (Error, strMessage)
+		 SELECT 1,'Survey does not have DQ rule (HSP_DecdAge < 18).'
+
+		--check for DQ_LOS Rule
+		If exists  (select BusinessRule_id
+		 from BUSINESSRULE br, CRITERIASTMT cs
+		 where br.CRITERIASTMT_ID = cs.CRITERIASTMT_ID
+		 and cs.STRCRITERIASTMT_NM = 'DQ_LOS'
+		 and br.SURVEY_ID = @Survey_id)
+
+			INSERT INTO #M (Error, strMessage)
+			SELECT 0,'Survey has DQ rule (LengthOfStay < 2).'
+		ELSE
+		 INSERT INTO #M (Error, strMessage)
+		 SELECT 1,'Survey does not have DQ rule (LengthOfStay < 2).'
+
+		--check for DQ_Rel Rule
+		If exists  (select BusinessRule_id
+		 from BUSINESSRULE br, CRITERIASTMT cs
+		 where br.CRITERIASTMT_ID = cs.CRITERIASTMT_ID
+		 and cs.STRCRITERIASTMT_NM = 'DQ_Rel'
+		 and br.SURVEY_ID = @Survey_id)
+
+			INSERT INTO #M (Error, strMessage)
+			SELECT 0,'Survey has DQ rule (HSP_CaregiverRelatn=6).'
+		ELSE
+		 INSERT INTO #M (Error, strMessage)
+		 SELECT 1,'Survey does not have DQ rule (HSP_CaregiverRelatn=6).'
+
+		--check for DQ_Guar Rule
+		If exists  (select BusinessRule_id
+		 from BUSINESSRULE br, CRITERIASTMT cs
+		 where br.CRITERIASTMT_ID = cs.CRITERIASTMT_ID
+		 and cs.STRCRITERIASTMT_NM = 'DQ_Guar'
+		 and br.SURVEY_ID = @Survey_id)
+
+			INSERT INTO #M (Error, strMessage)
+			SELECT 0,'Survey has DQ rule (HSP_GuardFlg = 1).'
+		ELSE
+		 INSERT INTO #M (Error, strMessage)
+		 SELECT 1,'Survey does not have DQ rule (HSP_GuardFlg = 1).'
+
+SELECT * FROM #M
+
+DROP TABLE #M
+
+GO
+
 declare @hospiceId int
 select @hospiceId = SurveyType_Id from SurveyType where SurveyType_dsc = 'Hospice CAHPS'
 
@@ -730,8 +903,20 @@ values (@hospiceId, 'Encounter','LengthOfStay',1)
 insert into surveyvalidationfields(SurveyType_id, TableName, ColumnName, bitActive)
 values (@hospiceId, 'Encounter','ServiceDate',1)
 
+--declare @hospiceId int
+select @hospiceId = SurveyType_Id from SurveyType where SurveyType_dsc = 'Hospice CAHPS'
+
+insert into SurveyValidationProcs (ProcedureName, ValidMessage, intOrder)
+values ('SV_CAHPS_Hospice_CAHPS_DQRules', 'Check DQ rules',	40)
+
+declare @SV_Hospice_Id int
+select @SV_Hospice_Id = SurveyValidationProcs_id from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_Hospice_CAHPS_DQRules'
+
+insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_id)
+values (@SV_Hospice_Id, @HospiceId)
 -----------------------END S14B US8 Survey Validation Adds/Changes
 go
+
 
 
 commit tran
