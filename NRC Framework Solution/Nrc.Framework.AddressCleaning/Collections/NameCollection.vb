@@ -87,7 +87,28 @@ Public Class NameCollection
         'Initialize the SOAP request message
         nameCheckRequest.CustomerID = AppConfig.Params("NameWebServiceCustomerID").StringValue
         nameCheckRequest.OptCorrectSpelling = "True"
-        nameCheckRequest.OptNameHint = "2"
+
+        'CAMELINCKX INC40090 IU Health Incorrect Name Issue
+        'For this incident here we will introduce logic that will based on a list of MelissaData prefixes
+        'decide whether the OptNameHint should be 1 (instead of default of 2), where the values are:
+        '1 - DefinitelyFull: Name will always be treated as normal name order, regardless of formatting or punctuation.
+        '2 - Name will be treated as normal name order unless inverse order is clearly indicated by formatting or punctuation.
+
+        Dim nameCleaningPrefixes As List(Of String) = New List(Of String)
+
+        For numNameCleaningPrefixParam As Integer = 1 To 100
+            Try
+                Dim prefixsLine As String
+                Dim paramVal As Param = AppConfig.Params("NameCleaningPrefix" + numNameCleaningPrefixParam.ToString())
+                If paramVal Is Nothing Then Exit For
+                prefixsLine = paramVal.StringValue
+                For Each prefix As String In prefixsLine.Split(";".ToCharArray())
+                    nameCleaningPrefixes.Add(prefix)
+                Next
+            Catch ex As Exception
+                Exit For
+            End Try
+        Next
 
         'Dimension the SOAP request message array for the first set of records
         ReDim nameCheckRequest.Record(GetArraySize(Count, nameUsed, maxRecords) - 1)
@@ -115,10 +136,11 @@ Public Class NameCollection
                 End If
 
                 'Add this name to the web service SOAP message
-                AddName(nameCount, item, nameCheckRequest)
+                AddName(nameCount, item, nameCheckRequest, nameCleaningPrefixes)
 
                 'Determine if it is time to call the web service
                 If nameCount = maxRecords OrElse nameUsed = Count Then
+
                     'Call the web service to clean the current SOAP message
                     nameCheckResponse = nameCheckService.doNameCheck(nameCheckRequest)
 
@@ -187,7 +209,7 @@ Public Class NameCollection
     ''' <param name="item">The name to be added to the request object.</param>
     ''' <param name="request">The request object that the name should be added to.</param>
     ''' <remarks></remarks>
-    Private Sub AddName(ByVal cnt As Integer, ByVal item As Name, ByVal request As dqwsNameCheck.RequestArray)
+    Private Sub AddName(ByVal cnt As Integer, ByVal item As Name, ByVal request As dqwsNameCheck.RequestArray, ByRef nameCleaningPrefixes As List(Of String))
 
         'Initialize this address request record
         request.Record(cnt - 1) = New dqwsNameCheck.RequestArrayRecord
@@ -222,6 +244,12 @@ Public Class NameCollection
 
             'Build the name string
             .FullName = String.Format("{0} {1} {2} {3}", firstName, middleName, lastName, item.OriginalName.Suffix).Trim
+
+            If nameCleaningPrefixes.Contains(firstName.ToUpper()) _
+                Or (nameCleaningPrefixes.Contains(middleName.ToUpper())) _
+                Or (nameCleaningPrefixes.Contains(lastName.ToUpper())) Then
+                request.OptNameHint = "1"
+            End If
         End With
 
     End Sub
