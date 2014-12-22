@@ -2,10 +2,6 @@
 
 	S14.2 US11.2 Add mailing methodology to sample set table in NRC datamart and assosiated stored procs.
 
-	Tim Butler
-
-	alter table [dbo].[SampleSetTemp]
-
 */
 
 use [NRC_DataMart_ETL]
@@ -19,9 +15,10 @@ if not exists (	SELECT 1
 					   AND st.NAME = 'SampleSetTemp' 
 					   AND sc.NAME = 'StandardMethodologyID' )
 
-	alter table [dbo].[SampleSetTemp] add StandardMethodologyID tinyint NOT NULL default(0)
+	alter table [dbo].[SampleSetTemp] add StandardMethodologyID int NULL 
 
 go
 
 commit tran
 go
+
