@@ -50,7 +50,7 @@ namespace USPS_ACS_Library
             {
                 // We have the option to turn off the downloads from the USPS ACS service
                 bool doDownload = AppConfig.Params["USPS_ACS_DoDownload"].IntegerValue == 1;
-                doDownload = true;
+
                 if (doDownload)
                 {
                     DownloadZips();

@@ -11,7 +11,7 @@
 
 use [NRC_DataMart]
 go
-begin tran
+begin tran1
 go
 if not exists (	SELECT 1 
 				FROM   sys.tables st 
@@ -24,10 +24,10 @@ if not exists (	SELECT 1
 
 go
 
-commit tran
+commit tran1
 go
 
-begin tran
+begin tran2
 go
 
 DECLARE @schema_id int
@@ -48,10 +48,10 @@ if not exists (	SELECT 1
 
 go
 
-commit tran
+commit tran2
 go
 
-begin tran
+begin tran3
 go
 
 DECLARE @schema_id int
@@ -72,5 +72,6 @@ if not exists (	SELECT 1
 
 go
 
-commit tran
+commit tran3
 go
+
