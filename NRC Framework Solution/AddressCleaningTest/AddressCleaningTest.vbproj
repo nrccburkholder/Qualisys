@@ -29,7 +29,7 @@
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
     <UpgradeBackupLocation />
-    <PublishUrl>\\Superman\NRCApplications\AddressCleaningTest\</PublishUrl>
+    <PublishUrl>\\mercury\QualisysApps\Prod\AddressCleaningTest\</PublishUrl>
     <Install>false</Install>
     <InstallFrom>Unc</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
