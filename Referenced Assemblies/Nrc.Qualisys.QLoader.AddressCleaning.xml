@@ -6,7 +6,601 @@ Nrc.Framework.AddressCleaning
 </name>
 </assembly>
 <members>
-<member name="P:Nrc.Framework.AddressCleaning.GeoCode.CountyFIPS">
+<member name="M:Nrc.Framework.AddressCleaning.AddressProvider.SelectCleanAddressBit(System.Int32)">
+	<summary>
+ This routine is used to determine whether or not the CleanAddressBit is set for the specified study.
+ </summary>
+	<param name="studyID">The study to be cleaned.</param>
+	<returns>The value of the CleanAddressBit.</returns>
+	<remarks></remarks>
+</member><member name="M:Nrc.Framework.AddressCleaning.AddressProvider.CleanAll(System.Int32,System.Int32,System.Int32,Nrc.Framework.AddressCleaning.MetaGroupCollection@,Nrc.Framework.AddressCleaning.AddressCollection,Nrc.Framework.AddressCleaning.LoadDatabases,System.Boolean)">
+	<summary>
+ This routine is the internal interface called to clean all of the 
+ addresses in the specified datafile and study.
+ </summary>
+	<param name="dataFileID">The datafile to be cleaned.</param>
+	<param name="studyID">The study to be cleaned.</param>
+	<param name="batchSize">The quantity of records to process on each pass.</param>
+	<param name="metaGroups">Collection of meta groups that specify information about this group.</param>
+	<param name="addresses">AddressCollection object to hold addresses to be cleaned.</param>
+	<param name="loadDB">The database these records are stored in.</param>
+	<param name="forceProxy">Specifies whether or not to force the use of a proxy server for web requests.</param>
+	<remarks></remarks>
+</member><member name="M:Nrc.Framework.AddressCleaning.NameProvider.CleanAll(System.Int32,System.Int32,System.Int32,Nrc.Framework.AddressCleaning.MetaGroupCollection@,Nrc.Framework.AddressCleaning.NameCollection,Nrc.Framework.AddressCleaning.LoadDatabases,System.Boolean)">
+	<summary>
+ This routine is the internal interface called to clean all of the 
+ names in the specified datafile and study.
+ </summary>
+	<param name="dataFileID">The datafile to be cleaned.</param>
+	<param name="studyID">The study to be cleaned.</param>
+	<param name="batchSize">The quantity of records to process on each pass.</param>
+	<param name="metaGroups">Collection of meta groups that specify information about this group.</param>
+	<param name="names">NameCollection object to hold names to be cleaned.</param>
+	<param name="loadDB">The database these records are stored in.</param>
+	<param name="forceProxy">Specifies whether or not to force the use of a proxy server for web requests.</param>
+	<remarks></remarks>
+</member><member name="T:Nrc.Framework.AddressCleaning.MetaField">
+	<summary>
+ This file contains the definition of the CMetaField object used to 
+ hold all the required information about a single field of name or 
+ address data needed to identify it.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:Nrc.Framework.AddressCleaning.dqwsNameCheck.Service.#ctor">
+	<remarks/>
+</member><member name="E:Nrc.Framework.AddressCleaning.dqwsNameCheck.Service.doNameCheckCompleted">
+	<remarks/>
+</member><member name="M:Nrc.Framework.AddressCleaning.dqwsNameCheck.Service.doNameCheck(Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArray)">
+	<remarks/>
+</member><member name="M:Nrc.Framework.AddressCleaning.dqwsNameCheck.Service.doNameCheckAsync(Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArray)">
+	<remarks/>
+</member><member name="M:Nrc.Framework.AddressCleaning.dqwsNameCheck.Service.doNameCheckAsync(Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArray,System.Object)">
+	<remarks/>
+</member><member name="M:Nrc.Framework.AddressCleaning.dqwsNameCheck.Service.CancelAsync(System.Object)">
+	<remarks/>
+</member><member name="T:Nrc.Framework.AddressCleaning.dqwsNameCheck.Service">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArray.TransmissionReference">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArray.CustomerID">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArray.OptCorrectSpelling">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArray.OptNameHint">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArray.OptGenderAggression">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArray.OptGenderPopulation">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArray.OptSalutationPrefix">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArray.OptSalutationSuffix">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArray.OptSalutationSlug">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArray.Record">
+	<remarks/>
+</member><member name="T:Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArray">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArrayRecord.RecordID">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArrayRecord.FullName">
+	<remarks/>
+</member><member name="T:Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArrayRecord">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArray.Version">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArray.TransmissionReference">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArray.Results">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArray.TotalRecords">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArray.Record">
+	<remarks/>
+</member><member name="T:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArray">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecord.RecordID">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecord.Results">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecord.Name">
+	<remarks/>
+</member><member name="T:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecord">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecordName.Prefix">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecordName.Prefix2">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecordName.First">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecordName.First2">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecordName.Middle">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecordName.Middle2">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecordName.Last">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecordName.Last2">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecordName.Suffix">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecordName.Suffix2">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecordName.Gender">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecordName.Gender2">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecordName.Salutation">
+	<remarks/>
+</member><member name="T:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecordName">
+	<remarks/>
+</member><member name="T:Nrc.Framework.AddressCleaning.dqwsNameCheck.doNameCheckCompletedEventHandler">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.doNameCheckCompletedEventArgs.Result">
+	<remarks/>
+</member><member name="T:Nrc.Framework.AddressCleaning.dqwsNameCheck.doNameCheckCompletedEventArgs">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.MetaGroup.SelectFieldList">
+	<summary>
+ Returns the formated list of fields used in a select statement to 
+ get the information about this name or address from the study table.
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:Nrc.Framework.AddressCleaning.MetaGroup.ErrorFieldName">
+	<summary>
+ Returns the name of the field that contains the error information 
+ for this address.
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:Nrc.Framework.AddressCleaning.MetaGroup.StatusFieldName">
+	<summary>
+ Returns the name of the field that contains the status information 
+ for this name or address.
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:Nrc.Framework.AddressCleaning.MetaGroup.SQLTableName(System.Int32,System.String)">
+	<summary>
+ Returns the name of the table that this name or address is contained in.
+ </summary>
+	<param name="studyID">The StudyID for the specified table name</param>
+	<param name="tableSuffix">The suffix for the table name if one is needed. Default is [_Load]"</param>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:Nrc.Framework.AddressCleaning.MetaGroup.UpdateFieldListAddress(Nrc.Framework.AddressCleaning.Address)">
+	<summary>
+ Returns the field and value list required for the SQL UPDATE statement.
+ </summary>
+	<param name="address">The address object that is to be inserted into the database.</param>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:Nrc.Framework.AddressCleaning.MetaGroup.UpdateFieldListName(Nrc.Framework.AddressCleaning.Name)">
+	<summary>
+ Returns the field and value list required for the SQL UPDATE statement.
+ </summary>
+	<param name="name">The name object that is to be inserted into the database.</param>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:Nrc.Framework.AddressCleaning.MetaGroup.SaveCounts(System.Int32,Nrc.Framework.AddressCleaning.MetaGroupCollection,Nrc.Framework.AddressCleaning.LoadDatabases)">
+	<summary>
+ This method stores all of the count properties for each group in the 
+ collection to the Loading Database so they can be used for reporting 
+ purposes.
+ </summary>
+	<param name="dataFileID">The data file that this collection is for.</param>
+	<remarks></remarks>
+</member><member name="M:Nrc.Framework.AddressCleaning.MetaGroup.GetCounts(System.Int32,System.Int32,Nrc.Framework.AddressCleaning.MetaGroupCollection,Nrc.Framework.AddressCleaning.LoadDatabases)">
+	<summary>
+ This routine sets the count properties for each group in the 
+ collection.  These properties can be used by the calling application 
+ for display info after the CPostalSoft.CleanAll method completes.
+ </summary>
+	<param name="dataFileID">The data file that this collection is for.</param>
+	<param name="studyID">The study that this collection is for.</param>
+	<remarks></remarks>
+</member><member name="T:Nrc.Framework.AddressCleaning.MetaGroup">
+	<summary>
+ This file contains the definition of the MetaGroup object used to hold 
+ all the required information about a single name or address including a 
+ collection of MetaFields that identify each that is part of this name 
+ or address.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:Nrc.Framework.AddressCleaning.modMain.CleanString(System.String,System.Boolean,System.Boolean)">
+	<summary>
+ This routine is used to cleanup null terminated strings returned 
+ from the name and address cleaning DLLs.  It trims the string at 
+ the terminating null and replaces all single and double quotes with 
+ fancy quotes.
+ </summary>
+	<param name="origStr">The string to be cleaned up.</param>
+	<param name="replaceQuotes">Specifies whether or not to replace all quotes (double and single) with fancy quotes.</param>
+	<param name="replaceCommas">Specifies whether or not to replace all commas with a space.  If this results in a double space then that will be replaced with a single space.</param>
+	<returns>Returns the cleaned up string.</returns>
+	<remarks></remarks>
+</member><member name="M:Nrc.Framework.AddressCleaning.modMain.ReplaceAllQuotes(System.String)">
+	<summary>
+ This routine is used to replace all single and double quotes with 
+ fancy quotes.
+ </summary>
+	<param name="origStr">The original string to be cleaned up.</param>
+	<returns>The cleaned string or an empty string if an error is encountered.</returns>
+	<remarks></remarks>
+</member><member name="M:Nrc.Framework.AddressCleaning.modMain.ReplaceAllCommas(System.String)">
+	<summary>
+ This routine is used to replace all commas with a space.
+ </summary>
+	<param name="origStr">The original string to be cleaned up.</param>
+	<returns>The cleaned string or an empty string if an error is encountered.</returns>
+	<remarks></remarks>
+</member><member name="T:Nrc.Framework.AddressCleaning.MetaFieldCollection">
+	<summary>
+ This file is the definition for the CMetaFields collection class used 
+ to contain all of the metafield objects that are used to identify name 
+ and address fields available to be cleaned in a specific study.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:Nrc.Framework.AddressCleaning.NameCollection.Clean(System.Boolean,System.Boolean)">
+	<summary>
+ This routine is the public interface called to clean all of the 
+ names currently contained in collection.
+ </summary>
+	<param name="properCase">Specifies if proper case formatting should be applied.</param>
+	<param name="forceProxy">Specifies whether or not to force the use of a proxy server for web requests</param>
+	<remarks></remarks>
+</member><member name="M:Nrc.Framework.AddressCleaning.NameCollection.Clean(System.Boolean,System.Boolean,System.Boolean)">
+	<summary>
+ This routine is the internal interface called to clean all of the
+ names currently contained in collection
+ </summary>
+	<param name="properCase">Specifies if proper case formatting should be applied.</param>
+	<param name="assignIDs">Specified whether or not the names need to have the DBKey set</param>
+	<param name="forceProxy">Specifies whether or not to force the use of a proxy server for web requests</param>
+	<remarks></remarks>
+</member><member name="M:Nrc.Framework.AddressCleaning.NameCollection.CleanAll(System.Int32,System.Int32,System.Int32,Nrc.Framework.AddressCleaning.MetaGroupCollection@,Nrc.Framework.AddressCleaning.LoadDatabases,System.Boolean)">
+	<summary>
+ This routine is the internal interface called to clean all of the 
+ names in the specified datafile and study.
+ </summary>
+	<param name="dataFileID">The datafile to be cleaned.</param>
+	<param name="studyID">The study to be cleaned.</param>
+	<param name="batchSize">The quantity of records to process on each pass.</param>
+	<param name="metaGroups">Collection of meta groups that specify information about this group.</param>
+	<param name="loadDB">The database these records are stored in.</param>
+	<param name="forceProxy">Specifies whether or not to force the use of a proxy server for web requests.</param>
+	<remarks></remarks>
+</member><member name="M:Nrc.Framework.AddressCleaning.NameCollection.GetArraySize(System.Int32,System.Int32,System.Int32)">
+	<summary>
+ This routine determines the array size for the request object.
+ </summary>
+	<param name="total">Total number of records in the collection.</param>
+	<param name="used">Number of records cleaned so far.</param>
+	<param name="maxSize">Maximum number of records allowed in the request object.</param>
+	<returns>Returns the size to be used for the request object.</returns>
+	<remarks></remarks>
+</member><member name="M:Nrc.Framework.AddressCleaning.NameCollection.AddName(System.Int32,Nrc.Framework.AddressCleaning.Name,Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArray,System.Collections.Generic.List{System.String}@)">
+	<summary>
+ This routine adds the specified address to the request object.
+ </summary>
+	<param name="cnt">Specifies which element of the request object to add this name to.</param>
+	<param name="item">The name to be added to the request object.</param>
+	<param name="request">The request object that the name should be added to.</param>
+	<remarks></remarks>
+</member><member name="M:Nrc.Framework.AddressCleaning.NameCollection.UpdateNames(Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArray,System.Boolean)">
+	<summary>
+ This routine updates the names in the collection with those returned in the response object.
+ </summary>
+	<param name="responseArray">The response object containing the updated names.</param>
+	<param name="properCase">Specifies if proper case formatting should be applied.</param>
+	<remarks></remarks>
+</member><member name="M:Nrc.Framework.AddressCleaning.NameCollection.FindName(System.Int32)">
+	<summary>
+ This routine finds the name object with the specified dbKey.
+ </summary>
+	<param name="dbKey">The name key to be found.</param>
+	<returns>Returns the name object with the specified dbKey.</returns>
+	<remarks></remarks>
+</member><member name="M:Nrc.Framework.AddressCleaning.NameCollection.UpdateName(Nrc.Framework.AddressCleaning.Name,Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecordName,System.String,System.Boolean)">
+	<summary>
+ This routine updates all of the individual elements of the specified name object.
+ </summary>
+	<param name="item">The name object to be updated.</param>
+	<param name="response">The response object containing the cleaned name.</param>
+	<param name="results">The result string for this name.</param>
+	<remarks></remarks>
+</member><member name="M:Nrc.Framework.AddressCleaning.NameCollection.CheckForNameErrors(System.String)">
+	<summary>
+ This routine checks the result string for an name and determines whether or not an error was encountered.
+ </summary>
+	<param name="results">The result string for this name.</param>
+	<returns>Returns a boolean indicating whether or not an error was encountered.</returns>
+	<remarks></remarks>
+</member><member name="M:Nrc.Framework.AddressCleaning.NameCollection.CheckForWebRequestErrors(System.String,System.String@)">
+	<summary>
+ This routine checks the result string for the web service call and determines whether or not an error was encountered.
+ </summary>
+	<param name="results">The result string for the web service call.</param>
+	<param name="message">The error message to throw if an error was encountered.</param>
+	<returns>Returns a boolean indicating whether or not an error was encountered.</returns>
+	<remarks></remarks>
+</member><member name="M:Nrc.Framework.AddressCleaning.NameCollection.GetNameStatus(System.String)">
+	<summary>
+ This routine cleans up the result string to make sure it will fit in the database column.
+ </summary>
+	<param name="results">The result string to be cleaned up.</param>
+	<returns>Returns a result string the will fit in the database column.</returns>
+	<remarks></remarks>
+</member><member name="M:Nrc.Framework.AddressCleaning.Cleaner.#ctor(Nrc.Framework.BusinessLogic.Configuration.CountryIDs,Nrc.Framework.AddressCleaning.LoadDatabases)">
+	<summary>
+ Creates a new instance of the Cleaner object.
+ </summary>
+	<param name="countryID">Country that is to be used to perform cleaning.</param>
+	<remarks>Allows user to specify the country directory to be used for cleaning.</remarks>
+</member><member name="M:Nrc.Framework.AddressCleaning.Cleaner.GetInitialCounts(System.Int32,System.Int32)">
+	<summary>
+ This is the public interface called to initialize the cleaning process 
+ if all names and addresses for the specified datafile and study are to 
+ be cleaned and you want the status counts before you begin.  If you do 
+ not need the status counts prior to starting then just call CleanAll.
+ </summary>
+	<param name="dataFileID">The datafile to be cleaned.</param>
+	<param name="studyID">The study to be cleaned.</param>
+	<returns>Returns a reference to the MetaGroups collection so the calling 
+ application can obtain the current statistics for this run.</returns>
+	<remarks></remarks>
+</member><member name="M:Nrc.Framework.AddressCleaning.Cleaner.CleanAll(System.Int32,System.Int32,System.Boolean)">
+	<summary>
+ This is the public interface called to clean all names and addresses 
+ for the specified datafile and study.
+ </summary>
+	<param name="dataFileID">The datafile to be cleaned.</param>
+	<param name="studyID">The study to be cleaned.</param>
+	<returns>Returns a reference to the MetaGroups collection so the calling 
+ application can obtain the current statistics for this run.</returns>
+	<remarks></remarks>
+</member><member name="M:Nrc.Framework.AddressCleaning.Cleaner.CleanAll(System.Int32,System.Int32,System.Int32,System.Boolean)">
+	<summary>
+ This is the public interface called to clean all names and addresses 
+ for the specified datafile and study.
+ </summary>
+	<param name="dataFileID">The datafile to be cleaned.</param>
+	<param name="studyID">The study to be cleaned.</param>
+	<param name="batchSize">The quantity of records to process on each pass.</param>
+	<returns>Returns a reference to the MetaGroups collection so the calling 
+ application can obtain the current statistics for this run.</returns>
+	<remarks></remarks>
+</member><member name="M:Nrc.Framework.AddressCleaning.Cleaner.CheckPhone(System.Int32)">
+	<summary>
+ This is the public interface called to clean all phone numbers 
+ for the specified datafile.
+ </summary>
+	<param name="dataFileID">The datafile to be cleaned.</param>
+	<returns>Returns a TimeSpan representing how long it took to execute.</returns>
+	<remarks></remarks>
+</member><member name="M:Nrc.Framework.AddressCleaning.Cleaner.IsCleanAddrBitSet(System.Int32)">
+	<summary>
+ This method is used to determine if address cleaning is turned on for the specified study.
+ </summary>
+	<param name="studyID">The study to be checked.</param>
+	<returns>Returns TRUE if address cleaning is turned on.</returns>
+	<remarks></remarks>
+</member><member name="M:Nrc.Framework.AddressCleaning.Cleaner.IsCheckPhoneBitSet(System.Int32)">
+	<summary>
+ This method is used to determine if phone number cleaning is turned on for the specified study.
+ </summary>
+	<param name="studyID">The study to be checked.</param>
+	<returns>Returns TRUE if phone number cleaning is turned on.</returns>
+	<remarks></remarks>
+</member><member name="P:Nrc.Framework.AddressCleaning.My.Resources.Resources.ResourceManager">
+	<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member><member name="P:Nrc.Framework.AddressCleaning.My.Resources.Resources.Culture">
+	<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member><member name="T:Nrc.Framework.AddressCleaning.My.Resources.Resources">
+	<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member><member name="M:Nrc.Framework.AddressCleaning.dqwsAddressCheck.Service.#ctor">
+	<remarks/>
+</member><member name="E:Nrc.Framework.AddressCleaning.dqwsAddressCheck.Service.doAddressCheckCompleted">
+	<remarks/>
+</member><member name="M:Nrc.Framework.AddressCleaning.dqwsAddressCheck.Service.doAddressCheck(Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArray)">
+	<remarks/>
+</member><member name="M:Nrc.Framework.AddressCleaning.dqwsAddressCheck.Service.doAddressCheckAsync(Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArray)">
+	<remarks/>
+</member><member name="M:Nrc.Framework.AddressCleaning.dqwsAddressCheck.Service.doAddressCheckAsync(Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArray,System.Object)">
+	<remarks/>
+</member><member name="M:Nrc.Framework.AddressCleaning.dqwsAddressCheck.Service.CancelAsync(System.Object)">
+	<remarks/>
+</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.Service">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArray.TransmissionReference">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArray.CustomerID">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArray.OptAddressParsed">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArray.Record">
+	<remarks/>
+</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArray">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArrayRecord.RecordID">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArrayRecord.Company">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArrayRecord.LastName">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArrayRecord.Urbanization">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArrayRecord.AddressLine1">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArrayRecord.AddressLine2">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArrayRecord.Suite">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArrayRecord.City">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArrayRecord.State">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArrayRecord.Zip">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArrayRecord.Plus4">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArrayRecord.Country">
+	<remarks/>
+</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArrayRecord">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArray.Version">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArray.TransmissionReference">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArray.Results">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArray.TotalRecords">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArray.Record">
+	<remarks/>
+</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArray">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecord.RecordID">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecord.Results">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecord.Address">
+	<remarks/>
+</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecord">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress.Company">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress.Urbanization">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress.Address1">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress.Address2">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress.Suite">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress.PrivateMailBox">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress.City">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress.State">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress.Zip">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress.Plus4">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress.CarrierRoute">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress.DeliveryPointCode">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress.DeliveryPointCheckDigit">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress.Type">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress.Country">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress.AddressKey">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress.Parsed">
+	<remarks/>
+</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressUrbanization.Name">
+	<remarks/>
+</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressUrbanization">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressCity.Name">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressCity.Abbreviation">
+	<remarks/>
+</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressCity">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressState.Name">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressState.Abbreviation">
+	<remarks/>
+</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressState">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressType.Address">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressType.Zip">
+	<remarks/>
+</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressType">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressTypeAddress.Code">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressTypeAddress.Description">
+	<remarks/>
+</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressTypeAddress">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressTypeZip.Code">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressTypeZip.Description">
+	<remarks/>
+</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressTypeZip">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressCountry.Abbreviation">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressCountry.Name">
+	<remarks/>
+</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressCountry">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressParsed.StreetName">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressParsed.AddressRange">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressParsed.Suffix">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressParsed.Direction">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressParsed.Suite">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressParsed.PrivateMailbox">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressParsed.Garbage">
+	<remarks/>
+</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressParsed">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressParsedDirection.Post">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressParsedDirection.Pre">
+	<remarks/>
+</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressParsedDirection">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressParsedSuite.Range">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressParsedSuite.Name">
+	<remarks/>
+</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressParsedSuite">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressParsedPrivateMailbox.Name">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressParsedPrivateMailbox.Range">
+	<remarks/>
+</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressParsedPrivateMailbox">
+	<remarks/>
+</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.doAddressCheckCompletedEventHandler">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.doAddressCheckCompletedEventArgs.Result">
+	<remarks/>
+</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.doAddressCheckCompletedEventArgs">
+	<remarks/>
+</member><member name="P:Nrc.Framework.AddressCleaning.GeoCode.CountyFIPS">
 	<summary>
  The Federal Information Processing Standard (FIPS) is a 5-digit code defined 
  by the U.S. Bureau of Census. 
@@ -297,409 +891,6 @@ Nrc.Framework.AddressCleaning
 	<value></value>
 	<returns></returns>
 	<remarks></remarks>
-</member><member name="M:Nrc.Framework.AddressCleaning.dqwsNameCheck.Service.#ctor">
-	<remarks/>
-</member><member name="E:Nrc.Framework.AddressCleaning.dqwsNameCheck.Service.doNameCheckCompleted">
-	<remarks/>
-</member><member name="M:Nrc.Framework.AddressCleaning.dqwsNameCheck.Service.doNameCheck(Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArray)">
-	<remarks/>
-</member><member name="M:Nrc.Framework.AddressCleaning.dqwsNameCheck.Service.doNameCheckAsync(Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArray)">
-	<remarks/>
-</member><member name="M:Nrc.Framework.AddressCleaning.dqwsNameCheck.Service.doNameCheckAsync(Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArray,System.Object)">
-	<remarks/>
-</member><member name="M:Nrc.Framework.AddressCleaning.dqwsNameCheck.Service.CancelAsync(System.Object)">
-	<remarks/>
-</member><member name="T:Nrc.Framework.AddressCleaning.dqwsNameCheck.Service">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArray.TransmissionReference">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArray.CustomerID">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArray.OptCorrectSpelling">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArray.OptNameHint">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArray.OptGenderAggression">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArray.OptGenderPopulation">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArray.OptSalutationPrefix">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArray.OptSalutationSuffix">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArray.OptSalutationSlug">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArray.Record">
-	<remarks/>
-</member><member name="T:Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArray">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArrayRecord.RecordID">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArrayRecord.FullName">
-	<remarks/>
-</member><member name="T:Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArrayRecord">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArray.Version">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArray.TransmissionReference">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArray.Results">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArray.TotalRecords">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArray.Record">
-	<remarks/>
-</member><member name="T:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArray">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecord.RecordID">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecord.Results">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecord.Name">
-	<remarks/>
-</member><member name="T:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecord">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecordName.Prefix">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecordName.Prefix2">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecordName.First">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecordName.First2">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecordName.Middle">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecordName.Middle2">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecordName.Last">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecordName.Last2">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecordName.Suffix">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecordName.Suffix2">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecordName.Gender">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecordName.Gender2">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecordName.Salutation">
-	<remarks/>
-</member><member name="T:Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecordName">
-	<remarks/>
-</member><member name="T:Nrc.Framework.AddressCleaning.dqwsNameCheck.doNameCheckCompletedEventHandler">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsNameCheck.doNameCheckCompletedEventArgs.Result">
-	<remarks/>
-</member><member name="T:Nrc.Framework.AddressCleaning.dqwsNameCheck.doNameCheckCompletedEventArgs">
-	<remarks/>
-</member><member name="T:Nrc.Framework.AddressCleaning.MetaField">
-	<summary>
- This file contains the definition of the CMetaField object used to 
- hold all the required information about a single field of name or 
- address data needed to identify it.
- </summary>
-	<remarks></remarks>
-</member><member name="M:Nrc.Framework.AddressCleaning.modMain.CleanString(System.String,System.Boolean,System.Boolean)">
-	<summary>
- This routine is used to cleanup null terminated strings returned 
- from the name and address cleaning DLLs.  It trims the string at 
- the terminating null and replaces all single and double quotes with 
- fancy quotes.
- </summary>
-	<param name="origStr">The string to be cleaned up.</param>
-	<param name="replaceQuotes">Specifies whether or not to replace all quotes (double and single) with fancy quotes.</param>
-	<param name="replaceCommas">Specifies whether or not to replace all commas with a space.  If this results in a double space then that will be replaced with a single space.</param>
-	<returns>Returns the cleaned up string.</returns>
-	<remarks></remarks>
-</member><member name="M:Nrc.Framework.AddressCleaning.modMain.ReplaceAllQuotes(System.String)">
-	<summary>
- This routine is used to replace all single and double quotes with 
- fancy quotes.
- </summary>
-	<param name="origStr">The original string to be cleaned up.</param>
-	<returns>The cleaned string or an empty string if an error is encountered.</returns>
-	<remarks></remarks>
-</member><member name="M:Nrc.Framework.AddressCleaning.modMain.ReplaceAllCommas(System.String)">
-	<summary>
- This routine is used to replace all commas with a space.
- </summary>
-	<param name="origStr">The original string to be cleaned up.</param>
-	<returns>The cleaned string or an empty string if an error is encountered.</returns>
-	<remarks></remarks>
-</member><member name="P:Nrc.Framework.AddressCleaning.MetaGroup.SelectFieldList">
-	<summary>
- Returns the formated list of fields used in a select statement to 
- get the information about this name or address from the study table.
- </summary>
-	<value></value>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="P:Nrc.Framework.AddressCleaning.MetaGroup.ErrorFieldName">
-	<summary>
- Returns the name of the field that contains the error information 
- for this address.
- </summary>
-	<value></value>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="P:Nrc.Framework.AddressCleaning.MetaGroup.StatusFieldName">
-	<summary>
- Returns the name of the field that contains the status information 
- for this name or address.
- </summary>
-	<value></value>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="P:Nrc.Framework.AddressCleaning.MetaGroup.SQLTableName(System.Int32,System.String)">
-	<summary>
- Returns the name of the table that this name or address is contained in.
- </summary>
-	<param name="studyID">The StudyID for the specified table name</param>
-	<param name="tableSuffix">The suffix for the table name if one is needed. Default is [_Load]"</param>
-	<value></value>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="P:Nrc.Framework.AddressCleaning.MetaGroup.UpdateFieldListAddress(Nrc.Framework.AddressCleaning.Address)">
-	<summary>
- Returns the field and value list required for the SQL UPDATE statement.
- </summary>
-	<param name="address">The address object that is to be inserted into the database.</param>
-	<value></value>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="P:Nrc.Framework.AddressCleaning.MetaGroup.UpdateFieldListName(Nrc.Framework.AddressCleaning.Name)">
-	<summary>
- Returns the field and value list required for the SQL UPDATE statement.
- </summary>
-	<param name="name">The name object that is to be inserted into the database.</param>
-	<value></value>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="M:Nrc.Framework.AddressCleaning.MetaGroup.SaveCounts(System.Int32,Nrc.Framework.AddressCleaning.MetaGroupCollection,Nrc.Framework.AddressCleaning.LoadDatabases)">
-	<summary>
- This method stores all of the count properties for each group in the 
- collection to the Loading Database so they can be used for reporting 
- purposes.
- </summary>
-	<param name="dataFileID">The data file that this collection is for.</param>
-	<remarks></remarks>
-</member><member name="M:Nrc.Framework.AddressCleaning.MetaGroup.GetCounts(System.Int32,System.Int32,Nrc.Framework.AddressCleaning.MetaGroupCollection,Nrc.Framework.AddressCleaning.LoadDatabases)">
-	<summary>
- This routine sets the count properties for each group in the 
- collection.  These properties can be used by the calling application 
- for display info after the CPostalSoft.CleanAll method completes.
- </summary>
-	<param name="dataFileID">The data file that this collection is for.</param>
-	<param name="studyID">The study that this collection is for.</param>
-	<remarks></remarks>
-</member><member name="T:Nrc.Framework.AddressCleaning.MetaGroup">
-	<summary>
- This file contains the definition of the CMetaGroup object used to hold 
- all the required information about a single name or address including a 
- collection of CMetaFields that identify each that is part of this name 
- or address.
- </summary>
-	<remarks></remarks>
-</member><member name="P:Nrc.Framework.AddressCleaning.My.Resources.Resources.ResourceManager">
-	<summary>
-  Returns the cached ResourceManager instance used by this class.
-</summary>
-</member><member name="P:Nrc.Framework.AddressCleaning.My.Resources.Resources.Culture">
-	<summary>
-  Overrides the current thread's CurrentUICulture property for all
-  resource lookups using this strongly typed resource class.
-</summary>
-</member><member name="T:Nrc.Framework.AddressCleaning.My.Resources.Resources">
-	<summary>
-  A strongly-typed resource class, for looking up localized strings, etc.
-</summary>
-</member><member name="M:Nrc.Framework.AddressCleaning.dqwsAddressCheck.Service.#ctor">
-	<remarks/>
-</member><member name="E:Nrc.Framework.AddressCleaning.dqwsAddressCheck.Service.doAddressCheckCompleted">
-	<remarks/>
-</member><member name="M:Nrc.Framework.AddressCleaning.dqwsAddressCheck.Service.doAddressCheck(Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArray)">
-	<remarks/>
-</member><member name="M:Nrc.Framework.AddressCleaning.dqwsAddressCheck.Service.doAddressCheckAsync(Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArray)">
-	<remarks/>
-</member><member name="M:Nrc.Framework.AddressCleaning.dqwsAddressCheck.Service.doAddressCheckAsync(Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArray,System.Object)">
-	<remarks/>
-</member><member name="M:Nrc.Framework.AddressCleaning.dqwsAddressCheck.Service.CancelAsync(System.Object)">
-	<remarks/>
-</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.Service">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArray.TransmissionReference">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArray.CustomerID">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArray.OptAddressParsed">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArray.Record">
-	<remarks/>
-</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArray">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArrayRecord.RecordID">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArrayRecord.Company">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArrayRecord.LastName">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArrayRecord.Urbanization">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArrayRecord.AddressLine1">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArrayRecord.AddressLine2">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArrayRecord.Suite">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArrayRecord.City">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArrayRecord.State">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArrayRecord.Zip">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArrayRecord.Plus4">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArrayRecord.Country">
-	<remarks/>
-</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.RequestArrayRecord">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArray.Version">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArray.TransmissionReference">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArray.Results">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArray.TotalRecords">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArray.Record">
-	<remarks/>
-</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArray">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecord.RecordID">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecord.Results">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecord.Address">
-	<remarks/>
-</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecord">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress.Company">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress.Urbanization">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress.Address1">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress.Address2">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress.Suite">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress.PrivateMailBox">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress.City">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress.State">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress.Zip">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress.Plus4">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress.CarrierRoute">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress.DeliveryPointCode">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress.DeliveryPointCheckDigit">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress.Type">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress.Country">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress.AddressKey">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress.Parsed">
-	<remarks/>
-</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddress">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressUrbanization.Name">
-	<remarks/>
-</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressUrbanization">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressCity.Name">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressCity.Abbreviation">
-	<remarks/>
-</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressCity">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressState.Name">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressState.Abbreviation">
-	<remarks/>
-</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressState">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressType.Address">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressType.Zip">
-	<remarks/>
-</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressType">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressTypeAddress.Code">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressTypeAddress.Description">
-	<remarks/>
-</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressTypeAddress">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressTypeZip.Code">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressTypeZip.Description">
-	<remarks/>
-</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressTypeZip">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressCountry.Abbreviation">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressCountry.Name">
-	<remarks/>
-</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressCountry">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressParsed.StreetName">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressParsed.AddressRange">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressParsed.Suffix">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressParsed.Direction">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressParsed.Suite">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressParsed.PrivateMailbox">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressParsed.Garbage">
-	<remarks/>
-</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressParsed">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressParsedDirection.Post">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressParsedDirection.Pre">
-	<remarks/>
-</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressParsedDirection">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressParsedSuite.Range">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressParsedSuite.Name">
-	<remarks/>
-</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressParsedSuite">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressParsedPrivateMailbox.Name">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressParsedPrivateMailbox.Range">
-	<remarks/>
-</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.ResponseArrayRecordAddressParsedPrivateMailbox">
-	<remarks/>
-</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.doAddressCheckCompletedEventHandler">
-	<remarks/>
-</member><member name="P:Nrc.Framework.AddressCleaning.dqwsAddressCheck.doAddressCheckCompletedEventArgs.Result">
-	<remarks/>
-</member><member name="T:Nrc.Framework.AddressCleaning.dqwsAddressCheck.doAddressCheckCompletedEventArgs">
-	<remarks/>
 </member><member name="P:Nrc.Framework.AddressCleaning.MetaGroupCollection.AddressesSelected">
 	<summary>
  Returns the quantity of address selected for cleaning.
@@ -726,12 +917,15 @@ Nrc.Framework.AddressCleaning
  This routine is the public interface called to clean all of the 
  addresses currently contained in collection.
  </summary>
+	<param name="forceProxy">Specifies whether or not to force the use of a proxy server for web requests</param>
 	<remarks></remarks>
 </member><member name="M:Nrc.Framework.AddressCleaning.AddressCollection.Clean(System.Boolean,System.Boolean)">
 	<summary>
  This routine is the public interface called to clean all of the 
  addresses currently contained in collection.
  </summary>
+	<param name="forceProxy">Specifies whether or not to force the use of a proxy server for web requests</param>
+	<param name="populateGeoCoding">Specifies whether or not to populate the geocoding information</param>
 	<remarks></remarks>
 </member><member name="M:Nrc.Framework.AddressCleaning.AddressCollection.Clean(System.Boolean,System.Boolean,System.Boolean)">
 	<summary>
@@ -739,6 +933,8 @@ Nrc.Framework.AddressCleaning
  addresses currently contained in collection
  </summary>
 	<param name="assignIDs">Specified whether or not the addresses need to have the DBKey set</param>
+	<param name="forceProxy">Specifies whether or not to force the use of a proxy server for web requests</param>
+	<param name="populateGeoCoding">Specifies whether or not to populate the geocoding information</param>
 	<remarks></remarks>
 </member><member name="M:Nrc.Framework.AddressCleaning.AddressCollection.CleanAll(System.Int32,System.Int32,System.Int32,Nrc.Framework.AddressCleaning.MetaGroupCollection@,Nrc.Framework.AddressCleaning.LoadDatabases,System.Boolean)">
 	<summary>
@@ -749,6 +945,8 @@ Nrc.Framework.AddressCleaning
 	<param name="studyID">The study to be cleaned.</param>
 	<param name="batchSize">The quantity of records to process on each pass.</param>
 	<param name="metaGroups">Collection of meta groups that specify information about this group.</param>
+	<param name="loadDB">The database these records are stored in.</param>
+	<param name="forceProxy">Specifies whether or not to force the use of a proxy server for web requests.</param>
 	<remarks></remarks>
 </member><member name="M:Nrc.Framework.AddressCleaning.AddressCollection.GetArraySize(System.Int32,System.Int32,System.Int32)">
 	<summary>
@@ -795,6 +993,13 @@ Nrc.Framework.AddressCleaning
 	<param name="results">The result string for this address.</param>
 	<returns>Returns a boolean indicating whether or not an error was encountered.</returns>
 	<remarks></remarks>
+</member><member name="M:Nrc.Framework.AddressCleaning.AddressCollection.CheckForAddressSuccess(System.String)">
+	<summary>
+ This routine checks the result string for an address and determines whether or not an error was encountered.
+ </summary>
+	<param name="results">The result string for this address.</param>
+	<returns>Returns a boolean indicating whether or not an error was encountered.</returns>
+	<remarks></remarks>
 </member><member name="M:Nrc.Framework.AddressCleaning.AddressCollection.CheckForAddressWebRequestErrors(System.String,System.String@)">
 	<summary>
  This routine checks the result string for the web service call and determines whether or not an error was encountered.
@@ -803,7 +1008,7 @@ Nrc.Framework.AddressCleaning
 	<param name="message">The error message to throw if an error was encountered.</param>
 	<returns>Returns a boolean indicating whether or not an error was encountered.</returns>
 	<remarks></remarks>
-</member><member name="M:Nrc.Framework.AddressCleaning.AddressCollection.GetZipCode(Nrc.Framework.AddressCleaning.Address)">
+</member><member name="M:Nrc.Framework.AddressCleaning.AddressCollection.GetZipCode(Nrc.Framework.AddressCleaning.AddressSub)">
 	<summary>
  This routine assembles the zip code.
  </summary>
@@ -824,11 +1029,13 @@ Nrc.Framework.AddressCleaning
 	<param name="results">The result string to be used.</param>
 	<returns>The error code to be stored in the database.</returns>
 	<remarks></remarks>
-</member><member name="M:Nrc.Framework.AddressCleaning.AddressCollection.SetNewAddressToOldAddress(Nrc.Framework.AddressCleaning.Address)">
+</member><member name="M:Nrc.Framework.AddressCleaning.AddressCollection.IsForeignError(System.String)">
 	<summary>
- This routine sets the new address equal to the original address when an error is encountered.
+ This routine determines if the error is a foreign error code.
  </summary>
-	<param name="addr">The address object to be used.</param>
+	<param name="results">The result string to be used.</param>
+	<returns>TRUE if the error code is a foreign error, 
+          FALSE is it is not a foreign error.</returns>
 	<remarks></remarks>
 </member><member name="M:Nrc.Framework.AddressCleaning.AddressCollection.AddGeoCoding(System.Int32,Nrc.Framework.AddressCleaning.Address,Nrc.Framework.AddressCleaning.dqwsGeoCodeCheck.RequestArray)">
 	<summary>
@@ -858,7 +1065,7 @@ Nrc.Framework.AddressCleaning
  This routine cleans up the result string to make sure it will fit in the database column.
  </summary>
 	<param name="results">The result string to be cleaned up.</param>
-	<returns>Returns a result string the will fit in the database column.</returns>
+	<returns>Returns a result string that will fit in the database column.</returns>
 	<remarks></remarks>
 </member><member name="M:Nrc.Framework.AddressCleaning.AddressCollection.UpdateGeoCoding(Nrc.Framework.AddressCleaning.dqwsGeoCodeCheck.ResponseArray)">
 	<summary>
@@ -873,194 +1080,6 @@ Nrc.Framework.AddressCleaning
 	<param name="addr">The address object to be updated.</param>
 	<param name="response">The response object containing the cleaned address.</param>
 	<param name="results">The result string for this address.</param>
-	<remarks></remarks>
-</member><member name="M:Nrc.Framework.AddressCleaning.NameCollection.Clean(System.Boolean,System.Boolean)">
-	<summary>
- This routine is the public interface called to clean all of the 
- names currently contained in collection.
- </summary>
-	<param name="properCase">Specifies if proper case formatting should be applied.</param>
-	<remarks></remarks>
-</member><member name="M:Nrc.Framework.AddressCleaning.NameCollection.Clean(System.Boolean,System.Boolean,System.Boolean)">
-	<summary>
- This routine is the internal interface called to clean all of the
- names currently contained in collection
- </summary>
-	<param name="properCase">Specifies if proper case formatting should be applied.</param>
-	<param name="assignIDs">Specified whether or not the names need to have the DBKey set</param>
-	<remarks></remarks>
-</member><member name="M:Nrc.Framework.AddressCleaning.NameCollection.CleanAll(System.Int32,System.Int32,System.Int32,Nrc.Framework.AddressCleaning.MetaGroupCollection@,Nrc.Framework.AddressCleaning.LoadDatabases,System.Boolean)">
-	<summary>
- This routine is the internal interface called to clean all of the 
- names in the specified datafile and study.
- </summary>
-	<param name="dataFileID">The datafile to be cleaned.</param>
-	<param name="studyID">The study to be cleaned.</param>
-	<param name="batchSize">The quantity of records to process on each pass.</param>
-	<param name="metaGroups">Collection of meta groups that specify information about this group.</param>
-	<remarks></remarks>
-</member><member name="M:Nrc.Framework.AddressCleaning.NameCollection.GetArraySize(System.Int32,System.Int32,System.Int32)">
-	<summary>
- This routine determines the array size for the request object.
- </summary>
-	<param name="total">Total number of records in the collection.</param>
-	<param name="used">Number of records cleaned so far.</param>
-	<param name="maxSize">Maximum number of records allowed in the request object.</param>
-	<returns>Returns the size to be used for the request object.</returns>
-	<remarks></remarks>
-</member><member name="M:Nrc.Framework.AddressCleaning.NameCollection.AddName(System.Int32,Nrc.Framework.AddressCleaning.Name,Nrc.Framework.AddressCleaning.dqwsNameCheck.RequestArray)">
-	<summary>
- This routine adds the specified address to the request object.
- </summary>
-	<param name="cnt">Specifies which element of the request object to add this name to.</param>
-	<param name="item">The name to be added to the request object.</param>
-	<param name="request">The request object that the name should be added to.</param>
-	<remarks></remarks>
-</member><member name="M:Nrc.Framework.AddressCleaning.NameCollection.UpdateNames(Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArray,System.Boolean)">
-	<summary>
- This routine updates the names in the collection with those returned in the response object.
- </summary>
-	<param name="responseArray">The response object containing the updated names.</param>
-	<remarks></remarks>
-</member><member name="M:Nrc.Framework.AddressCleaning.NameCollection.FindName(System.Int32)">
-	<summary>
- This routine finds the name object with the specified dbKey.
- </summary>
-	<param name="dbKey">The name key to be found.</param>
-	<returns>Returns the name object with the specified dbKey.</returns>
-	<remarks></remarks>
-</member><member name="M:Nrc.Framework.AddressCleaning.NameCollection.UpdateName(Nrc.Framework.AddressCleaning.Name,Nrc.Framework.AddressCleaning.dqwsNameCheck.ResponseArrayRecordName,System.String,System.Boolean)">
-	<summary>
- This routine updates all of the individual elements of the specified name object.
- </summary>
-	<param name="item">The name object to be updated.</param>
-	<param name="response">The response object containing the cleaned name.</param>
-	<param name="results">The result string for this name.</param>
-	<remarks></remarks>
-</member><member name="M:Nrc.Framework.AddressCleaning.NameCollection.CheckForNameErrors(System.String)">
-	<summary>
- This routine checks the result string for an name and determines whether or not an error was encountered.
- </summary>
-	<param name="results">The result string for this name.</param>
-	<returns>Returns a boolean indicating whether or not an error was encountered.</returns>
-	<remarks></remarks>
-</member><member name="M:Nrc.Framework.AddressCleaning.NameCollection.CheckForWebRequestErrors(System.String,System.String@)">
-	<summary>
- This routine checks the result string for the web service call and determines whether or not an error was encountered.
- </summary>
-	<param name="results">The result string for the web service call.</param>
-	<param name="message">The error message to throw if an error was encountered.</param>
-	<returns>Returns a boolean indicating whether or not an error was encountered.</returns>
-	<remarks></remarks>
-</member><member name="M:Nrc.Framework.AddressCleaning.NameCollection.GetNameStatus(System.String)">
-	<summary>
- This routine cleans up the result string to make sure it will fit in the database column.
- </summary>
-	<param name="results">The result string to be cleaned up.</param>
-	<returns>Returns a result string the will fit in the database column.</returns>
-	<remarks></remarks>
-</member><member name="M:Nrc.Framework.AddressCleaning.NameCollection.SetNewNameToOldName(Nrc.Framework.AddressCleaning.Name)">
-	<summary>
- This routine sets the new name equal to the original name when an error is encountered.
- </summary>
-	<param name="item">The name object to be used.</param>
-	<remarks></remarks>
-</member><member name="M:Nrc.Framework.AddressCleaning.AddressProvider.SelectCleanAddressBit(System.Int32)">
-	<summary>
- This routine is used to determine whether or not the CleanAddressBit is set for the specified study.
- </summary>
-	<param name="studyID">The study to be cleaned.</param>
-	<returns>The value of the CleanAddressBit.</returns>
-	<remarks></remarks>
-</member><member name="M:Nrc.Framework.AddressCleaning.AddressProvider.CleanAll(System.Int32,System.Int32,System.Int32,Nrc.Framework.AddressCleaning.MetaGroupCollection@,Nrc.Framework.AddressCleaning.AddressCollection,Nrc.Framework.AddressCleaning.LoadDatabases,System.Boolean)">
-	<summary>
- This routine is the internal interface called to clean all of the 
- addresses in the specified datafile and study.
- </summary>
-	<param name="dataFileID">The datafile to be cleaned.</param>
-	<param name="studyID">The study to be cleaned.</param>
-	<param name="batchSize">The quantity of records to process on each pass.</param>
-	<param name="metaGroups">Collection of meta groups that specify information about this group.</param>
-	<param name="addresses">AddressCollection object to hold addresses to be cleaned.</param>
-	<remarks></remarks>
-</member><member name="T:Nrc.Framework.AddressCleaning.MetaFieldCollection">
-	<summary>
- This file is the definition for the CMetaFields collection class used 
- to contain all of the metafield objects that are used to identify name 
- and address fields available to be cleaned in a specific study.
- </summary>
-	<remarks></remarks>
-</member><member name="M:Nrc.Framework.AddressCleaning.Cleaner.#ctor(Nrc.Framework.BusinessLogic.Configuration.CountryIDs,Nrc.Framework.AddressCleaning.LoadDatabases)">
-	<summary>
- Creates a new instance of the Cleaner object.
- </summary>
-	<param name="countryID">Country that is to be used to perform cleaning.</param>
-	<remarks>Allows user to specify the country directory to be used for cleaning.</remarks>
-</member><member name="M:Nrc.Framework.AddressCleaning.Cleaner.GetInitialCounts(System.Int32,System.Int32)">
-	<summary>
- This is the public interface called to initialize the cleaning process 
- if all names and addresses for the specified datafile and study are to 
- be cleaned and you want the status counts before you begin.  If you do 
- not need the status counts prior to starting then just call CleanAll.
- </summary>
-	<param name="dataFileID">The datafile to be cleaned.</param>
-	<param name="studyID">The study to be cleaned.</param>
-	<returns>Returns a reference to the MetaGroups collection so the calling 
- application can obtain the current statistics for this run.</returns>
-	<remarks></remarks>
-</member><member name="M:Nrc.Framework.AddressCleaning.Cleaner.CleanAll(System.Int32,System.Int32,System.Boolean)">
-	<summary>
- This is the public interface called to clean all names and addresses 
- for the specified datafile and study.
- </summary>
-	<param name="dataFileID">The datafile to be cleaned.</param>
-	<param name="studyID">The study to be cleaned.</param>
-	<returns>Returns a reference to the MetaGroups collection so the calling 
- application can obtain the current statistics for this run.</returns>
-	<remarks></remarks>
-</member><member name="M:Nrc.Framework.AddressCleaning.Cleaner.CleanAll(System.Int32,System.Int32,System.Int32,System.Boolean)">
-	<summary>
- This is the public interface called to clean all names and addresses 
- for the specified datafile and study.
- </summary>
-	<param name="dataFileID">The datafile to be cleaned.</param>
-	<param name="studyID">The study to be cleaned.</param>
-	<param name="batchSize">The quantity of records to process on each pass.</param>
-	<returns>Returns a reference to the MetaGroups collection so the calling 
- application can obtain the current statistics for this run.</returns>
-	<remarks></remarks>
-</member><member name="M:Nrc.Framework.AddressCleaning.Cleaner.CheckPhone(System.Int32)">
-	<summary>
- This is the public interface called to clean all phone numbers 
- for the specified datafile.
- </summary>
-	<param name="dataFileID">The datafile to be cleaned.</param>
-	<returns>Returns a TimeSpan representing how long it took to execute.</returns>
-	<remarks></remarks>
-</member><member name="M:Nrc.Framework.AddressCleaning.Cleaner.IsCleanAddrBitSet(System.Int32)">
-	<summary>
- This method is used to determine if address cleaning is turned on for the specified study.
- </summary>
-	<param name="studyID">The study to be checked.</param>
-	<returns>Returns TRUE if address cleaning is turned on.</returns>
-	<remarks></remarks>
-</member><member name="M:Nrc.Framework.AddressCleaning.Cleaner.IsCheckPhoneBitSet(System.Int32)">
-	<summary>
- This method is used to determine if phone number cleaning is turned on for the specified study.
- </summary>
-	<param name="studyID">The study to be checked.</param>
-	<returns>Returns TRUE if phone number cleaning is turned on.</returns>
-	<remarks></remarks>
-</member><member name="M:Nrc.Framework.AddressCleaning.NameProvider.CleanAll(System.Int32,System.Int32,System.Int32,Nrc.Framework.AddressCleaning.MetaGroupCollection@,Nrc.Framework.AddressCleaning.NameCollection,Nrc.Framework.AddressCleaning.LoadDatabases,System.Boolean)">
-	<summary>
- This routine is the internal interface called to clean all of the 
- names in the specified datafile and study.
- </summary>
-	<param name="dataFileID">The datafile to be cleaned.</param>
-	<param name="studyID">The study to be cleaned.</param>
-	<param name="batchSize">The quantity of records to process on each pass.</param>
-	<param name="metaGroups">Collection of meta groups that specify information about this group.</param>
-	<param name="names">NameCollection object to hold names to be cleaned.</param>
 	<remarks></remarks>
 </member>
 </members>
