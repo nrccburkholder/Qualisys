@@ -84,9 +84,6 @@ namespace NRC.Exporting
             string filepath = string.Empty;
             try
             {
-                //string filename = template.DefaultNamingConvention;
-                //SetFileName(ref filename, ds.Where(x => x.Section.ExportTemplateSectionName == "header").First());
-
                 XmlDocumentEx xmlDoc = new XmlDocumentEx();
                 xmlDoc = XMLExporter.MakeExportXMLDocument(ds, template);
 

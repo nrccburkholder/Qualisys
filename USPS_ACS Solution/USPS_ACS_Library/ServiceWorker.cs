@@ -31,6 +31,8 @@ namespace USPS_ACS_Library
 
         private static List<USPS_ACS_Error> errorList = new List<USPS_ACS_Error>();
         private static string[] versionList;
+        private static List<USPS_ACS_Notification> downloadList = new List<USPS_ACS_Notification>();
+        private static List<USPS_ACS_Notification> extractList = new List<USPS_ACS_Notification>();
 
         #region constants
 
@@ -42,12 +44,13 @@ namespace USPS_ACS_Library
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
             errorList.Clear();
+            downloadList.Clear();
 
             try
             {
                 // We have the option to turn off the downloads from the USPS ACS service
                 bool doDownload = AppConfig.Params["USPS_ACS_DoDownload"].IntegerValue == 1;
-
+                doDownload = true;
                 if (doDownload)
                 {
                     DownloadZips();
@@ -55,7 +58,6 @@ namespace USPS_ACS_Library
                 else Logs.Info("USPS ACS Download job is turned off.");
 
                
-
                 if (errorList.Count > 0)
                 {
                     throw new USPS_ACS_Exception(String.Format("{0} error(s) occurred during processing.", errorList.Count.ToString()), errorList);
@@ -72,7 +74,7 @@ namespace USPS_ACS_Library
             {
                 stopwatch.Stop();
                 Logs.Info(String.Format("USPS ACS Processing Elapsed Time: {0} seconds.", (stopwatch.ElapsedMilliseconds / 1000).ToString() ));
-                SendStatusNotification("USPS_ACS_Service.DoDownloadWork", new List<USPS_ACS_Notification>());
+                SendStatusNotification("USPS_ACS_Service.DownloadFile", downloadList, NotificationType.Download);
             }
 
         }
@@ -82,6 +84,7 @@ namespace USPS_ACS_Library
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
             errorList.Clear();
+            extractList.Clear();
 
             try
             {                
@@ -103,7 +106,7 @@ namespace USPS_ACS_Library
             {
                 stopwatch.Stop();
                 Logs.Info(String.Format("USPS ACS Processing Elapsed Time: {0} seconds.", (stopwatch.ElapsedMilliseconds / 1000).ToString()));
-                SendStatusNotification("USPS_ACS_Service.DoExtractWork", new List<USPS_ACS_Notification>());
+                SendStatusNotification("USPS_ACS_Service.ExtractFile", extractList, NotificationType.Extract);
             }
 
         }
@@ -135,7 +138,6 @@ namespace USPS_ACS_Library
 
                     int fileCount = 0;
                    
-
                     foreach (XmlNode productNode in xdoc.GetElementsByTagName("product"))
                     {
                         fileCount += 1;
@@ -170,13 +172,14 @@ namespace USPS_ACS_Library
                         }
                         else
                         {
-                            downloadStatus = "N";  //mark as canceled
+                            downloadStatus = "N";  // mark as canceled
                             fstatus = "New";
                         }
 
                         fdl.setStatus(authToken, key, downloadStatus, fileId);
                         Logs.Info(String.Format("DownloadFile: {0} -- status {1}", fileName , downloadStatus));
                         USPS_ACS_DataProvider.UpdateDownloadLogStatus(fileName,fstatus);
+                        downloadList.Add(new USPS_ACS_Notification{ ZipFileFile = fileName, FileType=NotificationType.Download});
                     }
 
                     stopwatch.Stop();
@@ -274,6 +277,8 @@ namespace USPS_ACS_Library
                         extractErrorCount += InsertExtractFileLog(exLog);
 
                         extractCount += 1;
+
+                        extractList.Add(new USPS_ACS_Notification { ZipFileFile = exLog.ZipFileName,  ExtractFileName = e.FileName, FileType = NotificationType.Extract, RecordCount = Convert.ToInt32(exLog.RecordCount) });
                     }
                 }
 
@@ -456,7 +461,6 @@ namespace USPS_ACS_Library
 
         private static void UpdateAddresses(int extractFileLog_id)
         {
-
             try
             {
                 USPS_ACS_DataProvider.UpdateAddress(extractFileLog_id);
@@ -469,7 +473,6 @@ namespace USPS_ACS_Library
             {
 
             }
-
         }
 
 
@@ -940,10 +943,8 @@ namespace USPS_ACS_Library
             }
         }
 
-        private static void SendStatusNotification(string serviceName, List<USPS_ACS_Notification> notifications)
+        private static void SendStatusNotification(string serviceName, List<USPS_ACS_Notification> notifications, NotificationType ntype)
         {
-
-            // TODO
 
             List<string> toList = new List<string>();
             List<string> ccList = new List<string>();
@@ -952,15 +953,15 @@ namespace USPS_ACS_Library
             string recipientNoteHtml = string.Empty;
             string environmentName = string.Empty;
 
-
             string bodyText = string.Empty;
-            string fileName = string.Empty;
-
+            string message = string.Empty;
 
             try
             {
                 string sendTo = AppConfig.Params["USPS_ACS_SendStatusNotificationTo"].StringValue;
                 string sendBcc = AppConfig.Params["USPS_ACS_SendStatusNotificationBcc"].StringValue;
+
+                message += USPS_ACS_Notification.GetNotificationTableHtml(notifications, ntype);
 
                 toList.Add(sendTo);
                 bccList.Add(sendBcc);
@@ -1015,10 +1016,10 @@ namespace USPS_ACS_Library
                 }
 
                 mailMessage.ReplacementValues.Add("ServiceName", serviceName);
-                mailMessage.ReplacementValues.Add("Environment", environmentName);;
+                mailMessage.ReplacementValues.Add("Environment", environmentName); ;               
                 mailMessage.ReplacementValues.Add("DateOccurred", DateTime.Now.ToString());
                 mailMessage.ReplacementValues.Add("MachineName", Environment.MachineName);
-                mailMessage.ReplacementValues.Add("FileName", fileName);
+                mailMessage.ReplacementValues.Add("Message", message);
 
                 //Merge the template
                 mailMessage.MergeTemplate();
@@ -1029,7 +1030,7 @@ namespace USPS_ACS_Library
 
             }catch (Exception ex)
             {
-
+                throw ex;
             }
 
         }
@@ -1047,10 +1048,7 @@ namespace USPS_ACS_Library
             string bodyText = string.Empty;
             string partialMatchMessage = string.Empty;
 
-            // TODO: retrieve PartialMatch information not yet reported and format for email
-
             // Retrieve unprocessed partial match rows
-
             try
             {
 
@@ -1098,6 +1096,8 @@ namespace USPS_ACS_Library
 
                     string sendTo = AppConfig.Params["USPS_ACS_SendStatusNotificationTo"].StringValue;
                     string sendBcc = AppConfig.Params["USPS_ACS_SendStatusNotificationBcc"].StringValue;
+
+                    sendTo = "tbutler@nationalresearch.com";
 
                     toList.Add(sendTo);
                     bccList.Add(sendBcc);
