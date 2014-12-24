@@ -29,8 +29,22 @@ Attribute VB_Name = "modMain"
 '\\     05-27-05    JJF     Modified to work with Canadian generated
 '\\                         surveys.
 '\\     08-18-06    JJF     Removed revision notes.
+'\\     12-02-2014  LEB     Changed file locking mechanism to use CreateFile/DeleteFile
+
 '\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 Option Explicit
+        
+    Private Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
+    Private Declare Function CloseHandle Lib "kernel32" (ByVal hObject As Long) As Long
+    Private Declare Function GetLastError Lib "kernel32" () As Long
+    Private Declare Function DeleteFile Lib "kernel32" Alias "DeleteFileA" (ByVal lpFileName As String) As Long
+    Private Declare Function CreateFile Lib "kernel32" Alias "CreateFileA" (ByVal lpFileName As String, ByVal dwDesiredAccess As Long, ByVal dwShareMode As Long, ByVal lpSecurityAttributes As Long, ByVal dwCreationDisposition As Long, ByVal dwFlagsAndAttributes As Long, ByVal hTemplateFile As Long) As Long
+
+    Private Const FILE_SHARE_NONE As Long = 0
+    Private Const GENERIC_WRITE As Long = &H40000000
+    Private Const CREATE_NEW As Long = 1
+    Private Const FILE_ATTRIBUTE_NORMAL As Long = &H80
+    Private Const INVALID_HANDLE_VALUE As Long = -1
         
     Public Enum eCountryCodeConstants
         cccUnknown = 0
@@ -111,6 +125,7 @@ Option Explicit
         iecErrorInvalidImages = iecErrorBase + 14
         iecErrorGetTemplateLineFailed = iecErrorBase + 15
         iecErrorAddHandwrittenResonsesFailed = iecErrorBase + 16
+        iecErrorCreateLockFileFailed = iecErrorBase + 17
         'iecError = iecErrorBase + X
     End Enum
     
@@ -599,38 +614,74 @@ End Sub
 '\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 Public Function LockFiles(sLockFileName As String, bWaitForever As Boolean) As Long
     
+    'FOR TESTING
+    ' sLockFileName = TestFileName(sLockFileName)
+    'END FOR TESTING
+    
     Dim lFileHandle As Long
-    
-    Const ksWaitCommand As String = "WAITFOR DELAY '00:00:05'"
-    
+    Dim dtLockFileCreated As Date
+    Dim lLockFileAge As Long
+        
     'Set the error trap
     On Error GoTo LockWait
     
-    'Get an available file handle
-    lFileHandle = FreeFile
-
 LockAgain:
-    'Attempt to lock the file
-    Open sLockFileName For Output Lock Read Write As #lFileHandle
+    'Attempt to create the lock file
+    lFileHandle = CreateFile(sLockFileName, GENERIC_WRITE, FILE_SHARE_NONE, 0&, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, 0&)
+    If lFileHandle = INVALID_HANDLE_VALUE Then
+        dtLockFileCreated = FileDateTime(sLockFileName)
+        lLockFileAge = DateDiff("n", dtLockFileCreated, DateTime.Now) ' n = minutes
+        
+        'If the lock file is 10 minutes old, assume something failed, delete the file, and try again
+        If lLockFileAge > 10 Then
+            Kill sLockFileName
+            GoTo LockAgain
+        End If
+        
+        Err.Raise iecErrorCreateLockFileFailed
+    End If
     
-    'If we made it to here then the file is locked
+    'If we made it to here then the lock file has been created
     LockFiles = lFileHandle
     
 Exit Function
 
 
 LockWait:
-    'If we are here then the file is already locked
     If bWaitForever Then
         'Let's wait a while and try again
-        goConn.Execute ksWaitCommand
+        DelaySeconds (5)
         Resume LockAgain
     Else
-        'File is already locked and we are not waiting around
+        'Lock file already exists and we are not waiting around
         LockFiles = -1
         Exit Function
     End If
     
+End Function
+
+Private Function DelaySeconds(lSeconds As Long)
+    Dim start As Date
+    start = DateTime.Now
+    Do While DateDiff("s", start, DateTime.Now) < lSeconds
+        DoEvents
+        Sleep 50
+    Loop
+End Function
+
+Private Function TestFileName(strFileName As String) As String
+    Dim strPrefix As String
+    strPrefix = "\\TestArgus\Production\FAQSS\Dynamic"
+    
+    If Len(strFileName) > Len(strPrefix) Then
+        If Left(strFileName, Len(strPrefix)) = strPrefix Then
+            TestFileName = "K:" + Mid(strFileName, 1 + Len(strPrefix))
+            Exit Function
+        End If
+    End If
+    
+    TestFileName = strFileName
+            
 End Function
 
 '\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -651,11 +702,17 @@ End Function
 '\\ Revisions:
 '\\     Date        By      Description
 '\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-Public Sub UnlockFiles(lFileHandle As Long)
+Public Sub UnlockFiles(sLockFileName As String, lFileHandle As Long)
+    'FOR TESTING
+    ' sLockFileName = TestFileName(sLockFileName)
+    'END FOR TESTING
     
-    'If we encounter an error closing the lock file ignore it
-    On Error Resume Next
-    Close #lFileHandle
+    On Error GoTo UnlockFail
     
+    CloseHandle (lFileHandle)
+    DeleteFile (sLockFileName)
+    
+UnlockFail:
+    Exit Sub
 End Sub
 

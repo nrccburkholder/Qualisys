@@ -1,6 +1,10 @@
 VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
+  Persistable = 0  'NotPersistable
+  DataBindingBehavior = 0  'vbNone
+  DataSourceBehavior  = 0  'vbNone
+  MTSTransactionMode  = 0  'NotAnMTSObject
 END
 Attribute VB_Name = "CNDLQuestionaires"
 Attribute VB_GlobalNameSpace = False
@@ -510,13 +514,14 @@ Public Function LoadFromFile() As Boolean
     Dim sTextLine   As String
     Dim lFileHandle As Long
     Dim lLockHandle As Long
+    Dim sLockFile As String
     
     'Set the error trap
     On Error GoTo ErrorHandler
     
     'Place a lock on the NDL files
-    lLockHandle = LockFiles(sLockFileName:=msUnProcessedFilePath & "ndl.lck", _
-                            bWaitForever:=False)
+    sLockFile = msUnProcessedFilePath & "ndl2.lck"
+    lLockHandle = LockFiles(sLockFileName:=sLockFile, bWaitForever:=False)
     
     'If we were unable to lock the files then we are going to head out of dodge
     If lLockHandle < 0 Then
@@ -524,12 +529,14 @@ Public Function LoadFromFile() As Boolean
         Exit Function
     End If
     
+    On Error GoTo ErrorHandlerWithUnlock
+    
     'Let's get a filename to process
     msFileName = Dir$(msUnProcessedFilePath & "*.ndl")
     
     'If there are no files to process then head out of dodge
     If msFileName = "" Then
-        UnlockFiles lFileHandle:=lLockHandle
+        UnlockFiles sLockFileName:=sLockFile, lFileHandle:=lLockHandle
         LoadFromFile = False
         Exit Function
     End If
@@ -568,13 +575,15 @@ Public Function LoadFromFile() As Boolean
     Kill msUnProcessedFilePath & msFileName
     
     'Unlock the file so other processes can continue
-    UnlockFiles lFileHandle:=lLockHandle
+    UnlockFiles sLockFileName:=sLockFile, lFileHandle:=lLockHandle
     
     'Cleanup
     LoadFromFile = True
     
 Exit Function
 
+ErrorHandlerWithUnlock:
+    UnlockFiles sLockFileName:=sLockFile, lFileHandle:=lLockHandle
 
 ErrorHandler:
     Err.Raise Number:=iecErrorLoadFromFileFailed, _
@@ -742,10 +751,11 @@ Public Sub OutputLog()
     Dim lLockHandle As Long
     Dim sFileName   As String
     Dim oUserInfo   As CUserInfo
+    Dim sLockFile As String
     
     'Place a lock on the STR files
-    lLockHandle = LockFiles(sLockFileName:=msLogFilePath & "CDFLog.lck", _
-                            bWaitForever:=True)
+    sLockFile = msLogFilePath & "CDFLog2.lck"
+    lLockHandle = LockFiles(sLockFileName:=sLockFile, bWaitForever:=True)
     
     'Get the file name
     sFileName = msLogFilePath & Format(Now, "yyyymmdd") & "CDF.log"
@@ -783,7 +793,7 @@ Public Sub OutputLog()
     Set oUserInfo = Nothing
     
     'Unlock the file so other processes can continue
-    UnlockFiles lFileHandle:=lLockHandle
+    UnlockFiles sLockFileName:=sLockFile, lFileHandle:=lLockHandle
     
 End Sub
 

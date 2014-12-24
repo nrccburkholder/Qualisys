@@ -21,6 +21,7 @@ Option Explicit
     Private Const mksRegDatabaseInfo As String = "Software\National Research\Database Info"
     
     Private Const mksRegMainDBDefault As String = "driver={SQL Server};server=NRC10;UID=qpsa;PWD=qpsa;database=QP_PROD"
+    ' Private Const mksRegMainDBDefault As String = "driver={SQL Server};server=Prime;UID=qpsa;PWD=qpsa;database=QP_PROD"
     
     Public goRegMainDBConnString As RegDBServer98.RegStr
     
