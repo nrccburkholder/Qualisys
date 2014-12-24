@@ -1935,12 +1935,12 @@ Public Class SqlDataProvider
         newObj.Qs.Add(rdr.GetInteger("Q79e3", -9).ToString())
         newObj.Qs.Add(rdr.GetInteger("Q79e4", -9).ToString())
         newObj.Qs.Add(rdr.GetInteger("Q80", -9).ToString())
-        newObj.Qs.Add(rdr.GetInteger("Q81", -9).ToString())
-        'newObj.Qs.Add(rdr.GetInteger("Q81a", -9).ToString())
-        'newObj.Qs.Add(rdr.GetInteger("Q81b", -9).ToString())
-        'newObj.Qs.Add(rdr.GetInteger("Q81c", -9).ToString())
-        'newObj.Qs.Add(rdr.GetInteger("Q81d", -9).ToString())
-        'newObj.Qs.Add(rdr.GetInteger("Q81e", -9).ToString())
+        'newObj.Qs.Add(rdr.GetInteger("Q81", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q81a", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q81b", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q81c", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q81d", -9).ToString())
+        newObj.Qs.Add(rdr.GetInteger("Q81e", -9).ToString())
 
         Return newObj
 

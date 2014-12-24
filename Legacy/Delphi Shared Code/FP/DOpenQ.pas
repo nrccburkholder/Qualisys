@@ -53,7 +53,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   DBTables, Wwquery, DB, Wwtable, DBRichEdit, Wwdatsrc, stdctrls, Clipbrd, comctrls,
-  mxarrays,comobj, FileUtil,ShellAPI, FileCtrl;
+  mxarrays,comobj, FileUtil,ShellAPI, FileCtrl, tMapping;
 
 const
   {Scale Placement}
@@ -304,7 +304,8 @@ type
     procedure FoxProPRG(fn:string);
 {$IFDEF FormLayout}
     function MappedSections:boolean;
-    function MappedTextBoxesByCL(coverLetter : string) : string;
+    function MappedSampleUnitsByCL(coverLetter : string) : string;
+    function MappedTextBoxesByCL(coverLetter : string) : MappingSet;
     procedure CodeReport(const fn:string);
     function FindNextUntranslated:char;
     function QuestionProperties:boolean;
@@ -1101,7 +1102,7 @@ begin
   rs:=unassigned;
 end;
 
-function TDMOpenQ.MappedTextBoxesByCL(coverLetter : string) : string;
+function TDMOpenQ.MappedSampleUnitsByCL(coverLetter : string) : string;
 begin
   result := '';
 
@@ -1110,17 +1111,52 @@ begin
       {ww_Query.close;}
       ww_Query.databasename := '_QualPro';
       ww_Query.sql.clear;
-      ww_Query.sql.add('select CoverLetter_dsc, CoverLetterItem_label, Artifact_dsc, ArtifactItem_label'+
+      ww_Query.sql.add('select SampleUnit_ID, STRSampleUnit_NM from SampleUnit where sampleunit_id in'+
+              ' (select SampleUnit_id from CoverLetterItemArtifactUnitMapping where survey_id = ' + inttostr(glbSurveyID) );
+      if coverLetter <> '' then
+         ww_Query.sql.add(' and (CoverLetter_dsc = ''' + coverLetter + ''')' );
+      ww_Query.sql.add(')');
+      ww_Query.sql.add(' order by STRSampleUnit_NM');
+      ww_Query.open;
+      while not ww_Query.eof do begin
+         result := result + trimright(ww_Query.fieldbyname('SampleUnit_id').AsString) + '=';
+         result := result + trimright(ww_Query.fieldbyname('STRSampleUnit_NM').AsString) + ';';
+         ww_Query.next;
+      end;
+      ww_Query.close;
+    end;
+end ;
+
+function TDMOpenQ.MappedTextBoxesByCL(coverLetter : string) : MappingSet;
+var
+  bMapping : BasicMapping;
+  i : integer;
+begin
+  fillchar(result, sizeof(result), #0);
+  i := 0;
+
+  if not laptop then
+    {with ww_Query do }begin
+      {ww_Query.close;}
+      ww_Query.databasename := '_QualPro';
+      ww_Query.sql.clear;
+      ww_Query.sql.add('select SampleUnit_id, CoverLetter_dsc, CoverLetterItem_label, Artifact_dsc, ArtifactItem_label'+
               ' from CoverLetterItemArtifactUnitMapping' +
-              ' where survey_id = ' + inttostr(glbSurveyID));
+              ' where CoverLetterItemType_id = 1 and survey_id = ' + inttostr(glbSurveyID));
       if coverLetter <> '' then
          ww_Query.sql.add(' and ((CoverLetter_dsc = ''' + coverLetter + ''')' +
                  ' or (Artifact_dsc = ''' + coverLetter + '''))');
       ww_Query.sql.add(' order by CoverLetter_dsc, CoverLetterItem_label');
       ww_Query.open;
       while not ww_Query.eof do begin
-        result := result + trimright(ww_Query.fieldbyname('CoverLetter_dsc').AsString) + '.' + trimright(ww_Query.fieldbyname('CoverLetterItem_label').AsString) + '<=';
-        result := result + trimright(ww_Query.fieldbyname('Artifact_dsc').AsString) + '.' + trimright(ww_Query.fieldbyname('ArtifactItem_label').AsString) + '! ';
+        bMapping := AssignBasicMapping(ww_Query.fieldbyname('SampleUnit_id').AsInteger,
+          trimright(ww_Query.fieldbyname('CoverLetter_dsc').AsString),
+          trimright(ww_Query.fieldbyname('CoverLetterItem_label').AsString),
+          trimright(ww_Query.fieldbyname('Artifact_dsc').AsString),
+          trimright(ww_Query.fieldbyname('ArtifactItem_label').AsString));
+
+        result[i] := bMapping;
+        inc(i);
         ww_Query.next;
       end;
       ww_Query.close;
@@ -5239,7 +5275,7 @@ begin
       ProgressBar.Position := 0;
       ProgressBar.left := StatusPanel.Width - 160;
       ProgressBar.Visible := true;
-      fromanothersurvey1.Enabled := (MappedTextBoxesByCL('') = '');
+      fromanothersurvey1.Enabled := (MappedTextBoxesByCL('')[0].SampleUnit = 0);
       fromatemplate1.Enabled := fromanothersurvey1.Enabled;
       clear1.Enabled := fromanothersurvey1.Enabled;
       OpenAllSQLTables(SID);
@@ -6321,7 +6357,7 @@ begin
         if fileexists(ExePath) then begin
           myMessage('Running SaveTagFields');
           //i := ExecuteFile(ExePath,inttostr(glbSurveyID),'',sw_shownormal);
-          i := -1;
+          //i := -1;
           //i := WinExec(strPcopy(zExePath,ExePath+' '+inttostr(glbSurveyID)),sw_shownormal);
           F_DynaQ.LunchWithHandle(ExePath+' '+inttostr(glbSurveyID));
           myMessage('Saving Valid Flag');

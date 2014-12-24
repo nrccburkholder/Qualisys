@@ -1,5 +1,12 @@
-﻿CREATE PROCEDURE [dbo].[sp_phase3_questionresult_for_extract] 
-AS 
+USE [QP_Prod]
+GO
+
+/****** Object:  StoredProcedure [dbo].[sp_phase3_questionresult_for_extract]    Script Date: 12/3/2014 1:55:53 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
 
 -- Modified 7/28/04 SJS (skip pattern recode) 
 -- Modified 11/2/05 BGD Removed skip pattern enforcement. Now in the SP_Extract_BubbleData procedure 
@@ -29,9 +36,11 @@ AS
 -- Modified 05/13/2013 DBG - added Survey_id in the link between cmnt_QuestionResult_work and skipidentifier in four places
 -- Modified 05/14/2013 DBG - modifications to account for overlapping skips
 -- Modified 01/14/2014 DBG - added check for ACO CAHPS usable partials and ACOCahps completeness check 
--- Modified 02/27/2014 CBC - added -5 and -6 as non-response codes. Phone surveys can code -5 as "Refused" and -6 as "Don't Know"
--- Modified 05/16/2014 CBC - Remove ACO CAHPS logic for Incompletes/Usable Partials.  This code was moved to the Catalyst ETL.
-
+-- Modified 02/27/2014 CB - added -5 and -6 as non-response codes. Phone surveys can code -5 as "Refused" and -6 as "Don't Know"
+-- Modified 06/18/2014 DBG - refactored ACOCAHPSCompleteness as a procedure instead of a function.
+-- Modified 10/29/2014 DBG - added Subtype_nm to temp table because ACOCAHPSCompleteness now needs it
+CREATE PROCEDURE [dbo].[sp_phase3_questionresult_for_extract] 
+AS 
     SET TRANSACTION isolation level READ uncommitted 
 
     INSERT INTO drm_tracktimes 
@@ -163,7 +172,6 @@ AS
 
     DROP TABLE #c 
 
-
 	-------------------------------------------------------------------
 	-- ccaouette 2014/04: Commented out and moved to Catalyst ETL
 	-------------------------------------------------------------------
@@ -280,12 +288,12 @@ AS
     -- strLithoCode, Sampleset_id, datReturned, bitComplete, strUnitSelectType, LangID, receiptType_ID)                  
     --SELECT sp.Study_id, qf.Survey_ID, qf.QuestionForm_id, qf.SamplePop_id, SampleUnit_id, strLithoCode,                   
     -- sp.SampleSet_id, qf.datReturned, qf.bitComplete, ss.strUnitSelectType, LangID, qf.ReceiptType_id                
-    --FROM (SELECT DISTINCT QuestionForm_id, Study_id                 
+    --FROM (SELECT DISTINCT QuestionForm_id, Study_id               
     --  FROM Cmnt_QuestionResult_work) qfe,                 
     -- QuestionForm qf, SentMailing sm, SamplePop sp, selectedSample ss                   
     --, Survey_def sd   
     --WHERE qfe.QuestionForm_id=qf.QuestionForm_id                    
-    --AND qf.SentMail_id=sm.SentMail_id                    
+    --AND qf.SentMail_id=sm.SentMail_id               
     --AND qf.SamplePop_id=sp.SamplePop_id                   
     --AND sp.Sampleset_id=ss.Sampleset_id                   
     --AND sp.Pop_id=ss.Pop_id              
@@ -380,7 +388,7 @@ AS
     FROM   cmnt_QuestionResult_work qr 
            INNER JOIN skipidentifier si  ON qr.Survey_id = si.Survey_id
                                            AND qr.datGenerated = si.datGenerated 
-                                           AND qr.qstncore = si.qstncore 
+                                AND qr.qstncore = si.qstncore 
                                            AND qr.val = si.intresponseval 
            INNER JOIN Survey_def sd      ON si.Survey_id = sd.Survey_id 
     WHERE  sd.bitenforceskip <> 0 
@@ -523,18 +531,31 @@ AS
     UPDATE cqw 
     SET    FinalDisposition = '38' 
     FROM   cmnt_QuestionResult_work cqw, 
-    #mncm_negrespscreenqstn i 
+           #mncm_negrespscreenqstn i 
     WHERE  i.QuestionForm_id = cqw.QuestionForm_id 
 
-    --ACO CAHPS DispositionS  
-    UPDATE cqw 
-    SET    FinalDisposition = dbo.ACOCAHPSCompleteness(cqw.QuestionForm_id)
+    --ACO CAHPS Dispositions
+    select cqw.questionform_id, 0 as ATACnt, 0 as ATAComplete, 0 as MeasureCnt, 0 as MeasureComplete, 0 as Disposition, Subtype_nm
+    into #ACOQF
     FROM   cmnt_QuestionResult_work cqw 
     inner join Surveytype st on cqw.Surveytype_id=st.Surveytype_id
+	left join (select sst.Survey_id, sst.Subtype_id, st.Subtype_nm 
+				from [dbo].[SurveySubtype] sst 
+				INNER JOIN [dbo].[Subtype] st on (st.Subtype_id = sst.Subtype_id)
+				) sst on sst.Survey_id = cqw.SURVEY_ID 
     WHERE  st.SurveyType_dsc = 'ACOCAHPS'
-           
+    
+    exec dbo.ACOCAHPSCompleteness
+        
+    UPDATE cqw 
+    SET    FinalDisposition = qf.Disposition
+    FROM   cmnt_QuestionResult_work cqw 
+    inner join #ACOQF qf on cqw.questionform_id=qf.questionform_id
+    WHERE  qf.disposition <> 255
 
-/*************************************************************************************************/
+	drop table #ACOQF
+
+    /*************************************************************************************************/
     /************************************************************************************************/
     INSERT INTO drm_tracktimes 
     SELECT Getdate(), 'Find ineligible hcahps' 
@@ -589,7 +610,7 @@ AS
     WHERE  cqw.QuestionForm_id = qf.QuestionForm_id 
            AND qf.SentMail_id = scm.SentMail_id 
            AND dv.hhcahpsvalue = cqw.finalDisposition 
-           AND cqw.Surveytype_id = 3 
+      AND cqw.Surveytype_id = 3 
 
     --MNCM  
     INSERT INTO #updatedispsql (strsql) 
@@ -628,7 +649,7 @@ AS
            AND cqw.Surveytype_id = 10
 
     WHILE (SELECT Count(*) FROM #updatedispsql) > 0 
-BEGIN 
+      BEGIN 
           SELECT TOP 1 @SQL = strsql FROM #updatedispsql 
           EXEC (@SQL) 
 
@@ -720,14 +741,14 @@ BEGIN
                 IF @loopcnt < 25 
                   BEGIN 
                       INSERT INTO drm_tracktimes 
-      SELECT Getdate(), 'Start HHCAHPS qstncore 38726 skip update' 
+                      SELECT Getdate(), 'Start HHCAHPS qstncore 38726 skip update' 
                   END 
 
                 --print 'HHCAHPS qstncore 38726 skip update'  
                 UPDATE qr 
                 -- SET Val=-7  
                 SET    Val = VAL + 10000 
-          FROM   cmnt_QuestionResult_work qr, 
+                FROM   cmnt_QuestionResult_work qr, 
                        Survey_def sd 
                 WHERE  @qf = qr.QuestionForm_id 
                        AND @su = qr.sampleunit_id 
@@ -756,7 +777,7 @@ BEGIN
 
           --SELECT TOP 1 @qf=QuestionForm_id, @su=SampleUnit_id, @sk=Skip_id, @svy=Survey_id  FROM @WORK ORDER BY QuestionForm_id, sampleunit_id, skip_id     
           SELECT TOP 1 @qf = QuestionForm_id, 
-                       @su = sampleunit_id, 
+                   @su = sampleunit_id, 
                        @sk = skip_id, 
                        @svy = Survey_id 
           FROM   #work 
@@ -813,7 +834,7 @@ BEGIN
                   FROM   cmnt_QuestionResult_work qr, 
                          Survey_def sd 
                   WHERE  qr.QuestionForm_id = @qf 
-                         AND qr.sampleunit_id = @su 
+                     AND qr.sampleunit_id = @su 
                          AND qstncore = 38694 
                          AND val <> 1 
                          AND @sk = -1 
@@ -852,5 +873,8 @@ BEGIN
     WHERE  val IN ( 9991, 9992, 9995, 9994 ) --Modified 02/27/2014 CB - now including -5/-6 Refused/Don't Know
 
     SET nocount OFF 
-    SET TRANSACTION isolation level READ committed 
+    SET TRANSACTION isolation level READ committed
+
+GO
+
 

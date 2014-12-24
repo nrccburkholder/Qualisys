@@ -1,4 +1,7 @@
-/****** Object:  Table [dbo].[USPS_ACS_ExtractFile_PartialMatch]    Script Date: 9/23/2014 10:36:37 AM ******/
+USE [QP_Prod]
+GO
+
+/****** Object:  Table [dbo].[USPS_ACS_ExtractFile_PartialMatch]    Script Date: 12/3/2014 1:46:57 PM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -49,6 +52,8 @@ CREATE TABLE [dbo].[USPS_ACS_ExtractFile_PartialMatch](
 	[AddressNew] [varchar](66) NULL,
 	[Address2New] [varchar](14) NULL,
 	[strLithocode] [varchar](10) NULL,
+	[UpdateStatus] [tinyint] NOT NULL,
+	[DateUpdated] [datetime] NULL,
  CONSTRAINT [PK_USPS_ACS_ExtractFile_PartialMatch_id] PRIMARY KEY CLUSTERED 
 (
 	[USPS_ACS_ExtractFile_PartialMatch_id] ASC
@@ -59,4 +64,8 @@ GO
 
 SET ANSI_PADDING OFF
 GO
+
+ALTER TABLE [dbo].[USPS_ACS_ExtractFile_PartialMatch] ADD  DEFAULT ((0)) FOR [UpdateStatus]
+GO
+
 

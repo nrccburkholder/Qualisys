@@ -117,12 +117,12 @@ Friend Class ACOCAHPSExporter
         Q79e3 = 94
         Q79e4 = 95
         Q80 = 96
-        Q81 = 97
-        'Q81a = 97
-        'Q81b = 98
-        'Q81c = 99
-        'Q81d = 100
-        'Q81e = 101
+        'Q81 = 97
+        Q81a = 97
+        Q81b = 98
+        Q81c = 99
+        Q81d = 100
+        Q81e = 101
     End Enum
 
     Dim SummaryInfo As List(Of String) = New List(Of String)
@@ -359,13 +359,13 @@ Friend Class ACOCAHPSExporter
         Next
 
         '-- Q80(2) skips to end 
-        'Set88(acoCAHPSExport.Qs, QMap.Q81a, QMap.Q80, NO)
-        'Set88(acoCAHPSExport.Qs, QMap.Q81b, QMap.Q80, NO)
-        'Set88(acoCAHPSExport.Qs, QMap.Q81c, QMap.Q80, NO)
-        'Set88(acoCAHPSExport.Qs, QMap.Q81d, QMap.Q80, NO)
-        'Set88(acoCAHPSExport.Qs, QMap.Q81e, QMap.Q80, NO)
+        Set88(acoCAHPSExport.Qs, QMap.Q81a, QMap.Q80, NO)
+        Set88(acoCAHPSExport.Qs, QMap.Q81b, QMap.Q80, NO)
+        Set88(acoCAHPSExport.Qs, QMap.Q81c, QMap.Q80, NO)
+        Set88(acoCAHPSExport.Qs, QMap.Q81d, QMap.Q80, NO)
+        Set88(acoCAHPSExport.Qs, QMap.Q81e, QMap.Q80, NO)
 
-        Set88(acoCAHPSExport.Qs, QMap.Q81, QMap.Q80, NO)
+        'Set88(acoCAHPSExport.Qs, QMap.Q81, QMap.Q80, NO)
 
         '-- Q79e(2) skips to Q80 (only asked on the phone survey)
         Set88(acoCAHPSExport.Qs, QMap.Q79e1, QMap.Q79e, NO)
@@ -571,17 +571,17 @@ Friend Class ACOCAHPSExporter
         End If
 
         '-- and let's do the same for the how you helped question. why not?
-        'If (Trim(acoCAHPSExport.Qs(QMap.Q81a).ToString()) = Trim(YES)) Or _
-        '   (Trim(acoCAHPSExport.Qs(QMap.Q81b).ToString()) = Trim(YES)) Or _
-        '   (Trim(acoCAHPSExport.Qs(QMap.Q81c).ToString()) = Trim(YES)) Or _
-        '   (Trim(acoCAHPSExport.Qs(QMap.Q81d).ToString()) = Trim(YES)) Or _
-        '   (Trim(acoCAHPSExport.Qs(QMap.Q81e).ToString()) = Trim(YES)) Then
-        '    acoCAHPSExport.Qs(QMap.Q81a) = IIf(acoCAHPSExport.Qs(QMap.Q81a).ToString() = _M, NO, YES).ToString()
-        '    acoCAHPSExport.Qs(QMap.Q81b) = IIf(acoCAHPSExport.Qs(QMap.Q81b).ToString() = _M, NO, YES).ToString()
-        '    acoCAHPSExport.Qs(QMap.Q81c) = IIf(acoCAHPSExport.Qs(QMap.Q81c).ToString() = _M, NO, YES).ToString()
-        '    acoCAHPSExport.Qs(QMap.Q81d) = IIf(acoCAHPSExport.Qs(QMap.Q81d).ToString() = _M, NO, YES).ToString()
-        '    acoCAHPSExport.Qs(QMap.Q81e) = IIf(acoCAHPSExport.Qs(QMap.Q81e).ToString() = _M, NO, YES).ToString()
-        'End If
+        If (Trim(acoCAHPSExport.Qs(QMap.Q81a).ToString()) = Trim(YES)) Or _
+           (Trim(acoCAHPSExport.Qs(QMap.Q81b).ToString()) = Trim(YES)) Or _
+           (Trim(acoCAHPSExport.Qs(QMap.Q81c).ToString()) = Trim(YES)) Or _
+           (Trim(acoCAHPSExport.Qs(QMap.Q81d).ToString()) = Trim(YES)) Or _
+           (Trim(acoCAHPSExport.Qs(QMap.Q81e).ToString()) = Trim(YES)) Then
+            acoCAHPSExport.Qs(QMap.Q81a) = IIf(acoCAHPSExport.Qs(QMap.Q81a).ToString() = _M, NO, YES).ToString()
+            acoCAHPSExport.Qs(QMap.Q81b) = IIf(acoCAHPSExport.Qs(QMap.Q81b).ToString() = _M, NO, YES).ToString()
+            acoCAHPSExport.Qs(QMap.Q81c) = IIf(acoCAHPSExport.Qs(QMap.Q81c).ToString() = _M, NO, YES).ToString()
+            acoCAHPSExport.Qs(QMap.Q81d) = IIf(acoCAHPSExport.Qs(QMap.Q81d).ToString() = _M, NO, YES).ToString()
+            acoCAHPSExport.Qs(QMap.Q81e) = IIf(acoCAHPSExport.Qs(QMap.Q81e).ToString() = _M, NO, YES).ToString()
+        End If
 
         '	Record has dispo 10, 31, or 34, but has no results
         If ((acoCAHPSExport.Dispositn = "10") Or (acoCAHPSExport.Dispositn = "31")) Then ' Removed for blank surveys per Dana: Or (acoCAHPSExport.Dispositn = "34")) Then

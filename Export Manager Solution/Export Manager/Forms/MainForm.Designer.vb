@@ -255,7 +255,7 @@ Partial Class MainForm
         Me.ACOCAHPSExportsTab.Size = New System.Drawing.Size(32, 32)
         Me.ACOCAHPSExportsTab.TabIndex = 0
         Me.ACOCAHPSExportsTab.Text = "ACO CAHPS Exports"
-        Me.ToolTip.SetToolTip(Me.ACOCAHPSExportsTab, "OCS & HHCAHPS Exports")
+        Me.ToolTip.SetToolTip(Me.ACOCAHPSExportsTab, "ACO CAHPS Exports")
         '
         'ScheduledExportsTab
         '

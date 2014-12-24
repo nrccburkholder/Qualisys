@@ -15,7 +15,7 @@ type
     procedure Timer1Timer(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
-    ViewState:short;
+    //ViewState:short;
     { Private declarations }
   public
     PersonalizationHandle:hwnd;

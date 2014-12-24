@@ -77,7 +77,7 @@ type
       Shift: TShiftState);
   private
     { Private declarations }
-    lstMapFields : TStringList;
+    //lstMapFields : TStringList;
   public
     { Public declarations }
   end;
