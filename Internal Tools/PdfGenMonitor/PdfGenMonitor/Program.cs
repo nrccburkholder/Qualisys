@@ -28,6 +28,10 @@ namespace PdfGenMonitor
                 restarter.RestartedApplicationPath = configuration.RestartedApplicationPath;
                 restarter.LogFileDestinationPath = configuration.LogFileDestinationPath;
 
+                string commentsConnectionStringLabel = "PdfGenMonitor.Properties.Settings.QP_CommentsConnectionString";
+                string dbConnectionString = ConfigurationManager.ConnectionStrings[commentsConnectionStringLabel].ConnectionString;
+                restarter.SqlConnectionString = dbConnectionString;
+
                 logInfo.AppendLine();
                 logInfo.AppendLine("Configuration:");
                 logInfo.AppendLine("MonitoredLogFilePath = " + restarter.MonitoredLogFilePath);
@@ -35,6 +39,14 @@ namespace PdfGenMonitor
                 logInfo.AppendLine("TerminatedProcessName = " + restarter.TerminatedProcessName);
                 logInfo.AppendLine("RestartedApplicationPath = " + restarter.RestartedApplicationPath);
                 logInfo.AppendLine("LogFileDestinationPath = " + restarter.LogFileDestinationPath);
+
+                const string passwordLabel = ";password=";
+                string loggedConnectionString = dbConnectionString.ToLower().Contains(passwordLabel) ?
+                    dbConnectionString.Substring(0, dbConnectionString.ToLower().IndexOf(passwordLabel) + passwordLabel.Length)
+                        + "********" :
+                    dbConnectionString;
+
+                logInfo.AppendLine("DB Connection String = " + loggedConnectionString);
 
                 restarter.CheckAndRestart();
             }

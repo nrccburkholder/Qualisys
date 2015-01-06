@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="PdfGenStuckJobs" targetNamespace="http://tempuri.org/PdfGenStuckJobs.xsd" xmlns:mstns="http://tempuri.org/PdfGenStuckJobs.xsd" xmlns="http://tempuri.org/PdfGenStuckJobs.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="QP_CommentsConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="QP_CommentsConnectionString (Settings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.PdfGenMonitor.Properties.Settings.GlobalReference.Default.QP_CommentsConnectionString" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="PdfGenStuckJobsTableAdapter" GeneratorDataComponentClassName="PdfGenStuckJobsTableAdapter" Name="PdfGenStuckJobs" UserDataComponentName="PdfGenStuckJobsTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="QP_CommentsConnectionString (Settings)" DbObjectName="QP_Comments.dbo.PdfGenStuckJobs" DbObjectType="View" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>SELECT Job_ID, JobCreateTime, JobBeginTime, JobEndTime FROM dbo.PdfGenStuckJobs</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="Job_ID" DataSetColumn="Job_ID" />
+              <Mapping SourceColumn="JobCreateTime" DataSetColumn="JobCreateTime" />
+              <Mapping SourceColumn="JobBeginTime" DataSetColumn="JobBeginTime" />
+              <Mapping SourceColumn="JobEndTime" DataSetColumn="JobEndTime" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="PdfGenStuckJobs" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="PdfGenStuckJobs" msprop:Generator_UserDSName="PdfGenStuckJobs">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="PdfGenStuckJobs" msprop:Generator_TableClassName="PdfGenStuckJobsDataTable" msprop:Generator_TableVarName="tablePdfGenStuckJobs" msprop:Generator_TablePropName="_PdfGenStuckJobs" msprop:Generator_RowDeletingName="PdfGenStuckJobsRowDeleting" msprop:Generator_RowChangingName="PdfGenStuckJobsRowChanging" msprop:Generator_RowEvHandlerName="PdfGenStuckJobsRowChangeEventHandler" msprop:Generator_RowDeletedName="PdfGenStuckJobsRowDeleted" msprop:Generator_UserTableName="PdfGenStuckJobs" msprop:Generator_RowChangedName="PdfGenStuckJobsRowChanged" msprop:Generator_RowEvArgName="PdfGenStuckJobsRowChangeEvent" msprop:Generator_RowClassName="PdfGenStuckJobsRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Job_ID" msprop:Generator_ColumnVarNameInTable="columnJob_ID" msprop:Generator_ColumnPropNameInRow="Job_ID" msprop:Generator_ColumnPropNameInTable="Job_IDColumn" msprop:Generator_UserColumnName="Job_ID" type="xs:int" />
+              <xs:element name="JobCreateTime" msprop:Generator_ColumnVarNameInTable="columnJobCreateTime" msprop:Generator_ColumnPropNameInRow="JobCreateTime" msprop:Generator_ColumnPropNameInTable="JobCreateTimeColumn" msprop:Generator_UserColumnName="JobCreateTime" type="xs:dateTime" />
+              <xs:element name="JobBeginTime" msprop:Generator_ColumnVarNameInTable="columnJobBeginTime" msprop:Generator_ColumnPropNameInRow="JobBeginTime" msprop:Generator_ColumnPropNameInTable="JobBeginTimeColumn" msprop:Generator_UserColumnName="JobBeginTime" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="JobEndTime" msprop:Generator_ColumnVarNameInTable="columnJobEndTime" msprop:Generator_ColumnPropNameInRow="JobEndTime" msprop:Generator_ColumnPropNameInTable="JobEndTimeColumn" msprop:Generator_UserColumnName="JobEndTime" type="xs:dateTime" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
