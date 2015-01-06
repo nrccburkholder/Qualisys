@@ -87,6 +87,8 @@ Public Class NameCollection
         'Initialize the SOAP request message
         nameCheckRequest.CustomerID = AppConfig.Params("NameWebServiceCustomerID").StringValue
         nameCheckRequest.OptCorrectSpelling = "True"
+        'CAMELINCKX Fixing bug that was introduced on first attempt to resolve INC40090 (forgot to default hint to 2)
+        nameCheckRequest.OptNameHint = "2"
 
         'CAMELINCKX INC40090 IU Health Incorrect Name Issue
         'For this incident here we will introduce logic that will based on a list of MelissaData prefixes
