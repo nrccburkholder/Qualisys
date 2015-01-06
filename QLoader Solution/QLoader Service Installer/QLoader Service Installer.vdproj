@@ -835,7 +835,7 @@
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
-                "FrameworkVersion" = "8:2.0.50727      "
+                "FrameworkVersion" = "8:2.0.50727       "
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=9832"
                 }
@@ -847,7 +847,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Nrc.Framework.AddressCleaning, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Nrc.Framework.AddressCleaning, Version=2.5.0.1, Culture=neutral, processorArchitecture=x86"
                 "ScatterAssemblies"
                 {
                     "_0046D6F95AEABBD029D5C7AB38567087"
@@ -1683,15 +1683,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:QLoader Service"
-        "ProductCode" = "8:{242F9193-1DE5-4FF1-ABD1-CF3E9A368EED}"
-        "PackageCode" = "8:{29F5A522-4406-4BF2-8E0B-2A614ED671ED}"
+        "ProductCode" = "8:{DA9B7B78-DAE3-4FD4-8C13-BF40CBB2D500}"
+        "PackageCode" = "8:{49AB82A7-2E31-4DAC-B73E-DC2CE5792CED}"
         "UpgradeCode" = "8:{8CD79B6A-677E-43C7-BE67-55B3363B4072}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:2.8.3"
+        "ProductVersion" = "8:2.8.4"
         "Manufacturer" = "8:National Research Corporation"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
