@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Diagnostics;
+using System.Data.SqlClient;
+using PdfGenMonitor.PdfGenStuckJobsTableAdapters;
 
 namespace PdfGenMonitor
 {
@@ -14,22 +16,55 @@ namespace PdfGenMonitor
         public string TerminatedProcessName { get; set; }
         public string RestartedApplicationPath { get; set; }
         public string LogFileDestinationPath { get; set; }
+        public string SqlConnectionString { get; set; }
         
         public void CheckAndRestart()
         {
-            if (IsLogFileCurrent())
-                return;
+            if (!IsLogFileCurrent()) // if the log file isn't current, restart the app
+            {
+                RestartPdfGen();
+                throw new ApplicationException("PdfGen appears to have stalled; the log file isn't current. PdfGen has been restarted.");
+            }
 
-            // if log file is too old, copy it, then terminate and restart the app
+            int firstStuckJobId = FirstStuckJob();
+            if (firstStuckJobId > 0) // if a job is stuck, restart the app
+            {
+                RestartPdfGen();
+                string errorMessage = "PdfGen appears to have stalled; job " +
+                    firstStuckJobId.ToString() + " is stuck. PdfGen has been restarted.";
+                throw new ApplicationException(errorMessage);
+            }
+        }
+
+        private void RestartPdfGen()
+        {
             CopyLogFile();
             TerminateProcess();
             RestartApplication();
-            throw new ApplicationException("The monitored application appears to have stalled and has been restarted.");
         }
 
         public static string TimestampedFileName(string fileName)
         {
             return DateTime.Now.ToString("yyyy-MM-dd-HHmm.") + fileName;
+        }
+
+        private int FirstStuckJob()
+        {
+            using(SqlConnection conn = new SqlConnection(SqlConnectionString))
+            {
+                conn.Open();
+
+                using(PdfGenStuckJobsTableAdapter adapter = new PdfGenStuckJobsTableAdapter())
+                {
+                    var stuckJobsDataSet = new PdfGenStuckJobs();
+                    var stuckJobsTable = (PdfGenStuckJobs.PdfGenStuckJobsDataTable) stuckJobsDataSet.Tables["PdfGenStuckJobs"];
+
+                    adapter.Fill(stuckJobsTable);
+                    return (stuckJobsTable.Rows.Count > 0) ? 
+                        (int) stuckJobsTable.Rows[0]["Job_ID"] :
+                        0;
+                }
+            }
         }
 
         private bool IsLogFileCurrent()
