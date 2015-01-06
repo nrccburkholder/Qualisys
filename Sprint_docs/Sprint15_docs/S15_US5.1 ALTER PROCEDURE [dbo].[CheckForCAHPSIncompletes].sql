@@ -318,7 +318,7 @@ AND ACODisposition = 34
 								from #qfResponseCount rc
 								inner join questionresult qr on rc.questionform_id=qr.questionform_id
 								union
-								select rc.questionform_id, qr2.qstncore, qr2.intResponseVal
+								select rc.questionform_id, rc.survey_id, qr2.qstncore, qr2.intResponseVal
 								from #qfResponseCount rc
 								inner join questionresult2 qr2 on rc.questionform_id=qr2.questionform_id) qr
 						inner join sel_qstns sq on qr.survey_id = sq.survey_id and qr.qstncore = sq.qstncore 
@@ -343,7 +343,7 @@ AND ACODisposition = 34
 								from #qfResponseCount rc
 								inner join questionresult qr on rc.questionform_id=qr.questionform_id
 								union
-								select rc.questionform_id, qr2.qstncore, qr2.intResponseVal
+								select rc.questionform_id, rc.survey_id, qr2.qstncore, qr2.intResponseVal
 								from #qfResponseCount rc
 								inner join questionresult2 qr2 on rc.questionform_id=qr2.questionform_id) qr
 						inner join sel_qstns sq on qr.survey_id = sq.survey_id and qr.qstncore = sq.qstncore 
