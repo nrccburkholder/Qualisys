@@ -1,0 +1,14 @@
+cd..
+
+CD C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319
+
+/*test*/
+installutil /username=testnrcus\#service /password=testservice /unattended "C:\Services\CEMFileMakerService\CEM.FileMaker.exe"
+
+/*stage*/
+installutil /username=stagenrcus\#service /password=testservice /unattended "C:\Services\CEMFileMakerService\CEM.FileMaker.exe"
+
+/*production*/
+installutil /username=NRC\#NRCSRV /password=88hawk /unattended "C:\Services\CEMFileMakerService\CEM.FileMaker.exe"
+
+installutil /u "C:\Services\CEMFileMakerService\CEM.FileMaker.exe"

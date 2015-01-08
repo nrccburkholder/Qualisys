@@ -56,19 +56,16 @@ namespace USPS_ACS_Library
                     DownloadZips();
                 }
                 else Logs.Info("USPS ACS Download job is turned off.");
-
-               
+              
                 if (errorList.Count > 0)
                 {
                     throw new USPS_ACS_Exception(String.Format("{0} error(s) occurred during processing.", errorList.Count.ToString()), errorList);
                 }
-
             }
             catch (Exception ex)
             {
                 Logs.Info("USPS Exception Encountered While Attempting to Process Files! " + ex.Message);
                 SendErrorNotification("USPS_ACS_Service", "Exception Encountered While Attempting to Process Files!", ex);
-
             }
             finally
             {
@@ -76,7 +73,6 @@ namespace USPS_ACS_Library
                 Logs.Info(String.Format("USPS ACS Processing Elapsed Time: {0} seconds.", (stopwatch.ElapsedMilliseconds / 1000).ToString() ));
                 SendStatusNotification("USPS_ACS_Service.DownloadFile", downloadList, NotificationType.Download);
             }
-
         }
 
         public static void DoExtractWork()
@@ -90,7 +86,7 @@ namespace USPS_ACS_Library
             {                
                 ExtractFiles();
                 ProcessFiles();
-                SendPartialMatchReport("USPS_ACS_Service", new List<USPS_ACS_Notification>());
+                SendPartialMatchReport("USPS_ACS_Service");
 
                 if (errorList.Count > 0)
                 {
@@ -200,7 +196,6 @@ namespace USPS_ACS_Library
                 stopwatch.Stop();
                 Logs.Info(String.Format("DownloadZips Elapsed Time: {0} seconds", (stopwatch.ElapsedMilliseconds / 1000).ToString()));
             }
-
         }
 
         private static bool DownloadFile(string fileUrl, string fileName)
@@ -641,15 +636,6 @@ namespace USPS_ACS_Library
 
         #endregion
 
-        #region Status Notification
-
-        private static void CreateStatusNotification()
-        {
-            
-        }
-
-        #endregion
-
         private static string GetFieldValue(Schema schema, string recordText, string fieldName)
         {
             return recordText.Substring(schema.SchemaMappingList.First(x => x.ColumnName.Equals(fieldName, StringComparison.OrdinalIgnoreCase)).ColumnStart - 1, schema.SchemaMappingList.First(x => x.ColumnName.Equals(fieldName, StringComparison.OrdinalIgnoreCase)).ColumnWidth).Trim();
@@ -1035,7 +1021,7 @@ namespace USPS_ACS_Library
 
         }
 
-        private static void SendPartialMatchReport(string serviceName, List<USPS_ACS_Notification> notifications)
+        private static void SendPartialMatchReport(string serviceName)
         {
 
             List<string> toList = new List<string>();

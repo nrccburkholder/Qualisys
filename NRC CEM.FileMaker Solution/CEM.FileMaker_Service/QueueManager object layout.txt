@@ -1,0 +1,59 @@
+Bundle
+	public string PostalBundle { get; set; } // 0
+        public int Total { get; set; } // 1
+        public int Survey_ID { get; set;  } // 2
+        public int PaperConfig_ID { get; set; } // 3
+        public int IntPages { get; set; } // 4
+        public int CheckSum { get; set; }// 5
+        public int LetterHead { get; set; }// 6
+        public string DateBundled { get; set; } //7
+        public DateTime DateMailed { get; set; } //8
+
+
+Configuration
+	public string PaperConfig_Name { get; set; } //0
+        public int PaperConfig_ID { get; set; } //1
+        public int IntPages { get; set; } //2
+        public int Study_ID { get; set; } //3
+        public int Survey_ID { get; set; } //4
+        public int CheckSum { get; set; } //5
+        public int NumberMailed { get; set; } //6
+        public DateTime DateMailed { get; set; } //7
+
+GroupedPrint
+	public int Survey_ID { get; set; } // 0
+        public int PaperConfig_ID { get; set; } //1
+        public string DatePrinted { get; set; } //2
+        public string DateBundled { get; set; } //2
+        public string ClientName { get; set; } //3
+        public string SurveyName { get; set; } //4
+        public string PaperConfig_Name { get; set; } //5
+        public string SurveyDescription { get; set; } //6
+        public int NumberOfPieces { get; set; } //7
+        public DateTime DateMailed { get; set; } //8
+        public int SurveyType_ID { get; set; } //9
+
+Client
+        public string ClientName { get; set; } //0
+        public string SurveyName { get; set; } //1
+        public int SurveyID { get; set; } //2
+        public string SurveyDescription { get; set; } //3
+        public int NumberOfPieces { get; set; } //4
+        public int NumberPrinted { get; set; } //5
+        public int NumberMailed { get; set; } //6
+        public int NumberInGroupPrint { get; set; } //7
+        public int SurveyType_ID { get; set; } //8
+
+TreeView.Nodes.Add(Relative,Relationship,Key,Text,Image, selectedImage)
+
+string.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}|{9}", 
+paperConfig.Survey_ID.ToString(), 	0
+paperConfig.PostalBundle, 		1		
+paperConfig.PaperConfig_ID.ToString(), 	2
+paperConfig.Pages.ToString(), 		3
+paperConfig.CheckSum.ToString(), 	4
+paperConfig.LetterHead, 		5
+MinLithoCode, 				6
+MaxLithoCode, 				7
+paperConfig.DateBundled, 		8
+paperConfig.DateMailed);		9
