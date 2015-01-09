@@ -1,0 +1,70 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+LaunchPad
+</name>
+</assembly>
+<members>
+<member name="M:Nrc.LaunchPad.LaunchButton.GetNewLaunchButton(Nrc.LaunchPad.ViewStyle)">
+	<summary>Factory method to return an instance of the right sub class</summary>
+	<param name="style">The view style for the button that should be returned</param>
+</member><member name="P:Nrc.LaunchPad.My.Resources.Resources.ResourceManager">
+	<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member><member name="P:Nrc.LaunchPad.My.Resources.Resources.Culture">
+	<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member><member name="P:Nrc.LaunchPad.My.Resources.Resources.CloseImage">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.LaunchPad.My.Resources.Resources.MinimizeImage">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="T:Nrc.LaunchPad.My.Resources.Resources">
+	<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member><member name="M:Nrc.LaunchPad.Globals.ReportException(System.Exception)">
+	<summary>Overload that will pass to ReportException method with logic in it.</summary>
+	<param name="ex"></param>
+	<Creator>Jeff Fleming</Creator>
+	<DateCreated>11/8/2007</DateCreated>
+	<DateModified>11/8/2007</DateModified>
+	<ModifiedBy>Tony Piccoli</ModifiedBy>
+</member><member name="M:Nrc.LaunchPad.Globals.ReportException(System.Exception,System.String)">
+	<summary>Generates and exception dialog, and provides some inherit and optional logging logic such
+  as emailing a list of users, recording a screen scrape at the time of error, etc.</summary>
+	<param name="ex"></param>
+	<param name="titleText"></param>
+	<Creator>Jeff Fleming</Creator>
+	<DateCreated>11/8/2007</DateCreated>
+	<DateModified>11/8/2007</DateModified>
+	<ModifiedBy>Tony Piccoli</ModifiedBy>
+</member><member name="T:Nrc.LaunchPad.Globals">
+	<summary>Class used to contain global static methods.</summary>
+	<Creator>Jeff Fleming</Creator>
+	<DateCreated>11/8/2007</DateCreated>
+	<DateModified>11/8/2007</DateModified>
+	<ModifiedBy>Tony Piccoli</ModifiedBy>
+</member><member name="M:Nrc.LaunchPad.MainForm.HideToTray">
+	<summary>
+ Hides the form and puts an icon for it in the system tray
+ </summary>
+</member><member name="M:Nrc.LaunchPad.MainForm.UnhideFromTray">
+	<summary>
+ Unhides the form and takes it out of the system tray
+ </summary>
+</member><member name="M:Nrc.LaunchPad.MainForm.ExtractURL(System.String)">
+	<summary>
+ Returns the url path that is stored in a .url shortcut
+ </summary>
+	<param name="shortCutPath"></param>
+</member>
+</members>
+</doc>

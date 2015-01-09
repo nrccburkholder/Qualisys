@@ -1,0 +1,271 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+Nrc.Framework.Notification
+</name>
+</assembly>
+<members>
+<member name="M:Nrc.Framework.Notification.Message.LoadTemplateData">
+	<summary>Loads the message object with its template specific variables.</summary>
+	<CreatedBy>Tony Piccoli</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="M:Nrc.Framework.Notification.Message.LoadTemplateSchema">
+	<summary>Poplulates the table definition objects.</summary>
+	<CreatedBy>Tony Piccoli</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="M:Nrc.Framework.Notification.Message.ParseEmailString(Nrc.Framework.Notification.AddressCollection@,System.String)">
+	<summary>Helper method to parse a semicolon delimited string into individual emails.</summary>
+	<param name="obj">the address collection you are using.</param>
+	<param name="delimitedString">the semicolon delimited string you are using.</param>
+	<CreatedBy>Tony Piccoli</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="T:Nrc.Framework.Notification.Message.SP">
+	<summary>Private class to hold stored procedure definitions.</summary>
+	<CreatedBy>Tony Piccoli</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="T:Nrc.Framework.Notification.Message">
+	<summary>Message class.  This section contains methods specific to DB retrieval.</summary>
+	<CreatedBy>Tony Piccoli</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="P:Nrc.Framework.Notification.Attachment.FilePath">
+	<summary>File path of the attachment you are trying to send.</summary>
+	<value></value>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="M:Nrc.Framework.Notification.Attachment.#ctor(System.String)">
+	<summary>Constructor states you must path in the file path of the attachment you are trying to send.</summary>
+	<param name="filePath"></param>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="T:Nrc.Framework.Notification.Attachment">
+	<summary>Wrapper class containing attachment path info that the active up object will use to attatch a file to an email</summary>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="M:Nrc.Framework.Notification.AttachmentCollection.Add(Nrc.Framework.Notification.Attachment)">
+	<summary>Adds to the list with an attachment object.</summary>
+	<param name="attachment"></param>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="M:Nrc.Framework.Notification.AttachmentCollection.Add(System.String)">
+	<summary>Adds to the list with a filepath as a string.</summary>
+	<param name="fileName"></param>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="T:Nrc.Framework.Notification.AttachmentCollection">
+	<summary>Represents a list of attachment objects.</summary>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="T:Nrc.Framework.Notification.MessageSendException">
+	<summary>This message rasies when the send method of the encapsulated mail object fails.</summary>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="P:Nrc.Framework.Notification.DatabaseHelper.Db">
+	<summary>Retrieves an instance of a database object.</summary>
+	<value></value>
+	<CreatedBy>Tony Piccoli</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="M:Nrc.Framework.Notification.DatabaseHelper.ExecuteReader(System.Data.Common.DbCommand)">
+	<summary>Executes a DBCommand object returning an IDataReader</summary>
+	<param name="cmd"></param>
+	<returns>IDataReader</returns>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="T:Nrc.Framework.Notification.InvalidPropertyValueException">
+	<summary>The exception raises when you have an invalid property in the message object.</summary>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="P:Nrc.Framework.Notification.AddressCollection.Links">
+	<summary>Formats the list of address object values as a semi colon delimted string.</summary>
+	<value></value>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="P:Nrc.Framework.Notification.AddressCollection.Merged">
+	<summary>Formats the list of address object values as a semi colon delimted string.</summary>
+	<value></value>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="M:Nrc.Framework.Notification.AddressCollection.Add(Nrc.Framework.Notification.Address)">
+	<summary>Adds to list by passing in an address object.</summary>
+	<param name="address"></param>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="M:Nrc.Framework.Notification.AddressCollection.Add(System.String)">
+	<summary>Adds to list by passing in an email string.</summary>
+	<param name="email"></param>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="M:Nrc.Framework.Notification.AddressCollection.Add(System.String,System.String)">
+	<summary>Adds to list by passing in an email string an friendly email name.</summary>
+	<param name="email"></param>
+	<param name="name"></param>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="T:Nrc.Framework.Notification.AddressCollection">
+	<summary>A List of Address objects used for things like the to collection of an email.</summary>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="P:Nrc.Framework.Notification.Message.From">
+	<summary>Represents the from address in a email</summary>
+	<value>An address object</value>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="P:Nrc.Framework.Notification.Message.To">
+	<summary>Represents the to collection of emails in a email to line</summary>
+	<value>An AddressCollection object</value>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="P:Nrc.Framework.Notification.Message.Cc">
+	<summary>Represents the cc collection of emails for an email cc line.</summary>
+	<value>An AddressCollection object</value>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="P:Nrc.Framework.Notification.Message.Bcc">
+	<summary>Represents the bcc collection of bcc email addresses.</summary>
+	<value>An AddressCollection object</value>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="P:Nrc.Framework.Notification.Message.Subject">
+	<summary>Represents the subject line of an email.</summary>
+	<value>the subject line as a string.</value>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="P:Nrc.Framework.Notification.Message.BodyText">
+	<summary>Represents the body text of a non HTML based message.</summary>
+	<value>String representing the body text of a non html based message.</value>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="P:Nrc.Framework.Notification.Message.BodyHtml">
+	<summary>Represents the body html of an html message.</summary>
+	<value>A string that represents the body html of an html message.</value>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="P:Nrc.Framework.Notification.Message.Attachments">
+	<summary>A collection of attachment objects which contain path to the files wanting to be attached to an email.</summary>
+	<value>AttachmentCollection</value>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="P:Nrc.Framework.Notification.Message.ReplacementValues">
+	<summary>This list represents values that will be replaced of of an email body.  The user will fill this list which will then merge against merge fields in contained within the body html or text.</summary>
+	<value>Dictionary(Of String, String)</value>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="P:Nrc.Framework.Notification.Message.ReplacementTables">
+	<summary>This list represents key - table name - value data table used as merge field replacements of tables within the body or text of an email.</summary>
+	<value>Dictionary(Of String, DataTable)</value>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="P:Nrc.Framework.Notification.Message.ValidationErrors">
+	<summary>A string list of validation errors such as not putting anything in the from clause or having invalid merge fields.</summary>
+	<value>List(Of String)</value>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="M:Nrc.Framework.Notification.Message.#ctor(System.String)">
+	<summary>This constructor will create a message object for a stand alone notification (no template).</summary>
+	<param name="smtpServer">Specifies the SMTP server to be used to send the message</param>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="M:Nrc.Framework.Notification.Message.#ctor(System.String,System.String)">
+	<summary>This constructor will create a message object that for a templated notification.</summary>
+	<param name="templateName">Specifies the name of the template to be used to create the message</param>
+	<param name="smtpServer">Specifies the SMTP server to be used to send the message</param>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="M:Nrc.Framework.Notification.Message.Validate">
+	<summary>Initiates the validation of fields within the message object.</summary>
+	<returns>True if message is valid, else false.</returns>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="M:Nrc.Framework.Notification.Message.MergeTemplate">
+	<summary>Performs the merge of a templated message</summary>
+	<returns>true if merge is successful else false.</returns>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="M:Nrc.Framework.Notification.Message.Send">
+	<summary>If a valid message will send the email(s)</summary>
+	<returns>true if sent else false.</returns>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="M:Nrc.Framework.Notification.Message.Summary(System.String@)">
+	<summary>Returns a html printable summary of an email message represented in the message object.</summary>
+	<param name="messagePreview"></param>
+	<returns>true if no exceptions, else false.</returns>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="M:Nrc.Framework.Notification.Message.BuildMessage">
+	<summary>Creates an active up mail object that can be sent.</summary>
+	<returns>an active Up Message object.</returns>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="M:Nrc.Framework.Notification.Message.ValidateAddresses">
+	<summary>Checks the to, from, bcc, cc address to make sure they contain valid email addresses.</summary>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="M:Nrc.Framework.Notification.Message.ValidateAttachments">
+	<summary>Validates that any file needed to be attatched actually exist.</summary>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="M:Nrc.Framework.Notification.Message.ValidateSubject">
+	<summary>Validates that a subject line was entered.</summary>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="M:Nrc.Framework.Notification.Message.ValidateBody">
+	<summary>Validates that a body was entered and that any mergefields required were put in by the user of the message object.</summary>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="P:Nrc.Framework.Notification.Address.Email">
+	<summary>The Internet email address (RFC 2822 addr-spec).</summary>
+	<value></value>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="P:Nrc.Framework.Notification.Address.Name">
+	<summary>The Address owner's fullname.</summary>
+	<value></value>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="P:Nrc.Framework.Notification.Address.Link">
+	<summary>Gets an HTML formatted link to the address (mailto: form).</summary>
+	<value></value>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="P:Nrc.Framework.Notification.Address.Merged">
+	<summary>Gets a string compliant with RFC2822 address specification that represents the Address with the owner's fullname.</summary>
+	<value></value>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="P:Nrc.Framework.Notification.Address.AuAddress">
+	<summary>Gets the internal ActiveUp Address object</summary>
+	<value></value>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="M:Nrc.Framework.Notification.Address.ToString">
+	<summary>Returns a String that represents the current Object.</summary>
+	<returns></returns>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="M:Nrc.Framework.Notification.Address.#ctor">
+	<summary>Default constructor.</summary>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="M:Nrc.Framework.Notification.Address.#ctor(System.String)">
+	<summary>Constructor to use when you only have or need the email address.</summary>
+	<param name="email"></param>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="M:Nrc.Framework.Notification.Address.#ctor(System.String,System.String)">
+	<summary>Constructor to use when you have an email address as well as a friendly name.</summary>
+	<param name="email"></param>
+	<param name="name"></param>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="T:Nrc.Framework.Notification.Address">
+	<summary>This class represents and email address that can contain either an email only and or an email with a friendly name.</summary>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="T:Nrc.Framework.Notification.MessageTypes">
+	<summary>Enum that tells whether or not the declared message object is a normal or template type.</summary>
+	<CreatedBy>Jeff Fleming</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member>
+</members>
+</doc>

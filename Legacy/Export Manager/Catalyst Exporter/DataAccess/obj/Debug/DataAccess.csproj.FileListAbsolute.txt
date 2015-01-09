@@ -1,0 +1,17 @@
+C:\gitrepos\Qualisys\Legacy\Export Manager\Catalyst Exporter\DataAccess\bin\Debug\Nrc.CatalystExporter.DataAccess.dll.config
+C:\gitrepos\Qualisys\Legacy\Export Manager\Catalyst Exporter\DataAccess\bin\Debug\Nrc.CatalystExporter.DataAccess.dll
+C:\gitrepos\Qualisys\Legacy\Export Manager\Catalyst Exporter\DataAccess\bin\Debug\Nrc.CatalystExporter.DataAccess.pdb
+C:\gitrepos\Qualisys\Legacy\Export Manager\Catalyst Exporter\DataAccess\bin\Debug\EntityFramework.dll
+C:\gitrepos\Qualisys\Legacy\Export Manager\Catalyst Exporter\DataAccess\bin\Debug\Nrc.CatalystExporter.DataContracts.dll
+C:\gitrepos\Qualisys\Legacy\Export Manager\Catalyst Exporter\DataAccess\bin\Debug\Nrc.CatalystExporter.Logger.dll
+C:\gitrepos\Qualisys\Legacy\Export Manager\Catalyst Exporter\DataAccess\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.dll
+C:\gitrepos\Qualisys\Legacy\Export Manager\Catalyst Exporter\DataAccess\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+C:\gitrepos\Qualisys\Legacy\Export Manager\Catalyst Exporter\DataAccess\bin\Debug\Microsoft.Practices.Unity.Interception.dll
+C:\gitrepos\Qualisys\Legacy\Export Manager\Catalyst Exporter\DataAccess\bin\Debug\Microsoft.Practices.ServiceLocation.dll
+C:\gitrepos\Qualisys\Legacy\Export Manager\Catalyst Exporter\DataAccess\bin\Debug\Microsoft.Practices.Unity.dll
+C:\gitrepos\Qualisys\Legacy\Export Manager\Catalyst Exporter\DataAccess\bin\Debug\Nrc.CatalystExporter.DataContracts.pdb
+C:\gitrepos\Qualisys\Legacy\Export Manager\Catalyst Exporter\DataAccess\bin\Debug\Nrc.CatalystExporter.Logger.pdb
+C:\gitrepos\Qualisys\Legacy\Export Manager\Catalyst Exporter\DataAccess\bin\Debug\EntityFramework.xml
+C:\gitrepos\Qualisys\Legacy\Export Manager\Catalyst Exporter\DataAccess\obj\Debug\DataAccess.csprojResolveAssemblyReference.cache
+C:\gitrepos\Qualisys\Legacy\Export Manager\Catalyst Exporter\DataAccess\obj\Debug\Nrc.CatalystExporter.DataAccess.dll
+C:\gitrepos\Qualisys\Legacy\Export Manager\Catalyst Exporter\DataAccess\obj\Debug\Nrc.CatalystExporter.DataAccess.pdb

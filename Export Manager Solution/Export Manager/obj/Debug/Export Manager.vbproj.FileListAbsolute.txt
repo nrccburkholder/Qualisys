@@ -1,0 +1,1 @@
+C:\gitrepos\Qualisys\Export Manager Solution\Export Manager\bin\Debug\ExportManager.exe.config

@@ -1,0 +1,10 @@
+C:\gitrepos\Qualisys\Legacy\Export Manager\Catalyst Exporter\Logger\bin\Debug\Nrc.CatalystExporter.Logger.dll
+C:\gitrepos\Qualisys\Legacy\Export Manager\Catalyst Exporter\Logger\bin\Debug\Nrc.CatalystExporter.Logger.pdb
+C:\gitrepos\Qualisys\Legacy\Export Manager\Catalyst Exporter\Logger\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.dll
+C:\gitrepos\Qualisys\Legacy\Export Manager\Catalyst Exporter\Logger\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+C:\gitrepos\Qualisys\Legacy\Export Manager\Catalyst Exporter\Logger\bin\Debug\Microsoft.Practices.Unity.Interception.dll
+C:\gitrepos\Qualisys\Legacy\Export Manager\Catalyst Exporter\Logger\bin\Debug\Microsoft.Practices.ServiceLocation.dll
+C:\gitrepos\Qualisys\Legacy\Export Manager\Catalyst Exporter\Logger\bin\Debug\Microsoft.Practices.Unity.dll
+C:\gitrepos\Qualisys\Legacy\Export Manager\Catalyst Exporter\Logger\obj\Debug\Nrc.CatalystExporter.Logger.dll
+C:\gitrepos\Qualisys\Legacy\Export Manager\Catalyst Exporter\Logger\obj\Debug\Nrc.CatalystExporter.Logger.pdb
+C:\gitrepos\Qualisys\Legacy\Export Manager\Catalyst Exporter\Logger\obj\Debug\Logger.csprojResolveAssemblyReference.cache

@@ -1,0 +1,31 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+QSIServicesTester
+</name>
+</assembly>
+<members>
+<member name="M:QSI_Services_Tester.QSITransferResultsServiceTest.DirectoryCleanUp(System.String,System.Int32)">
+	<summary>
+ Remove sub directories and their files older then {days}.
+ </summary>
+	<param name="path">The base directory path</param>
+	<param name="days">Number of days to retain items</param>
+	<remarks>Remove items where last write time was {days} days ago.</remarks>
+</member><member name="P:QSI_Services_Tester.My.Resources.Resources.ResourceManager">
+	<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member><member name="P:QSI_Services_Tester.My.Resources.Resources.Culture">
+	<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member><member name="T:QSI_Services_Tester.My.Resources.Resources">
+	<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+</members>
+</doc>

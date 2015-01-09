@@ -1,0 +1,345 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+QLoader
+</name>
+</assembly>
+<members>
+<member name="P:Nrc.Qualisys.QLoader.My.Resources.Resources.ResourceManager">
+	<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member><member name="P:Nrc.Qualisys.QLoader.My.Resources.Resources.Culture">
+	<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member><member name="P:Nrc.Qualisys.QLoader.My.Resources.Resources.AutoMap32">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.Qualisys.QLoader.My.Resources.Resources.Check1">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.Qualisys.QLoader.My.Resources.Resources.Check16">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.Qualisys.QLoader.My.Resources.Resources.ClearMappings32">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.Qualisys.QLoader.My.Resources.Resources.DeleteRed16">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.Qualisys.QLoader.My.Resources.Resources.Excel16">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.Qualisys.QLoader.My.Resources.Resources.NoWay">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.Qualisys.QLoader.My.Resources.Resources.NoWay16">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.Qualisys.QLoader.My.Resources.Resources.Refresh32">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.Qualisys.QLoader.My.Resources.Resources.Reports32">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.Qualisys.QLoader.My.Resources.Resources.Save16">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.Qualisys.QLoader.My.Resources.Resources.Undo32">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="T:Nrc.Qualisys.QLoader.My.Resources.Resources">
+	<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member><member name="M:Nrc.Qualisys.QLoader.ReportViewer.CanApproveReport">
+	<summary>Determins if the user can approve or apply a file</summary>
+	<RevisionList><list type="table">
+			<listheader>
+				<term>Date Modified - Modified By</term>
+				<description>Description</description></listheader>
+			<item>
+				<term>08/12/2008 - Arman Mnatsakanyan</term>
+				<description>Made it possible to approve and also apply by the same person if
+ the Qloader is set to a single person approval mode.</description></item>
+			<item>
+				<term>
+				</term>
+				<description>
+					<para></para></description></item></list></RevisionList>
+</member><member name="M:Nrc.Qualisys.QLoader.ReportViewer.btnApprove_Click(System.Object,System.EventArgs)">
+	<summary>Handles Approve button click event</summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<RevisionList><list type="table">
+			<listheader>
+				<term>Date Modified - Modified By</term>
+				<description>Description</description></listheader>
+			<item>
+				<term>08/12/08 - Arman Mnatsakanyan</term>
+				<description>Changed the parameter of file.Approve from the loginname to the
+ actual user object.</description></item>
+			<item>
+				<term>
+				</term>
+				<description>
+					<para></para></description></item></list></RevisionList>
+</member><member name="P:Nrc.Qualisys.QLoader.SortableListView.Columns">
+ -----------------------------------------------------------------------------
+ <summary>
+ The collection of SortableColumns that belong to this SortableListView
+ </summary>
+	<returns></returns>
+	<remarks>
+	</remarks>
+	<history>
+ 	[JCamp]	7/14/2004	Created
+ </history>
+ -----------------------------------------------------------------------------
+
+</member><member name="M:Nrc.Qualisys.QLoader.SortableListView.SortList">
+ -----------------------------------------------------------------------------
+ <summary>
+ Sorts the listed based on the last sort column selected.  If no sort column
+ has been selected, nothing will happen.
+ </summary>
+	<remarks>
+	</remarks>
+	<history>
+ 	[JCamp]	7/14/2004	Created
+ </history>
+ -----------------------------------------------------------------------------
+
+</member><member name="M:Nrc.Qualisys.QLoader.SortableListView.ToHtml">
+ -----------------------------------------------------------------------------
+ <summary>
+ Generates an HTML Fragment string representing all the items in the ListView.
+ </summary>
+	<returns></returns>
+	<remarks>
+	</remarks>
+	<history>
+ 	[JCamp]	7/14/2004	Created
+ </history>
+ -----------------------------------------------------------------------------
+
+</member><member name="M:Nrc.Qualisys.QLoader.SortableListView.ToTabDelimitedString">
+ -----------------------------------------------------------------------------
+ <summary>
+ Generates a Tab Delimited string containing all the items in the listview
+ </summary>
+	<returns>A string with all the items in the listview</returns>
+	<remarks>
+	</remarks>
+	<history>
+ 	[JCamp]	7/14/2004	Created
+ </history>
+ -----------------------------------------------------------------------------
+
+</member><member name="M:Nrc.Qualisys.QLoader.SortableListView.CopyToClipboard">
+ -----------------------------------------------------------------------------
+ <summary>
+ Copies the contents of the SortableListView to the clipboard for pasting in other
+ applications.
+ </summary>
+	<remarks>
+	</remarks>
+	<history>
+ 	[JCamp]	7/14/2004	Created
+ </history>
+ -----------------------------------------------------------------------------
+
+</member><member name="M:Nrc.Qualisys.QLoader.SortableListView.SortList(System.Int32,System.Boolean)">
+ -----------------------------------------------------------------------------
+ <summary>
+ Sorts the list based on a certain column.
+ </summary>
+	<param name="column">The column number that should be sorted.</param>
+	<remarks>
+	</remarks>
+	<history>
+ 	[JCamp]	7/14/2004	Created
+ </history>
+ -----------------------------------------------------------------------------
+
+</member><member name="M:Nrc.Qualisys.QLoader.SortableListView.OnColumnClick(System.Windows.Forms.ColumnClickEventArgs)">
+ -----------------------------------------------------------------------------
+ <summary>
+ Overrides OnColumnClick and performs the item sort based on that column.
+ </summary>
+	<param name="e">the ColumnClickEventArgs for this event.</param>
+	<remarks>
+	</remarks>
+	<history>
+ 	[JCamp]	7/14/2004	Created
+ </history>
+ -----------------------------------------------------------------------------
+
+</member><member name="M:Nrc.Qualisys.QLoader.SortableListView.OnKeyUp(System.Windows.Forms.KeyEventArgs)">
+ -----------------------------------------------------------------------------
+ <summary>
+ Overrides OnKeyUp and checks for a Ctrl+C combination.  If Ctrl+C was pressed then
+ the contents of the SortableListView are copied to the clipboard.
+ </summary>
+	<param name="e"></param>
+	<remarks>
+	</remarks>
+	<history>
+ 	[JCamp]	7/14/2004	Created
+ </history>
+ -----------------------------------------------------------------------------
+
+</member><member name="T:Nrc.Qualisys.QLoader.SortableListView">
+ -----------------------------------------------------------------------------
+ Project	 : NRC_Common_Classes
+ Class	 : WinForms.SortableListView
+ 
+ -----------------------------------------------------------------------------
+ <summary>
+ This is a ListView control where the columns are clickable for sorting.
+ </summary>
+	<remarks>
+ This is still a little buggy but is a good start.  For example, if you set the sort
+ order then re-fill the list, things are no longer sorted.
+ </remarks>
+	<history>
+ 	[JCamp]	7/14/2004	Created
+ </history>
+ -----------------------------------------------------------------------------
+
+</member><member name="T:Nrc.Qualisys.QLoader.SortableColumn.ColumnDataType">
+ -----------------------------------------------------------------------------
+ <summary>
+ The data type of the column.
+ </summary>
+	<remarks>
+	</remarks>
+	<history>
+ 	[JCamp]	7/14/2004	Created
+ </history>
+ -----------------------------------------------------------------------------
+
+</member><member name="P:Nrc.Qualisys.QLoader.SortableColumn.DataType">
+ -----------------------------------------------------------------------------
+ <summary>
+ The type of data that will be stored in this column.  This information is used
+ in the sorting process.
+ </summary>
+	<remarks>
+	</remarks>
+	<history>
+ 	[JCamp]	7/14/2004	Created
+ </history>
+ -----------------------------------------------------------------------------
+
+</member><member name="T:Nrc.Qualisys.QLoader.SortableColumn">
+ -----------------------------------------------------------------------------
+ Project	 : NRC_Common_Classes
+ Class	 : WinForms.SortableColumn
+ 
+ -----------------------------------------------------------------------------
+ <summary>
+ This is a ColumnHeader that also contains the DataType so that the SortableListView
+ control knows how to sort items in this column.
+ </summary>
+	<remarks>
+	</remarks>
+	<history>
+ 	[JCamp]	7/14/2004	Created
+ </history>
+ -----------------------------------------------------------------------------
+
+</member><member name="T:Nrc.Qualisys.QLoader.SortableColumnCollection">
+ -----------------------------------------------------------------------------
+ Project	 : NRC_Common_Classes
+ Class	 : WinForms.SortableColumnCollection
+ 
+ -----------------------------------------------------------------------------
+ <summary>
+ A collection of SortableColumns.
+ </summary>
+	<remarks>
+	</remarks>
+	<history>
+ 	[JCamp]	7/14/2004	Created
+ </history>
+ -----------------------------------------------------------------------------
+
+</member><member name="P:Nrc.Qualisys.QLoader.SectionHeader.HeaderText">
+ -----------------------------------------------------------------------------
+ <summary>
+ The text that should be rendered in the header if desired.
+ </summary>
+	<history>
+ 	[JCamp]	7/14/2004	Created
+ </history>
+ -----------------------------------------------------------------------------
+
+</member><member name="M:Nrc.Qualisys.QLoader.SectionHeader.#ctor">
+ -----------------------------------------------------------------------------
+ <summary>
+ Default constructor.
+ </summary>
+	<history>
+ 	[JCamp]	7/14/2004	Created
+ </history>
+ -----------------------------------------------------------------------------
+
+</member><member name="M:Nrc.Qualisys.QLoader.SectionHeader.OnPaint(System.Windows.Forms.PaintEventArgs)">
+ -----------------------------------------------------------------------------
+ <summary>
+ Overrides the baseclass OnPaint method to draw the SectionHeader
+ </summary>
+	<param name="e">the PaintEventArgs for the control</param>
+	<history>
+ 	[JCamp]	7/14/2004	Created
+ </history>
+ -----------------------------------------------------------------------------
+
+</member><member name="M:Nrc.Qualisys.QLoader.SectionHeader.OnSizeChanged(System.EventArgs)">
+ -----------------------------------------------------------------------------
+ <summary>
+ Overrides the baseclass OnSizeChanged method to resize the brushes.
+ </summary>
+	<param name="e">The EventArgs for the event</param>
+	<history>
+ 	[JCamp]	7/14/2004	Created
+ </history>
+ -----------------------------------------------------------------------------
+
+</member><member name="M:Nrc.Qualisys.QLoader.SectionHeader.Draw(System.Drawing.Graphics)">
+ -----------------------------------------------------------------------------
+ <summary>
+ Draws the gradient box and the header text onto the panel
+ </summary>
+	<param name="g">the Graphics object for the panel control</param>
+	<remarks>
+	</remarks>
+	<history>
+ 	[JCamp]	7/14/2004	Created
+ </history>
+ -----------------------------------------------------------------------------
+
+</member><member name="M:Nrc.Qualisys.QLoader.frmDataGrid.btnExport_Click(System.Object,System.EventArgs)">
+	<summary>
+ Exports Contents of Grid to Excel document
+ </summary>
+	<remarks>SK 08-27-2008 Changed from NRC framework's write excel function to built-in DevX export to excel</remarks>
+</member>
+</members>
+</doc>

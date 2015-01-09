@@ -1,0 +1,26 @@
+\\lnk0pusers01\users\tbutler\My Documents\Visual Studio 2013\Projects\NRC.Exporting\obj\Debug\NRC.Exporting.csprojResolveAssemblyReference.cache
+\\lnk0pusers01\users\tbutler\My Documents\Visual Studio 2013\Projects\NRC.Exporting\bin\Debug\NRC.Exporting.dll
+\\lnk0pusers01\users\tbutler\My Documents\Visual Studio 2013\Projects\NRC.Exporting\bin\Debug\NRC.Exporting.pdb
+\\lnk0pusers01\users\tbutler\My Documents\Visual Studio 2013\Projects\NRC.Exporting\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+\\lnk0pusers01\users\tbutler\My Documents\Visual Studio 2013\Projects\NRC.Exporting\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+\\lnk0pusers01\users\tbutler\My Documents\Visual Studio 2013\Projects\NRC.Exporting\bin\Debug\Microsoft.Practices.ObjectBuilder.dll
+\\lnk0pusers01\users\tbutler\My Documents\Visual Studio 2013\Projects\NRC.Exporting\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.xml
+\\lnk0pusers01\users\tbutler\My Documents\Visual Studio 2013\Projects\NRC.Exporting\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.xml
+\\lnk0pusers01\users\tbutler\My Documents\Visual Studio 2013\Projects\NRC.Exporting\bin\Debug\Microsoft.Practices.ObjectBuilder.xml
+\\lnk0pusers01\users\tbutler\My Documents\Visual Studio 2013\Projects\NRC.Exporting\obj\Debug\NRC.Exporting.dll
+\\lnk0pusers01\users\tbutler\My Documents\Visual Studio 2013\Projects\NRC.Exporting\obj\Debug\NRC.Exporting.pdb
+C:\gitrepos\Qualisys\NRC CEM Exporting\NRC.Exporting\bin\Debug\NRC.Exporting.dll
+C:\gitrepos\Qualisys\NRC CEM Exporting\NRC.Exporting\bin\Debug\NRC.Exporting.pdb
+C:\gitrepos\Qualisys\NRC CEM Exporting\NRC.Exporting\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+C:\gitrepos\Qualisys\NRC CEM Exporting\NRC.Exporting\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+C:\gitrepos\Qualisys\NRC CEM Exporting\NRC.Exporting\bin\Debug\NLog.dll
+C:\gitrepos\Qualisys\NRC CEM Exporting\NRC.Exporting\bin\Debug\Microsoft.Practices.ObjectBuilder.dll
+C:\gitrepos\Qualisys\NRC CEM Exporting\NRC.Exporting\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.xml
+C:\gitrepos\Qualisys\NRC CEM Exporting\NRC.Exporting\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.xml
+C:\gitrepos\Qualisys\NRC CEM Exporting\NRC.Exporting\bin\Debug\NLog.xml
+C:\gitrepos\Qualisys\NRC CEM Exporting\NRC.Exporting\bin\Debug\Microsoft.Practices.ObjectBuilder.xml
+C:\gitrepos\Qualisys\NRC CEM Exporting\NRC.Exporting\obj\Debug\NRC.Exporting.dll
+C:\gitrepos\Qualisys\NRC CEM Exporting\NRC.Exporting\obj\Debug\NRC.Exporting.pdb
+C:\gitrepos\Qualisys\NRC CEM Exporting\NRC.Exporting\obj\Debug\NRC.Exporting.csprojResolveAssemblyReference.cache
+C:\gitrepos\Qualisys\NRC CEM Exporting\NRC.Exporting\bin\Debug\NRC.Logging.dll
+C:\gitrepos\Qualisys\NRC CEM Exporting\NRC.Exporting\bin\Debug\NRC.Logging.pdb

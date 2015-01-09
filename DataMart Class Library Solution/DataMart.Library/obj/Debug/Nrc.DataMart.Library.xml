@@ -1,0 +1,945 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+Nrc.DataMart.Library
+</name>
+</assembly>
+<members>
+<member name="T:Nrc.DataMart.Library.Mode">
+	<summary>
+ Takes existing CMS/HCAHPS export definitions and creates an export file.
+ In addition to the export file, it also creates a summary, exception and TPS report. 
+ </summary>
+	<remarks></remarks>
+</member><member name="P:Nrc.DataMart.Library.Client.Id">
+	<summary>
+ The unique identifier of the Client in the data store
+ </summary>
+</member><member name="P:Nrc.DataMart.Library.Client.Name">
+	<summary>
+ The name of the client
+ </summary>
+</member><member name="P:Nrc.DataMart.Library.Client.DisplayLabel">
+	<summary>
+ A display label for this client
+ </summary>
+</member><member name="P:Nrc.DataMart.Library.Client.IsDirty">
+	<summary>
+ Returns true if the object has been modified since it was retrieved from the data store.
+ </summary>
+</member><member name="P:Nrc.DataMart.Library.Client.Studies">
+	<summary>
+ The collection of Study objects that belong to this client
+ </summary>
+</member><member name="M:Nrc.DataMart.Library.Client.#ctor">
+	<summary>
+ Initializes an intance of the Client class 
+ </summary>
+</member><member name="M:Nrc.DataMart.Library.Client.#ctor(System.Collections.ObjectModel.Collection{Nrc.DataMart.Library.Study})">
+	<summary>
+ Initializes an intance of the Client class with the supplied collection of child Study objects
+ </summary>
+	<param name="studies">The collection of Studies that belong to the client</param>
+</member><member name="M:Nrc.DataMart.Library.Client.GetClient(System.Int32)">
+	<summary>
+ Returns a Client object for the ID specified
+ </summary>
+	<param name="clientId">The ID of the Client object to return</param>
+</member><member name="M:Nrc.DataMart.Library.Client.GetClientsByUser(System.String,Nrc.DataMart.Library.Client.PopulateDepth)">
+	<summary>
+ Retrieves from the data store a collection of all the clients and studies that
+ the user has access to.
+ </summary>
+	<param name="userName">The user name to retrieve the collection of clients for.</param>
+	<returns>A collection of clients that the user has access to</returns>
+</member><member name="M:Nrc.DataMart.Library.Client.GetClientsByUser(System.String)">
+	<summary>
+ Returns a collection of clients, studies and surveys that the user specified as access to
+ </summary>
+	<param name="userName">The name of the user for whom to retrive the client collection</param>
+	<returns></returns>
+</member><member name="T:Nrc.DataMart.Library.Client.PopulateDepth">
+	<summary>
+ Specifies how deep the Client, Study, Survey object tree should be initially populated
+ </summary>
+	<remarks></remarks>
+</member><member name="M:Nrc.DataMart.Library.Client.ResetDirtyFlag">
+	<summary>
+ Marks the object as being up-to-date with the data store
+ </summary>
+</member><member name="M:Nrc.DataMart.Library.Client.ToString">
+	<summary>
+ Returns the Client DisplayLabel
+ </summary>
+</member><member name="M:Nrc.DataMart.Library.Client.GetExportSets(Nrc.DataMart.Library.ExportSetType)">
+	<summary>
+ Returns all the ExportSet objects that thave been created for the client
+ </summary>
+	<returns>Returns a collection of ExportSet objects belonging to the client</returns>
+</member><member name="M:Nrc.DataMart.Library.Client.GetExportSets(System.Nullable{System.DateTime},System.Nullable{System.DateTime},Nrc.DataMart.Library.ExportSetType)">
+	<summary>
+ Returns all the ExportSet objects that thave been created for the client within the date range specified
+ </summary>
+	<param name="creationFilterStartDate">The starting date used to filter the results</param>
+	<param name="creationFilterEndDate">The ending date used to filter the results</param>
+	<returns>
+ Returns a collection of ExportSet objects belonging to the client and were created
+ during the date range specified.
+ </returns>
+</member><member name="T:Nrc.DataMart.Library.Client">
+	<summary>
+ Represents a DataMart Client
+ </summary>
+</member><member name="F:Nrc.DataMart.Library.DataProvider.mInstance">
+	<summary>Holds the default instance of the data provider</summary>
+</member><member name="P:Nrc.DataMart.Library.DataProvider.ProviderList">
+	<summary>
+ Returns a collection of provider names and their corresponding types for all the providers defined in the config file
+ </summary>
+</member><member name="P:Nrc.DataMart.Library.DataProvider.Instance">
+	<summary>
+ Returns the default instance of the DataProvider as defined by the .Config file
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="T:Nrc.DataMart.Library.DataProvider">
+	<summary>
+ The DataProvider class defines an interface for persisting or retreiving DataMart.Library objects to or from a data store
+ </summary>
+	<remarks>This class is Abstract so that a more specialized class can implement the functionality needed for a specific type of data store</remarks>
+</member><member name="P:Nrc.DataMart.Library.Scale.Id">
+	<summary>
+ Id for this scale
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:Nrc.DataMart.Library.Scale.MaxScaleOrder">
+	<summary>
+ Each scale has an ordering of its responses.  The max scale order is the largest order that exists for this scale
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:Nrc.DataMart.Library.Scale.SurveyId">
+	<summary>
+ ID for the survey that this scale belongs to
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:Nrc.DataMart.Library.Scale.Responses">
+	<summary>
+ Collection of the responses that are part of this scale
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:Nrc.DataMart.Library.Scale.IsDirty">
+	<summary>
+ Returns true if the object has been modified since it was retrieved from the data store.
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:Nrc.DataMart.Library.Scale.GetScale(System.Int32,System.Int32)">
+	<summary>
+ Gets a scale object for the specified ID and survey ID
+ </summary>
+	<param name="scaleId"></param>
+	<param name="surveyId"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:Nrc.DataMart.Library.Scale.ResetDirtyFlag">
+	<summary>
+ Resets the flag to indicate that the object is not different from the copy in the data store
+ </summary>
+	<remarks></remarks>
+</member><member name="M:Nrc.DataMart.Library.ScheduledExport.GenerateFileName">
+	<summary>This method parses together the filename and extension.  If no file
+ name is set, the is defaults to ScheduledExport_FileID</summary>
+	<returns>Full File name</returns>
+	<CreateBy>Jeff Fleming</CreateBy>
+	<RevisionList><list type="table">
+			<listheader>
+				<term>Date Modified - Modified By</term>
+				<description>Description</description></listheader>
+			<item>
+				<term>20071213 - Tony Piccoli</term>
+				<description>Removed the File ID from the file name when a filename
+ exists.</description></item>
+			<item>
+				<term>
+				</term>
+				<description>
+					<para></para></description></item></list></RevisionList>
+</member><member name="M:Nrc.DataMart.Library.CAHPSExporter.CreateExportCsvFile(System.Data.IDataReader,System.String)">
+	<summary>
+ Creates an export CSV file
+ </summary>
+	<param name="reader">The IDataReader containing the results to write</param>
+	<param name="filePath">The path of the file to be created</param>
+	<returns>Returns the count of records written to the file</returns>
+</member><member name="M:Nrc.DataMart.Library.CAHPSExporter.CreateExportXmlFile(System.Data.IDataReader,System.String)">
+	<summary>
+ Creates an export XML file
+ </summary>
+	<param name="reader">The IDataReader containing the results to write</param>
+	<param name="filePath">The path of the file to be created</param>
+	<returns>Returns the count of records written to the file</returns>
+</member><member name="M:Nrc.DataMart.Library.Exporter.CreateExportCsvFile(System.Data.IDataReader,System.String)">
+	<summary>
+ Creates an export CSV file
+ </summary>
+	<param name="reader">The IDataReader containing the results to write</param>
+	<param name="filePath">The path of the file to be created</param>
+	<returns>Returns the count of records written to the file</returns>
+</member><member name="M:Nrc.DataMart.Library.Exporter.CreateExportXmlFile(System.Data.IDataReader,System.String)">
+	<summary>
+ Creates an export XML file
+ </summary>
+	<param name="reader">The IDataReader containing the results to write</param>
+	<param name="filePath">The path of the file to be created</param>
+	<returns>Returns the count of records written to the file</returns>
+</member><member name="P:Nrc.DataMart.Library.Study.Id">
+	<summary>
+ The ID of the Study in the data store
+ </summary>
+</member><member name="P:Nrc.DataMart.Library.Study.ClientId">
+	<summary>
+ The ID of the Client to which this Study belongs
+ </summary>
+</member><member name="P:Nrc.DataMart.Library.Study.Name">
+	<summary>
+ The name of the study
+ </summary>
+</member><member name="P:Nrc.DataMart.Library.Study.DisplayLabel">
+	<summary>
+ A display label for this study
+ </summary>
+</member><member name="P:Nrc.DataMart.Library.Study.IsDirty">
+	<summary>
+ Returns True if this object has been modified since it was retrived from the data store
+ </summary>
+</member><member name="P:Nrc.DataMart.Library.Study.Client">
+	<summary>
+ The Client object to which this study belongs
+ </summary>
+</member><member name="P:Nrc.DataMart.Library.Study.Surveys">
+	<summary>
+ The collection of Survey objects that belong to this study
+ </summary>
+</member><member name="M:Nrc.DataMart.Library.Study.#ctor">
+	<summary>
+ Initializes an instance of the Study class
+ </summary>
+</member><member name="M:Nrc.DataMart.Library.Study.#ctor(Nrc.DataMart.Library.Client)">
+	<summary>
+ Initializes an instance of the Study class and sets the parent client object
+ </summary>
+	<param name="parentClient">The client object to which this study belongs</param>
+</member><member name="M:Nrc.DataMart.Library.Study.#ctor(Nrc.DataMart.Library.Client,System.Collections.ObjectModel.Collection{Nrc.DataMart.Library.Survey})">
+	<summary>
+ Initializes an instance of the Study class, sets the parent client 
+ object, and sets the collection of surveys that belong to the study
+ </summary>
+	<param name="parentClient">The client object to which this study belongs</param>
+	<param name="surveys">The collection of survey objects that belong to this study</param>
+</member><member name="M:Nrc.DataMart.Library.Study.GetStudy(System.Int32)">
+	<summary>
+ Retrieves and populates a study object from the data store
+ </summary>
+	<param name="studyId">The ID of the study to retrieve.</param>
+</member><member name="M:Nrc.DataMart.Library.Study.ResetDirtyFlag">
+	<summary>Marks the object as being up-to-date with the data store</summary>
+</member><member name="M:Nrc.DataMart.Library.Study.ToString">
+	<summary>
+ Returns the Survey DisplayLabel
+ </summary>
+</member><member name="M:Nrc.DataMart.Library.Study.GetExportSets(Nrc.DataMart.Library.ExportSetType)">
+	<summary>
+ Returns all the ExportSet objects that thave been created for the study
+ </summary>
+	<returns>Returns a collection of ExportSet objects belonging to the study</returns>
+</member><member name="M:Nrc.DataMart.Library.Study.GetExportSets(System.Nullable{System.DateTime},System.Nullable{System.DateTime},Nrc.DataMart.Library.ExportSetType)">
+	<summary>
+ Returns all the ExportSet objects that thave been created for the study within the date range specified
+ </summary>
+	<param name="creationFilterStartDate">The starting date used to filter the results</param>
+	<param name="creationFilterEndDate">The ending date used to filter the results</param>
+	<returns>
+ Returns a collection of ExportSet objects belonging to the study and were created
+ during the date range specified.
+ </returns>
+</member><member name="T:Nrc.DataMart.Library.Study">
+	<summary>
+ Represents a DataMart Study
+ </summary>
+</member><member name="P:Nrc.DataMart.Library.Config.EnvironmentName">
+	<summary>The current environment you are in (dev, test, stage, etc)</summary>
+	<value></value>
+	<CreatedBy>Arman Mnatsakanyan</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="P:Nrc.DataMart.Library.Config.DataMartDataProvider">
+	<summary>ESExportNotifcationEmailAddress value from QualPro_Params table. Currently unused.</summary>
+	<value></value>
+	<CreatedBy>Arman Mnatsakanyan</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="P:Nrc.DataMart.Library.Config.ExportNotifcationEmailAddress">
+	<summary>ESExportNotifcationEmailAddress value from QualPro_Params table. Currently unused.</summary>
+	<value></value>
+	<CreatedBy>Arman Mnatsakanyan</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="P:Nrc.DataMart.Library.Config.ErroredFolderPath">
+	<summary>ESErroredFolderPath value from QualPro_Params table</summary>
+	<value></value>
+	<CreatedBy>Arman Mnatsakanyan</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="P:Nrc.DataMart.Library.Config.SmtpServer">
+	<summary>SMTPServer value for the current Environment from QualPro_Params table</summary>
+	<value></value>
+	<CreatedBy>Arman Mnatsakanyan</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="T:Nrc.DataMart.Library.Config">
+	<summary>Wrapper arround settings from QualPro_Params table.</summary>
+	<CreatedBy>Arman Mnatsakanyan</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="P:Nrc.DataMart.Library.ExportFile.Id">
+	<summary>The ID of the ExportFile</summary>
+</member><member name="P:Nrc.DataMart.Library.ExportFile.RecordCount">
+	<summary>The number of records that were written to the file</summary>
+</member><member name="P:Nrc.DataMart.Library.ExportFile.CreatedDate">
+	<summary>The date that the file was created</summary>
+</member><member name="P:Nrc.DataMart.Library.ExportFile.CreatedEmployeeName">
+	<summary>The name of the user who created the file</summary>
+</member><member name="P:Nrc.DataMart.Library.ExportFile.FilePath">
+	<summary>The path where the file was initially stored</summary>
+</member><member name="P:Nrc.DataMart.Library.ExportFile.FileType">
+	<summary>Type type of file that was written</summary>
+</member><member name="P:Nrc.DataMart.Library.ExportFile.FilePartsCount">
+	<summary>The number of parts that the file was broken into</summary>
+</member><member name="M:Nrc.DataMart.Library.ExportFile.CreateExportFile(Nrc.DataMart.Library.ExportSet,System.String,Nrc.DataMart.Library.ExportFileType,System.Boolean,System.Boolean,System.Boolean,System.String,System.Boolean)">
+	<summary>
+ Creates an export file for the specified ExportSet
+ </summary>
+	<param name="export">The ExportSet object being used to define the export file</param>
+	<param name="filePath">The path of the file to create</param>
+	<param name="fileType">The type of file to create</param>
+	<param name="includeOnlyReturns">If True, indicates that only returned records will be included, otherwise all records will be included</param>
+	<param name="includeOnlyDirects">If True, indicates that only direct sample unit records will be included, 
+ otherwise records for all units will be included.</param>
+	<param name="createdEmployeeName">The name of the user who created the file</param>
+</member><member name="M:Nrc.DataMart.Library.ExportFile.CreateExportFile(System.Collections.ObjectModel.Collection{Nrc.DataMart.Library.ExportSet},System.String,Nrc.DataMart.Library.ExportFileType,System.Boolean,System.Boolean,System.Boolean,System.String,System.Boolean)">
+	<summary>
+ Creates an export file that combines the data for all the specified ExportSets
+ </summary>
+	<param name="exportSets">The collection of ExportSet objects used to define the export file</param>
+	<param name="filePath">The path of the file to create</param>
+	<param name="fileType">The type of file to create</param>
+	<param name="includeOnlyReturns">If True, indicates that only returned records will be included, otherwise all records will be included</param>
+	<param name="includeOnlyDirects">If True, indicates that only direct sample unit records will be included, 
+ otherwise records for all units will be included.</param>
+	<param name="createdEmployeeName">The name of the user who created the file</param>
+</member><member name="M:Nrc.DataMart.Library.ExportFile.ResetDirtyFlag">
+	<summary>Marks the object as being up-to-date with the data store</summary>
+</member><member name="T:Nrc.DataMart.Library.ExportFile">
+	<summary>
+ The ExportFile class represents an actual file that has been created from an ExportSet
+ </summary>
+	<remarks></remarks>
+</member><member name="P:Nrc.DataMart.Library.ExportSet.Id">
+	<summary>The Id of the export set</summary>
+</member><member name="P:Nrc.DataMart.Library.ExportSet.Name">
+	<summary>The name of the export set</summary>
+</member><member name="P:Nrc.DataMart.Library.ExportSet.SurveyId">
+	<summary>The survey Id that the export set belongs to</summary>
+</member><member name="P:Nrc.DataMart.Library.ExportSet.SampleUnitId">
+	<summary>The sample unit Id that the export set belongs to</summary>
+</member><member name="P:Nrc.DataMart.Library.ExportSet.StartDate">
+	<summary>The starting date of the records included in the export</summary>
+</member><member name="P:Nrc.DataMart.Library.ExportSet.EndDate">
+	<summary>The ending date of the records included in the export</summary>
+</member><member name="P:Nrc.DataMart.Library.ExportSet.ReportDateField">
+	<summary>The name of the field that was used for reporting when this export was created</summary>
+</member><member name="P:Nrc.DataMart.Library.ExportSet.CreatedDate">
+	<summary>The date that this export was created</summary>
+</member><member name="P:Nrc.DataMart.Library.ExportSet.CreatedEmployeeName">
+	<summary>The name of the employee who created the export set</summary>
+</member><member name="P:Nrc.DataMart.Library.ExportSet.IsDirty">
+	<summary>Returns True if the object has been updated since it was retrieved from the data store</summary>
+</member><member name="M:Nrc.DataMart.Library.ExportSet.#ctor">
+	<summary>Initializes an instance of the ExportSet class</summary>
+</member><member name="M:Nrc.DataMart.Library.ExportSet.GetExportSet(System.Int32)">
+	<summary>
+ Returns an ExportSet object for the ID specified
+ </summary>
+	<param name="exportSetId">The ID of the ExportSet object to return</param>
+</member><member name="M:Nrc.DataMart.Library.ExportSet.CreateNewExportSet(System.String,System.Int32,System.DateTime,System.DateTime,Nrc.DataMart.Library.ExportSetType,System.String)">
+	<summary>
+ Creates a new ExportSet object and adds it to the data store
+ </summary>
+	<param name="name">The name of the export set</param>
+	<param name="surveyId">The ID of the survey to which the export set belongs</param>
+	<param name="startDate">The starting date of records in the export</param>
+	<param name="endDate">The ending date of records in the export</param>
+	<param name="exportType">Specifies the type of export set to create</param>
+	<param name="createdEmployeeName">The name of the user creating the export</param>
+	<returns>Returns the newly created ExportSet object</returns>
+</member><member name="M:Nrc.DataMart.Library.ExportSet.CreateNewExportSet(System.String,System.Int32,System.Int32,System.DateTime,System.DateTime,Nrc.DataMart.Library.ExportSetType,System.String)">
+	<summary>
+ Creates a new ExportSet object and adds it to the data store
+ </summary>
+	<param name="name">The name of the export set</param>
+	<param name="surveyId">The ID of the survey to which the export set belongs</param>
+	<param name="sampleUnitId">The ID of the sample unit to which the export set belongs</param>
+	<param name="startDate">The starting date of records in the export</param>
+	<param name="endDate">The ending date of records in the export</param>
+	<param name="exportType">Specifies the type of export set to create</param>
+	<param name="createdEmployeeName">The name of the user creating the export</param>
+	<returns>Returns the newly created ExportSet object</returns>
+</member><member name="M:Nrc.DataMart.Library.ExportSet.Delete(System.String,System.String@)">
+	<summary>
+ Deletes an ExportSet object from the data store
+ </summary>
+	<param name="deletionEmployeeName">The name of the user deleting the export</param>
+</member><member name="M:Nrc.DataMart.Library.ExportSet.ResetDirtyFlag">
+	<summary>Marks the object as being up-to-date with the data store</summary>
+</member><member name="M:Nrc.DataMart.Library.ExportSet.GetExportSets(System.Collections.ObjectModel.Collection{Nrc.DataMart.Library.Client},System.Collections.ObjectModel.Collection{Nrc.DataMart.Library.Study},System.Collections.ObjectModel.Collection{Nrc.DataMart.Library.Survey},System.Collections.ObjectModel.Collection{Nrc.DataMart.Library.SampleUnit},Nrc.DataMart.Library.ExportSetType)">
+	<summary>
+ Returns a collection of ExportSets that have been created for any of the supplied 
+ client IDs, study IDs or survey IDs 
+ </summary>
+	<param name="clients">The collection of clients</param>
+	<param name="studies">The collection of studies</param>
+	<param name="surveys">The collection of surveys</param>
+	<returns>Returns a collection of ExportSet objects</returns>
+</member><member name="M:Nrc.DataMart.Library.ExportSet.GetExportSets(System.Collections.ObjectModel.Collection{Nrc.DataMart.Library.Client},System.Collections.ObjectModel.Collection{Nrc.DataMart.Library.Study},System.Collections.ObjectModel.Collection{Nrc.DataMart.Library.Survey},System.Collections.ObjectModel.Collection{Nrc.DataMart.Library.SampleUnit},System.Nullable{System.DateTime},System.Nullable{System.DateTime},Nrc.DataMart.Library.ExportSetType)">
+	<summary>
+ Returns a collection of ExportSets that have been created for any of the supplied 
+ client IDs, study IDs or survey IDs during the time frame specified
+ </summary>
+	<param name="clients">The collection of clients</param>
+	<param name="studies">The collection of studies</param>
+	<param name="surveys">The collection of surveys</param>
+	<param name="creationFilterStartDate">The starting date used to filter the results</param>
+	<param name="creationFilterEndDate">The ending date used to filter the results</param>
+	<returns>Returns a collection of ExportSet objects that meet the specified criteria</returns>
+</member><member name="M:Nrc.DataMart.Library.ExportSet.RebuildExportSet">
+	<summary>
+ Rebuilds the members of the export set using the originally defined start and end date but 
+ including all records that are eligible at the current time.
+ </summary>
+	<remarks>This is used to "refresh" an export set so that new records that were not previously included can now be included</remarks>
+</member><member name="M:Nrc.DataMart.Library.ExportSet.GetExportFiles">
+	<summary>
+ Returns a collection of ExportFile objects that have been created from the ExportSet
+ </summary>
+</member><member name="M:Nrc.DataMart.Library.ExportSet.UnionExportList(System.Collections.ObjectModel.Collection{Nrc.DataMart.Library.ExportSet},System.Collections.Generic.List{System.Int32},System.Collections.ObjectModel.Collection{Nrc.DataMart.Library.ExportSet})">
+	<summary>
+ Merges a collection of ExportSet object into a master list that contains to duplicates
+ </summary>
+	<param name="masterList"></param>
+	<param name="exportIds"></param>
+	<param name="exportList"></param>
+	<remarks>
+ This method is used by the GetExportSetsByIds method.  Since the exports defined for a 
+ survey may overlap the exports defined at a client or study level, it is necessary to de-dup 
+ the lists and create one set of distinct ExportSet objects
+ </remarks>
+</member><member name="T:Nrc.DataMart.Library.ExportSet">
+	<summary>
+ The ExportSet class defines a set of data records to be exported from the DataMart.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:Nrc.DataMart.Library.ORYX.OryxExporter.CallProgress(System.Int32,System.String)">
+	<summary>
+ Checks for a cancel, then sends message back to _OnProgress event.
+ </summary>
+	<param name="pct">Percent done</param>
+	<param name="msg">Message to display</param>
+	<returns>Abort process</returns>
+	<remarks></remarks>
+</member><member name="P:Nrc.DataMart.Library.Response.Label">
+	<summary>
+ The label for the response
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:Nrc.DataMart.Library.Response.Value">
+	<summary>
+ The numeric value for the response
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:Nrc.DataMart.Library.Response.IsMissing">
+	<summary>
+ Indicates whether the response should be treated like a missing value when doing statistical analysis
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:Nrc.DataMart.Library.Response.Order">
+	<summary>
+ Provides the integer order of the response
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks>The order value is needed to help identify which response is the best and which is the worst.</remarks>
+</member><member name="P:Nrc.DataMart.Library.Response.IsDirty">
+	<summary>
+ Returns true if the object has been modified since it was retrieved from the data store.
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:Nrc.DataMart.Library.Response.GetResponses(System.Int32,System.Int32)">
+	<summary>
+ Gets all responses for a scale
+ </summary>
+	<param name="scaleid"></param>
+	<param name="surveyId"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:Nrc.DataMart.Library.Response.ResetDirtyFlag">
+	<summary>
+ Resets the flag to indicate that the object is not different from the copy in the data store
+ </summary>
+	<remarks></remarks>
+</member><member name="P:Nrc.DataMart.Library.Survey.Id">
+	<summary>
+ The ID of the survey in the data store
+ </summary>
+</member><member name="P:Nrc.DataMart.Library.Survey.Name">
+	<summary>
+ The name of the survey
+ </summary>
+</member><member name="P:Nrc.DataMart.Library.Survey.Description">
+	<summary>
+ The description of the survey
+ </summary>
+</member><member name="P:Nrc.DataMart.Library.Survey.StudyId">
+	<summary>
+ The ID of the study to which the survey belongs
+ </summary>
+</member><member name="P:Nrc.DataMart.Library.Survey.DisplayLabel">
+	<summary>
+ Returns a display label for this survey consisting of the name and ID
+ </summary>
+</member><member name="P:Nrc.DataMart.Library.Survey.Study">
+	<summary>
+ The Study object to which this survey belongs
+ </summary>
+</member><member name="P:Nrc.DataMart.Library.Survey.Questions">
+	<summary>
+ The collection of Questions that are used on this survey
+ </summary>
+</member><member name="P:Nrc.DataMart.Library.Survey.IsDirty">
+	<summary>
+ Returns true if the object has been modified since it was retrieved from the data store.
+ </summary>
+</member><member name="M:Nrc.DataMart.Library.Survey.#ctor">
+	<summary>Initializes an instance of the Survey class</summary>
+</member><member name="M:Nrc.DataMart.Library.Survey.#ctor(Nrc.DataMart.Library.Study)">
+	<summary>Initializes an instance of the Survey class and sets the sets the parent study instance
+ </summary>
+	<param name="parentStudy">The study object to which this survey belongs</param>
+</member><member name="M:Nrc.DataMart.Library.Survey.GetSurvey(System.Int32)">
+	<summary>
+ Retrieves and populates a survey object from the data store
+ </summary>
+	<param name="surveyId">The ID of the survey to retreive</param>
+</member><member name="M:Nrc.DataMart.Library.Survey.ResetDirtyFlag">
+	<summary>Marks the object as being up-to-date with the data store</summary>
+</member><member name="M:Nrc.DataMart.Library.Survey.ToString">
+	<summary>
+ Returns the Survey DisplayLabel
+ </summary>
+</member><member name="M:Nrc.DataMart.Library.Survey.GetExportSets(Nrc.DataMart.Library.ExportSetType)">
+	<summary>
+ Returns all the ExportSet objects that thave been created for the survey
+ </summary>
+	<returns>Returns a collection of ExportSet objects belonging to the survey</returns>
+</member><member name="M:Nrc.DataMart.Library.Survey.GetExportSets(System.Nullable{System.DateTime},System.Nullable{System.DateTime},Nrc.DataMart.Library.ExportSetType)">
+	<summary>
+ Returns all the ExportSet objects that thave been created for the survey within the date range specified
+ </summary>
+	<param name="creationFilterStartDate">The starting date used to filter the results</param>
+	<param name="creationFilterEndDate">The ending date used to filter the results</param>
+	<returns>
+ Returns a collection of ExportSet objects belonging to the survey and were created
+ during the date range specified.
+ </returns>
+</member><member name="T:Nrc.DataMart.Library.Survey">
+	<summary>Represents a DataMart survey</summary>
+</member><member name="F:Nrc.DataMart.Library.ACOCAHPSExporter.ZERO">
+	<summary>
+ Constants
+ </summary>
+	<remarks>Some constants perform a simple mapping (YES = "1 "), others just substitute directly (_88 = "88")</remarks>
+</member><member name="T:Nrc.DataMart.Library.ACOCAHPSExporter.QMap">
+	<summary>
+ Integer enum mapping Question Reponse to integer slot in the Qs array
+ </summary>
+	<remarks>Q01 naming convention follows ACO response data nomenclature</remarks>
+</member><member name="M:Nrc.DataMart.Library.ACOCAHPSExporter.CreateExportFile(System.Collections.ObjectModel.Collection{Nrc.DataMart.Library.ExportSet},System.String,Nrc.DataMart.Library.ExportFileType,System.Boolean,System.Boolean)">
+	<summary>
+ Manages the ACO CAHPS export file creation of a single file containing 1 to many surveys
+ </summary>
+	<param name="ACOCAHPSExportSets">Each set represents a survey</param>
+	<param name="filePath">Folder location for the output file</param>
+	<param name="fileType"></param>
+	<param name="isScheduledExport"></param>
+	<param name="isInterimFile">Indicator of whether this export is interim, stored in the export file log</param>
+	<returns>Failed Count</returns>
+	<remarks>One to many surveys are passed in here, and each one is sent, record by record to the RecodeAndWriteExportFile method
+ Two exceptions are reported at this (summary) level: no records found for the given time period, and duplicate finder id for records in a 
+ single survey</remarks>
+</member><member name="M:Nrc.DataMart.Library.ACOCAHPSExporter.WriteCmsInnerHtml(Nrc.DataMart.Library.CAHPSExporter.FrequencyTable,System.IO.TextWriter,System.String,Nrc.DataMart.Library.ExportSetType)">
+	<summary>
+ This is where summary rows go in the summary.html report
+ </summary>
+	<param name="freqTable">Where frequencies are found</param>
+	<param name="writer">Output stream</param>
+	<param name="fileName"></param>
+	<param name="exportType"></param>
+	<remarks>This is where the requested frequencies and cross-tabs go</remarks>
+</member><member name="M:Nrc.DataMart.Library.ACOCAHPSExporter.GetCmsFileFrequencies(System.String,Nrc.DataMart.Library.ExportSetType)">
+	<summary>
+ Get the store of frequencies to be reported on
+ </summary>
+	<param name="cmsFilePath"></param>
+	<param name="exportType"></param>
+	<returns>Frequencies</returns>
+	<remarks>In this case, we preferred to maintain a frequency table class variable to accumulate the frequencies and just pass it back</remarks>
+</member><member name="M:Nrc.DataMart.Library.ACOCAHPSExporter.Set88step2(System.Collections.Generic.List{System.String}@,System.Int32,System.Int32,System.String,System.Boolean)">
+	<summary>
+ Set88Step2 is a component of Step88 broken out
+ </summary>
+	<param name="Qs">Question array</param>
+	<param name="target">Child of skip relationahip</param>
+	<param name="driver">Parent of skip relationship</param>
+	<param name="checkVal">Value to check for skip logic enforcement</param>
+	<param name="dontSkipFor98and99">Switch to turn off Skip processing on 98 and 99</param>
+	<remarks>When both are called it comes after Set88Step1</remarks>
+</member><member name="M:Nrc.DataMart.Library.ACOCAHPSExporter.Set88Step1(System.Collections.Generic.List{System.String}@,System.Int32,System.Int32)">
+	<summary>
+ Set88Step1 is a component of Step88 broken out
+ </summary>
+	<param name="Qs">Question array</param>
+	<param name="target">Child of skip relationahip</param>
+	<param name="driver">Parent of skip relationship</param>
+	<remarks>When both are called it comes before Set88Step2</remarks>
+</member><member name="M:Nrc.DataMart.Library.ACOCAHPSExporter.Set88(System.Collections.Generic.List{System.String}@,System.Int32,System.Int32,System.String,System.Boolean)">
+	<summary>
+ Set88 is a utility method to perform basic skip logic functionality
+ </summary>
+	<param name="Qs">Question array</param>
+	<param name="target">Child of skip relationahip</param>
+	<param name="driver">Parent of skip relationship</param>
+	<param name="checkVal">Value to check for skip logic enforcement</param>
+	<param name="dontSkipFor98and99">Switch to turn off Skip processing on 98 and 99</param>
+	<remarks></remarks>
+</member><member name="M:Nrc.DataMart.Library.ACOCAHPSExporter.RecodeAndWriteExportFile(System.IO.StreamWriter,Nrc.DataMart.Library.ACOCAHPSExport,System.Int32)">
+	<summary>
+ The workhorse which enforces skip patterns, validation, and writes out the formatted record
+ </summary>
+	<param name="stream">Output file</param>
+	<param name="acoCAHPSExport">Individual record to recode, validate, and write</param>
+	<param name="Survey_Id">Survey Id to report for exceptions</param>
+	<remarks>This is an evolutionary step forward from the original temporary method of reporting ACO CAHPS results using SPs.
+ Dave Gilsdorf deserves credit for crafting and enforcing the skip logic in his SPs which was duplicated here.
+ Dave G's original stored procedures: ACOCAHPSFinalSubmissionFile, ACOCAHPSInterimSubmissionFile
+ The new stored procedure: DCL_SelectACOCAHPSBySurveyId
+ The original stored procedures may be used for side by side comparisons of the output files as a testing exercise</remarks>
+</member><member name="M:Nrc.DataMart.Library.ACOCAHPSExporter.LogValidationException(Nrc.DataMart.Library.ACOCAHPSExport,System.String)">
+	<summary>
+ Where validation exceptions get added to the Exception store
+ </summary>
+	<param name="aco">record being validated</param>
+	<param name="message">description of exception</param>
+	<remarks>This is needed because the newRow.Values.Add is required in order to report the exception</remarks>
+</member><member name="T:Nrc.DataMart.Library.ExportErrorDialog">
+	<summary>
+ Dialog Form used to alert user of terminal conditions when attempting to create export file.
+ General user has option to view terminal condition report or close (escape) file export transaction.
+ Administrative user has additional option to override terminal conditions and create an export file.
+ </summary>
+</member><member name="T:Nrc.DataMart.Library.ExportFileType">
+	<summary>
+ Enumerates the file types that are supported for an export
+ </summary>
+	<remarks></remarks>
+</member><member name="P:Nrc.DataMart.Library.My.Resources.Resources.ResourceManager">
+	<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member><member name="P:Nrc.DataMart.Library.My.Resources.Resources.Culture">
+	<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member><member name="T:Nrc.DataMart.Library.My.Resources.Resources">
+	<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member><member name="M:Nrc.DataMart.Library.MedicareExportSet.ResetDirtyFlag">
+	<summary>
+ Resets the is Dirty Flag to false.
+ </summary>
+	<remarks>This method should be called after saving changes.</remarks>
+</member><member name="M:Nrc.DataMart.Library.Question.#ctor">
+	<summary>
+ Default constructor
+ </summary>
+</member><member name="P:Nrc.DataMart.Library.Question.MultipleResponse">
+	<summary>
+ Returns true if this is a multiple response question
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:Nrc.DataMart.Library.Question.ColumnName">
+	<summary>
+ Returns the database column name for this question (Q008180, Q012323, etc.)
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:Nrc.DataMart.Library.Question.IsDirty">
+	<summary>
+ Returns true if the object has been modified since it was retrieved from the data store.
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:Nrc.DataMart.Library.Question.Scaleid">
+	<summary>
+ Returns the Scaleid of the scale used on this Question
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:Nrc.DataMart.Library.Question.IsMeanable">
+	<summary>
+ Returns True if calculating mean scores is appropriate for this question
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:Nrc.DataMart.Library.Question.SurveyId">
+	<summary>
+ Returns the Survey Id that this Question is associated with
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:Nrc.DataMart.Library.Question.Id">
+	<summary>
+ Returns the Question Core Number
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:Nrc.DataMart.Library.Question.ReportLabel">
+	<summary>
+ Displays the abbreviated Label used in Reporting Applications
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:Nrc.DataMart.Library.Question.FullLabel">
+	<summary>
+ Displays the full label that displays on the printed survey
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:Nrc.DataMart.Library.Question.Scale">
+	<summary>
+ Returns the Scale object associated with this question
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:Nrc.DataMart.Library.Question.GetQuestionsbySurveyId(System.Int32)">
+	<summary>
+ Returns a collection of Questions for a specific survey
+ </summary>
+	<param name="surveyId"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:Nrc.DataMart.Library.Question.ResetDirtyFlag">
+	<summary>
+ Resets the flag to indicate that the object is not different from the copy in the data store
+ </summary>
+	<remarks></remarks>
+</member><member name="T:Nrc.DataMart.Library.Question">
+	<summary>
+ Represents a DataMart Question
+ </summary>
+	<remarks></remarks>
+</member><member name="P:Nrc.DataMart.Library.Team.Id">
+	<summary>Unique Identifier for a team.</summary>
+	<value>The Unique ID for a team.</value>
+	<CreateBy>Tony,Steves,Arman</CreateBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="P:Nrc.DataMart.Library.Team.Name">
+	<summary>The name for the team.</summary>
+	<value>The name for the team. String value</value>
+	<CreateBy>Tony,Steves,Arman</CreateBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="P:Nrc.DataMart.Library.Team.Description">
+	<summary>A description of the team</summary>
+	<value>A description of the team as a string value.</value>
+	<CreateBy>Tony,Steves,Arman</CreateBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="M:Nrc.DataMart.Library.Team.#ctor">
+	<summary>Team Object Contstructor.</summary>
+	<CreateBy>Tony,Steves,Arman</CreateBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="M:Nrc.DataMart.Library.Team.GetTwoDigitTeams">
+	<summary>This method retrieve all teams in from the database whose ID is less than 100.</summary>
+	<returns>Collection of Team Objects</returns>
+	<CreateBy>Tony,Steves,Arman</CreateBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="M:Nrc.DataMart.Library.Team.ResetDirtyFlag">
+	<summary>This flag tells you if the team object has been modified.</summary>
+	<CreateBy>Tony,Steves,Arman</CreateBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="T:Nrc.DataMart.Library.Team">
+	<summary>This class represents a team which is a group of NRC Associates that work together for a client/project.</summary>
+	<CreateBy>Tony,Steves,Arman</CreateBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="P:Nrc.DataMart.Library.SampleUnit.Id">
+	<summary></summary>
+	<value></value>
+</member><member name="P:Nrc.DataMart.Library.SampleUnit.Name">
+	<summary>The sample unit name</summary>
+	<value></value>
+	<CreatedBy></CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="P:Nrc.DataMart.Library.SampleUnit.SurveyId">
+	<summary>Sample Unit SurveyID </summary>
+	<value></value>
+	<CreatedBy></CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="P:Nrc.DataMart.Library.SampleUnit.ParentSampleUnitId">
+	<summary>The Parent Sample Unit Id for a sample unit </summary>
+	<value></value>
+	<CreatedBy></CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="P:Nrc.DataMart.Library.SampleUnit.MedicareNumber">
+	<summary>The Parent Sample Unit Id for a sample unit </summary>
+	<value></value>
+	<CreatedBy></CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="P:Nrc.DataMart.Library.SampleUnit.MedicareName">
+	<summary>Medicare name for sample unit </summary>
+	<value></value>
+	<CreatedBy>Steve Grunberg</CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="P:Nrc.DataMart.Library.SampleUnit.IsHcahps">
+	<summary>The sample unit is HCAPS </summary>
+	<value></value>
+	<CreatedBy></CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="P:Nrc.DataMart.Library.SampleUnit.ChildUnits">
+	<summary>A collection of child sample units for this sample unit</summary>
+	<value></value>
+	<CreatedBy></CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="P:Nrc.DataMart.Library.SampleUnit.DisplayLabel">
+	<summary>A helper property for the UI to show the IDs with the name.</summary>
+	<value></value>
+	<CreatedBy></CreatedBy>
+	<RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
+</member><member name="M:Nrc.DataMart.Library.SampleUnit.GetExportSets(System.Nullable{System.DateTime},System.Nullable{System.DateTime},Nrc.DataMart.Library.ExportSetType)">
+	<summary>
+ Returns all the ExportSet objects that thave been created for the sample unit within the date range specified
+ </summary>
+	<param name="creationFilterStartDate">The starting date used to filter the results</param>
+	<param name="creationFilterEndDate">The ending date used to filter the results</param>
+	<returns>
+ Returns a collection of ExportSet objects belonging to the sample unit and were created
+ during the date range specified.
+ </returns>
+</member><member name="T:Nrc.DataMart.Library.SampleUnit">
+	<summary>
+ Represents a DataMart Sample Unit
+ </summary>
+</member><member name="P:Nrc.DataMart.Library.SampleSet.Id">
+	<summary>
+ The unique identifier of this SampleSet
+ </summary>
+</member><member name="P:Nrc.DataMart.Library.SampleSet.SamplePlanId">
+	<summary>
+ The ID of the SamplePlan used to create this SampleSet
+ </summary>
+</member><member name="P:Nrc.DataMart.Library.SampleSet.SurveyId">
+	<summary>
+ The ID of the survey that this SampleSet belongs to
+ </summary>
+</member><member name="P:Nrc.DataMart.Library.SampleSet.CreatorEmployeeId">
+	<summary>
+ The ID of the user who created this SampleSet
+ </summary>
+</member><member name="P:Nrc.DataMart.Library.SampleSet.DateCreated">
+	<summary>
+ The date on which the SampleSet was created
+ </summary>
+</member><member name="P:Nrc.DataMart.Library.SampleSet.SampleFromDate">
+	<summary>
+ The starting date of encounters included in the SampleSet
+ </summary>
+</member><member name="P:Nrc.DataMart.Library.SampleSet.SampleToDate">
+	<summary>
+ The ending date of encounters included in the SampleSet
+ </summary>
+</member><member name="P:Nrc.DataMart.Library.SampleSet.IsOversample">
+	<summary>
+ Indicates if this SampleSet is an over-sample
+ </summary>
+</member><member name="P:Nrc.DataMart.Library.SampleSet.ScheduledDate">
+	<summary>
+ The date on which this SampleSet was scheduled for generation
+ </summary>
+	<remarks>Note: this is not the date that SampleSet generation occurs, rather,
+ it is the date on which scheduling was performed</remarks>
+</member><member name="P:Nrc.DataMart.Library.SampleSet.SamplingAlgorithm">
+	<summary>
+ The SamplingAlgorithm that was used to create this SampleSet
+ </summary>
+</member><member name="P:Nrc.DataMart.Library.SampleSet.IsDirty">
+	<summary>
+ Boolean value indicating whether changes have been made to the object since it was loaded from the database.
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:Nrc.DataMart.Library.SampleSet.GetSampleSet(System.Int32)">
+	<summary>
+ Retrieves a given SampleSet object from the datastore
+ </summary>
+	<param name="sampleSetId">The unique identifier of the SampleSet to retrieve</param>
+</member><member name="M:Nrc.DataMart.Library.SampleSet.ResetDirtyFlag">
+	<summary>
+ Resets the is Dirty Flag to false.
+ </summary>
+	<remarks>This method should be called after saving changes.</remarks>
+</member><member name="T:Nrc.DataMart.Library.SampleSet">
+	<summary>
+ Represents a Qualisys SampleSet
+ </summary>
+	<remarks>A SampleSet is a set of i</remarks>
+</member><member name="M:Nrc.DataMart.Library.WeightType.UpdateWeightTypesCollection(System.Collections.ObjectModel.Collection{Nrc.DataMart.Library.WeightType})">
+	<summary>
+ Loops through a collection of weight categories and determines the appropriate action to take
+ </summary>
+	<remarks></remarks>
+</member>
+</members>
+</doc>

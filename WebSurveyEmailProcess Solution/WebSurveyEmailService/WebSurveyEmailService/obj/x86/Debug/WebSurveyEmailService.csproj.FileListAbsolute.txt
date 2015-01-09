@@ -1,0 +1,1 @@
+C:\gitrepos\Qualisys\WebSurveyEmailProcess Solution\WebSurveyEmailService\WebSurveyEmailService\bin\x86\Debug\WebSurveyEmailService.exe.config

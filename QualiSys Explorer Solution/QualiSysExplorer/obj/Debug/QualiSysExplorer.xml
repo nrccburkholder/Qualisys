@@ -1,0 +1,17 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+QualiSysExplorer
+</name>
+</assembly>
+<members>
+<member name="M:Nrc.QualiSys.QualiSysExplorer.DispositionSection.LoadMailingInfo(Nrc.QualiSys.Library.Mailing)">
+	<summary>
+     ''' 
+ </summary>
+	<param name="mail"></param>
+	<remarks>SK 09-09-2008 Added check for 99999 language id when displaying surveylanguage text on disposition section</remarks>
+</member>
+</members>
+</doc>

@@ -1,0 +1,68 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+QualiSysExplorer
+</name>
+</assembly>
+<members>
+<member name="P:Nrc.QualiSys.QualiSysExplorer.My.Resources.Resources.ResourceManager">
+	<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member><member name="P:Nrc.QualiSys.QualiSysExplorer.My.Resources.Resources.Culture">
+	<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member><member name="P:Nrc.QualiSys.QualiSysExplorer.My.Resources.Resources.block">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys.QualiSysExplorer.My.Resources.Resources.Excel16">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys.QualiSysExplorer.My.Resources.Resources.Excel32">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys.QualiSysExplorer.My.Resources.Resources.Filter16">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys.QualiSysExplorer.My.Resources.Resources.greencheck">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys.QualiSysExplorer.My.Resources.Resources.questionmark">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys.QualiSysExplorer.My.Resources.Resources.usps_icon4">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys.QualiSysExplorer.My.Resources.Resources.usps_icon4_disabled">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="T:Nrc.QualiSys.QualiSysExplorer.My.Resources.Resources">
+	<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member><member name="M:Nrc.QualiSys.QualiSysExplorer.DispositionSection.LoadMailingInfo(Nrc.QualiSys.Library.Mailing)">
+	<summary>
+     ''' 
+ </summary>
+	<param name="mail"></param>
+	<remarks>SK 09-09-2008 Added check for 99999 language id when displaying surveylanguage text on disposition section</remarks>
+</member><member name="M:Nrc.QualiSys.QualiSysExplorer.USPSAddressUpdateSection.gvPartialMatches_CustomRowCellEdit(System.Object,DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventArgs)">
+	<summary>
+	</summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks>Suppresses the display of the control in the filter row of the specified columns</remarks>
+</member>
+</members>
+</doc>

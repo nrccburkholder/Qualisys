@@ -1,0 +1,211 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+QualiSysScannerInterface
+</name>
+</assembly>
+<members>
+<member name="M:Nrc.QualiSys_Scanner_Interface.SurveyVendorSection.ValidMethSteps">
+	<summary>
+ Validating the methodology step.  Checking to see if only the Vendor properties are valid.
+ Not the entire object because only the vendor properties are being edited on this screen.
+ </summary>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.ResourceManager">
+	<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.Culture">
+	<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.AnimatedSearch">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.Batch">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.Bedside">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.Check">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.DeleteRed16">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.Document16">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.DocumentGreen16">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.DocumentRed16">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.DocumentYellow16">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.DownArrow16">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.Excel16">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.GoLtr">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.GreenLight">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.GroupCollapse11">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.GroupCollapse15">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.GroupExpand11">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.GroupExpand15">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.IVR">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.LetterWeb">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.Lock">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.MailWeb">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.Member32">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.Member321">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.MoveDown">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.MoveUp">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.New16">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.NoWay16">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.pdf_16x16">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.Phone">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.Properties16">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.Refresh16">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.Rotate_Clockwise">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.Rotate_Counterclockwise">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.Save16">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.Search">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.Study">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.Survey">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.UnCheck">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.Undo16">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.UpArrow16">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.Validation16">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.Web">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.YellowLight">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.Zoom_In">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="P:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources.Zoom_Out">
+	<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member><member name="T:Nrc.QualiSys_Scanner_Interface.My.Resources.Resources">
+	<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+</members>
+</doc>

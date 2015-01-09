@@ -1,0 +1,139 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+Nrc.DataMart.MySolutions.Library
+</name>
+</assembly>
+<members>
+<member name="T:Nrc.DataMart.MySolutions.Library.MemberResourceGroup">
+	<summary>
+ Class representing an organization unit group.
+ </summary>
+	<remarks>
+		<para>
+   Rick Christenham (09/07/2007): NRC eToolkit Enhancement II:
+                                  Adapted from MemberResourceQuestion.vb.
+   </para>
+	</remarks>
+</member><member name="T:Nrc.DataMart.MySolutions.Library.MemberResourceTag">
+	<summary>
+ Business object that holds a collection of tags for a member resource
+ </summary>
+	<remarks>
+ A tag for a member resource includes 
+ </remarks>
+</member><member name="P:Nrc.DataMart.MySolutions.Library.StudyTable.Id">
+	<summary>
+ The QualiSys MetaTable_id for this table
+ </summary>
+</member><member name="P:Nrc.DataMart.MySolutions.Library.StudyTable.Name">
+	<summary>
+ The name of the table
+ </summary>
+</member><member name="P:Nrc.DataMart.MySolutions.Library.StudyTable.StudyId">
+	<summary>
+ The Study ID of the table.
+ </summary>
+</member><member name="P:Nrc.DataMart.MySolutions.Library.StudyTable.Description">
+	<summary>
+ The table description
+ </summary>
+</member><member name="P:Nrc.DataMart.MySolutions.Library.StudyTable.IsView">
+	<summary>
+ Returns True if this table is actually a View
+ </summary>
+</member><member name="P:Nrc.DataMart.MySolutions.Library.StudyTable.Columns">
+	<summary>
+ The collection of columns contained in this table.
+ </summary>
+</member><member name="M:Nrc.DataMart.MySolutions.Library.StudyTable.#ctor">
+	<summary>
+ Default constructor
+ </summary>
+</member><member name="M:Nrc.DataMart.MySolutions.Library.StudyTable.GetAllStudyTables(System.Int32)">
+	<summary>
+ Returns a collection of all the tables belonging to a study
+ </summary>
+	<param name="studyId">The Study ID</param>
+</member><member name="M:Nrc.DataMart.MySolutions.Library.StudyTable.Get(System.Int32)">
+	<summary>
+ Returns the selected table
+ </summary>
+	<param name="tableId">The table ID</param>
+</member><member name="T:Nrc.DataMart.MySolutions.Library.StudyTable">
+	<summary>
+ Represents a QualiSys Study Table containing patient data.
+ </summary>
+</member><member name="M:Nrc.DataMart.MySolutions.Library.DataProvider.InsertMemberResourceGroup(Nrc.DataMart.MySolutions.Library.MemberResourceGroup)">
+	<summary>
+ Base-class definition for inserting a <see cref="T:Nrc.DataMart.MySolutions.Library.MemberResourceGroup">MemberResourceGroup</see> record.
+ </summary>
+	<param name="obj"><see cref="T:Nrc.DataMart.MySolutions.Library.MemberResourceGroup">MemberResourceGroup</see> object to save</param>
+	<returns><see cref="T:System.Int32">Integer</see> value representing the primary key</returns>
+	<remarks>
+		<para>
+   Rick Christenham (09/07/2007): NRC eToolkit Enhancement II
+   </para>
+	</remarks>
+</member><member name="M:Nrc.DataMart.MySolutions.Library.DataProvider.UpdateMemberResourceGroup(Nrc.DataMart.MySolutions.Library.MemberResourceGroup)">
+	<summary>
+ Base-class definition for updating a <see cref="T:Nrc.DataMart.MySolutions.Library.MemberResourceGroup">MemberResourceGroup</see> record.
+ </summary>
+	<param name="obj"><see cref="T:Nrc.DataMart.MySolutions.Library.MemberResourceGroup">MemberResourceGroup</see> object to save</param>
+	<remarks>
+		<para>
+   Rick Christenham (09/07/2007): NRC eToolkit Enhancement II
+   </para>
+	</remarks>
+</member><member name="M:Nrc.DataMart.MySolutions.Library.DataProvider.DeleteMemberResourceGroup(System.Int32)">
+	<summary>
+ Base-class definition for deleting a <see cref="T:Nrc.DataMart.MySolutions.Library.MemberResourceGroup">MemberResourceGroup</see> record.
+ </summary>
+	<param name="id"><see cref="T:System.Int32">Integer</see> value representing the primary key of the record to delete</param>
+	<remarks>
+		<para>
+   Rick Christenham (09/07/2007): NRC eToolkit Enhancement II
+   </para>
+	</remarks>
+</member><member name="P:Nrc.DataMart.MySolutions.Library.Legacy.ToolkitServer.MemberPreference">
+	<summary>Member preferences for the selected member</summary>
+</member><member name="P:Nrc.DataMart.MySolutions.Library.Legacy.ToolkitServer.MemberGroupPreference">
+	<summary>Member preferences for the selected group</summary>
+</member><member name="P:Nrc.DataMart.MySolutions.Library.Legacy.ToolkitServer.ResultSetId">
+	<summary>Returns the result set id</summary>
+</member><member name="P:Nrc.DataMart.MySolutions.Library.Legacy.ToolkitServer.AppVersion">
+	<summary>Returns the application version</summary>
+</member><member name="P:Nrc.DataMart.MySolutions.Library.Legacy.ToolkitServer.ServiceTypeName">
+	<summary>The selected service type name</summary>
+</member><member name="P:Nrc.DataMart.MySolutions.Library.Legacy.ToolkitServer.SelectedUnitName">
+	<summary>The selected sample unit name</summary>
+</member><member name="M:Nrc.DataMart.MySolutions.Library.Legacy.ToolkitServer.#ctor(System.Int32,System.Int32)">
+	<summary>
+ When a user logs into eToolKit the ToolKitServer should be popluated with
+ all the user specific data
+ </summary>
+	<param name="selectedMemberId">The ID of the NRcAuth Member account that the user has selected</param>
+	<param name="selectedGroupId">The ID of the NrcAuth Group account that the user has selected</param>
+</member><member name="P:Nrc.DataMart.MySolutions.Library.Legacy.ToolkitServer.Db">
+	<summary>A reference to the toolkit database object</summary>
+</member><member name="T:Nrc.DataMart.MySolutions.Library.Legacy.ToolkitServer">
+	<summary>
+ This class contains the code required for the eToolKit web application
+ </summary>
+</member><member name="P:Nrc.DataMart.MySolutions.Library.My.Resources.Resources.ResourceManager">
+	<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member><member name="P:Nrc.DataMart.MySolutions.Library.My.Resources.Resources.Culture">
+	<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member><member name="T:Nrc.DataMart.MySolutions.Library.My.Resources.Resources">
+	<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+</members>
+</doc>

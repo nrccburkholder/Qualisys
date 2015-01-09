@@ -1,0 +1,74 @@
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\QualiSys Scanner Interface.exe.config
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\QualiSys Scanner Interface.exe.manifest
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\QualiSys Scanner Interface.application
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\QualiSys Scanner Interface.exe
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\QualiSys Scanner Interface.pdb
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\QualiSys Scanner Interface.xml
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\ExpTreeLib.dll
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\Nrc.Framework.BusinessLogic.dll
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\Nrc.Framework.dll
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\NRC.NRCAuthLib.dll
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\Nrc.QualiSys.Library.dll
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\Nrc.QualiSys.Library.SqlDataProvider.dll
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\Nrc.QualiSys.Scanning.Library.dll
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\Nrc.QualiSys.Scanning.Library.SqlDataProvider.dll
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\SoftekBarcodeLib.dll
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\Nrc.Framework.Notification.dll
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\Tamir.SharpSSH.dll
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\Microsoft.Web.UI.WebControls.dll
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\NRC.dll
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\Microsoft.Practices.ObjectBuilder.dll
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\ActiveUp.Net.Mail.dll
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\DiffieHellman.dll
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\Org.Mentalis.Security.dll
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\ActiveUp.Net.Dns.dll
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\Nrc.QualiSys.Library.SqlDataProvider.pdb
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\Nrc.QualiSys.Library.pdb
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\Nrc.QualiSys.Scanning.Library.SqlDataProvider.pdb
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\Nrc.QualiSys.Scanning.Library.pdb
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\Nrc.Framework.xml
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\Nrc.Framework.BusinessLogic.xml
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\NRC.NRCAuthLib.xml
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\Microsoft.Practices.EnterpriseLibrary.Data.xml
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\Nrc.Framework.Notification.xml
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\NRC.xml
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\Microsoft.Practices.EnterpriseLibrary.Common.xml
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\Microsoft.Practices.ObjectBuilder.xml
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\ActiveUp.Net.Mail.xml
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\bin\x86\Debug\ActiveUp.Net.Dns.xml
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\obj\x86\Debug\QualiSys Scanner Interface.vbprojResolveAssemblyReference.cache
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\obj\x86\Debug\Nrc.QualiSys_Scanner_Interface.DataEntryVerifyQuestionControl.resources
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\obj\x86\Debug\Nrc.QualiSys_Scanner_Interface.DataEntryBatchAddDialog.resources
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\obj\x86\Debug\Nrc.QualiSys_Scanner_Interface.ImportListOutputDialog.resources
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\obj\x86\Debug\Nrc.QualiSys_Scanner_Interface.UserSettingsDialog.resources
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\obj\x86\Debug\Nrc.QualiSys_Scanner_Interface.VendorMaintenenceImportDialog.resources
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\obj\x86\Debug\Nrc.QualiSys_Scanner_Interface.SplashScreen.resources
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\obj\x86\Debug\Nrc.QualiSys_Scanner_Interface.ViewCommentForm.resources
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\obj\x86\Debug\Nrc.QualiSys_Scanner_Interface.BarcodeSearchNavigator.resources
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\obj\x86\Debug\Nrc.QualiSys_Scanner_Interface.DataEntryVerifyNavigator.resources
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\obj\x86\Debug\Nrc.QualiSys_Scanner_Interface.ImportNavigator.resources
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\obj\x86\Debug\Nrc.QualiSys_Scanner_Interface.SurveyVendorNavigator.resources
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\obj\x86\Debug\Nrc.QualiSys_Scanner_Interface.TransferResultsNavigator.resources
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\obj\x86\Debug\Nrc.QualiSys_Scanner_Interface.VendorFileValidationNavigator.resources
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\obj\x86\Debug\Nrc.QualiSys_Scanner_Interface.VendorMaintenanceNavigator.resources
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\obj\x86\Debug\Nrc.QualiSys_Scanner_Interface.BarcodeSearchSection.resources
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\obj\x86\Debug\Nrc.QualiSys_Scanner_Interface.DataEntryVerifySection.resources
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\obj\x86\Debug\Nrc.QualiSys_Scanner_Interface.ImportSection.resources
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\obj\x86\Debug\Nrc.QualiSys_Scanner_Interface.MainForm.resources
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\obj\x86\Debug\Nrc.QualiSys_Scanner_Interface.Resources.resources
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\obj\x86\Debug\Nrc.QualiSys_Scanner_Interface.SurveyVendorSection.resources
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\obj\x86\Debug\Nrc.QualiSys_Scanner_Interface.TransferResultsFileSection.resources
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\obj\x86\Debug\Nrc.QualiSys_Scanner_Interface.TransferResultsSection.resources
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\obj\x86\Debug\Nrc.QualiSys_Scanner_Interface.TransferResultsSurveySection.resources
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\obj\x86\Debug\Nrc.QualiSys_Scanner_Interface.TransferResultsVendorSection.resources
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\obj\x86\Debug\Nrc.QualiSys_Scanner_Interface.VendorFileValidationSection.resources
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\obj\x86\Debug\Nrc.QualiSys_Scanner_Interface.VendorMaintenanceSection.resources
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\obj\x86\Debug\QualiSys Scanner Interface.vbproj.GenerateResource.Cache
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\obj\x86\Debug\QualiSys Scanner Interface.exe.licenses
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\obj\x86\Debug\QualiSys Scanner Interface.exe.manifest
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\obj\x86\Debug\QualiSys Scanner Interface.application
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\obj\x86\Debug\QualiSys Scanner Interface.exe
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\obj\x86\Debug\QualiSys Scanner Interface.xml
+C:\gitrepos\Qualisys\QualiSys Scanner Interface Solution\QualiSys Scanner Interface\obj\x86\Debug\QualiSys Scanner Interface.pdb
