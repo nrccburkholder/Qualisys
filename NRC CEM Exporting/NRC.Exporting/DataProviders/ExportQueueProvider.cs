@@ -50,8 +50,6 @@ namespace NRC.Exporting.DataProviders
 
             if (ds.Tables.Count > 0)
             {
-                ExportQueue queue = new ExportQueue();
-
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
                     queues.Add(PopulateExportQueue(dr));

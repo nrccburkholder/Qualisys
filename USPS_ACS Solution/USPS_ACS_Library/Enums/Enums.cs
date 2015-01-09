@@ -44,4 +44,10 @@ namespace USPS_ACS_Library.Enums
         Completed,
         Error
     }
+
+    public enum NotificationType
+    {
+        Download,
+        Extract
+    }
 }

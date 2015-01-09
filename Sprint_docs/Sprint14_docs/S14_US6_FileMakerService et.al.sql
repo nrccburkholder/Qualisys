@@ -359,6 +359,7 @@ CREATE PROCEDURE [CEM].[SelectExportData]
 	@ExportQueueID int,
 	@ExportTemplateID int,
 	@sectionname varchar(200),
+	@FileMakerName varchar(200),
 	@OneRecordPerPatient bit = 0
 AS
 BEGIN
@@ -397,12 +398,16 @@ BEGIN
 		begin
 			SET @columnlist = @columnlist + '[' + LTRIM(RTRIM(@ExportColumnName)) + '],'
 		end
+		else
+		begin
+			SET @columnlist = @columnlist + 'NULL [' + LTRIM(RTRIM(@ExportColumnName)) + '],'
+		end
 		
 		delete from #Columns where ExportColumnName=@ExportColumnName
 		select top 1 @ExportTemplateColumnID=ExportTemplateColumnID, @ExportColumnName=ExportColumnName from #Columns
 	end
 	
-	Set @sqlCommand = 'SELECT distinct ' + @columnlist + ''' ''' + ' from ' + @tableName + ' WHERE ExportQueueID = ' + CAST(@ExportQueueID as varchar) + ' AND FileMakerName = ' + @FileMakerName 
+	Set @sqlCommand = 'SELECT distinct ' + @columnlist + ''' ''' + ' from ' + @tableName + ' WHERE ExportQueueID = ' + CAST(@ExportQueueID as varchar) + ' AND FileMakerName = ''' + @FileMakerName + ''''
 	 
 	exec sp_executesql  @sqlCommand
 

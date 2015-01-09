@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using USPS_ACS_Library.Objects;
+using USPS_ACS_Library.Enums;
 
 namespace USPS_ACS_Library
 {
@@ -19,25 +20,65 @@ namespace USPS_ACS_Library
         private string mZipFileName = string.Empty;
         private string mExtractFileName = string.Empty;
 
+        private int mRecordCount = 0;
+
         #endregion
 
         #region public properties
+
+
+        public string ZipFileFile
+        {
+            get { return mZipFileName; }
+            set { mZipFileName = value; }
+        }
+
+        public string ExtractFileName
+        {
+            get {return mExtractFileName;}
+            set { mExtractFileName = value; }
+        }
+
+        public int RecordCount
+        {
+            get {return mRecordCount;}
+            set { mRecordCount = value; }
+        }
+
+        public NotificationType FileType { get; set; }
+
         #endregion
 
         #region private properties
-        private string TableRowHtml
+        private string ExtractTableRowHtml
         {
             get
             {
-                return String.Format("<TR><TD style=\"background-color: #CDE1FA; padding: 5px; White-space: nowrap\">{0}</TD><TD style=\"background-color: #CDE1FA; padding: 5px; White-space: nowrap\">{1}</TD><TD style=\"background-color: #CDE1FA;padding: 5px; White-space: wrap\">{2}</TD></TR>", mZipFileName, mExtractFileName, "");
+                return String.Format("<TR><TD style=\"background-color: #CDE1FA; padding: 5px; White-space: nowrap\">{0}</TD><TD align=\"Right\" style=\"background-color: #CDE1FA; padding: 5px; White-space: nowrap\">{1}</TD><TD style=\"background-color: #CDE1FA; padding: 5px; White-space: nowrap\">{2}</TD></TR>", mExtractFileName, mRecordCount.ToString(), mZipFileName);
             }
         }
 
-        private string TableRowText
+        private string ExtractTableRowText
         {
             get
             {
-                return String.Format("               {0}                            {1}               {2}", mZipFileName.PadRight(30), mExtractFileName.PadRight(15), "");
+                return String.Format("               {0}                            {1}",  mExtractFileName.PadRight(15), mRecordCount.ToString());
+            }
+        }
+
+        private string DownloadTableRowHtml
+        {
+            get
+            {
+                return String.Format("<TR><TD style=\"background-color: #CDE1FA; padding: 5px; White-space: nowrap\">{0}</TD></TR>", mZipFileName);
+            }
+        }
+
+        private string DownloadTableRowText
+        {
+            get
+            {
+                return String.Format("               {0}", mZipFileName.PadRight(30));
             }
         }
 
@@ -56,50 +97,71 @@ namespace USPS_ACS_Library
         #region public static methods
 
 
-        public static string GetErrorTableText(List<USPS_ACS_Notification> errorList)
+        public static string GetNotificationTableText(List<USPS_ACS_Notification> notificationList, NotificationType ntype)
         {
-            string errString = string.Empty;
+            string messageString = string.Empty;
 
 
-            if (errorList.Count > 0)
+            if (notificationList.Count > 0)
             {
-                errString = System.Environment.NewLine + System.Environment.NewLine +
-                        "               Download File                    Extracted File  Error Message" + System.Environment.NewLine +
-                        "               -------------------------------  --------------- -------------------------";
+                if (ntype == NotificationType.Download)
+                    messageString = System.Environment.NewLine + System.Environment.NewLine +
+                        "               Download File                  " + System.Environment.NewLine +
+                        "               -------------------------------";
+                else
+                    messageString = System.Environment.NewLine + System.Environment.NewLine +
+                       "               Extract File                     Record Count   " + System.Environment.NewLine +
+                       "               -------------------------------  ---------------";
 
-
-                foreach (USPS_ACS_Notification item in errorList)
+                foreach (USPS_ACS_Notification item in notificationList)
                 {
-                    errString += System.Environment.NewLine + item.TableRowText;
+                    if (item.FileType == NotificationType.Download)
+                        messageString += System.Environment.NewLine + item.DownloadTableRowHtml;
+                    else
+                        messageString += System.Environment.NewLine + item.ExtractTableRowHtml;
                 }
             }
 
 
-            return errString;
+            return messageString;
         }
 
-        public static string GetErrorTableHtml(List<USPS_ACS_Notification> notificationList)
+        public static string GetNotificationTableHtml(List<USPS_ACS_Notification> notificationList, NotificationType ntype)
         {
-            string errString = string.Empty;
+            string messageString = string.Empty;
 
             if (notificationList.Count > 0)
             {
                 //Begin the table
-                errString = @"<BR><BR><TABLE style=""background-color: #660099; font-family: Tahoma, Verdana, Arial; font-size:X-Small"" Width=""100%"" cellpadding=""0"" cellspacing=""1"">";
+                messageString = @"<BR><BR><TABLE style=""background-color: #660099; font-family: Tahoma, Verdana, Arial; font-size:X-Small"" Width=""50%"" cellpadding=""0"" cellspacing=""1"">";
 
                 //Add the table header
-                errString += @"<TR><TD style=""background-color: #AFC8F5;White-space: nowrap; padding: 5px; font-weight: bold"">DownloadFile</TD><TD style=""background-color: #AFC8F5;White-space: nowrap; padding: 5px; font-weight: bold"">Extracted File</TD><TD style=""background-color: #AFC8F5;White-space: nowrap; padding: 5px; font-weight: bold"">Error Message</TD></TR>";
 
+                if (ntype == NotificationType.Download)
+                    messageString += @"<TR><TH style=""background-color: #AFC8F5;White-space: nowrap; padding: 5px; font-weight: bold"">Download File</TH></TR>";
+                else
+                    messageString += @"<TR><TH style=""background-color: #AFC8F5;White-space: nowrap; padding: 5px; font-weight: bold"">Extract File</TH><TH style=""background-color: #AFC8F5;White-space: nowrap; padding: 5px; font-weight: bold"">Record Count</TH><TH style=""background-color: #AFC8F5;White-space: nowrap; padding: 5px; font-weight: bold"">Download Source</TH></TR>";
 
                 foreach (USPS_ACS_Notification item in notificationList)
                 {
-                    errString += System.Environment.NewLine + item.TableRowHtml;
+                    if (item.FileType == NotificationType.Download)
+                        messageString += System.Environment.NewLine + item.DownloadTableRowHtml;
+                    else 
+                        messageString += System.Environment.NewLine + item.ExtractTableRowHtml;
                 }
 
-                errString += "</TABLE>";
+                messageString += "</TABLE>";
+            }
+            else
+            {
+                if (ntype == NotificationType.Download)
+                    messageString += "No files to download.";
+                else
+                    messageString += "No files to extract.";
+
             }
 
-            return errString;
+            return messageString;
         }
 
         #endregion

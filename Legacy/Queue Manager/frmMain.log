@@ -1,0 +1,14 @@
+Line 17: Class MSComctlLib.ImageList of control imlIcons was not a loaded control class.
+Line 195: Class MSComctlLib.TreeView of control tvTreeView was not a loaded control class.
+Line 20: The property name _ExtentX in imlIcons is invalid.
+Line 21: The property name _ExtentY in imlIcons is invalid.
+Line 23: The property name ImageWidth in imlIcons is invalid.
+Line 24: The property name ImageHeight in imlIcons is invalid.
+Line 25: The property name MaskColor in imlIcons is invalid.
+Line 26: The property name _Version in imlIcons is invalid.
+Line 193: The property name Images in imlIcons is invalid.
+Line 201: The property name _ExtentX in tvTreeView is invalid.
+Line 202: The property name _ExtentY in tvTreeView is invalid.
+Line 203: The property name _Version in tvTreeView is invalid.
+Line 204: The property name Style in tvTreeView is invalid.
+Line 205: The property name ImageList in tvTreeView is invalid.
