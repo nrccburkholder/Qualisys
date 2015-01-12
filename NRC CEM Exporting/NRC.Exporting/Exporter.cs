@@ -66,7 +66,7 @@ namespace NRC.Exporting
                     }
                 }
             }
-            Logs.Info("", "FILEMAKERSTATUS", string.Format("{0} file(s) processed.", iCnt.ToString()), EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
+            Logs.Info("", "FILEMAKERSTATUS", string.Format("{0}|{1}", "FILECOUNT",iCnt.ToString()), EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
         }
 
         /// <summary>
@@ -109,14 +109,16 @@ namespace NRC.Exporting
                         // TODO:  come up with standard EventTypes for the logging
                         Logs.Warn("", "XMLVALIDATIONERR", message, EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
                     }
-                    Logs.Info("", "FILEMAKERSTATUS", string.Format("{0} created with validation errors.", filepath), EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
+                    //Logs.Info("", "FILEMAKERSTATUS", string.Format("{0} created with validation errors.", filepath), EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
                     fileState = 2;
                 }
                 else
                 {
-                    Logs.Info("", "FILEMAKERSTATUS", string.Format("{0} created successfully.", filepath), EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
+                    //Logs.Info("", "FILEMAKERSTATUS", string.Format("{0} created successfully.", filepath), EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
                     fileState = 1;
                 }
+
+                Logs.Info("", "FILEMAKERSTATUS", string.Format("{0}|{1}", fileState == 1 ? "SUCCESS" : "INVALID", filepath), EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
 
                 // Update the ExportQueueFile record to mark is a complete.
                 queuefile.FileState = fileState;
