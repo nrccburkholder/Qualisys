@@ -203,7 +203,7 @@ values ('CaseMgrLName','Case Manager Last Name',@CaseId,'S',NULL,NULL,'CsMgrLNm'
 insert into MetaField (STRFIELD_NM, STRFIELD_DSC, FIELDGROUP_ID, STRFIELDDATATYPE, STRFIELDEDITMASK, INTSPECIALFIELD_CD, STRFIELDSHORT_NM, BITSYSKEY, bitPhase1Field, intAddrCleanCode, intAddrCleanGroup, bitPII)
 values ('ReferralSource','Source that referred patient to facility',NULL,'S',NULL,NULL,'RefrSrc',0,0,NULL,NULL,0)
 insert into MetaField (STRFIELD_NM, STRFIELD_DSC, FIELDGROUP_ID, STRFIELDDATATYPE, STRFIELDEDITMASK, INTSPECIALFIELD_CD, STRFIELDSHORT_NM, BITSYSKEY, bitPhase1Field, intAddrCleanCode, intAddrCleanGroup, bitPII)
-values ('HSP_CaregiverRelatn','Relationship of caregiver to hospice decedent',@PopId,'S',NULL,NULL,'HspReltn',0,0,NULL,NULL,0)
+values ('HSP_CaregiverRel','Relationship of caregiver to hospice decedent',@PopId,'S',NULL,NULL,'HspReltn',0,0,NULL,NULL,0)
 insert into MetaField (STRFIELD_NM, STRFIELD_DSC, FIELDGROUP_ID, STRFIELDDATATYPE, STRFIELDEDITMASK, INTSPECIALFIELD_CD, STRFIELDSHORT_NM, BITSYSKEY, bitPhase1Field, intAddrCleanCode, intAddrCleanGroup, bitPII)
 values ('HSP_GuardFlg','Flag indicating if hospice caregiver is a non-familial legal guardian',@PopId,'S',NULL,NULL,'HspGuard',0,0,NULL,NULL,0)
 insert into MetaField (STRFIELD_NM, STRFIELD_DSC, FIELDGROUP_ID, STRFIELDDATATYPE, STRFIELDEDITMASK, INTSPECIALFIELD_CD, STRFIELDSHORT_NM, BITSYSKEY, bitPhase1Field, intAddrCleanCode, intAddrCleanGroup, bitPII)
@@ -234,27 +234,43 @@ update metafield set intFieldLength = 50 where STRFIELDSHORT_NM = 'HSPLang'
 
 --@hospiceId int
 select @hospiceId = SurveyType_Id from SurveyType where SurveyType_dsc = 'Hospice CAHPS'
+declare @svpId int
 
+select @svpId = SurveyValidationProcs_id from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_SampleUnit'
 insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
-values (147, @hospiceId, null)
+values (@svpId, @hospiceId, null)
+select @svpId = SurveyValidationProcs_id from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_ActiveMethodology'
 insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
-values (148, @hospiceId, null)
+values (@svpId, @hospiceId, null)
+select @svpId = SurveyValidationProcs_id from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_RequiredPopulationFields'
 insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
-values (149, @hospiceId, null)
+values (@svpId, @hospiceId, null)
+select @svpId = SurveyValidationProcs_id from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_RequiredEncounterFields'
 insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
-values (150, @hospiceId, null)
+values (@svpId, @hospiceId, null)
+select @svpId = SurveyValidationProcs_id from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_SkipPatterns'
 insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
-values (151, @hospiceId, null)
+values (@svpId, @hospiceId, null)
+select @svpId = SurveyValidationProcs_id from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_Householding'
 insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
-values (153, @hospiceId, null)
+values (@svpId, @hospiceId, null)
+select @svpId = SurveyValidationProcs_id from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_ReportingDate'
 insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
-values (155, @hospiceId, null)
+values (@svpId, @hospiceId, null)
+select @svpId = SurveyValidationProcs_id from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_SamplingMethod'
 insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
-values (156, @hospiceId, null)
+values (@svpId, @hospiceId, null)
+select @svpId = SurveyValidationProcs_id from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_SamplingAlgorithm'
 insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
-values (158, @hospiceId, null)
+values (@svpId, @hospiceId, null)
+select @svpId = SurveyValidationProcs_id from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_FormQuestions'
 insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
-values (162, @hospiceId, null)
+values (@svpId, @hospiceId, null)
+select @svpId = SurveyValidationProcs_id from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_EnglishOrSpanish'
+insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
+values (@svpId, @hospiceId, null)
+
+--select * from SurveyValidationProcsBySurveyType SVPBST right join SurveyValidationProcs SVP on SVPBST.SurveyValidationProcs_id = SVP.SurveyValidationProcs_id where CAHPSType_ID = 11
 
 --declare @hospiceId int
 select @hospiceId = SurveyType_Id from SurveyType where SurveyType_dsc = 'Hospice CAHPS'
@@ -281,11 +297,11 @@ insert into DefaultCriteriaClause (DefaultCriteriaStmt_id, CriteriaPhrase_id, st
 values (@DCStmtId, 1, 'ENCOUNTER', @Fieldid, 5, '2', '')
 
 insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
-values ('DQ_Rel', '(POPULATIONHSP_CaregiverRelatn = 6)', 'Q')
-select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCriteriaStmt_nm = 'DQ_Rel' and strCriteriaString = '(POPULATIONHSP_CaregiverRelatn = 6)'
+values ('DQ_Rel', '(POPULATIONHSP_CaregiverRel = 6)', 'Q')
+select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCriteriaStmt_nm = 'DQ_Rel' and strCriteriaString = '(POPULATIONHSP_CaregiverRel = 6)'
 insert into SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteriaStmt_id)
 values (@hospiceId, 1, @DCStmtId)
-select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'HSP_CaregiverRelatn'
+select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'HSP_CaregiverRel'
 insert into DefaultCriteriaClause (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm, Field_id, intOperator, strLowValue, strHighValue)
 values (@DCStmtId, 1, 'POPULATION', @Fieldid, 1, '6', '')
 
@@ -307,15 +323,16 @@ insert into SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteri
 values (@hospiceId, 1, 19)
 
 -----------------------START S14B US8 Survey Validation Adds/Changes
-
+/*
 --declare @hospiceId int
 select @hospiceId = SurveyType_Id from SurveyType where SurveyType_dsc = 'Hospice CAHPS'
 
+--select * from SurveyValidationProcsBySurveyType select * from SurveyValidationProcs
 delete from SurveyValidationProcsBySurveyType where surveyvalidationprocs_id = 166 and CAHPSType_ID = @hospiceId
 
 insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
 values (163, @hospiceId, null)
-/*insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
+insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
 values (166, @hospiceId, null)
 */
 
@@ -714,10 +731,10 @@ CREATE TABLE #M (Error TINYINT, strMessage VARCHAR(200))
 		 and br.SURVEY_ID = @Survey_id)
 
 			INSERT INTO #M (Error, strMessage)
-			SELECT 0,'Survey has DQ rule (HSP_CaregiverRelatn=6).'
+			SELECT 0,'Survey has DQ rule (HSP_CaregiverRel=6).'
 		ELSE
 		 INSERT INTO #M (Error, strMessage)
-		 SELECT 1,'Survey does not have DQ rule (HSP_CaregiverRelatn=6).'
+		 SELECT 1,'Survey does not have DQ rule (HSP_CaregiverRel=6).'
 
 		--check for DQ_Guar Rule
 		If exists  (select BusinessRule_id
@@ -869,7 +886,7 @@ values (@hospiceId, 'Population','HSP_DecdHisp',1)
 insert into surveyvalidationfields(SurveyType_id, TableName, ColumnName, bitActive)
 values (@hospiceId, 'Population	','HSP_DecdRace',1)
 insert into surveyvalidationfields(SurveyType_id, TableName, ColumnName, bitActive)
-values (@hospiceId, 'Population','HSP_CaregiverRelatn',1)
+values (@hospiceId, 'Population','HSP_CaregiverRel',1)
 insert into surveyvalidationfields(SurveyType_id, TableName, ColumnName, bitActive)
 values (@hospiceId, 'Population','HSP_GuardFlg',1)
 insert into surveyvalidationfields(SurveyType_id, TableName, ColumnName, bitActive)
@@ -1628,6 +1645,25 @@ SELECT * FROM #M
 DROP TABLE #M
 
 GO
+
+/*
+update MetaField set STRFIELD_NM = 'HSP_CaregiverRel'
+--select * from Metafield 
+where STRFIELD_NM = 'HSP_CaregiverRelatn'
+
+update DefaultCriteriaStmt set strCriteriaString = '(POPULATIONHSP_CaregiverRel = 6)'
+--select * from DefaultCriteriaStmt 
+where strCriteriaString = '(POPULATIONHSP_CaregiverRelatn = 6)'
+
+update CriteriaStmt set strCriteriaString = '(POPULATIONHSP_CaregiverRel = 6)'
+--select * from CriteriaStmt 
+where strCriteriaString like '%(POPULATIONHSP_CaregiverRelatn = 6)%'
+
+update SurveyValidationFields set ColumnName = 'HSP_CaregiverRel'
+--select * from SurveyValidationFields 
+where ColumnName = 'HSP_CaregiverRelatn'
+*/
+
 
 commit tran
 
