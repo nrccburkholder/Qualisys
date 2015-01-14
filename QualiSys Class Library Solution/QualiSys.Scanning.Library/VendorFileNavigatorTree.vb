@@ -32,6 +32,8 @@ Public Class VendorFileNavigatorTree
     Private mErrorDesc As String = String.Empty
     Private mVendorID As Nullable(Of Integer)
     Private mDateFileCreated As Nullable(Of DateTime)
+    Private mTelematchLog_datSent As Nullable(Of DateTime)
+    Private mTelematchLog_datReturned As Nullable(Of DateTime)
 
 #End Region
 
@@ -243,6 +245,27 @@ Public Class VendorFileNavigatorTree
             PropertyHasChanged("DateFileCreated")
         End Set
     End Property
+
+    Public Property TelematchLog_datSent() As Nullable(Of DateTime)
+        Get
+            Return mTelematchLog_datSent
+        End Get
+        Set(value As Nullable(Of DateTime))
+            mTelematchLog_datSent = value
+            PropertyHasChanged("TelematchLog_datSent")
+        End Set
+    End Property
+
+    Public Property TelematchLog_datReturned() As Nullable(Of DateTime)
+        Get
+            Return mTelematchLog_datReturned
+        End Get
+        Set(value As Nullable(Of DateTime))
+            mTelematchLog_datReturned = value
+            PropertyHasChanged("TelematchLog_datReturned")
+        End Set
+    End Property
+
 #End Region
 
 #Region " Constructors "

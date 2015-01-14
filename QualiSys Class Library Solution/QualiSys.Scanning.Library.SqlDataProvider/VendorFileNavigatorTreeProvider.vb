@@ -38,6 +38,8 @@ Friend Class VendorFileNavigatorTreeProvider
         newObject.ErrorDesc = rdr.GetString("ErrorDesc")
         newObject.VendorID = rdr.GetNullableInteger("Vendor_ID")
         newObject.DateFileCreated = rdr.GetNullableDate("DateFileCreated")
+        newObject.TelematchLog_datSent = rdr.GetNullableDate("TelematchLog_datSent")
+        newObject.TelematchLog_datReturned = rdr.GetNullableDate("TelematchLog_datReturned")
         newObject.EndPopulate()
 
         Return newObject

@@ -148,6 +148,21 @@ Public Class VendorFileValidationSection
 
     End Sub
 
+    Private Sub ResendToTelematchButton_Click(sender As Object, e As EventArgs) Handles ResendToTelematchButton.Click
+
+        'Let's make sure this is what the user wants to do
+        Dim msg As String = String.Format("You are about to Resend to Telematch {0}!{1}{1}This will mark the file as Approved.{1}{1}Do you wish to continue?", mCurrentFileNode.DisplayName, vbCrLf)
+        If MessageBox.Show(msg, "Vendor File Resend to Telematch", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2) = DialogResult.OK Then
+            'The user has chosen to perform the rollback
+            mCurrentFileNode.ResendToTelematch()
+
+            'Reset the buttons
+            SetupButtons()
+        End If
+
+    End Sub
+
+
 #End Region
 
 #Region " Private Methods "
@@ -185,6 +200,8 @@ Public Class VendorFileValidationSection
 
     Private Sub SetupButtons()
 
+        ResendToTelematchButton.Enabled = False
+
         'Setup the buttons
         Select Case mCurrentFileNode.Source.VendorFileStatusID
             Case VendorFileStatusCodes.Processing
@@ -211,6 +228,7 @@ Public Class VendorFileValidationSection
                 VendorFileApproveButton.Enabled = False
                 VendorFileRemakeButton.Enabled = False
                 VendorFileRollbackButton.Enabled = False
+                ResendToTelematchButton.Enabled = mCurrentFileNode.IsStuckInTelematch
 
             Case VendorFileStatusCodes.Sent
                 VendorFileApproveButton.Enabled = False

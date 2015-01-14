@@ -32,6 +32,14 @@ Public Class VendorFileFileNode
         End Set
     End Property
 
+    Public ReadOnly Property IsStuckInTelematch() As Boolean
+        Get
+            Return mSource.TelematchLog_datSent.HasValue _
+                And Not mSource.TelematchLog_datReturned.HasValue _
+                And (mSource.TelematchLog_datSent.Value < Date.Now.AddHours(-1))
+        End Get
+    End Property
+
 #End Region
 
 #Region " Friend ReadOnly Properties "
@@ -147,6 +155,25 @@ Public Class VendorFileFileNode
 
         'Log this action
         VendorFileTracking.LogAction(fileQueue.VendorFileId, VendorFileTrackingActions.SetDateFileCreated, CurrentUser.MemberID)
+
+    End Sub
+
+    Friend Sub ResendToTelematch()
+
+        'Get the Queue object for this node
+        Dim fileQueue As VendorFileCreationQueue = VendorFileCreationQueue.Get(mSource.VendorFileID)
+
+        'Set the status to APPROVED and save it
+        fileQueue.VendorFileStatusId = VendorFileStatusCodes.Approved
+        fileQueue.Save()
+
+        'Setup the status and image in the tree
+        mSource.VendorFileStatusID = VendorFileStatusCodes.Approved
+        ImageKey = VendorFileImageKeys.FileApproved
+        SelectedImageKey = VendorFileImageKeys.FileApproved
+
+        'Log this action
+        VendorFileTracking.LogAction(fileQueue.VendorFileId, VendorFileTrackingActions.ResendToTelematch, CurrentUser.MemberID)
 
     End Sub
 

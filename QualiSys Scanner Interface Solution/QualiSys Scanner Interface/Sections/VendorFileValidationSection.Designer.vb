@@ -21,6 +21,7 @@ Partial Class VendorFileValidationSection
     Private Sub InitializeComponent()
         Me.VendorFileSectionPanel = New Nrc.Framework.WinForms.SectionPanel()
         Me.VendorFilePanel = New System.Windows.Forms.Panel()
+        Me.ResendToTelematchButton = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.VendorFileRollbackButton = New System.Windows.Forms.Button()
         Me.VendorFileTabControl = New System.Windows.Forms.TabControl()
@@ -59,6 +60,7 @@ Partial Class VendorFileValidationSection
         Me.VendorFilePanel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.VendorFilePanel.Controls.Add(Me.ResendToTelematchButton)
         Me.VendorFilePanel.Controls.Add(Me.DateFileCreatedDateTimePicker)
         Me.VendorFilePanel.Controls.Add(Me.Label1)
         Me.VendorFilePanel.Controls.Add(Me.VendorFileRollbackButton)
@@ -70,6 +72,25 @@ Partial Class VendorFileValidationSection
         Me.VendorFilePanel.Size = New System.Drawing.Size(801, 700)
         Me.VendorFilePanel.TabIndex = 0
         Me.VendorFilePanel.Visible = False
+        '
+        'ResendToTelematchButton
+        '
+        Me.ResendToTelematchButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.ResendToTelematchButton.Location = New System.Drawing.Point(4, 674)
+        Me.ResendToTelematchButton.Name = "ResendToTelematchButton"
+        Me.ResendToTelematchButton.Size = New System.Drawing.Size(148, 23)
+        Me.ResendToTelematchButton.TabIndex = 10
+        Me.ResendToTelematchButton.Text = "Resend to Telematch"
+        Me.ResendToTelematchButton.UseVisualStyleBackColor = True
+        '
+        'DateFileCreatedDateTimePicker
+        '
+        Me.DateFileCreatedDateTimePicker.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.DateFileCreatedDateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.DateFileCreatedDateTimePicker.Location = New System.Drawing.Point(376, 674)
+        Me.DateFileCreatedDateTimePicker.Name = "DateFileCreatedDateTimePicker"
+        Me.DateFileCreatedDateTimePicker.Size = New System.Drawing.Size(100, 21)
+        Me.DateFileCreatedDateTimePicker.TabIndex = 9
         '
         'Label1
         '
@@ -211,8 +232,8 @@ Partial Class VendorFileValidationSection
         CType(Me.VendorFileDataGridControl, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.VendorFileDataGridView, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
-
     End Sub
+
     Friend WithEvents VendorFileSectionPanel As Nrc.Framework.WinForms.SectionPanel
     Friend WithEvents VendorFilePanel As System.Windows.Forms.Panel
     Friend WithEvents VendorFileRemakeButton As System.Windows.Forms.Button
@@ -226,5 +247,6 @@ Partial Class VendorFileValidationSection
     Friend WithEvents VendorFileRollbackButton As System.Windows.Forms.Button
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents DateFileCreatedDateTimePicker As System.Windows.Forms.DateTimePicker
+    Friend WithEvents ResendToTelematchButton As System.Windows.Forms.Button
 
 End Class
