@@ -23,7 +23,7 @@
     </SccProvider>
     <ApplicationIcon>Scanner 2.ico</ApplicationIcon>
     <SignManifests>true</SignManifests>
-    <ManifestCertificateThumbprint>13E09AAD0FFC1E7667935AC08A3A46200504109E</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>53594C104BCB093407B64D7AE589A83AA503ECAB</ManifestCertificateThumbprint>
     <GenerateManifests>true</GenerateManifests>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
@@ -42,7 +42,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.10.2.0</ApplicationVersion>
+    <ApplicationVersion>1.11.0.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
