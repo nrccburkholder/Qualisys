@@ -24,7 +24,7 @@ DECLARE @IsCAHPS bit
 
 SET @IsCAHPS = 0
 
-SET @SurveyType_desc = 'CIHI'
+SET @SurveyType_desc = 'CIHI CPES-IC'
 SET @SeededMailings = 0
 SET @SeedSurveyPercent = NULL
 SET @SeedUnitField = NULL
@@ -59,83 +59,52 @@ END
 
 --select * from surveytype
 --select * from qualpro_params where strparam_nm like '%HCAHPS IP%' select * from qualpro_params where strparam_nm like '%CIHI%'
---delete from qualpro_params where strparam_nm = 'SurveyRule: IsSamplingMethodDisabled - CIHI'
+--delete from qualpro_params where strparam_nm = 'SurveyRule: IsSamplingMethodDisabled - CIHI CPES-IC'
 
 insert into qualpro_params (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, NUMPARAM_VALUE, DATPARAM_VALUE, COMMENTS)
-VALUES ('SurveyRule: SkipEnforcementRequired - CIHI','S','SurveyRules','1',NULL,NULL,'Skip Enforcement is required and controls are not enabled in Config Man')
+VALUES ('SurveyRule: SkipEnforcementRequired - CIHI CPES-IC','S','SurveyRules','1',NULL,NULL,'Skip Enforcement is required and controls are not enabled in Config Man')
 insert into qualpro_params (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, NUMPARAM_VALUE, DATPARAM_VALUE, COMMENTS)
-VALUES ('SurveyRule: ResurveyMethodDefault - CIHI','S','SurveyRules','CalendarMonths',2,NULL,'CIHI Resurvey method default for Config Man')
+VALUES ('SurveyRule: ResurveyMethodDefault - CIHI CPES-IC','S','SurveyRules','CalendarMonths',2,NULL,'CIHI Resurvey method default for Config Man')
 insert into qualpro_params (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, NUMPARAM_VALUE, DATPARAM_VALUE, COMMENTS)
-VALUES ('SurveyRule: ResurveyExclusionPeriodsNumericDefault - CIHI','N','SurveyRules',NULL,1,NULL,'CIHI Resurvey Exclusion Days default for Config Man')
+VALUES ('SurveyRule: ResurveyExclusionPeriodsNumericDefault - CIHI CPES-IC','N','SurveyRules',NULL,12,NULL,'CIHI Resurvey Exclusion Days default for Config Man')
 insert into qualpro_params (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, NUMPARAM_VALUE, DATPARAM_VALUE, COMMENTS)
-VALUES ('SurveyRule: IsResurveyExclusionPeriodsNumericDisabled - CIHI','S','SurveyRules',1,NULL,NULL,'CIHI Resurvey Exclusion Days disabled for Config Man')
+VALUES ('SurveyRule: IsResurveyExclusionPeriodsNumericDisabled - CIHI CPES-IC','S','SurveyRules',1,NULL,NULL,'CIHI Resurvey Exclusion Days disabled for Config Man')
 insert into qualpro_params (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, NUMPARAM_VALUE, DATPARAM_VALUE, COMMENTS)
-VALUES ('SurveyRule: IsMonthlyOnly - CIHI','S','SurveyRules','1',NULL,NULL,'Rule to determine if survey type is Monthly only for Config Man')
+VALUES ('SurveyRule: IsMonthlyOnly - CIHI CPES-IC','S','SurveyRules','1',NULL,NULL,'Rule to determine if survey type is Monthly only for Config Man')
 insert into qualpro_params (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, NUMPARAM_VALUE, DATPARAM_VALUE, COMMENTS)
-VALUES ('SurveyRule: SamplingMethodDefault - CIHI','S','SurveyRules','Specify Outgo',2,NULL,'Rule to set default sampling method for Config Man')
-insert into qualpro_params (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, NUMPARAM_VALUE, DATPARAM_VALUE, COMMENTS)
-VALUES ('SurveyRule: IsCAHPS - CIHI','S','SurveyRules','1',NULL,NULL,'Rule to determine if this is a CAHPS survey type for Config Man')
+VALUES ('SurveyRule: IsCAHPS - CIHI CPES-IC','S','SurveyRules','1',NULL,NULL,'Rule to determine if this is a CAHPS survey type for Config Man')
 
 --select * from standardmailingstep select * from standardmethodologybysurveytype select * from standardmethodology select * from methodologysteptype select * from mailingmethodology
 
 insert into standardmethodology (strStandardMethodology_nm, bitCustom, MethodologyType)
-values ('CIHI Mixed Mail-Phone', 0, 'Mixed Mail-Phone')
-insert into standardmethodology (strStandardMethodology_nm, bitCustom, MethodologyType)
-values ('CIHI Mail Only', 0, 'Mail Only')
-insert into standardmethodology (strStandardMethodology_nm, bitCustom, MethodologyType)
-values ('CIHI Phone Only', 0, 'Phone Only')
+values ('CPES-IC Mail Only, 2 Wave', 0, 'Mail Only')
+
 
 declare @CIHIMethodologyId int, @CIHIId int
-select @CIHIId = SurveyType_Id from SurveyType where SurveyType_dsc = 'CIHI'
+select @CIHIId = SurveyType_Id from SurveyType where SurveyType_dsc = @SurveyType_desc
 
-select @CIHIMethodologyId = StandardMethodologyId from StandardMethodology where strStandardMethodology_nm = 'CIHI Mixed Mail-Phone'
+select @CIHIMethodologyId = StandardMethodologyId from StandardMethodology where strStandardMethodology_nm = 'CPES-IC Mail Only, 2 Wave'
 insert into standardmethodologybysurveytype (StandardMethodologyID, SurveyType_id, SubType_ID) values (@CIHIMethodologyId, @CIHIId, 0)
 insert into standardmailingstep (StandardMethodologyID, intSequence, bitSurveyInLine, bitSendSurvey, intIntervalDays, bitThankYouItem, strMailingStep_nm, bitFirstSurvey, MailingStepMethod_id, ExpireInDays, ExpireFromStep, Quota_ID, QuotaStopCollectionAt, DaysInField, NumberOfAttempts, WeekDay_Day_Call, WeekDay_Eve_Call, Sat_Day_Call, Sat_Eve_Call, Sun_Day_Call, Sun_Eve_Call, CallBackOtherLang, CallbackUsingTTY, AcceptPartial, SendEmailBlast)
-values (@CIHIMethodologyId, 1, 0, 1, 0, 0, '1st Survey', 1, 0, 42, 1, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
+values (@CIHIMethodologyId, 1, 0, 1, 0, 0, '1st Survey', 1, 0, 84, 1, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
 insert into standardmailingstep (StandardMethodologyID, intSequence, bitSurveyInLine, bitSendSurvey, intIntervalDays, bitThankYouItem, strMailingStep_nm, bitFirstSurvey, MailingStepMethod_id, ExpireInDays, ExpireFromStep, Quota_ID, QuotaStopCollectionAt, DaysInField, NumberOfAttempts, WeekDay_Day_Call, WeekDay_Eve_Call, Sat_Day_Call, Sat_Eve_Call, Sun_Day_Call, Sun_Eve_Call, CallBackOtherLang, CallbackUsingTTY, AcceptPartial, SendEmailBlast)
-values (@CIHIMethodologyId, 2, 0, 1, 18, 0, 'Phone', 0, 1, 42, 1, 1, null, 41, 5, 1, 1, 1, 1, 1, 1, 1, 1, null, null)
+values (@CIHIMethodologyId, 2, 0, 1, 18, 0, '2nd Survey', 0, 0, 84, 1, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
 
-select @CIHIMethodologyId = StandardMethodologyId from StandardMethodology where strStandardMethodology_nm = 'CIHI Mail Only'
-insert into standardmethodologybysurveytype (StandardMethodologyID, SurveyType_id, SubType_ID) values (@CIHIMethodologyId, @CIHIId, 0)
-insert into standardmailingstep (StandardMethodologyID, intSequence, bitSurveyInLine, bitSendSurvey, intIntervalDays, bitThankYouItem, strMailingStep_nm, bitFirstSurvey, MailingStepMethod_id, ExpireInDays, ExpireFromStep, Quota_ID, QuotaStopCollectionAt, DaysInField, NumberOfAttempts, WeekDay_Day_Call, WeekDay_Eve_Call, Sat_Day_Call, Sat_Eve_Call, Sun_Day_Call, Sun_Eve_Call, CallBackOtherLang, CallbackUsingTTY, AcceptPartial, SendEmailBlast)
-values (@CIHIMethodologyId, 1, 0, 1, 0, 0, '1st Survey', 1, 0, 42, 1, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
-insert into standardmailingstep (StandardMethodologyID, intSequence, bitSurveyInLine, bitSendSurvey, intIntervalDays, bitThankYouItem, strMailingStep_nm, bitFirstSurvey, MailingStepMethod_id, ExpireInDays, ExpireFromStep, Quota_ID, QuotaStopCollectionAt, DaysInField, NumberOfAttempts, WeekDay_Day_Call, WeekDay_Eve_Call, Sat_Day_Call, Sat_Eve_Call, Sun_Day_Call, Sun_Eve_Call, CallBackOtherLang, CallbackUsingTTY, AcceptPartial, SendEmailBlast)
-values (@CIHIMethodologyId, 2, 0, 1, 18, 0, '2nd Survey', 0, 0, 42, 1, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
-
-select @CIHIMethodologyId = StandardMethodologyId from StandardMethodology where strStandardMethodology_nm = 'CIHI Phone Only'
-insert into standardmethodologybysurveytype (StandardMethodologyID, SurveyType_id, SubType_ID) values (@CIHIMethodologyId, @CIHIId, 0)
-insert into standardmailingstep (StandardMethodologyID, intSequence, bitSurveyInLine, bitSendSurvey, intIntervalDays, bitThankYouItem, strMailingStep_nm, bitFirstSurvey, MailingStepMethod_id, ExpireInDays, ExpireFromStep, Quota_ID, QuotaStopCollectionAt, DaysInField, NumberOfAttempts, WeekDay_Day_Call, WeekDay_Eve_Call, Sat_Day_Call, Sat_Eve_Call, Sun_Day_Call, Sun_Eve_Call, CallBackOtherLang, CallbackUsingTTY, AcceptPartial, SendEmailBlast)
-values (@CIHIMethodologyId, 1, 0, 1, 0, 0, 'Phone', 1, 1, 42, 1, 1, null, 41, 5, 1, 1, 1, 1, 1, 1, 1, 1, null, null)
-
-update sms set ExpireFromStep = StandardMailingStepID from
+update sms 
+set ExpireFromStep = StandardMailingStepID from
 --select * from
-StandardMailingStep sms inner join StandardMethodology sm on sms.StandardMethodologyID = sm.StandardMethodologyID 
-where strStandardMethodology_nm = 'CIHI Mixed Mail-Phone'
+StandardMailingStep sms 
+inner join StandardMethodology sm on sms.StandardMethodologyID = sm.StandardMethodologyID 
+where strStandardMethodology_nm = 'CPES-IC Mail Only, 2 Wave'
 and intSequence = 1
 
-update sms set ExpireFromStep = StandardMailingStepID - 1 from
+update sms 
+set ExpireFromStep = StandardMailingStepID - 1 from
 --select * from
-StandardMailingStep sms inner join StandardMethodology sm on sms.StandardMethodologyID = sm.StandardMethodologyID 
-where strStandardMethodology_nm = 'CIHI Mixed Mail-Phone'
+StandardMailingStep sms 
+inner join StandardMethodology sm on sms.StandardMethodologyID = sm.StandardMethodologyID 
+where strStandardMethodology_nm = 'CPES-IC Mail Only, 2 Wave'
 and intSequence = 2
-
-update sms set ExpireFromStep = StandardMailingStepID from
---select * from
-StandardMailingStep sms inner join StandardMethodology sm on sms.StandardMethodologyID = sm.StandardMethodologyID 
-where strStandardMethodology_nm = 'CIHI Mail Only'
-and intSequence = 1
-
-update sms set ExpireFromStep = StandardMailingStepID - 1 from
---select * from
-StandardMailingStep sms inner join StandardMethodology sm on sms.StandardMethodologyID = sm.StandardMethodologyID 
-where strStandardMethodology_nm = 'CIHI Mail Only'
-and intSequence = 2
-
-update sms set ExpireFromStep = StandardMailingStepID from
---select * from
-StandardMailingStep sms inner join StandardMethodology sm on sms.StandardMethodologyID = sm.StandardMethodologyID 
-where strStandardMethodology_nm = 'CIHI Phone Only'
-and intSequence = 1
 
 --select * from metafieldgroupdef select * from metafield
 insert into metafieldgroupdef (STRFIELDGROUP_NM, strAddrCleanType, bitAddrCleanDefault)
@@ -236,7 +205,7 @@ update metafield set intFieldLength = 1 where STRFIELDSHORT_NM = 'HspGuard'
 update metafield set intFieldLength = 50 where STRFIELDSHORT_NM = 'HSPLang'
 
 --declare @CIHIMethodologyId int, @CIHIId int
-select @CIHIId = SurveyType_Id from SurveyType where SurveyType_dsc = 'CIHI'
+select @CIHIId = SurveyType_Id from SurveyType where SurveyType_dsc = @SurveyType_desc
 
 insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
 values (147, @CIHIId, null)
@@ -260,14 +229,22 @@ insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id]
 values (162, @CIHIId, null)
 
 --declare @CIHIMethodologyId int, @CIHIId int
-select @CIHIId = SurveyType_Id from SurveyType where SurveyType_dsc = 'CIHI'
+select @CIHIId = SurveyType_Id from SurveyType where SurveyType_dsc = @SurveyType_desc
 declare @DCStmtId int, @FieldId int
 
 --select * from surveytypedefaultcriteria select * from defaultcriteriastmt select * from DefaultCriteriaClause
 
 insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
+values ('DQ_L Nm', '(POPULATIONLName IS NULL)', 'Q')
+SELECT @DCStmtId = SCOPE_IDENTITY()
+insert into SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteriaStmt_id)
+values (@CIHIId, 1, @DCStmtId)
+
+insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
 values ('DQ_Age', '(POPULATIONHSP_DecdAge < 18)', 'Q')
+
 select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCriteriaStmt_nm = 'DQ_Age' and strCriteriaString = '(POPULATIONHSP_DecdAge < 18)'
+
 insert into SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteriaStmt_id)
 values (@CIHIId, 1, @DCStmtId)
 select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'HSP_DecdAge'
