@@ -1,5 +1,55 @@
 use nrc_datamart
 go
+CREATE PROCEDURE [CEM].[ExportPostProcess00000001]
+@ExportQueueID int
+as
+update CEM.ExportDataset00000001
+set [patientresponse.race-white-phone]='M', [patientresponse.race-african-amer-phone]='M', [patientresponse.race-amer-indian-phone]='M', [patientresponse.race-asian-phone]='M', 
+	[patientresponse.race-nativehawaiian-pacific-phone]='M', [patientresponse.race-noneofabove-phone]='M' 
+where len([patientresponse.race-white-phone]+[patientresponse.race-african-amer-phone]+[patientresponse.race-amer-indian-phone]+[patientresponse.race-asian-phone]
+	+[patientresponse.race-nativehawaiian-pacific-phone]+[patientresponse.race-noneofabove-phone])=0
+and [administration.final-status] in ('110','120','130','140','150','160','190','199','210')
+and [administration.survey-mode]<>'X'
+and ExportQueueID=@ExportQueueID
+
+update CEM.ExportDataset00000001
+set [patientresponse.race-asian-indian-phone]='M', [patientresponse.race-chinese-phone]='M', [patientresponse.race-filipino-phone]='M', [patientresponse.race-japanese-phone]='M', 
+	[patientresponse.race-korean-phone]='M', [patientresponse.race-vietnamese-phone]='M', [patientresponse.race-otherasian-phone]='M', [patientresponse.race-noneofabove-asian-phone]='M'
+where len([patientresponse.race-asian-indian-phone]+[patientresponse.race-chinese-phone]+[patientresponse.race-filipino-phone]+[patientresponse.race-japanese-phone]
+	+[patientresponse.race-korean-phone]+[patientresponse.race-vietnamese-phone]+[patientresponse.race-otherasian-phone]+[patientresponse.race-noneofabove-asian-phone])=0
+and [administration.final-status] in ('110','120','130','140','150','160','190','199','210')
+and [administration.survey-mode]<>'X'
+and ExportQueueID=@ExportQueueID
+
+update CEM.ExportDataset00000001
+set [patientresponse.race-nativehawaiian-phone]='M', [patientresponse.race-guam-chamarro-phone]='M', [patientresponse.race-samoan-phone]='M', [patientresponse.race-otherpacificislander-phone]='M',
+	[patientresponse.race-noneofabove-pacific-phone]='M'
+where len([patientresponse.race-nativehawaiian-phone]+[patientresponse.race-guam-chamarro-phone]+[patientresponse.race-samoan-phone]+[patientresponse.race-otherpacificislander-phone]
+	+[patientresponse.race-noneofabove-pacific-phone])=0
+and [administration.final-status] in ('110','120','130','140','150','160','190','199','210')
+and [administration.survey-mode]<>'X'
+and ExportQueueID=@ExportQueueID
+
+update CEM.ExportDataset00000001
+set [patientresponse.race-white-mail]='M', [patientresponse.race-african-amer-mail]='M', [patientresponse.race-amer-indian-mail]='M', [patientresponse.race-asian-indian-mail]='M', 
+	[patientresponse.race-chinese-mail]='M', [patientresponse.race-filipino-mail]='M', [patientresponse.race-japanese-mail]='M', [patientresponse.race-korean-mail]='M', 
+	[patientresponse.race-vietnamese-mail]='M', [patientresponse.race-otherasian-mail]='M', [patientresponse.race-nativehawaiian-mail]='M', [patientresponse.race-guamanian-chamorro-mail]='M', 
+	[patientresponse.race-samoan-mail]='M', [patientresponse.race-other-pacificislander-mail]='M'
+where len([patientresponse.race-white-mail]+[patientresponse.race-african-amer-mail]+[patientresponse.race-amer-indian-mail]+[patientresponse.race-asian-indian-mail]
+	+[patientresponse.race-chinese-mail]+[patientresponse.race-filipino-mail]+[patientresponse.race-japanese-mail]+[patientresponse.race-korean-mail]+[patientresponse.race-vietnamese-mail]
+	+[patientresponse.race-otherasian-mail]+[patientresponse.race-nativehawaiian-mail]+[patientresponse.race-guamanian-chamorro-mail]+[patientresponse.race-samoan-mail]
+	+[patientresponse.race-other-pacificislander-mail])=0
+and [administration.final-status] in ('110','120','130','140','150','160','190','199','210')
+and [administration.survey-mode]<>'X'
+and ExportQueueID=@ExportQueueID
+
+update CEM.ExportDataset00000001
+set [patientresponse.help-answer]='M', [patientresponse.help-other]='M', [patientresponse.help-read]='M', [patientresponse.help-translate]='M', [patientresponse.help-wrote]='M'
+where len([patientresponse.help-answer]+[patientresponse.help-other]+[patientresponse.help-read]+[patientresponse.help-translate]+[patientresponse.help-wrote])=0
+and [administration.final-status] in ('110','120','130','140','150','160','190','199','210')
+and [administration.survey-mode]<>'X'
+and ExportQueueID=@ExportQueueID
+go
 truncate TABLE [CEM].[ExportTemplate]
 truncate TABLE [CEM].[ExportTemplateSection] 
 truncate TABLE [CEM].[ExportTemplateDefaultResponse] 
@@ -147,6 +197,7 @@ SELECT N'20' AS [ExportTemplateColumnResponseID], N'13' AS [ExportTemplateColumn
 SELECT N'21' AS [ExportTemplateColumnResponseID], N'13' AS [ExportTemplateColumnID], N'5240' AS [RawValue], NULL 			AS [ExportColumnName], N'240' AS [RecodeValue], N'Wrong/Disc/No Telephone Number' AS [ResponseLabel] UNION ALL
 SELECT N'22' AS [ExportTemplateColumnResponseID], N'13' AS [ExportTemplateColumnID], N'5250' AS [RawValue], NULL 			AS [ExportColumnName], N'250' AS [RecodeValue], N'No Response After Maximum Attempts' AS [ResponseLabel] UNION ALL
 SELECT N'23' AS [ExportTemplateColumnResponseID], N'15' AS [ExportTemplateColumnID], N'1' AS [RawValue], NULL 				AS [ExportColumnName], N'1' AS [RecodeValue], N'English' AS [ResponseLabel] UNION ALL
+SELECT N'23' AS [ExportTemplateColumnResponseID], N'15' AS [ExportTemplateColumnID], N'2' AS [RawValue], NULL 				AS [ExportColumnName], N'2' AS [RecodeValue], N'Spanish' AS [ResponseLabel] UNION ALL
 SELECT N'24' AS [ExportTemplateColumnResponseID], N'15' AS [ExportTemplateColumnID], N'19' AS [RawValue], NULL 				AS [ExportColumnName], N'2' AS [RecodeValue], N'Spanish' AS [ResponseLabel] UNION ALL
 SELECT N'25' AS [ExportTemplateColumnResponseID], N'15' AS [ExportTemplateColumnID], N'0000' AS [RawValue], NULL 			AS [ExportColumnName], N'3' AS [RecodeValue], N'Traditional Chinese' AS [ResponseLabel] UNION ALL
 SELECT N'26' AS [ExportTemplateColumnResponseID], N'15' AS [ExportTemplateColumnID], N'0000' AS [RawValue], NULL 			AS [ExportColumnName], N'4' AS [RecodeValue], N'Simplified Chinese' AS [ResponseLabel] UNION ALL
@@ -236,7 +287,7 @@ SELECT N'109' AS [ExportTemplateColumnResponseID], N'37' AS [ExportTemplateColum
 SELECT N'110' AS [ExportTemplateColumnResponseID], N'37' AS [ExportTemplateColumnID], N'2' AS [RawValue], NULL 				AS [ExportColumnName], N'2' AS [RecodeValue], N'Sometimes' AS [ResponseLabel] UNION ALL
 SELECT N'111' AS [ExportTemplateColumnResponseID], N'37' AS [ExportTemplateColumnID], N'3' AS [RawValue], NULL 				AS [ExportColumnName], N'3' AS [RecodeValue], N'Usually' AS [ResponseLabel] UNION ALL
 SELECT N'112' AS [ExportTemplateColumnResponseID], N'37' AS [ExportTemplateColumnID], N'4' AS [RawValue], NULL 				AS [ExportColumnName], N'4' AS [RecodeValue], N'Always' AS [ResponseLabel] UNION ALL
-SELECT N'113' AS [ExportTemplateColumnResponseID], N'37' AS [ExportTemplateColumnID], N'5' AS [RawValue], NULL 				AS [ExportColumnName], N'5' AS [RecodeValue], N'I/You insert my/ your own needles' AS [ResponseLabel] UNION ALL
+SELECT N'113' AS [ExportTemplateColumnResponseID], N'37' AS [ExportTemplateColumnID], N'-89' AS [RawValue], NULL 			AS [ExportColumnName], N'5' AS [RecodeValue], N'I/You insert my/ your own needles' AS [ResponseLabel] UNION ALL
 SELECT N'114' AS [ExportTemplateColumnResponseID], N'38' AS [ExportTemplateColumnID], N'1' AS [RawValue], NULL 				AS [ExportColumnName], N'1' AS [RecodeValue], N'Never' AS [ResponseLabel] UNION ALL
 SELECT N'115' AS [ExportTemplateColumnResponseID], N'38' AS [ExportTemplateColumnID], N'2' AS [RawValue], NULL 				AS [ExportColumnName], N'2' AS [RecodeValue], N'Sometimes' AS [ResponseLabel] UNION ALL
 SELECT N'116' AS [ExportTemplateColumnResponseID], N'38' AS [ExportTemplateColumnID], N'3' AS [RawValue], NULL 				AS [ExportColumnName], N'3' AS [RecodeValue], N'Usually' AS [ResponseLabel] UNION ALL
@@ -560,8 +611,11 @@ INSERT INTO CEM.DispositionClause (DispositionProcessID, DispositionPhraseKey, E
 SELECT DispositionProcessID, DispositionPhraseKey, ExportTemplateColumnID, OperatorID, LowValue, HighValue
 FROM (
 SELECT N'1' AS [DispositionClauseID], N'1' AS [DispositionProcessID], N'1' AS [DispositionPhraseKey], N'13' AS [ExportTemplateColumnID], N'12' AS [OperatorID], NULL AS [LowValue], NULL AS [HighValue] UNION ALL
-SELECT N'2' AS [DispositionClauseID], N'2' AS [DispositionProcessID], N'1' AS [DispositionPhraseKey], N'13' AS [ExportTemplateColumnID], N'12' AS [OperatorID], NULL AS [LowValue], NULL AS [HighValue] UNION ALL
-SELECT N'3' AS [DispositionClauseID], N'3' AS [DispositionProcessID], N'1' AS [DispositionPhraseKey], N'13' AS [ExportTemplateColumnID], N'12' AS [OperatorID], NULL AS [LowValue], NULL AS [HighValue] ) t;
+SELECT N'2' AS [DispositionClauseID], N'1' AS [DispositionProcessID], N'2' AS [DispositionPhraseKey], N'16' AS [ExportTemplateColumnID], N'7' AS [OperatorID], NULL AS [LowValue], NULL AS [HighValue] UNION ALL
+SELECT N'3' AS [DispositionClauseID], N'2' AS [DispositionProcessID], N'1' AS [DispositionPhraseKey], N'13' AS [ExportTemplateColumnID], N'12' AS [OperatorID], NULL AS [LowValue], NULL AS [HighValue] UNION ALL
+SELECT N'4' AS [DispositionClauseID], N'2' AS [DispositionProcessID], N'2' AS [DispositionPhraseKey], N'16' AS [ExportTemplateColumnID], N'7' AS [OperatorID], NULL AS [LowValue], NULL AS [HighValue] UNION ALL
+SELECT N'5' AS [DispositionClauseID], N'3' AS [DispositionProcessID], N'1' AS [DispositionPhraseKey], N'13' AS [ExportTemplateColumnID], N'12' AS [OperatorID], NULL AS [LowValue], NULL AS [HighValue] UNION ALL
+SELECT N'6' AS [DispositionClauseID], N'3' AS [DispositionProcessID], N'2' AS [DispositionPhraseKey], N'16' AS [ExportTemplateColumnID], N'7' AS [OperatorID], NULL AS [LowValue], NULL AS [HighValue] ) t;
 
 INSERT INTO CEM.DispositionInList ([DispositionClauseID], [ListValue] )
 SELECT [DispositionClauseID], [ListValue]
@@ -575,22 +629,63 @@ SELECT N'6' AS [DispositionInListID], N'1' AS [DispositionClauseID], N'160' AS [
 SELECT N'7' AS [DispositionInListID], N'1' AS [DispositionClauseID], N'190' AS [ListValue] UNION ALL
 SELECT N'8' AS [DispositionInListID], N'1' AS [DispositionClauseID], N'199' AS [ListValue] UNION ALL
 SELECT N'9' AS [DispositionInListID], N'1' AS [DispositionClauseID], N'210' AS [ListValue] UNION ALL
-SELECT N'10' AS [DispositionInListID], N'2' AS [DispositionClauseID], N'110' AS [ListValue] UNION ALL
-SELECT N'11' AS [DispositionInListID], N'2' AS [DispositionClauseID], N'120' AS [ListValue] UNION ALL
-SELECT N'12' AS [DispositionInListID], N'2' AS [DispositionClauseID], N'130' AS [ListValue] UNION ALL
-SELECT N'13' AS [DispositionInListID], N'2' AS [DispositionClauseID], N'140' AS [ListValue] UNION ALL
-SELECT N'14' AS [DispositionInListID], N'2' AS [DispositionClauseID], N'150' AS [ListValue] UNION ALL
-SELECT N'15' AS [DispositionInListID], N'2' AS [DispositionClauseID], N'160' AS [ListValue] UNION ALL
-SELECT N'16' AS [DispositionInListID], N'2' AS [DispositionClauseID], N'190' AS [ListValue] UNION ALL
-SELECT N'17' AS [DispositionInListID], N'2' AS [DispositionClauseID], N'199' AS [ListValue] UNION ALL
-SELECT N'18' AS [DispositionInListID], N'2' AS [DispositionClauseID], N'210' AS [ListValue] UNION ALL
-SELECT N'19' AS [DispositionInListID], N'3' AS [DispositionClauseID], N'110' AS [ListValue] UNION ALL
-SELECT N'20' AS [DispositionInListID], N'3' AS [DispositionClauseID], N'120' AS [ListValue] UNION ALL
-SELECT N'21' AS [DispositionInListID], N'3' AS [DispositionClauseID], N'130' AS [ListValue] UNION ALL
-SELECT N'22' AS [DispositionInListID], N'3' AS [DispositionClauseID], N'140' AS [ListValue] UNION ALL
-SELECT N'23' AS [DispositionInListID], N'3' AS [DispositionClauseID], N'150' AS [ListValue] UNION ALL
-SELECT N'24' AS [DispositionInListID], N'3' AS [DispositionClauseID], N'160' AS [ListValue] UNION ALL
-SELECT N'25' AS [DispositionInListID], N'3' AS [DispositionClauseID], N'190' AS [ListValue] UNION ALL
-SELECT N'26' AS [DispositionInListID], N'3' AS [DispositionClauseID], N'199' AS [ListValue] UNION ALL
-SELECT N'27' AS [DispositionInListID], N'3' AS [DispositionClauseID], N'210' AS [ListValue] ) t;
+SELECT N'10' AS [DispositionInListID], N'2' AS [DispositionClauseID], N'0' AS [ListValue] UNION ALL
+SELECT N'11' AS [DispositionInListID], N'2' AS [DispositionClauseID], char(7) AS [ListValue] UNION ALL
+SELECT N'12' AS [DispositionInListID], N'2' AS [DispositionClauseID], 'X' AS [ListValue] UNION ALL
+SELECT N'13' AS [DispositionInListID], N'3' AS [DispositionClauseID], N'110' AS [ListValue] UNION ALL
+SELECT N'14' AS [DispositionInListID], N'3' AS [DispositionClauseID], N'120' AS [ListValue] UNION ALL
+SELECT N'15' AS [DispositionInListID], N'3' AS [DispositionClauseID], N'130' AS [ListValue] UNION ALL
+SELECT N'16' AS [DispositionInListID], N'3' AS [DispositionClauseID], N'140' AS [ListValue] UNION ALL
+SELECT N'17' AS [DispositionInListID], N'3' AS [DispositionClauseID], N'150' AS [ListValue] UNION ALL
+SELECT N'18' AS [DispositionInListID], N'3' AS [DispositionClauseID], N'160' AS [ListValue] UNION ALL
+SELECT N'19' AS [DispositionInListID], N'3' AS [DispositionClauseID], N'190' AS [ListValue] UNION ALL
+SELECT N'20' AS [DispositionInListID], N'3' AS [DispositionClauseID], N'199' AS [ListValue] UNION ALL
+SELECT N'21' AS [DispositionInListID], N'3' AS [DispositionClauseID], N'210' AS [ListValue] UNION ALL
+SELECT N'22' AS [DispositionInListID], N'4' AS [DispositionClauseID], N'0' AS [ListValue] UNION ALL
+SELECT N'23' AS [DispositionInListID], N'4' AS [DispositionClauseID], char(7) AS [ListValue] UNION ALL
+SELECT N'23' AS [DispositionInListID], N'4' AS [DispositionClauseID], 'X' AS [ListValue] UNION ALL
+SELECT N'24' AS [DispositionInListID], N'5' AS [DispositionClauseID], N'110' AS [ListValue] UNION ALL
+SELECT N'25' AS [DispositionInListID], N'5' AS [DispositionClauseID], N'120' AS [ListValue] UNION ALL
+SELECT N'26' AS [DispositionInListID], N'5' AS [DispositionClauseID], N'130' AS [ListValue] UNION ALL
+SELECT N'27' AS [DispositionInListID], N'5' AS [DispositionClauseID], N'140' AS [ListValue] UNION ALL
+SELECT N'28' AS [DispositionInListID], N'5' AS [DispositionClauseID], N'150' AS [ListValue] UNION ALL
+SELECT N'29' AS [DispositionInListID], N'5' AS [DispositionClauseID], N'160' AS [ListValue] UNION ALL
+SELECT N'30' AS [DispositionInListID], N'5' AS [DispositionClauseID], N'190' AS [ListValue] UNION ALL
+SELECT N'31' AS [DispositionInListID], N'5' AS [DispositionClauseID], N'199' AS [ListValue] UNION ALL
+SELECT N'32' AS [DispositionInListID], N'5' AS [DispositionClauseID], N'210' AS [ListValue] UNION ALL 
+SELECT N'33' AS [DispositionInListID], N'6' AS [DispositionClauseID], N'0' AS [ListValue] UNION ALL
+SELECT N'34' AS [DispositionInListID], N'6' AS [DispositionClauseID], 'X' AS [ListValue] UNION ALL
+SELECT N'35' AS [DispositionInListID], N'6' AS [DispositionClauseID], char(7) AS [ListValue] ) t;
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
