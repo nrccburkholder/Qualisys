@@ -1,1 +1,0 @@
-C:\gitrepos\Qualisys\Legacy\FormLayoutLauncher\FormLayoutLauncher\bin\Debug\FormLayoutLauncher.exe.config

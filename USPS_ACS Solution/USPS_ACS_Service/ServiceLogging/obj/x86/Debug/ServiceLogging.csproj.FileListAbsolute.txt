@@ -1,7 +1,0 @@
-C:\gitrepos\Qualisys\USPS_ACS Solution\USPS_ACS_Service\ServiceLogging\bin\x86\Debug\ServiceLogging.dll
-C:\gitrepos\Qualisys\USPS_ACS Solution\USPS_ACS_Service\ServiceLogging\bin\x86\Debug\ServiceLogging.pdb
-C:\gitrepos\Qualisys\USPS_ACS Solution\USPS_ACS_Service\ServiceLogging\bin\x86\Debug\NLog.dll
-C:\gitrepos\Qualisys\USPS_ACS Solution\USPS_ACS_Service\ServiceLogging\bin\x86\Debug\NLog.xml
-C:\gitrepos\Qualisys\USPS_ACS Solution\USPS_ACS_Service\ServiceLogging\obj\x86\Debug\ServiceLogging.dll
-C:\gitrepos\Qualisys\USPS_ACS Solution\USPS_ACS_Service\ServiceLogging\obj\x86\Debug\ServiceLogging.pdb
-C:\gitrepos\Qualisys\USPS_ACS Solution\USPS_ACS_Service\ServiceLogging\obj\x86\Debug\ServiceLogging.csprojResolveAssemblyReference.cache

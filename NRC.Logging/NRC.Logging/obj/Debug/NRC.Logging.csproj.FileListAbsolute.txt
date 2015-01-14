@@ -1,7 +1,0 @@
-C:\gitrepos\Qualisys\NRC.Logging\NRC.Logging\bin\Debug\NRC.Logging.dll
-C:\gitrepos\Qualisys\NRC.Logging\NRC.Logging\bin\Debug\NRC.Logging.pdb
-C:\gitrepos\Qualisys\NRC.Logging\NRC.Logging\bin\Debug\NLog.dll
-C:\gitrepos\Qualisys\NRC.Logging\NRC.Logging\bin\Debug\NLog.xml
-C:\gitrepos\Qualisys\NRC.Logging\NRC.Logging\obj\Debug\NRC.Logging.dll
-C:\gitrepos\Qualisys\NRC.Logging\NRC.Logging\obj\Debug\NRC.Logging.pdb
-C:\gitrepos\Qualisys\NRC.Logging\NRC.Logging\obj\Debug\NRC.Logging.csprojResolveAssemblyReference.cache

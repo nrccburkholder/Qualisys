@@ -1,6 +1,0 @@
-C:\gitrepos\Qualisys\Legacy\Export Manager\Catalyst Exporter\DataContracts\bin\Debug\Nrc.CatalystExporter.DataContracts.dll
-C:\gitrepos\Qualisys\Legacy\Export Manager\Catalyst Exporter\DataContracts\bin\Debug\Nrc.CatalystExporter.DataContracts.pdb
-C:\gitrepos\Qualisys\Legacy\Export Manager\Catalyst Exporter\DataContracts\bin\Debug\EntityFramework.dll
-C:\gitrepos\Qualisys\Legacy\Export Manager\Catalyst Exporter\DataContracts\obj\Debug\Nrc.CatalystExporter.DataContracts.dll
-C:\gitrepos\Qualisys\Legacy\Export Manager\Catalyst Exporter\DataContracts\obj\Debug\Nrc.CatalystExporter.DataContracts.pdb
-C:\gitrepos\Qualisys\Legacy\Export Manager\Catalyst Exporter\DataContracts\obj\Debug\DataContracts.csprojResolveAssemblyReference.cache
