@@ -82,37 +82,26 @@ VALUES ('SurveyRule: IsCAHPS - CIHI CPES-IC','S','SurveyRules','1',NULL,NULL,'Ru
 /*
 	Methodologies
 */
-declare @CIHIMethodologyId int
+
+declare @StandardMethodologyID int
+declare @StandardMailingStepID int
 
 insert into standardmethodology (strStandardMethodology_nm, bitCustom, MethodologyType)
 values ('CPES-IC Mail Only, 2 Wave', 0, 'Mail Only')
 
-set @CIHIMethodologyId=scope_identity()
+set @StandardMethodologyID=scope_identity()
 
 insert into standardmethodologybysurveytype (StandardMethodologyID, SurveyType_id, SubType_ID) values (@CIHIMethodologyId, @SurveyType_ID, 0)
 
 insert into standardmailingstep (StandardMethodologyID, intSequence, bitSurveyInLine, bitSendSurvey, intIntervalDays, bitThankYouItem, strMailingStep_nm, bitFirstSurvey, MailingStepMethod_id, ExpireInDays, ExpireFromStep, Quota_ID, QuotaStopCollectionAt, DaysInField, NumberOfAttempts, WeekDay_Day_Call, WeekDay_Eve_Call, Sat_Day_Call, Sat_Eve_Call, Sun_Day_Call, Sun_Eve_Call, CallBackOtherLang, CallbackUsingTTY, AcceptPartial, SendEmailBlast)
-values (@CIHIMethodologyId, 1, 0, 1, 0, 0, '1st Survey', 1, 0, 84, 1, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
+values (@StandardMethodologyID, 1, 0, 1, 0, 0, '1st Survey', 1, 0, 84, -1, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
+
+set @StandardMailingStepID = scope_identity()
 
 insert into standardmailingstep (StandardMethodologyID, intSequence, bitSurveyInLine, bitSendSurvey, intIntervalDays, bitThankYouItem, strMailingStep_nm, bitFirstSurvey, MailingStepMethod_id, ExpireInDays, ExpireFromStep, Quota_ID, QuotaStopCollectionAt, DaysInField, NumberOfAttempts, WeekDay_Day_Call, WeekDay_Eve_Call, Sat_Day_Call, Sat_Eve_Call, Sun_Day_Call, Sun_Eve_Call, CallBackOtherLang, CallbackUsingTTY, AcceptPartial, SendEmailBlast)
-values (@CIHIMethodologyId, 2, 0, 1, 18, 0, '2nd Survey', 0, 0, 84, 1, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
+values (@StandardMethodologyID, 2, 0, 1, 18, 0, '2nd Survey', 0, 0, 84, -1, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
 
-
-update sms 
-set ExpireFromStep = StandardMailingStepID from
---select * from
-StandardMailingStep sms 
-inner join StandardMethodology sm on sms.StandardMethodologyID = sm.StandardMethodologyID 
-where strStandardMethodology_nm = 'CPES-IC Mail Only, 2 Wave'
-and intSequence = 1
-
-update sms 
-set ExpireFromStep = StandardMailingStepID - 1 from
---select * from
-StandardMailingStep sms 
-inner join StandardMethodology sm on sms.StandardMethodologyID = sm.StandardMethodologyID 
-where strStandardMethodology_nm = 'CPES-IC Mail Only, 2 Wave'
-and intSequence = 2
+update StandardMailingStep set ExpireFromStep=@StandardMailingStepID where ExpireFromStep=-1
 
 
 /*
@@ -221,7 +210,8 @@ update metafield set intFieldLength = 50 where STRFIELDSHORT_NM = 'HSPLang'
 	DQ Rules
 */
 
-declare @DCStmtId int, @FieldId int
+declare @DCStmtId int
+declare @FieldId int
 declare @strCriteriaStmt_nm varchar(8)
 declare @strCriteriaString varchar(7000)
 declare @busRule_cd char(1)
@@ -230,7 +220,7 @@ declare @busRule_cd char(1)
 SET @strCriteriaStmt_nm = 'DQ_L Nm'
 SET @strCriteriaString = '(POPULATIONLName IS NULL)'
 SET @busRule_cd = 'Q'
-IF NOT EXISTS (select * from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString )
+IF NOT EXISTS (select 1 from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString )
 BEGIN
 	insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
 	values (@strCriteriaStmt_nm, @strCriteriaString, @busRule_cd)
@@ -239,10 +229,11 @@ select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCrit
 insert into SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteriaStmt_id)
 values (@SurveyType_ID,@Country_id, @DCStmtId)
 
+
 SET @strCriteriaStmt_nm = 'DQ_F Nm'
 SET @strCriteriaString = '(POPULATIONFName IS NULL)'
 SET @busRule_cd = 'Q'
-IF NOT EXISTS (select * from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString )
+IF NOT EXISTS (select 1 from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString )
 BEGIN
 	insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
 	values (@strCriteriaStmt_nm, @strCriteriaString, @busRule_cd)
@@ -254,7 +245,7 @@ values (@SurveyType_ID,@Country_id, @DCStmtId)
 SET @strCriteriaStmt_nm = 'DQ_Addr'
 SET @strCriteriaString = '(POPULATIONADDR IS NULL)'
 SET @busRule_cd = 'Q'
-IF NOT EXISTS (select * from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString )
+IF NOT EXISTS (select 1 from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString )
 BEGIN
 	insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
 	values (@strCriteriaStmt_nm, @strCriteriaString, @busRule_cd)
@@ -266,7 +257,7 @@ values (@SurveyType_ID,@Country_id, @DCStmtId)
 SET @strCriteriaStmt_nm = 'DQ_City'
 SET @strCriteriaString = '(POPULATIONCITY IS NULL)'
 SET @busRule_cd = 'Q'
-IF NOT EXISTS (select * from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString )
+IF NOT EXISTS (select 1 from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString )
 BEGIN
 	insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
 	values (@strCriteriaStmt_nm, @strCriteriaString, @busRule_cd)
@@ -278,7 +269,7 @@ values (@SurveyType_ID,@Country_id, @DCStmtId)
 SET @strCriteriaStmt_nm = 'DQ_PROV'
 SET @strCriteriaString = '(POPULATIONProvince IS NULL)'
 SET @busRule_cd = 'Q'
-IF NOT EXISTS (select * from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString )
+IF NOT EXISTS (select 1 from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString )
 BEGIN
 	insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
 	values (@strCriteriaStmt_nm, @strCriteriaString, @busRule_cd)
@@ -290,7 +281,7 @@ values (@SurveyType_ID,@Country_id, @DCStmtId)
 SET @strCriteriaStmt_nm = 'DQ_PstCd'
 SET @strCriteriaString = '(POPULATIONPostal_Code IS NULL)'
 SET @busRule_cd = 'Q'
-IF NOT EXISTS (select * from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString )
+IF NOT EXISTS (select 1 from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString )
 BEGIN
 	insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
 	values (@strCriteriaStmt_nm, @strCriteriaString, @busRule_cd)
@@ -303,7 +294,7 @@ values (@SurveyType_ID,@Country_id, @DCStmtId)
 SET @strCriteriaStmt_nm = 'DQ_Age'
 SET @strCriteriaString = '(POPULATIONAge IS NULL) OR (POPULATIONAGE < 0)'
 SET @busRule_cd = 'Q'
-IF NOT EXISTS (select * from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString )
+IF NOT EXISTS (select 1 from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString )
 BEGIN
 	insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
 	values (@strCriteriaStmt_nm, @strCriteriaString, @busRule_cd)
@@ -312,10 +303,17 @@ select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCrit
 insert into SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteriaStmt_id)
 values (@SurveyType_ID,@Country_id, @DCStmtId)
 
+select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'HSP_DecdAge'
+insert into DefaultCriteriaClause (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm, Field_id, intOperator, strLowValue, strHighValue)
+values (@DCStmtId, 1, 'POPULATION', @Fieldid, 5, '18', '')
+
+
+
+
 SET @strCriteriaStmt_nm = 'DQ_SEX'
 SET @strCriteriaString = '(POPULATIONSEX IS NULL)'
 SET @busRule_cd = 'Q'
-IF NOT EXISTS (select * from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString )
+IF NOT EXISTS (select 1 from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString )
 BEGIN
 	insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
 	values (@strCriteriaStmt_nm, @strCriteriaString, @busRule_cd)
@@ -327,7 +325,7 @@ values (@SurveyType_ID,@Country_id, @DCStmtId)
 SET @strCriteriaStmt_nm = 'DQ_Langl'
 SET @strCriteriaString = '(POPULATIONLangID IS NULL)'
 SET @busRule_cd = 'Q'
-IF NOT EXISTS (select * from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString )
+IF NOT EXISTS (select 1 from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString )
 BEGIN
 	insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
 	values (@strCriteriaStmt_nm, @strCriteriaString, @busRule_cd)
@@ -339,7 +337,7 @@ values (@SurveyType_ID,@Country_id, @DCStmtId)
 SET @strCriteriaStmt_nm = 'DQ_MRN'
 SET @strCriteriaString = '(POPULATIONMRN IS NULL)'
 SET @busRule_cd = 'Q'
-IF NOT EXISTS (select * from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString )
+IF NOT EXISTS (select 1 from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString )
 BEGIN
 	insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
 	values (@strCriteriaStmt_nm, @strCriteriaString, @busRule_cd)
@@ -351,7 +349,7 @@ values (@SurveyType_ID,@Country_id, @DCStmtId)
 SET @strCriteriaStmt_nm = 'DQ_MDAE'
 SET @strCriteriaString = '(POPULATIONAddrErr IN (''NC'',''TL'',''FO'',''NU''))'
 SET @busRule_cd = 'Q'
-IF NOT EXISTS (select * from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString )
+IF NOT EXISTS (select 1 from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString )
 BEGIN
 	insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
 	values (@strCriteriaStmt_nm, @strCriteriaString, @busRule_cd)
