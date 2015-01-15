@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Configuration;
 using NRC.Exporting;
 using NRC.Exporting.Configuration;
 using NRC.Logging;
@@ -16,6 +17,7 @@ namespace FileMakerServiceTester
        private static EventLog eventLog;
 
 
+
         static void Main(string[] args)
         {
 
@@ -23,6 +25,10 @@ namespace FileMakerServiceTester
             eventLog.Source = "CEM.FileMaker_Service";
             eventLog.Log = "Application";
 
+
+            Console.WriteLine();
+            Console.WriteLine(string.Format("Environment: {0}", GetEnvironment()));
+            Console.WriteLine();
             Console.WriteLine();
             Console.WriteLine("Press return to start");
             Console.ReadLine();
@@ -60,6 +66,17 @@ namespace FileMakerServiceTester
             {
                 Logs.Error("Error executing job.",ex);
             }
+        }
+
+
+        static string GetEnvironment()
+        {
+            string connStr = ConfigurationManager.ConnectionStrings["CEMConnection"].ConnectionString.ToUpper();
+
+            if (connStr.Contains("LNK0TCATSQL01"))return "TEST";
+            else if (connStr.Contains("STGCATCLUSTDB2")) return "STAGE";
+            else return "PROD";
+
         }
     }
 }

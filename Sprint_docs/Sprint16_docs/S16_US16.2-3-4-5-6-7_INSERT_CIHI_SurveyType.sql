@@ -9,7 +9,6 @@ S14.US16	As an Implementation Associate, I want a new survey type w/ appropriate
 16.6	Create standard methodologies
 16.7	Create survey validation rules
 
-
 */
 
 use qp_prod
@@ -21,6 +20,7 @@ DECLARE @SeededMailings bit
 DECLARE @SeedSurveyPercent int
 DECLARE @SeedUnitField varchar(42)
 DECLARE @IsCAHPS bit
+DECLARE @Country_id int
 
 SET @IsCAHPS = 0
 
@@ -28,8 +28,14 @@ SET @SurveyType_desc = 'CIHI CPES-IC'
 SET @SeededMailings = 0
 SET @SeedSurveyPercent = NULL
 SET @SeedUnitField = NULL
+SET @Country_id = 2
 
 begin tran
+
+
+/*
+	Survey Type
+*/
 
 if not exists (	SELECT 1 FROM SurveyType WHERE SurveyType_dsc = @SurveyType_desc)
 BEGIN
@@ -57,9 +63,9 @@ BEGIN
 END
 
 
---select * from surveytype
---select * from qualpro_params where strparam_nm like '%HCAHPS IP%' select * from qualpro_params where strparam_nm like '%CIHI%'
---delete from qualpro_params where strparam_nm = 'SurveyRule: IsSamplingMethodDisabled - CIHI CPES-IC'
+/*
+	Survey Properties
+*/
 
 insert into qualpro_params (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, NUMPARAM_VALUE, DATPARAM_VALUE, COMMENTS)
 VALUES ('SurveyRule: SkipEnforcementRequired - CIHI CPES-IC','S','SurveyRules','1',NULL,NULL,'Skip Enforcement is required and controls are not enabled in Config Man')
@@ -70,25 +76,27 @@ VALUES ('SurveyRule: ResurveyExclusionPeriodsNumericDefault - CIHI CPES-IC','N',
 insert into qualpro_params (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, NUMPARAM_VALUE, DATPARAM_VALUE, COMMENTS)
 VALUES ('SurveyRule: IsResurveyExclusionPeriodsNumericDisabled - CIHI CPES-IC','S','SurveyRules',1,NULL,NULL,'CIHI Resurvey Exclusion Days disabled for Config Man')
 insert into qualpro_params (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, NUMPARAM_VALUE, DATPARAM_VALUE, COMMENTS)
-VALUES ('SurveyRule: IsMonthlyOnly - CIHI CPES-IC','S','SurveyRules','1',NULL,NULL,'Rule to determine if survey type is Monthly only for Config Man')
-insert into qualpro_params (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, NUMPARAM_VALUE, DATPARAM_VALUE, COMMENTS)
 VALUES ('SurveyRule: IsCAHPS - CIHI CPES-IC','S','SurveyRules','1',NULL,NULL,'Rule to determine if this is a CAHPS survey type for Config Man')
 
---select * from standardmailingstep select * from standardmethodologybysurveytype select * from standardmethodology select * from methodologysteptype select * from mailingmethodology
+
+/*
+	Methodologies
+*/
+declare @CIHIMethodologyId int
 
 insert into standardmethodology (strStandardMethodology_nm, bitCustom, MethodologyType)
 values ('CPES-IC Mail Only, 2 Wave', 0, 'Mail Only')
 
+set @CIHIMethodologyId=scope_identity()
 
-declare @CIHIMethodologyId int, @CIHIId int
-select @CIHIId = SurveyType_Id from SurveyType where SurveyType_dsc = @SurveyType_desc
+insert into standardmethodologybysurveytype (StandardMethodologyID, SurveyType_id, SubType_ID) values (@CIHIMethodologyId, @SurveyType_ID, 0)
 
-select @CIHIMethodologyId = StandardMethodologyId from StandardMethodology where strStandardMethodology_nm = 'CPES-IC Mail Only, 2 Wave'
-insert into standardmethodologybysurveytype (StandardMethodologyID, SurveyType_id, SubType_ID) values (@CIHIMethodologyId, @CIHIId, 0)
 insert into standardmailingstep (StandardMethodologyID, intSequence, bitSurveyInLine, bitSendSurvey, intIntervalDays, bitThankYouItem, strMailingStep_nm, bitFirstSurvey, MailingStepMethod_id, ExpireInDays, ExpireFromStep, Quota_ID, QuotaStopCollectionAt, DaysInField, NumberOfAttempts, WeekDay_Day_Call, WeekDay_Eve_Call, Sat_Day_Call, Sat_Eve_Call, Sun_Day_Call, Sun_Eve_Call, CallBackOtherLang, CallbackUsingTTY, AcceptPartial, SendEmailBlast)
 values (@CIHIMethodologyId, 1, 0, 1, 0, 0, '1st Survey', 1, 0, 84, 1, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
+
 insert into standardmailingstep (StandardMethodologyID, intSequence, bitSurveyInLine, bitSendSurvey, intIntervalDays, bitThankYouItem, strMailingStep_nm, bitFirstSurvey, MailingStepMethod_id, ExpireInDays, ExpireFromStep, Quota_ID, QuotaStopCollectionAt, DaysInField, NumberOfAttempts, WeekDay_Day_Call, WeekDay_Eve_Call, Sat_Day_Call, Sat_Eve_Call, Sun_Day_Call, Sun_Eve_Call, CallBackOtherLang, CallbackUsingTTY, AcceptPartial, SendEmailBlast)
 values (@CIHIMethodologyId, 2, 0, 1, 18, 0, '2nd Survey', 0, 0, 84, 1, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
+
 
 update sms 
 set ExpireFromStep = StandardMailingStepID from
@@ -106,7 +114,11 @@ inner join StandardMethodology sm on sms.StandardMethodologyID = sm.StandardMeth
 where strStandardMethodology_nm = 'CPES-IC Mail Only, 2 Wave'
 and intSequence = 2
 
---select * from metafieldgroupdef select * from metafield
+
+/*
+	META fields
+*/
+
 insert into metafieldgroupdef (STRFIELDGROUP_NM, strAddrCleanType, bitAddrCleanDefault)
 values ('CIHI Pop', NULL, 0)
 
@@ -204,90 +216,177 @@ update metafield set intFieldLength = 1 where STRFIELDSHORT_NM = 'HspReltn'
 update metafield set intFieldLength = 1 where STRFIELDSHORT_NM = 'HspGuard'
 update metafield set intFieldLength = 50 where STRFIELDSHORT_NM = 'HSPLang'
 
---declare @CIHIMethodologyId int, @CIHIId int
-select @CIHIId = SurveyType_Id from SurveyType where SurveyType_dsc = @SurveyType_desc
 
-insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
-values (147, @CIHIId, null)
-insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
-values (148, @CIHIId, null)
-insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
-values (149, @CIHIId, null)
-insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
-values (150, @CIHIId, null)
-insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
-values (151, @CIHIId, null)
-insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
-values (153, @CIHIId, null)
-insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
-values (155, @CIHIId, null)
-insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
-values (156, @CIHIId, null)
-insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
-values (158, @CIHIId, null)
-insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
-values (162, @CIHIId, null)
+/*
+	DQ Rules
+*/
 
---declare @CIHIMethodologyId int, @CIHIId int
-select @CIHIId = SurveyType_Id from SurveyType where SurveyType_dsc = @SurveyType_desc
 declare @DCStmtId int, @FieldId int
-
+declare @strCriteriaStmt_nm varchar(8)
+declare @strCriteriaString varchar(7000)
+declare @busRule_cd char(1)
 --select * from surveytypedefaultcriteria select * from defaultcriteriastmt select * from DefaultCriteriaClause
 
-insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
-values ('DQ_L Nm', '(POPULATIONLName IS NULL)', 'Q')
-SELECT @DCStmtId = SCOPE_IDENTITY()
+SET @strCriteriaStmt_nm = 'DQ_L Nm'
+SET @strCriteriaString = '(POPULATIONLName IS NULL)'
+SET @busRule_cd = 'Q'
+IF NOT EXISTS (select * from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString )
+BEGIN
+	insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
+	values (@strCriteriaStmt_nm, @strCriteriaString, @busRule_cd)
+END
+select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString 
 insert into SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteriaStmt_id)
-values (@CIHIId, 1, @DCStmtId)
+values (@SurveyType_ID,@Country_id, @DCStmtId)
 
-insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
-values ('DQ_Age', '(POPULATIONHSP_DecdAge < 18)', 'Q')
-
-select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCriteriaStmt_nm = 'DQ_Age' and strCriteriaString = '(POPULATIONHSP_DecdAge < 18)'
-
+SET @strCriteriaStmt_nm = 'DQ_F Nm'
+SET @strCriteriaString = '(POPULATIONFName IS NULL)'
+SET @busRule_cd = 'Q'
+IF NOT EXISTS (select * from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString )
+BEGIN
+	insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
+	values (@strCriteriaStmt_nm, @strCriteriaString, @busRule_cd)
+END
+select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString 
 insert into SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteriaStmt_id)
-values (@CIHIId, 1, @DCStmtId)
-select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'HSP_DecdAge'
-insert into DefaultCriteriaClause (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm, Field_id, intOperator, strLowValue, strHighValue)
-values (@DCStmtId, 1, 'POPULATION', @Fieldid, 5, '18', '')
+values (@SurveyType_ID,@Country_id, @DCStmtId)
 
-insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
-values ('DQ_LOS', '(ENCOUNTERLengthOfStay < 2)', 'Q')
-select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCriteriaStmt_nm = 'DQ_LOS' and strCriteriaString = '(ENCOUNTERLengthOfStay < 2)'
+SET @strCriteriaStmt_nm = 'DQ_Addr'
+SET @strCriteriaString = '(POPULATIONADDR IS NULL)'
+SET @busRule_cd = 'Q'
+IF NOT EXISTS (select * from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString )
+BEGIN
+	insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
+	values (@strCriteriaStmt_nm, @strCriteriaString, @busRule_cd)
+END
+select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString 
 insert into SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteriaStmt_id)
-values (@CIHIId, 1, @DCStmtId)
-select @Fieldid = 75
-insert into DefaultCriteriaClause (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm, Field_id, intOperator, strLowValue, strHighValue)
-values (@DCStmtId, 1, 'ENCOUNTER', @Fieldid, 5, '2', '')
+values (@SurveyType_ID,@Country_id, @DCStmtId)
 
-insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
-values ('DQ_Rel', '(POPULATIONHSP_CaregiverRelatn = 6)', 'Q')
-select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCriteriaStmt_nm = 'DQ_Rel' and strCriteriaString = '(POPULATIONHSP_CaregiverRelatn = 6)'
+SET @strCriteriaStmt_nm = 'DQ_City'
+SET @strCriteriaString = '(POPULATIONCITY IS NULL)'
+SET @busRule_cd = 'Q'
+IF NOT EXISTS (select * from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString )
+BEGIN
+	insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
+	values (@strCriteriaStmt_nm, @strCriteriaString, @busRule_cd)
+END
+select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString 
 insert into SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteriaStmt_id)
-values (@CIHIId, 1, @DCStmtId)
-select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'HSP_CaregiverRelatn'
-insert into DefaultCriteriaClause (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm, Field_id, intOperator, strLowValue, strHighValue)
-values (@DCStmtId, 1, 'POPULATION', @Fieldid, 1, '6', '')
+values (@SurveyType_ID,@Country_id, @DCStmtId)
 
-insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
-values ('DQ_Guar', '(POPULATIONHSP_GuardFlg = 1)', 'Q')
-select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCriteriaStmt_nm = 'DQ_Guar' and strCriteriaString = '(POPULATIONHSP_GuardFlg = 1)'
+SET @strCriteriaStmt_nm = 'DQ_PROV'
+SET @strCriteriaString = '(POPULATIONProvince IS NULL)'
+SET @busRule_cd = 'Q'
+IF NOT EXISTS (select * from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString )
+BEGIN
+	insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
+	values (@strCriteriaStmt_nm, @strCriteriaString, @busRule_cd)
+END
+select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString 
 insert into SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteriaStmt_id)
-values (@CIHIId, 1, @DCStmtId)
-select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'HSP_GuardFlg'
-insert into DefaultCriteriaClause (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm, Field_id, intOperator, strLowValue, strHighValue)
-values (@DCStmtId, 1, 'POPULATION', @Fieldid, 1, '1', '')
+values (@SurveyType_ID,@Country_id, @DCStmtId)
+
+SET @strCriteriaStmt_nm = 'DQ_PstCd'
+SET @strCriteriaString = '(POPULATIONPostal_Code IS NULL)'
+SET @busRule_cd = 'Q'
+IF NOT EXISTS (select * from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString )
+BEGIN
+	insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
+	values (@strCriteriaStmt_nm, @strCriteriaString, @busRule_cd)
+END
+select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString 
+insert into SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteriaStmt_id)
+values (@SurveyType_ID,@Country_id, @DCStmtId)
 
 
+SET @strCriteriaStmt_nm = 'DQ_Age'
+SET @strCriteriaString = '(POPULATIONAge IS NULL) OR (POPULATIONAGE < 0)'
+SET @busRule_cd = 'Q'
+IF NOT EXISTS (select * from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString )
+BEGIN
+	insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
+	values (@strCriteriaStmt_nm, @strCriteriaString, @busRule_cd)
+END
+select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString 
 insert into SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteriaStmt_id)
-values (@CIHIId, 1, 1)
+values (@SurveyType_ID,@Country_id, @DCStmtId)
+
+SET @strCriteriaStmt_nm = 'DQ_SEX'
+SET @strCriteriaString = '(POPULATIONSEX IS NULL)'
+SET @busRule_cd = 'Q'
+IF NOT EXISTS (select * from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString )
+BEGIN
+	insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
+	values (@strCriteriaStmt_nm, @strCriteriaString, @busRule_cd)
+END
+select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString 
 insert into SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteriaStmt_id)
-values (@CIHIId, 1, 2)
+values (@SurveyType_ID,@Country_id, @DCStmtId)
+
+SET @strCriteriaStmt_nm = 'DQ_Langl'
+SET @strCriteriaString = '(POPULATIONLangID IS NULL)'
+SET @busRule_cd = 'Q'
+IF NOT EXISTS (select * from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString )
+BEGIN
+	insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
+	values (@strCriteriaStmt_nm, @strCriteriaString, @busRule_cd)
+END
+select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString 
 insert into SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteriaStmt_id)
-values (@CIHIId, 1, 19)
+values (@SurveyType_ID,@Country_id, @DCStmtId)
+
+SET @strCriteriaStmt_nm = 'DQ_MRN'
+SET @strCriteriaString = '(POPULATIONMRN IS NULL)'
+SET @busRule_cd = 'Q'
+IF NOT EXISTS (select * from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString )
+BEGIN
+	insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
+	values (@strCriteriaStmt_nm, @strCriteriaString, @busRule_cd)
+END
+select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString 
+insert into SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteriaStmt_id)
+values (@SurveyType_ID,@Country_id, @DCStmtId)
+
+SET @strCriteriaStmt_nm = 'DQ_MDAE'
+SET @strCriteriaString = '(POPULATIONAddrErr IN (''NC'',''TL'',''FO'',''NU''))'
+SET @busRule_cd = 'Q'
+IF NOT EXISTS (select * from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString )
+BEGIN
+	insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
+	values (@strCriteriaStmt_nm, @strCriteriaString, @busRule_cd)
+END
+select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString 
+insert into SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteriaStmt_id)
+values (@SurveyType_ID,@Country_id, @DCStmtId)
+
+
+/*
+	Survey Validation
+*/
+
+insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
+values (147, @SurveyType_ID, null)
+insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
+values (148, @SurveyType_ID, null)
+insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
+values (149, @SurveyType_ID, null)
+insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
+values (150, @SurveyType_ID, null)
+insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
+values (151, @SurveyType_ID, null)
+insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
+values (153, @SurveyType_ID, null)
+insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
+values (155, @SurveyType_ID, null)
+insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
+values (156, @SurveyType_ID, null)
+insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
+values (158, @SurveyType_ID, null)
+insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
+values (162, @SurveyType_ID, null)
 
 go
-
 
 commit tran
 
