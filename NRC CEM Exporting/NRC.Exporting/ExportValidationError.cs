@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Schema;
 
-namespace NRC.Exporting
+namespace CEM.Exporting
 {
     public class ExportValidationError
     {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace NRC.Exporting
+namespace CEM.Exporting
 {
     [System.Serializable]
     public class ExportSection

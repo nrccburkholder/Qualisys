@@ -7,7 +7,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Data.Common;
 
-namespace NRC.Exporting.DataProviders
+namespace CEM.Exporting.DataProviders
 {
     internal class ExportQueueProvider
     {

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data;
-using NRC.Exporting.DataProviders;
+using CEM.Exporting.DataProviders;
 
-namespace NRC.Exporting
+namespace CEM.Exporting
 {
     public class ExportDataSet
     {

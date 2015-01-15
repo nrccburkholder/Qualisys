@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NRC.Exporting.DataProviders;
+using CEM.Exporting.DataProviders;
 using System.Data;
 using System.IO;
 using System.Xml.Linq;
@@ -11,12 +11,12 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 using System.Configuration;
-using NRC.Exporting.Configuration;
+using CEM.Exporting.Configuration;
 using NRC.Logging;
 
 
 
-namespace NRC.Exporting
+namespace CEM.Exporting
 {
     public static class Exporter
     {

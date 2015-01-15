@@ -8,9 +8,9 @@ using System.Data.SqlClient;
 using System.Data.Common;
 using System.Xml;
 using System.Configuration;
-using NRC.Exporting.Configuration;
+using CEM.Exporting.Configuration;
 
-namespace NRC.Exporting.DataProviders
+namespace CEM.Exporting.DataProviders
 {
     public class SqlDataProvider: IDisposable
     {

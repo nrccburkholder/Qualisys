@@ -1,5 +1,5 @@
 ﻿
-namespace NRC.Exporting.Enums
+namespace CEM.Exporting.Enums
 {
     public enum ExportFileTypes
     {

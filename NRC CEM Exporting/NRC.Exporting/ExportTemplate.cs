@@ -9,9 +9,9 @@ using System.Xml.Schema;
 using System.Xml.Serialization;
 using System.Xml.Linq;
 using System.IO;
-using NRC.Exporting.DataProviders;
+using CEM.Exporting.DataProviders;
 
-namespace NRC.Exporting
+namespace CEM.Exporting
 {
     [System.Serializable]
     public class ExportTemplate

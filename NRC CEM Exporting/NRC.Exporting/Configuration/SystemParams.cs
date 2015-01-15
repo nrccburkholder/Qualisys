@@ -4,9 +4,9 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NRC.Exporting.DataProviders;
+using CEM.Exporting.DataProviders;
 
-namespace NRC.Exporting.Configuration
+namespace CEM.Exporting.Configuration
 {
     public static class SystemParams
     {

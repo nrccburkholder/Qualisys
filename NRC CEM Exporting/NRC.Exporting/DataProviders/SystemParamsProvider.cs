@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
 using System.Data.Common;
-using NRC.Exporting.Configuration;
+using CEM.Exporting.Configuration;
 
-namespace NRC.Exporting.DataProviders
+namespace CEM.Exporting.DataProviders
 {
     public class SystemParamsProvider
     {

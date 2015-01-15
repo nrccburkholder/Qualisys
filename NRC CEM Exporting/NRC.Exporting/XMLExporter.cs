@@ -11,7 +11,7 @@ using System.Xml.Schema;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
-namespace NRC.Exporting
+namespace CEM.Exporting
 {
 
     internal static class XMLExporter
