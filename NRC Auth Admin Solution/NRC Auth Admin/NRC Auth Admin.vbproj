@@ -17,8 +17,9 @@
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
     <ApplicationIcon>NRCAuthAdmin.ico</ApplicationIcon>
-    <ManifestCertificateThumbprint>E233A37402EEAFB3058F455C5BE62A3C81DE87C3</ManifestCertificateThumbprint>
-    <ManifestKeyFile>NRC Auth Admin_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestCertificateThumbprint>53594C104BCB093407B64D7AE589A83AA503ECAB</ManifestCertificateThumbprint>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
     <GenerateManifests>true</GenerateManifests>
     <SignManifests>true</SignManifests>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -28,7 +29,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <PublishUrl>\\mercury\QualisysApps\Prod\NRCAuthAdmin\</PublishUrl>
+    <PublishUrl>\\superman\NRCApplications\NRCAuthAdmin\</PublishUrl>
     <Install>false</Install>
     <InstallFrom>Unc</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -41,8 +42,8 @@
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>2</ApplicationRevision>
-    <ApplicationVersion>1.2.1.2</ApplicationVersion>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.2.6.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>

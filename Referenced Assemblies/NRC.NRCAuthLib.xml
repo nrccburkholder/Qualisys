@@ -1,449 +1,904 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <doc>
-  <assembly>
-    <name>NRC.NRCAuthLib</name>
-    <version>1.0.2425.15144</version>
-    <fullname>NRC.NRCAuthLib, Version=1.0.2425.15144, Culture=neutral, PublicKeyToken=null</fullname>
-  </assembly>
-  <members>
-    <member name="T:NRC.NRCAuthLib.Application">
-      <summary>
- Represents an NRC application with secured access 
+<assembly>
+<name>
+NRC.NRCAuthLib
+</name>
+</assembly>
+<members>
+<member name="M:NRC.NRCAuthLib.MemberCollection.GetMembersByEmailAddress(System.String)">
+	<summary>Gets a collection of usernames associated with the provided email
+ address</summary>
+	<author>Steve Kennedy</author>
+	<revision>SK - Initial Creation</revision>
+</member><member name="T:NRC.NRCAuthLib.MemberCollection">
+	<summary>
+ Stores a collection of Member objects
  </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Application.ApplicationId">
-      <summary>
- The database ID of the application 
+</member><member name="P:NRC.NRCAuthLib.Member.DateCreated">
+	<summary>
+ The date that this account was created
  </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Application.Name">
-      <summary>
- The name of the application 
+</member><member name="P:NRC.NRCAuthLib.Member.LastLoginDate">
+	<summary>
+ The date on which the user last logged in
  </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Application.Description">
-      <summary>
- A description of the application 
+</member><member name="P:NRC.NRCAuthLib.Member.IsAccountLocked">
+	<summary>
+ Indicates that the account has been locked and must be unlocked by an administrator before use
  </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Application.DeploymentType">
-      <summary>
- Indicates the method for deploying this application 
+</member><member name="P:NRC.NRCAuthLib.Member.UserName">
+	<summary>
+ The User Name of the account
  </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Application.Path">
-      <summary>
- Inidicates the path for accessing this application 
+</member><member name="P:NRC.NRCAuthLib.Member.NTLoginName">
+	<summary>
+ The NRC Windows NT User Name of the account
  </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Application.ImageData">
-      <summary>
- Indicates the icon to use for this application 
+</member><member name="P:NRC.NRCAuthLib.Member.LastPasswordChangeDate">
+	<summary>
+ The date on which the user last changed their password
  </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Application.Category">
-      <summary>
- Indicates the icon to use for this application 
+</member><member name="P:NRC.NRCAuthLib.Member.IsPasswordExpired">
+	<summary>
+ Indicates that the password has expired and needs to be changed
  </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Application.IsInternalOnly">
-      <summary>
- Inidicates if the application is used only internally at NRC 
+</member><member name="P:NRC.NRCAuthLib.Member.MemberType">
+	<summary>
+ Indicates what type of member this is
  </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Application.Privileges">
-      <summary>
- The set of privileges for this application 
+</member><member name="P:NRC.NRCAuthLib.Member.OrgUnit">
+	<summary>
+ The organizational unit for which this user is a member of
  </summary>
-    </member>
-    <member name="T:NRC.NRCAuthLib.MemberCollection">
-      <summary>
- Stores a collection of Member objects 
+</member><member name="P:NRC.NRCAuthLib.Member.DisplayLabel">
+	<summary>
+ The label that should be displayed for this user in the UI
  </summary>
-    </member>
-    <member name="M:NRC.NRCAuthLib.OrgUnitCollection.GetOrgUnitChildren(System.Int32)">
-      <summary>
- Gets the collection of OrgUnits that are children of the specified OrgUnit 
+</member><member name="P:NRC.NRCAuthLib.Member.FirstName">
+	<summary>
+ The user's first name
  </summary>
-    </member>
-    <member name="T:NRC.NRCAuthLib.PrivilegeCollection">
-      <summary>
- A collection of privilege objects 
+</member><member name="P:NRC.NRCAuthLib.Member.LastName">
+	<summary>
+ The user's last name
  </summary>
-    </member>
-    <member name="T:NRC.NRCAuthLib.FormsAuth">
-      <summary>
- A helper class for implementing ASP.NET forms authentication 
+</member><member name="P:NRC.NRCAuthLib.Member.FullName">
+	<summary>
+ The user's full name
  </summary>
-    </member>
-    <member name="M:NRC.NRCAuthLib.Group.HasPrivilege(System.String)">
-      <summary>
- Returns true if the user has access to any privileges within the specified application 
+</member><member name="P:NRC.NRCAuthLib.Member.OccupationalTitle">
+	<summary>
+ The user's title
  </summary>
- <param name="applicationName">The name of the application</param></member>
-    <member name="M:NRC.NRCAuthLib.Group.HasPrivilege(System.String,System.String)">
-      <summary>
- Return true if the user has been granted a particular privilege to a given application 
+</member><member name="P:NRC.NRCAuthLib.Member.Facility">
+	<summary>
+ The user's facility
  </summary>
- <param name="applicationName">The name of the application</param>
- <param name="privilegeName">The name of the privilege</param></member>
-    <member name="T:NRC.NRCAuthLib.Member">
-      <summary>
- Represents a Member user account 
+</member><member name="P:NRC.NRCAuthLib.Member.EmailAddress">
+	<summary>
+ The user's email address
  </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Member.DateCreated">
-      <summary>
- The date that this account was created 
+</member><member name="P:NRC.NRCAuthLib.Member.PhoneNumber">
+	<summary>
+ The user's phone number
  </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Member.LastLoginDate">
-      <summary>
- The date on which the user last logged in 
+</member><member name="P:NRC.NRCAuthLib.Member.City">
+	<summary>
+ The user's city
  </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Member.IsAccountLocked">
-      <summary>
- Indicates that the account has been locked and must be unlocked by an administrator before use 
+</member><member name="P:NRC.NRCAuthLib.Member.State">
+	<summary>
+ The user's state
  </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Member.UserName">
-      <summary>
- The User Name of the account 
+</member><member name="M:NRC.NRCAuthLib.Member.#ctor">
+	<summary>
+ Default constructor
  </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Member.NTLoginName">
-      <summary>
- The NRC Windows NT User Name of the account 
+</member><member name="M:NRC.NRCAuthLib.Member.Authenticate(System.String,System.String)">
+	<summary>
+ Verifies that a user name and password are correct for the user account
  </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Member.LastPasswordChangeDate">
-      <summary>
- The date on which the user last changed their password 
- </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Member.IsPasswordExpired">
-      <summary>
- Indicates that the password has expired and needs to be changed 
- </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Member.SecretQuestion">
-      <summary>
- The user's secret question for password recovery 
- </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Member.MemberType">
-      <summary>
- Indicates what type of member this is 
- </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Member.OrgUnit">
-      <summary>
- The organizational unit for which this user is a member of 
- </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Member.DisplayLabel">
-      <summary>
- The label that should be displayed for this user in the UI 
- </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Member.FirstName">
-      <summary>
- The user's first name 
- </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Member.LastName">
-      <summary>
- The user's last name 
- </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Member.FullName">
-      <summary>
- The user's full name 
- </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Member.OccupationalTitle">
-      <summary>
- The user's title 
- </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Member.Facility">
-      <summary>
- The user's facility 
- </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Member.EmailAddress">
-      <summary>
- The user's email address 
- </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Member.PhoneNumber">
-      <summary>
- The user's phone number 
- </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Member.City">
-      <summary>
- The user's city 
- </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Member.State">
-      <summary>
- The user's state 
- </summary>
-    </member>
-    <member name="M:NRC.NRCAuthLib.Member.#ctor">
-      <summary>
- Default constructor 
- </summary>
-    </member>
-    <member name="M:NRC.NRCAuthLib.Member.Authenticate(System.String,System.String)">
-      <summary>
- Verifies that a user name and password are correct for the user account 
- </summary>
- <remarks>Returns true if the user name and password password match 
+	<remarks>Returns true if the user name and password password match
  Returns false otherwise</remarks>
- <param name="userName">The account user name</param>
- <param name="password">The user's password</param></member>
-    <member name="M:NRC.NRCAuthLib.Member.Authenticate(System.String,System.String,NRC.NRCAuthLib.Member@)">
-      <summary>
- Verifies that a user name and password are correct for the user account 
+	<param name="userName">The account user name</param>
+	<param name="password">The user's password</param>
+</member><member name="M:NRC.NRCAuthLib.Member.Authenticate(System.String,System.String,NRC.NRCAuthLib.Member@)">
+	<summary>
+ Verifies that a user name and password are correct for the user account
  </summary>
- <remarks>Returns true if the user name and password password match 
+	<remarks>Returns true if the user name and password password match
  Returns false otherwise</remarks>
- <param name="userName">The account user name</param>
- <param name="password">The user's password</param></member>
-    <member name="M:NRC.NRCAuthLib.Member.CreateNewMember(System.Int32,System.Int32,System.String,System.String,NRC.NRCAuthLib.Member.MemberTypeEnum,System.Boolean,System.String)">
-      <summary>
- Creates a new user account 
+	<param name="userName">The account user name</param>
+	<param name="password">The user's password</param>
+</member><member name="M:NRC.NRCAuthLib.Member.CreateNewMember(System.Int32,System.Int32,System.String,System.String,NRC.NRCAuthLib.Member.MemberTypeEnum,System.Boolean,System.String)">
+	<summary>
+ Creates a new user account
  </summary>
- <param name="orgUnitId">The ID of the organizational unit that the new user will belong to</param>
- <param name="userName">The User Name of the new account</param>
- <param name="eMailAddress">The e-mail address of the new user</param>
- <param name="memberType">The type of user account that should be created</param></member>
-    <member name="M:NRC.NRCAuthLib.Member.DeleteMember(System.Int32,System.Int32)">
-      <summary>
- Deletes a user account from the database 
+	<param name="orgUnitId">The ID of the organizational unit that the new user will belong to</param>
+	<param name="userName">The User Name of the new account</param>
+	<param name="eMailAddress">The e-mail address of the new user</param>
+	<param name="memberType">The type of user account that should be created</param>
+</member><member name="M:NRC.NRCAuthLib.Member.IsUserNameAvailable(System.String)">
+	<summary>
+ Checks if a particular string is available for use as a User Name
  </summary>
- <param name="userName">The User Name of the account to be deleted</param></member>
-    <member name="M:NRC.NRCAuthLib.Member.IsUserNameAvailable(System.String)">
-      <summary>
- Checks if a particular string is available for use as a User Name 
+</member><member name="M:NRC.NRCAuthLib.Member.GetMember(System.String)">
+	<summary>
+ Returns an instance of Member for the specified User Name
  </summary>
-    </member>
-    <member name="M:NRC.NRCAuthLib.Member.GetMember(System.String)">
-      <summary>
- Returns an instance of Member for the specified User Name 
+	<param name="userName">The User Name for the member that should be retrieved</param>
+</member><member name="M:NRC.NRCAuthLib.Member.SendUserListToEmail(System.String,System.String)">
+	<summary>Emails the user a listing of their NRC accounts to their email
+ address</summary>
+	<author>Steve Kennedy</author>
+	<revision>SK - 08/24/2008 - Initial Creation</revision>
+</member><member name="M:NRC.NRCAuthLib.Member.ResetPassword(System.Boolean,System.Int32,System.String)">
+	<summary>
+ Resets the user's password to random value
  </summary>
- <param name="userName">The User Name for the member that should be retrieved</param></member>
-    <member name="M:NRC.NRCAuthLib.Member.GetNTLoginMember(System.String)">
-      <summary>
- Returns an instance of Member for the specified NT Login User Name 
+	<param name="sendEmail">Indicates if an email should be sent to the user indicating the new password.</param>
+</member><member name="M:NRC.NRCAuthLib.Member.SetSecretQuestion(System.Int32,System.String,System.Int32)">
+	<summary>
+ Stores a secret question for the user
  </summary>
- <param name="userName">The User Name for the member that should be retrieved</param></member>
-    <member name="M:NRC.NRCAuthLib.Member.ResetPassword(System.Boolean,System.Int32,System.String)">
-      <summary>
- Resets the user's password to random value 
+	<param name="secretQuestionId">The ID of the secret question that the user has chosen</param>
+	<param name="secretAnswer">The plain-text answer that the user provided for the secret question</param>
+</member><member name="M:NRC.NRCAuthLib.Member.UpdateProfile(System.Int32)">
+	<summary>
+ Persists all of the user profile information to the data store
  </summary>
- <param name="sendEmail">Indicates if an email should be sent to the user indicating the new password.</param></member>
-    <member name="M:NRC.NRCAuthLib.Member.ChangePassword(System.String,System.Int32)">
-      <summary>
- Resets the user's password to random value 
+</member><member name="M:NRC.NRCAuthLib.Member.VerifySecretAnswer(System.String)">
+	<summary>
+ Verifies that a particular string matches the stored secret answer
  </summary>
- <param name="sendEmail">Indicates if an email should be sent to the user indicating the new password.</param></member>
-    <member name="M:NRC.NRCAuthLib.Member.SetSecretQuestion(System.Int32,System.String,System.Int32)">
-      <summary>
- Stores a secret question for the user 
+	<param name="answer">The plain-text answer to be verified</param>
+</member><member name="M:NRC.NRCAuthLib.Member.VerifyPassword(System.String)">
+	<summary>
+ Verifies that a string matches the stored password
  </summary>
- <param name="secretQuestionId">The ID of the secret question that the user has chosen</param>
- <param name="secretAnswer">The plain-text answer that the user provided for the secret question</param></member>
-    <member name="M:NRC.NRCAuthLib.Member.UpdateProfile(System.Int32)">
-      <summary>
- Persists all of the user profile information to the data store 
+	<param name="password">The plain-text password to verify</param>
+</member><member name="M:NRC.NRCAuthLib.Member.HasMemberPrivilege(System.String,System.String)">
+	<summary>
+ Return true if the user has been granted a particular privilege to a given application
  </summary>
-    </member>
-    <member name="M:NRC.NRCAuthLib.Member.VerifySecretAnswer(System.String)">
-      <summary>
- Verifies that a particular string matches the stored secret answer 
+	<param name="applicationName">The name of the application</param>
+	<param name="privilegeName">The name of the privilege</param>
+</member><member name="M:NRC.NRCAuthLib.Member.GetWebRoles">
+	<summary>
+ Returns a string indicating all of the users roles for Forms based authentication
  </summary>
- <param name="answer">The plain-text answer to be verified</param></member>
-    <member name="M:NRC.NRCAuthLib.Member.VerifyPassword(System.String)">
-      <summary>
- Verifies that a string matches the stored password 
+</member><member name="M:NRC.NRCAuthLib.Member.GetWebRoles(System.Int32)">
+	<summary>
+ Returns a string indicating all of the users roles for Forms based authentication
  </summary>
- <param name="password">The plain-text password to verify</param></member>
-    <member name="M:NRC.NRCAuthLib.Member.HasAccessToApplication(System.String)">
-      <summary>
-' Returns true if the user has access to any privileges within the specified application 
-' </summary>
-' <param name="applicationName">The name of the application</param>
-' <summary>
-' Return true if the user has been granted a particular privilege to a given application 
-' </summary>
-' <param name="applicationName">The name of the application</param>
-' <param name="privilegeName">The name of the privilege</param></member>
-    <member name="M:NRC.NRCAuthLib.Member.HasMemberPrivilege(System.String,System.String)">
-      <summary>
- Return true if the user has been granted a particular privilege to a given application 
+</member><member name="M:NRC.NRCAuthLib.Member.EmailPasswordToUser(System.String,System.Boolean)">
+	<summary>
+ Sends a password notification email to the user
  </summary>
- <param name="applicationName">The name of the application</param>
- <param name="privilegeName">The name of the privilege</param></member>
-    <member name="M:NRC.NRCAuthLib.Member.GetWebRoles">
-      <summary>
- Returns a string indicating all of the users roles for Forms based authentication 
+</member><member name="M:NRC.NRCAuthLib.Member.GetAllOtherUserNames(System.String)">
+	<summary>Returns a collection of usernames associated with the provided email
+ address</summary>
+	<author>Steve Kennedy</author>
+	<revision>SK - Initial Creation</revision>
+</member><member name="T:NRC.NRCAuthLib.PrivilegeCollection">
+	<summary>
+ A collection of privilege objects
  </summary>
-    </member>
-    <member name="M:NRC.NRCAuthLib.Member.GetWebRoles(System.Int32)">
-      <summary>
- Returns a string indicating all of the users roles for Forms based authentication 
+</member><member name="P:NRC.NRCAuthLib.OrgUnit.OrgUnitId">
+	<summary>
+ The database ID of the Organizational Unit
  </summary>
-    </member>
-    <member name="M:NRC.NRCAuthLib.Member.EmailPasswordToUser(System.String,System.Boolean)">
-      <summary>
- Sends a password notification email to the user 
+</member><member name="P:NRC.NRCAuthLib.OrgUnit.Name">
+	<summary>
+ The name of the Organizational Unit
  </summary>
-    </member>
-    <member name="T:NRC.NRCAuthLib.OrgUnit">
-      <summary>
- Represents an Organizational Unit that contains member accounts and certain privileges 
+</member><member name="P:NRC.NRCAuthLib.OrgUnit.Description">
+	<summary>
+ A description of the Organizational Unit
  </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.OrgUnit.OrgUnitId">
-      <summary>
- The database ID of the Organizational Unit 
+</member><member name="P:NRC.NRCAuthLib.OrgUnit.OrgUnitType">
+	<summary>
+ The Organizational Unit type
  </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.OrgUnit.Name">
-      <summary>
- The name of the Organizational Unit 
+</member><member name="P:NRC.NRCAuthLib.OrgUnit.DateCreated">
+	<summary>
+ The date on which this Organizational Unit was created
  </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.OrgUnit.Description">
-      <summary>
- A description of the Organizational Unit 
+</member><member name="P:NRC.NRCAuthLib.OrgUnit.IPAddressFilter">
+	<summary>
+ The list of valid IP addresses for this Organizational Unit
  </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.OrgUnit.OrgUnitType">
-      <summary>
- The Organizational Unit type 
+</member><member name="P:NRC.NRCAuthLib.OrgUnit.HasChildren">
+	<summary>
+ Indicates if this Organizational Unit has child units
  </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.OrgUnit.DateCreated">
-      <summary>
- The date on which this Organizational Unit was created 
+</member><member name="P:NRC.NRCAuthLib.OrgUnit.OrgUnits">
+	<summary>
+ The collection of child Organizational Units
  </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.OrgUnit.IPAddressFilter">
-      <summary>
- The list of valid IP addresses for this Organizational Unit 
+</member><member name="P:NRC.NRCAuthLib.OrgUnit.Members">
+	<summary>
+ The collection of members in this Organizational Unit
  </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.OrgUnit.HasChildren">
-      <summary>
- Indicates if this Organizational Unit has child units 
+</member><member name="P:NRC.NRCAuthLib.OrgUnit.Applications">
+	<summary>
+ The collection of applications that have been granted to the Organizational Unit
  </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.OrgUnit.OrgUnits">
-      <summary>
- The collection of child Organizational Units 
+</member><member name="M:NRC.NRCAuthLib.OrgUnit.GetOrgUnit(System.Int32)">
+	<summary>
+ Returns an instance of OrgUnit for the specified OrgUnitId
  </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.OrgUnit.Members">
-      <summary>
- The collection of members in this Organizational Unit 
+	<param name="orgUnitId">The database ID of the OrgUnit to be retrieved</param>
+</member><member name="M:NRC.NRCAuthLib.OrgUnit.HasPrivilege(System.String)">
+	<summary>
+ Returns true if the Organizational Unit has access to any privileges within the specified application
  </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.OrgUnit.Applications">
-      <summary>
- The collection of applications that have been granted to the Organizational Unit 
+	<param name="applicationName">The name of the application</param>
+</member><member name="M:NRC.NRCAuthLib.OrgUnit.HasPrivilege(System.String,System.String)">
+	<summary>
+ Return true if the Organizational Unit has been granted a particular privilege to a given application
  </summary>
-    </member>
-    <member name="M:NRC.NRCAuthLib.OrgUnit.GetOrgUnit(System.Int32)">
-      <summary>
- Returns an instance of OrgUnit for the specified OrgUnitId 
+	<param name="applicationName">The name of the application</param>
+	<param name="privilegeName">The name of the privilege</param>
+</member><member name="T:NRC.NRCAuthLib.OrgUnit">
+	<summary>
+ Represents an Organizational Unit that contains member accounts and certain privileges
  </summary>
- <param name="orgUnitId">The database ID of the OrgUnit to be retrieved</param></member>
-    <member name="M:NRC.NRCAuthLib.OrgUnit.HasPrivilege(System.String)">
-      <summary>
- Returns true if the Organizational Unit has access to any privileges within the specified application 
+</member><member name="P:NRC.NRCAuthLib.Profile.FirstName">
+	<summary>
+ The user's first name
  </summary>
- <param name="applicationName">The name of the application</param></member>
-    <member name="M:NRC.NRCAuthLib.OrgUnit.HasPrivilege(System.String,System.String)">
-      <summary>
- Return true if the Organizational Unit has been granted a particular privilege to a given application 
+</member><member name="P:NRC.NRCAuthLib.Profile.LastName">
+	<summary>
+ The user's last name
  </summary>
- <param name="applicationName">The name of the application</param>
- <param name="privilegeName">The name of the privilege</param></member>
-    <member name="M:NRC.NRCAuthLib.PasswordHelper.HashPassword(System.String,System.String)">
-      <summary>
- Converts a plain-text password to a base65 hashed string for secure storage 
+</member><member name="P:NRC.NRCAuthLib.Profile.OccupationalTitle">
+	<summary>
+ The user's title
  </summary>
- <param name="password">The plain-text password</param>
- <param name="salt">The salt value to be appended to the password</param></member>
-    <member name="M:NRC.NRCAuthLib.PasswordHelper.HashString(System.String)">
-      <summary>
- Hashes a string 
+</member><member name="P:NRC.NRCAuthLib.Profile.EmailAddress">
+	<summary>
+ The user's email address
  </summary>
- <param name="plainText">The string to be hashed</param></member>
-    <member name="M:NRC.NRCAuthLib.PasswordHelper.HashString(System.Byte[])">
-      <summary>
- Hashes a byte array and returns the string 
+</member><member name="P:NRC.NRCAuthLib.Profile.PhoneNumber">
+	<summary>
+ The user's phone number
  </summary>
- <param name="plainTextBytes">The byte array to be hashed</param></member>
-    <member name="M:NRC.NRCAuthLib.PasswordHelper.GenerateSalt">
-      <summary>
- Generates a random salt string 
+</member><member name="P:NRC.NRCAuthLib.Profile.City">
+	<summary>
+ The user's city
  </summary>
-    </member>
-    <member name="M:NRC.NRCAuthLib.PasswordHelper.GeneratePassword">
-      <summary>
- Generates a random 12 character password string 
+</member><member name="P:NRC.NRCAuthLib.Profile.State">
+	<summary>
+ The user's state
  </summary>
-    </member>
-    <member name="M:NRC.NRCAuthLib.PasswordHelper.GeneratePassword(System.Int32)">
-      <summary>
- Generates a random password string 
+</member><member name="T:NRC.NRCAuthLib.Profile">
+	<summary>
+ Represents a users personal information
  </summary>
- <param name="length">The desired length of the password</param></member>
-    <member name="T:NRC.NRCAuthLib.Profile">
-      <summary>
- Represents a users personal information 
+</member><member name="M:NRC.NRCAuthLib.DAL.SelectMembersByEmailAddress(System.String)">
+	<summary>Get a collection of usernames associated with the provided email
+ address</summary>
+	<remarks>if email address parameter contains a single apostraphe, this function
+ will send the SP two apostraphes.</remarks>
+	<param name="emailAddress"></param>
+	<author>Steve Kennedy</author>
+	<revision>SK - 8/24/2008 - Initial Creation </revision>
+</member><member name="M:NRC.NRCAuthLib.OrgUnitCollection.GetOrgUnitChildren(System.Int32)">
+	<summary>
+ Gets the collection of OrgUnits that are children of the specified OrgUnit
  </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Profile.FirstName">
-      <summary>
- The user's first name 
+</member><member name="T:NRC.NRCAuthLib.FormsAuth">
+	<summary>
+ A helper class for implementing ASP.NET forms authentication
  </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Profile.LastName">
-      <summary>
- The user's last name 
+</member><member name="M:NRC.NRCAuthLib.PasswordHelper.HashPassword(System.String,System.String)">
+	<summary>
+ Converts a plain-text password to a base65 hashed string for secure storage
  </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Profile.OccupationalTitle">
-      <summary>
- The user's title 
+	<param name="password">The plain-text password</param>
+	<param name="salt">The salt value to be appended to the password</param>
+</member><member name="M:NRC.NRCAuthLib.PasswordHelper.HashString(System.String)">
+	<summary>
+ Hashes a string
  </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Profile.EmailAddress">
-      <summary>
- The user's email address 
+	<param name="plainText">The string to be hashed</param>
+</member><member name="M:NRC.NRCAuthLib.PasswordHelper.HashString(System.Byte[])">
+	<summary>
+ Hashes a byte array and returns the string
  </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Profile.PhoneNumber">
-      <summary>
- The user's phone number 
+	<param name="plainTextBytes">The byte array to be hashed</param>
+</member><member name="M:NRC.NRCAuthLib.PasswordHelper.GenerateSalt">
+	<summary>
+ Generates a random salt string
  </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Profile.City">
-      <summary>
- The user's city 
+</member><member name="M:NRC.NRCAuthLib.PasswordHelper.GeneratePassword">
+	<summary>
+ Generates a random 12 character password string
  </summary>
-    </member>
-    <member name="P:NRC.NRCAuthLib.Profile.State">
-      <summary>
- The user's state 
+</member><member name="M:NRC.NRCAuthLib.PasswordHelper.GeneratePassword(System.Int32)">
+	<summary>
+ Generates a random password string
  </summary>
-    </member>
-  </members>
+	<param name="length">The desired length of the password</param>
+</member><member name="M:NRC.NRCAuthLib.OUH.OUHModel.#ctor">
+	<summary>
+Initializes a new OUHModel object using the connection string found in the 'OUHModel' section of the application configuration file.
+</summary>
+</member><member name="M:NRC.NRCAuthLib.OUH.OUHModel.#ctor(System.String)">
+	<summary>
+Initialize a new OUHModel object.
+</summary>
+</member><member name="M:NRC.NRCAuthLib.OUH.OUHModel.#ctor(System.Data.EntityClient.EntityConnection)">
+	<summary>
+Initialize a new OUHModel object.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OUHModel.Client">
+	<summary>
+There are no comments for Client in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OUHModel.ClientOrganization">
+	<summary>
+There are no comments for ClientOrganization in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OUHModel.MemberOrganizationUnit">
+	<summary>
+There are no comments for MemberOrganizationUnit in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OUHModel.OrganizationSet">
+	<summary>
+There are no comments for OrganizationSet in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OUHModel.OrganizationCategorySet">
+	<summary>
+There are no comments for OrganizationCategorySet in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OUHModel.OrganizationUnitSet">
+	<summary>
+There are no comments for OrganizationUnitSet in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OUHModel.FFT_OrgUnitSampleUnit">
+	<summary>
+There are no comments for FFT_OrgUnitSampleUnit in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OUHModel.vw_OrganizationUnit">
+	<summary>
+There are no comments for vw_OrganizationUnit in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OUHModel.GroupOrganizationUnit">
+	<summary>
+There are no comments for GroupOrganizationUnit in the schema.
+</summary>
+</member><member name="M:NRC.NRCAuthLib.OUH.OUHModel.AddToClient(NRC.NRCAuthLib.OUH.Client)">
+	<summary>
+There are no comments for Client in the schema.
+</summary>
+</member><member name="M:NRC.NRCAuthLib.OUH.OUHModel.AddToClientOrganization(NRC.NRCAuthLib.OUH.ClientOrganization)">
+	<summary>
+There are no comments for ClientOrganization in the schema.
+</summary>
+</member><member name="M:NRC.NRCAuthLib.OUH.OUHModel.AddToMemberOrganizationUnit(NRC.NRCAuthLib.OUH.MemberOrganizationUnit)">
+	<summary>
+There are no comments for MemberOrganizationUnit in the schema.
+</summary>
+</member><member name="M:NRC.NRCAuthLib.OUH.OUHModel.AddToOrganizationSet(NRC.NRCAuthLib.OUH.Organization)">
+	<summary>
+There are no comments for OrganizationSet in the schema.
+</summary>
+</member><member name="M:NRC.NRCAuthLib.OUH.OUHModel.AddToOrganizationCategorySet(NRC.NRCAuthLib.OUH.OrganizationCategory)">
+	<summary>
+There are no comments for OrganizationCategorySet in the schema.
+</summary>
+</member><member name="M:NRC.NRCAuthLib.OUH.OUHModel.AddToOrganizationUnitSet(NRC.NRCAuthLib.OUH.OrganizationUnit)">
+	<summary>
+There are no comments for OrganizationUnitSet in the schema.
+</summary>
+</member><member name="M:NRC.NRCAuthLib.OUH.OUHModel.AddToFFT_OrgUnitSampleUnit(NRC.NRCAuthLib.OUH.FFT_OrgUnitSampleUnit)">
+	<summary>
+There are no comments for FFT_OrgUnitSampleUnit in the schema.
+</summary>
+</member><member name="M:NRC.NRCAuthLib.OUH.OUHModel.AddTovw_OrganizationUnit(NRC.NRCAuthLib.OUH.vw_OrganizationUnit)">
+	<summary>
+There are no comments for vw_OrganizationUnit in the schema.
+</summary>
+</member><member name="M:NRC.NRCAuthLib.OUH.OUHModel.AddToGroupOrganizationUnit(NRC.NRCAuthLib.OUH.GroupOrganizationUnit)">
+	<summary>
+There are no comments for GroupOrganizationUnit in the schema.
+</summary>
+</member><member name="T:NRC.NRCAuthLib.OUH.OUHModel">
+	<summary>
+There are no comments for OUHModel in the schema.
+</summary>
+</member><member name="M:NRC.NRCAuthLib.OUH.Client.CreateClient(System.Int32,System.String,System.String)">
+	<summary>
+Create a new Client object.
+</summary>
+	<param name="clientID">Initial value of ClientID.</param>
+	<param name="clientName">Initial value of ClientName.</param>
+	<param name="sourceClientID">Initial value of SourceClientID.</param>
+</member><member name="P:NRC.NRCAuthLib.OUH.Client.ClientID">
+	<summary>
+There are no comments for property ClientID in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.Client.ClientName">
+	<summary>
+There are no comments for property ClientName in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.Client.SourceClientID">
+	<summary>
+There are no comments for property SourceClientID in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.Client.ClientOrganization">
+	<summary>
+There are no comments for ClientOrganization in the schema.
+</summary>
+</member><member name="T:NRC.NRCAuthLib.OUH.Client">
+	<summary>
+There are no comments for OUH.Client in the schema.
+</summary>
+	<KeyProperties>
+ClientID
+</KeyProperties>
+</member><member name="M:NRC.NRCAuthLib.OUH.ClientOrganization.CreateClientOrganization(System.Int32,System.Int32)">
+	<summary>
+Create a new ClientOrganization object.
+</summary>
+	<param name="clientID">Initial value of ClientID.</param>
+	<param name="organizationID">Initial value of OrganizationID.</param>
+</member><member name="P:NRC.NRCAuthLib.OUH.ClientOrganization.ClientID">
+	<summary>
+There are no comments for property ClientID in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.ClientOrganization.OrganizationID">
+	<summary>
+There are no comments for property OrganizationID in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.ClientOrganization.Client">
+	<summary>
+There are no comments for Client in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.ClientOrganization.ClientReference">
+	<summary>
+There are no comments for Client in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.ClientOrganization.Organization">
+	<summary>
+There are no comments for Organization in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.ClientOrganization.OrganizationReference">
+	<summary>
+There are no comments for Organization in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.ClientOrganization.DimOrganization">
+	<summary>
+There are no comments for DimOrganization in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.ClientOrganization.DimOrganizationReference">
+	<summary>
+There are no comments for DimOrganization in the schema.
+</summary>
+</member><member name="T:NRC.NRCAuthLib.OUH.ClientOrganization">
+	<summary>
+There are no comments for OUH.ClientOrganization in the schema.
+</summary>
+	<KeyProperties>
+ClientID
+OrganizationID
+</KeyProperties>
+</member><member name="M:NRC.NRCAuthLib.OUH.MemberOrganizationUnit.CreateMemberOrganizationUnit(System.String,System.Int32,System.Int32)">
+	<summary>
+Create a new MemberOrganizationUnit object.
+</summary>
+	<param name="member">Initial value of Member.</param>
+	<param name="organizationUnitID">Initial value of OrganizationUnitID.</param>
+	<param name="memberID">Initial value of MemberID.</param>
+</member><member name="P:NRC.NRCAuthLib.OUH.MemberOrganizationUnit.Member">
+	<summary>
+There are no comments for property Member in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.MemberOrganizationUnit.OrganizationUnitID">
+	<summary>
+There are no comments for property OrganizationUnitID in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.MemberOrganizationUnit.MemberID">
+	<summary>
+There are no comments for property MemberID in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.MemberOrganizationUnit.OrganizationUnit">
+	<summary>
+There are no comments for OrganizationUnit in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.MemberOrganizationUnit.OrganizationUnitReference">
+	<summary>
+There are no comments for OrganizationUnit in the schema.
+</summary>
+</member><member name="T:NRC.NRCAuthLib.OUH.MemberOrganizationUnit">
+	<summary>
+There are no comments for OUH.MemberOrganizationUnit in the schema.
+</summary>
+	<KeyProperties>
+Member
+OrganizationUnitID
+</KeyProperties>
+</member><member name="M:NRC.NRCAuthLib.OUH.Organization.CreateOrganization(System.Int32,System.String)">
+	<summary>
+Create a new Organization object.
+</summary>
+	<param name="organizationID">Initial value of OrganizationID.</param>
+	<param name="organizationName">Initial value of OrganizationName.</param>
+</member><member name="P:NRC.NRCAuthLib.OUH.Organization.OrganizationID">
+	<summary>
+There are no comments for property OrganizationID in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.Organization.OrganizationName">
+	<summary>
+There are no comments for property OrganizationName in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.Organization.ClientOrganization">
+	<summary>
+There are no comments for ClientOrganization in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.Organization.OrganizationUnit">
+	<summary>
+There are no comments for OrganizationUnit in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.Organization.ClientOrganization_1">
+	<summary>
+There are no comments for ClientOrganization_1 in the schema.
+</summary>
+</member><member name="T:NRC.NRCAuthLib.OUH.Organization">
+	<summary>
+There are no comments for OUH.Organization in the schema.
+</summary>
+	<KeyProperties>
+OrganizationID
+</KeyProperties>
+</member><member name="M:NRC.NRCAuthLib.OUH.OrganizationCategory.CreateOrganizationCategory(System.Int32,System.String,System.Boolean)">
+	<summary>
+Create a new OrganizationCategory object.
+</summary>
+	<param name="organizationCategoryID">Initial value of OrganizationCategoryID.</param>
+	<param name="categoryName">Initial value of CategoryName.</param>
+	<param name="internalOnly">Initial value of InternalOnly.</param>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationCategory.OrganizationCategoryID">
+	<summary>
+There are no comments for property OrganizationCategoryID in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationCategory.CategoryName">
+	<summary>
+There are no comments for property CategoryName in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationCategory.InternalOnly">
+	<summary>
+There are no comments for property InternalOnly in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationCategory.OrganizationUnit">
+	<summary>
+There are no comments for OrganizationUnit in the schema.
+</summary>
+</member><member name="T:NRC.NRCAuthLib.OUH.OrganizationCategory">
+	<summary>
+There are no comments for OUH.OrganizationCategory in the schema.
+</summary>
+	<KeyProperties>
+OrganizationCategoryID
+</KeyProperties>
+</member><member name="M:NRC.NRCAuthLib.OUH.OrganizationUnit.CreateOrganizationUnit(System.Int32,System.String,System.String,System.String,System.String,System.Int32,System.String,System.Int32,System.Boolean)">
+	<summary>
+Create a new OrganizationUnit object.
+</summary>
+	<param name="organizationUnitID">Initial value of OrganizationUnitID.</param>
+	<param name="organizationCategoryName">Initial value of OrganizationCategoryName.</param>
+	<param name="organizationName">Initial value of OrganizationName.</param>
+	<param name="levelName">Initial value of LevelName.</param>
+	<param name="orgUnitName">Initial value of OrgUnitName.</param>
+	<param name="level01OrgUnitID">Initial value of Level01OrgUnitID.</param>
+	<param name="level01OrgUnitName">Initial value of Level01OrgUnitName.</param>
+	<param name="levelNum">Initial value of LevelNum.</param>
+	<param name="isLeaf">Initial value of IsLeaf.</param>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationUnit.OrganizationUnitID">
+	<summary>
+There are no comments for property OrganizationUnitID in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationUnit.OrganizationCategoryName">
+	<summary>
+There are no comments for property OrganizationCategoryName in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationUnit.OrganizationName">
+	<summary>
+There are no comments for property OrganizationName in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationUnit.LevelName">
+	<summary>
+There are no comments for property LevelName in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationUnit.OrgUnitName">
+	<summary>
+There are no comments for property OrgUnitName in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationUnit.Level01OrgUnitID">
+	<summary>
+There are no comments for property Level01OrgUnitID in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationUnit.Level01OrgUnitName">
+	<summary>
+There are no comments for property Level01OrgUnitName in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationUnit.Level02OrgUnitID">
+	<summary>
+There are no comments for property Level02OrgUnitID in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationUnit.Level02OrgUnitName">
+	<summary>
+There are no comments for property Level02OrgUnitName in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationUnit.Level03OrgUnitID">
+	<summary>
+There are no comments for property Level03OrgUnitID in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationUnit.Level03OrgUnitName">
+	<summary>
+There are no comments for property Level03OrgUnitName in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationUnit.Level04OrgUnitID">
+	<summary>
+There are no comments for property Level04OrgUnitID in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationUnit.Level04OrgUnitName">
+	<summary>
+There are no comments for property Level04OrgUnitName in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationUnit.Level05OrgUnitID">
+	<summary>
+There are no comments for property Level05OrgUnitID in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationUnit.Level05OrgUnitName">
+	<summary>
+There are no comments for property Level05OrgUnitName in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationUnit.Level06OrgUnitID">
+	<summary>
+There are no comments for property Level06OrgUnitID in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationUnit.Level06OrgUnitName">
+	<summary>
+There are no comments for property Level06OrgUnitName in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationUnit.Level07OrgUnitID">
+	<summary>
+There are no comments for property Level07OrgUnitID in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationUnit.Level07OrgUnitName">
+	<summary>
+There are no comments for property Level07OrgUnitName in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationUnit.Level08OrgUnitID">
+	<summary>
+There are no comments for property Level08OrgUnitID in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationUnit.Level08OrgUnitName">
+	<summary>
+There are no comments for property Level08OrgUnitName in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationUnit.Level09OrgUnitID">
+	<summary>
+There are no comments for property Level09OrgUnitID in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationUnit.Level09OrgUnitName">
+	<summary>
+There are no comments for property Level09OrgUnitName in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationUnit.Level10OrgUnitID">
+	<summary>
+There are no comments for property Level10OrgUnitID in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationUnit.Level10OrgUnitName">
+	<summary>
+There are no comments for property Level10OrgUnitName in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationUnit.LevelNum">
+	<summary>
+There are no comments for property LevelNum in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationUnit.IsLeaf">
+	<summary>
+There are no comments for property IsLeaf in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationUnit.MemberOrganizationUnit">
+	<summary>
+There are no comments for MemberOrganizationUnit in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationUnit.Organization">
+	<summary>
+There are no comments for Organization in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationUnit.OrganizationReference">
+	<summary>
+There are no comments for Organization in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationUnit.OrganizationCategory">
+	<summary>
+There are no comments for OrganizationCategory in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationUnit.OrganizationCategoryReference">
+	<summary>
+There are no comments for OrganizationCategory in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationUnit.FFT_OrgUnitSampleUnit">
+	<summary>
+There are no comments for FFT_OrgUnitSampleUnit in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.OrganizationUnit.GroupOrganizationUnit">
+	<summary>
+There are no comments for GroupOrganizationUnit in the schema.
+</summary>
+</member><member name="T:NRC.NRCAuthLib.OUH.OrganizationUnit">
+	<summary>
+There are no comments for OUH.OrganizationUnit in the schema.
+</summary>
+	<KeyProperties>
+OrganizationUnitID
+</KeyProperties>
+</member><member name="M:NRC.NRCAuthLib.OUH.FFT_OrgUnitSampleUnit.CreateFFT_OrgUnitSampleUnit(System.Int64,System.Int32,System.Int32)">
+	<summary>
+Create a new FFT_OrgUnitSampleUnit object.
+</summary>
+	<param name="orgUnitSampleUnitID">Initial value of OrgUnitSampleUnitID.</param>
+	<param name="sampleUnitID">Initial value of SampleUnitID.</param>
+	<param name="samplePopulationID">Initial value of SamplePopulationID.</param>
+</member><member name="P:NRC.NRCAuthLib.OUH.FFT_OrgUnitSampleUnit.OrgUnitSampleUnitID">
+	<summary>
+There are no comments for property OrgUnitSampleUnitID in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.FFT_OrgUnitSampleUnit.SampleUnitID">
+	<summary>
+There are no comments for property SampleUnitID in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.FFT_OrgUnitSampleUnit.SamplePopulationID">
+	<summary>
+There are no comments for property SamplePopulationID in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.FFT_OrgUnitSampleUnit.OrganizationUnit">
+	<summary>
+There are no comments for OrganizationUnit in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.FFT_OrgUnitSampleUnit.OrganizationUnitReference">
+	<summary>
+There are no comments for OrganizationUnit in the schema.
+</summary>
+</member><member name="T:NRC.NRCAuthLib.OUH.FFT_OrgUnitSampleUnit">
+	<summary>
+There are no comments for OUH.FFT_OrgUnitSampleUnit in the schema.
+</summary>
+	<KeyProperties>
+OrgUnitSampleUnitID
+</KeyProperties>
+</member><member name="M:NRC.NRCAuthLib.OUH.vw_OrganizationUnit.Createvw_OrganizationUnit(System.Int32,System.String,System.Int32,System.Int32,System.String)">
+	<summary>
+Create a new vw_OrganizationUnit object.
+</summary>
+	<param name="organizationUnitID">Initial value of OrganizationUnitID.</param>
+	<param name="orgUnitName">Initial value of OrgUnitName.</param>
+	<param name="organizationID">Initial value of OrganizationID.</param>
+	<param name="levelNum">Initial value of LevelNum.</param>
+	<param name="levelName">Initial value of LevelName.</param>
+</member><member name="P:NRC.NRCAuthLib.OUH.vw_OrganizationUnit.OrganizationUnitID">
+	<summary>
+There are no comments for property OrganizationUnitID in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.vw_OrganizationUnit.OrgUnitName">
+	<summary>
+There are no comments for property OrgUnitName in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.vw_OrganizationUnit.OrganizationID">
+	<summary>
+There are no comments for property OrganizationID in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.vw_OrganizationUnit.ParentOrgUnitID">
+	<summary>
+There are no comments for property ParentOrgUnitID in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.vw_OrganizationUnit.LevelNum">
+	<summary>
+There are no comments for property LevelNum in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.vw_OrganizationUnit.LevelName">
+	<summary>
+There are no comments for property LevelName in the schema.
+</summary>
+</member><member name="T:NRC.NRCAuthLib.OUH.vw_OrganizationUnit">
+	<summary>
+There are no comments for OUH.vw_OrganizationUnit in the schema.
+</summary>
+	<KeyProperties>
+OrganizationUnitID
+OrgUnitName
+OrganizationID
+LevelName
+LevelNum
+</KeyProperties>
+</member><member name="M:NRC.NRCAuthLib.OUH.GroupOrganizationUnit.CreateGroupOrganizationUnit(System.Int32,System.Int32)">
+	<summary>
+Create a new GroupOrganizationUnit object.
+</summary>
+	<param name="groupID">Initial value of GroupID.</param>
+	<param name="organizationUnitID">Initial value of OrganizationUnitID.</param>
+</member><member name="P:NRC.NRCAuthLib.OUH.GroupOrganizationUnit.GroupID">
+	<summary>
+There are no comments for property GroupID in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.GroupOrganizationUnit.OrganizationUnitID">
+	<summary>
+There are no comments for property OrganizationUnitID in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.GroupOrganizationUnit.OrganizationUnit">
+	<summary>
+There are no comments for OrganizationUnit in the schema.
+</summary>
+</member><member name="P:NRC.NRCAuthLib.OUH.GroupOrganizationUnit.OrganizationUnitReference">
+	<summary>
+There are no comments for OrganizationUnit in the schema.
+</summary>
+</member><member name="T:NRC.NRCAuthLib.OUH.GroupOrganizationUnit">
+	<summary>
+There are no comments for OUH.GroupOrganizationUnit in the schema.
+</summary>
+	<KeyProperties>
+GroupID
+OrganizationUnitID
+</KeyProperties>
+</member><member name="P:NRC.NRCAuthLib.Application.ApplicationId">
+	<summary>
+ The database ID of the application
+ </summary>
+</member><member name="P:NRC.NRCAuthLib.Application.Name">
+	<summary>
+ The name of the application
+ </summary>
+</member><member name="P:NRC.NRCAuthLib.Application.Description">
+	<summary>
+ A description of the application
+ </summary>
+</member><member name="P:NRC.NRCAuthLib.Application.DeploymentType">
+	<summary>
+ Indicates the method for deploying this application
+ </summary>
+</member><member name="P:NRC.NRCAuthLib.Application.Path">
+	<summary>
+ Inidicates the path for accessing this application
+ </summary>
+</member><member name="P:NRC.NRCAuthLib.Application.ImageData">
+	<summary>
+ Indicates the icon to use for this application
+ </summary>
+</member><member name="P:NRC.NRCAuthLib.Application.Category">
+	<summary>
+ Indicates the icon to use for this application
+ </summary>
+</member><member name="P:NRC.NRCAuthLib.Application.IsInternalOnly">
+	<summary>
+ Inidicates if the application is used only internally at NRC
+ </summary>
+</member><member name="P:NRC.NRCAuthLib.Application.Privileges">
+	<summary>
+ The set of privileges for this application
+ </summary>
+</member><member name="T:NRC.NRCAuthLib.Application">
+	<summary>
+ Represents an NRC application with secured access
+ </summary>
+</member><member name="M:NRC.NRCAuthLib.Group.HasPrivilege(System.String)">
+	<summary>
+ Returns true if the user has access to any privileges within the specified application
+ </summary>
+	<param name="applicationName">The name of the application</param>
+</member><member name="M:NRC.NRCAuthLib.Group.HasPrivilege(System.String,System.String)">
+	<summary>
+ Return true if the user has been granted a particular privilege to a given application
+ </summary>
+	<param name="applicationName">The name of the application</param>
+	<param name="privilegeName">The name of the privilege</param>
+</member>
+</members>
 </doc>
