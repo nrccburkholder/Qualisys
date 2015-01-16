@@ -7,8 +7,9 @@
 --          1.1 modifed logic to handle DatUndeliverable changes
 --			1.2 by ccaouette: ACO CAHPS Project
 --          1.3 by dgilsdorf: CheckForACOCAHPSIncompletes changed to CheckForCAHPSIncompletes
+--          1.4 by dgilsdorf: added call to CheckForMostCompleteUsablePartials for HHCAHPS and ICHCAHPS processing
 -- =============================================
-CREATE PROCEDURE [dbo].[csp_GetQuestionFormExtractData] 
+alter PROCEDURE [dbo].[csp_GetQuestionFormExtractData] 
 	@ExtractFileID int 
 	
 --exec [dbo].[csp_GetQuestionFormExtractData]  2238
@@ -32,6 +33,7 @@ AS
 	BEGIN
 		EXEC [QP_Prod].[dbo].[CheckForCAHPSIncompletes] 
 		EXEC [QP_Prod].[dbo].[CheckForACOCAHPSUsablePartials]
+		EXEC [QP_Prod].[dbo].[CheckForMostCompleteUsablePartials] -- HHCAHPS and ICHCAHPS
 	END
 	
 
