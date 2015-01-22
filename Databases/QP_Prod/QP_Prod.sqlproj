@@ -8259,6 +8259,31 @@
     <Build Include="Schema Objects\Database Level Objects\Storage\Filegroups\FGPopTables.filegroup.sql">
       <SubType>Code</SubType>
     </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\SV_CAHPS_Hospice_CAHPS_DQRules.proc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\SV_CAHPS_ActiveMethodology.proc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\SV_CAHPS_AddrErrorDQ.proc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\SV_CAHPS_AHA_Id.proc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\SV_CAHPS_EnglishOrSpanish.proc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\SV_CAHPS_FacilityStatePopulated.proc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\SV_CAHPS_FormQuestions.proc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\SV_CAHPS_H_CAHPS_DQrules.proc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\SV_CAHPS_HasDQRule.proc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\SV_CAHPS_HH_CAHPS_DQRules.proc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\SV_CAHPS_Householding.proc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\SV_CAHPS_MedicareNumber.proc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\SV_CAHPS_PCMH_CAHPS_DQRules.proc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\SV_CAHPS_ReportingDate.proc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\SV_CAHPS_RequiredEncounterFields.proc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\SV_CAHPS_RequiredPopulationFields.proc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\SV_CAHPS_Resurvey.proc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\SV_CAHPS_SamplePeriods.proc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\SV_CAHPS_SampleUnit.proc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\SV_CAHPS_SampleUnitTarget.proc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\SV_CAHPS_SamplingAlgorithm.proc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\SV_CAHPS_SamplingEncounterDate.proc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\SV_CAHPS_SamplingMethod.proc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\SV_CAHPS_SkipPatterns.proc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\SV_CAHPS_Template.proc.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\ScriptsIgnoredOnImport.sql">

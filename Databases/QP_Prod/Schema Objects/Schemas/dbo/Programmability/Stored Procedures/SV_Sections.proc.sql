@@ -13,6 +13,7 @@ FROM Sel_Qstns SQ
 Where SQ.Survey_id=@Survey_id
 AND  SQ.Subtype=3
 AND  SQ.LABEL not like '%dummy%'
+AND  SQ.LABEL not like '%Do Not Map%'
 AND  NOT EXISTS
 (SELECT * FROM SampleUnitSection SUS
 WHERE SUS.SelQstnsSection = SQ.Section_ID
@@ -24,3 +25,4 @@ AND (SQ.LABEL not like '%mail%' OR exists (select 1 from mailingstepmethod msm i
 GROUP BY Section_ID, Label
 IF @@ROWCOUNT=0
 SELECT 0 bitError, 'Sections validation' strMessage
+
