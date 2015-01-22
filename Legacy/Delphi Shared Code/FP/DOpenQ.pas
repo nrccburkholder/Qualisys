@@ -53,7 +53,11 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   DBTables, Wwquery, DB, Wwtable, DBRichEdit, Wwdatsrc, stdctrls, Clipbrd, comctrls,
-  mxarrays,comobj, FileUtil,ShellAPI, FileCtrl, tMapping;
+  mxarrays,comobj, FileUtil,ShellAPI, FileCtrl
+{$IFDEF FormLayout}
+  , tMapping
+{$ENDIF}
+  ;
 
 const
   {Scale Placement}

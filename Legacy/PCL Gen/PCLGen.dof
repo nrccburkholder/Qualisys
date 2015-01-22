@@ -54,7 +54,7 @@ AutoIncBuild=1
 MajorVer=2
 MinorVer=5
 Release=0
-Build=35
+Build=36
 Debug=0
 PreRelease=1
 Special=0
@@ -65,7 +65,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=National Research
 FileDescription=Generates the PCL Code
-FileVersion=2.5.0.35
+FileVersion=2.5.0.36
 InternalName=
 LegalCopyright=© 2000-2005. All Rights Reserved.
 LegalTrademarks=

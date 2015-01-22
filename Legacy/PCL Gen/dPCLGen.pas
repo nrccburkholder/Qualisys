@@ -526,6 +526,10 @@ begin
      'where P.survey_id = SL.survey_id and SL.Coverid=P.selcover_id '+
      'and P.Batch_id='+inttostr(currentBatch),'','',wwt_LocalSelLogo);
 
+  if (TestPrints) then
+     DMOpenQ.t_Logo_SQL.tablename := 'dbo.PCL_Logo_tp'
+  else
+     DMOpenQ.t_Logo_SQL.tablename := 'dbo.PCL_Logo';
   DMOpenQ.t_Logo_SQL.open;
   with wwt_LocalSelLogo do begin
     first;
