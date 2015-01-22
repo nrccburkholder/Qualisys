@@ -25,7 +25,7 @@ CGCAHPS				4
 ICHCAHPS			8
 ACOCAHPS			10
 */
-
+/*
 -- CAHPS surveyType_id 'constants'
 declare @CGCAHPS int
 SET @CGCAHPS = 4
@@ -41,7 +41,7 @@ SET @ACOCAHPS = 10
 
 declare @ICHCAHPS int
 SET @ICHCAHPS = 8
-
+*/
 declare @surveyType_id int
 
 SELECT  @surveyType_id = SurveyType_id
@@ -69,7 +69,7 @@ CREATE TABLE #M (Error TINYINT, strMessage VARCHAR(200))
 
 --check to make sure only english or hcahps spanish is used on HHACAHPS survey
 		INSERT INTO #M (Error, strMessage)
-		SELECT 1, l.Language + ' is not a valid Language for a HHCAHPS survey'
+		SELECT 1, l.Language + ' is not a valid Language for this CAHPS survey'
 		FROM Languages l, SEL_QSTNS sq
 		WHERE l.LangID = sq.LANGUAGE and
 		  sq.SURVEY_ID = @Survey_id and

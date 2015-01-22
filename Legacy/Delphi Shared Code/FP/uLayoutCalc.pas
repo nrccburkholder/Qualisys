@@ -1196,7 +1196,7 @@ begin
             5 : // Mexican Spanish
                  vScaleText := vScaleText + ' (continuar·con·la·pregunta·[S'+wwt_sclsItem.asString+'])';
             6 : // French
-                 vScaleText := vScaleText + ' (Passez·à·la·question·[S'+wwt_sclsItem.asString+'])';
+                 vScaleText := vScaleText + ' (Allez·à·la·question·[S'+wwt_sclsItem.asString+'])';
             8 : // PEP-C Spanish
                  vScaleText := vScaleText + ' (Saltar·a·la·pregunta·[S'+wwt_sclsItem.asString+'])';
             9 : // Harris County Spanish
@@ -3843,7 +3843,7 @@ begin
      case dmOpenQ.CurrentLanguage of
        2,7,9,18,19,20 : QText := '# '; //Spanish, VA-Spanish, Harris County Spanish, Magnus GN03, HCAHPS Spanish GN08
        5: Qtext := 'continuar con la pregunta '; //Mexican Spanish
-       6: QText := 'à la question '; //French
+       6: QText := 'Allez à la question '; //French
        8: QText := 'Saltar a la pregunta '; //PEP-C Spanish
        10: QText := 'Passez au n'+#27+'*p-30Yo'+#27+'*p+30Y '; // Quebeqor
        11,12,17: QText := 'Passez à la question n'+#27+'*p-30Yo'+#27+'*p+30Y '; // Francophone

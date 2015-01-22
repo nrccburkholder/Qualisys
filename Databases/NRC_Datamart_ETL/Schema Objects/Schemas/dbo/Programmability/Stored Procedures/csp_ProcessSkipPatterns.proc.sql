@@ -3,11 +3,18 @@
 -- Modified 05/13/2013 DBG - added survey_id in the link between questionformtemp and skipidentifier in two places
 -- Modified 05/14/2013 DBG - modifications to account for overlapping skips
 -- Modified 04/04/2014 CBC - Modified for ACO project.  Added logic to handle new phone survey responses.
+-- Modified 12/17/2014 DBG - Differentiate between "not answered" (-9) and "appropriately skipped" (-4)
 
-CREATE PROCEDURE [dbo].[csp_ProcessSkipPatterns] @ExtractFileID INT 
---exec [dbo].[csp_ProcessSkipPatterns] 10  
+CREATE PROCEDURE [dbo].[csp_ProcessSkipPatterns] 
+@ExtractFileID INT 
 AS 
     SET nocount ON 
+
+	DECLARE @oExtractRunLogID INT;
+	DECLARE @currDateTime1 DATETIME = GETDATE();
+	DECLARE @currDateTime2 DATETIME;
+	DECLARE @TaskName VARCHAR(200) =  OBJECT_NAME(@@PROCID);
+	EXEC [InsertExtractRunLog] @ExtractFileID, @TaskName, @currDateTime1, @ExtractRunLogID = @oExtractRunLogID OUTPUT;
 
     -- declare @ExtractFileID int  
     -- set @ExtractFileID = 20  
@@ -173,8 +180,10 @@ AS
 
       --dbg 5/14/13-- -8's and -9's are now being offset, but we don't really want them to be. So we're now offsetting them back.
 	  -- Modified 04/04/2014 CBC - Adjusts skipped question response values if values equals -5 or -6 by substracting 10000.
+	  -- Modified 12/17/2014 DBG - Differentiate between "not answered" (-9) and "appropriately skipped" (-4)	  
       UPDATE bt 
-      SET    responseVal = responseVal - 10000 
+      SET    responseVal = case when bt.responseval in (9991,9992) then -4 else responseVal - 10000 end	-- 9991 is -9 (not answered) and 9992 is -8 (single respone question with multiple marks) 
+																										-- both with the +10000 offset. Both of these should be set to -4 (appropriately skipped)
       FROM   bubbletemp bt 
              INNER JOIN qp_prod.dbo.skipqstns sq ON sq.qstncore = bt.nrcquestioncore 
              INNER JOIN #work w                  ON bt.questionform_id = w.questionform_id 
@@ -187,6 +196,13 @@ AS
 
     -- drop table #validskippattern  
     EXEC dbo.Csp_processskippatterns_hhcahps @ExtractFileID 
+
+
+	
+
+	SET @currDateTime2 = GETDATE();
+	SELECT @oExtractRunLogID,@currDateTime2,@TaskName
+	EXEC [UpdateExtractRunLog] @oExtractRunLogID, @currDateTime2
 
     RETURN
 
