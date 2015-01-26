@@ -64,6 +64,8 @@ Public Class Survey
     Private mCompliesWithSwitchToPropSamplingDate As Boolean = False
     Private mByPassInitRespRateNumericEnforcement As Boolean = False
     Private mUseUSPSAddrChangeServiceDefault As Boolean = False
+    Private mDefaultScheduleDateAdjustmentByMonths As Integer = 0
+
 
 #End Region
 
@@ -888,6 +890,13 @@ Public Class Survey
         Get
             GetSurveyRule("BypassInitRespRateNumericEnforcement", mByPassInitRespRateNumericEnforcement, override)
             Return mByPassInitRespRateNumericEnforcement
+        End Get
+    End Property
+
+    Public ReadOnly Property DefaultScheduleDateAdjustmentByMonths(Optional ByVal override As String = vbNullString) As Integer
+        Get
+            GetSurveyRule("DefaultScheduleDateAdjustmentByMonths", mDefaultScheduleDateAdjustmentByMonths, override)
+            Return mDefaultScheduleDateAdjustmentByMonths
         End Get
     End Property
 

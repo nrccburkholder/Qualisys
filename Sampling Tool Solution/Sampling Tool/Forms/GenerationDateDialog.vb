@@ -13,10 +13,13 @@ Public Class GenerationDateDialog
     ''' <summary>
     ''' The date that is selected in the dialog
     ''' </summary>
-    Public ReadOnly Property SelectedDate() As Date
+    Public Property SelectedDate() As Date
         Get
             Return Me.GenerationDate.Value
         End Get
+        Set(value As Date)
+            Me.GenerationDate.Value = value
+        End Set
     End Property
 #End Region
 
@@ -25,7 +28,7 @@ Public Class GenerationDateDialog
 #Region " Control Event Handlers "
     Private Sub GenerationDateDialog_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         'Initialize the generation date to today by default
-        Me.GenerationDate.Value = Date.Today
+        'Me.GenerationDate.Value = Date.Today
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
