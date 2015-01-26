@@ -1,0 +1,451 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Tahoma" Size="8.25" />
+  <Class Name="Nrc.QualiSys.Library.AuditLog">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>AuditLog.vb</FileName>
+      <HashCode>AAAAAAAAAQAQAAAAAAACAAAAAACAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.AuditLogChange">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>AuditLogChange.vb</FileName>
+      <HashCode>QAAAEAAQAAAAAAAACAEEABAAAAAIAAAAAIAAAIBAAEA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.AuditLogObject">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>AuditLogObject.vb</FileName>
+      <HashCode>AAAIEUgAAAAAAAAEgAAABAAAAAAAAIAAAACAACAAAAA=</HashCode>
+    </TypeIdentifier>
+    <NestedTypes>
+      <Enum Name="Nrc.QualiSys.Library.AuditLogObject.AuditLogObjectType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>AuditLogObject.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.BusinessCollection(Of T)">
+    <Position X="7.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <FileName>BusinessCollection.vb</FileName>
+      <HashCode>gAQAAABAAABARAAAAQAAAAgAQAAAgAAEQAIBABIYAAE=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.BusinessRule">
+    <Position X="9.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>BusinessRule.vb</FileName>
+      <HashCode>AAACUEAAQEAQAABAAAAAAAQAAAKAACAgwQCBAAAAAAQ=</HashCode>
+    </TypeIdentifier>
+    <NestedTypes>
+      <Enum Name="Nrc.QualiSys.Library.BusinessRule.BusinessRuleType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>BusinessRule.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.Client">
+    <Position X="12.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Client.vb</FileName>
+      <HashCode>AAQCEAAAAAAQAAIGAAAAAgwAgAEAAAAAACgDAABAAAY=</HashCode>
+    </TypeIdentifier>
+    <NestedTypes>
+      <Enum Name="Nrc.QualiSys.Library.Client.PopulateDepth" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Client.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.ConcurrencyLock">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ConcurrencyLock.vb</FileName>
+      <HashCode>IAEiEAAAgAQAAAYAAAAAAAAAAAAAAQAACQBCAAAQAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.ConcurrencyManager" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="1.5" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>ConcurrencyManager.vb</FileName>
+      <HashCode>EAAECAAAACAAQACAAAEAJCAAAAggDAAAAAAAAgIIAkA=</HashCode>
+    </TypeIdentifier>
+    <NestedTypes>
+      <Class Name="Nrc.QualiSys.Library.ConcurrencyManager.ServerTime" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ConcurrencyManager.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.Criteria" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Criteria.vb</FileName>
+      <HashCode>AAACUAwABAAAAAJAQAgAAAQAAEoAAAQAAAgBEBAAABA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.CriteriaClause" BaseTypeListCollapsed="true">
+    <Position X="9.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>CriteriaClause.vb</FileName>
+      <HashCode>AAISECIAAAAQAgAAAAAYAIAAAAABgAABAIAggQAgKRE=</HashCode>
+    </TypeIdentifier>
+    <NestedTypes>
+      <Enum Name="Nrc.QualiSys.Library.CriteriaClause.Operators" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>CriteriaClause.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.CriteriaInValue" BaseTypeListCollapsed="true">
+    <Position X="11" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>CriteriaInValue.vb</FileName>
+      <HashCode>AAACEAAAAAAQAAAAAAAQAAgACAAEAAAAAAAgAAAAABA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.CriteriaPhrase" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>CriteriaPhrase.vb</FileName>
+      <HashCode>IAICEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAQAFA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.CutoffDateField">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>CutoffDateField.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAIAAAABAAAAAAAgAAAgAQE=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.Disposition" BaseTypeListCollapsed="true">
+    <Position X="4" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Disposition.vb</FileName>
+      <HashCode>AACCE4gAAAAAAAQAgAAAAgwAAAAAgIAEAAkAAAAAAAQ=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.DispositionCollection">
+    <Position X="5.75" Y="2.5" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>DispositionCollection.vb</FileName>
+      <HashCode>AAIAAAAAAAAAAAAAAAAQAAAEAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.Employee">
+    <Position X="9.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Employee.vb</FileName>
+      <HashCode>AKACEEAEACAQhMAAAAAAAAAAAAAABAAEAAABAQAAAAw=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.Facility">
+    <Position X="12.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Facility.vb</FileName>
+      <HashCode>QAVGMBAACAAQIgBMwDcAggSAgQcAQIIUIGgBRgQIEDQ=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.FacilityRegion" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>FacilityRegion.vb</FileName>
+      <HashCode>AAACEAAAAAAAAAQAAAAAAAQAAAAAAAAAAggAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.Language">
+    <Position X="7.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Language.vb</FileName>
+      <HashCode>AAACEAAAgAAQAAAAAAAAAAQAgAAAAACAAAgBAAAAACQ=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.SampleSet">
+    <Position X="7.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>LegacySampleSet.vb</FileName>
+      <HashCode>EBACFABAAAwQAAAAgBARQAAAAAARQABEIEAFYABBQgQ=</HashCode>
+    </TypeIdentifier>
+    <NestedTypes>
+      <Class Name="Nrc.QualiSys.Library.SampleSet.LegacySampleSet" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>LegacySampleSet.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Enum Name="Nrc.QualiSys.Library.SampleSet.SamplingMethod" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>SampleSet.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="Nrc.QualiSys.Library.SampleSet.RemovedRule" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>SampleSet.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="Nrc.QualiSys.Library.SampleSet.UnitSelectType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>SampleSet.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Class Name="Nrc.QualiSys.Library.SampleSet.StaticPlusAlgorithm" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>StaticPlusAlgorithm.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.ListItem(Of T)" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ListItem.vb</FileName>
+      <HashCode>AAAAAAAAEAAAAAQEAAAAAAAAAAAEAAAEAAAgAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.Mailing">
+    <Position X="2.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Mailing.vb</FileName>
+      <HashCode>hAAgQDGAAACQACBAAJADFAAkggAAEMBKQISBQQKKEgQ=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.MailingStep">
+    <Position X="5.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>MailingStep.vb</FileName>
+      <HashCode>AAACEAAAAAAQAAQAAAABAAQAAAAAAAAAAAgBRAAAAAU=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.QualisysParam">
+    <Position X="11" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>QualiSysParam.vb</FileName>
+      <HashCode>QAAyEEAQAAAQAAEAAAAAAAQEAABAAAAgCQgBAAQAIAQ=</HashCode>
+    </TypeIdentifier>
+    <NestedTypes>
+      <Enum Name="Nrc.QualiSys.Library.QualisysParam.ParamDataType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>QualiSysParam.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.QualisysParams">
+    <Position X="12.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>QualiSysParams.vb</FileName>
+      <HashCode>ACAAAAAACAAAAAAAAIAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <NestedTypes>
+      <Enum Name="Nrc.QualiSys.Library.QualisysParams.ParamKey" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>QualiSysParams.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.ReceiptType">
+    <Position X="0.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ReceiptType.vb</FileName>
+      <HashCode>AAACEAAAAAAAAAAAAAAAAAQAAAAAAAAAAAgACAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.SamplePeriod">
+    <Position X="4" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>SamplePeriod.vb</FileName>
+      <HashCode>QAACMAggBCAAAAAEkAAJAAQAAAABRAUCIAgAwABAAAA=</HashCode>
+    </TypeIdentifier>
+    <NestedTypes>
+      <Enum Name="Nrc.QualiSys.Library.SamplePeriod.TimeFrame" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>SamplePeriod.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.SampleUnit">
+    <Position X="11" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>SampleUnit.vb</FileName>
+      <HashCode>YAYKkVAAEAEwcIpEwEBBMCSgpAMASAAgZFiRZxgICAQ=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.SampleUnitLinking" Collapsed="true">
+    <Position X="12.75" Y="5.5" Width="2" />
+    <TypeIdentifier>
+      <FileName>SampleUnitLinking.vb</FileName>
+      <HashCode>gBAAEEAEEAAAAAAIQAAAEAAIAhQEICAQgABQBAgAoAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.SampleUnitLinkingCollection">
+    <Position X="8" Y="4.5" Width="2.25" />
+    <TypeIdentifier>
+      <FileName>SampleUnitLinkingCollection.vb</FileName>
+      <HashCode>AAAAAABCAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.SampleUnitServiceType">
+    <Position X="4" Y="6.5" Width="2" />
+    <TypeIdentifier>
+      <FileName>SampleUnitServiceType.vb</FileName>
+      <HashCode>AAQCEAAACIAQQAAEAAAAIAQAgAAAAAAAAAgBQQAAAgQ=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.Study">
+    <Position X="7.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Study.vb</FileName>
+      <HashCode>AAACMAAQAABwIEAAgQAAAgQAgAFQAAAAQGgBQBAEAgQ=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.StudyDataset">
+    <Position X="9.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>StudyDataset.vb</FileName>
+      <HashCode>AAACUAgAAAIAAABAAAAAACBAIAAAAAAAAQAAAAAAAEA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.StudyDatasetDateRange">
+    <Position X="11" Y="6.5" Width="2" />
+    <TypeIdentifier>
+      <FileName>StudyDatasetDateRange.vb</FileName>
+      <HashCode>AAEAEAAECAAAAAAAAAAAAAQAAAABAAAAIAAAAAEAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.StudyTable">
+    <Position X="0.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>StudyTable.vb</FileName>
+      <HashCode>AAACUAQQAAAgAABAAAAAAAUEAAAAAAgAAAgAAAgAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.StudyTableColumn">
+    <Position X="2.25" Y="7.5" Width="2.25" />
+    <TypeIdentifier>
+      <FileName>StudyTableColumn.vb</FileName>
+      <HashCode>AAACEAAQAAIgABBEAAAQAARIIEABAAgAAAgAAAAAAQg=</HashCode>
+    </TypeIdentifier>
+    <NestedTypes>
+      <Enum Name="Nrc.QualiSys.Library.StudyTableColumn.ColumnDataType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>StudyTableColumn.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.StudyTableColumnCollection">
+    <Position X="5" Y="7.5" Width="2.25" />
+    <TypeIdentifier>
+      <FileName>StudyTableColumnCollection.vb</FileName>
+      <HashCode>AAAAAABAAAAQBAAAAAAAAAAAQAAAAAAEAAABAAAAAAQ=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.Survey">
+    <Position X="7.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Survey.vb</FileName>
+      <HashCode>gARS0BJR4EBwEAlA4gAEloSAoFvlCFwAEKlRIYsABAQ=</HashCode>
+    </TypeIdentifier>
+    <NestedTypes>
+      <Enum Name="Nrc.QualiSys.Library.Survey.HouseHoldingType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Survey.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="Nrc.QualiSys.Library.Survey.SurveyType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Survey.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="Nrc.QualiSys.Library.Survey.SamplingAlgorithm" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Survey.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="Nrc.QualiSys.Library.Survey.ReportStatus" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Survey.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="Nrc.QualiSys.Library.Survey.ResurveyMethod" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Survey.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+  </Class>
+  <Class Name="Nrc.QualiSys.Library.USState">
+    <Position X="11" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>USState.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAkACgBAQAAAAAAAAAAAAEAAAA=</HashCode>
+    </TypeIdentifier>
+    <NestedTypes>
+      <Enum Name="Nrc.QualiSys.Library.USState.StateCode" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>USState.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+  </Class>
+  <Enum Name="Nrc.QualiSys.Library.AuditLogChangeType" Collapsed="true">
+    <Position X="0.5" Y="10" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>AuditLogChangeType.vb</FileName>
+      <HashCode>AAYAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAEAAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Nrc.QualiSys.Library.ConcurrencyLockCategory" Collapsed="true">
+    <Position X="2.25" Y="10" Width="2" />
+    <TypeIdentifier>
+      <FileName>ConcurrencyLockCategory.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAACAAAAApQQgAAAMAAAQBACAIAEAAAQ=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Nrc.QualiSys.Library.CountryCode" Collapsed="true">
+    <Position X="4" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>CountryCode.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAABAAAAAEAAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Nrc.QualiSys.Library.DispositionAction" Collapsed="true">
+    <Position X="7.5" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>DispositionAction.vb</FileName>
+      <HashCode>AAAACACACQAAAAAAAgAAAABAAAAAAAAAAAAAAAEAAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Nrc.QualiSys.Library.SampleSelectionType" Collapsed="true">
+    <Position X="9.25" Y="10" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>SampleSelectionType.vb</FileName>
+      <HashCode>AQAACAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAEAAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Nrc.QualiSys.Library.CutoffFieldType" Collapsed="true">
+    <Position X="5.75" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>SurveyCutoffFieldType.vb</FileName>
+      <HashCode>BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+</ClassDiagram>

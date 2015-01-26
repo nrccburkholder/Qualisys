@@ -1,9 +1,11 @@
-Imports Nrc.Qualisys.Library
+Imports System
+Imports Nrc.QualiSys.Library
 Imports Nrc.Framework.BusinessLogic.Configuration
 
 Public Class ExistingSampleSetViewer
 
     Private mSurveys As Collection(Of Survey)
+    Private mSurveyTypes As SurveyTypeCollection
     Private WithEvents mSampleSetFilterStartDate As ToolStripDateTimePicker
     Private WithEvents mSampleSetFilterEndDate As ToolStripDateTimePicker
     Public Event SampleSetDeleted As EventHandler
@@ -27,6 +29,7 @@ Public Class ExistingSampleSetViewer
         Me.mSurveys = surveys
         Me.PopulateSampleSets(surveys)
         Me.EnableDisableSampleSetButtons()
+        Me.mSurveyTypes = SurveyType.GetAll()
     End Sub
 
 #Region " Private Properties "
@@ -309,7 +312,21 @@ Public Class ExistingSampleSetViewer
         Try
             Me.Cursor = Cursors.WaitCursor
 
+            Dim srvy As Survey
+            Dim ss As SampleSet = SelectedSampleSet()
+            srvy = Survey.Get(ss.SurveyId)
+
             Dim genDateDialog As New GenerationDateDialog
+
+            Dim defaultScheduleDateByMonths As Integer = srvy.DefaultScheduleDateAdjustmentByMonths
+
+            If defaultScheduleDateByMonths <> 0 Then ' 
+                Dim dt As DateTime = Convert.ToDateTime(srvy.ActiveSamplePeriod.ExpectedStartDate.Value)
+                genDateDialog.SelectedDate = dt.AddMonths(defaultScheduleDateByMonths).AddDays(-1)
+            Else
+                genDateDialog.SelectedDate = Date.Today
+            End If
+
             If genDateDialog.ShowDialog = DialogResult.OK Then
                 Dim generationDate As Date = genDateDialog.SelectedDate
 
