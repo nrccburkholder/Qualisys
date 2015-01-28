@@ -273,7 +273,7 @@ namespace USPS_ACS_Library
 
                         extractCount += 1;
 
-                        extractList.Add(new USPS_ACS_Notification { ZipFileFile = exLog.ZipFileName,  ExtractFileName = e.FileName, FileType = NotificationType.Extract, RecordCount = Convert.ToInt32(exLog.RecordCount) });
+                        extractList.Add(new USPS_ACS_Notification { ZipFileFile = exLog.ZipFileName,  ExtractFileName = e.FileName, FileType = NotificationType.Extract, RecordCount = Convert.ToInt32(exLog.RecordCount), Status = exLog.Status });
                     }
                 }
 

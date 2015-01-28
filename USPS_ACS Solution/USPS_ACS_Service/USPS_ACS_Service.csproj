@@ -73,7 +73,8 @@
     <Reference Include="NLog">
       <HintPath>packages\NLog.3.1.0.0\lib\net40\NLog.dll</HintPath>
     </Reference>
-    <Reference Include="Nrc.Framework.BusinessLogic">
+    <Reference Include="Nrc.Framework.BusinessLogic, Version=1.0.5.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Referenced Assemblies\Nrc.Framework.BusinessLogic.dll</HintPath>
     </Reference>
     <Reference Include="Quartz, Version=2.2.3.400, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
