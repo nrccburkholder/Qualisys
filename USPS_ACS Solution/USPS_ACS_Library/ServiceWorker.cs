@@ -274,6 +274,13 @@ namespace USPS_ACS_Library
                         extractCount += 1;
 
                         extractList.Add(new USPS_ACS_Notification { ZipFileFile = exLog.ZipFileName,  ExtractFileName = e.FileName, FileType = NotificationType.Extract, RecordCount = Convert.ToInt32(exLog.RecordCount), Status = exLog.Status });
+
+                        // if the file extracted is anything other than New, go ahead and move it, otherwise it will just sit around in the Extracted folder
+                        if (exLog.Status != "New")
+                        {
+                            ExtractFileStatus thisStatus = (ExtractFileStatus)Enum.Parse(typeof(ExtractFileStatus), exLog.Status);
+                            MoveExtractFile(exLog.FilePath, thisStatus);
+                        }
                     }
                 }
 
@@ -439,7 +446,7 @@ namespace USPS_ACS_Library
 
                     Logs.Info(String.Format("{0} processed as {1}", Path.GetFileName(filepath), status));
                                  
-                    MoveExtractFile(USPS_ACS_ExtractFileLog_ID, filepath, status);
+                    MoveExtractFile(filepath, status);
 
                     UpdateAddresses(USPS_ACS_ExtractFileLog_ID);
 
@@ -617,7 +624,7 @@ namespace USPS_ACS_Library
 
         }
 
-        private static void MoveExtractFile(int extractFileLog_id, string currentFile, ExtractFileStatus status)
+        private static void MoveExtractFile(string currentFile, ExtractFileStatus status)
         {
 
             string folderPath = Path.Combine(Path.GetDirectoryName(currentFile), status.ToString(), Path.GetFileName(currentFile));
