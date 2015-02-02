@@ -10,6 +10,7 @@ Public Class MedicareNumber
 #Region "Private Fields"
 
     Private mLastRecalcLoaded As Boolean
+    Private mLastRecalcUserCensusForcedLoaded As Boolean
     Private mHistoricLoaded As Boolean
 
     <NotUndoable()> Private mInstanceGuid As Guid = Guid.NewGuid
@@ -30,10 +31,12 @@ Public Class MedicareNumber
     Private mHistoricResponseRate As Decimal
     Private mPENumber As String = String.Empty
     Private mIsActive As Boolean = True
+    Private mUserCensusForced As Integer
 
     Private mCalculationErrors As New List(Of String)
 
     Private mLastRecalcHistory As MedicareRecalcHistory
+    Private mLastRecalcHistoryUserCensusForced As MedicareRecalcHistory
     Private mMedicareGlobalDates As MedicareGlobalCalcDateCollection
 
 #End Region
@@ -205,6 +208,24 @@ Public Class MedicareNumber
                 PropertyHasChanged("IsActive")
             End If
         End Set
+    End Property
+
+    Public Property UserCensusForced() As Integer
+        Get
+            Return mUserCensusForced
+        End Get
+        Set(ByVal value As Integer)
+            If Not value = mUserCensusForced Then
+                mUserCensusForced = value
+                PropertyHasChanged("UserCensusForced")
+            End If
+        End Set
+    End Property
+
+    Public ReadOnly Property SystemCensusForced() As Integer
+        Get
+            Return -1
+        End Get
     End Property
 
 #End Region
@@ -411,12 +432,23 @@ Public Class MedicareNumber
     Private ReadOnly Property LastRecalcHistory() As MedicareRecalcHistory
         Get
             If mLastRecalcHistory Is Nothing AndAlso Not mLastRecalcLoaded Then
-                mLastRecalcHistory = MedicareRecalcHistory.GetLatestByMedicareNumber(mMedicareNumber, Date.Now)
+                mLastRecalcHistory = MedicareRecalcHistory.GetLatestByMedicareNumber(mMedicareNumber, Date.Now, False)
                 mLastRecalcLoaded = True
             End If
             Return mLastRecalcHistory
         End Get
     End Property
+
+    Private ReadOnly Property LastRecalcHistoryUserCensusForced() As MedicareRecalcHistory
+        Get
+            If mLastRecalcHistoryUserCensusForced Is Nothing AndAlso Not mLastRecalcUserCensusForcedLoaded Then
+                mLastRecalcHistoryUserCensusForced = MedicareRecalcHistory.GetLatestByMedicareNumber(mMedicareNumber, Date.Now, True)
+                mLastRecalcUserCensusForcedLoaded = True
+            End If
+            Return mLastRecalcHistoryUserCensusForced
+        End Get
+    End Property
+
 
 #End Region
 
@@ -752,10 +784,19 @@ Public Class MedicareNumber
 
                 'Determine if the new proportion is greater than the force census limit
                 Dim globalDefaults As MedicareGlobalCalculationDefaultCollection = MedicareGlobalCalculationDefault.GetAll
+                UserCensusForced = memberID
                 If globalDefaults.Count > 0 Then
                     'Global defaults exist so let's check
                     If annualProportion > globalDefaults(0).ForceCensusSamplePercentage Then
-                        CensusForced = True
+                        If CensusForced = False Then
+                            CensusForced = True
+                            UserCensusForced = SystemCensusForced 'indicates system assigned CensusForced not a user
+                        End If
+                    Else 'annual Proportion <= globalDefaults(0).ForceCensusSamplePercentage
+                        If (CensusForced = True) And (LastRecalcHistoryUserCensusForced Is Nothing) Then
+                            CensusForced = False
+                            UserCensusForced = SystemCensusForced 'indicates system assigned CensusForced not a user
+                        End If
                     End If
                 End If
 
@@ -780,6 +821,7 @@ Public Class MedicareNumber
                 objLog.HistoricAnnualVolume = annualEligibleVolume
                 objLog.PropSampleCalcDate = propSampleDate
                 objLog.ForcedCalculation = forced
+                objLog.UserCensusForced = UserCensusForced
 
                 'Send and email notification if sampling is locked
                 sampleLockNotifyFailed = False
@@ -854,10 +896,19 @@ Public Class MedicareNumber
 
             'Determine if the new proportion is greater than the force census limit
             Dim globalDefaults As MedicareGlobalCalculationDefaultCollection = MedicareGlobalCalculationDefault.GetAll
+            UserCensusForced = memberID
             If globalDefaults.Count > 0 Then
                 'Global defaults exist so let's check
                 If annualProportion > globalDefaults(0).ForceCensusSamplePercentage Then
-                    CensusForced = True
+                    If CensusForced = False Then
+                        CensusForced = True
+                        UserCensusForced = SystemCensusForced 'indicates system assigned CensusForced not a user
+                    End If
+                Else 'annual Proportion <= globalDefaults(0).ForceCensusSamplePercentage
+                    If (CensusForced = True) And (LastRecalcHistoryUserCensusForced Is Nothing) Then
+                        CensusForced = False
+                        UserCensusForced = SystemCensusForced 'indicates system assigned CensusForced not a user
+                    End If
                 End If
             End If
 
@@ -882,6 +933,7 @@ Public Class MedicareNumber
             objLog.HistoricAnnualVolume = 0
             objLog.PropSampleCalcDate = propSampleDate
             objLog.ForcedCalculation = forced
+            objLog.UserCensusForced = UserCensusForced
 
             'Send and email notification if sampling is locked
             sampleLockNotifyFailed = False

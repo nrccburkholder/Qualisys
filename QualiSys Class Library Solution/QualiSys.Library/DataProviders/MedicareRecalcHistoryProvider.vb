@@ -30,7 +30,7 @@ Namespace DataProvider
         Public MustOverride Function Insert(ByVal instance As MedicareRecalcHistory) As Integer
         Public MustOverride Sub Update(ByVal instance As MedicareRecalcHistory)
         Public MustOverride Sub Delete(ByVal medicareRecalcHistoryID As Integer)
-        Public MustOverride Function GetLatestByMedicareNumber(ByVal medicareNumber As String, ByVal latestDate As Date) As MedicareRecalcHistory
+        Public MustOverride Function GetLatestByMedicareNumber(ByVal medicareNumber As String, ByVal latestDate As Date, ByVal userCensusForced As Boolean) As MedicareRecalcHistory
         Public MustOverride Function GetLatestBySampleDate(ByVal medicareNumber As String, ByVal sampleDate As Date) As MedicareRecalcHistory
 
     End Class
