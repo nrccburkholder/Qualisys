@@ -1,9 +1,20 @@
+/*
 
+	S17 US17 Hospice CAHPS QLoader Global Functions
+
+	As an Implementation Associate, I want custom global functions in QLoader for Hospice CAHPS, so that the data will be loaded correctly and consistently.
+
+	Document Requirements, Write functions and script them out. 
+
+	Tim Butler
+
+*/
 USE [QP_Load]
 GO
 
 DECLARE @FunctionGroup_id int
-DECLARE @strFunctionGroup_dsc varchar(42) = 'Hospice CAHPS'
+DECLARE @strFunctionGroup_dsc varchar(42) 
+SET @strFunctionGroup_dsc = 'Hospice CAHPS'
 
 IF NOT Exists (Select 1 FROM [dbo].[FunctionGroup] WHERE [strFunctionGroup_dsc] = @strFunctionGroup_dsc)
 BEGIN
@@ -12,8 +23,9 @@ BEGIN
 			   ([strFunctionGroup_dsc]
 			   ,[intParentFunctionGroup_id])
 		 VALUES
-			   ('Hospice CAHPS'
+			   ( @strFunctionGroup_dsc
 			   ,2)
+
 	SELECT @FunctionGroup_id = SCOPE_IDENTITY()
 END
 ELSE 
@@ -27,30 +39,47 @@ DECLARE @strFunction_nm varchar(42)
 DECLARE @strFunction_Sig varchar(200)
 DECLARE @strFunction_dsc varchar(200)
 DECLARE @strFunction_Code varchar(5000)
-DECLARE @bitVBS bit = 0
-DECLARE @Client_id int = 0
+DECLARE @bitVBS bit
+DECLARE @Client_id int
 
-SET @strFunction_nm = ''
-SET @strFunction_Sig = ''
-SET @strFunction_dsc = ''
-SET @strFunction_Code = 'Function GetHCAHPSDischargeStatus(strDischargeStatus,strVisitType) 
-    ''Only consider inpatient records
-    If strVisitType = "I" Then
-        Select Case strDischargeStatus
-            Case "01","1","02","2","03","3","04","4","05","5","06","6","07","7","20","21","40","41","42","43","50","51","61","62","63","64","65","66","69","70","81","82","83","84","85","86","87","88","89","90","91","92","93","94","95"
-                GetHCAHPSDischargeStatus = strDischargeStatus      
-            Case Else
-                GetHCAHPSDischargeStatus = "M"    ''code for missing value
-        End Select
-    Else
-        GetHCAHPSDischargeStatus = dbNull
-    End If
-End Function'
+DECLARE @IsUpdateFunction bit
+
+SET @strFunction_nm = 'HSPGetValidValues'
+SET @strFunction_Sig = 'HSPGetValidValues(strValue,strField)'
+SET @strFunction_dsc = 'Check for valid values for Hospice CAHPS data.Fields: "CaregiverRel", "Hispanic", "LastLoc", "Payer", "Race"'
+SET @strFunction_Code = 'Function HSPGetValidValues(strValue,strField)
+						If IsNumeric(strValue) Then
+							Select Case strField
+							Case "CaregiverRel"
+								HSPGetValidValues = CheckHospiceValues(CInt(strValue), 1, 7)
+							Case "Hispanic"
+								HSPGetValidValues = CheckHospiceValues(CInt(strValue), 1, 2)
+							Case "LastLoc"
+								HSPGetValidValues = CheckHospiceValues(CInt(strValue), 1, 10)
+							Case "Payer"
+								HSPGetValidValues = CheckHospiceValues(CInt(strValue), 1, 6)
+							Case "Race"
+								HSPGetValidValues = CheckHospiceValues(CInt(strValue), 1, 7)
+							End Select
+						Else
+							HSPGetValidValues = "M"
+						End If
+					End Function
+
+					Function CheckHospiceValues (intValue, intLow, intHigh)
+						If intValue >= intLow And intValue <= intHigh Then
+							CheckHospiceValues = intValue
+						Else
+							CheckHospiceValues = "M"
+						End If
+					End Function'
+
 SET @bitVBS = 0
 SET @Client_id = 0
+SET @IsUpdateFunction = 0
 
 
-IF NOT Exists (Select 1 FROM [dbo].[Functions] WHERE [strFunction_nm] = @strFunction_nm)
+IF NOT Exists (Select 1 FROM [dbo].[Functions] WHERE [strFunction_nm] = @strFunction_nm and [FunctionGroup_id] = @FunctionGroup_id)
 BEGIN
 
 	INSERT INTO [dbo].[Functions]
@@ -70,7 +99,7 @@ BEGIN
 			   ,@Client_id
 			   ,@FunctionGroup_id)
 END
-ELSE
+ELSE IF @IsUpdateFunction = 1
 BEGIN
 
 	UPDATE [dbo].[Functions]
@@ -83,11 +112,15 @@ BEGIN
 	 WHERE [strFunction_nm] = @strFunction_nm
 
 END
-GO
 
 
 
+ SELECT *
+ FROM functiongroup
+ WHERE FunctionGroup_id = @FunctionGroup_id
 
  SELECT * 
  FROM [dbo].[Functions] 
- WHERE strFunction_nm = 'GetHCAHPSDischargeStatus' 
+ WHERE FunctionGroup_id = @FunctionGroup_id
+
+ GO
