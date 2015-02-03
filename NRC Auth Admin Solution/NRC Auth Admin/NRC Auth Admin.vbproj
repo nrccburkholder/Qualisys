@@ -87,6 +87,9 @@
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
+  <PropertyGroup>
+      <RunOctoPack>true</RunOctoPack>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
@@ -647,6 +650,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="NRC Auth Admin.nuspec">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="NRC Auth Admin_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Resources\Member32.png" />
