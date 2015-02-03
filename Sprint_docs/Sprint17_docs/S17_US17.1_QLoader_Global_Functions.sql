@@ -114,6 +114,123 @@ BEGIN
 END
 
 
+SET @strFunction_nm = 'GetHospiceICD9'
+SET @strFunction_Sig = 'GetHospiceICD9(strValue)'
+SET @strFunction_dsc = 'Verify the format of the ICD-9 code.'
+SET @strFunction_Code = 'Function GetHospiceICD9(strValue)
+							dim objRegExp : set objRegExp = new RegExp
+							with objRegExp
+								.Pattern =  "^(V\d{2}(\.\d{1,2})?|\d{3}(\.\d{1,2})?|E\d{3}(\.\d)?)$"
+								.IgnoreCase = TRUE
+								.Global = True
+							end with
+ 
+							If objRegExp.test(strValue) = TRUE Then
+								GetHospiceICD9 = strValue
+							Else
+								GetHospiceICD9 = "dbNull"
+							End If
+
+							set objRegExp = nothing
+						end function'
+
+SET @bitVBS = 0
+SET @Client_id = 0
+SET @IsUpdateFunction = 0
+
+
+IF NOT Exists (Select 1 FROM [dbo].[Functions] WHERE [strFunction_nm] = @strFunction_nm and [FunctionGroup_id] = @FunctionGroup_id)
+BEGIN
+
+	INSERT INTO [dbo].[Functions]
+			   ([strFunction_nm]
+			   ,[strFunction_Sig]
+			   ,[strFunction_dsc]
+			   ,[strFunction_Code]
+			   ,[bitVBS]
+			   ,[Client_id]
+			   ,[FunctionGroup_id])
+		 VALUES
+			   (@strFunction_nm
+			   ,@strFunction_Sig
+			   ,@strFunction_dsc
+			   ,@strFunction_Code
+			   ,@bitVBS
+			   ,@Client_id
+			   ,@FunctionGroup_id)
+END
+ELSE IF @IsUpdateFunction = 1
+BEGIN
+
+	UPDATE [dbo].[Functions]
+	   SET [strFunction_Sig] = @strFunction_Sig
+		  ,[strFunction_dsc] = @strFunction_dsc
+		  ,[strFunction_Code] = @strFunction_Code
+		  ,[bitVBS] = @bitVBS
+		  ,[Client_id] = @Client_id
+		  ,[FunctionGroup_id] = @FunctionGroup_id
+	 WHERE [strFunction_nm] = @strFunction_nm
+
+END
+
+SET @strFunction_nm = 'GetHospiceICD10'
+SET @strFunction_Sig = 'GetHospiceICD10(strValue)'
+SET @strFunction_dsc = 'Verify the format of the ICD-9 code.'
+SET @strFunction_Code = 'Function GetHospiceICD9(strValue)
+							 dim objRegExp : set objRegExp = new RegExp
+							with objRegExp
+								.Pattern =  "^[A-TV-Z][0-9][A-Z0-9](\.[A-Z0-9]{1,4})?$"
+								.IgnoreCase = TRUE
+								.Global = True
+							end with
+ 
+							If objRegExp.test(strValue) = TRUE Then
+								GetHospiceICD10 = strValue
+							Else
+								GetHospiceICD10 = dbNull
+							End If
+
+							set objRegExp = nothing
+						end function'
+
+SET @bitVBS = 0
+SET @Client_id = 0
+SET @IsUpdateFunction = 0
+
+
+IF NOT Exists (Select 1 FROM [dbo].[Functions] WHERE [strFunction_nm] = @strFunction_nm and [FunctionGroup_id] = @FunctionGroup_id)
+BEGIN
+
+	INSERT INTO [dbo].[Functions]
+			   ([strFunction_nm]
+			   ,[strFunction_Sig]
+			   ,[strFunction_dsc]
+			   ,[strFunction_Code]
+			   ,[bitVBS]
+			   ,[Client_id]
+			   ,[FunctionGroup_id])
+		 VALUES
+			   (@strFunction_nm
+			   ,@strFunction_Sig
+			   ,@strFunction_dsc
+			   ,@strFunction_Code
+			   ,@bitVBS
+			   ,@Client_id
+			   ,@FunctionGroup_id)
+END
+ELSE IF @IsUpdateFunction = 1
+BEGIN
+
+	UPDATE [dbo].[Functions]
+	   SET [strFunction_Sig] = @strFunction_Sig
+		  ,[strFunction_dsc] = @strFunction_dsc
+		  ,[strFunction_Code] = @strFunction_Code
+		  ,[bitVBS] = @bitVBS
+		  ,[Client_id] = @Client_id
+		  ,[FunctionGroup_id] = @FunctionGroup_id
+	 WHERE [strFunction_nm] = @strFunction_nm
+
+END
 
  SELECT *
  FROM functiongroup
