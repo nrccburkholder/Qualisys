@@ -5,10 +5,14 @@
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{6ED47CEB-9896-4BE5-A7F2-CF2A5693F1ED}</ProjectGuid>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ApplicationIcon>
@@ -146,6 +150,18 @@
     <Reference Include="Microsoft.Web.UI.WebControls, Version=1.0.2.226, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Referenced Assemblies\Microsoft.Web.UI.WebControls.dll</HintPath>
+    </Reference>
+    <Reference Include="NRC, Version=1.14.1.0, Culture=neutral, PublicKeyToken=0c9e538f562d9317">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\NRC.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Framework, Version=1.10.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Framework.BusinessLogic, Version=1.0.5.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.BusinessLogic.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -309,20 +325,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\NRC Class Library Solution\NRC Class Library.vbproj">
-      <Project>{12BD4B86-4C6E-413C-B1CE-F023AAC40BB2}</Project>
-      <Name>NRC Class Library</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\NRC Framework Solution\Nrc.Framework.BusinessLogic\Nrc.Framework.BusinessLogic.vbproj">
-      <Project>{C5A6EE1A-D5BF-4059-87CF-ACA302979820}</Project>
-      <Name>Nrc.Framework.BusinessLogic</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\NRC Framework Solution\Nrc.Framework\Nrc.Framework.vbproj">
-      <Project>{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}</Project>
-      <Name>Nrc.Framework</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="OUH\OUHModel.edmx">

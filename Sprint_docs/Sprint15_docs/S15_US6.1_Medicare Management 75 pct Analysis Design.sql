@@ -131,8 +131,13 @@ BEGIN
 			where(DateCalculated > @EarliestDatePropCalcPctExceeds75Pct)
 				and CensusForced = 0
 				and MedicareNumber = @MedicareNumber) */
-		print 'User Modified: '+@MedicareNumber+'  '+Convert(varchar, @EarliestDatePropCalcPctExceeds75Pct)
+	begin
+		update MedicareRecalc_History set UserCensusForced = Member_ID
+			where MedicareNumber = @MedicareNumber
+			and DateCalculated = @EarliestDatePropCalcPctExceeds75Pct 
 
+		print 'User Modified: '+@MedicareNumber+'  '+Convert(varchar, @EarliestDatePropCalcPctExceeds75Pct)
+	end
 	FETCH NEXT FROM db_cursor INTO @MedicareNumber
 END  
 
@@ -140,6 +145,10 @@ CLOSE db_cursor
 DEALLOCATE db_cursor 
 
 --------------------END HERE TO RUN CURSOR
+select * from MedicareRecalc_History
+
+select * from MedicareLookup where MedicareNumber in (select MedicareNumber from MedicareRecalc_History)
+
 
 /*
 
