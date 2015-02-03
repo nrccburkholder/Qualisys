@@ -50,7 +50,8 @@ BEGIN
 	begin
 		update MedicareRecalc_History set UserCensusForced = Member_ID
 			where MedicareNumber = @MedicareNumber
-			and DateCalculated = @EarliestDatePropCalcPctExceeds75Pct 
+			and ProportionCalcPct < @ForceCensusSamplePercentage 
+			and CensusForced = 1
 
 		print 'User Modified: '+@MedicareNumber+'  '+Convert(varchar, @EarliestDatePropCalcPctExceeds75Pct)
 	end
