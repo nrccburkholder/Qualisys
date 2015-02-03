@@ -17,7 +17,7 @@
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
     <ApplicationIcon>NRCAuthAdmin.ico</ApplicationIcon>
-    <ManifestCertificateThumbprint>E233A37402EEAFB3058F455C5BE62A3C81DE87C3</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>B9F2010A5106F508D077DF027A6E4F2296D994AD</ManifestCertificateThumbprint>
     <ManifestKeyFile>NRC Auth Admin_TemporaryKey.pfx</ManifestKeyFile>
     <GenerateManifests>true</GenerateManifests>
     <SignManifests>true</SignManifests>
@@ -644,7 +644,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="NRC Auth Admin_1_TemporaryKey.pfx" />
     <None Include="NRC Auth Admin_TemporaryKey.pfx" />
     <None Include="Resources\Member32.png" />
   </ItemGroup>
