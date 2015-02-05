@@ -40,6 +40,7 @@ Public Class MedicareRecalcHistory
     Private mHistoricAnnualVolume As Integer
     Private mForcedCalculation As Boolean
     Private mPropSampleCalcDate As Date
+    Private mUserCensusForced As Integer
 
 #End Region
 
@@ -333,6 +334,16 @@ Public Class MedicareRecalcHistory
         End Set
     End Property
 
+    Public Property UserCensusForced() As Integer
+        Get
+            Return mUserCensusForced
+        End Get
+        Set(ByVal value As Integer)
+            mUserCensusForced = value
+            PropertyHasChanged("UserCensusForced")
+        End Set
+    End Property
+
 #End Region
 
 #Region " Constructors "
@@ -383,9 +394,9 @@ Public Class MedicareRecalcHistory
     ''' <returns></returns>
     ''' <CreatedBy>Tony Piccoli</CreatedBy>
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
-    Public Shared Function GetLatestByMedicareNumber(ByVal medicareNumber As String, ByVal latestDate As Date) As MedicareRecalcHistory
+    Public Shared Function GetLatestByMedicareNumber(ByVal medicareNumber As String, ByVal latestDate As Date, ByVal userCensusForced As Boolean) As MedicareRecalcHistory
 
-        Return DataProvider.MedicareRecalcHistoryProvider.Instance.GetLatestByMedicareNumber(medicareNumber, latestDate)
+        Return DataProvider.MedicareRecalcHistoryProvider.Instance.GetLatestByMedicareNumber(medicareNumber, latestDate, userCensusForced)
 
     End Function
 

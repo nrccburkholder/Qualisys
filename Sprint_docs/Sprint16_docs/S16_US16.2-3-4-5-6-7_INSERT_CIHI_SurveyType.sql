@@ -306,7 +306,7 @@ BEGIN
 END
 select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCriteriaStmt_nm = @strCriteriaStmt_nm and strCriteriaString = @strCriteriaString 
 insert into SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteriaStmt_id)
-values (@SurveyType_ID,@Country_id, @DCStmtId, )
+values (@SurveyType_ID,@Country_id, @DCStmtId )
 
 
 SET @strCriteriaStmt_nm = 'DQ_Addr'

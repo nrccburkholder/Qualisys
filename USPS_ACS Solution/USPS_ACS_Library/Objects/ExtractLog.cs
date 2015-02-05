@@ -15,7 +15,7 @@ namespace USPS_ACS_Library.Objects
         private string mVersion = "";
         private string mDetailRecordIndicator = "";
         private string mCustomerID = "";
-        private string mRecordCount = "";
+        private string mRecordCount = "0";
         private string mCreatedDate = "";
         private string mHeaderText = "";
         private string mZipFileName = "";

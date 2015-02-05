@@ -11,6 +11,6 @@ Public Class SurveyTypeCollection
         Return newObj
 
     End Function
-	
+
 End Class
 

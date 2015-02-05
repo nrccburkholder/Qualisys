@@ -41,6 +41,7 @@ Friend Class MedicareRecalcHistoryProvider
         Else
             newObject.CensusForced = True
         End If
+        newObject.UserCensusForced = rdr.GetInteger("UserCensusForced")
         newObject.MemberId = rdr.GetInteger("Member_ID")
         newObject.DateCalculated = rdr.GetDate("DateCalculated")
         newObject.HistoricRespRate = rdr.GetDecimal("HistoricRespRate")
@@ -93,9 +94,9 @@ Friend Class MedicareRecalcHistoryProvider
     ''' <returns></returns>
     ''' <CreatedBy>Tony Piccoli</CreatedBy>
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
-    Public Overrides Function GetLatestByMedicareNumber(ByVal medicareNumber As String, ByVal latestDate As Date) As MedicareRecalcHistory
+    Public Overrides Function GetLatestByMedicareNumber(ByVal medicareNumber As String, ByVal latestDate As Date, ByVal userCensusForced As Boolean) As MedicareRecalcHistory
 
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectMedicareCalcHistoryByMedicareNumber, medicareNumber, latestDate)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectMedicareCalcHistoryByMedicareNumber, medicareNumber, latestDate, userCensusForced)
         Using rdr As New SafeDataReader(ExecuteReader(cmd))
             If Not rdr.Read Then
                 Return Nothing
@@ -136,7 +137,7 @@ Friend Class MedicareRecalcHistoryProvider
                                 instance.SwitchToCalcDate, instance.AnnualReturnTarget, instance.ProportionCalcPct, _
                                 CByte(IIf(instance.SamplingLocked, 1, 0)), instance.ProportionChangeThreshold, _
                                 CByte(IIf(instance.CensusForced, 1, 0)), instance.MemberId, instance.DateCalculated, instance.HistoricRespRate, _
-                                CByte(IIf(instance.ForcedCalculation, 1, 0)), instance.PropSampleCalcDate, instance.MedicarePropDataTypeID, instance.HistoricAnnualVolume)
+                                CByte(IIf(instance.ForcedCalculation, 1, 0)), instance.PropSampleCalcDate, instance.MedicarePropDataTypeID, instance.HistoricAnnualVolume, instance.UserCensusForced)
         Return ExecuteInteger(cmd)
 
     End Function
@@ -152,7 +153,7 @@ Friend Class MedicareRecalcHistoryProvider
                                 instance.EstAnnualVolume, instance.SwitchToCalcDate, instance.AnnualReturnTarget, instance.ProportionCalcPct, _
                                 CByte(IIf(instance.SamplingLocked, 1, 0)), instance.ProportionChangeThreshold, _
                                 CByte(IIf(instance.CensusForced, 1, 0)), instance.MemberId, instance.DateCalculated, instance.HistoricRespRate, _
-                                CByte(IIf(instance.ForcedCalculation, 1, 0)), instance.PropSampleCalcDate, instance.MedicarePropDataTypeID, instance.HistoricAnnualVolume)
+                                CByte(IIf(instance.ForcedCalculation, 1, 0)), instance.PropSampleCalcDate, instance.MedicarePropDataTypeID, instance.HistoricAnnualVolume, instance.UserCensusForced)
         ExecuteNonQuery(cmd)
 
     End Sub

@@ -575,7 +575,7 @@ Public Class SurveyPropertiesEditor
         Dim survey As Survey = New Survey()
         survey.SurveyType = surveyType
 
-        If survey.SurveyTypeName.Contains("CAHPS") Then 'This is the generic CAHPS intended to work for any CAHPS going forward without code changes
+        If survey.IsCAHPS Then 'This is the generic CAHPS intended to work for any CAHPS going forward without code changes
             If unit.CAHPSType <> survey.SurveyType AndAlso unit.CAHPSType <> CAHPSType.None Then
                 Return False
             End If

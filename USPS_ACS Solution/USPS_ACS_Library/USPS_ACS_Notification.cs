@@ -45,6 +45,12 @@ namespace USPS_ACS_Library
             set { mRecordCount = value; }
         }
 
+        public string Status
+        {
+            get { return mStatus; }
+            set { mStatus = value; }
+        }
+
         public NotificationType FileType { get; set; }
 
         #endregion
@@ -54,7 +60,7 @@ namespace USPS_ACS_Library
         {
             get
             {
-                return String.Format("<TR><TD style=\"background-color: #CDE1FA; padding: 5px; White-space: nowrap\">{0}</TD><TD align=\"Right\" style=\"background-color: #CDE1FA; padding: 5px; White-space: nowrap\">{1}</TD><TD style=\"background-color: #CDE1FA; padding: 5px; White-space: nowrap\">{2}</TD></TR>", mExtractFileName, mRecordCount.ToString(), mZipFileName);
+                return String.Format("<TR><TD style=\"background-color: #CDE1FA; padding: 5px; White-space: nowrap\">{0}</TD><TD align=\"Right\" style=\"background-color: #CDE1FA; padding: 5px; White-space: nowrap\">{1}</TD><TD align=\"Center\"style=\"background-color: #CDE1FA; padding: 5px; White-space: nowrap\">{2}</TD><TD style=\"background-color: #CDE1FA; padding: 5px; White-space: nowrap\">{3}</TD></TR>", mExtractFileName, mRecordCount.ToString(), mStatus, mZipFileName);
             }
         }
 
@@ -62,7 +68,7 @@ namespace USPS_ACS_Library
         {
             get
             {
-                return String.Format("               {0}                            {1}",  mExtractFileName.PadRight(15), mRecordCount.ToString());
+                return String.Format("               {0}                            {1}                            {2}", mExtractFileName.PadRight(15), mRecordCount.ToString(), mStatus);
             }
         }
 
@@ -133,14 +139,14 @@ namespace USPS_ACS_Library
             if (notificationList.Count > 0)
             {
                 //Begin the table
-                messageString = @"<BR><BR><TABLE style=""background-color: #660099; font-family: Tahoma, Verdana, Arial; font-size:X-Small"" Width=""50%"" cellpadding=""0"" cellspacing=""1"">";
+                messageString = @"<BR><BR><TABLE style=""background-color: #660099; font-family: Tahoma, Verdana, Arial; font-size:X-Small"" Width=""70%"" cellpadding=""0"" cellspacing=""1"">";
 
                 //Add the table header
 
                 if (ntype == NotificationType.Download)
                     messageString += @"<TR><TH style=""background-color: #AFC8F5;White-space: nowrap; padding: 5px; font-weight: bold"">Download File</TH></TR>";
                 else
-                    messageString += @"<TR><TH style=""background-color: #AFC8F5;White-space: nowrap; padding: 5px; font-weight: bold"">Extract File</TH><TH style=""background-color: #AFC8F5;White-space: nowrap; padding: 5px; font-weight: bold"">Record Count</TH><TH style=""background-color: #AFC8F5;White-space: nowrap; padding: 5px; font-weight: bold"">Download Source</TH></TR>";
+                    messageString += @"<TR><TH style=""background-color: #AFC8F5;White-space: nowrap; padding: 5px; font-weight: bold"">Extract File</TH><TH style=""background-color: #AFC8F5;White-space: nowrap; padding: 5px; font-weight: bold"">Record Count</TH><TH style=""background-color: #AFC8F5;White-space: nowrap; padding: 5px; font-weight: bold"">File Status</TH><TH style=""background-color: #AFC8F5;White-space: nowrap; padding: 5px; font-weight: bold"">Download Source</TH></TR>";
 
                 foreach (USPS_ACS_Notification item in notificationList)
                 {

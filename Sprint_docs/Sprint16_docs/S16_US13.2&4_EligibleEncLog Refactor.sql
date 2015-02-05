@@ -19,6 +19,11 @@ GO
 
 begin tran
 
+IF EXISTS (SELECT * FROM sys.procedures where schema_id=1 and name = 'Export_HCAHPSSampleunitAvailableCount')
+	DROP PROCEDURE dbo.Export_HCAHPSSampleunitAvailableCount
+GO
+
+
 /****** Object:  StoredProcedure [dbo].[Export_HCAHPSSampleunitAvailableCount]    Script Date: 1/14/2015 11:07:29 AM ******/
 SET ANSI_NULLS ON
 GO
@@ -40,7 +45,7 @@ Modified:
     
 */      
     
-ALTER PROCEDURE [dbo].[Export_HCAHPSSampleunitAvailableCount]    
+CREATE PROCEDURE [dbo].[Export_HCAHPSSampleunitAvailableCount]    
  @Sampleunit_id INT,     
     @startDate DATETIME,     
     @EndDate DATETIME    
@@ -71,13 +76,19 @@ Modified:
     
 */      
 
+IF EXISTS (SELECT * FROM sys.procedures where schema_id=1 and name = 'Export_HHCAHPSSampleunitAvailableCount')
+	DROP PROCEDURE dbo.Export_HHCAHPSSampleunitAvailableCount
+GO
+
+
 /****** Object:  StoredProcedure [dbo].[Export_HHCAHPSSampleunitAvailableCount]    Script Date: 1/14/2015 11:07:29 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-ALTER PROCEDURE [dbo].[Export_HHCAHPSSampleunitAvailableCount]    
+
+CREATE PROCEDURE [dbo].[Export_HHCAHPSSampleunitAvailableCount]    
  @Sampleunit_id INT,     
     @startDate DATETIME,     
     @EndDate DATETIME    
@@ -94,13 +105,19 @@ from (select distinct pop_id
 
 GO
 
+
+IF EXISTS (SELECT * FROM sys.procedures where schema_id=1 and name = 'GetHcahpsModeExperimentData')
+	DROP PROCEDURE dbo.GetHcahpsModeExperimentData
+GO
+
+
 /****** Object:  StoredProcedure [dbo].[GetHcahpsModeExperimentData]    Script Date: 1/14/2015 11:07:29 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-ALTER proc [dbo].[GetHcahpsModeExperimentData] 
+CREATE proc [dbo].[GetHcahpsModeExperimentData] 
 	@samplesets varchar(1000)
 as
 
@@ -207,6 +224,13 @@ drop table #Samplesets
 drop table #EligibleEncs
 
 GO
+
+IF EXISTS (SELECT * FROM sys.procedures where schema_id=1 and name = 'HHCAHPS_Visit_GetEligiblePatientAdminData')
+	DROP PROCEDURE dbo.HHCAHPS_Visit_GetEligiblePatientAdminData
+GO
+
+
+
 /****** Object:  StoredProcedure [dbo].[HHCAHPS_Visit_GetEligiblePatientAdminData]    Script Date: 1/14/2015 11:07:29 AM ******/
 SET ANSI_NULLS ON
 GO
@@ -219,7 +243,7 @@ GO
 --				Get patient data for eligible patients from study-owned tables
 --			1/14/2015 CJB: switched from HCAHPS specific table to new EligibleEncLog table    
 -- =============================================
-ALTER PROCEDURE [dbo].[HHCAHPS_Visit_GetEligiblePatientAdminData]
+CREATE PROCEDURE [dbo].[HHCAHPS_Visit_GetEligiblePatientAdminData]
 
 @visityear int,
 @CCN varchar(6),
@@ -274,6 +298,13 @@ END
 
 GO
 
+
+IF EXISTS (SELECT * FROM sys.procedures where schema_id=1 and name = 'QCL_DeleteSampleSet')
+	DROP PROCEDURE dbo.QCL_DeleteSampleSet
+GO
+
+
+
 /****** Object:  StoredProcedure [dbo].[QCL_DeleteSampleSet]    Script Date: 1/14/2015 11:07:29 AM ******/
 SET ANSI_NULLS ON
 GO
@@ -293,7 +324,7 @@ Modified:
    9/27/2011 DRM added code to delete seeded mailing info
    5/14/2013 DRM added check for existence of encounter table before deleting from it
 */       
-ALTER PROCEDURE [dbo].[QCL_DeleteSampleSet]    
+CREATE PROCEDURE [dbo].[QCL_DeleteSampleSet]    
  @intSampleSet_id INT    
 AS    
 DECLARE @intStudy_id INT    
@@ -451,6 +482,13 @@ END
 
 GO
 
+
+IF EXISTS (SELECT * FROM sys.procedures where schema_id=1 and name = 'QCL_GetHCAHPSEligibleCount')
+	DROP PROCEDURE dbo.QCL_GetHCAHPSEligibleCount
+GO
+
+
+
 /****** Object:  StoredProcedure [dbo].[QCL_GetHCAHPSEligibleCount]    Script Date: 1/14/2015 11:07:29 AM ******/
 SET ANSI_NULLS ON
 GO
@@ -462,7 +500,7 @@ Purpose:  This proc returns a count of the eligible HCAHPS encounters and is use
 		  calculation to update the HCAHPS unit target
 			1/14/2015 CJB: switched from HCAHPS specific table to new EligibleEncLog table    
 */
-ALTER proc [dbo].[QCL_GetHCAHPSEligibleCount] (@Sampleset_ID int, @SampleUnit_ID int)
+CREATE proc [dbo].[QCL_GetHCAHPSEligibleCount] (@Sampleset_ID int, @SampleUnit_ID int)
 as
 
 begin
@@ -471,6 +509,12 @@ begin
 	where Sampleset_ID = @Sampleset_ID and SampleUnit_ID = @SampleUnit_ID
 
 end
+
+GO
+
+
+IF EXISTS (SELECT * FROM sys.procedures where schema_id=1 and name = 'QCL_PropSamp_CheckRollingOneYearSamples')
+	DROP PROCEDURE dbo.QCL_PropSamp_CheckRollingOneYearSamples
 
 GO
 
@@ -497,7 +541,7 @@ Test Code:
 --QCL_PropSamp_CheckRollingOneYearSamples 'T00001', '2008-08-11 00:00:00'   
 --QCL_PropSamp_CheckRollingOneYearSamples '03002', '2008-08-11 00:00:00'            
 */  
-ALTER Procedure [dbo].[QCL_PropSamp_CheckRollingOneYearSamples](@MedicareNumber varchar(20), @PeriodDate datetime = null)  
+CREATE Procedure [dbo].[QCL_PropSamp_CheckRollingOneYearSamples](@MedicareNumber varchar(20), @PeriodDate datetime = null)  
 as  
   
 begin  
@@ -607,6 +651,12 @@ end
 
 GO
 
+
+IF EXISTS (SELECT * FROM sys.procedures where schema_id=1 and name = 'QCL_PropSamp_GetHistoricalAnnualVolume')
+	DROP PROCEDURE dbo.QCL_PropSamp_GetHistoricalAnnualVolume
+
+GO
+
 /****** Object:  StoredProcedure [dbo].[QCL_PropSamp_GetHistoricalAnnualVolume]    Script Date: 1/14/2015 11:07:29 AM ******/
 SET ANSI_NULLS ON
 GO
@@ -625,7 +675,7 @@ Created: 8/11/2008 by MB
 			1/14/2015 CJB: switched from HCAHPS specific table to new EligibleEncLog table    
              
 */  
-ALTER Procedure [dbo].[QCL_PropSamp_GetHistoricalAnnualVolume](@MedicareNumber varchar(20), @PeriodDate datetime)  
+CREATE Procedure [dbo].[QCL_PropSamp_GetHistoricalAnnualVolume](@MedicareNumber varchar(20), @PeriodDate datetime)  
 as  
   
 begin
@@ -642,6 +692,13 @@ begin
 	  pd1.datExpectedEncStart >= @EncDateStart and pd1.datExpectedEncEnd <= @EncDateEnd and   
 	  ml.medicareNumber = @MedicareNumber  
 end
+
+GO
+
+
+
+IF EXISTS (SELECT * FROM sys.procedures where schema_id=1 and name = 'QCL_SampleSetHouseholdingExclusion')
+	DROP PROCEDURE dbo.QCL_SampleSetHouseholdingExclusion
 
 GO
 
@@ -675,7 +732,7 @@ Created:  04/13/2012 Don Mayhew
 													vw_Billians_NursingHomeAssistedLiving to be run in country=US only              
 			1/14/2015 CJB: switched from HCAHPS specific table to new EligibleEncLog table    
 */
-ALTER PROCEDURE [dbo].[QCL_SampleSetHouseholdingExclusion]
+CREATE PROCEDURE [dbo].[QCL_SampleSetHouseholdingExclusion]
   @Study_id                      INT,
   @Survey_ID                     INT,
   @startDate                     DATETIME,
@@ -825,12 +882,17 @@ DROP PROCEDURE [dbo].[QCL_SelectEncounterUnitEligibility_hheel_debug]
 
 GO
 
+IF EXISTS (SELECT * FROM sys.procedures where schema_id=1 and name = 'QP_REP_People_Sampled_HCAHPS')
+	DROP PROCEDURE dbo.QP_REP_People_Sampled_HCAHPS
+
+GO
+
 /****** Object:  StoredProcedure [dbo].[QP_REP_People_Sampled_HCAHPS]    Script Date: 1/14/2015 11:07:29 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-ALTER PROCEDURE [dbo].[QP_REP_People_Sampled_HCAHPS]  
+CREATE PROCEDURE [dbo].[QP_REP_People_Sampled_HCAHPS]  
  @Associate VARCHAR(50),  
  @Client VARCHAR(50),  
  @Study VARCHAR(50),  
@@ -897,12 +959,18 @@ DROP TABLE #SAMPLEPOP
 
 GO
 
+
+
+IF EXISTS (SELECT * FROM sys.procedures where schema_id=1 and name = 'sp_Samp_RollbackSample')
+	DROP PROCEDURE dbo.sp_Samp_RollbackSample
+GO
+
 /****** Object:  StoredProcedure [dbo].[sp_Samp_RollbackSample]    Script Date: 1/14/2015 11:07:29 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-ALTER PROCEDURE [dbo].[sp_Samp_RollbackSample]    
+CREATE PROCEDURE [dbo].[sp_Samp_RollbackSample]    
  @intSampleSet_id int    
 AS    
  DECLARE @intStudy_id int    
