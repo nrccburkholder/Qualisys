@@ -48,31 +48,31 @@ SET @strFunction_nm = 'HSPGetValidValues'
 SET @strFunction_Sig = 'HSPGetValidValues(strValue,strField)'
 SET @strFunction_dsc = 'Check for valid values for Hospice CAHPS data.Fields: "CaregiverRel", "Hispanic", "LastLoc", "Payer", "Race"'
 SET @strFunction_Code = 'Function HSPGetValidValues(strValue,strField)
-						If IsNumeric(strValue) Then
-							Select Case strField
-							Case "CaregiverRel"
-								HSPGetValidValues = CheckHospiceValues(CInt(strValue), 1, 7)
-							Case "Hispanic"
-								HSPGetValidValues = CheckHospiceValues(CInt(strValue), 1, 2)
-							Case "LastLoc"
-								HSPGetValidValues = CheckHospiceValues(CInt(strValue), 1, 10)
-							Case "Payer"
-								HSPGetValidValues = CheckHospiceValues(CInt(strValue), 1, 6)
-							Case "Race"
-								HSPGetValidValues = CheckHospiceValues(CInt(strValue), 1, 7)
-							End Select
-						Else
-							HSPGetValidValues = "M"
-						End If
-					End Function
+If IsNumeric(strValue) Then
+	Select Case strField
+	Case "CaregiverRel"
+		HSPGetValidValues = CheckHospiceValues(CInt(strValue), 1, 7)
+	Case "Hispanic"
+		HSPGetValidValues = CheckHospiceValues(CInt(strValue), 1, 2)
+	Case "LastLoc"
+		HSPGetValidValues = CheckHospiceValues(CInt(strValue), 1, 10)
+	Case "Payer"
+		HSPGetValidValues = CheckHospiceValues(CInt(strValue), 1, 6)
+	Case "Race"
+		HSPGetValidValues = CheckHospiceValues(CInt(strValue), 1, 7)
+	End Select
+Else
+	HSPGetValidValues = "M"
+End If
+End Function
 
-					Function CheckHospiceValues (intValue, intLow, intHigh)
-						If intValue >= intLow And intValue <= intHigh Then
-							CheckHospiceValues = intValue
-						Else
-							CheckHospiceValues = "M"
-						End If
-					End Function'
+Function CheckHospiceValues (intValue, intLow, intHigh)
+If intValue >= intLow And intValue <= intHigh Then
+	CheckHospiceValues = intValue
+Else
+	CheckHospiceValues = "M"
+End If
+End Function'
 
 SET @bitVBS = 0
 SET @Client_id = 0
@@ -118,21 +118,21 @@ SET @strFunction_nm = 'GetHospiceICD9'
 SET @strFunction_Sig = 'GetHospiceICD9(strValue)'
 SET @strFunction_dsc = 'Verify the format of the ICD-9 code.'
 SET @strFunction_Code = 'Function GetHospiceICD9(strValue)
-							dim objRegExp : set objRegExp = new RegExp
-							with objRegExp
-								.Pattern =  "^(V\d{2}(\.\d{1,2})?|\d{3}(\.\d{1,2})?|E\d{3}(\.\d)?)$"
-								.IgnoreCase = TRUE
-								.Global = True
-							end with
+dim objRegExp : set objRegExp = new RegExp
+with objRegExp
+	.Pattern =  "^(V\d{2}(\.\d{1,2})?|\d{3}(\.\d{1,2})?|E\d{3}(\.\d)?)$"
+	.IgnoreCase = TRUE
+	.Global = True
+end with
  
-							If objRegExp.test(strValue) = TRUE Then
-								GetHospiceICD9 = strValue
-							Else
-								GetHospiceICD9 = "dbNull"
-							End If
+If objRegExp.test(strValue) = TRUE Then
+	GetHospiceICD9 = strValue
+Else
+	GetHospiceICD9 = dbNull
+End If
 
-							set objRegExp = nothing
-						end function'
+set objRegExp = nothing
+end function'
 
 SET @bitVBS = 0
 SET @Client_id = 0
@@ -175,23 +175,23 @@ END
 
 SET @strFunction_nm = 'GetHospiceICD10'
 SET @strFunction_Sig = 'GetHospiceICD10(strValue)'
-SET @strFunction_dsc = 'Verify the format of the ICD-9 code.'
-SET @strFunction_Code = 'Function GetHospiceICD9(strValue)
-							 dim objRegExp : set objRegExp = new RegExp
-							with objRegExp
-								.Pattern =  "^[A-TV-Z][0-9][A-Z0-9](\.[A-Z0-9]{1,4})?$"
-								.IgnoreCase = TRUE
-								.Global = True
-							end with
+SET @strFunction_dsc = 'Verify the format of the ICD-10 code.'
+SET @strFunction_Code = 'Function GetHospiceICD10(strValue)
+dim objRegExp : set objRegExp = new RegExp
+with objRegExp
+    .Pattern =  "^[A-TV-Z][0-9][A-Z0-9](\.[A-Z0-9]{1,4})?$"
+    .IgnoreCase = TRUE
+    .Global = True
+end with
  
-							If objRegExp.test(strValue) = TRUE Then
-								GetHospiceICD10 = strValue
-							Else
-								GetHospiceICD10 = dbNull
-							End If
+If objRegExp.test(strValue) = TRUE Then
+    GetHospiceICD10 = strValue
+Else
+    GetHospiceICD10 = dbNull
+End If
 
-							set objRegExp = nothing
-						end function'
+set objRegExp = nothing 
+End Function'
 
 SET @bitVBS = 0
 SET @Client_id = 0
