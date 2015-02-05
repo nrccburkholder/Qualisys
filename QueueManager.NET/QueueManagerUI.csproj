@@ -117,12 +117,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\QueueManagerLibrary\QueueManagerLibrary.csproj">
-      <Project>{d286fde1-5928-4a30-8ce2-6cbb374be6d2}</Project>
-      <Name>QueueManagerLibrary</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="icons\grouprint.bmp" />
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +169,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\default_config.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\QueueManagerLibrary.NET\QueueManagerLibrary.csproj">
+      <Project>{d286fde1-5928-4a30-8ce2-6cbb374be6d2}</Project>
+      <Name>QueueManagerLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
