@@ -1470,7 +1470,7 @@ AS
                      WHERE    suni.SampleUnit_id = su.SAMPLEUNIT_ID
                               AND su.SUFacility_id = f.SUFacility_id
                               AND f.MedicareNumber = ml.MedicareNumber
-                              AND su.bitHHCAHPS = 1
+                              AND su.CAHPSType_id in (@HHCAHPS, @hospiceCAHPS)
                      GROUP BY suni.SampleUnit_id, ml.MedicareNumber                                    
          END                                   
                                                  
