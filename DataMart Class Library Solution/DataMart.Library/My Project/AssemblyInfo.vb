@@ -14,7 +14,6 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyProduct("DataMart Class Library")> 
 <Assembly: AssemblyCopyright("Copyright ©  2005")> 
 <Assembly: AssemblyTrademark("")> 
-<Assembly: Security.Permissions.SecurityPermission(Security.Permissions.SecurityAction.RequestMinimum)> 
 <Assembly: ComVisible(False)> 
 <Assembly: CLSCompliant(True)> 
 
