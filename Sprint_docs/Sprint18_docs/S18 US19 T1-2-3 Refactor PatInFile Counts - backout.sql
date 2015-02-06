@@ -1,14 +1,13 @@
 /*
-S18 US_ T1 Refactor PatInFile Counts.sql
+S18 US19 T1-2-3 Refactor PatInFile Counts - backout.sql
 
-21	Refactor PatInFile Counts	
+19	Refactor PatInFile Counts	
 
 As a CAHPS Developer, I need to reaname the HHCAHPS_PatInFile Count table to CHAPS_PatInFileCount so that it can handle both HH and Hospice CAHPS. 	
 
 1) QCL_DeleteSampleset on NRC10
 2) GetCMSHeadersForUnsampledOCSAgencies on NRC1
 3) sp_Samp_RollbackSample on NRC10 (?? This may be an older proc that is no longer used)
-4) DCL_ExportCreateFile_Sub on Medusa (for HH-CAHPS)
 
 EXEC sp_helptext 'dbo.GetCMSHeadersForUnsampledOCSAgencies'
 EXEC sp_helptext 'dbo.GetCMSHeadersForUnsampledOCSAgencies_drm'
@@ -21,9 +20,12 @@ EXEC sp_helptext 'dbo.sp_Samp_RollbackSample'
 
 --select * from CAHPS_PatInfileCount
 
+USE [qp_prod]
+go
+
 begin tran
 
-EXEC sp_rename 'HHCAHPS_PatInfileCount', 'CAHPS_PatInfileCount'
+EXEC sp_rename 'CAHPS_PatInfileCount', 'HHCAHPS_PatInfileCount'
 
 GO
 
@@ -85,7 +87,7 @@ BEGIN
    on su.SUFacility_id = suf.SUFacility_id  
   inner join #mailmeth mailmeth WITH(NOLOCK)
    on sd.SURVEY_ID=mailmeth.SURVEY_ID
-  left join QP_PROD.dbo.CAHPS_PatInfileCount pif WITH(NOLOCK)
+  left join QP_PROD.dbo.HHCAHPS_PatInfileCount pif WITH(NOLOCK)
    on pif.Sampleset_id=sst.sampleset_id 
    and pif.sampleunit_id=su.sampleunit_id 
    and pif.MedicareNumber=suf.MedicareNumber
@@ -203,6 +205,7 @@ from (
  SET NOCOUNT OFF  
 END
 
+
 GO
 
 ALTER PROCEDURE [dbo].[GetCMSHeadersForUnsampledOCSAgencies_drm] @sampleMonth as INT, @sampleYear as INT  
@@ -262,7 +265,7 @@ BEGIN
    on su.SUFacility_id = suf.SUFacility_id  
   inner join #mailmeth mailmeth WITH(NOLOCK)
    on sd.SURVEY_ID=mailmeth.SURVEY_ID
-  left join QP_PROD.dbo.CAHPS_PatInfileCount pif WITH(NOLOCK)
+  left join QP_PROD.dbo.HHCAHPS_PatInfileCount pif WITH(NOLOCK)
    on pif.Sampleset_id=sst.sampleset_id 
    and pif.sampleunit_id=su.sampleunit_id 
    and pif.MedicareNumber=suf.MedicareNumber
@@ -379,7 +382,7 @@ from (
  SET NOCOUNT OFF  
 END
 
-GO
+GO 
 
 ALTER PROCEDURE [dbo].[QCL_DeleteSampleSet]    
  @intSampleSet_id INT    
@@ -398,6 +401,7 @@ Modified:
    9/27/2011 DRM added code to delete seeded mailing info
    5/14/2013 DRM added check for existence of encounter table before deleting from it
 */       
+
 DECLARE @intStudy_id INT    
 DECLARE @vcSQL VARCHAR(8000)    
 DECLARE @intSurvey_ID INT    
@@ -525,9 +529,11 @@ DELETE FROM dbo.SamplePlanWorkSheet
 WHERE SampleSet_id=@intSampleSet_id    
 DELETE FROM dbo.SPWDQCounts    
 WHERE SampleSet_id=@intSampleSet_id    
-DELETE FROM dbo.EligibleEncLog    
+DELETE FROM dbo.HCAHPSEligibleEncLog    
 WHERE SampleSet_id=@intSampleSet_id    
-DELETE FROM dbo.CAHPS_PatInfileCount  
+DELETE FROM dbo.HHCAHPSEligibleEncLog    
+WHERE SampleSet_id=@intSampleSet_id    
+DELETE FROM dbo.HHCAHPS_PatInfileCount  
 WHERE SampleSet_id = @intSampleSet_id     
     
     
@@ -549,7 +555,8 @@ UPDATE dbo.PeriodDates
 SET SampleSet_id=NULL,    
  datSampleCreate_dt=NULL    
 WHERE SampleSet_id=@intSampleSet_id     
-END
+END    
+
 
 GO
 
@@ -640,29 +647,8 @@ AS
       DECLARE @HHFields TABLE (Fieldname VARCHAR(50) ,
                                DataType VARCHAR(20) ,
                                Length INT ,
-                               Field_id INT)        
-							                                 
-		declare @CGCAHPS int
-		SELECT @CGCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'CGCAHPS'
-
-		declare @HCAHPS int
-		SELECT @HCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'HCAHPS IP'
-
-		declare @HHCAHPS int
-		SELECT @HHCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'Home Health CAHPS'
-
-		declare @ACOCAHPS int
-		SELECT @ACOCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'CIHI CPES-IC'
-
-		declare @ICHCAHPS int
-		SELECT @ICHCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'ICHCAHPS'
-
-		declare @hospiceCAHPS int
-		SELECT @hospiceCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'Hospice CAHPS'
-
-		declare @CIHI int
-		select @CIHI = SurveyType_Id from SurveyType where SurveyType_dsc = 'CIHI CPES-IC'
-	                                             
+                               Field_id INT)                                                
+                                                 
               
  --MWB 9/2/08  HCAHPS Prop Sampling Sprint                                              
       SELECT   @HouseHoldingType = strHouseHoldingType, @bitDoTOCL = 1, @SurveyType_ID = SurveyType_id                                              
@@ -696,7 +682,7 @@ AS
                      WHERE    HR.Table_id = M.Table_id
                               AND HR.Field_id = M.Field_id
                               AND HR.Survey_id = @Survey_id                                                
-                            
+                                                 
             SELECT   @HouseHoldFieldSelectSyntax = @HouseHoldFieldSelectSyntax + ', X.' + Fieldname
             FROM     @HHFields
             ORDER BY Field_id                                                
@@ -826,7 +812,7 @@ AS
          BEGIN                                           
             SELECT   @BVJOIN = 'X.Pop_id=BV.POPULATIONPop_id'                                                
             SELECT   @PopID_EncID_Join = 'X.Pop_id=Y.Pop_id'                                                
-            SELECT   @POPENCSelect = 'Pop_id'                                                
+            SELECT   @POPENCSelect = 'Pop_id'                                          
             SELECT   @PopID_EncID_CreateTable = 'Pop_id int'                                                
             SELECT   @PopID_EncID_Select_Aliased = 'x.Pop_id'                                                
          END                         
@@ -881,7 +867,7 @@ AS
                   SELECT   @EncounterDateField, 'D', 4, '9999'                                                
       IF NOT EXISTS ( SELECT  1
                       FROM    @tbl
-            WHERE   FieldName = @reportDateField )
+                      WHERE   FieldName = @reportDateField )
          AND @reportDateField IS NOT NULL 
          INSERT   INTO @tbl
                   SELECT   @reportDateField, 'D', 4, '9999'                                                
@@ -958,7 +944,7 @@ AS
                FROM     CriteriaStmt c ,
                         SampleUnit su ,
                         Sampleplan sp
-               WHERE    c.CriteriaStmt_id = su.CriteriaStmt_id
+            WHERE    c.CriteriaStmt_id = su.CriteriaStmt_id
                         AND c.Study_id = @Study_id
                         AND su.Sampleplan_id = sp.Sampleplan_id
                         AND Survey_id = @Survey_id                                                
@@ -1025,7 +1011,7 @@ AS
                                  intTreeOrder INT ,
                                  Survey_id INT)                                                
                                                  
- -- SP_Samp_ReOrgSampleUnits 388                                   
+ -- SP_Samp_ReOrgSampleUnits 388           
       INSERT   INTO #SampleUnits
                EXEC QCL_SampleSetReOrgSampleUnits @Survey_id                                                
                                                  
@@ -1141,7 +1127,7 @@ AS
                            SELECT   @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - Marker 8', GETDATE(), ''                          
                END                          
                           
-                                                  
+                                                 
             DELETE   c
             FROM     #SampleUnits su ,
                      #Criters c
@@ -1277,7 +1263,7 @@ AS
    FROM #PreSample p, #BVUK b                                                
    WHERE p.Pop_id=b.Populationpop_id                                                 
    AND p.Enc_id=b.EncounterEnc_id                                                
-   AND (' + @Criteria + ')'                                                
+   AND (' + @Criteria + ')'                                
                   IF @indebug = 1 
                      PRINT @sel                                              
                   EXEC (@Sel)                                  
@@ -1330,7 +1316,7 @@ AS
                                          
             IF @indebug = 1 
                PRINT @sel                                                 
-            EXEC (@Sel)        
+            EXEC (@Sel)                                                
                                                  
             DELETE   #Criters
             WHERE    CriteriaStmt_id = @DQ_id                                                
@@ -1346,7 +1332,7 @@ AS
       IF @SamplingLogInsert = 1 
          BEGIN                          
             INSERT   INTO SamplingLog (SampleSet_id, StepName, Occurred, SQLCode)
-                     SELECT   @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - Marker 11', GETDATE(), ''                          
+              SELECT   @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - Marker 11', GETDATE(), ''                          
          END                          
                                                  
                                                  
@@ -1397,7 +1383,7 @@ AS
             + CASE WHEN @EncounterDateField IS NOT NULL THEN @EncounterDateField
                    ELSE 'null'
               END
-            + ', null as resurveyDate, null as household_id, bitBadAddress, bitBadPhone,                                            
+            + ', null as resurveyDate, null as household_id, bitBadAddress, bitBadPhone,                                                 
   ' + CASE WHEN @reportDateField IS NOT NULL THEN @reportDateField
            ELSE 'null'
       END                                                 
@@ -1411,7 +1397,7 @@ AS
             + ', null as resurveyDate, null as household_id, bitBadAddress, bitBadPhone,                                                 
   ' + CASE WHEN @reportDateField IS NOT NULL THEN @reportDateField
            ELSE 'null'
-      END                                                 
+     END                                                 
                                                    
       IF @HouseHoldingType <> 'N' 
          SET @Sel = @Sel + +', ' + REPLACE(@HouseHoldFieldSelectSyntax, 'X.', 'BV.')                                                
@@ -1457,9 +1443,9 @@ AS
  --MWB 04/08/2010                                    
  --If SurveyType = HHCAHPS need to capture the distinct count of pop_IDs that fit the HHCAHPS Unit                                  
  --and save it off to new table.                                  
---      IF @SurveyType_ID = 3 ' 2/4/2015 CJB now doing this for all CAHPS
+      IF @SurveyType_ID = 3 
          BEGIN                                  
-            INSERT   INTO CAHPS_PatInfileCount (Sampleset_ID, Sampleunit_ID, MedicareNumber, NumPatInFile)
+            INSERT   INTO HHCAHPS_PatInfileCount (Sampleset_ID, Sampleunit_ID, MedicareNumber, NumPatInFile)
                      SELECT   @sampleSet_id, suni.SampleUnit_id, ml.MedicareNumber, COUNT(DISTINCT suni.Pop_id)
                      FROM     #SampleUnit_Universe suni ,
                               SAMPLEUNIT su ,
@@ -1472,7 +1458,7 @@ AS
                      GROUP BY suni.SampleUnit_id, ml.MedicareNumber                                    
          END                                   
                                                  
- --MWB 9/2/08  HCAHPS Prop Sampling Sprint -- run TOCL before writing HCAHPSEligibleEncLog table                                               
+ --MWB 9/2/08  HCAHPS Prop Sampling Sprint -- run TOCL before writing HCAHPSEligibleEncLog table                         
       IF @bitDoTOCL = 1 
          BEGIN                                      
             IF @indebug = 1 
@@ -1517,7 +1503,7 @@ AS
  -- BEGIN                          
  --    insert into SamplingLog (SampleSet_id, StepName, Occurred,SQLCode)                          
  --  Select @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - Marker 16', GETDATE(), ''                          
- -- END            
+ -- END                          
                                                  
                                                  
  --NewBorn rule                                                
@@ -1596,7 +1582,7 @@ AS
       EXEC QCL_SampleSetPerformHousehold @survey_id, @sampleset_id               
             
       IF @SamplingLogInsert = 1 
-         BEGIN                          
+         BEGIN              
             INSERT   INTO SamplingLog (SampleSet_id, StepName, Occurred, SQLCode)
                      SELECT   @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - Marker 19B', GETDATE(), ''                    
          END            
@@ -1635,39 +1621,33 @@ AS
       SET      HouseHold_id = NULL, Removed_Rule = 0
       WHERE    Removed_Rule = -7      
                                         
-	  -- 2015.01.26 TSB -- 
-	  if @SurveyType_ID in (@HCAHPS,@HHCAHPS,@HospiceCAHPS, @CIHI)  -- Added CIHI S17 US23 
-	  BEGIN
-
-		INSERT   INTO EligibleEncLog (sampleset_id, sampleunit_id, pop_Id, enc_id, sampleEncounterDate, SurveyType_ID)
+      INSERT   INTO HCAHPSEligibleEncLog (sampleset_id, sampleunit_id, pop_Id, enc_id, sampleEncounterDate)
                SELECT DISTINCT
-                        @sampleset_Id, su.sampleunit_id, pop_Id, enc_id, EncDate,s.CAHPSType_id
+                        @sampleset_Id, su.sampleunit_id, pop_Id, enc_id, EncDate
                FROM     #SampleUnit_Universe su ,
                         sampleunit s
                WHERE    Removed_Rule = 0
                         AND su.sampleunit_id = s.sampleunit_id
-                        AND s.CAHPSType_id = @SurveyType_ID                               
+                        AND s.bitHCAHPS = 1                             
 
 --------------9/10/2014 CJB Adding code to populate number inserted into HCAHPSEligibleEncLog into HcahpsEligibleEncLogCount in SPW
-		--Update the EncLog count in SPW                                                 
-		 declare @HcahpsEligibleEncLogCount int = 0
+	  --Update the EncLog count in SPW                                                 
+	  declare @HcahpsEligibleEncLogCount int = 0
 
-		select @HcahpsEligibleEncLogCount = count(*) 
+	  select @HcahpsEligibleEncLogCount = count(distinct pop_id) 
             FROM     SamplePlanWorkSheet spw,
-					 EligibleEncLog eec
+					 HCAHPSEligibleEncLog eec
                      WHERE spw.sampleset_id = @sampleSet_id
 					 and spw.SampleUnit_id = eec.sampleunit_id 
 					 and spw.sampleset_id = eec.sampleset_id
-					 and eec.SurveyType_id = @HCAHPS
 
-			UPDATE   spw
-			SET      HcahpsEligibleEncLogCount = @HcahpsEligibleEncLogCount
-			FROM     SamplePlanWorkSheet spw,
-					 sampleunit s
-			WHERE	 spw.sampleset_id = @sampleSet_id
-				AND  spw.SampleUnit_id = s.SAMPLEUNIT_ID 
-				AND  s.CAHPSType_id = @HCAHPS
-	   END
+        UPDATE   spw
+        SET      HcahpsEligibleEncLogCount = @HcahpsEligibleEncLogCount
+        FROM     SamplePlanWorkSheet spw,
+				 sampleunit s
+        WHERE	 spw.sampleset_id = @sampleSet_id
+			AND  spw.SampleUnit_id = s.SAMPLEUNIT_ID 
+			AND  s.bitHCAHPS = 1
 
 --------------9/10/2014 
                                                         
@@ -1676,7 +1656,19 @@ AS
             INSERT   INTO SamplingLog (SampleSet_id, StepName, Occurred, SQLCode)
                      SELECT   @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - Marker 16', GETDATE(), ''                          
          END                          
-                                                                              
+                                            
+ --Save off all of the eligible encounters.  We don't want to save anyone who was DQ'd.                                                
+ --However, we do not want to save encounters even if the fail newborn, householding, resurvey etc.                                                
+ --Therefore, we must save after checking newborn, householding, resurvey etc.                                             
+ --(unlike HCHAPS per Dana Petersen)                                                
+      INSERT   INTO HHCAHPSEligibleEncLog (sampleset_id, sampleunit_id, pop_Id, enc_id, sampleEncounterDate)
+               SELECT   @sampleset_Id, su.sampleunit_id, pop_Id, enc_id, EncDate
+               FROM     #SampleUnit_Universe su ,
+                        sampleunit s
+               WHERE    Removed_Rule = 0
+                        AND su.sampleunit_id = s.sampleunit_id
+                        AND s.bitHHCAHPS = 1                                               
+                                          
                           
       IF @SamplingLogInsert = 1 
          BEGIN                          
@@ -1718,7 +1710,7 @@ AS
          END                          
                                           
       IF @indebug = 1 
-         BEGIN                             
+         BEGIN                              
 --Testing code only.                                          
 --should be commented out when in stage or prod.                                          
             SET @sql = '                                          
@@ -1906,7 +1898,8 @@ end
 
 GO
 
-ALTER PROCEDURE [dbo].[sp_Samp_RollbackSample]    
+
+ALTER PROCEDURE sp_Samp_RollbackSample    
  @intSampleSet_id int    
 AS    
  DECLARE @intStudy_id int    
@@ -1993,9 +1986,11 @@ group by ss.survey_id, sp.study_id, ss.datSampleCreate_dt
   WHERE SampleSet_id = @intSampleSet_id    
  DELETE FROM dbo.Sampling_ExclusionLog    
   WHERE SampleSet_id = @intSampleSet_id    
- DELETE FROM dbo.EligibleEncLog    
+ DELETE FROM dbo.HCAHPSEligibleEncLog    
   WHERE SampleSet_id = @intSampleSet_id    
- DELETE FROM dbo.CAHPS_PatInfileCount
+ DELETE FROM dbo.HHCAHPSEligibleEncLog    
+  WHERE SampleSet_id = @intSampleSet_id   
+ DELETE FROM dbo.HHCAHPS_PatInfileCount
   WHERE SampleSet_id = @intSampleSet_id   
  
          
@@ -2019,7 +2014,6 @@ BEGIN
   datsamplecreate_dt=null    
   WHERE SampleSet_id = @intSampleSet_id     
 END    
- --End of Add DC
-
+ --End of Add DC    
 
 commit tran

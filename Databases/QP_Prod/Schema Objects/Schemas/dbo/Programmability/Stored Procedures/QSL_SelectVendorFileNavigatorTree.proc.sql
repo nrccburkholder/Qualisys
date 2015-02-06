@@ -1,4 +1,8 @@
-﻿CREATE PROCEDURE [dbo].[QSL_SelectVendorFileNavigatorTree]
+﻿-- =============================================
+-- Updated: CAmelinckx 2015-0114
+-- Description:	Returning VendorFile TelematchLog's fields
+-- =============================================
+CREATE PROCEDURE [dbo].[QSL_SelectVendorFileNavigatorTree]
 @VendorStatus INT      = 0, 
 @StartDate    DATETIME = NULL,
 @EndDate      DATETIME = NULL
