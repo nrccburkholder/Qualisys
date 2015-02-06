@@ -611,6 +611,15 @@ Friend Class ACOCAHPSExporter
             If iQuestion = acoCAHPSExport.Qs.Count Then 'we found only null or empty strings
                 LogValidationException(acoCAHPSExport, "Non-return disposition has results")
             End If
+            iQuestion = 0
+            'If we have a final disposition other than 10, 31, or 34, 
+            'can we just recode question results to “M" --CJB 2/6/2015 per Dana 
+            While iQuestion < acoCAHPSExport.Qs.Count
+                If acoCAHPSExport.Qs(iQuestion) <> NA2 Then
+                    acoCAHPSExport.Qs(iQuestion) = _M
+                End If
+                iQuestion = iQuestion + 1
+            End While
         End If
 
         '   Record has dispo 10, 31, or 34, and language = 8
