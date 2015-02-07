@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <id>NRC.Qualisys.NRCAuthAdmin</id>
+    <id>Qualisys.NRCAuthAdmin</id>
     <title>NRC Auth Admin</title>
     <version>1.2.7.0</version>
     <authors>NRC</authors>
