@@ -8,6 +8,6 @@
     <description>Graphical user interface to NRCAuth</description>
   </metadata>
   <files>
-    <file src="publish\**\*"/>
+    <file src="bin\Release\app.publish\**\*"/>
   </files>
 </package>
