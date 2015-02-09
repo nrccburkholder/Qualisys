@@ -102,6 +102,12 @@ AS
 -- =============================================
 	SET NOCOUNT ON 
 
+	DECLARE @oImportRunLogID INT;
+	DECLARE @currDateTime1 DATETIME = GETDATE();
+	DECLARE @currDateTime2 DATETIME;
+	DECLARE @TaskName VARCHAR(200) =  OBJECT_NAME(@@PROCID);
+	EXEC [ETL].[InsertImportRunLog] @DataFileID, @TaskName, @currDateTime1, @ImportRunLogID = @oImportRunLogID OUTPUT
+
 	DECLARE @icnt INT, @ucnt INT, @dcnt INT, @ecnt INT,@EntityTypeID INT
 	
 	SET @EntityTypeID = 8 -- SampleSet
@@ -428,7 +434,9 @@ AS
 	  WHERE DataFileID = @DataFileID
 		AND Entity = 'SampleSet'
   
-	
+	  SET @currDateTime2 = GETDATE();
+	SELECT @oImportRunLogID,@currDateTime2,@TaskName
+	EXEC [ETL].[UpdateImportRunLog] @oImportRunLogID, @currDateTime2 
 
    SET NOCOUNT OFF
 GO
