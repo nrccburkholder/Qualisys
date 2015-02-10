@@ -208,6 +208,7 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
+    <None Include="QualiSys Scanner Interface Service.nuspec" />
     <None Include="QualiSys Scanner Interface Service_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

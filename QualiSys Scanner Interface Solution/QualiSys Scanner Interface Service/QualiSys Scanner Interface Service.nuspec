@@ -1,0 +1,13 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Qualisys.QualisysScannerInterfaceService</id>
+    <title>Qualisys Scanner Interface Service</title>
+    <version>1.28.4.0</version>
+    <authors>NRC</authors>
+    <description>Data service backend for Qualisys Scanner Interface</description>
+  </metadata>
+  <files>
+    <file src="bin\Release\**"/>
+  </files>
+</package>
