@@ -301,6 +301,7 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
+    <None Include="Sampling Tool.nuspec" />
     <None Include="Sampling Tool_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
