@@ -5,7 +5,7 @@
     <title>Qualisys Sampling Tool</title>
     <version>4.0.5.0</version>
     <authors>NRC</authors>
-    <description>GUI to sample survey popuulations for data collection</description>
+    <description>GUI to sample survey populations for data collection</description>
   </metadata>
   <files>
     <file src="bin\Release\app.publish\**\*"/>
