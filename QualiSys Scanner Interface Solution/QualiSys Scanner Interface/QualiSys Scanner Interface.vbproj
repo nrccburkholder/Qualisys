@@ -31,9 +31,9 @@
     <OldToolsVersion>2.0</OldToolsVersion>
     <UpgradeBackupLocation />
     <TargetFrameworkProfile />
-    <PublishUrl>\\superman\NRCApplications\QualiSysScannerInterface\</PublishUrl>
+    <PublishUrl>publish\</PublishUrl>
     <Install>false</Install>
-    <InstallFrom>Unc</InstallFrom>
+    <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateMode>Foreground</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
@@ -574,6 +574,7 @@
     <None Include="Resources\UnCheck.PNG" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="QualiSys Scanner Interface.nuspec" />
     <None Include="My Project\DataSources\Nrc.QualiSys.Library.CoverLetter.datasource" />
     <None Include="My Project\DataSources\Nrc.QualiSys.Library.Disposition.datasource" />
     <None Include="My Project\DataSources\Nrc.QualiSys.Library.EmailBlast.datasource" />
