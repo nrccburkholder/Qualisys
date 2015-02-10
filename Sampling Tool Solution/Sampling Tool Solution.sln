@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Sampling Tool", "Sampling Tool\Sampling Tool.vbproj", "{733DECDE-D3EC-4411-803A-4133AC759338}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "QualiSys.Library", "..\QualiSys Class Library Solution\QualiSys.Library\QualiSys.Library.vbproj", "{191D0C34-FF61-47A6-852F-7FD91D50AD72}"
@@ -10,8 +12,6 @@ EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Seeded Mailing Service", "Seeded Mailing Service\Seeded Mailing Service.vbproj", "{67AF70B2-620F-429F-8BED-112CD448E9DC}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Seeded Mailing Service Tester", "Seeded Mailing Service Tester\Seeded Mailing Service Tester.vbproj", "{F0026E67-6C9F-4C93-91A3-266E2FEF5076}"
-EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Seeded Mailing Service Installer", "Seeded Mailing Service Installer\Seeded Mailing Service Installer.vdproj", "{A2D1B1A7-679C-4661-93B3-C90F4465F7D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -78,15 +78,6 @@ Global
 		{F0026E67-6C9F-4C93-91A3-266E2FEF5076}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F0026E67-6C9F-4C93-91A3-266E2FEF5076}.Release|x86.ActiveCfg = Release|x86
 		{F0026E67-6C9F-4C93-91A3-266E2FEF5076}.Release|x86.Build.0 = Release|x86
-		{A2D1B1A7-679C-4661-93B3-C90F4465F7D3}.Debug|Any CPU.ActiveCfg = Debug
-		{A2D1B1A7-679C-4661-93B3-C90F4465F7D3}.Debug|x86.ActiveCfg = Debug
-		{A2D1B1A7-679C-4661-93B3-C90F4465F7D3}.Production|Any CPU.ActiveCfg = Release
-		{A2D1B1A7-679C-4661-93B3-C90F4465F7D3}.Production|Any CPU.Build.0 = Release
-		{A2D1B1A7-679C-4661-93B3-C90F4465F7D3}.Production|x86.ActiveCfg = Release
-		{A2D1B1A7-679C-4661-93B3-C90F4465F7D3}.Production|x86.Build.0 = Release
-		{A2D1B1A7-679C-4661-93B3-C90F4465F7D3}.Release|Any CPU.ActiveCfg = Release
-		{A2D1B1A7-679C-4661-93B3-C90F4465F7D3}.Release|x86.ActiveCfg = Release
-		{A2D1B1A7-679C-4661-93B3-C90F4465F7D3}.Release|x86.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
