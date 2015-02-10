@@ -23,7 +23,7 @@
     </SccProvider>
     <ApplicationIcon>Scanner 2.ico</ApplicationIcon>
     <SignManifests>true</SignManifests>
-    <ManifestCertificateThumbprint>816A0F20B187B1C4BE333F541B9E318B8FAB7D2E</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>255BABE7D59361C0D0C75F6C6BF4E0D2857745E3</ManifestCertificateThumbprint>
     <GenerateManifests>true</GenerateManifests>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileUpgradeFlags>
@@ -99,6 +99,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>QualiSys Scanner Interface_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DevExpress.Data.v7.3, Version=7.3.11.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
@@ -487,6 +490,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="QualiSys Scanner Interface_TemporaryKey.pfx" />
     <None Include="Resources\GoLtr.bmp" />
   </ItemGroup>
   <ItemGroup>
