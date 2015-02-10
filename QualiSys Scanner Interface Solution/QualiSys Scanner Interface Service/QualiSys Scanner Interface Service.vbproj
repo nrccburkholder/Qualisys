@@ -33,7 +33,7 @@
     <ApplicationVersion>1.0.0.0</ApplicationVersion>
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
     <ManifestCertificateThumbprint>F3822311A57B3CA7654C0FAE7DC59BB4F18284DC</ManifestCertificateThumbprint>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileUpgradeFlags>
