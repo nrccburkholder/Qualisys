@@ -27,7 +27,7 @@
     </ManifestKeyFile>
     <GenerateManifests>true</GenerateManifests>
     <SignManifests>true</SignManifests>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
@@ -50,6 +50,7 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -114,10 +115,6 @@
     <Reference Include="Nrc.Framework.BusinessLogic, Version=1.0.5.0, Culture=neutral, PublicKeyToken=7f65ae6d961bde9c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Referenced Assemblies\Nrc.Framework.BusinessLogic.dll</HintPath>
-    </Reference>
-    <Reference Include="NRC.NRCAuthLib, Version=1.1.1.0, Culture=neutral">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\NRC.NRCAuthLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -520,6 +517,10 @@
     <ProjectReference Include="..\..\DataMart Class Library Solution\DataMart.Library\DataMart.Library.vbproj">
       <Project>{D94DDA87-FE09-4644-9416-2BF8FE136D93}</Project>
       <Name>DataMart.Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NRC Auth Solution\NRCAuthLib\NRCAuthlib.vbproj">
+      <Project>{6ed47ceb-9896-4be5-a7f2-cf2a5693f1ed}</Project>
+      <Name>NRCAuthlib</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -35,11 +35,12 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <SignManifests>true</SignManifests>
     <ManifestCertificateThumbprint>22959BA24B4429E732F374D75F5DD70CEAEC94EA</ManifestCertificateThumbprint>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
     <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
