@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Qualisys.ExportManager</id>
+    <title>QualiSys Export Manager</title>
+    <version>4.6.6</version>
+    <authors>NRC</authors>
+    <description>Graphical Export File Manager for CAHPS and other survey types</description>
+  </metadata>
+</package>
