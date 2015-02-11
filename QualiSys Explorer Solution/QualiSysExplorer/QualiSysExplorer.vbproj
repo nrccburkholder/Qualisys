@@ -140,15 +140,19 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Utils.v10.1, Version=10.1.1.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>..\..\Referenced Assemblies\DevExpress.Utils.v10.1.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.XtraBars.v10.1, Version=10.1.1.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\..\Referenced Assemblies\DevExpress.XtraBars.v10.1.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.XtraEditors.v10.1, Version=10.1.1.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <HintPath>..\..\Referenced Assemblies\DevExpress.XtraEditors.v10.1.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.XtraGrid.v10.1, Version=10.1.1.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\..\Referenced Assemblies\DevExpress.XtraGrid.v10.1.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.XtraPrinting.v10.1, Version=10.1.1.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
