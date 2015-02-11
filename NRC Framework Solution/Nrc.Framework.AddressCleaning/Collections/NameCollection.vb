@@ -81,8 +81,8 @@ Public Class NameCollection
         Dim nameCount As Integer = 0
         Dim nameUsed As Integer = 0
         Dim maxRecords As Integer = AppConfig.Params("NameWebServiceMaxRecords").IntegerValue
-        Dim nameCheckRequest As New dqwsNameCheck.RequestArray
-        Dim nameCheckResponse As New dqwsNameCheck.ResponseArray
+        Dim nameCheckRequest As New net.melissadata.name.RequestArray
+        Dim nameCheckResponse As New net.melissadata.name.ResponseArray
 
         'Initialize the SOAP request message
         nameCheckRequest.CustomerID = AppConfig.Params("NameWebServiceCustomerID").StringValue
@@ -116,7 +116,7 @@ Public Class NameCollection
         ReDim nameCheckRequest.Record(GetArraySize(Count, nameUsed, maxRecords) - 1)
 
         'Create the name cleaning web service connection
-        Using nameCheckService As New dqwsNameCheck.Service
+        Using nameCheckService As New net.melissadata.name.Service
             'Initialize the web service
             nameCheckService.Url = AppConfig.Params("NameWebServiceURL").StringValue
 
@@ -211,10 +211,10 @@ Public Class NameCollection
     ''' <param name="item">The name to be added to the request object.</param>
     ''' <param name="request">The request object that the name should be added to.</param>
     ''' <remarks></remarks>
-    Private Sub AddName(ByVal cnt As Integer, ByVal item As Name, ByVal request As dqwsNameCheck.RequestArray, ByRef nameCleaningPrefixes As List(Of String))
+    Private Sub AddName(ByVal cnt As Integer, ByVal item As Name, ByVal request As net.melissadata.name.RequestArray, ByRef nameCleaningPrefixes As List(Of String))
 
         'Initialize this address request record
-        request.Record(cnt - 1) = New dqwsNameCheck.RequestArrayRecord
+        request.Record(cnt - 1) = New net.melissadata.name.RequestArrayRecord
 
         'Populate the address request record
         With request.Record(cnt - 1)
@@ -262,7 +262,7 @@ Public Class NameCollection
     ''' <param name="responseArray">The response object containing the updated names.</param>
     ''' <param name="properCase">Specifies if proper case formatting should be applied.</param>
     ''' <remarks></remarks>
-    Private Sub UpdateNames(ByVal responseArray As dqwsNameCheck.ResponseArray, ByVal properCase As Boolean)
+    Private Sub UpdateNames(ByVal responseArray As net.melissadata.name.ResponseArray, ByVal properCase As Boolean)
 
         Dim cnt As Integer
 
@@ -311,7 +311,7 @@ Public Class NameCollection
     ''' <param name="response">The response object containing the cleaned name.</param>
     ''' <param name="results">The result string for this name.</param>
     ''' <remarks></remarks>
-    Private Sub UpdateName(ByVal item As Name, ByVal response As dqwsNameCheck.ResponseArrayRecordName, ByVal results As String, ByVal properCase As Boolean)
+    Private Sub UpdateName(ByVal item As Name, ByVal response As net.melissadata.name.ResponseArrayRecordName, ByVal results As String, ByVal properCase As Boolean)
 
         Dim stringConv As Microsoft.VisualBasic.VbStrConv
         If mCountryID = CountryIDs.Canada OrElse Not properCase Then
