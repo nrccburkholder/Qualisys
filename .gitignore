@@ -9,6 +9,8 @@
 *.out
 *.output.txt
 .pubxml
+*.pdb
+*.dll
 bin/
 obj/
 publish/

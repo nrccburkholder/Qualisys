@@ -22,11 +22,10 @@
     </SccProvider>
     <ApplicationIcon>QLoader.ico</ApplicationIcon>
     <SignManifests>true</SignManifests>
-    <ManifestCertificateThumbprint>C4A197BC9B34ECD5E7BB33F5F760862819B9A188</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>96D04AF07B82097D55DF143B89E7BBB30FB235CF</ManifestCertificateThumbprint>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <GenerateManifests>true</GenerateManifests>
-    <ManifestKeyFile>
-    </ManifestKeyFile>
+    <ManifestKeyFile>QLoader_2_TemporaryKey.pfx</ManifestKeyFile>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -451,6 +450,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="QLoader_2_TemporaryKey.pfx" />
     <None Include="Resources\Undo32.png" />
   </ItemGroup>
   <ItemGroup>
