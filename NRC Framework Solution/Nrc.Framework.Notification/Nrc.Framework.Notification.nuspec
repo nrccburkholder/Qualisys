@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Qualisys.Nrc.Framework.Notification</id>
+    <title>Nrc.Framework.Notification</title>
+    <version>1.0.5.0</version>
+    <authors>NRC</authors>
+    <description>Core NRC.Framework.Notification class library</description>
+  </metadata>
+  <files>
+    <file src="bin\Release\**"/>
+  </files>
+</package>
