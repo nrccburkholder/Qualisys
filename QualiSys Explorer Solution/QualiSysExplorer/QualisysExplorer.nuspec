@@ -1,0 +1,13 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Qualisys.QualisysExplorer</id>
+    <title>Qualisys Explorer</title>
+    <version>2.0.8.0</version>
+    <authors>NRC</authors>
+    <description>GUI to search for respondents and change their dispositions</description>
+  </metadata>
+  <files>
+    <file src="bin\Release\app.publish\**\*"/>
+  </files>
+</package>
