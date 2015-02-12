@@ -212,6 +212,7 @@
     </WebReferenceUrl>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Nrc.Framework.AddressCleaning.nuspec" />
     <None Include="Web References\net.melissadata.addresscheck\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.vb</LastGenOutput>

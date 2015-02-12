@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Qualisys.Nrc.Framework.AddressCleaning</id>
+    <title>Nrc.Framework.AddressCleaning</title>
+    <version>2.5.0.1</version>
+    <authors>NRC</authors>
+    <description>Melissa address cleaning wrapper class library</description>
+  </metadata>
+  <files>
+    <file src="bin\Release\**"/>
+  </files>
+</package>
