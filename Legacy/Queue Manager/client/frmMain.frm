@@ -1,7 +1,7 @@
 VERSION 5.00
-Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.3#0"; "comctl32.ocx"
+Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.3#0"; "COMCTL32.OCX"
 Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.OCX"
-Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
 Begin VB.Form frmMain 
    Caption         =   "Print Queue Manager"
    ClientHeight    =   7170
@@ -157,7 +157,7 @@ Begin VB.Form frmMain
       MaskColor       =   12632256
       _Version        =   327682
       BeginProperty Images {0713E8C2-850A-101B-AFC0-4210102A8DA7} 
-         NumListImages   =   69
+         NumListImages   =   111
          BeginProperty ListImage1 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
             Picture         =   "frmMain.frx":16CC
             Key             =   ""
@@ -434,6 +434,174 @@ Begin VB.Form frmMain
             Picture         =   "frmMain.frx":10B94
             Key             =   ""
          EndProperty
+         BeginProperty ListImage70 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":10EE6
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage71 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":11238
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage72 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":1158A
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage73 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":118DC
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage74 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":11C2E
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage75 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":11F80
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage76 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":122D2
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage77 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":12624
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage78 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":12976
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage79 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":12CC8
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage80 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":1301A
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage81 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":1336C
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage82 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":136BE
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage83 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":13A10
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage84 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":13D62
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage85 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":140B4
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage86 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":14406
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage87 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":14758
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage88 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":14AAA
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage89 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":14DFC
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage90 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":1514E
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage91 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":154A0
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage92 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":157F2
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage93 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":15B44
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage94 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":15E96
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage95 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":161E8
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage96 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":1653A
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage97 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":1688C
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage98 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":16BDE
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage99 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":16F30
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage100 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":17282
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage101 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":175D4
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage102 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":17926
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage103 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":17C78
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage104 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":17FCA
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage105 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":1831C
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage106 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":1866E
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage107 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":189C0
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage108 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":18D12
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage109 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":19064
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage110 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":193B6
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage111 {0713E8C3-850A-101B-AFC0-4210102A8DA7} 
+            Picture         =   "frmMain.frx":19708
+            Key             =   ""
+         EndProperty
       EndProperty
    End
    Begin VB.Menu mnuTreeViewPopUp 
@@ -584,9 +752,8 @@ Public Sub CheckQueue()
     Dim lNodeIndex As Long
     Dim lQueueCnt As Long
     Dim bIsEmpty As Boolean
-    Dim bIsHCAHPS As Boolean
-    Dim bIsHHCAHPS As Boolean   '01-08-2010 JJF - Added HHCAHPS
-    Dim bIsACOCAHPS As Boolean  '01-09-2014 CJB - Added ACOCAHPS
+    Dim iHospital As Integer
+    Dim iOffset As Integer
     
     'On Error GoTo EmptyQueue
     MousePointer = vbHourglass
@@ -616,12 +783,13 @@ Public Sub CheckQueue()
     If Not IsEmpty(vHospitalQueue) Then
         bIsEmpty = False
         For lQueueCnt = 0 To UBound(vHospitalQueue, 2)
-            ' 04-27-2006 SH Added HCAHPS.
-            bIsHCAHPS = IIf(UCase(Left(vHospitalQueue(3, lQueueCnt), 6)) = "HCAHPS", True, False)
-            '01-08-2010 JJF - Added HHCAHPS
-            bIsHHCAHPS = IIf(UCase(Left(vHospitalQueue(3, lQueueCnt), 11)) = "HOME HEALTH", True, False)
-            '01-09-2014 CJB - Added ACOCAHPS
-            bIsACOCAHPS = IIf((UCase(Left(vHospitalQueue(3, lQueueCnt), 8)) = "ACOCAHPS") Or (UCase(Left(vHospitalQueue(3, lQueueCnt), 8)) = "ICHCAHPS"), True, False)
+            iOffset = 0
+            iOffset = IIf(UCase(Left(vHospitalQueue(3, lQueueCnt), 6)) = "HCAHPS", OffsetHCAHPS, iOffset)
+            iOffset = IIf(UCase(Left(vHospitalQueue(3, lQueueCnt), 11)) = "HOME HEALTH", OffsetHHCAHPS, iOffset)
+            iOffset = IIf(UCase(Left(vHospitalQueue(3, lQueueCnt), 8)) = "ACOCAHPS", OffsetACOCAHPS, iOffset)
+            iOffset = IIf(UCase(Left(vHospitalQueue(3, lQueueCnt), 8)) = "ICHCAHPS", OffsetICHCAHPS, iOffset)
+            iOffset = IIf(UCase(Left(vHospitalQueue(3, lQueueCnt), 7)) = "HOSPICE", OffsetHOSPICE, iOffset)
+            iHospital = conHospital + iOffset
             ' I am hold the description of the node in the
             ' key value of the node.  this is what is
             ' displayed when clicked on in the tree
@@ -632,27 +800,13 @@ Public Sub CheckQueue()
             mlUniqueKey = mlUniqueKey + 1
             sProperties = sProperties & mlUniqueKey
             If mbReprint Then
-                '01-08-2010 JJF - Added HHCAHPS / ACOCAHPS 01-09-2014
-                'lImageIndex = IIf(vHospitalQueue(6, lQueueCnt) = vHospitalQueue(4, lQueueCnt), _
-                '                  IIf(bIsHCAHPS, HCheckedHospital, conCheckedHospital), _
-                '                  IIf(bIsHCAHPS, HHospital, conHospital) _
-                '              )
                 lImageIndex = IIf(vHospitalQueue(6, lQueueCnt) = vHospitalQueue(4, lQueueCnt), _
-                                  IIf(bIsHCAHPS, HCheckedHospital, IIf(bIsHHCAHPS, HHCheckedHospital, IIf(bIsACOCAHPS, ACheckedHospital, conCheckedHospital))), _
-                                  IIf(bIsHCAHPS, HHospital, IIf(bIsHHCAHPS, HHHospital, IIf(bIsACOCAHPS, AHospital, conHospital))) _
-                              )
-                '01-08-2010 JJF - End of added HHCAHPS / ACOCAHPS 01-09-2014
+                                iHospital + CheckedHospital, _
+                                iHospital)
             Else
-                '01-08-2010 JJF - Added HHCAHPS / ACOCAHPS 01-09-2014
-                'lImageIndex = IIf(vHospitalQueue(7, lQueueCnt) = vHospitalQueue(4, lQueueCnt), _
-                '                  IIf(bIsHCAHPS, HCheckedHospital, conCheckedHospital), _
-                '                  IIf(bIsHCAHPS, HHospital, conHospital) _
-                '              )
                 lImageIndex = IIf(vHospitalQueue(7, lQueueCnt) = vHospitalQueue(4, lQueueCnt), _
-                                  IIf(bIsHCAHPS, HCheckedHospital, IIf(bIsHHCAHPS, HHCheckedHospital, IIf(bIsACOCAHPS, ACheckedHospital, conCheckedHospital))), _
-                                  IIf(bIsHCAHPS, HHospital, IIf(bIsHHCAHPS, HHHospital, IIf(bIsACOCAHPS, AHospital, conHospital))) _
-                              )
-                '01-08-2010 JJF - End of added HHCAHPS / ACOCAHPS 01-09-2014
+                                iHospital + CheckedHospital, _
+                                iHospital)
             End If
             
             Set oProjectNode = tvTreeView.Nodes.Add(, , sProperties, Trim(vHospitalQueue(0, lQueueCnt)) & " (" & Trim(vHospitalQueue(1, lQueueCnt)) & _
@@ -686,25 +840,20 @@ Public Sub CheckQueue()
         End If
         
         For lQueueCnt = 0 To UBound(vHospitalQueue, 2)
-            bIsHCAHPS = IIf(UCase(Left(vHospitalQueue(6, lQueueCnt), 6)) = "HCAHPS", True, False)
-            '01-08-2010 JJF - Added HHCAHPS
-            bIsHHCAHPS = IIf(UCase(Left(vHospitalQueue(6, lQueueCnt), 11)) = "HOME HEALTH", True, False)
-            '01-09-2014 CJB - Added ACOCAHPS
-            bIsACOCAHPS = IIf((UCase(Left(vHospitalQueue(6, lQueueCnt), 8)) = "ACOCAHPS") Or (UCase(Left(vHospitalQueue(6, lQueueCnt), 8)) = "ICHCAHPS"), True, False)
+            iOffset = 0
+            iOffset = IIf(UCase(Left(vHospitalQueue(6, lQueueCnt), 6)) = "HCAHPS", OffsetHCAHPS, iOffset)
+            iOffset = IIf(UCase(Left(vHospitalQueue(6, lQueueCnt), 11)) = "HOME HEALTH", OffsetHHCAHPS, iOffset)
+            iOffset = IIf(UCase(Left(vHospitalQueue(6, lQueueCnt), 8)) = "ACOCAHPS", OffsetACOCAHPS, iOffset)
+            iOffset = IIf(UCase(Left(vHospitalQueue(6, lQueueCnt), 8)) = "ICHCAHPS", OffsetICHCAHPS, iOffset)
+            iOffset = IIf(UCase(Left(vHospitalQueue(6, lQueueCnt), 7)) = "HOSPICE", OffsetHOSPICE, iOffset)
+            iHospital = conHospital + iOffset
             'add the paperconfig node if it isn't already there
             'key is defined by paperconfig_id (plus datPrinted for the mail queue)
             lNodeIndex = FindNodeByKey("GroupedPrintConfig=" & Trim(vHospitalQueue(1, lQueueCnt)) & IIf(mbReprint, vbTab & vHospitalQueue(2, lQueueCnt), ""))
             If lNodeIndex = -1 Then
-                '01-08-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-                'lImageIndex = IIf(vHospitalQueue(8, lQueueCnt) < #1/1/4000#, _
-                '                  IIf(bIsHCAHPS, HCheckedConfiguration, conCheckedConfiguration), _
-                '                  IIf(bIsHCAHPS, HGroupedPrintConfiguration, conGroupedPrintConfiguration) _
-                '              )
                 lImageIndex = IIf(vHospitalQueue(8, lQueueCnt) < #1/1/4000#, _
-                                  IIf(bIsHCAHPS, HCheckedConfiguration, IIf(bIsHHCAHPS, HHCheckedConfiguration, IIf(bIsACOCAHPS, ACheckedConfiguration, conCheckedConfiguration))), _
-                                  IIf(bIsHCAHPS, HGroupedPrintConfiguration, IIf(bIsHHCAHPS, HHGroupedPrintConfiguration, IIf(bIsACOCAHPS, AGroupedPrintConfiguration, conGroupedPrintConfiguration))) _
-                              )
-                '01-08-2010 JJF - End of added HHCAHPS / ACOCAHPS CJB 01-09-2014
+                                    iHospital + CheckedConfiguration, _
+                                    iHospital + GroupedPrintConfiguration)
                 Set oProjectNode = tvTreeView.Nodes.Add(tvTreeView.Nodes("GroupedPrint"), tvwChild, "GroupedPrintConfig=" & _
                                                         Trim(vHospitalQueue(1, lQueueCnt)) & IIf(mbReprint, vbTab & vHospitalQueue(2, lQueueCnt), ""), _
                                                         Trim(IIf(mbReprint, vHospitalQueue(2, lQueueCnt) & " ", "") & vHospitalQueue(5, lQueueCnt)), lImageIndex)
@@ -719,16 +868,9 @@ Public Sub CheckQueue()
             sProperties = sProperties & " }"
             mlUniqueKey = mlUniqueKey + 1
             sProperties = sProperties & mlUniqueKey
-            '01-08-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-            'lImageIndex = IIf(vHospitalQueue(8, lQueueCnt) < #1/1/4000#, _
-            '                  IIf(bIsHCAHPS, HCheckedGroupedPrintHospital, conCheckedGroupedPrintHospital), _
-            '                  IIf(bIsHCAHPS, HGroupedPrintHospital, conGroupedPrintHospital) _
-            '              )
             lImageIndex = IIf(vHospitalQueue(8, lQueueCnt) < #1/1/4000#, _
-                              IIf(bIsHCAHPS, HCheckedGroupedPrintHospital, IIf(bIsHHCAHPS, HHCheckedGroupedPrintHospital, IIf(bIsACOCAHPS, ACheckedGroupedPrintHospital, conCheckedGroupedPrintHospital))), _
-                              IIf(bIsHCAHPS, HGroupedPrintHospital, IIf(bIsHHCAHPS, HHGroupedPrintHospital, IIf(bIsACOCAHPS, AGroupedPrintHospital, conGroupedPrintHospital))) _
-                          )
-            '01-08-2010 JJF - End of added HHCAHPS / ACOCAHPS CJB 01-09-2014
+                                iHospital + CheckedGroupedPrintHospital, _
+                                iHospital + GroupedPrintHospital)
             Set oProjectNode = tvTreeView.Nodes.Add(tvTreeView.Nodes("GroupedPrintConfig=" & _
                                                     Trim(vHospitalQueue(1, lQueueCnt)) & IIf(mbReprint, vbTab & vHospitalQueue(2, lQueueCnt), "")), _
                                                     tvwChild, "GroupedPrintItem=" & sProperties, vHospitalQueue(3, lQueueCnt) & _
@@ -805,12 +947,6 @@ Public Sub ShowProperties(nodSelected As Node)
     Dim strBundled As String
     Dim n As Long
     
-    ' Variables needed for doing the litho thing.
-    Dim bundle As String
-    Dim Survey_id As String
-    Dim PaperConfig As String
-    Dim lastdelim As Integer
-    
     'On Error GoTo Skip
     
     oldmouse = Screen.MousePointer
@@ -818,20 +954,15 @@ Public Sub ShowProperties(nodSelected As Node)
     'DoEvents   '** Removed 03-31-00 JJF
 
     txtProperties.TextRTF = "{ "
-    Select Case nodSelected.image
-        '01-08-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-        'Case conHospital, conCheckedHospital, HHospital, HCheckedHospital:
-        Case conHospital, conCheckedHospital, HHospital, HCheckedHospital, HHHospital, HHCheckedHospital, AHospital, ACheckedHospital:
+    Select Case nodSelected.Image Mod TotalStates
+        Case Hospital, CheckedHospital:
             strKey = nodSelected.Child.Key
             If InStr(1, strKey, "QUERY=", vbTextCompare) > 0 And ButtonUsed < 0 Then
                 CheckConfiguration nodSelected, Mid(strKey, 7)
                 tvTreeView.Nodes.Remove nodSelected.Child.Index
             End If
             txtProperties.TextRTF = txtProperties.Text & nodSelected.Key
-        '01-08-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-        'Case conConfiguration, conFadedConfiguration, conCheckedConfiguration, HConfiguration, HFadedConfiguration, HCheckedConfiguration:
-        Case conConfiguration, conFadedConfiguration, conCheckedConfiguration, HConfiguration, HFadedConfiguration, HCheckedConfiguration, _
-            HHConfiguration, HHFadedConfiguration, HHCheckedConfiguration, AConfiguration, AFadedConfiguration, ACheckedConfiguration:
+        Case Configuration, FadedConfiguration, CheckedConfiguration:
             If nodSelected.Child Is Nothing Then
               strKey = ""
             Else
@@ -852,26 +983,15 @@ Public Sub ShowProperties(nodSelected As Node)
                 tvTreeView.Nodes.Remove nodSelected.Child.Index
             End If
             txtProperties.TextRTF = txtProperties.Text & nodSelected.Key
-        '01-08-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-        'Case conBundle, conMailBundle, conAlreadyMailed, HBundle, HMailBundle, HAlreadyMailed:
-        Case conBundle, conMailBundle, conAlreadyMailed, HBundle, HMailBundle, HAlreadyMailed, _
-            HHBundle, HHMailBundle, HHAlreadyMailed, ABundle, AMailBundle, AAlreadyMailed:
+        Case Bundle, MailBundle, AlreadyMailed:
             txtProperties.TextRTF = txtProperties.Text & nodSelected.Key
-        '01-08-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-        'Case conPrinting, HPrinting:
-        Case conPrinting, HPrinting, HHPrinting, APrinting:
+        Case Printing:
             txtProperties.TextRTF = txtProperties.Text & "{\par \qc Printing... \par \line } " & nodSelected.Key
-        '01-08-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-        'Case conDeleted, HDeleted:
-        Case conDeleted, HDeleted, HHDeleted, ADeleted:
+        Case Deleted:
             txtProperties.TextRTF = txtProperties.Text & "{\par \qc Deleting... \par \line } " & nodSelected.Key
-        '01-08-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-        'Case conGroupedPrintHospital, HGroupedPrintHospital:
-        Case conGroupedPrintHospital, HGroupedPrintHospital, HHGroupedPrintHospital, AGroupedPrintHospital:
+        Case GroupedPrintHospital:
             txtProperties.TextRTF = txtProperties.Text & Mid(nodSelected.Key, InStr(nodSelected.Key, "=") + 1)
-        '01-08-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-        'Case conCheckedGroupedPrintHospital, HCheckedGroupedPrintHospital:
-        Case conCheckedGroupedPrintHospital, HCheckedGroupedPrintHospital, HHCheckedGroupedPrintHospital, ACheckedGroupedPrintHospital:
+        Case CheckedGroupedPrintHospital:
             txtProperties.TextRTF = txtProperties.Text & Mid(nodSelected.Key, InStr(nodSelected.Key, "=") + 1)
             strKey = nodSelected.Tag
             strStudy_id = NextValue(strKey, vbTab)
@@ -879,9 +999,7 @@ Public Sub ShowProperties(nodSelected As Node)
             strBundled = NextValue(strKey, vbTab)
             lngBundleCount = NextValue(strKey, vbTab)
             txtProperties.TextRTF = txtProperties.Text & "mailed on " & strKey
-        '01-08-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-        'Case conGroupedPrintConfiguration, HGroupedPrintConfiguration:
-        Case conGroupedPrintConfiguration, HGroupedPrintConfiguration, HHGroupedPrintConfiguration, AGroupedPrintConfiguration:
+        Case GroupedPrintConfiguration:
             txtProperties.TextRTF = nodSelected.Text & vbCrLf & "Number of pieces: " & nodSelected.Tag
         'Case conBundle:
         '   txtProperties.TextRTF = txtProperties.Text & "{ \cell \ql Number of pieces: \tab \cell " & nodSelected.Image & " \par }"
@@ -921,13 +1039,9 @@ Private Sub CheckConfiguration(nodParent As Node, ByVal lngSurveyId As Long)
             'strProperties = strProperties & " }"
             strProperties = strProperties & " }" & lngSurveyId
             '** End of modification 09-19-02 JJF
-            '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-            'lngBundleCount = IIf(varConfiguration(6, X) = varConfiguration(5, X), _
-            '                 IIf(IsHCAHPS(nodParent.image), HCheckedConfiguration, conCheckedConfiguration), _
-            '                 IIf(IsHCAHPS(nodParent.image), HConfiguration, conConfiguration))
             lngBundleCount = IIf(varConfiguration(6, X) = varConfiguration(5, X), _
-                             IIf(IsHCAHPS(nodParent.image), HCheckedConfiguration, IIf(IsHHCAHPS(nodParent.image), HHCheckedConfiguration, IIf(IsACOCAHPS(nodParent.image), ACheckedConfiguration, conCheckedConfiguration))), _
-                             IIf(IsHCAHPS(nodParent.image), HConfiguration, IIf(IsHHCAHPS(nodParent.image), HHConfiguration, IIf(IsACOCAHPS(nodParent.image), AConfiguration, conConfiguration))))
+                             (nodParent.Image \ TotalStates) * TotalStates + CheckedConfiguration, _
+                             (nodParent.Image \ TotalStates) * TotalStates + Configuration)
             Set nodConfiguration = tvTreeView.Nodes.Add(nodParent, tvwChild, strProperties, varConfiguration(0, X), lngBundleCount)
             strProperties = varConfiguration(4, X) & vbTab & varConfiguration(1, X) & vbTab & Trim(Left(varConfiguration(0, X), InStr(varConfiguration(0, X), "  "))) & vbTab & varConfiguration(5, X)
             n = FindNodeByTag(strProperties)
@@ -936,9 +1050,7 @@ Private Sub CheckConfiguration(nodParent As Node, ByVal lngSurveyId As Long)
                 nodConfiguration.Tag = strProperties & vbTab & varConfiguration(7, X)
             If n > -1 Then
                 nodConfiguration.Key = Mid(tvTreeView.Nodes(n).Key, 18)
-                '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-                'nodConfiguration.image = IIf(IsHCAHPS(nodConfiguration.image), HFadedConfiguration, conFadedConfiguration)
-                nodConfiguration.image = IIf(IsHCAHPS(nodConfiguration.image), HFadedConfiguration, IIf(IsHHCAHPS(nodConfiguration.image), HHFadedConfiguration, IIf(IsACOCAHPS(nodConfiguration.image), AFadedConfiguration, conFadedConfiguration)))
+                nodConfiguration.Image = (nodConfiguration.Image \ TotalStates) * TotalStates + FadedConfiguration
             Else
                 ' 08-12-1999 DV
                 ' We will only get one level, and let the clicks to the rest.
@@ -958,9 +1070,7 @@ Private Sub DeleteConfiguration(nodSelected As Node)
     Dim X As Long
     Dim AnotherNode As Node
     
-    '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-    'nodSelected.image = IIf(IsHCAHPS(nodSelected.image), HDeleted, conDeleted)
-    nodSelected.image = IIf(IsHCAHPS(nodSelected.image), HDeleted, IIf(IsHHCAHPS(nodSelected.image), HHDeleted, IIf(IsACOCAHPS(nodSelected.image), ADeleted, conDeleted)))
+    nodSelected.Image = (nodSelected.Image \ TotalStates) * TotalStates + Deleted
     Set AnotherNode = nodSelected.Child
     For X = 1 To nodSelected.Children
         DeleteBundleId AnotherNode
@@ -972,9 +1082,7 @@ Private Sub UnDeleteConfiguration(nodSelected As Node)
     Dim X As Long
     Dim AnotherNode As Node
     
-    '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-    'nodSelected.image = IIf(IsHCAHPS(nodSelected.image), HConfiguration, conConfiguration)
-    nodSelected.image = IIf(IsHCAHPS(nodSelected.image), HConfiguration, IIf(IsHHCAHPS(nodSelected.image), HHConfiguration, IIf(IsACOCAHPS(nodSelected.image), AConfiguration, conConfiguration)))
+    nodSelected.Image = (nodSelected.Image \ TotalStates) * TotalStates + Configuration
     Set AnotherNode = nodSelected.Child
     For X = 1 To nodSelected.Children
         UnDeleteBundleId AnotherNode
@@ -988,13 +1096,6 @@ Private Function CheckBundleId(nodParent As Node, ByVal lngSurveyId As Long, ByV
     Dim strProperties As String
     Dim varBundle As Variant
     Dim varLithoRange As Variant
-    Dim bIsHCAHPS As Boolean
-    Dim bIsHHCAHPS As Boolean '01-20-2010 JJF - Added HHCAHPS
-    Dim bIsACOCAHPS As Boolean '01-09-2014 CJB - Added ACOCAHPS
-    
-    bIsHCAHPS = IsHCAHPS(nodParent.image)
-    bIsHHCAHPS = IsHHCAHPS(nodParent.image) '01-20-2010 JJF - Added HHCAHPS
-    bIsACOCAHPS = IsACOCAHPS(nodParent.image) '01-09-2014 CJB - Added ACOCAHPS
     
     varBundle = moQueueManager.PaperConfig(mbReprint, lngSurveyId, lngPaperConfig, strBundled)
     'varBundle(0,X)=strBundle
@@ -1044,15 +1145,10 @@ Private Function CheckBundleId(nodParent As Node, ByVal lngSurveyId As Long, ByV
             ' in the database for printing and deleteing
             mlUniqueKey = mlUniqueKey + 1
             strProperties = strProperties & mlUniqueKey
-            '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-            'Set nodBundle = tvTreeView.Nodes.Add(nodParent, tvwChild, strProperties, _
-            '                                     IIf(IsNull(varBundle(0, X)), "Not Bundled", varBundle(0, X)), _
-            '                                     IIf(IsNull(varBundle(8, X)), IIf(bIsHCAHPS, HBundle, conBundle), _
-            '                                         IIf(bIsHCAHPS, HAlreadyMailed, conAlreadyMailed)))
             Set nodBundle = tvTreeView.Nodes.Add(nodParent, tvwChild, strProperties, _
                                                  IIf(IsNull(varBundle(0, X)), "Not Bundled", varBundle(0, X)), _
-                                                 IIf(IsNull(varBundle(8, X)), IIf(bIsHCAHPS, HBundle, IIf(bIsHHCAHPS, HHBundle, IIf(bIsACOCAHPS, ABundle, conBundle))), _
-                                                     IIf(bIsHCAHPS, HAlreadyMailed, IIf(bIsHHCAHPS, HHAlreadyMailed, IIf(bIsACOCAHPS, AAlreadyMailed, conAlreadyMailed)))))
+                                                 IIf(IsNull(varBundle(8, X)), (nodParent.Image \ TotalStates) * TotalStates + Bundle, _
+                                                     (nodParent.Image \ TotalStates) * TotalStates + AlreadyMailed))
             nodBundle.Tag = varBundle(2, X) & vbTab & varBundle(0, X) & vbTab & varBundle(3, X) & _
                             vbTab & varBundle(4, X) & vbTab & mvStartLitho & vbTab & mvEndLitho & vbTab & _
                             varBundle(7, X) & vbTab & IIf(IsNull(varBundle(8, X)), "Not Mailed", varBundle(8, X))
@@ -1062,17 +1158,11 @@ Private Function CheckBundleId(nodParent As Node, ByVal lngSurveyId As Long, ByV
 End Function
 
 Private Sub DeleteBundleId(nodSelected As Node)
-    
-    '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-    'nodSelected.image = IIf(IsHCAHPS(nodSelected.image), HDeleted, conDeleted)
-    nodSelected.image = IIf(IsHCAHPS(nodSelected.image), HDeleted, IIf(IsHHCAHPS(nodSelected.image), HHDeleted, IIf(IsACOCAHPS(nodSelected.image), ADeleted, conDeleted)))
-
+    nodSelected.Image = (nodSelected.Image \ TotalStates) * TotalStates + Deleted
 End Sub
 
 Private Sub UnDeleteBundleId(nodSelected As Node)
-    '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-    'nodSelected.image = IIf(IsHCAHPS(nodSelected.image), HBundle, conBundle)
-    nodSelected.image = IIf(IsHCAHPS(nodSelected.image), HBundle, IIf(IsHHCAHPS(nodSelected.image), HHBundle, IIf(IsACOCAHPS(nodSelected.image), ABundle, conBundle)))
+    nodSelected.Image = (nodSelected.Image \ TotalStates) * TotalStates + Bundle
 End Sub
 
 Public Sub LaunchReport(TypeOfReport As String)
@@ -1089,13 +1179,8 @@ End Sub
 
 Private Sub cmdPrint_Click()
     On Error GoTo BadSelection
-    '01-08-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-    'If tvTreeView.SelectedItem.image <> conHospital And tvTreeView.SelectedItem.image <> conCheckedHospital And _
-    '   tvTreeView.SelectedItem.image <> HHospital And tvTreeView.SelectedItem.image <> HCheckedHospital Then
-    If tvTreeView.SelectedItem.image <> conHospital And tvTreeView.SelectedItem.image <> conCheckedHospital And _
-       tvTreeView.SelectedItem.image <> HHospital And tvTreeView.SelectedItem.image <> HCheckedHospital And _
-       tvTreeView.SelectedItem.image <> HHHospital And tvTreeView.SelectedItem.image <> HHCheckedHospital And _
-       tvTreeView.SelectedItem.image <> AHospital And tvTreeView.SelectedItem.image <> ACheckedHospital Then
+    If (tvTreeView.SelectedItem.Image Mod TotalStates <> Hospital) And _
+        (tvTreeView.SelectedItem.Image Mod TotalStates <> CheckedHospital) Then
         mnuPrint_Click
     Else
 BadSelection:
@@ -1148,18 +1233,22 @@ Private Sub mnuAddToGroupedPrint_Click()
     Dim strBundled, n As Long
     Dim Survey_id, SelectedConfig, Config_nm As String
     Dim dummy, strID As String
-    Dim bIsHCAHPS As Boolean
-    Dim bIsHHCAHPS, bIsACOCAHPS As Boolean   '01-08-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
+    Dim iOffset As Integer
+    Dim iHospital As Integer
 
     strID = tvTreeView.SelectedItem.Tag
     Survey_id = NextValue(strID, vbTab) ' survey_id
     SelectedConfig = NextValue(strID, vbTab) ' config_id
     strBundled = NextValue(strID, vbTab) ' strBundled
     Config_nm = Trim(Mid(tvTreeView.SelectedItem.Text, 1 + Len(strBundled)))
-    bIsHCAHPS = IIf(UCase(Left(NextValue(strID, vbTab), 6)) = "HCAHPS", True, False) ' survey type
-    '01-08-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-    bIsHHCAHPS = IIf(UCase(Left(NextValue(strID, vbTab), 11)) = "HOME HEALTH", True, False) ' survey type
-    bIsACOCAHPS = IIf((UCase(Left(NextValue(strID, vbTab), 8)) = "ACOCAHPS") Or (UCase(Left(NextValue(strID, vbTab), 8)) = "ICHCAHPS"), True, False) ' survey type
+    iOffset = 0
+    iOffset = IIf(UCase(Left(NextValue(strID, vbTab), 6)) = "HCAHPS", OffsetHCAHPS, iOffset)
+    iOffset = IIf(UCase(Left(NextValue(strID, vbTab), 11)) = "HOME HEALTH", OffsetHHCAHPS, iOffset)
+    iOffset = IIf(UCase(Left(NextValue(strID, vbTab), 8)) = "ACOCAHPS", OffsetACOCAHPS, iOffset)
+    iOffset = IIf(UCase(Left(NextValue(strID, vbTab), 8)) = "ICHCAHPS", OffsetICHCAHPS, iOffset)
+    iOffset = IIf(UCase(Left(NextValue(strID, vbTab), 7)) = "HOSPICE", OffsetHOSPICE, iOffset)
+    iHospital = conHospital + iOffset
+    
     dummy = NextValue(strID, vbTab) ' number of pieces
    
     n = FindNodeByKey("GroupedPrint")
@@ -1169,11 +1258,8 @@ Private Sub mnuAddToGroupedPrint_Click()
     
     n = FindNodeByKey("GroupedPrintConfig=" & SelectedConfig)
     If n = -1 Then
-        '01-08-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-        'Set nodProject = tvTreeView.Nodes.Add(tvTreeView.Nodes("GroupedPrint"), tvwChild, "GroupedPrintConfig=" & SelectedConfig, _
-        '                 Config_nm, IIf(bIsHCAHPS, HGroupedPrintConfiguration, conGroupedPrintConfiguration))
         Set nodProject = tvTreeView.Nodes.Add(tvTreeView.Nodes("GroupedPrint"), tvwChild, "GroupedPrintConfig=" & SelectedConfig, _
-                         Config_nm, IIf(bIsHCAHPS, HGroupedPrintConfiguration, IIf(bIsHHCAHPS, HHGroupedPrintConfiguration, IIf(bIsACOCAHPS, AGroupedPrintConfiguration, conGroupedPrintConfiguration))))
+                         Config_nm, iHospital + GroupedPrintConfiguration)
         nodProject.Tag = Val(dummy)
     Else
         tvTreeView.Nodes(n).Tag = tvTreeView.Nodes(n).Tag + Val(dummy)
@@ -1181,16 +1267,10 @@ Private Sub mnuAddToGroupedPrint_Click()
     
     n = FindNodeByKey("GroupedPrintItem=" & tvTreeView.SelectedItem.Key)
     If n = -1 Then
-        '01-08-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-        'Set nodProject = tvTreeView.Nodes.Add(tvTreeView.Nodes("GroupedPrintConfig=" & SelectedConfig), tvwChild, "GroupedPrintItem=" & tvTreeView.SelectedItem.Key, _
-        '                 tvTreeView.SelectedItem.Parent.Text, IIf(bIsHCAHPS, HGroupedPrintHospital, conGroupedPrintHospital))
         Set nodProject = tvTreeView.Nodes.Add(tvTreeView.Nodes("GroupedPrintConfig=" & SelectedConfig), tvwChild, "GroupedPrintItem=" & tvTreeView.SelectedItem.Key, _
-                         tvTreeView.SelectedItem.Parent.Text, IIf(bIsHCAHPS, HGroupedPrintHospital, IIf(bIsHHCAHPS, HHGroupedPrintHospital, IIf(bIsACOCAHPS, AGroupedPrintHospital, conGroupedPrintHospital))))
+                         tvTreeView.SelectedItem.Parent.Text, iHospital + GroupedPrintHospital)
         nodProject.Tag = tvTreeView.SelectedItem.Tag
-        'change the selected node's image
-        '01-08-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-        'tvTreeView.SelectedItem.image = IIf(bIsHCAHPS, HFadedConfiguration, conFadedConfiguration)
-        tvTreeView.SelectedItem.image = IIf(bIsHCAHPS, HFadedConfiguration, IIf(bIsHHCAHPS, HHFadedConfiguration, IIf(bIsACOCAHPS, AFadedConfiguration, conFadedConfiguration)))
+        tvTreeView.SelectedItem.Image = iHospital + FadedConfiguration
         ' & remove any bundles
         tvTreeView.SelectedItem.Expanded = False
         While tvTreeView.SelectedItem.Children > 0
@@ -1198,22 +1278,14 @@ Private Sub mnuAddToGroupedPrint_Click()
         Wend
         ' & check to see if its parent should be checked
         Set nodProject = tvTreeView.SelectedItem.FirstSibling
-        '01-08-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-        'n = IIf(bIsHCAHPS, HCheckedHospital, conCheckedHospital)
-        'While Not nodProject Is Nothing
-        '    If nodProject.image = conConfiguration Or nodProject.image = HConfiguration Then
-        '        n = IIf(bIsHCAHPS, HHospital, conHospital)
-        '    End If
-        '    Set nodProject = nodProject.Next
-        'Wend
-        n = IIf(bIsHCAHPS, HCheckedHospital, IIf(bIsHHCAHPS, HHCheckedHospital, IIf(bIsACOCAHPS, ACheckedHospital, conCheckedHospital)))
+        n = iHospital + CheckedHospital
         While Not nodProject Is Nothing
-            If nodProject.image = conConfiguration Or nodProject.image = HConfiguration Or nodProject.image = HHConfiguration Or nodProject.image = AConfiguration Then
-                n = IIf(bIsHCAHPS, HHospital, IIf(bIsHHCAHPS, HHHospital, IIf(bIsACOCAHPS, AHospital, conHospital)))
+            If nodProject.Image = iHospital + Configuration Then
+                n = iHospital
             End If
             Set nodProject = nodProject.Next
         Wend
-        tvTreeView.SelectedItem.Parent.image = n
+        tvTreeView.SelectedItem.Parent.Image = n
         moQueueManager.AddToGroupedPrint Survey_id, SelectedConfig, strBundled
     End If
 End Sub
@@ -1246,13 +1318,7 @@ Private Sub mnuBundleFlats_Click()
     Dim strSurvey_id, strConfig_id, strBundled As String
     
     strID = tvTreeView.SelectedItem.Tag
-    '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-    'If tvTreeView.SelectedItem.image = conConfiguration Or _
-    '   tvTreeView.SelectedItem.image = HConfiguration Then
-    If tvTreeView.SelectedItem.image = conConfiguration Or _
-       tvTreeView.SelectedItem.image = HConfiguration Or _
-       tvTreeView.SelectedItem.image = HHConfiguration Or _
-       tvTreeView.SelectedItem.image = AConfiguration Then
+    If tvTreeView.SelectedItem.Image Mod TotalStates = Configuration Then
         strSurvey_id = NextValue(strID, vbTab)
         strConfig_id = NextValue(strID, vbTab)
         strBundled = NextValue(strID, vbTab)
@@ -1278,34 +1344,16 @@ Private Sub mnuBundlingReport_Click()
     
     MousePointer = vbHourglass
     strID = tvTreeView.SelectedItem.Tag
-    '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-    'If tvTreeView.SelectedItem.image = conConfiguration Or _
-    '   tvTreeView.SelectedItem.image = HConfiguration Then
-    If tvTreeView.SelectedItem.image = conConfiguration Or _
-       tvTreeView.SelectedItem.image = HConfiguration Or _
-       tvTreeView.SelectedItem.image = HHConfiguration Or _
-       tvTreeView.SelectedItem.image = AConfiguration Then
+    If tvTreeView.SelectedItem.Image Mod TotalStates = Configuration Then
         strSurvey_id = NextValue(strID, vbTab)
         strConfig_id = NextValue(strID, vbTab)
         strBundled = NextValue(strID, vbTab)
-    '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-    'ElseIf tvTreeView.SelectedItem.image = conGroupedPrintConfiguration Or _
-    '       tvTreeView.SelectedItem.image = HGroupedPrintConfiguration Then
-    ElseIf tvTreeView.SelectedItem.image = conGroupedPrintConfiguration Or _
-           tvTreeView.SelectedItem.image = HGroupedPrintConfiguration Or _
-           tvTreeView.SelectedItem.image = HHGroupedPrintConfiguration Or _
-           tvTreeView.SelectedItem.image = AGroupedPrintConfiguration Then
+    ElseIf tvTreeView.SelectedItem.Image Mod TotalStates = GroupedPrintConfiguration Then
         strID = tvTreeView.SelectedItem.Key
         strSurvey_id = "GP"
         strConfig_id = Replace(NextValue(strID, vbTab), "GroupedPrintConfig=", "")
         strBundled = NextValue(strID, vbTab)
-    '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-    'ElseIf tvTreeView.SelectedItem.image = conCheckedConfiguration Or _
-    '       tvTreeView.SelectedItem.image = HCheckedConfiguration Then
-    ElseIf tvTreeView.SelectedItem.image = conCheckedConfiguration Or _
-           tvTreeView.SelectedItem.image = HCheckedConfiguration Or _
-           tvTreeView.SelectedItem.image = HHCheckedConfiguration Or _
-           tvTreeView.SelectedItem.image = ACheckedConfiguration Then
+    ElseIf tvTreeView.SelectedItem.Image Mod TotalStates = CheckedConfiguration Then
         If InStr(1, tvTreeView.SelectedItem.Key, "GroupedPrintConfig=") > 0 Then
             strID = tvTreeView.SelectedItem.Key
             strSurvey_id = "GP"
@@ -1341,25 +1389,9 @@ Private Sub PrintSample(ByVal bolSeperatePages As Boolean)
     Dim strSurvey_id, strConfig_id, strBundled, strPostalBundle, dummy As String
 
     strID = tvTreeView.SelectedItem.Tag
-    '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-    'If tvTreeView.SelectedItem.image = conFadedConfiguration Or _
-    '   tvTreeView.SelectedItem.image = conConfiguration Or _
-    '   tvTreeView.SelectedItem.image = conGroupedPrintHospital Or _
-    '   tvTreeView.SelectedItem.image = HFadedConfiguration Or _
-    '   tvTreeView.SelectedItem.image = HConfiguration Or _
-    '   tvTreeView.SelectedItem.image = HGroupedPrintHospital Then
-    If tvTreeView.SelectedItem.image = conFadedConfiguration Or _
-       tvTreeView.SelectedItem.image = conConfiguration Or _
-       tvTreeView.SelectedItem.image = conGroupedPrintHospital Or _
-       tvTreeView.SelectedItem.image = HFadedConfiguration Or _
-       tvTreeView.SelectedItem.image = HConfiguration Or _
-       tvTreeView.SelectedItem.image = HGroupedPrintHospital Or _
-       tvTreeView.SelectedItem.image = HHFadedConfiguration Or _
-       tvTreeView.SelectedItem.image = HHConfiguration Or _
-       tvTreeView.SelectedItem.image = HHGroupedPrintHospital Or _
-       tvTreeView.SelectedItem.image = AFadedConfiguration Or _
-       tvTreeView.SelectedItem.image = AConfiguration Or _
-       tvTreeView.SelectedItem.image = AGroupedPrintHospital Then
+    If (tvTreeView.SelectedItem.Image Mod TotalStates = FadedConfiguration) Or _
+        (tvTreeView.SelectedItem.Image Mod TotalStates = Configuration) Or _
+        (tvTreeView.SelectedItem.Image Mod TotalStates = GroupedPrintConfiguration) Then
         strSurvey_id = NextValue(strID, vbTab)
         strConfig_id = NextValue(strID, vbTab)
         strBundled = NextValue(strID, vbTab)
@@ -1395,8 +1427,8 @@ Private Sub mnuRemoveFromGroupedPrint_Click()
     Dim Survey_id, Config_id, strBundled, dummy, strX As String
     Dim n As Long
     Dim nodProject As Node
-    Dim bIsHCAHPS As Boolean
-    Dim bIsHHCAHPS, bIsACOCAHPS As Boolean   '01-08-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
+    Dim iOffset As Integer
+    Dim iHospital As Integer
     
     strKey = tvTreeView.SelectedItem.Key
     If Mid(strKey, 1, 17) = "GroupedPrintItem=" Then
@@ -1408,10 +1440,13 @@ Private Sub mnuRemoveFromGroupedPrint_Click()
     Survey_id = NextValue(strX, vbTab) ' survey_id
     Config_id = NextValue(strX, vbTab) ' config_id
     strBundled = NextValue(strX, vbTab) ' datbundled
-    bIsHCAHPS = IIf(UCase(Left(NextValue(strX, vbTab), 6)) = "HCAHPS", True, False) ' survey type
-    '01-08-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-    bIsHHCAHPS = IIf(UCase(Left(NextValue(strX, vbTab), 11)) = "HOME HEALTH", True, False) ' survey type
-    bIsACOCAHPS = IIf((UCase(Left(NextValue(strX, vbTab), 8)) = "ACOCAHPS") Or (UCase(Left(NextValue(strX, vbTab), 8)) = "ICHCAHPS"), True, False) ' survey type
+    iOffset = 0
+    iOffset = IIf(UCase(Left(NextValue(strX, vbTab), 6)) = "HCAHPS", OffsetHCAHPS, iOffset)
+    iOffset = IIf(UCase(Left(NextValue(strX, vbTab), 11)) = "HOME HEALTH", OffsetHHCAHPS, iOffset)
+    iOffset = IIf(UCase(Left(NextValue(strX, vbTab), 8)) = "ACOCAHPS", OffsetACOCAHPS, iOffset)
+    iOffset = IIf(UCase(Left(NextValue(strX, vbTab), 8)) = "ICHCAHPS", OffsetICHCAHPS, iOffset)
+    iOffset = IIf(UCase(Left(NextValue(strX, vbTab), 7)) = "HOSPICE", OffsetHOSPICE, iOffset)
+    iHospital = conHospital + iOffset
     dummy = NextValue(strX, vbTab) ' number of pieces
     
     tvTreeView.Nodes(n).Parent.Tag = tvTreeView.Nodes(n).Parent.Tag - Val(dummy)
@@ -1425,11 +1460,8 @@ Private Sub mnuRemoveFromGroupedPrint_Click()
         strX = strX & NextValue(strKey, vbTab) & "|"
         strX = strX & NextValue(strKey, vbTab)
         
-        '01-08-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-        'tvTreeView.Nodes(n).image = IIf(bIsHCAHPS, HConfiguration, conConfiguration)
-        'tvTreeView.Nodes(n).Parent.image = IIf(bIsHCAHPS, HHospital, conHospital)
-        tvTreeView.Nodes(n).image = IIf(bIsHCAHPS, HConfiguration, IIf(bIsHHCAHPS, HHConfiguration, IIf(bIsACOCAHPS, AConfiguration, conConfiguration)))
-        tvTreeView.Nodes(n).Parent.image = IIf(bIsHCAHPS, HHospital, IIf(bIsHHCAHPS, HHHospital, IIf(bIsACOCAHPS, AHospital, conHospital)))
+        tvTreeView.Nodes(n).Image = iHospital + Configuration
+        tvTreeView.Nodes(n).Parent.Image = iHospital
         Set nodProject = tvTreeView.Nodes.Add(tvTreeView.Nodes(n), tvwChild, strX, "")
         nodProject.Expanded = False
     End If
@@ -1461,13 +1493,7 @@ Private Sub mnuRollbackGen_Click()
     strID = tvTreeView.SelectedItem.Tag
     surveyID = NextValue(strID, vbTab)
     
-    '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-    'If frmMain.tvTreeView.SelectedItem.image = conConfiguration Or _
-    '   frmMain.tvTreeView.SelectedItem.image = HConfiguration Then
-    If frmMain.tvTreeView.SelectedItem.image = conConfiguration Or _
-       frmMain.tvTreeView.SelectedItem.image = HConfiguration Or _
-       frmMain.tvTreeView.SelectedItem.image = HHConfiguration Or _
-       frmMain.tvTreeView.SelectedItem.image = AConfiguration Then
+    If frmMain.tvTreeView.SelectedItem.Image Mod TotalStates = Configuration Then
         Dim SelectedNode As ComctlLib.Node
         Dim n As Integer
         
@@ -1488,13 +1514,7 @@ Private Sub mnuRollbackGen_Click()
         If frmMain.tvTreeView.SelectedItem.Children <> 0 Then
             n = frmMain.tvTreeView.SelectedItem.Child.Index
             Do While n >= 0
-                '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-                'If frmMain.tvTreeView.Nodes(n).image = conAlreadyMailed Or _
-                '   frmMain.tvTreeView.Nodes(n).image = HAlreadyMailed Then
-                If frmMain.tvTreeView.Nodes(n).image = conAlreadyMailed Or _
-                   frmMain.tvTreeView.Nodes(n).image = HAlreadyMailed Or _
-                   frmMain.tvTreeView.Nodes(n).image = HHAlreadyMailed Or _
-                   frmMain.tvTreeView.Nodes(n).image = AAlreadyMailed Then
+                If frmMain.tvTreeView.Nodes(n).Image Mod TotalStates = AlreadyMailed Then
                     mailDateSet = True
                     Exit Do
                 End If
@@ -1756,19 +1776,9 @@ End Sub
 
 Private Sub mnuMailingDates_Click()
     DoEvents
-    '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-    'If tvTreeView.SelectedItem.image = conBundle Or _
-    '   tvTreeView.SelectedItem.image = HBundle Then
-    '    If MsgBox("The current bundle is not marked for mailing date assignment.  Do you want to include this bundle?", vbYesNo, "Include this bundle?") = vbYes Then
-    '        tvTreeView.SelectedItem.image = IIf(IsHCAHPS(tvTreeView.SelectedItem.image), HMailBundle, conMailBundle)
-    '    End If
-    'End If
-    If tvTreeView.SelectedItem.image = conBundle Or _
-       tvTreeView.SelectedItem.image = HBundle Or _
-       tvTreeView.SelectedItem.image = HHBundle Or _
-       tvTreeView.SelectedItem.image = ABundle Then
+    If tvTreeView.SelectedItem.Image Mod TotalStates = Bundle Then
         If MsgBox("The current bundle is not marked for mailing date assignment.  Do you want to include this bundle?", vbYesNo, "Include this bundle?") = vbYes Then
-            tvTreeView.SelectedItem.image = IIf(IsHCAHPS(tvTreeView.SelectedItem.image), HMailBundle, IIf(IsHHCAHPS(tvTreeView.SelectedItem.image), HHMailBundle, IIf(IsACOCAHPS(tvTreeView.SelectedItem.image), AMailBundle, conMailBundle)))
+            tvTreeView.SelectedItem.Image = (tvTreeView.SelectedItem.Image \ TotalStates) * TotalStates + MailBundle
         End If
     End If
     frmMailingDates.Show vbModal
@@ -1784,21 +1794,15 @@ Private Sub mnuModify_Click()
         mnuPrint.Enabled = False
         mnuDelete.Enabled = False
     Else
-        Select Case tvTreeView.SelectedItem.image
-            '01-08-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-            'Case conHospital, conCheckedHospital, HHospital, HCheckedHospital:
-            Case conHospital, conCheckedHospital, HHospital, HCheckedHospital, HHHospital, HHCheckedHospital, AHospital, ACheckedHospital:
+        Select Case tvTreeView.SelectedItem.Image Mod TotalStates
+            Case Hospital, CheckedHospital:
                 mnuPrint.Enabled = False
                 mnuDelete.Enabled = False
-            '01-08-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-            'Case conConfiguration, conBundle, HConfiguration, HBundle:
-            Case conConfiguration, conBundle, HConfiguration, HBundle, HHConfiguration, HHBundle, AConfiguration, ABundle:
+            Case Configuration, Bundle:
                 mnuDelete.Caption = "&Delete"
                 mnuDelete.Enabled = True
                 mnuPrint.Enabled = True
-            '01-08-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-            'Case conDeleted, HDeleted:
-            Case conDeleted, HDeleted, HHDeleted, ADeleted:
+            Case Deleted:
                 mnuDelete.Caption = "&UnDelete"
                 mnuPrint.Enabled = False
         End Select
@@ -1815,34 +1819,18 @@ Private Sub mnuDelete_Click()
 On Error GoTo NoSelection
     Dim X As Long
     If mbTreeSel Then
-        '01-08-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-        'If tvTreeView.SelectedItem.image <> conDeleted And tvTreeView.SelectedItem.image <> HDeleted Then
-        '    Select Case tvTreeView.SelectedItem.image
-        '        Case conConfiguration, HConfiguration:
-        '            DeleteConfiguration tvTreeView.SelectedItem
-        '        Case conBundle, HBundle:
-        '            DeleteBundleId tvTreeView.SelectedItem
-        '    End Select
-        'Else
-        '    Select Case tvTreeView.SelectedItem.Parent.image
-        '        Case conHospital, conCheckedHospital, HHospital, HCheckedHospital:
-        '            UnDeleteConfiguration tvTreeView.SelectedItem
-        '        Case conConfiguration, HConfiguration:
-        '            UnDeleteBundleId tvTreeView.SelectedItem
-        '    End Select
-        'End If
-        If tvTreeView.SelectedItem.image <> conDeleted And tvTreeView.SelectedItem.image <> HDeleted And tvTreeView.SelectedItem.image <> HHDeleted And tvTreeView.SelectedItem.image <> ADeleted Then
-            Select Case tvTreeView.SelectedItem.image
-                Case conConfiguration, HConfiguration, HHConfiguration, AConfiguration:
+        If tvTreeView.SelectedItem.Image Mod TotalStates <> Deleted Then
+            Select Case tvTreeView.SelectedItem.Image Mod TotalStates
+                Case Configuration:
                     DeleteConfiguration tvTreeView.SelectedItem
-                Case conBundle, HBundle, HHBundle, ABundle:
+                Case Bundle:
                     DeleteBundleId tvTreeView.SelectedItem
             End Select
         Else
-            Select Case tvTreeView.SelectedItem.Parent.image
-                Case conHospital, conCheckedHospital, HHospital, HCheckedHospital, HHHospital, HHCheckedHospital, AHospital, ACheckedHospital:
+            Select Case tvTreeView.SelectedItem.Parent.Image Mod TotalStates
+                Case Hospital, CheckedHospital:
                     UnDeleteConfiguration tvTreeView.SelectedItem
-                Case conConfiguration, HConfiguration, HHConfiguration, AConfiguration:
+                Case Configuration:
                     UnDeleteBundleId tvTreeView.SelectedItem
             End Select
         End If
@@ -1857,32 +1845,10 @@ End Sub
 
 Private Sub mnuPopupMarkMailing_Click()
     
-    '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-    'If tvTreeView.SelectedItem.image = conBundle Then
-    '    tvTreeView.SelectedItem.image = conMailBundle
-    'ElseIf tvTreeView.SelectedItem.image = HBundle Then
-    '    tvTreeView.SelectedItem.image = HMailBundle
-    'ElseIf tvTreeView.SelectedItem.image = conMailBundle Then
-    '    tvTreeView.SelectedItem.image = conBundle
-    'ElseIf tvTreeView.SelectedItem.image = HMailBundle Then
-    '    tvTreeView.SelectedItem.image = HBundle
-    'End If
-    If tvTreeView.SelectedItem.image = conBundle Then
-        tvTreeView.SelectedItem.image = conMailBundle
-    ElseIf tvTreeView.SelectedItem.image = conMailBundle Then
-        tvTreeView.SelectedItem.image = conBundle
-    ElseIf tvTreeView.SelectedItem.image = HBundle Then
-        tvTreeView.SelectedItem.image = HMailBundle
-    ElseIf tvTreeView.SelectedItem.image = HMailBundle Then
-        tvTreeView.SelectedItem.image = HBundle
-    ElseIf tvTreeView.SelectedItem.image = HHBundle Then
-        tvTreeView.SelectedItem.image = HHMailBundle
-    ElseIf tvTreeView.SelectedItem.image = HHMailBundle Then
-        tvTreeView.SelectedItem.image = HHBundle
-    ElseIf tvTreeView.SelectedItem.image = ABundle Then
-        tvTreeView.SelectedItem.image = AMailBundle
-    ElseIf tvTreeView.SelectedItem.image = AMailBundle Then
-        tvTreeView.SelectedItem.image = ABundle
+    If tvTreeView.SelectedItem.Image Mod TotalStates = Bundle Then
+        tvTreeView.SelectedItem.Image = tvTreeView.SelectedItem.Image - Bundle + MailBundle
+    ElseIf tvTreeView.SelectedItem.Image Mod TotalStates = MailBundle Then
+        tvTreeView.SelectedItem.Image = tvTreeView.SelectedItem.Image - MailBundle + Bundle
     End If
 
 End Sub
@@ -1904,9 +1870,7 @@ Private Sub mnuPostOfficeReport_Click()
         strConfig_id = Replace(NextValue(strID, vbTab), "GroupedPrintConfig=", "")
         strBundled = NextValue(strID, vbTab)
         strMailed = "1/1/1980"
-    '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-    'ElseIf tvTreeView.SelectedItem.image = conAlreadyMailed Or tvTreeView.SelectedItem.image = HAlreadyMailed Then
-    ElseIf tvTreeView.SelectedItem.image = conAlreadyMailed Or tvTreeView.SelectedItem.image = HAlreadyMailed Or tvTreeView.SelectedItem.image = HHAlreadyMailed Or tvTreeView.SelectedItem.image = AAlreadyMailed Then
+    ElseIf tvTreeView.SelectedItem.Image Mod TotalStates = AlreadyMailed Then
         strID = tvTreeView.SelectedItem.Tag
         strSurvey_id = NextValue(strID, vbTab)
         strBundle = NextValue(strID, vbTab)
@@ -1983,35 +1947,15 @@ Private Sub mnuPrint_Click()
             mnuMailingDates.Visible = False
             mnuPopupMarkMailing.Visible = False
             mnuBundlingReport.Visible = False
-            '01-19-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-            'If tvTreeView.SelectedItem.image <> conDeleted And _
-            '   tvTreeView.SelectedItem.image <> HDeleted Then
-            If tvTreeView.SelectedItem.image <> conDeleted And _
-               tvTreeView.SelectedItem.image <> HDeleted And _
-               tvTreeView.SelectedItem.image <> HHDeleted And _
-               tvTreeView.SelectedItem.image <> ADeleted Then
-            '01-19-2010 JJF - End of add
+            If tvTreeView.SelectedItem.Image Mod TotalStates = Deleted Then
                 If InStr(tvTreeView.SelectedItem.Tag, "(unbundled)") = 0 Then
                     Call PrintBundles(tvTreeView.SelectedItem)
                     moQueueManager.PrintingInstance_Remove
                     tvTreeView.Nodes.Remove tvTreeView.SelectedItem.Index
                     Do While (Not (tvTreeView.SelectedItem Is Nothing))
-                        '01-19-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-                        'If (tvTreeView.SelectedItem.image <> conHospital And _
-                        '   tvTreeView.SelectedItem.image <> conConfiguration And _
-                        '   tvTreeView.SelectedItem.image <> HHospital And _
-                        '   tvTreeView.SelectedItem.image <> HConfiguration) Or _
-                        '   (Not (tvTreeView.SelectedItem.Child Is Nothing)) Then
-                        If (tvTreeView.SelectedItem.image <> conHospital And _
-                           tvTreeView.SelectedItem.image <> conConfiguration And _
-                           tvTreeView.SelectedItem.image <> HHospital And _
-                           tvTreeView.SelectedItem.image <> HConfiguration And _
-                           tvTreeView.SelectedItem.image <> HHHospital And _
-                           tvTreeView.SelectedItem.image <> HHConfiguration And _
-                           tvTreeView.SelectedItem.image <> AHospital And _
-                           tvTreeView.SelectedItem.image <> AConfiguration) Or _
+                        If (tvTreeView.SelectedItem.Image Mod TotalStates <> Hospital And _
+                            tvTreeView.SelectedItem.Image Mod TotalStates <> Configuration) Or _
                            (Not (tvTreeView.SelectedItem.Child Is Nothing)) Then
-                        '01-19-2010 JJF - End of add
                             Exit Do
                         End If
                         tvTreeView.Nodes.Remove tvTreeView.SelectedItem.Index
@@ -2078,22 +2022,9 @@ End Sub
 
 Private Sub tvTreeView_DblClick()
     
-    '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-    'If mnuReprint.Caption = "View Print &Queue" And _
-    '   (tvTreeView.SelectedItem.image = conBundle Or _
-    '    tvTreeView.SelectedItem.image = conMailBundle Or _
-    '    tvTreeView.SelectedItem.image = HBundle Or _
-    '    tvTreeView.SelectedItem.image = HMailBundle) Then
     If mnuReprint.Caption = "View Print &Queue" And _
-       (tvTreeView.SelectedItem.image = conBundle Or _
-        tvTreeView.SelectedItem.image = conMailBundle Or _
-        tvTreeView.SelectedItem.image = HBundle Or _
-        tvTreeView.SelectedItem.image = HMailBundle Or _
-        tvTreeView.SelectedItem.image = HHBundle Or _
-        tvTreeView.SelectedItem.image = HHMailBundle Or _
-        tvTreeView.SelectedItem.image = ABundle Or _
-        tvTreeView.SelectedItem.image = AMailBundle) Then
-        
+       (tvTreeView.SelectedItem.Image Mod TotalStates = Bundle Or _
+        tvTreeView.SelectedItem.Image Mod TotalStates = MailBundle) Then
         mnuPopupMarkMailing_Click
     End If
 End Sub
@@ -2119,10 +2050,8 @@ Private Sub tvTreeView_MouseUp(Button As Integer, Shift As Integer, X As Single,
     ButtonUsed = Button
     Select Case Button
         Case vbRightButton:
-            Select Case tvTreeView.SelectedItem.image
-                '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-                'Case conConfiguration, conAlreadyMailed, HConfiguration, HAlreadyMailed:
-                Case conConfiguration, conAlreadyMailed, HConfiguration, HAlreadyMailed, HHConfiguration, HHAlreadyMailed, AConfiguration, AAlreadyMailed:
+            Select Case tvTreeView.SelectedItem.Image Mod TotalStates
+                Case Configuration, AlreadyMailed:
                     mnuPopUpPrint.Visible = True
                     mnuPopUpDelete.Caption = "&Delete"
                     If bolReprint Then
@@ -2131,13 +2060,7 @@ Private Sub tvTreeView_MouseUp(Button As Integer, Shift As Integer, X As Single,
                         mnuPrintSample.Visible = False
                         mnuBundleFlats.Visible = False
                         mnuBundlingReport.Visible = True
-                        '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-                        'mnuMailingDates.Visible = (tvTreeView.SelectedItem.image = conConfiguration Or _
-                        '                           tvTreeView.SelectedItem.image = HConfiguration)
-                        mnuMailingDates.Visible = (tvTreeView.SelectedItem.image = conConfiguration Or _
-                                                   tvTreeView.SelectedItem.image = HConfiguration Or _
-                                                   tvTreeView.SelectedItem.image = HHConfiguration Or _
-                                                   tvTreeView.SelectedItem.image = AConfiguration)
+                        mnuMailingDates.Visible = (tvTreeView.SelectedItem.Image Mod TotalStates = Configuration)
                     Else
                         mnuPopUpPrint.Caption = "&Print"
                         mnuAddToGroupedPrint.Visible = bolShowGroupedPrint
@@ -2152,20 +2075,12 @@ Private Sub tvTreeView_MouseUp(Button As Integer, Shift As Integer, X As Single,
                     mnuBundleFlats.Enabled = True
                     mnuPopupMarkMailing.Visible = False
                     mnuRollbackGen.Visible = True
-                    '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-                    'mnuPostOfficeReport.Visible = (tvTreeView.SelectedItem.image = conAlreadyMailed Or _
-                    '                               tvTreeView.SelectedItem.image = HAlreadyMailed)
-                    mnuPostOfficeReport.Visible = (tvTreeView.SelectedItem.image = conAlreadyMailed Or _
-                                                   tvTreeView.SelectedItem.image = HAlreadyMailed Or _
-                                                   tvTreeView.SelectedItem.image = HHAlreadyMailed Or _
-                                                   tvTreeView.SelectedItem.image = AAlreadyMailed)
+                    mnuPostOfficeReport.Visible = tvTreeView.SelectedItem.Image Mod TotalStates = AlreadyMailed
                     mnuRemoveFromGroupedPrint.Visible = False
                     If InStr(tvTreeView.SelectedItem.Tag, "(unbundled)") = 0 Then
                         PopupMenu mnuTreeViewPopUp, , , , mnuPopUpPrint
                     End If
-                '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-                'Case conBundle, conMailBundle, HBundle, HMailBundle:
-                Case conBundle, conMailBundle, HBundle, HMailBundle, HHBundle, HHMailBundle, ABundle, AMailBundle:
+                Case Bundle, MailBundle:
                     mnuPopUpPrint.Visible = True
                     mnuPopUpDelete.Caption = "&Delete"
                     mnuAddToGroupedPrint.Visible = False
@@ -2183,12 +2098,7 @@ Private Sub tvTreeView_MouseUp(Button As Integer, Shift As Integer, X As Single,
                         mnuBundlingReport.Visible = False
                         mnuPopupMarkMailing.Visible = False
                         mnuMailingDates.Visible = False
-                        '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-                        'If tvTreeView.SelectedItem.image = conBundle Or tvTreeView.SelectedItem.image = HBundle Then
-                        If tvTreeView.SelectedItem.image = conBundle Or _
-                           tvTreeView.SelectedItem.image = HBundle Or _
-                           tvTreeView.SelectedItem.image = HHBundle Or _
-                           tvTreeView.SelectedItem.image = ABundle Then
+                        If tvTreeView.SelectedItem.Image Mod TotalStates = Bundle Then
                             mnuPopupMarkMailing.Caption = "Mark for &Mailing"
                         Else
                             mnuPopupMarkMailing.Caption = "Unmark for &Mailing"
@@ -2202,9 +2112,7 @@ Private Sub tvTreeView_MouseUp(Button As Integer, Shift As Integer, X As Single,
                     mnuPostOfficeReport.Visible = False
                     mnuRemoveFromGroupedPrint.Visible = False
                     PopupMenu mnuTreeViewPopUp, , , , mnuPopUpPrint
-                '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-                'Case conDeleted, HDeleted:
-                Case conDeleted, HDeleted, HHDeleted, ADeleted:
+                Case Deleted:
                     mnuPopUpDelete.Caption = "&UnDelete"
                     mnuPopUpPrint.Enabled = False
                     mnuPopUpPrint.Visible = False
@@ -2213,9 +2121,7 @@ Private Sub tvTreeView_MouseUp(Button As Integer, Shift As Integer, X As Single,
                     mnuBundleFlats.Enabled = False
                     PopupMenu mnuTreeViewPopUp, , , , mnuPopUpPrint
                     mnuAbout_Click
-                '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-                'Case conFadedConfiguration, HFadedConfiguration:
-                Case conFadedConfiguration, HFadedConfiguration, HHFadedConfiguration, AFadedConfiguration:
+                Case FadedConfiguration:
                     mnuRemoveFromGroupedPrint.Visible = bolShowGroupedPrint
                     mnuPrintSample.Visible = True
                     mnuAddToGroupedPrint.Visible = False
@@ -2228,22 +2134,14 @@ Private Sub tvTreeView_MouseUp(Button As Integer, Shift As Integer, X As Single,
                     mnuPostOfficeReport.Visible = False
                     mnuRollbackGen.Visible = False
                     PopupMenu mnuTreeViewPopUp
-                '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-                'Case conGroupedPrintConfiguration, conCheckedConfiguration, HGroupedPrintConfiguration, HCheckedConfiguration:
-                Case conGroupedPrintConfiguration, conCheckedConfiguration, HGroupedPrintConfiguration, HCheckedConfiguration, HHGroupedPrintConfiguration, HHCheckedConfiguration, AGroupedPrintConfiguration, ACheckedConfiguration:
+                Case GroupedPrintConfiguration, CheckedConfiguration:
                     If bolReprint Then
                         mnuPopUpPrint.Caption = "&RePrint"
                     Else
                         mnuPopUpPrint.Caption = "&Print"
                     End If
                     mnuMailingDates.Visible = bolReprint
-                    '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-                    'If tvTreeView.SelectedItem.image = conCheckedConfiguration Or _
-                    '   tvTreeView.SelectedItem.image = HCheckedConfiguration Then
-                    If tvTreeView.SelectedItem.image = conCheckedConfiguration Or _
-                       tvTreeView.SelectedItem.image = HCheckedConfiguration Or _
-                       tvTreeView.SelectedItem.image = HHCheckedConfiguration Or _
-                       tvTreeView.SelectedItem.image = ACheckedConfiguration Then
+                    If tvTreeView.SelectedItem.Image Mod TotalStates = CheckedConfiguration Then
                         mnuMailingDates.Visible = False
                     End If
                     mnuPopUpPrint.Visible = True
@@ -2257,9 +2155,7 @@ Private Sub tvTreeView_MouseUp(Button As Integer, Shift As Integer, X As Single,
                     mnuRollbackGen.Visible = False
                     mnuRemoveFromGroupedPrint.Visible = False
                     PopupMenu mnuTreeViewPopUp, , , , mnuPopUpPrint
-                '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-                'Case conGroupedPrintHospital, HGroupedPrintHospital:
-                Case conGroupedPrintHospital, HGroupedPrintHospital, HHGroupedPrintHospital, AGroupedPrintHospital:
+                Case GroupedPrintHospital:
                     mnuRemoveFromGroupedPrint.Visible = bolShowGroupedPrint
                     mnuPrintSample.Visible = True
                     mnuAddToGroupedPrint.Visible = False
@@ -2306,16 +2202,12 @@ Public Sub GroupedPrintNode(NodeIndex As Long)
     strID = tvTreeView.Nodes(NodeIndex).Key
     If Mid(strID, 1, 19) = "GroupedPrintConfig=" Then
         PaperConfig = Val(Mid(strID, 20))
-        '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-        'frmMain.tvTreeView.Nodes(NodeIndex).image = IIf(IsHCAHPS(frmMain.tvTreeView.Nodes(NodeIndex).image), HPrinting, conPrinting)
-        frmMain.tvTreeView.Nodes(NodeIndex).image = IIf(IsHCAHPS(frmMain.tvTreeView.Nodes(NodeIndex).image), HPrinting, IIf(IsHHCAHPS(frmMain.tvTreeView.Nodes(NodeIndex).image), HHPrinting, IIf(IsACOCAHPS(frmMain.tvTreeView.Nodes(NodeIndex).image), APrinting, conPrinting)))
+        frmMain.tvTreeView.Nodes(NodeIndex).Image = (frmMain.tvTreeView.Nodes(NodeIndex).Image \ TotalStates) * TotalStates + Printing
         moQueueManager.GroupedPrintRebundleAndSetLithos PaperConfig, PrintDate
         If Not moQueueManager.GetGroupedPrint(PaperConfig, False, PrintDate) Then
             MsgBox "No surveys were printed!", vbExclamation, "Print Warning"
         End If
-        '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-        'frmMain.tvTreeView.Nodes(NodeIndex).image = IIf(IsHCAHPS(frmMain.tvTreeView.Nodes(NodeIndex).image), HBundle, conBundle)
-        frmMain.tvTreeView.Nodes(NodeIndex).image = IIf(IsHCAHPS(frmMain.tvTreeView.Nodes(NodeIndex).image), HBundle, IIf(IsHHCAHPS(frmMain.tvTreeView.Nodes(NodeIndex).image), HHBundle, IIf(IsACOCAHPS(frmMain.tvTreeView.Nodes(NodeIndex).image), ABundle, conBundle)))
+        frmMain.tvTreeView.Nodes(NodeIndex).Image = (frmMain.tvTreeView.Nodes(NodeIndex).Image \ TotalStates) * TotalStates + Bundle
     Else
         MsgBox "That doesn't appear to be a Grouped Print configuration", vbCritical, "Error"
     End If
@@ -2339,16 +2231,12 @@ Public Sub PrintNode(NodeIndex As Long)
     mvStartLitho = NextValue(strID, vbTab)
     mvEndLitho = NextValue(strID, vbTab)
     strBundled = NextValue(strID, vbTab)
-    '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-    'frmMain.tvTreeView.Nodes(NodeIndex).image = IIf(IsHCAHPS(frmMain.tvTreeView.Nodes(NodeIndex).image), HPrinting, conPrinting)
-    frmMain.tvTreeView.Nodes(NodeIndex).image = IIf(IsHCAHPS(frmMain.tvTreeView.Nodes(NodeIndex).image), HPrinting, IIf(IsHHCAHPS(frmMain.tvTreeView.Nodes(NodeIndex).image), HHPrinting, IIf(IsACOCAHPS(frmMain.tvTreeView.Nodes(NodeIndex).image), APrinting, conPrinting)))
+    frmMain.tvTreeView.Nodes(NodeIndex).Image = (frmMain.tvTreeView.Nodes(NodeIndex).Image \ TotalStates) * TotalStates + Printing
     moQueueManager.SetLithoCodes mbReprint, Survey_id, PostalBundle, PaperConfig, Page_num, strBundled
     If Not moQueueManager.GetPrintBundle(Survey_id, PostalBundle, PaperConfig, Page_num, strBundled) Then
         MsgBox "No surveys were printed for the " & PostalBundle & " bundle!", vbExclamation, "Print Warning"
     End If
-    '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-    'frmMain.tvTreeView.Nodes(NodeIndex).image = IIf(IsHCAHPS(frmMain.tvTreeView.Nodes(NodeIndex).image), HBundle, conBundle)
-    frmMain.tvTreeView.Nodes(NodeIndex).image = IIf(IsHCAHPS(frmMain.tvTreeView.Nodes(NodeIndex).image), HBundle, IIf(IsHHCAHPS(frmMain.tvTreeView.Nodes(NodeIndex).image), HHBundle, IIf(IsACOCAHPS(frmMain.tvTreeView.Nodes(NodeIndex).image), ABundle, conBundle)))
+    frmMain.tvTreeView.Nodes(NodeIndex).Image = (frmMain.tvTreeView.Nodes(NodeIndex).Image \ TotalStates) * TotalStates + Bundle
 End Sub
 
 Public Function PrintBundles(nodSelected As Node) As String
@@ -2367,30 +2255,15 @@ Public Function PrintBundles(nodSelected As Node) As String
             SelectedNode.Selected = True
         End If
     End If
-    '01-19-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-    'If nodSelected.image = conGroupedPrintConfiguration Or _
-    '   nodSelected.image = HGroupedPrintConfiguration Then
-    If nodSelected.image = conGroupedPrintConfiguration Or _
-       nodSelected.image = HGroupedPrintConfiguration Or _
-       nodSelected.image = HHGroupedPrintConfiguration Or _
-       nodSelected.image = AGroupedPrintConfiguration Then
+    If nodSelected.Image Mod TotalStates = GroupedPrintConfiguration Then
     '01-19-2010 JJF - End of add
         'check to see if any surveys have been added to grouped print since the last time the tree was refreshed!
         '(write some code here)
         GroupedPrintNode (nodSelected.Index)
-    '01-19-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-    'ElseIf nodSelected.image = conBundle Or nodSelected.image = HBundle Then
-    ElseIf nodSelected.image = conBundle Or nodSelected.image = HBundle Or nodSelected.image = HHBundle Or nodSelected.image = ABundle Then
-    '01-19-2010 JJF - End of add
+    ElseIf nodSelected.Image Mod TotalStates = Bundle Then
         PrintNode (nodSelected.Index)
-    '01-19-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-    'ElseIf nodSelected.Parent.image <> conHospital And nodSelected.Parent.image <> conCheckedHospital And _
-    '    nodSelected.Parent.image <> HHospital And nodSelected.Parent.image <> HCheckedHospital Then
-    ElseIf nodSelected.Parent.image <> conHospital And nodSelected.Parent.image <> conCheckedHospital And _
-        nodSelected.Parent.image <> HHospital And nodSelected.Parent.image <> HCheckedHospital And _
-        nodSelected.Parent.image <> HHHospital And nodSelected.Parent.image <> HHCheckedHospital And _
-        nodSelected.Parent.image <> AHospital And nodSelected.Parent.image <> ACheckedHospital Then
-    '01-19-2010 JJF - End of add
+    ElseIf nodSelected.Parent.Image Mod TotalStates <> Hospital And _
+        nodSelected.Parent.Image Mod TotalStates <> CheckedHospital Then
         Set nodSelected = nodSelected.Parent
         PrintNode (nodSelected.Index)
     Else
@@ -2402,10 +2275,7 @@ Public Function PrintBundles(nodSelected As Node) As String
         Next X
     End If
     Me.MousePointer = vbDefault
-    '01-19-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-    'nodSelected.image = IIf(IsHCAHPS(nodSelected.image), HConfiguration, conConfiguration)
-    nodSelected.image = IIf(IsHCAHPS(nodSelected.image), HConfiguration, IIf(IsHHCAHPS(nodSelected.image), HHConfiguration, IIf(IsACOCAHPS(nodSelected.image), AConfiguration, conConfiguration)))
-    '01-19-2010 JJF - End of add
+    nodSelected.Image = (nodSelected.Image \ TotalStates) * TotalStates + Configuration
     Exit Function
 NoPrint:
     
@@ -2461,7 +2331,7 @@ Public Function RePrintBundles(nodSelected As Node) As Boolean
             SelectedNode.Selected = True
         End If
     End If
-    If nodSelected.Parent.image = conGroupedPrint Then
+    If nodSelected.Parent.Image = conGroupedPrint Then
         strID = tvTreeView.SelectedItem.Key
         If Mid(strID, 1, 19) = "GroupedPrintConfig=" Then
             strID = Mid(strID, 20)
@@ -2471,13 +2341,8 @@ Public Function RePrintBundles(nodSelected As Node) As Boolean
                 MsgBox "No surveys were printed!", vbExclamation, "Print Warning"
             End If
         End If
-    '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-    'ElseIf nodSelected.Parent.image <> conHospital And nodSelected.Parent.image <> conCheckedHospital And _
-    '       nodSelected.Parent.image <> HHospital And nodSelected.Parent.image <> HCheckedHospital Then
-    ElseIf nodSelected.Parent.image <> conHospital And nodSelected.Parent.image <> conCheckedHospital And _
-           nodSelected.Parent.image <> HHospital And nodSelected.Parent.image <> HCheckedHospital And _
-           nodSelected.Parent.image <> HHHospital And nodSelected.Parent.image <> HHCheckedHospital And _
-           nodSelected.Parent.image <> AHospital And nodSelected.Parent.image <> ACheckedHospital Then
+    ElseIf nodSelected.Parent.Image Mod TotalStates <> Hospital And _
+            nodSelected.Parent.Image Mod TotalStates <> CheckedHospital Then
         Set AnotherNode = nodSelected
         Set nodSelected = nodSelected.Parent
         lngTotalChildren = 1
@@ -2490,25 +2355,18 @@ Public Function RePrintBundles(nodSelected As Node) As Boolean
         mvEndLitho = NextValue(strID, vbTab)
         strBundled = NextValue(strID, vbTab)
         strMailedOn = NextValue(strID, vbTab)
-        '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-        'frmMain.tvTreeView.SelectedItem.image = IIf(IsHCAHPS(frmMain.tvTreeView.SelectedItem.image), HPrinting, conPrinting)
-        n = frmMain.tvTreeView.SelectedItem.image
-        n = IIf(IsHCAHPS(n), HPrinting, IIf(IsHHCAHPS(n), HHPrinting, IIf(IsACOCAHPS(n), APrinting, conPrinting)))
-        '01-20-2010 JJF - End of add
+        n = frmMain.tvTreeView.SelectedItem.Image
+        n = (n \ TotalStates) * TotalStates + Printing
         
         If Not oQueueManager.GetRePrintBundle(Survey_id, PostalBundle, PaperConfig, Page_num, strBundled) Then
             MsgBox "No surveys were printed for the " & PostalBundle & " bundle!", vbExclamation, "Print Warning"
         End If
         If strMailedOn = "Not Mailed" Then
-            '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-            'n = IIf(IsHCAHPS(frmMain.tvTreeView.SelectedItem.image), HBundle, conBundle)
-            n = IIf(IsHCAHPS(n), HBundle, IIf(IsHHCAHPS(n), HHBundle, IIf(IsACOCAHPS(n), ABundle, conBundle)))
+            n = (n \ TotalStates) * TotalStates + Bundle
         Else
-            '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-            'n = IIf(IsHCAHPS(frmMain.tvTreeView.SelectedItem.image), HAlreadyMailed, conAlreadyMailed)
-            n = IIf(IsHCAHPS(n), HAlreadyMailed, IIf(IsHHCAHPS(n), HHAlreadyMailed, IIf(IsACOCAHPS(n), AAlreadyMailed, conAlreadyMailed)))
+            n = (n \ TotalStates) * TotalStates + AlreadyMailed
         End If
-        frmMain.tvTreeView.SelectedItem.image = n
+        frmMain.tvTreeView.SelectedItem.Image = n
     Else
         lngTotalChildren = nodSelected.Children
         Set AnotherNode = nodSelected
@@ -2522,32 +2380,23 @@ Public Function RePrintBundles(nodSelected As Node) As Boolean
             mvEndLitho = NextValue(strID, vbTab)
             strBundled = NextValue(strID, vbTab)
             strMailedOn = NextValue(strID, vbTab)
-            '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-            'frmMain.tvTreeView.Nodes(X).image = IIf(IsHCAHPS(frmMain.tvTreeView.Nodes(X).image), HPrinting, conPrinting)
-            n = frmMain.tvTreeView.Nodes(X).image
-            n = IIf(IsHCAHPS(n), HPrinting, IIf(IsHHCAHPS(n), HHPrinting, IIf(IsACOCAHPS(n), APrinting, conPrinting)))
-            '01-20-2010 JJF - End of add
+            n = frmMain.tvTreeView.Nodes(X).Image
+            n = (n \ TotalStates) * TotalStates + Printing
             If Not oQueueManager.GetRePrintBundle(Survey_id, PostalBundle, PaperConfig, Page_num, strBundled) Then
                 MsgBox "No surveys were printed for the " & PostalBundle & " bundle!", vbExclamation, "Print Warning"
             End If
             If strMailedOn = "Not Mailed" Then
-                '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-                'n = IIf(IsHCAHPS(frmMain.tvTreeView.Nodes(X).image), HBundle, conBundle)
-                n = IIf(IsHCAHPS(n), HBundle, IIf(IsHHCAHPS(n), HHBundle, IIf(IsACOCAHPS(n), ABundle, conBundle)))
+                n = (n \ TotalStates) * TotalStates + Bundle
             Else
-                '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-                'n = IIf(IsHCAHPS(frmMain.tvTreeView.Nodes(X).image), HAlreadyMailed, conAlreadyMailed)
-                n = IIf(IsHCAHPS(n), HAlreadyMailed, IIf(IsHHCAHPS(n), HHAlreadyMailed, IIf(IsACOCAHPS(n), AAlreadyMailed, conAlreadyMailed)))
+                n = (n \ TotalStates) * TotalStates + AlreadyMailed
             End If
-            frmMain.tvTreeView.Nodes(X).image = n
+            frmMain.tvTreeView.Nodes(X).Image = n
         Next X
     End If
     ' This will go through all the children for
     ' the selected paper configuration
     Me.MousePointer = vbDefault
-    '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-    'nodSelected.image = IIf(IsHCAHPS(nodSelected.image), HConfiguration, conConfiguration)
-    nodSelected.image = IIf(IsHCAHPS(nodSelected.image), HConfiguration, IIf(IsHHCAHPS(nodSelected.image), HHConfiguration, IIf(IsACOCAHPS(nodSelected.image), AConfiguration, conConfiguration)))
+    nodSelected.Image = (nodSelected.Image \ TotalStates) * TotalStates + Configuration
     RePrintBundles = True
     Exit Function
 NoPrint:

@@ -34,91 +34,61 @@ Public Const HKEY_CLASSES_ROOT = &H80000000
 Public Const KEY_QUERY_VALUE As Long = 1
 
 Global Const LISTVIEW_BUTTON = 11
-Global Const conMailBundle = 18
-Global Const conAlreadyMailed = 19
-Global Const conDeleted = 6
-Global Const conHospital = 12
-Global Const conConfiguration = 13
-Global Const conBundle = 14
-Global Const conPrinting = 16
+
+Global Const conHospital = 70
 Global Const conGroupedPrint = 20
-Global Const conFadedConfiguration = 21
-Global Const conGroupedPrintHospital = 22
-Global Const conGroupedPrintConfiguration = 23
-Global Const conCheckedHospital = 24
-Global Const conCheckedBundle = 25
-Global Const conCheckedConfiguration = 26
-Global Const conCheckedGroupedPrintHospital = 27
 
-' 04-27-2006 SH Added HCAHPS
-Global Const HHospital = 28
-Global Const HConfiguration = 29
-Global Const HBundle = 30
-Global Const HFadedConfiguration = 31
-Global Const HGroupedPrintHospital = 32
-Global Const HGroupedPrintConfiguration = 33
-Global Const HCheckedHospital = 34
-Global Const HCheckedBundle = 35
-Global Const HCheckedConfiguration = 36
-Global Const HCheckedGroupedPrintHospital = 37
-Global Const HMailBundle = 38
-Global Const HAlreadyMailed = 39
-Global Const HDeleted = 40
-Global Const HPrinting = 41
+''''''''''''''''''''''''''''''''''''
+'''' February 13, 2015 Refactor Notes -- Chris Burkholder
+''''''''''''''''''''''''''''''''''''
+''''
+'''' Below are the main constants now used to manage icon state in Queue Manager.
+'''' The only exception above is that conHospital, now set to 70, is the default starting point
+'''' The set of 14 constants below MUST MATCH the order of icons in the resource:
+'''' Con(default): 70..83; HCAHPS: 28..41; HHCAHPS: 42-55; ACOCAHPS/ICHCAHPS: 56-69; <Red>: 84-97; HOSPICE: 98-111
+'''' Currently, the first (Hospital) icon in the set must be evenly divisible by 14 = TotalStates below
+''''
+'''' IsHCAHPS, IsHHCAHPS, IsACOCAHPS functions have been eliminated.  These were only used to determine the icon set for an image.
+'''' So, instead, taking the value: (image \ TotalStates) * TotalStates puts us back on the Hospital icon for the set, and then
+'''' the state constant below may be added to land on the desired icon in the same set
+''''
+'''' Other cases were trying to figure out if the current icon index was any of the Hospital, or any of the MailBundle, etc.
+'''' These cases could be handled by taking the value: index Mod TotalStates and testing that against Hospital or MailBundle, etc.
+''''
+'''' Here's hoping a port to .NET has become less daunting at this point...
+''''
+''''''''''''''''''''''''''''''''''''
 
-' 01-08-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-Global Const HHHospital = 42
-Global Const HHConfiguration = 43
-Global Const HHBundle = 44
-Global Const HHFadedConfiguration = 45
-Global Const HHGroupedPrintHospital = 46
-Global Const HHGroupedPrintConfiguration = 47
-Global Const HHCheckedHospital = 48
-Global Const HHCheckedBundle = 49
-Global Const HHCheckedConfiguration = 50
-Global Const HHCheckedGroupedPrintHospital = 51
-Global Const HHMailBundle = 52
-Global Const HHAlreadyMailed = 53
-Global Const HHDeleted = 54
-Global Const HHPrinting = 55
+Global Const Hospital = 0
+Global Const Configuration = 1
+Global Const Bundle = 2
+Global Const FadedConfiguration = 3
+Global Const GroupedPrintHospital = 4
+Global Const GroupedPrintConfiguration = 5
+Global Const CheckedHospital = 6
+Global Const CheckedBundle = 7
+Global Const CheckedConfiguration = 8
+Global Const CheckedGroupedPrintHospital = 9
+Global Const MailBundle = 10
+Global Const AlreadyMailed = 11
+Global Const Deleted = 12
+Global Const Printing = 13
 
-Global Const AHospital = 56
-Global Const AConfiguration = 57
-Global Const ABundle = 58
-Global Const AFadedConfiguration = 59
-Global Const AGroupedPrintHospital = 60
-Global Const AGroupedPrintConfiguration = 61
-Global Const ACheckedHospital = 62
-Global Const ACheckedBundle = 63
-Global Const ACheckedConfiguration = 64
-Global Const ACheckedGroupedPrintHospital = 65
-Global Const AMailBundle = 66
-Global Const AAlreadyMailed = 67
-Global Const ADeleted = 68
-Global Const APrinting = 69
+Global Const TotalStates = 14
+
+Global Const BlueOffset = -42   '70 + -42 = 28 = conHospital + BlueOffset   = blueHospital
+Global Const PurpleOffset = -28 '70 + -28 = 42 = conHospital + PurpleOffset = purpleHospital
+Global Const OrangeOffset = -14 '70 + -14 = 56 = conHospital + OrangeOffset = orangeHospital
+Global Const RedOffset = 14     '70 +  14 = 84 = conHospital + RedOffset    = redHospital
+Global Const GreenOffset = 28   '70 +  28 = 98 = conHospital + GreenOffset  = greenHospital
+
+Global Const OffsetHCAHPS = BlueOffset
+Global Const OffsetHHCAHPS = PurpleOffset
+Global Const OffsetACOCAHPS = OrangeOffset
+Global Const OffsetICHCAHPS = OrangeOffset
+Global Const OffsetHOSPICE = GreenOffset
 
 Public fMainForm As frmMain
-
-'01-19-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-Public Function IsHCAHPS(ByVal image As Integer) As Boolean
-    ' HCAHPS image starts at 28 (after conCheckedGroupedPrintHospital).
-    'IsHCAHPS = IIf(image > conCheckedGroupedPrintHospital, True, False)
-    IsHCAHPS = IIf(image > conCheckedGroupedPrintHospital And image < HHHospital, True, False)
-End Function
-' *** end of addition
-
-'01-19-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-Public Function IsHHCAHPS(ByVal image As Integer) As Boolean
-    'HHCAHPS image starts at 42 (after HPrinting).
-    IsHHCAHPS = IIf(image > HPrinting And image < AHospital, True, False)
-End Function
-
-Public Function IsACOCAHPS(ByVal image As Integer) As Boolean
-    'HHCAHPS image starts at 56 (after HHPrinting).
-    IsACOCAHPS = IIf(image > HHPrinting, True, False)
-End Function
-
-' *** end of addition
 
 Sub Main()
     Set fMainForm = New frmMain
