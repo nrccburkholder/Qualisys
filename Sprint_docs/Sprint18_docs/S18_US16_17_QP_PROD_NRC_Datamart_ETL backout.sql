@@ -7,6 +7,7 @@
 
 	alter table [dbo].[SampleSet] drop column IneligibleCount (QP_PROD)
 	alter table [dbo].[SampleSetTemp] drop column IneligibleCount (NRC_Datamart_ETL)
+	alter table [dbo].[SamplePopTemp] add SupplementalQuestionCount int NULL  (NRC_Datamart_ETL)
 	ALTER PROCEDURE [dbo].[QCL_SelectEncounterUnitEligibility] (QP_PROD)
 	ALTER PROCEDURE [dbo].[csp_GetSampleSetExtractData] (NRC_Datamart_ETL)
 	ALTER PROCEDURE [dbo].[csp_GetSamplePopulationExtractData2] (NRC_Datamart_ETL)
@@ -50,6 +51,24 @@ go
 commit tran
 go
 
+
+use [NRC_DataMart_ETL]
+go
+begin tran
+go
+if exists (	SELECT 1 
+				FROM   sys.tables st 
+					   INNER JOIN sys.columns sc ON st.object_id = sc.object_id 
+				WHERE  st.schema_id = 1 
+					   AND st.NAME = 'SamplePopTemp' 
+					   AND sc.NAME = 'SupplementalQuestionCount' )
+
+	alter table [dbo].[SamplePopTemp] drop column SupplementalQuestionCount 
+
+go
+
+commit tran
+go
 
 
 USE [QP_Prod]
