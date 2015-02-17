@@ -14,7 +14,7 @@
 	alter table [LOAD_TABLES].[SamplePopulationNPIError]
 	ALTER PROCEDURE [dbo].[etl_LoadSampleSetRecords]
 	ALTER PROCEDURE [dbo].[etl_LoadSamplePopRecords]
-	
+	ALTER PROCEDURE [dbo].[etl_CompleteImport]
 */
 
 use [NRC_DataMart]
@@ -1190,3 +1190,70 @@ END
 
 GO
 
+USE [NRC_Datamart]
+GO
+/****** Object:  StoredProcedure [dbo].[etl_CompleteImport]    Script Date: 2/16/2015 3:01:50 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[etl_CompleteImport]
+	@DataFileID int,@RC Int	
+	--exec [dbo].[etl_CompleteImport] 2817,1
+AS
+BEGIN
+	SET NOCOUNT ON 
+
+
+  	DECLARE @oImportRunLogID INT;
+	DECLARE @currDateTime1 DATETIME = GETDATE();
+	DECLARE @currDateTime2 DATETIME;
+	DECLARE @TaskName VARCHAR(200) =  OBJECT_NAME(@@PROCID);
+	EXEC [ETL].[InsertImportRunLog] @DataFileID, @TaskName, @currDateTime1, @ImportRunLogID = @oImportRunLogID OUTPUT	
+	DECLARE @ErrorMessage NVARCHAR(500) , @ReturnCode INT
+       
+    
+    BEGIN TRY	  
+      SET @ReturnCode = 1
+       
+		IF (SELECT SUM(errors)
+			FROM ETL.DataFileCounts WITH (NOLOCK)
+			WHERE DataFileID = @DataFileID) > 0 
+		BEGIN
+			SET @ErrorMessage = 'ERRORS!!  Check ETL.DataFileCounts table'
+			SET @ReturnCode = 2
+		END
+		ELSE SET @ErrorMessage = CASE WHEN @RC < 0 THEN 'ERRORS!!  Check NRC_ClientPlatform.dbo.AuditLog table' ELSE '' END
+
+		    
+		UPDATE ETL.DataFile
+		   SET EndDateTime = GETDATE(),
+			   ErrorMessage = @ErrorMessage
+		 WHERE DataFileID = @DataFileID	 
+	 
+	   	SET @currDateTime2 = GETDATE();
+		SELECT @oImportRunLogID,@currDateTime2,@TaskName
+		EXEC [ETL].[UpdateImportRunLog] @oImportRunLogID, @currDateTime2 
+
+	    RETURN @ReturnCode
+	    
+	END TRY
+
+	BEGIN CATCH			
+		--Print 'In catch block'			
+		--Set @ReturnMessage = 'etl_CompleteImport-- '  +  ERROR_MESSAGE() 
+
+		SET @currDateTime2 = GETDATE();
+		SELECT @oImportRunLogID,@currDateTime2,@TaskName
+		EXEC [ETL].[UpdateImportRunLog] @oImportRunLogID, @currDateTime2 	
+
+		Return 0
+	END CATCH;
+
+
+	
+	SET NOCOUNT OFF
+
+END
+
+GO
