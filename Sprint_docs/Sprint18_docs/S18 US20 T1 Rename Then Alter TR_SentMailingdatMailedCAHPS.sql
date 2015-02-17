@@ -136,4 +136,6 @@ AS
         END
     END 
 
+GO
+
 commit tran
