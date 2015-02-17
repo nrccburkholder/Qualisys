@@ -130,13 +130,7 @@ Private Sub cmdOk_Click()
             n = frmMain.tvTreeView.SelectedItem.Child.Index
             Counter = 0
             While n <> -1
-                '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-                'If frmMain.tvTreeView.Nodes(n).image <> conBundle And _
-                '   frmMain.tvTreeView.Nodes(n).image <> HBundle Then
-                If frmMain.tvTreeView.Nodes(n).image <> conBundle And _
-                   frmMain.tvTreeView.Nodes(n).image <> HBundle And _
-                   frmMain.tvTreeView.Nodes(n).image <> HHBundle And _
-                   frmMain.tvTreeView.Nodes(n).image <> ABundle Then
+                If frmMain.tvTreeView.Nodes(n).Image Mod TotalStates <> Bundle Then
                     Counter = Counter + 1
                 End If
                 If n = frmMain.tvTreeView.Nodes(n).LastSibling.Index Then
@@ -156,13 +150,7 @@ Private Sub cmdOk_Click()
                     Exit Sub
                 End If
             End If
-            '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-            'If frmMain.tvTreeView.SelectedItem.image = conGroupedPrintConfiguration Or _
-            '   frmMain.tvTreeView.SelectedItem.image = HGroupedPrintConfiguration Then
-            If frmMain.tvTreeView.SelectedItem.image = conGroupedPrintConfiguration Or _
-               frmMain.tvTreeView.SelectedItem.image = HGroupedPrintConfiguration Or _
-               frmMain.tvTreeView.SelectedItem.image = HHGroupedPrintConfiguration Or _
-               frmMain.tvTreeView.SelectedItem.image = AGroupedPrintConfiguration Then
+            If frmMain.tvTreeView.Nodes(n).Image Mod TotalStates = GroupedPrintConfiguration Then
                 strID = frmMain.tvTreeView.SelectedItem.Key
                 If Mid(strID, 1, 19) = "GroupedPrintConfig=" Then
                     strID = Mid(strID, 20)
@@ -200,9 +188,7 @@ Private Sub cmdOk_Click()
             Set con = Nothing
             n = frmMain.tvTreeView.SelectedItem.Child.Index
             While n <> -1
-                '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-                'frmMain.tvTreeView.Nodes(n).image = IIf(IsHCAHPS(frmMain.tvTreeView.Nodes(n).image), HAlreadyMailed, conAlreadyMailed)
-                frmMain.tvTreeView.Nodes(n).image = IIf(IsHCAHPS(frmMain.tvTreeView.Nodes(n).image), HAlreadyMailed, IIf(IsHHCAHPS(frmMain.tvTreeView.Nodes(n).image), HHAlreadyMailed, IIf(IsACOCAHPS(frmMain.tvTreeView.Nodes(n).image), AAlreadyMailed, conAlreadyMailed)))
+                frmMain.tvTreeView.Nodes(n).Image = (frmMain.tvTreeView.Nodes(n).Image \ TotalStates) * TotalStates + AlreadyMailed
                 strID = frmMain.tvTreeView.Nodes(n).Tag
                 If InStr(1, strID, "Not Mailed") > 0 Then
                     frmMain.tvTreeView.Nodes(n).Tag = Left(strID, InStr(1, strID, "Not Mailed") - 1) + txtMailDate.Text
@@ -219,13 +205,7 @@ Private Sub cmdOk_Click()
         Else
             n = frmMain.tvTreeView.SelectedItem.FirstSibling.Index
             While n <> -1
-                '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-                'If frmMain.tvTreeView.Nodes(n).image = conMailBundle Or _
-                '   frmMain.tvTreeView.Nodes(n).image = HMailBundle Then
-                If frmMain.tvTreeView.Nodes(n).image = conMailBundle Or _
-                   frmMain.tvTreeView.Nodes(n).image = HMailBundle Or _
-                   frmMain.tvTreeView.Nodes(n).image = HHMailBundle Or _
-                   frmMain.tvTreeView.Nodes(n).image = AMailBundle Then
+                If frmMain.tvTreeView.Nodes(n).Image Mod TotalStates = MailBundle Then
                     strID = frmMain.tvTreeView.Nodes(n).Tag
                     Survey_id = frmMain.NextValue(strID, vbTab)
                     PostalBundle = frmMain.NextValue(strID, vbTab)
@@ -252,9 +232,7 @@ Private Sub cmdOk_Click()
                     con.Close
                     Set con = Nothing
                     Set cmd = Nothing
-                    '01-20-2010 JJF - Added HHCAHPS / ACOCAHPS CJB 01-09-2014
-                    'frmMain.tvTreeView.Nodes(n).image = IIf(IsHCAHPS(frmMain.tvTreeView.Nodes(n).image), HAlreadyMailed, conAlreadyMailed)
-                    frmMain.tvTreeView.Nodes(n).image = IIf(IsHCAHPS(frmMain.tvTreeView.Nodes(n).image), HAlreadyMailed, IIf(IsHHCAHPS(frmMain.tvTreeView.Nodes(n).image), HHAlreadyMailed, IIf(IsACOCAHPS(frmMain.tvTreeView.Nodes(n).image), AAlreadyMailed, conAlreadyMailed)))
+                    frmMain.tvTreeView.Nodes(n).Image = (frmMain.tvTreeView.Nodes(n).Image \ TotalStates) * TotalStates + AlreadyMailed
                     strID = frmMain.tvTreeView.Nodes(n).Tag
                     If InStr(1, strID, "Not Mailed") > 0 Then
                         frmMain.tvTreeView.Nodes(n).Tag = Left(strID, InStr(1, strID, "Not Mailed") - 1) + txtMailDate.Text
