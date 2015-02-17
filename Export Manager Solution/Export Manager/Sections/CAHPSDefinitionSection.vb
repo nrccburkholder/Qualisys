@@ -364,8 +364,11 @@ Public Class CAHPSDefinitionSection
             'Get existing HHCAHPS export sets
             Dim medicareExportSets As Collection(Of MedicareExportSet) = MedicareExportSet.GetFileGUIDsByClientGroup(SurveyType.HomeHCAHPS, "OCS", "=", startDate, endDate)
 
+            'Remove duplication from export sets
+            Dim cleanedExportSets As Collection(Of MedicareExportSet) = ResultsCleanup(medicareExportSets)
+
             'Build OCS file
-            Dim fileCount As Integer = ExportFile.CreateOCSExportFile(ocsMedicareExportSet, medicareExportSets, AppConfig.Params("EMCMSOutputFolderPath").StringValue, SelectedFileType.Extension, SelectedFileType.ExportFileType, False)
+            Dim fileCount As Integer = ExportFile.CreateOCSExportFile(ocsMedicareExportSet, cleanedExportSets, AppConfig.Params("EMCMSOutputFolderPath").StringValue, SelectedFileType.Extension, SelectedFileType.ExportFileType, False)
 
             Dim crlf As String = vbCrLf & vbTab
             Dim outputPath As String = String.Format("{0}\OCS\{1}", AppConfig.Params("EMCMSOutputFolderPath").StringValue, startDate.ToString("yyyyMMM"))
@@ -396,8 +399,11 @@ Public Class CAHPSDefinitionSection
             'Get existing HHCAHPS export sets
             Dim medicareExportSets As Collection(Of MedicareExportSet) = MedicareExportSet.GetFileGUIDsByClientGroup(SurveyType.HomeHCAHPS, "OCS", "<>", startDate, endDate)
 
+            'Remove duplication from export sets
+            Dim cleanedExportSets As Collection(Of MedicareExportSet) = ResultsCleanup(medicareExportSets)
+
             'Build OCS file
-            Dim fileCount As Integer = ExportFile.CreateOCSExportFile(ocsMedicareExportSet, medicareExportSets, AppConfig.Params("EMCMSOutputFolderPath").StringValue, SelectedFileType.Extension, SelectedFileType.ExportFileType, False)
+            Dim fileCount As Integer = ExportFile.CreateOCSExportFile(ocsMedicareExportSet, cleanedExportSets, AppConfig.Params("EMCMSOutputFolderPath").StringValue, SelectedFileType.Extension, SelectedFileType.ExportFileType, False)
 
             Dim crlf As String = vbCrLf & vbTab
             Dim outputPath As String = String.Format("{0}\OCS\{1}", AppConfig.Params("EMCMSOutputFolderPath").StringValue, startDate.ToString("yyyyMMM"))
@@ -418,6 +424,47 @@ Public Class CAHPSDefinitionSection
         PopulateFileHistory()
 
     End Sub
+
+    Private Shared Function ResultsCleanup(ByRef medicareExportSets As System.Collections.ObjectModel.Collection(Of MedicareExportSet)) As System.Collections.ObjectModel.Collection(Of MedicareExportSet)
+
+        Dim cleanedExportSets As New System.Collections.ObjectModel.Collection(Of MedicareExportSet)
+        Dim exportSetDictionary As New Dictionary(Of Integer, Integer)
+
+        Try
+
+            For i As Integer = 0 To medicareExportSets.Count - 1
+
+                Dim keyID As Integer = medicareExportSets(i).MedicareExportSetId
+
+                If Not exportSetDictionary.ContainsKey(keyID) Then
+                    exportSetDictionary.Add(keyID, i)
+                Else
+                    'get medicare export set index from dictionary
+                    Dim index As Integer = Nothing
+                    Dim valueInDictionary As Boolean = exportSetDictionary.TryGetValue(keyID, index)
+
+                    If valueInDictionary Then
+                        'get dates created for current set in loop and specific indexed export set
+                        Dim indexedDateCreated As DateTime = medicareExportSets(index).DateCreated
+
+                        If indexedDateCreated.CompareTo(medicareExportSets(i).DateCreated) = 1 Then
+                            exportSetDictionary(keyID) = i
+                        End If
+                    End If
+                End If
+            Next
+
+            For Each keypair As KeyValuePair(Of Integer, Integer) In exportSetDictionary
+                cleanedExportSets.Add(medicareExportSets(keypair.Value))
+            Next
+
+        Catch ex As Exception
+            Return medicareExportSets
+        End Try
+
+        Return cleanedExportSets
+
+    End Function
 
     Private Sub SubmittedToolStripButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SubmittedToolStripButton.Click
 
