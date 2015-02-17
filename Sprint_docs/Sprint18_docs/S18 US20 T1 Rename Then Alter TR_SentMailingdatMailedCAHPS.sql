@@ -81,10 +81,12 @@ AS
              AND i.sentmail_id = sm.sentmail_id
              AND sm.datmailed IS NOT NULL
              AND ((ss.SurveyType_id = 2  /*HCAHPS*/  AND datediff(dd, SampleEncounterDate, sm.datmailed) > 42) OR
-				  (ss.SurveyType_id = 11 /*Hospice*/ AND ((Month(sm.datMailed) = (Month(DateAdd(mm,3,SampleEncounterDate))) 
+				  (ss.SurveyType_id = 11 /*Hospice*/ AND (Year(sm.datMailed) > Year(DateAdd(mm,3,SampleEncounterDate)) OR
+															(Month(sm.datMailed) = (Month(DateAdd(mm,3,SampleEncounterDate))) 
 															AND (Day(sm.datMailed) > 7))
 														OR (Month(sm.datMailed) > Month(DateAdd(mm,3,SampleEncounterDate))))) OR
-				  (ss.SurveyType_id = 12 /*CIHI*/    AND (Month(sm.datMailed) > Month(DateAdd(mm,1,SampleEncounterDate)))))
+				  (ss.SurveyType_id = 12 /*CIHI*/    AND (Year(sm.datMailed) > Year(DateAdd(mm,1,SampleEncounterDate)) OR
+				                                          Month(sm.datMailed) > Month(DateAdd(mm,1,SampleEncounterDate)))))
              AND su.CAHPSType_id = ss.SurveyType_Id
              AND sc.OverrideItem_ID IS NULL -- Lee Kohrs 2013-07-17 per HCAHPS2012 Audit TR#6
       ORDER  BY 1 DESC,
