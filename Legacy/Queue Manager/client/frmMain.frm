@@ -59,7 +59,6 @@ Begin VB.Form frmMain
          _Version        =   393217
          BackColor       =   -2147483644
          BorderStyle     =   0
-         Enabled         =   -1  'True
          HideSelection   =   0   'False
          ReadOnly        =   -1  'True
          DisableNoScroll =   -1  'True
@@ -1947,7 +1946,7 @@ Private Sub mnuPrint_Click()
             mnuMailingDates.Visible = False
             mnuPopupMarkMailing.Visible = False
             mnuBundlingReport.Visible = False
-            If tvTreeView.SelectedItem.Image Mod TotalStates = Deleted Then
+            If tvTreeView.SelectedItem.Image Mod TotalStates <> Deleted Then
                 If InStr(tvTreeView.SelectedItem.Tag, "(unbundled)") = 0 Then
                     Call PrintBundles(tvTreeView.SelectedItem)
                     moQueueManager.PrintingInstance_Remove
