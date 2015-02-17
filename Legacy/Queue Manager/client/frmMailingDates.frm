@@ -150,7 +150,7 @@ Private Sub cmdOk_Click()
                     Exit Sub
                 End If
             End If
-            If frmMain.tvTreeView.Nodes(n).Image Mod TotalStates = GroupedPrintConfiguration Then
+            If frmMain.tvTreeView.SelectedItem.Image Mod TotalStates = GroupedPrintConfiguration Then
                 strID = frmMain.tvTreeView.SelectedItem.Key
                 If Mid(strID, 1, 19) = "GroupedPrintConfig=" Then
                     strID = Mid(strID, 20)
