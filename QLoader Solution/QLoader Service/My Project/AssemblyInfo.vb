@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("National Research Corporation")> 
 <Assembly: AssemblyProduct("QLoader Service")> 
-<Assembly: AssemblyCopyright("Copyright ©  2014")> 
+<Assembly: AssemblyCopyright("Copyright ©  2015")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("2.8.4.0")> 
-<Assembly: AssemblyFileVersion("2.8.4.0")> 
+<Assembly: AssemblyVersion("2.8.5.0")> 
+<Assembly: AssemblyFileVersion("2.8.5.0")> 
