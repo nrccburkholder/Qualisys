@@ -159,7 +159,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="My Project\app.manifest" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
@@ -196,6 +195,14 @@
       <Project>{6ed47ceb-9896-4be5-a7f2-cf2a5693f1ed}</Project>
       <Name>NRCAuthlib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\QualiSys Class Library Solution\QualiSys.Pervasive.Library.SqlDataProvider\QualiSys.Pervasive.Library.SqlDataProvider.vbproj">
+      <Project>{45342c2f-19ef-474c-b9bc-f8222cbabcc2}</Project>
+      <Name>QualiSys.Pervasive.Library.SqlDataProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\QualiSys Class Library Solution\QualiSys.Pervasive.Library\QualiSys.Pervasive.Library.vbproj">
+      <Project>{1bc993f6-721e-44a9-a1cd-cc2decfc5464}</Project>
+      <Name>QualiSys.Pervasive.Library</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\QualiSys Class Library Solution\Qualisys.QLoader.Library.SqlProvider\Qualisys.QLoader.Library.SqlProvider.vbproj">
       <Project>{8C82B762-7494-478C-B8D6-E75958616F05}</Project>
       <Name>Qualisys.QLoader.Library.SqlProvider</Name>
@@ -215,6 +222,10 @@
     <ProjectReference Include="..\AddressCleaner\AddressCleaner.vbproj">
       <Project>{0ce3dd3a-b828-473a-bf1b-6a4004062a92}</Project>
       <Name>AddressCleaner</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FileLoader\FileLoader.vbproj">
+      <Project>{d461d470-1413-44cd-be17-530a820c091a}</Project>
+      <Name>FileLoader</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
