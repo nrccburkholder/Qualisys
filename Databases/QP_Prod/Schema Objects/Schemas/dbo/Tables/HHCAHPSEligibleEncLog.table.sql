@@ -1,4 +1,7 @@
-﻿CREATE TABLE [dbo].[HHCAHPSEligibleEncLog](
+﻿/*
+dropped 2/19/2015 in favor of using EligibleEncLoc table instead - Chris Burkholder
+
+CREATE TABLE [dbo].[HHCAHPSEligibleEncLog](
 	[sampleset_id] [int] NOT NULL,
 	[sampleunit_id] [int] NOT NULL,
 	[pop_id] [int] NOT NULL,
@@ -14,3 +17,4 @@
 ) ON [PRIMARY]
 
 
+*/

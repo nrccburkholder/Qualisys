@@ -44,7 +44,7 @@ select top 1 @study = cast(study_id as varchar) from #samplesets
 select heel.pop_id, heel.enc_id, heel.sampleset_id, heel.sampleunit_id
 into #EligibleEncs 
 from #Samplesets tss
-join HCAHPSEligibleEncLog heel
+join EligibleEncLog heel
 on tss.sampleset_id = heel.sampleset_id
 and tss.sampleunit_id = heel.sampleunit_id
 left outer join SAMPLEPOP sp
@@ -103,5 +103,4 @@ exec(@sql)
 
 drop table #Samplesets
 drop table #EligibleEncs
-
 

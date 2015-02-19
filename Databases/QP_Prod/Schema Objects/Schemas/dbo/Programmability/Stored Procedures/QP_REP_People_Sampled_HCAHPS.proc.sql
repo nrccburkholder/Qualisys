@@ -45,7 +45,7 @@ SET @SQL='SELECT DISTINCT ''THIS IS A TEST REPORT'' [THIS IS A TEST REPORT],'+ch
 'inner join selectedsample sel on (sel.sampleset_id=sp.sampleset_id and sel.pop_id=sp.pop_id)'+char(10)+
 'inner join s'+CONVERT(VARCHAR,@Study_id)+'.Encounter e on (e.enc_id=sel.enc_id)'+CHAR(10)+
 'inner join sampleunit su on (sel.sampleunit_id=su.sampleunit_id)'+char(10)+
-'left outer join HCAHPSEligibleEncLog he (nolock)'+CHAR(10)+
+'left outer join EligibleEncLog he (nolock)'+CHAR(10)+
 	'on ((he.sampleset_id=sp.sampleset_id) and (he.pop_id=p.pop_id) and (he.enc_id=e.enc_id))'+char(10)+
 'where su.bithcahps=1'+char(10)+
 'and (he.enc_id+he.pop_id is not null)'+char(10)+
@@ -62,5 +62,4 @@ EXEC (@sql)
 
 DROP TABLE #SAMPLESET
 DROP TABLE #SAMPLEPOP
-
 

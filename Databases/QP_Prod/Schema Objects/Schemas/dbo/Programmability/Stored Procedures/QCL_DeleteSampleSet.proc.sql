@@ -142,9 +142,7 @@ DELETE FROM dbo.SamplePlanWorkSheet
 WHERE SampleSet_id=@intSampleSet_id    
 DELETE FROM dbo.SPWDQCounts    
 WHERE SampleSet_id=@intSampleSet_id    
-DELETE FROM dbo.HCAHPSEligibleEncLog    
-WHERE SampleSet_id=@intSampleSet_id    
-DELETE FROM dbo.HHCAHPSEligibleEncLog    
+DELETE FROM dbo.EligibleEncLog    
 WHERE SampleSet_id=@intSampleSet_id    
 DELETE FROM dbo.HHCAHPS_PatInfileCount  
 WHERE SampleSet_id = @intSampleSet_id     
@@ -169,5 +167,4 @@ SET SampleSet_id=NULL,
  datSampleCreate_dt=NULL    
 WHERE SampleSet_id=@intSampleSet_id     
 END
-
 

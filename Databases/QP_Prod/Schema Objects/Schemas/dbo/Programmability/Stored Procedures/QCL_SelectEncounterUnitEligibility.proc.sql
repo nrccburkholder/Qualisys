@@ -85,8 +85,29 @@ AS
       DECLARE @HHFields TABLE (Fieldname VARCHAR(50) ,
                                DataType VARCHAR(20) ,
                                Length INT ,
-                               Field_id INT)                                                
-                                                 
+                               Field_id INT)        
+							                                 
+		declare @CGCAHPS int
+		SELECT @CGCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'CGCAHPS'
+
+		declare @HCAHPS int
+		SELECT @HCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'HCAHPS IP'
+
+		declare @HHCAHPS int
+		SELECT @HHCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'Home Health CAHPS'
+
+		declare @ACOCAHPS int
+		SELECT @ACOCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'CIHI CPES-IC'
+
+		declare @ICHCAHPS int
+		SELECT @ICHCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'ICHCAHPS'
+
+		declare @hospiceCAHPS int
+		SELECT @hospiceCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'Hospice CAHPS'
+
+		declare @CIHI int
+		select @CIHI = SurveyType_Id from SurveyType where SurveyType_dsc = 'CIHI CPES-IC'
+	                                             
               
  --MWB 9/2/08  HCAHPS Prop Sampling Sprint                                              
       SELECT   @HouseHoldingType = strHouseHoldingType, @bitDoTOCL = 1, @SurveyType_ID = SurveyType_id                                              
@@ -1059,33 +1080,39 @@ AS
       SET      HouseHold_id = NULL, Removed_Rule = 0
       WHERE    Removed_Rule = -7      
                                         
-      INSERT   INTO HCAHPSEligibleEncLog (sampleset_id, sampleunit_id, pop_Id, enc_id, sampleEncounterDate)
+	  -- 2015.01.26 TSB -- 
+	  if @SurveyType_ID in (@HCAHPS,@HHCAHPS,@HospiceCAHPS, @CIHI)  -- Added CIHI S17 US23 
+	  BEGIN
+
+		INSERT   INTO EligibleEncLog (sampleset_id, sampleunit_id, pop_Id, enc_id, sampleEncounterDate, SurveyType_ID)
                SELECT DISTINCT
-                        @sampleset_Id, su.sampleunit_id, pop_Id, enc_id, EncDate
+                        @sampleset_Id, su.sampleunit_id, pop_Id, enc_id, EncDate,s.CAHPSType_id
                FROM     #SampleUnit_Universe su ,
                         sampleunit s
                WHERE    Removed_Rule = 0
                         AND su.sampleunit_id = s.sampleunit_id
-                        AND s.bitHCAHPS = 1                             
+                        AND s.CAHPSType_id = @SurveyType_ID                               
 
 --------------9/10/2014 CJB Adding code to populate number inserted into HCAHPSEligibleEncLog into HcahpsEligibleEncLogCount in SPW
-	  --Update the EncLog count in SPW                                                 
-	  declare @HcahpsEligibleEncLogCount int = 0
+		--Update the EncLog count in SPW                                                 
+		 declare @HcahpsEligibleEncLogCount int = 0
 
-	  select @HcahpsEligibleEncLogCount = count(*) 
+		select @HcahpsEligibleEncLogCount = count(*) 
             FROM     SamplePlanWorkSheet spw,
-					 HCAHPSEligibleEncLog eec
+					 EligibleEncLog eec
                      WHERE spw.sampleset_id = @sampleSet_id
 					 and spw.SampleUnit_id = eec.sampleunit_id 
 					 and spw.sampleset_id = eec.sampleset_id
+					 and eec.SurveyType_id = @HCAHPS
 
-        UPDATE   spw
-        SET      HcahpsEligibleEncLogCount = @HcahpsEligibleEncLogCount
-        FROM     SamplePlanWorkSheet spw,
-				 sampleunit s
-        WHERE	 spw.sampleset_id = @sampleSet_id
-			AND  spw.SampleUnit_id = s.SAMPLEUNIT_ID 
-			AND  s.bitHCAHPS = 1
+			UPDATE   spw
+			SET      HcahpsEligibleEncLogCount = @HcahpsEligibleEncLogCount
+			FROM     SamplePlanWorkSheet spw,
+					 sampleunit s
+			WHERE	 spw.sampleset_id = @sampleSet_id
+				AND  spw.SampleUnit_id = s.SAMPLEUNIT_ID 
+				AND  s.CAHPSType_id = @HCAHPS
+	   END
 
 --------------9/10/2014 
                                                         
@@ -1094,19 +1121,7 @@ AS
             INSERT   INTO SamplingLog (SampleSet_id, StepName, Occurred, SQLCode)
                      SELECT   @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - Marker 16', GETDATE(), ''                          
          END                          
-                                            
- --Save off all of the eligible encounters.  We don't want to save anyone who was DQ'd.                                                
- --However, we do not want to save encounters even if the fail newborn, householding, resurvey etc.                                                
- --Therefore, we must save after checking newborn, householding, resurvey etc.                                             
- --(unlike HCHAPS per Dana Petersen)                                                
-      INSERT   INTO HHCAHPSEligibleEncLog (sampleset_id, sampleunit_id, pop_Id, enc_id, sampleEncounterDate)
-               SELECT   @sampleset_Id, su.sampleunit_id, pop_Id, enc_id, EncDate
-               FROM     #SampleUnit_Universe su ,
-                        sampleunit s
-               WHERE    Removed_Rule = 0
-                        AND su.sampleunit_id = s.sampleunit_id
-                        AND s.bitHHCAHPS = 1                                               
-                                          
+                                                                              
                           
       IF @SamplingLogInsert = 1 
          BEGIN                          
@@ -1332,6 +1347,4 @@ end
                           
                           
                                                 
-   END
-
-
+   END 

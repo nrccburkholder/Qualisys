@@ -45,6 +45,9 @@ SET @ICHCAHPS = 8
 declare @hospiceCAHPS int
 select @hospiceCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'Hospice CAHPS'
 
+declare @CIHI int
+select @CIHI = SurveyType_Id from SurveyType where SurveyType_dsc = 'CIHI CPES-IC'
+
 declare @surveyType_id int
 
 SELECT  @surveyType_id = SurveyType_id
@@ -124,9 +127,25 @@ IF @surveyType_id in (@ACOCAHPS)
 			SELECT 0,'Sample Encounter Date Field is set to ServiceDate.'
 	END
 
+	IF @surveyType_id in (@CIHI)
+	BEGIN
+		--Make sure the reporting date is DischargeDate                                     
+		IF (SELECT sampleEncounterfield_id FROM Survey_Def WHERE survey_id = @survey_id) IS NULL
+			INSERT INTO #M (Error, strMessage)
+			SELECT 1,'Sample Encounter Date Field has to be DischargeDate from the Encounter table.'
+		ELSE
+			INSERT INTO #M (Error, strMessage)
+			SELECT 1,'Sample Encounter Date Field has to be DischargeDate from the Encounter table.'
+				 FROM Survey_def sd, MetaTable mt
+				 WHERE sd.sampleEncounterTable_id=mt.Table_id
+					  AND  sd.Survey_id=@Survey_id
+					  AND sd.sampleEncounterField_id <> (select FIELD_ID from METAFIELD where STRFIELD_NM = 'DischargeDate')
+		IF @@ROWCOUNT=0
+			INSERT INTO #M (Error, strMessage)
+			SELECT 0,'Sample Encounter Date Field is set to DischargeDate.'
+	END
+
 SELECT * FROM #M
 
 DROP TABLE #M
 GO
-
-

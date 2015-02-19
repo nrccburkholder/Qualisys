@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[QCL_InsertMedicareRecalc_History]
+﻿ALTER PROCEDURE [dbo].[QCL_InsertMedicareRecalc_History]
 @MedicareNumber VARCHAR(20),
 @MedicareName VARCHAR(200),
 @MedicarePropCalcType_ID INT,
@@ -17,16 +17,16 @@
 @ForcedCalculation TinyInt,
 @PropSampleCalcDate DATETIME,
 @MedicarePropDataType_ID INT,
-@HistoricAnnualVolume INT
+@HistoricAnnualVolume INT, 
+@UserCensusForced INT
 AS
 
 SET NOCOUNT ON
 
-INSERT INTO [dbo].MedicareRecalc_History (MedicareNumber, MedicareName, MedicarePropCalcType_ID, EstRespRate, EstIneligibleRate, EstAnnualVolume, SwitchToCalcDate, AnnualReturnTarget, ProportionCalcPct, SamplingLocked, ProportionChangeThreshold, CensusForced, Member_ID, DateCalculated, HistoricRespRate, ForcedCalculation, PropSampleCalcDate, MedicarePropDataType_ID, HistoricAnnualVolume)
-VALUES (@MedicareNumber, @MedicareName, @MedicarePropCalcType_ID, @EstRespRate, @EstIneligibleRate, @EstAnnualVolume, @SwitchToCalcDate, @AnnualReturnTarget, @ProportionCalcPct, @SamplingLocked, @ProportionChangeThreshold, @CensusForced, @Member_ID, @DateCalculated, @HistoricRespRate, @ForcedCalculation, @PropSampleCalcDate, @MedicarePropDataType_ID, @HistoricAnnualVolume)
+INSERT INTO [dbo].MedicareRecalc_History (MedicareNumber, MedicareName, MedicarePropCalcType_ID, EstRespRate, EstIneligibleRate, EstAnnualVolume, SwitchToCalcDate, AnnualReturnTarget, ProportionCalcPct, SamplingLocked, ProportionChangeThreshold, CensusForced, Member_ID, DateCalculated, HistoricRespRate, ForcedCalculation, PropSampleCalcDate, MedicarePropDataType_ID, HistoricAnnualVolume, UserCensusForced)
+VALUES (@MedicareNumber, @MedicareName, @MedicarePropCalcType_ID, @EstRespRate, @EstIneligibleRate, @EstAnnualVolume, @SwitchToCalcDate, @AnnualReturnTarget, @ProportionCalcPct, @SamplingLocked, @ProportionChangeThreshold, @CensusForced, @Member_ID, @DateCalculated, @HistoricRespRate, @ForcedCalculation, @PropSampleCalcDate, @MedicarePropDataType_ID, @HistoricAnnualVolume, @UserCensusForced)
 
 SELECT SCOPE_IDENTITY()
 
 SET NOCOUNT OFF
-
 

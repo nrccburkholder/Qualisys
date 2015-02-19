@@ -21,6 +21,7 @@ Created:  04/13/2012 Don Mayhew
 
 11/25/2013 Dave Hansen - CanadaQualisysUpgrade - DFCT0010966 - conditioned delete/update statements using 
 													vw_Billians_NursingHomeAssistedLiving to be run in country=US only              
+			1/14/2015 CJB: switched from HCAHPS specific table to new EligibleEncLog table    
 */
 CREATE PROCEDURE [dbo].[QCL_SampleSetHouseholdingExclusion]
   @Study_id                      INT,
@@ -59,7 +60,7 @@ AS
                            12, 2000)
                     + ',9999999), p.pop_id'
                     + '                          
-  FROM sampleset ss, SampleUnit su, hcahpseligibleenclog h, survey_def sd, S'
+  FROM sampleset ss, SampleUnit su, eligibleenclog h, survey_def sd, S'
                     + LTRIM(STR(@Study_id))
                     + '.Population p                      
   WHERE sd.Study_id='
@@ -157,5 +158,4 @@ IF @country=''US''
 
       EXEC (@sql)
     END
-
 

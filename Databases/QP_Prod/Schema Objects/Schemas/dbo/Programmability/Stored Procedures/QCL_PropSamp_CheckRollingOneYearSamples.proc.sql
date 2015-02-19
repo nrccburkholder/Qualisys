@@ -9,13 +9,14 @@ the proportional sample percentage
                   
 Created: 8/11/2008 by MB   
 modified: 4/17/09 by MB:  Added bitHCAHPS = 1 to facility check b/c we only care about data for HCAHPS units           
+			1/14/2015 CJB: switched from HCAHPS specific table to new EligibleEncLog table    
   
 Test Code:  
   
 --QCL_PropSamp_CheckRollingOneYearSamples 'T00001', '2008-08-11 00:00:00'   
 --QCL_PropSamp_CheckRollingOneYearSamples '03002', '2008-08-11 00:00:00'            
 */  
-CREATE Procedure QCL_PropSamp_CheckRollingOneYearSamples(@MedicareNumber varchar(20), @PeriodDate datetime = null)  
+CREATE Procedure [dbo].[QCL_PropSamp_CheckRollingOneYearSamples](@MedicareNumber varchar(20), @PeriodDate datetime = null)  
 as  
   
 begin  
@@ -31,7 +32,7 @@ begin
   begin  
   
    select @PeriodDate = max(pd1.datExpectedEncStart)  
-   from medicarelookup ml, sufacility sf, sampleunit su, HCAHPSEligibleEncLog hE , periodDef pd1, periodDates pd2  
+   from medicarelookup ml, sufacility sf, sampleunit su, EligibleEncLog hE , periodDef pd1, periodDates pd2  
    where ml.medicareNumber = sf.MedicareNumber and  
      sf.SUFacility_ID = su.SuFacility_ID and  
      su.Sampleunit_ID = he.sampleunit_ID and  
@@ -74,7 +75,7 @@ begin
   begin  
    if (  
    select top 1 he.enc_ID  
-   from medicarelookup ml, sufacility sf, sampleunit su, HCAHPSEligibleEncLog hE , periodDef pd1, periodDates pd2  
+   from medicarelookup ml, sufacility sf, sampleunit su, EligibleEncLog hE , periodDef pd1, periodDates pd2  
    where ml.medicareNumber = sf.MedicareNumber and  
      sf.SUFacility_ID = su.SuFacility_ID and  
      su.Sampleunit_ID = he.sampleunit_ID and  
@@ -122,5 +123,4 @@ begin
  else  
   select 0  
 end
-
 

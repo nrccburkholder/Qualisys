@@ -8,9 +8,10 @@ logic for Finding Historic annual HCAHPS volume is used in
 HCAHPS proportional Sampling to create the proportional sample percentage  
                   
 Created: 8/11/2008 by MB              
+			1/14/2015 CJB: switched from HCAHPS specific table to new EligibleEncLog table    
              
 */  
-CREATE Procedure QCL_PropSamp_GetHistoricalAnnualVolume(@MedicareNumber varchar(20), @PeriodDate datetime)  
+CREATE Procedure [dbo].[QCL_PropSamp_GetHistoricalAnnualVolume](@MedicareNumber varchar(20), @PeriodDate datetime)  
 as  
   
 begin
@@ -18,7 +19,7 @@ begin
 	exec QCL_CreateHCHAPSRollingYear @PeriodDate, @EncDateStart OUTPUT, @EncDateEnd OUTPUT  
 	  
 	select count(he.enc_ID)  
-	from medicarelookup ml, sufacility sf, sampleunit su, HCAHPSEligibleEncLog hE , periodDef pd1, periodDates pd2  
+	from medicarelookup ml, sufacility sf, sampleunit su, EligibleEncLog hE , periodDef pd1, periodDates pd2  
 	where ml.medicareNumber = sf.MedicareNumber and  
 	  sf.SUFacility_ID = su.SuFacility_ID and  
 	  su.Sampleunit_ID = he.sampleunit_ID and  
@@ -27,5 +28,4 @@ begin
 	  pd1.datExpectedEncStart >= @EncDateStart and pd1.datExpectedEncEnd <= @EncDateEnd and   
 	  ml.medicareNumber = @MedicareNumber  
 end
-
 

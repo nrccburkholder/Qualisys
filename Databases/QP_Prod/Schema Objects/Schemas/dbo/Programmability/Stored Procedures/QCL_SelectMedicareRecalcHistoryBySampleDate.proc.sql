@@ -5,7 +5,7 @@ BEGIN
 	SET NOCOUNT ON
 	SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 
-	SELECT Top 1 MedicareReCalcLog_ID, MedicareNumber, MedicareName, MedicarePropCalcType_ID, EstRespRate, EstIneligibleRate, EstAnnualVolume, SwitchToCalcDate, AnnualReturnTarget, ProportionCalcPct, SamplingLocked, ProportionChangeThreshold, CensusForced, Member_ID, DateCalculated, HistoricRespRate, ForcedCalculation, PropSampleCalcDate, MedicarePropDataType_ID, HistoricAnnualVolume
+	SELECT Top 1 MedicareReCalcLog_ID, MedicareNumber, MedicareName, MedicarePropCalcType_ID, EstRespRate, EstIneligibleRate, EstAnnualVolume, SwitchToCalcDate, AnnualReturnTarget, ProportionCalcPct, SamplingLocked, ProportionChangeThreshold, CensusForced, Member_ID, DateCalculated, HistoricRespRate, ForcedCalculation, PropSampleCalcDate, MedicarePropDataType_ID, HistoricAnnualVolume, UserCensusForced
 	FROM [dbo].MedicareRecalc_History
 	WHERE MedicareNumber = @MedicareNumber 
 	  AND PropSampleCalcDate <= @SampleDate 
@@ -15,5 +15,3 @@ BEGIN
 	SET TRANSACTION ISOLATION LEVEL READ COMMITTED
 
 END
-
-

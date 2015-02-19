@@ -42,6 +42,10 @@ SET @ACOCAHPS = 10
 declare @ICHCAHPS int
 SET @ICHCAHPS = 8
 
+
+declare @CIHI int
+select @CIHI = SurveyType_Id from SurveyType where SurveyType_dsc = 'CIHI CPES-IC'
+
 declare @surveyType_id int
 
 SELECT  @surveyType_id = SurveyType_id
@@ -67,16 +71,27 @@ Select @study_ID = study_ID from SURVEY_DEF where SURVEY_ID = @Survey_id
 --0=Passed,1=Error,2=Warning
 CREATE TABLE #M (Error TINYINT, strMessage VARCHAR(200))
 
---check to make sure only one sample period on HHACAHPS survey
+IF @surveyType_id in (@CIHI)
+	BEGIN
+		--check to make sure the sample period is at lest three consecutive months
+		INSERT INTO #M (Error, strMessage)
+		select  1, p1.strPeriodDef_nm + ' must be at least three consecutive months.'
+		from PeriodDef p1
+		where p1.Survey_id = @Survey_id and
+		DATEDIFF(MONTH, [datExpectedEncStart], DateAdd(d,1,[datExpectedEncEnd])) >= 3
+		and p1.intExpectedSamples <> 1
+	END
+	ELSE
+	BEGIN 
+
+		--check to make sure only one sample period on survey
 		INSERT INTO #M (Error, strMessage)
 		select  1, p1.strPeriodDef_nm + ' has more than one Sample in one period.'
 		from PeriodDef p1
 		where p1.Survey_id = @Survey_id and
 		  p1.intExpectedSamples <> 1
+	END
 
 SELECT * FROM #M
 
 DROP TABLE #M
-GO
-
-

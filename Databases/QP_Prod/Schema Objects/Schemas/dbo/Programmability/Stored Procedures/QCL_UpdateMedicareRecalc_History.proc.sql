@@ -18,7 +18,8 @@
 @ForcedCalculation TinyInt,
 @PropSampleCalcDate DATETIME,
 @MedicarePropDataType_ID INT,
-@HistoricAnnualVolume INT
+@HistoricAnnualVolume INT, 
+@UserCensusForced INT
 AS
 
 SET NOCOUNT ON
@@ -42,9 +43,8 @@ UPDATE [dbo].MedicareRecalc_History SET
 	ForcedCalculation = @ForcedCalculation,
 	PropSampleCalcDate= @PropSampleCalcDate,
 	MedicarePropDataType_ID = @MedicarePropDataType_ID,
-	HistoricAnnualVolume = @HistoricAnnualVolume
+	HistoricAnnualVolume = @HistoricAnnualVolume, 
+	UserCensusForced = @UserCensusForced
 WHERE MedicareReCalcLog_ID = @MedicareReCalcLog_ID
 
 SET NOCOUNT OFF
-
-

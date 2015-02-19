@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE sp_Samp_RollbackSample    
+﻿CREATE PROCEDURE [dbo].[sp_Samp_RollbackSample]    
  @intSampleSet_id int    
 AS    
  DECLARE @intStudy_id int    
@@ -85,10 +85,8 @@ group by ss.survey_id, sp.study_id, ss.datSampleCreate_dt
   WHERE SampleSet_id = @intSampleSet_id    
  DELETE FROM dbo.Sampling_ExclusionLog    
   WHERE SampleSet_id = @intSampleSet_id    
- DELETE FROM dbo.HCAHPSEligibleEncLog    
+ DELETE FROM dbo.EligibleEncLog    
   WHERE SampleSet_id = @intSampleSet_id    
- DELETE FROM dbo.HHCAHPSEligibleEncLog    
-  WHERE SampleSet_id = @intSampleSet_id   
  DELETE FROM dbo.HHCAHPS_PatInfileCount
   WHERE SampleSet_id = @intSampleSet_id   
  
@@ -114,5 +112,3 @@ BEGIN
   WHERE SampleSet_id = @intSampleSet_id     
 END    
  --End of Add DC
-
-

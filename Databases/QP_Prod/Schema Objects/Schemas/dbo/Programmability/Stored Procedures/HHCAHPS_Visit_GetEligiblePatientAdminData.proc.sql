@@ -3,8 +3,9 @@
 -- Create date: 04/26/2013
 -- Description:	For On-Site Visit data digging.
 --				Get patient data for eligible patients from study-owned tables
+--			1/14/2015 CJB: switched from HCAHPS specific table to new EligibleEncLog table    
 -- =============================================
-CREATE PROCEDURE HHCAHPS_Visit_GetEligiblePatientAdminData
+CREATE PROCEDURE [dbo].[HHCAHPS_Visit_GetEligiblePatientAdminData]
 
 @visityear int,
 @CCN varchar(6),
@@ -43,7 +44,7 @@ e.HHHMO, e.HHdual,
 e.ICD9, e.ICD9_2, e.ICD9_3, e.ICD9_4, e.ICD9_5, e.ICD9_6,
 e.HHSurg, e.hhESRD,
 e.hhadl_deficit, hhadl_dressup, hhadl_dresslow, hhadl_bath, hhadl_toilet, hhadl_transfer, p.langid 
-from hhcahpseligibleenclog heel, s' + ltrim(cast(@study_id as varchar)) +
+from eligibleenclog heel, s' + ltrim(cast(@study_id as varchar)) +
 '.population p, s' + ltrim(cast(@study_id as varchar)) + '.encounter e
 where heel.pop_id = p.pop_id
 and heel.enc_id = e.enc_id
@@ -56,5 +57,3 @@ exec (@sql)
 
 
 END
-
-
