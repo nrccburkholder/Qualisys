@@ -257,7 +257,7 @@ Private Sub cmdRunFrequencies_Click()
         ' *** Added 09-18-2002 SH
         Dim strUserPath As String
         
-        strUserPath = "c:\Documents and Settings\" & Trim(gstrLoginName) & "\My Documents\"
+        strUserPath = "c:\Users\" & Trim(gstrLoginName) & "\Documents\"
         
         Beep
         Beep
@@ -1026,7 +1026,7 @@ Function fctCloseAsciiFile(ByVal pstrFileName As String) As Boolean
     ' on local drive (C) if it doesn't exist.
     Dim strUserPath As String
     
-    strUserPath = "c:\Documents and Settings\"
+    strUserPath = "c:\Users\"
     If Dir(strUserPath, vbDirectory) = "" Then
         MkDir strUserPath
     End If
@@ -1038,7 +1038,7 @@ Function fctCloseAsciiFile(ByVal pstrFileName As String) As Boolean
     End If
     
     ' Check subdirectory "My Documents" and create it if it doesn't exist.
-    strUserPath = strUserPath & "My Documents\"
+    strUserPath = strUserPath & "Documents\"
     If Dir(strUserPath, vbDirectory) = "" Then
         MkDir strUserPath
     End If

@@ -1242,7 +1242,7 @@ Function CreatePivotTable()
     strTableName = Trim(strTableName)
     strSql = frmCrossTabs.GenerateSQL(strTableName)
     
-    strUserPath = "c:\Documents and Settings\" & Trim(gstrLoginName) & "\My Documents\"
+    strUserPath = "c:\Users\" & Trim(gstrLoginName) & "\Documents\"
 
     Beep
     Beep
