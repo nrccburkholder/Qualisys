@@ -1654,6 +1654,11 @@ AS
 	SET NOCOUNT ON 
 --exec csp_GetSamplePopulationExtractData2 2714
 	
+	DECLARE @oExtractRunLogID INT;
+	DECLARE @currDateTime1 DATETIME = GETDATE();
+	DECLARE @currDateTime2 DATETIME;
+	DECLARE @TaskName VARCHAR(200) =  OBJECT_NAME(@@PROCID);
+	EXEC [InsertExtractRunLog] @ExtractFileID, @TaskName, @currDateTime1, @ExtractRunLogID = @oExtractRunLogID OUTPUT
 	
 			declare @SamplePopEntityTypeID int
 			set @SamplePopEntityTypeID = 7 -- SamplePopulation
@@ -2058,7 +2063,9 @@ begin
     drop table #tttUS
     drop table #ttt_errorUS
 
-
+	SET @currDateTime2 = GETDATE();
+	SELECT @oExtractRunLogID,@currDateTime2,@TaskName
+	EXEC [UpdateExtractRunLog] @oExtractRunLogID, @currDateTime2
 end
 
 GO
