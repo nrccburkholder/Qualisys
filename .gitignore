@@ -11,6 +11,7 @@
 .pubxml
 bin/
 obj/
+publish/
 TestResults/
 FakesAssemblies/
 .metadata/
