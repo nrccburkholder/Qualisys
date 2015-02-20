@@ -22,8 +22,9 @@
     <SccProvider>
     </SccProvider>
     <ApplicationIcon>ExportMan.ico</ApplicationIcon>
-    <ManifestCertificateThumbprint>637FFFBD4E3AEFED3AAA274AC5899B2E1183A3E7</ManifestCertificateThumbprint>
-    <ManifestKeyFile>Export Manager_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestCertificateThumbprint>0FE167A020151A1F521FE8E3E27648F54B2C513A</ManifestCertificateThumbprint>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
     <GenerateManifests>true</GenerateManifests>
     <SignManifests>true</SignManifests>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
