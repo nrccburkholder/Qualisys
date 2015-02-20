@@ -313,7 +313,7 @@ Public Class ExistingSampleSetViewer
             Me.Cursor = Cursors.WaitCursor
 
             Dim srvy As Survey
-            Dim ss As SampleSet = SelectedSampleSet()
+            Dim ss As SampleSet = SampleSet.GetSampleSet(CInt(SampleSetGridView.SelectedRows(0).Tag))
             srvy = Survey.Get(ss.SurveyId)
 
             Dim genDateDialog As New GenerationDateDialog
