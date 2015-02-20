@@ -1,0 +1,13 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Qualisys.ConfigurationManager</id>
+    <title>Configuration Manager</title>
+    <version>4.4.23.0</version>
+    <authors>NRC</authors>
+    <description>GUI for managing study/survey setup and configuration</description>
+  </metadata>
+  <files>
+    <file src="bin\Release\app.publish\**\*"/>
+  </files>
+</package>

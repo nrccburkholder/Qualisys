@@ -23,7 +23,7 @@
     <OptionStrict>On</OptionStrict>
     <SignManifests>true</SignManifests>
     <ManifestCertificateThumbprint>13E09AAD0FFC1E7667935AC08A3A46200504109E</ManifestCertificateThumbprint>
-    <ManifestCertificateThumbprint>0FE167A020151A1F521FE8E3E27648F54B2C513A</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>5A71A56E298D541D5E2B8C5954E41C6B418841DD</ManifestCertificateThumbprint>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <GenerateManifests>true</GenerateManifests>
     <SignAssembly>false</SignAssembly>
@@ -35,9 +35,9 @@
     <OldToolsVersion>2.0</OldToolsVersion>
     <UpgradeBackupLocation />
     <TargetFrameworkProfile />
-    <PublishUrl>\\superman\NRCApplications\ConfigMan\</PublishUrl>
+    <PublishUrl>publish\</PublishUrl>
     <Install>false</Install>
-    <InstallFrom>Unc</InstallFrom>
+    <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateMode>Foreground</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
@@ -112,9 +112,13 @@
       <HintPath>..\..\Referenced Assemblies\AuditdotNET.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v9.3, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\DevExpress.Data.v9.3.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Utils.v9.3, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\DevExpress.Utils.v9.3.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.XtraBars.v9.3, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
@@ -123,9 +127,13 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.XtraEditors.v9.3, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\DevExpress.XtraEditors.v9.3.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.XtraGrid.v9.3, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\DevExpress.XtraGrid.v9.3.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.XtraPrinting.v9.3, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
@@ -138,15 +146,20 @@
       <HintPath>..\..\Referenced Assemblies\DevExpress.XtraRichEdit.v9.3.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DevExpress.XtraScheduler.v9.3.Core, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.XtraScheduler.v9.3, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\DevExpress.XtraScheduler.v9.3.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DevExpress.XtraScheduler.v9.3, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.XtraScheduler.v9.3.Core, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\DevExpress.XtraScheduler.v9.3.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.XtraTreeList.v9.3, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Referenced Assemblies\DevExpress.XtraTreeList.v9.3.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Interop.ADODB, Version=2.7.0.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
@@ -671,6 +684,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Configuration Manager_TemporaryKey.pfx" />
+    <None Include="ConfigurationManager.nuspec" />
     <None Include="My Project\app.manifest" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
@@ -806,16 +820,6 @@
       <FileType>Assembly</FileType>
     </PublishFile>
     <PublishFile Include="ActiveUp.Net.Mail">
-      <Visible>False</Visible>
-      <Group>
-      </Group>
-      <TargetPath>
-      </TargetPath>
-      <PublishState>Include</PublishState>
-      <IncludeHash>True</IncludeHash>
-      <FileType>Assembly</FileType>
-    </PublishFile>
-    <PublishFile Include="DevExpress.Data.v9.3">
       <Visible>False</Visible>
       <Group>
       </Group>
