@@ -8284,6 +8284,9 @@
     <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\SV_CAHPS_SamplingMethod.proc.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\SV_CAHPS_SkipPatterns.proc.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\SV_CAHPS_Template.proc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\CheckForCAHPSIncompletes.proc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\SV_CAHPS_EnglishOrFrench.proc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\EligibleEncLog.table.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\ScriptsIgnoredOnImport.sql">
