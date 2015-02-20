@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sqlScript>
+  <scriptFile filePath="..\v2.7.0.0 Add Sample Date Project\Tables\SelectedSample.sql" />
+  <scriptFile filePath="..\v2.7.0.0 Add Sample Date Project\Tables\Survey_Def.sql" />
+  <scriptFile filePath="..\v2.7.0.0 Add Sample Date Project\Tables\SurveyValidationProcs.sql" />
+  <scriptFile filePath="..\v2.7.0.0 Add Sample Date Project\SP\Export_SampleunitAvailableCount.sql" />
+  <scriptFile filePath="..\v2.7.0.0 Add Sample Date Project\SP\QCL_InsertSampleSet.sql" />
+  <scriptFile filePath="..\v2.7.0.0 Add Sample Date Project\SP\QCL_InsertSelectedSample.sql" />
+  <scriptFile filePath="..\v2.7.0.0 Add Sample Date Project\SP\QCL_InsertSurvey.sql" />
+  <scriptFile filePath="..\v2.7.0.0 Add Sample Date Project\SP\QCL_SampleSetResurveyExclusion.sql" />
+  <scriptFile filePath="..\v2.7.0.0 Add Sample Date Project\SP\QCL_SamplesetResurveyExclusion_StaticPlus.sql" />
+  <scriptFile filePath="..\v2.7.0.0 Add Sample Date Project\SP\QCL_SelectClientsStudiesAndSurveysByUser.sql" />
+  <scriptFile filePath="..\v2.7.0.0 Add Sample Date Project\SP\QCL_SelectEncounterUnitEligibility.sql" />
+  <scriptFile filePath="..\v2.7.0.0 Add Sample Date Project\SP\QCL_SelectSurvey.sql" />
+  <scriptFile filePath="..\v2.7.0.0 Add Sample Date Project\SP\QCL_SelectSurveysByStudyId.sql" />
+  <scriptFile filePath="..\v2.7.0.0 Add Sample Date Project\SP\QCL_UpdateSurvey.sql" />
+  <scriptFile filePath="..\v2.7.0.0 Add Sample Date Project\SP\QP_Rep_SamplePlanWorkSheetTitle.sql" />
+  <scriptFile filePath="..\v2.7.0.0 Add Sample Date Project\SP\QP_Rep_SurveyConfig01.sql" />
+  <scriptFile filePath="..\v2.7.0.0 Add Sample Date Project\SP\sp_Phase4_Big_View_Web.sql" />
+  <scriptFile filePath="..\v2.7.0.0 Add Sample Date Project\SP\sp_Samp_AddSampleSetV2.sql" />
+  <scriptFile filePath="..\v2.7.0.0 Add Sample Date Project\SP\sp_Samp_CreateTempTables.sql" />
+  <scriptFile filePath="..\v2.7.0.0 Add Sample Date Project\SP\SP_Samp_DefineDateRange.sql" />
+  <scriptFile filePath="..\v2.7.0.0 Add Sample Date Project\SP\SP_Samp_PersistantAssignment.sql" />
+  <scriptFile filePath="..\v2.7.0.0 Add Sample Date Project\SP\sp_Samp_Populate_Sampleunit_Universe.sql" />
+  <scriptFile filePath="..\v2.7.0.0 Add Sample Date Project\SP\sp_Samp_UpdateSelectedSample.sql" />
+  <scriptFile filePath="..\v2.7.0.0 Add Sample Date Project\SP\SV_HCAHPS.sql" />
+  <scriptFile filePath="..\v2.7.0.0 Add Sample Date Project\SP\SV_SurveyProperties.sql" />
+  <scriptFile filePath="..\v2.7.0.0 Add Sample Date Project\Views\Web_ClientStudySurvey_View.sql" />
+   </sqlScript>
