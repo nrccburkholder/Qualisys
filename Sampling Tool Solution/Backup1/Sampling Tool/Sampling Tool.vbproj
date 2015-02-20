@@ -1,0 +1,363 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{733DECDE-D3EC-4411-803A-4133AC759338}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>Nrc.Qualisys.SamplingTool.My.MyApplication</StartupObject>
+    <RootNamespace>Nrc.Qualisys.SamplingTool</RootNamespace>
+    <AssemblyName>SamplingTool</AssemblyName>
+    <MyType>WindowsForms</MyType>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <ApplicationIcon>SampTool.ico</ApplicationIcon>
+    <OptionStrict>On</OptionStrict>
+    <SignManifests>true</SignManifests>
+    <ManifestCertificateThumbprint>C4A197BC9B34ECD5E7BB33F5F760862819B9A188</ManifestCertificateThumbprint>
+    <SignAssembly>false</SignAssembly>
+    <TargetZone>LocalIntranet</TargetZone>
+    <GenerateManifests>true</GenerateManifests>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>\\superman\NRCApplications\SamplingTool\</PublishUrl>
+    <Install>false</Install>
+    <InstallFrom>Unc</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ProductName>Sampling Tool</ProductName>
+    <PublisherName>National Research Corporation</PublisherName>
+    <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
+    <ApplicationVersion>4.0.4.0</ApplicationVersion>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Development\</OutputPath>
+    <DocumentationFile>SamplingTool.xml</DocumentationFile>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <CodeAnalysisRuleAssemblies>C:\Program Files\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Development\</OutputPath>
+    <DocumentationFile>SamplingTool.xml</DocumentationFile>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <CodeAnalysisRuleAssemblies>C:\Program Files\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DocumentationFile>SamplingTool.xml</DocumentationFile>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <CodeAnalysisRuleAssemblies>C:\Program Files\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DocumentationFile>SamplingTool.xml</DocumentationFile>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <CodeAnalysisRuleAssemblies>C:\Program Files\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Nrc.Framework, Version=1.1.0.0, Culture=neutral, PublicKeyToken=7f65ae6d961bde9c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Framework.BusinessLogic, Version=1.0.5.0, Culture=neutral, PublicKeyToken=7f65ae6d961bde9c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.BusinessLogic.dll</HintPath>
+    </Reference>
+    <Reference Include="NRC.NRCAuthLib, Version=1.1.1.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\NRC.NRCAuthLib.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Collections.ObjectModel" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="Classes\CurrentUser.vb" />
+    <Compile Include="Classes\MultiSelectTreeView.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Classes\SampleDefinition.vb" />
+    <Compile Include="Classes\UIRelation.vb" />
+    <Compile Include="Controls\CalendarCell.vb" />
+    <Compile Include="Controls\CalendarColumn.vb" />
+    <Compile Include="Controls\CalendarEditingControl.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Navigators\ClientStudySurveyNavigator.Designer.vb">
+      <DependentUpon>ClientStudySurveyNavigator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Navigators\ClientStudySurveyNavigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ExistingSampleSetViewer.Designer.vb">
+      <DependentUpon>ExistingSampleSetViewer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ExistingSampleSetViewer.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Classes\Navigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\NewSampleDefinition.Designer.vb">
+      <DependentUpon>NewSampleDefinition.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\NewSampleDefinition.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Navigators\ReportNavigator.Designer.vb">
+      <DependentUpon>ReportNavigator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Navigators\ReportNavigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\ReportSection.Designer.vb">
+      <DependentUpon>ReportSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\ReportSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\SampleSection.Designer.vb">
+      <DependentUpon>SampleSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\SampleSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Classes\Section.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ToolStripDateTimePicker.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Exceptions\AccessDeniedException.vb" />
+    <Compile Include="Forms\GenerationDateDialog.Designer.vb">
+      <DependentUpon>GenerationDateDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\GenerationDateDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LockedSamplesDialog.Designer.vb">
+      <DependentUpon>LockedSamplesDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\LockedSamplesDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MainForm.Designer.vb">
+      <DependentUpon>MainForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MainForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\OverSampleDialog.Designer.vb">
+      <DependentUpon>OverSampleDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\OverSampleDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Main.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Navigators\ClientStudySurveyNavigator.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ClientStudySurveyNavigator.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ExistingSampleSetViewer.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ExistingSampleSetViewer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\NewSampleDefinition.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>NewSampleDefinition.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Navigators\ReportNavigator.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ReportNavigator.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\ReportSection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ReportSection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\SampleSection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SampleSection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\GenerationDateDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>GenerationDateDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LockedSamplesDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>LockedSamplesDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MainForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MainForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OverSampleDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>OverSampleDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\licenses.licx" />
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <BaseApplicationManifest Include="My Project\app.manifest" />
+    <None Include="My Project\DataSources\SampleDefinition.datasource" />
+    <None Include="Resources\Schedule.png" />
+    <None Include="Resources\Reports.png" />
+    <None Include="Resources\Delete.png" />
+    <None Include="Resources\Delete1.png" />
+    <None Include="Resources\Frequencies.png" />
+    <None Include="Resources\Check.png" />
+    <None Include="Resources\GoLtr.bmp" />
+    <None Include="Resources\Unschedule.png" />
+    <None Include="Resources\Unschedule16.png" />
+    <None Include="Resources\Undo16.png" />
+    <None Include="Resources\Down16.png" />
+    <None Include="Resources\Up16.png" />
+    <None Include="Resources\UpArrow16.png" />
+    <None Include="Resources\DownArrow16.png" />
+    <None Include="Resources\Caution16.png" />
+    <None Include="Resources\NoWay.png" />
+    <None Include="Resources\Validation16.png" />
+    <None Include="Resources\Refresh32.png" />
+    <None Include="Resources\checkbox-checked.gif" />
+    <Content Include="SampTool.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\QualiSys Class Library Solution\QualiSys.Library.SqlDataProvider\QualiSys.Library.SqlDataProvider.vbproj">
+      <Project>{31F9022F-D830-410D-90AE-98C59F34E552}</Project>
+      <Name>QualiSys.Library.SqlDataProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\QualiSys Class Library Solution\QualiSys.Library\QualiSys.Library.vbproj">
+      <Project>{191D0C34-FF61-47A6-852F-7FD91D50AD72}</Project>
+      <Name>QualiSys.Library</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PublishFile Include="ActiveUp.Net.Dns">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="ActiveUp.Net.Mail">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Dialogs\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
