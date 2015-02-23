@@ -29,7 +29,7 @@
     <ProductName>QueueManager</ProductName>
     <PublisherName>National Research Corporation</PublisherName>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>4.2.0.0</ApplicationVersion>
+    <ApplicationVersion>4.3.0.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
