@@ -7,4 +7,7 @@
     <authors>NRC</authors>
     <description>Graphical Export File Manager for CAHPS and other survey types</description>
   </metadata>
+  <files>
+    <file src="bin\Release\app.publish\**\*"/>
+  </files>
 </package>
