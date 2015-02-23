@@ -22,7 +22,7 @@
     </SccProvider>
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <SignManifests>true</SignManifests>
-    <ManifestCertificateThumbprint>22959BA24B4429E732F374D75F5DD70CEAEC94EA</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>17B000FE5ADD8817D78BD87A1F5C99CC57972A6F</ManifestCertificateThumbprint>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -87,6 +87,9 @@
     <CodeAnalysisRuleAssemblies>C:\Program Files (x86)\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
     <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>DataMart Export Service_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Nrc.Framework, Version=1.5.1.0, Culture=neutral, PublicKeyToken=7f65ae6d961bde9c, processorArchitecture=MSIL">
@@ -161,6 +164,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="DataMart Export Service.nuspec" />
+    <None Include="DataMart Export Service_TemporaryKey.pfx" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
