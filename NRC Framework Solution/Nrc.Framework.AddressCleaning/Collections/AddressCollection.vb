@@ -1,5 +1,5 @@
 Imports System.Net
-Imports NRC.Framework.BusinessLogic
+Imports Nrc.Framework.BusinessLogic
 Imports Nrc.Framework.BusinessLogic.Configuration
 
 Public Class AddressCollection
@@ -94,12 +94,12 @@ Public Class AddressCollection
         Dim addrCount As Integer = 0
         Dim addrUsed As Integer = 0
         Dim maxRecords As Integer = AppConfig.Params("AddressWebServiceMaxRecords").IntegerValue
-        Dim addrCheckRequest As New dqwsAddressCheck.RequestArray
-        Dim addrCheckResponse As New dqwsAddressCheck.ResponseArray
+        Dim addrCheckRequest As New net.melissadata.addresscheck.RequestArray
+        Dim addrCheckResponse As New net.melissadata.addresscheck.ResponseArray
         Dim geoCodingCount As Integer = 0
         Dim geoCodingUsed As Integer = 0
-        Dim geoCodingRequest As New dqwsGeoCodeCheck.RequestArray
-        Dim geoCodingResponse As New dqwsGeoCodeCheck.ResponseArray
+        Dim geoCodingRequest As New net.melissadata.geocoder.RequestArray
+        Dim geoCodingResponse As New net.melissadata.geocoder.ResponseArray
 
         'Initialize the SOAP request message
         addrCheckRequest.CustomerID = AppConfig.Params("AddressWebServiceCustomerID").StringValue
@@ -109,7 +109,7 @@ Public Class AddressCollection
         ReDim addrCheckRequest.Record(GetArraySize(Count, addrUsed, maxRecords) - 1)
 
         'Create the address cleaning web service connection
-        Using addrCheckService As New dqwsAddressCheck.Service
+        Using addrCheckService As New net.melissadata.addresscheck.Service
             'Initialize the web service
             addrCheckService.Url = AppConfig.Params("AddressWebServiceURL").StringValue
 
@@ -165,7 +165,7 @@ Public Class AddressCollection
         ReDim geoCodingRequest.Record(GetArraySize(Count, geoCodingUsed, maxRecords) - 1)
 
         'Create the address cleaning web service connection
-        Using geoCodingService As New dqwsGeoCodeCheck.Service
+        Using geoCodingService As New net.melissadata.geocoder.Service
             'Initialize the web service
             geoCodingService.Url = AppConfig.Params("GeoCodingWebServiceURL").StringValue
 
@@ -254,10 +254,10 @@ Public Class AddressCollection
     ''' <param name="addr">The address to be added to the request object.</param>
     ''' <param name="request">The request object that the address should be added to.</param>
     ''' <remarks></remarks>
-    Private Sub AddAddress(ByVal cnt As Integer, ByVal addr As Address, ByVal request As dqwsAddressCheck.RequestArray)
+    Private Sub AddAddress(ByVal cnt As Integer, ByVal addr As Address, ByVal request As net.melissadata.addresscheck.RequestArray)
 
         'Initialize this address request record
-        request.Record(cnt - 1) = New dqwsAddressCheck.RequestArrayRecord
+        request.Record(cnt - 1) = New net.melissadata.addresscheck.RequestArrayRecord
 
         'Populate the address request record
         With request.Record(cnt - 1)
@@ -337,7 +337,7 @@ Public Class AddressCollection
     ''' </summary>
     ''' <param name="responseArray">The response object containing the updated addresses.</param>
     ''' <remarks></remarks>
-    Private Sub UpdateAddresses(ByVal responseArray As dqwsAddressCheck.ResponseArray)
+    Private Sub UpdateAddresses(ByVal responseArray As net.melissadata.addresscheck.ResponseArray)
 
         Dim cnt As Integer
 
@@ -386,7 +386,7 @@ Public Class AddressCollection
     ''' <param name="response">The response object containing the cleaned address.</param>
     ''' <param name="results">The result string for this address.</param>
     ''' <remarks></remarks>
-    Private Sub UpdateAddress(ByVal addr As Address, ByVal response As dqwsAddressCheck.ResponseArrayRecordAddress, ByVal results As String)
+    Private Sub UpdateAddress(ByVal addr As Address, ByVal response As net.melissadata.addresscheck.ResponseArrayRecordAddress, ByVal results As String)
 
         With addr.WorkingAddress
             'Get the Address Type
@@ -712,10 +712,10 @@ Public Class AddressCollection
     ''' <param name="addr">The address to be added to the request object.</param>
     ''' <param name="request">The request object that the geocode should be added to.</param>
     ''' <remarks></remarks>
-    Private Sub AddGeoCoding(ByVal cnt As Integer, ByVal addr As Address, ByVal request As dqwsGeoCodeCheck.RequestArray)
+    Private Sub AddGeoCoding(ByVal cnt As Integer, ByVal addr As Address, ByVal request As net.melissadata.geocoder.RequestArray)
 
         'Initialize this geocode request record
-        request.Record(cnt - 1) = New dqwsGeoCodeCheck.RequestArrayRecord
+        request.Record(cnt - 1) = New net.melissadata.geocoder.RequestArrayRecord
 
         'Populate the geocode request record
         With request.Record(cnt - 1)
@@ -823,7 +823,7 @@ Public Class AddressCollection
     ''' </summary>
     ''' <param name="responseArray">The response object containing the updated addresses.</param>
     ''' <remarks></remarks>
-    Private Sub UpdateGeoCoding(ByVal responseArray As dqwsGeoCodeCheck.ResponseArray)
+    Private Sub UpdateGeoCoding(ByVal responseArray As net.melissadata.geocoder.ResponseArray)
 
         Dim cnt As Integer
 
@@ -852,7 +852,7 @@ Public Class AddressCollection
     ''' <param name="response">The response object containing the cleaned address.</param>
     ''' <param name="results">The result string for this address.</param>
     ''' <remarks></remarks>
-    Private Sub UpdateGeoCode(ByVal addr As Address, ByVal response As dqwsGeoCodeCheck.ResponseArrayRecordAddress, ByVal results As String)
+    Private Sub UpdateGeoCode(ByVal addr As Address, ByVal response As net.melissadata.geocoder.ResponseArrayRecordAddress, ByVal results As String)
 
         'Set the Status Code
         addr.GeoCode.GeoCodeStatus = GetGeoCodeStatus(results)

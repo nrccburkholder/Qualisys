@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Qualisys.Nrc.Framework</id>
+    <title>Nrc.Framework</title>
+    <version>1.10.0.0</version>
+    <authors>NRC</authors>
+    <description>Core Nrc.Framework class library</description>
+  </metadata>
+  <files>
+    <file src="bin\Release\**"/>
+  </files>
+</package>
