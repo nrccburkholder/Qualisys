@@ -521,10 +521,6 @@
       <Project>{D94DDA87-FE09-4644-9416-2BF8FE136D93}</Project>
       <Name>DataMart.Library</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\NRC Auth Solution\NRCAuthLib\NRCAuthlib.vbproj">
-      <Project>{6ed47ceb-9896-4be5-a7f2-cf2a5693f1ed}</Project>
-      <Name>NRCAuthlib</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <PublishFile Include="Data\DataMart.mdf">
