@@ -2223,8 +2223,11 @@ begin
         if SpreadToFillPages then s := s + 'T'
         else                      s := s + 'F';
 
-        if ExtraSpace>0 then s := s + format('%5d',[ExtraSpace])
-        else s := s + '00000';
+        if InsertSkipArrowDoD then s := s + 'T'
+        else                       s := s + 'F';
+
+        if ExtraSpace>0 then s := s + format('%4d',[ExtraSpace])
+        else s := s + '0000';
         //GN03: Save the most recent option as it was causing a corrupt code exception during Validate Layout
         // This info is stored in Address and FOUO information section of the survey
         DBRESelQstnText.Lines.Clear;

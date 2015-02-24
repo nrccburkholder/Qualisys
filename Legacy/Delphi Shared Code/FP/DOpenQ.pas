@@ -306,6 +306,7 @@ type
       DisplayText: Boolean);
     procedure DMOpenQDestroy(Sender: TObject);
     procedure FoxProPRG(fn:string);
+    function SkipRepeatsScaleTextForSurveyType: boolean;
 {$IFDEF FormLayout}
     function MappedSections:boolean;
     function MappedSampleUnitsByCL(coverLetter : string) : string;
@@ -424,6 +425,7 @@ type
     TwoColumns : boolean;
     ExtraSpace : integer;
     SpreadToFillPages : boolean;
+    InsertSkipArrowDoD : boolean;
     ClipboardQuestions : boolean;
     function SurveyDB(const fn:string):boolean;
     function GetUserParam(const prm:string):string;
@@ -764,6 +766,16 @@ begin
   SL.Free;
   closefile(f);
 {$ENDIF}
+end;
+
+function TDMOpenQ.SkipRepeatsScaleTextForSurveyType:boolean;
+var rs:variant;
+begin
+  rs := sqlcn.execute( 'select 1 from SurveyType inner join Survey_def on SurveyType.SurveyType_id = Survey_def.SurveyType_id ' +
+                       'where SkipRepeatsScaleText = 1 and survey_id='+inttostr(glbSurveyID));
+  result := (not rs.eof);
+  rs.close;
+  rs:=unassigned;
 end;
 
 {$IFDEF FormLayout}
@@ -3681,6 +3693,7 @@ begin
     ShadingOn := true;
     CurrentLanguage := -1; {Spanish}
     SpreadToFillPages := true;
+    InsertSkipArrowDoD := false;
     ExtraSpace := 0;
     FindTransUponCreate := true;
     Errorlist := tStringlist.create;
