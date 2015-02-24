@@ -97,13 +97,14 @@ Namespace DataProvider
 
         End Function
 
-        Protected Shared Function CreateStandardMethodology(ByVal id As Integer, ByVal name As String, ByVal isCustomizable As Boolean) As StandardMethodology
+        Protected Shared Function CreateStandardMethodology(ByVal id As Integer, ByVal name As String, ByVal isCustomizable As Boolean, ByVal isExpired As Boolean) As StandardMethodology
 
             Dim standard As New StandardMethodology
 
             standard.Id = id
             standard.Name = name
             standard.IsCustomizable = isCustomizable
+            standard.IsExpired = isExpired
 
             Return standard
 
