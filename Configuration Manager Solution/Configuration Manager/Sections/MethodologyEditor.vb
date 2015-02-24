@@ -1856,7 +1856,10 @@ Public Class MethodologyEditor
         Dim currentCell As DataGridViewCell = MethDataGrid.CurrentCell
 
         'If user has selected an expired methodology then warn them and get out
-        If Not cboBox.Text.Contains("(expired)") Then
+
+        Dim selectedMethodology As StandardMethodology = CType(cboBox.SelectedItem, StandardMethodology)
+
+        If selectedMethodology.IsExpired = False Then
             'Set the cell value based on the combobox selection
             currentCell.Value = cboBox.SelectedValue
 
