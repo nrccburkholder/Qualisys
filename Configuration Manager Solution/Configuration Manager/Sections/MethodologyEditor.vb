@@ -1,5 +1,8 @@
 Imports Nrc.Qualisys.Library
 Imports Nrc.Framework.BusinessLogic.Configuration
+Imports System.ComponentModel
+Imports System.Linq
+
 Public Class MethodologyEditor
 
 #Region " Private Fields "
@@ -10,7 +13,7 @@ Public Class MethodologyEditor
     Private mMethStepTypeCollection As Collection(Of MethodologyStepType)
     Private mCoverLetterCollection As Collection(Of CoverLetter)
     Private mNoCoverLetterCollection As Collection(Of CoverLetter)
-
+    Private methTypeList As BindingList(Of StandardMethodology)
     Private mIsDeleting As Boolean
 
 #End Region
@@ -66,9 +69,13 @@ Public Class MethodologyEditor
 
             'Build the methodology types combo box collection
             Dim methTypeCollection As Collection(Of StandardMethodology) = StandardMethodology.GetBySurveyType(mSurvey.SurveyType, mSurvey.SurveySubTypes)
+
+            'Convert collection to list so we can use linq to filter
+            methTypeList = New BindingList(Of StandardMethodology)(methTypeCollection)
+
             With MethTypeColumn
-                .DataSource = methTypeCollection
-                .DisplayMember = "Name"
+                .DataSource = methTypeList
+                .DisplayMember = "DisplayName"
                 .ValueMember = "ID"
             End With
 
@@ -244,23 +251,26 @@ Public Class MethodologyEditor
         'Get a name for the new methodology
         Dim methName As String = String.Empty
 
+        ' Check to see that un-expired methodologies exist
+        If methTypeList.Where(Function(x) x.IsExpired = False).ToList().Count > 0 Then
 
+            'Get the default standard methodology for the new methodology
+            Dim stdMeth As StandardMethodology = methTypeList.Where(Function(x) x.IsExpired = False).ToList().First()   'StandardMethodology.GetBySurveyType(mSurvey.SurveyType, mSurvey.SurveySubTypes).Item(0)
 
-        'Get the default standard methodology for the new methodology
-        Dim stdMeth As StandardMethodology = StandardMethodology.GetBySurveyType(mSurvey.SurveyType, mSurvey.SurveySubTypes).Item(0)
+            'Create the new methodology
+            Dim meth As Methodology = Methodology.CreateFromStandard(mSurvey.Id, methName, stdMeth)
 
-        'Create the new methodology
-        Dim meth As Methodology = Methodology.CreateFromStandard(mSurvey.Id, methName, stdMeth)
+            'Add the new methodology to the grid
+            Dim newRow As Integer = AddMethRow(meth, True)
 
-        'Add the new methodology to the grid
-        Dim newRow As Integer = AddMethRow(meth, True)
-
-        'Select the name column
-        With MethDataGrid
-            .Rows(newRow).Cells(MethNameColumn.Index).Selected = True
-            .BeginEdit(True)
-        End With
-
+            'Select the name column
+            With MethDataGrid
+                .Rows(newRow).Cells(MethNameColumn.Index).Selected = True
+                .BeginEdit(True)
+            End With
+        Else
+            MessageBox.Show("No 'Un-Expired' methodologies exist for this survey type!", "Missing Methodologies", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End If
     End Sub
 
 
@@ -1749,6 +1759,8 @@ Public Class MethodologyEditor
 
 #Region " Control Events - MethDataGrid "
 
+
+
     Private Sub MethDataGrid_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles MethDataGrid.MouseDown
 
         'If this is not the right mouse button then we are out of here
@@ -1843,26 +1855,33 @@ Public Class MethodologyEditor
         'Get a reference to the current grid cell
         Dim currentCell As DataGridViewCell = MethDataGrid.CurrentCell
 
-        'Set the cell value based on the combobox selection
-        currentCell.Value = cboBox.SelectedValue
+        'If user has selected an expired methodology then warn them and get out
 
-        'Take care of other column specific tasks
-        Select Case currentCell.ColumnIndex
-            Case MethTypeColumn.Index
-                'Update the methodology object
-                Dim stdMeth As StandardMethodology = StandardMethodology.Get(CType(currentCell.Value, Integer))
-                If Not (meth.StandardMethodology Is stdMeth) Then
-                    meth.StandardMethodology = stdMeth
+        Dim selectedMethodology As StandardMethodology = CType(cboBox.SelectedItem, StandardMethodology)
 
-                    'Repopulate the methodology steps
-                    PopulateMethSteps(meth)
+        If selectedMethodology.IsExpired = False Then
+            'Set the cell value based on the combobox selection
+            currentCell.Value = cboBox.SelectedValue
 
-                    'Validate the new type
-                    IsMethTypeValid(currentCell)
-                    AreMethStepRowsValid(currentCell.OwningRow)
-                End If
+            'Take care of other column specific tasks
+            Select Case currentCell.ColumnIndex
+                Case MethTypeColumn.Index
+                    'Update the methodology object
+                    Dim stdMeth As StandardMethodology = StandardMethodology.Get(CType(currentCell.Value, Integer))
+                    If Not (meth.StandardMethodology Is stdMeth) Then
+                        meth.StandardMethodology = stdMeth
 
-        End Select
+                        'Repopulate the methodology steps
+                        PopulateMethSteps(meth)
+
+                        'Validate the new type
+                        IsMethTypeValid(currentCell)
+                        AreMethStepRowsValid(currentCell.OwningRow)
+                    End If
+            End Select
+        Else
+            MessageBox.Show("You cannot select an expired methodology!", "Invalid Methodology", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End If
 
         'Reset the methodology toolbar
         SetupMethToolbar(meth)
