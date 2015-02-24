@@ -2,10 +2,6 @@ Imports Nrc.Qualisys.Library
 Imports Nrc.Framework.BusinessLogic.Configuration
 Imports System.ComponentModel
 Imports System.Linq
-Imports System.Xml
-Imports System.Text
-Imports System.IO
-
 
 Public Class MethodologyEditor
 
