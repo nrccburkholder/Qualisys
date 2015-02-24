@@ -65,12 +65,6 @@ Public Class StandardMethodology
     Friend Sub New()
     End Sub
 
-    Public Sub New(ByRef strName As String, ByRef intID As Integer, ByRef bitCustomizable As Boolean, ByRef bitExpired As Boolean)
-        Me.mName = strName
-        Me.mId = intID
-        Me.mIsExpired = bitExpired
-        Me.mIsCustomizable = bitCustomizable
-    End Sub
 #End Region
 
 #Region " Public Methods "
