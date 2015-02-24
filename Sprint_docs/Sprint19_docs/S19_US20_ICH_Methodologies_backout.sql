@@ -61,3 +61,26 @@ ELSE
 
 SET NOCOUNT OFF
 SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+GO
+
+USE [QP_Prod]
+GO
+/****** Object:  StoredProcedure [dbo].[QCL_SelectStandardMethodology]    Script Date: 2/24/2015 2:56:52 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[QCL_SelectStandardMethodology]
+ @StandardMethodologyId INT  
+AS  
+  
+SET NOCOUNT ON  
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED  
+  
+SELECT sm.StandardMethodologyId, sm.strStandardMethodology_nm, sm.bitCustom  
+FROM StandardMethodology sm
+WHERE sm.StandardMethodologyId=@StandardMethodologyId
+  
+SET NOCOUNT OFF  
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED

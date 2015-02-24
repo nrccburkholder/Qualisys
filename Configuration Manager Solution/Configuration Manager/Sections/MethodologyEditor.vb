@@ -1880,7 +1880,7 @@ Public Class MethodologyEditor
                     End If
             End Select
         Else
-            MessageBox.Show("Cannot select an expired methodology!", "Invalid Methodology", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("You cannot select an expired methodology!", "Invalid Methodology", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End If
 
         'Reset the methodology toolbar
