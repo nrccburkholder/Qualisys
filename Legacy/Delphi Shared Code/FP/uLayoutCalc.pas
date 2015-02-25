@@ -210,6 +210,7 @@ type
     { Private declarations }
     CAHPSNumbering : boolean;
     DoDBenSkips : boolean;
+    SkipRepeatsScaleText : boolean;
     NextQTop : integer;
     NeedLabels : boolean;
     SurveyItems: integer;
@@ -1192,38 +1193,89 @@ begin
             //if dmOpenQ.SkipGoPhrase = '' then
             case dmOpenQ.CurrentLanguage of
             2 : // Spanish
-                 vScaleText := vScaleText + ' (Vaya·al·#·[S'+wwt_sclsItem.asString+'])';
+                 if SkipRepeatsScaleText then
+                   vScaleText := format('%s (Si·"%s"·vaya·al·#·[S%s])',[vScaleText, vScaleText, wwt_sclsItem.asString])
+                 else
+                   vScaleText := format('%s (Vaya·al·#·[S%s])',[vScaleText, wwt_sclsItem.asString]);
             5 : // Mexican Spanish
-                 vScaleText := vScaleText + ' (continuar·con·la·pregunta·[S'+wwt_sclsItem.asString+'])';
+                 if SkipRepeatsScaleText then
+                   vScaleText := format('%s (Si·"%s"·continuar·con·la·pregunta·[S%s])',[vScaleText, vScaleText, wwt_sclsItem.asString])
+                 else
+                   vScaleText := format('%s (continuar·con·la·pregunta·[S%s])',[vScaleText, wwt_sclsItem.asString]);
             6 : // French
-                 vScaleText := vScaleText + ' (Allez·à·la·question·[S'+wwt_sclsItem.asString+'])';
+                 if SkipRepeatsScaleText then
+                   vScaleText := format('%s (Si·"%s"·allez·à·la·question·[S%s])',[vScaleText, vScaleText, wwt_sclsItem.asString])
+                 else
+                   vScaleText := format('%s (Allez·à·la·question·[S%s])',[vScaleText, wwt_sclsItem.asString]);
             8 : // PEP-C Spanish
-                 vScaleText := vScaleText + ' (Saltar·a·la·pregunta·[S'+wwt_sclsItem.asString+'])';
+                 if SkipRepeatsScaleText then
+                   vScaleText := format('%s (Si·"%s"·saltar·a·la·pregunta·[S%s])',[vScaleText, vScaleText, wwt_sclsItem.asString])
+                 else
+                   vScaleText := format('%s (Saltar·a·la·pregunta·[S%s])',[vScaleText, wwt_sclsItem.asString]);
             9 : // Harris County Spanish
-                 vScaleText := vScaleText + ' (Vaya·al·#·[S'+wwt_sclsItem.asString+'])';
+                 if SkipRepeatsScaleText then
+                   vScaleText := format('%s (Si·"%s"·vaya·al·#·[S%s])',[vScaleText, vScaleText, wwt_sclsItem.asString])
+                 else
+                   vScaleText := format('%s (Vaya·al·#·[S%s])',[vScaleText, wwt_sclsItem.asString]);
             10: // Quebeqor
-                 vScaleText := vScaleText + ' (Passez·au·n'+#27+'*p-30Yo'+#27+'*p+30Y·[S'+wwt_sclsItem.asString+'])';
+                 if SkipRepeatsScaleText then
+                   vScaleText := format('%s (Si·"%s"·passez·au·n'+#27+'*p-30Yo'+#27+'*p+30Y·[S%s])',[vScaleText, vScaleText, wwt_sclsItem.asString])
+                 else
+                   vScaleText := format('%s (Passez·au·n'+#27+'*p-30Yo'+#27+'*p+30Y·[S%s])',[vScaleText, wwt_sclsItem.asString]);
             11: //Francophone
-                 vScaleText := vScaleText + ' (Passez·à·la·question·n'+#27+'*p-30Yo'+#27+'*p+30Y·[S'+wwt_sclsItem.asString+'])';
+                 if SkipRepeatsScaleText then
+                   vScaleText := format('%s (Si·"%s"·passez·à·la·question·n'+#27+'*p-30Yo'+#27+'*p+30Y·[S%s])',[vScaleText, vScaleText, wwt_sclsItem.asString])
+                 else
+                   vScaleText := format('%s (Passez·à·la·question·n'+#27+'*p-30Yo'+#27+'*p+30Y·[S%s])',[vScaleText, wwt_sclsItem.asString]);
             22: // GN19: Montort french
-                 vScaleText := vScaleText + ' (procédez·à·la·question·[S'+wwt_sclsItem.asString+'])';
+                 if SkipRepeatsScaleText then
+                   vScaleText := format('%s (Si·"%s"·procédez·à·la·question·[S%s])',[vScaleText, vScaleText, wwt_sclsItem.asString])
+                 else
+                   vScaleText := format('%s (procédez·à·la·question·[S%s])',[vScaleText, wwt_sclsItem.asString]);
             13: // Harris County Spanish
-                 vScaleText := vScaleText + '·[S'+wwt_sclsItem.asString+'])'; //                 SkipError('Italian skips')
+                 //vScaleText := vScaleText + '·[S'+wwt_sclsItem.asString+'])'; //                 SkipError('Italian skips')
+                 if SkipRepeatsScaleText then
+                   vScaleText := format('%s (Si·"%s"·[S%s])',[vScaleText, vScaleText, wwt_sclsItem.asString])
+                 else
+                   vScaleText := format('%s ([S%s])',[vScaleText, wwt_sclsItem.asString]); //added missing '(' here just in case this is used
             14: //Portuguese
-                 vScaleText := vScaleText + ' (vá·para·a·Pergunta·[S'+wwt_sclsItem.asString+'])';
+                 if SkipRepeatsScaleText then
+                   vScaleText := format('%s (Se·"%s"·vá·para·a·Pergunta·[S%s])',[vScaleText, vScaleText, wwt_sclsItem.asString])
+                 else
+                   vScaleText := format('%s (vá·para·a·Pergunta·[S%s])',[vScaleText, wwt_sclsItem.asString]);
             15: // Hmong
-                 vScaleText := vScaleText + ' (Mus·rau·lo·lus·nug·[S'+wwt_sclsItem.asString+'])';
+                 if SkipRepeatsScaleText then
+                   vScaleText := format('%s (Yog tias·"%s"·mus·rau·lo·lus·nug·[S%s])',[vScaleText, vScaleText, wwt_sclsItem.asString])
+                 else
+                   vScaleText := format('%s (Mus·rau·lo·lus·nug·[S%s])',[vScaleText, wwt_sclsItem.asString]);
             16: // Somali
-                 vScaleText := vScaleText + ' (U·gudub·[S'+wwt_sclsItem.asString+'])';
+                 if SkipRepeatsScaleText then
+                   vScaleText := format('%s (Hadii·"%s"·u·gudub·[S%s])',[vScaleText, vScaleText, wwt_sclsItem.asString])
+                 else
+                   vScaleText := format('%s (U·gudub·[S%s])',[vScaleText, wwt_sclsItem.asString]);
             18,19,20: // Magnus Spanish GN03, HCAHPS Spanish GN08, Sodexho GN16
-                 vScaleText := vScaleText + ' (Vaya·al·#·[S'+wwt_sclsItem.asString+'])';
+                 if SkipRepeatsScaleText then
+                   vScaleText := format('%s (Si·"%s"·vaya·al·#·[S%s])',[vScaleText, vScaleText, wwt_sclsItem.asString])
+                 else
+                   vScaleText := format('%s (Vaya·al·#·[S%s])',[vScaleText, wwt_sclsItem.asString]);
             21: //GN19: Polish
-                 vScaleText := vScaleText + ' (Prosze·przejsc·do·nr·[S'+wwt_sclsItem.asString+'])';
+                 if SkipRepeatsScaleText then
+                   vScaleText := format('%s (W·przypadku·"%s"·prosze·przejsc·do·nr·[S%s])',[vScaleText, vScaleText, wwt_sclsItem.asString])
+                 else
+                   vScaleText := format('%s (Prosze·przejsc·do·nr·[S%s])',[vScaleText, wwt_sclsItem.asString]);
             else
                  if CAHPSNumbering or DoDBenSkips then
-                   vScaleText := vScaleText + '  ›··Go·to·Question·[S'+wwt_sclsItem.asString+']' // Alt-0155 = ›
+                   //vScaleText := vScaleText + '  ›··Go·to·Question·[S'+wwt_sclsItem.asString+']' // Alt-0155 = ›
+                   if SkipRepeatsScaleText then
+                     vScaleText := format('%s ›··If·"%s"·go·to·Question·[S%s]',[vScaleText, vScaleText, wwt_sclsItem.asString])
+                   else
+                     vScaleText := format('%s ›··Go·to·Question·[S%s]',[vScaleText, wwt_sclsItem.asString])
                  else
-                   vScaleText := vScaleText + ' (Go·to·#·[S'+wwt_sclsItem.asString+'])';
+                   //vScaleText := vScaleText + ' (Go·to·#·[S'+wwt_sclsItem.asString+'])';
+                   if SkipRepeatsScaleText then
+                     vScaleText := format('%s (If·"%s"·go·to·#·[S%s])',[vScaleText, vScaleText, wwt_sclsItem.asString])
+                   else
+                     vScaleText := format('%s (Go·to·#·[S%s])',[vScaleText, wwt_sclsItem.asString])
             end; //case dmOpenQ.CurrentLanguage of
 {            begin
                if dmOpenQ.CurrentLanguage = 2 then // Spanish
@@ -4042,7 +4094,8 @@ begin
     end;
     filtered := true;
     CAHPSNumbering := findkey([1,0,0]) and (pos('CAHPS',uppercase(wwt_qstnslabel.value))>0);
-    DoDBenSkips := findkey([1,0,0]) and (pos('DoD',wwt_qstnslabel.value)>0);
+//    DoDBenSkips := findkey([1,0,0]) and (pos('DoD',wwt_qstnslabel.value)>0);
+    DoDBenSkips := dmOpenQ.InsertSkipArrowDoD;
     while (ThisSect<=nSects) and (findkey([sects[ThisSect].section,ThisSub,0])) do begin
       dummy := 54;
       CalcSubsection(dummy,QN);
@@ -4546,8 +4599,10 @@ begin
   if PageType = 1 then begin
     CoverLetterGen(CoverHeight,AfterPageBreakCoverHeight);
     VerticalOffset := CoverHeight + AfterPageBreakCoverHeight;
-    if IncludeQstns then
+    if IncludeQstns then begin
+      SkipRepeatsScaleText := dmOpenQ.SkipRepeatsScaleTextForSurveyType;
       QuestionGen(VerticalOffset);
+    end;
     PaperChoice(CoverHeight,VerticalOffset);
   end else begin
     PostCardGen(PageType);
@@ -5139,7 +5194,10 @@ begin
     SelLength := 1;
     dmOpenQ.SpreadToFillPages := ((SelText='T') or (SelText=''));
     SelStart := 7;
-    SelLength := 5;
+    SelLength := 1;
+    dmOpenQ.InsertSkipArrowDoD := ((SelText='T') or (SelText=''));
+    SelStart := 8;
+    SelLength := 4;
     dmOpenQ.ExtraSpace := strtointdef(seltext,0);
     SelStart := 0;
     SelLength := 0;

@@ -19,8 +19,14 @@ sp_helptext QCL_selectallsurveytypes
 sp_helptext QCL_selectsurveytype
 
 */
+use [QP_Prod]
 
 begin tran
+
+update QualPro_Params set strparam_value = '3.28' where STRPARAM_NM = 'FormLayoutVersion'
+					 and strparam_value <> '3.28'
+--update QualPro_Params set strparam_value = '3.0' 
+--select * from Qualpro_params where STRPARAM_NM = 'FormLayoutVersion'
 
 IF NOT EXISTS (
             SELECT 1
