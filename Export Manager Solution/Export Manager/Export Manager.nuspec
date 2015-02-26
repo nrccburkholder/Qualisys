@@ -8,6 +8,6 @@
     <description>Graphical Export File Manager for CAHPS and other survey types</description>
   </metadata>
   <files>
-    <file src="bin\Debug\app.publish\**\*"/>
+    <file src="bin\Release\app.publish\**\*"/>
   </files>
 </package>
