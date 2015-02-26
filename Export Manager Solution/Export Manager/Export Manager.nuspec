@@ -3,11 +3,11 @@
   <metadata>
     <id>Qualisys.ExportManager</id>
     <title>QualiSys Export Manager</title>
-    <version>4.6.11.1</version>
+    <version>4.6.11.2</version>
     <authors>NRC</authors>
     <description>Graphical Export File Manager for CAHPS and other survey types</description>
   </metadata>
   <files>
-    <file src="publish\**\*"/>
+    <file src="bin\x86\Release\app.publish\**\*"/>
   </files>
 </package>
