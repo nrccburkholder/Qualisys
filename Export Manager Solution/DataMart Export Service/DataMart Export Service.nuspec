@@ -3,11 +3,11 @@
   <metadata>
     <id>Qualisys.DatamartExportService</id>
     <title>DataMart Export Service</title>
-    <version>1.25.12.1</version>
+    <version>1.25.12.2</version>
     <authors>NRC</authors>
     <description>Data service backend for (Medusa) Export Manager</description>
   </metadata>
   <files>
-    <file src="bin\Release\**"/>
+    <file src="bin\x86\Release\**"/>
   </files>
 </package>
