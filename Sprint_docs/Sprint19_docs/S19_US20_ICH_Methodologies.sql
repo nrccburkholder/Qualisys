@@ -336,7 +336,7 @@ Select @study_ID = study_ID from SURVEY_DEF where SURVEY_ID = @Survey_id
 CREATE TABLE #M (Error TINYINT, strMessage VARCHAR(200))
 
 --Check the active methodology  (ALL CAHPS)
-CREATE TABLE #ActiveMethodology (standardmethodologyid INT)
+CREATE TABLE #ActiveMethodology (standardmethodologyid INT, bitExpired bit)
 
 INSERT INTO #ActiveMethodology
 SELECT mm.StandardMethodologyId, smst.bitExpired
