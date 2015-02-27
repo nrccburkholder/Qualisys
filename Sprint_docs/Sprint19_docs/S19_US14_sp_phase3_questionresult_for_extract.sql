@@ -6,7 +6,10 @@ T14.2	For mixed mode, only add bad phone if both address and phone is bad. Testi
 
 Dave Gilsdorf
 
+INSERT INTO dbo.Disposition
+INSERT INTO dbo.SurveyTypeDispositions
 ALTER PROCEDURE [dbo].[sp_phase3_questionresult_for_extract]
+
 */
 use qp_prod
 go
@@ -17,8 +20,17 @@ if not exists (select * from dbo.Disposition where strDispositionLabel='Unused B
 if not exists (select * from dbo.Disposition where strDispositionLabel='Unused Bad Phone')
 	insert into dbo.Disposition (strDispositionLabel,Action_id,strReportLabel,MustHaveResults)
 	values ('Unused Bad Phone', 0, 'Unused Non Response Bad Phone', 0)
-go
 
+go
+if not exists (select * from dbo.SurveyTypeDispositions where [Desc]='Non-response: Unused Bad Address')
+	insert into dbo.SurveyTypeDispositions (Disposition_ID, Value, Hierarchy, [Desc], ExportReportResponses, ReceiptType_ID, SurveyType_ID)
+	values (46, 10, 12, 'Non-response: Unused Bad Address', 0, NULL, 11)
+	
+if not exists (select * from dbo.SurveyTypeDispositions where [Desc]='Non-response: Unused Bad/No Telephone Number')	
+	insert into dbo.SurveyTypeDispositions (Disposition_ID, Value, Hierarchy, [Desc], ExportReportResponses, ReceiptType_ID, SurveyType_ID)
+	values (47, 11, 12, 'Non-response: Unused Bad/No Telephone Number', 0, NULL, 11)
+
+go
 -- Modified 7/28/04 SJS (skip pattern recode) 
 -- Modified 11/2/05 BGD Removed skip pattern enforcement. Now in the SP_Extract_BubbleData procedure 
 -- Modified 11/16/05 BGD Calculate completeness for HCAHPS Surveys 
