@@ -566,6 +566,22 @@ INSERT INTO drm_tracktimes
 
 	drop table #ACOQF
 
+    --Hospice CAHPS Dispositions
+    --For mixed mode hospice cahps methodologies, only add bad phone and bad address dispositions if both address and phone are bad.
+    select cqw.samplepop_id
+		, max(case when disposition_id in (5) then 1 else 0 end) as BadAddr
+		, max(case when disposition_id in (14,16) then 1 else 0 end) as BadPhone
+    into #Hospice
+    FROM   cmnt_QuestionResult_work cqw 
+    inner join Surveytype st on cqw.Surveytype_id=st.Surveytype_id
+    inner join dispositionlog dl on cqw.samplepop_id=dl.samplepop_id
+    inner join questionform qf on cqw.questionform_id=qf.questionform_id
+    inner join sentmailing sm on qf.sentmail_id=sm.sentmail_id
+    inner join mailingmethodology mm on sm.methodology_id = mm.methodology_id 
+    WHERE  st.SurveyType_dsc = 'Hospice CAHPS'
+    and mm.StandardMethodologyID=26 -- Hospice Mixed Mail-Phone
+    group by cqw.samplepop_id
+
     /*************************************************************************************************/
     /************************************************************************************************/
     INSERT INTO drm_tracktimes 
