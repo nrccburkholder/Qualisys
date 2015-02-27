@@ -581,8 +581,9 @@ INSERT INTO drm_tracktimes
     --Hospice CAHPS Dispositions
     --For mixed mode hospice cahps methodologies, only add bad phone and bad address dispositions if both address and phone are bad.
     select cqw.samplepop_id
-		, max(case when disposition_id in (5) then 1 else 0 end) as BadAddr
-		, max(case when disposition_id in (14,16) then 1 else 0 end) as BadPhone
+		, max(case when disposition_id in (5,46) then 1 else 0 end) as BadAddr
+		, max(case when disposition_id in (14,16,47) then 1 else 0 end) as BadPhone
+		, max(case when disposition_id in (46,47) then 1 else 0 end) as UnusedDisps
     into #Hospice
     FROM   cmnt_QuestionResult_work cqw 
     inner join Surveytype st on cqw.Surveytype_id=st.Surveytype_id
@@ -605,6 +606,12 @@ INSERT INTO drm_tracktimes
 	from #Hospice h
     inner join dispositionlog dl on h.samplepop_id=dl.samplepop_id
 	where h.BadAddr=0 and h.BadPhone=1 and dl.disposition_id in (5)
+	
+	-- if there's both bad phone and bad addr - change any previously Unused dispositions back to used
+	update dl set disposition_id=case when dl.disposition_id=46 then 5 else 14 end
+	from #Hospice h
+    inner join dispositionlog dl on h.samplepop_id=dl.samplepop_id
+	where h.BadAddr=1 and h.BadPhone=1 and UnusedDisps=1 and dl.disposition_id in (46,47)
 
     /*************************************************************************************************/
     /************************************************************************************************/
