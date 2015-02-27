@@ -68,6 +68,7 @@ type
     SpeedButton2: TSpeedButton;
     Label6: TLabel;
     Label7: TLabel;
+    cbSkipArrowDoD: TCheckBox;
     procedure OKbtnClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure LangCheckListBoxClickCheck(Sender: TObject);
@@ -139,6 +140,7 @@ begin
   if {QPV2}(1=2) then dmOpenQ.SaveSectionOrder;
   dmOpenQ.ExtraSpace := editExtraSpace.value;
   dmOpenQ.SpreadToFillPages := cbSpreadQuestions.checked;
+  dmOpenQ.InsertSkipArrowDoD := cbSkipArrowDoD.Checked;
   //close; GN01
 end;
 
@@ -203,6 +205,7 @@ procedure Tf_options.FormCreate(Sender: TObject);
   begin
     chbTwoCols.Checked := dmOpenQ.TwoColumns;
     cbSpreadQuestions.Checked := dmOpenQ.SpreadToFillPages;
+    cbSkipArrowDoD.Checked := dmOpenQ.InsertSkipArrowDoD;
     editExtraSpace.value := dmOpenQ.ExtraSpace;
     cbSpreadQuestionsClick(Sender);
   end;

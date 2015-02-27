@@ -2225,6 +2225,10 @@ begin
 
         if ExtraSpace>0 then s := s + format('%5d',[ExtraSpace])
         else s := s + '00000';
+
+        if InsertSkipArrowDoD then s := s + 'T'
+        else                       s := s + 'F';
+
         //GN03: Save the most recent option as it was causing a corrupt code exception during Validate Layout
         // This info is stored in Address and FOUO information section of the survey
         DBRESelQstnText.Lines.Clear;
@@ -4686,6 +4690,13 @@ begin
         SelStart := 7;
         SelLength := 5;
         pnlExtraSpace.caption := inttostr(strtointdef(seltext,0));
+
+        SelStart := 12;
+        SelLength := 1;
+        if ((SelText='T') or (SelText='')) then
+          lblIncludeSkipArrow.caption := 'R'
+        else
+          lblIncludeSkipArrow.caption := '£'; 
       end;
 
       //In-Memory properties
@@ -4725,6 +4736,12 @@ begin
           lblSpreadQuestions1.caption := '£';
 
         pnlExtraSpace1.caption := inttostr(ExtraSpace);
+
+        if InsertSkipArrowDoD then
+          lblIncludeSkipArrow1.caption := 'R'
+        else
+          lblIncludeSkipArrow1.caption := '£';
+
       end;
 
 
@@ -4789,6 +4806,13 @@ begin
         AllMatch:= False;
         pnl1_9.color := clRed;
         pnl2_9.color := clRed;
+      end;
+
+      if lblIncludeSkipArrow1.Caption <> lblIncludeSkipArrow.Caption then
+      begin
+        AllMatch:= False;
+        pnl1_9b.color := clRed;
+        pnl2_9b.color := clRed;
       end;
 
       if LblConsiderLegal1.Caption <> LblConsiderLegal.Caption then

@@ -184,7 +184,8 @@ Public Class MethodologyProvider
         Dim newObj As StandardMethodology = CreateStandardMethodology( _
                                 rdr.GetInteger("StandardMethodologyId"), _
                                 rdr.GetString("strStandardMethodology_nm"), _
-                                rdr.GetBoolean("bitCustom"))
+                                rdr.GetBoolean("bitCustom"), _
+                                rdr.GetBoolean("bitExpired"))
 
         Return newObj
     End Function

@@ -19,114 +19,114 @@ Partial Class MethodologyEditor
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
-        Me.OKButton = New System.Windows.Forms.Button
-        Me.CancelButton = New System.Windows.Forms.Button
-        Me.BottomPanel = New System.Windows.Forms.Panel
-        Me.SplitContainer = New System.Windows.Forms.SplitContainer
-        Me.MethSectionPanel = New Nrc.Framework.WinForms.SectionPanel
-        Me.MethToolStrip = New System.Windows.Forms.ToolStrip
-        Me.MethNewTSButton = New System.Windows.Forms.ToolStripButton
-        Me.MethDeleteTSButton = New System.Windows.Forms.ToolStripButton
-        Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator
-        Me.MethEditTSButton = New System.Windows.Forms.ToolStripButton
-        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
-        Me.MethActivateTSButton = New System.Windows.Forms.ToolStripButton
-        Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator
-        Me.MethUndoTSButton = New System.Windows.Forms.ToolStripButton
-        Me.MethDataGrid = New System.Windows.Forms.DataGridView
-        Me.MethActiveColumn = New System.Windows.Forms.DataGridViewImageColumn
-        Me.MethNameColumn = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.MethTypeColumn = New System.Windows.Forms.DataGridViewComboBoxColumn
-        Me.MethCreatedColumn = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.components = New System.ComponentModel.Container()
+        Me.OKButton = New System.Windows.Forms.Button()
+        Me.CancelButton = New System.Windows.Forms.Button()
+        Me.BottomPanel = New System.Windows.Forms.Panel()
+        Me.SplitContainer = New System.Windows.Forms.SplitContainer()
+        Me.MethSectionPanel = New Nrc.Framework.WinForms.SectionPanel()
+        Me.MethToolStrip = New System.Windows.Forms.ToolStrip()
+        Me.MethNewTSButton = New System.Windows.Forms.ToolStripButton()
+        Me.MethDeleteTSButton = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
+        Me.MethEditTSButton = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.MethActivateTSButton = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
+        Me.MethUndoTSButton = New System.Windows.Forms.ToolStripButton()
+        Me.MethDataGrid = New System.Windows.Forms.DataGridView()
+        Me.MethActiveColumn = New System.Windows.Forms.DataGridViewImageColumn()
+        Me.MethNameColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.MethTypeColumn = New System.Windows.Forms.DataGridViewComboBoxColumn()
+        Me.MethCreatedColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.MethMenuStrip = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.MethNewMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.MethDeleteMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator6 = New System.Windows.Forms.ToolStripSeparator
-        Me.MethEditMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator7 = New System.Windows.Forms.ToolStripSeparator
-        Me.MethActivateMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator8 = New System.Windows.Forms.ToolStripSeparator
-        Me.MethUndoMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
-        Me.MethStepSectionPanel = New Nrc.Framework.WinForms.SectionPanel
-        Me.MethStepToolStrip = New System.Windows.Forms.ToolStrip
-        Me.MethStepNewTSButton = New System.Windows.Forms.ToolStripButton
-        Me.MethStepDeleteTSButton = New System.Windows.Forms.ToolStripButton
-        Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator
-        Me.MethStepMoveUpTSButton = New System.Windows.Forms.ToolStripButton
-        Me.MethStepMoveDownTSButton = New System.Windows.Forms.ToolStripButton
-        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
-        Me.MethStepApplyTSButton = New System.Windows.Forms.ToolStripButton
-        Me.MethStepUndoTSButton = New System.Windows.Forms.ToolStripButton
-        Me.MethStepDataGrid = New System.Windows.Forms.DataGridView
+        Me.MethNewMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MethDeleteMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator6 = New System.Windows.Forms.ToolStripSeparator()
+        Me.MethEditMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator7 = New System.Windows.Forms.ToolStripSeparator()
+        Me.MethActivateMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator8 = New System.Windows.Forms.ToolStripSeparator()
+        Me.MethUndoMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
+        Me.MethStepSectionPanel = New Nrc.Framework.WinForms.SectionPanel()
+        Me.MethStepToolStrip = New System.Windows.Forms.ToolStrip()
+        Me.MethStepNewTSButton = New System.Windows.Forms.ToolStripButton()
+        Me.MethStepDeleteTSButton = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
+        Me.MethStepMoveUpTSButton = New System.Windows.Forms.ToolStripButton()
+        Me.MethStepMoveDownTSButton = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
+        Me.MethStepApplyTSButton = New System.Windows.Forms.ToolStripButton()
+        Me.MethStepUndoTSButton = New System.Windows.Forms.ToolStripButton()
+        Me.MethStepDataGrid = New System.Windows.Forms.DataGridView()
+        Me.MethStepTypeTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.MethStepTypeComboBoxColumn = New System.Windows.Forms.DataGridViewComboBoxColumn()
+        Me.MethStepDaysSincePrevColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.MethStepCoverLetterColumn = New System.Windows.Forms.DataGridViewComboBoxColumn()
+        Me.MethStepLanguageColumn = New System.Windows.Forms.DataGridViewComboBoxColumn()
+        Me.MethStepIncludeWithPrevColumn = New System.Windows.Forms.DataGridViewComboBoxColumn()
+        Me.MethStepExpirationDaysColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.MethStepExpireFromStepColumn = New System.Windows.Forms.DataGridViewComboBoxColumn()
         Me.MethStepMenuStrip = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.MethStepNewMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.MethStepDeleteMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator9 = New System.Windows.Forms.ToolStripSeparator
-        Me.MethStepMoveUpMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.MethStepMoveDownMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator10 = New System.Windows.Forms.ToolStripSeparator
-        Me.MethStepApplyMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.MethStepUndoMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.MethPropsSectionPanel = New Nrc.Framework.WinForms.SectionPanel
-        Me.MethodologyPropsWebPanel = New System.Windows.Forms.Panel
-        Me.WebEmailBlastGridControl = New DevExpress.XtraGrid.GridControl
+        Me.MethStepNewMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MethStepDeleteMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator9 = New System.Windows.Forms.ToolStripSeparator()
+        Me.MethStepMoveUpMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MethStepMoveDownMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator10 = New System.Windows.Forms.ToolStripSeparator()
+        Me.MethStepApplyMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MethStepUndoMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MethPropsSectionPanel = New Nrc.Framework.WinForms.SectionPanel()
+        Me.MethodologyPropsWebPanel = New System.Windows.Forms.Panel()
+        Me.WebEmailBlastGridControl = New DevExpress.XtraGrid.GridControl()
         Me.EmailBlastBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.WebEmailBlastGridView = New DevExpress.XtraGrid.Views.Grid.GridView
-        Me.colEmailBlastId = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.EmailBlastNameLookUpEdit = New DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit
+        Me.WebEmailBlastGridView = New DevExpress.XtraGrid.Views.Grid.GridView()
+        Me.colEmailBlastId = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.EmailBlastNameLookUpEdit = New DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit()
         Me.EmailBlastOptionBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.colDaysFromStepGen = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.DaysFromStepGenTextEdit = New DevExpress.XtraEditors.Repository.RepositoryItemTextEdit
-        Me.EmailBlastNameComboBox = New DevExpress.XtraEditors.Repository.RepositoryItemComboBox
-        Me.EmailBlastNameGridLookUpEdit = New DevExpress.XtraEditors.Repository.RepositoryItemGridLookUpEdit
-        Me.RepositoryItemGridLookUpEdit1View = New DevExpress.XtraGrid.Views.Grid.GridView
-        Me.WebEmailBlastCheckBox = New System.Windows.Forms.CheckBox
-        Me.WebQuotasGroupBox = New System.Windows.Forms.GroupBox
-        Me.WebReturnsLabel = New System.Windows.Forms.Label
-        Me.WebQuotasStopReturnsTextBox = New System.Windows.Forms.TextBox
-        Me.WebQuotasStopReturnsRadioButton = New System.Windows.Forms.RadioButton
-        Me.WebQuotasAllReturnsRadioButton = New System.Windows.Forms.RadioButton
-        Me.WebDaysInFieldLabel = New System.Windows.Forms.Label
-        Me.WebAcceptPartialCheckBox = New System.Windows.Forms.CheckBox
-        Me.WebDaysInFieldTextBox = New System.Windows.Forms.TextBox
-        Me.MethodologyPropsIVRPanel = New System.Windows.Forms.Panel
-        Me.IVRDaysInFieldLabel = New System.Windows.Forms.Label
-        Me.IVRAcceptPartialCheckBox = New System.Windows.Forms.CheckBox
-        Me.IVRDaysInFieldTextBox = New System.Windows.Forms.TextBox
-        Me.MethodologyPropsPhonePanel = New System.Windows.Forms.Panel
-        Me.PhoneEveningSunCheckBox = New System.Windows.Forms.CheckBox
-        Me.PhoneDaySunCheckBox = New System.Windows.Forms.CheckBox
-        Me.PhoneEveningSatCheckBox = New System.Windows.Forms.CheckBox
-        Me.PhoneDaySatCheckBox = New System.Windows.Forms.CheckBox
-        Me.PhoneSundayLabel = New System.Windows.Forms.Label
-        Me.PhoneSaturdayLabel = New System.Windows.Forms.Label
-        Me.PhoneMFLabel = New System.Windows.Forms.Label
-        Me.PhoneEveningMFCheckBox = New System.Windows.Forms.CheckBox
-        Me.PhoneNumberOfAttemptsLabel = New System.Windows.Forms.Label
-        Me.PhoneNumberOfAttemptsTextBox = New System.Windows.Forms.TextBox
-        Me.PhoneTTYCallbackCheckBox = New System.Windows.Forms.CheckBox
-        Me.PhoneLangCallbackCheckBox = New System.Windows.Forms.CheckBox
-        Me.PhoneQuotasGroupBox = New System.Windows.Forms.GroupBox
-        Me.PhoneReturnsLabel = New System.Windows.Forms.Label
-        Me.PhoneQuotasStopReturnsTextBox = New System.Windows.Forms.TextBox
-        Me.PhoneQuotasStopReturnsRadioButton = New System.Windows.Forms.RadioButton
-        Me.PhoneQuotasAllReturnsRadioButton = New System.Windows.Forms.RadioButton
-        Me.PhoneDaysInFieldLabel = New System.Windows.Forms.Label
-        Me.PhoneDayMFCheckBox = New System.Windows.Forms.CheckBox
-        Me.PhoneDaysInFieldTextBox = New System.Windows.Forms.TextBox
-        Me.InformationBar = New Nrc.Qualisys.ConfigurationManager.InformationBar
+        Me.colDaysFromStepGen = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.DaysFromStepGenTextEdit = New DevExpress.XtraEditors.Repository.RepositoryItemTextEdit()
+        Me.EmailBlastNameComboBox = New DevExpress.XtraEditors.Repository.RepositoryItemComboBox()
+        Me.EmailBlastNameGridLookUpEdit = New DevExpress.XtraEditors.Repository.RepositoryItemGridLookUpEdit()
+        Me.RepositoryItemGridLookUpEdit1View = New DevExpress.XtraGrid.Views.Grid.GridView()
+        Me.WebEmailBlastCheckBox = New System.Windows.Forms.CheckBox()
+        Me.WebQuotasGroupBox = New System.Windows.Forms.GroupBox()
+        Me.WebReturnsLabel = New System.Windows.Forms.Label()
+        Me.WebQuotasStopReturnsTextBox = New System.Windows.Forms.TextBox()
+        Me.WebQuotasStopReturnsRadioButton = New System.Windows.Forms.RadioButton()
+        Me.WebQuotasAllReturnsRadioButton = New System.Windows.Forms.RadioButton()
+        Me.WebDaysInFieldLabel = New System.Windows.Forms.Label()
+        Me.WebAcceptPartialCheckBox = New System.Windows.Forms.CheckBox()
+        Me.WebDaysInFieldTextBox = New System.Windows.Forms.TextBox()
+        Me.MethodologyPropsIVRPanel = New System.Windows.Forms.Panel()
+        Me.IVRDaysInFieldLabel = New System.Windows.Forms.Label()
+        Me.IVRAcceptPartialCheckBox = New System.Windows.Forms.CheckBox()
+        Me.IVRDaysInFieldTextBox = New System.Windows.Forms.TextBox()
+        Me.MethodologyPropsPhonePanel = New System.Windows.Forms.Panel()
+        Me.PhoneEveningSunCheckBox = New System.Windows.Forms.CheckBox()
+        Me.PhoneDaySunCheckBox = New System.Windows.Forms.CheckBox()
+        Me.PhoneEveningSatCheckBox = New System.Windows.Forms.CheckBox()
+        Me.PhoneDaySatCheckBox = New System.Windows.Forms.CheckBox()
+        Me.PhoneSundayLabel = New System.Windows.Forms.Label()
+        Me.PhoneSaturdayLabel = New System.Windows.Forms.Label()
+        Me.PhoneMFLabel = New System.Windows.Forms.Label()
+        Me.PhoneEveningMFCheckBox = New System.Windows.Forms.CheckBox()
+        Me.PhoneNumberOfAttemptsLabel = New System.Windows.Forms.Label()
+        Me.PhoneNumberOfAttemptsTextBox = New System.Windows.Forms.TextBox()
+        Me.PhoneTTYCallbackCheckBox = New System.Windows.Forms.CheckBox()
+        Me.PhoneLangCallbackCheckBox = New System.Windows.Forms.CheckBox()
+        Me.PhoneQuotasGroupBox = New System.Windows.Forms.GroupBox()
+        Me.PhoneReturnsLabel = New System.Windows.Forms.Label()
+        Me.PhoneQuotasStopReturnsTextBox = New System.Windows.Forms.TextBox()
+        Me.PhoneQuotasStopReturnsRadioButton = New System.Windows.Forms.RadioButton()
+        Me.PhoneQuotasAllReturnsRadioButton = New System.Windows.Forms.RadioButton()
+        Me.PhoneDaysInFieldLabel = New System.Windows.Forms.Label()
+        Me.PhoneDayMFCheckBox = New System.Windows.Forms.CheckBox()
+        Me.PhoneDaysInFieldTextBox = New System.Windows.Forms.TextBox()
+        Me.InformationBar = New Nrc.QualiSys.ConfigurationManager.InformationBar()
         Me.MethPropsErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.WebBlastErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
-        Me.MethStepTypeTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.MethStepTypeComboBoxColumn = New System.Windows.Forms.DataGridViewComboBoxColumn
-        Me.MethStepDaysSincePrevColumn = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.MethStepCoverLetterColumn = New System.Windows.Forms.DataGridViewComboBoxColumn
-        Me.MethStepLanguageColumn = New System.Windows.Forms.DataGridViewComboBoxColumn
-        Me.MethStepIncludeWithPrevColumn = New System.Windows.Forms.DataGridViewComboBoxColumn
-        Me.MethStepExpirationDaysColumn = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.MethStepExpireFromStepColumn = New System.Windows.Forms.DataGridViewComboBoxColumn
         Me.BottomPanel.SuspendLayout()
         Me.SplitContainer.Panel1.SuspendLayout()
         Me.SplitContainer.Panel2.SuspendLayout()
@@ -213,8 +213,8 @@ Partial Class MethodologyEditor
         'MethSectionPanel
         '
         Me.MethSectionPanel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.MethSectionPanel.BorderColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(45, Byte), Integer), CType(CType(150, Byte), Integer))
         Me.MethSectionPanel.Caption = "Survey Methodologies"
         Me.MethSectionPanel.Controls.Add(Me.MethToolStrip)
@@ -237,18 +237,18 @@ Partial Class MethodologyEditor
         '
         'MethNewTSButton
         '
-        Me.MethNewTSButton.Image = Global.Nrc.Qualisys.ConfigurationManager.My.Resources.Resources.New16
+        Me.MethNewTSButton.Image = Global.Nrc.QualiSys.ConfigurationManager.My.Resources.Resources.New16
         Me.MethNewTSButton.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.MethNewTSButton.Name = "MethNewTSButton"
-        Me.MethNewTSButton.Size = New System.Drawing.Size(113, 22)
+        Me.MethNewTSButton.Size = New System.Drawing.Size(126, 22)
         Me.MethNewTSButton.Text = "New Methodology"
         '
         'MethDeleteTSButton
         '
-        Me.MethDeleteTSButton.Image = Global.Nrc.Qualisys.ConfigurationManager.My.Resources.Resources.DeleteRed16
+        Me.MethDeleteTSButton.Image = Global.Nrc.QualiSys.ConfigurationManager.My.Resources.Resources.DeleteRed16
         Me.MethDeleteTSButton.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.MethDeleteTSButton.Name = "MethDeleteTSButton"
-        Me.MethDeleteTSButton.Size = New System.Drawing.Size(123, 22)
+        Me.MethDeleteTSButton.Size = New System.Drawing.Size(135, 22)
         Me.MethDeleteTSButton.Text = "Delete Methodology"
         '
         'ToolStripSeparator3
@@ -258,10 +258,10 @@ Partial Class MethodologyEditor
         '
         'MethEditTSButton
         '
-        Me.MethEditTSButton.Image = Global.Nrc.Qualisys.ConfigurationManager.My.Resources.Resources.Properties16
+        Me.MethEditTSButton.Image = Global.Nrc.QualiSys.ConfigurationManager.My.Resources.Resources.Properties16
         Me.MethEditTSButton.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.MethEditTSButton.Name = "MethEditTSButton"
-        Me.MethEditTSButton.Size = New System.Drawing.Size(75, 22)
+        Me.MethEditTSButton.Size = New System.Drawing.Size(78, 22)
         Me.MethEditTSButton.Text = "Edit Steps"
         '
         'ToolStripSeparator1
@@ -271,10 +271,10 @@ Partial Class MethodologyEditor
         '
         'MethActivateTSButton
         '
-        Me.MethActivateTSButton.Image = Global.Nrc.Qualisys.ConfigurationManager.My.Resources.Resources.Validation16
+        Me.MethActivateTSButton.Image = Global.Nrc.QualiSys.ConfigurationManager.My.Resources.Resources.Validation16
         Me.MethActivateTSButton.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.MethActivateTSButton.Name = "MethActivateTSButton"
-        Me.MethActivateTSButton.Size = New System.Drawing.Size(132, 22)
+        Me.MethActivateTSButton.Size = New System.Drawing.Size(145, 22)
         Me.MethActivateTSButton.Text = "Activate Methodology"
         '
         'ToolStripSeparator5
@@ -284,10 +284,10 @@ Partial Class MethodologyEditor
         '
         'MethUndoTSButton
         '
-        Me.MethUndoTSButton.Image = Global.Nrc.Qualisys.ConfigurationManager.My.Resources.Resources.Undo16
+        Me.MethUndoTSButton.Image = Global.Nrc.QualiSys.ConfigurationManager.My.Resources.Resources.Undo16
         Me.MethUndoTSButton.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.MethUndoTSButton.Name = "MethUndoTSButton"
-        Me.MethUndoTSButton.Size = New System.Drawing.Size(97, 22)
+        Me.MethUndoTSButton.Size = New System.Drawing.Size(105, 22)
         Me.MethUndoTSButton.Text = "Undo Changes"
         '
         'MethDataGrid
@@ -296,8 +296,8 @@ Partial Class MethodologyEditor
         Me.MethDataGrid.AllowUserToDeleteRows = False
         Me.MethDataGrid.AllowUserToResizeRows = False
         Me.MethDataGrid.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.MethDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.MethDataGrid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.MethActiveColumn, Me.MethNameColumn, Me.MethTypeColumn, Me.MethCreatedColumn})
         Me.MethDataGrid.ContextMenuStrip = Me.MethMenuStrip
@@ -349,56 +349,56 @@ Partial Class MethodologyEditor
         '
         Me.MethMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MethNewMenuItem, Me.MethDeleteMenuItem, Me.ToolStripSeparator6, Me.MethEditMenuItem, Me.ToolStripSeparator7, Me.MethActivateMenuItem, Me.ToolStripSeparator8, Me.MethUndoMenuItem})
         Me.MethMenuStrip.Name = "MethMenuStrip"
-        Me.MethMenuStrip.Size = New System.Drawing.Size(191, 132)
+        Me.MethMenuStrip.Size = New System.Drawing.Size(193, 132)
         '
         'MethNewMenuItem
         '
-        Me.MethNewMenuItem.Image = Global.Nrc.Qualisys.ConfigurationManager.My.Resources.Resources.New16
+        Me.MethNewMenuItem.Image = Global.Nrc.QualiSys.ConfigurationManager.My.Resources.Resources.New16
         Me.MethNewMenuItem.Name = "MethNewMenuItem"
-        Me.MethNewMenuItem.Size = New System.Drawing.Size(190, 22)
+        Me.MethNewMenuItem.Size = New System.Drawing.Size(192, 22)
         Me.MethNewMenuItem.Text = "New Methodology"
         '
         'MethDeleteMenuItem
         '
-        Me.MethDeleteMenuItem.Image = Global.Nrc.Qualisys.ConfigurationManager.My.Resources.Resources.DeleteRed16
+        Me.MethDeleteMenuItem.Image = Global.Nrc.QualiSys.ConfigurationManager.My.Resources.Resources.DeleteRed16
         Me.MethDeleteMenuItem.Name = "MethDeleteMenuItem"
-        Me.MethDeleteMenuItem.Size = New System.Drawing.Size(190, 22)
+        Me.MethDeleteMenuItem.Size = New System.Drawing.Size(192, 22)
         Me.MethDeleteMenuItem.Text = "Delete Methodology"
         '
         'ToolStripSeparator6
         '
         Me.ToolStripSeparator6.Name = "ToolStripSeparator6"
-        Me.ToolStripSeparator6.Size = New System.Drawing.Size(187, 6)
+        Me.ToolStripSeparator6.Size = New System.Drawing.Size(189, 6)
         '
         'MethEditMenuItem
         '
-        Me.MethEditMenuItem.Image = Global.Nrc.Qualisys.ConfigurationManager.My.Resources.Resources.Properties16
+        Me.MethEditMenuItem.Image = Global.Nrc.QualiSys.ConfigurationManager.My.Resources.Resources.Properties16
         Me.MethEditMenuItem.Name = "MethEditMenuItem"
-        Me.MethEditMenuItem.Size = New System.Drawing.Size(190, 22)
+        Me.MethEditMenuItem.Size = New System.Drawing.Size(192, 22)
         Me.MethEditMenuItem.Text = "Edit Steps"
         '
         'ToolStripSeparator7
         '
         Me.ToolStripSeparator7.Name = "ToolStripSeparator7"
-        Me.ToolStripSeparator7.Size = New System.Drawing.Size(187, 6)
+        Me.ToolStripSeparator7.Size = New System.Drawing.Size(189, 6)
         '
         'MethActivateMenuItem
         '
-        Me.MethActivateMenuItem.Image = Global.Nrc.Qualisys.ConfigurationManager.My.Resources.Resources.Validation16
+        Me.MethActivateMenuItem.Image = Global.Nrc.QualiSys.ConfigurationManager.My.Resources.Resources.Validation16
         Me.MethActivateMenuItem.Name = "MethActivateMenuItem"
-        Me.MethActivateMenuItem.Size = New System.Drawing.Size(190, 22)
+        Me.MethActivateMenuItem.Size = New System.Drawing.Size(192, 22)
         Me.MethActivateMenuItem.Text = "Activate Methodology"
         '
         'ToolStripSeparator8
         '
         Me.ToolStripSeparator8.Name = "ToolStripSeparator8"
-        Me.ToolStripSeparator8.Size = New System.Drawing.Size(187, 6)
+        Me.ToolStripSeparator8.Size = New System.Drawing.Size(189, 6)
         '
         'MethUndoMenuItem
         '
-        Me.MethUndoMenuItem.Image = Global.Nrc.Qualisys.ConfigurationManager.My.Resources.Resources.Undo16
+        Me.MethUndoMenuItem.Image = Global.Nrc.QualiSys.ConfigurationManager.My.Resources.Resources.Undo16
         Me.MethUndoMenuItem.Name = "MethUndoMenuItem"
-        Me.MethUndoMenuItem.Size = New System.Drawing.Size(190, 22)
+        Me.MethUndoMenuItem.Size = New System.Drawing.Size(192, 22)
         Me.MethUndoMenuItem.Text = "Undo Changes"
         '
         'SplitContainer1
@@ -423,8 +423,8 @@ Partial Class MethodologyEditor
         'MethStepSectionPanel
         '
         Me.MethStepSectionPanel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.MethStepSectionPanel.BorderColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(45, Byte), Integer), CType(CType(150, Byte), Integer))
         Me.MethStepSectionPanel.Caption = "Methodology Steps"
         Me.MethStepSectionPanel.Controls.Add(Me.MethStepToolStrip)
@@ -447,18 +447,18 @@ Partial Class MethodologyEditor
         '
         'MethStepNewTSButton
         '
-        Me.MethStepNewTSButton.Image = Global.Nrc.Qualisys.ConfigurationManager.My.Resources.Resources.New16
+        Me.MethStepNewTSButton.Image = Global.Nrc.QualiSys.ConfigurationManager.My.Resources.Resources.New16
         Me.MethStepNewTSButton.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.MethStepNewTSButton.Name = "MethStepNewTSButton"
-        Me.MethStepNewTSButton.Size = New System.Drawing.Size(73, 22)
+        Me.MethStepNewTSButton.Size = New System.Drawing.Size(77, 22)
         Me.MethStepNewTSButton.Text = "New Step"
         '
         'MethStepDeleteTSButton
         '
-        Me.MethStepDeleteTSButton.Image = Global.Nrc.Qualisys.ConfigurationManager.My.Resources.Resources.DeleteRed16
+        Me.MethStepDeleteTSButton.Image = Global.Nrc.QualiSys.ConfigurationManager.My.Resources.Resources.DeleteRed16
         Me.MethStepDeleteTSButton.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.MethStepDeleteTSButton.Name = "MethStepDeleteTSButton"
-        Me.MethStepDeleteTSButton.Size = New System.Drawing.Size(83, 22)
+        Me.MethStepDeleteTSButton.Size = New System.Drawing.Size(86, 22)
         Me.MethStepDeleteTSButton.Text = "Delete Step"
         '
         'ToolStripSeparator4
@@ -468,18 +468,18 @@ Partial Class MethodologyEditor
         '
         'MethStepMoveUpTSButton
         '
-        Me.MethStepMoveUpTSButton.Image = Global.Nrc.Qualisys.ConfigurationManager.My.Resources.Resources.UpArrow16
+        Me.MethStepMoveUpTSButton.Image = Global.Nrc.QualiSys.ConfigurationManager.My.Resources.Resources.UpArrow16
         Me.MethStepMoveUpTSButton.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.MethStepMoveUpTSButton.Name = "MethStepMoveUpTSButton"
-        Me.MethStepMoveUpTSButton.Size = New System.Drawing.Size(69, 22)
+        Me.MethStepMoveUpTSButton.Size = New System.Drawing.Size(75, 22)
         Me.MethStepMoveUpTSButton.Text = "Move Up"
         '
         'MethStepMoveDownTSButton
         '
-        Me.MethStepMoveDownTSButton.Image = Global.Nrc.Qualisys.ConfigurationManager.My.Resources.Resources.DownArrow16
+        Me.MethStepMoveDownTSButton.Image = Global.Nrc.QualiSys.ConfigurationManager.My.Resources.Resources.DownArrow16
         Me.MethStepMoveDownTSButton.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.MethStepMoveDownTSButton.Name = "MethStepMoveDownTSButton"
-        Me.MethStepMoveDownTSButton.Size = New System.Drawing.Size(83, 22)
+        Me.MethStepMoveDownTSButton.Size = New System.Drawing.Size(91, 22)
         Me.MethStepMoveDownTSButton.Text = "Move Down"
         '
         'ToolStripSeparator2
@@ -489,18 +489,18 @@ Partial Class MethodologyEditor
         '
         'MethStepApplyTSButton
         '
-        Me.MethStepApplyTSButton.Image = Global.Nrc.Qualisys.ConfigurationManager.My.Resources.Resources.Save16
+        Me.MethStepApplyTSButton.Image = Global.Nrc.QualiSys.ConfigurationManager.My.Resources.Resources.Save16
         Me.MethStepApplyTSButton.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.MethStepApplyTSButton.Name = "MethStepApplyTSButton"
-        Me.MethStepApplyTSButton.Size = New System.Drawing.Size(99, 22)
+        Me.MethStepApplyTSButton.Size = New System.Drawing.Size(107, 22)
         Me.MethStepApplyTSButton.Text = "Apply Changes"
         '
         'MethStepUndoTSButton
         '
-        Me.MethStepUndoTSButton.Image = Global.Nrc.Qualisys.ConfigurationManager.My.Resources.Resources.Undo16
+        Me.MethStepUndoTSButton.Image = Global.Nrc.QualiSys.ConfigurationManager.My.Resources.Resources.Undo16
         Me.MethStepUndoTSButton.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.MethStepUndoTSButton.Name = "MethStepUndoTSButton"
-        Me.MethStepUndoTSButton.Size = New System.Drawing.Size(97, 22)
+        Me.MethStepUndoTSButton.Size = New System.Drawing.Size(105, 22)
         Me.MethStepUndoTSButton.Text = "Undo Changes"
         '
         'MethStepDataGrid
@@ -509,8 +509,8 @@ Partial Class MethodologyEditor
         Me.MethStepDataGrid.AllowUserToDeleteRows = False
         Me.MethStepDataGrid.AllowUserToResizeRows = False
         Me.MethStepDataGrid.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.MethStepDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.MethStepDataGrid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.MethStepTypeTextBoxColumn, Me.MethStepTypeComboBoxColumn, Me.MethStepDaysSincePrevColumn, Me.MethStepCoverLetterColumn, Me.MethStepLanguageColumn, Me.MethStepIncludeWithPrevColumn, Me.MethStepExpirationDaysColumn, Me.MethStepExpireFromStepColumn})
         Me.MethStepDataGrid.ContextMenuStrip = Me.MethStepMenuStrip
@@ -522,69 +522,142 @@ Partial Class MethodologyEditor
         Me.MethStepDataGrid.Size = New System.Drawing.Size(798, 149)
         Me.MethStepDataGrid.TabIndex = 2
         '
+        'MethStepTypeTextBoxColumn
+        '
+        Me.MethStepTypeTextBoxColumn.HeaderText = "Step Type"
+        Me.MethStepTypeTextBoxColumn.MaxInputLength = 20
+        Me.MethStepTypeTextBoxColumn.MinimumWidth = 50
+        Me.MethStepTypeTextBoxColumn.Name = "MethStepTypeTextBoxColumn"
+        Me.MethStepTypeTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        Me.MethStepTypeTextBoxColumn.Visible = False
+        Me.MethStepTypeTextBoxColumn.Width = 170
+        '
+        'MethStepTypeComboBoxColumn
+        '
+        Me.MethStepTypeComboBoxColumn.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox
+        Me.MethStepTypeComboBoxColumn.HeaderText = "Step Type"
+        Me.MethStepTypeComboBoxColumn.MinimumWidth = 50
+        Me.MethStepTypeComboBoxColumn.Name = "MethStepTypeComboBoxColumn"
+        Me.MethStepTypeComboBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.MethStepTypeComboBoxColumn.Width = 170
+        '
+        'MethStepDaysSincePrevColumn
+        '
+        Me.MethStepDaysSincePrevColumn.HeaderText = "Days Since Previous Step"
+        Me.MethStepDaysSincePrevColumn.MaxInputLength = 2
+        Me.MethStepDaysSincePrevColumn.MinimumWidth = 80
+        Me.MethStepDaysSincePrevColumn.Name = "MethStepDaysSincePrevColumn"
+        Me.MethStepDaysSincePrevColumn.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.MethStepDaysSincePrevColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        Me.MethStepDaysSincePrevColumn.Width = 80
+        '
+        'MethStepCoverLetterColumn
+        '
+        Me.MethStepCoverLetterColumn.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox
+        Me.MethStepCoverLetterColumn.HeaderText = "Cover Letter"
+        Me.MethStepCoverLetterColumn.MinimumWidth = 50
+        Me.MethStepCoverLetterColumn.Name = "MethStepCoverLetterColumn"
+        Me.MethStepCoverLetterColumn.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.MethStepCoverLetterColumn.Width = 150
+        '
+        'MethStepLanguageColumn
+        '
+        Me.MethStepLanguageColumn.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox
+        Me.MethStepLanguageColumn.HeaderText = "Language"
+        Me.MethStepLanguageColumn.MinimumWidth = 50
+        Me.MethStepLanguageColumn.Name = "MethStepLanguageColumn"
+        Me.MethStepLanguageColumn.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        '
+        'MethStepIncludeWithPrevColumn
+        '
+        Me.MethStepIncludeWithPrevColumn.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox
+        Me.MethStepIncludeWithPrevColumn.HeaderText = "Include With Previous Step"
+        Me.MethStepIncludeWithPrevColumn.MinimumWidth = 80
+        Me.MethStepIncludeWithPrevColumn.Name = "MethStepIncludeWithPrevColumn"
+        Me.MethStepIncludeWithPrevColumn.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.MethStepIncludeWithPrevColumn.Width = 80
+        '
+        'MethStepExpirationDaysColumn
+        '
+        Me.MethStepExpirationDaysColumn.HeaderText = "Days Until Expiration"
+        Me.MethStepExpirationDaysColumn.MaxInputLength = 3
+        Me.MethStepExpirationDaysColumn.MinimumWidth = 50
+        Me.MethStepExpirationDaysColumn.Name = "MethStepExpirationDaysColumn"
+        Me.MethStepExpirationDaysColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        Me.MethStepExpirationDaysColumn.Width = 80
+        '
+        'MethStepExpireFromStepColumn
+        '
+        Me.MethStepExpireFromStepColumn.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox
+        Me.MethStepExpireFromStepColumn.HeaderText = "Expire From Step"
+        Me.MethStepExpireFromStepColumn.MinimumWidth = 50
+        Me.MethStepExpireFromStepColumn.Name = "MethStepExpireFromStepColumn"
+        Me.MethStepExpireFromStepColumn.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.MethStepExpireFromStepColumn.Width = 120
+        '
         'MethStepMenuStrip
         '
         Me.MethStepMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MethStepNewMenuItem, Me.MethStepDeleteMenuItem, Me.ToolStripSeparator9, Me.MethStepMoveUpMenuItem, Me.MethStepMoveDownMenuItem, Me.ToolStripSeparator10, Me.MethStepApplyMenuItem, Me.MethStepUndoMenuItem})
         Me.MethStepMenuStrip.Name = "MethStepMenuStrip"
-        Me.MethStepMenuStrip.Size = New System.Drawing.Size(158, 148)
+        Me.MethStepMenuStrip.Size = New System.Drawing.Size(155, 148)
         '
         'MethStepNewMenuItem
         '
-        Me.MethStepNewMenuItem.Image = Global.Nrc.Qualisys.ConfigurationManager.My.Resources.Resources.New16
+        Me.MethStepNewMenuItem.Image = Global.Nrc.QualiSys.ConfigurationManager.My.Resources.Resources.New16
         Me.MethStepNewMenuItem.Name = "MethStepNewMenuItem"
-        Me.MethStepNewMenuItem.Size = New System.Drawing.Size(157, 22)
+        Me.MethStepNewMenuItem.Size = New System.Drawing.Size(154, 22)
         Me.MethStepNewMenuItem.Text = "New Step"
         '
         'MethStepDeleteMenuItem
         '
-        Me.MethStepDeleteMenuItem.Image = Global.Nrc.Qualisys.ConfigurationManager.My.Resources.Resources.DeleteRed16
+        Me.MethStepDeleteMenuItem.Image = Global.Nrc.QualiSys.ConfigurationManager.My.Resources.Resources.DeleteRed16
         Me.MethStepDeleteMenuItem.Name = "MethStepDeleteMenuItem"
-        Me.MethStepDeleteMenuItem.Size = New System.Drawing.Size(157, 22)
+        Me.MethStepDeleteMenuItem.Size = New System.Drawing.Size(154, 22)
         Me.MethStepDeleteMenuItem.Text = "Delete Step"
         '
         'ToolStripSeparator9
         '
         Me.ToolStripSeparator9.Name = "ToolStripSeparator9"
-        Me.ToolStripSeparator9.Size = New System.Drawing.Size(154, 6)
+        Me.ToolStripSeparator9.Size = New System.Drawing.Size(151, 6)
         '
         'MethStepMoveUpMenuItem
         '
-        Me.MethStepMoveUpMenuItem.Image = Global.Nrc.Qualisys.ConfigurationManager.My.Resources.Resources.UpArrow16
+        Me.MethStepMoveUpMenuItem.Image = Global.Nrc.QualiSys.ConfigurationManager.My.Resources.Resources.UpArrow16
         Me.MethStepMoveUpMenuItem.Name = "MethStepMoveUpMenuItem"
-        Me.MethStepMoveUpMenuItem.Size = New System.Drawing.Size(157, 22)
+        Me.MethStepMoveUpMenuItem.Size = New System.Drawing.Size(154, 22)
         Me.MethStepMoveUpMenuItem.Text = "Move Up"
         '
         'MethStepMoveDownMenuItem
         '
-        Me.MethStepMoveDownMenuItem.Image = Global.Nrc.Qualisys.ConfigurationManager.My.Resources.Resources.DownArrow16
+        Me.MethStepMoveDownMenuItem.Image = Global.Nrc.QualiSys.ConfigurationManager.My.Resources.Resources.DownArrow16
         Me.MethStepMoveDownMenuItem.Name = "MethStepMoveDownMenuItem"
-        Me.MethStepMoveDownMenuItem.Size = New System.Drawing.Size(157, 22)
+        Me.MethStepMoveDownMenuItem.Size = New System.Drawing.Size(154, 22)
         Me.MethStepMoveDownMenuItem.Text = "Move Down"
         '
         'ToolStripSeparator10
         '
         Me.ToolStripSeparator10.Name = "ToolStripSeparator10"
-        Me.ToolStripSeparator10.Size = New System.Drawing.Size(154, 6)
+        Me.ToolStripSeparator10.Size = New System.Drawing.Size(151, 6)
         '
         'MethStepApplyMenuItem
         '
-        Me.MethStepApplyMenuItem.Image = Global.Nrc.Qualisys.ConfigurationManager.My.Resources.Resources.Save16
+        Me.MethStepApplyMenuItem.Image = Global.Nrc.QualiSys.ConfigurationManager.My.Resources.Resources.Save16
         Me.MethStepApplyMenuItem.Name = "MethStepApplyMenuItem"
-        Me.MethStepApplyMenuItem.Size = New System.Drawing.Size(157, 22)
+        Me.MethStepApplyMenuItem.Size = New System.Drawing.Size(154, 22)
         Me.MethStepApplyMenuItem.Text = "Apply Changes"
         '
         'MethStepUndoMenuItem
         '
-        Me.MethStepUndoMenuItem.Image = Global.Nrc.Qualisys.ConfigurationManager.My.Resources.Resources.Undo16
+        Me.MethStepUndoMenuItem.Image = Global.Nrc.QualiSys.ConfigurationManager.My.Resources.Resources.Undo16
         Me.MethStepUndoMenuItem.Name = "MethStepUndoMenuItem"
-        Me.MethStepUndoMenuItem.Size = New System.Drawing.Size(157, 22)
+        Me.MethStepUndoMenuItem.Size = New System.Drawing.Size(154, 22)
         Me.MethStepUndoMenuItem.Text = "Undo Changes"
         '
         'MethPropsSectionPanel
         '
         Me.MethPropsSectionPanel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.MethPropsSectionPanel.BorderColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(45, Byte), Integer), CType(CType(150, Byte), Integer))
         Me.MethPropsSectionPanel.Caption = "Methodology Step Properties"
         Me.MethPropsSectionPanel.Controls.Add(Me.MethodologyPropsWebPanel)
@@ -600,8 +673,8 @@ Partial Class MethodologyEditor
         'MethodologyPropsWebPanel
         '
         Me.MethodologyPropsWebPanel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.MethodologyPropsWebPanel.Controls.Add(Me.WebEmailBlastGridControl)
         Me.MethodologyPropsWebPanel.Controls.Add(Me.WebEmailBlastCheckBox)
         Me.MethodologyPropsWebPanel.Controls.Add(Me.WebQuotasGroupBox)
@@ -618,8 +691,8 @@ Partial Class MethodologyEditor
         'WebEmailBlastGridControl
         '
         Me.WebEmailBlastGridControl.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.WebEmailBlastGridControl.DataSource = Me.EmailBlastBindingSource
         Me.WebEmailBlastGridControl.EmbeddedNavigator.Buttons.EndEdit.Visible = False
         Me.WebEmailBlastGridControl.EmbeddedNavigator.Buttons.First.Visible = False
@@ -628,7 +701,6 @@ Partial Class MethodologyEditor
         Me.WebEmailBlastGridControl.EmbeddedNavigator.Buttons.NextPage.Visible = False
         Me.WebEmailBlastGridControl.EmbeddedNavigator.Buttons.Prev.Visible = False
         Me.WebEmailBlastGridControl.EmbeddedNavigator.Buttons.PrevPage.Visible = False
-        Me.WebEmailBlastGridControl.EmbeddedNavigator.Name = ""
         Me.WebEmailBlastGridControl.EmbeddedNavigator.TextStringFormat = ""
         Me.WebEmailBlastGridControl.Enabled = False
         Me.WebEmailBlastGridControl.Location = New System.Drawing.Point(388, 35)
@@ -643,7 +715,7 @@ Partial Class MethodologyEditor
         'EmailBlastBindingSource
         '
         Me.EmailBlastBindingSource.AllowNew = True
-        Me.EmailBlastBindingSource.DataSource = GetType(Nrc.Qualisys.Library.EmailBlast)
+        Me.EmailBlastBindingSource.DataSource = GetType(Nrc.QualiSys.Library.EmailBlast)
         '
         'WebEmailBlastGridView
         '
@@ -679,7 +751,7 @@ Partial Class MethodologyEditor
         '
         'EmailBlastOptionBindingSource
         '
-        Me.EmailBlastOptionBindingSource.DataSource = GetType(Nrc.Qualisys.Library.EmailBlastOption)
+        Me.EmailBlastOptionBindingSource.DataSource = GetType(Nrc.QualiSys.Library.EmailBlastOption)
         '
         'colDaysFromStepGen
         '
@@ -812,8 +884,8 @@ Partial Class MethodologyEditor
         'MethodologyPropsIVRPanel
         '
         Me.MethodologyPropsIVRPanel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.MethodologyPropsIVRPanel.Controls.Add(Me.IVRDaysInFieldLabel)
         Me.MethodologyPropsIVRPanel.Controls.Add(Me.IVRAcceptPartialCheckBox)
         Me.MethodologyPropsIVRPanel.Controls.Add(Me.IVRDaysInFieldTextBox)
@@ -855,8 +927,8 @@ Partial Class MethodologyEditor
         'MethodologyPropsPhonePanel
         '
         Me.MethodologyPropsPhonePanel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.MethodologyPropsPhonePanel.Controls.Add(Me.PhoneEveningSunCheckBox)
         Me.MethodologyPropsPhonePanel.Controls.Add(Me.PhoneDaySunCheckBox)
         Me.MethodologyPropsPhonePanel.Controls.Add(Me.PhoneEveningSatCheckBox)
@@ -1090,79 +1162,6 @@ Partial Class MethodologyEditor
         '
         Me.WebBlastErrorProvider.ContainerControl = Me
         '
-        'MethStepTypeTextBoxColumn
-        '
-        Me.MethStepTypeTextBoxColumn.HeaderText = "Step Type"
-        Me.MethStepTypeTextBoxColumn.MaxInputLength = 20
-        Me.MethStepTypeTextBoxColumn.MinimumWidth = 50
-        Me.MethStepTypeTextBoxColumn.Name = "MethStepTypeTextBoxColumn"
-        Me.MethStepTypeTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.MethStepTypeTextBoxColumn.Visible = False
-        Me.MethStepTypeTextBoxColumn.Width = 170
-        '
-        'MethStepTypeComboBoxColumn
-        '
-        Me.MethStepTypeComboBoxColumn.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox
-        Me.MethStepTypeComboBoxColumn.HeaderText = "Step Type"
-        Me.MethStepTypeComboBoxColumn.MinimumWidth = 50
-        Me.MethStepTypeComboBoxColumn.Name = "MethStepTypeComboBoxColumn"
-        Me.MethStepTypeComboBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.MethStepTypeComboBoxColumn.Width = 170
-        '
-        'MethStepDaysSincePrevColumn
-        '
-        Me.MethStepDaysSincePrevColumn.HeaderText = "Days Since Previous Step"
-        Me.MethStepDaysSincePrevColumn.MaxInputLength = 2
-        Me.MethStepDaysSincePrevColumn.MinimumWidth = 80
-        Me.MethStepDaysSincePrevColumn.Name = "MethStepDaysSincePrevColumn"
-        Me.MethStepDaysSincePrevColumn.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.MethStepDaysSincePrevColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.MethStepDaysSincePrevColumn.Width = 80
-        '
-        'MethStepCoverLetterColumn
-        '
-        Me.MethStepCoverLetterColumn.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox
-        Me.MethStepCoverLetterColumn.HeaderText = "Cover Letter"
-        Me.MethStepCoverLetterColumn.MinimumWidth = 50
-        Me.MethStepCoverLetterColumn.Name = "MethStepCoverLetterColumn"
-        Me.MethStepCoverLetterColumn.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.MethStepCoverLetterColumn.Width = 150
-        '
-        'MethStepLanguageColumn
-        '
-        Me.MethStepLanguageColumn.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox
-        Me.MethStepLanguageColumn.HeaderText = "Language"
-        Me.MethStepLanguageColumn.MinimumWidth = 50
-        Me.MethStepLanguageColumn.Name = "MethStepLanguageColumn"
-        Me.MethStepLanguageColumn.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        '
-        'MethStepIncludeWithPrevColumn
-        '
-        Me.MethStepIncludeWithPrevColumn.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox
-        Me.MethStepIncludeWithPrevColumn.HeaderText = "Include With Previous Step"
-        Me.MethStepIncludeWithPrevColumn.MinimumWidth = 80
-        Me.MethStepIncludeWithPrevColumn.Name = "MethStepIncludeWithPrevColumn"
-        Me.MethStepIncludeWithPrevColumn.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.MethStepIncludeWithPrevColumn.Width = 80
-        '
-        'MethStepExpirationDaysColumn
-        '
-        Me.MethStepExpirationDaysColumn.HeaderText = "Days Until Expiration"
-        Me.MethStepExpirationDaysColumn.MaxInputLength = 3
-        Me.MethStepExpirationDaysColumn.MinimumWidth = 50
-        Me.MethStepExpirationDaysColumn.Name = "MethStepExpirationDaysColumn"
-        Me.MethStepExpirationDaysColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.MethStepExpirationDaysColumn.Width = 80
-        '
-        'MethStepExpireFromStepColumn
-        '
-        Me.MethStepExpireFromStepColumn.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox
-        Me.MethStepExpireFromStepColumn.HeaderText = "Expire From Step"
-        Me.MethStepExpireFromStepColumn.MinimumWidth = 50
-        Me.MethStepExpireFromStepColumn.Name = "MethStepExpireFromStepColumn"
-        Me.MethStepExpireFromStepColumn.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.MethStepExpireFromStepColumn.Width = 120
-        '
         'MethodologyEditor
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1251,10 +1250,6 @@ Partial Class MethodologyEditor
     Friend WithEvents MethStepUndoMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator9 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents ToolStripSeparator10 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents MethActiveColumn As System.Windows.Forms.DataGridViewImageColumn
-    Friend WithEvents MethNameColumn As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents MethTypeColumn As System.Windows.Forms.DataGridViewComboBoxColumn
-    Friend WithEvents MethCreatedColumn As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
     Friend WithEvents MethStepSectionPanel As Nrc.Framework.WinForms.SectionPanel
     Friend WithEvents MethStepToolStrip As System.Windows.Forms.ToolStrip
@@ -1324,5 +1319,9 @@ Partial Class MethodologyEditor
     Friend WithEvents MethStepIncludeWithPrevColumn As System.Windows.Forms.DataGridViewComboBoxColumn
     Friend WithEvents MethStepExpirationDaysColumn As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents MethStepExpireFromStepColumn As System.Windows.Forms.DataGridViewComboBoxColumn
+    Friend WithEvents MethActiveColumn As System.Windows.Forms.DataGridViewImageColumn
+    Friend WithEvents MethNameColumn As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents MethTypeColumn As System.Windows.Forms.DataGridViewComboBoxColumn
+    Friend WithEvents MethCreatedColumn As System.Windows.Forms.DataGridViewTextBoxColumn
 
 End Class

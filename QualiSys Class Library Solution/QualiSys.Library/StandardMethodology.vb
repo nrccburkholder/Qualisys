@@ -9,6 +9,7 @@ Public Class StandardMethodology
     Private mId As Integer
     Private mName As String
     Private mIsCustomizable As Boolean
+    Private mIsExpired As Boolean
 #End Region
 
 #Region " Public Properties "
@@ -41,11 +42,29 @@ Public Class StandardMethodology
             mIsCustomizable = value
         End Set
     End Property
+
+    Public Property IsExpired() As Boolean
+        Get
+            Return mIsExpired
+        End Get
+        Set(value As Boolean)
+            mIsExpired = value
+        End Set
+    End Property
+
+    Public ReadOnly Property DisplayName() As String
+        Get
+            Return CStr(IIf(mIsExpired, String.Format("{0} {1}", mName, "(expired)"), mName))
+        End Get
+      
+    End Property
+
 #End Region
 
 #Region " Constructors "
     Friend Sub New()
     End Sub
+
 #End Region
 
 #Region " Public Methods "

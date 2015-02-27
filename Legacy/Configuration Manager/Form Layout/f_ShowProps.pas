@@ -84,6 +84,12 @@ type
     Label9: TLabel;
     Button1: TButton;
     Label14: TLabel;
+    pnl1_9b: TPanel;
+    Label19: TLabel;
+    lblIncludeSkipArrow1: TLabel;
+    pnl2_9b: TPanel;
+    Label22: TLabel;
+    lblIncludeSkipArrow: TLabel;
   private
     { Private declarations }
   public
