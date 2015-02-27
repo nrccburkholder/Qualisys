@@ -582,6 +582,18 @@ INSERT INTO drm_tracktimes
     and mm.StandardMethodologyID=26 -- Hospice Mixed Mail-Phone
     group by cqw.samplepop_id
 
+	-- if there's a bad address, but no bad phone - change the bad addr disposition(s) to "unused bad addr"
+	update dl set disposition_id=46
+	from #Hospice h
+    inner join dispositionlog dl on h.samplepop_id=dl.samplepop_id
+	where h.BadAddr=1 and h.BadPhone=0 and dl.disposition_id in (14,16)
+
+	-- if there's a bad phone, but no bad addr - change the bad phone disposition(s) to "unused bad phone"
+	update dl set disposition_id=47
+	from #Hospice h
+    inner join dispositionlog dl on h.samplepop_id=dl.samplepop_id
+	where h.BadAddr=0 and h.BadPhone=1 and dl.disposition_id in (5)
+
     /*************************************************************************************************/
     /************************************************************************************************/
     INSERT INTO drm_tracktimes 
