@@ -47,7 +47,7 @@
     <PublisherName>National Research Corporation</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.8.2.0</ApplicationVersion>
+    <ApplicationVersion>1.8.3.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -450,6 +450,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="QLoader.nuspec" />
     <None Include="QLoader_2_TemporaryKey.pfx" />
     <None Include="Resources\Undo32.png" />
   </ItemGroup>
