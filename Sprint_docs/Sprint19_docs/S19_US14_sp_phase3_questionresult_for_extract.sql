@@ -10,6 +10,15 @@ ALTER PROCEDURE [dbo].[sp_phase3_questionresult_for_extract]
 */
 use qp_prod
 go
+if not exists (select * from dbo.Disposition where strDispositionLabel='Unused Bad Address')
+	insert into dbo.Disposition (strDispositionLabel,Action_id,strReportLabel,MustHaveResults)
+	values ('Unused Bad Address', 0, 'Unused Non Response Bad Address', 0)
+
+if not exists (select * from dbo.Disposition where strDispositionLabel='Unused Bad Phone')
+	insert into dbo.Disposition (strDispositionLabel,Action_id,strReportLabel,MustHaveResults)
+	values ('Unused Bad Phone', 0, 'Unused Non Response Bad Phone', 0)
+go
+
 -- Modified 7/28/04 SJS (skip pattern recode) 
 -- Modified 11/2/05 BGD Removed skip pattern enforcement. Now in the SP_Extract_BubbleData procedure 
 -- Modified 11/16/05 BGD Calculate completeness for HCAHPS Surveys 
