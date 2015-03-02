@@ -224,6 +224,12 @@ begin
 	from #Hospice h
     inner join Qualisys.qp_prod.dbo.dispositionlog dl on h.samplepop_id=dl.samplepop_id
 	where h.BadAddr=0 and h.BadPhone=1 and dl.disposition_id in (14,16)
+	
+	-- if there's both bad phone and bad addr - change any previously Unused dispositions back to used
+	update dl set disposition_id=case when dl.disposition_id=46 then 5 else 14 end
+	from #Hospice h
+    inner join Qualisys.qp_prod.dbo.dispositionlog dl on h.samplepop_id=dl.samplepop_id
+	where h.BadAddr=1 and h.BadPhone=1 and UnusedDisps=1 and dl.disposition_id in (46,47)
 end
 go
 use NRC_Datamart_ETL
