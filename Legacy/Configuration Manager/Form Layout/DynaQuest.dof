@@ -40,13 +40,13 @@ ExeDescription=
 [Directories]
 OutputDir=
 UnitOutputDir=
-SearchPath=c:\program files\borland\delphi 3\ip3\lib;c:\program files\borland\delphi 3\qualpro;c:\cdk3;c:\program files\borland\delphi 3\edsvcl;c:\program files\borland\delphi 3\pp;..\..\Delphi Shared Code\QFP;..\..\Delphi Shared Code\FP;..\..\Delphi Shared Code\QF;
+SearchPath=..\..\delphi 3\ip3\lib;..\..\delphi 3\qualpro;..\..\delphi 3\edsvcl;..\..\delphi 3\pp;..\..\Delphi Shared Code\QFP;..\..\Delphi Shared Code\FP;..\..\Delphi Shared Code\QF;
 Packages=VCLX30;VCL30;VCLDB30;VCLDBX30;DSS30;QRPT30;TEEUI30;TEEDB30;TEE30;INET30;INETDB30;VCLSMP30;IBEVNT30;IP30;Sym200
 Conditionals=FormLayout
 DebugSourceDirs=
 UsePackages=0
 [Parameters]
-RunParams=15872
+RunParams=15878
 HostApplication=
 [Version Info]
 IncludeVerInfo=1
@@ -54,7 +54,7 @@ AutoIncBuild=1
 MajorVer=3
 MinorVer=28
 Release=0
-Build=3
+Build=4
 Debug=0
 PreRelease=0
 Special=0
@@ -65,7 +65,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=National Research Corporation
 FileDescription=Configuration Manager - Form Layout
-FileVersion=3.28.0.3
+FileVersion=3.28.0.4
 InternalName=
 LegalCopyright=
 LegalTrademarks=

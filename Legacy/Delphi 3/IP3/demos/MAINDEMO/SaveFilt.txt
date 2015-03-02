@@ -1,0 +1,6 @@
+Companies starting with "S"
+Company Name	Company Name	0	S			False
+///
+Buyer=No
+Buyer	Buyer	0	No			False
+///
