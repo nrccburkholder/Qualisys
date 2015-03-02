@@ -16,6 +16,21 @@ CREATE PROCEDURE [dbo].[csp_CAHPSProcesses]
 ALTER PROCEDURE [dbo].[csp_GetQuestionFormExtractData] 
 
 */
+
+/*	====================================================================
+								MANUAL UPDATE
+	====================================================================
+Add a new step to catdb2's DatamartDailyLoad job, prior to the MetaDataExtract step
+	Step Name: CAHPS pre-processing
+	Type: Transact-SQL script
+	Database: NRC_Datamart
+	Command: exec Qualisys.NRC_Datamart_ETL.dbo.csp_CAHPSProcesses
+	On success: Go to the next step
+	On failure: Goto step [?] DataMartDailyLoad Failed Notification
+
+NOTE: if the step you're adding is the new first step, be sure to change the designated Start step.
+
+*/
 use qp_prod
 go
 if not exists (select * from dbo.Disposition where strDispositionLabel='Unused Bad Address')
@@ -62,12 +77,18 @@ go
 --          1.4 by dgilsdorf: added call to CheckForMostCompleteUsablePartials for HHCAHPS and ICHCAHPS processing
 --          1.5 by dgilsdorf: moved CAHPS processing procs to earlier in the ETL
 -- =============================================
-CREATE PROCEDURE [dbo].[csp_GetQuestionFormExtractData] 
+ALTER PROCEDURE [dbo].[csp_GetQuestionFormExtractData] 
 	@ExtractFileID int 
 	
 --exec [dbo].[csp_GetQuestionFormExtractData]  2238
 AS
 	SET NOCOUNT ON 
+
+	DECLARE @oExtractRunLogID INT;
+	DECLARE @currDateTime1 DATETIME = GETDATE();
+	DECLARE @currDateTime2 DATETIME;
+	DECLARE @TaskName VARCHAR(200) =  OBJECT_NAME(@@PROCID);
+	EXEC [InsertExtractRunLog] @ExtractFileID, @TaskName, @currDateTime1, @ExtractRunLogID = @oExtractRunLogID OUTPUT;
 
 	declare @EntityTypeID int
 	set @EntityTypeID = 11 -- QuestionForm
@@ -191,6 +212,11 @@ AS
 	                     and IsDeleted = 1 ) eh
 				Left join QP_Prod.dbo.QUESTIONFORM qf With (NOLOCK) on qf.QUESTIONFORM_ID = eh.PKey1 AND qf.DATRETURNED IS NULL--if datReturned is not NULL it is not a delete
 				Left join QP_Prod.dbo.SentMailing sm With (NOLOCK) on qf.SentMail_id = sm.SentMail_id
+
+  	SET @currDateTime2 = GETDATE();
+	SELECT @oExtractRunLogID,@currDateTime2,@TaskName
+	EXEC [UpdateExtractRunLog] @oExtractRunLogID, @currDateTime2
+
 go
 use qp_Prod
 go
