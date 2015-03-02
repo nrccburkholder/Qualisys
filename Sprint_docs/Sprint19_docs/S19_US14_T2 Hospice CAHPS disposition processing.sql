@@ -184,6 +184,33 @@ go
 if exists (select * from sys.procedures where schema_id=1 and name = 'CheckHospiceCAHPSDispositions')
 	DROP PROCEDURE [dbo].[CheckHospiceCAHPSDispositions]
 go
+CREATE PROCEDURE [dbo].[CheckHospiceCAHPSDispositions]
+as
+-- created 3/1/2015 DBG
+-- As a Hospice CAHPS vendor, we need to be able to assign the appropriate final disposition so it can be reported to CMS.
+-- For mixed mode methodology, only add bad phone & address if both address and phone are bad. 
+
+select dl.samplepop_id 
+	, max(case when dl.disposition_id in (5,46) then 1 else 0 end) as BadAddr
+	, max(case when dl.disposition_id in (14,16,47) then 1 else 0 end) as BadPhone
+	, max(case when dl.disposition_id in (46,47) then 1 else 0 end) as UnusedDisps
+into #Hospice
+FROM NRC_DataMart_ETL.dbo.ExtractQueue eq
+inner join dbo.dispositionlog dl on eq.PKey1=dl.samplepop_id
+inner join dbo.samplepop sp on eq.PKey1=sp.samplepop_id
+inner join dbo.sampleset ss on sp.sampleset_id=ss.sampleset_id
+inner join dbo.survey_def sd on ss.survey_id=sd.survey_id
+inner join dbo.Surveytype st on sd.Surveytype_id=st.Surveytype_id
+inner join dbo.questionform qf on sp.samplepop_id=qf.samplepop_id
+inner join dbo.sentmailing sm on qf.sentmail_id=sm.sentmail_id
+inner join dbo.mailingmethodology mm on sm.methodology_id=mm.methodology_id
+WHERE st.SurveyType_dsc = 'Hospice CAHPS'
+and mm.StandardMethodologyID=26 -- Hospice Mixed Mail-Phone
+and eq.entitytypeID=14 -- dispositionlog
+and eq.pkey2 in (5,14,16,46,47) -- disposition_id
+and eq.ExtractFileID is null 
+group by dl.samplepop_id
+go
 use NRC_Datamart_ETL
 go
 if exists (select * from sys.procedures where schema_id=1 and name = 'csp_CAHPSProcesses')
