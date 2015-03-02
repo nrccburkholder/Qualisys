@@ -26,14 +26,27 @@ if not exists (select * from dbo.Disposition where strDispositionLabel='Unused B
 	insert into dbo.Disposition (strDispositionLabel,Action_id,strReportLabel,MustHaveResults)
 	values ('Unused Bad Phone', 0, 'Unused Non Response Bad Phone', 0)
 
+if not exists (select * from dbo.Disposition where strDispositionLabel='Unused Bad Address' and Disposition_id=46)
+	RAISERROR (N'Unused Bad Address was supposed to be Disposition_id=46!', 10, 1)
+
+if not exists (select * from dbo.Disposition where strDispositionLabel='Unused Bad Phone' and Disposition_id=47)
+	RAISERROR (N'Unused Bad Phone was supposed to be Disposition_id=47!', 10, 1)
+           
 go
 if not exists (select * from dbo.SurveyTypeDispositions where [Desc]='Non-response: Unused Bad Address')
 	insert into dbo.SurveyTypeDispositions (Disposition_ID, Value, Hierarchy, [Desc], ExportReportResponses, ReceiptType_ID, SurveyType_ID)
-	values (46, 10, 12, 'Non-response: Unused Bad Address', 0, NULL, 11)
+	values (46, 9, 12, 'Non-response: Unused Bad Address', 0, NULL, 11)
 	
 if not exists (select * from dbo.SurveyTypeDispositions where [Desc]='Non-response: Unused Bad/No Telephone Number')	
 	insert into dbo.SurveyTypeDispositions (Disposition_ID, Value, Hierarchy, [Desc], ExportReportResponses, ReceiptType_ID, SurveyType_ID)
-	values (47, 11, 12, 'Non-response: Unused Bad/No Telephone Number', 0, NULL, 11)
+	values (47, 9, 12, 'Non-response: Unused Bad/No Telephone Number', 0, NULL, 11)
+	
+if exists (select * from dbo.SurveyTypeDispositions where Hierarchy=9 and [desc]='Non-response: Bad Address')
+	update dbo.SurveyTypeDispositions set Hierarchy=10 where Hierarchy=9 and [desc]='Non-response: Bad Address'
+
+if exists (select * from dbo.SurveyTypeDispositions where Hierarchy=10 and [desc]='Non-response: Bad/No Telephone Number')
+	update dbo.SurveyTypeDispositions set Hierarchy=9 where Hierarchy=10 and [desc]='Non-response: Bad/No Telephone Number'
+	
 go
 use nrc_datamart_etl
 go
