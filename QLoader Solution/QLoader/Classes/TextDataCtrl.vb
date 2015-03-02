@@ -748,13 +748,10 @@ Public Class TextDataCtrl
 
                 If (len <= 0) Then len = 1
 
-                'Added 2/15/2005 - JPC - Addressing bug where delimited data gets cut off
-                'These template columns might not contain the maximum column length possible
-                'Force all columns to be at least 50 wide to reduce truncation risk
-                If len < 50 Then
-                    len = 50
+                '2/27/2015 New default data field length
+                If len < 100 Then
+                    len = 100
                 End If
-                'End 2/15/2005 Modification
 
                 col.Length = len
 
