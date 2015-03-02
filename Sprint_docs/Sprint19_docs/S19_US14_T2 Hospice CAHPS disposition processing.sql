@@ -251,5 +251,6 @@ AS
 		EXEC [QP_Prod].[dbo].[CheckForCAHPSIncompletes] 
 		EXEC [QP_Prod].[dbo].[CheckForACOCAHPSUsablePartials]
 		EXEC [QP_Prod].[dbo].[CheckForMostCompleteUsablePartials] -- HHCAHPS and ICHCAHPS
+		EXEC [QP_Prod].[dbo].[CheckHospiceCAHPSDispositions]
 	END
 go
