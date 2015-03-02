@@ -18,18 +18,22 @@ ALTER PROCEDURE [dbo].[csp_GetQuestionFormExtractData]
 */
 use qp_prod
 go
-if exists (select * from dbo.Disposition where strDispositionLabel='Unused Bad Address')
-	delete from dbo.Disposition where strDispositionLabel='Unused Bad Address'
+if not exists (select * from dbo.Disposition where strDispositionLabel='Unused Bad Address')
+	insert into dbo.Disposition (strDispositionLabel,Action_id,strReportLabel,MustHaveResults)
+	values ('Unused Bad Address', 0, 'Unused Non Response Bad Address', 0)
 
-if exists (select * from dbo.Disposition where strDispositionLabel='Unused Bad Phone')
-	delete from dbo.Disposition where strDispositionLabel='Unused Bad Phone'
+if not exists (select * from dbo.Disposition where strDispositionLabel='Unused Bad Phone')
+	insert into dbo.Disposition (strDispositionLabel,Action_id,strReportLabel,MustHaveResults)
+	values ('Unused Bad Phone', 0, 'Unused Non Response Bad Phone', 0)
 
 go
-if exists (select * from dbo.SurveyTypeDispositions where [Desc]='Non-response: Unused Bad Address')
-	delete from dbo.SurveyTypeDispositions where [Desc]='Non-response: Unused Bad Address'
+if not exists (select * from dbo.SurveyTypeDispositions where [Desc]='Non-response: Unused Bad Address')
+	insert into dbo.SurveyTypeDispositions (Disposition_ID, Value, Hierarchy, [Desc], ExportReportResponses, ReceiptType_ID, SurveyType_ID)
+	values (46, 10, 12, 'Non-response: Unused Bad Address', 0, NULL, 11)
 	
-if exists (select * from dbo.SurveyTypeDispositions where [Desc]='Non-response: Unused Bad/No Telephone Number')	
-	delete from dbo.SurveyTypeDispositions where [Desc]='Non-response: Unused Bad/No Telephone Number'
+if not exists (select * from dbo.SurveyTypeDispositions where [Desc]='Non-response: Unused Bad/No Telephone Number')	
+	insert into dbo.SurveyTypeDispositions (Disposition_ID, Value, Hierarchy, [Desc], ExportReportResponses, ReceiptType_ID, SurveyType_ID)
+	values (47, 11, 12, 'Non-response: Unused Bad/No Telephone Number', 0, NULL, 11)
 go
 use nrc_datamart_etl
 go
