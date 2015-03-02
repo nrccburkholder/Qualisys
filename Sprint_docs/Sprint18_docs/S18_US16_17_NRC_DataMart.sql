@@ -15,6 +15,8 @@
 	ALTER PROCEDURE [dbo].[etl_LoadSampleSetRecords]
 	ALTER PROCEDURE [dbo].[etl_LoadSamplePopRecords]
 	ALTER PROCEDURE [dbo].[etl_CompleteImport]
+
+	ALTER VIEW [pma].[CahpsSamplePopulation]  (NRC_VBP)
 */
 
 use [NRC_DataMart]
@@ -1257,3 +1259,34 @@ BEGIN
 END
 
 GO
+
+USE [NRC_VBP]
+GO
+
+ALTER VIEW [pma].[CahpsSamplePopulation]
+       AS
+              
+
+       SELECT      su.SampleUnitID, sp.SamplePopulationID, sp.SampleSetID, sp.DispositionID
+                           , sp.CahpsDispositionID, sp.IsCahpsDispositionComplete, sp.FirstName, sp.LastName 
+                           , sp.City, sp.Province, sp.PostalCode, sp.IsMale, sp.Age, sp.LanguageID, sp.DrNPI
+                           , sp.ClinicNPI, sp.UndeliverableDate, sp.AdmitDate, sp.DischargeDate, 
+                           sp.ServiceDate, sp.DrNPI_Initial, sp.ClinicNPI_Initial, sp.ReportDate
+                           , CASE WHEN cd.CahpsDispositionID IN (2, 3, 4, 5) THEN 0 ELSE 1 END AS IsCahpsEligible
+                           , cd.IsCahpsDispositionComplete AS IsCahpsComplete,
+                                                       (SELECT        ColumnValue
+                                                          FROM            NRC_DataMart.dbo.SamplePopulationBackgroundField
+                                                          WHERE        (SamplePopulationID = sp.SamplePopulationID) AND (ColumnName = 'HServiceType')) AS ServiceType,
+                                                       (SELECT        ColumnValue
+                                                         FROM            NRC_DataMart.dbo.SamplePopulationBackgroundField
+                                                          WHERE        (SamplePopulationID = sp.SamplePopulationID) AND (ColumnName = 'HAdmissionSource')) AS AdmissionSource
+       FROM            NRC_DataMart.dbo.SampleUnit AS su INNER JOIN
+                                                NRC_DataMart.dbo.SelectedSample AS ss ON su.SampleUnitID = ss.SampleUnitID INNER JOIN
+                                                NRC_DataMart.dbo.SamplePopulation AS sp ON ss.SamplePopulationID = sp.SamplePopulationID INNER JOIN
+                                                NRC_DataMart.dbo.CahpsDisposition AS cd ON sp.CahpsDispositionID = cd.CahpsDispositionID
+       WHERE        (su.IsCahps = 1) AND (cd.CahpsTypeID = 1)
+
+GO
+
+
+

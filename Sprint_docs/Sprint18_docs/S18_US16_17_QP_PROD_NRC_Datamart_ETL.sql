@@ -3,8 +3,8 @@
 	S18 US16 As an authorized Hospice CAHPS vendor, we need to retain counts of ineligible records by category to comply with a CMS mandate
 	S18 US17 As an authorized Hospice CAHPS vendor, we need to count the number of supplemental questions for each sampled patient, so that we can report the data to CMS.
 
-	alter table [dbo].[SampleSet] drop column IneligibleCount (QP_PROD)
-	alter table [dbo].[SampleSetTemp] drop column IneligibleCount (NRC_Datamart_ETL)
+	alter table [dbo].[SampleSet] add column IneligibleCount (QP_PROD)
+	alter table [dbo].[SampleSetTemp] add column IneligibleCount (NRC_Datamart_ETL)
 	alter table [dbo].[SamplePopTemp] add SupplementalQuestionCount int NULL  (NRC_Datamart_ETL)
 	ALTER PROCEDURE [dbo].[QCL_SelectEncounterUnitEligibility] (QP_PROD)
 	ALTER PROCEDURE [dbo].[csp_GetSampleSetExtractData] (NRC_Datamart_ETL)
