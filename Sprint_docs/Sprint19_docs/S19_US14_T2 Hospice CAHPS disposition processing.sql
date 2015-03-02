@@ -231,9 +231,25 @@ begin
     inner join Qualisys.qp_prod.dbo.dispositionlog dl on h.samplepop_id=dl.samplepop_id
 	where h.BadAddr=1 and h.BadPhone=1 and UnusedDisps=1 and dl.disposition_id in (46,47)
 end
+drop table #Hospice
 go
 use NRC_Datamart_ETL
 go
 if exists (select * from sys.procedures where schema_id=1 and name = 'csp_CAHPSProcesses')
 	DROP PROCEDURE [dbo].[csp_CAHPSProcesses] 
+go
+CREATE PROCEDURE [dbo].[csp_CAHPSProcesses] 
+AS
+-- this code was previously in NRC_Datamart_ETL.dbo.csp_CAHPSProcesses. We're putting it in its own proc so that 
+-- it can be called at the beginning of the ETL, instead of in the middle.
+
+	DECLARE @country VARCHAR(10)
+	SELECT @country = [STRPARAM_VALUE] FROM [QP_Prod].[dbo].[qualpro_params] WHERE STRPARAM_NM = 'Country'
+	select @country
+	IF @country = 'US'
+	BEGIN
+		EXEC [QP_Prod].[dbo].[CheckForCAHPSIncompletes] 
+		EXEC [QP_Prod].[dbo].[CheckForACOCAHPSUsablePartials]
+		EXEC [QP_Prod].[dbo].[CheckForMostCompleteUsablePartials] -- HHCAHPS and ICHCAHPS
+	END
 go
