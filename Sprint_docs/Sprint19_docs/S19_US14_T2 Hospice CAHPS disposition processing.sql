@@ -47,6 +47,7 @@ go
 --			1.2 by ccaouette: ACO CAHPS Project
 --          1.3 by dgilsdorf: CheckForACOCAHPSIncompletes changed to CheckForCAHPSIncompletes
 --          1.4 by dgilsdorf: added call to CheckForMostCompleteUsablePartials for HHCAHPS and ICHCAHPS processing
+--          1.5 by dgilsdorf: moved CAHPS processing procs to earlier in the ETL
 -- =============================================
 CREATE PROCEDURE [dbo].[csp_GetQuestionFormExtractData] 
 	@ExtractFileID int 
@@ -65,15 +66,15 @@ AS
 	-- ACO CAHPS Project
 	-- ccaouette: 2014-05
 	---------------------------------------------------------------------------------------
-	DECLARE @country VARCHAR(10)
-	SELECT @country = [STRPARAM_VALUE] FROM [QP_Prod].[dbo].[qualpro_params] WHERE STRPARAM_NM = 'Country'
-	select @country
-	IF @country = 'US'
-	BEGIN
-		EXEC [QP_Prod].[dbo].[CheckForCAHPSIncompletes] 
-		EXEC [QP_Prod].[dbo].[CheckForACOCAHPSUsablePartials]
-		EXEC [QP_Prod].[dbo].[CheckForMostCompleteUsablePartials] -- HHCAHPS and ICHCAHPS
-	END	
+	--DECLARE @country VARCHAR(10)
+	--SELECT @country = [STRPARAM_VALUE] FROM [QP_Prod].[dbo].[qualpro_params] WHERE STRPARAM_NM = 'Country'
+	--select @country
+	--IF @country = 'US'
+	--BEGIN
+	--	EXEC [QP_Prod].[dbo].[CheckForCAHPSIncompletes] 
+	--	EXEC [QP_Prod].[dbo].[CheckForACOCAHPSUsablePartials]
+	--	EXEC [QP_Prod].[dbo].[CheckForMostCompleteUsablePartials] -- HHCAHPS and ICHCAHPS
+	--END	
 
 	---------------------------------------------------------------------------------------
 	-- Load records to Insert/Update into a temp table
