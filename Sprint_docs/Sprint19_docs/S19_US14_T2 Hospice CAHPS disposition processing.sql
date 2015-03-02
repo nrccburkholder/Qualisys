@@ -214,22 +214,51 @@ group by dl.samplepop_id
 if @@rowcount>0
 begin
 	-- if there's a bad address, but no bad phone - change the bad addr disposition(s) to "unused bad addr"
+	-- remove "bad addr" from ExtractQueue
+	update eq set ExtractFileID = -1
+	from #Hospice h
+	inner join NRC_Datamart_etl.dbo.ExtractQueue eq on h.samplepop_id=eq.pkey1 
+	where h.BadAddr=1 and h.BadPhone=0 
+	and eq.entitytypeID=14 and eq.ExtractFileID is null
+	and eq.pkey2 in (5)
+	
+	-- change bad addr to unused bad addr in dispositionlog. a trigger will insert unused bad addr to ExtractQueue
 	update dl set disposition_id=46, LoggedBy = left(LoggedBy + ',CheckHospiceCAHPSDispositions',42)
 	from #Hospice h
-    inner join Qualisys.qp_prod.dbo.dispositionlog dl on h.samplepop_id=dl.samplepop_id
+    inner join dbo.dispositionlog dl on h.samplepop_id=dl.samplepop_id
 	where h.BadAddr=1 and h.BadPhone=0 and dl.disposition_id in (5)
 
+
 	-- if there's a bad phone, but no bad addr - change the bad phone disposition(s) to "unused bad phone"
+	-- remove "bad phone" from ExtractQueue
+	update eq set ExtractFileID = -1
+	from #Hospice h
+	inner join NRC_Datamart_etl.dbo.ExtractQueue eq on h.samplepop_id=eq.pkey1 
+	where h.BadAddr=0 and h.BadPhone=1 
+	and eq.entitytypeID=14 and eq.ExtractFileID is null
+	and eq.pkey2 in (14,16)
+
+	-- change bad phone to unused bad phone in dispositionlog. a trigger will insert unused bad phone to ExtractQueue
 	update dl set disposition_id=47, LoggedBy = left(LoggedBy + ',CheckHospiceCAHPSDispositions',42)
 	from #Hospice h
-    inner join Qualisys.qp_prod.dbo.dispositionlog dl on h.samplepop_id=dl.samplepop_id
+    inner join dbo.dispositionlog dl on h.samplepop_id=dl.samplepop_id
 	where h.BadAddr=0 and h.BadPhone=1 and dl.disposition_id in (14,16)
+
 	
 	-- if there's both bad phone and bad addr - change any previously Unused dispositions back to used
+	-- remove "unused bad phone" and "unused bad addr" from ExtractQueue
+	update eq set ExtractFileID = -1
+	from #Hospice h
+	inner join NRC_Datamart_etl.dbo.ExtractQueue eq on h.samplepop_id=eq.pkey1 
+	where h.BadAddr=1 and h.BadPhone=1 and h.UnusedDisps=1 
+	and eq.entitytypeID=14 and eq.ExtractFileID is null
+	and eq.pkey2 in (46,47)
+	
+	-- change unused bad addr to bad addr and unused bad phone to bad phone in dispositionlog. a trigger will insert the appropriate record to ExtractQueue
 	update dl set disposition_id=case when dl.disposition_id=46 then 5 else 14 end
 	from #Hospice h
-    inner join Qualisys.qp_prod.dbo.dispositionlog dl on h.samplepop_id=dl.samplepop_id
-	where h.BadAddr=1 and h.BadPhone=1 and UnusedDisps=1 and dl.disposition_id in (46,47)
+    inner join dbo.dispositionlog dl on h.samplepop_id=dl.samplepop_id
+	where h.BadAddr=1 and h.BadPhone=1 and h.UnusedDisps=1 and dl.disposition_id in (46,47)
 end
 drop table #Hospice
 go
