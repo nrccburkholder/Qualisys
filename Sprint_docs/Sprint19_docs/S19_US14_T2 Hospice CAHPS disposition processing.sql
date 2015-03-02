@@ -254,6 +254,14 @@ where p.entitytypeID=14 -- dispositionlog
 and p.pkey2 in (5,14,16,46,47) -- disposition_id
 and p.ExtractFileID is not null 
 
+insert into #EQ ([ExtractQueueID],[EntityTypeID],[PKey1],[PKey2],[IsMetaData],[ExtractFileID], [IsDeleted],[Created],[Source])
+select [ExtractQueueID],[EntityTypeID],[PKey1],[PKey2],[IsMetaData],[ExtractFileID], [IsDeleted],[Created],[Source]
+from nrc_datamart_etl.dbo.ExtractQueueArchive p
+inner join (select distinct pkey1 from #eq) t on p.pkey1=t.pkey1
+where p.entitytypeID=14 -- dispositionlog
+and p.pkey2 in (5,14,16,46,47) -- disposition_id
+and p.ExtractFileID is not null 
+
 -- create a list of samplepop_id's with three bit fields: 
 	-- have they ever had a bad address disp? 
 	-- have they ever had a bad phone disp? 
