@@ -210,6 +210,15 @@ and eq.entitytypeID=14 -- dispositionlog
 and eq.pkey2 in (5,14,16,46,47) -- disposition_id
 and eq.ExtractFileID is null 
 group by dl.samplepop_id
+
+if @@rowcount>0
+begin
+	-- if there's a bad address, but no bad phone - change the bad addr disposition(s) to "unused bad addr"
+	update dl set disposition_id=46, LoggedBy = left(LoggedBy + ',CheckHospiceCAHPSDispositions',42)
+	from #Hospice h
+    inner join Qualisys.qp_prod.dbo.dispositionlog dl on h.samplepop_id=dl.samplepop_id
+	where h.BadAddr=1 and h.BadPhone=0 and dl.disposition_id in (5)
+end
 go
 use NRC_Datamart_ETL
 go
