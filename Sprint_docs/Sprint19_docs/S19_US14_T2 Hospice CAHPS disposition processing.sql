@@ -218,6 +218,12 @@ begin
 	from #Hospice h
     inner join Qualisys.qp_prod.dbo.dispositionlog dl on h.samplepop_id=dl.samplepop_id
 	where h.BadAddr=1 and h.BadPhone=0 and dl.disposition_id in (5)
+
+	-- if there's a bad phone, but no bad addr - change the bad phone disposition(s) to "unused bad phone"
+	update dl set disposition_id=47, LoggedBy = left(LoggedBy + ',CheckHospiceCAHPSDispositions',42)
+	from #Hospice h
+    inner join Qualisys.qp_prod.dbo.dispositionlog dl on h.samplepop_id=dl.samplepop_id
+	where h.BadAddr=0 and h.BadPhone=1 and dl.disposition_id in (14,16)
 end
 go
 use NRC_Datamart_ETL
