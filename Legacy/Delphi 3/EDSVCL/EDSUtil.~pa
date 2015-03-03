@@ -1,0 +1,169 @@
+unit EDSUtil;
+interface
+uses
+  SysUtils, WinTypes, WinProcs, Messages, Classes, Controls, Graphics, Forms,
+  TabNotBk, Menus, StdCtrls, ExtCtrls;
+
+type
+  TEnterEdit = class(TEdit)
+    private
+      { Private declarations }
+    protected
+      { Protected declarations }
+      procedure KeyPress(var Key: Char); override;
+      procedure KeyDown (var Key: Word; Shift: TShiftState);  override;
+    public
+      { Public declarations }
+    published
+      { Published declarations }
+  end;  { TEnterEdit }
+
+  TNewListBox = Class(TListBox)
+    private
+      { Private declarations }
+      FOnChange : TNotifyEvent;
+      FLastSel : integer;
+      procedure Click; override;
+    protected
+      { Protected declarations }
+      procedure Change; Virtual;
+    published
+      { Published declarations }
+      property OnChange : TNotifyEvent read FOnChange write FOnChange;
+    public
+      { Public declarations }
+      constructor Create(AOwner : TComponent); override;
+  end;  { TNewListBox }
+
+  TNewLabel = Class(TLabel)
+    private
+      { Private declarations }
+      FOnChange : TNotifyEvent;
+      function GetCaption: String;
+      procedure SetCaption (Value: String);
+    protected
+      { Protected declarations }
+      procedure Change; virtual;
+    published
+      { Published declarations }
+      property Caption : String read GetCaption write SetCaption;
+      property OnChange : TNotifyEvent read FOnChange write FOnChange;
+    public
+      { Public declarations }
+      constructor Create(AOwner : TComponent); override;
+  end;  { TNewLabel }
+
+procedure SurfaceControl (AControl: TWinControl);
+  {-insures control is visible (in case on notebook page)}
+procedure Register;
+
+implementation
+
+procedure SurfaceControl (AControl: TWinControl);
+  {-insures control is visible (in case on notebook page)}
+var
+  FControl: TWinControl;
+  AParent:  TWinControl;
+  AntiHang: integer;  {makes sure no hang in repeat until loop}
+begin
+  FControl := AControl;
+  AntiHang := 0;
+  repeat
+    AParent := FControl.Parent;
+    if AParent is TTabPage then
+      TTabbedNotebook (TTabPage (AParent).Parent).ActivePage := TTabPage (AParent).Caption
+    else
+    if AParent is TPage then
+      TNoteBook (TPage (AParent).Parent).ActivePage := TPage (AParent).Caption;
+    FControl := AParent;
+    Inc (AntiHang);
+  until (FControl = nil) or
+        (IsWindowVisible (FControl.Handle)) or
+        (AParent is TForm) and
+        (AntiHang >= 999);
+end;  { SurfaceControl }
+
+procedure TEnterEdit.KeyPress(var Key: Char);
+var
+{$IFDEF Ver100}
+  MYForm: TCustomForm;
+{$ELSE}
+  MYForm: TForm;
+{$ENDIF}
+begin
+  if Key = #13 then
+  begin
+    MYForm := GetParentForm( Self );
+    if not (MYForm = nil ) then
+      SendMessage(MYForm.Handle, WM_NEXTDLGCTL, 0, 0);
+    Key := #0;
+  end;  { if... }
+  if Key <> #0 then inherited KeyPress(Key);
+end;  { TEnterEdit.KeyPress }
+
+procedure TEnterEdit.KeyDown (var Key: Word; Shift: TShiftState);
+var
+  St: string;
+begin
+  case Key of
+    VK_UP: if ssCtrl in Shift then
+           begin
+             Text := UpperCase (Text);
+             Key  := 0;
+           end;  { if... }
+    VK_DOWN: if ssCtrl in Shift then
+             begin
+               St    := UpperCase (Text);
+               St[1] := UpCase (St[1]);
+               Text  := St;
+               Key  := 0;
+             end;  { case }
+  end;  { case }
+end;  { TEnterEdit.KeyDown }
+
+constructor TNewListBox.Create;
+begin
+  inherited Create(AOwner);
+  FLastSel := -1;
+end;  { TNewListBox.Create }
+
+procedure TNewListBox.Change;
+begin
+  if Assigned (FOnChange) then FOnChange (Self);
+end;  { TNewListBox.Change }
+
+procedure TNewListBox.Click;
+begin
+  inherited Click;
+  if FLastSel <> ItemIndex then
+     Change;
+end;  { TNewListBox.Click }
+
+{--- TNewLabel Class ---}
+constructor TNewLabel.Create (AOwner: TComponent);
+begin
+  inherited Create (AOwner);
+end;  { TNewLabel.Create }
+
+procedure TNewLabel.Change;
+begin
+  if Assigned (FOnChange) then FOnChange (Self);
+end;  { TNewLabel.Change }
+
+function TNewLabel.GetCaption: String;
+begin
+  Result := inherited Caption;
+end;  { TNewLabel.GetCaption }
+
+procedure TNewLabel.SetCaption (Value: String);
+begin
+  inherited Caption := Value;
+  Change;
+end;  { TNewLabel.SetCaption }
+
+procedure Register;
+begin
+  RegisterComponents('Domain', [TEnterEdit, TNewListBox, TNewLabel]);
+end;
+
+end.  { EDSUtil }

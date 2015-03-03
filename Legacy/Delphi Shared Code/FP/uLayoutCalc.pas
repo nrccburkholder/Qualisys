@@ -79,7 +79,7 @@ const
   MaxNumResps = 99;
   MaxNumScales = 200;
   BubbleWidth = 98;
-  BubbleHeight = 60;
+  BubbleHeight = 60;                        
   ICRWidth = 150;
   ICRHeight = 150;
   LineSpacing = 108;

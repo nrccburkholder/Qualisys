@@ -5,7 +5,8 @@
 	[SURVEY_ID] [int] NULL,
 	[STUDY_ID] [int] NULL,
 	[sampleDate] [datetime] NULL,
-	[IsDeleted] [bit] NOT NULL
+	[IsDeleted] [bit] NOT NULL,
+	[StandardMethodologyID] [int] NULL
 ) ON [PRIMARY]
 
 

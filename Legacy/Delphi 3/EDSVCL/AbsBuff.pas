@@ -1,0 +1,451 @@
+(* ABSBUFF.PAS - Copyright (c) 1995-1996, Eminent Domain Software *)
+
+unit AbsBuff;
+  {-Abstract buffer manager for EDSSpell component}
+  {-also includes native Delphi CustomEdit buffer manager}
+interface
+uses
+  Classes, Controls, Graphics, SysUtils, Forms, Dialogs, StdCtrls,
+  WinProcs, WinTypes,
+{$IFDEF Win32}
+  {$IFDEF Ver100}
+  LexDCTD3,
+  {$ELSE}
+  LexDCT32,
+  {$ENDIF}
+{$ELSE}
+  LexDCT,
+{$ENDIF}
+  MemoUtil, SpellGbl, Words;
+
+type
+  TAbsBuffer = class (TObject)       {abstract buffer manager}
+    private
+      { Private declarations }
+      FSize:        Longint;          {size of buffer}
+      FCurPosPtr:   PChar;            {points to current character in buffer}
+      FBeginPos:    Longint;          {beginning position of word in buffer}
+      FEndPos:      Longint;          {ending position of word in buffer}
+      FParent:      TControl;         {parent control, if any}
+      FAllNums:     Boolean;          {TRUE if the current word is all numbers}
+      FSupportHTML: Boolean;          {set to TRUE to support HTML}
+    protected
+      { Protected declarations }
+    public
+      { Public declarations }
+      Buffer:      PBigBuffer;       {pointer to the buffer}
+      BufferSize:  integer;          {size of the above buffer}
+      CurPos:      Longint;          {current location in the buffer}
+
+      constructor Create (AParent: TControl);  dynamic;
+      destructor  Destroy;  override;
+
+      procedure   InitParms;
+        {-initializes buffer parameters}
+      function    IsModified: Boolean;  virtual;  abstract;
+        {-returns TRUE if parent had been modified}
+      procedure   SetModified (NowModified: Boolean);  virtual;  abstract;
+        {-sets parents modified flag}
+      function    GetYPos: integer;  virtual;
+        {-gets the current y location of the highlighted word (absolute screen)}
+      function    GetTextBufferSize: integer;  dynamic;
+        {-returns the maximum size of the buffer}
+      function    GetNextWord: string;  dynamic;  abstract;
+        {-returns the next word in the buffer}
+      procedure   MoveBackOneWord;  dynamic;  abstract;
+        {-moves back to the beginning of the current word}
+      procedure   UpdateBuffer;  dynamic;  abstract;
+        {-updates the buffer from the parent component, if any}
+      procedure   SetSelectedText;  dynamic;
+        {-highlights the current word using FBeginPos & FEndPos}
+      procedure   ReplaceWord (WithWord: string);  dynamic;  abstract;
+        {-replaces the current word with the word provided}
+      procedure   WordCount (var NumWords, UniqueWords: Longint);  dynamic;
+        {-returns the number of words in buffer}
+
+      { Property declarations }
+      property    BufSize: Longint     read  FSize
+                                       write FSize;
+      property    PCurPos: PChar       read  FCurPosPtr
+                                       write FCurPosPtr;
+      property    BeginPos: Longint    read  FBeginPos
+                                       write FBeginPos;
+      property    EndPos: Longint      read  FEndPos
+                                       write FEndPos;
+      property    Parent: TControl     read  FParent
+                                       write FParent;
+      property    Modified: Boolean    read  IsModified
+                                       write SetModified;
+      property    YPos: Integer        read  GetYPos;
+      property    AllNumbers: Boolean  read  FAllNums
+                                       write FAllNums;
+      property    SupportHTML: Boolean read  FSupportHTML
+                                       write FSupportHTML;
+  end; { TAbsBuffer }
+
+  TPCharBuffer = class (TAbsBuffer)  {PChar buffer manager}
+    private
+      { Private declarations }
+      FModified: Boolean;            {Internal modified flag}
+      FPChar:    PChar;              {Parent Buffer}
+    protected
+      { Protected declarations }
+    public
+      { Public declarations }
+      constructor Create (AParent: TControl);  override;
+      constructor CreateSpecial (ParentBuffer: PChar);  dynamic;
+
+      function    IsModified: Boolean;  override;
+        {-returns TRUE if parent had been modified}
+      procedure   SetModified (NowModified: Boolean);  override;
+        {-sets parents modified flag}
+      function    GetNextWord: string;  override;
+        {-returns the next word in the buffer}
+      procedure   MoveBackOneWord;  override;
+        {-moves back to the beginning of the current word}
+      procedure   UpdateBuffer;  override;
+        {-updates the buffer from the parent component, if any}
+      procedure   ReplaceWord (WithWord: string);  override;
+        {-replaces the current word with the word provided}
+  end;  { TPCharBuffer }
+
+  PString = ^String;
+  TStringBuffer = class (TAbsBuffer) {pascal string buffer manager}
+    private
+      { Private declarations }
+//      FModified: Boolean;            {Internal modified flag}
+      FString:   PString;            {string being spell checked}
+    protected
+      { Protected declarations }
+    public
+      { Public declarations }
+      constructor Create (CheckString: PString);
+
+      procedure   UpdateBuffer;  override;
+        {-updates the buffer from the parent component, if any}
+      procedure   ReplaceWord (WithWord: string);  override;
+        {-replaces the current word with the word provided}
+  end;  { TStringBuffer }
+
+  TCEBuffer = class (TPCharBuffer)   {TCustomEdit buffer manager}
+    private                          {works for TMemo & TEdit}
+      { Private declarations }
+    protected
+      { Protected declarations }
+    public
+      { Public declarations }
+      constructor Create (AParent: TControl);
+
+      function    IsModified: Boolean;  override;
+        {-returns TRUE if parent had been modified}
+      procedure   SetModified (NowModified: Boolean);  override;
+        {-sets parents modified flag}
+      function    GetYPos: integer;  override;
+        {-gets the current y location of the highlighted word (absolute screen)}
+      function    GetTextBufferSize: integer;  override;
+        {-returns the maximum size of the buffer}
+      procedure   SetSelectedText;  override;
+        {-highlights the current word using BeginPos & EndPos}
+      procedure   UpdateBuffer;  override;
+        {-updates the buffer from the parent component, if any}
+      procedure   ReplaceWord (WithWord: string);  override;
+        {-replaces the current word with the word provided}
+  end;  { TCEBuffer }
+
+
+implementation
+
+{Abstract Buffer Manager}
+constructor TAbsBuffer.Create (AParent: TControl);
+var
+  TestSize: Longint;
+begin
+  inherited Create;
+  FParent := AParent;
+  TestSize := GetTextBufferSize + AddBufferSize;
+  if TestSize > MaxBuffer
+    then BufferSize := MaxBuffer
+    else BufferSize := TestSize;
+  GetMem (Buffer, BufferSize);
+  InitParms;
+  UpdateBuffer;
+end;  { TAbsBuffer.Create }
+
+procedure TAbsBuffer.InitParms;
+  {-initializes buffer parameters}
+begin
+  FSize := 0;
+  CurPos := 1;
+  PCurPos := @Buffer^[1];
+end;  { TAbsBuffer.InitParms }
+
+function TAbsBuffer.GetYPos: integer;
+  {-gets the current y location of the highlighted word (absolute screen)}
+begin
+  Result := 0;
+end;  { TAbsBuffer.GetYPos }
+
+function TAbsBuffer.GetTextBufferSize: integer;
+  {-returns the maximum size of the buffer}
+begin
+  Result := 32767 - AddBufferSize;
+    {-default maximum buffer is 32K}
+end;  { TAbsBuffer.GetTextBufferSize }
+
+procedure TAbsBuffer.WordCount (var NumWords, UniqueWords: Longint);
+  {-returns the number of words in buffer}
+var
+  UniqueList:  TStringList;
+  WordSt:      String;
+  Words:       String;
+  UniqueSt:    String;
+begin
+  InitParms;
+  NumWords     := 0;
+  UniqueWords  := 0;
+  UniqueList   := TStringList.Create;
+  UpdateBuffer;
+  if WordForm = nil then
+    WordForm := TWordForm.Create (Application);
+  if not WordForm.Visible then WordForm.Show;
+  repeat
+    WordSt := UpperCase (GetNextWord);
+ {Note:  If using an older version of WPTools, uncomment the next lines;}
+ {the next two lines were used as a patch for earlier versions - 10-30-97.}
+ {From version 1.98 on, WPTools does not now need this patch}
+ {
+      if WordSt = '' then
+      WordSt := UpperCase (GetNextWord);
+ }
+    if WordSt <> '' then
+    begin
+      Inc (NumWords);
+      if UniqueList.IndexOf (WordSt) = (-1) then
+        UniqueList.Add (WordSt);
+    end;  { if... }
+    Str (NumWords, Words);
+    Str (UniqueList.Count, UniqueSt);
+    WordForm.lblWords.Caption := Words;
+    WordForm.lblUniqueWords.Caption := UniqueSt;
+    Application.ProcessMessages;
+    if not WordForm.Visible then  {form was closed}
+    begin
+      NumWords := 0;
+      UniqueList.Clear;
+      Break;
+    end;  { if... }
+  until WordSt = '';
+  UniqueWords := UniqueList.Count;
+  UniqueList.Free;
+end;  { TAbsBuffer.WordCount }
+
+procedure TAbsBuffer.SetSelectedText;
+begin
+  {do nothing}
+end; { TabsBuffer.SetSelectedText }
+
+destructor TAbsBuffer.Destroy;
+begin
+  if Buffer <> nil then
+    FreeMem (Buffer, BufferSize);
+  inherited Destroy;
+end;  { TAbsBuffer.Destroy }
+
+{PChar Buffer Manager}
+constructor TPCharBuffer.Create (AParent: TControl);
+begin
+  inherited Create (AParent);
+  FModified := FALSE;
+end;  { TPCharBuffer.Create }
+
+constructor TPCharBuffer.CreateSpecial (ParentBuffer: PChar);
+begin
+  FPChar := ParentBuffer;
+  FModified := FALSE;
+  inherited Create (nil);
+end;  { TPCharBuffer.CreateSpecial }
+
+function TPCharBuffer.IsModified: Boolean;
+  {-returns TRUE if parent had been modified}
+begin
+  Result := FModified;
+end;  { TPCharBuffer.IsModified }
+
+procedure TPCharBuffer.SetModified (NowModified: Boolean);
+  {-sets parents modified flag}
+begin
+  FModified := NowModified;
+end;  { TPCharBuffer.SetModified }
+
+function TPCharBuffer.GetNextWord: string;
+  {-returns the next word in the buffer}
+var
+  S: string;  {string being constructed}
+  InHTML: Boolean;  {TRUE if '<' has been encountered}
+  Ch: Char;
+begin
+  BeginPos := CurPos;
+  EndPos   := CurPos;
+  S        := '';
+  FAllNums := TRUE;
+  InHTML   := FALSE;
+  {find the first letter of the next word}
+  while (not (Char (PCurPos^) in ValidChars)) and
+        (CurPos<BufSize) or InHTML do
+  begin
+    if SupportHTML then
+    begin
+      Ch := PCurPos^;
+      if InHTML and (Ch = '>') then InHTML := FALSE
+      else
+      if Ch = '<' then InHTML := TRUE;
+    end;  { if... }
+    Inc (CurPos, 1);
+    PCurPos := @Buffer^[CurPos];
+  end; {  while }
+  if CurPos<BufSize then
+  begin
+    BeginPos := CurPos;
+    {goto the end of the word}
+    while ((Char (PCurPos^) in ValidChars) and
+           (CurPos<BufSize)) do
+    begin
+      S := ConCat (S, Char (PCurPos^));
+      Inc (CurPos, 1);
+      if FAllNums and (not (Char (PCurPos^) in NumberSet)) then
+        FAllNums := FALSE;
+      PCurPos := @Buffer^[CurPos];
+      EndPos := CurPos;
+      if EndPos - BeginPos = MaxWordLength then
+      begin
+        MessageDlg ('Aborting spell check (Invalid word): ' + #13 + S, mtError,
+                    [mbOk], 0);
+        S := '';
+        Break;
+      end;  { if... }
+    end;  { while }
+    Result := S;
+  end {:} else
+    Result := '';
+end;  { TPCharBuffer.GetNextword }
+
+procedure TPCharBuffer.MoveBackOneWord;
+  {-moves back to the beginning of the current word}
+begin
+  while (Char (PCurPos^) in ValidChars) and (CurPos > 1) do
+  begin
+    Dec (CurPos, 1);
+    PCurPos := @Buffer^[CurPos];
+  end; {  while }
+end;  { TPCharBuffer.MoveBackOneWord }
+
+procedure TPCharBuffer.UpdateBuffer;
+  {-updates the buffer from the parent component, if any}
+begin
+  BufSize := StrLen (FPChar) + 1;
+  Move (FPChar^, Buffer^, BufSize);
+  PCurPos := @Buffer^[CurPos];
+end;  { TPCharBuffer.UpdateBuffer }
+
+procedure TPCharBuffer.ReplaceWord (WithWord: string);
+  {-replaces the current word with the word provided}
+begin
+  {Delete the current word}
+  {Insert the new one}
+  UpdateBuffer;
+end;  { TPCharBuffer.ReplaceWord }
+
+constructor TStringBuffer.Create (CheckString: PString);
+begin
+  inherited Create (nil);
+  FString := CheckString;
+end;  { TStringBuffer.Create }
+
+procedure TStringBuffer.UpdateBuffer;
+  {-updates the buffer from the parent component, if any}
+begin
+  {do nothing};
+end;  { TStringBuffer.UpdateBuffer }
+
+procedure TStringBuffer.ReplaceWord (WithWord: string);
+  {-replaces the current word with the word provided}
+begin
+  Delete (FString^, BeginPos, Length (WithWord));
+  Insert (WithWord, FString^, BeginPos);
+end;  { TStringBuffer.ReplaceWord }
+
+{TCustomEdit Buffer Manager}
+constructor TCEBuffer.Create (AParent: TControl);
+begin
+  inherited Create (AParent);
+end;  { TCEBuffer.Create }
+
+function TCEBuffer.IsModified: Boolean;
+  {-returns TRUE if parent had been modified}
+begin
+  Result := TCustomEdit (Parent).Modified;
+end;  { TCEBuffer.IsModified }
+
+procedure TCEBuffer.SetModified (NowModified: Boolean);
+  {-sets parents modified flag}
+begin
+  TCustomEdit (Parent).Modified := Modified;
+end;  { TCEBuffer.SetModified }
+
+function TCEBuffer.GetYPos: integer;
+  {-gets the current y location of the highlighted word (absolute screen)}
+var
+  AbsMemoXY: TPoint;
+begin
+  if Parent is TMemo then
+  begin
+    Result := Memo_WhereY (TMemo (Parent));
+  end {:} else
+  begin
+    AbsMemoXY := Parent.ClientToScreen (Point (0, 0));
+    Result := AbsMemoXY.Y;
+  end;  { else }
+end;  { TCEBuffer.GetYPos }
+
+function TCEBuffer.GetTextBufferSize: integer;
+  {-returns the maximum size of the buffer}
+begin
+  Result := TCustomEdit (Parent).GetTextLen + 1;
+end;  { TCEBuffer.GetTextBufferSize }
+
+procedure TCEBuffer.SetSelectedText;
+  {-highlights the current word using BeginPos & EndPos}
+begin
+  with Parent as TCustomEdit do
+  begin
+    SelStart  := BeginPos - 1;
+    SelLength := EndPos - BeginPos;
+    Update;
+  end;  { with }
+end;  { TCEBuffer.SetSelectedText }
+
+procedure TCEBuffer.UpdateBuffer;
+  {-updates the buffer from the parent component, if any}
+begin
+  BufSize := GetTextBufferSize;
+  TCustomEdit (Parent).GetTextBuf (pChar(Buffer), BufSize);
+  {support international characters}
+  AnsiToOemBuff (pChar (Buffer), pChar (Buffer), BufSize);
+  PCurPos := @Buffer^[CurPos];
+end;  { TCEBuffer.UpdateBuffer }
+
+procedure TCEBuffer.ReplaceWord (WithWord: string);
+  {-replaces the current word with the word provided}
+begin
+  with Parent as TCustomEdit do
+  begin
+    SetFocus;
+    SetSelectedText;
+    CurPos   := CurPos - (EndPos - BeginPos);
+    SelText  := WithWord;
+    CurPos   := CurPos + Length (WithWord);
+    UpdateBuffer;
+  end;  { with }
+end;  { TCEBuffer.ReplaceWord }
+
+end.  { AbsBuff }
