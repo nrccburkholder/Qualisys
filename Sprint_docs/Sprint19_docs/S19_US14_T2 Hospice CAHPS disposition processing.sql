@@ -238,11 +238,12 @@ create table #EQ (
 	[ExtractFileID] [int] NULL,
 	[IsDeleted] [bit] NOT NULL,
 	[Created] [datetime] NOT NULL,
-	[Source] [nvarchar](50) NOT NULL)
+	[Source] [nvarchar](50) NOT NULL,
+	[bitArchived] bit NOT NULL)
 
 -- list of all ExtractQueue records for bad addr/phone dispositions that haven't been processed
-insert into #EQ ([ExtractQueueID],[EntityTypeID],[PKey1],[PKey2],[IsMetaData],[ExtractFileID], [IsDeleted],[Created],[Source])
-select [ExtractQueueID],[EntityTypeID],[PKey1],[PKey2],[IsMetaData],[ExtractFileID], [IsDeleted],[Created],[Source]
+insert into #EQ ([ExtractQueueID],[EntityTypeID],[PKey1],[PKey2],[IsMetaData],[ExtractFileID], [IsDeleted],[Created],[Source], [bitArchived])
+select [ExtractQueueID],[EntityTypeID],[PKey1],[PKey2],[IsMetaData],[ExtractFileID], [IsDeleted],[Created],[Source], 0
 from NRC_DataMart_ETL.dbo.ExtractQueue 
 where entitytypeID=14 -- dispositionlog
 and pkey2 in (5,14,16,46,47) -- disposition_id
@@ -272,16 +273,16 @@ begin
 end
 
 -- if anyone is left in the table, add in any previously processed dispositions
-insert into #EQ ([ExtractQueueID],[EntityTypeID],[PKey1],[PKey2],[IsMetaData],[ExtractFileID], [IsDeleted],[Created],[Source])
-select [ExtractQueueID],[EntityTypeID],[PKey1],[PKey2],[IsMetaData],[ExtractFileID], [IsDeleted],[Created],[Source]
+insert into #EQ ([ExtractQueueID],[EntityTypeID],[PKey1],[PKey2],[IsMetaData],[ExtractFileID], [IsDeleted],[Created],[Source],[bitArchived])
+select p.[ExtractQueueID],p.[EntityTypeID],p.[PKey1],p.[PKey2],p.[IsMetaData],p.[ExtractFileID], p.[IsDeleted],p.[Created],p.[Source], 0
 from nrc_datamart_etl.dbo.ExtractQueue p
 inner join (select distinct pkey1 from #eq) t on p.pkey1=t.pkey1
 where p.entitytypeID=14 -- dispositionlog
 and p.pkey2 in (5,14,16,46,47) -- disposition_id
 and p.ExtractFileID is not null 
 
-insert into #EQ ([ExtractQueueID],[EntityTypeID],[PKey1],[PKey2],[IsMetaData],[ExtractFileID], [IsDeleted],[Created],[Source])
-select [ExtractQueueID],[EntityTypeID],[PKey1],[PKey2],[IsMetaData],[ExtractFileID], [IsDeleted],[Created],[Source]
+insert into #EQ ([ExtractQueueID],[EntityTypeID],[PKey1],[PKey2],[IsMetaData],[ExtractFileID], [IsDeleted],[Created],[Source],[bitArchived])
+select p.[ExtractQueueArchiveID],p.[EntityTypeID],p.[PKey1],p.[PKey2],p.[IsMetaData],p.[ExtractFileID], p.[IsDeleted],p.[Created],p.[Source], 1
 from nrc_datamart_etl.dbo.ExtractQueueArchive p
 inner join (select distinct pkey1 from #eq) t on p.pkey1=t.pkey1
 where p.entitytypeID=14 -- dispositionlog
@@ -309,6 +310,7 @@ begin
 	inner join #eq t on h.samplepop_id=t.pkey1 
 	inner join NRC_Datamart_etl.dbo.ExtractQueue p on t.ExtractQueueID=p.ExtractQueueID
 	where h.BadAddr=1 and h.BadPhone=0 
+	and t.bitArchived=0
 	and t.ExtractFileID is null
 	and t.pkey2 in (5)
 	
@@ -326,6 +328,7 @@ begin
 	inner join #eq t on h.samplepop_id=t.pkey1 
 	inner join NRC_Datamart_etl.dbo.ExtractQueue p on t.ExtractQueueID=p.ExtractQueueID
 	where h.BadAddr=0 and h.BadPhone=1 
+	and t.bitArchived=0
 	and t.ExtractFileID is null
 	and t.pkey2 in (14,16)
 
@@ -343,6 +346,7 @@ begin
 	inner join #eq t on h.samplepop_id=t.pkey1 
 	inner join NRC_Datamart_etl.dbo.ExtractQueue p on t.ExtractQueueID=p.ExtractQueueID
 	where h.BadAddr=1 and h.BadPhone=1 and h.UnusedDisps=1 
+	and t.bitArchived=0
 	and t.ExtractFileID is null
 	and t.pkey2 in (46,47)
 	
