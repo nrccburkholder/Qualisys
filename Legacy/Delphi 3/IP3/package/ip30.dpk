@@ -1,0 +1,57 @@
+package ip30;
+
+{$R *.RES}
+{$ALIGN ON}
+{$ASSERTIONS OFF}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS OFF}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST ON}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $00400000}
+{$DESCRIPTION 'InfoPower 3.0 Package'}
+{$RUNONLY}
+{$IMPLICITBUILD OFF}
+
+requires
+  vcl30,
+  vclx30,
+  vcldb30;
+
+contains
+  wwdbgrid,
+  wwtable,
+  wwmemo,
+  wwdblook,
+  wwidlg,
+  wwdbdlg,
+  wwquery,
+  wwkeycb,
+  wwdotdot,
+  wwdatsrc,
+  wwqbe,
+  wwlocate,
+  wwdbcomb,
+  wwdbspin,
+  wwdbedit,
+  wwfltdlg,
+  wwintl,
+  wwstorep,
+  wwriched,
+  wwclient,
+  wwrcdvw;
+
+end.

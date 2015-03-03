@@ -1,0 +1,133 @@
+(* ABSSPELL.PAS - Copyright (c) 1995-1996, Eminent Domain Software *)
+
+unit AbsSpell;
+  {-Abstract Spell Checking Dialog Form}
+{$D-}
+{$L-}
+interface
+uses
+  SysUtils, WinTypes, WinProcs, Messages, Classes, Graphics, Controls,
+  Forms, Dialogs, StdCtrls, Buttons, Menus,
+  ExtCtrls, EDSUtil, SpellGbl;
+
+const
+  {Modal Results for Spell Dialog and CheckWord}
+  mrReplace       = 20;
+  mrAdd           = 21;
+  mrSkipOnce      = 22;
+  mrSkipAll       = 23;
+  mrReplaceAll    = 24;
+  mrSuggest       = 25;
+
+type
+  TAccents        = (acSpanish);
+  TAccentSet      = Set of TAccents;
+  TAbsSpellDialog = class (TForm)
+  private
+    { Private declarations }
+    FSuggestions:   Byte;         {number of words to suggest}
+    FAccents:       TAccentSet;   {set of accents to display on dialog}
+    FLanguage:      TLanguages;   {current label language}
+    procedure CreateParams (var Params: TCreateParams);  override;
+    procedure SetLanguage (ToLanguage: TLanguages);
+      {-calls SetLabelLanguage (used for property)}
+  public
+    { Public declarations }
+    SpellDlgResult: Integer;
+    constructor Create (AOwner: TComponent);  override;
+    destructor  Destroy;  override;
+
+    {--- Labels and Prompts ----}
+    procedure SetNotFoundPrompt (ToString: String);  dynamic;  abstract;
+      {-sets the not found prompt}
+    procedure SetNotFoundCaption (ToString: String);  dynamic;  abstract;
+      {-sets the not found caption}
+    procedure SetEditWord (ToWord: String);  dynamic;  abstract;
+      {-sets the edit word string}
+    function  GetEditWord: String;  dynamic;  abstract;
+      {-gets the edit word}
+    procedure SetEditAsActive;  dynamic;  abstract;
+      {-sets activecontrol the edit control}
+    procedure SetLabelLanguage;  dynamic;
+      {-sets labels and buttons to a the language}
+
+    {--- Buttons ---}
+    procedure RemoveGlyphs;  virtual;
+      {-removes the glyphs from the buttons}
+    procedure EnableSkipButtons;  dynamic;  abstract;
+      {-enables the Skip and Skip All buttons}
+      {-or          Ignore and Ignore All}
+    procedure DisableSkipButtons;  dynamic;  abstract;
+      {-disables the Skip and Skip All buttons}
+      {-or           Ignore and Ignore All}
+
+    {--- Accented Buttons ---}
+    procedure SetAccentSet (Accents: TAccentSet);   dynamic;  abstract;
+      {-sets the accented buttons to be displayed}
+
+    {--- Suggest List ----}
+    procedure ClearSuggestList; dynamic;  abstract;
+      {-clears the suggest list}
+    procedure MakeSuggestions;  dynamic;  abstract;
+      {-sets the suggest list}
+    property  Suggestions:  Byte read FSuggestions write FSuggestions;
+    property  Language: TLanguages read FLanguage write SetLanguage;
+  end;  { TAbsSpellDialog }
+
+implementation
+
+constructor TAbsSpellDialog.Create (AOwner: TComponent);
+begin
+  inherited Create (AOwner);
+end;  { TAbsSpellDialog.Create }
+
+procedure TAbsSpellDialog.CreateParams (var Params: TCreateParams);
+begin
+  inherited CreateParams (Params);
+  if Parent {Application.MainForm} <> nil then
+    Params.WndParent := Parent{Application.MainForm}.Handle;
+end;  { TAbsSpellDialog.CreateParams }
+
+procedure TAbsSpellDialog.SetLabelLanguage;
+  {-sets labels and buttons to a the language}
+begin
+  if not (FLanguage in [lgEnglish
+{$IFDEF SupportBritish}
+                        ,lgBritish
+{$ENDIF}
+                                  ]) then
+    Caption := SpellTitle[FLanguage];
+end;  { TAbsSpellDialog.SetLabelLanguage }
+
+procedure TAbsSpellDialog.SetLanguage (ToLanguage: TLanguages);
+  {-sets labels and buttons to a the language}
+begin
+  FLanguage := ToLanguage;
+  SetLabelLanguage;
+end;  { TAbsSpellDialog.SetLanguage }
+
+procedure TAbsSpellDialog.RemoveGlyphs;
+  {-removes the glyphs from the buttons}
+var
+  i: integer;
+begin
+  for i := 0 to ComponentCount - 1 do
+  begin
+    if (Components[i] is TBitBtn) then
+      with Components[i] as TBitBtn do
+      begin
+        if not Glyph.Empty then
+        begin
+          {free bitmap}
+          Glyph := nil;
+        end;  { if... }
+      end;  { with }
+  end;  { next i }
+end;  { TAbsSpellDialog.RemoveGlyphs }
+
+destructor TAbsSpellDialog.Destroy;
+begin
+  inherited Destroy;
+end;  { TAbsSpellDialog.Destroy }
+
+end.  { AbsSpell }
