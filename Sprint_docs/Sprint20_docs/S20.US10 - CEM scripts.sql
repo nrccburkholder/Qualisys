@@ -1074,8 +1074,8 @@ begin
 end
 else
 begin
-	set @SQL = ''insert into #results (samplepopulationid) 
-		select distinct samplepopulationid 
+	set @SQL = ''insert into #results (SamplePopulationID) 
+		select distinct SamplePopulationID 
 		from CEM.ExportDataset''+right(convert(varchar,100000000+@ExportTemplateID),8)+''
 		where ExportQueueID=''+convert(varchar,@ExportQueueID)
 	exec (@SQL)
@@ -1098,13 +1098,13 @@ begin
 end
 
 declare @sqlInsert varchar(max), @sqlSelect varchar(max), @sqlFrom varchar(max), @sqlWhere varchar(max)
-set @sqlInsert=''insert into #results (SamplepopulationID, QuestionFormID, ExportQueueID, ExportTemplateID'' + char(10)
-set @sqlSelect=''select distinct sp.SamplepopulationID, qf.QuestionFormID, ''+convert(varchar,@ExportQueueID)+'' as ExportQueueID, ''+convert(varchar,@ExportTemplateID)+'' as ExportTemplateID'' + char(10)
-set @sqlFrom=''from samplepopulation sp 
-inner join sampleset ss on sp.SampleSetID=ss.SampleSetID
-inner join selectedsample sel on sp.samplepopulationid=sel.samplepopulationid
-inner join sampleunit su on sel.sampleunitid=su.sampleunitid
-left join questionform qf on sp.samplepopulationid=qf.samplepopulationid and qf.isActive=1'' + char(10)
+set @sqlInsert=''insert into #results (SamplePopulationID, QuestionFormID, ExportQueueID, ExportTemplateID'' + char(10)
+set @sqlSelect=''select distinct sp.SamplePopulationID, qf.QuestionFormID, ''+convert(varchar,@ExportQueueID)+'' as ExportQueueID, ''+convert(varchar,@ExportTemplateID)+'' as ExportTemplateID'' + char(10)
+set @sqlFrom=''from NRC_Datamart.dbo.samplepopulation sp 
+inner join NRC_Datamart.dbo.sampleset ss on sp.SampleSetID=ss.SampleSetID
+inner join NRC_Datamart.dbo.selectedsample sel on sp.SamplePopulationID=sel.SamplePopulationID
+inner join NRC_Datamart.dbo.sampleunit su on sel.sampleunitid=su.sampleunitid
+left join NRC_Datamart.dbo.questionform qf on sp.SamplePopulationID=qf.SamplePopulationID and qf.isActive=1'' + char(10)
 
 set @sqlWhere = ''where su.surveyid in (''+@surveylist+'')'' + char(10)
 
@@ -1135,10 +1135,10 @@ if exists (select * from #allcolumns where flag=1 and ExportTemplateColumnID=@Ex
 	where ds.DataSourceID=@DateDataSourceID
 else
 begin
-	select @sqlFrom = @sqlFrom + ''inner join (select samplepopulationid, convert(datetime,ColumnValue) as [''+ExportColumnName+''] ''
-		+ ''from Samplepopulationbackgroundfield ''
+	select @sqlFrom = @sqlFrom + ''inner join (select SamplePopulationID, convert(datetime,ColumnValue) as [''+ExportColumnName+''] ''
+		+ ''from NRC_Datamart.dbo.Samplepopulationbackgroundfield ''
 		+ ''where ''+SourceColumnName+'') datesub ''
-		+ ''on sp.samplepopulationid=datesub.samplepopulationid'' + char(10)
+		+ ''on sp.SamplePopulationID=datesub.SamplePopulationID'' + char(10)
 	 , @sqlWhere = @sqlWhere + ''and datesub.[''+ExportColumnName+''] between ''''''+convert(varchar,@exportStart)+'''''' and ''''''+convert(varchar,@exportEnd)+'''''''' + char(10)
 	 , @sqlSelect = @sqlSelect + '', convert(varchar,[''+ExportColumnName+''],112)'' + char(10)
 	 , @sqlinsert = @sqlinsert + '', [''+ExportTemplateSectionName+''.''+ExportColumnName+'']'' + char(10)
@@ -1156,7 +1156,7 @@ set @SQL = ''''
 select @SQL = @SQL + cmd + char(10)
 from (	select distinct ''update r set [''+ExportTemplateSectionName+''.''+ExportColumnName+'']=bg.columnValue
 		from #results r
-		inner join samplepopulationbackgroundfield bg on r.samplepopulationid=bg.samplepopulationid
+		inner join NRC_Datamart.dbo.samplepopulationbackgroundfield bg on r.SamplePopulationID=bg.SamplePopulationID
 		where bg.''+SourceColumnName as cmd
 		from #allcolumns 
 		where flag=0
@@ -1437,12 +1437,12 @@ begin
 	select @sql = @sql + '',[''+ExportTemplateSectionName+''.''+ExportColumnName+'']''
 	from (select distinct ExportTemplateSectionName,isnull(ExportColumnName,ExportColumnNameMR) as ExportColumnName from #allcolumns where isnull(ExportColumnNameMR,'''') <> ''unmarked'') x
 
-	print ''insert into CEM.ExportDataset''+right(convert(varchar,100000000+@ExportTemplateID),8)+'' (ExportqueueID, ExportTemplateID, SamplepopulationID, QuestionformID, FileMakerName'' + @sql + '')''
-	print ''select ExportqueueID, ExportTemplateID, SamplepopulationID, QuestionformID, FileMakerName''+@sql
+	print ''insert into CEM.ExportDataset''+right(convert(varchar,100000000+@ExportTemplateID),8)+'' (ExportqueueID, ExportTemplateID, SamplePopulationID, QuestionFormID, FileMakerName'' + @sql + '')''
+	print ''select ExportqueueID, ExportTemplateID, SamplePopulationID, QuestionFormID, FileMakerName''+@sql
 	print ''from #results''
 	
-	set @sql = ''insert into CEM.ExportDataset''+right(convert(varchar,100000000+@ExportTemplateID),8)+'' (ExportqueueID, ExportTemplateID, SamplepopulationID, QuestionformID, FileMakerName'' + @sql + '')
-	select ExportqueueID, ExportTemplateID, SamplepopulationID, QuestionformID, FileMakerName''+@sql+''
+	set @sql = ''insert into CEM.ExportDataset''+right(convert(varchar,100000000+@ExportTemplateID),8)+'' (ExportqueueID, ExportTemplateID, SamplePopulationID, QuestionFormID, FileMakerName'' + @sql + '')
+	select ExportqueueID, ExportTemplateID, SamplePopulationID, QuestionFormID, FileMakerName''+@sql+''
 	from #results''
 
 	exec (@SQL)
