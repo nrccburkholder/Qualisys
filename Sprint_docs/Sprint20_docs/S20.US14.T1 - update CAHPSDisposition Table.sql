@@ -13,13 +13,14 @@ note: query ran in qp_prod to get the values below:
 	select 6 as CahpsTypeID
 		, Disposition_id as DispositionID
 		, case when ReceiptType_ID in (19,21) then 17 when ReceiptType_ID in (20,22) then 12 else -1 end as ReceiptTypeID
-				-- note: none of Hospice CAHPS dipsositions are methodology dependent, so all ReceiptTypeID values are -1
+					-- note: none of Hospice CAHPS dipsositions are methodology dependent, so all ReceiptTypeID values are -1
 		, [desc] as Label
 		, [value] as CahpsDispositionID
 		, Hierarchy as CahpsHierarchy
 		, case when disposition_id=12 then 1 else 0 end as IsDefaultDisposition 
 	from SurveyTypeDispositions 
 	where surveytype_id=11
+	and [value] is not null
 */
 use NRC_Datamart
 go
