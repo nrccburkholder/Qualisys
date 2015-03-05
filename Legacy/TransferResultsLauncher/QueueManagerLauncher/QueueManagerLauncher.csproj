@@ -54,10 +54,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>C4A197BC9B34ECD5E7BB33F5F760862819B9A188</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>74703A10681FD40EC5FEA5BE2BAE2611FE87C512</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>QueueManagerLauncher_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>QueueManagerLauncher_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -122,7 +122,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <None Include="QueueManagerLauncher.nuspec" />
-    <None Include="QueueManagerLauncher_TemporaryKey.pfx" />
+    <None Include="QueueManagerLauncher_1_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
