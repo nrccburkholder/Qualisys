@@ -1970,3 +1970,23 @@ and ExportQueueID=@ExportQueueID
 ' 
 END
 GO
+use nrc_datamart
+go
+exec sp_rename 'cem.System_Params', 'System_Params_'
+exec sp_rename 'cem.ExportDataset00000001', 'ExportDataset00000001_'
+exec sp_rename 'cem.datasource_', 'Datasource_'
+exec sp_rename 'cem.ExportTemplate', 'ExportTemplate_'
+exec sp_rename 'cem.ExportTemplateSection', 'ExportTemplateSection_'
+exec sp_rename 'cem.ExportTemplateDefaultResponse', 'ExportTemplateDefaultResponse_'
+exec sp_rename 'cem.ExportTemplateColumn', 'ExportTemplateColumn_'
+exec sp_rename 'cem.ExportTemplateColumnResponse', 'ExportTemplateColumnResponse_'
+exec sp_rename 'cem.DispositionProcess', 'DispositionProcess_'
+exec sp_rename 'cem.Logs', 'Logs_'
+exec sp_rename 'cem.DispositionClause', 'DispositionClause_'
+exec sp_rename 'cem.DispositionInList', 'DispositionInList_'
+exec sp_rename 'cem.ExportQueue', 'ExportQueue_'
+exec sp_rename 'cem.ExportQueueFile', 'ExportQueueFile_'
+exec sp_rename 'cem.ExportQueueSurvey', 'ExportQueueSurvey_'
+exec sp_rename 'cem.ExportNotification', 'ExportNotification_'
+exec sp_rename 'cem.ExportNotificationType', 'ExportNotificationType_'
+exec sp_rename 'cem.Operator', 'Operator_'
