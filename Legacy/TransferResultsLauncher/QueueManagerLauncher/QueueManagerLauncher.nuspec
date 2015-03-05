@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Qualisys.QueueManagerLauncher</id>
+    <title>QualiSys Queue Manager Launcher</title>
+    <version>4.3.0.0</version>
+    <authors>NRC</authors>
+    <description>Queue Manager Launcher shell which launches Queue Manager</description>
+  </metadata>
+  <files>
+    <file src="bin\Release\app.publish\**\*"/>
+  </files>
+</package>
