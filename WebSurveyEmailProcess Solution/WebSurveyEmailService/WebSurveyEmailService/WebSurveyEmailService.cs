@@ -106,6 +106,7 @@ namespace WebSurveyEmailService
         }
     }
 
+    [DisallowConcurrentExecution]
     internal class MyJob : IJob
     {
         public void Execute(IJobExecutionContext context)
@@ -125,6 +126,7 @@ namespace WebSurveyEmailService
         }
     }
 
+    [DisallowConcurrentExecution]
     internal class CleanUpJob : IJob
     {
         public void Execute(IJobExecutionContext context)
