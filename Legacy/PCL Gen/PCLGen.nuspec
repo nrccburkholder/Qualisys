@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Qualisys.PCLGen</id>
+    <title>QualiSys PCL Gen Server Application</title>
+    <version>2.6.0.2</version>
+    <authors>NRC</authors>
+    <description>PCLGen server application which creates survey via PCL in .PRN files</description>
+  </metadata>
+  <files>
+    <file src="PclGen.exe"/>
+  </files>
+</package>
