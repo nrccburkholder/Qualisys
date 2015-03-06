@@ -1170,7 +1170,7 @@ set @SQL = ''''
 select @SQL = @SQL + cmd + char(10)
 from (	select distinct ''update r set [''+ExportTemplateSectionName+''.''+ExportColumnName+'']=rb.ResponseValue
 		from #results r
-		inner join ResponseBubble rb on r.QuestionFormID=rb.QuestionFormID
+		inner join nrc_datamart.dbo.ResponseBubble rb on r.QuestionFormID=rb.QuestionFormID
 		where rb.''+SourceColumnName as cmd
 		from #allcolumns 
 		where flag=0
@@ -1186,7 +1186,7 @@ set @SQL = ''''
 select @SQL = @SQL + cmd + char(10)
 from (	select distinct ''update r set [''+ExportTemplateSectionName+''.''+ExportColumnNameMR+'']=''+convert(varchar,RecodeValue)+''
 		from #results r
-		inner join ResponseBubble rb on r.QuestionFormID=rb.QuestionFormID
+		inner join nrc_datamart.dbo.ResponseBubble rb on r.QuestionFormID=rb.QuestionFormID
 		where rb.''+SourceColumnName+''
 		and rb.ResponseValue=''+convert(varchar,RawValue) as cmd
 		from #allcolumns 
@@ -1223,7 +1223,7 @@ select @sql = @sql + ''update r set [''+ExportTemplateSectionName+''.''+ExportCo
 		case when SourceColumnType in (40,61) then ''convert(varchar,'' else '''' end+
 		TableAlias+''.''+SourceColumnName+case when SourceColumnType in (40,61) then '',112)'' else '''' end+'') as Agg
 		from #results r 
-		inner join ''+TableName+'' ''+TableAlias+'' on r.''+TableName+''id=''+TableAlias+''.''+TableName+''id
+		inner join ''+TableName+'' ''+TableAlias+'' on r.''+replace(TableName,''NRC_Datamart.dbo.'','''')+''id=''+TableAlias+''.''+replace(TableName,''NRC_Datamart.dbo.'','''')+''id
 		group by FileMakerName) sub
 		on r.FileMakerName=sub.FileMakerName'' + char(10)
 from #allcolumns
