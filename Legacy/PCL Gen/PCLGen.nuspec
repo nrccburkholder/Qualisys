@@ -8,6 +8,6 @@
     <description>PCLGen server application which creates survey via PCL in .PRN files</description>
   </metadata>
   <files>
-    <file src="bin"/>
+    <file src="bin\PCLGen.exe"/>
   </files>
 </package>
