@@ -220,8 +220,12 @@ namespace WebSurveyLibrary
 
                             string mailTo = ds.Tables[0].Rows[0]["Email_Address"].ToString();
 
-                            if (IsValidEmail(mailTo))
-                            { 
+
+                             //* Remove email address validation.  TSB 2015.03.05
+                             //* http://davidcel.is/blog/2012/09/06/stop-validating-email-addresses-with-regex/
+   
+                            //if (IsValidEmail(mailTo))
+                            //{ 
                                 MailMessage mailMessage = new MailMessage();
 
                                 mailMessage.From = new MailAddress(from);
@@ -249,13 +253,13 @@ namespace WebSurveyLibrary
                                 mailMessage.Dispose();
                                 result = ResultType.Success;
                                 Logs.Info("Web Survey Successfully sent --> litho: " + litho);
-                            }
-                            else
-                            {
-                                errorList.Add(new WebSurveyError(VendorWebFile_Data_ID, Survey_ID, litho, "Invalid Email Address Format."));
-                                Logs.Info("Invalid Email Address Format --> litho: " + litho);
-                                result = ResultType.InvalidEmail;
-                            }
+                            //}
+                            //else
+                            //{
+                            //    errorList.Add(new WebSurveyError(VendorWebFile_Data_ID, Survey_ID, litho, "Invalid Email Address Format."));
+                            //    Logs.Info("Invalid Email Address Format --> litho: " + litho);
+                            //    result = ResultType.InvalidEmail;
+                            //}
                         }
                         else
                         {

@@ -17,7 +17,7 @@ CREATE PROCEDURE [CEM].[SelectTemplateSection]
 CREATE PROCEDURE [CEM].[SelectSystemParams]
 
 */
-USE [NRC_Datamart]
+USE [NRC_Datamart_Extracts]
 GO
 
 
