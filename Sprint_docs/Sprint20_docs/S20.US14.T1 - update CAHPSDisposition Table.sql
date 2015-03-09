@@ -49,5 +49,12 @@ SELECT N'6' AS [CahpsTypeID], N'25' AS [DispositionID], N'-1' AS [ReceiptTypeID]
 SELECT N'6' AS [CahpsTypeID], N'45' AS [DispositionID], N'-1' AS [ReceiptTypeID], N'Ineligible: Never Involved in Decedent Care' AS [Label], N'6' AS [CahpsDispositionID], N'4' AS [CahpsHierarchy], N'0' AS [IsDefaultDisposition] UNION ALL
 SELECT N'6' AS [CahpsTypeID], N'46' AS [DispositionID], N'-1' AS [ReceiptTypeID], N'Non-response: Unused Bad Address' AS [Label], N'9' AS [CahpsDispositionID], N'12' AS [CahpsHierarchy], N'0' AS [IsDefaultDisposition] UNION ALL
 SELECT N'6' AS [CahpsTypeID], N'47' AS [DispositionID], N'-1' AS [ReceiptTypeID], N'Non-response: Unused Bad/No Telephone Number' AS [Label], N'9' AS [CahpsDispositionID], N'12' AS [CahpsHierarchy], N'0' AS [IsDefaultDisposition] ) t;
-commit tran
 
+insert into dbo.CAHPSDisposition (CahpsDispositionID,CahpsTypeID,Label,IsCahpsDispositionComplete,IsCahpsDispositionInComplete)
+select distinct cahpsdispositionID, cahpstypeid, label
+, case when cahpsdispositionid in (1) then 1 else 0 end as IsCahpsDispositionComplete
+, case when cahpsdispositionid in (7) then 1 else 0 end as IsCahpsDispositionInComplete 
+from CahpsDispositionMapping where cahpstypeid=6 
+order by 1
+
+commit tran
