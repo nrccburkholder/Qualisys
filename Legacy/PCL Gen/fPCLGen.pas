@@ -63,7 +63,7 @@ end;
 procedure TfrmPCLGeneration.progressreport(s:string; const s_id,sm_id:string); far;
 var qry : string;
 begin
-  AddToMessageLog(s);
+//  AddToMessageLog(s);
   while memo1.lines.count > 100 do
     memo1.lines.delete(0);
   if dmPCLGen.currentrun <= 0 then begin
