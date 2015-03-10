@@ -107,7 +107,7 @@ BEGIN
       ,[ValidatedDate]
       ,[ValidatedBy]
       ,[ValidationCode]
-  FROM [NRC_Datamart].[CEM].[ExportQueue]
+  FROM [CEM].[ExportQueue]
   WHERE ((@ExportQueueID is null) or (ExportQueueID = @ExportQueueID)) and
 		((@ExportTemplateName is null) or (ExportTemplateName = @ExportTemplateName)) and
 		((@ExportTemplateVersionMajor is null) or (ExportTemplateVersionMajor = @ExportTemplateVersionMajor)) and
@@ -505,7 +505,7 @@ BEGIN
 END
 
 GO
-USE [NRC_Datamart]
+USE [NRC_Datamart_Extracts]
 GO
 
 DECLARE @schema_id int
@@ -542,7 +542,7 @@ END
 
 GO
 
-USE [NRC_Datamart]
+USE [NRC_Datamart_Extracts]
 GO
 
 DECLARE @schema_id int
