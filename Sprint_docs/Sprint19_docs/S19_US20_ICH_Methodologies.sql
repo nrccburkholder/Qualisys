@@ -345,6 +345,7 @@ INNER JOIN StandardMethodology sm ON (sm.StandardMethodologyID = mm.StandardMeth
 INNER JOIN StandardMethodologyBySurveyType smst ON smst.StandardMethodologyID=sm.StandardMethodologyID
 WHERE mm.Survey_id=@Survey_id
 AND mm.bitActiveMethodology=1
+and smst.SurveyType_id = @surveyType_id
 
 IF @@ROWCOUNT<>1
  INSERT INTO #M (Error, strMessage)

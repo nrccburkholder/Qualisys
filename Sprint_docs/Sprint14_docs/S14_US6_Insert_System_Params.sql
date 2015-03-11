@@ -9,7 +9,7 @@ INSERT parameter records for CEM
 
 */
 
-USE NRC_DataMart
+USE NRC_DataMart_Extracts
 
 /****** Object:  Table [CEM].[System_Params]    Script Date: 12/10/2014 10:58:10 AM ******/
 SET ANSI_NULLS ON
