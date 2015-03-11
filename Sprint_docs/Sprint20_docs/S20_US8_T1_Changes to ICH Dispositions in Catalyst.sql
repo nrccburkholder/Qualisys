@@ -108,27 +108,33 @@ BEGIN
 		insert into @eligibilityOverride values (-9,-9,0,1,32,5130)	-- [blank] (-9) / [blank] (-9)									--> Completed Mail Questionnaire—Survey Eligibility Unknown
 		insert into @eligibilityOverride values (-9,1,0,1,8,5160)	-- [blank] (-9) / < 3 months (1)								--> Ineligible: Does Not Meet Eligibility Criteria
 																	-- [blank] (-9) / 3 months+ (2-4*)								--> No override - use original heirarchical disposition
+		insert into @eligibilityOverride values (-9,2,0,1,32,5130)	-- [blank] (-9) / No longer at this facility (5)				--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (-9,3,0,1,32,5130)	-- [blank] (-9) / No longer at this facility (5)				--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (-9,4,0,1,32,5130)	-- [blank] (-9) / No longer at this facility (5)				--> Completed Mail Questionnaire—Survey Eligibility Unknown
 		insert into @eligibilityOverride values (-9,5,0,1,34,5190)	-- [blank] (-9) / No longer at this facility (5)				--> Ineligible: No Longer Receiving Care at Sampled Facility
 		insert into @eligibilityOverride values (1,-9,0,1,8,5160)	-- At home (1) / [blank] (-9)									--> Ineligible: Does Not Meet Eligibility Criteria
-		insert into @eligibilityOverride values (1,1,0,1,32,5130)	-- At home (1) / < 3 months (1)									--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (1,1,0,1,8,5160)	-- At home (1) / < 3 months (1)									--> Completed Mail Questionnaire—Survey Eligibility Unknown
 		insert into @eligibilityOverride values (1,2,0,1,32,5130)	-- At home (1) / 3-12 months (2)								--> Completed Mail Questionnaire—Survey Eligibility Unknown
 		insert into @eligibilityOverride values (1,3,0,1,32,5130)	-- At home (1) / 1-5 years (3)									--> Completed Mail Questionnaire—Survey Eligibility Unknown
 		insert into @eligibilityOverride values (1,4,0,1,32,5130)	-- At home (1) / 5 years + (4)									--> Completed Mail Questionnaire—Survey Eligibility Unknown
-		insert into @eligibilityOverride values (1,5,0,1,32,5130)	-- At home (1) / No longer at this facility (5)					--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (1,5,0,1,34,5190)	-- At home (1) / No longer at this facility (5)					--> Completed Mail Questionnaire—Survey Eligibility Unknown
 																	-- At the dialysis ctr (2) / [blank] (-9)						--> No override - use original heirarchical disposition
 		insert into @eligibilityOverride values (2,1,0,1,8,5160)	-- At the dialysis ctr (2) / < 3 months (1)						--> Ineligible: Does Not Meet Eligibility Criteria
 																	-- At the dialysis ctr (2) / 3 months+ (2-4*)					--> No override - use original heirarchical disposition
 		insert into @eligibilityOverride values (2,5,0,1,34,5190)	-- At the dialysis ctr (2) / No longer at this facility (5)		--> Ineligible: No Longer Receiving Care at Sampled Facility
 		insert into @eligibilityOverride values (3,-9,0,1,33,5140)	-- Do not currently rec'v (3) / [blank] (-9)					--> Ineligible: Not Receiving Dialysis
-		insert into @eligibilityOverride values (3,1,0,1,32,5130)	-- Do not currently rec'v (3) / < 3 months (1)					--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (3,1,0,1,33,5140)	-- Do not currently rec'v (3) / < 3 months (1)					--> Completed Mail Questionnaire—Survey Eligibility Unknown
 		insert into @eligibilityOverride values (3,2,0,1,32,5130)	-- Do not currently rec'v (3) / 3-12 months (2)					--> Completed Mail Questionnaire—Survey Eligibility Unknown
 		insert into @eligibilityOverride values (3,3,0,1,32,5130)	-- Do not currently rec'v (3) / 1-5 years (3)					--> Completed Mail Questionnaire—Survey Eligibility Unknown
 		insert into @eligibilityOverride values (3,4,0,1,32,5130)	-- Do not currently rec'v (3) / 5 years+ (4)					--> Completed Mail Questionnaire—Survey Eligibility Unknown
-		insert into @eligibilityOverride values (3,5,0,1,32,5130)	-- Do not currently rec'v (3) / No longer at this facility (5)	--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (3,5,0,1,33,5140)	-- Do not currently rec'v (3) / No longer at this facility (5)	--> Completed Mail Questionnaire—Survey Eligibility Unknown
 				
 		insert into @eligibilityOverride values (-9,-9,1,1,32,5130)	-- [blank] (-9) / [blank] (-9)									--> Completed Mail Questionnaire—Survey Eligibility Unknown
 		insert into @eligibilityOverride values (-9,1,1,1,32,5130)	-- [blank] (-9) / < 3 months (1)								--> Completed Mail Questionnaire—Survey Eligibility Unknown
 																	-- [blank] (-9) / 3 months+ (2-4*)								--> No override - use original heirarchical disposition
+		insert into @eligibilityOverride values (-9,2,1,1,32,5130)	-- [blank] (-9) / No longer at this facility (5)				--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (-9,3,1,1,32,5130)	-- [blank] (-9) / No longer at this facility (5)				--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (-9,4,1,1,32,5130)	-- [blank] (-9) / No longer at this facility (5)				--> Completed Mail Questionnaire—Survey Eligibility Unknown
 		insert into @eligibilityOverride values (-9,5,1,1,32,5130)	-- [blank] (-9) / No longer at this facility (5)				--> Completed Mail Questionnaire—Survey Eligibility Unknown
 		insert into @eligibilityOverride values (1,-9,1,1,32,5130)	-- At home (1) / [blank] (-9)									--> Completed Mail Questionnaire—Survey Eligibility Unknown
 		insert into @eligibilityOverride values (1,1,1,1,32,5130)	-- At home (1) / < 3 months (1)									--> Completed Mail Questionnaire—Survey Eligibility Unknown
@@ -140,6 +146,7 @@ BEGIN
 		insert into @eligibilityOverride values (2,1,1,1,32,5130)	-- At the dialysis ctr (2) / < 3 months (1)						--> Completed Mail Questionnaire—Survey Eligibility Unknown
 																	-- At the dialysis ctr (2) / 3 months+ (2-4*)					--> No override - use original heirarchical disposition
 		insert into @eligibilityOverride values (2,5,1,1,32,5130)	-- At the dialysis ctr (2) / No longer at this facility (5)		--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		insert into @eligibilityOverride values (2,-9,1,1,32,5130)	-- Do not currently rec'v (3) / [blank] (-9)					--> Completed Mail Questionnaire—Survey Eligibility Unknown
 		insert into @eligibilityOverride values (3,-9,1,1,32,5130)	-- Do not currently rec'v (3) / [blank] (-9)					--> Completed Mail Questionnaire—Survey Eligibility Unknown
 		insert into @eligibilityOverride values (3,1,1,1,32,5130)	-- Do not currently rec'v (3) / < 3 months (1)					--> Completed Mail Questionnaire—Survey Eligibility Unknown
 		insert into @eligibilityOverride values (3,2,1,1,32,5130)	-- Do not currently rec'v (3) / 3-12 months (2)					--> Completed Mail Questionnaire—Survey Eligibility Unknown
