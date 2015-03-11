@@ -1,4 +1,5 @@
 /*
+S20 US17 T2 Hospice CAHPS remove SV question 52366
 
 3/11/2015 Chris Burkholder
 
@@ -12,7 +13,7 @@ I checked w/ Compliance and Research and they are in favor of removing the conse
 
 */
 
-
+Use [QP_Prod]
 
 delete 
 --select *
