@@ -1,0 +1,13 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Qualisys.WebSurveyEmailService</id>
+    <title>Web Survey Email Service</title>
+    <version>1.2.0.0</version>
+    <authors>NRC</authors>
+    <description>Service for sending Canada Web Survey Emails</description>
+  </metadata>
+  <files>
+    <file src="bin\Release\*"/>
+  </files>
+</package>
