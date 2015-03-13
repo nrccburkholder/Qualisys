@@ -1,6 +1,6 @@
 /*
-	S20.US16 -- Updates the WebSurveyEmailService so that email notifications will go to a specific distribution list 
-	instead of TransferResultsErrors@nationalresearch.com
+	S20.US16 -- Updates the WebSurveyEmailService QualPro_Params for Service Cycle Time and Error Notification
+	
 
 	This ONLY needs to be run for Canada.
 
@@ -15,9 +15,13 @@ update QUALPRO_PARAMS
 where STRPARAM_GRP = 'WebSurveyEmailSrvc'
 and STRPARAM_NM = 'WebSurveySendErrorNotificationTo'
 
+update QUALPRO_PARAMS
+	SET NUMPARAM_VALUE = '2'
+where STRPARAM_GRP = 'WebSurveyEmailSrvc'
+and STRPARAM_NM = 'WebSurveyServiceCycleTime'
+
 commit tran
 
 select *
 from QUALPRO_PARAMS
 where STRPARAM_GRP = 'WebSurveyEmailSrvc'
-and STRPARAM_NM = 'WebSurveySendErrorNotificationTo'
