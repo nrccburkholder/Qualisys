@@ -35,7 +35,7 @@ GO
    MODIFIED 10/6/2014 DG Implement Cover Letter Variations to accomodate dynamic cover letters
    MODIFIED 1/15/2015 CJB Corrected Mockup substitutions for Test Prints
    MODIFIED 2/26/2015 DG Emergency Change - assembling @sql_join should happen outside the IF/THEN that adds TB_# and Art_#, otherwise @sql_join='' the second time through the loop
-   MODIFIED 3/13/2015 DG added "study_id=@study" in a couple places to keep the proc from affecting studies that weren't passed in with the @Study parameter
+   MODIFIED 3/13/2015 DG only add records to #spCoverVariation for surveys that have cover letter mappings.
 */
 CREATE PROCEDURE [dbo].[SP_FG_FormGen_Sub]
 @Study INT, @Survey INT, @bitTP BIT
