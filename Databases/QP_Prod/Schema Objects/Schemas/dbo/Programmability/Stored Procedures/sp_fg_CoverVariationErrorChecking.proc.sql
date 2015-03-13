@@ -13,9 +13,10 @@ if object_id('CoverVariationLog_spCoverVariation') is NOT NULL
 if object_id('CoverVariationLog_SurveyCoverVariation') is NOT NULL
 	delete from CoverVariationLog_SurveyCoverVariation where CV_RunDate < dateadd(month,-3,getdate())
 
-SELECT DISTINCT Survey_id
+SELECT DISTINCT w.Survey_id
 INTO #Survey
-FROM FG_PreMailingWork
+FROM FG_PreMailingWork w
+inner join CoverLetterItemArtifactUnitMapping map on w.survey_id=map.survey_id
 
 create table #CoverVariation (CoverVariation_id int identity(101,1), survey_id int, cover_id int)
 create table #SurveyCoverVariation (SurveyCoverVariation_id int identity(1,1), CoverVariation_id int, survey_id int, cover_id int)
