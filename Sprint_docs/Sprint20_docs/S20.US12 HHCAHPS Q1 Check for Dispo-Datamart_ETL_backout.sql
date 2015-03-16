@@ -25,6 +25,7 @@ GO
 --			1.2 by ccaouette: ACO CAHPS Project
 --          1.3 by dgilsdorf: CheckForACOCAHPSIncompletes changed to CheckForCAHPSIncompletes
 --          1.4 by dgilsdorf: added call to CheckForMostCompleteUsablePartials for HHCAHPS and ICHCAHPS processing
+--          1.5 by dgilsdorf: moved CAHPS processing procs to earlier in the ETL
 -- =============================================
 ALTER PROCEDURE [dbo].[csp_GetQuestionFormExtractData] 
 	@ExtractFileID int 
@@ -32,6 +33,12 @@ ALTER PROCEDURE [dbo].[csp_GetQuestionFormExtractData]
 --exec [dbo].[csp_GetQuestionFormExtractData]  2238
 AS
 	SET NOCOUNT ON 
+
+	DECLARE @oExtractRunLogID INT;
+	DECLARE @currDateTime1 DATETIME = GETDATE();
+	DECLARE @currDateTime2 DATETIME;
+	DECLARE @TaskName VARCHAR(200) =  OBJECT_NAME(@@PROCID);
+	EXEC [InsertExtractRunLog] @ExtractFileID, @TaskName, @currDateTime1, @ExtractRunLogID = @oExtractRunLogID OUTPUT;
 
 	declare @EntityTypeID int
 	set @EntityTypeID = 11 -- QuestionForm
@@ -43,16 +50,15 @@ AS
 	-- ACO CAHPS Project
 	-- ccaouette: 2014-05
 	---------------------------------------------------------------------------------------
-	DECLARE @country VARCHAR(10)
-	SELECT @country = [STRPARAM_VALUE] FROM [QP_Prod].[dbo].[qualpro_params] WHERE STRPARAM_NM = 'Country'
-	select @country
-	IF @country = 'US'
-	BEGIN
-		EXEC [QP_Prod].[dbo].[CheckForCAHPSIncompletes] 
-		EXEC [QP_Prod].[dbo].[CheckForACOCAHPSUsablePartials]
-		EXEC [QP_Prod].[dbo].[CheckForMostCompleteUsablePartials] -- HHCAHPS and ICHCAHPS
-	END
-	
+	--DECLARE @country VARCHAR(10)
+	--SELECT @country = [STRPARAM_VALUE] FROM [QP_Prod].[dbo].[qualpro_params] WHERE STRPARAM_NM = 'Country'
+	--select @country
+	--IF @country = 'US'
+	--BEGIN
+	--	EXEC [QP_Prod].[dbo].[CheckForCAHPSIncompletes] 
+	--	EXEC [QP_Prod].[dbo].[CheckForACOCAHPSUsablePartials]
+	--	EXEC [QP_Prod].[dbo].[CheckForMostCompleteUsablePartials] -- HHCAHPS and ICHCAHPS
+	--END	
 
 	---------------------------------------------------------------------------------------
 	-- Load records to Insert/Update into a temp table
@@ -156,4 +162,8 @@ AS
 	                     and IsDeleted = 1 ) eh
 				Left join QP_Prod.dbo.QUESTIONFORM qf With (NOLOCK) on qf.QUESTIONFORM_ID = eh.PKey1 AND qf.DATRETURNED IS NULL--if datReturned is not NULL it is not a delete
 				Left join QP_Prod.dbo.SentMailing sm With (NOLOCK) on qf.SentMail_id = sm.SentMail_id
+
+  	SET @currDateTime2 = GETDATE();
+	SELECT @oExtractRunLogID,@currDateTime2,@TaskName
+	EXEC [UpdateExtractRunLog] @oExtractRunLogID, @currDateTime2
 go
