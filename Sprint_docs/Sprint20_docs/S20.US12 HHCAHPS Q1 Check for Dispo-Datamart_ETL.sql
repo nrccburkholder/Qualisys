@@ -28,7 +28,7 @@ GO
 --          1.5 by dgilsdorf: moved CAHPS processing procs to earlier in the ETL
 --          1.6 by dgilsdorf: changed call to HHCAHPSCompleteness from a function to a procedure
 -- =============================================
-CREATE PROCEDURE [dbo].[csp_GetQuestionFormExtractData] 
+ALTER PROCEDURE [dbo].[csp_GetQuestionFormExtractData] 
 	@ExtractFileID int 
 	
 --exec [dbo].[csp_GetQuestionFormExtractData]  2238
