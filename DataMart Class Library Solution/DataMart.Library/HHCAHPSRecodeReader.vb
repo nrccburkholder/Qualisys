@@ -660,23 +660,34 @@ Friend Class HHCAHPSRecodeReader
             Return "M"
         End If
 
-        If value Is DBNull.Value OrElse value.ToString.Trim = String.Empty Then
-            Return 2
-        End If
-
         Dim screen As Object = mReader(screenQuestion)
-        If CType(screen, Integer) = skipValue Then
-            Return 2
-        Else
-            Dim intVal As Integer = CType(value, Integer)
-            'If the value is > 10000 then we need to subtract it off
-            If intVal >= 10000 Then intVal -= 10000
-            If intVal = 3 Then
-                Return 1
-            Else
+
+        If CType(screen, Integer) = 1 Then
+            Return 1
+        Else 'If screen.Equals("M") Then
+            If value Is DBNull.Value OrElse value.ToString.Trim = String.Empty Then
+                Return "M"
+            Else 'value must be 1 or 2
                 Return 2
             End If
         End If
+
+        'If value Is DBNull.Value OrElse value.ToString.Trim = String.Empty Then
+        '    Return 2
+        'End If
+
+        'If CType(screen, Integer) = skipValue Then
+        '    Return 2
+        'Else
+        '    Dim intVal As Integer = CType(value, Integer)
+        '    'If the value is > 10000 then we need to subtract it off
+        '    If intVal >= 10000 Then intVal -= 10000
+        '    If intVal = 3 Then
+        '        Return 1
+        '    Else
+        '        Return 2
+        '    End If
+        'End If
 
     End Function
 
