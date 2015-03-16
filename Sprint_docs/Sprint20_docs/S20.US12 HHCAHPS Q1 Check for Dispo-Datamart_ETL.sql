@@ -15,23 +15,6 @@ alter procedure SP_Phase3_QuestionResult_For_Extract_by_Samplepop
 */
 USE NRC_DataMart_ETL
 GO
-/*
-	S20.US12 HHCAHPS Q1 Check for Dispo
-		As an Authorized Vendor for HHCAHPS, we want to assign the correct disposition based on the response to Q1, so that we are submitting correct data
-
-	T12.2	Modify the ???? SP in Medusa ETL
-
-Dave Gilsdorf
-
-QP_Prod:
-drop function HHCAHPSCompleteness
-create procedure HHCAHPSCompleteness
-alter procedure sp_phase3_questionresult_for_extract
-alter procedure SP_Phase3_QuestionResult_For_Extract_by_Samplepop
-
-*/
-USE NRC_DataMart_ETL
-GO
 -- =============================================
 -- Author:	Kathi Nussralalh
 -- Procedure Name: csp_GetQuestionFormExtractData
