@@ -15,6 +15,23 @@ alter procedure SP_Phase3_QuestionResult_For_Extract_by_Samplepop
 */
 USE NRC_DataMart_ETL
 GO
+/*
+	S20.US12 HHCAHPS Q1 Check for Dispo
+		As an Authorized Vendor for HHCAHPS, we want to assign the correct disposition based on the response to Q1, so that we are submitting correct data
+
+	T12.2	Modify the ???? SP in Medusa ETL
+
+Dave Gilsdorf
+
+QP_Prod:
+drop function HHCAHPSCompleteness
+create procedure HHCAHPSCompleteness
+alter procedure sp_phase3_questionresult_for_extract
+alter procedure SP_Phase3_QuestionResult_For_Extract_by_Samplepop
+
+*/
+USE NRC_DataMart_ETL
+GO
 -- =============================================
 -- Author:	Kathi Nussralalh
 -- Procedure Name: csp_GetQuestionFormExtractData
@@ -32,6 +49,12 @@ ALTER PROCEDURE [dbo].[csp_GetQuestionFormExtractData]
 --exec [dbo].[csp_GetQuestionFormExtractData]  2238
 AS
 	SET NOCOUNT ON 
+
+	DECLARE @oExtractRunLogID INT;
+	DECLARE @currDateTime1 DATETIME = GETDATE();
+	DECLARE @currDateTime2 DATETIME;
+	DECLARE @TaskName VARCHAR(200) =  OBJECT_NAME(@@PROCID);
+	EXEC [InsertExtractRunLog] @ExtractFileID, @TaskName, @currDateTime1, @ExtractRunLogID = @oExtractRunLogID OUTPUT;
 
 	declare @EntityTypeID int
 	set @EntityTypeID = 11 -- QuestionForm
@@ -156,4 +179,8 @@ AS
 	                     and IsDeleted = 1 ) eh
 				Left join QP_Prod.dbo.QUESTIONFORM qf With (NOLOCK) on qf.QUESTIONFORM_ID = eh.PKey1 AND qf.DATRETURNED IS NULL--if datReturned is not NULL it is not a delete
 				Left join QP_Prod.dbo.SentMailing sm With (NOLOCK) on qf.SentMail_id = sm.SentMail_id
+				
+  	SET @currDateTime2 = GETDATE();
+	SELECT @oExtractRunLogID,@currDateTime2,@TaskName
+	EXEC [UpdateExtractRunLog] @oExtractRunLogID, @currDateTime2
 go
