@@ -6,11 +6,8 @@
 
 Dave Gilsdorf
 
-QP_Prod:
-drop function HHCAHPSCompleteness
-create procedure HHCAHPSCompleteness
-alter procedure sp_phase3_questionresult_for_extract
-alter procedure SP_Phase3_QuestionResult_For_Extract_by_Samplepop
+NRC_DataMart_ETL:
+ALTER PROCEDURE [dbo].[csp_GetQuestionFormExtractData]
 
 */
 USE NRC_DataMart_ETL
