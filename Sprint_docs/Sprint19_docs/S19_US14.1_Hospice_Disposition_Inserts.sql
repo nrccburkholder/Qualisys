@@ -1,8 +1,16 @@
-/*Insert statements for Hospice CAHPS dispositions for sprint 19 story 14.1
-Note a new disposition is also being added to the NRC Disposition table for "Ineligible: Never Involved in Decedent Care" Dispo
+/*
+S19 US14.1 Insert statements for Hospice CAHPS dispositions
+
+Tyler Truax
+
+Insert statements for Hospice CAHPS dispositions.
+Note a new disposition is also being added to the NRC Disposition table for "Ineligible: Never Involved in Descendent Care" Disposition
 Also we want to track Hospice late mailings but not giving a final Disposition yet (See spread sheet in sprint 19 
-Business Analyst folderfor more info on that.
+Business Analyst folder for more info on that.
+
 */
+
+USE QP_PROD
 
 --New Disposition need to add to NRC Disposition Table First
 Insert into Disposition (strDispositionLabel, Action_ID, strReportLabel, MustHaveResults)
