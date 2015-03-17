@@ -31,6 +31,21 @@ if not exists (select * from disposition where dispositionid in (45,46,47))
 	, (46, N'Non-response: Unused Bad Address')
 	, (47, N'Non-response: Unused Bad/No Telephone Number')
 
+if not exists (select * from CAHPSDisposition where CahpsTypeID=6)
+	insert into dbo.CAHPSDisposition (CahpsDispositionID,CahpsTypeID,Label,IsCahpsDispositionComplete,IsCahpsDispositionInComplete)
+	SELECT N'601' AS [CahpsDispositionID], N'6' AS [CahpsTypeID], N'Completed Survey' AS [Label], N'1' AS [IsCahpsDispositionComplete], N'0' AS [IsCahpsDispositionInComplete] UNION ALL
+	SELECT N'602' AS [CahpsDispositionID], N'6' AS [CahpsTypeID], N'Ineligible: Deceased' AS [Label], N'0' AS [IsCahpsDispositionComplete], N'0' AS [IsCahpsDispositionInComplete] UNION ALL
+	SELECT N'603' AS [CahpsDispositionID], N'6' AS [CahpsTypeID], N'Ineligible: Not in Eligible Population' AS [Label], N'0' AS [IsCahpsDispositionComplete], N'0' AS [IsCahpsDispositionInComplete] UNION ALL
+	SELECT N'604' AS [CahpsDispositionID], N'6' AS [CahpsTypeID], N'Ineligible: Language Barrier' AS [Label], N'0' AS [IsCahpsDispositionComplete], N'0' AS [IsCahpsDispositionInComplete] UNION ALL
+	SELECT N'605' AS [CahpsDispositionID], N'6' AS [CahpsTypeID], N'Ineligible: Mental or Physical Incapacity' AS [Label], N'0' AS [IsCahpsDispositionComplete], N'0' AS [IsCahpsDispositionInComplete] UNION ALL
+	SELECT N'606' AS [CahpsDispositionID], N'6' AS [CahpsTypeID], N'Ineligible: Never Involved in Decedent Care' AS [Label], N'0' AS [IsCahpsDispositionComplete], N'0' AS [IsCahpsDispositionInComplete] UNION ALL
+	SELECT N'607' AS [CahpsDispositionID], N'6' AS [CahpsTypeID], N'Non-response: Break-off' AS [Label], N'0' AS [IsCahpsDispositionComplete], N'1' AS [IsCahpsDispositionInComplete] UNION ALL
+	SELECT N'608' AS [CahpsDispositionID], N'6' AS [CahpsTypeID], N'Non-response: Refusal' AS [Label], N'0' AS [IsCahpsDispositionComplete], N'0' AS [IsCahpsDispositionInComplete] UNION ALL
+	SELECT N'609' AS [CahpsDispositionID], N'6' AS [CahpsTypeID], N'Non-response: Non-response after max attempts' AS [Label], N'0' AS [IsCahpsDispositionComplete], N'0' AS [IsCahpsDispositionInComplete] UNION ALL
+	SELECT N'610' AS [CahpsDispositionID], N'6' AS [CahpsTypeID], N'Non-response: Non-response: Bad Address' AS [Label], N'0' AS [IsCahpsDispositionComplete], N'0' AS [IsCahpsDispositionInComplete] UNION ALL
+	SELECT N'611' AS [CahpsDispositionID], N'6' AS [CahpsTypeID], N'Non-response: Non-response: Bad/No Telephone Number' AS [Label], N'0' AS [IsCahpsDispositionComplete], N'0' AS [IsCahpsDispositionInComplete]
+	order by 1
+
 if not exists (select * from CahpsDispositionMapping where CahpsTypeID=6)
 	insert into CahpsDispositionMapping (CahpsTypeID, DispositionID, ReceiptTypeID, Label, CahpsDispositionID, CahpsHierarchy, IsDefaultDisposition)
 	select CahpsTypeID, DispositionID, ReceiptTypeID, Label, CahpsDispositionID, CahpsHierarchy, IsDefaultDisposition
@@ -50,16 +65,6 @@ if not exists (select * from CahpsDispositionMapping where CahpsTypeID=6)
 	SELECT N'6' AS [CahpsTypeID], N'45' AS [DispositionID], N'-1' AS [ReceiptTypeID], N'Ineligible: Never Involved in Decedent Care'			AS [Label], N'606' AS [CahpsDispositionID], N'4' AS [CahpsHierarchy], N'0' AS [IsDefaultDisposition] UNION ALL
 	SELECT N'6' AS [CahpsTypeID], N'46' AS [DispositionID], N'-1' AS [ReceiptTypeID], N'Non-response: Unused Bad Address'						AS [Label], N'609' AS [CahpsDispositionID], N'12' AS [CahpsHierarchy], N'0' AS [IsDefaultDisposition] UNION ALL
 	SELECT N'6' AS [CahpsTypeID], N'47' AS [DispositionID], N'-1' AS [ReceiptTypeID], N'Non-response: Unused Bad/No Telephone Number'			AS [Label], N'609' AS [CahpsDispositionID], N'12' AS [CahpsHierarchy], N'0' AS [IsDefaultDisposition] ) t;
-
-if not exists (select * from CAHPSDisposition where CahpsTypeID=6)
-	insert into dbo.CAHPSDisposition (CahpsDispositionID,CahpsTypeID,Label,IsCahpsDispositionComplete,IsCahpsDispositionInComplete)
-	select 600+cahpsdispositionID, cahpstypeid, min(label) as label
-	, case when cahpsdispositionid in (1) then 1 else 0 end as IsCahpsDispositionComplete
-	, case when cahpsdispositionid in (7) then 1 else 0 end as IsCahpsDispositionInComplete 
-	from CahpsDispositionMapping 
-	where cahpstypeid=6 
-	group by cahpsdispositionID, cahpstypeid
-	order by 1
 
 commit tran
 
