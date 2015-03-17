@@ -16,6 +16,7 @@ using Quartz.Impl;
 using NullableDateTime = System.Nullable<System.DateTime>;
 using Nrc.Framework.BusinessLogic.Configuration;
 using NLog;
+using System.Reflection;
 
 
 namespace WebSurveyEmailService
@@ -34,12 +35,15 @@ namespace WebSurveyEmailService
 
         protected override void OnStart(string[] args)
         {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+            string version = fvi.FileVersion;
 
             eventLog = new EventLog();
             eventLog.Source = "WebSurveyEmailService";
             eventLog.Log = "Application";
 
-            Logs.Info("WebSurveyEmailService Started");
+            Logs.Info(string.Format("WebSurveyEmailService v{0} Started", version));
 
             CreateSchedule();
             _scheduler.Start();
