@@ -118,6 +118,7 @@ SET @strFunction_nm = 'GetHospiceICD9'
 SET @strFunction_Sig = 'GetHospiceICD9(strValue)'
 SET @strFunction_dsc = 'Verify the format of the ICD-9 code.'
 SET @strFunction_Code = 'Function GetHospiceICD9(strValue)
+If Not IsNullOrBlank(strValue) Then
 dim objRegExp : set objRegExp = new RegExp
 with objRegExp
 	.Pattern =  "^(V\d{2}(\.\d{1,2})?|\d{3}(\.\d{1,2})?|E\d{3}(\.\d)?)$"
@@ -132,11 +133,12 @@ Else
 End If
 
 set objRegExp = nothing
+End If
 end function'
 
 SET @bitVBS = 0
 SET @Client_id = 0
-SET @IsUpdateFunction = 0
+SET @IsUpdateFunction = 1
 
 
 IF NOT Exists (Select 1 FROM [dbo].[Functions] WHERE [strFunction_nm] = @strFunction_nm and [FunctionGroup_id] = @FunctionGroup_id)
@@ -177,6 +179,7 @@ SET @strFunction_nm = 'GetHospiceICD10'
 SET @strFunction_Sig = 'GetHospiceICD10(strValue)'
 SET @strFunction_dsc = 'Verify the format of the ICD-10 code.'
 SET @strFunction_Code = 'Function GetHospiceICD10(strValue)
+If not IsNullOrBlank(strValue) Then
 dim objRegExp : set objRegExp = new RegExp
 with objRegExp
     .Pattern =  "^[A-TV-Z][0-9][A-Z0-9](\.[A-Z0-9]{1,4})?$"
@@ -191,11 +194,12 @@ Else
 End If
 
 set objRegExp = nothing 
+End If
 End Function'
 
 SET @bitVBS = 0
 SET @Client_id = 0
-SET @IsUpdateFunction = 0
+SET @IsUpdateFunction = 1
 
 
 IF NOT Exists (Select 1 FROM [dbo].[Functions] WHERE [strFunction_nm] = @strFunction_nm and [FunctionGroup_id] = @FunctionGroup_id)
