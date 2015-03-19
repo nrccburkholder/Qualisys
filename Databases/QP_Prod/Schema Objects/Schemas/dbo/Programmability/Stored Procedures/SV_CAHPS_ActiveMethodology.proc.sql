@@ -18,22 +18,28 @@ ACOCAHPS			10
 
 -- CAHPS surveyType_id 'constants'
 declare @CGCAHPS int
-SET @CGCAHPS = 4
+SELECT @CGCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'CGCAHPS'
 
 declare @HCAHPS int
-SET @HCAHPS = 2
+SELECT @HCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'HCAHPS IP'
 
 declare @HHCAHPS int
-SET @HHCAHPS = 3
+SELECT @HHCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'Home Health CAHPS'
 
 declare @ACOCAHPS int
-SET @ACOCAHPS = 10
+SELECT @ACOCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'ACOCAHPS'
 
 declare @ICHCAHPS int
-SET @ICHCAHPS = 8
+SELECT @ICHCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'ICHCAHPS'
+
+declare @hospiceCAHPS int
+SELECT @hospiceCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'Hospice CAHPS'
 
 declare @PCMHSubType int
-SET @PCMHSubType = 9
+SELECT @PCMHSubType = 9
+
+declare @CIHI int
+select @CIHI = SurveyType_Id from SurveyType where SurveyType_dsc = 'CIHI CPES-IC'
 
 declare @surveyType_id int
 declare @subtype_id int
@@ -84,13 +90,16 @@ Select @study_ID = study_ID from SURVEY_DEF where SURVEY_ID = @Survey_id
 CREATE TABLE #M (Error TINYINT, strMessage VARCHAR(200))
 
 --Check the active methodology  (ALL CAHPS)
-CREATE TABLE #ActiveMethodology (standardmethodologyid INT)
+CREATE TABLE #ActiveMethodology (standardmethodologyid INT, bitExpired bit)
 
 INSERT INTO #ActiveMethodology
-SELECT standardmethodologyid
-FROM MailingMethodology (NOLOCK)
-WHERE Survey_id=@Survey_id
-AND bitActiveMethodology=1
+SELECT mm.StandardMethodologyId, smst.bitExpired
+FROM MailingMethodology mm (NOLOCK)
+INNER JOIN StandardMethodology sm ON (sm.StandardMethodologyID = mm.StandardMethodologyID)
+INNER JOIN StandardMethodologyBySurveyType smst ON smst.StandardMethodologyID=sm.StandardMethodologyID
+WHERE mm.Survey_id=@Survey_id
+AND mm.bitActiveMethodology=1
+and smst.SurveyType_id = @surveyType_id
 
 IF @@ROWCOUNT<>1
  INSERT INTO #M (Error, strMessage)
@@ -98,9 +107,13 @@ IF @@ROWCOUNT<>1
 ELSE
 BEGIN
 
-	 IF EXISTS(SELECT * FROM #ActiveMethodology WHERE standardmethodologyid = 5) -- 5 is custom methodology
+	 IF EXISTS(SELECT * FROM #ActiveMethodology WHERE standardmethodologyid = 5 and bitExpired = 0) -- 5 is custom methodology
 	  INSERT INTO #M (Error, strMessage)
 	  SELECT 2,'Survey uses a custom methodology.'         -- a warning
+
+	 ELSE IF EXISTS(SELECT * FROM #ActiveMethodology WHERE bitExpired = 1) -- 
+	  INSERT INTO #M (Error, strMessage)
+	  SELECT 1,'Survey uses an expired methodology.'         -- an error
 
 	 ELSE IF EXISTS(SELECT * FROM #ActiveMethodology
 	   WHERE standardmethodologyid in (select StandardMethodologyID
@@ -109,6 +122,7 @@ BEGIN
 	   )
 	  INSERT INTO #M (Error, strMessage)
 	  SELECT 0,'Survey uses a standard ' + @SurveyTypeDescription + ' methodology.'
+
 	 ELSE
 	  INSERT INTO #M (Error, strMessage)
 	  SELECT 1,'Survey does not use a standard ' + @SurveyTypeDescription + ' methodology.'   -- a warning     

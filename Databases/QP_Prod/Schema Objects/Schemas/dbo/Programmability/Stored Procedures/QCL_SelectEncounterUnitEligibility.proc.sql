@@ -74,7 +74,7 @@ AS
                                                  
  --Get HouseHolding Variables if needed                                           
       DECLARE @HouseHoldFieldSelectSyntax VARCHAR(1000) ,
-         @HouseHoldFieldSelectBigViewSyntax VARCHAR(1000) ,
+  @HouseHoldFieldSelectBigViewSyntax VARCHAR(1000) ,
          @HouseHoldFieldCreateTableSyntax VARCHAR(1000) ,
          @HouseHoldJoinSyntax VARCHAR(1000) ,
          @HouseHoldingType CHAR(1)                                                
@@ -141,7 +141,7 @@ AS
                      WHERE    HR.Table_id = M.Table_id
                               AND HR.Field_id = M.Field_id
                               AND HR.Survey_id = @Survey_id                                                
-                                                 
+                            
             SELECT   @HouseHoldFieldSelectSyntax = @HouseHoldFieldSelectSyntax + ', X.' + Fieldname
             FROM     @HHFields
             ORDER BY Field_id                                                
@@ -326,7 +326,7 @@ AS
                   SELECT   @EncounterDateField, 'D', 4, '9999'                                                
       IF NOT EXISTS ( SELECT  1
                       FROM    @tbl
-                      WHERE   FieldName = @reportDateField )
+            WHERE   FieldName = @reportDateField )
          AND @reportDateField IS NOT NULL 
          INSERT   INTO @tbl
                   SELECT   @reportDateField, 'D', 4, '9999'                                                
@@ -775,7 +775,7 @@ AS
                                          
             IF @indebug = 1 
                PRINT @sel                                                 
-            EXEC (@Sel)                                                
+            EXEC (@Sel)        
                                                  
             DELETE   #Criters
             WHERE    CriteriaStmt_id = @DQ_id                                                
@@ -842,7 +842,7 @@ AS
             + CASE WHEN @EncounterDateField IS NOT NULL THEN @EncounterDateField
                    ELSE 'null'
               END
-            + ', null as resurveyDate, null as household_id, bitBadAddress, bitBadPhone,                                                 
+            + ', null as resurveyDate, null as household_id, bitBadAddress, bitBadPhone,                                            
   ' + CASE WHEN @reportDateField IS NOT NULL THEN @reportDateField
            ELSE 'null'
       END                                                 
@@ -902,9 +902,9 @@ AS
  --MWB 04/08/2010                                    
  --If SurveyType = HHCAHPS need to capture the distinct count of pop_IDs that fit the HHCAHPS Unit                                  
  --and save it off to new table.                                  
-      IF @SurveyType_ID = 3 
+      IF @SurveyType_ID in (@HHCAHPS, @hospiceCAHPS) -- 2/4/2015 CJB now doing this for all CAHPS
          BEGIN                                  
-            INSERT   INTO HHCAHPS_PatInfileCount (Sampleset_ID, Sampleunit_ID, MedicareNumber, NumPatInFile)
+            INSERT   INTO CAHPS_PatInfileCount (Sampleset_ID, Sampleunit_ID, MedicareNumber, NumPatInFile)
                      SELECT   @sampleSet_id, suni.SampleUnit_id, ml.MedicareNumber, COUNT(DISTINCT suni.Pop_id)
                      FROM     #SampleUnit_Universe suni ,
                               SAMPLEUNIT su ,
@@ -913,7 +913,7 @@ AS
                      WHERE    suni.SampleUnit_id = su.SAMPLEUNIT_ID
                               AND su.SUFacility_id = f.SUFacility_id
                               AND f.MedicareNumber = ml.MedicareNumber
-                              AND su.bitHHCAHPS = 1
+                              AND su.CAHPSType_id in (@HHCAHPS, @hospiceCAHPS)
                      GROUP BY suni.SampleUnit_id, ml.MedicareNumber                                    
          END                                   
                                                  
@@ -962,7 +962,7 @@ AS
  -- BEGIN                          
  --    insert into SamplingLog (SampleSet_id, StepName, Occurred,SQLCode)                          
  --  Select @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - Marker 16', GETDATE(), ''                          
- -- END                          
+ -- END            
                                                  
                                                  
  --NewBorn rule                                                
@@ -1163,7 +1163,7 @@ AS
          END                          
                                           
       IF @indebug = 1 
-         BEGIN                                          
+         BEGIN                             
 --Testing code only.                                          
 --should be commented out when in stage or prod.                                          
             SET @sql = '                                          
@@ -1347,4 +1347,4 @@ end
                           
                           
                                                 
-   END 
+   END
