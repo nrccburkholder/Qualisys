@@ -546,6 +546,7 @@
     <Build Include="Schema Objects\Schemas\dbo\Tables\AuditLog.table.sql">
       <SubType>Code</SubType>
     </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\csp_CAHPSProcesses.proc.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\ScriptsIgnoredOnImport.sql">

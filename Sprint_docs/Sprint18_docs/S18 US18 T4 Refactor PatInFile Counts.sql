@@ -3,6 +3,8 @@ S18 US19 T1 Refactor PatInFile Counts.sql
 
 21	Refactor PatInFile Counts	
 
+Chris Burkholder
+
 As a CAHPS Developer, I need to reaname the HHCAHPS_PatInFile Count table to CHAPS_PatInFileCount so that it can handle both HH and Hospice CAHPS. 	
 
 4) DCL_ExportCreateFile_Sub on Medusa (for HH-CAHPS)

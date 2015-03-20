@@ -3,6 +3,8 @@ S18 US19 T1-2-3 Refactor PatInFile Counts.sql
 
 19	Refactor PatInFile Counts	
 
+Chris Burkholder
+
 As a CAHPS Developer, I need to reaname the HHCAHPS_PatInFile Count table to CHAPS_PatInFileCount so that it can handle both HH and Hospice CAHPS. 	
 
 1) QCL_DeleteSampleset on NRC10

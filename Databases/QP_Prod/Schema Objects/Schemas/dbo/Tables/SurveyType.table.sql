@@ -5,6 +5,7 @@
 	[SeedMailings] [bit] NULL,
 	[SeedSurveyPercent] [int] NULL,
 	[SeedUnitField] [varchar](42) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[SkipRepeatsScaleText] bit NOT NULL,
  CONSTRAINT [PK__SurveyType__6687B66A] PRIMARY KEY CLUSTERED 
 (
 	[SurveyType_ID] ASC

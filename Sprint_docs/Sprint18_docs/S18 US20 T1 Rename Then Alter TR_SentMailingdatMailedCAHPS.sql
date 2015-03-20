@@ -3,6 +3,8 @@ S18 US20 T1 Rename Then Alter TR_SentMailingdatMailedCAHPS
 
 Hospice CAHPS Calculate Late Mailing	
 
+Chris Burkholder
+
 As an authorized Hospice CAHPS vendor, we need to determine if first mailings are 
 beyond the allowed window to mail, so that we do not report them to CMS
 
