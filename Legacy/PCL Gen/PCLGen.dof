@@ -50,11 +50,11 @@ RunParams=/2 c:\fakedir /1
 HostApplication=
 [Version Info]
 IncludeVerInfo=1
-AutoIncBuild=1
+AutoIncBuild=0
 MajorVer=2
 MinorVer=6
 Release=0
-Build=3
+Build=4
 Debug=0
 PreRelease=1
 Special=0
@@ -65,7 +65,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=National Research
 FileDescription=Generates the PCL Code
-FileVersion=2.6.0.3
+FileVersion=2.6.0.4
 InternalName=
 LegalCopyright=© 2000-2005. All Rights Reserved.
 LegalTrademarks=

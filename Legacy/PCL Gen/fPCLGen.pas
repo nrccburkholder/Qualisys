@@ -66,14 +66,14 @@ begin
 //  AddToMessageLog(s);
   while memo1.lines.count > 100 do
     memo1.lines.delete(0);
-  if dmPCLGen.currentrun <= 0 then begin
+  if (dmPCLGen = NIL) or (dmPCLGen.currentrun <= 0) then begin
     s := s + ' (not logged to PCLGenLog table)';
     memo1.lines.add(TimeToStr(Time) + ' ' + s);
   end else
     memo1.lines.add(TimeToStr(Time) + ' ('+inttostr(dmPCLGen.currentrun)+') ' + s);
   memo1.update;
 
-  if dmPCLGen.currentrun > 0 then begin
+  if (dmPCLGen <> NIL) and (dmPCLGen.currentrun > 0) then begin
     qry := 'execute sp_PCL_LogEntry ' + inttostr(dmPCLGen.currentrun)+', '+dmOpenq.sqlstring(s,false)+', ';
 
     if strtointdef(s_id,0)=0
@@ -121,6 +121,7 @@ begin
       frmPCLGeneration.progressreport('Relaunching PCLGen (from fPCLGen)','','');
       winExec(strpcopy(zExeName,application.exename+' /2 '+paramstr(2)+' '+paramstr(3)),sw_shownormal)
     end;
+    sleep(2000);
     frmPCLGeneration.close;
   end;
 end;
