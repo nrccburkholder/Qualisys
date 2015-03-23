@@ -1642,8 +1642,11 @@ begin
     open;
   end;
   MakePopSection('localPopSection.db',wwt_LocalPopSection);
+  frmPCLGeneration.progressreport('MakePopSection localPopSection.db','','');
   MakePopCover('localPopCover.db',wwt_LocalPopCover);
+  frmPCLGeneration.progressreport('MakePopCover localPopCover.db','','');
   MakePopCode('localPopCode.db',wwt_LocalPopCode);
+  frmPCLGeneration.progressreport('MakePopCode localPopCode.db','','');
   wwt_LocalSelCover.tablename := 'LocalSelCover.db';
   dmOpenQ.tabledef(wwt_LocalSelCover,C,true);
   wwt_LocalSelLogo.tablename := 'LocalSelLogo.db';
@@ -1660,6 +1663,7 @@ begin
   dmOpenQ.tabledef(wwt_LocalSelTextBox,T,true);
 
   dmOpenQ.CreateProblemScoreTable;
+  frmPCLGeneration.progressreport('dmOpenQ.CreateProblemScoreTable','','');
 
   wwt_LocalSelCover.open;
   wwt_LocalSelLogo.open;
@@ -1668,6 +1672,7 @@ begin
   wwt_LocalSelQstns.open;
   wwt_LocalSelScls.open;
   wwt_LocalSelTextBox.open;
+  frmPCLGeneration.progressreport('LocalSel[Cover/Logo/PCL/Skip/Qstns/Scls/TextBox].open','','');
 
   with dmOpenQ do begin
     tabledef(wwt_Cover,C,true);
@@ -1677,6 +1682,7 @@ begin
     tabledef(wwt_Qstns,Q,true);
     tabledef(wwt_Scls,S,true);
     tabledef(wwt_TextBox,T,true);
+    frmPCLGeneration.progressreport('tabledef wwt_[Cover/Logo/PCL/Skip/Qstns/Scls/TextBox]','','');
     with wwt_Cover do begin
       filtered := false;
       IndexFieldNames := '';
@@ -1712,6 +1718,7 @@ begin
       IndexFieldNames := '';
       open;
     end;
+    frmPCLGeneration.progressreport('wwt_[Cover/Logo/PCL/Skip/Qstns/Scls/TextBox] open','','');
   end;
 end;
 
