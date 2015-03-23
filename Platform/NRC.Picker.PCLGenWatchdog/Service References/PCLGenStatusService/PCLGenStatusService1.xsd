@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/NRC.Picker.PCLGenWatchdog.RemoteMonitoringService" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/NRC.Picker.PCLGenWatchdog.RemoteMonitoringService" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="Status">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ErrorsDetected" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsPCLGenRunning" type="xs:boolean" />
+      <xs:element minOccurs="0" name="LastRestartOfPCLGen" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="LastRestartReason" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LastStatusCheck" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="LogWindowText" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PrinterStatus" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ServerName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UnhandledErrorReason" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Status" nillable="true" type="tns:Status" />
+</xs:schema>
