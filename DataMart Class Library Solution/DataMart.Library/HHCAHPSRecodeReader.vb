@@ -662,14 +662,14 @@ Friend Class HHCAHPSRecodeReader
 
         Dim screen As Object = mReader(screenQuestion)
 
-        If CType(value, Integer) Mod 10000 = 3 Then 'Q34 from QAG
-            Return 1
-        Else 'value.Equals("M") Then 'Q34 from QAG
-            If screen Is DBNull.Value OrElse value.ToString.Trim = String.Empty Then 'Q33
+        If value Is DBNull.Value OrElse value.ToString.Trim = String.Empty OrElse CType(value, Integer) = -9 Then 'Q34
+            If screen Is DBNull.Value OrElse screen.ToString.Trim = String.Empty OrElse CType(screen, Integer) = -9 Then 'Q33
                 Return "M"
-            Else 'screen must be 1 or 2 'Q33
-                Return 2
+            Else
+                Return 2 'Indicates CType(screen, Integer) is 1 or 2 'Q34 from QAG
             End If
+        Else 'Indicates CType(value, Integer) Mod 10000 = 3 'Q34 from QAG
+            Return 1
         End If
 
         'If value Is DBNull.Value OrElse value.ToString.Trim = String.Empty Then
