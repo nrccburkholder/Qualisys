@@ -593,6 +593,8 @@ namespace USPS_ACS_Library
                 if (UnitDesignatorNew.Length > 0) Address2New = Address2New + UnitDesignatorNew + " ";
                 if (SecondaryNumberNew.Length > 0) Address2New = Address2New + SecondaryNumberNew;
 
+                string MoveType = GetFieldValue(schema, recordText, "MoveType");
+
                 USPS_ACS_DataProvider.InsertExtractFileRecord(
                             extractFileLog_id
                             , recordText
@@ -620,7 +622,8 @@ namespace USPS_ACS_Library
                             , FiveDigitZipCodeNew
                             , Plus4CodeNew
                             , AddressNew
-                            , Address2New);
+                            , Address2New
+                            , MoveType);
 
         }
 
