@@ -13,6 +13,10 @@ I checked w/ Compliance and Research and they are in favor of removing the conse
 
 */
 
+
+
+-- !!!!!!!!!! This was run in PROD 03/27/2015 in response to a message from Adam Harris  TSB
+
 Use [QP_Prod]
 
 delete 
