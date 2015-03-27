@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("USPS_ACS_Service")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("USPC Address Change Service")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("National Research Corporation")]
 [assembly: AssemblyProduct("USPS_ACS_Service")]
