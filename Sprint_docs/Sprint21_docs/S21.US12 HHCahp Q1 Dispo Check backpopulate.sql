@@ -36,7 +36,7 @@ select * from #HHQF
 exec dbo.HHCAHPSCompleteness
 
 select * from #HHQF  
-where STUDY_ID in (2802, 3144)
+--where STUDY_ID in (2802, 3144)
 
 
 -- return query to list out all the people who need their disposition changed to 220
