@@ -33,6 +33,22 @@ if not exists (select * from sys.procedures where name = 'HHCAHPSCompleteness' a
 exec ('CREATE PROCEDURE dbo.HHCAHPSCompleteness
 AS  
 BEGIN  
+
+-- this initial preset is for people who returned the survey but didn''t answer any questions
+update hh 
+set complete = 0
+      , ATACnt=0
+      , Q1=-9
+      , numAnswersAfterQ1=0
+from #HHQF hh
+inner join (SELECT qf.questionform_id
+                  FROM QuestionResult qr
+                  inner join QuestionForm qf on qr.QuestionForm_id=qf.QuestionForm_id  
+                  inner join #HHQF hh on qf.questionform_id=hh.questionform_id
+                  where qf.datreturned is not null
+                  group by qf.questionform_id) sub
+            on hh.questionform_id=sub.questionform_id
+-- /inital preset 
   
 update hh
 set complete = case when sub.ATAcnt>9 then 1 else 0 end
@@ -86,6 +102,7 @@ go
 -- Modified 02/27/2014 CB - added -5 and -6 as non-response codes. Phone surveys can code -5 as "Refused" and -6 as "Don't Know"
 -- Modified 06/18/2014 DBG - refactored ACOCAHPSCompleteness as a procedure instead of a function.
 -- Modified 10/29/2014 DBG - added Subtype_nm to temp table because ACOCAHPSCompleteness now needs it
+-- Modified 03/27/2015 TSB -- modified #HHQF to include STRMAILINGSTEP_NM
 ALTER PROCEDURE [dbo].[sp_phase3_questionresult_for_extract] 
 AS 
     SET TRANSACTION isolation level READ uncommitted 
@@ -136,19 +153,34 @@ AS
     INSERT INTO drm_tracktimes 
     SELECT Getdate(), 'HH get hcahps records and index' 
 
-    --Get the records that are HHCAHPS so we can compute completeness  
-    SELECT e.QuestionForm_id, CONVERT(INT, NULL) Complete, convert(int,null) ATACnt, convert(int,null) Q1, convert(int,null) numAnswersAfterQ1
-    INTO   #HHQF 
-    FROM   QuestionForm_extract e, 
-           QuestionForm qf, 
-           Survey_def sd 
-    WHERE  e.study_id IS NOT NULL 
-           AND e.tiextracted = 0 
-           AND datextracted_dt IS NULL 
-           AND e.QuestionForm_id = qf.QuestionForm_id 
-           AND qf.Survey_id = sd.Survey_id 
-           AND Surveytype_id = 3 
-    GROUP  BY e.QuestionForm_id 
+    ----Get the records that are HHCAHPS so we can compute completeness  
+    --SELECT e.QuestionForm_id, CONVERT(INT, NULL) Complete, convert(int,null) ATACnt, convert(int,null) Q1, convert(int,null) numAnswersAfterQ1
+    --INTO   #HHQF 
+    --FROM   QuestionForm_extract e, 
+    --       QuestionForm qf, 
+    --       Survey_def sd
+    --WHERE  e.study_id IS NOT NULL 
+    --       AND e.tiextracted = 0 
+    --       AND datextracted_dt IS NULL 
+    --       AND e.QuestionForm_id = qf.QuestionForm_id 
+    --       AND qf.Survey_id = sd.Survey_id 
+    --       AND Surveytype_id = 3 
+    --GROUP  BY e.QuestionForm_id 
+
+	--Modified 03/27/2015 TSB
+	select e.QuestionForm_id, CONVERT(INT, NULL) Complete, convert(int,null) ATACnt, convert(int,null) Q1, convert(int,null) numAnswersAfterQ1, ms.STRMAILINGSTEP_NM
+	into #HHQF
+	from QuestionForm_extract e
+	inner join QuestionForm qf on e.QuestionForm_id = qf.QuestionForm_id 
+	inner join survey_def sd on qf.survey_id=sd.survey_id
+	inner join SENTMAILING sm on sm.SENTMAIL_ID = qf.SENTMAIL_ID
+	inner join SCHEDULEDMAILING scm on scm.scheduledmailing_id = sm.scheduledmailing_id
+	inner join MAILINGSTEP ms on ms.MAILINGSTEP_ID = scm.mailingstep_id
+	where e.study_id IS NOT NULL 
+           AND e.tiextracted = 0
+		   AND sd.surveytype_id=3
+	GROUP  BY e.QuestionForm_id, ms.STRMAILINGSTEP_NM
+
 
     CREATE INDEX tmpindex ON #HHQF (QuestionForm_id) 
 
@@ -537,6 +569,7 @@ INSERT INTO drm_tracktimes
            AND (hh.numAnswersAfterQ1 > 0 or hh.Q1=1)
            
 	-- if incomplete and Q1 isn't answered and they didn't answer anything else either, it's just a blank survey.
+	-- Modified 03/27/2015 TSB  to only look at 2ndSurvey
     UPDATE cqw 
     SET    FinalDisposition = '320' -- Refusal
     FROM   cmnt_QuestionResult_work cqw 
@@ -544,6 +577,7 @@ INSERT INTO drm_tracktimes
     WHERE  hh.complete=0
            AND hh.numAnswersAfterQ1=0 
            AND hh.Q1=-9
+		   AND hh.STRMAILINGSTEP_NM = '2nd Survey'
 
     --MNCM DispositionS  
     UPDATE cqw 
