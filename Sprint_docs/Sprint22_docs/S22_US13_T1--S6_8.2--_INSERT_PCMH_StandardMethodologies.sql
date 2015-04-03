@@ -4,6 +4,8 @@ declare @SMid int, @SMSid int, @SurveyTypeid int, @Subtype_Id int
 
 if not exists (select 1 from subtype where Subtype_nm = 'PCMH') 
 	INSERT INTO dbo.subtype VALUES ('PCMH',1,0)
+update dbo.subtype set subtype_nm = 'PCMH Distinction', bitRuleOverride = 1
+where subtype_nm = 'PCMH'
 																												
 select @SurveyTypeid = surveytype_id from surveytype where SurveyType_dsc='CGCAHPS'	
 
