@@ -2,8 +2,9 @@
 
 declare @SMid int, @SMSid int, @SurveyTypeid int, @Subtype_Id int
 
-
-																													
+if not exists (select 1 from subtype where Subtype_nm = 'PCMH') 
+	INSERT INTO dbo.subtype VALUES ('PCMH',1,0)
+																												
 select @SurveyTypeid = surveytype_id from surveytype where SurveyType_dsc='CGCAHPS'	
 
 select @subtype_id = st.subtype_id 
@@ -11,6 +12,9 @@ from surveytypesubtype stst
 inner join subtype st on st.subtype_id = stst.subtype_id
 where st.Subtype_nm = 'PCMH'
 	
+if not exists (select 1 from surveytypesubtype where surveytype_id = @surveytypeid and subtype_id = @subtype_id)
+	INSERT INTO dbo.SurveyTypeSubtype VALUES (@SurveyTypeid,@subtype_id)
+
 
 begin tran
 																									
