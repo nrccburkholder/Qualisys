@@ -65,7 +65,7 @@ var BarWidth,BarDist:double;
         //if maxvalue > 100 then
         //  result:=result+TextAt(x-2,thisy,Arial,fs,FormatFloat('0',(i*(maxvalue/10))),100,'R',false,'')
         //else
-        result:=result+TextAt(x-2,thisy,Arial,fs,FormatFloat(Formats[intFormat],(i*MaxValue/MaxScale)),100,'R',false,'');
+        result:=result+TextAt(x-2,thisy,'',fs,FormatFloat(Formats[intFormat],(i*MaxValue/MaxScale)),100,'R',false,'');
 
 
       end;
@@ -73,8 +73,8 @@ var BarWidth,BarDist:double;
       y:=y+VBoxHeight+40;
       x:= x+VBoxLength*0.5;
 
-      result:=result+TextAt(x,y,Arial,fs,l1,round(VBoxLength),'CU',false,'');
-      result:=result+TextAt( x,yGlobal,Arial,fs,l2,round(VBoxLength),'C',false,'');
+      result:=result+TextAt(x,y,'',fs,l1,round(VBoxLength),'CU',false,'');
+      result:=result+TextAt( x,yGlobal,'',fs,l2,round(VBoxLength),'C',false,'');
       result:=result+'Q'#10;
   end;
 
@@ -260,7 +260,7 @@ var BarWidth,BarDist:double;
        s2:=vbox(x,y,'.4 g'#10,'.7 g'#10,vartostr(rs.fields['label1'].value),'',r);
        ActiveFont:='/F1';
        s3:=s3+Format('q 0 g BT %s %f Tf 0 1 -1 0 %g %g Tm (%s) Tj ET Q'#10,[ActiveFont, fs+1, x-inch*0.3,
-       y+(VBoxHeight- GetTextWidth(VarToStr(rs.fields['labelb'].Value),Arial, fs+1))/2, //Center the text in the Y-CoOrd
+       y+(VBoxHeight- GetTextWidth(VarToStr(rs.fields['labelb'].Value),'', fs+1))/2, //Center the text in the Y-CoOrd
        VarToStr(rs.fields['labelb'].Value)]);
 
     end
@@ -300,24 +300,24 @@ var BarWidth,BarDist:double;
            //s1:=s1+format('q 1 g 1 w %g %g %g %g re f Q'#10,[x+VBarDepth,y+VBarDepth+h*r+1,barwidth,fs]);
 
            s1:=s1+'q 2 w 1 G 2 Tr'#10;     //this will print white stroked text first
-           s1:=s1+TextAt(x+VBarDepth+barwidth*0.5,y+VBarDepth+h*r+2,Arial,fs,s,round(barwidth+bardist),'C',false,'');
+           s1:=s1+TextAt(x+VBarDepth+barwidth*0.5,y+VBarDepth+h*r+2,'',fs,s,round(barwidth+bardist),'C',false,'');
            s1:=s1+'0 Tr'#10;              //then black filled text
-           s1:=s1+TextAt(x+VBarDepth+barwidth*0.5,y+VBarDepth+h*r+2,Arial,fs,s,round(barwidth+bardist),'C',false,'');
+           s1:=s1+TextAt(x+VBarDepth+barwidth*0.5,y+VBarDepth+h*r+2,'',fs,s,round(barwidth+bardist),'C',false,'');
            s1:=s1+'Q'#10;
          end
          else
          begin
            //s1:=s1+format('q 1 g 1 w %g %g %g %g re b Q'#10,[x,y+h*r+1,barwidth,fs]);
            s1:=s1+'q 2 w 1 G 2 Tr'#10; //this will print white stroked text first
-           s1:=s1+TextAt(x+barwidth*0.5,y+h*r+2,Arial,fs,s,round(barwidth+bardist),'C',false,'');
+           s1:=s1+TextAt(x+barwidth*0.5,y+h*r+2,'',fs,s,round(barwidth+bardist),'C',false,'');
            s1:=s1+'0 Tr'#10;          //then black filled text
-           s1:=s1+TextAt(x+barwidth*0.5,y+h*r+2,Arial,fs,s,round(barwidth+bardist),'C',false,'');
+           s1:=s1+TextAt(x+barwidth*0.5,y+h*r+2,'',fs,s,round(barwidth+bardist),'C',false,'');
            s1:=s1+'Q'#10;
          end;
 
        end;
        if lbl <> '' then //print lables
-         s2:=s2+textat(x+barwidth*0.5,y-10,Arial,fs,lbl,round((barwidth+bardist)+0.5)-1,'C',false,'');
+         s2:=s2+textat(x+barwidth*0.5,y-10,'',fs,lbl,round((barwidth+bardist)+0.5)-1,'C',false,'');
 
        x:=x+barwidth+bardist;
        inc(i);
@@ -334,9 +334,9 @@ var BarWidth,BarDist:double;
       x:=x-10;
       Lbl:='* Significantly Different from Your Current Score';
       if bool3D then
-        Lbl:='/F1 8 Tf'#10+textat(pagewidth*0.5+VBarDepth+20,y+15,Arial,8,lbl,300,'L',false,'')
+        Lbl:='/F1 8 Tf'#10+textat(pagewidth*0.5+VBarDepth+20,y+15,'',8,lbl,300,'L',false,'')
       else
-        Lbl:='/F1 8 Tf'#10+textat(pagewidth*0.5+20,y+15,Arial,8,lbl,300,'L',false,'');
+        Lbl:='/F1 8 Tf'#10+textat(pagewidth*0.5+20,y+15,'',8,lbl,300,'L',false,'');
 
       tmp3d:=bool3D;
       bool3D:=false;

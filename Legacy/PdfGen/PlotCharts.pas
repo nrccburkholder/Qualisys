@@ -176,7 +176,7 @@ implementation
         rs.Open(sql,cn,1,1);
 
         fs:=8;
-        x:=LeftMargin+GetTextWidth('100',Arial,fs)+5;
+        x:=LeftMargin+GetTextWidth('100','',fs)+5;
         l:=pagewidth-x-LeftMargin;
 
         xlabeldist:=1;
@@ -197,7 +197,7 @@ implementation
         s:=s+'.75 w'#10'0 j 0 J'#10;
         fs:=15;
         y:=y-fs*0.5;
-        s:=s+TextAt(PageWidth*0.5,y-fs,Arial,fs,strMeasureTypeLabel,round(PageWidth*0.5),'C',false,'/F2');
+        s:=s+TextAt(PageWidth*0.5,y-fs,'',fs,strMeasureTypeLabel,round(PageWidth*0.5),'C',false,'/F2');
         y:=yGlobal+fs*0.5;
         h:=inch*2;
         y:=y-inch*2;
@@ -228,7 +228,7 @@ implementation
           begin
             thisy:= basey + ((i-ymin)*ylabeldist);
             s:=s+format('%g %g m'#10'%g %g l s'#10,[x,ThisY,x-3,ThisY]);
-            s:=s+TextAt(x-5,ThisY-fs*0.35,Arial,fs,inttostr(i),100,'R',false,'');
+            s:=s+TextAt(x-5,ThisY-fs*0.35,'',fs,inttostr(i),100,'R',false,'');
             strLines:=strLines+format('%g %g m'#10'%g %g l s'#10,[x+1,ThisY,x1,ThisY]);
           end;
         end;
@@ -245,7 +245,7 @@ implementation
           x:= x+xlabeldist;
           xPoints[i]:=x+(xlabeldist*0.5);
           s:=s+Format('%g %g m'#10'%g %g l s'#10,[xPoints[i],y,xPoints[i],y-3]);
-          s:=s+TextAt(xPoints[i],y-fs*1.5,Arial,fs,datestr,round(xlabeldist),'C',false,'');
+          s:=s+TextAt(xPoints[i],y-fs*1.5,'',fs,datestr,round(xlabeldist),'C',false,'');
 
           if LowestLabelPos > yGlobal then LowestLabelPos := yGlobal;
 
@@ -395,10 +395,10 @@ implementation
       x := LegendLeft+5;
 
       fs:=8;
-      s:=s+TextAt(x,y,Arial,fs,'Box Plot',100,'L',false,'');
-      s:=s+TextAt(x,y-fs,Arial,fs,'Description',100,'L',false,'');
+      s:=s+TextAt(x,y,'',fs,'Box Plot',100,'L',false,'');
+      s:=s+TextAt(x,y-fs,'',fs,'Description',100,'L',false,'');
       //fs:=5;
-      x:=x+GetTextWidth('Description' ,Arial,fs)+15;
+      x:=x+GetTextWidth('Description' ,'',fs)+15;
 
       avg  :=  -(fs*3.5);
       Pc10 :=  0.0;
@@ -419,25 +419,25 @@ implementation
       x:=x+15;
       if ReverseScale then
       begin
-        s:=s+TextAt(x,y+Pc10-fs*0.35,Arial,fs,'10th percentile',100,'L',false,'');
-        s:=s+TextAt(x,y+Pc25-fs*0.35,Arial,fs,'25th percentile',100,'L',false,'');
-        s:=s+TextAt(x,y+Pc50-fs*0.35,Arial,fs,'50th percentile',100,'L',false,'');
-        s:=s+TextAt(x,y+Pc75-fs*0.35,Arial,fs,'75th percentile',100,'L',false,'');
-        s:=s+TextAt(x,y+Pc90-fs*0.35,Arial,fs,'90th percentile',100,'L',false,'');
+        s:=s+TextAt(x,y+Pc10-fs*0.35,'',fs,'10th percentile',100,'L',false,'');
+        s:=s+TextAt(x,y+Pc25-fs*0.35,'',fs,'25th percentile',100,'L',false,'');
+        s:=s+TextAt(x,y+Pc50-fs*0.35,'',fs,'50th percentile',100,'L',false,'');
+        s:=s+TextAt(x,y+Pc75-fs*0.35,'',fs,'75th percentile',100,'L',false,'');
+        s:=s+TextAt(x,y+Pc90-fs*0.35,'',fs,'90th percentile',100,'L',false,'');
       end
       else
       begin
-        s:=s+TextAt(x,y+Pc10-fs*0.35,Arial,fs,'90th percentile',100,'L',false,'');
-        s:=s+TextAt(x,y+Pc25-fs*0.35,Arial,fs,'75th percentile',100,'L',false,'');
-        s:=s+TextAt(x,y+Pc50-fs*0.35,Arial,fs,'50th percentile',100,'L',false,'');
-        s:=s+TextAt(x,y+Pc75-fs*0.35,Arial,fs,'25th percentile',100,'L',false,'');
-        s:=s+TextAt(x,y+Pc90-fs*0.35,Arial,fs,'10th percentile',100,'L',false,'');
+        s:=s+TextAt(x,y+Pc10-fs*0.35,'',fs,'90th percentile',100,'L',false,'');
+        s:=s+TextAt(x,y+Pc25-fs*0.35,'',fs,'75th percentile',100,'L',false,'');
+        s:=s+TextAt(x,y+Pc50-fs*0.35,'',fs,'50th percentile',100,'L',false,'');
+        s:=s+TextAt(x,y+Pc75-fs*0.35,'',fs,'25th percentile',100,'L',false,'');
+        s:=s+TextAt(x,y+Pc90-fs*0.35,'',fs,'10th percentile',100,'L',false,'');
       end;
 
-      x:=x+GetTextWidth('90th percentile' ,Arial,fs)+30;
+      x:=x+GetTextWidth('90th percentile' ,'',fs)+30;
       //fs := 8;
 
-      x:=x+GetTextWidth('LEGEND' ,Arial,fs);
+      x:=x+GetTextWidth('LEGEND' ,'',fs);
 
       //determine if we have any comparison columns to build legend
       sql := format('select distinct '+
@@ -460,7 +460,7 @@ implementation
       k := -1;
       x := x+w*0.5;
 
-      s:=s+Format('q /F2 %g Tf BT %g %g Td(%s)'' ET Q'#10,[fs,x-fs*2-GetTextWidth('LEGEND' ,Arial,fs),y,'LEGEND']);
+      s:=s+Format('q /F2 %g Tf BT %g %g Td(%s)'' ET Q'#10,[fs,x-fs*2-GetTextWidth('LEGEND' ,'',fs),y,'LEGEND']);
 
       thisx:=0;
 
@@ -468,15 +468,15 @@ implementation
       while not rs.eof do
       begin
         i := rs.fields['SubGroupOrder_ID'].value-1;
-        s:=s+textat(x,y+(pc90-fs),Arial,fs,trim(vartostr(rs.fields['UnitGroupLabel'].value)),round(w-fs),'C',false,'');
+        s:=s+textat(x,y+(pc90-fs),'',fs,trim(vartostr(rs.fields['UnitGroupLabel'].value)),round(w-fs),'C',false,'');
         if LowestLabelPos > yGlobal then LowestLabelPos := yGlobal;
         if j = 0 then
         begin
-          s:=s+textat(x+w*0.5,y+(pc50-fs*0.35),Arial,fs,'Mean',round(w-fs),'C',false,'');
-          strLines := strLines+format('%g %g m'#10'%g %g l s'#10,[x,y+Pc50,((x+w*0.5)-GetTextWidth('Mean' ,Arial,fs)*0.5)-2 ,y+Pc50]);
+          s:=s+textat(x+w*0.5,y+(pc50-fs*0.35),'',fs,'Mean',round(w-fs),'C',false,'');
+          strLines := strLines+format('%g %g m'#10'%g %g l s'#10,[x,y+Pc50,((x+w*0.5)-GetTextWidth('Mean' ,'',fs)*0.5)-2 ,y+Pc50]);
         end
         else
-         strLines := strLines+format('%g %g m'#10'%g %g l s'#10,[x,y+Pc50,((x-w*0.5)+GetTextWidth('Mean' ,Arial,fs)*0.5)+2 ,y+Pc50]);
+         strLines := strLines+format('%g %g m'#10'%g %g l s'#10,[x,y+Pc50,((x-w*0.5)+GetTextWidth('Mean' ,'',fs)*0.5)+2 ,y+Pc50]);
 
         DrawBoxPlot(x,y,0,1,fs*2,avg,Pc10,Pc25,Pc50,Pc75,Pc90,@strPlotBoxesArray[i],@strMeanLines,nil);
         x:=x+w;
@@ -490,7 +490,7 @@ implementation
 
       strTrendLines:=strTrendLines+format('%s RG %g %g m'#10'%g %g l s'#10,[getRGB(clBlack),x,y+fs*0.5,x+inch*0.2,y+fs*0.5]); //draw line
 
-      s:=s+textat(x,y+(pc90-fs),Arial,fs,'Current Period',round(w-fs),'C',false,'');
+      s:=s+textat(x,y+(pc90-fs),'',fs,'Current Period',round(w-fs),'C',false,'');
       if LowestLabelPos > yGlobal then LowestLabelPos := yGlobal;
 
       w := PageWidth - LegendLeft * 2;
@@ -512,7 +512,7 @@ implementation
       s:=s+DivLine(y);
 
       except
-        s:=textat( pagewidth*0.5,y,Arial,30,'Error Creating Box Plot Chart',200,'C',false,'');
+        s:=textat( pagewidth*0.5,y,'',30,'Error Creating Box Plot Chart',200,'C',false,'');
         y := yGlobal;
         s:=s+DivLine(y);
       end;

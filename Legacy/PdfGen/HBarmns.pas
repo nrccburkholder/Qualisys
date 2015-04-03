@@ -41,7 +41,7 @@ type tHbar = class(tobject)
       r:double;
       bg:carray;
       stackedbg: array [1..4] of carray;
-      fn:LongInt;
+//      fn:LongInt;
       i,j:integer;
       num_compare_labels:integer;
       mys:string;
@@ -60,7 +60,7 @@ type tHbar = class(tobject)
       rsColCount:variant;
       tempstr:string;
   begin
-     fn:=Arial;
+//     fn:='';
      HBarLength:=inch*1.65; //GN01
 
      y1 := y + (h/2);
@@ -105,7 +105,7 @@ type tHbar = class(tobject)
            s1 := s1+stackedbg[whilecount][2]; //bacground color for end of hbar
            s1:=s1+format('%g %g m'#10'%g %g l'#10'%g %g l'#10'%g %g l'#10'b'#10+stackedbg[whilecount][3],[x1,y,x2,y1,x2,y2,x1,y3]);
            s1:=s1+format('%g %g m'#10'%g %g l'#10'%g %g l'#10'%g %g l'#10'b Q'#10,[x1,y3,x2,y2,x3,y2,x,y3]);
-           s1:=s1+textat(x1+h/2+1,y1,Arial,fs,lbl,100,'L',true,'');
+           s1:=s1+textat(x1+h/2+1,y1,'',fs,lbl,100,'L',true,'');
            x:=x1+100;
            rs.movenext;
        end;
@@ -299,11 +299,11 @@ type tHbar = class(tobject)
          //print HBar question labels.
          if (not(HasComparison and stacked_bars)) then
          begin
-           TempStr := TextAt(x-3,y+h*0.25,Arial,fs,lbl,round(CurColWidth),'R',true,'');
+           TempStr := TextAt(x-3,y+h*0.25,'',fs,lbl,round(CurColWidth),'R',true,'');
            if LinesHeight > h*1.25 then
            begin
               y:= y-LinesHeight+fs;
-              TempStr := TextAt(x-3,y,Arial,fs,lbl,round(CurColWidth),'R',true,'');
+              TempStr := TextAt(x-3,y,'',fs,lbl,round(CurColWidth),'R',true,'');
            end;
            s:=s+TempStr;
          end;
@@ -360,9 +360,9 @@ type tHbar = class(tobject)
              lbl:=FormatFloat(Formats[ValueFormat[CurCol]],round(w*10000)*0.0001);
 
              if stacked_bars then
-               s:=s+textat(x1-(w/2),y+h*0.3,Arial,fs,lbl,50,'C',false,'')
+               s:=s+textat(x1-(w/2),y+h*0.3,'',fs,lbl,50,'C',false,'')
              else
-               s:=s+textat(x1+h*0.5+1,y1,Arial,fs,lbl,50,'L',false,'');
+               s:=s+textat(x1+h*0.5+1,y1,'',fs,lbl,50,'L',false,'');
            end;
 
            inc(HBarsCounter);
@@ -402,7 +402,7 @@ type tHbar = class(tobject)
 
              List2[i]:=FormatFloat(Formats[intFormat],round(w*10000)*0.0001);
 
-             s:=s+TextAt( ColPos[i],y + (h*0.5),Arial,fs,List2[i],round(ColWidth[i]),'C',false,'');
+             s:=s+TextAt( ColPos[i],y + (h*0.5),'',fs,List2[i],round(ColWidth[i]),'C',false,'');
 
              if ShowSig then
                s:=s+DrawArrow(SigArrowPos-2,y1,fs,'0 g',sig[i]);
