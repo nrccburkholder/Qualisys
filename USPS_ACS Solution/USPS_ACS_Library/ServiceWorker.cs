@@ -259,7 +259,8 @@ namespace USPS_ACS_Library
                 using (Ionic.Zip.ZipFile zip1 = ZipFile.Read(zipFile))
                 {
                     // Here, we extract conditionally based on entry name.  
-                    foreach (ZipEntry e in zip1.Where(x => (!Path.GetFileNameWithoutExtension(x.FileName).EndsWith("N")))) // we are not extracting the files whose filenames end with 'N' because those are just billing statements.
+                    // We are not extracting the files whose filenames end with 'SN' and 'SD' because those are just billing statements.
+                    foreach (ZipEntry e in zip1.Where(x => (!Path.GetFileNameWithoutExtension(x.FileName).EndsWith("SN") && !Path.GetFileNameWithoutExtension(x.FileName).EndsWith("SD")))) 
                     {
                         string Password = AppConfig.Params["USPS_ACS_FileExtractionPassword"].StringValue; 
                         e.ExtractWithPassword(extractToPath, ExtractExistingFileAction.OverwriteSilently, Password);
@@ -593,7 +594,7 @@ namespace USPS_ACS_Library
                 if (UnitDesignatorNew.Length > 0) Address2New = Address2New + UnitDesignatorNew + " ";
                 if (SecondaryNumberNew.Length > 0) Address2New = Address2New + SecondaryNumberNew;
 
-                string MoveType = GetFieldValue(schema, recordText, "MoveType");
+                //string MoveType = GetFieldValue(schema, recordText, "MoveType");
 
                 USPS_ACS_DataProvider.InsertExtractFileRecord(
                             extractFileLog_id
@@ -623,7 +624,37 @@ namespace USPS_ACS_Library
                             , Plus4CodeNew
                             , AddressNew
                             , Address2New
-                            , MoveType);
+                            );
+
+                //USPS_ACS_DataProvider.InsertExtractFileRecord(
+                //               extractFileLog_id
+                //               , recordText
+                //               , FirstName
+                //               , LastName
+                //               , PrimaryNumberOld
+                //               , PreDirectionalOld
+                //               , StreetNameOld
+                //               , StreetSuffixOld
+                //               , PostDirectionalOld
+                //               , UnitDesignatorOld
+                //               , SecondaryNumberOld
+                //               , CityOld
+                //               , StateOld
+                //               , FiveDigitZipCodeOld
+                //               , PrimaryNumberNew
+                //               , PreDirectionalNew
+                //               , StreetNameNew
+                //               , StreetSuffixNew
+                //               , PostDirectionalNew
+                //               , UnitDesignatorNew
+                //               , SecondaryNumberNew
+                //               , CityNew
+                //               , StateNew
+                //               , FiveDigitZipCodeNew
+                //               , Plus4CodeNew
+                //               , AddressNew
+                //               , Address2New
+                //               , MoveType);
 
         }
 
