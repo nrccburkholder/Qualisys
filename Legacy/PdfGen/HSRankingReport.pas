@@ -105,13 +105,13 @@ var rs:variant;
       x := colPos[-1];
       x := x+11;
       fs := 11;
-      RowLength := GetTextWidth(Title,Arial,fs);
-      textat(x,y,ArialBold,fs,'Something' ,round(QuestionWidth),'LB',True,'/F2');
+      RowLength := GetTextWidth(Title,'',fs);
+      textat(x,y,'',fs,'Something' ,round(QuestionWidth),'LB',True,'/F2');
       LabelHeight := y-yGlobal;
       fs:=9;
       for i := FirstCol to LastCol do
       begin
-        textat(ColPos[i],y,ArialBold,fs,ColumnLabels[i],round(ColWidth-fs),'LB',false,'/F2');
+        textat(ColPos[i],y,'',fs,ColumnLabels[i],round(ColWidth-fs),'LB',false,'/F2');
         LabelHeight := max(LabelHeight, y-yGlobal);
       end;
       y:=y-LabelHeight;
@@ -123,15 +123,15 @@ var rs:variant;
       fs:=9;
 
       if ShowRankingNum then
-         s := s+textat(ColPos[-1],y,ArialBold,fs,'Rank',round(RankingWidth),'L',true,'/F2');
+         s := s+textat(ColPos[-1],y,'',fs,'Rank',round(RankingWidth),'L',true,'/F2');
 
-      s := s+textat(ColPos[0],y,ArialBold,fs,'Facility',round(QuestionWidth),'L',true,'/F2');
+      s := s+textat(ColPos[0],y,'',fs,'Facility',round(QuestionWidth),'L',true,'/F2');
 
 
 
       for i := FirstCol to LastCol do
       begin
-        s := s+textat(ColPos[i],y,ArialBold,fs,ColumnLabels[i],round(ColWidth-fs),'C',true,'/F2');
+        s := s+textat(ColPos[i],y,'',fs,ColumnLabels[i],round(ColWidth-fs),'C',true,'/F2');
       end;
       s := s+'Q'#10;
 
@@ -169,7 +169,7 @@ var rs:variant;
       //if pages[index] <> '' then begin
       index := pages.AddObject('',tobject(true));
       NoLegendPages:=NoLegendPages+[pages.count];
-      HSReport:=HSReport+[pages.count];
+//      HSReport:=HSReport+[pages.count];
 
       if Landscape then
         LandscapePages:=LandscapePages+[pages.count];
@@ -190,7 +190,7 @@ var rs:variant;
       if PerformSigTest then
       begin
         s:='AAAAAA Significantly Higher Than '+SigTestComparisonName;
-        LegendWidth := GetTextWidth(s,Arial,fs);
+        LegendWidth := GetTextWidth(s,'',fs);
         LegendHeight := fs*4;
         x:=PageWidth-(InnerLeftMargin+LegendWidth);
         y := y-fs*5;
@@ -199,10 +199,10 @@ var rs:variant;
         pages[index] := pages[index] + DrawRectangle(x,y,LegendWidth-fs,LegendHeight,2,clBlack,clWhite);
         y:=y+fs*2.5;
         s:='Significantly Higher Than '+SigTestComparisonName;
-        pages[index] := pages[index] + DrawArrow(x+5,y,fs,'0 g','H') + textat(x+fs*2,y,Arial,fs,s,Round(LegendWidth+0.4),'L',False,'');
+        pages[index] := pages[index] + DrawArrow(x+5,y,fs,'0 g','H') + textat(x+fs*2,y,'',fs,s,Round(LegendWidth+0.4),'L',False,'');
         y:=y-fs*1.5;
         s:='Significantly Lower Than '+SigTestComparisonName;
-        pages[index] := pages[index] + DrawArrow(x+5,y,fs,'0 g','L') + textat(x+fs*2,y,Arial,fs,s,Round(LegendWidth+0.4),'L',False,'');
+        pages[index] := pages[index] + DrawArrow(x+5,y,fs,'0 g','L') + textat(x+fs*2,y,'',fs,s,Round(LegendWidth+0.4),'L',False,'');
       end;
 
       x := LeftMargin;
@@ -218,7 +218,7 @@ var rs:variant;
          y := y - fs;
 
       end;
-      if usenrclogo then
+//      if usenrclogo then
         pages[index] := pages[index] + Format( #10'q %g 0 0 %g %g %g cm /Im1 Do Q'#10,[ImageWidth1/96*72,ImageHeight1/96*72,PageWidth-(ImageWidth1/96*72)-LeftMargin,BottomMargin-(ImageHeight1/96*72)-10  ] );
 
       //write titles
@@ -229,9 +229,9 @@ var rs:variant;
 
       fs:=16;
       x := LeftMargin+inch*0.5;
-      pages[index] := pages[index] + textat(x,y,Arial,fs,Title,400,'L',False,'');
+      pages[index] := pages[index] + textat(x,y,'',fs,Title,400,'L',False,'');
       y := yGlobal;
-      pages[index] := pages[index] + textat(x,y,Arial,fs,Title2,400,'L',False,'');
+      pages[index] := pages[index] + textat(x,y,'',fs,Title2,400,'L',False,'');
       y := yGlobal;
 
       fs:=fontsize;
@@ -243,7 +243,7 @@ var rs:variant;
 
       //write date
       y := y - fs;
-      pages[index] := pages[index] + textat(PageWidth-InnerLeftMargin,y,Arial,fs,DateRange,300 ,'R',False,'');
+      pages[index] := pages[index] + textat(PageWidth-InnerLeftMargin,y,'',fs,DateRange,300 ,'R',False,'');
       fs:=fontsize;
 
       //write Ranking Key
@@ -257,7 +257,7 @@ var rs:variant;
         x := InnerLeftMargin;
         s1 := format('q 1 w 0 G %g %g m'#10'%g %g l s Q'#10,[x,y,PageWidth-x,y]);
         y := y - fs*1.5;
-        s1:=s1+TextAt(x+inch,y,ArialBold,fs,'Total point = (Number of up arrows) - (Number of down arrows)',300 ,'L',False,'');
+        s1:=s1+TextAt(x+inch,y,'',fs,'Total point = (Number of up arrows) - (Number of down arrows)',300 ,'L',False,'');
 
         NumberOfKeys := (NumberOfRankingColumns * 2 +1);
         KeysPerCol := NumberOfKeys div 4;
@@ -272,14 +272,14 @@ var rs:variant;
         k:=1;
 
         s:= '10 = 1 total points';
-        KeyWidth := GetTextWidth(s,Arial,fs);
+        KeyWidth := GetTextWidth(s,'',fs);
         s:= Format('1 = %0:d total points (statistically greater on all %0:d items/themes)',[NumberOfRankingColumns]);
-        FirstKeyWidth := GetTextWidth(s,Arial,fs)+KeyWidth;
+        FirstKeyWidth := GetTextWidth(s,'',fs)+KeyWidth;
         KeyWidth := KeyWidth * 2;
         k:=NumberOfRankingColumns;
         x := InnerLeftMargin;
         y := BottomMargin;
-        s1 := s1 + TextAt(x,y,Arial,fs,s,Round(FirstKeyWidth+0.5) ,'L',False,'');
+        s1 := s1 + TextAt(x,y,'',fs,s,Round(FirstKeyWidth+0.5) ,'L',False,'');
         y := y - fs;
         j:=1;
 
@@ -289,7 +289,7 @@ var rs:variant;
               h := NumberOfRankingColumns-k;
               if (h+1) = NumberOfKeys then break;
               s:=Format('%d = %d total points',[h+1,k]);
-              s1:=s1+TextAt(x,y,Arial,fs,s,300 ,'L',False,'');
+              s1:=s1+TextAt(x,y,'',fs,s,300 ,'L',False,'');
               inc(j);
               y := y - fs;
            end;
@@ -312,7 +312,7 @@ var rs:variant;
               h := NumberOfRankingColumns-k;
               if (h+1) = NumberOfKeys then break;
               s:=Format('%d = %d total points',[h+1,k]);
-              s1:=s1+TextAt(x,y,Arial,fs,s,300 ,'L',False,'');
+              s1:=s1+TextAt(x,y,'',fs,s,300 ,'L',False,'');
               inc(j);
               y := y - fs;
            end;
@@ -326,7 +326,7 @@ var rs:variant;
         end;
 
         s:= Format('%0:d = %1:d total points (statistically less on all %2:d items/themes)',[NumberOfKeys,k,NumberOfRankingColumns]);
-        s1:=s1+TextAt(x,y,Arial,fs,s,300 ,'L',False,'');
+        s1:=s1+TextAt(x,y,'',fs,s,300 ,'L',False,'');
 
         if ExtraKeyCols > 0 then
           BottomMargin := BottomMargin + fs;
@@ -335,7 +335,7 @@ var rs:variant;
         BottomMargin := BottomMargin + fs * 2;
         y := BottomMargin;
         x := InnerLeftMargin;
-        s1:=s1+TextAt(x,y,ArialBold,fs,'KEY TO RANKING',300 ,'L',False,'/F2');
+        s1:=s1+TextAt(x,y,'',fs,'KEY TO RANKING',300 ,'L',False,'/F2');
         y := y - fs*0.5;
         s1 := s1 + format('q 0 J 1 w 0 G %g %g m'#10'%g %g l s Q'#10,[x,y,PageWidth-InnerLeftMargin,y]);
         y := TopMargin;
@@ -534,12 +534,12 @@ begin
         x := ColPos[-1];
         s := vartostr(rs.fields['RankingNum'].value);
         if s <> '' then  //GN01
-        pages[index] := pages[index]+textat(x+fs,y,Arial,fs,s,round(RankingWidth)-5,'C',False,'');
+        pages[index] := pages[index]+textat(x+fs,y,'',fs,s,round(RankingWidth)-5,'C',False,'');
       end;
       s := vartostr(rs.fields['RowLabel'].value);
       RowLabel:=s;
       x := ColPos[0];
-      pages[index] := pages[index]+textat(x,y,Arial,fs,s,round(QuestionWidth)-5,'L',False,'');
+      pages[index] := pages[index]+textat(x,y,'',fs,s,round(QuestionWidth)-5,'L',False,'');
       LinesHeight := fs;
       if LabelHeight > LinesHeight then
          LabelHeight := LinesHeight;
@@ -559,12 +559,12 @@ begin
              v := rs.fields['Col'+inttostr(j)].value;
              s:=formatfloat(ValueFormat[j],round(v*10000)*0.0001);
            end;
-           pages[index] := pages[index]+textat(ColPos[j],y,Arial,fs,s,round(ColWidth),'C',False,'');
+           pages[index] := pages[index]+textat(ColPos[j],y,'',fs,s,round(ColWidth),'C',False,'');
            pages[index] := pages[index]+DrawArrow(SigArrowPos-2,y,fs,'0 g',vartostr(rs.fields['sig'+inttostr(j)])[1] );
          end;
       end;
 
-      RowLength := max(RowLength, GetTextWidth(s,Arial,fs));
+      RowLength := max(RowLength, GetTextWidth(s,'',fs));
       RowDataCategory := rs.fields['RowDataCategory'].value;
 
       x := InnerLeftMargin;
