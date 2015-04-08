@@ -105,6 +105,7 @@ go
 -- Modified 03/27/2015 TSB -- modified #HHQF to include STRMAILINGSTEP_NM
 ALTER PROCEDURE [dbo].[sp_phase3_questionresult_for_extract] 
 AS 
+
     SET TRANSACTION isolation level READ uncommitted 
 
     INSERT INTO drm_tracktimes 
@@ -965,6 +966,7 @@ INSERT INTO drm_tracktimes
     SET nocount OFF 
     SET TRANSACTION isolation level READ committed
 GO
+
 ALTER PROCEDURE [dbo].[SP_Phase3_QuestionResult_For_Extract_by_Samplepop]
 as
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED 
@@ -1011,16 +1013,29 @@ DROP TABLE #a
 insert into drm_tracktimes select getdate(), 'HH get hcahps records and index' 
 
 --Get the records that are HHCAHPS so we can compute completeness 
-SELECT e.QuestionForm_id, CONVERT(INT,NULL) Complete, convert(int,null) ATACnt, convert(int,null) Q1, convert(int,null) numAnswersAfterQ1
-INTO #HHQF
-FROM QuestionForm_Extract e, QuestionForm qf, Survey_def sd 
-WHERE e.Study_id IS NOT NULL 
-AND e.tiExtracted=0 
-AND datExtracted_dt IS NULL 
-AND e.QuestionForm_id=qf.Questionform_id 
-AND qf.Survey_id=sd.Survey_id 
-AND SurveyType_id=3 
-GROUP BY e.QuestionForm_id 
+--SELECT e.QuestionForm_id, CONVERT(INT,NULL) Complete, convert(int,null) ATACnt, convert(int,null) Q1, convert(int,null) numAnswersAfterQ1
+--INTO #HHQF
+--FROM QuestionForm_Extract e, QuestionForm qf, Survey_def sd 
+--WHERE e.Study_id IS NOT NULL 
+--AND e.tiExtracted=0 
+--AND datExtracted_dt IS NULL 
+--AND e.QuestionForm_id=qf.Questionform_id 
+--AND qf.Survey_id=sd.Survey_id 
+--AND SurveyType_id=3 
+--GROUP BY e.QuestionForm_id 
+
+select e.QuestionForm_id, CONVERT(INT, NULL) Complete, convert(int,null) ATACnt, convert(int,null) Q1, convert(int,null) numAnswersAfterQ1, ms.STRMAILINGSTEP_NM
+	into #HHQF
+	from QuestionForm_extract e
+	inner join QuestionForm qf on e.QuestionForm_id = qf.QuestionForm_id 
+	inner join survey_def sd on qf.survey_id=sd.survey_id
+	inner join SENTMAILING sm on sm.SENTMAIL_ID = qf.SENTMAIL_ID
+	inner join SCHEDULEDMAILING scm on scm.scheduledmailing_id = sm.scheduledmailing_id
+	inner join MAILINGSTEP ms on ms.MAILINGSTEP_ID = scm.mailingstep_id
+	where e.study_id IS NOT NULL 
+           AND e.tiextracted = 0
+		   AND sd.surveytype_id=3
+	GROUP  BY e.QuestionForm_id, ms.STRMAILINGSTEP_NM
 
 CREATE INDEX tmpIndex ON #HHQF (QuestionForm_id) 
 
@@ -1286,13 +1301,22 @@ where hh.complete=0
 and (hh.numAnswersAfterQ1 > 0 or hh.Q1=1)
 
 -- if incomplete and Q1 isn't answered and they didn't answer anything else either, it's just a blank survey.
-UPDATE cqw 
-SET FinalDisposition = '320' -- Refusal
-FROM cmnt_QuestionResult_work cqw 
-inner join #HHQF hh on hh.QuestionForm_id = cqw.QuestionForm_id 
-WHERE hh.complete=0
-AND hh.numAnswersAfterQ1=0 
-AND hh.Q1=-9
+--UPDATE cqw 
+--SET FinalDisposition = '320' -- Refusal
+--FROM cmnt_QuestionResult_work cqw 
+--inner join #HHQF hh on hh.QuestionForm_id = cqw.QuestionForm_id 
+--WHERE hh.complete=0
+--AND hh.numAnswersAfterQ1=0 
+--AND hh.Q1=-9
+-- Modified 03/27/2015 TSB  to only look at 2ndSurvey
+    UPDATE cqw 
+    SET    FinalDisposition = '320' -- Refusal
+    FROM   cmnt_QuestionResult_work cqw 
+           inner join #HHQF hh on hh.QuestionForm_id = cqw.QuestionForm_id 
+    WHERE  hh.complete=0
+           AND hh.numAnswersAfterQ1=0 
+           AND hh.Q1=-9
+		   AND hh.STRMAILINGSTEP_NM = '2nd Survey'
 
 
 --MNCM DISPOSITIONS 
