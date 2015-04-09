@@ -594,67 +594,37 @@ namespace USPS_ACS_Library
                 if (UnitDesignatorNew.Length > 0) Address2New = Address2New + UnitDesignatorNew + " ";
                 if (SecondaryNumberNew.Length > 0) Address2New = Address2New + SecondaryNumberNew;
 
-                //string MoveType = GetFieldValue(schema, recordText, "MoveType");
+                string MoveType = GetFieldValue(schema, recordText, "MoveType");
 
                 USPS_ACS_DataProvider.InsertExtractFileRecord(
-                            extractFileLog_id
-                            , recordText
-                            , FirstName
-                            , LastName
-                            , PrimaryNumberOld
-                            , PreDirectionalOld
-                            , StreetNameOld
-                            , StreetSuffixOld
-                            , PostDirectionalOld
-                            , UnitDesignatorOld
-                            , SecondaryNumberOld
-                            , CityOld
-                            , StateOld
-                            , FiveDigitZipCodeOld
-                            , PrimaryNumberNew
-                            , PreDirectionalNew
-                            , StreetNameNew
-                            , StreetSuffixNew
-                            , PostDirectionalNew
-                            , UnitDesignatorNew
-                            , SecondaryNumberNew
-                            , CityNew
-                            , StateNew
-                            , FiveDigitZipCodeNew
-                            , Plus4CodeNew
-                            , AddressNew
-                            , Address2New
-                            );
-
-                //USPS_ACS_DataProvider.InsertExtractFileRecord(
-                //               extractFileLog_id
-                //               , recordText
-                //               , FirstName
-                //               , LastName
-                //               , PrimaryNumberOld
-                //               , PreDirectionalOld
-                //               , StreetNameOld
-                //               , StreetSuffixOld
-                //               , PostDirectionalOld
-                //               , UnitDesignatorOld
-                //               , SecondaryNumberOld
-                //               , CityOld
-                //               , StateOld
-                //               , FiveDigitZipCodeOld
-                //               , PrimaryNumberNew
-                //               , PreDirectionalNew
-                //               , StreetNameNew
-                //               , StreetSuffixNew
-                //               , PostDirectionalNew
-                //               , UnitDesignatorNew
-                //               , SecondaryNumberNew
-                //               , CityNew
-                //               , StateNew
-                //               , FiveDigitZipCodeNew
-                //               , Plus4CodeNew
-                //               , AddressNew
-                //               , Address2New
-                //               , MoveType);
+                               extractFileLog_id
+                               , recordText
+                               , FirstName
+                               , LastName
+                               , PrimaryNumberOld
+                               , PreDirectionalOld
+                               , StreetNameOld
+                               , StreetSuffixOld
+                               , PostDirectionalOld
+                               , UnitDesignatorOld
+                               , SecondaryNumberOld
+                               , CityOld
+                               , StateOld
+                               , FiveDigitZipCodeOld
+                               , PrimaryNumberNew
+                               , PreDirectionalNew
+                               , StreetNameNew
+                               , StreetSuffixNew
+                               , PostDirectionalNew
+                               , UnitDesignatorNew
+                               , SecondaryNumberNew
+                               , CityNew
+                               , StateNew
+                               , FiveDigitZipCodeNew
+                               , Plus4CodeNew
+                               , AddressNew
+                               , Address2New
+                               , MoveType);
 
         }
 
