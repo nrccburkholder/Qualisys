@@ -167,6 +167,12 @@ as
 --declare @USPS_ACS_ExtractFileLog_ID int
 --set @USPS_ACS_ExtractFileLog_ID=2
 
+/*
+S21.R4	04/10/2015 Tim Butler Check the move type in the USPS files and match records based on whether it’s a "F"amily or "I"ndividual move.
+	If MoveType field is “I” include both first and last name in the match. 
+	If MoveType is “F” then only include last name in the match.
+*/
+
 declare @daysBack int, @headerDate datetime
 
 select @daysBack=numParam_Value 
@@ -233,6 +239,7 @@ end
 
 create index tmp_ndx on #pop (lname, st, zip5)
 
+-- modified to distinguish Family address from Individual addresss.  
 select p.study_id, p.pop_id, p.strLithocode, w.USPS_ACS_ExtractFile_Work_ID, w.USPS_ACS_ExtractFile_ID, w.addressnew, w.address2new, w.citynew, w.statenew, w.zip5new, w.Plus4ZipNew, convert(varchar(20),null) as [Status]
 , case when w.MoveType = 'F' 
 		and p.addr like '%'+w.StreetNameOld+'%'
