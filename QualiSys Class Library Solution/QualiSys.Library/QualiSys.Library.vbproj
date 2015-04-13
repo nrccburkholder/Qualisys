@@ -101,6 +101,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Referenced Assemblies\Nrc.Framework.dll</HintPath>
     </Reference>
+    <Reference Include="Nrc.Framework.BusinessLogic, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.BusinessLogic.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Framework.Notification, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.Notification.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -393,16 +401,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\questionmark.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\NRC Framework Solution\Nrc.Framework.BusinessLogic\Nrc.Framework.BusinessLogic.vbproj">
-      <Project>{c5a6ee1a-d5bf-4059-87cf-aca302979820}</Project>
-      <Name>Nrc.Framework.BusinessLogic</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\NRC Framework Solution\Nrc.Framework.Notification\Nrc.Framework.Notification.vbproj">
-      <Project>{27ab551e-d67f-4b03-bab5-e7172e105217}</Project>
-      <Name>Nrc.Framework.Notification</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
