@@ -503,13 +503,13 @@ Public Class SurveyPropertiesEditor
             Return False
         End If
 
-        ' Check to make sure if PCMN subtype selected the user has selected a QuestionnaireType
+        ' Check to make sure if PCMH Distinction subtype selected the user has selected a QuestionnaireType
         For Each st As SubType In SurveySubTypeListBox.CheckedItems
-            If st.SubTypeName = "PCMH" Then
+            If st.SubTypeName = "PCMH Distinction" Then
                 ' If PCMH, then we need to make sure that a QuestionnaireType was selected.
                 If CType(QuestionnaireTypeComboBox.SelectedItem, SubType).SubTypeId = 0 Then
                     QuestionnaireTypeComboBox.Focus()
-                    MessageBox.Show("For a PCMH Sub-Type you must select a Questionnaire Type!", title, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    MessageBox.Show("For a PCMH Distinction Sub-Type you must select a Questionnaire Type!", title, MessageBoxButtons.OK, MessageBoxIcon.Information)
                     Return False
                 End If
             End If
@@ -612,7 +612,10 @@ Public Class SurveyPropertiesEditor
     End Sub
 
     Private Sub LoadQuestionnaireTypeComboBox(ByVal surveytypeid As Integer, ByVal questionnairetypeid As Integer, ByVal surveyid As Integer)
-        QuestionnaireTypeComboBox.DataSource = Survey.GetSubTypes(surveytypeid, SubtypeCategories.QuestionnaireType, surveyid)
+        'QuestionnaireTypeComboBox.DataSource = Survey.GetSubTypes(surveytypeid, SubtypeCategories.QuestionnaireType, surveyid)
+
+        bindingSourceQuestionnaireComboBox.DataSource = Survey.GetSubTypes(surveytypeid, SubtypeCategories.QuestionnaireType, surveyid)
+        QuestionnaireTypeComboBox.DataSource = bindingSourceQuestionnaireComboBox
         QuestionnaireTypeComboBox.DisplayMember = "SubtypeName"
         QuestionnaireTypeComboBox.ValueMember = "SubTypeId"
         QuestionnaireTypeComboBox.SelectedIndex = 0
