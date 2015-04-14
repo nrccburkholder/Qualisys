@@ -50,11 +50,11 @@ RunParams=15878
 HostApplication=
 [Version Info]
 IncludeVerInfo=1
-AutoIncBuild=1
+AutoIncBuild=0
 MajorVer=3
-MinorVer=28
+MinorVer=29
 Release=0
-Build=2
+Build=0
 Debug=0
 PreRelease=0
 Special=0
@@ -65,7 +65,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=National Research Corporation
 FileDescription=Configuration Manager - Form Layout
-FileVersion=3.28.0.2
+FileVersion=3.29.0.0
 InternalName=
 LegalCopyright=
 LegalTrademarks=
