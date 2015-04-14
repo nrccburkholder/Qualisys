@@ -3,7 +3,7 @@
   <metadata>
     <id>Qualisys.FormLayoutLauncher</id>
     <title>QualiSys Form Layout Launcher</title>
-    <version>3.28.0.2</version>
+    <version>3.29.0.0</version>
     <authors>NRC</authors>
     <description>Form Layout Launcher shell which launches Form Layout stand-alond, and updates Form Layout in the Qualisys folder if needed</description>
   </metadata>
