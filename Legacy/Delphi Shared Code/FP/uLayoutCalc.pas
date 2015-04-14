@@ -3239,8 +3239,8 @@ var SurveyHeight,capacity,TotalPages,PaperTypeAnswer : integer;
   end;
 
   procedure SplitIntoPages;
-  var CLoffset,FirstPageCol2Offset,offset,thispagecap,prevItem,increasedcapacity,prevSub,CoverLetterAfterPageBreak : integer;
-      PrevIs0LineCmnt,col2 : boolean;
+  var CLoffset,FirstPageCol2Offset,offset,thispagecap,prev2Item,prevItem,increasedcapacity,prev2Sub,prevSub,CoverLetterAfterPageBreak : integer;
+      Prev2Is0LineCmnt,PrevIs0LineCmnt,col2,Carry2Prev : boolean;
       LastSec:integer;
       SavePlace: TBookmark;
   begin
@@ -3281,8 +3281,11 @@ var SurveyHeight,capacity,TotalPages,PaperTypeAnswer : integer;
             offset := CLOffset;
             SurveyPages := 1;
             prevItem := -1;
+            prev2Item := -1;
             prevSub := -1;
+            prev2Sub := -1;
             PrevIs0LineCmnt := false;
+            Prev2Is0LineCmnt := false;
             while not eof do begin
               ThisPageCap := increasedcapacity + PageHeight[SheetType,SurveyPages mod pages[SheetType]];
               if (tPCLY.value+tPCLHeight.value) > offset+ThisPageCap+TopMargin then begin
@@ -3290,13 +3293,24 @@ var SurveyHeight,capacity,TotalPages,PaperTypeAnswer : integer;
                   or ( PrevIs0LineCmnt and (tPCLSubsection.value=prevSub)) {CAHPS hack}
                  then begin
                   prior;
+{-----------------CAHPS hack squared Prev2 is Prev of Prev 4/13/2015 Chris Burkholder}
+                  if ((tPCLItem.value=1) and (prev2Item=0))
+                    or ( Prev2Is0LineCmnt and (tPCLSubsection.value=prev2Sub)) {CAHPS hack}
+                   then begin
+                    prior;
+                    if pos(tPCLQNmbr.value,'Adr,Cvr,BMP,PCL')>0 then next;
+                  end;
+{-----------------}
                   if pos(tPCLQNmbr.value,'Adr,Cvr,BMP,PCL')>0 then next;
                 end;
                 offset := tpclY.value-TopMargin;
                 inc(SurveyPages);
               end;
+              prev2Item := prevItem;
               prevItem := tPCLitem.value;
+              prev2Sub := prevSub;
               prevSub := tPCLSubsection.value;
+              Prev2Is0LineCmnt := PrevIs0LineCmnt;
               PrevIs0LineCmnt := (tPCLQstnCore.value=0) and (tPCLQnmbr.value='');
               next;
             end;
@@ -3326,8 +3340,11 @@ var SurveyHeight,capacity,TotalPages,PaperTypeAnswer : integer;
         FirstPageCol2Offset := -1;
         SurveyPages := 1;
         prevItem := -1;
+        prev2Item := -1;
         prevSub := -1;
+        prev2Sub := -1;
         PrevIs0LineCmnt := false;
+        Prev2Is0LineCmnt := false;
         col2 := false;
         while not eof do begin
           ThisPageCap := increasedcapacity + PageHeight[SheetType,SurveyPages mod pages[SheetType]];
@@ -3336,6 +3353,16 @@ var SurveyHeight,capacity,TotalPages,PaperTypeAnswer : integer;
               or ( PrevIs0LineCmnt and (tPCLSubsection.value=prevSub)) {CAHPS hack}
              then begin
               prior;
+{-----------------CAHPS hack squared Prev2 is Prev of Prev 4/13/2015 Chris Burkholder}
+              Carry2Prev := false;
+              if ((tPCLItem.value=1) and (prev2Item=0))
+                or ( Prev2Is0LineCmnt and (tPCLSubsection.value=prev2Sub)) {CAHPS hack}
+               then begin
+                prior;
+                Carry2Prev := true;
+                if pos(tPCLQNmbr.value,'Adr,Cvr,BMP,PCL')>0 then next;
+              end;
+{-----------------}
               if pos(tPCLQNmbr.value,'Adr,Cvr,BMP,PCL')>0 then
                 next
               else begin
@@ -3348,6 +3375,22 @@ var SurveyHeight,capacity,TotalPages,PaperTypeAnswer : integer;
                 else
                   tpclX.value := tPCLX.value - HorzOffset[SheetType, SurveyPages mod pages[SheetType]];
                 post;
+{-----------------CAHPS hack squared Prev2 is Prev of Prev 4/13/2015 Chris Burkholder}
+                if Carry2Prev {CAHPS hack}
+                 then begin
+                   next;
+                   edit;
+                   tpclY.value := tPCLY.value + offset;
+                   //tpclX.value := tPCLX.value - HorzOffset[SheetType, SurveyPages mod pages[SheetType]];
+                   if Col2 then
+                     tpclX.value := tPCLX.value - HorzOffset[SheetType, SurveyPages mod pages[SheetType]]
+                                                - ((PageWidth+(ColumnGutter*(ColumnCnt-1))) div ColumnCnt)
+                   else
+                     tpclX.value := tPCLX.value - HorzOffset[SheetType, SurveyPages mod pages[SheetType]];
+                   post;
+                   prior;
+                 end;
+{-----------------}
               end;
             end;
             if ColumnCnt=2 then begin
@@ -3390,8 +3433,11 @@ var SurveyHeight,capacity,TotalPages,PaperTypeAnswer : integer;
           else
             tpclX.value := tPCLX.value + HorzOffset[SheetType, SurveyPages mod pages[SheetType]];
           post;
+          prev2Item := prevItem;
           prevItem := tPCLitem.value;
+          prev2Sub := prevSub;
           prevSub := tPCLSubsection.value;
+          Prev2Is0LineCmnt := PrevIs0LineCmnt;
           PrevIs0LineCmnt := (tPCLQstnCore.value=0) and (tPCLQnmbr.value='');
           next;
         end;
