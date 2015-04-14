@@ -8,9 +8,9 @@ Width=1024
 Height=114
 MaxLeft=0
 MaxTop=2
-MaxWidth=1288
+MaxWidth=1688
 MaxHeight=114
-ClientWidth=1280
+ClientWidth=1680
 ClientHeight=60
 
 [WatchWindow]
@@ -203,14 +203,15 @@ Count=1
 H0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
 
 [HistoryLists\hiSearchMasks]
-Count=7
-H0=E:\Projects\QualiSys
-H1=E:\Projects\PDFGen
-H2=E:\Projects\QualiSys\Question Library
-H3=C:\dq\dynaquest\
-H4=C:\program files\borland\delphi 3\source
-H5=C:\FgomezTemp\Programming Samples\Delphi\SQL PDFGen
-H6=*.pas
+Count=8
+H0=C:\GIT\Legacy
+H1=E:\Projects\QualiSys
+H2=E:\Projects\PDFGen
+H3=E:\Projects\QualiSys\Question Library
+H4=C:\dq\dynaquest\
+H5=C:\program files\borland\delphi 3\source
+H6=C:\FgomezTemp\Programming Samples\Delphi\SQL PDFGen
+H7=*.pas
 
 [Closed Files]
 File_0=SourceModule,'E:\Projects\PDFGen\ControlCharts.pas',0,1,630,70,643,0,0
@@ -223,29 +224,52 @@ File_6=SourceModule,'E:\Projects\PDFGen\HBHeaders.pas',0,1,52,19,53,0,0
 File_7=SourceModule,'E:\Projects\PDFGen\QuadChart.pas',0,1,2,1,49,0,0
 
 [Modules]
-Module0=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\HBarpcs.pas
-Module1=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\Main.pas
-Module2=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\HBarmns.pas
+Module0=C:\GIT2015\Legacy\PdfGen\VBars.pas
+Module1=C:\GIT2015\Legacy\PdfGen\Main.pas
+Module2=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\HBarpcs.pas
 Module3=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\Fileutil.pas
-Module4=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\constants.pas
-Module5=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\PdfGen.dpr
-Module6=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\TabularTitle.pas
-Module7=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\PlotCharts.pas
-Module8=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\JpgReader.pas
-Module9=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\zlibStr.pas
-Module10=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\zlib.pas
-Module11=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\arrows.pas
-Module12=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\AddNewPage.pas
-Module13=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\ControlCharts.pas
-Module14=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\TextMeasure.pas
-Module15=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\divLines.pas
-Module16=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\Drawing.pas
-Module17=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\appath.pas
-Module18=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\fontreader.pas
-Count=19
+Module4=C:\GIT2015\Legacy\PdfGen\PdfGen.dpr
+Module5=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\Main.pas
+Module6=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\HBarmns.pas
+Module7=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\constants.pas
+Module8=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\PdfGen.dpr
+Module9=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\TabularTitle.pas
+Module10=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\PlotCharts.pas
+Module11=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\JpgReader.pas
+Module12=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\zlibStr.pas
+Module13=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\zlib.pas
+Module14=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\arrows.pas
+Module15=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\AddNewPage.pas
+Module16=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\ControlCharts.pas
+Module17=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\TextMeasure.pas
+Module18=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\divLines.pas
+Module19=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\Drawing.pas
+Module20=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\appath.pas
+Module21=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\fontreader.pas
+Count=22
 EditWindowCount=1
 
+[C:\GIT2015\Legacy\PdfGen\VBars.pas]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[C:\GIT2015\Legacy\PdfGen\Main.pas]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
 [\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\HBarpcs.pas]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\Fileutil.pas]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[C:\GIT2015\Legacy\PdfGen\PdfGen.dpr]
 ModuleType=SourceModule
 FormState=0
 FormOnTop=0
@@ -256,11 +280,6 @@ FormState=0
 FormOnTop=0
 
 [\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\HBarmns.pas]
-ModuleType=SourceModule
-FormState=0
-FormOnTop=0
-
-[\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\Fileutil.pas]
 ModuleType=SourceModule
 FormState=0
 FormOnTop=0
@@ -352,10 +371,10 @@ MaxLeft=-1
 MaxTop=-1
 ClientWidth=1025
 ClientHeight=500
-SplitPos=100
+SplitPos=99
 MessagePane=1
-ViewCount=18
-CurrentView=15
+ViewCount=20
+CurrentView=16
 View0=0
 View1=1
 View2=2
@@ -374,6 +393,8 @@ View14=14
 View15=15
 View16=16
 View17=17
+View18=18
+View19=19
 
 [View0]
 Module=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\constants.pas
@@ -482,19 +503,33 @@ LeftCol=1
 
 [View15]
 Module=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\HBarpcs.pas
-CursorX=1
-CursorY=295
+CursorX=48
+CursorY=293
 TopLine=283
 LeftCol=1
 
 [View16]
+Module=C:\GIT2015\Legacy\PdfGen\VBars.pas
+CursorX=39
+CursorY=76
+TopLine=58
+LeftCol=1
+
+[View17]
+Module=C:\GIT2015\Legacy\PdfGen\Main.pas
+CursorX=1
+CursorY=1868
+TopLine=1858
+LeftCol=1
+
+[View18]
 Module=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\HBarmns.pas
 CursorX=1
 CursorY=418
 TopLine=409
 LeftCol=1
 
-[View17]
+[View19]
 Module=\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\Fileutil.pas
 CursorX=1
 CursorY=277
@@ -516,3 +551,23 @@ Breakpoint0='\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\HBarpcs.pas',
 Breakpoint1='\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\HBarpcs.pas',136,'',0,1
 Breakpoint2='\\tsclient\U\Projects\ActionPlanBuilder\PDF Generator\HBarpcs.pas',38,'',0,1
 
+[PVCS Browser]
+Left=236
+Top=105
+Width=625
+Height=393
+State=0
+Visible=0
+[PVCS VDiff]
+Left=257
+Top=160
+Width=591
+Height=608
+Layout=1
+Orientation=1
+State=0
+Visible=0
+File1Color=16711680
+File2Color=255
+SpaceColor=16776960
+TextColor=0
