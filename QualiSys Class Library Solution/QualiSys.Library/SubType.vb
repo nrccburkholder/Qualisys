@@ -21,6 +21,7 @@ Public Class SubType
     Private mNeedsDeleted As Boolean = False
     Private mWasSelected As Boolean = False
     Private mParentSubType_Id As Integer = 0
+    Private mbitQuestionnaireRequired As Boolean = False
 #End Region
 
 #Region "public properties"
@@ -165,6 +166,15 @@ Public Class SubType
         End Set
     End Property
 
+    Public Property IsQuestionnaireRequired() As Boolean
+        Get
+            Return mbitQuestionnaireRequired
+        End Get
+        Set(ByVal value As Boolean)
+            mbitQuestionnaireRequired = value
+        End Set
+    End Property
+
 #End Region
 
 #Region " Constructors "
@@ -202,7 +212,7 @@ Public Class SubType
 
     End Sub
 
-    Public Sub New(ByVal subtype_Id As Integer, ByVal SurveyID As Integer, ByVal Name As String, ByVal bitRuleOverride As Boolean, ByVal isSelected As Boolean, ByVal parentSubType_Id As Integer)
+    Public Sub New(ByVal subtype_Id As Integer, ByVal SurveyID As Integer, ByVal Name As String, ByVal bitRuleOverride As Boolean, ByVal isSelected As Boolean, ByVal parentSubType_Id As Integer, ByVal isQuestionnaireRequired As Boolean)
 
         mSubType_Id = subtype_Id
         mSubType_NM = Name
@@ -210,6 +220,7 @@ Public Class SubType
         mbitRuleOverride = bitRuleOverride
         mWasSelected = isSelected
         mParentSubType_Id = parentSubType_Id
+        mbitQuestionnaireRequired = isQuestionnaireRequired
 
     End Sub
 
