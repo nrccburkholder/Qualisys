@@ -19,7 +19,6 @@ Partial Class SurveyPropertiesEditor
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
         Me.OKButton = New System.Windows.Forms.Button()
         Me.cnclButton = New System.Windows.Forms.Button()
         Me.BottomPanel = New System.Windows.Forms.Panel()
@@ -73,21 +72,19 @@ Partial Class SurveyPropertiesEditor
         Me.FacingNameTextBox = New System.Windows.Forms.TextBox()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.InformationBar = New Nrc.Qualisys.ConfigurationManager.InformationBar()
-        Me.bindingSourceQuestionnaireComboBox = New System.Windows.Forms.BindingSource(Me.components)
         Me.BottomPanel.SuspendLayout()
         Me.WorkAreaPanel.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.ResurveyExcludionDaysPanel.SuspendLayout()
         CType(Me.ResurveyExcludionDaysNumeric, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.RespRateRecalcDaysNumeric, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.bindingSourceQuestionnaireComboBox, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'OKButton
         '
         Me.OKButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.OKButton.Location = New System.Drawing.Point(477, 5)
-        Me.OKButton.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.OKButton.Margin = New System.Windows.Forms.Padding(4)
         Me.OKButton.Name = "OKButton"
         Me.OKButton.Size = New System.Drawing.Size(100, 28)
         Me.OKButton.TabIndex = 0
@@ -98,7 +95,7 @@ Partial Class SurveyPropertiesEditor
         '
         Me.cnclButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cnclButton.Location = New System.Drawing.Point(585, 5)
-        Me.cnclButton.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cnclButton.Margin = New System.Windows.Forms.Padding(4)
         Me.cnclButton.Name = "cnclButton"
         Me.cnclButton.Size = New System.Drawing.Size(100, 28)
         Me.cnclButton.TabIndex = 1
@@ -112,7 +109,7 @@ Partial Class SurveyPropertiesEditor
         Me.BottomPanel.Controls.Add(Me.cnclButton)
         Me.BottomPanel.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.BottomPanel.Location = New System.Drawing.Point(0, 787)
-        Me.BottomPanel.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.BottomPanel.Margin = New System.Windows.Forms.Padding(4)
         Me.BottomPanel.Name = "BottomPanel"
         Me.BottomPanel.Size = New System.Drawing.Size(696, 43)
         Me.BottomPanel.TabIndex = 2
@@ -165,7 +162,7 @@ Partial Class SurveyPropertiesEditor
         Me.WorkAreaPanel.Controls.Add(Me.Label5)
         Me.WorkAreaPanel.Dock = System.Windows.Forms.DockStyle.Fill
         Me.WorkAreaPanel.Location = New System.Drawing.Point(0, 25)
-        Me.WorkAreaPanel.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.WorkAreaPanel.Margin = New System.Windows.Forms.Padding(4)
         Me.WorkAreaPanel.Name = "WorkAreaPanel"
         Me.WorkAreaPanel.Size = New System.Drawing.Size(696, 762)
         Me.WorkAreaPanel.TabIndex = 1
@@ -184,7 +181,7 @@ Partial Class SurveyPropertiesEditor
         '
         Me.UseUSPSAddrChangeServiceCheckBox.AutoSize = True
         Me.UseUSPSAddrChangeServiceCheckBox.Location = New System.Drawing.Point(236, 736)
-        Me.UseUSPSAddrChangeServiceCheckBox.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.UseUSPSAddrChangeServiceCheckBox.Margin = New System.Windows.Forms.Padding(4)
         Me.UseUSPSAddrChangeServiceCheckBox.Name = "UseUSPSAddrChangeServiceCheckBox"
         Me.UseUSPSAddrChangeServiceCheckBox.Size = New System.Drawing.Size(15, 14)
         Me.UseUSPSAddrChangeServiceCheckBox.TabIndex = 41
@@ -230,7 +227,7 @@ Partial Class SurveyPropertiesEditor
         Me.QuestionnaireTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.QuestionnaireTypeComboBox.FormattingEnabled = True
         Me.QuestionnaireTypeComboBox.Location = New System.Drawing.Point(236, 278)
-        Me.QuestionnaireTypeComboBox.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.QuestionnaireTypeComboBox.Margin = New System.Windows.Forms.Padding(4)
         Me.QuestionnaireTypeComboBox.Name = "QuestionnaireTypeComboBox"
         Me.QuestionnaireTypeComboBox.Size = New System.Drawing.Size(407, 24)
         Me.QuestionnaireTypeComboBox.TabIndex = 37
@@ -252,7 +249,7 @@ Partial Class SurveyPropertiesEditor
         Me.ContractedLanguagesListBox.CheckOnClick = True
         Me.ContractedLanguagesListBox.FormattingEnabled = True
         Me.ContractedLanguagesListBox.Location = New System.Drawing.Point(420, 629)
-        Me.ContractedLanguagesListBox.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.ContractedLanguagesListBox.Margin = New System.Windows.Forms.Padding(4)
         Me.ContractedLanguagesListBox.Name = "ContractedLanguagesListBox"
         Me.ContractedLanguagesListBox.Size = New System.Drawing.Size(223, 106)
         Me.ContractedLanguagesListBox.TabIndex = 34
@@ -282,7 +279,7 @@ Partial Class SurveyPropertiesEditor
         '
         Me.InActivateCheckBox.AutoSize = True
         Me.InActivateCheckBox.Location = New System.Drawing.Point(236, 709)
-        Me.InActivateCheckBox.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.InActivateCheckBox.Margin = New System.Windows.Forms.Padding(4)
         Me.InActivateCheckBox.Name = "InActivateCheckBox"
         Me.InActivateCheckBox.Size = New System.Drawing.Size(15, 14)
         Me.InActivateCheckBox.TabIndex = 31
@@ -294,7 +291,7 @@ Partial Class SurveyPropertiesEditor
         Me.SampleEncounterDateComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.SampleEncounterDateComboBox.FormattingEnabled = True
         Me.SampleEncounterDateComboBox.Location = New System.Drawing.Point(236, 543)
-        Me.SampleEncounterDateComboBox.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.SampleEncounterDateComboBox.Margin = New System.Windows.Forms.Padding(4)
         Me.SampleEncounterDateComboBox.Name = "SampleEncounterDateComboBox"
         Me.SampleEncounterDateComboBox.Size = New System.Drawing.Size(407, 24)
         Me.SampleEncounterDateComboBox.TabIndex = 23
@@ -317,7 +314,7 @@ Partial Class SurveyPropertiesEditor
         Me.Panel1.Controls.Add(Me.EnforceSkipYesOption)
         Me.Panel1.Controls.Add(Me.lblEnforceSkipPattern)
         Me.Panel1.Location = New System.Drawing.Point(1, 448)
-        Me.Panel1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Panel1.Margin = New System.Windows.Forms.Padding(4)
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(644, 26)
         Me.Panel1.TabIndex = 17
@@ -326,7 +323,7 @@ Partial Class SurveyPropertiesEditor
         '
         Me.EnforceSkipNoOption.AutoSize = True
         Me.EnforceSkipNoOption.Location = New System.Drawing.Point(300, 4)
-        Me.EnforceSkipNoOption.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.EnforceSkipNoOption.Margin = New System.Windows.Forms.Padding(4)
         Me.EnforceSkipNoOption.Name = "EnforceSkipNoOption"
         Me.EnforceSkipNoOption.Size = New System.Drawing.Size(44, 20)
         Me.EnforceSkipNoOption.TabIndex = 2
@@ -338,7 +335,7 @@ Partial Class SurveyPropertiesEditor
         Me.EnforceSkipYesOption.AutoSize = True
         Me.EnforceSkipYesOption.Checked = True
         Me.EnforceSkipYesOption.Location = New System.Drawing.Point(235, 4)
-        Me.EnforceSkipYesOption.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.EnforceSkipYesOption.Margin = New System.Windows.Forms.Padding(4)
         Me.EnforceSkipYesOption.Name = "EnforceSkipYesOption"
         Me.EnforceSkipYesOption.Size = New System.Drawing.Size(50, 20)
         Me.EnforceSkipYesOption.TabIndex = 1
@@ -361,7 +358,7 @@ Partial Class SurveyPropertiesEditor
         '
         Me.StudyIdLabel.BackColor = System.Drawing.SystemColors.Control
         Me.StudyIdLabel.Location = New System.Drawing.Point(563, 68)
-        Me.StudyIdLabel.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.StudyIdLabel.Margin = New System.Windows.Forms.Padding(4)
         Me.StudyIdLabel.Name = "StudyIdLabel"
         Me.StudyIdLabel.ReadOnly = True
         Me.StudyIdLabel.Size = New System.Drawing.Size(80, 22)
@@ -372,7 +369,7 @@ Partial Class SurveyPropertiesEditor
         '
         Me.SurveyIdLabel.BackColor = System.Drawing.SystemColors.Control
         Me.SurveyIdLabel.Location = New System.Drawing.Point(563, 37)
-        Me.SurveyIdLabel.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.SurveyIdLabel.Margin = New System.Windows.Forms.Padding(4)
         Me.SurveyIdLabel.Name = "SurveyIdLabel"
         Me.SurveyIdLabel.ReadOnly = True
         Me.SurveyIdLabel.Size = New System.Drawing.Size(80, 22)
@@ -383,7 +380,7 @@ Partial Class SurveyPropertiesEditor
         '
         Me.StudyNameLabel.BackColor = System.Drawing.SystemColors.Control
         Me.StudyNameLabel.Location = New System.Drawing.Point(235, 68)
-        Me.StudyNameLabel.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.StudyNameLabel.Margin = New System.Windows.Forms.Padding(4)
         Me.StudyNameLabel.Name = "StudyNameLabel"
         Me.StudyNameLabel.ReadOnly = True
         Me.StudyNameLabel.Size = New System.Drawing.Size(205, 22)
@@ -417,7 +414,7 @@ Partial Class SurveyPropertiesEditor
         Me.ResurveyExcludionDaysPanel.Controls.Add(Me.ResurveyExcludionDaysNumeric)
         Me.ResurveyExcludionDaysPanel.Controls.Add(Me.ResurveyExcludionDaysLabel)
         Me.ResurveyExcludionDaysPanel.Location = New System.Drawing.Point(1, 671)
-        Me.ResurveyExcludionDaysPanel.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.ResurveyExcludionDaysPanel.Margin = New System.Windows.Forms.Padding(4)
         Me.ResurveyExcludionDaysPanel.Name = "ResurveyExcludionDaysPanel"
         Me.ResurveyExcludionDaysPanel.Size = New System.Drawing.Size(379, 31)
         Me.ResurveyExcludionDaysPanel.TabIndex = 30
@@ -425,7 +422,7 @@ Partial Class SurveyPropertiesEditor
         'ResurveyExcludionDaysNumeric
         '
         Me.ResurveyExcludionDaysNumeric.Location = New System.Drawing.Point(235, 4)
-        Me.ResurveyExcludionDaysNumeric.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.ResurveyExcludionDaysNumeric.Margin = New System.Windows.Forms.Padding(4)
         Me.ResurveyExcludionDaysNumeric.Maximum = New Decimal(New Integer() {9999, 0, 0, 0})
         Me.ResurveyExcludionDaysNumeric.Name = "ResurveyExcludionDaysNumeric"
         Me.ResurveyExcludionDaysNumeric.Size = New System.Drawing.Size(143, 22)
@@ -459,7 +456,7 @@ Partial Class SurveyPropertiesEditor
         Me.ResurveyMethodComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.ResurveyMethodComboBox.FormattingEnabled = True
         Me.ResurveyMethodComboBox.Location = New System.Drawing.Point(236, 641)
-        Me.ResurveyMethodComboBox.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.ResurveyMethodComboBox.Margin = New System.Windows.Forms.Padding(4)
         Me.ResurveyMethodComboBox.Name = "ResurveyMethodComboBox"
         Me.ResurveyMethodComboBox.Size = New System.Drawing.Size(141, 24)
         Me.ResurveyMethodComboBox.TabIndex = 29
@@ -482,7 +479,7 @@ Partial Class SurveyPropertiesEditor
         Me.SamplingAlgorithmComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.SamplingAlgorithmComboBox.FormattingEnabled = True
         Me.SamplingAlgorithmComboBox.Location = New System.Drawing.Point(236, 421)
-        Me.SamplingAlgorithmComboBox.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.SamplingAlgorithmComboBox.Margin = New System.Windows.Forms.Padding(4)
         Me.SamplingAlgorithmComboBox.Name = "SamplingAlgorithmComboBox"
         Me.SamplingAlgorithmComboBox.Size = New System.Drawing.Size(141, 24)
         Me.SamplingAlgorithmComboBox.TabIndex = 16
@@ -525,7 +522,7 @@ Partial Class SurveyPropertiesEditor
         '
         Me.SurveyEndDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
         Me.SurveyEndDatePicker.Location = New System.Drawing.Point(236, 511)
-        Me.SurveyEndDatePicker.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.SurveyEndDatePicker.Margin = New System.Windows.Forms.Padding(4)
         Me.SurveyEndDatePicker.Name = "SurveyEndDatePicker"
         Me.SurveyEndDatePicker.Size = New System.Drawing.Size(141, 22)
         Me.SurveyEndDatePicker.TabIndex = 21
@@ -533,7 +530,7 @@ Partial Class SurveyPropertiesEditor
         'SurveyDescriptionTextBox
         '
         Me.SurveyDescriptionTextBox.Location = New System.Drawing.Point(236, 343)
-        Me.SurveyDescriptionTextBox.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.SurveyDescriptionTextBox.Margin = New System.Windows.Forms.Padding(4)
         Me.SurveyDescriptionTextBox.MaxLength = 40
         Me.SurveyDescriptionTextBox.Multiline = True
         Me.SurveyDescriptionTextBox.Name = "SurveyDescriptionTextBox"
@@ -565,7 +562,7 @@ Partial Class SurveyPropertiesEditor
         'ContractNumberTextBox
         '
         Me.ContractNumberTextBox.Location = New System.Drawing.Point(235, 7)
-        Me.ContractNumberTextBox.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.ContractNumberTextBox.Margin = New System.Windows.Forms.Padding(4)
         Me.ContractNumberTextBox.MaxLength = 9
         Me.ContractNumberTextBox.Name = "ContractNumberTextBox"
         Me.ContractNumberTextBox.Size = New System.Drawing.Size(205, 22)
@@ -574,7 +571,7 @@ Partial Class SurveyPropertiesEditor
         'SurveyNameTextBox
         '
         Me.SurveyNameTextBox.Location = New System.Drawing.Point(235, 37)
-        Me.SurveyNameTextBox.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.SurveyNameTextBox.Margin = New System.Windows.Forms.Padding(4)
         Me.SurveyNameTextBox.MaxLength = 10
         Me.SurveyNameTextBox.Name = "SurveyNameTextBox"
         Me.SurveyNameTextBox.Size = New System.Drawing.Size(205, 22)
@@ -583,7 +580,7 @@ Partial Class SurveyPropertiesEditor
         'RespRateRecalcDaysNumeric
         '
         Me.RespRateRecalcDaysNumeric.Location = New System.Drawing.Point(236, 609)
-        Me.RespRateRecalcDaysNumeric.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.RespRateRecalcDaysNumeric.Margin = New System.Windows.Forms.Padding(4)
         Me.RespRateRecalcDaysNumeric.Maximum = New Decimal(New Integer() {9999, 0, 0, 0})
         Me.RespRateRecalcDaysNumeric.Name = "RespRateRecalcDaysNumeric"
         Me.RespRateRecalcDaysNumeric.Size = New System.Drawing.Size(144, 22)
@@ -595,7 +592,7 @@ Partial Class SurveyPropertiesEditor
         Me.CutoffDateComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CutoffDateComboBox.FormattingEnabled = True
         Me.CutoffDateComboBox.Location = New System.Drawing.Point(236, 576)
-        Me.CutoffDateComboBox.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CutoffDateComboBox.Margin = New System.Windows.Forms.Padding(4)
         Me.CutoffDateComboBox.Name = "CutoffDateComboBox"
         Me.CutoffDateComboBox.Size = New System.Drawing.Size(407, 24)
         Me.CutoffDateComboBox.TabIndex = 25
@@ -616,7 +613,7 @@ Partial Class SurveyPropertiesEditor
         '
         Me.SurveyStartDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
         Me.SurveyStartDatePicker.Location = New System.Drawing.Point(236, 479)
-        Me.SurveyStartDatePicker.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.SurveyStartDatePicker.Margin = New System.Windows.Forms.Padding(4)
         Me.SurveyStartDatePicker.Name = "SurveyStartDatePicker"
         Me.SurveyStartDatePicker.Size = New System.Drawing.Size(141, 22)
         Me.SurveyStartDatePicker.TabIndex = 19
@@ -638,7 +635,7 @@ Partial Class SurveyPropertiesEditor
         Me.SurveyTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.SurveyTypeComboBox.FormattingEnabled = True
         Me.SurveyTypeComboBox.Location = New System.Drawing.Point(235, 98)
-        Me.SurveyTypeComboBox.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.SurveyTypeComboBox.Margin = New System.Windows.Forms.Padding(4)
         Me.SurveyTypeComboBox.Name = "SurveyTypeComboBox"
         Me.SurveyTypeComboBox.Size = New System.Drawing.Size(407, 24)
         Me.SurveyTypeComboBox.TabIndex = 9
@@ -669,7 +666,7 @@ Partial Class SurveyPropertiesEditor
         'FacingNameTextBox
         '
         Me.FacingNameTextBox.Location = New System.Drawing.Point(236, 311)
-        Me.FacingNameTextBox.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.FacingNameTextBox.Margin = New System.Windows.Forms.Padding(4)
         Me.FacingNameTextBox.MaxLength = 42
         Me.FacingNameTextBox.Name = "FacingNameTextBox"
         Me.FacingNameTextBox.Size = New System.Drawing.Size(407, 22)
@@ -692,7 +689,7 @@ Partial Class SurveyPropertiesEditor
         Me.InformationBar.Dock = System.Windows.Forms.DockStyle.Top
         Me.InformationBar.Information = " Information Bar"
         Me.InformationBar.Location = New System.Drawing.Point(0, 0)
-        Me.InformationBar.Margin = New System.Windows.Forms.Padding(5, 5, 5, 5)
+        Me.InformationBar.Margin = New System.Windows.Forms.Padding(5)
         Me.InformationBar.Name = "InformationBar"
         Me.InformationBar.Padding = New System.Windows.Forms.Padding(1)
         Me.InformationBar.Size = New System.Drawing.Size(696, 25)
@@ -706,7 +703,7 @@ Partial Class SurveyPropertiesEditor
         Me.Controls.Add(Me.WorkAreaPanel)
         Me.Controls.Add(Me.InformationBar)
         Me.Controls.Add(Me.BottomPanel)
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "SurveyPropertiesEditor"
         Me.Size = New System.Drawing.Size(696, 830)
         Me.BottomPanel.ResumeLayout(False)
@@ -718,7 +715,6 @@ Partial Class SurveyPropertiesEditor
         Me.ResurveyExcludionDaysPanel.PerformLayout()
         CType(Me.ResurveyExcludionDaysNumeric, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.RespRateRecalcDaysNumeric, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.bindingSourceQuestionnaireComboBox, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -775,6 +771,5 @@ Partial Class SurveyPropertiesEditor
     Friend WithEvents Label12 As System.Windows.Forms.Label
     Friend WithEvents UseUSPSAddrChangeServiceLabel As System.Windows.Forms.Label
     Friend WithEvents UseUSPSAddrChangeServiceCheckBox As System.Windows.Forms.CheckBox
-    Friend WithEvents bindingSourceQuestionnaireComboBox As System.Windows.Forms.BindingSource
 
 End Class

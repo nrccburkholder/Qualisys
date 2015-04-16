@@ -1,0 +1,13 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Qualisys.QSIFileMoverService</id>
+    <title>QSI File Mover Service</title>
+    <version>2.0.0</version>
+    <authors>NRC</authors>
+    <description>This service monitors the vendor FTP folder and moves new files to the InBoundFiles vendor folder.</description>
+  </metadata>
+  <files>
+    <file src="bin\Release\**"/>
+  </files>
+</package>

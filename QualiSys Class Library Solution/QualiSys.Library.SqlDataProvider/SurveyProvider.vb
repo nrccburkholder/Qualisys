@@ -496,6 +496,8 @@ Public Class SurveyProvider
             Dim isMultiselect As Boolean
             Dim isRuleOverride As Boolean
             Dim isSelected As Boolean
+            Dim ParentSubType_Id As Integer
+            Dim isQuestionnaireRequired As Boolean
 
             If categorytype = SubtypeCategories.QuestionnaireType Then
                 items.Add(New SubType(0, -1, "N/A", False, False))
@@ -510,8 +512,10 @@ Public Class SurveyProvider
                 isMultiselect = rdr.GetBoolean("bitMultiSelect")
                 isRuleOverride = rdr.GetBoolean("bitRuleOverride")
                 isSelected = rdr.GetInteger("bitSelected") = 1
+                ParentSubType_Id = rdr.GetInteger("ParentSubType_id")
+                isQuestionnaireRequired = rdr.GetBoolean("bitQuestionnaireRequired")
 
-                items.Add(New SubType(SubType_Id, SurveyType_Id, SubType_NM, isRuleOverride, isSelected))
+                items.Add(New SubType(SubType_Id, SurveyType_Id, SubType_NM, isRuleOverride, isSelected, ParentSubType_Id, isQuestionnaireRequired))
             Loop
 
             Return items

@@ -1,0 +1,13 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Qualisys.QSITransferResultsService</id>
+    <title>QSI Transfer Results Service</title>
+    <version>2.0.0</version>
+    <authors>NRC</authors>
+    <description>This service monitors the InBound folders specified in the DL_TranslationModules table for new files and transfers the data contained into QualiSys.</description>
+  </metadata>
+  <files>
+    <file src="bin\Release\**"/>
+  </files>
+</package>
