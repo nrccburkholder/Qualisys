@@ -41,6 +41,7 @@ GO
 -- Modified 10/29/2014 DBG - added Subtype_nm to temp table because ACOCAHPSCompleteness now needs it
 CREATE PROCEDURE [dbo].[sp_phase3_questionresult_for_extract] 
 AS 
+
     SET TRANSACTION isolation level READ uncommitted 
 
     INSERT INTO drm_tracktimes 
@@ -89,44 +90,53 @@ AS
     INSERT INTO drm_tracktimes 
     SELECT Getdate(), 'HH get hcahps records and index' 
 
-    --Get the records that are HHCAHPS so we can compute completeness  
-    SELECT e.QuestionForm_id, CONVERT(INT, NULL) Complete 
-    INTO   #b 
-    FROM   QuestionForm_extract e, 
-           QuestionForm qf, 
-           Survey_def sd 
-    WHERE  e.study_id IS NOT NULL 
-           AND e.tiextracted = 0 
-           AND datextracted_dt IS NULL 
-           AND e.QuestionForm_id = qf.QuestionForm_id 
-           AND qf.Survey_id = sd.Survey_id 
-           AND Surveytype_id = 3 
-    GROUP  BY e.QuestionForm_id 
+    ----Get the records that are HHCAHPS so we can compute completeness  
+    --SELECT e.QuestionForm_id, CONVERT(INT, NULL) Complete, convert(int,null) ATACnt, convert(int,null) Q1, convert(int,null) numAnswersAfterQ1
+    --INTO   #HHQF 
+    --FROM   QuestionForm_extract e, 
+    --       QuestionForm qf, 
+    --       Survey_def sd
+    --WHERE  e.study_id IS NOT NULL 
+    --       AND e.tiextracted = 0 
+    --       AND datextracted_dt IS NULL 
+    --       AND e.QuestionForm_id = qf.QuestionForm_id 
+    --       AND qf.Survey_id = sd.Survey_id 
+    --       AND Surveytype_id = 3 
+    --GROUP  BY e.QuestionForm_id 
 
-    --*******************************************************************   
-    --**  DRM 12/30/2012  Temp hack to allow hcahps only   
-    --*******************************************************************   
-    --delete #b   
-    --*******************************************************************   
-    --**  end hack   
-    --*******************************************************************   
-    CREATE INDEX tmpindex ON #b (QuestionForm_id) 
+	--Modified 03/27/2015 TSB
+	select e.QuestionForm_id, CONVERT(INT, NULL) Complete, convert(int,null) ATACnt, convert(int,null) Q1, convert(int,null) numAnswersAfterQ1, ms.STRMAILINGSTEP_NM
+	into #HHQF
+	from QuestionForm_extract e
+	inner join QuestionForm qf on e.QuestionForm_id = qf.QuestionForm_id 
+	inner join survey_def sd on qf.survey_id=sd.survey_id
+	inner join SENTMAILING sm on sm.SENTMAIL_ID = qf.SENTMAIL_ID
+	inner join SCHEDULEDMAILING scm on scm.scheduledmailing_id = sm.scheduledmailing_id
+	inner join MAILINGSTEP ms on ms.MAILINGSTEP_ID = scm.mailingstep_id
+	where e.study_id IS NOT NULL 
+           AND e.tiextracted = 0
+		   AND sd.surveytype_id=3
+	GROUP  BY e.QuestionForm_id, ms.STRMAILINGSTEP_NM
+
+
+    CREATE INDEX tmpindex ON #HHQF (QuestionForm_id) 
 
     INSERT INTO drm_tracktimes 
-    SELECT Getdate(), 'HH update tmp table with function call' 
+    SELECT Getdate(), 'HH update tmp table with procedure call' 
 
-    UPDATE #b 
-	SET    complete = dbo.Hhcahpscompleteness(QuestionForm_id) 
+--	UPDATE #HHQF
+--	SET    complete = dbo.Hhcahpscompleteness(QuestionForm_id) 
+	exec dbo.HHCAHPSCompleteness
 
     INSERT INTO drm_tracktimes 
     SELECT Getdate(), 'HH update QuestionForm' 
 
     UPDATE qf 
     SET    bitComplete = Complete 
-    FROM   QuestionForm qf, #b t 
+    FROM   QuestionForm qf, #HHQF t 
     WHERE  t.QuestionForm_id = qf.QuestionForm_id 
 
-    DROP TABLE #b 
+--	DROP TABLE #HHQF --> we're using this later, so don't drop it yet.
 
     --END: Get the records that are HHCAHPS so we can compute completeness  
     INSERT INTO drm_tracktimes 
@@ -188,7 +198,7 @@ AS
 	--exec dbo.CheckForACOCAHPSIncompletes
  --   --END: Get the records that are ACO so we can compute completeness  
 
-    INSERT INTO drm_tracktimes 
+INSERT INTO drm_tracktimes 
     SELECT Getdate(), 'populate Cmnt_QuestionResult_Work' 
 
     INSERT INTO cmnt_QuestionResult_work 
@@ -442,52 +452,69 @@ AS
     WHERE  SurveyType_ID = 2 
            AND bitcomplete = 0 
 
-    --HHCAHPS DispositionS  
+    --HHCAHPS DispositionS 
+    -- if more than half of the ATA questions have been answered, bitComplete=1 and it's coded as a Complete
     UPDATE cqw 
-    SET    FinalDisposition = '110' 
+    SET    FinalDisposition = '110' -- Completed Mail Survey
     FROM   cmnt_QuestionResult_work cqw 
     WHERE  SurveyType_ID = 3 
            AND bitcomplete = 1 
            AND ReceiptType_ID = 17 
 
     UPDATE cqw 
-    SET    FinalDisposition = '120' 
+    SET    FinalDisposition = '120' -- Completed Phone Interview
     FROM   cmnt_QuestionResult_work cqw 
     WHERE  SurveyType_ID = 3 
            AND bitcomplete = 1 
            AND ReceiptType_ID = 12 
 
-    SELECT q.QuestionForm_id 
-    INTO   #hhcahps_invalidDisposition 
-    FROM   cmnt_QuestionResult_work q, 
-           Survey_def sd 
-    WHERE  qstncore = 38694 
-           AND val <> 1 
-           AND sd.Survey_id = q.Survey_id 
-           AND sd.Surveytype_id = 3 
-           AND bitcomplete = 0 
+    --SELECT q.QuestionForm_id 
+    --INTO   #hhcahps_invalidDisposition 
+    --FROM   cmnt_QuestionResult_work q, 
+    --       Survey_def sd 
+    --WHERE  qstncore = 38694 
+    --       AND val <> 1 
+    --       AND sd.Survey_id = q.Survey_id 
+    --       AND sd.Surveytype_id = 3 
+    --       AND bitcomplete = 0 
 
+	-- if incomplete and Q1=No and they didn't answer any other questions, they're ineligible
     UPDATE cqw 
-    SET    FinalDisposition = '220' 
-    FROM   cmnt_QuestionResult_work cqw, 
-           #hhcahps_invalidDisposition i 
-    WHERE  i.QuestionForm_id = cqw.QuestionForm_id 
+    SET    FinalDisposition = '220' -- Ineligible: Does not meet eligible Population criteria
+    FROM   cmnt_QuestionResult_work cqw 
+           inner join #HHQF hh on  hh.QuestionForm_id = cqw.QuestionForm_id 
+    WHERE  hh.Q1 = 2
+           AND hh.complete = 0
+           AND hh.numAnswersAfterQ1 = 0
 
-    SELECT q.QuestionForm_id 
-    INTO   #hhcahps_validDisposition 
-    FROM   cmnt_QuestionResult_work q, 
-           Survey_def sd 
-    WHERE  qstncore = 38694 
-           AND val = 1 
-           AND sd.Survey_id = q.Survey_id 
-           AND sd.Surveytype_id = 3 
-           AND bitcomplete = 0 
+    --SELECT q.QuestionForm_id 
+    --INTO   #hhcahps_validDisposition 
+    --FROM   cmnt_QuestionResult_work q, 
+    --       Survey_def sd 
+    --WHERE  qstncore = 38694 
+    --       AND val = 1 
+    --       AND sd.Survey_id = q.Survey_id 
+    --       AND sd.Surveytype_id = 3 
+    --       AND bitcomplete = 0 
 
+	-- if incomplete and Q1=Yes or they answered questions after Q1, it's a breakoff
     UPDATE cqw 
-    SET    FinalDisposition = '310' 
-    FROM   cmnt_QuestionResult_work cqw, 
-           #hhcahps_validDisposition i 
-    WHERE  i.QuestionForm_id = cqw.QuestionForm_id 
+    SET    FinalDisposition = '310' -- Breakoff
+    FROM   cmnt_QuestionResult_work cqw 
+           inner join #HHQF hh on hh.QuestionForm_id = cqw.QuestionForm_id 
+    WHERE  hh.complete=0
+           AND (hh.numAnswersAfterQ1 > 0 or hh.Q1=1)
+           
+	-- if incomplete and Q1 isn't answered and they didn't answer anything else either, it's just a blank survey.
+	-- Modified 03/27/2015 TSB  to only look at 2ndSurvey
+    UPDATE cqw 
+    SET    FinalDisposition = '320' -- Refusal
+    FROM   cmnt_QuestionResult_work cqw 
+           inner join #HHQF hh on hh.QuestionForm_id = cqw.QuestionForm_id 
+    WHERE  hh.complete=0
+           AND hh.numAnswersAfterQ1=0 
+           AND hh.Q1=-9
+		   AND hh.STRMAILINGSTEP_NM = '2nd Survey'
 
     --MNCM DispositionS  
     UPDATE cqw 
@@ -770,7 +797,7 @@ AS
           -- Modified 01/03/2013 DRH changed @work to #work plus index 
           --DELETE FROM @work WHERE @qf=QuestionForm_id AND  @su=SampleUnit_id AND  @sk=Skip_id AND  @svy=Survey_id    
           DELETE FROM #work 
-          WHERE  @qf = QuestionForm_id 
+         WHERE  @qf = QuestionForm_id 
                  AND @su = sampleunit_id 
                  AND @sk = skip_id 
                  AND @svy = Survey_id 
@@ -874,7 +901,4 @@ AS
 
     SET nocount OFF 
     SET TRANSACTION isolation level READ committed
-
 GO
-
-
