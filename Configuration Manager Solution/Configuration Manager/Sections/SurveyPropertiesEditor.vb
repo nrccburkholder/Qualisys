@@ -1,5 +1,7 @@
 Imports Nrc.Qualisys.Library
 Imports System.Linq
+Imports System.Text
+
 
 Public Class SurveyPropertiesEditor
 
@@ -521,17 +523,29 @@ Public Class SurveyPropertiesEditor
             Return False
         End If
 
-        ' Check to make sure if PCMH Distinction subtype selected the user has selected a QuestionnaireType
+        ' For each selected subtype, check to see if a QuestionnaireType is required
+        Dim isQuestionnaireRequiredError As Boolean = False
+        Dim alertMessage As New StringBuilder
+        alertMessage.Append("You must select a Questionnaire Type for the following selected SubType(s):")
+        alertMessage.Append(vbCrLf)
+        alertMessage.Append(vbCrLf)
         For Each st As SubType In SurveySubTypeListBox.CheckedItems
-            If st.SubTypeName = "PCMH Distinction" Then
-                ' If PCMH, then we need to make sure that a QuestionnaireType was selected.
+            If st.IsQuestionnaireRequired Then
+                ' If required, then we need to make sure that a QuestionnaireType was selected.
                 If CType(QuestionnaireTypeComboBox.SelectedItem, SubType).SubTypeId = 0 Then
-                    QuestionnaireTypeComboBox.Focus()
-                    MessageBox.Show("For a PCMH Distinction Sub-Type you must select a Questionnaire Type!", title, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                    Return False
+                    alertMessage.Append(st.SubTypeName)
+                    alertMessage.Append(vbCrLf)
+                    isQuestionnaireRequiredError = True
                 End If
             End If
         Next
+
+        ' If there is a missing Questionnaire, display the message to the user.
+        If isQuestionnaireRequiredError Then
+            QuestionnaireTypeComboBox.Focus()
+            MessageBox.Show(alertMessage.ToString(), title, MessageBoxButtons.OK, MessageBoxIcon.Information)
+            Return False
+        End If
 
         Return True
 
