@@ -1,4 +1,6 @@
 /*
+File: S20_US8_T1_Changes to ICH Dispositions in Catalyst.sql
+
 s20 US8 T1 Changes to ICH Dispositions	
 
 3/11/2015 Chris Burkholder

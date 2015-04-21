@@ -118,11 +118,21 @@ AS
 	FROM QuestionFormTemp qft 
     WHERE ExtractFileID = @ExtractFileID AND SurveyType_id=2
     
-    UPDATE qft 
-	SET isComplete=CASE WHEN QP_Prod.dbo.HHCAHPSCompleteness(QUESTIONFORM_ID) <> 0 THEN 'true' ELSE 'false' END
-	--SELECT *--isComplete=QP_Prod.dbo.HCAHPSCompleteness(QUESTIONFORM_ID),*
-	FROM QuestionFormTemp qft 
+    CREATE TABLE #HHQF (QuestionForm_id INT, Complete INT, ATACnt INT, Q1 INT, numAnswersAfterQ1 INT)
+    INSERT INTO #HHQF (QuestionForm_id)
+    select QuestionForm_id 
+    from QuestionFormTemp 
     WHERE ExtractFileID = @ExtractFileID AND SurveyType_id=3
+    
+    exec QP_Prod.dbo.HHCAHPSCompleteness
+    
+    UPDATE qft 
+	SET isComplete=CASE WHEN hh.Complete <> 0 THEN 'true' ELSE 'false' END
+	--SELECT *
+	FROM QuestionFormTemp qft 
+	inner join #HHQF hh on qft.Questionform_id=hh.questionform_id
+	
+	DROP TABLE #HHQF
     
     UPDATE qft 
 	SET isComplete=CASE WHEN QP_Prod.dbo.MNCMCompleteness(QUESTIONFORM_ID) <> 0 THEN 'true' ELSE 'false' END

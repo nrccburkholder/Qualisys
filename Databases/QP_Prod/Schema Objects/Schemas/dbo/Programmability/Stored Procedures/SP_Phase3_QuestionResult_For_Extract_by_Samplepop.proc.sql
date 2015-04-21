@@ -44,40 +44,45 @@ DROP TABLE #a
 insert into drm_tracktimes select getdate(), 'HH get hcahps records and index' 
 
 --Get the records that are HHCAHPS so we can compute completeness 
-SELECT e.QuestionForm_id, CONVERT(INT,NULL) Complete 
-INTO #b 
-FROM QuestionForm_Extract e, QuestionForm qf, Survey_def sd 
-WHERE e.Study_id IS NOT NULL 
-AND e.tiExtracted=0 
-AND datExtracted_dt IS NULL 
-AND e.QuestionForm_id=qf.Questionform_id 
-AND qf.Survey_id=sd.Survey_id 
-AND SurveyType_id=3 
-GROUP BY e.QuestionForm_id 
+--SELECT e.QuestionForm_id, CONVERT(INT,NULL) Complete, convert(int,null) ATACnt, convert(int,null) Q1, convert(int,null) numAnswersAfterQ1
+--INTO #HHQF
+--FROM QuestionForm_Extract e, QuestionForm qf, Survey_def sd 
+--WHERE e.Study_id IS NOT NULL 
+--AND e.tiExtracted=0 
+--AND datExtracted_dt IS NULL 
+--AND e.QuestionForm_id=qf.Questionform_id 
+--AND qf.Survey_id=sd.Survey_id 
+--AND SurveyType_id=3 
+--GROUP BY e.QuestionForm_id 
 
---*******************************************************************  
---**  DRM 12/30/2012  Temp hack to allow hcahps only  
---*******************************************************************  
---delete #b  
---*******************************************************************  
---**  end hack  
---*******************************************************************  
+select e.QuestionForm_id, CONVERT(INT, NULL) Complete, convert(int,null) ATACnt, convert(int,null) Q1, convert(int,null) numAnswersAfterQ1, ms.STRMAILINGSTEP_NM
+	into #HHQF
+	from QuestionForm_extract e
+	inner join QuestionForm qf on e.QuestionForm_id = qf.QuestionForm_id 
+	inner join survey_def sd on qf.survey_id=sd.survey_id
+	inner join SENTMAILING sm on sm.SENTMAIL_ID = qf.SENTMAIL_ID
+	inner join SCHEDULEDMAILING scm on scm.scheduledmailing_id = sm.scheduledmailing_id
+	inner join MAILINGSTEP ms on ms.MAILINGSTEP_ID = scm.mailingstep_id
+	where e.study_id IS NOT NULL 
+           AND e.tiextracted = 0
+		   AND sd.surveytype_id=3
+	GROUP  BY e.QuestionForm_id, ms.STRMAILINGSTEP_NM
 
+CREATE INDEX tmpIndex ON #HHQF (QuestionForm_id) 
 
-CREATE INDEX tmpIndex ON #b (QuestionForm_id) 
+insert into drm_tracktimes select getdate(), 'HH update tmp table with procedure call' 
 
-insert into drm_tracktimes select getdate(), 'HH update tmp table with function call' 
-
-UPDATE #b SET Complete=dbo.HHCAHPSCompleteness(QuestionForm_id) 
+--UPDATE #HHQF SET Complete=dbo.HHCAHPSCompleteness(QuestionForm_id) 
+exec dbo.HHCAHPSCompleteness
 
 insert into drm_tracktimes select getdate(), 'HH update questionform' 
 
 UPDATE qf 
 SET bitComplete=Complete 
-FROM QuestionForm qf, #b t 
+FROM QuestionForm qf, #HHQF t 
 WHERE t.QuestionForm_id=qf.QuestionForm_id 
 
-DROP TABLE #b 
+--DROP TABLE #HHQF --> we're using this later, so don't drop it yet.
 --END: Get the records that are HHCAHPS so we can compute completeness 
 
 insert into drm_tracktimes select getdate(), 'MNCM get hcahps records and index' 
@@ -279,44 +284,71 @@ from Cmnt_QuestionResult_Work cqw
 where SurveyType_ID = 2 and bitcomplete = 0 
 
 --HHCAHPS DISPOSITIONS 
+-- if more than half of the ATA questions have been answered, bitComplete=1 and it's coded as a Complete
 Update cqw 
-set FinalDisposition = '110' 
+set FinalDisposition = '110' -- Completed Mail Survey
 from Cmnt_QuestionResult_Work cqw 
 where SurveyType_ID = 3 and bitcomplete = 1 and ReceiptType_ID = 17 
 
 Update cqw 
-set FinalDisposition = '120' 
+set FinalDisposition = '120' -- Completed Phone Interview
 from Cmnt_QuestionResult_Work cqw 
 where SurveyType_ID = 3 and bitcomplete = 1 and ReceiptType_ID = 12 
 
 
-SELECT q.questionform_id 
-into #HHCAHPS_InvalidDisposition 
-FROM Cmnt_QuestionResult_Work q, SURVEY_DEF sd 
-WHERE qstncore = 38694 AND 
-val <> 1 AND 
-sd.SURVEY_ID = q.Survey_id AND 
-sd.SurveyType_id = 3 and 
-bitcomplete = 0 
+--SELECT q.questionform_id 
+--into #HHCAHPS_InvalidDisposition 
+--FROM Cmnt_QuestionResult_Work q, SURVEY_DEF sd 
+--WHERE qstncore = 38694 AND 
+--val <> 1 AND 
+--sd.SURVEY_ID = q.Survey_id AND 
+--sd.SurveyType_id = 3 and 
+--bitcomplete = 0 
 
+-- if incomplete and Q1=No and they didn't answer any other questions, they're ineligible
 Update cqw 
-set FinalDisposition = '220' 
-from Cmnt_QuestionResult_Work cqw, #HHCAHPS_InvalidDisposition i 
-where i.questionform_Id = cqw.questionform_id 
+set FinalDisposition = '220' -- Ineligible: Does not meet eligible Population criteria
+from Cmnt_QuestionResult_Work cqw
+inner join #HHQF hh on hh.questionform_Id = cqw.questionform_id 
+where hh.q1 = 2
+and hh.complete=0
+and hh.numAnswersAfterQ1 = 0
 
-SELECT q.questionform_id 
-into #HHCAHPS_ValidDisposition 
-FROM Cmnt_QuestionResult_Work q, SURVEY_DEF sd 
-WHERE qstncore = 38694 AND 
-val = 1 AND 
-sd.SURVEY_ID = q.Survey_id AND 
-sd.SurveyType_id = 3 and 
-bitcomplete = 0 
+--SELECT q.questionform_id 
+--into #HHCAHPS_ValidDisposition 
+--FROM Cmnt_QuestionResult_Work q, SURVEY_DEF sd 
+--WHERE qstncore = 38694 AND 
+--val = 1 AND 
+--sd.SURVEY_ID = q.Survey_id AND 
+--sd.SurveyType_id = 3 and 
+--bitcomplete = 0 
 
+-- if incomplete and Q1=Yes or they answered questions after Q1, it's a breakoff
 Update cqw 
-set FinalDisposition = '310' 
-from Cmnt_QuestionResult_Work cqw, #HHCAHPS_ValidDisposition i 
-where i.questionform_Id = cqw.questionform_id 
+set FinalDisposition = '310' -- Breakoff
+from Cmnt_QuestionResult_Work cqw
+inner join #HHQF hh on hh.questionform_Id = cqw.questionform_id 
+where hh.complete=0 
+and (hh.numAnswersAfterQ1 > 0 or hh.Q1=1)
+
+-- if incomplete and Q1 isn't answered and they didn't answer anything else either, it's just a blank survey.
+--UPDATE cqw 
+--SET FinalDisposition = '320' -- Refusal
+--FROM cmnt_QuestionResult_work cqw 
+--inner join #HHQF hh on hh.QuestionForm_id = cqw.QuestionForm_id 
+--WHERE hh.complete=0
+--AND hh.numAnswersAfterQ1=0 
+--AND hh.Q1=-9
+-- Modified 03/27/2015 TSB  to only look at 2ndSurvey
+    UPDATE cqw 
+    SET    FinalDisposition = '320' -- Refusal
+    FROM   cmnt_QuestionResult_work cqw 
+           inner join #HHQF hh on hh.QuestionForm_id = cqw.QuestionForm_id 
+    WHERE  hh.complete=0
+           AND hh.numAnswersAfterQ1=0 
+           AND hh.Q1=-9
+		   AND hh.STRMAILINGSTEP_NM = '2nd Survey'
+
 
 --MNCM DISPOSITIONS 
 Update cqw 
@@ -615,5 +647,4 @@ DROP TABLE #work
 
 SET NOCOUNT OFF 
 SET TRANSACTION ISOLATION LEVEL READ COMMITTED
-
-
+GO

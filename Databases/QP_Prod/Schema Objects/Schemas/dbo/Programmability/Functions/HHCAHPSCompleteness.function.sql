@@ -1,4 +1,6 @@
-﻿CREATE FUNCTION dbo.HHCAHPSCompleteness (@QuestionForm_id INT)  
+﻿/* 4/16/2015 replaced this function with an SP of the same name
+
+CREATE FUNCTION dbo.HHCAHPSCompleteness (@QuestionForm_id INT)  
 RETURNS BIT  
 AS  
 BEGIN  
@@ -30,3 +32,4 @@ RETURN @Complete
 END
 
 
+*/
