@@ -842,8 +842,6 @@ Public Class AddressCollection
             'return the new address
             ResendSecondaryAddress = clonedAddress
         Else
-            'Error out the original error
-            origAddr.SetCleanedTo(origAddr.OriginalAddress, "NC")
             'return the original address
             ResendSecondaryAddress = origAddr
         End If
