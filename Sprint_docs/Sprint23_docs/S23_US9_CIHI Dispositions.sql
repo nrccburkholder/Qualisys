@@ -10,6 +10,7 @@ T1 check for tables; confirm exist and create and populate as needed
 T2 modify ETL
 	ALTER PROCEDURE [dbo].[csp_CAHPSProcesses] 	
 	CREATE PROCEDURE [dbo].[CIHICompleteness]
+	DROP PROCEDURE [dbo].[CheckForCASurveyIncompletes]
 */
 USE [QP_Prod]
 
@@ -51,7 +52,7 @@ AS
 -- Procedure Name: CIHICompleteness
 -- Create date: 4/2015
 -- Description:	Stored Procedure that extracts question form data from QP_Prod
--- History: 1.0  4/2015  by Dave Gilsdorf (modeled after ACOCAHPSCompleteness
+-- History: 1.0  4/2015  by Dave Gilsdorf (modeled after ACOCAHPSCompleteness)
 -- =============================================
 BEGIN
 	DECLARE @MinDate DATE;
@@ -157,6 +158,9 @@ BEGIN
 	where qf.disposition in (11,13)	
 
 END
+GO
+IF exists (select * from sys.procedures where schema_id=1 and name = 'CheckForCASurveyIncompletes')
+	DROP PROCEDURE [DBO].[CheckForCASurveyIncompletes]
 GO
 use [NRC_Datamart_ETL]
 go
