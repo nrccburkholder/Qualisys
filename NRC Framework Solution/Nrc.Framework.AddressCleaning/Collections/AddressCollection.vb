@@ -627,8 +627,7 @@ Public Class AddressCollection
                 addr.SetCleanedTo(addr.OriginalAddress, "NU")
             ElseIf CheckForValidSecondAddress(results, addr) Then
                 addr.SetCleanedTo(addr.OriginalAddress, "NC")
-                Dim originalAddress As Address = addr.Clone
-                ResendSecondaryAddress(addr, originalAddress)
+                addr = ResendSecondaryAddress(addr)
             Else
                 'Address errors only were detected so set to original with error NC (Not Cleaned)
                 addr.SetCleanedTo(addr.OriginalAddress, "NC")
@@ -816,24 +815,35 @@ Public Class AddressCollection
 
     End Function
 
-    Private Function ResendSecondaryAddress(ByRef addr As Address, ByVal clonedAddress As Address) As Boolean
+    ''' <summary>
+    ''' This method is used to try a second time to clean a single address with Line1/Line2 swapped
+    ''' </summary>
+    ''' <param name="origAddr">If the </param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Function ResendSecondaryAddress(ByVal origAddr As Address) As Address
 
-        Dim primaryAddressHolder As String = addr.OriginalAddress.StreetLine1
+        'Make clone of the address being passed in
+        Dim clonedAddress As Address = origAddr.Clone
 
-        addr.OriginalAddress.StreetLine1 = addr.OriginalAddress.StreetLine2
-        addr.OriginalAddress.StreetLine2 = primaryAddressHolder
+        'Swap first and second lines for this second attempt on the clone
+        clonedAddress.OriginalAddress.StreetLine1 = origAddr.OriginalAddress.StreetLine2
+        clonedAddress.OriginalAddress.StreetLine2 = origAddr.OriginalAddress.StreetLine1
 
-        Dim responseArray As net.melissadata.addresscheck.ResponseArray = cleanSingleAddress(True, False, True, addr)
+        'Make the web service call with the clone/swapped address
+        Dim responseArray As net.melissadata.addresscheck.ResponseArray = cleanSingleAddress(True, False, True, clonedAddress)
 
-        Dim returnedAddress As Address = ParseSingleAddress(responseArray, addr)
+        'Parse the address clean response into an Address object
+        Dim returnedAddress As Address = ParseSingleAddress(responseArray, clonedAddress)
 
         If CheckForAddressSuccess(returnedAddress.WorkingAddress.AddressStatus) Then
-            'Use new address
-            addr.SetCleanedTo(returnedAddress.WorkingAddress)
+            'Success, use new address
+            clonedAddress.SetCleanedTo(returnedAddress.WorkingAddress)
+            'return the new address
+            ResendSecondaryAddress = clonedAddress
         Else
-            'reassign old address to new one and error out the original error
-            addr = clonedAddress
-            addr.SetCleanedTo(addr.OriginalAddress, "NC")
+            'return the original address
+            ResendSecondaryAddress = origAddr
         End If
 
     End Function
