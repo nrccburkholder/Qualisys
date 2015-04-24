@@ -151,6 +151,12 @@ BEGIN
 		end
 	where Disposition=0
 	
+	update qf
+	set bitComplete=c.ATAComplete
+	from dbo.questionform qf
+	inner join #CIHIqf c on qf.questionform_id=c.questionform_id
+	where c.ATAComplete in (1,0)
+	
 	insert into DispositionLog (sentmail_id, samplepop_id, disposition_id, ReceiptType_id, datlogged, loggedby)
 	select tr.sentmail_id, tr.samplepop_id, qf.disposition, tr.ReceiptType_id, getdate() as datlogged, 'CIHICompleteness' as loggedby
 	from #CIHIQF qf
