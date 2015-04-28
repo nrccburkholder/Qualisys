@@ -94,8 +94,8 @@ GO
 -- Create date: 7/10/2014
 -- Description:	Simple Rule Reader by Survey Type 
 -- =============================================
-CREATE 
---ALTER
+--CREATE 
+ALTER
 FUNCTION [dbo].[SurveyProperty] 
 (
 	@PropertyName varchar(50),

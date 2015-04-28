@@ -1,15 +1,21 @@
 use QP_PROD
 
+DECLARE @Surveytype_id int
+
+SELECT @Surveytype_id = SurveyType_id
+from SurveyType
+WHERE SurveyType_dsc = 'CGCAHPS'
+
 select *
 from SurveyTypeDefaultCriteria
-where surveytype_id = 4
+where surveytype_id = @Surveytype_id
 
 select *
 from DefaultCriteriaStmt
 where DefaultCriteriaStmt_id in (
 	select DefaultCriteriaStmt_id
 from SurveyTypeDefaultCriteria
-where surveytype_id = 4
+where surveytype_id = @Surveytype_id
 
 )
 
@@ -19,7 +25,7 @@ from DefaultCriteriaClause
 where DefaultCriteriaStmt_id in (
 	select DefaultCriteriaStmt_id
 from SurveyTypeDefaultCriteria
-where surveytype_id = 4
+where surveytype_id = @Surveytype_id
 
 )
 
@@ -28,7 +34,7 @@ begin tran
 
 INSERT INTO [dbo].[SurveyTypeDefaultCriteria]([SurveyType_id],[Country_id],[DefaultCriteriaStmt_id])--,[Subtype_id])
      VALUES
-           (4
+           (@Surveytype_id
            ,1
            ,1)
            --,9)
@@ -36,14 +42,14 @@ INSERT INTO [dbo].[SurveyTypeDefaultCriteria]([SurveyType_id],[Country_id],[Defa
 
 INSERT INTO [dbo].[SurveyTypeDefaultCriteria]([SurveyType_id],[Country_id],[DefaultCriteriaStmt_id])--,[Subtype_id])
      VALUES
-           (4
+           (@Surveytype_id
            ,1
            ,2)
            --,9)
 
 INSERT INTO [dbo].[SurveyTypeDefaultCriteria]([SurveyType_id],[Country_id],[DefaultCriteriaStmt_id])--,[Subtype_id])
      VALUES
-           (4
+           (@Surveytype_id
            ,1
            ,9)
            --,9)
@@ -87,7 +93,7 @@ INSERT INTO [dbo].[DefaultCriteriaClause]([DefaultCriteriaStmt_id],[CriteriaPhra
 
 INSERT INTO [dbo].[SurveyTypeDefaultCriteria]([SurveyType_id],[Country_id],[DefaultCriteriaStmt_id])--,[Subtype_id])
      VALUES
-           (4
+           (@Surveytype_id
            ,1
            ,@DefaultCriteriaStmt_ID)
            --,9)
@@ -104,14 +110,14 @@ rollback tran
 
 select *
 from SurveyTypeDefaultCriteria
-where surveytype_id = 4
+where surveytype_id = @Surveytype_id
 
 select *
 from DefaultCriteriaStmt
 where DefaultCriteriaStmt_id in (
 	select DefaultCriteriaStmt_id
 from SurveyTypeDefaultCriteria
-where surveytype_id = 4
+where surveytype_id = @Surveytype_id
 
 )
 
@@ -121,6 +127,6 @@ from DefaultCriteriaClause
 where DefaultCriteriaStmt_id in (
 	select DefaultCriteriaStmt_id
 from SurveyTypeDefaultCriteria
-where surveytype_id = 4
+where surveytype_id = @Surveytype_id
 
 )
