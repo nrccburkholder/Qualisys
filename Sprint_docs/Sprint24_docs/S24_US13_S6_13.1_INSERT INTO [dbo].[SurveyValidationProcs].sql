@@ -1,7 +1,12 @@
 USE QP_Prod
 /*
-Inserts new SurveyValidationProcs records 
-and the SurveyValidationProcsBySurveyType mappings 
+
+
+S24 US13.1  Setup PCMH survey validation
+
+Tim Butler
+
+Inserts new SurveyValidationProcs records and the SurveyValidationProcsBySurveyType mappings 
 
 */
 
@@ -138,7 +143,7 @@ Select @intOrder = Max(intOrder) + 1 from SurveyValidationProcs
 
 
 
---commit tran
+commit tran
 
 select *
 FROM SurveyValidationProcs_View
