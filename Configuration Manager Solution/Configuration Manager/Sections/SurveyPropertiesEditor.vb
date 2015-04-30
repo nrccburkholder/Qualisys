@@ -214,7 +214,7 @@ Public Class SurveyPropertiesEditor
                     selectedItem.IsDirty = False
                 End If
             End If
-            
+
         End If
     End Sub
 
@@ -274,7 +274,7 @@ Public Class SurveyPropertiesEditor
         'questionnaire Type list
         Dim questionnaireTypeID As Integer = 0
         LoadQuestionnaireTypeComboBox(surveyTypeID, questionnaireTypeID, mModule.EditingSurvey.Id)
-       
+
         'Set up disabled controls based on survey subtype (not a value saved with the survey, per se)
         Dim override As String = mModule.EditingSurvey.SurveySubTypeOverrideName() 'will retrieve PCMH for example CJB 8/14/2014
 
@@ -676,17 +676,28 @@ Public Class SurveyPropertiesEditor
     Private Function FilterQuestionnaireComboBox(ByVal _subTypeList As List(Of SubType)) As SubTypeList
 
         Dim parentSubTypeIDList As List(Of Integer) = New List(Of Integer)
-
         ' create a list of the parentSubType ids for the checked items
         If _subTypeList.Count > 0 Then
-            For Each subtypeItem As SubType In _subTypeList
-                parentSubTypeIDList.Add(subtypeItem.ParentSubTypeId)
-            Next
+
+            ' check if any of the selected subtypes is an override
+            If _subTypeList.Where(Function(s) (s.IsRuleOverride = True)).Count > 0 Then
+                ' add the overrides to the list.
+                For Each subtypeItem As SubType In _subTypeList.Where(Function(s) (s.IsRuleOverride = True))
+                    parentSubTypeIDList.Add(subtypeItem.ParentSubTypeId)
+                Next
+            Else
+                ' none of the selections is an override, so add them all to the list
+                For Each subtypeItem As SubType In _subTypeList
+                    parentSubTypeIDList.Add(subtypeItem.ParentSubTypeId)
+                Next
+
+            End If
         Else
             parentSubTypeIDList.Add(0)
         End If
-        parentSubTypeIDList = parentSubTypeIDList.Distinct().ToList
 
+        ' make a distinct list of subtype id's 
+        parentSubTypeIDList = parentSubTypeIDList.Distinct().ToList
 
         '  if any of the Non-mapped subtypes are selected, we just return the whole list
         If parentSubTypeIDList.Contains(0) Then
@@ -696,10 +707,9 @@ Public Class SurveyPropertiesEditor
             Dim tempSubTypeList As New SubTypeList()
 
             For Each item As SubType In mSubTypeList
-                If parentSubTypeIDList.Contains(item.ParentSubTypeId) Or item.SubTypeId = 0 Then
+                If parentSubTypeIDList.Contains(item.ParentSubTypeId) Or item.SubTypeId = 0 Then ' item.Subtype = 0 represents N/A, so we always include it
                     tempSubTypeList.Add(item)
                 End If
-
             Next
 
             Return tempSubTypeList
@@ -745,7 +755,7 @@ Public Class SurveyPropertiesEditor
 
 #End Region
 
-  
-   
-    
+
+
+
 End Class
