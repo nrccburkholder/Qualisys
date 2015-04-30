@@ -119,7 +119,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="TransferResults.nuspec" />
+    <None Include="TransferResultsLauncher.nuspec" />
     <Content Include="TransferResults.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
