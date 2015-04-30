@@ -54,10 +54,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>C4A197BC9B34ECD5E7BB33F5F760862819B9A188</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>5A71A56E298D541D5E2B8C5954E41C6B418841DD</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>TransferResultsLauncher_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -103,6 +104,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="TransferResultsLauncher.nuspec" />
     <None Include="TransferResultsLauncher_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
