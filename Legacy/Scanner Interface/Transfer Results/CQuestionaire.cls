@@ -52,7 +52,7 @@ Option Explicit
     Private mdtDateReturned     As Date         '** Added 08-29-00 JJF
     Private mbKeepMultiReturns  As Boolean      '** Added 12-20-00 JJF
     Private meWhereIsIt         As eCountryCodeConstants    '** Added 05-27-05 JJF
-    Private mlLithoCode         As Long
+    Private mlLithoCode         As Long  '** Added 04-30-205 TSB
 
 
 

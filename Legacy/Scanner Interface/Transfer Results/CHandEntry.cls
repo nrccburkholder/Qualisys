@@ -53,6 +53,7 @@ Option Explicit
     Private mlUnusedReturnID    As Long     'local copy
     Private mbQuestionNotFound  As Boolean  'local copy
     Private meWhereIsIt         As eCountryCodeConstants    '** Added 05-27-05 JJF
+    Private mlLithoCode         As Long  '** Added 04-30-205 TSB
 
 
 

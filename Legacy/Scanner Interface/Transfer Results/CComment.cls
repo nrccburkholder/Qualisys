@@ -54,6 +54,7 @@ Option Explicit
     Private msCommentTextUM         As String   '** Added 01-28-02 JJF
     Private meWhereIsIt             As eCountryCodeConstants    '** Added 05-27-05 JJF
     Private mlSamplePopID           As Long
+    Private mlLithoCode         As Long  '** Added 04-30-205 TSB
     
     Private malCommentCodes()       As Long
     
