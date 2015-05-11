@@ -393,8 +393,6 @@ AS
 --			2.0  Tim Butler - S15 US11 Add StandardMethodologyID column to SampleSet
 --			3.0  Tim Butler - S18 US17 Add IneligibleCount column to SampleSet
 --			S20 US9  Add SamplingMethodID  Tim Butler
---			S20 US11 Add Patient In File Count  Tim Butler
---			S23 US8  Delete SampleUnitBySampleSet records if the SampleSet is deleted
 -- =============================================
 	SET NOCOUNT ON 
 
@@ -461,11 +459,10 @@ AS
 	   AND lt.isInsert <> 0 AND isDelete = 0
 
 	INSERT dbo.SampleSet
-		(SampleSetID, ClientID, SampleDate,StandardMethodologyID, IneligibleCount, NumPatInFile, SamplingMethodID)
+		(SampleSetID, ClientID, SampleDate,StandardMethodologyID, IneligibleCount, SamplingMethodID)
 		SELECT SampleSetID, ClientID, CONVERT(DATE,SampleDate)
 		,StandardMethodologyID -- 2.0
 		,IneligibleCount  -- 3.0
-		,NumPatInFile -- S20 US11
 		,SamplingMethodID -- S20 US9
 		  FROM LOAD_TABLES.SampleSet WITH (NOLOCK)
 		 WHERE DataFileID = @DataFileID
@@ -481,7 +478,6 @@ AS
 		   SampleDate = CONVERT(DATE,lt.SampleDate),
 		   StandardMethodologyID = lt.StandardMethodologyID, -- 2.0
 		   IneligibleCount = lt.IneligibleCount, -- 3.0
-		   NumPatInFile = lt.NumPatInFile, -- S20 US11
 		   SamplingMethodID = lt.SamplingMethodID -- S20 US9
 	  FROM LOAD_TABLES.SampleSet lt WITH (NOLOCK)
 			INNER JOIN dbo.SampleSet p WITH (NOLOCK) ON p.SampleSetID = lt.SampleSetID
@@ -502,7 +498,6 @@ AS
       ,'ClientID Is NULL' 
       ,[StandardMethodologyID]  --2.0
 	  ,[IneligibleCount]   -- 3.0
-	  ,[NumPatInFile] -- S20 US11
 	  ,[SamplingMethodID] -- S20 US9
     FROM LOAD_TABLES.SampleSet WITH (NOLOCK)
     WHERE ClientID IS NULL AND isDelete = 0 AND DataFileID = @DataFileID
@@ -529,7 +524,6 @@ AS
 			LEFT JOIN ResponseComment WITH (NOLOCK) ON QuestionForm.QuestionFormID = ResponseComment.QuestionFormID			
 		 WHERE lt.DataFileID = @DataFileID
 		 AND lt.isDelete <> 0
-
 
        DELETE dbo.ResponseCommentCommentCode
 --          select *
@@ -721,17 +715,7 @@ AS
  			INNER JOIN dbo.SampleSet st WITH (NOLOCK) ON temp.SampleSetID = st.SampleSetID
  			INNER JOIN ETL.DataSourceKey dsk WITH (NOLOCK) ON st.SampleSetID = dsk.DataSourceKeyID
 	
-		SET @dcnt = @@ROWCOUNT	
-		
-		--------------------------------------------------------------------------------------
-		-- S23 US8  SampleUnitBySampleSet
-		--------------------------------------------------------------------------------------				
-		DELETE dbo.SampleUnitBySampleSet
---          select *
-		  FROM #temp temp WITH (NOLOCK)
- 			INNER JOIN dbo.SampleUnitBySampleSet ss WITH (NOLOCK) ON temp.SampleSetID = ss.SAMPLESETID
-	
-		SET @dcnt = @@ROWCOUNT
+		SET @dcnt = @@ROWCOUNT		
 
 		DROP TABLE #temp
 		       

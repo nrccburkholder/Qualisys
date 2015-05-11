@@ -34,6 +34,8 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -83,11 +85,11 @@
       <Name>NRC.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\NRC.Picker.SamplingService.Autosampler\NRC.Picker.SamplingService.Autosampler.csproj">
-      <Project>{9BD9A1DA-989A-4FFD-846A-FF264B97687D}</Project>
+      <Project>{9bd9a1da-989a-4ffd-846a-ff264b97687d}</Project>
       <Name>NRC.Picker.SamplingService.Autosampler</Name>
     </ProjectReference>
     <ProjectReference Include="..\NRC.Picker.SamplingService.QueueService\NRC.Picker.SamplingService.QueueService.csproj">
-      <Project>{8504C72F-3BDB-4FA6-BDC1-AA5051769C55}</Project>
+      <Project>{8504c72f-3bdb-4fa6-bdc1-aa5051769c55}</Project>
       <Name>NRC.Picker.SamplingService.QueueService</Name>
     </ProjectReference>
   </ItemGroup>
@@ -121,6 +123,13 @@
     <Content Include="autosampler.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
