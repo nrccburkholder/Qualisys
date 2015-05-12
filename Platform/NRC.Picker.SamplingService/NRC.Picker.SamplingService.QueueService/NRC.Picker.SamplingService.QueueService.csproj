@@ -71,6 +71,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="QueueService.nuspec" />
     <None Include="settings.xml.template">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
