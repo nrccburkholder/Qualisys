@@ -37,6 +37,11 @@ AS
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 SET NOCOUNT ON
 
+declare @HCAHPS int
+SELECT @HCAHPS = surveytype_id
+from SurveyType
+where SurveyType_dsc='HCAHPS IP'
+
 declare @surveyType_id int
 
 SELECT @surveyType_id = SurveyType_id
@@ -96,6 +101,19 @@ IF @@ROWCOUNT = 0
   INSERT INTO #m (error, strmessage) 
   SELECT 0, 'Medicare number is Active' 
 
+IF @surveyType_id=@HCAHPS
+BEGIN
+	DECLARE @CCNList TABLE (MedicareNumber varchar(20))
+	INSERT INTO @CCNList (MedicareNumber)
+	SELECT DISTINCT suf.MedicareNumber
+	FROM dbo.SamplePlan sp
+	INNER JOIN dbo.SampleUnit su on sp.SamplePlan_id = su.SamplePlan_id
+	INNER JOIN dbo.SUFacility suf on su.SUFacility_id = suf.SUFacility_id
+	INNER JOIN dbo.MedicareLookup ml on SUF.MedicareNumber = ml.MedicareNumber
+	WHERE sp.Survey_id = @Survey_id
+	and ml.Active=1
+	
+END
 
 SELECT * FROM #M
 
