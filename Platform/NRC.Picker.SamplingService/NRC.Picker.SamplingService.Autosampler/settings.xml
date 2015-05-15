@@ -1,7 +1,7 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <settings>
-  <autosampler-threads>5</autosampler-threads>
-  <sample-count-threshold>0.8</sample-count-threshold>
-  <mailer-url>http://perseus:3417/Service</mailer-url>
-  <enable-scheduling>True</enable-scheduling>
+	<autosampler-threads>5</autosampler-threads>
+	<sample-count-threshold>0.8</sample-count-threshold>
+	<mailer-url>http://lnk0pdiapp01:3417/Service</mailer-url>
+	<enable-scheduling>True</enable-scheduling>
 </settings>

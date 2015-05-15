@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NRC.Platform.Test.DevelopmentInterfaces</RootNamespace>
-    <AssemblyName>NRC.Platform.Test.DevelopmentInterfaces</AssemblyName>
+    <AssemblyName>Test.DevelopmentInterfaces</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
