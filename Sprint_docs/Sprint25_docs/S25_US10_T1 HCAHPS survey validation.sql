@@ -8,10 +8,27 @@
 Dave Gilsdorf
 
 QP_Prod:
+INSERT INTO Qualpro_params
 ALTER PROCEDURE [dbo].[SV_CAHPS_MedicareNumber]
 
 */
 USE QP_PROD
+GO
+declare @clientlist varchar(250)=''
+select @clientlist=@clientlist+convert(varchar,client_id)+','
+from client 
+where strclient_nm in ('Indiana University Health','JWilley_Test','JWilley_Catalyst_Client','VRuenprom_Test')
+
+INSERT INTO Qualpro_params ([STRPARAM_NM], [STRPARAM_TYPE], [STRPARAM_GRP], [STRPARAM_VALUE], [NUMPARAM_VALUE], [DATPARAM_VALUE], [COMMENTS])
+SELECT N'SV_CCN_Exceptions' AS [STRPARAM_NM]
+	, N'S' AS [STRPARAM_TYPE]
+	, N'ConfigurationManager' AS [STRPARAM_GRP]
+	, @clientlist AS [STRPARAM_VALUE]
+	, NULL AS [NUMPARAM_VALUE]
+	, '10/1/2015' AS [DATPARAM_VALUE]
+	, 'The list of clients that are allowed to have CCNs span HCAHPS surveys in multiple studies, '
+		+'but only if the survey is being validated before [datParam_value]' AS [COMMENTS]
+
 GO
 ALTER PROCEDURE [dbo].[SV_CAHPS_MedicareNumber]
     @Survey_id INT

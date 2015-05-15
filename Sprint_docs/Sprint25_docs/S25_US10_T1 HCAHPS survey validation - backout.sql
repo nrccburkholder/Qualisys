@@ -8,10 +8,15 @@
 Dave Gilsdorf
 
 QP_Prod:
+INSERT INTO Qualpro_params
 ALTER PROCEDURE [dbo].[SV_CAHPS_MedicareNumber]
 
 */
 USE QP_PROD
+GO
+delete from Qualpro_params 
+where [STRPARAM_NM] = N'SV_CCN_Exceptions' 
+and [STRPARAM_GRP] = N'ConfigurationManager' 
 GO
 ALTER PROCEDURE [dbo].[SV_CAHPS_MedicareNumber]
     @Survey_id INT
