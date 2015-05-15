@@ -113,6 +113,7 @@ BEGIN
 	WHERE sp.Survey_id = @Survey_id
 	and ml.Active = 1
 	and su.bitHCAHPS = 1
+	and su.DontSampleUnit = 0
 
 	INSERT INTO #M (Error, strMessage)
 	SELECT distinct 1, 'CCN "'+ccn.MedicareNumber+'" is also used in study ' + convert(varchar,sd.Study_id) + ', survey ' + convert(varchar, sd.Survey_id)
@@ -125,6 +126,7 @@ BEGIN
 	WHERE ml.Active = 1
 	AND sd.Study_id <> @Study_id
 	and su.bitHCAHPS = 1
+	and su.DontSampleUnit = 0
 	
 	IF @@ROWCOUNT=0
 	BEGIN
