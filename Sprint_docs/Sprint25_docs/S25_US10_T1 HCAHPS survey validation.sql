@@ -126,6 +126,22 @@ BEGIN
 	AND sd.Study_id <> @Study_id
 	and su.bitHCAHPS = 1
 	
+	DECLARE @Client_id int, @ClientExceptionList VARCHAR(100)
+	SELECT @Client_id=client_id
+	from dbo.Study
+	where Study_id=@Study_id
+	
+	SELECT @ClientExceptionList = strParamValue
+	FROM dbo.Qualpro_params
+	WHERE STRPARAM_NM = 'SV_CCN_Exceptions' 
+	AND strParam_Value = 'ConfigurationManager' 
+	AND datParam_Value < getdate()
+	
+	IF EXISTS (SELECT items FROM split(@ClientExceptionList,',') where items=@Client_id)
+		UPDATE #M
+		SET Error = 2
+		where strMessage like 'CCN%'
+	
 END
 
 SELECT * FROM #M
