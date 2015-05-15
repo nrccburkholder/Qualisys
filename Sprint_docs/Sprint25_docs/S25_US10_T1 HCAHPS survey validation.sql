@@ -59,10 +59,6 @@ SELECT @SurveyTypeDescription = [SurveyType_dsc]
 FROM [dbo].[SurveyType] 
 WHERE SurveyType_ID = @surveyType_id
 
-
-declare @study_ID int, @EncTable_ID int
-Select @study_ID = study_ID from SURVEY_DEF where SURVEY_ID = @Survey_id
-
 --Need a temp table to store the messages.  We will select them at the end.
 --0=Passed,1=Error,2=Warning
 CREATE TABLE #M (Error TINYINT, strMessage VARCHAR(200))
