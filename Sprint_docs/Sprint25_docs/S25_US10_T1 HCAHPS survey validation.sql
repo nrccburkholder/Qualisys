@@ -19,6 +19,9 @@ select @clientlist=@clientlist+convert(varchar,client_id)+','
 from client 
 where strclient_nm in ('Indiana University Health','JWilley_Test','JWilley_Catalyst_Client','VRuenprom_Test')
 
+IF NOT EXISTS (	SELECT * FROM Qualpro_params 
+				WHERE [STRPARAM_NM] = N'SV_CCN_Exceptions' 
+				AND [STRPARAM_GRP] = N'ConfigurationManager' )
 INSERT INTO Qualpro_params ([STRPARAM_NM], [STRPARAM_TYPE], [STRPARAM_GRP], [STRPARAM_VALUE], [NUMPARAM_VALUE], [DATPARAM_VALUE], [COMMENTS])
 SELECT N'SV_CCN_Exceptions' AS [STRPARAM_NM]
 	, N'S' AS [STRPARAM_TYPE]
@@ -136,7 +139,7 @@ BEGIN
 		from dbo.Study
 		where Study_id=@Study_id
 		
-		SELECT @ClientExceptionList = strParamValue
+		SELECT @ClientExceptionList = strParam_Value
 		FROM dbo.Qualpro_params
 		WHERE STRPARAM_NM = 'SV_CCN_Exceptions' 
 		AND strParam_Value = 'ConfigurationManager' 
