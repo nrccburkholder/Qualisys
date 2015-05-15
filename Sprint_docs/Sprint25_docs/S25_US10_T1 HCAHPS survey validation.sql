@@ -37,36 +37,9 @@ AS
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 SET NOCOUNT ON
 
-SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
-SET NOCOUNT ON
-
-/*
-HCAHPS IP			2
-Home Health CAHPS	3
-CGCAHPS				4
-ICHCAHPS			8
-ACOCAHPS			10
-*/
-
--- CAHPS surveyType_id 'constants'
-declare @CGCAHPS int
-SET @CGCAHPS = 4
-
-declare @HCAHPS int
-SET @HCAHPS = 2
-
-declare @HHCAHPS int
-SET @HHCAHPS = 3
-
-declare @ACOCAHPS int
-SET @ACOCAHPS = 10
-
-declare @ICHCAHPS int
-SET @ICHCAHPS = 8
-
 declare @surveyType_id int
 
-SELECT  @surveyType_id = SurveyType_id
+SELECT @surveyType_id = SurveyType_id
 from SURVEY_DEF
 where SURVEY_ID = @Survey_id
 
@@ -91,31 +64,37 @@ CREATE TABLE #M (Error TINYINT, strMessage VARCHAR(200))
 
 --Make sure the Medicare number is populated.
 INSERT INTO #M (Error, strMessage)
-SELECT 1,'Medicare number is not populated.'
-FROM SamplePlan sp, SampleUnit su LEFT JOIN SUFacility suf
-ON su.SUFacility_id=suf.SUFacility_id
-WHERE sp.Survey_id=@Survey_id
-AND sp.SamplePlan_id=su.SamplePlan_id
-AND su.CAHPSType_id = @surveyType_id
-AND (suf.MedicareNumber IS NULL
-OR LTRIM(RTRIM(suf.MedicareNumber))='')
-IF @@ROWCOUNT=0
-INSERT INTO #M (Error, strMessage)
-SELECT 0,'Medicare number is populated'
+SELECT 1, 'Medicare number is not populated.' 
+FROM   sampleplan sp, 
+       sampleunit su 
+       LEFT JOIN sufacility suf ON su.sufacility_id = suf.sufacility_id 
+WHERE  sp.survey_id = @Survey_id 
+       AND sp.sampleplan_id = su.sampleplan_id 
+       AND su.cahpstype_id = @surveyType_id 
+       AND ( suf.medicarenumber IS NULL 
+              OR Ltrim(Rtrim(suf.medicarenumber)) = '' ) 
+
+IF @@ROWCOUNT = 0 
+  INSERT INTO #M (Error, strMessage)
+  SELECT 0,'Medicare number is populated'
 
 --make sure the Medicare number is active
 INSERT INTO #M (Error, strMessage)
-SELECT 1,'Medicare number is not Active'
-FROM SamplePlan sp, SampleUnit su,SUFacility suf, MedicareLookup ml
-WHERE sp.Survey_id=@Survey_id
-AND su.SUFacility_id=suf.SUFacility_id
-AND sp.SamplePlan_id=su.SamplePlan_id
-AND ml.MedicareNumber = suf.MedicareNumber
-AND su.CAHPSType_id = @surveyType_id
-AND ml.Active = 0
-IF @@ROWCOUNT=0
-INSERT INTO #M (Error, strMessage)
-SELECT 0,'Medicare number is Active'
+SELECT 1, 'Medicare number is not Active' 
+FROM   sampleplan sp, 
+       sampleunit su, 
+       sufacility suf, 
+       medicarelookup ml 
+WHERE  sp.survey_id = @Survey_id 
+       AND su.sufacility_id = suf.sufacility_id 
+       AND sp.sampleplan_id = su.sampleplan_id 
+       AND ml.medicarenumber = suf.medicarenumber 
+       AND su.cahpstype_id = @surveyType_id 
+       AND ml.active = 0 
+
+IF @@ROWCOUNT = 0 
+  INSERT INTO #m (error, strmessage) 
+  SELECT 0, 'Medicare number is Active' 
 
 
 SELECT * FROM #M
