@@ -112,6 +112,7 @@ BEGIN
 	INNER JOIN dbo.MedicareLookup ml on SUF.MedicareNumber = ml.MedicareNumber
 	WHERE sp.Survey_id = @Survey_id
 	and ml.Active = 1
+	and su.bitHCAHPS = 1
 
 	INSERT INTO #M (Error, strMessage)
 	SELECT distinct 1, 'CCN "'+ccn.MedicareNumber+'" is also used in study ' + convert(varchar,sd.Study_id)
@@ -123,6 +124,7 @@ BEGIN
 	INNER JOIN dbo.Survey_def sd on sp.Survey_id = sd.Survey_id
 	WHERE ml.Active = 1
 	AND sd.Study_id <> @Study_id
+	and su.bitHCAHPS = 1
 	
 END
 
