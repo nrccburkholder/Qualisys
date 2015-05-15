@@ -42,9 +42,9 @@ SELECT @HCAHPS = surveytype_id
 from SurveyType
 where SurveyType_dsc='HCAHPS IP'
 
-declare @surveyType_id int
+declare @surveyType_id int, @Study_id int
 
-SELECT @surveyType_id = SurveyType_id
+SELECT @surveyType_id = SurveyType_id, @Study_id = Study_id
 from SURVEY_DEF
 where SURVEY_ID = @Survey_id
 
@@ -101,7 +101,7 @@ IF @@ROWCOUNT = 0
   INSERT INTO #m (error, strmessage) 
   SELECT 0, 'Medicare number is Active' 
 
-IF @surveyType_id=@HCAHPS
+IF @surveyType_id = @HCAHPS
 BEGIN
 	DECLARE @CCNList TABLE (MedicareNumber varchar(20))
 	INSERT INTO @CCNList (MedicareNumber)
@@ -111,7 +111,18 @@ BEGIN
 	INNER JOIN dbo.SUFacility suf on su.SUFacility_id = suf.SUFacility_id
 	INNER JOIN dbo.MedicareLookup ml on SUF.MedicareNumber = ml.MedicareNumber
 	WHERE sp.Survey_id = @Survey_id
-	and ml.Active=1
+	and ml.Active = 1
+
+	INSERT INTO #M (Error, strMessage)
+	SELECT distinct 1, 'CCN "'+ccn.MedicareNumber+'" is also used in study ' + convert(varchar,sd.Study_id)
+	FROM @CCNList ccn
+	INNER JOIN dbo.SUFacility suf on ccn.MedicareNumber = suf.MedicareNumber
+	INNER JOIN dbo.MedicareLookup ml on SUF.MedicareNumber = ml.MedicareNumber
+	INNER JOIN dbo.SampleUnit su on suf.SUFacility_id = su.SUFacility_id
+	INNER JOIN dbo.SamplePlan sp on su.SamplePlan_id=sp.SamplePlan_id
+	INNER JOIN dbo.Survey_def sd on sp.Survey_id = sd.Survey_id
+	WHERE ml.Active = 1
+	AND sd.Study_id <> @Study_id
 	
 END
 
