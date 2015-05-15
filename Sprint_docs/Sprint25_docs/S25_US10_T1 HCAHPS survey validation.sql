@@ -115,7 +115,7 @@ BEGIN
 	and su.bitHCAHPS = 1
 
 	INSERT INTO #M (Error, strMessage)
-	SELECT distinct 1, 'CCN "'+ccn.MedicareNumber+'" is also used in study ' + convert(varchar,sd.Study_id)
+	SELECT distinct 1, 'CCN "'+ccn.MedicareNumber+'" is also used in study ' + convert(varchar,sd.Study_id) + ', survey ' + convert(varchar, sd.Survey_id)
 	FROM @CCNList ccn
 	INNER JOIN dbo.SUFacility suf on ccn.MedicareNumber = suf.MedicareNumber
 	INNER JOIN dbo.MedicareLookup ml on SUF.MedicareNumber = ml.MedicareNumber
@@ -126,22 +126,29 @@ BEGIN
 	AND sd.Study_id <> @Study_id
 	and su.bitHCAHPS = 1
 	
-	DECLARE @Client_id int, @ClientExceptionList VARCHAR(100)
-	SELECT @Client_id=client_id
-	from dbo.Study
-	where Study_id=@Study_id
-	
-	SELECT @ClientExceptionList = strParamValue
-	FROM dbo.Qualpro_params
-	WHERE STRPARAM_NM = 'SV_CCN_Exceptions' 
-	AND strParam_Value = 'ConfigurationManager' 
-	AND datParam_Value < getdate()
-	
-	IF EXISTS (SELECT items FROM split(@ClientExceptionList,',') where items=@Client_id)
-		UPDATE #M
-		SET Error = 2
-		where strMessage like 'CCN%'
-	
+	IF @@ROWCOUNT=0
+	BEGIN
+		INSERT INTO #m (error, strmessage) 
+		SELECT 0, 'All CCNs are unique to this study' 
+	END
+	ELSE
+	BEGIN
+		DECLARE @Client_id int, @ClientExceptionList VARCHAR(100)
+		SELECT @Client_id=client_id
+		from dbo.Study
+		where Study_id=@Study_id
+		
+		SELECT @ClientExceptionList = strParamValue
+		FROM dbo.Qualpro_params
+		WHERE STRPARAM_NM = 'SV_CCN_Exceptions' 
+		AND strParam_Value = 'ConfigurationManager' 
+		AND datParam_Value < getdate()
+		
+		IF EXISTS (SELECT items FROM dbo.split(@ClientExceptionList,',') where items=@Client_id)
+			UPDATE #M
+			SET Error = 2
+			where strMessage like 'CCN%'
+	END	
 END
 
 SELECT * FROM #M
