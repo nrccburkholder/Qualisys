@@ -142,8 +142,8 @@ BEGIN
 		SELECT @ClientExceptionList = strParam_Value
 		FROM dbo.Qualpro_params
 		WHERE STRPARAM_NM = 'SV_CCN_Exceptions' 
-		AND strParam_Value = 'ConfigurationManager' 
-		AND datParam_Value < getdate()
+		AND strParam_Grp = 'ConfigurationManager' 
+		AND datParam_Value > getdate()
 		
 		IF EXISTS (SELECT items FROM dbo.split(@ClientExceptionList,',') where items=@Client_id)
 			UPDATE #M
