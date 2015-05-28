@@ -454,7 +454,7 @@ begin
 	if object_id('tempdb..#disproc') is not null
 		drop table #disproc
 
-	select distinct dp.DispositionProcessID, dp.RecodeValue, dc.DispositionClauseID, dc.DispositionPhraseKey, '['+ac.ExportTemplateSectionName+'.'+isnull(ExportColumnName,ExportColumnNameMR)+'] '+o.strOperator+' '
+	select distinct dp.DispositionProcessID, dp.RecodeValue, dp.DispositionAction, dc.DispositionClauseID, dc.DispositionPhraseKey, '['+ac.ExportTemplateSectionName+'.'+isnull(ExportColumnName,ExportColumnNameMR)+'] '+o.strOperator+' '
 		+replace(replace(o.strLogic,'%strLowValue%',isnull(LowValue,'')),'%strHighValue%',isnull(HighValue,'')) as strWhere
 	into #disproc
 	from CEM.DispositionProcess dp
@@ -463,7 +463,7 @@ begin
 	inner join CEM.Operator o on dc.OperatorID=o.OperatorID
 
 	-- declare @sql varchar(max)
-	declare @dpid int, @dcid int, @dpk int 
+	declare @dpid int, @dcid int, @dpk int, @daid int 
 
 	select top 1 @dcid = DispositionClauseID from #disproc where strWhere like '%[%]inlist[%]%'
 	while @@rowcount>0 
@@ -480,7 +480,7 @@ begin
 		select top 1 @dcid = DispositionClauseID from #disproc where strWhere like '%[%]inlist[%]%'
 	end
 
-	-- declare @sql varchar(max), @dpid int, @dpk int, @dcid int 
+	-- declare @sql varchar(max), @dpid int, @dpk int, @dcid int
 	while exists (select 1 from #disproc group by DispositionProcessID, DispositionPhraseKey having count(*)>1)
 	begin
 		select top 1 @dpid=DispositionProcessID, @dcid=min(DispositionClauseID), @dpk=DispositionPhraseKey 
@@ -516,7 +516,7 @@ begin
 		update #disproc set strWhere = @sql where DispositionProcessID = @dpid 
 	end
 
-	select top 1 @dpid=DispositionProcessID from #disproc
+	select top 1 @dpid=DispositionProcessID, @daid=DispositionActionID from #disproc
 	while @@rowcount>0
 	begin
 		set @sql = 'update #results set '
