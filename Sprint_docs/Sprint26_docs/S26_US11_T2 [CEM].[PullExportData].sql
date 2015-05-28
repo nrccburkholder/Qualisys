@@ -519,13 +519,18 @@ begin
 	select top 1 @dpid=DispositionProcessID, @daid=DispositionActionID from #disproc
 	while @@rowcount>0
 	begin
-		set @sql = 'update #results set '
-		select @sql = @sql + char(10) + '[' + ac.ExportTemplateSectionName + '.' + ac.ExportColumnName+'] = ''' + replicate(dc.RecodeValue,ac.FixedWidthLength) + ''',' 
-		from (	select distinct DispositionProcessID,ExportTemplateSectionName,isnull(ExportColumnNameMR,ExportColumnName) as ExportColumnName,FixedWidthLength 
-				from #allcolumns
-				where isnull(ExportColumnNameMR,'') <> 'unmarked') ac
-		inner join #disproc dc on ac.DispositionProcessID=dc.DispositionProcessID
-		where ac.DispositionProcessID=@dpid
+		if @daid=1 -- recode
+		begin
+			set @sql = 'update #results set '
+			select @sql = @sql + char(10) + '[' + ac.ExportTemplateSectionName + '.' + ac.ExportColumnName+'] = ''' + replicate(dc.RecodeValue,ac.FixedWidthLength) + ''',' 
+			from (	select distinct DispositionProcessID,ExportTemplateSectionName,isnull(ExportColumnNameMR,ExportColumnName) as ExportColumnName,FixedWidthLength 
+					from #allcolumns
+					where isnull(ExportColumnNameMR,'') <> 'unmarked') ac
+			inner join #disproc dc on ac.DispositionProcessID=dc.DispositionProcessID
+			where ac.DispositionProcessID=@dpid
+		end
+		else if @daid=2
+			set @sql = 'delete #results~' -- the "~" will get removed by the left() function in the next select
 		
 		select @sql = left(@sql,len(@sql)-1) + ' where ' + strWhere
 		from #disproc
@@ -535,7 +540,7 @@ begin
 		exec (@SQL)
 
 		delete from #disproc where DispositionProcessID=@dpid
-		select top 1 @dpid=DispositionProcessID from #disproc
+		select top 1 @dpid=DispositionProcessID, @daid=DispositionActionID from #disproc
 	end
 end /* @doDispositionProc=1 */
 
