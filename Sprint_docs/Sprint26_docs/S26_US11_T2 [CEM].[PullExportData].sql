@@ -529,7 +529,7 @@ begin
 			inner join #disproc dc on ac.DispositionProcessID=dc.DispositionProcessID
 			where ac.DispositionProcessID=@dpid
 		end
-		else if @daid=2
+		else if @daid=2 -- delete 
 			set @sql = 'delete #results~' -- the "~" will get removed by the left() function in the next select
 		
 		select @sql = left(@sql,len(@sql)-1) + ' where ' + strWhere
