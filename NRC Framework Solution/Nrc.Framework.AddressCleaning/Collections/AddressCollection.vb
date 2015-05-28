@@ -627,7 +627,7 @@ Public Class AddressCollection
                 addr.SetCleanedTo(addr.OriginalAddress, "NU")
             ElseIf CheckForValidSecondAddress(results, addr) Then
                 addr.SetCleanedTo(addr.OriginalAddress, "NC")
-                addr = ResendSecondaryAddress(addr)
+                ResendSecondaryAddress(addr)
             Else
                 'Address errors only were detected so set to original with error NC (Not Cleaned)
                 addr.SetCleanedTo(addr.OriginalAddress, "NC")
@@ -821,7 +821,7 @@ Public Class AddressCollection
     ''' <param name="origAddr">If the </param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Function ResendSecondaryAddress(ByRef origAddr As Address) As Address
+    Private Sub ResendSecondaryAddress(ByRef origAddr As Address)
 
         'Make clone of the address being passed in
         Dim clonedAddress As Address = origAddr.Clone
@@ -842,14 +842,12 @@ Public Class AddressCollection
         If CheckForAddressSuccess(returnedAddress.WorkingAddress.AddressStatus) Then
             'Success, use new address
             origAddr.SetCleanedTo(returnedAddress.WorkingAddress)
-            'return the new address
-            ResendSecondaryAddress = origAddr
         Else
             'return the original address
-            ResendSecondaryAddress = clonedAddress
+            origAddr = clonedAddress
         End If
 
-    End Function
+    End Sub
 
     ''' <summary>
     ''' This routine checks the result string for an address and determines whether or not an error was encountered.
