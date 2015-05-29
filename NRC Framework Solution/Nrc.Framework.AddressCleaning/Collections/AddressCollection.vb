@@ -244,7 +244,7 @@ Public Class AddressCollection
         addrCheckRequest.OptAddressParsed = "False"
       
         'Dimension the SOAP request message array for the first set of records
-        ReDim addrCheckRequest.Record(GetArraySize(Count, addrUsed, maxRecords) - 1)
+        ReDim addrCheckRequest.Record(GetArraySize(Count, addrUsed, maxRecords))
 
         'Create the address cleaning web service connection
         Using addrCheckService As New net.melissadata.addresscheck.Service
@@ -289,7 +289,7 @@ Public Class AddressCollection
         geoCodingRequest.CustomerID = AppConfig.Params("GeoCodingWebServiceCustomerID").StringValue
 
         'Dimension the SOAP request message array for the first set of records
-        ReDim geoCodingRequest.Record(GetArraySize(Count, geoCodingUsed, maxRecords) - 1)
+        ReDim geoCodingRequest.Record(GetArraySize(Count, geoCodingUsed, maxRecords))
 
         'Create the address cleaning web service connection
         Using geoCodingService As New net.melissadata.geocoder.Service
@@ -439,7 +439,7 @@ Public Class AddressCollection
     ''' </summary>
     ''' <param name="responseArray">The response object containing the updated addresses.</param>
     ''' <remarks></remarks>
-    Private Sub UpdateAddresses(ByVal responseArray As net.melissadata.addresscheck.ResponseArray)
+    Private Sub UpdateAddresses(ByRef responseArray As net.melissadata.addresscheck.ResponseArray)
 
         Dim cnt As Integer
 
@@ -488,7 +488,7 @@ Public Class AddressCollection
     ''' <param name="response">The response object containing the cleaned address.</param>
     ''' <param name="results">The result string for this address.</param>
     ''' <remarks></remarks>
-    Private Sub UpdateAddress(ByVal addr As Address, ByVal response As net.melissadata.addresscheck.ResponseArrayRecordAddress, ByVal results As String)
+    Private Sub UpdateAddress(ByRef addr As Address, ByRef response As net.melissadata.addresscheck.ResponseArrayRecordAddress, ByVal results As String)
 
         With addr.WorkingAddress
             'Get the Address Type
@@ -627,7 +627,7 @@ Public Class AddressCollection
                 addr.SetCleanedTo(addr.OriginalAddress, "NU")
             ElseIf CheckForValidSecondAddress(results, addr) Then
                 addr.SetCleanedTo(addr.OriginalAddress, "NC")
-                addr = ResendSecondaryAddress(addr)
+                ResendSecondaryAddress(addr)
             Else
                 'Address errors only were detected so set to original with error NC (Not Cleaned)
                 addr.SetCleanedTo(addr.OriginalAddress, "NC")
@@ -642,7 +642,7 @@ Public Class AddressCollection
 
     End Sub
 
-    Private Function ParseSingleAddress(ByVal responseArray As net.melissadata.addresscheck.ResponseArray, ByRef addr As Address) As Address
+    Private Function ParseSingleAddress(ByRef responseArray As net.melissadata.addresscheck.ResponseArray, ByRef addr As Address) As Address
 
         Dim response As net.melissadata.addresscheck.ResponseArrayRecordAddress
         Dim results As String
@@ -821,32 +821,33 @@ Public Class AddressCollection
     ''' <param name="origAddr">If the </param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Function ResendSecondaryAddress(ByVal origAddr As Address) As Address
+    Private Sub ResendSecondaryAddress(ByRef origAddr As Address)
 
         'Make clone of the address being passed in
         Dim clonedAddress As Address = origAddr.Clone
 
         'Swap first and second lines for this second attempt on the clone
-        clonedAddress.OriginalAddress.StreetLine1 = origAddr.OriginalAddress.StreetLine2
-        clonedAddress.OriginalAddress.StreetLine2 = origAddr.OriginalAddress.StreetLine1
+        origAddr.OriginalAddress.StreetLine1 = clonedAddress.OriginalAddress.StreetLine2
+        origAddr.OriginalAddress.StreetLine2 = clonedAddress.OriginalAddress.StreetLine1
+
+        origAddr.WorkingAddress.StreetLine1 = clonedAddress.OriginalAddress.StreetLine2
+        origAddr.WorkingAddress.StreetLine2 = clonedAddress.OriginalAddress.StreetLine1
 
         'Make the web service call with the clone/swapped address
-        Dim responseArray As net.melissadata.addresscheck.ResponseArray = cleanSingleAddress(True, False, True, clonedAddress)
+        Dim responseArray As net.melissadata.addresscheck.ResponseArray = cleanSingleAddress(True, False, True, origAddr)
 
         'Parse the address clean response into an Address object
-        Dim returnedAddress As Address = ParseSingleAddress(responseArray, clonedAddress)
+        Dim returnedAddress As Address = ParseSingleAddress(responseArray, origAddr)
 
         If CheckForAddressSuccess(returnedAddress.WorkingAddress.AddressStatus) Then
             'Success, use new address
-            clonedAddress.SetCleanedTo(returnedAddress.WorkingAddress)
-            'return the new address
-            ResendSecondaryAddress = clonedAddress
+            origAddr.SetCleanedTo(returnedAddress.WorkingAddress)
         Else
             'return the original address
-            ResendSecondaryAddress = origAddr
+            origAddr = clonedAddress
         End If
 
-    End Function
+    End Sub
 
     ''' <summary>
     ''' This routine checks the result string for an address and determines whether or not an error was encountered.
