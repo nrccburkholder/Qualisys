@@ -454,7 +454,7 @@ begin
 	if object_id('tempdb..#disproc') is not null
 		drop table #disproc
 
-	select distinct dp.DispositionProcessID, dp.RecodeValue, dp.DispositionAction, dc.DispositionClauseID, dc.DispositionPhraseKey, '['+ac.ExportTemplateSectionName+'.'+isnull(ExportColumnName,ExportColumnNameMR)+'] '+o.strOperator+' '
+	select distinct dp.DispositionProcessID, dp.RecodeValue, dp.DispositionActionID, dc.DispositionClauseID, dc.DispositionPhraseKey, '['+ac.ExportTemplateSectionName+'.'+isnull(ExportColumnName,ExportColumnNameMR)+'] '+o.strOperator+' '
 		+replace(replace(o.strLogic,'%strLowValue%',isnull(LowValue,'')),'%strHighValue%',isnull(HighValue,'')) as strWhere
 	into #disproc
 	from CEM.DispositionProcess dp
