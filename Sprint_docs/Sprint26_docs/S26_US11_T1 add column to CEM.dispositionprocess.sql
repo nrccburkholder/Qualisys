@@ -15,14 +15,14 @@ CREATE TABLE/INSERT [CEM].[DispositionAction]
 USE [NRC_DataMart_Extracts]
 GO
 
-IF EXISTS (SELECT * FROM SYS.COLUMNS WHERE OBJECT_NAME(OBJECT_ID)='DispositionProcess' AND NAME='DispositionActionID')
+IF NOT EXISTS (SELECT * FROM SYS.COLUMNS WHERE OBJECT_NAME(OBJECT_ID)='DispositionProcess' AND NAME='DispositionActionID')
 	ALTER TABLE [CEM].[DispositionProcess] ADD DispositionActionID [int]
 GO
 UPDATE [CEM].[DispositionProcess] SET DispositionActionID =1
 
 GO
 
-IF EXISTS (SELECT * FROM SYS.TABLES WHERE SCHEMA_ID=SCHEMA_ID('CEM') AND NAME='DispositionAction')
+IF NOT EXISTS (SELECT * FROM SYS.TABLES WHERE SCHEMA_ID=SCHEMA_ID('CEM') AND NAME='DispositionAction')
 	CREATE TABLE [CEM].[DispositionAction](
 		[DispositionActionID] [int] IDENTITY(1,1) NOT NULL,
 		[DispositionAction] varchar(20) NULL,
