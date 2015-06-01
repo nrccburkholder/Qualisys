@@ -76,7 +76,7 @@ update #ETC set ExportTemplateColumnDescription='Q62' where SourceColumnName='Ma
 
 
 -- update ExportTemplate with new values, provided by CMS
-UPDATE #ET SET ValidStartDate='1/1/15', ValidEndDate='6/30/15', ExportTemplateVersionMajor='3.0', createdon=getdate(), XMLScemaDefinition='<?xml version="1.0" encoding="UTF-8"?>
+UPDATE #ET SET ValidStartDate='1/1/15', ValidEndDate='6/30/15', ExportTemplateVersionMajor='3.0', createdon=getdate(), XMLSchemaDefinition='<?xml version="1.0" encoding="UTF-8"?>
 <xs:schema id="perioddata" targetNamespace="http://ichcahps.org" xmlns:mstns="http://ichcahps.org" xmlns="http://ichcahps.org" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" attributeFormDefault="qualified" elementFormDefault="qualified">
 
   <xs:element name="perioddata" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
@@ -317,7 +317,7 @@ select ExportTemplateName, SurveyTypeID, SurveySubTypeID, ValidDateColumnID, Val
 from #ET
 
 set @newID = SCOPE_IDENTITY()
-update #ET set ExportTemplateID=@newID
+update #ET set [newID]=@newID
 update #ETS set ExportTemplateID=@newID
 update #ETDR set ExportTemplateID=@newID
 
@@ -411,7 +411,7 @@ begin
 	select top 1 @oldID=DispositionClauseID from #DC where [newid]=0
 end
 
-select top 1 @oldID=DispositionInListID from #DC where [newid]=0
+select top 1 @oldID=DispositionInListID from #DIL where [newid]=0
 while @@rowcount>0
 begin
 	INSERT INTO CEM.DispositionInList (DispositionClauseID,ListValue)
@@ -423,7 +423,7 @@ begin
 	
 	update #DIL set [newid]=@newID where DispositionInListID=@oldID
 	
-	select top 1 @oldID=DispositionInListID from #DC where [newid]=0
+	select top 1 @oldID=DispositionInListID from #DIL where [newid]=0
 end
 
 commit tran
