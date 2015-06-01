@@ -59,7 +59,6 @@ into #DIL
 from cem.dispositioninlist
 where dispositioninlistID in (select dispositioninlistID from #DP)
 
--- TODO: should the values in #ETC.ExportTemplateColumnDescription (Q1, Q2 ... Q65) be updated?
 update #ETC set ExportTemplateColumnDescription='Q57' where SourceColumnName='MasterQuestionCore=51203' -- language-spoken
 update #ETC set ExportTemplateColumnDescription='Q58-phone' where SourceColumnName='MasterQuestionCore=51261' -- not-hispanic-phone
 update #ETC set ExportTemplateColumnDescription='Q58a-phone' where SourceColumnName='MasterQuestionCore=51262' -- hispanic-phone
@@ -99,16 +98,16 @@ delete
 from #ETCR
 where ExportTemplateColumnID = @etcid
 
-insert into #ETCR (ExportTemplateColumnID,RawValue,ExportColumnName,RecodeValue,ResponseLabel)
-values (@etcid, 1, NULL, '1', 'English')
-	,  (@etcid, 2, NULL, '2', 'Spanish')
-	,  (@etcid, 3, NULL, '3', 'Chinese')
-	,  (@etcid, 4, NULL, '4', 'Samoan')
-	,  (@etcid, 5, NULL, '5', 'Russian')
-	,  (@etcid, 6, NULL, '6', 'Vietnamese')
-	,  (@etcid, 7, NULL, '7', 'Portuguese')
-	,  (@etcid, 8, NULL, '8', 'Some other language')
-	,  (@etcid, -9, NULL, 'X', 'NOT APPLICABLE')
+insert into #ETCR (ExportTemplateColumnID,RawValue,ExportColumnName,RecodeValue,ResponseLabel,[newid])
+values (@etcid, 1, NULL, '1', 'English',0)
+	,  (@etcid, 2, NULL, '2', 'Spanish',0)
+	,  (@etcid, 3, NULL, '3', 'Chinese',0)
+	,  (@etcid, 4, NULL, '4', 'Samoan',0)
+	,  (@etcid, 5, NULL, '5', 'Russian',0)
+	,  (@etcid, 6, NULL, '6', 'Vietnamese',0)
+	,  (@etcid, 7, NULL, '7', 'Portuguese',0)
+	,  (@etcid, 8, NULL, '8', 'Some other language',0)
+	,  (@etcid, -9, NULL, 'X', 'NOT APPLICABLE',0)
 	--,(@etcid, 'M', NULL, 'M', 'MISSING/DK') --> taken care of in the post-process proc
 
 
@@ -125,6 +124,19 @@ select *
 from #ETCR
 where exporttemplatecolumnid=81
 
+---- Create the disposition process that deletes any records with final-status=999 ('CMS Removal') ----
+declare @dpid int
+insert into #DP (DispositionActionID,[newid]) values (2,0)
+set @dpid=scope_identity()
+
+insert into #dc (DispositionProcessID,DispositionPhraseKey,ExportTemplateColumnID,OperatorID,LowValue,HighValue,[newID])
+select @dpid, 1, ExportTemplateColumnID, OperatorID, 999, null, 0 
+from #etc, cem.operator
+where exportcolumnname='final-status'
+and strOperator = '='
+
+-- assign the new disposition process to a column (doesn't matter which column -- we're deleting the entire record, not recoding a specific column -- it just needs to be one that doesn't already have a disposition process)
+update #etc set DispositionProcessId=@dpid where DispositionProcessId is NULL and exportColumnName='sample-id'
 
 ---- INSERT THE MODIFIED TEMPLATE INTO THE TABLES ----
 
