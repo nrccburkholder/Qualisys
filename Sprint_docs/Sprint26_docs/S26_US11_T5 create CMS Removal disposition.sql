@@ -15,7 +15,7 @@ INSERT INTO dbo.DispositionLog
 */
 use qp_prod
 go
-/* create new disposition code */
+/* create new disposition code -- double-check that the new code is '48' -- if not, update the catalyst script */
 if not exists (select * from disposition where strDispositionLabel='CMS Removal')
 	insert into disposition (strDispositionLabel,Action_id,strReportLabel,MustHaveResults) 
 	values ('CMS Removal',0,'CMS Removal',0)
