@@ -48,8 +48,8 @@ if exists (select * from qualpro_params where strParam_nm ='EnvName' and STRPARA
 
 
 /* insert records in DispositionLog for the appropriate samplepops */
-insert into dispositionlog (samplepop_id, Disposition_id,ReceiptType_id,datLogged,LoggedBy)
-select sp.Samplepop_id, d.Disposition_id, 0 as receiptType_id, getdate() as datLogged, 'CMS Removal' as LoggedBy 
+insert into dispositionlog (samplepop_id, Disposition_id,ReceiptType_id,datLogged,LoggedBy,DaysFromFirst)
+select sp.Samplepop_id, d.Disposition_id, 0 as receiptType_id, getdate() as datLogged, 'CMS Removal' as LoggedBy, 0 as DaysFromFirst
 from samplepop sp, disposition d
 where d.strDispositionLabel='CMS Removal'
 and sp.SAMPLEPOP_ID in (113515173,113515177,113515146,113522108,113522192,113522078,113522147,113522069,113522132,113522106,113522112,113522182,113522054,113522064,113522086,113522103
