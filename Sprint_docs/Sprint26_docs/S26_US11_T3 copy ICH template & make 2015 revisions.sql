@@ -298,13 +298,30 @@ insert into #DP (DispositionActionID,[newid]) values (2,0)
 set @dpid=scope_identity()
 
 insert into #dc (DispositionProcessID,DispositionPhraseKey,ExportTemplateColumnID,OperatorID,LowValue,HighValue,[newID])
-select @dpid, 1, ExportTemplateColumnID, OperatorID, 999, null, 0 
+select @dpid, 1, ExportTemplateColumnID, OperatorID, '''999''', null, 0 
 from #etc, cem.operator
 where exportcolumnname='final-status'
 and strOperator = '='
 
+-- add the new disposition value into ExportTemplateColumnResponse
+insert into #ETCR (ExportTemplateColumnID,RawValue,ExportColumnName,RecodeValue,ResponseLabel,[newID])
+select ExportTemplateColumnID,5999,null,999,'CMS Removal',0
+from #ETC 
+where ExportColumnName='final-status'
+
 -- assign the new disposition process to a column (doesn't matter which column -- we're deleting the entire record, not recoding a specific column -- it just needs to be one that doesn't already have a disposition process)
 update #etc set DispositionProcessId=@dpid where DispositionProcessId is NULL and exportColumnName='sample-id'
+
+-- update the standard mailing methodology IDs to the 2015 values
+declare @mm int
+select @mm=exporttemplatecolumnid 
+from #ETC c
+inner join #ETS s on c.exporttemplatesectionid=s.exporttemplatesectionid 
+where s.ExportTemplateSectionName='header' and c.ExportColumnName='survey-mode'
+
+update #ETCR set rawvalue=29 where exporttemplatecolumnid=@mm and responselabel='Mail Only'
+update #ETCR set rawvalue=30 where exporttemplatecolumnid=@mm and responselabel='Telephone Only'
+update #ETCR set rawvalue=28 where exporttemplatecolumnid=@mm and responselabel='Mixed Mode'
 
 
 ---- INSERT THE MODIFIED TEMPLATE INTO THE TABLES ----
