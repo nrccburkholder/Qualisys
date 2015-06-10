@@ -11,6 +11,7 @@ Tim Butler
 	CREATE TABLE [dbo].[SampleUnitBySampleSet]
 	ALTER PROCEDURE [dbo].[etl_LoadSampleSetRecords]
 	ALTER PROCEDURE [dbo].[etl_ClearEventLoadTables]
+	ALTER PROCEDURE [dbo].[etl_ClearLoadTables]
 */
 
 use [NRC_DataMart]

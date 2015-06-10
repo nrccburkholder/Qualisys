@@ -88,7 +88,10 @@ namespace CEM.Exporting.DataProviders
         {
             SqlParameter[] param = new SqlParameter[] {new SqlParameter("@ExportTemplateID",template.ExportTemplateID),
                                                        new SqlParameter("@SurveyTypeId", template.SurveyTypeID),
-                                                       new SqlParameter("@ClientId",template.ClientID)
+                                                       new SqlParameter("@ExportTemplateName", template.ExportTemplateName),
+	                                                    new SqlParameter("@ExportTemplateVersionMajor", template.ExportTemplateVersionMajor),
+	                                                    new SqlParameter("@ExportTemplateVersionMinor",template.ExportTemplateVersionMinor),
+                                                        new SqlParameter("@ClientId", template.ClientID)
                                                        };
 
             DataSet ds = new DataSet();
