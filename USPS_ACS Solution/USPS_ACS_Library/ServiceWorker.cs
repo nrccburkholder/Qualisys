@@ -449,7 +449,7 @@ namespace USPS_ACS_Library
                                  
                     MoveExtractFile(filepath, status);
 
-                    //UpdateAddresses(USPS_ACS_ExtractFileLog_ID);
+                    UpdateAddresses(USPS_ACS_ExtractFileLog_ID);
 
                     fileCount += 1;
                 }

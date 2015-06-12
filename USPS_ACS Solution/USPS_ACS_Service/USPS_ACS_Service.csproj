@@ -124,6 +124,10 @@
       <Project>{c5a6ee1a-d5bf-4059-87cf-aca302979820}</Project>
       <Name>Nrc.Framework.BusinessLogic</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Nrc.Common.WinService\Nrc.Common.WinService.csproj">
+      <Project>{3276917c-5f3b-45db-bb21-7781a9386504}</Project>
+      <Name>Nrc.Common.WinService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\USPS_ACS_Library\USPS_ACS_Library.csproj">
       <Project>{12d934d7-919f-4767-8184-b9aceb83d5f0}</Project>
       <Name>USPS_ACS_Library</Name>
