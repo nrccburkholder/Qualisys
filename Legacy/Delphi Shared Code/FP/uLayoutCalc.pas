@@ -3241,6 +3241,7 @@ var SurveyHeight,capacity,TotalPages,PaperTypeAnswer : integer;
   procedure SplitIntoPages;
   var CLoffset,FirstPageCol2Offset,offset,thispagecap,prev2Item,prevItem,increasedcapacity,prev2Sub,prevSub,CoverLetterAfterPageBreak : integer;
       Prev2Is0LineCmnt,PrevIs0LineCmnt,col2,Carry2Prev : boolean;
+      origX : integer;
       LastSec:integer;
       SavePlace: TBookmark;
   begin
@@ -3382,11 +3383,17 @@ var SurveyHeight,capacity,TotalPages,PaperTypeAnswer : integer;
                    edit;
                    tpclY.value := tPCLY.value + offset;
                    //tpclX.value := tPCLX.value - HorzOffset[SheetType, SurveyPages mod pages[SheetType]];
+
+                   origX := tpclX.value; //in case we are already in the first column CJB 6/16/2015
+
                    if Col2 then
                      tpclX.value := tPCLX.value - HorzOffset[SheetType, SurveyPages mod pages[SheetType]]
                                                 - ((PageWidth+(ColumnGutter*(ColumnCnt-1))) div ColumnCnt)
                    else
                      tpclX.value := tPCLX.value - HorzOffset[SheetType, SurveyPages mod pages[SheetType]];
+
+                   if tpclX.value < 0 then //in case we are already in the first column CJB 6/16/2015
+                     tpclX.value := origX;
                    post;
                    prior;
                  end;
