@@ -5,6 +5,7 @@
 
 	alter table [dbo].[USPS_ACS_ExtractFile_Work] add MoveType varchar(1) 
 	ALTER PROCEDURE [dbo].[USPS_ACS_InsertExtractFileRecord]
+	ALTER PROCEDURE [dbo].[USPS_ACS_ProcessFile]
 
 */
 
