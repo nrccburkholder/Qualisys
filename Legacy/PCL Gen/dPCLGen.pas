@@ -874,7 +874,8 @@ begin
     if Length(strBody) > 8000 then
        strBody := Copy(strBody,1,7900) + '***data truncated***' ;//gn04
 //    QPQuery(format('exec master.dbo.xp_sendmail @recipients = ''%s'', @subject = ''%s'', @message = ''%s''',[strto, strSubject, strBody]),wwSQLQuery,true);
-    QPQuery(format('exec msdb.dbo.sp_send_dbmail @profile_name = ''ApptixQualisysEmail'', @recipients = ''%s'', @subject = ''%s'', @body = ''%s''',[strto, strSubject, strBody]),wwSQLQuery,true);
+//    QPQuery(format('exec msdb.dbo.sp_send_dbmail @profile_name = ''ApptixQualisysEmail'', @recipients = ''%s'', @subject = ''%s'', @body = ''%s''',[strto, strSubject, strBody]),wwSQLQuery,true);
+    QPQuery(format('exec qp_prod.dbo.NRC10_send_dbmail @recipients = ''%s'', @subject = ''%s'', @body = ''%s''',[strto, strSubject, strBody]),wwSQLQuery,true);
   end;
 end;
 
