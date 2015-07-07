@@ -1229,31 +1229,37 @@ begin
     frmLayoutCalc.DOD := (pos(','+s_id+',',DODSurveys)>0);
     frmPCLGeneration.ProgressReport(frmPCLGeneration.CompName + ' Process '+s_id+'.'+sm_id,s_id,sm_id );
     frmLayoutCalc.SurveyGen(sp_id);
-    if not wwt_myPCLNeeded.fieldbyname('QuestionForm_id').isnull then begin
-      if not TestPrints then
-      begin
-        dmOpenQ.bblLocFlush;
-        dmOpenQ.cmntLocFlush;
-        dmOpenQ.HWLocFlush;
-      end;
-      if ChkPosOn then
-        for i := 1 to 10 do
-          if length(chkpos[i]) > 5 then
-            with frmLayoutCalc.tPCL do begin
-              append;
-              fieldbyname('Sheet').value := (i+1) div 2;
-              fieldbyname('Side').value := i;
-              fieldbyname('Pagenum').value := 9999;
-              fieldbyname('PCLStream').value := chkpos[i];
-              post;
-            end;
-    end;
-
-    SavePCLOutput;
-    if not testprints then //GN03
-       CheckQuestionCount;
-    QPQuery('delete from PCLNeeded'+strTP+' where '+WhereField+'='+sm_id,wwSQLQuery,true);
 {$IFDEF TrapErrors}
+    try
+{$ENDIF}
+      if not wwt_myPCLNeeded.fieldbyname('QuestionForm_id').isnull then begin
+        if not TestPrints then
+        begin
+          dmOpenQ.bblLocFlush;
+          dmOpenQ.cmntLocFlush;
+          dmOpenQ.HWLocFlush;
+        end;
+        if ChkPosOn then
+          for i := 1 to 10 do
+            if length(chkpos[i]) > 5 then
+              with frmLayoutCalc.tPCL do begin
+                append;
+                fieldbyname('Sheet').value := (i+1) div 2;
+                fieldbyname('Side').value := i;
+                fieldbyname('Pagenum').value := 9999;
+                fieldbyname('PCLStream').value := chkpos[i];
+                post;
+              end;
+      end;
+{$IFDEF TrapErrors}
+    finally
+{$ENDIF}
+      SavePCLOutput;
+      if not testprints then //GN03
+         CheckQuestionCount;
+      QPQuery('delete from PCLNeeded'+strTP+' where '+WhereField+'='+sm_id,wwSQLQuery,true);
+{$IFDEF TrapErrors}
+    end;
   except
     on e:exception do begin
       if e is eOrphanTagError then
