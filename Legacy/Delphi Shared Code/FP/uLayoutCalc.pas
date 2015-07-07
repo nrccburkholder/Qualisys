@@ -3971,19 +3971,22 @@ var i,SectOrder,ThisUnit,ThisSect,ThisSub,ThisItem,TargetSect,TargetSub,TargetIt
 begin
 //  if dmOpenQ.SkipGoPhrase = '' then
 //  begin
+    // DG: removed the first capital letter off some skip instructions so that the "" command at the end of this procdure
+    // would be able to find both "Saltar a la pregunta" and "Si {response} saltar a la pregunta" (for example.)
+    // see the skip instruction definitions in the newScale function for more information.
      case dmOpenQ.CurrentLanguage of
        2,7,9,18,19,20 : QText := '# '; //Spanish, VA-Spanish, Harris County Spanish, Magnus GN03, HCAHPS Spanish GN08
        5: Qtext := 'continuar con la pregunta '; //Mexican Spanish
-       6: QText := 'Allez à la question '; //French
-       8: QText := 'Saltar a la pregunta '; //PEP-C Spanish
-       10: QText := 'Passez au n'+#27+'*p-30Yo'+#27+'*p+30Y '; // Quebeqor
-       11,12,17: QText := 'Passez à la question n'+#27+'*p-30Yo'+#27+'*p+30Y '; // Francophone
+       6: QText := {A}'llez à la question '; //French
+       8: QText := {S}'altar a la pregunta '; //PEP-C Spanish
+       10: QText := {P}'assez au n'+#27+'*p-30Yo'+#27+'*p+30Y '; // Quebeqor
+       11,12,17: QText := {P}'assez à la question n'+#27+'*p-30Yo'+#27+'*p+30Y '; // Francophone
        22 : QText := 'procédez à la question '; //gn19: Montort french
        13: SkipError('Italian skips');
        14: QText := 'vá para a Pergunta '; //Portuguese
-       15: QText := 'Mus rau lo lus nug '; // Hmong
-       16: QText := 'U gudub '; // Somali
-       21: QText := 'Prosze przejsc do '; //gn19: Polish
+       15: QText := {M}'us rau lo lus nug '; // Hmong
+       16: QText := {U}' gudub '; // Somali
+       21: QText := {P}'rosze przejsc do '; //gn19: Polish
 
      else
        if CAHPSNumbering or DoDBenSkips then QText := 'Question '
@@ -4099,7 +4102,10 @@ begin
       s := tPCLPCLStream.value;
       while pos('# ',TargetQnum) > 0 do delete(targetQnum,pos('# ',TargetQnum)+1,1);
       fnd := QText+'[S'+inttostr(skips[i].Item)+']';
-      insert(TargetQnum,s,pos(fnd,s));
+      if pos(fnd,s)>0 then
+         insert(TargetQnum,s,pos(fnd,s))
+      else
+         raise EGenErr.Create('Cant find skip instructions.');
       delete(s,pos(fnd,s),length(fnd));
       tPCL.edit;
       tPCLPCLStream.value := s;
