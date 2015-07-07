@@ -3971,7 +3971,7 @@ var i,SectOrder,ThisUnit,ThisSect,ThisSub,ThisItem,TargetSect,TargetSub,TargetIt
 begin
 //  if dmOpenQ.SkipGoPhrase = '' then
 //  begin
-    // DG: removed the first capital letter off some skip instructions so that the "" command at the end of this procdure
+    // DG: removed the first capital letter off some skip instructions so that the "pos(fnd,s)" command at the end of this procdure
     // would be able to find both "Saltar a la pregunta" and "Si {response} saltar a la pregunta" (for example.)
     // see the skip instruction definitions in the newScale function for more information.
      case dmOpenQ.CurrentLanguage of
