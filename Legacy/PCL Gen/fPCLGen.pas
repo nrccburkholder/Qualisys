@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, Grids, DBGrids, ExtCtrls, DBTables, Buttons;
+  StdCtrls, Grids, DBGrids, ExtCtrls, DBTables, Buttons, FileUtil;
 
 type
   TfrmPCLGeneration = class(TForm)
@@ -25,6 +25,7 @@ type
   public
     { Public declarations }
     CompName : string;
+    Version : string;
   end;
 
 var
@@ -99,8 +100,10 @@ begin
 end;
 
 procedure TfrmPCLGeneration.FormCreate(Sender: TObject);
+var dummy : string;
 begin
   CompName := ComputerName;
+  dummy := GetFileVersion(application.exename, Version);
   if paramstr(4)='/C' then timer.interval := 1000;
   timer.enabled := true;
 end;

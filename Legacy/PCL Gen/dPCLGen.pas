@@ -15,7 +15,7 @@ Date        UserID  Description
 
 12-06-2006  GN04    @message NVARCHAR(4000), VARCHAR(8000)
                     Body text of the email message. The maximum line length is 1000 characters.
-                    Lines need to be separated using a carriage return linefeed (\r\n or using T-SQL char(13) | char(10)). 
+                    Lines need to be separated using a carriage return linefeed (\r\n or using T-SQL char(13) | char(10)).
 
 ********************************************************************************}
 
@@ -1468,7 +1468,7 @@ begin
     frmPCLGeneration.txtSurvey_id.text := '0'
   else
     frmPCLGeneration.ProgressReport('  waiting for a batch for survey_id='+frmPCLGeneration.txtSurvey_id.text,'','');
-  QPQuery('execute sp_PCL_NextBatch ''' + frmPCLGeneration.CompName + ''', '+frmPCLGeneration.txtSurvey_id.text,wwSQLQuery,true);
+  QPQuery('execute sp_PCL_NextBatch ''' + frmPCLGeneration.CompName + ''', '+frmPCLGeneration.txtSurvey_id.text + ', ''' + frmPCLGeneration.Version + '''',wwSQLQuery,true);
   QPQuery('execute sp_PCL_CleanBatch',wwSQLQuery,true);
 
   ww_sql.SQL.Add('Update #MyPCLNeeded set #MyPCLNeeded.LithoCode = cast(sm.strLithoCode as integer),'+
