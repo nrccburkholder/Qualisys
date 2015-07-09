@@ -1,4 +1,7 @@
-/****** Object:  Table [dbo].[USPS_ACS_ExtractFile_Work]    Script Date: 8/21/2014 10:55:15 AM ******/
+USE [QP_Prod]
+GO
+
+/****** Object:  Table [dbo].[USPS_ACS_ExtractFile_Work]    Script Date: 7/9/2015 3:25:09 PM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -8,36 +11,35 @@ GO
 SET ANSI_PADDING ON
 GO
 
-
 CREATE TABLE [dbo].[USPS_ACS_ExtractFile_Work](
 	[USPS_ACS_ExtractFile_Work_ID] [int] IDENTITY(1,1) NOT NULL,
-	[USPS_ACS_ExtractFile_ID] [int],
-	FName varchar(15),
-	LName varchar(20),
-	PrimaryNumberOld varchar(10),
-	PreDirectionalOld varchar(2),
-	StreetNameOld varchar(28),
-	StreetSuffixOld varchar(4),
-	PostDirectionalOld varchar(2),
-	UnitDesignatorOld varchar(4),
-	SecondaryNumberOld varchar(10),
-	CityOld varchar(28),
-	StateOld varchar(2),
-	Zip5Old varchar(5),
-	PrimaryNumberNew varchar(10),
-	PreDirectionalNew varchar(2),
-	StreetNameNew varchar(28),
-	StreetSuffixNew varchar(4),
-	PostDirectionalNew varchar(2),
-	UnitDesignatorNew varchar(4),
-	SecondaryNumberNew varchar(10),
-	CityNew varchar(28),
-	StateNew varchar(2),
-	Zip5New varchar(5),
-	Plus4ZipNew varchar(4),
-	AddressNew varchar(66),
-	Address2New varchar(14)
-	
+	[USPS_ACS_ExtractFile_ID] [int] NULL,
+	[FName] [varchar](15) NULL,
+	[LName] [varchar](20) NULL,
+	[PrimaryNumberOld] [varchar](10) NULL,
+	[PreDirectionalOld] [varchar](2) NULL,
+	[StreetNameOld] [varchar](28) NULL,
+	[StreetSuffixOld] [varchar](4) NULL,
+	[PostDirectionalOld] [varchar](2) NULL,
+	[UnitDesignatorOld] [varchar](4) NULL,
+	[SecondaryNumberOld] [varchar](10) NULL,
+	[CityOld] [varchar](28) NULL,
+	[StateOld] [varchar](2) NULL,
+	[Zip5Old] [varchar](5) NULL,
+	[PrimaryNumberNew] [varchar](10) NULL,
+	[PreDirectionalNew] [varchar](2) NULL,
+	[StreetNameNew] [varchar](28) NULL,
+	[StreetSuffixNew] [varchar](4) NULL,
+	[PostDirectionalNew] [varchar](2) NULL,
+	[UnitDesignatorNew] [varchar](4) NULL,
+	[SecondaryNumberNew] [varchar](10) NULL,
+	[CityNew] [varchar](28) NULL,
+	[StateNew] [varchar](2) NULL,
+	[Zip5New] [varchar](5) NULL,
+	[Plus4ZipNew] [varchar](4) NULL,
+	[AddressNew] [varchar](66) NULL,
+	[Address2New] [varchar](14) NULL,
+	[MoveType] [char](1) NULL,
  CONSTRAINT [PK_USPS_ACS_ExtractFile_Work] PRIMARY KEY CLUSTERED 
 (
 	[USPS_ACS_ExtractFile_Work_ID] ASC
@@ -45,3 +47,8 @@ CREATE TABLE [dbo].[USPS_ACS_ExtractFile_Work](
 ) ON [PRIMARY]
 
 GO
+
+SET ANSI_PADDING OFF
+GO
+
+

@@ -1,4 +1,6 @@
-/****** Object:  StoredProcedure [dbo].[USPS_ACS_InsertExtractFileRecord]    Script Date: 9/23/2014 10:42:12 AM ******/
+USE [QP_Prod]
+GO
+/****** Object:  StoredProcedure [dbo].[USPS_ACS_InsertExtractFileRecord]    Script Date: 3/20/2015 9:43:11 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -30,7 +32,8 @@ CREATE PROCEDURE [dbo].[USPS_ACS_InsertExtractFileRecord]
 	@Zip5New varchar(5),
 	@Plus4ZipNew varchar(4),
 	@AddressNew varchar(66),
-	@Address2New varchar(14)
+	@Address2New varchar(14),
+	@MoveType char(1) = 'I'
 
 AS
 BEGIN
@@ -78,7 +81,8 @@ BEGIN
 			   ,[Zip5New]  
 			   ,[Plus4ZipNew]
 			   ,[AddressNew]
-			   ,[Address2New])
+			   ,[Address2New]
+			   ,[MoveType])
 		 VALUES
 			   (@ExtractFileRecord_Id
 			    ,@FName
@@ -105,7 +109,8 @@ BEGIN
 				,@Zip5New
 				,@Plus4ZipNew
 				,@AddressNew
-				,@Address2New)
+				,@Address2New
+				,@MoveType)
 
 	END
 	ELSE
@@ -115,6 +120,6 @@ BEGIN
 		where USPS_ACS_ExtractFile_ID =@ExtractFileRecord_Id
 	END
 
-
 END
+
 GO
