@@ -182,7 +182,7 @@ AS
                         INNER JOIN dbo.SampleUnit su ON ss.sampleunit_id = su.sampleunit_Id
                         INNER JOIN #SampleUnit_Universe t ON t.Pop_id = ss.Pop_id
 						INNER JOIN SUFacility suf on su.SUFacility_ID = suf.SUFacility_ID
-                  WHERE su.bitHCAHPS = 1 <-- we aren't concerned with resurvey exclusion for non-HCAHPS patients?
+                  WHERE su.bitHCAHPS = 1 
                         AND ss.Study_id = @Study_id
                         AND sampleEncounterDate BETWEEN @minDate AND @maxDate) a
           GROUP BY a.Pop_id,
@@ -216,9 +216,9 @@ AS
                  1 AS SamplingExclusionType_ID,
                  NULL AS DQ_BusRule_ID
           FROM   #SampleUnit_Universe U
-                 LEFT JOIN SampleUnit su on u.sampleunit_id=su.sampleunit_id and su.CAHPSType_id=2														<-- INNER JOIN?
-                 LEFT JOIN SUFacility suf on su.SUFacility_ID = suf.SUFacility_ID																		<-- INNER JOIN?
-                 INNER JOIN #ReSurvey MM ON U.Pop_id = MM.Pop_id AND U.ReSurveyDate = MM.ReSurveyDate and isnull(suf.MedicareNumber,'<no CCN>')=mm.CCN	<-- ISNULL() needed?
+                 INNER JOIN SampleUnit su on u.sampleunit_id=su.sampleunit_id and su.CAHPSType_id=2
+                 INNER JOIN SUFacility suf on su.SUFacility_ID = suf.SUFacility_ID
+                 INNER JOIN #ReSurvey MM ON U.Pop_id = MM.Pop_id AND U.ReSurveyDate = MM.ReSurveyDate and suf.MedicareNumber=mm.CCN	
 
           IF EXISTS (SELECT *
                      FROM   tempdb.dbo.sysobjects o
