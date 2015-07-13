@@ -41,6 +41,6 @@ from #breakoff bo
 inner join CahpsDispositionMapping cdm on bo.CahpsTypeID=cdm.CahpsTypeID and cdm.CahpsHierarchy>=bo.CahpsHierarchy
 
 insert into CahpsDispositionMapping (CahpsTypeID,DispositionID,ReceiptTypeID,Label,CahpsDispositionID,CahpsHierarchy,IsDefaultDisposition)
-select CahpsTypeID,49 as DispositionID,-1 as ReceiptTypeID,'Breakoff is actually blank' as Label,000 as CahpsDispositionID,CahpsHierarchy,0 as IsDefaultDisposition
+select CahpsTypeID,49 as DispositionID,-1 as ReceiptTypeID,'Breakoff is actually blank' as Label,8 as CahpsDispositionID,CahpsHierarchy,0 as IsDefaultDisposition
 from #breakoff
 go
