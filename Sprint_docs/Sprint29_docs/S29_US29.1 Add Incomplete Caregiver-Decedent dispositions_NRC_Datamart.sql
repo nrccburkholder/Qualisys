@@ -30,9 +30,7 @@ declare @label varchar(100)
 
 select @hospiceId = CahpsTypeId from [dbo].[CahpsType] where label = 'Hospice CAHPS'
 
-select @hierarchy = max(CahpsHierarchy) + 1
-	from cahpsdispositionmapping
-	where CahpsTypeID = @hospiceId
+SET @hierarchy = 12
 
 SET @label = 'Incomplete Caregiver'
 SET @CMSdispositionCode = 12
@@ -45,7 +43,7 @@ if not exists (select * from cahpsdisposition where cahpstypeid=@hospiceId and l
 	insert into cahpsdisposition (CahpsDispositionID, CahpsTypeID, Label, IsCahpsDispositionComplete, IsCahpsDispositionInComplete)
 	values (@cahpsdispositionid, @hospiceId, @label, 0, 0)
 
-SET @dispositionid  = /* get the disposition id from QP_Prod.Disposition -- the one we just added */
+SET @dispositionid  = 50 /* get the disposition id from QP_Prod.Disposition -- the one we just added */
 
 if not exists (select * from disposition where label = @label)
 	insert into disposition (DispositionID, label) values (@dispositionid, @label)
@@ -71,7 +69,7 @@ if not exists (select * from cahpsdisposition where cahpstypeid=@hospiceId and l
 	insert into cahpsdisposition (CahpsDispositionID, CahpsTypeID, Label, IsCahpsDispositionComplete, IsCahpsDispositionInComplete)
 	values (@cahpsdispositionid, @hospiceId, @label, 0, 0)
 
-SET @dispositionid  = /* get the disposition id from QP_Prod.Disposition -- the one we just added */
+SET @dispositionid  = 51 /* get the disposition id from QP_Prod.Disposition -- the one we just added */
 
 if not exists (select * from disposition where label = @label)
 	insert into disposition (DispositionID, label) values (@dispositionid, @label)
@@ -84,7 +82,23 @@ begin
 	values (@hospiceId, @dispositionid , -1, @label, @cahpsdispositionid, @hierarchy, 0)
 end
 
+-- Update Hierarchy for the dispositions so our new dispositions rank higher than these
 
+Update cahpsdispositionmapping
+	SET CahpsHierarchy = @hierarchy + 1
+where Label = 'Non-response: Unused Bad Address'
+and CahpsTypeID =  @hospiceId
+
+Update cahpsdispositionmapping
+	SET CahpsHierarchy = @hierarchy + 1
+where Label = 'Non-response: Unused Bad/No Telephone Number'
+and CahpsTypeID =  @hospiceId
+
+-- this is the default, so it needs to be last
+Update cahpsdispositionmapping
+	SET CahpsHierarchy = @hierarchy + 2
+where Label = 'Non-response: Non-response after max attempts'
+and CahpsTypeID =  @hospiceId
 
 commit tran
 --rollback tran
@@ -92,13 +106,12 @@ commit tran
 
 select *
 from cahpsdisposition
-where CahpsTypeID =6
+where CahpsTypeID = @hospiceId
 
-select *
-from Disposition
 
 select *
 from cahpsdispositionmapping
-where CahpsTypeID = 6
+where CahpsTypeID = @hospiceId
+order by CahpsHierarchy desc, Label
 
 go
