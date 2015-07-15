@@ -20,4 +20,4 @@ CCommentCodes = 0, 0, 0, 0, C
 CCommentCode = 0, 0, 0, 0, C
 modMain = 182, 182, 993, 589, 
 frmScanImport = 78, 78, 889, 485, , 104, 104, 915, 512, C
-dlgShowCurrentUsers = 0, 0, 0, 0, C, 130, 130, 941, 538, C
+dlgShowCurrentUsers = 26, 26, 837, 433, , 130, 130, 941, 538, C
