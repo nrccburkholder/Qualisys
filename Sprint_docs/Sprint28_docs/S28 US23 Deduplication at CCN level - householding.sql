@@ -60,10 +60,22 @@ AS
   SET @BOM = dateadd(dd, -day(@startDate) + 1, @startDate)
   SET @EOM = dateadd(dd, -1, dateadd(mm, 1, @BOM))
 
+declare @dbg varchar(30) set @dbg=	convert(varchar,getdate(),109)
+set @SQL = 'temp_dbg_SampleUnit_Universe QCL_SampleSetHouseholdingExclusion        before '+@dbg
+while exists (select * from sys.tables where name = @SQL)
+	set @SQL = @SQL + 'x'
+
+set @SQL = 'select * into ['+@SQL+'] from #SampleUnit_Universe'
+exec (@SQL)
+
   IF @HouseHoldingType = 'A'
     BEGIN
-      SELECT @SQL = 'CREATE TABLE #Distinct (a INT IDENTITY(-1,-1), ' + @strHouseHoldField_CreateTable + ', pop_id int, CCN varchar(20))
-		  INSERT INTO #Distinct (' + @strHouseHoldField_Select + ', pop_id, CCN)
+set @sql = 'temp_dbg_distinct            QCL_SampleSetHouseholdingExclusion               '+@dbg
+while exists (select * from sys.tables where name = @SQL)
+	set @SQL = @SQL + 'x'
+
+      SELECT @SQL = 'CREATE TABLE ['+@sql+'] (a INT IDENTITY(-1,-1), ' + @strHouseHoldField_CreateTable + ', pop_id int, CCN varchar(20))
+		  INSERT INTO ['+@sql+'] (' + @strHouseHoldField_Select + ', pop_id, CCN)
 		  SELECT DISTINCT ' + SUBSTRING(REPLACE(REPLACE(REPLACE(@strHouseHoldField_Select, 'POPULATION', '')
 			  , 'x.', ',9999999),ISNULL(p.')
 			  , ', ,', ',')
@@ -86,8 +98,8 @@ AS
 		declare @environment nvarchar(255)
 		exec dbo.sp_getcountryenvironment @ocountry=@country output, @oenvironment=@environment output
 		IF @country=''US''
-			DELETE #Distinct
-			FROM   #Distinct d
+			DELETE ['+@sql+']
+			FROM   ['+@sql+'] d
 			   INNER JOIN vw_Billians_NursingHomeAssistedLiving v
 					   ON d.POPULATIONAddr = v.Street_Address
 						  AND d.POPULATIONaddr2 = v.mail_Address
@@ -97,7 +109,7 @@ AS
 
 		  UPDATE x
 		  SET x.Removed_Rule=10
-		  FROM #SampleUnit_Universe x, sampleunit su, SUFacility suf, #Distinct y
+		  FROM #SampleUnit_Universe x, sampleunit su, SUFacility suf, ['+@sql+'] y
 		  WHERE x.sampleunit_id = su.sampleunit_id 
 		  and su.SUFacility_id = suf.SUFacility_id
 		  and ' + REPLACE(REPLACE(@strHouseHold_Join, 'x.', 'ISNULL(X.'), '=', ',9999999)=') + ' 
@@ -108,7 +120,7 @@ AS
 		  insert into Sampling_ExclusionLog (Survey_ID,Sampleset_ID,Sampleunit_ID,Pop_ID,Enc_ID,SamplingExclusionType_ID,DQ_BusRule_ID)
 		  Select distinct ' + cast(@survey_ID AS VARCHAR(10)) + ' as Survey_ID, '
 							+ cast(@Sampleset_ID AS VARCHAR(10)) + ' as Sampleset_ID, x.Sampleunit_ID, x.Pop_ID, x.Enc_ID, 10 as SamplingExclusionType_ID, Null as DQ_BusRule_ID
-		  FROM #SampleUnit_Universe x, sampleunit su, SUFacility suf, #Distinct y
+		  FROM #SampleUnit_Universe x, sampleunit su, SUFacility suf, ['+@sql+'] y
 		  WHERE x.sampleunit_id = su.sampleunit_id 
 		  and su.SUFacility_id = suf.SUFacility_id
 		  and ' + REPLACE(REPLACE(@strHouseHold_Join, 'x.', 'ISNULL(X.'), '=', ',9999999)=') + ' 
@@ -118,7 +130,7 @@ AS
   
 		  UPDATE x
 		  SET x.Removed_Rule=7
-		  FROM #SampleUnit_Universe x, sampleunit su, SUFacility suf, #Distinct y
+		  FROM #SampleUnit_Universe x, sampleunit su, SUFacility suf, ['+@sql+'] y
 		  WHERE x.sampleunit_id = su.sampleunit_id 
 		  and su.SUFacility_id = suf.SUFacility_id
 		  and ' + REPLACE(REPLACE(@strHouseHold_Join, 'x.', 'ISNULL(X.'), '=', ',9999999)=') + ' 
@@ -129,7 +141,7 @@ AS
 		  insert into Sampling_ExclusionLog (Survey_ID,Sampleset_ID,Sampleunit_ID,Pop_ID,Enc_ID,SamplingExclusionType_ID,DQ_BusRule_ID)
 		  Select distinct ' + cast(@survey_ID AS VARCHAR(10)) + ' as Survey_ID, '
 							+ cast(@Sampleset_ID AS VARCHAR(10)) + ' as Sampleset_ID, x.Sampleunit_ID, x.Pop_ID, x.Enc_ID, 7 as SamplingExclusionType_ID, Null as DQ_BusRule_ID
-		  FROM #SampleUnit_Universe x, sampleunit su, SUFacility suf, #Distinct y
+		  FROM #SampleUnit_Universe x, sampleunit su, SUFacility suf, ['+@sql+'] y
 		  WHERE x.sampleunit_id = su.sampleunit_id 
 		  and su.SUFacility_id = suf.SUFacility_id
 		  and ' + REPLACE(REPLACE(@strHouseHold_Join, 'x.', 'ISNULL(X.'), '=', ',9999999)=') + ' 
@@ -152,7 +164,7 @@ AS
 			   AND isnull(p.zip5, '''') = LEFT(v.street_zip, 5)
 			 )
 
-		  DROP TABLE #Distinct'
+		  --DROP TABLE #Distinct'
 
       SELECT @sql = replace(@sql, 'DOB,9999999', 'DOB,''12/31/4000''')
 
@@ -161,6 +173,19 @@ AS
       IF @indebug = 1
         PRINT @sql
 
+if not exists (select * from sys.tables where name = 'temp_dbg_somestrings')
+	create table temp_dbg_somestrings (ss_id int identity(1,1), theProc varchar(100), theTime datetime, theString varchar(8000))
+
+INSERT INTO temp_dbg_somestrings (theProc, theTime, theString) values ('QCL_SampleSetHouseholdingExclusion', getdate(), @SQL)
+
 	  EXEC (@sql)
     END
+
+set @SQL = 'temp_dbg_SampleUnit_Universe QCL_SampleSetHouseholdingExclusion        after  '+@dbg
+while exists (select * from sys.tables where name = @SQL)
+	set @SQL = @SQL + 'x'
+
+set @SQL = 'select * into ['+@SQL+'] from #SampleUnit_Universe'
+exec (@SQL)
+
 go

@@ -163,13 +163,14 @@ AS
         DROP TABLE #ReSurvey;
 
       CREATE TABLE #ReSurvey (pop_ID       INT,
+	                          CCN          VARCHAR(20),
                               ReSurveyDate DATETIME)
 
       --if HCAHPS
       IF @surveyType_ID = 2
         BEGIN
           --Get the distinct months of the reportdate for each pop_id
-          INSERT INTO #ReSurvey
+          INSERT INTO #ReSurvey (pop_ID, CCN, ReSurveyDate)
           SELECT a.Pop_id,
                  a.ccn,
 				 dbo.FirstDayOfMonth(sampleEncounterDate) ReSurveyDate
@@ -230,7 +231,7 @@ AS
         BEGIN
           --HHCAHPS
           --Get the distinct months of the reportdate for each pop_id
-          INSERT INTO #ReSurvey
+          INSERT INTO #ReSurvey (pop_ID, ReSurveyDate)
           SELECT a.Pop_id,
                  dbo.FirstDayOfMonth(a.sampleEncounterDate) ReSurveyDate
           FROM   (
@@ -312,6 +313,14 @@ AS
       WHERE  HouseHold_id = id_Num
     END
 
+declare @dbg varchar(30) set @dbg=convert(varchar,getdate(),109)
+set @SQL = 'temp_dbg_SampleUnit_Universe QCL_SampleSetResurveyExclusion_StaticPlus before '+@dbg
+while exists (select * from sys.tables where name = @SQL)
+	set @SQL = @SQL + 'x'
+
+set @SQL = 'select * into ['+@SQL+'] from #SampleUnit_Universe'
+exec (@SQL)
+
   --Now to expand to people not in this sample
   IF @HouseHoldingType = 'A'
      AND @ReSurveyMethod_id = 2
@@ -320,16 +329,21 @@ AS
       --  X.POPULATIONAddr, X.POPULATIONCity, X.POPULATIONST, X.POPULATIONZIP5, X.POPULATIONAddr2
       -- to this:
       -- ISNULL(Addr,9999999),ISNULL(City,9999999),ISNULL(ST,9999999),ISNULL(ZIP5,9999999),ISNULL(Addr2,9999999)
-      SELECT @sql = 'CREATE TABLE #Distinct (a INT IDENTITY(-1,-1), ' + @strHouseHoldField_CreateTable + ', pop_id int, CCN varchar(20))
-		  INSERT INTO #Distinct (' + @strHouseHoldField_Select + ', pop_id, CCN)
+
+set @sql = 'temp_dbg_distinct            QCL_SampleSetResurveyExclusion_StaticPlus        '+@dbg
+while exists (select * from sys.tables where name = @SQL)
+	set @SQL = @SQL + 'x'
+
+      SELECT @sql = 'CREATE TABLE ['+@sql+'] (a INT IDENTITY(-1,-1), ' + @strHouseHoldField_CreateTable + ', pop_id int, CCN varchar(20))
+		  INSERT INTO ['+@sql+'] (' + @strHouseHoldField_Select + ', pop_id, CCN)
 		  SELECT DISTINCT ' + SUBSTRING(REPLACE(REPLACE(REPLACE(@strHouseHoldField_Select, 'POPULATION', '')
-			  , 'x.', ',9999999),ISNULL(')
+			  , 'x.', ',9999999),ISNULL(p.')
 			  , ', ,', ',')
 			  , 12, 2000)
 			  + ',9999999), p.pop_id, suf.MedicareNumber as CCN
 		  FROM dbo.SelectedSample ss
 		       INNER JOIN dbo.SampleUnit su ON ss.sampleunit_id=su.sampleunit_Id
-			   INNER JOIN dbo.SUFacility suf on su.sampleunit_id=suf.sampleunit_id
+			   INNER JOIN dbo.SUFacility suf on su.SUFacility_id = suf.SUFacility_id
 		       INNER JOIN S' + LTRIM(STR(@Study_id)) + '.Population p ON ss.Pop_id=p.Pop_id
 		  WHERE ss.Study_id=' + LTRIM(STR(@Study_id)) + '
 		  AND sampleEncounterDate BETWEEN ''' + CONVERT(VARCHAR, @minDate) + ''' AND ''' + CONVERT(VARCHAR, @maxDate) + '''
@@ -341,8 +355,8 @@ AS
 		declare @environment nvarchar(255)
 		exec dbo.sp_getcountryenvironment @ocountry=@country output, @oenvironment=@environment output
 		IF @country=''US''
-			DELETE #Distinct
-			FROM   #Distinct d
+			DELETE ['+@sql+']
+			FROM   ['+@sql+'] d
 			   INNER JOIN vw_Billians_NursingHomeAssistedLiving v
 					   ON d.POPULATIONAddr = v.Street_Address
 						  AND d.POPULATIONaddr2 = v.mail_Address
@@ -352,23 +366,25 @@ AS
 
 		  --select *
 		  --into dbo.mb_Sampling_HHdistinct_' + CAST(@Sampleset_ID AS VARCHAR(10)) + '
-		  --from #distinct
+		  --from ['+@sql+']
 
 		  UPDATE x
 		  SET x.Removed_Rule=7
-		  FROM #SampleUnit_Universe x, SUFacility sfu, #Distinct y
-		  WHERE x.sampleunit_id=sfu.sampleunit_id 
+		  FROM #SampleUnit_Universe x, sampleunit su, SUFacility suf, ['+@sql+'] y
+		  WHERE x.sampleunit_id = su.sampleunit_id 
+		  and su.SUFacility_id = suf.SUFacility_id
 		  and ' + REPLACE(REPLACE(@strHouseHold_Join, 'x.', 'ISNULL(X.'), '=', ',9999999)=') + '
-		  and sfu.MedicareNumber = y.CCN 
+		  and suf.MedicareNumber = y.CCN 
 		  and isnull(x.removed_rule, 0) = 0
 
 		  insert into dbo.Sampling_ExclusionLog (Survey_ID,Sampleset_ID,Sampleunit_ID,Pop_ID,Enc_ID,SamplingExclusionType_ID,DQ_BusRule_ID)
 		  Select distinct ' + cast(@survey_ID AS VARCHAR(10)) + ' as Survey_ID, '
 							+ cast(@Sampleset_ID AS VARCHAR(10)) + ' as Sampleset_ID, x.Sampleunit_ID, x.Pop_ID, x.Enc_ID, 7 as SamplingExclusionType_ID, Null as DQ_BusRule_ID
-		  FROM #SampleUnit_Universe x, SUFacility sfu, #Distinct y
-		  WHERE x.sampleunit_id=sfu.sampleunit_id 
+		  FROM #SampleUnit_Universe x, sampleunit su, SUFacility suf, ['+@sql+'] y
+		  WHERE x.sampleunit_id = su.sampleunit_id 
+		  and su.SUFacility_id = suf.SUFacility_id
 		  and ' + REPLACE(REPLACE(@strHouseHold_Join, 'x.', 'ISNULL(X.'), '=', ',9999999)=') + '
-		  and sfu.MedicareNumber = y.CCN 
+		  and suf.MedicareNumber = y.CCN 
 		  and x.removed_rule = 7
 
 		--11/25/2013 Dave Hansen - CanadaQualisysUpgrade - DFCT0010966 - conditioned delete/update statements using
@@ -388,7 +404,7 @@ AS
 			   AND isnull(p.zip5, '''') = LEFT(v.street_zip, 5)
 			 )
 
-		  DROP TABLE #Distinct'
+		  --DROP TABLE #Distinct'
 
       SELECT @sql = replace(@sql, 'DOB,9999999', 'DOB,''12/31/4000''')
 
@@ -396,6 +412,11 @@ AS
 
       IF @indebug = 1
         PRINT @sql
+
+if not exists (select * from sys.tables where name = 'temp_dbg_somestrings')
+	create table temp_dbg_somestrings (ss_id int identity(1,1), theProc varchar(100), theTime datetime, theString varchar(8000))
+
+INSERT INTO temp_dbg_somestrings (theProc, theTime, theString) values ('QCL_SampleSetResurveyExclusion_StaticPlus', getdate(), @SQL)
 
       EXEC (@sql)
     END
@@ -472,6 +493,11 @@ AS
       IF @indebug = 1
         PRINT @sql
 
+if not exists (select * from sys.tables where name = 'temp_dbg_somestrings')
+	create table temp_dbg_somestrings (ss_id int identity(1,1), theProc varchar(100), theTime datetime, theString varchar(8000))
+
+INSERT INTO temp_dbg_somestrings (theProc, theTime, theString) values ('QCL_SampleSetResurveyExclusion_StaticPlus', getdate(), @SQL)
+
       EXEC (@sql)
     END
 
@@ -480,4 +506,13 @@ AS
 --test code should not be in production unless there is a specific sampling error
 --insert into mb_sampling_samplesql
 --select @sql as SQL
+
+set @SQL = 'temp_dbg_SampleUnit_Universe QCL_SampleSetResurveyExclusion_StaticPlus after  '+@dbg
+while exists (select * from sys.tables where name = @SQL)
+	set @SQL = @SQL + 'x'
+
+set @SQL = 'select * into ['+@SQL+'] from #SampleUnit_Universe'
+exec (@SQL)
+
+
 go
