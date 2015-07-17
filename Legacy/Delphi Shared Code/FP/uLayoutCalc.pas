@@ -3971,7 +3971,7 @@ var i,SectOrder,ThisUnit,ThisSect,ThisSub,ThisItem,TargetSect,TargetSub,TargetIt
 begin
 //  if dmOpenQ.SkipGoPhrase = '' then
 //  begin
-    // DG: removed the first capital letter off some skip instructions so that the "pos(fnd,s)" command at the end of this procdure
+    // DG: removed the first capital letter off some skip instructions so that the "" command at the end of this procdure
     // would be able to find both "Saltar a la pregunta" and "Si {response} saltar a la pregunta" (for example.)
     // see the skip instruction definitions in the newScale function for more information.
      case dmOpenQ.CurrentLanguage of
@@ -3989,8 +3989,7 @@ begin
        21: QText := {P}'rosze przejsc do '; //gn19: Polish
 
      else
-       if CAHPSNumbering or DoDBenSkips then QText := 'Question '
-       else QText := '# ';
+       QText := 'Question ';
      end;
 //  end
 {  else
@@ -4069,14 +4068,14 @@ begin
              case dmOpenQ.CurrentLanguage of
                2,7,8,9,18,19,20: TargetQnum := 'final'; //Spanish, VA Spanish, PEP-C Spanish, Harris County Spanish, Magnus GN03, HCAHPS Spanish GN08
                5: TargetQnum := 'vaya a final'; //Mexican Spanish
-               6: TargetQnum := 'au fin'; // French
+               6: TargetQnum := {a}'u fin'; // French
                10,11,12,17: TargetQnum := 'Aller à la fin'; // Quebeqor, Francophone
                22: TargetQnum := 'procédez à la fin de la questionnaire';//GN19: Montort French
                13: SkipError('Italian skip to end');
                14: TargetQnum := 'vá para o fim';//Portuguese
                15: SkipError('Hmong skip to end');
                16: SkipError('Somali skip to end');
-               21: TargetQnum := 'Prosze przejsc do konca'; //gn19 polish
+               21: TargetQnum := {P}'rosze przejsc do konca'; //gn19 polish
              else
                TargetQnum := 'end';
              end;
