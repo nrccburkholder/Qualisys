@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -118,6 +118,8 @@
     <Compile Include="Collections\DispositionCollection.vb" />
     <Compile Include="Collections\EmployeeCollection.vb" />
     <Compile Include="Collections\FacilityList.vb" />
+    <Compile Include="Collections\PracticeSiteList.vb" />
+    <Compile Include="Collections\SiteGroupList.vb" />
     <Compile Include="Collections\HCAHPSDispositionCollection.vb" />
     <Compile Include="Collections\HHCAHPSDispositionCollection.vb" />
     <Compile Include="Collections\MailingStepMethodCollection.vb" />
@@ -211,6 +213,8 @@
     <Compile Include="FacilityRegion.vb" />
     <Compile Include="FacilityState.vb" />
     <Compile Include="FormGenJob.vb" />
+    <Compile Include="PracticeSite.vb" />
+    <Compile Include="SiteGroup.vb" />
     <Compile Include="HCAHPSDisposition.vb" />
     <Compile Include="HHCAHPSDisposition.vb" />
     <Compile Include="ListItem.vb" />

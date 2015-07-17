@@ -111,54 +111,44 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Referenced Assemblies\AuditdotNET.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Data.v9.3, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.Data.v9.3, Version=9.3.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\DevExpress.Data.v9.3.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DevExpress.Utils.v9.3, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.Utils.v9.3, Version=9.3.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\DevExpress.Utils.v9.3.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DevExpress.XtraBars.v9.3, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.XtraBars.v9.3, Version=9.3.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\DevExpress.XtraBars.v9.3.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DevExpress.XtraEditors.v9.3, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.XtraEditors.v9.3, Version=9.3.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\DevExpress.XtraEditors.v9.3.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DevExpress.XtraGrid.v9.3, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.XtraGrid.v9.3, Version=9.3.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\DevExpress.XtraGrid.v9.3.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DevExpress.XtraPrinting.v9.3, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.XtraPrinting.v9.3, Version=9.3.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\DevExpress.XtraPrinting.v9.3.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DevExpress.XtraRichEdit.v9.3, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.XtraRichEdit.v9.3, Version=9.3.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\DevExpress.XtraRichEdit.v9.3.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DevExpress.XtraScheduler.v9.3, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.XtraScheduler.v9.3, Version=9.3.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\DevExpress.XtraScheduler.v9.3.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DevExpress.XtraScheduler.v9.3.Core, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.XtraScheduler.v9.3.Core, Version=9.3.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\DevExpress.XtraScheduler.v9.3.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DevExpress.XtraTreeList.v9.3, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.XtraTreeList.v9.3, Version=9.3.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\DevExpress.XtraTreeList.v9.3.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Interop.ADODB, Version=2.7.0.0, Culture=neutral">
@@ -367,6 +357,18 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Classes\CoverLetterEx.vb" />
+    <Compile Include="Sections\FacilityAdminSection.Designer.vb">
+      <DependentUpon>FacilityAdminSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\FacilityAdminSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\FacilityGroupSiteMappingSection.Designer.vb">
+      <DependentUpon>FacilityGroupSiteMappingSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\FacilityGroupSiteMappingSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Sections\FacilitySection.Designer.vb">
       <DependentUpon>FacilitySection.vb</DependentUpon>
     </Compile>
@@ -579,6 +581,12 @@
     <EmbeddedResource Include="Controls\FacilityGrid.resx">
       <SubType>Designer</SubType>
       <DependentUpon>FacilityGrid.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\FacilityAdminSection.resx">
+      <DependentUpon>FacilityAdminSection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\FacilityGroupSiteMappingSection.resx">
+      <DependentUpon>FacilityGroupSiteMappingSection.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Sections\FacilitySection.resx">
       <SubType>Designer</SubType>

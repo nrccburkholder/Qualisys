@@ -25,7 +25,7 @@ Public Class FacilityGrid
                     'Set all to Invisible and then set specific ones to visible
                     Me.colFacilityName.Visible = True
                     Me.colFacilityMedicareNumber.Visible = True
-                    Me.colPENumber.Visible = True
+                    Me.colPENumber.Visible = False  ' marked as not visible as per Dana S29 US6 07/13/2015
                     Me.colCity.Visible = True
                     Me.colState.Visible = True
                     Me.colRegionId.Visible = False
@@ -47,7 +47,7 @@ Public Class FacilityGrid
                 Else
                     Me.colFacilityName.Visible = True
                     Me.colFacilityMedicareNumber.Visible = True
-                    Me.colPENumber.Visible = True
+                    Me.colPENumber.Visible = False  ' marked as not visible as per Dana S29 US6 07/13/2015
                     Me.colCity.Visible = True
                     Me.colState.Visible = True
                     Me.colRegionId.Visible = True

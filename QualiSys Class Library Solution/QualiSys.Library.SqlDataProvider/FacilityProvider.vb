@@ -207,4 +207,107 @@ Public Class FacilityProvider
         ExecuteNonQuery(cmd)
     End Sub
 
+    Public Overrides Function SelectAllSiteGroups() As DataSet
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectAllSiteGroupsAndPracticeSites)
+
+        Dim ds As New DataSet()
+        ds = ExecuteDataSet(cmd)
+
+        Dim keyColumn As DataColumn = ds.Tables(0).Columns("SiteGroup_Id")
+        Dim foreignKeyColumn1 As DataColumn = ds.Tables(1).Columns("SiteGroup_Id")
+
+        ds.Relations.Add("FK_Master_Detail", keyColumn, foreignKeyColumn1)
+
+        Return ds
+    End Function
+
+    Private Function PopulateSiteGroup(ByVal rdr As SafeDataReader) As SiteGroup
+        Dim newObj As SiteGroup = SiteGroup.NewSiteGroup
+        Dim privateInterface As ISiteGroup = newObj
+
+        newObj.BeginPopulate()
+        privateInterface.Id = rdr.GetInteger("SiteGroup_ID")
+        newObj.SiteGroup_ID = rdr.GetInteger("SiteGroup_ID")
+        newObj.AssignedID = rdr.GetInteger("AssignedID")
+        newObj.GroupName = rdr.GetString("GroupName")
+        newObj.Addr1 = rdr.GetString("Addr1")
+        newObj.Addr2 = rdr.GetString("Addr2")
+        newObj.City = rdr.GetString("City")
+        newObj.ST = rdr.GetString("ST")
+        newObj.Zip5 = rdr.GetString("Zip5")
+        newObj.Phone = rdr.GetString("Phone")
+        newObj.GroupOwnerShip = rdr.GetString("GroupOwnership")
+        newObj.GroupContactName = rdr.GetString("GroupContactName")
+        newObj.GroupContactPhone = rdr.GetString("GroupContactPhone")
+        newObj.GroupContactEmail = rdr.GetString("GroupContactEmail")
+        newObj.MasterGroupID = rdr.GetInteger("MasterGroupID")
+        newObj.MasterGroupName = rdr.GetString("MasterGroupName")
+        newObj.IsActive = rdr.GetBoolean("bitActive")
+
+        newObj.PracticeSites = SelectPracticeSiteBySiteGroupId(newObj.SiteGroup_ID)
+
+        newObj.EndPopulate()
+
+        Return newObj
+
+    End Function
+
+    Private Function SelectPracticeSiteBySiteGroupId(ByVal siteGroupId As Integer) As PracticeSiteList
+
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectPracticeSitesBySiteGroupId, siteGroupId)
+
+        Dim practiceSiteList As New PracticeSiteList
+        Using rdr As New SafeDataReader(ExecuteReader(cmd))
+            While rdr.Read
+                practiceSiteList.Add(PopulatePracticeSite(rdr))
+            End While
+        End Using
+        Return practiceSiteList
+    End Function
+
+    Private Function PopulatePracticeSite(ByVal rdr As SafeDataReader) As PracticeSite
+
+
+        Dim newObj As PracticeSite = PracticeSite.NewPracticeSite
+        Dim privateInterface As IPracticeSite = newObj
+
+        privateInterface.Id = rdr.GetInteger("PracticeSite_ID")
+        newObj.PracticeSite_ID = rdr.GetInteger("PracticeSite_ID")
+        newObj.AssignedID = rdr.GetInteger("AssignedID")
+        newObj.SiteGroup_ID = rdr.GetInteger("SiteGroup_ID")
+        newObj.PracticeName = rdr.GetString("PracticeName")
+        newObj.Addr1 = rdr.GetString("Addr1")
+        newObj.Addr2 = rdr.GetString("Addr2")
+        newObj.City = rdr.GetString("City")
+        newObj.ST = rdr.GetString("ST")
+        newObj.Zip5 = rdr.GetString("Zip5")
+        newObj.Phone = rdr.GetString("Phone")
+        newObj.PracticeOwnership = rdr.GetString("PracticeOwnership")
+        newObj.PatVisitsWeek = rdr.GetInteger("PatVisitsWeek")
+        newObj.ProvWorkWeek = rdr.GetInteger("ProvWorkWeek")
+        newObj.PracticeContactName = rdr.GetString("PracticeContactName")
+        newObj.PracticeContactPhone = rdr.GetString("PracticeContactPhone")
+        newObj.PracticeContactEmail = rdr.GetString("PracticeContactEmail")
+        newObj.SampleUnit_id = rdr.GetInteger("SampleUnit_id")
+        newObj.bitActive = rdr.GetBoolean("bitActive")
+
+        Return newObj
+
+    End Function
+
+    Public Overrides Sub UpdateSiteGroup(ByVal siteGroup As SiteGroup)
+
+        'Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.InsertFacility, fac.AhaId, fac.Name, fac.City, fac.State, fac.Country, _
+        '                                region, fac.AdmitNumber, fac.BedSize, StatusToBoolean(fac.IsPediatric), StatusToBoolean(fac.IsTeaching), _
+        '                                StatusToBoolean(fac.IsTrauma), StatusToBoolean(fac.IsReligious), StatusToBoolean(fac.IsGovernment), _
+        '                                StatusToBoolean(fac.IsRural), StatusToBoolean(fac.IsForProfit), StatusToBoolean(fac.IsRehab), _
+        '                                StatusToBoolean(fac.IsCancerCenter), StatusToBoolean(fac.IsPicker), StatusToBoolean(fac.IsFreeStanding), _
+        '                                medNum)
+    End Sub
+
+    Public Overrides Sub UpdatePracticeSite(ByVal practiceSite As PracticeSite)
+
+    End Sub
+    
+
 End Class

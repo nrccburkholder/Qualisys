@@ -13,6 +13,8 @@ using System.Xml.Serialization;
 using System.Configuration;
 using CEM.Exporting.Configuration;
 using NRC.Logging;
+using CEM.Exporting.XmlExporters;
+using CEM.Exporting.Enums;
 
 
 
@@ -84,49 +86,61 @@ namespace CEM.Exporting
             string filepath = string.Empty;
             try
             {
-                XmlDocumentEx xmlDoc = new XmlDocumentEx();
-                xmlDoc = XMLExporter.MakeExportXMLDocument(ds, template);
 
-                filepath = xmlDoc.IsValid == true ? fileLocation : Path.Combine(fileLocation, "error");
-
-                if (!Directory.Exists(filepath))
+                if (Enum.IsDefined(typeof(SurveyTypes), template.SurveyTypeID))
                 {
-                    Directory.CreateDirectory(filepath);
-                }
+                    XmlDocumentEx xmlDoc = new XmlDocumentEx();
 
-                filepath = Path.Combine(filepath, Path.ChangeExtension(queuefile.FileMakerName,"xml"));
+                    BaseXmlExporter exporter = GetExporter((SurveyTypes)template.SurveyTypeID);
 
-                xmlDoc.Save(filepath);
+                    xmlDoc = exporter.MakeExportXMLDocument(ds, template);
 
-                Int16 fileState = 0;
+                    filepath = xmlDoc.IsValid == true ? fileLocation : Path.Combine(fileLocation, "error");
 
-                if (!xmlDoc.IsValid)
-                {
-                    foreach (ExportValidationError eve in xmlDoc.ValidationErrorList)
+                    if (!Directory.Exists(filepath))
                     {
-                        //Logging to the database.  The elements of the message are pipe delimited, with the template name, queueid, queuefileid, the file name, and the validation error description
-                        string message = string.Format("{0}|{1}|{2}|{3}|{4}", template.ExportTemplateName, queuefile.ExportQueueID.ToString(), queuefile.ExportQueueFileID.ToString(), Path.GetFileName(filepath), eve.ErrorDescription);
-                        // TODO:  come up with standard EventTypes for the logging
-                        Logs.Warn("", "XMLVALIDATIONERR", message, EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
+                        Directory.CreateDirectory(filepath);
                     }
-                    //Logs.Info("", "FILEMAKERSTATUS", string.Format("{0} created with validation errors.", filepath), EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
-                    fileState = 2;
+
+                    filepath = Path.Combine(filepath, Path.ChangeExtension(queuefile.FileMakerName, "xml"));
+
+                    xmlDoc.Save(filepath);
+
+                    Int16 fileState = 0;
+
+                    if (!xmlDoc.IsValid)
+                    {
+                        foreach (ExportValidationError eve in xmlDoc.ValidationErrorList)
+                        {
+                            //Logging to the database.  The elements of the message are pipe delimited, with the template name, queueid, queuefileid, the file name, and the validation error description
+                            string message = string.Format("{0}|{1}|{2}|{3}|{4}", template.ExportTemplateName, queuefile.ExportQueueID.ToString(), queuefile.ExportQueueFileID.ToString(), Path.GetFileName(filepath), eve.ErrorDescription);
+                            // TODO:  come up with standard EventTypes for the logging
+                            Logs.Warn("", "XMLVALIDATIONERR", message, EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
+                        }
+                        fileState = 2;
+                    }
+                    else
+                    {
+                        fileState = 1;
+                    }
+
+                    Logs.Info("", "FILEMAKERSTATUS", string.Format("{0}|{1}", fileState == 1 ? "SUCCESS" : "INVALID", filepath), EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
+
+                    // Update the ExportQueueFile record to mark is a complete.
+                    queuefile.FileState = fileState;
+                    queuefile.FileMakerDate = DateTime.Now;
+                    queuefile.Template = template;
+                    queuefile.Save();
+
+                    b = true;
+
                 }
                 else
                 {
-                    //Logs.Info("", "FILEMAKERSTATUS", string.Format("{0} created successfully.", filepath), EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
-                    fileState = 1;
+                    string msg = string.Format("SurveyType_id {0} has no matching SurveyType enumeration!", template.SurveyTypeID.ToString());
+                    throw new Exception("msg");
+
                 }
-
-                Logs.Info("", "FILEMAKERSTATUS", string.Format("{0}|{1}", fileState == 1 ? "SUCCESS" : "INVALID", filepath), EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
-
-                // Update the ExportQueueFile record to mark is a complete.
-                queuefile.FileState = fileState;
-                queuefile.FileMakerDate = DateTime.Now;
-                queuefile.Template = template;
-                queuefile.Save();
-
-                b = true;
             }
             catch (Exception ex)
             {
@@ -163,6 +177,21 @@ namespace CEM.Exporting
 
                     }
                 }
+            }
+        }
+
+        private static BaseXmlExporter GetExporter(SurveyTypes surveyType )
+        {
+            switch (surveyType)
+            {
+                case SurveyTypes.ICHCAHPS:
+                    return new XMLExporter_ICH();
+                case SurveyTypes.HospiceCAHPS:
+                    return new XMLExporter_Hospice();
+                case SurveyTypes.HHCAHPS:
+                    return new XMLExporter_ICH();
+                default:
+                    return null;
             }
         }
     }
