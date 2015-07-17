@@ -30,9 +30,7 @@ declare @hierarchy int
 
 select @hospiceId = SurveyType_Id from SurveyType where SurveyType_dsc = 'Hospice CAHPS'
 
-select @hierarchy = max(hierarchy) + 1
-	from SurveyTypeDispositions
-	where SurveyType_ID = @hospiceId
+SET @hierarchy = 12
 
 /* create new disposition code -- Incomplete Caregiver */
 if not exists (select * from disposition where strDispositionLabel='Incomplete Caregiver')
@@ -71,6 +69,27 @@ begin
 	where strDispositionLabel='Incomplete Decedent'
 end
 
+
+-- Update Hierarchy for the dispositions so our new dispositions rank higher than these
+
+
+Update SurveyTypeDispositions
+	SET Hierarchy = @hierarchy + 1
+where [desc] = 'Non-response: Unused Bad Address'
+and SurveyType_ID =  @hospiceId
+
+Update SurveyTypeDispositions
+	SET Hierarchy = @hierarchy + 1
+where [desc] = 'Non-response: Unused Bad/No Telephone Number'
+and SurveyType_ID =  @hospiceId
+
+-- this one needs to be last
+Update SurveyTypeDispositions
+	SET Hierarchy = @hierarchy + 2
+where [desc] = 'Non-response: Non-response after max attempts'
+and SurveyType_ID =  @hospiceId
+
+
 commit tran
 
 
@@ -80,3 +99,5 @@ from Disposition
 select *
 from SurveyTypeDispositions
 where SurveyType_ID = @hospiceId
+
+GO

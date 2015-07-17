@@ -3,13 +3,13 @@ Public Class FacilityViewModeChangedEventArgs
 
 #Region " Private Members "
 
-    Private mViewMode As FacilitySection.DataViewMode
+    Private mViewMode As FacilityAdminSection.DataViewMode
 
 #End Region
 
 #Region " Public Properties "
 
-    Public ReadOnly Property ViewMode() As FacilitySection.DataViewMode
+    Public ReadOnly Property ViewMode() As FacilityAdminSection.DataViewMode
         Get
             Return mViewMode
         End Get
@@ -19,7 +19,7 @@ Public Class FacilityViewModeChangedEventArgs
 
 #Region " Constructors "
 
-    Public Sub New(ByVal viewMode As FacilitySection.DataViewMode)
+    Public Sub New(ByVal viewMode As FacilityAdminSection.DataViewMode)
 
         mViewMode = viewMode
 

@@ -19,10 +19,11 @@ Partial Class ClientNavigator
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.FacilityToolStrip = New System.Windows.Forms.ToolStrip
-        Me.FacilityAllTSButton = New System.Windows.Forms.ToolStripButton
-        Me.FacilityClientTSButton = New System.Windows.Forms.ToolStripButton
-        Me.ClientList = New System.Windows.Forms.ListBox
+        Me.FacilityToolStrip = New System.Windows.Forms.ToolStrip()
+        Me.FacilityAllTSButton = New System.Windows.Forms.ToolStripButton()
+        Me.GroupSiteTSButton = New System.Windows.Forms.ToolStripButton()
+        Me.FacilityClientTSButton = New System.Windows.Forms.ToolStripButton()
+        Me.ClientList = New System.Windows.Forms.ListBox()
         Me.FacilityToolStrip.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -30,11 +31,11 @@ Partial Class ClientNavigator
         '
         Me.FacilityToolStrip.CanOverflow = False
         Me.FacilityToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.FacilityToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FacilityAllTSButton, Me.FacilityClientTSButton})
+        Me.FacilityToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FacilityAllTSButton, Me.GroupSiteTSButton, Me.FacilityClientTSButton})
         Me.FacilityToolStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.VerticalStackWithOverflow
         Me.FacilityToolStrip.Location = New System.Drawing.Point(0, 0)
         Me.FacilityToolStrip.Name = "FacilityToolStrip"
-        Me.FacilityToolStrip.Size = New System.Drawing.Size(207, 67)
+        Me.FacilityToolStrip.Size = New System.Drawing.Size(207, 90)
         Me.FacilityToolStrip.TabIndex = 5
         '
         'FacilityAllTSButton
@@ -45,8 +46,17 @@ Partial Class ClientNavigator
         Me.FacilityAllTSButton.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.FacilityAllTSButton.Name = "FacilityAllTSButton"
         Me.FacilityAllTSButton.Size = New System.Drawing.Size(205, 20)
-        Me.FacilityAllTSButton.Text = "Edit Facility List"
+        Me.FacilityAllTSButton.Text = "Edit Facilities"
         Me.FacilityAllTSButton.ToolTipText = "Display All Facilities"
+        '
+        'GroupSiteTSButton
+        '
+        Me.GroupSiteTSButton.Image = Global.Nrc.Qualisys.ConfigurationManager.My.Resources.Resources.SampleUnitMapping16
+        Me.GroupSiteTSButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.GroupSiteTSButton.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.GroupSiteTSButton.Name = "GroupSiteTSButton"
+        Me.GroupSiteTSButton.Size = New System.Drawing.Size(205, 20)
+        Me.GroupSiteTSButton.Text = "Groups and Sites"
         '
         'FacilityClientTSButton
         '
@@ -55,16 +65,16 @@ Partial Class ClientNavigator
         Me.FacilityClientTSButton.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.FacilityClientTSButton.Name = "FacilityClientTSButton"
         Me.FacilityClientTSButton.Size = New System.Drawing.Size(205, 20)
-        Me.FacilityClientTSButton.Text = "Assign Facilities to Client"
+        Me.FacilityClientTSButton.Text = "Assign to Clients"
         Me.FacilityClientTSButton.ToolTipText = "Display Facilities linked to selected Client"
         '
         'ClientList
         '
         Me.ClientList.Dock = System.Windows.Forms.DockStyle.Fill
         Me.ClientList.IntegralHeight = False
-        Me.ClientList.Location = New System.Drawing.Point(0, 67)
+        Me.ClientList.Location = New System.Drawing.Point(0, 90)
         Me.ClientList.Name = "ClientList"
-        Me.ClientList.Size = New System.Drawing.Size(207, 256)
+        Me.ClientList.Size = New System.Drawing.Size(207, 233)
         Me.ClientList.TabIndex = 6
         '
         'ClientNavigator
@@ -85,5 +95,6 @@ Partial Class ClientNavigator
     Friend WithEvents FacilityClientTSButton As System.Windows.Forms.ToolStripButton
     Friend WithEvents FacilityAllTSButton As System.Windows.Forms.ToolStripButton
     Friend WithEvents ClientList As System.Windows.Forms.ListBox
+    Friend WithEvents GroupSiteTSButton As System.Windows.Forms.ToolStripButton
 
 End Class
