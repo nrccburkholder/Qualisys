@@ -256,7 +256,6 @@
     <None Include="WeightsLoader_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bin\Debug\WeightsLoader.vshost.exe" />
     <Content Include="Data\DataMart.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
