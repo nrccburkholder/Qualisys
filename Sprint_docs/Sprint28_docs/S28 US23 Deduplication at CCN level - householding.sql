@@ -60,12 +60,24 @@ AS
   SET @BOM = dateadd(dd, -day(@startDate) + 1, @startDate)
   SET @EOM = dateadd(dd, -1, dateadd(mm, 1, @BOM))
 
+declare @dbg varchar(30) set @dbg=	convert(varchar,getdate(),109)
+set @SQL = 'temp_dbg_SampleUnit_Universe QCL_SampleSetHouseholdingExclusion        before '+@dbg
+while exists (select * from sys.tables where name = @SQL)
+	set @SQL = @SQL + 'x'
+
+set @SQL = 'select * into ['+@SQL+'] from #SampleUnit_Universe'
+exec (@SQL)
+
   IF @HouseHoldingType = 'A'
     BEGIN
-      SELECT @sql = 'CREATE TABLE #Distinct (a INT IDENTITY(-1,-1), ' + @strHouseHoldField_CreateTable + ', pop_id int, CCN varchar(20))
-		  INSERT INTO #Distinct (' + @strHouseHoldField_Select + ', pop_id, CCN)
+set @sql = 'temp_dbg_distinct            QCL_SampleSetHouseholdingExclusion               '+@dbg
+while exists (select * from sys.tables where name = @SQL)
+	set @SQL = @SQL + 'x'
+
+      SELECT @SQL = 'CREATE TABLE ['+@sql+'] (a INT IDENTITY(-1,-1), ' + @strHouseHoldField_CreateTable + ', pop_id int, CCN varchar(20))
+		  INSERT INTO ['+@sql+'] (' + @strHouseHoldField_Select + ', pop_id, CCN)
 		  SELECT DISTINCT ' + SUBSTRING(REPLACE(REPLACE(REPLACE(@strHouseHoldField_Select, 'POPULATION', '')
-			  , 'x.', ',9999999),ISNULL(')
+			  , 'x.', ',9999999),ISNULL(p.')
 			  , ', ,', ',')
 			  , 12, 2000) 
 			  + ',9999999), p.pop_id, suf.MedicareNumber as CCN
@@ -74,7 +86,7 @@ AS
 		       INNER JOIN SampleUnit su ON h.sampleunit_id= su.sampleunit_Id 
 			   INNER JOIN survey_def sd ON sd.survey_id = ss.survey_id
 			   INNER JOIN S' + LTRIM(STR(@Study_id)) + '.Population p ON h.Pop_id=p.Pop_id 
-			   INNER JOIN SUFacility suf on su.sampleunit_id=suf.sampleunit_id
+			   INNER JOIN SUFacility suf on su.SUFacility_id = suf.SUFacility_id
 		  WHERE sd.Study_id=' + LTRIM(STR(@Study_id)) + '
 		  AND sampleEncounterDate BETWEEN ''' + CONVERT(VARCHAR, @BOM) + ''' AND  ''' + CONVERT(VARCHAR, @EOM) + '''
 		  and su.bitHCAHPS = 1
@@ -86,8 +98,8 @@ AS
 		declare @environment nvarchar(255)
 		exec dbo.sp_getcountryenvironment @ocountry=@country output, @oenvironment=@environment output
 		IF @country=''US''
-			DELETE #Distinct
-			FROM   #Distinct d
+			DELETE ['+@sql+']
+			FROM   ['+@sql+'] d
 			   INNER JOIN vw_Billians_NursingHomeAssistedLiving v
 					   ON d.POPULATIONAddr = v.Street_Address
 						  AND d.POPULATIONaddr2 = v.mail_Address
@@ -97,39 +109,43 @@ AS
 
 		  UPDATE x
 		  SET x.Removed_Rule=10
-		  FROM #SampleUnit_Universe x, SUFacility sfu, #Distinct y
-		  WHERE x.sampleunit_id = suf.sampleunit_id 
+		  FROM #SampleUnit_Universe x, sampleunit su, SUFacility suf, ['+@sql+'] y
+		  WHERE x.sampleunit_id = su.sampleunit_id 
+		  and su.SUFacility_id = suf.SUFacility_id
 		  and ' + REPLACE(REPLACE(@strHouseHold_Join, 'x.', 'ISNULL(X.'), '=', ',9999999)=') + ' 
-		  and sfu.MedicareNumber = y.CCN
+		  and suf.MedicareNumber = y.CCN
 		  and isnull(x.removed_rule, 0) = 0  
 		  and x.pop_id = y.pop_id
 
 		  insert into Sampling_ExclusionLog (Survey_ID,Sampleset_ID,Sampleunit_ID,Pop_ID,Enc_ID,SamplingExclusionType_ID,DQ_BusRule_ID)
 		  Select distinct ' + cast(@survey_ID AS VARCHAR(10)) + ' as Survey_ID, '
 							+ cast(@Sampleset_ID AS VARCHAR(10)) + ' as Sampleset_ID, x.Sampleunit_ID, x.Pop_ID, x.Enc_ID, 10 as SamplingExclusionType_ID, Null as DQ_BusRule_ID
-		  FROM #SampleUnit_Universe x, SUFacility suf, #Distinct y
-		  WHERE x.sampleunit_id = sfu.sampleunit_id
+		  FROM #SampleUnit_Universe x, sampleunit su, SUFacility suf, ['+@sql+'] y
+		  WHERE x.sampleunit_id = su.sampleunit_id 
+		  and su.SUFacility_id = suf.SUFacility_id
 		  and ' + REPLACE(REPLACE(@strHouseHold_Join, 'x.', 'ISNULL(X.'), '=', ',9999999)=') + ' 
-		  and sfu.MedicareNumber = y.CCN
+		  and suf.MedicareNumber = y.CCN
 		  and x.pop_id = y.pop_id 
 		  and x.removed_rule = 10
   
 		  UPDATE x
 		  SET x.Removed_Rule=7
-		  FROM #SampleUnit_Universe x, SUFacility sfu, #Distinct y
-		  WHERE x.sampleunit_id=sfu.sampleunit_id 
+		  FROM #SampleUnit_Universe x, sampleunit su, SUFacility suf, ['+@sql+'] y
+		  WHERE x.sampleunit_id = su.sampleunit_id 
+		  and su.SUFacility_id = suf.SUFacility_id
 		  and ' + REPLACE(REPLACE(@strHouseHold_Join, 'x.', 'ISNULL(X.'), '=', ',9999999)=') + ' 
-		  and sfu.MedicareNumber = y.CCN 
+		  and suf.MedicareNumber = y.CCN 
 		  and isnull(x.removed_rule, 0) = 0 
 		  and x.pop_id <> y.pop_id
 
 		  insert into Sampling_ExclusionLog (Survey_ID,Sampleset_ID,Sampleunit_ID,Pop_ID,Enc_ID,SamplingExclusionType_ID,DQ_BusRule_ID)
 		  Select distinct ' + cast(@survey_ID AS VARCHAR(10)) + ' as Survey_ID, '
 							+ cast(@Sampleset_ID AS VARCHAR(10)) + ' as Sampleset_ID, x.Sampleunit_ID, x.Pop_ID, x.Enc_ID, 7 as SamplingExclusionType_ID, Null as DQ_BusRule_ID
-		  FROM #SampleUnit_Universe x, SUFacility sfu, #Distinct y
-		  WHERE x.sampleunit_id=sfu.sampleunit_id 
+		  FROM #SampleUnit_Universe x, sampleunit su, SUFacility suf, ['+@sql+'] y
+		  WHERE x.sampleunit_id = su.sampleunit_id 
+		  and su.SUFacility_id = suf.SUFacility_id
 		  and ' + REPLACE(REPLACE(@strHouseHold_Join, 'x.', 'ISNULL(X.'), '=', ',9999999)=') + ' 
-		  and sfu.MedicareNumber = y.CCN 
+		  and suf.MedicareNumber = y.CCN 
 		  and x.removed_rule = 7
 
 		--11/25/2013 Dave Hansen - CanadaQualisysUpgrade - DFCT0010966 - conditioned delete/update statements using
@@ -148,7 +164,7 @@ AS
 			   AND isnull(p.zip5, '''') = LEFT(v.street_zip, 5)
 			 )
 
-		  DROP TABLE #Distinct'
+		  --DROP TABLE #Distinct'
 
       SELECT @sql = replace(@sql, 'DOB,9999999', 'DOB,''12/31/4000''')
 
@@ -157,6 +173,19 @@ AS
       IF @indebug = 1
         PRINT @sql
 
-      EXEC (@sql)
+if not exists (select * from sys.tables where name = 'temp_dbg_somestrings')
+	create table temp_dbg_somestrings (ss_id int identity(1,1), theProc varchar(100), theTime datetime, theString varchar(8000))
+
+INSERT INTO temp_dbg_somestrings (theProc, theTime, theString) values ('QCL_SampleSetHouseholdingExclusion', getdate(), @SQL)
+
+	  EXEC (@sql)
     END
+
+set @SQL = 'temp_dbg_SampleUnit_Universe QCL_SampleSetHouseholdingExclusion        after  '+@dbg
+while exists (select * from sys.tables where name = @SQL)
+	set @SQL = @SQL + 'x'
+
+set @SQL = 'select * into ['+@SQL+'] from #SampleUnit_Universe'
+exec (@SQL)
+
 go

@@ -46,14 +46,14 @@ Conditionals=SMTPBLOCK
 DebugSourceDirs=
 UsePackages=0
 [Parameters]
-RunParams=/2 c:\fakedir /1 
+RunParams=/2 c:\fakedir /1 \\NEPTUNE\QUALPRO\QP_LIB\NET
 HostApplication=
 [Version Info]
 IncludeVerInfo=1
 AutoIncBuild=0
 MajorVer=2
 MinorVer=7
-Release=5
+Release=7
 Build=0
 Debug=0
 PreRelease=1
@@ -65,7 +65,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=National Research
 FileDescription=Generates the PCL Code
-FileVersion=2.7.5.0
+FileVersion=2.7.7.0
 InternalName=
 LegalCopyright=© 2000-2005. All Rights Reserved.
 LegalTrademarks=
