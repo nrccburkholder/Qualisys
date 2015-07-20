@@ -46,7 +46,7 @@ Conditionals=SMTPBLOCK
 DebugSourceDirs=
 UsePackages=0
 [Parameters]
-RunParams=/2 c:\fakedir /1 
+RunParams=/2 c:\fakedir /1 \\NEPTUNE\QUALPRO\QP_LIB\NET
 HostApplication=
 [Version Info]
 IncludeVerInfo=1
