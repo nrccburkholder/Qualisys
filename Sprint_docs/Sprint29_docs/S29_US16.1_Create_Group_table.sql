@@ -1,6 +1,8 @@
 USE [QP_PROD]
 GO
 
+DROP TABLE [dbo].[SiteGroup]
+
 /****** Object:  Table [dbo].[Group]    Script Date: 7/15/2015 11:07:37 AM ******/
 SET ANSI_NULLS ON
 GO
@@ -12,7 +14,6 @@ GO
 
 CREATE TABLE [dbo].[SiteGroup](
 	[SiteGroup_ID] [int] IDENTITY(1,1) NOT NULL,
-	[Client_ID] [int] NULL,
 	[AssignedID] [int] NULL,
 	[GroupName] [nvarchar](50) NULL,
 	[Addr1] [nvarchar](60) NULL,
