@@ -157,8 +157,8 @@ BEGIN
 	inner join #CIHIqf c on qf.questionform_id=c.questionform_id
 	where c.ATAComplete in (1,0)
 	
-	insert into DispositionLog (sentmail_id, samplepop_id, disposition_id, ReceiptType_id, datlogged, loggedby, daysFromCurrent)
-	select tr.sentmail_id, tr.samplepop_id, qf.disposition, tr.ReceiptType_id, getdate() as datlogged, 'CIHICompleteness' as loggedby, 0 as daysFromCurrent
+	insert into DispositionLog (sentmail_id, samplepop_id, disposition_id, ReceiptType_id, datlogged, loggedby, daysFromCurrent, DaysFromFirst)
+	select tr.sentmail_id, tr.samplepop_id, qf.disposition, tr.ReceiptType_id, getdate() as datlogged, 'CIHICompleteness' as loggedby, 0 as daysFromCurrent, 0 as DaysFromFirst
 	from #CIHIQF qf
 	inner join #todaysreturns tr on qf.questionform_id=tr.questionform_id
 	where qf.disposition in (11,13)	
