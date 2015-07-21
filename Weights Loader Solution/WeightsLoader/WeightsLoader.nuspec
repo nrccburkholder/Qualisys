@@ -3,11 +3,11 @@
   <metadata>
     <id>Qualisys.WeightsLoader</id>
     <title>Weights Loader</title>
-    <version>1.0.7.2</version>
+    <version>1.0.7.3</version>
     <authors>NRC</authors>
     <description>GUI for loading weights</description>
   </metadata>
   <files>
-    <file src="bin\Release\app.publish\**\*"/>
+    <file src="bin\x86\Release\app.publish\**\*"/>
   </files>
 </package>
