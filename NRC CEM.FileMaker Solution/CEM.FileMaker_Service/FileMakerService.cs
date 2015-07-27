@@ -24,7 +24,7 @@ namespace CEM.FileMaker
 
 
         private EventLog eventLog;
-        private IScheduler _scheduler;
+        private IScheduler jobScheduler;
         private static string EventSource = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
         private static string EventClass = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name;
 
@@ -47,15 +47,15 @@ namespace CEM.FileMaker
             Logs.Info(string.Format("CEM.FileMakerService v{0} Started", version));
 
             CreateSchedule();
-            _scheduler.Start();
+            jobScheduler.Start();
 
         }
 
         protected override void OnStop()
         {
-            if (_scheduler != null)
+            if (jobScheduler != null)
             {
-                _scheduler.Shutdown();
+                jobScheduler.Shutdown();
             }
             Logs.Info("CEM.FileMakerService Stopped");
         }
@@ -64,12 +64,12 @@ namespace CEM.FileMaker
         {
             string schedulerCron = SystemParams.Params.GetParam("ServiceInterval").StringValue;
 
-            //NameValueCollection properties = new NameValueCollection { { "quartz.threadPool.threadCount", "1" } };
-            //ISchedulerFactory schedulerFactory = new StdSchedulerFactory(properties);
+            NameValueCollection properties = new NameValueCollection { { "quartz.threadPool.threadCount", "1" } };
+            ISchedulerFactory schedulerFactory = new StdSchedulerFactory(properties);
 
-            ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
+            //ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
 
-            _scheduler = schedulerFactory.GetScheduler();
+            jobScheduler = schedulerFactory.GetScheduler();
 
             // Create job detail for the making the files
             IJobDetail job = JobBuilder.Create<FileMakerJob>()
@@ -77,24 +77,25 @@ namespace CEM.FileMaker
                     .Build();
 
             // Create trigger
-            ITrigger trigger1 = TriggerBuilder.Create()
+            ITrigger trigger = TriggerBuilder.Create()
             .WithIdentity("t1", "g1")
             .WithCronSchedule(schedulerCron)  // we don't have to use a cron expression.  If it is a consistent interval, could use something like the SimpleSchedule below
             .Build();
 
 
-            /*
-            // Create trigger
-            ITrigger trigger = TriggerBuilder.Create()
-            .WithIdentity("t1", "g2")
-            .WithSimpleSchedule(x => x
-                .WithIntervalInHours(4) // runs every four hours
-                .RepeatForever())
-            .Build();
-            */
+
+            //// Create trigger
+            //ITrigger trigger = TriggerBuilder.Create()
+            //.WithIdentity("t1", "g1")
+            //.WithSimpleSchedule(x => x
+            //    .WithIntervalInMinutes(1)
+            //    .RepeatForever())
+            //.Build();
+
 
             // Add job and trigger to schedule
-            _scheduler.ScheduleJob(job, trigger1);
+            jobScheduler.ScheduleJob(job, trigger);
+
         }
 
         [DisallowConcurrentExecutionAttribute]

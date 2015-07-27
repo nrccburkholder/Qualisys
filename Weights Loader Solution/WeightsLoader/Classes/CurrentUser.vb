@@ -1,5 +1,5 @@
 Imports System.DirectoryServices
-Imports Nrc.NRCAuthLib
+Imports NRC.NRCAuthLib
 
 Public NotInheritable Class CurrentUser
 

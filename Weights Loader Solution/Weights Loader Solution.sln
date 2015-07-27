@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "WeightsLoader", "WeightsLoader\WeightsLoader.vbproj", "{D909E1B3-D322-45CD-8935-57460B18C12B}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DataMart.Library", "..\DataMart Class Library Solution\DataMart.Library\DataMart.Library.vbproj", "{D94DDA87-FE09-4644-9416-2BF8FE136D93}"
@@ -8,38 +10,37 @@ EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DataMart.Library.SqlProvider", "..\DataMart Class Library Solution\DataMart.Library.SqlProvider\DataMart.Library.SqlProvider.vbproj", "{EA181BE1-8009-48A1-B389-02642319C079}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 4
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://perseus:8080/
-		SccProjectUniqueName0 = ..\\DataMart\u0020Class\u0020Library\u0020Solution\\DataMart.Library\\DataMart.Library.vbproj
-		SccProjectName0 = ../DataMart\u0020Class\u0020Library\u0020Solution/DataMart.Library
-		SccLocalPath0 = ..\\DataMart\u0020Class\u0020Library\u0020Solution\\DataMart.Library
-		SccProjectUniqueName1 = ..\\DataMart\u0020Class\u0020Library\u0020Solution\\DataMart.Library.SqlProvider\\DataMart.Library.SqlProvider.vbproj
-		SccProjectName1 = ../DataMart\u0020Class\u0020Library\u0020Solution/DataMart.Library.SqlProvider
-		SccLocalPath1 = ..\\DataMart\u0020Class\u0020Library\u0020Solution\\DataMart.Library.SqlProvider
-		SccLocalPath2 = .
-		SccProjectUniqueName3 = WeightsLoader\\WeightsLoader.vbproj
-		SccProjectName3 = WeightsLoader
-		SccLocalPath3 = WeightsLoader
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{D909E1B3-D322-45CD-8935-57460B18C12B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D909E1B3-D322-45CD-8935-57460B18C12B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D909E1B3-D322-45CD-8935-57460B18C12B}.Debug|x86.ActiveCfg = Debug|x86
+		{D909E1B3-D322-45CD-8935-57460B18C12B}.Debug|x86.Build.0 = Debug|x86
 		{D909E1B3-D322-45CD-8935-57460B18C12B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D909E1B3-D322-45CD-8935-57460B18C12B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D909E1B3-D322-45CD-8935-57460B18C12B}.Release|x86.ActiveCfg = Release|x86
+		{D909E1B3-D322-45CD-8935-57460B18C12B}.Release|x86.Build.0 = Release|x86
 		{D94DDA87-FE09-4644-9416-2BF8FE136D93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D94DDA87-FE09-4644-9416-2BF8FE136D93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D94DDA87-FE09-4644-9416-2BF8FE136D93}.Debug|x86.ActiveCfg = Debug|x86
+		{D94DDA87-FE09-4644-9416-2BF8FE136D93}.Debug|x86.Build.0 = Debug|x86
 		{D94DDA87-FE09-4644-9416-2BF8FE136D93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D94DDA87-FE09-4644-9416-2BF8FE136D93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D94DDA87-FE09-4644-9416-2BF8FE136D93}.Release|x86.ActiveCfg = Release|x86
+		{D94DDA87-FE09-4644-9416-2BF8FE136D93}.Release|x86.Build.0 = Release|x86
 		{EA181BE1-8009-48A1-B389-02642319C079}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EA181BE1-8009-48A1-B389-02642319C079}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA181BE1-8009-48A1-B389-02642319C079}.Debug|x86.ActiveCfg = Debug|x86
+		{EA181BE1-8009-48A1-B389-02642319C079}.Debug|x86.Build.0 = Debug|x86
 		{EA181BE1-8009-48A1-B389-02642319C079}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA181BE1-8009-48A1-B389-02642319C079}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA181BE1-8009-48A1-B389-02642319C079}.Release|x86.ActiveCfg = Release|x86
+		{EA181BE1-8009-48A1-B389-02642319C079}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,6 @@
 Imports Nrc.Framework.WinForms
+Imports NRC.Framework.BusinessLogic.Configuration
+
 Public Class MainForm
 
     Private mUIRelations As New Dictionary(Of MultiPaneTab, UIRelation)
@@ -19,7 +21,7 @@ Public Class MainForm
 
     Private Sub InitializeUI()
         Me.Text = My.Application.Info.Title
-        Me.EnvironmentLabel.Text = Config.EnvironmentName
+        Me.EnvironmentLabel.Text = AppConfig.EnvironmentName
         Me.VersionLabel.Text = "v" & My.Application.Info.Version.ToString
         Me.UserNameLabel.Text = String.Format("{0} ({1})", CurrentUser.DisplayName, My.User.Name)
 
@@ -50,7 +52,7 @@ Public Class MainForm
         End If
     End Sub
 
-    Private Sub ActivateTab(ByVal tab As Nrc.Framework.WinForms.MultiPaneTab)
+    Private Sub ActivateTab(ByVal tab As NRC.Framework.WinForms.MultiPaneTab)
         Try
             Me.Cursor = Cursors.WaitCursor
 

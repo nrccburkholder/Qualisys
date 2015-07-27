@@ -1,4 +1,5 @@
 Imports Nrc.Framework.WinForms
+Imports NRC.Framework.BusinessLogic.Configuration
 
 Module Main
     Public Sub ReportException(ByVal ex As Exception)
@@ -14,7 +15,7 @@ Module Main
             Dim rpt As New ExceptionReport(ex)
             rpt.ReportSender = CurrentUser.Email
             rpt.ReportSubject = My.Application.Info.ProductName & " Exception Report"
-            rpt.SMTPServer = Config.SmtpServer
+            rpt.SMTPServer = AppConfig.SmtpServer
             rpt.ShowException(titleText, True, False)
         Catch inner As Exception
             MessageBox.Show(inner.Message, "Unhandled Exception", MessageBoxButtons.OK, MessageBoxIcon.Error)
