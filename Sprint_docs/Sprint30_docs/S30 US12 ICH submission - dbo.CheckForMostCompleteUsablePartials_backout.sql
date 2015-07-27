@@ -1,4 +1,18 @@
-CREATE PROCEDURE [dbo].[CheckForMostCompleteUsablePartials]
+/*
+	S30.US12 pull ICH data	
+		reserve time for Tim to pull ICH data
+
+	12.1	support fixes from first pull and pull again
+
+Dave Gilsdorf
+
+QP_Prod:
+ALTER PROCEDURE [dbo].[CheckForMostCompleteUsablePartials]
+*/
+go
+use QP_Prod
+go
+ALTER PROCEDURE [dbo].[CheckForMostCompleteUsablePartials]
 as
 -- created 12/23/2014 DBG
 -- After HHCAHPS and ICHCAHPS Surveys expire, we want to see if there were any returns that we initially ignored because there was still outstanding surveys.
@@ -9,7 +23,7 @@ as
 
 
 select qf.SamplePop_id, qf.QuestionForm_id, qf.datReturned, qf.unusedreturn_id, qf.datUnusedReturn, 0 as bitUse, 0 as numResponses
-, sstx.Subtype_id, sstx.Subtype_nm, sd.survey_id, sd.surveytype_id, 0 as bitComplete
+, sstx.Subtype_id, sstx.Subtype_nm
 into #partials
 from QuestionForm qf
 inner join SentMailing sm on qf.SentMail_id=sm.SentMail_id
@@ -46,7 +60,7 @@ where samplepop_id in (select samplepop_id from #partials group by samplepop_id 
 
 
 -- if there are two unused returns, use the one with the most responses
-select samplepop_id, questionform_id, datUnusedReturn, 0 as responsecount, survey_id
+select samplepop_id, questionform_id, datUnusedReturn, 0 as responsecount
 into #QFResponseCount
 from #partials
 where samplepop_id in (select samplepop_id from #partials group by samplepop_id having count(*)>1)
@@ -112,59 +126,6 @@ inner join #partials p on qf.QuestionForm_id=p.QuestionForm_id
 where p.unusedreturn_id=5
 and p.bitUse=1
 
-if @@rowcount>0
-begin
-	update p
-	set bitComplete=case when ATACnt>=19 then 1 else 0 end
-	from #partials p
-	inner join (select qr.questionform_id, count(distinct sq.qstncore) as ATACnt
-				from (	select rc.questionform_id, rc.survey_id, qr.qstncore, qr.intResponseVal
-						from #qfResponseCount rc
-						inner join questionresult qr on rc.questionform_id=qr.questionform_id
-						union
-						select rc.questionform_id, rc.survey_id, qr2.qstncore, qr2.intResponseVal
-						from #qfResponseCount rc
-						inner join questionresult2 qr2 on rc.questionform_id=qr2.questionform_id) qr
-				inner join sel_qstns sq on qr.survey_id = sq.survey_id and qr.qstncore = sq.qstncore 
-				inner join sel_scls ss on sq.scaleid = ss.qpc_id AND sq.survey_id = ss.survey_id and qr.intresponseval = ss.val
-				where sq.qstncore in (51198,51199,47159,47160,47161,47162,47163,47164,47165,47166,47167,47168,47169,47170,47171,47172,47173,47174,47175,
-										47176,47178,47179,47181,47182,47183,47184,47185,47186,47187,47188,47189,47190,47191,47192,47193,47195,47196,47197)
-				and sq.subtype = 1 
-				AND sq.language = 1 
-				AND ss.language = 1 
-				group by qr.questionform_id) rc
-			on p.questionform_id=rc.questionform_id
-	where p.Surveytype_id in (8) -- ICHCAHPS
-
-	update p
-	set bitComplete=case when ATACnt>9 then 1 else 0 end
-	from #partials p
-	inner join (select qr.questionform_id, count(distinct sq.qstncore) as ATACnt
-				from (	select rc.questionform_id, rc.survey_id, qr.qstncore, qr.intResponseVal
-						from #qfResponseCount rc
-						inner join questionresult qr on rc.questionform_id=qr.questionform_id
-						union
-						select rc.questionform_id, rc.survey_id, qr2.qstncore, qr2.intResponseVal
-						from #qfResponseCount rc
-						inner join questionresult2 qr2 on rc.questionform_id=qr2.questionform_id) qr
-				inner join sel_qstns sq on qr.survey_id = sq.survey_id and qr.qstncore = sq.qstncore 
-				inner join sel_scls ss on sq.scaleid = ss.qpc_id AND sq.survey_id = ss.survey_id and qr.intresponseval = ss.val
-				where sq.qstncore in (38694,38695,38696,38697,38698,38699,38700,38701,38702,38703,38704,38708,38709,38710,38711,38712,38713,38714,38717,38718)
-				and sq.subtype = 1 
-				AND sq.language = 1 
-				AND ss.language = 1 
-				group by qr.questionform_id) rc
-			on p.questionform_id=rc.questionform_id
-	where p.Surveytype_id in (3) -- Home Health CAHPS
-
-	update qf 
-	set bitComplete = p.bitComplete
-	from QuestionForm qf
-	inner join #partials p on qf.QuestionForm_id=p.QuestionForm_id
-	where p.unusedreturn_id=5
-	and p.bitUse=1
-end
-
 -- move the results for blank/incomplete or partials we've decided to use into QuestionResult
 insert into QuestionResult (QuestionForm_ID,SampleUnit_ID,QstnCore,intResponseVal)
 select qr2.QuestionForm_ID,qr2.SampleUnit_ID,qr2.QstnCore,qr2.intResponseVal
@@ -181,3 +142,4 @@ and p.bitUse=1
 
 drop table #partials
 drop table #QFResponseCount
+go

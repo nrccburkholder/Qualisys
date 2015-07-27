@@ -1,4 +1,18 @@
-CREATE PROCEDURE [dbo].[CheckForMostCompleteUsablePartials]
+/*
+	S30.US12 pull ICH data	
+		reserve time for Tim to pull ICH data
+
+	12.1	support fixes from first pull and pull again
+
+Dave Gilsdorf
+
+QP_Prod:
+ALTER PROCEDURE [dbo].[CheckForMostCompleteUsablePartials]
+*/
+go
+use QP_Prod
+go
+ALTER PROCEDURE [dbo].[CheckForMostCompleteUsablePartials]
 as
 -- created 12/23/2014 DBG
 -- After HHCAHPS and ICHCAHPS Surveys expire, we want to see if there were any returns that we initially ignored because there was still outstanding surveys.
@@ -181,3 +195,4 @@ and p.bitUse=1
 
 drop table #partials
 drop table #QFResponseCount
+go
