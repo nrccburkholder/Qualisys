@@ -37,23 +37,8 @@ IF @HouseHoldingType='A'
 BEGIN
 	if @surveytype_id=2 -- HCAHPS
 	begin
-
-declare @dbg varchar(30) set @dbg=convert(varchar,getdate(),109)
-
-set @SQL = 'temp_dbg_SampleUnit_Universe QCL_SampleSetAssignHouseHold              before '+@dbg
-while exists (select * from sys.tables where name = @SQL)
-	set @SQL = @SQL + 'x'
-
-set @SQL = 'select * into ['+@SQL+'] from #SampleUnit_Universe'
-exec (@SQL)
-
-
-set @sql = 'temp_dbg_distinct            QCL_SampleSetAssignHouseHold                     '+@dbg
-while exists (select * from sys.tables where name = @SQL)
-	set @SQL = @SQL + 'x'
-		
-		SELECT @sql='CREATE TABLE ['+@sql+'] (a INT IDENTITY(-1,-1), '+@strHouseHoldField_CreateTable+', CCN varchar(20))
-		INSERT INTO ['+@sql+'] ('+@strHouseHoldField_Select+', CCN)
+		SELECT @sql='CREATE TABLE #Distinct (a INT IDENTITY(-1,-1), '+@strHouseHoldField_CreateTable+', CCN varchar(20))
+		INSERT INTO #Distinct ('+@strHouseHoldField_Select+', CCN)
 		SELECT DISTINCT '+SUBSTRING(REPLACE(REPLACE(@strHouseHoldField_Select,'x.',',9999999),ISNULL('),', ,',','),12,2000)+',9999999), isnull(suf.MedicareNumber,''dummy'')
 		FROM #SampleUnit_Universe X
 		INNER JOIN SampleUnit su on x.sampleunit_id=su.sampleunit_id
@@ -62,7 +47,7 @@ while exists (select * from sys.tables where name = @SQL)
 		-- assign household_id to those who are HCAHPS eligible, using the HCAHPS sampleunit’s CCN as part of the critera
 		UPDATE x
 		SET x.HouseHold_id=y.a
-		FROM #SampleUnit_Universe x, sampleunit su, SUFacility suf, ['+@sql+'] y
+		FROM #SampleUnit_Universe x, sampleunit su, SUFacility suf, #Distinct y
 		WHERE x.sampleunit_id = su.sampleunit_id 
 		and su.SUFacility_id = suf.SUFacility_id
 		and suf.medicarenumber=y.ccn
@@ -80,7 +65,7 @@ while exists (select * from sys.tables where name = @SQL)
 		-- if there’s anyone in the household that wasn’t HCAHPS eligible, assign them to their HCAHPS-eligible housemate’s household_id 
 		UPDATE x
 		SET x.HouseHold_id=y.a
-		FROM #SampleUnit_Universe x, ['+@sql+'] y
+		FROM #SampleUnit_Universe x, #Distinct y
 		WHERE '+REPLACE(REPLACE(@strHouseHold_Join,'x.','ISNULL(X.'),'=',',9999999)=')+'
 		and y.CCN<>''dummy''
 		AND isnull(x.Household_id,0)=0
@@ -88,12 +73,12 @@ while exists (select * from sys.tables where name = @SQL)
 		-- now assign household_id to households in which no one was HCAHPS eligible
 		UPDATE x
 		SET x.HouseHold_id=y.a
-		FROM #SampleUnit_Universe x, ['+@sql+'] y
+		FROM #SampleUnit_Universe x, #Distinct y
 		WHERE '+REPLACE(REPLACE(@strHouseHold_Join,'x.','ISNULL(X.'),'=',',9999999)=')+'
 		and y.CCN=''dummy''
 		AND isnull(x.Household_id,0)=0
 
-		--DROP TABLE ['+@sql+']'
+		DROP TABLE #Distinct'
 	end
 	else
 	begin
@@ -114,12 +99,6 @@ while exists (select * from sys.tables where name = @SQL)
 	select @sql = replace(@sql, 'Date,9999999', 'Date,''12/31/4000''')
 
 	print @sql
-
-if not exists (select * from sys.tables where name = 'temp_dbg_somestrings')
-	create table temp_dbg_somestrings (ss_id int identity(1,1), theProc varchar(100), theTime datetime, theString varchar(8000))
-
-INSERT INTO temp_dbg_somestrings (theProc, theTime, theString) values ('QCL_SampleSetAssignHouseHold', getdate(), @SQL)
-
 	EXEC (@sql)
 END
 
@@ -140,12 +119,5 @@ FROM #SampleUnit_Universe suu, (
   GROUP BY HouseHold_id
   HAVING COUNT(DISTINCT Pop_id)=1) a
 WHERE a.HouseHold_id=suu.HouseHold_id
-
-set @SQL = 'temp_dbg_SampleUnit_Universe QCL_SampleSetAssignHouseHold              after  '+@dbg
-while exists (select * from sys.tables where name = @SQL)
-	set @SQL = @SQL + 'x'
-
-set @SQL = 'select * into ['+@SQL+'] from #SampleUnit_Universe'
-exec (@SQL)
 
 go
