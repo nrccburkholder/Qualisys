@@ -10,32 +10,12 @@ CREATE PROCEDURE QCL_SelectAllSiteGroupsAndPracticeSites
 CREATE PROCEDURE QCL_SelectPracticeSites
 -- =============================================
 */
-IF EXISTS (SELECT * FROM sys.procedures where schema_id=1 and name = 'QCL_SelectAllSiteGroups')
-	DROP PROCEDURE [dbo].[QCL_SelectAllSiteGroups] 
+IF EXISTS (SELECT * FROM sys.procedures where schema_id=1 and name = 'QCL_SiteGroupSelect')
+	DROP PROCEDURE [dbo].[QCL_SiteGroupSelect] 
 GO
 
-CREATE PROCEDURE QCL_SelectAllSiteGroups
-AS
-BEGIN
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	SET NOCOUNT ON;
-
-	EXEC [dbo].[QCL_SelectAllSiteGroupsAndPracticeSites] null, false
-
-END
-
-GO
-
--- =============================================
-
-IF EXISTS (SELECT * FROM sys.procedures where schema_id=1 and name = 'QCL_SelectAllSiteGroupsAndPracticeSites')
-	DROP PROCEDURE [dbo].[QCL_SelectAllSiteGroupsAndPracticeSites] 
-GO
-
-CREATE PROCEDURE QCL_SelectAllSiteGroupsAndPracticeSites
-	@SiteGroup_id int = null,
-	@IncludePracticeSites bit = true
+CREATE PROCEDURE QCL_SiteGroupSelect
+	@SiteGroup_id int = null
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
@@ -63,28 +43,23 @@ BEGIN
 	  FROM [dbo].[SiteGroup]
 	  where (@SiteGroup_id is null) or (SiteGroup_ID = @SiteGroup_id)
 
-	if (@IncludePracticeSites = 1)
-		EXEC [dbo].[QCL_SelectPracticeSites]
-
 END
 
 GO
 
 -- =============================================
 
-IF EXISTS (SELECT * FROM sys.procedures where schema_id=1 and name = 'QCL_SelectPracticeSites')
-	DROP PROCEDURE [dbo].[QCL_SelectPracticeSites] 
+IF EXISTS (SELECT * FROM sys.procedures where schema_id=1 and name = 'QCL_PracticeSiteSelect')
+	DROP PROCEDURE [dbo].[QCL_PracticeSiteSelect] 
 GO
 
-CREATE PROCEDURE QCL_SelectPracticeSites
-	-- Add the parameters for the stored procedure here
+CREATE PROCEDURE QCL_PracticeSiteSelect
 	@SiteGroup_id int = null
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
-
 
 	SELECT [PracticeSite_ID]
 		  ,[AssignedID]
@@ -111,3 +86,26 @@ BEGIN
 END
 
 GO
+
+-- =============================================
+
+IF EXISTS (SELECT * FROM sys.procedures where schema_id=1 and name = 'QCL_SiteGroupsAndPracticeSitesSelect')
+	DROP PROCEDURE [dbo].[QCL_SiteGroupsAndPracticeSitesSelect] 
+GO
+
+CREATE PROCEDURE QCL_SiteGroupsAndPracticeSitesSelect
+	@SiteGroup_id int = null
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	EXEC [dbo].[QCL_SiteGroupSelect] @SiteGroup_id
+
+	EXEC [dbo].[QCL_PracticeSiteSelect] @SiteGroup_id
+
+END
+
+GO
+

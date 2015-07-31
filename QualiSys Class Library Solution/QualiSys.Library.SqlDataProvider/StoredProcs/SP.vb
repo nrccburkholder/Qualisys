@@ -116,9 +116,9 @@ Public NotInheritable Class SP
     Public Const UpdateModeSectionMapping As String = "QCL_UpdateModeSectionMapping"
 
     'Added 2015.07.15  Sprint 29 User Story 26
-    Public Const SelectAllSiteGroups As String = "QCL_SelectAllSiteGroups"
-    Public Const SelectPracticeSitesBySiteGroupId As String = "SelectPracticeSitesBySiteGroupId"
-    Public Const SelectAllSiteGroupsAndPracticeSites As String = "QCL_SelectAllSiteGroupsAndPracticeSites"
+    Public Const SelectAllSiteGroups As String = "QCL_SiteGroupSelect"
+    Public Const SelectPracticeSitesBySiteGroupId As String = "QCL_PracticeSiteSelect"
+    Public Const SelectAllSiteGroupsAndPracticeSites As String = "QCL_SiteGroupsAndPracticeSitesSelect"
     Public Const UpdateSiteGroup As String = "QCL_UpdateSiteGroup"
     Public Const UpdatePracticeSite As String = "QCL_UpdatePracticeSite"
 
