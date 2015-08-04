@@ -26,7 +26,7 @@ Public Class SiteGroup
     Private mGroupContactName As String
     Private mGroupContactPhone As String
     Private mGroupContactEmail As String
-    Private mMasterGroup_id As Integer
+    Private mMasterGroup_id? As Integer
     Private mMasterGroupName As String
     Private mIsActive As Boolean
     Private mPracticeSites As PracticeSiteList
@@ -192,11 +192,11 @@ Public Class SiteGroup
             mGroupContactEmail = value
         End Set
     End Property
-    Public Property MasterGroupID As Integer
+    Public Property MasterGroupID As Integer?
         Get
             Return mMasterGroup_id
         End Get
-        Set(value As Integer)
+        Set(value As Integer?)
             If mMasterGroup_id = value Then
                 Return
             End If
@@ -266,7 +266,7 @@ Public Class SiteGroup
 
 #Region "Constructors"
 
-    Private Sub New()
+    Public Sub New()
 
     End Sub
 
@@ -289,6 +289,21 @@ Public Class SiteGroup
         Return FacilityProvider.Instance.SelectAllSiteGroups()
     End Function
 
+    Public Shared Sub UpdateSiteGroup(siteGroup As SiteGroup)
+        FacilityProvider.Instance.UpdateSiteGroup(siteGroup)
+    End Sub
+
+    Public Shared Sub InsertSiteGroup(siteGroup As SiteGroup)
+        FacilityProvider.Instance.InsertSiteGroup(siteGroup)
+    End Sub
+
+    Public Shared Sub UpdatePracticeSite(practiceSite As PracticeSite)
+        FacilityProvider.Instance.UpdatePracticeSite(practiceSite)
+    End Sub
+
+    Public Shared Sub InsertPracticeSite(practiceSite As PracticeSite)
+        FacilityProvider.Instance.InsertPracticeSite(practiceSite)
+    End Sub
 
 #End Region
 

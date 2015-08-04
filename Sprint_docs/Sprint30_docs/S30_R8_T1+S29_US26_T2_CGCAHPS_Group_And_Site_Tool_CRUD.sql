@@ -126,7 +126,7 @@ GO
 CREATE PROCEDURE QCL_SiteGroupUpdate
 
 @SiteGroup_Id int,
-@bitActive bit,
+@isActive bit,
 @AssignedID int = null,
 @GroupName nvarchar(50) = null,
 @Addr1 nvarchar(60) = null,
@@ -146,7 +146,7 @@ AS
 BEGIN
 
 UPDATE [dbo].[SiteGroup]
-   SET [bitActive] = @bitActive
+   SET [bitActive] = @isActive
       ,[AssignedID] = IsNull(@AssignedID, [AssignedId])
       ,[GroupName] = IsNull(@GroupName, [GroupName])
       ,[Addr1] = IsNull(@Addr1, [Addr1])
@@ -227,6 +227,9 @@ INSERT INTO [dbo].[SiteGroup]
            ,@MasterGroupName
            ,@bitActive
 		   )
+
+SELECT SCOPE_IDENTITY()
+
 END
 
 GO
@@ -351,6 +354,9 @@ INSERT INTO [dbo].[PracticeSite]
            ,@PracticeContactEmail
            ,@SampleUnit_id
            ,@bitActive)
+
+SELECT SCOPE_IDENTITY()
+
 END
 
 GO
