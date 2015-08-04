@@ -23,7 +23,7 @@ Partial Class FacilityGroupSiteMappingSection
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim GridLevelNode2 As DevExpress.XtraGrid.GridLevelNode = New DevExpress.XtraGrid.GridLevelNode()
+        Dim GridLevelNode1 As DevExpress.XtraGrid.GridLevelNode = New DevExpress.XtraGrid.GridLevelNode()
         Me.gvPracticeSites = New DevExpress.XtraGrid.Views.Grid.GridView()
         Me.GridColumn34 = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.GridColumn14 = New DevExpress.XtraGrid.Columns.GridColumn()
@@ -95,6 +95,8 @@ Partial Class FacilityGroupSiteMappingSection
         Me.GridColumn14.Caption = "Site Name"
         Me.GridColumn14.FieldName = "PracticeName"
         Me.GridColumn14.Name = "GridColumn14"
+        Me.GridColumn14.Visible = True
+        Me.GridColumn14.VisibleIndex = 0
         '
         'GridColumn16
         '
@@ -102,7 +104,7 @@ Partial Class FacilityGroupSiteMappingSection
         Me.GridColumn16.FieldName = "AssignedID"
         Me.GridColumn16.Name = "GridColumn16"
         Me.GridColumn16.Visible = True
-        Me.GridColumn16.VisibleIndex = 0
+        Me.GridColumn16.VisibleIndex = 1
         '
         'GridColumn17
         '
@@ -110,7 +112,7 @@ Partial Class FacilityGroupSiteMappingSection
         Me.GridColumn17.FieldName = "Addr1"
         Me.GridColumn17.Name = "GridColumn17"
         Me.GridColumn17.Visible = True
-        Me.GridColumn17.VisibleIndex = 1
+        Me.GridColumn17.VisibleIndex = 2
         '
         'GridColumn18
         '
@@ -118,7 +120,7 @@ Partial Class FacilityGroupSiteMappingSection
         Me.GridColumn18.FieldName = "Addr2"
         Me.GridColumn18.Name = "GridColumn18"
         Me.GridColumn18.Visible = True
-        Me.GridColumn18.VisibleIndex = 2
+        Me.GridColumn18.VisibleIndex = 3
         '
         'GridColumn19
         '
@@ -126,7 +128,7 @@ Partial Class FacilityGroupSiteMappingSection
         Me.GridColumn19.FieldName = "City"
         Me.GridColumn19.Name = "GridColumn19"
         Me.GridColumn19.Visible = True
-        Me.GridColumn19.VisibleIndex = 3
+        Me.GridColumn19.VisibleIndex = 4
         '
         'GridColumn20
         '
@@ -134,7 +136,7 @@ Partial Class FacilityGroupSiteMappingSection
         Me.GridColumn20.FieldName = "ST"
         Me.GridColumn20.Name = "GridColumn20"
         Me.GridColumn20.Visible = True
-        Me.GridColumn20.VisibleIndex = 4
+        Me.GridColumn20.VisibleIndex = 5
         '
         'GridColumn21
         '
@@ -142,7 +144,7 @@ Partial Class FacilityGroupSiteMappingSection
         Me.GridColumn21.FieldName = "Zip5"
         Me.GridColumn21.Name = "GridColumn21"
         Me.GridColumn21.Visible = True
-        Me.GridColumn21.VisibleIndex = 5
+        Me.GridColumn21.VisibleIndex = 6
         '
         'GridColumn22
         '
@@ -150,7 +152,7 @@ Partial Class FacilityGroupSiteMappingSection
         Me.GridColumn22.FieldName = "Phone"
         Me.GridColumn22.Name = "GridColumn22"
         Me.GridColumn22.Visible = True
-        Me.GridColumn22.VisibleIndex = 6
+        Me.GridColumn22.VisibleIndex = 7
         '
         'GridColumn23
         '
@@ -158,7 +160,7 @@ Partial Class FacilityGroupSiteMappingSection
         Me.GridColumn23.FieldName = "PracticeOwnership"
         Me.GridColumn23.Name = "GridColumn23"
         Me.GridColumn23.Visible = True
-        Me.GridColumn23.VisibleIndex = 7
+        Me.GridColumn23.VisibleIndex = 8
         '
         'GridColumn24
         '
@@ -166,7 +168,7 @@ Partial Class FacilityGroupSiteMappingSection
         Me.GridColumn24.FieldName = "PatVisitsWeek"
         Me.GridColumn24.Name = "GridColumn24"
         Me.GridColumn24.Visible = True
-        Me.GridColumn24.VisibleIndex = 8
+        Me.GridColumn24.VisibleIndex = 9
         '
         'GridColumn25
         '
@@ -174,15 +176,15 @@ Partial Class FacilityGroupSiteMappingSection
         Me.GridColumn25.FieldName = "ProvWorkWeek"
         Me.GridColumn25.Name = "GridColumn25"
         Me.GridColumn25.Visible = True
-        Me.GridColumn25.VisibleIndex = 9
+        Me.GridColumn25.VisibleIndex = 10
         '
         'GridColumn26
         '
-        Me.GridColumn26.Caption = "Contract Name"
+        Me.GridColumn26.Caption = "Contact Name"
         Me.GridColumn26.FieldName = "PracticeContactName"
         Me.GridColumn26.Name = "GridColumn26"
         Me.GridColumn26.Visible = True
-        Me.GridColumn26.VisibleIndex = 10
+        Me.GridColumn26.VisibleIndex = 11
         '
         'GridColumn27
         '
@@ -190,15 +192,15 @@ Partial Class FacilityGroupSiteMappingSection
         Me.GridColumn27.FieldName = "PracticeContactPhone"
         Me.GridColumn27.Name = "GridColumn27"
         Me.GridColumn27.Visible = True
-        Me.GridColumn27.VisibleIndex = 11
+        Me.GridColumn27.VisibleIndex = 12
         '
         'GridColumn28
         '
-        Me.GridColumn28.Caption = "Contract Email"
+        Me.GridColumn28.Caption = "Contact Email"
         Me.GridColumn28.FieldName = "PracticeContactEmail"
         Me.GridColumn28.Name = "GridColumn28"
         Me.GridColumn28.Visible = True
-        Me.GridColumn28.VisibleIndex = 12
+        Me.GridColumn28.VisibleIndex = 13
         '
         'GridColumn29
         '
@@ -206,7 +208,7 @@ Partial Class FacilityGroupSiteMappingSection
         Me.GridColumn29.FieldName = "bitActive"
         Me.GridColumn29.Name = "GridColumn29"
         Me.GridColumn29.Visible = True
-        Me.GridColumn29.VisibleIndex = 13
+        Me.GridColumn29.VisibleIndex = 14
         '
         'GridColumn32
         '
@@ -225,14 +227,14 @@ Partial Class FacilityGroupSiteMappingSection
         Me.gcGroupsAndSites.DataSource = Me.SiteGroupBindingSource
         Me.gcGroupsAndSites.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gcGroupsAndSites.EmbeddedNavigator.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        GridLevelNode2.LevelTemplate = Me.gvPracticeSites
-        GridLevelNode2.RelationName = "FK_Master_Detail"
-        Me.gcGroupsAndSites.LevelTree.Nodes.AddRange(New DevExpress.XtraGrid.GridLevelNode() {GridLevelNode2})
-        Me.gcGroupsAndSites.Location = New System.Drawing.Point(0, 67)
+        GridLevelNode1.LevelTemplate = Me.gvPracticeSites
+        GridLevelNode1.RelationName = "FK_Master_Detail"
+        Me.gcGroupsAndSites.LevelTree.Nodes.AddRange(New DevExpress.XtraGrid.GridLevelNode() {GridLevelNode1})
+        Me.gcGroupsAndSites.Location = New System.Drawing.Point(0, 62)
         Me.gcGroupsAndSites.MainView = Me.gvSiteGroups
         Me.gcGroupsAndSites.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.gcGroupsAndSites.Name = "gcGroupsAndSites"
-        Me.gcGroupsAndSites.Size = New System.Drawing.Size(1458, 791)
+        Me.gcGroupsAndSites.Size = New System.Drawing.Size(1458, 796)
         Me.gcGroupsAndSites.TabIndex = 5
         Me.gcGroupsAndSites.UseEmbeddedNavigator = True
         Me.gcGroupsAndSites.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.gvSiteGroups, Me.gvPracticeSites})
@@ -381,14 +383,14 @@ Partial Class FacilityGroupSiteMappingSection
         Me.HeaderStrip1.Location = New System.Drawing.Point(0, 0)
         Me.HeaderStrip1.Name = "HeaderStrip1"
         Me.HeaderStrip1.Padding = New System.Windows.Forms.Padding(0, 0, 2, 0)
-        Me.HeaderStrip1.Size = New System.Drawing.Size(1458, 42)
+        Me.HeaderStrip1.Size = New System.Drawing.Size(1458, 37)
         Me.HeaderStrip1.TabIndex = 0
         Me.HeaderStrip1.Text = "HeaderStrip1"
         '
         'ToolStrip1
         '
         Me.ToolStrip1.ImageScalingSize = New System.Drawing.Size(24, 24)
-        Me.ToolStrip1.Location = New System.Drawing.Point(0, 42)
+        Me.ToolStrip1.Location = New System.Drawing.Point(0, 37)
         Me.ToolStrip1.Name = "ToolStrip1"
         Me.ToolStrip1.Padding = New System.Windows.Forms.Padding(0, 0, 2, 0)
         Me.ToolStrip1.Size = New System.Drawing.Size(1458, 25)
