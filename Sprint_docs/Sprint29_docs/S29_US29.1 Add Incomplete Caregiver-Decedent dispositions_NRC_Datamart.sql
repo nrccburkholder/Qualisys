@@ -43,7 +43,7 @@ if not exists (select * from cahpsdisposition where cahpstypeid=@hospiceId and l
 	insert into cahpsdisposition (CahpsDispositionID, CahpsTypeID, Label, IsCahpsDispositionComplete, IsCahpsDispositionInComplete)
 	values (@cahpsdispositionid, @hospiceId, @label, 0, 0)
 
-SET @dispositionid  = 49 /* get the disposition id from QP_Prod.Disposition -- the one we just added */
+SET @dispositionid  = 50 /* get the disposition id from QP_Prod.Disposition -- the one we just added */
 
 if not exists (select * from disposition where label = @label)
 	insert into disposition (DispositionID, label) values (@dispositionid, @label)
@@ -69,7 +69,7 @@ if not exists (select * from cahpsdisposition where cahpstypeid=@hospiceId and l
 	insert into cahpsdisposition (CahpsDispositionID, CahpsTypeID, Label, IsCahpsDispositionComplete, IsCahpsDispositionInComplete)
 	values (@cahpsdispositionid, @hospiceId, @label, 0, 0)
 
-SET @dispositionid  = 50 /* get the disposition id from QP_Prod.Disposition -- the one we just added */
+SET @dispositionid  = 51 /* get the disposition id from QP_Prod.Disposition -- the one we just added */
 
 if not exists (select * from disposition where label = @label)
 	insert into disposition (DispositionID, label) values (@dispositionid, @label)

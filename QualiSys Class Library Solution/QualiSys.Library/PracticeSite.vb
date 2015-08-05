@@ -30,7 +30,7 @@ Public Class PracticeSite
     Private mPracticeContactName As String
     Private mPracticeContactPhone As String
     Private mPracticeContactEmail As String
-    Private mSampleUnit_id As Integer
+    Private mSampleUnit_id? As Integer
     Private mbitActive As Boolean
 #End Region
 
@@ -225,11 +225,11 @@ Public Class PracticeSite
             mPracticeContactEmail = value
         End Set
     End Property
-    Public Property SampleUnit_id As Integer
+    Public Property SampleUnit_id As Integer?
         Get
             Return mSampleUnit_id
         End Get
-        Set(value As Integer)
+        Set(value As Integer?)
             If mSampleUnit_id = value Then
                 Return
             End If
@@ -253,7 +253,7 @@ Public Class PracticeSite
 
 #Region "Constructors"
 
-    Private Sub New()
+    Public Sub New()
 
     End Sub
 

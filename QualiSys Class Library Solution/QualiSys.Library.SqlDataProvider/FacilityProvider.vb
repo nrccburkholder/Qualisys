@@ -297,17 +297,49 @@ Public Class FacilityProvider
 
     Public Overrides Sub UpdateSiteGroup(ByVal siteGroup As SiteGroup)
 
-        'Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.InsertFacility, fac.AhaId, fac.Name, fac.City, fac.State, fac.Country, _
-        '                                region, fac.AdmitNumber, fac.BedSize, StatusToBoolean(fac.IsPediatric), StatusToBoolean(fac.IsTeaching), _
-        '                                StatusToBoolean(fac.IsTrauma), StatusToBoolean(fac.IsReligious), StatusToBoolean(fac.IsGovernment), _
-        '                                StatusToBoolean(fac.IsRural), StatusToBoolean(fac.IsForProfit), StatusToBoolean(fac.IsRehab), _
-        '                                StatusToBoolean(fac.IsCancerCenter), StatusToBoolean(fac.IsPicker), StatusToBoolean(fac.IsFreeStanding), _
-        '                                medNum)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.UpdateSiteGroup, siteGroup.SiteGroup_ID,
+                                                       siteGroup.IsActive, siteGroup.AssignedID,
+                                                       siteGroup.GroupName, siteGroup.Addr1, siteGroup.Addr2, siteGroup.City,
+                                                       siteGroup.ST, siteGroup.Zip5, siteGroup.Phone, siteGroup.GroupOwnerShip,
+                                                       siteGroup.GroupContactName, siteGroup.GroupContactPhone, siteGroup.GroupContactEmail,
+                                                       siteGroup.MasterGroupID, siteGroup.MasterGroupName)
+        ExecuteNonQuery(cmd)
     End Sub
 
     Public Overrides Sub UpdatePracticeSite(ByVal practiceSite As PracticeSite)
 
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.UpdatePracticeSite, practiceSite.PracticeSite_ID, practiceSite.bitActive, practiceSite.AssignedID,
+                                                       practiceSite.SiteGroup_ID, practiceSite.PracticeName, practiceSite.Addr1,
+                                                       practiceSite.Addr2, practiceSite.City, practiceSite.ST, practiceSite.Zip5,
+                                                       practiceSite.Phone, practiceSite.PracticeOwnership, practiceSite.PatVisitsWeek,
+                                                       practiceSite.ProvWorkWeek, practiceSite.PracticeContactName, practiceSite.PracticeContactPhone,
+                                                       practiceSite.PracticeContactEmail, practiceSite.SampleUnit_id)
+        ExecuteNonQuery(cmd)
     End Sub
     
+    Public Overrides Sub InsertSiteGroup(ByVal siteGroup As SiteGroup)
+
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.InsertSiteGroup, siteGroup.AssignedID,
+                                                       siteGroup.GroupName, siteGroup.Addr1, siteGroup.Addr2, siteGroup.City,
+                                                       siteGroup.ST, siteGroup.Zip5, siteGroup.Phone, siteGroup.GroupOwnerShip,
+                                                       siteGroup.GroupContactName, siteGroup.GroupContactPhone, siteGroup.GroupContactEmail,
+                                                       siteGroup.MasterGroupID, siteGroup.MasterGroupName, siteGroup.IsActive)
+        Dim newId As Integer = ExecuteInteger(cmd)
+        Dim privateInterface As ISiteGroup = siteGroup
+        privateInterface.Id = newId
+    End Sub
+
+    Public Overrides Sub InsertPracticeSite(ByVal practiceSite As PracticeSite)
+
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.InsertPracticeSite, practiceSite.AssignedID,
+                                                       practiceSite.SiteGroup_ID, practiceSite.PracticeName, practiceSite.Addr1,
+                                                       practiceSite.Addr2, practiceSite.City, practiceSite.ST, practiceSite.Zip5,
+                                                       practiceSite.Phone, practiceSite.PracticeOwnership, practiceSite.PatVisitsWeek,
+                                                       practiceSite.ProvWorkWeek, practiceSite.PracticeContactName, practiceSite.PracticeContactPhone,
+                                                       practiceSite.PracticeContactEmail, practiceSite.SampleUnit_id, practiceSite.bitActive)
+        Dim newId As Integer = ExecuteInteger(cmd)
+        Dim privateInterface As IPracticeSite = practiceSite
+        practiceSite.Id = newId
+    End Sub
 
 End Class

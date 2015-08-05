@@ -34,8 +34,12 @@ SET @hierarchy = 12
 
 /* create new disposition code -- Incomplete Caregiver */
 if not exists (select * from disposition where strDispositionLabel='Incomplete Caregiver')
-	insert into disposition (strDispositionLabel,Action_id,strReportLabel,MustHaveResults) 
-	values ('Incomplete Caregiver',0,'Incomplete Caregiver',0)
+begin
+	SET IDENTITY_INSERT disposition ON
+	insert into disposition (disposition_id,strDispositionLabel,Action_id,strReportLabel,MustHaveResults) 
+	values (50,'Incomplete Caregiver',0,'Incomplete Caregiver',0)
+	SET IDENTITY_INSERT disposition OFF
+end
 
 -- add to the bottom of the hierarchy
 if not exists (select * from SurveyTypeDispositions where [desc]='Incomplete Caregiver' and SurveyType_id=@hospiceId)
@@ -52,8 +56,12 @@ end
 
 /* create new disposition code -- Incomplete Decedent */
 if not exists (select * from disposition where strDispositionLabel='Incomplete Decedent')
-	insert into disposition (strDispositionLabel,Action_id,strReportLabel,MustHaveResults) 
-	values ('Incomplete Decedent',0,'Incomplete Decedent',0)
+begin
+SET IDENTITY_INSERT disposition ON
+	insert into disposition (disposition_id,strDispositionLabel,Action_id,strReportLabel,MustHaveResults) 
+	values (51,'Incomplete Decedent',0,'Incomplete Decedent',0)
+	SET IDENTITY_INSERT disposition OFF
+end
 
 
 -- add to the bottom of the hierarchy
@@ -95,6 +103,10 @@ commit tran
 
 select *
 from Disposition
+
+select *
+from SurveyTypeDispositions
+where surveytype_id = 11
 
 select *
 from SurveyTypeDispositions
