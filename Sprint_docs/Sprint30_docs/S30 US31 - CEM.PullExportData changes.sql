@@ -17,7 +17,7 @@ ALTER PROCEDURE [CEM].[PullExportData]
 as
 begin 
 
--- */ declare @ExportQueueID int = 54,  @doRecode bit=1, @doDispositionProc bit=1, @doPostProcess bit=1
+-- */ declare @ExportQueueID int = 52,  @doRecode bit=1, @doDispositionProc bit=1, @doPostProcess bit=1
 
 declare @ExportTemplateName varchar(200), @ExportTemplateVersionMajor varchar(200), @ExportTemplateVersionMinor int
 declare @ExportTemplateID int, @ExportDateColumnID int, @ExportStart datetime, @exportEnd datetime, @returnsonly bit, @CahpsUnitOnly bit
@@ -448,7 +448,7 @@ begin
 		drop table #recodes
 
 	-- use a cartesian join to populate all the default recoding that should happen across all columns
-	select distinct ExportTemplateColumnID, ExportTemplateSectionName, ExportColumnName, isnull(convert(varchar,d.RawValue),'') as RawValue, d.RecodeValue
+	select distinct ExportTemplateColumnID, ExportTemplateSectionName, ExportColumnName, isnull(convert(varchar,d.RawValue),'') as RawValue, d.RecodeValue, ac.FixedWidthLength
 	into #recodes
 	from #allcolumns ac, [CEM].[ExportTemplateDefaultResponse] d
 	where ExportColumnName is not null and ac.RecodeValue is not null and d.ExportTemplateID=@ExportTemplateID
@@ -465,20 +465,20 @@ begin
 
 	-- add column specific recodes to #recodes
 	insert into #recodes
-	select distinct ExportTemplateColumnID, ExportTemplateSectionName, ExportColumnName, isnull(ac.RawValue,''), ac.RecodeValue
+	select distinct ExportTemplateColumnID, ExportTemplateSectionName, ExportColumnName, isnull(ac.RawValue,''), ac.RecodeValue, ac.FixedWidthLength
 	from #allcolumns ac
-	where ExportColumnName is not null and ac.RecodeValue is not null and flag=0 
+	where ExportColumnName is not null and ac.RecodeValue is not null and flag=0
 
 	-- execute the recodes
-	-- declare @sql varchar(max), @sectname varchar(200), @colname varchar(200)
+	-- declare @sql varchar(max), @sectname varchar(200), @colname varchar(200) 
 	select top 1 @sectname=ExportTemplateSectionName, @colname=ExportColumnName from #recodes 
 	while @@rowcount>0
 	begin
 		-- char(7) is used as a flag for "out-of-range"
 		set @SQL = 'update R
-				set ['+@sectname+'.'+@colname+']=isnull(RecodeValue,char(7))
+				set ['+@sectname+'.'+@colname+']=isnull(right(replicate(RecodeValue,FixedWidthLength),FixedWidthLength),char(7))
 				from #results R
-				left join (select RawValue, RecodeValue from #recodes where ExportTemplateSectionName='''+@sectname+''' and ExportColumnName='''+@colname+''') rc
+				left join (select RawValue, RecodeValue, FixedWidthLength from #recodes where ExportTemplateSectionName='''+@sectname+''' and ExportColumnName='''+@colname+''') rc
 					on r.['+@sectname+'.'+@colname+']=rc.RawValue'
 		print substring(@sql,1,8000)
 		if len(@Sql)>8000 print '~'+substring(@sql,8001,7000)
@@ -489,10 +489,9 @@ begin
 		select top 1 @sectname=ExportTemplateSectionName, @colname=ExportColumnName from #recodes 
 	end
 
-
 	-- declare @sql varchar(max), @sqlwhere varchar(max)
 	insert into #recodes
-	select distinct ExportTemplateColumnID, ExportTemplateSectionName, ExportColumnNameMR, isnull(ac.RawValue,''), ac.RecodeValue
+	select distinct ExportTemplateColumnID, ExportTemplateSectionName, ExportColumnNameMR, isnull(ac.RawValue,''), ac.RecodeValue, FixedWidthLength
 	from #allcolumns ac
 	where ExportColumnNameMR is not null 
 

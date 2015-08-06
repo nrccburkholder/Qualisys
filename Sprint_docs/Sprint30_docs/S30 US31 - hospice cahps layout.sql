@@ -564,7 +564,7 @@ update eds
 set [decedentleveldata.sex] = case [decedentleveldata.sex] when 'M' then '1' when 'F' then '2' else 'M' end
 from CEM.ExportDataset00000003 eds
 where [decedentleveldata.sex] not in ('1','2')
-
+and eds.ExportQueueID = @ExportQueueID 
 
 /*
 Number of days between date of death and the date that data collection activities ended
@@ -592,34 +592,35 @@ Ineligible: Institutionalized                14           SamplePopulationDispos
 
 update eds set [decedentleveldata.lag-time]=datediff(day,convert(datetime,[decedentleveldata.death-month]+'/'+[decedentleveldata.death-day]+'/'+[decedentleveldata.death-yr]),spdl.LoggedDate)
 --select distinct eds.samplepopulationid, convert(datetime,[decedentleveldata.death-month]+'/'+[decedentleveldata.death-day]+'/'+[decedentleveldata.death-yr]) as DayOfDeath, [decedentleveldata.survey-status]
---, case when [decedentleveldata.survey-status] in (2,3,4,5,8,12,13,14) then 'SamplePopulationDispositionLog.LoggedDate' 
+--, case when ltrim([decedentleveldata.survey-status]) in (2,3,4,5,8,12,13,14) then 'SamplePopulationDispositionLog.LoggedDate' 
 --	   end
 --,spdl.DispositionID,spdl.ReceiptTypeID,spdl.CahpsTypeID,spdl.LoggedBy,spdl.LoggedDate
 from CEM.ExportDataset00000003 eds
 inner join nrc_datamart.dbo.samplepopulationdispositionlog spdl on spdl.SamplePopulationID=eds.SamplePopulationID
 inner join nrc_datamart.dbo.CahpsDispositionMapping cdm on cdm.dispositionid=spdl.DispositionID and [decedentleveldata.survey-status]=(cdm.CahpsDispositionID-600)
-where [decedentleveldata.survey-status] in ('2','3','4','5','8','12','13','14')
+where ltrim([decedentleveldata.survey-status]) in ('2','3','4','5','8','12','13','14')
+and eds.ExportQueueID = @ExportQueueID 
 
 update eds set [decedentleveldata.lag-time]=datediff(day,convert(datetime,[decedentleveldata.death-month]+'/'+[decedentleveldata.death-day]+'/'+[decedentleveldata.death-yr]),qf.returndate)
 --select eds.samplepopulationid, convert(datetime,[decedentleveldata.death-month]+'/'+[decedentleveldata.death-day]+'/'+[decedentleveldata.death-yr]) as DayOfDeath, [decedentleveldata.survey-status]
---, case when [decedentleveldata.survey-status] in (1,7) then 'QuestionForm.ReturnDate'
+--, case when ltrim([decedentleveldata.survey-status]) in (1,7) then 'QuestionForm.ReturnDate'
 --	   end
 --, qf.returndate
 from CEM.ExportDataset00000003 eds
 inner join nrc_datamart.dbo.questionform qf on qf.SamplePopulationID=eds.SamplePopulationID
-where [decedentleveldata.survey-status] in ('1','7') 
-
+where ltrim([decedentleveldata.survey-status]) in ('1','7') 
+and eds.ExportQueueID = @ExportQueueID 
 
 update eds set [decedentleveldata.lag-time]=datediff(day,convert(datetime,[decedentleveldata.death-month]+'/'+[decedentleveldata.death-day]+'/'+[decedentleveldata.death-yr]),qf.returndate)
 --select eds.samplepopulationid, convert(datetime,[decedentleveldata.death-month]+'/'+[decedentleveldata.death-day]+'/'+[decedentleveldata.death-yr]) as DayOfDeath, [decedentleveldata.survey-status]
---, case when [decedentleveldata.survey-status] = 6 then 'QuestionForm.ReturnDate OR SamplePopulationDispositionLog.LoggedDate'
+--, case when ltrim([decedentleveldata.survey-status]) = 6 then 'QuestionForm.ReturnDate OR SamplePopulationDispositionLog.LoggedDate'
 --	   end
 --, qf.returndate
 --, [caregiverresponse.oversee], [decedentleveldata.survey-completion-mode]
 from CEM.ExportDataset00000003 eds
 inner join nrc_datamart.dbo.questionform qf on qf.SamplePopulationID=eds.SamplePopulationID
-where [decedentleveldata.survey-status] = '6' 
-
+where ltrim([decedentleveldata.survey-status]) = '6' 
+and eds.ExportQueueID = @ExportQueueID 
 
 if object_id('tempdb..#SampleSetExpiration') is not null
 	drop table #SampleSetExpiration
@@ -631,6 +632,7 @@ inner join NRC_Datamart.dbo.sampleset ss on sp.SampleSetID=ss.SampleSetID
 inner join NRC_Datamart.dbo.selectedsample sel on sp.SamplePopulationID=sel.SamplePopulationID
 inner join NRC_Datamart.dbo.sampleunit su on sel.sampleunitid=su.sampleunitid
 left join nrc_datamart.dbo.questionform qf on qf.SamplePopulationID=eds.SamplePopulationID
+where eds.ExportQueueID = @ExportQueueID 
 order by 2
 
 update sse
@@ -645,17 +647,18 @@ where sse.datExpire is null
 
 update eds set [decedentleveldata.lag-time]=datediff(day,convert(datetime,[decedentleveldata.death-month]+'/'+[decedentleveldata.death-day]+'/'+[decedentleveldata.death-yr]),sse.datExpire)
 --select eds.samplepopulationid, convert(datetime,[decedentleveldata.death-month]+'/'+[decedentleveldata.death-day]+'/'+[decedentleveldata.death-yr]) as DayOfDeath, [decedentleveldata.survey-status]
---, case when [decedentleveldata.survey-status] = 9 then 'Expiration Date (Mail & Mixed) OR Date of last phone attempt (Phone)'
+--, case when ltrim([decedentleveldata.survey-status]) = 9 then 'Expiration Date (Mail & Mixed) OR Date of last phone attempt (Phone)'
 --	   end
 --, sse.DatExpire
 from CEM.ExportDataset00000003 eds
 inner join #SampleSetExpiration sse on eds.SamplePopulationID=sse.SamplePopulationID
-where [decedentleveldata.survey-status] ='9'
+where ltrim([decedentleveldata.survey-status]) ='9'
 and [hospicedata.survey-mode] in ('1','3')
+and eds.ExportQueueID = @ExportQueueID 
 
 update eds set [decedentleveldata.lag-time]=datediff(day,convert(datetime,[decedentleveldata.death-month]+'/'+[decedentleveldata.death-day]+'/'+[decedentleveldata.death-yr]),qss.datLastMailed)
 --select eds.samplepopulationid, [hospicedata.provider-id] as ccn, [hospicedata.survey-mode], convert(datetime,[decedentleveldata.death-month]+'/'+[decedentleveldata.death-day]+'/'+[decedentleveldata.death-yr]) as DayOfDeath, [decedentleveldata.survey-status]
---, case when [decedentleveldata.survey-status] = 9 then 'Expiration Date (Mail & Mixed) OR Date of last phone attempt (Phone)'
+--, case when ltrim([decedentleveldata.survey-status]) = 9 then 'Expiration Date (Mail & Mixed) OR Date of last phone attempt (Phone)'
 --	   end
 --, ss.samplesetID, dsk.DataSourceKey as sampleset_id, qss.datLastMailed
 from CEM.ExportDataset00000003 eds
@@ -663,9 +666,10 @@ inner join NRC_Datamart.dbo.samplepopulation sp  on eds.SamplePopulationID=sp.Sa
 inner join NRC_Datamart.dbo.sampleset ss on sp.SampleSetID=ss.SampleSetID
 inner join NRC_DataMart.etl.DataSourceKey dsk on ss.SampleSetID=dsk.DataSourceKeyID and dsk.EntityTypeID=8
 inner join Qualisys.qp_prod.dbo.sampleset qss on dsk.DataSourceKey = qss.sampleset_id
-where [decedentleveldata.survey-status] in ('9')
+where ltrim([decedentleveldata.survey-status]) in ('9')
 and isnull([decedentleveldata.lag-time],'') =''
 and qss.datLastMailed is not null
+and eds.ExportQueueID = @ExportQueueID 
 
 
 update eds set [decedentleveldata.lag-time]=datediff(day,convert(datetime,[decedentleveldata.death-month]+'/'+[decedentleveldata.death-day]+'/'+[decedentleveldata.death-yr]),isnull(qf.datUndeliverable, spdl.CreateDate))
@@ -675,8 +679,9 @@ update eds set [decedentleveldata.lag-time]=datediff(day,convert(datetime,[deced
 from CEM.ExportDataset00000003 eds
 left join nrc_datamart.dbo.questionform qf on qf.SamplePopulationID=eds.SamplePopulationID
 left join nrc_datamart.dbo.SamplePopulationDispositionLog spdl on eds.SamplePopulationID=spdl.SamplePopulationID and spdl.DispositionID=5--Non Response Bad Address / 16--Non Response Bad Phone
-where [decedentleveldata.survey-status] = '10' -- bad address     / 11 -- bad phone
+where ltrim([decedentleveldata.survey-status]) = '10' -- bad address     / 11 -- bad phone
 and isnull([decedentleveldata.lag-time],'') =''
+and eds.ExportQueueID = @ExportQueueID 
 
 
 update eds set [decedentleveldata.lag-time]=datediff(day,convert(datetime,[decedentleveldata.death-month]+'/'+[decedentleveldata.death-day]+'/'+[decedentleveldata.death-yr]),isnull(qf.datUndeliverable, spdl.CreateDate))
@@ -686,8 +691,9 @@ update eds set [decedentleveldata.lag-time]=datediff(day,convert(datetime,[deced
 from CEM.ExportDataset00000003 eds
 left join nrc_datamart.dbo.questionform qf on qf.SamplePopulationID=eds.SamplePopulationID
 left join nrc_datamart.dbo.SamplePopulationDispositionLog spdl on eds.SamplePopulationID=spdl.SamplePopulationID and spdl.DispositionID in (14,16)--Non Response Bad Phone
-where [decedentleveldata.survey-status] = '11' -- bad phone
+where ltrim([decedentleveldata.survey-status]) = '11' -- bad phone
 and isnull([decedentleveldata.lag-time],'') =''
+and eds.ExportQueueID = @ExportQueueID 
 
 -- There’s one hospice that we messed up sampling for January & February data.
 -- Delete all January and February data out of the file for CCN 031592.
@@ -696,13 +702,42 @@ from CEM.ExportDataset00000003
 where [hospicedata.provider-id]='031592'
 and [hospicedata.reference-yr]='2015'
 and [hospicedata.reference-month] in ('01','02')
+and ExportQueueID = @ExportQueueID 
+
+update cem.ExportDataset00000003 
+set [caregiverresponse.location-assisted]='M'
+	,[caregiverresponse.location-home]='M'
+	,[caregiverresponse.location-hospice-facility]='M'
+	,[caregiverresponse.location-hospital]='M'
+	,[caregiverresponse.location-nursinghome]='M'
+	,[caregiverresponse.location-other]='M'
+where [caregiverresponse.location-assisted] = ''
+	and [caregiverresponse.location-home] = ''
+	and [caregiverresponse.location-hospice-facility] = ''
+	and [caregiverresponse.location-hospital] = ''
+	and [caregiverresponse.location-nursinghome] = ''
+	and [caregiverresponse.location-other] = ''
+	and ltrim([decedentleveldata.survey-status]) in ('1','6','7')  
+	and ExportQueueID = @ExportQueueID 
+
+update cem.ExportDataset00000003 
+set [caregiverresponse.race-african-amer]='M'
+	,[caregiverresponse.race-amer-indian-ak]='M'
+	,[caregiverresponse.race-asian]='M'
+	,[caregiverresponse.race-hi-pacific-islander]='M'
+	,[caregiverresponse.race-white]='M'
+where [caregiverresponse.race-african-amer]='' 
+	and [caregiverresponse.race-amer-indian-ak]='' 
+	and [caregiverresponse.race-asian]='' 
+	and [caregiverresponse.race-hi-pacific-islander]='' 
+	and [caregiverresponse.race-white]=''
+	and ltrim([decedentleveldata.survey-status]) in ('1','6','7')  
+	and ExportQueueID = @ExportQueueID 
 
 select [decedentleveldata.survey-status], min([decedentleveldata.lag-time]) as minLagTime, max([decedentleveldata.lag-time]) as maxLagTime, count(*) as [count]
 from CEM.ExportDataset00000003 eds
 where isnull([decedentleveldata.lag-time],'') =''
 group by [decedentleveldata.survey-status]
-
-
 go
 declare @Q_id int
 insert into cem.exportqueue (ExportTemplateName, ExportTemplateVersionMajor, ExportTemplateVersionMinor, ExportDateStart, ExportDateEnd, ReturnsOnly, ExportNotificationID, RequestDate, PullDate, ValidatedDate, ValidatedBy, ValidationCode)
