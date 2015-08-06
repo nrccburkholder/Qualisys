@@ -13,8 +13,14 @@ AS
 	select @country
 	IF @country = 'US'
 	BEGIN
+		EXEC [QP_Prod].[dbo].[CheckForBlankBreakoffs]
 		EXEC [QP_Prod].[dbo].[CheckForCAHPSIncompletes] 
 		EXEC [QP_Prod].[dbo].[CheckForACOCAHPSUsablePartials]
 		EXEC [QP_Prod].[dbo].[CheckForMostCompleteUsablePartials] -- HHCAHPS and ICHCAHPS
 		EXEC [QP_Prod].[dbo].[CheckHospiceCAHPSDispositions]
+	END
+	ELSE
+	IF @country = 'CA'
+	BEGIN
+		EXEC [QP_Prod].[dbo].[CIHICompleteness]
 	END
