@@ -211,6 +211,7 @@ type
     CAHPSNumbering : boolean;
     DoDBenSkips : boolean;
     SkipRepeatsScaleText : boolean;
+    SubOrInsertPoundSignForQuestion : boolean;
     NextQTop : integer;
     NeedLabels : boolean;
     SurveyItems: integer;
@@ -1279,9 +1280,15 @@ begin
                    vScaleText := format('%s ' + _BeginChars + 'U·gudub·[S%s]' + _EndChars,[vScaleText, wwt_sclsItem.asString]);
             18,19,20: // Magnus Spanish GN03, HCAHPS Spanish GN08, Sodexho GN16
                  if SkipRepeatsScaleText then
-                   vScaleText := format('%s ' + _BeginChars + 'Si·%s,·vaya·al·#·[S%s]' + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])
+                     if SubOrInsertPoundSignForQuestion then
+                       vScaleText := format('%s ' + _BeginChars + 'Si·%s,·pase a la pregunta #[S%s]' + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])
+                     else
+                       vScaleText := format('%s ' + _BeginChars + 'Si·%s,·vaya·al·#·[S%s]' + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])
                  else
-                   vScaleText := format('%s ' + _BeginChars + 'Vaya·al·#·[S%s]' + _EndChars,[vScaleText, wwt_sclsItem.asString]);
+                     if SubOrInsertPoundSignForQuestion then
+                       vScaleText := format('%s ' + _BeginChars + 'Pase a la pregunta #[S%s]' + _EndChars,[vScaleText, wwt_sclsItem.asString])
+                     else
+                       vScaleText := format('%s ' + _BeginChars + 'Vaya·al·#·[S%s]' + _EndChars,[vScaleText, wwt_sclsItem.asString]);
             21: //GN19: Polish
                  if SkipRepeatsScaleText then
                    vScaleText := format('%s ' + _BeginChars + 'W·przypadku·%s,·prosze·przejsc·do·nr·[S%s]' + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])
@@ -1291,9 +1298,16 @@ begin
                  //if CAHPSNumbering or DoDBenSkips then
                    //vScaleText := vScaleText + '  ›··Go·to·Question·[S'+wwt_sclsItem.asString+']' // Alt-0155 = ›
                    if SkipRepeatsScaleText then
-                     vScaleText := format('%s ' + _BeginChars + 'If·%s,·go·to·Question·[S%s]' + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])
+                     if SubOrInsertPoundSignForQuestion then
+                       vScaleText := format('%s ' + _BeginChars + 'If·%s,·go·to·#[S%s]' + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])
+                     else
+                       vScaleText := format('%s ' + _BeginChars + 'If·%s,·go·to·Question·[S%s]' + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])
                    else
-                     vScaleText := format('%s ' + _BeginChars + 'Go·to·Question·[S%s]' + _EndChars,[vScaleText, wwt_sclsItem.asString])
+                     if SubOrInsertPoundSignForQuestion then
+                       vScaleText := format('%s ' + _BeginChars + 'Go·to·#[S%s]' + _EndChars,[vScaleText, wwt_sclsItem.asString])
+                     else
+                       vScaleText := format('%s ' + _BeginChars + 'Go·to·Question·[S%s]' + _EndChars,[vScaleText, wwt_sclsItem.asString])
+
                  {else
                    //vScaleText := vScaleText + ' (Go·to·#·[S'+wwt_sclsItem.asString+'])';
                    if SkipRepeatsScaleText then
@@ -3972,7 +3986,11 @@ begin
 //  if dmOpenQ.SkipGoPhrase = '' then
 //  begin
      case dmOpenQ.CurrentLanguage of
-       2,7,9,18,19,20 : QText := '# '; //Spanish, VA-Spanish, Harris County Spanish, Magnus GN03, HCAHPS Spanish GN08
+       2,7,9,18,19,20 :
+                        if SubOrInsertPoundSignForQuestion then
+                          QText := '#'
+                        else
+                          QText := '# '; //Spanish, VA-Spanish, Harris County Spanish, Magnus GN03, HCAHPS Spanish GN08
        5: Qtext := 'continuar con la pregunta '; //Mexican Spanish
        6: QText := 'Allez à la question '; //French
        8: QText := 'Saltar a la pregunta '; //PEP-C Spanish
@@ -3986,7 +4004,10 @@ begin
        21: QText := 'Prosze przejsc do '; //gn19: Polish
 
      else
-       QText := 'Question ';
+       if SubOrInsertPoundSignForQuestion then
+         QText := '#'
+       else
+         QText := 'Question ';
      end;
 //  end
 {  else
@@ -4682,6 +4703,7 @@ begin
     VerticalOffset := CoverHeight + AfterPageBreakCoverHeight;
     if IncludeQstns then begin
       SkipRepeatsScaleText := dmOpenQ.SkipRepeatsScaleTextForSurveyType;
+      SubOrInsertPoundSignForQuestion := dmOpenQ.SubOrInsertPoundSignForQuestionForSurveyType;
       QuestionGen(VerticalOffset);
     end;
     PaperChoice(CoverHeight,VerticalOffset);
