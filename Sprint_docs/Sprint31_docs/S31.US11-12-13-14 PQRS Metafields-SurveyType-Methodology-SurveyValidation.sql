@@ -12,8 +12,7 @@ S31.US11-12-13-14 PQRS Metafields-SurveyType-Methodology-SurveyValidation
 13.1 insert standard methodologies and mailing steps
 14.1 create new survey validation stored procedure and add to mapping table
 
-Chris Burkholder 11.1 12.1 13.1 
-??? 14.1 
+Chris Burkholder 11.1 12.1 13.1 14.1 
 
 ALTER PROCEDURE [dbo].[SV_CAHPS_Householding]
 ALTER PROCEDURE [dbo].[SV_CAHPS_ReportingDate]
@@ -802,7 +801,7 @@ CREATE TABLE #M (Error TINYINT, strMessage VARCHAR(200))
 		OrderDiff INT
 	)
 
-	IF (@surveyType_id in (@CGCAHPS) AND @subtype_id = @PCMHSubType) OR (@SurveyType_id in (@ACOCAHPS, @pqrsCAHPS)) 
+	IF (@surveyType_id in (@CGCAHPS) AND @subtype_id = @PCMHSubType) OR (@SurveyType_id in (@ACOCAHPS)) 
 	BEGIN
 
 		INSERT INTO #M (Error, strMessage)
