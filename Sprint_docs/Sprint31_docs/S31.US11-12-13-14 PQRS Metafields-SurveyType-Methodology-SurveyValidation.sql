@@ -16,7 +16,6 @@ Chris Burkholder 11.1 12.1 13.1 14.1
 
 ALTER PROCEDURE [dbo].[SV_CAHPS_Householding]
 ALTER PROCEDURE [dbo].[SV_CAHPS_ReportingDate]
-ALTER PROCEDURE [dbo].[SV_CAHPS_FormQuestions]
 
 */
 
@@ -145,17 +144,18 @@ select @SurveyType_ID = SurveyType_ID from SurveyType where SurveyType_dsc = 'PQ
 
 --select * from SurveyValidationProcsBySurveyType svpbst inner join SurveyValidationProcs svp on svp.SurveyValidationProcs_id = svpbst.SurveyValidationProcs_id where cahpstype_id = 14
 
-insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) VALUES (147,@SurveyType_ID)  --SampleUnit
-insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) VALUES (148,@SurveyType_ID)	--ActiveMethdology
-insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) VALUES (150,@SurveyType_ID)	--RequiredEncounterFields
-insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) VALUES (151,@SurveyType_ID)	--SkipPatterns
-insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) VALUES (152,@SurveyType_ID)	--Resurvey
-insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) VALUES (153,@SurveyType_ID)	--Householding
-insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) VALUES (155,@SurveyType_ID)	--ReportingDate
-insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) VALUES (156,@SurveyType_ID)	--SamplingMethod
-insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) VALUES (158,@SurveyType_ID)	--SamplingAlgorithm
-insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) VALUES (162,@SurveyType_ID)	--FormQuestions
-insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) VALUES (166,@SurveyType_ID)	--HasDQRule
+insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@SurveyType_ID from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_SampleUnit'
+insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@SurveyType_ID from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_ActiveMethdology'
+insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@SurveyType_ID from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_RequiredEncounterFields'
+insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@SurveyType_ID from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_SkipPatterns'
+insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@SurveyType_ID from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_Resurvey'
+insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@SurveyType_ID from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_Householding'
+insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@SurveyType_ID from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_ReportingDate'
+insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@SurveyType_ID from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_SamplingMethod'
+insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@SurveyType_ID from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_SamplingAlgorithm'
+insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@SurveyType_ID from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_FormQuestions'
+insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@SurveyType_ID from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_SamplePeriods'
+insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@SurveyType_ID from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_HasDQRule'
 
 --select * from SurveyTypeQuestionMappings where surveytype_id = 14 order by intorder
 
