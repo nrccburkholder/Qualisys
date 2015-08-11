@@ -554,6 +554,8 @@ commit tran
 -- rollback tran
 
 go
+use NRC_DataMart_Extracts
+go
 if exists (select * from sys.procedures where name='ExportPostProcess00000003')
 	drop procedure cem.ExportPostProcess00000003
 go
@@ -657,7 +659,7 @@ and [hospicedata.survey-mode] in ('1','3')
 and eds.ExportQueueID = @ExportQueueID 
 
 update eds set [decedentleveldata.lag-time]=datediff(day,convert(datetime,[decedentleveldata.death-month]+'/'+[decedentleveldata.death-day]+'/'+[decedentleveldata.death-yr]),qss.datLastMailed)
---select eds.samplepopulationid, [hospicedata.provider-id] as ccn, [hospicedata.survey-mode], convert(datetime,[decedentleveldata.death-month]+'/'+[decedentleveldata.death-day]+'/'+[decedentleveldata.death-yr]) as DayOfDeath, [decedentleveldata.survey-status]
+--select eds.samplepopulationid, [hospicedata.provider-id] ccn, [hospicedata.survey-mode], convert(datetime,[decedentleveldata.death-month]+'/'+[decedentleveldata.death-day]+'/'+[decedentleveldata.death-yr]) DayOfDeath, [decedentleveldata.survey-status]
 --, case when ltrim([decedentleveldata.survey-status]) = 9 then 'Expiration Date (Mail & Mixed) OR Date of last phone attempt (Phone)'
 --	   end
 --, ss.samplesetID, dsk.DataSourceKey as sampleset_id, qss.datLastMailed
@@ -704,6 +706,91 @@ and [hospicedata.reference-yr]='2015'
 and [hospicedata.reference-month] in ('01','02')
 and ExportQueueID = @ExportQueueID 
 
+-- Saint Mary’s Hospice and Palliative Care (ccn 291501) has six people we sampled in January but shouldn't have, so we're not submiting any of their january data.
+delete eds
+from cem.ExportDataset00000003 eds
+where ExportQueueID = @ExportQueueID 
+and [hospicedata.provider-id]='291501'
+and [hospicedata.reference-yr]='2015'
+and [hospicedata.reference-month] in ('01')
+
+--update blank [no-publicity] to 0 for the following CCNs:
+	--provider-name								provider-id	reference-month
+	--Gentlepro Home Health Care				141613		03
+	--Knapp Medical Center (Prime Healthcare)	451662		01
+	--Knapp Medical Center (Prime Healthcare)	451662		02
+	--Knapp Medical Center (Prime Healthcare)	451662		03
+	--Vernon Memorial Hospital					521544		03
+update eds
+set [hospicedata.no-publicity]='0'
+--- select distinct exportqueueid,[hospicedata.provider-id],[hospicedata.reference-month],[hospicedata.no-publicity]
+from cem.ExportDataset00000003 eds
+where [hospicedata.no-publicity]=''
+and [hospicedata.provider-id]+'.'+[hospicedata.reference-month] in ('141613.03','451662.01','451662.02','451662.03','521544.03')
+and [hospicedata.reference-yr]='2015'
+and ExportQueueID = @ExportQueueID
+
+-- delete the following months for the following CCNs - we have good March data for them and aren't submitting January or February
+	--provider-name									provider-id	reference-yr	reference-month
+	--Saint Mary’s Hospice and Palliative Care 		291501		2015			2
+	--St. Joseph Hospice-Baton Rouge/TCH			191568		2015			1
+	--St. Joseph Hospice-Baton Rouge/TCH			191568		2015			2
+	--St. Joseph Hospice-Biloxi/Hattiesburg/Picayun	251670		2015			1
+	--St. Joseph Hospice-Biloxi/Hattiesburg/Picayun	251670		2015			2
+	--St. Joseph Hospice-Richland/Vicksburg			251575		2015			1
+	--St. Joseph Hospice-Richland/Vicksburg			251575		2015			2
+delete eds
+from cem.ExportDataset00000003 eds
+where ExportQueueID = @ExportQueueID 
+and [hospicedata.reference-yr]='2015'
+and [hospicedata.provider-id] in ('291501','191568','251670','251575')
+and [hospicedata.reference-month] in ('01','02')
+
+-- Number of decedents/caregivers in the sample for the month with a “Final Survey Status” code of:  
+-- “3 – Ineligible: Not in Eligible Population,” 
+-- “6 – Ineligible: Never Involved in Decedent Care,” and 
+-- “14 – Ineligible: Institutionalized.”
+update cem.ExportDataset00000003 
+set [hospicedata.ineligible-postsample]='0'
+where ExportQueueID=@ExportQueueID 
+
+update eds
+set [hospicedata.ineligible-postsample]=sub.cnt
+from cem.ExportDataset00000003 eds
+inner join (select [hospicedata.provider-id],[hospicedata.reference-month], count(*) cnt
+			from cem.ExportDataset00000003
+			where ExportQueueID=@ExportQueueID 
+			and ltrim([decedentleveldata.survey-status]) in ('3','6','14')
+			group by [hospicedata.provider-id], [hospicedata.reference-month]) sub
+	on eds.[hospicedata.provider-id]=sub.[hospicedata.provider-id] and eds.[hospicedata.reference-month]=sub.[hospicedata.reference-month]
+where eds.ExportQueueID=@ExportQueueID 
+
+-- recode various blank columns to 'M' or 'N/A'
+update cem.ExportDataset00000003 set [decedentleveldata.decedent-primary-diagnosis]='MMMMMMM' where [decedentleveldata.decedent-primary-diagnosis]='' and ExportQueueid=@ExportQueueID
+update cem.ExportDataset00000003 set [decedentleveldata.decedent-payer-primary]='M' where [decedentleveldata.decedent-payer-primary]='' and ExportQueueid=@ExportQueueID
+update cem.ExportDataset00000003 set [decedentleveldata.decedent-payer-secondary]='M' where [decedentleveldata.decedent-payer-secondary]='' and ExportQueueid=@ExportQueueID
+update cem.ExportDataset00000003 set [decedentleveldata.decedent-payer-other]='M' where [decedentleveldata.decedent-payer-other]='' and ExportQueueid=@ExportQueueID
+update cem.ExportDataset00000003 set [decedentleveldata.last-location]='M' where [decedentleveldata.last-location]='' and ExportQueueid=@ExportQueueID
+update cem.ExportDataset00000003 set [decedentleveldata.facility-name]='N/A' where [decedentleveldata.facility-name]='' and ExportQueueid=@ExportQueueID
+
+-- recode blank NPI's to 'M'
+update eds
+set [hospicedata.npi]='M'
+from CEM.ExportDataset00000003 eds
+where eds.ExportQueueID = @ExportQueueID 
+and [hospicedata.npi]=''
+
+-- recode NPI to 'M' for any CCN that has multiple NPI values
+update eds
+set [hospicedata.npi]='M'
+from CEM.ExportDataset00000003 eds
+where eds.ExportQueueID = @ExportQueueID 
+and [hospicedata.provider-id] in (select [hospicedata.provider-id]
+									from CEM.ExportDataset00000003 eds
+									where eds.ExportQueueID = @ExportQueueID 
+									group by [hospicedata.provider-id]
+									having count(distinct [hospicedata.npi])>1)
+
 update cem.ExportDataset00000003 
 set [caregiverresponse.location-assisted]='M'
 	,[caregiverresponse.location-home]='M'
@@ -734,9 +821,25 @@ where [caregiverresponse.race-african-amer]=''
 	and ltrim([decedentleveldata.survey-status]) in ('1','6','7')  
 	and ExportQueueID = @ExportQueueID 
 
+-- the default CEM behavior is to repeat the missing characters (e.g. 'M') for the entire width of the field. CAHPSHospice wants it to be just 'M' in the CareGiverResponse section, regardless of the width of the field.
+-- in other sections they want it repeated (e.g. [decedentleveldata.decedent-primary-diagnosis] should be 'MMMMMMM' and not 'M')
+declare @sql varchar(max)=''
+select @sql=@sql+'update cem.ExportDataset00000003 set [caregiverresponse.'+etc.exportcolumnname+']=''M'' where [caregiverresponse.'+etc.exportcolumnname+']='''+replicate('M',etc.fixedwidthlength)+''' and ExportQueueid='+convert(varchar,eq.exportqueueid)+char(10)
+from cem.exportqueue eq
+inner join cem.ExportTemplate et on eq.exporttemplatename=et.exporttemplatename and eq.exporttemplateversionmajor=et.exporttemplateversionmajor and isnull(eq.ExportTemplateVersionMinor,-1)=isnull(et.ExportTemplateVersionMinor,-1)
+inner join cem.ExportTemplateSection ets on et.ExportTemplateID=ets.ExportTemplateID
+inner join cem.ExportTemplateColumn etc on ets.ExportTemplateSectionID=etc.ExportTemplateSectionID
+where eq.exportqueueid=@ExportQueueID
+and ets.exporttemplatesectionname='caregiverresponse'
+and etc.FixedWidthLength>1
+and etc.exportcolumnname is not null
+print @SQL
+exec(@SQL)
+
 select [decedentleveldata.survey-status], min([decedentleveldata.lag-time]) as minLagTime, max([decedentleveldata.lag-time]) as maxLagTime, count(*) as [count]
 from CEM.ExportDataset00000003 eds
 where isnull([decedentleveldata.lag-time],'') =''
+and ExportQueueID = @ExportQueueID 
 group by [decedentleveldata.survey-status]
 go
 declare @Q_id int
