@@ -1,5 +1,5 @@
-modQueueManager = 250, 250, 1343, 867, 
-frmMain = 249, 97, 1342, 714, , 25, 25, 1118, 642, C
+modQueueManager = 1, 1, 1094, 618, Z
+frmMain = -4, -11, 1089, 606, , 25, 25, 1118, 642, C
 frmAbout = 0, 0, 0, 0, C, 75, 75, 1168, 692, C
 frmMailingDates = 88, 116, 1230, 739, , 100, 100, 1193, 717, C
 frmRePrintDates = 0, 0, 0, 0, C, 125, 125, 1218, 742, C
