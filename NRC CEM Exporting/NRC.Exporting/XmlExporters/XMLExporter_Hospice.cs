@@ -7,6 +7,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.IO;
 using System.Data;
+using NRC.Logging;
 
 namespace CEM.Exporting.XmlExporters
 {
@@ -124,30 +125,39 @@ namespace CEM.Exporting.XmlExporters
         {
             XmlNode node = XMLDoc.GetElementsByTagName("decedentleveldata")[0];
 
-            foreach (DataRow dr in dsList[2].DataTable.Rows)
+            try
             {
-                writer.StartElement(node.Name);
-
-                foreach (XmlNode childnode in node.ChildNodes)
+                foreach (DataRow dr in dsList[2].DataTable.Rows)
                 {
-                    CreateElementString(dr, string.Format("{0}.{1}", node.Name, childnode.Name), childnode.Name, writer);
+                    writer.StartElement(node.Name);
+
+                    foreach (XmlNode childnode in node.ChildNodes)
+                    {
+                        CreateElementString(dr, string.Format("{0}.{1}", node.Name, childnode.Name), childnode.Name, writer);
+                    }
+
+                    string provider_id = dr["decedentleveldata.provider-id"].ToString();
+                    string decedent_id = dr["decedentleveldata.decedent-id"].ToString();
+
+                    string searchExpression = string.Format("[caregiverresponse.provider-id]='{0}' and [caregiverresponse.decedent-id]='{1}'", provider_id, decedent_id);
+                    DataRow prRow = dsList[3].DataTable.Select(searchExpression)[0];
+
+                    if (!AreAllColumnsEmpty(prRow, new int[] { 0, 1 }))
+                    {
+                        WriteCareGiverResponseSection(prRow, writer, node.LastChild);
+                    }
+
+
+                    writer.EndElement();
+
                 }
-
-                string provider_id = dr["decedentleveldata.provider-id"].ToString();
-                string decedent_id = dr["decedentleveldata.decedent-id"].ToString();
-
-                string searchExpression = string.Format("[caregiverresponse.provider-id]={0} and [caregiverresponse.decedent-id]={1}", provider_id, decedent_id);
-                DataRow prRow = dsList[3].DataTable.Select(searchExpression)[0];
-
-                if (!AreAllColumnsEmpty(prRow, new int[]{0,1}))
-                {
-                    WriteCareGiverResponseSection(prRow, writer, node.LastChild);
-                }
-
-
-                writer.EndElement();
-
             }
+
+            catch (Exception ex)
+            {
+                Logs.Error("Hospice Decedent Error Creating XML file.", ex);
+            }
+
         }
 
         private void WriteCareGiverResponseSection(DataRow dr, XMLWriter writer, XmlNode node)
