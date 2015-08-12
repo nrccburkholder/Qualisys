@@ -142,7 +142,7 @@ namespace CEM.Exporting.XmlExporters
                     string searchExpression = string.Format("[caregiverresponse.provider-id]='{0}' and [caregiverresponse.decedent-id]='{1}'", provider_id, decedent_id);
                     DataRow prRow = dsList[3].DataTable.Select(searchExpression)[0];
 
-                    if (!AreAllColumnsEmpty(prRow, new int[] { 0, 1 }))
+                    if (!AreAllColumnsEmpty(prRow, new int[] { 0, 1, 2 }))
                     {
                         WriteCareGiverResponseSection(prRow, writer, node.LastChild);
                     }

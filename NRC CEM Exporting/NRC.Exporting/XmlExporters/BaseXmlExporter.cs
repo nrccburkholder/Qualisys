@@ -142,7 +142,7 @@ namespace CEM.Exporting.XmlExporters
             {
                 if (ignoreColumns.Contains(i) == false)
                 {
-                    if (row[i].ToString().Trim().Length > 0)
+                    if (string.IsNullOrWhiteSpace(row[i].ToString()))
                         return false;
                 }       
             }
