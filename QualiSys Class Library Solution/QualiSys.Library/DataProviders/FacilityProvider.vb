@@ -20,9 +20,9 @@ Namespace DataProvider
         End Sub
 
 
-        Public MustOverride Function [Select](ByVal facilityId As Integer) As Facility
-        Public MustOverride Function SelectAll() As FacilityList
-        Public MustOverride Function SelectByClientId(ByVal clientId As Integer) As FacilityList
+        Public MustOverride Function [Select](ByVal facilityId As Integer, Optional ByVal isPracticeSite As Boolean = False) As Facility
+        Public MustOverride Function SelectAll(Optional ByVal isPracticeSite As Boolean? = False) As FacilityList
+        Public MustOverride Function SelectByClientId(ByVal clientId As Integer, Optional ByVal isPracticeSite? As Boolean = False) As FacilityList
         Public MustOverride Function SelectByAhaId(ByVal ahaId As Integer) As Collection(Of Facility)
         Public MustOverride Function SelectAllFacilityRegions() As Collection(Of FacilityRegion)
 
@@ -32,8 +32,8 @@ Namespace DataProvider
 
         Public MustOverride Function AllowDelete(ByVal facilityId As Integer) As Boolean
         Public MustOverride Function AllowUnassignment(ByVal facilityId As Integer, ByVal clientId As Integer) As Boolean
-        Public MustOverride Sub AssignFacilityToClient(ByVal facilityId As Integer, ByVal clientId As Integer)
-        Public MustOverride Sub UnassignFacilityFromClient(ByVal facilityId As Integer, ByVal clientId As Integer)
+        Public MustOverride Sub AssignFacilityToClient(ByVal facilityId As Integer, ByVal clientId As Integer, Optional ByVal isPracticeSite As Boolean = False)
+        Public MustOverride Sub UnassignFacilityFromClient(ByVal facilityId As Integer, ByVal clientId As Integer, Optional ByVal isPracticeSite As Boolean = False)
 
         Public MustOverride Function SelectAllSiteGroups() As DataSet
         Public MustOverride Sub UpdateSiteGroup(ByVal siteGroup As SiteGroup)

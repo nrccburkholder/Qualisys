@@ -403,11 +403,11 @@ Public Class Facility
 #Region "Public Methods"
 
     Public Sub AssignToClient(ByVal clientId As Integer)
-        FacilityProvider.Instance.AssignFacilityToClient(mId, clientId)
+        FacilityProvider.Instance.AssignFacilityToClient(mId, clientId, (MedicareNumber Is Nothing))
     End Sub
 
     Public Sub UnassignFromClient(ByVal clientId As Integer)
-        FacilityProvider.Instance.UnassignFacilityFromClient(mId, clientId)
+        FacilityProvider.Instance.UnassignFacilityFromClient(mId, clientId, (MedicareNumber Is Nothing))
     End Sub
 
     'A facility can only be deleted if it is not mapped to any units.
@@ -440,7 +440,7 @@ Public Class Facility
     'End Function
 
     Public Shared Function GetAll() As FacilityList
-        Return FacilityProvider.Instance.SelectAll
+        Return FacilityProvider.Instance.SelectAll(New Nullable(Of Boolean))
     End Function
 
     ''' <summary>
@@ -448,7 +448,7 @@ Public Class Facility
     ''' </summary>
     ''' <param name="clientId">The Client ID by which to filter the facility list</param>
     Public Shared Function GetByClientId(ByVal clientId As Integer) As FacilityList
-        Return FacilityProvider.Instance.SelectByClientId(clientId)
+        Return FacilityProvider.Instance.SelectByClientId(clientId, New Nullable(Of Boolean))
     End Function
     'Public Shared Function GetByClientId(ByVal clientId As Integer) As Collection(Of Facility)
     '    Return FacilityProvider.Instance.SelectByClientId(clientId)

@@ -66,8 +66,8 @@ Public Class FacilityProvider
 
 #End Region
 
-    Public Overrides Function [Select](ByVal facilityId As Integer) As Facility
-        Dim cmd As DBCommand = Db.GetStoredProcCommand(SP.SelectFacility, facilityId)
+    Public Overrides Function [Select](ByVal facilityId As Integer, Optional ByVal isPracticeSite As Boolean = False) As Facility
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectFacility, facilityId, isPracticeSite)
 
         Using rdr As New SafeDataReader(ExecuteReader(cmd))
             If rdr.Read Then
@@ -79,10 +79,10 @@ Public Class FacilityProvider
 
     End Function
 
-    Public Overrides Function SelectAll() As FacilityList
+    Public Overrides Function SelectAll(Optional ByVal isPracticeSite As Boolean? = False) As FacilityList
         Dim facList As New FacilityList
 
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectAllFacilities)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectAllFacilities, isPracticeSite, DBNull.Value, DBNull.Value, DBNull.Value)
         Using rdr As New SafeDataReader(ExecuteReader(cmd))
             While rdr.Read
                 facList.Add(PopulateFacility(rdr))
@@ -91,10 +91,10 @@ Public Class FacilityProvider
         Return facList
     End Function
 
-    Public Overrides Function SelectByClientId(ByVal clientId As Integer) As FacilityList
+    Public Overrides Function SelectByClientId(ByVal clientId As Integer, Optional ByVal isPracticeSite As Boolean? = False) As FacilityList
         Dim facList As New FacilityList
 
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectFacilityByClientId, clientId)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectFacilityByClientId, clientId, isPracticeSite)
         Using rdr As New SafeDataReader(ExecuteReader(cmd))
             While rdr.Read
                 facList.Add(PopulateFacility(rdr))
@@ -197,13 +197,13 @@ Public Class FacilityProvider
         Return (result = 1)
     End Function
 
-    Public Overrides Sub AssignFacilityToClient(ByVal facilityId As Integer, ByVal clientId As Integer)
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.AssignFacilityToClient, facilityId, clientId)
+    Public Overrides Sub AssignFacilityToClient(ByVal facilityId As Integer, ByVal clientId As Integer, Optional ByVal isPracticeSite As Boolean = False)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.AssignFacilityToClient, facilityId, clientId, isPracticeSite)
         ExecuteNonQuery(cmd)
     End Sub
 
-    Public Overrides Sub UnassignFacilityFromClient(ByVal facilityId As Integer, ByVal clientId As Integer)
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.UnassignFacilityFromClient, facilityId, clientId)
+    Public Overrides Sub UnassignFacilityFromClient(ByVal facilityId As Integer, ByVal clientId As Integer, Optional ByVal isPracticeSite As Boolean = False)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.UnassignFacilityFromClient, facilityId, clientId, isPracticeSite)
         ExecuteNonQuery(cmd)
     End Sub
 
