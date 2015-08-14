@@ -9,6 +9,8 @@ using Quartz;
 using Quartz.Impl;
 using NullableDateTime = System.Nullable<System.DateTime>;
 using Nrc.Framework.BusinessLogic.Configuration;
+using System.Reflection;
+using System.Diagnostics;
 
 namespace WebSurveyEmailProcessTestApplication
 {
@@ -24,6 +26,8 @@ namespace WebSurveyEmailProcessTestApplication
         static void Main(string[] args)
         {
             string chronExpression = AppConfig.Params["WebSurveyCleanupInterval"].StringValue;
+
+           
 
 
             _sched = new CronExpression(chronExpression); // triggered at 11 PM everyday
@@ -45,8 +49,11 @@ namespace WebSurveyEmailProcessTestApplication
 
         static void Start()
         {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+            string version = fvi.FileVersion;
 
-            Logs.Info("WebSurveyEmailService Started");
+            Logs.Info(string.Format("WebSurveyEmailService v{0} Started", version));
             CreateSchedule();
             _scheduler.Start();
             //WebSurveyWorker.DoWork();

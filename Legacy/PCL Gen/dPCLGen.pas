@@ -15,7 +15,7 @@ Date        UserID  Description
 
 12-06-2006  GN04    @message NVARCHAR(4000), VARCHAR(8000)
                     Body text of the email message. The maximum line length is 1000 characters.
-                    Lines need to be separated using a carriage return linefeed (\r\n or using T-SQL char(13) | char(10)). 
+                    Lines need to be separated using a carriage return linefeed (\r\n or using T-SQL char(13) | char(10)).
 
 ********************************************************************************}
 
@@ -867,13 +867,15 @@ begin
        Application.ProcessMessages;
     end;
   end else begin
-    frmPCLGeneration.progressreport('sending email notification using xp_sendMail to ' + strTo + ' subject length=' + IntToStr(Length(strBody)),'','');
+    frmPCLGeneration.progressreport('sending email notification using sp_send_dbmail to ' + strTo + ' subject length=' + IntToStr(Length(strBody)),'','');
     strTo := substitute(strTo,'''','''''');
     strSubject := substitute(strSubject,'''','''''');
     strBody := substitute(strBody,'''','''''');
     if Length(strBody) > 8000 then
        strBody := Copy(strBody,1,7900) + '***data truncated***' ;//gn04
-    QPQuery(format('exec master.dbo.xp_sendmail @recipients = ''%s'', @subject = ''%s'', @message = ''%s''',[strto, strSubject, strBody]),wwSQLQuery,true);
+//    QPQuery(format('exec master.dbo.xp_sendmail @recipients = ''%s'', @subject = ''%s'', @message = ''%s''',[strto, strSubject, strBody]),wwSQLQuery,true);
+//    QPQuery(format('exec msdb.dbo.sp_send_dbmail @profile_name = ''ApptixQualisysEmail'', @recipients = ''%s'', @subject = ''%s'', @body = ''%s''',[strto, strSubject, strBody]),wwSQLQuery,true);
+    QPQuery(format('exec qp_prod.dbo.NRC10_send_dbmail @recipients = ''%s'', @subject = ''%s'', @body = ''%s''',[strto, strSubject, strBody]),wwSQLQuery,true);
   end;
 end;
 
@@ -1227,31 +1229,37 @@ begin
     frmLayoutCalc.DOD := (pos(','+s_id+',',DODSurveys)>0);
     frmPCLGeneration.ProgressReport(frmPCLGeneration.CompName + ' Process '+s_id+'.'+sm_id,s_id,sm_id );
     frmLayoutCalc.SurveyGen(sp_id);
-    if not wwt_myPCLNeeded.fieldbyname('QuestionForm_id').isnull then begin
-      if not TestPrints then
-      begin
-        dmOpenQ.bblLocFlush;
-        dmOpenQ.cmntLocFlush;
-        dmOpenQ.HWLocFlush;
-      end;
-      if ChkPosOn then
-        for i := 1 to 10 do
-          if length(chkpos[i]) > 5 then
-            with frmLayoutCalc.tPCL do begin
-              append;
-              fieldbyname('Sheet').value := (i+1) div 2;
-              fieldbyname('Side').value := i;
-              fieldbyname('Pagenum').value := 9999;
-              fieldbyname('PCLStream').value := chkpos[i];
-              post;
-            end;
-    end;
-
-    SavePCLOutput;
-    if not testprints then //GN03
-       CheckQuestionCount;
-    QPQuery('delete from PCLNeeded'+strTP+' where '+WhereField+'='+sm_id,wwSQLQuery,true);
 {$IFDEF TrapErrors}
+    try
+{$ENDIF}
+      if not wwt_myPCLNeeded.fieldbyname('QuestionForm_id').isnull then begin
+        if not TestPrints then
+        begin
+          dmOpenQ.bblLocFlush;
+          dmOpenQ.cmntLocFlush;
+          dmOpenQ.HWLocFlush;
+        end;
+        if ChkPosOn then
+          for i := 1 to 10 do
+            if length(chkpos[i]) > 5 then
+              with frmLayoutCalc.tPCL do begin
+                append;
+                fieldbyname('Sheet').value := (i+1) div 2;
+                fieldbyname('Side').value := i;
+                fieldbyname('Pagenum').value := 9999;
+                fieldbyname('PCLStream').value := chkpos[i];
+                post;
+              end;
+      end;
+{$IFDEF TrapErrors}
+    finally
+{$ENDIF}
+      SavePCLOutput;
+      if not testprints then //GN03
+         CheckQuestionCount;
+      QPQuery('delete from PCLNeeded'+strTP+' where '+WhereField+'='+sm_id,wwSQLQuery,true);
+{$IFDEF TrapErrors}
+    end;
   except
     on e:exception do begin
       if e is eOrphanTagError then
@@ -1460,7 +1468,7 @@ begin
     frmPCLGeneration.txtSurvey_id.text := '0'
   else
     frmPCLGeneration.ProgressReport('  waiting for a batch for survey_id='+frmPCLGeneration.txtSurvey_id.text,'','');
-  QPQuery('execute sp_PCL_NextBatch ''' + frmPCLGeneration.CompName + ''', '+frmPCLGeneration.txtSurvey_id.text,wwSQLQuery,true);
+  QPQuery('execute sp_PCL_NextBatch ''' + frmPCLGeneration.CompName + ''', '+frmPCLGeneration.txtSurvey_id.text + ', ''' + frmPCLGeneration.Version + '''',wwSQLQuery,true);
   QPQuery('execute sp_PCL_CleanBatch',wwSQLQuery,true);
 
   ww_sql.SQL.Add('Update #MyPCLNeeded set #MyPCLNeeded.LithoCode = cast(sm.strLithoCode as integer),'+
@@ -1642,8 +1650,11 @@ begin
     open;
   end;
   MakePopSection('localPopSection.db',wwt_LocalPopSection);
+  frmPCLGeneration.progressreport('MakePopSection localPopSection.db','','');
   MakePopCover('localPopCover.db',wwt_LocalPopCover);
+  frmPCLGeneration.progressreport('MakePopCover localPopCover.db','','');
   MakePopCode('localPopCode.db',wwt_LocalPopCode);
+  frmPCLGeneration.progressreport('MakePopCode localPopCode.db','','');
   wwt_LocalSelCover.tablename := 'LocalSelCover.db';
   dmOpenQ.tabledef(wwt_LocalSelCover,C,true);
   wwt_LocalSelLogo.tablename := 'LocalSelLogo.db';
@@ -1660,6 +1671,7 @@ begin
   dmOpenQ.tabledef(wwt_LocalSelTextBox,T,true);
 
   dmOpenQ.CreateProblemScoreTable;
+  frmPCLGeneration.progressreport('dmOpenQ.CreateProblemScoreTable','','');
 
   wwt_LocalSelCover.open;
   wwt_LocalSelLogo.open;
@@ -1668,6 +1680,7 @@ begin
   wwt_LocalSelQstns.open;
   wwt_LocalSelScls.open;
   wwt_LocalSelTextBox.open;
+  frmPCLGeneration.progressreport('LocalSel[Cover/Logo/PCL/Skip/Qstns/Scls/TextBox].open','','');
 
   with dmOpenQ do begin
     tabledef(wwt_Cover,C,true);
@@ -1677,6 +1690,7 @@ begin
     tabledef(wwt_Qstns,Q,true);
     tabledef(wwt_Scls,S,true);
     tabledef(wwt_TextBox,T,true);
+    frmPCLGeneration.progressreport('tabledef wwt_[Cover/Logo/PCL/Skip/Qstns/Scls/TextBox]','','');
     with wwt_Cover do begin
       filtered := false;
       IndexFieldNames := '';
@@ -1712,6 +1726,7 @@ begin
       IndexFieldNames := '';
       open;
     end;
+    frmPCLGeneration.progressreport('wwt_[Cover/Logo/PCL/Skip/Qstns/Scls/TextBox] open','','');
   end;
 end;
 

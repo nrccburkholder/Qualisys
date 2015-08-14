@@ -9,6 +9,7 @@ Public Class AddressCollection
 
     Private mCountryID As CountryIDs
 
+
 #End Region
 
 #Region " Base Class Overrides "
@@ -225,6 +226,107 @@ Public Class AddressCollection
 
     End Sub
 
+    Private Function cleanSingleAddress(ByVal assignIDs As Boolean, ByVal forceProxy As Boolean, ByVal populateGeoCoding As Boolean, ByRef addr As Address) As net.melissadata.addresscheck.ResponseArray
+        Dim addrCount As Integer = 1
+        Dim addrUsed As Integer = 1
+        Dim maxRecords As Integer = AppConfig.Params("AddressWebServiceMaxRecords").IntegerValue
+        Dim addrCheckRequest As New net.melissadata.addresscheck.RequestArray
+        Dim addrCheckResponse As New net.melissadata.addresscheck.ResponseArray
+        Dim geoCodingCount As Integer = 1
+        Dim geoCodingUsed As Integer = 1
+        Dim geoCodingRequest As New net.melissadata.geocoder.RequestArray
+        Dim geoCodingResponse As New net.melissadata.geocoder.ResponseArray
+
+
+
+        'Initialize the SOAP request message
+        addrCheckRequest.CustomerID = AppConfig.Params("AddressWebServiceCustomerID").StringValue
+        addrCheckRequest.OptAddressParsed = "False"
+      
+        'Dimension the SOAP request message array for the first set of records
+        ReDim addrCheckRequest.Record(GetArraySize(Count, addrUsed, maxRecords))
+
+        'Create the address cleaning web service connection
+        Using addrCheckService As New net.melissadata.addresscheck.Service
+            'Initialize the web service
+            addrCheckService.Url = AppConfig.Params("AddressWebServiceURL").StringValue
+
+            'Determine if we need to use a proxy
+            If forceProxy Then
+                addrCheckService.Proxy = New WebProxy(AppConfig.Params("WebServiceProxyServer").StringValue, AppConfig.Params("WebServiceProxyPort").IntegerValue)
+                addrCheckService.Proxy.Credentials = CredentialCache.DefaultCredentials
+            End If
+
+            'Clean all addresses in the collection
+
+            'Increment the counters
+            addrCount = 1
+            addrUsed = 1
+
+            'Check to see if we need to assign the id
+            If assignIDs Then
+                addr.DBKey = addrUsed
+            End If
+
+            'Add this address to the web service SOAP message
+            AddAddress(addrCount, addr, addrCheckRequest)
+
+            'Determine if it is time to call the web service           
+            addrCheckResponse = addrCheckService.doAddressCheck(addrCheckRequest)
+
+            'Check to see if the web service returned any errors
+            Dim message As String = String.Empty
+
+            If CheckForAddressWebRequestErrors(addrCheckResponse.Results, message) Then
+                'We have encountered a general error from the web service.
+                Throw New Exception(message)
+
+            End If
+
+        End Using
+
+        'Initialize the SOAP request message
+        geoCodingRequest.CustomerID = AppConfig.Params("GeoCodingWebServiceCustomerID").StringValue
+
+        'Dimension the SOAP request message array for the first set of records
+        ReDim geoCodingRequest.Record(GetArraySize(Count, geoCodingUsed, maxRecords))
+
+        'Create the address cleaning web service connection
+        Using geoCodingService As New net.melissadata.geocoder.Service
+            'Initialize the web service
+            geoCodingService.Url = AppConfig.Params("GeoCodingWebServiceURL").StringValue
+
+            'Determine if we need to use a proxy
+            If forceProxy Then
+                geoCodingService.Proxy = New WebProxy(AppConfig.Params("WebServiceProxyServer").StringValue, AppConfig.Params("WebServiceProxyPort").IntegerValue)
+                geoCodingService.Proxy.Credentials = CredentialCache.DefaultCredentials
+            End If
+
+            'Add this address to the web service SOAP message
+            AddGeoCoding(geoCodingCount, addr, geoCodingRequest)
+
+            'Determine if it is time to call the web service
+            If geoCodingCount = maxRecords OrElse geoCodingUsed = Count Then
+                'Call the web service to clean the current SOAP message
+                geoCodingResponse = geoCodingService.doGeoCode(geoCodingRequest)
+
+                'Check to see if the web service returned any errors
+                Dim message As String = String.Empty
+                If CheckForGeoCodingWebRequestErrors(geoCodingResponse.Results, message) Then
+                    'We have encountered a general error from the web service.
+                    Throw New Exception(message)
+                End If
+
+                'Find and update the returned addresses
+                UpdateGeoCoding(geoCodingResponse)
+            End If
+
+        End Using
+
+        Return addrCheckResponse
+       
+    End Function
+
 #End Region
 
 #Region " Private Methods "
@@ -337,7 +439,7 @@ Public Class AddressCollection
     ''' </summary>
     ''' <param name="responseArray">The response object containing the updated addresses.</param>
     ''' <remarks></remarks>
-    Private Sub UpdateAddresses(ByVal responseArray As net.melissadata.addresscheck.ResponseArray)
+    Private Sub UpdateAddresses(ByRef responseArray As net.melissadata.addresscheck.ResponseArray)
 
         Dim cnt As Integer
 
@@ -386,7 +488,7 @@ Public Class AddressCollection
     ''' <param name="response">The response object containing the cleaned address.</param>
     ''' <param name="results">The result string for this address.</param>
     ''' <remarks></remarks>
-    Private Sub UpdateAddress(ByVal addr As Address, ByVal response As net.melissadata.addresscheck.ResponseArrayRecordAddress, ByVal results As String)
+    Private Sub UpdateAddress(ByRef addr As Address, ByRef response As net.melissadata.addresscheck.ResponseArrayRecordAddress, ByVal results As String)
 
         With addr.WorkingAddress
             'Get the Address Type
@@ -523,6 +625,9 @@ Public Class AddressCollection
             If CheckForAddressSuccess(results) Then
                 'At least one Address error was detected but so was one Address success so set to original with error NU (No Unit)
                 addr.SetCleanedTo(addr.OriginalAddress, "NU")
+            ElseIf CheckForValidSecondAddress(results, addr) Then
+                addr.SetCleanedTo(addr.OriginalAddress, "NC")
+                ResendSecondaryAddress(addr)
             Else
                 'Address errors only were detected so set to original with error NC (Not Cleaned)
                 addr.SetCleanedTo(addr.OriginalAddress, "NC")
@@ -536,6 +641,144 @@ Public Class AddressCollection
         End If
 
     End Sub
+
+    Private Function ParseSingleAddress(ByRef responseArray As net.melissadata.addresscheck.ResponseArray, ByRef addr As Address) As Address
+
+        Dim response As net.melissadata.addresscheck.ResponseArrayRecordAddress
+        Dim results As String
+
+        response = responseArray.Record(0).Address
+        results = responseArray.Record(0).Results
+
+        With addr.WorkingAddress
+            'Get the Address Type
+            Select Case response.Type.Address.Code.Trim.ToUpper
+                Case "F"
+                    .AddressType = AddressTypes.FirmOrCompany
+
+                Case "G"
+                    .AddressType = AddressTypes.GeneralDelivery
+
+                Case "H"
+                    .AddressType = AddressTypes.HighriseOrBusinessComplex
+
+                Case "P"
+                    .AddressType = AddressTypes.POBox
+
+                Case "R"
+                    .AddressType = AddressTypes.RuralRoute
+
+                Case "S"
+                    .AddressType = AddressTypes.StreetOrResidential
+
+                Case Else
+                    .AddressType = AddressTypes.None
+
+            End Select
+
+            'Get the Zip Type
+            Select Case response.Type.Zip.Code.Trim.ToUpper
+                Case "P"
+                    .ZipCodeType = ZipCodeTypes.POBox
+
+                Case "U"
+                    .ZipCodeType = ZipCodeTypes.Unique
+
+                Case "M"
+                    .ZipCodeType = ZipCodeTypes.Military
+
+                Case Else
+                    .ZipCodeType = ZipCodeTypes.Standard
+
+            End Select
+
+            'Get the Urbanization
+            .UrbanizationName = response.Urbanization.Name
+
+            'Get the Private Mail Box
+            .PrivateMailBox = response.PrivateMailBox
+
+            'Get line 1 of the address
+            .StreetLine1 = CleanString(response.Address1, True, False).ToUpper
+
+            'Get line 2 of the address
+            If addr.OriginalAddress.StreetLine2 = "%NOT%USED%" Then
+                'Line 2 is not used in this study
+                .StreetLine2 = String.Empty
+            Else
+                'Line 2 is used
+                .StreetLine2 = CleanString(response.Address2, True, False).ToUpper
+            End If
+
+            'Get the suite information
+            Dim suite As String = CleanString(response.Suite, True, False).ToUpper
+            If Not String.IsNullOrEmpty(suite) Then
+                'Suite information exists
+                If addr.OriginalAddress.StreetLine2 = "%NOT%USED%" Then
+                    'Line 2 is not used for this study so add the suite information to line 1
+                    If Not .StreetLine1.ToUpper.Contains(suite) Then
+                        .StreetLine1 = String.Format("{0} {1}", .StreetLine1, suite).Trim
+                    End If
+                Else
+                    'Add the suite information to line 2
+                    If Not .StreetLine2.ToUpper.Contains(suite) Then
+                        .StreetLine2 = String.Format("{0} {1}", .StreetLine2, suite).Trim
+                    End If
+                End If
+            End If
+
+            'Get the city
+            .City = CleanString(response.City.Name, True, False).ToUpper
+
+            'Get remaining address parts based on country
+            Select Case mCountryID
+                Case CountryIDs.US
+                    'Get the state
+                    .State = response.State.Abbreviation.ToUpper
+
+                    'Get the zip5
+                    If addr.OriginalAddress.Zip5 = "99999" OrElse addr.OriginalAddress.Zip5 = "88888" Then
+                        'Non-QualiSys-Language so leave as is for NQL processing
+                        .Zip5 = addr.OriginalAddress.Zip5
+                    Else
+                        'Save zip5
+                        .Zip5 = response.Zip
+                    End If
+
+                    'Get the zip4
+                    .Zip4 = response.Plus4
+
+                    'Get the delivery point information
+                    .DeliveryPoint = response.DeliveryPointCode & response.DeliveryPointCheckDigit
+
+                    'Get the carrier route information
+                    .Carrier = response.CarrierRoute
+
+                Case CountryIDs.Canada
+                    'Get the province
+                    .Province = CleanString(response.State.Abbreviation, True, False).ToUpper
+
+                    'Get the postal code
+                    .Postal = response.Zip
+
+            End Select
+
+            'Set the Country
+            .Country = response.Country.Abbreviation.ToUpper
+
+            'Set the Status Code
+            .AddressStatus = GetAddressStatus(results)
+
+            'Save the unique address key used for other Melissa services
+            .AddressKey = response.AddressKey
+
+            'Set the Error Code
+            .AddressError = GetAddressError(results)
+        End With
+
+        Return addr
+
+    End Function
 
     ''' <summary>
     ''' This routine checks the result string for an address and determines whether or not an error was encountered.
@@ -554,6 +797,57 @@ Public Class AddressCollection
         Return False
 
     End Function
+
+
+
+    Private Function CheckForValidSecondAddress(ByVal results As String, ByRef addr As Address) As Boolean
+
+
+        If Not String.IsNullOrEmpty(addr.OriginalAddress.StreetLine2) AndAlso addr.OriginalAddress.StreetLine2.Length > 5 Then
+            'If line 1 is within valid deliverable USPS range and the lines have not been swapped by Melissa Data
+            If results.Contains("AE10") AndAlso Not results.Contains("AC06") Then
+                Return True
+            Else
+                Return False
+            End If
+        End If
+        Return False
+
+    End Function
+
+    ''' <summary>
+    ''' This method is used to try a second time to clean a single address with Line1/Line2 swapped
+    ''' </summary>
+    ''' <param name="origAddr">If the </param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Sub ResendSecondaryAddress(ByRef origAddr As Address)
+
+        'Make clone of the address being passed in
+        Dim clonedAddress As Address = origAddr.Clone
+
+        'Swap first and second lines for this second attempt on the clone
+        origAddr.OriginalAddress.StreetLine1 = clonedAddress.OriginalAddress.StreetLine2
+        origAddr.OriginalAddress.StreetLine2 = clonedAddress.OriginalAddress.StreetLine1
+
+        origAddr.WorkingAddress.StreetLine1 = clonedAddress.OriginalAddress.StreetLine2
+        origAddr.WorkingAddress.StreetLine2 = clonedAddress.OriginalAddress.StreetLine1
+
+        'Make the web service call with the clone/swapped address
+        Dim responseArray As net.melissadata.addresscheck.ResponseArray = cleanSingleAddress(True, False, True, origAddr)
+
+        'Parse the address clean response into an Address object
+        Dim returnedAddress As Address = ParseSingleAddress(responseArray, origAddr)
+
+        If CheckForAddressSuccess(returnedAddress.WorkingAddress.AddressStatus) Then
+            'Success, use new address
+            origAddr.SetCleanedTo(returnedAddress.WorkingAddress)
+        Else
+            'return the original address
+            origAddr = clonedAddress
+        End If
+
+    End Sub
 
     ''' <summary>
     ''' This routine checks the result string for an address and determines whether or not an error was encountered.

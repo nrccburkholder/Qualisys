@@ -1,5 +1,5 @@
 SCC = This is a Source Code Control file
 
 [CreateDefinitionFiles.vbp]
-SCC_Aux_Path = "\\lnk0pfil01.nationalresearch.com\teams\Information Services\Development\vss"
-SCC_Project_Name = "$/QualiSys/Scanner Interface/Create Definition Files", IABAAAAA
+SCC_Aux_Path =\\lnk0pfil01.nationalresearch.com\teams\Information Services\Development\vss,
+SCC_Project_Name ="$/QualiSys/Scanner Interface/Create Definition Files", IABAAAAA

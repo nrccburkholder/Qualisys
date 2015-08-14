@@ -2700,13 +2700,7 @@
     <Build Include="Schema Objects\Schemas\dbo\Tables\HHVisit_OCSReturnsPats.table.sql">
       <SubType>Code</SubType>
     </Build>
-    <Build Include="Schema Objects\Schemas\dbo\Tables\HHCAHPS_PatInfileCount.table.sql">
-      <SubType>Code</SubType>
-    </Build>
-    <Build Include="Schema Objects\Schemas\dbo\Tables\HHCAHPSEligibleEncLog_bk_bf_SampSetAdjust.table.sql">
-      <SubType>Code</SubType>
-    </Build>
-    <Build Include="Schema Objects\Schemas\dbo\Tables\HHCAHPSEligibleEncLog.table.sql">
+    <Build Include="Schema Objects\Schemas\dbo\Tables\CAHPS_PatInfileCount.table.sql">
       <SubType>Code</SubType>
     </Build>
     <Build Include="Schema Objects\Schemas\dbo\Tables\HHCAHPSDispositions.table.sql">
@@ -2719,9 +2713,6 @@
       <SubType>Code</SubType>
     </Build>
     <Build Include="Schema Objects\Schemas\dbo\Tables\HCAHPSIP.table.sql">
-      <SubType>Code</SubType>
-    </Build>
-    <Build Include="Schema Objects\Schemas\dbo\Tables\HCAHPSEligibleEncLog.table.sql">
       <SubType>Code</SubType>
     </Build>
     <Build Include="Schema Objects\Schemas\dbo\Tables\HCAHPSDispositions.table.sql">
@@ -8287,6 +8278,7 @@
     <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\CheckForCAHPSIncompletes.proc.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\SV_CAHPS_EnglishOrFrench.proc.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Tables\EligibleEncLog.table.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\CheckHospiceCAHPSDispositions.proc.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\ScriptsIgnoredOnImport.sql">

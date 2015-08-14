@@ -3,7 +3,7 @@
   <metadata>
     <id>Qualisys.QLoader</id>
     <title>QLoader</title>
-    <version>1.8.4.0</version>
+    <version>1.8.5.0</version>
     <authors>NRC</authors>
     <description>GUI for Loading patient discharge records onto Qualisys</description>
   </metadata>

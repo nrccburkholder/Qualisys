@@ -12,6 +12,10 @@ Spanish as well. Probably less than 20 hours to put a flag in SurveyType table. 
 */
 
 /*
+ALTER TABLE SurveyType 
+ALTER PROCEDURE [dbo].[QCL_SelectAllSurveyTypes]
+ALTER PROCEDURE [dbo].[QCL_SelectSurveyType]
+
 select * from surveytype
 
 sp_helptext QCL_selectallsurveytypes

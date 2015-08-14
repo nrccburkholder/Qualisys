@@ -40,21 +40,21 @@ ExeDescription=
 [Directories]
 OutputDir=bin
 UnitOutputDir=lib
-SearchPath=c:\program files\borland\delphi 3\ip3\lib;c:\program files\borland\delphi 3\qualpro;c:\cdk3;c:\program files\borland\delphi 3\edsvcl;c:\program files\borland\delphi 3\pp;C:\VSS\QualiSys\Configuration Manager\Form Layout;C:\VSS\QualiSys\lib
+SearchPath=..\delphi 3\ip3\lib;..\delphi 3\qualpro;..\delphi 3\edsvcl;..\delphi 3\pp;..\Form Layout;..\QualiSys\lib
 Packages=VCLX30;VCL30;VCLDB30;VCLDBX30;INETDB30;INET30;VCLSMP30;QRPT30;TEEUI30;TEEDB30;TEE30;DSS30;IBEVNT30;CDKSMP30;EAGLWK30;IP30
-Conditionals=
+Conditionals=SMTPBLOCK
 DebugSourceDirs=
 UsePackages=0
 [Parameters]
-RunParams=/2 c:\fakedir /1 
+RunParams=/2 c:\fakedir /1 \\NEPTUNE\QUALPRO\QP_LIB\NET
 HostApplication=
 [Version Info]
 IncludeVerInfo=1
-AutoIncBuild=1
+AutoIncBuild=0
 MajorVer=2
-MinorVer=6
+MinorVer=8
 Release=0
-Build=2
+Build=0
 Debug=0
 PreRelease=1
 Special=0
@@ -65,7 +65,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=National Research
 FileDescription=Generates the PCL Code
-FileVersion=2.6.0.2
+FileVersion=2.8.0.0
 InternalName=
 LegalCopyright=© 2000-2005. All Rights Reserved.
 LegalTrademarks=

@@ -75,7 +75,7 @@ Public Class ClientNavigator
         ClientList.DisplayMember = "DisplayLabel"
         ClientList.ValueMember = "Id"
         mIsLoading = False
-        SetViewMode(FacilitySection.DataViewMode.AllFacilities)
+        SetViewMode(FacilityAdminSection.DataViewMode.AllFacilities)
 
     End Sub
 
@@ -93,7 +93,7 @@ Public Class ClientNavigator
         If Not mSection.AllowInactivate Then Exit Sub
 
         'Set the display mode
-        SetViewMode(FacilitySection.DataViewMode.ClientFacilities)
+        SetViewMode(FacilityAdminSection.DataViewMode.ClientFacilities)
 
     End Sub
 
@@ -104,10 +104,20 @@ Public Class ClientNavigator
         If Not mSection.AllowInactivate Then Exit Sub
 
         'Set the display mode
-        SetViewMode(FacilitySection.DataViewMode.AllFacilities)
+        SetViewMode(FacilityAdminSection.DataViewMode.AllFacilities)
 
     End Sub
 
+
+
+    Private Sub GroupSiteTSButton_Click(sender As System.Object, e As System.EventArgs) Handles GroupSiteTSButton.Click
+        'Check to see if we can change views
+        If Not mSection.AllowInactivate Then Exit Sub
+
+        'Set the display mode
+        SetViewMode(FacilityAdminSection.DataViewMode.GroupsAndSites)
+
+    End Sub
 #End Region
 
 #Region " Protected Methods "
@@ -129,14 +139,15 @@ Public Class ClientNavigator
 
 #Region " Private Methods "
 
-    Private Sub SetViewMode(ByVal viewMode As FacilitySection.DataViewMode)
+    Private Sub SetViewMode(ByVal viewMode As FacilityAdminSection.DataViewMode)
 
         'Update the button selection
-        FacilityClientTSButton.Checked = (viewMode = FacilitySection.DataViewMode.ClientFacilities)
-        FacilityAllTSButton.Checked = (viewMode = FacilitySection.DataViewMode.AllFacilities)
+        FacilityClientTSButton.Checked = (viewMode = FacilityAdminSection.DataViewMode.ClientFacilities)
+        FacilityAllTSButton.Checked = (viewMode = FacilityAdminSection.DataViewMode.AllFacilities)
+        GroupSiteTSButton.Checked = (viewMode = FacilityAdminSection.DataViewMode.GroupsAndSites)
 
         'Determine if we need the client list box
-        ClientList.Enabled = (viewMode = FacilitySection.DataViewMode.ClientFacilities)
+        ClientList.Enabled = (viewMode = FacilityAdminSection.DataViewMode.ClientFacilities)
 
         'Fire the event so the FacilitySection can deal with the change
         Dim eArgs As FacilityViewModeChangedEventArgs = New FacilityViewModeChangedEventArgs(viewMode)
@@ -164,7 +175,7 @@ Public Class ClientNavigator
                 mSelectedIndex = ClientList.SelectedIndex
 
                 'Raise the event
-                Dim eArgs As FacilityViewModeChangedEventArgs = New FacilityViewModeChangedEventArgs(FacilitySection.DataViewMode.ClientFacilities)
+                Dim eArgs As FacilityViewModeChangedEventArgs = New FacilityViewModeChangedEventArgs(FacilityAdminSection.DataViewMode.ClientFacilities)
                 OnFacilityViewModeChanged(eArgs)
             Else
                 UndoClientSelection()
@@ -175,5 +186,4 @@ Public Class ClientNavigator
 
 #End Region
 
-    
 End Class

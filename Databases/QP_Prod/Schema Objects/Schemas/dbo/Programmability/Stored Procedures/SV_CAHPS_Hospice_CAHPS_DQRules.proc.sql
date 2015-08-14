@@ -1,6 +1,6 @@
 USE [QP_Prod]
 GO
-/****** Object:  StoredProcedure [dbo].[SV_CAHPS_FormQuestions]    Script Date: 10/7/2014 11:21:34 AM ******/
+/****** Object:  StoredProcedure [dbo].[SV_CAHPS_FormQuestions]    Script Date: 8/6/2015 12:42:34 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -71,30 +71,17 @@ CREATE TABLE #M (Error TINYINT, strMessage VARCHAR(200))
 		If exists  (select BusinessRule_id
 		 from BUSINESSRULE br, CRITERIASTMT cs
 		 where br.CRITERIASTMT_ID = cs.CRITERIASTMT_ID
-		 and cs.STRCRITERIASTMT_NM = 'DQ_L NM'
+		 and cs.STRCRITERIASTMT_NM = 'DQ_NCG'
 		 and br.SURVEY_ID = @Survey_id)
 
 			INSERT INTO #M (Error, strMessage)
-			SELECT 0,'Survey has DQ rule (LName IS NULL).'
+			SELECT 0,'Survey has DQ rule (LName IS NULL AND FName IS NULL AND ADDR IS NULL AND HSP_CaregiverRel IS NULL).'
 		ELSE
 		 INSERT INTO #M (Error, strMessage)
-		 SELECT 1,'Survey does not have DQ rule (LName IS NULL).'
+		 SELECT 1,'Survey does not have DQ rule (LName IS NULL AND FName IS NULL AND ADDR IS NULL AND HSP_CaregiverRel IS NULL).'
 
 
-		--check for DQ_F NM Rule
-		If exists  (select BusinessRule_id
-		 from BUSINESSRULE br, CRITERIASTMT cs
-		 where br.CRITERIASTMT_ID = cs.CRITERIASTMT_ID
-		 and cs.STRCRITERIASTMT_NM = 'DQ_F NM'
-		 and br.SURVEY_ID = @Survey_id)
-
-			INSERT INTO #M (Error, strMessage)
-			SELECT 0,'Survey has DQ rule (FName IS NULL).'
-		ELSE
-		 INSERT INTO #M (Error, strMessage)
-		 SELECT 1,'Survey does not have DQ rule (FName IS NULL).'
-
-		--check for DQ_MDFA Rule
+				--check for DQ_MDFA Rule
 		If exists  (select BusinessRule_id
 		 from BUSINESSRULE br, CRITERIASTMT cs
 		 where br.CRITERIASTMT_ID = cs.CRITERIASTMT_ID

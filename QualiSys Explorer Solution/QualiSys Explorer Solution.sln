@@ -1,25 +1,33 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "QualiSysExplorer", "QualiSysExplorer\QualiSysExplorer.vbproj", "{3CFD4B2B-D777-41D7-8795-5495B03069BD}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "QualiSys.Library", "..\QualiSys Class Library Solution\QualiSys.Library\QualiSys.Library.vbproj", "{191D0C34-FF61-47A6-852F-7FD91D50AD72}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "QualiSys.Library.SqlDataProvider", "..\QualiSys Class Library Solution\QualiSys.Library.SqlDataProvider\QualiSys.Library.SqlDataProvider.vbproj", "{31F9022F-D830-410D-90AE-98C59F34E552}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Nrc.Framework", "..\NRC Framework Solution\Nrc.Framework\Nrc.Framework.vbproj", "{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Nrc.Framework.BusinessLogic", "..\NRC Framework Solution\Nrc.Framework.BusinessLogic\Nrc.Framework.BusinessLogic.vbproj", "{C5A6EE1A-D5BF-4059-87CF-ACA302979820}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Nrc.Framework.Notification", "..\NRC Framework Solution\Nrc.Framework.Notification\Nrc.Framework.Notification.vbproj", "{27AB551E-D67F-4B03-BAB5-E7172E105217}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{789F4955-F509-4882-BB99-DCC58826D68B}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 2
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://oma0pnrctfs01.nationalresearch.com:8080/tfs/nrc_git
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = QualiSysExplorer\\QualiSysExplorer.vbproj
-		SccProjectName1 = QualiSysExplorer
-		SccLocalPath1 = QualiSysExplorer
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
+		PRODUCTION|Any CPU = PRODUCTION|Any CPU
+		PRODUCTION|x86 = PRODUCTION|x86
 		Release|Any CPU = Release|Any CPU
 		Release|x86 = Release|x86
 	EndGlobalSection
@@ -28,6 +36,10 @@ Global
 		{3CFD4B2B-D777-41D7-8795-5495B03069BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3CFD4B2B-D777-41D7-8795-5495B03069BD}.Debug|x86.ActiveCfg = Debug|x86
 		{3CFD4B2B-D777-41D7-8795-5495B03069BD}.Debug|x86.Build.0 = Debug|x86
+		{3CFD4B2B-D777-41D7-8795-5495B03069BD}.PRODUCTION|Any CPU.ActiveCfg = Release|Any CPU
+		{3CFD4B2B-D777-41D7-8795-5495B03069BD}.PRODUCTION|Any CPU.Build.0 = Release|Any CPU
+		{3CFD4B2B-D777-41D7-8795-5495B03069BD}.PRODUCTION|x86.ActiveCfg = Release|x86
+		{3CFD4B2B-D777-41D7-8795-5495B03069BD}.PRODUCTION|x86.Build.0 = Release|x86
 		{3CFD4B2B-D777-41D7-8795-5495B03069BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3CFD4B2B-D777-41D7-8795-5495B03069BD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3CFD4B2B-D777-41D7-8795-5495B03069BD}.Release|x86.ActiveCfg = Release|x86
@@ -36,6 +48,10 @@ Global
 		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.Debug|x86.ActiveCfg = Debug|x86
 		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.Debug|x86.Build.0 = Debug|x86
+		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.PRODUCTION|Any CPU.ActiveCfg = Release|Any CPU
+		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.PRODUCTION|Any CPU.Build.0 = Release|Any CPU
+		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.PRODUCTION|x86.ActiveCfg = Release|x86
+		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.PRODUCTION|x86.Build.0 = Release|x86
 		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.Release|Any CPU.Build.0 = Release|Any CPU
 		{191D0C34-FF61-47A6-852F-7FD91D50AD72}.Release|x86.ActiveCfg = Release|x86
@@ -44,10 +60,50 @@ Global
 		{31F9022F-D830-410D-90AE-98C59F34E552}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31F9022F-D830-410D-90AE-98C59F34E552}.Debug|x86.ActiveCfg = Debug|x86
 		{31F9022F-D830-410D-90AE-98C59F34E552}.Debug|x86.Build.0 = Debug|x86
+		{31F9022F-D830-410D-90AE-98C59F34E552}.PRODUCTION|Any CPU.ActiveCfg = Release|Any CPU
+		{31F9022F-D830-410D-90AE-98C59F34E552}.PRODUCTION|Any CPU.Build.0 = Release|Any CPU
+		{31F9022F-D830-410D-90AE-98C59F34E552}.PRODUCTION|x86.ActiveCfg = Release|x86
+		{31F9022F-D830-410D-90AE-98C59F34E552}.PRODUCTION|x86.Build.0 = Release|x86
 		{31F9022F-D830-410D-90AE-98C59F34E552}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31F9022F-D830-410D-90AE-98C59F34E552}.Release|Any CPU.Build.0 = Release|Any CPU
 		{31F9022F-D830-410D-90AE-98C59F34E552}.Release|x86.ActiveCfg = Release|x86
 		{31F9022F-D830-410D-90AE-98C59F34E552}.Release|x86.Build.0 = Release|x86
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.Debug|x86.ActiveCfg = Debug|x86
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.Debug|x86.Build.0 = Debug|x86
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.PRODUCTION|Any CPU.ActiveCfg = Release|Any CPU
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.PRODUCTION|Any CPU.Build.0 = Release|Any CPU
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.PRODUCTION|x86.ActiveCfg = Release|x86
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.PRODUCTION|x86.Build.0 = Release|x86
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.Release|x86.ActiveCfg = Release|x86
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}.Release|x86.Build.0 = Release|x86
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Debug|x86.ActiveCfg = Debug|x86
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Debug|x86.Build.0 = Debug|x86
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.PRODUCTION|Any CPU.ActiveCfg = PRODUCTION|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.PRODUCTION|Any CPU.Build.0 = PRODUCTION|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.PRODUCTION|x86.ActiveCfg = PRODUCTION|x86
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.PRODUCTION|x86.Build.0 = PRODUCTION|x86
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Release|x86.ActiveCfg = Release|x86
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Release|x86.Build.0 = Release|x86
+		{27AB551E-D67F-4B03-BAB5-E7172E105217}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27AB551E-D67F-4B03-BAB5-E7172E105217}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27AB551E-D67F-4B03-BAB5-E7172E105217}.Debug|x86.ActiveCfg = Debug|x86
+		{27AB551E-D67F-4B03-BAB5-E7172E105217}.Debug|x86.Build.0 = Debug|x86
+		{27AB551E-D67F-4B03-BAB5-E7172E105217}.PRODUCTION|Any CPU.ActiveCfg = Release|Any CPU
+		{27AB551E-D67F-4B03-BAB5-E7172E105217}.PRODUCTION|Any CPU.Build.0 = Release|Any CPU
+		{27AB551E-D67F-4B03-BAB5-E7172E105217}.PRODUCTION|x86.ActiveCfg = Release|x86
+		{27AB551E-D67F-4B03-BAB5-E7172E105217}.PRODUCTION|x86.Build.0 = Release|x86
+		{27AB551E-D67F-4B03-BAB5-E7172E105217}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27AB551E-D67F-4B03-BAB5-E7172E105217}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27AB551E-D67F-4B03-BAB5-E7172E105217}.Release|x86.ActiveCfg = Release|x86
+		{27AB551E-D67F-4B03-BAB5-E7172E105217}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -35,6 +35,12 @@ Namespace DataProvider
         Public MustOverride Sub AssignFacilityToClient(ByVal facilityId As Integer, ByVal clientId As Integer)
         Public MustOverride Sub UnassignFacilityFromClient(ByVal facilityId As Integer, ByVal clientId As Integer)
 
+        Public MustOverride Function SelectAllSiteGroups() As DataSet
+        Public MustOverride Sub UpdateSiteGroup(ByVal siteGroup As SiteGroup)
+        Public MustOverride Sub UpdatePracticeSite(ByVal practiceSite As PracticeSite)
+        Public MustOverride Sub InsertSiteGroup(ByVal siteGroup As SiteGroup)
+        Public MustOverride Sub InsertPracticeSite(ByVal practiceSite As PracticeSite)
+
         Protected Shared Function GetNewFacility(ByVal id As Integer) As Facility
             Return New Facility(id)
         End Function

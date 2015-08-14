@@ -87,7 +87,7 @@ group by ss.survey_id, sp.study_id, ss.datSampleCreate_dt
   WHERE SampleSet_id = @intSampleSet_id    
  DELETE FROM dbo.EligibleEncLog    
   WHERE SampleSet_id = @intSampleSet_id    
- DELETE FROM dbo.HHCAHPS_PatInfileCount
+ DELETE FROM dbo.CAHPS_PatInfileCount
   WHERE SampleSet_id = @intSampleSet_id   
  
          

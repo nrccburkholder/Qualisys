@@ -16,6 +16,12 @@ alter PROCEDURE [dbo].[csp_GetQuestionFormExtractData]
 AS
 	SET NOCOUNT ON 
 
+	DECLARE @oExtractRunLogID INT;
+	DECLARE @currDateTime1 DATETIME = GETDATE();
+	DECLARE @currDateTime2 DATETIME;
+	DECLARE @TaskName VARCHAR(200) =  OBJECT_NAME(@@PROCID);
+	EXEC [InsertExtractRunLog] @ExtractFileID, @TaskName, @currDateTime1, @ExtractRunLogID = @oExtractRunLogID OUTPUT;
+
 	declare @EntityTypeID int
 	set @EntityTypeID = 11 -- QuestionForm
 --
@@ -26,16 +32,15 @@ AS
 	-- ACO CAHPS Project
 	-- ccaouette: 2014-05
 	---------------------------------------------------------------------------------------
-	DECLARE @country VARCHAR(10)
-	SELECT @country = [STRPARAM_VALUE] FROM [QP_Prod].[dbo].[qualpro_params] WHERE STRPARAM_NM = 'Country'
-	select @country
-	IF @country = 'US'
-	BEGIN
-		EXEC [QP_Prod].[dbo].[CheckForCAHPSIncompletes] 
-		EXEC [QP_Prod].[dbo].[CheckForACOCAHPSUsablePartials]
-		EXEC [QP_Prod].[dbo].[CheckForMostCompleteUsablePartials] -- HHCAHPS and ICHCAHPS
-	END
-	
+	--DECLARE @country VARCHAR(10)
+	--SELECT @country = [STRPARAM_VALUE] FROM [QP_Prod].[dbo].[qualpro_params] WHERE STRPARAM_NM = 'Country'
+	--select @country
+	--IF @country = 'US'
+	--BEGIN
+	--	EXEC [QP_Prod].[dbo].[CheckForCAHPSIncompletes] 
+	--	EXEC [QP_Prod].[dbo].[CheckForACOCAHPSUsablePartials]
+	--	EXEC [QP_Prod].[dbo].[CheckForMostCompleteUsablePartials] -- HHCAHPS and ICHCAHPS
+	--END	
 
 	---------------------------------------------------------------------------------------
 	-- Load records to Insert/Update into a temp table
@@ -113,11 +118,21 @@ AS
 	FROM QuestionFormTemp qft 
     WHERE ExtractFileID = @ExtractFileID AND SurveyType_id=2
     
-    UPDATE qft 
-	SET isComplete=CASE WHEN QP_Prod.dbo.HHCAHPSCompleteness(QUESTIONFORM_ID) <> 0 THEN 'true' ELSE 'false' END
-	--SELECT *--isComplete=QP_Prod.dbo.HCAHPSCompleteness(QUESTIONFORM_ID),*
-	FROM QuestionFormTemp qft 
+    CREATE TABLE #HHQF (QuestionForm_id INT, Complete INT, ATACnt INT, Q1 INT, numAnswersAfterQ1 INT)
+    INSERT INTO #HHQF (QuestionForm_id)
+    select QuestionForm_id 
+    from QuestionFormTemp 
     WHERE ExtractFileID = @ExtractFileID AND SurveyType_id=3
+    
+    exec QP_Prod.dbo.HHCAHPSCompleteness
+    
+    UPDATE qft 
+	SET isComplete=CASE WHEN hh.Complete <> 0 THEN 'true' ELSE 'false' END
+	--SELECT *
+	FROM QuestionFormTemp qft 
+	inner join #HHQF hh on qft.Questionform_id=hh.questionform_id
+	
+	DROP TABLE #HHQF
     
     UPDATE qft 
 	SET isComplete=CASE WHEN QP_Prod.dbo.MNCMCompleteness(QUESTIONFORM_ID) <> 0 THEN 'true' ELSE 'false' END
@@ -139,3 +154,7 @@ AS
 	                     and IsDeleted = 1 ) eh
 				Left join QP_Prod.dbo.QUESTIONFORM qf With (NOLOCK) on qf.QUESTIONFORM_ID = eh.PKey1 AND qf.DATRETURNED IS NULL--if datReturned is not NULL it is not a delete
 				Left join QP_Prod.dbo.SentMailing sm With (NOLOCK) on qf.SentMail_id = sm.SentMail_id
+
+  	SET @currDateTime2 = GETDATE();
+	SELECT @oExtractRunLogID,@currDateTime2,@TaskName
+	EXEC [UpdateExtractRunLog] @oExtractRunLogID, @currDateTime2

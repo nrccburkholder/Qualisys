@@ -1,11 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
- 
-using Newtonsoft.Json;
-
 using RESTClient = NRC.Common.Web.RESTClient;
 
 namespace NRC.Common.Application

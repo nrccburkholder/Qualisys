@@ -4,22 +4,15 @@ Public Class FacilitySection
 
 #Region " Private Members "
 
-    Private WithEvents mClientNavigator As ClientNavigator
-    Private mViewMode As DataViewMode
+
+    Private mViewMode As FacilityAdminSection.DataViewMode
     Private mAllFacilityGridIsPopulated As Boolean
     Private mAllFacilityList As FacilityList
     Private mMedicareList As MedicareNumberList
+    Private mClientNavigator As ClientNavigator
 
 #End Region
 
-#Region " Enums "
-
-    Public Enum DataViewMode
-        ClientFacilities = 1
-        AllFacilities = 2
-    End Enum
-
-#End Region
 
 #Region " Constructors "
 
@@ -32,53 +25,6 @@ Public Class FacilitySection
 
 #End Region
 
-#Region " Base Class Overrides "
-
-    Public Overrides Sub ActivateSection()
-
-        'Set the view mode (this reinitializes the screen each time it is activated)
-        PopulateMedicareList()
-        SetViewMode(mViewMode)
-
-    End Sub
-
-    Public Overrides Sub InactivateSection()
-
-        'Cleanup all memory collections and grid data sources
-        Me.AllFacilityGrid.ClearDataSources()
-        Me.ClientFacilityGrid.ClearDataSources()
-        mAllFacilityGridIsPopulated = False
-
-    End Sub
-
-    Public Overrides Function AllowInactivate() As Boolean
-
-        Select Case mViewMode
-            Case DataViewMode.AllFacilities
-                Return VerifyOKToInactivateAllFacilities()
-
-            Case DataViewMode.ClientFacilities
-                'We can always unload here because database updates are immediate
-                Return True
-
-            Case Else
-                'No current view mode exists
-                Return True
-        End Select
-
-    End Function
-
-    Public Overrides Sub RegisterNavControl(ByVal navCtrl As Navigator)
-
-        Me.mClientNavigator = TryCast(navCtrl, ClientNavigator)
-        If mClientNavigator Is Nothing Then
-            Throw New ArgumentException("The FacilitySection control expects a navigation control of type ClientNavigator")
-        End If
-
-    End Sub
-
-#End Region
-
 #Region " Event Handlers "
 
 #Region " Event Handlers - Form "
@@ -86,10 +32,10 @@ Public Class FacilitySection
     Private Sub ApplyButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ApplyButton.Click
 
         Select Case mViewMode
-            Case DataViewMode.AllFacilities
+            Case FacilityAdminSection.DataViewMode.AllFacilities
                 SaveAllFacilityGrid()
 
-            Case DataViewMode.ClientFacilities
+            Case FacilityAdminSection.DataViewMode.ClientFacilities
                 'Do Nothing
 
         End Select
@@ -99,7 +45,7 @@ Public Class FacilitySection
     Private Sub CancelButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
 
         Select Case mViewMode
-            Case DataViewMode.AllFacilities
+            Case FacilityAdminSection.DataViewMode.AllFacilities
                 Me.Cursor = Cursors.WaitCursor
                 Me.PopulateAllFacilityList()
                 Me.PopulateAllFacilityGrid()
@@ -107,16 +53,12 @@ Public Class FacilitySection
                 Cancel_Button.Enabled = True
                 Me.Cursor = Me.DefaultCursor
 
-            Case DataViewMode.ClientFacilities
+            Case FacilityAdminSection.DataViewMode.ClientFacilities
                 ApplyButton.Enabled = False
                 Cancel_Button.Enabled = False
 
         End Select
 
-    End Sub
-
-    Private Sub mClientNavigator_FacilityViewModeChanged(ByVal sender As Object, ByVal e As FacilityViewModeChangedEventArgs) Handles mClientNavigator.FacilityViewModeChanged
-        SetViewMode(e.ViewMode)
     End Sub
 
 #End Region
@@ -191,29 +133,33 @@ Public Class FacilitySection
 
 #Region " Private Methods - General "
 
-    Private Sub SetViewMode(ByVal viewMode As DataViewMode)
+    Public Sub SetViewMode(ByVal viewMode As FacilityAdminSection.DataViewMode, ClientNav As ClientNavigator)
+
+        mClientNavigator = ClientNav
 
         If mMedicareList Is Nothing Then
             PopulateMedicareList()
         End If
         If mAllFacilityList Is Nothing Then
-            PopulateAllFacilityList
+            PopulateAllFacilityList()
         End If
 
         'Setup the screen based on the mode selected
         Select Case viewMode
-            Case DataViewMode.AllFacilities
+            Case FacilityAdminSection.DataViewMode.AllFacilities
 
                 'Setup the screen
                 SetupAllFacility()
 
                 'Populate the screen if we haven't already populated the allfacilitygrid
-                If Not mAllFacilityGridIsPopulated Then PopulateAllFacilityGrid()
+                If Not mAllFacilityGridIsPopulated Then
+                    PopulateAllFacilityGrid()
+                End If
 
                 'reset the appearance
                 ResetAllFacilityGridAppearance()
 
-            Case DataViewMode.ClientFacilities
+            Case FacilityAdminSection.DataViewMode.ClientFacilities
                 'Setup the screen
                 SetupClientFacility()
 
@@ -406,7 +352,7 @@ Public Class FacilitySection
         MainPanel.Caption = mClientNavigator.SelectedClient.Name & " Facilities"
     End Sub
 
-    Private Sub ResetClientFacilityGridAppearance()
+    Public Sub ResetClientFacilityGridAppearance()
         ClientFacilityGrid.FacilitiesGrid.SuspendLayout()
         With ClientFacilityGrid.FacilityGridView
             .ClearColumnsFilter()
@@ -444,172 +390,6 @@ Public Class FacilitySection
     End Sub
 
 #End Region
-
-#End Region
-
-
-#Region "Medicare Number stuff"
-
-    'Private Sub MedicareNumberDeleteTSButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-    '    If MessageBox.Show("Are you sure you want to delete the selected rows?", "Confirm Delete", MessageBoxButtons.YesNo) = DialogResult.Yes Then
-    '        Dim selectedRows() As Integer = Me.MedicareNumberGridView.GetSelectedRows
-    '        'Reverse the items so we delete in reverse order.  This avoids problems with index numbers
-    '        'Changing each time we delete an item.
-    '        Array.Reverse(selectedRows)
-
-    '        For Each i As Integer In selectedRows
-    '            If i >= 0 Then
-    '                Dim medicareNum As MedicareNumber = DirectCast(Me.MedicareNumberGridView.GetRow(i), MedicareNumber)
-    '                If medicareNum IsNot Nothing Then
-    '                    If CanMedicareNumberGridDeleteRow(medicareNum) Then
-    '                        MedicareNumberGridView.DeleteRow(i)
-    '                    End If
-    '                End If
-    '            End If
-    '        Next
-    '        'UpdateMedicareNumberStatus()
-    '    End If
-    'End Sub
-
-    'Private Sub MedicareNumberGridView_FocusedRowChanged(ByVal sender As Object, ByVal e As DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs)
-    '    'The medicareNumber column cannot be edited for Old medicare Numbers.
-    '    If e.FocusedRowHandle >= 0 AndAlso DirectCast(Me.MedicareNumberGridView.GetRow(e.FocusedRowHandle), MedicareNumber).IsNew = False Then
-    '        colMedicareNumber.OptionsColumn.ReadOnly = True
-    '    Else
-    '        colMedicareNumber.OptionsColumn.ReadOnly = False
-    '    End If
-    'End Sub
-
-    'Private Sub SetupMedicareNumbers()
-
-    '    'Setup the splitters so only the MedicareNumberGrid is visible
-    '    MainSplitContainer.Panel1Collapsed = False
-    '    MainSplitContainer.Panel2Collapsed = True
-    '    FacilitySplitContainer.Panel1Collapsed = True
-    '    FacilitySplitContainer.Panel2Collapsed = True
-    '    ButtonPanel.Enabled = True
-
-    '    'Set the section caption 
-    '    MainPanel.Caption = "All Medicare Numbers"
-
-    'End Sub
-
-    'Private Sub ResetMedicareNumberGridAppearance()
-    '    Me.MedicareNumberGrid.SuspendLayout()
-    '    With Me.MedicareNumberGridView
-    '        .ClearColumnsFilter()
-    '        .ClearSorting()
-    '    End With
-    '    colMedicareNumber.SortOrder = DevExpress.Data.ColumnSortOrder.Ascending
-    '    colMedicareNumber.SortIndex = 0
-    '    Me.MedicareNumberGridView.ClearSelection()
-    '    Me.MedicareNumberGridView.SelectRow(0)
-    '    Me.MedicareNumberGridView.MoveFirst()
-    '    'Me.MedicareNumberGridView.BestFitMaxRowCount = 25
-    '    Me.MedicareNumberGridView.BestFitColumns()
-    '    Me.MedicareNumberGrid.ResumeLayout()
-    'End Sub
-
-    'Private Sub PopulateMedicareNumberGrid()
-    '    'Repopulate the grid
-    '    MedicareNumberBindingSource.DataSource = mMedicareList
-
-    '    'Set the flag to indicate that the grid is populated
-    '    mMedicareNumberGridIsPopulated = True
-    'End Sub
-
-    'Private Sub SaveMedicareNumberGrid()
-
-    '    If Me.MedicareNumberGridView.IsEditing Then
-    '        If Me.MedicareNumberGridView.ValidateEditor Then
-    '            Me.MedicareNumberGridView.CloseEditor()
-    '        End If
-    '    End If
-
-    '    'Set the wait cursor
-    '    Me.Cursor = Cursors.WaitCursor
-
-    '    'Save the changes
-    '    If Me.mMedicareList.IsValid Then
-    '        Me.mMedicareList.Save()
-    '    Else
-    '        MessageBox.Show("You cannot save until all errors are corrected.", "Save Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '    End If
-
-    '    'Reset the wait cursor
-    '    Me.Cursor = Me.DefaultCursor
-
-    'End Sub
-
-    'Private Function CanMedicareNumberGridDeleteRow(ByVal medicareNum As MedicareNumber) As Boolean
-
-    '    Dim retValue As Boolean = False
-
-    '    'Set the wait cursor
-    '    Me.Cursor = Cursors.WaitCursor
-
-    '    'If the medicare number being deleted is not a "New" medicare number then we need to store
-    '    'it in our list of deleted medicare numbers
-    '    If medicareNum.IsNew Then
-
-    '        'Set the return value
-    '        retValue = True
-    '    Else
-    '        'Verify that this medicare number can be deleted
-    '        If MedicareNumber.AllowDelete(medicareNum.MedicareNumber) Then
-    '            'Set the return value
-    '            retValue = True
-    '        Else
-    '            'If it can't be deleted then display an error and cancel delete
-    '            MessageBox.Show("Medicare Number " & medicareNum.DisplayLabel & " cannot be deleted because it is still associated with at least one facility!", "Medicare Number Delete Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '        End If
-    '    End If
-
-    '    'Reset the wait cursor
-    '    Me.Cursor = Me.DefaultCursor
-
-    '    'Return
-    '    Return retValue
-
-    'End Function
-
-    'Private Function VerifyOKToInactivateMedicareNumbers() As Boolean
-    '    'Commit any uncommitted changes
-    '    If Me.MedicareNumberGridView.IsEditing Then
-    '        If Me.MedicareNumberGridView.ValidateEditor Then
-    '            Me.MedicareNumberGridView.CloseEditor()
-    '        End If
-    '    End If
-
-    '    If Me.mMedicareList.IsDirty Then
-    '        'Prompt the user to save changes
-    '        Dim result As DialogResult = MessageBox.Show("You have made changes to the medicare number information." & vbCrLf & vbCrLf & "Do you want to save your changes?", "Save Changes?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning)
-
-    '        If result = DialogResult.Yes Then
-    '            If Not Me.mMedicareList.IsValid Then
-    '                MessageBox.Show("You cannot save until all errors are corrected.", "Save Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '                Return False
-    '            End If
-    '        End If
-
-    '        'Do as the user requested
-    '        If result = DialogResult.Cancel Then
-    '            'The user has canceled so we are out of here
-    '            Return False
-    '        ElseIf result = DialogResult.Yes Then
-    '            'Save the changes
-    '            SaveMedicareNumberGrid()
-    '            Return True
-    '        ElseIf result = DialogResult.No Then
-    '            Me.mMedicareList = Nothing
-    '            Return True
-    '        End If
-    '    Else
-    '        'We are good to go
-    '        Return True
-    '    End If
-
-    'End Function
 
 #End Region
 

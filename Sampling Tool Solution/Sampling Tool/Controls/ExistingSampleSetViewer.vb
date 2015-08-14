@@ -320,8 +320,10 @@ Public Class ExistingSampleSetViewer
 
             Dim defaultScheduleDateByMonths As Integer = srvy.DefaultScheduleDateAdjustmentByMonths
 
-            If defaultScheduleDateByMonths <> 0 Then ' 
-                Dim dt As DateTime = Convert.ToDateTime(srvy.ActiveSamplePeriod.ExpectedStartDate.Value)
+            If defaultScheduleDateByMonths <> 0 Then
+
+                'Dim dt As DateTime = Convert.ToDateTime(srvy.ActiveSamplePeriod.ExpectedStartDate.Value)
+                Dim dt As DateTime = Convert.ToDateTime(ss.DateRangeFrom.Value)
                 genDateDialog.SelectedDate = dt.AddMonths(defaultScheduleDateByMonths).AddDays(-1)
             Else
                 genDateDialog.SelectedDate = Date.Today

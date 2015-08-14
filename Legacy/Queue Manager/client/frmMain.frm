@@ -1,7 +1,7 @@
 VERSION 5.00
-Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.3#0"; "COMCTL32.OCX"
+Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.3#0"; "comctl32.ocx"
 Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.OCX"
-Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
 Begin VB.Form frmMain 
    Caption         =   "Print Queue Manager"
    ClientHeight    =   7170
@@ -59,6 +59,7 @@ Begin VB.Form frmMain
          _Version        =   393217
          BackColor       =   -2147483644
          BorderStyle     =   0
+         Enabled         =   -1  'True
          HideSelection   =   0   'False
          ReadOnly        =   -1  'True
          DisableNoScroll =   -1  'True
@@ -788,6 +789,7 @@ Public Sub CheckQueue()
             iOffset = IIf(UCase(Left(vHospitalQueue(3, lQueueCnt), 8)) = "ACOCAHPS", OffsetACOCAHPS, iOffset)
             iOffset = IIf(UCase(Left(vHospitalQueue(3, lQueueCnt), 8)) = "ICHCAHPS", OffsetICHCAHPS, iOffset)
             iOffset = IIf(UCase(Left(vHospitalQueue(3, lQueueCnt), 7)) = "HOSPICE", OffsetHOSPICE, iOffset)
+            iOffset = IIf(UCase(Left(vHospitalQueue(3, lQueueCnt), 10)) = "PQRS CAHPS", OffsetPQRSCAHPS, iOffset)
             iHospital = conHospital + iOffset
             ' I am hold the description of the node in the
             ' key value of the node.  this is what is
@@ -845,6 +847,7 @@ Public Sub CheckQueue()
             iOffset = IIf(UCase(Left(vHospitalQueue(6, lQueueCnt), 8)) = "ACOCAHPS", OffsetACOCAHPS, iOffset)
             iOffset = IIf(UCase(Left(vHospitalQueue(6, lQueueCnt), 8)) = "ICHCAHPS", OffsetICHCAHPS, iOffset)
             iOffset = IIf(UCase(Left(vHospitalQueue(6, lQueueCnt), 7)) = "HOSPICE", OffsetHOSPICE, iOffset)
+            iOffset = IIf(UCase(Left(vHospitalQueue(6, lQueueCnt), 10)) = "PQRS CAHPS", OffsetPQRSCAHPS, iOffset)
             iHospital = conHospital + iOffset
             'add the paperconfig node if it isn't already there
             'key is defined by paperconfig_id (plus datPrinted for the mail queue)
@@ -1246,6 +1249,7 @@ Private Sub mnuAddToGroupedPrint_Click()
     iOffset = IIf(UCase(Left(NextValue(strID, vbTab), 8)) = "ACOCAHPS", OffsetACOCAHPS, iOffset)
     iOffset = IIf(UCase(Left(NextValue(strID, vbTab), 8)) = "ICHCAHPS", OffsetICHCAHPS, iOffset)
     iOffset = IIf(UCase(Left(NextValue(strID, vbTab), 7)) = "HOSPICE", OffsetHOSPICE, iOffset)
+    iOffset = IIf(UCase(Left(NextValue(strID, vbTab), 10)) = "PQRS CAHPS", OffsetPQRSCAHPS, iOffset)
     iHospital = conHospital + iOffset
     
     dummy = NextValue(strID, vbTab) ' number of pieces
@@ -1445,6 +1449,7 @@ Private Sub mnuRemoveFromGroupedPrint_Click()
     iOffset = IIf(UCase(Left(NextValue(strX, vbTab), 8)) = "ACOCAHPS", OffsetACOCAHPS, iOffset)
     iOffset = IIf(UCase(Left(NextValue(strX, vbTab), 8)) = "ICHCAHPS", OffsetICHCAHPS, iOffset)
     iOffset = IIf(UCase(Left(NextValue(strX, vbTab), 7)) = "HOSPICE", OffsetHOSPICE, iOffset)
+    iOffset = IIf(UCase(Left(NextValue(strX, vbTab), 10)) = "PQRS CAHPS", OffsetPQRSCAHPS, iOffset)
     iHospital = conHospital + iOffset
     dummy = NextValue(strX, vbTab) ' number of pieces
     

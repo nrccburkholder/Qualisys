@@ -245,8 +245,8 @@ insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id]
 values (153, @hospiceId, null)
 insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
 values (155, @hospiceId, null)
-insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
-values (156, @hospiceId, null)
+--insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
+--values (156, @hospiceId, null)  -- SamplingMethod validation not needed because all methods are valid
 insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])
 values (158, @hospiceId, null)
 insert into SurveyValidationProcsBySurveyType (svpbst.[SurveyValidationProcs_id],[CAHPSType_ID],[SubType_ID])

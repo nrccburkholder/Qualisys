@@ -4,12 +4,13 @@
 /*              a transaction from sp_pcl_startnewrun */
 CREATE PROCEDURE sp_pcl_startnewrun
  @compname VARCHAR(16),
+ @version varchar(25),
  @PCLGenRun_id int OUTPUT
 AS
 /* StartNewRun */
 /* BEGIN TRANSACTION*/
- INSERT INTO dbo.PCLGenRun (computer_nm, start_dt)
-  VALUES (@compname,GETDATE())
+ INSERT INTO dbo.PCLGenRun (computer_nm, PCLGenVersion, start_dt)
+  VALUES (@compname,@version,GETDATE())
  if @@error <> 0
  begin
 /*  ROLLBACK TRANSACTION*/

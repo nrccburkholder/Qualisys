@@ -660,23 +660,34 @@ Friend Class HHCAHPSRecodeReader
             Return "M"
         End If
 
-        If value Is DBNull.Value OrElse value.ToString.Trim = String.Empty Then
-            Return 2
+        Dim screen As Object = mReader(screenQuestion)
+
+        If value Is DBNull.Value OrElse value.ToString.Trim = String.Empty OrElse CType(value, Integer) = -9 Then 'Q34
+            If screen Is DBNull.Value OrElse screen.ToString.Trim = String.Empty OrElse CType(screen, Integer) = -9 Then 'Q33
+                Return "M"
+            Else
+                Return 2 'Indicates CType(screen, Integer) is 1 or 2 'Q34 from QAG
+            End If
+        Else 'Indicates CType(value, Integer) Mod 10000 = 3 'Q34 from QAG
+            Return 1
         End If
 
-        Dim screen As Object = mReader(screenQuestion)
-        If CType(screen, Integer) = skipValue Then
-            Return 2
-        Else
-            Dim intVal As Integer = CType(value, Integer)
-            'If the value is > 10000 then we need to subtract it off
-            If intVal >= 10000 Then intVal -= 10000
-            If intVal = 3 Then
-                Return 1
-            Else
-                Return 2
-            End If
-        End If
+        'If value Is DBNull.Value OrElse value.ToString.Trim = String.Empty Then
+        '    Return 2
+        'End If
+
+        'If CType(screen, Integer) = skipValue Then
+        '    Return 2
+        'Else
+        '    Dim intVal As Integer = CType(value, Integer)
+        '    'If the value is > 10000 then we need to subtract it off
+        '    If intVal >= 10000 Then intVal -= 10000
+        '    If intVal = 3 Then
+        '        Return 1
+        '    Else
+        '        Return 2
+        '    End If
+        'End If
 
     End Function
 

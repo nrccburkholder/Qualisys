@@ -19,47 +19,48 @@ Partial Class FacilityGrid
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
+        Dim SerializableAppearanceObject1 As DevExpress.Utils.SerializableAppearanceObject = New DevExpress.Utils.SerializableAppearanceObject()
         Me.MedicareNumberBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.FacilityRegionBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.FacilityStateBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.FacilityBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.FacilitiesGrid = New DevExpress.XtraGrid.GridControl
-        Me.FacilityGridView = New DevExpress.XtraGrid.Views.Grid.GridView
-        Me.colFacilityName = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.colFacilityMedicareNumber = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.MedicareNumberGridLookUpEdit = New DevExpress.XtraEditors.Repository.RepositoryItemGridLookUpEdit
-        Me.GridView1 = New DevExpress.XtraGrid.Views.Grid.GridView
-        Me.colMedicareNumberLookup = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.colNameLookup = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.colCity = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.colState = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.FacilityStateGridLookUpEdit = New DevExpress.XtraEditors.Repository.RepositoryItemGridLookUpEdit
-        Me.RepositoryItemGridLookUpEdit1View = New DevExpress.XtraGrid.Views.Grid.GridView
-        Me.colStateName = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.colAbbreviation1 = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.colRegionId = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.FacilityRegionLookUpEdit = New DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit
-        Me.colCountry = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.CountryComboBox = New DevExpress.XtraEditors.Repository.RepositoryItemComboBox
-        Me.colAhaId = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.colAdmitNumber = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.colBedSize = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.colIsCancerCenter = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.TriStateComboBoxEdit = New DevExpress.XtraEditors.Repository.RepositoryItemComboBox
-        Me.colIsForProfit = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.colIsFreeStanding = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.colIsGovernment = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.colIsPediatric = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.colIsPicker = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.colIsRehab = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.colIsReligious = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.colIsRural = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.colIsTrauma = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.colIsTeaching = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.colAbbreviation = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.colPENumber = New DevExpress.XtraGrid.Columns.GridColumn
-        Me.PENumberLookUpEdit = New DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit
+        Me.FacilitiesGrid = New DevExpress.XtraGrid.GridControl()
+        Me.FacilityGridView = New DevExpress.XtraGrid.Views.Grid.GridView()
+        Me.colFacilityName = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colFacilityMedicareNumber = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.MedicareNumberGridLookUpEdit = New DevExpress.XtraEditors.Repository.RepositoryItemGridLookUpEdit()
+        Me.GridView1 = New DevExpress.XtraGrid.Views.Grid.GridView()
+        Me.colMedicareNumberLookup = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colNameLookup = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colPENumber = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.PENumberLookUpEdit = New DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit()
+        Me.colCity = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colState = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.FacilityStateGridLookUpEdit = New DevExpress.XtraEditors.Repository.RepositoryItemGridLookUpEdit()
+        Me.RepositoryItemGridLookUpEdit1View = New DevExpress.XtraGrid.Views.Grid.GridView()
+        Me.colStateName = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colAbbreviation1 = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colRegionId = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.FacilityRegionLookUpEdit = New DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit()
+        Me.colCountry = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.CountryComboBox = New DevExpress.XtraEditors.Repository.RepositoryItemComboBox()
+        Me.colAhaId = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colAdmitNumber = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colBedSize = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colIsCancerCenter = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.TriStateComboBoxEdit = New DevExpress.XtraEditors.Repository.RepositoryItemComboBox()
+        Me.colIsForProfit = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colIsFreeStanding = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colIsGovernment = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colIsPediatric = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colIsPicker = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colIsRehab = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colIsReligious = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colIsRural = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colIsTrauma = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colIsTeaching = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.colAbbreviation = New DevExpress.XtraGrid.Columns.GridColumn()
         CType(Me.MedicareNumberBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.FacilityRegionBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.FacilityStateBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -68,12 +69,12 @@ Partial Class FacilityGrid
         CType(Me.FacilityGridView, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MedicareNumberGridLookUpEdit, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.GridView1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PENumberLookUpEdit, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.FacilityStateGridLookUpEdit, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.RepositoryItemGridLookUpEdit1View, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.FacilityRegionLookUpEdit, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CountryComboBox, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TriStateComboBoxEdit, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PENumberLookUpEdit, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'MedicareNumberBindingSource
@@ -96,7 +97,6 @@ Partial Class FacilityGrid
         '
         Me.FacilitiesGrid.DataSource = Me.FacilityBindingSource
         Me.FacilitiesGrid.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.FacilitiesGrid.EmbeddedNavigator.Name = ""
         Me.FacilitiesGrid.Location = New System.Drawing.Point(0, 0)
         Me.FacilitiesGrid.MainView = Me.FacilityGridView
         Me.FacilitiesGrid.Name = "FacilitiesGrid"
@@ -142,12 +142,12 @@ Partial Class FacilityGrid
         '
         Me.MedicareNumberGridLookUpEdit.AllowNullInput = DevExpress.Utils.DefaultBoolean.[True]
         Me.MedicareNumberGridLookUpEdit.AutoHeight = False
-        Me.MedicareNumberGridLookUpEdit.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo), New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "Delete Previous Selection")})
+        Me.MedicareNumberGridLookUpEdit.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo), New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, True, True, False, DevExpress.XtraEditors.ImageLocation.MiddleCenter, Nothing, New DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), SerializableAppearanceObject1, "Delete Previous Selection", Nothing, Nothing, True)})
         Me.MedicareNumberGridLookUpEdit.DataSource = Me.MedicareNumberBindingSource
         Me.MedicareNumberGridLookUpEdit.DisplayMember = "MedicareNumber"
         Me.MedicareNumberGridLookUpEdit.Name = "MedicareNumberGridLookUpEdit"
         Me.MedicareNumberGridLookUpEdit.NullText = ""
-        Me.MedicareNumberGridLookUpEdit.PopupFormWidth = 450
+        Me.MedicareNumberGridLookUpEdit.PopupFormSize = New System.Drawing.Size(450, 0)
         Me.MedicareNumberGridLookUpEdit.View = Me.GridView1
         '
         'GridView1
@@ -180,13 +180,31 @@ Partial Class FacilityGrid
         Me.colNameLookup.VisibleIndex = 1
         Me.colNameLookup.Width = 551
         '
+        'colPENumber
+        '
+        Me.colPENumber.Caption = "PE Number"
+        Me.colPENumber.ColumnEdit = Me.PENumberLookUpEdit
+        Me.colPENumber.FieldName = "MedicareNumber"
+        Me.colPENumber.Name = "colPENumber"
+        Me.colPENumber.OptionsColumn.ReadOnly = True
+        '
+        'PENumberLookUpEdit
+        '
+        Me.PENumberLookUpEdit.AllowNullInput = DevExpress.Utils.DefaultBoolean.[True]
+        Me.PENumberLookUpEdit.AutoHeight = False
+        Me.PENumberLookUpEdit.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
+        Me.PENumberLookUpEdit.DataSource = Me.MedicareNumberBindingSource
+        Me.PENumberLookUpEdit.DisplayMember = "PENumber"
+        Me.PENumberLookUpEdit.Name = "PENumberLookUpEdit"
+        Me.PENumberLookUpEdit.NullText = ""
+        '
         'colCity
         '
         Me.colCity.Caption = "City"
         Me.colCity.FieldName = "City"
         Me.colCity.Name = "colCity"
         Me.colCity.Visible = True
-        Me.colCity.VisibleIndex = 3
+        Me.colCity.VisibleIndex = 2
         Me.colCity.Width = 122
         '
         'colState
@@ -196,7 +214,7 @@ Partial Class FacilityGrid
         Me.colState.FieldName = "State"
         Me.colState.Name = "colState"
         Me.colState.Visible = True
-        Me.colState.VisibleIndex = 4
+        Me.colState.VisibleIndex = 3
         Me.colState.Width = 81
         '
         'FacilityStateGridLookUpEdit
@@ -247,7 +265,7 @@ Partial Class FacilityGrid
         Me.colRegionId.Name = "colRegionId"
         Me.colRegionId.OptionsColumn.ReadOnly = True
         Me.colRegionId.Visible = True
-        Me.colRegionId.VisibleIndex = 5
+        Me.colRegionId.VisibleIndex = 4
         Me.colRegionId.Width = 109
         '
         'FacilityRegionLookUpEdit
@@ -266,7 +284,7 @@ Partial Class FacilityGrid
         Me.colCountry.FieldName = "Country"
         Me.colCountry.Name = "colCountry"
         Me.colCountry.Visible = True
-        Me.colCountry.VisibleIndex = 6
+        Me.colCountry.VisibleIndex = 5
         '
         'CountryComboBox
         '
@@ -281,7 +299,7 @@ Partial Class FacilityGrid
         Me.colAhaId.FieldName = "AhaId"
         Me.colAhaId.Name = "colAhaId"
         Me.colAhaId.Visible = True
-        Me.colAhaId.VisibleIndex = 7
+        Me.colAhaId.VisibleIndex = 6
         Me.colAhaId.Width = 83
         '
         'colAdmitNumber
@@ -291,7 +309,7 @@ Partial Class FacilityGrid
         Me.colAdmitNumber.FieldName = "AdmitNumber"
         Me.colAdmitNumber.Name = "colAdmitNumber"
         Me.colAdmitNumber.Visible = True
-        Me.colAdmitNumber.VisibleIndex = 8
+        Me.colAdmitNumber.VisibleIndex = 7
         Me.colAdmitNumber.Width = 89
         '
         'colBedSize
@@ -301,7 +319,7 @@ Partial Class FacilityGrid
         Me.colBedSize.FieldName = "BedSize"
         Me.colBedSize.Name = "colBedSize"
         Me.colBedSize.Visible = True
-        Me.colBedSize.VisibleIndex = 9
+        Me.colBedSize.VisibleIndex = 8
         Me.colBedSize.Width = 62
         '
         'colIsCancerCenter
@@ -311,7 +329,7 @@ Partial Class FacilityGrid
         Me.colIsCancerCenter.FieldName = "IsCancerCenter"
         Me.colIsCancerCenter.Name = "colIsCancerCenter"
         Me.colIsCancerCenter.Visible = True
-        Me.colIsCancerCenter.VisibleIndex = 10
+        Me.colIsCancerCenter.VisibleIndex = 9
         Me.colIsCancerCenter.Width = 92
         '
         'TriStateComboBoxEdit
@@ -329,7 +347,7 @@ Partial Class FacilityGrid
         Me.colIsForProfit.FieldName = "IsForProfit"
         Me.colIsForProfit.Name = "colIsForProfit"
         Me.colIsForProfit.Visible = True
-        Me.colIsForProfit.VisibleIndex = 11
+        Me.colIsForProfit.VisibleIndex = 10
         Me.colIsForProfit.Width = 80
         '
         'colIsFreeStanding
@@ -339,7 +357,7 @@ Partial Class FacilityGrid
         Me.colIsFreeStanding.FieldName = "IsFreeStanding"
         Me.colIsFreeStanding.Name = "colIsFreeStanding"
         Me.colIsFreeStanding.Visible = True
-        Me.colIsFreeStanding.VisibleIndex = 12
+        Me.colIsFreeStanding.VisibleIndex = 11
         Me.colIsFreeStanding.Width = 89
         '
         'colIsGovernment
@@ -349,7 +367,7 @@ Partial Class FacilityGrid
         Me.colIsGovernment.FieldName = "IsGovernment"
         Me.colIsGovernment.Name = "colIsGovernment"
         Me.colIsGovernment.Visible = True
-        Me.colIsGovernment.VisibleIndex = 13
+        Me.colIsGovernment.VisibleIndex = 12
         Me.colIsGovernment.Width = 81
         '
         'colIsPediatric
@@ -359,7 +377,7 @@ Partial Class FacilityGrid
         Me.colIsPediatric.FieldName = "IsPediatric"
         Me.colIsPediatric.Name = "colIsPediatric"
         Me.colIsPediatric.Visible = True
-        Me.colIsPediatric.VisibleIndex = 14
+        Me.colIsPediatric.VisibleIndex = 13
         Me.colIsPediatric.Width = 63
         '
         'colIsPicker
@@ -369,7 +387,7 @@ Partial Class FacilityGrid
         Me.colIsPicker.FieldName = "IsPicker"
         Me.colIsPicker.Name = "colIsPicker"
         Me.colIsPicker.Visible = True
-        Me.colIsPicker.VisibleIndex = 15
+        Me.colIsPicker.VisibleIndex = 14
         Me.colIsPicker.Width = 63
         '
         'colIsRehab
@@ -379,7 +397,7 @@ Partial Class FacilityGrid
         Me.colIsRehab.FieldName = "IsRehab"
         Me.colIsRehab.Name = "colIsRehab"
         Me.colIsRehab.Visible = True
-        Me.colIsRehab.VisibleIndex = 16
+        Me.colIsRehab.VisibleIndex = 15
         Me.colIsRehab.Width = 53
         '
         'colIsReligious
@@ -389,7 +407,7 @@ Partial Class FacilityGrid
         Me.colIsReligious.FieldName = "IsReligious"
         Me.colIsReligious.Name = "colIsReligious"
         Me.colIsReligious.Visible = True
-        Me.colIsReligious.VisibleIndex = 17
+        Me.colIsReligious.VisibleIndex = 16
         Me.colIsReligious.Width = 64
         '
         'colIsRural
@@ -399,7 +417,7 @@ Partial Class FacilityGrid
         Me.colIsRural.FieldName = "IsRural"
         Me.colIsRural.Name = "colIsRural"
         Me.colIsRural.Visible = True
-        Me.colIsRural.VisibleIndex = 18
+        Me.colIsRural.VisibleIndex = 17
         Me.colIsRural.Width = 60
         '
         'colIsTrauma
@@ -409,7 +427,7 @@ Partial Class FacilityGrid
         Me.colIsTrauma.FieldName = "IsTrauma"
         Me.colIsTrauma.Name = "colIsTrauma"
         Me.colIsTrauma.Visible = True
-        Me.colIsTrauma.VisibleIndex = 19
+        Me.colIsTrauma.VisibleIndex = 18
         Me.colIsTrauma.Width = 58
         '
         'colIsTeaching
@@ -419,7 +437,7 @@ Partial Class FacilityGrid
         Me.colIsTeaching.FieldName = "IsTeaching"
         Me.colIsTeaching.Name = "colIsTeaching"
         Me.colIsTeaching.Visible = True
-        Me.colIsTeaching.VisibleIndex = 20
+        Me.colIsTeaching.VisibleIndex = 19
         Me.colIsTeaching.Width = 67
         '
         'colAbbreviation
@@ -429,26 +447,6 @@ Partial Class FacilityGrid
         Me.colAbbreviation.Name = "colAbbreviation"
         Me.colAbbreviation.Visible = True
         Me.colAbbreviation.VisibleIndex = 0
-        '
-        'colPENumber
-        '
-        Me.colPENumber.Caption = "PE Number"
-        Me.colPENumber.ColumnEdit = Me.PENumberLookUpEdit
-        Me.colPENumber.FieldName = "MedicareNumber"
-        Me.colPENumber.Name = "colPENumber"
-        Me.colPENumber.OptionsColumn.ReadOnly = True
-        Me.colPENumber.Visible = True
-        Me.colPENumber.VisibleIndex = 2
-        '
-        'PENumberLookUpEdit
-        '
-        Me.PENumberLookUpEdit.AllowNullInput = DevExpress.Utils.DefaultBoolean.[True]
-        Me.PENumberLookUpEdit.AutoHeight = False
-        Me.PENumberLookUpEdit.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
-        Me.PENumberLookUpEdit.DataSource = Me.MedicareNumberBindingSource
-        Me.PENumberLookUpEdit.DisplayMember = "PENumber"
-        Me.PENumberLookUpEdit.Name = "PENumberLookUpEdit"
-        Me.PENumberLookUpEdit.NullText = ""
         '
         'FacilityGrid
         '
@@ -465,12 +463,12 @@ Partial Class FacilityGrid
         CType(Me.FacilityGridView, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.MedicareNumberGridLookUpEdit, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.GridView1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PENumberLookUpEdit, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.FacilityStateGridLookUpEdit, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.RepositoryItemGridLookUpEdit1View, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.FacilityRegionLookUpEdit, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CountryComboBox, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TriStateComboBoxEdit, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PENumberLookUpEdit, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub

@@ -37,16 +37,16 @@ implementation
          else  measure_label := trim(ScaleLabel);
        end;
        if a = 'C' then
-         Result:=TextAt(pagewidth*0.5,y,Arial,fs,Measure_Label,round(pagewidth*0.5)-50,'C',false,'')
+         Result:=TextAt(pagewidth*0.5,y,'',fs,Measure_Label,round(pagewidth*0.5)-50,'C',false,'')
        else
         if measure = 1 then
           //Result:=TextAt(pagewidth*0.5,y,Arial,fs,trim(Measure_Label),round(pagewidth*0.5)-50,'CU',False,'') //GN01
-          Result:=TextAt( pagewidth*0.4,y,Arial,fs,trim(Measure_Label),round(inch * 3.0),'CU',False,'') //GN01
+          Result:=TextAt( pagewidth*0.4,y,'',fs,trim(Measure_Label),round(inch * 3.0),'CU',False,'') //GN01
        else
         if measure = 2 then
-         Result:=TextAt( x,y,Arial,fs,trim(Measure_Label),round(x-50),a+'I',false,'')
+         Result:=TextAt( x,y,'',fs,trim(Measure_Label),round(x-50),a+'I',false,'')
         else
-         Result:=TextAt( x,y,Arial,fs,trim(Measure_Label),round(x-50),a+'U',false,'');
+         Result:=TextAt( x,y,'',fs,trim(Measure_Label),round(x-50),a+'U',false,'');
 
       end;
 

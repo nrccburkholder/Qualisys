@@ -4,7 +4,7 @@
 /*              based on QualPro params. */
 /* DG 1/22/04 - Added code for test prints. */
 CREATE PROCEDURE sp_pcl_nextbatch
- @compname varchar(16), @survey_id int = 0
+ @compname varchar(16), @survey_id int = 0, @version varchar(25)
 AS
 --declare @compname varchar(16) set @compname='dgilsdorf'
  declare @nextbatch int, @pclgenrun_id int, @rc int, @err int, @TPBatch datetime, @timefor int
@@ -25,7 +25,8 @@ end
 
 /* Determine if we can run */
 exec @timefor=sp_PCL_Timefor @survey_id
-if @timefor=0 return
+if @timefor=0 -- and @compname <> 'NRC-DEVDELPHI03' --> used for debugging 
+	return
 
 if @timefor=1 -- Real Surveys
 begin
@@ -60,7 +61,7 @@ begin
       return
      end
     
-     exec @rc=dbo.sp_pcl_startnewrun @compname=@compname, @PCLGenRun_id=@pclgenrun_id OUTPUT
+     exec @rc=dbo.sp_pcl_startnewrun @compname=@compname, @version=@version, @PCLGenRun_id=@pclgenrun_id OUTPUT
      select @err=@@error
      if @err <> 0 or @rc < 0 or @PCLGenRun_id is null or @PCLGenRun_id <= 0
      begin
@@ -117,7 +118,7 @@ begin
      return
     end
     set @compname='TP_'+@compname
-    exec @rc=dbo.sp_pcl_startnewrun @compname=@compname, @PCLGenRun_id=@pclgenrun_id OUTPUT
+    exec @rc=dbo.sp_pcl_startnewrun @compname=@compname, @version=@version, @PCLGenRun_id=@pclgenrun_id OUTPUT
     select @err=@@error
     if @err <> 0 or @rc < 0 or @PCLGenRun_id is null or @PCLGenRun_id <= 0
     begin

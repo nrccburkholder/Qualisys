@@ -1,6 +1,10 @@
 VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
+  Persistable = 0  'NotPersistable
+  DataBindingBehavior = 0  'vbNone
+  DataSourceBehavior  = 0  'vbNone
+  MTSTransactionMode  = 0  'NotAnMTSObject
 END
 Attribute VB_Name = "CQuestionaire"
 Attribute VB_GlobalNameSpace = False
@@ -48,6 +52,7 @@ Option Explicit
     Private mdtDateReturned     As Date         '** Added 08-29-00 JJF
     Private mbKeepMultiReturns  As Boolean      '** Added 12-20-00 JJF
     Private meWhereIsIt         As eCountryCodeConstants    '** Added 05-27-05 JJF
+    Private mlLithoCode         As Long  '** Added 04-30-205 TSB
 
 
 
@@ -828,12 +833,22 @@ Public Property Let Barcode(ByVal sData As String)
     '** Modified 06-12-01 JJF
     'msLithoCode = UnCrunch(sBarCode:=Left(msBarcode, 6))
     msLithoCode = BarcodeToLitho(sBarCode:=Left(msBarcode, 6))
+    
+    'INC0044335 Tim Butler 04-30-2015  convert litho values to long to allow proper comparison below
+    mlLithoCode = CLng(msLithoCode)
+    Dim lMinLitho As Long
+    Dim lMaxLitho As Long
+    lMinLitho = CLng(goCALithoRange.sMinLitho)
+    lMaxLitho = CLng(goCALithoRange.sMaxLitho)
+     
     '** End of modifications 06-12-01 JJF
     
     '** Added 05-27-05 JJF
     'Determine where this survey lives
-    If msLithoCode >= goCALithoRange.sMinLitho And _
-       msLithoCode <= goCALithoRange.sMaxLitho Then
+    
+    'INC0044335 Tim Butler 04-30-2015  changed compare to use Long instead of string
+    If mlLithoCode >= lMinLitho And _
+       mlLithoCode <= lMaxLitho Then
         meWhereIsIt = cccCanada
     Else
         meWhereIsIt = cccUS

@@ -55,7 +55,7 @@ BEGIN
    on su.SUFacility_id = suf.SUFacility_id  
   inner join #mailmeth mailmeth WITH(NOLOCK)
    on sd.SURVEY_ID=mailmeth.SURVEY_ID
-  left join QP_PROD.dbo.HHCAHPS_PatInfileCount pif WITH(NOLOCK)
+  left join QP_PROD.dbo.CAHPS_PatInfileCount pif WITH(NOLOCK)
    on pif.Sampleset_id=sst.sampleset_id 
    and pif.sampleunit_id=su.sampleunit_id 
    and pif.MedicareNumber=suf.MedicareNumber
@@ -171,5 +171,3 @@ from (
   
  SET NOCOUNT OFF  
 END
-
-

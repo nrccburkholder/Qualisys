@@ -1,3 +1,5 @@
+Imports NRC.Framework.BusinessLogic.Configuration
+
 Namespace My
 
     ' The following events are availble for MyApplication:
@@ -36,14 +38,14 @@ Namespace My
         End Sub
 
         Private Sub SetupNrcAuthSettings()
-            Nrc.NRCAuthLib.StaticConfig.NRCAuthConnection = Config.NrcAuthConnection
-            Select Case Config.EnvironmentType
-                Case Framework.Configuration.EnvironmentType.Development
-                    Nrc.NRCAuthLib.StaticConfig.EnvironmentType = NRCAuthLib.StaticConfig.Environment.Development
-                Case Framework.Configuration.EnvironmentType.Testing
-                    Nrc.NRCAuthLib.StaticConfig.EnvironmentType = NRCAuthLib.StaticConfig.Environment.Testing
-                Case Framework.Configuration.EnvironmentType.Production
-                    Nrc.NRCAuthLib.StaticConfig.EnvironmentType = NRCAuthLib.StaticConfig.Environment.Production
+            NRC.NRCAuthLib.StaticConfig.NRCAuthConnection = AppConfig.NrcAuthConnection
+            Select Case AppConfig.EnvironmentType
+                'Case EnvironmentTypes.Development
+                '    NRC.NRCAuthLib.StaticConfig.EnvironmentType = NRCAuthLib.StaticConfig.Environment.Development
+                Case EnvironmentTypes.Testing
+                    NRC.NRCAuthLib.StaticConfig.EnvironmentType = NRCAuthLib.StaticConfig.Environment.Testing
+                Case EnvironmentTypes.Production
+                    NRC.NRCAuthLib.StaticConfig.EnvironmentType = NRCAuthLib.StaticConfig.Environment.Production
             End Select
         End Sub
     End Class

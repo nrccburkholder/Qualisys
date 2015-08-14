@@ -40,7 +40,7 @@ ExeDescription=
 [Directories]
 OutputDir=bin
 UnitOutputDir=lib
-SearchPath=
+SearchPath=lib
 Packages=vclx30;VCL30;vcldb30;vcldbx30;inetdb30;inet30;VclSmp30;Qrpt30;teeui30;teedb30;tee30;dss30;IBEVNT30;ip30
 Conditionals=
 DebugSourceDirs=
@@ -54,7 +54,7 @@ AutoIncBuild=1
 MajorVer=2
 MinorVer=8
 Release=0
-Build=27
+Build=32
 Debug=0
 PreRelease=0
 Special=0
@@ -65,7 +65,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=National Research Corporation
 FileDescription=APB - PDFGen
-FileVersion=2.8.0.27
+FileVersion=2.8.0.32
 InternalName=PDFGen
 LegalCopyright=©2000-2006 National Research Corporation
 LegalTrademarks=

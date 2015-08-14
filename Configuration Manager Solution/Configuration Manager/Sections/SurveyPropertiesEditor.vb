@@ -1,4 +1,7 @@
 Imports Nrc.Qualisys.Library
+Imports System.Linq
+Imports System.Text
+
 
 Public Class SurveyPropertiesEditor
 
@@ -7,6 +10,7 @@ Public Class SurveyPropertiesEditor
     Private mModule As SurveyPropertiesModule
     Private mEndConfigCallBack As EndConfigCallBackMethod
     Private mIsLoading As Boolean = False
+    Private mSubTypeList As SubTypeList = New SubTypeList()
 
 #End Region
 
@@ -145,6 +149,22 @@ Public Class SurveyPropertiesEditor
             Dim survey As Survey = New Survey()
             survey.SurveyType = surveyType
 
+            ' Because this doesn't specifically know if an checkbox item is being checked or unchecked,
+            ' we have to figure out what it's going to be.  
+
+            Dim cList As List(Of SubType) = New List(Of SubType)
+            For Each item As SubType In SurveySubTypeListBox.CheckedItems
+                cList.Add(item)
+            Next
+
+            If Not cList.Contains(DirectCast(SurveySubTypeListBox.Items(e.Index), SubType)) Then
+                cList.Add(DirectCast(SurveySubTypeListBox.Items(e.Index), SubType))
+            ElseIf e.NewValue = CheckState.Unchecked Then
+                cList.Remove(DirectCast(SurveySubTypeListBox.Items(e.Index), SubType))
+            End If
+
+            QuestionnaireTypeComboBox.DataSource = FilterQuestionnaireComboBox(cList)
+
             If selectedItem.IsRuleOverride Then
                 If e.NewValue = CheckState.Checked Then
                     iRuleOverrideCount += 1
@@ -194,7 +214,7 @@ Public Class SurveyPropertiesEditor
                     selectedItem.IsDirty = False
                 End If
             End If
-            
+
         End If
     End Sub
 
@@ -254,7 +274,7 @@ Public Class SurveyPropertiesEditor
         'questionnaire Type list
         Dim questionnaireTypeID As Integer = 0
         LoadQuestionnaireTypeComboBox(surveyTypeID, questionnaireTypeID, mModule.EditingSurvey.Id)
-       
+
         'Set up disabled controls based on survey subtype (not a value saved with the survey, per se)
         Dim override As String = mModule.EditingSurvey.SurveySubTypeOverrideName() 'will retrieve PCMH for example CJB 8/14/2014
 
@@ -503,17 +523,29 @@ Public Class SurveyPropertiesEditor
             Return False
         End If
 
-        ' Check to make sure if PCMN subtype selected the user has selected a QuestionnaireType
+        ' For each selected subtype, check to see if a QuestionnaireType is required
+        Dim isQuestionnaireRequiredError As Boolean = False
+        Dim alertMessage As New StringBuilder
+        alertMessage.Append("You must select a Questionnaire Type for the following selected SubType(s):")
+        alertMessage.Append(vbCrLf)
+        alertMessage.Append(vbCrLf)
         For Each st As SubType In SurveySubTypeListBox.CheckedItems
-            If st.SubTypeName = "PCMH" Then
-                ' If PCMH, then we need to make sure that a QuestionnaireType was selected.
+            If st.IsQuestionnaireRequired Then
+                ' If required, then we need to make sure that a QuestionnaireType was selected.
                 If CType(QuestionnaireTypeComboBox.SelectedItem, SubType).SubTypeId = 0 Then
-                    QuestionnaireTypeComboBox.Focus()
-                    MessageBox.Show("For a PCMH Sub-Type you must select a Questionnaire Type!", title, MessageBoxButtons.OK, MessageBoxIcon.Information)
-                    Return False
+                    alertMessage.Append(st.SubTypeName)
+                    alertMessage.Append(vbCrLf)
+                    isQuestionnaireRequiredError = True
                 End If
             End If
         Next
+
+        ' If there is a missing Questionnaire, display the message to the user.
+        If isQuestionnaireRequiredError Then
+            QuestionnaireTypeComboBox.Focus()
+            MessageBox.Show(alertMessage.ToString(), title, MessageBoxButtons.OK, MessageBoxIcon.Information)
+            Return False
+        End If
 
         Return True
 
@@ -612,26 +644,79 @@ Public Class SurveyPropertiesEditor
     End Sub
 
     Private Sub LoadQuestionnaireTypeComboBox(ByVal surveytypeid As Integer, ByVal questionnairetypeid As Integer, ByVal surveyid As Integer)
-        QuestionnaireTypeComboBox.DataSource = Survey.GetSubTypes(surveytypeid, SubtypeCategories.QuestionnaireType, surveyid)
+
+        ' create a list of all questionnairetypes 
+        mSubTypeList = Survey.GetSubTypes(surveytypeid, SubtypeCategories.QuestionnaireType, surveyid)
+
+        ' create a list of SubType items that are checked, then filter
+        Dim cList As List(Of SubType) = New List(Of SubType)
+        For Each item As SubType In SurveySubTypeListBox.CheckedItems
+            cList.Add(item)
+        Next
+        QuestionnaireTypeComboBox.DataSource = FilterQuestionnaireComboBox(cList)
         QuestionnaireTypeComboBox.DisplayMember = "SubtypeName"
         QuestionnaireTypeComboBox.ValueMember = "SubTypeId"
         QuestionnaireTypeComboBox.SelectedIndex = 0
+
         If QuestionnaireTypeComboBox.Items.Count < 2 Then
             QuestionnaireTypeComboBox.Enabled = False
         Else
             QuestionnaireTypeComboBox.Enabled = True
             If mModule.EditingSurvey.QuestionnaireType IsNot Nothing Then
                 If mModule.EditingSurvey.QuestionnaireType.SubTypeId = 0 Then
-
                     QuestionnaireTypeComboBox.SelectedIndex = 0
                 Else
                     QuestionnaireTypeComboBox.SelectedValue = mModule.EditingSurvey.QuestionnaireType.SubTypeId
                 End If
-
-
             End If
         End If
+
     End Sub
+
+    Private Function FilterQuestionnaireComboBox(ByVal _subTypeList As List(Of SubType)) As SubTypeList
+
+        Dim parentSubTypeIDList As List(Of Integer) = New List(Of Integer)
+        ' create a list of the parentSubType ids for the checked items
+        If _subTypeList.Count > 0 Then
+
+            ' check if any of the selected subtypes is an override
+            If _subTypeList.Where(Function(s) (s.IsRuleOverride = True)).Count > 0 Then
+                ' add the overrides to the list.
+                For Each subtypeItem As SubType In _subTypeList.Where(Function(s) (s.IsRuleOverride = True))
+                    parentSubTypeIDList.Add(subtypeItem.ParentSubTypeId)
+                Next
+            Else
+                ' none of the selections is an override, so add them all to the list
+                For Each subtypeItem As SubType In _subTypeList
+                    parentSubTypeIDList.Add(subtypeItem.ParentSubTypeId)
+                Next
+
+            End If
+        Else
+            parentSubTypeIDList.Add(0)
+        End If
+
+        ' make a distinct list of subtype id's 
+        parentSubTypeIDList = parentSubTypeIDList.Distinct().ToList
+
+        '  if any of the Non-mapped subtypes are selected, we just return the whole list
+        If parentSubTypeIDList.Contains(0) Then
+            Return mSubTypeList
+        Else
+            ' otherwise, we filter on questionnaires that are mapped specifically to subtypes
+            Dim tempSubTypeList As New SubTypeList()
+
+            For Each item As SubType In mSubTypeList
+                If parentSubTypeIDList.Contains(item.ParentSubTypeId) Or item.SubTypeId = 0 Then ' item.Subtype = 0 represents N/A, so we always include it
+                    tempSubTypeList.Add(item)
+                End If
+            Next
+
+            Return tempSubTypeList
+
+        End If
+
+    End Function
 
 
     Private Function SetSurveySubTypes() As SubTypeList
@@ -670,7 +755,7 @@ Public Class SurveyPropertiesEditor
 
 #End Region
 
-  
-   
-    
+
+
+
 End Class

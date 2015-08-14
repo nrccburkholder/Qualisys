@@ -235,7 +235,7 @@ implementation
           begin
             thisy:= basey + ((i-ymin)*ylabeldist);
             s:=s+format('%g %g m'#10'%g %g l s'#10,[x,ThisY,x-3,ThisY]);
-            s:=s+TextAt(x-3,ThisY-fs*0.35,Arial,fs,inttostr(i),100,'R',false,'');
+            s:=s+TextAt(x-3,ThisY-fs*0.35,'',fs,inttostr(i),100,'R',false,'');
             strLines:=strLines+format('q %g %g m'#10'%g %g l s Q'#10,[x+1,ThisY,x1,ThisY]);
           end;
         end;
@@ -260,9 +260,9 @@ implementation
           x:= x+xlabeldist;
           xPoints[i]:=x+(xlabeldist/2);
           if section = 'MAIN' then
-            s:=s+TextAt(xPoints[i],y-fs*1.5,Arial,fs,datestr,round(xlabeldist),'C',false,'')
+            s:=s+TextAt(xPoints[i],y-fs*1.5,'',fs,datestr,round(xlabeldist),'C',false,'')
           else
-            s:=s+TextAt(xPoints[i],y-fs*1.5,Arial,fs,datestr,round(xlabeldist),'C',false,'');
+            s:=s+TextAt(xPoints[i],y-fs*1.5,'',fs,datestr,round(xlabeldist),'C',false,'');
 
           s:=s+format('%g %g m'#10'%g %g l s'#10,[xPoints[i],y,xPoints[i],y-3]);
           rs.movenext;
@@ -285,15 +285,15 @@ implementation
 
         thisx:=ComponentXY[Componentid,1];
         thisy:=ComponentXY[Componentid,2]+h+20;
-        prevx:=GetTextWidth(s1,Arial,fs);
+        prevx:=GetTextWidth(s1,'',fs);
         if s1 = '' then
            s1:= 'Unknown Question or Theme';
 
-        s1:=TextAt(thisx+l/2,Thisy+fs,Arial,fs,s1,500,'CU',false,'');
+        s1:=TextAt(thisx+l/2,Thisy+fs,'',fs,s1,500,'CU',false,'');
 
         if s2 = '' then s2:= 'Unable to match scale';
 
-        s2:=TextAt(thisx+l/2,thisy,Arial,fs,s2,500,'C',false,'');
+        s2:=TextAt(thisx+l/2,thisy,'',fs,s2,500,'C',false,'');
 
         thisx:=(thisx+l*0.5)-prevx*0.5;
         s:=s+s1+s2;
@@ -370,7 +370,7 @@ implementation
             datestr:= formatfloat(strValueFormat,round(r*10000)*0.0001);
            thisy:=basey + ((r-ymin)*ylabeldist);
 
-          strDataLabels:=strDataLabels+Format('BT %g %g Td(%s)'' ET'#10,[xPoints[i]-(GetTextWidth(datestr,Arial,fs)*0.5),thisy+2,datestr]); //value label
+          strDataLabels:=strDataLabels+Format('BT %g %g Td(%s)'' ET'#10,[xPoints[i]-(GetTextWidth(datestr,'',fs)*0.5),thisy+2,datestr]); //value label
 
             if LowNSize or ExceedSdCl then
             begin
@@ -588,7 +588,7 @@ implementation
       for i := 0 to LegendList.count-1 do
       begin
         s1 := LegendList.Values[LegendList.names[i]];
-        lx[i] := GetTextWidth(s1 ,Arial,fs)+inch * 0.30;
+        lx[i] := GetTextWidth(s1 ,'',fs)+inch * 0.30;
         if x+lx[i] > l then
         begin
           x := 0;
@@ -663,7 +663,7 @@ implementation
     end;
     s := s+DivLine(inch*0.7);
     except
-      s := textat( pagewidth*0.5,y,Arial,50,'Unable to generate Control Chart',200,'C',true,'');
+      s := textat( pagewidth*0.5,y,'',50,'Unable to generate Control Chart',200,'C',true,'');
     end;
 
     rs := unassigned;

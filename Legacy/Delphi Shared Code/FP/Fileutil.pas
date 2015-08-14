@@ -248,7 +248,7 @@ function GetFileVersion(const FileName: TFileName; var sVersion : string): strin
     handle: THandle;
     buffer: pchar;
     pinfo: ^TVSFixedFileInfo;
-    Major, Minor, {Release,} Build: word;
+    Major, Minor, Release, Build: word;
 begin
     Result := '';
     size := GetFileVersionInfoSize(Pointer(FileName), handle);
@@ -260,7 +260,7 @@ begin
         begin
           Major   := HiWord(pinfo.dwFileVersionMS);
           Minor   := LoWord(pinfo.dwFileVersionMS);
-//          Release := HiWord(pinfo.dwFileVersionLS);
+          Release := HiWord(pinfo.dwFileVersionLS);
           Build   := LoWord(pinfo.dwFileVersionLS);
           //For display
           //sVersion:= Format('Version %d.%d.%d%s%d%s',
@@ -268,8 +268,8 @@ begin
           //For version Comparison
           //Result  :=  Format('%d.%d.%d.%d',
           //           [Major, Minor, Release,Build]);
-          sVersion:= Format('Version %d.%d%s%d%s',
-                     [Major, Minor, ' (Build ', Build, ')']);
+          sVersion:= Format('Version %d.%d.%d.%d',
+                     [Major, Minor, Release, Build]);
           //For version Comparison
           Result  :=  Format('%d.%d',
                      [Major, Minor]);

@@ -1,6 +1,10 @@
 VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
+  Persistable = 0  'NotPersistable
+  DataBindingBehavior = 0  'vbNone
+  DataSourceBehavior  = 0  'vbNone
+  MTSTransactionMode  = 0  'NotAnMTSObject
 END
 Attribute VB_Name = "CQuestionaire"
 Attribute VB_GlobalNameSpace = False
@@ -63,7 +67,7 @@ Option Explicit
     Private mdtDateUndeliverable    As Date
     Private mdtDateExpired          As Date
     Private meWhereIsIt             As eCountryCodeConstants
-    
+    Private mlLithoCode As Long  '** Added 07-14-2015 CJB
     
     
     
@@ -1687,14 +1691,32 @@ Public Property Let Barcode(ByVal sData As String)
     'Determine the lithocode
     msLithoCode = BarcodeToLitho(sBarCode:=Left(msBarcode, 6))
     
-    'Determine where this survey lives
-    If msLithoCode >= goCALithoRange.sMinLitho And _
-       msLithoCode <= goCALithoRange.sMaxLitho Then
+''Determine where this survey lives
+'If msLithoCode >= goCALithoRange.sMinLitho And _
+'   msLithoCode <= goCALithoRange.sMaxLitho Then
+'    meWhereIsIt = cccCanada
+'Else
+'    meWhereIsIt = cccUS
+'End If
+    
+'INC0045985 ref INC0044335 Chris Burkholder 07-14-2015  convert litho values to long to allow proper comparison below
+    mlLithoCode = CLng(msLithoCode)
+
+Dim lMinLitho As Long
+Dim lMaxLitho As Long
+    lMinLitho = CLng(goCALithoRange.sMinLitho)
+    lMaxLitho = CLng(goCALithoRange.sMaxLitho)
+
+'Determine where this survey lives
+
+'INC0045985 ref INC0044335 Chris Burkholder 07-14-2015  changed compare to use Long instead of string
+    If mlLithoCode >= lMinLitho And _
+       mlLithoCode <= lMaxLitho Then
         meWhereIsIt = cccCanada
     Else
         meWhereIsIt = cccUS
     End If
-    
+
 End Property
 
 

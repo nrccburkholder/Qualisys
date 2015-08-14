@@ -35,6 +35,7 @@ GO
    MODIFIED 10/6/2014 DG Implement Cover Letter Variations to accomodate dynamic cover letters
    MODIFIED 1/15/2015 CJB Corrected Mockup substitutions for Test Prints
    MODIFIED 2/26/2015 DG Emergency Change - assembling @sql_join should happen outside the IF/THEN that adds TB_# and Art_#, otherwise @sql_join='' the second time through the loop
+   MODIFIED 3/13/2015 DG only add records to #spCoverVariation for surveys that have cover letter mappings.
 */
 CREATE PROCEDURE [dbo].[SP_FG_FormGen_Sub]
 @Study INT, @Survey INT, @bitTP BIT
@@ -305,6 +306,7 @@ begin
 	select distinct survey_id, samplepop_id, 0 as CoverVariation_id, mw.selcover_id, 0 as intFlag
 	into #spCoverVariation
 	from #FG_MailingWork mw
+	where mw.survey_id in (select survey_id from CoverLetterItemArtifactUnitMapping )
 
 	-- get the list of all the items that might get swapped out on the cover letter(s) we're examining
 	select distinct st.survey_id, st.coverid, st.qpc_id --> list of all textboxes on all the cover letters

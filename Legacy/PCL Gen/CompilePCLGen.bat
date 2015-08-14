@@ -1,0 +1,1 @@
+"C:\Program Files\Borland\Delphi 3\BIN\dcc32" PCLGen.dpr -B -U"..\delphi 3\ip3\lib;..\delphi 3\qualpro;..\delphi 3\edsvcl;..\delphi 3\pp;..\Form Layout;..\QualiSys\lib" -DSMTPBlock

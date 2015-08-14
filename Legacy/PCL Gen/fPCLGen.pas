@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  StdCtrls, Grids, DBGrids, ExtCtrls, DBTables, Buttons;
+  StdCtrls, Grids, DBGrids, ExtCtrls, DBTables, Buttons, FileUtil;
 
 type
   TfrmPCLGeneration = class(TForm)
@@ -25,6 +25,7 @@ type
   public
     { Public declarations }
     CompName : string;
+    Version : string;
   end;
 
 var
@@ -63,17 +64,17 @@ end;
 procedure TfrmPCLGeneration.progressreport(s:string; const s_id,sm_id:string); far;
 var qry : string;
 begin
-  AddToMessageLog(s);
+//  AddToMessageLog(s);
   while memo1.lines.count > 100 do
     memo1.lines.delete(0);
-  if dmPCLGen.currentrun <= 0 then begin
+  if (dmPCLGen = NIL) or (dmPCLGen.currentrun <= 0) then begin
     s := s + ' (not logged to PCLGenLog table)';
     memo1.lines.add(TimeToStr(Time) + ' ' + s);
   end else
     memo1.lines.add(TimeToStr(Time) + ' ('+inttostr(dmPCLGen.currentrun)+') ' + s);
   memo1.update;
 
-  if dmPCLGen.currentrun > 0 then begin
+  if (dmPCLGen <> NIL) and (dmPCLGen.currentrun > 0) then begin
     qry := 'execute sp_PCL_LogEntry ' + inttostr(dmPCLGen.currentrun)+', '+dmOpenq.sqlstring(s,false)+', ';
 
     if strtointdef(s_id,0)=0
@@ -99,8 +100,10 @@ begin
 end;
 
 procedure TfrmPCLGeneration.FormCreate(Sender: TObject);
+var dummy : string;
 begin
   CompName := ComputerName;
+  dummy := GetFileVersion(application.exename, Version);
   if paramstr(4)='/C' then timer.interval := 1000;
   timer.enabled := true;
 end;
@@ -121,6 +124,7 @@ begin
       frmPCLGeneration.progressreport('Relaunching PCLGen (from fPCLGen)','','');
       winExec(strpcopy(zExeName,application.exename+' /2 '+paramstr(2)+' '+paramstr(3)),sw_shownormal)
     end;
+    sleep(2000);
     frmPCLGeneration.close;
   end;
 end;

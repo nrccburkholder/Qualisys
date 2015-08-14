@@ -177,7 +177,7 @@ namespace NRC.Picker.SamplingService.Store
                                                          dataset.Study.AccountDirector,
                                                          dateRange.Period,
                                                          false,
-                                                         0);
+                                                         -1);  // modified to pass -1 instead of 0 so that auto seeding is enabled  TSB 05/11/2015
 
             return new SampleResult(dataset, survey, dateRange, sample);
         }

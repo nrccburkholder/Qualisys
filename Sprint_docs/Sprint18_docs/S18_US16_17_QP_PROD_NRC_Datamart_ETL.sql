@@ -3,8 +3,8 @@
 	S18 US16 As an authorized Hospice CAHPS vendor, we need to retain counts of ineligible records by category to comply with a CMS mandate
 	S18 US17 As an authorized Hospice CAHPS vendor, we need to count the number of supplemental questions for each sampled patient, so that we can report the data to CMS.
 
-	alter table [dbo].[SampleSet] drop column IneligibleCount (QP_PROD)
-	alter table [dbo].[SampleSetTemp] drop column IneligibleCount (NRC_Datamart_ETL)
+	alter table [dbo].[SampleSet] add column IneligibleCount (QP_PROD)
+	alter table [dbo].[SampleSetTemp] add column IneligibleCount (NRC_Datamart_ETL)
 	alter table [dbo].[SamplePopTemp] add SupplementalQuestionCount int NULL  (NRC_Datamart_ETL)
 	ALTER PROCEDURE [dbo].[QCL_SelectEncounterUnitEligibility] (QP_PROD)
 	ALTER PROCEDURE [dbo].[csp_GetSampleSetExtractData] (NRC_Datamart_ETL)
@@ -989,7 +989,7 @@ AS
  --and save it off to new table.                                  
       IF @SurveyType_ID in (@HHCAHPS, @hospiceCAHPS) -- 2/4/2015 CJB now doing this for all CAHPS
          BEGIN                                  
-            INSERT   INTO CAHPS_PatInfileCount (Sampleset_ID, Sampleunit_ID, MedicareNumber, NumPatInFile)
+           INSERT   INTO CAHPS_PatInfileCount (Sampleset_ID, Sampleunit_ID, MedicareNumber, NumPatInFile)
                      SELECT   @sampleSet_id, suni.SampleUnit_id, ml.MedicareNumber, COUNT(DISTINCT suni.Pop_id)
                      FROM     #SampleUnit_Universe suni ,
                               SAMPLEUNIT su ,
@@ -998,8 +998,8 @@ AS
                      WHERE    suni.SampleUnit_id = su.SAMPLEUNIT_ID
                               AND su.SUFacility_id = f.SUFacility_id
                               AND f.MedicareNumber = ml.MedicareNumber
-                              AND su.bitHHCAHPS = 1
-                     GROUP BY suni.SampleUnit_id, ml.MedicareNumber                                    
+                              AND su.CAHPSType_id in (@HHCAHPS, @hospiceCAHPS)
+                     GROUP BY suni.SampleUnit_id, ml.MedicareNumber                                               
          END                                   
                                                  
  --MWB 9/2/08  HCAHPS Prop Sampling Sprint -- run TOCL before writing HCAHPSEligibleEncLog table                                               

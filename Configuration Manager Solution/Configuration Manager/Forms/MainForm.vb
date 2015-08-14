@@ -14,6 +14,7 @@ Public Class MainForm
     Private mClientTree As Navigation.NavigationTree
     Private mClientNavigator As ClientNavigator
     Private mFacilitySection As New FacilitySection
+    Private mFacilityAdminSection As New FacilityAdminSection
 
     Private mHCAHPSMngrNavigator As HCAHPSMngrNavigator
     Private mHCAHPSMngrSection As New HCAHPSMngrSection
@@ -55,7 +56,7 @@ Public Class MainForm
         mUIRelations.Add(ConfigurationTab, New UIRelation(mClientStudySurveyNavigator, mConfigSection))
 
         If CurrentUser.IsFacilityManager Then
-            mUIRelations.Add(FacilityAdminTab, New UIRelation(mClientNavigator, mFacilitySection))
+            mUIRelations.Add(FacilityAdminTab, New UIRelation(mClientNavigator, mFacilityAdminSection))
         Else
             MultiPane.Tabs.Remove(FacilityAdminTab)
         End If

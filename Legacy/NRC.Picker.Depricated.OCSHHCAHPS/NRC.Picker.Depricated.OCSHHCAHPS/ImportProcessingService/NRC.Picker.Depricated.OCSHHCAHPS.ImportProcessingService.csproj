@@ -70,6 +70,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="NRC.Picker.Depricated.OCSHHCAHPS.nuspec" />
     <None Include="settings.xml.template">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

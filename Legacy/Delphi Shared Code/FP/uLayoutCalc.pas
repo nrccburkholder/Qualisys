@@ -79,7 +79,7 @@ const
   MaxNumResps = 99;
   MaxNumScales = 200;
   BubbleWidth = 98;
-  BubbleHeight = 60;
+  BubbleHeight = 60;                        
   ICRWidth = 150;
   ICRHeight = 150;
   LineSpacing = 108;
@@ -211,6 +211,7 @@ type
     CAHPSNumbering : boolean;
     DoDBenSkips : boolean;
     SkipRepeatsScaleText : boolean;
+    SubOrInsertPoundSignForQuestion : boolean;
     NextQTop : integer;
     NeedLabels : boolean;
     SurveyItems: integer;
@@ -1279,9 +1280,15 @@ begin
                    vScaleText := format('%s ' + _BeginChars + 'U·gudub·[S%s]' + _EndChars,[vScaleText, wwt_sclsItem.asString]);
             18,19,20: // Magnus Spanish GN03, HCAHPS Spanish GN08, Sodexho GN16
                  if SkipRepeatsScaleText then
-                   vScaleText := format('%s ' + _BeginChars + 'Si·%s,·vaya·al·#·[S%s]' + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])
+                     if SubOrInsertPoundSignForQuestion then
+                       vScaleText := format('%s ' + _BeginChars + 'Si·%s,·pase a la pregunta #[S%s]' + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])
+                     else
+                       vScaleText := format('%s ' + _BeginChars + 'Si·%s,·vaya·al·#·[S%s]' + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])
                  else
-                   vScaleText := format('%s ' + _BeginChars + 'Vaya·al·#·[S%s]' + _EndChars,[vScaleText, wwt_sclsItem.asString]);
+                     if SubOrInsertPoundSignForQuestion then
+                       vScaleText := format('%s ' + _BeginChars + 'Pase a la pregunta #[S%s]' + _EndChars,[vScaleText, wwt_sclsItem.asString])
+                     else
+                       vScaleText := format('%s ' + _BeginChars + 'Vaya·al·#·[S%s]' + _EndChars,[vScaleText, wwt_sclsItem.asString]);
             21: //GN19: Polish
                  if SkipRepeatsScaleText then
                    vScaleText := format('%s ' + _BeginChars + 'W·przypadku·%s,·prosze·przejsc·do·nr·[S%s]' + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])
@@ -1291,9 +1298,16 @@ begin
                  //if CAHPSNumbering or DoDBenSkips then
                    //vScaleText := vScaleText + '  ›··Go·to·Question·[S'+wwt_sclsItem.asString+']' // Alt-0155 = ›
                    if SkipRepeatsScaleText then
-                     vScaleText := format('%s ' + _BeginChars + 'If·%s,·go·to·Question·[S%s]' + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])
+                     if SubOrInsertPoundSignForQuestion then
+                       vScaleText := format('%s ' + _BeginChars + 'If·%s,·go·to·#[S%s]' + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])
+                     else
+                       vScaleText := format('%s ' + _BeginChars + 'If·%s,·go·to·Question·[S%s]' + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])
                    else
-                     vScaleText := format('%s ' + _BeginChars + 'Go·to·Question·[S%s]' + _EndChars,[vScaleText, wwt_sclsItem.asString])
+                     if SubOrInsertPoundSignForQuestion then
+                       vScaleText := format('%s ' + _BeginChars + 'Go·to·#[S%s]' + _EndChars,[vScaleText, wwt_sclsItem.asString])
+                     else
+                       vScaleText := format('%s ' + _BeginChars + 'Go·to·Question·[S%s]' + _EndChars,[vScaleText, wwt_sclsItem.asString])
+
                  {else
                    //vScaleText := vScaleText + ' (Go·to·#·[S'+wwt_sclsItem.asString+'])';
                    if SkipRepeatsScaleText then
@@ -3239,8 +3253,9 @@ var SurveyHeight,capacity,TotalPages,PaperTypeAnswer : integer;
   end;
 
   procedure SplitIntoPages;
-  var CLoffset,FirstPageCol2Offset,offset,thispagecap,prevItem,increasedcapacity,prevSub,CoverLetterAfterPageBreak : integer;
-      PrevIs0LineCmnt,col2 : boolean;
+  var CLoffset,FirstPageCol2Offset,offset,thispagecap,prev2Item,prevItem,increasedcapacity,prev2Sub,prevSub,CoverLetterAfterPageBreak : integer;
+      Prev2Is0LineCmnt,PrevIs0LineCmnt,col2,Carry2Prev : boolean;
+      origX : integer;
       LastSec:integer;
       SavePlace: TBookmark;
   begin
@@ -3281,8 +3296,11 @@ var SurveyHeight,capacity,TotalPages,PaperTypeAnswer : integer;
             offset := CLOffset;
             SurveyPages := 1;
             prevItem := -1;
+            prev2Item := -1;
             prevSub := -1;
+            prev2Sub := -1;
             PrevIs0LineCmnt := false;
+            Prev2Is0LineCmnt := false;
             while not eof do begin
               ThisPageCap := increasedcapacity + PageHeight[SheetType,SurveyPages mod pages[SheetType]];
               if (tPCLY.value+tPCLHeight.value) > offset+ThisPageCap+TopMargin then begin
@@ -3290,13 +3308,24 @@ var SurveyHeight,capacity,TotalPages,PaperTypeAnswer : integer;
                   or ( PrevIs0LineCmnt and (tPCLSubsection.value=prevSub)) {CAHPS hack}
                  then begin
                   prior;
+{-----------------CAHPS hack squared Prev2 is Prev of Prev 4/13/2015 Chris Burkholder}
+                  if ((tPCLItem.value=1) and (prev2Item=0))
+                    or ( Prev2Is0LineCmnt and (tPCLSubsection.value=prev2Sub)) {CAHPS hack}
+                   then begin
+                    prior;
+                    if pos(tPCLQNmbr.value,'Adr,Cvr,BMP,PCL')>0 then next;
+                  end;
+{-----------------}
                   if pos(tPCLQNmbr.value,'Adr,Cvr,BMP,PCL')>0 then next;
                 end;
                 offset := tpclY.value-TopMargin;
                 inc(SurveyPages);
               end;
+              prev2Item := prevItem;
               prevItem := tPCLitem.value;
+              prev2Sub := prevSub;
               prevSub := tPCLSubsection.value;
+              Prev2Is0LineCmnt := PrevIs0LineCmnt;
               PrevIs0LineCmnt := (tPCLQstnCore.value=0) and (tPCLQnmbr.value='');
               next;
             end;
@@ -3326,8 +3355,11 @@ var SurveyHeight,capacity,TotalPages,PaperTypeAnswer : integer;
         FirstPageCol2Offset := -1;
         SurveyPages := 1;
         prevItem := -1;
+        prev2Item := -1;
         prevSub := -1;
+        prev2Sub := -1;
         PrevIs0LineCmnt := false;
+        Prev2Is0LineCmnt := false;
         col2 := false;
         while not eof do begin
           ThisPageCap := increasedcapacity + PageHeight[SheetType,SurveyPages mod pages[SheetType]];
@@ -3336,6 +3368,16 @@ var SurveyHeight,capacity,TotalPages,PaperTypeAnswer : integer;
               or ( PrevIs0LineCmnt and (tPCLSubsection.value=prevSub)) {CAHPS hack}
              then begin
               prior;
+{-----------------CAHPS hack squared Prev2 is Prev of Prev 4/13/2015 Chris Burkholder}
+              Carry2Prev := false;
+              if ((tPCLItem.value=1) and (prev2Item=0))
+                or ( Prev2Is0LineCmnt and (tPCLSubsection.value=prev2Sub)) {CAHPS hack}
+               then begin
+                prior;
+                Carry2Prev := true;
+                if pos(tPCLQNmbr.value,'Adr,Cvr,BMP,PCL')>0 then next;
+              end;
+{-----------------}
               if pos(tPCLQNmbr.value,'Adr,Cvr,BMP,PCL')>0 then
                 next
               else begin
@@ -3348,6 +3390,28 @@ var SurveyHeight,capacity,TotalPages,PaperTypeAnswer : integer;
                 else
                   tpclX.value := tPCLX.value - HorzOffset[SheetType, SurveyPages mod pages[SheetType]];
                 post;
+{-----------------CAHPS hack squared Prev2 is Prev of Prev 4/13/2015 Chris Burkholder}
+                if Carry2Prev {CAHPS hack}
+                 then begin
+                   next;
+                   edit;
+                   tpclY.value := tPCLY.value + offset;
+                   //tpclX.value := tPCLX.value - HorzOffset[SheetType, SurveyPages mod pages[SheetType]];
+
+                   origX := tpclX.value; //in case we are already in the first column CJB 6/16/2015
+
+                   if Col2 then
+                     tpclX.value := tPCLX.value - HorzOffset[SheetType, SurveyPages mod pages[SheetType]]
+                                                - ((PageWidth+(ColumnGutter*(ColumnCnt-1))) div ColumnCnt)
+                   else
+                     tpclX.value := tPCLX.value - HorzOffset[SheetType, SurveyPages mod pages[SheetType]];
+
+                   if tpclX.value < 0 then //in case we are already in the first column CJB 6/16/2015
+                     tpclX.value := origX;
+                   post;
+                   prior;
+                 end;
+{-----------------}
               end;
             end;
             if ColumnCnt=2 then begin
@@ -3390,8 +3454,11 @@ var SurveyHeight,capacity,TotalPages,PaperTypeAnswer : integer;
           else
             tpclX.value := tPCLX.value + HorzOffset[SheetType, SurveyPages mod pages[SheetType]];
           post;
+          prev2Item := prevItem;
           prevItem := tPCLitem.value;
+          prev2Sub := prevSub;
           prevSub := tPCLSubsection.value;
+          Prev2Is0LineCmnt := PrevIs0LineCmnt;
           PrevIs0LineCmnt := (tPCLQstnCore.value=0) and (tPCLQnmbr.value='');
           next;
         end;
@@ -3919,7 +3986,11 @@ begin
 //  if dmOpenQ.SkipGoPhrase = '' then
 //  begin
      case dmOpenQ.CurrentLanguage of
-       2,7,9,18,19,20 : QText := '# '; //Spanish, VA-Spanish, Harris County Spanish, Magnus GN03, HCAHPS Spanish GN08
+       2,7,9,18,19,20 :
+                        if SubOrInsertPoundSignForQuestion then
+                          QText := '#'
+                        else
+                          QText := '# '; //Spanish, VA-Spanish, Harris County Spanish, Magnus GN03, HCAHPS Spanish GN08
        5: Qtext := 'continuar con la pregunta '; //Mexican Spanish
        6: QText := 'Allez à la question '; //French
        8: QText := 'Saltar a la pregunta '; //PEP-C Spanish
@@ -3933,8 +4004,10 @@ begin
        21: QText := 'Prosze przejsc do '; //gn19: Polish
 
      else
-       if CAHPSNumbering or DoDBenSkips then QText := 'Question '
-       else QText := '# ';
+       if SubOrInsertPoundSignForQuestion then
+         QText := '#'
+       else
+         QText := 'Question ';
      end;
 //  end
 {  else
@@ -4045,9 +4118,12 @@ begin
       tPCL.findkey([SectOrder,ThisSub,ThisItem]);
       s := tPCLPCLStream.value;
       while pos('# ',TargetQnum) > 0 do delete(targetQnum,pos('# ',TargetQnum)+1,1);
-      fnd := QText+'[S'+inttostr(skips[i].Item)+']';
-      insert(TargetQnum,s,pos(fnd,s));
-      delete(s,pos(fnd,s),length(fnd));
+      fnd := uppercase(QText+'[S'+inttostr(skips[i].Item)+']');
+      if pos(fnd,uppercase(s))>0 then
+         insert(TargetQnum,s,pos(fnd,uppercase(s)))
+      else
+         raise EGenErr.Create('Cant find skip instructions.');
+      delete(s,pos(fnd,uppercase(s)),length(fnd));
       tPCL.edit;
       tPCLPCLStream.value := s;
       tPCL.post;
@@ -4627,6 +4703,7 @@ begin
     VerticalOffset := CoverHeight + AfterPageBreakCoverHeight;
     if IncludeQstns then begin
       SkipRepeatsScaleText := dmOpenQ.SkipRepeatsScaleTextForSurveyType;
+      SubOrInsertPoundSignForQuestion := dmOpenQ.SubOrInsertPoundSignForQuestionForSurveyType;
       QuestionGen(VerticalOffset);
     end;
     PaperChoice(CoverHeight,VerticalOffset);

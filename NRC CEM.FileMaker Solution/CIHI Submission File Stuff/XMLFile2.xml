@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.cihi.ca/CIHI" xmlns:cpesic="http://www.cihi.ca/CIHI" xmlns:cdssb-bt="http://www.cihi.ca/CIHI" targetNamespace="http://www.cihi.ca/CIHI">
+  <xs:element name="creationTime">
+    <xs:complexType>
+      <xs:attribute name="value" type="xs:unsignedInt" use="required" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="sender">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="organization">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="id">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="value" type="xs:string" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="versionCode">
+    <xs:complexType>
+      <xs:attribute name="code" type="xs:string" use="required" />
+      <xs:attribute name="codeSystem" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="purpose">
+    <xs:complexType>
+      <xs:attribute name="code" type="xs:string" use="required" />
+      <xs:attribute name="codeSystem" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="organizationProfile">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="organization">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="id">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="value" type="xs:string" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element maxOccurs="unbounded" name="contact">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="code">
+                      <xs:complexType>
+                        <xs:attribute name="code" type="xs:string" use="required" />
+                        <xs:attribute name="codeSystem" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="email" type="xs:string" />
+                    <xs:element name="name" type="xs:string" />
+                    <xs:element name="phone">
+                      <xs:complexType>
+                        <xs:attribute name="extension" type="xs:unsignedByte" use="required" />
+                        <xs:attribute name="number" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="role">
+          <xs:complexType>
+            <xs:attribute name="code" type="xs:string" use="required" />
+            <xs:attribute name="codeSystem" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="surveyingFrequency">
+          <xs:complexType>
+            <xs:attribute name="code" type="xs:string" use="required" />
+            <xs:attribute name="codeSystem" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="device">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="manufacturer">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="id">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="value" type="xs:string" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="questionnaireCycle">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="id">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="value" type="xs:string" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="healthCareFacility">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="id">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="value" type="xs:string" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="submissionType">
+          <xs:complexType>
+            <xs:attribute name="code" type="xs:string" use="required" />
+            <xs:attribute name="codeSystem" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="proceduresManualVersion">
+          <xs:complexType>
+            <xs:attribute name="code" type="xs:string" use="required" />
+            <xs:attribute name="codeSystem" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="effectiveTime">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="low">
+                <xs:complexType>
+                  <xs:attribute name="value" type="xs:unsignedInt" use="required" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="high">
+                <xs:complexType>
+                  <xs:attribute name="value" type="xs:unsignedInt" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="sampleInformation">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="samplingMethod">
+                <xs:complexType>
+                  <xs:attribute name="code" type="xs:string" use="required" />
+                  <xs:attribute name="codeSystem" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="populationInformation">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="dischargeCount" type="xs:unsignedShort" />
+                    <xs:element name="sampleSize" type="xs:unsignedShort" />
+                    <xs:element maxOccurs="unbounded" name="dischargeInformation">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="service">
+                            <xs:complexType>
+                              <xs:attribute name="code" type="xs:string" use="required" />
+                              <xs:attribute name="codeSystem" type="xs:string" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="admissionSource">
+                            <xs:complexType>
+                              <xs:attribute name="code" type="xs:string" use="required" />
+                              <xs:attribute name="codeSystem" type="xs:string" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="gender">
+                            <xs:complexType>
+                              <xs:attribute name="code" type="xs:string" use="required" />
+                              <xs:attribute name="codeSystem" type="xs:string" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="ageCategory">
+                            <xs:complexType>
+                              <xs:attribute name="code" type="xs:string" use="required" />
+                              <xs:attribute name="codeSystem" type="xs:string" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="dischargeCount" type="xs:unsignedByte" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="questionnaire">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="id">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="value" type="xs:string" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="subject">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="id">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="value" type="xs:string" />
+                          <xs:element name="issuer">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="code">
+                                  <xs:complexType>
+                                    <xs:attribute name="code" type="xs:string" use="required" />
+                                    <xs:attribute name="codeSystem" type="xs:string" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="otherId">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="value" type="xs:string" />
+                          <xs:element name="code">
+                            <xs:complexType>
+                              <xs:attribute name="code" type="xs:string" use="required" />
+                              <xs:attribute name="codeSystem" type="xs:string" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="personInformation">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="birthTime">
+                            <xs:complexType>
+                              <xs:attribute name="value" type="xs:unsignedInt" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="estimatedBirthTimeInd">
+                            <xs:complexType>
+                              <xs:attribute name="code" type="xs:string" use="required" />
+                              <xs:attribute name="codeSystem" type="xs:string" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="gender">
+                            <xs:complexType>
+                              <xs:attribute name="code" type="xs:string" use="required" />
+                              <xs:attribute name="codeSystem" type="xs:string" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="encompassingEncounter">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="effectiveTime">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="high">
+                            <xs:complexType>
+                              <xs:attribute name="value" type="xs:unsignedInt" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="service">
+                      <xs:complexType>
+                        <xs:attribute name="code" type="xs:string" use="required" />
+                        <xs:attribute name="codeSystem" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="authorMode">
+                <xs:complexType>
+                  <xs:attribute name="code" type="xs:string" use="required" />
+                  <xs:attribute name="codeSystem" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="language">
+                <xs:complexType>
+                  <xs:attribute name="code" type="xs:string" use="required" />
+                  <xs:attribute name="codeSystem" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="questions">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element maxOccurs="unbounded" name="question">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="code">
+                            <xs:complexType>
+                              <xs:attribute name="code" type="xs:string" use="required" />
+                              <xs:attribute name="codeSystem" type="xs:string" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="answer">
+                            <xs:complexType>
+                              <xs:attribute name="code" type="xs:string" use="required" />
+                              <xs:attribute name="codeSystem" type="xs:string" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="specialProjectData">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="questionnaireCycle">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="id">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="value" type="xs:string" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="questionnaire">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="id">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="value" type="xs:string" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="specialProject">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="code" type="xs:string" />
+              <xs:element name="data" type="xs:string" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
