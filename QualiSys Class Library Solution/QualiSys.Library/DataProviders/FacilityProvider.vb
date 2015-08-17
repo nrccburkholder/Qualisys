@@ -31,7 +31,7 @@ Namespace DataProvider
         Public MustOverride Sub Delete(ByVal facilityId As Integer)
 
         Public MustOverride Function AllowDelete(ByVal facilityId As Integer) As Boolean
-        Public MustOverride Function AllowUnassignment(ByVal facilityId As Integer, ByVal clientId As Integer) As Boolean
+        Public MustOverride Function AllowUnassignment(ByVal facilityId As Integer, ByVal clientId As Integer, Optional ByVal isPracticeSite As Boolean = False) As Boolean
         Public MustOverride Sub AssignFacilityToClient(ByVal facilityId As Integer, ByVal clientId As Integer, Optional ByVal isPracticeSite As Boolean = False)
         Public MustOverride Sub UnassignFacilityFromClient(ByVal facilityId As Integer, ByVal clientId As Integer, Optional ByVal isPracticeSite As Boolean = False)
 

@@ -417,7 +417,7 @@ Public Class Facility
 
     'A facility can only be unassigned if it is not mapped to any units for the client.
     Public Function AllowUnassignment(ByVal clientId As Integer) As Boolean
-        Return FacilityProvider.Instance.AllowUnassignment(mId, clientId)
+        Return FacilityProvider.Instance.AllowUnassignment(mId, clientId, (MedicareNumber Is Nothing))
     End Function
 
     Public Overrides Function ToString() As String

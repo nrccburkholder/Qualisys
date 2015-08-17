@@ -190,8 +190,8 @@ Public Class FacilityProvider
         Return (result = 1)
     End Function
 
-    Public Overrides Function allowUnassignment(ByVal facilityId As Integer, ByVal clientId As Integer) As Boolean
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.AllowUnassignmentFacility, facilityId, clientId)
+    Public Overrides Function allowUnassignment(ByVal facilityId As Integer, ByVal clientId As Integer, Optional ByVal isPracticeSite As Boolean = False) As Boolean
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.AllowUnassignmentFacility, facilityId, clientId, isPracticeSite)
         Dim result As Integer = ExecuteInteger(cmd)
 
         Return (result = 1)
