@@ -47,13 +47,15 @@ Public Class FacilitySection
         Select Case mViewMode
             Case FacilityAdminSection.DataViewMode.AllFacilities
                 Me.Cursor = Cursors.WaitCursor
-                Me.PopulateAllFacilityList()
+                Me.PopulateAllFacilityList(False)
                 Me.PopulateAllFacilityGrid()
                 ApplyButton.Enabled = True
                 Cancel_Button.Enabled = True
                 Me.Cursor = Me.DefaultCursor
 
             Case FacilityAdminSection.DataViewMode.ClientFacilities
+                Me.PopulateAllFacilityList(True)
+
                 ApplyButton.Enabled = False
                 Cancel_Button.Enabled = False
 
@@ -140,13 +142,15 @@ Public Class FacilitySection
         If mMedicareList Is Nothing Then
             PopulateMedicareList()
         End If
-        If mAllFacilityList Is Nothing Then
-            PopulateAllFacilityList()
-        End If
+        'If mAllFacilityList Is Nothing Then
+        '    PopulateAllFacilityList()
+        'End If
 
         'Setup the screen based on the mode selected
         Select Case viewMode
             Case FacilityAdminSection.DataViewMode.AllFacilities
+
+                PopulateAllFacilityList(False)
 
                 'Setup the screen
                 SetupAllFacility()
@@ -160,6 +164,9 @@ Public Class FacilitySection
                 ResetAllFacilityGridAppearance()
 
             Case FacilityAdminSection.DataViewMode.ClientFacilities
+
+                PopulateAllFacilityList(True)
+
                 'Setup the screen
                 SetupClientFacility()
 
@@ -184,8 +191,8 @@ Public Class FacilitySection
 
 #Region " Private Methods - AllFacility "
 
-    Private Sub PopulateAllFacilityList()
-        mAllFacilityList = Facility.GetAll
+    Private Sub PopulateAllFacilityList(includePracticeSites As Boolean)
+        mAllFacilityList = Facility.GetAll(includePracticeSites)
         mAllFacilityList.AllowNew = True
         Me.mAllFacilityGridIsPopulated = False
     End Sub

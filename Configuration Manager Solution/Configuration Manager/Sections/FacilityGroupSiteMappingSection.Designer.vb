@@ -89,6 +89,7 @@ Partial Class FacilityGroupSiteMappingSection
         Me.GridColumn34.Caption = "Site ID"
         Me.GridColumn34.FieldName = "PracticeSite_ID"
         Me.GridColumn34.Name = "GridColumn34"
+        Me.GridColumn34.OptionsColumn.AllowEdit = False
         Me.GridColumn34.Visible = True
         Me.GridColumn34.VisibleIndex = 0
         '
@@ -97,6 +98,7 @@ Partial Class FacilityGroupSiteMappingSection
         Me.GridColumn33.Caption = "Group ID"
         Me.GridColumn33.FieldName = "SiteGroup_ID"
         Me.GridColumn33.Name = "GridColumn33"
+        Me.GridColumn33.OptionsColumn.AllowEdit = False
         Me.GridColumn33.Visible = True
         Me.GridColumn33.VisibleIndex = 1
         '
@@ -258,6 +260,7 @@ Partial Class FacilityGroupSiteMappingSection
         Me.GridColumn15.Caption = "Group ID"
         Me.GridColumn15.FieldName = "SiteGroup_ID"
         Me.GridColumn15.Name = "GridColumn15"
+        Me.GridColumn15.OptionsColumn.AllowEdit = False
         Me.GridColumn15.Visible = True
         Me.GridColumn15.VisibleIndex = 0
         '

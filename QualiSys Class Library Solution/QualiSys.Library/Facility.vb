@@ -439,8 +439,12 @@ Public Class Facility
     '    Return FacilityProvider.Instance.SelectAllBindingListView
     'End Function
 
-    Public Shared Function GetAll() As FacilityList
-        Return FacilityProvider.Instance.SelectAll(New Nullable(Of Boolean))
+    Public Shared Function GetAll(includePracticeSites As Boolean) As FacilityList
+        If includePracticeSites Then
+            Return FacilityProvider.Instance.SelectAll(New Nullable(Of Boolean))
+        Else
+            Return FacilityProvider.Instance.SelectAll(False)
+        End If
     End Function
 
     ''' <summary>
