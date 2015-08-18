@@ -40,6 +40,8 @@ Public Class FacilityProvider
         newObj.City = rdr.GetString("City")
         newObj.State = rdr.GetString("State")
         newObj.Country = rdr.GetString("Country")
+        newObj.RowType = rdr.GetString("RowType")
+        newObj.GroupID = rdr.GetString("GroupID")
         'newObj.RegionId = rdr.GetInteger("Region_id")
         newObj.AdmitNumber = rdr.GetNullableInteger("AdmitNumber")
         newObj.BedSize = rdr.GetNullableInteger("BedSize")

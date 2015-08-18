@@ -24,6 +24,8 @@ Public Class Facility
     Private mCity As String = String.Empty
     Private mState As String = String.Empty
     Private mCountry As String = String.Empty
+    Private mRowType As String = String.Empty
+    Private mGroupID As String = String.Empty
     Private mAdmitNumber As Nullable(Of Integer)
     Private mBedSize As Nullable(Of Integer)
     Private mIsPediatric As ClassificationStatus
@@ -145,11 +147,37 @@ Public Class Facility
     End Property
 
     <Logable()> _
+    Public Property RowType() As String
+        Get
+            Return mRowType
+        End Get
+        Set(ByVal value As String)
+            If mRowType <> value Then
+                mRowType = value
+                PropertyHasChanged()
+            End If
+        End Set
+    End Property
+
+    <Logable()> _
+    Public Property GroupID() As String
+        Get
+            Return mGroupID
+        End Get
+        Set(ByVal value As String)
+            If mGroupID <> value Then
+                mGroupID = value
+                PropertyHasChanged()
+            End If
+        End Set
+    End Property
+
+    <Logable()> _
     Public ReadOnly Property RegionId() As Integer
         Get
             Return mRegionId
         End Get
-        
+
     End Property
 
     <Logable()> _
@@ -403,11 +431,11 @@ Public Class Facility
 #Region "Public Methods"
 
     Public Sub AssignToClient(ByVal clientId As Integer)
-        FacilityProvider.Instance.AssignFacilityToClient(mId, clientId, (MedicareNumber Is Nothing))
+        FacilityProvider.Instance.AssignFacilityToClient(mId, clientId, RowType.Equals("G"))
     End Sub
 
     Public Sub UnassignFromClient(ByVal clientId As Integer)
-        FacilityProvider.Instance.UnassignFacilityFromClient(mId, clientId, (MedicareNumber Is Nothing))
+        FacilityProvider.Instance.UnassignFacilityFromClient(mId, clientId, RowType.Equals("G"))
     End Sub
 
     'A facility can only be deleted if it is not mapped to any units.
@@ -417,7 +445,7 @@ Public Class Facility
 
     'A facility can only be unassigned if it is not mapped to any units for the client.
     Public Function AllowUnassignment(ByVal clientId As Integer) As Boolean
-        Return FacilityProvider.Instance.AllowUnassignment(mId, clientId, (MedicareNumber Is Nothing))
+        Return FacilityProvider.Instance.AllowUnassignment(mId, clientId, RowType.Equals("G"))
     End Function
 
     Public Overrides Function ToString() As String
