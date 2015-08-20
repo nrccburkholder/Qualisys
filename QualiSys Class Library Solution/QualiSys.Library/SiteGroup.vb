@@ -14,7 +14,7 @@ Public Class SiteGroup
     <NotUndoable()> Private mInstanceGuid As Guid = Guid.NewGuid
     Private mId As Integer
     Private mSiteGroup_ID As Integer
-    Private mAssigned_id As Integer
+    Private mAssigned_id As String
     Private mGroupName As String
     Private mAddr1 As String
     Private mAddr2 As String
@@ -60,11 +60,11 @@ Public Class SiteGroup
         End Set
     End Property
 
-    Public Property AssignedID As Integer
+    Public Property AssignedID As String
         Get
             Return mAssigned_id
         End Get
-        Set(value As Integer)
+        Set(value As String)
             If mAssigned_id = value Then
                 Return
             End If

@@ -68,7 +68,7 @@ Public Class FacilityGroupSiteMappingSection
 
                 Dim siteGroup As New SiteGroup With {
                                         .SiteGroup_ID = If(IsDBNull(dr("SiteGroup_ID")), .SiteGroup_ID, CInt(dr("SiteGroup_ID"))),
-                                        .AssignedID = If(IsDBNull(dr("AssignedID")), .AssignedID, CInt(dr("AssignedID"))),
+                                        .AssignedID = dr("AssignedID").ToString(),
                                         .GroupName = dr("GroupName").ToString(),
                                         .Addr1 = dr("Addr1").ToString(),
                                         .Addr2 = dr("Addr2").ToString(),
@@ -105,7 +105,7 @@ Public Class FacilityGroupSiteMappingSection
 
                     Dim practiceSite As New PracticeSite With {
                                                 .PracticeSite_ID = If(IsDBNull(drow("PracticeSite_ID")), .PracticeSite_ID, CInt(drow("PracticeSite_ID"))),
-                                                .AssignedID = If(IsDBNull(drow("AssignedID")), .AssignedID, CInt(drow("AssignedID"))),
+                                                .AssignedID = drow("AssignedID").ToString(),
                                                 .SiteGroup_ID = If(IsDBNull(drow("SiteGroup_ID")), .SiteGroup_ID, CInt(drow("SiteGroup_ID"))),
                                                 .PracticeName = drow("PracticeName").ToString(),
                                                 .Addr1 = drow("Addr1").ToString(),

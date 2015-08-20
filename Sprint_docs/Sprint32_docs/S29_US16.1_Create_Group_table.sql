@@ -1,7 +1,14 @@
+/*
+S29_US16.1_Create_Group_table.sql
+
+Tim Butler/Chris Burkholder
+
+*/
 USE [QP_PROD]
 GO
 
-DROP TABLE [dbo].[SiteGroup]
+IF (EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'SiteGroup'))
+	DROP TABLE [dbo].[SiteGroup]
 
 /****** Object:  Table [dbo].[Group]    Script Date: 7/15/2015 11:07:37 AM ******/
 SET ANSI_NULLS ON
@@ -14,7 +21,7 @@ GO
 
 CREATE TABLE [dbo].[SiteGroup](
 	[SiteGroup_ID] [int] IDENTITY(1,1) NOT NULL,
-	[AssignedID] [int] NULL,
+	[AssignedID] [nvarchar](20) NULL,
 	[GroupName] [nvarchar](50) NULL,
 	[Addr1] [nvarchar](60) NULL,
 	[Addr2] [nvarchar](42) NULL,
@@ -38,3 +45,8 @@ CREATE TABLE [dbo].[SiteGroup](
 GO
 
 
+
+/*
+ALTER TABLE SiteGroup
+ALTER COLUMN AssignedID nvarchar(20)
+*/

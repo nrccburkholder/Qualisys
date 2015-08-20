@@ -230,7 +230,7 @@ Public Class FacilityProvider
         newObj.BeginPopulate()
         privateInterface.Id = rdr.GetInteger("SiteGroup_ID")
         newObj.SiteGroup_ID = rdr.GetInteger("SiteGroup_ID")
-        newObj.AssignedID = rdr.GetInteger("AssignedID")
+        newObj.AssignedID = rdr.GetString("AssignedID")
         newObj.GroupName = rdr.GetString("GroupName")
         newObj.Addr1 = rdr.GetString("Addr1")
         newObj.Addr2 = rdr.GetString("Addr2")
@@ -275,7 +275,7 @@ Public Class FacilityProvider
 
         privateInterface.Id = rdr.GetInteger("PracticeSite_ID")
         newObj.PracticeSite_ID = rdr.GetInteger("PracticeSite_ID")
-        newObj.AssignedID = rdr.GetInteger("AssignedID")
+        newObj.AssignedID = rdr.GetString("AssignedID")
         newObj.SiteGroup_ID = rdr.GetInteger("SiteGroup_ID")
         newObj.PracticeName = rdr.GetString("PracticeName")
         newObj.Addr1 = rdr.GetString("Addr1")
