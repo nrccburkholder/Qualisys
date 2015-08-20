@@ -33,25 +33,28 @@ BEGIN
 	-- MeasureCnt tinyint
 	-- MeasureComplete bit
 	-- Disposition tinyint  
-	-- Subtype_nm
+	-- Subtype_nm varchar(50)
+	-- SurveyType_id int
 
 	create table #QR (Questionform_id int, qstncore int, intResponseVal int)
 	insert into #QR (questionform_id, qstncore, intResponseVal)
-			select qr.questionform_id, QstnCore,intResponseVal from QuestionResult qr, #ACOQF qf where qr.QuestionForm_id=qf.QuestionForm_id
-			union all select qr.questionform_id, QstnCore,intResponseVal from QuestionResult2 qr, #ACOQF qf where qr.QuestionForm_id=qf.QuestionForm_id
+			select qr.questionform_id, QstnCore,intResponseVal from QuestionResult qr, #ACOQF qf where qr.QuestionForm_id=qf.QuestionForm_id and qf.surveytype_id in (10,14)
+			union all select qr.questionform_id, QstnCore,intResponseVal from QuestionResult2 qr, #ACOQF qf where qr.QuestionForm_id=qf.QuestionForm_id and qf.surveytype_id in (10,14)
 	
-	update #ACOQF set ATAcnt=0, ATAcomplete=0, MeasureCnt=0, MeasureComplete=0, Disposition=0
+	update #ACOQF set ATAcnt=0, ATAcomplete=0, MeasureCnt=0, MeasureComplete=0, Disposition=0 where surveytype_id in (10,14)
 
 	update #ACOQF set disposition=255
 	from #ACOQF qf
 	left join #QR qr on qf.questionform_id=qr.questionform_id
 	where qr.questionform_id is null
-		
+	and qf.surveytype_id in (10,14)
+
 	-- if Q1 invokes the skip, ignore questions 5 through 43
 	delete q2_43 
 	from #QR q1
 	inner join #QR q2_43 on q1.questionform_id=q2_43.questionform_id	
 	where q1.qstncore=50175 and q1.intresponseval in (2,-5,-6) -- 2.0  
+	and q1.surveytype_id in (10,14)
 	and q2_43.qstncore in (
 						50176, --02		Q2. Is this the provider you usually see if you need a check-up want advice about a health problem or get sick or hurt?
 						50177, --03		Q3. How long have you been going to this provider?
@@ -84,7 +87,8 @@ BEGIN
 	from #QR q4
 	inner join #QR q5_43 on q4.questionform_id=q5_43.questionform_id	
 	where q4.qstncore=51426 and q4.intresponseval in (0,-5,-6) -- 2.0
-	and q5_43.qstncore in (
+	and q4.surveytype_id in (10,14)
+ 	and q5_43.qstncore in (
 						50179, --05		Q5. In the last 6 months did you phone this providers office to get an appointment for an illness injury or condition that needed care right away? 
 						50181, --06		Q7. In the last 6 months did you make any appointments for a check-up or routine care with this provider?
 						50183, --07		Q9. In the last 6 months did you phone this providers office with a medical question during regular office hours?
@@ -114,15 +118,15 @@ BEGIN
 	
 	-- the race question on the phone survey is a series of 16 yes/no questions, but they only count as a single question for completeness.					
 	update #QR set qstncore=50725 where qstncore between 50726 and 50740
-
-	declare @ATA table (SubType_nm varchar(50), totalATAcnt int)
+	
+	declare @ATA table (Surveytype_id int, SubType_nm varchar(50), totalATAcnt int)
 	insert into @ATA
-	select st.subtype_nm, count(*) as totalATAcnt
+	select stqm.surveytype_id, st.subtype_nm, count(*) as totalATAcnt
 	from SurveyTypeQuestionMappings stqm
-	inner join subtype st on stqm.subtype_id=st.subtype_id
-	where stqm.SurveyType_id=10
-	and isATA=1
-	group by st.subtype_nm
+	left join subtype st on stqm.subtype_id=st.subtype_id
+	where stqm.SurveyType_id in (10,14)
+	and stqm.isATA=1
+	group by stqm.surveytype_id, st.subtype_nm
 
 	--> new: 1.1
 	-- for ACO questionnaire types
@@ -131,30 +135,32 @@ BEGIN
 		, ATAcomplete=case when sub.cnt >= (ata.totalATAcnt * 0.50) then 1 else 0 end
 	from #ACOQF qf
 	inner join @ATA ata on qf.subtype_nm=ata.SubType_nm
-	inner join (SELECT st.Subtype_nm, qr.questionform_id, COUNT(distinct qr.QstnCore) as cnt
+	inner join (SELECT st.subtype_nm,stqm.surveytype_id, qr.questionform_id, COUNT(distinct qr.QstnCore) as cnt
 				FROM #QR qr
 				inner join SurveyTypeQuestionMappings stqm on qr.QstnCore=stqm.QstnCore
-				inner join subtype st on stqm.subtype_id=st.subtype_id
+				left join subtype st on stqm.subtype_id=st.subtype_id
 				where qr.intResponseVal>=0
-				and stqm.SurveyType_id=10
+				and stqm.SurveyType_id in (10,14)
 				and stqm.isATA=1
-				group by st.Subtype_nm, qr.questionform_id) sub
+				group by st.subtype_nm,stqm.surveytype_id, qr.questionform_id) sub
 		on qf.questionform_id=sub.questionform_id
-		WHERE qf.Subtype_nm = sub.Subtype_nm
+		WHERE qf.SurveyType_id=sub.surveytype_id 
+		and isnull(qf.Subtype_nm,'null') = isnull(sub.Subtype_nm,'null')
 
 	update qf
 	set MeasureCnt=sub.cnt, MeasureComplete=case when sub.cnt >= 1 then 1 else 0 end
 	from #ACOQF qf
-	inner join (SELECT st.Subtype_nm, qr.questionform_id, COUNT(distinct qr.qstncore) as cnt
+	inner join (SELECT st.subtype_nm,stqm.surveytype_id, qr.questionform_id, COUNT(distinct qr.qstncore) as cnt
 				FROM #QR qr
 				inner join SurveyTypeQuestionMappings stqm on qr.QstnCore=stqm.QstnCore
 				inner join subtype st on stqm.subtype_id=st.subtype_id
 				WHERE qr.intResponseVal >= 0
-				and stqm.SurveyType_id=10
+				and stqm.SurveyType_id in (10,14)
 				and stqm.isMeasure=1
-				group by st.Subtype_nm, qr.questionform_id) sub
+				group by st.subtype_nm,stqm.surveytype_id, qr.questionform_id) sub
 		on qf.questionform_id=sub.questionform_id
-		WHERE qf.Subtype_nm = sub.Subtype_nm
+		WHERE qf.SurveyType_id=sub.surveytype_id 
+		and isnull(qf.Subtype_nm,'null') = isnull(sub.Subtype_nm,'null')
 
 	update #ACOQF 
 	set Disposition=
