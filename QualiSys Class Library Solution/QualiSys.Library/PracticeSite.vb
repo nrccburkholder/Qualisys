@@ -15,7 +15,7 @@ Public Class PracticeSite
     <NotUndoable()> Private mInstanceGuid As Guid = Guid.NewGuid
     Private mId As Integer
     Private mPracticeSite_ID As Integer
-    Private mAssignedID As Integer
+    Private mAssignedID As String
     Private mSiteGroup_ID As Integer
     Private mPracticeName As String
     Private mAddr1 As String
@@ -60,11 +60,11 @@ Public Class PracticeSite
             mPracticeSite_ID = value
         End Set
     End Property
-    Public Property AssignedID As Integer
+    Public Property AssignedID As String
         Get
             Return mAssignedID
         End Get
-        Set(value As Integer)
+        Set(value As String)
             If mAssignedID = value Then
                 Return
             End If

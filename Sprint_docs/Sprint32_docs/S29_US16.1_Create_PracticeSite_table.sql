@@ -1,7 +1,14 @@
+/*
+S29_US16.1_Create_PracticeSite_table.sql
+
+Tim Butler/Chris Burkholder
+
+*/
 USE [QP_PROD]
 GO
 
-DROP TABLE [dbo].[PracticeSite]
+IF (EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'PracticeSite'))
+	DROP TABLE [dbo].[PracticeSite]
 
 /****** Object:  Table [dbo].[PracticeSite]    Script Date: 7/15/2015 11:04:52 AM ******/
 SET ANSI_NULLS ON
@@ -13,7 +20,7 @@ GO
 
 CREATE TABLE [dbo].[PracticeSite](
 	[PracticeSite_ID] [int] IDENTITY(1,1) NOT NULL,
-	[AssignedID] [int] NULL,
+	[AssignedID] [nvarchar](20) NULL,
 	[SiteGroup_ID] [int] NULL,
 	[PracticeName] [nvarchar](255) NULL,
 	[Addr1] [nvarchar](255) NULL,
@@ -39,3 +46,7 @@ CREATE TABLE [dbo].[PracticeSite](
 GO
 
 
+/*
+ALTER TABLE PracticeSite
+ALTER COLUMN AssignedID nvarchar(20)
+*/
