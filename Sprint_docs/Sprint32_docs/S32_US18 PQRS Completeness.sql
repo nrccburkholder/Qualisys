@@ -27,7 +27,7 @@ as
 -- Modified 12/23/2014 DBG - other survey types are using unusedreturn_id=5, so I added "Surveytype_id=10" to the initial query
 
 select qf.SamplePop_id, qf.QuestionForm_id, qf.unusedreturn_id, qf.datUnusedReturn, convert(bit,NULL) as bitUse, 0 as ACODisposition
-, sstx.Subtype_id, sstx.Subtype_nm
+, sstx.Subtype_id, sstx.Subtype_nm, sd.SurveyType_id
 into #partials
 from QuestionForm qf
 inner join survey_def sd on qf.survey_id=sd.survey_id
@@ -35,7 +35,7 @@ inner join SentMailing sm on qf.SentMail_id=sm.SentMail_id
 left join (select sst.Survey_id, sst.Subtype_id, st.Subtype_nm from [dbo].[SurveySubtype] sst INNER JOIN [dbo].[Subtype] st on (st.Subtype_id = sst.Subtype_id)) sstx on sstx.Survey_id = qf.SURVEY_ID --> new: 1.6
 where qf.SamplePop_id in (select SamplePop_id from QuestionForm where unusedreturn_id=5)
 and (qf.datReturned is not null or unusedreturn_id=5)
-and sd.Surveytype_id=10 -- ACOCAHPS
+and sd.Surveytype_id in (10,14) -- ACOCAHPS, PQRS
 and isnull(sm.datexpire,getdate())<getdate()
 
 if @@rowcount=0
@@ -50,7 +50,7 @@ where SamplePop_id in (	select SamplePop_id
 						having count(distinct isnull(unusedreturn_id,0)) > 1)
 
 select questionform_id, 0 as ATACnt, 0 as ATAComplete, 0 as MeasureCnt, 0 as MeasureComplete, 0 as Disposition
-, Subtype_nm
+, Subtype_nm, SurveyType_id
 into #ACOQF
 from #partials
 where unusedreturn_id=5
@@ -218,16 +218,16 @@ inner join SurveyType st on sd.Surveytype_id=st.Surveytype_id
 left join (select sst.Survey_id, sst.Subtype_id, st.Subtype_nm from [dbo].[SurveySubtype] sst INNER JOIN [dbo].[Subtype] st on (st.Subtype_id = sst.Subtype_id)) sstx on sstx.Survey_id = qf.SURVEY_ID --> new: 1.6
 inner join MailingStep ms on scm.Methodology_id=ms.Methodology_id and scm.MailingStep_id=ms.MailingStep_id
 where qf.datResultsImported is not null
-and st.Surveytype_dsc in ('HCAHPS IP','ACOCAHPS','ICHCAHPS','Home Health CAHPS', 'Hospice CAHPS')
+and st.Surveytype_dsc in ('HCAHPS IP','ACOCAHPS','ICHCAHPS','Home Health CAHPS', 'Hospice CAHPS','PQRS CAHPS')
 and sm.datExpire > getdate()
 order by qf.datResultsImported desc
 
 -- ACO CAHPS Processing
 select questionform_id, 0 as ATACnt, 0 as ATAComplete, 0 as MeasureCnt, 0 as MeasureComplete, 0 as Disposition
-, Subtype_nm													--> new: 1.6
+, Subtype_nm, SurveyType_id													--> new: 1.6
 into #ACOQF
 from #TodaysReturns
-where Surveytype_dsc='ACOCAHPS'								--> new line
+where Surveytype_dsc in ('ACOCAHPS','PQRS CAHPS')								--> new line
 
 exec dbo.ACOCAHPSCompleteness
 
@@ -247,7 +247,7 @@ inner join #ACOQF qf on tr.questionform_id=qf.questionform_id
 insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_id,datLogged,LoggedBy)
 select sentmail_id, samplepop_id, (SELECT Disposition_ID FROM ACOCAHPSDispositions WHERE ACOCAHPSValue = tr.ACODisposition),receipttype_id, getdate(), 'CheckForCAHPSIncompletes'
 from #TodaysReturns tr
-where Surveytype_dsc='ACOCAHPS'	
+where Surveytype_dsc in ('ACOCAHPS','PQRS CAHPS')
 AND strMailingStep_nm in ('1st Survey','2nd Survey')
 AND ACODisposition in ( 10, 31)
 
@@ -256,7 +256,7 @@ AND ACODisposition in ( 10, 31)
 insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_id,datLogged,LoggedBy)
 select sentmail_id, samplepop_id, 25,receipttype_id, getdate(), 'CheckForCAHPSIncompletes'
 from #TodaysReturns tr
-where Surveytype_dsc='ACOCAHPS'	
+where Surveytype_dsc in ('ACOCAHPS','PQRS CAHPS')
 AND strMailingStep_nm='1st Survey'
 AND ACODisposition = 34
 
@@ -265,7 +265,7 @@ AND ACODisposition = 34
 insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_id,datLogged,LoggedBy)
 select sentmail_id, samplepop_id, 26,receipttype_id, getdate(), 'CheckForCAHPSIncompletes'
 from #TodaysReturns tr
-where Surveytype_dsc='ACOCAHPS'	
+where Surveytype_dsc in ('ACOCAHPS','PQRS CAHPS')
 AND strMailingStep_nm='2nd Survey'
 AND ACODisposition = 34
 
@@ -826,7 +826,7 @@ inner join ScheduledMailing SM on MM.Methodology_id = SM.Methodology_id
 inner join MailingStep MS on SM.MailingStep_id=MS.MailingStep_id
 inner join SamplePop SP on SP.SamplePop_id = SM.SamplePop_id 
 left join FormGenError FGE on SM.ScheduledMailing_id = FGE.ScheduledMailing_id 
-WHERE  ST.surveytype_dsc = 'ACOCAHPS' AND
+WHERE  ST.surveytype_dsc in ('ACOCAHPS','PQRS CAHPS') AND
        SM.SentMail_id IS NULL AND
        SM.datGenerate <= DATEADD(HOUR,6,GETDATE()) AND
        SD.bitFormGenRelease = 1 AND
@@ -1453,7 +1453,7 @@ INSERT INTO drm_tracktimes
     WHERE  i.QuestionForm_id = cqw.QuestionForm_id 
 
     --ACO CAHPS Dispositions
-    select cqw.questionform_id, 0 as ATACnt, 0 as ATAComplete, 0 as MeasureCnt, 0 as MeasureComplete, 0 as Disposition, Subtype_nm
+    select cqw.questionform_id, 0 as ATACnt, 0 as ATAComplete, 0 as MeasureCnt, 0 as MeasureComplete, 0 as Disposition, Subtype_nm, st.SurveyType_ID
     into #ACOQF
     FROM   cmnt_QuestionResult_work cqw 
     inner join Surveytype st on cqw.Surveytype_id=st.Surveytype_id
@@ -1461,7 +1461,7 @@ INSERT INTO drm_tracktimes
 				from [dbo].[SurveySubtype] sst 
 				INNER JOIN [dbo].[Subtype] st on (st.Subtype_id = sst.Subtype_id)
 				) sst on sst.Survey_id = cqw.SURVEY_ID 
-    WHERE  st.SurveyType_dsc = 'ACOCAHPS'
+    WHERE  st.SurveyType_dsc in ('ACOCAHPS','PQRS CAHPS')
     
     exec dbo.ACOCAHPSCompleteness
         
