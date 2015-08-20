@@ -54,7 +54,6 @@ BEGIN
 	from #QR q1
 	inner join #QR q2_43 on q1.questionform_id=q2_43.questionform_id	
 	where q1.qstncore=50175 and q1.intresponseval in (2,-5,-6) -- 2.0  
-	and q1.surveytype_id in (10,14)
 	and q2_43.qstncore in (
 						50176, --02		Q2. Is this the provider you usually see if you need a check-up want advice about a health problem or get sick or hurt?
 						50177, --03		Q3. How long have you been going to this provider?
@@ -87,7 +86,6 @@ BEGIN
 	from #QR q4
 	inner join #QR q5_43 on q4.questionform_id=q5_43.questionform_id	
 	where q4.qstncore=51426 and q4.intresponseval in (0,-5,-6) -- 2.0
-	and q4.surveytype_id in (10,14)
  	and q5_43.qstncore in (
 						50179, --05		Q5. In the last 6 months did you phone this providers office to get an appointment for an illness injury or condition that needed care right away? 
 						50181, --06		Q7. In the last 6 months did you make any appointments for a check-up or routine care with this provider?
@@ -175,5 +173,6 @@ BEGIN
 
 END
 go
-DROP FUNCTION [dbo].[ACOCAHPSCompleteness_FN]
+if exists (select * from sys.objects where name = 'ACOCAHPSCompleteness_FN')
+	DROP FUNCTION [dbo].[ACOCAHPSCompleteness_FN]
 go
