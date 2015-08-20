@@ -1,6 +1,9 @@
 Imports Nrc.Qualisys.Library
 Imports System.Linq
 Imports System.Text
+Imports DevExpress.Utils
+Imports DevExpress.XtraEditors
+Imports DevExpress.XtraEditors.Controls
 
 
 Public Class SurveyPropertiesEditor
@@ -163,7 +166,9 @@ Public Class SurveyPropertiesEditor
                 cList.Remove(DirectCast(SurveySubTypeListBox.Items(e.Index), SubType))
             End If
 
-            QuestionnaireTypeComboBox.DataSource = FilterQuestionnaireComboBox(cList)
+            Dim stl As SubTypeList = FilterQuestionnaireComboBox(cList)
+
+            LoadQuestionnaireTypeImageCombobBox(stl, mModule.EditingSurvey.Id)
 
             If selectedItem.IsRuleOverride Then
                 If e.NewValue = CheckState.Checked Then
@@ -201,10 +206,21 @@ Public Class SurveyPropertiesEditor
 
     End Sub
 
-    Private Sub QuestionnaireTypeComboBox_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles QuestionnaireTypeComboBox.SelectedIndexChanged
-
+    Private Sub QuestionnaireTypeImageComboBox_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles QuestionnaireTypeImageComboBox.SelectedIndexChanged
         If Not mIsLoading Then
-            Dim selectedItem As SubType = CType(QuestionnaireTypeComboBox.SelectedItem, SubType)
+
+            Dim selectedItem As SubType = CType(CType(QuestionnaireTypeImageComboBox.SelectedItem, ImageComboBoxItem).Value, SubType)
+
+            If selectedItem.IsActive = False Then
+                MessageBox.Show("You can't use that Questionnaire Version.  It's INACTIVE!", "Invalid Questionnaire Version", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                If mModule.EditingSurvey.QuestionnaireType.IsActive = False Then
+                    QuestionnaireTypeImageComboBox.SelectedIndex = -1
+                Else
+                    SelectQuestionnaireSubtype(mModule.EditingSurvey.QuestionnaireType.SubTypeId)
+                End If
+
+                Exit Sub
+            End If
 
             If mModule.EditingSurvey.QuestionnaireType IsNot Nothing Then
                 If selectedItem.SubTypeId <> mModule.EditingSurvey.QuestionnaireType.SubTypeId Then
@@ -217,7 +233,6 @@ Public Class SurveyPropertiesEditor
 
         End If
     End Sub
-
 
 #End Region
 
@@ -532,7 +547,7 @@ Public Class SurveyPropertiesEditor
         For Each st As SubType In SurveySubTypeListBox.CheckedItems
             If st.IsQuestionnaireRequired Then
                 ' If required, then we need to make sure that a QuestionnaireType was selected.
-                If CType(QuestionnaireTypeComboBox.SelectedItem, SubType).SubTypeId = 0 Then
+                If CType(CType(QuestionnaireTypeImageComboBox.SelectedItem, ImageComboBoxItem).Value, SubType).SubTypeId = 0 Then
                     alertMessage.Append(st.SubTypeName)
                     alertMessage.Append(vbCrLf)
                     isQuestionnaireRequiredError = True
@@ -542,7 +557,7 @@ Public Class SurveyPropertiesEditor
 
         ' If there is a missing Questionnaire, display the message to the user.
         If isQuestionnaireRequiredError Then
-            QuestionnaireTypeComboBox.Focus()
+            QuestionnaireTypeImageComboBox.Focus()
             MessageBox.Show(alertMessage.ToString(), title, MessageBoxButtons.OK, MessageBoxIcon.Information)
             Return False
         End If
@@ -653,24 +668,47 @@ Public Class SurveyPropertiesEditor
         For Each item As SubType In SurveySubTypeListBox.CheckedItems
             cList.Add(item)
         Next
-        QuestionnaireTypeComboBox.DataSource = FilterQuestionnaireComboBox(cList)
-        QuestionnaireTypeComboBox.DisplayMember = "SubtypeName"
-        QuestionnaireTypeComboBox.ValueMember = "SubTypeId"
-        QuestionnaireTypeComboBox.SelectedIndex = 0
 
-        If QuestionnaireTypeComboBox.Items.Count < 2 Then
-            QuestionnaireTypeComboBox.Enabled = False
+        Dim stl As SubTypeList = FilterQuestionnaireComboBox(cList)
+
+        LoadQuestionnaireTypeImageCombobBox(stl, surveyid, mModule.EditingSurvey.QuestionnaireType.SubTypeId)
+
+        QuestionnaireTypeImageComboBox.SelectedIndex = -1
+
+        If QuestionnaireTypeImageComboBox.Properties.Items.Count < 2 Then
+            QuestionnaireTypeImageComboBox.Enabled = False
         Else
-            QuestionnaireTypeComboBox.Enabled = True
+            QuestionnaireTypeImageComboBox.Enabled = True
             If mModule.EditingSurvey.QuestionnaireType IsNot Nothing Then
                 If mModule.EditingSurvey.QuestionnaireType.SubTypeId = 0 Then
-                    QuestionnaireTypeComboBox.SelectedIndex = 0
+                    QuestionnaireTypeImageComboBox.SelectedIndex = -1
                 Else
-                    QuestionnaireTypeComboBox.SelectedValue = mModule.EditingSurvey.QuestionnaireType.SubTypeId
+                    SelectQuestionnaireSubtype(mModule.EditingSurvey.QuestionnaireType.SubTypeId)
                 End If
             End If
         End If
 
+    End Sub
+
+    Private Sub LoadQuestionnaireTypeImageCombobBox(ByVal list As SubTypeList, ByVal surveyid As Integer, Optional ByVal selectedSubTypeId As Integer = -1)
+        QuestionnaireTypeImageComboBox.Properties.Items.Clear()
+        For Each item As SubType In list
+
+            Dim display As Boolean = True
+            If (surveyid = 0 And item.IsActive = False) Or (item.IsActive = False And item.SubTypeId <> selectedSubTypeId) Then
+                display = False
+            End If
+
+            If display Then
+                Dim icbi As New ImageComboBoxItem(item, Convert.ToInt32(item.IsActive))
+                icbi.Description = item.DisplayName
+                icbi.Value = item
+                QuestionnaireTypeImageComboBox.Properties.Items.Add(icbi)
+            End If
+
+        Next
+
+        QuestionnaireTypeImageComboBox.Properties.SmallImages = QuestionnaireTypeImageCollection
     End Sub
 
     Private Function FilterQuestionnaireComboBox(ByVal _subTypeList As List(Of SubType)) As SubTypeList
@@ -718,7 +756,6 @@ Public Class SurveyPropertiesEditor
 
     End Function
 
-
     Private Function SetSurveySubTypes() As SubTypeList
 
         Dim items As SubTypeList = New SubTypeList
@@ -732,10 +769,17 @@ Public Class SurveyPropertiesEditor
 
     Private Function SetQuestionnaireType() As SubType
 
-        If QuestionnaireTypeComboBox.SelectedItem Is Nothing Then
+        'If QuestionnaireTypeComboBox.SelectedItem Is Nothing Then
+        '    Return Nothing
+        'Else
+        '    Return CType(QuestionnaireTypeComboBox.SelectedItem, SubType)
+        'End If
+
+
+        If QuestionnaireTypeImageComboBox.SelectedItem Is Nothing Then
             Return Nothing
         Else
-            Return CType(QuestionnaireTypeComboBox.SelectedItem, SubType)
+            Return CType(CType(QuestionnaireTypeImageComboBox.SelectedItem, ImageComboBoxItem).Value, SubType)
         End If
 
     End Function
@@ -752,10 +796,16 @@ Public Class SurveyPropertiesEditor
 
     End Function
 
-
+    Private Sub SelectQuestionnaireSubtype(ByVal subtypeId As Integer)
+        For Each item As ImageComboBoxItem In QuestionnaireTypeImageComboBox.Properties.Items
+            Dim itemSubType As SubType = CType(item.Value, SubType)
+            If itemSubType.SubTypeId = subtypeId Then
+                QuestionnaireTypeImageComboBox.SelectedItem = item
+                Exit For
+            End If
+        Next
+    End Sub
 #End Region
-
-
 
 
 End Class

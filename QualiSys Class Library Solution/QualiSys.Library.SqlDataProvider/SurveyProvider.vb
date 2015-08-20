@@ -498,12 +498,15 @@ Public Class SurveyProvider
             Dim isSelected As Boolean
             Dim ParentSubType_Id As Integer
             Dim isQuestionnaireRequired As Boolean
+            Dim isActive As Boolean
 
-            If categorytype = SubtypeCategories.QuestionnaireType Then
-                items.Add(New SubType(0, -1, "N/A", False, False))
-            End If
+            'If categorytype = SubtypeCategories.QuestionnaireType Then
+            '    items.Add(New SubType(0, 0, -1, "N/A", False, True, False))
+            'End If
 
             Do While rdr.Read
+
+                isActive = rdr.GetBoolean("bitActive")
                 SubType_NM = rdr.GetString("SubType_NM")
                 SubType_Id = rdr.GetInteger("SubType_id")
                 SurveyType_Id = rdr.GetInteger("SurveyType_ID")
@@ -514,8 +517,8 @@ Public Class SurveyProvider
                 isSelected = rdr.GetInteger("bitSelected") = 1
                 ParentSubType_Id = rdr.GetInteger("ParentSubType_id")
                 isQuestionnaireRequired = rdr.GetBoolean("bitQuestionnaireRequired")
+                items.Add(New SubType(SubType_Id, SubtypeCategory_Id, SurveyType_Id, SubType_NM, isRuleOverride, isSelected, ParentSubType_Id, isQuestionnaireRequired, isActive))
 
-                items.Add(New SubType(SubType_Id, SurveyType_Id, SubType_NM, isRuleOverride, isSelected, ParentSubType_Id, isQuestionnaireRequired))
             Loop
 
             Return items
@@ -531,12 +534,17 @@ Public Class SurveyProvider
             Dim items As New SubTypeList
             Dim SubType_Id As Integer
             Dim SubType_NM As String
+            Dim SubTypeCategory_id As Integer
             Dim isRuleOverride As Boolean
+            Dim isActive As Boolean
+            SubTypeCategory_id = Convert.ToInt32(categorytype)
             Do While rdr.Read
                 SubType_NM = rdr.GetString("SubType_NM")
                 SubType_Id = rdr.GetInteger("SubType_id")
                 isRuleOverride = rdr.GetBoolean("bitRuleOverride")
-                items.Add(New SubType(SubType_Id, SubType_NM, isRuleOverride, True))
+                isActive = rdr.GetBoolean("bitActive")
+                items.Add(New SubType(SubType_Id, SubTypeCategory_id, SubType_NM, isRuleOverride, isActive, True))
+
             Loop
 
             Return items
@@ -550,7 +558,7 @@ Public Class SurveyProvider
         Dim list As SubTypeList = SelectSurveySubTypes(surveyid, categorytype)
 
         If list.Count = 0 Then
-            list.Add(New SubType(0, -1, "N/A", False, False))
+            list.Add(New SubType(0, 0, -1, "N/A", False, True, False))
         End If
 
         Return list.Item(0)
