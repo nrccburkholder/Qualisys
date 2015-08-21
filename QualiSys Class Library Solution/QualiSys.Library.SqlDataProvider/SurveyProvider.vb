@@ -500,9 +500,9 @@ Public Class SurveyProvider
             Dim isQuestionnaireRequired As Boolean
             Dim isActive As Boolean
 
-            'If categorytype = SubtypeCategories.QuestionnaireType Then
-            '    items.Add(New SubType(0, 0, -1, "N/A", False, True, False))
-            'End If
+            If categorytype = SubtypeCategories.QuestionnaireType Then
+                items.Add(New SubType(0, 0, -1, "N/A", False, True, False))
+            End If
 
             Do While rdr.Read
 

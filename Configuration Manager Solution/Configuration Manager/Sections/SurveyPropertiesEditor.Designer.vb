@@ -639,6 +639,7 @@ Partial Class SurveyPropertiesEditor
         Me.QuestionnaireTypeImageCollection.ImageStream = CType(resources.GetObject("QuestionnaireTypeImageCollection.ImageStream"), DevExpress.Utils.ImageCollectionStreamer)
         Me.QuestionnaireTypeImageCollection.Images.SetKeyName(0, "NoWay16.png")
         Me.QuestionnaireTypeImageCollection.Images.SetKeyName(1, "GreenLight.png")
+        Me.QuestionnaireTypeImageCollection.Images.SetKeyName(2, "YellowLight.png")
         '
         'InformationBar
         '

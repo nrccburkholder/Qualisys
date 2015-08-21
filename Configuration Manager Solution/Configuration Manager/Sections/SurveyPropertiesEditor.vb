@@ -209,27 +209,38 @@ Public Class SurveyPropertiesEditor
     Private Sub QuestionnaireTypeImageComboBox_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles QuestionnaireTypeImageComboBox.SelectedIndexChanged
         If Not mIsLoading Then
 
-            Dim selectedItem As SubType = CType(CType(QuestionnaireTypeImageComboBox.SelectedItem, ImageComboBoxItem).Value, SubType)
+            If QuestionnaireTypeImageComboBox.SelectedItem IsNot Nothing Then
 
-            If selectedItem.IsActive = False Then
-                MessageBox.Show("You can't use that Questionnaire Version.  It's INACTIVE!", "Invalid Questionnaire Version", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                If mModule.EditingSurvey.QuestionnaireType.IsActive = False Then
-                    QuestionnaireTypeImageComboBox.SelectedIndex = -1
-                Else
+                Dim selectedItem As SubType = CType(CType(QuestionnaireTypeImageComboBox.SelectedItem, ImageComboBoxItem).Value, SubType)
+
+                If selectedItem.IsActive = False Then
+                    MessageBox.Show("You can't use that Questionnaire Version.  It's INACTIVE!", "Invalid Questionnaire Version", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                    If mModule.EditingSurvey.QuestionnaireType.IsActive = False Then
+                        QuestionnaireTypeImageComboBox.SelectedIndex = 0
+                    Else
+                        If mModule.EditingSurvey.QuestionnaireType IsNot Nothing Then
+                            SelectQuestionnaireSubtype(mModule.EditingSurvey.QuestionnaireType.SubTypeId)
+                        End If
+                    End If
+                    Exit Sub
+                End If
+
+                If mModule.EditingSurvey.QuestionnaireType IsNot Nothing Then
+                    If selectedItem.SubTypeId <> mModule.EditingSurvey.QuestionnaireType.SubTypeId Then
+                        If selectedItem.SubTypeId = 0 Then selectedItem.NeedsDeleted = True
+                        selectedItem.IsDirty = True
+                    Else
+                        selectedItem.IsDirty = False
+                    End If
+                End If
+
+            Else
+                If mModule.EditingSurvey.QuestionnaireType IsNot Nothing Then
                     SelectQuestionnaireSubtype(mModule.EditingSurvey.QuestionnaireType.SubTypeId)
                 End If
-
-                Exit Sub
             End If
 
-            If mModule.EditingSurvey.QuestionnaireType IsNot Nothing Then
-                If selectedItem.SubTypeId <> mModule.EditingSurvey.QuestionnaireType.SubTypeId Then
-                    If selectedItem.SubTypeId = 0 Then selectedItem.NeedsDeleted = True
-                    selectedItem.IsDirty = True
-                Else
-                    selectedItem.IsDirty = False
-                End If
-            End If
+            
 
         End If
     End Sub
@@ -681,7 +692,7 @@ Public Class SurveyPropertiesEditor
 
         LoadQuestionnaireTypeImageCombobBox(stl, surveyid, questionnaireSubtypeId)
 
-        QuestionnaireTypeImageComboBox.SelectedIndex = -1
+        QuestionnaireTypeImageComboBox.SelectedIndex = 0
 
         If QuestionnaireTypeImageComboBox.Properties.Items.Count < 2 Then
             QuestionnaireTypeImageComboBox.Enabled = False
@@ -689,7 +700,7 @@ Public Class SurveyPropertiesEditor
             QuestionnaireTypeImageComboBox.Enabled = True
             If mModule.EditingSurvey.QuestionnaireType IsNot Nothing Then
                 If mModule.EditingSurvey.QuestionnaireType.SubTypeId = 0 Then
-                    QuestionnaireTypeImageComboBox.SelectedIndex = -1
+                    QuestionnaireTypeImageComboBox.SelectedIndex = 0
                 Else
                     SelectQuestionnaireSubtype(mModule.EditingSurvey.QuestionnaireType.SubTypeId)
                 End If
@@ -708,7 +719,15 @@ Public Class SurveyPropertiesEditor
             End If
 
             If display Then
-                Dim icbi As New ImageComboBoxItem(item, Convert.ToInt32(item.IsActive))
+                Dim imageIndex As Integer
+
+                If item.SubTypeId = 0 Then
+                    imageIndex = 2
+                Else
+                    imageIndex = Convert.ToInt32(item.IsActive)
+                End If
+
+                Dim icbi As New ImageComboBoxItem(item, imageIndex)
                 icbi.Description = item.DisplayName
                 icbi.Value = item
                 QuestionnaireTypeImageComboBox.Properties.Items.Add(icbi)
