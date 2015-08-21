@@ -211,31 +211,21 @@ namespace CEM.Exporting
                 {
 
                     BaseTextFileExporter exporter = GetTextFileExporter((SurveyTypes)template.SurveyTypeID);
-
-                    exporter.MakeExportTextFile(ds, template);
-
-                    filepath = xmlDoc.IsValid == true ? fileLocation : Path.Combine(fileLocation, "error");
-
-                    if (!Directory.Exists(filepath))
-                    {
-                        Directory.CreateDirectory(filepath);
-                    }
-
                     filepath = Path.Combine(filepath, Path.ChangeExtension(queuefile.FileMakerName, "txt"));
 
-                    xmlDoc.Save(filepath);
-
+                    bool isSuccess = exporter.MakeExportTextFile(ds, template, filepath );
+       
                     Int16 fileState = 0;
 
-                    if (!xmlDoc.IsValid)
+                    if (isSuccess == false)
                     {
-                        foreach (ExportValidationError eve in xmlDoc.ValidationErrorList)
-                        {
-                            //Logging to the database.  The elements of the message are pipe delimited, with the template name, queueid, queuefileid, the file name, and the validation error description
-                            string message = string.Format("{0}|{1}|{2}|{3}|{4}", template.ExportTemplateName, queuefile.ExportQueueID.ToString(), queuefile.ExportQueueFileID.ToString(), Path.GetFileName(filepath), eve.ErrorDescription);
-                            // TODO:  come up with standard EventTypes for the logging
-                            Logs.Warn("", "XMLVALIDATIONERR", message, EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
-                        }
+                        //foreach (ExportValidationError eve in xmlDoc.ValidationErrorList)
+                        //{
+                        //    //Logging to the database.  The elements of the message are pipe delimited, with the template name, queueid, queuefileid, the file name, and the validation error description
+                        //    string message = string.Format("{0}|{1}|{2}|{3}|{4}", template.ExportTemplateName, queuefile.ExportQueueID.ToString(), queuefile.ExportQueueFileID.ToString(), Path.GetFileName(filepath), eve.ErrorDescription);
+                        //    // TODO:  come up with standard EventTypes for the logging
+                        //    Logs.Warn("", "XMLVALIDATIONERR", message, EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
+                        //}
                         fileState = 2;
                     }
                     else
