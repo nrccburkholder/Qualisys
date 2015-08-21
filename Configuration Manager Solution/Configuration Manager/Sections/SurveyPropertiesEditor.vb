@@ -671,7 +671,15 @@ Public Class SurveyPropertiesEditor
 
         Dim stl As SubTypeList = FilterQuestionnaireComboBox(cList)
 
-        LoadQuestionnaireTypeImageCombobBox(stl, surveyid, mModule.EditingSurvey.QuestionnaireType.SubTypeId)
+        Dim questionnaireSubtypeId As Integer
+
+        If Not mModule.EditingSurvey.QuestionnaireType Is Nothing Then
+            questionnaireSubtypeId = mModule.EditingSurvey.QuestionnaireType.SubTypeId
+        Else
+            questionnaireSubtypeId = -1
+        End If
+
+        LoadQuestionnaireTypeImageCombobBox(stl, surveyid, questionnaireSubtypeId)
 
         QuestionnaireTypeImageComboBox.SelectedIndex = -1
 
@@ -806,6 +814,5 @@ Public Class SurveyPropertiesEditor
         Next
     End Sub
 #End Region
-
 
 End Class
