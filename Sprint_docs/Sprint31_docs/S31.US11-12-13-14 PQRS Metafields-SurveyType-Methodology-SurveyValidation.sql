@@ -452,6 +452,49 @@ DROP TABLE #M
 
 GO
 
+--DFCT0012238 required metafields missing validation
+
+DECLARE @SurveyType_ID int
+select @SurveyType_ID = SurveyType_ID from SurveyType where SurveyType_dsc = 'PQRS CAHPS'
+
+if not exists (select 1 from SurveyValidationFields where ColumnName = 'PQRS_FinderNum' and SurveyType_id = @SurveyType_ID)
+	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
+	values('Population', 'PQRS_FinderNum', @SurveyType_ID, 1)
+if not exists (select 1 from SurveyValidationFields where ColumnName = 'PQRS_LangHandE' and SurveyType_id = @SurveyType_ID)
+	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
+	values('Population','PQRS_LangHandE', @SurveyType_ID, 1)
+if not exists (select 1 from SurveyValidationFields where ColumnName = 'PQRS_HelpedHandE' and SurveyType_id = @SurveyType_ID)
+	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
+	values('Population','PQRS_HelpedHandE', @SurveyType_ID, 1)
+if not exists (select 1 from SurveyValidationFields where ColumnName = 'PQRS_GroupID' and SurveyType_id = @SurveyType_ID)
+	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
+	values('Encounter','PQRS_GroupID', @SurveyType_ID, 1)
+if not exists (select 1 from SurveyValidationFields where ColumnName = 'PQRS_GroupName' and SurveyType_id = @SurveyType_ID)
+	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
+	values('Encounter','PQRS_GroupName', @SurveyType_ID, 1)
+if not exists (select 1 from SurveyValidationFields where ColumnName = 'PQRS_FocalType' and SurveyType_id = @SurveyType_ID)
+	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
+	values('Encounter','PQRS_FocalType', @SurveyType_ID, 1)
+if not exists (select 1 from SurveyValidationFields where ColumnName = 'DrTitle' and SurveyType_id = @SurveyType_ID)
+	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
+	values('Encounter','DrTitle', @SurveyType_ID, 1)
+if not exists (select 1 from SurveyValidationFields where ColumnName = 'DrFirstName' and SurveyType_id = @SurveyType_ID)
+	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
+	values('Encounter','DrFirstName', @SurveyType_ID, 1)
+if not exists (select 1 from SurveyValidationFields where ColumnName = 'DrLastName' and SurveyType_id = @SurveyType_ID)
+	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
+	values('Encounter','DrLastName', @SurveyType_ID, 1)
+if not exists (select 1 from SurveyValidationFields where ColumnName = 'ServiceDate' and SurveyType_id = @SurveyType_ID)
+	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
+	values('Encounter','ServiceDate', @SurveyType_ID, 1)
+if not exists (select 1 from SurveyValidationFields where ColumnName = 'PhServInd1' and SurveyType_id = @SurveyType_ID)
+	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
+	values('Encounter','PhServInd1', @SurveyType_ID, 1)
+if not exists (select 1 from SurveyValidationFields where ColumnName = 'PhServDate' and SurveyType_id = @SurveyType_ID)
+	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
+	values('Encounter','PhServDate', @SurveyType_ID, 1)
+
+GO
 
 commit tran
 
