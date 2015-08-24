@@ -144,6 +144,7 @@ select @SurveyType_ID = SurveyType_ID from SurveyType where SurveyType_dsc = 'PQ
 
 --select * from SurveyValidationProcsBySurveyType svpbst inner join SurveyValidationProcs svp on svp.SurveyValidationProcs_id = svpbst.SurveyValidationProcs_id where cahpstype_id = 14
 
+insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@SurveyType_ID from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_RequiredPopulationFields'
 insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@SurveyType_ID from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_SampleUnit'
 insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@SurveyType_ID from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_ActiveMethdology'
 insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@SurveyType_ID from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_RequiredEncounterFields'
