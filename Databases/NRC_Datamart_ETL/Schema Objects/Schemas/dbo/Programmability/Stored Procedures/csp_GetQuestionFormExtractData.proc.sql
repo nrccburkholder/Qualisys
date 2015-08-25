@@ -10,7 +10,10 @@
 --          1.4 by dgilsdorf: added call to CheckForMostCompleteUsablePartials for HHCAHPS and ICHCAHPS processing
 --          1.5 by dgilsdorf: moved CAHPS processing procs to earlier in the ETL
 --          1.6 by dgilsdorf: changed call to HHCAHPSCompleteness from a function to a procedure
+<<<<<<< HEAD
 --			1.7 by ccaouette: check for duplicate questionform (same samplepop_id)
+=======
+>>>>>>> e999d14b84435993ef50556ef5622407a9a656c3
 -- =============================================
 CREATE PROCEDURE [dbo].[csp_GetQuestionFormExtractData] 
 	@ExtractFileID int 
