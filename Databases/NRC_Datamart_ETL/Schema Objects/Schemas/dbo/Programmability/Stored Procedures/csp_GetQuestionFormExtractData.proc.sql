@@ -8,8 +8,10 @@
 --			1.2 by ccaouette: ACO CAHPS Project
 --          1.3 by dgilsdorf: CheckForACOCAHPSIncompletes changed to CheckForCAHPSIncompletes
 --          1.4 by dgilsdorf: added call to CheckForMostCompleteUsablePartials for HHCAHPS and ICHCAHPS processing
+--          1.5 by dgilsdorf: moved CAHPS processing procs to earlier in the ETL
+--          1.6 by dgilsdorf: changed call to HHCAHPSCompleteness from a function to a procedure
 -- =============================================
-alter PROCEDURE [dbo].[csp_GetQuestionFormExtractData] 
+CREATE PROCEDURE [dbo].[csp_GetQuestionFormExtractData] 
 	@ExtractFileID int 
 	
 --exec [dbo].[csp_GetQuestionFormExtractData]  2238
