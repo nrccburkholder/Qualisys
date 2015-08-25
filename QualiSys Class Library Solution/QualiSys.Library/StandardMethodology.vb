@@ -82,7 +82,7 @@ Public Class StandardMethodology
     ''' <returns></returns>
     Public Shared Function GetBySurveyType(ByVal srvyType As SurveyTypes, ByVal subTypes As SubTypeList) As Collection(Of StandardMethodology)
 
-        Dim SubType As SubType = New SubType(0, "", False)
+        Dim SubType As SubType = New SubType(0, 0, "", False)
 
         If (Not subTypes Is Nothing) Then
             For Each st As SubType In subTypes

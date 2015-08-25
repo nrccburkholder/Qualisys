@@ -22,6 +22,7 @@ Public Class SubType
     Private mWasSelected As Boolean = False
     Private mParentSubType_Id As Integer = 0
     Private mbitQuestionnaireRequired As Boolean = False
+    Private mbitActive As Boolean = True
 #End Region
 
 #Region "public properties"
@@ -62,6 +63,13 @@ Public Class SubType
 
     Public ReadOnly Property DisplayName() As String
         Get
+            'Select Case mSubtypeCategory_Id
+            '    Case 2
+            '        Return String.Concat(mSubType_NM, IIf(mbitActive = False, " (INACTIVE)", ""))
+            '    Case Else
+            '        Return String.Concat(mSubType_NM, IIf(mbitRuleOverride = True, "*", ""))
+            'End Select
+
             Return String.Concat(mSubType_NM, IIf(mbitRuleOverride = True, "*", ""))
         End Get
 
@@ -175,6 +183,19 @@ Public Class SubType
         End Set
     End Property
 
+    Public Property IsActive() As Boolean
+        Get
+            Return mbitActive
+
+        End Get
+        Set(value As Boolean)
+            mbitActive = value
+        End Set
+
+    End Property
+
+
+
 #End Region
 
 #Region " Constructors "
@@ -184,35 +205,40 @@ Public Class SubType
 
     End Sub
 
-    Public Sub New(ByVal subtype_Id As Integer, ByVal Name As String, ByVal isSelected As Boolean)
+    Public Sub New(ByVal subtype_Id As Integer, ByVal categoryType_id As Integer, ByVal Name As String, ByVal isSelected As Boolean)
 
         mSubType_Id = subtype_Id
         mSubType_NM = Name
         mWasSelected = isSelected
+        mSubtypeCategory_Id = categoryType_id
 
     End Sub
 
-    Public Sub New(ByVal subtype_Id As Integer, ByVal Name As String, ByVal bitRuleOverride As Boolean, ByVal isSelected As Boolean)
+    Public Sub New(ByVal subtype_Id As Integer, ByVal categoryType_id As Integer, ByVal Name As String, ByVal bitRuleOverride As Boolean, ByVal bitActive As Boolean, ByVal isSelected As Boolean)
 
 
         mSubType_Id = subtype_Id
         mSubType_NM = Name
         mbitRuleOverride = bitRuleOverride
         mWasSelected = isSelected
+        mbitActive = bitActive
+        mSubtypeCategory_Id = categoryType_id
     End Sub
 
 
-    Public Sub New(ByVal subtype_Id As Integer, ByVal SurveyID As Integer, ByVal Name As String, ByVal bitRuleOverride As Boolean, ByVal isSelected As Boolean)
+    Public Sub New(ByVal subtype_Id As Integer, ByVal categoryType_id As Integer, ByVal SurveyID As Integer, ByVal Name As String, ByVal bitRuleOverride As Boolean, ByVal bitActive As Boolean, ByVal isSelected As Boolean)
 
         mSubType_Id = subtype_Id
         mSubType_NM = Name
         mSurveyType_Id = SurveyID
         mbitRuleOverride = bitRuleOverride
         mWasSelected = isSelected
+        mbitActive = bitActive
+        mSubtypeCategory_Id = categoryType_id
 
     End Sub
 
-    Public Sub New(ByVal subtype_Id As Integer, ByVal SurveyID As Integer, ByVal Name As String, ByVal bitRuleOverride As Boolean, ByVal isSelected As Boolean, ByVal parentSubType_Id As Integer, ByVal isQuestionnaireRequired As Boolean)
+    Public Sub New(ByVal subtype_Id As Integer, ByVal categoryType_id As Integer, ByVal SurveyID As Integer, ByVal Name As String, ByVal bitRuleOverride As Boolean, ByVal isSelected As Boolean, ByVal parentSubType_Id As Integer, ByVal isQuestionnaireRequired As Boolean, ByVal bitActive As Boolean)
 
         mSubType_Id = subtype_Id
         mSubType_NM = Name
@@ -221,6 +247,8 @@ Public Class SubType
         mWasSelected = isSelected
         mParentSubType_Id = parentSubType_Id
         mbitQuestionnaireRequired = isQuestionnaireRequired
+        mbitActive = bitActive
+        mSubtypeCategory_Id = categoryType_id
 
     End Sub
 
