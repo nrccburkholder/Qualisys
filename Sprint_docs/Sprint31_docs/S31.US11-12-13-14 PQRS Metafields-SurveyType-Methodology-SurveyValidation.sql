@@ -142,7 +142,7 @@ GO
 DECLARE @SurveyType_ID int
 select @SurveyType_ID = SurveyType_ID from SurveyType where SurveyType_dsc = 'PQRS CAHPS'
 
---select * from SurveyValidationProcsBySurveyType svpbst inner join SurveyValidationProcs svp on svp.SurveyValidationProcs_id = svpbst.SurveyValidationProcs_id where cahpstype_id = 14
+--select * from SurveyValidationProcsBySurveyType svpbst inner join SurveyValidationProcs svp on svp.SurveyValidationProcs_id = svpbst.SurveyValidationProcs_id where cahpstype_id in (13, 14)
 
 insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@SurveyType_ID from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_RequiredPopulationFields'
 insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@SurveyType_ID from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_SampleUnit'
@@ -158,11 +158,19 @@ insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSTy
 insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@SurveyType_ID from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_SamplePeriods'
 insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@SurveyType_ID from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_HasDQRule'
 
---select * from SurveyTypeQuestionMappings where surveytype_id = 14 order by intorder
+--select * from SurveyTypeQuestionMappings where surveytype_id in (10,13,14) order by intorder
+
+GO
+
+DECLARE @SurveyType_ID int
+select @SurveyType_ID = SurveyType_ID from SurveyType where SurveyType_dsc = 'PQRS CAHPS'
+
+declare @ACO12SubType int
+select @ACO12SubType = subtype_id from subtype where subtype_nm = 'ACO-12'
 
 --START FROM ACOCAHPS QUESTIONS
-insert into SurveyTypeQuestionMappings
-select @SurveyType_ID, QstnCore, intOrder, bitFirstOnForm, bitExpanded, '11/1/2015', datEncounterEnd_dt, 0 from SurveyTypeQuestionMappings where surveytype_id = 10 and subtype_id = 11
+insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
+select @SurveyType_ID, QstnCore, intOrder, bitFirstOnForm, bitExpanded, '11/1/2015', datEncounterEnd_dt, 0 from SurveyTypeQuestionMappings where surveytype_id = 10 and subtype_id = @ACO12SubType
 
 --SUBSTITUTE NEW PQRS CAHPS QSTNCORE NUMBERS
 update SurveyTypeQuestionMappings set QstnCore = 53421 where intorder = 5 and surveytype_id = @SurveyType_ID
