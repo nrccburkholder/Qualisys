@@ -17,25 +17,28 @@ insert into dbo.CahpsDispositionMapping
 go
 use master
 go
-if not exists (select * from qualisys.qp_prod.dbo.SurveyTypeDispositions where surveytype_id=14)
+declare @pqrsType int
+select @pqrsType = SurveyType_id from qualisys.qp_prod.dbo.SurveyType where SurveyType_dsc = 'PQRS CAHPS'
+
+if not exists (select * from qualisys.qp_prod.dbo.SurveyTypeDispositions where surveytype_id=@pqrsType)
 insert into qualisys.qp_prod.dbo.SurveyTypeDispositions 
 (surveytype_id	,Value	,[Desc]	,Hierarchy	,ExportReportResponses	,Disposition_ID	)
-values (14	,20	,'Deceased'										,1	,0	,3	)
-	,  (14	,11	,'Institutionalized'							,2	,0	,24	)
-	,  (14	,40	,'Excluded from survey'							,3	,0	,48	)
-	,  (14	,10	,'Completed Survey'								,4	,1	,13	)
-	,  (14	,34	,'Blank survey or incomplete survey returned'	,5	,0	,49	)
-	,  (14	,31	,'Partially Completed Survey'					,6	,1	,11	)
-	,  (14	,34	,'Blank survey or incomplete survey returned'	,7	,1	,25	)
-	,  (14	,34	,'Blank survey or incomplete survey returned'	,7	,1	,26	)
-	,  (14	,34	,'Blank survey or incomplete survey returned'	,7	,1	,27	)
-	,  (14	,22	,'Language Barrier'								,8	,0	,10	)
-	,  (14	,24	,'Mentally or physically unable to respond'		,9	,0	,4	)
-	,  (14	,32	,'Refusal'										,10	,0	,2	)
-	,  (14	,35	,'Bad address and/or bad phone number'			,11	,0	,5	)
-	,  (14	,35	,'Bad address and/or bad phone number'			,11	,0	,16	)
-	,  (14	,35	,'Bad address and/or bad phone number'			,11	,0	,14	)
-	,  (14	,33	,'Non-response'									,12	,0	,12	)
+values (@pqrsType	,20	,'Deceased'										,1	,0	,3	)
+	,  (@pqrsType	,11	,'Institutionalized'							,2	,0	,24	)
+	,  (@pqrsType	,40	,'Excluded from survey'							,3	,0	,48	)
+	,  (@pqrsType	,10	,'Completed Survey'								,4	,1	,13	)
+	,  (@pqrsType	,34	,'Blank survey or incomplete survey returned'	,5	,0	,49	)
+	,  (@pqrsType	,31	,'Partially Completed Survey'					,6	,1	,11	)
+	,  (@pqrsType	,34	,'Blank survey or incomplete survey returned'	,7	,1	,25	)
+	,  (@pqrsType	,34	,'Blank survey or incomplete survey returned'	,7	,1	,26	)
+	,  (@pqrsType	,34	,'Blank survey or incomplete survey returned'	,7	,1	,27	)
+	,  (@pqrsType	,22	,'Language Barrier'								,8	,0	,10	)
+	,  (@pqrsType	,24	,'Mentally or physically unable to respond'		,9	,0	,4	)
+	,  (@pqrsType	,32	,'Refusal'										,10	,0	,2	)
+	,  (@pqrsType	,35	,'Bad address and/or bad phone number'			,11	,0	,5	)
+	,  (@pqrsType	,35	,'Bad address and/or bad phone number'			,11	,0	,16	)
+	,  (@pqrsType	,35	,'Bad address and/or bad phone number'			,11	,0	,14	)
+	,  (@pqrsType	,33	,'Non-response'									,12	,0	,12	)
 go
 use NRC_Datamart
 go

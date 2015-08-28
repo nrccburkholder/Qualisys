@@ -38,16 +38,29 @@ BEGIN
 
 	create table #QR (Questionform_id int, qstncore int, intResponseVal int)
 	insert into #QR (questionform_id, qstncore, intResponseVal)
-			select qr.questionform_id, QstnCore,intResponseVal from QuestionResult qr, #ACOQF qf where qr.QuestionForm_id=qf.QuestionForm_id and qf.surveytype_id in (10,14)
-			union all select qr.questionform_id, QstnCore,intResponseVal from QuestionResult2 qr, #ACOQF qf where qr.QuestionForm_id=qf.QuestionForm_id and qf.surveytype_id in (10,14)
+			select qr.questionform_id, QstnCore,intResponseVal 
+				from QuestionResult qr, #ACOQF qf, SurveyType st 
+				where qr.QuestionForm_id=qf.QuestionForm_id 
+				and qf.surveytype_id = st.SurveyType_ID
+				and st.surveytype_dsc in ('ACOCAHPS','PQRS CAHPS')
+			union all 
+				select qr.questionform_id, QstnCore,intResponseVal 
+					from QuestionResult2 qr, #ACOQF qf, SurveyType st 
+					where qr.QuestionForm_id=qf.QuestionForm_id 
+					and qf.surveytype_id = st.SurveyType_ID
+					and st.surveytype_dsc in ('ACOCAHPS','PQRS CAHPS')
 	
-	update #ACOQF set ATAcnt=0, ATAcomplete=0, MeasureCnt=0, MeasureComplete=0, Disposition=0 where surveytype_id in (10,14)
+	update #ACOQF set ATAcnt=0, ATAcomplete=0, MeasureCnt=0, MeasureComplete=0, Disposition=0 
+	from #ACOQF qf
+	inner join surveytype st on qf.surveytype_id = st.surveytype_id
+	where st.surveytype_dsc in ('ACOCAHPS','PQRS CAHPS')
 
 	update #ACOQF set disposition=255
 	from #ACOQF qf
+	inner join surveytype st on qf.surveytype_id = st.surveytype_id
 	left join #QR qr on qf.questionform_id=qr.questionform_id
 	where qr.questionform_id is null
-	and qf.surveytype_id in (10,14)
+	and st.surveytype_dsc in ('ACOCAHPS','PQRS CAHPS')
 
 	-- if Q1 invokes the skip, ignore questions 5 through 43
 	delete q2_43 
@@ -119,8 +132,10 @@ BEGIN
 	insert into @ATA
 	select stqm.surveytype_id, st.subtype_nm, count(*) as totalATAcnt
 	from SurveyTypeQuestionMappings stqm
+	inner join SurveyType srt on stqm.SurveyType_id = srt.SurveyType_ID 
 	left join subtype st on stqm.subtype_id=st.subtype_id
-	where stqm.SurveyType_id in (10,14)
+	where stqm.SurveyType_id = srt.SurveyType_ID 
+	and srt.surveytype_dsc in ('ACOCAHPS','PQRS CAHPS')
 	and stqm.isATA=1
 	group by stqm.surveytype_id, st.subtype_nm
 
@@ -134,9 +149,11 @@ BEGIN
 	inner join (SELECT st.subtype_nm,stqm.surveytype_id, qr.questionform_id, COUNT(distinct qr.QstnCore) as cnt
 				FROM #QR qr
 				inner join SurveyTypeQuestionMappings stqm on qr.QstnCore=stqm.QstnCore
+				inner join SurveyType srt on stqm.SurveyType_id = srt.SurveyType_ID 
 				left join subtype st on stqm.subtype_id=st.subtype_id
 				where qr.intResponseVal>=0
-				and stqm.SurveyType_id in (10,14)
+				and stqm.SurveyType_id = srt.SurveyType_ID
+				and srt.surveytype_dsc in ('ACOCAHPS','PQRS CAHPS')
 				and stqm.isATA=1
 				group by st.subtype_nm,stqm.surveytype_id, qr.questionform_id) sub
 		on qf.questionform_id=sub.questionform_id
@@ -149,9 +166,11 @@ BEGIN
 	inner join (SELECT st.subtype_nm,stqm.surveytype_id, qr.questionform_id, COUNT(distinct qr.qstncore) as cnt
 				FROM #QR qr
 				inner join SurveyTypeQuestionMappings stqm on qr.QstnCore=stqm.QstnCore
+				inner join SurveyType srt on stqm.SurveyType_id = srt.SurveyType_ID 
 				inner join subtype st on stqm.subtype_id=st.subtype_id
 				WHERE qr.intResponseVal >= 0
-				and stqm.SurveyType_id in (10,14)
+				and stqm.SurveyType_id = srt.SurveyType_ID
+				and srt.surveytype_dsc in ('ACOCAHPS','PQRS CAHPS')
 				and stqm.isMeasure=1
 				group by st.subtype_nm,stqm.surveytype_id, qr.questionform_id) sub
 		on qf.questionform_id=sub.questionform_id
