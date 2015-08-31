@@ -92,7 +92,7 @@ select @pqrsMethodologyId = StandardMethodologyId from StandardMethodology where
 insert into standardmethodologybysurveytype (StandardMethodologyID, SurveyType_id, SubType_ID) values (@pqrsMethodologyId, @pqrsId, 0)
 
 insert into standardmailingstep (StandardMethodologyID, intSequence, bitSurveyInLine, bitSendSurvey, intIntervalDays, bitThankYouItem, strMailingStep_nm, bitFirstSurvey, MailingStepMethod_id, ExpireInDays, ExpireFromStep, Quota_ID, QuotaStopCollectionAt, DaysInField, NumberOfAttempts, WeekDay_Day_Call, WeekDay_Eve_Call, Sat_Day_Call, Sat_Eve_Call, Sun_Day_Call, Sun_Eve_Call, CallBackOtherLang, CallbackUsingTTY, AcceptPartial, SendEmailBlast)
-values (@pqrsMethodologyId, 1, 0, 1, 0, 0, 'Prenote', 1, 10, 82, 1, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
+values (@pqrsMethodologyId, 1, 0, 0, 0, 0, 'Prenote', 1, 10, 82, 1, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
 insert into standardmailingstep (StandardMethodologyID, intSequence, bitSurveyInLine, bitSendSurvey, intIntervalDays, bitThankYouItem, strMailingStep_nm, bitFirstSurvey, MailingStepMethod_id, ExpireInDays, ExpireFromStep, Quota_ID, QuotaStopCollectionAt, DaysInField, NumberOfAttempts, WeekDay_Day_Call, WeekDay_Eve_Call, Sat_Day_Call, Sat_Eve_Call, Sun_Day_Call, Sun_Eve_Call, CallBackOtherLang, CallbackUsingTTY, AcceptPartial, SendEmailBlast)
 values (@pqrsMethodologyId, 2, 0, 1, 4, 0, '1st Survey', 0, 0, 82, 1, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
 insert into standardmailingstep (StandardMethodologyID, intSequence, bitSurveyInLine, bitSendSurvey, intIntervalDays, bitThankYouItem, strMailingStep_nm, bitFirstSurvey, MailingStepMethod_id, ExpireInDays, ExpireFromStep, Quota_ID, QuotaStopCollectionAt, DaysInField, NumberOfAttempts, WeekDay_Day_Call, WeekDay_Eve_Call, Sat_Day_Call, Sat_Eve_Call, Sun_Day_Call, Sun_Eve_Call, CallBackOtherLang, CallbackUsingTTY, AcceptPartial, SendEmailBlast)
@@ -142,8 +142,9 @@ GO
 DECLARE @SurveyType_ID int
 select @SurveyType_ID = SurveyType_ID from SurveyType where SurveyType_dsc = 'PQRS CAHPS'
 
---select * from SurveyValidationProcsBySurveyType svpbst inner join SurveyValidationProcs svp on svp.SurveyValidationProcs_id = svpbst.SurveyValidationProcs_id where cahpstype_id = 14
+--select * from SurveyValidationProcsBySurveyType svpbst inner join SurveyValidationProcs svp on svp.SurveyValidationProcs_id = svpbst.SurveyValidationProcs_id where cahpstype_id in (13, 14)
 
+insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@SurveyType_ID from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_RequiredPopulationFields'
 insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@SurveyType_ID from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_SampleUnit'
 insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@SurveyType_ID from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_ActiveMethdology'
 insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@SurveyType_ID from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_RequiredEncounterFields'
@@ -157,11 +158,19 @@ insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSTy
 insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@SurveyType_ID from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_SamplePeriods'
 insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@SurveyType_ID from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_HasDQRule'
 
---select * from SurveyTypeQuestionMappings where surveytype_id = 14 order by intorder
+--select * from SurveyTypeQuestionMappings where surveytype_id in (10,13,14) order by intorder
+
+GO
+
+DECLARE @SurveyType_ID int
+select @SurveyType_ID = SurveyType_ID from SurveyType where SurveyType_dsc = 'PQRS CAHPS'
+
+declare @ACO12SubType int
+select @ACO12SubType = subtype_id from subtype where subtype_nm = 'ACO-12'
 
 --START FROM ACOCAHPS QUESTIONS
-insert into SurveyTypeQuestionMappings
-select @SurveyType_ID, QstnCore, intOrder, bitFirstOnForm, bitExpanded, '11/1/2015', datEncounterEnd_dt, 0 from SurveyTypeQuestionMappings where surveytype_id = 10 and subtype_id = 11
+insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
+select @SurveyType_ID, QstnCore, intOrder, bitFirstOnForm, bitExpanded, '11/1/2015', datEncounterEnd_dt, 0 from SurveyTypeQuestionMappings where surveytype_id = 10 and subtype_id = @ACO12SubType
 
 --SUBSTITUTE NEW PQRS CAHPS QSTNCORE NUMBERS
 update SurveyTypeQuestionMappings set QstnCore = 53421 where intorder = 5 and surveytype_id = @SurveyType_ID
@@ -452,6 +461,49 @@ DROP TABLE #M
 
 GO
 
+--DFCT0012238 required metafields missing validation
+
+DECLARE @SurveyType_ID int
+select @SurveyType_ID = SurveyType_ID from SurveyType where SurveyType_dsc = 'PQRS CAHPS'
+
+if not exists (select 1 from SurveyValidationFields where ColumnName = 'PQRS_FinderNum' and SurveyType_id = @SurveyType_ID)
+	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
+	values('Population', 'PQRS_FinderNum', @SurveyType_ID, 1)
+if not exists (select 1 from SurveyValidationFields where ColumnName = 'PQRS_LangHandE' and SurveyType_id = @SurveyType_ID)
+	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
+	values('Population','PQRS_LangHandE', @SurveyType_ID, 1)
+if not exists (select 1 from SurveyValidationFields where ColumnName = 'PQRS_HelpedHandE' and SurveyType_id = @SurveyType_ID)
+	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
+	values('Population','PQRS_HelpedHandE', @SurveyType_ID, 1)
+if not exists (select 1 from SurveyValidationFields where ColumnName = 'PQRS_GroupID' and SurveyType_id = @SurveyType_ID)
+	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
+	values('Encounter','PQRS_GroupID', @SurveyType_ID, 1)
+if not exists (select 1 from SurveyValidationFields where ColumnName = 'PQRS_GroupName' and SurveyType_id = @SurveyType_ID)
+	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
+	values('Encounter','PQRS_GroupName', @SurveyType_ID, 1)
+if not exists (select 1 from SurveyValidationFields where ColumnName = 'PQRS_FocalType' and SurveyType_id = @SurveyType_ID)
+	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
+	values('Encounter','PQRS_FocalType', @SurveyType_ID, 1)
+if not exists (select 1 from SurveyValidationFields where ColumnName = 'DrTitle' and SurveyType_id = @SurveyType_ID)
+	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
+	values('Encounter','DrTitle', @SurveyType_ID, 1)
+if not exists (select 1 from SurveyValidationFields where ColumnName = 'DrFirstName' and SurveyType_id = @SurveyType_ID)
+	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
+	values('Encounter','DrFirstName', @SurveyType_ID, 1)
+if not exists (select 1 from SurveyValidationFields where ColumnName = 'DrLastName' and SurveyType_id = @SurveyType_ID)
+	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
+	values('Encounter','DrLastName', @SurveyType_ID, 1)
+if not exists (select 1 from SurveyValidationFields where ColumnName = 'ServiceDate' and SurveyType_id = @SurveyType_ID)
+	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
+	values('Encounter','ServiceDate', @SurveyType_ID, 1)
+if not exists (select 1 from SurveyValidationFields where ColumnName = 'PhServInd1' and SurveyType_id = @SurveyType_ID)
+	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
+	values('Encounter','PhServInd1', @SurveyType_ID, 1)
+if not exists (select 1 from SurveyValidationFields where ColumnName = 'PhServDate' and SurveyType_id = @SurveyType_ID)
+	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
+	values('Encounter','PhServDate', @SurveyType_ID, 1)
+
+GO
 
 commit tran
 

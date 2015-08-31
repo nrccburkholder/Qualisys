@@ -8,8 +8,14 @@
 --			1.2 by ccaouette: ACO CAHPS Project
 --          1.3 by dgilsdorf: CheckForACOCAHPSIncompletes changed to CheckForCAHPSIncompletes
 --          1.4 by dgilsdorf: added call to CheckForMostCompleteUsablePartials for HHCAHPS and ICHCAHPS processing
+--          1.5 by dgilsdorf: moved CAHPS processing procs to earlier in the ETL
+--          1.6 by dgilsdorf: changed call to HHCAHPSCompleteness from a function to a procedure
+<<<<<<< HEAD
+--			1.7 by ccaouette: check for duplicate questionform (same samplepop_id)
+=======
+>>>>>>> e999d14b84435993ef50556ef5622407a9a656c3
 -- =============================================
-alter PROCEDURE [dbo].[csp_GetQuestionFormExtractData] 
+CREATE PROCEDURE [dbo].[csp_GetQuestionFormExtractData] 
 	@ExtractFileID int 
 	
 --exec [dbo].[csp_GetQuestionFormExtractData]  2238
@@ -48,30 +54,129 @@ AS
 	---------------------------------------------------------------------------------------
 
 	-- clean up any records that might be in the tables already
-	delete QuestionFormTemp where ExtractFileID = @ExtractFileID
+	DELETE QuestionFormTemp where ExtractFileID = @ExtractFileID;
 
-	insert QuestionFormTemp 
-			(ExtractFileID, QUESTIONFORM_ID, SURVEY_ID,SurveyType_id,SAMPLEPOP_ID,strLithoCode, isComplete, ReceiptType_id
-             , returnDate, DatMailed,DatExpire,DatGenerated,DatPrinted,DatBundled,DatUndeliverable,IsDeleted)
-		select distinct @ExtractFileID, qf.QUESTIONFORM_ID, qf.SURVEY_ID,sd.SurveyType_id, qf.SAMPLEPOP_ID,sm.strLithoCode, 
-			   case when qf.bitComplete <> 0 then 'true' else 'false' end, 
-			   qf.ReceiptType_id,qf.datReturned , sm.DatMailed, sm.DatExpire, sm.DatGenerated, sm.DatPrinted, sm.DatBundled, sm.DatUndeliverable,0
-  --      select *
-		 from (select distinct PKey1 
-                        from ExtractHistory  with (NOLOCK) 
-                         where ExtractFileID = @ExtractFileID
-	                     and EntityTypeID = @EntityTypeID
-	                     and IsDeleted = 0 ) eh
-				inner join QP_Prod.dbo.QUESTIONFORM qf With (NOLOCK) on qf.QUESTIONFORM_ID = eh.PKey1
-               	inner join QP_Prod.dbo.SentMailing sm With (NOLOCK) on qf.SentMail_id = sm.SentMail_id   
-                inner join QP_Prod.dbo.SAMPLEPOP sp with (NOLOCK) on sp.samplepop_id = qf.SAMPLEPOP_ID	
-                inner join QP_Prod.dbo.Survey_def sd With (NOLOCK) on qf.SURVEY_ID = sd.SURVEY_ID
-                left join SampleSetTemp sst with (NOLOCK) on sp.sampleset_id = sst.sampleset_id 
-                                     and sst.ExtractFileID = @ExtractFileID and sst.IsDeleted = 1
-	    where (qf.DATRETURNED is not null OR sm.DatUndeliverable is not NULL ) 
-	           and sp.POP_ID > 0
-	           and sst.sampleset_id is NULL --excludes questionforms/sample pops that will be deleted due to sampleset deletes
-	    
+	-- CTE finds duplicate questionforms in ExtractHistory table
+	WITH cteEH AS
+	(
+				SELECT eh1.PKey1, eh1.Pkey2, eh1.EntityTypeID, eh1.IsDeleted, eh1.Created
+				FROM ExtractHistory eh1
+				INNER JOIN (SELECT DISTINCT PKey1, Pkey2, EntityTypeID
+								FROM ExtractHistory  with (NOLOCK) 
+									WHERE ExtractFileID = @ExtractFileID
+									AND EntityTypeID = @EntityTypeID --and pkey2 = '186064012'
+									GROUP BY PKey1, Pkey2,EntityTypeID
+									having COUNT(*) > 1) eh2 ON eh1.PKey1 = eh2.PKey1 AND eh1.PKey2 = eh2.Pkey2 AND eh1.EntityTypeID = eh2.EntityTypeID
+				WHERE ExtractFileID = @ExtractFileID								
+	)
+
+
+	INSERT INTO QuestionFormTemp 
+			(ExtractFileID
+			, QUESTIONFORM_ID
+			, SURVEY_ID
+			, SurveyType_id
+			, SAMPLEPOP_ID
+			, strLithoCode
+			, isComplete
+			, ReceiptType_id
+            , returnDate
+			, DatMailed, DatExpire, DatGenerated, DatPrinted, DatBundled, DatUndeliverable
+			,IsDeleted)
+	SELECT DISTINCT @ExtractFileID
+						, qf.QUESTIONFORM_ID
+						, qf.SURVEY_ID
+						, sd.SurveyType_id
+						, qf.SAMPLEPOP_ID
+						, sm.strLithoCode
+						, CASE WHEN qf.bitComplete <> 0 THEN 'true' ELSE 'false' END 
+						, qf.ReceiptType_id
+						, qf.datReturned 
+						, sm.DatMailed, sm.DatExpire, sm.DatGenerated, sm.DatPrinted, sm.DatBundled, sm.DatUndeliverable
+						, eh.IsDeleted
+		 FROM (SELECT  t1.PKey1, t1.Pkey2, t1.IsDeleted
+					FROM cteEH t1 
+					INNER JOIN cteEH t2 ON t1.PKey1 = t2.PKey1 AND t1.PKey2 = t2.Pkey2 AND t1.EntityTypeID = t2.EntityTypeID
+					WHERE t1.Created > t2.Created
+					) eh --Find most recent duplicate ExtractHistory record
+		INNER JOIN QP_Prod.dbo.QUESTIONFORM qf With (NOLOCK) on qf.QUESTIONFORM_ID = eh.PKey1
+        INNER JOIN QP_Prod.dbo.SentMailing sm With (NOLOCK) on qf.SentMail_id = sm.SentMail_id   
+        INNER JOIN QP_Prod.dbo.SAMPLEPOP sp with (NOLOCK) on sp.samplepop_id = qf.SAMPLEPOP_ID	
+        INNER JOIN QP_Prod.dbo.Survey_def sd With (NOLOCK) on qf.SURVEY_ID = sd.SURVEY_ID
+        LEFT JOIN SampleSetTemp sst with (NOLOCK) on sp.sampleset_id = sst.sampleset_id 
+                                     AND sst.ExtractFileID = @ExtractFileID and sst.IsDeleted = 1
+	    WHERE (qf.DATRETURNED IS NOT NULL OR sm.DatUndeliverable IS NOT NULL ) 
+	           AND sp.POP_ID > 0
+	           AND sst.sampleset_id IS NULL; --excludes questionforms/sample pops that will be deleted due to sampleset deletes
+
+	WITH cteEH AS
+	(
+				SELECT eh1.PKey1, eh1.Pkey2, eh1.EntityTypeID, eh1.IsDeleted, eh1.Created
+				FROM ExtractHistory eh1
+				INNER JOIN (SELECT DISTINCT PKey1, Pkey2, EntityTypeID
+								FROM ExtractHistory  with (NOLOCK) 
+									WHERE ExtractFileID = @ExtractFileID
+									AND EntityTypeID = @EntityTypeID --and pkey2 = '186064012'
+									GROUP BY PKey1, Pkey2,EntityTypeID
+									having COUNT(*) = 1) eh2 ON eh1.PKey1 = eh2.PKey1 AND eh1.PKey2 = eh2.Pkey2 AND eh1.EntityTypeID = eh2.EntityTypeID
+				WHERE ExtractFileID = @ExtractFileID
+	)
+
+
+	INSERT INTO QuestionFormTemp 
+			(ExtractFileID
+			, QUESTIONFORM_ID
+			, SURVEY_ID
+			, SurveyType_id
+			, SAMPLEPOP_ID
+			, strLithoCode
+			, isComplete
+			, ReceiptType_id
+            , returnDate
+			, DatMailed, DatExpire, DatGenerated, DatPrinted, DatBundled, DatUndeliverable
+			,IsDeleted)
+	SELECT DISTINCT @ExtractFileID
+						, qf.QUESTIONFORM_ID
+						, qf.SURVEY_ID
+						, sd.SurveyType_id
+						, qf.SAMPLEPOP_ID
+						, sm.strLithoCode
+						, CASE WHEN qf.bitComplete <> 0 THEN 'true' ELSE 'false' END 
+						, qf.ReceiptType_id
+						, qf.datReturned 
+						, sm.DatMailed, sm.DatExpire, sm.DatGenerated, sm.DatPrinted, sm.DatBundled, sm.DatUndeliverable
+						, eh.IsDeleted
+		 FROM (SELECT  t1.PKey1, t1.Pkey2, t1.IsDeleted
+					FROM cteEH t1 
+					) eh 
+		INNER JOIN QP_Prod.dbo.QUESTIONFORM qf With (NOLOCK) on qf.QUESTIONFORM_ID = eh.PKey1
+        INNER JOIN QP_Prod.dbo.SentMailing sm With (NOLOCK) on qf.SentMail_id = sm.SentMail_id   
+        INNER JOIN QP_Prod.dbo.SAMPLEPOP sp with (NOLOCK) on sp.samplepop_id = qf.SAMPLEPOP_ID	
+        INNER JOIN QP_Prod.dbo.Survey_def sd With (NOLOCK) on qf.SURVEY_ID = sd.SURVEY_ID
+        LEFT JOIN SampleSetTemp sst with (NOLOCK) on sp.sampleset_id = sst.sampleset_id 
+                                     AND sst.ExtractFileID = @ExtractFileID and sst.IsDeleted = 1
+	    WHERE (qf.DATRETURNED IS NOT NULL OR sm.DatUndeliverable IS NOT NULL ) 
+	           AND sp.POP_ID > 0
+	           AND sst.sampleset_id IS NULL;
+
+		--Deal with multiple QuestionForms with same SamplePop.  Process earliest returndate by setting IsDelete=0, other matching records set to IsDeleted=1
+		;WITH cleanQF AS
+		(
+			SELECT QuestionForm_ID, SamplePop_ID, returnDate FROM QuestionFormTemp
+			WHERE returnDate IS NOT NULL AND SamplePop_ID IN (
+			SELECT SamplePop_ID
+			FROM QuestionFormTemp
+			WHERE returnDate IS NOT NULL --AND IsDeleted = 0
+			GROUP BY SamplePop_ID
+			HAVING COUNT(DISTINCT QuestionForm_ID) > 1)
+		) 
+
+		UPDATE t
+		SET IsDeleted = 1
+		--SELECT c.*,t.QuestionForm_ID, t.SamplePop_ID, t.returnDate
+		FROM QuestionFormTemp t
+		LEFT JOIN cleanQF c ON c.SamplePop_ID = t.SamplePop_ID
+		WHERE c.returnDate < t.returnDate AND c.QuestionForm_ID <> t.QuestionForm_ID
 ---------------------------------------------------------------------------------------	    
 -- Add code to determine days from first mailing as well as days from current mailing until the return    
 -- Get all of the maildates for the samplepops were are extracting    
@@ -143,18 +248,22 @@ AS
  ---------------------------------------------------------------------------------------
  -- Load records to deletes into a temp table
   ---------------------------------------------------------------------------------------
- insert QuestionFormTemp 
-			(ExtractFileID, QUESTIONFORM_ID, SAMPLEPOP_ID,strLithoCode,IsDeleted )
-		select distinct @ExtractFileID, IsNull(qf.QUESTIONFORM_ID,-1), IsNull(qf.SAMPLEPOP_ID,-1),IsNull(IsNull(eh.PKey2,sm.strLithoCode),-1),1 
-  --      select *
-		 from (select distinct PKey1 ,PKey2
-                        from ExtractHistory  with (NOLOCK) 
-                         where ExtractFileID = @ExtractFileID
-	                     and EntityTypeID = @EntityTypeID
-	                     and IsDeleted = 1 ) eh
-				Left join QP_Prod.dbo.QUESTIONFORM qf With (NOLOCK) on qf.QUESTIONFORM_ID = eh.PKey1 AND qf.DATRETURNED IS NULL--if datReturned is not NULL it is not a delete
-				Left join QP_Prod.dbo.SentMailing sm With (NOLOCK) on qf.SentMail_id = sm.SentMail_id
+ --insert QuestionFormTemp 
+	--		(ExtractFileID, QUESTIONFORM_ID, SAMPLEPOP_ID,strLithoCode,IsDeleted )
+	--	select distinct @ExtractFileID, IsNull(qf.QUESTIONFORM_ID,-1), IsNull(qf.SAMPLEPOP_ID,-1),IsNull(IsNull(eh.PKey2,sm.strLithoCode),-1),1 
+ -- --      select *
+	--	 from (select distinct PKey1 ,PKey2
+ --                       from ExtractHistory  with (NOLOCK) 
+ --                        where ExtractFileID = @ExtractFileID
+	--                     and EntityTypeID = @EntityTypeID
+	--                     and IsDeleted = 1 ) eh
+	--			Left join QP_Prod.dbo.QUESTIONFORM qf With (NOLOCK) on qf.QUESTIONFORM_ID = eh.PKey1 AND qf.DATRETURNED IS NULL--if datReturned is not NULL it is not a delete
+	--			Left join QP_Prod.dbo.SentMailing sm With (NOLOCK) on qf.SentMail_id = sm.SentMail_id
 
   	SET @currDateTime2 = GETDATE();
 	SELECT @oExtractRunLogID,@currDateTime2,@TaskName
 	EXEC [UpdateExtractRunLog] @oExtractRunLogID, @currDateTime2
+
+GO
+
+
