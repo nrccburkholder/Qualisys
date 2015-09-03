@@ -145,7 +145,7 @@ BEGIN
 	set ATAcnt=sub.cnt
 		, ATAcomplete=case when sub.cnt >= (ata.totalATAcnt * 0.50) then 1 else 0 end
 	from #ACOQF qf
-	inner join @ATA ata on qf.subtype_nm=ata.SubType_nm
+	inner join @ATA ata on isnull(qf.subtype_nm,'null')=isnull(ata.SubType_nm,'null')
 	inner join (SELECT st.subtype_nm,stqm.surveytype_id, qr.questionform_id, COUNT(distinct qr.QstnCore) as cnt
 				FROM #QR qr
 				inner join SurveyTypeQuestionMappings stqm on qr.QstnCore=stqm.QstnCore
@@ -167,7 +167,7 @@ BEGIN
 				FROM #QR qr
 				inner join SurveyTypeQuestionMappings stqm on qr.QstnCore=stqm.QstnCore
 				inner join SurveyType srt on stqm.SurveyType_id = srt.SurveyType_ID 
-				inner join subtype st on stqm.subtype_id=st.subtype_id
+				left join subtype st on stqm.subtype_id=st.subtype_id
 				WHERE qr.intResponseVal >= 0
 				and stqm.SurveyType_id = srt.SurveyType_ID
 				and srt.surveytype_dsc in ('ACOCAHPS','PQRS CAHPS')
