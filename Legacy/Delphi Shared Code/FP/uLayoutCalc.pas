@@ -1247,7 +1247,7 @@ begin
                    vScaleText := format('%s ' + _BeginChars + 'Si·%s,·passez·au·n'+#27+'*p-30Yo'+#27+'*p+30Y·[S%s]' + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])
                  else
                    vScaleText := format('%s ' + _BeginChars + 'Passez·au·n'+#27+'*p-30Yo'+#27+'*p+30Y·[S%s]' + _EndChars,[vScaleText, wwt_sclsItem.asString]);
-            11: //Francophone
+            11,12: //Francophone
                  if SkipRepeatsScaleText then
                    vScaleText := format('%s ' + _BeginChars + 'Si·%s,·passez·à·la·question·n'+#27+'*p-30Yo'+#27+'*p+30Y·[S%s]' + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])
                  else
