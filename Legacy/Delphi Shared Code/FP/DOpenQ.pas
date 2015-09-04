@@ -782,8 +782,7 @@ end;
 function TDMOpenQ.SubOrInsertPoundSignForQuestionForSurveyType:boolean;
 var rs:variant;
 begin
-  rs := sqlcn.execute( 'select 1 from SurveyType inner join Survey_def on SurveyType.SurveyType_id = Survey_def.SurveyType_id ' +
-                       'where SurveyType_dsc like ''%PQRS%'' and survey_id='+inttostr(glbSurveyID));
+  rs := sqlcn.execute( 'exec dbo.UsePoundSignForSkipInstructions @survey_id='+inttostr(glbSurveyID));
   result := (not rs.eof);
   rs.close;
   rs:=unassigned;
