@@ -376,7 +376,7 @@ Public Class FacilitySection
         Dim clientFacilityList As FacilityList
 
         'Repopulate the grid
-        clientFacilityList = Facility.GetByClientId(mClientNavigator.SelectedClient.Id)
+        clientFacilityList = Facility.GetByClientId(mClientNavigator.SelectedClient.Id, New Nullable(Of Boolean))
         ClientFacilityGrid.PopulateFacilityGrid(clientFacilityList, Me.mMedicareList)
     End Sub
 

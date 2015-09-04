@@ -479,8 +479,8 @@ Public Class Facility
     ''' Returns a list of Facility objects for the given Client 
     ''' </summary>
     ''' <param name="clientId">The Client ID by which to filter the facility list</param>
-    Public Shared Function GetByClientId(ByVal clientId As Integer) As FacilityList
-        Return FacilityProvider.Instance.SelectByClientId(clientId, New Nullable(Of Boolean))
+    Public Shared Function GetByClientId(ByVal clientId As Integer, IsPracticeSite As Boolean?) As FacilityList
+        Return FacilityProvider.Instance.SelectByClientId(clientId, IsPracticeSite)
     End Function
     'Public Shared Function GetByClientId(ByVal clientId As Integer) As Collection(Of Facility)
     '    Return FacilityProvider.Instance.SelectByClientId(clientId)

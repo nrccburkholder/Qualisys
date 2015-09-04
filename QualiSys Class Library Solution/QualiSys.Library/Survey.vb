@@ -61,6 +61,7 @@ Public Class Survey
     Private mNotEditableIfSampled As Boolean = False
     Private mIsResurveyMethodDisabled As Boolean = False
     Private mMedicareIdTextMayBeBlank As Boolean = False
+    Private mFacilitiesArePracticeSites As Boolean = False
     Private mCompliesWithSwitchToPropSamplingDate As Boolean = False
     Private mByPassInitRespRateNumericEnforcement As Boolean = False
     Private mUseUSPSAddrChangeServiceDefault As Boolean = False
@@ -876,6 +877,13 @@ Public Class Survey
         Get
             GetSurveyRule("MedicareIdTextMayBeBlank", mMedicareIdTextMayBeBlank, override)
             Return mMedicareIdTextMayBeBlank
+        End Get
+    End Property
+
+    Public ReadOnly Property FacilitiesArePracticeSites(Optional ByVal override As String = vbNullString) As Boolean
+        Get
+            GetSurveyRule("FacilitiesArePracticeSites", mFacilitiesArePracticeSites, override)
+            Return mFacilitiesArePracticeSites
         End Get
     End Property
 
