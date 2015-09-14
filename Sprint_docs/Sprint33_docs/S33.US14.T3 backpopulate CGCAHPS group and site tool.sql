@@ -23,8 +23,8 @@ set identity_insert SiteGroup on
 
 insert into SiteGroup (Addr1, Addr2, AssignedID, bitActive, City, GroupContactEmail, GroupContactName, GroupContactPhone,
 	GroupName, GroupOwnership, MasterGroupID, MasterGroupName, Phone, SiteGroup_ID, ST, Zip5)
-select Addr1, Addr2, CGGroupID, 1, City, GroupContactEmail, GroupContactName, GroupContactPhone,
-	GroupName, GroupOwnership, MasterGroupID, MasterGroupName, Phone, CGCAHPSGroup_ID, ST, Zip5 from [datamart].[qp_comments].[dbo].[cgcahpsgroup]
+select IsNull(Addr1, ''), IsNull(Addr2, ''), CGGroupID, 1, IsNull(City, ''), IsNull(GroupContactEmail, ''), IsNull(GroupContactName, ''), IsNull(GroupContactPhone, ''),
+	IsNull(GroupName, ''), IsNull(GroupOwnership, ''), IsNull(MasterGroupID, ''), IsNull(MasterGroupName, ''), IsNull(Phone, ''), IsNull(CGCAHPSGroup_ID, ''), IsNull(ST, ''), IsNull(Zip5, '') from [datamart].[qp_comments].[dbo].[cgcahpsgroup]
 
 set identity_insert SiteGroup off
 go
@@ -33,15 +33,16 @@ go
 delete from PracticeSite
 set identity_insert PracticeSite on
 
-insert into PracticeSite (Addr1, Addr2, AssignedID, bitActive, PatVisitsWeek, PracticeContactEmail, PracticeContactName,
+insert into PracticeSite (Addr1, Addr2, AssignedID, bitActive, City, PatVisitsWeek, Phone, PracticeContactEmail, PracticeContactName,
 	PracticeContactPhone, PracticeName, PracticeOwnership, PracticeSite_ID, SampleUnit_id, SiteGroup_ID, ST, Zip5)
-select ps.Addr1, ps.Addr2, ps.CGGroupID, bitActive, PatVisitsWeek, PracticeContactEmail, PracticeContactName,
-	PracticeContactPhone, PracticeName, PracticeOwnership, CGCAHPSPracticeSite_ID, SampleUnit_id, CGCAHPSGroup_ID, ps.ST, ps.Zip5 
+select IsNull(ps.Addr1, ''), IsNull(ps.Addr2, ''), ps.CGGroupID, bitActive, IsNull(ps.City, ''), PatVisitsWeek, IsNull(ps.Phone, ''), IsNull(PracticeContactEmail, ''), IsNull(PracticeContactName, ''),
+	IsNull(PracticeContactPhone, ''), IsNull(PracticeName, ''), IsNull(PracticeOwnership, ''), CGCAHPSPracticeSite_ID, SampleUnit_id, CGCAHPSGroup_ID, IsNull(ps.ST, ''), IsNull(ps.Zip5, '')
 	from [datamart].[qp_comments].[dbo].[cgcahpspracticesite] ps
 	inner join [datamart].[qp_comments].[dbo].[cgcahpsgroup] sg on sg.CGgroupid = ps.CGgroupid
 
 set identity_insert PracticeSite off
 go
+
 
 --delete from cgcahpsgroup where cgcahpsgroup_id = 93
 
