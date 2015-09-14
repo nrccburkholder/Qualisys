@@ -43,6 +43,7 @@ select ps.Addr1, ps.Addr2, ps.CGGroupID, bitActive, PatVisitsWeek, PracticeConta
 set identity_insert PracticeSite off
 go
 
+--delete from cgcahpsgroup where cgcahpsgroup_id = 93
 
 --rollback tran
 
