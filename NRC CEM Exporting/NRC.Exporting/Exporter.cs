@@ -59,11 +59,14 @@ namespace CEM.Exporting
                                 
                                 if (MakeFile_XML(ds, targetFileLocation, template, queuefile))
                                 {
-                                    iCnt += 1;
+                                    iCnt++;
                                 }
                                 break;
                             case (int)Enums.ExportFileTypes.FixedWidthText:
-
+                                if (MakeFile_Text(ds, targetFileLocation, template, queuefile))
+                                {
+                                    iCnt++;
+                                }
                                 break;
                             case (int)Enums.ExportFileTypes.CSV:
 
@@ -199,7 +202,6 @@ namespace CEM.Exporting
             }
         }
 
-
         private static bool MakeFile_Text(List<ExportDataSet> ds, string fileLocation, ExportTemplate template, ExportQueueFile queuefile)
         {
             bool b = false;
@@ -209,23 +211,15 @@ namespace CEM.Exporting
 
                 if (Enum.IsDefined(typeof(SurveyTypes), template.SurveyTypeID))
                 {
-
-                    BaseTextFileExporter exporter = GetTextFileExporter((SurveyTypes)template.SurveyTypeID);
+                    BaseTextFileExporter exporter = GetTextFileExporter((SurveyTypes)template.SurveyTypeID, template);
                     filepath = Path.Combine(filepath, Path.ChangeExtension(queuefile.FileMakerName, "txt"));
 
-                    bool isSuccess = exporter.MakeExportTextFile(ds, template, filepath );
+                    bool isSuccess = exporter.MakeExportTextFile(ds, filepath );
        
                     Int16 fileState = 0;
 
                     if (isSuccess == false)
                     {
-                        //foreach (ExportValidationError eve in xmlDoc.ValidationErrorList)
-                        //{
-                        //    //Logging to the database.  The elements of the message are pipe delimited, with the template name, queueid, queuefileid, the file name, and the validation error description
-                        //    string message = string.Format("{0}|{1}|{2}|{3}|{4}", template.ExportTemplateName, queuefile.ExportQueueID.ToString(), queuefile.ExportQueueFileID.ToString(), Path.GetFileName(filepath), eve.ErrorDescription);
-                        //    // TODO:  come up with standard EventTypes for the logging
-                        //    Logs.Warn("", "XMLVALIDATIONERR", message, EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
-                        //}
                         fileState = 2;
                     }
                     else
@@ -258,13 +252,12 @@ namespace CEM.Exporting
             return b;
         }
 
-
-        private static BaseTextFileExporter GetTextFileExporter(SurveyTypes surveyType)
+        private static BaseTextFileExporter GetTextFileExporter(SurveyTypes surveyType, ExportTemplate template)
         {
             switch (surveyType)
             {
                 case SurveyTypes.ACOCAHPS:
-                    return new TextFileExporter_ACO();
+                    return new TextFileExporter_ACO(template);
                 default:
                     return null;
             }
