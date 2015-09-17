@@ -8,7 +8,7 @@ using System.Data;
 
 namespace CEM.Exporting.TextFileExporters
 {
-    public class TextFileExporter_ACO : BaseTextFileExporter
+    public class TextFileExporter_ACO : TextFileExporter
     {
 
          #region constructors
@@ -24,70 +24,70 @@ namespace CEM.Exporting.TextFileExporters
         {
             bool result = false;
 
-            try
-            {
-                if (!Directory.Exists(filePath))
-                {
-                    Directory.CreateDirectory(filePath);
-                }
+            //try
+            //{
+            //    if (!Directory.Exists(filePath))
+            //    {
+            //        Directory.CreateDirectory(filePath);
+            //    }
 
-                System.IO.TextWriter tw = new StreamWriter(filePath);
+            //    System.IO.TextWriter tw = new StreamWriter(filePath);
 
-                this.CreateFileHeader(tw);
+            //    this.CreateFileHeader(tw);
 
-                foreach (ExportDataSet ds in dsList)
-                {
-                    foreach (DataRow dr in ds.DataTable.Rows)
-                    {
+            //    foreach (ExportDataSet ds in dsList)
+            //    {
+            //        foreach (DataRow dr in ds.DataTable.Rows)
+            //        {
 
-                            foreach (KeyValuePair<int,KeyValuePair<string,ExportColumn>> item in this.Columns.OrderBy(x => x.Key))
-                            {
-                                ExportColumn column = (ExportColumn)item.Value.Value;
-                                string columnName = string.Format("{0}.{1}",item.Value.Key, column.ExportColumnName);
-                                string value = dr[columnName].ToString();
+            //                foreach (KeyValuePair<int,KeyValuePair<string,ExportColumn>> item in this.Columns.OrderBy(x => x.Key))
+            //                {
+            //                    ExportColumn column = (ExportColumn)item.Value.Value;
+            //                    string columnName = string.Format("{0}.{1}",item.Value.Key, column.ExportColumnName);
+            //                    string value = dr[columnName].ToString();
 
-                                if (IsNumeric(value))
-                                {
-                                    // align value to the right if it is numeric
-                                    tw.Write(value.PadLeft((int)column.FixedWidthLength));
-                                }
-                                else
-                                {
-                                    // align value to the left if it is NOT numeric
-                                    tw.Write(value.PadRight((int)column.FixedWidthLength));
-                                }     
-                            }
+            //                    if (IsNumeric(value))
+            //                    {
+            //                        // align value to the right if it is numeric
+            //                        tw.Write(value.PadLeft((int)column.FixedWidthLength));
+            //                    }
+            //                    else
+            //                    {
+            //                        // align value to the left if it is NOT numeric
+            //                        tw.Write(value.PadRight((int)column.FixedWidthLength));
+            //                    }     
+            //                }
 
-                        tw.Write(tw.NewLine);
-                    }      
-                }
+            //            tw.Write(tw.NewLine);
+            //        }      
+            //    }
 
-                tw.Flush();
-                tw.Close();
+            //    tw.Flush();
+            //    tw.Close();
 
-                result = false;
+            //    result = false;
 
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    throw;
+            //}
 
             return result;
         }
 
 
-        private bool IsNumeric(Object Expression)
-        {
-            if (Expression == null || Expression is DateTime)
-                return false;
+        //private bool IsNumeric(Object Expression)
+        //{
+        //    if (Expression == null || Expression is DateTime)
+        //        return false;
 
-            if (Expression is Int16 || Expression is Int32 || Expression is Int64 || Expression is Decimal || Expression is Single || Expression is Double || Expression is Boolean)
-                return true;
+        //    if (Expression is Int16 || Expression is Int32 || Expression is Int64 || Expression is Decimal || Expression is Single || Expression is Double || Expression is Boolean)
+        //        return true;
 
-            Double tmp;
-            bool isSuccess = Double.TryParse(Expression as string, out tmp);
-            return isSuccess;
-        }
+        //    Double tmp;
+        //    bool isSuccess = Double.TryParse(Expression as string, out tmp);
+        //    return isSuccess;
+        //}
     }
 }

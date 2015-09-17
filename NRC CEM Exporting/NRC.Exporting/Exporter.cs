@@ -211,32 +211,42 @@ namespace CEM.Exporting
 
                 if (Enum.IsDefined(typeof(SurveyTypes), template.SurveyTypeID))
                 {
-                    BaseTextFileExporter exporter = GetTextFileExporter((SurveyTypes)template.SurveyTypeID, template);
-                    filepath = Path.Combine(filepath, Path.ChangeExtension(queuefile.FileMakerName, "txt"));
-
-                    bool isSuccess = exporter.MakeExportTextFile(ds, filepath );
-       
-                    Int16 fileState = 0;
-
-                    if (isSuccess == false)
+                    if (Enum.IsDefined(typeof(ExportFileTypes), queuefile.FileMakerType))
                     {
-                        fileState = 2;
+
+                        TextFileExporter exporter = new TextFileExporter(template, (ExportFileTypes)queuefile.FileMakerType); //GetTextFileExporter((SurveyTypes)template.SurveyTypeID, template);
+
+                        filepath = Path.Combine(filepath, Path.ChangeExtension(queuefile.FileMakerName, "txt"));
+
+                        bool isSuccess = exporter.MakeExportTextFile(ds, filepath);
+
+                        Int16 fileState;
+
+                        if (isSuccess == false)
+                        {
+                            fileState = 2;
+                        }
+                        else
+                        {
+                            fileState = 1;
+                        }
+
+                        Logs.Info("", "FILEMAKERSTATUS", string.Format("{0}|{1}", fileState == 1 ? "SUCCESS" : "INVALID", filepath), EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
+
+                        // Update the ExportQueueFile record to mark it as complete.
+                        queuefile.FileState = fileState;
+                        queuefile.FileMakerDate = DateTime.Now;
+                        queuefile.Template = template;
+                        queuefile.Save();
+
+                        b = true;
+
                     }
                     else
                     {
-                        fileState = 1;
+                        string msg = string.Format("FileMakerType {0} has no matching ExportFileType enumeration!", template.SurveyTypeID.ToString());
+                        throw new Exception("msg");
                     }
-
-                    Logs.Info("", "FILEMAKERSTATUS", string.Format("{0}|{1}", fileState == 1 ? "SUCCESS" : "INVALID", filepath), EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
-
-                    // Update the ExportQueueFile record to mark is a complete.
-                    queuefile.FileState = fileState;
-                    queuefile.FileMakerDate = DateTime.Now;
-                    queuefile.Template = template;
-                    queuefile.Save();
-
-                    b = true;
-
                 }
                 else
                 {
@@ -252,16 +262,6 @@ namespace CEM.Exporting
             return b;
         }
 
-        private static BaseTextFileExporter GetTextFileExporter(SurveyTypes surveyType, ExportTemplate template)
-        {
-            switch (surveyType)
-            {
-                case SurveyTypes.ACOCAHPS:
-                    return new TextFileExporter_ACO(template);
-                default:
-                    return null;
-            }
-        }
     }
 
 }
