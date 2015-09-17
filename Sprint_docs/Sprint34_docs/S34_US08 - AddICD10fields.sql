@@ -52,84 +52,104 @@ select					   @encTable_id, field_id, 0,               1,                0,     
 from #newfields
 
 -- QP_dataload encounter table
-set @sql='alter table pervasive.qp_dataload.'+@study+'.ENCOUNTER_load add '
-select @sql=@sql + md.strfield_nm + ' '+case md.strFielddataType when 'D' then 'DATETIME' when 'I' then 'INTEGER' when 'S' then 'VARCHAR('+convert(varchar,md.intFieldLength)+')' end+','
--- declare @study_id int=3814, @study varchar(10)='s3814' select md.strfield_nm, md.intfieldlength, ql.*
-from METADATA_VIEW md
-left join (	select ss.name as Schema_nm, st.name as Table_nm, sc.name as column_nm
+if exists (	SELECT * 
 			from pervasive.qp_dataload.sys.schemas ss
-			inner join pervasive.qp_dataload.sys.tables st on ss.name=@study and ss.schema_id=st.schema_id and st.name='Encounter_load'
-			inner join pervasive.qp_dataload.sys.columns sc on st.object_id=sc.object_id) ql
-	on md.strField_nm=ql.column_nm 
-where ql.column_nm is null
-and md.study_id=@study_id
-and md.strTable_nm='ENCOUNTER'
-
-if len(@SQL)>60
+			inner join pervasive.qp_dataload.sys.tables st on ss.name=@study and ss.schema_id=st.schema_id and st.name='Encounter_load')
 begin
-	set @sql=left(@sql,len(@sql)-1)
-	print @sql
-	exec (@sql)
+	set @sql='alter table pervasive.qp_dataload.'+@study+'.ENCOUNTER_load add '
+	select @sql=@sql + md.strfield_nm + ' '+case md.strFielddataType when 'D' then 'DATETIME' when 'I' then 'INTEGER' when 'S' then 'VARCHAR('+convert(varchar,md.intFieldLength)+')' end+','
+	-- declare @study_id int=3814, @study varchar(10)='s3814' select md.strfield_nm, md.intfieldlength, ql.*
+	from METADATA_VIEW md
+	left join (	select ss.name as Schema_nm, st.name as Table_nm, sc.name as column_nm
+				from pervasive.qp_dataload.sys.schemas ss
+				inner join pervasive.qp_dataload.sys.tables st on ss.name=@study and ss.schema_id=st.schema_id and st.name='Encounter_load'
+				inner join pervasive.qp_dataload.sys.columns sc on st.object_id=sc.object_id) ql
+		on md.strField_nm=ql.column_nm 
+	where ql.column_nm is null
+	and md.study_id=@study_id
+	and md.strTable_nm='ENCOUNTER'
+
+	if len(@SQL)>60
+	begin
+		set @sql=left(@sql,len(@sql)-1)
+		print @sql
+		exec (@sql)
+	end
 end
 
 -- QLoader encounter table
-set @sql='alter table qloader.qp_load.'+@study+'.ENCOUNTER_load add '
-select @sql=@sql + md.strfield_nm + ' '+case md.strFielddataType when 'D' then 'DATETIME' when 'I' then 'INTEGER' when 'S' then 'VARCHAR('+convert(varchar,md.intFieldLength)+')' end+','
--- select md.strfield_nm, md.intfieldlength, ql.*
-from METADATA_VIEW md
-left join (	select su.name as Schema_nm, so.name as Table_nm, sc.name as column_nm
+if exists (	SELECT * 
 			from qloader.qp_load.dbo.sysusers su
-			inner join qloader.qp_load.dbo.sysobjects so on su.name=@study and su.uid=so.uid and so.name='Encounter_load'
-			inner join qloader.qp_load.dbo.syscolumns sc on so.id=sc.id
-			where so.type='u') ql
-	on md.strField_nm=ql.column_nm 
-where ql.column_nm is null
-and md.study_id=@study_id
-and md.strTable_nm='ENCOUNTER'
-
-if len(@SQL)>53
+			inner join qloader.qp_load.dbo.sysobjects so on su.name=@study and su.uid=so.uid and so.name='Encounter_load')
 begin
-	set @sql=left(@sql,len(@sql)-1)
-	print @sql
-	exec (@sql)
+	set @sql='alter table qloader.qp_load.'+@study+'.ENCOUNTER_load add '
+	select @sql=@sql + md.strfield_nm + ' '+case md.strFielddataType when 'D' then 'DATETIME' when 'I' then 'INTEGER' when 'S' then 'VARCHAR('+convert(varchar,md.intFieldLength)+')' end+','
+	-- select md.strfield_nm, md.intfieldlength, ql.*
+	from METADATA_VIEW md
+	left join (	select su.name as Schema_nm, so.name as Table_nm, sc.name as column_nm
+				from qloader.qp_load.dbo.sysusers su
+				inner join qloader.qp_load.dbo.sysobjects so on su.name=@study and su.uid=so.uid and so.name='Encounter_load'
+				inner join qloader.qp_load.dbo.syscolumns sc on so.id=sc.id
+				where so.type='u') ql
+		on md.strField_nm=ql.column_nm 
+	where ql.column_nm is null
+	and md.study_id=@study_id
+	and md.strTable_nm='ENCOUNTER'
+
+	if len(@SQL)>53
+	begin
+		set @sql=left(@sql,len(@sql)-1)
+		print @sql
+		exec (@sql)
+	end
 end
 
 -- qp_prod encounter table
-set @sql='alter table '+@study+'.ENCOUNTER add '
-select @sql=@sql + md.strfield_nm + ' '+case md.strFielddataType when 'D' then 'DATETIME' when 'I' then 'INTEGER' when 'S' then 'VARCHAR('+convert(varchar,md.intFieldLength)+')' end+','
-from METADATA_VIEW md
-left join (	select su.name as Schema_nm, so.name as Table_nm, sc.name as column_nm
+if exists (	select *
 			from sys.schemas su
-			inner join sys.tables so on su.name=@study and su.schema_id=so.schema_id and so.name='Encounter'
-			inner join sys.columns sc on so.object_id=sc.object_id) e on e.column_nm=md.strfield_nm 
-where e.column_nm is null
-and md.study_id=@study_id
-and md.strTable_nm='ENCOUNTER'
-
-if len(@SQL)>32
+			inner join sys.tables so on su.name=@study and su.schema_id=so.schema_id and so.name='Encounter')
 begin
-	set @sql=left(@sql,len(@sql)-1)
-	print @sql
-	exec (@sql)
+	set @sql='alter table '+@study+'.ENCOUNTER add '
+	select @sql=@sql + md.strfield_nm + ' '+case md.strFielddataType when 'D' then 'DATETIME' when 'I' then 'INTEGER' when 'S' then 'VARCHAR('+convert(varchar,md.intFieldLength)+')' end+','
+	from METADATA_VIEW md
+	left join (	select su.name as Schema_nm, so.name as Table_nm, sc.name as column_nm
+				from sys.schemas su
+				inner join sys.tables so on su.name=@study and su.schema_id=so.schema_id and so.name='Encounter'
+				inner join sys.columns sc on so.object_id=sc.object_id) e on e.column_nm=md.strfield_nm 
+	where e.column_nm is null
+	and md.study_id=@study_id
+	and md.strTable_nm='ENCOUNTER'
+
+	if len(@SQL)>32
+	begin
+		set @sql=left(@sql,len(@sql)-1)
+		print @sql
+		exec (@sql)
+	end
 end
 
 -- QP_Prod encounter_load table
-set @sql='alter table '+@study+'.ENCOUNTER_Load add '
-select @sql=@sql + md.strfield_nm + ' '+case md.strFielddataType when 'D' then 'DATETIME' when 'I' then 'INTEGER' when 'S' then 'VARCHAR('+convert(varchar,md.intFieldLength)+')' end+','
-from METADATA_VIEW md
-left join (	select su.name as Schema_nm, so.name as Table_nm, sc.name as column_nm
+if exists (	select *
 			from sys.schemas su
-			inner join sys.tables so on su.name=@study and su.schema_id=so.schema_id and so.name='Encounter_load'
-			inner join sys.columns sc on so.object_id=sc.object_id) e on e.column_nm=md.strfield_nm 
-where e.column_nm is null
-and md.study_id=@study_id
-and md.strTable_nm='ENCOUNTER'
-
-if len(@SQL)>37
+			inner join sys.tables so on su.name=@study and su.schema_id=so.schema_id and so.name='Encounter_load')
 begin
-	set @sql=left(@sql,len(@sql)-1)
-	print @sql
-	exec (@sql)
+	set @sql='alter table '+@study+'.ENCOUNTER_Load add '
+	select @sql=@sql + md.strfield_nm + ' '+case md.strFielddataType when 'D' then 'DATETIME' when 'I' then 'INTEGER' when 'S' then 'VARCHAR('+convert(varchar,md.intFieldLength)+')' end+','
+	from METADATA_VIEW md
+	left join (	select su.name as Schema_nm, so.name as Table_nm, sc.name as column_nm
+				from sys.schemas su
+				inner join sys.tables so on su.name=@study and su.schema_id=so.schema_id and so.name='Encounter_load'
+				inner join sys.columns sc on so.object_id=sc.object_id) e on e.column_nm=md.strfield_nm 
+	where e.column_nm is null
+	and md.study_id=@study_id
+	and md.strTable_nm='ENCOUNTER'
+
+	if len(@SQL)>37
+	begin
+		set @sql=left(@sql,len(@sql)-1)
+		print @sql
+		exec (@sql)
+	end
 end
 
 -- QP_Prod Big_View
