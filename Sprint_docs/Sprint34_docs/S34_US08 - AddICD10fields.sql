@@ -33,7 +33,7 @@ select @encTable_id=table_id from metatable where study_id=@study_id and strTabl
 if @encTable_id is null
 	return
 
-declare @sql varchar(max)
+declare @sql nvarchar(max)
 select mf.field_id, mf.strField_nm, mf.strFieldDataType, mf.intFieldLength
 into #newfields
 from metafield mf 
@@ -41,9 +41,6 @@ left join METADATA_VIEW mdv on mdv.strfield_nm=mf.strfield_nm and mdv.study_id=@
 where (mf.strfield_nm like 'icd10_[1-9]' or mf.strfield_nm like 'icd10_1[0-8]')
 and mdv.strfield_nm is null
 order by mdv.strfield_nm
-
-if @@rowcount=0
-	return
 
 begin tran
 
@@ -56,7 +53,7 @@ if exists (	SELECT *
 			from pervasive.qp_dataload.sys.schemas ss
 			inner join pervasive.qp_dataload.sys.tables st on ss.name=@study and ss.schema_id=st.schema_id and st.name='Encounter_load')
 begin
-	set @sql='alter table pervasive.qp_dataload.'+@study+'.ENCOUNTER_load add '
+	set @sql='alter table '+@study+'.ENCOUNTER_load add '
 	select @sql=@sql + md.strfield_nm + ' '+case md.strFielddataType when 'D' then 'DATETIME' when 'I' then 'INTEGER' when 'S' then 'VARCHAR('+convert(varchar,md.intFieldLength)+')' end+','
 	-- declare @study_id int=3814, @study varchar(10)='s3814' select md.strfield_nm, md.intfieldlength, ql.*
 	from METADATA_VIEW md
@@ -69,11 +66,11 @@ begin
 	and md.study_id=@study_id
 	and md.strTable_nm='ENCOUNTER'
 
-	if len(@SQL)>60
+	if len(@SQL)>37
 	begin
 		set @sql=left(@sql,len(@sql)-1)
 		print @sql
-		exec (@sql)
+		EXECUTE pervasive.qp_dataload.dbo.sp_executesql  @SQL
 	end
 end
 
@@ -82,7 +79,7 @@ if exists (	SELECT *
 			from qloader.qp_load.dbo.sysusers su
 			inner join qloader.qp_load.dbo.sysobjects so on su.name=@study and su.uid=so.uid and so.name='Encounter_load')
 begin
-	set @sql='alter table qloader.qp_load.'+@study+'.ENCOUNTER_load add '
+	set @sql='alter table '+@study+'.ENCOUNTER_load add '
 	select @sql=@sql + md.strfield_nm + ' '+case md.strFielddataType when 'D' then 'DATETIME' when 'I' then 'INTEGER' when 'S' then 'VARCHAR('+convert(varchar,md.intFieldLength)+')' end+','
 	-- select md.strfield_nm, md.intfieldlength, ql.*
 	from METADATA_VIEW md
@@ -96,11 +93,11 @@ begin
 	and md.study_id=@study_id
 	and md.strTable_nm='ENCOUNTER'
 
-	if len(@SQL)>53
+	if len(@SQL)>37
 	begin
 		set @sql=left(@sql,len(@sql)-1)
 		print @sql
-		exec (@sql)
+		EXECUTE qloader.qp_load.dbo.sp_executesql  @SQL
 	end
 end
 
@@ -124,7 +121,7 @@ begin
 	begin
 		set @sql=left(@sql,len(@sql)-1)
 		print @sql
-		exec (@sql)
+		EXECUTE dbo.sp_executesql  @SQL
 	end
 end
 
@@ -148,12 +145,12 @@ begin
 	begin
 		set @sql=left(@sql,len(@sql)-1)
 		print @sql
-		exec (@sql)
+		EXECUTE dbo.sp_executesql  @SQL
 	end
 end
 
 -- QP_Prod Big_View
-declare @v varchar(max)
+declare @v nvarchar(max)
 if object_id(@study+'.BIG_VIEW') is NULL
 	set @v='CREATE VIEW '+@study+'.BIG_VIEW AS 
 	SELECT '
@@ -180,7 +177,7 @@ from METALOOKUP_VIEW where study_id=@study_id
 set @V = left(@V,len(@V)-4)
 
 print @v
-exec (@v)
+EXECUTE dbo.sp_executesql  @v
 
 commit tran
 
