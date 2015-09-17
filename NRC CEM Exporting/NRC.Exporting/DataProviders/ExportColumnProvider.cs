@@ -34,6 +34,7 @@ namespace CEM.Exporting.DataProviders
             column.ColumnOrder = (int)dr["ColumnOrder"];
             column.DataSourceID = (int)dr["DatasourceID"];
             column.ExportColumnName = dr["ExportColumnName"].ToString();
+            column.SourceColumnType = (int)dr["SourceColumnType"];
             column.DispositionProcessID = dr["DispositionProcessID"] == DBNull.Value ? null : (int?)dr["DispositionProcessID"];
             column.FixedWidthLength = dr["FixedWidthLength"] == DBNull.Value ? null : (int?)dr["FixedWidthLength"];
             column.ColumnSetKey = dr["ColumnSetKey"] == DBNull.Value ? null : (int?)dr["ColumnSetKey"];

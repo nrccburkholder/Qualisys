@@ -62,14 +62,12 @@ namespace CEM.Exporting
                                     iCnt++;
                                 }
                                 break;
-                            case (int)Enums.ExportFileTypes.FixedWidthText:
+                            case (int)Enums.ExportFileTypes.FixedWidthText: 
+                            case (int)Enums.ExportFileTypes.DelimitedText:
                                 if (MakeFile_Text(ds, targetFileLocation, template, queuefile))
                                 {
                                     iCnt++;
                                 }
-                                break;
-                            case (int)Enums.ExportFileTypes.CSV:
-
                                 break;
                             default:
                                 break;

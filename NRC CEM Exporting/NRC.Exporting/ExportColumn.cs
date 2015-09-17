@@ -19,6 +19,7 @@ namespace CEM.Exporting
         public int? DataSourceID{ get; set; }
         public string ExportColumnName{ get; set; }
         public string SourceColumnName{ get; set; }
+        public int SourceColumnType { get; set; }
         public int? DispositionProcessID{ get; set; }
         public int? FixedWidthLength{ get; set; }
         public int? ColumnSetKey{ get; set; }

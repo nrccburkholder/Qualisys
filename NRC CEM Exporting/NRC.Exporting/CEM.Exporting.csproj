@@ -57,6 +57,7 @@
     <Compile Include="DataProviders\ExportTemplateProvider.cs" />
     <Compile Include="DataProviders\SystemParamsProvider.cs" />
     <Compile Include="Enums\ExportFileTypes.cs" />
+    <Compile Include="Enums\SourceColumnType.cs" />
     <Compile Include="Enums\SurveyTypes.cs" />
     <Compile Include="ExportColumn.cs" />
     <Compile Include="ExportColumnResponse.cs" />
