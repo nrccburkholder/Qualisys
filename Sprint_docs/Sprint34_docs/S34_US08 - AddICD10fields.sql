@@ -154,8 +154,10 @@ from metatable where study_id=@study_id
 set @v=left(@v,len(@v)-1)+'
 WHERE '
 
-select @v=@v+ @study+'.'+strTable_nm+'.'+strField_nm+' = '+@study+'.'+lookuptablename+'.'+lookupfieldname
+select @v=@v+ @study+'.'+strTable_nm+'.'+strField_nm+' = '+@study+'.'+lookuptablename+'.'+lookupfieldname + ' AND '
 from METALOOKUP_VIEW where study_id=@study_id
+
+set @V = left(@V,len(@V)-4)
 
 print @v
 exec (@v)
