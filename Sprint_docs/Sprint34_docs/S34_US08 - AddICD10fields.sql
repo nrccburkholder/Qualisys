@@ -65,10 +65,12 @@ where ql.column_nm is null
 and md.study_id=@study_id
 and md.strTable_nm='ENCOUNTER'
 
-set @sql=left(@sql,len(@sql)-1)
-print @sql
-exec (@sql)
-
+if len(@SQL)>60
+begin
+	set @sql=left(@sql,len(@sql)-1)
+	print @sql
+	exec (@sql)
+end
 
 -- QLoader encounter table
 set @sql='alter table qloader.qp_load.'+@study+'.ENCOUNTER_load add '
@@ -85,9 +87,12 @@ where ql.column_nm is null
 and md.study_id=@study_id
 and md.strTable_nm='ENCOUNTER'
 
-set @sql=left(@sql,len(@sql)-1)
-print @sql
-exec (@sql)
+if len(@SQL)>53
+begin
+	set @sql=left(@sql,len(@sql)-1)
+	print @sql
+	exec (@sql)
+end
 
 -- qp_prod encounter table
 set @sql='alter table '+@study+'.ENCOUNTER add '
@@ -101,9 +106,12 @@ where e.column_nm is null
 and md.study_id=@study_id
 and md.strTable_nm='ENCOUNTER'
 
-set @sql=left(@sql,len(@sql)-1)
-print @sql
-exec (@sql)
+if len(@SQL)>32
+begin
+	set @sql=left(@sql,len(@sql)-1)
+	print @sql
+	exec (@sql)
+end
 
 -- QP_Prod encounter_load table
 set @sql='alter table '+@study+'.ENCOUNTER_Load add '
@@ -117,15 +125,21 @@ where e.column_nm is null
 and md.study_id=@study_id
 and md.strTable_nm='ENCOUNTER'
 
-set @sql=left(@sql,len(@sql)-1)
-print @sql
-exec (@sql)
-
+if len(@SQL)>37
+begin
+	set @sql=left(@sql,len(@sql)-1)
+	print @sql
+	exec (@sql)
+end
 
 -- QP_Prod Big_View
 declare @v varchar(max)
-set @v='CREATE VIEW '+@study+'.BIG_VIEW AS 
-SELECT '
+if object_id(@study+'.BIG_VIEW') is NULL
+	set @v='CREATE VIEW '+@study+'.BIG_VIEW AS 
+	SELECT '
+else
+	set @v='ALTER VIEW '+@study+'.BIG_VIEW AS 
+	SELECT '
 
 select @v = @v + strTable_nm+strField_nm+'='+@study+'.'+strTable_nm+'.'+strField_nm+', '
 from METADATA_VIEW 
