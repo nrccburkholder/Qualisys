@@ -212,7 +212,7 @@ namespace CEM.Exporting
                     if (Enum.IsDefined(typeof(ExportFileTypes), queuefile.FileMakerType))
                     {
 
-                        TextFileExporter exporter = new TextFileExporter(template, (ExportFileTypes)queuefile.FileMakerType); //GetTextFileExporter((SurveyTypes)template.SurveyTypeID, template);
+                        TextFileExporter exporter = new TextFileExporter(template, (ExportFileTypes)queuefile.FileMakerType); 
 
                         filepath = Path.Combine(filepath, Path.ChangeExtension(queuefile.FileMakerName, "txt"));
 
