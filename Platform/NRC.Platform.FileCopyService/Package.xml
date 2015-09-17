@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package-list>
+  <package>
+    <name>NRC.Platform.FileCopyService</name>
+    <package-version>1.0.0</package-version>
+    <framework-version>3.5</framework-version>
+    <applications>
+      <application type="service" source="." />
+    </applications>
+  </package>
+</package-list>
