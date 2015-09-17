@@ -51,6 +51,25 @@ insert into metastructure (Table_id,     FIELD_ID, BITKEYFIELD_FLG, BITUSERFIELD
 select					   @encTable_id, field_id, 0,               1,                0,                 1,                  0,      1
 from #newfields
 
+-- QP_dataload encounter table
+set @sql='alter table pervasive.qp_dataload.'+@study+'.ENCOUNTER_load add '
+select @sql=@sql + md.strfield_nm + ' '+case md.strFielddataType when 'D' then 'DATETIME' when 'I' then 'INTEGER' when 'S' then 'VARCHAR('+convert(varchar,md.intFieldLength)+')' end+','
+-- declare @study_id int=3814, @study varchar(10)='s3814' select md.strfield_nm, md.intfieldlength, ql.*
+from METADATA_VIEW md
+left join (	select ss.name as Schema_nm, st.name as Table_nm, sc.name as column_nm
+			from pervasive.qp_dataload.sys.schemas ss
+			inner join pervasive.qp_dataload.sys.tables st on ss.name=@study and ss.schema_id=st.schema_id and st.name='Encounter_load'
+			inner join pervasive.qp_dataload.sys.columns sc on st.object_id=sc.object_id) ql
+	on md.strField_nm=ql.column_nm 
+where ql.column_nm is null
+and md.study_id=@study_id
+and md.strTable_nm='ENCOUNTER'
+
+set @sql=left(@sql,len(@sql)-1)
+print @sql
+exec (@sql)
+
+
 -- QLoader encounter table
 set @sql='alter table qloader.qp_load.'+@study+'.ENCOUNTER_load add '
 select @sql=@sql + md.strfield_nm + ' '+case md.strFielddataType when 'D' then 'DATETIME' when 'I' then 'INTEGER' when 'S' then 'VARCHAR('+convert(varchar,md.intFieldLength)+')' end+','
