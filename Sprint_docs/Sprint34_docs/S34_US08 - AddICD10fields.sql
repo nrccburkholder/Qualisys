@@ -51,6 +51,7 @@ insert into metastructure (Table_id,     FIELD_ID, BITKEYFIELD_FLG, BITUSERFIELD
 select					   @encTable_id, field_id, 0,               1,                0,                 1,                  0,      1
 from #newfields
 
+-- QLoader encounter table
 set @sql='alter table qloader.qp_load.'+@study+'.ENCOUNTER_load add '
 select @sql=@sql + md.strfield_nm + ' '+case md.strFielddataType when 'D' then 'DATETIME' when 'I' then 'INTEGER' when 'S' then 'VARCHAR('+convert(varchar,md.intFieldLength)+')' end+','
 -- select md.strfield_nm, md.intfieldlength, ql.*
@@ -69,7 +70,7 @@ set @sql=left(@sql,len(@sql)-1)
 print @sql
 exec (@sql)
 
-
+-- qp_prod encounter table
 set @sql='alter table '+@study+'.ENCOUNTER add '
 select @sql=@sql + md.strfield_nm + ' '+case md.strFielddataType when 'D' then 'DATETIME' when 'I' then 'INTEGER' when 'S' then 'VARCHAR('+convert(varchar,md.intFieldLength)+')' end+','
 from METADATA_VIEW md
@@ -85,6 +86,7 @@ set @sql=left(@sql,len(@sql)-1)
 print @sql
 exec (@sql)
 
+-- QP_Prod encounter_load table
 set @sql='alter table '+@study+'.ENCOUNTER_Load add '
 select @sql=@sql + md.strfield_nm + ' '+case md.strFielddataType when 'D' then 'DATETIME' when 'I' then 'INTEGER' when 'S' then 'VARCHAR('+convert(varchar,md.intFieldLength)+')' end+','
 from METADATA_VIEW md
@@ -101,7 +103,7 @@ print @sql
 exec (@sql)
 
 
-
+-- QP_Prod Big_View
 declare @v varchar(max)
 set @v='CREATE VIEW '+@study+'.BIG_VIEW AS 
 SELECT '
