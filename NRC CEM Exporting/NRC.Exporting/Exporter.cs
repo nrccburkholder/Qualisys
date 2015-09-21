@@ -44,11 +44,9 @@ namespace CEM.Exporting
 
                 foreach (ExportQueue queue in queues)
                 {
-                    ExportTemplate template = ExportTemplate.Select(new ExportTemplate { ExportTemplateName = queue.ExportTemplateName, ExportTemplateVersionMajor = queue.ExportTemplateVersionMajor, ExportTemplateVersionMinor = queue.ExportTemplateVersionMinor }).First();
+                    ExportTemplate template = ExportTemplate.Select(new ExportTemplate { ExportTemplateName = queue.ExportTemplateName, ExportTemplateVersionMajor = queue.ExportTemplateVersionMajor, ExportTemplateVersionMinor = queue.ExportTemplateVersionMinor }, true).First();
 
-                    List<ExportSection> sections = ExportSection.Select(new ExportSection { ExportTemplateID = template.ExportTemplateID });
-
-                    List<ExportDataSet> ds = ExportDataSet.Select(new ExportDataSet { ExportQueueID = queue.ExportQueueID, FileMakerName = queuefile.FileMakerName}, sections);
+                    List<ExportDataSet> ds = ExportDataSet.Select(new ExportDataSet { ExportQueueID = queue.ExportQueueID, FileMakerName = queuefile.FileMakerName}, template.Sections);
 
                     if (ds.Count > 0)
                     {
@@ -62,14 +60,11 @@ namespace CEM.Exporting
                                     iCnt++;
                                 }
                                 break;
-                            case (int)Enums.ExportFileTypes.FixedWidthText: 
-                            case (int)Enums.ExportFileTypes.DelimitedText:
+                            default:
                                 if (MakeFile_Text(ds, targetFileLocation, template, queuefile))
                                 {
                                     iCnt++;
                                 }
-                                break;
-                            default:
                                 break;
                         }
                     }
@@ -156,6 +151,11 @@ namespace CEM.Exporting
             return b;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="defaultname"></param>
+        /// <param name="ds"></param>
         private static void SetFileName(ref string defaultname, ExportDataSet ds)
         {
             int iBracketStart = 0;
@@ -187,6 +187,11 @@ namespace CEM.Exporting
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="surveyType"></param>
+        /// <returns></returns>
         private static BaseXmlExporter GetXmlExporter(SurveyTypes surveyType )
         {
             switch (surveyType)
@@ -200,6 +205,14 @@ namespace CEM.Exporting
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ds"></param>
+        /// <param name="fileLocation"></param>
+        /// <param name="template"></param>
+        /// <param name="queuefile"></param>
+        /// <returns></returns>
         private static bool MakeFile_Text(List<ExportDataSet> ds, string fileLocation, ExportTemplate template, ExportQueueFile queuefile)
         {
             bool b = false;
@@ -213,10 +226,8 @@ namespace CEM.Exporting
                     {
 
                         TextFileExporter exporter = new TextFileExporter(template, (ExportFileTypes)queuefile.FileMakerType); 
-
-                        filepath = Path.Combine(filepath, Path.ChangeExtension(queuefile.FileMakerName, "txt"));
-
-                        bool isSuccess = exporter.MakeExportTextFile(ds, filepath);
+            
+                        bool isSuccess = exporter.MakeExportTextFile(ds, fileLocation, queuefile.FileMakerName);
 
                         Int16 fileState;
 
@@ -226,10 +237,10 @@ namespace CEM.Exporting
                         }
                         else
                         {
-                            fileState = 1;
+                            fileState = 1;  // successfully created
                         }
 
-                        Logs.Info("", "FILEMAKERSTATUS", string.Format("{0}|{1}", fileState == 1 ? "SUCCESS" : "INVALID", filepath), EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
+                        Logs.Info("", "FILEMAKERSTATUS", string.Format("{0}|{1}", fileState == 1 ? "SUCCESS" : "ERROR", filepath), EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
 
                         // Update the ExportQueueFile record to mark it as complete.
                         queuefile.FileState = fileState;

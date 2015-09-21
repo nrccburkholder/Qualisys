@@ -10,7 +10,7 @@ namespace CEM.Exporting
     [System.Serializable]
     public class ExportColumn
     {
-
+        
         public int? ExportTemplateID { get; set; }
         public int? ExportTemplateSectionID { get; set; }
         public int? ExportTemplateColumnID { get; set; }
@@ -27,6 +27,9 @@ namespace CEM.Exporting
         public double? MissingThreshholdPercentage{ get; set; }
         public bool? CheckFrequencies{ get; set; }
         public List<ExportColumnResponse> ColumnResponses { get; set; }
+        //public int SectionID { get; set; }
+        //public string SectionName { get; set; }
+        public int MultiResponseOrder { get; set; }
 
         public ExportColumn()
         {
@@ -34,7 +37,7 @@ namespace CEM.Exporting
         }
 
 
-        public List<ExportColumn> SelectSelect(ExportColumn Column, bool IncludeChildProperties = false)
+        public List<ExportColumn> Select(ExportColumn Column, bool IncludeChildProperties = false)
         {
             return ExportColumnProvider.Select(Column, IncludeChildProperties);
         }

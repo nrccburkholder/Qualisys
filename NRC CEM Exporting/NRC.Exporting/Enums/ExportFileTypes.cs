@@ -6,6 +6,9 @@ namespace CEM.Exporting.Enums
         None = 0,
         Xml = 1,
         FixedWidthText = 2,
-        DelimitedText = 3,
+        CommaDelimitedText = 3,
+        TabDelimitedText = 4,
+        PipeDelimitedText = 5,
+        CommaDelimitedCSV = 6,
     }
 }

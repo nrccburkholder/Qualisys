@@ -41,11 +41,13 @@ namespace CEM.Exporting.DataProviders
             column.FormatID = dr["FormatID"] == DBNull.Value ? null : (int?)dr["FormatID"];
             column.MissingThreshholdPercentage = dr["MissingThresholdPercentage"] == DBNull.Value ? null : (double?)dr["MissingThresholdPercentage"];
             column.CheckFrequencies = (bool)dr["CheckFrequencies"];
+            column.MultiResponseOrder = 0;
 
             if (b)
             {
                 column.ColumnResponses = ExportColumnResponseProvider.Select(new ExportColumnResponse { ExportTemplateID = column.ExportTemplateID, ExportTemplateSectionID = column.ExportTemplateSectionID, ExportTemplateColumnID = column.ExportTemplateColumnID });
             }
+
 
             return column;
         }
