@@ -46,22 +46,22 @@ namespace CEM.Exporting
                 {
                     ExportTemplate template = ExportTemplate.Select(new ExportTemplate { ExportTemplateName = queue.ExportTemplateName, ExportTemplateVersionMajor = queue.ExportTemplateVersionMajor, ExportTemplateVersionMinor = queue.ExportTemplateVersionMinor }, true).First();
 
-                    List<ExportDataSet> ds = ExportDataSet.Select(new ExportDataSet { ExportQueueID = queue.ExportQueueID, FileMakerName = queuefile.FileMakerName}, template.Sections);
+                    List<ExportDataSet> exds = ExportDataSet.Select(new ExportDataSet { ExportQueueID = queue.ExportQueueID, FileMakerName = queuefile.FileMakerName}, template.Sections);
 
-                    if (ds.Count > 0)
+                    if (exds.Count > 0)
                     {
                         // Depending on the file type, we call the appropriate File Maker Methods
                         switch (queuefile.FileMakerType)
                         {
                             case (int)Enums.ExportFileTypes.Xml:
                                 
-                                if (MakeFile_XML(ds, targetFileLocation, template, queuefile))
+                                if (MakeFile_XML(exds, targetFileLocation, template, queuefile))
                                 {
                                     iCnt++;
                                 }
                                 break;
                             default:
-                                if (MakeFile_Text(ds, targetFileLocation, template, queuefile))
+                                if (MakeFile_Text(exds, targetFileLocation, template, queuefile))
                                 {
                                     iCnt++;
                                 }
@@ -233,7 +233,7 @@ namespace CEM.Exporting
 
                         if (isSuccess == false)
                         {
-                            fileState = 2;
+                            fileState = 2;  
                         }
                         else
                         {

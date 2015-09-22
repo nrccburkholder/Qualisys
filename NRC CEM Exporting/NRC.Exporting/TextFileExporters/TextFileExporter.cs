@@ -84,13 +84,24 @@ namespace CEM.Exporting.TextFileExporters
                     Directory.CreateDirectory(fileLocation);
                 }
 
-                bool isOneFilePerSection = dsList.Count > 1;
-
                 string delimiter = GetDelimiter(fileMakerType);
+
+                bool hasMultipleSections = dsList.Count > 1;
 
                 foreach (ExportDataSet exds in dsList)
                 {
-                    string fname = isOneFilePerSection == true ? string.Format("{0}_{1}",fileName,exds.Section.ExportTemplateSectionName) : fileName; // append section name to filename if there are multiple sections
+                    string fname;
+
+                    if (hasMultipleSections)
+                    {
+                        // for flatfile submissions that have multiple sections, we will use the Section.DefaultNamingConvention for the file names. 
+                        // If there is no Section.DefaultNamingConvention, we will append the section name to the fileName (QueueFile.FileMakerName)
+                        fname = string.IsNullOrEmpty(exds.Section.DefaultNamingConvention) ? string.Format("{0}_{1}", fileName, exds.Section.ExportTemplateSectionName) : exds.Section.DefaultNamingConvention;
+                    }
+                    else
+                    {
+                        fname = fileName;
+                    }
 
                     string filepath = Path.Combine(fileLocation, Path.ChangeExtension(fname, FileExtension));
 
