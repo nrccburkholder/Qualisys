@@ -94,7 +94,7 @@ namespace CEM.Exporting.TextFileExporters
 
                     if (hasMultipleSections)
                     {
-                        // for flatfile submissions that have multiple sections, we will use the Section.DefaultNamingConvention for the file names. 
+                        // For flatfile submissions that have multiple sections, we will create one file per section, using the Section.DefaultNamingConvention for the filename. 
                         // If there is no Section.DefaultNamingConvention, we will append the section name to the fileName (QueueFile.FileMakerName)
                         fname = string.IsNullOrEmpty(exds.Section.DefaultNamingConvention) ? string.Format("{0}_{1}", fileName, exds.Section.ExportTemplateSectionName) : exds.Section.DefaultNamingConvention;
                     }
@@ -111,23 +111,24 @@ namespace CEM.Exporting.TextFileExporters
 
                     if (columnList.Count > 0)
                     {
-                        System.IO.TextWriter txtWriter = new StreamWriter(filepath);
-
-                        this.CreateFileHeader(txtWriter, columnList, delimiter);
-
-                        foreach (DataRow dr in exds.DataTable.Rows)
+                        using (System.IO.TextWriter txtWriter = new StreamWriter(filepath))
                         {
-                            foreach (ExportColumn column in columnList.OrderBy(x => x.ColumnOrder))
-                            {
-                                string columnName = string.Format("{0}.{1}", sectionName, column.ExportColumnName);
-                                string value = dr[columnName].ToString();
-                                WriteColumn(txtWriter, column, value, delimiter);                               
-                            }
-                            txtWriter.Write(txtWriter.NewLine);
-                        }
+                            CreateFileHeader(txtWriter, columnList, delimiter);
 
-                        txtWriter.Flush();
-                        txtWriter.Close();
+                            foreach (DataRow dr in exds.DataTable.Rows)
+                            {
+
+                                foreach (ExportColumn column in columnList.OrderBy(x => x.ColumnOrder))
+                                {
+                                    string columnName = string.Format("{0}.{1}", sectionName, column.ExportColumnName);
+                                    string value = dr[columnName].ToString();
+                                    WriteColumn(txtWriter, column, value, delimiter);
+                                }
+
+                                txtWriter.Write(txtWriter.NewLine);
+                            }
+                        }
+                      
                     }
                     else throw new Exception(string.Format("No columns found for section {0}!", exds.Section.ExportTemplateSectionName));
                 }        
@@ -135,7 +136,7 @@ namespace CEM.Exporting.TextFileExporters
                 result = true;
 
             }
-            catch (Exception ex)
+            catch
             {
                 throw;
             }
