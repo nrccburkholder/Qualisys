@@ -340,9 +340,16 @@ namespace WebSurveyLibrary
 
             if (email != string.Empty)
             {
-                bool isEmail = Regex.IsMatch(email, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase);
+                try
+                {
+                    var addr = new System.Net.Mail.MailAddress(email);
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
 
-                return isEmail;
             }
             else return false;
         }
