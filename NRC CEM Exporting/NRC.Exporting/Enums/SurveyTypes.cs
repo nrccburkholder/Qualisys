@@ -14,6 +14,7 @@ namespace CEM.Exporting.Enums
         ACOCAHPS = 10,
         HospiceCAHPS = 11,
         CIHI = 12,
+        PQRS = 13,
 
     }
 }

@@ -76,7 +76,7 @@ Public Class SamplePlanModule
             fac.Name = "N/A"
             items.Add(fac)
             Dim clientId As Integer = Me.Study.ClientId
-            For Each fac In Facility.GetByClientId(clientId)
+            For Each fac In Facility.GetByClientId(clientId, Me.Survey.FacilitiesArePracticeSites)
                 items.Add(fac)
             Next
             Return items

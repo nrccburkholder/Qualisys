@@ -44,31 +44,27 @@ namespace CEM.Exporting
 
                 foreach (ExportQueue queue in queues)
                 {
-                    ExportTemplate template = ExportTemplate.Select(new ExportTemplate { ExportTemplateName = queue.ExportTemplateName, ExportTemplateVersionMajor = queue.ExportTemplateVersionMajor, ExportTemplateVersionMinor = queue.ExportTemplateVersionMinor }).First();
+                    ExportTemplate template = ExportTemplate.Select(new ExportTemplate { ExportTemplateName = queue.ExportTemplateName, ExportTemplateVersionMajor = queue.ExportTemplateVersionMajor, ExportTemplateVersionMinor = queue.ExportTemplateVersionMinor }, true).First();
 
-                    List<ExportSection> sections = ExportSection.Select(new ExportSection { ExportTemplateID = template.ExportTemplateID });
+                    List<ExportDataSet> exds = ExportDataSet.Select(new ExportDataSet { ExportQueueID = queue.ExportQueueID, FileMakerName = queuefile.FileMakerName}, template.Sections);
 
-                    List<ExportDataSet> ds = ExportDataSet.Select(new ExportDataSet { ExportQueueID = queue.ExportQueueID, FileMakerName = queuefile.FileMakerName}, sections);
-
-                    if (ds.Count > 0)
+                    if (exds.Count > 0)
                     {
                         // Depending on the file type, we call the appropriate File Maker Methods
                         switch (queuefile.FileMakerType)
                         {
                             case (int)Enums.ExportFileTypes.Xml:
                                 
-                                if (MakeFile_XML(ds, targetFileLocation, template, queuefile))
+                                if (MakeFile_XML(exds, targetFileLocation, template, queuefile))
                                 {
-                                    iCnt += 1;
+                                    iCnt++;
                                 }
                                 break;
-                            case (int)Enums.ExportFileTypes.FixedWidthText:
-
-                                break;
-                            case (int)Enums.ExportFileTypes.CSV:
-
-                                break;
                             default:
+                                if (MakeFile_Text(exds, targetFileLocation, template, queuefile))
+                                {
+                                    iCnt++;
+                                }
                                 break;
                         }
                     }
@@ -155,6 +151,11 @@ namespace CEM.Exporting
             return b;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="defaultname"></param>
+        /// <param name="ds"></param>
         private static void SetFileName(ref string defaultname, ExportDataSet ds)
         {
             int iBracketStart = 0;
@@ -186,6 +187,11 @@ namespace CEM.Exporting
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="surveyType"></param>
+        /// <returns></returns>
         private static BaseXmlExporter GetXmlExporter(SurveyTypes surveyType )
         {
             switch (surveyType)
@@ -199,7 +205,14 @@ namespace CEM.Exporting
             }
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ds"></param>
+        /// <param name="fileLocation"></param>
+        /// <param name="template"></param>
+        /// <param name="queuefile"></param>
+        /// <returns></returns>
         private static bool MakeFile_Text(List<ExportDataSet> ds, string fileLocation, ExportTemplate template, ExportQueueFile queuefile)
         {
             bool b = false;
@@ -209,40 +222,40 @@ namespace CEM.Exporting
 
                 if (Enum.IsDefined(typeof(SurveyTypes), template.SurveyTypeID))
                 {
-
-                    BaseTextFileExporter exporter = GetTextFileExporter((SurveyTypes)template.SurveyTypeID);
-                    filepath = Path.Combine(filepath, Path.ChangeExtension(queuefile.FileMakerName, "txt"));
-
-                    bool isSuccess = exporter.MakeExportTextFile(ds, template, filepath );
-       
-                    Int16 fileState = 0;
-
-                    if (isSuccess == false)
+                    if (Enum.IsDefined(typeof(ExportFileTypes), queuefile.FileMakerType))
                     {
-                        //foreach (ExportValidationError eve in xmlDoc.ValidationErrorList)
-                        //{
-                        //    //Logging to the database.  The elements of the message are pipe delimited, with the template name, queueid, queuefileid, the file name, and the validation error description
-                        //    string message = string.Format("{0}|{1}|{2}|{3}|{4}", template.ExportTemplateName, queuefile.ExportQueueID.ToString(), queuefile.ExportQueueFileID.ToString(), Path.GetFileName(filepath), eve.ErrorDescription);
-                        //    // TODO:  come up with standard EventTypes for the logging
-                        //    Logs.Warn("", "XMLVALIDATIONERR", message, EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
-                        //}
-                        fileState = 2;
+
+                        TextFileExporter exporter = new TextFileExporter(template, (ExportFileTypes)queuefile.FileMakerType); 
+            
+                        bool isSuccess = exporter.MakeExportTextFile(ds, fileLocation, queuefile.FileMakerName);
+
+                        Int16 fileState;
+
+                        if (isSuccess == false)
+                        {
+                            fileState = 2;  
+                        }
+                        else
+                        {
+                            fileState = 1;  // successfully created
+                        }
+
+                        Logs.Info("", "FILEMAKERSTATUS", string.Format("{0}|{1}", fileState == 1 ? "SUCCESS" : "ERROR", filepath), EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
+
+                        // Update the ExportQueueFile record to mark it as complete.
+                        queuefile.FileState = fileState;
+                        queuefile.FileMakerDate = DateTime.Now;
+                        queuefile.Template = template;
+                        queuefile.Save();
+
+                        b = true;
+
                     }
                     else
                     {
-                        fileState = 1;
+                        string msg = string.Format("FileMakerType {0} has no matching ExportFileType enumeration!", template.SurveyTypeID.ToString());
+                        throw new Exception("msg");
                     }
-
-                    Logs.Info("", "FILEMAKERSTATUS", string.Format("{0}|{1}", fileState == 1 ? "SUCCESS" : "INVALID", filepath), EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
-
-                    // Update the ExportQueueFile record to mark is a complete.
-                    queuefile.FileState = fileState;
-                    queuefile.FileMakerDate = DateTime.Now;
-                    queuefile.Template = template;
-                    queuefile.Save();
-
-                    b = true;
-
                 }
                 else
                 {
@@ -258,17 +271,6 @@ namespace CEM.Exporting
             return b;
         }
 
-
-        private static BaseTextFileExporter GetTextFileExporter(SurveyTypes surveyType)
-        {
-            switch (surveyType)
-            {
-                case SurveyTypes.ACOCAHPS:
-                    return new TextFileExporter_ACO();
-                default:
-                    return null;
-            }
-        }
     }
 
 }

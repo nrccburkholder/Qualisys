@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CEM.Exporting.DataProviders;
+using CEM.Exporting.Enums;
 
 namespace CEM.Exporting
 {

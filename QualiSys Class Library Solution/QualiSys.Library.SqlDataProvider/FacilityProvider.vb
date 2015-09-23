@@ -97,11 +97,15 @@ Public Class FacilityProvider
         Dim facList As New FacilityList
 
         Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectFacilityByClientId, clientId, isPracticeSite)
+
         Using rdr As New SafeDataReader(ExecuteReader(cmd))
-            While rdr.Read
-                facList.Add(PopulateFacility(rdr))
-            End While
+            If Not (rdr Is Nothing) Then
+                While rdr.Read
+                    facList.Add(PopulateFacility(rdr))
+                End While
+            End If
         End Using
+
         Return facList
     End Function
 

@@ -10,10 +10,8 @@
 --          1.4 by dgilsdorf: added call to CheckForMostCompleteUsablePartials for HHCAHPS and ICHCAHPS processing
 --          1.5 by dgilsdorf: moved CAHPS processing procs to earlier in the ETL
 --          1.6 by dgilsdorf: changed call to HHCAHPSCompleteness from a function to a procedure
-<<<<<<< HEAD
 --			1.7 by ccaouette: check for duplicate questionform (same samplepop_id)
-=======
->>>>>>> e999d14b84435993ef50556ef5622407a9a656c3
+--			1.8 by ccaouette: fix issue with missed comments
 -- =============================================
 CREATE PROCEDURE [dbo].[csp_GetQuestionFormExtractData] 
 	@ExtractFileID int 
@@ -66,7 +64,7 @@ AS
 									WHERE ExtractFileID = @ExtractFileID
 									AND EntityTypeID = @EntityTypeID --and pkey2 = '186064012'
 									GROUP BY PKey1, Pkey2,EntityTypeID
-									having COUNT(*) > 1) eh2 ON eh1.PKey1 = eh2.PKey1 AND eh1.PKey2 = eh2.Pkey2 AND eh1.EntityTypeID = eh2.EntityTypeID
+									having COUNT(*) > 1) eh2 ON eh1.PKey1 = eh2.PKey1 AND (eh1.PKey2 = eh2.Pkey2 OR eh1.PKey2 IS NULL) AND eh1.EntityTypeID = eh2.EntityTypeID
 				WHERE ExtractFileID = @ExtractFileID								
 	)
 
@@ -96,7 +94,7 @@ AS
 						, eh.IsDeleted
 		 FROM (SELECT  t1.PKey1, t1.Pkey2, t1.IsDeleted
 					FROM cteEH t1 
-					INNER JOIN cteEH t2 ON t1.PKey1 = t2.PKey1 AND t1.PKey2 = t2.Pkey2 AND t1.EntityTypeID = t2.EntityTypeID
+					INNER JOIN cteEH t2 ON t1.PKey1 = t2.PKey1 AND (t1.PKey2 = t2.Pkey2 OR t2.PKey2 IS NULL) AND t1.EntityTypeID = t2.EntityTypeID
 					WHERE t1.Created > t2.Created
 					) eh --Find most recent duplicate ExtractHistory record
 		INNER JOIN QP_Prod.dbo.QUESTIONFORM qf With (NOLOCK) on qf.QUESTIONFORM_ID = eh.PKey1
@@ -118,7 +116,7 @@ AS
 									WHERE ExtractFileID = @ExtractFileID
 									AND EntityTypeID = @EntityTypeID --and pkey2 = '186064012'
 									GROUP BY PKey1, Pkey2,EntityTypeID
-									having COUNT(*) = 1) eh2 ON eh1.PKey1 = eh2.PKey1 AND eh1.PKey2 = eh2.Pkey2 AND eh1.EntityTypeID = eh2.EntityTypeID
+									having COUNT(*) = 1) eh2 ON eh1.PKey1 = eh2.PKey1 AND (eh1.PKey2 = eh2.Pkey2 OR eh1.PKey2 IS NULL) AND eh1.EntityTypeID = eh2.EntityTypeID
 				WHERE ExtractFileID = @ExtractFileID
 	)
 
@@ -168,7 +166,7 @@ AS
 			FROM QuestionFormTemp
 			WHERE returnDate IS NOT NULL --AND IsDeleted = 0
 			GROUP BY SamplePop_ID
-			HAVING COUNT(DISTINCT QuestionForm_ID) > 1)
+			HAVING COUNT(DISTINCT QuestionForm_ID) > 1) --and samplepop_id =64511502
 		) 
 
 		UPDATE t
@@ -176,7 +174,8 @@ AS
 		--SELECT c.*,t.QuestionForm_ID, t.SamplePop_ID, t.returnDate
 		FROM QuestionFormTemp t
 		LEFT JOIN cleanQF c ON c.SamplePop_ID = t.SamplePop_ID
-		WHERE c.returnDate < t.returnDate AND c.QuestionForm_ID <> t.QuestionForm_ID
+		WHERE (c.returnDate < t.returnDate  AND c.QuestionForm_ID <> t.QuestionForm_ID)
+			OR (c.returnDate = t.returnDate  AND c.QuestionForm_ID <> t.QuestionForm_ID AND c.QuestionForm_ID < t.QuestionForm_ID)
 ---------------------------------------------------------------------------------------	    
 -- Add code to determine days from first mailing as well as days from current mailing until the return    
 -- Get all of the maildates for the samplepops were are extracting    
@@ -263,7 +262,3 @@ AS
   	SET @currDateTime2 = GETDATE();
 	SELECT @oExtractRunLogID,@currDateTime2,@TaskName
 	EXEC [UpdateExtractRunLog] @oExtractRunLogID, @currDateTime2
-
-GO
-
-

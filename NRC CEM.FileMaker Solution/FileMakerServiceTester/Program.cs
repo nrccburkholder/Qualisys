@@ -52,7 +52,7 @@ namespace FileMakerServiceTester
 
                 Console.WriteLine();
                 Console.WriteLine();
-                Console.WriteLine("Do you want to run it again? (Y or just hit return>");
+                Console.WriteLine("Do you want to run it again? (Y or hit <RETURN> to Exit)");
                 string answer = Console.ReadLine().ToLower();
                 if (answer.IndexOf("y") == 0)
                 {
