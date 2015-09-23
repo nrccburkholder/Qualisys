@@ -8,7 +8,7 @@ ICD10_1 through ICD10_18. Client Group OCS only.
 Investigate if posting can be automated (but Service has agreed to post manually) 
 10/9 deadline
 
-8.1
+8.1 (timebox) investigate automatically posting studies and complete chosen option - Minerva/Irish/Ratchet
 
 Dave Gilsdorf
 
