@@ -18,7 +18,7 @@ ALTER PROCEDURE [CEM].[PullExportData]
 as
 begin 
 
--- */ declare @ExportQueueID int = 52,  @doRecode bit=1, @doDispositionProc bit=1, @doPostProcess bit=1
+-- */ declare @ExportQueueID int = 55,  @doRecode bit=1, @doDispositionProc bit=1, @doPostProcess bit=1
 
 declare @ExportTemplateName varchar(200), @ExportTemplateVersionMajor varchar(200), @ExportTemplateVersionMinor int
 declare @ExportTemplateID int, @ExportDateColumnID int, @ExportStart datetime, @exportEnd datetime, @returnsonly bit, @CahpsUnitOnly bit
@@ -96,22 +96,24 @@ left join CEM.exporttemplatecolumnresponse etcr on etc.ExportTemplateColumnID=et
 where et.ExportTemplateID=@ExportTemplateID
 order by ets.ExportTemplateSectionID,etc.ColumnOrder
 
-if exists (	select ExportTemplateColumnID
+if exists (	select ExportTemplateColumnID, 1.0*min(FixedWidthLength)/count(*) , round(1.0*min(FixedWidthLength)/count(*),0)
 			from #allcolumns
 			where ExportColumnNameMR is not null
 			and RawValue <> -9
 			group by ExportTemplateColumnID
-			having min(FixedWidthLength) <> sum(len(RecodeValue)))
+			having 1.0*min(FixedWidthLength)/count(*) <> round(1.0*min(FixedWidthLength)/count(*),0)
+			or 1.0*min(FixedWidthLength)/count(*) < max(len(recodevalue)))
 begin
-	print 'ERROR! One or more of the multiple response questions doesn''t have a wide enough FixedWidthLength. Aborting.'
+	print 'ERROR! The width of one or more of the multiple response questions is too short or isn''t evenly divisible by the number of responses. Aborting.'
 	set @sql=''
 	select @SQL = @SQL + msg + ', '
-	from (	select min(ExportTemplateColumnDescription)+ ' needs ' + convert(varchar,sum(len(RecodeValue))) + ' but is using '+convert(varchar, min(FixedWidthLength)) as msg
+	from (	select min(ExportTemplateColumnDescription)+ ' has ' + convert(varchar,count(*)) + ' responses but has a width of '+convert(varchar, min(FixedWidthLength)) as msg
 			from #allcolumns
 			where ExportColumnNameMR is not null
 			and RawValue <> -9
 			group by ExportTemplateColumnID
-			having min(FixedWidthLength) <> sum(len(RecodeValue))) x
+			having 1.0*min(FixedWidthLength)/count(*) <> round(1.0*min(FixedWidthLength)/count(*),0)
+			or 1.0*min(FixedWidthLength)/count(*) < max(len(recodevalue))) x
 
 	insert into [CEM].[Logs] (EventDateTime, EventLevel, UserName, MachineName, EventType, EventMessage, EventSource, EventClass, EventMethod, ErrorMessage)
 	select getdate() as EventDateTime
@@ -356,8 +358,7 @@ where ExportTemplateID=@ExportTemplateID
 
 while charindex('{',@SQL) > 0
 begin
-	--declare @SQL varchar(max)='{vendordata.vendor-name}.{vendordata.file-submission-day}{vendordata.file-submission-month}{vendordata.file-submission-yr}.{vendordata.file-submission-number}', @sqlfrom varchar(max), @colname varchar(200) set @sqlfrom=''''+@
-sql+''''
+	--declare @SQL varchar(max)='{vendordata.vendor-name}.{vendordata.file-submission-day}{vendordata.file-submission-month}{vendordata.file-submission-yr}.{vendordata.file-submission-number}', @sqlfrom varchar(max), @colname varchar(200) set @sqlfrom=''''+@sql+''''
 	set @colname = substring(@SQL, 1 + charindex('{', @SQL),  charindex('}', @SQL) - charindex('{', @SQL) - 1)
 	set @sqlfrom = replace(@sqlfrom,@sqlfrom,'replace('+@sqlfrom+',''{'+@colname+'}'',['+@colname+'])')
 	set @sql = replace(@sql,'{'+@colname+'}','')
