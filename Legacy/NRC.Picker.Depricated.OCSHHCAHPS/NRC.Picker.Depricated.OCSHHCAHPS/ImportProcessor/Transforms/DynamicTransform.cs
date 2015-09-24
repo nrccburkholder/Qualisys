@@ -96,6 +96,7 @@ Imports Microsoft.VisualBasic.Financial
 Imports Microsoft.VisualBasic.Strings
 Imports Microsoft.VisualBasic.VBMath
 Imports NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Transforms.Misc
+Imports System.Text.RegularExpressions
 
 Namespace NRC
 Public Class DynamicCode 

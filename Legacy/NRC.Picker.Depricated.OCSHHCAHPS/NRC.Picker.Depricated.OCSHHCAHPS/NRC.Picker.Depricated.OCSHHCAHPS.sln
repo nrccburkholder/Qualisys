@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor", "ImportProcessor\NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.csproj", "{BCD6012D-3D2B-4A44-993E-9FAEC29FF962}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessingService", "ImportProcessingService\NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessingService.csproj", "{3A8C93C5-027A-4488-8D74-5FC379340003}"
