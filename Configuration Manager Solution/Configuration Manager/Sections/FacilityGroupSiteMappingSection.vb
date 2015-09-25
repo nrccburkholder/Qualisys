@@ -1,4 +1,5 @@
-﻿Imports Nrc.QualiSys.Library
+﻿Imports Nrc.Qualisys.Library
+Imports DevExpress.Data.Filtering
 
 
 Public Class FacilityGroupSiteMappingSection
@@ -16,7 +17,7 @@ Public Class FacilityGroupSiteMappingSection
     Public ReadOnly Property UniqueSiteGroupId As Integer
         Get
             Return mUniqueSiteGroupId
-        End Get    
+        End Get
     End Property
 #End Region
 
@@ -42,6 +43,8 @@ Public Class FacilityGroupSiteMappingSection
         ' initialize
         mUniqueSiteGroupId = Convert.ToInt32(ds.Tables(0).Compute("max(SiteGroup_id)", String.Empty))
 
+        gvSiteGroups.SetRowCellValue(GridControlEx.AutoFilterRowHandle, gvSiteGroups.Columns("bitActive"), True)
+        gvPracticeSites.SetRowCellValue(GridControlEx.AutoFilterRowHandle, gvSiteGroups.Columns("bitActive"), True)
     End Sub
 
 
