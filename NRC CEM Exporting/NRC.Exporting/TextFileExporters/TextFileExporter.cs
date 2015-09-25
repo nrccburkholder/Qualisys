@@ -79,9 +79,11 @@ namespace CEM.Exporting.TextFileExporters
 
             try
             {
-                if (!Directory.Exists(fileLocation))
+                string fileDestination = Path.Combine(fileLocation, exportTemplate.ExportTemplateName);
+
+                if (!Directory.Exists(fileDestination))
                 {
-                    Directory.CreateDirectory(fileLocation);
+                    Directory.CreateDirectory(fileDestination);
                 }
 
                 string delimiter = GetDelimiter(fileMakerType);
@@ -103,7 +105,7 @@ namespace CEM.Exporting.TextFileExporters
                         fname = fileName;
                     }
 
-                    string filepath = Path.Combine(fileLocation, Path.ChangeExtension(fname, FileExtension));
+                    string filepath = Path.Combine(fileDestination, string.Format("{0}.{1}", fname, FileExtension));
 
                     List<ExportColumn> columnList = columns.Where(x => x.Key == exds.Section.ExportTemplateSectionID).FirstOrDefault().Value;
 
@@ -235,18 +237,18 @@ namespace CEM.Exporting.TextFileExporters
             switch (fileMakerType)
             {
                 case ExportFileTypes.FixedWidthText:
-                    txtWriter.Write(value.PadRight((int)column.FixedWidthLength));
+                    txtWriter.Write(value.Trim().PadRight((int)column.FixedWidthLength));
                     break;
                 default:
                     // delimitted                   
                     if (column.ColumnOrder == 1)
                     {
                         // do not add delimiter to first column
-                        txtWriter.Write(value);
+                        txtWriter.Write(value.Trim());
                     }
                     else
                     {
-                        txtWriter.Write(string.Format("{0}{1}", delimiter,value));
+                        txtWriter.Write(string.Format("{0}{1}", delimiter,value.Trim()));
                     }
 
                     break;
