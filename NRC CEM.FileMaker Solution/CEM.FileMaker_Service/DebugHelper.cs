@@ -6,6 +6,7 @@ using System.ServiceProcess;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Configuration;
 
 namespace CEM.FileMaker
 {
@@ -15,6 +16,9 @@ namespace CEM.FileMaker
         {
             //Source: http://coding.abel.nu/2012/05/debugging-a-windows-service-project/
             Console.WriteLine("Services running in interactive mode.");
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine(string.Format("Environment: {0}", GetEnvironment()));
             Console.WriteLine();
 
             MethodInfo onStartMethod = typeof(ServiceBase).GetMethod("OnStart",
@@ -46,6 +50,16 @@ namespace CEM.FileMaker
             Console.WriteLine("All services stopped.");
             // Keep the console alive for a second to allow the user to see the message.
             Thread.Sleep(1000);
+        }
+
+        static string GetEnvironment()
+        {
+            string connStr = ConfigurationManager.ConnectionStrings["CEMConnection"].ConnectionString.ToUpper();
+
+            if (connStr.Contains("LNK0TCATSQL01")) return "TEST";
+            else if (connStr.Contains("STGCATCLUSTDB2")) return "STAGE";
+            else return "PROD";
+
         }
     }
 }
