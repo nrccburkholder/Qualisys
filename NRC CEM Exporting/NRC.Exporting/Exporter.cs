@@ -89,6 +89,9 @@ namespace CEM.Exporting
             try
             {
 
+                string fileDestination = Path.Combine(fileLocation, template.ExportTemplateName);
+           
+
                 if (Enum.IsDefined(typeof(SurveyTypes), template.SurveyTypeID))
                 {
                     XmlDocumentEx xmlDoc = new XmlDocumentEx();
@@ -97,7 +100,7 @@ namespace CEM.Exporting
 
                     xmlDoc = exporter.MakeExportXMLDocument(ds, template);
 
-                    filepath = xmlDoc.IsValid == true ? fileLocation : Path.Combine(fileLocation, "error");
+                    filepath = xmlDoc.IsValid == true ? fileDestination : Path.Combine(fileDestination, "error");
 
                     if (!Directory.Exists(filepath))
                     {

@@ -15,7 +15,7 @@ if not exists (select * from sys.columns where object_name(object_id)='SurveyTyp
 go
 update surveytype set UsePoundSignForSkipInstructions = 0
 update surveytype set UsePoundSignForSkipInstructions = 1 where surveytype_dsc in ('PQRS CAHPS','ACOCAHPS')
-
+update surveytype set SkipRepeatsScaleText = 1 where surveytype_dsc in ('ACOCAHPS')
 go
 if exists (select * from sys.procedures where name='UsePoundSignForSkipInstructions')
 	drop procedure dbo.UsePoundSignForSkipInstructions
