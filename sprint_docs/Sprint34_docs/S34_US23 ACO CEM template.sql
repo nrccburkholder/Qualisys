@@ -97,7 +97,7 @@ set @ETSid=SCOPE_IDENTITY()
 
 insert into cem.ExportTemplateColumn (ExportTemplateSectionID, ExportTemplateColumnDescription, ColumnOrder,	DatasourceID,	ExportColumnName,	SourceColumnName,				SourceColumnType,	AggregateFunction,	DispositionProcessID,	FixedWidthLength,	ColumnSetKey,	FormatID,	MissingThresholdPercentage,	CheckFrequencies)
 VALUES (@ETSid, 'Unique Beneficiary Finder Number Assigned by CAHPS for ACOs Data Coordination Team',	1,		4,				'FINDER',			'ColumnName=''ACO_FinderNum''',	167,				null,				null,					8,					NULL,			NULL,		.95,						0)
-, (@ETSid, 'Five character ACO identifier: begins with a letter (A or P), followed by 4 numbers',		2, 		4,				'ACO_ID',			'ColumnName=''ACO_ID''',		167,				null,				null,					5,					NULL,			NULL,		.95,						0)
+, (@ETSid, 'Five character ACO identifier: begins with a letter (A or P), followed by 4 numbers',		2, 		4,				'ACO_ID',			'ColumnName=''ACO_ACOID''',		167,				null,				null,					5,					NULL,			NULL,		.95,						0)
 , (@ETSid, 'Final Disposition Code',																	3,		3,             	'DISPOSITN',		'CahpsDispositionID',			56,					null,				null,					2,					NULL,			NULL,		.95,						0)
 , (@ETSid, 'Survey Completion Mode',																	4,		1,             	'MODE',				'ReceiptTypeID',				56,					null,				null,					1,					NULL,			NULL,		.95,						0)
 , (@ETSid, 'Survey Language',																			5,		3,             	'DISPO_LANG',		'LanguageID',					56,					null,				null,					1,					NULL,			NULL,		.95,						0)
@@ -894,11 +894,11 @@ where ets.ExportTemplateID=@newTemplateID
 and etc.ExportColumnName in ('FIELDDATE','FINDER','FOCALTYPE')
 
 update etc
-set SourceColumnName = 'ColumnName=''PQRS_GroupID'''
+set SourceColumnName = 'ColumnName=''PQRS_GroupID''', ExportColumnName='PQRS_ID'
 from  cem.ExportTemplateColumn etc 
 inner join cem.ExportTemplateSection ets on etc.ExportTemplateSectionID=ets.ExportTemplateSectionID
 where ets.ExportTemplateID=@newTemplateID
-and etc.ExportColumnName = 'ACO_ID'
+and etc.ExportColumnName = 'ACO_ACOID'
 
 update etc
 set SourceColumnName = replace(SourceColumnName, 'Dr','PQRS_')
