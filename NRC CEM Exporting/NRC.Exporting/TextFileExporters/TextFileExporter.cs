@@ -120,10 +120,10 @@ namespace CEM.Exporting.TextFileExporters
                             foreach (DataRow dr in exds.DataTable.Rows)
                             {
 
-                                foreach (ExportColumn column in columnList.OrderBy(x => x.ColumnOrder))
+                                foreach (ExportColumn column in columnList.OrderBy(x => x.ColumnOrder).ThenBy(x => x.MultiResponseOrder))
                                 {
                                     string columnName = string.Format("{0}.{1}", sectionName, column.ExportColumnName);
-                                    string value = dr[columnName].ToString();
+                                    string value = dr[columnName].ToString().Trim();
                                     WriteColumn(txtWriter, column, value, delimiter);
                                 }
 
@@ -156,7 +156,7 @@ namespace CEM.Exporting.TextFileExporters
         {
             if (fileMakerType != ExportFileTypes.FixedWidthText)  // only make a header if it's NOT fixed width
             { 
-                foreach (ExportColumn column in columnList.OrderBy(x => x.ColumnOrder))
+                foreach (ExportColumn column in columnList.OrderBy(x => x.ColumnOrder).ThenBy(x => x.MultiResponseOrder))
                 {
                     WriteColumn(txtWriter, column, column.ExportColumnName, delimiter);
                 }
@@ -180,12 +180,14 @@ namespace CEM.Exporting.TextFileExporters
                     if (string.IsNullOrEmpty(column.ExportColumnName))
                     {
                         int order = 0;
-                        foreach (ExportColumnResponse columnResponse in column.ColumnResponses.Where(x => x.ExportColumnName != "unmarked"))
+                        List<ExportColumnResponse> columnResponses = column.ColumnResponses.Where(x => x.ExportColumnName != "unmarked").ToList();
+                        int columnWidth = ((int)column.FixedWidthLength / columnResponses.Count());  
+                        foreach (ExportColumnResponse columnResponse in columnResponses)
                         {
                             ExportColumn multipResponseColumn = new ExportColumn();
                             multipResponseColumn.ExportColumnName = columnResponse.ExportColumnName;
                             multipResponseColumn.ColumnOrder = column.ColumnOrder;
-                            multipResponseColumn.FixedWidthLength = column.FixedWidthLength;
+                            multipResponseColumn.FixedWidthLength = columnWidth;
                             multipResponseColumn.ExportTemplateSectionID = column.ExportTemplateSectionID;
                             multipResponseColumn.MultiResponseOrder = ++order;
                             multipResponseColumn.SourceColumnType = column.SourceColumnType;
@@ -237,18 +239,18 @@ namespace CEM.Exporting.TextFileExporters
             switch (fileMakerType)
             {
                 case ExportFileTypes.FixedWidthText:
-                    txtWriter.Write(value.Trim().PadRight((int)column.FixedWidthLength));
+                    txtWriter.Write(value.PadRight((int)column.FixedWidthLength));
                     break;
                 default:
                     // delimitted                   
                     if (column.ColumnOrder == 1)
                     {
                         // do not add delimiter to first column
-                        txtWriter.Write(value.Trim());
+                        txtWriter.Write(value);
                     }
                     else
                     {
-                        txtWriter.Write(string.Format("{0}{1}", delimiter,value.Trim()));
+                        txtWriter.Write(string.Format("{0}{1}", delimiter,value));
                     }
 
                     break;
