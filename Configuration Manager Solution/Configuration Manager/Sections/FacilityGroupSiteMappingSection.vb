@@ -41,7 +41,11 @@ Public Class FacilityGroupSiteMappingSection
         SiteGroupBindingSource.DataSource = ds.Tables(0)
 
         ' initialize
-        mUniqueSiteGroupId = Convert.ToInt32(ds.Tables(0).Compute("max(SiteGroup_id)", String.Empty))
+        If (ds.Tables(0).Rows.Count > 0) Then
+            mUniqueSiteGroupId = Convert.ToInt32(ds.Tables(0).Compute("max(SiteGroup_id)", String.Empty))
+        Else
+            mUniqueSiteGroupId = 0
+        End If
 
         gvSiteGroups.SetRowCellValue(GridControlEx.AutoFilterRowHandle, gvSiteGroups.Columns("bitActive"), True)
         gvPracticeSites.SetRowCellValue(GridControlEx.AutoFilterRowHandle, gvSiteGroups.Columns("bitActive"), True)
