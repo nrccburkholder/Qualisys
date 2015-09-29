@@ -940,4 +940,4 @@ from cem.ExportTemplateColumnResponse etcr
 inner join cem.ExportTemplateColumn etc on etcr.ExportTemplateColumnID=etc.ExportTemplateColumnID
 inner join cem.ExportTemplateSection ets on etc.ExportTemplateSectionID=ets.ExportTemplateSectionID
 where ets.ExportTemplateID=@newTemplateID
-and etc.ExportColumnName = 'DEPOSITN'
+and etc.ExportColumnName = 'DISPOSITN'

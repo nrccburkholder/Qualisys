@@ -9,7 +9,7 @@ inner join etl.DataSourceKey dsk on s.surveyid=dsk.DataSourceKeyID
 inner join qualisys.qp_prod.dbo.survey_def sd on dsk.DataSourceKey=sd.survey_id
 left join qualisys.qp_prod.dbo.surveysubtype sst on sd.survey_id=sst.survey_id
 left join qualisys.qp_prod.dbo.subtype st on sst.subtype_id=st.subtype_id
-where s.CAHPSTypeID in (4,8)
+where s.CAHPSTypeID in (8)
 
 select distinct s.*, ss.SampleDate
 into #ACOSurveys
@@ -23,6 +23,7 @@ inner join #s s on su.surveyid=s.surveyID
 where ss.SampleDate between '2015-09-01' and '2222-12-31' 
 order by 2
 
+select * from #acosurveys
 
 use nrc_datamart_extracts
 declare @EQid int
@@ -64,7 +65,9 @@ set @EQid=SCOPE_IDENTITY()
 insert into cem.ExportQueueSurvey (ExportQueueID, SurveyID)
 select distinct @EQid, surveyid 
 from #ACOSurveys
-where CAHPSTypeID=8
+where CAHPSTypeID=8 and survey_id=18070
+
+print @eqid
 
 if exists (select * from sys.tables where name = 'ExportDataset00000004')
 	drop table CEM.ExportDataset00000004
@@ -96,17 +99,34 @@ where [submission.dispositn] not in ('33','433')
 
 go
 if exists (select * from sys.tables where name = 'ExportDataset00000006')
-	drop table CEM.ExportDataset00000006
+	delete from CEM.ExportDataset00000006 where exportqueueid=61
 if object_id('tempdb..#results') is not null
 	drop table #results
 
-update cem.exportqueue set pulldate=null where exportqueueid=56
+update cem.exportqueue set pulldate=null where exportqueueid=61
 go
 create table #results (ResultsID int identity(1,1), ExportQueueID int, ExportTemplateID int, SamplePopulationID int, QuestionFormID int, FileMakerName varchar(200))
-exec cem.PullExportData @ExportQueueID=56, @dorecode=1, @dodispositionproc=1, @dopostprocess=1
+exec cem.PullExportData @ExportQueueID=61, @dorecode=1, @dodispositionproc=1, @dopostprocess=1
+
+update cem.ExportDataset00000006 set [support.subdy]=day(getdate()), [support.submn]=month(getdate()), [support.subyr]='15' where exportqueueid=61
+update cem.exportdataset00000006 set [support.subdy]='0'+[support.subdy] where len([support.subdy])=1
+update cem.exportdataset00000006 set [support.submn]='0'+[support.submn] where len([support.submn])=1
+update cem.exportdataset00000006 set filemakername=
+	replace(
+	replace(
+	replace(
+	replace('PQRS.NationalResearchCorp.submission{support.SUBNUM}.{support.SUBMN}{support.SUBDY}{support.SUBYR}','{support.subnum}',[support.subnum])
+	,'{support.submn}',[support.submn])
+	,'{support.subdy}',[support.subdy])
+	,'{support.subyr}',[support.subyr])
+
+insert into cem.ExportQueueFile (ExportQueueID,FileState,FileMakerType,FileMakerName)
+select distinct ExportQueueID,0 as FileState,2 as FileMakerType,FileMakerName
+from CEM.ExportDataset00000006
+where ExportQueueID=61
 
 /*
-select [ResultsID],[ExportQueueID],[ExportTemplateID],[SamplePopulationID],[QuestionFormID],[FileMakerName],[submission.FINDER],[submission.ACO_ID],[submission.DISPOSITN],[submission.MODE],[submission.DISPO_LANG],[submission.RECEIVED]
+select [ResultsID],[ExportQueueID],[ExportTemplateID],[SamplePopulationID],[QuestionFormID],[FileMakerName],[submission.FINDER],[submission.PQRS_ID],[submission.DISPOSITN],[submission.MODE],[submission.DISPO_LANG],[submission.RECEIVED]
 ,[submission.FOCALTYPE],[submission.PRTITLE],[submission.PRFNAME],[submission.PRLNAME]
 ,[submission.Q01],[submission.Q02],[submission.Q03],[submission.Q04],[submission.Q05],[submission.Q06],[submission.Q07],[submission.Q08],[submission.Q09],[submission.Q10],[submission.Q11],[submission.Q12]
 ,[submission.Q13],[submission.Q14],[submission.Q15],[submission.Q16],[submission.Q17],[submission.Q18],[submission.Q19],[submission.Q20],[submission.Q21],[submission.Q22],[submission.Q23],[submission.Q24]
@@ -120,6 +140,9 @@ select [ResultsID],[ExportQueueID],[ExportTemplateID],[SamplePopulationID],[Ques
 ,[support.Q78d1-mail],[support.Q78d2-mail],[support.Q78d3-mail],[support.Q78d4-mail],[support.Q78d5-mail],[support.Q78d6-mail],[support.Q78d7-mail],[support.Q78e1-mail],[support.Q78e2-mail],[support.Q78e3-mail]
 ,[support.Q78e4-mail]
 from CEM.ExportDataset00000006
+where exportqueueid=61
+and questionformid is not null
+order by [submission.dispositn]
 */
 
 
