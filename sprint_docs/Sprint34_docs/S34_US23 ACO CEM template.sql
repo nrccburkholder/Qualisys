@@ -900,12 +900,12 @@ inner join cem.ExportTemplateSection ets on etc.ExportTemplateSectionID=ets.Expo
 where ets.ExportTemplateID=@newTemplateID
 and etc.ExportColumnName = 'ACO_ACOID'
 
-update etc
-set SourceColumnName = replace(SourceColumnName, 'Dr','PQRS_')
-from  cem.ExportTemplateColumn etc 
-inner join cem.ExportTemplateSection ets on etc.ExportTemplateSectionID=ets.ExportTemplateSectionID
-where ets.ExportTemplateID=@newTemplateID
-and etc.ExportColumnName in ('PRFNAME','PRLNAME')
+--update etc
+--set SourceColumnName = replace(SourceColumnName, 'Dr','PQRS_')
+--from  cem.ExportTemplateColumn etc 
+--inner join cem.ExportTemplateSection ets on etc.ExportTemplateSectionID=ets.ExportTemplateSectionID
+--where ets.ExportTemplateID=@newTemplateID
+--and etc.ExportColumnName in ('PRFNAME','PRLNAME')
 
 delete etcr
 from cem.ExportTemplateColumnResponse etcr
