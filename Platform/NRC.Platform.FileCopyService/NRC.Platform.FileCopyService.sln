@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NRC.Platform.FileCopyService", "NRC.Platform.FileCopyService.csproj", "{FE329AF1-3DD8-4481-B5B3-BFFA95A45991}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NRC.Common", "..\NRC.Common\NRC.Common.csproj", "{FCC95A8B-8FE0-482D-A09E-E9EB2CB7C890}"
@@ -10,18 +12,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Package.xml = Package.xml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{FC9CDA7D-54A1-4237-93DA-D17098E23FED}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{46EF60B7-AF38-4F8C-8425-763E51C6359E}"
+	ProjectSection(SolutionItems) = preProject
+		lib\Tamir.SharpSSH.dll = lib\Tamir.SharpSSH.dll
+	EndProjectSection
+EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 3
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://tfs.nationalresearch.com:8080/tfs/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = ..\\NRC.Common\\NRC.Common.csproj
-		SccProjectName1 = ../NRC.Common
-		SccLocalPath1 = ..\\NRC.Common
-		SccProjectUniqueName2 = NRC.Platform.FileCopyService.csproj
-		SccLocalPath2 = .
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
