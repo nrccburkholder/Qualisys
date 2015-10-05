@@ -306,8 +306,7 @@ type
       DisplayText: Boolean);
     procedure DMOpenQDestroy(Sender: TObject);
     procedure FoxProPRG(fn:string);
-    function SkipRepeatsScaleTextForSurveyType: boolean;
-    function SubOrInsertPoundSignForQuestionForSurveyType: boolean;
+    function SubOrInsertPoundSignForQuestionForSurveyType(var formatOverride : string; var skipRepeatsScaleText : boolean): boolean;
 {$IFDEF FormLayout}
     function MappedSections:boolean;
     function MappedSampleUnitsByCL(coverLetter : string) : string;
@@ -769,21 +768,14 @@ begin
 {$ENDIF}
 end;
 
-function TDMOpenQ.SkipRepeatsScaleTextForSurveyType:boolean;
+function TDMOpenQ.SubOrInsertPoundSignForQuestionForSurveyType(var formatOverride : string; var skipRepeatsScaleText : boolean):boolean;
 var rs:variant;
 begin
-  rs := sqlcn.execute( 'select 1 from SurveyType inner join Survey_def on SurveyType.SurveyType_id = Survey_def.SurveyType_id ' +
-                       'where SkipRepeatsScaleText = 1 and survey_id='+inttostr(glbSurveyID));
-  result := (not rs.eof);
-  rs.close;
-  rs:=unassigned;
-end;
-
-function TDMOpenQ.SubOrInsertPoundSignForQuestionForSurveyType:boolean;
-var rs:variant;
-begin
-  rs := sqlcn.execute( 'exec dbo.UsePoundSignForSkipInstructions @survey_id='+inttostr(glbSurveyID));
-  result := (not rs.eof);
+  rs := sqlcn.execute( 'exec dbo.UsePoundSignForSkipInstructions @survey_id='+inttostr(glbSurveyID)+ ', @lang_id='+ inttostr(CurrentLanguage));
+  result := rs.fields[0].value;
+  formatOverride := vartostr(rs.fields[1].value);
+  skipRepeatsScaleText := rs.fields[2].value;
+//  result := (not rs.eof);
   rs.close;
   rs:=unassigned;
 end;
