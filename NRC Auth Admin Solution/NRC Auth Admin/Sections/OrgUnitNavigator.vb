@@ -329,7 +329,7 @@ Public Class OrgUnitNavigator
     Private Sub PopulateOrgUnits(ByVal nodes As TreeNodeCollection, ByVal rootOrg As OrgUnit)
         Dim displayName As String
         If rootOrg.OrgUnitType = OrgUnit.OrgUnitTypeEnum.ClientOu Then
-            displayName = String.Format("{0}({1})", rootOrg.Name, rootOrg.OrgUnitId)
+            displayName = String.Format("{0} ({1})", rootOrg.Name, rootOrg.OrgUnitId)
         Else
             displayName = rootOrg.Name
         End If
