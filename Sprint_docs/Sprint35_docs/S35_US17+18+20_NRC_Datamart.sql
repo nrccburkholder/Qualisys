@@ -172,7 +172,7 @@ if not exists (	SELECT 1
 					   AND st.NAME = 'SampleUnitBySampleSet' 
 					   AND sc.NAME = 'IsCensus' )
 
-	alter table [dbo].[SampleUnitBySampleSet] add IsCensus bit NULL 
+	alter table [dbo].[SampleUnitBySampleSet] add IsCensus tinyint NULL 
 
 go
 
@@ -197,7 +197,7 @@ if not exists (	SELECT 1
 					   AND st.NAME = 'SampleUnitBySampleSet' 
 					   AND sc.NAME = 'IsCensus' )
 
-	alter table [LOAD_TABLES].[SampleUnitBySampleSet] add IsCensus bit NULL 
+	alter table [LOAD_TABLES].[SampleUnitBySampleSet] add IsCensus tinyint NULL 
 
 
 go
@@ -223,7 +223,7 @@ if not exists (	SELECT 1
 					   AND st.NAME = 'SampleUnitBySampleSetError' 
 					   AND sc.NAME = 'IsCensus' )
 
-	alter table [LOAD_TABLES].[SampleUnitBySampleSetError] add IsCensus bit NULL 
+	alter table [LOAD_TABLES].[SampleUnitBySampleSetError] add IsCensus tinyint NULL 
 
 
 go
