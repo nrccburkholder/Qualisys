@@ -26,5 +26,8 @@
     <Setting Name="CommentFilterGridSettings" Type="System.Object" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="NRCAuthAdmin_tissrssql01_ReportingService2010" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://tissrssql01:80/ReportServer/ReportService2010.asmx</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

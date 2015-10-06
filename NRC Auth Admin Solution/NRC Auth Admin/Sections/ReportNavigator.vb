@@ -45,8 +45,8 @@ Public Class ReportNavigator
 
     Private Function GetReportButtons() As ToolStripButton()
         Dim buttons As New List(Of ToolStripButton)
-        Dim rs As New ReportingService
-        rs.Url = String.Format("http://{0}/ReportServer/ReportService.asmx", Config.ReportServer)
+        Dim rs As New ReportService.ReportingService2010
+        rs.Url = String.Format("http://{0}/ReportServer/ReportService2010.asmx", Config.ReportServer)
         Dim reportPath As String = Config.ReportFolder
 
         rs.Credentials = System.Net.CredentialCache.DefaultCredentials
@@ -54,7 +54,7 @@ Public Class ReportNavigator
         catalogItems = rs.ListChildren(reportPath, True)
 
         For Each item As CatalogItem In catalogItems
-            If item.Type = ItemTypeEnum.Report Then
+            If item.TypeName = "Report" Then
 
                 Dim button As New ToolStripButton(item.Name, My.Resources.Document16, AddressOf ReportButtonClick)
                 button.Tag = item
