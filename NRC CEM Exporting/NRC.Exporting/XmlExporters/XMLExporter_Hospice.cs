@@ -59,7 +59,7 @@ namespace CEM.Exporting.XmlExporters
                     returnXMLdoc.Schemas.Add(schema);
                     returnXMLdoc.LoadXml(writer.XmlString);
 
-                    returnXMLdoc.Validate();
+                    //returnXMLdoc.Validate();
 
                     return returnXMLdoc;
                 }
@@ -129,7 +129,8 @@ namespace CEM.Exporting.XmlExporters
             {
                 foreach (DataRow dr in dsList[2].DataTable.Rows)
                 {
-                    if (AreAllColumnsEmpty(dr) == false)
+                    
+                    if (AreAllColumnsEmpty(dr) == false) // check the columns of the datarow.  If all of them are NULL or blank, then we do not write the node
                     {
                         writer.StartElement(node.Name);
 
@@ -151,7 +152,6 @@ namespace CEM.Exporting.XmlExporters
 
                         writer.EndElement();
                     }
-
                 }
             }
 
