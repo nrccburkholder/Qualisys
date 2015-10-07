@@ -314,7 +314,7 @@ AS
 	--------------------------------------------------------------------------------------
 	UPDATE dbo.SampleUnitBySampleSet
 	   SET NumPatInFile = lt.NumPatInFile
-		,IneligibleCount = lt.IneligibleCount
+		,IneligibleCount = ISNULL(lt.IneligibleCount,0)
 		,IsCensus = lt.IsCensus
 	 FROM LOAD_TABLES.SampleUnitBySampleSet lt WITH (NOLOCK)
 		 INNER JOIN dbo.SampleUnitBySampleSet p WITH (NOLOCK) on p.SAMPLESETID = lt.SAMPLESETID and p.SAMPLEUNITID = lt.SAMPLEUNITID
