@@ -327,7 +327,14 @@ Public Class OrgUnitNavigator
     End Sub
 
     Private Sub PopulateOrgUnits(ByVal nodes As TreeNodeCollection, ByVal rootOrg As OrgUnit)
-        Dim rootNode As New TreeNode(rootOrg.Name)
+        Dim displayName As String
+        If rootOrg.OrgUnitType = OrgUnit.OrgUnitTypeEnum.ClientOu Then
+            displayName = String.Format("{0} ({1})", rootOrg.Name, rootOrg.OrgUnitId)
+        Else
+            displayName = rootOrg.Name
+        End If
+
+        Dim rootNode As New TreeNode(displayName)
         rootNode.Tag = rootOrg
         For Each org As OrgUnit In rootOrg.OrgUnits
             PopulateOrgUnits(rootNode.Nodes, org)

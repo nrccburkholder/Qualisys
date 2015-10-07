@@ -142,9 +142,21 @@ namespace CEM.Exporting.XmlExporters
             {
                 if (ignoreColumns.Contains(i) == false)
                 {
-                    if (string.IsNullOrWhiteSpace(row[i].ToString()))
+                    if (string.IsNullOrWhiteSpace(row[i].ToString())== false)
                         return false;
                 }       
+            }
+            return true;
+        }
+
+        protected bool AreAllColumnsEmpty(DataRow row)
+        {
+            for (int i = 0; i < row.Table.Columns.Count; i++)
+            {
+
+                if (string.IsNullOrWhiteSpace(row[i].ToString()) == false)
+                    return false;
+
             }
             return true;
         }
