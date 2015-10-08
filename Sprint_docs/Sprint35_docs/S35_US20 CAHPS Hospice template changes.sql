@@ -43,6 +43,40 @@ begin
 	exec [CEM].[CopyExportTemplate] @oldTemplateID
 	select @newTemplateID = max(exporttemplateid) from cem.exporttemplate 
 	update cem.ExportTemplate set ExportTemplateVersionMinor=2 where ExportTemplateID=@newTemplateID
+/* 
+y'know .... i don't think we need to do this in post-processing. I think we can take care of it via ExportTemplateColumn.AggregateFunction
+
+	declare @sql nvarchar(max)
+	select @sql=definition
+	from sys.sql_modules
+	where object_name(object_id)='ExportPostProcess'+right(convert(varchar,@newtemplateID+100000000),8)
+	print @sql
+	set @sql = replace(@sql,'-- recode various blank columns to ''M'' or ''N/A''','-- ineligible-presample & sample-type:
+-- sample-type: 1=Simple Random Sample, 2=Census Sample
+update eds
+set [hospicedata.ineligible-presample]=sub.IneligibleCount, [hospicedata.sample-type]= case sub.isCensus when 0 then 1 when 1 then 2 end
+from cem.ExportDataset'+right(convert(varchar,@newtemplateID+100000000),8)+' eds
+inner join (select r.[hospicedata.reference-month],r.[hospicedata.provider-id], sum(suss.IneligibleCount) as IneligibleCount, min(suss.isCensus) as isCensus
+		from cem.ExportDataset'+right(convert(varchar,@newtemplateID+100000000),8)+' r
+		inner join nrc_datamart.dbo.SampleUnitFacilityAttributes sufa on r.[hospicedata.provider-id]=sufa.MedicareNumber
+		inner join NRC_Datamart.dbo.SamplePopulation sp on r.SamplepopulationID=sp.SamplepopulationID
+		inner join NRC_Datamart.dbo.SampleSet ss on sp.SampleSetID=ss.SampleSetID
+		inner join NRC_Datamart.dbo.SelectedSample sel on sp.SamplePopulationID=sel.SamplePopulationID and sel.sampleunitid=sufa.sampleunitid
+		inner join NRC_Datamart.dbo.sampleunit su on sel.sampleunitid=su.sampleunitid
+		inner join NRC_Datamart.dbo.SampleUnitBySampleSet suss on sel.sampleunitid=suss.sampleunitid and ss.SampleSetID=suss.SampleSetID
+		where su.isCahps=1
+		group by r.[hospicedata.reference-month],r.[hospicedata.provider-id] ) sub
+	on eds.[hospicedata.reference-month]=sub.[hospicedata.reference-month] and eds.[hospicedata.provider-id]=sub.[hospicedata.provider-id]
+where eds.ExportQueueID = @ExportQueueID 
+
+-- recode various blank columns to ''M'' or ''N/A''')
+	
+	if exists(select * from sys.procedures where name = 'ExportPostProcess'+right(convert(varchar,@newTemplateID+100000000),8))
+		set @SQL = replace(@SQL,'CREATE PROCEDURE [CEM].[','ALTER PROCEDURE [CEM].[')
+
+	EXECUTE dbo.sp_executesql @SQL
+*/
+	
 end
 
 update etc
@@ -65,6 +99,10 @@ where ExportTemplateColumnID=(select top 1 exporttemplatecolumnid from cem.Expor
 and ResponseLabel='Census Sample'
 and RawValue <> 1
 
+update etc
+set datasourceid=10, SourceColumnName='IneligibleCount', AggregateFunction='sum [hospicedata.reference-month],[hospicedata.provider-id]'
+from cem.exporttemplatecolumn etc
+where ExportTemplateColumnID=(select top 1 exporttemplatecolumnid from cem.ExportTemplate_view where ExportTemplateID=7 and ExportColumnName='ineligible-presample')
 --select * from sys.procedures where schema_id=8
 --sp_Helptext [cem.PullExportData]
 --sp_Helptext [CEM.CopyExportTemplate]
@@ -273,6 +311,7 @@ set @sqlFrom='from NRC_Datamart.dbo.samplepopulation sp
 inner join NRC_Datamart.dbo.sampleset ss on sp.SampleSetID=ss.SampleSetID
 inner join NRC_Datamart.dbo.selectedsample sel on sp.SamplePopulationID=sel.SamplePopulationID
 inner join NRC_Datamart.dbo.sampleunit su on sel.sampleunitid=su.sampleunitid
+inner join NRC_Datamart.dbo.SampleUnitBySampleset suss on su.sampleunitid=suss.sampleunitid and ss.samplesetid=suss.samplesetid
 left join NRC_Datamart.dbo.SampleUnitFacilityAttributes sufa on sel.sampleunitid=sufa.sampleunitid
 left join NRC_Datamart.dbo.questionform qf on sp.SamplePopulationID=qf.SamplePopulationID and qf.isActive=1' + char(10)
 
@@ -451,7 +490,7 @@ begin
 		set @JoinOn='inner join NRC_Datamart.dbo.SamplePopulation sp on r.SamplepopulationID=sp.SamplepopulationID
 		inner join NRC_Datamart.dbo.SampleSet ss on sp.SampleSetID=ss.SampleSetID
 		inner join NRC_Datamart.dbo.SelectedSample sel on sp.SamplePopulationID=sel.SamplePopulationID
-		inner join NRC_Datamart.dbo.SampleUnit su on sel.sampleunitid=su.sampleunitid
+		inner join NRC_Datamart.dbo.SampleUnit su on sel.sampleunitid=su.sampleunitid ' + case when @CahpsUnitOnly=1 then 'and su.isCahps = 1' else '' end + '
 		inner join NRC_Datamart.dbo.SampleUnitBySampleset suss on su.sampleunitid=suss.sampleunitid and ss.samplesetid=suss.samplesetid
 		left join NRC_Datamart.dbo.SampleUnitFacilityAttributes sufa on sel.sampleunitid=sufa.sampleunitid
 		left join NRC_Datamart.dbo.QuestionForm qf on sp.SamplePopulationID=qf.SamplePopulationID and qf.isActive=1' + char(10)
