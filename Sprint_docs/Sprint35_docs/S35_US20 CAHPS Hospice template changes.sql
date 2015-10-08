@@ -1,6 +1,7 @@
 /*
 S35_US20 CAHPS Hospice template changes.sql
 
+user story 20:
 As a Hospice CAHPS Vendor, we need to correctly report the sample type, so we submit accurate data & comply w/ an on-site visit item 
 See HSP_Visit_2015_FUp_CCN_051508_SampleType.docx 
 Notes: 3 possible sample methods (target/out-go/census). We pulled in the NRC value of 2 and reported census it appears. At 700 decedents/year 
@@ -8,6 +9,24 @@ then the method changes from census to random At CCN level, we need to check if 
 if so we census sampled. OR Should implementation use the correct code when they set it up?
 
 Task 3 - Change post-processing to use the new element
+
+
+User story 18: 
+18 Hospice CAHPS: As a Hospice CAHPS Vendor, we need to report ineligible presample at the CCN level, so we submit accurate data & comply w/ an on-site 
+visit item Currently reporting from root sampleunit for survey. 
+
+Task 2: Update CEM to calculate the correct numbers - sample unit facility attributes is where it's at in catalyst
+
+
+user story 17:
+Hospice CAHPS: As a Hospice CAHPS Vendor, we need to fix/refactor lag time calculations, so we submit accurate data & comply w/ an on-site visit item 
+Notes: datExpire is one day later than it should be. Also lag times > 400 due to expiration date manual changes. NonDel Lag times need to use 
+datLogged from dispo log. 
+
+Task 2: Alter the CEM process that calculates lag time to use datFirst; the 42 days can be coded in, this value seems stable.
+Task 3: Non-deliverables had high lag times; looking at wrong date in disposition logs. Needs to look at datLogged.
+
+
 
 Dave Gilsdorf
 
@@ -76,9 +95,81 @@ where eds.ExportQueueID = @ExportQueueID
 
 	EXECUTE dbo.sp_executesql @SQL
 */
+	-- user story 17: change lag-time calculation in the post-processing procedure.
+	declare @sql nvarchar(max), @oldcode nvarchar(max), @newcode nvarchar(max)
+	select @sql=definition
+	from sys.sql_modules
+	where object_name(object_id)='ExportPostProcess'+right(convert(varchar,@newtemplateID+100000000),8)
+	
+	set @oldcode='select distinct ss.samplesetid, eds.samplepopulationid, qf.DatExpire
+into #SampleSetExpiration
+from CEM.ExportDataset'+right(convert(varchar,@newtemplateID+100000000),8)+' eds
+inner join NRC_Datamart.dbo.samplepopulation sp  on eds.SamplePopulationID=sp.SamplePopulationID
+inner join NRC_Datamart.dbo.sampleset ss on sp.SampleSetID=ss.SampleSetID
+inner join NRC_Datamart.dbo.selectedsample sel on sp.SamplePopulationID=sel.SamplePopulationID
+inner join NRC_Datamart.dbo.sampleunit su on sel.sampleunitid=su.sampleunitid
+left join nrc_datamart.dbo.questionform qf on qf.SamplePopulationID=eds.SamplePopulationID
+where eds.ExportQueueID = @ExportQueueID 
+order by 2'
+
+	set @newcode='select distinct ss.samplesetid, eds.samplepopulationid, dateadd(day,42,ss.datFirstMailed) as DatExpire
+into #SampleSetExpiration
+from CEM.ExportDataset'+right(convert(varchar,@newtemplateID+100000000),8)+' eds
+inner join NRC_Datamart.dbo.samplepopulation sp  on eds.SamplePopulationID=sp.SamplePopulationID
+inner join NRC_Datamart.dbo.sampleset ss on sp.SampleSetID=ss.SampleSetID
+where eds.ExportQueueID = @ExportQueueID 
+order by 2'
+
+	if charindex(@oldcode,@sql)=0
+		select 1 from [Can't find @oldcode (1)]
+	else
+		set @sql = replace(@sql,@oldcode,@newcode)
+
+	set @oldcode='update sse
+set datExpire=sub.datExpire
+from #SampleSetExpiration sse
+inner join (select samplesetid,max(datexpire) as datExpire
+			from #SampleSetExpiration
+			where datExpire is not null
+			group by samplesetid) sub
+	on sse.samplesetid=sub.samplesetid
+where sse.datExpire is null'
+
+	set @newcode='if exists (select * from #SampleSetExpiration where datExpire is null)
+	update sse
+	set datExpire=dateadd(day,42,sub.datFirstMailed) 
+	from #SampleSetExpiration sse
+	inner join (select sse.samplesetid, min(sm.datMailed) as datFirstMailed
+				from #SampleSetExpiration sse
+				inner join nrc_datamart.etl.datasourcekey dsk on sse.SampleSetID=dsk.DataSourceKeyID
+				inner join qualisys.qp_prod.dbo.samplepop sp on dsk.DataSourceKey=sp.sampleset_id
+				inner join qualisys.qp_prod.dbo.scheduledmailing scm on sp.samplepop_id=scm.samplepop_id
+				inner join qualisys.qp_prod.dbo.sentmailing sm on scm.sentmail_id=sm.sentmail_id
+				group by sse.samplesetid) sub
+		on sse.samplesetid=sub.samplesetid
+	where sse.datExpire is null'
+
+	if charindex(@oldcode,@sql)=0
+		select 1 from [Can't find @oldcode (2)]
+	else
+		set @sql = replace(@sql,@oldcode,@newcode)
+
+	set @oldcode='spdl.CreateDate'
+	set @newcode='spdl.LoggedDate'
+
+	if charindex(@oldcode,@sql)=0
+		select 1 from [Can't find @oldcode (3)]
+	else
+		set @sql = replace(@sql,@oldcode,@newcode)
+
+	if exists(select * from sys.procedures where name = 'ExportPostProcess'+right(convert(varchar,@newTemplateID+100000000),8))
+		set @SQL = replace(@SQL,'CREATE PROCEDURE','ALTER PROCEDURE')
+
+	EXECUTE dbo.sp_executesql @SQL
 	
 end
 
+-- user story 20: use SampleUnitBySampleSet.isCensus for calculation of [sample-type]
 update etc
 set DatasourceID=@datasourceid, SourceColumnName='isCensus', AggregateFunction='min [hospicedata.reference-month],[hospicedata.provider-id]'  --> min=0 => isCensus=false, min=1 => isCensus=true
 from cem.exporttemplatecolumn etc
@@ -99,6 +190,7 @@ where ExportTemplateColumnID=(select top 1 exporttemplatecolumnid from cem.Expor
 and ResponseLabel='Census Sample'
 and RawValue <> 1
 
+-- User story 18: use SampleUnitBySampleSet.IneligibleCount for calculation of [ineligible-presample]
 update etc
 set datasourceid=@datasourceid, SourceColumnName='IneligibleCount', AggregateFunction='sum [hospicedata.reference-month],[hospicedata.provider-id]'
 from cem.exporttemplatecolumn etc
