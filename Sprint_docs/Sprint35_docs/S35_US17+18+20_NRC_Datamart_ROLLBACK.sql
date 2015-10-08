@@ -23,14 +23,14 @@ use [NRC_DataMart]
 go
 begin tran
 go
-if not exists (	SELECT 1 
+if exists (	SELECT 1 
 				FROM   sys.tables st 
 					   INNER JOIN sys.columns sc ON st.object_id = sc.object_id 
 				WHERE  st.schema_id = 1 
 					   AND st.NAME = 'SampleSet' 
 					   AND sc.NAME = 'datFirstMailed' )
 
-	alter table [dbo].[SampleSet] add datFirstMailed datetime null
+	alter table [dbo].[SampleSet] drop column datFirstMailed
 
 go
 
@@ -48,14 +48,14 @@ select @schema_id = schema_id
 from sys.schemas
 WHERE name = 'LOAD_TABLES'
 
-if not exists (	SELECT 1 
+if exists (	SELECT 1 
 				FROM   sys.tables st 
 					   INNER JOIN sys.columns sc ON st.object_id = sc.object_id 
 				WHERE  st.schema_id = @schema_id 
 					    AND st.NAME = 'SampleSet' 
 					   AND sc.NAME = 'datFirstMailed' )
 
-	alter table [LOAD_TABLES].[SampleSet] add datFirstMailed datetime null
+	alter table [LOAD_TABLES].[SampleSet] drop column datFirstMailed
 
 
 go
@@ -74,14 +74,14 @@ select @schema_id = schema_id
 from sys.schemas
 WHERE name = 'LOAD_TABLES'
 
-if not exists (	SELECT 1 
+if exists (	SELECT 1 
 				FROM   sys.tables st 
 					   INNER JOIN sys.columns sc ON st.object_id = sc.object_id 
 				WHERE  st.schema_id = @schema_id 
 					    AND st.NAME = 'SampleSetError' 
 					   AND sc.NAME = 'datFirstMailed' )
 
-	alter table [LOAD_TABLES].[SampleSetError] add datFirstMailed datetime null
+	alter table [LOAD_TABLES].[SampleSetError] drop column datFirstMailed
 
 
 go
@@ -94,14 +94,14 @@ use [NRC_DataMart]
 go
 begin tran
 go
-if not exists (	SELECT 1 
+if exists (	SELECT 1 
 				FROM   sys.tables st 
 					   INNER JOIN sys.columns sc ON st.object_id = sc.object_id 
 				WHERE  st.schema_id = 1 
 					   AND st.NAME = 'SampleUnitBySampleSet' 
 					   AND sc.NAME = 'IneligibleCount' )
 
-	alter table [dbo].[SampleUnitBySampleSet] add IneligibleCount int NULL 
+	alter table [dbo].[SampleUnitBySampleSet] drop column IneligibleCount 
 
 go
 
@@ -119,14 +119,14 @@ select @schema_id = schema_id
 from sys.schemas
 WHERE name = 'LOAD_TABLES'
 
-if not exists (	SELECT 1 
+if exists (	SELECT 1 
 				FROM   sys.tables st 
 					   INNER JOIN sys.columns sc ON st.object_id = sc.object_id 
 				WHERE  st.schema_id = @schema_id 
 					   AND st.NAME = 'SampleUnitBySampleSet' 
 					   AND sc.NAME = 'IneligibleCount' )
 
-	alter table [LOAD_TABLES].[SampleUnitBySampleSet] add IneligibleCount int NULL 
+	alter table [LOAD_TABLES].[SampleUnitBySampleSet] drop column IneligibleCount
 
 
 go
@@ -145,14 +145,14 @@ select @schema_id = schema_id
 from sys.schemas
 WHERE name = 'LOAD_TABLES'
 
-if not exists (	SELECT 1 
+if exists (	SELECT 1 
 				FROM   sys.tables st 
 					   INNER JOIN sys.columns sc ON st.object_id = sc.object_id 
 				WHERE  st.schema_id = @schema_id 
 					   AND st.NAME = 'SampleUnitBySampleSetError' 
 					   AND sc.NAME = 'IneligibleCount' )
 
-	alter table [LOAD_TABLES].[SampleUnitBySampleSetError] add IneligibleCount int NULL 
+	alter table [LOAD_TABLES].[SampleUnitBySampleSetError] drop column IneligibleCount 
 
 
 go
@@ -165,14 +165,14 @@ use [NRC_DataMart]
 go
 begin tran
 go
-if not exists (	SELECT 1 
+if exists (	SELECT 1 
 				FROM   sys.tables st 
 					   INNER JOIN sys.columns sc ON st.object_id = sc.object_id 
 				WHERE  st.schema_id = 1 
 					   AND st.NAME = 'SampleUnitBySampleSet' 
 					   AND sc.NAME = 'IsCensus' )
 
-	alter table [dbo].[SampleUnitBySampleSet] add IsCensus tinyint NULL 
+	alter table [dbo].[SampleUnitBySampleSet] drop column IsCensus
 
 go
 
@@ -190,14 +190,14 @@ select @schema_id = schema_id
 from sys.schemas
 WHERE name = 'LOAD_TABLES'
 
-if not exists (	SELECT 1 
+if exists (	SELECT 1 
 				FROM   sys.tables st 
 					   INNER JOIN sys.columns sc ON st.object_id = sc.object_id 
 				WHERE  st.schema_id = @schema_id 
 					   AND st.NAME = 'SampleUnitBySampleSet' 
 					   AND sc.NAME = 'IsCensus' )
 
-	alter table [LOAD_TABLES].[SampleUnitBySampleSet] add IsCensus tinyint NULL 
+	alter table [LOAD_TABLES].[SampleUnitBySampleSet] drop column IsCensus 
 
 
 go
@@ -216,14 +216,14 @@ select @schema_id = schema_id
 from sys.schemas
 WHERE name = 'LOAD_TABLES'
 
-if not exists (	SELECT 1 
+if exists (	SELECT 1 
 				FROM   sys.tables st 
 					   INNER JOIN sys.columns sc ON st.object_id = sc.object_id 
 				WHERE  st.schema_id = @schema_id 
 					   AND st.NAME = 'SampleUnitBySampleSetError' 
 					   AND sc.NAME = 'IsCensus' )
 
-	alter table [LOAD_TABLES].[SampleUnitBySampleSetError] add IsCensus tinyint NULL 
+	alter table [LOAD_TABLES].[SampleUnitBySampleSetError] drop column IsCensus 
 
 
 go
@@ -232,9 +232,9 @@ commit tran
 go
 
 
-USE [NRC_Datamart]
+USE [NRC_DataMart]
 GO
-/****** Object:  StoredProcedure [dbo].[etl_LoadSampleUnitBySampleSetRecords]    Script Date: 10/5/2015 8:35:27 AM ******/
+/****** Object:  StoredProcedure [dbo].[etl_LoadSampleUnitBySampleSetRecords]    Script Date: 10/7/2015 3:49:26 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -250,7 +250,6 @@ AS
 -- =============================================
 -- Procedure Name: etl_LoadSampleUnitBySampleSetRecords
 -- History: 1.0  Original Tim Butler 04/17/2015
--- S35 US18,20 -- add IneligibleCount and IsCensus - Tim Butler 10/05/2015
 -- =============================================
 	SET NOCOUNT ON 
 
@@ -299,8 +298,8 @@ AS
 	--------------------------------------------------------------------------------------
 	
 	INSERT dbo.SampleUnitBySampleSet
-		(SampleSetID, SAMPLEUNITID, NumPatInFile, IneligibleCount, IsCensus)
-		SELECT lt.SampleSetID, lt.SampleUnitID ,lt.NumPatInFile, lt.IneligibleCount, lt.IsCensus
+		(SampleSetID, SAMPLEUNITID, NumPatInFile)
+		SELECT lt.SampleSetID, lt.SampleUnitID ,lt.NumPatInFile
 		  FROM LOAD_TABLES.SampleUnitBySampleSet lt WITH (NOLOCK)
 		  LEFT JOIN dbo.SampleUnitBySampleSet p WITH (NOLOCK) on p.SAMPLESETID = lt.SAMPLESETID and p.SAMPLEUNITID = lt.SAMPLEUNITID
 		 WHERE DataFileID = @DataFileID
@@ -314,8 +313,6 @@ AS
 	--------------------------------------------------------------------------------------
 	UPDATE dbo.SampleUnitBySampleSet
 	   SET NumPatInFile = lt.NumPatInFile
-		,IneligibleCount = ISNULL(lt.IneligibleCount,0)
-		,IsCensus = lt.IsCensus
 	 FROM LOAD_TABLES.SampleUnitBySampleSet lt WITH (NOLOCK)
 		 INNER JOIN dbo.SampleUnitBySampleSet p WITH (NOLOCK) on p.SAMPLESETID = lt.SAMPLESETID and p.SAMPLEUNITID = lt.SAMPLEUNITID
 		 WHERE DataFileID = @DataFileID
@@ -329,10 +326,8 @@ AS
       ,[SAMPLEUNIT_ID]
       ,[SAMPLESETID]
       ,[SAMPLEUNITID]
-      ,[NumPatInFile]	  
+      ,[NumPatInFile]
       ,'SampleSetID is null'
-	  ,[IneligibleCount]
-	  ,[IsCensus]
 	FROM [LOAD_TABLES].[SampleUnitBySampleSet]
     WHERE SAMPLESETID IS NULL
 
@@ -346,8 +341,6 @@ AS
       ,[SAMPLEUNITID]
       ,[NumPatInFile]
       ,'SampleUnitID is null'
-	  ,[IneligibleCount]
-	  ,[IsCensus]
 	FROM [LOAD_TABLES].[SampleUnitBySampleSet]
     WHERE SAMPLESETID IS NOT NULL  AND SAMPLEUNITID IS NULL
 
@@ -371,12 +364,11 @@ AS
 	EXEC [ETL].[UpdateImportRunLog] @oImportRunLogID, @currDateTime2 
 
    SET NOCOUNT OFF
-
-   GO
-
-   USE [NRC_Datamart]
 GO
-/****** Object:  StoredProcedure [dbo].[etl_LoadSampleSetRecords]    Script Date: 10/5/2015 8:50:09 AM ******/
+
+USE [NRC_DataMart]
+GO
+/****** Object:  StoredProcedure [dbo].[etl_LoadSampleSetRecords]    Script Date: 10/7/2015 3:49:54 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -395,7 +387,6 @@ AS
 --			2.0  Tim Butler - S15 US11 Add StandardMethodologyID column to SampleSet
 --			3.0  Tim Butler - S18 US17 Add IneligibleCount column to SampleSet
 --			S20 US9  Add SamplingMethodID  Tim Butler
---			S35 US17 Add datFirstMailed - Tim Butler 10/04/2015
 -- =============================================
 	SET NOCOUNT ON 
 
@@ -462,12 +453,11 @@ AS
 	   AND lt.isInsert <> 0 AND isDelete = 0
 
 	INSERT dbo.SampleSet
-		(SampleSetID, ClientID, SampleDate,StandardMethodologyID, IneligibleCount, SamplingMethodID, datFirstMailed)
+		(SampleSetID, ClientID, SampleDate,StandardMethodologyID, IneligibleCount, SamplingMethodID)
 		SELECT SampleSetID, ClientID, CONVERT(DATE,SampleDate)
 		,StandardMethodologyID -- 2.0
 		,IneligibleCount  -- 3.0
 		,SamplingMethodID -- S20 US9
-		,datFirstMailed -- S35 US17
 		  FROM LOAD_TABLES.SampleSet WITH (NOLOCK)
 		 WHERE DataFileID = @DataFileID
 		   AND isInsert <> 0 AND isDelete = 0 AND ClientID IS NOT NULL
@@ -482,8 +472,7 @@ AS
 		   SampleDate = CONVERT(DATE,lt.SampleDate),
 		   StandardMethodologyID = lt.StandardMethodologyID, -- 2.0
 		   IneligibleCount = lt.IneligibleCount, -- 3.0
-		   SamplingMethodID = lt.SamplingMethodID, -- S20 US9
-		   datFirstMailed = lt.datFirstMailed -- S35 US17
+		   SamplingMethodID = lt.SamplingMethodID -- S20 US9
 	  FROM LOAD_TABLES.SampleSet lt WITH (NOLOCK)
 			INNER JOIN dbo.SampleSet p WITH (NOLOCK) ON p.SampleSetID = lt.SampleSetID
 	 WHERE lt.DataFileID = @DataFileID
@@ -504,7 +493,6 @@ AS
       ,[StandardMethodologyID]  --2.0
 	  ,[IneligibleCount]   -- 3.0
 	  ,[SamplingMethodID] -- S20 US9
-	  ,[datFirstMailed] -- S35 US17
     FROM LOAD_TABLES.SampleSet WITH (NOLOCK)
     WHERE ClientID IS NULL AND isDelete = 0 AND DataFileID = @DataFileID
 
@@ -742,3 +730,5 @@ AS
 	EXEC [ETL].[UpdateImportRunLog] @oImportRunLogID, @currDateTime2 
 
    SET NOCOUNT OFF
+
+GO
