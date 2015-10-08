@@ -100,9 +100,9 @@ and ResponseLabel='Census Sample'
 and RawValue <> 1
 
 update etc
-set datasourceid=10, SourceColumnName='IneligibleCount', AggregateFunction='sum [hospicedata.reference-month],[hospicedata.provider-id]'
+set datasourceid=@datasourceid, SourceColumnName='IneligibleCount', AggregateFunction='sum [hospicedata.reference-month],[hospicedata.provider-id]'
 from cem.exporttemplatecolumn etc
-where ExportTemplateColumnID=(select top 1 exporttemplatecolumnid from cem.ExportTemplate_view where ExportTemplateID=7 and ExportColumnName='ineligible-presample')
+where ExportTemplateColumnID=(select top 1 exporttemplatecolumnid from cem.ExportTemplate_view where ExportTemplateID=@newTemplateID and ExportColumnName='ineligible-presample')
 --select * from sys.procedures where schema_id=8
 --sp_Helptext [cem.PullExportData]
 --sp_Helptext [CEM.CopyExportTemplate]
