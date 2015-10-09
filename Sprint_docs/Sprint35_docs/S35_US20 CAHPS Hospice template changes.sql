@@ -52,6 +52,21 @@ if not exists (select * from cem.datasource where TableName='NRC_Datamart.dbo.Sa
 	insert into cem.Datasource (HorizontalVertical, TableName, TableAlias, ForeignKeyField) 
 	values ('H', 'NRC_Datamart.dbo.SampleUnitBySampleSet', 'suss', 'SampleUnitID,SampleSetID')
 
+if not exists (select * from sys.columns where object_name(object_id)='Datasource' and name = 'Uniqueness')
+begin
+	alter table cem.Datasource add Uniqueness varchar(50)
+	update cem.Datasource set Uniqueness = 'QuestionFormID' where tableAlias='qf'
+	update cem.Datasource set Uniqueness = 'QuestionFormID,OriginalQuestionCore,ResponseValue' where tableAlias='rb'
+	update cem.Datasource set Uniqueness = 'SamplepopulationID' where tableAlias='sp'
+	update cem.Datasource set Uniqueness = 'SamplePopulationID,ColumnName' where tableAlias='bg'
+	update cem.Datasource set Uniqueness = 'SamplesetID' where tableAlias='ss'
+	update cem.Datasource set Uniqueness = 'SamplePopulationID,SampleUnitID' where tableAlias='sel'
+	update cem.Datasource set Uniqueness = 'SampleUnitID' where tableAlias='su'
+	update cem.Datasource set Uniqueness = 'SurveyID' where tableAlias='sv'
+	update cem.Datasource set Uniqueness = 'SampleUnitID' where tableAlias='sufa'
+	update cem.Datasource set Uniqueness = 'SampleUnitID,SampleSetID' where tableAlias='suss'
+end
+
 declare @dataSourceID int, @oldTemplateID int, @newTemplateID int
 select @dataSourceID=datasourceID from cem.datasource where TableName='NRC_Datamart.dbo.SampleUnitBySampleSet'
 
@@ -558,18 +573,21 @@ if len(@Sql)>15000 print '~'+substring(@sql,16001,7000)
 exec (@sql)
 
 set @sql = ''
-declare @ExportColumnName varchar(255), @AggFunction varchar(255), @SourceColumnType int, @TableName varchar(255), @TableAlias varchar(20), @SourceColumnName varchar(255), @GroupBy varchar(255), @JoinOn varchar(max)
+declare @ExportColumnName varchar(255), @AggFunction varchar(255), @SourceColumnType int, @TableName varchar(255), @TableAlias varchar(20), @SourceColumnName varchar(255), @GroupBy varchar(255), @JoinOn varchar(max), @Uniqueness varchar(50)
 while exists (select * from #allcolumns where flag=0 and ExportColumnName is not null and AggregateFunction is not null)
 begin
-	select top 1 @ExportcolumnName=ExportTemplateSectionName+'.'+ExportColumnName
-	, @AggFunction = rtrim(AggregateFunction)
-	, @SourceColumnType=SourceColumnType
-	, @TableName=TableName
-	, @TableAlias=TableAlias
-	, @SourceColumnName=SourceColumnName
-	from #allcolumns where flag=0 
-	and ExportColumnName is not null 
-	and AggregateFunction is not null
+	select top 1 @ExportcolumnName=ac.ExportTemplateSectionName+'.'+ac.ExportColumnName
+	, @AggFunction = rtrim(ac.AggregateFunction)
+	, @SourceColumnType=ac.SourceColumnType
+	, @TableName=ac.TableName
+	, @TableAlias=ac.TableAlias
+	, @SourceColumnName=ac.SourceColumnName
+	, @Uniqueness=ds.Uniqueness
+	from #allcolumns ac
+	inner join cem.Datasource ds on ac.DatasourceID=ds.DatasourceID
+	where ac.flag=0 
+	and ac.ExportColumnName is not null 
+	and ac.AggregateFunction is not null
 
 	set @JoinOn = replace(@TableName,'NRC_Datamart.dbo.','')+'id'
 
@@ -596,13 +614,17 @@ begin
 	else
 		set @GroupBy = '[FileMakerName]'
 
+	set @Uniqueness = replace(@Uniqueness, @SourceColumnName, '')
+	if rtrim(@uniqueness)<>'' set @uniqueness=','+@uniqueness
+
 	set @sql = @sql + 'update r set ['+@ExportColumnName+']=sub.Agg
 	from #results r
 	inner join (select '+@groupby+', '+@AggFunction+'('+
 		case when @SourceColumnType in (40,61) then 'convert(varchar,' else '' end+
-		@TableAlias+'.'+@SourceColumnName+case when @SourceColumnType in (40,61) then ',112)' else '' end+') as Agg
-		from #results r 
-		'+@JoinOn+'
+		'sub2.'+@SourceColumnName+case when @SourceColumnType in (40,61) then ',112)' else '' end+') as Agg
+		from (select distinct '+@GroupBy+replace(@Uniqueness+','+@SourceColumnName, ',', ','+@TableAlias+'.')+'
+			from #results r 
+			'+@JoinOn+'		) sub2
 		group by '+@groupby+') sub
 		on '+replace(replace(@groupby,',','+''|''+'),'[','r.[')     --> takes a @GroupBy                (e.g. [ColX],[ColY])
 		+'='+replace(replace(@groupby,',','+''|''+'),'[','sub.[')	--> and makes it into a join clause (e.g. r.[ColX]+'|'+r.[ColY] = sub.[ColX]+'|'+sub.[ColY])
