@@ -177,6 +177,65 @@ where sse.datExpire is null'
 	else
 		set @sql = replace(@sql,@oldcode,@newcode)
 
+	set @oldcode='-- recode blank NPI''s to ''M'''
+	set @newcode='-- add zero-sample CCN''s to the dataset. 
+-- for now, any CCN that''s in (select from SampleUnitFacilityAttributes where AHAIdent=1) is one we should be submitting for.
+-- AHAIdent is manually populated.
+
+if object_id(''tempdb..#months'') is not null
+	drop table #months
+if object_id(''tempdb..#CCN'') is not null
+	drop table #CCN
+if object_id(''tempdb..#everything'') is not null
+	drop table #everything
+
+select distinct eds.[hospicedata.reference-yr], eds.[hospicedata.reference-month]
+into #months
+from [CEM].[ExportDataset'+right(convert(varchar,@newtemplateID+100000000),8)+'] eds
+where eds.exportqueueid=@ExportQueueID
+
+select distinct MedicareNumber, FacilityName, convert(char(10), NULL) as NPI
+into #CCN
+from nrc_datamart.dbo.SampleUnitFacilityAttributes 
+where AHAIdent=1
+
+update #ccn set NPI=''M''
+
+update ccn
+set npi=[hospicedata.provider-name]
+from #ccn ccn
+inner join [CEM].[ExportDataset'+right(convert(varchar,@newtemplateID+100000000),8)+'] eds on ccn.MedicareNumber=eds.[hospicedata.provider-id]
+where eds.ExportQueueid=@ExportQueueID
+
+select *
+into #everything
+from #months m, #ccn c
+
+delete e
+from #everything e
+inner join [CEM].[ExportDataset'+right(convert(varchar,@newtemplateID+100000000),8)+'] eds 
+	on e.[hospicedata.reference-yr]=eds.[hospicedata.reference-yr]
+		and e.[hospicedata.reference-month]=eds.[hospicedata.reference-month]
+		and e.MedicareNumber=eds.[hospicedata.provider-id]
+where eds.ExportQueueID=@ExportQueueID
+
+insert into [CEM].[ExportDataset'+right(convert(varchar,@newtemplateID+100000000),8)+'] ([ExportQueueID], [ExportTemplateID], [FileMakerName], [vendordata.vendor-name], [vendordata.file-submission-yr], [vendordata.file-submission-month], [vendordata.file-submission-day]
+	, [vendordata.file-submission-number], [hospicedata.reference-yr], [hospicedata.reference-month], [hospicedata.provider-name], [hospicedata.provider-id], [hospicedata.npi], [hospicedata.survey-mode], [hospicedata.total-decedents]
+	, [hospicedata.live-discharges], [hospicedata.no-publicity], [hospicedata.ineligible-presample], [hospicedata.sample-size], [hospicedata.ineligible-postsample], [hospicedata.sample-type])
+select distinct eds.[ExportQueueID], eds.[ExportTemplateID], eds.[FileMakerName], eds.[vendordata.vendor-name], eds.[vendordata.file-submission-yr], eds.[vendordata.file-submission-month], eds.[vendordata.file-submission-day]
+	, eds.[vendordata.file-submission-number], e.[hospicedata.reference-yr], e.[hospicedata.reference-month], left(e.FacilityName,100), e.MedicareNumber, e.NPI, ''8'' as [hospicedata.survey-mode], char(7) as [hospicedata.total-decedents]
+	, char(7) as [hospicedata.live-discharges], char(7) as [hospicedata.no-publicity], char(7) as [hospicedata.ineligible-presample], ''0'' as [hospicedata.sample-size], ''0'' as [hospicedata.ineligible-postsample], ''8'' as [hospicedata.sample-type]
+from [CEM].[ExportDataset'+right(convert(varchar,@newtemplateID+100000000),8)+'] eds, #everything e
+where eds.ExportQueueID=@ExportQueueID
+
+-- recode blank NPI''s to ''M'''
+
+	if charindex(@oldcode,@sql)=0
+		select 1 from [Can't find @oldcode (4)]
+	else
+		set @sql = replace(@sql,@oldcode,@newcode)
+
+
 	if exists(select * from sys.procedures where name = 'ExportPostProcess'+right(convert(varchar,@newTemplateID+100000000),8))
 		set @SQL = replace(@SQL,'CREATE PROCEDURE','ALTER PROCEDURE')
 
