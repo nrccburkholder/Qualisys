@@ -31,6 +31,13 @@ and ExportTemplateVersionMinor=2
 --> all CEM exported columns are varchars, regardless of expected contents
 
 --•	Survey-mode – added “8 – not applicable (no decedents in the sampled month)”
+insert into cem.ExportTemplateColumnResponse (ExportTemplateColumnID, RawValue, ExportColumnName, RecodeValue, ResponseLabel)
+select distinct ExportTemplateColumnID, 0, null, '8', 'not applicable (no decedents in the sampled month)'
+from cem.ExportTemplate_view 
+where ExportColumnName='survey-mode' 
+and ExportTemplateID = (select ExportTemplateID from cem.ExportTemplate where ExportTemplateName='CAHPS Hospice' and ExportTemplateVersionMajor='1.1' and ExportTemplateVersionMinor=2)
+
+
 --•	Total-decedents – added “M – missing” and changed type to alpha-numeric
 --•	Live-discharges - added “M – missing” and changed type to alpha-numeric
 --•	No-publicity - added “M – missing” and changed type to alpha-numeric
