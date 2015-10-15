@@ -83,4 +83,10 @@ where ExportColumnName = 'admission-month'
 and ExportTemplateID = (select ExportTemplateID from cem.ExportTemplate where ExportTemplateName='CAHPS Hospice' and ExportTemplateVersionMajor='1.1' and ExportTemplateVersionMinor=2)
 
 --•	Admission-day – added “88” for missing.
+insert into cem.ExportTemplateColumnResponse (ExportTemplateColumnID, RawValue, ExportColumnName, RecodeValue, ResponseLabel)
+select distinct ExportTemplateColumnID, 0, null, '88', 'missing'
+from cem.ExportTemplate_view
+where ExportColumnName = 'admission-day'
+and ExportTemplateID = (select ExportTemplateID from cem.ExportTemplate where ExportTemplateName='CAHPS Hospice' and ExportTemplateVersionMajor='1.1' and ExportTemplateVersionMinor=2)
+
 --•	Survey-status – value 10 changed from “bad address” to “bad/no address”
