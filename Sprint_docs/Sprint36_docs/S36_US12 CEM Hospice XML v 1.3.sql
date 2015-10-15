@@ -39,10 +39,15 @@ and ExportTemplateID = (select ExportTemplateID from cem.ExportTemplate where Ex
 
 
 --•	Total-decedents – added “M – missing” and changed type to alpha-numeric
---•	Live-discharges - added “M – missing” and changed type to alpha-numeric
---•	No-publicity - added “M – missing” and changed type to alpha-numeric
---•	Sample-type – added “8 – not applicable (no decedents in the sampled month)”
+--> all CEM exported columns are varchars, regardless of expected contents
 
+--•	Live-discharges - added “M – missing” and changed type to alpha-numeric
+--> all CEM exported columns are varchars, regardless of expected contents
+
+--•	No-publicity - added “M – missing” and changed type to alpha-numeric
+--> all CEM exported columns are varchars, regardless of expected contents
+
+--•	Sample-type – added “8 – not applicable (no decedents in the sampled month)”
 
 --Decedent Level Data section
 --•	Admission-year – added “8888” for missing. Now indicates “2009 or later”, but discussion during on-site visit indicated this was not intended to exclude patients w/ earlier admissions. They also indicated they would discuss further w/ CMS.
