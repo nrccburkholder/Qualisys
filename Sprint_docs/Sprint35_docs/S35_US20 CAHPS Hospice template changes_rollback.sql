@@ -75,7 +75,7 @@ select max(ExportTemplateColumnResponseid) from CEM.ExportTemplateColumnResponse
 select max(ExportTemplateDefaultResponseid) from CEM.ExportTemplateDefaultResponse -- 119
 select max(dispositionprocessid) from CEM.DispositionProcess -- 12
 select max(dispositionclauseid) from  CEM.DispositionClause -- 20
-select max(dispositioninlistid) from  CEM.Dispositioninlist -- 344
+select max(dispositioninlistid) from  CEM.Dispositioninlist -- 103
 select max(datasourceid) from CEM.Datasource -- 9
 
 DBCC CHECKIDENT ('CEM.ExportTemplate', RESEED, 6 )
@@ -86,7 +86,7 @@ DBCC CHECKIDENT ('CEM.ExportTemplateDefaultResponse', RESEED, 119)
 
 DBCC CHECKIDENT ('CEM.DispositionProcess', RESEED, 12) 
 DBCC CHECKIDENT ('CEM.DispositionClause', RESEED, 20) 
-DBCC CHECKIDENT ('CEM.Dispositioninlist', RESEED, 344) 
+DBCC CHECKIDENT ('CEM.Dispositioninlist', RESEED, 103) 
 
 DBCC CHECKIDENT ('CEM.Datasource', RESEED, 9) 
 go
