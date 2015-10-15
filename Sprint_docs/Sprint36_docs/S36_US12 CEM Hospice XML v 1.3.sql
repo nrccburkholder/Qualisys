@@ -57,6 +57,25 @@ and ExportTemplateID = (select ExportTemplateID from cem.ExportTemplate where Ex
 
 --Decedent Level Data section
 --•	Admission-year – added “8888” for missing. Now indicates “2009 or later”, but discussion during on-site visit indicated this was not intended to exclude patients w/ earlier admissions. They also indicated they would discuss further w/ CMS.
+update etcr 
+set RecodeValue='8888', ResponseLabel = '2009 or later'
+from cem.ExportTemplateColumnResponse etcr
+where RawValue=2009
+and ExportTemplateColumnID in (
+	select ExportTemplateColumnID
+	from cem.ExportTemplate_view 
+	where ExportColumnName = 'admission-yr'
+	and ExportTemplateID = (select ExportTemplateID from cem.ExportTemplate where ExportTemplateName='CAHPS Hospice' and ExportTemplateVersionMajor='1.1' and ExportTemplateVersionMinor=2)
+	)
+
+insert into cem.ExportTemplateColumnResponse (ExportTemplateColumnID, RawValue, ExportColumnName, RecodeValue, ResponseLabel)
+select distinct ExportTemplateColumnID, yr, null, '8888', '2009 or later'
+from cem.ExportTemplate_view, (select 2008 as yr union select 2007 union select 2006 union select 2005 union select 2004 union select 2003 union select 2002 union select 2001 union select 0) y
+where ExportColumnName = 'admission-yr'
+and ExportTemplateID = (select ExportTemplateID from cem.ExportTemplate where ExportTemplateName='CAHPS Hospice' and ExportTemplateVersionMajor='1.1' and ExportTemplateVersionMinor=2)
+order by yr desc
+
+
 --•	Admission-month – added “88” for missing.
 --•	Admission-day – added “88” for missing.
 --•	Survey-status – value 10 changed from “bad address” to “bad/no address”
