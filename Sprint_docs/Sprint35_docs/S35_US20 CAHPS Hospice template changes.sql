@@ -243,6 +243,18 @@ where eds.ExportQueueID=@ExportQueueID
 	
 end
 
+-- email from James (10/14/2015):
+--There were two CCNs in Q2 2015 that had “zero sampled” months:
+--	•	GentlePro Hospice Services, CCN 141613
+--		o	Zero sampled all 3 months of data in Q2 2015
+--	•	Catholic Community Hospice, CCN 261644
+--		o	Zero sampled in April and May
+update sufa
+set AHAIdent=1
+from nrc_datamart.dbo.SampleUnitFacilityAttributes sufa
+where MedicareNumber in ('141613','261644')
+
+
 -- user story 20: use SampleUnitBySampleSet.isCensus for calculation of [sample-type]
 update etc
 set DatasourceID=@datasourceid, SourceColumnName='isCensus', AggregateFunction='min [hospicedata.reference-month],[hospicedata.provider-id]'  --> min=0 => isCensus=false, min=1 => isCensus=true

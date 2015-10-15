@@ -56,6 +56,17 @@ begin
 
 end
 
+-- email from James (10/14/2015):
+--There were two CCNs in Q2 2015 that had “zero sampled” months:
+--	•	GentlePro Hospice Services, CCN 141613
+--		o	Zero sampled all 3 months of data in Q2 2015
+--	•	Catholic Community Hospice, CCN 261644
+--		o	Zero sampled in April and May
+update sufa
+set AHAIdent=NULL
+from nrc_datamart.dbo.SampleUnitFacilityAttributes sufa
+where MedicareNumber in ('141613','261644')
+
 
 select max(exporttemplateid) from CEM.ExportTemplate -- 6
 select max(exporttemplatesectionid) from CEM.ExportTemplateSection -- 16
