@@ -1,5 +1,5 @@
 /*
-S36_US11 CAHPS Hospice exclude caregiverresponse section.sql
+S36_US12 CEM Hospice XML v 1.3.sql
 
 user story 12 Hospice - CEM- Hospice XML v 1.3
 As an authorized Hospice CAHPS vendor, we must follow the specs for XML file v 1.3, so that our submission data will be accepted.
@@ -28,6 +28,8 @@ and ExportTemplateVersionMinor=2
 
 --Hospice Data section
 --•	NPI is now alpha-numeric to allow for “M” value for missing
+--> all CEM exported columns are varchars, regardless of expected contents
+
 --•	Survey-mode – added “8 – not applicable (no decedents in the sampled month)”
 --•	Total-decedents – added “M – missing” and changed type to alpha-numeric
 --•	Live-discharges - added “M – missing” and changed type to alpha-numeric
