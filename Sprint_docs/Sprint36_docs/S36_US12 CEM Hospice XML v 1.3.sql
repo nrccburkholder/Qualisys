@@ -32,7 +32,7 @@ and ExportTemplateVersionMinor=2
 
 --•	Survey-mode – added “8 – not applicable (no decedents in the sampled month)”
 insert into cem.ExportTemplateColumnResponse (ExportTemplateColumnID, RawValue, ExportColumnName, RecodeValue, ResponseLabel)
-select distinct ExportTemplateColumnID, 0, null, '8', 'not applicable (no decedents in the sampled month)'
+select distinct ExportTemplateColumnID, 8, null, '8', 'not applicable (no decedents in the sampled month)'
 from cem.ExportTemplate_view 
 where ExportColumnName='survey-mode' 
 and ExportTemplateID = (select ExportTemplateID from cem.ExportTemplate where ExportTemplateName='CAHPS Hospice' and ExportTemplateVersionMajor='1.1' and ExportTemplateVersionMinor=2)
@@ -48,6 +48,12 @@ and ExportTemplateID = (select ExportTemplateID from cem.ExportTemplate where Ex
 --> all CEM exported columns are varchars, regardless of expected contents
 
 --•	Sample-type – added “8 – not applicable (no decedents in the sampled month)”
+insert into cem.ExportTemplateColumnResponse (ExportTemplateColumnID, RawValue, ExportColumnName, RecodeValue, ResponseLabel)
+select distinct ExportTemplateColumnID, 8, null, '8', 'not applicable (no decedents in the sampled month)'
+from cem.ExportTemplate_view 
+where ExportColumnName='sample-type' 
+and ExportTemplateID = (select ExportTemplateID from cem.ExportTemplate where ExportTemplateName='CAHPS Hospice' and ExportTemplateVersionMajor='1.1' and ExportTemplateVersionMinor=2)
+
 
 --Decedent Level Data section
 --•	Admission-year – added “8888” for missing. Now indicates “2009 or later”, but discussion during on-site visit indicated this was not intended to exclude patients w/ earlier admissions. They also indicated they would discuss further w/ CMS.
