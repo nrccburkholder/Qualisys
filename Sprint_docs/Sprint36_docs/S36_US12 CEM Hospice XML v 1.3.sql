@@ -90,3 +90,13 @@ where ExportColumnName = 'admission-day'
 and ExportTemplateID = (select ExportTemplateID from cem.ExportTemplate where ExportTemplateName='CAHPS Hospice' and ExportTemplateVersionMajor='1.1' and ExportTemplateVersionMinor=2)
 
 --•	Survey-status – value 10 changed from “bad address” to “bad/no address”
+update etcr 
+set ResponseLabel = 'Non-response: Bad/No Address'
+from cem.ExportTemplateColumnResponse etcr
+where ExportTemplateColumnResponseID in (
+	select ExportTemplateColumnResponseID
+	from cem.ExportTemplate_view 
+	where ExportColumnName = 'survey-status'
+	and RecodeValue='10'
+	and ExportTemplateID = (select ExportTemplateID from cem.ExportTemplate where ExportTemplateName='CAHPS Hospice' and ExportTemplateVersionMajor='1.1' and ExportTemplateVersionMinor=2)
+	)
