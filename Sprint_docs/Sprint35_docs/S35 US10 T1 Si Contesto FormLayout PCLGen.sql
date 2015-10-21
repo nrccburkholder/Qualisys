@@ -50,7 +50,7 @@ values ('SkipInstructionFormat - PQRS CAHPS + HCAHPS Spanish', 'S', 'SurveyRules
 update qualpro_params set strparam_value = 'Si·contestó ''%s,''·pase a la pregunta #[S%s]'
 where strparam_nm in ('SkipInstructionFormat - CGCAHPS + HCAHPS Spanish','SkipInstructionFormat - ACOCAHPS + HCAHPS Spanish','SkipInstructionFormat - PQRS CAHPS + HCAHPS Spanish')
 
-update qualpro_params set strparam_value = 'Si·contestó %s,·pase a la pregunta #[S%s]'
+update qualpro_params set strparam_value = 'Si·contestó %s,·pase a la pregunta [S%s]'
 where strparam_nm in ('SkipInstructionFormat - Hospice CAHPS + HCAHPS Spanish')
 
 /*
