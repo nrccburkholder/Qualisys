@@ -202,7 +202,7 @@ where AHAIdent=1
 update #ccn set NPI=''M''
 
 update ccn
-set npi=[hospicedata.provider-name]
+set npi=[hospicedata.npi]
 from #ccn ccn
 inner join [CEM].[ExportDataset'+right(convert(varchar,@newtemplateID+100000000),8)+'] eds on ccn.MedicareNumber=eds.[hospicedata.provider-id]
 where eds.ExportQueueid=@ExportQueueID
@@ -235,6 +235,49 @@ where eds.ExportQueueID=@ExportQueueID
 	else
 		set @sql = replace(@sql,@oldcode,@newcode)
 
+	-- phone-only methodologies that didn't have any response should use the date of the last phone call for lag-time calculation. 
+	-- we were using sampleset.datLastMailed for some reason.
+	set @oldcode='update eds set [decedentleveldata.lag-time]=datediff(day,convert(datetime,[decedentleveldata.death-month]+''/''+[decedentleveldata.death-day]+''/''+[decedentleveldata.death-yr]),qss.datLastMailed)
+--select eds.samplepopulationid, [hospicedata.provider-id] ccn, [hospicedata.survey-mode], convert(datetime,[decedentleveldata.death-month]+''/''+[decedentleveldata.death-day]+''/''+[decedentleveldata.death-yr]) DayOfDeath, [decedentleveldata.survey-status]
+--, case when ltrim([decedentleveldata.survey-status]) = 9 then ''Expiration Date (Mail & Mixed) OR Date of last phone attempt (Phone)''
+--	   end
+--, ss.samplesetID, dsk.DataSourceKey as sampleset_id, qss.datLastMailed
+from CEM.ExportDataset00000003 eds
+inner join NRC_Datamart.dbo.samplepopulation sp  on eds.SamplePopulationID=sp.SamplePopulationID
+inner join NRC_Datamart.dbo.sampleset ss on sp.SampleSetID=ss.SampleSetID
+inner join NRC_DataMart.etl.DataSourceKey dsk on ss.SampleSetID=dsk.DataSourceKeyID and dsk.EntityTypeID=8
+inner join Qualisys.qp_prod.dbo.sampleset qss on dsk.DataSourceKey = qss.sampleset_id
+where ltrim([decedentleveldata.survey-status]) in (''9'')
+and isnull([decedentleveldata.lag-time],'''') =''''
+and qss.datLastMailed is not null
+and eds.ExportQueueID = @ExportQueueID'
+
+	set @newcode='update eds set [decedentleveldata.lag-time]=datediff(day,convert(datetime,[decedentleveldata.death-month]+''/''+[decedentleveldata.death-day]+''/''+[decedentleveldata.death-yr]),phones.lastPhoneCall)
+--select eds.samplepopulationid, [hospicedata.provider-id] ccn, [hospicedata.survey-mode], convert(datetime,[decedentleveldata.death-month]+''/''+[decedentleveldata.death-day]+''/''+[decedentleveldata.death-yr]) DayOfDeath, [decedentleveldata.survey-status]
+--, case when ltrim([decedentleveldata.survey-status]) = 9 then ''Expiration Date (Mail & Mixed) OR Date of last phone attempt (Phone)''
+--	   end
+--, phones.lastPhoneCall
+from CEM.ExportDataset00000007 eds
+inner join (select eds.samplepopulationid, max(d.DispositionDate) as lastPhoneCall
+			from CEM.ExportDataset00000007 eds
+			inner join NRC_Datamart.dbo.samplepopulation sp  on eds.SamplePopulationID=sp.SamplePopulationID
+			inner join NRC_DataMart.etl.DataSourceKey dsk on sp.SamplePopulationID=dsk.DataSourceKeyID
+			inner join Qualisys.qp_prod.dbo.scheduledmailing scm on dsk.DataSourceKey = scm.samplepop_id
+			inner join Qualisys.qp_prod.dbo.sentmailing sm on scm.sentmail_id=sm.sentmail_id
+			inner join Qualisys.qp_prod.dbo.dl_lithocodes lc on sm.strlithocode=lc.strlithocode
+			inner join Qualisys.qp_prod.dbo.dl_dispositions d on lc.DL_LithoCode_ID=d.DL_LithoCode_ID
+			where ltrim([decedentleveldata.survey-status]) in (''9'')
+			and isnull([decedentleveldata.lag-time],'''') =''''
+			and eds.ExportQueueID = @ExportQueueID
+			and d.isFinal=1
+			group by eds.samplepopulationid) phones
+		on eds.SamplePopulationID=phones.SamplePopulationID
+where eds.ExportQueueID = @ExportQueueID'
+
+	if charindex(@oldcode,@sql)=0
+		select 1 from [Can't find @oldcode (5)]
+	else
+		set @sql = replace(@sql,@oldcode,@newcode)
 
 	if exists(select * from sys.procedures where name = 'ExportPostProcess'+right(convert(varchar,@newTemplateID+100000000),8))
 		set @SQL = replace(@SQL,'CREATE PROCEDURE','ALTER PROCEDURE')
