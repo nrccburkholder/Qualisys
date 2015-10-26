@@ -39,6 +39,7 @@ GO
 -- Modified 02/27/2014 CB - added -5 and -6 as non-response codes. Phone surveys can code -5 as "Refused" and -6 as "Don't Know"
 -- Modified 06/18/2014 DBG - refactored ACOCAHPSCompleteness as a procedure instead of a function.
 -- Modified 10/29/2014 DBG - added Subtype_nm to temp table because ACOCAHPSCompleteness now needs it
+-- Modified 03/27/2015 TSB -- modified #HHQF to include STRMAILINGSTEP_NM
 CREATE PROCEDURE [dbo].[sp_phase3_questionresult_for_extract] 
 AS 
 
@@ -290,7 +291,7 @@ INSERT INTO drm_tracktimes
            selectedsample ss 
     WHERE  qfe.QuestionForm_id = qf.QuestionForm_id 
            AND qf.SentMail_id = sm.SentMail_id 
-           AND qf.SamplePop_id = sp.SamplePop_id 
+    AND qf.SamplePop_id = sp.SamplePop_id 
            AND sp.sampleset_id = ss.sampleset_id 
            AND sp.pop_id = ss.pop_id 
 
@@ -471,7 +472,7 @@ INSERT INTO drm_tracktimes
     --SELECT q.QuestionForm_id 
     --INTO   #hhcahps_invalidDisposition 
     --FROM   cmnt_QuestionResult_work q, 
-    --       Survey_def sd 
+  --       Survey_def sd 
     --WHERE  qstncore = 38694 
     --       AND val <> 1 
     --       AND sd.Survey_id = q.Survey_id 
@@ -562,7 +563,7 @@ INSERT INTO drm_tracktimes
     WHERE  i.QuestionForm_id = cqw.QuestionForm_id 
 
     --ACO CAHPS Dispositions
-    select cqw.questionform_id, 0 as ATACnt, 0 as ATAComplete, 0 as MeasureCnt, 0 as MeasureComplete, 0 as Disposition, Subtype_nm
+    select cqw.questionform_id, 0 as ATACnt, 0 as ATAComplete, 0 as MeasureCnt, 0 as MeasureComplete, 0 as Disposition, Subtype_nm, st.SurveyType_ID
     into #ACOQF
     FROM   cmnt_QuestionResult_work cqw 
     inner join Surveytype st on cqw.Surveytype_id=st.Surveytype_id
@@ -570,7 +571,7 @@ INSERT INTO drm_tracktimes
 				from [dbo].[SurveySubtype] sst 
 				INNER JOIN [dbo].[Subtype] st on (st.Subtype_id = sst.Subtype_id)
 				) sst on sst.Survey_id = cqw.SURVEY_ID 
-    WHERE  st.SurveyType_dsc = 'ACOCAHPS'
+    WHERE  st.SurveyType_dsc in ('ACOCAHPS','PQRS CAHPS')
     
     exec dbo.ACOCAHPSCompleteness
         
@@ -582,7 +583,7 @@ INSERT INTO drm_tracktimes
 
 	drop table #ACOQF
 
-    /*************************************************************************************************/
+  /*************************************************************************************************/
     /************************************************************************************************/
     INSERT INTO drm_tracktimes 
     SELECT Getdate(), 'Find ineligible hcahps' 
@@ -669,11 +670,13 @@ INSERT INTO drm_tracktimes
     FROM   cmnt_QuestionResult_work cqw, 
            QuestionForm qf, 
            ScheduledMailing scm, 
-           Dispositions_view dv 
+           Dispositions_view dv,
+		   surveytype st 
     WHERE  cqw.QuestionForm_id = qf.QuestionForm_id 
            AND qf.SentMail_id = scm.SentMail_id 
            AND dv.acocahpsvalue = cqw.finalDisposition 
-           AND cqw.Surveytype_id = 10
+           AND cqw.Surveytype_id = st.SurveyType_ID
+		   and st.SurveyType_dsc in ('ACOCAHPS','PQRS CAHPS')
 
     WHILE (SELECT Count(*) FROM #updatedispsql) > 0 
       BEGIN 
@@ -756,7 +759,7 @@ INSERT INTO drm_tracktimes
                        AND a.qstncore = qr.qstncore 
                        AND sd.Survey_id = @svy 
                        --dbg 5/14/13--AND Val NOT IN (-9,-8,-6,-5)  --Modified 02/27/2014 CB - now including -5/-6 Refused/Don't Know
-                       AND Val < 9000 
+ AND Val < 9000 
                        AND sd.Surveytype_id = 3 
 
                 IF @loopcnt < 25 

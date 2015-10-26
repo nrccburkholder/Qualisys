@@ -116,10 +116,10 @@ CREATE TABLE #M (Error TINYINT, strMessage VARCHAR(200))
 		 and br.SURVEY_ID = @Survey_id)
 
 			INSERT INTO #M (Error, strMessage)
-			SELECT 0,'Survey has DQ rule (LengthOfStay < 2).'
+			SELECT 0,'Survey has DQ rule ((ENCOUNTERLengthOfStay < 2) OR (ENCOUNTERLengthOfStay IS NULL)).'
 		ELSE
 		 INSERT INTO #M (Error, strMessage)
-		 SELECT 1,'Survey does not have DQ rule (LengthOfStay < 2).'
+		 SELECT 1,'Survey does not have DQ rule ((ENCOUNTERLengthOfStay < 2) OR (ENCOUNTERLengthOfStay IS NULL)).'
 
 		--check for DQ_Rel Rule
 		If exists  (select BusinessRule_id

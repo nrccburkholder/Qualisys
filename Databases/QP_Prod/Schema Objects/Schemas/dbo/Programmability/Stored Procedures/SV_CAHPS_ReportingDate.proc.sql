@@ -45,6 +45,9 @@ SET @ICHCAHPS = 8
 declare @hospiceCAHPS int
 select @hospiceCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'Hospice CAHPS'
 
+declare @pqrsCAHPS int
+select @pqrsCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'PQRS CAHPS'
+
 declare @CIHI int
 select @CIHI = SurveyType_Id from SurveyType where SurveyType_dsc = 'CIHI CPES-IC'
 
@@ -109,7 +112,7 @@ IF @surveyType_id in (@ACOCAHPS)
 			SELECT 0,'Sample Encounter Date Field is set to ICH_FieldDate.'
 	END
 
-	IF @surveyType_id in (@hospiceCAHPS)
+	IF @surveyType_id in (@hospiceCAHPS, @pqrsCAHPS)
 	BEGIN
 		--Make sure the reporting date is ICH_FieldDate                                      
 		IF (SELECT sampleEncounterfield_id FROM Survey_Def WHERE survey_id = @survey_id) IS NULL
