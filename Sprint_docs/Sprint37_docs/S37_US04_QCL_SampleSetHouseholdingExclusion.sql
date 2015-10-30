@@ -1,7 +1,7 @@
 <EVENT_INSTANCE>
-  <EventType>CREATE_PROCEDURE</EventType>
-  <PostTime>2015-02-19T12:05:57.900</PostTime>
-  <SPID>205</SPID>
+  <EventType>ALTER_PROCEDURE</EventType>
+  <PostTime>2015-08-06T12:13:35.257</PostTime>
+  <SPID>195</SPID>
   <ServerName>NRC10</ServerName>
   <LoginName>NRC\dgilsdorf</LoginName>
   <UserName>dbo</UserName>
@@ -11,17 +11,17 @@
   <ObjectType>PROCEDURE</ObjectType>
   <TSQLCommand>
     <SetOptions ANSI_NULLS="ON" ANSI_NULL_DEFAULT="ON" ANSI_PADDING="ON" QUOTED_IDENTIFIER="ON" ENCRYPTED="FALSE" />
-    <CommandText>/*                      
-Created:  04/13/2012 Don Mayhew    
+    <CommandText>/*
+Created:  04/13/2012 Don Mayhew
 
 08/30/2013 Lee Kohrs
   Removed the following snippet to improve performance
-  -- and not exists ( select ''x'' from dbo.vw_Billians_NursingHomeAssistedLiving v           
-  --   where isnull(v.Street_Address, '''') = isnull(p.addr, '''') and          
-  --     isnull(v.mail_Address, '''') = isnull(p.addr2, '''') and           
-  --     isnull(v.city, '''') = isnull(p.city, '''') and          
-  --     isnull(v.state, '''') = isnull(p.st, '''') and          
-  --     isnull(substring(v.street_zip,1,5), '''') = isnull(p.zip5, '''') 
+  -- and not exists ( select ''x'' from dbo.vw_Billians_NursingHomeAssistedLiving v
+  --   where isnull(v.Street_Address, '''') = isnull(p.addr, '''') and
+  --     isnull(v.mail_Address, '''') = isnull(p.addr2, '''') and
+  --     isnull(v.city, '''') = isnull(p.city, '''') and
+  --     isnull(v.state, '''') = isnull(p.st, '''') and
+  --     isnull(substring(v.street_zip,1,5), '''') = isnull(p.zip5, '''')
   Added the following to delete records matching the vw_Billians_NursingHomeAssistedLiving view
     DELETE #Distinct
     FROM   #Distinct d
@@ -30,13 +30,13 @@ Created:  04/13/2012 Don Mayhew
                   AND d.POPULATIONaddr2 = v.mail_Address
                   AND d.POPULATIONcity = v.city
                   AND d.POPULATIONst = v.state
-                  AND d.POPULATIONzip5 = LEFT(v.street_zip, 5)                 
+                  AND d.POPULATIONzip5 = LEFT(v.street_zip, 5)
 
-11/25/2013 Dave Hansen - CanadaQualisysUpgrade - DFCT0010966 - conditioned delete/update statements using 
-													vw_Billians_NursingHomeAssistedLiving to be run in country=US only              
-			1/14/2015 CJB: switched from HCAHPS specific table to new EligibleEncLog table    
+11/25/2013 Dave Hansen - CanadaQualisysUpgrade - DFCT0010966 - conditioned delete/update statements using
+													vw_Billians_NursingHomeAssistedLiving to be run in country=US only
+			1/14/2015 CJB: switched from HCAHPS specific table to new EligibleEncLog table
 */
-CREATE PROCEDURE [dbo].[QCL_SampleSetHouseholdingExclusion]
+ALTER PROCEDURE [dbo].[QCL_SampleSetHouseholdingExclusion]
   @Study_id                      INT,
   @Survey_ID                     INT,
   @startDate                     DATETIME,
@@ -60,107 +60,97 @@ AS
 
   IF @HouseHoldingType = 'A'
     BEGIN
-      SELECT @sql = 'CREATE TABLE #Distinct (a INT IDENTITY(-1,-1), '
-                    + @strHouseHoldField_CreateTable
-                    + ', pop_id int)                          
-  INSERT INTO #Distinct ('
-                    + @strHouseHoldField_Select
-                    + ', pop_id)                          
-  SELECT DISTINCT '
-                    + SUBSTRING(REPLACE(REPLACE(REPLACE(@strHouseHoldField_Select, 'POPULATION', ''), 'x.', ',9999999),ISNULL('),
-                    ', ,',
-                    ','),
-                           12, 2000)
-                    + ',9999999), p.pop_id'
-                    + '                          
-  FROM sampleset ss, SampleUnit su, eligibleenclog h, survey_def sd, S'
-                    + LTRIM(STR(@Study_id))
-                    + '.Population p                      
-  WHERE sd.Study_id='
-                    + LTRIM(STR(@Study_id))
-                    + '                      
-  AND sampleEncounterDate BETWEEN '''
-                    + CONVERT(VARCHAR, @BOM)
-                    + ''' AND  '''
-                    + CONVERT(VARCHAR, @EOM)
-                    + '''                       
-  AND h.Pop_id=p.Pop_id AND  h.sampleunit_id= su.sampleunit_Id and  su.bitHCAHPS = 1           
-  and su.dontsampleunit = 0 and ss.sampleset_id = h.sampleset_id and sd.survey_id = ss.survey_id    
+      SELECT @SQL = 'CREATE TABLE #Distinct (a INT IDENTITY(-1,-1), ' + @strHouseHoldField_CreateTable + ', pop_id int, CCN varchar(20))
+		  INSERT INTO #Distinct (' + @strHouseHoldField_Select + ', pop_id, CCN)
+		  SELECT DISTINCT ' + SUBSTRING(REPLACE(REPLACE(REPLACE(@strHouseHoldField_Select, 'POPULATION', '')
+			  , 'x.', ',9999999),ISNULL(p.')
+			  , ', ,', ',')
+			  , 12, 2000) 
+			  + ',9999999), p.pop_id, suf.MedicareNumber as CCN
+		  FROM sampleset ss
+			   INNER JOIN eligibleenclog h ON ss.sampleset_id = h.sampleset_id 
+		       INNER JOIN SampleUnit su ON h.sampleunit_id= su.sampleunit_Id 
+			   INNER JOIN survey_def sd ON sd.survey_id = ss.survey_id
+			   INNER JOIN S' + LTRIM(STR(@Study_id)) + '.Population p ON h.Pop_id=p.Pop_id 
+			   INNER JOIN SUFacility suf on su.SUFacility_id = suf.SUFacility_id
+		  WHERE sd.Study_id=' + LTRIM(STR(@Study_id)) + '
+		  AND sampleEncounterDate BETWEEN ''' + CONVERT(VARCHAR, @BOM) + ''' AND  ''' + CONVERT(VARCHAR, @EOM) + '''
+		  and su.bitHCAHPS = 1
+		  and su.dontsampleunit = 0 
 
---11/25/2013 Dave Hansen - CanadaQualisysUpgrade - DFCT0010966 - conditioned delete/update statements using 
---													vw_Billians_NursingHomeAssistedLiving to be run in country=US only              
-declare @country nvarchar(255)
-declare @environment nvarchar(255)
-exec dbo.sp_getcountryenvironment @ocountry=@country output, @oenvironment=@environment output
-IF @country=''US''
-    DELETE #Distinct
-    FROM   #Distinct d
-       INNER JOIN vw_Billians_NursingHomeAssistedLiving v
-               ON d.POPULATIONAddr = v.Street_Address
-                  AND d.POPULATIONaddr2 = v.mail_Address
-                  AND d.POPULATIONcity = v.city
-                  AND d.POPULATIONst = v.state
-                  AND d.POPULATIONzip5 = LEFT(v.street_zip, 5)               
-            
-                              
-  UPDATE x                          
-  SET x.Removed_Rule=10  
-  FROM #SampleUnit_Universe x, #Distinct y                   
-  WHERE '
-                    + REPLACE(REPLACE(@strHouseHold_Join, 'x.', 'ISNULL(X.'), '=', ',9999999)=')
-                    + ' and isnull(x.removed_rule, 0) = 0  and x.pop_id = y.pop_id                        
-            
-  insert into Sampling_ExclusionLog (Survey_ID,Sampleset_ID,Sampleunit_ID,Pop_ID,Enc_ID,SamplingExclusionType_ID,DQ_BusRule_ID)            
-  Select distinct '
-                    + cast(@survey_ID AS VARCHAR(10))
-                    + ' as Survey_ID, '
-                    + cast(@Sampleset_ID AS VARCHAR(10))
-                    + ' as Sampleset_ID, x.Sampleunit_ID, x.Pop_ID, x.Enc_ID, 10 as SamplingExclusionType_ID, Null as DQ_BusRule_ID            
-  FROM #SampleUnit_Universe x, #Distinct y                          
-  WHERE '
-                    + REPLACE(REPLACE(@strHouseHold_Join, 'x.', 'ISNULL(X.'), '=', ',9999999)=')
-                    + ' and x.pop_id = y.pop_id and x.removed_rule = 10                    
+		--11/25/2013 Dave Hansen - CanadaQualisysUpgrade - DFCT0010966 - conditioned delete/update statements using
+		--													vw_Billians_NursingHomeAssistedLiving to be run in country=US only
+		declare @country nvarchar(255)
+		declare @environment nvarchar(255)
+		exec dbo.sp_getcountryenvironment @ocountry=@country output, @oenvironment=@environment output
+		IF @country=''US''
+			DELETE #Distinct
+			FROM   #Distinct d
+			   INNER JOIN vw_Billians_NursingHomeAssistedLiving v
+					   ON d.POPULATIONAddr = v.Street_Address
+						  AND d.POPULATIONaddr2 = v.mail_Address
+						  AND d.POPULATIONcity = v.city
+						  AND d.POPULATIONst = v.state
+						  AND d.POPULATIONzip5 = LEFT(v.street_zip, 5)
+
+		  UPDATE x
+		  SET x.Removed_Rule=10
+		  FROM #SampleUnit_Universe x, sampleunit su, SUFacility suf, #Distinct y
+		  WHERE x.sampleunit_id = su.sampleunit_id 
+		  and su.SUFacility_id = suf.SUFacility_id
+		  and ' + REPLACE(REPLACE(@strHouseHold_Join, 'x.', 'ISNULL(X.'), '=', ',9999999)=') + ' 
+		  and suf.MedicareNumber = y.CCN
+		  and isnull(x.removed_rule, 0) = 0  
+		  and x.pop_id = y.pop_id
+
+		  insert into Sampling_ExclusionLog (Survey_ID,Sampleset_ID,Sampleunit_ID,Pop_ID,Enc_ID,SamplingExclusionType_ID,DQ_BusRule_ID)
+		  Select distinct ' + cast(@survey_ID AS VARCHAR(10)) + ' as Survey_ID, '
+							+ cast(@Sampleset_ID AS VARCHAR(10)) + ' as Sampleset_ID, x.Sampleunit_ID, x.Pop_ID, x.Enc_ID, 10 as SamplingExclusionType_ID, Null as DQ_BusRule_ID
+		  FROM #SampleUnit_Universe x, sampleunit su, SUFacility suf, #Distinct y
+		  WHERE x.sampleunit_id = su.sampleunit_id 
+		  and su.SUFacility_id = suf.SUFacility_id
+		  and ' + REPLACE(REPLACE(@strHouseHold_Join, 'x.', 'ISNULL(X.'), '=', ',9999999)=') + ' 
+		  and suf.MedicareNumber = y.CCN
+		  and x.pop_id = y.pop_id 
+		  and x.removed_rule = 10
   
-  
-  
-  
-  UPDATE x                          
-  SET x.Removed_Rule=7                          
-  FROM #SampleUnit_Universe x, #Distinct y                          
-  WHERE '
-                    + REPLACE(REPLACE(@strHouseHold_Join, 'x.', 'ISNULL(X.'), '=', ',9999999)=')
-                    + ' and isnull(x.removed_rule, 0) = 0 and x.pop_id &lt;&gt; y.pop_id  
-            
-  insert into Sampling_ExclusionLog (Survey_ID,Sampleset_ID,Sampleunit_ID,Pop_ID,Enc_ID,SamplingExclusionType_ID,DQ_BusRule_ID)            
-  Select distinct '
-                    + cast(@survey_ID AS VARCHAR(10))
-                    + ' as Survey_ID, '
-                    + cast(@Sampleset_ID AS VARCHAR(10))
-                    + ' as Sampleset_ID, x.Sampleunit_ID, x.Pop_ID, x.Enc_ID, 7 as SamplingExclusionType_ID, Null as DQ_BusRule_ID            
-  FROM #SampleUnit_Universe x, #Distinct y                          
-  WHERE '
-                    + REPLACE(REPLACE(@strHouseHold_Join, 'x.', 'ISNULL(X.'), '=', ',9999999)=')
-                    + ' and x.removed_rule = 7                     
-            
---11/25/2013 Dave Hansen - CanadaQualisysUpgrade - DFCT0010966 - conditioned delete/update statements using 
---													vw_Billians_NursingHomeAssistedLiving to be run in country=US only              
-IF @country=''US''
-  UPDATE x                          
-  SET x.Removed_Rule= -7                          
-  FROM #SampleUnit_Universe x, S'
-                    + LTRIM(STR(@Study_id))
-                    + '.Population p             
-  WHERE x.pop_ID = p.pop_ID and x.removed_rule = 0             
-  and exists     ( select ''x''             
-     from vw_Billians_NursingHomeAssistedLiving v             
-     WHERE  isnull(p.addr, '''') = v.Street_Address
-       AND isnull(p.addr2, '''') = v.mail_Address
-       AND isnull(p.city, '''') = v.city
-       AND isnull(p.st, '''') = v.state
-       AND isnull(p.zip5, '''') = LEFT(v.street_zip, 5)           
-     )            
-                 
-  DROP TABLE #Distinct'
+		  UPDATE x
+		  SET x.Removed_Rule=7
+		  FROM #SampleUnit_Universe x, sampleunit su, SUFacility suf, #Distinct y
+		  WHERE x.sampleunit_id = su.sampleunit_id 
+		  and su.SUFacility_id = suf.SUFacility_id
+		  and ' + REPLACE(REPLACE(@strHouseHold_Join, 'x.', 'ISNULL(X.'), '=', ',9999999)=') + ' 
+		  and suf.MedicareNumber = y.CCN 
+		  and isnull(x.removed_rule, 0) = 0 
+		  and x.pop_id &lt;&gt; y.pop_id
+
+		  insert into Sampling_ExclusionLog (Survey_ID,Sampleset_ID,Sampleunit_ID,Pop_ID,Enc_ID,SamplingExclusionType_ID,DQ_BusRule_ID)
+		  Select distinct ' + cast(@survey_ID AS VARCHAR(10)) + ' as Survey_ID, '
+							+ cast(@Sampleset_ID AS VARCHAR(10)) + ' as Sampleset_ID, x.Sampleunit_ID, x.Pop_ID, x.Enc_ID, 7 as SamplingExclusionType_ID, Null as DQ_BusRule_ID
+		  FROM #SampleUnit_Universe x, sampleunit su, SUFacility suf, #Distinct y
+		  WHERE x.sampleunit_id = su.sampleunit_id 
+		  and su.SUFacility_id = suf.SUFacility_id
+		  and ' + REPLACE(REPLACE(@strHouseHold_Join, 'x.', 'ISNULL(X.'), '=', ',9999999)=') + ' 
+		  and suf.MedicareNumber = y.CCN 
+		  and x.removed_rule = 7
+
+		--11/25/2013 Dave Hansen - CanadaQualisysUpgrade - DFCT0010966 - conditioned delete/update statements using
+		--													vw_Billians_NursingHomeAssistedLiving to be run in country=US only
+		IF @country=''US''
+		  UPDATE x
+		  SET x.Removed_Rule= -7
+		  FROM #SampleUnit_Universe x, S' + LTRIM(STR(@Study_id)) + '.Population p
+		  WHERE x.pop_ID = p.pop_ID and x.removed_rule = 0
+		  and exists     ( select ''x''
+			 from vw_Billians_NursingHomeAssistedLiving v
+			 WHERE  isnull(p.addr, '''') = v.Street_Address
+			   AND isnull(p.addr2, '''') = v.mail_Address
+			   AND isnull(p.city, '''') = v.city
+			   AND isnull(p.st, '''') = v.state
+			   AND isnull(p.zip5, '''') = LEFT(v.street_zip, 5)
+			 )
+
+		  DROP TABLE #Distinct'
 
       SELECT @sql = replace(@sql, 'DOB,9999999', 'DOB,''12/31/4000''')
 
@@ -169,7 +159,7 @@ IF @country=''US''
       IF @indebug = 1
         PRINT @sql
 
-      EXEC (@sql)
+	  EXEC (@sql)
     END
 
 </CommandText>
