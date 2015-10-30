@@ -1,7 +1,7 @@
 <EVENT_INSTANCE>
   <EventType>ALTER_PROCEDURE</EventType>
-  <PostTime>2015-08-14T11:47:48.267</PostTime>
-  <SPID>187</SPID>
+  <PostTime>2015-08-14T12:00:06.073</PostTime>
+  <SPID>167</SPID>
   <ServerName>NRC10</ServerName>
   <LoginName>NRC\dgilsdorf</LoginName>
   <UserName>dbo</UserName>
@@ -51,29 +51,9 @@ AS
   SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
   SET NOCOUNT ON
 
-  DECLARE @sql VARCHAR(MAX)
+  DECLARE @sql VARCHAR(8000)
   DECLARE @BOM DATETIME,
           @EOM DATETIME
-
-declare @guid VARCHAR(30)
-SET @guid=convert(nvarchar(50),GETDATE(),112)+' '+convert(nvarchar(50),GETDATE(),114)+' '+RIGHT(CONVERT(VARCHAR,100000+ROUND(RAND()*100000,0)),5)
-
-SET @SQL='
-select '+convert(varchar,@Study_id)    +' as at_Study_id                     ,
- 	   '+convert(varchar,@Survey_ID)   +' as at_Survey_ID                    ,
-	   '''+convert(varchar,@startDate,101)+''' as at_startDate               ,
-	   '''+convert(varchar,@EndDate,101)+''' as at_EndDate                   ,
-	   '''+replace(@strHouseholdField_CreateTable,'''','''''')+''' as at_strHouseholdField_CreateTable,
-	   '''+replace(@strHouseholdField_Select,'''','''''')     +''' as at_strHouseholdField_Select     ,
-	   '''+replace(@strHousehold_Join,'''','''''')            +''' as at_strHousehold_Join            ,
-	   '''+@HouseHoldingType             +''' as at_HouseHoldingType             ,
-	   '+convert(varchar,@Sampleset_ID)+' as at_Sampleset_ID                 ,
-	   '+convert(varchar,@indebug)     +' as at_indebug                      ,
-	   *
-into [dbg_temp_QCL_SampleSetHouseholdingExclusion________'+@guid+']
-from #SampleUnit_Universe'
-EXEC (@SQL)
-
 
   SET @BOM = dateadd(dd, -day(@startDate) + 1, @startDate)
   SET @EOM = dateadd(dd, -1, dateadd(mm, 1, @BOM))
