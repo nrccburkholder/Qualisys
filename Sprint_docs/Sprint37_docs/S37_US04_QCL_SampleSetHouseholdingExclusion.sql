@@ -1,7 +1,7 @@
 <EVENT_INSTANCE>
   <EventType>ALTER_PROCEDURE</EventType>
-  <PostTime>2015-08-14T13:52:28.087</PostTime>
-  <SPID>187</SPID>
+  <PostTime>2015-08-14T13:59:36.053</PostTime>
+  <SPID>167</SPID>
   <ServerName>NRC10</ServerName>
   <LoginName>NRC\dgilsdorf</LoginName>
   <UserName>dbo</UserName>
@@ -51,49 +51,9 @@ AS
   SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
   SET NOCOUNT ON
 
-  DECLARE @sql VARCHAR(MAX)
+  DECLARE @sql VARCHAR(8000)
   DECLARE @BOM DATETIME,
           @EOM DATETIME
-
-declare @guid VARCHAR(30)
-SET @guid=convert(nvarchar(50),GETDATE(),112)+' '+convert(nvarchar(50),GETDATE(),114)+' '+RIGHT(CONVERT(VARCHAR,100000+ROUND(RAND()*100000,0)),5)
-
-insert into dbg_temp_samplingtracking (
-	at_Study_id                     ,
-	at_Survey_ID                    ,
-	at_startDate                    ,
-	at_EndDate                      ,
-	at_strHouseholdField_CreateTable,
-	at_strHouseholdField_Select     ,
-	at_strHousehold_Join            ,
-	at_HouseHoldingType             ,
-	at_Sampleset_ID                 ,
-	at_indebug                      ,
-	proc_nm ,
-	file_nm ,
-	rundate )
-values (
-	@Study_id                     ,
-	@Survey_ID                    ,
-	@startDate                    ,
-	@EndDate                      ,
-	@strHouseholdField_CreateTable,
-	@strHouseholdField_Select     ,
-	@strHousehold_Join            ,
-	@HouseHoldingType             ,
-	@Sampleset_ID                 ,
-	@indebug                      ,
-	'[QCL_SampleSetHouseholdingExclusion]',
-	@guid,
-	getdate()
-)
-
-
-SET @SQL='select *
-into [dbg_temp_QCL_SampleSetHouseholdingExclusion________'+@guid+']
-from #SampleUnit_Universe'
-EXEC (@SQL)
-
 
   SET @BOM = dateadd(dd, -day(@startDate) + 1, @startDate)
   SET @EOM = dateadd(dd, -1, dateadd(mm, 1, @BOM))
