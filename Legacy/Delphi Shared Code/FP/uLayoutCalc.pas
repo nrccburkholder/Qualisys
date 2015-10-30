@@ -354,6 +354,80 @@ begin
   result := strToDateTime(mn+'/'+dy+'/'+yr+' '+hr+':'+mi+' '+ampm);
 end;
 
+
+{ Returns a count of the number of occurences of aSubstring in aString }
+function CountOccurences( const aString, aSubstring: string): Integer;
+var
+   tempStr: string;
+   lPosition: Integer;
+   iCount: integer;
+begin
+  iCount := 0;
+  lPosition := Pos(aSubstring, aString);
+  tempStr := aString;
+  while lPosition <> 0 do
+  begin
+    Inc(iCount);
+    tempStr := Copy(tempStr, lPosition + Length(aSubstring), MaxInt);
+    lPosition := Pos(aSubstring, tempStr);
+  end;
+
+  Result := iCount;
+
+end;  { CountOccurences }
+
+function ParseQstnCoreSkipInstructionOverride(OverrideText: string; QstnCore: integer; var RepeatsScaleText: boolean) : string;
+var
+   tempStr : string;
+   appendStr : string;
+   iPos: integer;
+   iDelimiter: integer;
+   sQstnCore: string;
+   iCountPlaceHolders: integer;
+begin
+
+      sQstnCore := '|Q' +  IntToStr(QstnCore) + '|';
+      // Check if this Question is in our OverrideText
+      iPos := Pos(sQstnCore,OverrideText);
+
+      if iPos = 0 then
+      begin
+           // if it's not in the OverrideText, check for QElse
+           sQstnCore := '|QElse|';
+           iPos := Pos(sQstnCore,OverrideText);
+      end;
+
+      if iPos > 0 then
+      begin
+           // If there was a matching Question Core or a QElse
+           tempStr := Copy(OverrideText,iPos + Length(sQstnCore), MaxInt);
+           iDelimiter := Pos('|',tempStr);
+           if iDelimiter > 0 then
+           begin
+                  tempStr := Copy(tempStr, 0, iDelimiter - 1);
+           end;
+
+           // find last Bar and see if there is any text that will be appended
+           iDelimiter := LastDelimiter('|',OverrideText);
+           appendStr := Trim(Copy(OverrideText,iDelimiter + 1, MaxInt));
+           tempStr := tempStr + appendStr;
+      end
+      else
+      begin
+           // No QuestionCore or QElse found in the OverrideText
+           tempStr := OverrideText;
+      end;
+
+      // count the number of %s that occur in the string and return True if count = 2
+      iCountPlaceHolders := CountOccurences(tempStr,'%s');
+      RepeatsScaleText := iCountPlaceHolders  > 1;
+
+      Result := tempStr;
+
+end;
+
+
+
 function tFrmLayoutCalc.QualProFunctions(const text,CodeDelim:string; const ErrCode:byte):string;
 var s,QPFresult,func : string;
     Tag,Parm1 : string;
@@ -1157,6 +1231,8 @@ var Resp,Miss : array[0..MaxNumResps] of tResponse;
     AnyICR : boolean;
     vScaleText:string;
     _PCLBoldOn, _PCLBoldOff, _ArrowChar, _ParenChar, _ParenClose, _BeginChars, _EndChars : string;
+    isRepeatsScaleText: boolean;
+    parsedSubOrInsertFormatOverride: string;
   procedure aConcat(var a:array of integer; const n : integer; var b:array of integer);
   var i : integer;
   begin
@@ -1190,6 +1266,7 @@ begin
   result := 0;
   Resp[0].val := 0;
   Miss[0].val := 0;
+
   if rDQRichEdit[Qid].ScalePos > 0 then begin
     with dmOpenQ, wwt_scls do begin
       Sid := rDQRichEdit[Qid].ScaleID;
@@ -1217,6 +1294,9 @@ begin
                                Sid,
                                wwt_sclsItem.value]) then begin
             //if dmOpenQ.SkipGoPhrase = '' then
+
+            parsedSubOrInsertFormatOverride:= ParseQstnCoreSkipInstructionOverride(SubOrInsertFormatOverride, rDQRichEdit[Qid].QstnCore, isRepeatsScaleText);
+
             case dmOpenQ.CurrentLanguage of
             2 : // Spanish
                  if SkipRepeatsScaleText then
@@ -1283,11 +1363,14 @@ begin
                  if SkipRepeatsScaleText then
                    if SubOrInsertFormatOverride = '' then
                      if SubOrInsertPoundSignForQuestion then
-                       vScaleText := format('%s ' + _BeginChars + 'Si·%s,·pase a la pregunta #[S%s]' + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])
+                       vScaleText := format('%s ' + _BeginChars + 'Si·%s,·pase a la pregunta #[S%s]' + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])      //default
                      else
                        vScaleText := format('%s ' + _BeginChars + 'Si·%s,·vaya·al·#·[S%s]' + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])
                    else
-                     vScaleText := format('%s ' + _BeginChars + SubOrInsertFormatOverride + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])
+                     if isRepeatsScaleText then
+                        vScaleText := format('%s ' + _BeginChars + parsedSubOrInsertFormatOverride + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])
+                     else
+                         vScaleText := format('%s ' + _BeginChars + parsedSubOrInsertFormatOverride + _EndChars,[vScaleText, wwt_sclsItem.asString])
                  else
                      if SubOrInsertPoundSignForQuestion then
                        vScaleText := format('%s ' + _BeginChars + 'Pase a la pregunta #[S%s]' + _EndChars,[vScaleText, wwt_sclsItem.asString])
@@ -1304,11 +1387,14 @@ begin
                  if SkipRepeatsScaleText then
                    if SubOrInsertFormatOverride = '' then
                      if SubOrInsertPoundSignForQuestion then
-                       vScaleText := format('%s ' + _BeginChars + 'If·%s,·go·to·#[S%s]' + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])
+                       vScaleText := format('%s ' + _BeginChars + 'If·%s,·go·to·#[S%s]' + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])    // default
                      else
                        vScaleText := format('%s ' + _BeginChars + 'If·%s,·go·to·Question·[S%s]' + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])
                    else
-                     vScaleText := format('%s ' + _BeginChars + SubOrInsertFormatOverride + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])
+                       if isRepeatsScaleText then
+                          vScaleText := format('%s ' + _BeginChars + parsedSubOrInsertFormatOverride + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])
+                       else
+                           vScaleText := format('%s ' + _BeginChars + parsedSubOrInsertFormatOverride + _EndChars,[vScaleText, wwt_sclsItem.asString])
                  else
                    if SubOrInsertPoundSignForQuestion then
                      vScaleText := format('%s ' + _BeginChars + 'Go·to·#[S%s]' + _EndChars,[vScaleText, wwt_sclsItem.asString])
@@ -1486,6 +1572,7 @@ begin
   end;
 
 end;
+
 
 procedure tFrmLayoutCalc.ShowQ(Shading:boolean; var TBPos:integer; var QstnNmbr:integer; var QstnChar:char);
 var QstnLines,Qid : integer;
