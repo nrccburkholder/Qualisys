@@ -1,7 +1,7 @@
 <EVENT_INSTANCE>
   <EventType>ALTER_PROCEDURE</EventType>
-  <PostTime>2015-08-06T12:13:35.257</PostTime>
-  <SPID>195</SPID>
+  <PostTime>2015-08-14T11:31:17.797</PostTime>
+  <SPID>187</SPID>
   <ServerName>NRC10</ServerName>
   <LoginName>NRC\dgilsdorf</LoginName>
   <UserName>dbo</UserName>
@@ -36,7 +36,7 @@ Created:  04/13/2012 Don Mayhew
 													vw_Billians_NursingHomeAssistedLiving to be run in country=US only
 			1/14/2015 CJB: switched from HCAHPS specific table to new EligibleEncLog table
 */
-ALTER PROCEDURE [dbo].[QCL_SampleSetHouseholdingExclusion]
+alter PROCEDURE [dbo].[QCL_SampleSetHouseholdingExclusion]
   @Study_id                      INT,
   @Survey_ID                     INT,
   @startDate                     DATETIME,
@@ -51,9 +51,29 @@ AS
   SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
   SET NOCOUNT ON
 
-  DECLARE @sql VARCHAR(8000)
+  DECLARE @sql VARCHAR(MAX)
   DECLARE @BOM DATETIME,
           @EOM DATETIME
+
+declare @guid VARCHAR(30)
+SET @guid=convert(nvarchar(50),GETDATE(),112)+' '+convert(nvarchar(50),GETDATE(),114)+' '+RIGHT(CONVERT(VARCHAR,100000+ROUND(RAND()*100000,0)),5)
+
+SET @SQL='
+select @Study_id                      as at_Study_id                     ,
+ 	   @Survey_ID                     as at_Survey_ID                    ,
+	   @startDate                     as at_startDate                    ,
+	   @EndDate                       as at_EndDate                      ,
+	   @strHouseholdField_CreateTable as at_strHouseholdField_CreateTable,
+	   @strHouseholdField_Select      as at_strHouseholdField_Select     ,
+	   @strHousehold_Join             as at_strHousehold_Join            ,
+	   @HouseHoldingType              as at_HouseHoldingType             ,
+	   @Sampleset_ID                  as at_Sampleset_ID                 ,
+	   @indebug                       as at_indebug                      ,
+	   *
+into [dbg_temp_QCL_SampleSetHouseholdingExclusion________'+@guid+']
+from #SampleUnit_Universe'
+EXEC (@SQL)
+
 
   SET @BOM = dateadd(dd, -day(@startDate) + 1, @startDate)
   SET @EOM = dateadd(dd, -1, dateadd(mm, 1, @BOM))
@@ -161,7 +181,6 @@ AS
 
 	  EXEC (@sql)
     END
-
 </CommandText>
   </TSQLCommand>
 </EVENT_INSTANCE>
