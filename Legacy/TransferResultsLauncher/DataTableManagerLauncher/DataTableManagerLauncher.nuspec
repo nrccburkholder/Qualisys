@@ -3,7 +3,7 @@
   <metadata>
     <id>Qualisys.DataTableManagerLauncher</id>
     <title>QualiSys Data Table Manager Launcher</title>
-    <version>3.0.17</version>
+    <version>3.0.18</version>
     <authors>NRC</authors>
     <description>Data Table Manager Launcher shell which launches Data Table Manager</description>
   </metadata>
