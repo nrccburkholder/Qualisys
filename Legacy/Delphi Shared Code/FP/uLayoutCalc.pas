@@ -4079,7 +4079,7 @@ var i,SectOrder,ThisUnit,ThisSect,ThisSub,ThisItem,TargetSect,TargetSub,TargetIt
 begin
 //  if dmOpenQ.SkipGoPhrase = '' then
 //  begin
-     case dmOpenQ.CurrentLanguage of
+{     case dmOpenQ.CurrentLanguage of
        2,7,9,18,19,20 :
                         if (SkipRepeatsScaleText and (SubOrInsertFormatOverride <> '')) then
                           if pos('# ',SubOrInsertFormatOverride) > 0 then
@@ -4114,7 +4114,7 @@ begin
            QText := '#'
          else
            QText := 'Question ';
-     end;
+     end;}
 //  end
 {  else
   begin
@@ -4125,6 +4125,7 @@ begin
 
      end;
   end;}
+  QText := ''; // CJB 10/30/2015 No longer worrying about getting the "question" text preceding the skip substitution block 
 
   dmOpenQ.wwt_Qstns.indexFieldNames := 'Survey_ID;SelQstns_ID';
   tPCL.indexfieldnames := 'Section;Subsection;Item';
