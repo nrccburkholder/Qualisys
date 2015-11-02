@@ -64,8 +64,9 @@ strparam_nm = 'SkipInstructionFormat - ' + @SurveyType + ' + ' + @Language
 
 select IsNull(@bitUsePoundForSkipInstructions, 0) UsePoundSignForSkipInstructions, 
 	IsNull(@FormatOverride, '') FormatOverride,
-	IsNull(@bitSkipRepeatsScaleText, 1) SkipRepeatsScaleText,
+	IsNull(@bitSkipRepeatsScaleText, CASE WHEN strparam_value = 'US' THEN 1 ELSE 0 END) SkipRepeatsScaleText,
 	IsNull(@SkipGoPhrase, '') SkipGoPhrase,
 	IsNull(@SkipEndPhrase, '') SkipEndPhrase
+from qualpro_params where strparam_nm = 'Country'
 
 GO
