@@ -53,7 +53,7 @@ begin
 end
 
 
---commit tran
+commit tran
 
 
 
@@ -67,6 +67,6 @@ from cahpsdispositionmapping
 where CahpsTypeID = @surveytype_id
 order by CahpsHierarchy desc, Label
 
-rollback tran
+--rollback tran
 
 go
