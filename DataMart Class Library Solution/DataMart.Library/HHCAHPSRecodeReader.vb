@@ -290,22 +290,22 @@ Friend Class HHCAHPSRecodeReader
                 Return RecodeSimple(mReader("HHDual"), 1, 3)
 
             Case "PRIMARY-DIAGNOSIS"
-                Return RecodeICD9(mReader("ICD9"))
+                Return RecodeICD(mReader("ICD9"), mReader("ICD10_1"), mReader("SmpEncDt"))
 
             Case "OTHER-DIAGNOSIS-1"
-                Return RecodeICD9(mReader("ICD9_2"))
+                Return RecodeICD(mReader("ICD9_2"), mReader("ICD10_2"), mReader("SmpEncDt"))
 
             Case "OTHER-DIAGNOSIS-2"
-                Return RecodeICD9(mReader("ICD9_3"))
+                Return RecodeICD(mReader("ICD9_3"), mReader("ICD10_3"), mReader("SmpEncDt"))
 
             Case "OTHER-DIAGNOSIS-3"
-                Return RecodeICD9(mReader("ICD9_4"))
+                Return RecodeICD(mReader("ICD9_4"), mReader("ICD10_4"), mReader("SmpEncDt"))
 
             Case "OTHER-DIAGNOSIS-4"
-                Return RecodeICD9(mReader("ICD9_5"))
+                Return RecodeICD(mReader("ICD9_5"), mReader("ICD10_5"), mReader("SmpEncDt"))
 
             Case "OTHER-DIAGNOSIS-5"
-                Return RecodeICD9(mReader("ICD9_6"))
+                Return RecodeICD(mReader("ICD9_6"), mReader("ICD10_6"), mReader("SmpEncDt"))
 
             Case "SURGICAL-DISCHARGE"
                 Return RecodeSimple(mReader("HHSurg"), 1, 2)
@@ -558,14 +558,25 @@ Friend Class HHCAHPSRecodeReader
 
     End Function
 
-    Private Function RecodeICD9(ByVal value As Object) As Object
+    Private Function RecodeICD(ByVal icd9val As Object, ByVal icd10val As Object, ByVal sampleEncounterDate As Object) As Object
+        Dim useIcd9 As Boolean = False
+        If Not sampleEncounterDate Is DBNull.Value AndAlso CType(sampleEncounterDate, Date) < New Date(2015, 10, 1) Then
+            useIcd9 = True
+        End If
 
-        If value Is DBNull.Value OrElse String.IsNullOrEmpty(value.ToString.Trim) OrElse String.IsNullOrEmpty(value.ToString.Trim.Replace("0", String.Empty)) Then
+        Dim icdval As Object
+        If useIcd9 Then
+            icdval = icd9val
+        Else
+            icdval = icd10val
+        End If
+
+        If icdval Is DBNull.Value OrElse String.IsNullOrEmpty(icdval.ToString.Trim) OrElse String.IsNullOrEmpty(icdval.ToString.Trim.Replace("0", String.Empty)) Then
             Return "M"
         Else
-            Dim strVal As String = value.ToString.Replace(".", String.Empty)
+            Dim strVal As String = icdval.ToString.Replace(".", String.Empty)
             'Pad leading 0 if first character numeric
-            If IsNumeric(Left(strVal, 1)) Then
+            If useIcd9 AndAlso IsNumeric(Left(strVal, 1)) Then
                 Return strVal.PadLeft(5, CChar("0"))
             Else
                 Return strVal
