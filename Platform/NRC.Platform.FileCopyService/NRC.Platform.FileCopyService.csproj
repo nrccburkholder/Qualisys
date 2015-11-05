@@ -51,6 +51,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileCopyException.cs" />
     <Compile Include="Interval.cs" />
     <Compile Include="DirectoryReferences.cs" />
     <Compile Include="DirectorySyncTask.cs" />

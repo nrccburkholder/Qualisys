@@ -89,12 +89,14 @@ namespace NRC.Platform.FileCopyService
             source.Prepare();
             //whether or not dest and backup have been prepared
             bool havePrepared = false, hadError = false;
-
+            
             IEnumerable<string> files = source.ListFiles();
             foreach (string file in files)
             {
                 string fromFullFilename = source.FullFilename(file);
                 string tmpFilename = "";
+                string destFullFilename = "";
+                string backupFullFilename = "";
                 try
                 {
                     Debug.WriteLine("DoSync found: " + fromFullFilename);
@@ -120,14 +122,16 @@ namespace NRC.Platform.FileCopyService
                             }
                             havePrepared = true;
                         }
-                        catch (Exception e)
+                        catch (Exception ex)
                         {
-                            Program.Log(e);
+                            var detailEx = CreateDetailException(ex, action, fromFullFilename, destFullFilename, backupFullFilename);
+                            Program.Log(detailEx);
+                            
                             hadError = true;
                             break;
                         }
                     }
-
+                    
                     //generate filenames from original + filematch + toflatlayout [+ timestamp]
                     string rewriteFilename;
                     if (string.IsNullOrEmpty(filename))
@@ -139,8 +143,9 @@ namespace NRC.Platform.FileCopyService
                         rewriteFilename = filename;
                     }
                     string destFilename = MakeDestinationFilename(rewriteFilename, match.Groups);
-                    string destFullFilename = destination.FullFilename(destFilename);
+                    destFullFilename = destination.FullFilename(destFilename);
                     string backupFilename = MakeBackupFilename(rewriteFilename, match.Groups);
+                    backupFullFilename = backup == null ? "" : backup.FullFilename(backupFilename);
                     Debug.WriteLine("DoSync to: " + destFilename);
                     
                     //check exists/overwrite
@@ -162,10 +167,10 @@ namespace NRC.Platform.FileCopyService
                     if (backup != null && backup.Exists(backupFilename))
                     {
                         Debug.WriteLine("DoSync backup file already exists: " + backupFilename);
-                        logger.Error("Failed to backup file: " + backup.FullFilename(backupFilename) + " already exists");
+                        logger.Error("Failed to backup file: " + backupFullFilename + " already exists");
                         continue;
                     }
-
+                    
                     //copy source to local
                     tmpFilename = System.IO.Path.GetTempFileName();
                     Debug.WriteLine("DoSync tmp: " + tmpFilename);
@@ -174,10 +179,10 @@ namespace NRC.Platform.FileCopyService
                     if (backup != null)
                     {
                         //copy local to backup
-                        logger.Info(string.Format("Backing up {0} to {1}", fromFullFilename, backup.FullFilename(backupFilename)));
+                        logger.Info(string.Format("Backing up {0} to {1}", fromFullFilename, backupFullFilename));
                         backup.PutFile(tmpFilename, backupFilename);
                     }
-
+                    
                     //copy local to destination
                     try
                     {
@@ -192,7 +197,9 @@ namespace NRC.Platform.FileCopyService
                     }
                     catch (Exception ex)
                     {
-                        Program.Log(ex);
+                        var detailEx = CreateDetailException(ex, action, fromFullFilename, destFullFilename, backupFullFilename);
+                        Program.Log(detailEx);
+
                         if (backup != null)
                         {
                             backup.RemoveFile(backupFilename);
@@ -212,7 +219,8 @@ namespace NRC.Platform.FileCopyService
                 }
                 catch (Exception ex)
                 {
-                    Program.Log(ex);
+                    var detailEx = CreateDetailException(ex, action, fromFullFilename, destFullFilename, backupFullFilename);
+                    Program.Log(detailEx);
                     hadError = true;
                 }
                 finally
@@ -275,6 +283,11 @@ namespace NRC.Platform.FileCopyService
             }
             string backupFilename = dest + curTimeStamp + ext;
             return backupFilename;
+        }
+
+        private Exception CreateDetailException(Exception ex, string action, string source, string destination, string backup)
+        {
+            return new FileCopyException(string.Format("Error doing {0} from '{1}' to '{2}' with backup '{3}'.", action, source, destination, backup), ex);
         }
     }
 }
