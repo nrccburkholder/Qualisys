@@ -1,0 +1,2 @@
+
+:r \GIT2015\Sprint_docs\Sprint37_docs\S37_US6_T1_Skip_Instructions_Question_Variations.sql
