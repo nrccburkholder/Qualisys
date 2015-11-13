@@ -373,7 +373,12 @@ Public Class MetaGroup
 
                         Case "FieldAddrFipsState"
                             Try
-                                thisField = String.Format("{0} = {1}", .FieldName, GetFieldValue(address.GeoCode.CountyFIPS).Substring(1, 2))
+                                Dim fieldVal As String = GetFieldValue(address.GeoCode.CountyFIPS).Substring(1, 2)
+                                Dim discardInt As Integer
+                                If (Integer.TryParse(fieldVal, discardInt) = False) Then
+                                    fieldVal = "0"
+                                End If
+                                thisField = String.Format("{0} = {1}", .FieldName, fieldVal)
                             Catch
                                 thisField = String.Format("{0} = {1}", .FieldName, "0")
                             End Try

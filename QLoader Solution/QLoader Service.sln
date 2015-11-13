@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AddressCleaner", "AddressCleaner\AddressCleaner.vbproj", "{0CE3DD3A-B828-473A-BF1B-6A4004062A92}"
 EndProject
@@ -24,6 +24,10 @@ EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "QualiSys.QLoader.Library20.SqlDataProvider", "..\QualiSys Class Library Solution\QualiSys.QLoader.Library20.SqlDataProvider\QualiSys.QLoader.Library20.SqlDataProvider.vbproj", "{C006A8BF-39A9-4B1B-8699-170C1B9FB13E}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "NRCAuthlib", "..\NRC Auth Solution\NRCAuthLib\NRCAuthlib.vbproj", "{6ED47CEB-9896-4BE5-A7F2-CF2A5693F1ED}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Nrc.Framework.AddressCleaning", "..\NRC Framework Solution\Nrc.Framework.AddressCleaning\Nrc.Framework.AddressCleaning.vbproj", "{125B82D7-2796-4BA4-945D-0EB84C807F94}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Nrc.Framework.BusinessLogic", "..\NRC Framework Solution\Nrc.Framework.BusinessLogic\Nrc.Framework.BusinessLogic.vbproj", "{C5A6EE1A-D5BF-4059-87CF-ACA302979820}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -236,6 +240,42 @@ Global
 		{6ED47CEB-9896-4BE5-A7F2-CF2A5693F1ED}.Release|Mixed Platforms.Build.0 = Release|x86
 		{6ED47CEB-9896-4BE5-A7F2-CF2A5693F1ED}.Release|x86.ActiveCfg = Release|x86
 		{6ED47CEB-9896-4BE5-A7F2-CF2A5693F1ED}.Release|x86.Build.0 = Release|x86
+		{125B82D7-2796-4BA4-945D-0EB84C807F94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{125B82D7-2796-4BA4-945D-0EB84C807F94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{125B82D7-2796-4BA4-945D-0EB84C807F94}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{125B82D7-2796-4BA4-945D-0EB84C807F94}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{125B82D7-2796-4BA4-945D-0EB84C807F94}.Debug|x86.ActiveCfg = Debug|x86
+		{125B82D7-2796-4BA4-945D-0EB84C807F94}.Debug|x86.Build.0 = Debug|x86
+		{125B82D7-2796-4BA4-945D-0EB84C807F94}.Production|Any CPU.ActiveCfg = Release|Any CPU
+		{125B82D7-2796-4BA4-945D-0EB84C807F94}.Production|Any CPU.Build.0 = Release|Any CPU
+		{125B82D7-2796-4BA4-945D-0EB84C807F94}.Production|Mixed Platforms.ActiveCfg = Release|x86
+		{125B82D7-2796-4BA4-945D-0EB84C807F94}.Production|Mixed Platforms.Build.0 = Release|x86
+		{125B82D7-2796-4BA4-945D-0EB84C807F94}.Production|x86.ActiveCfg = Release|x86
+		{125B82D7-2796-4BA4-945D-0EB84C807F94}.Production|x86.Build.0 = Release|x86
+		{125B82D7-2796-4BA4-945D-0EB84C807F94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{125B82D7-2796-4BA4-945D-0EB84C807F94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{125B82D7-2796-4BA4-945D-0EB84C807F94}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{125B82D7-2796-4BA4-945D-0EB84C807F94}.Release|Mixed Platforms.Build.0 = Release|x86
+		{125B82D7-2796-4BA4-945D-0EB84C807F94}.Release|x86.ActiveCfg = Release|x86
+		{125B82D7-2796-4BA4-945D-0EB84C807F94}.Release|x86.Build.0 = Release|x86
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Debug|x86.ActiveCfg = Debug|x86
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Debug|x86.Build.0 = Debug|x86
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Production|Any CPU.ActiveCfg = PRODUCTION|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Production|Any CPU.Build.0 = PRODUCTION|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Production|Mixed Platforms.ActiveCfg = PRODUCTION|x86
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Production|Mixed Platforms.Build.0 = PRODUCTION|x86
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Production|x86.ActiveCfg = PRODUCTION|x86
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Production|x86.Build.0 = PRODUCTION|x86
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Release|Mixed Platforms.Build.0 = Release|x86
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Release|x86.ActiveCfg = Release|x86
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

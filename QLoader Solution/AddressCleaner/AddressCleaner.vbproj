@@ -87,14 +87,6 @@
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Nrc.Framework.AddressCleaning, Version=2.4.2.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.AddressCleaning.dll</HintPath>
-    </Reference>
-    <Reference Include="Nrc.Framework.BusinessLogic, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.BusinessLogic.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
@@ -143,6 +135,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\NRC Framework Solution\Nrc.Framework.AddressCleaning\Nrc.Framework.AddressCleaning.vbproj">
+      <Project>{125b82d7-2796-4ba4-945d-0eb84c807f94}</Project>
+      <Name>Nrc.Framework.AddressCleaning</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NRC Framework Solution\Nrc.Framework.BusinessLogic\Nrc.Framework.BusinessLogic.vbproj">
+      <Project>{c5a6ee1a-d5bf-4059-87cf-aca302979820}</Project>
+      <Name>Nrc.Framework.BusinessLogic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\QualiSys Class Library Solution\QualiSys.Pervasive.Library.SqlDataProvider\QualiSys.Pervasive.Library.SqlDataProvider.vbproj">
       <Project>{45342C2F-19EF-474C-B9BC-F8222CBABCC2}</Project>
       <Name>QualiSys.Pervasive.Library.SqlDataProvider</Name>
