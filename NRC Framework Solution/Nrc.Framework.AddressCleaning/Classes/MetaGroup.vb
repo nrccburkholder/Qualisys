@@ -372,23 +372,12 @@ Public Class MetaGroup
                             thisField = String.Format("{0} = {1}", .FieldName, GetFieldValue(address.GeoCode.TimeZoneName))
 
                         Case "FieldAddrFipsState"
-                            Try
-                                Dim fieldVal As String = GetFieldValue(address.GeoCode.CountyFIPS).Substring(1, 2)
-                                Dim discardInt As Integer
-                                If (Integer.TryParse(fieldVal, discardInt) = False) Then
-                                    fieldVal = "0"
-                                End If
-                                thisField = String.Format("{0} = {1}", .FieldName, fieldVal)
-                            Catch
-                                thisField = String.Format("{0} = {1}", .FieldName, "0")
-                            End Try
+                            Dim fieldVal As String = ExtractFIPSIntegerValue(address.GeoCode.CountyFIPS, 1, 2)
+                            thisField = String.Format("{0} = {1}", .FieldName, fieldVal)
 
                         Case "FieldAddrFipsCounty"
-                            Try
-                                thisField = String.Format("{0} = {1}", .FieldName, GetFieldValue(address.GeoCode.CountyFIPS).Substring(3, 3))
-                            Catch
-                                thisField = String.Format("{0} = {1}", .FieldName, "0")
-                            End Try
+                            Dim fieldVal As String = ExtractFIPSIntegerValue(address.GeoCode.CountyFIPS, 3, 3)
+                            thisField = String.Format("{0} = {1}", .FieldName, fieldVal)
 
                     End Select
 
@@ -402,6 +391,27 @@ Public Class MetaGroup
 
         End Get
     End Property
+
+    ''' <summary>
+    ''' Takes the FIPS string, substrings the given range, checks if it can be parsed to as an Integer
+    ''' If it isn't then it will return the "0" string
+    ''' </summary>
+    ''' <param name="fieldVal"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Function ExtractFIPSIntegerValue(sourceString As String, startIdx As Integer, length As Integer) As String
+        Dim fieldVal As String
+        Try
+            fieldVal = GetFieldValue(sourceString).Substring(startIdx, length)
+            Dim discardInt As Integer
+            If (Integer.TryParse(fieldVal, discardInt) = False) Then
+                fieldVal = "0"
+            End If
+        Catch
+            fieldVal = "0"
+        End Try
+        Return fieldVal
+    End Function
 
     ''' <summary>
     ''' Returns the field and value list required for the SQL UPDATE statement.
