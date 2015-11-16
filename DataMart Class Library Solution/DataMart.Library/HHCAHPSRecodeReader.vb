@@ -290,22 +290,22 @@ Friend Class HHCAHPSRecodeReader
                 Return RecodeSimple(mReader("HHDual"), 1, 3)
 
             Case "PRIMARY-DIAGNOSIS"
-                Return RecodeICD(mReader("ICD9"), mReader("ICD10_1"), mReader("SmpEncDt"))
+                Return RecodeICD(mReader, "ICD9", "ICD10_1", mReader("SmpEncDt"))
 
             Case "OTHER-DIAGNOSIS-1"
-                Return RecodeICD(mReader("ICD9_2"), mReader("ICD10_2"), mReader("SmpEncDt"))
+                Return RecodeICD(mReader, "ICD9_2", "ICD10_2", mReader("SmpEncDt"))
 
             Case "OTHER-DIAGNOSIS-2"
-                Return RecodeICD(mReader("ICD9_3"), mReader("ICD10_3"), mReader("SmpEncDt"))
+                Return RecodeICD(mReader, "ICD9_3", "ICD10_3", mReader("SmpEncDt"))
 
             Case "OTHER-DIAGNOSIS-3"
-                Return RecodeICD(mReader("ICD9_4"), mReader("ICD10_4"), mReader("SmpEncDt"))
+                Return RecodeICD(mReader, "ICD9_4", "ICD10_4", mReader("SmpEncDt"))
 
             Case "OTHER-DIAGNOSIS-4"
-                Return RecodeICD(mReader("ICD9_5"), mReader("ICD10_5"), mReader("SmpEncDt"))
+                Return RecodeICD(mReader, "ICD9_5", "ICD10_5", mReader("SmpEncDt"))
 
             Case "OTHER-DIAGNOSIS-5"
-                Return RecodeICD(mReader("ICD9_6"), mReader("ICD10_6"), mReader("SmpEncDt"))
+                Return RecodeICD(mReader, "ICD9_6", "ICD10_6", mReader("SmpEncDt"))
 
             Case "SURGICAL-DISCHARGE"
                 Return RecodeSimple(mReader("HHSurg"), 1, 2)
@@ -558,7 +558,37 @@ Friend Class HHCAHPSRecodeReader
 
     End Function
 
-    Private Function RecodeICD(ByVal icd9val As Object, ByVal icd10val As Object, ByVal sampleEncounterDate As Object) As Object
+
+    Private testedSchemaTable As DataTable
+    Private testedCols As Dictionary(Of String, Boolean) = New Dictionary(Of String, Boolean)
+    Private Function HasColumn(ByVal reader As IDataReader, ByVal col As String) As Boolean
+        Dim schemaTable As DataTable = reader.GetSchemaTable()
+        If testedSchemaTable Is Nothing Then testedSchemaTable = schemaTable
+
+        If testedSchemaTable IsNot schemaTable Then
+            testedSchemaTable = schemaTable
+            testedCols.Clear()
+        End If
+
+        If testedCols.ContainsKey(col) Then Return testedCols(col)
+
+        For Each row As DataRow In schemaTable.Rows
+            If CType(row(0), String) = col Then
+                testedCols.Add(col, True)
+                Return True
+            End If
+        Next
+
+        testedCols.Add(col, False)
+        Return False
+    End Function
+
+    Private Function RecodeICD(ByVal reader As IDataReader, ByVal icd9col As String, ByVal icd10col As String, ByVal sampleEncounterDate As Object) As Object
+        Dim icd9val As Object = DBNull.Value
+        Dim icd10val As Object = DBNull.Value
+        If HasColumn(reader, icd9col) Then icd9val = reader(icd9col)
+        If HasColumn(reader, icd10col) Then icd10val = reader(icd10col)
+
         Dim useIcd9 As Boolean = False
         If Not sampleEncounterDate Is DBNull.Value AndAlso CType(sampleEncounterDate, Date) < New Date(2015, 10, 1) Then
             useIcd9 = True
