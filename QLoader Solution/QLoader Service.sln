@@ -1,9 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AddressCleaner", "AddressCleaner\AddressCleaner.vbproj", "{0CE3DD3A-B828-473A-BF1B-6A4004062A92}"
+	ProjectSection(ProjectDependencies) = postProject
+		{125B82D7-2796-4BA4-945D-0EB84C807F94} = {125B82D7-2796-4BA4-945D-0EB84C807F94}
+	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "FileLoader", "FileLoader\FileLoader.vbproj", "{D461D470-1413-44CD-BE17-530A820C091A}"
 EndProject

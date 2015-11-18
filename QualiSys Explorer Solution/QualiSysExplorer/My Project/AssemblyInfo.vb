@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("National Research Corporation")> 
 <Assembly: AssemblyProduct("QualiSys Explorer")> 
-<Assembly: AssemblyCopyright("Copyright © 2005")> 
+<Assembly: AssemblyCopyright("Copyright © 2015")> 
 <Assembly: AssemblyTrademark("")> 
 <Assembly: CLSCompliant(True)> 
 <Assembly: ComVisible(False)> 
@@ -37,5 +37,5 @@ Imports System.Runtime.InteropServices
 'v0.1.3.0 - 10/12/2005 - Add return date to mailing information
 'v0.2.0.0 - 10/17/2005 - Replace embeded SQL with SPROC calls
 'v0.3.0.0 - 11/08/2005 - Upgrate to .NET 2.0
-<Assembly: AssemblyVersion("2.0.8.0")> 
-<Assembly: AssemblyFileVersion("2.0.8.0")> 
+<Assembly: AssemblyVersion("2.0.9.0")> 
+<Assembly: AssemblyFileVersion("2.0.9.0")> 
