@@ -1094,7 +1094,6 @@ namespace USPS_ACS_Library
                     string sendTo = AppConfig.Params["USPS_ACS_SendStatusNotificationTo"].StringValue;
                     string sendBcc = AppConfig.Params["USPS_ACS_SendStatusNotificationBcc"].StringValue;
 
-                    sendTo = "tbutler@nationalresearch.com";
 
                     toList.Add(sendTo);
                     bccList.Add(sendBcc);
