@@ -58,7 +58,7 @@
     <PublisherName>National Research Corporation</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>2.0.10.0</ApplicationVersion>
+    <ApplicationVersion>2.0.11.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -180,16 +180,6 @@
       <HintPath>..\..\Referenced Assemblies\DevExpress.XtraTreeList.v10.1.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Nrc.Framework, Version=1.1.0.0, Culture=neutral, PublicKeyToken=7f65ae6d961bde9c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Nrc.Framework.AddressCleaning">
-      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.AddressCleaning.dll</HintPath>
-    </Reference>
-    <Reference Include="Nrc.Framework.BusinessLogic">
-      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.BusinessLogic.dll</HintPath>
-    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -263,17 +253,11 @@
     <Compile Include="Classes\ExpandableList.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Classes\FillGridColumn.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Classes\FillGridColumn.vb" />
     <Compile Include="Classes\FillGridColumnCollection.vb" />
     <Compile Include="Classes\FillGridInfoRegistrator.vb" />
-    <Compile Include="Classes\FillGridView.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Classes\GridControlOverride.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Classes\FillGridView.vb" />
+    <Compile Include="Classes\GridControlOverride.vb" />
     <Compile Include="Classes\GroupItem.vb">
       <SubType>Code</SubType>
     </Compile>
@@ -423,6 +407,18 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\NRC Framework Solution\Nrc.Framework.AddressCleaning\Nrc.Framework.AddressCleaning.vbproj">
+      <Project>{125b82d7-2796-4ba4-945d-0eb84c807f94}</Project>
+      <Name>Nrc.Framework.AddressCleaning</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NRC Framework Solution\Nrc.Framework.BusinessLogic\Nrc.Framework.BusinessLogic.vbproj">
+      <Project>{c5a6ee1a-d5bf-4059-87cf-aca302979820}</Project>
+      <Name>Nrc.Framework.BusinessLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NRC Framework Solution\Nrc.Framework\Nrc.Framework.vbproj">
+      <Project>{4616369f-a6a3-4192-93a9-23b3e6e2d0bc}</Project>
+      <Name>Nrc.Framework</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\QualiSys Class Library Solution\QualiSys.Library.SqlDataProvider\QualiSys.Library.SqlDataProvider.vbproj">
       <Project>{31F9022F-D830-410D-90AE-98C59F34E552}</Project>
       <Name>QualiSys.Library.SqlDataProvider</Name>
