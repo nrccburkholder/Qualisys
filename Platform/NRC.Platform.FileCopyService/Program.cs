@@ -53,7 +53,9 @@ namespace NRC.Platform.FileCopyService
                 }
                 catch (Exception ex)
                 {
-                    Log(ex);
+                    var detailEx = new FileCopyException(string.Format("Error doing {0} from {1} to {2} with backup {3}.", 
+                        dst.action, dst.source?.Path, dst.destination?.Path, dst.backup?.Path), ex);
+                    Log(detailEx);
                 }
             }
         }

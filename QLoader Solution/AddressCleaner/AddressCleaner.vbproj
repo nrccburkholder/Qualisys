@@ -21,16 +21,17 @@
     <SccProvider>
     </SccProvider>
     <SignManifests>false</SignManifests>
-    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>2.0</OldToolsVersion>
-    <PublishUrl>http://localhost/AddressCleaner/</PublishUrl>
+    <TargetFrameworkProfile />
+    <PublishUrl>Publish\</PublishUrl>
     <Install>true</Install>
-    <InstallFrom>Web</InstallFrom>
+    <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateMode>Foreground</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
@@ -39,10 +40,9 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.1.%2a</ApplicationVersion>
+    <ApplicationVersion>2.6.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -87,14 +87,6 @@
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Nrc.Framework.AddressCleaning, Version=2.4.2.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.AddressCleaning.dll</HintPath>
-    </Reference>
-    <Reference Include="Nrc.Framework.BusinessLogic, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.BusinessLogic.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
@@ -131,6 +123,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="AddressCleaner.nuspec" />
     <None Include="App.config" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
@@ -143,6 +136,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\NRC Framework Solution\Nrc.Framework.AddressCleaning\Nrc.Framework.AddressCleaning.vbproj">
+      <Project>{125b82d7-2796-4ba4-945d-0eb84c807f94}</Project>
+      <Name>Nrc.Framework.AddressCleaning</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NRC Framework Solution\Nrc.Framework.BusinessLogic\Nrc.Framework.BusinessLogic.vbproj">
+      <Project>{c5a6ee1a-d5bf-4059-87cf-aca302979820}</Project>
+      <Name>Nrc.Framework.BusinessLogic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\QualiSys Class Library Solution\QualiSys.Pervasive.Library.SqlDataProvider\QualiSys.Pervasive.Library.SqlDataProvider.vbproj">
       <Project>{45342C2F-19EF-474C-B9BC-F8222CBABCC2}</Project>
       <Name>QualiSys.Pervasive.Library.SqlDataProvider</Name>

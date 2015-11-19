@@ -12,6 +12,8 @@ namespace NRC.Platform.FileCopyService
     /// </summary>
     public interface IDirectoryReference
     {
+        string Path { get; }
+
         /// <summary>
         /// Get any resources needed for interacting with referenced directory.
         /// </summary>

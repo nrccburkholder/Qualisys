@@ -51,6 +51,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileCopyException.cs" />
     <Compile Include="Interval.cs" />
     <Compile Include="DirectoryReferences.cs" />
     <Compile Include="DirectorySyncTask.cs" />
@@ -68,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="NRC.Platform.FileCopyService.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Settings.xml">

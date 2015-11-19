@@ -107,7 +107,7 @@ namespace CEM.Exporting
                         Directory.CreateDirectory(filepath);
                     }
 
-                    filepath = Path.Combine(filepath, Path.ChangeExtension(queuefile.FileMakerName, "xml"));
+                    filepath = Path.Combine(filepath, queuefile.FileMakerName+ ".xml");
 
                     xmlDoc.Save(filepath);
 

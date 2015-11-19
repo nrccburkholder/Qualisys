@@ -1,0 +1,13 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Qualisys.AddressCleaner</id>
+    <title>Address Cleaner</title>
+    <version>2.6.0.0</version>
+    <authors>NRC</authors>
+    <description>EXE to manage Address Cleaning activities</description>
+  </metadata>
+  <files>
+    <file src="bin\x86\Release\**\*"/>
+  </files>
+</package>

@@ -109,31 +109,31 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DevExpress.Data.v7.3, Version=7.3.13.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.Data.v9.3, Version=9.3.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Program Files (x86)\Developer Express .NET v7.3\Sources\DevExpress.DLL\DevExpress.Data.v7.3.dll</HintPath>
+      
       <Private>True</Private>
     </Reference>
-    <Reference Include="DevExpress.Utils.v7.3, Version=7.3.13.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.Utils.v9.3, Version=9.3.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Program Files (x86)\Developer Express .NET v7.3\Sources\DevExpress.DLL\DevExpress.Utils.v7.3.dll</HintPath>
+      
       <Private>True</Private>
     </Reference>
-    <Reference Include="DevExpress.XtraBars.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.XtraBars.v9.3, Version=9.3.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DevExpress.XtraEditors.v7.3, Version=7.3.13.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.XtraEditors.v9.3, Version=9.3.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Program Files (x86)\Developer Express .NET v7.3\Sources\DevExpress.DLL\DevExpress.XtraEditors.v7.3.dll</HintPath>
+      
       <Private>True</Private>
     </Reference>
-    <Reference Include="DevExpress.XtraGrid.v7.3, Version=7.3.13.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.XtraGrid.v9.3, Version=9.3.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Program Files (x86)\Developer Express .NET v7.3\Sources\DevExpress.DLL\DevExpress.XtraGrid.v7.3.dll</HintPath>
+      
       <Private>True</Private>
     </Reference>
-    <Reference Include="DevExpress.XtraPrinting.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.XtraPrinting.v9.3, Version=9.3.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
@@ -545,7 +545,7 @@
       <IncludeHash>True</IncludeHash>
       <FileType>Assembly</FileType>
     </PublishFile>
-    <PublishFile Include="DevExpress.XtraLayout.v7.3">
+    <PublishFile Include="DevExpress.XtraLayout.v9.3">
       <Visible>False</Visible>
       <Group>
       </Group>
@@ -555,7 +555,7 @@
       <IncludeHash>True</IncludeHash>
       <FileType>Assembly</FileType>
     </PublishFile>
-    <PublishFile Include="DevExpress.XtraRichTextEdit.v7.3">
+    <PublishFile Include="DevExpress.XtraRichTextEdit.v9.3">
       <Visible>False</Visible>
       <Group>
       </Group>

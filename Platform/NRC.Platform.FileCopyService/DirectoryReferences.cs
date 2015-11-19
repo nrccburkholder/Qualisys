@@ -44,11 +44,11 @@ namespace NRC.Platform.FileCopyService
     public class LocalDirectory : ConfigSection, IDirectoryReference
     {
         [ConfigUse("Path")]
-        public string path;
+        public string Path { get; set; }
 
         public string FullFilename(string file)
         {
-            return path + file;
+            return Path + file;
         }
 
         virtual public void Prepare()
@@ -63,7 +63,7 @@ namespace NRC.Platform.FileCopyService
 
         public IEnumerable<string> ListFiles()
         {
-            System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(path);
+            System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(Path);
 
             IEnumerable<string> fullFilePaths = dir.GetFiles("*.*", System.IO.SearchOption.AllDirectories)
                 .Where( t => !(t.Attributes & FileAttributes.System).Equals(FileAttributes.System))
@@ -79,7 +79,7 @@ namespace NRC.Platform.FileCopyService
             {
                 //I found this method was returning a list of files with relative paths within the directory
                 //including a trailing slash. Continuing to return the same as the business logic works with it.
-                string relativeFilePath = fullFilePath.Remove(0, path.Length);
+                string relativeFilePath = fullFilePath.Remove(0, Path.Length);
 
                 try
                 {
@@ -102,27 +102,27 @@ namespace NRC.Platform.FileCopyService
 
         public bool Exists(string file)
         {
-            return System.IO.File.Exists(path + file);
+            return System.IO.File.Exists(Path + file);
         }
 
         public void GetFile(string file, string local)
         {
             //over write local temp file
-            Debug.WriteLine("Local Get " + path + file);
-            System.IO.File.Copy(path + file, local, true); 
+            Debug.WriteLine("Local Get " + Path + file);
+            System.IO.File.Copy(Path + file, local, true); 
         }
 
         public void PutFile(string local, string file)
         {
-            Debug.WriteLine("Local Put " + path + file);
-            Directory.CreateDirectory(System.IO.Path.GetDirectoryName(path + file));
-            System.IO.File.Copy(local, path + file);
+            Debug.WriteLine("Local Put " + Path + file);
+            Directory.CreateDirectory(System.IO.Path.GetDirectoryName(Path + file));
+            System.IO.File.Copy(local, Path + file);
         }
 
         public void RemoveFile(string file)
         {
-            Debug.WriteLine("Local Remove " + path + file);
-            System.IO.File.Delete(path + file);
+            Debug.WriteLine("Local Remove " + Path + file);
+            System.IO.File.Delete(Path + file);
         }
     }
 
@@ -140,14 +140,14 @@ namespace NRC.Platform.FileCopyService
         {
             Debug.WriteLine("UNC Prepare");
             nd = new NetworkDrive();
-            Debug.WriteLine(path + " " + username + " " + password);
-            nd.MapNetworkDrive(path, username, password);
+            Debug.WriteLine(Path + " " + username + " " + password);
+            nd.MapNetworkDrive(Path, username, password);
         }
 
         public override void Unprepare()
         {
             Debug.WriteLine("UNC Unprepare");
-            nd.UnmapNetworkDrive(path);
+            nd.UnmapNetworkDrive(Path);
         }
     }
 
@@ -157,7 +157,7 @@ namespace NRC.Platform.FileCopyService
         public string server;
 
         [ConfigUse("Path")]
-        public string path;
+        public string Path { get; set; }
 
         [ConfigUse("UserName")]
         public string username;
@@ -167,7 +167,7 @@ namespace NRC.Platform.FileCopyService
 
         public string FullFilename(string file)
         {
-            return string.Format("ftp://{0}@{1}{2}{3}", username, server, path, file.Replace("\\", "/"));
+            return string.Format("ftp://{0}@{1}{2}{3}", username, server, Path, file.Replace("\\", "/"));
         }
 
         public void Prepare()
@@ -282,7 +282,7 @@ namespace NRC.Platform.FileCopyService
 
         public void PutFile(string local, string file)
         {
-            EnsureDirectoryExists(Path.GetDirectoryName(file));
+            EnsureDirectoryExists(System.IO.Path.GetDirectoryName(file));
             Debug.WriteLine("FTP Put " + GetFileUrl(file));
             FtpWebRequest request = (FtpWebRequest)WebRequest.Create(GetFileUrl(file));
             request.Credentials = new NetworkCredential(username, password);
@@ -350,7 +350,7 @@ namespace NRC.Platform.FileCopyService
             {
                 file = "/" + file;
             }
-            return "ftp://" + server + path + file;
+            return "ftp://" + server + Path + file;
         }
     }
 
@@ -360,7 +360,7 @@ namespace NRC.Platform.FileCopyService
         public string server;
 
         [ConfigUse("Path")]
-        public string path;
+        public string Path { get; set; }
 
         [ConfigUse("UserName")]
         public string username;
@@ -376,7 +376,7 @@ namespace NRC.Platform.FileCopyService
 
         public string FullFilename(string file)
         {
-            return string.Format("sftp://{0}@{1}{2}{3}", username, server, path, file.Replace("\\", "/"));
+            return string.Format("sftp://{0}@{1}{2}{3}", username, server, Path, file.Replace("\\", "/"));
         }
 
         public void Prepare()
@@ -412,8 +412,8 @@ namespace NRC.Platform.FileCopyService
         public IEnumerable<string> ListFiles()
         {
             return
-                from string entry in ListFilesInternal(path)
-                select entry.Remove(0, path.Length);
+                from string entry in ListFilesInternal(Path)
+                select entry.Remove(0, Path.Length);
         }
 
         private IEnumerable<string> ListFilesInternal(string ipath)
@@ -446,27 +446,27 @@ namespace NRC.Platform.FileCopyService
 
         public bool Exists(string file)
         {
-            return sftp.Exists(path + file);
+            return sftp.Exists(Path + file);
         }
 
         public void GetFile(string file, string local)
         {
-            string fullpath = (path + file).Replace("\\", "/");
+            string fullpath = (Path + file).Replace("\\", "/");
             Debug.WriteLine("SFTP Get " + fullpath);
             sftp.Get(fullpath, local);
         }
 
         public void PutFile(string local, string file)
         {
-            string fullpath = (path + file).Replace("\\", "/");
-            EnsureDirectoryExists(Path.GetDirectoryName(file));
+            string fullpath = (Path + file).Replace("\\", "/");
+            EnsureDirectoryExists(System.IO.Path.GetDirectoryName(file));
             Debug.WriteLine("SFTP Put " + fullpath);
             sftp.Put(local, fullpath);
         }
 
         public void RemoveFile(string file)
         {
-            string fullpath = (path + file).Replace("\\", "/");
+            string fullpath = (Path + file).Replace("\\", "/");
             Debug.WriteLine("SFTP Remove " + fullpath);
             sftp.Remove(fullpath);
         }
@@ -481,7 +481,7 @@ namespace NRC.Platform.FileCopyService
                 string curdir = string.Join("/", subdirs.Take(ii));
                 if (!Exists(curdir))
                 {
-                    sftp.Mkdir(path + curdir);
+                    sftp.Mkdir(Path + curdir);
                 }
             }
         }

@@ -1,9 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "QualiSysExplorer", "QualiSysExplorer\QualiSysExplorer.vbproj", "{3CFD4B2B-D777-41D7-8795-5495B03069BD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C5A6EE1A-D5BF-4059-87CF-ACA302979820} = {C5A6EE1A-D5BF-4059-87CF-ACA302979820}
+		{27AB551E-D67F-4B03-BAB5-E7172E105217} = {27AB551E-D67F-4B03-BAB5-E7172E105217}
+		{4616369F-A6A3-4192-93A9-23B3E6E2D0BC} = {4616369F-A6A3-4192-93A9-23B3E6E2D0BC}
+		{125B82D7-2796-4BA4-945D-0EB84C807F94} = {125B82D7-2796-4BA4-945D-0EB84C807F94}
+	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "QualiSys.Library", "..\QualiSys Class Library Solution\QualiSys.Library\QualiSys.Library.vbproj", "{191D0C34-FF61-47A6-852F-7FD91D50AD72}"
 EndProject
@@ -21,6 +27,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{789F49
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Nrc.Framework.AddressCleaning", "..\NRC Framework Solution\Nrc.Framework.AddressCleaning\Nrc.Framework.AddressCleaning.vbproj", "{125B82D7-2796-4BA4-945D-0EB84C807F94}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -104,6 +112,18 @@ Global
 		{27AB551E-D67F-4B03-BAB5-E7172E105217}.Release|Any CPU.Build.0 = Release|Any CPU
 		{27AB551E-D67F-4B03-BAB5-E7172E105217}.Release|x86.ActiveCfg = Release|x86
 		{27AB551E-D67F-4B03-BAB5-E7172E105217}.Release|x86.Build.0 = Release|x86
+		{125B82D7-2796-4BA4-945D-0EB84C807F94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{125B82D7-2796-4BA4-945D-0EB84C807F94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{125B82D7-2796-4BA4-945D-0EB84C807F94}.Debug|x86.ActiveCfg = Debug|x86
+		{125B82D7-2796-4BA4-945D-0EB84C807F94}.Debug|x86.Build.0 = Debug|x86
+		{125B82D7-2796-4BA4-945D-0EB84C807F94}.PRODUCTION|Any CPU.ActiveCfg = Release|Any CPU
+		{125B82D7-2796-4BA4-945D-0EB84C807F94}.PRODUCTION|Any CPU.Build.0 = Release|Any CPU
+		{125B82D7-2796-4BA4-945D-0EB84C807F94}.PRODUCTION|x86.ActiveCfg = Release|x86
+		{125B82D7-2796-4BA4-945D-0EB84C807F94}.PRODUCTION|x86.Build.0 = Release|x86
+		{125B82D7-2796-4BA4-945D-0EB84C807F94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{125B82D7-2796-4BA4-945D-0EB84C807F94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{125B82D7-2796-4BA4-945D-0EB84C807F94}.Release|x86.ActiveCfg = Release|x86
+		{125B82D7-2796-4BA4-945D-0EB84C807F94}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

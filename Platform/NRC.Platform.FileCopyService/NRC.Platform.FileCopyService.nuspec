@@ -1,0 +1,14 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Qualisys.FileCopyService</id>
+    <title>Qualisys File Copy Service</title>
+    <version>1.0.2.0</version>
+    <authors>NRC</authors>
+    <description>Qualisys file copy service</description>
+  </metadata>
+  <files>
+    <file src="bin\Release\**" exclude="bin\Release\Settings.xml" />
+    <file src="bin\Release\Settings.xml" target="Settings_Example.xml" />
+  </files>
+</package>
