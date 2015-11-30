@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,26 +26,34 @@ namespace WebSurveyEmailProcessTestApplication
 
         static void Main(string[] args)
         {
-            string chronExpression = AppConfig.Params["WebSurveyCleanupInterval"].StringValue;
-
-           
+            //string chronExpression = AppConfig.Params["WebSurveyCleanupInterval"].StringValue;
 
 
-            _sched = new CronExpression(chronExpression); // triggered at 11 PM everyday
-            //_sched = new CronExpression("0 0 7 */3 * ?"); // triggered at 7 AM everyday
-            _lastRunDateTime = DateTime.UtcNow.AddDays(-1);
 
-            //Console.WriteLine("Exchange Web Services Test");
-            //Console.WriteLine();
-            //Console.WriteLine("Press ENTER to begin.");
-            //Console.ReadLine();
-            Start();
-            //Console.WriteLine("End of Processing");
-            //Console.WriteLine("Press ENTER to exit.");
-            //Console.ReadLine();
-            //Console.WriteLine("Exiting application...");
+
+            //_sched = new CronExpression(chronExpression); // triggered at 11 PM everyday
+            ////_sched = new CronExpression("0 0 7 */3 * ?"); // triggered at 7 AM everyday
+            //_lastRunDateTime = DateTime.UtcNow.AddDays(-1);
+
+            Console.WriteLine("Exchange Web Services Test");
+            Console.WriteLine();
+            Console.WriteLine("Press ENTER to begin.");
+            Console.ReadLine();
+            //Start();
+            TestSummaryReport();
+            Console.WriteLine("End of Processing");
+            Console.WriteLine("Press ENTER to exit.");
+            Console.ReadLine();
+            Console.WriteLine("Exiting application...");
 
             //Logs.Info("WebSurveyEmailService Stopped");
+        }
+
+        static void TestSummaryReport()
+        {
+
+            WebSurveyWorker.DoSummaryReport();
+
         }
 
         static void Start()
@@ -72,10 +81,13 @@ namespace WebSurveyEmailProcessTestApplication
         static void CreateSchedule()
         {
 
-            int interval = 15;
+            int cycleInterval = AppConfig.Params["WebSurveyServiceCycleTime"].IntegerValue;
+
             string cronExpression = AppConfig.Params["WebSurveyCleanupInterval"].StringValue;
 
-            cronExpression = "0 /5 * * * ?"; 
+            NameValueCollection properties = new NameValueCollection { { "quartz.threadPool.threadCount", "1" } };
+
+           // cronExpression = "0 /5 * * * ?"; 
 
             ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
 
@@ -90,7 +102,7 @@ namespace WebSurveyEmailProcessTestApplication
             ITrigger trigger = TriggerBuilder.Create()
             .WithIdentity("t1", "g1")
             .WithSimpleSchedule(x => x
-                .WithIntervalInMinutes(interval)
+                .WithIntervalInMinutes(cycleInterval)
                 .RepeatForever())
             .Build();
 

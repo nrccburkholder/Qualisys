@@ -19,7 +19,14 @@ namespace WebSurveyEmailService
             { 
                 new WebSurveyEmailService() 
             };
-            ServiceBase.Run(ServicesToRun);
+            if (Environment.UserInteractive)
+            {
+                DebugHelper.RunInteractive(ServicesToRun);
+            }
+            else
+            {
+                ServiceBase.Run(ServicesToRun);
+            }
         }
     }
 }
