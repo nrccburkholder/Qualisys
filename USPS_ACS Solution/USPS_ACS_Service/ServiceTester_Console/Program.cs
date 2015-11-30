@@ -21,6 +21,9 @@ namespace ServiceTester_Console
 
         static void Main(string[] args)
         {
+            Console.WriteLine();
+            Console.WriteLine(string.Format("Environment: {0}", GetEnvironment()));
+            Console.WriteLine();
             Console.WriteLine("Press return to start");
             Console.ReadLine();
 
@@ -148,5 +151,27 @@ namespace ServiceTester_Console
             }
         }
 
+
+        static string GetEnvironment()
+        {
+            string env = "Unknown";
+            switch (AppConfig.EnvironmentType)
+            {
+                case EnvironmentTypes.Production:
+                    env = "Prod";
+                    break;
+                case EnvironmentTypes.Staging:
+                    env = "Stage";
+                    break;
+                case EnvironmentTypes.Testing:
+                    env = "Test";
+                    break;
+                default:
+                    break;
+            }
+
+            return env;
+
+        }
     }
 }
