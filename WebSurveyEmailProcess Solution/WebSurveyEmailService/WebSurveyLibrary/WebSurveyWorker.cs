@@ -806,9 +806,6 @@ namespace WebSurveyLibrary
                     string sendTo = AppConfig.Params["WebSurveySendErrorNotificationTo"].StringValue;
                     string sendBcc = AppConfig.Params["WebSurveySendErrorNotificationBcc"].StringValue;
 
-                    sendTo = "tbutler@nationalresearch.com";
-                    sendBcc = "tbutler@nationalresearch.com";
-
                     toList.Add(sendTo);
                     bccList.Add(sendBcc);
 
