@@ -525,7 +525,7 @@ namespace USPS_ACS_Library
                                     catch (Exception ex)
                                     {
                                         errorList.Add(new USPS_ACS_Error(ErrorType.Extract, zipfilename, filename, "Failed to write ExtractFile record."));
-                                        Logs.LogException("ProcessFiles - OpenFile() Error: Failed to write ExtractFile record.",ex);
+                                        Logs.LogException("ProcessFiles - ExtractRecords() Error: Failed to write ExtractFile record.",ex);
                                         fCount += 1;
                                     }                
                                 }
