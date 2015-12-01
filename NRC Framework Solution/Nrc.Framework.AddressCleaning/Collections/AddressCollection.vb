@@ -244,7 +244,7 @@ Public Class AddressCollection
         addrCheckRequest.OptAddressParsed = "False"
       
         'Dimension the SOAP request message array for the first set of records
-        ReDim addrCheckRequest.Record(GetArraySize(Count, addrUsed, maxRecords))
+        ReDim addrCheckRequest.Record(GetArraySize(addrCount, addrUsed, maxRecords))
 
         'Create the address cleaning web service connection
         Using addrCheckService As New net.melissadata.addresscheck.Service
@@ -289,7 +289,7 @@ Public Class AddressCollection
         geoCodingRequest.CustomerID = AppConfig.Params("GeoCodingWebServiceCustomerID").StringValue
 
         'Dimension the SOAP request message array for the first set of records
-        ReDim geoCodingRequest.Record(GetArraySize(Count, geoCodingUsed, maxRecords))
+        ReDim geoCodingRequest.Record(GetArraySize(geoCodingCount, geoCodingUsed, maxRecords))
 
         'Create the address cleaning web service connection
         Using geoCodingService As New net.melissadata.geocoder.Service
@@ -306,7 +306,7 @@ Public Class AddressCollection
             AddGeoCoding(geoCodingCount, addr, geoCodingRequest)
 
             'Determine if it is time to call the web service
-            If geoCodingCount = maxRecords OrElse geoCodingUsed = Count Then
+            If geoCodingCount = maxRecords OrElse geoCodingUsed = geoCodingCount Then
                 'Call the web service to clean the current SOAP message
                 geoCodingResponse = geoCodingService.doGeoCode(geoCodingRequest)
 
@@ -834,7 +834,7 @@ Public Class AddressCollection
         origAddr.WorkingAddress.StreetLine2 = clonedAddress.OriginalAddress.StreetLine1
 
         'Make the web service call with the clone/swapped address
-        Dim responseArray As net.melissadata.addresscheck.ResponseArray = cleanSingleAddress(True, False, True, origAddr)
+        Dim responseArray As net.melissadata.addresscheck.ResponseArray = cleanSingleAddress(False, False, True, origAddr)
 
         'Parse the address clean response into an Address object
         Dim returnedAddress As Address = ParseSingleAddress(responseArray, origAddr)
