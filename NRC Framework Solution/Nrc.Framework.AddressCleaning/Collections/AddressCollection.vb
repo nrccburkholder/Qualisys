@@ -114,6 +114,9 @@ Public Class AddressCollection
             'Initialize the web service
             addrCheckService.Url = AppConfig.Params("AddressWebServiceURL").StringValue
 
+            '2015-1202 Increasing Timeout to 5 minutes
+            addrCheckService.Timeout = 5 * 60 * 1000
+
             'Determine if we need to use a proxy
             If forceProxy Then
                 addrCheckService.Proxy = New WebProxy(AppConfig.Params("WebServiceProxyServer").StringValue, AppConfig.Params("WebServiceProxyPort").IntegerValue)
@@ -251,6 +254,9 @@ Public Class AddressCollection
             'Initialize the web service
             addrCheckService.Url = AppConfig.Params("AddressWebServiceURL").StringValue
 
+            '2015-1202 Increasing Timeout to 5 minutes
+            addrCheckService.Timeout = 5 * 60 * 1000
+
             'Determine if we need to use a proxy
             If forceProxy Then
                 addrCheckService.Proxy = New WebProxy(AppConfig.Params("WebServiceProxyServer").StringValue, AppConfig.Params("WebServiceProxyPort").IntegerValue)
@@ -271,7 +277,7 @@ Public Class AddressCollection
             'Add this address to the web service SOAP message
             AddAddress(addrCount, addr, addrCheckRequest)
 
-            'Determine if it is time to call the web service           
+            'Call the web service           
             addrCheckResponse = addrCheckService.doAddressCheck(addrCheckRequest)
 
             'Check to see if the web service returned any errors
