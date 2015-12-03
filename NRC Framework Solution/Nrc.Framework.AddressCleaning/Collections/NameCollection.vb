@@ -57,10 +57,10 @@ Public Class NameCollection
     ''' <param name="properCase">Specifies if proper case formatting should be applied.</param>
     ''' <param name="forceProxy">Specifies whether or not to force the use of a proxy server for web requests</param>
     ''' <remarks></remarks>
-    Public Sub Clean(ByVal properCase As Boolean, ByVal forceProxy As Boolean)
+    Public Sub Clean(ByVal properCase As Boolean, ByVal forceProxy As Boolean, ByVal dataFileId As Integer)
 
         'The DBKey property of the name object is not publicly exposed so it will need to be set by the application.
-        Clean(properCase, True, forceProxy)
+        Clean(properCase, True, forceProxy, dataFileId)
 
     End Sub
 
@@ -76,7 +76,7 @@ Public Class NameCollection
     ''' <param name="assignIDs">Specified whether or not the names need to have the DBKey set</param>
     ''' <param name="forceProxy">Specifies whether or not to force the use of a proxy server for web requests</param>
     ''' <remarks></remarks>
-    Friend Sub Clean(ByVal properCase As Boolean, ByVal assignIDs As Boolean, ByVal forceProxy As Boolean)
+    Friend Sub Clean(ByVal properCase As Boolean, ByVal assignIDs As Boolean, ByVal forceProxy As Boolean, ByVal dataFileId As Integer)
 
         Dim nameCount As Integer = 0
         Dim nameUsed As Integer = 0
@@ -144,7 +144,18 @@ Public Class NameCollection
                 If nameCount = maxRecords OrElse nameUsed = Count Then
 
                     'Call the web service to clean the current SOAP message
-                    nameCheckResponse = nameCheckService.doNameCheck(nameCheckRequest)
+
+                    Logs.Info(String.Format("Begin nameCheckService.doAddressCheck - DataFile_Id:{0}, AddrCount: {1}", dataFileId, nameCount))
+
+                    Try
+                        nameCheckResponse = nameCheckService.doNameCheck(nameCheckRequest)
+                    Catch ex As Exception
+                        LogException(ex, String.Format("ERROR nameCheckService.doAddressCheck - DataFile_Id:{0}", dataFileId))
+                        Throw ex
+                    End Try
+
+                    Logs.Info(String.Format("End nameCheckService.doAddressCheck - DataFile_Id:{0}", dataFileId))
+
 
                     'Check to see if the web service returned any errors
                     Dim message As String = String.Empty

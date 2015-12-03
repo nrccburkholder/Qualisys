@@ -175,7 +175,9 @@ Friend Class AddressProvider
                     addrTable.Dispose()
 
                     'Clean the addresses
-                    addresses.Clean(False, forceProxy, True)
+                    Logs.Info(String.Format("Begin CleanAll.addresses.Clean - DataFile_id: {0}, Study_id: {1}", dataFileID, studyID))
+                    addresses.Clean(False, forceProxy, True, dataFileID)
+                    Logs.Info(String.Format("End CleanAll.addresses.Clean - DataFile_id: {0}, Study_id: {1}", dataFileID, studyID))
 
                     'Update these addresses to the database
                     For Each addr As Address In addresses

@@ -111,7 +111,9 @@ Friend Class NameProvider
                     nameTable.Dispose()
 
                     'Clean the names
-                    names.Clean(metaGrp.ProperCase, False, forceProxy)
+                    Logs.Info(String.Format("Begin CleanAll.names.Clean - DataFile_id: {0}, Study_id: {1}", dataFileID, studyID))
+                    names.Clean(metaGrp.ProperCase, False, forceProxy, dataFileID)
+                    Logs.Info(String.Format("End CleanAll.names.Clean - DataFile_id: {0}, Study_id: {1}", dataFileID, studyID))
 
                     'Update these names to the database
                     For Each nam As Name In names
