@@ -57,10 +57,10 @@ Public Class AddressCollection
     ''' </summary>
     ''' <param name="forceProxy">Specifies whether or not to force the use of a proxy server for web requests</param>
     ''' <remarks></remarks>
-    Public Sub Clean(ByVal forceProxy As Boolean, ByVal dataFileId As Integer)
+    Public Sub Clean(ByVal forceProxy As Boolean)
 
         'The DBKey property of the address object is not publicly exposed so it will need to be set by the application.
-        Clean(True, forceProxy, True, dataFileId)
+        Clean(True, forceProxy, True, -1)
 
     End Sub
 
