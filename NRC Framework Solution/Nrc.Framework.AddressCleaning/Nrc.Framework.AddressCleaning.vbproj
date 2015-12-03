@@ -25,8 +25,6 @@
     <OldToolsVersion>2.0</OldToolsVersion>
     <UpgradeBackupLocation />
     <TargetFrameworkProfile />
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\QLoader Solution\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -258,7 +256,7 @@
       <Name>Nrc.Framework.BusinessLogic</Name>
     </ProjectReference>
     <ProjectReference Include="..\Nrc.Framework\Nrc.Framework.vbproj">
-      <Project>{4616369f-a6a3-4192-93a9-23b3e6e2d0bc}</Project>
+      <Project>{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}</Project>
       <Name>Nrc.Framework</Name>
     </ProjectReference>
   </ItemGroup>
@@ -273,13 +271,6 @@
     <Folder Include="Exceptions\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

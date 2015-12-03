@@ -175,7 +175,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nrc.Framework.AddressCleaning\Nrc.Framework.AddressCleaning.vbproj">
-      <Project>{125B82D7-2796-4BA4-945D-0EB84C807F94}</Project>
+      <Project>{125b82d7-2796-4ba4-945d-0eb84c807f94}</Project>
       <Name>Nrc.Framework.AddressCleaning</Name>
     </ProjectReference>
     <ProjectReference Include="..\Nrc.Framework.BusinessLogic\Nrc.Framework.BusinessLogic.vbproj">
