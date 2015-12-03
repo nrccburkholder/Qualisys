@@ -145,7 +145,7 @@ Public Class AddressCollection
                     Try
                         addrCheckResponse = addrCheckService.doAddressCheck(addrCheckRequest)
                     Catch ex As Exception
-                        LogException(ex, String.Format("ERROR addrCheckService.doAddressCheck - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
+                        Logs.LogException(ex, String.Format("ERROR addrCheckService.doAddressCheck - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
                         Throw ex
                     End Try
 
@@ -205,7 +205,7 @@ Public Class AddressCollection
                     Try
                         geoCodingResponse = geoCodingService.doGeoCode(geoCodingRequest)
                     Catch ex As Exception
-                        LogException(ex, String.Format("ERROR geoCodingService.doGeoCode - DataFile_Id:{0}", dataFileId))
+                        Logs.LogException(ex, String.Format("ERROR geoCodingService.doGeoCode - DataFile_Id:{0}", dataFileId))
                         Throw ex
                     End Try
 
@@ -301,7 +301,7 @@ Public Class AddressCollection
             Try
                 addrCheckResponse = addrCheckService.doAddressCheck(addrCheckRequest)
             Catch ex As Exception
-                LogException(ex, String.Format("ERROR Single addrCheckService.doAddressCheck - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
+                Logs.LogException(ex, String.Format("ERROR Single addrCheckService.doAddressCheck - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
                 Throw ex
             End Try
 
@@ -346,7 +346,7 @@ Public Class AddressCollection
                 Try
                     geoCodingResponse = geoCodingService.doGeoCode(geoCodingRequest)
                 Catch ex As Exception
-                    LogException(ex, String.Format("ERROR Single geoCodingService.doGeoCode - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
+                    Logs.LogException(ex, String.Format("ERROR Single geoCodingService.doGeoCode - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
                     Throw ex
                 End Try
 

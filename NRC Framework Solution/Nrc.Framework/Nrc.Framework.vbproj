@@ -111,7 +111,7 @@
     <Compile Include="Data\SqlCommandException.vb" />
     <Compile Include="Data\XmlWriter.vb" />
     <Compile Include="IO\Path.vb" />
-    <Compile Include="Modules\Logs.vb" />
+    <Compile Include="Logs\Logs.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>

@@ -150,7 +150,7 @@ Public Class NameCollection
                     Try
                         nameCheckResponse = nameCheckService.doNameCheck(nameCheckRequest)
                     Catch ex As Exception
-                        LogException(ex, String.Format("ERROR nameCheckService.doAddressCheck - DataFile_Id:{0}", dataFileId))
+                        Logs.LogException(ex, String.Format("ERROR nameCheckService.doAddressCheck - DataFile_Id:{0}", dataFileId))
                         Throw ex
                     End Try
 
