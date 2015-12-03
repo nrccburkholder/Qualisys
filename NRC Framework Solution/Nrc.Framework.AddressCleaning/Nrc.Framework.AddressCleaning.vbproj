@@ -79,10 +79,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Referenced Assemblies\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
     </Reference>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\..\QLoader Solution\packages\NLog.4.2.2\lib\net35\NLog.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.EnterpriseServices" />
@@ -121,7 +117,6 @@
     <Compile Include="Enums\LoadDatabases.vb" />
     <Compile Include="Enums\ZipCodeTypes.vb" />
     <Compile Include="Modules\Global.vb" />
-    <Compile Include="Modules\Logs.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -220,7 +215,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Nrc.Framework.AddressCleaning.nuspec" />
-    <None Include="packages.config" />
     <None Include="Web References\net.melissadata.addresscheck\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.vb</LastGenOutput>
@@ -264,7 +258,7 @@
       <Name>Nrc.Framework.BusinessLogic</Name>
     </ProjectReference>
     <ProjectReference Include="..\Nrc.Framework\Nrc.Framework.vbproj">
-      <Project>{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}</Project>
+      <Project>{4616369f-a6a3-4192-93a9-23b3e6e2d0bc}</Project>
       <Name>Nrc.Framework</Name>
     </ProjectReference>
   </ItemGroup>
