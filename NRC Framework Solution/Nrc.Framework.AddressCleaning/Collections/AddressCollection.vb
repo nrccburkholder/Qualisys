@@ -89,7 +89,6 @@ Public Class AddressCollection
     ''' <param name="addrCheckRequest"></param>
     ''' <param name="dataFileId"></param>
     ''' <param name="forceProxy"></param>
-    ''' <param name="maxRetries"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
     Private Function DoAddressCheckWithRetries(ByRef addrCheckRequest As net.melissadata.addresscheck.RequestArray, ByVal dataFileId As Integer, ByVal forceProxy As Boolean) As net.melissadata.addresscheck.ResponseArray
@@ -140,13 +139,12 @@ Public Class AddressCollection
 
 
     ''' <summary>
-    ''' Calls the melissadata.addresscheck.Service with retry logic
+    ''' Calls the net.melissadata.geocoder.Service with retry logic
     ''' If the failed attempts exceed the specified number of retries, it will bubble the exception up to the caller
     ''' </summary>
-    ''' <param name="addrCheckRequest"></param>
+    ''' <param name="geoCodingRequest"></param>
     ''' <param name="dataFileId"></param>
     ''' <param name="forceProxy"></param>
-    ''' <param name="maxRetries"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
     Private Function DoGeoCodingWithRetries(ByRef geoCodingRequest As net.melissadata.geocoder.RequestArray, ByVal dataFileId As Integer, ByVal forceProxy As Boolean) As net.melissadata.geocoder.ResponseArray
@@ -402,29 +400,26 @@ Public Class AddressCollection
         AddGeoCoding(geoCodingCount, addr, geoCodingRequest)
 
         'Call the web service
-        If geoCodingCount = maxRecords OrElse geoCodingUsed = geoCodingCount Then
-            'Call the web service to clean the current SOAP message
 
-            Logs.Info(String.Format("Begin Single geoCodingService.doGeoCode - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
-            Try
-                geoCodingResponse = DoGeoCodingWithRetries(geoCodingRequest, dataFileId, forceProxy)
-            Catch ex As Exception
-                Logs.LogException(ex, String.Format("ERROR Single geoCodingService.doGeoCode - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
-                Throw ex
-            End Try
+        Logs.Info(String.Format("Begin Single geoCodingService.doGeoCode - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
+        Try
+            geoCodingResponse = DoGeoCodingWithRetries(geoCodingRequest, dataFileId, forceProxy)
+        Catch ex As Exception
+            Logs.LogException(ex, String.Format("ERROR Single geoCodingService.doGeoCode - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
+            Throw ex
+        End Try
 
-            Logs.Info(String.Format("End Single geoCodingService.doGeoCode - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
+        Logs.Info(String.Format("End Single geoCodingService.doGeoCode - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
 
-            'Check to see if the web service returned any errors
-            message = String.Empty
-            If CheckForGeoCodingWebRequestErrors(geoCodingResponse.Results, message) Then
-                'We have encountered a general error from the web service.
-                Throw New Exception(message)
-            End If
-
-            'Find and update the returned addresses
-            UpdateGeoCoding(geoCodingResponse)
+        'Check to see if the web service returned any errors
+        message = String.Empty
+        If CheckForGeoCodingWebRequestErrors(geoCodingResponse.Results, message) Then
+            'We have encountered a general error from the web service.
+            Throw New Exception(message)
         End If
+
+        'Find and update the returned addresses
+        UpdateGeoCoding(geoCodingResponse)
 
         Logs.Info(String.Format("End cleanSingleAddress - DataFile_Id:{0}", dataFileId))
 
