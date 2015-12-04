@@ -209,7 +209,7 @@ Public Class AddressCollection
                         Throw ex
                     End Try
 
-                    Logs.Info(String.Format("Begin geoCodingService.doGeoCode - DataFile_Id:{0}", dataFileId))
+                    Logs.Info(String.Format("End geoCodingService.doGeoCode - DataFile_Id:{0}", dataFileId))
 
                     geoCodingResponse = geoCodingService.doGeoCode(geoCodingRequest)
 
