@@ -83,6 +83,59 @@ Public Class AddressCollection
 #Region " Friend Methods "
 
     ''' <summary>
+    ''' Calls the melissadata.addresscheck.Service with retry logic
+    ''' If the failed attempts exceed the specified number of retries, it will bubble the exception up to the caller
+    ''' </summary>
+    ''' <param name="addrCheckRequest"></param>
+    ''' <param name="dataFileId"></param>
+    ''' <param name="forceProxy"></param>
+    ''' <param name="maxRetries"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Function DoAddressCheckWithRetries(ByRef addrCheckRequest As net.melissadata.addresscheck.RequestArray, ByVal dataFileId As Integer, ByVal forceProxy As Boolean, ByVal maxRetries As Integer) As net.melissadata.addresscheck.ResponseArray
+
+        'Create the address cleaning web service connection
+        Using addrCheckService As New net.melissadata.addresscheck.Service
+            'Initialize the web service
+            addrCheckService.Url = AppConfig.Params("AddressWebServiceURL").StringValue
+
+            'Determine if we need to use a proxy
+            If forceProxy Then
+                addrCheckService.Proxy = New WebProxy(AppConfig.Params("WebServiceProxyServer").StringValue, AppConfig.Params("WebServiceProxyPort").IntegerValue)
+                addrCheckService.Proxy.Credentials = CredentialCache.DefaultCredentials
+            End If
+
+            Dim tryCount As Integer = 0
+
+            Dim addrCheckResponse As net.melissadata.addresscheck.ResponseArray = Nothing
+
+            Do
+                tryCount += 1
+
+                If (tryCount > 1) Then
+                    'Sleep for some seconds before retrying
+                    Threading.Thread.Sleep(5 * 1000)
+                End If
+
+                Try
+                    addrCheckResponse = addrCheckService.doAddressCheck(addrCheckRequest)
+                    Exit Do
+                Catch ex As Exception
+                    Logs.LogException(ex, String.Format("ERROR addrCheckService.doAddressCheck - DataFile_Id:{0} Attempt:{1}", dataFileId, tryCount))
+                    If (tryCount >= maxRetries) Then
+                        Throw
+                    End If
+
+                End Try
+
+            Loop While tryCount < maxRetries
+
+            Return addrCheckResponse
+        End Using
+
+    End Function
+
+    ''' <summary>
     ''' This routine is the internal interface called to clean all of the
     ''' addresses currently contained in collection
     ''' </summary>
@@ -110,62 +163,49 @@ Public Class AddressCollection
         'Dimension the SOAP request message array for the first set of records
         ReDim addrCheckRequest.Record(GetArraySize(Count, addrUsed, maxRecords) - 1)
 
-        'Create the address cleaning web service connection
-        Using addrCheckService As New net.melissadata.addresscheck.Service
-            'Initialize the web service
-            addrCheckService.Url = AppConfig.Params("AddressWebServiceURL").StringValue
+        'Clean all addresses in the collection
+        For Each addr As Address In Me
+            'Increment the counters
+            addrCount += 1
+            addrUsed += 1
 
-            'Determine if we need to use a proxy
-            If forceProxy Then
-                addrCheckService.Proxy = New WebProxy(AppConfig.Params("WebServiceProxyServer").StringValue, AppConfig.Params("WebServiceProxyPort").IntegerValue)
-                addrCheckService.Proxy.Credentials = CredentialCache.DefaultCredentials
+            'Check to see if we need to assign the id
+            If assignIDs Then
+                addr.DBKey = addrUsed
             End If
 
+            'Add this address to the web service SOAP message
+            AddAddress(addrCount, addr, addrCheckRequest)
 
-            'Clean all addresses in the collection
-            For Each addr As Address In Me
-                'Increment the counters
-                addrCount += 1
-                addrUsed += 1
+            'Determine if it is time to call the web service
+            If addrCount = maxRecords OrElse addrUsed = Count Then
+                webCallCount += 1
+                'Call the web service to clean the current SOAP message
+                Logs.Info(String.Format("Begin addrCheckService.doAddressCheck - DataFile_Id:{0}, AddrCount: {1}, WebCallCount: {2}, Pop_Id: {3}", dataFileId, addrCount, webCallCount, addr.DBKey))
 
-                'Check to see if we need to assign the id
-                If assignIDs Then
-                    addr.DBKey = addrUsed
+                Try
+                    addrCheckResponse = DoAddressCheckWithRetries(addrCheckRequest, dataFileId, forceProxy, 3)
+                Catch ex As Exception
+                    Logs.LogException(ex, String.Format("ERROR addrCheckService.doAddressCheck - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
+                    Throw ex
+                End Try
+
+                Logs.Info(String.Format("End addrCheckService.doAddressCheck - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
+                'Check to see if the web service returned any errors
+                Dim message As String = String.Empty
+                If CheckForAddressWebRequestErrors(addrCheckResponse.Results, message) Then
+                    'We have encountered a general error from the web service.
+                    Throw New Exception(message)
                 End If
 
-                'Add this address to the web service SOAP message
-                AddAddress(addrCount, addr, addrCheckRequest)
+                'Find and update the returned addresses
+                UpdateAddresses(addrCheckResponse, dataFileId)
 
-                'Determine if it is time to call the web service
-                If addrCount = maxRecords OrElse addrUsed = Count Then
-                    webCallCount += 1
-                    'Call the web service to clean the current SOAP message
-                    Logs.Info(String.Format("Begin addrCheckService.doAddressCheck - DataFile_Id:{0}, AddrCount: {1}, WebCallCount: {2}, Pop_Id: {3}", dataFileId, addrCount, webCallCount, addr.DBKey))
-
-                    Try
-                        addrCheckResponse = addrCheckService.doAddressCheck(addrCheckRequest)
-                    Catch ex As Exception
-                        Logs.LogException(ex, String.Format("ERROR addrCheckService.doAddressCheck - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
-                        Throw ex
-                    End Try
-
-                    Logs.Info(String.Format("End addrCheckService.doAddressCheck - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
-                    'Check to see if the web service returned any errors
-                    Dim message As String = String.Empty
-                    If CheckForAddressWebRequestErrors(addrCheckResponse.Results, message) Then
-                        'We have encountered a general error from the web service.
-                        Throw New Exception(message)
-                    End If
-
-                    'Find and update the returned addresses
-                    UpdateAddresses(addrCheckResponse, dataFileId)
-
-                    'Reset and prepare for next set of addresses to be added to the SOAP message
-                    addrCount = 0
-                    ReDim addrCheckRequest.Record(GetArraySize(Count, addrUsed, maxRecords) - 1)
-                End If
-            Next
-        End Using
+                'Reset and prepare for next set of addresses to be added to the SOAP message
+                addrCount = 0
+                ReDim addrCheckRequest.Record(GetArraySize(Count, addrUsed, maxRecords) - 1)
+            End If
+        Next
 
         'Determine if we are doing the GeoCoding
         If Not populateGeoCoding Then Exit Sub
@@ -271,52 +311,40 @@ Public Class AddressCollection
 
         'Create the address cleaning web service connection
 
-        Using addrCheckService As New net.melissadata.addresscheck.Service
-            'Initialize the web service
-            addrCheckService.Url = AppConfig.Params("AddressWebServiceURL").StringValue
+        'Clean all addresses in the collection
 
-            'Determine if we need to use a proxy
-            If forceProxy Then
-                addrCheckService.Proxy = New WebProxy(AppConfig.Params("WebServiceProxyServer").StringValue, AppConfig.Params("WebServiceProxyPort").IntegerValue)
-                addrCheckService.Proxy.Credentials = CredentialCache.DefaultCredentials
-            End If
+        'Increment the counters
+        addrCount = 1
+        addrUsed = 1
 
-            'Clean all addresses in the collection
+        'Check to see if we need to assign the id
+        If assignIDs Then
+            addr.DBKey = addrUsed
+        End If
 
-            'Increment the counters
-            addrCount = 1
-            addrUsed = 1
+        'Add this address to the web service SOAP message
+        AddAddress(addrCount, addr, addrCheckRequest)
 
-            'Check to see if we need to assign the id
-            If assignIDs Then
-                addr.DBKey = addrUsed
-            End If
+        'Call the web service   
+        Logs.Info(String.Format("Begin Single addrCheckService.doAddressCheck - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
 
-            'Add this address to the web service SOAP message
-            AddAddress(addrCount, addr, addrCheckRequest)
+        Try
+            addrCheckResponse = DoAddressCheckWithRetries(addrCheckRequest, dataFileId, forceProxy, 3)
+        Catch ex As Exception
+            Logs.LogException(ex, String.Format("ERROR Single addrCheckService.doAddressCheck - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
+            Throw ex
+        End Try
 
-            'Call the web service   
-            Logs.Info(String.Format("Begin Single addrCheckService.doAddressCheck - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
+        Logs.Info(String.Format("End Single addrCheckService.doAddressCheck - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
 
-            Try
-                addrCheckResponse = addrCheckService.doAddressCheck(addrCheckRequest)
-            Catch ex As Exception
-                Logs.LogException(ex, String.Format("ERROR Single addrCheckService.doAddressCheck - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
-                Throw ex
-            End Try
+        'Check to see if the web service returned any errors
+        Dim message As String = String.Empty
 
-            Logs.Info(String.Format("End Single addrCheckService.doAddressCheck - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
+        If CheckForAddressWebRequestErrors(addrCheckResponse.Results, message) Then
+            'We have encountered a general error from the web service.
+            Throw New Exception(message)
 
-            'Check to see if the web service returned any errors
-            Dim message As String = String.Empty
-
-            If CheckForAddressWebRequestErrors(addrCheckResponse.Results, message) Then
-                'We have encountered a general error from the web service.
-                Throw New Exception(message)
-
-            End If
-
-        End Using
+        End If
 
         'Initialize the SOAP request message
         geoCodingRequest.CustomerID = AppConfig.Params("GeoCodingWebServiceCustomerID").StringValue
@@ -353,7 +381,7 @@ Public Class AddressCollection
                 Logs.Info(String.Format("End Single geoCodingService.doGeoCode - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
 
                 'Check to see if the web service returned any errors
-                Dim message As String = String.Empty
+                message = String.Empty
                 If CheckForGeoCodingWebRequestErrors(geoCodingResponse.Results, message) Then
                     'We have encountered a general error from the web service.
                     Throw New Exception(message)
