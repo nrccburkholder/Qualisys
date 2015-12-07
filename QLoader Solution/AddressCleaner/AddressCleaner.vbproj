@@ -125,7 +125,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="AddressCleaner.nuspec" />
+    <None Include="AddressCleaner.nuspec">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="AddressCleaner.exe.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
