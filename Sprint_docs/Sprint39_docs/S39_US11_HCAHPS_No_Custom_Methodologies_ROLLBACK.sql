@@ -21,22 +21,13 @@ go
 
 DECLARE @SurveyType_desc varchar(100)
 DECLARE @SurveyType_ID int
-DECLARE @SeededMailings bit
-DECLARE @SeedSurveyPercent int
-DECLARE @SeedUnitField varchar(42)
-DECLARE @Country_id int
-
 
 SET @SurveyType_desc = 'HCAHPS IP'
-SET @SeededMailings = 0
-SET @SeedSurveyPercent = NULL
-SET @SeedUnitField = NULL
 
 select @SurveyType_ID = SurveyType_Id from SurveyType where SurveyType_dsc = @SurveyType_desc
 
 begin tran
 
-declare @SMid int, @SMSid int
 declare @StandardMethodology_nm varchar(50)
 declare @MethodologyType varchar(30)
 
