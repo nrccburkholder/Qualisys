@@ -39,3 +39,6 @@ inner join standardmethodology sm on sm.[StandardMethodologyID] = mm.[StandardMe
 where sd.surveytype_id = @surveytype_id
 and sm.strStandardMethodology_nm = @StandardMethodology_nm
 and sm.MethodologyType = @MethodologyType
+and sd.Active = 1 and c.Active = 1 and st.Active = 1
+and SUBSTRING(st.STRSTUDY_NM,1,1) <> 'x'
+and SUBSTRING(sd.STRSURVEY_NM,1,1) <> 'x'
