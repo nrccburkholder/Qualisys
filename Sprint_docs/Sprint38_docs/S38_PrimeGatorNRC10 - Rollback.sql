@@ -8,4 +8,6 @@ Chris Burkholder
 
 */
 
+:r "\ATLASRelease38&39\Sprint38_docs\S38 US1 - S39 US1 - S33_US14.6_Add_PracticeSiteExtract to ETL ROLLBACK.sql"
+
 :r "\ATLASRelease38&39\Sprint38_docs\S38.US1.T2 backpopulate CGCAHPS group and site tool - Rollback.sql"

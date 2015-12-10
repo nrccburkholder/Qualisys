@@ -26,6 +26,9 @@ INSERT INTO ClientPracticeSiteGroupLookup
 
 UPDATE QualPro_Params
 
+UPDATE PracticeSite --causes rows to appear in ExtractQueue
+UPDATE SiteGroup --causes rows to appear in ExtractQueue
+
 */
 
 use [qp_prod]
@@ -44,8 +47,15 @@ delete from [datamart].[qp_comments].[dbo].[cgcahpsgroup] where cgcahpsgroup_id 
 
 begin tran
 
+--select * from ClientPracticeSiteGroupLookup
+delete from ClientPracticeSiteGroupLookup
+
+--select * from practicesite
+delete from PracticeSite
+
 --select * from sitegroup
 delete from SiteGroup
+
 set identity_insert SiteGroup on
 
 insert into SiteGroup (Addr1, Addr2, AssignedID, bitActive, City, GroupContactEmail, GroupContactName, GroupContactPhone,
@@ -56,8 +66,6 @@ select IsNull(Addr1, ''), IsNull(Addr2, ''), CGGroupID, 1, IsNull(City, ''), IsN
 set identity_insert SiteGroup off
 go
 
---select * from practicesite
-delete from PracticeSite
 set identity_insert PracticeSite on
 
 insert into PracticeSite (Addr1, Addr2, AssignedID, bitActive, City, PatVisitsWeek, Phone, PracticeContactEmail, PracticeContactName,
@@ -158,6 +166,16 @@ Now set QualPro_params to allow Practice Site hookup to CGCAHPS Sample Units
 update Qualpro_params set strparam_value = 1
 --select * from QualPro_Params
 where strparam_nm = 'SurveyRule: FacilitiesArePracticeSites - CGCAHPS'
+
+/******
+Hook up ExtractQueue by updating all records
+******/
+
+update PracticeSite
+set SampleUnit_id = null
+
+update SiteGroup
+set MasterGroupName = MasterGroupName
 
 --rollback tran
 
