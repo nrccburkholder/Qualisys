@@ -7,11 +7,46 @@ As the Director of Research, I want the issue with missing return dates identifi
 Dave Gilsdorf
 
 QP_Prod:
+CREATE JOB (see below)
 CREATE TABLE dbo.Questionform_Missing_datReturned 
 CREATE TRIGGER [dbo].[trg_QuestionForm_temp_MissingReturnDates] 
+CREATE INDEX on dbo.ScanningResets
 
 */
+/* Create a single-step job on NRC10 that executes on QP_Prod and executes the following code every 10 minutes between 8:00 AM and 5:00 PM, Monday through Friday.
+*/
+declare @QfMissingDatreturned_id int
+select @QfMissingDatreturned_id=min(QfMissingDatreturned_id) from Questionform_Missing_datReturned where isResetLitho is NULL
+
+if @QfMissingDatreturned_id is NULL -- No new records
+	RETURN
+
+UPDATE QFMR 
+set isResetLitho = case when SR.strLithocode is NULL then 0 else 1 end
+FROM Questionform_Missing_datReturned QFMR
+INNER JOIN SentMailing SM on QFMR.SentMail_id=SM.SentMail_id
+LEFT JOIN ScanningResets SR on sm.strLithocode=SR.strLithocode
+where QFMR.isResetLitho is NULL
+
+if @@rowcount>0
+begin
+	if exists (select * from Questionform_Missing_datReturned where QfMissingDatreturned_id>@QfMissingDatreturned_id AND isResetLitho=0)
+	begin
+		declare @sql varchar(200) = 'select * from Questionform_Missing_datReturned where isResetLitho=0 AND QfMissingDatreturned_id>'+convert(varchar,@QfMissingDatreturned_id)
+		EXEC msdb.dbo.sp_send_dbmail @profile_name='QualisysEmail',
+			@recipients='dgilsdorf@nationalresearch.com',
+			@subject='New records in Questionform_Missing_datReturned',
+			@body=@sql,
+			@body_format='Text',
+			@importance='High'
+	end
+end
+/*  /end of job code */
+
 use QP_Prod
+go
+if not exists (select * from sys.indexes where object_id=object_id('ScanningResets') and name = 'IDX_ScanningResets_strLithocode')
+	CREATE INDEX IDX_ScanningResets_strLithocode on dbo.ScanningResets (strLithocode) INCLUDE (datReturned)
 go
 if not exists (select * from sys.tables where name = 'Questionform_Missing_datReturned')
 	CREATE TABLE dbo.Questionform_Missing_datReturned 
@@ -20,6 +55,8 @@ if not exists (select * from sys.tables where name = 'Questionform_Missing_datRe
 	, [host_name] nvarchar(256)
 	, [program_name] nvarchar(256)
 	, [login_name] nvarchar(256)
+	, [isResetLitho] tinyint
+	, [Notes] varchar(500)
 	, [QUESTIONFORM_ID] int
 	, [SENTMAIL_ID] int
 	, [SAMPLEPOP_ID] int
