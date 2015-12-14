@@ -8,6 +8,6 @@
     <description>Validates the file and applies it to the database</description>
   </metadata>
   <files>
-    <!--<file src="bin\x86\Release\app.publish\**\*"/>-->
+    <file src="bin\x86\Release\app.publish\**\*"/>
   </files>
 </package>
