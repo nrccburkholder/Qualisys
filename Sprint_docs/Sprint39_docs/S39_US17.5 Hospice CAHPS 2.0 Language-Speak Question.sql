@@ -15,48 +15,53 @@ Chris Burkholder
 
 begin tran
 
-declare @idToCopy int
-
-select @idToCopy = ExportTemplateID
-from [NRC_Datamart_Extracts].[CEM].[ExportTemplate] 
+if not exists (select 1 from [NRC_Datamart_Extracts].[CEM].[ExportTemplate] 
 where ExportTemplateName = 'CAHPS Hospice'
 and ExportTemplateVersionMajor = '2.0'
-and ExportTemplateVersionMinor = 1
+and ExportTemplateVersionMinor = 2)
+begin
+	declare @idToCopy int
 
-exec [NRC_Datamart_Extracts].[CEM].[CopyExportTemplate] @idToCopy
+	select @idToCopy = ExportTemplateID
+	from [NRC_Datamart_Extracts].[CEM].[ExportTemplate] 
+	where ExportTemplateName = 'CAHPS Hospice'
+	and ExportTemplateVersionMajor = '2.0'
+	and ExportTemplateVersionMinor = 1
 
-declare @newETId int
+	exec [NRC_Datamart_Extracts].[CEM].[CopyExportTemplate] @idToCopy
 
-select @newETId = max(ExportTemplateId) from [NRC_Datamart_Extracts].[CEM].[ExportTemplate] 
+	declare @newETId int
 
-update [NRC_Datamart_Extracts].[CEM].[ExportTemplate] set ExportTemplateVersionMinor = 2, CreatedOn = GetDate()
-where ExportTemplateId = @newETId
+	select @newETId = max(ExportTemplateId) from [NRC_Datamart_Extracts].[CEM].[ExportTemplate] 
 
-declare @ETCId int
+	update [NRC_Datamart_Extracts].[CEM].[ExportTemplate] set ExportTemplateVersionMinor = 2, CreatedOn = GetDate()
+	where ExportTemplateId = @newETId
 
-select @ETCId = etc.ExportTemplateColumnID
-from [NRC_Datamart_Extracts].[CEM].[ExportTemplateColumn] etc
-inner join [NRC_Datamart_Extracts].[CEM].[ExportTemplateSection] ets on etc.ExportTemplateSectionID = ets.ExportTemplateSectionID
-where ets.ExportTemplateID = @newETId
-  and etc.SourceColumnName = 'OriginalQuestionCore = 51620'
+	declare @ETCId int
 
-update [NRC_Datamart_Extracts].[CEM].[ExportTemplateColumn] 
-	set SourceColumnName = Replace(SourceColumnName, '51620', '54067') 
-from [NRC_Datamart_Extracts].[CEM].[ExportTemplateColumn] etc
-inner join [NRC_Datamart_Extracts].[CEM].[ExportTemplateSection] ets on etc.ExportTemplateSectionID = ets.ExportTemplateSectionID
-where ets.ExportTemplateID = @newETId
-  and etc.SourceColumnName = 'OriginalQuestionCore = 51620'
+	select @ETCId = etc.ExportTemplateColumnID
+	from [NRC_Datamart_Extracts].[CEM].[ExportTemplateColumn] etc
+	inner join [NRC_Datamart_Extracts].[CEM].[ExportTemplateSection] ets on etc.ExportTemplateSectionID = ets.ExportTemplateSectionID
+	where ets.ExportTemplateID = @newETId
+	  and etc.SourceColumnName = 'OriginalQuestionCore = 51620'
 
-update [NRC_Datamart_Extracts].[CEM].[ExportTemplateColumnResponse] 
-set ResponseLabel = 'Russian'
-where ExportTemplateColumnID = @ETCId
-  and RawValue = 4
+	update [NRC_Datamart_Extracts].[CEM].[ExportTemplateColumn] 
+		set SourceColumnName = Replace(SourceColumnName, '51620', '54067') 
+	from [NRC_Datamart_Extracts].[CEM].[ExportTemplateColumn] etc
+	inner join [NRC_Datamart_Extracts].[CEM].[ExportTemplateSection] ets on etc.ExportTemplateSectionID = ets.ExportTemplateSectionID
+	where ets.ExportTemplateID = @newETId
+	  and etc.SourceColumnName = 'OriginalQuestionCore = 51620'
 
-insert [NRC_Datamart_Extracts].[CEM].[ExportTemplateColumnResponse] (ExportTemplateColumnID, RawValue, ExportColumnName, RecodeValue, ResponseLabel)
-select @ETCid, 5, NULL, 5, 'Portuguese'
+	update [NRC_Datamart_Extracts].[CEM].[ExportTemplateColumnResponse] 
+	set ResponseLabel = 'Russian'
+	where ExportTemplateColumnID = @ETCId
+	  and RawValue = 4
 
-insert [NRC_Datamart_Extracts].[CEM].[ExportTemplateColumnResponse] (ExportTemplateColumnID, RawValue, ExportColumnName, RecodeValue, ResponseLabel)
-select @ETCid, 6, NULL, 6, 'Some Other Language'
+	insert [NRC_Datamart_Extracts].[CEM].[ExportTemplateColumnResponse] (ExportTemplateColumnID, RawValue, ExportColumnName, RecodeValue, ResponseLabel)
+	select @ETCid, 5, NULL, 5, 'Portuguese'
+
+	insert [NRC_Datamart_Extracts].[CEM].[ExportTemplateColumnResponse] (ExportTemplateColumnID, RawValue, ExportColumnName, RecodeValue, ResponseLabel)
+	select @ETCid, 6, NULL, 6, 'Some Other Language'
 
 /*
 ExportTemplateColumnResponseID	ExportTemplateColumnID	RawValue	ExportColumnName	RecodeValue	ResponseLabel
@@ -75,6 +80,7 @@ inner join [NRC_Datamart_Extracts].[CEM].[ExportTemplateSection] ets on etc.Expo
 where ets.ExportTemplateID = 9
   and etc.SourceColumnName = 'OriginalQuestionCore = 51620'
 */
+end
 
 --rollback tran
 commit tran
