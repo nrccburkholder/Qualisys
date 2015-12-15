@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="NRC.Miscellaneous.TableWriters.TableItem_Old">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <Members>
+      <Field Name="_bFilledItem" Hidden="true" />
+      <Field Name="_bShowAllExceptions" Hidden="true" />
+      <Field Name="_colTranslation" Hidden="true" />
+      <Field Name="_iLenght" Hidden="true" />
+      <Field Name="_sColumnName" Hidden="true" />
+      <Field Name="_sFormatType" Hidden="true" />
+      <Field Name="_sRawValue" Hidden="true" />
+      <Field Name="_sWarnings" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>ABAAAAAFAEAAkgAAAABAAAEAAAAAIAgAAAAgggBQQAg=</HashCode>
+      <FileName>DBLayerClasses\TW_TableItem_old.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NRC.Miscellaneous.TableWriters.TableWriter">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <Members>
+      <Field Name="_bShowAllExceptions" Hidden="true" />
+      <Field Name="_bWriteNulls" Hidden="true" />
+      <Field Name="_DBFactory" Hidden="true" />
+      <Field Name="_iRowsAffected" Hidden="true" />
+      <Field Name="_sDBConnectionString" Hidden="true" />
+      <Field Name="_sDBConnectionType" Hidden="true" />
+      <Field Name="_sDBSourceName" Hidden="true" />
+      <Field Name="_SQLRunner" Hidden="true" />
+      <Field Name="_sTableName" Hidden="true" />
+      <Field Name="_sTranslationKeys" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AQCAEBJDAFAAkmggACDAIBAHiQBBIACAAEACwSEUEGg=</HashCode>
+      <FileName>DBLayerClasses\TW_TableWriter.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NRC.Miscellaneous.TableWriters.TableWriter_UJK">
+    <Position X="2.5" Y="0.5" Width="1.5" />
+    <Members>
+      <Field Name="_sSourceAgencyName" Hidden="true" />
+      <Field Name="_sUJK" Hidden="true" />
+      <Field Name="_sUJKFieldName" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAiEAAAAAQAAACAAAAAABAAAAAAAIgEAAAAAAAAAAA=</HashCode>
+      <FileName>DBLayerClasses\TW_TableWriter_UJK.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NRC.Miscellaneous.TableWriters.TW_TableWriter_MSSQLGeneric">
+    <Position X="4.5" Y="0.5" Width="2" />
+    <Members>
+      <Field Name="_colIgnoreFieldWhenUpdate" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAgAAACAAAAACAAAAAAAAAACAAAQIgAAAAAAAAAEAA=</HashCode>
+      <FileName>DBLayerClasses\TW_TableWriter_UJK_MSSQLGeneric.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

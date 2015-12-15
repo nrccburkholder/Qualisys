@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <userSettings>
+    <NRC_SLT>
+      <setting name="AppName" serializeAs="String">
+        <value>NRC SmartLink Transfer</value>
+      </setting>
+      <setting name="Path" serializeAs="String">
+        <value></value>
+      </setting>
+      <setting name="PollingFolder1" serializeAs="String">
+        <value></value>
+      </setting>
+      <setting name="PollingFolder2" serializeAs="String">
+        <value></value>
+      </setting>
+      <setting name="BackupDir" serializeAs="String">
+        <value></value>
+      </setting>
+      <setting name="BackupFiles" serializeAs="String">
+        <value>No</value>
+      </setting>
+      <setting name="LogWSFiles" serializeAs="String">
+        <value>Yes</value>
+      </setting>
+      <setting name="TraceFlag" serializeAs="String">
+        <value>True</value>
+      </setting>
+      <setting name="PollingMethod" serializeAs="String">
+        <value>P</value>
+      </setting>
+      <setting name="TimerIntervalInSeconds" serializeAs="String">
+        <value>10</value>
+      </setting>
+      <setting name="PollingIntervalInSeconds" serializeAs="String">
+        <value>10</value>
+      </setting>
+      <setting name="AppKey" serializeAs="String">
+        <value></value>
+      </setting>
+      <setting name="FileNumber" serializeAs="String">
+        <value>139</value>
+      </setting>
+      <setting name="ExcludeFileTypes" serializeAs="String">
+        <value>.exe;.dll;.htm;.html;.bat;.scr;.wsh;.wmf;.cpx;.lnk</value>
+      </setting>
+      <setting name="InternetCheckURL" serializeAs="String">
+        <value>http://www.google.com</value>
+      </setting>
+      <setting name="InternetCheckIP" serializeAs="String">
+        <value>http://209.85.135.103/</value>
+      </setting>
+      <setting name="NWSCheckURL" serializeAs="String">
+        <value>http://power.networksolutions.com</value>
+      </setting>
+      <setting name="PollingFolders" serializeAs="Xml">
+        <value>
+          <ArrayOfString>
+          </ArrayOfString>
+        </value>
+      </setting>
+      <setting name="AllowFileRename" serializeAs="String">
+        <value>Yes</value>
+      </setting>
+      <setting name="TransferDelayInterval" serializeAs="String">
+        <value>2</value>
+      </setting>
+      <setting name="MaxInetAccessTries" serializeAs="String">
+        <value>4</value>
+      </setting>
+      <setting name="IntervalBetweenTries" serializeAs="String">
+        <value>15</value>
+      </setting>
+      <setting name="PauseBeforeFinalWSChk" serializeAs="Integer">
+        <value>60</value>
+      </setting>
+      <setting name="AppUpdateScheduleType" serializeAs="String">
+        <value>Daily</value>
+      </setting>
+      <setting name="AppUpdateScheduleInterval" serializeAs="String">
+        <value>1</value>
+      </setting>
+      <setting name="AppUpdateScheduleWeeklyDays" serializeAs="String">
+        <value>Monday, Tuesday, Friday</value>
+      </setting>
+      <setting name="AppUpdateScheduleTime" serializeAs="String">
+        <value>11:30 AM</value>
+      </setting>
+    </NRC_SLT>
+  </userSettings>
+</configuration>

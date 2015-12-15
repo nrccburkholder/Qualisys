@@ -12,6 +12,13 @@ using CEM.Exporting.Configuration;
 
 namespace CEM.Exporting.DataProviders
 {
+
+    public enum DB
+    {
+        CEM,
+        QPPROD,
+    }
+
     public class SqlDataProvider: IDisposable
     {
 
@@ -23,24 +30,9 @@ namespace CEM.Exporting.DataProviders
         private  SqlTransaction _sqlTrans;
         private int _commandTimeout = 0;
         private string _currentConnectionString;
-        //private string _connectionString = string.Empty;
+        private DB Database;
 
-        //private Database mDBInstance;
-
-        //internal Database Db
-        //{
-        //    get
-        //    {
-        //        if (mDBInstance == null)
-        //        {
-        //            // TODO:  read connection string from a param store.
-        //            mDBInstance = new SqlDatabase("Data Source=LNK0TCATSQL01\\CATDB2;Initial Catalog=NRC_DataMart;Persist Security Info=True;User ID=nrc;Password=nrc;MultipleActiveResultSets=True;");
-        //        }
-        //        return mDBInstance;
-        //    }
-        //}
-
-
+        
 
         #endregion
 
@@ -51,10 +43,26 @@ namespace CEM.Exporting.DataProviders
         {
             get
             {
-                // TODO: get the connection string from registry?
-                return ConfigurationManager.ConnectionStrings["CEMConnection"].ConnectionString;
+                string connStr = string.Empty;
+                switch (Database)
+                {
+                    case DB.QPPROD:
+                        connStr = ConfigurationManager.ConnectionStrings["QPPRODConnection"].ConnectionString;
+                        break;
+                    
+                    case DB.CEM:
+                        connStr =  ConfigurationManager.ConnectionStrings["CEMConnection"].ConnectionString;
+                        break;
+
+                    default:
+                        break;                
+                }
+
+                return connStr;          
             }
         }
+
+
 
         public int CommandTimeout
         {
@@ -67,8 +75,10 @@ namespace CEM.Exporting.DataProviders
 
         #region constructors
 
-        public SqlDataProvider()
+        public SqlDataProvider(DB database)
         {
+            Database = database;
+
             _currentConnectionString = ConnectionString;
         }
 

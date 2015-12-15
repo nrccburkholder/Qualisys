@@ -16,7 +16,7 @@ namespace CEM.Exporting.DataProviders
         {
             get
             {
-                return new SqlDataProvider();
+                return new SqlDataProvider(DB.CEM);
             }
         }
 

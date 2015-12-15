@@ -13,7 +13,7 @@ namespace CEM.Exporting
 
         public int? ExportQueueFileID { get; set; }
         public int? ExportQueueID { get; set; }
-        public Int16 FileState { get; set; }
+        public Int16? FileState { get; set; }
         public DateTime? SubmissionDate { get; set; }
         public string SubmissionBy { get; set; }
         public string CMSResponseCode { get; set; }

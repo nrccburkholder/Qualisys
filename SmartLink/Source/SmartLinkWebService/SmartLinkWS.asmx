@@ -1,0 +1,1 @@
+﻿<%@ WebService Language="VB" CodeBehind="SmartLinkWS.asmx.vb" Class="NRC.SmartLink.WebService.SmartLinkWS" %>

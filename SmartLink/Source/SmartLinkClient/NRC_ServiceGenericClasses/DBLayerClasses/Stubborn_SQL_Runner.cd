@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Tahoma" Size="8.25" />
+  <Class Name="NRC.Miscellaneous.Stubborn_SQL_Runner">
+    <Position X="1" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Stubborn_SQL_Runner.vb</FileName>
+      <HashCode>wAAAAAAEAAAAQAAAAAAAAECAQAFAABAJCBAAAAQAIAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+</ClassDiagram>
