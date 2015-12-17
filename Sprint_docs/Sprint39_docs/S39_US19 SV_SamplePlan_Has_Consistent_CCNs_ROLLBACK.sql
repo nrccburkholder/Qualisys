@@ -8,8 +8,11 @@ Dave Gilsdorf
 
 QP_Prod:
 CREATE PROCEDURE dbo.SV_SamplePlan_Has_Consistent_CCNs
+INSERT INTO dbo.SurveyValidationProcs
 
 */
+delete from SurveyValidationProcs where ProcedureName='SV_SamplePlan_Has_Consistent_CCNs'
+
 if exists (select * from sys.procedures where name = 'SV_SamplePlan_Has_Consistent_CCNs')
 	drop procedure dbo.SV_SamplePlan_Has_Consistent_CCNs
 go

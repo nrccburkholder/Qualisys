@@ -8,8 +8,14 @@ Dave Gilsdorf
 
 QP_Prod:
 CREATE PROCEDURE dbo.SV_SamplePlan_Has_Consistent_CCNs
+INSERT INTO dbo.SurveyValidationProcs
 
 */
+if not exists (select * from SurveyValidationProcs where ProcedureName='SV_SamplePlan_Has_Consistent_CCNs')
+	INSERT INTO dbo.SurveyValidationProcs (ProcedureName, ValidMessage, intOrder)
+	select 'SV_SamplePlan_Has_Consistent_CCNs','PASSED!  Sample Plan has consistent CCN assignments', max(intOrder)+1 
+	from SurveyValidationProcs 
+go
 if exists (select * from sys.procedures where name = 'SV_SamplePlan_Has_Consistent_CCNs')
 	drop procedure dbo.SV_SamplePlan_Has_Consistent_CCNs
 go
