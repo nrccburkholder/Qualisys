@@ -1,7 +1,7 @@
 /*
 S39_US19 SV_SamplePlan_Has_Consistent_CCNs.sql
 
-user story 10 Consistent CCN survey validation 
+user story 19 Consistent CCN survey validation 
 As a certified CAHPS vendor, we want to ensure that if a sample unit is assigned to a CCN, all of its children are assigned to that same CCN so that we conform to CMS requirements and submit valid data.
 
 Dave Gilsdorf
@@ -39,7 +39,7 @@ update #su set Tier=1, TierSort=Sampleunit_id where parentsampleunit_id is null
 while @@rowcount>0
 	update child
 	set Tier=parent.Tier+1
-		, CCNMatch = case when parent.SUFacility_id=0 or isnull(parent.MedicareNumber,-1) = isnull(child.MedicareNumber,-1) then 1 else 0 end
+		, CCNMatch = case when parent.MedicareNumber is NULL or isnull(parent.MedicareNumber,-1) = isnull(child.MedicareNumber,-1) then 1 else 0 end
 		, TierSort=parent.TierSort+'.'+convert(varchar,child.sampleunit_id)
 		--, strSampleUnit_nm=replicate('  ',parent.Tier)+strSampleUnit_nm
 	from #su child
