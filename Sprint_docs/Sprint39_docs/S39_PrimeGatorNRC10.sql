@@ -16,4 +16,5 @@ Chris Burkholder
 
 :r "\ATLASRelease38&39\Sprint39_docs\S39_US11_HCAHPS_No_Custom_Methodologies.sql"
 
-:r "\ATLASRelease38&39\Sprint39_docs\S39_US17.2_ Hospice_CAHPS_2.0_Language-Speak Question.sql"
+--Included in off-cycle release
+--:r "\ATLASRelease38&39\Sprint39_docs\S39_US17.2_ Hospice_CAHPS_2.0_Language-Speak Question.sql"
