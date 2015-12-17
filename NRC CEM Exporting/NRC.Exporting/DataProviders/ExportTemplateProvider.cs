@@ -20,7 +20,7 @@ namespace CEM.Exporting.DataProviders
                 if (mSDP == null)
                 {
                     // TODO:  read connection string from a param store.
-                    mSDP = new SqlDataProvider();
+                    mSDP = new SqlDataProvider(DB.CEM);
                 }
                 return mSDP;
             }

@@ -55,6 +55,7 @@
     <Compile Include="DataProviders\ExportSectionProvider.cs" />
     <Compile Include="DataProviders\SqlDataProvider.cs" />
     <Compile Include="DataProviders\ExportTemplateProvider.cs" />
+    <Compile Include="DataProviders\SurveyTypeDataProvider.cs" />
     <Compile Include="DataProviders\SystemParamsProvider.cs" />
     <Compile Include="Enums\ExportFileTypes.cs" />
     <Compile Include="Enums\SourceColumnType.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="ExportValidationError.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Configuration\SystemParams.cs" />
+    <Compile Include="SurveyType.cs" />
     <Compile Include="TextFileExporters\TextFileExporter.cs" />
     <Compile Include="XmlDocumentEx.cs" />
     <Compile Include="XmlExporters\XMLExporter_Hospice.cs" />

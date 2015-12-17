@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Tahoma" Size="8.25" />
+  <Class Name="NRC.Miscellaneous.Email_Notifier">
+    <Position X="1.25" Y="1.5" Width="2.5" />
+    <TypeIdentifier>
+      <FileName>Email_Notifier.vb</FileName>
+      <HashCode>EAAgAAICDAACAAAAAGAAgAAAAACAQEIAggAAAAAIAAg=</HashCode>
+    </TypeIdentifier>
+    <Members>
+      <Field Name="_blnIsError" Hidden="true" />
+      <Field Name="_MailServer" Hidden="true" />
+      <Field Name="_strAppName" Hidden="true" />
+      <Field Name="_strAppVersion" Hidden="true" />
+      <Field Name="_strEmailAddresses" Hidden="true" />
+      <Field Name="_strFromWho" Hidden="true" />
+      <Field Name="_strMachineName" Hidden="true" />
+      <Field Name="_strOperatorEmail" Hidden="true" />
+      <Field Name="_strSMTP" Hidden="true" />
+      <Field Name="_strTextAddresses" Hidden="true" />
+    </Members>
+  </Class>
+</ClassDiagram>

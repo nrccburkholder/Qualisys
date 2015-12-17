@@ -1,0 +1,58 @@
+USE [UPLOADER]
+GO
+/****** Object:  Table [dbo].[APP_EVENTS]    Script Date: 03/08/2006 10:19:49 ******/
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[APP_EVENTS]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
+DROP TABLE [dbo].[APP_EVENTS]
+GO
+
+/****** Object:  Table [dbo].[APP_EVENTS]    Script Date: 03/08/2006 10:19:41 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[APP_EVENTS](
+	[event_id] [int] IDENTITY(1,1) NOT NULL,
+	[application_name] [varchar](25) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[username] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[event_message] [varchar](200) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[error_time] [smalldatetime] NOT NULL CONSTRAINT [DF_APP_EVENTS_ERROR_TIME]  DEFAULT (getdate()),
+ CONSTRAINT [PK_APP_EVENTS] PRIMARY KEY CLUSTERED 
+(
+	[event_id] ASC
+) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+
+USE [UPLOADER]
+GO
+/****** Object:  StoredProcedure [dbo].[usp_Application_Events_Save]    Script Date: 03/08/2006 10:20:28 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+
+/****** Object:  StoredProcedure [dbo].[usp_Application_Events_Save]    Script Date: 03/08/2006 10:20:39 ******/
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[usp_Application_Events_Save]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE [dbo].[usp_Application_Events_Save]
+GO
+
+CREATE    PROCEDURE [dbo].[usp_Application_Events_Save]
+@application_name varchar(25),
+@user_name varchar(50),
+@event_message varchar(200)
+AS
+INSERT INTO app_events
+  (application_name, username, event_message)
+  VALUES
+  (@application_name, @user_name, @event_message)
+
+
+
+
+
+
+

@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- 
+  Note to SmartLink Developers: Any changes you make to the structure of 
+  this file will be overwritten when compiled and deployed unless you update
+  the master SL_Settings.xml file in the NRC.Misc project.  
+  
+  Additionally, you should update the CreateDefaultSettingsFile() method 
+  in the Settings.vb code file to ensure the file is constructed 
+  appropriately when deleted from customer workstations.
+-->
+<SmartLink>
+  <ServiceManager>
+    <Settings>
+      <TraceFlag>True</TraceFlag>
+      <SmartLinkWS>http://localhost:1619/SmartLinkWS.asmx</SmartLinkWS>
+      <ProxyUser></ProxyUser>
+      <ProxyPswrd></ProxyPswrd>
+      <ProxyDomain></ProxyDomain>
+      <ProxyPort></ProxyPort>
+      <ProxyIP></ProxyIP>
+      <ProxyEnabled>No</ProxyEnabled>
+      <SMTPServer></SMTPServer>
+      <OperatorEmail></OperatorEmail>
+      <InternetCheckURL>http://www.google.com</InternetCheckURL>
+      <InternetCheckIP>http://209.85.135.103/</InternetCheckIP>
+      <ProviderNumber></ProviderNumber>
+      <InstallKey></InstallKey>
+      <AgencyID></AgencyID>
+      <AutoDownloadAndInstallUpdates>False</AutoDownloadAndInstallUpdates>      
+      <AutoUpdateInterval>Daily</AutoUpdateInterval>
+      <AutoUpdateIntervalModifier>1</AutoUpdateIntervalModifier>
+      <AutoUpdateTime>10:00 AM</AutoUpdateTime>
+      <AutoUpdateWeeklyDays></AutoUpdateWeeklyDays>
+      <AutoUpdateLastCheck></AutoUpdateLastCheck>
+      <AutoUpdateWriteTraceToEventLog>True</AutoUpdateWriteTraceToEventLog>
+      <InstalledSmartLinkVersion>1.0.0</InstalledSmartLinkVersion>
+    </Settings>
+  </ServiceManager>
+  <TransferService>
+    <Settings>
+      <IsActivated>False</IsActivated>
+      <TraceFlag>True</TraceFlag>
+      <AppName>NRC SmartLink Transfer</AppName>
+      <AppKey>QmR3tgYp7wdf5aOd</AppKey>
+      <Path></Path>
+      <PollingFolder1></PollingFolder1>
+      <PollingFolder2></PollingFolder2>
+      <PollingIntervalInSeconds>10</PollingIntervalInSeconds>
+      <BackupDir></BackupDir>
+      <BackupFiles>No</BackupFiles>
+      <LogWSFiles>Yes</LogWSFiles>      
+      <ErrorsDir>NOT USED CURRENTLY - HARDCODED</ErrorsDir>
+      <WorkDir>NOT USED CURRENTLY - HARDCODED</WorkDir>
+      <ErrorLogFile>SLT_Errors.log</ErrorLogFile>
+      <EventLogFile>SLT_SubmittedFiles.log</EventLogFile>
+      <FileNumber>139</FileNumber>
+      <ExcludeFileTypes>.exe;.dll;.htm;.html;.bat;.scr;.wsh;.wmf;.cpx;.lnk</ExcludeFileTypes>
+      <AllowFileRename>Yes</AllowFileRename>
+      <TransferDelayInterval>2</TransferDelayInterval>
+      <MaxInetAccessTries>4</MaxInetAccessTries>
+      <IntervalBetweenTries>15</IntervalBetweenTries>
+      <PauseBeforeFinalWSChk>60</PauseBeforeFinalWSChk>
+      <PollingFolders>
+        <Folder></Folder>
+        <Folder></Folder>
+        <Folder></Folder>
+        <Folder></Folder>
+      </PollingFolders>      
+    </Settings>
+  </TransferService>
+</SmartLink>

@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://NRCWebService/SmartLinkWS" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://NRCWebService/SmartLinkWS" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Upload Data to NRC for Processing</wsdl:documentation>
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://NRCWebService/SmartLinkWS">
+      <s:element name="FileUpload">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sFileName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="buffer" type="s:base64Binary" />
+            <s:element minOccurs="1" maxOccurs="1" name="Offset" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="BytesRead" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FileUploadResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="FileUploadResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="StartFileTransmission">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sFileName" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="FileSize" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="StartCheckSum" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="StartFileTransmissionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="StartFileTransmissionResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DoFileTransmission">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="buffer" type="s:base64Binary" />
+            <s:element minOccurs="1" maxOccurs="1" name="Offset" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="BytesRead" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DoFileTransmissionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="DoFileTransmissionResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EndFileTransmission">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EndFileTransmissionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="EndFileTransmissionResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Ping">
+        <s:complexType />
+      </s:element>
+      <s:element name="PingResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="PingResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CheckForSmartLinkAppUpdate">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="clientId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="clientVersion" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CheckForSmartLinkAppUpdateResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CheckForSmartLinkAppUpdateResult" type="tns:Version" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Version">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="VersionId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Url" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FileName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Checksum" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CheckFileHash">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FileName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CheckFileHashResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CheckFileHashResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="FileUploadSoapIn">
+    <wsdl:part name="parameters" element="tns:FileUpload" />
+  </wsdl:message>
+  <wsdl:message name="FileUploadSoapOut">
+    <wsdl:part name="parameters" element="tns:FileUploadResponse" />
+  </wsdl:message>
+  <wsdl:message name="StartFileTransmissionSoapIn">
+    <wsdl:part name="parameters" element="tns:StartFileTransmission" />
+  </wsdl:message>
+  <wsdl:message name="StartFileTransmissionSoapOut">
+    <wsdl:part name="parameters" element="tns:StartFileTransmissionResponse" />
+  </wsdl:message>
+  <wsdl:message name="DoFileTransmissionSoapIn">
+    <wsdl:part name="parameters" element="tns:DoFileTransmission" />
+  </wsdl:message>
+  <wsdl:message name="DoFileTransmissionSoapOut">
+    <wsdl:part name="parameters" element="tns:DoFileTransmissionResponse" />
+  </wsdl:message>
+  <wsdl:message name="EndFileTransmissionSoapIn">
+    <wsdl:part name="parameters" element="tns:EndFileTransmission" />
+  </wsdl:message>
+  <wsdl:message name="EndFileTransmissionSoapOut">
+    <wsdl:part name="parameters" element="tns:EndFileTransmissionResponse" />
+  </wsdl:message>
+  <wsdl:message name="PingSoapIn">
+    <wsdl:part name="parameters" element="tns:Ping" />
+  </wsdl:message>
+  <wsdl:message name="PingSoapOut">
+    <wsdl:part name="parameters" element="tns:PingResponse" />
+  </wsdl:message>
+  <wsdl:message name="CheckForSmartLinkAppUpdateSoapIn">
+    <wsdl:part name="parameters" element="tns:CheckForSmartLinkAppUpdate" />
+  </wsdl:message>
+  <wsdl:message name="CheckForSmartLinkAppUpdateSoapOut">
+    <wsdl:part name="parameters" element="tns:CheckForSmartLinkAppUpdateResponse" />
+  </wsdl:message>
+  <wsdl:message name="CheckFileHashSoapIn">
+    <wsdl:part name="parameters" element="tns:CheckFileHash" />
+  </wsdl:message>
+  <wsdl:message name="CheckFileHashSoapOut">
+    <wsdl:part name="parameters" element="tns:CheckFileHashResponse" />
+  </wsdl:message>
+  <wsdl:portType name="SmartLinkWSSoap">
+    <wsdl:operation name="FileUpload">
+      <wsdl:input message="tns:FileUploadSoapIn" />
+      <wsdl:output message="tns:FileUploadSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="StartFileTransmission">
+      <wsdl:input message="tns:StartFileTransmissionSoapIn" />
+      <wsdl:output message="tns:StartFileTransmissionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DoFileTransmission">
+      <wsdl:input message="tns:DoFileTransmissionSoapIn" />
+      <wsdl:output message="tns:DoFileTransmissionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="EndFileTransmission">
+      <wsdl:input message="tns:EndFileTransmissionSoapIn" />
+      <wsdl:output message="tns:EndFileTransmissionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Ping">
+      <wsdl:input message="tns:PingSoapIn" />
+      <wsdl:output message="tns:PingSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckForSmartLinkAppUpdate">
+      <wsdl:input message="tns:CheckForSmartLinkAppUpdateSoapIn" />
+      <wsdl:output message="tns:CheckForSmartLinkAppUpdateSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckFileHash">
+      <wsdl:input message="tns:CheckFileHashSoapIn" />
+      <wsdl:output message="tns:CheckFileHashSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="SmartLinkWSSoap" type="tns:SmartLinkWSSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="FileUpload">
+      <soap:operation soapAction="http://NRCWebService/SmartLinkWS/FileUpload" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StartFileTransmission">
+      <soap:operation soapAction="http://NRCWebService/SmartLinkWS/StartFileTransmission" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DoFileTransmission">
+      <soap:operation soapAction="http://NRCWebService/SmartLinkWS/DoFileTransmission" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EndFileTransmission">
+      <soap:operation soapAction="http://NRCWebService/SmartLinkWS/EndFileTransmission" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Ping">
+      <soap:operation soapAction="http://NRCWebService/SmartLinkWS/Ping" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckForSmartLinkAppUpdate">
+      <soap:operation soapAction="http://NRCWebService/SmartLinkWS/CheckForSmartLinkAppUpdate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckFileHash">
+      <soap:operation soapAction="http://NRCWebService/SmartLinkWS/CheckFileHash" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="SmartLinkWSSoap12" type="tns:SmartLinkWSSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="FileUpload">
+      <soap12:operation soapAction="http://NRCWebService/SmartLinkWS/FileUpload" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StartFileTransmission">
+      <soap12:operation soapAction="http://NRCWebService/SmartLinkWS/StartFileTransmission" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DoFileTransmission">
+      <soap12:operation soapAction="http://NRCWebService/SmartLinkWS/DoFileTransmission" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EndFileTransmission">
+      <soap12:operation soapAction="http://NRCWebService/SmartLinkWS/EndFileTransmission" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Ping">
+      <soap12:operation soapAction="http://NRCWebService/SmartLinkWS/Ping" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckForSmartLinkAppUpdate">
+      <soap12:operation soapAction="http://NRCWebService/SmartLinkWS/CheckForSmartLinkAppUpdate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckFileHash">
+      <soap12:operation soapAction="http://NRCWebService/SmartLinkWS/CheckFileHash" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SmartLinkWS">
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Upload Data to NRC for Processing</wsdl:documentation>
+    <wsdl:port name="SmartLinkWSSoap" binding="tns:SmartLinkWSSoap">
+      <soap:address location="http://localhost:4964/SmartLinkWS/SmartLinkWS.asmx" />
+    </wsdl:port>
+    <wsdl:port name="SmartLinkWSSoap12" binding="tns:SmartLinkWSSoap12">
+      <soap12:address location="http://localhost:4964/SmartLinkWS/SmartLinkWS.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

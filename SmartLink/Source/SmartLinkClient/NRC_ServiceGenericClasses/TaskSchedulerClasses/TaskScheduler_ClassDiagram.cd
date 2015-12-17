@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Tahoma" Size="8.25" />
+  <Class Name="NRC.Miscellaneous.TaskScheduler.DailyScheduler">
+    <Position X="2.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>TaskScheduler_DailyScheduler.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NRC.Miscellaneous.TaskScheduler.Scheduler">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>TaskScheduler_Scheduler.vb</FileName>
+      <HashCode>ADoAAAAAASSAAIAgAIAAAAAAAgAAAAgQIAAYmEAAAQA=</HashCode>
+    </TypeIdentifier>
+    <Members>
+      <Field Name="_bEnabled" Hidden="true" />
+      <Field Name="_dStartDate" Hidden="true" />
+      <Field Name="_dtLastRun" Hidden="true" />
+      <Field Name="_dtNextRun" Hidden="true" />
+      <Field Name="_dtTime" Hidden="true" />
+      <Field Name="_iInterval" Hidden="true" />
+      <Field Name="_sFileName" Hidden="true" />
+      <Field Name="_tTimer" Hidden="true" />
+      <Method Name="LoadRunDates" Hidden="true" />
+      <Method Name="SaveRunDates" Hidden="true" />
+      <Method Name="VerifySchedule" Hidden="true" />
+    </Members>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="NRC.Miscellaneous.TaskScheduler.HourlyScheduler">
+    <Position X="2.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>TaskScheduler_HourlyScheduler.vb</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NRC.Miscellaneous.TaskScheduler.WeeklyScheduler">
+    <Position X="2.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>TaskScheduler_WeeklyScheduler.vb</FileName>
+      <HashCode>ACAAAAACAAAAAAAAAAAAAAAAEAAAAAAAAAAACAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Members>
+      <Field Name="_bWeekdays" Hidden="true" />
+    </Members>
+  </Class>
+</ClassDiagram>
