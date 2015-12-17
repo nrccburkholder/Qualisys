@@ -11,6 +11,8 @@ CREATE PROCEDURE dbo.SV_SamplePlan_Has_Consistent_CCNs
 INSERT INTO dbo.SurveyValidationProcs
 
 */
+use QP_Prod
+go
 if not exists (select * from SurveyValidationProcs where ProcedureName='SV_SamplePlan_Has_Consistent_CCNs')
 	INSERT INTO dbo.SurveyValidationProcs (ProcedureName, ValidMessage, intOrder)
 	select 'SV_SamplePlan_Has_Consistent_CCNs','PASSED!  Sample Plan has consistent CCN assignments', max(intOrder)+1 

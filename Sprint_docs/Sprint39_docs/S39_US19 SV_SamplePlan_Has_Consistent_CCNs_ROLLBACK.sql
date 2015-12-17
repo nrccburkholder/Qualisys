@@ -11,6 +11,8 @@ CREATE PROCEDURE dbo.SV_SamplePlan_Has_Consistent_CCNs
 INSERT INTO dbo.SurveyValidationProcs
 
 */
+use QP_Prod
+go
 delete from SurveyValidationProcs where ProcedureName='SV_SamplePlan_Has_Consistent_CCNs'
 
 if exists (select * from sys.procedures where name = 'SV_SamplePlan_Has_Consistent_CCNs')
