@@ -16,6 +16,7 @@ CREATE INDEX on dbo.ScanningResets
 /* Create a single-step job on NRC10 that executes on QP_Prod and executes the following code every 10 minutes between 8:00 AM and 5:00 PM, Monday through Friday.
 */
 declare @QfMissingDatreturned_id int
+declare @MailTo varchar(100) = 'dgilsdorf@nationalresearch.com'
 select @QfMissingDatreturned_id=min(QfMissingDatreturned_id) from Questionform_Missing_datReturned where isResetLitho is NULL
 
 if @QfMissingDatreturned_id is NULL -- No new records
@@ -34,7 +35,7 @@ begin
 	begin
 		declare @sql varchar(200) = 'select * from Questionform_Missing_datReturned where isResetLitho=0 AND QfMissingDatreturned_id>'+convert(varchar,@QfMissingDatreturned_id)
 		EXEC msdb.dbo.sp_send_dbmail @profile_name='QualisysEmail',
-			@recipients='dgilsdorf@nationalresearch.com',
+			@recipients=@mailto,
 			@subject='New records in Questionform_Missing_datReturned',
 			@body=@sql,
 			@body_format='Text',
