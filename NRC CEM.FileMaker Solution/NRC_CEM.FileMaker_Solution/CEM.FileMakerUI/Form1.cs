@@ -36,7 +36,7 @@ namespace CEM.FileMakerUI
         }
 
         private void Form1_Load(object sender, EventArgs e)
-        {
+        {            
             Messages = new List<string>();
             richTextBox1.Clear();
             btnRun.Enabled = false;
@@ -47,6 +47,7 @@ namespace CEM.FileMakerUI
             AddTemplateColumns();
             AddQueueColumns();
             AddQueueFileColumns();
+            cmbxSurveyType.SelectedIndex = -1;
         }
 
         private void cmbxSurveyType_SelectedIndexChanged(object sender, EventArgs e)
@@ -138,7 +139,7 @@ namespace CEM.FileMakerUI
             ToggleEnabled(false);
             this.pictureBox1.Image = Properties.Resources.Animation1;
             btnRun.Enabled = false;
-            backgroundWorker1.RunWorkerAsync();
+            backgroundWorker1.RunWorkerAsync(1);
         }
 
         private void dgQueueFiles_CellValueChanged(object sender, DataGridViewCellEventArgs e)
@@ -151,13 +152,32 @@ namespace CEM.FileMakerUI
             dgQueueFiles.EndEdit();
         }
 
+        private void runAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            cmbxSurveyType.SelectedIndex = -1;
+            ClearTemplatesGrid();
+            ClearQueuesGrid();
+            ClearQueueFilesGrid();
+            richTextBox1.Clear();
+            richTextBox1.AppendText("Running all..." + Environment.NewLine);
+            ToggleEnabled(false);
+            this.pictureBox1.Image = Properties.Resources.Animation1;
+            btnRun.Enabled = false;
+            backgroundWorker1.RunWorkerAsync(0);
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
         #region backgroundworker events
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
-                MakeFiles();              
+                MakeFiles(e.Argument);              
             } catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
@@ -187,29 +207,46 @@ namespace CEM.FileMakerUI
             dgQueueFiles.Enabled = state;
         }
 
-        private void MakeFiles()
+        private void MakeFiles(object argument)
         {
             
-            List<ExportQueueFile> filesToMake = new List<ExportQueueFile>();
-            foreach (DataGridViewRow row in dgQueueFiles.Rows)
+            if ((int)argument == 1)
             {
-                if (Convert.ToBoolean(row.Cells[0].Value))
+                List<ExportQueueFile> filesToMake = new List<ExportQueueFile>();
+                foreach (DataGridViewRow row in dgQueueFiles.Rows)
                 {
-                    filesToMake.Add((ExportQueueFile)row.DataBoundItem);
+                    if (Convert.ToBoolean(row.Cells[0].Value))
+                    {
+                        filesToMake.Add((ExportQueueFile)row.DataBoundItem);
+                    }
+                }
+                if (filesToMake.Count > 0)
+                {
+                    try
+                    {
+                        Messages = Exporter.MakeFiles(filesToMake);
+                    }
+                    catch (Exception ex)
+                    {
+                        richTextBox1.AppendText(ex.Message + Environment.NewLine + ex.StackTrace);
+                    }
                 }
             }
-            if (filesToMake.Count > 0)
+            else
             {
                 try
                 {
-                    Messages = Exporter.MakeFiles(filesToMake);
-                   
+                    Messages = Exporter.MakeFiles();
                 }
                 catch (Exception ex)
                 {
                     richTextBox1.AppendText(ex.Message + Environment.NewLine + ex.StackTrace);
                 }
+
+
             }
+
+           
         }
 
         private void LoadMessages()
@@ -442,6 +479,6 @@ namespace CEM.FileMakerUI
 
             return iCnt;
         }
-    
+
     }
 }

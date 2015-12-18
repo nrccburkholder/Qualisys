@@ -32,10 +32,12 @@ namespace CEM.Exporting
         /// <summary>
         /// Creates and saves Export files
         /// </summary>
-        public static void  MakeFiles()
+        public static List<string> MakeFiles()
         {
             List<ExportQueueFile> queuefiles = ExportQueueFile.Select(new ExportQueueFile { FileState = 0});
             GenerateFiles(queuefiles);
+
+            return Messages;
         }
 
         /// <summary>
@@ -58,42 +60,50 @@ namespace CEM.Exporting
             Messages.Clear(); 
 
             string targetFileLocation = SystemParams.Params.GetParam("FileLocation").StringValue;
-
             int iCnt = 0; // file counter
-            foreach (ExportQueueFile queuefile in queuefiles)
+
+            if (queuefiles.Count > 0)
             {
-                List<ExportQueue> queues = ExportQueue.Select(new ExportQueue { ExportQueueID = queuefile.ExportQueueID });
-
-                foreach (ExportQueue queue in queues)
+                
+                foreach (ExportQueueFile queuefile in queuefiles)
                 {
-                    ExportTemplate template = ExportTemplate.Select(new ExportTemplate { ExportTemplateName = queue.ExportTemplateName, ExportTemplateVersionMajor = queue.ExportTemplateVersionMajor, ExportTemplateVersionMinor = queue.ExportTemplateVersionMinor }, true).First();
+                    List<ExportQueue> queues = ExportQueue.Select(new ExportQueue { ExportQueueID = queuefile.ExportQueueID });
 
-                    List<ExportDataSet> exds = ExportDataSet.Select(new ExportDataSet { ExportQueueID = queue.ExportQueueID, FileMakerName = queuefile.FileMakerName }, template.Sections);
-
-                    if (exds.Count > 0)
+                    foreach (ExportQueue queue in queues)
                     {
-                        // Depending on the file type, we call the appropriate File Maker Methods
-                        switch (queuefile.FileMakerType)
+                        ExportTemplate template = ExportTemplate.Select(new ExportTemplate { ExportTemplateName = queue.ExportTemplateName, ExportTemplateVersionMajor = queue.ExportTemplateVersionMajor, ExportTemplateVersionMinor = queue.ExportTemplateVersionMinor }, true).First();
+
+                        List<ExportDataSet> exds = ExportDataSet.Select(new ExportDataSet { ExportQueueID = queue.ExportQueueID, FileMakerName = queuefile.FileMakerName }, template.Sections);
+
+                        if (exds.Count > 0)
                         {
-                            case (int)Enums.ExportFileTypes.Xml:
+                            // Depending on the file type, we call the appropriate File Maker Methods
+                            switch (queuefile.FileMakerType)
+                            {
+                                case (int)Enums.ExportFileTypes.Xml:
 
-                                if (MakeFile_XML(exds, targetFileLocation, template, queuefile))
-                                {
-                                    iCnt++;
-                                }
-                                break;
-                            default:
+                                    if (MakeFile_XML(exds, targetFileLocation, template, queuefile))
+                                    {
+                                        iCnt++;
+                                    }
+                                    break;
+                                default:
 
-                                int textFileCount = 0;
+                                    int textFileCount = 0;
 
-                                if (MakeFile_Text(exds, targetFileLocation, template, queuefile, out textFileCount))
-                                {
-                                    iCnt = iCnt + textFileCount;
-                                }
-                                break;
+                                    if (MakeFile_Text(exds, targetFileLocation, template, queuefile, out textFileCount))
+                                    {
+                                        iCnt = iCnt + textFileCount;
+                                    }
+                                    break;
+                            }
                         }
                     }
                 }
+            }
+            else
+            {
+                Messages.Add("No files to process.");
             }
 
             Logs.Info("", "FILEMAKERSTATUS", string.Format("{0}|{1}", "FILECOUNT", iCnt.ToString()), EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
