@@ -39,9 +39,9 @@
             this.btnRun = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgTemplates)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgQueueFiles)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgQueues)).BeginInit();
@@ -148,15 +148,6 @@
             this.pictureBox1.TabIndex = 10;
             this.pictureBox1.TabStop = false;
             // 
-            // richTextBox1
-            // 
-            this.richTextBox1.DetectUrls = false;
-            this.richTextBox1.Location = new System.Drawing.Point(18, 637);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(834, 112);
-            this.richTextBox1.TabIndex = 11;
-            this.richTextBox1.Text = "";
-            // 
             // menuStrip1
             // 
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -173,14 +164,24 @@
             this.statusStrip1.TabIndex = 13;
             this.statusStrip1.Text = "statusStrip1";
             // 
+            // richTextBox1
+            // 
+            this.richTextBox1.DetectUrls = false;
+            this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.richTextBox1.Location = new System.Drawing.Point(0, 676);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(877, 96);
+            this.richTextBox1.TabIndex = 14;
+            this.richTextBox1.Text = "";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(877, 794);
-            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.richTextBox1);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.btnRun);
             this.Controls.Add(this.label4);
@@ -219,8 +220,8 @@
         private System.Windows.Forms.Button btnRun;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
-        private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.StatusStrip statusStrip1;
     }
 }
