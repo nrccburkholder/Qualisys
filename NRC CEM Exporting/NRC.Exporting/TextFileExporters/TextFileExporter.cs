@@ -66,6 +66,18 @@ namespace CEM.Exporting.TextFileExporters
 
         #endregion
 
+
+        public bool MakeExportTextFile(List<ExportDataSet> dsList, string fileLocation, string fileName)
+        {
+            List<string> destinationfiles = new List<string>();
+            return MakeTextFile(dsList, fileLocation, fileName, out destinationfiles );
+        }
+
+        public bool MakeExportTextFile(List<ExportDataSet> dsList, string fileLocation, string fileName, out List<string> destinationfiles)
+        {
+            return MakeTextFile(dsList, fileLocation, fileName, out destinationfiles);
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -73,10 +85,10 @@ namespace CEM.Exporting.TextFileExporters
         /// <param name="fileLocation"></param>
         /// <param name="fileName"></param>
         /// <returns></returns>
-        public bool MakeExportTextFile(List<ExportDataSet> dsList, string fileLocation, string fileName)
+        private bool MakeTextFile(List<ExportDataSet> dsList, string fileLocation, string fileName, out List<string> destinationfiles)
         {
             bool result = false;
-
+            List<string> files = new List<string>();
             try
             {
                 string fileDestination = Path.Combine(fileLocation, exportTemplate.ExportTemplateName);
@@ -106,6 +118,8 @@ namespace CEM.Exporting.TextFileExporters
                     }
 
                     string filepath = Path.Combine(fileDestination, string.Format("{0}.{1}", fname, FileExtension));
+
+                    files.Add(filepath);
 
                     List<ExportColumn> columnList = columns.Where(x => x.Key == exds.Section.ExportTemplateSectionID).FirstOrDefault().Value;
 
@@ -142,7 +156,8 @@ namespace CEM.Exporting.TextFileExporters
             {
                 throw;
             }
-             
+
+            destinationfiles = files;
             return result;
         }
 
