@@ -52,21 +52,25 @@ BEGIN
 
 	DECLARE @incompleteCargiverDisposition_id int
 	DECLARE @incompleteDecedentDisposition_id int
+	DECLARE @missingCaregiverDisposition_id int
 
 	select @incompleteCargiverDisposition_id = Disposition_id from Disposition where strDispositionLabel = 'Incomplete Caregiver'
 	select @incompleteDecedentDisposition_id = Disposition_id from Disposition where strDispositionLabel = 'Incomplete Decedent'
+	select @missingCaregiverDisposition_id = Disposition_id from Disposition where strDispositionLabel = 'Missing Caregiver'
 
 	SET @Sql = 
 	'INSERT INTO #IncompleteCaregiversDecedents ' + + CHAR(13) + 
+	'select p.pop_id, ' + CAST(@missingCaregiverDisposition_id as varchar)  + CHAR(13) + 
+	' from S' + CAST(@Study_Id as varchar) + '.POPULATION p
+	WHERE p.FName is null AND p.LName is Null
+	INSERT INTO #IncompleteCaregiversDecedents ' + + CHAR(13) + 
 	'select p.pop_id, ' + CAST(@incompleteCargiverDisposition_id as varchar)  + CHAR(13) + 
 	' from S' + CAST(@Study_Id as varchar) + '.POPULATION p
-	WHERE p.FName is null
-	OR p.LName is Null
+	WHERE (p.FName is null AND p.LName is NOT Null) OR (p.FName is not null AND p.LName is Null)
 	INSERT INTO #IncompleteCaregiversDecedents ' + + CHAR(13) + 
 	'select p.pop_id, ' + CAST(@incompleteDecedentDisposition_id as varchar)  + CHAR(13) + 
 	'from S' + CAST(@Study_Id as varchar) + '.POPULATION p 
-	WHERE p.HSP_DecdFName is null
-	OR p.HSP_DecdLName is Null'
+	WHERE p.HSP_DecdFName is null OR p.HSP_DecdLName is Null'
 
 	EXEC (@sql)
 END
@@ -141,5 +145,3 @@ COMMIT TRANSACTION
    
 SET TRANSACTION ISOLATION LEVEL READ COMMITTED  
 SET NOCOUNT OFF
-
-

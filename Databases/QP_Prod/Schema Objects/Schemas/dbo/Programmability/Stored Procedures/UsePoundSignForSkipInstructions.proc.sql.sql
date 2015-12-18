@@ -23,8 +23,13 @@ where LangId = @lang_id
 select @FormatOverride = strparam_value from QualPro_Params where
 strparam_nm = 'SkipInstructionFormat - ' + @SurveyType + ' + ' + @Language
 
-select @bitUsePoundForSkipInstructions UsePoundSignForSkipInstructions, 
+--CJB 11/2/2015 Using 0 and 1 as defaults for bits below, hoping these match up to most new template print mockups INC0050205
+
+select IsNull(@bitUsePoundForSkipInstructions, 0) UsePoundSignForSkipInstructions, 
 	IsNull(@FormatOverride, '') FormatOverride,
-	@bitSkipRepeatsScaleText SkipRepeatsScaleText,
+	IsNull(@bitSkipRepeatsScaleText, CASE WHEN strparam_value = 'US' THEN 1 ELSE 0 END) SkipRepeatsScaleText,
 	IsNull(@SkipGoPhrase, '') SkipGoPhrase,
 	IsNull(@SkipEndPhrase, '') SkipEndPhrase
+from qualpro_params where strparam_nm = 'Country'
+
+GO
