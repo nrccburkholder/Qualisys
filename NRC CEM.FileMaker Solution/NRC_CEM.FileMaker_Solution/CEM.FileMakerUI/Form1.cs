@@ -205,6 +205,7 @@ namespace CEM.FileMakerUI
             dgTemplates.Enabled = state;
             dgQueues.Enabled = state;
             dgQueueFiles.Enabled = state;
+            menuStrip1.Enabled = state;
         }
 
         private void MakeFiles(object argument)
