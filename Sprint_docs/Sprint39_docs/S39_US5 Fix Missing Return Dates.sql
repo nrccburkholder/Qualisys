@@ -87,7 +87,7 @@ begin
 
 	if @@rowcount>0
 	begin
-		if exists (select * from Questionform_Missing_datReturned where QfMissingDatreturned_id>@QfMissingDatreturned_id AND isResetLitho=0)
+		if exists (select * from Questionform_Missing_datReturned where QfMissingDatreturned_id>@QfMissingDatreturned_id and Notes='')
 		begin
 			declare @sql varchar(200) = 'select * from Questionform_Missing_datReturned where isResetLitho=0 AND QfMissingDatreturned_id>='+convert(varchar,@QfMissingDatreturned_id)
 			declare @sql2 varchar(max) = 'select count(*) as [count], count(distinct questionform_id) as [count questionform_id], convert(varchar,min(logDate),1) as oldest, convert(varchar,max(logDate),1) as newest, notes
