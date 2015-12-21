@@ -13,10 +13,24 @@ INSERT INTO dbo.SurveyValidationProcs
 */
 use QP_Prod
 go
+declare @SurveyValidationProcs_id int
 if not exists (select * from SurveyValidationProcs where ProcedureName='SV_SamplePlan_Has_Consistent_CCNs')
+begin
 	INSERT INTO dbo.SurveyValidationProcs (ProcedureName, ValidMessage, intOrder)
 	select 'SV_SamplePlan_Has_Consistent_CCNs','PASSED!  Sample Plan has consistent CCN assignments', max(intOrder)+1 
 	from SurveyValidationProcs 
+	set @SurveyValidationProcs_id=scope_identity()
+end 
+else
+begin
+	select @SurveyValidationProcs_id=SurveyValidationProcs_id 
+	from SurveyValidationProcs 
+	where ProcedureName='SV_SamplePlan_Has_Consistent_CCNs'
+end
+if not exists (select * from SurveyValidationProcsBySurveyType where SurveyValidationProcs_id=@SurveyValidationProcs_id)
+	insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID, SubType_ID)
+	select distinct @SurveyValidationProcs_id, CAHPSType_ID, SubType_ID
+	from SurveyValidationProcsBySurveyType 
 go
 if exists (select * from sys.procedures where name = 'SV_SamplePlan_Has_Consistent_CCNs')
 	drop procedure dbo.SV_SamplePlan_Has_Consistent_CCNs
