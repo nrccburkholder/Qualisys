@@ -199,6 +199,7 @@ AND ACODisposition = 34
 				inner join MailingStep ms on scm.Methodology_id=ms.Methodology_id and scm.MailingStep_id=ms.MailingStep_id
 				where tr.bitETLThisReturn=1
 				and qf.UnusedReturn_id=5
+				and tr.Surveytype_dsc in ('ICHCAHPS','Home Health CAHPS')
 				
 				if @@rowcount>0
 				begin
