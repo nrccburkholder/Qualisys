@@ -96,10 +96,17 @@
     <Compile Include="Exceptions\InvalidArgumentException.cs" />
     <Compile Include="Exceptions\UploadAbandoned.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Extractors\CmsCsvExtractor.cs" />
     <Compile Include="Extractors\CSVToXMLBase.cs" />
+    <Compile Include="Extractors\ExtractHelper.cs" />
     <Compile Include="Extractors\Factory.cs" />
     <Compile Include="Extractors\IExtract.cs" />
+    <Compile Include="Extractors\OcsCsvExtractor.cs" />
+    <Compile Include="Extractors\OcsFwExtractor.cs" />
+    <Compile Include="Extractors\OcsFwParser.cs" />
     <Compile Include="Extractors\OCS\HHCAHPS.cs" />
+    <Compile Include="Extractors\PgCsvExtractor.cs" />
+    <Compile Include="Extractors\PtctCsvExtractor.cs" />
     <Compile Include="ImportProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
