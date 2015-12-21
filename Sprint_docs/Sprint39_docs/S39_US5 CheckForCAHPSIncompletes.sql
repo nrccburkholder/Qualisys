@@ -46,6 +46,7 @@ WITH CTE_Returns AS
 	SELECT DISTINCT PKey1 
 	FROM NRC_DataMart_ETL.dbo.ExtractQueue eq
 	WHERE eq.ExtractFileID IS NULL AND eq.EntityTypeID = 11 AND eq.Created > @MinDate
+	and Source = 'trg_NRC_DataMart_ETL_dbo_QUESTIONFORM'
 )
 
 --SELECT * FROM CTE_Returns
@@ -215,6 +216,7 @@ AND ACODisposition = 34
 					from #qfresponsecount rc
 					inner join questionform qf on rc.questionform_id=qf.questionform_id
 					left join #todaysreturns tr on rc.questionform_id=tr.questionform_id
+					where rc.AllMailStepsAreBack=1
 
 					-- samplepops where all returns were blank  --> DFCT0011927
 					update tb
@@ -271,10 +273,28 @@ AND ACODisposition = 34
 					from #takebest tb
 					inner join questionform qf on tb.questionform_id=qf.questionform_id
 					where orgBitETLThisReturn=0 and newBitETLThisReturn=0
+					and qf.unusedreturn_id=5
 
 					delete from #takebest where orgBitETLThisReturn=newBitETLThisReturn
 
 					-- if newBitETLThisReturn is the NOT same return as orgBitETLThisReturn, we need to:
+					-- move today's return's results from questionresult to questionresult2
+					insert into QuestionResult2 (QUESTIONFORM_ID,SAMPLEUNIT_ID,QSTNCORE,INTRESPONSEVAL)
+					select qr.QUESTIONFORM_ID,SAMPLEUNIT_ID,QSTNCORE,INTRESPONSEVAL
+					from #takebest tb
+					inner join questionform qf on tb.questionform_id=qf.questionform_id
+					inner join questionresult qr on tb.questionform_id=qr.questionform_id
+					where orgBitETLThisReturn=1 and newBitETLThisReturn=0
+					and qf.datReturned is not NULL
+
+					delete qr 
+					from #takebest tb
+					inner join questionform qf on tb.questionform_id=qf.questionform_id
+					inner join questionresult qr on tb.questionform_id=qr.questionform_id
+					where orgBitETLThisReturn=1 and newBitETLThisReturn=0
+					and qf.datReturned is not NULL
+
+
 					-- change today's return to an unused return (this also removes it from the Catalyst ETL queue, via a trigger)
 					update qf
 					set unusedreturn_id=6, datUnusedReturn=qf.datReturned, datReturned=NULL
@@ -282,19 +302,26 @@ AND ACODisposition = 34
 					from #takebest tb
 					inner join questionform qf on tb.questionform_id=qf.questionform_id
 					where orgBitETLThisReturn=1 and newBitETLThisReturn=0
-
-					-- move today's return's results from questionresult to questionresult2
-					insert into QuestionResult2 (QUESTIONFORM_ID,SAMPLEUNIT_ID,QSTNCORE,INTRESPONSEVAL)
+					and qf.datReturned is not NULL
+					
+					-- move the previous return's results from questionresult2 to questionresult
+					insert into QuestionResult (QUESTIONFORM_ID,SAMPLEUNIT_ID,QSTNCORE,INTRESPONSEVAL)
 					select qr.QUESTIONFORM_ID,SAMPLEUNIT_ID,QSTNCORE,INTRESPONSEVAL
 					from #takebest tb
-					inner join questionresult qr on tb.questionform_id=qr.questionform_id
-					where orgBitETLThisReturn=1 and newBitETLThisReturn=0
+					inner join questionform qf on tb.questionform_id=qf.questionform_id
+					inner join questionresult2 qr on tb.questionform_id=qr.questionform_id
+					where orgBitETLThisReturn=0 and newBitETLThisReturn=1
+					and qf.datUnusedReturn is not null
+					and qf.unusedreturn_id=5
 
-					delete qr 
+					delete qr
 					from #takebest tb
-					inner join questionresult qr on tb.questionform_id=qr.questionform_id
-					where orgBitETLThisReturn=1 and newBitETLThisReturn=0
-					
+					inner join questionform qf on tb.questionform_id=qf.questionform_id
+					inner join questionresult2 qr on tb.questionform_id=qr.questionform_id
+					where orgBitETLThisReturn=0 and newBitETLThisReturn=1
+					and qf.datUnusedReturn is not null
+					and qf.unusedreturn_id=5
+
 					-- change the previous return back into a used return  (this also adds it to the Catalyst ETL queue, via a trigger)
 					update qf
 					set unusedreturn_id=0, datReturned=qf.datUnusedReturn, qf.datUnusedReturn=NULL
@@ -302,18 +329,8 @@ AND ACODisposition = 34
 					from #takebest tb
 					inner join questionform qf on tb.questionform_id=qf.questionform_id
 					where orgBitETLThisReturn=0 and newBitETLThisReturn=1
-
-					-- move the previous return's results from questionresult2 to questionresult
-					insert into QuestionResult (QUESTIONFORM_ID,SAMPLEUNIT_ID,QSTNCORE,INTRESPONSEVAL)
-					select qr.QUESTIONFORM_ID,SAMPLEUNIT_ID,QSTNCORE,INTRESPONSEVAL
-					from #takebest tb
-					inner join questionresult2 qr on tb.questionform_id=qr.questionform_id
-					where orgBitETLThisReturn=0 and newBitETLThisReturn=1
-
-					delete qr
-					from #takebest tb
-					inner join questionresult2 qr on tb.questionform_id=qr.questionform_id
-					where orgBitETLThisReturn=0 and newBitETLThisReturn=1
+					and qf.datUnusedReturn is not null
+					and qf.unusedreturn_id=5
 				
 					-- change the record in #todaysreturns to bitETLThisReturn=0
 					update tr
@@ -337,6 +354,7 @@ AND ACODisposition = 34
 					inner join scheduledmailing scm on qf.sentmail_id=scm.sentmail_id
 					inner join mailingstep ms on scm.mailingstep_id=ms.mailingstep_id
 					where tb.newBitETLThisReturn=1
+					and qf.questionform_id not in (select questionform_id from #todaysreturns)
 					
 					-- removed today's return and insert the previous return in the medusa queue
 					delete qfe
