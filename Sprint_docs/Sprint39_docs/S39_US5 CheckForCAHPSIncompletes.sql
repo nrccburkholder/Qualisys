@@ -38,6 +38,8 @@ AS
 DECLARE @MinDate DATE;
 SET @MinDate = DATEADD(DAY, -4, GETDATE());
 
+declare @UniqueNameExtention varchar(26) = convert(varchar,getdate(),109), @sql varchar(max);
+
 -- v1.1  5/27/2014 by C Caouette
 WITH CTE_Returns AS
 (
@@ -182,6 +184,12 @@ AND ACODisposition = 34
 			if @@rowcount>0
 			begin
 
+				set @sql = 'select * into [temp_TodaysReturns_'+@uniqueNameExtention+'] from #TodaysReturns'
+				exec (@SQL)
+
+				set @sql = 'select * into [temp_qfResponseCount_'+@uniqueNameExtention+'] from #qfResponseCount'
+				exec (@SQL)
+
 				-- if we're ETLing something, check to see if any other returned mailsteps had more questions answered. If so, ETL the other mailstep
 				insert into #qfresponsecount (Surveytype_dsc, survey_id, questionform_id, sentmail_id, samplepop_id, receipttype_id, strMailingStep_nm, ResponseCount, FutureScheduledMailing, AllMailStepsAreBack, tempFlag)
 				select tr.Surveytype_dsc, tr.survey_id, qf.questionform_id, qf.sentmail_id, qf.samplepop_id, qf.receipttype_id, ms.strmailingStep_nm, 0 as ResponseCount, 0 as FutureScheduledMailing, 1 as AllMailStepsAreBack, 1 as tempFlag
@@ -196,6 +204,9 @@ AND ACODisposition = 34
 				begin
 					
 					exec dbo.QFResponseCount
+
+					set @sql = 'insert into [temp_qfResponseCount_'+@uniqueNameExtention+'] select * from #qfResponseCount where tempFlag=1'
+					exec (@SQL)
 
 					-- list of samplepops that have multiple returns
 					select rc.questionform_id, rc.samplepop_id, ResponseCount, isnull(qf.datreturned,qf.datUnusedReturn) as datReturned, isnull(tr.bitETLThisReturn,0) as orgBitETLThisReturn, 0 as newBitETLThisReturn, 0 as useLast --> DFCT0011927
@@ -248,6 +259,9 @@ AND ACODisposition = 34
 								group by samplepop_id 
 								having count(*)>1) lastRet
 						on tb.samplepop_id=lastRet.samplepop_id and tb.datReturned<lastRet.lastReturned 
+
+					set @sql = 'select * into [temp_takeBest_'+@uniqueNameExtention+'] from #TakeBest'
+					exec (@SQL)
 
 					-- if newBitETLThisReturn is the same return as orgBitETLThisReturn, we don't need to adjust #TodaysReturn.bitETLThisReturn
 					-- but we do need to change the non-ETL'd return from UnusedReturn_id=5 to UnusedReturn_id=6 (i.e. from "we might use it" to "we're never gonna use it")
@@ -400,6 +414,7 @@ AND ACODisposition = 34
 	delete from #QFResponseCount
 	insert into #QFResponseCount
 	select Surveytype_dsc, survey_id, questionform_id, sentmail_id, samplepop_id, receipttype_id, strMailingStep_nm, 0 as ResponseCount, 0 as FutureScheduledMailing, 1 as AllMailStepsAreBack----, convert(datetime,null) as GenDate1st, convert(datetime,null) as GenDate2nd
+	, 0 as tempFlag
 	from #TodaysReturns
 	where Surveytype_dsc in ('HCAHPS IP', 'Hospice CAHPS') -- added Hospice CAHPS 2015-02-19
 
