@@ -94,6 +94,7 @@
             // 
             this.dgQueueFiles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgQueueFiles.Location = new System.Drawing.Point(116, 463);
+            this.dgQueueFiles.MultiSelect = false;
             this.dgQueueFiles.Name = "dgQueueFiles";
             this.dgQueueFiles.RowHeadersVisible = false;
             this.dgQueueFiles.ShowEditingIcon = false;
@@ -115,6 +116,7 @@
             // 
             this.dgQueues.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgQueues.Location = new System.Drawing.Point(66, 281);
+            this.dgQueues.MultiSelect = false;
             this.dgQueues.Name = "dgQueues";
             this.dgQueues.Size = new System.Drawing.Size(786, 150);
             this.dgQueues.TabIndex = 6;
