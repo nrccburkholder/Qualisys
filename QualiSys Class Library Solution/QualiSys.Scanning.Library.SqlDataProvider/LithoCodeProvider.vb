@@ -157,11 +157,11 @@ Friend Class LithoCodeProvider
 
     End Function
 
-    Public Overrides Function BeginTransaction() As DbTransaction
+    Public Overrides Function CreateConnection() As DbConnection
 
         Dim conn As DbConnection = Db.CreateConnection()
         conn.Open()
-        Return conn.BeginTransaction
+        Return conn
 
     End Function
 

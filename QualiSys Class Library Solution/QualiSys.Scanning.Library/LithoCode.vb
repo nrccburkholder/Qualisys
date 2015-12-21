@@ -525,131 +525,133 @@ Public Class LithoCode
         'If we cannot save to QualiSys then we are out of here
         If Not CanSaveToQualiSys() Then Exit Sub
 
-        'Start a transaction
-        Using trans As DbTransaction = LithoCodeProvider.Instance.BeginTransaction
+        Using conn As DbConnection = LithoCodeProvider.Instance.CreateConnection
+            'Start a transaction
+            Using trans As DbTransaction = conn.BeginTransaction
 
-            'Get the barcode for this LithoCode
-            Dim barcode As String = Litho.LithoToBarcode(CInt(mLithoCode), False, 1)
-            Dim fullBarcode As String = Litho.LithoToBarcode(CInt(mLithoCode), True, 1)
+                'Get the barcode for this LithoCode
+                Dim barcode As String = Litho.LithoToBarcode(CInt(mLithoCode), False, 1)
+                Dim fullBarcode As String = Litho.LithoToBarcode(CInt(mLithoCode), True, 1)
 
-            'Get a FileInfo for the definition file name
-            Dim definitionFile As New FileInfo(Path.Combine(AppConfig.Params("QSIFAQSSCommentDataFileFolder").StringValue, barcode & ".txt"))
+                'Get a FileInfo for the definition file name
+                Dim definitionFile As New FileInfo(Path.Combine(AppConfig.Params("QSIFAQSSCommentDataFileFolder").StringValue, barcode & ".txt"))
 
-            'Get a FileInfo for the comment data file
-            Dim dataFile As New FileInfo(commentFileName)
+                'Get a FileInfo for the comment data file
+                Dim dataFile As New FileInfo(commentFileName)
 
-            Try
-                'If we have a final disposition then save everything
-                If Dispositions.DoesFinalExist AndAlso Not IsUndeliverable() Then
-                    If DoResultsExist(noResponseChar, dontKnowResponseChar, refusedResponseChar) Then
-                        'Save the litho code data
-                        LithoCodeProvider.Instance.SaveLithoCodeToQualiSys(Me, trans)
+                Try
+                    'If we have a final disposition then save everything
+                    If Dispositions.DoesFinalExist AndAlso Not IsUndeliverable() Then
+                        If DoResultsExist(noResponseChar, dontKnowResponseChar, refusedResponseChar) Then
+                            'Save the litho code data
+                            LithoCodeProvider.Instance.SaveLithoCodeToQualiSys(Me, trans)
 
-                        'Save the question results
-                        For Each result As QuestionResult In QuestionResults
-                            If result.ErrorId <> TransferErrorCodes.IgnoreQstnCore AndAlso Not String.IsNullOrEmpty(result.ResponseVal) Then
-                                If Integer.TryParse(result.GetQualiSysResponseValue(noResponseChar, skipResponseChar, dontKnowResponseChar, refusedResponseChar), tryInt) Then
-                                    'Only save the result if it is an integer.  We do not save the MultiRespItemNotPickedChar, or Blanks (NULL or Empty String)
-                                    LithoCodeProvider.Instance.SaveQuestionResultToQualiSys(QuestionFormId, result.SampleUnitID, result.QstnCore, tryInt, trans)
+                            'Save the question results
+                            For Each result As QuestionResult In QuestionResults
+                                If result.ErrorId <> TransferErrorCodes.IgnoreQstnCore AndAlso Not String.IsNullOrEmpty(result.ResponseVal) Then
+                                    If Integer.TryParse(result.GetQualiSysResponseValue(noResponseChar, skipResponseChar, dontKnowResponseChar, refusedResponseChar), tryInt) Then
+                                        'Only save the result if it is an integer.  We do not save the MultiRespItemNotPickedChar, or Blanks (NULL or Empty String)
+                                        LithoCodeProvider.Instance.SaveQuestionResultToQualiSys(QuestionFormId, result.SampleUnitID, result.QstnCore, tryInt, trans)
+                                    End If
                                 End If
+                            Next
+
+                            'Save the hand entries
+                            For Each hand As HandEntry In HandEntries
+                                LithoCodeProvider.Instance.SaveHandEntryToQualiSys(Me, hand, trans)
+                            Next
+
+                            'Save the pop mappings
+                            For Each pop As PopMapping In PopMappings
+                                LithoCodeProvider.Instance.SavePopMappingToQualiSys(Me, pop, trans)
+                            Next
+
+                            'Save the langId data
+                            LithoCodeProvider.Instance.SaveLangIdToQualiSys(Me, trans)
+
+                        ElseIf Dispositions.DoesMustHaveResultsExist Then
+                            'No results exist and we have a disposition that says we have to have results
+                            Throw New MustHaveResultsException()
+                        End If
+                    End If
+
+                    'Save all of the dispositions
+                    For Each dispo As Disposition In Dispositions
+                        'Save this disposition
+                        LithoCodeProvider.Instance.SaveDispositionToQualiSys(Me, dispo, userName, trans)
+                    Next
+
+                    'Save the comments
+                    If Comments.Count > 0 Then
+                        'Write the comment definition file for this LithoCode
+                        Dim definitionStream As StreamWriter = definitionFile.CreateText
+                        definitionStream.Write(GetCommentDefinitionFile())
+                        definitionStream.Flush()
+                        definitionStream.Close()
+
+                        'Build the comment data file row for this LithoCode
+                        Dim dataFileRow As String = fullBarcode
+                        For Each cmnt As Comment In Comments
+                            If AppConfig.Params("QSIIncludeQuestionTextInCMT").IntegerValue = 0 Then
+                                'Do not include the question text in the CMT file
+                                dataFileRow &= String.Format(",{0},{1}{2}{1}", cmnt.CmntNumber + mkCommentQstnCoreOffset, Chr(34), cmnt.CmntText)
+                            Else
+                                'Include the question text in the CMT file
+                                dataFileRow &= String.Format(",{0},{1}{2}{1},{1}{3}{1}", cmnt.CmntNumber + mkCommentQstnCoreOffset, Chr(34), mCommentQstnCores.Item(cmnt.CmntNumber), cmnt.CmntText)
                             End If
                         Next
 
-                        'Save the hand entries
-                        For Each hand As HandEntry In HandEntries
-                            LithoCodeProvider.Instance.SaveHandEntryToQualiSys(Me, hand, trans)
-                        Next
-
-                        'Save the pop mappings
-                        For Each pop As PopMapping In PopMappings
-                            LithoCodeProvider.Instance.SavePopMappingToQualiSys(Me, pop, trans)
-                        Next
-
-                        'Save the langId data
-                        LithoCodeProvider.Instance.SaveLangIdToQualiSys(Me, trans)
-
-                    ElseIf Dispositions.DoesMustHaveResultsExist Then
-                        'No results exist and we have a disposition that says we have to have results
-                        Throw New MustHaveResultsException()
+                        'Write the row to the comment data file
+                        Dim dataStream As StreamWriter = dataFile.AppendText
+                        dataStream.WriteLine(dataFileRow)
+                        dataStream.Flush()
+                        dataStream.Close()
+                        qtyCommentRowsInFile += 1
                     End If
-                End If
 
-                'Save all of the dispositions
-                For Each dispo As Disposition In Dispositions
-                    'Save this disposition
-                    LithoCodeProvider.Instance.SaveDispositionToQualiSys(Me, dispo, userName, trans)
-                Next
+                    'If we have made it to hear then commit the transaction
+                    trans.Commit()
 
-                'Save the comments
-                If Comments.Count > 0 Then
-                    'Write the comment definition file for this LithoCode
-                    Dim definitionStream As StreamWriter = definitionFile.CreateText
-                    definitionStream.Write(GetCommentDefinitionFile())
-                    definitionStream.Flush()
-                    definitionStream.Close()
+                    'Set the bitSubmitted for the comments
+                    If Comments.Count > 0 Then
+                        For Each cmnt As Comment In Comments
+                            cmnt.Submitted = True
+                            cmnt.Save()
+                        Next
+                    End If
 
-                    'Build the comment data file row for this LithoCode
-                    Dim dataFileRow As String = fullBarcode
-                    For Each cmnt As Comment In Comments
-                        If AppConfig.Params("QSIIncludeQuestionTextInCMT").IntegerValue = 0 Then
-                            'Do not include the question text in the CMT file
-                            dataFileRow &= String.Format(",{0},{1}{2}{1}", cmnt.CmntNumber + mkCommentQstnCoreOffset, Chr(34), cmnt.CmntText)
-                        Else
-                            'Include the question text in the CMT file
-                            dataFileRow &= String.Format(",{0},{1}{2}{1},{1}{3}{1}", cmnt.CmntNumber + mkCommentQstnCoreOffset, Chr(34), mCommentQstnCores.Item(cmnt.CmntNumber), cmnt.CmntText)
-                        End If
-                    Next
+                    'Set the bitSummited
+                    Submitted = True
+                    Save()
 
-                    'Write the row to the comment data file
-                    Dim dataStream As StreamWriter = dataFile.AppendText
-                    dataStream.WriteLine(dataFileRow)
-                    dataStream.Flush()
-                    dataStream.Close()
-                    qtyCommentRowsInFile += 1
-                End If
+                Catch ex As Exception
+                    'Roll the transaction back
+                    If trans IsNot Nothing AndAlso trans.Connection IsNot Nothing Then
+                        Try
+                            trans.Rollback()
+                        Catch ex2 As Exception
+                            EventLog.WriteEntry(QSIServiceNames.QSITransferResultsService, Translator.SendNotification(QSIServiceNames.QSITransferResultsService, String.Format("Error encountered, Rollback failure, unable to save LithoCode {0} to QualiSys.", mLithoCode), ex2, False), EventLogEntryType.Error)
+                        End Try
+                    End If
 
-                'If we have made it to hear then commit the transaction
-                trans.Commit()
+                    'If this litho had comments clean them up
+                    If Comments.Count > 0 Then
+                        'Delete the definition file
+                        If definitionFile.Exists Then definitionFile.Delete()
+                    End If
 
-                'Set the bitSubmitted for the comments
-                If Comments.Count > 0 Then
-                    For Each cmnt As Comment In Comments
-                        cmnt.Submitted = True
-                        cmnt.Save()
-                    Next
-                End If
+                    'Mark the litho with an error
+                    If TypeOf ex Is MustHaveResultsException Then
+                        ErrorId = TransferErrorCodes.DispositionMustHaveResults
+                    Else
+                        ErrorId = TransferErrorCodes.ErrorSavingToQualiSys
+                        EventLog.WriteEntry(QSIServiceNames.QSITransferResultsService, Translator.SendNotification(QSIServiceNames.QSITransferResultsService, String.Format("Error encountered, unable to save LithoCode {0} to QualiSys.", mLithoCode), ex, False), EventLogEntryType.Error)
+                    End If
+                    Submitted = False
+                    Save()
 
-                'Set the bitSummited
-                Submitted = True
-                Save()
-
-            Catch ex As Exception
-                'Roll the transaction back
-                If trans IsNot Nothing Then
-                    Try
-                        trans.Rollback()
-                    Catch ex2 As Exception
-                        EventLog.WriteEntry(QSIServiceNames.QSITransferResultsService, Translator.SendNotification(QSIServiceNames.QSITransferResultsService, String.Format("Error encountered, Rollback failure, unable to save LithoCode {0} to QualiSys.", mLithoCode), ex2, False), EventLogEntryType.Error)
-                    End Try
-                End If
-
-                'If this litho had comments clean them up
-                If Comments.Count > 0 Then
-                    'Delete the definition file
-                    If definitionFile.Exists Then definitionFile.Delete()
-                End If
-
-                'Mark the litho with an error
-                If TypeOf ex Is MustHaveResultsException Then
-                    ErrorId = TransferErrorCodes.DispositionMustHaveResults
-                Else
-                    ErrorId = TransferErrorCodes.ErrorSavingToQualiSys
-                    EventLog.WriteEntry(QSIServiceNames.QSITransferResultsService, Translator.SendNotification(QSIServiceNames.QSITransferResultsService, String.Format("Error encountered, unable to save LithoCode {0} to QualiSys.", mLithoCode), ex, False), EventLogEntryType.Error)
-                End If
-                Submitted = False
-                Save()
-
-            End Try
+                End Try
+            End Using
         End Using
     End Sub
 
