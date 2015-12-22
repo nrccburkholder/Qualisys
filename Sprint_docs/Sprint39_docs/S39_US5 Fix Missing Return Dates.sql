@@ -72,7 +72,7 @@ begin
 	and notes not like '%datUnusedReturned set to %'
 
 	declare @QfMissingDatreturned_id int
-	declare @MailTo varchar(100) = 'dgilsdorf@nationalresearch.com'
+	declare @MailTo varchar(100) = 'dgilsdorf@nationalresearch.com,tbutler@nationalresearch.com'
 	select @QfMissingDatreturned_id=min(QfMissingDatreturned_id) from Questionform_Missing_datReturned where isResetLitho is NULL
 
 	if @QfMissingDatreturned_id is NULL -- No new records
