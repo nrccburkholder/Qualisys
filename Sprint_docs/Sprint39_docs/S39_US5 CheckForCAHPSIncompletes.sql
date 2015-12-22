@@ -39,6 +39,8 @@ DECLARE @MinDate DATE;
 SET @MinDate = DATEADD(DAY, -4, GETDATE());
 
 declare @UniqueNameExtention varchar(26) = convert(varchar,getdate(),109), @sql varchar(max);
+declare @maxQFerror int
+select @maxQFerror = max(QfMissingDatreturned_id) from Questionform_Missing_datReturned;
 
 -- v1.1  5/27/2014 by C Caouette
 WITH CTE_Returns AS
@@ -71,7 +73,7 @@ and sm.datExpire > getdate()
 order by qf.datResultsImported desc
 
 -- ACO CAHPS Processing
-select questionform_id, 0 as ATACnt, 0 as ATAComplete, 0 as MeasureCnt, 0 as MeasureComplete, 0 as Disposition
+select QuestionForm_id, 0 as ATACnt, 0 as ATAComplete, 0 as MeasureCnt, 0 as MeasureComplete, 0 as Disposition
 , Subtype_nm, SurveyType_id													--> new: 1.6
 into #ACOQF
 from #TodaysReturns
@@ -85,9 +87,9 @@ set ACODisposition=qf.disposition
 	, bitContinueWithMailings = case when qf.disposition in (34) then 1 else 0 end --> modified: 1.5
 	, bitETLThisReturn        = case when qf.disposition in (31,34) then 0 else 1 end
 	, bitComplete             = case when qf.disposition = 10 then 1 else 0 end
---select tr.questionform_id, tr.ACODisposition, qf.disposition, tr.bitContinueWithMailings, tr.bitETLThisReturn, qf.disposition 
+--select tr.QuestionForm_id, tr.ACODisposition, qf.disposition, tr.bitContinueWithMailings, tr.bitETLThisReturn, qf.disposition 
 from #TodaysReturns tr
-inner join #ACOQF qf on tr.questionform_id=qf.questionform_id
+inner join #ACOQF qf on tr.QuestionForm_id=qf.QuestionForm_id
 
 /* Begin Write ACO dispositions to DispositionLog - new 1.7 */  
 
@@ -125,15 +127,25 @@ AND ACODisposition = 34
 -- ACO Disposition 31 = partial
 -- ACO Disposition 34 = blank/incomplete
 
+
+			-----
+			select qf.questionform_id, qf.survey_id, qf.samplepop_id, qf.datReturned, qf.unusedreturn_id, qf.datunusedreturn, qf.datresultsimported, qf.bitcomplete 
+			into #Audit
+			from questionform qf
+			inner join survey_def sd on qf.survey_id=sd.survey_id
+			where sd.surveytype_id in (3,8)
+			and qf.datreturned > convert(datetime,floor(convert(float,getdate())))
+			-----
+
 			-- ICH CAHPS & Home Health CAHPS processing
 			/* begin addition */
-			select Surveytype_dsc, survey_id, questionform_id, sentmail_id, samplepop_id, receipttype_id, strMailingStep_nm, 0 as ResponseCount, 0 as FutureScheduledMailing, 1 as AllMailStepsAreBack----, convert(datetime,null) as GenDate1st, convert(datetime,null) as GenDate2nd
+			select Surveytype_dsc, survey_id, QuestionForm_id, sentmail_id, samplepop_id, receipttype_id, strMailingStep_nm, 0 as ResponseCount, 0 as FutureScheduledMailing, 1 as AllMailStepsAreBack----, convert(datetime,null) as GenDate1st, convert(datetime,null) as GenDate2nd
 			, 0 as tempFlag
 			into #QFResponseCount
 			from #TodaysReturns
 			where Surveytype_dsc in ('ICHCAHPS','Home Health CAHPS')
 				/* for testing:
-				select 'Home Health CAHPS' as Surveytype_dsc, 15851 as survey_id, questionform_id, qf.sentmail_id, qf.samplepop_id, receipttype_id, strMailingStep_nm, 0 as ResponseCount, 0 as FutureScheduledMailing, 1 as AllMailStepsAreBack----, convert(datetime,null) as GenDate1st, convert(datetime,null) as GenDate2nd
+				select 'Home Health CAHPS' as Surveytype_dsc, 15851 as survey_id, QuestionForm_id, qf.sentmail_id, qf.samplepop_id, receipttype_id, strMailingStep_nm, 0 as ResponseCount, 0 as FutureScheduledMailing, 1 as AllMailStepsAreBack----, convert(datetime,null) as GenDate1st, convert(datetime,null) as GenDate2nd
 				into #QFResponseCount
 				from Questionform qf
 				inner join scheduledmailing scm on qf.sentmail_id=scm.sentmail_id
@@ -176,9 +188,9 @@ AND ACODisposition = 34
 			-- we can etl a return if the samplepop meets these criteria:
 			update tr
 			set bitETLThisReturn=1, bitContinueWithMailings=0
-			-- select tr.questionform_id, rc.AllMailStepsAreBack, rc.FutureScheduledMailing, tr.bitETLThisReturn, tr.bitContinueWithMailings
+			-- select tr.QuestionForm_id, rc.AllMailStepsAreBack, rc.FutureScheduledMailing, tr.bitETLThisReturn, tr.bitContinueWithMailings
 			from #TodaysReturns tr
-			inner join #qfResponseCount rc on tr.questionform_id=rc.questionform_id
+			inner join #qfResponseCount rc on tr.QuestionForm_id=rc.QuestionForm_id
 			where rc.AllMailStepsAreBack=1 
 			and rc.FutureScheduledMailing=0
 			
@@ -192,8 +204,8 @@ AND ACODisposition = 34
 				exec (@SQL)
 
 				-- if we're ETLing something, check to see if any other returned mailsteps had more questions answered. If so, ETL the other mailstep
-				insert into #qfresponsecount (Surveytype_dsc, survey_id, questionform_id, sentmail_id, samplepop_id, receipttype_id, strMailingStep_nm, ResponseCount, FutureScheduledMailing, AllMailStepsAreBack, tempFlag)
-				select tr.Surveytype_dsc, tr.survey_id, qf.questionform_id, qf.sentmail_id, qf.samplepop_id, qf.receipttype_id, ms.strmailingStep_nm, 0 as ResponseCount, 0 as FutureScheduledMailing, 1 as AllMailStepsAreBack, 1 as tempFlag
+				insert into #qfresponsecount (Surveytype_dsc, survey_id, QuestionForm_id, sentmail_id, samplepop_id, receipttype_id, strMailingStep_nm, ResponseCount, FutureScheduledMailing, AllMailStepsAreBack, tempFlag)
+				select tr.Surveytype_dsc, tr.survey_id, qf.QuestionForm_id, qf.sentmail_id, qf.samplepop_id, qf.receipttype_id, ms.strmailingStep_nm, 0 as ResponseCount, 0 as FutureScheduledMailing, 1 as AllMailStepsAreBack, 1 as tempFlag
 				from #TodaysReturns tr
 				inner join questionform qf on tr.samplepop_id=qf.samplepop_id
 				inner join ScheduledMailing scm on qf.sentmail_id=scm.sentmail_id
@@ -211,11 +223,11 @@ AND ACODisposition = 34
 					exec (@SQL)
 
 					-- list of samplepops that have multiple returns
-					select rc.questionform_id, rc.samplepop_id, ResponseCount, isnull(qf.datreturned,qf.datUnusedReturn) as datReturned, isnull(tr.bitETLThisReturn,0) as orgBitETLThisReturn, 0 as newBitETLThisReturn, 0 as useLast --> DFCT0011927
+					select rc.QuestionForm_id, rc.samplepop_id, ResponseCount, isnull(qf.datreturned,qf.datUnusedReturn) as datReturned, isnull(tr.bitETLThisReturn,0) as orgBitETLThisReturn, 0 as newBitETLThisReturn, 0 as useLast --> DFCT0011927
 					into #takeBest
 					from #qfresponsecount rc
-					inner join questionform qf on rc.questionform_id=qf.questionform_id
-					left join #todaysreturns tr on rc.questionform_id=tr.questionform_id
+					inner join questionform qf on rc.QuestionForm_id=qf.QuestionForm_id
+					left join #todaysreturns tr on rc.QuestionForm_id=tr.QuestionForm_id
 					where rc.AllMailStepsAreBack=1
 
 					-- samplepops where all returns were blank  --> DFCT0011927
@@ -271,26 +283,36 @@ AND ACODisposition = 34
 					update qf
 					set unusedreturn_id=6
 					from #takebest tb
-					inner join questionform qf on tb.questionform_id=qf.questionform_id
+					inner join questionform qf on tb.QuestionForm_id=qf.QuestionForm_id
 					where orgBitETLThisReturn=0 and newBitETLThisReturn=0
 					and qf.unusedreturn_id=5
+					-----
+					if exists (select * from Questionform_Missing_datReturned where QfMissingDatreturned_id>@maxQFerror)
+					begin
+						select @sql = 'yo! (a) There are ' + convert(varchar,count(*))+' new records in Questionform_Missing_datReturned. QfMissingDatreturned_id between ' + convert(varchar,min(QfMissingDatreturned_id)) + ' and ' + convert(varchar,max(QfMissingDatreturned_id))
+						from Questionform_Missing_datReturned
+						where QfMissingDatreturned_id>@maxQFerror
+						print @SQL
+						select @maxQFerror = max(QfMissingDatreturned_id) from Questionform_Missing_datReturned
+					end
+					-----
 
 					delete from #takebest where orgBitETLThisReturn=newBitETLThisReturn
 
 					-- if newBitETLThisReturn is the NOT same return as orgBitETLThisReturn, we need to:
 					-- move today's return's results from questionresult to questionresult2
-					insert into QuestionResult2 (QUESTIONFORM_ID,SAMPLEUNIT_ID,QSTNCORE,INTRESPONSEVAL)
-					select qr.QUESTIONFORM_ID,SAMPLEUNIT_ID,QSTNCORE,INTRESPONSEVAL
+					insert into QuestionResult2 (QuestionForm_id,SAMPLEUNIT_ID,QSTNCORE,INTRESPONSEVAL)
+					select qr.QuestionForm_id,SAMPLEUNIT_ID,QSTNCORE,INTRESPONSEVAL
 					from #takebest tb
-					inner join questionform qf on tb.questionform_id=qf.questionform_id
-					inner join questionresult qr on tb.questionform_id=qr.questionform_id
+					inner join questionform qf on tb.QuestionForm_id=qf.QuestionForm_id
+					inner join questionresult qr on tb.QuestionForm_id=qr.QuestionForm_id
 					where orgBitETLThisReturn=1 and newBitETLThisReturn=0
 					and qf.datReturned is not NULL
 
 					delete qr 
 					from #takebest tb
-					inner join questionform qf on tb.questionform_id=qf.questionform_id
-					inner join questionresult qr on tb.questionform_id=qr.questionform_id
+					inner join questionform qf on tb.QuestionForm_id=qf.QuestionForm_id
+					inner join questionresult qr on tb.QuestionForm_id=qr.QuestionForm_id
 					where orgBitETLThisReturn=1 and newBitETLThisReturn=0
 					and qf.datReturned is not NULL
 
@@ -298,26 +320,36 @@ AND ACODisposition = 34
 					-- change today's return to an unused return (this also removes it from the Catalyst ETL queue, via a trigger)
 					update qf
 					set unusedreturn_id=6, datUnusedReturn=qf.datReturned, datReturned=NULL
-					-- select qf.questionform_id, orgBitETLThisReturn, newBitETLThisReturn, qf.unusedreturn_id, qf.datUnusedReturn, qf.datReturned
+					-- select qf.QuestionForm_id, orgBitETLThisReturn, newBitETLThisReturn, qf.unusedreturn_id, qf.datUnusedReturn, qf.datReturned
 					from #takebest tb
-					inner join questionform qf on tb.questionform_id=qf.questionform_id
+					inner join questionform qf on tb.QuestionForm_id=qf.QuestionForm_id
 					where orgBitETLThisReturn=1 and newBitETLThisReturn=0
 					and qf.datReturned is not NULL
+					-----
+					if exists (select * from Questionform_Missing_datReturned where QfMissingDatreturned_id>@maxQFerror)
+					begin
+						select @sql = 'yo! (b) There are ' + convert(varchar,count(*))+' new records in Questionform_Missing_datReturned. QfMissingDatreturned_id between ' + convert(varchar,min(QfMissingDatreturned_id)) + ' and ' + convert(varchar,max(QfMissingDatreturned_id))
+						from Questionform_Missing_datReturned
+						where QfMissingDatreturned_id>@maxQFerror
+						print @SQL
+						select @maxQFerror = max(QfMissingDatreturned_id) from Questionform_Missing_datReturned
+					end
+					-----
 					
 					-- move the previous return's results from questionresult2 to questionresult
-					insert into QuestionResult (QUESTIONFORM_ID,SAMPLEUNIT_ID,QSTNCORE,INTRESPONSEVAL)
-					select qr.QUESTIONFORM_ID,SAMPLEUNIT_ID,QSTNCORE,INTRESPONSEVAL
+					insert into QuestionResult (QuestionForm_id,SAMPLEUNIT_ID,QSTNCORE,INTRESPONSEVAL)
+					select qr.QuestionForm_id,SAMPLEUNIT_ID,QSTNCORE,INTRESPONSEVAL
 					from #takebest tb
-					inner join questionform qf on tb.questionform_id=qf.questionform_id
-					inner join questionresult2 qr on tb.questionform_id=qr.questionform_id
+					inner join questionform qf on tb.QuestionForm_id=qf.QuestionForm_id
+					inner join questionresult2 qr on tb.QuestionForm_id=qr.QuestionForm_id
 					where orgBitETLThisReturn=0 and newBitETLThisReturn=1
 					and qf.datUnusedReturn is not null
 					and qf.unusedreturn_id=5
 
 					delete qr
 					from #takebest tb
-					inner join questionform qf on tb.questionform_id=qf.questionform_id
-					inner join questionresult2 qr on tb.questionform_id=qr.questionform_id
+					inner join questionform qf on tb.QuestionForm_id=qf.QuestionForm_id
+					inner join questionresult2 qr on tb.QuestionForm_id=qr.QuestionForm_id
 					where orgBitETLThisReturn=0 and newBitETLThisReturn=1
 					and qf.datUnusedReturn is not null
 					and qf.unusedreturn_id=5
@@ -325,18 +357,28 @@ AND ACODisposition = 34
 					-- change the previous return back into a used return  (this also adds it to the Catalyst ETL queue, via a trigger)
 					update qf
 					set unusedreturn_id=0, datReturned=qf.datUnusedReturn, qf.datUnusedReturn=NULL
-					-- select qf.questionform_id, orgBitETLThisReturn, newBitETLThisReturn, qf.unusedreturn_id, qf.datUnusedReturn, qf.datReturned
+					-- select qf.QuestionForm_id, orgBitETLThisReturn, newBitETLThisReturn, qf.unusedreturn_id, qf.datUnusedReturn, qf.datReturned
 					from #takebest tb
-					inner join questionform qf on tb.questionform_id=qf.questionform_id
+					inner join questionform qf on tb.QuestionForm_id=qf.QuestionForm_id
 					where orgBitETLThisReturn=0 and newBitETLThisReturn=1
 					and qf.datUnusedReturn is not null
 					and qf.unusedreturn_id=5
+					-----
+					if exists (select * from Questionform_Missing_datReturned where QfMissingDatreturned_id>@maxQFerror)
+					begin
+						select @sql = 'yo! (c) There are ' + convert(varchar,count(*))+' new records in Questionform_Missing_datReturned. QfMissingDatreturned_id between ' + convert(varchar,min(QfMissingDatreturned_id)) + ' and ' + convert(varchar,max(QfMissingDatreturned_id))
+						from Questionform_Missing_datReturned
+						where QfMissingDatreturned_id>@maxQFerror
+						print @SQL
+						select @maxQFerror = max(QfMissingDatreturned_id) from Questionform_Missing_datReturned
+					end
+					-----
 				
 					-- change the record in #todaysreturns to bitETLThisReturn=0
 					update tr
 					set bitETLThisReturn=0
 					from #takebest tb
-					inner join #todaysreturns tr on tb.questionform_id=tr.questionform_id
+					inner join #todaysreturns tr on tb.QuestionForm_id=tr.QuestionForm_id
 					where tb.newbitETLThisReturn=0
 					
 					-- insert the previous return into #todaysreturns
@@ -347,27 +389,27 @@ AND ACODisposition = 34
 						scm.OVERRIDEITEM_ID, qf.SENTMAIL_ID, scm.METHODOLOGY_ID, scm.DATGENERATE, qf.QuestionForm_id, sm.datExpire, null as ACODisposition, null as DispositionAction, qf.ReceiptType_id, 
 						ms.strMailingStep_nm, qf.bitComplete, tb.newbitETLThisReturn, 0 as bitContinueWithMailings
 					from #takeBest tb
-					inner join questionform qf on tb.questionform_id=qf.questionform_id
+					inner join questionform qf on tb.QuestionForm_id=qf.QuestionForm_id
 					inner join survey_def sd on qf.survey_id=sd.survey_id
 					inner join surveytype st on sd.surveytype_id=st.surveytype_id
 					inner join sentmailing sm on qf.sentmail_id=sm.sentmail_id
 					inner join scheduledmailing scm on qf.sentmail_id=scm.sentmail_id
 					inner join mailingstep ms on scm.mailingstep_id=ms.mailingstep_id
 					where tb.newBitETLThisReturn=1
-					and qf.questionform_id not in (select questionform_id from #todaysreturns)
+					and qf.QuestionForm_id not in (select QuestionForm_id from #todaysreturns)
 					
 					-- removed today's return and insert the previous return in the medusa queue
 					delete qfe
 					from #takebest tb
-					inner join QuestionForm_extract qfe on tb.questionform_id=qfe.questionform_id
+					inner join QuestionForm_extract qfe on tb.QuestionForm_id=qfe.QuestionForm_id
 					where tb.orgBitETLThisReturn=1 and 
 					tb.newBitETLThisReturn=0
 					
-					insert into QuestionForm_extract (Questionform_id, tiExtracted)
-					select Questionform_id, 0
+					insert into QuestionForm_extract (QuestionForm_id, tiExtracted)
+					select QuestionForm_id, 0
 					from #todaysreturns
 					where bitETLThisReturn=1
-					and questionform_id not in (select questionform_id from QuestionForm_extract where datExtracted_dt is null)
+					and QuestionForm_id not in (select QuestionForm_id from QuestionForm_extract where datExtracted_dt is null)
 
 					/* Catalyst is taken care of by triggers that fired when we updated questionform.datReturned, above
 					*/
@@ -377,14 +419,14 @@ AND ACODisposition = 34
 			update tr
 			set bitComplete=case when ATACnt>=19 then 1 else 0 end
 			from #TodaysReturns tr
-			inner join (select qr.questionform_id, count(distinct sq.qstncore) as ATACnt
-						from (	select rc.questionform_id, rc.survey_id, qr.qstncore, qr.intResponseVal
+			inner join (select qr.QuestionForm_id, count(distinct sq.qstncore) as ATACnt
+						from (	select rc.QuestionForm_id, rc.survey_id, qr.qstncore, qr.intResponseVal
 								from #qfResponseCount rc
-								inner join questionresult qr on rc.questionform_id=qr.questionform_id
+								inner join questionresult qr on rc.QuestionForm_id=qr.QuestionForm_id
 								union
-								select rc.questionform_id, rc.survey_id, qr2.qstncore, qr2.intResponseVal
+								select rc.QuestionForm_id, rc.survey_id, qr2.qstncore, qr2.intResponseVal
 								from #qfResponseCount rc
-								inner join questionresult2 qr2 on rc.questionform_id=qr2.questionform_id) qr
+								inner join questionresult2 qr2 on rc.QuestionForm_id=qr2.QuestionForm_id) qr
 						inner join sel_qstns sq on qr.survey_id = sq.survey_id and qr.qstncore = sq.qstncore 
 						inner join sel_scls ss on sq.scaleid = ss.qpc_id AND sq.survey_id = ss.survey_id and qr.intresponseval = ss.val
 						where sq.qstncore in (51198,51199,47159,47160,47161,47162,47163,47164,47165,47166,47167,47168,47169,47170,47171,47172,47173,47174,47175,
@@ -392,8 +434,8 @@ AND ACODisposition = 34
 						and sq.subtype = 1 
 						AND sq.language = 1 
 						AND ss.language = 1 
-						group by qr.questionform_id) rc
-					on tr.questionform_id=rc.questionform_id
+						group by qr.QuestionForm_id) rc
+					on tr.QuestionForm_id=rc.QuestionForm_id
 			where tr.Surveytype_dsc = 'ICHCAHPS'
 
 			-- similar code is used in the HHCAHPSCompleteness function (called during the Medusa ETL by in the sp_phase3_questionresult_for_extract and 
@@ -402,29 +444,29 @@ AND ACODisposition = 34
 			update tr
 			set bitComplete=case when ATACnt>9 then 1 else 0 end
 			from #TodaysReturns tr
-			inner join (select qr.questionform_id, count(distinct sq.qstncore) as ATACnt
-						from (	select rc.questionform_id, rc.survey_id, qr.qstncore, qr.intResponseVal
+			inner join (select qr.QuestionForm_id, count(distinct sq.qstncore) as ATACnt
+						from (	select rc.QuestionForm_id, rc.survey_id, qr.qstncore, qr.intResponseVal
 								from #qfResponseCount rc
-								inner join questionresult qr on rc.questionform_id=qr.questionform_id
+								inner join questionresult qr on rc.QuestionForm_id=qr.QuestionForm_id
 								union
-								select rc.questionform_id, rc.survey_id, qr2.qstncore, qr2.intResponseVal
+								select rc.QuestionForm_id, rc.survey_id, qr2.qstncore, qr2.intResponseVal
 								from #qfResponseCount rc
-								inner join questionresult2 qr2 on rc.questionform_id=qr2.questionform_id) qr
+								inner join questionresult2 qr2 on rc.QuestionForm_id=qr2.QuestionForm_id) qr
 						inner join sel_qstns sq on qr.survey_id = sq.survey_id and qr.qstncore = sq.qstncore 
 						inner join sel_scls ss on sq.scaleid = ss.qpc_id AND sq.survey_id = ss.survey_id and qr.intresponseval = ss.val
 						where sq.qstncore in (38694,38695,38696,38697,38698,38699,38700,38701,38702,38703,38704,38708,38709,38710,38711,38712,38713,38714,38717,38718)
 						and sq.subtype = 1 
 						AND sq.language = 1 
 						AND ss.language = 1 
-						group by qr.questionform_id) rc
-					on tr.questionform_id=rc.questionform_id
+						group by qr.QuestionForm_id) rc
+					on tr.QuestionForm_id=rc.QuestionForm_id
 			where tr.Surveytype_dsc = 'Home Health CAHPS'
 
 			update tr
 			set bitETLThisReturn=0, bitContinueWithMailings=1, bitComplete=0
-			-- select tr.questionform_id, rc.ResponseCount, rc.strMailingStep_nm, rc.AllMailStepsAreBack, tr.bitETLThisReturn, tr.bitContinueWithMailings
+			-- select tr.QuestionForm_id, rc.ResponseCount, rc.strMailingStep_nm, rc.AllMailStepsAreBack, tr.bitETLThisReturn, tr.bitContinueWithMailings
 			from #TodaysReturns tr
-			inner join #qfResponseCount rc on tr.questionform_id=rc.questionform_id
+			inner join #qfResponseCount rc on tr.QuestionForm_id=rc.QuestionForm_id
 			where rc.ResponseCount=0			
 		
 			/* end addition */
@@ -432,7 +474,7 @@ AND ACODisposition = 34
 	-- HCAHPS and Hospice CAHPS processing - if a blank return comes in, continue data collection protocol
 	delete from #QFResponseCount
 	insert into #QFResponseCount
-	select Surveytype_dsc, survey_id, questionform_id, sentmail_id, samplepop_id, receipttype_id, strMailingStep_nm, 0 as ResponseCount, 0 as FutureScheduledMailing, 1 as AllMailStepsAreBack----, convert(datetime,null) as GenDate1st, convert(datetime,null) as GenDate2nd
+	select Surveytype_dsc, survey_id, QuestionForm_id, sentmail_id, samplepop_id, receipttype_id, strMailingStep_nm, 0 as ResponseCount, 0 as FutureScheduledMailing, 1 as AllMailStepsAreBack----, convert(datetime,null) as GenDate1st, convert(datetime,null) as GenDate2nd
 	, 0 as tempFlag
 	from #TodaysReturns
 	where Surveytype_dsc in ('HCAHPS IP', 'Hospice CAHPS') -- added Hospice CAHPS 2015-02-19
@@ -445,9 +487,9 @@ AND ACODisposition = 34
 
 	update tr 
 	set bitETLThisReturn=0, bitComplete=0, bitContinueWithMailings= case when rc.strMailingStep_nm = '1st Survey' then 1 else 0 end
-	-- select tr.questionform_id, tr.surveytype_dsc, rc.ResponseCount, tr.bitETLThisReturn, tr.bitComplete, tr.bitContinueWithMailings, rc.strMailingStep_nm
+	-- select tr.QuestionForm_id, tr.surveytype_dsc, rc.ResponseCount, tr.bitETLThisReturn, tr.bitComplete, tr.bitContinueWithMailings, rc.strMailingStep_nm
 	from #todaysreturns tr
-	inner join #QFresponsecount rc on tr.questionform_id=rc.questionform_id
+	inner join #QFresponsecount rc on tr.QuestionForm_id=rc.QuestionForm_id
 	where tr.surveytype_dsc in ('HCAHPS IP', 'Hospice CAHPS') -- added Hospice CAHPS 2015-02-19
 	and rc.ResponseCount=0
 
@@ -460,22 +502,22 @@ AND ACODisposition = 34
 							else case when rc.ATACnt >= 1 AND rc.ATACnt < (34 * 0.50) then 11 else NULL end -- Breakoff
 							end
 	from #TodaysReturns tr
-	inner join (select qr.questionform_id, count(distinct sq.qstncore) as ATACnt
-				from (	select rc.questionform_id, rc.survey_id, qr.qstncore, qr.intResponseVal
+	inner join (select qr.QuestionForm_id, count(distinct sq.qstncore) as ATACnt
+				from (	select rc.QuestionForm_id, rc.survey_id, qr.qstncore, qr.intResponseVal
 						from #qfResponseCount rc
-						inner join questionresult qr on rc.questionform_id=qr.questionform_id
+						inner join questionresult qr on rc.QuestionForm_id=qr.QuestionForm_id
 						union
-						select rc.questionform_id, rc.survey_id, qr2.qstncore, qr2.intResponseVal
+						select rc.QuestionForm_id, rc.survey_id, qr2.qstncore, qr2.intResponseVal
 						from #qfResponseCount rc
-						inner join questionresult2 qr2 on rc.questionform_id=qr2.questionform_id) qr
+						inner join questionresult2 qr2 on rc.QuestionForm_id=qr2.QuestionForm_id) qr
 				inner join sel_qstns sq on qr.survey_id = sq.survey_id and qr.qstncore = sq.qstncore 
 				inner join sel_scls ss on sq.scaleid = ss.qpc_id AND sq.survey_id = ss.survey_id and qr.intresponseval = ss.val
 				where sq.qstncore in (51574,51575,51576,51577,51579,51580,51581,51582,51583,51584,51585,51586,51588,51590,51594,51597,51599,51601,51603,51604,51605,51608,51609,51610,51611,51612,51613,51614,51615,51616,51617,51618,51619,51620)
 				and sq.subtype = 1 
 				AND sq.language = 1 
 				AND ss.language = 1 
-				group by qr.questionform_id) rc
-			on tr.questionform_id=rc.questionform_id
+				group by qr.QuestionForm_id) rc
+			on tr.QuestionForm_id=rc.QuestionForm_id
 	where tr.Surveytype_dsc = 'Hospice CAHPS'
 
 	-- completes S19 US15
@@ -525,10 +567,22 @@ set bitComplete = 0, datReturned=null, UnusedReturn_id=5, datUnusedReturn=qf.dat
 from #TodaysReturns tr
 inner join QuestionForm qf on qf.QuestionForm_id=tr.QuestionForm_id
 where bitETLThisReturn=0
+and qf.UnusedReturn_id=0
+and qf.datReturned is not null
+					-----
+					if exists (select * from Questionform_Missing_datReturned where QfMissingDatreturned_id>@maxQFerror)
+					begin
+						select @sql = 'yo! (d) There are ' + convert(varchar,count(*))+' new records in Questionform_Missing_datReturned. QfMissingDatreturned_id between ' + convert(varchar,min(QfMissingDatreturned_id)) + ' and ' + convert(varchar,max(QfMissingDatreturned_id))
+						from Questionform_Missing_datReturned
+						where QfMissingDatreturned_id>@maxQFerror
+						print @SQL
+						select @maxQFerror = max(QfMissingDatreturned_id) from Questionform_Missing_datReturned
+					end
+					-----
 
 -- move blank/incomplete and partial results into QuestionResult2
-insert into QuestionResult2 (QuestionForm_ID,SampleUnit_ID,QstnCore,intResponseVal)
-select qr.QuestionForm_ID,qr.SampleUnit_ID,qr.QstnCore,qr.intResponseVal
+insert into QuestionResult2 (QuestionForm_id,SampleUnit_ID,QstnCore,intResponseVal)
+select qr.QuestionForm_id,qr.SampleUnit_ID,qr.QstnCore,qr.intResponseVal
 from QuestionResult qr
 inner join #TodaysReturns tr on qr.QuestionForm_id=tr.QuestionForm_id
 where bitETLThisReturn=0
@@ -780,6 +834,23 @@ from #ACOEverybody ae
 inner join #ACOMailingSteps ams on ams.mailingstep_id=ae.mailingstep_id and ams.sampleset_id=ae.sampleset_id
 group by ae.MAILINGSTEP_ID,ae.SAMPLEPOP_ID,ae.METHODOLOGY_ID
 
+select qf.questionform_id, qf.survey_id, qf.samplepop_id, qf.datReturned, qf.unusedreturn_id, qf.datunusedreturn, qf.datresultsimported, qf.bitcomplete 
+into #Audit2
+from questionform qf
+where questionform_id in (select questionform_id from #audit)
+
+set @SQL = 'select a.*, b.datReturned as newDatReturned, b.unusedreturn_id as newUnusedReturn_id, b.datunusedreturn as newDatUnusedReturn, b.datresultsimported as newDatResultsImported, b.bitcomplete as newBitComplete
+into [temp_CheckForCAHPSIncompletesAudit_'+@UniqueNameExtention+']
+from #Audit a
+inner join #audit2 b on a.questionform_id=b.questionform_id
+where isnull(a.datReturned, ''1/1/1910'') <> isnull(b.datReturned, ''1/1/1910'') 
+or isnull(a.unusedreturn_id,-1) <> isnull(b.unusedreturn_id,-1)
+or isnull(a.datunusedreturn, ''1/1/1910'') <> isnull(b.datunusedreturn, ''1/1/1910'') 
+or isnull(a.datresultsimported, ''1/1/1910'') <> isnull(b.datresultsimported, ''1/1/1910'') 
+or a.bitcomplete <> b.bitcomplete
+or (a.bitcomplete is null and b.bitcomplete is not null)
+or (b.bitcomplete is null and a.bitcomplete is not null)'
+
+exec (@SQL)
+
 GO
-
-
