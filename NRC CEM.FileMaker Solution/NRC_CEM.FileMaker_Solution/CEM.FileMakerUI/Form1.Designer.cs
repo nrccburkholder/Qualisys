@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.cmbxSurveyType = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.dgTemplates = new System.Windows.Forms.DataGridView();
@@ -45,11 +46,17 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.templateBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.queueBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.queueFileBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dgTemplates)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgQueueFiles)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgQueues)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.templateBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.queueBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.queueFileBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // cmbxSurveyType
@@ -92,7 +99,9 @@
             // 
             // dgQueueFiles
             // 
+            this.dgQueueFiles.AutoGenerateColumns = false;
             this.dgQueueFiles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgQueueFiles.DataSource = this.queueFileBindingSource;
             this.dgQueueFiles.Location = new System.Drawing.Point(116, 463);
             this.dgQueueFiles.MultiSelect = false;
             this.dgQueueFiles.Name = "dgQueueFiles";
@@ -114,9 +123,10 @@
             // 
             // dgQueues
             // 
+            this.dgQueues.AutoGenerateColumns = false;
             this.dgQueues.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgQueues.DataSource = this.queueBindingSource;
             this.dgQueues.Location = new System.Drawing.Point(66, 281);
-            this.dgQueues.MultiSelect = false;
             this.dgQueues.Name = "dgQueues";
             this.dgQueues.Size = new System.Drawing.Size(786, 150);
             this.dgQueues.TabIndex = 6;
@@ -205,6 +215,10 @@
             this.richTextBox1.TabIndex = 14;
             this.richTextBox1.Text = "";
             // 
+            // templateBindingSource
+            // 
+            this.templateBindingSource.AllowNew = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -235,6 +249,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.templateBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.queueBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.queueFileBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -259,6 +276,9 @@
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem runAllToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.BindingSource queueFileBindingSource;
+        private System.Windows.Forms.BindingSource queueBindingSource;
+        private System.Windows.Forms.BindingSource templateBindingSource;
     }
 }
 
