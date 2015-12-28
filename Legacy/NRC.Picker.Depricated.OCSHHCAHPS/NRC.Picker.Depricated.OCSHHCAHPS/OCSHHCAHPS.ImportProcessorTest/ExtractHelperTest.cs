@@ -3,78 +3,203 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors;
 using NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL.Generated;
 using System.Xml.Linq;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace OCSHHCAHPS.ImportProcessorTest
 {
     [TestClass]
     public class ExtractHelperTest
     {
-        private XDocument XDocWithRoot()
+        #region Helpers
+
+        private static void AssertAttribute(IEnumerable<XAttribute> attributes, string name, string value)
         {
-            return new XDocument(new XElement("root"));
+            var attribute = attributes.FirstOrDefault(a => a.Name == name);
+            Assert.IsNotNull(attribute);
+            Assert.AreEqual(value, attribute.Value);
+        }
+
+        #endregion Helpers
+
+        #region CreateEmptyDocument
+
+        [TestMethod]
+        public void CreateEmptyDocument_ReturnsDocument()
+        {
+            var xml = ExtractHelper.CreateEmptyDocument();
+            Assert.IsNotNull(xml);
+        }
+
+        [TestMethod]
+        public void CreateEmptyDocument_HasRoot()
+        {
+            var xml = ExtractHelper.CreateEmptyDocument();
+            Assert.IsNotNull(xml.Root);
+            Assert.AreEqual("root", xml.Root.Name);
+        }
+
+        [TestMethod]
+        public void CreateEmptyDocument_HasMetadataElement()
+        {
+            var xml = ExtractHelper.CreateEmptyDocument();
+            Assert.IsNotNull(xml.Root.Element("metadata"));
+        }
+
+        [TestMethod]
+        public void CreateEmptyDocument_HasRowsElement()
+        {
+            var xml = ExtractHelper.CreateEmptyDocument();
+            Assert.IsNotNull(xml.Root.Element("rows"));
+        }
+
+        #endregion CreateEmptyDocument
+
+        #region CreateRootAttributes
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void CreateRootAttributes_ClientIsNull_ArgumentNullExceptionIsThrown()
+        {
+            ExtractHelper.CreateRootAttributes(null, "file.csv");
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void SetRootAttributes_XmlIsNull_ArgumentNullExceptionIsThrown()
+        public void CreateRootAttributes_FileNameIsNull_ArgumentNullExceptionIsThrown()
         {
-            ExtractHelper.SetRootAttributes(null, new ClientDetail(), "file.csv");
+            ExtractHelper.CreateRootAttributes(new ClientDetail(), null);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void SetRootAttributes_ClientIsNull_ArgumentNullExceptionIsThrown()
+        public void CreateRootAttributes_SourceFileIsSet()
         {
-            ExtractHelper.SetRootAttributes(XDocWithRoot(), null, "file.csv");
+            var attributes = ExtractHelper.CreateRootAttributes(new ClientDetail(), "file.csv");
+            AssertAttribute(attributes, "sourcefile", "file.csv");
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void SetRootAttributes_FileNameIsNull_ArgumentNullExceptionIsThrown()
+        public void CreateRootAttributes_ClientIdIsSet()
         {
-            ExtractHelper.SetRootAttributes(XDocWithRoot(), new ClientDetail(), null);
+            var attributes = ExtractHelper.CreateRootAttributes(new ClientDetail { Client_id = 1 }, "file.csv");
+            AssertAttribute(attributes, "client_id", "1");
         }
 
         [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
-        public void SetRootAttributes_NoRoot_InvalidOperationExceptionIsThrown()
+        public void CreateRootAttributes_StudyIdIsSet()
         {
-            ExtractHelper.SetRootAttributes(new XDocument(), new ClientDetail(), "file.csv");
+            var attributes = ExtractHelper.CreateRootAttributes(new ClientDetail { Study_id = 1 }, "file.csv");
+            AssertAttribute(attributes, "study_id", "1");
         }
 
         [TestMethod]
-        public void SetRootAttributes_SourceFileIsSet()
+        public void CreateRootAttributes_SurveyIdIsSet()
         {
-            var xml = ExtractHelper.SetRootAttributes(XDocWithRoot(), new ClientDetail(), "file.csv");
-            Assert.AreEqual("file.csv", xml.Root.Attribute("sourcefile").Value);
+            var attributes = ExtractHelper.CreateRootAttributes(new ClientDetail { Survey_id = 1 }, "file.csv");
+            AssertAttribute(attributes, "survey_id", "1");
         }
 
         [TestMethod]
-        public void SetRootAttributes_ClientIdIsSet()
+        public void CreateRootAttributes_ContractedLanguagesIsSet()
         {
-            var xml = ExtractHelper.SetRootAttributes(XDocWithRoot(), new ClientDetail { Client_id = 1 }, "file.csv");
-            Assert.AreEqual("1", xml.Root.Attribute("client_id").Value);
+            var attributes = ExtractHelper.CreateRootAttributes(new ClientDetail { Languages = "A,B,C" }, "file.csv");
+            AssertAttribute(attributes, "ContractedLanguages", "A,B,C");
+        }
+
+        #endregion CreateRootAttributes
+
+        #region CreateTransformRow
+
+        [TestMethod]
+        public void CreateTransformRow_ReturnsRElement()
+        {
+            var row = ExtractHelper.CreateTransformRow(1);
+            Assert.IsNotNull(row);
+            Assert.AreEqual("r", row.Name);
         }
 
         [TestMethod]
-        public void SetRootAttributes_StudyIdIsSet()
+        public void CreateTransformRow_IdIsSet()
         {
-            var xml = ExtractHelper.SetRootAttributes(XDocWithRoot(), new ClientDetail { Study_id = 1 }, "file.csv");
-            Assert.AreEqual("1", xml.Root.Attribute("study_id").Value);
+            var row = ExtractHelper.CreateTransformRow(1);
+            var id = row.Attribute("id");
+            Assert.IsNotNull(id);
+            Assert.AreEqual("1", id.Value);
         }
 
         [TestMethod]
-        public void SetRootAttributes_SurveyIdIsSet()
+        public void CreateTransformRow_FieldsAreAdded()
         {
-            var xml = ExtractHelper.SetRootAttributes(XDocWithRoot(), new ClientDetail { Survey_id = 1 }, "file.csv");
-            Assert.AreEqual("1", xml.Root.Attribute("survey_id").Value);
+            var row = ExtractHelper.CreateTransformRow(1, new XElement("a"));
+            var fields = row.Elements();
+            Assert.AreEqual(1, fields.Count());
+            Assert.AreEqual("a", fields.First().Name);
+        }
+
+        #endregion
+
+        #region CreateFieldElement
+
+        [TestMethod]
+        public void CreateFieldElement_NvElementIsCreated()
+        {
+            var field = ExtractHelper.CreateFieldElement("a", "");
+            Assert.IsNotNull(field);
+            Assert.AreEqual("nv", field.Name);
         }
 
         [TestMethod]
-        public void SetRootAttributes_ContractedLanguagesIsSet()
+        public void CreateFieldElement_NvValueIsSet()
         {
-            var xml = ExtractHelper.SetRootAttributes(XDocWithRoot(), new ClientDetail { Languages = "A,B,C" }, "file.csv");
-            Assert.AreEqual("A,B,C", xml.Root.Attribute("ContractedLanguages").Value);
+            var field = ExtractHelper.CreateFieldElement("a", "b");
+            Assert.AreEqual("b", field.Value);
         }
+
+        [TestMethod]
+        public void CreateFieldElement_NAttributeIsSet()
+        {
+            var field = ExtractHelper.CreateFieldElement("a", "b");
+            var attribute = field.Attribute("n");
+            Assert.IsNotNull(attribute);
+            Assert.AreEqual("a", attribute.Value);
+        }
+
+        #endregion CreateFieldElement
+
+        #region GetMetadataElement
+
+        [TestMethod]
+        public void GetMetadataElement_HasMetadataElement_ReturnsMetadataElement()
+        {
+            var xml =
+                new XDocument(
+                    new XElement("root",
+                        new XElement("metadata")
+                ));
+
+            var element = ExtractHelper.GetMetadataElement(xml);
+            Assert.IsNotNull(element);
+            Assert.AreEqual("metadata", element.Name);
+        }
+
+        #endregion GetMetadataElement
+
+        #region GetRowsElement
+
+        [TestMethod]
+        public void GetRowsElement_HasRowsElement_ReturnsRowsElement()
+        {
+            var xml =
+                new XDocument(
+                    new XElement("root",
+                        new XElement("rows")
+                ));
+
+            var element = ExtractHelper.GetRowsElement(xml);
+            Assert.IsNotNull(element);
+            Assert.AreEqual("rows", element.Name);
+        }
+
+        #endregion GetRowsElement
     }
 }

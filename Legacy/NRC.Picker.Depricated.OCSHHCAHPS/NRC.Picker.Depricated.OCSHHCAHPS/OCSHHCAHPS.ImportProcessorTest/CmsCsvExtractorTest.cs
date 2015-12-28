@@ -6,9 +6,6 @@ namespace OCSHHCAHPS.ImportProcessorTest
     [TestClass]
     public class CmsCsvExtractorTest
     {
-        [TestMethod]
-        public void TestMethod1()
-        {
-        }
+
     }
 }
