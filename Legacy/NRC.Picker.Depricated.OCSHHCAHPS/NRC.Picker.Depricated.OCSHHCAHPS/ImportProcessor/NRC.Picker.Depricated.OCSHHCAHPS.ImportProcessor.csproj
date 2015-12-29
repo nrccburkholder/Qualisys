@@ -101,7 +101,9 @@
     <Compile Include="Exceptions\UploadAbandoned.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Extractors\BitConverter.cs" />
+    <Compile Include="Extractors\CmsCsvBody.cs" />
     <Compile Include="Extractors\CmsCsvExtractor.cs" />
+    <Compile Include="Extractors\CmsCsvParser.cs" />
     <Compile Include="Extractors\CompactDateConverter.cs" />
     <Compile Include="Extractors\CSVToXMLBase.cs" />
     <Compile Include="Extractors\ExtractHelper.cs" />
