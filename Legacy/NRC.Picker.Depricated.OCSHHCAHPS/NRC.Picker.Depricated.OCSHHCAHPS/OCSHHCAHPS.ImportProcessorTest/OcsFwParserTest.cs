@@ -13,26 +13,6 @@ namespace OCSHHCAHPS.ImportProcessorTest
     {
         #region Helpers
 
-        private static IEnumerable<XElement> GetMetadataRows(XDocument xml)
-        {
-            return xml.Element("root").Element("metadata").Elements("r");
-        }
-
-        private static XElement GetMetadataRow(XDocument xml)
-        {
-            return GetMetadataRows(xml).First();
-        }
-
-        private static IEnumerable<XElement> GetRows(XDocument xml)
-        {
-            return xml.Element("root").Element("rows").Elements("r");
-        }
-
-        private static XElement GetElement(XElement parent, string field)
-        {
-            return parent.Elements("nv").FirstOrDefault(nv => nv.Attribute("n").Value == field);
-        }
-
         private static string GetVersion1File()
         {
             return
@@ -51,30 +31,30 @@ namespace OCSHHCAHPS.ImportProcessorTest
         private static XElement GetMetadataRowForVersion1File()
         {
             var xml = GetParsedVersion1File();
-            return GetMetadataRow(xml);
+            return ParserTestHelper.GetMetadataRow(xml);
         }
 
         private static XElement GetMetadataElementForVersion1File(string field)
         {
             var metadata = GetMetadataRowForVersion1File();
-            return GetElement(metadata, field);
+            return ParserTestHelper.GetElement(metadata, field);
         }
 
         private static IEnumerable<XElement> GetRowsForVersion1File()
         {
             var xml = GetParsedVersion1File();
-            return GetRows(xml);
+            return ParserTestHelper.GetRows(xml);
         }
 
         private static XElement GetRowsElementForVersion1File(string field, int rowNumber)
         {
             var row = GetRowsForVersion1File().ElementAt(rowNumber);
-            return GetElement(row, field);
+            return ParserTestHelper.GetElement(row, field);
         }
 
         private static void AssertVersion1FileMetadataHasField(string field, string value)
         {
-            var element = GetElement(GetMetadataRowForVersion1File(), field);
+            var element = ParserTestHelper.GetElement(GetMetadataRowForVersion1File(), field);
             Assert.IsNotNull(element);
             Assert.AreEqual(value, element.Value);
         }
@@ -107,30 +87,30 @@ namespace OCSHHCAHPS.ImportProcessorTest
         private static XElement GetMetadataRowForVersion2File()
         {
             var xml = GetParsedVersion2File();
-            return GetMetadataRow(xml);
+            return ParserTestHelper.GetMetadataRow(xml);
         }
 
         private static XElement GetMetadataElementForVersion2File(string field)
         {
             var metadata = GetMetadataRowForVersion2File();
-            return GetElement(metadata, field);
+            return ParserTestHelper.GetElement(metadata, field);
         }
 
         private static IEnumerable<XElement> GetRowsForVersion2File()
         {
             var xml = GetParsedVersion2File();
-            return GetRows(xml);
+            return ParserTestHelper.GetRows(xml);
         }
 
         private static XElement GetRowsElementForVersion2File(string field, int rowNumber)
         {
             var row = GetRowsForVersion2File().ElementAt(rowNumber);
-            return GetElement(row, field);
+            return ParserTestHelper.GetElement(row, field);
         }
 
         private static void AssertVersion2FileMetadataHasField(string field, string value)
         {
-            var element = GetElement(GetMetadataRowForVersion2File(), field);
+            var element = ParserTestHelper.GetElement(GetMetadataRowForVersion2File(), field);
             Assert.IsNotNull(element);
             Assert.AreEqual(value, element.Value);
         }
@@ -169,7 +149,7 @@ namespace OCSHHCAHPS.ImportProcessorTest
         public void Parse_Version1File_OneMetadataRow()
         {
             var xml = GetParsedVersion1File();
-            var metadataRows = GetMetadataRows(xml);
+            var metadataRows = ParserTestHelper.GetMetadataRows(xml);
             Assert.AreEqual(1, metadataRows.Count());
         }
 
@@ -736,7 +716,7 @@ namespace OCSHHCAHPS.ImportProcessorTest
         public void Parse_Version2File_OneMetadataRow()
         {
             var xml = GetParsedVersion2File();
-            var metadataRows = GetMetadataRows(xml);
+            var metadataRows = ParserTestHelper.GetMetadataRows(xml);
             Assert.AreEqual(1, metadataRows.Count());
         }
 

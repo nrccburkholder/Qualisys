@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -50,6 +50,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -58,10 +59,12 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FileHelpers">
-      <HintPath>..\..\third_party\FileHelpers\Binaries\DotNet 2.0\FileHelpers.dll</HintPath>
+    <Reference Include="FileHelpers, Version=3.1.5.0, Culture=neutral, PublicKeyToken=3e0c08d59cc3d657, processorArchitecture=MSIL">
+      <HintPath>..\packages\FileHelpers.3.1.5\lib\net40\FileHelpers.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
@@ -106,7 +109,12 @@
     <Compile Include="Extractors\IcdConverter.cs" />
     <Compile Include="Extractors\IExtract.cs" />
     <Compile Include="Extractors\M0010Converter.cs" />
+    <Compile Include="Extractors\MonthConverter.cs" />
+    <Compile Include="Extractors\NoCommasConverter.cs" />
+    <Compile Include="Extractors\OcsCsvBody.cs" />
     <Compile Include="Extractors\OcsCsvExtractor.cs" />
+    <Compile Include="Extractors\OcsCsvHeader.cs" />
+    <Compile Include="Extractors\OcsCsvParser.cs" />
     <Compile Include="Extractors\OcsFwBodyV1.cs" />
     <Compile Include="Extractors\OcsFwBodyV2.cs" />
     <Compile Include="Extractors\OcsFwExtractor.cs" />
@@ -133,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="DAL\Generated\GenerateDAL.bat" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

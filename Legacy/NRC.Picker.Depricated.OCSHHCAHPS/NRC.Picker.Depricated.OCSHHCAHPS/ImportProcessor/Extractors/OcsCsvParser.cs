@@ -1,105 +1,78 @@
-﻿using System;
-using System.Linq;
-using System.Xml.Linq;
-using System.Collections.Generic;
+﻿using FileHelpers;
+using FileHelpers.Events;
+using FileHelpers.MasterDetail;
 using NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL.Generated;
-using FileHelpers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Xml.Linq;
 
 namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
 {
-    internal static class OcsFwParser
+    internal static class OcsCsvParser
     {
-        private enum OcsFwBodyVersion
-        {
-            V1,
-            V2
-        }
-
-        private const int BODY_LINE_LENGTH_V1 = 469;
-        private const int BODY_LINE_LENGTH_V2 = 505;
-        private const int BODY_LINE_LENGTH = 505;
-        private const int SHORT_LINE_FLEX = 20; // consider that they might not pad the last field, so a body line might be short by let's say 20
-        private const int MIN_BODY_LINE_LENGTH = BODY_LINE_LENGTH - SHORT_LINE_FLEX;
-
         public static XDocument Parse(ClientDetail client, string fileName, string fileContents)
         {
             var xml = ExtractHelper.CreateEmptyDocument();
-            var lines = ExtractHelper.GetLinesForFixedWidthFile(fileContents);
 
-            ParseHeader(xml, lines);
-            ParseBody(xml, lines);
+            var engine = new MasterDetailEngine<OcsCsvHeader, OcsCsvBody>(new MasterDetailSelector(RecordSelector));
+            var result = engine.ReadString(ExtractHelper.AddTrailingCommas(fileContents));
+
+            if (result.Length == 0) throw new InvalidOperationException("No header found in file.");
+            if (result.Length > 1) throw new InvalidOperationException("More than one header found in file.");
+
+            ParseHeader(xml, result[0].Master);
+            ParseBody(xml, result[0].Details);
+
             xml.Root.Add(ExtractHelper.CreateRootAttributes(client, fileName));
 
             return xml;
         }
 
-        private static void ParseHeader(XDocument xml, IEnumerable<string> lines)
+        private static RecordAction RecordSelector(string record)
         {
-            var foundHeader = false;
+            if (record.Length < 2 || record.StartsWith("Sample") || record.StartsWith("PatientCode"))
+                return RecordAction.Skip;
+
+            var columnsWithData = ColumnsWithData(record);
+
+            if (columnsWithData == 0)
+                return RecordAction.Skip;
+            else if (columnsWithData <= 8)
+                return RecordAction.Master;
+            else
+                return RecordAction.Detail;
+        }
+
+        private static int ColumnsWithData(string record)
+        {
+            return record.Split(',').Where(value => !string.IsNullOrWhiteSpace(value)).Count();
+        }
+
+        private static void ParseHeader(XDocument xml, OcsCsvHeader header)
+        {
             var metadata = ExtractHelper.GetMetadataElement(xml);
-            foreach (var line in lines)
-            {
-                if (IsHeader(line))
-                {
-                    if (foundHeader) throw new InvalidOperationException("More than one header found in file.");
-                    foundHeader = true;
 
-                    var header = ExtractHelper.Parse<OcsFwHeader>(line);
-
-                    metadata.Add(
-                        ExtractHelper.CreateTransformRow(1,
-                            ExtractHelper.CreateFieldElement("MONTH", header.SampleMonth),
-                            ExtractHelper.CreateFieldElement("YEAR", header.SampleYear),
-                            ExtractHelper.CreateFieldElement("PROVIDER ID", header.ProviderID),
-                            ExtractHelper.CreateFieldElement("PROVIDER NAME", header.ProviderName),
-                            ExtractHelper.CreateFieldElement("TOTAL NUMBER OF PATIENT SERVED", header.TotalNumberOfPatientsServed),
-                            ExtractHelper.CreateFieldElement("NUMBER OF BRANCHES", header.NumberOfBranchesServed),
-                            ExtractHelper.CreateFieldElement("VERSION NUMBER", header.VersionNumber)
-                            ));
-                }
-            }
-
-            if (!foundHeader) throw new InvalidOperationException("No header found in file.");
+            metadata.Add(
+                ExtractHelper.CreateTransformRow(1,
+                    ExtractHelper.CreateFieldElement("MONTH", header.SampleMonth),
+                    ExtractHelper.CreateFieldElement("YEAR", header.SampleYear),
+                    ExtractHelper.CreateFieldElement("PROVIDER ID", header.ProviderID),
+                    ExtractHelper.CreateFieldElement("PROVIDER NAME", header.ProviderName),
+                    ExtractHelper.CreateFieldElement("TOTAL NUMBER OF PATIENT SERVED", header.TotalNumberOfPatientsServed),
+                    ExtractHelper.CreateFieldElement("NUMBER OF BRANCHES", header.NumberOfBranchesServed),
+                    ExtractHelper.CreateFieldElement("VERSION NUMBER", header.VersionNumber)
+                    ));
         }
 
-        private static bool IsHeader(string line)
+        private static void ParseBody(XDocument xml, IEnumerable<OcsCsvBody> records)
         {
-            return (line.TrimEnd().Length < MIN_BODY_LINE_LENGTH && line.Length > 1 && !line.EndsWith("%"));
-        }
-
-        private static bool IsBlank(string line)
-        {
-            return string.IsNullOrWhiteSpace(line);
-        }
-
-        private static void ParseBody(XDocument xml, IEnumerable<string> lines)
-        {
-            var engineV1 = new FileHelperAsyncEngine<OcsFwBodyV1>();
-            var engineV2 = new FileHelperAsyncEngine<OcsFwBodyV2>();
-
             var rows = ExtractHelper.GetRowsElement(xml);
             int rowCount = 0;
-            foreach (var line in lines)
+            foreach (var body in records)
             {
-                if (IsBlank(line)) continue;
-                if (IsHeader(line)) continue;
                 rowCount++;
-
-                var version = GetBodyVersion(line);
-                dynamic body;
-                switch (version)
-                {
-                    case OcsFwBodyVersion.V1:
-                        engineV1.BeginReadString(line);
-                        body = engineV1.ReadNext();
-                        break;
-                    case OcsFwBodyVersion.V2:
-                        engineV2.BeginReadString(line);
-                        body = engineV2.ReadNext();
-                        break;
-                    default:
-                        throw new InvalidOperationException(string.Format("Unrecognized file version {0}.", version));
-                }
 
                 rows.Add(
                     ExtractHelper.CreateTransformRow(rowCount,
@@ -187,22 +160,6 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
                         ExtractHelper.CreateFieldElement("ADL_Transferring", body.ADL_Transfer),
                         ExtractHelper.CreateFieldElement("ADL_Feed", body.ADL_Feed)
                         ));
-            }
-        }
-
-        private static OcsFwBodyVersion GetBodyVersion(string line)
-        {
-            var pos = line.LastIndexOf("%");
-            var columns = (pos > 0) ? pos + 1 : line.Length;
-
-            switch (columns)
-            {
-                case BODY_LINE_LENGTH_V1:
-                    return OcsFwBodyVersion.V1;
-                case BODY_LINE_LENGTH_V2:
-                    return OcsFwBodyVersion.V2;
-                default:
-                    throw new InvalidOperationException(string.Format("{0} characters found on line which doesn't match either version 1 or 2 files.", columns));
             }
         }
     }

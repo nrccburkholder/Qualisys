@@ -57,7 +57,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
             return xml.Element("root").Element("rows");
         }
 
-        public static T Parse<T>(string line)
+        public static T Parse<T>(string line) where T : class
         {
             var engine = new FileHelperAsyncEngine<T>();
             engine.BeginReadString(line);
@@ -67,6 +67,11 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
         public static IEnumerable<string> GetLinesForFixedWidthFile(string fileContents)
         {
             return fileContents.Split('\n').Select(line => line.Replace("\r", ""));
+        }
+
+        public static string AddTrailingCommas(string fileContents)
+        {
+            return string.Join("\n", fileContents.Split('\n').Select(line => line.TrimEnd(' ', '\r') + ","));
         }
     }
 }
