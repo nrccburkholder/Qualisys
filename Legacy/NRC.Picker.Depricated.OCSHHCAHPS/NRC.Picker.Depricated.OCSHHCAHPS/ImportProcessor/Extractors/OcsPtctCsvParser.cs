@@ -32,7 +32,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
             if (record.Length < 2 || record.StartsWith("Sample") || record.StartsWith("PatientCode"))
                 return RecordAction.Skip;
 
-            var columnsWithData = ColumnsWithData(record);
+            var columnsWithData = ExtractHelper.ColumnsWithData(record);
 
             if (columnsWithData == 0)
                 return RecordAction.Skip;
@@ -40,11 +40,6 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
                 return RecordAction.Master;
             else
                 return RecordAction.Detail;
-        }
-
-        private static int ColumnsWithData(string record)
-        {
-            return record.Split(',').Where(value => !string.IsNullOrWhiteSpace(value)).Count();
         }
 
         private static void ParseHeader(XDocument xml, OcsPtctCsvHeader header)
@@ -79,7 +74,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
                         ExtractHelper.CreateFieldElement("Patient Middle Initial", body.Middle_Initial),
                         ExtractHelper.CreateFieldElement("Patient Last Name", body.Last_Name),
                         ExtractHelper.CreateFieldElement("Patient Mailing Address 1", body.Address1),
-                        ExtractHelper.CreateFieldElement("Patient Mailing Address 2", body.Address2),
+                        ExtractHelper.CreateFieldElement("Patient Mailing Address 2", ExtractHelper.IsPhoneNumber(body.Address2) ? "" : body.Address2),
                         ExtractHelper.CreateFieldElement("Patient Address City", body.City),
                         ExtractHelper.CreateFieldElement("Patient Address State", body.State),
                         ExtractHelper.CreateFieldElement("Patient Address Zip Code", body.ZipCode),

@@ -109,7 +109,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
                         ExtractHelper.CreateFieldElement("Patient Middle Initial", body.Middle_Initial),
                         ExtractHelper.CreateFieldElement("Patient Last Name", body.Last_Name),
                         ExtractHelper.CreateFieldElement("Patient Mailing Address 1", body.Address1),
-                        ExtractHelper.CreateFieldElement("Patient Mailing Address 2", body.Address2),
+                        ExtractHelper.CreateFieldElement("Patient Mailing Address 2", ExtractHelper.IsPhoneNumber(body.Address2) ? "" : body.Address2),
                         ExtractHelper.CreateFieldElement("Patient Address City", body.City),
                         ExtractHelper.CreateFieldElement("Patient Address State", body.State),
                         ExtractHelper.CreateFieldElement("Patient Address Zip Code", body.ZipCode),

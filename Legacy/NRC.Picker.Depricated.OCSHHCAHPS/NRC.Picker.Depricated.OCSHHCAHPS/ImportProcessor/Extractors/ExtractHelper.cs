@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
 namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
@@ -132,6 +133,25 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
         public static string ConvertDateFormat(string value, bool expectingyyyMMdd)
         {
             return GetDateTimeFromString(value, expectingyyyMMdd).ToString("MMddyyyy");
+        }
+
+        private static Regex _phoneNumberRegex = new Regex(@"^(\(?\d{3}\)?)?\s*[\.\-]*\s*\d{3}\s*[\.\-]*\s*\d{4}$", RegexOptions.Compiled);
+
+        public static bool IsPhoneNumber(string candidateString)
+        {
+            return _phoneNumberRegex.IsMatch(candidateString.Trim());
+        }
+
+        public static int ColumnsWithData(string record)
+        {
+            return record.Split(',').Where(value => !string.IsNullOrWhiteSpace(value)).Count();
+        }
+
+        public static bool IsBlankCsvLine(string line)
+        {
+            if (string.IsNullOrWhiteSpace(line)) return true;
+            else if (ColumnsWithData(line) == 0) return true;
+            return false;
         }
     }
 }

@@ -9,13 +9,13 @@ using System.Xml.Linq;
 
 namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
 {
-    internal static class CmsCsvParser
+    internal static class PgCsvParser
     {
         public static XDocument Parse(ClientDetail client, string fileName, string fileContents)
         {
             var xml = ExtractHelper.CreateEmptyDocument();
 
-            var engine = new FileHelperAsyncEngine<CmsCsvBody>();
+            var engine = new FileHelperAsyncEngine<PgCsvBody>();
             engine.BeforeReadRecord += Engine_BeforeReadRecord;
 
             using (engine.BeginReadString(fileContents))
@@ -30,11 +30,11 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
                     if (firstRecord)
                         metadata.Add(
                             ExtractHelper.CreateTransformRow(1,
-                                ExtractHelper.CreateFieldElement("MONTH", body.Sample_Month),
-                                ExtractHelper.CreateFieldElement("YEAR", body.Sample_Year),
-                                ExtractHelper.CreateFieldElement("PROVIDER ID", body.M0010),
-                                ExtractHelper.CreateFieldElement("PROVIDER NAME", body.Provider_Name),
-                                ExtractHelper.CreateFieldElement("TOTAL NUMBER OF PATIENT SERVED", body.Total_Patients_Served),
+                                ExtractHelper.CreateFieldElement("MONTH", body.SampleMonth),
+                                ExtractHelper.CreateFieldElement("YEAR", body.SampleYear),
+                                ExtractHelper.CreateFieldElement("PROVIDER ID", body.ClientNumber),
+                                ExtractHelper.CreateFieldElement("PROVIDER NAME", ""),
+                                ExtractHelper.CreateFieldElement("TOTAL NUMBER OF PATIENT SERVED", body.TotalNumberOfPatientsServed),
                                 ExtractHelper.CreateFieldElement("NUMBER OF BRANCHES", ""),
                                 ExtractHelper.CreateFieldElement("VERSION NUMBER", "")
                                 ));
@@ -46,7 +46,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
                     rows.Add(
                         ExtractHelper.CreateTransformRow(rowCount,
                             ExtractHelper.CreateFieldElement("Patient ID", body.Patient_ID),
-                            ExtractHelper.CreateFieldElement("Medical Record Number", body.Patient_ID),
+                            ExtractHelper.CreateFieldElement("Medical Record Number", ""),
                             ExtractHelper.CreateFieldElement("Patient First Name", body.First_Name),
                             ExtractHelper.CreateFieldElement("Patient Middle Initial", body.Middle_Initial),
                             ExtractHelper.CreateFieldElement("Patient Last Name", body.Last_Name),
@@ -61,7 +61,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
                             ExtractHelper.CreateFieldElement("Language", body.Language),
                             ExtractHelper.CreateFieldElement("Start of Care Date", ExtractHelper.ConvertDateFormat(body.SOC_Date, false)),
                             ExtractHelper.CreateFieldElement("Number of skilled visits", body.CurrentMonth_Skilled_Visits),
-                            ExtractHelper.CreateFieldElement("Lookback Period Visits", body.Lookback_Skilled_Visits),
+                            ExtractHelper.CreateFieldElement("Lookback Period Visits", body.LastTwoMonths_Skilled_Visits - body.CurrentMonth_Skilled_Visits),
                             ExtractHelper.CreateFieldElement("Payer - None", body.Payer_None),
                             ExtractHelper.CreateFieldElement("Payer - Medicare FFS", body.Payer_MedicareFFS),
                             ExtractHelper.CreateFieldElement("Payer - Medicare HMO", body.Payer_MedicareHMO),
@@ -79,15 +79,15 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
                             ExtractHelper.CreateFieldElement("Hospice Indicator", ""),
                             ExtractHelper.CreateFieldElement("Maternity Care Only Indicator", ""),
                             ExtractHelper.CreateFieldElement("Branch ID", body.Branch_ID),
-                            ExtractHelper.CreateFieldElement("Home Health Visit Type", ""),
-                            ExtractHelper.CreateFieldElement("Assessment Reason", ""),
-                            ExtractHelper.CreateFieldElement("Discharge Date", ""),
+                            ExtractHelper.CreateFieldElement("Home Health Visit Type", body.HH_Visit_Type),
+                            ExtractHelper.CreateFieldElement("Assessment Reason", body.Assessment_Reason),
+                            ExtractHelper.CreateFieldElement("Discharge Date", ExtractHelper.ConvertDateFormat(body.Discharge_Date, false)),
                             ExtractHelper.CreateFieldElement("Admission Source - NF", body.Admission_NF),
                             ExtractHelper.CreateFieldElement("Admission Source - SNF", body.Admission_SNF),
-                            ExtractHelper.CreateFieldElement("Admission Source - IPP S", ""),
+                            ExtractHelper.CreateFieldElement("Admission Source - IPP S", body.Admission_IPPS),
                             ExtractHelper.CreateFieldElement("Admission Source - LTCH", body.Admission_LTCH),
                             ExtractHelper.CreateFieldElement("Admission Source - IRF", body.Admission_IRF),
-                            ExtractHelper.CreateFieldElement("Admission Source - Pysch", ""),
+                            ExtractHelper.CreateFieldElement("Admission Source - Pysch", body.Admission_Pysch),
                             ExtractHelper.CreateFieldElement("Admission Source - Other", body.Admission_Other),
                             ExtractHelper.CreateFieldElement("Admission Source - NA (Community)", body.Admission_NA),
                             ExtractHelper.CreateFieldElement("Admission Source - Unknown", ""),
@@ -114,14 +114,14 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
                             ExtractHelper.CreateFieldElement("Surgical Discharge", body.Surgical_Discharge),
                             ExtractHelper.CreateFieldElement("End-Stage Renal Disease (ESRD)", body.ESRD),
                             ExtractHelper.CreateFieldElement("Dialysis Indicator", ""),
-                            ExtractHelper.CreateFieldElement("Referral Source", ""),
+                            ExtractHelper.CreateFieldElement("Referral Source", body.Referral_Source),
                             ExtractHelper.CreateFieldElement("Skilled Nursing", ""),
-                            ExtractHelper.CreateFieldElement("Physical Therapy", ""),
-                            ExtractHelper.CreateFieldElement("Home Health Aide", ""),
-                            ExtractHelper.CreateFieldElement("Social Service", ""),
-                            ExtractHelper.CreateFieldElement("Occupational Therapy", ""),
-                            ExtractHelper.CreateFieldElement("Companion/Homemaker", ""),
-                            ExtractHelper.CreateFieldElement("Speech Therapy", ""),
+                            ExtractHelper.CreateFieldElement("Physical Therapy", body.PT),
+                            ExtractHelper.CreateFieldElement("Home Health Aide", body.HHA),
+                            ExtractHelper.CreateFieldElement("Social Service", body.Social_Service),
+                            ExtractHelper.CreateFieldElement("Occupational Therapy", body.OT),
+                            ExtractHelper.CreateFieldElement("Companion/Homemaker", body.Comp_Hmkr),
+                            ExtractHelper.CreateFieldElement("Speech Therapy", body.ST),
                             ExtractHelper.CreateFieldElement("ADL_Dress Upper", body.ADL_Upper),
                             ExtractHelper.CreateFieldElement("ADL_Dress Lower", body.ADL_Lower),
                             ExtractHelper.CreateFieldElement("ADL_Bathing", body.ADL_Bath),
@@ -137,10 +137,10 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
             return xml;
         }
 
-        private static void Engine_BeforeReadRecord(EngineBase engine, BeforeReadEventArgs<CmsCsvBody> e)
+        private static void Engine_BeforeReadRecord(EngineBase engine, BeforeReadEventArgs<PgCsvBody> e)
         {
             if (ExtractHelper.IsBlankCsvLine(e.RecordLine)) e.SkipThisRecord = true;
-            if (e.RecordLine.StartsWith("Location_Name_Code")) e.SkipThisRecord = true;
+            else if (e.RecordLine.StartsWith("Survey_Designator")) e.SkipThisRecord = true;
         }
     }
 }

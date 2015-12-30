@@ -75,6 +75,8 @@ namespace OCSHHCAHPS.ImportProcessorTest
 
         #region Parse
 
+        #region Sample1File
+
         [TestMethod]
         public void Parse_Sample1File_OneMetadataRow()
         {
@@ -638,6 +640,8 @@ namespace OCSHHCAHPS.ImportProcessorTest
             AssertSample1FileRowsHaveField("ADL_Feed", "M", "1", "0", "0");
         }
 
+        #endregion Sample1File
+
         [TestMethod]
         public void Parse_MissingHeaderHeader_MetadataIsSet()
         {
@@ -683,6 +687,36 @@ namespace OCSHHCAHPS.ImportProcessorTest
 
             Assert.IsNotNull(element);
             Assert.AreEqual("6", element.Value);
+        }
+
+        [TestMethod]
+        public void Parse_BlankLine_LineIsSkipped()
+        {
+            const string fileContents =
+                "Sample Month,Sample Year,Provider ID,Provider Name,NPI,Total number of patients served,Number of branches served,Version Number\r\n" +
+                "6,2010,58110,New Haven Home Health and Hospice Inc.,1881609436,192,,1.1\r\n" +
+                "PatientCode,Medical Number,PatientFirstName,PatientMiddleInitial,PatientLastName,PatientAddress1,PatientAddress2,PatientCity,PatientState,PatientZipCode,PatientTelephone,PatientGender,PatientBirthdate,PrimaryLanguage,START_CARE_DT,NumberOfSkilledVisits,NumberOfSkilledVisits_IncludingLookBack,CPAY_NONE,CPAY_MCARE_FFS,CPAY_MCARE_HMO,CPAY_MCAID_FFS,CPAY_MCAID_HMO,CPAY_WRKCOMP,CPAY_TITLEPGMS,CPAY_OTH_GOVT,CPAY_PRIV_INS,CPAY_PRIV_HMO,CPAY_SELFPAY,CPAY_OTHER,CPAY_UNKNOWN,Deceased,Hospice,Maternity Care Only,BRANCH_ID,Home Health Visit Type,ASSMT_REASON,DC_TRAN_DTH_DT,M1000_DC_LTC_14_DA,M1000_DC_SNF_14_DA,M1000_DC_IPPS_14_DA,M1000_DC_LTCH_14_DA,M1000_DC_IRF_14_DA,M1000_DC_PSYCH_14_DA,M1000_DC_OTH_14_DA,M1000_DC_NONE_14_DA,AdmissionSourceUnknown,IsHMO,EligibleMedicareAndMedicaid,PRIMARY_DIAG_ICD,PMT_DIAG_ICD_A3,PMT_DIAG_ICD_A4,OTH_DIAG1_ICD,PMT_DIAG_ICD_B3,PMT_DIAG_ICD_B4,OTH_DIAG2_ICD,PMT_DIAG_ICD_C3,PMT_DIAG_ICD_C4,OTH_DIAG3_ICD,PMT_DIAG_ICD_D3,PMT_DIAG_ICD_D4,OTH_DIAG4_ICD,PMT_DIAG_ICD_E3,PMT_DIAG_ICD_E4,OTH_DIAG5_ICD,PMT_DIAG_ICD_F3,PMT_DIAG_ICD_F4,SurgicalDischarge,HasEndStageRenalDisease,DialysisIndicator,ReferralSource,SkilledNursing,PhysicalTherapy,HomeHealthAide,SocialService,OccupationalTherapy,CompanionHomemaker,SpeechTherapy,CUR_DRESS_UPPER,CUR_DRESS_LOWER,CRNT_BATHG,CUR_TOILTG,CUR_TRNSFRNG,CUR_FEEDING\r\n" +
+                "2004-816,2004-817,Paul,,Abuda,417 Templeton Ave,,DALY CITY,CA,94014,4159941519,1,6291931,M,5192010,3,7,0,0,1,0,0,0,0,0,0,0,0,0,,2,2,2,N,2,6,20100602,,,,,,,,,1,1,2,,,,,,,,,,,,,,,,,,,M,M,M,,M,M,M,M,M,M,M,M,M,M,M,M,M\r\n" +
+                "\r\n" +
+                "2004-816,2004-817,Paul,,Abuda,417 Templeton Ave,,DALY CITY,CA,94014,4159941519,1,6291931,M,5192010,3,7,0,0,1,0,0,0,0,0,0,0,0,0,,2,2,2,N,2,6,20100602,,,,,,,,,1,1,2,,,,,,,,,,,,,,,,,,,M,M,M,,M,M,M,M,M,M,M,M,M,M,M,M,M\r\n";
+            var xml = OcsPtctCsvParser.Parse(new ClientDetail(), "file.csv", fileContents, false);
+            var rows = ParserTestHelper.GetRows(xml);
+            Assert.AreEqual(2, rows.Count());
+        }
+
+        [TestMethod]
+        public void Parse_LineWithOnlyCommas_LineIsSkipped()
+        {
+            const string fileContents =
+                "Sample Month,Sample Year,Provider ID,Provider Name,NPI,Total number of patients served,Number of branches served,Version Number\r\n" +
+                "6,2010,58110,New Haven Home Health and Hospice Inc.,1881609436,192,,1.1\r\n" +
+                "PatientCode,Medical Number,PatientFirstName,PatientMiddleInitial,PatientLastName,PatientAddress1,PatientAddress2,PatientCity,PatientState,PatientZipCode,PatientTelephone,PatientGender,PatientBirthdate,PrimaryLanguage,START_CARE_DT,NumberOfSkilledVisits,NumberOfSkilledVisits_IncludingLookBack,CPAY_NONE,CPAY_MCARE_FFS,CPAY_MCARE_HMO,CPAY_MCAID_FFS,CPAY_MCAID_HMO,CPAY_WRKCOMP,CPAY_TITLEPGMS,CPAY_OTH_GOVT,CPAY_PRIV_INS,CPAY_PRIV_HMO,CPAY_SELFPAY,CPAY_OTHER,CPAY_UNKNOWN,Deceased,Hospice,Maternity Care Only,BRANCH_ID,Home Health Visit Type,ASSMT_REASON,DC_TRAN_DTH_DT,M1000_DC_LTC_14_DA,M1000_DC_SNF_14_DA,M1000_DC_IPPS_14_DA,M1000_DC_LTCH_14_DA,M1000_DC_IRF_14_DA,M1000_DC_PSYCH_14_DA,M1000_DC_OTH_14_DA,M1000_DC_NONE_14_DA,AdmissionSourceUnknown,IsHMO,EligibleMedicareAndMedicaid,PRIMARY_DIAG_ICD,PMT_DIAG_ICD_A3,PMT_DIAG_ICD_A4,OTH_DIAG1_ICD,PMT_DIAG_ICD_B3,PMT_DIAG_ICD_B4,OTH_DIAG2_ICD,PMT_DIAG_ICD_C3,PMT_DIAG_ICD_C4,OTH_DIAG3_ICD,PMT_DIAG_ICD_D3,PMT_DIAG_ICD_D4,OTH_DIAG4_ICD,PMT_DIAG_ICD_E3,PMT_DIAG_ICD_E4,OTH_DIAG5_ICD,PMT_DIAG_ICD_F3,PMT_DIAG_ICD_F4,SurgicalDischarge,HasEndStageRenalDisease,DialysisIndicator,ReferralSource,SkilledNursing,PhysicalTherapy,HomeHealthAide,SocialService,OccupationalTherapy,CompanionHomemaker,SpeechTherapy,CUR_DRESS_UPPER,CUR_DRESS_LOWER,CRNT_BATHG,CUR_TOILTG,CUR_TRNSFRNG,CUR_FEEDING\r\n" +
+                "2004-816,2004-817,Paul,,Abuda,417 Templeton Ave,,DALY CITY,CA,94014,4159941519,1,6291931,M,5192010,3,7,0,0,1,0,0,0,0,0,0,0,0,0,,2,2,2,N,2,6,20100602,,,,,,,,,1,1,2,,,,,,,,,,,,,,,,,,,M,M,M,,M,M,M,M,M,M,M,M,M,M,M,M,M\r\n" +
+                ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,\r\n" +
+                "2004-816,2004-817,Paul,,Abuda,417 Templeton Ave,,DALY CITY,CA,94014,4159941519,1,6291931,M,5192010,3,7,0,0,1,0,0,0,0,0,0,0,0,0,,2,2,2,N,2,6,20100602,,,,,,,,,1,1,2,,,,,,,,,,,,,,,,,,,M,M,M,,M,M,M,M,M,M,M,M,M,M,M,M,M\r\n";
+            var xml = OcsPtctCsvParser.Parse(new ClientDetail(), "file.csv", fileContents, false);
+            var rows = ParserTestHelper.GetRows(xml);
+            Assert.AreEqual(2, rows.Count());
         }
 
         #endregion Parse
