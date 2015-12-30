@@ -28,6 +28,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
 
             ParseHeader(xml, lines);
             ParseBody(xml, lines);
+
             xml.Root.Add(ExtractHelper.CreateRootAttributes(client, fileName));
 
             return xml;
@@ -48,8 +49,8 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
 
                     metadata.Add(
                         ExtractHelper.CreateTransformRow(1,
-                            ExtractHelper.CreateFieldElement("MONTH", header.SampleMonth),
-                            ExtractHelper.CreateFieldElement("YEAR", header.SampleYear),
+                            ExtractHelper.CreateFieldElement("MONTH", header.SampleMonth ?? -1),
+                            ExtractHelper.CreateFieldElement("YEAR", header.SampleYear ?? -1),
                             ExtractHelper.CreateFieldElement("PROVIDER ID", header.ProviderID),
                             ExtractHelper.CreateFieldElement("PROVIDER NAME", header.ProviderName),
                             ExtractHelper.CreateFieldElement("TOTAL NUMBER OF PATIENT SERVED", header.TotalNumberOfPatientsServed),
@@ -76,33 +77,39 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
         {
             var engineV1 = new FileHelperAsyncEngine<OcsFwBodyV1>();
             var engineV2 = new FileHelperAsyncEngine<OcsFwBodyV2>();
-
+            
             var rows = ExtractHelper.GetRowsElement(xml);
-            int rowCount = 0;
+            int rowNumber = 0;
+            int lineNumber = 0;
             foreach (var line in lines)
             {
+                lineNumber++;
                 if (IsBlank(line)) continue;
                 if (IsHeader(line)) continue;
-                rowCount++;
-
-                var version = GetBodyVersion(line);
+                rowNumber++;
+                
+                var version = GetBodyVersion(line, lineNumber);
                 dynamic body;
                 switch (version)
                 {
                     case OcsFwBodyVersion.V1:
-                        engineV1.BeginReadString(line);
-                        body = engineV1.ReadNext();
+                        using (engineV1.BeginReadString(line))
+                        {
+                            body = engineV1.ReadNext();
+                        }
                         break;
                     case OcsFwBodyVersion.V2:
-                        engineV2.BeginReadString(line);
-                        body = engineV2.ReadNext();
+                        using (engineV2.BeginReadString(line))
+                        {
+                            body = engineV2.ReadNext();
+                        }
                         break;
                     default:
                         throw new InvalidOperationException(string.Format("Unrecognized file version {0}.", version));
                 }
 
                 rows.Add(
-                    ExtractHelper.CreateTransformRow(rowCount,
+                    ExtractHelper.CreateTransformRow(rowNumber,
                         ExtractHelper.CreateFieldElement("Patient ID", body.Patient_ID),
                         ExtractHelper.CreateFieldElement("Medical Record Number", body.MedicalRecordNumber),
                         ExtractHelper.CreateFieldElement("Patient First Name", body.First_Name),
@@ -190,19 +197,19 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
             }
         }
 
-        private static OcsFwBodyVersion GetBodyVersion(string line)
+        private static OcsFwBodyVersion GetBodyVersion(string line, int lineNumber)
         {
-            var pos = line.LastIndexOf("%");
-            var columns = (pos > 0) ? pos + 1 : line.Length;
+            var index = line.LastIndexOf("%");
+            var characters = (index > 0) ? index + 1 : line.Length;
 
-            switch (columns)
+            switch (characters)
             {
                 case BODY_LINE_LENGTH_V1:
                     return OcsFwBodyVersion.V1;
                 case BODY_LINE_LENGTH_V2:
                     return OcsFwBodyVersion.V2;
                 default:
-                    throw new InvalidOperationException(string.Format("{0} characters found on line which doesn't match either version 1 or 2 files.", columns));
+                    throw new InvalidOperationException(string.Format("{0} characters found on line {1} which doesn't match either version 1 or 2 files.", characters, lineNumber));
             }
         }
     }

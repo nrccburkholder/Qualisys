@@ -355,5 +355,10 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
         [FieldQuoted('"', QuoteMode.OptionalForBoth)]
         [FieldOptional]
         public string EndOfRecordCharacter;
+
+        [FieldQuoted('"', QuoteMode.OptionalForBoth)]
+        [FieldTrim(TrimMode.Both)]
+        [FieldOptional]
+        public string[] ExtraColumns;
     }
 }

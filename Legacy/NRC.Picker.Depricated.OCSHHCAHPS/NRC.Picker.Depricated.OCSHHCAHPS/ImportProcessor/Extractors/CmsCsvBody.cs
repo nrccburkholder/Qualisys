@@ -291,9 +291,9 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
         [FieldOptional]
         public string Language;
 
-        //[FieldQuoted('"', QuoteMode.OptionalForBoth)]
-        //[FieldTrim(TrimMode.Both)]
-        //[FieldOptional]
-        //public string[] ExtraColumns;
+        [FieldQuoted('"', QuoteMode.OptionalForBoth)]
+        [FieldTrim(TrimMode.Both)]
+        [FieldOptional]
+        public string[] ExtraColumns;
     }
 }

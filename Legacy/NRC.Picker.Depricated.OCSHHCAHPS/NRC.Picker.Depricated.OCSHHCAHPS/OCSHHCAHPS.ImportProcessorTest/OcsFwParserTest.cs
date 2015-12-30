@@ -1289,6 +1289,16 @@ namespace OCSHHCAHPS.ImportProcessorTest
             Assert.AreEqual(2, rows.Count());
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void Parse_TooManyCharacters_ExceptionIsThrown()
+        {
+            const string fileContents =
+                "062010107189AMERICAN PROVIDERS INC                                                                              1346299955          02040041.1\r\n" +
+                "N         06719               05719               EDUVIGES                       ALVAREZ                       220 WEST 74 PLACE                                 APT 209                                           HIALEAH                                           FL33014    305823440920601192012042920101        004005000000010010100000000021715.09            356.4             440.21            735.8             414.01            386.11            22M112122221121102MMandsomeextracharacters%";
+            OcsFwParser.Parse(new ClientDetail(), "file.csv", fileContents);
+        }
+
         #endregion Parse
     }
 }

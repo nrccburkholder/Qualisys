@@ -28,7 +28,7 @@ namespace OCSHHCAHPS.ImportProcessorTest
         //public void Extract_BigFile()
         //{
         //    var extractor = new PgCsvExtractor();
-        //    extractor.Extract(new ClientDetail(), @"C:\Users\bgoble\Documents\CodeGen\PTCTBigCSV.txt");
+        //    extractor.Extract(new ClientDetail(), @"C:\Users\bgoble\Documents\CodeGen\PGBigCSV.txt");
         //}
     }
 }

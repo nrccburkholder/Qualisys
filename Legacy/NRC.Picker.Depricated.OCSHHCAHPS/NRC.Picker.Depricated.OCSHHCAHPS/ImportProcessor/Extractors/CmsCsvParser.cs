@@ -30,8 +30,8 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
                     if (firstRecord)
                         metadata.Add(
                             ExtractHelper.CreateTransformRow(1,
-                                ExtractHelper.CreateFieldElement("MONTH", body.Sample_Month),
-                                ExtractHelper.CreateFieldElement("YEAR", body.Sample_Year),
+                                ExtractHelper.CreateFieldElement("MONTH", body.Sample_Month ?? -1),
+                                ExtractHelper.CreateFieldElement("YEAR", body.Sample_Year ?? -1),
                                 ExtractHelper.CreateFieldElement("PROVIDER ID", body.M0010),
                                 ExtractHelper.CreateFieldElement("PROVIDER NAME", body.Provider_Name),
                                 ExtractHelper.CreateFieldElement("TOTAL NUMBER OF PATIENT SERVED", body.Total_Patients_Served),

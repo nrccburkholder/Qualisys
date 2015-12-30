@@ -29,7 +29,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
 
         private static RecordAction RecordSelector(string record)
         {
-            if (record.Length < 2 || record.StartsWith("Sample") || record.StartsWith("PatientCode"))
+            if (string.IsNullOrWhiteSpace(record) || record.StartsWith("Sample") || record.StartsWith("PatientCode"))
                 return RecordAction.Skip;
 
             var columnsWithData = ExtractHelper.ColumnsWithData(record);

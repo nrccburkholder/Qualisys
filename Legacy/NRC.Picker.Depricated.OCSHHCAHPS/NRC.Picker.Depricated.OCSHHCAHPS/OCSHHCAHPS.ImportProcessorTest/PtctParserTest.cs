@@ -75,6 +75,8 @@ namespace OCSHHCAHPS.ImportProcessorTest
 
         #region Parse
 
+        #region Sample1File
+
         [TestMethod]
         public void Parse_Sample1File_OneMetadataRow()
         {
@@ -637,6 +639,8 @@ namespace OCSHHCAHPS.ImportProcessorTest
         {
             AssertSample1FileRowsHaveField("ADL_Feed", "M", "1", "0", "0");
         }
+
+        #endregion Sample1File
 
         [TestMethod]
         public void Parse_MissingHeaderHeader_MetadataIsSet()

@@ -100,11 +100,9 @@
     <Compile Include="Exceptions\InvalidArgumentException.cs" />
     <Compile Include="Exceptions\UploadAbandoned.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="Extractors\BitConverter.cs" />
     <Compile Include="Extractors\CmsCsvBody.cs" />
     <Compile Include="Extractors\CmsCsvExtractor.cs" />
     <Compile Include="Extractors\CmsCsvParser.cs" />
-    <Compile Include="Extractors\CompactDateConverter.cs" />
     <Compile Include="Extractors\CSVToXMLBase.cs" />
     <Compile Include="Extractors\EnumConverter.cs" />
     <Compile Include="Extractors\ExtractHelper.cs" />
@@ -113,7 +111,6 @@
     <Compile Include="Extractors\IExtract.cs" />
     <Compile Include="Extractors\M0010Converter.cs" />
     <Compile Include="Extractors\MonthConverter.cs" />
-    <Compile Include="Extractors\NoCommasConverter.cs" />
     <Compile Include="Extractors\OcsPtctCsvBody.cs" />
     <Compile Include="Extractors\OcsCsvExtractor.cs" />
     <Compile Include="Extractors\OcsPtctCsvHeader.cs" />
@@ -124,6 +121,7 @@
     <Compile Include="Extractors\OcsFwHeader.cs" />
     <Compile Include="Extractors\OcsFwParser.cs" />
     <Compile Include="Extractors\OCS\HHCAHPS.cs" />
+    <Compile Include="Extractors\ParseException.cs" />
     <Compile Include="Extractors\PgCsvBody.cs" />
     <Compile Include="Extractors\PgCsvExtractor.cs" />
     <Compile Include="Extractors\PgCsvParser.cs" />

@@ -15,7 +15,14 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
             if (client == null) throw new ArgumentNullException(nameof(client));
             if (file == null) throw new ArgumentNullException(nameof(file));
 
-            return OcsFwParser.Parse(client, file, File.ReadAllText(file));
+            try
+            {
+                return OcsFwParser.Parse(client, file, File.ReadAllText(file));
+            }
+            catch (Exception ex)
+            {
+                throw new ParseException(string.Format("Couldn't parse file {0}.", file), ex);
+            }
         }
     }
 }

@@ -23,7 +23,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
                 var metadata = ExtractHelper.GetMetadataElement(xml);
                 var rows = ExtractHelper.GetRowsElement(xml);
                 var firstRecord = true;
-                var rowCount = 0;
+                var rowNumber = 0;
 
                 foreach (var body in engine)
                 {
@@ -41,10 +41,10 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
 
                     firstRecord = false;
 
-                    rowCount++;
+                    rowNumber++;
 
                     rows.Add(
-                        ExtractHelper.CreateTransformRow(rowCount,
+                        ExtractHelper.CreateTransformRow(rowNumber,
                             ExtractHelper.CreateFieldElement("Patient ID", body.Patient_ID),
                             ExtractHelper.CreateFieldElement("Medical Record Number", ""),
                             ExtractHelper.CreateFieldElement("Patient First Name", body.First_Name),
