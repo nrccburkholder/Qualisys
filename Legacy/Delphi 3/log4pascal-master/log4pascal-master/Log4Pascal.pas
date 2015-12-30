@@ -103,7 +103,22 @@ begin
   Self.SetNoisyMode;
   FQuietTypes := [];
 end;
- 
+
+ function IncludeTrailingPathDelimiter(const Path: string): string;
+ var
+   len: Integer;
+ const
+   PathDelim = '\';
+ begin
+   Result := Path;
+   len := Length(Result);
+   if len = 0 then
+     Result := PathDelim
+   else
+   if Result[len] <> PathDelim then
+     Result := Result + PathDelim;
+ end;
+
 procedure TLogger.CreateFoldersIfNecessary;
 var
   FilePath: string;
@@ -112,10 +127,10 @@ begin
   FilePath := ExtractFilePath(FFileName);
 
   if Pos(':', FilePath) > 0 then
-    CreateDir(FilePath)
+    ForceDirectories(FilePath)
   else begin
     FullApplicationPath := ExtractFilePath(Application.ExeName);
-    CreateDir(FullApplicationPath + FilePath);
+    ForceDirectories(IncludeTrailingPathDelimiter(FullApplicationPath) + FilePath);
   end;
 end;
 
@@ -272,7 +287,7 @@ begin
   Self.Initialize;
   try
     if FIsInit then
-      Writeln(FOutFile, Format('%s [%s]', [Msg, FormatDateTime(FORMAT_DATETIME_DEFAULT, Now)]));
+      Writeln(FOutFile, Format('[%s] %s', [FormatDateTime(FORMAT_DATETIME_DEFAULT, Now), Msg]));
   finally
     Self.Finalize;
   end;
@@ -280,14 +295,7 @@ end;
 
 initialization
 
-  if not DirectoryExists('C:\NRC') then
-    MkDir('C:\NRC');
-  if not DirectoryExists('C:\NRC\Logs') then
-    MkDir('C:\NRC\Logs');
-  if not DirectoryExists('C:\NRC\Logs\PCLGen') then
-    MkDir('C:\NRC\Logs\PCLGen');
-
-  Logger := TLogger.Create('C:\NRC\Logs\PCLGen\' + FormatDateTime(FORMAT_DATETIME_DEFAULT, Now) + '.txt');
+  Logger := TLogger.Create('C:\NRC\Logs\'+ExtractFileName(Application.ExeName)+'\' + FormatDateTime(FORMAT_DATETIME_DEFAULT, Now) + '.txt');
 
 finalization
   Logger.Free;
