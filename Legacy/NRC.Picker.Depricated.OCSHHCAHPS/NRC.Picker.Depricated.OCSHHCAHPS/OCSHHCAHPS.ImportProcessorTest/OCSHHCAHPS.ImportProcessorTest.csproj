@@ -62,13 +62,13 @@
     <Compile Include="OcsFwExtractorTest.cs" />
     <Compile Include="OcsCsvExtractorTest.cs" />
     <Compile Include="CmsCsvExtractorTest.cs" />
-    <Compile Include="PtctExtractorTest.cs" />
-    <Compile Include="PgExtractorTest.cs" />
+    <Compile Include="PtctCsvExtractorTest.cs" />
+    <Compile Include="PgCsvExtractorTest.cs" />
     <Compile Include="OcsFwParserTest.cs" />
     <Compile Include="OcsCsvParserTest.cs" />
     <Compile Include="CmsCsvParserTest.cs" />
-    <Compile Include="PtctParserTest.cs" />
-    <Compile Include="PgParserTest.cs" />
+    <Compile Include="PtctCsvParserTest.cs" />
+    <Compile Include="PgCsvParserTest.cs" />
     <Compile Include="ExtractHelperTest.cs" />
   </ItemGroup>
   <ItemGroup>

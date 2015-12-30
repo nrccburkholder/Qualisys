@@ -9,7 +9,7 @@ using System.Linq;
 namespace OCSHHCAHPS.ImportProcessorTest
 {
     [TestClass]
-    public class PgParserTest
+    public class PgCsvParserTest
     {
         #region Helpers
 
@@ -86,49 +86,49 @@ namespace OCSHHCAHPS.ImportProcessorTest
         public void Parse_Sample1File_MetadataHasId1()
         {
             var metadata = GetMetadataRowForSample1File();
-            Assert.AreEqual("1", metadata.Attribute("id").Value);
+            Assert.AreEqual("1", metadata.Attribute(ExtractHelper.IdAttributeName).Value);
         }
 
         [TestMethod]
         public void Parse_Sample1File_MetadataHasMonth()
         {
-            AssertSample1FileMetadataHasField("MONTH", "6");
+            AssertSample1FileMetadataHasField(ExtractHelper.MonthField, "6");
         }
 
         [TestMethod]
         public void Parse_Sample1File_MetadataHasYear()
         {
-            AssertSample1FileMetadataHasField("YEAR", "2010");
+            AssertSample1FileMetadataHasField(ExtractHelper.YearField, "2010");
         }
 
         [TestMethod]
         public void Parse_Sample1File_MetadataHasProviderId()
         {
-            AssertSample1FileMetadataHasField("PROVIDER ID", "147714");
+            AssertSample1FileMetadataHasField(ExtractHelper.ProviderIdField, "147714");
         }
 
         [TestMethod]
         public void Parse_Sample1File_MetadataHasProviderName()
         {
-            AssertSample1FileMetadataHasField("PROVIDER NAME", "");
+            AssertSample1FileMetadataHasField(ExtractHelper.ProviderNameField, "");
         }
 
         [TestMethod]
         public void Parse_Sample1File_MetadataHasTotalNumberOfPatientsServed()
         {
-            AssertSample1FileMetadataHasField("TOTAL NUMBER OF PATIENT SERVED", "298");
+            AssertSample1FileMetadataHasField(ExtractHelper.TotalPatientsServedField, "298");
         }
 
         [TestMethod]
         public void Parse_Sample1File_MetadataHasNumberOfBranches()
         {
-            AssertSample1FileMetadataHasField("NUMBER OF BRANCHES", "");
+            AssertSample1FileMetadataHasField(ExtractHelper.NumberOfBranchesField, "");
         }
 
         [TestMethod]
         public void Parse_Sample1File_MetadataHasVersionNumber()
         {
-            AssertSample1FileMetadataHasField("VERSION NUMBER", "");
+            AssertSample1FileMetadataHasField(ExtractHelper.VersionNumberField, "");
         }
 
         [TestMethod]
@@ -141,500 +141,500 @@ namespace OCSHHCAHPS.ImportProcessorTest
         [TestMethod]
         public void Parse_Sample1File_RowsHavePatientId()
         {
-            AssertSample1FileRowsHaveField("Patient ID", "JA1560", "JA2506", "FA3172", "JB2619");
+            AssertSample1FileRowsHaveField(ExtractHelper.PatientIDField, "JA1560", "JA2506", "FA3172", "JB2619");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveMedicalRecordNumber()
         {
-            AssertSample1FileRowsHaveField("Medical Record Number", "", "", "", "");
+            AssertSample1FileRowsHaveField(ExtractHelper.MedicalRecordNumberField, "", "", "", "");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveFirstName()
         {
-            AssertSample1FileRowsHaveField("Patient First Name", "JUAN", "JULIES", "FELIX", "JESSIE");
+            AssertSample1FileRowsHaveField(ExtractHelper.PatientFirstNameField, "JUAN", "JULIES", "FELIX", "JESSIE");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveMiddleInitial()
         {
-            AssertSample1FileRowsHaveField("Patient Middle Initial", "J", "K", "", "M");
+            AssertSample1FileRowsHaveField(ExtractHelper.PatientMiddleInitialField, "J", "K", "", "M");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveLastName()
         {
-            AssertSample1FileRowsHaveField("Patient Last Name", "ANDRADE", "ANWIYA", "ARES", "BAILEY");
+            AssertSample1FileRowsHaveField(ExtractHelper.PatientLastNameField, "ANDRADE", "ANWIYA", "ARES", "BAILEY");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveAddress1()
         {
-            AssertSample1FileRowsHaveField("Patient Mailing Address 1", "6970 N. WOLCOTT AVE", "6607 N. SEELEY AVENUE", "9356 SHERMER", "415 51st AVENUE");
+            AssertSample1FileRowsHaveField(ExtractHelper.PatientMailingAddress1Field, "6970 N. WOLCOTT AVE", "6607 N. SEELEY AVENUE", "9356 SHERMER", "415 51st AVENUE");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveAddress2()
         {
-            AssertSample1FileRowsHaveField("Patient Mailing Address 2", "", "", "", "");
+            AssertSample1FileRowsHaveField(ExtractHelper.PatientMailingAddress2Field, "", "", "", "");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveCity()
         {
-            AssertSample1FileRowsHaveField("Patient Address City", "CHICAGO", "CHICAGO", "MORTON GROVE", "BELLWOOD");
+            AssertSample1FileRowsHaveField(ExtractHelper.PatientAddressCityField, "CHICAGO", "CHICAGO", "MORTON GROVE", "BELLWOOD");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveState()
         {
-            AssertSample1FileRowsHaveField("Patient Address State", "IL", "IL", "IL", "IL");
+            AssertSample1FileRowsHaveField(ExtractHelper.PatientAddressStateField, "IL", "IL", "IL", "IL");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveZip()
         {
-            AssertSample1FileRowsHaveField("Patient Address Zip Code", "60626", "60645", "60053", "60104");
+            AssertSample1FileRowsHaveField(ExtractHelper.PatientAddressZipCodeField, "60626", "60645", "60053", "60104");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHavePhone()
         {
-            AssertSample1FileRowsHaveField("Telephone Number including area code", "7732627035", "7737618103", "8476738373", "7085479908");
+            AssertSample1FileRowsHaveField(ExtractHelper.TelephoneNumberincludingareacodeField, "7732627035", "7737618103", "8476738373", "7085479908");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveGender()
         {
-            AssertSample1FileRowsHaveField("Gender", "1", "2", "1", "2");
+            AssertSample1FileRowsHaveField(ExtractHelper.GenderField, "1", "2", "1", "2");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveDateOfBirth()
         {
-            AssertSample1FileRowsHaveField("Patient Date of Birth", "10281944", "07011935", "09051960", "03071945");
+            AssertSample1FileRowsHaveField(ExtractHelper.PatientDateofBirthField, "10281944", "07011935", "09051960", "03071945");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveLanguage()
         {
-            AssertSample1FileRowsHaveField("Language", "1", "", "2", "2");
+            AssertSample1FileRowsHaveField(ExtractHelper.LanguageField, "1", "", "2", "2");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveStartOfCareDate()
         {
-            AssertSample1FileRowsHaveField("Start of Care Date", "02262010", "06162010", "06202010", "04062010");
+            AssertSample1FileRowsHaveField(ExtractHelper.StartofCareDateField, "02262010", "06162010", "06202010", "04062010");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveCurrentMonthSkilledVisits()
         {
-            AssertSample1FileRowsHaveField("Number of skilled visits", "4", "1", "1", "2");
+            AssertSample1FileRowsHaveField(ExtractHelper.NumberofskilledvisitsField, "4", "1", "1", "2");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveLookbackSkilledVisits()
         {
-            AssertSample1FileRowsHaveField("Lookback Period Visits", "3", "0", "0", "4");
+            AssertSample1FileRowsHaveField(ExtractHelper.LookbackPeriodVisitsField, "3", "0", "0", "4");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHavePayerNone()
         {
-            AssertSample1FileRowsHaveField("Payer - None", "0", "0", "0", "0");
+            AssertSample1FileRowsHaveField(ExtractHelper.PayerNoneField, "0", "0", "0", "0");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHavePayerMedicareFFS()
         {
-            AssertSample1FileRowsHaveField("Payer - Medicare FFS", "1", "1", "1", "1");
+            AssertSample1FileRowsHaveField(ExtractHelper.PayerMedicareFFSField, "1", "1", "1", "1");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHavePayerMedicareHMO()
         {
-            AssertSample1FileRowsHaveField("Payer - Medicare HMO", "0", "0", "0", "0");
+            AssertSample1FileRowsHaveField(ExtractHelper.PayerMedicareHMOField, "0", "0", "0", "0");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHavePayerMedicaidFFS()
         {
-            AssertSample1FileRowsHaveField("Payer - Medicaid FFS", "0", "0", "0", "0");
+            AssertSample1FileRowsHaveField(ExtractHelper.PayerMedicaidFFSField, "0", "0", "0", "0");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHavePayerMedicaidHMO()
         {
-            AssertSample1FileRowsHaveField("Payer - Medicaid HMO", "0", "0", "0", "0");
+            AssertSample1FileRowsHaveField(ExtractHelper.PayerMedicaidHMOField, "0", "0", "0", "0");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHavePayerWorkersComp()
         {
-            AssertSample1FileRowsHaveField("Payer - Workers Comp", "0", "0", "0", "0");
+            AssertSample1FileRowsHaveField(ExtractHelper.PayerWorkersCompField, "0", "0", "0", "0");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHavePayerTitlePrograms()
         {
-            AssertSample1FileRowsHaveField("Payer - Title programs", "0", "0", "0", "0");
+            AssertSample1FileRowsHaveField(ExtractHelper.PayerTitleprogramsField, "0", "0", "0", "0");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHavePayerOtherGovt()
         {
-            AssertSample1FileRowsHaveField("Payer - Other Government", "0", "0", "0", "0");
+            AssertSample1FileRowsHaveField(ExtractHelper.PayerOtherGovernmentField, "0", "0", "0", "0");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHavePayerPrivateIns()
         {
-            AssertSample1FileRowsHaveField("Payer - Private Ins", "0", "0", "0", "0");
+            AssertSample1FileRowsHaveField(ExtractHelper.PayerPrivateInsField, "0", "0", "0", "0");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHavePayerPrivateHMO()
         {
-            AssertSample1FileRowsHaveField("Payer - Private HMO", "0", "0", "0", "0");
+            AssertSample1FileRowsHaveField(ExtractHelper.PayerPrivateHMOField, "0", "0", "0", "0");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHavePayerPrivateSelf()
         {
-            AssertSample1FileRowsHaveField("Payer - Self-pay", "0", "0", "0", "0");
+            AssertSample1FileRowsHaveField(ExtractHelper.PayerSelfpayField, "0", "0", "0", "0");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHavePayerOther()
         {
-            AssertSample1FileRowsHaveField("Payer - Other", "0", "0", "0", "0");
+            AssertSample1FileRowsHaveField(ExtractHelper.PayerOtherField, "0", "0", "0", "0");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHavePayerUnknown()
         {
-            AssertSample1FileRowsHaveField("Payer - Unknown", "0", "0", "0", "0");
+            AssertSample1FileRowsHaveField(ExtractHelper.PayerUnknownField, "0", "0", "0", "0");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveDeceasedIndicator()
         {
-            AssertSample1FileRowsHaveField("Deceased Indicator", "", "", "", "");
+            AssertSample1FileRowsHaveField(ExtractHelper.DeceasedIndicatorField, "", "", "", "");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveHospiceIndicator()
         {
-            AssertSample1FileRowsHaveField("Hospice Indicator", "", "", "", "");
+            AssertSample1FileRowsHaveField(ExtractHelper.HospiceIndicatorField, "", "", "", "");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveMaternityCareOnlyIndicator()
         {
-            AssertSample1FileRowsHaveField("Maternity Care Only Indicator", "", "", "", "");
+            AssertSample1FileRowsHaveField(ExtractHelper.MaternityCareOnlyIndicatorField, "", "", "", "");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveBranchID()
         {
-            AssertSample1FileRowsHaveField("Branch ID", "", "", "", "");
+            AssertSample1FileRowsHaveField(ExtractHelper.BranchIDField, "", "", "", "");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveHomeHealthVisitType()
         {
-            AssertSample1FileRowsHaveField("Home Health Visit Type", "2", "2", "2", "2");
+            AssertSample1FileRowsHaveField(ExtractHelper.HomeHealthVisitTypeField, "2", "2", "2", "2");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveAssessmentReason()
         {
-            AssertSample1FileRowsHaveField("Assessment Reason", "4", "1", "1", "4");
+            AssertSample1FileRowsHaveField(ExtractHelper.AssessmentReasonField, "4", "1", "1", "4");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveDischargeDate()
         {
-            AssertSample1FileRowsHaveField("Discharge Date", "", "", "", "");
+            AssertSample1FileRowsHaveField(ExtractHelper.DischargeDateField, "", "", "", "");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveAdmissionSourceNF()
         {
-            AssertSample1FileRowsHaveField("Admission Source - NF", "0", "0", "0", "0");
+            AssertSample1FileRowsHaveField(ExtractHelper.AdmissionSourceNFField, "0", "0", "0", "0");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveAdmissionSourceSNF()
         {
-            AssertSample1FileRowsHaveField("Admission Source - SNF", "0", "0", "0", "0");
+            AssertSample1FileRowsHaveField(ExtractHelper.AdmissionSourceSNFField, "0", "0", "0", "0");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveAdmissionSourceIPPS()
         {
-            AssertSample1FileRowsHaveField("Admission Source - IPP S", "0", "0", "0", "0");
+            AssertSample1FileRowsHaveField(ExtractHelper.AdmissionSourceIPPSField, "0", "0", "0", "0");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveAdmissionSourceLTCH()
         {
-            AssertSample1FileRowsHaveField("Admission Source - LTCH", "0", "0", "0", "0");
+            AssertSample1FileRowsHaveField(ExtractHelper.AdmissionSourceLTCHField, "0", "0", "0", "0");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveAdmissionSourceIRF()
         {
-            AssertSample1FileRowsHaveField("Admission Source - IRF", "0", "0", "0", "0");
+            AssertSample1FileRowsHaveField(ExtractHelper.AdmissionSourceIRFField, "0", "0", "0", "0");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveAdmissionSourcePysch()
         {
-            AssertSample1FileRowsHaveField("Admission Source - Pysch", "0", "0", "0", "0");
+            AssertSample1FileRowsHaveField(ExtractHelper.AdmissionSourcePyschField, "0", "0", "0", "0");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveAdmissionSourceOther()
         {
-            AssertSample1FileRowsHaveField("Admission Source - Other", "0", "0", "0", "0");
+            AssertSample1FileRowsHaveField(ExtractHelper.AdmissionSourceOtherField, "0", "0", "0", "0");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveAdmissionSourceNACommunity()
         {
-            AssertSample1FileRowsHaveField("Admission Source - NA (Community)", "1", "1", "1", "1");
+            AssertSample1FileRowsHaveField(ExtractHelper.AdmissionSourceNACommunityField, "1", "1", "1", "1");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveAdmissionSourceUnknown()
         {
-            AssertSample1FileRowsHaveField("Admission Source - Unknown", "", "", "", "");
+            AssertSample1FileRowsHaveField(ExtractHelper.AdmissionSourceUnknownField, "", "", "", "");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveHMOIndicator()
         {
-            AssertSample1FileRowsHaveField("HMO Indicator", "0", "0", "0", "0");
+            AssertSample1FileRowsHaveField(ExtractHelper.HMOIndicatorField, "0", "0", "0", "0");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveDuallyeligibleforMedicareandMedicaid()
         {
 
-            AssertSample1FileRowsHaveField("Dually eligible for Medicare and Medicaid?", "0", "0", "0", "0");
+            AssertSample1FileRowsHaveField(ExtractHelper.DuallyeligibleforMedicareandMedicaidField, "0", "0", "0", "0");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHavePrimaryDiagnosisICD_A2()
         {
-            AssertSample1FileRowsHaveField("Primary Diagnosis ICD_A2", "716.99", "716.99", "716.96", "401.9");
+            AssertSample1FileRowsHaveField(ExtractHelper.PrimaryDiagnosisICD_A2Field, "716.99", "716.99", "716.96", "401.9");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHavePrimaryPaymentDiagnosisICD_A3()
         {
-            AssertSample1FileRowsHaveField("Primary Payment Diagnosis ICD_A3", "", "", "", "");
+            AssertSample1FileRowsHaveField(ExtractHelper.PrimaryPaymentDiagnosisICD_A3Field, "", "", "", "");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHavePrimaryPaymentDiagnosisICD_A4()
         {
-            AssertSample1FileRowsHaveField("Primary Payment Diagnosis ICD_A4", "", "", "", "");
+            AssertSample1FileRowsHaveField(ExtractHelper.PrimaryPaymentDiagnosisICD_A4Field, "", "", "", "");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveOtherdiagnosis_B2()
         {
-            AssertSample1FileRowsHaveField("Other diagnosis_B2", "403.91", "719.7", "401.9", "716.86");
+            AssertSample1FileRowsHaveField(ExtractHelper.Otherdiagnosis_B2Field, "403.91", "719.7", "401.9", "716.86");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveOtherPaymentDiagnosisICD_B3()
         {
-            AssertSample1FileRowsHaveField("Other Payment Diagnosis  ICD_B3", "", "", "", "");
+            AssertSample1FileRowsHaveField(ExtractHelper.OtherPaymentDiagnosisICD_B3Field, "", "", "", "");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveOtherPaymentDiagnosisICD_B4()
         {
-            AssertSample1FileRowsHaveField("Other Payment Diagnosis ICD_B4", "", "", "", "");
+            AssertSample1FileRowsHaveField(ExtractHelper.OtherPaymentDiagnosisICD_B4Field, "", "", "", "");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveOtherdiagnosis_C2()
         {
-            AssertSample1FileRowsHaveField("Other diagnosis_C2", "585.6", "401.9", "780.79", "477.9");
+            AssertSample1FileRowsHaveField(ExtractHelper.Otherdiagnosis_C2Field, "585.6", "401.9", "780.79", "477.9");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveOtherPaymentDiagnosisICD_C3()
         {
-            AssertSample1FileRowsHaveField("Other Payment Diagnosis  ICD_C3", "", "", "", "");
+            AssertSample1FileRowsHaveField(ExtractHelper.OtherPaymentDiagnosisICD_C3Field, "", "", "", "");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveOtherPaymentDiagnosisICD_C4()
         {
-            AssertSample1FileRowsHaveField("Other Payment Diagnosis ICD_C4", "", "", "", "");
+            AssertSample1FileRowsHaveField(ExtractHelper.OtherPaymentDiagnosisICD_C4Field, "", "", "", "");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveOtherdiagnosis_D2()
         {
-            AssertSample1FileRowsHaveField("Other diagnosis_D2", "285.21", "780.79", "535.5", "");
+            AssertSample1FileRowsHaveField(ExtractHelper.Otherdiagnosis_D2Field, "285.21", "780.79", "535.5", "");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveOtherPaymentDiagnosisICD_D3()
         {
-            AssertSample1FileRowsHaveField("Other Payment Diagnosis  ICD_D3", "", "", "", "");
+            AssertSample1FileRowsHaveField(ExtractHelper.OtherPaymentDiagnosisICD_D3Field, "", "", "", "");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveOtherPaymentDiagnosisICD_D4()
         {
-            AssertSample1FileRowsHaveField("Other Payment Diagnosis ICD_D4", "", "", "", "");
+            AssertSample1FileRowsHaveField(ExtractHelper.OtherPaymentDiagnosisICD_D4Field, "", "", "", "");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveOtherdiagnosis_E2()
         {
-            AssertSample1FileRowsHaveField("Other diagnosis_E2", "414.01", "", "345.3", "244.9");
+            AssertSample1FileRowsHaveField(ExtractHelper.Otherdiagnosis_E2Field, "414.01", "", "345.3", "244.9");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveOtherPaymentDiagnosisICD_E3()
         {
-            AssertSample1FileRowsHaveField("Other Payment Diagnosis  ICD_E3", "", "", "", "");
+            AssertSample1FileRowsHaveField(ExtractHelper.OtherPaymentDiagnosisICD_E3Field, "", "", "", "");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveOtherPaymentDiagnosisICD_E4()
         {
-            AssertSample1FileRowsHaveField("Other Payment Diagnosis ICD_E4", "", "", "", "");
+            AssertSample1FileRowsHaveField(ExtractHelper.OtherPaymentDiagnosisICD_E4Field, "", "", "", "");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveOtherdiagnosis_F2()
         {
-            AssertSample1FileRowsHaveField("Other diagnosis_F2", "493.9", "", "300.02", "174.9");
+            AssertSample1FileRowsHaveField(ExtractHelper.Otherdiagnosis_F2Field, "493.9", "", "300.02", "174.9");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveOtherPaymentDiagnosisICD_F3()
         {
-            AssertSample1FileRowsHaveField("Other Payment Diagnosis  ICD_F3", "", "", "", "");
+            AssertSample1FileRowsHaveField(ExtractHelper.OtherPaymentDiagnosisICD_F3Field, "", "", "", "");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveOtherPaymentDiagnosisICD_F4()
         {
-            AssertSample1FileRowsHaveField("Other Payment Diagnosis ICD_F4", "", "", "", "");
+            AssertSample1FileRowsHaveField(ExtractHelper.OtherPaymentDiagnosisICD_F4Field, "", "", "", "");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveSurgicalDischarge()
         {
-            AssertSample1FileRowsHaveField("Surgical Discharge", "2", "2", "2", "2");
+            AssertSample1FileRowsHaveField(ExtractHelper.SurgicalDischargeField, "2", "2", "2", "2");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveEndStageRenalDiseaseESRD()
         {
-            AssertSample1FileRowsHaveField("End-Stage Renal Disease (ESRD)", "1", "2", "2", "2");
+            AssertSample1FileRowsHaveField(ExtractHelper.EndStageRenalDiseaseESRDField, "1", "2", "2", "2");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveDialysisIndicator()
         {
-            AssertSample1FileRowsHaveField("Dialysis Indicator", "", "", "", "");
+            AssertSample1FileRowsHaveField(ExtractHelper.DialysisIndicatorField, "", "", "", "");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveReferralSource()
         {
-            AssertSample1FileRowsHaveField("Referral Source", "1", "1", "1", "1");
+            AssertSample1FileRowsHaveField(ExtractHelper.ReferralSourceField, "1", "1", "1", "1");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveSkilledNursing()
         {
-            AssertSample1FileRowsHaveField("Skilled Nursing", "", "", "", "");
+            AssertSample1FileRowsHaveField(ExtractHelper.SkilledNursingField, "", "", "", "");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHavePhysicalTherapy()
         {
-            AssertSample1FileRowsHaveField("Physical Therapy", "2", "2", "2", "2");
+            AssertSample1FileRowsHaveField(ExtractHelper.PhysicalTherapyField, "2", "2", "2", "2");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveHomeHealthAide()
         {
-            AssertSample1FileRowsHaveField("Home Health Aide", "2", "2", "2", "2");
+            AssertSample1FileRowsHaveField(ExtractHelper.HomeHealthAideField, "2", "2", "2", "2");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveSocialService()
         {
-            AssertSample1FileRowsHaveField("Social Service", "2", "2", "2", "2");
+            AssertSample1FileRowsHaveField(ExtractHelper.SocialServiceField, "2", "2", "2", "2");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveOccupationalTherapy()
         {
-            AssertSample1FileRowsHaveField("Occupational Therapy", "2", "2", "2", "2");
+            AssertSample1FileRowsHaveField(ExtractHelper.OccupationalTherapyField, "2", "2", "2", "2");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveCompanionHomemaker()
         {
-            AssertSample1FileRowsHaveField("Companion/Homemaker", "2", "2", "2", "2");
+            AssertSample1FileRowsHaveField(ExtractHelper.CompanionHomemakerField, "2", "2", "2", "2");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveSpeechTherapy()
         {
-            AssertSample1FileRowsHaveField("Speech Therapy", "2", "2", "2", "2");
+            AssertSample1FileRowsHaveField(ExtractHelper.SpeechTherapyField, "2", "2", "2", "2");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveADL_DressUpper()
         {
-            AssertSample1FileRowsHaveField("ADL_Dress Upper", "1", "1", "1", "1");
+            AssertSample1FileRowsHaveField(ExtractHelper.ADL_DressUpperField, "1", "1", "1", "1");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveADL_DressLower()
         {
-            AssertSample1FileRowsHaveField("ADL_Dress Lower", "1", "2", "2", "1");
+            AssertSample1FileRowsHaveField(ExtractHelper.ADL_DressLowerField, "1", "2", "2", "1");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveADL_Bathing()
         {
-            AssertSample1FileRowsHaveField("ADL_Bathing", "2", "2", "2", "2");
+            AssertSample1FileRowsHaveField(ExtractHelper.ADL_BathingField, "2", "2", "2", "2");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveADL_Toileting()
         {
-            AssertSample1FileRowsHaveField("ADL_Toileting", "0", "1", "1", "1");
+            AssertSample1FileRowsHaveField(ExtractHelper.ADL_ToiletingField, "0", "1", "1", "1");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveADL_Transferring()
         {
-            AssertSample1FileRowsHaveField("ADL_Transferring", "1", "1", "1", "1");
+            AssertSample1FileRowsHaveField(ExtractHelper.ADL_TransferringField, "1", "1", "1", "1");
         }
 
         [TestMethod]
         public void Parse_Sample1File_RowsHaveADL_Feed()
         {
-            AssertSample1FileRowsHaveField("ADL_Feed", "", "", "", "");
+            AssertSample1FileRowsHaveField(ExtractHelper.ADL_FeedField, "", "", "", "");
         }
 
         #endregion Sample1File

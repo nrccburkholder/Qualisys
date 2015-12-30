@@ -36,21 +36,21 @@ namespace OCSHHCAHPS.ImportProcessorTest
         {
             var xml = ExtractHelper.CreateEmptyDocument();
             Assert.IsNotNull(xml.Root);
-            Assert.AreEqual("root", xml.Root.Name);
+            Assert.AreEqual(ExtractHelper.RootElementName, xml.Root.Name);
         }
 
         [TestMethod]
         public void CreateEmptyDocument_HasMetadataElement()
         {
             var xml = ExtractHelper.CreateEmptyDocument();
-            Assert.IsNotNull(xml.Root.Element("metadata"));
+            Assert.IsNotNull(xml.Root.Element(ExtractHelper.MetadataElementName));
         }
 
         [TestMethod]
         public void CreateEmptyDocument_HasRowsElement()
         {
             var xml = ExtractHelper.CreateEmptyDocument();
-            Assert.IsNotNull(xml.Root.Element("rows"));
+            Assert.IsNotNull(xml.Root.Element(ExtractHelper.RowsElementName));
         }
 
         #endregion CreateEmptyDocument
@@ -75,35 +75,35 @@ namespace OCSHHCAHPS.ImportProcessorTest
         public void CreateRootAttributes_SourceFileIsSet()
         {
             var attributes = ExtractHelper.CreateRootAttributes(new ClientDetail(), "file.csv");
-            AssertAttribute(attributes, "sourcefile", "file.csv");
+            AssertAttribute(attributes, ExtractHelper.SourceFileAttributeName, "file.csv");
         }
 
         [TestMethod]
         public void CreateRootAttributes_ClientIdIsSet()
         {
             var attributes = ExtractHelper.CreateRootAttributes(new ClientDetail { Client_id = 1 }, "file.csv");
-            AssertAttribute(attributes, "client_id", "1");
+            AssertAttribute(attributes, ExtractHelper.ClientIdAttributeName, "1");
         }
 
         [TestMethod]
         public void CreateRootAttributes_StudyIdIsSet()
         {
             var attributes = ExtractHelper.CreateRootAttributes(new ClientDetail { Study_id = 1 }, "file.csv");
-            AssertAttribute(attributes, "study_id", "1");
+            AssertAttribute(attributes, ExtractHelper.StudyIdAttributeName, "1");
         }
 
         [TestMethod]
         public void CreateRootAttributes_SurveyIdIsSet()
         {
             var attributes = ExtractHelper.CreateRootAttributes(new ClientDetail { Survey_id = 1 }, "file.csv");
-            AssertAttribute(attributes, "survey_id", "1");
+            AssertAttribute(attributes, ExtractHelper.SurveyIdAttributeName, "1");
         }
 
         [TestMethod]
         public void CreateRootAttributes_ContractedLanguagesIsSet()
         {
             var attributes = ExtractHelper.CreateRootAttributes(new ClientDetail { Languages = "A,B,C" }, "file.csv");
-            AssertAttribute(attributes, "ContractedLanguages", "A,B,C");
+            AssertAttribute(attributes, ExtractHelper.ContractedLanguagesAttributeName, "A,B,C");
         }
 
         #endregion CreateRootAttributes
@@ -115,14 +115,14 @@ namespace OCSHHCAHPS.ImportProcessorTest
         {
             var row = ExtractHelper.CreateTransformRow(1);
             Assert.IsNotNull(row);
-            Assert.AreEqual("r", row.Name);
+            Assert.AreEqual(ExtractHelper.RowElementName, row.Name);
         }
 
         [TestMethod]
         public void CreateTransformRow_IdIsSet()
         {
             var row = ExtractHelper.CreateTransformRow(1);
-            var id = row.Attribute("id");
+            var id = row.Attribute(ExtractHelper.IdAttributeName);
             Assert.IsNotNull(id);
             Assert.AreEqual("1", id.Value);
         }
@@ -145,7 +145,7 @@ namespace OCSHHCAHPS.ImportProcessorTest
         {
             var field = ExtractHelper.CreateFieldElement("a", "");
             Assert.IsNotNull(field);
-            Assert.AreEqual("nv", field.Name);
+            Assert.AreEqual(ExtractHelper.FieldElementName, field.Name);
         }
 
         [TestMethod]
@@ -159,7 +159,7 @@ namespace OCSHHCAHPS.ImportProcessorTest
         public void CreateFieldElement_NAttributeIsSet()
         {
             var field = ExtractHelper.CreateFieldElement("a", "b");
-            var attribute = field.Attribute("n");
+            var attribute = field.Attribute(ExtractHelper.FieldAttributeName);
             Assert.IsNotNull(attribute);
             Assert.AreEqual("a", attribute.Value);
         }
@@ -173,13 +173,13 @@ namespace OCSHHCAHPS.ImportProcessorTest
         {
             var xml =
                 new XDocument(
-                    new XElement("root",
-                        new XElement("metadata")
+                    new XElement(ExtractHelper.RootElementName,
+                        new XElement(ExtractHelper.MetadataElementName)
                 ));
 
             var element = ExtractHelper.GetMetadataElement(xml);
             Assert.IsNotNull(element);
-            Assert.AreEqual("metadata", element.Name);
+            Assert.AreEqual(ExtractHelper.MetadataElementName, element.Name);
         }
 
         #endregion GetMetadataElement
@@ -191,13 +191,13 @@ namespace OCSHHCAHPS.ImportProcessorTest
         {
             var xml =
                 new XDocument(
-                    new XElement("root",
-                        new XElement("rows")
+                    new XElement(ExtractHelper.RootElementName,
+                        new XElement(ExtractHelper.RowsElementName)
                 ));
 
             var element = ExtractHelper.GetRowsElement(xml);
             Assert.IsNotNull(element);
-            Assert.AreEqual("rows", element.Name);
+            Assert.AreEqual(ExtractHelper.RowsElementName, element.Name);
         }
 
         #endregion GetRowsElement

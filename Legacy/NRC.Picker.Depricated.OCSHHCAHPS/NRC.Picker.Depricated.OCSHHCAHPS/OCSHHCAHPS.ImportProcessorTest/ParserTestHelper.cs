@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,7 @@ namespace OCSHHCAHPS.ImportProcessorTest
     {
         public static IEnumerable<XElement> GetMetadataRows(XDocument xml)
         {
-            return xml.Element("root").Element("metadata").Elements("r");
+            return xml.Element(ExtractHelper.RootElementName).Element(ExtractHelper.MetadataElementName).Elements(ExtractHelper.RowElementName);
         }
 
         public static XElement GetMetadataRow(XDocument xml)
@@ -21,12 +22,12 @@ namespace OCSHHCAHPS.ImportProcessorTest
 
         public static IEnumerable<XElement> GetRows(XDocument xml)
         {
-            return xml.Element("root").Element("rows").Elements("r");
+            return xml.Element(ExtractHelper.RootElementName).Element(ExtractHelper.RowsElementName).Elements(ExtractHelper.RowElementName);
         }
 
         public static XElement GetElement(XElement parent, string field)
         {
-            return parent.Elements("nv").FirstOrDefault(nv => nv.Attribute("n").Value == field);
+            return parent.Elements(ExtractHelper.FieldElementName).FirstOrDefault(nv => nv.Attribute(ExtractHelper.FieldAttributeName).Value == field);
         }
     }
 }

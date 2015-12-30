@@ -6,13 +6,13 @@ using NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL.Generated;
 namespace OCSHHCAHPS.ImportProcessorTest
 {
     [TestClass]
-    public class PgExtractorTest
+    public class PtctCsvExtractorTest
     {
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Extract_ClientIsNull_ArgumentNullExceptionIsThrown()
         {
-            var extractor = new PgCsvExtractor();
+            var extractor = new PtctCsvExtractor();
             extractor.Extract(null, "file.csv");
         }
 
@@ -20,15 +20,15 @@ namespace OCSHHCAHPS.ImportProcessorTest
         [ExpectedException(typeof(ArgumentNullException))]
         public void Extract_FileIsNull_ArgumentNullExceptionIsThrown()
         {
-            var extractor = new PgCsvExtractor();
+            var extractor = new PtctCsvExtractor();
             extractor.Extract(new ClientDetail(), null);
         }
 
         //[TestMethod]
         //public void Extract_BigFile()
         //{
-        //    var extractor = new PgCsvExtractor();
-        //    extractor.Extract(new ClientDetail(), @"C:\Users\bgoble\Documents\CodeGen\PGBigCSV.txt");
+        //    var extractor = new PtctCsvExtractor();
+        //    extractor.Extract(new ClientDetail(), @"C:\Users\bgoble\Documents\CodeGen\PTCTBigCSV.txt");
         //}
     }
 }
