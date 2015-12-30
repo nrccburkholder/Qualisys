@@ -15,7 +15,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
         {
             var xml = ExtractHelper.CreateEmptyDocument();
 
-            var engine = new FileHelpers.FileHelperAsyncEngine<CmsCsvBody>();
+            var engine = new FileHelperAsyncEngine<CmsCsvBody>();
             engine.BeforeReadRecord += Engine_BeforeReadRecord;
 
             using (engine.BeginReadString(fileContents))
@@ -57,9 +57,9 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
                             ExtractHelper.CreateFieldElement("Patient Address Zip Code", body.ZipCode),
                             ExtractHelper.CreateFieldElement("Telephone Number including area code", body.Telephone),
                             ExtractHelper.CreateFieldElement("Gender", body.Gender),
-                            ExtractHelper.CreateFieldElement("Patient Date of Birth", body.DOB),
+                            ExtractHelper.CreateFieldElement("Patient Date of Birth", ExtractHelper.ConvertDateFormat(body.DOB, false)),
                             ExtractHelper.CreateFieldElement("Language", body.Language),
-                            ExtractHelper.CreateFieldElement("Start of Care Date", body.SOC_Date),
+                            ExtractHelper.CreateFieldElement("Start of Care Date", ExtractHelper.ConvertDateFormat(body.SOC_Date, false)),
                             ExtractHelper.CreateFieldElement("Number of skilled visits", body.CurrentMonth_Skilled_Visits),
                             ExtractHelper.CreateFieldElement("Lookback Period Visits", body.Lookback_Skilled_Visits),
                             ExtractHelper.CreateFieldElement("Payer - None", body.Payer_None),

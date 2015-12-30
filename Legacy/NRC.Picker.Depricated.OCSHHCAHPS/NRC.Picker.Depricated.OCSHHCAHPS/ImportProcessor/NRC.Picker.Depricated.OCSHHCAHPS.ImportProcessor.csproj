@@ -113,10 +113,10 @@
     <Compile Include="Extractors\M0010Converter.cs" />
     <Compile Include="Extractors\MonthConverter.cs" />
     <Compile Include="Extractors\NoCommasConverter.cs" />
-    <Compile Include="Extractors\OcsCsvBody.cs" />
+    <Compile Include="Extractors\OcsPtctCsvBody.cs" />
     <Compile Include="Extractors\OcsCsvExtractor.cs" />
-    <Compile Include="Extractors\OcsCsvHeader.cs" />
-    <Compile Include="Extractors\OcsCsvParser.cs" />
+    <Compile Include="Extractors\OcsPtctCsvHeader.cs" />
+    <Compile Include="Extractors\OcsPtctCsvParser.cs" />
     <Compile Include="Extractors\OcsFwBodyV1.cs" />
     <Compile Include="Extractors\OcsFwBodyV2.cs" />
     <Compile Include="Extractors\OcsFwExtractor.cs" />

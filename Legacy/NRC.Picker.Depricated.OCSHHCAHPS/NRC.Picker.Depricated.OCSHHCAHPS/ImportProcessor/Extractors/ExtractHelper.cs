@@ -2,6 +2,7 @@
 using NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL.Generated;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
@@ -72,6 +73,65 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
         public static string AddTrailingCommas(string fileContents)
         {
             return string.Join("\n", fileContents.Split('\n').Select(line => line.TrimEnd(' ', '\r') + ","));
+        }
+
+        public static DateTime? GetDateTimeFromString(string value, bool expectingyyyMMdd)
+        {
+            value = string.IsNullOrEmpty(value) ? "" : value.Trim();
+            if (string.IsNullOrEmpty(value))
+            {
+                return null;
+            }
+
+            if (value.IndexOf('/') != -1)
+            {
+                try
+                {
+                    return DateTime.Parse(value);
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            }
+            
+            IEnumerable<string> formats = new string[] { "MMddyyyy", "yyyyMMdd" };
+            if (expectingyyyMMdd)
+            {
+                formats = formats.Reverse();
+            }
+
+            foreach (string fmt in formats)
+            {
+                string v = value;
+                if (v.Length == fmt.Length - 1 && fmt.StartsWith("MM"))
+                {
+                    v = "0" + v;
+                }
+                else if (v.Length != fmt.Length) // unfixable, no good
+                {
+                    continue;
+                }
+
+                DateTime d;
+                if (DateTime.TryParseExact(v, fmt, CultureInfo.CurrentCulture, DateTimeStyles.None, out d))
+                {
+                    return d;
+                }
+            }
+
+            return null;
+        }
+
+        public static string ToString(this DateTime? date, string format)
+        {
+            if (date == null) return "";
+            return date.Value.ToString(format);
+        }
+
+        public static string ConvertDateFormat(string value, bool expectingyyyMMdd)
+        {
+            return GetDateTimeFromString(value, expectingyyyMMdd).ToString("MMddyyyy");
         }
     }
 }

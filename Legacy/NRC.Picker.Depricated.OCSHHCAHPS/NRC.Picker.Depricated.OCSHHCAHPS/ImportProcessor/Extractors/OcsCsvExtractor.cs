@@ -15,7 +15,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
             if (client == null) throw new ArgumentNullException(nameof(client));
             if (file == null) throw new ArgumentNullException(nameof(file));
 
-            return OcsCsvParser.Parse(client, file, File.ReadAllText(file));
+            return OcsPtctCsvParser.Parse(client, file, File.ReadAllText(file), false);
         }
     }
 }

@@ -212,7 +212,7 @@ namespace OCSHHCAHPS.ImportProcessorTest
         [TestMethod]
         public void Parse_Sample1File_RowsHaveDateOfBirth()
         {
-            AssertSample1FileRowsHaveField("Patient Date of Birth", "6181941", "8101939", "6261933", "12261928");
+            AssertSample1FileRowsHaveField("Patient Date of Birth", "06181941", "08101939", "06261933", "12261928");
         }
 
         [TestMethod]
@@ -224,7 +224,7 @@ namespace OCSHHCAHPS.ImportProcessorTest
         [TestMethod]
         public void Parse_Sample1File_RowsHaveStartOfCareDate()
         {
-            AssertSample1FileRowsHaveField("Start of Care Date", "4052010", "4092010", "4092010", "2122009");
+            AssertSample1FileRowsHaveField("Start of Care Date", "04052010", "04092010", "04092010", "02122009");
         }
 
         [TestMethod]

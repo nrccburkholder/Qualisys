@@ -7,7 +7,7 @@ using System.Text;
 namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
 {
     [DelimitedRecord(",")]
-    internal class OcsCsvBody
+    internal class OcsPtctCsvBody
     {
         [FieldQuoted('"', QuoteMode.OptionalForBoth)]
         [FieldTrim(TrimMode.Both)]

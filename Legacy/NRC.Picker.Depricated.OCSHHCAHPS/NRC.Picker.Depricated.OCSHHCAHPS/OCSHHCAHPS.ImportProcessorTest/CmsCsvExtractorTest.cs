@@ -24,11 +24,11 @@ namespace OCSHHCAHPS.ImportProcessorTest
             extractor.Extract(new ClientDetail(), null);
         }
 
-        [TestMethod]
-        public void Extract_BigFile()
-        {
-            var extractor = new CmsCsvExtractor();
-            extractor.Extract(new ClientDetail(), @"C:\Users\bgoble\Documents\CodeGen\CMSBigCSV.txt");
-        }
+        //[TestMethod]
+        //public void Extract_BigFile()
+        //{
+        //    var extractor = new CmsCsvExtractor();
+        //    extractor.Extract(new ClientDetail(), @"C:\Users\bgoble\Documents\CodeGen\CMSBigCSV.txt");
+        //}
     }
 }
