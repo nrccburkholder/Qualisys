@@ -119,6 +119,11 @@ end;
      Result := Result + PathDelim;
  end;
 
+ function TimeStampFileName: string;
+ begin
+   result := 'C:\NRC\Logs\'+ExtractFileName(Application.ExeName)+'\' + FormatDateTime(FORMAT_DATETIME_DEFAULT, Now) + '.log';
+ end;
+
 procedure TLogger.CreateFoldersIfNecessary;
 var
   FilePath: string;
@@ -243,14 +248,18 @@ begin
 
     AssignFile(FOutFile, FFileName);
     if not FileExists(FFileName) then
-      Rewrite(FOutFile)
+    begin
+      FFileName := TimeStampFileName;
+      AssignFile(FOutFile, FFileName);
+      Rewrite(FOutFile);
+    end
     else
       Append(FOutFile);
   end;
 
   FIsInit := True;
 end;
- 
+
 procedure TLogger.Info(const Msg: string);
 begin
   if not (ltInfo in FQuietTypes) then
@@ -261,7 +270,7 @@ procedure TLogger.SetNoisyMode;
 begin
   FQuietMode := False;
 end;
- 
+
 procedure TLogger.SetQuietMode;
 begin
   FQuietMode := True;
@@ -278,7 +287,7 @@ begin
   if not (ltWarning in FQuietTypes) then
     Self.Write(Format(FORMAT_LOG, [PREFIX_WARN, Msg]));
 end;
- 
+
 procedure TLogger.Write(const Msg: string);
 begin
   if FQuietMode then
@@ -295,7 +304,7 @@ end;
 
 initialization
 
-  Logger := TLogger.Create('C:\NRC\Logs\'+ExtractFileName(Application.ExeName)+'\' + FormatDateTime(FORMAT_DATETIME_DEFAULT, Now) + '.txt');
+  Logger := TLogger.Create(TimeStampFileName);
 
 finalization
   Logger.Free;
