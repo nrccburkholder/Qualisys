@@ -185,55 +185,37 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
 
         public static string AddTrailingCommas(string fileContents)
         {
-            return string.Join("\n", fileContents.Split('\n').Select(line => line.TrimEnd(' ', '\r') + ","));
+            return string.Join("\n", fileContents.Split('\n').Select(line => line.Replace("\r", "") + ","));
         }
 
-        public static DateTime? GetDateTimeFromString(string value, bool expectingyyyMMdd)
+        private static DateTime? GetDateTimeFromString(string value)
         {
-            value = string.IsNullOrEmpty(value) ? "" : value.Trim();
-            if (string.IsNullOrEmpty(value))
+            if (value == null) return null;
+            value = value.Trim();
+            
+            string format;
+            if (value.Contains("/"))
+            {
+                format = "M/d/yyyy";
+            }
+            else
+            {
+                const int GreatestPossibleMonthDay = 1231;
+
+                if (value.Length < 7) return null;
+                if (value.Length == 7) value = "0" + value;
+                format = int.Parse(value.Substring(0, 4)) <= GreatestPossibleMonthDay ? "MMddyyyy" : "yyyyMMdd";
+            }
+
+            DateTime d;
+            if (DateTime.TryParseExact(value, format, CultureInfo.CurrentCulture, DateTimeStyles.None, out d))
+            {
+                return d;
+            }
+            else
             {
                 return null;
             }
-
-            if (value.IndexOf('/') != -1)
-            {
-                try
-                {
-                    return DateTime.Parse(value);
-                }
-                catch (Exception)
-                {
-                    return null;
-                }
-            }
-            
-            IEnumerable<string> formats = new string[] { "MMddyyyy", "yyyyMMdd" };
-            if (expectingyyyMMdd)
-            {
-                formats = formats.Reverse();
-            }
-
-            foreach (string fmt in formats)
-            {
-                string v = value;
-                if (v.Length == fmt.Length - 1 && fmt.StartsWith("MM"))
-                {
-                    v = "0" + v;
-                }
-                else if (v.Length != fmt.Length) // unfixable, no good
-                {
-                    continue;
-                }
-
-                DateTime d;
-                if (DateTime.TryParseExact(v, fmt, CultureInfo.CurrentCulture, DateTimeStyles.None, out d))
-                {
-                    return d;
-                }
-            }
-
-            return null;
         }
 
         public static string ToString(this DateTime? date, string format)
@@ -242,9 +224,9 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
             return date.Value.ToString(format);
         }
 
-        public static string ConvertDateFormat(string value, bool expectingyyyMMdd)
+        public static string ConvertDateFormat(string value)
         {
-            return GetDateTimeFromString(value, expectingyyyMMdd).ToString("MMddyyyy");
+            return GetDateTimeFromString(value).ToString("MMddyyyy");
         }
 
         private static Regex _phoneNumberRegex = new Regex(@"^(\(?\d{3}\)?)?\s*[\.\-]*\s*\d{3}\s*[\.\-]*\s*\d{4}$", RegexOptions.Compiled);

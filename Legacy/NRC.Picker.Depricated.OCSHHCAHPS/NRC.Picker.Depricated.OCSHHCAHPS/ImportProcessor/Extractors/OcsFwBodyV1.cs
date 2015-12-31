@@ -64,6 +64,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
 
         [FieldFixedLength(8)]
         [FieldTrim(TrimMode.Both)]
+        [FieldConverter(typeof(DateConverter))]
         public string DOB;
 
         [FieldFixedLength(1)]
@@ -76,6 +77,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
 
         [FieldFixedLength(8)]
         [FieldTrim(TrimMode.Both)]
+        [FieldConverter(typeof(DateConverter))]
         public string SOC_Date;
 
         [FieldFixedLength(1)]
@@ -84,6 +86,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
 
         [FieldFixedLength(8)]
         [FieldTrim(TrimMode.Both)]
+        [FieldConverter(typeof(DateConverter))]
         public string Discharge_Date;
 
         [FieldFixedLength(3)]

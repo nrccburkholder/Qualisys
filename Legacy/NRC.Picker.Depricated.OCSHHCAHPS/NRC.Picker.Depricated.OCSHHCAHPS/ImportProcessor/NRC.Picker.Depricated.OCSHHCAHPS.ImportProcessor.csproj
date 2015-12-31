@@ -104,6 +104,7 @@
     <Compile Include="Extractors\CmsCsvExtractor.cs" />
     <Compile Include="Extractors\CmsCsvParser.cs" />
     <Compile Include="Extractors\CSVToXMLBase.cs" />
+    <Compile Include="Extractors\DateConverter.cs" />
     <Compile Include="Extractors\EnumConverter.cs" />
     <Compile Include="Extractors\ExtractHelper.cs" />
     <Compile Include="Extractors\Factory.cs" />

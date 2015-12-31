@@ -28,7 +28,7 @@ namespace OCSHHCAHPS.ImportProcessorTest
         //public void Extract_BigFile()
         //{
         //    var extractor = new OcsFwExtractor();
-        //    extractor.Extract(new ClientDetail(), @"C:\Users\bgoble\Documents\CodeGen\OCSBigFixedWidth.txt");
+        //    extractor.Extract(new ClientDetail(), @"C:\TestFiles\OCS\OCSBigFixedWidth.txt");
         //}
     }
 }

@@ -735,6 +735,13 @@ namespace OCSHHCAHPS.ImportProcessorTest
             Assert.AreEqual("", element.Value);
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void Parse_EmptyFile_InvalidOperationExceptionIsThrown()
+        {
+            var xml = OcsPtctCsvParser.Parse(new ClientDetail(), "file.csv", "", false);
+        }
+
         #endregion Parse
     }
 }

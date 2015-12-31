@@ -1299,6 +1299,13 @@ namespace OCSHHCAHPS.ImportProcessorTest
             OcsFwParser.Parse(new ClientDetail(), "file.csv", fileContents);
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void Parse_EmptyFile_InvalidOperationExceptionIsThrown()
+        {
+            var xml = OcsFwParser.Parse(new ClientDetail(), "file.csv", "");
+        }
+
         #endregion Parse
     }
 }

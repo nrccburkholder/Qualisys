@@ -688,6 +688,14 @@ namespace OCSHHCAHPS.ImportProcessorTest
             Assert.AreEqual("", element.Value);
         }
 
+        [TestMethod]
+        public void Parse_EmptyFile_NoExceptions()
+        {
+            var xml = CmsCsvParser.Parse(new ClientDetail(), "file.csv", "");
+            var rows = ParserTestHelper.GetRows(xml);
+            Assert.AreEqual(0, rows.Count());
+        }
+
         #endregion Parse
     }
 }

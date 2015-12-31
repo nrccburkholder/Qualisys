@@ -72,6 +72,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
 
         [FieldQuoted('"', QuoteMode.OptionalForBoth)]
         [FieldOptional]
+        [FieldConverter(typeof(DateConverter))]
         public string DOB;
 
         [FieldQuoted('"', QuoteMode.OptionalForBoth)]
@@ -81,6 +82,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
 
         [FieldQuoted('"', QuoteMode.OptionalForBoth)]
         [FieldOptional]
+        [FieldConverter(typeof(DateConverter))]
         public string SOC_Date;
 
         [FieldQuoted('"', QuoteMode.OptionalForBoth)]
@@ -178,6 +180,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
         [FieldQuoted('"', QuoteMode.OptionalForBoth)]
         [FieldTrim(TrimMode.Both)]
         [FieldOptional]
+        [FieldConverter(typeof(DateConverter))]
         public string Discharge_Date;
 
         [FieldQuoted('"', QuoteMode.OptionalForBoth)]

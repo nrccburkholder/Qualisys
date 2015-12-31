@@ -20,6 +20,42 @@ namespace OCSHHCAHPS.ImportProcessorTest
             Assert.AreEqual(value, attribute.Value);
         }
 
+        private static void AssertGetLinesForFixedWidth(string fileContents, params string[] expectedResult)
+        {
+            var lines = ExtractHelper.GetLinesForFixedWidthFile(fileContents).ToList();
+            CollectionAssert.AreEqual(expectedResult, lines);
+        }
+
+        private static void AssertAddTrailingCommas(string fileContents, string expectedResult)
+        {
+            var result = ExtractHelper.AddTrailingCommas(fileContents);
+            Assert.AreEqual(expectedResult, result);
+        }
+
+        private static void AssertNullableDateTimeToString(DateTime? date, string expectedResult)
+        {
+            var result = date.ToString("MMddyyyy");
+            Assert.AreEqual(expectedResult, result);
+        }
+
+        private static void AssertConvertDateFormat(string value, string expectedResult)
+        {
+            var result = ExtractHelper.ConvertDateFormat(value);
+            Assert.AreEqual(expectedResult, result);
+        }
+
+        private static void AssertColumnsWithData(string line, int expectedCount)
+        {
+            var count = ExtractHelper.ColumnsWithData(line);
+            Assert.AreEqual(expectedCount, count);
+        }
+
+        private static void AssertIsBlankCsvLine(string line, bool expectedResult)
+        {
+            var result = ExtractHelper.IsBlankCsvLine(line);
+            Assert.AreEqual(expectedResult, result);
+        }
+
         #endregion Helpers
 
         #region CreateEmptyDocument
@@ -201,5 +237,173 @@ namespace OCSHHCAHPS.ImportProcessorTest
         }
 
         #endregion GetRowsElement
+
+        #region GetLinesForFixedWidthFile
+
+        [TestMethod]
+        public void GetLinesForFixedWidthFile_OneLine_ThatLineIsReturned()
+        {
+            AssertGetLinesForFixedWidth("a", "a");
+        }
+
+        [TestMethod]
+        public void GetLinesForFixedWidthFile_TwoLinesSeparatedByNewLineChar_TwoLinesReturned()
+        {
+            AssertGetLinesForFixedWidth("a\nb", "a", "b");
+        }
+
+        [TestMethod]
+        public void GetLinesForFixedWidthFile_TwoLinesSeparatedByReturnAndNewLineChars_ReturnCharStrippedOut()
+        {
+            AssertGetLinesForFixedWidth("a\r\nb", "a", "b");
+        }
+
+        [TestMethod]
+        public void GetLinesForFixedWidthFile_TwoLinesSeparatedByNewLineAndReturnChars_ReturnCharIsStrippedOut()
+        {
+            AssertGetLinesForFixedWidth("a\n\rb", "a", "b");
+        }
+
+        #endregion GetLinesForFixedWidthFile
+
+        #region AddTrailingCommas
+
+        [TestMethod]
+        public void AddTrailingCommas_LinesEndWithReturnNewLine_LinesEndWithCommaNewLine()
+        {
+            AssertAddTrailingCommas("a\r\nb", "a,\nb,");
+        }
+
+        [TestMethod]
+        public void AddTrailingCommas_LinesEndWithNewLineReturn_LinesEndWithCommaNewLine()
+        {
+            AssertAddTrailingCommas("a\n\rb", "a,\nb,");
+        }
+
+        [TestMethod]
+        public void AddTrailingCommas_LinesEndWithNewLine_LinesEndWithCommaNewLine()
+        {
+            AssertAddTrailingCommas("a\nb", "a,\nb,");
+        }
+
+        #endregion AddTrailingCommas
+
+        #region NullableDateTimeToString
+
+        [TestMethod]
+        public void NullableDateTimeToString_DateIsNull_ReturnsEmptyString()
+        {
+            AssertNullableDateTimeToString(null, "");
+        }
+
+        [TestMethod]
+        public void NullableDateTimeToString_DateIsNotNull_ReturnsFormattedDate()
+        {
+            AssertNullableDateTimeToString(new DateTime(2015, 1, 2), "01022015");
+        }
+
+        #endregion NullableDateTimeToString
+
+        #region ConvertDateFormat
+
+        [TestMethod]
+        public void ConvertDateFormat_01022015_Returns01022015()
+        {
+            AssertConvertDateFormat("01022015", "01022015");
+        }
+
+        [TestMethod]
+        public void ConvertDateFormat_1022015_Returns01022015()
+        {
+            AssertConvertDateFormat("1022015", "01022015");
+        }
+
+        [TestMethod]
+        public void ConvertDateFormat_01Slash02Slash2015_Returns01022015()
+        {
+            AssertConvertDateFormat("01/02/2015", "01022015");
+        }
+
+        [TestMethod]
+        public void ConvertDateFormat_1Slash2Slash2015_Returns01022015()
+        {
+            AssertConvertDateFormat("1/2/2015", "01022015");
+        }
+
+        [TestMethod]
+        public void ConvertDateFormat_20150102_Returns01022015()
+        {
+            AssertConvertDateFormat("20150102", "01022015");
+        }
+
+        #endregion ConvertDateFormat
+
+        #region ColumnsWithData
+
+        [TestMethod]
+        public void ColumnsWithData_OneWithNonWhitespace_ReturnsOne()
+        {
+            AssertColumnsWithData("a", 1);
+        }
+
+        [TestMethod]
+        public void ColumnsWithData_TwoWithNonWhitespace_ReturnsTwo()
+        {
+            AssertColumnsWithData("a,b", 2);
+        }
+
+        [TestMethod]
+        public void ColumnsWithData_TwoWithNothing_ReturnsZero()
+        {
+            AssertColumnsWithData(",", 0);
+        }
+
+        [TestMethod]
+        public void ColumnsWithData_OneWithWhitespace_ReturnsZero()
+        {
+            AssertColumnsWithData(" ", 0);
+        }
+
+        [TestMethod]
+        public void ColumnsWithData_TwoWithWhitespace_ReturnsZero()
+        {
+            AssertColumnsWithData(" ,   ", 0);
+        }
+
+        #endregion ColumnsWithData
+
+        #region IsBlankCsvLine
+
+        [TestMethod]
+        public void IsBlankCsvLine_EmptyLine_ReturnsTrue()
+        {
+            AssertIsBlankCsvLine("", true);
+        }
+
+        [TestMethod]
+        public void IsBlankCsvLine_WhitespaceLine_ReturnsTrue()
+        {
+            AssertIsBlankCsvLine(" ", true);
+        }
+
+        [TestMethod]
+        public void IsBlankCsvLine_OnlyCommas_ReturnsTrue()
+        {
+            AssertIsBlankCsvLine(",,", true);
+        }
+
+        [TestMethod]
+        public void IsBlankCsvLine_OneNonWhitespace_ReturnsFalse()
+        {
+            AssertIsBlankCsvLine("a", false);
+        }
+
+        [TestMethod]
+        public void IsBlankCsvLine_OneNonWhitespaceOneEmpty_ReturnsFalse()
+        {
+            AssertIsBlankCsvLine("a,", false);
+        }
+
+        #endregion IsBlankCsvLine
     }
 }

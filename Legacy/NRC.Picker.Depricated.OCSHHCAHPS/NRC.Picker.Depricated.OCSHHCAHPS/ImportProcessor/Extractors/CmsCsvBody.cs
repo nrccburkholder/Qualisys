@@ -73,11 +73,13 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
         [FieldQuoted('"', QuoteMode.OptionalForBoth)]
         [FieldTrim(TrimMode.Both)]
         [FieldOptional]
+        [FieldConverter(typeof(DateConverter))]
         public string DOB;
 
         [FieldQuoted('"', QuoteMode.OptionalForBoth)]
         [FieldTrim(TrimMode.Both)]
         [FieldOptional]
+        [FieldConverter(typeof(DateConverter))]
         public string SOC_Date;
 
         [FieldQuoted('"', QuoteMode.OptionalForBoth)]
