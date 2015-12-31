@@ -205,8 +205,8 @@ select ss.SURVEY_ID
 		--WHEN ss.[Language] = 16 THEN	-- Somali
 		--'{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Calibri;}}{\colortbl ;\red0\green0\blue0;}\viewkind4\uc1\pard\cf1\lang1033\f0\fs20 Somali Portuguese\par }'
 		WHEN ss.[Language] IN (2,8,18,19) THEN -- Spanish
-		'{\rtf1\ansi\deff0{\fonttbl{\f0\fnil MS Sans Serif;}} \viewkind4\uc1\pard\lang1033\f0\fs16 Ruso \par }'
-		ELSE '{\rtf1\ansi\deff0{\fonttbl{\f0\fswiss\fcharset0 MS Sans Serif;}} {\colortbl ;\red0\green0\blue0;} \viewkind4\uc1\pard\cf1\lang1033\f0\fs16 Russian \par }'
+		'{\rtf1\ansi\deff0{\fonttbl{\f0\fnil MS Sans Serif;}}\viewkind4\uc1\pard\lang1033\f0\fs16 Ruso\par }'
+		ELSE '{\rtf1\ansi\deff0{\fonttbl{\f0\fswiss\fcharset0 MS Sans Serif;}}{\colortbl ;\red0\green0\blue0;}\viewkind4\uc1\pard\cf1\lang1033\f0\fs16 Russian\par }'
 	END RICHTEXT
 	,ss.MISSING
 	,ss.CHARSET
