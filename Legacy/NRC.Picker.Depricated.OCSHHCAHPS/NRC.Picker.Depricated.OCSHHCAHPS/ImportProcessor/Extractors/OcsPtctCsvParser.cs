@@ -9,7 +9,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
 {
     internal static class OcsPtctCsvParser
     {
-        public static XDocument Parse(ClientDetail client, string fileName, string fileContents, bool isPtct)
+        public static XDocument Parse(ClientDetail client, string fullFileName, string fileContents, bool isPtct)
         {
             var xml = ExtractHelper.CreateEmptyDocument();
 
@@ -22,7 +22,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
             ParseHeader(xml, result[0].Master);
             ParseBody(xml, result[0].Details, isPtct);
 
-            xml.Root.Add(ExtractHelper.CreateRootAttributes(client, fileName));
+            xml.Root.Add(ExtractHelper.CreateRootAttributes(client, fullFileName));
 
             return xml;
         }

@@ -11,7 +11,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
 {
     internal static class PgCsvParser
     {
-        public static XDocument Parse(ClientDetail client, string fileName, string fileContents)
+        public static XDocument Parse(ClientDetail client, string fullFileName, string fileContents)
         {
             var xml = ExtractHelper.CreateEmptyDocument();
 
@@ -132,7 +132,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
                 }
             }
 
-            xml.Root.Add(ExtractHelper.CreateRootAttributes(client, fileName));
+            xml.Root.Add(ExtractHelper.CreateRootAttributes(client, fullFileName));
 
             return xml;
         }

@@ -21,7 +21,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
         private const int SHORT_LINE_FLEX = 20; // consider that they might not pad the last field, so a body line might be short by let's say 20
         private const int MIN_BODY_LINE_LENGTH = BODY_LINE_LENGTH - SHORT_LINE_FLEX;
 
-        public static XDocument Parse(ClientDetail client, string fileName, string fileContents)
+        public static XDocument Parse(ClientDetail client, string fullFileName, string fileContents)
         {
             var xml = ExtractHelper.CreateEmptyDocument();
             var lines = ExtractHelper.GetLinesForFixedWidthFile(fileContents);
@@ -29,7 +29,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
             ParseHeader(xml, lines);
             ParseBody(xml, lines);
 
-            xml.Root.Add(ExtractHelper.CreateRootAttributes(client, fileName));
+            xml.Root.Add(ExtractHelper.CreateRootAttributes(client, fullFileName));
 
             return xml;
         }
