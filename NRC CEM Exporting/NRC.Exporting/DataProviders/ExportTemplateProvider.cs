@@ -29,7 +29,7 @@ namespace CEM.Exporting.DataProviders
 
         #region private methods
 
-        private static ExportTemplate PopulateExportTemplate(DataRow dr, bool b)
+        internal static ExportTemplate PopulateExportTemplate(DataRow dr, bool b)
         {
             ExportTemplate template = new ExportTemplate();
 
@@ -61,7 +61,7 @@ namespace CEM.Exporting.DataProviders
             return template;
         }
 
-        private static List<ExportTemplate> PopulateTemplateList(DataSet ds, bool b)
+        internal static List<ExportTemplate> PopulateTemplateList(DataSet ds, bool b)
         {
             List<ExportTemplate> templates = new List<ExportTemplate>();
 
@@ -100,6 +100,25 @@ namespace CEM.Exporting.DataProviders
             using (ds)
             {
                 return PopulateTemplateList(ds, IncludeChildProperties);
+            }
+        }
+
+        internal static DataTable SelectAsDataTable(ExportTemplate template, bool IncludeChildProperties = false)
+        {
+            SqlParameter[] param = new SqlParameter[] {new SqlParameter("@ExportTemplateID",template.ExportTemplateID),
+                                                       new SqlParameter("@SurveyTypeId", template.SurveyTypeID),
+                                                       new SqlParameter("@ExportTemplateName", template.ExportTemplateName),
+                                                        new SqlParameter("@ExportTemplateVersionMajor", template.ExportTemplateVersionMajor),
+                                                        new SqlParameter("@ExportTemplateVersionMinor",template.ExportTemplateVersionMinor),
+                                                        new SqlParameter("@ClientId", template.ClientID)
+                                                       };
+
+            DataSet ds = new DataSet();
+            SqlProvider.Fill(ref ds, "Templates","CEM.SelectTemplate", CommandType.StoredProcedure, param);
+
+            using (ds)
+            {
+                return ds.Tables["Templates"];
             }
         }
 

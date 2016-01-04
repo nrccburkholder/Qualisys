@@ -128,14 +128,15 @@ SET @NewScale_id = 8850
 SELECT distinct sq.selqstns_id, sq.survey_id, sq.scaleid, sq.label, sq.[language]
   INTO #sel_qstns    
   FROM [dbo].[SEL_QSTNS] sq
-INNER JOIN [dbo].[SURVEY_DEF] sd on sq.survey_id = sq.survey_id
+INNER JOIN [dbo].[SURVEY_DEF] sd on sd.survey_id = sq.survey_id
 INNER JOIN [dbo].[MAILINGMETHODOLOGY] mm on (mm.SURVEY_ID = sq.SURVEY_ID)
 INNER JOIN [dbo].[StandardMethodology] sm ON (sm.StandardMethodologyID = mm.StandardMethodologyID)
 where sq.QSTNCORE = @OldQstnCore
+and sq.survey_id not in (17516) -- excluding this survey as per Rachel 12/21/2015
 and sd.surveytype_id = @SurveyType_ID
 
-print 'sel_qstns with old QstnCore'
-select sq.*
+
+select 'sel_qstns with old QstnCore', sq.*
 FROM #sel_qstns sq
 order by sq.SELQSTNS_ID
 
@@ -204,8 +205,8 @@ select ss.SURVEY_ID
 		--WHEN ss.[Language] = 16 THEN	-- Somali
 		--'{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Calibri;}}{\colortbl ;\red0\green0\blue0;}\viewkind4\uc1\pard\cf1\lang1033\f0\fs20 Somali Portuguese\par }'
 		WHEN ss.[Language] IN (2,8,18,19) THEN -- Spanish
-		'{\rtf1\ansi\deff0{\fonttbl{\f0\fnil MS Sans Serif;}} \viewkind4\uc1\pard\lang1033\f0\fs16 Ruso \par }'
-		ELSE '{\rtf1\ansi\deff0{\fonttbl{\f0\fswiss\fcharset0 MS Sans Serif;}} {\colortbl ;\red0\green0\blue0;} \viewkind4\uc1\pard\cf1\lang1033\f0\fs16 Russian \par }'
+		'{\rtf1\ansi\deff0{\fonttbl{\f0\fnil MS Sans Serif;}}\viewkind4\uc1\pard\lang1033\f0\fs16 Ruso\par }'
+		ELSE '{\rtf1\ansi\deff0{\fonttbl{\f0\fswiss\fcharset0 MS Sans Serif;}}{\colortbl ;\red0\green0\blue0;}\viewkind4\uc1\pard\cf1\lang1033\f0\fs16 Russian\par }'
 	END RICHTEXT
 	,ss.MISSING
 	,ss.CHARSET
@@ -298,9 +299,12 @@ begin
 
 	print '---------------------------------------'
 	print 'backup for SEL_QSTNS'
-		select *
+		select sq.*
 		into bak_SEL_QSTNS_AllCAHPS_Release039
-		from SEL_QSTNS
+		from SEL_QSTNS sq
+		INNER JOIN [dbo].[SURVEY_DEF] sd on sd.survey_id = sq.survey_id
+		and sd.surveytype_id = @SurveyType_ID
+
 
 end
 
@@ -312,9 +316,11 @@ begin
 
 	print '---------------------------------------'
 	print 'backup for SEL_SCLS'
-		select *
+		select ss.*
 		into bak_SEL_SCLS_AllCAHPS_Release039
-		from SEL_SCLS
+		from SEL_SCLS ss
+		INNER JOIN [dbo].[SURVEY_DEF] sd on sd.survey_id = ss.survey_id
+		and sd.surveytype_id = @SurveyType_ID
 
 end
 	BEGIN tran

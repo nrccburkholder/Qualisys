@@ -48,11 +48,13 @@ namespace CEM.FileMakerUI
             AddQueueColumns();
             AddQueueFileColumns();
             cmbxSurveyType.SelectedIndex = -1;
+
+            //LoadData();
         }
 
         private void cmbxSurveyType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cmbxSurveyType.SelectedValue != null)
+            if (cmbxSurveyType.SelectedIndex >= 0)
             {
                 SurveyType selectedSurveyType = (SurveyType)cmbxSurveyType.SelectedItem;
                 int surveyTypeId = selectedSurveyType.SurveyTypeID;
@@ -63,9 +65,19 @@ namespace CEM.FileMakerUI
                     ClearQueuesGrid();
                     ClearQueueFilesGrid();
                     LoadTemplates(surveyTypeId);
+                    //LoadTemplateDS(surveyTypeId);
+
+
+                    //templateBindingSource.Filter = "[SurveyTypeID]  = 11";
+                    //dgTemplates.Refresh();
                 }
                 
-            }        
+            }
+            //else
+            //{
+            //    templateBindingSource.Filter = "";
+            //    dgTemplates.Refresh();
+            //}   
         }
 
         //private void dgTemplates_CellValueChanged(object sender, DataGridViewCellEventArgs e)
@@ -105,6 +117,8 @@ namespace CEM.FileMakerUI
         {
             if (e.RowIndex > -1)
             {
+                //DataRow row = ((DataRowView)dgTemplates.Rows[e.RowIndex].DataBoundItem).Row;
+                //ExportTemplate selectedTemplate = ExportTemplate.PopulateExportTemplate(row);
                 ExportTemplate selectedTemplate = (ExportTemplate)dgTemplates.Rows[e.RowIndex].DataBoundItem;
 
                 if (selectedTemplate.ExportTemplateID != currentTemplateId)
@@ -121,6 +135,8 @@ namespace CEM.FileMakerUI
         {
             if (e.RowIndex > -1)
             {
+                //DataRow row = ((DataRowView)dgQueues.Rows[e.RowIndex].DataBoundItem).Row;
+                //ExportQueue selectedQueue = ExportQueue.PopulateExportQueue(row);
                 ExportQueue selectedQueue = (ExportQueue)dgQueues.Rows[e.RowIndex].DataBoundItem;
 
                 if (selectedQueue.ExportQueueID != currentQueueId)
@@ -129,7 +145,7 @@ namespace CEM.FileMakerUI
                     ClearQueueFilesGrid();
                     LoadQueueFiles(selectedQueue);
                 }
-                
+
             }
         }
 
@@ -219,6 +235,8 @@ namespace CEM.FileMakerUI
                     if (Convert.ToBoolean(row.Cells[0].Value))
                     {
                         filesToMake.Add((ExportQueueFile)row.DataBoundItem);
+                        //DataRow r = ((DataRowView)row.DataBoundItem).Row;
+                        //filesToMake.Add(ExportQueueFile.PopulateExportQueueFile(r));
                     }
                 }
                 if (filesToMake.Count > 0)
@@ -289,6 +307,13 @@ namespace CEM.FileMakerUI
             idColumn.ReadOnly = true;
 
             dgTemplates.Columns.Add(idColumn);
+
+            DataGridViewTextBoxColumn surveyTypeIdColumn = new DataGridViewTextBoxColumn();
+            surveyTypeIdColumn.Name = "Survey Type";
+            surveyTypeIdColumn.DataPropertyName = "SurveyTypeID";
+            surveyTypeIdColumn.ReadOnly = true;
+
+            dgTemplates.Columns.Add(surveyTypeIdColumn);
 
             DataGridViewTextBoxColumn nameColumn = new DataGridViewTextBoxColumn();
             nameColumn.Name = "Name";
@@ -446,7 +471,7 @@ namespace CEM.FileMakerUI
             dgQueueFiles.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
 
         }
-
+        
         private void ClearTemplatesGrid()
         {
             LoadTemplates(0);
@@ -481,5 +506,74 @@ namespace CEM.FileMakerUI
             return iCnt;
         }
 
+        private void LoadTemplateDS(int surveyTypeId)
+        {
+            //richTextBox1.Clear();
+            //DataSet ds = ExportTemplate.SelectAsDataSet(new ExportTemplate { SurveyTypeID = surveyTypeId });
+            //templateBindingSource.DataSource = ds;
+            //templateBindingSource.DataMember = "Templates";
+            //dgTemplates.DataSource = templateBindingSource;
+            
+        }
+
+        private void LoadQueueDS(ExportTemplate template)
+        {
+            //richTextBox1.Clear();
+            //DataSet ds = ExportQueue.SelectAsDataSet(new ExportQueue { ExportTemplateName = template.ExportTemplateName, ExportTemplateVersionMajor = template.ExportTemplateVersionMajor, ExportTemplateVersionMinor = template.ExportTemplateVersionMinor });
+            //queueBindingSource.DataSource = ds;
+            //queueBindingSource.DataMember = "Queues";
+            //dgQueues.DataSource = queueBindingSource;
+
+        }
+
+
+        private void LoadData()
+        {
+            richTextBox1.Clear();
+            DataSet ds = new DataSet();
+            DataTable dtTemplates = ExportTemplate.SelectAsDataTable(new ExportTemplate()).Copy();
+
+            if (dtTemplates.Rows.Count > 0)
+            {
+                ds.Tables.Add(dtTemplates);
+
+                DataTable dtQueues = ExportQueue.SelectAsDataTable(new ExportQueue()).Copy();
+
+
+                ds.Tables.Add(dtQueues);
+              
+
+                DataRelation relationTemplatesQueues = new DataRelation("TemplatesQueues",
+                    ds.Tables["Templates"].Columns["ExportTemplateID"],
+                    ds.Tables["Queues"].Columns["ExportTemplateID"]);
+
+                ds.Relations.Add(relationTemplatesQueues);
+
+
+                DataTable dtQueueFiles = ExportQueueFile.SelectAsDataTable(new ExportQueueFile()).Copy();
+
+                ds.Tables.Add(dtQueueFiles);
+
+                DataRelation relationQueuesQueueFiles = new DataRelation("QueuesQueueFiles",
+                   ds.Tables["Queues"].Columns["ExportQueueID"],
+                   ds.Tables["QueueFiles"].Columns["ExportQueueID"]);
+
+                ds.Relations.Add(relationQueuesQueueFiles);
+
+                templateBindingSource.DataSource = ds;
+                templateBindingSource.DataMember = "Templates";
+                dgTemplates.DataSource = templateBindingSource;
+
+                queueBindingSource.DataSource = templateBindingSource;
+                queueBindingSource.DataMember = "TemplatesQueues";
+                dgQueues.DataSource = queueBindingSource;
+
+                queueFileBindingSource.DataSource = queueBindingSource;
+                queueFileBindingSource.DataMember = "QueuesQueueFiles";
+                dgQueueFiles.DataSource = queueFileBindingSource;
+
+
+            }
+        }
     }
 }

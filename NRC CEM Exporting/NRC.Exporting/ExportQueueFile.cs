@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CEM.Exporting.DataProviders;
 using CEM.Exporting.Enums;
+using System.Data;
 
 namespace CEM.Exporting
 {
@@ -12,6 +13,7 @@ namespace CEM.Exporting
     {
 
         public int? ExportQueueFileID { get; set; }
+        public int? ExportTemplateID { get; set; }
         public int? ExportQueueID { get; set; }
         public Int16? FileState { get; set; }
         public DateTime? SubmissionDate { get; set; }
@@ -37,9 +39,19 @@ namespace CEM.Exporting
             ExportQueueFileProvider.Update(this);
         }
 
+        public static ExportQueueFile PopulateExportQueueFile(DataRow dr)
+        {
+            return DataProviders.ExportQueueFileProvider.PopulateExportQueueFile(dr);
+        }
+
         public static List<ExportQueueFile> Select(ExportQueueFile queuefile)
         {
             return DataProviders.ExportQueueFileProvider.Select(queuefile);
+        }
+
+        public static DataTable SelectAsDataTable(ExportQueueFile queuefile)
+        {
+            return DataProviders.ExportQueueFileProvider.SelectAsDataTable(queuefile);
         }
 
         #endregion

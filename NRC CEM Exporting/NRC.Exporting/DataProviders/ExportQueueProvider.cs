@@ -22,11 +22,12 @@ namespace CEM.Exporting.DataProviders
 
         #region private methods
 
-        private static ExportQueue PopulateExportQueue(DataRow dr)
+        internal static ExportQueue PopulateExportQueue(DataRow dr)
         {
             ExportQueue queue = new ExportQueue();
 
             queue.ExportQueueID = (int)dr["ExportQueueID"];
+            queue.ExportTemplateID = (int)dr["ExportTemplateID"];
             queue.ExportTemplateName = dr["ExportTemplateName"].ToString();
             queue.ExportTemplateVersionMajor = dr["ExportTemplateVersionMajor"].ToString();
             queue.ExportTemplateVersionMinor = dr["ExportTemplateVersionMinor"] == DBNull.Value ? null : (int?)dr["ExportTemplateVersionMinor"];
@@ -44,7 +45,7 @@ namespace CEM.Exporting.DataProviders
         }
 
 
-        private static List<ExportQueue> PopulateQueueList(DataSet ds)
+        internal static List<ExportQueue> PopulateQueueList(DataSet ds)
         {
             List<ExportQueue> queues = new List<ExportQueue>();
 
@@ -78,6 +79,25 @@ namespace CEM.Exporting.DataProviders
             using (ds)
             {
                 return PopulateQueueList(ds);
+            }
+
+        }
+
+        internal static DataTable SelectAsDataTable(ExportQueue queue)
+        {
+
+            SqlParameter[] param = new SqlParameter[] {new SqlParameter("@ExportQueueID",queue.ExportQueueID),
+                                                       new SqlParameter("@ExportTemplateName", queue.ExportTemplateName),
+                                                       new SqlParameter("@ExportTemplateVersionMajor", queue.ExportTemplateVersionMajor),
+                                                       new SqlParameter("@ExportTemplateVersionMinor",queue.ExportTemplateVersionMinor)
+                                                       };
+
+            DataSet ds = new DataSet();
+            SqlProvider.Fill(ref ds, "Queues", "CEM.SelectExportQueue", CommandType.StoredProcedure, param);
+
+            using (ds)
+            {
+                return ds.Tables["Queues"];
             }
 
         }

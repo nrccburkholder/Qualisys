@@ -10,6 +10,7 @@ using System.Xml.Serialization;
 using System.Xml.Linq;
 using System.IO;
 using CEM.Exporting.DataProviders;
+using System.Data;
 
 namespace CEM.Exporting
 {
@@ -60,11 +61,21 @@ namespace CEM.Exporting
 
         #region public methods
 
+        public static ExportTemplate PopulateExportTemplate(DataRow dr)
+        {
+            return ExportTemplateProvider.PopulateExportTemplate(dr, false);
+        }
+
         public static List<ExportTemplate>Select(ExportTemplate template, bool IncludeChildProperties = false)
         {
             return ExportTemplateProvider.Select(template, IncludeChildProperties);
         }
-            
+
+        public static DataTable SelectAsDataTable(ExportTemplate template, bool IncludeChildProperties = false)
+        {
+            return ExportTemplateProvider.SelectAsDataTable(template, IncludeChildProperties);
+        }
+
         #endregion
 
         #region Validation

@@ -41,7 +41,7 @@ EVENTLOG_ERROR_TYPE = $0001;
 
 implementation
 
-uses dPCLGen, common, DOpenQ;
+uses dPCLGen, common, DOpenQ, log4Pascal;
 
 {$R *.DFM}
 
@@ -68,11 +68,14 @@ begin
   while memo1.lines.count > 100 do
     memo1.lines.delete(0);
   if (dmPCLGen = NIL) or (dmPCLGen.currentrun <= 0) then begin
-    s := s + ' (not logged to PCLGenLog table)';
-    memo1.lines.add(TimeToStr(Time) + ' ' + s);
-  end else
-    memo1.lines.add(TimeToStr(Time) + ' ('+inttostr(dmPCLGen.currentrun)+') ' + s);
+//    memo1.lines.add(TimeToStr(Time) + ' ' + s + ' (not logged to PCLGenLog table)');
+    Logger.Info(s);
+  end else begin
+//    memo1.lines.add(TimeToStr(Time) + ' ('+inttostr(dmPCLGen.currentrun)+') ' + s);
+    Logger.Info(s +' ('+inttostr(dmPCLGen.currentrun)+') ');
+  end;
   memo1.update;
+
 
   if (dmPCLGen <> NIL) and (dmPCLGen.currentrun > 0) then begin
     qry := 'execute sp_PCL_LogEntry ' + inttostr(dmPCLGen.currentrun)+', '+dmOpenq.sqlstring(s,false)+', ';
@@ -106,6 +109,7 @@ begin
   dummy := GetFileVersion(application.exename, Version);
   if paramstr(4)='/C' then timer.interval := 1000;
   timer.enabled := true;
+  memo1.Lines.Add('Log file in C:\NRC\Logs\'+ExtractFileName(Application.ExeName)+'\');
 end;
 
 procedure TfrmPCLGeneration.TimerTimer(Sender: TObject);
