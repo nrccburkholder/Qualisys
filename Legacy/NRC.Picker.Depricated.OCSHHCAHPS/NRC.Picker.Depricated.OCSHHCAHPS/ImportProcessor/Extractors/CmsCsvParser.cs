@@ -34,6 +34,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
                                 ExtractHelper.CreateFieldElement(ExtractHelper.YearField, body.Sample_Year ?? -1),
                                 ExtractHelper.CreateFieldElement(ExtractHelper.ProviderIdField, body.M0010),
                                 ExtractHelper.CreateFieldElement(ExtractHelper.ProviderNameField, body.Provider_Name),
+                                ExtractHelper.CreateFieldElement(ExtractHelper.NpiField, body.NPI),
                                 ExtractHelper.CreateFieldElement(ExtractHelper.TotalPatientsServedField, body.Total_Patients_Served),
                                 ExtractHelper.CreateFieldElement(ExtractHelper.NumberOfBranchesField, ""),
                                 ExtractHelper.CreateFieldElement(ExtractHelper.VersionNumberField, "")
@@ -140,7 +141,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
         private static void Engine_BeforeReadRecord(EngineBase engine, BeforeReadEventArgs<CmsCsvBody> e)
         {
             if (ExtractHelper.IsBlankCsvLine(e.RecordLine)) e.SkipThisRecord = true;
-            if (e.RecordLine.StartsWith("Location_Name_Code")) e.SkipThisRecord = true;
+            if (ExtractHelper.IsFieldNamesLine(e.RecordLine)) e.SkipThisRecord = true;
         }
     }
 }

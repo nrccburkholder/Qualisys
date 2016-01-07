@@ -18,6 +18,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
         public const string YearField = "YEAR";
         public const string ProviderIdField = "PROVIDER ID";
         public const string ProviderNameField = "PROVIDER NAME";
+        public const string NpiField = "NPI";
         public const string TotalPatientsServedField = "TOTAL NUMBER OF PATIENT SERVED";
         public const string NumberOfBranchesField = "NUMBER OF BRANCHES";
         public const string VersionNumberField = "VERSION NUMBER";
@@ -238,13 +239,86 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
 
         public static int ColumnsWithData(string record)
         {
-            return record.Split(',').Where(value => !string.IsNullOrWhiteSpace(value)).Count();
+            return SplitIntoCells(record).Where(value => !string.IsNullOrWhiteSpace(value)).Count();
+        }
+
+        private static IEnumerable<string> SplitIntoCells(string contents)
+        {
+            var cell = new StringBuilder();
+            var previous = ' ';
+            var inQuotes = false;
+            foreach (var current in contents)
+            {
+                switch (current)
+                {
+                    case '"':
+                        inQuotes = !inQuotes;
+                        if (previous == '"')
+                        {
+                            cell.Append('"');
+                            previous = ' ';
+                        }
+                        else
+                        {
+                            previous = current;
+                        }
+                        break;
+                    case ',':
+                        if (inQuotes)
+                        {
+                            cell.Append(current);
+                        }
+                        else
+                        {
+                            yield return cell.ToString();
+                            cell.Clear();
+                        }
+                        previous = current;
+                        break;
+                    case '\n':
+                        if (inQuotes)
+                        {
+                            cell.Append(current);
+                        }
+                        else
+                        {
+                            yield return cell.ToString();
+                            yield return null;
+                            cell.Clear();
+                        }
+                        previous = current;
+                        break;
+                    case '\r':
+                        break;
+                    default:
+                        cell.Append(current);
+                        previous = current;
+                        break;
+                }
+            }
+
+            if (cell.ToString() != "") yield return cell.ToString();
         }
 
         public static bool IsBlankCsvLine(string line)
         {
             if (string.IsNullOrWhiteSpace(line)) return true;
             else if (ColumnsWithData(line) == 0) return true;
+            return false;
+        }
+
+        public static bool IsFieldNamesLine(string line)
+        {
+            line = line.ToLower();
+
+            if (line.Contains("version")) return true;
+            if (line.Contains("provider id")) return true;
+            if (line.Contains("npi")) return true;
+            if (line.Contains("icd")) return true;
+            if (line.Contains("deceased")) return true;
+            if (line.Contains("zip")) return true;
+            if (line.Contains("address")) return true;
+
             return false;
         }
     }

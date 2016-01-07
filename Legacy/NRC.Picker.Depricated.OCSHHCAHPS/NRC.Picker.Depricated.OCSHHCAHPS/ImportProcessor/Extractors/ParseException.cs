@@ -12,7 +12,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
 
         public ParseException(string message) : base(message) { }
 
-        public ParseException(string message, Exception innerException) { }
+        public ParseException(string message, Exception innerException) : base(message, innerException) { }
 
         public ParseException(SerializationInfo info, StreamingContext context) : base(info, context) { }
     }

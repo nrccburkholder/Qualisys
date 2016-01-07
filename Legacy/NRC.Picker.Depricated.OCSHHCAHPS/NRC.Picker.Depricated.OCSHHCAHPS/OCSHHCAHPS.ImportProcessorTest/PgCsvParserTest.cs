@@ -114,6 +114,12 @@ namespace OCSHHCAHPS.ImportProcessorTest
         }
 
         [TestMethod]
+        public void Parse_Sample1File_MetadataHasNpi()
+        {
+            AssertSample1FileMetadataHasField(ExtractHelper.NpiField, "");
+        }
+
+        [TestMethod]
         public void Parse_Sample1File_MetadataHasTotalNumberOfPatientsServed()
         {
             AssertSample1FileMetadataHasField(ExtractHelper.TotalPatientsServedField, "298");
@@ -703,6 +709,20 @@ namespace OCSHHCAHPS.ImportProcessorTest
             var xml = PgCsvParser.Parse(new ClientDetail(), "file.csv", "");
             var rows = ParserTestHelper.GetRows(xml);
             Assert.AreEqual(0, rows.Count());
+        }
+
+        [TestMethod]
+        public void Parse_AddressHasComma_ProviderNameParses()
+        {
+            const string fileContents =
+                "OCS,147714,JUAN,J,ANDRADE,\"6970 N. WOLCOTT, AVE\",,CHICAGO,IL,60626,7732627035,2,2/26/2010,4,,10/28/1944,0,1,JA1560,2,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,716.99,403.91,585.6,285.21,414.01,493.9,1,2,2,2,2,2,2,1,1,2,0,1,,4,7,6,2010,,,298,$";
+            var xml = PgCsvParser.Parse(new ClientDetail(), "file.csv", fileContents);
+
+            var row = ParserTestHelper.GetRows(xml).ElementAt(0);
+            var element = ParserTestHelper.GetElement(row, ExtractHelper.PatientMailingAddress1Field);
+
+            Assert.IsNotNull(element);
+            Assert.AreEqual("6970 N. WOLCOTT, AVE", element.Value);
         }
 
         #endregion Parse

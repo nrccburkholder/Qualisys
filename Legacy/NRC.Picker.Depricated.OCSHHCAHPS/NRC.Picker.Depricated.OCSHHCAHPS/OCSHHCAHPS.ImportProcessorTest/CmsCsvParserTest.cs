@@ -115,6 +115,12 @@ namespace OCSHHCAHPS.ImportProcessorTest
         }
 
         [TestMethod]
+        public void Parse_Sample1File_MetadataHasNpi()
+        {
+            AssertSample1FileMetadataHasField(ExtractHelper.NpiField, "1558306159");
+        }
+
+        [TestMethod]
         public void Parse_Sample1File_MetadataHasTotalNumberOfPatientsServed()
         {
             AssertSample1FileMetadataHasField(ExtractHelper.TotalPatientsServedField, "730");
@@ -694,6 +700,19 @@ namespace OCSHHCAHPS.ImportProcessorTest
             var xml = CmsCsvParser.Parse(new ClientDetail(), "file.csv", "");
             var rows = ParserTestHelper.GetRows(xml);
             Assert.AreEqual(0, rows.Count());
+        }
+
+        [TestMethod]
+        public void Parse_ProviderNameHasComma_ProviderNameParses()
+        {
+            const string fileContents =
+                "P,\"NURSE ON CALL, INC.\",107207,1558306159,6,2010,730,290,GEORGE,J,BURKE,1,6181941,4052010,4 Woodholm Lane,,Palm Coast,FL,32164,3864469610,689311M,15,47,,,,,,,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,998.83,250,401.9,414,715.9,443.9,1,M,3,1,2,5,0,0,M,1";
+            var xml = CmsCsvParser.Parse(new ClientDetail(), "file.csv", fileContents);
+            var metadata = ParserTestHelper.GetMetadataRow(xml);
+            var element = ParserTestHelper.GetElement(metadata, ExtractHelper.ProviderNameField);
+
+            Assert.IsNotNull(element);
+            Assert.AreEqual("NURSE ON CALL, INC.", element.Value);
         }
 
         #endregion Parse

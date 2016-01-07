@@ -29,7 +29,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
 
         private static RecordAction RecordSelector(string record)
         {
-            if (string.IsNullOrWhiteSpace(record) || record.StartsWith("Sample") || record.StartsWith("PatientCode"))
+            if (string.IsNullOrWhiteSpace(record) || ExtractHelper.IsFieldNamesLine(record))
                 return RecordAction.Skip;
 
             var columnsWithData = ExtractHelper.ColumnsWithData(record);
@@ -52,6 +52,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
                     ExtractHelper.CreateFieldElement(ExtractHelper.YearField, header.SampleYear),
                     ExtractHelper.CreateFieldElement(ExtractHelper.ProviderIdField, header.ProviderID),
                     ExtractHelper.CreateFieldElement(ExtractHelper.ProviderNameField, header.ProviderName),
+                    ExtractHelper.CreateFieldElement(ExtractHelper.NpiField, header.NPI),
                     ExtractHelper.CreateFieldElement(ExtractHelper.TotalPatientsServedField, header.TotalNumberOfPatientsServed),
                     ExtractHelper.CreateFieldElement(ExtractHelper.NumberOfBranchesField, header.NumberOfBranchesServed),
                     ExtractHelper.CreateFieldElement(ExtractHelper.VersionNumberField, header.VersionNumber)

@@ -34,6 +34,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
                                 ExtractHelper.CreateFieldElement(ExtractHelper.YearField, body.SampleYear),
                                 ExtractHelper.CreateFieldElement(ExtractHelper.ProviderIdField, body.ClientNumber),
                                 ExtractHelper.CreateFieldElement(ExtractHelper.ProviderNameField, ""),
+                                ExtractHelper.CreateFieldElement(ExtractHelper.NpiField, ""),
                                 ExtractHelper.CreateFieldElement(ExtractHelper.TotalPatientsServedField, body.TotalNumberOfPatientsServed),
                                 ExtractHelper.CreateFieldElement(ExtractHelper.NumberOfBranchesField, ""),
                                 ExtractHelper.CreateFieldElement(ExtractHelper.VersionNumberField, "")
@@ -140,7 +141,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
         private static void Engine_BeforeReadRecord(EngineBase engine, BeforeReadEventArgs<PgCsvBody> e)
         {
             if (ExtractHelper.IsBlankCsvLine(e.RecordLine)) e.SkipThisRecord = true;
-            else if (e.RecordLine.StartsWith("Survey_Designator")) e.SkipThisRecord = true;
+            else if (ExtractHelper.IsFieldNamesLine(e.RecordLine)) e.SkipThisRecord = true;
         }
     }
 }

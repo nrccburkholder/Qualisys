@@ -185,6 +185,12 @@ namespace OCSHHCAHPS.ImportProcessorTest
         }
 
         [TestMethod]
+        public void Parse_Version1File_MetadataHasNpi()
+        {
+            AssertVersion1FileMetadataHasField(ExtractHelper.NpiField, "1346299955");
+        }
+
+        [TestMethod]
         public void Parse_Version1File_MetadataHasTotalNumberOfPatientsServed()
         {
             AssertVersion1FileMetadataHasField(ExtractHelper.TotalPatientsServedField, "204");
@@ -749,6 +755,12 @@ namespace OCSHHCAHPS.ImportProcessorTest
         public void Parse_Version2File_MetadataHasProviderName()
         {
             AssertVersion2FileMetadataHasField(ExtractHelper.ProviderNameField, "AMERICAN PROVIDERS INC");
+        }
+
+        [TestMethod]
+        public void Parse_Version2File_MetadataHasNpi()
+        {
+            AssertVersion2FileMetadataHasField(ExtractHelper.NpiField, "1346299955");
         }
 
         [TestMethod]

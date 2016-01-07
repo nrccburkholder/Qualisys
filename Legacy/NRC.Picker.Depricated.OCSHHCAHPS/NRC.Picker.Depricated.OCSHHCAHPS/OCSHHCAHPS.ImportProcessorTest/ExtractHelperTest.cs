@@ -370,6 +370,12 @@ namespace OCSHHCAHPS.ImportProcessorTest
             AssertColumnsWithData(" ,   ", 0);
         }
 
+        [TestMethod]
+        public void ColumnsWithData_ColumnHasQuotedComma_ReturnsOne()
+        {
+            AssertColumnsWithData("\"a,b\"", 1);
+        }
+
         #endregion ColumnsWithData
 
         #region IsBlankCsvLine
