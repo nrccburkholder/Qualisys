@@ -32,8 +32,6 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
 
         public override object StringToField(string from)
         {
-            return from;
-
             if (string.IsNullOrEmpty(from)) return null;
 
             from = from.Trim();
