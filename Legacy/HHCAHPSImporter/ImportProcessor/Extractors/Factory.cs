@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
+namespace HHCAHPSImporter.ImportProcessor.Extractors
 {
     public static class Factory
     {

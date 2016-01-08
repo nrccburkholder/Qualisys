@@ -1,14 +1,14 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-using Generated = NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL.Generated;
-using NRC.Picker.Depricated.OCSHHCAHPS.Web.UI.Models;
+using Generated = HHCAHPSImporter.ImportProcessor.DAL.Generated;
+using HHCAHPSImporter.Web.UI.Models;
 using NRC.Common.Configuration;
 
-namespace NRC.Picker.Depricated.OCSHHCAHPS.Web.UI.Controllers
+namespace HHCAHPSImporter.Web.UI.Controllers
 {
     [HandleError()]
     public class UploadFilesController : ControllerBase
@@ -67,7 +67,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.Web.UI.Controllers
                 uploadfiles = qpDataLoad.UploadedFileLogView
                     .Where(t => t.DateUploadFileStateChange >= _startDate &&
                                 t.DateUploadFileStateChange < _endDate.AddDays(1) &&
-                                t.UploadFileState_id.Equals(NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL.UploadState.UploadedAbandoned))
+                                t.UploadFileState_id.Equals(HHCAHPSImporter.ImportProcessor.DAL.UploadState.UploadedAbandoned))
                     .OrderByDescending(t => t.UploadFile_id)
                     .Take(_take)
                     .ToList();

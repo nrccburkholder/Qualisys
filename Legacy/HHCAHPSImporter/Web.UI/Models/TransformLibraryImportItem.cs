@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace NRC.Picker.Depricated.OCSHHCAHPS.Web.UI.Models
+namespace HHCAHPSImporter.Web.UI.Models
 {
     public class TransformLibraryImportItem
     {

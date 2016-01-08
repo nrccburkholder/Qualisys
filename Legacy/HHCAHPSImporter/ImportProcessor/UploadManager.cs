@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +6,7 @@ using System.Xml.Linq;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor
+namespace HHCAHPSImporter.ImportProcessor
 {
     public class UploadManager
     {
@@ -20,7 +20,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor
             this.qpDataLoadManager = DAL.QP_DataLoadManager.Create(this._settings.QP_DataLoadConnectionString);
         }
 
-        public event NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.InfoEventHandler Info;
+        public event HHCAHPSImporter.ImportProcessor.InfoEventHandler Info;
         private void OnInfo(string message)
         {
             if (this.Info != null)
@@ -29,7 +29,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor
             }
         }
 
-        public event NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.ErrorEventHandler Error;
+        public event HHCAHPSImporter.ImportProcessor.ErrorEventHandler Error;
         private void OnError(string message, Exception ex)
         {
             if (this.Error != null)

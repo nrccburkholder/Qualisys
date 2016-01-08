@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
 
-namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Validation
+namespace HHCAHPSImporter.ImportProcessor.Validation
 {
     [AttributeUsage(AttributeTargets.Class)] 
     public class EitherFieldRequiredAttribute : ValidationAttribute

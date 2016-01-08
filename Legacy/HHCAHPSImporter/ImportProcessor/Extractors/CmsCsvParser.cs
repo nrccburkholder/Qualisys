@@ -1,13 +1,13 @@
-﻿using FileHelpers;
+using FileHelpers;
 using FileHelpers.Events;
-using NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL.Generated;
+using HHCAHPSImporter.ImportProcessor.DAL.Generated;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 
-namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
+namespace HHCAHPSImporter.ImportProcessor.Extractors
 {
     internal static class CmsCsvParser
     {

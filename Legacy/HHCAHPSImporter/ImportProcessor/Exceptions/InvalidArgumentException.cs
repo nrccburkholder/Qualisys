@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Exceptions
+namespace HHCAHPSImporter.ImportProcessor.Exceptions
 {
     public class InvalidArgumentException : System.Exception
     {

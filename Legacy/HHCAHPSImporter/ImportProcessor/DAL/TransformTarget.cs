@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
-using NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Validation;
+using HHCAHPSImporter.ImportProcessor.Validation;
 
-namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL.Generated
+namespace HHCAHPSImporter.ImportProcessor.DAL.Generated
 {
     [MetadataType(typeof(TransformTarget_Validation))]
     public partial class TransformTarget

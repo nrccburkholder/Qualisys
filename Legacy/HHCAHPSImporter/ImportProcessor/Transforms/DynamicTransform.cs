@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,9 +10,9 @@ using System.Reflection;
 using System.IO;
 using System.Text.RegularExpressions;
 
-using NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL;
+using HHCAHPSImporter.ImportProcessor.DAL;
 
-namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Transforms
+namespace HHCAHPSImporter.ImportProcessor.Transforms
 {
     class DynamicTransform : ITransform
     {
@@ -82,7 +82,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Transforms
             // *** Start by adding any referenced assemblies
             loParameters.ReferencedAssemblies.Add("System.dll");
             loParameters.ReferencedAssemblies.Add("Microsoft.VisualBasic.dll");
-            loParameters.ReferencedAssemblies.Add(Assembly.GetExecutingAssembly().Location);//, "NRC.Picker.Depricated.ImportProcessors.OCSHHCAHPS.dll"));
+            loParameters.ReferencedAssemblies.Add(Assembly.GetExecutingAssembly().Location);
 
             string vbCode =
 @"Imports System
@@ -95,7 +95,7 @@ Imports Microsoft.VisualBasic.DateAndTime
 Imports Microsoft.VisualBasic.Financial
 Imports Microsoft.VisualBasic.Strings
 Imports Microsoft.VisualBasic.VBMath
-Imports NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Transforms.Misc
+Imports HHCAHPSImporter.ImportProcessor.Transforms.Misc
 Imports System.Text.RegularExpressions
 
 Namespace NRC
@@ -251,7 +251,7 @@ End Namespace";
                 // *** Start by adding any referenced assemblies
                 loParameters.ReferencedAssemblies.Add("System.dll");
                 loParameters.ReferencedAssemblies.Add("Microsoft.VisualBasic.dll");
-                loParameters.ReferencedAssemblies.Add(Assembly.GetExecutingAssembly().Location);//, "NRC.Picker.Depricated.ImportProcessors.OCSHHCAHPS.dll"));
+                loParameters.ReferencedAssemblies.Add(Assembly.GetExecutingAssembly().Location);
 
                 string vbCode =
 @"Imports System
@@ -264,7 +264,7 @@ Imports Microsoft.VisualBasic.DateAndTime
 Imports Microsoft.VisualBasic.Financial
 Imports Microsoft.VisualBasic.Strings
 Imports Microsoft.VisualBasic.VBMath
-Imports NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Transforms.Misc
+Imports HHCAHPSImporter.ImportProcessor.Transforms.Misc
 Imports System.Text.RegularExpressions
 
 Namespace NRC

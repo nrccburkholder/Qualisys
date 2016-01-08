@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,16 +8,16 @@ using NRC.Common;
 using NRC.Common.Service;
 using NRC.Common.Configuration;
 
-using ImportProcessor = NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor;
-using Exceptions = NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Exceptions;
+using ImportProcessor = HHCAHPSImporter.ImportProcessor;
+using Exceptions = HHCAHPSImporter.ImportProcessor.Exceptions;
 
 
-namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessingService
+namespace HHCAHPSImporter.ImportProcessingService
 {
     class Program : TimerService
     {
         Settings settings = ConfigManager.Load<Settings>(new ConfigOptions { CreateMissingDirectories = true });
-        private static Logger _logger = Logger.GetLogger("NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor");
+        private static Logger _logger = Logger.GetLogger("HHCAHPSImporter.ImportProcessor");
 
         #region TimerService Overrides
         protected override int IntervalSecs

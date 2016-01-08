@@ -1,13 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-using Generated = NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL.Generated;
-using NRC.Picker.Depricated.OCSHHCAHPS.Web.UI.Models;
+using Generated = HHCAHPSImporter.ImportProcessor.DAL.Generated;
+using HHCAHPSImporter.Web.UI.Models;
 
-namespace NRC.Picker.Depricated.OCSHHCAHPS.Web.UI.Controllers
+namespace HHCAHPSImporter.Web.UI.Controllers
 {
     [HandleError()]
     public class LibrariesController : ControllerBase

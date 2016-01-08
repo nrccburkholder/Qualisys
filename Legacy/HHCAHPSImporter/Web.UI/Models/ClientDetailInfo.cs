@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-using Generated = NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL.Generated;
+using Generated = HHCAHPSImporter.ImportProcessor.DAL.Generated;
 
-namespace NRC.Picker.Depricated.OCSHHCAHPS.Web.UI.Models
+namespace HHCAHPSImporter.Web.UI.Models
 {
     public class ClientDetailInfo
     {

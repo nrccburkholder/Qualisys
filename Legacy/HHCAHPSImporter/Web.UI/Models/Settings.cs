@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -6,7 +6,7 @@ using System.IO;
 
 using NRC.Common.Configuration;
 
-namespace NRC.Picker.Depricated.OCSHHCAHPS.Web.UI.Models
+namespace HHCAHPSImporter.Web.UI.Models
 {
     public class Settings : ConfigSection
     {

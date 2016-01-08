@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +7,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 
-namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor
+namespace HHCAHPSImporter.ImportProcessor
 {
     public class ImportProcessor
     {
@@ -22,14 +22,14 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor
         private TextWriter _logger = null;
 
         #region event delegates
-        public event NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.InfoEventHandler Info;
+        public event HHCAHPSImporter.ImportProcessor.InfoEventHandler Info;
         private void OnInfo(string message)
         {
             if( this._logger != null ) _logger.LogLine(message);
             if (this.Info != null) this.Info(message);
         }
 
-        public event NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.ErrorEventHandler Error;
+        public event HHCAHPSImporter.ImportProcessor.ErrorEventHandler Error;
         private void OnError(string message, Exception ex)
         {
             if (this._logger != null) _logger.LogError(message, ex);
@@ -299,11 +299,11 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor
                     this.OnInfo(string.Format("Abandoning DataFile({0})", dataFileId.Value));
                     if (ex != null)
                     {
-                        qpDataLoadManager.LD_UpdateDataFileStateChange(dataFileId.Value, NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL.DataFileState.Abandoned, string.Format("Abandoned - {0}", ex.Message));
+                        qpDataLoadManager.LD_UpdateDataFileStateChange(dataFileId.Value, HHCAHPSImporter.ImportProcessor.DAL.DataFileState.Abandoned, string.Format("Abandoned - {0}", ex.Message));
                     }
                     else
                     {
-                        qpDataLoadManager.LD_UpdateDataFileStateChange(dataFileId.Value, NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL.DataFileState.Abandoned, "Abandoned");
+                        qpDataLoadManager.LD_UpdateDataFileStateChange(dataFileId.Value, HHCAHPSImporter.ImportProcessor.DAL.DataFileState.Abandoned, "Abandoned");
                     }
                 }
             }

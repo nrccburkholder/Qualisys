@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,11 +9,11 @@ using System.Text.RegularExpressions;
 // using LumenWorks.Framework.IO.Csv;
 using FileHelpers;
 
-using NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL;
+using HHCAHPSImporter.ImportProcessor.DAL;
 using System.Xml.Serialization;
 
 
-namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors.OCS
+namespace HHCAHPSImporter.ImportProcessor.Extractors.OCS
 {
     [DelimitedRecord(",")]
     public class NRCBody

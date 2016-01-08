@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<IEnumerable<NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL.Generated.UploadedFileLogView>>" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<IEnumerable<HHCAHPSImporter.ImportProcessor.DAL.Generated.UploadedFileLogView>>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
 	Index
@@ -68,7 +68,7 @@
   
         <tr>
             <td>
-                <a href='file://<%: NRC.Picker.Depricated.OCSHHCAHPS.Web.UI.Models.Utils.GetDataFileDirectory(item) %>'>
+                <a href='file://<%: HHCAHPSImporter.Web.UI.Models.Utils.GetDataFileDirectory(item) %>'>
                     <span id="Span2" style="float:left" class="ui-icon ui-icon-folder-open" ></span>
                 </a>
             </td>
@@ -96,9 +96,9 @@
                     <%: item.DataFileName %>
             </td>
             <td>
-                <% if (item.UploadFileState_id == (int)NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL.UploadState.UploadedAbandoned )
+                <% if (item.UploadFileState_id == (int)HHCAHPSImporter.ImportProcessor.DAL.UploadState.UploadedAbandoned )
                    { %>
-                <div class="errorHead" id='<%: string.Format("abandonded-target-u{0}", item.UploadFile_id) %>'><%: ((NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL.UploadState)item.UploadFileState_id).ToString()%></div>
+                <div class="errorHead" id='<%: string.Format("abandonded-target-u{0}", item.UploadFile_id) %>'><%: ((HHCAHPSImporter.ImportProcessor.DAL.UploadState)item.UploadFileState_id).ToString()%></div>
                 <div class="errorBody" id='<%: string.Format("abandonded-content-u{0}", item.UploadFile_id) %>'>
                     <ul id="simplelist">
                         <% foreach (var m in item.UploadStateParam.Split(new char[] { '\r', '\n' }).Where(t => t.Length > 0).ToList())
@@ -110,13 +110,13 @@
                 <%}
                    else
                    { %>
-                <%: ((NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL.UploadState)item.UploadFileState_id).ToString()%>
+                <%: ((HHCAHPSImporter.ImportProcessor.DAL.UploadState)item.UploadFileState_id).ToString()%>
                 <% } %>
             </td>
             <td>
-                <% if (item.DataFileState_id == (int)NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL.DataFileState.Abandoned)
+                <% if (item.DataFileState_id == (int)HHCAHPSImporter.ImportProcessor.DAL.DataFileState.Abandoned)
                    { %>
-                <div class="errorHead" id='<%: string.Format("abandonded-target-d{0}", item.DataFile_id) %>'><%: ((NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL.DataFileState)item.DataFileState_id).ToString()%></div>
+                <div class="errorHead" id='<%: string.Format("abandonded-target-d{0}", item.DataFile_id) %>'><%: ((HHCAHPSImporter.ImportProcessor.DAL.DataFileState)item.DataFileState_id).ToString()%></div>
                 <div class="errorBody" id='<%: string.Format("abandonded-content-d{0}", item.DataFile_id) %>' >
                     <ul id="simplelist">
                         <% foreach (var m in item.DataFileStateParam.Split(new char[] { '\r', '\n' }).Where(t => t.Length > 0).ToList())
@@ -128,7 +128,7 @@
                 <% }
                    else
                    { %>
-                <%: ((NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL.DataFileState)item.DataFileState_id).ToString()%>
+                <%: ((HHCAHPSImporter.ImportProcessor.DAL.DataFileState)item.DataFileState_id).ToString()%>
                 <% } %>
             </td>
             <td>

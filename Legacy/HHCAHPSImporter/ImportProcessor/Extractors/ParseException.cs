@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
+namespace HHCAHPSImporter.ImportProcessor.Extractors
 {
     public class ParseException : Exception
     {

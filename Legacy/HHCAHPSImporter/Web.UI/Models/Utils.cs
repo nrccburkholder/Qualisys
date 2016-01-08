@@ -1,15 +1,15 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Xml.Linq;
 
 using HostingEnvironment = System.Web.Hosting.HostingEnvironment;
-using Generated = NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL.Generated;
-using NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL;
+using Generated = HHCAHPSImporter.ImportProcessor.DAL.Generated;
+using HHCAHPSImporter.ImportProcessor.DAL;
 using NRC.Common.Configuration;
 
-namespace NRC.Picker.Depricated.OCSHHCAHPS.Web.UI.Models
+namespace HHCAHPSImporter.Web.UI.Models
 {
     public static class Utils
     {
@@ -121,7 +121,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.Web.UI.Models
             #endregion 
             #endregion
 
-            XDocument transformedData = NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Transforms.Factory
+            XDocument transformedData = HHCAHPSImporter.ImportProcessor.Transforms.Factory
                 .GetTransformProcessor(client)
                 .Transform(client, transforms, data);
 

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<NRC.Picker.Depricated.OCSHHCAHPS.Web.UI.Models.ClientEditInfo>" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<HHCAHPSImporter.Web.UI.Models.ClientEditInfo>" %>
 <%@ Assembly Name="System.Data" %>
 <%@ Assembly Name="System.Data.Linq, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" %>
 
@@ -66,7 +66,7 @@
                         </li>
 
                         <% if (Model.AvailableTransforms != null) {
-                               foreach (NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL.Generated.Transform t in Model.AvailableTransforms) {%> 
+                               foreach (HHCAHPSImporter.ImportProcessor.DAL.Generated.Transform t in Model.AvailableTransforms) {%> 
                                <li> 
                                     <% if (Model.CurrentTransformId.Equals( t.TransformId )) { %>
                                             <input type="radio" name="selectedTransformId" value='<%: t.TransformId %>' checked="checked"  /><%: t.TransformName %>

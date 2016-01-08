@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Xml.Linq;
 using System.Collections.Generic;
-using NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL.Generated;
+using HHCAHPSImporter.ImportProcessor.DAL.Generated;
 using FileHelpers;
 
-namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
+namespace HHCAHPSImporter.ImportProcessor.Extractors
 {
     internal static class OcsFwParser
     {

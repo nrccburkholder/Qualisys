@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data.SqlClient;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using System.Data;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL
+namespace HHCAHPSImporter.ImportProcessor.DAL
 {
     public class QP_DataLoadManager
     {

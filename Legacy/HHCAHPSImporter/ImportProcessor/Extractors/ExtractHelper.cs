@@ -1,5 +1,5 @@
-﻿using FileHelpers;
-using NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL.Generated;
+using FileHelpers;
+using HHCAHPSImporter.ImportProcessor.DAL.Generated;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
-namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
+namespace HHCAHPSImporter.ImportProcessor.Extractors
 {
     internal static class ExtractHelper
     {

@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
-namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Validation
+namespace HHCAHPSImporter.ImportProcessor.Validation
 {
     class TableNameAttribute :  ValidationAttribute
     {

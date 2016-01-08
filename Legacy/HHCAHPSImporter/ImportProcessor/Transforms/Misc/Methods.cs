@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Globalization;
 
-namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Transforms.Misc
+namespace HHCAHPSImporter.ImportProcessor.Transforms.Misc
 {
     public class Methods
     {

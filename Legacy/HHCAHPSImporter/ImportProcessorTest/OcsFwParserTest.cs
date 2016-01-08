@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors;
+using HHCAHPSImporter.ImportProcessor.Extractors;
 using System.Linq;
 using System.Xml.Linq;
 using System.Collections.Generic;
-using NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL.Generated;
+using HHCAHPSImporter.ImportProcessor.DAL.Generated;
 
 namespace OCSHHCAHPS.ImportProcessorTest
 {

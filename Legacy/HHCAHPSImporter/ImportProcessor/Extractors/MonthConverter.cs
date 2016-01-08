@@ -1,11 +1,11 @@
-﻿using FileHelpers;
+using FileHelpers;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Extractors
+namespace HHCAHPSImporter.ImportProcessor.Extractors
 {
     public class MonthConverter : ConverterBase
     {

@@ -1,13 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
 
-using ImportProcessor = NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor;
+using ImportProcessor = HHCAHPSImporter.ImportProcessor;
 using NRC.Common.Configuration;
 
-namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessingService
+namespace HHCAHPSImporter.ImportProcessingService
 {
     public class Settings : ImportProcessor.Settings
     {

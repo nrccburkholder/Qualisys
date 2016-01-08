@@ -1,1 +1,1 @@
-sqlmetal /server:NBAALIABADI /database:QP_DataLoad /sprocs /views /namespace:NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL.Generated /entitybase:NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL.EntityBase /code:QP_DataLoad.cs
+sqlmetal /server:NBAALIABADI /database:QP_DataLoad /sprocs /views /namespace:HHCAHPSImporter.ImportProcessor.DAL.Generated /entitybase:HHCAHPSImporter.ImportProcessor.DAL.EntityBase /code:QP_DataLoad.cs

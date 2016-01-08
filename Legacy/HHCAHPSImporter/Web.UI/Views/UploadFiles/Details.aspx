@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL.Generated.UploadedFileLogView>" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<HHCAHPSImporter.ImportProcessor.DAL.Generated.UploadedFileLogView>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
 	Details
@@ -16,7 +16,7 @@
                 <td>UploadFile_id</td><td><%: Model.UploadFile_id %></td>
             </tr>
             <tr>
-                <td>UploadState</td><td><%: ((NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL.UploadState)Model.UploadFileState_id).ToString()%></td>
+                <td>UploadState</td><td><%: ((HHCAHPSImporter.ImportProcessor.DAL.UploadState)Model.UploadFileState_id).ToString()%></td>
             </tr>
             <tr>
                 <td>OrigFile_Nm</td><td><%: Model.OrigFile_Nm %></td>
@@ -28,7 +28,7 @@
                 <td>FileSize</td><td><%: Model.FileSize %></td>
             </tr>
             <tr>
-                <td>UploadAction_id</td><td><%: ((NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL.UploadAction)Model.UploadAction_id).ToString() %></td>
+                <td>UploadAction_id</td><td><%: ((HHCAHPSImporter.ImportProcessor.DAL.UploadAction)Model.UploadAction_id).ToString() %></td>
             </tr>
             <tr>
                 <td>Mod Date</td>

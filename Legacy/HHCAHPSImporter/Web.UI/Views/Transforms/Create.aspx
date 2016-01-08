@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL.Generated.Transform>" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<HHCAHPSImporter.ImportProcessor.DAL.Generated.Transform>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
 	Create
@@ -35,7 +35,7 @@
                 <td>Import Libraries</td>
                 <td>
                     <ul id="simplelist">
-                    <% foreach (var v in NRC.Picker.Depricated.OCSHHCAHPS.Web.UI.Models.Utils.TransformLibraries(Model.TransformId) ) { %>
+                    <% foreach (var v in HHCAHPSImporter.Web.UI.Models.Utils.TransformLibraries(Model.TransformId) ) { %>
                         <li><input type="checkbox" name="importLibraries" value="<%: v.TransformLibraryId %>" 
                         <%if(v.IsImported){ %>checked="checked"<% } %> /><%: v.TransformLibraryName %></li>
                     <% } %>

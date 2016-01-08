@@ -1,1 +1,1 @@
-﻿<%@ Application Codebehind="Global.asax.cs" Inherits="NRC.Picker.Depricated.OCSHHCAHPS.Web.UI.MvcApplication" Language="C#" %>
+<%@ Application Codebehind="Global.asax.cs" Inherits="HHCAHPSImporter.Web.UI.MvcApplication" Language="C#" %>

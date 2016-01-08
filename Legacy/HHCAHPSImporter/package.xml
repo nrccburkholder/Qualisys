@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <package-list>
   <package>
-    <name>NRC.Picker.Depricated.OCSHHCAHPS</name>
+    <name>HHCAHPSImporter</name>
     <package-version>1.0.0</package-version>
     <framework-version>4.0</framework-version>
     <applications>

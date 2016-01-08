@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -9,10 +9,10 @@ using System.Web.Mvc;
 using System.Web.Security;
 using System.IO;
 
-using Generated = NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL.Generated;
+using Generated = HHCAHPSImporter.ImportProcessor.DAL.Generated;
 using NRC.Common.Configuration;
 
-namespace NRC.Picker.Depricated.OCSHHCAHPS.Web.UI.Models
+namespace HHCAHPSImporter.Web.UI.Models
 {
     public class TransformRepository 
     {

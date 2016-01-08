@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -11,8 +11,8 @@
     <ProjectTypeGuids>{E53F8FEA-EAE0-44A6-8774-FFD645390401};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NRC.Picker.Depricated.OCSHHCAHPS.Web.UI</RootNamespace>
-    <AssemblyName>NRC.Picker.Depricated.OCSHHCAHPS.Web.UI</AssemblyName>
+    <RootNamespace>HHCAHPSImporter.Web.UI</RootNamespace>
+    <AssemblyName>HHCAHPSImporter.Web.UI</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <SccProjectName>
@@ -203,9 +203,9 @@
       <Project>{FCC95A8B-8FE0-482D-A09E-E9EB2CB7C890}</Project>
       <Name>NRC.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ImportProcessor\NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.csproj">
+    <ProjectReference Include="..\ImportProcessor\HHCAHPSImporter.ImportProcessor.csproj">
       <Project>{BCD6012D-3D2B-4A44-993E-9FAEC29FF962}</Project>
-      <Name>NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor</Name>
+      <Name>HHCAHPSImporter.ImportProcessor</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

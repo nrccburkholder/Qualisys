@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
-using NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Validation;
+using HHCAHPSImporter.ImportProcessor.Validation;
 
-namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL.Generated
+namespace HHCAHPSImporter.ImportProcessor.DAL.Generated
 {
     [MetadataType(typeof(TransformLibrary_Validation))]
     public partial class TransformLibrary
@@ -18,7 +18,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL.Generated
                 return;
             }
 
-            NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Transforms.Factory.GetTransformProcessor(null).TestLibrary(this.Code);
+            HHCAHPSImporter.ImportProcessor.Transforms.Factory.GetTransformProcessor(null).TestLibrary(this.Code);
         }
     }
 

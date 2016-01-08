@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.DAL
+namespace HHCAHPSImporter.ImportProcessor.DAL
 {
     public class EntityBase
     {

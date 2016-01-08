@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
 
-namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Validation
+namespace HHCAHPSImporter.ImportProcessor.Validation
 {
     public class LibraryCodeAttribute : ValidationAttribute
     {
@@ -17,7 +17,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Validation
 
             try
             {
-                NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.Transforms.Factory.GetTransformProcessor(null).TestLibrary(value.ToString());
+                HHCAHPSImporter.ImportProcessor.Transforms.Factory.GetTransformProcessor(null).TestLibrary(value.ToString());
                 return true;
             }
             catch(Exception ex) 
