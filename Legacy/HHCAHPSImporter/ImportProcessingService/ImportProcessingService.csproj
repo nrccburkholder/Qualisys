@@ -82,13 +82,7 @@
     <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ImportProcessor\NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.csproj">
-      <Project>{BCD6012D-3D2B-4A44-993E-9FAEC29FF962}</Project>
-      <Name>NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="NRC.Picker.Depricated.OCSHHCAHPS.nuspec" />
+    <None Include="ImportProcessingService.nuspec" />
     <None Include="settings.xml.template">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -117,6 +111,12 @@
       <ProductName>Windows Installer 4.5</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ImportProcessor\ImportProcessor.csproj">
+      <Project>{bcd6012d-3d2b-4a44-993e-9faec29ff962}</Project>
+      <Name>ImportProcessor</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

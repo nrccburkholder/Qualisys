@@ -72,13 +72,13 @@
     <Compile Include="ExtractHelperTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ImportProcessor\NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor.csproj">
-      <Project>{bcd6012d-3d2b-4a44-993e-9faec29ff962}</Project>
-      <Name>NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\ImportProcessor\ImportProcessor.csproj">
+      <Project>{bcd6012d-3d2b-4a44-993e-9faec29ff962}</Project>
+      <Name>ImportProcessor</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
