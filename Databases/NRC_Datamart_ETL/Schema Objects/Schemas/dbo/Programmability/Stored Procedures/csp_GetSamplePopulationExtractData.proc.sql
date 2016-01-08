@@ -135,7 +135,7 @@ AS
 	-- If this next query is slow, create this index in QP_Prod
 	--    create index IX_MSI_Performance_1 on SelectedSample (sampleset_id, pop_id, sampleunit_id, enc_id, strUnitSelectType)
 	
-	insert SelectedSampleTemp (ExtractFileID,SAMPLESET_ID, SAMPLEPOP_ID, SAMPLEUNIT_ID, POP_ID, ENC_ID, selectedTypeID,STUDY_ID,intExtracted_flg)
+	INSERT INTO SelectedSampleTemp (ExtractFileID,SAMPLESET_ID, SAMPLEPOP_ID, SAMPLEUNIT_ID, POP_ID, ENC_ID, selectedTypeID,STUDY_ID,intExtracted_flg)
 		select distinct @ExtractFileID,ss.SAMPLESET_ID, SAMPLEPOP_ID, ss.SAMPLEUNIT_ID, ss.POP_ID, ss.ENC_ID, 
 				(case when strUnitSelectType = 'D' then 1  when strUnitSelectType = 'I' then 2 else 0 end),ss.STUDY_ID,intExtracted_flg
 		 from SamplePopTemp t with (NOLOCK)
@@ -159,24 +159,24 @@ AS
 	   inner join QP_Prod.dbo.CAHPS_PatInfileCount pif with (NOLOCK) on pif.Sampleset_ID = sut.SAMPLESET_ID and pif.Sampleunit_ID = sut.SAMPLEUNIT_ID
 		where sut.ExtractFileID = @ExtractFileID  
 
-	 -- S35 US18 - ineligibleCount
-	 SELECT distinct se.SampleSet_id, se.SampleUnit_id, pop_id
-	 INTO #ExclusionLog
-	 FROM [QP_Prod].[dbo].[Sampling_ExclusionLog] se
-	 inner join dbo.SampleunitTemp su on su.SAMPLESET_ID = se.Sampleset_ID and su.SAMPLEUNIT_ID = se.Sampleunit_ID
 
-	 update sut
-	  set sut.ineligibleCount = sel.ineligibleCount
-	   from dbo.SampleunitTemp sut
-	   inner join (
-			SELECT[sampleset_id]
-		    ,[sampleunit_id]
-		    ,count(*) ineligibleCount
-		    FROM #ExclusionLog
-		    group by sampleset_id, sampleunit_id
+
+	 UPDATE sut
+	  SET sut.ineligibleCount = sel.ineligibleCount
+	   FROM dbo.SampleunitTemp sut
+	   INNER JOIN (
+			SELECT  dt.[sampleset_id]
+					,dt.[sampleunit_id]
+					,count(*) ineligibleCount
+		    FROM (	 -- S35 US18 - ineligibleCount
+					 SELECT distinct se.SampleSet_id, se.SampleUnit_id, pop_id
+					 FROM [QP_Prod].[dbo].[Sampling_ExclusionLog] se
+					 INNER JOIN dbo.SampleunitTemp su on su.SAMPLESET_ID = se.Sampleset_ID and su.SAMPLEUNIT_ID = se.Sampleunit_ID
+					 WHERE su.ExtractFileID = @ExtractFileID  ) dt
+		    GROUP BY dt.sampleset_id, dt.sampleunit_id
 	   )   sel
-	   on sel.sampleset_id = sut.SAMPLESET_ID and sel.Sampleunit_ID = sut.SAMPLEUNIT_ID
-	 where sut.ExtractFileID = @ExtractFileID  
+	   ON sel.sampleset_id = sut.SAMPLESET_ID and sel.Sampleunit_ID = sut.SAMPLEUNIT_ID
+	 WHERE sut.ExtractFileID = @ExtractFileID  
 
 	 -- S35 US20 - isCensus
 	  update sut 
@@ -185,24 +185,24 @@ AS
 		inner join QP_Prod.dbo.SamplePlanWorksheet spw on sut.Sampleset_id=spw.Sampleset_id and sut.SampleUnit_id=spw.SampleUnit_id 
 		where sut.ExtractFileID = @ExtractFileID  
 
-	 update sp
-	  set ENC_ID = ss.ENC_ID
-	   from dbo.SamplePopTemp sp
-	   inner join (select distinct SAMPLESET_ID,SAMPLEPOP_ID,ENC_ID--*
-	     			from dbo.SelectedSampleTemp
-					where ExtractFileID = @ExtractFileID  and intextracted_flg = 1 ) ss on sp.SAMPLESET_ID = ss.SAMPLESET_ID and sp.SAMPLEPOP_ID = ss.SAMPLEPOP_ID
-		where sp.ExtractFileID = @ExtractFileID 
+	 UPDATE sp
+	  SET ENC_ID = ss.ENC_ID
+	   FROM dbo.SamplePopTemp sp
+	   INNER JOIN (SELECT DISTINCT SAMPLESET_ID,SAMPLEPOP_ID,ENC_ID--*
+	     			FROM dbo.SelectedSampleTemp
+					WHERE ExtractFileID = @ExtractFileID  and intextracted_flg = 1 ) ss ON sp.SAMPLESET_ID = ss.SAMPLESET_ID and sp.SAMPLEPOP_ID = ss.SAMPLEPOP_ID
+		WHERE sp.ExtractFileID = @ExtractFileID 
 
     ---------------------------------------------------------------------------------------
 	-- Add delete rows to SamplePopTemp 
 	---------------------------------------------------------------------------------------
-     insert SamplePopTemp 
+     INSERT INTO SamplePopTemp 
 		(ExtractFileID,SAMPLESET_ID,SAMPLEPOP_ID, POP_ID,IsDeleted )
-	  select distinct @ExtractFileID, PKey2, PKey1, 0, 1
-        from ExtractHistory  with (NOLOCK) 
-         where ExtractFileID = @ExtractFileID
-	      and EntityTypeID = @EntityTypeID
-	       and IsDeleted = 1
+	  SELECT DISTINCT @ExtractFileID, PKey2, PKey1, 0, 1
+        FROM ExtractHistory  with (NOLOCK) 
+         WHERE ExtractFileID = @ExtractFileID
+	      AND EntityTypeID = @EntityTypeID
+	       AND IsDeleted = 1
 	 
 
 	SET @currDateTime2 = GETDATE();

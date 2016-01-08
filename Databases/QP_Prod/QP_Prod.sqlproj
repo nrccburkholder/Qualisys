@@ -15,7 +15,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Name>QP_Prod</Name>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectVersion>4.0</ProjectVersion>
+    <ProjectVersion>4.1</ProjectVersion>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql100DatabaseSchemaProvider</DSP>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <ShowWizard>False</ShowWizard>
@@ -28,7 +28,7 @@
     <LoadSqlClrTypes>True</LoadSqlClrTypes>
     <RootNamespace>QP_Prod</RootNamespace>
     <DefaultSchema>dbo</DefaultSchema>
-    <PreviousProjectVersion>4.0</PreviousProjectVersion>
+    <PreviousProjectVersion>4.1</PreviousProjectVersion>
     <ValidateCasingOnIdentifiers>False</ValidateCasingOnIdentifiers>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{159c2b4e-b58b-4c2d-b8a4-fabec367bc63}</ProjectGuid>
@@ -94,7 +94,8 @@
     <SuppressTSqlWarnings />
   </PropertyGroup>
   <!--Import the settings-->
-  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" Condition="'$(SQLDBExtensionsRefPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" Condition="'$(SQLDBExtensionsRefPath)' == ''" />
   <ItemGroup>
     <Folder Include="Scripts" />
     <Folder Include="Scripts\Pre-Deployment" />
@@ -8279,6 +8280,10 @@
     <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\SV_CAHPS_EnglishOrFrench.proc.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Tables\EligibleEncLog.table.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\CheckHospiceCAHPSDispositions.proc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\SV_SamplePlan_Has_Consistent_CCNs.proc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\temp_InvestigateMissingReturns.proc.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\Questionform_Missing_datReturned.table.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Tables\Indexes\IDX_ScanningResets_strLithocode.index.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\ScriptsIgnoredOnImport.sql">
