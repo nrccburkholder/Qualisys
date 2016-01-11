@@ -28,7 +28,7 @@
     <LoadSqlClrTypes>True</LoadSqlClrTypes>
     <RootNamespace>NRC_Datamart_ETL</RootNamespace>
     <DefaultSchema>dbo</DefaultSchema>
-    <PreviousProjectVersion>4.0</PreviousProjectVersion>
+    <PreviousProjectVersion>4.1</PreviousProjectVersion>
     <ValidateCasingOnIdentifiers>False</ValidateCasingOnIdentifiers>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{34e07ae3-e445-4150-a4da-e0d4b4d6e606}</ProjectGuid>
