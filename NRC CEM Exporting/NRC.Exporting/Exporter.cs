@@ -27,50 +27,87 @@ namespace CEM.Exporting
         private static string EventSource = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
         private static string EventClass = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name;
 
+        public static List<string> Messages = new List<string>();
+
         /// <summary>
         /// Creates and saves Export files
         /// </summary>
-        public static void  MakeFiles()
+        public static List<string> MakeFiles()
         {
-            int iCnt = 0; // file counter
+            List<ExportQueueFile> queuefiles = ExportQueueFile.Select(new ExportQueueFile { FileState = 0});
+            GenerateFiles(queuefiles);
+
+            return Messages;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="queuefiles"></param>
+        public static List<string> MakeFiles(List<ExportQueueFile> queuefiles)
+        {
+            GenerateFiles(queuefiles);
+
+            return Messages;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="queuefiles"></param>
+        private static void GenerateFiles(List<ExportQueueFile> queuefiles)
+        {
+            Messages.Clear(); 
 
             string targetFileLocation = SystemParams.Params.GetParam("FileLocation").StringValue;
+            int iCnt = 0; // file counter
 
-            List<ExportQueueFile> queuefiles = ExportQueueFile.Select(new ExportQueueFile { FileState = 0});
-
-            foreach (ExportQueueFile queuefile in queuefiles)
+            if (queuefiles.Count > 0)
             {
-                List<ExportQueue> queues = ExportQueue.Select(new ExportQueue { ExportQueueID = queuefile.ExportQueueID });
-
-                foreach (ExportQueue queue in queues)
+                
+                foreach (ExportQueueFile queuefile in queuefiles)
                 {
-                    ExportTemplate template = ExportTemplate.Select(new ExportTemplate { ExportTemplateName = queue.ExportTemplateName, ExportTemplateVersionMajor = queue.ExportTemplateVersionMajor, ExportTemplateVersionMinor = queue.ExportTemplateVersionMinor }, true).First();
+                    List<ExportQueue> queues = ExportQueue.Select(new ExportQueue { ExportQueueID = queuefile.ExportQueueID });
 
-                    List<ExportDataSet> exds = ExportDataSet.Select(new ExportDataSet { ExportQueueID = queue.ExportQueueID, FileMakerName = queuefile.FileMakerName}, template.Sections);
-
-                    if (exds.Count > 0)
+                    foreach (ExportQueue queue in queues)
                     {
-                        // Depending on the file type, we call the appropriate File Maker Methods
-                        switch (queuefile.FileMakerType)
+                        ExportTemplate template = ExportTemplate.Select(new ExportTemplate { ExportTemplateName = queue.ExportTemplateName, ExportTemplateVersionMajor = queue.ExportTemplateVersionMajor, ExportTemplateVersionMinor = queue.ExportTemplateVersionMinor }, true).First();
+
+                        List<ExportDataSet> exds = ExportDataSet.Select(new ExportDataSet { ExportQueueID = queue.ExportQueueID, FileMakerName = queuefile.FileMakerName }, template.Sections);
+
+                        if (exds.Count > 0)
                         {
-                            case (int)Enums.ExportFileTypes.Xml:
-                                
-                                if (MakeFile_XML(exds, targetFileLocation, template, queuefile))
-                                {
-                                    iCnt++;
-                                }
-                                break;
-                            default:
-                                if (MakeFile_Text(exds, targetFileLocation, template, queuefile))
-                                {
-                                    iCnt++;
-                                }
-                                break;
+                            // Depending on the file type, we call the appropriate File Maker Methods
+                            switch (queuefile.FileMakerType)
+                            {
+                                case (int)Enums.ExportFileTypes.Xml:
+
+                                    if (MakeFile_XML(exds, targetFileLocation, template, queuefile))
+                                    {
+                                        iCnt++;
+                                    }
+                                    break;
+                                default:
+
+                                    int textFileCount = 0;
+
+                                    if (MakeFile_Text(exds, targetFileLocation, template, queuefile, out textFileCount))
+                                    {
+                                        iCnt = iCnt + textFileCount;
+                                    }
+                                    break;
+                            }
                         }
                     }
                 }
             }
-            Logs.Info("", "FILEMAKERSTATUS", string.Format("{0}|{1}", "FILECOUNT",iCnt.ToString()), EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
+            else
+            {
+                Messages.Add("No files to process.");
+            }
+
+            Logs.Info("", "FILEMAKERSTATUS", string.Format("{0}|{1}", "FILECOUNT", iCnt.ToString()), EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
+            Messages.Add(string.Format("{0}: {1}", "FILECOUNT", iCnt.ToString()));
         }
 
         /// <summary>
@@ -88,10 +125,8 @@ namespace CEM.Exporting
             string filepath = string.Empty;
             try
             {
-
                 string fileDestination = Path.Combine(fileLocation, template.ExportTemplateName);
            
-
                 if (Enum.IsDefined(typeof(SurveyTypes), template.SurveyTypeID))
                 {
                     XmlDocumentEx xmlDoc = new XmlDocumentEx();
@@ -107,7 +142,7 @@ namespace CEM.Exporting
                         Directory.CreateDirectory(filepath);
                     }
 
-                    filepath = Path.Combine(filepath, Path.ChangeExtension(queuefile.FileMakerName, "xml"));
+                    filepath = Path.Combine(filepath, queuefile.FileMakerName+ ".xml");
 
                     xmlDoc.Save(filepath);
 
@@ -121,6 +156,7 @@ namespace CEM.Exporting
                             string message = string.Format("{0}|{1}|{2}|{3}|{4}", template.ExportTemplateName, queuefile.ExportQueueID.ToString(), queuefile.ExportQueueFileID.ToString(), Path.GetFileName(filepath), eve.ErrorDescription);
                             // TODO:  come up with standard EventTypes for the logging
                             Logs.Warn("", "XMLVALIDATIONERR", message, EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
+                            Messages.Add("Validation Error: " + message);
                         }
                         fileState = 2;
                     }
@@ -130,7 +166,7 @@ namespace CEM.Exporting
                     }
 
                     Logs.Info("", "FILEMAKERSTATUS", string.Format("{0}|{1}", fileState == 1 ? "SUCCESS" : "INVALID", filepath), EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
-
+                    Messages.Add(string.Format("{0} File: \"{1}\"", fileState == 1 ? "SUCCESS! " : "INVALID!", filepath));
                     // Update the ExportQueueFile record to mark is a complete.
                     queuefile.FileState = fileState;
                     queuefile.FileMakerDate = DateTime.Now;
@@ -138,18 +174,18 @@ namespace CEM.Exporting
                     queuefile.Save();
 
                     b = true;
-
                 }
                 else
                 {
                     string msg = string.Format("SurveyType_id {0} has no matching SurveyType enumeration!", template.SurveyTypeID.ToString());
                     throw new Exception("msg");
-
                 }
             }
             catch (Exception ex)
             {
                 Logs.Error("", "XMLFILECREATIONERR", "Error Creating XML file.", EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name, ex);
+                Messages.Add(string.Format("Error Message: {0}", ex.Message));
+                Messages.Add(string.Format("Stack Trace: {0}", ex.StackTrace));
             }
             return b;
         }
@@ -216,12 +252,13 @@ namespace CEM.Exporting
         /// <param name="template"></param>
         /// <param name="queuefile"></param>
         /// <returns></returns>
-        private static bool MakeFile_Text(List<ExportDataSet> ds, string fileLocation, ExportTemplate template, ExportQueueFile queuefile)
+        private static bool MakeFile_Text(List<ExportDataSet> ds, string fileLocation, ExportTemplate template, ExportQueueFile queuefile, out int fileCount)
         {
             bool b = false;
-            string filepath = string.Empty;
+            int iCnt = 0;
             try
             {
+                List<string> files = new List<string>();
 
                 if (Enum.IsDefined(typeof(SurveyTypes), template.SurveyTypeID))
                 {
@@ -230,7 +267,7 @@ namespace CEM.Exporting
 
                         TextFileExporter exporter = new TextFileExporter(template, (ExportFileTypes)queuefile.FileMakerType); 
             
-                        bool isSuccess = exporter.MakeExportTextFile(ds, fileLocation, queuefile.FileMakerName);
+                        bool isSuccess = exporter.MakeExportTextFile(ds, fileLocation, queuefile.FileMakerName, out files);
 
                         Int16 fileState;
 
@@ -243,8 +280,13 @@ namespace CEM.Exporting
                             fileState = 1;  // successfully created
                         }
 
-                        Logs.Info("", "FILEMAKERSTATUS", string.Format("{0}|{1}", fileState == 1 ? "SUCCESS" : "ERROR", filepath), EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
-
+                        foreach (string file in files)
+                        {
+                            Logs.Info("", "FILEMAKERSTATUS", string.Format("{0}|{1}", fileState == 1 ? "SUCCESS" : "ERROR", file), EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name);
+                            Messages.Add(string.Format("{0} \"{1}\"", fileState == 1 ? "SUCCESS!  File Created: " : "ERROR", file));
+                            iCnt++;
+                        }
+                 
                         // Update the ExportQueueFile record to mark it as complete.
                         queuefile.FileState = fileState;
                         queuefile.FileMakerDate = DateTime.Now;
@@ -270,7 +312,10 @@ namespace CEM.Exporting
             catch (Exception ex)
             {
                 Logs.Error("", "TEXTFILECREATIONERR", "Error Creating XML file.", EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name, ex);
+                Messages.Add(string.Format("{0}{1}{2}",ex.Message, Environment.NewLine, ex.StackTrace));
             }
+
+            fileCount = iCnt;
             return b;
         }
 

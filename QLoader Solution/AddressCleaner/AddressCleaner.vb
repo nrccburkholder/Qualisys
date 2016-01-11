@@ -1,5 +1,6 @@
 Imports Nrc.Framework.AddressCleaning
 Imports Nrc.Framework.BusinessLogic.Configuration
+Imports Nrc.Framework
 
 Public Class AddressCleaner
 
@@ -215,20 +216,33 @@ Public Class AddressCleaner
                 Case LoadDatabases.QPLoad
                     QLoader.Library.SqlProvider.PackageDB.LogServiceEvent(dataFileID, eventData, System.Threading.Thread.CurrentThread.ManagedThreadId)
 
+                    Logs.Info(String.Format("FileLoader (QP_Load) - DataFile_id: {0}, EventData: {1}, intThread: {2}", dataFileID, eventData, System.Threading.Thread.CurrentThread.ManagedThreadId))
+
                 Case LoadDatabases.QPDataLoad
                     EventLog.WriteEntry("FileLoader (QP_DataLoad)", eventData, EventLogEntryType.Information)
 
+                    Logs.Info(String.Format("FileLoader (QP_DataLoad) - EventData: {0}", eventData))
             End Select
+
 
         Catch ex As Exception
+
             Select Case loadDB
                 Case LoadDatabases.QPLoad
+
                     EventLog.WriteEntry("FileLoader (QP_Load)", String.Format("{0}{1}{2}", eventData, vbCrLf, ex.StackTrace), EventLogEntryType.Error)
 
+                    Logs.LogException(ex, String.Format("FileLoader (QP_Load) {0}", eventData))
+
                 Case LoadDatabases.QPDataLoad
+
                     EventLog.WriteEntry("FileLoader (QP_DataLoad)", String.Format("{0}{1}{2}", eventData, vbCrLf, ex.StackTrace), EventLogEntryType.Error)
 
+                    Logs.LogException(ex, String.Format("FileLoader (QP_DataLoad) {0}", eventData))
+
             End Select
+
+
 
         End Try
 

@@ -115,7 +115,7 @@ Public Class MainForm
         clean.Names.Add(item)
 
         'Clean the name
-        clean.Names.Clean(True, ForceProxyCheckBox.Checked)
+        clean.Names.Clean(True, ForceProxyCheckBox.Checked, 0)
 
         'Load the working name
         With item.WorkingName
@@ -183,7 +183,7 @@ Public Class MainForm
         clean.Addresses.Add(item)
 
         'Clean the address
-        clean.Addresses.Clean(ForceProxyCheckBox.Checked, PopulateGeoCodingCheckBox.Checked)
+        clean.Addresses.Clean(ForceProxyCheckBox.Checked, PopulateGeoCodingCheckBox.Checked, CInt(FileIDTextBox.Text))
 
         'Load the working address
         With item.WorkingAddress

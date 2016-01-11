@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("")> 
 <Assembly: AssemblyProduct("AddrCleaningTest")> 
-<Assembly: AssemblyCopyright("Copyright ©  2007-2014")> 
+<Assembly: AssemblyCopyright("Copyright ©  2007-2015")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("2.5.4.0")> 
-<Assembly: AssemblyFileVersion("2.5.4.0")> 
+<Assembly: AssemblyVersion("2.5.6.0")> 
+<Assembly: AssemblyFileVersion("2.5.6.0")> 

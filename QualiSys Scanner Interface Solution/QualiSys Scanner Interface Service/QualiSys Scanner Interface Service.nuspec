@@ -3,7 +3,7 @@
   <metadata>
     <id>Qualisys.QualisysScannerInterfaceService</id>
     <title>Qualisys Scanner Interface Service</title>
-    <version>1.28.4.0</version>
+    <version>1.29.0.0</version>
     <authors>NRC</authors>
     <description>Data service backend for Qualisys Scanner Interface</description>
   </metadata>

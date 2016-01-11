@@ -67,7 +67,9 @@ namespace WebSurveyEmailService
 
             int cycleInterval = AppConfig.Params["WebSurveyServiceCycleTime"].IntegerValue;
 
-            string cronExpression = AppConfig.Params["WebSurveyCleanupInterval"].StringValue;
+            string cronExpCleanup = AppConfig.Params["WebSurveyCleanupInterval"].StringValue;
+
+            string cronExpReport = AppConfig.Params["WebSurveySummaryReportInterval"] == null ? "0 0 0 1/1 * ? *" : AppConfig.Params["WebSurveySummaryReportInterval"].StringValue; // defaults to run at midnight if it can't find the QualPro_Param
 
             NameValueCollection properties = new NameValueCollection { { "quartz.threadPool.threadCount", "1" } };
 
@@ -101,11 +103,26 @@ namespace WebSurveyEmailService
             //Create another trigger for the job
             ITrigger trigger2 = TriggerBuilder.Create()
             .WithIdentity("t2", "g2")
-            .WithCronSchedule(cronExpression)
+            .WithCronSchedule(cronExpCleanup)
             .Build();
 
             // add trigger to schedule
             _scheduler.ScheduleJob(cleanupJob,trigger2);
+
+
+            // Create job detail for the summary report
+            IJobDetail summaryReportJob = JobBuilder.Create<SummaryReportJob>()
+                    .WithIdentity("summaryReport", "g3")
+                    .Build();
+
+            //Create another trigger for the job
+            ITrigger trigger3 = TriggerBuilder.Create()
+            .WithIdentity("t3", "g3")
+            .WithCronSchedule(cronExpReport)
+            .Build();
+
+            // add trigger to schedule
+            _scheduler.ScheduleJob(summaryReportJob, trigger3);
 
         }
     }
@@ -118,9 +135,9 @@ namespace WebSurveyEmailService
             try
             {
                 // Do the scheduled work here.
-                Logs.Info("WebSurveyEmailService Begin Work");
+                Logs.Info("WebSurveyEmailService Begin Email Processing");
                 WebSurveyWorker.DoWork();
-                Logs.Info("WebSurveyEmailService End Work");
+                Logs.Info("WebSurveyEmailService End Email Processing");
             }
             catch (JobExecutionException ex)
             {
@@ -149,5 +166,26 @@ namespace WebSurveyEmailService
         }
     }
 
-    
+
+    [DisallowConcurrentExecution]
+    internal class SummaryReportJob : IJob
+    {
+        public void Execute(IJobExecutionContext context)
+        {
+            try
+            {
+                // Do the scheduled work here.
+                Logs.Info("WebSurveyEmailService Begin Summary Report");
+                WebSurveyWorker.DoSummaryReport();
+                Logs.Info("WebSurveyEmailService End Summary Report");
+            }
+            catch (JobExecutionException ex)
+            {
+                Logs.Info("Quartz: Error executing job - " + ex.Message + ' ' + DateTime.UtcNow.ToString());
+            }
+        }
+    }
+
+
+
 }

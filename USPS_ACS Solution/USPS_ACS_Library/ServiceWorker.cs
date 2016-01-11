@@ -429,7 +429,7 @@ namespace USPS_ACS_Library
             int fileCount = 0;
             try
             {
-                DataTable dt = USPS_ACS_DataProvider.SelectExtractFilesByStatus(ExtractFileStatus.New.ToString());
+                DataTable dt = USPS_ACS_DataProvider.SelectExtractFilesByStatus(ExtractFileStatus.New.ToString(),ExtractFileStatus.Extracted.ToString());
                 
                 foreach (DataRow dr in dt.Rows)
                 {
@@ -440,16 +440,32 @@ namespace USPS_ACS_Library
                     string version = dr["Version"].ToString();
                     int recordCount = Convert.ToInt32(dr["RecordCount"]);  // this is coming from the header
                     string detailRecordIndicator = dr["DetailRecordIndicator"].ToString();
+                    ExtractFileStatus currentStatus = (ExtractFileStatus)Enum.Parse(typeof(ExtractFileStatus), dr["Status"].ToString());
 
-                    ExtractFileStatus status = OpenFile(USPS_ACS_ExtractFileLog_ID,filename, filepath, version,recordCount,detailRecordIndicator,zipfilename);
+                    // if new status, open the file and extract the data, otherwise this file was extracted but the data was not successfully updated
+                    if (currentStatus == ExtractFileStatus.New)
+                    {
+                        ExtractFileStatus status = ExtractRecords(USPS_ACS_ExtractFileLog_ID, filename, filepath, version, recordCount, detailRecordIndicator, zipfilename);
 
-                    USPS_ACS_DataProvider.UpdateExtractFileLogStatus(USPS_ACS_ExtractFileLog_ID, status);
+                        USPS_ACS_DataProvider.UpdateExtractFileLogStatus(USPS_ACS_ExtractFileLog_ID, status);
 
-                    Logs.Info(String.Format("{0} processed as {1}", Path.GetFileName(filepath), status));
-                                 
-                    MoveExtractFile(filepath, status);
+                        Logs.Info(String.Format("{0} processed as {1}", Path.GetFileName(filepath), status));
 
-                    UpdateAddresses(USPS_ACS_ExtractFileLog_ID);
+                        MoveExtractFile(filepath, status);
+                    }
+
+
+                    if (UpdateAddresses(USPS_ACS_ExtractFileLog_ID)) 
+                    {
+                        USPS_ACS_DataProvider.UpdateExtractFileLogStatus(USPS_ACS_ExtractFileLog_ID, ExtractFileStatus.Completed);
+                    }
+                    else 
+                    { 
+                        // the call to UpdateAddresses failed
+                        Logs.Info(String.Format("UpdateAddresses failed for {0} - ExtractFileLog_ID: {1}", Path.GetFileName(filepath),USPS_ACS_ExtractFileLog_ID.ToString()));
+                        errorList.Add(new USPS_ACS_Error(ErrorType.Update, "", Path.GetFileName(filepath), String.Format("UpdateAddresses failed for ExtractFileLog_ID: {0}", USPS_ACS_ExtractFileLog_ID.ToString())));
+                    }
+
 
                     fileCount += 1;
                 }
@@ -462,24 +478,26 @@ namespace USPS_ACS_Library
             }
         }
 
-        private static void UpdateAddresses(int extractFileLog_id)
+        private static bool UpdateAddresses(int extractFileLog_id)
         {
+            bool result = false;
             try
             {
                 USPS_ACS_DataProvider.UpdateAddress(extractFileLog_id);
+                result = true;
             }
             catch (Exception ex)
             {
-                errorList.Add(new USPS_ACS_Error(ErrorType.Update,"" ,"" , ex.Message));
+                Logs.LogException("ProcessFiles - UpdateAddresses() Error", ex);
+                //errorList.Add(new USPS_ACS_Error(ErrorType.Update,"" ,"" , ex.Message, ex.StackTrace));
             }
-            finally
-            {
 
-            }
+            return result;
+
         }
 
 
-        private static ExtractFileStatus OpenFile(int extractFileLog_id, string filename, string filepath, string version, int recordcount, string detailRecordIndicator, string zipfilename)
+        private static ExtractFileStatus ExtractRecords(int extractFileLog_id, string filename, string filepath, string version, int recordcount, string detailRecordIndicator, string zipfilename)
         {
             try
             {        
@@ -507,7 +525,7 @@ namespace USPS_ACS_Library
                                     catch (Exception ex)
                                     {
                                         errorList.Add(new USPS_ACS_Error(ErrorType.Extract, zipfilename, filename, "Failed to write ExtractFile record."));
-                                        Logs.LogException("ProcessFiles - OpenFile() Error: Failed to write ExtractFile record.",ex);
+                                        Logs.LogException("ProcessFiles - ExtractRecords() Error: Failed to write ExtractFile record.",ex);
                                         fCount += 1;
                                     }                
                                 }
@@ -518,9 +536,9 @@ namespace USPS_ACS_Library
                     Logs.Info(String.Format("{0} Record(s) extracted from {1}. {2} records failed.", rCount.ToString(), Path.GetFileName(filepath), fCount.ToString()));
 
                     if (fCount > 0)
-                        return ExtractFileStatus.Completed_w_Errors;
+                        return ExtractFileStatus.Extracted_w_Errors;
                     else
-                        return ExtractFileStatus.Completed;    
+                        return ExtractFileStatus.Extracted;    
                 } 
                 else
                 {
@@ -530,7 +548,7 @@ namespace USPS_ACS_Library
             catch (Exception ex)
             {
                 errorList.Add(new USPS_ACS_Error(ErrorType.Extract, zipfilename, filename, ex.Message));
-                Logs.LogException("ProcessFiles - OpenFile() Error", ex);
+                Logs.LogException("ProcessFiles - ExtractRecords() Error", ex);
                 return ExtractFileStatus.Processing_Error;
             }
 
@@ -1094,7 +1112,6 @@ namespace USPS_ACS_Library
                     string sendTo = AppConfig.Params["USPS_ACS_SendStatusNotificationTo"].StringValue;
                     string sendBcc = AppConfig.Params["USPS_ACS_SendStatusNotificationBcc"].StringValue;
 
-                    sendTo = "tbutler@nationalresearch.com";
 
                     toList.Add(sendTo);
                     bccList.Add(sendBcc);

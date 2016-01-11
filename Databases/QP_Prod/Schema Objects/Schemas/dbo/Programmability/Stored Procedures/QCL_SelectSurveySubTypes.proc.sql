@@ -12,12 +12,15 @@ CREATE PROCEDURE [dbo].[QCL_SelectSurveySubTypes]
     @SurveyId INT,
 	@SubtypeCategory_id INT     
 AS      
-      
+
+/*
+	S32 US12.3	Tim Butler -- added bitActive to SELECT 
+*/      
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED        
 SET NOCOUNT ON        
       
 
-SELECT sst.SurveySubtype_id, sst.Subtype_id, sst.Survey_id, st.Subtype_nm, st.SubtypeCategory_id, st.bitRuleOverride
+SELECT sst.SurveySubtype_id, sst.Subtype_id, sst.Survey_id, st.Subtype_nm, st.SubtypeCategory_id, st.bitRuleOverride, st.bitActive
 FROM SurveySubtype sst
 inner join Subtype st on st.Subtype_id = sst.Subtype_id
 WHERE sst.Survey_id = @SurveyId

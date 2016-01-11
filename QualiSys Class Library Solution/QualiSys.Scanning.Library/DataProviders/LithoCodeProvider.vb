@@ -36,7 +36,7 @@ Public MustInherit Class LithoCodeProvider
     Public MustOverride Sub UpdateLithoCode(ByVal instance As LithoCode)
     Public MustOverride Sub DeleteLithoCode(ByVal instance As LithoCode)
 
-    Public MustOverride Function BeginTransaction() As DbTransaction
+    Public MustOverride Function CreateConnection() As DbConnection
     Public MustOverride Function SelectLithoCodePrevFinalDispoCount(ByVal instance As LithoCode) As Integer
     Public MustOverride Sub GetAdditionalInfo(ByVal instance As LithoCode)
     Public MustOverride Sub SaveLithoCodeToQualiSys(ByVal litho As LithoCode, ByVal transaction As DbTransaction)

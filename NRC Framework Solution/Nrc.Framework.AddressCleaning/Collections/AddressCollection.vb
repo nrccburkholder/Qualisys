@@ -8,7 +8,7 @@ Public Class AddressCollection
 #Region " Private Members "
 
     Private mCountryID As CountryIDs
-
+    Private Const WEB_SERVICE_MAX_RETRIES As Integer = 3
 
 #End Region
 
@@ -60,7 +60,7 @@ Public Class AddressCollection
     Public Sub Clean(ByVal forceProxy As Boolean)
 
         'The DBKey property of the address object is not publicly exposed so it will need to be set by the application.
-        Clean(True, forceProxy, True)
+        Clean(True, forceProxy, True, -1)
 
     End Sub
 
@@ -71,16 +71,129 @@ Public Class AddressCollection
     ''' <param name="forceProxy">Specifies whether or not to force the use of a proxy server for web requests</param>
     ''' <param name="populateGeoCoding">Specifies whether or not to populate the geocoding information</param>
     ''' <remarks></remarks>
-    Public Sub Clean(ByVal forceProxy As Boolean, ByVal populateGeoCoding As Boolean)
+    Public Sub Clean(ByVal forceProxy As Boolean, ByVal populateGeoCoding As Boolean, ByVal dataFileId As Integer)
 
         'The DBKey property of the address object is not publicly exposed so it will need to be set by the application.
-        Clean(True, forceProxy, populateGeoCoding)
+        Clean(True, forceProxy, populateGeoCoding, dataFileId)
 
     End Sub
 
 #End Region
 
 #Region " Friend Methods "
+
+    ''' <summary>
+    ''' Calls the melissadata.addresscheck.Service with retry logic
+    ''' If the failed attempts exceed the specified number of retries, it will bubble the exception up to the caller
+    ''' </summary>
+    ''' <param name="addrCheckRequest"></param>
+    ''' <param name="dataFileId"></param>
+    ''' <param name="forceProxy"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Function DoAddressCheckWithRetries(ByRef addrCheckRequest As net.melissadata.addresscheck.RequestArray, ByVal dataFileId As Integer, ByVal forceProxy As Boolean) As net.melissadata.addresscheck.ResponseArray
+
+        'Create the address cleaning web service connection
+        Using addrCheckService As New net.melissadata.addresscheck.Service
+            'Initialize the web service
+            addrCheckService.Url = AppConfig.Params("AddressWebServiceURL").StringValue
+
+            'Determine if we need to use a proxy
+            If forceProxy Then
+                addrCheckService.Proxy = New WebProxy(AppConfig.Params("WebServiceProxyServer").StringValue, AppConfig.Params("WebServiceProxyPort").IntegerValue)
+                addrCheckService.Proxy.Credentials = CredentialCache.DefaultCredentials
+            End If
+
+            Dim tryCount As Integer = 0
+
+            Dim addrCheckResponse As net.melissadata.addresscheck.ResponseArray = Nothing
+
+            Do
+                tryCount += 1
+
+                If (tryCount > 1) Then
+                    'Sleep for some seconds before retrying
+                    Threading.Thread.Sleep(5 * 1000)
+                End If
+
+                Try
+                    addrCheckResponse = addrCheckService.doAddressCheck(addrCheckRequest)
+                    If (tryCount > 1) Then
+                        Logs.Info(String.Format("SUCCESS DoAddressCheckWithRetries - DataFile_Id:{0} Attempt:{1}", dataFileId, tryCount))
+                    End If
+                    Exit Do
+                Catch ex As Exception
+                    Logs.LogException(ex, String.Format("ERROR DoAddressCheckWithRetries - DataFile_Id:{0} Attempt:{1}", dataFileId, tryCount))
+                    If (tryCount >= WEB_SERVICE_MAX_RETRIES) Then
+                        Throw
+                    End If
+
+                End Try
+
+            Loop While tryCount < WEB_SERVICE_MAX_RETRIES
+
+            Return addrCheckResponse
+        End Using
+
+    End Function
+
+
+    ''' <summary>
+    ''' Calls the net.melissadata.geocoder.Service with retry logic
+    ''' If the failed attempts exceed the specified number of retries, it will bubble the exception up to the caller
+    ''' </summary>
+    ''' <param name="geoCodingRequest"></param>
+    ''' <param name="dataFileId"></param>
+    ''' <param name="forceProxy"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Function DoGeoCodingWithRetries(ByRef geoCodingRequest As net.melissadata.geocoder.RequestArray, ByVal dataFileId As Integer, ByVal forceProxy As Boolean) As net.melissadata.geocoder.ResponseArray
+
+        'Create the address cleaning web service connection
+        Using geoCodingService As New net.melissadata.geocoder.Service
+            'Initialize the web service
+            geoCodingService.Url = AppConfig.Params("GeoCodingWebServiceURL").StringValue
+
+            'Determine if we need to use a proxy
+            If forceProxy Then
+                geoCodingService.Proxy = New WebProxy(AppConfig.Params("WebServiceProxyServer").StringValue, AppConfig.Params("WebServiceProxyPort").IntegerValue)
+                geoCodingService.Proxy.Credentials = CredentialCache.DefaultCredentials
+            End If
+
+            Dim tryCount As Integer = 0
+
+            Dim geoCodingResponse As New net.melissadata.geocoder.ResponseArray
+            Do
+                tryCount += 1
+
+                If (tryCount > 1) Then
+                    'Sleep for some seconds before retrying
+                    Threading.Thread.Sleep(5 * 1000)
+                End If
+
+                Try
+                    geoCodingResponse = geoCodingService.doGeoCode(geoCodingRequest)
+                    If (tryCount > 1) Then
+                        Logs.Info(String.Format("SUCCESS DoGeoCodingWithRetries - DataFile_Id:{0} Attempt:{1}", dataFileId, tryCount))
+                    End If
+                    Exit Do
+                Catch ex As Exception
+                    Logs.LogException(ex, String.Format("ERROR DoGeoCodingWithRetries - DataFile_Id:{0} Attempt:{1}", dataFileId, tryCount))
+                    If (tryCount >= WEB_SERVICE_MAX_RETRIES) Then
+                        Throw
+                    End If
+
+                End Try
+
+            Loop While tryCount < WEB_SERVICE_MAX_RETRIES
+
+            Return geoCodingResponse
+        End Using
+
+    End Function
+
+
+
 
     ''' <summary>
     ''' This routine is the internal interface called to clean all of the
@@ -90,10 +203,11 @@ Public Class AddressCollection
     ''' <param name="forceProxy">Specifies whether or not to force the use of a proxy server for web requests</param>
     ''' <param name="populateGeoCoding">Specifies whether or not to populate the geocoding information</param>
     ''' <remarks></remarks>
-    Friend Sub Clean(ByVal assignIDs As Boolean, ByVal forceProxy As Boolean, ByVal populateGeoCoding As Boolean)
+    Friend Sub Clean(ByVal assignIDs As Boolean, ByVal forceProxy As Boolean, ByVal populateGeoCoding As Boolean, ByVal dataFileId As Integer)
 
         Dim addrCount As Integer = 0
         Dim addrUsed As Integer = 0
+        Dim webCallCount As Integer = 0
         Dim maxRecords As Integer = AppConfig.Params("AddressWebServiceMaxRecords").IntegerValue
         Dim addrCheckRequest As New net.melissadata.addresscheck.RequestArray
         Dim addrCheckResponse As New net.melissadata.addresscheck.ResponseArray
@@ -109,52 +223,49 @@ Public Class AddressCollection
         'Dimension the SOAP request message array for the first set of records
         ReDim addrCheckRequest.Record(GetArraySize(Count, addrUsed, maxRecords) - 1)
 
-        'Create the address cleaning web service connection
-        Using addrCheckService As New net.melissadata.addresscheck.Service
-            'Initialize the web service
-            addrCheckService.Url = AppConfig.Params("AddressWebServiceURL").StringValue
+        'Clean all addresses in the collection
+        For Each addr As Address In Me
+            'Increment the counters
+            addrCount += 1
+            addrUsed += 1
 
-            'Determine if we need to use a proxy
-            If forceProxy Then
-                addrCheckService.Proxy = New WebProxy(AppConfig.Params("WebServiceProxyServer").StringValue, AppConfig.Params("WebServiceProxyPort").IntegerValue)
-                addrCheckService.Proxy.Credentials = CredentialCache.DefaultCredentials
+            'Check to see if we need to assign the id
+            If assignIDs Then
+                addr.DBKey = addrUsed
             End If
 
-            'Clean all addresses in the collection
-            For Each addr As Address In Me
-                'Increment the counters
-                addrCount += 1
-                addrUsed += 1
+            'Add this address to the web service SOAP message
+            AddAddress(addrCount, addr, addrCheckRequest)
 
-                'Check to see if we need to assign the id
-                If assignIDs Then
-                    addr.DBKey = addrUsed
+            'Determine if it is time to call the web service
+            If addrCount = maxRecords OrElse addrUsed = Count Then
+                webCallCount += 1
+                'Call the web service to clean the current SOAP message
+                Logs.Info(String.Format("Begin addrCheckService.doAddressCheck - DataFile_Id:{0}, AddrCount: {1}, WebCallCount: {2}, Pop_Id: {3}", dataFileId, addrCount, webCallCount, addr.DBKey))
+
+                Try
+                    addrCheckResponse = DoAddressCheckWithRetries(addrCheckRequest, dataFileId, forceProxy)
+                Catch ex As Exception
+                    Logs.LogException(ex, String.Format("ERROR addrCheckService.doAddressCheck - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
+                    Throw ex
+                End Try
+
+                Logs.Info(String.Format("End addrCheckService.doAddressCheck - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
+                'Check to see if the web service returned any errors
+                Dim message As String = String.Empty
+                If CheckForAddressWebRequestErrors(addrCheckResponse.Results, message) Then
+                    'We have encountered a general error from the web service.
+                    Throw New Exception(message)
                 End If
 
-                'Add this address to the web service SOAP message
-                AddAddress(addrCount, addr, addrCheckRequest)
+                'Find and update the returned addresses
+                UpdateAddresses(addrCheckResponse, dataFileId)
 
-                'Determine if it is time to call the web service
-                If addrCount = maxRecords OrElse addrUsed = Count Then
-                    'Call the web service to clean the current SOAP message
-                    addrCheckResponse = addrCheckService.doAddressCheck(addrCheckRequest)
-
-                    'Check to see if the web service returned any errors
-                    Dim message As String = String.Empty
-                    If CheckForAddressWebRequestErrors(addrCheckResponse.Results, message) Then
-                        'We have encountered a general error from the web service.
-                        Throw New Exception(message)
-                    End If
-
-                    'Find and update the returned addresses
-                    UpdateAddresses(addrCheckResponse)
-
-                    'Reset and prepare for next set of addresses to be added to the SOAP message
-                    addrCount = 0
-                    ReDim addrCheckRequest.Record(GetArraySize(Count, addrUsed, maxRecords) - 1)
-                End If
-            Next
-        End Using
+                'Reset and prepare for next set of addresses to be added to the SOAP message
+                addrCount = 0
+                ReDim addrCheckRequest.Record(GetArraySize(Count, addrUsed, maxRecords) - 1)
+            End If
+        Next
 
         'Determine if we are doing the GeoCoding
         If Not populateGeoCoding Then Exit Sub
@@ -165,47 +276,45 @@ Public Class AddressCollection
         'Dimension the SOAP request message array for the first set of records
         ReDim geoCodingRequest.Record(GetArraySize(Count, geoCodingUsed, maxRecords) - 1)
 
-        'Create the address cleaning web service connection
-        Using geoCodingService As New net.melissadata.geocoder.Service
-            'Initialize the web service
-            geoCodingService.Url = AppConfig.Params("GeoCodingWebServiceURL").StringValue
+        'Add GeoCoding for all addresses in the collection
+        For Each addr As Address In Me
+            'Increment the counters
+            geoCodingCount += 1
+            geoCodingUsed += 1
 
-            'Determine if we need to use a proxy
-            If forceProxy Then
-                geoCodingService.Proxy = New WebProxy(AppConfig.Params("WebServiceProxyServer").StringValue, AppConfig.Params("WebServiceProxyPort").IntegerValue)
-                geoCodingService.Proxy.Credentials = CredentialCache.DefaultCredentials
-            End If
+            'Add this address to the web service SOAP message
+            AddGeoCoding(geoCodingCount, addr, geoCodingRequest)
 
-            'Add GeoCoding for all addresses in the collection
-            For Each addr As Address In Me
-                'Increment the counters
-                geoCodingCount += 1
-                geoCodingUsed += 1
+            'Determine if it is time to call the web service
+            If geoCodingCount = maxRecords OrElse geoCodingUsed = Count Then
+                'Call the web service to clean the current SOAP message
 
-                'Add this address to the web service SOAP message
-                AddGeoCoding(geoCodingCount, addr, geoCodingRequest)
 
-                'Determine if it is time to call the web service
-                If geoCodingCount = maxRecords OrElse geoCodingUsed = Count Then
-                    'Call the web service to clean the current SOAP message
-                    geoCodingResponse = geoCodingService.doGeoCode(geoCodingRequest)
+                Logs.Info(String.Format("Begin geoCodingService.doGeoCode - DataFile_Id:{0}", dataFileId))
+                Try
+                    geoCodingResponse = DoGeoCodingWithRetries(geoCodingRequest, dataFileId, forceProxy)
+                Catch ex As Exception
+                    Logs.LogException(ex, String.Format("ERROR geoCodingService.doGeoCode - DataFile_Id:{0}", dataFileId))
+                    Throw ex
+                End Try
 
-                    'Check to see if the web service returned any errors
-                    Dim message As String = String.Empty
-                    If CheckForGeoCodingWebRequestErrors(geoCodingResponse.Results, message) Then
-                        'We have encountered a general error from the web service.
-                        Throw New Exception(message)
-                    End If
+                Logs.Info(String.Format("End geoCodingService.doGeoCode - DataFile_Id:{0}", dataFileId))
 
-                    'Find and update the returned addresses
-                    UpdateGeoCoding(geoCodingResponse)
-
-                    'Reset and prepare for next set of addresses to be added to the SOAP message
-                    geoCodingCount = 0
-                    ReDim geoCodingRequest.Record(GetArraySize(Count, geoCodingUsed, maxRecords) - 1)
+                'Check to see if the web service returned any errors
+                Dim message As String = String.Empty
+                If CheckForGeoCodingWebRequestErrors(geoCodingResponse.Results, message) Then
+                    'We have encountered a general error from the web service.
+                    Throw New Exception(message)
                 End If
-            Next
-        End Using
+
+                'Find and update the returned addresses
+                UpdateGeoCoding(geoCodingResponse)
+
+                'Reset and prepare for next set of addresses to be added to the SOAP message
+                geoCodingCount = 0
+                ReDim geoCodingRequest.Record(GetArraySize(Count, geoCodingUsed, maxRecords) - 1)
+            End If
+        Next
 
     End Sub
 
@@ -226,7 +335,7 @@ Public Class AddressCollection
 
     End Sub
 
-    Private Function cleanSingleAddress(ByVal assignIDs As Boolean, ByVal forceProxy As Boolean, ByVal populateGeoCoding As Boolean, ByRef addr As Address) As net.melissadata.addresscheck.ResponseArray
+    Private Function cleanSingleAddress(ByVal assignIDs As Boolean, ByVal forceProxy As Boolean, ByVal populateGeoCoding As Boolean, ByRef addr As Address, ByVal dataFileId As Integer) As net.melissadata.addresscheck.ResponseArray
         Dim addrCount As Integer = 1
         Dim addrUsed As Integer = 1
         Dim maxRecords As Integer = AppConfig.Params("AddressWebServiceMaxRecords").IntegerValue
@@ -237,94 +346,85 @@ Public Class AddressCollection
         Dim geoCodingRequest As New net.melissadata.geocoder.RequestArray
         Dim geoCodingResponse As New net.melissadata.geocoder.ResponseArray
 
-
-
         'Initialize the SOAP request message
         addrCheckRequest.CustomerID = AppConfig.Params("AddressWebServiceCustomerID").StringValue
         addrCheckRequest.OptAddressParsed = "False"
-      
+
         'Dimension the SOAP request message array for the first set of records
-        ReDim addrCheckRequest.Record(GetArraySize(Count, addrUsed, maxRecords))
+        ReDim addrCheckRequest.Record(GetArraySize(addrCount, addrUsed, maxRecords))
 
         'Create the address cleaning web service connection
-        Using addrCheckService As New net.melissadata.addresscheck.Service
-            'Initialize the web service
-            addrCheckService.Url = AppConfig.Params("AddressWebServiceURL").StringValue
 
-            'Determine if we need to use a proxy
-            If forceProxy Then
-                addrCheckService.Proxy = New WebProxy(AppConfig.Params("WebServiceProxyServer").StringValue, AppConfig.Params("WebServiceProxyPort").IntegerValue)
-                addrCheckService.Proxy.Credentials = CredentialCache.DefaultCredentials
-            End If
+        'Clean all addresses in the collection
 
-            'Clean all addresses in the collection
+        'Increment the counters
+        addrCount = 1
+        addrUsed = 1
 
-            'Increment the counters
-            addrCount = 1
-            addrUsed = 1
+        'Check to see if we need to assign the id
+        If assignIDs Then
+            addr.DBKey = addrUsed
+        End If
 
-            'Check to see if we need to assign the id
-            If assignIDs Then
-                addr.DBKey = addrUsed
-            End If
+        'Add this address to the web service SOAP message
+        AddAddress(addrCount, addr, addrCheckRequest)
 
-            'Add this address to the web service SOAP message
-            AddAddress(addrCount, addr, addrCheckRequest)
+        'Call the web service   
+        Logs.Info(String.Format("Begin Single addrCheckService.doAddressCheck - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
 
-            'Determine if it is time to call the web service           
-            addrCheckResponse = addrCheckService.doAddressCheck(addrCheckRequest)
+        Try
+            addrCheckResponse = DoAddressCheckWithRetries(addrCheckRequest, dataFileId, forceProxy)
+        Catch ex As Exception
+            Logs.LogException(ex, String.Format("ERROR Single addrCheckService.doAddressCheck - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
+            Throw ex
+        End Try
 
-            'Check to see if the web service returned any errors
-            Dim message As String = String.Empty
+        Logs.Info(String.Format("End Single addrCheckService.doAddressCheck - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
 
-            If CheckForAddressWebRequestErrors(addrCheckResponse.Results, message) Then
-                'We have encountered a general error from the web service.
-                Throw New Exception(message)
+        'Check to see if the web service returned any errors
+        Dim message As String = String.Empty
 
-            End If
+        If CheckForAddressWebRequestErrors(addrCheckResponse.Results, message) Then
+            'We have encountered a general error from the web service.
+            Throw New Exception(message)
 
-        End Using
+        End If
 
         'Initialize the SOAP request message
         geoCodingRequest.CustomerID = AppConfig.Params("GeoCodingWebServiceCustomerID").StringValue
 
         'Dimension the SOAP request message array for the first set of records
-        ReDim geoCodingRequest.Record(GetArraySize(Count, geoCodingUsed, maxRecords))
+        ReDim geoCodingRequest.Record(GetArraySize(geoCodingCount, geoCodingUsed, maxRecords))
 
-        'Create the address cleaning web service connection
-        Using geoCodingService As New net.melissadata.geocoder.Service
-            'Initialize the web service
-            geoCodingService.Url = AppConfig.Params("GeoCodingWebServiceURL").StringValue
+        'Add this address to the web service SOAP message
+        AddGeoCoding(geoCodingCount, addr, geoCodingRequest)
 
-            'Determine if we need to use a proxy
-            If forceProxy Then
-                geoCodingService.Proxy = New WebProxy(AppConfig.Params("WebServiceProxyServer").StringValue, AppConfig.Params("WebServiceProxyPort").IntegerValue)
-                geoCodingService.Proxy.Credentials = CredentialCache.DefaultCredentials
-            End If
+        'Call the web service
 
-            'Add this address to the web service SOAP message
-            AddGeoCoding(geoCodingCount, addr, geoCodingRequest)
+        Logs.Info(String.Format("Begin Single geoCodingService.doGeoCode - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
+        Try
+            geoCodingResponse = DoGeoCodingWithRetries(geoCodingRequest, dataFileId, forceProxy)
+        Catch ex As Exception
+            Logs.LogException(ex, String.Format("ERROR Single geoCodingService.doGeoCode - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
+            Throw ex
+        End Try
 
-            'Determine if it is time to call the web service
-            If geoCodingCount = maxRecords OrElse geoCodingUsed = Count Then
-                'Call the web service to clean the current SOAP message
-                geoCodingResponse = geoCodingService.doGeoCode(geoCodingRequest)
+        Logs.Info(String.Format("End Single geoCodingService.doGeoCode - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
 
-                'Check to see if the web service returned any errors
-                Dim message As String = String.Empty
-                If CheckForGeoCodingWebRequestErrors(geoCodingResponse.Results, message) Then
-                    'We have encountered a general error from the web service.
-                    Throw New Exception(message)
-                End If
+        'Check to see if the web service returned any errors
+        message = String.Empty
+        If CheckForGeoCodingWebRequestErrors(geoCodingResponse.Results, message) Then
+            'We have encountered a general error from the web service.
+            Throw New Exception(message)
+        End If
 
-                'Find and update the returned addresses
-                UpdateGeoCoding(geoCodingResponse)
-            End If
+        'Find and update the returned addresses
+        UpdateGeoCoding(geoCodingResponse)
 
-        End Using
+        Logs.Info(String.Format("End cleanSingleAddress - DataFile_Id:{0}", dataFileId))
 
         Return addrCheckResponse
-       
+
     End Function
 
 #End Region
@@ -439,7 +539,7 @@ Public Class AddressCollection
     ''' </summary>
     ''' <param name="responseArray">The response object containing the updated addresses.</param>
     ''' <remarks></remarks>
-    Private Sub UpdateAddresses(ByRef responseArray As net.melissadata.addresscheck.ResponseArray)
+    Private Sub UpdateAddresses(ByRef responseArray As net.melissadata.addresscheck.ResponseArray, ByVal datafileId As Integer)
 
         Dim cnt As Integer
 
@@ -455,7 +555,7 @@ Public Class AddressCollection
                 End If
 
                 'If we are here then we need to update the address
-                UpdateAddress(addr, .Address, .Results)
+                UpdateAddress(addr, .Address, .Results, datafileId)
             End With
         Next
 
@@ -488,7 +588,7 @@ Public Class AddressCollection
     ''' <param name="response">The response object containing the cleaned address.</param>
     ''' <param name="results">The result string for this address.</param>
     ''' <remarks></remarks>
-    Private Sub UpdateAddress(ByRef addr As Address, ByRef response As net.melissadata.addresscheck.ResponseArrayRecordAddress, ByVal results As String)
+    Private Sub UpdateAddress(ByRef addr As Address, ByRef response As net.melissadata.addresscheck.ResponseArrayRecordAddress, ByVal results As String, ByVal datafileId As Integer)
 
         With addr.WorkingAddress
             'Get the Address Type
@@ -627,7 +727,7 @@ Public Class AddressCollection
                 addr.SetCleanedTo(addr.OriginalAddress, "NU")
             ElseIf CheckForValidSecondAddress(results, addr) Then
                 addr.SetCleanedTo(addr.OriginalAddress, "NC")
-                ResendSecondaryAddress(addr)
+                ResendSecondaryAddress(addr, datafileId)
             Else
                 'Address errors only were detected so set to original with error NC (Not Cleaned)
                 addr.SetCleanedTo(addr.OriginalAddress, "NC")
@@ -821,7 +921,7 @@ Public Class AddressCollection
     ''' <param name="origAddr">If the </param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Sub ResendSecondaryAddress(ByRef origAddr As Address)
+    Private Sub ResendSecondaryAddress(ByRef origAddr As Address, ByVal datafileId As Integer)
 
         'Make clone of the address being passed in
         Dim clonedAddress As Address = origAddr.Clone
@@ -834,7 +934,7 @@ Public Class AddressCollection
         origAddr.WorkingAddress.StreetLine2 = clonedAddress.OriginalAddress.StreetLine1
 
         'Make the web service call with the clone/swapped address
-        Dim responseArray As net.melissadata.addresscheck.ResponseArray = cleanSingleAddress(True, False, True, origAddr)
+        Dim responseArray As net.melissadata.addresscheck.ResponseArray = cleanSingleAddress(False, False, True, origAddr, datafileId)
 
         'Parse the address clean response into an Address object
         Dim returnedAddress As Address = ParseSingleAddress(responseArray, origAddr)

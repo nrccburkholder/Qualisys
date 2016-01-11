@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data;
 
 namespace CEM.Exporting
 {
@@ -10,6 +11,7 @@ namespace CEM.Exporting
     {
 
         public int? ExportQueueID { get; set; }
+        public int? ExportTemplateID { get; set; }
         public string ExportTemplateName { get; set; }
         public string ExportTemplateVersionMajor { get; set; }
         public int? ExportTemplateVersionMinor { get; set; }
@@ -29,11 +31,19 @@ namespace CEM.Exporting
 
         }
 
+        public static ExportQueue PopulateExportQueue(DataRow dr)
+        {
+            return DataProviders.ExportQueueProvider.PopulateExportQueue(dr);
+        }
+
         public static List<ExportQueue> Select(ExportQueue queue)
         {
             return DataProviders.ExportQueueProvider.Select(queue);
         }
 
-
+        public static DataTable SelectAsDataTable(ExportQueue queue)
+        {
+            return DataProviders.ExportQueueProvider.SelectAsDataTable(queue);
+        }
     }
 }

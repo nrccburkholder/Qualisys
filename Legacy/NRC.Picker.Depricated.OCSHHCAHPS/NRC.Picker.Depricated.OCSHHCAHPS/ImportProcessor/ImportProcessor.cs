@@ -137,7 +137,7 @@ namespace NRC.Picker.Depricated.OCSHHCAHPS.ImportProcessor
 
                     #region *** extract ***
                     this.OnInfo(string.Format("Extracting {0}", uploadFileInfo.Name));
-                    Extractors.IExtract extractProcessor = Extractors.Factory.GetExtractor(client);
+                    Extractors.IExtract extractProcessor = Extractors.Factory.GetExtractor(client, uploadFileInfo.Name);
                     XDocument extractedData = extractProcessor.Extract(client, file.FullName);
 
                     #region Add externally generated values to the metadata

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Qualisys.DataTableManagerLauncher</id>
+    <title>QualiSys Data Table Manager Launcher</title>
+    <version>3.0.18</version>
+    <authors>NRC</authors>
+    <description>Data Table Manager Launcher shell which launches Data Table Manager</description>
+  </metadata>
+  <files>
+    <file src="bin\Release\app.publish\**\*"/>
+  </files>
+</package>

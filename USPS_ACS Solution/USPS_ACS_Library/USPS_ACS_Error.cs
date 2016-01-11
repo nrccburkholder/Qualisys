@@ -17,6 +17,7 @@ namespace USPS_ACS_Library
         private string mZipFileName = string.Empty;
         private string mExtractFileName = string.Empty;
         private string mErrorMessage = string.Empty;
+        private string mStackTrace = string.Empty;
 
 
         #endregion
@@ -73,6 +74,15 @@ namespace USPS_ACS_Library
             mZipFileName = zipfilename;
             mExtractFileName = extractfilename;
             mErrorMessage = errormessage;
+        }
+
+        public USPS_ACS_Error(ErrorType errorType, string zipfilename, string extractfilename, string errormessage, string stacktrace)
+        {
+            mErrorType = errorType;
+            mZipFileName = zipfilename;
+            mExtractFileName = extractfilename;
+            mErrorMessage = errormessage;
+            mStackTrace = stacktrace;
         }
 
         #endregion

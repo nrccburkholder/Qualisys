@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Tahoma" Size="8.25" />
+  <Class Name="NRC.Miscellaneous.FolderPolling.FileOperation">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>FolderPolling.vb</FileName>
+      <HashCode>BkIIARAQASABAIIgAAAImQAAkgEKACgBCAEAgABQBAA=</HashCode>
+    </TypeIdentifier>
+    <Members>
+      <Field Name="_bAutomaticBackups" Hidden="true" />
+      <Field Name="_bBackupFiles" Hidden="true" />
+      <Field Name="_bDropBackup" Hidden="true" />
+      <Field Name="_bErrorFiles" Hidden="true" />
+      <Field Name="_bMainDirDefined" Hidden="true" />
+      <Field Name="_bValidFileName" Hidden="true" />
+      <Field Name="_sBackupDirectory" Hidden="true" />
+      <Field Name="_sBackupFileName" Hidden="true" />
+      <Field Name="_sErrorDirectory" Hidden="true" />
+      <Field Name="_sFileName" Hidden="true" />
+      <Field Name="_sMainDirectory" Hidden="true" />
+      <Method Name="GetExtension" Hidden="true" />
+      <Method Name="GetJustSubPath" Hidden="true" />
+      <Method Name="GetName" Hidden="true" />
+      <Method Name="GetPath" Hidden="true" />
+    </Members>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="NRC.Miscellaneous.FolderPolling.FolderPolling">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>FolderPolling.vb</FileName>
+      <HashCode>CEIAFRAEACAEAIAgAAgoiQAAAJAAAAhABCAAAAkQAg4=</HashCode>
+    </TypeIdentifier>
+    <Members>
+      <Field Name="_bAutomaticBackups" Hidden="true" />
+      <Field Name="_bBackupFiles" Hidden="true" />
+      <Field Name="_bDropBackup" Hidden="true" />
+      <Field Name="_bErrorFiles" Hidden="true" />
+      <Field Name="_bGetfiles" Hidden="true" />
+      <Field Name="_bMainDirDefined" Hidden="true" />
+      <Field Name="_bRecursive" Hidden="true" />
+      <Field Name="_bSubDirectoryUsed" Hidden="true" />
+      <Field Name="_enDirectories" Hidden="true" />
+      <Field Name="_enFiles" Hidden="true" />
+      <Field Name="_foCurrentFile" Hidden="true" />
+      <Field Name="_fpSubdirectory" Hidden="true" />
+      <Field Name="_sAllDirectories" Hidden="true" />
+      <Field Name="_sAllFiles" Hidden="true" />
+      <Field Name="_sBackupDirectory" Hidden="true" />
+      <Field Name="_sCurrentDirectory" Hidden="true" />
+      <Field Name="_sErrorDirectory" Hidden="true" />
+      <Field Name="_sFilter" Hidden="true" />
+      <Field Name="_sMainDirectory" Hidden="true" />
+      <Method Name="DeleteFolder" Hidden="true" />
+      <Method Name="GetFiles" Hidden="true" />
+      <Method Name="InitializeVariables" Hidden="true" />
+    </Members>
+    <Lollipop Position="0.2" />
+  </Class>
+</ClassDiagram>

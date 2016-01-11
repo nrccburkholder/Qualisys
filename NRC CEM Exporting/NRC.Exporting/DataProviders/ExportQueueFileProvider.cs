@@ -16,17 +16,19 @@ namespace CEM.Exporting.DataProviders
         {
             get
             {
-                return new SqlDataProvider();
+                return new SqlDataProvider(DB.CEM);
             }
         }
 
         #region private methods
 
-        private static ExportQueueFile PopulateExportQueueFile(DataRow dr) 
+        internal static ExportQueueFile PopulateExportQueueFile(DataRow dr) 
         {
             ExportQueueFile queuefile = new ExportQueueFile();
 
+
             queuefile.ExportQueueFileID = (int)dr["ExportQueueFileID"];
+            queuefile.ExportTemplateID = (int)dr["ExportTemplateID"];
             queuefile.ExportQueueID = (int)dr["ExportQueueID"];
             queuefile.FileState = (Int16)dr["FileState"];
             queuefile.SubmissionDate = dr["SubmissionDate"] == DBNull.Value ? null : (DateTime?)dr["SubmissionDate"];
@@ -40,7 +42,7 @@ namespace CEM.Exporting.DataProviders
         }
 
 
-        private static List<ExportQueueFile> PopulateQueueFileList(DataSet ds)
+        internal static List<ExportQueueFile> PopulateQueueFileList(DataSet ds)
         {
             List<ExportQueueFile> queuefiles = new List<ExportQueueFile>();
 
@@ -75,6 +77,22 @@ namespace CEM.Exporting.DataProviders
             using (ds)
             {
                 return PopulateQueueFileList(ds);
+            }
+
+        }
+
+        internal static DataTable SelectAsDataTable(ExportQueueFile queuefile)
+        {
+
+            SqlParameter[] param = new SqlParameter[] { new SqlParameter("@ExportQueueID", queuefile.ExportQueueID),
+                                                        new SqlParameter("@FileState", queuefile.FileState)};
+
+            DataSet ds = new DataSet();
+            SqlProvider.Fill(ref ds, "QueueFiles", "CEM.SelectExportQueueFile", CommandType.StoredProcedure, param);
+
+            using (ds)
+            {
+                return ds.Tables["QueueFiles"];
             }
 
         }

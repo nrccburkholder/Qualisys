@@ -1,0 +1,13 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Qualisys.PervasiveService</id>
+    <title>QualiSys Pervasive Service</title>
+    <version>1.0.3.0</version>
+    <authors>NRC</authors>
+    <description>Validates the file and applies it to the database</description>
+  </metadata>
+  <files>
+    <file src="bin\x86\Release\*"/>
+  </files>
+</package>

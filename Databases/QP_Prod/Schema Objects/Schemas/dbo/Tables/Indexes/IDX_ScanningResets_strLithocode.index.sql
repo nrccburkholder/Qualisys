@@ -1,0 +1,1 @@
+﻿	CREATE INDEX IDX_ScanningResets_strLithocode on dbo.ScanningResets (strLithocode) INCLUDE (datReturned)

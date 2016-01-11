@@ -96,8 +96,10 @@ namespace USPS_ACS_Library
 
         public static DataTable SelectExtractFilesByStatus(params string[] args)
         {
-            string proc = "USPS_ACS_SelectExtractFilesByStatus";
-            DbCommand cmd = Db.GetStoredProcCommand(proc, args);
+
+            string sArgs = string.Join(",", args);
+            string proc = "USPS_ACS_SelectExtractFilesByStatus2";
+            DbCommand cmd = Db.GetStoredProcCommand(proc, sArgs);
 
             try
             {

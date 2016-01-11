@@ -32,7 +32,9 @@ namespace USPS_ACS_Library.Enums
         Processing_Error,
         Completed_w_Errors,
         Completed,
-        Archived
+        Archived,
+        Extracted,
+        Extracted_w_Errors,
     }
 
     public enum ExtractFileRecordStatus

@@ -42,7 +42,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>2.5.2.0</ApplicationVersion>
+    <ApplicationVersion>2.5.6.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -162,7 +162,9 @@
   <ItemGroup>
     <None Include="AddressCleaningTest.nuspec" />
     <None Include="AddressCleaningTest_TemporaryKey.pfx" />
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
@@ -175,7 +177,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nrc.Framework.AddressCleaning\Nrc.Framework.AddressCleaning.vbproj">
-      <Project>{125B82D7-2796-4BA4-945D-0EB84C807F94}</Project>
+      <Project>{125b82d7-2796-4ba4-945d-0eb84c807f94}</Project>
       <Name>Nrc.Framework.AddressCleaning</Name>
     </ProjectReference>
     <ProjectReference Include="..\Nrc.Framework.BusinessLogic\Nrc.Framework.BusinessLogic.vbproj">

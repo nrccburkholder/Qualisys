@@ -17,6 +17,7 @@
   <ClientsDirectory>c:\NEPTUNE_FS\Prod</ClientsDirectory>
 
   <QP_DataLoadConnectionString>#{OcsConnectionString}</QP_DataLoadConnectionString>
+  <!--<QP_DataLoadConnectionString>Server=TiQualSQL04;Database=QP_DataLoad;Trusted_Connection=TRUE;</QP_DataLoadConnectionString>-->
   <!-- QP_DataLoadConnectionString>Server=BUMBLEBEE.testnrcus.nationalresearch.com;Database=AA_QP_DataLoad;Trusted_Connection=TRUE;</QP_DataLoadConnectionString -->
 
   <SaveXMLFiles>true</SaveXMLFiles>

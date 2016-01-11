@@ -57,10 +57,10 @@ Public Class NameCollection
     ''' <param name="properCase">Specifies if proper case formatting should be applied.</param>
     ''' <param name="forceProxy">Specifies whether or not to force the use of a proxy server for web requests</param>
     ''' <remarks></remarks>
-    Public Sub Clean(ByVal properCase As Boolean, ByVal forceProxy As Boolean)
+    Public Sub Clean(ByVal properCase As Boolean, ByVal forceProxy As Boolean, ByVal dataFileId As Integer)
 
         'The DBKey property of the name object is not publicly exposed so it will need to be set by the application.
-        Clean(properCase, True, forceProxy)
+        Clean(properCase, True, forceProxy, dataFileId)
 
     End Sub
 
@@ -76,7 +76,7 @@ Public Class NameCollection
     ''' <param name="assignIDs">Specified whether or not the names need to have the DBKey set</param>
     ''' <param name="forceProxy">Specifies whether or not to force the use of a proxy server for web requests</param>
     ''' <remarks></remarks>
-    Friend Sub Clean(ByVal properCase As Boolean, ByVal assignIDs As Boolean, ByVal forceProxy As Boolean)
+    Friend Sub Clean(ByVal properCase As Boolean, ByVal assignIDs As Boolean, ByVal forceProxy As Boolean, ByVal dataFileId As Integer)
 
         Dim nameCount As Integer = 0
         Dim nameUsed As Integer = 0
@@ -115,53 +115,53 @@ Public Class NameCollection
         'Dimension the SOAP request message array for the first set of records
         ReDim nameCheckRequest.Record(GetArraySize(Count, nameUsed, maxRecords) - 1)
 
-        'Create the name cleaning web service connection
-        Using nameCheckService As New net.melissadata.name.Service
-            'Initialize the web service
-            nameCheckService.Url = AppConfig.Params("NameWebServiceURL").StringValue
 
-            'Determine if we need to use a proxy
-            If forceProxy Then
-                nameCheckService.Proxy = New WebProxy(AppConfig.Params("WebServiceProxyServer").StringValue, AppConfig.Params("WebServiceProxyPort").IntegerValue)
-                nameCheckService.Proxy.Credentials = CredentialCache.DefaultCredentials
+        'Clean all names in the collection
+        For Each item As Name In Me
+            'Increment the counters
+            nameCount += 1
+            nameUsed += 1
+
+            'Check to see if we need to assign the id
+            If assignIDs Then
+                item.DBKey = nameUsed
             End If
 
-            'Clean all names in the collection
-            For Each item As Name In Me
-                'Increment the counters
-                nameCount += 1
-                nameUsed += 1
+            'Add this name to the web service SOAP message
+            AddName(nameCount, item, nameCheckRequest, nameCleaningPrefixes)
 
-                'Check to see if we need to assign the id
-                If assignIDs Then
-                    item.DBKey = nameUsed
+            'Determine if it is time to call the web service
+            If nameCount = maxRecords OrElse nameUsed = Count Then
+
+                'Call the web service to clean the current SOAP message
+
+                Logs.Info(String.Format("Begin nameCheckService.doNameCheck - DataFile_Id:{0}, AddrCount: {1}", dataFileId, nameCount))
+
+                Try
+                    nameCheckResponse = DoNameCheckWithRetries(nameCheckRequest, dataFileId, forceProxy)
+                Catch ex As Exception
+                    Logs.LogException(ex, String.Format("ERROR nameCheckService.doNameCheck - DataFile_Id:{0}", dataFileId))
+                    Throw ex
+                End Try
+
+                Logs.Info(String.Format("End nameCheckService.doNameCheck - DataFile_Id:{0}", dataFileId))
+
+
+                'Check to see if the web service returned any errors
+                Dim message As String = String.Empty
+                If CheckForWebRequestErrors(nameCheckResponse.Results, message) Then
+                    'We have encountered a general error from the web service.
+                    Throw New Exception(message)
                 End If
 
-                'Add this name to the web service SOAP message
-                AddName(nameCount, item, nameCheckRequest, nameCleaningPrefixes)
+                'Find and update the returned names
+                UpdateNames(nameCheckResponse, properCase)
 
-                'Determine if it is time to call the web service
-                If nameCount = maxRecords OrElse nameUsed = Count Then
-
-                    'Call the web service to clean the current SOAP message
-                    nameCheckResponse = nameCheckService.doNameCheck(nameCheckRequest)
-
-                    'Check to see if the web service returned any errors
-                    Dim message As String = String.Empty
-                    If CheckForWebRequestErrors(nameCheckResponse.Results, message) Then
-                        'We have encountered a general error from the web service.
-                        Throw New Exception(message)
-                    End If
-
-                    'Find and update the returned names
-                    UpdateNames(nameCheckResponse, properCase)
-
-                    'Reset and prepare for next set of names to be added to the SOAP message
-                    nameCount = 0
-                    ReDim nameCheckRequest.Record(GetArraySize(Count, nameUsed, maxRecords) - 1)
-                End If
-            Next
-        End Using
+                'Reset and prepare for next set of names to be added to the SOAP message
+                nameCount = 0
+                ReDim nameCheckRequest.Record(GetArraySize(Count, nameUsed, maxRecords) - 1)
+            End If
+        Next
 
     End Sub
 
@@ -186,6 +186,55 @@ Public Class NameCollection
 
 #Region " Private Methods "
 
+    Private Const WEB_SERVICE_MAX_RETRIES As Integer = 3
+
+    Private Function DoNameCheckWithRetries(ByRef nameCheckRequest As net.melissadata.name.RequestArray, ByVal dataFileId As Integer, ByVal forceProxy As Boolean) As net.melissadata.name.ResponseArray
+
+        Dim nameCheckResponse As New net.melissadata.name.ResponseArray
+
+        'Create the name cleaning web service connection
+        Using nameCheckService As New net.melissadata.name.Service
+            'Initialize the web service
+            nameCheckService.Url = AppConfig.Params("NameWebServiceURL").StringValue
+
+            'Determine if we need to use a proxy
+            If forceProxy Then
+                nameCheckService.Proxy = New WebProxy(AppConfig.Params("WebServiceProxyServer").StringValue, AppConfig.Params("WebServiceProxyPort").IntegerValue)
+                nameCheckService.Proxy.Credentials = CredentialCache.DefaultCredentials
+            End If
+
+            Dim tryCount As Integer = 0
+
+            Dim addrCheckResponse As net.melissadata.addresscheck.ResponseArray = Nothing
+
+            Do
+                tryCount += 1
+
+                If (tryCount > 1) Then
+                    'Sleep for some seconds before retrying
+                    Threading.Thread.Sleep(5 * 1000)
+                End If
+
+                Try
+                    nameCheckResponse = nameCheckService.doNameCheck(nameCheckRequest)
+                    If (tryCount > 1) Then
+                        Logs.Info(String.Format("SUCCESS DoNameCheckWithRetries - DataFile_Id:{0} Attempt:{1}", dataFileId, tryCount))
+                    End If
+                    Exit Do
+                Catch ex As Exception
+                    Logs.LogException(ex, String.Format("ERROR DoNameCheckWithRetries - DataFile_Id:{0} Attempt:{1}", dataFileId, tryCount))
+                    If (tryCount >= WEB_SERVICE_MAX_RETRIES) Then
+                        Throw
+                    End If
+
+                End Try
+
+            Loop While tryCount < WEB_SERVICE_MAX_RETRIES
+
+            Return nameCheckResponse
+        End Using
+
+    End Function
     ''' <summary>
     ''' This routine determines the array size for the request object.
     ''' </summary>
