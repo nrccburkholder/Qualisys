@@ -210,7 +210,7 @@ namespace NRC.Common
 
         public void ConfigureEventSending(string eventCollectorUrl)
         {
-            _eventClient = (eventCollectorUrl != null) ? new EventClient(eventCollectorUrl, a => _logger.Trace(a), (a, b) => _logger.Error(a,b)) : null;
+            _eventClient = (eventCollectorUrl != null) ? new EventClient(eventCollectorUrl, a => _logger.Trace(a), (a, b) => _logger.Error(b,a)) : null;
         }
 
         private void CheckInitialization()
@@ -245,7 +245,7 @@ namespace NRC.Common
         public void Info(string text, Exception exception)
         {
             CheckInitialization();
-            _logger.Info(text, exception);
+            _logger.Info(exception, text);
         }
 
         public void Error(string text)
@@ -258,7 +258,7 @@ namespace NRC.Common
         public void Error(string text, Exception exception)
         {
             CheckInitialization();
-            _logger.Error(text, exception);
+            _logger.Error(exception, text);
             Event(null, "General.Error", new { }, new { });
         }
 
@@ -275,7 +275,7 @@ namespace NRC.Common
             }
             catch (Exception ex)
             {
-                _logger.Error(String.Format("Unable to log event of type {0}: {1}", type, ex.Message), ex);
+                _logger.Error(ex, String.Format("Unable to log event of type {0}: {1}", type, ex.Message));
             }
         }
 

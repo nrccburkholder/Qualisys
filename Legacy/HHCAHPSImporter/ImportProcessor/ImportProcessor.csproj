@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BCD6012D-3D2B-4A44-993E-9FAEC29FF962}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HHCAHPSImporter.ImportProcessor</RootNamespace>
+    <AssemblyName>HHCAHPSImporter.ImportProcessor</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FileHelpers, Version=3.1.5.0, Culture=neutral, PublicKeyToken=3e0c08d59cc3d657, processorArchitecture=MSIL">
+      <HintPath>..\packages\FileHelpers.3.1.5\lib\net40\FileHelpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="NRC.Common">
+      <HintPath>..\..\..\Referenced Assemblies\NRC.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DAL\GetClientTransformsResult.cs" />
+    <Compile Include="DAL\Transform.cs" />
+    <Compile Include="DAL\EntityBase.cs" />
+    <Compile Include="DAL\TransformLibrary.cs" />
+    <Compile Include="DAL\TransformTarget.cs" />
+    <Compile Include="DAL\Generated\QP_DataLoad.cs" />
+    <Compile Include="DAL\Helpers.cs" />
+    <Compile Include="DAL\QP_DataLoadManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DAL\TransformMapping.cs" />
+    <Compile Include="Delegates.cs" />
+    <Compile Include="Exceptions\InvalidArgumentException.cs" />
+    <Compile Include="Exceptions\UploadAbandoned.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Extractors\CmsCsvBody.cs" />
+    <Compile Include="Extractors\CmsCsvExtractor.cs" />
+    <Compile Include="Extractors\CmsCsvParser.cs" />
+    <Compile Include="Extractors\CSVToXMLBase.cs" />
+    <Compile Include="Extractors\DateConverter.cs" />
+    <Compile Include="Extractors\EnumConverter.cs" />
+    <Compile Include="Extractors\ExtractHelper.cs" />
+    <Compile Include="Extractors\Factory.cs" />
+    <Compile Include="Extractors\IcdConverter.cs" />
+    <Compile Include="Extractors\IExtract.cs" />
+    <Compile Include="Extractors\M0010Converter.cs" />
+    <Compile Include="Extractors\MonthConverter.cs" />
+    <Compile Include="Extractors\OcsPtctCsvBody.cs" />
+    <Compile Include="Extractors\OcsCsvExtractor.cs" />
+    <Compile Include="Extractors\OcsPtctCsvHeader.cs" />
+    <Compile Include="Extractors\OcsPtctCsvParser.cs" />
+    <Compile Include="Extractors\OcsFwBodyV1.cs" />
+    <Compile Include="Extractors\OcsFwBodyV2.cs" />
+    <Compile Include="Extractors\OcsFwExtractor.cs" />
+    <Compile Include="Extractors\OcsFwHeader.cs" />
+    <Compile Include="Extractors\OcsFwParser.cs" />
+    <Compile Include="Extractors\OCS\HHCAHPS.cs" />
+    <Compile Include="Extractors\ParseException.cs" />
+    <Compile Include="Extractors\PgCsvBody.cs" />
+    <Compile Include="Extractors\PgCsvExtractor.cs" />
+    <Compile Include="Extractors\PgCsvParser.cs" />
+    <Compile Include="Extractors\PhoneNumberConverter.cs" />
+    <Compile Include="Extractors\PtctCsvExtractor.cs" />
+    <Compile Include="Extractors\Int32Converter.cs" />
+    <Compile Include="ImportProcessor.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="Transforms\DynamicTransform.cs" />
+    <Compile Include="Transforms\Factory.cs" />
+    <Compile Include="Transforms\ITransform.cs" />
+    <Compile Include="Transforms\Misc\Methods.cs" />
+    <Compile Include="UploadInfo.cs" />
+    <Compile Include="UploadManager.cs" />
+    <Compile Include="Validation\EitherFieldRequiredAttribute.cs" />
+    <Compile Include="Validation\LibraryCodeAttribute.cs" />
+    <Compile Include="Validation\TableNameAttribute.cs" />
+    <Compile Include="Validation\TransformMappingAttribute.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DAL\Generated\GenerateDAL.bat" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

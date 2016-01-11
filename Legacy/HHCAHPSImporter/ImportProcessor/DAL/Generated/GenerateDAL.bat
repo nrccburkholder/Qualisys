@@ -1,0 +1,1 @@
+sqlmetal /server:NBAALIABADI /database:QP_DataLoad /sprocs /views /namespace:HHCAHPSImporter.ImportProcessor.DAL.Generated /entitybase:HHCAHPSImporter.ImportProcessor.DAL.EntityBase /code:QP_DataLoad.cs
