@@ -29,7 +29,7 @@ namespace HHCAHPSImporter.ImportProcessingService
         {
             try
             {
-                ocsHHCAHPSImportProcessor_Info("OCS HHCAHPS Import Service checking for work");
+                HHCAHPSImportProcessor_Info("HHCAHPS Import Service checking for work");
 
                 //// List<FileInfo> files = settings.IncomingDirectory.GetFiles().ToList();
                 //// Move all of the files off of the FTP server
@@ -41,28 +41,28 @@ namespace HHCAHPSImporter.ImportProcessingService
 
                 if (files.Count > 0)
                 {
-                    ocsHHCAHPSImportProcessor_Info(string.Format("Found {0} files in the ImportQueue directory", files.Count));
+                    HHCAHPSImportProcessor_Info(string.Format("Found {0} files in the ImportQueue directory", files.Count));
                     UploadAndImportFiles(files);
-                    ocsHHCAHPSImportProcessor_Info("OCS HHCAHPS Import Service work completed");
+                    HHCAHPSImportProcessor_Info("HHCAHPS Import Service work completed");
                 }
                 else
                 {
-                    // ocsHHCAHPSImportProcessor_Info("Nothing to do");
+                    // HHCAHPSImportProcessor_Info("Nothing to do");
                 }
             }
             catch (Exception ex)
             {
-                ocsHHCAHPSImportProcessor_Error(ex.Message, ex);
+                HHCAHPSImportProcessor_Error(ex.Message, ex);
             }
             finally
             {
-                // ocsHHCAHPSImportProcessor_Info("OCS HHCAHPS Import Service work completed");
+                // HHCAHPSImportProcessor_Info("HHCAHPS Import Service work completed");
             }
         }
 
         public override string InternalName
         {
-            get { return "OCS HHCAHPS Import Service"; }
+            get { return "HHCAHPS Import Service"; }
         }
         #endregion
 
@@ -77,7 +77,7 @@ namespace HHCAHPSImporter.ImportProcessingService
 
             if (files.Count() > 0)
             {
-                ocsHHCAHPSImportProcessor_Info(string.Format("Found {0} files in {1}.  These will be queued for importing", files.Count, settings.IncomingDirectory.FullName));
+                HHCAHPSImportProcessor_Info(string.Format("Found {0} files in {1}.  These will be queued for importing", files.Count, settings.IncomingDirectory.FullName));
 
                 foreach (FileInfo fi in files)
                 {
@@ -87,7 +87,7 @@ namespace HHCAHPSImporter.ImportProcessingService
                     }
                     catch (Exception ex)
                     {
-                        ocsHHCAHPSImportProcessor_Error(string.Format("Could not queue file {0}", fi.Name), ex);
+                        HHCAHPSImportProcessor_Error(string.Format("Could not queue file {0}", fi.Name), ex);
                     }
                 }
             }
@@ -99,12 +99,12 @@ namespace HHCAHPSImporter.ImportProcessingService
 
             if (!File.Exists(target))
             {
-                ocsHHCAHPSImportProcessor_Info(string.Format("Moving {0} to {1}", file.Name, settings.UploadQueueDirectory.FullName));
+                HHCAHPSImportProcessor_Info(string.Format("Moving {0} to {1}", file.Name, settings.UploadQueueDirectory.FullName));
                 file.MoveTo(target);
             }
             else
             {
-                ocsHHCAHPSImportProcessor_Info( string.Format("A File named {0} is already queued.  Not queuing {1}", target, file.FullName ) );
+                HHCAHPSImportProcessor_Info( string.Format("A File named {0} is already queued.  Not queuing {1}", target, file.FullName ) );
             }
         }
 
@@ -114,7 +114,7 @@ namespace HHCAHPSImporter.ImportProcessingService
 
             if (files.Count() > 0)
             {
-                ocsHHCAHPSImportProcessor_Info(string.Format("Found {0} zip in {1}.  These will be queued for importing", files.Count, settings.IncomingDirectory.FullName));
+                HHCAHPSImportProcessor_Info(string.Format("Found {0} zip in {1}.  These will be queued for importing", files.Count, settings.IncomingDirectory.FullName));
 
                 foreach (FileInfo fi in files)
                 {
@@ -143,7 +143,7 @@ namespace HHCAHPSImporter.ImportProcessingService
                     }
                     catch (Exception ex)
                     {
-                        ocsHHCAHPSImportProcessor_Error(string.Format("Could not queue zipfile {0}", fi.Name), ex);
+                        HHCAHPSImportProcessor_Error(string.Format("Could not queue zipfile {0}", fi.Name), ex);
                         FailZipFile(fi);
                     }
                 }
@@ -156,12 +156,12 @@ namespace HHCAHPSImporter.ImportProcessingService
 
             if (!File.Exists(target))
             {
-                ocsHHCAHPSImportProcessor_Info(string.Format("Moving {0} to {1}", file.Name, settings.ZipQueueDirectory.FullName));
+                HHCAHPSImportProcessor_Info(string.Format("Moving {0} to {1}", file.Name, settings.ZipQueueDirectory.FullName));
                 file.MoveTo(target);
             }
             else
             {
-                ocsHHCAHPSImportProcessor_Info(string.Format("A File named {0} is already queued.  Not queuing {1}", target, file.FullName));
+                HHCAHPSImportProcessor_Info(string.Format("A File named {0} is already queued.  Not queuing {1}", target, file.FullName));
             }
         }
 
@@ -174,12 +174,12 @@ namespace HHCAHPSImporter.ImportProcessingService
 
             if (!File.Exists(target))
             {
-                ocsHHCAHPSImportProcessor_Info(string.Format("Moving {0} to {1}", file.Name, settings.ZipArchiveDirectory.FullName));
+                HHCAHPSImportProcessor_Info(string.Format("Moving {0} to {1}", file.Name, settings.ZipArchiveDirectory.FullName));
                 file.MoveTo(target);
             }
             else
             {
-                ocsHHCAHPSImportProcessor_Info(string.Format("A File named {0} is already queued.  Not moving {1}", target, file.FullName));
+                HHCAHPSImportProcessor_Info(string.Format("A File named {0} is already queued.  Not moving {1}", target, file.FullName));
             }
         }
 
@@ -191,12 +191,12 @@ namespace HHCAHPSImporter.ImportProcessingService
 
             if (!File.Exists(target))
             {
-                ocsHHCAHPSImportProcessor_Info(string.Format("Moving {0} to {1}", file.Name, settings.ZipFailureDirectory.FullName));
+                HHCAHPSImportProcessor_Info(string.Format("Moving {0} to {1}", file.Name, settings.ZipFailureDirectory.FullName));
                 file.MoveTo(target);
             }
             else
             {
-                ocsHHCAHPSImportProcessor_Info(string.Format("A File named {0} is already queued.  Not moving {1}", target, file.FullName));
+                HHCAHPSImportProcessor_Info(string.Format("A File named {0} is already queued.  Not moving {1}", target, file.FullName));
             }
         }
 
@@ -205,7 +205,7 @@ namespace HHCAHPSImporter.ImportProcessingService
             // string target = Path.Combine(settings.UploadQueueDirectory.FullName, zipFile.Directory.Name);
             string target = settings.UploadQueueDirectory.FullName;
 
-            ocsHHCAHPSImportProcessor_Info(string.Format("Extracting {0} from {1} to {2}", zipEntry.FileName, zipFile.Name, target));
+            HHCAHPSImportProcessor_Info(string.Format("Extracting {0} from {1} to {2}", zipEntry.FileName, zipFile.Name, target));
             zipEntry.Extract(target, Ionic.Zip.ExtractExistingFileAction.Throw);
 
         }
@@ -214,13 +214,13 @@ namespace HHCAHPSImporter.ImportProcessingService
         {
             ImportProcessor.UploadManager uploadManager = new ImportProcessor.UploadManager(settings);
 
-            uploadManager.Info += new ImportProcessor.InfoEventHandler(ocsHHCAHPSImportProcessor_Info);
-            uploadManager.Error += new ImportProcessor.ErrorEventHandler(ocsHHCAHPSImportProcessor_Error);
+            uploadManager.Info += new ImportProcessor.InfoEventHandler(HHCAHPSImportProcessor_Info);
+            uploadManager.Error += new ImportProcessor.ErrorEventHandler(HHCAHPSImportProcessor_Error);
 
-            ImportProcessor.ImportProcessor ocsHHCAHPSImportProcessor = new ImportProcessor.ImportProcessor(settings);
+            ImportProcessor.ImportProcessor HHCAHPSImportProcessor = new ImportProcessor.ImportProcessor(settings);
 
-            ocsHHCAHPSImportProcessor.Info += new ImportProcessor.InfoEventHandler(ocsHHCAHPSImportProcessor_Info);
-            ocsHHCAHPSImportProcessor.Error += new ImportProcessor.ErrorEventHandler(ocsHHCAHPSImportProcessor_Error);
+            HHCAHPSImportProcessor.Info += new ImportProcessor.InfoEventHandler(HHCAHPSImportProcessor_Info);
+            HHCAHPSImportProcessor.Error += new ImportProcessor.ErrorEventHandler(HHCAHPSImportProcessor_Error);
 
             foreach (FileInfo fi in files)
             {
@@ -238,17 +238,17 @@ namespace HHCAHPSImporter.ImportProcessingService
                 #region Upload the file
                 try
                 {
-                    ocsHHCAHPSImportProcessor_Info(string.Format("Uploading {0}", fi.FullName));
+                    HHCAHPSImportProcessor_Info(string.Format("Uploading {0}", fi.FullName));
                     uploadInfo = uploadManager.UploadFile(fi);
                 }
                 catch (Exceptions.UploadAbandonedException ex)
                 {
-                    ocsHHCAHPSImportProcessor_Error(string.Format("Upload Abandoned for {0}", fi.FullName), ex);
+                    HHCAHPSImportProcessor_Error(string.Format("Upload Abandoned for {0}", fi.FullName), ex);
                     continue;
                 }
                 catch (Exception ex)
                 {
-                    ocsHHCAHPSImportProcessor_Error(string.Format("Upload Failed for {0}", fi.FullName), ex);
+                    HHCAHPSImportProcessor_Error(string.Format("Upload Failed for {0}", fi.FullName), ex);
                     MoveFileToUploadFailureDirectory(fi, ex);
                     continue;
                 }
@@ -258,14 +258,14 @@ namespace HHCAHPSImporter.ImportProcessingService
                 try
                 {
                     // import the file
-                    ocsHHCAHPSImportProcessor_Info(string.Format("Importing uploadFileId {0}", fi.Name));
+                    HHCAHPSImportProcessor_Info(string.Format("Importing uploadFileId {0}", fi.Name));
 
-                    int? datafileId = ocsHHCAHPSImportProcessor.ImportFile(uploadInfo.UploadFileId.Value, isUpdateFile);
+                    int? datafileId = HHCAHPSImportProcessor.ImportFile(uploadInfo.UploadFileId.Value, isUpdateFile);
 
                 }
                 catch (Exception ex)
                 {
-                    ocsHHCAHPSImportProcessor_Error(string.Format("ImportFile failed for uploadFileId {0}", uploadInfo.UploadFileId), ex);
+                    HHCAHPSImportProcessor_Error(string.Format("ImportFile failed for uploadFileId {0}", uploadInfo.UploadFileId), ex);
                 }
                 #endregion
 
@@ -300,7 +300,7 @@ namespace HHCAHPSImporter.ImportProcessingService
             }
             else
             {
-                ocsHHCAHPSImportProcessor_Error(string.Format("file {0} already exists in upload failure directory", destFilename), null);
+                HHCAHPSImportProcessor_Error(string.Format("file {0} already exists in upload failure directory", destFilename), null);
             }
 
         }
@@ -316,7 +316,7 @@ namespace HHCAHPSImporter.ImportProcessingService
         #endregion
 
         #region Event Handlers
-        void ocsHHCAHPSImportProcessor_Info(string message)
+        void HHCAHPSImportProcessor_Info(string message)
         {
             _logger.Info(message);
 
@@ -326,7 +326,7 @@ namespace HHCAHPSImporter.ImportProcessingService
             }
         }
 
-        void ocsHHCAHPSImportProcessor_Error(string message, Exception e)
+        void HHCAHPSImportProcessor_Error(string message, Exception e)
         {
             if (e != null) _logger.Error(message, e);
             else _logger.Error(message);
@@ -343,7 +343,7 @@ namespace HHCAHPSImporter.ImportProcessingService
                     Console.WriteLine(e.StackTrace);
                     if (e.InnerException != null)
                     {
-                        ocsHHCAHPSImportProcessor_Error(message, e.InnerException);
+                        HHCAHPSImportProcessor_Error(message, e.InnerException);
                     }
                 }
             }

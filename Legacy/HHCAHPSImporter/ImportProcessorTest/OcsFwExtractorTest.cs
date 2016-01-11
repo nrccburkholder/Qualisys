@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using HHCAHPSImporter.ImportProcessor.Extractors;
 using ClientDetail = HHCAHPSImporter.ImportProcessor.DAL.Generated.ClientDetail;
 
-namespace OCSHHCAHPS.ImportProcessorTest
+namespace HHCAHPS.ImportProcessorTest
 {
     [TestClass]
     public class OcsFwExtractorTest

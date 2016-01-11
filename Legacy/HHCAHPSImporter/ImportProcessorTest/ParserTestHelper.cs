@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace OCSHHCAHPS.ImportProcessorTest
+namespace HHCAHPS.ImportProcessorTest
 {
     internal static class ParserTestHelper
     {

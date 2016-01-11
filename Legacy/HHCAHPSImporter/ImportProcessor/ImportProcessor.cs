@@ -199,15 +199,15 @@ namespace HHCAHPSImporter.ImportProcessor
 
                     if (isUpdateFile)
                     {
-                        this.OnInfo(string.Format("LD_UpdateDataFileStateChange({0}) to DataFileState.AwaitingOCSHHCAHPSUpdate", dataFileId));
-                        qpDataLoadManager.LD_UpdateDataFileStateChange(dataFileId.Value, DAL.DataFileState.AwaitingOCSHHCAHPSUpdate, "AwaitingOCSHHCAHPSUpdate");
+                        this.OnInfo(string.Format("LD_UpdateDataFileStateChange({0}) to DataFileState.AwaitingHHCAHPSUpdate", dataFileId));
+                        qpDataLoadManager.LD_UpdateDataFileStateChange(dataFileId.Value, DAL.DataFileState.AwaitingHHCAHPSUpdate, "AwaitingHHCAHPSUpdate");
 
                         this.OnInfo(string.Format("calling UpdateOCSEncounterData({0})", dataFileId));
                         qpDataLoadManager.UpdateOCSEncounterData(dataFileId.Value);
                         // EXEC UpdateOCSEncounterData " & dataFileID 
 
-                        this.OnInfo(string.Format("LD_UpdateDataFileStateChange({0}) to DataFileState.OCSHHCAHPSUpdateApplied", dataFileId));
-                        qpDataLoadManager.LD_UpdateDataFileStateChange(dataFileId.Value, DAL.DataFileState.OCSHHCAHPSUpdateApplied, "OCSHHCAHPSUpdateApplied");
+                        this.OnInfo(string.Format("LD_UpdateDataFileStateChange({0}) to DataFileState.HHCAHPSUpdateApplied", dataFileId));
+                        qpDataLoadManager.LD_UpdateDataFileStateChange(dataFileId.Value, DAL.DataFileState.HHCAHPSUpdateApplied, "HHCAHPSUpdateApplied");
                     }
                     else
                     {

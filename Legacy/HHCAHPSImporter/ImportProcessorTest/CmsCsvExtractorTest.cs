@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using HHCAHPSImporter.ImportProcessor.DAL.Generated;
 using HHCAHPSImporter.ImportProcessor.Extractors;
 
-namespace OCSHHCAHPS.ImportProcessorTest
+namespace HHCAHPS.ImportProcessorTest
 {
     [TestClass]
     public class CmsCsvExtractorTest

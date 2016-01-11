@@ -6,7 +6,7 @@ using HHCAHPSImporter.ImportProcessor.Extractors;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OCSHHCAHPS.ImportProcessorTest
+namespace HHCAHPS.ImportProcessorTest
 {
     [TestClass]
     public class PgCsvParserTest

@@ -111,17 +111,17 @@ namespace HHCAHPSImporter.ImportProcessor.DAL
         /// <summary>
         /// 20
         /// </summary>
-        AwaitingOCSHHCAHPSUpdate = 20,
+        AwaitingHHCAHPSUpdate = 20,
 
         /// <summary>
         /// 21
         /// </summary>
-        OCSHHCAHPSUpdating = 21,
+        HHCAHPSUpdating = 21,
 
         /// <summary>
         /// 22
         /// </summary>
-        OCSHHCAHPSUpdateApplied = 22,
+        HHCAHPSUpdateApplied = 22,
 
         /// <summary>
         /// 23
@@ -131,7 +131,7 @@ namespace HHCAHPSImporter.ImportProcessor.DAL
         /// <summary>
         /// 24
         /// </summary>
-        OCSHHCAHPSUpdateAbandoned = 24
+        HHCAHPSUpdateAbandoned = 24
     }
 
     public enum UploadState

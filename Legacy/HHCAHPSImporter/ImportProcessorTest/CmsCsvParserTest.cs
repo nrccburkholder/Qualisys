@@ -6,7 +6,7 @@ using System.Linq;
 using HHCAHPSImporter.ImportProcessor.Extractors;
 using HHCAHPSImporter.ImportProcessor.DAL.Generated;
 
-namespace OCSHHCAHPS.ImportProcessorTest
+namespace HHCAHPS.ImportProcessorTest
 {
     [TestClass]
     public class CmsCsvParserTest
