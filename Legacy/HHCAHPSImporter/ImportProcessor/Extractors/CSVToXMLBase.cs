@@ -60,6 +60,7 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
                 foreach (var field in fields)
                 {
                     string fieldName = field.Name;
+                    if (fieldName == "ExtraColumns") continue;
 
                     XmlAttributeAttribute exportNameAttrib = (XmlAttributeAttribute)field.GetCustomAttributes(typeof(XmlAttributeAttribute), false).FirstOrDefault();
                     if (exportNameAttrib != null)

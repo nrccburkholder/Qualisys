@@ -351,6 +351,10 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors.OCS
         [XmlAttribute("ADL_Feed")]
         public string ADL_Feed;
 
+        [FieldQuoted('"', QuoteMode.OptionalForBoth)]
+        [FieldTrim(TrimMode.Both)]
+        [FieldOptional]
+        public string[] ExtraColumns;
     }
 
     [DelimitedRecord(",")]
@@ -386,6 +390,11 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors.OCS
         [FieldQuoted('"', QuoteMode.OptionalForBoth)]
         [XmlAttribute("VERSION NUMBER")]
         public string VersionNumber;
+
+        [FieldQuoted('"', QuoteMode.OptionalForBoth)]
+        [FieldTrim(TrimMode.Both)]
+        [FieldOptional]
+        public string[] ExtraColumns;
     }
 
     public class HHCAHPS : CSVToXMLBase, IExtract
