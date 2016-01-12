@@ -88,6 +88,7 @@ Global Const OffsetACOCAHPS = OrangeOffset
 Global Const OffsetICHCAHPS = OrangeOffset
 Global Const OffsetHOSPICE = RedOffset
 Global Const OffsetPQRSCAHPS = OrangeOffset
+Global Const OffsetOASCAHPS = GreenOffset
 
 Public fMainForm As frmMain
 

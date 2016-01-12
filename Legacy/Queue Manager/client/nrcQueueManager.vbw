@@ -1,4 +1,4 @@
-modQueueManager = 1, 1, 1094, 618, Z
+modQueueManager = 1, 1, 1094, 618, 
 frmMain = -4, -11, 1089, 606, , 25, 25, 1118, 642, C
 frmAbout = 0, 0, 0, 0, C, 75, 75, 1168, 692, C
 frmMailingDates = 88, 116, 1230, 739, , 100, 100, 1193, 717, C
