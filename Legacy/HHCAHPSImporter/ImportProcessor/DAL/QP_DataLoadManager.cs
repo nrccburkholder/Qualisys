@@ -44,31 +44,7 @@ namespace HHCAHPSImporter.ImportProcessor.DAL
             get
             {
                 return this._connectionString;
-                //// TODO: REMOVE THIS -
-                //string connString = db.Connection.ConnectionString;
-                //if (connString.Contains("user id=qpsa;"))
-                //{
-                //    connString = connString + "password=qpsa";
-                //}
-
-                //return connString;
             }
-        }
-
-        // TODO: This does not belong here.  should be abstracted out and be controlled at the transform level.
-        public string CCNFromFilename(string filename)
-        {
-            string ccn = string.Empty;
-
-            // M0010 from the filename:
-            Regex r = new Regex(@"OCS([a-z0-9]+)_", RegexOptions.IgnoreCase);
-            Match m = r.Match(filename);
-            if (m.Success)
-            {
-                ccn = m.Groups[1].Value.ToString();
-            }
-
-            return ccn;
         }
 
         public DAL.Generated.ClientDetail GetClientDetailFromCCN(string ccn)

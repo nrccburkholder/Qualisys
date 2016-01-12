@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
+using HHCAHPSImporter.ImportProcessor.Extractors;
 
 namespace HHCAHPSImporter.ImportProcessor
 {
@@ -63,7 +64,7 @@ namespace HHCAHPSImporter.ImportProcessor
             FileInfo file = new FileInfo(Path.Combine(this._settings.ImportQueueDirectory.FullName, uploadFile.File_Nm));
 
             #region Check to see that the uploaded file can be resolved to a cnn and an NRC client
-            string ccn = this.qpDataLoadManager.CCNFromFilename(file.Name);
+            string ccn = FileNameParser.GetCCN(file.Name);
             if (string.IsNullOrEmpty(ccn))
             {
                 throw new Exceptions.InvalidArgumentException(string.Format("Unrecognized file pattern for file {0}", file.Name));

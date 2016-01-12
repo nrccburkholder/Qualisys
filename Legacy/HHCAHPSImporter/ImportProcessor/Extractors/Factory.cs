@@ -9,8 +9,6 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
 {
     public static class Factory
     {
-        //private static IExtract extract = null;
-
         public static IExtract GetExtractor(DAL.Generated.ClientDetail client, string fileName)
         {
             var lowerFileName = fileName.ToLower();
@@ -27,13 +25,6 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
                 return new PtctCsvExtractor();
             else
                 return new OCS.HHCAHPS();
-
-            //// TODO: need to be smarter about different types of extractors.  for now all extractor are of the same type.
-            //if (extract == null)
-            //{
-            //    extract = (IExtract)(new OCS.HHCAHPS());
-            //}
-            //return extract;
         }
     }
 }
