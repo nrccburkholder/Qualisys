@@ -7,32 +7,52 @@ namespace ImportProcessorTest
     [TestClass]
     public class FileNameParserTest
     {
+        #region Helpers
+
+        private static void AssertGetCCN(string fileName, string expected)
+        {
+            var ccn = FileNameParser.GetCCN(fileName);
+            Assert.AreEqual(expected, ccn);
+        }
+
+        private static void AssertGetFileSource(string fileName, FileSource expected)
+        {
+            var result = FileNameParser.GetFileSource(fileName);
+            Assert.AreEqual(expected, result);
+        }
+
+        #endregion Helpers
+
+        #region GetCCN
+        
         [TestMethod]
         public void GetCCN_NrcFile_ReturnsCCN()
         {
-            var ccn = FileNameParser.GetCCN(@"56014_15990_OCS240053_HHCAHPS_52014_09242015.csv");
-            Assert.AreEqual("240053", ccn);
+            AssertGetCCN(@"56014_15990_OCS240053_HHCAHPS_52014_09242015.csv", "240053");
         }
 
         [TestMethod]
         public void GetCCN_NrcFileWithFullPathContainingConflictingMatch_ReturnsCCN()
         {
-            var ccn = FileNameParser.GetCCN(@"C:\OCS123456_\56014_15990_OCS240053_HHCAHPS_52014_09242015.csv");
-            Assert.AreEqual("240053", ccn);
+            AssertGetCCN(@"C:\OCS123456_\56014_15990_OCS240053_HHCAHPS_52014_09242015.csv", "240053");
         }
 
         [TestMethod]
         public void GetCCN_DirectFromClientFile_ReturnsCCN()
         {
-            var ccn = FileNameParser.GetCCN(@"HHCAHPS_240053_13_09242015.csv");
-            Assert.AreEqual("240053", ccn);
+            AssertGetCCN(@"HHCAHPS_240053_13_09242015.csv", "240053");
+        }
+
+        [TestMethod]
+        public void GetCCN_DirectFromClientFileWithUploadIdPrefix_ReturnsCCN()
+        {
+            AssertGetCCN(@"8888_HHCAHPS_240053_13_09242015.csv", "240053");
         }
 
         [TestMethod]
         public void GetCCN_DirectFromClientFileWithFullPathContainingConflictingMatch_ReturnsCCN()
         {
-            var ccn = FileNameParser.GetCCN(@"C:\HHCAHPS_123456_\HHCAHPS_240053_13_09242015.csv");
-            Assert.AreEqual("240053", ccn);
+            AssertGetCCN(@"C:\HHCAHPS_123456_\HHCAHPS_240053_13_09242015.csv", "240053");
         }
 
         [TestMethod]
@@ -42,46 +62,40 @@ namespace ImportProcessorTest
             FileNameParser.GetCCN(@"blah");
         }
 
+        #endregion GetCCN
+
+        #region GetFileSource
+
         [TestMethod]
-        public void IsNrcFile_NrcFile_ReturnsTrue()
+        public void GetFileSource_NrcFile_ReturnsNRC()
         {
-            var result = FileNameParser.IsNrcFile(@"56014_15990_OCS240053_HHCAHPS_52014_09242015.csv");
-            Assert.IsTrue(result);
+            AssertGetFileSource(@"56014_15990_OCS240053_HHCAHPS_52014_09242015.csv", FileSource.NRC);
         }
 
         [TestMethod]
-        public void IsNrcFile_DirectFromClientFile_ReturnsFalse()
+        public void GetFileSource_DirectFromClientFile_ReturnsDirectFromClient()
         {
-            var result = FileNameParser.IsNrcFile(@"HHCAHPS_240053_13_09242015.csv");
-            Assert.IsFalse(result);
+            AssertGetFileSource(@"HHCAHPS_240053_13_09242015.csv", FileSource.DirectFromClient);
         }
 
         [TestMethod]
-        public void IsNrcFile_NrcFileWithFullPath_ReturnsTrue()
+        public void GetFileSource_NrcFileWithFullPath_ReturnsNRC()
         {
-            var result = FileNameParser.IsNrcFile(@"C:\HHCAHPS_123456_\56014_15990_OCS240053_HHCAHPS_52014_09242015.csv");
-            Assert.IsTrue(result);
+            AssertGetFileSource(@"C:\HHCAHPS_123456_\56014_15990_OCS240053_HHCAHPS_52014_09242015.csv", FileSource.NRC);
         }
 
         [TestMethod]
-        public void IsDirectFromClientFile_NrcFile_ReturnsFalse()
+        public void GetFileSource_DirectFromClientFileWithUploadIdPrefix_ReturnsDirectFromClient()
         {
-            var result = FileNameParser.IsDirectFromClientFile(@"56014_15990_OCS240053_HHCAHPS_52014_09242015.csv");
-            Assert.IsFalse(result);
+            AssertGetFileSource(@"8888_HHCAHPS_240053_13_09242015.csv", FileSource.DirectFromClient);
         }
 
         [TestMethod]
-        public void IsDirectFromClientFile_DirectFromClientFile_ReturnsTrue()
+        public void GetFileSource_DirectFromClientFileWithOCSPath_ReturnsDirectFromClient()
         {
-            var result = FileNameParser.IsDirectFromClientFile(@"HHCAHPS_240053_13_09242015.csv");
-            Assert.IsTrue(result);
+            AssertGetFileSource(@"C:\OCS_123456_\HHCAHPS_240053_13_09242015.csv", FileSource.DirectFromClient);
         }
 
-        [TestMethod]
-        public void IsDirectFromClientFile_DirectFromClientFileWithOCSPath_ReturnsTrue()
-        {
-            var result = FileNameParser.IsDirectFromClientFile(@"C:\OCS_123456_\HHCAHPS_240053_13_09242015.csv");
-            Assert.IsTrue(result);
-        }
+        #endregion GetFileSource
     }
 }

@@ -112,8 +112,9 @@
     <Compile Include="Extractors\EnumConverter.cs" />
     <Compile Include="Extractors\ExtractHelper.cs" />
     <Compile Include="Extractors\Factory.cs" />
-    <Compile Include="Extractors\FileClassifier.cs" />
-    <Compile Include="Extractors\FileType.cs" />
+    <Compile Include="Extractors\FileFormatClassifier.cs" />
+    <Compile Include="Extractors\FileFormat.cs" />
+    <Compile Include="Extractors\FileSource.cs" />
     <Compile Include="Extractors\IcdConverter.cs" />
     <Compile Include="Extractors\IExtract.cs" />
     <Compile Include="Extractors\M0010Converter.cs" />

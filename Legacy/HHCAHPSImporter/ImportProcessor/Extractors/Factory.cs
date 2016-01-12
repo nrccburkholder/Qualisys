@@ -4,27 +4,33 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Text.RegularExpressions;
+using HHCAHPSImporter.ImportProcessor.DAL;
 
 namespace HHCAHPSImporter.ImportProcessor.Extractors
 {
     public static class Factory
     {
-        public static IExtract GetExtractor(DAL.Generated.ClientDetail client, string fileName)
+        public static IExtract GetExtractor(DAL.Generated.ClientDetail client, string fileName, QP_DataLoadManager dataLoadManager)
         {
-            var lowerFileName = fileName.ToLower();
+            var format = FileFormatClassifier.Classify(fileName, dataLoadManager);
 
-            if (lowerFileName.Contains("cmscsv"))
-                return new CmsCsvExtractor();
-            else if (lowerFileName.Contains("ocv"))
-                return new OcsCsvExtractor();
-            else if (lowerFileName.Contains("ofw"))
-                return new OcsFwExtractor();
-            else if (lowerFileName.Contains("pgcsv"))
-                return new PgCsvExtractor();
-            else if (lowerFileName.Contains("ptctcsv"))
-                return new PtctCsvExtractor();
-            else
-                return new OCS.HHCAHPS();
+            switch (format)
+            {
+                case FileFormat.NRC:
+                    return new OCS.HHCAHPS();
+                case FileFormat.PG_CSV:
+                    return new PgCsvExtractor();
+                case FileFormat.OCS_CSV:
+                    return new OcsCsvExtractor();
+                case FileFormat.OCS_FW:
+                    return new OcsFwExtractor();
+                case FileFormat.PTCT_CSV:
+                    return new PtctCsvExtractor();
+                case FileFormat.CMS_CSV:
+                    return new CmsCsvExtractor();
+                default:
+                    throw new InvalidOperationException(string.Format("Couldn't get the extractor for file format {0}.", format));
+            }
         }
     }
 }

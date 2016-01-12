@@ -68,6 +68,11 @@ namespace HHCAHPSImporter.ImportProcessor.DAL
             return null;
         }
 
+        public Generated.ClientFormat GetClientFormatFromCCN(string ccn)
+        {
+            return db.ClientFormat.FirstOrDefault(t => t.CCN.Equals(ccn));
+        }
+
 
         #region Transform Functionality
 
