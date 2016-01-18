@@ -39,9 +39,7 @@ begin
 
 	insert into @Results
 	exec(@sql);
-
-	select * from @Results;
-
+	
 	declare @result int
 	select @result = result from @Results;
 
