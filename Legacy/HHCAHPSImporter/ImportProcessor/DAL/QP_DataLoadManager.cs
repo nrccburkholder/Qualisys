@@ -73,6 +73,11 @@ namespace HHCAHPSImporter.ImportProcessor.DAL
             return db.ClientFormat.FirstOrDefault(t => t.CCN.Equals(ccn));
         }
 
+        public bool StudyHasAppliedData(int studyId, int sampleMonth, int sampleYear)
+        {
+            return db.StudyHasAppliedData(studyId, sampleMonth, sampleYear) == 1;
+        }
+
 
         #region Transform Functionality
 

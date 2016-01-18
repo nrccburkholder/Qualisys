@@ -904,6 +904,14 @@ namespace HHCAHPSImporter.ImportProcessor.DAL.Generated
 			return ((ISingleResult<LD_ViewWarningResult>)(result.ReturnValue));
 		}
 		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.StudyHasAppliedData")]
+		[return: global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")]
+		public int StudyHasAppliedData([global::System.Data.Linq.Mapping.ParameterAttribute(Name="StudyId", DbType="Int")] System.Nullable<int> studyId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="SampleMonth", DbType="Int")] System.Nullable<int> sampleMonth, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="SampleYear", DbType="Int")] System.Nullable<int> sampleYear)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), studyId, sampleMonth, sampleYear);
+			return ((int)(result.ReturnValue));
+		}
+		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.UpdateOCSEncounterData")]
 		public ISingleResult<UpdateOCSEncounterDataResult> UpdateOCSEncounterData([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> datafile_id)
 		{

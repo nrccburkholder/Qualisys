@@ -226,12 +226,6 @@ namespace HHCAHPSImporter.ImportProcessingService
             {
                 ImportProcessor.UploadInfo uploadInfo = null;
 
-                bool isUpdateFile = false;
-                if (fi.Name.Contains("UPDATE"))
-                {
-                    isUpdateFile = true;
-                }
-
                 //// make a backup of the file before we do anything
                 //BackupFile(fi);
 
@@ -260,7 +254,7 @@ namespace HHCAHPSImporter.ImportProcessingService
                     // import the file
                     HHCAHPSImportProcessor_Info(string.Format("Importing uploadFileId {0}", fi.Name));
 
-                    int? datafileId = HHCAHPSImportProcessor.ImportFile(uploadInfo.UploadFileId.Value, isUpdateFile);
+                    int? datafileId = HHCAHPSImportProcessor.ImportFile(uploadInfo.UploadFileId.Value);
 
                 }
                 catch (Exception ex)

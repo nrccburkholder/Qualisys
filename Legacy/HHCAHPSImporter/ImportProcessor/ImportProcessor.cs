@@ -45,7 +45,7 @@ namespace HHCAHPSImporter.ImportProcessor
             this.qpDataLoadManager = DAL.QP_DataLoadManager.Create(_settings.QP_DataLoadConnectionString);
         }
 
-        public int? ImportFile(int uploadFileId, bool isUpdateFile)
+        public int? ImportFile(int uploadFileId)
         {
             DAL.Generated.ClientDetail client = null;
             int? dataFileId = null;
@@ -140,6 +140,8 @@ namespace HHCAHPSImporter.ImportProcessor
                     this.OnInfo(string.Format("Extracting {0}", uploadFileInfo.Name));
                     Extractors.IExtract extractProcessor = Extractors.Factory.GetExtractor(client, uploadFileInfo.Name, qpDataLoadManager);
                     XDocument extractedData = extractProcessor.Extract(client, file.FullName);
+                    var sampleMonth = ExtractHelper.GetSampleMonth(extractedData);
+                    var sampleYear = ExtractHelper.GetSampleYear(extractedData);
 
                     #region Add externally generated values to the metadata
                     extractedData.Root.Add(new XAttribute("uploadfile_id", uploadFileId));
@@ -197,6 +199,8 @@ namespace HHCAHPSImporter.ImportProcessor
                     #endregion
 
                     #endregion
+
+                    var isUpdateFile = qpDataLoadManager.StudyHasAppliedData(client.Study_id, sampleMonth, sampleYear);
 
                     if (isUpdateFile)
                     {
