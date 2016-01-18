@@ -6,15 +6,15 @@ As a company, we want to process update files received from OCS HHCAHPS clients 
 
 Brendan Goble
 
-Task 34.1 Add cutoff dates to QUALPRO_PARAMS.
+Task 34.1 Add cutoff dates to Loading_PARAMS.
 
 ROLLBACK
 
 */
-use QP_Prod
+use QP_DataLoad
 go
 
-delete from dbo.QUALPRO_PARAMS
-where STRPARAM_NM in ('HHCAHPSUpdateFileQ1Cutoff', 'HHCAHPSUpdateFileQ2Cutoff', 'HHCAHPSUpdateFileQ3Cutoff', 'HHCAHPSUpdateFileQ4Cutoff')
+delete from dbo.Loading_PARAMS
+where STRPARAM_NM in ('UpdateFileQ1Cutoff', 'UpdateFileQ2Cutoff', 'UpdateFileQ3Cutoff', 'UpdateFileQ4Cutoff')
 
 go

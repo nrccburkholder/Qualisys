@@ -6,16 +6,17 @@ As a company, we want to process update files received from OCS HHCAHPS clients 
 
 Brendan Goble
 
-Task 34.1 Add cutoff dates to QUALPRO_PARAMS.
+Task 34.1 Add cutoff dates to Loading_PARAMS.
 
 */
-use QP_Prod
+use QP_DataLoad
 go
 
-if not exists (select * from dbo.QUALPRO_PARAMS where STRPARAM_NM in ('HHCAHPSUpdateFileQ1Cutoff', 'HHCAHPSUpdateFileQ2Cutoff', 'HHCAHPSUpdateFileQ3Cutoff', 'HHCAHPSUpdateFileQ4Cutoff'))
+if not exists (select * from dbo.Loading_PARAMS where STRPARAM_NM in ('UpdateFileQ1Cutoff', 'UpdateFileQ2Cutoff', 'UpdateFileQ3Cutoff', 'UpdateFileQ4Cutoff'))
 begin
-	INSERT INTO [dbo].[QUALPRO_PARAMS]
-			   ([STRPARAM_NM]
+	INSERT INTO [dbo].[Loading_PARAMS]
+			   ([PARAM_ID]
+			   ,[STRPARAM_NM]
 			   ,[STRPARAM_TYPE]
 			   ,[STRPARAM_GRP]
 			   ,[STRPARAM_VALUE]
@@ -23,33 +24,37 @@ begin
 			   ,[DATPARAM_VALUE]
 			   ,[COMMENTS])
 		 VALUES
-			   ('HHCAHPSUpdateFileQ1Cutoff'
+			   (3
+			   ,'UpdateFileQ1Cutoff'
 			   ,'D'
-			   ,'HHCAHPSImporter'
+			   ,'Loading'
 			   ,null
 			   ,null
 			   ,'2016-07-15'
 			   ,'Cutoff date for processing HHCAHPS update files in Quarter 1. Files will be processed up to and including this day. Only the month and day are significant, year will be set by the importer.'
 			   ),
-			   ('HHCAHPSUpdateFileQ2Cutoff'
+			   (4
+			   ,'UpdateFileQ2Cutoff'
 			   ,'D'
-			   ,'HHCAHPSImporter'
+			   ,'Loading'
 			   ,null
 			   ,null
 			   ,'2016-10-15'
 			   ,'Cutoff date for processing HHCAHPS update files in Quarter 2. Files will be processed up to and including this day. Only the month and day are significant, year will be set by the importer.'
 			   ),
-			   ('HHCAHPSUpdateFileQ3Cutoff'
+			   (5
+			   ,'UpdateFileQ3Cutoff'
 			   ,'D'
-			   ,'HHCAHPSImporter'
+			   ,'Loading'
 			   ,null
 			   ,null
 			   ,'2017-01-15'
 			   ,'Cutoff date for processing HHCAHPS update files in Quarter 3. Files will be processed up to and including this day. Only the month and day are significant, year will be set by the importer.'
 			   ),
-			   ('HHCAHPSUpdateFileQ4Cutoff'
+			   (6
+			   ,'UpdateFileQ4Cutoff'
 			   ,'D'
-			   ,'HHCAHPSImporter'
+			   ,'Loading'
 			   ,null
 			   ,null
 			   ,'2017-04-15'
