@@ -7,7 +7,7 @@ namespace HHCAHPSImporter.ImportProcessor
 {
     internal static class CutoffDateHelper
     {
-        public enum Quarter
+        private enum Quarter
         {
             Q1,
             Q2,
@@ -15,7 +15,7 @@ namespace HHCAHPSImporter.ImportProcessor
             Q4
         }
 
-        public static Quarter GetQuarter(int sampleMonth)
+        private static Quarter GetQuarter(int sampleMonth)
         {
             switch (sampleMonth)
             {

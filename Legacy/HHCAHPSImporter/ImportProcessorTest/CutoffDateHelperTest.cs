@@ -9,12 +9,6 @@ namespace ImportProcessorTest
     {
         #region Helpers
 
-        private void AssertQuarter(int sampleMonth, CutoffDateHelper.Quarter expected)
-        {
-            var quarter = CutoffDateHelper.GetQuarter(sampleMonth);
-            Assert.AreEqual(expected, quarter);
-        }
-
         private void AssertPastCutoffQ1(DateTime q1Cutoff, int sampleMonth, int sampleYear, DateTime current, bool expected)
         {
             var result = CutoffDateHelper.IsPastCutoff(q1Cutoff, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue, sampleMonth, sampleYear, current);
@@ -40,96 +34,6 @@ namespace ImportProcessorTest
         }
 
         #endregion Helpers
-
-        #region GetQuarter
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void GetQuarter_0_ThrowsArgumentOutOfRangeException()
-        {
-            CutoffDateHelper.GetQuarter(0);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void GetQuarter_13_ThrowsArgumentOutOfRangeException()
-        {
-            CutoffDateHelper.GetQuarter(13);
-        }
-
-        [TestMethod]
-        public void GetQuarter_1_ReturnsQ1()
-        {
-            AssertQuarter(1, CutoffDateHelper.Quarter.Q1);
-        }
-
-        [TestMethod]
-        public void GetQuarter_2_ReturnsQ1()
-        {
-            AssertQuarter(2, CutoffDateHelper.Quarter.Q1);
-        }
-
-        [TestMethod]
-        public void GetQuarter_3_ReturnsQ1()
-        {
-            AssertQuarter(3, CutoffDateHelper.Quarter.Q1);
-        }
-
-        [TestMethod]
-        public void GetQuarter_4_ReturnsQ2()
-        {
-            AssertQuarter(4, CutoffDateHelper.Quarter.Q2);
-        }
-
-        [TestMethod]
-        public void GetQuarter_5_ReturnsQ2()
-        {
-            AssertQuarter(5, CutoffDateHelper.Quarter.Q2);
-        }
-
-        [TestMethod]
-        public void GetQuarter_6_ReturnsQ2()
-        {
-            AssertQuarter(6, CutoffDateHelper.Quarter.Q2);
-        }
-
-        [TestMethod]
-        public void GetQuarter_7_ReturnsQ3()
-        {
-            AssertQuarter(7, CutoffDateHelper.Quarter.Q3);
-        }
-
-        [TestMethod]
-        public void GetQuarter_8_ReturnsQ3()
-        {
-            AssertQuarter(8, CutoffDateHelper.Quarter.Q3);
-        }
-
-        [TestMethod]
-        public void GetQuarter_9_ReturnsQ3()
-        {
-            AssertQuarter(9, CutoffDateHelper.Quarter.Q3);
-        }
-
-        [TestMethod]
-        public void GetQuarter_10_ReturnsQ4()
-        {
-            AssertQuarter(10, CutoffDateHelper.Quarter.Q4);
-        }
-
-        [TestMethod]
-        public void GetQuarter_11_ReturnsQ4()
-        {
-            AssertQuarter(11, CutoffDateHelper.Quarter.Q4);
-        }
-
-        [TestMethod]
-        public void GetQuarter_12_ReturnsQ4()
-        {
-            AssertQuarter(12, CutoffDateHelper.Quarter.Q4);
-        }
-
-        #endregion GetQuarter
 
         #region IsPastCutoff
 
