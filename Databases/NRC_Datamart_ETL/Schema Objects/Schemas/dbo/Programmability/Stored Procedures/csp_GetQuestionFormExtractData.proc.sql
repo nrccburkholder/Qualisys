@@ -12,6 +12,7 @@
 --          1.6 by dgilsdorf: changed call to HHCAHPSCompleteness from a function to a procedure
 --			1.7 by ccaouette: check for duplicate questionform (same samplepop_id)
 --			1.8 by ccaouette: fix issue with missed comments
+--			1.9 by ccaouette: fix issue where deleted questionforms are not properly inactivated in Catalyst
 -- =============================================
 CREATE PROCEDURE [dbo].[csp_GetQuestionFormExtractData] 
 	@ExtractFileID int 
@@ -247,18 +248,22 @@ AS
  ---------------------------------------------------------------------------------------
  -- Load records to deletes into a temp table
   ---------------------------------------------------------------------------------------
- --insert QuestionFormTemp 
-	--		(ExtractFileID, QUESTIONFORM_ID, SAMPLEPOP_ID,strLithoCode,IsDeleted )
-	--	select distinct @ExtractFileID, IsNull(qf.QUESTIONFORM_ID,-1), IsNull(qf.SAMPLEPOP_ID,-1),IsNull(IsNull(eh.PKey2,sm.strLithoCode),-1),1 
- -- --      select *
-	--	 from (select distinct PKey1 ,PKey2
- --                       from ExtractHistory  with (NOLOCK) 
- --                        where ExtractFileID = @ExtractFileID
-	--                     and EntityTypeID = @EntityTypeID
-	--                     and IsDeleted = 1 ) eh
-	--			Left join QP_Prod.dbo.QUESTIONFORM qf With (NOLOCK) on qf.QUESTIONFORM_ID = eh.PKey1 AND qf.DATRETURNED IS NULL--if datReturned is not NULL it is not a delete
-	--			Left join QP_Prod.dbo.SentMailing sm With (NOLOCK) on qf.SentMail_id = sm.SentMail_id
+ insert QuestionFormTemp 
+			(ExtractFileID, QUESTIONFORM_ID, SAMPLEPOP_ID,strLithoCode,IsDeleted )
+		select distinct @ExtractFileID, IsNull(qf.QUESTIONFORM_ID,-1), IsNull(qf.SAMPLEPOP_ID,-1),IsNull(IsNull(eh.PKey2,sm.strLithoCode),-1),1 
+  --      select *
+		 from (select distinct PKey1 ,PKey2
+                        from ExtractHistory  with (NOLOCK) 
+                         where ExtractFileID = @ExtractFileID
+	                     and EntityTypeID = @EntityTypeID
+	                     and IsDeleted = 1 ) eh
+				Left join QP_Prod.dbo.QUESTIONFORM qf With (NOLOCK) on qf.QUESTIONFORM_ID = eh.PKey1 AND qf.DATRETURNED IS NULL--if datReturned is not NULL it is not a delete
+				Left join QP_Prod.dbo.SentMailing sm With (NOLOCK) on qf.SentMail_id = sm.SentMail_id
 
   	SET @currDateTime2 = GETDATE();
 	SELECT @oExtractRunLogID,@currDateTime2,@TaskName
 	EXEC [UpdateExtractRunLog] @oExtractRunLogID, @currDateTime2
+
+GO
+
+
