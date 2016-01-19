@@ -140,8 +140,24 @@ namespace HHCAHPSImporter.ImportProcessor
                     this.OnInfo(string.Format("Extracting {0}", uploadFileInfo.Name));
                     Extractors.IExtract extractProcessor = Extractors.Factory.GetExtractor(client, uploadFileInfo.Name, qpDataLoadManager);
                     XDocument extractedData = extractProcessor.Extract(client, file.FullName);
+
                     var sampleMonth = ExtractHelper.GetSampleMonth(extractedData);
                     var sampleYear = ExtractHelper.GetSampleYear(extractedData);
+                    var isUpdateFile = qpDataLoadManager.StudyHasAppliedData(client.Study_id, sampleMonth, sampleYear);
+                    if (isUpdateFile)
+                    {
+                        if(CutoffDateHelper.IsPastCutoff(
+                            qpDataLoadManager.GetUpdateFileQ1Cutoff(),
+                            qpDataLoadManager.GetUpdateFileQ2Cutoff(),
+                            qpDataLoadManager.GetUpdateFileQ3Cutoff(),
+                            qpDataLoadManager.GetUpdateFileQ4Cutoff(),
+                            sampleMonth,
+                            sampleYear,
+                            DateTime.Now))
+                        {
+                            throw new InvalidOperationException("Update file received after cutoff date");
+                        }
+                    }
 
                     #region Add externally generated values to the metadata
                     extractedData.Root.Add(new XAttribute("uploadfile_id", uploadFileId));
@@ -200,8 +216,6 @@ namespace HHCAHPSImporter.ImportProcessor
 
                     #endregion
 
-                    var isUpdateFile = qpDataLoadManager.StudyHasAppliedData(client.Study_id, sampleMonth, sampleYear);
-
                     if (isUpdateFile)
                     {
                         this.OnInfo(string.Format("LD_UpdateDataFileStateChange({0}) to DataFileState.AwaitingHHCAHPSUpdate", dataFileId));
@@ -239,7 +253,7 @@ namespace HHCAHPSImporter.ImportProcessor
                 }
             }
 
-            // something went worng.
+            // something went wrong.
             return null;
         }
 
