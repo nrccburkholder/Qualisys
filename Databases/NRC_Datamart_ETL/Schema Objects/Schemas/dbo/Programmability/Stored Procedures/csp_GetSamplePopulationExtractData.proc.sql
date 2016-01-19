@@ -210,3 +210,7 @@ AS
 	EXEC [UpdateExtractRunLog] @oExtractRunLogID, @currDateTime2
 
 
+
+GO
+
+
