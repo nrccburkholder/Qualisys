@@ -71,6 +71,7 @@
     <Compile Include="PgCsvParserTest.cs" />
     <Compile Include="ExtractHelperTest.cs" />
     <Compile Include="FileNameParserTest.cs" />
+    <Compile Include="CutoffDateHelperTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -26,7 +26,7 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
                 case FileSource.DirectFromClient:
                     return GetCCNFromDirectFromClientFile(fileName);
                 default:
-                    throw new InvalidOperationException(string.Format("Can't get the CCN from file {0}.", fileName));
+                    throw new InvalidOperationException($"Can't get the CCN from file {fileName}.");
             }
         }
 

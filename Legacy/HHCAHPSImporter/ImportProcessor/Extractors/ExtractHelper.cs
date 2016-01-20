@@ -321,5 +321,25 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
 
             return false;
         }
+
+        private static string GetMetadataFieldValue(XDocument xml, string field)
+        {
+            return GetMetadataElement(xml)
+                .Elements(RowElementName)
+                .First()
+                .Elements(FieldElementName)
+                .FirstOrDefault(nv => nv.Attribute(FieldAttributeName).Value == field)
+                .Value;
+        }
+
+        public static int GetSampleMonth(XDocument xml)
+        {
+            return int.Parse(GetMetadataFieldValue(xml, MonthField));
+        }
+
+        public static int GetSampleYear(XDocument xml)
+        {
+            return int.Parse(GetMetadataFieldValue(xml, YearField));
+        }
     }
 }

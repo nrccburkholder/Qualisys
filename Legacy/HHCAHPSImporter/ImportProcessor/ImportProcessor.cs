@@ -45,7 +45,7 @@ namespace HHCAHPSImporter.ImportProcessor
             this.qpDataLoadManager = DAL.QP_DataLoadManager.Create(_settings.QP_DataLoadConnectionString);
         }
 
-        public int? ImportFile(int uploadFileId, bool isUpdateFile)
+        public int? ImportFile(int uploadFileId)
         {
             DAL.Generated.ClientDetail client = null;
             int? dataFileId = null;
@@ -141,6 +141,24 @@ namespace HHCAHPSImporter.ImportProcessor
                     Extractors.IExtract extractProcessor = Extractors.Factory.GetExtractor(client, uploadFileInfo.Name, qpDataLoadManager);
                     XDocument extractedData = extractProcessor.Extract(client, file.FullName);
 
+                    var sampleMonth = ExtractHelper.GetSampleMonth(extractedData);
+                    var sampleYear = ExtractHelper.GetSampleYear(extractedData);
+                    var isUpdateFile = qpDataLoadManager.StudyHasAppliedData(client.Study_id, sampleMonth, sampleYear);
+                    if (isUpdateFile)
+                    {
+                        if(CutoffDateHelper.IsPastCutoff(
+                            qpDataLoadManager.GetUpdateFileQ1Cutoff(),
+                            qpDataLoadManager.GetUpdateFileQ2Cutoff(),
+                            qpDataLoadManager.GetUpdateFileQ3Cutoff(),
+                            qpDataLoadManager.GetUpdateFileQ4Cutoff(),
+                            sampleMonth,
+                            sampleYear,
+                            DateTime.Now))
+                        {
+                            throw new InvalidOperationException("Update file received after cutoff date");
+                        }
+                    }
+
                     #region Add externally generated values to the metadata
                     extractedData.Root.Add(new XAttribute("uploadfile_id", uploadFileId));
                     extractedData.Root.Add(new XAttribute("datafile_id", dataFileId));
@@ -235,7 +253,7 @@ namespace HHCAHPSImporter.ImportProcessor
                 }
             }
 
-            // something went worng.
+            // something went wrong.
             return null;
         }
 

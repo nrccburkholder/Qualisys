@@ -88,6 +88,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CutoffDateHelper.cs" />
     <Compile Include="DAL\GetClientTransformsResult.cs" />
     <Compile Include="DAL\Transform.cs" />
     <Compile Include="DAL\EntityBase.cs" />
