@@ -1,6 +1,6 @@
 /*
 
-S40_US10_OAS_Methodologies_update.sql
+S40_US10_OAS_Methodologies_update - Rollback.sql
 
 10 OAS: New Survey Type
 As an Implementation Associate, I want a new survey type w/ appropriate settings for OAS CAHPS, so that I can set up surveys compliantly.
@@ -45,95 +45,31 @@ declare @MethodologyType varchar(30)
 
 SET @StandardMethodology_nm = 'OAS Mixed Mail-Phone'
 SET @MethodologyType = 'Mixed Mail-Phone'
+																													
+	select @SMid= StandardMethodologyId from StandardMethodology where strStandardMethodology_nm = @StandardMethodology_nm and MethodologyType = @MethodologyType	
+	delete from StandardMethodologyBySurveyType where StandardMethodologyID = @SMid
+	delete from StandardMailingStep where StandardMethodologyID = @SMid																													
 
-/*
-	Update [dbo].[StandardMethodologyBySurveyType]
-		SET bitExpired = 1
-	WHERE StandardMethodologyID in (
-		select StandardMethodologyID
-			  from StandardMethodology 
-			  where strStandardMethodology_nm = @StandardMethodology_nm
-			  and MethodologyType = @MethodologyType
-	)	
-*/
-
-if not exists(select * from StandardMethodology where strStandardMethodology_nm = @StandardMethodology_nm and MethodologyType = @MethodologyType)
-begin
-	insert into StandardMethodology (strStandardMethodology_nm,bitCustom,MethodologyType) values (@StandardMethodology_nm,0,@MethodologyType)
-
-	set @SMid=scope_identity()	
-	insert into StandardMethodologyBySurveyType (StandardMethodologyID,SurveyType_id) values (@SMid, @SurveyType_id)																												
-																																																							
-	insert into StandardMailingStep (StandardMethodologyID	,intSequence	,strMailingStep_nm	,intIntervalDays	,ExpireInDays	,ExpireFromStep	,
-	bitSurveyInLine	,bitSendSurvey	,bitThankYouItem	,bitFirstSurvey	,MailingStepMethod_id	,DaysInField	,NumberOfAttempts	,WeekDay_Day_Call	,WeekDay_Eve_Call	,Sat_Day_Call	,Sat_Eve_Call	,Sun_Day_Call	,Sun_Eve_Call			,CallBackOtherLang	,CallbackUsingTTY		,AcceptPartial			,SendEmailBlast		)
-	values (@SMid	,'1'	,'1st Survey'	,'0'	,'42'	,'-1' /*1st survey*/	,
-	'0'	,'1'	,'0'	,'1'	,'0'	,NULL	,NULL	,NULL	,NULL	,NULL	,NULL	,NULL	,NULL			,NULL	,NULL		,NULL			,NULL		)
-	set @SMSid=scope_identity()																													
-	insert into StandardMailingStep (StandardMethodologyID	,intSequence	,strMailingStep_nm	,intIntervalDays	,ExpireInDays	,ExpireFromStep	,
-	bitSurveyInLine	,bitSendSurvey	,bitThankYouItem	,bitFirstSurvey	,MailingStepMethod_id	,DaysInField	,NumberOfAttempts	,WeekDay_Day_Call	,WeekDay_Eve_Call	,Sat_Day_Call	,Sat_Eve_Call	,Sun_Day_Call	,Sun_Eve_Call			,CallBackOtherLang	,CallbackUsingTTY		,AcceptPartial			,SendEmailBlast,	quota_id)
-	values (@SMid	,'2'	,'Phone'	,'19'	,'42'	,'-1' /*1st survey*/	,
-	'0'	,'1'	,'0'	,'0'	,'1'	,'20'	,'5'	,'1'	,'1'	,'1'	,'1'	,'1'	,'1'			,'1'	,'0'		,NULL			,NULL	,1	)
-	update StandardMailingStep set ExpireFromStep=@SMSid where ExpireFromStep=-1																													
-end	
-
+delete from StandardMethodology where strStandardMethodology_nm = @StandardMethodology_nm and MethodologyType = @MethodologyType
 
 SET @StandardMethodology_nm = 'OAS Mail Only'
 SET @MethodologyType = 'Mail Only'
+																													
+	select @SMid= StandardMethodologyId from StandardMethodology where strStandardMethodology_nm = @StandardMethodology_nm and MethodologyType = @MethodologyType	
+	delete from StandardMethodologyBySurveyType where StandardMethodologyID = @SMid
+	delete from StandardMailingStep where StandardMethodologyID = @SMid																													
 
-/*
-	Update [dbo].[StandardMethodologyBySurveyType]
-		SET bitExpired = 1
-	WHERE StandardMethodologyID in (
-		select StandardMethodologyID
-			  from StandardMethodology 
-			  where strStandardMethodology_nm = @StandardMethodology_nm
-			  and MethodologyType = @MethodologyType
-	)	
-*/
-
-if not exists(select * from StandardMethodology where strStandardMethodology_nm = @StandardMethodology_nm and MethodologyType = @MethodologyType)
-begin
-	insert into StandardMethodology (strStandardMethodology_nm,bitCustom,MethodologyType) values (@StandardMethodology_nm,0,@MethodologyType)																													
-																												
-	set @SMid=scope_identity()	insert into StandardMethodologyBySurveyType (StandardMethodologyID,SurveyType_id) values (@SMid, @SurveyType_ID)																												
-	insert into StandardMailingStep (StandardMethodologyID	,intSequence	,strMailingStep_nm	,intIntervalDays	,ExpireInDays	,ExpireFromStep	,
-	bitSurveyInLine	,bitSendSurvey	,bitThankYouItem	,bitFirstSurvey	,MailingStepMethod_id	,DaysInField	,NumberOfAttempts	,WeekDay_Day_Call	,WeekDay_Eve_Call	,Sat_Day_Call	,Sat_Eve_Call	,Sun_Day_Call	,Sun_Eve_Call			,CallBackOtherLang	,CallbackUsingTTY		,AcceptPartial			,SendEmailBlast		)
-	values (@SMid	,'1'	,'1st Survey'	,'0'	,'42'	,'-1' /*1st survey*/	,
-	'0'	,'1'	,'0'	,'1'	,'0'	,NULL	,NULL	,NULL	,NULL	,NULL	,NULL	,NULL	,NULL			,NULL	,NULL		,NULL			,NULL		)
-	set @SMSid=scope_identity()																													
-	insert into StandardMailingStep (StandardMethodologyID	,intSequence	,strMailingStep_nm	,intIntervalDays	,ExpireInDays	,ExpireFromStep	,
-	bitSurveyInLine	,bitSendSurvey	,bitThankYouItem	,bitFirstSurvey	,MailingStepMethod_id	,DaysInField	,NumberOfAttempts	,WeekDay_Day_Call	,WeekDay_Eve_Call	,Sat_Day_Call	,Sat_Eve_Call	,Sun_Day_Call	,Sun_Eve_Call			,CallBackOtherLang	,CallbackUsingTTY		,AcceptPartial			,SendEmailBlast		)
-	values (@SMid	,'2'	,'2nd Survey'	,'18'	,'42'	,'-1' /*1st survey*/	,
-	'0'	,'1'	,'0'	,'0'	,'0'	,NULL	,NULL	,NULL	,NULL	,NULL	,NULL	,NULL	,NULL			,NULL	,NULL		,NULL			,NULL		)
-	update StandardMailingStep set ExpireFromStep=@SMSid where ExpireFromStep=-1																													
-end																											
+delete from StandardMethodology where strStandardMethodology_nm = @StandardMethodology_nm and MethodologyType = @MethodologyType
 
 
 SET @StandardMethodology_nm = 'OAS Phone Only'
 SET @MethodologyType = 'Phone Only'
-/*
-	Update [dbo].[StandardMethodologyBySurveyType]
-		SET bitExpired = 1
-	WHERE StandardMethodologyID in (
-		select StandardMethodologyID
-			  from StandardMethodology 
-			  where strStandardMethodology_nm = @StandardMethodology_nm
-			  and MethodologyType = @MethodologyType
-	)	
-*/
-
-if not exists(select * from StandardMethodology where strStandardMethodology_nm = @StandardMethodology_nm and MethodologyType = @MethodologyType)
-begin
-	insert into StandardMethodology (strStandardMethodology_nm,bitCustom,MethodologyType) values (@StandardMethodology_nm,0,@MethodologyType)																												
 																													
-	set @SMid=scope_identity()	insert into StandardMethodologyBySurveyType (StandardMethodologyID,SurveyType_id) values (@SMid, @SurveyType_ID)																												
-	insert into StandardMailingStep (StandardMethodologyID	,intSequence	,strMailingStep_nm	,intIntervalDays	,ExpireInDays	,ExpireFromStep	,
-	bitSurveyInLine	,bitSendSurvey	,bitThankYouItem	,bitFirstSurvey	,MailingStepMethod_id	,DaysInField	,NumberOfAttempts	,WeekDay_Day_Call	,WeekDay_Eve_Call	,Sat_Day_Call	,Sat_Eve_Call	,Sun_Day_Call	,Sun_Eve_Call			,CallBackOtherLang	,CallbackUsingTTY		,AcceptPartial			,SendEmailBlast	, Quota_ID		)
-	values (@SMid	,'1'	,'Phone'	,'0'	,'42'	,'-1' /*phone*/	,
-	'0'	,'1'	,'0'	,'1'	,'1'	,'41'	,'5'	,'1'	,'1'	,'1'	,'1'	,'1'	,'1'			,'1'	,'0'		,NULL			,NULL	,1	)
-	set @SMSid=scope_identity()																													
-	update StandardMailingStep set ExpireFromStep=@SMSid where ExpireFromStep=-1																													
-end
+	select @SMid= StandardMethodologyId from StandardMethodology where strStandardMethodology_nm = @StandardMethodology_nm and MethodologyType = @MethodologyType	
+	delete from StandardMethodologyBySurveyType where StandardMethodologyID = @SMid
+	delete from StandardMailingStep where StandardMethodologyID = @SMid																													
+
+delete from StandardMethodology where strStandardMethodology_nm = @StandardMethodology_nm and MethodologyType = @MethodologyType
 
 --rollback tran	
 --update standardmailingstep set ExpireInDays = 42, intIntervalDays = 0 where standardmailingstepid = 138
@@ -163,44 +99,23 @@ go
 
 
 --select * from metafieldgroupdef select * from metafield
-if not exists(select * from metafieldgroupdef where strfieldgroup_nm = 'OAS CAHPS')
-insert into metafieldgroupdef (STRFIELDGROUP_NM, strAddrCleanType, bitAddrCleanDefault)
-values ('OAS CAHPS', 'N', 0)
 
 declare @OASId int
 
 select @OASId = Fieldgroup_ID from METAFIELDGROUPDEF where STRFIELDGROUP_NM = 'OAS CAHPS'
 
-if not exists (select * from Metafield where strfield_NM = 'OAS_LocationID')
-insert into MetaField (STRFIELD_NM, STRFIELD_DSC, FIELDGROUP_ID, STRFIELDDATATYPE, INTFIELDLENGTH, STRFIELDEDITMASK, INTSPECIALFIELD_CD, STRFIELDSHORT_NM, BITSYSKEY, bitPhase1Field, intAddrCleanCode, intAddrCleanGroup, bitPII)
-values ('OAS_LocationID','ID for location or other division under HOPD or ASC',@OASId,'S',42,NULL,NULL,'OASLocID',0,0,NULL,NULL,0)
-if not exists (select * from Metafield where strfield_NM = 'OAS_LocationName')
-insert into MetaField (STRFIELD_NM, STRFIELD_DSC, FIELDGROUP_ID, STRFIELDDATATYPE, INTFIELDLENGTH, STRFIELDEDITMASK, INTSPECIALFIELD_CD, STRFIELDSHORT_NM, BITSYSKEY, bitPhase1Field, intAddrCleanCode, intAddrCleanGroup, bitPII)
-values ('OAS_LocationName','Name for location or other division under HOPD or ASC',@OASId,'S',100,NULL,NULL,'OASLocNm',0,0,NULL,NULL,0)
-if not exists (select * from Metafield where strfield_NM = 'OAS_PatServed')
-insert into MetaField (STRFIELD_NM, STRFIELD_DSC, FIELDGROUP_ID, STRFIELDDATATYPE, INTFIELDLENGTH, STRFIELDEDITMASK, INTSPECIALFIELD_CD, STRFIELDSHORT_NM, BITSYSKEY, bitPhase1Field, intAddrCleanCode, intAddrCleanGroup, bitPII)
-values ('OAS_PatServed','OAS CAHPS count of patients served',@OASId,'I',NULL,NULL,NULL,'OASPtSrv',0,0,NULL,NULL,0)
-if not exists (select * from Metafield where strfield_NM = 'OAS_VisitAge')
-insert into MetaField (STRFIELD_NM, STRFIELD_DSC, FIELDGROUP_ID, STRFIELDDATATYPE, INTFIELDLENGTH, STRFIELDEDITMASK, INTSPECIALFIELD_CD, STRFIELDSHORT_NM, BITSYSKEY, bitPhase1Field, intAddrCleanCode, intAddrCleanGroup, bitPII)
-values ('OAS_VisitAge','OAS CAHPS age on date of procedure',@OASId,'I',NULL,NULL,NULL,'OASAge',0,0,NULL,NULL,1)
-if not exists (select * from Metafield where strfield_NM = 'HCPCSLvl2Cd')
-insert into MetaField (STRFIELD_NM, STRFIELD_DSC, FIELDGROUP_ID, STRFIELDDATATYPE, INTFIELDLENGTH, STRFIELDEDITMASK, INTSPECIALFIELD_CD, STRFIELDSHORT_NM, BITSYSKEY, bitPhase1Field, intAddrCleanCode, intAddrCleanGroup, bitPII)
-values ('HCPCSLvl2Cd','Primary HCPCS Level II code',NULL,'S',5,NULL,NULL,'Lvl2Cd',0,0,NULL,NULL,0)
-if not exists (select * from Metafield where strfield_NM = 'HCPCSLvl2Cd_2')
-insert into MetaField (STRFIELD_NM, STRFIELD_DSC, FIELDGROUP_ID, STRFIELDDATATYPE, INTFIELDLENGTH, STRFIELDEDITMASK, INTSPECIALFIELD_CD, STRFIELDSHORT_NM, BITSYSKEY, bitPhase1Field, intAddrCleanCode, intAddrCleanGroup, bitPII)
-values ('HCPCSLvl2Cd_2','Primary HCPCS Level II code 2',NULL,'S',5,NULL,NULL,'Lvl2Cd2',0,0,NULL,NULL,0)
-if not exists (select * from Metafield where strfield_NM = 'HCPCSLvl2Cd_3')
-insert into MetaField (STRFIELD_NM, STRFIELD_DSC, FIELDGROUP_ID, STRFIELDDATATYPE, INTFIELDLENGTH, STRFIELDEDITMASK, INTSPECIALFIELD_CD, STRFIELDSHORT_NM, BITSYSKEY, bitPhase1Field, intAddrCleanCode, intAddrCleanGroup, bitPII)
-values ('HCPCSLvl2Cd_3','Primary HCPCS Level II code',NULL,'S',5,NULL,NULL,'Lvl2Cd3',0,0,NULL,NULL,0)
-if not exists (select * from Metafield where strfield_NM = 'OAS_HE_Lang')
-insert into MetaField (STRFIELD_NM, STRFIELD_DSC, FIELDGROUP_ID, STRFIELDDATATYPE, INTFIELDLENGTH, STRFIELDEDITMASK, INTSPECIALFIELD_CD, STRFIELDSHORT_NM, BITSYSKEY, bitPhase1Field, intAddrCleanCode, intAddrCleanGroup, bitPII)
-values ('OAS_HE_Lang','OAS CAHPS language question hand-entry field',NULL,'S',50,NULL,NULL,'OASLang',0,0,NULL,NULL,1)
-if not exists (select * from Metafield where strfield_NM = 'OAS_HE_HowHelp')
-insert into MetaField (STRFIELD_NM, STRFIELD_DSC, FIELDGROUP_ID, STRFIELDDATATYPE, INTFIELDLENGTH, STRFIELDEDITMASK, INTSPECIALFIELD_CD, STRFIELDSHORT_NM, BITSYSKEY, bitPhase1Field, intAddrCleanCode, intAddrCleanGroup, bitPII)
-values ('OAS_HE_HowHelp','OAS CAHPS how helped question hand-entry field',NULL,'S',99,NULL,NULL,'OASHelp',0,0,NULL,NULL,0)
-if not exists (select * from Metafield where strfield_NM = 'OAS_FacilityType')
-insert into MetaField (STRFIELD_NM, STRFIELD_DSC, FIELDGROUP_ID, STRFIELDDATATYPE, INTFIELDLENGTH, STRFIELDEDITMASK, INTSPECIALFIELD_CD, STRFIELDSHORT_NM, BITSYSKEY, bitPhase1Field, intAddrCleanCode, intAddrCleanGroup, bitPII)
-values ('OAS_FacilityType','OAS CAHPS facility type (HOPD or ASC)',@OASId,'S',10,NULL,NULL,'OASFTyp',0,0,NULL,NULL,0)
+delete from Metafield where strfield_NM = 'OAS_LocationID'
+delete from Metafield where strfield_NM = 'OAS_LocationName'
+delete from Metafield where strfield_NM = 'OAS_PatServed'
+delete from Metafield where strfield_NM = 'OAS_VisitAge'
+delete from Metafield where strfield_NM = 'HCPCSLvl2Cd'
+delete from Metafield where strfield_NM = 'HCPCSLvl2Cd_2'
+delete from Metafield where strfield_NM = 'HCPCSLvl2Cd_3'
+delete from Metafield where strfield_NM = 'OAS_HE_Lang'
+delete from Metafield where strfield_NM = 'OAS_HE_HowHelp'
+delete from Metafield where strfield_NM = 'OAS_FacilityType'
+
+delete from metafieldgroupdef where strfieldgroup_nm = 'OAS CAHPS'
 
 GO
 
@@ -216,107 +131,20 @@ where cahpstype_id = 16 and ProcedureName = 'SV_CAHPS_HasDQRule'
 */
 --delete from SurveyValidationProcsBySurveyType where SurveyValidationProcsToSurveyType_id = 143
 
-if not exists (select * from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_SupplementalQuestionCount')
-insert SurveyValidationProcs (ProcedureName, ValidMessage, intOrder)
-select 'SV_CAHPS_SupplementalQuestionCount', 'PASSED! Survey has allowable number of supplementable questions', max(intorder) + 1 from SurveyValidationProcs
+delete svp from SurveyValidationProcs svp inner join SurveyValidationProcsBySurveyType svpbst on svp.surveyvalidationprocs_id = svpbst.surveyvalidationprocs_id where CAHPSType_id = @OAScahpsId and ProcedureName = 'SV_CAHPS_SupplementalQuestionCount'
+delete from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_SupplementalQuestionCount'
 
-if not exists(select * from SurveyValidationProcs svp inner join SurveyValidationProcsBySurveyType svpbst on svp.surveyvalidationprocs_id = svpbst.surveyvalidationprocs_id where CAHPSType_id = @OAScahpsId and ProcedureName = 'SV_CAHPS_SampleUnit')
-insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@OAScahpsId from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_SampleUnit'
-if not exists(select * from SurveyValidationProcs svp inner join SurveyValidationProcsBySurveyType svpbst on svp.surveyvalidationprocs_id = svpbst.surveyvalidationprocs_id where CAHPSType_id = @OAScahpsId and ProcedureName = 'SV_CAHPS_ActiveMethodology')
-insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@OAScahpsId from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_ActiveMethodology'
-if not exists(select * from SurveyValidationProcs svp inner join SurveyValidationProcsBySurveyType svpbst on svp.surveyvalidationprocs_id = svpbst.surveyvalidationprocs_id where CAHPSType_id = @OAScahpsId and ProcedureName = 'SV_CAHPS_RequiredPopulationFields')
-insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@OAScahpsId from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_RequiredPopulationFields'
-if not exists(select * from SurveyValidationProcs svp inner join SurveyValidationProcsBySurveyType svpbst on svp.surveyvalidationprocs_id = svpbst.surveyvalidationprocs_id where CAHPSType_id = @OAScahpsId and ProcedureName = 'SV_CAHPS_RequiredEncounterFields')
-insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@OAScahpsId from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_RequiredEncounterFields'
-if not exists(select * from SurveyValidationProcs svp inner join SurveyValidationProcsBySurveyType svpbst on svp.surveyvalidationprocs_id = svpbst.surveyvalidationprocs_id where CAHPSType_id = @OAScahpsId and ProcedureName = 'SV_CAHPS_SkipPatterns')
-insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@OAScahpsId from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_SkipPatterns'
-if not exists(select * from SurveyValidationProcs svp inner join SurveyValidationProcsBySurveyType svpbst on svp.surveyvalidationprocs_id = svpbst.surveyvalidationprocs_id where CAHPSType_id = @OAScahpsId and ProcedureName = 'SV_CAHPS_Householding')
-insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@OAScahpsId from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_Householding'
-if not exists(select * from SurveyValidationProcs svp inner join SurveyValidationProcsBySurveyType svpbst on svp.surveyvalidationprocs_id = svpbst.surveyvalidationprocs_id where CAHPSType_id = @OAScahpsId and ProcedureName = 'SV_CAHPS_ReportingDate')
-insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@OAScahpsId from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_ReportingDate'
-if not exists(select * from SurveyValidationProcs svp inner join SurveyValidationProcsBySurveyType svpbst on svp.surveyvalidationprocs_id = svpbst.surveyvalidationprocs_id where CAHPSType_id = @OAScahpsId and ProcedureName = 'SV_CAHPS_SamplingAlgorithm')
-insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@OAScahpsId from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_SamplingAlgorithm'
-if not exists(select * from SurveyValidationProcs svp inner join SurveyValidationProcsBySurveyType svpbst on svp.surveyvalidationprocs_id = svpbst.surveyvalidationprocs_id where CAHPSType_id = @OAScahpsId and ProcedureName = 'SV_CAHPS_FormQuestions')
-insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@OAScahpsId from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_FormQuestions'
-if not exists(select * from SurveyValidationProcs svp inner join SurveyValidationProcsBySurveyType svpbst on svp.surveyvalidationprocs_id = svpbst.surveyvalidationprocs_id where CAHPSType_id = @OAScahpsId and ProcedureName = 'SV_CAHPS_EnglishOrSpanish')
-insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@OAScahpsId from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_EnglishOrSpanish'
-if not exists(select * from SurveyValidationProcs svp inner join SurveyValidationProcsBySurveyType svpbst on svp.surveyvalidationprocs_id = svpbst.surveyvalidationprocs_id where CAHPSType_id = @OAScahpsId and ProcedureName = 'SV_CAHPS_SupplementalQuestionCount')
-insert into SurveyValidationProcsBySurveyType (SurveyValidationProcs_id, CAHPSType_ID) SELECT SurveyValidationProcs_id,@OAScahpsId from SurveyValidationProcs where ProcedureName = 'SV_CAHPS_SupplementalQuestionCount'
-
---declare @OAScahpsId int
-select @OAScahpsId = SurveyType_Id from SurveyType where SurveyType_dsc = 'OAS CAHPS'
-declare @DCStmtId int, @FieldId int
-
---select * from surveytypedefaultcriteria select * from defaultcriteriastmt select * from DefaultCriteriaClause select * from DefaultCriteriaInList
-----------------------
-select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCriteriaStmt_nm = 'DQ_MDFA' and strCriteriaString = '(POPULATIONAddrErr=''FO'')'
-if not exists(select * from SurveyTypeDefaultCriteria 
-				where SurveyType_id = @OAScahpsId and Country_id = 1 and DefaultCriteriaStmt_id = @DCStmtId)
-insert into SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteriaStmt_id)
-values (@OAScahpsId, 1, @DCStmtId)
-----------------------
-if not exists(select * from DefaultCriteriaStmt 
-				where (strCriteriaStmt_nm = 'DQ_Age' and strCriteriaString = '(ENCOUNTEROAS_VisitAge < 18)' and BusRule_cd = 'Q'))
-insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
-values ('DQ_Age', '(ENCOUNTEROAS_VisitAge < 18)', 'Q')
-
-select @DCStmtId = DefaultCriteriaStmt_Id from DefaultCriteriaStmt 
-				where strCriteriaStmt_nm = 'DQ_Age' and strCriteriaString = '(ENCOUNTEROAS_VisitAge < 18)' and BusRule_cd = 'Q'
-
-if not exists(select * from SurveyTypeDefaultCriteria 
-				where SurveyType_id = @OAScahpsId and Country_id = 1 and DefaultCriteriaStmt_id = @DCStmtId)
-insert into SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteriaStmt_id)
-values (@OAScahpsId, 1, @DCStmtId)
-
-select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'OAS_VisitAge'
-if not exists (select * from DefaultCriteriaClause where DefaultCriteriaStmt_id = @DCStmtId and CriteriaPhrase_id = 1)
-insert into DefaultCriteriaClause (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm, Field_id, intOperator, strLowValue, strHighValue)
-values (@DCStmtId, 1, 'ENCOUNTER', @Fieldid, 5, '18', '')
-----------------------
-if not exists(select * from DefaultCriteriaStmt 
-				where strCriteriaStmt_nm = 'DQ_SrgCd' and strCriteriaString = 'CPT4 in (''16020'', ''16025'', ''16030'', ''29581'', ''36600'', ''36415'', ''36416'') OR CPT4_2 in (''16020'', ''16025'', ''16030'', ''29581'', ''36600'', ''36415'', ''36416'') OR CPT4_3 in (''16020'', ''16025'', ''16030'', ''29581'', ''36600'', ''36415'', ''36416'')' and BusRule_cd = 'Q')
-insert into DefaultCriteriaStmt (strCriteriaStmt_nm, strCriteriaString, BusRule_cd)
-values ('DQ_SrgCd', 'CPT4 in (''16020'', ''16025'', ''16030'', ''29581'', ''36600'', ''36415'', ''36416'') OR CPT4_2 in (''16020'', ''16025'', ''16030'', ''29581'', ''36600'', ''36415'', ''36416'') OR CPT4_3 in (''16020'', ''16025'', ''16030'', ''29581'', ''36600'', ''36415'', ''36416'')', 'Q')
-
-select @DCStmtId = DefaultCriteriaStmt_Id from DefaultCriteriaStmt 
-				where strCriteriaStmt_nm = 'DQ_SrgCd' and strCriteriaString = 'CPT4 in (''16020'', ''16025'', ''16030'', ''29581'', ''36600'', ''36415'', ''36416'') OR CPT4_2 in (''16020'', ''16025'', ''16030'', ''29581'', ''36600'', ''36415'', ''36416'') OR CPT4_3 in (''16020'', ''16025'', ''16030'', ''29581'', ''36600'', ''36415'', ''36416'')' and BusRule_cd = 'Q'
-if not exists(select * from SurveyTypeDefaultCriteria 
-				where (SurveyType_id = @OAScahpsId and Country_id = 1 and DefaultCriteriaStmt_id = @DCStmtId))
-insert into SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteriaStmt_id)
-values (@OAScahpsId, 1, @DCStmtId)
-
-select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'CPT4'
-if not exists (select * from DefaultCriteriaClause where DefaultCriteriaStmt_id = @DCStmtId and CriteriaPhrase_id = 1)
-insert into DefaultCriteriaClause (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm, Field_id, intOperator, strLowValue, strHighValue)
-values (@DCStmtId, 1, 'ENCOUNTER', @Fieldid, 7, '', '')
-
-select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'CPT4_2'
-if not exists (select * from DefaultCriteriaClause where DefaultCriteriaStmt_id = @DCStmtId and CriteriaPhrase_id = 2)
-insert into DefaultCriteriaClause (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm, Field_id, intOperator, strLowValue, strHighValue)
-values (@DCStmtId, 2, 'ENCOUNTER', @Fieldid, 7, '', '')
-
-select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'CPT4_3'
-if not exists (select * from DefaultCriteriaClause where DefaultCriteriaStmt_id = @DCStmtId and CriteriaPhrase_id = 3)
-insert into DefaultCriteriaClause (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm, Field_id, intOperator, strLowValue, strHighValue)
-values (@DCStmtId, 3, 'ENCOUNTER', @Fieldid, 7, '', '')
-----------------------
-
---select * from SurveyTypeDefaultCriteria dc inner join DefaultCriteriaStmt cs on dc.DefaultCriteriaStmt_id = cs.DefaultCriteriaStmt_id where SurveyType_id = 16
---update surveytypedefaultcriteria set DefaultCriteriaStmt_id = 49 where SurveyType_id = 16 and DefaultCriteriaStmt_id = 64
---delete from defaultcriteriaclause where defaultcriteriaclause_id in (65,69)
-
-/*
-select * from defaultcriteriainlist dcil inner join defaultcriteriaclause dcc on dcil.DefaultCriteriaClause_id = dcc.DefaultCriteriaClause_id
-inner join defaultcriteriastmt dcis on dcis.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
-inner join surveytypedefaultcriteria stdc on stdc.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
-where surveytype_id = 16
-
-select * from defaultcriteriaclause dcc 
-inner join defaultcriteriastmt dcis on dcis.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
-inner join surveytypedefaultcriteria stdc on stdc.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
-where surveytype_id = 16
-and intoperator = 7
-*/
+delete svp from SurveyValidationProcs svp inner join SurveyValidationProcsBySurveyType svpbst on svp.surveyvalidationprocs_id = svpbst.surveyvalidationprocs_id where CAHPSType_id = @OAScahpsId and ProcedureName = 'SV_CAHPS_SampleUnit'
+delete svp from SurveyValidationProcs svp inner join SurveyValidationProcsBySurveyType svpbst on svp.surveyvalidationprocs_id = svpbst.surveyvalidationprocs_id where CAHPSType_id = @OAScahpsId and ProcedureName = 'SV_CAHPS_ActiveMethodology'
+delete svp from SurveyValidationProcs svp inner join SurveyValidationProcsBySurveyType svpbst on svp.surveyvalidationprocs_id = svpbst.surveyvalidationprocs_id where CAHPSType_id = @OAScahpsId and ProcedureName = 'SV_CAHPS_RequiredPopulationFields'
+delete svp from SurveyValidationProcs svp inner join SurveyValidationProcsBySurveyType svpbst on svp.surveyvalidationprocs_id = svpbst.surveyvalidationprocs_id where CAHPSType_id = @OAScahpsId and ProcedureName = 'SV_CAHPS_RequiredEncounterFields'
+delete svp from SurveyValidationProcs svp inner join SurveyValidationProcsBySurveyType svpbst on svp.surveyvalidationprocs_id = svpbst.surveyvalidationprocs_id where CAHPSType_id = @OAScahpsId and ProcedureName = 'SV_CAHPS_SkipPatterns'
+delete svp from SurveyValidationProcs svp inner join SurveyValidationProcsBySurveyType svpbst on svp.surveyvalidationprocs_id = svpbst.surveyvalidationprocs_id where CAHPSType_id = @OAScahpsId and ProcedureName = 'SV_CAHPS_Householding'
+delete svp from SurveyValidationProcs svp inner join SurveyValidationProcsBySurveyType svpbst on svp.surveyvalidationprocs_id = svpbst.surveyvalidationprocs_id where CAHPSType_id = @OAScahpsId and ProcedureName = 'SV_CAHPS_ReportingDate'
+delete svp from SurveyValidationProcs svp inner join SurveyValidationProcsBySurveyType svpbst on svp.surveyvalidationprocs_id = svpbst.surveyvalidationprocs_id where CAHPSType_id = @OAScahpsId and ProcedureName = 'SV_CAHPS_SamplingAlgorithm'
+delete svp from SurveyValidationProcs svp inner join SurveyValidationProcsBySurveyType svpbst on svp.surveyvalidationprocs_id = svpbst.surveyvalidationprocs_id where CAHPSType_id = @OAScahpsId and ProcedureName = 'SV_CAHPS_FormQuestions'
+delete svp from SurveyValidationProcs svp inner join SurveyValidationProcsBySurveyType svpbst on svp.surveyvalidationprocs_id = svpbst.surveyvalidationprocs_id where CAHPSType_id = @OAScahpsId and ProcedureName = 'SV_CAHPS_EnglishOrSpanish'
+delete svp from SurveyValidationProcs svp inner join SurveyValidationProcsBySurveyType svpbst on svp.surveyvalidationprocs_id = svpbst.surveyvalidationprocs_id where CAHPSType_id = @OAScahpsId and ProcedureName = 'SV_CAHPS_SupplementalQuestionCount'
 
 --declare @OAScahpsId int
 select @OAScahpsId = SurveyType_Id from SurveyType where SurveyType_dsc = 'OAS CAHPS'
@@ -337,54 +165,101 @@ inner join defaultcriteriastmt dcis on dcis.DefaultCriteriaStmt_id = dcc.Default
 inner join surveytypedefaultcriteria stdc on stdc.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
 where surveytype_id = @OAScahpsId and intoperator = 7 and CriteriaPhrase_id = 3
 
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt1 and strListValue = '16020')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt1, '16020')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt1 and strListValue = '16025')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt1, '16025')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt1 and strListValue = '16030')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt1, '16030')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt1 and strListValue = '29581')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt1, '29581')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt1 and strListValue = '36600')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt1, '36600')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt1 and strListValue = '36415')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt1, '36415')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt1 and strListValue = '36416')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt1, '36416')
+delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt1 and strListValue = '16020'
+delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt1 and strListValue = '16025'
+delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt1 and strListValue = '16030'
+delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt1 and strListValue = '29581'
+delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt1 and strListValue = '36600'
+delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt1 and strListValue = '36415'
+delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt1 and strListValue = '36416'
 
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = '16020')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt2, '16020')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = '16025')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt2, '16025')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = '16030')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt2, '16030')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = '29581')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt2, '29581')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = '36600')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt2, '36600')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = '36415')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt2, '36415')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = '36416')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt2, '36416')
+delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = '16020'
+delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = '16025'
+delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = '16030'
+delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = '29581'
+delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = '36600'
+delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = '36415'
+delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = '36416'
 
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '16020')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt3, '16020')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '16025')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt3, '16025')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '16030')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt3, '16030')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '29581')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt3, '29581')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '36600')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt3, '36600')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '36415')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt3, '36415')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '36416')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt3, '36416')
+delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '16020'
+delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '16025'
+delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '16030'
+delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '29581'
+delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '36600'
+delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '36415'
+delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '36416'
+
+--declare @OAScahpsId int
+select @OAScahpsId = SurveyType_Id from SurveyType where SurveyType_dsc = 'OAS CAHPS'
+declare @DCStmtId int, @FieldId int
+
+--select * from surveytypedefaultcriteria select * from defaultcriteriastmt select * from DefaultCriteriaClause select * from DefaultCriteriaInList
+----------------------
+select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCriteriaStmt_nm = 'DQ_MDFA' and strCriteriaString = '(POPULATIONAddrErr=''FO'')'
+delete from SurveyTypeDefaultCriteria 
+				where SurveyType_id = @OAScahpsId and Country_id = 1 and DefaultCriteriaStmt_id = @DCStmtId
+----------------------
+select @DCStmtId = DefaultCriteriaStmt_Id from DefaultCriteriaStmt 
+				where strCriteriaStmt_nm = 'DQ_Age' and strCriteriaString = '(ENCOUNTEROAS_VisitAge < 18)' and BusRule_cd = 'Q'
+
+delete from SurveyTypeDefaultCriteria 
+				where SurveyType_id = @OAScahpsId and Country_id = 1 and DefaultCriteriaStmt_id = @DCStmtId
+
+select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'OAS_VisitAge'
+delete from DefaultCriteriaClause where DefaultCriteriaStmt_id = @DCStmtId and CriteriaPhrase_id = 1 and Field_id = @FieldId
+
+delete from DefaultCriteriaStmt 
+				where (strCriteriaStmt_nm = 'DQ_Age' and strCriteriaString = '(ENCOUNTEROAS_VisitAge < 18)' and BusRule_cd = 'Q')
+----------------------
+
+select @DCStmtId = DefaultCriteriaStmt_Id from DefaultCriteriaStmt 
+				where strCriteriaStmt_nm = 'DQ_SrgCd' and strCriteriaString = 'CPT4 in (''16020'', ''16025'', ''16030'', ''29581'', ''36600'', ''36415'', ''36416'') OR CPT4_2 in (''16020'', ''16025'', ''16030'', ''29581'', ''36600'', ''36415'', ''36416'') OR CPT4_3 in (''16020'', ''16025'', ''16030'', ''29581'', ''36600'', ''36415'', ''36416'')' and BusRule_cd = 'Q'
+select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'CPT4'
+delete from DefaultCriteriaClause where DefaultCriteriaStmt_id = @DCStmtId and CriteriaPhrase_id = 1
+
+select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'CPT4_2'
+delete from DefaultCriteriaClause where DefaultCriteriaStmt_id = @DCStmtId and CriteriaPhrase_id = 2
+
+select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'CPT4_3'
+delete from DefaultCriteriaClause where DefaultCriteriaStmt_id = @DCStmtId and CriteriaPhrase_id = 3
+
+delete from SurveyTypeDefaultCriteria 
+				where (SurveyType_id = @OAScahpsId and Country_id = 1 and DefaultCriteriaStmt_id = @DCStmtId)
+delete from DefaultCriteriaStmt 
+				where strCriteriaStmt_nm = 'DQ_SrgCd' and strCriteriaString = 'CPT4 in (''16020'', ''16025'', ''16030'', ''29581'', ''36600'', ''36415'', ''36416'') OR CPT4_2 in (''16020'', ''16025'', ''16030'', ''29581'', ''36600'', ''36415'', ''36416'') OR CPT4_3 in (''16020'', ''16025'', ''16030'', ''29581'', ''36600'', ''36415'', ''36416'')' and BusRule_cd = 'Q'
+----------------------
+
+--select * from SurveyTypeDefaultCriteria dc inner join DefaultCriteriaStmt cs on dc.DefaultCriteriaStmt_id = cs.DefaultCriteriaStmt_id where SurveyType_id = 16
+--update surveytypedefaultcriteria set DefaultCriteriaStmt_id = 49 where SurveyType_id = 16 and DefaultCriteriaStmt_id = 64
+--delete from defaultcriteriaclause where defaultcriteriaclause_id in (65,69)
+
+/*
+select * from defaultcriteriainlist dcil inner join defaultcriteriaclause dcc on dcil.DefaultCriteriaClause_id = dcc.DefaultCriteriaClause_id
+inner join defaultcriteriastmt dcis on dcis.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
+inner join surveytypedefaultcriteria stdc on stdc.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
+where surveytype_id = 16
+
+select * from defaultcriteriaclause dcc 
+inner join defaultcriteriastmt dcis on dcis.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
+inner join surveytypedefaultcriteria stdc on stdc.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
+where surveytype_id = 16
+and intoperator = 7
+*/
+
 
 go
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+USE [QP_Prod]
+GO
+
+/****** Object:  StoredProcedure [dbo].[SV_CAHPS_ActiveMethodology]    Script Date: 1/20/2016 12:31:28 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
 ALTER PROCEDURE [dbo].[SV_CAHPS_ActiveMethodology]
     @Survey_id INT
 AS
@@ -394,6 +269,39 @@ SET NOCOUNT ON
 
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 SET NOCOUNT ON
+
+/*
+HCAHPS IP			2
+Home Health CAHPS	3
+CGCAHPS				4
+ICHCAHPS			8
+ACOCAHPS			10
+*/
+
+-- CAHPS surveyType_id 'constants'
+declare @CGCAHPS int
+SELECT @CGCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'CGCAHPS'
+
+declare @HCAHPS int
+SELECT @HCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'HCAHPS IP'
+
+declare @HHCAHPS int
+SELECT @HHCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'Home Health CAHPS'
+
+declare @ACOCAHPS int
+SELECT @ACOCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'ACOCAHPS'
+
+declare @ICHCAHPS int
+SELECT @ICHCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'ICHCAHPS'
+
+declare @hospiceCAHPS int
+SELECT @hospiceCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'Hospice CAHPS'
+
+declare @PCMHSubType int
+SELECT @PCMHSubType = 9
+
+declare @CIHI int
+select @CIHI = SurveyType_Id from SurveyType where SurveyType_dsc = 'CIHI CPES-IC'
 
 declare @surveyType_id int
 declare @subtype_id int
@@ -488,10 +396,20 @@ DROP TABLE #ActiveMethodology
 SELECT * FROM #M
 
 DROP TABLE #M
-
 GO
 
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+USE [QP_Prod]
+GO
+
+/****** Object:  StoredProcedure [dbo].[SV_CAHPS_RequiredPopulationFields]    Script Date: 1/20/2016 12:31:57 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
 ALTER PROCEDURE [dbo].[SV_CAHPS_RequiredPopulationFields]
     @Survey_id INT
 AS
@@ -501,6 +419,30 @@ SET NOCOUNT ON
 
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 SET NOCOUNT ON
+
+/*
+HCAHPS IP			2
+Home Health CAHPS	3
+CGCAHPS				4
+ICHCAHPS			8
+ACOCAHPS			10
+*/
+
+-- CAHPS surveyType_id 'constants'
+declare @CGCAHPS int
+SET @CGCAHPS = 4
+
+declare @HCAHPS int
+SET @HCAHPS = 2
+
+declare @HHCAHPS int
+SET @HHCAHPS = 3
+
+declare @ACOCAHPS int
+SET @ACOCAHPS = 10
+
+declare @ICHCAHPS int
+SET @ICHCAHPS = 8
 
 declare @surveyType_id int
 
@@ -556,7 +498,18 @@ DROP TABLE #M
 
 GO
 
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+USE [QP_Prod]
+GO
+
+/****** Object:  StoredProcedure [dbo].[SV_CAHPS_RequiredEncounterFields]    Script Date: 1/20/2016 12:32:19 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
 ALTER PROCEDURE [dbo].[SV_CAHPS_RequiredEncounterFields]
     @Survey_id INT
 AS
@@ -566,6 +519,30 @@ SET NOCOUNT ON
 
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 SET NOCOUNT ON
+
+/*
+HCAHPS IP			2
+Home Health CAHPS	3
+CGCAHPS				4
+ICHCAHPS			8
+ACOCAHPS			10
+*/
+
+-- CAHPS surveyType_id 'constants'
+declare @CGCAHPS int
+SET @CGCAHPS = 4
+
+declare @HCAHPS int
+SET @HCAHPS = 2
+
+declare @HHCAHPS int
+SET @HHCAHPS = 3
+
+declare @ACOCAHPS int
+SET @ACOCAHPS = 10
+
+declare @ICHCAHPS int
+SET @ICHCAHPS = 8
 
 declare @surveyType_id int
 declare @subtype_id int
@@ -636,9 +613,21 @@ SELECT * FROM #M
 
 DROP TABLE #M
 
+
 GO
 
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+USE [QP_Prod]
+GO
+
+/****** Object:  StoredProcedure [dbo].[SV_CAHPS_SkipPatterns]    Script Date: 1/20/2016 12:33:01 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
 ALTER PROCEDURE [dbo].[SV_CAHPS_SkipPatterns]
     @Survey_id INT
 AS
@@ -648,6 +637,30 @@ SET NOCOUNT ON
 
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 SET NOCOUNT ON
+
+/*
+HCAHPS IP			2
+Home Health CAHPS	3
+CGCAHPS				4
+ICHCAHPS			8
+ACOCAHPS			10
+*/
+
+-- CAHPS surveyType_id 'constants'
+declare @CGCAHPS int
+SET @CGCAHPS = 4
+
+declare @HCAHPS int
+SET @HCAHPS = 2
+
+declare @HHCAHPS int
+SET @HHCAHPS = 3
+
+declare @ACOCAHPS int
+SET @ACOCAHPS = 10
+
+declare @ICHCAHPS int
+SET @ICHCAHPS = 8
 
 declare @surveyType_id int
 declare @subtype_id int
@@ -709,7 +722,19 @@ DROP TABLE #M
 
 GO
 
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+USE [QP_Prod]
+GO
+
+/****** Object:  StoredProcedure [dbo].[SV_CAHPS_Householding]    Script Date: 1/20/2016 12:33:22 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
 ALTER PROCEDURE [dbo].[SV_CAHPS_Householding]
     @Survey_id INT
 AS
@@ -755,10 +780,6 @@ select @pqrsCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'PQRS C
 
 declare @CIHI int
 select @CIHI = SurveyType_Id from SurveyType where SurveyType_dsc = 'CIHI CPES-IC'
-
-declare @oasCAHPS int
-select @oasCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'OAS CAHPS'
-
 
 declare @surveyType_id int
 declare @subtype_id int
@@ -825,7 +846,7 @@ IF @surveyType_id in (@HCAHPS) or (@surveyType_id in (@CGCAHPS) and @subtype_id 
 
 END
 
-IF @surveyType_id in (@ACOCAHPS, @ICHCAHPS, @hospiceCAHPS, @CIHI, @pqrsCAHPS, @oasCAHPS)
+IF @surveyType_id in (@ACOCAHPS, @ICHCAHPS, @hospiceCAHPS, @CIHI, @pqrsCAHPS)
 	BEGIN
 
 		-- Check for Householding
@@ -839,9 +860,24 @@ SELECT * FROM #M
 
 DROP TABLE #M
 
+
+
+
 GO
 
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+USE [QP_Prod]
+GO
+
+/****** Object:  StoredProcedure [dbo].[SV_CAHPS_ReportingDate]    Script Date: 1/20/2016 12:33:41 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
 ALTER PROCEDURE [dbo].[SV_CAHPS_ReportingDate]
     @Survey_id INT
 AS
@@ -884,9 +920,6 @@ select @pqrsCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'PQRS C
 
 declare @CIHI int
 select @CIHI = SurveyType_Id from SurveyType where SurveyType_dsc = 'CIHI CPES-IC'
-
-declare @oasCAHPS int
-select @oasCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'OAS CAHPS'
 
 declare @surveyType_id int
 
@@ -949,7 +982,7 @@ IF @surveyType_id in (@ACOCAHPS)
 			SELECT 0,'Sample Encounter Date Field is set to ICH_FieldDate.'
 	END
 
-	IF @surveyType_id in (@hospiceCAHPS, @pqrsCAHPS, @oasCAHPS)
+	IF @surveyType_id in (@hospiceCAHPS, @pqrsCAHPS)
 	BEGIN
 		--Make sure the reporting date is ICH_FieldDate                                      
 		IF (SELECT sampleEncounterfield_id FROM Survey_Def WHERE survey_id = @survey_id) IS NULL
@@ -989,9 +1022,23 @@ SELECT * FROM #M
 
 DROP TABLE #M
 
+
+
+
 GO
 
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+USE [QP_Prod]
+GO
+
+/****** Object:  StoredProcedure [dbo].[SV_CAHPS_SamplingAlgorithm]    Script Date: 1/20/2016 12:34:01 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
 ALTER PROCEDURE [dbo].[SV_CAHPS_SamplingAlgorithm]
     @Survey_id INT
 AS
@@ -1001,6 +1048,30 @@ SET NOCOUNT ON
 
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 SET NOCOUNT ON
+
+/*
+HCAHPS IP			2
+Home Health CAHPS	3
+CGCAHPS				4
+ICHCAHPS			8
+ACOCAHPS			10
+*/
+
+-- CAHPS surveyType_id 'constants'
+declare @CGCAHPS int
+SET @CGCAHPS = 4
+
+declare @HCAHPS int
+SET @HCAHPS = 2
+
+declare @HHCAHPS int
+SET @HHCAHPS = 3
+
+declare @ACOCAHPS int
+SET @ACOCAHPS = 10
+
+declare @ICHCAHPS int
+SET @ICHCAHPS = 8
 
 declare @surveyType_id int
 declare @subtype_id int
@@ -1057,7 +1128,19 @@ SELECT * FROM #M
 DROP TABLE #M
 
 GO
+
+
 -------------------------------------------------------------
+USE [QP_Prod]
+GO
+
+/****** Object:  StoredProcedure [dbo].[SV_CAHPS_FormQuestions]    Script Date: 1/20/2016 12:34:19 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
 ALTER PROCEDURE [dbo].[SV_CAHPS_FormQuestions]
     @Survey_id INT
 AS
@@ -1115,11 +1198,6 @@ declare @hospiceCAHPS int
 SELECT @hospiceCAHPS = SurveyType_id
 from SurveyType
 WHERE SurveyType_dsc = 'Hospice CAHPS'
-
-declare @oasCAHPS int
-SELECT @oasCAHPS = SurveyType_id
-from SurveyType
-WHERE SurveyType_dsc = 'OAS CAHPS'
 
 declare @PCMHSubType int
 SELECT @PCMHSubType = [Subtype_id]
@@ -1389,15 +1467,9 @@ CREATE TABLE #M (Error TINYINT, strMessage VARCHAR(200))
 
 	END
 
-	IF (@surveyType_id = @HHCAHPS) OR (@SurveyType_id = @hospiceCAHPS) OR (@SurveyType_id = @CIHI) OR (@SurveyType_id = @oasCAHPS)
+	IF (@surveyType_id = @HHCAHPS) OR (@SurveyType_id = @hospiceCAHPS) OR (@SurveyType_id = @CIHI)
 	BEGIN
-		IF (@SurveyType_id = @oasCAHPS)
-			IF EXISTS (select 1 from #CurrentForm  where QstnCore = 54117)
-				delete from #CAHPS_SurveyTypeQuestionMappings where QstnCore in (54181,54182,54183)
-			ELSE
-				IF EXISTS (select 1 from #CurrentForm where QstnCore in (54181,54182,54183))
-					delete from #CAHPS_SurveyTypeQuestionMappings  where QstnCore = 54117
-		
+
 		INSERT INTO #M (Error, strMessage)
 		SELECT 1,'QstnCore '+LTRIM(STR(s.QstnCore))+' is missing from the form.'
 		FROM #CAHPS_SurveyTypeQuestionMappings s 
@@ -1447,7 +1519,7 @@ CREATE TABLE #M (Error TINYINT, strMessage VARCHAR(200))
 		AND bitFirstOnForm=0
 		AND qm.QstnCore=t.QstnCore
 	END
-	ELSE -- NOT (IF (@surveyType_id in (@CGCAHPS) AND @subtype_id = @PCMHSubType) OR (@SurveyType_id = @ACOCAHPS))
+	ELSE
 	BEGIN
 		--Look for questions that are out of order.
 		--First the questions that have to be at the beginning of the form.
@@ -1476,13 +1548,6 @@ CREATE TABLE #M (Error TINYINT, strMessage VARCHAR(200))
 	SELECT @OrderDifference=OrderDiff
 	FROM #OrderCheck
 	WHERE OverAllOrder=1
-
-	IF (@SurveyType_id = @oasCAHPS)
-		IF NOT EXISTS (select 1 from #CurrentForm where QstnCore in (54181,54182,54183))
-			delete from #OrderCheck where QstnCore in (54118,54119,54120,54121,54122)
-		ELSE
-			IF NOT EXISTS (select 1 from #CurrentForm where QstnCore = 54117)
-				delete from #OrderCheck where QstnCore in (54181,54182,54183,54118,54119,54120,54121,54122)
 
 	INSERT INTO #M (Error, strMessage)
 	SELECT 1,'QstnCore '+LTRIM(STR(QstnCore))+' is out of order on the form.'
@@ -1586,8 +1651,21 @@ SELECT * FROM #M
 
 DROP TABLE #M
 
+
 GO
+
+
 -------------------------------------------------------------
+USE [QP_Prod]
+GO
+
+/****** Object:  StoredProcedure [dbo].[SV_CAHPS_EnglishOrSpanish]    Script Date: 1/20/2016 12:34:47 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
 ALTER PROCEDURE [dbo].[SV_CAHPS_EnglishOrSpanish]
     @Survey_id INT
 AS
@@ -1598,6 +1676,30 @@ SET NOCOUNT ON
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 SET NOCOUNT ON
 
+/*
+HCAHPS IP			2
+Home Health CAHPS	3
+CGCAHPS				4
+ICHCAHPS			8
+ACOCAHPS			10
+*/
+/*
+-- CAHPS surveyType_id 'constants'
+declare @CGCAHPS int
+SET @CGCAHPS = 4
+
+declare @HCAHPS int
+SET @HCAHPS = 2
+
+declare @HHCAHPS int
+SET @HHCAHPS = 3
+
+declare @ACOCAHPS int
+SET @ACOCAHPS = 10
+
+declare @ICHCAHPS int
+SET @ICHCAHPS = 8
+*/
 declare @surveyType_id int
 
 SELECT  @surveyType_id = SurveyType_id
@@ -1635,9 +1737,21 @@ SELECT * FROM #M
 
 DROP TABLE #M
 
+
 GO
 
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+USE [QP_Prod]
+GO
+
+/****** Object:  StoredProcedure [dbo].[SV_CAHPS_HasDQRule]    Script Date: 1/20/2016 12:35:07 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
 ALTER PROCEDURE [dbo].[SV_CAHPS_HasDQRule]
     @Survey_id INT
 AS
@@ -1647,6 +1761,30 @@ SET NOCOUNT ON
 
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 SET NOCOUNT ON
+
+/*
+HCAHPS IP			2
+Home Health CAHPS	3
+CGCAHPS				4
+ICHCAHPS			8
+ACOCAHPS			10
+*/
+
+-- CAHPS surveyType_id 'constants'
+declare @CGCAHPS int
+SET @CGCAHPS = 4
+
+declare @HCAHPS int
+SET @HCAHPS = 2
+
+declare @HHCAHPS int
+SET @HHCAHPS = 3
+
+declare @ACOCAHPS int
+SET @ACOCAHPS = 10
+
+declare @ICHCAHPS int
+SET @ICHCAHPS = 8
 
 declare @surveyType_id int
 
@@ -1689,44 +1827,11 @@ DROP TABLE #M
 
 GO
 
+
+
 /****** Object:  StoredProcedure [dbo].[SV_CAHPS_SupplementalQuestionCount]    Script Date: 1/13/2016 4:23:52 PM ******/
 IF OBJECT_ID('SV_CAHPS_SupplementalQuestionCount', 'P') IS NOT NULL
 DROP PROCEDURE [dbo].[SV_CAHPS_SupplementalQuestionCount]
-GO
-
-CREATE PROCEDURE [dbo].[SV_CAHPS_SupplementalQuestionCount]
-    @Survey_id INT
-AS
-
-SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
-SET NOCOUNT ON
-
-SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
-SET NOCOUNT ON
-
---Need a temp table to store the messages.  We will select them at the end.
---0=Passed,1=Error,2=Warning
-CREATE TABLE #M (Error TINYINT, strMessage VARCHAR(200))
-
-Declare @SupplementalQuestions int
-
-select @SupplementalQuestions = count(distinct qstncore)
-				   FROM sel_qstns sq inner join survey_def sd on sq.SURVEY_ID = sd.SURVEY_ID
-					 WHERE sq.Survey_id = @Survey_id
-					 and subtype in (1,4) --questions/comment boxes
-					 and qstncore > 0
-					 and qstncore not in (select qstncore from SurveyTypeQuestionMappings where surveytype_id = sd.SurveyType_id)
-	IF (@SupplementalQuestions > 15)
-			INSERT INTO #M (Error, strMessage)
-			SELECT 1,'Survey has more than 15 supplemental questions.'
-		ELSE
-			INSERT INTO #M (Error, strMessage)
-			SELECT 0,'Survey has 15 or fewer supplemental questions.'
-
-SELECT * FROM #M
-
-DROP TABLE #M
-
 GO
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1735,51 +1840,21 @@ select @SurveyType_ID = SurveyType_ID from SurveyType where SurveyType_dsc = 'OA
 
 --select * from surveyvalidationfields where surveytype_id = 16
 
-if not exists (select 1 from SurveyValidationFields where ColumnName = 'OAS_HE_HowHelp' and SurveyType_id = @SurveyType_ID)
-	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
-	values('Population', 'OAS_HE_HowHelp', @SurveyType_ID, 1)
-if not exists (select 1 from SurveyValidationFields where ColumnName = 'OAS_HE_Lang' and SurveyType_id = @SurveyType_ID)
-	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
-	values('Population','OAS_HE_Lang', @SurveyType_ID, 1)
-if not exists (select 1 from SurveyValidationFields where ColumnName = 'OAS_LocationID' and SurveyType_id = @SurveyType_ID)
-	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
-	values('Encounter','OAS_LocationID', @SurveyType_ID, 1)
-if not exists (select 1 from SurveyValidationFields where ColumnName = 'OAS_LocationName' and SurveyType_id = @SurveyType_ID)
-	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
-	values('Encounter','OAS_LocationName', @SurveyType_ID, 1)
-if not exists (select 1 from SurveyValidationFields where ColumnName = 'OAS_PatServed' and SurveyType_id = @SurveyType_ID)
-	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
-	values('Encounter','OAS_PatServed', @SurveyType_ID, 1)
-if not exists (select 1 from SurveyValidationFields where ColumnName = 'OAS_FacilityType' and SurveyType_id = @SurveyType_ID)
-	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
-	values('Encounter','OAS_FacilityType', @SurveyType_ID, 1)
-if not exists (select 1 from SurveyValidationFields where ColumnName = 'HCPCSLvl2Cd' and SurveyType_id = @SurveyType_ID)
-	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
-	values('Encounter','HCPCSLvl2Cd', @SurveyType_ID, 1)
-if not exists (select 1 from SurveyValidationFields where ColumnName = 'HCPCSLvl2Cd_2' and SurveyType_id = @SurveyType_ID)
-	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
-	values('Encounter','HCPCSLvl2Cd_2', @SurveyType_ID, 1)
-if not exists (select 1 from SurveyValidationFields where ColumnName = 'HCPCSLvl2Cd_3' and SurveyType_id = @SurveyType_ID)
-	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
-	values('Encounter','HCPCSLvl2Cd_3', @SurveyType_ID, 1)
-if not exists (select 1 from SurveyValidationFields where ColumnName = 'CPT4' and SurveyType_id = @SurveyType_ID)
-	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
-	values('Encounter','CPT4', @SurveyType_ID, 1)
-if not exists (select 1 from SurveyValidationFields where ColumnName = 'CPT4_2' and SurveyType_id = @SurveyType_ID)
-	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
-	values('Encounter','CPT4_2', @SurveyType_ID, 1)
-if not exists (select 1 from SurveyValidationFields where ColumnName = 'CPT4_3' and SurveyType_id = @SurveyType_ID)
-	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
-	values('Encounter','CPT4_3', @SurveyType_ID, 1)
-if not exists (select 1 from SurveyValidationFields where ColumnName = 'FacilityName' and SurveyType_id = @SurveyType_ID)
-	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
-	values('Encounter','FacilityName', @SurveyType_ID, 1)
-if not exists (select 1 from SurveyValidationFields where ColumnName = 'CCN' and SurveyType_id = @SurveyType_ID)
-	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
-	values('Encounter','CCN', @SurveyType_ID, 1)
-if not exists (select 1 from SurveyValidationFields where ColumnName = 'ServiceDate' and SurveyType_id = @SurveyType_ID)
-	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
-	values('Encounter','ServiceDate', @SurveyType_ID, 1)
+delete from SurveyValidationFields where ColumnName = 'OAS_HE_HowHelp' and SurveyType_id = @SurveyType_ID
+delete from SurveyValidationFields where ColumnName = 'OAS_HE_Lang' and SurveyType_id = @SurveyType_ID
+delete from SurveyValidationFields where ColumnName = 'OAS_LocationID' and SurveyType_id = @SurveyType_ID
+delete from SurveyValidationFields where ColumnName = 'OAS_LocationName' and SurveyType_id = @SurveyType_ID
+delete from SurveyValidationFields where ColumnName = 'OAS_PatServed' and SurveyType_id = @SurveyType_ID
+delete from SurveyValidationFields where ColumnName = 'OAS_FacilityType' and SurveyType_id = @SurveyType_ID
+delete from SurveyValidationFields where ColumnName = 'HCPCSLvl2Cd' and SurveyType_id = @SurveyType_ID
+delete from SurveyValidationFields where ColumnName = 'HCPCSLvl2Cd_2' and SurveyType_id = @SurveyType_ID
+delete from SurveyValidationFields where ColumnName = 'HCPCSLvl2Cd_3' and SurveyType_id = @SurveyType_ID
+delete from SurveyValidationFields where ColumnName = 'CPT4' and SurveyType_id = @SurveyType_ID
+delete from SurveyValidationFields where ColumnName = 'CPT4_2' and SurveyType_id = @SurveyType_ID
+delete from SurveyValidationFields where ColumnName = 'CPT4_3' and SurveyType_id = @SurveyType_ID
+delete from SurveyValidationFields where ColumnName = 'FacilityName' and SurveyType_id = @SurveyType_ID
+delete from SurveyValidationFields where ColumnName = 'CCN' and SurveyType_id = @SurveyType_ID
+delete from SurveyValidationFields where ColumnName = 'ServiceDate' and SurveyType_id = @SurveyType_ID
 
 GO
 
@@ -1788,126 +1863,46 @@ GO
 DECLARE @SurveyType_ID int
 select @SurveyType_ID = SurveyType_ID from SurveyType where SurveyType_dsc = 'OAS CAHPS'
 
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54086)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54086,1,1,0,'2016-01-01' , '2999-12-31', 0 )
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54087)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54087,2,1,0,'2016-01-01','2999-12-31', 0 )
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54088)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54088,3,1,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54089)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54089,4,1,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54090)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54090,5,1,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54091)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54091,6,1,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54092)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54092,7,1,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54093)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54093,8,1,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54094)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54094,9,1,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54095)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54095,10,1,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54096)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54096,11,1,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54097)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54097,12,1,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54098)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54098,13,1,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54099)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54099,14,1,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54100)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54100,15,1,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54101)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54101,16,1,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54102)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54102,17,1,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54103)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54103,18,1,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54104)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54104,19,1,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54105)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54105,20,1,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54106)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54106,21,1,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54107)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54107,22,1,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54108)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54108,23,1,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54109)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54109,24,1,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54110)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54110,25,0,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54111)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54111,26,0,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54112)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54112,27,0,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54113)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54113,28,0,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54114)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54114,29,0,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54115)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54115,30,0,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54116)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54116,31,0,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54117)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54117,32,0,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54181)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54181,33,0,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54182)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54182,340,0,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54183)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54183,35,0,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54118)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54118,36,0,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54119)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54119,37,0,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54120)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54120,38,0,0,'2016-01-01','2999-12-31',0)
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54121)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54121,39,0,0,'2016-01-01','2999-12-31',0) 
-if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54122)
-insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
-values(@SurveyType_ID,54122,40,0,0,'2016-01-01','2999-12-31',0) 
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54086
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54087
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54088
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54089
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54090
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54091
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54092
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54093
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54094
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54095
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54096
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54097
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54098
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54099
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54100
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54101
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54102
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54103
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54104
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54105
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54106
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54107
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54108
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54109
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54110
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54111
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54112
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54113
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54114
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54115
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54116
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54117
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54181
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54182
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54183
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54118
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54119
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54120
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54121
+delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54122
 
 
 --rollback tran	
