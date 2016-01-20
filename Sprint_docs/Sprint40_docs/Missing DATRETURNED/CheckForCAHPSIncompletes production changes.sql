@@ -1,9 +1,9 @@
 <EVENT_INSTANCE>
   <EventType>ALTER_PROCEDURE</EventType>
-  <PostTime>2014-11-20T12:39:21.710</PostTime>
-  <SPID>131</SPID>
+  <PostTime>2015-02-19T12:05:24.013</PostTime>
+  <SPID>198</SPID>
   <ServerName>NRC10</ServerName>
-  <LoginName>NRC\tbutler</LoginName>
+  <LoginName>NRC\dgilsdorf</LoginName>
   <UserName>dbo</UserName>
   <DatabaseName>QP_Prod</DatabaseName>
   <SchemaName>dbo</SchemaName>
@@ -23,11 +23,11 @@ AS
 --          1.2  6/18/2014 by D Gilsdorf: Refactored ACOCAHPSCompleteness as a procedure instead of a function.
 --          1.3  8/7/2014 by D Gilsdorf: added ICHCAHPS processing and renamed to CheckForCAHPSIncompletes
 --          1.4  9/26/2014 by D Gilsdorf: added HCAHPS processing 
---			1.4.1  10/23/2014 by G.Gilsdorf: bug fix introduced in CAHPS release 5
+--			1.4.1  10/23/2014 by D.Gilsdorf: bug fix introduced in CAHPS release 5
 --			1.5  10/02/2014 by T. Butler: ACO CAHPS processing -- modified follow-up by phone S10 US14
 --			1.6  10/03/2014 by T. Butler: ACO CAHPS processing -- ATA questions by questionnaire type S10 US 11
 --			1.7  10/09/2014 by T. Butler: ACO CAHPS processing -- update Complete disposition calculation S10 US 12
-
+--			1.8  12/23/2014 by D. Gilsdorf: Added HHCAHPS processing
 -- =============================================
 
 
@@ -61,7 +61,7 @@ inner join SurveyType st on sd.Surveytype_id=st.Surveytype_id
 left join (select sst.Survey_id, sst.Subtype_id, st.Subtype_nm from [dbo].[SurveySubtype] sst INNER JOIN [dbo].[Subtype] st on (st.Subtype_id = sst.Subtype_id)) sstx on sstx.Survey_id = qf.SURVEY_ID --&gt; new: 1.6
 inner join MailingStep ms on scm.Methodology_id=ms.Methodology_id and scm.MailingStep_id=ms.MailingStep_id
 where qf.datResultsImported is not null
-and st.Surveytype_dsc in ('HCAHPS IP','ACOCAHPS','ICHCAHPS')			
+and st.Surveytype_dsc in ('HCAHPS IP','ACOCAHPS','ICHCAHPS','Home Health CAHPS')
 and sm.datExpire &gt; getdate()
 order by qf.datResultsImported desc
 
@@ -120,12 +120,12 @@ AND ACODisposition = 34
 -- ACO Disposition 31 = partial
 -- ACO Disposition 34 = blank/incomplete
 
-			-- ICH CAHPS processing
+			-- ICH CAHPS &amp; Home Health CAHPS processing
 			/* begin addition */
-			select questionform_id, sentmail_id, samplepop_id, receipttype_id, strMailingStep_nm, 0 as ResponseCount, 0 as FutureScheduledMailing, 1 as AllMailStepsAreBack----, convert(datetime,null) as GenDate1st, convert(datetime,null) as GenDate2nd
+			select Surveytype_dsc, survey_id, questionform_id, sentmail_id, samplepop_id, receipttype_id, strMailingStep_nm, 0 as ResponseCount, 0 as FutureScheduledMailing, 1 as AllMailStepsAreBack----, convert(datetime,null) as GenDate1st, convert(datetime,null) as GenDate2nd
 			into #QFResponseCount
 			from #TodaysReturns
-			where Surveytype_dsc='ICHCAHPS'
+			where Surveytype_dsc in ('ICHCAHPS','Home Health CAHPS')
 				/* for testing:
 				select questionform_id, qf.sentmail_id, qf.samplepop_id, receipttype_id, strMailingStep_nm, 0 as ResponseCount, 0 as FutureScheduledMailing----, convert(datetime,null) as GenDate1st, convert(datetime,null) as GenDate2nd
 				into #QFResponseCount
@@ -136,18 +136,6 @@ AND ACODisposition = 34
 				*/
 
 			exec dbo.QFResponseCount
-
-			----update rc set GenDate1st=scm.DATGENERATE
-			----from #qfresponsecount rc
-			----inner join scheduledmailing scm on rc.samplepop_id=scm.samplepop_id
-			----inner join mailingstep ms on scm.mailingstep_id=ms.mailingstep_id
-			----where ms.strMailingStep_nm='1st Survey'
-
-			----update rc set GenDate2nd=scm.DATGENERATE
-			----from #qfresponsecount rc
-			----inner join scheduledmailing scm on rc.samplepop_id=scm.samplepop_id
-			----inner join mailingstep ms on scm.mailingstep_id=ms.mailingstep_id
-			----where ms.strMailingStep_nm='2nd Survey'
 
 			insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_id,datLogged,LoggedBy)
 			select sentmail_id, samplepop_id, 25, receipttype_id, getdate(), 'CheckForCAHPSIncompletes'
@@ -319,21 +307,6 @@ AND ACODisposition = 34
 					and questionform_id not in (select questionform_id from QuestionForm_extract where datExtracted_dt is null)
 
 					/* Catalyst is taken care of by triggers that fired when we updated questionform.datReturned, above
-					-- update the catalyst queue
-					-- remove today's return from the queue
-					delete eq
-					from #takebest tb
-					inner join NRC_DataMart_ETL.dbo.ExtractQueue eq on tb.questionform_id=eq.pkey1 
-					where eq.entitytypeid=11 
-					and eq.extractFileID is null
-					and tb.newBitETLThisReturn=0
-					
-					-- add the previous return
-					insert into NRC_DataMart_ETL.dbo.ExtractQueue (EntityTypeID,PKey1,PKey2,IsMetaData,ExtractFileID,IsDeleted,Created,Source)
-					select 11 as EntityTypeID,QUESTIONFORM_ID, strlithocode, 0 as isMetaData, null as ExtractFileID, 0 as isDeleted, getdate(), 'CheckForCAHPSIncompletes'
-					from #todaysreturns tr
-					inner join sentmailing sm on tr.sentmail_id=sm.sentmail_id
-					where bitETLThisReturn=1
 					*/
 				end
 			end
@@ -341,15 +314,48 @@ AND ACODisposition = 34
 			update tr
 			set bitComplete=case when ATACnt&gt;=19 then 1 else 0 end
 			from #TodaysReturns tr
-			inner join (select rc.questionform_id, count(distinct isnull(qr.qstncore,qr2.qstncore)) as ATACnt
-						from #qfResponseCount rc
-						left join questionresult qr on rc.questionform_id=qr.questionform_id
-						left join questionresult2 qr2 on rc.questionform_id=qr2.questionform_id
-						where isnull(qr.qstncore,qr2.qstncore) in (51198,51199,47159,47160,47161,47162,47163,47164,47165,47166,47167,47168,47169,47170,47171,47172
-								,47173,47174,47175,47176,47178,47179,47181,47182,47183,47184,47185,47186,47187,47188,47189,47190,47191,47192,47193,47195,47196,47197)
-						and isnull(qr.intResponseVal, qr2.intResponseval) &gt;= 0
-						group by rc.questionform_id) rc
+			inner join (select qr.questionform_id, count(distinct sq.qstncore) as ATACnt
+						from (	select rc.questionform_id, rc.survey_id, qr.qstncore, qr.intResponseVal
+								from #qfResponseCount rc
+								inner join questionresult qr on rc.questionform_id=qr.questionform_id
+								union
+								select rc.questionform_id, rc.survey_id, qr2.qstncore, qr2.intResponseVal
+								from #qfResponseCount rc
+								inner join questionresult2 qr2 on rc.questionform_id=qr2.questionform_id) qr
+						inner join sel_qstns sq on qr.survey_id = sq.survey_id and qr.qstncore = sq.qstncore 
+						inner join sel_scls ss on sq.scaleid = ss.qpc_id AND sq.survey_id = ss.survey_id and qr.intresponseval = ss.val
+						where sq.qstncore in (51198,51199,47159,47160,47161,47162,47163,47164,47165,47166,47167,47168,47169,47170,47171,47172,47173,47174,47175,
+											  47176,47178,47179,47181,47182,47183,47184,47185,47186,47187,47188,47189,47190,47191,47192,47193,47195,47196,47197)
+						and sq.subtype = 1 
+						AND sq.language = 1 
+						AND ss.language = 1 
+						group by qr.questionform_id) rc
 					on tr.questionform_id=rc.questionform_id
+			where tr.Surveytype_dsc = 'ICHCAHPS'
+
+			-- similar code is used in the HHCAHPSCompleteness function (called during the Medusa ETL by in the sp_phase3_questionresult_for_extract and 
+			-- SP_Phase3_QuestionResult_For_Extract_by_Samplepop prodcedures), but the function (1) doesn't look in questionresult2 for possible answers 
+			-- and (2) is inefficient on large resultsets. Therefore, it's replicated here.
+			update tr
+			set bitComplete=case when ATACnt&gt;9 then 1 else 0 end
+			from #TodaysReturns tr
+			inner join (select qr.questionform_id, count(distinct sq.qstncore) as ATACnt
+						from (	select rc.questionform_id, rc.survey_id, qr.qstncore, qr.intResponseVal
+								from #qfResponseCount rc
+								inner join questionresult qr on rc.questionform_id=qr.questionform_id
+								union
+								select rc.questionform_id, rc.survey_id, qr2.qstncore, qr2.intResponseVal
+								from #qfResponseCount rc
+								inner join questionresult2 qr2 on rc.questionform_id=qr2.questionform_id) qr
+						inner join sel_qstns sq on qr.survey_id = sq.survey_id and qr.qstncore = sq.qstncore 
+						inner join sel_scls ss on sq.scaleid = ss.qpc_id AND sq.survey_id = ss.survey_id and qr.intresponseval = ss.val
+						where sq.qstncore in (38694,38695,38696,38697,38698,38699,38700,38701,38702,38703,38704,38708,38709,38710,38711,38712,38713,38714,38717,38718)
+						and sq.subtype = 1 
+						AND sq.language = 1 
+						AND ss.language = 1 
+						group by qr.questionform_id) rc
+					on tr.questionform_id=rc.questionform_id
+			where tr.Surveytype_dsc = 'Home Health CAHPS'
 
 			update tr
 			set bitETLThisReturn=0, bitContinueWithMailings=1, bitComplete=0
@@ -363,7 +369,7 @@ AND ACODisposition = 34
 	-- HCAHPS processing - if a blank return comes in, continue data collection protocol
 	delete from #QFResponseCount
 	insert into #QFResponseCount
-	select questionform_id, sentmail_id, samplepop_id, receipttype_id, strMailingStep_nm, 0 as ResponseCount, 0 as FutureScheduledMailing, 1 as AllMailStepsAreBack----, convert(datetime,null) as GenDate1st, convert(datetime,null) as GenDate2nd
+	select Surveytype_dsc, survey_id, questionform_id, sentmail_id, samplepop_id, receipttype_id, strMailingStep_nm, 0 as ResponseCount, 0 as FutureScheduledMailing, 1 as AllMailStepsAreBack----, convert(datetime,null) as GenDate1st, convert(datetime,null) as GenDate2nd
 	from #TodaysReturns
 	where Surveytype_dsc='HCAHPS IP'
 
