@@ -106,7 +106,7 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
                         }
                         break;
                     default:
-                        throw new InvalidOperationException(string.Format("Unrecognized file version {0}.", version));
+                        throw new InvalidOperationException($"Unrecognized file version {version}.");
                 }
 
                 rows.Add(
@@ -210,7 +210,7 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
                 case BODY_LINE_LENGTH_V2:
                     return OcsFwBodyVersion.V2;
                 default:
-                    throw new InvalidOperationException(string.Format("{0} characters found on line {1} which doesn't match either version 1 or 2 files.", characters, lineNumber));
+                    throw new InvalidOperationException($"{characters} characters found on line {lineNumber} which doesn't match either version 1 or 2 files.");
             }
         }
     }

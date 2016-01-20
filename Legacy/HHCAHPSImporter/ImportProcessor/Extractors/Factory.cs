@@ -29,7 +29,7 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
                 case FileFormat.CMS_CSV:
                     return new CmsCsvExtractor();
                 default:
-                    throw new InvalidOperationException(string.Format("Couldn't get the extractor for file format {0}.", format));
+                    throw new InvalidOperationException($"Couldn't get the extractor for file format {format}.");
             }
         }
     }

@@ -21,7 +21,7 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
             }
             catch (Exception ex)
             {
-                throw new ParseException(string.Format("Couldn't parse file {0}.", file), ex);
+                throw new ParseException($"Couldn't parse file {file}.", ex);
             }
         }
     }

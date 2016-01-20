@@ -60,7 +60,7 @@ namespace HHCAHPSImporter.ImportProcessor
                     cutoff = new DateTime(sampleYear + 1, q4Cutoff.Month, q4Cutoff.Day);
                     break;
                 default:
-                    throw new InvalidOperationException(string.Format("Couldn't get the cutoff date for quarter {0}.", quarter));
+                    throw new InvalidOperationException($"Couldn't get the cutoff date for quarter {quarter}.");
             }
 
             return currentDate.Date > cutoff;
