@@ -127,6 +127,8 @@ namespace HHCAHPSImporter.ImportProcessingService
                         {
                             using (var z = new Ionic.Zip.ZipFile(fi.FullName))
                             {
+                                ZipExtractor.SetFlattenedUniqueFileNames(z);
+
                                 var zfiles = z.Where(t => t.FileName.EndsWith(".csv")).ToList();
                                 foreach (var zfile in zfiles)
                                 {
