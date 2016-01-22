@@ -23,7 +23,7 @@ namespace HHCAHPSImporter.ImportProcessingService
                 var counter = 1;
                 while (fileNames.Contains(uniqueName))
                 {
-                    uniqueName = $"{Path.GetFileNameWithoutExtension(flattenedName)}_{counter}{Path.GetExtension(flattenedName)}";
+                    uniqueName = $"{Path.GetFileNameWithoutExtension(flattenedName)}_{counter}{Path.GetExtension(flattenedName)}"; // new syntax for string.Format();
                     counter++;
                 }
 
