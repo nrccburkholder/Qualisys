@@ -9,7 +9,7 @@ Tim Butler
 Task 22.2 Create new template for the new XSD
 
 Create version 2.1.1 
-	* decedent-primary-diagnosis - changes FixedWidthLength to 8, and changes SourceColumnName to 'M'
+	* decedent-primary-diagnosis - changes FixedWidthLength to 8, and changes SourceColumnName to 'MMMMMMMM'
 	* language - adds Russian and Portuguese
 	* cHomeLang - drops Russian and Portuguese but keeps "Some Other Language" recoded to 6, and changes questioncore to 51620
 
@@ -74,7 +74,7 @@ declare @ResponseLabel varchar(200)
 
 Update etc
 	SET FixedWidthLength = 8
-	,SourceColumnName = 'M'
+	,SourceColumnName = 'MMMMMMMM'
 from cem.ExportTemplateColumn etc
 where ExportTemplateSectionID = @decedentleveldatasectionid
 and ExportColumnName = 'decedent-primary-diagnosis'
@@ -150,7 +150,7 @@ Update CEM.ExportTemplate
   <xs:element name="vendordata">
     <xs:annotation>
       <xs:documentation>CAHPS Hospice Survey XML File Specification
-     Version 12.21.2015
+     Version 01.22.2016
 
      All data fields are defined as character.</xs:documentation>
     </xs:annotation>
@@ -393,7 +393,7 @@ as
 /* includes changes for xml version 2.1 as per S40 US22  TSB 01/13/2016 */
 update eds
 set [decedentleveldata.sex] = case [decedentleveldata.sex] when 'M' then '1' when 'F' then '2' else 'M' end
-from CEM.ExportDataset00000012 eds
+from CEM.ExportDataset00000000 eds
 where [decedentleveldata.sex] not in ('1','2')
 and eds.ExportQueueID = @ExportQueueID 
 
@@ -428,7 +428,7 @@ update eds set [decedentleveldata.lag-time]=datediff(day,convert(datetime,[deced
 --, case when ltrim([decedentleveldata.survey-status]) in (2,3,4,5,8,12,13,14) then 'SamplePopulationDispositionLog.LoggedDate' 
 --	   end
 --,spdl.DispositionID,spdl.ReceiptTypeID,spdl.CahpsTypeID,spdl.LoggedBy,spdl.LoggedDate
-from CEM.ExportDataset00000012 eds
+from CEM.ExportDataset00000000 eds
 inner join nrc_datamart.dbo.samplepopulationdispositionlog spdl on spdl.SamplePopulationID=eds.SamplePopulationID
 inner join nrc_datamart.dbo.CahpsDispositionMapping cdm on cdm.dispositionid=spdl.DispositionID and [decedentleveldata.survey-status]=(cdm.CahpsDispositionID-600)
 where ltrim([decedentleveldata.survey-status]) in ('2','3','4','5','8','12','13','14')
@@ -439,7 +439,7 @@ update eds set [decedentleveldata.lag-time]=datediff(day,convert(datetime,[deced
 --, case when ltrim([decedentleveldata.survey-status]) in (1,7) then 'QuestionForm.ReturnDate'
 --	   end
 --, qf.returndate
-from CEM.ExportDataset00000012 eds
+from CEM.ExportDataset00000000 eds
 inner join nrc_datamart.dbo.questionform qf on qf.SamplePopulationID=eds.SamplePopulationID
 where ltrim([decedentleveldata.survey-status]) in ('1','7') 
 and eds.ExportQueueID = @ExportQueueID 
@@ -450,7 +450,7 @@ update eds set [decedentleveldata.lag-time]=datediff(day,convert(datetime,[deced
 --	   end
 --, qf.returndate
 --, [caregiverresponse.oversee], [decedentleveldata.survey-completion-mode]
-from CEM.ExportDataset00000012 eds
+from CEM.ExportDataset00000000 eds
 inner join nrc_datamart.dbo.questionform qf on qf.SamplePopulationID=eds.SamplePopulationID
 where ltrim([decedentleveldata.survey-status]) = '6' 
 and eds.ExportQueueID = @ExportQueueID 
@@ -459,7 +459,7 @@ if object_id('tempdb..#SampleSetExpiration') is not null
 	drop table #SampleSetExpiration
 select distinct ss.samplesetid, eds.samplepopulationid, dateadd(day,42,ss.datFirstMailed) as DatExpire
 into #SampleSetExpiration
-from CEM.ExportDataset00000012 eds
+from CEM.ExportDataset00000000 eds
 inner join NRC_Datamart.dbo.samplepopulation sp  on eds.SamplePopulationID=sp.SamplePopulationID
 inner join NRC_Datamart.dbo.sampleset ss on sp.SampleSetID=ss.SampleSetID
 where eds.ExportQueueID = @ExportQueueID 
@@ -484,7 +484,7 @@ update eds set [decedentleveldata.lag-time]=datediff(day,convert(datetime,[deced
 --, case when ltrim([decedentleveldata.survey-status]) = 9 then 'Expiration Date (Mail & Mixed) OR Date of last phone attempt (Phone)'
 --	   end
 --, sse.DatExpire
-from CEM.ExportDataset00000012 eds
+from CEM.ExportDataset00000000 eds
 inner join #SampleSetExpiration sse on eds.SamplePopulationID=sse.SamplePopulationID
 where ltrim([decedentleveldata.survey-status]) ='9'
 and [hospicedata.survey-mode] in ('1','3')
@@ -496,7 +496,7 @@ update eds set [decedentleveldata.lag-time]=datediff(day,convert(datetime,[deced
 --, case when ltrim([decedentleveldata.survey-status]) = 9 then 'Expiration Date (Mail & Mixed) OR Date of last phone attempt (Phone)'
 --	   end
 --, ss.samplesetID, dsk.DataSourceKey as sampleset_id, qss.datLastMailed
-from CEM.ExportDataset00000012 eds
+from CEM.ExportDataset00000000 eds
 inner join NRC_Datamart.dbo.samplepopulation sp  on eds.SamplePopulationID=sp.SamplePopulationID
 inner join NRC_Datamart.dbo.sampleset ss on sp.SampleSetID=ss.SampleSetID
 inner join NRC_DataMart.etl.DataSourceKey dsk on ss.SampleSetID=dsk.DataSourceKeyID and dsk.EntityTypeID=8
@@ -511,7 +511,7 @@ update eds set [decedentleveldata.lag-time]=datediff(day,convert(datetime,[deced
 --select eds.samplepopulationid, convert(datetime,[decedentleveldata.death-month]+'/'+[decedentleveldata.death-day]+'/'+[decedentleveldata.death-yr]) as DayOfDeath, [decedentleveldata.survey-status]
 --, isnull(qf.datUndeliverable, spdl.LoggedDate) as dispositiondate
 --, datediff(day,convert(datetime,[decedentleveldata.death-month]+'/'+[decedentleveldata.death-day]+'/'+[decedentleveldata.death-yr]),isnull(qf.datUndeliverable, spdl.LoggedDate)) as lagtime
-from CEM.ExportDataset00000012 eds
+from CEM.ExportDataset00000000 eds
 left join nrc_datamart.dbo.questionform qf on qf.SamplePopulationID=eds.SamplePopulationID
 left join nrc_datamart.dbo.SamplePopulationDispositionLog spdl on eds.SamplePopulationID=spdl.SamplePopulationID and spdl.DispositionID=5--Non Response Bad Address / 16--Non Response Bad Phone
 where ltrim([decedentleveldata.survey-status]) = '10' -- bad address     / 11 -- bad phone
@@ -523,7 +523,7 @@ update eds set [decedentleveldata.lag-time]=datediff(day,convert(datetime,[deced
 --select eds.samplepopulationid, convert(datetime,[decedentleveldata.death-month]+'/'+[decedentleveldata.death-day]+'/'+[decedentleveldata.death-yr]) as DayOfDeath, [decedentleveldata.survey-status]
 --, isnull(qf.datUndeliverable, spdl.LoggedDate) as dispositiondate
 --, datediff(day,convert(datetime,[decedentleveldata.death-month]+'/'+[decedentleveldata.death-day]+'/'+[decedentleveldata.death-yr]),isnull(qf.datUndeliverable, spdl.LoggedDate)) as lagtime
-from CEM.ExportDataset00000012 eds
+from CEM.ExportDataset00000000 eds
 left join nrc_datamart.dbo.questionform qf on qf.SamplePopulationID=eds.SamplePopulationID
 left join nrc_datamart.dbo.SamplePopulationDispositionLog spdl on eds.SamplePopulationID=spdl.SamplePopulationID and spdl.DispositionID in (14,16)--Non Response Bad Phone
 where ltrim([decedentleveldata.survey-status]) = '11' -- bad phone
@@ -533,7 +533,7 @@ and eds.ExportQueueID = @ExportQueueID
 -- There’s one hospice that we messed up sampling for January & February data.
 -- Delete all January and February data out of the file for CCN 031592.
 delete 
-from CEM.ExportDataset00000012 
+from CEM.ExportDataset00000000 
 where [hospicedata.provider-id]='031592'
 and [hospicedata.reference-yr]='2015'
 and [hospicedata.reference-month] in ('01','02')
@@ -541,7 +541,7 @@ and ExportQueueID = @ExportQueueID
 
 -- Saint Mary’s Hospice and Palliative Care (ccn 291501) has six people we sampled in January but shouldn't have, so we're not submiting any of their january data.
 delete eds
-from cem.ExportDataset00000012 eds
+from cem.ExportDataset00000000 eds
 where ExportQueueID = @ExportQueueID 
 and [hospicedata.provider-id]='291501'
 and [hospicedata.reference-yr]='2015'
@@ -557,7 +557,7 @@ and [hospicedata.reference-month] in ('01')
 update eds
 set [hospicedata.no-publicity]='0'
 --- select distinct exportqueueid,[hospicedata.provider-id],[hospicedata.reference-month],[hospicedata.no-publicity]
-from cem.ExportDataset00000012 eds
+from cem.ExportDataset00000000 eds
 where [hospicedata.no-publicity]=''
 and [hospicedata.provider-id]+'.'+[hospicedata.reference-month] in ('141613.03','451662.01','451662.02','451662.03','521544.03')
 and [hospicedata.reference-yr]='2015'
@@ -573,7 +573,7 @@ and ExportQueueID = @ExportQueueID
 	--St. Joseph Hospice-Richland/Vicksburg			251575		2015			1
 	--St. Joseph Hospice-Richland/Vicksburg			251575		2015			2
 delete eds
-from cem.ExportDataset00000012 eds
+from cem.ExportDataset00000000 eds
 where ExportQueueID = @ExportQueueID 
 and [hospicedata.reference-yr]='2015'
 and [hospicedata.provider-id] in ('291501','191568','251670','251575')
@@ -583,15 +583,15 @@ and [hospicedata.reference-month] in ('01','02')
 -- “3 – Ineligible: Not in Eligible Population,” 
 -- “6 – Ineligible: Never Involved in Decedent Care,” and 
 -- “14 – Ineligible: Institutionalized.”
-update cem.ExportDataset00000012 
+update cem.ExportDataset00000000 
 set [hospicedata.ineligible-postsample]='0'
 where ExportQueueID=@ExportQueueID 
 
 update eds
 set [hospicedata.ineligible-postsample]=sub.cnt
-from cem.ExportDataset00000012 eds
+from cem.ExportDataset00000000 eds
 inner join (select [hospicedata.provider-id],[hospicedata.reference-month], count(*) cnt
-			from cem.ExportDataset00000012
+			from cem.ExportDataset00000000
 			where ExportQueueID=@ExportQueueID 
 			and ltrim([decedentleveldata.survey-status]) in ('2','3','4','5','6','14') --(v2.1)
 			group by [hospicedata.provider-id], [hospicedata.reference-month]) sub
@@ -599,14 +599,14 @@ inner join (select [hospicedata.provider-id],[hospicedata.reference-month], coun
 where eds.ExportQueueID=@ExportQueueID 
 
 -- recode various blank columns to 'M' or 'N/A'
-update cem.ExportDataset00000012 set [decedentleveldata.decedent-primary-diagnosis]='MMMMMMM' where [decedentleveldata.decedent-primary-diagnosis]='' and ExportQueueid=@ExportQueueID
-update cem.ExportDataset00000012 set [decedentleveldata.decedent-payer-primary]='M' where [decedentleveldata.decedent-payer-primary]='' and ExportQueueid=@ExportQueueID
-update cem.ExportDataset00000012 set [decedentleveldata.decedent-payer-secondary]='M' where [decedentleveldata.decedent-payer-secondary]='' and ExportQueueid=@ExportQueueID
-update cem.ExportDataset00000012 set [decedentleveldata.decedent-payer-other]='M' where [decedentleveldata.decedent-payer-other]='' and ExportQueueid=@ExportQueueID
-update cem.ExportDataset00000012 set [decedentleveldata.last-location]='M' where [decedentleveldata.last-location]='' and ExportQueueid=@ExportQueueID
-update cem.ExportDataset00000012 set [decedentleveldata.decedent-race]='M' where [decedentleveldata.decedent-race]='' and ExportQueueid=@ExportQueueID
-update cem.ExportDataset00000012 set [decedentleveldata.facility-name]='N/A' where [decedentleveldata.facility-name]='' and ExportQueueid=@ExportQueueID
-update cem.ExportDataset00000012 set [hospicedata.no-publicity]='M' where [hospicedata.no-publicity]='' and ExportQueueid=@ExportQueueID
+update cem.ExportDataset00000000 set [decedentleveldata.decedent-primary-diagnosis]='MMMMMMMM' where [decedentleveldata.decedent-primary-diagnosis]='' and ExportQueueid=@ExportQueueID
+update cem.ExportDataset00000000 set [decedentleveldata.decedent-payer-primary]='M' where [decedentleveldata.decedent-payer-primary]='' and ExportQueueid=@ExportQueueID
+update cem.ExportDataset00000000 set [decedentleveldata.decedent-payer-secondary]='M' where [decedentleveldata.decedent-payer-secondary]='' and ExportQueueid=@ExportQueueID
+update cem.ExportDataset00000000 set [decedentleveldata.decedent-payer-other]='M' where [decedentleveldata.decedent-payer-other]='' and ExportQueueid=@ExportQueueID
+update cem.ExportDataset00000000 set [decedentleveldata.last-location]='M' where [decedentleveldata.last-location]='' and ExportQueueid=@ExportQueueID
+update cem.ExportDataset00000000 set [decedentleveldata.decedent-race]='M' where [decedentleveldata.decedent-race]='' and ExportQueueid=@ExportQueueID
+update cem.ExportDataset00000000 set [decedentleveldata.facility-name]='N/A' where [decedentleveldata.facility-name]='' and ExportQueueid=@ExportQueueID
+update cem.ExportDataset00000000 set [hospicedata.no-publicity]='M' where [hospicedata.no-publicity]='' and ExportQueueid=@ExportQueueID
 
 -- add zero-sample CCN's to the dataset. 
 -- for now, any CCN that's in (select from SampleUnitFacilityAttributes where AHAIdent=1) is one we should be submitting for.
@@ -621,7 +621,7 @@ if object_id('tempdb..#everything') is not null
 
 select distinct eds.[hospicedata.reference-yr], eds.[hospicedata.reference-month]
 into #months
-from [CEM].[ExportDataset00000012] eds
+from [CEM].[ExportDataset00000000] eds
 where eds.exportqueueid=@ExportQueueID
 
 select distinct MedicareNumber, FacilityName, convert(char(10), NULL) as NPI
@@ -634,7 +634,7 @@ update #ccn set NPI='M'
 update ccn
 set npi=[hospicedata.NPI]
 from #ccn ccn
-inner join [CEM].[ExportDataset00000012] eds on ccn.MedicareNumber=eds.[hospicedata.provider-id]
+inner join [CEM].[ExportDataset00000000] eds on ccn.MedicareNumber=eds.[hospicedata.provider-id]
 where eds.ExportQueueid=@ExportQueueID
 
 select *
@@ -643,40 +643,40 @@ from #months m, #ccn c
 
 delete e
 from #everything e
-inner join [CEM].[ExportDataset00000012] eds 
+inner join [CEM].[ExportDataset00000000] eds 
 	on e.[hospicedata.reference-yr]=eds.[hospicedata.reference-yr]
 		and e.[hospicedata.reference-month]=eds.[hospicedata.reference-month]
 		and e.MedicareNumber=eds.[hospicedata.provider-id]
 where eds.ExportQueueID=@ExportQueueID
 
-insert into [CEM].[ExportDataset00000012] ([ExportQueueID], [ExportTemplateID], [FileMakerName], [vendordata.vendor-name], [vendordata.file-submission-yr], [vendordata.file-submission-month], [vendordata.file-submission-day]
+insert into [CEM].[ExportDataset00000000] ([ExportQueueID], [ExportTemplateID], [FileMakerName], [vendordata.vendor-name], [vendordata.file-submission-yr], [vendordata.file-submission-month], [vendordata.file-submission-day]
 	, [vendordata.file-submission-number], [hospicedata.reference-yr], [hospicedata.reference-month], [hospicedata.provider-name], [hospicedata.provider-id], [hospicedata.npi], [hospicedata.survey-mode], [hospicedata.total-decedents]
 	, [hospicedata.live-discharges], [hospicedata.no-publicity], [hospicedata.ineligible-presample], [hospicedata.sample-size], [hospicedata.ineligible-postsample], [hospicedata.sample-type])
 select distinct eds.[ExportQueueID], eds.[ExportTemplateID], eds.[FileMakerName], eds.[vendordata.vendor-name], eds.[vendordata.file-submission-yr], eds.[vendordata.file-submission-month], eds.[vendordata.file-submission-day]
 	, eds.[vendordata.file-submission-number], e.[hospicedata.reference-yr], e.[hospicedata.reference-month], left(e.FacilityName,100), e.MedicareNumber, e.NPI, '8' as [hospicedata.survey-mode], char(7) as [hospicedata.total-decedents]
 	, char(7) as [hospicedata.live-discharges], char(7) as [hospicedata.no-publicity], char(7) as [hospicedata.ineligible-presample], '0' as [hospicedata.sample-size], '0' as [hospicedata.ineligible-postsample], '8' as [hospicedata.sample-type]
-from [CEM].[ExportDataset00000012] eds, #everything e
+from [CEM].[ExportDataset00000000] eds, #everything e
 where eds.ExportQueueID=@ExportQueueID
 
 -- recode blank NPI's to 'M'
 update eds
 set [hospicedata.npi]='M'
-from CEM.ExportDataset00000012 eds
+from CEM.ExportDataset00000000 eds
 where eds.ExportQueueID = @ExportQueueID 
 and [hospicedata.npi]=''
 
 -- recode NPI to 'M' for any CCN that has multiple NPI values
 update eds
 set [hospicedata.npi]='M'
-from CEM.ExportDataset00000012 eds
+from CEM.ExportDataset00000000 eds
 where eds.ExportQueueID = @ExportQueueID 
 and [hospicedata.provider-id] in (select [hospicedata.provider-id]
-									from CEM.ExportDataset00000012 eds
+									from CEM.ExportDataset00000000 eds
 									where eds.ExportQueueID = @ExportQueueID 
 									group by [hospicedata.provider-id]
 									having count(distinct [hospicedata.npi])>1)
 
-update cem.ExportDataset00000012 
+update cem.ExportDataset00000000 
 set [caregiverresponse.location-assisted]='M'
 	,[caregiverresponse.location-home]='M'
 	,[caregiverresponse.location-hospice-facility]='M'
@@ -692,7 +692,7 @@ where [caregiverresponse.location-assisted] = ''
 	and ltrim([decedentleveldata.survey-status]) in ('1','6','7')  
 	and ExportQueueID = @ExportQueueID 
 
-update cem.ExportDataset00000012 
+update cem.ExportDataset00000000 
 set [caregiverresponse.race-african-amer]='M'
 	,[caregiverresponse.race-amer-indian-ak]='M'
 	,[caregiverresponse.race-asian]='M'
@@ -709,7 +709,7 @@ where [caregiverresponse.race-african-amer]=''
 -- the default CEM behavior is to repeat the missing characters (e.g. 'M') for the entire width of the field. CAHPSHospice wants it to be just 'M' in the CareGiverResponse section, regardless of the width of the field.
 -- in other sections they want it repeated (e.g. [decedentleveldata.decedent-primary-diagnosis] should be 'MMMMMMM' and not 'M')
 declare @sql varchar(max)=''
-select @sql=@sql+'update cem.ExportDataset00000012 set [caregiverresponse.'+etc.exportcolumnname+']=''M'' '+
+select @sql=@sql+'update cem.ExportDataset00000000 set [caregiverresponse.'+etc.exportcolumnname+']=''M'' '+
 	'where [caregiverresponse.'+etc.exportcolumnname+']='''+replicate('M',etc.fixedwidthlength)+''' and ExportQueueid='+convert(varchar,eq.exportqueueid)+char(10)
 from cem.exportqueue eq
 inner join cem.ExportTemplate et on eq.exporttemplatename=et.exporttemplatename and eq.exporttemplateversionmajor=et.exporttemplateversionmajor and isnull(eq.ExportTemplateVersionMinor,-1)=isnull(et.ExportTemplateVersionMinor,-1)
@@ -723,7 +723,7 @@ print @SQL
 exec(@SQL)
 
 select [decedentleveldata.survey-status], min([decedentleveldata.lag-time]) as minLagTime, max([decedentleveldata.lag-time]) as maxLagTime, count(*) as [count]
-from CEM.ExportDataset00000012 eds
+from CEM.ExportDataset00000000 eds
 where isnull([decedentleveldata.lag-time],'') =''
 and ExportQueueID = @ExportQueueID 
 group by [decedentleveldata.survey-status]
@@ -734,16 +734,16 @@ S37 US 8.2 Modify stored procedure to accommodate ICD type determination  11/03/
 */
 
 update eds 
-	set [decedentleveldata.diagnosis-code-format] ='1', 
-	[decedentleveldata.decedent-primary-diagnosis] = 'M' -- if ICD9, change to 'M'   (v2.1)
-from cem.ExportDataset00000012 eds 
+	set [decedentleveldata.diagnosis-code-format] ='1',
+	[decedentleveldata.decedent-primary-diagnosis] =  ltrim(rtrim([decedentleveldata.icd9]))
+from cem.ExportDataset00000000 eds 
 where LEN(ltrim(rtrim([decedentleveldata.icd9]))) > 0
 and eds.ExportQueueID = @ExportQueueID
 
 update eds 
-	set [decedentleveldata.diagnosis-code-format] ='2', 
-	[decedentleveldata.decedent-primary-diagnosis] = replace([decedentleveldata.icd10],'.','') -- remove dot
-from cem.ExportDataset00000012 eds 
+	set [decedentleveldata.diagnosis-code-format] ='2',
+	[decedentleveldata.decedent-primary-diagnosis] =  ltrim(rtrim([decedentleveldata.icd10]))
+from cem.ExportDataset00000000 eds 
 where LEN(ltrim(rtrim([decedentleveldata.icd10]))) > 0 
 and eds.ExportQueueID = @ExportQueueID
 
@@ -767,7 +767,7 @@ select eds.[hospicedata.provider-id] as provider_id, qpss.SampleSet_ID, sds.Data
        , eds.[hospicedata.reference-yr] as yr, eds.[hospicedata.reference-month] as mo
 	   , convert(bit,null) as isInDateRange, convert(datetime,null) as minDatasetServicedate, convert(datetime,null) as maxDatasetServicedate
 	   INTO #SampleSets
-from [NRC_Datamart_Extracts].[CEM].[ExportDataset00000012] eds
+from [NRC_Datamart_Extracts].[CEM].[ExportDataset00000000] eds
 inner join NRC_DataMart_Extracts.CEM.ExportQueue  eq on eq.ExportQueueId = eds.ExportQueueId
 inner join Qualisys.qp_prod.dbo.SuFacility suf on suf.medicarenumber = eds.[hospicedata.provider-id]
 inner join Qualisys.qp_prod.dbo.SampleUnit qpsu on qpsu.SUFacility_id = suf.SUFacility_id
@@ -870,7 +870,7 @@ end
 
 update eds
 SET [hospicedata.missing-dod] = mdc.MissingCount
-FROM [NRC_Datamart_Extracts].[CEM].[ExportDataset00000012] eds
+FROM [NRC_Datamart_Extracts].[CEM].[ExportDataset00000000] eds
 inner join (select [provider-id], yr, mo, sum(missingcount) as missingcount
 			from #MissingDODCounts
 			group by [provider-id], yr, mo) mdc on mdc.[provider-id] = eds.[hospicedata.provider-id] and mdc.yr = eds.[hospicedata.reference-yr] and mdc.mo = eds.[hospicedata.reference-month]
@@ -878,7 +878,7 @@ where eds.ExportQueueID = @ExportQueueID
 
 update eds
 SET [hospicedata.missing-dod] = 0
-FROM [NRC_Datamart_Extracts].[CEM].[ExportDataset00000012] eds
+FROM [NRC_Datamart_Extracts].[CEM].[ExportDataset00000000] eds
 where eds.ExportQueueID = @ExportQueueID
 and [hospicedata.missing-dod] is NULL
 
