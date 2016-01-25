@@ -18,6 +18,7 @@ namespace HHCAHPSImporter.ImportProcessingService
     {
         Settings settings = ConfigManager.Load<Settings>(new ConfigOptions { CreateMissingDirectories = true });
         private static Logger _logger = Logger.GetLogger("HHCAHPSImporter.ImportProcessor");
+        private static readonly HashSet<string> extensionsToProcess = new HashSet<string> { ".csv", ".txt" };
 
         #region TimerService Overrides
         protected override int IntervalSecs
@@ -73,7 +74,7 @@ namespace HHCAHPSImporter.ImportProcessingService
         /// </summary>
         void QueueFiles()
         {
-            List<FileInfo> files = settings.IncomingDirectory.GetFiles("*.csv").ToList() ;
+            List<FileInfo> files = settings.IncomingDirectory.GetFiles().Where(file => extensionsToProcess.Contains(file.Extension.ToLower())).ToList();
 
             if (files.Count() > 0)
             {
@@ -129,7 +130,7 @@ namespace HHCAHPSImporter.ImportProcessingService
                             {
                                 ZipExtractor.SetFlattenedUniqueFileNames(z);
 
-                                var zfiles = z.Where(t => t.FileName.EndsWith(".csv")).ToList();
+                                var zfiles = z.Where(t => extensionsToProcess.Contains(Path.GetExtension(t.FileName).ToLower())).ToList();
                                 foreach (var zfile in zfiles)
                                 {
                                     QueueZipFileEntry(fi, zfile);
