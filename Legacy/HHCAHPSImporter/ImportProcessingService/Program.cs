@@ -128,7 +128,7 @@ namespace HHCAHPSImporter.ImportProcessingService
                         {
                             using (var z = new Ionic.Zip.ZipFile(fi.FullName))
                             {
-                                ZipExtractor.SetFlattenedUniqueFileNames(z);
+                                ZipExtractor.SetFlattenedUniqueFileNames(z, settings.UploadQueueDirectory.FullName);
 
                                 var zfiles = z.Where(t => extensionsToProcess.Contains(Path.GetExtension(t.FileName).ToLower())).ToList();
                                 foreach (var zfile in zfiles)
@@ -188,9 +188,10 @@ namespace HHCAHPSImporter.ImportProcessingService
 
         void FailZipFile(FileInfo file)
         {
-            string target = Path.Combine(
-                Path.Combine(settings.ZipFailureDirectory.FullName, DateTime.Now.ToString("yyyyMMdd"))
-                , file.Name);
+            var targetDirectory = Path.Combine(settings.ZipFailureDirectory.FullName, DateTime.Now.ToString("yyyyMMdd"));
+            Directory.CreateDirectory(targetDirectory);
+
+            string target = Path.Combine(targetDirectory, file.Name);
 
             if (!File.Exists(target))
             {
