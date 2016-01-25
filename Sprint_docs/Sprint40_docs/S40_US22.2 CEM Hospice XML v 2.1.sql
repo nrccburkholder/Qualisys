@@ -747,6 +747,14 @@ from cem.ExportDataset00000000 eds
 where LEN(ltrim(rtrim([decedentleveldata.icd10]))) > 0 
 and eds.ExportQueueID = @ExportQueueID
 
+-- if icd10 code is a z code, then mark as missing
+update eds 
+	set [decedentleveldata.decedent-primary-diagnosis] =  'MMMMMMMM'
+from cem.ExportDataset00000000 eds 
+where [decedentleveldata.diagnosis-code-format] ='2'
+and substring((ltrim(rtrim([decedentleveldata.icd10]))),1,1) = 'Z'
+and eds.ExportQueueID = @ExportQueueID
+
 /* 
 Hospice Missing DOD Count -----As an authorized Hospice CAHPS vendor, we must keep a count of records w/ missing dates of death, so that we can submit data according to specifications 
 S37 US 1.1 Alter the Hospice CAHPS CEM template post processing proc to grab this data from Qualisys  11/03/2015  TSB
