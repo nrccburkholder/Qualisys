@@ -201,6 +201,10 @@ values ('OAS_HE_HowHelp','OAS CAHPS how helped question hand-entry field',NULL,'
 if not exists (select * from Metafield where strfield_NM = 'OAS_FacilityType')
 insert into MetaField (STRFIELD_NM, STRFIELD_DSC, FIELDGROUP_ID, STRFIELDDATATYPE, INTFIELDLENGTH, STRFIELDEDITMASK, INTSPECIALFIELD_CD, STRFIELDSHORT_NM, BITSYSKEY, bitPhase1Field, intAddrCleanCode, intAddrCleanGroup, bitPII)
 values ('OAS_FacilityType','OAS CAHPS facility type (HOPD or ASC)',@OASId,'S',10,NULL,NULL,'OASFTyp',0,0,NULL,NULL,0)
+if not exists (select * from Metafield where strfield_NM = 'CPT_Srg_Cd_Valid')
+insert into MetaField (STRFIELD_NM, STRFIELD_DSC, FIELDGROUP_ID, STRFIELDDATATYPE, INTFIELDLENGTH, STRFIELDEDITMASK, INTSPECIALFIELD_CD, STRFIELDSHORT_NM, BITSYSKEY, bitPhase1Field, intAddrCleanCode, intAddrCleanGroup, bitPII)
+values ('CPT_Srg_Cd_Valid','OAS CAHPS CPT Codes Valid',@OASId,'S',10,NULL,NULL,'CPTSrgCV',0,0,NULL,NULL,0)
+
 
 GO
 
@@ -285,20 +289,50 @@ if not exists(select * from SurveyTypeDefaultCriteria
 insert into SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteriaStmt_id)
 values (@OAScahpsId, 1, @DCStmtId)
 
-select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'CPT4'
+--select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'CPT4'
+--if not exists (select * from DefaultCriteriaClause where DefaultCriteriaStmt_id = @DCStmtId and CriteriaPhrase_id = 1)
+--insert into DefaultCriteriaClause (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm, Field_id, intOperator, strLowValue, strHighValue)
+--values (@DCStmtId, 1, 'ENCOUNTER', @Fieldid, 7, '', '')
+--if not exists (select * from DefaultCriteriaClause where DefaultCriteriaStmt_id = @DCStmtId and CriteriaPhrase_id = 4)
+--insert into DefaultCriteriaClause (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm, Field_id, intOperator, strLowValue, strHighValue)
+--values (@DCStmtId, 4, 'ENCOUNTER', @Fieldid, 11, '10021', '69990')
+
+--select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'CPT4_2'
+--if not exists (select * from DefaultCriteriaClause where DefaultCriteriaStmt_id = @DCStmtId and CriteriaPhrase_id = 2)
+--insert into DefaultCriteriaClause (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm, Field_id, intOperator, strLowValue, strHighValue)
+--values (@DCStmtId, 2, 'ENCOUNTER', @Fieldid, 7, '', '')
+--if not exists (select * from DefaultCriteriaClause where DefaultCriteriaStmt_id = @DCStmtId and CriteriaPhrase_id = 5)
+--insert into DefaultCriteriaClause (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm, Field_id, intOperator, strLowValue, strHighValue)
+--values (@DCStmtId, 5, 'ENCOUNTER', @Fieldid, 11, '10021', '69990')
+
+--select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'CPT4_3'
+--if not exists (select * from DefaultCriteriaClause where DefaultCriteriaStmt_id = @DCStmtId and CriteriaPhrase_id = 3)
+--insert into DefaultCriteriaClause (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm, Field_id, intOperator, strLowValue, strHighValue)
+--values (@DCStmtId, 3, 'ENCOUNTER', @Fieldid, 7, '', '')
+--if not exists (select * from DefaultCriteriaClause where DefaultCriteriaStmt_id = @DCStmtId and CriteriaPhrase_id = 6)
+--insert into DefaultCriteriaClause (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm, Field_id, intOperator, strLowValue, strHighValue)
+--values (@DCStmtId, 6, 'ENCOUNTER', @Fieldid, 11, '10021', '69990')
+
+select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'CPT_Srg_Cd_Valid'
 if not exists (select * from DefaultCriteriaClause where DefaultCriteriaStmt_id = @DCStmtId and CriteriaPhrase_id = 1)
 insert into DefaultCriteriaClause (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm, Field_id, intOperator, strLowValue, strHighValue)
-values (@DCStmtId, 1, 'ENCOUNTER', @Fieldid, 7, '', '')
+values (@DCStmtId, 1, 'ENCOUNTER', @Fieldid, 1, '0', '')
 
-select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'CPT4_2'
+select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'HCPCSLvl2Cd'
 if not exists (select * from DefaultCriteriaClause where DefaultCriteriaStmt_id = @DCStmtId and CriteriaPhrase_id = 2)
 insert into DefaultCriteriaClause (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm, Field_id, intOperator, strLowValue, strHighValue)
-values (@DCStmtId, 2, 'ENCOUNTER', @Fieldid, 7, '', '')
+values (@DCStmtId, 2, 'ENCOUNTER', @Fieldid, 11, '', '')
 
-select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'CPT4_3'
+select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'HCPCSLvl2Cd_2'
 if not exists (select * from DefaultCriteriaClause where DefaultCriteriaStmt_id = @DCStmtId and CriteriaPhrase_id = 3)
 insert into DefaultCriteriaClause (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm, Field_id, intOperator, strLowValue, strHighValue)
-values (@DCStmtId, 3, 'ENCOUNTER', @Fieldid, 7, '', '')
+values (@DCStmtId, 3, 'ENCOUNTER', @Fieldid, 11, '', '')
+
+select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'HCPCSLvl2Cd_3'
+if not exists (select * from DefaultCriteriaClause where DefaultCriteriaStmt_id = @DCStmtId and CriteriaPhrase_id = 4)
+insert into DefaultCriteriaClause (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm, Field_id, intOperator, strLowValue, strHighValue)
+values (@DCStmtId, 4, 'ENCOUNTER', @Fieldid, 11, '', '')
+
 ----------------------
 
 --select * from SurveyTypeDefaultCriteria dc inner join DefaultCriteriaStmt cs on dc.DefaultCriteriaStmt_id = cs.DefaultCriteriaStmt_id where SurveyType_id = 16
@@ -320,67 +354,111 @@ and intoperator = 7
 
 --declare @OAScahpsId int
 select @OAScahpsId = SurveyType_Id from SurveyType where SurveyType_dsc = 'OAS CAHPS'
-declare @cpt1 int, @cpt2 int, @cpt3 int
+--declare @cpt1 int, @cpt2 int, @cpt3 int
 
-select @cpt1 = defaultcriteriaclause_id from defaultcriteriaclause dcc 
-inner join defaultcriteriastmt dcis on dcis.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
-inner join surveytypedefaultcriteria stdc on stdc.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
-where surveytype_id = @OAScahpsId and intoperator = 7 and CriteriaPhrase_id = 1
+--select @cpt1 = defaultcriteriaclause_id from defaultcriteriaclause dcc 
+--inner join defaultcriteriastmt dcis on dcis.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
+--inner join surveytypedefaultcriteria stdc on stdc.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
+--where surveytype_id = @OAScahpsId and intoperator = 7 and CriteriaPhrase_id = 1
+
+--select @cpt2 = defaultcriteriaclause_id from defaultcriteriaclause dcc 
+--inner join defaultcriteriastmt dcis on dcis.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
+--inner join surveytypedefaultcriteria stdc on stdc.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
+--where surveytype_id = @OAScahpsId and intoperator = 7 and CriteriaPhrase_id = 2
+
+--select @cpt3 = defaultcriteriaclause_id from defaultcriteriaclause dcc 
+--inner join defaultcriteriastmt dcis on dcis.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
+--inner join surveytypedefaultcriteria stdc on stdc.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
+--where surveytype_id = @OAScahpsId and intoperator = 7 and CriteriaPhrase_id = 3
+
+--if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt1 and strListValue = '16020')
+--insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt1, '16020')
+--if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt1 and strListValue = '16025')
+--insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt1, '16025')
+--if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt1 and strListValue = '16030')
+--insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt1, '16030')
+--if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt1 and strListValue = '29581')
+--insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt1, '29581')
+--if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt1 and strListValue = '36600')
+--insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt1, '36600')
+--if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt1 and strListValue = '36415')
+--insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt1, '36415')
+--if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt1 and strListValue = '36416')
+--insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt1, '36416')
+
+--if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = '16020')
+--insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt2, '16020')
+--if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = '16025')
+--insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt2, '16025')
+--if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = '16030')
+--insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt2, '16030')
+--if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = '29581')
+--insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt2, '29581')
+--if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = '36600')
+--insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt2, '36600')
+--if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = '36415')
+--insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt2, '36415')
+--if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = '36416')
+--insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt2, '36416')
+
+--if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '16020')
+--insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt3, '16020')
+--if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '16025')
+--insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt3, '16025')
+--if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '16030')
+--insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt3, '16030')
+--if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '29581')
+--insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt3, '29581')
+--if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '36600')
+--insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt3, '36600')
+--if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '36415')
+--insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt3, '36415')
+--if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '36416')
+--insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt3, '36416')
+
+declare @cpt2 int, @cpt3 int, @cpt4 int
 
 select @cpt2 = defaultcriteriaclause_id from defaultcriteriaclause dcc 
 inner join defaultcriteriastmt dcis on dcis.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
 inner join surveytypedefaultcriteria stdc on stdc.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
-where surveytype_id = @OAScahpsId and intoperator = 7 and CriteriaPhrase_id = 2
+where surveytype_id = @OAScahpsId and intoperator = 11 and CriteriaPhrase_id = 2
 
 select @cpt3 = defaultcriteriaclause_id from defaultcriteriaclause dcc 
 inner join defaultcriteriastmt dcis on dcis.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
 inner join surveytypedefaultcriteria stdc on stdc.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
-where surveytype_id = @OAScahpsId and intoperator = 7 and CriteriaPhrase_id = 3
+where surveytype_id = @OAScahpsId and intoperator = 11 and CriteriaPhrase_id = 3
 
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt1 and strListValue = '16020')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt1, '16020')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt1 and strListValue = '16025')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt1, '16025')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt1 and strListValue = '16030')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt1, '16030')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt1 and strListValue = '29581')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt1, '29581')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt1 and strListValue = '36600')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt1, '36600')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt1 and strListValue = '36415')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt1, '36415')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt1 and strListValue = '36416')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt1, '36416')
+select @cpt4 = defaultcriteriaclause_id from defaultcriteriaclause dcc 
+inner join defaultcriteriastmt dcis on dcis.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
+inner join surveytypedefaultcriteria stdc on stdc.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
+where surveytype_id = @OAScahpsId and intoperator = 11 and CriteriaPhrase_id = 4
 
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = '16020')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt2, '16020')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = '16025')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt2, '16025')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = '16030')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt2, '16030')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = '29581')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt2, '29581')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = '36600')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt2, '36600')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = '36415')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt2, '36415')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = '36416')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt2, '36416')
+if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = 'G0104')
+insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt2, 'G0104')
+if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = 'G0105')
+insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt2, 'G0105')
+if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = 'G0121')
+insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt2, 'G0121')
+if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = 'G0260')
+insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt2, 'G0260')
 
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '16020')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt3, '16020')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '16025')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt3, '16025')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '16030')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt3, '16030')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '29581')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt3, '29581')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '36600')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt3, '36600')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '36415')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt3, '36415')
-if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '36416')
-insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt3, '36416')
+if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = 'G0104')
+insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt3, 'G0104')
+if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = 'G0105')
+insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt3, 'G0105')
+if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = 'G0121')
+insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt3, 'G0121')
+if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = 'G0260')
+insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt3, 'G0260')
+
+if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt4 and strListValue = 'G0104')
+insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt4, 'G0104')
+if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt4 and strListValue = 'G0105')
+insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt4, 'G0105')
+if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt4 and strListValue = 'G0121')
+insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt4, 'G0121')
+if not exists (select * from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt4 and strListValue = 'G0260')
+insert into DefaultCriteriaInList (DefaultCriteriaClause_id,strListValue) values (@cpt4, 'G0260')
 
 go
 
@@ -1771,6 +1849,9 @@ if not exists (select 1 from SurveyValidationFields where ColumnName = 'CPT4_2' 
 if not exists (select 1 from SurveyValidationFields where ColumnName = 'CPT4_3' and SurveyType_id = @SurveyType_ID)
 	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
 	values('Encounter','CPT4_3', @SurveyType_ID, 1)
+if not exists (select 1 from SurveyValidationFields where ColumnName = 'CPT_Srg_Cd_Valid' and SurveyType_id = @SurveyType_ID)
+	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
+	values('Encounter','CPT_Srg_Cd_Valid', @SurveyType_ID, 1)
 if not exists (select 1 from SurveyValidationFields where ColumnName = 'FacilityName' and SurveyType_id = @SurveyType_ID)
 	insert into SurveyValidationFields(TableName, ColumnName, SurveyType_Id, bitActive)
 	values('Encounter','FacilityName', @SurveyType_ID, 1)
@@ -1909,6 +1990,13 @@ if not exists(select * from SurveyTypeQuestionMappings where SurveyType_id = @Su
 insert into SurveyTypeQuestionMappings (SurveyType_id, QstnCore, intOrder, bitFirstOnForm, bitExpanded, datEncounterStart_dt, datEncounterEnd_dt, SubType_ID)
 values(@SurveyType_ID,54122,40,0,0,'2016-01-01','2999-12-31',0) 
 
+update o1 set o1.strOperator = o2.strOperator, o1.strLogic = o2.strLogic 
+--select o1.*, o2.* 
+from operator o1 inner join operator o2 on o1.operator_num = 11 and o2.operator_num = 12
+
+delete
+--select *
+from operator where operator_num = 12
 
 --rollback tran	
 commit tran

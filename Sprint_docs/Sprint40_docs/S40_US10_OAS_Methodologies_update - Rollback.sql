@@ -189,6 +189,38 @@ delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and str
 delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '36415'
 delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '36416'
 
+declare @cpt7 int, @cpt8 int, @cpt9 int
+
+select @cpt7 = defaultcriteriaclause_id from defaultcriteriaclause dcc 
+inner join defaultcriteriastmt dcis on dcis.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
+inner join surveytypedefaultcriteria stdc on stdc.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
+where surveytype_id = @OAScahpsId and intoperator = 12 and CriteriaPhrase_id = 7
+
+select @cpt8 = defaultcriteriaclause_id from defaultcriteriaclause dcc 
+inner join defaultcriteriastmt dcis on dcis.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
+inner join surveytypedefaultcriteria stdc on stdc.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
+where surveytype_id = @OAScahpsId and intoperator = 12 and CriteriaPhrase_id = 8
+
+select @cpt9 = defaultcriteriaclause_id from defaultcriteriaclause dcc 
+inner join defaultcriteriastmt dcis on dcis.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
+inner join surveytypedefaultcriteria stdc on stdc.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
+where surveytype_id = @OAScahpsId and intoperator = 12 and CriteriaPhrase_id = 9
+
+delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt7 and strListValue = 'G0104'
+delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt7 and strListValue = 'G0105'
+delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt7 and strListValue = 'G0121'
+delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt7 and strListValue = 'G0260'
+
+delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt8 and strListValue = 'G0104'
+delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt8 and strListValue = 'G0105'
+delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt8 and strListValue = 'G0121'
+delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt8 and strListValue = 'G0260'
+
+delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt9 and strListValue = 'G0104'
+delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt9 and strListValue = 'G0105'
+delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt9 and strListValue = 'G0121'
+delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt9 and strListValue = 'G0260'
+
 --declare @OAScahpsId int
 select @OAScahpsId = SurveyType_Id from SurveyType where SurveyType_dsc = 'OAS CAHPS'
 declare @DCStmtId int, @FieldId int
@@ -214,14 +246,7 @@ delete from DefaultCriteriaStmt
 
 select @DCStmtId = DefaultCriteriaStmt_Id from DefaultCriteriaStmt 
 				where strCriteriaStmt_nm = 'DQ_SrgCd' and strCriteriaString = 'CPT4 in (''16020'', ''16025'', ''16030'', ''29581'', ''36600'', ''36415'', ''36416'') OR CPT4_2 in (''16020'', ''16025'', ''16030'', ''29581'', ''36600'', ''36415'', ''36416'') OR CPT4_3 in (''16020'', ''16025'', ''16030'', ''29581'', ''36600'', ''36415'', ''36416'')' and BusRule_cd = 'Q'
-select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'CPT4'
-delete from DefaultCriteriaClause where DefaultCriteriaStmt_id = @DCStmtId and CriteriaPhrase_id = 1
-
-select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'CPT4_2'
-delete from DefaultCriteriaClause where DefaultCriteriaStmt_id = @DCStmtId and CriteriaPhrase_id = 2
-
-select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'CPT4_3'
-delete from DefaultCriteriaClause where DefaultCriteriaStmt_id = @DCStmtId and CriteriaPhrase_id = 3
+delete from DefaultCriteriaClause where DefaultCriteriaStmt_id = @DCStmtId 
 
 delete from SurveyTypeDefaultCriteria 
 				where (SurveyType_id = @OAScahpsId and Country_id = 1 and DefaultCriteriaStmt_id = @DCStmtId)
@@ -1852,6 +1877,7 @@ delete from SurveyValidationFields where ColumnName = 'HCPCSLvl2Cd_3' and Survey
 delete from SurveyValidationFields where ColumnName = 'CPT4' and SurveyType_id = @SurveyType_ID
 delete from SurveyValidationFields where ColumnName = 'CPT4_2' and SurveyType_id = @SurveyType_ID
 delete from SurveyValidationFields where ColumnName = 'CPT4_3' and SurveyType_id = @SurveyType_ID
+delete from SurveyValidationFields where ColumnName = 'CPT_Srg_Cd_Valid' and SurveyType_id = @SurveyType_ID
 delete from SurveyValidationFields where ColumnName = 'FacilityName' and SurveyType_id = @SurveyType_ID
 delete from SurveyValidationFields where ColumnName = 'CCN' and SurveyType_id = @SurveyType_ID
 delete from SurveyValidationFields where ColumnName = 'ServiceDate' and SurveyType_id = @SurveyType_ID
@@ -1904,6 +1930,12 @@ delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and 
 delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54121
 delete from SurveyTypeQuestionMappings where SurveyType_id = @SurveyType_id and QstnCore = 54122
 
+update o1 set o1.strOperator = 'NOT BETWEEN', o1.strLogic = o2.strLogic 
+--select o1.*, o2.* 
+from operator o1 inner join operator o2 on o1.operator_num = 11 and o2.operator_num = 8
+
+insert into operator
+select 12,	'NOT IN','%INLIST%'
 
 --rollback tran	
 commit tran
