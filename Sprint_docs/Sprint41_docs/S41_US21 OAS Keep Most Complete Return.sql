@@ -14,10 +14,9 @@
 
 USE [QP_PROD]
 
-IF NOT EXISTS (select 1 from dbo.QUALPRO_PARAMS WHERE STRPARAM_NM = 'CAHPSCompletnessLogging' and STRPARAM_GRP = 'CAHPS')
+IF NOT EXISTS (select 1 from dbo.QUALPRO_PARAMS WHERE STRPARAM_NM = 'CAHPSCompletenessLogging' and STRPARAM_GRP = 'CAHPS')
 	insert QualPro_Params(STRPARAM_NM,STRPARAM_TYPE,STRPARAM_GRP,STRPARAM_VALUE,NUMPARAM_VALUE,DATPARAM_VALUE,COMMENTS)
-	values('CAHPSCompletnessLogging','S','CAHPS','0',NULL,NULL,'Flag to determine if we are logging in CHECKFORCAHPSINCOMPLETES proc')
-
+	values('CAHPSCompletenessLogging','S','CAHPS',NULL,1,NULL,'Flag to determine if we are logging in CHECKFORCAHPSINCOMPLETES proc')
 
 
 
@@ -55,9 +54,8 @@ AS
 
 DECLARE @doLogging bit = 0
 
-IF EXISTS (select 1 from dbo.QUALPRO_PARAMS WHERE STRPARAM_NM = 'CAHPSCompletnessLogging' and STRPARAM_GRP = 'CAHPS')
-	SELECT @doLogging = CASE STRPARAM_VALUE WHEN '1' THEN 1 ELSE 0 END
-	FROM dbo.QUALPRO_PARAMS WHERE STRPARAM_NM = 'CAHPSCompletnessLogging' and STRPARAM_GRP = 'CAHPS'
+SELECT @doLogging = NUMPARAM_VALUE
+FROM dbo.QUALPRO_PARAMS WHERE STRPARAM_NM = 'CAHPSCompletenessLogging' and STRPARAM_GRP = 'CAHPS'
 
 
 DECLARE @MinDate DATE;
@@ -158,12 +156,12 @@ AND ACODisposition = 34
 			into #Audit
 			from questionform qf
 			inner join survey_def sd on qf.survey_id=sd.survey_id
-			where sd.surveytype_id in (3,8)
+			where sd.surveytype_id in (3,8,16)
 			and qf.datreturned > convert(datetime,floor(convert(float,getdate())))
 			and @doLogging = 1
 			-----
 
-			-- ICH CAHPS & Home Health CAHPS processing
+			-- ICH CAHPS & Home Health CAHPS & OAS CAHPS processing
 			/* begin addition */
 			select Surveytype_dsc, survey_id, QuestionForm_id, sentmail_id, samplepop_id, receipttype_id, strMailingStep_nm, 0 as ResponseCount, 0 as FutureScheduledMailing, 1 as AllMailStepsAreBack----, convert(datetime,null) as GenDate1st, convert(datetime,null) as GenDate2nd
 			, 0 as tempFlag
@@ -323,17 +321,15 @@ AND ACODisposition = 34
 					and qf.unusedreturn_id=5
 					-----
 
-					if @doLogging = 1
+					if exists (select * from Questionform_Missing_datReturned where QfMissingDatreturned_id>@maxQFerror)
 					begin
-						if exists (select * from Questionform_Missing_datReturned where QfMissingDatreturned_id>@maxQFerror)
-						begin
-							select @sql = 'yo! (a) There are ' + convert(varchar,count(*))+' new records in Questionform_Missing_datReturned. QfMissingDatreturned_id between ' + convert(varchar,min(QfMissingDatreturned_id)) + ' and ' + convert(varchar,max(QfMissingDatreturned_id))
-							from Questionform_Missing_datReturned
-							where QfMissingDatreturned_id>@maxQFerror
-							print @SQL
-							select @maxQFerror = max(QfMissingDatreturned_id) from Questionform_Missing_datReturned
-						end
+						select @sql = 'yo! (a) There are ' + convert(varchar,count(*))+' new records in Questionform_Missing_datReturned. QfMissingDatreturned_id between ' + convert(varchar,min(QfMissingDatreturned_id)) + ' and ' + convert(varchar,max(QfMissingDatreturned_id))
+						from Questionform_Missing_datReturned
+						where QfMissingDatreturned_id>@maxQFerror
+						print @SQL
+						select @maxQFerror = max(QfMissingDatreturned_id) from Questionform_Missing_datReturned
 					end
+
 					-----
 
 					delete from #takebest where orgBitETLThisReturn=newBitETLThisReturn
@@ -366,17 +362,16 @@ AND ACODisposition = 34
 					and qf.datReturned is not NULL
 					-----
 
-					if @doLogging = 1
+
+					if exists (select * from Questionform_Missing_datReturned where QfMissingDatreturned_id>@maxQFerror)
 					begin
-						if exists (select * from Questionform_Missing_datReturned where QfMissingDatreturned_id>@maxQFerror)
-						begin
-							select @sql = 'yo! (b) There are ' + convert(varchar,count(*))+' new records in Questionform_Missing_datReturned. QfMissingDatreturned_id between ' + convert(varchar,min(QfMissingDatreturned_id)) + ' and ' + convert(varchar,max(QfMissingDatreturned_id))
-							from Questionform_Missing_datReturned
-							where QfMissingDatreturned_id>@maxQFerror
-							print @SQL
-							select @maxQFerror = max(QfMissingDatreturned_id) from Questionform_Missing_datReturned
-						end
+						select @sql = 'yo! (b) There are ' + convert(varchar,count(*))+' new records in Questionform_Missing_datReturned. QfMissingDatreturned_id between ' + convert(varchar,min(QfMissingDatreturned_id)) + ' and ' + convert(varchar,max(QfMissingDatreturned_id))
+						from Questionform_Missing_datReturned
+						where QfMissingDatreturned_id>@maxQFerror
+						print @SQL
+						select @maxQFerror = max(QfMissingDatreturned_id) from Questionform_Missing_datReturned
 					end
+
 					-----
 					
 					-- move the previous return's results from questionresult2 to questionresult
@@ -407,17 +402,16 @@ AND ACODisposition = 34
 					and qf.datUnusedReturn is not null
 					and qf.unusedreturn_id=5
 					-----
-					if @doLogging = 1
+
+					if exists (select * from Questionform_Missing_datReturned where QfMissingDatreturned_id>@maxQFerror)
 					begin
-						if exists (select * from Questionform_Missing_datReturned where QfMissingDatreturned_id>@maxQFerror)
-						begin
-							select @sql = 'yo! (c) There are ' + convert(varchar,count(*))+' new records in Questionform_Missing_datReturned. QfMissingDatreturned_id between ' + convert(varchar,min(QfMissingDatreturned_id)) + ' and ' + convert(varchar,max(QfMissingDatreturned_id))
-							from Questionform_Missing_datReturned
-							where QfMissingDatreturned_id>@maxQFerror
-							print @SQL
-							select @maxQFerror = max(QfMissingDatreturned_id) from Questionform_Missing_datReturned
-						end
+						select @sql = 'yo! (c) There are ' + convert(varchar,count(*))+' new records in Questionform_Missing_datReturned. QfMissingDatreturned_id between ' + convert(varchar,min(QfMissingDatreturned_id)) + ' and ' + convert(varchar,max(QfMissingDatreturned_id))
+						from Questionform_Missing_datReturned
+						where QfMissingDatreturned_id>@maxQFerror
+						print @SQL
+						select @maxQFerror = max(QfMissingDatreturned_id) from Questionform_Missing_datReturned
 					end
+
 					-----
 				
 					-- change the record in #todaysreturns to bitETLThisReturn=0
@@ -508,7 +502,8 @@ AND ACODisposition = 34
 					on tr.QuestionForm_id=rc.QuestionForm_id
 			where tr.Surveytype_dsc = 'Home Health CAHPS'
 
-			update tr --S41 US21     01/22/106
+			-- New: S41 US21     01/22/106 T.Butler
+			update tr 
 			set bitComplete = case when (cast(ATACnt as float)/cast(22 as float)) * 100 >= 50 then 1 else 0 end
 			from #TodaysReturns tr
 			inner join (select qr.QuestionForm_id, count(distinct sq.qstncore) as ATACnt
@@ -638,17 +633,16 @@ where bitETLThisReturn=0
 and qf.UnusedReturn_id=0
 and qf.datReturned is not null
 					-----
-					if @doLogging = 1
+
+					if exists (select * from Questionform_Missing_datReturned where QfMissingDatreturned_id>@maxQFerror)
 					begin
-						if exists (select * from Questionform_Missing_datReturned where QfMissingDatreturned_id>@maxQFerror)
-						begin
-							select @sql = 'yo! (d) There are ' + convert(varchar,count(*))+' new records in Questionform_Missing_datReturned. QfMissingDatreturned_id between ' + convert(varchar,min(QfMissingDatreturned_id)) + ' and ' + convert(varchar,max(QfMissingDatreturned_id))
-							from Questionform_Missing_datReturned
-							where QfMissingDatreturned_id>@maxQFerror
-							print @SQL
-							select @maxQFerror = max(QfMissingDatreturned_id) from Questionform_Missing_datReturned
-						end
+						select @sql = 'yo! (d) There are ' + convert(varchar,count(*))+' new records in Questionform_Missing_datReturned. QfMissingDatreturned_id between ' + convert(varchar,min(QfMissingDatreturned_id)) + ' and ' + convert(varchar,max(QfMissingDatreturned_id))
+						from Questionform_Missing_datReturned
+						where QfMissingDatreturned_id>@maxQFerror
+						print @SQL
+						select @maxQFerror = max(QfMissingDatreturned_id) from Questionform_Missing_datReturned
 					end
+
 					-----
 
 -- move blank/incomplete and partial results into QuestionResult2
@@ -1051,7 +1045,7 @@ from QuestionForm qf
 inner join #partials p on qf.QuestionForm_id=p.QuestionForm_id
 where p.unusedreturn_id=5
 and p.bitUse=1
-and qf.datUnusedReturn is not null --> S41 US21  
+and qf.datUnusedReturn is not null --> S41 US21     01/22/106 T.Butler 
 
 if @@rowcount>0
 begin
@@ -1098,6 +1092,7 @@ begin
 			on p.questionform_id=rc.questionform_id
 	where p.Surveytype_id in (3) -- Home Health CAHPS
 
+	-- New: S41 US21     01/22/106 T.Butler
 	update p
 	set bitComplete=case when (cast(ATACnt as float)/cast(22 as float)) * 100 >= 50 then 1 else 0 end
 	from #partials p
@@ -1118,7 +1113,7 @@ begin
 				AND ss.language = 1 
 				group by qr.questionform_id) rc
 			on p.questionform_id=rc.questionform_id
-	where p.Surveytype_id in (16) -- OAS CAHPS
+	where p.Surveytype_id in (16) -- OAS CAHPS 
 
 
 	update qf 

@@ -16,10 +16,10 @@
 
 USE [QP_PROD]
 
-IF EXISTS (select 1 from dbo.QUALPRO_PARAMS WHERE STRPARAM_NM = 'CAHPSCompletnessLogging' and STRPARAM_GRP = 'CAHPS')
+IF EXISTS (select 1 from dbo.QUALPRO_PARAMS WHERE STRPARAM_NM = 'CAHPSCompletenessLogging' and STRPARAM_GRP = 'CAHPS')
 begin
 
-	delete from dbo.QUALPRO_PARAMS WHERE STRPARAM_NM = 'CAHPSCompletnessLogging' and STRPARAM_GRP = 'CAHPS'
+	delete from dbo.QUALPRO_PARAMS WHERE STRPARAM_NM = 'CAHPSCompletenessLogging' and STRPARAM_GRP = 'CAHPS'
 
 	DECLARE @param_id int
 
