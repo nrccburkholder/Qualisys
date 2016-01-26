@@ -17,7 +17,7 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
 
             string retVal = _regex.Replace(from, "");
 
-            return retVal;
+            return retVal.PadLeft(6, '0');
         }
     }
 }
