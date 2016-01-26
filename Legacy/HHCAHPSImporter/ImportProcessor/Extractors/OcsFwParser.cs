@@ -179,7 +179,7 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
                         CreateFieldElement(OtherPaymentDiagnosisICD_F3Field, body.ICD_F3),
                         CreateFieldElement(OtherPaymentDiagnosisICD_F4Field, body.ICD_F4),
                         CreateFieldElement(SurgicalDischargeField, body.Surgical_Discharge),
-                        CreateFieldElement(EndStageRenalDiseaseESRDField, body.ESRD),
+                        CreateFieldElement(EndStageRenalDiseaseESRDField, GetESRD(body.ESRD, body.ICD_A2, body.ICD_B2, body.ICD_C2, body.ICD_D2, body.ICD_E2, body.ICD_F2)),
                         CreateFieldElement(DialysisIndicatorField, body.Dialysis_Indicator),
                         CreateFieldElement(ReferralSourceField, body.Referral_Source),
                         CreateFieldElement(SkilledNursingField, body.SN),

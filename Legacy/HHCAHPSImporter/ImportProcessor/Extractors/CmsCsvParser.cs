@@ -114,7 +114,7 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
                             CreateFieldElement(OtherPaymentDiagnosisICD_F3Field, ""),
                             CreateFieldElement(OtherPaymentDiagnosisICD_F4Field, ""),
                             CreateFieldElement(SurgicalDischargeField, body.Surgical_Discharge),
-                            CreateFieldElement(EndStageRenalDiseaseESRDField, body.ESRD),
+                            CreateFieldElement(EndStageRenalDiseaseESRDField, GetESRD(body.ESRD, body.ICD_A2, body.ICD_B2, body.ICD_C2, body.ICD_D2, body.ICD_E2, body.ICD_F2)),
                             CreateFieldElement(DialysisIndicatorField, ""),
                             CreateFieldElement(ReferralSourceField, ""),
                             CreateFieldElement(SkilledNursingField, ""),
