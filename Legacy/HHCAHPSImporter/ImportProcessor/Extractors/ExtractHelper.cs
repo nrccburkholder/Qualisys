@@ -341,5 +341,37 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
         {
             return int.Parse(GetMetadataFieldValue(xml, YearField));
         }
+
+        public static string GetESRD(string ESRD, string ICD_A2, string ICD_B2, string ICD_C2, string ICD_D2, string ICD_E2, string ICD_F2)
+        {
+            if (ESRD != null || ESRD.Trim().Equals("1")) return ESRD;
+            if (AreAnyESRD(ICD_A2, ICD_B2, ICD_C2, ICD_D2, ICD_E2, ICD_F2)) return "1";
+            return ESRD;
+        }
+
+        public static bool AreAnyESRD(string ICD_A2, string ICD_B2, string ICD_C2, string ICD_D2, string ICD_E2, string ICD_F2)
+        {
+            return IsESRD_ICDCode(ICD_A2)
+                    || IsESRD_ICDCode(ICD_B2)
+                    || IsESRD_ICDCode(ICD_C2)
+                    || IsESRD_ICDCode(ICD_D2)
+                    || IsESRD_ICDCode(ICD_E2)
+                    || IsESRD_ICDCode(ICD_F2);
+        }
+
+        public static bool IsESRD_ICDCode(string ICDCode)
+        {
+            if (ICDCode == null)
+            {
+                return false;
+            }
+
+            if (ICDCode.StartsWith("585.6") || ICDCode.Equals("V45.11") || ICDCode.Equals("V45.12")
+                || ICDCode.Equals("N18.6") || ICDCode.Equals("Z99.2") || ICDCode.Equals("Z91.15")
+                )
+                return true;
+            else
+                return false;
+        }
     }
 }

@@ -107,7 +107,7 @@ namespace HHCAHPS.ImportProcessorTest
         [TestMethod]
         public void Parse_Sample1File_MetadataHasProviderId()
         {
-            AssertSample1FileMetadataHasField(ExtractHelper.ProviderIdField, "58110");
+            AssertSample1FileMetadataHasField(ExtractHelper.ProviderIdField, "058110");
         }
 
         [TestMethod]
