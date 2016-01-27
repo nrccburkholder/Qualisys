@@ -314,24 +314,24 @@ values (@OAScahpsId, 1, @DCStmtId)
 --values (@DCStmtId, 6, 'ENCOUNTER', @Fieldid, 11, '10021', '69990')
 
 select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'CPT_Srg_Cd_Valid'
-if not exists (select * from DefaultCriteriaClause where DefaultCriteriaStmt_id = @DCStmtId and CriteriaPhrase_id = 1)
+if not exists (select * from DefaultCriteriaClause where DefaultCriteriaStmt_id = @DCStmtId and and Field_id = @Field_id)
 insert into DefaultCriteriaClause (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm, Field_id, intOperator, strLowValue, strHighValue)
 values (@DCStmtId, 1, 'ENCOUNTER', @Fieldid, 1, '0', '')
 
 select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'HCPCSLvl2Cd'
-if not exists (select * from DefaultCriteriaClause where DefaultCriteriaStmt_id = @DCStmtId and CriteriaPhrase_id = 2)
+if not exists (select * from DefaultCriteriaClause where DefaultCriteriaStmt_id = @DCStmtId and Field_id = @Field_id)
 insert into DefaultCriteriaClause (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm, Field_id, intOperator, strLowValue, strHighValue)
-values (@DCStmtId, 2, 'ENCOUNTER', @Fieldid, 11, '', '')
+values (@DCStmtId, 1, 'ENCOUNTER', @Fieldid, 11, '', '')
 
 select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'HCPCSLvl2Cd_2'
-if not exists (select * from DefaultCriteriaClause where DefaultCriteriaStmt_id = @DCStmtId and CriteriaPhrase_id = 3)
+if not exists (select * from DefaultCriteriaClause where DefaultCriteriaStmt_id = @DCStmtId and Field_id = @Field_id)
 insert into DefaultCriteriaClause (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm, Field_id, intOperator, strLowValue, strHighValue)
-values (@DCStmtId, 3, 'ENCOUNTER', @Fieldid, 11, '', '')
+values (@DCStmtId, 1, 'ENCOUNTER', @Fieldid, 11, '', '')
 
 select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'HCPCSLvl2Cd_3'
-if not exists (select * from DefaultCriteriaClause where DefaultCriteriaStmt_id = @DCStmtId and CriteriaPhrase_id = 4)
+if not exists (select * from DefaultCriteriaClause where DefaultCriteriaStmt_id = @DCStmtId and Field_id = @Field_id)
 insert into DefaultCriteriaClause (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm, Field_id, intOperator, strLowValue, strHighValue)
-values (@DCStmtId, 4, 'ENCOUNTER', @Fieldid, 11, '', '')
+values (@DCStmtId, 1, 'ENCOUNTER', @Fieldid, 11, '', '')
 
 ----------------------
 
@@ -350,6 +350,19 @@ inner join defaultcriteriastmt dcis on dcis.DefaultCriteriaStmt_id = dcc.Default
 inner join surveytypedefaultcriteria stdc on stdc.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
 where surveytype_id = 16
 and intoperator = 7
+
+update dcc set criteriaphrase_id = 1 
+--select * 
+from defaultcriteriaclause dcc 
+inner join defaultcriteriastmt dcis on dcis.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
+where strCriteriaStmt_nm = 'DQ_SrgCd'
+
+update cc set criteriaphrase_id = 1 
+--select * 
+from criteriaclause cc 
+inner join criteriastmt cs on cs.CriteriaStmt_id = cc.CriteriaStmt_id
+where strCriteriaStmt_nm = 'DQ_SrgCd'
+
 */
 
 --declare @OAScahpsId int

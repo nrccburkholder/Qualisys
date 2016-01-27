@@ -148,110 +148,32 @@ delete svp from SurveyValidationProcs svp inner join SurveyValidationProcsBySurv
 
 --declare @OAScahpsId int
 select @OAScahpsId = SurveyType_Id from SurveyType where SurveyType_dsc = 'OAS CAHPS'
-declare @cpt1 int, @cpt2 int, @cpt3 int
 
-select @cpt1 = defaultcriteriaclause_id from defaultcriteriaclause dcc 
+delete from dcc
+--select * 
+from defaultcriteriainlist dcil inner join defaultcriteriaclause dcc on dcil.DefaultCriteriaClause_id = dcc.DefaultCriteriaClause_id
 inner join defaultcriteriastmt dcis on dcis.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
 inner join surveytypedefaultcriteria stdc on stdc.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
-where surveytype_id = @OAScahpsId and intoperator = 7 and CriteriaPhrase_id = 1
+where surveytype_id = @OAScahpsId 
 
-select @cpt2 = defaultcriteriaclause_id from defaultcriteriaclause dcc 
+delete from dcc
+--select * 
+from defaultcriteriaclause dcc 
 inner join defaultcriteriastmt dcis on dcis.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
 inner join surveytypedefaultcriteria stdc on stdc.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
-where surveytype_id = @OAScahpsId and intoperator = 7 and CriteriaPhrase_id = 2
+where surveytype_id = @OAScahpsId 
 
-select @cpt3 = defaultcriteriaclause_id from defaultcriteriaclause dcc 
-inner join defaultcriteriastmt dcis on dcis.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
-inner join surveytypedefaultcriteria stdc on stdc.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
-where surveytype_id = @OAScahpsId and intoperator = 7 and CriteriaPhrase_id = 3
+delete from dcis
+--select * 
+from defaultcriteriastmt dcis 
+inner join surveytypedefaultcriteria stdc on stdc.DefaultCriteriaStmt_id = dcis.DefaultCriteriaStmt_id
+where surveytype_id = @OAScahpsId 
 
-delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt1 and strListValue = '16020'
-delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt1 and strListValue = '16025'
-delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt1 and strListValue = '16030'
-delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt1 and strListValue = '29581'
-delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt1 and strListValue = '36600'
-delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt1 and strListValue = '36415'
-delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt1 and strListValue = '36416'
+delete from stdc
+--select * 
+from surveytypedefaultcriteria stdc 
+where surveytype_id = @OAScahpsId 
 
-delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = '16020'
-delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = '16025'
-delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = '16030'
-delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = '29581'
-delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = '36600'
-delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = '36415'
-delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt2 and strListValue = '36416'
-
-delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '16020'
-delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '16025'
-delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '16030'
-delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '29581'
-delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '36600'
-delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '36415'
-delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt3 and strListValue = '36416'
-
-declare @cpt7 int, @cpt8 int, @cpt9 int
-
-select @cpt7 = defaultcriteriaclause_id from defaultcriteriaclause dcc 
-inner join defaultcriteriastmt dcis on dcis.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
-inner join surveytypedefaultcriteria stdc on stdc.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
-where surveytype_id = @OAScahpsId and intoperator = 12 and CriteriaPhrase_id = 7
-
-select @cpt8 = defaultcriteriaclause_id from defaultcriteriaclause dcc 
-inner join defaultcriteriastmt dcis on dcis.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
-inner join surveytypedefaultcriteria stdc on stdc.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
-where surveytype_id = @OAScahpsId and intoperator = 12 and CriteriaPhrase_id = 8
-
-select @cpt9 = defaultcriteriaclause_id from defaultcriteriaclause dcc 
-inner join defaultcriteriastmt dcis on dcis.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
-inner join surveytypedefaultcriteria stdc on stdc.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
-where surveytype_id = @OAScahpsId and intoperator = 12 and CriteriaPhrase_id = 9
-
-delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt7 and strListValue = 'G0104'
-delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt7 and strListValue = 'G0105'
-delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt7 and strListValue = 'G0121'
-delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt7 and strListValue = 'G0260'
-
-delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt8 and strListValue = 'G0104'
-delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt8 and strListValue = 'G0105'
-delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt8 and strListValue = 'G0121'
-delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt8 and strListValue = 'G0260'
-
-delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt9 and strListValue = 'G0104'
-delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt9 and strListValue = 'G0105'
-delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt9 and strListValue = 'G0121'
-delete from DefaultCriteriaInList where DefaultCriteriaClause_id = @cpt9 and strListValue = 'G0260'
-
---declare @OAScahpsId int
-select @OAScahpsId = SurveyType_Id from SurveyType where SurveyType_dsc = 'OAS CAHPS'
-declare @DCStmtId int, @FieldId int
-
---select * from surveytypedefaultcriteria select * from defaultcriteriastmt select * from DefaultCriteriaClause select * from DefaultCriteriaInList
-----------------------
-select @DCStmtId = DefaultCriteriaStmt_id from DefaultCriteriaStmt where strCriteriaStmt_nm = 'DQ_MDFA' and strCriteriaString = '(POPULATIONAddrErr=''FO'')'
-delete from SurveyTypeDefaultCriteria 
-				where SurveyType_id = @OAScahpsId and Country_id = 1 and DefaultCriteriaStmt_id = @DCStmtId
-----------------------
-select @DCStmtId = DefaultCriteriaStmt_Id from DefaultCriteriaStmt 
-				where strCriteriaStmt_nm = 'DQ_Age' and strCriteriaString = '(ENCOUNTEROAS_VisitAge < 18)' and BusRule_cd = 'Q'
-
-delete from SurveyTypeDefaultCriteria 
-				where SurveyType_id = @OAScahpsId and Country_id = 1 and DefaultCriteriaStmt_id = @DCStmtId
-
-select @Fieldid = Field_id from MetaField where STRFIELD_NM = 'OAS_VisitAge'
-delete from DefaultCriteriaClause where DefaultCriteriaStmt_id = @DCStmtId and CriteriaPhrase_id = 1 and Field_id = @FieldId
-
-delete from DefaultCriteriaStmt 
-				where (strCriteriaStmt_nm = 'DQ_Age' and strCriteriaString = '(ENCOUNTEROAS_VisitAge < 18)' and BusRule_cd = 'Q')
-----------------------
-
-select @DCStmtId = DefaultCriteriaStmt_Id from DefaultCriteriaStmt 
-				where strCriteriaStmt_nm = 'DQ_SrgCd' and strCriteriaString = 'CPT4 in (''16020'', ''16025'', ''16030'', ''29581'', ''36600'', ''36415'', ''36416'') OR CPT4_2 in (''16020'', ''16025'', ''16030'', ''29581'', ''36600'', ''36415'', ''36416'') OR CPT4_3 in (''16020'', ''16025'', ''16030'', ''29581'', ''36600'', ''36415'', ''36416'')' and BusRule_cd = 'Q'
-delete from DefaultCriteriaClause where DefaultCriteriaStmt_id = @DCStmtId 
-
-delete from SurveyTypeDefaultCriteria 
-				where (SurveyType_id = @OAScahpsId and Country_id = 1 and DefaultCriteriaStmt_id = @DCStmtId)
-delete from DefaultCriteriaStmt 
-				where strCriteriaStmt_nm = 'DQ_SrgCd' and strCriteriaString = 'CPT4 in (''16020'', ''16025'', ''16030'', ''29581'', ''36600'', ''36415'', ''36416'') OR CPT4_2 in (''16020'', ''16025'', ''16030'', ''29581'', ''36600'', ''36415'', ''36416'') OR CPT4_3 in (''16020'', ''16025'', ''16030'', ''29581'', ''36600'', ''36415'', ''36416'')' and BusRule_cd = 'Q'
 ----------------------
 
 --select * from SurveyTypeDefaultCriteria dc inner join DefaultCriteriaStmt cs on dc.DefaultCriteriaStmt_id = cs.DefaultCriteriaStmt_id where SurveyType_id = 16
@@ -259,16 +181,26 @@ delete from DefaultCriteriaStmt
 --delete from defaultcriteriaclause where defaultcriteriaclause_id in (65,69)
 
 /*
-select * from defaultcriteriainlist dcil inner join defaultcriteriaclause dcc on dcil.DefaultCriteriaClause_id = dcc.DefaultCriteriaClause_id
+select * 
+from surveytypedefaultcriteria stdc
+where surveytype_id = 16
+
+select * 
+from defaultcriteriastmt dcis 
+inner join surveytypedefaultcriteria stdc on stdc.DefaultCriteriaStmt_id = dcis.DefaultCriteriaStmt_id
+where surveytype_id = 16
+
+select * 
+from defaultcriteriainlist dcil inner join defaultcriteriaclause dcc on dcil.DefaultCriteriaClause_id = dcc.DefaultCriteriaClause_id
 inner join defaultcriteriastmt dcis on dcis.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
 inner join surveytypedefaultcriteria stdc on stdc.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
 where surveytype_id = 16
 
-select * from defaultcriteriaclause dcc 
+select * 
+from defaultcriteriaclause dcc 
 inner join defaultcriteriastmt dcis on dcis.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
 inner join surveytypedefaultcriteria stdc on stdc.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
 where surveytype_id = 16
-and intoperator = 7
 */
 
 
