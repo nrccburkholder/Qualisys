@@ -149,7 +149,7 @@ delete svp from SurveyValidationProcs svp inner join SurveyValidationProcsBySurv
 --declare @OAScahpsId int
 select @OAScahpsId = SurveyType_Id from SurveyType where SurveyType_dsc = 'OAS CAHPS'
 
-delete from dcc
+delete from dcil
 --select * 
 from defaultcriteriainlist dcil inner join defaultcriteriaclause dcc on dcil.DefaultCriteriaClause_id = dcc.DefaultCriteriaClause_id
 inner join defaultcriteriastmt dcis on dcis.DefaultCriteriaStmt_id = dcc.DefaultCriteriaStmt_id
