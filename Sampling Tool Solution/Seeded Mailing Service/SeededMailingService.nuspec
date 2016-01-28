@@ -1,0 +1,13 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>SeededMailingService</id>
+    <title>Seeded Mailing Service</title>
+    <version>1.0.2.0</version>
+    <authors>NRC</authors>
+    <description>This service sets up the ToBeSeeded table with all of the surveys that are to be seeded each quarter.</description>
+  </metadata>
+  <files>
+    <file src="bin\Release\*"/>
+  </files>
+</package>
