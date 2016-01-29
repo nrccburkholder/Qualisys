@@ -8,10 +8,11 @@ using System.Xml;
 using System.Data;
 using System.IO;
 using System.Text.RegularExpressions;
+using HHCAHPSImporter.ImportProcessor.Extractors;
 
 namespace HHCAHPSImporter.ImportProcessor.DAL
 {
-    public class QP_DataLoadManager
+    public class QP_DataLoadManager : IMergeRecordDb
     {
         // private Generated.QP_DataLoad db = null;
         private string _connectionString;
@@ -106,6 +107,19 @@ namespace HHCAHPSImporter.ImportProcessor.DAL
         public DateTime GetUpdateFileQ4Cutoff()
         {
             return GetDateParam(UpdateFileQ4CutoffParam);
+        }
+
+        public Dictionary<string, XElement> GetMergeRecords(int sampleYear, int sampleMonth, string CCN)
+        {
+            return db
+                .MergeRecord
+                .Where(r => r.SampleYear == sampleYear && r.SampleMonth == sampleMonth && r.CCN == CCN)
+                .ToDictionary(r => r.MatchKey, r => XElement.Parse(r.RecordXml));
+        }
+
+        public void UpdateMergeRecords(int sampleYear, int sampleMonth, string CCN, XElement records)
+        {
+            db.UpdateMergeRecords(sampleYear, sampleMonth, CCN, records);
         }
 
         #region Transform Functionality

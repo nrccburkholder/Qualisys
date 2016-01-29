@@ -120,6 +120,9 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
         public const string IdAttributeName = "id";
         public const string FieldElementName = "nv";
         public const string FieldAttributeName = "n";
+        public const string MatchKeyAttributeName = "matchkey";
+
+        public const string UpdateToBlankDesignator = "-";
 
         #endregion Constants
 
@@ -322,14 +325,17 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
             return false;
         }
 
-        private static string GetMetadataFieldValue(XDocument xml, string field)
+        public static string GetFieldValue(XElement row, string field)
         {
-            return GetMetadataElement(xml)
-                .Elements(RowElementName)
-                .First()
+            return row
                 .Elements(FieldElementName)
                 .FirstOrDefault(nv => nv.Attribute(FieldAttributeName).Value == field)
                 .Value;
+        }
+
+        public static string GetMetadataFieldValue(XDocument xml, string field)
+        {
+            return GetFieldValue(GetMetadataElement(xml).Elements(RowElementName).First(), field);
         }
 
         public static int GetSampleMonth(XDocument xml)

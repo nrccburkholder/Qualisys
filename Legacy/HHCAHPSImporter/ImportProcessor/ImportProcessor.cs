@@ -157,7 +157,10 @@ namespace HHCAHPSImporter.ImportProcessor
                         {
                             throw new InvalidOperationException("Update file received after cutoff date");
                         }
+
+                        UpdateRecordMerger.Merge(sampleYear, sampleMonth, ccn, extractedData, qpDataLoadManager);
                     }
+                    UpdateRecordMerger.UpdateMergeRecords(sampleYear, sampleMonth, ccn, extractedData, qpDataLoadManager);
 
                     #region Add externally generated values to the metadata
                     extractedData.Root.Add(new XAttribute("uploadfile_id", uploadFileId));

@@ -118,6 +118,7 @@
     <Compile Include="Extractors\FileSource.cs" />
     <Compile Include="Extractors\IcdConverter.cs" />
     <Compile Include="Extractors\IExtract.cs" />
+    <Compile Include="Extractors\IMergeRecordDb.cs" />
     <Compile Include="Extractors\M0010Converter.cs" />
     <Compile Include="Extractors\MonthConverter.cs" />
     <Compile Include="Extractors\OcsPtctCsvBody.cs" />
@@ -137,6 +138,7 @@
     <Compile Include="Extractors\PhoneNumberConverter.cs" />
     <Compile Include="Extractors\PtctCsvExtractor.cs" />
     <Compile Include="Extractors\Int32Converter.cs" />
+    <Compile Include="Extractors\UpdateRecordMerger.cs" />
     <Compile Include="ImportProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
