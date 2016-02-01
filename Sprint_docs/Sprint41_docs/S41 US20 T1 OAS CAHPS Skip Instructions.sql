@@ -37,7 +37,7 @@ update qualpro_params
 set strparam_value = @override
 where strparam_nm in ('SkipInstructionFormat - OAS CAHPS + ENGLISH')
 
-select @override = '|Q54115|Si·contestó "No",·pase a la pregunta [S%s]|QElse|Si·contestó "%s,"·pase a la pregunta [S%s]'
+select @override = '|Q54115|Si·contestó "No",·pase a la pregunta [S%s]|QElse|Si·contestó "%s,"·pase a la pregunta [S%s]|'
 
 update qualpro_params 
 set strparam_value = @override
