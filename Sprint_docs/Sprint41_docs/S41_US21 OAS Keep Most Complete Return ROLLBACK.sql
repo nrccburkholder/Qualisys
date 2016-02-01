@@ -14,7 +14,37 @@
 
 */
 
-USE [QP_PROD]
+USE [QP_Prod]
+GO
+
+
+IF (EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'temp_CheckForCAHPSIncompletesAudit'))
+BEGIN
+	DROP TABLE [dbo].[temp_CheckForCAHPSIncompletesAudit]
+END
+
+GO
+
+IF (EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'temp_qfResponseCount'))
+BEGIN
+	DROP TABLE [dbo].[temp_qfResponseCount]
+END
+
+GO
+
+
+IF (EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'temp_TodaysReturns'))
+BEGIN
+	DROP TABLE [dbo].[temp_TodaysReturns]
+END
+GO
+
+IF (EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'temp_takeBest'))
+BEGIN
+	DROP TABLE [dbo].[temp_takeBest]
+END
+GO
+
 
 IF EXISTS (select 1 from dbo.QUALPRO_PARAMS WHERE STRPARAM_NM = 'CAHPSCompletenessLogging' and STRPARAM_GRP = 'CAHPS')
 begin

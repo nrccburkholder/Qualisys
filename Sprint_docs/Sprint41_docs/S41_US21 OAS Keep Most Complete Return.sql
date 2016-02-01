@@ -5,11 +5,118 @@
 
 		Task 2 - Update the CheckForIncompletes, MostUsablePartials, various complete calculations to include OAS
 
+		CREATE temp_ tables for logging
 		INSERT QUALPRO_PARAM for CHECKFORCAHPSINCOMPLETES logging
 		ALTER PROCEDURE [dbo].[CheckForCAHPSIncompletes]
 		ALTER PROCEDURE [dbo].[CheckForMostCompleteUsablePartials]
 
 */
+
+
+USE [QP_Prod]
+GO
+
+
+IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'temp_CheckForCAHPSIncompletesAudit'))
+BEGIN
+
+	CREATE TABLE [dbo].[temp_CheckForCAHPSIncompletesAudit](
+		[questionform_id] [int] NOT NULL,
+		[survey_id] [int] NULL,
+		[samplepop_id] [int] NULL,
+		[datReturned] [datetime] NULL,
+		[unusedreturn_id] [int] NULL,
+		[datunusedreturn] [datetime] NULL,
+		[datresultsimported] [datetime] NULL,
+		[bitcomplete] [bit] NULL,
+		[newDatReturned] [datetime] NULL,
+		[newUnusedReturn_id] [int] NULL,
+		[newDatUnusedReturn] [datetime] NULL,
+		[newDatResultsImported] [datetime] NULL,
+		[newBitComplete] [bit] NULL,
+		[CreatedDateTime] [datetime] NULL
+	)
+
+END
+
+GO
+
+IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'temp_qfResponseCount'))
+BEGIN
+
+	CREATE TABLE [dbo].[temp_qfResponseCount](
+		[Surveytype_dsc] [varchar](100) NOT NULL,
+		[survey_id] [int] NOT NULL,
+		[QuestionForm_id] [int] NOT NULL,
+		[sentmail_id] [int] NULL,
+		[samplepop_id] [int] NULL,
+		[receipttype_id] [int] NULL,
+		[strMailingStep_nm] [varchar](42) NOT NULL,
+		[ResponseCount] [int] NOT NULL,
+		[FutureScheduledMailing] [int] NOT NULL,
+		[AllMailStepsAreBack] [int] NOT NULL,
+		[tempFlag] [int] NOT NULL,
+		[CreatedDateTime] [datetime] NULL
+	)
+
+END
+
+GO
+
+
+IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'temp_TodaysReturns'))
+BEGIN
+
+	CREATE TABLE [dbo].[temp_TodaysReturns](
+		[datReturned] [datetime] NULL,
+		[datResultsImported] [datetime] NULL,
+		[Survey_id] [int] NOT NULL,
+		[Surveytype_id] [int] NOT NULL,
+		[Surveytype_dsc] [varchar](100) NOT NULL,
+		[intSequence] [int] NOT NULL,
+		[SCHEDULEDMAILING_ID] [int] NOT NULL,
+		[MAILINGSTEP_ID] [int] NULL,
+		[SAMPLEPOP_ID] [int] NULL,
+		[OVERRIDEITEM_ID] [int] NULL,
+		[SENTMAIL_ID] [int] NULL,
+		[METHODOLOGY_ID] [int] NULL,
+		[DATGENERATE] [datetime] NOT NULL,
+		[QuestionForm_id] [int] NOT NULL,
+		[datExpire] [datetime] NULL,
+		[ACODisposition] [tinyint] NULL,
+		[DispositionAction] [varchar](16) NULL,
+		[ReceiptType_id] [int] NULL,
+		[strMailingStep_nm] [varchar](42) NOT NULL,
+		[bitComplete] [bit] NULL,
+		[bitETLThisReturn] [int] NOT NULL,
+		[bitContinueWithMailings] [int] NOT NULL,
+		[Subtype_id] [int] NULL,
+		[Subtype_nm] [varchar](50) NULL,
+		[HospiceDisposition] [tinyint] NULL,
+		[CreatedDateTime] [datetime] NULL
+	)
+
+
+END
+GO
+
+IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND  TABLE_NAME = 'temp_takeBest'))
+BEGIN
+
+	CREATE TABLE [dbo].[temp_takeBest](
+		[QuestionForm_id] [int] NOT NULL,
+		[samplepop_id] [int] NULL,
+		[ResponseCount] [int] NOT NULL,
+		[datReturned] [datetime] NULL,
+		[orgBitETLThisReturn] [int] NOT NULL,
+		[newBitETLThisReturn] [int] NOT NULL,
+		[useLast] [int] NOT NULL,
+		[CreatedDateTime] [datetime] NULL
+	)
+
+	END
+GO
+
 
 
 USE [QP_PROD]
@@ -61,7 +168,7 @@ FROM dbo.QUALPRO_PARAMS WHERE STRPARAM_NM = 'CAHPSCompletenessLogging' and STRPA
 DECLARE @MinDate DATE;
 SET @MinDate = DATEADD(DAY, -4, GETDATE());
 
-declare @UniqueNameExtention varchar(26) = convert(varchar,getdate(),109), @sql varchar(max);
+DECLARE  @sql varchar(max);
 declare @maxQFerror int
 select @maxQFerror = max(QfMissingDatreturned_id) from Questionform_Missing_datReturned;
 
@@ -223,10 +330,10 @@ AND ACODisposition = 34
 
 				if @doLogging = 1
 				begin
-					set @sql = 'select * into [temp_TodaysReturns_'+@uniqueNameExtention+'] from #TodaysReturns'
+					set @sql = 'insert into [temp_TodaysReturns] select *, getdate() from #TodaysReturns'
 					exec (@SQL)
 
-					set @sql = 'select * into [temp_qfResponseCount_'+@uniqueNameExtention+'] from #qfResponseCount'
+					set @sql = 'insert into [temp_qfResponseCount] select *, getdate() from #qfResponseCount'
 					exec (@SQL)
 				end
 
@@ -248,7 +355,7 @@ AND ACODisposition = 34
 
 					if @doLogging = 1
 					begin
-						set @sql = 'insert into [temp_qfResponseCount_'+@uniqueNameExtention+'] select * from #qfResponseCount where tempFlag=1'
+						set @sql = 'insert into [temp_qfResponseCount] select *, getdate() from #qfResponseCount where tempFlag=1'
 						exec (@SQL)
 					end
 
@@ -307,7 +414,7 @@ AND ACODisposition = 34
 
 					if @doLogging = 1
 					begin
-						set @sql = 'select * into [temp_takeBest_'+@uniqueNameExtention+'] from #TakeBest'
+						set @sql = 'insert into [temp_takeBest] select *, getdate() from #TakeBest'
 						exec (@SQL)
 					end
 
@@ -906,8 +1013,7 @@ begin
 	from questionform qf
 	where questionform_id in (select questionform_id from #audit)
 
-	set @SQL = 'select a.*, b.datReturned as newDatReturned, b.unusedreturn_id as newUnusedReturn_id, b.datunusedreturn as newDatUnusedReturn, b.datresultsimported as newDatResultsImported, b.bitcomplete as newBitComplete
-	into [temp_CheckForCAHPSIncompletesAudit_'+@UniqueNameExtention+']
+	set @SQL = 'Insert into [temp_CheckForCAHPSIncompletesAudit] select a.*, b.datReturned as newDatReturned, b.unusedreturn_id as newUnusedReturn_id, b.datunusedreturn as newDatUnusedReturn, b.datresultsimported as newDatResultsImported, b.bitcomplete as newBitComplete, getdate()
 	from #Audit a
 	inner join #audit2 b on a.questionform_id=b.questionform_id
 	where isnull(a.datReturned, ''1/1/1910'') <> isnull(b.datReturned, ''1/1/1910'') 
