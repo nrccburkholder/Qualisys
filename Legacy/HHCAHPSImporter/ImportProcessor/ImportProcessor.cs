@@ -143,7 +143,7 @@ namespace HHCAHPSImporter.ImportProcessor
 
                     var sampleMonth = ExtractHelper.GetSampleMonth(extractedData);
                     var sampleYear = ExtractHelper.GetSampleYear(extractedData);
-                    var isUpdateFile = qpDataLoadManager.StudyHasAppliedData(client.Study_id, sampleMonth, sampleYear);
+                    var isUpdateFile = uploadFile.OrigFile_Nm.ToLower().Contains("update");
                     if (isUpdateFile)
                     {
                         if(CutoffDateHelper.IsPastCutoff(
