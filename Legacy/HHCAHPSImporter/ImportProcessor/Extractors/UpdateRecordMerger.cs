@@ -20,13 +20,23 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
             Merge(inputRows, existingRows);
         }
 
-        public static void UpdateMergeRecords(int sampleYear, int sampleMonth, string CCN, XDocument inputXml, IMergeRecordDb db)
+        public static void UpdateMergeRecords(int sampleYear, int sampleMonth, string CCN, XDocument inputXml, IMergeRecordDb db, bool isUpdateFile)
         {
             if (inputXml == null) throw new ArgumentNullException(nameof(inputXml));
             if (db == null) throw new ArgumentNullException(nameof(db));
 
             var inputRows = GetRowsElement(inputXml);
+            if (!isUpdateFile) SetMatchKey(inputRows);
             db.UpdateMergeRecords(sampleYear, sampleMonth, CCN, inputRows);
+        }
+
+        private static void SetMatchKey(XElement inputRows)
+        {
+            foreach (var inputRow in inputRows.Elements(RowElementName))
+            {
+                var matchKey = GetMatchKey(inputRow);
+                inputRow.Add(new XAttribute(MatchKeyAttributeName, matchKey));
+            }
         }
 
         private static void Merge(XElement inputRows, Dictionary<string, XElement> existingRows)

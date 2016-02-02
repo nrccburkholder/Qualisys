@@ -160,7 +160,7 @@ namespace HHCAHPSImporter.ImportProcessor
 
                         UpdateRecordMerger.Merge(sampleYear, sampleMonth, ccn, extractedData, qpDataLoadManager);
                     }
-                    UpdateRecordMerger.UpdateMergeRecords(sampleYear, sampleMonth, ccn, extractedData, qpDataLoadManager);
+                    UpdateRecordMerger.UpdateMergeRecords(sampleYear, sampleMonth, ccn, extractedData, qpDataLoadManager, isUpdateFile);
 
                     #region Add externally generated values to the metadata
                     extractedData.Root.Add(new XAttribute("uploadfile_id", uploadFileId));
