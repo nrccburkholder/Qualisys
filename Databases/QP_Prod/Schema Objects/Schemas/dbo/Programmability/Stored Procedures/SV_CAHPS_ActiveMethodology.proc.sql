@@ -8,39 +8,6 @@ SET NOCOUNT ON
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 SET NOCOUNT ON
 
-/*
-HCAHPS IP			2
-Home Health CAHPS	3
-CGCAHPS				4
-ICHCAHPS			8
-ACOCAHPS			10
-*/
-
--- CAHPS surveyType_id 'constants'
-declare @CGCAHPS int
-SELECT @CGCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'CGCAHPS'
-
-declare @HCAHPS int
-SELECT @HCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'HCAHPS IP'
-
-declare @HHCAHPS int
-SELECT @HHCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'Home Health CAHPS'
-
-declare @ACOCAHPS int
-SELECT @ACOCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'ACOCAHPS'
-
-declare @ICHCAHPS int
-SELECT @ICHCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'ICHCAHPS'
-
-declare @hospiceCAHPS int
-SELECT @hospiceCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'Hospice CAHPS'
-
-declare @PCMHSubType int
-SELECT @PCMHSubType = 9
-
-declare @CIHI int
-select @CIHI = SurveyType_Id from SurveyType where SurveyType_dsc = 'CIHI CPES-IC'
-
 declare @surveyType_id int
 declare @subtype_id int
 

@@ -54,6 +54,10 @@ select @pqrsCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'PQRS C
 declare @CIHI int
 select @CIHI = SurveyType_Id from SurveyType where SurveyType_dsc = 'CIHI CPES-IC'
 
+declare @oasCAHPS int
+select @oasCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'OAS CAHPS'
+
+
 declare @surveyType_id int
 declare @subtype_id int
 
@@ -119,7 +123,7 @@ IF @surveyType_id in (@HCAHPS) or (@surveyType_id in (@CGCAHPS) and @subtype_id 
 
 END
 
-IF @surveyType_id in (@ACOCAHPS, @ICHCAHPS, @hospiceCAHPS, @CIHI, @pqrsCAHPS)
+IF @surveyType_id in (@ACOCAHPS, @ICHCAHPS, @hospiceCAHPS, @CIHI, @pqrsCAHPS, @oasCAHPS)
 	BEGIN
 
 		-- Check for Householding
@@ -132,6 +136,3 @@ END
 SELECT * FROM #M
 
 DROP TABLE #M
-GO
-
-
