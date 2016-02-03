@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RptDataSource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>QMSFullReader</Name>
+  <DataSourceID>f3ddd32b-6c5d-4e7d-82c1-78be69f26bbd</DataSourceID>
+  <ConnectionProperties>
+    <Extension>SQL</Extension>
+    <ConnectString>Data Source=10.10.90.4;Initial Catalog=QMS</ConnectString>
+  </ConnectionProperties>
+</RptDataSource>

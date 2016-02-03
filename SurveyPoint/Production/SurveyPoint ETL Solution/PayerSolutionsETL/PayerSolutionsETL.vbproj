@@ -1,0 +1,546 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Development</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C4B5A838-2708-40D6-8E76-24BD5EED239F}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>Nrc.PayerSolutionsETL.My.MyApplication</StartupObject>
+    <RootNamespace>Nrc.PayerSolutionsETL</RootNamespace>
+    <AssemblyName>PayerSolutionsETL</AssemblyName>
+    <MyType>WindowsForms</MyType>
+    <OptionStrict>Off</OptionStrict>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <SignManifests>true</SignManifests>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <ManifestCertificateThumbprint>CAD861F76B9F1B00FF21BACC43A0F7266C917FFD</ManifestCertificateThumbprint>
+    <GenerateManifests>true</GenerateManifests>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <PublishUrl>\\mercury\QualisysApps\Prod\SurveyPointETL\</PublishUrl>
+    <Install>false</Install>
+    <InstallFrom>Unc</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
+    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationVersion>2.2.29.2</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Development|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Development\</OutputPath>
+    <DocumentationFile>PayerSolutionsETL.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Testing|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Testing\</OutputPath>
+    <DocumentationFile>PayerSolutionsETL.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>C:\Program Files\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Staging|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Staging\</OutputPath>
+    <DocumentationFile>PayerSolutionsETL.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>C:\Program Files\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Production|AnyCPU' ">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Production\</OutputPath>
+    <DocumentationFile>PayerSolutionsETL.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>C:\Program Files\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Data.v6.3, Version=6.3.2.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\DevExpress.Data.v6.3.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v6.3, Version=6.3.2.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\DevExpress.Utils.v6.3.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v6.3, Version=6.3.2.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\DevExpress.XtraEditors.v6.3.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v6.3, Version=6.3.2.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\DevExpress.XtraGrid.v6.3.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Framework, Version=1.10.0.0, Culture=neutral, PublicKeyToken=7f65ae6d961bde9c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ReferencedAssemblies\Nrc.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Framework.BusinessLogic, Version=1.0.5.0, Culture=neutral, PublicKeyToken=7f65ae6d961bde9c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ReferencedAssemblies\Nrc.Framework.BusinessLogic.dll</HintPath>
+    </Reference>
+    <Reference Include="NRC.NRCAuthLib, Version=1.1.1.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ReferencedAssemblies\NRC.NRCAuthLib.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="Classes\Config.vb" />
+    <Compile Include="Classes\Direction.vb" />
+    <Compile Include="EventArgs\FolderChangedEventArgs.vb" />
+    <Compile Include="Classes\Globals.vb" />
+    <Compile Include="EventArgs\ReportSelectedEventArgs.vb" />
+    <Compile Include="Classes\UIRelation.vb" />
+    <Compile Include="Classes\CurrentUser.vb" />
+    <Compile Include="Exceptions\AccessDeniedException.vb" />
+    <Compile Include="Forms\SplashScreen.Designer.vb">
+      <DependentUpon>SplashScreen.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SplashScreen.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Navigators\WestVRTDispositionNavigator.Designer.vb">
+      <DependentUpon>WestVRTDispositionNavigator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Navigators\WestVRTDispositionNavigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Navigators\ImportUpdateNavigator.Designer.vb">
+      <DependentUpon>ImportUpdateNavigator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Navigators\ImportUpdateNavigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Navigators\LifeStylesExportNavigator.Designer.vb">
+      <DependentUpon>LifeStylesExportNavigator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Navigators\LifeStylesExportNavigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Navigators\RespondentImportValidatorNavigator.Designer.vb">
+      <DependentUpon>RespondentImportValidatorNavigator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Navigators\RespondentImportValidatorNavigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Navigators\SplitFileNavigator.Designer.vb">
+      <DependentUpon>SplitFileNavigator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Navigators\SplitFileNavigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Classes\Navigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Classes\Section.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\MainForm.Designer.vb">
+      <DependentUpon>MainForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MainForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Navigators\TVXVRTDispositionNavigator.Designer.vb">
+      <DependentUpon>TVXVRTDispositionNavigator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Navigators\TVXVRTDispositionNavigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Navigators\VoviciUnpivotNavigator.Designer.vb">
+      <DependentUpon>VoviciUnpivotNavigator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Navigators\VoviciUnpivotNavigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Navigators\VRTDispositionsNavigator.Designer.vb">
+      <DependentUpon>VRTDispositionsNavigator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Navigators\VRTDispositionsNavigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Navigators\VRTFileExpandNavigator.Designer.vb">
+      <DependentUpon>VRTFileExpandNavigator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Navigators\VRTFileExpandNavigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Navigators\WebCSVNavigator.Designer.vb">
+      <DependentUpon>WebCSVNavigator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Navigators\WebCSVNavigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Navigators\WebFileConvertNavigator.Designer.vb">
+      <DependentUpon>WebFileConvertNavigator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Navigators\WebFileConvertNavigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Navigators\WellpointNavigator.Designer.vb">
+      <DependentUpon>WellpointNavigator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Navigators\WellpointNavigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\WestVRTDispositionSection.Designer.vb">
+      <DependentUpon>WestVRTDispositionSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\WestVRTDispositionSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\ImportUpdateSection.Designer.vb">
+      <DependentUpon>ImportUpdateSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\ImportUpdateSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\LifeStylesExportSection.Designer.vb">
+      <DependentUpon>LifeStylesExportSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\LifeStylesExportSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\PivotFileSection.Designer.vb">
+      <DependentUpon>PivotFileSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\PivotFileSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\RespondentImportValidatorSection.Designer.vb">
+      <DependentUpon>RespondentImportValidatorSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\RespondentImportValidatorSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\SplitFileSection.Designer.vb">
+      <DependentUpon>SplitFileSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\SplitFileSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\TVXVRTDispositionSection.Designer.vb">
+      <DependentUpon>TVXVRTDispositionSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\TVXVRTDispositionSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\VoviciUnpivotSection.Designer.vb">
+      <DependentUpon>VoviciUnpivotSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\VoviciUnpivotSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\VRTDispositionSection.Designer.vb">
+      <DependentUpon>VRTDispositionSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\VRTDispositionSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\VRTFileExpandSection.Designer.vb">
+      <DependentUpon>VRTFileExpandSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\VRTFileExpandSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\WebCSVSection.designer.vb">
+      <DependentUpon>WebCSVSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\WebCSVSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\WebFileConvertSection.Designer.vb">
+      <DependentUpon>WebFileConvertSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\WebFileConvertSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\WellpointSection.Designer.vb">
+      <DependentUpon>WellpointSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\WellpointSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Forms\SplashScreen.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SplashScreen.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MainForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MainForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\WestVRTDispositionSection.resx">
+      <DependentUpon>WestVRTDispositionSection.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\ImportUpdateSection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ImportUpdateSection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\LifeStylesExportSection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>LifeStylesExportSection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\PivotFileSection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PivotFileSection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\RespondentImportValidatorSection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>RespondentImportValidatorSection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\SplitFileSection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SplitFileSection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\TVXVRTDispositionSection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TVXVRTDispositionSection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\VoviciUnpivotSection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>VoviciUnpivotSection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\VRTDispositionSection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>VRTDispositionSection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\VRTFileExpandSection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>VRTFileExpandSection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\WebCSVSection.resx">
+      <DependentUpon>WebCSVSection.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\WebFileConvertSection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>WebFileConvertSection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\WellpointSection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>WellpointSection.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Resources\GoLtr.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Sql.Server.Express.1.0">
+      <Visible>False</Visible>
+      <ProductName>SQL Server 2005 Express Edition</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\SurveyPoint Class Library Solution\SurveyPoint.Library.SqlDataProvider\SurveyPoint.Library.SqlDataProvider.vbproj">
+      <Project>{2AD098FB-4201-43D4-8133-F8A5EDC5E155}</Project>
+      <Name>SurveyPoint.Library.SqlDataProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SurveyPoint Class Library Solution\SurveyPoint.Library\SurveyPoint.Library.vbproj">
+      <Project>{22006699-74C3-4AE2-B529-FA1F0804DA25}</Project>
+      <Name>SurveyPoint.Library</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Undo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Full Trash.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\web.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\heart.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\desktop_3.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\africanDaisy.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\_Check.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\application.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Derek%27s Segway Icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\doc_f2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\down.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MostlyHarmless.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\prodicon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <PublishFile Include="DevExpress.Data.v6.3">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="DevExpress.Utils.v6.3">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="DevExpress.XtraEditors.v6.3">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="DevExpress.XtraGrid.v6.3">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
