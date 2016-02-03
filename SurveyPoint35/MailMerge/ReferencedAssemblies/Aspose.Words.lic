@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<License>
+  <Data>
+    <LicensedTo>National Research Corporation</LicensedTo>
+    <LicenseType>Developer Enterprise Subscription</LicenseType>
+    <LicenseNote>Limited to 1 developer.</LicenseNote>
+    <OrderID>100114132112</OrderID>
+    <OEM>This is a redistributable license</OEM>
+    <Products>
+      <Product>Aspose.Words for .NET</Product>
+    </Products>
+    <EditionType>Enterprise</EditionType>
+    <SerialNumber>960bb31c-9b21-4cb9-968c-d4ae6456cd7b</SerialNumber>
+    <SubscriptionExpiry>20110114</SubscriptionExpiry>
+    <LicenseVersion>2.2</LicenseVersion>
+  </Data>
+  <Signature>sFK6EbZr5qfO7iALCJThoEEGoLeq1CQfibg9XhW9hj2DMBWGRPrIkAsePtP08+8leaYWApfJoUMyNt54iENHL0QvxedO2zRRmspNdE91MdEyxmVMQyO1rkXrGAnTmtokjMiUJCSCd6uGdKlNEnIl7cug5cgrFZA+U/EWMYz+s2E=</Signature>
+</License>

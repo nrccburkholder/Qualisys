@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="dsProtocolStepParameters" targetNamespace="http://tempuri.org/dsProtocolStepParameters.xsd" elementFormDefault="qualified" attributeFormDefault="qualified" xmlns="http://tempuri.org/dsProtocolStepParameters.xsd" xmlns:mstns="http://tempuri.org/dsProtocolStepParameters.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+	<xs:element name="dsProtocolStepParameters" msdata:IsDataSet="true">
+		<xs:complexType>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="ProtocolStepParameters">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ProtocolStepParamID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="ProtocolStepID" type="xs:int" />
+							<xs:element name="ProtocolStepTypeParamID" type="xs:int" />
+							<xs:element name="ProtocolStepParamValue" type="xs:string" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ProtocolStepTypeParameters">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ProtocolStepTypeParamID" type="xs:int" />
+							<xs:element name="ProtocolStepTypeID" type="xs:int" />
+							<xs:element name="ProtocolStepParamDesc" type="xs:string" />
+							<xs:element name="Defaults" type="xs:string" minOccurs="0" />
+							<xs:element name="ControlTypeID" type="xs:int" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ControlTypes">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ControlTypeID" type="xs:int" />
+							<xs:element name="ControlName" type="xs:string" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Search">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ProtocolStepParamID" type="xs:int" minOccurs="0" />
+							<xs:element name="ProtocolStepID" type="xs:int" minOccurs="0" />
+							<xs:element name="ProtocolStepTypeParamID" type="xs:int" minOccurs="0" />
+							<xs:element name="ProtocolID" type="xs:int" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:complexType>
+		<xs:unique name="dsProtocolStepParametersKey1" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:ProtocolStepParameters" />
+			<xs:field xpath="mstns:ProtocolStepParamID" />
+		</xs:unique>
+		<xs:unique name="dsProtocolStepParametersKey2" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:ProtocolStepTypeParameters" />
+			<xs:field xpath="mstns:ProtocolStepTypeParamID" />
+		</xs:unique>
+		<xs:key name="key1">
+			<xs:selector xpath=".//mstns:ProtocolStepTypeParameters" />
+			<xs:field xpath="mstns:ProtocolStepTypeParamID" />
+		</xs:key>
+		<xs:keyref name="ProtocolStepTypeParametersProtocolStepParameters" refer="key1">
+			<xs:selector xpath=".//mstns:ProtocolStepParameters" />
+			<xs:field xpath="mstns:ProtocolStepTypeParamID" />
+		</xs:keyref>
+		<xs:unique name="dsProtocolStepParametersKey3" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:ControlTypes" />
+			<xs:field xpath="mstns:ControlTypeID" />
+		</xs:unique>
+		<xs:key name="key2">
+			<xs:selector xpath=".//mstns:ControlTypes" />
+			<xs:field xpath="mstns:ControlTypeID" />
+		</xs:key>
+		<xs:keyref name="ControlTypesProtocolStepTypeParameters" refer="key2">
+			<xs:selector xpath=".//mstns:ProtocolStepTypeParameters" />
+			<xs:field xpath="mstns:ControlTypeID" />
+		</xs:keyref>
+	</xs:element>
+</xs:schema>

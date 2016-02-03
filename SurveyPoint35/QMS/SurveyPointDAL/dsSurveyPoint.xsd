@@ -1,0 +1,289 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="dsSurveyPoint" targetNamespace="http://tempuri.org/dsSurveyPoint.xsd" elementFormDefault="qualified"
+	attributeFormDefault="qualified" xmlns="http://tempuri.org/dsSurveyPoint.xsd" xmlns:mstns="http://tempuri.org/dsSurveyPoint.xsd"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+	<xs:element name="dsSurveyPoint" msdata:IsDataSet="true">
+		<xs:complexType>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="Surveys">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="SurveyID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="Name" type="xs:string" />
+							<xs:element name="Description" type="xs:string" />
+							<xs:element name="CreatedByUserID" type="xs:int" />
+							<xs:element name="CreatedOnDate" type="xs:dateTime" />
+							<xs:element name="Active" type="xs:unsignedByte" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="FileDefs">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="FileDefID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="FileDefName" type="xs:string" />
+							<xs:element name="FileDefDescription" type="xs:string" />
+							<xs:element name="ClientID" type="xs:int" minOccurs="0" />
+							<xs:element name="SurveyID" type="xs:int" minOccurs="0" />
+							<xs:element name="FileDefTypeID" type="xs:int" />
+							<xs:element name="FileTypeID" type="xs:int" />
+							<xs:element name="FileDefDelimiter" type="xs:string" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Clients">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ClientID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="Name" type="xs:string" />
+							<xs:element name="Address1" type="xs:string" />
+							<xs:element name="Address2" type="xs:string" />
+							<xs:element name="City" type="xs:string" />
+							<xs:element name="State" type="xs:string" />
+							<xs:element name="PostalCode" type="xs:string" />
+							<xs:element name="Telephone" type="xs:string" />
+							<xs:element name="Fax" type="xs:string" />
+							<xs:element name="Active" type="xs:unsignedByte" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Scripts">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ScriptID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="SurveyID" type="xs:int" />
+							<xs:element name="ScriptTypeID" type="xs:int" />
+							<xs:element name="Name" type="xs:string" />
+							<xs:element name="Description" type="xs:string" />
+							<xs:element name="CompletenessLevel" type="xs:decimal" />
+							<xs:element name="FollowSkips" type="xs:unsignedByte" />
+							<xs:element name="CalcCompleteness" type="xs:unsignedByte" />
+							<xs:element name="DefaultScript" type="xs:unsignedByte" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Templates">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="TemplateID" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="ClientID" type="xs:int" />
+							<xs:element name="ScriptID" type="xs:int" />
+							<xs:element name="FileDefID" type="xs:int" minOccurs="0" />
+							<xs:element name="Description" type="xs:string" minOccurs="0" />
+							<xs:element name="Notes" type="xs:string" minOccurs="0" />
+							<xs:element name="ClientName" type="xs:string" minOccurs="0" />
+							<xs:element name="ScriptName" type="xs:string" minOccurs="0" />
+							<xs:element name="SurveyID" type="xs:int" minOccurs="0" />
+							<xs:element name="SurveyName" type="xs:string" minOccurs="0" />
+							<xs:element name="FileDefName" type="xs:string" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="FileDefColumns">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="FileDefColumnID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="FileDefID" type="xs:int" />
+							<xs:element name="ColumnName" type="xs:string" />
+							<xs:element name="DisplayOrder" type="xs:int" />
+							<xs:element name="Width" type="xs:int" minOccurs="0" />
+							<xs:element name="FormatString" type="xs:string" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Respondents">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="RespondentID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="SurveyInstanceID" type="xs:int" />
+							<xs:element name="FirstName" type="xs:string" minOccurs="0" />
+							<xs:element name="MiddleInitial" type="xs:string" minOccurs="0" />
+							<xs:element name="LastName" type="xs:string" />
+							<xs:element name="Address1" type="xs:string" minOccurs="0" />
+							<xs:element name="Address2" type="xs:string" minOccurs="0" />
+							<xs:element name="City" type="xs:string" minOccurs="0" />
+							<xs:element name="State" type="xs:string" minOccurs="0" />
+							<xs:element name="PostalCode" type="xs:string" minOccurs="0" />
+							<xs:element name="TelephoneDay" type="xs:string" minOccurs="0" />
+							<xs:element name="TelephoneEvening" type="xs:string" minOccurs="0" />
+							<xs:element name="Email" type="xs:string" minOccurs="0" />
+							<xs:element name="DOB" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="Gender" type="xs:string" minOccurs="0" />
+							<xs:element name="ClientRespondentID" type="xs:string" minOccurs="0" />
+							<xs:element name="SSN" type="xs:string" minOccurs="0" />
+							<xs:element name="BatchID" type="xs:int" minOccurs="0" />
+							<xs:element name="MailingSeedFlag" type="xs:unsignedByte" minOccurs="0" />
+							<xs:element name="CallsMade" type="xs:int" />
+							<xs:element name="Final" type="xs:int" />
+							<xs:element name="NextContact" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="PostalCodeExt" type="xs:string" minOccurs="0" />
+							<xs:element name="RespondentKey" type="xs:string" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="RespondentProperties">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="RespondentPropertyID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="RespondentID" type="xs:int" />
+							<xs:element name="PropertyName" type="xs:string" />
+							<xs:element name="PropertyValue" type="xs:string" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="SurveyInstances">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="SurveyInstanceID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="ClientID" type="xs:int" />
+							<xs:element name="SurveyID" type="xs:int" />
+							<xs:element name="ClientName" type="xs:string" />
+							<xs:element name="SurveyName" type="xs:string" />
+							<xs:element name="SurveyInstanceName" type="xs:string" />
+							<xs:element name="Description" msdata:ReadOnly="true" type="xs:string" minOccurs="0" />
+							<xs:element name="Active" type="xs:unsignedByte" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="TriggerDependencies">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="TriggerDependencyID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="TriggerID" type="xs:int" />
+							<xs:element name="DependsOnTriggerID" type="xs:int" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="InvocationPoints">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="InvocationPointID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="InvocationPointName" type="xs:string" />
+							<xs:element name="Description" type="xs:string" minOccurs="0" />
+							<xs:element name="Notes" type="xs:string" minOccurs="0" />
+							<xs:element name="EventID" type="xs:int" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="TriggerTypes">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="TriggerTypeID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="TriggerTypeName" type="xs:string" />
+							<xs:element name="IntroCode" type="xs:string" minOccurs="0" />
+							<xs:element name="ExitCode" type="xs:string" minOccurs="0" />
+							<xs:element name="Description" type="xs:string" minOccurs="0" />
+							<xs:element name="DevDescription" type="xs:string" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Triggers">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="TriggerID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="TriggerTypeID" type="xs:int" />
+							<xs:element name="SurveyID" type="xs:int" minOccurs="0" />
+							<xs:element name="TriggerName" type="xs:string" minOccurs="0" />
+							<xs:element name="CriteriaID" type="xs:int" minOccurs="0" />
+							<xs:element name="TheCode" type="xs:string" minOccurs="0" />
+							<xs:element name="PerodicyDate" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="PerodicyNextDate" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="InvocationPointID" type="xs:int" minOccurs="0" />
+							<xs:element name="TriggerTypeName" type="xs:string" />
+							<xs:element name="SurveyName" type="xs:string" minOccurs="0" />
+							<xs:element name="InvocationPointName" type="xs:string" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Criteria">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="CriteriaID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="CriteriaName" type="xs:string" minOccurs="0" />
+							<xs:element name="SurveyID" type="xs:int" />
+							<xs:element name="CriteriaTypeID" type="xs:int" />
+							<xs:element name="AnswerCategoryID" type="xs:int" minOccurs="0" />
+							<xs:element name="CriteriaDataTypeID" type="xs:short" minOccurs="0" />
+							<xs:element name="ParameterName" type="xs:string" minOccurs="0" />
+							<xs:element name="TextValue" type="xs:string" minOccurs="0" />
+							<xs:element name="ReferenceCriteriaID" type="xs:int" minOccurs="0" />
+							<xs:element name="ReferenceCriteriaSequence" type="xs:int" minOccurs="0" />
+							<xs:element name="Flag" type="xs:int" />
+							<xs:element name="Lvl" type="xs:int" minOccurs="0" />
+							<xs:element name="Hierarchy" type="xs:string" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="CriteriaTypes">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="CriteriaTypeID" type="xs:int" />
+							<xs:element name="Name" type="xs:string" />
+							<xs:element name="Description" type="xs:string" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:complexType>
+		<xs:unique name="dsSurveyPointKey2" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:Surveys" />
+			<xs:field xpath="mstns:SurveyID" />
+		</xs:unique>
+		<xs:unique name="dsSurveyPointKey3" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:FileDefs" />
+			<xs:field xpath="mstns:FileDefID" />
+		</xs:unique>
+		<xs:unique name="dsSurveyPointKey4" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:Clients" />
+			<xs:field xpath="mstns:ClientID" />
+		</xs:unique>
+		<xs:unique name="dsSurveyPointKey5" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:Scripts" />
+			<xs:field xpath="mstns:ScriptID" />
+		</xs:unique>
+		<xs:key name="dsSurveyPointKey1" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:Templates" />
+			<xs:field xpath="mstns:TemplateID" />
+		</xs:key>
+		<xs:unique name="dsSurveyPointKey6" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:FileDefColumns" />
+			<xs:field xpath="mstns:FileDefColumnID" />
+		</xs:unique>
+		<xs:unique name="dsSurveyPointKey7" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:Respondents" />
+			<xs:field xpath="mstns:RespondentID" />
+		</xs:unique>
+		<xs:unique name="dsSurveyPointKey8" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:RespondentProperties" />
+			<xs:field xpath="mstns:RespondentPropertyID" />
+		</xs:unique>
+		<xs:key name="dsSurveyPointKey9" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:SurveyInstances" />
+			<xs:field xpath="mstns:SurveyInstanceID" />
+		</xs:key>
+		<xs:unique name="dsSurveyPointKey11" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:TriggerDependencies" />
+			<xs:field xpath="mstns:TriggerDependencyID" />
+		</xs:unique>
+		<xs:unique name="dsSurveyPointKey12" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:InvocationPoints" />
+			<xs:field xpath="mstns:InvocationPointID" />
+		</xs:unique>
+		<xs:unique name="dsSurveyPointKey13" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:TriggerTypes" />
+			<xs:field xpath="mstns:TriggerTypeID" />
+		</xs:unique>
+		<xs:key name="dsSurveyPointKey10" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:Triggers" />
+			<xs:field xpath="mstns:TriggerID" />
+		</xs:key>
+		<xs:unique name="dsSurveyPointKey14" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:Criteria" />
+			<xs:field xpath="mstns:CriteriaID" />
+		</xs:unique>
+		<xs:unique name="dsSurveyPointKey15" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:CriteriaTypes" />
+			<xs:field xpath="mstns:CriteriaTypeID" />
+		</xs:unique>
+	</xs:element>
+</xs:schema>

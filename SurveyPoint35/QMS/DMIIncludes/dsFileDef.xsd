@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="dsFileDef" targetNamespace="http://tempuri.org/dsFileDef.xsd" elementFormDefault="qualified" attributeFormDefault="qualified" xmlns="http://tempuri.org/dsFileDef.xsd" xmlns:mstns="http://tempuri.org/dsFileDef.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+	<xs:element name="dsFileDef" msdata:IsDataSet="true">
+		<xs:complexType>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="tblFileDef">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ColumnID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="ColName" type="xs:string" minOccurs="0" />
+							<xs:element name="ColType" type="xs:int" minOccurs="0" />
+							<xs:element name="ColWidth" type="xs:int" minOccurs="0" />
+							<xs:element name="ColOrder" type="xs:int" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:complexType>
+		<xs:unique name="dsFileDefKey1" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//tblFileDef" />
+			<xs:field xpath="ColumnID" />
+		</xs:unique>
+	</xs:element>
+</xs:schema>

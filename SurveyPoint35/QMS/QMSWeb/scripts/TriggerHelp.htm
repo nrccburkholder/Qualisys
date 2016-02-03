@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<title>TextTokenHelp</title>
+		<meta name="vs_defaultClientScript" content="JavaScript">
+		<meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5">
+		<meta name="GENERATOR" content="Microsoft Visual Studio .NET 7.1">
+		<meta name="ProgId" content="VisualStudio.HTML">
+		<meta name="Originator" content="Microsoft Visual Studio .NET 7.1">
+		<LINK href="../Styles.css" type="text/css" rel="stylesheet">
+	</head>
+	<body style="background-color:#ffffff">
+		<P class="pagetitle">
+			Trigger Code&nbsp;Help</P>
+		<P>
+			<TABLE cellSpacing="0" cellPadding="3" width="100%" border="0">
+				<TR class="headingcell">
+					<TD width="40%">
+						Command</TD>
+					<TD width="60%">Description</TD>
+				</TR>
+				<TR valign="top" class="itemcell">
+					<TD><STRONG>%EXIT</STRONG></TD>
+					<TD>Exits interview without running completeness calculation and end script trigger</TD>
+				</TR>
+				<TR valign="top" class="altcell">
+					<TD><STRONG>%END</STRONG></TD>
+					<TD>End interview and runs completeness calculation and end script trigger</TD>
+				</TR>
+				<TR valign="top" class="itemcell">
+					<TD><STRONG>%NEXT</STRONG></TD>
+					<TD>Go to next screen. Use in pre-screen trigger to skip the current screen</TD>
+				</TR>
+				<TR valign="top" class="altcell">
+					<TD><STRONG>%SCREENINDEX(</STRONG><EM>screen index</EM><STRONG>)</STRONG></TD>
+					<TD>Go to specified screen index</TD>
+				</TR>
+				<TR valign="top" class="itemcell">
+					<TD><STRONG>%SCREENID(</STRONG><EM>script screen id</EM><STRONG>)</STRONG></TD>
+					<TD>Go to specified script screen id</TD>
+				</TR>
+				<TR valign="top" class="altcell">
+					<TD><EM>sql statement</EM></TD>
+					<TD>
+						Executes sql statement</TD>
+				</TR>
+				<TR valign="top" class="itemcell">
+					<TD><STRONG>{0}</STRONG></TD>
+					<TD>Used in sql statment for respondent id number</TD>
+				</TR>
+				<TR valign="top" class="altcell">
+					<TD><STRONG>{1}</STRONG></TD>
+					<TD>Used in sql statment for script id number</TD>
+				</TR>
+				<TR valign="top" class="itemcell">
+					<TD><STRONG>{2}</STRONG></TD>
+					<TD>USed in sql statement for user id number</TD>
+				</TR>
+			</TABLE>
+		</P>
+		<P class="pagetitle">Criteria Help</P>
+		<P>
+			<TABLE cellSpacing="0" cellPadding="3" width="100%" border="0" ID="Table1">
+				<TR class="headingcell">
+					<TD width="40%">
+						Criteria Type</TD>
+					<TD width="60%">Description</TD>
+				</TR>
+				<TR valign="top" class="itemcell">
+					<TD><STRONG>Simple</STRONG></TD>
+					<TD>Simple match to answer category.</TD>
+				</TR>
+				<TR valign="top" class="altcell">
+					<TD><STRONG>Text</STRONG></TD>
+					<TD>Criteria text must match exactly with open answer text.</TD>
+				</TR>
+				<TR valign="top" class="itemcell">
+					<TD><STRONG>TextLike</STRONG></TD>
+					<TD>Criteria&nbsp;text can be anywhere in open answer text.</TD>
+				</TR>
+				<TR valign="top" class="altcell">
+					<TD><STRONG>Parameter</STRONG></TD>
+					<TD>Criteria&nbsp;text&nbsp;must match exactly the parameter value (see Valid 
+						Criteria Parameters list below).</TD>
+				</TR>
+				<TR valign="top" class="itemcell">
+					<TD><STRONG>ParameterLike</STRONG></TD>
+					<TD>Criteria text can be anywhere in&nbsp;the parameter&nbsp;value (see Valid 
+						Criteria Parameters list below).</TD>
+				</TR>
+				<TR valign="top" class="altcell">
+					<TD><STRONG>Parameter &gt; </STRONG>
+					</TD>
+					<TD>Criteria text must be greater than the parameter value (see Valid Criteria 
+						Parameters list below).</TD>
+				</TR>
+				<TR valign="top" class="itemcell">
+					<TD><STRONG>Parameter &lt;</STRONG></TD>
+					<TD>Criteria text must be less than the parameter value (see Valid Criteria 
+						Parameters list below).</TD>
+				</TR>
+				<TR valign="top" class="altcell">
+					<TD><STRONG>And</STRONG></TD>
+					<TD>All criteria within AND must be true</TD>
+				</TR>
+				<TR valign="top" class="itemcell">
+					<TD><STRONG>Or</STRONG></TD>
+					<TD>At least one criteria within OR must be true</TD>
+				</TR>
+				<TR valign="top" class="altcell">
+					<TD><STRONG>Unanswered</STRONG></TD>
+					<TD>
+						Question is unanswered or has no response</TD>
+				</TR>
+			</TABLE>
+		</P>
+		<P class="pagetitle">Valid Criteria Parameters</P>
+		<TABLE cellSpacing="0" cellPadding="3" width="100%" border="0" ID="Table2">
+			<TR class="headingcell">
+				<TD width="40%">
+					Parameter</TD>
+			</TR>
+			<tr valign="top" class="itemcell">
+				<td>Gender</td>
+			</tr>
+			<tr valign="top" class="altcell">
+				<td>BatchID</td>
+			</tr>
+			<tr valign="top" class="itemcell">
+				<td>State</td>
+			</tr>
+			<tr valign="top" class="altcell">
+				<td>FirstName</td>
+			</tr>
+			<tr valign="top" class="itemcell">
+				<td>MiddleInitial</td>
+			</tr>
+			<tr valign="top" class="altcell">
+				<td>LastName</td>
+			</tr>
+			<tr valign="top" class="itemcell">
+				<td>Address1</td>
+			</tr>
+			<tr valign="top" class="altcell">
+				<td>Address2</td>
+			</tr>
+			<tr valign="top" class="itemcell">
+				<td>City</td>
+			</tr>
+			<tr valign="top" class="altcell">
+				<td>PostalCode</td>
+			</tr>
+			<tr valign="top" class="itemcell">
+				<td>TelephoneDay</td>
+			</tr>
+			<tr valign="top" class="altcell">
+				<td>TelephoneEvening</td>
+			</tr>
+			<tr valign="top" class="itemcell">
+				<td>Email</td>
+			</tr>
+			<tr valign="top" class="altcell">
+				<td>DOB</td>
+			</tr>
+			<tr valign="top" class="itemcell">
+				<td>ClientRespondentID</td>
+			</tr>
+			<tr valign="top" class="altcell">
+				<td>SSN</td>
+			</tr>
+			<tr valign="top" class="itemcell">
+				<td>MailingSeedFlag</td>
+			</tr>
+			<tr valign="top" class="altcell">
+				<td>SurveyInstanceName</td>
+			</tr>
+			<tr valign="top" class="itemcell">
+				<td>SurveyInstanceDate</td>
+			</tr>
+			<tr valign="top" class="altcell">
+				<td>SurveyInstanceStartDate</td>
+			</tr>
+			<tr valign="top" class="itemcell">
+				<td>SurveyName</td>
+			</tr>
+			<tr valign="top" class="altcell">
+				<td>ClientName</td>
+			</tr>
+			<tr valign="top" class="itemcell">
+				<td>ProtocolName</td>
+			</tr>
+		</TABLE>
+		<P></P>
+	</body>
+</html>
