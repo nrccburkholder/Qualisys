@@ -8,10 +8,11 @@ using System.Xml;
 using System.Data;
 using System.IO;
 using System.Text.RegularExpressions;
+using HHCAHPSImporter.ImportProcessor.Extractors;
 
 namespace HHCAHPSImporter.ImportProcessor.DAL
 {
-    public class QP_DataLoadManager
+    public class QP_DataLoadManager : IMergeRecordDb
     {
         // private Generated.QP_DataLoad db = null;
         private string _connectionString;
@@ -73,6 +74,53 @@ namespace HHCAHPSImporter.ImportProcessor.DAL
             return db.ClientFormat.FirstOrDefault(t => t.CCN.Equals(ccn));
         }
 
+        public bool StudyHasAppliedData(int studyId, int sampleMonth, int sampleYear)
+        {
+            return db.StudyHasAppliedData(studyId, sampleMonth, sampleYear) == 1;
+        }
+
+        private const string UpdateFileQ1CutoffParam = "UpdateFileQ1Cutoff";
+        private const string UpdateFileQ2CutoffParam = "UpdateFileQ2Cutoff";
+        private const string UpdateFileQ3CutoffParam = "UpdateFileQ3Cutoff";
+        private const string UpdateFileQ4CutoffParam = "UpdateFileQ4Cutoff";
+
+        private DateTime GetDateParam(string name)
+        {
+            return db.Loading_PARAMS.First(param => param.STRPARAM_NM.Equals(name)).DATPARAM_VALUE.Value;
+        }
+
+        public DateTime GetUpdateFileQ1Cutoff()
+        {
+            return GetDateParam(UpdateFileQ1CutoffParam);
+        }
+
+        public DateTime GetUpdateFileQ2Cutoff()
+        {
+            return GetDateParam(UpdateFileQ2CutoffParam);
+        }
+
+        public DateTime GetUpdateFileQ3Cutoff()
+        {
+            return GetDateParam(UpdateFileQ3CutoffParam);
+        }
+
+        public DateTime GetUpdateFileQ4Cutoff()
+        {
+            return GetDateParam(UpdateFileQ4CutoffParam);
+        }
+
+        public Dictionary<string, XElement> GetMergeRecords(int sampleYear, int sampleMonth, string CCN)
+        {
+            return db
+                .MergeRecord
+                .Where(r => r.SampleYear == sampleYear && r.SampleMonth == sampleMonth && r.CCN == CCN)
+                .ToDictionary(r => r.MatchKey, r => XElement.Parse(r.RecordXml));
+        }
+
+        public void UpdateMergeRecords(int sampleYear, int sampleMonth, string CCN, XElement records)
+        {
+            db.UpdateMergeRecords(sampleYear, sampleMonth, CCN, records);
+        }
 
         #region Transform Functionality
 

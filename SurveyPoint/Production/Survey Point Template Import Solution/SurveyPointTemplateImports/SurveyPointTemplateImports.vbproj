@@ -1,0 +1,450 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Development</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E0D030DB-C945-4728-BFAF-7512513219EE}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>Nrc.SurveyPointTemplateImports.My.MyApplication</StartupObject>
+    <RootNamespace>Nrc.SurveyPointTemplateImports</RootNamespace>
+    <AssemblyName>SurveyPointTemplateImports</AssemblyName>
+    <MyType>WindowsForms</MyType>
+    <OptionStrict>Off</OptionStrict>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <SignManifests>true</SignManifests>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <ManifestCertificateThumbprint>6B406EC0E86EA2B89AEF5B9044D23F3FDE707165</ManifestCertificateThumbprint>
+    <GenerateManifests>true</GenerateManifests>
+    <PublishUrl>\\mercury\QualisysApps\Prod\SurveyPointTemplateImporter\</PublishUrl>
+    <Install>false</Install>
+    <InstallFrom>Unc</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
+    <ApplicationVersion>1.3.0.2</ApplicationVersion>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Development|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Development\</OutputPath>
+    <DocumentationFile>SurveyPointTemplateImports.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>C:\Program Files\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Testing|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Testing\</OutputPath>
+    <DocumentationFile>SurveyPointTemplateImports.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>C:\Program Files\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Staging|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Staging\</OutputPath>
+    <DocumentationFile>SurveyPointTemplateImports.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>C:\Program Files\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Production|AnyCPU' ">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Production\</OutputPath>
+    <DocumentationFile>SurveyPointTemplateImports.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>C:\Program Files\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Development|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Development\</OutputPath>
+    <DocumentationFile>SurveyPointTemplateImports.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>C:\Program Files\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Testing|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Testing\</OutputPath>
+    <DocumentationFile>SurveyPointTemplateImports.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>C:\Program Files\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Staging|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Staging\</OutputPath>
+    <DocumentationFile>SurveyPointTemplateImports.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>C:\Program Files\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Production|x86' ">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Production\</OutputPath>
+    <DocumentationFile>SurveyPointTemplateImports.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>C:\Program Files\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Data.v6.3, Version=6.3.2.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v6.3, Version=6.3.2.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v6.3, Version=6.3.2.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v6.3, Version=6.3.2.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Nrc.Framework, Version=1.10.0.0, Culture=neutral, PublicKeyToken=7f65ae6d961bde9c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Framework.BusinessLogic, Version=1.0.5.0, Culture=neutral, PublicKeyToken=7f65ae6d961bde9c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.BusinessLogic.dll</HintPath>
+    </Reference>
+    <Reference Include="NRC.NRCAuthLib, Version=1.1.1.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\NRC.NRCAuthLib.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="Classes\Config.vb" />
+    <Compile Include="Dialogs\ExportDefinitionStatusDialog.Designer.vb">
+      <DependentUpon>ExportDefinitionStatusDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\ExportDefinitionStatusDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\ExportDefintionDialog.Designer.vb">
+      <DependentUpon>ExportDefintionDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\ExportDefintionDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\ExportDefQMSDeDupRule.Designer.vb">
+      <DependentUpon>ExportDefQMSDeDupRule.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\ExportDefQMSDeDupRule.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\FileTemplateAdd.Designer.vb">
+      <DependentUpon>FileTemplateAdd.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\FileTemplateAdd.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\ValidationErrorsDialog.Designer.vb">
+      <DependentUpon>ValidationErrorsDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\ValidationErrorsDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Enums\ColumnActions.vb" />
+    <Compile Include="Enums\ExportDefinitionActions.vb" />
+    <Compile Include="Enums\FileTemplateActions.vb" />
+    <Compile Include="EventArgs\DeDupRuleSelectedEventArgs.vb" />
+    <Compile Include="EventArgs\ExportDefintionSelectedEventArgs.vb" />
+    <Compile Include="EventArgs\FileTemplateSelectedEventArgs.vb" />
+    <Compile Include="EventArgs\FolderChangedEventArgs.vb" />
+    <Compile Include="Classes\Globals.vb" />
+    <Compile Include="Classes\UIRelation.vb" />
+    <Compile Include="Classes\CurrentUser.vb" />
+    <Compile Include="Exceptions\AccessDeniedException.vb" />
+    <Compile Include="Forms\SplashScreen.Designer.vb">
+      <DependentUpon>SplashScreen.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SplashScreen.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Navigators\ExportDefinitionLogNavigator.Designer.vb">
+      <DependentUpon>ExportDefinitionLogNavigator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Navigators\ExportDefinitionLogNavigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Navigators\FileTemplateNavigator.Designer.vb">
+      <DependentUpon>FileTemplateNavigator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Navigators\FileTemplateNavigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Navigators\ImportExportNavigator.Designer.vb">
+      <DependentUpon>ImportExportNavigator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Navigators\ImportExportNavigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\ExportDefinitionLogSection.Designer.vb">
+      <DependentUpon>ExportDefinitionLogSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\ExportDefinitionLogSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\FileTemplateSection.Designer.vb">
+      <DependentUpon>FileTemplateSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\FileTemplateSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sections\FolderSection.Designer.vb">
+      <DependentUpon>FolderSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\FolderSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Navigators\FolderNavigator.Designer.vb">
+      <DependentUpon>FolderNavigator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Navigators\FolderNavigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Classes\Navigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Classes\Section.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\MainForm.Designer.vb">
+      <DependentUpon>MainForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MainForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Sections\ImportExportSection.Designer.vb">
+      <DependentUpon>ImportExportSection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Sections\ImportExportSection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Dialogs\ExportDefinitionStatusDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ExportDefinitionStatusDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\ExportDefintionDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ExportDefintionDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\ExportDefQMSDeDupRule.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ExportDefQMSDeDupRule.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\FileTemplateAdd.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FileTemplateAdd.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\ValidationErrorsDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ValidationErrorsDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SplashScreen.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SplashScreen.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\licenses.licx" />
+    <EmbeddedResource Include="Navigators\FileTemplateNavigator.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FileTemplateNavigator.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Navigators\ImportExportNavigator.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ImportExportNavigator.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\ExportDefinitionLogSection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ExportDefinitionLogSection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\FileTemplateSection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FileTemplateSection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\FolderSection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FolderSection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Navigators\FolderNavigator.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FolderNavigator.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MainForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MainForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sections\ImportExportSection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ImportExportSection.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Resources\GoLtr.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Sql.Server.Express.1.0">
+      <Visible>False</Visible>
+      <ProductName>SQL Server 2005 Express Edition</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\applic_f.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\New.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Delete.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\DataSources\Nrc.Framework.BusinessLogic.Validation.BrokenRule.datasource" />
+    <None Include="My Project\DataSources\Nrc.SurveyPoint.Library.SPTI_ColumnDefinition.datasource" />
+    <None Include="My Project\DataSources\Nrc.SurveyPoint.Library.SPTI_FileTemplate.datasource" />
+    <None Include="Resources\Copy.ico" />
+    <None Include="SurveyPointTemplateImports.vsdoc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\SurveyPoint Class Library Solution\SurveyPoint.Library.SqlDataProvider\SurveyPoint.Library.SqlDataProvider.vbproj">
+      <Project>{2AD098FB-4201-43D4-8133-F8A5EDC5E155}</Project>
+      <Name>SurveyPoint.Library.SqlDataProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SurveyPoint Class Library Solution\SurveyPoint.Library\SurveyPoint.Library.vbproj">
+      <Project>{22006699-74C3-4AE2-B529-FA1F0804DA25}</Project>
+      <Name>SurveyPoint.Library</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\DataSources\Nrc.SurveyPoint.Library.ExportObjectMessage.datasource" />
+    <None Include="My Project\DataSources\Nrc.SurveyPoint.Library.SPTI_ExportDefinition.datasource" />
+    <None Include="Resources\share.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\DataSources\Nrc.SurveyPoint.Library.SPTI_DeDupRuleColumnMap.datasource" />
+    <None Include="My Project\DataSources\Nrc.SurveyPoint.Library.SPTI_ExportDefinitionLog.datasource" />
+    <None Include="My Project\DataSources\Nrc.SurveyPoint.Library.SPTI_ExportDefintionFile.datasource" />
+    <None Include="Resources\info.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

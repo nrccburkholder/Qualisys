@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RptDataSource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>SurveyAdmin</Name>
+  <DataSourceID>5d1a45a3-b397-4043-94e2-8aceac6582e6</DataSourceID>
+  <ConnectionProperties>
+    <Extension>SQL</Extension>
+    <ConnectString>Data Source=Aries;Initial Catalog=SurveyAdministration</ConnectString>
+  </ConnectionProperties>
+</RptDataSource>

@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RptDataSource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>QMSProduction</Name>
+  <DataSourceID>9513cbe7-dc96-4a1c-9899-8db04d4fc206</DataSourceID>
+  <ConnectionProperties>
+    <Extension>SQL</Extension>
+    <ConnectString>Data Source=aries.nationalresearch.com;Initial Catalog=QMS</ConnectString>
+  </ConnectionProperties>
+</RptDataSource>

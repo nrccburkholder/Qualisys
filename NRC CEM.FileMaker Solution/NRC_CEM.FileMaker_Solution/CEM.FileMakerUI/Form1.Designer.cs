@@ -34,8 +34,10 @@
             this.dgTemplates = new System.Windows.Forms.DataGridView();
             this.label2 = new System.Windows.Forms.Label();
             this.dgQueueFiles = new System.Windows.Forms.DataGridView();
+            this.queueFileBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.label3 = new System.Windows.Forms.Label();
             this.dgQueues = new System.Windows.Forms.DataGridView();
+            this.queueBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.label4 = new System.Windows.Forms.Label();
             this.btnRun = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
@@ -47,16 +49,18 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.templateBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.queueBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.queueFileBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.btnSelectAll = new System.Windows.Forms.Button();
+            this.btnUnselectAll = new System.Windows.Forms.Button();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)(this.dgTemplates)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgQueueFiles)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.queueFileBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgQueues)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.queueBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.menuStrip1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.templateBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.queueBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.queueFileBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // cmbxSurveyType
@@ -199,6 +203,8 @@
             // 
             // statusStrip1
             // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel1});
             this.statusStrip1.Location = new System.Drawing.Point(0, 772);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(877, 22);
@@ -219,12 +225,40 @@
             // 
             this.templateBindingSource.AllowNew = false;
             // 
+            // btnSelectAll
+            // 
+            this.btnSelectAll.Location = new System.Drawing.Point(207, 437);
+            this.btnSelectAll.Name = "btnSelectAll";
+            this.btnSelectAll.Size = new System.Drawing.Size(75, 20);
+            this.btnSelectAll.TabIndex = 15;
+            this.btnSelectAll.Text = "Select All";
+            this.btnSelectAll.UseVisualStyleBackColor = true;
+            this.btnSelectAll.Click += new System.EventHandler(this.btnSelectAll_Click);
+            // 
+            // btnUnselectAll
+            // 
+            this.btnUnselectAll.Location = new System.Drawing.Point(308, 437);
+            this.btnUnselectAll.Name = "btnUnselectAll";
+            this.btnUnselectAll.Size = new System.Drawing.Size(75, 20);
+            this.btnUnselectAll.TabIndex = 16;
+            this.btnUnselectAll.Text = "Unselect All";
+            this.btnUnselectAll.UseVisualStyleBackColor = true;
+            this.btnUnselectAll.Click += new System.EventHandler(this.btnUnselectAll_Click);
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(118, 17);
+            this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(877, 794);
+            this.Controls.Add(this.btnUnselectAll);
+            this.Controls.Add(this.btnSelectAll);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.pictureBox1);
@@ -245,13 +279,15 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgTemplates)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgQueueFiles)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.queueFileBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgQueues)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.queueBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.templateBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.queueBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.queueFileBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -279,6 +315,9 @@
         private System.Windows.Forms.BindingSource queueFileBindingSource;
         private System.Windows.Forms.BindingSource queueBindingSource;
         private System.Windows.Forms.BindingSource templateBindingSource;
+        private System.Windows.Forms.Button btnSelectAll;
+        private System.Windows.Forms.Button btnUnselectAll;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
     }
 }
 

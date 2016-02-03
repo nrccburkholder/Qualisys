@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="dsRespondentDetails" targetNamespace="http://tempuri.org/dsRespondentDetails.xsd"
+	elementFormDefault="qualified" attributeFormDefault="qualified" xmlns="http://tempuri.org/dsRespondentDetails.xsd"
+	xmlns:mstns="http://tempuri.org/dsRespondentDetails.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+	<xs:element name="dsRespondentDetails" msdata:IsDataSet="true">
+		<xs:complexType>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="RespondentProperties">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="RespondentPropertyID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="RespondentID" type="xs:int" />
+							<xs:element name="PropertyName" type="xs:string" />
+							<xs:element name="PropertyValue" type="xs:string" />
+							<xs:element name="PropertyLevel" type="xs:int" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="EventLog">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="EventLogID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="EventDate" type="xs:dateTime" />
+							<xs:element name="EventID" type="xs:int" />
+							<xs:element name="UserID" type="xs:int" />
+							<xs:element name="RespondentID" type="xs:int" minOccurs="0" />
+							<xs:element name="EventParameters" type="xs:string" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="tblEvents">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="EventID" type="xs:int" />
+							<xs:element name="Name" type="xs:string" />
+							<xs:element name="Description" type="xs:string" />
+							<xs:element name="EventTypeID" type="xs:int" />
+							<xs:element name="FinalCode" type="xs:unsignedByte" />
+							<xs:element name="UserCreated" type="xs:unsignedByte" />
+							<xs:element name="DefaultNonContact" type="xs:int" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Users">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="UserID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="Username" type="xs:string" />
+							<xs:element name="FirstName" type="xs:string" />
+							<xs:element name="LastName" type="xs:string" />
+							<xs:element name="Password" type="xs:string" />
+							<xs:element name="Email" type="xs:string" />
+							<xs:element name="GroupID" type="xs:int" />
+							<xs:element name="Active" type="xs:unsignedByte" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Respondents">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="RespondentID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="SurveyInstanceID" type="xs:int" />
+							<xs:element name="FirstName" type="xs:string" minOccurs="0" />
+							<xs:element name="MiddleInitial" type="xs:string" minOccurs="0" />
+							<xs:element name="LastName" type="xs:string" />
+							<xs:element name="Address1" type="xs:string" minOccurs="0" />
+							<xs:element name="Address2" type="xs:string" minOccurs="0" />
+							<xs:element name="City" type="xs:string" minOccurs="0" />
+							<xs:element name="State" type="xs:string" minOccurs="0" />
+							<xs:element name="PostalCode" type="xs:string" minOccurs="0" />
+							<xs:element name="TelephoneDay" type="xs:string" minOccurs="0" />
+							<xs:element name="TelephoneEvening" type="xs:string" minOccurs="0" />
+							<xs:element name="Email" type="xs:string" minOccurs="0" />
+							<xs:element name="DOB" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="Gender" type="xs:string" minOccurs="0" />
+							<xs:element name="ClientRespondentID" type="xs:string" minOccurs="0" />
+							<xs:element name="SSN" type="xs:string" minOccurs="0" />
+							<xs:element name="BatchID" type="xs:int" minOccurs="0" />
+							<xs:element name="SurveyInstanceName" type="xs:string" />
+							<xs:element name="ClientName" type="xs:string" />
+							<xs:element name="SurveyName" type="xs:string" />
+							<xs:element name="ClientID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="SurveyID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="CallsMade" type="xs:int" />
+							<xs:element name="Final" type="xs:unsignedByte" minOccurs="0" />
+							<xs:element name="NextContact" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="PostalCodeExt" type="xs:string" minOccurs="0" />
+							<xs:element name="RespondentKey" type="xs:string" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Household">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="RespondentID" type="xs:int" />
+							<xs:element name="FirstName" type="xs:string" minOccurs="0" />
+							<xs:element name="LastName" type="xs:string" />
+							<xs:element name="Telephone" type="xs:string" minOccurs="0" />
+							<xs:element name="SurveyName" type="xs:string" />
+							<xs:element name="ClientName" type="xs:string" />
+							<xs:element name="SurveyInstanceName" type="xs:string" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:complexType>
+		<xs:unique name="dsRespondentDetailsKey2" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:RespondentProperties" />
+			<xs:field xpath="mstns:RespondentPropertyID" />
+		</xs:unique>
+		<xs:unique name="dsRespondentDetailsKey3" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:EventLog" />
+			<xs:field xpath="mstns:EventLogID" />
+		</xs:unique>
+		<xs:unique name="dsRespondentDetailsKey4" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//tblEvents" />
+			<xs:field xpath="mstns:EventID" />
+		</xs:unique>
+		<xs:key name="key1">
+			<xs:selector xpath=".//tblEvents" />
+			<xs:field xpath="mstns:EventID" />
+		</xs:key>
+		<xs:unique name="dsRespondentDetailsKey5" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:Users" />
+			<xs:field xpath="mstns:UserID" />
+		</xs:unique>
+		<xs:key name="key2">
+			<xs:selector xpath=".//mstns:Users" />
+			<xs:field xpath="mstns:UserID" />
+		</xs:key>
+		<xs:keyref name="UsersEventLog" refer="key2">
+			<xs:selector xpath=".//mstns:EventLog" />
+			<xs:field xpath="mstns:UserID" />
+		</xs:keyref>
+		<xs:key name="dsRespondentDetailsKey6">
+			<xs:selector xpath=".//mstns:tblEvents" />
+			<xs:field xpath="mstns:EventID" />
+		</xs:key>
+		<xs:key name="key3">
+			<xs:selector xpath=".//mstns:tblEvents" />
+			<xs:field xpath="mstns:EventID" />
+		</xs:key>
+		<xs:keyref name="tblEventsEventLog" refer="key3">
+			<xs:selector xpath=".//mstns:EventLog" />
+			<xs:field xpath="mstns:EventID" />
+		</xs:keyref>
+		<xs:key name="dsRespondentDetailsKey1">
+			<xs:selector xpath=".//mstns:Respondents" />
+			<xs:field xpath="mstns:RespondentID" />
+		</xs:key>
+		<xs:key name="key4">
+			<xs:selector xpath=".//mstns:Respondents" />
+			<xs:field xpath="mstns:RespondentID" />
+		</xs:key>
+		<xs:keyref name="RespondentsRespondentProperties" refer="key4">
+			<xs:selector xpath=".//mstns:RespondentProperties" />
+			<xs:field xpath="mstns:RespondentID" />
+		</xs:keyref>
+		<xs:keyref name="RespondentsEventLog" refer="key4">
+			<xs:selector xpath=".//mstns:EventLog" />
+			<xs:field xpath="mstns:RespondentID" />
+		</xs:keyref>
+	</xs:element>
+</xs:schema>

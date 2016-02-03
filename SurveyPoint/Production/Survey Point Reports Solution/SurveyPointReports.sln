@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{F14B399A-7131-4C87-9E4B-1186C45EF12D}") = "SurveyPointReports", "SurveyPointReports\SurveyPointReports.rptproj", "{E7DB2A9D-74FD-4A31-9641-C84E07CF2652}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 2
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://perseus:8080/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = SurveyPointReports\\SurveyPointReports.rptproj
+		SccProjectName1 = SurveyPointReports
+		SccLocalPath1 = SurveyPointReports
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Default = Debug|Default
+		DebugLocal|Default = DebugLocal|Default
+		Production|Default = Production|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E7DB2A9D-74FD-4A31-9641-C84E07CF2652}.Debug|Default.ActiveCfg = Debug
+		{E7DB2A9D-74FD-4A31-9641-C84E07CF2652}.Debug|Default.Build.0 = DebugLocal
+		{E7DB2A9D-74FD-4A31-9641-C84E07CF2652}.Debug|Default.Deploy.0 = DebugLocal
+		{E7DB2A9D-74FD-4A31-9641-C84E07CF2652}.DebugLocal|Default.ActiveCfg = DebugLocal
+		{E7DB2A9D-74FD-4A31-9641-C84E07CF2652}.DebugLocal|Default.Build.0 = DebugLocal
+		{E7DB2A9D-74FD-4A31-9641-C84E07CF2652}.DebugLocal|Default.Deploy.0 = DebugLocal
+		{E7DB2A9D-74FD-4A31-9641-C84E07CF2652}.Production|Default.ActiveCfg = Production
+		{E7DB2A9D-74FD-4A31-9641-C84E07CF2652}.Production|Default.Build.0 = Production
+		{E7DB2A9D-74FD-4A31-9641-C84E07CF2652}.Production|Default.Deploy.0 = Production
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

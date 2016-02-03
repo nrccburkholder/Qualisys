@@ -1,0 +1,84 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F8C87330-0058-4912-8367-4F26AA540672}"
+	ProjectSection(SolutionItems) = preProject
+		localtestrun.testrunconfig = localtestrun.testrunconfig
+		SurveyPoint Utilities Solution.vsmdi = SurveyPoint Utilities Solution.vsmdi
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "SurveyPoint Utilities", "SurveyPoint Utilities\SurveyPoint Utilities.vbproj", "{9E4BCC6B-151C-463C-9AC3-3C78FB697036}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "SurveyPoint.Library", "..\SurveyPoint Class Library Solution\SurveyPoint.Library\SurveyPoint.Library.vbproj", "{22006699-74C3-4AE2-B529-FA1F0804DA25}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "SurveyPoint.Library.SqlDataProvider", "..\SurveyPoint Class Library Solution\SurveyPoint.Library.SqlDataProvider\SurveyPoint.Library.SqlDataProvider.vbproj", "{2AD098FB-4201-43D4-8133-F8A5EDC5E155}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://tfs.nationalresearch.com:8080/tfs/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = SurveyPoint\u0020Utilities\\SurveyPoint\u0020Utilities.vbproj
+		SccProjectName1 = SurveyPoint\u0020Utilities
+		SccLocalPath1 = SurveyPoint\u0020Utilities
+		SccProjectUniqueName2 = ..\\SurveyPoint\u0020Class\u0020Library\u0020Solution\\SurveyPoint.Library\\SurveyPoint.Library.vbproj
+		SccProjectName2 = ../SurveyPoint\u0020Class\u0020Library\u0020Solution/SurveyPoint.Library
+		SccLocalPath2 = ..\\SurveyPoint\u0020Class\u0020Library\u0020Solution\\SurveyPoint.Library
+		SccProjectUniqueName3 = ..\\SurveyPoint\u0020Class\u0020Library\u0020Solution\\SurveyPoint.Library.SqlDataProvider\\SurveyPoint.Library.SqlDataProvider.vbproj
+		SccProjectName3 = ../SurveyPoint\u0020Class\u0020Library\u0020Solution/SurveyPoint.Library.SqlDataProvider
+		SccLocalPath3 = ..\\SurveyPoint\u0020Class\u0020Library\u0020Solution\\SurveyPoint.Library.SqlDataProvider
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = SurveyPoint Utilities Solution.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Development|Any CPU = Development|Any CPU
+		Production|Any CPU = Production|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Staging|Any CPU = Staging|Any CPU
+		Testing|Any CPU = Testing|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9E4BCC6B-151C-463C-9AC3-3C78FB697036}.Debug|Any CPU.ActiveCfg = Development|Any CPU
+		{9E4BCC6B-151C-463C-9AC3-3C78FB697036}.Debug|Any CPU.Build.0 = Development|Any CPU
+		{9E4BCC6B-151C-463C-9AC3-3C78FB697036}.Development|Any CPU.ActiveCfg = Development|Any CPU
+		{9E4BCC6B-151C-463C-9AC3-3C78FB697036}.Development|Any CPU.Build.0 = Development|Any CPU
+		{9E4BCC6B-151C-463C-9AC3-3C78FB697036}.Production|Any CPU.ActiveCfg = Production|Any CPU
+		{9E4BCC6B-151C-463C-9AC3-3C78FB697036}.Production|Any CPU.Build.0 = Production|Any CPU
+		{9E4BCC6B-151C-463C-9AC3-3C78FB697036}.Release|Any CPU.ActiveCfg = Production|Any CPU
+		{9E4BCC6B-151C-463C-9AC3-3C78FB697036}.Release|Any CPU.Build.0 = Production|Any CPU
+		{9E4BCC6B-151C-463C-9AC3-3C78FB697036}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
+		{9E4BCC6B-151C-463C-9AC3-3C78FB697036}.Staging|Any CPU.Build.0 = Staging|Any CPU
+		{9E4BCC6B-151C-463C-9AC3-3C78FB697036}.Testing|Any CPU.ActiveCfg = Testing|Any CPU
+		{9E4BCC6B-151C-463C-9AC3-3C78FB697036}.Testing|Any CPU.Build.0 = Testing|Any CPU
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Debug|Any CPU.ActiveCfg = Development|Any CPU
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Debug|Any CPU.Build.0 = Development|Any CPU
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Development|Any CPU.ActiveCfg = Development|Any CPU
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Development|Any CPU.Build.0 = Development|Any CPU
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Production|Any CPU.ActiveCfg = Production|Any CPU
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Production|Any CPU.Build.0 = Production|Any CPU
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Release|Any CPU.ActiveCfg = Production|Any CPU
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Release|Any CPU.Build.0 = Production|Any CPU
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Staging|Any CPU.Build.0 = Staging|Any CPU
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Testing|Any CPU.ActiveCfg = Testing|Any CPU
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Testing|Any CPU.Build.0 = Testing|Any CPU
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Debug|Any CPU.ActiveCfg = Development|Any CPU
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Debug|Any CPU.Build.0 = Development|Any CPU
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Development|Any CPU.ActiveCfg = Development|Any CPU
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Development|Any CPU.Build.0 = Development|Any CPU
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Production|Any CPU.ActiveCfg = Production|Any CPU
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Production|Any CPU.Build.0 = Production|Any CPU
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Release|Any CPU.ActiveCfg = Production|Any CPU
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Release|Any CPU.Build.0 = Production|Any CPU
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Staging|Any CPU.Build.0 = Staging|Any CPU
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Testing|Any CPU.ActiveCfg = Testing|Any CPU
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Testing|Any CPU.Build.0 = Testing|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -18,30 +18,6 @@ SET NOCOUNT ON
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 SET NOCOUNT ON
 
-/*
-HCAHPS IP			2
-Home Health CAHPS	3
-CGCAHPS				4
-ICHCAHPS			8
-ACOCAHPS			10
-*/
-
--- CAHPS surveyType_id 'constants'
-declare @CGCAHPS int
-SET @CGCAHPS = 4
-
-declare @HCAHPS int
-SET @HCAHPS = 2
-
-declare @HHCAHPS int
-SET @HHCAHPS = 3
-
-declare @ACOCAHPS int
-SET @ACOCAHPS = 10
-
-declare @ICHCAHPS int
-SET @ICHCAHPS = 8
-
 declare @surveyType_id int
 
 SELECT  @surveyType_id = SurveyType_id
@@ -80,6 +56,3 @@ CREATE TABLE #M (Error TINYINT, strMessage VARCHAR(200))
 SELECT * FROM #M
 
 DROP TABLE #M
-GO
-
-

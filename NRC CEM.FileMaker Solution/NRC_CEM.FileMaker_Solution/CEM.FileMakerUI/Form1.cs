@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CEM.Exporting;
+using System.Configuration;
 
 namespace CEM.FileMakerUI
 {
@@ -48,6 +49,8 @@ namespace CEM.FileMakerUI
             AddQueueColumns();
             AddQueueFileColumns();
             cmbxSurveyType.SelectedIndex = -1;
+
+            toolStripStatusLabel1.Text = string.Format("Environment: {0}", GetEnvironment());
 
             //LoadData();
         }
@@ -574,6 +577,33 @@ namespace CEM.FileMakerUI
 
 
             }
+        }
+
+        private void btnSelectAll_Click(object sender, EventArgs e)
+        {
+
+            foreach (DataGridViewRow row in dgQueueFiles.Rows)
+            {
+                row.Cells[0].Value = "true";
+            }
+        }
+
+        private void btnUnselectAll_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in dgQueueFiles.Rows)
+            {
+                row.Cells[0].Value = "false";
+            }
+        }
+
+        static string GetEnvironment()
+        {
+            string connStr = ConfigurationManager.ConnectionStrings["CEMConnection"].ConnectionString.ToUpper();
+
+            if (connStr.Contains("LNK0TCATSQL01")) return "TEST";
+            else if (connStr.Contains("STGCATCLUSTDB2")) return "STAGE";
+            else return "PROD";
+
         }
     }
 }

@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="dsCriteria" targetNamespace="http://tempuri.org/dsCriteria.xsd" elementFormDefault="qualified"
+	attributeFormDefault="qualified" xmlns="http://tempuri.org/dsCriteria.xsd" xmlns:mstns="http://tempuri.org/dsCriteria.xsd"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+	<xs:element name="dsCriteria" msdata:IsDataSet="true">
+		<xs:complexType>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="Criteria">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="CriteriaID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="CriteriaName" type="xs:string" minOccurs="0" />
+							<xs:element name="SurveyID" type="xs:int" />
+							<xs:element name="CriteriaTypeID" type="xs:int" />
+							<xs:element name="AnswerCategoryID" type="xs:int" minOccurs="0" />
+							<xs:element name="CriteriaDataTypeID" type="xs:short" minOccurs="0" />
+							<xs:element name="ParameterName" type="xs:string" minOccurs="0" />
+							<xs:element name="TextValue" type="xs:string" minOccurs="0" />
+							<xs:element name="ReferenceCriteriaID" type="xs:int" minOccurs="0" />
+							<xs:element name="ReferenceCriteriaSequence" type="xs:int" minOccurs="0" />
+							<xs:element name="Flag" type="xs:int" />
+							<xs:element name="Hierarchy" type="xs:string" minOccurs="0" />
+							<xs:element name="Lvl" type="xs:int" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Search">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="CriteriaID" type="xs:int" minOccurs="0" />
+							<xs:element name="SurveyID" type="xs:int" minOccurs="0" />
+							<xs:element name="CriteriaTypeID" type="xs:int" minOccurs="0" />
+							<xs:element name="AnswerCategoryID" type="xs:int" minOccurs="0" />
+							<xs:element name="ReferenceCriteriaID" type="xs:int" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="CriteriaTypes">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="CriteriaTypeID" type="xs:int" />
+							<xs:element name="Name" type="xs:string" />
+							<xs:element name="Description" type="xs:string" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:complexType>
+		<xs:unique name="dsCriteriaKey1" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:Criteria" />
+			<xs:field xpath="mstns:CriteriaID" />
+		</xs:unique>
+		<xs:unique name="dsCriteriaKey2" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:CriteriaTypes" />
+			<xs:field xpath="mstns:CriteriaTypeID" />
+		</xs:unique>
+	</xs:element>
+</xs:schema>

@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <State>$base64$PFNvdXJjZUNvbnRyb2xJbmZvIHhtbG5zOnhzZD0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEiIHhtbG5zOnhzaT0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEtaW5zdGFuY2UiIHhtbG5zOmRkbDI9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDAzL2VuZ2luZS8yIiB4bWxuczpkZGwyXzI9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDAzL2VuZ2luZS8yLzIiIHhtbG5zOmR3ZD0iaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS9EYXRhV2FyZWhvdXNlL0Rlc2lnbmVyLzEuMCI+DQogIDxFbmFibGVkPnRydWU8L0VuYWJsZWQ+DQogIDxQcm9qZWN0TmFtZT5TQUs8L1Byb2plY3ROYW1lPg0KICA8QXV4UGF0aD5TQUs8L0F1eFBhdGg+DQogIDxMb2NhbFBhdGg+U0FLPC9Mb2NhbFBhdGg+DQogIDxQcm92aWRlcj5TQUs8L1Byb3ZpZGVyPg0KPC9Tb3VyY2VDb250cm9sSW5mbz4=</State>
+  <DataSources>
+    <ProjectItem>
+      <Name>QArchive.rds</Name>
+      <FullPath>QArchive.rds</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>QArchiveReportWriter.rds</Name>
+      <FullPath>QArchiveReportWriter.rds</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>QMSFullReader.rds</Name>
+      <FullPath>QMSFullReader.rds</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>QMSProduction.rds</Name>
+      <FullPath>QMSProduction.rds</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>QMSReportWriter.rds</Name>
+      <FullPath>QMSReportWriter.rds</FullPath>
+    </ProjectItem>
+  </DataSources>
+  <Reports>
+    <ProjectItem>
+      <Name>5 Star HRA.rdl</Name>
+      <FullPath>5 Star HRA.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>5-Star_Health_Profile_PHN.rdl</Name>
+      <FullPath>5-Star_Health_Profile_PHN.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>5Star_Health_Profile_Reassessment.rdl</Name>
+      <FullPath>5Star_Health_Profile_Reassessment.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>5-Star_Health_Profile_Wellpoint.rdl</Name>
+      <FullPath>5-Star_Health_Profile_Wellpoint.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>5-Star_Health_Profiles.rdl</Name>
+      <FullPath>5-Star_Health_Profiles.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>5-Star_Health_Profiles_by_subgroup.rdl</Name>
+      <FullPath>5-Star_Health_Profiles_by_subgroup.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>5-Star_PHN_Incompletes.rdl</Name>
+      <FullPath>5-Star_PHN_Incompletes.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Adult_Quarterly_Report.rdl</Name>
+      <FullPath>Adult_Quarterly_Report.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Child_Quarterly_Report.rdl</Name>
+      <FullPath>Child_Quarterly_Report.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Maternity_Quarterly_Report.rdl</Name>
+      <FullPath>Maternity_Quarterly_Report.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>5Star_Quarterly_Report.rdl</Name>
+      <FullPath>5Star_Quarterly_Report.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Adult_Good_Health.rdl</Name>
+      <FullPath>Adult_Good_Health.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Adult_Health_Profile.rdl</Name>
+      <FullPath>Adult_Health_Profile.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Adv_Senior_Health_Profile.rdl</Name>
+      <FullPath>Adv_Senior_Health_Profile.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>AdvKC_Senior_Health_Profile.rdl</Name>
+      <FullPath>AdvKC_Senior_Health_Profile.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>BCBS of SC Rates by Survey Instances.rdl</Name>
+      <FullPath>BCBS of SC Rates by Survey Instances.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Bundling Report.rdl</Name>
+      <FullPath>Bundling Report.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Child_Health_Profile.rdl</Name>
+      <FullPath>Child_Health_Profile.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Completed Surveys By Date Range.rdl</Name>
+      <FullPath>Completed Surveys By Date Range.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Completed_Surveys_By_Date_Range.rdl</Name>
+      <FullPath>Completed_Surveys_By_Date_Range.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Copy of AdvKC_Senior_Health_Profile.rdl</Name>
+      <FullPath>Copy of AdvKC_Senior_Health_Profile.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Copy of Senior_Health_Profile_Reassessment.rdl</Name>
+      <FullPath>Copy of Senior_Health_Profile_Reassessment.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Images processed report by date.rdl</Name>
+      <FullPath>Images processed report by date.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Inserting Report by Date.rdl</Name>
+      <FullPath>Inserting Report by Date.rdl</FullPath>
+    </ProjectItem>
+    <ResourceProjectItem>
+      <Name>logo.jpg</Name>
+      <FullPath>logo.jpg</FullPath>
+      <MimeType>image/jpeg</MimeType>
+    </ResourceProjectItem>
+    <ProjectItem>
+      <Name>Mail_vs_Telephone_ResponseRate.rdl</Name>
+      <FullPath>Mail_vs_Telephone_ResponseRate.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Maternity_Health_Profile.rdl</Name>
+      <FullPath>Maternity_Health_Profile.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Respondent Status Summary.rdl</Name>
+      <FullPath>Respondent Status Summary.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Respondent_Status_Summary_Coventry.rdl</Name>
+      <FullPath>Respondent_Status_Summary_Coventry.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Response Rate Report BSBSSC.rdl</Name>
+      <FullPath>Response Rate Report BSBSSC.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Response Rate Report by Client.rdl</Name>
+      <FullPath>Response Rate Report by Client.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Response_Rate_Report_PHN.rdl</Name>
+      <FullPath>Response_Rate_Report_PHN.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>SampleReport.rdl</Name>
+      <FullPath>SampleReport.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Senior Health Report_Excellus.rdl</Name>
+      <FullPath>Senior Health Report_Excellus.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Senior_Health_Profile.rdl</Name>
+      <FullPath>Senior_Health_Profile.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Senior_health_profile_BCBS_of_SC.rdl</Name>
+      <FullPath>Senior_health_profile_BCBS_of_SC.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Senior_Health_Profile_IVHP.rdl</Name>
+      <FullPath>Senior_Health_Profile_IVHP.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Senior_Health_Profile_PHN.rdl</Name>
+      <FullPath>Senior_Health_Profile_PHN.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Senior_Health_Profile_Reassessment.rdl</Name>
+      <FullPath>Senior_Health_Profile_Reassessment.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Senior_Health_Profile_Wellpoint.rdl</Name>
+      <FullPath>Senior_Health_Profile_Wellpoint.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Senior_Health_ProfileJohnMuir.rdl</Name>
+      <FullPath>Senior_Health_ProfileJohnMuir.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Senior_Health_ProfilePeoplesChoice.rdl</Name>
+      <FullPath>Senior_Health_ProfilePeoplesChoice.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>SeniorHealthQuarterlyReport_GroupFilter.rdl</Name>
+      <FullPath>SeniorHealthQuarterlyReport_GroupFilter.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>SHP_PHN_Incompletes.rdl</Name>
+      <FullPath>SHP_PHN_Incompletes.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Survey Merge Queue Status.rdl</Name>
+      <FullPath>Survey Merge Queue Status.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>SurveyMergeFiles.rdl</Name>
+      <FullPath>SurveyMergeFiles.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>SurveyMergeSubJob.rdl</Name>
+      <FullPath>SurveyMergeSubJob.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>TestGraphedQuartery.rdl</Name>
+      <FullPath>TestGraphedQuartery.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>VRT_Respondent_Status_Summary.rdl</Name>
+      <FullPath>VRT_Respondent_Status_Summary.rdl</FullPath>
+    </ProjectItem>
+  </Reports>
+  <Configurations>
+    <Configuration>
+      <Name>Debug</Name>
+      <Platform>Win32</Platform>
+      <Options>
+        <TargetServerURL>http://iris.nationalresearch.com/ReportServer</TargetServerURL>
+        <TargetFolder>SurveyPoint</TargetFolder>
+        <TargetDataSourceFolder>Data Sources/Prod</TargetDataSourceFolder>
+      </Options>
+    </Configuration>
+    <Configuration>
+      <Name>DebugLocal</Name>
+      <Platform>Win32</Platform>
+      <Options>
+        <TargetFolder>PayerSolutionsReports</TargetFolder>
+        <TargetDataSourceFolder>Data Sources</TargetDataSourceFolder>
+      </Options>
+    </Configuration>
+    <Configuration>
+      <Name>Production</Name>
+      <Platform>Win32</Platform>
+      <Options>
+        <TargetFolder>PayerSolutionsReports</TargetFolder>
+        <TargetDataSourceFolder>Data Sources</TargetDataSourceFolder>
+      </Options>
+    </Configuration>
+  </Configurations>
+</Project>

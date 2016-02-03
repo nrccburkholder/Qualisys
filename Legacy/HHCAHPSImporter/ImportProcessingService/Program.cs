@@ -18,6 +18,7 @@ namespace HHCAHPSImporter.ImportProcessingService
     {
         Settings settings = ConfigManager.Load<Settings>(new ConfigOptions { CreateMissingDirectories = true });
         private static Logger _logger = Logger.GetLogger("HHCAHPSImporter.ImportProcessor");
+        private static readonly HashSet<string> extensionsToProcess = new HashSet<string> { ".csv", ".txt" };
 
         #region TimerService Overrides
         protected override int IntervalSecs
@@ -73,7 +74,7 @@ namespace HHCAHPSImporter.ImportProcessingService
         /// </summary>
         void QueueFiles()
         {
-            List<FileInfo> files = settings.IncomingDirectory.GetFiles("*.csv").ToList() ;
+            List<FileInfo> files = settings.IncomingDirectory.GetFiles().Where(file => extensionsToProcess.Contains(file.Extension.ToLower())).ToList();
 
             if (files.Count() > 0)
             {
@@ -127,7 +128,9 @@ namespace HHCAHPSImporter.ImportProcessingService
                         {
                             using (var z = new Ionic.Zip.ZipFile(fi.FullName))
                             {
-                                var zfiles = z.Where(t => t.FileName.EndsWith(".csv")).ToList();
+                                ZipExtractor.SetFlattenedUniqueFileNames(z, settings.UploadQueueDirectory.FullName);
+
+                                var zfiles = z.Where(t => extensionsToProcess.Contains(Path.GetExtension(t.FileName).ToLower())).ToList();
                                 foreach (var zfile in zfiles)
                                 {
                                     QueueZipFileEntry(fi, zfile);
@@ -185,9 +188,10 @@ namespace HHCAHPSImporter.ImportProcessingService
 
         void FailZipFile(FileInfo file)
         {
-            string target = Path.Combine(
-                Path.Combine(settings.ZipFailureDirectory.FullName, DateTime.Now.ToString("yyyyMMdd"))
-                , file.Name);
+            var targetDirectory = Path.Combine(settings.ZipFailureDirectory.FullName, DateTime.Now.ToString("yyyyMMdd"));
+            Directory.CreateDirectory(targetDirectory);
+
+            string target = Path.Combine(targetDirectory, file.Name);
 
             if (!File.Exists(target))
             {
@@ -226,12 +230,6 @@ namespace HHCAHPSImporter.ImportProcessingService
             {
                 ImportProcessor.UploadInfo uploadInfo = null;
 
-                bool isUpdateFile = false;
-                if (fi.Name.Contains("UPDATE"))
-                {
-                    isUpdateFile = true;
-                }
-
                 //// make a backup of the file before we do anything
                 //BackupFile(fi);
 
@@ -260,7 +258,7 @@ namespace HHCAHPSImporter.ImportProcessingService
                     // import the file
                     HHCAHPSImportProcessor_Info(string.Format("Importing uploadFileId {0}", fi.Name));
 
-                    int? datafileId = HHCAHPSImportProcessor.ImportFile(uploadInfo.UploadFileId.Value, isUpdateFile);
+                    int? datafileId = HHCAHPSImportProcessor.ImportFile(uploadInfo.UploadFileId.Value);
 
                 }
                 catch (Exception ex)

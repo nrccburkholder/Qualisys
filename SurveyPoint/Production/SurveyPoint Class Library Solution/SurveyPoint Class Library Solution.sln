@@ -1,0 +1,56 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "SurveyPoint.Library", "SurveyPoint.Library\SurveyPoint.Library.vbproj", "{22006699-74C3-4AE2-B529-FA1F0804DA25}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "SurveyPoint.Library.SqlDataProvider", "SurveyPoint.Library.SqlDataProvider\SurveyPoint.Library.SqlDataProvider.vbproj", "{2AD098FB-4201-43D4-8133-F8A5EDC5E155}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://perseus:8080/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = SurveyPoint.Library\\SurveyPoint.Library.vbproj
+		SccProjectName1 = SurveyPoint.Library
+		SccLocalPath1 = SurveyPoint.Library
+		SccProjectUniqueName2 = SurveyPoint.Library.SqlDataProvider\\SurveyPoint.Library.SqlDataProvider.vbproj
+		SccProjectName2 = SurveyPoint.Library.SqlDataProvider
+		SccLocalPath2 = SurveyPoint.Library.SqlDataProvider
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Development|Any CPU = Development|Any CPU
+		Production|Any CPU = Production|Any CPU
+		Staging|Any CPU = Staging|Any CPU
+		Testing|Any CPU = Testing|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Development|Any CPU.ActiveCfg = Development|Any CPU
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Development|Any CPU.Build.0 = Development|Any CPU
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Production|Any CPU.ActiveCfg = Production|Any CPU
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Production|Any CPU.Build.0 = Production|Any CPU
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Staging|Any CPU.Build.0 = Staging|Any CPU
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Testing|Any CPU.ActiveCfg = Testing|Any CPU
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Testing|Any CPU.Build.0 = Testing|Any CPU
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Development|Any CPU.ActiveCfg = Development|Any CPU
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Development|Any CPU.Build.0 = Development|Any CPU
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Production|Any CPU.ActiveCfg = Production|Any CPU
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Production|Any CPU.Build.0 = Production|Any CPU
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Staging|Any CPU.Build.0 = Staging|Any CPU
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Testing|Any CPU.ActiveCfg = Testing|Any CPU
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Testing|Any CPU.Build.0 = Testing|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

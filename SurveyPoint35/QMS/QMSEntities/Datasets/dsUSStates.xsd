@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="dsUSStates" targetNamespace="http://tempuri.org/dsUSStates.xsd" elementFormDefault="qualified"
+	attributeFormDefault="qualified" xmlns="http://tempuri.org/dsUSStates.xsd" xmlns:mstns="http://tempuri.org/dsUSStates.xsd"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+	<xs:element name="dsUSStates" msdata:IsDataSet="true">
+		<xs:complexType>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="States">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="State" type="xs:string" />
+							<xs:element name="StateName" type="xs:string" />
+							<xs:element name="TimeDifference" type="xs:short" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:complexType>
+		<xs:unique name="dsUSStatesKey1" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:States" />
+			<xs:field xpath="mstns:State" />
+		</xs:unique>
+	</xs:element>
+</xs:schema>

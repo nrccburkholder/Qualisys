@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "MailMerge", "MailMerge\MailMerge.vbproj", "{55ED581B-16AE-4990-AEB1-35EA92D6A665}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "MailMergePrep.Library", "MailMergePrep.Library\MailMergePrep.Library.vbproj", "{024EEA7D-C340-4E84-885E-713EDAF03CAD}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "MailMergePrep.Library.SqlDataProvider", "MailMergePrep.Library.SqlDataProvider\MailMergePrep.Library.SqlDataProvider.vbproj", "{5A7E940D-3E7E-41EB-995A-CBC8A41FF3DA}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://perseus:8080/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = MailMerge\\MailMerge.vbproj
+		SccProjectName1 = MailMerge
+		SccLocalPath1 = MailMerge
+		SccProjectUniqueName2 = MailMergePrep.Library\\MailMergePrep.Library.vbproj
+		SccProjectName2 = MailMergePrep.Library
+		SccLocalPath2 = MailMergePrep.Library
+		SccProjectUniqueName3 = MailMergePrep.Library.SqlDataProvider\\MailMergePrep.Library.SqlDataProvider.vbproj
+		SccProjectName3 = MailMergePrep.Library.SqlDataProvider
+		SccLocalPath3 = MailMergePrep.Library.SqlDataProvider
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{55ED581B-16AE-4990-AEB1-35EA92D6A665}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55ED581B-16AE-4990-AEB1-35EA92D6A665}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55ED581B-16AE-4990-AEB1-35EA92D6A665}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55ED581B-16AE-4990-AEB1-35EA92D6A665}.Release|Any CPU.Build.0 = Release|Any CPU
+		{024EEA7D-C340-4E84-885E-713EDAF03CAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{024EEA7D-C340-4E84-885E-713EDAF03CAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{024EEA7D-C340-4E84-885E-713EDAF03CAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{024EEA7D-C340-4E84-885E-713EDAF03CAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A7E940D-3E7E-41EB-995A-CBC8A41FF3DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A7E940D-3E7E-41EB-995A-CBC8A41FF3DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A7E940D-3E7E-41EB-995A-CBC8A41FF3DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A7E940D-3E7E-41EB-995A-CBC8A41FF3DA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
