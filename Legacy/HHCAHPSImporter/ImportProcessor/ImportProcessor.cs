@@ -143,6 +143,10 @@ namespace HHCAHPSImporter.ImportProcessor
 
                     var sampleMonth = ExtractHelper.GetSampleMonth(extractedData);
                     var sampleYear = ExtractHelper.GetSampleYear(extractedData);
+
+                    if (sampleMonth == null || sampleMonth <= 0) throw new InvalidOperationException("Sample month is missing.");
+                    if (sampleYear == null || sampleYear <= 0) throw new InvalidOperationException("Sample year is missing.");
+
                     var isUpdateFile = uploadFile.OrigFile_Nm.ToLower().Contains("update");
                     if (isUpdateFile)
                     {
@@ -151,16 +155,16 @@ namespace HHCAHPSImporter.ImportProcessor
                             qpDataLoadManager.GetUpdateFileQ2Cutoff(),
                             qpDataLoadManager.GetUpdateFileQ3Cutoff(),
                             qpDataLoadManager.GetUpdateFileQ4Cutoff(),
-                            sampleMonth,
-                            sampleYear,
+                            sampleMonth.Value,
+                            sampleYear.Value,
                             DateTime.Now))
                         {
                             throw new InvalidOperationException("Update file received after cutoff date");
                         }
 
-                        UpdateRecordMerger.Merge(sampleYear, sampleMonth, ccn, extractedData, qpDataLoadManager);
+                        UpdateRecordMerger.Merge(sampleYear.Value, sampleMonth.Value, ccn, extractedData, qpDataLoadManager);
                     }
-                    UpdateRecordMerger.UpdateMergeRecords(sampleYear, sampleMonth, ccn, extractedData, qpDataLoadManager, isUpdateFile);
+                    UpdateRecordMerger.UpdateMergeRecords(sampleYear.Value, sampleMonth.Value, ccn, extractedData, qpDataLoadManager, isUpdateFile);
 
                     #region Add externally generated values to the metadata
                     extractedData.Root.Add(new XAttribute("uploadfile_id", uploadFileId));
