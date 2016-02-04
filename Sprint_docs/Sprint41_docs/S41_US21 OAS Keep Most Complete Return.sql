@@ -330,11 +330,9 @@ AND ACODisposition = 34
 
 				if @doLogging = 1
 				begin
-					set @sql = 'insert into [temp_TodaysReturns] select *, getdate() from #TodaysReturns'
-					exec (@SQL)
+					insert into [temp_TodaysReturns] select *, getdate() from #TodaysReturns
 
-					set @sql = 'insert into [temp_qfResponseCount] select *, getdate() from #qfResponseCount'
-					exec (@SQL)
+					insert into [temp_qfResponseCount] select *, getdate() from #qfResponseCount
 				end
 
 				-- if we're ETLing something, check to see if any other returned mailsteps had more questions answered. If so, ETL the other mailstep
@@ -355,8 +353,7 @@ AND ACODisposition = 34
 
 					if @doLogging = 1
 					begin
-						set @sql = 'insert into [temp_qfResponseCount] select *, getdate() from #qfResponseCount where tempFlag=1'
-						exec (@SQL)
+						insert into [temp_qfResponseCount] select *, getdate() from #qfResponseCount where tempFlag=1
 					end
 
 					-- list of samplepops that have multiple returns
@@ -414,8 +411,7 @@ AND ACODisposition = 34
 
 					if @doLogging = 1
 					begin
-						set @sql = 'insert into [temp_takeBest] select *, getdate() from #TakeBest'
-						exec (@SQL)
+						insert into [temp_takeBest] select *, getdate() from #TakeBest
 					end
 
 					-- if newBitETLThisReturn is the same return as orgBitETLThisReturn, we don't need to adjust #TodaysReturn.bitETLThisReturn
@@ -1013,18 +1009,16 @@ begin
 	from questionform qf
 	where questionform_id in (select questionform_id from #audit)
 
-	set @SQL = 'Insert into [temp_CheckForCAHPSIncompletesAudit] select a.*, b.datReturned as newDatReturned, b.unusedreturn_id as newUnusedReturn_id, b.datunusedreturn as newDatUnusedReturn, b.datresultsimported as newDatResultsImported, b.bitcomplete as newBitComplete, getdate()
+	Insert into [temp_CheckForCAHPSIncompletesAudit] select a.*, b.datReturned as newDatReturned, b.unusedreturn_id as newUnusedReturn_id, b.datunusedreturn as newDatUnusedReturn, b.datresultsimported as newDatResultsImported, b.bitcomplete as newBitComplete, getdate()
 	from #Audit a
 	inner join #audit2 b on a.questionform_id=b.questionform_id
-	where isnull(a.datReturned, ''1/1/1910'') <> isnull(b.datReturned, ''1/1/1910'') 
+	where isnull(a.datReturned, '1/1/1910') <> isnull(b.datReturned, '1/1/1910') 
 	or isnull(a.unusedreturn_id,-1) <> isnull(b.unusedreturn_id,-1)
-	or isnull(a.datunusedreturn, ''1/1/1910'') <> isnull(b.datunusedreturn, ''1/1/1910'') 
-	or isnull(a.datresultsimported, ''1/1/1910'') <> isnull(b.datresultsimported, ''1/1/1910'') 
+	or isnull(a.datunusedreturn, '1/1/1910') <> isnull(b.datunusedreturn, '1/1/1910') 
+	or isnull(a.datresultsimported, '1/1/1910') <> isnull(b.datresultsimported, '1/1/1910') 
 	or a.bitcomplete <> b.bitcomplete
 	or (a.bitcomplete is null and b.bitcomplete is not null)
-	or (b.bitcomplete is null and a.bitcomplete is not null)'
-
-	exec (@SQL)
+	or (b.bitcomplete is null and a.bitcomplete is not null)
 
 end
 
