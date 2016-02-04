@@ -267,7 +267,7 @@ if @surveyType_ID = 3    --HHCAHPS survey
 begin
 	declare @HHPatServedColumnCount int;
 	select @HHPatServedColumnCount = count(*) from INFORMATION_SCHEMA.COLUMNS
-	where TABLE_NAME = 'encounter_load'
+	where TABLE_NAME = 'ENCOUNTER_load'
 		and TABLE_SCHEMA = 's' + CAST(@Study_id as varchar(10))
 		and COLUMN_NAME in ('HHPatServed');
  
@@ -280,7 +280,7 @@ begin
 
 		set @sql =
 			'insert into #HHPatServedTooLow select COUNT(*) as total
-			from s' + LTRIM(STR(@Study_id)) + '.encounter_load
+			from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
 			where HHPatServed < ' + cast(@RecordCount as varchar(10)) + '
 			and DataFile_id = ' + LTRIM(STR(@File_id));
 		if @indebug = 1 print @sql;
@@ -302,7 +302,7 @@ begin
 
 		set @sql =
 			'insert into #HHPatServedTooHigh select COUNT(*) as total
-			from s' + LTRIM(STR(@Study_id)) + '.encounter_load
+			from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
 			where HHPatServed > 9999
 			and DataFile_id = ' + LTRIM(STR(@File_id));
 		if @indebug = 1 print @sql;
@@ -318,8 +318,70 @@ begin
 		if @HHPatServedTooHighCount > 0
 			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
 			select @File_id, 3, 'Number of patients served is greater than 9999.';
-	end        
-end   
+	end
+end
+
+
+/*************************************************************/
+/* Validate NPI */
+
+if @surveyType_ID = 3    --HHCAHPS survey
+begin
+	declare @NPIColumnCount int;
+	select @NPIColumnCount = count(*) from INFORMATION_SCHEMA.COLUMNS
+	where TABLE_NAME = 'ENCOUNTER_load'
+		and TABLE_SCHEMA = 's' + CAST(@Study_id as varchar(10))
+		and COLUMN_NAME in ('npi');
+ 
+	if @NPIColumnCount < 1
+		insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+		select @File_id, 3, 'npi column doesn''t exist.';
+	else
+	begin
+		create table #NPINonNumeric (total int)
+
+		set @sql =
+			'insert into #NPINonNumeric select COUNT(*) as total
+			from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
+			where npi like ''%[^0-9]%''
+			and DataFile_id = ' + LTRIM(STR(@File_id));
+		if @indebug = 1 print @sql;
+
+		declare @NPINonNumericCount int;
+		exec(@sql);
+		select @NPINonNumericCount = total from #NPINonNumeric;
+
+		drop table #NPINonNumeric;
+
+		if @indebug = 1 print @NPINonNumericCount;
+
+		if @NPINonNumericCount > 0
+			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+			select @File_id, 3, 'NPI is not numeric.';
+
+
+		create table #NPITooLong (total int)
+
+		set @sql =
+			'insert into #NPITooLong select COUNT(*) as total
+			from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
+			where len(npi) > 10
+			and DataFile_id = ' + LTRIM(STR(@File_id));
+		if @indebug = 1 print @sql;
+
+		declare @NPITooLongCount int;
+		exec(@sql);
+		select @NPITooLongCount = total from #NPITooLong;
+
+		drop table #NPITooLong;
+
+		if @indebug = 1 print @NPITooLongCount;
+
+		if @NPITooLongCount > 0
+			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+			select @File_id, 3, 'NPI is more than 10 digits long.';
+	end 
+end
 
       
 /*************************************************************/        
