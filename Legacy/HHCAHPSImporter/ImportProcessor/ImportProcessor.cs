@@ -145,9 +145,6 @@ namespace HHCAHPSImporter.ImportProcessor
                     var sampleMonth = ExtractHelper.GetSampleMonth(extractedData);
                     var sampleYear = ExtractHelper.GetSampleYear(extractedData);
 
-                    if (sampleMonth == null || sampleMonth <= 0) throw new InvalidOperationException("Sample month is missing.");
-                    if (sampleYear == null || sampleYear <= 0) throw new InvalidOperationException("Sample year is missing.");
-
                     var isUpdateFile = uploadFile.OrigFile_Nm.ToLower().Contains("update");
                     if (isUpdateFile)
                     {

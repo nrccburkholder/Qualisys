@@ -20,6 +20,7 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
             engine.BeforeReadRecord += Engine_BeforeReadRecord;
 
             var ccns = new HashSet<string>();
+            var sampleMonths = new HashSet<SampleMonth>();
 
             using (engine.BeginReadString(fileContents))
             {
@@ -31,6 +32,7 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
                 foreach (var body in engine)
                 {
                     ccns.Add(body.ClientNumber);
+                    sampleMonths.Add(new SampleMonth { Month = body.SampleMonth, Year = body.SampleYear });
 
                     if (firstRecord)
                         metadata.Add(
@@ -139,6 +141,7 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
             }
 
             CcnValidator.ValidateFileNameCcnAgainstFileContents(client.CCN, ccns);
+            SampleMonthValidator.Validate(sampleMonths);
 
             xml.Root.Add(CreateRootAttributes(client, fullFileName));
 

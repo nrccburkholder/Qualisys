@@ -61,6 +61,7 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
                             ));
 
                     CcnValidator.ValidateFileNameCcnAgainstFileContents(fileNameCcn, header.ProviderID);
+                    SampleMonthValidator.Validate(header.SampleMonth, header.SampleYear);
                 }
             }
 
