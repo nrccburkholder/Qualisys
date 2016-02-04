@@ -515,6 +515,40 @@ begin
 	end
 end
 
+
+/*************************************************************/
+/* Validate Drop in Record Count */
+
+if @surveyType_ID = 3    --HHCAHPS survey
+begin
+	create table #AverageRecordCount (Average int);
+
+	set @sql =
+		'insert into #AverageRecordCount
+		select avg(intRecords) as Average
+		from DataFile f inner join DataFileState s on s.DataFile_id = f.DataFile_id
+		where
+			f.Study_ID = ' + LTRIM(STR(@Study_id)) + '
+			and f.datReceived > dateadd(day, -90, getdate())
+			and s.State_ID = 10'
+	if @indebug = 1 print @sql;
+
+	declare @AverageRecordCount int;
+	exec(@sql);
+	select @AverageRecordCount = Average from #AverageRecordCount;
+
+	drop table #AverageRecordCount;
+
+	if @indebug = 1 print @AverageRecordCount;
+
+	declare @RecordCountPercentageDrop float = 0.0;
+	if @AverageRecordCount <> 0 set @RecordCountPercentageDrop = round(100.0 - 100.0 * @RecordCount / @AverageRecordCount, 0);
+
+	if @RecordCountPercentageDrop >= 30.0
+		insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+		select @File_id, 3, 'The number of records has dropped by ' + cast(@RecordCountPercentageDrop as varchar(10)) + '% from the average.';
+end
+
       
 /*************************************************************/        
             
