@@ -21,13 +21,13 @@ select count(distinct surveyid) from #x
 select count(distinct samplesetid) from #x
 select count(distinct medicarenumber) from #x
 
-declare @eqid int=68
+declare @eqid int
 insert into cem.exportqueue (ExportTemplateName,ExportTemplateVersionMajor,ExportTemplateVersionMinor,ExportDateStart,ExportDateEnd,ReturnsOnly,RequestDate)
 select ExportTemplateName,ExportTemplateVersionMajor,ExportTemplateVersionMinor,'7/1/15','9/30/15',0 as ReturnsOnly,getdate() as RequestDate
 from cem.exporttemplate
 where ExportTemplateName='CAHPS Hospice'
-and ExportTemplateVersionMajor='2.0'
-and ExportTemplateVersionMinor=2
+and ExportTemplateVersionMajor='2.1.1'
+and ExportTemplateVersionMinor=1
 set @eqid=SCOPE_IDENTITY()
 
 insert into cem.exportqueuesurvey (ExportQueueID, SurveyID)
