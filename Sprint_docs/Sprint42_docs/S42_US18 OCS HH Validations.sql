@@ -279,7 +279,8 @@ begin
 		create table #HHPatServedTooLow (total int)
 
 		set @sql =
-			'insert into #HHPatServedTooLow select COUNT(*) as total
+			'insert into #HHPatServedTooLow
+			select COUNT(*) as total
 			from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
 			where HHPatServed < ' + cast(@RecordCount as varchar(10)) + '
 			and DataFile_id = ' + LTRIM(STR(@File_id));
@@ -301,7 +302,8 @@ begin
 		create table #HHPatServedTooHigh (total int)
 
 		set @sql =
-			'insert into #HHPatServedTooHigh select COUNT(*) as total
+			'insert into #HHPatServedTooHigh
+			select COUNT(*) as total
 			from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
 			where HHPatServed > 9999
 			and DataFile_id = ' + LTRIM(STR(@File_id));
@@ -341,7 +343,8 @@ begin
 		create table #NPINonNumeric (total int)
 
 		set @sql =
-			'insert into #NPINonNumeric select COUNT(*) as total
+			'insert into #NPINonNumeric
+			select COUNT(*) as total
 			from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
 			where npi like ''%[^0-9]%''
 			and DataFile_id = ' + LTRIM(STR(@File_id));
@@ -363,7 +366,8 @@ begin
 		create table #NPITooLong (total int)
 
 		set @sql =
-			'insert into #NPITooLong select COUNT(*) as total
+			'insert into #NPITooLong
+			select COUNT(*) as total
 			from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
 			where len(npi) > 10
 			and DataFile_id = ' + LTRIM(STR(@File_id));
@@ -381,6 +385,47 @@ begin
 			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
 			select @File_id, 3, 'NPI is more than 10 digits long.';
 	end 
+end
+
+
+/*************************************************************/
+/* Validate Payer Fields */
+
+if @surveyType_ID = 3    --HHCAHPS survey
+begin
+	declare @PayerColumnCount int;
+	select @PayerColumnCount = count(*) from INFORMATION_SCHEMA.COLUMNS
+	where TABLE_NAME = 'ENCOUNTER_load'
+		and TABLE_SCHEMA = 's' + CAST(@Study_id as varchar(10))
+		and COLUMN_NAME in ('HHPay_Mcaid', 'HHPay_Mcare', 'HHPay_Other');
+ 
+	if @PayerColumnCount < 3
+		insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+		select @File_id, 3, 'Payer fields do not exist.';
+	else
+	begin
+		create table #PayerAllMissing (total int)
+
+		set @sql =
+			'insert into #PayerAllMissing
+			select COUNT(*) as total
+			from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
+			where HHPay_Mcaid = ''M'' and HHPay_Mcare = ''M'' and HHPay_Other = ''M''
+			and DataFile_id = ' + LTRIM(STR(@File_id));
+		if @indebug = 1 print @sql;
+
+		declare @PayerAllMissingCount int;
+		exec(@sql);
+		select @PayerAllMissingCount = total from #PayerAllMissing;
+
+		drop table #PayerAllMissing;
+
+		if @indebug = 1 print @PayerAllMissingCount;
+
+		if @PayerAllMissingCount > 0
+			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+			select @File_id, 3, 'An encounter is missing all payer fields.';
+	end
 end
 
       
