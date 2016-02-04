@@ -276,7 +276,7 @@ begin
 		select @File_id, 3, 'HHPatServed column doesn''t exist.';
 	else
 	begin
-		create table #HHPatServedTooLow (total int)
+		create table #HHPatServedTooLow (total int);
 
 		set @sql =
 			'insert into #HHPatServedTooLow
@@ -299,7 +299,7 @@ begin
 			select @File_id, 3, 'Number of patients served is less than the number of records in the file.';
 
 
-		create table #HHPatServedTooHigh (total int)
+		create table #HHPatServedTooHigh (total int);
 
 		set @sql =
 			'insert into #HHPatServedTooHigh
@@ -340,7 +340,7 @@ begin
 		select @File_id, 3, 'npi column doesn''t exist.';
 	else
 	begin
-		create table #NPINonNumeric (total int)
+		create table #NPINonNumeric (total int);
 
 		set @sql =
 			'insert into #NPINonNumeric
@@ -363,7 +363,7 @@ begin
 			select @File_id, 3, 'NPI is not numeric.';
 
 
-		create table #NPITooLong (total int)
+		create table #NPITooLong (total int);
 
 		set @sql =
 			'insert into #NPITooLong
@@ -404,7 +404,7 @@ begin
 		select @File_id, 3, 'Payer fields do not exist.';
 	else
 	begin
-		create table #PayerAllMissing (total int)
+		create table #PayerAllMissing (total int);
 
 		set @sql =
 			'insert into #PayerAllMissing
@@ -425,6 +425,93 @@ begin
 		if @PayerAllMissingCount > 0
 			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
 			select @File_id, 3, 'An encounter is missing all payer fields.';
+	end
+end
+
+
+/*************************************************************/
+/* Validate Date of Birth */
+
+if @surveyType_ID = 3    --HHCAHPS survey
+begin
+	declare @DOBColumnCount int;
+	select @PayerColumnCount = count(*) from INFORMATION_SCHEMA.COLUMNS
+	where TABLE_NAME = 'POPULATION_load'
+		and TABLE_SCHEMA = 's' + CAST(@Study_id as varchar(10))
+		and COLUMN_NAME in ('DOB');
+ 
+	if @DOBColumnCount < 3
+		insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+		select @File_id, 3, 'Date of birth field doesn''t exist.';
+	else
+	begin
+		create table #DOBGreaterThanToday (total int);
+
+		set @sql =
+			'insert into #DOBGreaterThanToday
+			select COUNT(*) as total
+			from s' + LTRIM(STR(@Study_id)) + '.POPULATION_load
+			where DOB > getdate()
+			and DataFile_id = ' + LTRIM(STR(@File_id));
+		if @indebug = 1 print @sql;
+
+		declare @DOBGreaterThanTodayCount int;
+		exec(@sql);
+		select @DOBGreaterThanTodayCount = total from #DOBGreaterThanToday;
+
+		drop table #DOBGreaterThanToday;
+
+		if @indebug = 1 print @DOBGreaterThanTodayCount;
+
+		if @DOBGreaterThanTodayCount > 0
+			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+			select @File_id, 3, 'A date of birth is after today.';
+
+
+		create table #DOBTooOld (total int);
+
+		set @sql =
+			'insert into #DOBTooOld
+			select COUNT(*) as total
+			from s' + LTRIM(STR(@Study_id)) + '.POPULATION_load
+			where DOB < dateadd(year, -150, getdate())
+			and DataFile_id = ' + LTRIM(STR(@File_id));
+		if @indebug = 1 print @sql;
+
+		declare @DOBTooOldCount int;
+		exec(@sql);
+		select @DOBTooOldCount = total from #DOBTooOld;
+
+		drop table #DOBTooOld;
+
+		if @indebug = 1 print @DOBTooOldCount;
+
+		if @DOBTooOldCount > 0
+			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+			select @File_id, 3, 'A date of birth is more than 150 years ago.';
+
+
+		create table #DOBNotAtLeast18 (total int);
+
+		set @sql =
+			'insert into #DOBNotAtLeast18
+			select COUNT(*) as total
+			from s' + LTRIM(STR(@Study_id)) + '.POPULATION_load
+			where DOB > dateadd(year, -18, getdate()) and DOB < getdate()
+			and DataFile_id = ' + LTRIM(STR(@File_id));
+		if @indebug = 1 print @sql;
+
+		declare @DOBNotAtLeast18Count int;
+		exec(@sql);
+		select @DOBNotAtLeast18Count = total from #DOBNotAtLeast18;
+
+		drop table #DOBNotAtLeast18;
+
+		if @indebug = 1 print @DOBNotAtLeast18Count;
+
+		if @DOBNotAtLeast18Count > 0
+			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+			select @File_id, 3, 'A date of birth is not at least 18 years ago.';
 	end
 end
 
