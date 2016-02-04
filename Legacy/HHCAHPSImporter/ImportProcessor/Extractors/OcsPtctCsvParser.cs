@@ -19,6 +19,7 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
 
             if (result.Length == 0) throw new InvalidOperationException("No header found in file.");
             if (result.Length > 1) throw new InvalidOperationException("More than one header found in file.");
+            CcnValidator.ValidateFileNameCcnAgainstFileContents(client.CCN, result[0].Master.ProviderID);
 
             ParseHeader(xml, result[0].Master);
             ParseBody(xml, result[0].Details, isPtct);

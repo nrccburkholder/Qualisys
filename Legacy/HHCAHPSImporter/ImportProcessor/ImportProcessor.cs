@@ -7,6 +7,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using HHCAHPSImporter.ImportProcessor.Extractors;
+using HHCAHPSImporter.ImportProcessor.Validation;
 
 namespace HHCAHPSImporter.ImportProcessor
 {
