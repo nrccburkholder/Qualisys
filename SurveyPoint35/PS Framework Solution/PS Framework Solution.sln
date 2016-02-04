@@ -1,0 +1,65 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "TestFramework.Library", "TestFramework.Library\TestFramework.Library.vbproj", "{6895D295-D7D0-42CB-9AB6-94C3F4906066}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "TestFramework.Library.SqlDataProvider", "TestFramework.Library.SqlDataProvider\TestFramework.Library.SqlDataProvider.vbproj", "{EE2495D0-DD8A-4581-BFE6-9C68503E8C7B}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "TestFramework.WinApp", "TestFramework.WinApp\TestFramework.WinApp.vbproj", "{E99D6CEB-AF05-425C-AB05-0D1F58071116}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PS.Framework", "PS.Framework\PS.Framework.vbproj", "{AA3C1AE3-34D2-4872-9073-80F3CD3AF46F}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PS.Framework.BusinessLogic", "PS.Framework.BusinessLogic\PS.Framework.BusinessLogic.vbproj", "{BF3F904C-D65C-4A81-8361-CA4E2C210678}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 6
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://perseus:8080/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = PS.Framework.BusinessLogic\\PS.Framework.BusinessLogic.vbproj
+		SccProjectName1 = PS.Framework.BusinessLogic
+		SccLocalPath1 = PS.Framework.BusinessLogic
+		SccProjectUniqueName2 = PS.Framework\\PS.Framework.vbproj
+		SccProjectName2 = PS.Framework
+		SccLocalPath2 = PS.Framework
+		SccProjectUniqueName3 = TestFramework.Library.SqlDataProvider\\TestFramework.Library.SqlDataProvider.vbproj
+		SccProjectName3 = TestFramework.Library.SqlDataProvider
+		SccLocalPath3 = TestFramework.Library.SqlDataProvider
+		SccProjectUniqueName4 = TestFramework.Library\\TestFramework.Library.vbproj
+		SccProjectName4 = TestFramework.Library
+		SccLocalPath4 = TestFramework.Library
+		SccProjectUniqueName5 = TestFramework.WinApp\\TestFramework.WinApp.vbproj
+		SccProjectName5 = TestFramework.WinApp
+		SccLocalPath5 = TestFramework.WinApp
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6895D295-D7D0-42CB-9AB6-94C3F4906066}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6895D295-D7D0-42CB-9AB6-94C3F4906066}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6895D295-D7D0-42CB-9AB6-94C3F4906066}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6895D295-D7D0-42CB-9AB6-94C3F4906066}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE2495D0-DD8A-4581-BFE6-9C68503E8C7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE2495D0-DD8A-4581-BFE6-9C68503E8C7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE2495D0-DD8A-4581-BFE6-9C68503E8C7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE2495D0-DD8A-4581-BFE6-9C68503E8C7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E99D6CEB-AF05-425C-AB05-0D1F58071116}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E99D6CEB-AF05-425C-AB05-0D1F58071116}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E99D6CEB-AF05-425C-AB05-0D1F58071116}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E99D6CEB-AF05-425C-AB05-0D1F58071116}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA3C1AE3-34D2-4872-9073-80F3CD3AF46F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA3C1AE3-34D2-4872-9073-80F3CD3AF46F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA3C1AE3-34D2-4872-9073-80F3CD3AF46F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA3C1AE3-34D2-4872-9073-80F3CD3AF46F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF3F904C-D65C-4A81-8361-CA4E2C210678}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF3F904C-D65C-4A81-8361-CA4E2C210678}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF3F904C-D65C-4A81-8361-CA4E2C210678}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF3F904C-D65C-4A81-8361-CA4E2C210678}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

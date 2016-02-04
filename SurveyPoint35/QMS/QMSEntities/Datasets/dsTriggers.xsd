@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="dsTriggers" targetNamespace="http://tempuri.org/dsTriggers.xsd" elementFormDefault="qualified"
+	attributeFormDefault="qualified" xmlns="http://tempuri.org/dsTriggers.xsd" xmlns:mstns="http://tempuri.org/dsTriggers.xsd"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+	<xs:element name="dsTriggers" msdata:IsDataSet="true">
+		<xs:complexType>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="Triggers">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="TriggerID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="TriggerTypeID" type="xs:int" />
+							<xs:element name="SurveyID" type="xs:int" minOccurs="0" />
+							<xs:element name="TriggerName" type="xs:string" minOccurs="0" />
+							<xs:element name="CriteriaID" type="xs:int" minOccurs="0" />
+							<xs:element name="TheCode" type="xs:string" minOccurs="0" />
+							<xs:element name="PerodicyDate" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="PerodicyNextDate" type="xs:dateTime" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Search">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="TriggerID" type="xs:int" minOccurs="0" />
+							<xs:element name="TriggerTypeID" type="xs:int" minOccurs="0" />
+							<xs:element name="SurveyID" type="xs:int" minOccurs="0" />
+							<xs:element name="TriggerName" type="xs:string" minOccurs="0" />
+							<xs:element name="CriteriaID" type="xs:int" minOccurs="0" />
+							<xs:element name="ScriptID" type="xs:int" minOccurs="0" />
+							<xs:element name="ScriptScreenID" type="xs:int" minOccurs="0" />
+							<xs:element name="PrePostFlag" type="xs:int" minOccurs="0" />
+							<xs:element name="ScriptedTriggerID" type="xs:int" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:complexType>
+		<xs:unique name="dsTriggersKey1" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:Triggers" />
+			<xs:field xpath="mstns:TriggerID" />
+		</xs:unique>
+	</xs:element>
+</xs:schema>

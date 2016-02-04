@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="dsSurveyInstances" targetNamespace="http://tempuri.org/dsSurveyInstances.xsd"
+	elementFormDefault="qualified" attributeFormDefault="qualified" xmlns="http://tempuri.org/dsSurveyInstances.xsd"
+	xmlns:mstns="http://tempuri.org/dsSurveyInstances.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+	<xs:element name="dsSurveyInstances" msdata:IsDataSet="true">
+		<xs:complexType>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="SurveyInstances">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="SurveyInstanceID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="SurveyID" type="xs:int" />
+							<xs:element name="ClientID" type="xs:int" />
+							<xs:element name="ProtocolID" type="xs:int" />
+							<xs:element name="Name" type="xs:string" />
+							<xs:element name="InstanceDate" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="StartDate" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="Active" type="xs:unsignedByte" />
+							<xs:element name="GroupByHousehold" type="xs:unsignedByte" />
+							<xs:element name="SurveyName" type="xs:string" msdata:ReadOnly="true" minOccurs="0" />
+							<xs:element name="ClientName" type="xs:string" msdata:ReadOnly="true" minOccurs="0" />
+							<xs:element name="SurveyInstanceCategoryID" type="xs:int" minOccurs="0" />
+							<xs:element name="SurveyInstanceCategoryName" type="xs:string" minOccurs="0" />
+							<xs:element name="SurveyInstanceKey" type="xs:string" minOccurs="0" />
+							<xs:element name="QuarterEnding" type="xs:dateTime" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Search">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="SurveyInstanceID" type="xs:int" minOccurs="0" />
+							<xs:element name="SurveyID" type="xs:int" minOccurs="0" />
+							<xs:element name="ClientID" type="xs:int" minOccurs="0" />
+							<xs:element name="ProtocolID" type="xs:int" minOccurs="0" />
+							<xs:element name="Name" type="xs:string" minOccurs="0" />
+							<xs:element name="BeginInstanceDate" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="EndInstanceDate" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="BeginStartDate" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="EndStartDate" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="Active" type="xs:unsignedByte" minOccurs="0" />
+							<xs:element name="GroupByHousehold" type="xs:unsignedByte" minOccurs="0" />
+							<xs:element name="SurveyInstanceCategoryID" type="xs:int" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="SurveyInstanceDefaultScripts">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="SurveyInstanceScriptID" msdata:ReadOnly="true" msdata:AutoIncrement="true"
+								type="xs:int" />
+							<xs:element name="SurveyInstanceID" type="xs:int" />
+							<xs:element name="ScriptTypeID" type="xs:int" />
+							<xs:element name="ScriptID" type="xs:int" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:complexType>
+		<xs:unique name="dsSurveyInstancesKey1" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:SurveyInstances" />
+			<xs:field xpath="mstns:SurveyInstanceID" />
+		</xs:unique>
+		<xs:unique name="dsSurveyInstancesKey2" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:SurveyInstanceDefaultScripts" />
+			<xs:field xpath="mstns:SurveyInstanceScriptID" />
+		</xs:unique>
+	</xs:element>
+</xs:schema>

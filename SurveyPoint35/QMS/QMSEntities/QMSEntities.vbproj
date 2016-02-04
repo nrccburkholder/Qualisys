@@ -1,0 +1,824 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{946175FC-3319-4D13-9D40-2CB0BDC9AE2E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>QMS</RootNamespace>
+    <AssemblyName>QMS</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>Windows</MyType>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionStrict>Off</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>QMS.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>QMS.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ReferencedAssemblies\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ReferencedAssemblies\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Class1.vb" />
+    <Compile Include="Classes\clsAnswerCategories.vb" />
+    <Compile Include="Classes\clsBatches.vb" />
+    <Compile Include="Classes\clsCallList.vb" />
+    <Compile Include="Classes\clsClients.vb" />
+    <Compile Include="Classes\clsCriteria.vb" />
+    <Compile Include="Classes\clsDataColumn.vb" />
+    <Compile Include="Classes\clsDataExtractView.vb" />
+    <Compile Include="Classes\clsEventLog.vb" />
+    <Compile Include="Classes\clsEvents.vb" />
+    <Compile Include="Classes\clsFileDef.vb" />
+    <Compile Include="Classes\clsFileDefColumns.vb" />
+    <Compile Include="Classes\clsHouseholdOld.vb" />
+    <Compile Include="Classes\clsHouseholds.vb" />
+    <Compile Include="Classes\clsImportExport.vb" />
+    <Compile Include="Classes\clsInputMode.vb" />
+    <Compile Include="Classes\clsInterview.vb" />
+    <Compile Include="Classes\clsInterviewLite.vb" />
+    <Compile Include="Classes\clsMailingSeeds.vb" />
+    <Compile Include="Classes\clsProtocols.vb" />
+    <Compile Include="Classes\clsProtocolStepParamters.vb" />
+    <Compile Include="Classes\clsProtocolSteps.vb" />
+    <Compile Include="Classes\clsQMSTools.vb" />
+    <Compile Include="Classes\clsQuestionFolders.vb" />
+    <Compile Include="Classes\clsQuestions.vb" />
+    <Compile Include="Classes\clsRespondentDetails.vb" />
+    <Compile Include="Classes\clsRespondentProperties.vb" />
+    <Compile Include="Classes\clsRespondents.vb" />
+    <Compile Include="Classes\clsResponses.vb" />
+    <Compile Include="Classes\clsScripts.vb" />
+    <Compile Include="Classes\clsScriptScreenCategories.vb" />
+    <Compile Include="Classes\clsScriptScreens.vb" />
+    <Compile Include="Classes\clsScriptTriggerDetails.vb" />
+    <Compile Include="Classes\clsScriptTriggers.vb" />
+    <Compile Include="Classes\clsSecurity.vb" />
+    <Compile Include="Classes\clsSurveyInstanceDefaultScripts.vb" />
+    <Compile Include="Classes\clsSurveyInstances.vb" />
+    <Compile Include="Classes\clsSurveyQuestions.vb" />
+    <Compile Include="Classes\clsSurveys.vb" />
+    <Compile Include="Classes\clsSurveyTasks.vb" />
+    <Compile Include="Classes\clsTelephoneAppointment.vb" />
+    <Compile Include="Classes\clsTextTokens.vb" />
+    <Compile Include="Classes\clsTriggers.vb" />
+    <Compile Include="Classes\clsUserGroups.vb" />
+    <Compile Include="Classes\clsUsers.vb" />
+    <Compile Include="Classes\clsWebInterviewer.vb" />
+    <Compile Include="Datasets\dsAnswerCategories.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsAnswerCategories.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsAnswerJumpType.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsAnswerJumpType.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsBatches.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsBatches.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsCallList.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsCallList.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsClients.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsClients.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsCriteria.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsCriteria.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsEventLog.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsEventLog.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsEvents.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsEvents.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsFileDefColumns.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsFileDefColumns.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsFileDefs.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsFileDefs.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsHousehold.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsHousehold.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsImportExport.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsImportExport.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsInterview.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsInterview.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsInterviewLite.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsInterviewLite.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsMailingSeeds.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsMailingSeeds.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsProtocols.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsProtocols.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsProtocolStepEvents.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsProtocolStepEvents.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsProtocolStepParameters.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsProtocolStepParameters.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsProtocolSteps.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsProtocolSteps.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsQuestionFolder.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsQuestionFolder.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsQuestions.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsQuestions.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsRespondentDetails.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsRespondentDetails.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsRespondentProperties.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsRespondentProperties.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsRespondents.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsRespondents.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsResponses.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsResponses.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsScripts.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsScripts.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsScriptScreenCategories.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsScriptScreenCategories.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsScriptScreens.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsScriptScreens.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsScriptTriggerDetails.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsScriptTriggerDetails.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsScriptTriggers.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsScriptTriggers.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsSurveyInstanceDefaultScripts.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsSurveyInstanceDefaultScripts.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsSurveyInstances.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsSurveyInstances.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsSurveyQuestions.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsSurveyQuestions.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsSurveys.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsSurveys.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsSurveyTasks.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsSurveyTasks.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsTelephoneAppointments.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsTelephoneAppointments.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsTriggers.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsTriggers.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsUserGroups.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsUserGroups.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsUsers.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsUsers.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Datasets\dsUSStates.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsUSStates.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Datasets\dsAnswerCategories.xsc">
+      <DependentUpon>dsAnswerCategories.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsAnswerCategories.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsAnswerCategories.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsAnswerCategories.xss">
+      <DependentUpon>dsAnswerCategories.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsAnswerJumpType.xsc">
+      <DependentUpon>dsAnswerJumpType.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsAnswerJumpType.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsAnswerJumpType.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsAnswerJumpType.xss">
+      <DependentUpon>dsAnswerJumpType.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsBatches.xsc">
+      <DependentUpon>dsBatches.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsBatches.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsBatches.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsBatches.xss">
+      <DependentUpon>dsBatches.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsCallList.xsc">
+      <DependentUpon>dsCallList.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsCallList.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsCallList.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsCallList.xss">
+      <DependentUpon>dsCallList.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsClients.xsc">
+      <DependentUpon>dsClients.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsClients.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsClients.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsClients.xss">
+      <DependentUpon>dsClients.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsCriteria.xsc">
+      <DependentUpon>dsCriteria.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsCriteria.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsCriteria.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsCriteria.xss">
+      <DependentUpon>dsCriteria.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsEventLog.xsc">
+      <DependentUpon>dsEventLog.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsEventLog.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsEventLog.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsEventLog.xss">
+      <DependentUpon>dsEventLog.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsEvents.xsc">
+      <DependentUpon>dsEvents.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsEvents.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsEvents.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsEvents.xss">
+      <DependentUpon>dsEvents.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsFileDefColumns.xsc">
+      <DependentUpon>dsFileDefColumns.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsFileDefColumns.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsFileDefColumns.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsFileDefColumns.xss">
+      <DependentUpon>dsFileDefColumns.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsFileDefs.xsc">
+      <DependentUpon>dsFileDefs.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsFileDefs.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsFileDefs.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsFileDefs.xss">
+      <DependentUpon>dsFileDefs.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsHousehold.xsc">
+      <DependentUpon>dsHousehold.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsHousehold.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsHousehold.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsHousehold.xss">
+      <DependentUpon>dsHousehold.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsImportExport.xsc">
+      <DependentUpon>dsImportExport.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsImportExport.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsImportExport.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsImportExport.xss">
+      <DependentUpon>dsImportExport.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsInterview.xsc">
+      <DependentUpon>dsInterview.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsInterview.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsInterview.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsInterview.xss">
+      <DependentUpon>dsInterview.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsInterviewLite.xsc">
+      <DependentUpon>dsInterviewLite.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsInterviewLite.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsInterviewLite.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsInterviewLite.xss">
+      <DependentUpon>dsInterviewLite.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsMailingSeeds.xsc">
+      <DependentUpon>dsMailingSeeds.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsMailingSeeds.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsMailingSeeds.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsMailingSeeds.xss">
+      <DependentUpon>dsMailingSeeds.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsProtocols.xsc">
+      <DependentUpon>dsProtocols.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsProtocols.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsProtocols.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsProtocols.xss">
+      <DependentUpon>dsProtocols.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsProtocolStepEvents.xsc">
+      <DependentUpon>dsProtocolStepEvents.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsProtocolStepEvents.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsProtocolStepEvents.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsProtocolStepEvents.xss">
+      <DependentUpon>dsProtocolStepEvents.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsProtocolStepParameters.xsc">
+      <DependentUpon>dsProtocolStepParameters.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsProtocolStepParameters.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsProtocolStepParameters.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsProtocolStepParameters.xss">
+      <DependentUpon>dsProtocolStepParameters.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsProtocolSteps.xsc">
+      <DependentUpon>dsProtocolSteps.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsProtocolSteps.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsProtocolSteps.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsProtocolSteps.xss">
+      <DependentUpon>dsProtocolSteps.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsQuestionFolder.xsc">
+      <DependentUpon>dsQuestionFolder.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsQuestionFolder.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsQuestionFolder.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsQuestionFolder.xss">
+      <DependentUpon>dsQuestionFolder.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsQuestions.xsc">
+      <DependentUpon>dsQuestions.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsQuestions.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsQuestions.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsQuestions.xss">
+      <DependentUpon>dsQuestions.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsRespondentDetails.xsc">
+      <DependentUpon>dsRespondentDetails.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsRespondentDetails.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsRespondentDetails.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsRespondentDetails.xss">
+      <DependentUpon>dsRespondentDetails.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsRespondentProperties.xsc">
+      <DependentUpon>dsRespondentProperties.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsRespondentProperties.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsRespondentProperties.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsRespondentProperties.xss">
+      <DependentUpon>dsRespondentProperties.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsRespondents.xsc">
+      <DependentUpon>dsRespondents.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsRespondents.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsRespondents.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsRespondents.xss">
+      <DependentUpon>dsRespondents.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsResponses.xsc">
+      <DependentUpon>dsResponses.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsResponses.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsResponses.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsResponses.xss">
+      <DependentUpon>dsResponses.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsScripts.xsc">
+      <DependentUpon>dsScripts.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsScripts.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsScripts.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsScripts.xss">
+      <DependentUpon>dsScripts.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsScriptScreenCategories.xsc">
+      <DependentUpon>dsScriptScreenCategories.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsScriptScreenCategories.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsScriptScreenCategories.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsScriptScreenCategories.xss">
+      <DependentUpon>dsScriptScreenCategories.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsScriptScreens.xsc">
+      <DependentUpon>dsScriptScreens.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsScriptScreens.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsScriptScreens.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsScriptScreens.xss">
+      <DependentUpon>dsScriptScreens.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsScriptTriggerDetails.xsc">
+      <DependentUpon>dsScriptTriggerDetails.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsScriptTriggerDetails.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsScriptTriggerDetails.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsScriptTriggerDetails.xss">
+      <DependentUpon>dsScriptTriggerDetails.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsScriptTriggers.xsc">
+      <DependentUpon>dsScriptTriggers.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsScriptTriggers.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsScriptTriggers.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsScriptTriggers.xss">
+      <DependentUpon>dsScriptTriggers.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsSurveyInstanceDefaultScripts.xsc">
+      <DependentUpon>dsSurveyInstanceDefaultScripts.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsSurveyInstanceDefaultScripts.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsSurveyInstanceDefaultScripts.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsSurveyInstanceDefaultScripts.xss">
+      <DependentUpon>dsSurveyInstanceDefaultScripts.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsSurveyInstances.xsc">
+      <DependentUpon>dsSurveyInstances.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsSurveyInstances.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsSurveyInstances.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsSurveyInstances.xss">
+      <DependentUpon>dsSurveyInstances.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsSurveyQuestions.xsc">
+      <DependentUpon>dsSurveyQuestions.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsSurveyQuestions.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsSurveyQuestions.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsSurveyQuestions.xss">
+      <DependentUpon>dsSurveyQuestions.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsSurveys.xsc">
+      <DependentUpon>dsSurveys.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsSurveys.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsSurveys.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsSurveys.xss">
+      <DependentUpon>dsSurveys.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsSurveyTasks.xsc">
+      <DependentUpon>dsSurveyTasks.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsSurveyTasks.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsSurveyTasks.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsSurveyTasks.xss">
+      <DependentUpon>dsSurveyTasks.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsTelephoneAppointments.xsc">
+      <DependentUpon>dsTelephoneAppointments.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsTelephoneAppointments.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsTelephoneAppointments.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsTelephoneAppointments.xss">
+      <DependentUpon>dsTelephoneAppointments.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsTriggers.xsc">
+      <DependentUpon>dsTriggers.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsTriggers.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsTriggers.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsTriggers.xss">
+      <DependentUpon>dsTriggers.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsUserGroups.xsc">
+      <DependentUpon>dsUserGroups.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsUserGroups.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsUserGroups.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsUserGroups.xss">
+      <DependentUpon>dsUserGroups.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsUsers.xsc">
+      <DependentUpon>dsUsers.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsUsers.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsUsers.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsUsers.xss">
+      <DependentUpon>dsUsers.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsUSStates.xsc">
+      <DependentUpon>dsUSStates.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\dsUSStates.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsUSStates.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\dsUSStates.xss">
+      <DependentUpon>dsUSStates.xsd</DependentUpon>
+    </None>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DMIIncludes\DMIIncludes.vbproj">
+      <Project>{5052A84F-1BDA-4E98-BBCB-61DEF241E51F}</Project>
+      <Name>DMIIncludes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Logging\Logging.vbproj">
+      <Project>{EEB48494-7815-4B2D-9FF8-19BF555D1A10}</Project>
+      <Name>Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SurveyPointDAL\SurveyPointDAL.csproj">
+      <Project>{F30EADC4-56B4-4C2F-9BA2-90B47127C47A}</Project>
+      <Name>SurveyPointDAL</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Helpers\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

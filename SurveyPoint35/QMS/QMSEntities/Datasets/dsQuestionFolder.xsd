@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="dsQuestionFolders" targetNamespace="http://tempuri.org/dsQuestionFolders.xsd" elementFormDefault="qualified" attributeFormDefault="qualified" xmlns="http://tempuri.org/dsQuestionFolders.xsd" xmlns:mstns="http://tempuri.org/dsQuestionFolders.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+	<xs:element name="dsQuestionFolders" msdata:IsDataSet="true">
+		<xs:complexType>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="QuestionFolders">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="QuestionFolderID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="Name" type="xs:string" />
+							<xs:element name="Description" type="xs:string" minOccurs="0" />
+							<xs:element name="Active" type="xs:unsignedByte" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Questions">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="QuestionID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="QuestionFolderID" type="xs:int" />
+							<xs:element name="Text" type="xs:string" />
+							<xs:element name="ShortDesc" type="xs:string" minOccurs="0" />
+							<xs:element name="QuestionTypeID" type="xs:int" />
+							<xs:element name="ItemOrder" type="xs:int" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Search">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="QuestionFolderID" type="xs:int" minOccurs="0" />
+							<xs:element name="Keyword" type="xs:string" minOccurs="0" />
+							<xs:element name="Active" type="xs:unsignedByte" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="QuestionTypes">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="QuestionTypeID" type="xs:int" />
+							<xs:element name="Name" type="xs:string" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:complexType>
+		<xs:unique name="dsQuestionFoldersKey1" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:QuestionFolders" />
+			<xs:field xpath="mstns:QuestionFolderID" />
+		</xs:unique>
+		<xs:unique name="dsQuestionFoldersKey2" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:Questions" />
+			<xs:field xpath="mstns:QuestionID" />
+		</xs:unique>
+		<xs:key name="key1">
+			<xs:selector xpath=".//mstns:QuestionFolders" />
+			<xs:field xpath="mstns:QuestionFolderID" />
+		</xs:key>
+		<xs:keyref name="QuestionFoldersQuestions" refer="key1">
+			<xs:selector xpath=".//mstns:Questions" />
+			<xs:field xpath="mstns:QuestionFolderID" />
+		</xs:keyref>
+		<xs:unique name="dsQuestionFoldersKey3" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:QuestionTypes" />
+			<xs:field xpath="mstns:QuestionTypeID" />
+		</xs:unique>
+		<xs:key name="key2">
+			<xs:selector xpath=".//mstns:QuestionTypes" />
+			<xs:field xpath="mstns:QuestionTypeID" />
+		</xs:key>
+		<xs:keyref name="QuestionTypesQuestions" refer="key2">
+			<xs:selector xpath=".//mstns:Questions" />
+			<xs:field xpath="mstns:QuestionTypeID" />
+		</xs:keyref>
+	</xs:element>
+</xs:schema>

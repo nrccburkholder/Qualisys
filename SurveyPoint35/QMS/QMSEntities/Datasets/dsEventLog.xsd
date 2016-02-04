@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="dsEventLog" targetNamespace="http://tempuri.org/dsEventLog.xsd" elementFormDefault="qualified"
+	attributeFormDefault="qualified" xmlns="http://tempuri.org/dsEventLog.xsd" xmlns:mstns="http://tempuri.org/dsEventLog.xsd"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+	<xs:element name="dsEventLog" msdata:IsDataSet="true">
+		<xs:complexType>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="Search">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="EventLogID" type="xs:int" minOccurs="0" />
+							<xs:element name="RespondentID" type="xs:int" minOccurs="0" />
+							<xs:element name="SurveyInstanceID" type="xs:int" minOccurs="0" />
+							<xs:element name="RespondentName" type="xs:string" minOccurs="0" />
+							<xs:element name="Address" type="xs:string" minOccurs="0" />
+							<xs:element name="City" type="xs:string" minOccurs="0" />
+							<xs:element name="State" type="xs:string" minOccurs="0" />
+							<xs:element name="PostalCode" type="xs:string" minOccurs="0" />
+							<xs:element name="Telephone" type="xs:string" minOccurs="0" />
+							<xs:element name="Email" type="xs:string" minOccurs="0" />
+							<xs:element name="DOBStartRange" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="DOBEndRange" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="Gender" type="xs:string" minOccurs="0" />
+							<xs:element name="ClientRespondentID" type="xs:string" minOccurs="0" />
+							<xs:element name="SSN" type="xs:string" minOccurs="0" />
+							<xs:element name="BatchID" type="xs:int" minOccurs="0" />
+							<xs:element name="ClientID" type="xs:int" minOccurs="0" />
+							<xs:element name="SurveyID" type="xs:int" minOccurs="0" />
+							<xs:element name="PropertyName" type="xs:string" minOccurs="0" />
+							<xs:element name="PropertyValue" type="xs:string" minOccurs="0" />
+							<xs:element name="EventID" type="xs:int" minOccurs="0" />
+							<xs:element name="EventStartRange" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="EventEndRange" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="SurveyInstanceStartRange" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="SurveyInstanceEndRange" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="BatchIDList" type="xs:string" minOccurs="0" />
+							<xs:element name="IncludeMailSeeds" type="xs:boolean" minOccurs="0" />
+							<xs:element name="ExcludeFinalCodes" type="xs:boolean" minOccurs="0" />
+							<xs:element name="FileDefFilterID" type="xs:int" minOccurs="0" />
+							<xs:element name="LocalTimeStartRange" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="LocalTimeEndRange" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="TimeZoneDifference" type="xs:int" minOccurs="0" />
+							<xs:element name="CallAttemptsMade" type="xs:int" minOccurs="0" />
+							<xs:element name="UserID" type="xs:int" minOccurs="0" />
+							<xs:element name="EventTypeID" type="xs:int" minOccurs="0" />
+							<xs:element name="Active" type="xs:unsignedByte" minOccurs="0" />
+							<xs:element name="Top" type="xs:int" minOccurs="0" />
+							<xs:element name="EventParameters" type="xs:string" minOccurs="0" />
+							<xs:element name="EventIDList" type="xs:string" minOccurs="0" />
+							<xs:element name="ExcludeEventIDList" type="xs:string" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="EventLog">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="EventLogID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="EventDate" type="xs:dateTime" />
+							<xs:element name="EventID" type="xs:int" />
+							<xs:element name="UserID" type="xs:int" />
+							<xs:element name="RespondentID" type="xs:int" minOccurs="0" />
+							<xs:element name="EventParameters" type="xs:string" minOccurs="0" />
+							<xs:element name="EventName" type="xs:string" />
+							<xs:element name="EventTypeID" type="xs:int" />
+							<xs:element name="RespondentName" msdata:ReadOnly="true" type="xs:string" minOccurs="0" />
+							<xs:element name="SurveyInstanceName" msdata:ReadOnly="true" type="xs:string" minOccurs="0" />
+							<xs:element name="Username" type="xs:string" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:complexType>
+		<xs:key name="dsEventLogKey1" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:EventLog" />
+			<xs:field xpath="mstns:EventLogID" />
+		</xs:key>
+	</xs:element>
+</xs:schema>

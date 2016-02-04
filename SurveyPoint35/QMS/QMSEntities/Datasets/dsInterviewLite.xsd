@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="dsInterviewLite" targetNamespace="http://tempuri.org/dsInterviewLite.xsd" elementFormDefault="qualified"
+	attributeFormDefault="qualified" xmlns="http://tempuri.org/dsInterviewLite.xsd" xmlns:mstns="http://tempuri.org/dsInterviewLite.xsd"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+	<xs:element name="dsInterviewLite" msdata:IsDataSet="true">
+		<xs:complexType>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="Scripts">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ScriptID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="SurveyID" type="xs:int" />
+							<xs:element name="ScriptTypeID" type="xs:int" />
+							<xs:element name="Name" type="xs:string" />
+							<xs:element name="Description" type="xs:string" />
+							<xs:element name="CompletenessLevel" type="xs:decimal" />
+							<xs:element name="FollowSkips" type="xs:unsignedByte" />
+							<xs:element name="CalcCompleteness" type="xs:unsignedByte" />
+							<xs:element name="DefaultScript" type="xs:unsignedByte" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ScriptScreens">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ScriptScreenID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="ScriptID" type="xs:int" />
+							<xs:element name="SurveyQuestionID" type="xs:int" minOccurs="0" />
+							<xs:element name="Title" type="xs:string" />
+							<xs:element name="Text" type="xs:string" />
+							<xs:element name="CalculationTypeID" type="xs:int" />
+							<xs:element name="ItemOrder" type="xs:int" />
+							<xs:element name="Status" type="xs:int" minOccurs="0" />
+							<xs:element name="QuestionTypeID" type="xs:int" minOccurs="0" />
+							<xs:element name="JumpIndex" type="xs:int" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ScriptScreenCategories">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ScriptScreenCategoryID" msdata:ReadOnly="true" msdata:AutoIncrement="true"
+								type="xs:int" />
+							<xs:element name="ScriptScreenID" type="xs:int" />
+							<xs:element name="AnswerCategoryID" type="xs:int" />
+							<xs:element name="JumpToScriptScreenID" type="xs:int" minOccurs="0" />
+							<xs:element name="Text" type="xs:string" minOccurs="0" />
+							<xs:element name="AnswerCategoryTypeID" type="xs:int" minOccurs="0" />
+							<xs:element name="AnswerText" type="xs:string" minOccurs="0" />
+							<xs:element name="QuestionID" type="xs:int" minOccurs="0" />
+							<xs:element name="AnswerValue" type="xs:int" minOccurs="0" />
+							<xs:element name="Show" msdata:ReadOnly="true" type="xs:int" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Respondents">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="RespondentID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="SurveyInstanceID" type="xs:int" />
+							<xs:element name="FirstName" type="xs:string" minOccurs="0" />
+							<xs:element name="MiddleInitial" type="xs:string" minOccurs="0" />
+							<xs:element name="LastName" type="xs:string" />
+							<xs:element name="Address1" type="xs:string" minOccurs="0" />
+							<xs:element name="Address2" type="xs:string" minOccurs="0" />
+							<xs:element name="City" type="xs:string" minOccurs="0" />
+							<xs:element name="State" type="xs:string" minOccurs="0" />
+							<xs:element name="PostalCode" type="xs:string" minOccurs="0" />
+							<xs:element name="TelephoneDay" type="xs:string" minOccurs="0" />
+							<xs:element name="TelephoneEvening" type="xs:string" minOccurs="0" />
+							<xs:element name="Email" type="xs:string" minOccurs="0" />
+							<xs:element name="DOB" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="Gender" type="xs:string" minOccurs="0" />
+							<xs:element name="ClientRespondentID" type="xs:string" minOccurs="0" />
+							<xs:element name="SSN" type="xs:string" minOccurs="0" />
+							<xs:element name="BatchID" type="xs:int" minOccurs="0" />
+							<xs:element name="SurveyInstanceName" type="xs:string" />
+							<xs:element name="ClientName" type="xs:string" />
+							<xs:element name="SurveyName" type="xs:string" />
+							<xs:element name="ClientID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="SurveyID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="CallsMade" type="xs:int" />
+							<xs:element name="Final" type="xs:unsignedByte" minOccurs="0" />
+							<xs:element name="NextContact" type="xs:dateTime" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Responses">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ResponseID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="RespondentID" type="xs:int" />
+							<xs:element name="AnswerCategoryID" type="xs:int" />
+							<xs:element name="ResponseText" type="xs:string" />
+							<xs:element name="SurveyQuestionID" type="xs:int" />
+							<xs:element name="UserID" type="xs:int" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:complexType>
+		<xs:key name="dsInterviewLiteKey1" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:Scripts" />
+			<xs:field xpath="mstns:ScriptID" />
+		</xs:key>
+		<xs:key name="dsInterviewLiteKey2" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:ScriptScreens" />
+			<xs:field xpath="mstns:ScriptScreenID" />
+		</xs:key>
+		<xs:key name="dsInterviewLiteKey3" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:ScriptScreenCategories" />
+			<xs:field xpath="mstns:ScriptScreenCategoryID" />
+		</xs:key>
+		<xs:key name="dsInterviewLiteKey4" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:Respondents" />
+			<xs:field xpath="mstns:RespondentID" />
+		</xs:key>
+		<xs:key name="dsInterviewLiteKey5" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:Responses" />
+			<xs:field xpath="mstns:ResponseID" />
+		</xs:key>
+	</xs:element>
+</xs:schema>

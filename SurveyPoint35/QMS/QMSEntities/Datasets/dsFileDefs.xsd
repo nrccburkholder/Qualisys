@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="dsFileDefs" targetNamespace="http://tempuri.org/dsFileDefs.xsd" elementFormDefault="qualified" attributeFormDefault="qualified" xmlns="http://tempuri.org/dsFileDefs.xsd" xmlns:mstns="http://tempuri.org/dsFileDefs.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+	<xs:element name="dsFileDefs" msdata:IsDataSet="true">
+		<xs:complexType>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="FileDefs">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="FileDefID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="FileDefName" type="xs:string" />
+							<xs:element name="FileDefDescription" type="xs:string" />
+							<xs:element name="ClientID" type="xs:int" minOccurs="0" />
+							<xs:element name="SurveyID" type="xs:int" minOccurs="0" />
+							<xs:element name="FileDefTypeID" type="xs:int" />
+							<xs:element name="FileTypeID" type="xs:int" />
+							<xs:element name="FileDefDelimiter" type="xs:string" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="FileDefTypes">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="FileDefTypeID" type="xs:int" />
+							<xs:element name="FileDefTypeName" type="xs:string" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="FileDefColumns">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="FileDefColumnID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="FileDefID" type="xs:int" />
+							<xs:element name="ColumnName" type="xs:string" />
+							<xs:element name="DisplayOrder" type="xs:int" />
+							<xs:element name="Width" type="xs:int" minOccurs="0" />
+							<xs:element name="FormatString" type="xs:string" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Clients">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ClientID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="Name" type="xs:string" />
+							<xs:element name="Address1" type="xs:string" />
+							<xs:element name="Address2" type="xs:string" />
+							<xs:element name="City" type="xs:string" />
+							<xs:element name="State" type="xs:string" />
+							<xs:element name="PostalCode" type="xs:string" />
+							<xs:element name="Telephone" type="xs:string" />
+							<xs:element name="Fax" type="xs:string" />
+							<xs:element name="Active" type="xs:unsignedByte" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Surveys">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="SurveyID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="Name" type="xs:string" />
+							<xs:element name="Description" type="xs:string" />
+							<xs:element name="CreatedByUserID" type="xs:int" />
+							<xs:element name="CreatedOnDate" type="xs:dateTime" />
+							<xs:element name="Active" type="xs:unsignedByte" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="FileTypes">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="FileTypeID" type="xs:int" />
+							<xs:element name="FileTypeName" type="xs:string" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Search">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="FileDefID" type="xs:int" minOccurs="0" />
+							<xs:element name="Keyword" type="xs:string" minOccurs="0" />
+							<xs:element name="ClientID" type="xs:int" minOccurs="0" />
+							<xs:element name="SurveyID" type="xs:int" minOccurs="0" />
+							<xs:element name="FileDefTypeID" type="xs:int" minOccurs="0" />
+							<xs:element name="FileTypeID" type="xs:int" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:complexType>
+		<xs:unique name="dsFileDefinitionsKey1" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:FileDefs" />
+			<xs:field xpath="mstns:FileDefID" />
+		</xs:unique>
+		<xs:unique name="dsFileDefinitionsKey2" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:FileDefTypes" />
+			<xs:field xpath="mstns:FileDefTypeID" />
+		</xs:unique>
+		<xs:key name="key1">
+			<xs:selector xpath=".//mstns:FileDefTypes" />
+			<xs:field xpath="mstns:FileDefTypeID" />
+		</xs:key>
+		<xs:unique name="dsFileDefinitionsKey3" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:FileDefColumns" />
+			<xs:field xpath="mstns:FileDefColumnID" />
+		</xs:unique>
+		<xs:key name="key2">
+			<xs:selector xpath=".//mstns:FileDefs" />
+			<xs:field xpath="mstns:FileDefID" />
+		</xs:key>
+		<xs:keyref name="FileDefsFileDefColumns" refer="key2">
+			<xs:selector xpath=".//mstns:FileDefColumns" />
+			<xs:field xpath="mstns:FileDefID" />
+		</xs:keyref>
+		<xs:unique name="dsFileDefinitionsKey4" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:Clients" />
+			<xs:field xpath="mstns:ClientID" />
+		</xs:unique>
+		<xs:key name="key3">
+			<xs:selector xpath=".//mstns:Clients" />
+			<xs:field xpath="mstns:ClientID" />
+		</xs:key>
+		<xs:unique name="dsFileDefinitionsKey5" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:Surveys" />
+			<xs:field xpath="mstns:SurveyID" />
+		</xs:unique>
+		<xs:key name="key4">
+			<xs:selector xpath=".//mstns:Surveys" />
+			<xs:field xpath="mstns:SurveyID" />
+		</xs:key>
+		<xs:unique name="dsFileDefinitionsKey6" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:FileTypes" />
+			<xs:field xpath="mstns:FileTypeID" />
+		</xs:unique>
+		<xs:key name="key5">
+			<xs:selector xpath=".//mstns:FileTypes" />
+			<xs:field xpath="mstns:FileTypeID" />
+		</xs:key>
+		<xs:key name="key6">
+			<xs:selector xpath=".//mstns:FileTypes" />
+			<xs:field xpath="mstns:FileTypeID" />
+		</xs:key>
+		<xs:keyref name="FileTypesFileDefs" refer="key6">
+			<xs:selector xpath=".//mstns:FileDefs" />
+			<xs:field xpath="mstns:FileTypeID" />
+		</xs:keyref>
+		<xs:key name="key7">
+			<xs:selector xpath=".//mstns:FileDefTypes" />
+			<xs:field xpath="mstns:FileDefTypeID" />
+		</xs:key>
+		<xs:keyref name="FileDefTypesFileDefs" refer="key7">
+			<xs:selector xpath=".//mstns:FileDefs" />
+			<xs:field xpath="mstns:FileDefTypeID" />
+		</xs:keyref>
+		<xs:key name="key8">
+			<xs:selector xpath=".//mstns:Clients" />
+			<xs:field xpath="mstns:ClientID" />
+		</xs:key>
+		<xs:keyref name="ClientsFileDefs" refer="key8">
+			<xs:selector xpath=".//mstns:FileDefs" />
+			<xs:field xpath="mstns:ClientID" />
+		</xs:keyref>
+		<xs:key name="key9">
+			<xs:selector xpath=".//mstns:Surveys" />
+			<xs:field xpath="mstns:SurveyID" />
+		</xs:key>
+		<xs:keyref name="SurveysFileDefs" refer="key9">
+			<xs:selector xpath=".//mstns:FileDefs" />
+			<xs:field xpath="mstns:SurveyID" />
+		</xs:keyref>
+	</xs:element>
+</xs:schema>

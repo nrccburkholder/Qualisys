@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="dsScriptTriggers" targetNamespace="http://tempuri.org/dsScriptTriggers.xsd"
+	elementFormDefault="qualified" attributeFormDefault="qualified" xmlns="http://tempuri.org/dsScriptTriggers.xsd"
+	xmlns:mstns="http://tempuri.org/dsScriptTriggers.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+	<xs:element name="dsScriptTriggers" msdata:IsDataSet="true">
+		<xs:complexType>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="Search">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ScriptedTriggerID" type="xs:int" minOccurs="0" />
+							<xs:element name="TriggerID" type="xs:int" minOccurs="0" />
+							<xs:element name="ScriptID" type="xs:int" minOccurs="0" />
+							<xs:element name="ScriptScreenID" type="xs:int" minOccurs="0" />
+							<xs:element name="ScriptScreenCategoryID" type="xs:int" minOccurs="0" />
+							<xs:element name="RunBeforeAfter" type="xs:int" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ScriptedTriggers">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ScriptedTriggerID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="TriggerID" type="xs:int" />
+							<xs:element name="TriggerIDValue1" type="xs:int" minOccurs="0" />
+							<xs:element name="TriggerIDValue2" type="xs:int" minOccurs="0" />
+							<xs:element name="TriggerIDValue3" type="xs:int" minOccurs="0" />
+							<xs:element name="TriggerIDValue4" type="xs:int" minOccurs="0" />
+							<xs:element name="TriggerName" type="xs:string" minOccurs="0" />
+							<xs:element name="ItemOrder" type="xs:int" minOccurs="0" />
+							<xs:element name="ScreenTitle" type="xs:string" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:complexType>
+		<xs:key name="dsScriptTriggersKey1">
+			<xs:selector xpath=".//mstns:ScriptedTriggers" />
+			<xs:field xpath="mstns:ScriptedTriggerID" />
+		</xs:key>
+	</xs:element>
+</xs:schema>

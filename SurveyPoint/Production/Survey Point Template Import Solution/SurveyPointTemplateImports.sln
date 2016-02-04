@@ -1,0 +1,101 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "SurveyPointTemplateImports", "SurveyPointTemplateImports\SurveyPointTemplateImports.vbproj", "{E0D030DB-C945-4728-BFAF-7512513219EE}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "SurveyPoint.Library", "..\SurveyPoint Class Library Solution\SurveyPoint.Library\SurveyPoint.Library.vbproj", "{22006699-74C3-4AE2-B529-FA1F0804DA25}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "SurveyPoint.Library.SqlDataProvider", "..\SurveyPoint Class Library Solution\SurveyPoint.Library.SqlDataProvider\SurveyPoint.Library.SqlDataProvider.vbproj", "{2AD098FB-4201-43D4-8133-F8A5EDC5E155}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://tfs.nationalresearch.com:8080/tfs
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = SurveyPointTemplateImports\\SurveyPointTemplateImports.vbproj
+		SccProjectName1 = SurveyPointTemplateImports
+		SccLocalPath1 = SurveyPointTemplateImports
+		SccProjectUniqueName2 = ..\\SurveyPoint\u0020Class\u0020Library\u0020Solution\\SurveyPoint.Library\\SurveyPoint.Library.vbproj
+		SccProjectName2 = ../SurveyPoint\u0020Class\u0020Library\u0020Solution/SurveyPoint.Library
+		SccLocalPath2 = ..\\SurveyPoint\u0020Class\u0020Library\u0020Solution\\SurveyPoint.Library
+		SccProjectUniqueName3 = ..\\SurveyPoint\u0020Class\u0020Library\u0020Solution\\SurveyPoint.Library.SqlDataProvider\\SurveyPoint.Library.SqlDataProvider.vbproj
+		SccProjectName3 = ../SurveyPoint\u0020Class\u0020Library\u0020Solution/SurveyPoint.Library.SqlDataProvider
+		SccLocalPath3 = ..\\SurveyPoint\u0020Class\u0020Library\u0020Solution\\SurveyPoint.Library.SqlDataProvider
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Development|Any CPU = Development|Any CPU
+		Development|x86 = Development|x86
+		Production|Any CPU = Production|Any CPU
+		Production|x86 = Production|x86
+		Staging|Any CPU = Staging|Any CPU
+		Staging|x86 = Staging|x86
+		Testing|Any CPU = Testing|Any CPU
+		Testing|x86 = Testing|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E0D030DB-C945-4728-BFAF-7512513219EE}.Development|Any CPU.ActiveCfg = Development|Any CPU
+		{E0D030DB-C945-4728-BFAF-7512513219EE}.Development|Any CPU.Build.0 = Development|Any CPU
+		{E0D030DB-C945-4728-BFAF-7512513219EE}.Development|x86.ActiveCfg = Development|x86
+		{E0D030DB-C945-4728-BFAF-7512513219EE}.Development|x86.Build.0 = Development|x86
+		{E0D030DB-C945-4728-BFAF-7512513219EE}.Production|Any CPU.ActiveCfg = Production|Any CPU
+		{E0D030DB-C945-4728-BFAF-7512513219EE}.Production|Any CPU.Build.0 = Production|Any CPU
+		{E0D030DB-C945-4728-BFAF-7512513219EE}.Production|x86.ActiveCfg = Production|x86
+		{E0D030DB-C945-4728-BFAF-7512513219EE}.Production|x86.Build.0 = Production|x86
+		{E0D030DB-C945-4728-BFAF-7512513219EE}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
+		{E0D030DB-C945-4728-BFAF-7512513219EE}.Staging|Any CPU.Build.0 = Staging|Any CPU
+		{E0D030DB-C945-4728-BFAF-7512513219EE}.Staging|x86.ActiveCfg = Staging|x86
+		{E0D030DB-C945-4728-BFAF-7512513219EE}.Staging|x86.Build.0 = Staging|x86
+		{E0D030DB-C945-4728-BFAF-7512513219EE}.Testing|Any CPU.ActiveCfg = Testing|Any CPU
+		{E0D030DB-C945-4728-BFAF-7512513219EE}.Testing|Any CPU.Build.0 = Testing|Any CPU
+		{E0D030DB-C945-4728-BFAF-7512513219EE}.Testing|x86.ActiveCfg = Testing|x86
+		{E0D030DB-C945-4728-BFAF-7512513219EE}.Testing|x86.Build.0 = Testing|x86
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Development|Any CPU.ActiveCfg = Development|Any CPU
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Development|Any CPU.Build.0 = Development|Any CPU
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Development|x86.ActiveCfg = Development|x86
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Development|x86.Build.0 = Development|x86
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Production|Any CPU.ActiveCfg = Production|Any CPU
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Production|Any CPU.Build.0 = Production|Any CPU
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Production|x86.ActiveCfg = Production|x86
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Production|x86.Build.0 = Production|x86
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Staging|Any CPU.Build.0 = Staging|Any CPU
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Staging|x86.ActiveCfg = Staging|x86
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Staging|x86.Build.0 = Staging|x86
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Testing|Any CPU.ActiveCfg = Testing|Any CPU
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Testing|Any CPU.Build.0 = Testing|Any CPU
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Testing|x86.ActiveCfg = Testing|x86
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Testing|x86.Build.0 = Testing|x86
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Development|Any CPU.ActiveCfg = Development|Any CPU
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Development|Any CPU.Build.0 = Development|Any CPU
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Development|x86.ActiveCfg = Development|x86
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Development|x86.Build.0 = Development|x86
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Production|Any CPU.ActiveCfg = Production|Any CPU
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Production|Any CPU.Build.0 = Production|Any CPU
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Production|x86.ActiveCfg = Production|x86
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Production|x86.Build.0 = Production|x86
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Staging|Any CPU.Build.0 = Staging|Any CPU
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Staging|x86.ActiveCfg = Staging|x86
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Staging|x86.Build.0 = Staging|x86
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Testing|Any CPU.ActiveCfg = Testing|Any CPU
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Testing|Any CPU.Build.0 = Testing|Any CPU
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Testing|x86.ActiveCfg = Testing|x86
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Testing|x86.Build.0 = Testing|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

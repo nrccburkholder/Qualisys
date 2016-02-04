@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="dsScriptTriggerDetails" targetNamespace="http://tempuri.org/dsScriptTriggerDetails.xsd"
+	elementFormDefault="qualified" attributeFormDefault="qualified" xmlns="http://tempuri.org/dsScriptTriggerDetails.xsd"
+	xmlns:mstns="http://tempuri.org/dsScriptTriggerDetails.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+	<xs:element name="dsScriptTriggerDetails" msdata:IsDataSet="true">
+		<xs:complexType>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="Criteria">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="CriteriaID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="CriteriaName" type="xs:string" minOccurs="0" />
+							<xs:element name="SurveyID" type="xs:int" />
+							<xs:element name="CriteriaTypeID" type="xs:int" />
+							<xs:element name="AnswerCategoryID" type="xs:int" minOccurs="0" />
+							<xs:element name="CriteriaDataTypeID" type="xs:short" minOccurs="0" />
+							<xs:element name="ParameterName" type="xs:string" minOccurs="0" />
+							<xs:element name="TextValue" type="xs:string" minOccurs="0" />
+							<xs:element name="ReferenceCriteriaID" type="xs:int" minOccurs="0" />
+							<xs:element name="ReferenceCriteriaSequence" type="xs:int" minOccurs="0" />
+							<xs:element name="Flag" type="xs:int" />
+							<xs:element name="Hierarchy" type="xs:string" minOccurs="0" />
+							<xs:element name="Lvl" type="xs:int" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Triggers">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="TriggerID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="TriggerTypeID" type="xs:int" />
+							<xs:element name="SurveyID" type="xs:int" minOccurs="0" />
+							<xs:element name="TriggerName" type="xs:string" minOccurs="0" />
+							<xs:element name="CriteriaID" type="xs:int" minOccurs="0" />
+							<xs:element name="TheCode" type="xs:string" minOccurs="0" />
+							<xs:element name="PerodicyDate" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="PerodicyNextDate" type="xs:dateTime" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ScriptScreens">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ScriptScreenID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="Title" type="xs:string" />
+							<xs:element name="ItemOrder" type="xs:int" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ScriptedTriggers">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ScriptedTriggerID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="TriggerID" type="xs:int" />
+							<xs:element name="TriggerIDValue1" type="xs:int" minOccurs="0" />
+							<xs:element name="TriggerIDValue2" type="xs:int" minOccurs="0" />
+							<xs:element name="TriggerIDValue3" type="xs:int" minOccurs="0" />
+							<xs:element name="TriggerIDValue4" type="xs:int" minOccurs="0" />
+							<xs:element name="TriggerName" type="xs:string" minOccurs="0" />
+							<xs:element name="ItemOrder" type="xs:int" minOccurs="0" />
+							<xs:element name="ScreenTitle" type="xs:string" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="CriteriaTypes">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="CriteriaTypeID" type="xs:int" />
+							<xs:element name="Name" type="xs:string" />
+							<xs:element name="Description" type="xs:string" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:complexType>
+		<xs:unique name="dsScriptTriggerDetailsKey1" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:Criteria" />
+			<xs:field xpath="mstns:CriteriaID" />
+		</xs:unique>
+		<xs:unique name="dsScriptTriggerDetailsKey7" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:Triggers" />
+			<xs:field xpath="mstns:TriggerID" />
+		</xs:unique>
+		<xs:unique name="dsScriptTriggerDetailsKey3" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:ScriptScreens" />
+			<xs:field xpath="mstns:ScriptScreenID" />
+		</xs:unique>
+		<xs:key name="dsScriptTriggerDetailsKey2">
+			<xs:selector xpath=".//mstns:ScriptedTriggers" />
+			<xs:field xpath="mstns:ScriptedTriggerID" />
+		</xs:key>
+		<xs:keyref name="TriggersScriptTriggers" refer="dsScriptTriggerDetailsKey7" msdata:UpdateRule="Cascade">
+			<xs:selector xpath=".//mstns:ScriptedTriggers" />
+			<xs:field xpath="mstns:TriggerID" />
+		</xs:keyref>
+		<xs:unique name="dsScriptTriggerDetailsKey4" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:CriteriaTypes" />
+			<xs:field xpath="mstns:CriteriaTypeID" />
+		</xs:unique>
+		<xs:keyref name="CriteriaTypesCriteria" refer="dsScriptTriggerDetailsKey4">
+			<xs:selector xpath=".//mstns:Criteria" />
+			<xs:field xpath="mstns:CriteriaTypeID" />
+		</xs:keyref>
+	</xs:element>
+</xs:schema>

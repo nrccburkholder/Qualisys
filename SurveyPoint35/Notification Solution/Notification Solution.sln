@@ -1,0 +1,72 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PS.Notification.ServiceTester", "PS.Notification.ServiceTester\PS.Notification.ServiceTester.vbproj", "{11C0203E-EEF2-46D7-B87F-D9A5C9645E63}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PS.Notification.Library", "PS.Notification.Library\PS.Notification.Library.vbproj", "{33F3FDB9-C7C4-439E-A06D-B0EB26771F15}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PS.Notification.Library.SqlDataProvider", "PS.Notification.Library.SqlDataProvider\PS.Notification.Library.SqlDataProvider.vbproj", "{0276E15D-9C57-4F5D-8ED9-F651BAA875B5}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PS.Notification.ServiceLibrary", "PS.Notification.ServiceLibrary\PS.Notification.ServiceLibrary.vbproj", "{669F6859-0E39-4BA1-B9B8-15624A149EDC}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PS.Notification.Service", "PS.Notification.Service\PS.Notification.Service.vbproj", "{9F4CBC1F-340D-42F7-BF97-A67B017AACB4}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "PSNotificationServiceInstaller", "PSNotificationServiceInstaller\PSNotificationServiceInstaller.vdproj", "{8FDB11AF-5627-4A0B-BA36-AC62550A07F5}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 7
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://perseus:8080/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = PS.Notification.ServiceTester\\PS.Notification.ServiceTester.vbproj
+		SccProjectName1 = PS.Notification.ServiceTester
+		SccLocalPath1 = PS.Notification.ServiceTester
+		SccProjectUniqueName2 = PS.Notification.Library\\PS.Notification.Library.vbproj
+		SccProjectName2 = PS.Notification.Library
+		SccLocalPath2 = PS.Notification.Library
+		SccProjectUniqueName3 = PS.Notification.Library.SqlDataProvider\\PS.Notification.Library.SqlDataProvider.vbproj
+		SccProjectName3 = PS.Notification.Library.SqlDataProvider
+		SccLocalPath3 = PS.Notification.Library.SqlDataProvider
+		SccProjectUniqueName4 = PS.Notification.ServiceLibrary\\PS.Notification.ServiceLibrary.vbproj
+		SccProjectName4 = PS.Notification.ServiceLibrary
+		SccLocalPath4 = PS.Notification.ServiceLibrary
+		SccProjectUniqueName5 = PS.Notification.Service\\PS.Notification.Service.vbproj
+		SccProjectName5 = PS.Notification.Service
+		SccLocalPath5 = PS.Notification.Service
+		SccProjectUniqueName6 = PSNotificationServiceInstaller\\PSNotificationServiceInstaller.vdproj
+		SccProjectName6 = PSNotificationServiceInstaller
+		SccLocalPath6 = PSNotificationServiceInstaller
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{11C0203E-EEF2-46D7-B87F-D9A5C9645E63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11C0203E-EEF2-46D7-B87F-D9A5C9645E63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11C0203E-EEF2-46D7-B87F-D9A5C9645E63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11C0203E-EEF2-46D7-B87F-D9A5C9645E63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33F3FDB9-C7C4-439E-A06D-B0EB26771F15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33F3FDB9-C7C4-439E-A06D-B0EB26771F15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33F3FDB9-C7C4-439E-A06D-B0EB26771F15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33F3FDB9-C7C4-439E-A06D-B0EB26771F15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0276E15D-9C57-4F5D-8ED9-F651BAA875B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0276E15D-9C57-4F5D-8ED9-F651BAA875B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0276E15D-9C57-4F5D-8ED9-F651BAA875B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0276E15D-9C57-4F5D-8ED9-F651BAA875B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{669F6859-0E39-4BA1-B9B8-15624A149EDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{669F6859-0E39-4BA1-B9B8-15624A149EDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{669F6859-0E39-4BA1-B9B8-15624A149EDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{669F6859-0E39-4BA1-B9B8-15624A149EDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F4CBC1F-340D-42F7-BF97-A67B017AACB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F4CBC1F-340D-42F7-BF97-A67B017AACB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F4CBC1F-340D-42F7-BF97-A67B017AACB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F4CBC1F-340D-42F7-BF97-A67B017AACB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FDB11AF-5627-4A0B-BA36-AC62550A07F5}.Debug|Any CPU.ActiveCfg = Debug
+		{8FDB11AF-5627-4A0B-BA36-AC62550A07F5}.Release|Any CPU.ActiveCfg = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

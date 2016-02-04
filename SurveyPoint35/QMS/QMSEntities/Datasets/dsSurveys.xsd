@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="dsSurveys" targetNamespace="http://tempuri.org/dsSurveys.xsd" elementFormDefault="qualified" attributeFormDefault="qualified" xmlns="http://tempuri.org/dsSurveys.xsd" xmlns:mstns="http://tempuri.org/dsSurveys.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+	<xs:element name="dsSurveys" msdata:IsDataSet="true">
+		<xs:complexType>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="Surveys">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="SurveyID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="Name" type="xs:string" />
+							<xs:element name="Description" type="xs:string" minOccurs="0" />
+							<xs:element name="CreatedByUserID" type="xs:int" />
+							<xs:element name="CreatedOnDate" type="xs:dateTime" />
+							<xs:element name="Active" type="xs:unsignedByte" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="SurveyQuestions">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="SurveyQuestionID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="SurveyID" type="xs:int" />
+							<xs:element name="QuestionID" type="xs:int" />
+							<xs:element name="DisplayNumber" type="xs:string" minOccurs="0" />
+							<xs:element name="ItemOrder" type="xs:int" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Questions">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="QuestionID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="QuestionFolderID" type="xs:int" />
+							<xs:element name="Text" type="xs:string" />
+							<xs:element name="ShortDesc" type="xs:string" minOccurs="0" />
+							<xs:element name="QuestionTypeID" type="xs:int" />
+							<xs:element name="ItemOrder" type="xs:int" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Search">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="SurveyID" type="xs:int" minOccurs="0" />
+							<xs:element name="Keyword" type="xs:string" minOccurs="0" />
+							<xs:element name="CreatedByUserID" type="xs:int" minOccurs="0" />
+							<xs:element name="Active" type="xs:unsignedByte" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Users">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="UserID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="Username" type="xs:string" />
+							<xs:element name="FirstName" type="xs:string" minOccurs="0" />
+							<xs:element name="LastName" type="xs:string" minOccurs="0" />
+							<xs:element name="Password" type="xs:string" />
+							<xs:element name="Email" type="xs:string" minOccurs="0" />
+							<xs:element name="GroupID" type="xs:int" />
+							<xs:element name="Active" type="xs:unsignedByte" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:complexType>
+		<xs:unique name="dsSurveysKey1" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:Surveys" />
+			<xs:field xpath="mstns:SurveyID" />
+		</xs:unique>
+		<xs:unique name="dsSurveysKey2" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:SurveyQuestions" />
+			<xs:field xpath="mstns:SurveyQuestionID" />
+		</xs:unique>
+		<xs:unique name="dsSurveysKey3" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:Questions" />
+			<xs:field xpath="mstns:QuestionID" />
+		</xs:unique>
+		<xs:key name="key1">
+			<xs:selector xpath=".//mstns:Surveys" />
+			<xs:field xpath="mstns:SurveyID" />
+		</xs:key>
+		<xs:keyref name="SurveysSurveyQuestions" refer="key1">
+			<xs:selector xpath=".//mstns:SurveyQuestions" />
+			<xs:field xpath="mstns:SurveyID" />
+		</xs:keyref>
+		<xs:key name="key2">
+			<xs:selector xpath=".//mstns:Questions" />
+			<xs:field xpath="mstns:QuestionID" />
+		</xs:key>
+		<xs:keyref name="QuestionsSurveyQuestions" refer="key2">
+			<xs:selector xpath=".//mstns:SurveyQuestions" />
+			<xs:field xpath="mstns:QuestionID" />
+		</xs:keyref>
+		<xs:unique name="dsSurveysKey4" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:Users" />
+			<xs:field xpath="mstns:UserID" />
+		</xs:unique>
+		<xs:key name="key3">
+			<xs:selector xpath=".//mstns:Users" />
+			<xs:field xpath="mstns:UserID" />
+		</xs:key>
+		<xs:keyref name="UsersSurveys" refer="key3">
+			<xs:selector xpath=".//mstns:Surveys" />
+			<xs:field xpath="mstns:CreatedByUserID" />
+		</xs:keyref>
+	</xs:element>
+</xs:schema>
