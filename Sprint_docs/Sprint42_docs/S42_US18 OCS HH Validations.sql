@@ -590,6 +590,47 @@ begin
 	end
 end
 
+
+/*************************************************************/
+/* Validate Admission Source Fields */
+
+if @surveyType_ID = 3    --HHCAHPS survey
+begin
+	declare @AdmSourceColumnCount int;
+	select @AdmSourceColumnCount = count(*) from INFORMATION_SCHEMA.COLUMNS
+	where TABLE_NAME = 'ENCOUNTER_load'
+		and TABLE_SCHEMA = 's' + CAST(@Study_id as varchar(10))
+		and COLUMN_NAME in ('HHAdm_Comm', 'HHAdm_Hosp', 'HHAdm_OthIP', 'HHAdm_OthLTC', 'HHAdm_Rehab', 'HHAdm_SNF');
+ 
+	if @AdmSourceColumnCount < 6
+		insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+		select @File_id, 3, 'Admission source fields do not exist.';
+	else
+	begin
+		create table #AdmSourceAllMissing (total int);
+
+		set @sql =
+			'insert into #AdmSourceAllMissing
+			select COUNT(*) as total
+			from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
+			where HHAdm_Comm = ''M'' and HHAdm_Hosp = ''M'' and HHAdm_OthIP = ''M'' and HHAdm_OthLTC = ''M'' and HHAdm_Rehab = ''M'' and HHAdm_SNF = ''M''
+			and DataFile_id = ' + LTRIM(STR(@File_id));
+		if @indebug = 1 print @sql;
+
+		declare @AdmSourceAllMissingCount int;
+		exec(@sql);
+		select @AdmSourceAllMissingCount = total from #AdmSourceAllMissing;
+
+		drop table #AdmSourceAllMissing;
+
+		if @indebug = 1 print @AdmSourceAllMissingCount;
+
+		if @AdmSourceAllMissingCount > 0
+			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+			select @File_id, 3, 'An encounter is missing all admission source fields.';
+	end
+end
+
       
 /*************************************************************/        
             
