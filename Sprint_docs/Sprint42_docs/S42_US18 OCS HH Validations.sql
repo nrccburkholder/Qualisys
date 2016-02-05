@@ -679,6 +679,47 @@ begin
 	end
 end
 
+
+/*************************************************************/
+/* Validate Surgical Discharge */
+
+if @surveyType_ID = 3    --HHCAHPS survey
+begin
+	declare @SurgDisColumnCount int;
+	select @SurgDisColumnCount = count(*) from INFORMATION_SCHEMA.COLUMNS
+	where TABLE_NAME = 'ENCOUNTER_load'
+		and TABLE_SCHEMA = 's' + CAST(@Study_id as varchar(10))
+		and COLUMN_NAME in ('HHSurg');
+ 
+	if @SurgDisColumnCount < 1
+		insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+		select @File_id, 3, 'HHSurg field does not exist.';
+	else
+	begin
+		create table #SurgDisInvalid (total int);
+
+		set @sql =
+			'insert into #SurgDisInvalid
+			select COUNT(*) as total
+			from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
+			where HHSurg not in (''1'', ''2'', ''M'')
+			and DataFile_id = ' + LTRIM(STR(@File_id));
+		if @indebug = 1 print @sql;
+
+		declare @SurgDisInvalidCount int;
+		exec(@sql);
+		select @SurgDisInvalidCount = total from #SurgDisInvalid;
+
+		drop table #SurgDisInvalid;
+
+		if @indebug = 1 print @SurgDisInvalidCount;
+
+		if @SurgDisInvalidCount > 0
+			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+			select @File_id, 3, 'An encounter has an invalid surgical discharge value.';
+	end
+end
+
       
 /*************************************************************/        
             
