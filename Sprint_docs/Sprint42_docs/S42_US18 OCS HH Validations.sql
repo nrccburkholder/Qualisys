@@ -13,8 +13,6 @@ if not exists (select * from Validation_Definitions where Table_nm = 'Population
 	insert into Validation_Definitions (SurveyType_ID, Table_nm, Field_nm, FailureThresholdPct, CheckForValue) values (3, 'Population', 'MRN', 0, null);
 if not exists (select * from Validation_Definitions where Table_nm = 'Encounter' and Field_nm = 'HHOASISPatID')
 	insert into Validation_Definitions (SurveyType_ID, Table_nm, Field_nm, FailureThresholdPct, CheckForValue) values (3, 'Encounter', 'HHOASISPatID', 0, null);
-if not exists (select * from Validation_Definitions where Table_nm = 'Population' and Field_nm = 'Phone')
-	insert into Validation_Definitions (SurveyType_ID, Table_nm, Field_nm, FailureThresholdPct, CheckForValue) values (3, 'Population', 'Phone', 0, null);
 go
 
 
@@ -369,7 +367,7 @@ begin
 
 		if @NPINonNumericCount > 0
 			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-			select @File_id, 3, 'NPI is not numeric.';
+			select @File_id, 4, 'NPI is not numeric.';
 
 
 		create table #NPITooLong (total int);
@@ -392,7 +390,7 @@ begin
 
 		if @NPITooLongCount > 0
 			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-			select @File_id, 3, 'NPI is more than 10 digits long.';
+			select @File_id, 4, 'NPI is more than 10 digits long.';
 	end 
 end
 
@@ -431,9 +429,9 @@ begin
 
 		if @indebug = 1 print @PayerAllMissingCount;
 
-		if @PayerAllMissingCount > 0
+		if @PayerAllMissingCount = @RecordCount
 			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-			select @File_id, 3, 'An encounter is missing all payer fields.';
+			select @File_id, 4, 'All payer fields are missing on all records.';
 	end
 end
 
@@ -517,10 +515,12 @@ begin
 		drop table #DOBNotAtLeast18;
 
 		if @indebug = 1 print @DOBNotAtLeast18Count;
+		declare @DOBNotAtLeast18Percentage float = 0;
+		if @RecordCount <> 0 set @DOBNotAtLeast18Percentage = round(100.0 * @DOBNotAtLeast18Count / @RecordCount, 0);
 
-		if @DOBNotAtLeast18Count > 0
+		if @DOBNotAtLeast18Percentage >= 80.0
 			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-			select @File_id, 3, 'A date of birth is not at least 18 years ago.';
+			select @File_id, 3, 'Date of birth is not at least 18 years ago on ' + cast(@DOBNotAtLeast18Percentage as varchar(10)) + '% of records.';
 	end
 end
 
@@ -538,7 +538,7 @@ begin
 		from DataFile f inner join DataFileState s on s.DataFile_id = f.DataFile_id
 		where
 			f.Study_ID = ' + LTRIM(STR(@Study_id)) + '
-			and f.datReceived > dateadd(day, -90, getdate())
+			and f.datReceived > dateadd(month, -6, getdate())
 			and s.State_ID = 10'
 	if @indebug = 1 print @sql;
 
@@ -592,10 +592,12 @@ begin
 		drop table #ADLAllMissing;
 
 		if @indebug = 1 print @ADLAllMissingCount;
+		declare @ADLAllMissingPercentage float = 0;
+		if @RecordCount <> 0 set @ADLAllMissingPercentage = round(100.0 * @ADLAllMissingCount / @RecordCount, 0);
 
-		if @ADLAllMissingCount > 0
+		if @ADLAllMissingPercentage >= 20.0
 			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-			select @File_id, 3, 'An encounter is missing all ADL fields.';
+			select @File_id, 4, 'All ADL fields are missing on ' + cast(@ADLAllMissingPercentage as varchar(10)) + '% of records.';
 	end
 end
 
@@ -633,10 +635,12 @@ begin
 		drop table #AdmSourceAllMissing;
 
 		if @indebug = 1 print @AdmSourceAllMissingCount;
+		declare @AdmSourceAllMissingPercentage float = 0;
+		if @RecordCount <> 0 set @AdmSourceAllMissingPercentage = round(100.0 * @AdmSourceAllMissingCount / @RecordCount, 0);
 
-		if @AdmSourceAllMissingCount > 0
+		if @AdmSourceAllMissingPercentage >= 20.0
 			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-			select @File_id, 3, 'An encounter is missing all admission source fields.';
+			select @File_id, 4, 'All admission source fields are missing on ' + cast(@AdmSourceAllMissingPercentage as varchar(10)) + '% of records.';
 	end
 end
 
@@ -674,10 +678,12 @@ begin
 		drop table #ESRDInvalid;
 
 		if @indebug = 1 print @ESRDInvalidCount;
+		declare @ESRDInvalidPercentage float = 0;
+		if @RecordCount <> 0 set @ESRDInvalidPercentage = round(100.0 * @ESRDInvalidCount / @RecordCount, 0);
 
-		if @ESRDInvalidCount > 0
+		if @ESRDInvalidPercentage >= 5.0
 			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-			select @File_id, 3, 'An encounter has an invalid ESRD value.';
+			select @File_id, 4, 'There are invalid ESRD values on ' + cast(@ESRDInvalidPercentage as varchar(10)) + '% of records.';
 	end
 end
 
@@ -715,10 +721,12 @@ begin
 		drop table #SurgDisInvalid;
 
 		if @indebug = 1 print @SurgDisInvalidCount;
+		declare @SurgDisInvalidPercentage float = 0;
+		if @RecordCount <> 0 set @SurgDisInvalidPercentage = round(100.0 * @SurgDisInvalidCount / @RecordCount, 0);
 
-		if @SurgDisInvalidCount > 0
+		if @SurgDisInvalidPercentage >= 5.0
 			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-			select @File_id, 3, 'An encounter has an invalid surgical discharge value.';
+			select @File_id, 4, 'There are invalid surgical discharge values on ' + cast(@SurgDisInvalidPercentage as varchar(10)) + '% of records.';
 	end
 end
 
