@@ -159,7 +159,7 @@ AS
 
 /* PART 1 -- find people who are going through the ETL tonight and check their completeness. If their survey was partial or incomplete, reschedule their next mailstep. */
 
-DECLARE @doLogging bit = 0
+DECLARE @doLogging bit = 0, @LogTime datetime = getdate()
 
 SELECT @doLogging = NUMPARAM_VALUE
 FROM dbo.QUALPRO_PARAMS WHERE STRPARAM_NM = 'CAHPSCompletenessLogging' and STRPARAM_GRP = 'CAHPS'
@@ -225,7 +225,7 @@ inner join #ACOQF qf on tr.QuestionForm_id=qf.QuestionForm_id
 
 -- write the complete and partials
 insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_id,datLogged,LoggedBy)
-select sentmail_id, samplepop_id, (SELECT Disposition_ID FROM ACOCAHPSDispositions WHERE ACOCAHPSValue = tr.ACODisposition),receipttype_id, getdate(), 'CheckForCAHPSIncompletes'
+select sentmail_id, samplepop_id, (SELECT Disposition_ID FROM ACOCAHPSDispositions WHERE ACOCAHPSValue = tr.ACODisposition),receipttype_id, @LogTime, 'CheckForCAHPSIncompletes'
 from #TodaysReturns tr
 where Surveytype_dsc in ('ACOCAHPS','PQRS CAHPS')
 AND strMailingStep_nm in ('1st Survey','2nd Survey')
@@ -234,7 +234,7 @@ AND ACODisposition in ( 10, 31)
 
 -- first survey blanks
 insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_id,datLogged,LoggedBy)
-select sentmail_id, samplepop_id, 25,receipttype_id, getdate(), 'CheckForCAHPSIncompletes'
+select sentmail_id, samplepop_id, 25,receipttype_id, @LogTime, 'CheckForCAHPSIncompletes'
 from #TodaysReturns tr
 where Surveytype_dsc in ('ACOCAHPS','PQRS CAHPS')
 AND strMailingStep_nm='1st Survey'
@@ -243,7 +243,7 @@ AND ACODisposition = 34
 
 --second survey blanks
 insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_id,datLogged,LoggedBy)
-select sentmail_id, samplepop_id, 26,receipttype_id, getdate(), 'CheckForCAHPSIncompletes'
+select sentmail_id, samplepop_id, 26,receipttype_id, @LogTime, 'CheckForCAHPSIncompletes'
 from #TodaysReturns tr
 where Surveytype_dsc in ('ACOCAHPS','PQRS CAHPS')
 AND strMailingStep_nm='2nd Survey'
@@ -264,7 +264,7 @@ AND ACODisposition = 34
 			from questionform qf
 			inner join survey_def sd on qf.survey_id=sd.survey_id
 			where sd.surveytype_id in (3,8,16)
-			and qf.datreturned > convert(datetime,floor(convert(float,getdate())))
+			and qf.datreturned > convert(datetime,floor(convert(float,@LogTime)))
 			and @doLogging = 1
 			-----
 
@@ -287,14 +287,14 @@ AND ACODisposition = 34
 			exec dbo.QFResponseCount
 
 			insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_id,datLogged,LoggedBy)
-			select sentmail_id, samplepop_id, 25, receipttype_id, getdate(), 'CheckForCAHPSIncompletes'
+			select sentmail_id, samplepop_id, 25, receipttype_id, @LogTime, 'CheckForCAHPSIncompletes'
 			--, strMailingStep_nm, ResponseCount
 			from #qfResponseCount rc
 			where strMailingStep_nm='1st Survey'
 			and ResponseCount=0
 
  			insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_id,datLogged,LoggedBy)
-			select sentmail_id, samplepop_id, 26, receipttype_id, getdate(), 'CheckForCAHPSIncompletes'
+			select sentmail_id, samplepop_id, 26, receipttype_id, @LogTime, 'CheckForCAHPSIncompletes'
 			--, strMailingStep_nm, ResponseCount
 			from #qfResponseCount rc
 			where strMailingStep_nm='2nd Survey'
@@ -330,11 +330,9 @@ AND ACODisposition = 34
 
 				if @doLogging = 1
 				begin
-					set @sql = 'insert into [temp_TodaysReturns] select *, getdate() from #TodaysReturns'
-					exec (@SQL)
+					insert into [temp_TodaysReturns] select *, @LogTime from #TodaysReturns
 
-					set @sql = 'insert into [temp_qfResponseCount] select *, getdate() from #qfResponseCount'
-					exec (@SQL)
+					insert into [temp_qfResponseCount] select *, @LogTime from #qfResponseCount
 				end
 
 				-- if we're ETLing something, check to see if any other returned mailsteps had more questions answered. If so, ETL the other mailstep
@@ -355,8 +353,7 @@ AND ACODisposition = 34
 
 					if @doLogging = 1
 					begin
-						set @sql = 'insert into [temp_qfResponseCount] select *, getdate() from #qfResponseCount where tempFlag=1'
-						exec (@SQL)
+						insert into [temp_qfResponseCount] select *, @LogTime from #qfResponseCount where tempFlag=1
 					end
 
 					-- list of samplepops that have multiple returns
@@ -414,8 +411,7 @@ AND ACODisposition = 34
 
 					if @doLogging = 1
 					begin
-						set @sql = 'insert into [temp_takeBest] select *, getdate() from #TakeBest'
-						exec (@SQL)
+						insert into [temp_takeBest] select *, @LogTime from #TakeBest
 					end
 
 					-- if newBitETLThisReturn is the same return as orgBitETLThisReturn, we don't need to adjust #TodaysReturn.bitETLThisReturn
@@ -692,28 +688,28 @@ AND ACODisposition = 34
 
 	-- completes S19 US15
 	insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_id,datLogged,LoggedBy)
-	select sentmail_id, samplepop_id, tr.HospiceDisposition,receipttype_id, getdate(), 'CheckForCAHPSIncompletes'
+	select sentmail_id, samplepop_id, tr.HospiceDisposition,receipttype_id, @LogTime, 'CheckForCAHPSIncompletes'
 	from #TodaysReturns tr
 	where Surveytype_dsc='Hospice CAHPS'	
 	AND HospiceDisposition = 13
 
 	-- breakoffs S19 US15
 	insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_id,datLogged,LoggedBy)
-	select sentmail_id, samplepop_id, tr.HospiceDisposition,receipttype_id, getdate(), 'CheckForCAHPSIncompletes'
+	select sentmail_id, samplepop_id, tr.HospiceDisposition,receipttype_id, @LogTime, 'CheckForCAHPSIncompletes'
 	from #TodaysReturns tr
 	where Surveytype_dsc='Hospice CAHPS'	
 	AND HospiceDisposition = 11
 
 
 	insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_id,datLogged,LoggedBy)
-	select sentmail_id, samplepop_id, 25, receipttype_id, getdate(), 'CheckForCAHPSIncompletes'
+	select sentmail_id, samplepop_id, 25, receipttype_id, @LogTime, 'CheckForCAHPSIncompletes'
 	--, strMailingStep_nm, ResponseCount
 	from #qfResponseCount rc
 	where strMailingStep_nm='1st Survey'
 	and ResponseCount=0
 
 	insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_id,datLogged,LoggedBy)
-	select sentmail_id, samplepop_id, 26, receipttype_id, getdate(), 'CheckForCAHPSIncompletes'
+	select sentmail_id, samplepop_id, 26, receipttype_id, @LogTime, 'CheckForCAHPSIncompletes'
 	--, strMailingStep_nm, ResponseCount
 	from #qfResponseCount rc
 	where strMailingStep_nm='2nd Survey'
@@ -899,8 +895,8 @@ delete #NewScheduledMailing where datGenerate is NULL
 -- anything that should have already generated, generate it tonight.
 -- it should be within the last few days? should we check that it's not older than that?
 update #NewScheduledMailing 
-set datGenerate = convert(datetime,ceiling(convert(float,getdate()))) 
-where datGenerate<getdate()
+set datGenerate = convert(datetime,ceiling(convert(float,@LogTime))) 
+where datGenerate<@LogTime
 
 insert into ScheduledMailing (OverrideItem_id, Methodology_ID, MailingStep_ID, SamplePop_ID, SentMail_ID, datGenerate)
 select OverrideItem_id, Methodology_ID, MailingStep_ID, SamplePop_ID, SentMail_ID, datGenerate
@@ -1013,18 +1009,16 @@ begin
 	from questionform qf
 	where questionform_id in (select questionform_id from #audit)
 
-	set @SQL = 'Insert into [temp_CheckForCAHPSIncompletesAudit] select a.*, b.datReturned as newDatReturned, b.unusedreturn_id as newUnusedReturn_id, b.datunusedreturn as newDatUnusedReturn, b.datresultsimported as newDatResultsImported, b.bitcomplete as newBitComplete, getdate()
+	Insert into [temp_CheckForCAHPSIncompletesAudit] select a.*, b.datReturned as newDatReturned, b.unusedreturn_id as newUnusedReturn_id, b.datunusedreturn as newDatUnusedReturn, b.datresultsimported as newDatResultsImported, b.bitcomplete as newBitComplete, @LogTime
 	from #Audit a
 	inner join #audit2 b on a.questionform_id=b.questionform_id
-	where isnull(a.datReturned, ''1/1/1910'') <> isnull(b.datReturned, ''1/1/1910'') 
+	where isnull(a.datReturned, '1/1/1910') <> isnull(b.datReturned, '1/1/1910') 
 	or isnull(a.unusedreturn_id,-1) <> isnull(b.unusedreturn_id,-1)
-	or isnull(a.datunusedreturn, ''1/1/1910'') <> isnull(b.datunusedreturn, ''1/1/1910'') 
-	or isnull(a.datresultsimported, ''1/1/1910'') <> isnull(b.datresultsimported, ''1/1/1910'') 
+	or isnull(a.datunusedreturn, '1/1/1910') <> isnull(b.datunusedreturn, '1/1/1910') 
+	or isnull(a.datresultsimported, '1/1/1910') <> isnull(b.datresultsimported, '1/1/1910') 
 	or a.bitcomplete <> b.bitcomplete
 	or (a.bitcomplete is null and b.bitcomplete is not null)
-	or (b.bitcomplete is null and a.bitcomplete is not null)'
-
-	exec (@SQL)
+	or (b.bitcomplete is null and a.bitcomplete is not null)
 
 end
 
