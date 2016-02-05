@@ -11,7 +11,7 @@ ROLLBACK
 use QP_DataLoad
 go
 
-delete from Validation_Definitions where Field_nm in ('MRN', 'HHOASISPatID');
+delete from Validation_Definitions where Field_nm in ('MRN', 'HHOASISPatID', 'Phone');
 go
 
 if exists (select * from sys.procedures where name = 'LD_RunValidation' and schema_id = SCHEMA_ID('dbo'))
