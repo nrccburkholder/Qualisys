@@ -9,12 +9,14 @@ Brendan Goble
 use QP_DataLoad
 go
 
-insert into Validation_Definitions (SurveyType_ID, Table_nm, Field_nm, FailureThresholdPct, CheckForValue)
-values
-(3, 'Population', 'MRN', 0, null),
-(3, 'Encounter', 'HHOASISPatID', 0, null),
-(3, 'Population', 'Phone', 0, null);
+if not exists (select * from Validation_Definitions where Table_nm = 'Population' and Field_nm = 'MRN')
+	insert into Validation_Definitions (SurveyType_ID, Table_nm, Field_nm, FailureThresholdPct, CheckForValue) values (3, 'Population', 'MRN', 0, null);
+if not exists (select * from Validation_Definitions where Table_nm = 'Encounter' and Field_nm = 'HHOASISPatID')
+	insert into Validation_Definitions (SurveyType_ID, Table_nm, Field_nm, FailureThresholdPct, CheckForValue) values (3, 'Encounter', 'HHOASISPatID', 0, null);
+if not exists (select * from Validation_Definitions where Table_nm = 'Population' and Field_nm = 'Phone')
+	insert into Validation_Definitions (SurveyType_ID, Table_nm, Field_nm, FailureThresholdPct, CheckForValue) values (3, 'Population', 'Phone', 0, null);
 go
+
 
 if exists (select * from sys.procedures where name = 'LD_RunValidation' and schema_id = SCHEMA_ID('dbo'))
 	drop procedure dbo.LD_RunValidation;
