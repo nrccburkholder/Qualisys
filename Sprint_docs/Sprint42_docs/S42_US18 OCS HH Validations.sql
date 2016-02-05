@@ -549,6 +549,47 @@ begin
 		select @File_id, 3, 'The number of records has dropped by ' + cast(@RecordCountPercentageDrop as varchar(10)) + '% from the average.';
 end
 
+
+/*************************************************************/
+/* Validate ADL Fields */
+
+if @surveyType_ID = 3    --HHCAHPS survey
+begin
+	declare @ADLColumnCount int;
+	select @ADLColumnCount = count(*) from INFORMATION_SCHEMA.COLUMNS
+	where TABLE_NAME = 'ENCOUNTER_load'
+		and TABLE_SCHEMA = 's' + CAST(@Study_id as varchar(10))
+		and COLUMN_NAME in ('HHADL_Bath', 'HHADL_DressLow', 'HHADL_DressUp', 'HHADL_Feed', 'HHADL_Toilet', 'HHADL_Transfer');
+ 
+	if @ADLColumnCount < 6
+		insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+		select @File_id, 3, 'ADL fields do not exist.';
+	else
+	begin
+		create table #ADLAllMissing (total int);
+
+		set @sql =
+			'insert into #ADLAllMissing
+			select COUNT(*) as total
+			from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
+			where HHADL_Bath = ''M'' and HHADL_DressLow = ''M'' and HHADL_DressUp = ''M'' and HHADL_Feed = ''M'' and HHADL_Toilet = ''M'' and HHADL_Transfer = ''M''
+			and DataFile_id = ' + LTRIM(STR(@File_id));
+		if @indebug = 1 print @sql;
+
+		declare @ADLAllMissingCount int;
+		exec(@sql);
+		select @ADLAllMissingCount = total from #ADLAllMissing;
+
+		drop table #ADLAllMissing;
+
+		if @indebug = 1 print @ADLAllMissingCount;
+
+		if @ADLAllMissingCount > 0
+			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+			select @File_id, 3, 'An encounter is missing all ADL fields.';
+	end
+end
+
       
 /*************************************************************/        
             
