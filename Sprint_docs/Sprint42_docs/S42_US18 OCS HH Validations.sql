@@ -638,6 +638,47 @@ begin
 	end
 end
 
+
+/*************************************************************/
+/* Validate ESRD */
+
+if @surveyType_ID = 3    --HHCAHPS survey
+begin
+	declare @ESRDColumnCount int;
+	select @ESRDColumnCount = count(*) from INFORMATION_SCHEMA.COLUMNS
+	where TABLE_NAME = 'ENCOUNTER_load'
+		and TABLE_SCHEMA = 's' + CAST(@Study_id as varchar(10))
+		and COLUMN_NAME in ('HHESRD');
+ 
+	if @ESRDColumnCount < 1
+		insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+		select @File_id, 3, 'HHESRD field does not exist.';
+	else
+	begin
+		create table #ESRDInvalid (total int);
+
+		set @sql =
+			'insert into #ESRDInvalid
+			select COUNT(*) as total
+			from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
+			where HHESRD not in (''1'', ''2'', ''M'')
+			and DataFile_id = ' + LTRIM(STR(@File_id));
+		if @indebug = 1 print @sql;
+
+		declare @ESRDInvalidCount int;
+		exec(@sql);
+		select @ESRDInvalidCount = total from #ESRDInvalid;
+
+		drop table #ESRDInvalid;
+
+		if @indebug = 1 print @ESRDInvalidCount;
+
+		if @ESRDInvalidCount > 0
+			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+			select @File_id, 3, 'An encounter has an invalid ESRD value.';
+	end
+end
+
       
 /*************************************************************/        
             
