@@ -553,7 +553,7 @@ begin
 	declare @RecordCountPercentageDrop float = 0.0;
 	if @AverageRecordCount <> 0 set @RecordCountPercentageDrop = round(100.0 - 100.0 * @RecordCount / @AverageRecordCount, 0);
 
-	if @RecordCountPercentageDrop >= 30.0
+	if @RecordCountPercentageDrop >= 30.0 and @AverageRecordCount >= 25
 		insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
 		select @File_id, 3, 'The number of records has dropped by ' + cast(@RecordCountPercentageDrop as varchar(10)) + '% from the average.';
 end
