@@ -145,21 +145,21 @@ namespace HHCAHPSImporter.ImportProcessor
                     var sampleMonth = ExtractHelper.GetSampleMonth(extractedData);
                     var sampleYear = ExtractHelper.GetSampleYear(extractedData);
 
+                    if (CutoffDateHelper.IsPastCutoff(
+                        qpDataLoadManager.GetUpdateFileQ1Cutoff(),
+                        qpDataLoadManager.GetUpdateFileQ2Cutoff(),
+                        qpDataLoadManager.GetUpdateFileQ3Cutoff(),
+                        qpDataLoadManager.GetUpdateFileQ4Cutoff(),
+                        sampleMonth.Value,
+                        sampleYear.Value,
+                        DateTime.Now))
+                    {
+                        throw new InvalidOperationException("File received after cutoff date");
+                    }
+
                     var isUpdateFile = uploadFile.OrigFile_Nm.ToLower().Contains("update");
                     if (isUpdateFile)
                     {
-                        if(CutoffDateHelper.IsPastCutoff(
-                            qpDataLoadManager.GetUpdateFileQ1Cutoff(),
-                            qpDataLoadManager.GetUpdateFileQ2Cutoff(),
-                            qpDataLoadManager.GetUpdateFileQ3Cutoff(),
-                            qpDataLoadManager.GetUpdateFileQ4Cutoff(),
-                            sampleMonth.Value,
-                            sampleYear.Value,
-                            DateTime.Now))
-                        {
-                            throw new InvalidOperationException("Update file received after cutoff date");
-                        }
-
                         UpdateRecordMerger.Merge(sampleYear.Value, sampleMonth.Value, ccn, extractedData, qpDataLoadManager);
                     }
                     UpdateRecordMerger.UpdateMergeRecords(sampleYear.Value, sampleMonth.Value, ccn, extractedData, qpDataLoadManager, isUpdateFile);

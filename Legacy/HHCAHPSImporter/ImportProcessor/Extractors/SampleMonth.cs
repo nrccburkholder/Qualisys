@@ -18,6 +18,14 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
             }
         }
 
+        public bool HasEnded
+        {
+            get
+            {
+                return DateTime.Now >= new DateTime(Year.Value, Month.Value, 1).AddMonths(1);
+            }
+        }
+
         public override bool Equals(object obj)
         {
             var compareTo = obj as SampleMonth;

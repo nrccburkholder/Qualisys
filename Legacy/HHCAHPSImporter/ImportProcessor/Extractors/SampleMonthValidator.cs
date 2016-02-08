@@ -15,6 +15,7 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
         public static void Validate(SampleMonth sampleMonth)
         {
             if (sampleMonth.HasMissingData) throw new InvalidOperationException("Sample month or year is missing.");
+            if (!sampleMonth.HasEnded) throw new InvalidOperationException("Sample month has not ended yet. This file was received too early.");
         }
 
         public static void Validate(IEnumerable<SampleMonth> sampleMonths)

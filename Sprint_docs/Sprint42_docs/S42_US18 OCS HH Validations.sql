@@ -367,7 +367,7 @@ begin
 
 		if @NPINonNumericCount > 0
 			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-			select @File_id, 4, 'NPI is not numeric.';
+			select @File_id, 2, 'NPI is not numeric.';
 
 
 		create table #NPITooLong (total int);
@@ -390,7 +390,7 @@ begin
 
 		if @NPITooLongCount > 0
 			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-			select @File_id, 4, 'NPI is more than 10 digits long.';
+			select @File_id, 2, 'NPI is more than 10 digits long.';
 	end 
 end
 
@@ -431,7 +431,7 @@ begin
 
 		if @PayerAllMissingCount = @RecordCount
 			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-			select @File_id, 4, 'All payer fields are missing on all records.';
+			select @File_id, 2, 'All payer fields are missing on all records.';
 	end
 end
 
@@ -538,7 +538,7 @@ begin
 		from DataFile f inner join DataFileState s on s.DataFile_id = f.DataFile_id
 		where
 			f.Study_ID = ' + LTRIM(STR(@Study_id)) + '
-			and f.datReceived > dateadd(month, -6, getdate())
+			and f.datReceived >= dateadd(month, -6, getdate())
 			and s.State_ID = 10'
 	if @indebug = 1 print @sql;
 
@@ -597,7 +597,7 @@ begin
 
 		if @ADLAllMissingPercentage >= 20.0
 			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-			select @File_id, 4, 'All ADL fields are missing on ' + cast(@ADLAllMissingPercentage as varchar(10)) + '% of records.';
+			select @File_id, 2, 'All ADL fields are missing on ' + cast(@ADLAllMissingPercentage as varchar(10)) + '% of records.';
 	end
 end
 
@@ -640,7 +640,7 @@ begin
 
 		if @AdmSourceAllMissingPercentage >= 20.0
 			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-			select @File_id, 4, 'All admission source fields are missing on ' + cast(@AdmSourceAllMissingPercentage as varchar(10)) + '% of records.';
+			select @File_id, 2, 'All admission source fields are missing on ' + cast(@AdmSourceAllMissingPercentage as varchar(10)) + '% of records.';
 	end
 end
 
@@ -683,7 +683,7 @@ begin
 
 		if @ESRDInvalidPercentage >= 5.0
 			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-			select @File_id, 4, 'There are invalid ESRD values on ' + cast(@ESRDInvalidPercentage as varchar(10)) + '% of records.';
+			select @File_id, 2, 'There are invalid ESRD values on ' + cast(@ESRDInvalidPercentage as varchar(10)) + '% of records.';
 	end
 end
 
@@ -726,7 +726,7 @@ begin
 
 		if @SurgDisInvalidPercentage >= 5.0
 			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-			select @File_id, 4, 'There are invalid surgical discharge values on ' + cast(@SurgDisInvalidPercentage as varchar(10)) + '% of records.';
+			select @File_id, 2, 'There are invalid surgical discharge values on ' + cast(@SurgDisInvalidPercentage as varchar(10)) + '% of records.';
 	end
 end
 
@@ -1007,6 +1007,18 @@ if @currMin is not null and
 -- BEGIN            
 --  --dates are not populated.  Error here?            
 -- END            
+
+if @currMin is not null
+begin
+	declare @currMinYear varchar(10) = cast(datepart(year, @currMin) as varchar);
+	declare @currMinMonth varchar(10) = cast(datepart(month, @currMin) as varchar);
+	declare @sampleMonth datetime = cast(@currMinYear + '-' + @currMinMonth + '-' + '1' as datetime);
+	declare @cutoffDate datetime = dateadd(month, 2, @sampleMonth);
+
+	if getdate() >= @cutoffDate
+		insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+		select @File_id, 3, 'This file was received after sampling normally would have ended for sample month ' + @currMinMonth + '/' + @currMinYear;
+end
             
             
 drop table #PopMtch             
