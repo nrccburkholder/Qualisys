@@ -104,6 +104,7 @@
     <Compile Include="Exceptions\InvalidArgumentException.cs" />
     <Compile Include="Exceptions\UploadAbandoned.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Extractors\CcnValidator.cs" />
     <Compile Include="Extractors\FileNameParser.cs" />
     <Compile Include="Extractors\CmsCsvBody.cs" />
     <Compile Include="Extractors\CmsCsvExtractor.cs" />
@@ -138,6 +139,8 @@
     <Compile Include="Extractors\PhoneNumberConverter.cs" />
     <Compile Include="Extractors\PtctCsvExtractor.cs" />
     <Compile Include="Extractors\Int32Converter.cs" />
+    <Compile Include="Extractors\SampleMonth.cs" />
+    <Compile Include="Extractors\SampleMonthValidator.cs" />
     <Compile Include="Extractors\UpdateRecordMerger.cs" />
     <Compile Include="ImportProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

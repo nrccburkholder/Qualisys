@@ -15,14 +15,7 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
             if (client == null) throw new ArgumentNullException(nameof(client));
             if (file == null) throw new ArgumentNullException(nameof(file));
 
-            try
-            {
-                return PgCsvParser.Parse(client, file, File.ReadAllText(file));
-            }
-            catch (Exception ex)
-            {
-                throw new ParseException($"Couldn't parse file {file}.", ex);
-            }
+            return PgCsvParser.Parse(client, file, File.ReadAllText(file));
         }
     }
 }

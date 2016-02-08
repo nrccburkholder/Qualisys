@@ -338,14 +338,22 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
             return GetFieldValue(GetMetadataElement(xml).Elements(RowElementName).First(), field);
         }
 
-        public static int GetSampleMonth(XDocument xml)
+        public static int? GetSampleMonth(XDocument xml)
         {
-            return int.Parse(GetMetadataFieldValue(xml, MonthField));
+            int month;
+            if (int.TryParse(GetMetadataFieldValue(xml, MonthField), out month))
+                return month;
+            else
+                return null;
         }
 
-        public static int GetSampleYear(XDocument xml)
+        public static int? GetSampleYear(XDocument xml)
         {
-            return int.Parse(GetMetadataFieldValue(xml, YearField));
+            int year;
+            if (int.TryParse(GetMetadataFieldValue(xml, YearField), out year))
+                return year;
+            else
+                return null;
         }
 
         public static string GetESRD(string ESRD, string ICD_A2, string ICD_B2, string ICD_C2, string ICD_D2, string ICD_E2, string ICD_F2)
