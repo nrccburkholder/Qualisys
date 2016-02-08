@@ -667,6 +667,7 @@ AND ACODisposition = 34
 	set HospiceDisposition = case when rc.ATACnt >= (34 * 0.50) then 13 -- Complete
 							else case when rc.ATACnt >= 1 AND rc.ATACnt < (34 * 0.50) then 11 else NULL end -- Breakoff
 							end
+		, bitComplete = case when rc.ATACnt >= (34 * 0.50) then 1 else 0 end
 	from #TodaysReturns tr
 	inner join (select qr.QuestionForm_id, count(distinct sq.qstncore) as ATACnt
 				from (	select rc.QuestionForm_id, rc.survey_id, qr.qstncore, qr.intResponseVal
