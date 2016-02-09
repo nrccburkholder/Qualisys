@@ -601,7 +601,10 @@ Friend Class HHCAHPSRecodeReader
             icdval = icd10val
         End If
 
-        If icdval Is DBNull.Value OrElse String.IsNullOrEmpty(icdval.ToString.Trim) OrElse String.IsNullOrEmpty(icdval.ToString.Trim.Replace("0", String.Empty)) Then
+        'icd10 starting with V,W,X,Y -> "M" CJB 2/9/2016
+        If icdval Is DBNull.Value OrElse String.IsNullOrEmpty(icdval.ToString.Trim) OrElse String.IsNullOrEmpty(icdval.ToString.Trim.Replace("0", String.Empty)) _
+            OrElse icdval.ToString.ToUpper.StartsWith("V") OrElse icdval.ToString.ToUpper.StartsWith("W") _
+            OrElse icdval.ToString.ToUpper.StartsWith("X") OrElse icdval.ToString.ToUpper.StartsWith("Y") Then
             Return "M"
         Else
             Dim strVal As String = icdval.ToString.Replace(".", String.Empty)
