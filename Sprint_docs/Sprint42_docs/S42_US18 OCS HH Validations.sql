@@ -11,8 +11,6 @@ go
 
 if not exists (select * from Validation_Definitions where Table_nm = 'Population' and Field_nm = 'MRN')
 	insert into Validation_Definitions (SurveyType_ID, Table_nm, Field_nm, FailureThresholdPct, CheckForValue) values (3, 'Population', 'MRN', 0, null);
-if not exists (select * from Validation_Definitions where Table_nm = 'Encounter' and Field_nm = 'HHOASISPatID')
-	insert into Validation_Definitions (SurveyType_ID, Table_nm, Field_nm, FailureThresholdPct, CheckForValue) values (3, 'Encounter', 'HHOASISPatID', 0, null);
 go
 
 
@@ -437,90 +435,90 @@ end
 
 
 /*************************************************************/
-/* Validate Date of Birth */
+/* Validate EOM Age */
 
 if @surveyType_ID = 3    --HHCAHPS survey
 begin
-	declare @DOBColumnCount int;
-	select @PayerColumnCount = count(*) from INFORMATION_SCHEMA.COLUMNS
-	where TABLE_NAME = 'POPULATION_load'
+	declare @EOMAgeColumnCount int;
+	select @EOMAgeColumnCount = count(*) from INFORMATION_SCHEMA.COLUMNS
+	where TABLE_NAME = 'ENCOUNTER_load'
 		and TABLE_SCHEMA = 's' + CAST(@Study_id as varchar(10))
-		and COLUMN_NAME in ('DOB');
+		and COLUMN_NAME in ('HHEOMAge');
  
-	if @DOBColumnCount < 3
+	if @EOMAgeColumnCount < 1
 		insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-		select @File_id, 3, 'Date of birth field doesn''t exist.';
+		select @File_id, 3, 'HHEOMAge field doesn''t exist.';
 	else
 	begin
-		create table #DOBGreaterThanToday (total int);
+		create table #EOMAgeLessThan0 (total int);
 
 		set @sql =
-			'insert into #DOBGreaterThanToday
+			'insert into #EOMAgeLessThan0
 			select COUNT(*) as total
-			from s' + LTRIM(STR(@Study_id)) + '.POPULATION_load
-			where DOB > getdate()
+			from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
+			where HHEOMAge < 0
 			and DataFile_id = ' + LTRIM(STR(@File_id));
 		if @indebug = 1 print @sql;
 
-		declare @DOBGreaterThanTodayCount int;
+		declare @EOMAgeLessThan0Count int;
 		exec(@sql);
-		select @DOBGreaterThanTodayCount = total from #DOBGreaterThanToday;
+		select @EOMAgeLessThan0Count = total from #EOMAgeLessThan0;
 
-		drop table #DOBGreaterThanToday;
+		drop table #EOMAgeLessThan0;
 
-		if @indebug = 1 print @DOBGreaterThanTodayCount;
+		if @indebug = 1 print @EOMAgeLessThan0Count;
 
-		if @DOBGreaterThanTodayCount > 0
+		if @EOMAgeLessThan0Count > 0
 			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-			select @File_id, 3, 'A date of birth is after today.';
+			select @File_id, 3, 'An end of month age is less than 0 years.';
 
 
-		create table #DOBTooOld (total int);
+		create table #EOMAgeTooOld (total int);
 
 		set @sql =
-			'insert into #DOBTooOld
+			'insert into #EOMAgeTooOld
 			select COUNT(*) as total
-			from s' + LTRIM(STR(@Study_id)) + '.POPULATION_load
-			where DOB < dateadd(year, -150, getdate())
+			from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
+			where HHEOMAge >= 150
 			and DataFile_id = ' + LTRIM(STR(@File_id));
 		if @indebug = 1 print @sql;
 
-		declare @DOBTooOldCount int;
+		declare @EOMAgeTooOldCount int;
 		exec(@sql);
-		select @DOBTooOldCount = total from #DOBTooOld;
+		select @EOMAgeTooOldCount = total from #EOMAgeTooOld;
 
-		drop table #DOBTooOld;
+		drop table #EOMAgeTooOld;
 
-		if @indebug = 1 print @DOBTooOldCount;
+		if @indebug = 1 print @EOMAgeTooOldCount;
 
-		if @DOBTooOldCount > 0
+		if @EOMAgeTooOldCount > 0
 			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-			select @File_id, 3, 'A date of birth is more than 150 years ago.';
+			select @File_id, 3, 'An end of month age is more than 150 years.';
 
 
-		create table #DOBNotAtLeast18 (total int);
+		create table #EOMAgeNotAtLeast18 (total int);
 
 		set @sql =
-			'insert into #DOBNotAtLeast18
+			'insert into #EOMAgeNotAtLeast18
 			select COUNT(*) as total
-			from s' + LTRIM(STR(@Study_id)) + '.POPULATION_load
-			where DOB > dateadd(year, -18, getdate()) and DOB < getdate()
+			from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
+			where HHEOMAge < 18
 			and DataFile_id = ' + LTRIM(STR(@File_id));
 		if @indebug = 1 print @sql;
 
-		declare @DOBNotAtLeast18Count int;
+		declare @EOMAgeNotAtLeast18Count int;
 		exec(@sql);
-		select @DOBNotAtLeast18Count = total from #DOBNotAtLeast18;
+		select @EOMAgeNotAtLeast18Count = total from #EOMAgeNotAtLeast18;
 
-		drop table #DOBNotAtLeast18;
+		drop table #EOMAgeNotAtLeast18;
 
-		if @indebug = 1 print @DOBNotAtLeast18Count;
-		declare @DOBNotAtLeast18Percentage float = 0;
-		if @RecordCount <> 0 set @DOBNotAtLeast18Percentage = round(100.0 * @DOBNotAtLeast18Count / @RecordCount, 0);
+		if @indebug = 1 print @EOMAgeNotAtLeast18Count;
+		declare @EOMAgeNotAtLeast18Percentage float = 0;
+		if @RecordCount <> 0 set @EOMAgeNotAtLeast18Percentage = round(100.0 * @EOMAgeNotAtLeast18Count / @RecordCount, 0);
 
-		if @DOBNotAtLeast18Percentage >= 80.0
+		if @EOMAgeNotAtLeast18Percentage >= 80.0
 			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-			select @File_id, 3, 'Date of birth is not at least 18 years ago on ' + cast(@DOBNotAtLeast18Percentage as varchar(10)) + '% of records.';
+			select @File_id, 3, 'End of month age is not at least 18 years on ' + cast(@EOMAgeNotAtLeast18Percentage as varchar(10)) + '% of records.';
 	end
 end
 
