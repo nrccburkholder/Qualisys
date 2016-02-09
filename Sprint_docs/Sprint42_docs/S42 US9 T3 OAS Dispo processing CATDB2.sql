@@ -30,7 +30,7 @@ note: queries to get the values below:
 		, [desc] as Label
 --		, Hierarchy as CahpsHierarchy
 --		, case when disposition_id=12 then 1 else 0 end as IsDefaultDisposition 
-        , case when [desc] = 'Completed Mail Survey' then 1 else 0 end as IsCahpsDispositionComplete
+        , case when [desc] in ('Completed Mail Survey','Completed Phone Interview') then 1 else 0 end as IsCahpsDispositionComplete
 		, case when [desc] = 'Breakoff' then 1 else 0 end as IsCahpsDispositionInComplete
 	from [QUALISYS].[QP_Prod].[dbo].[SurveyTypeDispositions]
 	where surveytype_id=16
@@ -44,7 +44,7 @@ note: queries to get the values below:
 		, [value] as CahpsDispositionID
 		, Hierarchy as CahpsHierarchy
 		, case when disposition_id=12 then 1 else 0 end as IsDefaultDisposition 
---        , case when [desc] = 'Completed Mail Survey' then 1 else 0 end as IsCahpsDispositionComplete
+--        , case when [desc] in ('Completed Mail Survey','Completed Phone Interview') then 1 else 0 end as IsCahpsDispositionComplete
 --		, case when [desc] = 'Breakoff' then 1 else 0 end as IsCahpsDispositionInComplete
 	from [QUALISYS].[QP_Prod].[dbo].[SurveyTypeDispositions]
 	where surveytype_id=16
@@ -60,7 +60,7 @@ begin tran
 if not exists (select * from CAHPSDisposition where CahpsTypeID=9)
 	insert into dbo.CAHPSDisposition (CahpsDispositionID,CahpsTypeID,Label,IsCahpsDispositionComplete,IsCahpsDispositionInComplete)
 	SELECT N'901', /*110,*/	9,'Completed Mail Survey',1,0 UNION ALL
-	SELECT N'902', /*120,*/	9,'Completed Phone Interview',0,0 UNION ALL
+	SELECT N'902', /*120,*/	9,'Completed Phone Interview',1,0 UNION ALL
 	SELECT N'903', /*210,*/	9,'Ineligible: Deceased',0,0 UNION ALL
 	SELECT N'904', /*220,*/	9,'Ineligible: Does not meet eligible Population criteria',0,0 UNION ALL
 	SELECT N'905', /*230,*/	9,'Ineligible: Language Barrier',0,0 UNION ALL
@@ -83,8 +83,8 @@ if not exists (select * from CahpsDispositionMapping where CahpsTypeID=9)
 	Select 9,10,-1,'Ineligible: Language Barrier',905,/*230,*/4,0 union all
 	Select 9,26,-1,'Blank second mail survey',908,/*320,*/5,0 union all
 	Select 9,2,-1,'Refusal',909,/*320,*/5,0 union all
-	Select 9,19,-1,'Completed Mail Survey',901,/*110,*/6,0 union all
-	Select 9,20,-1,'Completed Phone Interview',902,/*120,*/6,0 union all
+	Select 9,19,17,'Completed Mail Survey',901,/*110,*/6,0 union all
+	Select 9,20,12,'Completed Phone Interview',902,/*120,*/6,0 union all
 	Select 9,49,-1,'Breakoff is actually blank',913,/*350,*/7,0 union all
 	Select 9,11,-1,'Breakoff',907,/*310,*/8,0 union all
 	Select 9,14,-1,'Wrong, Disconnected or No Telephone Number',911,/*340,*/9,0 union all
