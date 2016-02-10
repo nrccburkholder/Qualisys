@@ -8,21 +8,6 @@ EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "SurveyPoint.Library.SqlDataProvider", "..\SurveyPoint Class Library Solution\SurveyPoint.Library.SqlDataProvider\SurveyPoint.Library.SqlDataProvider.vbproj", "{2AD098FB-4201-43D4-8133-F8A5EDC5E155}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 4
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://tfs.nationalresearch.com:8080/tfs/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = PayerSolutionsETL\\PayerSolutionsETL.vbproj
-		SccProjectName1 = PayerSolutionsETL
-		SccLocalPath1 = PayerSolutionsETL
-		SccProjectUniqueName2 = ..\\SurveyPoint\u0020Class\u0020Library\u0020Solution\\SurveyPoint.Library\\SurveyPoint.Library.vbproj
-		SccProjectName2 = ../SurveyPoint\u0020Class\u0020Library\u0020Solution/SurveyPoint.Library
-		SccLocalPath2 = ..\\SurveyPoint\u0020Class\u0020Library\u0020Solution\\SurveyPoint.Library
-		SccProjectUniqueName3 = ..\\SurveyPoint\u0020Class\u0020Library\u0020Solution\\SurveyPoint.Library.SqlDataProvider\\SurveyPoint.Library.SqlDataProvider.vbproj
-		SccProjectName3 = ../SurveyPoint\u0020Class\u0020Library\u0020Solution/SurveyPoint.Library.SqlDataProvider
-		SccLocalPath3 = ..\\SurveyPoint\u0020Class\u0020Library\u0020Solution\\SurveyPoint.Library.SqlDataProvider
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Development|Any CPU = Development|Any CPU
 		Production|Any CPU = Production|Any CPU

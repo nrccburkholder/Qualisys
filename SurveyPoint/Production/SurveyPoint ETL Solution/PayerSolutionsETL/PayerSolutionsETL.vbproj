@@ -14,10 +14,14 @@
     <OptionStrict>Off</OptionStrict>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <SignManifests>true</SignManifests>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <ManifestCertificateThumbprint>CAD861F76B9F1B00FF21BACC43A0F7266C917FFD</ManifestCertificateThumbprint>
     <GenerateManifests>true</GenerateManifests>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
@@ -37,8 +41,8 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>2</ApplicationRevision>
-    <ApplicationVersion>2.2.29.2</ApplicationVersion>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>2.2.30.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -94,21 +98,17 @@
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DevExpress.Data.v6.3, Version=6.3.2.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.Data.v9.3, Version=9.3.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\DevExpress.Data.v6.3.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Utils.v6.3, Version=6.3.2.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.Utils.v9.3, Version=9.3.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\DevExpress.Utils.v6.3.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.XtraEditors.v6.3, Version=6.3.2.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.XtraEditors.v9.3, Version=9.3.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\DevExpress.XtraEditors.v6.3.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.XtraGrid.v6.3, Version=6.3.2.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.XtraGrid.v9.3, Version=9.3.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\DevExpress.XtraGrid.v6.3.dll</HintPath>
     </Reference>
     <Reference Include="Nrc.Framework, Version=1.10.0.0, Culture=neutral, PublicKeyToken=7f65ae6d961bde9c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -491,10 +491,13 @@
     <None Include="Resources\MostlyHarmless.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\online-survey.jpg" />
+    <None Include="PayerSolutionETL.nuspec" />
     <Content Include="Resources\prodicon.ico" />
+    <None Include="Resources\SplashScreen.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <PublishFile Include="DevExpress.Data.v6.3">
+    <PublishFile Include="DevExpress.Data.v9.3">
       <Visible>False</Visible>
       <Group>
       </Group>
@@ -504,7 +507,7 @@
       <IncludeHash>True</IncludeHash>
       <FileType>Assembly</FileType>
     </PublishFile>
-    <PublishFile Include="DevExpress.Utils.v6.3">
+    <PublishFile Include="DevExpress.Utils.v9.3">
       <Visible>False</Visible>
       <Group>
       </Group>
@@ -514,7 +517,7 @@
       <IncludeHash>True</IncludeHash>
       <FileType>Assembly</FileType>
     </PublishFile>
-    <PublishFile Include="DevExpress.XtraEditors.v6.3">
+    <PublishFile Include="DevExpress.XtraEditors.v9.3">
       <Visible>False</Visible>
       <Group>
       </Group>
@@ -524,7 +527,7 @@
       <IncludeHash>True</IncludeHash>
       <FileType>Assembly</FileType>
     </PublishFile>
-    <PublishFile Include="DevExpress.XtraGrid.v6.3">
+    <PublishFile Include="DevExpress.XtraGrid.v9.3">
       <Visible>False</Visible>
       <Group>
       </Group>

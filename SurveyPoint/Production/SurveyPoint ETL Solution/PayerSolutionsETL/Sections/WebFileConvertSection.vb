@@ -23,6 +23,7 @@ Public Class WebFileConvertSection
     End Sub
 #End Region
 #Region " Event Handlers "
+
     Private Sub cmdOriginalFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOriginalFile.Click
         Dim result As DialogResult = Me.OpenFileDialog1.ShowDialog()
         If result = DialogResult.OK Then
@@ -106,6 +107,7 @@ Public Class WebFileConvertSection
     End Sub
 #End Region
 #Region " Private Methods "
+
     Private Function GUIValidateImport() As Boolean
         Dim retVal As Boolean = False
         Try
@@ -123,6 +125,7 @@ Public Class WebFileConvertSection
         End Try
         Return retVal
     End Function
+
     Public Sub ImportFile()
         If CStr(cboFileType.SelectedItem).ToUpper() = "SECBLUE" Then
             'ConvertSecBlue()
@@ -163,13 +166,16 @@ Public Class WebFileConvertSection
         ElseIf CStr(cboFileType.SelectedItem).ToUpper() = "LOVELACE CHILD UPDATE 2013" Then
             ConvertLovelaceChildUpdate2013()
         ElseIf CStr(cboFileType.SelectedItem).ToUpper() = "EXCELLUS UPDATE 2012" Then
-            ConvertExcellusUpdate()        
+            ConvertExcellusUpdate()
         ElseIf CStr(cboFileType.SelectedItem).ToUpper() = "FLORIDA BLUE" Then
             ConvertFloridaBlue()
         ElseIf CStr(cboFileType.SelectedItem).ToUpper() = "PHN 2013" Then
             ConvertPHN2013()
+        ElseIf CStr(cboFileType.SelectedItem).ToUpper() = "PRIORITY HEALTH" Then
+            ConvertPriorityHealth()
         End If
     End Sub
+
     Protected Friend Sub ConvertPHN2013()
         Dim writer As System.IO.StreamWriter = Nothing
         Dim blnSkipHeader As Boolean = True
@@ -337,6 +343,7 @@ Public Class WebFileConvertSection
             End If
         End Try
     End Sub
+
     Private Sub ConvertFloridaBlue()
         Dim writer As System.IO.StreamWriter = Nothing
         Dim blnSkipHeader As Boolean = True
@@ -386,6 +393,7 @@ Public Class WebFileConvertSection
             End If
         End Try
     End Sub
+
     Protected Friend Sub ConvertCoventryAdultUpdate2012()
         Dim writer As System.IO.StreamWriter = Nothing
         Dim blnSkipHeader As Boolean = True
@@ -533,6 +541,7 @@ Public Class WebFileConvertSection
             End If
         End Try
     End Sub
+
     Private Sub ConvertLovelaceAdultUpdate2013()
         Dim writer As System.IO.StreamWriter = Nothing
         Dim blnSkipHeader As Boolean = True
@@ -619,6 +628,7 @@ Public Class WebFileConvertSection
         End Try
 
     End Sub
+
     Private Sub ConvertLovelaceAdult()
         Dim writer As System.IO.StreamWriter = Nothing
         Dim blnSkipHeader As Boolean = True
@@ -701,6 +711,7 @@ Public Class WebFileConvertSection
         End Try
 
     End Sub
+
     Private Sub ConvertLovelaceChildUpdate2013()
         Dim writer As System.IO.StreamWriter = Nothing
         Dim blnSkipHeader As Boolean = True
@@ -763,6 +774,7 @@ Public Class WebFileConvertSection
             End If
         End Try
     End Sub
+
     Private Sub ConvertLovelaceChild()
         Dim writer As System.IO.StreamWriter = Nothing
         Dim blnSkipHeader As Boolean = True
@@ -809,7 +821,7 @@ Public Class WebFileConvertSection
                 newLine.Append(PadString(row(21), 1, Direction.Left, " ")) ' 9 (Q9) 
                 newLine.Append(PadString(row(22), 1, Direction.Left, " ")) ' 10 (Q4) 
 
-           
+
 
                 writer.WriteLine(newLine.ToString)
             Next
@@ -822,6 +834,7 @@ Public Class WebFileConvertSection
             End If
         End Try
     End Sub
+
     Private Sub ConvertWellpoint()
         Dim writer As System.IO.StreamWriter = Nothing
         Dim blnSkipHeader As Boolean = True
@@ -882,7 +895,7 @@ Public Class WebFileConvertSection
                     End If
                     newLine.Append(tempVar)
                 Next
-                newLine.Append(PadString(row(92), 30, Direction.Left, " "))                
+                newLine.Append(PadString(row(92), 30, Direction.Left, " "))
                 newLine.Append(PadString(row(93), 1, Direction.Left, " "))
                 newLine.Append(PadString(row(94), 1, Direction.Left, " "))
                 newLine.Append(PadString(row(95), 30, Direction.Left, " "))
@@ -897,14 +910,14 @@ Public Class WebFileConvertSection
                             tempVar = "2"
                         End If
                     End If
-                    newLine.Append(tempVar)                    
+                    newLine.Append(tempVar)
                 Next
                 newLine.Append(PadString(row(130), 1000, Direction.Left, " "))
                 newLine.Append(PadString(row(131), 1, Direction.Left, " "))
                 newLine.Append(PadString(row(132), 30, Direction.Left, " "))
                 newLine.Append(PadString(row(133), 30, Direction.Left, " "))
                 newLine.Append(PadString(row(134), 10, Direction.Left, " "))
-                newLine.Append(PadString(row(135), 1, Direction.Left, " "))               
+                newLine.Append(PadString(row(135), 1, Direction.Left, " "))
                 writer.WriteLine(newLine.ToString)
             Next
             MessageBox.Show("Proccess Complete")
@@ -916,6 +929,7 @@ Public Class WebFileConvertSection
             End If
         End Try
     End Sub
+
     Private Sub ConvertSecBlue()
         Dim writer As System.IO.StreamWriter = Nothing
         Dim blnSkipHeader As Boolean = True
@@ -984,6 +998,7 @@ Public Class WebFileConvertSection
             End If
         End Try
     End Sub
+
     Private Sub ConvertSecBlueUpdate2013()
         Dim writer As System.IO.StreamWriter = Nothing
         Dim blnSkipHeader As Boolean = True
@@ -1126,6 +1141,7 @@ Public Class WebFileConvertSection
             End If
         End Try
     End Sub
+
     Private Sub ConvertHiMark()
         Dim writer As System.IO.StreamWriter = Nothing
         Dim blnSkipHeader As Boolean = True
@@ -1159,7 +1175,7 @@ Public Class WebFileConvertSection
                     newLine.Append(tempVar)
                 Next
                 newLine.Append(PadString(row(94), 2, Direction.Left, " "))
-                newLine.Append(PadString(row(95), 3, Direction.Left, " "))                              
+                newLine.Append(PadString(row(95), 3, Direction.Left, " "))
                 For j As Integer = 96 To 100
                     newLine.Append(PadString(row(j), 1, Direction.Left, " "))
                 Next
@@ -1182,7 +1198,7 @@ Public Class WebFileConvertSection
                     newLine.Append(PadString(row(j), 1, Direction.Left, " "))
                 Next
                 newLine.Append(PadString(row(114), 30, Direction.Left, " "))
-                newLine.Append(PadString(row(115), 30, Direction.Left, " "))                
+                newLine.Append(PadString(row(115), 30, Direction.Left, " "))
                 writer.WriteLine(newLine.ToString)
             Next
             MessageBox.Show("Proccess Complete")
@@ -1337,6 +1353,7 @@ Public Class WebFileConvertSection
             End If
         End Try
     End Sub
+
     Private Sub Convert5Star()
         Dim writer As System.IO.StreamWriter = Nothing
         Dim blnSkipHeader As Boolean = True
@@ -1387,6 +1404,7 @@ Public Class WebFileConvertSection
             End If
         End Try
     End Sub
+
     Private Sub ConvertWellPoint2013()
         Dim writer As System.IO.StreamWriter = Nothing
         Dim blnSkipHeader As Boolean = True
@@ -1471,6 +1489,7 @@ Public Class WebFileConvertSection
             End If
         End Try
     End Sub
+
     Private Sub ConvertWellPoint2011()
         Dim writer As System.IO.StreamWriter = Nothing
         Dim blnSkipHeader As Boolean = True
@@ -1610,6 +1629,7 @@ Public Class WebFileConvertSection
             End If
         End Try
     End Sub
+
     Private Sub ConvertExcellusUpdate()
         Dim writer As System.IO.StreamWriter = Nothing
         Dim blnSkipHeader As Boolean = True
@@ -1693,6 +1713,7 @@ Public Class WebFileConvertSection
             End If
         End Try
     End Sub
+
     Private Sub ConvertExcellus()
         Dim writer As System.IO.StreamWriter = Nothing
         Dim blnSkipHeader As Boolean = True
@@ -2185,6 +2206,154 @@ Public Class WebFileConvertSection
         End Try
     End Sub
 
+    Private Sub ConvertPriorityHealth()
+        Dim writer As System.IO.StreamWriter = Nothing
+        Dim blnSkipHeader As Boolean = True
+        Try
+            writer = New StreamWriter(Me.txtConvertFile.Text, False)
+            Dim readTable As System.Data.DataTable = GetImportTable()
+
+            For Each col As DataColumn In readTable.Columns
+                Debug.Print(col.ColumnName)
+            Next
+
+            For Each row As Data.DataRow In readTable.Rows
+                Dim newLine As New StringBuilder()
+                Dim tempVar As String = ""
+
+                newLine.Append(PadString("", 1, Direction.Left, " "))       ' BLANK(1)
+                newLine.Append(PadString(Convert.ToDateTime(row(116).ToString()).ToString("yyyyMMdd"), 8, Direction.Left, " ")) ' Last Modified
+                newLine.Append(PadString("", 9, Direction.Left, " "))       ' BLANK(9)
+
+                newLine.Append(PadString(row(127), 5, Direction.Right, "0")) ' Key 3
+                newLine.Append(PadString(row(126), 8, Direction.Right, "0")) ' Key 2
+
+                newLine.Append(PadString("", 3, Direction.Left, " "))       ' BLANK(3)
+
+                newLine.Append(PadString(row(4), 1, Direction.Left, " ")) ' Q1 Start: 35 End: 35
+                newLine.Append(PadString(row(5), 1, Direction.Left, " ")) ' Q4 Start: 36 End: 36
+                newLine.Append(PadString(row(6), 1, Direction.Left, " ")) ' Q5 Start: 37 End: 37
+                newLine.Append(PadString(row(7), 1, Direction.Left, " ")) ' Q66 Start: 38 End: 38
+                newLine.Append(PadString(row(8), 1, Direction.Left, " ")) ' Q15 Start: 39 End: 39
+                newLine.Append(PadString(row(9), 1, Direction.Left, " ")) ' Q29 Start: 40 End: 40
+                newLine.Append(PadString(row(10), 1, Direction.Left, " ")) ' Q55 Start: 41 End: 41
+                newLine.Append(PadString(row(11), 1, Direction.Left, " ")) ' Q30_A_1 Start: 42 End: 42
+                newLine.Append(PadString(row(12), 1, Direction.Left, " ")) ' Q30_A_2 Start: 43 End: 43
+                newLine.Append(PadString(row(13), 1, Direction.Left, " ")) ' Q30_A_3 Start: 44 End: 44
+                newLine.Append(PadString(row(14), 1, Direction.Left, " ")) ' Q30_A_4 Start: 45 End: 45
+                newLine.Append(PadString(row(15), 1, Direction.Left, " ")) ' Q10 Start: 46 End: 46
+                newLine.Append(PadString(row(16), 1, Direction.Left, " ")) ' Q9 Start: 47 End: 47
+                newLine.Append(PadString(row(17), 1, Direction.Left, " ")) ' Q58 Start: 48 End: 48
+                newLine.Append(PadString(row(18), 1, Direction.Left, " ")) ' Q33 Start: 49 End: 49
+                newLine.Append(PadString(row(19), 1, Direction.Left, " ")) ' Q11 Start: 50 End: 50
+                newLine.Append(PadString(row(21), 1, Direction.Left, " ")) ' Q34 Start: 51 End: 51
+                newLine.Append(PadString(row(22), 1, Direction.Left, " ")) ' Q64 Start: 52 End: 52
+                newLine.Append(PadString(row(23), 1, Direction.Left, " ")) ' Q35_A_1 Start: 53 End: 53
+                newLine.Append(PadString(row(24), 1, Direction.Left, " ")) ' Q35_A_2 Start: 54 End: 54
+                newLine.Append(PadString(row(25), 1, Direction.Left, " ")) ' Q35_A_3 Start: 55 End: 55
+                newLine.Append(PadString(row(26), 1, Direction.Left, " ")) ' Q35_A_4 Start: 56 End: 56
+                newLine.Append(PadString(row(27), 1, Direction.Left, " ")) ' Q35_A_5 Start: 57 End: 57
+                newLine.Append(PadString(row(28), 1, Direction.Left, " ")) ' Q35_A_6 Start: 58 End: 58
+                newLine.Append(PadString(row(29), 1, Direction.Left, " ")) ' Q35_A_7 Start: 59 End: 59
+                newLine.Append(PadString(row(30), 1, Direction.Left, " ")) ' Q35_A_8 Start: 60 End: 60
+                newLine.Append(PadString(row(31), 1, Direction.Left, " ")) ' Q35_A_9 Start: 61 End: 61
+                newLine.Append(PadString(row(32), 1, Direction.Left, " ")) ' Q35_A_10 Start: 62 End: 62
+                newLine.Append(PadString(row(33), 1, Direction.Left, " ")) ' Q35_A_11 Start: 63 End: 63
+                newLine.Append(PadString(row(34), 1, Direction.Left, " ")) ' Q35_A_12 Start: 64 End: 64
+                newLine.Append(PadString(row(35), 1, Direction.Left, " ")) ' Q35_A_13 Start: 65 End: 65
+                newLine.Append(PadString(row(36), 30, Direction.Left, " ")) ' Q13_1 Start: 66 End: 95
+                newLine.Append(PadString(row(37), 1, Direction.Left, " ")) ' Q59 Start: 96 End: 96
+                newLine.Append(PadString(row(38), 1, Direction.Left, " ")) ' Q36 Start: 97 End: 97
+                newLine.Append(PadString(row(39), 1, Direction.Left, " ")) ' Q74 Start: 98 End: 98
+                newLine.Append(PadString(row(40), 1, Direction.Left, " ")) ' Q38 Start: 99 End: 99
+                newLine.Append(PadString(row(41), 1, Direction.Left, " ")) ' Q65 Start: 100 End: 100
+                newLine.Append(PadString(row(42), 15, Direction.Left, " ")) ' Q16_1 Start: 101 End: 115
+                newLine.Append(PadString(row(43), 1, Direction.Left, " ")) ' Q75 Start: 116 End: 116
+                newLine.Append(PadString(row(44), 1, Direction.Left, " ")) ' Q76 Start: 117 End: 117
+                newLine.Append(PadString(row(45), 2, Direction.Left, " ")) ' Q39_1 Start: 118 End: 119
+                newLine.Append(PadString(row(46), 2, Direction.Left, " ")) ' Q39_2 Start: 120 End: 121
+                newLine.Append(PadString(row(47), 1, Direction.Left, " ")) ' Q40 Start: 122 End: 122
+                newLine.Append(PadString(row(48), 1, Direction.Left, " ")) ' Q41_A_1 Start: 123 End: 123
+                newLine.Append(PadString(row(49), 1, Direction.Left, " ")) ' Q41_A_2 Start: 124 End: 124
+                newLine.Append(PadString(row(50), 1, Direction.Left, " ")) ' Q41_A_3 Start: 125 End: 125
+                newLine.Append(PadString(row(51), 1, Direction.Left, " ")) ' Q41_A_4 Start: 126 End: 126
+                newLine.Append(PadString(row(52), 1, Direction.Left, " ")) ' Q41_A_5 Start: 127 End: 127
+                newLine.Append(PadString(row(53), 1, Direction.Left, " ")) ' Q47 Start: 128 End: 128
+                newLine.Append(PadString(row(54), 1, Direction.Left, " ")) ' Q43 Start: 129 End: 129
+                newLine.Append(PadString(row(55), 1, Direction.Left, " ")) ' Q63 Start: 130 End: 130
+                newLine.Append(PadString(row(56), 1, Direction.Left, " ")) ' Q14 Start: 131 End: 131
+                newLine.Append(PadString(row(57), 1, Direction.Left, " ")) ' Q20 Start: 132 End: 132
+                newLine.Append(PadString(row(58), 1, Direction.Left, " ")) ' Q21 Start: 133 End: 133
+                newLine.Append(PadString(row(59), 1, Direction.Left, " ")) ' Q70 Start: 134 End: 134
+                newLine.Append(PadString(row(60), 1, Direction.Left, " ")) ' Q71 Start: 135 End: 135
+                newLine.Append(PadString(row(61), 1, Direction.Left, " ")) ' Q72 Start: 136 End: 136
+                newLine.Append(PadString(row(62), 1, Direction.Left, " ")) ' Q73 Start: 137 End: 137
+                newLine.Append(PadString(row(64), 1, Direction.Left, " ")) ' Q3_A_1 Start: 138 End: 138
+                newLine.Append(PadString(row(65), 1, Direction.Left, " ")) ' Q3_A_2 Start: 139 End: 139
+                newLine.Append(PadString(row(66), 1, Direction.Left, " ")) ' Q3_A_3 Start: 140 End: 140
+                newLine.Append(PadString(row(67), 1, Direction.Left, " ")) ' Q3_A_4 Start: 141 End: 141
+                newLine.Append(PadString(row(68), 1, Direction.Left, " ")) ' Q3_A_5 Start: 142 End: 142
+                newLine.Append(PadString(row(69), 1, Direction.Left, " ")) ' Q3_A_6 Start: 143 End: 143
+                newLine.Append(PadString(row(70), 1, Direction.Left, " ")) ' Q3_A_7 Start: 144 End: 144
+                newLine.Append(PadString(row(71), 1, Direction.Left, " ")) ' Q3_A_8 Start: 145 End: 145
+                newLine.Append(PadString(row(72), 1, Direction.Left, " ")) ' Q3_A_9 Start: 146 End: 146
+                newLine.Append(PadString(row(73), 1, Direction.Left, " ")) ' Q3_A_10 Start: 147 End: 147
+                newLine.Append(PadString(row(74), 1, Direction.Left, " ")) ' Q3_A_11 Start: 148 End: 148
+                newLine.Append(PadString(row(75), 1, Direction.Left, " ")) ' Q3_A_12 Start: 149 End: 149
+                newLine.Append(PadString(row(76), 1, Direction.Left, " ")) ' Q3_A_13 Start: 150 End: 150
+                newLine.Append(PadString(row(77), 1, Direction.Left, " ")) ' Q17 Start: 151 End: 151
+                newLine.Append(PadString(row(78), 1, Direction.Left, " ")) ' Q62 Start: 152 End: 152
+                newLine.Append(PadString(row(79), 1, Direction.Left, " ")) ' Q24 Start: 153 End: 153
+                newLine.Append(PadString(row(80), 30, Direction.Left, " ")) ' Q24SPECIFIED_4 Start: 154 End: 183
+                newLine.Append(PadString(row(81), 1, Direction.Left, " ")) ' Q44_1 Start: 184 End: 184
+                newLine.Append(PadString(row(82), 1, Direction.Left, " ")) ' Q44_2 Start: 185 End: 185
+                newLine.Append(PadString(row(83), 1, Direction.Left, " ")) ' Q44_3 Start: 186 End: 186
+                newLine.Append(PadString(row(84), 1, Direction.Left, " ")) ' Q44_4 Start: 187 End: 187
+                newLine.Append(PadString(row(85), 1, Direction.Left, " ")) ' Q44_5 Start: 188 End: 188
+                newLine.Append(PadString(row(86), 1, Direction.Left, " ")) ' Q44_6 Start: 189 End: 189
+                newLine.Append(PadString(row(87), 1, Direction.Left, " ")) ' Q18 Start: 190 End: 190
+                newLine.Append(PadString(row(88), 1, Direction.Left, " ")) ' Q42 Start: 191 End: 191
+                newLine.Append(PadString(row(89), 1, Direction.Left, " ")) ' Q19 Start: 192 End: 192
+                newLine.Append(PadString(row(90), 1, Direction.Left, " ")) ' Q25 Start: 193 End: 193
+                newLine.Append(PadString(row(91), 1, Direction.Left, " ")) ' Q6 Start: 194 End: 194
+                newLine.Append(PadString(row(92), 1, Direction.Left, " ")) ' Q60_A_1 Start: 195 End: 195
+                newLine.Append(PadString(row(93), 1, Direction.Left, " ")) ' Q60_A_2 Start: 196 End: 196
+                newLine.Append(PadString(row(94), 1, Direction.Left, " ")) ' Q48 Start: 197 End: 197
+                newLine.Append(PadString(row(95), 1, Direction.Left, " ")) ' Q49 Start: 198 End: 198
+                newLine.Append(PadString(row(96), 1, Direction.Left, " ")) ' Q46 Start: 199 End: 199
+                newLine.Append(PadString(row(97), 1, Direction.Left, " ")) ' Q50 Start: 200 End: 200
+                newLine.Append(PadString(row(98), 1, Direction.Left, " ")) ' Q54 Start: 201 End: 201
+                newLine.Append(PadString(row(99), 1, Direction.Left, " ")) ' Q26_1 Start: 202 End: 202
+                newLine.Append(PadString(row(100), 1, Direction.Left, " ")) ' Q26_2 Start: 203 End: 203
+                newLine.Append(PadString(row(101), 1, Direction.Left, " ")) ' Q26_3 Start: 204 End: 204
+                newLine.Append(PadString(row(102), 1, Direction.Left, " ")) ' Q56 Start: 205 End: 205
+                newLine.Append(PadString(row(103), 1, Direction.Left, " ")) ' Q28 Start: 206 End: 206
+                newLine.Append(PadString(row(104), 1, Direction.Left, " ")) ' Q32 Start: 207 End: 207
+                newLine.Append(PadString(row(105), 30, Direction.Left, " ")) ' Q61_1 Start: 208 End: 237
+                newLine.Append(PadString(row(106), 30, Direction.Left, " ")) ' Q61_2 Start: 238 End: 267
+                newLine.Append(PadString(row(107), 10, Direction.Left, " ")) ' Q61_3 Start: 268 End: 277
+                newLine.Append(PadString(row(108), 28, Direction.Left, " ")) ' Q27_1 Start: 278 End: 305
+                newLine.Append(PadString(row(20), 1, Direction.Left, " ")) ' Q12 Start: 306 End: 306
+                newLine.Append(PadString(row(63), 1, Direction.Left, " ")) ' Q22 Start: 307 End: 307
+                newLine.Append(PadString(row(109), 10, Direction.Left, " ")) ' Q27_2 Start: 308 End: 317
+
+
+
+
+
+
+                writer.WriteLine(newLine.ToString)
+            Next
+            MessageBox.Show("Proccess Complete")
+        Catch ex As Exception
+            Globals.ReportException(ex)
+        Finally
+            If Not writer Is Nothing Then
+                writer.Close()
+            End If
+        End Try
+    End Sub
+
     Private Function PadString(ByVal value As Object, ByVal length As Integer, ByVal padDir As Direction, ByVal fillChar As String, Optional ByVal truncateNonNumeric As Boolean = False) As String
         Dim retVal As String = "'"
         If IsDBNull(value) Then
@@ -2221,23 +2390,27 @@ Public Class WebFileConvertSection
             Return retVal
         End If
     End Function
+
     Private Function GetImportTable() As System.Data.DataTable
         Dim path As String = Me.txtOriginalFile.Text.Substring(0, Me.txtOriginalFile.Text.LastIndexOf("\"c))
         Dim headerVal As String
         Dim fileName As String = Me.txtOriginalFile.Text.Substring(Me.txtOriginalFile.Text.LastIndexOf("\"c) + 1)
-        Dim ds As New DataSet        
-        headerVal = "Yes"        
+
+        Dim ds As New DataSet
+        headerVal = "Yes"
+        'Dim connStr As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" & _
+        '    path & ";Extended Properties=""Text;HDR=" & headerVal & ";FMT=Delimited"""
+
         Dim connStr As String = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" & _
             path & ";Extended Properties=""Text;HDR=" & headerVal & ";FMT=Delimited"""
+
+
         Dim conn As New OleDb.OleDbConnection(connStr)
         Dim da As New OleDb.OleDbDataAdapter("Select * from " & "[" & fileName & "]", conn)
         da.Fill(ds, "WebFileConvert")
         Return ds.Tables(0)
     End Function
 #End Region
-
-
-
 
  
 

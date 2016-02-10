@@ -28,4 +28,7 @@ Public NotInheritable Class SplashScreen
         Copyright.Text = My.Application.Info.Copyright
     End Sub
 
+    Private Sub ApplicationTitle_Click(sender As System.Object, e As System.EventArgs) Handles ApplicationTitle.Click
+
+    End Sub
 End Class
