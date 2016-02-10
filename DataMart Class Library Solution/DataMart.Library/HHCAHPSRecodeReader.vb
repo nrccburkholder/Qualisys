@@ -290,7 +290,14 @@ Friend Class HHCAHPSRecodeReader
                 Return RecodeSimple(mReader("HHDual"), 1, 3)
 
             Case "PRIMARY-DIAGNOSIS"
-                Return RecodeICD(mReader, "ICD9", "ICD10_1", mReader("SmpEncDt"))
+                Dim icdval As String = RecodeICD(mReader, "ICD9", "ICD10_1", mReader("SmpEncDt")).ToString
+
+                If icdval.ToUpper.StartsWith("V") OrElse icdval.ToUpper.StartsWith("W") _
+                    OrElse icdval.ToUpper.StartsWith("X") OrElse icdval.ToUpper.StartsWith("Y") Then
+                    Return "M"
+                Else
+                    Return icdval
+                End If
 
             Case "OTHER-DIAGNOSIS-1"
                 Return RecodeICD(mReader, "ICD9_2", "ICD10_2", mReader("SmpEncDt"))
@@ -601,10 +608,7 @@ Friend Class HHCAHPSRecodeReader
             icdval = icd10val
         End If
 
-        'icd10 starting with V,W,X,Y -> "M" CJB 2/9/2016
-        If icdval Is DBNull.Value OrElse String.IsNullOrEmpty(icdval.ToString.Trim) OrElse String.IsNullOrEmpty(icdval.ToString.Trim.Replace("0", String.Empty)) _
-            OrElse icdval.ToString.ToUpper.StartsWith("V") OrElse icdval.ToString.ToUpper.StartsWith("W") _
-            OrElse icdval.ToString.ToUpper.StartsWith("X") OrElse icdval.ToString.ToUpper.StartsWith("Y") Then
+        If icdval Is DBNull.Value OrElse String.IsNullOrEmpty(icdval.ToString.Trim) OrElse String.IsNullOrEmpty(icdval.ToString.Trim.Replace("0", String.Empty)) Then
             Return "M"
         Else
             Dim strVal As String = icdval.ToString.Replace(".", String.Empty)
