@@ -24,7 +24,7 @@ namespace HHCAHPS.ImportProcessorTest
 
         private static XDocument GetParsedSample1File()
         {
-            return PgCsvParser.Parse(new ClientDetail(), "file.csv", GetSample1File());
+            return PgCsvParser.Parse(new ClientDetail { CCN = "147714" }, "HHCAHPS_147714_1.csv", GetSample1File());
         }
 
         private static XElement GetMetadataRowForSample1File()
@@ -153,7 +153,7 @@ namespace HHCAHPS.ImportProcessorTest
         [TestMethod]
         public void Parse_Sample1File_RowsHaveMedicalRecordNumber()
         {
-            AssertSample1FileRowsHaveField(ExtractHelper.MedicalRecordNumberField, "", "", "", "");
+            AssertSample1FileRowsHaveField(ExtractHelper.MedicalRecordNumberField, "JA1560", "JA2506", "FA3172", "JB2619");
         }
 
         [TestMethod]
@@ -651,7 +651,7 @@ namespace HHCAHPS.ImportProcessorTest
             const string fileContents = 
                 "OCS,147714,JUAN,J,ANDRADE,6970 N. WOLCOTT AVE,,CHICAGO,IL,60626,7732627035,2,2/26/2010,4,,10/28/1944,0,1,JA1560,2,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,716.99,403.91,585.6,285.21,414.01,493.9,1,2,2,2,2,2,2,1,1,2,0,1,,4,7,6,2010,,,298\r\n" +
                 "OCS,147714,JUAN,J,ANDRADE,6970 N. WOLCOTT AVE,,CHICAGO,IL,60626,7732627035,2,2/26/2010,4,,10/28/1944,0,1,JA1560,2,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,716.99,403.91,585.6,285.21,414.01,493.9,1,2,2,2,2,2,2,1,1,2,0,1,,4,7,6,2010,,,298,";
-            var xml = PgCsvParser.Parse(new ClientDetail(), "file.csv", fileContents);
+            var xml = PgCsvParser.Parse(new ClientDetail { CCN = "147714" }, "HHCAHPS_147714_1.csv", fileContents);
             var rows = ParserTestHelper.GetRows(xml);
             Assert.AreEqual(2, rows.Count());
         }
@@ -663,7 +663,7 @@ namespace HHCAHPS.ImportProcessorTest
                 "OCS,147714,JUAN,J,ANDRADE,6970 N. WOLCOTT AVE,,CHICAGO,IL,60626,7732627035,2,2/26/2010,4,,10/28/1944,0,1,JA1560,2,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,716.99,403.91,585.6,285.21,414.01,493.9,1,2,2,2,2,2,2,1,1,2,0,1,,4,7,6,2010,,,298,$\r\n" +
                 "\r\n" +
                 "OCS,147714,FELIX,,ARES,9356 SHERMER,,MORTON GROVE,IL,60053,8476738373,2,6/20/2010,1,,9/5/1960,1,1,FA3172,2,2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,716.96,401.9,780.79,535.5,345.3,300.02,1,2,2,2,2,2,2,1,2,2,1,1,,1,1,6,2010,,,298,$";
-            var xml = PgCsvParser.Parse(new ClientDetail(), "file.csv", fileContents);
+            var xml = PgCsvParser.Parse(new ClientDetail { CCN = "147714" }, "HHCAHPS_147714_1.csv", fileContents);
             var rows = ParserTestHelper.GetRows(xml);
             Assert.AreEqual(2, rows.Count());
         }
@@ -675,7 +675,7 @@ namespace HHCAHPS.ImportProcessorTest
                 "OCS,147714,JUAN,J,ANDRADE,6970 N. WOLCOTT AVE,,CHICAGO,IL,60626,7732627035,2,2/26/2010,4,,10/28/1944,0,1,JA1560,2,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,716.99,403.91,585.6,285.21,414.01,493.9,1,2,2,2,2,2,2,1,1,2,0,1,,4,7,6,2010,,,298,$\r\n" +
                 ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,\r\n" +
                 "OCS,147714,FELIX,,ARES,9356 SHERMER,,MORTON GROVE,IL,60053,8476738373,2,6/20/2010,1,,9/5/1960,1,1,FA3172,2,2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,716.96,401.9,780.79,535.5,345.3,300.02,1,2,2,2,2,2,2,1,2,2,1,1,,1,1,6,2010,,,298,$";
-            var xml = PgCsvParser.Parse(new ClientDetail(), "file.csv", fileContents);
+            var xml = PgCsvParser.Parse(new ClientDetail { CCN = "147714" }, "HHCAHPS_147714_1.csv", fileContents);
             var rows = ParserTestHelper.GetRows(xml);
             Assert.AreEqual(2, rows.Count());
         }
@@ -686,7 +686,7 @@ namespace HHCAHPS.ImportProcessorTest
             const string fileContents =
                 "OCS,147714,JUAN,J,ANDRADE,6970 N. WOLCOTT AVE,,CHICAGO,IL,60626,7732627035,2,2/26/2010,4,,10/28/1944,0,1,JA1560,2,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,716.99,403.91,585.6,285.21,414.01,493.9,1,2,2,2,2,2,2,1,1,2,0,1,,4,7,6,2010,,,298,$,extra\r\n" +
                 "OCS,147714,JUAN,J,ANDRADE,6970 N. WOLCOTT AVE,,CHICAGO,IL,60626,7732627035,2,2/26/2010,4,,10/28/1944,0,1,JA1560,2,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,716.99,403.91,585.6,285.21,414.01,493.9,1,2,2,2,2,2,2,1,1,2,0,1,,4,7,6,2010,,,298,$,\r\n";
-            var xml = PgCsvParser.Parse(new ClientDetail(), "file.csv", fileContents);
+            var xml = PgCsvParser.Parse(new ClientDetail { CCN = "147714" }, "HHCAHPS_147714_1.csv", fileContents);
             var rows = ParserTestHelper.GetRows(xml);
             Assert.AreEqual(2, rows.Count());
         }
@@ -696,7 +696,7 @@ namespace HHCAHPS.ImportProcessorTest
         {
             const string fileContents =
                 "OCS,147714,JUAN,J,ANDRADE,6970 N. WOLCOTT AVE,,CHICAGO,IL,60626,7732627035,2,2/26/2010,4,,10/28/1944,0,1,JA1560,2,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,716.99,403.91,585.6,285.21,414.01,493.9,1,2,2,2,2,2,2,1,1,2,0,1,,4,7,6,2010,,";
-            var xml = PgCsvParser.Parse(new ClientDetail(), "file.csv", fileContents);
+            var xml = PgCsvParser.Parse(new ClientDetail { CCN = "147714" }, "HHCAHPS_147714_1.csv", fileContents);
             var rows = ParserTestHelper.GetMetadataRow(xml);
             var element = ParserTestHelper.GetElement(rows, "TOTAL NUMBER OF PATIENT SERVED");
             Assert.IsNotNull(element);
@@ -706,7 +706,7 @@ namespace HHCAHPS.ImportProcessorTest
         [TestMethod]
         public void Parse_EmptyFile_NoExceptions()
         {
-            var xml = PgCsvParser.Parse(new ClientDetail(), "file.csv", "");
+            var xml = PgCsvParser.Parse(new ClientDetail { CCN = "147714" }, "HHCAHPS_147714_1.csv", "");
             var rows = ParserTestHelper.GetRows(xml);
             Assert.AreEqual(0, rows.Count());
         }
@@ -716,7 +716,7 @@ namespace HHCAHPS.ImportProcessorTest
         {
             const string fileContents =
                 "OCS,147714,JUAN,J,ANDRADE,\"6970 N. WOLCOTT, AVE\",,CHICAGO,IL,60626,7732627035,2,2/26/2010,4,,10/28/1944,0,1,JA1560,2,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,716.99,403.91,585.6,285.21,414.01,493.9,1,2,2,2,2,2,2,1,1,2,0,1,,4,7,6,2010,,,298,$";
-            var xml = PgCsvParser.Parse(new ClientDetail(), "file.csv", fileContents);
+            var xml = PgCsvParser.Parse(new ClientDetail { CCN = "147714" }, "HHCAHPS_147714_1.csv", fileContents);
 
             var row = ParserTestHelper.GetRows(xml).ElementAt(0);
             var element = ParserTestHelper.GetElement(row, ExtractHelper.PatientMailingAddress1Field);

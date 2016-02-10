@@ -16,8 +16,8 @@ begin
 		SampleYear int not null,
 		SampleMonth int not null,
 		CCN varchar(10) not null,
-		MatchKey varchar(100) not null,
-		RecordXml varchar(max),
+		MatchKey nvarchar(100) not null,
+		RecordXml nvarchar(max),
 
 		constraint PK_MergeRecord primary key clustered (SampleYear, SampleMonth, CCN, MatchKey)
 	);
@@ -40,7 +40,7 @@ begin
 		select MatchKey, min(RecordXml) as RecordXml
 		from
 		(
-			select T.r.value('./@matchkey', 'varchar(100)') as MatchKey, cast(T.r.query('.') as varchar(max)) as RecordXml
+			select T.r.value('./@matchkey', 'nvarchar(100)') as MatchKey, cast(T.r.query('.') as nvarchar(max)) as RecordXml
 			from @Records.nodes('/rows/r') as T(r)
 		) as records
 		group by MatchKey

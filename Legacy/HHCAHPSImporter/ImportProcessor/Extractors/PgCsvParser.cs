@@ -54,7 +54,7 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
                     rows.Add(
                         CreateTransformRow(rowNumber,
                             CreateFieldElement(PatientIDField, body.Patient_ID),
-                            CreateFieldElement(MedicalRecordNumberField, ""),
+                            CreateFieldElement(MedicalRecordNumberField, body.Patient_ID),
                             CreateFieldElement(PatientFirstNameField, body.First_Name),
                             CreateFieldElement(PatientMiddleInitialField, body.Middle_Initial),
                             CreateFieldElement(PatientLastNameField, body.Last_Name),

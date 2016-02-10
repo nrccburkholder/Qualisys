@@ -17,5 +17,5 @@ if exists (select * from sys.tables where name = 'MergeRecord' and schema_id = S
 go
 
 if exists (select * from sys.procedures where name = 'UpdateMergeRecords' and schema_id = SCHEMA_ID('dbo'))
-	drop procedure dbo.MergeRecordUpdate;
+	drop procedure dbo.UpdateMergeRecords;
 go
