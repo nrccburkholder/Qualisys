@@ -175,9 +175,9 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
         private static int? GetLookbackSkilledVisits(int? priorMonthSkilledVisits, int? currentMonthSkilledVisits, bool isPtct)
         {
             if (isPtct)
-                return (priorMonthSkilledVisits ?? 0) - (currentMonthSkilledVisits ?? 0);
+                return priorMonthSkilledVisits ?? 0;
             else
-                return priorMonthSkilledVisits ?? currentMonthSkilledVisits;
+                return priorMonthSkilledVisits ?? 0 + currentMonthSkilledVisits ?? 0;
         }
     }
 }

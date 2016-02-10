@@ -25,7 +25,7 @@ namespace HHCAHPS.ImportProcessorTest
 
         private static XDocument GetParsedSample1File()
         {
-            return CmsCsvParser.Parse(new ClientDetail(), "file.csv", GetSample1File());
+            return CmsCsvParser.Parse(new ClientDetail { CCN = "107207" }, "file.csv", GetSample1File());
         }
 
         private static XElement GetMetadataRowForSample1File()
@@ -653,7 +653,7 @@ namespace HHCAHPS.ImportProcessorTest
                 "P,NURSE ON CALL INC.,107207,1558306159,6,2010,730,290,GEORGE,J,BURKE,1,6181941,4052010,4 Woodholm Lane,,Palm Coast,FL,32164,3864469610,689311M,15,47,,,,,,,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,998.83,250,401.9,414,715.9,443.9,1,M,3,1,2,5,0,0,M,1\r\n" +
                 "\r\n" +
                 "P,NURSE ON CALL INC.,107207,1558306159,6,2010,730,290,CHARLES,M,BENTZLEY,1,8101939,4092010,138 Wellstone Drive,,Palm Coast,FL,32164,3863160540,698711M,8,19,,,,,,,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,345.9,250,401.9,414,294.1,272.4,2,M,5,1,2,2,1,1,M,1\r\n";
-            var xml = CmsCsvParser.Parse(new ClientDetail(), "file.csv", fileContents);
+            var xml = CmsCsvParser.Parse(new ClientDetail { CCN = "107207" }, "file.csv", fileContents);
             var rows = ParserTestHelper.GetRows(xml);
             Assert.AreEqual(2, rows.Count());
         }
@@ -665,7 +665,7 @@ namespace HHCAHPS.ImportProcessorTest
                 "P,NURSE ON CALL INC.,107207,1558306159,6,2010,730,290,GEORGE,J,BURKE,1,6181941,4052010,4 Woodholm Lane,,Palm Coast,FL,32164,3864469610,689311M,15,47,,,,,,,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,998.83,250,401.9,414,715.9,443.9,1,M,3,1,2,5,0,0,M,1\r\n" +
                 ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,\r\n" +
                 "P,NURSE ON CALL INC.,107207,1558306159,6,2010,730,290,CHARLES,M,BENTZLEY,1,8101939,4092010,138 Wellstone Drive,,Palm Coast,FL,32164,3863160540,698711M,8,19,,,,,,,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,345.9,250,401.9,414,294.1,272.4,2,M,5,1,2,2,1,1,M,1\r\n";
-            var xml = CmsCsvParser.Parse(new ClientDetail(), "file.csv", fileContents);
+            var xml = CmsCsvParser.Parse(new ClientDetail { CCN = "107207" }, "file.csv", fileContents);
             var rows = ParserTestHelper.GetRows(xml);
             Assert.AreEqual(2, rows.Count());
         }
@@ -676,7 +676,7 @@ namespace HHCAHPS.ImportProcessorTest
             const string fileContents =
                 "P,NURSE ON CALL INC.,107207,1558306159,6,2010,730,290,GEORGE,J,BURKE,1,6181941,4052010,4 Woodholm Lane,,Palm Coast,FL,32164,3864469610,689311M,15,47,,,,,,,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,998.83,250,401.9,414,715.9,443.9,1,M,3,1,2,5,0,0,M,1,extra\r\n" +
                 "P,NURSE ON CALL INC.,107207,1558306159,6,2010,730,290,GEORGE,J,BURKE,1,6181941,4052010,4 Woodholm Lane,,Palm Coast,FL,32164,3864469610,689311M,15,47,,,,,,,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,998.83,250,401.9,414,715.9,443.9,1,M,3,1,2,5,0,0,M,1,\r\n";
-            var xml = CmsCsvParser.Parse(new ClientDetail(), "file.csv", fileContents);
+            var xml = CmsCsvParser.Parse(new ClientDetail { CCN = "107207" }, "file.csv", fileContents);
             var rows = ParserTestHelper.GetRows(xml);
             Assert.AreEqual(2, rows.Count());
         }
@@ -686,7 +686,7 @@ namespace HHCAHPS.ImportProcessorTest
         {
             const string fileContents =
                 "P,NURSE ON CALL INC.,107207,1558306159,6,2010,730,290,GEORGE,J,BURKE,1,6181941,4052010,4 Woodholm Lane,,Palm Coast,FL,32164,3864469610,689311M,15,47,,,,,,,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,998.83,250,401.9,414,715.9,443.9,1,M,3,1,2,5,0,0,M";
-            var xml = CmsCsvParser.Parse(new ClientDetail(), "file.csv", fileContents);
+            var xml = CmsCsvParser.Parse(new ClientDetail { CCN = "107207" }, "file.csv", fileContents);
             var rows = ParserTestHelper.GetRows(xml);
             Assert.AreEqual(1, rows.Count());
             var element = ParserTestHelper.GetElement(rows.First(), "Language");
@@ -697,7 +697,7 @@ namespace HHCAHPS.ImportProcessorTest
         [TestMethod]
         public void Parse_EmptyFile_NoExceptions()
         {
-            var xml = CmsCsvParser.Parse(new ClientDetail(), "file.csv", "");
+            var xml = CmsCsvParser.Parse(new ClientDetail { CCN = "107207" }, "file.csv", "");
             var rows = ParserTestHelper.GetRows(xml);
             Assert.AreEqual(0, rows.Count());
         }
@@ -707,7 +707,7 @@ namespace HHCAHPS.ImportProcessorTest
         {
             const string fileContents =
                 "P,\"NURSE ON CALL, INC.\",107207,1558306159,6,2010,730,290,GEORGE,J,BURKE,1,6181941,4052010,4 Woodholm Lane,,Palm Coast,FL,32164,3864469610,689311M,15,47,,,,,,,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,998.83,250,401.9,414,715.9,443.9,1,M,3,1,2,5,0,0,M,1";
-            var xml = CmsCsvParser.Parse(new ClientDetail(), "file.csv", fileContents);
+            var xml = CmsCsvParser.Parse(new ClientDetail { CCN = "107207" }, "file.csv", fileContents);
             var metadata = ParserTestHelper.GetMetadataRow(xml);
             var element = ParserTestHelper.GetElement(metadata, ExtractHelper.ProviderNameField);
 

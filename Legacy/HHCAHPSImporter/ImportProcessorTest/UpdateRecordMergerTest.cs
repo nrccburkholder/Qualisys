@@ -65,24 +65,6 @@ namespace ImportProcessorTest
         #region Merge
 
         [TestMethod]
-        public void Merge_PatientIdIsaDOBIs10201930_RecordsSentToDbHaveMatchKeya_10201930()
-        {
-            var db = Mock.Create<IMergeRecordDb>();
-            XElement dbRecords = null;
-            Mock.Arrange(() => db.UpdateMergeRecords(Arg.AnyInt, Arg.AnyInt, Arg.AnyString, Arg.IsAny<XElement>()))
-                .DoInstead((int sampleYear, int sampleMonth, string ccn, XElement records) => dbRecords = records);
-
-            var inputXml = CreateInput("a", "10201930");
-
-            UpdateRecordMerger.Merge(10, 2015, "123456", inputXml, db);
-
-            Mock.Assert(() => db.UpdateMergeRecords(10, 2015, "123456", Arg.IsAny<XElement>()), Occurs.Once());
-            var matchKeyAttribute = dbRecords.Elements(ExtractHelper.RowElementName).First().Attribute(ExtractHelper.MatchKeyAttributeName);
-            Assert.IsNotNull(matchKeyAttribute);
-            Assert.AreEqual("a_10201930", matchKeyAttribute.Value);
-        }
-
-        [TestMethod]
         public void Merge_InputFieldHasValueExistingHasValue_InputValueIsUsed()
         {
             AssertMergedValue("b", "c", "b");
