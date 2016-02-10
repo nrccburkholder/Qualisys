@@ -35,11 +35,17 @@ namespace CEM.Exporting.XmlExporters
             {
                 Encoding encoding = new UTF8Encoding(false);
 
-                XmlSchema schema = XmlSchema.Read(new StringReader(template.XMLSchemaDefinition), null);
+                //string xsdString = System.IO.File.ReadAllText(@"C:\gitrepo\Qualisys\NRC CEM.FileMaker Solution\FileMakerServiceTester\XMLSchema1.xsd");
+                //XmlSchema schema = XmlSchema.Read(new StringReader(xsdString), null);
+                string xsdString = template.XMLSchemaDefinition;
+                XmlSchema schema = XmlSchema.Read(new StringReader(xsdString), null);
                 schema.Compile(ValidationCallBack);
 
                 // we create an empty xml from the schema definition so we can walk the elements for each node to help us build the final output Xml
                 XMLDoc.LoadXml(GenerateEmptyXMLFromSchema(schema));
+
+                //string xmlString = System.IO.File.ReadAllText(@"C:\gitrepo\Qualisys\NRC CEM.FileMaker Solution\FileMakerServiceTester\Hopsice Cahps Empty XML 2.1");
+                //XMLDoc.LoadXml(xmlString);
 
                 using (XMLWriter writer = new XMLWriter())
                 {

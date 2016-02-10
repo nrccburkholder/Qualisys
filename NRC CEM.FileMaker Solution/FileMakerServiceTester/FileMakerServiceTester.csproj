@@ -49,7 +49,11 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Hopsice Cahps Empty XML 2.1" />
     <None Include="packages.config" />
+    <None Include="XMLSchema1.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\NRC.Logging\NRC.Logging\NRC.Logging.csproj">
