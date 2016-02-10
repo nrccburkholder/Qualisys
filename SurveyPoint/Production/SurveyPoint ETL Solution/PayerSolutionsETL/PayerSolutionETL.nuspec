@@ -1,0 +1,13 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Qualisys.PayerSolutionETL</id>
+    <title>SurveyPoint ETL</title>
+    <version>2.2.30.0</version>
+    <authors>NRC</authors>
+    <description>GUI for managing one-off client file transformations</description>
+  </metadata>
+  <files>
+    <file src="bin\Release\app.publish\**\*"/>
+  </files>
+</package>

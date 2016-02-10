@@ -41,6 +41,8 @@ select * from CAHPSDisposition where CahpsTypeID=9
 
 select * from CahpsDispositionMapping where CahpsTypeID=9
 
+--update CAHPSDisposition set IsCahpsDispositionComplete = 1 where CahpsDispositionID = 902
+
 --rollback tran
 commit tran
 

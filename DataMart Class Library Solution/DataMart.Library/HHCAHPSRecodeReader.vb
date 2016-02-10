@@ -290,7 +290,14 @@ Friend Class HHCAHPSRecodeReader
                 Return RecodeSimple(mReader("HHDual"), 1, 3)
 
             Case "PRIMARY-DIAGNOSIS"
-                Return RecodeICD(mReader, "ICD9", "ICD10_1", mReader("SmpEncDt"))
+                Dim icdval As String = RecodeICD(mReader, "ICD9", "ICD10_1", mReader("SmpEncDt")).ToString
+
+                If icdval.ToUpper.StartsWith("V") OrElse icdval.ToUpper.StartsWith("W") _
+                    OrElse icdval.ToUpper.StartsWith("X") OrElse icdval.ToUpper.StartsWith("Y") Then
+                    Return "M"
+                Else
+                    Return icdval
+                End If
 
             Case "OTHER-DIAGNOSIS-1"
                 Return RecodeICD(mReader, "ICD9_2", "ICD10_2", mReader("SmpEncDt"))
