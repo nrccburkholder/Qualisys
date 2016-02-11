@@ -819,6 +819,47 @@ begin
 	end
 end
 
+
+/*************************************************************/
+/* Validate Skilled Visits */
+
+if @surveyType_ID = 3    --HHCAHPS survey
+begin
+	declare @NoSkilledVisitsColumnCount int;
+	select @NoSkilledVisitsColumnCount = count(*) from INFORMATION_SCHEMA.COLUMNS
+	where TABLE_NAME = 'ENCOUNTER_load'
+		and TABLE_SCHEMA = 's' + CAST(@Study_id as varchar(10))
+		and COLUMN_NAME in ('HHVisitCnt', 'ServiceInd_5', 'ServiceInd_6', 'ServiceInd_9', 'ServiceInd_11');
+ 
+	if @NoSkilledVisitsColumnCount < 5
+		insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+		select @File_id, 3, 'Skilled visits fields don''t exist.';
+	else
+	begin
+		create table #NoSkilledVisitsMismatch (total int);
+
+		set @sql =
+			'insert into #NoSkilledVisitsMismatch
+			select COUNT(*) as total
+			from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
+			where HHVisitCnt > 0 and ServiceInd_5 = ''2'' and ServiceInd_6 = ''2'' and ServiceInd_9 = ''2'' and ServiceInd_11 = ''2''
+			and DataFile_id = ' + LTRIM(STR(@File_id));
+		if @indebug = 1 print @sql;
+
+		declare @NoSkilledVisitsMismatchCount int;
+		exec(@sql);
+		select @NoSkilledVisitsMismatchCount = total from #NoSkilledVisitsMismatch;
+
+		drop table #NoSkilledVisitsMismatch;
+
+		if @indebug = 1 print @NoSkilledVisitsMismatchCount;
+
+		if @NoSkilledVisitsMismatchCount > 0
+			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+			select @File_id, 3, 'Skilled visits is not zero, but there was no skilled nursing, physical therapy, occupational therapy, or speech therapy.';
+	end
+end
+
       
 /*************************************************************/        
             
