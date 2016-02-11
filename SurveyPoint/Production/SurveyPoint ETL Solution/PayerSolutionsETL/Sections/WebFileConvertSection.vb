@@ -3,9 +3,11 @@ Imports System.IO
 Imports System.Data
 
 Public Class WebFileConvertSection
+
 #Region " Fields "
     Dim mNavigator As WebFileConvertNavigator
 #End Region
+
 #Region " Overrides "
     Public Overrides Sub RegisterNavControl(ByVal navCtrl As Navigator)
         MyBase.RegisterNavControl(navCtrl)
@@ -21,7 +23,9 @@ Public Class WebFileConvertSection
     Public Overrides Sub InactivateSection()
         'RemoveHandler mFolderNavigator.FolderChanged, AddressOf mFolderNavigator_FolderChanged
     End Sub
+
 #End Region
+
 #Region " Event Handlers "
 
     Private Sub cmdOriginalFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOriginalFile.Click
@@ -105,6 +109,7 @@ Public Class WebFileConvertSection
 
         txtResults.Text = sb.ToString
     End Sub
+
 #End Region
 #Region " Private Methods "
 
@@ -2412,7 +2417,7 @@ Public Class WebFileConvertSection
     End Function
 #End Region
 
- 
+
 
 
 
