@@ -13,12 +13,15 @@ if not exists (select * from Validation_Definitions where Table_nm = 'Population
 	insert into Validation_Definitions (SurveyType_ID, Table_nm, Field_nm, FailureThresholdPct, CheckForValue) values (3, 'Population', 'MRN', 0, null);
 go
 
+delete from Validation_Definitions where Field_nm = 'ICD10_1';
+go
+
 
 if exists (select * from sys.procedures where name = 'LD_RunValidation' and schema_id = SCHEMA_ID('dbo'))
 	drop procedure dbo.LD_RunValidation;
 go
 CREATE PROCEDURE [dbo].[LD_RunValidation]                    
- @File_id INT, @indebug int = 0                    
+ @File_id INT, @indebug int = 0, @currentDate datetime = null
 AS                    
     
     
@@ -35,7 +38,9 @@ select * From datafile
 LD_RunValidation 173, 1            
             
 */            
-            
+
+if @currentDate is null set @currentDate = getdate();
+
 if @indebug = 1 print 'Start QP_DataLoading LD_RunValidation'            
             
 --Deletes are done here in case the validation (post Pervasive) process is restarted            
@@ -536,7 +541,7 @@ begin
 		from DataFile f inner join DataFileState s on s.DataFile_id = f.DataFile_id
 		where
 			f.Study_ID = ' + LTRIM(STR(@Study_id)) + '
-			and f.datReceived >= dateadd(month, -6, getdate())
+			and f.datReceived >= dateadd(month, -6, ''' + cast(@currentDate as varchar(20)) + ''')
 			and s.State_ID = 10'
 	if @indebug = 1 print @sql;
 
@@ -551,7 +556,7 @@ begin
 	declare @RecordCountPercentageDrop float = 0.0;
 	if @AverageRecordCount <> 0 set @RecordCountPercentageDrop = round(100.0 - 100.0 * @RecordCount / @AverageRecordCount, 0);
 
-	if @RecordCountPercentageDrop >= 30.0 and @AverageRecordCount >= 25
+	if @RecordCountPercentageDrop >= 50.0 and @AverageRecordCount >= 25
 		insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
 		select @File_id, 3, 'The number of records has dropped by ' + cast(@RecordCountPercentageDrop as varchar(10)) + '% from the average.';
 end
@@ -725,6 +730,92 @@ begin
 		if @SurgDisInvalidPercentage >= 5.0
 			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
 			select @File_id, 2, 'There are invalid surgical discharge values on ' + cast(@SurgDisInvalidPercentage as varchar(10)) + '% of records.';
+	end
+end
+
+
+/*************************************************************/
+/* Validate LangID */
+
+if @surveyType_ID = 3    --HHCAHPS survey
+begin
+	declare @LangColumnCount int;
+	select @LangColumnCount = count(*) from INFORMATION_SCHEMA.COLUMNS
+	where TABLE_NAME = 'POPULATION_load'
+		and TABLE_SCHEMA = 's' + CAST(@Study_id as varchar(10))
+		and COLUMN_NAME in ('LangID');
+ 
+	if @LangColumnCount < 1
+		insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+		select @File_id, 3, 'LangID field does not exist.';
+	else
+	begin
+		create table #LangNotEnglish (total int);
+
+		set @sql =
+			'insert into #LangNotEnglish
+			select COUNT(*) as total
+			from s' + LTRIM(STR(@Study_id)) + '.POPULATION_load
+			where LangID <> ''1''
+			and DataFile_id = ' + LTRIM(STR(@File_id));
+		if @indebug = 1 print @sql;
+
+		declare @LangNotEnglishCount int;
+		exec(@sql);
+		select @LangNotEnglishCount = total from #LangNotEnglish;
+
+		drop table #LangNotEnglish;
+
+		if @indebug = 1 print @LangNotEnglishCount;
+		declare @LangNotEnglishPercentage float = 0;
+		if @RecordCount <> 0 set @LangNotEnglishPercentage = round(100.0 * @LangNotEnglishCount / @RecordCount, 0);
+
+		if @LangNotEnglishPercentage >= 80.0
+			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+			select @File_id, 3, 'The language is not English on ' + cast(@LangNotEnglishPercentage as varchar(10)) + '% of records.';
+	end
+end
+
+
+/*************************************************************/
+/* Validate ICD10_1 */
+
+if @surveyType_ID = 3    --HHCAHPS survey
+begin
+	declare @PrimaryICDColumnCount int;
+	select @PrimaryICDColumnCount = count(*) from INFORMATION_SCHEMA.COLUMNS
+	where TABLE_NAME = 'ENCOUNTER_load'
+		and TABLE_SCHEMA = 's' + CAST(@Study_id as varchar(10))
+		and COLUMN_NAME in ('ICD10_1');
+ 
+	if @PrimaryICDColumnCount < 1
+		insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+		select @File_id, 3, 'ICD10_1 field does not exist.';
+	else
+	begin
+		create table #PrimaryICDBlank (total int);
+
+		set @sql =
+			'insert into #PrimaryICDBlank
+			select COUNT(*) as total
+			from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
+			where ICD10_1 is null
+			and DataFile_id = ' + LTRIM(STR(@File_id));
+		if @indebug = 1 print @sql;
+
+		declare @PrimaryICDBlankCount int;
+		exec(@sql);
+		select @PrimaryICDBlankCount = total from #PrimaryICDBlank;
+
+		drop table #PrimaryICDBlank;
+
+		if @indebug = 1 print @PrimaryICDBlankCount;
+		declare @PrimaryICDBlankPercentage float = 0;
+		if @RecordCount <> 0 set @PrimaryICDBlankPercentage = round(100.0 * @PrimaryICDBlankCount / @RecordCount, 0);
+
+		if @PrimaryICDBlankPercentage >= 20.0
+			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+			select @File_id, 2, 'The ICD10_1 is missing on ' + cast(@PrimaryICDBlankPercentage as varchar(10)) + '% of records.';
 	end
 end
 
@@ -1011,9 +1102,9 @@ begin
 	declare @currMinYear varchar(10) = cast(datepart(year, @currMin) as varchar);
 	declare @currMinMonth varchar(10) = cast(datepart(month, @currMin) as varchar);
 	declare @sampleMonth datetime = cast(@currMinYear + '-' + @currMinMonth + '-' + '1' as datetime);
-	declare @cutoffDate datetime = dateadd(month, 2, @sampleMonth);
+	declare @cutoffDate datetime = dateadd(day, 20, dateadd(month, 1, @sampleMonth));
 
-	if getdate() >= @cutoffDate
+	if @currentDate >= @cutoffDate
 		insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
 		select @File_id, 3, 'This file was received after sampling normally would have ended for sample month ' + @currMinMonth + '/' + @currMinYear;
 end

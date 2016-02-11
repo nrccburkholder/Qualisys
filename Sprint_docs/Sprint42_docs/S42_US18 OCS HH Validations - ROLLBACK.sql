@@ -14,6 +14,10 @@ go
 delete from Validation_Definitions where Field_nm in ('MRN');
 go
 
+if not exists (select * from Validation_Definitions where Table_nm = 'Encounter' and Field_nm = 'ICD10_1')
+	insert into Validation_Definitions (SurveyType_ID, Table_nm, Field_nm, FailureThresholdPct, CheckForValue) values (3, 'Encounter', 'ICD10_1', 90, null);
+go
+
 if exists (select * from sys.procedures where name = 'LD_RunValidation' and schema_id = SCHEMA_ID('dbo'))
 	drop procedure dbo.LD_RunValidation;
 go
