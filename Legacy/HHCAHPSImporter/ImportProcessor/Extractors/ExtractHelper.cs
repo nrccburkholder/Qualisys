@@ -120,6 +120,9 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
         public const string IdAttributeName = "id";
         public const string FieldElementName = "nv";
         public const string FieldAttributeName = "n";
+        public const string MatchKeyAttributeName = "matchkey";
+
+        public const string UpdateToBlankDesignator = "-";
 
         #endregion Constants
 
@@ -322,24 +325,35 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
             return false;
         }
 
-        private static string GetMetadataFieldValue(XDocument xml, string field)
+        public static string GetFieldValue(XElement row, string field)
         {
-            return GetMetadataElement(xml)
-                .Elements(RowElementName)
-                .First()
+            return row
                 .Elements(FieldElementName)
                 .FirstOrDefault(nv => nv.Attribute(FieldAttributeName).Value == field)
                 .Value;
         }
 
-        public static int GetSampleMonth(XDocument xml)
+        public static string GetMetadataFieldValue(XDocument xml, string field)
         {
-            return int.Parse(GetMetadataFieldValue(xml, MonthField));
+            return GetFieldValue(GetMetadataElement(xml).Elements(RowElementName).First(), field);
         }
 
-        public static int GetSampleYear(XDocument xml)
+        public static int? GetSampleMonth(XDocument xml)
         {
-            return int.Parse(GetMetadataFieldValue(xml, YearField));
+            int month;
+            if (int.TryParse(GetMetadataFieldValue(xml, MonthField), out month))
+                return month;
+            else
+                return null;
+        }
+
+        public static int? GetSampleYear(XDocument xml)
+        {
+            int year;
+            if (int.TryParse(GetMetadataFieldValue(xml, YearField), out year))
+                return year;
+            else
+                return null;
         }
 
         public static string GetESRD(string ESRD, string ICD_A2, string ICD_B2, string ICD_C2, string ICD_D2, string ICD_E2, string ICD_F2)

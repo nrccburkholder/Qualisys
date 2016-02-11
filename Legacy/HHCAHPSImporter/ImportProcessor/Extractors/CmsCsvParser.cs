@@ -19,6 +19,9 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
             var engine = new FileHelperAsyncEngine<CmsCsvBody>();
             engine.BeforeReadRecord += Engine_BeforeReadRecord;
 
+            var ccns = new HashSet<string>();
+            var sampleMonths = new HashSet<SampleMonth>();
+
             using (engine.BeginReadString(fileContents))
             {
                 var metadata = GetMetadataElement(xml);
@@ -28,6 +31,9 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
 
                 foreach (var body in engine)
                 {
+                    ccns.Add(body.M0010);
+                    sampleMonths.Add(new SampleMonth { Month = body.Sample_Month, Year = body.Sample_Year });
+
                     if (firstRecord)
                         metadata.Add(
                             CreateTransformRow(1,
@@ -133,6 +139,9 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
                             ));
                 }
             }
+
+            CcnValidator.ValidateFileNameCcnAgainstFileContents(client.CCN, ccns);
+            SampleMonthValidator.Validate(sampleMonths);
 
             xml.Root.Add(CreateRootAttributes(client, fullFileName));
 

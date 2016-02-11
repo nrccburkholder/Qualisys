@@ -25,7 +25,7 @@ namespace HHCAHPS.ImportProcessorTest
 
         private static XDocument GetParsedVersion1File()
         {
-            return OcsFwParser.Parse(new ClientDetail(), "file.csv", GetVersion1File());
+            return OcsFwParser.Parse(new ClientDetail { CCN = "107189" }, "file.csv", GetVersion1File());
         }
 
         private static XElement GetMetadataRowForVersion1File()
@@ -81,7 +81,7 @@ namespace HHCAHPS.ImportProcessorTest
 
         private static XDocument GetParsedVersion2File()
         {
-            return OcsFwParser.Parse(new ClientDetail(), "file.csv", GetVersion2File());
+            return OcsFwParser.Parse(new ClientDetail { CCN = "107189" }, "file.csv", GetVersion2File());
         }
 
         private static XElement GetMetadataRowForVersion2File()
@@ -132,7 +132,7 @@ namespace HHCAHPS.ImportProcessorTest
         [TestMethod]
         public void Parse_RootAttributesAreSet()
         {
-            var xml = OcsFwParser.Parse(new ClientDetail(), "file.csv", GetVersion1File());
+            var xml = OcsFwParser.Parse(new ClientDetail { CCN = "107189" }, "file.csv", GetVersion1File());
             Assert.IsNotNull(xml.Root.Attribute("sourcefile"));
         }
 
@@ -140,7 +140,7 @@ namespace HHCAHPS.ImportProcessorTest
         [ExpectedException(typeof(InvalidOperationException))]
         public void Parse_NoHeader_InvalidOperationExceptionIsThrown()
         {
-            OcsFwParser.Parse(new ClientDetail(), "file.csv", "");
+            OcsFwParser.Parse(new ClientDetail { CCN = "107189" }, "file.csv", "");
         }
 
         #region Version 1
@@ -314,7 +314,7 @@ namespace HHCAHPS.ImportProcessorTest
         [TestMethod]
         public void Parse_Version1File_RowsHaveLookbackSkilledVisits()
         {
-            AssertVersion1FileRowsHaveField(ExtractHelper.LookbackPeriodVisitsField, "5", "4", "21", "31");
+            AssertVersion1FileRowsHaveField(ExtractHelper.LookbackPeriodVisitsField, "9", "8", "51", "61");
         }
 
         [TestMethod]
@@ -887,7 +887,7 @@ namespace HHCAHPS.ImportProcessorTest
         [TestMethod]
         public void Parse_Version2File_RowsHaveLookbackSkilledVisits()
         {
-            AssertVersion2FileRowsHaveField(ExtractHelper.LookbackPeriodVisitsField, "5", "4", "21", "31");
+            AssertVersion2FileRowsHaveField(ExtractHelper.LookbackPeriodVisitsField, "9", "8", "51", "61");
         }
 
         [TestMethod]
@@ -1296,7 +1296,7 @@ namespace HHCAHPS.ImportProcessorTest
                 "N         06719               05719               EDUVIGES                       ALVAREZ                       220 WEST 74 PLACE                                 APT 209                                           HIALEAH                                           FL33014    305823440920601192012042920101        004005000000010010100000000021715.09            356.4             440.21            735.8             414.01            386.11            22M112122221121102MM%\r\n" +
                 "\r\n" +
                 "N         09475               08475               RAMONA                         PORTES                        2899 COLLINS AVE                                  APT 1204                                          MIAMI BEACH                                       FL33140    305672047220408191512040920094        030031000000000010000000000022250.70            443.81            331.0             787.20            V55.1             438.20            22M1121222233645M2MM%\r\n";
-            var xml = OcsFwParser.Parse(new ClientDetail(), "file.csv", fileContents);
+            var xml = OcsFwParser.Parse(new ClientDetail { CCN = "107189" }, "file.csv", fileContents);
             var rows = ParserTestHelper.GetRows(xml);
             Assert.AreEqual(2, rows.Count());
         }
@@ -1308,14 +1308,14 @@ namespace HHCAHPS.ImportProcessorTest
             const string fileContents =
                 "062010107189AMERICAN PROVIDERS INC                                                                              1346299955          02040041.1\r\n" +
                 "N         06719               05719               EDUVIGES                       ALVAREZ                       220 WEST 74 PLACE                                 APT 209                                           HIALEAH                                           FL33014    305823440920601192012042920101        004005000000010010100000000021715.09            356.4             440.21            735.8             414.01            386.11            22M112122221121102MMandsomeextracharacters%";
-            OcsFwParser.Parse(new ClientDetail(), "file.csv", fileContents);
+            OcsFwParser.Parse(new ClientDetail { CCN = "107189" }, "file.csv", fileContents);
         }
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void Parse_EmptyFile_InvalidOperationExceptionIsThrown()
         {
-            var xml = OcsFwParser.Parse(new ClientDetail(), "file.csv", "");
+            var xml = OcsFwParser.Parse(new ClientDetail { CCN = "107189" }, "file.csv", "");
         }
 
         #endregion Parse

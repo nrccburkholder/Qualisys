@@ -27,7 +27,7 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
             var xml = CreateEmptyDocument();
             var lines = GetLinesForFixedWidthFile(fileContents);
 
-            ParseHeader(xml, lines);
+            ParseHeader(xml, lines, client.CCN);
             ParseBody(xml, lines);
 
             xml.Root.Add(CreateRootAttributes(client, fullFileName));
@@ -35,7 +35,7 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
             return xml;
         }
 
-        private static void ParseHeader(XDocument xml, IEnumerable<string> lines)
+        private static void ParseHeader(XDocument xml, IEnumerable<string> lines, string fileNameCcn)
         {
             var foundHeader = false;
             var metadata = GetMetadataElement(xml);
@@ -59,6 +59,9 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
                             CreateFieldElement(NumberOfBranchesField, header.NumberOfBranchesServed),
                             CreateFieldElement(VersionNumberField, header.VersionNumber)
                             ));
+
+                    CcnValidator.ValidateFileNameCcnAgainstFileContents(fileNameCcn, header.ProviderID);
+                    SampleMonthValidator.Validate(header.SampleMonth, header.SampleYear);
                 }
             }
 

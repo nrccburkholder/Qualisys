@@ -1,0 +1,1624 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+Nrc.Framework.BusinessLogic
+</name>
+</assembly>
+<members>
+<member name="M:Nrc.Framework.BusinessLogic.Validation.RuleMethod.ToString">
+	<summary>
+ Returns the name of the method implementing the rule
+ and the property, field or column name to which the
+ rule applies.
+ </summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.Validation.RuleMethod.RuleName">
+	<summary>
+ Gets the name of the rule.
+ </summary>
+	<remarks>
+ The rule's name must be unique and is used
+ to identify a broken rule in the BrokenRules
+ collection.
+ </remarks>
+</member><member name="P:Nrc.Framework.BusinessLogic.Validation.RuleMethod.RuleArgs">
+	<summary>
+ Returns the name of the field, property or column
+ to which the rule applies.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.RuleMethod.#ctor(System.Object,Nrc.Framework.BusinessLogic.Validation.RuleHandler,System.String)">
+	<summary>
+ Creates and initializes the rule.
+ </summary>
+	<param name="target">Reference to the object containing the data to validate.</param>
+	<param name="handler">The address of the method implementing the rule.</param>
+	<param name="propertyName">The field, property or column to which the rule applies.</param>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.RuleMethod.#ctor(System.Object,Nrc.Framework.BusinessLogic.Validation.RuleHandler,Nrc.Framework.BusinessLogic.Validation.RuleArgs)">
+	<summary>
+ Creates and initializes the rule.
+ </summary>
+	<param name="target">Reference to the object containing the data to validate.</param>
+	<param name="handler">The address of the method implementing the rule.</param>
+	<param name="args">A RuleArgs object.</param>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.RuleMethod.Invoke">
+	<summary>
+ Invokes the rule to validate the data.
+ </summary>
+	<returns>True if the data is valid, False if the data is invalid.</returns>
+</member><member name="T:Nrc.Framework.BusinessLogic.Validation.RuleMethod">
+	<summary>
+ Tracks all information for a rule.
+ </summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.Core.UndoableBase.EditLevel">
+	<summary>
+ Returns the current edit level of the object.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.UndoableBase.CopyStateComplete">
+	<summary>
+ This method is invoked after the CopyState
+ operation is complete.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.UndoableBase.CopyState">
+	<summary>
+ Copies the state of the object and places the copy
+ onto the state stack.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.UndoableBase.UndoChangesComplete">
+	<summary>
+ This method is invoked after the UndoChanges
+ operation is complete.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.UndoableBase.UndoChanges">
+	<summary>
+ Restores the object's state to the most recently
+ copied values from the state stack.
+ </summary>
+	<remarks>
+ Restores the state of the object to its
+ previous value by taking the data out of 
+ the stack and restoring it into the fields
+ of the object.
+ </remarks>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.UndoableBase.AcceptChangesComplete">
+	<summary>
+ This method is invoked after the AcceptChanges
+ operation is complete.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.UndoableBase.AcceptChanges">
+	<summary>
+ Accepts any changes made to the object since the last
+ state copy was made.
+ </summary>
+	<remarks>
+ The most recent state copy is removed from the state
+ stack and discarded, thus committing any changes made
+ to the object's state.
+ </remarks>
+</member><member name="T:Nrc.Framework.BusinessLogic.Core.UndoableBase">
+	<summary>
+ Implements n-level undo capabilities as
+ described in Chapters 2 and 3.
+ </summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.My.Resources.Resources.ResourceManager">
+	<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.My.Resources.Resources.Culture">
+	<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.My.Resources.Resources.ChangeInvalidException">
+	<summary>
+  Looks up a localized string similar to Changing an element is an invalid operation.
+</summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.My.Resources.Resources.ChildDeleteException">
+	<summary>
+  Looks up a localized string similar to Can not directly mark a child object for deletion - use its parent collection.
+</summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.My.Resources.Resources.ClearInvalidException">
+	<summary>
+  Looks up a localized string similar to Clear is an invalid operation.
+</summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.My.Resources.Resources.GetIdValueCantBeNull">
+	<summary>
+  Looks up a localized string similar to GetIdValue must not return Nothing.
+</summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.My.Resources.Resources.InsertInvalidException">
+	<summary>
+  Looks up a localized string similar to Insert is an invalid operation.
+</summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.My.Resources.Resources.MaxValueRule">
+	<summary>
+  Looks up a localized string similar to {0} can not exceed {1}.
+</summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.My.Resources.Resources.MinValueRule">
+	<summary>
+  Looks up a localized string similar to {0} can not be less than {1}.
+</summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.My.Resources.Resources.NoApplyEditChildException">
+	<summary>
+  Looks up a localized string similar to ApplyEdit is not valid on a child object.
+</summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.My.Resources.Resources.NoBeginEditChildException">
+	<summary>
+  Looks up a localized string similar to BeginEdit is not valid on a child object.
+</summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.My.Resources.Resources.NoCancelEditChildException">
+	<summary>
+  Looks up a localized string similar to CancelEdit is not valid on a child object.
+</summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.My.Resources.Resources.NoDeleteRootException">
+	<summary>
+  Looks up a localized string similar to Invalid for root objects - use Delete instead.
+</summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.My.Resources.Resources.NoSaveChildException">
+	<summary>
+  Looks up a localized string similar to Can not directly save a child object.
+</summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.My.Resources.Resources.NoSaveEditingException">
+	<summary>
+  Looks up a localized string similar to Object is still being edited and can not be saved.
+</summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.My.Resources.Resources.NoSaveInvalidException">
+	<summary>
+  Looks up a localized string similar to Object is not valid and can not be saved.
+</summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.My.Resources.Resources.ParentSetException">
+	<summary>
+  Looks up a localized string similar to Parent value can only be set for child objects.
+</summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.My.Resources.Resources.RegExMatchRule">
+	<summary>
+  Looks up a localized string similar to {0} does not match regular expression.
+</summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.My.Resources.Resources.RemoveInvalidException">
+	<summary>
+  Looks up a localized string similar to Remove is an invalid operation.
+</summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.My.Resources.Resources.StringMaxLengthRule">
+	<summary>
+  Looks up a localized string similar to {0} can not exceed {1} characters.
+</summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.My.Resources.Resources.StringRequiredRule">
+	<summary>
+  Looks up a localized string similar to {0} required.
+</summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.My.Resources.Resources.UpdateNotSupportedException">
+	<summary>
+  Looks up a localized string similar to Invalid operation - update not allowed.
+</summary>
+</member><member name="T:Nrc.Framework.BusinessLogic.My.Resources.Resources">
+	<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member><member name="T:Nrc.Framework.BusinessLogic.Validation.RuleHandler">
+	<summary>
+ Delegate that defines the method signature for all rule handler methods.
+ </summary>
+	<remarks>
+		<para>
+ When implementing a rule handler, you must conform to the method signature
+ defined by this delegate. You should also apply the Description attribute
+ to your method to provide a meaningful description for your rule.
+ </para><para>
+ The method implementing the rule must return 
+ <see langword="true"/> if the data is valid and
+ return <see langword="false"/> if the data is invalid.
+ </para>
+	</remarks>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.ValidationException.#ctor">
+	<summary>
+ Initializes a new instance of the 
+ <see cref="T:Csla.ValidationException"/> class.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.ValidationException.#ctor(System.String)">
+	<summary>
+ Initializes a new instance of the 
+ <see cref="ValidationException"/> class
+ with a specified error message.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.ValidationException.#ctor(System.String,System.Exception)">
+	<summary>
+ Initializes a new instance of the 
+ <see cref="T:Csla.ValidationException"/> class
+ with a specified error message and a reference to the 
+ inner exception that is the cause of this exception.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.ValidationException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+	<summary>
+ Initializes a new instance of the 
+ <see cref="T:Csla.ValidationException"/> class
+ with serialized data.
+ </summary>
+</member><member name="T:Nrc.Framework.BusinessLogic.Validation.ValidationException">
+	<summary>
+ Exception class indicating that there was a validation
+ problem with a business object.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.ValidationRules.GetRulesForProperty(System.String)">
+	<summary>
+ Returns the list containing rules for a rule name. If
+ no list exists one is created and returned.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.ValidationRules.AddRule(Nrc.Framework.BusinessLogic.Validation.RuleHandler,System.String)">
+	<summary>
+ Adds a rule to the list of rules to be enforced.
+ </summary>
+	<remarks>
+		<para>
+ A rule is implemented by a method which conforms to the 
+ method signature defined by the RuleHandler delegate.
+ </para><para>
+ The propertyName may be used by the method that implements the rule
+ in order to retrieve the value to be validated. If the rule
+ implementation is inside the target object then it probably has
+ direct access to all data. However, if the rule implementation
+ is outside the target object then it will need to use reflection
+ or CallByName to dynamically invoke this property to retrieve
+ the value to be validated.
+ </para>
+	</remarks>
+	<param name="handler">The method that implements the rule.</param>
+	<param name="propertyName">
+ The property name on the target object where the rule implementation can retrieve
+ the value to be validated.
+ </param>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.ValidationRules.AddRule(Nrc.Framework.BusinessLogic.Validation.RuleHandler,Nrc.Framework.BusinessLogic.Validation.RuleArgs)">
+	<summary>
+ Adds a rule to the list of rules to be enforced.
+ </summary>
+	<remarks>
+ A rule is implemented by a method which conforms to the 
+ method signature defined by the RuleHandler delegate.
+ </remarks>
+	<param name="handler">The method that implements the rule.</param>
+	<param name="args">
+ A RuleArgs object specifying the property name and other arguments
+ passed to the rule method
+ </param>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.ValidationRules.CheckRules(System.String)">
+	<summary>
+ Invokes all rule methods associated with
+ the specified property.
+ </summary>
+	<param name="propertyName">The name of the property to validate.</param>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.ValidationRules.CheckRules">
+	<summary>
+ Invokes all rule methods for all properties
+ in the object.
+ </summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.Validation.ValidationRules.IsValid">
+	<summary>
+ Returns a value indicating whether there are any broken rules
+ at this time. 
+ </summary>
+	<returns>A value indicating whether any rules are broken.</returns>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.ValidationRules.GetBrokenRules">
+	<summary>
+ Returns a reference to the readonly collection of broken
+ business rules.
+ </summary>
+	<remarks>
+ The reference returned points to the actual collection object.
+ This means that as rules are marked broken or unbroken over time,
+ the underlying data will change. Because of this, the UI developer
+ can bind a display directly to this collection to get a dynamic
+ display of the broken rules at all times.
+ </remarks>
+	<returns>A reference to the collection of broken rules.</returns>
+</member><member name="T:Nrc.Framework.BusinessLogic.Validation.ValidationRules">
+	<summary>
+ Tracks the business rules broken within a business object.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.BusinessListBase`2.Initialize">
+	<summary>
+ Override this method to set up event handlers so user
+ code in a partial class can respond to events raised by
+ generated code.
+ </summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.BusinessListBase`2.IsDirty">
+	<summary>
+ Gets a value indicating whether this object's data has been changed.
+ </summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.BusinessListBase`2.IsValid">
+	<summary>
+ Gets a value indicating whether this object is currently in
+ a valid state (has no broken validation rules).
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.BusinessListBase`2.BeginEdit">
+	<summary>
+ Starts a nested edit on the object.
+ </summary>
+	<remarks>
+		<para>
+ When this method is called the object takes a snapshot of
+ its current state (the values of its variables). This snapshot
+ can be restored by calling <see cref="CancelEdit"/>
+ or committed by calling <see cref="ApplyEdit"/>.
+ </para><para>
+ This is a nested operation. Each call to BeginEdit adds a new
+ snapshot of the object's state to a stack. You should ensure that 
+ for each call to BeginEdit there is a corresponding call to either 
+ CancelEdit or ApplyEdit to remove that snapshot from the stack.
+ </para><para>
+ See Chapters 2 and 3 for details on n-level undo and state stacking.
+ </para><para>
+ This method triggers the copying of all child object states.
+ </para>
+	</remarks>
+</member><member name="M:Nrc.Framework.BusinessLogic.BusinessListBase`2.CancelEdit">
+	<summary>
+ Cancels the current edit process, restoring the object's state to
+ its previous values.
+ </summary>
+	<remarks>
+ Calling this method causes the most recently taken snapshot of the 
+ object's state to be restored. This resets the object's values
+ to the point of the last <see cref="BeginEdit"/>
+ call.
+ <para>
+ This method triggers an undo in all child objects.
+ </para>
+	</remarks>
+</member><member name="M:Nrc.Framework.BusinessLogic.BusinessListBase`2.ApplyEdit">
+	<summary>
+ Commits the current edit process.
+ </summary>
+	<remarks>
+ Calling this method causes the most recently taken snapshot of the 
+ object's state to be discarded, thus committing any changes made
+ to the object's state since the last 
+ <see cref="BeginEdit"/> call.
+ <para>
+ This method triggers an <see cref="Core.BusinessBase.ApplyEdit"/>
+  in all child objects.
+ </para>
+	</remarks>
+</member><member name="P:Nrc.Framework.BusinessLogic.BusinessListBase`2.DeletedList">
+	<summary>
+ A collection containing all child objects marked
+ for deletion.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.BusinessListBase`2.ContainsDeleted(`1)">
+	<summary>
+ Returns <see langword="true"/> if the internal deleted list
+ contains the specified child object.
+ </summary>
+	<param name="item">Child object to check.</param>
+</member><member name="M:Nrc.Framework.BusinessLogic.BusinessListBase`2.RemoveChild(Nrc.Framework.BusinessLogic.Core.IEditableBusinessObject)">
+	<summary>
+ This method is called by a child object when it
+ wants to be removed from the collection.
+ </summary>
+	<param name="child">The child object to remove.</param>
+</member><member name="M:Nrc.Framework.BusinessLogic.BusinessListBase`2.InsertItem(System.Int32,`1)">
+	<summary>
+ Sets the edit level of the child object as it is added.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.BusinessListBase`2.RemoveItem(System.Int32)">
+	<summary>
+ Marks the child object for deletion and moves it to
+ the collection of deleted objects.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.BusinessListBase`2.ClearItems">
+	<summary>
+ Clears the collection, moving all active
+ items to the deleted list.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.BusinessListBase`2.SetItem(System.Int32,`1)">
+	<summary>
+ Replaces the item at the specified index with
+ the specified item, first moving the original
+ item to the deleted list.
+ </summary>
+	<param name="index">The zero-based index of the item to replace.</param>
+	<param name="item">
+ The new value for the item at the specified index. 
+ The value can be null for reference types.
+ </param>
+	<remarks></remarks>
+</member><member name="P:Nrc.Framework.BusinessLogic.BusinessListBase`2.EditLevel">
+	<summary>
+ Returns the current edit level of the object.
+ </summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.BusinessListBase`2.IsChild">
+	<summary>
+ Indicates whether this collection object is a child object.
+ </summary>
+	<returns>True if this is a child object.</returns>
+</member><member name="M:Nrc.Framework.BusinessLogic.BusinessListBase`2.MarkAsChild">
+	<summary>
+ Marks the object as being a child object.
+ </summary>
+	<remarks>
+		<para>
+ By default all business objects are 'parent' objects. This means
+ that they can be directly retrieved and updated into the database.
+ </para><para>
+ We often also need child objects. These are objects which are contained
+ within other objects. For instance, a parent Invoice object will contain
+ child LineItem objects.
+ </para><para>
+ To create a child object, the MarkAsChild method must be called as the
+ object is created. Please see Chapter 7 for details on the use of the
+ MarkAsChild method.
+ </para>
+	</remarks>
+</member><member name="M:Nrc.Framework.BusinessLogic.BusinessListBase`2.GetClone">
+	<summary>
+ Creates a clone of the object.
+ </summary>
+	<returns>
+ A new object containing the exact data of the original object.
+ </returns>
+</member><member name="M:Nrc.Framework.BusinessLogic.BusinessListBase`2.Clone">
+	<summary>
+ Creates a clone of the object.
+ </summary>
+	<returns>
+ A new object containing the exact data of the original object.
+ </returns>
+</member><member name="M:Nrc.Framework.BusinessLogic.BusinessListBase`2.OnDeserialized(System.Runtime.Serialization.StreamingContext)">
+	<summary>
+ This method is called on a newly deserialized object
+ after deserialization is complete.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.BusinessListBase`2.Save">
+	<summary>
+ Saves the object to the database.
+ </summary>
+	<remarks>
+		<para>
+ Calling this method starts the save operation, causing the all child
+ objects to be inserted, updated or deleted within the database based on the
+ each object's current state.
+ </para><para>
+ All this is contingent on <see cref="IsDirty"/>. If
+ this value is <see langword="false"/>, no data operation occurs. 
+ It is also contingent on <see cref="IsValid"/>. If this value is 
+ <see langword="false"/> an exception will be thrown to 
+ indicate that the UI attempted to save an invalid object.
+ </para><para>
+ It is important to note that this method returns a new version of the
+ business collection that contains any data updated during the save operation.
+ You MUST update all object references to use this new version of the
+ business collection in order to have access to the correct object data.
+ </para><para>
+ You can override this method to add your own custom behaviors to the save
+ operation. For instance, you may add some security checks to make sure
+ the user can save the object. If all security checks pass, you would then
+ invoke the base Save method via <c>MyBase.Save()</c>.
+ </para>
+	</remarks>
+</member><member name="T:Nrc.Framework.BusinessLogic.BusinessListBase`2">
+	<summary>
+ This is the base class from which most business collections
+ or lists will be derived.
+ </summary>
+	<typeparam name="T">Type of the business object being defined.</typeparam>
+	<typeparam name="C">Type of the child objects contained in the list.</typeparam>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.ObjectCloner.Clone(System.Object)">
+	<summary>
+ Clones an object by using the
+ <see cref="BinaryFormatter"/>.
+ </summary>
+	<param name="obj">The object to clone.</param>
+	<remarks>
+ The object to be cloned must be serializable.
+ </remarks>
+</member><member name="E:Nrc.Framework.BusinessLogic.Core.BindableBase.PropertyChanged">
+	<summary>
+ Implements a serialization-safe PropertyChanged event.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.BindableBase.OnIsDirtyChanged">
+	<summary>
+ Call this method to raise the PropertyChanged event
+ for all object properties.
+ </summary>
+	<remarks>
+ This method is for backward compatibility with
+ CSLA .NET 1.x.
+ </remarks>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.BindableBase.OnUnknownPropertyChanged">
+	<summary>
+ Call this method to raise the PropertyChanged event
+ for all object properties.
+ </summary>
+	<remarks>
+ This method is automatically called by MarkDirty.
+ </remarks>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.BindableBase.OnPropertyChanged(System.String)">
+	<summary>
+ Call this method to raise the PropertyChanged event
+ for a specific property.
+ </summary>
+	<remarks>
+ This method may be called by properties in the business
+ class to indicate the change in a specific property.
+ </remarks>
+</member><member name="T:Nrc.Framework.BusinessLogic.Core.BindableBase">
+	<summary>
+ This class implements INotifyPropertyChanged
+ in a serialization-safe manner.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.BrokenRulesCollection.GetFirstBrokenRule(System.String)">
+	<summary>
+ Returns the first <see cref="BrokenRule"/> object
+ corresponding to the specified property.
+ </summary>
+	<remarks>
+ Code in a business object or UI can also use this value to retrieve
+ the first broken rule in <see cref="BrokenRulesCollection"/> that corresponds
+ to a specfic Property on the object.
+ </remarks>
+	<param name="property">The name of the property affected by the rule.</param>
+	<returns>
+ The first BrokenRule object corresponding to the specified property, or Nothing if 
+ there are no rules defined for the property.
+ </returns>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.BrokenRulesCollection.ToString">
+	<summary>
+ Returns the text of all broken rule descriptions, each
+ separated by a <see cref="Environment.NewLine"/>.
+ </summary>
+	<returns>The text of all broken rule descriptions.</returns>
+</member><member name="T:Nrc.Framework.BusinessLogic.Validation.BrokenRulesCollection">
+	<summary>
+ A collection of currently broken rules.
+ </summary>
+	<remarks>
+ This collection is readonly and can be safely made available
+ to code outside the business object such as the UI. This allows
+ external code, such as a UI, to display the list of broken rules
+ to the user.
+ </remarks>
+</member><member name="M:Nrc.Framework.BusinessLogic.SortedBindingList`1.GetEnumerator">
+	<summary>
+ Returns an enumerator for the list, honoring
+ any sort that is active at the time.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.SortedBindingList`1.AddIndex(System.ComponentModel.PropertyDescriptor)">
+	<summary>
+ Implemented by IList source object.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.SortedBindingList`1.AddNew">
+	<summary>
+ Implemented by IList source object.
+ </summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.SortedBindingList`1.AllowEdit">
+	<summary>
+ Implemented by IList source object.
+ </summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.SortedBindingList`1.AllowNew">
+	<summary>
+ Implemented by IList source object.
+ </summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.SortedBindingList`1.AllowRemove">
+	<summary>
+ Implemented by IList source object.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.SortedBindingList`1.ApplySort(System.String,System.ComponentModel.ListSortDirection)">
+	<summary>
+ Applies a sort to the view.
+ </summary>
+	<param name="propertyName">The text name of the property on which to sort.</param>
+	<param name="direction">The direction to sort the data.</param>
+</member><member name="M:Nrc.Framework.BusinessLogic.SortedBindingList`1.ApplySort(System.ComponentModel.PropertyDescriptor,System.ComponentModel.ListSortDirection)">
+	<summary>
+ Applies a sort to the view.
+ </summary>
+	<param name="property">A PropertyDescriptor for the property on which to sort.</param>
+	<param name="direction">The direction to sort the data.</param>
+</member><member name="M:Nrc.Framework.BusinessLogic.SortedBindingList`1.Find(System.String,System.Object)">
+	<summary>
+ Finds an item in the view
+ </summary>
+	<param name="propertyName">Name of the property to search</param>
+	<param name="key">Value to find</param>
+</member><member name="M:Nrc.Framework.BusinessLogic.SortedBindingList`1.Find(System.ComponentModel.PropertyDescriptor,System.Object)">
+	<summary>
+ Implemented by IList source object.
+ </summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.SortedBindingList`1.IsSorted">
+	<summary>
+ Gets a value indicating whether the view is currently sorted.
+ </summary>
+</member><member name="E:Nrc.Framework.BusinessLogic.SortedBindingList`1.ListChanged">
+	<summary>
+ Raised to indicate that the list's data has changed.
+ </summary>
+	<remarks>
+ This event is raised if the underling IList object's data changes
+ (assuming the underling IList also implements the IBindingList
+ interface). It is also raised if the sort property or direction
+ is changed to indicate that the view's data has changed. See
+ Chapter 5 for details.
+ </remarks>
+</member><member name="M:Nrc.Framework.BusinessLogic.SortedBindingList`1.RemoveIndex(System.ComponentModel.PropertyDescriptor)">
+	<summary>
+ Implemented by IList source object.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.SortedBindingList`1.RemoveSort">
+	<summary>
+ Removes any sort currently applied to the view.
+ </summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.SortedBindingList`1.SortDirection">
+	<summary>
+ Returns the direction of the current sort.
+ </summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.SortedBindingList`1.SortProperty">
+	<summary>
+ Returns the PropertyDescriptor of the current sort.
+ </summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.SortedBindingList`1.SupportsChangeNotification">
+	<summary>
+ Returns <see langword="true"/> since this object does raise the
+ ListChanged event.
+ </summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.SortedBindingList`1.SupportsSearching">
+	<summary>
+ Implemented by IList source object.
+ </summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.SortedBindingList`1.SupportsSorting">
+	<summary>
+ Returns <see langword="true"/>. Sorting is supported.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.SortedBindingList`1.CopyTo(`0[],System.Int32)">
+	<summary>
+ Implemented by IList source object.
+ </summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.SortedBindingList`1.Count">
+	<summary>
+ Implemented by IList source object.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.SortedBindingList`1.Add(`0)">
+	<summary>
+ Implemented by IList source object.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.SortedBindingList`1.Clear">
+	<summary>
+ Implemented by IList source object.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.SortedBindingList`1.Contains(`0)">
+	<summary>
+ Implemented by IList source object.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.SortedBindingList`1.IndexOf(`0)">
+	<summary>
+ Implemented by IList source object.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.SortedBindingList`1.Insert(System.Int32,`0)">
+	<summary>
+ Implemented by IList source object.
+ </summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.SortedBindingList`1.IsReadOnly">
+	<summary>
+ Implemented by IList source object.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.SortedBindingList`1.Remove(`0)">
+	<summary>
+ Implemented by IList source object.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.SortedBindingList`1.RemoveAt(System.Int32)">
+	<summary>
+ Removes the child object at the specified index
+ in the list, resorting the display as needed.
+ </summary>
+	<param name="index">The index of the object to remove.</param>
+	<remarks>
+ See Chapter 5 for details on how and why the list is
+ altered during the remove process.
+ </remarks>
+</member><member name="P:Nrc.Framework.BusinessLogic.SortedBindingList`1.Item(System.Int32)">
+	<summary>
+ Gets the child item at the specified index in the list,
+ honoring the sort order of the items.
+ </summary>
+	<param name="index">The index of the item in the sorted list.</param>
+</member><member name="M:Nrc.Framework.BusinessLogic.SortedBindingList`1.#ctor(System.Collections.Generic.IList{`0})">
+	<summary>
+ Creates a new view based on the provided IList object.
+ </summary>
+	<param name="list">The IList (collection) containing the data.</param>
+</member><member name="T:Nrc.Framework.BusinessLogic.SortedBindingList`1">
+	<summary>
+ Provides a sorted view into an existing IList(Of T).
+ </summary>
+	<typeparam name="T">
+ Type of child object contained by
+ the original list or collection.
+ </typeparam>
+</member><member name="M:Nrc.Framework.BusinessLogic.BusinessBase`1.GetIdValue">
+	<summary>
+ Override this method to return a unique identifying
+ value for this object.
+ </summary>
+	<remarks>
+ If you can not provide a unique identifying value, it
+ is best if you can generate such a unique value (even
+ temporarily). If you can not do that, then return 
+ <see langword="Nothing"/> and then manually override the
+ <see cref="Equals"/>, <see cref="GetHashCode"/> and
+ <see cref="ToString"/> methods in your business object.
+ </remarks>
+</member><member name="M:Nrc.Framework.BusinessLogic.BusinessBase`1.Equals(System.Object)">
+	<summary>
+ Compares this object for equality with another object, using
+ the results of <see cref="GetIdValue"/> to determine
+ equality.
+ </summary>
+	<param name="obj">The object to be compared.</param>
+</member><member name="M:Nrc.Framework.BusinessLogic.BusinessBase`1.GetHashCode">
+	<summary>
+ Returns a hash code value for this object, based on
+ the results of <see cref="GetIdValue"/>.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.BusinessBase`1.ToString">
+	<summary>
+ Returns a text representation of this object by
+ returning the <see cref="GetIdValue"/> value
+ in text form.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.BusinessBase`1.Clone">
+	<summary>
+ Creates a clone of the object.
+ </summary>
+	<returns>
+ A new object containing the exact data of the original object.
+ </returns>
+</member><member name="T:Nrc.Framework.BusinessLogic.BusinessBase`1">
+	<summary>
+ This is the base class from which most business objects
+ will be derived.
+ </summary>
+	<remarks>
+		<para>
+ This class is the core of the CSLA .NET framework. To create
+ a business object, inherit from this class.
+ </para><para>
+ Please refer to 'Expert VB 2005 Business Objects' for
+ full details on the use of this base class to create business
+ objects.
+ </para>
+	</remarks>
+	<typeparam name="T">Type of the business object being defined.</typeparam>
+</member><member name="T:Nrc.Framework.BusinessLogic.Core.IBusinessObject">
+	<summary>
+ This is the core interface implemented
+ by all CSLA .NET base classes.
+ </summary>
+</member><member name="T:Nrc.Framework.BusinessLogic.Core.IEditableCollection">
+	<summary>
+ Defines the common methods required by all
+ editable CSLA collection objects.
+ </summary>
+	<remarks>
+ It is strongly recommended that the implementations
+ of the methods in this interface be made Private
+ so as to not clutter up the native interface of
+ the collection objects.
+ </remarks>
+</member><member name="T:Nrc.Framework.BusinessLogic.Core.IUndoableObject">
+	<summary>
+ Defines the methods required to participate
+ in n-level undo within the CSLA .NET framework.
+ </summary>
+	<remarks>
+ This interface is used by Csla.Core.UndoableBase
+ to initiate begin, cancel and apply edit operations.
+ </remarks>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.BusinessBase.Initialize">
+	<summary>
+ Override this method to set up event handlers so user
+ code in a partial class can respond to events raised by
+ generated code.
+ </summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.Core.BusinessBase.IsNew">
+	<summary>
+ Returns <see langword="true"/> if this is a new object, 
+ <see langword="false"/> if it is a pre-existing object.
+ </summary>
+	<remarks>
+ An object is considered to be new if its primary identifying (key) value 
+ doesn't correspond to data in the database. In other words, 
+ if the data values in this particular
+ object have not yet been saved to the database the object is considered to
+ be new. Likewise, if the object's data has been deleted from the database
+ then the object is considered to be new.
+ </remarks>
+	<returns>A value indicating if this object is new.</returns>
+</member><member name="P:Nrc.Framework.BusinessLogic.Core.BusinessBase.IsDeleted">
+	<summary>
+ Returns <see langword="true"/> if this object is marked for deletion.
+ </summary>
+	<remarks>
+ CSLA .NET supports both immediate and deferred deletion of objects. This
+ property is part of the support for deferred deletion, where an object
+ can be marked for deletion, but isn't actually deleted until the object
+ is saved to the database. This property indicates whether or not the
+ current object has been marked for deletion. If it is <see langword="true"/>
+ , the object will
+ be deleted when it is saved to the database, otherwise it will be inserted
+ or updated by the save operation.
+ </remarks>
+	<returns>A value indicating if this object is marked for deletion.</returns>
+</member><member name="P:Nrc.Framework.BusinessLogic.Core.BusinessBase.IsDirty">
+	<summary>
+ Returns <see langword="true"/> if this object's data has been changed.
+ </summary>
+	<remarks>
+		<para>
+ When an object's data is changed, CSLA .NET makes note of that change
+ and considers the object to be 'dirty' or changed. This value is used to
+ optimize data updates, since an unchanged object does not need to be
+ updated into the database. All new objects are considered dirty. All objects
+ marked for deletion are considered dirty.
+ </para><para>
+ Once an object's data has been saved to the database (inserted or updated)
+ the dirty flag is cleared and the object is considered unchanged. Objects
+ newly loaded from the database are also considered unchanged.
+ </para>
+	</remarks>
+	<returns>A value indicating if this object's data has been changed.</returns>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.BusinessBase.MarkNew">
+	<summary>
+ Marks the object as being a new object. This also marks the object
+ as being dirty and ensures that it is not marked for deletion.
+ </summary>
+	<remarks>
+		<para>
+ Newly created objects are marked new by default. You should call
+ this method in the implementation of DataPortal_Update when the
+ object is deleted (due to being marked for deletion) to indicate
+ that the object no longer reflects data in the database.
+ </para><para>
+ If you override this method, make sure to call the base
+ implementation after executing your new code.
+ </para>
+	</remarks>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.BusinessBase.MarkOld">
+	<summary>
+ Marks the object as being an old (not new) object. This also
+ marks the object as being unchanged (not dirty).
+ </summary>
+	<remarks>
+		<para>
+ You should call this method in the implementation of
+ DataPortal_Fetch to indicate that an existing object has been
+ successfully retrieved from the database.
+ </para><para>
+ You should call this method in the implementation of 
+ DataPortal_Update to indicate that a new object has been successfully
+ inserted into the database.
+ </para><para>
+ If you override this method, make sure to call the base
+ implementation after executing your new code.
+ </para>
+	</remarks>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.BusinessBase.MarkDeleted">
+	<summary>
+ Marks an object for deletion. This also marks the object
+ as being dirty.
+ </summary>
+	<remarks>
+ You should call this method in your business logic in the
+ case that you want to have the object deleted when it is
+ saved to the database.
+ </remarks>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.BusinessBase.MarkDirty">
+	<summary>
+ Marks an object as being dirty, or changed.
+ </summary>
+	<remarks>
+		<para>
+ You should call this method in your business logic any time
+ the object's internal data changes. Any time any instance
+ variable changes within the object, this method should be called
+ to tell CSLA .NET that the object's data has been changed.
+ </para><para>
+ Marking an object as dirty does two things. First it ensures
+ that CSLA .NET will properly save the object as appropriate. Second,
+ it causes CSLA .NET to tell Windows Forms data binding that the
+ object's data has changed so any bound controls will update to
+ reflect the new values.
+ </para>
+	</remarks>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.BusinessBase.MarkDirty(System.Boolean)">
+	<summary>
+ Marks an object as being dirty, or changed.
+ </summary>
+	<param name="supressEvent">
+		<see langword="true"/> to supress the PropertyChanged event that is otherwise
+ raised to indicate that the object's state has changed.
+ </param>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.BusinessBase.PropertyHasChanged">
+	<summary>
+ Performs processing required when the current
+ property has changed.
+ </summary>
+	<remarks>
+		<para>
+ This method calls CheckRules(propertyName), MarkDirty and
+ OnPropertyChanged(propertyName). MarkDirty is called such
+ that no event is raised for IsDirty, so only the specific
+ property changed event for the current property is raised.
+ </para><para>
+ This implementation uses System.Diagnostics.StackTrace to
+ determine the name of the current property, and so must be called
+ directly from the property to be checked.
+ </para>
+	</remarks>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.BusinessBase.PropertyHasChanged(System.String)">
+	<summary>
+ Performs processing required when a property
+ has changed.
+ </summary>
+	<remarks>
+ This method calls CheckRules(propertyName), MarkDirty and
+ OnPropertyChanged(propertyName). MarkDirty is called such
+ that no event is raised for IsDirty, so only the specific
+ property changed event for the current property is raised.
+ </remarks>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.BusinessBase.MarkClean">
+	<summary>
+ Forces the object's IsDirty flag to <see langword="false"/>.
+ </summary>
+	<remarks>
+ This method is normally called automatically and is
+ not intended to be called manually.
+ </remarks>
+</member><member name="P:Nrc.Framework.BusinessLogic.Core.BusinessBase.IsSavable">
+	<summary>
+ Returns <see langword="true"/> if this object is both dirty and valid.
+ </summary>
+	<remarks>
+ An object is considered dirty (changed) if 
+ <see cref="P:Csla.BusinessBase.IsDirty"/> returns <see langword="true"/>. It is
+ considered valid if IsValid
+ returns <see langword="true"/>. The IsSavable property is
+ a combination of these two properties. 
+ </remarks>
+	<returns>A value indicating if this object is both dirty and valid.</returns>
+</member><member name="P:Nrc.Framework.BusinessLogic.Core.BusinessBase.Parent">
+	<summary>
+ Provide access to the parent reference for use
+ in child object code.
+ </summary>
+	<remarks>
+ This value will be Nothing for root objects.
+ </remarks>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.BusinessBase.SetParent(Nrc.Framework.BusinessLogic.Core.IEditableCollection)">
+	<summary>
+ Used by BusinessListBase as a child object is 
+ created to tell the child object about its
+ parent.
+ </summary>
+	<param name="parent">A reference to the parent collection object.</param>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.BusinessBase.BeginEdit">
+	<summary>
+ Starts a nested edit on the object.
+ </summary>
+	<remarks>
+		<para>
+ When this method is called the object takes a snapshot of
+ its current state (the values of its variables). This snapshot
+ can be restored by calling CancelEdit
+ or committed by calling ApplyEdit.
+ </para><para>
+ This is a nested operation. Each call to BeginEdit adds a new
+ snapshot of the object's state to a stack. You should ensure that 
+ for each call to BeginEdit there is a corresponding call to either 
+ CancelEdit or ApplyEdit to remove that snapshot from the stack.
+ </para><para>
+ See Chapters 2 and 3 for details on n-level undo and state stacking.
+ </para>
+	</remarks>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.BusinessBase.CancelEdit">
+	<summary>
+ Cancels the current edit process, restoring the object's state to
+ its previous values.
+ </summary>
+	<remarks>
+ Calling this method causes the most recently taken snapshot of the 
+ object's state to be restored. This resets the object's values
+ to the point of the last BeginEdit call.
+ </remarks>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.BusinessBase.UndoChangesComplete">
+	<summary>
+ Called when an undo operation has completed.
+ </summary>
+	<remarks>
+ This method resets the object as a result of
+ deserialization and raises PropertyChanged events
+ to notify data binding that the object has changed.
+ </remarks>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.BusinessBase.ApplyEdit">
+	<summary>
+ Commits the current edit process.
+ </summary>
+	<remarks>
+ Calling this method causes the most recently taken snapshot of the 
+ object's state to be discarded, thus committing any changes made
+ to the object's state since the last BeginEdit call.
+ </remarks>
+</member><member name="P:Nrc.Framework.BusinessLogic.Core.BusinessBase.IsChild">
+	<summary>
+ Returns <see langword="true"/> if this is a child (non-root) object.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.BusinessBase.MarkAsChild">
+	<summary>
+ Marks the object as being a child object.
+ </summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.Core.BusinessBase.EditLevelAdded">
+	<summary>
+ Gets or sets the current edit level of the
+ object.
+ </summary>
+	<remarks>
+ Allow the collection object to use the
+ edit level as needed.
+ </remarks>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.BusinessBase.GetClone">
+	<summary>
+ Creates a clone of the object.
+ </summary>
+	<returns>
+ A new object containing the exact data of the original object.
+ </returns>
+</member><member name="P:Nrc.Framework.BusinessLogic.Core.BusinessBase.ValidationRules">
+	<summary>
+ Provides access to the broken rules functionality.
+ </summary>
+	<remarks>
+ This property is used within your business logic so you can
+ easily call the AddRule() method to associate validation
+ rules with your object's properties.
+ </remarks>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.BusinessBase.AddBusinessRules">
+	<summary>
+ Override this method in your business class to
+ be notified when you need to set up business
+ rules.
+ </summary>
+	<remarks>
+ AddBusinessRules is automatically called by CSLA .NET
+ when your object should associate validation rules
+ with its properties.
+ </remarks>
+</member><member name="P:Nrc.Framework.BusinessLogic.Core.BusinessBase.IsValid">
+	<summary>
+ Returns <see langword="true"/> if the object is currently valid, <see langword="false"/> if the
+ object has broken rules or is otherwise invalid.
+ </summary>
+	<remarks>
+		<para>
+ By default this property relies on the underling ValidationRules
+ object to track whether any business rules are currently broken for this object.
+ </para><para>
+ You can override this property to provide more sophisticated
+ implementations of the behavior. For instance, you should always override
+ this method if your object has child objects, since the validity of this object
+ is affected by the validity of all child objects.
+ </para>
+	</remarks>
+	<returns>A value indicating if the object is currently valid.</returns>
+</member><member name="P:Nrc.Framework.BusinessLogic.Core.BusinessBase.BrokenRulesCollection">
+	<summary>
+ Provides access to the readonly collection of broken business rules
+ for this object.
+ </summary>
+	<returns>A Csla.Validation.RulesCollection object.</returns>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.BusinessBase.Delete">
+	<summary>
+ Marks the object for deletion. The object will be deleted as part of the
+ next save operation.
+ </summary>
+	<remarks>
+		<para>
+ CSLA .NET supports both immediate and deferred deletion of objects. This
+ method is part of the support for deferred deletion, where an object
+ can be marked for deletion, but isn't actually deleted until the object
+ is saved to the database. This method is called by the UI developer to
+ mark the object for deletion.
+ </para><para>
+ To 'undelete' an object, use n-level undo as discussed in Chapters 2 and 3.
+ </para>
+	</remarks>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.BusinessBase.DeleteChild">
+	<summary>
+ Called by a parent object to mark the child
+ for deferred deletion.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.BusinessBase.Save">
+	<summary>
+ Saves the object to the database.
+ </summary>
+	<remarks>
+		<para>
+ Calling this method starts the save operation, causing the object
+ to be inserted, updated or deleted within the database based on the
+ object's current state.
+ </para><para>
+ If <see cref="Core.BusinessBase.IsDeleted"/> is <see langword="true"/>
+ the object will be deleted. Otherwise, if <see cref="Core.BusinessBase.IsNew"/> 
+ is <see langword="true"/> the object will be inserted. 
+ Otherwise the object's data will be updated in the database.
+ </para><para>
+ All this is contingent on <see cref="Core.BusinessBase.IsDirty"/>. If
+ this value is <see langword="false"/>, no data operation occurs. 
+ It is also contingent on <see cref="Core.BusinessBase.IsValid"/>. 
+ If this value is <see langword="false"/> an
+ exception will be thrown to indicate that the UI attempted to save an
+ invalid object.
+ </para><para>
+ It is important to note that this method returns a new version of the
+ business object that contains any data updated during the save operation.
+ You MUST update all object references to use this new version of the
+ business object in order to have access to the correct object data.
+ </para><para>
+ You can override this method to add your own custom behaviors to the save
+ operation. For instance, you may add some security checks to make sure
+ the user can save the object. If all security checks pass, you would then
+ invoke the base Save method via <c>MyBase.Save()</c>.
+ </para>
+	</remarks>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.BusinessBase.Save(System.Boolean)">
+	<summary>
+ Saves the object to the database, forcing
+ IsNew to <see langword="false"/> and IsDirty to True.
+ </summary>
+	<param name="forceUpdate">
+ If <see langword="true"/>, triggers overriding IsNew and IsDirty. 
+ If <see langword="false"/> then it is the same as calling Save().
+ </param>
+	<remarks>
+ This overload is designed for use in web applications
+ when implementing the Update method in your 
+ data wrapper object.
+ </remarks>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.BusinessBase.OnDeserialized(System.Runtime.Serialization.StreamingContext)">
+	<summary>
+ This method is called on a newly deserialized object
+ after deserialization is complete.
+ </summary>
+</member><member name="T:Nrc.Framework.BusinessLogic.Core.BusinessBase">
+	<summary>
+ This is the non-generic base class from which most
+ business objects will be derived.
+ </summary>
+	<remarks>
+ See Chapter 3 for details.
+ </remarks>
+</member><member name="T:Nrc.Framework.BusinessLogic.NotUndoableAttribute">
+	<summary>
+ Marks a field to indicate that the value should not 
+ be copied as part of the undo process.
+ </summary>
+	<remarks>
+ Marking a variable with this attribute will cause the n-level
+ undo process to ignore that variable's value. The value will
+ not be included in a snapshot when BeginEdit is called, nor
+ will it be restored when CancelEdit is called.
+ </remarks>
+</member><member name="P:Nrc.Framework.BusinessLogic.Validation.RuleArgs.PropertyName">
+	<summary>
+ The name of the property to be validated.
+ </summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.Validation.RuleArgs.Description">
+	<summary>
+ Set by the rule handler method to describe the broken
+ rule.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.RuleArgs.#ctor(System.String)">
+	<summary>
+ Creates an instance of RuleArgs.
+ </summary>
+	<param name="propertyName">The name of the property to be validated.</param>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.RuleArgs.ToString">
+	<summary>
+ Returns a string representation of the object.
+ </summary>
+</member><member name="T:Nrc.Framework.BusinessLogic.Validation.RuleArgs">
+	<summary>
+ Object providing extra information to methods that
+ implement business rules.
+ </summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.Core.IEditableBusinessObject.IsDirty">
+	<summary>
+ Returns <see langword="true"/> if this object's data has been changed.
+ </summary>
+	<remarks>
+		<para>
+ When an object's data is changed, CSLA .NET makes note of that change
+ and considers the object to be 'dirty' or changed. This value is used to
+ optimize data updates, since an unchanged object does not need to be
+ updated into the database. All new objects are considered dirty. All objects
+ marked for deletion are considered dirty.
+ </para><para>
+ Once an object's data has been saved to the database (inserted or updated)
+ the dirty flag is cleared and the object is considered unchanged. Objects
+ newly loaded from the database are also considered unchanged.
+ </para>
+	</remarks>
+	<returns>A value indicating if this object's data has been changed.</returns>
+</member><member name="P:Nrc.Framework.BusinessLogic.Core.IEditableBusinessObject.IsValid">
+	<summary>
+ Returns <see langword="true"/> if the object is currently valid, <see langword="false"/> if the
+ object has broken rules or is otherwise invalid.
+ </summary>
+	<remarks>
+		<para>
+ By default this property relies on the underling ValidationRules
+ object to track whether any business rules are currently broken for this object.
+ </para><para>
+ You can override this property to provide more sophisticated
+ implementations of the behavior. For instance, you should always override
+ this method if your object has child objects, since the validity of this object
+ is affected by the validity of all child objects.
+ </para>
+	</remarks>
+	<returns>A value indicating if the object is currently valid.</returns>
+</member><member name="P:Nrc.Framework.BusinessLogic.Core.IEditableBusinessObject.IsDeleted">
+	<summary>
+ Returns <see langword="true"/> if this object is marked for deletion.
+ </summary>
+	<remarks>
+ CSLA .NET supports both immediate and deferred deletion of objects. This
+ property is part of the support for deferred deletion, where an object
+ can be marked for deletion, but isn't actually deleted until the object
+ is saved to the database. This property indicates whether or not the
+ current object has been marked for deletion. If it is <see langword="true"/>
+ , the object will
+ be deleted when it is saved to the database, otherwise it will be inserted
+ or updated by the save operation.
+ </remarks>
+	<returns>A value indicating if this object is marked for deletion.</returns>
+</member><member name="P:Nrc.Framework.BusinessLogic.Core.IEditableBusinessObject.IsNew">
+	<summary>
+ Returns <see langword="true"/> if this is a new object, 
+ <see langword="false"/> if it is a pre-existing object.
+ </summary>
+	<remarks>
+ An object is considered to be new if its primary identifying (key) value 
+ doesn't correspond to data in the database. In other words, 
+ if the data values in this particular
+ object have not yet been saved to the database the object is considered to
+ be new. Likewise, if the object's data has been deleted from the database
+ then the object is considered to be new.
+ </remarks>
+	<returns>A value indicating if this object is new.</returns>
+</member><member name="P:Nrc.Framework.BusinessLogic.Core.IEditableBusinessObject.IsSavable">
+	<summary>
+ Returns <see langword="true"/> if this object is both dirty and valid.
+ </summary>
+	<remarks>
+ An object is considered dirty (changed) if 
+ <see cref="P:Csla.BusinessBase.IsDirty"/> returns <see langword="true"/>. It is
+ considered valid if IsValid
+ returns <see langword="true"/>. The IsSavable property is
+ a combination of these two properties. 
+ </remarks>
+	<returns>A value indicating if this object is both dirty and valid.</returns>
+</member><member name="P:Nrc.Framework.BusinessLogic.Core.IEditableBusinessObject.EditLevelAdded">
+	<summary>
+ For internal use only!!
+ </summary>
+	<remarks>
+ Altering this value will almost certainly
+ break your code. This property is for use
+ by the parent collection only!
+ </remarks>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.IEditableBusinessObject.DeleteChild">
+	<summary>
+ Called by a parent object to mark the child
+ for deferred deletion.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.IEditableBusinessObject.SetParent(Nrc.Framework.BusinessLogic.Core.IEditableCollection)">
+	<summary>
+ Used by BusinessListBase as a child object is 
+ created to tell the child object about its
+ parent.
+ </summary>
+	<param name="parent">A reference to the parent collection object.</param>
+</member><member name="T:Nrc.Framework.BusinessLogic.Core.IEditableBusinessObject">
+	<summary>
+ Defines the common methods required by all
+ editable CSLA single objects.
+ </summary>
+	<remarks>
+ It is strongly recommended that the implementations
+ of the methods in this interface be made Private
+ so as to not clutter up the native interface of
+ the collection objects.
+ </remarks>
+</member><member name="P:Nrc.Framework.BusinessLogic.Core.ReadOnlyBindingList`1.IsReadOnly">
+	<summary>
+ Gets or sets a value indicating whether the list is readonly.
+ </summary>
+	<remarks>
+ Subclasses can set this value to unlock the collection
+ in order to alter the collection's data.
+ </remarks>
+	<value>True indicates that the list is readonly.</value>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.ReadOnlyBindingList`1.ClearItems">
+	<summary>
+ Prevents clearing the collection.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.ReadOnlyBindingList`1.AddNewCore">
+	<summary>
+ Prevents insertion of items into the collection.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.ReadOnlyBindingList`1.InsertItem(System.Int32,`0)">
+	<summary>
+ Prevents insertion of items into the collection.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.ReadOnlyBindingList`1.RemoveItem(System.Int32)">
+	<summary>
+ Removes the item at the specified index if the collection is
+ not in readonly mode.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.Core.ReadOnlyBindingList`1.SetItem(System.Int32,`0)">
+	<summary>
+ Replaces the item at the specified index with the 
+ specified item if the collection is not in
+ readonly mode.
+ </summary>
+</member><member name="T:Nrc.Framework.BusinessLogic.Core.ReadOnlyBindingList`1">
+	<summary>
+ A readonly version of BindingList(Of T)
+ </summary>
+	<typeparam name="C">Type of item contained in the list.</typeparam>
+	<remarks>
+ This is a subclass of BindingList(Of T) that implements
+ a readonly list, preventing adding and removing of items
+ from the list. Use the IsReadOnly property
+ to unlock the list for loading/unloading data.
+ </remarks>
+</member><member name="P:Nrc.Framework.BusinessLogic.Validation.BrokenRule.RuleName">
+	<summary>
+ Provides access to the name of the broken rule.
+ </summary>
+	<value>The name of the rule.</value>
+</member><member name="P:Nrc.Framework.BusinessLogic.Validation.BrokenRule.Description">
+	<summary>
+ Provides access to the description of the broken rule.
+ </summary>
+	<value>The description of the rule.</value>
+</member><member name="P:Nrc.Framework.BusinessLogic.Validation.BrokenRule.Property">
+	<summary>
+ Provides access to the property affected by the broken rule.
+ </summary>
+	<value>The property affected by the rule.</value>
+</member><member name="T:Nrc.Framework.BusinessLogic.Validation.BrokenRule">
+	<summary>
+ Stores details about a specific broken business rule.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.CommonRules.StringRequired(System.Object,Nrc.Framework.BusinessLogic.Validation.RuleArgs)">
+	<summary>
+ Rule ensuring a string value contains one or more
+ characters.
+ </summary>
+	<param name="target">Object containing the data to validate</param>
+	<param name="e">Arguments parameter specifying the name of the string
+ property to validate</param>
+	<returns><see langword="false"/> if the rule is broken</returns>
+	<remarks>
+ This implementation uses late binding, and will only work
+ against string property values.
+ </remarks>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.CommonRules.StringMaxLength(System.Object,Nrc.Framework.BusinessLogic.Validation.RuleArgs)">
+	<summary>
+ Rule ensuring a string value doesn't exceed
+ a specified length.
+ </summary>
+	<param name="target">Object containing the data to validate</param>
+	<param name="e">Arguments parameter specifying the name of the string
+ property to validate</param>
+	<returns><see langword="false"/> if the rule is broken</returns>
+	<remarks>
+ This implementation uses late binding, and will only work
+ against string property values.
+ </remarks>
+</member><member name="P:Nrc.Framework.BusinessLogic.Validation.CommonRules.MaxLengthRuleArgs.MaxLength">
+	<summary>
+ Get the max length for the string.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.CommonRules.MaxLengthRuleArgs.#ctor(System.String,System.Int32)">
+	<summary>
+ Create a new object.
+ </summary>
+	<param name="propertyName">Name of the property to validate.</param>
+	<param name="maxLength">Max length of characters allowed.</param>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.CommonRules.MaxLengthRuleArgs.ToString">
+	<summary>
+ Returns a string representation of the object.
+ </summary>
+</member><member name="T:Nrc.Framework.BusinessLogic.Validation.CommonRules.MaxLengthRuleArgs">
+	<summary>
+ Custom <see cref="RuleArgs"/> object required by the
+ <see cref="StringMaxLength"/> rule method.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.CommonRules.IntegerMaxValue(System.Object,Nrc.Framework.BusinessLogic.Validation.RuleArgs)">
+	<summary>
+ Rule ensuring an integer value doesn't exceed
+ a specified value.
+ </summary>
+	<param name="target">Object containing the data to validate.</param>
+	<param name="e">Arguments parameter specifying the name of the
+ property to validate.</param>
+	<returns><see langword="false"/> if the rule is broken.</returns>
+</member><member name="P:Nrc.Framework.BusinessLogic.Validation.CommonRules.IntegerMaxValueRuleArgs.MaxValue">
+	<summary>
+ Get the max value for the property.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.CommonRules.IntegerMaxValueRuleArgs.#ctor(System.String,System.Int32)">
+	<summary>
+ Create a new object.
+ </summary>
+	<param name="propertyName">Name of the property.</param>
+	<param name="maxValue">Maximum allowed value for the property.</param>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.CommonRules.IntegerMaxValueRuleArgs.ToString">
+	<summary>
+ Returns a string representation of the object.
+ </summary>
+</member><member name="T:Nrc.Framework.BusinessLogic.Validation.CommonRules.IntegerMaxValueRuleArgs">
+	<summary>
+ Custom <see cref="RuleArgs"/> object required by the
+ <see cref="IntegerMaxValue"/> rule method.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.CommonRules.IntegerMinValue(System.Object,Nrc.Framework.BusinessLogic.Validation.RuleArgs)">
+	<summary>
+ Rule ensuring an integer value doesn't go below
+ a specified value.
+ </summary>
+	<param name="target">Object containing the data to validate.</param>
+	<param name="e">Arguments parameter specifying the name of the
+ property to validate.</param>
+	<returns><see langword="false"/> if the rule is broken.</returns>
+</member><member name="P:Nrc.Framework.BusinessLogic.Validation.CommonRules.IntegerMinValueRuleArgs.MinValue">
+	<summary>
+ Get the min value for the property.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.CommonRules.IntegerMinValueRuleArgs.#ctor(System.String,System.Int32)">
+	<summary>
+ Create a new object.
+ </summary>
+	<param name="propertyName">Name of the property.</param>
+	<param name="minValue">Minimum allowed value for the property.</param>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.CommonRules.IntegerMinValueRuleArgs.ToString">
+	<summary>
+ Returns a string representation of the object.
+ </summary>
+</member><member name="T:Nrc.Framework.BusinessLogic.Validation.CommonRules.IntegerMinValueRuleArgs">
+	<summary>
+ Custom <see cref="RuleArgs"/> object required by the
+ <see cref="IntegerMinValue"/> rule method.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.CommonRules.MaxValue``1(System.Object,Nrc.Framework.BusinessLogic.Validation.RuleArgs)">
+	<summary>
+ Rule ensuring that a numeric value
+ doesn't exceed a specified maximum.
+ </summary>
+	<typeparam name="T">Type of the property to validate.</typeparam>
+	<param name="target">Object containing value to validate.</param>
+	<param name="e">Arguments variable specifying the
+ name of the property to validate, along with the max
+ allowed value.</param>
+</member><member name="P:Nrc.Framework.BusinessLogic.Validation.CommonRules.MaxValueRuleArgs`1.MaxValue">
+	<summary>
+ Get the max value for the property.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.CommonRules.MaxValueRuleArgs`1.#ctor(System.String,`0)">
+	<summary>
+ Create a new object.
+ </summary>
+	<param name="propertyName">Name of the property.</param>
+	<param name="maxValue">Maximum allowed value for the property.</param>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.CommonRules.MaxValueRuleArgs`1.ToString">
+	<summary>
+ Returns a string representation of the object.
+ </summary>
+</member><member name="T:Nrc.Framework.BusinessLogic.Validation.CommonRules.MaxValueRuleArgs`1">
+	<summary>
+ Custom <see cref="RuleArgs"/> object required by the
+ <see cref="MaxValue"/> rule method.
+ </summary>
+	<typeparam name="T">Type of the property to validate.</typeparam>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.CommonRules.MinValue``1(System.Object,Nrc.Framework.BusinessLogic.Validation.RuleArgs)">
+	<summary>
+ Rule ensuring that a numeric value
+ doesn't exceed a specified minimum.
+ </summary>
+	<typeparam name="T">Type of the property to validate.</typeparam>
+	<param name="target">Object containing value to validate.</param>
+	<param name="e">Arguments variable specifying the
+ name of the property to validate, along with the min
+ allowed value.</param>
+</member><member name="P:Nrc.Framework.BusinessLogic.Validation.CommonRules.MinValueRuleArgs`1.MinValue">
+	<summary>
+ Get the min value for the property.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.CommonRules.MinValueRuleArgs`1.#ctor(System.String,`0)">
+	<summary>
+ Create a new object.
+ </summary>
+	<param name="propertyName">Name of the property.</param>
+	<param name="minValue">Minimum allowed value for the property.</param>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.CommonRules.MinValueRuleArgs`1.ToString">
+	<summary>
+ Returns a string representation of the object.
+ </summary>
+</member><member name="T:Nrc.Framework.BusinessLogic.Validation.CommonRules.MinValueRuleArgs`1">
+	<summary>
+ Custom <see cref="RuleArgs"/> object required by the
+ <see cref="MinValue"/> rule method.
+ </summary>
+	<typeparam name="T">Type of the property to validate.</typeparam>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.CommonRules.RegExMatch(System.Object,Nrc.Framework.BusinessLogic.Validation.RuleArgs)">
+	<summary>
+ Rule that checks to make sure a value
+ matches a given regex pattern.
+ </summary>
+	<param name="target">Object containing the data to validate</param>
+	<param name="e">RegExRuleArgs parameter specifying the name of the 
+ property to validate and the regex pattern.</param>
+	<returns>False if the rule is broken</returns>
+	<remarks>
+ This implementation uses late binding.
+ </remarks>
+</member><member name="F:Nrc.Framework.BusinessLogic.Validation.CommonRules.RegExPatterns.SSN">
+	<summary>
+ US Social Security number pattern.
+ </summary>
+</member><member name="F:Nrc.Framework.BusinessLogic.Validation.CommonRules.RegExPatterns.Email">
+	<summary>
+ Email address pattern.
+ </summary>
+</member><member name="T:Nrc.Framework.BusinessLogic.Validation.CommonRules.RegExPatterns">
+	<summary>
+ List of built-in regex patterns.
+ </summary>
+</member><member name="P:Nrc.Framework.BusinessLogic.Validation.CommonRules.RegExRuleArgs.RegEx">
+	<summary>
+ The <see cref="RegEx"/> object used to validate
+ the property.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.CommonRules.RegExRuleArgs.#ctor(System.String,Nrc.Framework.BusinessLogic.Validation.CommonRules.RegExPatterns)">
+	<summary>
+ Creates a new object.
+ </summary>
+	<param name="propertyName">Name of the property to validate.</param>
+	<param name="pattern">Built-in regex pattern to use.</param>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.CommonRules.RegExRuleArgs.#ctor(System.String,System.String)">
+	<summary>
+ Creates a new object.
+ </summary>
+	<param name="propertyName">Name of the property to validate.</param>
+	<param name="pattern">Custom regex pattern to use.</param>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.CommonRules.RegExRuleArgs.#ctor(System.String,System.Text.RegularExpressions.Regex)">
+	<summary>
+ Creates a new object.
+ </summary>
+	<param name="propertyName">Name of the property to validate.</param>
+	<param name="regEx"><see cref="RegEx"/> object to use.</param>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.CommonRules.RegExRuleArgs.ToString">
+	<summary>
+ Returns a string representation of the object.
+ </summary>
+</member><member name="M:Nrc.Framework.BusinessLogic.Validation.CommonRules.RegExRuleArgs.GetPattern(Nrc.Framework.BusinessLogic.Validation.CommonRules.RegExPatterns)">
+	<summary>
+ Returns the specified built-in regex pattern.
+ </summary>
+</member><member name="T:Nrc.Framework.BusinessLogic.Validation.CommonRules.RegExRuleArgs">
+	<summary>
+ Custom <see cref="RuleArgs"/> object required by the
+ <see cref="RegExMatch"/> rule method.
+ </summary>
+</member><member name="T:Nrc.Framework.BusinessLogic.Validation.CommonRules">
+	<summary>
+ Implements common business rules.
+ </summary>
+</member>
+</members>
+</doc>

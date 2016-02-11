@@ -72,6 +72,7 @@
     <Compile Include="ExtractHelperTest.cs" />
     <Compile Include="FileNameParserTest.cs" />
     <Compile Include="CutoffDateHelperTest.cs" />
+    <Compile Include="UpdateRecordMergerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

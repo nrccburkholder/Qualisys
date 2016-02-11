@@ -1,0 +1,1078 @@
+﻿<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E66B0F63-CEBB-41BF-9E37-DA91463975E5}</ProjectGuid>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>QMSWeb</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyMode>None</AssemblyOriginatorKeyMode>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionStrict>Off</OptionStrict>
+    <RootNamespace>QMSWeb</RootNamespace>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <MyType>Windows</MyType>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>QMSWeb.xml</DocumentationFile>
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>
+    </DefineConstants>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>1</WarningLevel>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</NoWarn>
+    <DebugType>full</DebugType>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>QMSWeb.xml</DocumentationFile>
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>
+    </DefineConstants>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>1</WarningLevel>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</NoWarn>
+    <DebugType>none</DebugType>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="dmi.data, Version=1.0.1607.20230, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ReferencedAssemblies\dmi.data.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.9.0, Culture=neutral, PublicKeyToken=b32731d11ce58905">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ReferencedAssemblies\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ReferencedAssemblies\Microsoft.ApplicationBlocks.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ReferencedAssemblies\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic">
+      <Name>Microsoft.VisualBasic</Name>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Web">
+      <Name>System.Web</Name>
+    </Reference>
+    <Reference Include="System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Extensions.Design, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Services">
+      <Name>System.Web.Services</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <Reference Include="System.Xml.Linq, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Configuration" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Text" />
+    <Import Include="System.Web" />
+    <Import Include="System.Web.UI" />
+    <Import Include="System.Web.UI.HtmlControls" />
+    <Import Include="System.Web.UI.WebControls" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="batching\batches.aspx.designer.vb">
+      <DependentUpon>batches.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="batching\batches.aspx.vb">
+      <DependentUpon>batches.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="batching\batchlogging.aspx.designer.vb">
+      <DependentUpon>batchlogging.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="batching\batchlogging.aspx.vb">
+      <DependentUpon>batchlogging.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="batching\batchlogging_byCRID.aspx.designer.vb">
+      <DependentUpon>batchlogging_byCRID.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="batching\batchlogging_byCRID.aspx.vb">
+      <DependentUpon>batchlogging_byCRID.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="clients\clientdetails.aspx.designer.vb">
+      <DependentUpon>clientdetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="clients\clientdetails.aspx.vb">
+      <DependentUpon>clientdetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="clients\clients.aspx.designer.vb">
+      <DependentUpon>clients.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="clients\clients.aspx.vb">
+      <DependentUpon>clients.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="default.aspx.designer.vb">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="default.aspx.vb">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="events\eventlog.aspx.designer.vb">
+      <DependentUpon>eventlog.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="events\eventlog.aspx.vb">
+      <DependentUpon>eventlog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="events\events.aspx.designer.vb">
+      <DependentUpon>events.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="events\events.aspx.vb">
+      <DependentUpon>events.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="filedefinitions\ExcelExport.aspx.designer.vb">
+      <DependentUpon>ExcelExport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="filedefinitions\ExcelExport.aspx.vb">
+      <DependentUpon>ExcelExport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="filedefinitions\executefiledef.aspx.designer.vb">
+      <DependentUpon>executefiledef.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="filedefinitions\executefiledef.aspx.vb">
+      <DependentUpon>executefiledef.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="filedefinitions\filedefinitiondetails.aspx.designer.vb">
+      <DependentUpon>filedefinitiondetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="filedefinitions\filedefinitiondetails.aspx.vb">
+      <DependentUpon>filedefinitiondetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="filedefinitions\filedefinitions.aspx.designer.vb">
+      <DependentUpon>filedefinitions.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="filedefinitions\filedefinitions.aspx.vb">
+      <DependentUpon>filedefinitions.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="filedefinitions\previewimport.aspx.designer.vb">
+      <DependentUpon>previewimport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="filedefinitions\previewimport.aspx.vb">
+      <DependentUpon>previewimport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="filedefinitions\progress.aspx.designer.vb">
+      <DependentUpon>progress.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="filedefinitions\progress.aspx.vb">
+      <DependentUpon>progress.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="filedefinitions\templatedetails.aspx.designer.vb">
+      <DependentUpon>templatedetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="filedefinitions\templatedetails.aspx.vb">
+      <DependentUpon>templatedetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="filedefinitions\templates.aspx.designer.vb">
+      <DependentUpon>templates.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="filedefinitions\templates.aspx.vb">
+      <DependentUpon>templates.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Global.asax.vb">
+      <DependentUpon>Global.asax</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HTMLEdit\HTMLEditor.ascx.designer.vb">
+      <DependentUpon>HTMLEditor.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="HTMLEdit\HTMLEditor.ascx.vb">
+      <DependentUpon>HTMLEditor.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="includes\clsDBEntity.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="includes\clsLog.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="includes\clsSurveyInstanceEvent.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="includes\ucQMSHeader.ascx.designer.vb">
+      <DependentUpon>ucQMSHeader.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="includes\ucQMSHeader.ascx.vb">
+      <DependentUpon>ucQMSHeader.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="includes\ucTemplates.ascx.designer.vb">
+      <DependentUpon>ucTemplates.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="includes\ucTemplates.ascx.vb">
+      <DependentUpon>ucTemplates.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="login.aspx.designer.vb">
+      <DependentUpon>login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="login.aspx.vb">
+      <DependentUpon>login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="operations\appointments.aspx.designer.vb">
+      <DependentUpon>appointments.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="operations\appointments.aspx.vb">
+      <DependentUpon>appointments.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="operations\calllist.aspx.designer.vb">
+      <DependentUpon>calllist.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="operations\calllist.aspx.vb">
+      <DependentUpon>calllist.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="operations\interview.aspx.designer.vb">
+      <DependentUpon>interview.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="operations\interview.aspx.vb">
+      <DependentUpon>interview.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="operations\interviewLite.aspx.designer.vb">
+      <DependentUpon>interviewLite.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="operations\interviewLite.aspx.vb">
+      <DependentUpon>interviewLite.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="operations\settemplateinfo.aspx.designer.vb">
+      <DependentUpon>settemplateinfo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="operations\settemplateinfo.aspx.vb">
+      <DependentUpon>settemplateinfo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="operations\triggerdetail.aspx.designer.vb">
+      <DependentUpon>triggerdetail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="operations\triggerdetail.aspx.vb">
+      <DependentUpon>triggerdetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="operations\triggers.aspx.designer.vb">
+      <DependentUpon>triggers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="operations\triggers.aspx.vb">
+      <DependentUpon>triggers.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="protocols\protocoldetails.aspx.designer.vb">
+      <DependentUpon>protocoldetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="protocols\protocoldetails.aspx.vb">
+      <DependentUpon>protocoldetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="protocols\protocols.aspx.designer.vb">
+      <DependentUpon>protocols.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="protocols\protocols.aspx.vb">
+      <DependentUpon>protocols.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="questionbank\questionbank.aspx.designer.vb">
+      <DependentUpon>questionbank.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="questionbank\questionbank.aspx.vb">
+      <DependentUpon>questionbank.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="questionbank\questiondetails.aspx.designer.vb">
+      <DependentUpon>questiondetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="questionbank\questiondetails.aspx.vb">
+      <DependentUpon>questiondetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="questionbank\questionfolderdetails.aspx.designer.vb">
+      <DependentUpon>questionfolderdetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="questionbank\questionfolderdetails.aspx.vb">
+      <DependentUpon>questionfolderdetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports.aspx.designer.vb">
+      <DependentUpon>Reports.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports.aspx.vb">
+      <DependentUpon>Reports.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="respondents\email.aspx.designer.vb">
+      <DependentUpon>email.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="respondents\email.aspx.vb">
+      <DependentUpon>email.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="respondents\getrespondent.aspx.designer.vb">
+      <DependentUpon>getrespondent.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="respondents\getrespondent.aspx.vb">
+      <DependentUpon>getrespondent.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="respondents\getrespondent_byCRID.aspx.designer.vb">
+      <DependentUpon>getrespondent_byCRID.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="respondents\getrespondent_byCRID.aspx.vb">
+      <DependentUpon>getrespondent_byCRID.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="respondents\respondentdetails.aspx.designer.vb">
+      <DependentUpon>respondentdetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="respondents\respondentdetails.aspx.vb">
+      <DependentUpon>respondentdetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="respondents\respondents.aspx.designer.vb">
+      <DependentUpon>respondents.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="respondents\respondents.aspx.vb">
+      <DependentUpon>respondents.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="respondents\responses.aspx.designer.vb">
+      <DependentUpon>responses.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="respondents\responses.aspx.vb">
+      <DependentUpon>responses.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="respondents\selectrespondent.aspx.designer.vb">
+      <DependentUpon>selectrespondent.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="respondents\selectrespondent.aspx.vb">
+      <DependentUpon>selectrespondent.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="scripts\printscript.aspx.designer.vb">
+      <DependentUpon>printscript.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="scripts\printscript.aspx.vb">
+      <DependentUpon>printscript.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="scripts\scriptdetails.aspx.designer.vb">
+      <DependentUpon>scriptdetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="scripts\scriptdetails.aspx.vb">
+      <DependentUpon>scriptdetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="scripts\scripts.aspx.designer.vb">
+      <DependentUpon>scripts.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="scripts\scripts.aspx.vb">
+      <DependentUpon>scripts.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="scripts\scriptscreendetails.aspx.designer.vb">
+      <DependentUpon>scriptscreendetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="scripts\scriptscreendetails.aspx.vb">
+      <DependentUpon>scriptscreendetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="scripts\scripttriggerdetails.aspx.designer.vb">
+      <DependentUpon>scripttriggerdetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="scripts\scripttriggerdetails.aspx.vb">
+      <DependentUpon>scripttriggerdetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="scripts\scripttriggers.aspx.designer.vb">
+      <DependentUpon>scripttriggers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="scripts\scripttriggers.aspx.vb">
+      <DependentUpon>scripttriggers.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="surveyinstances\mailingseeds.aspx.designer.vb">
+      <DependentUpon>mailingseeds.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="surveyinstances\mailingseeds.aspx.vb">
+      <DependentUpon>mailingseeds.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="surveyinstances\surveyinstancedetails.aspx.designer.vb">
+      <DependentUpon>surveyinstancedetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="surveyinstances\surveyinstancedetails.aspx.vb">
+      <DependentUpon>surveyinstancedetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="surveyinstances\surveyinstanceevents.aspx.designer.vb">
+      <DependentUpon>surveyinstanceevents.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="surveyinstances\surveyinstanceevents.aspx.vb">
+      <DependentUpon>surveyinstanceevents.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="surveyinstances\surveyinstances.aspx.designer.vb">
+      <DependentUpon>surveyinstances.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="surveyinstances\surveyinstances.aspx.vb">
+      <DependentUpon>surveyinstances.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="surveys\copyquestions.aspx.designer.vb">
+      <DependentUpon>copyquestions.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="surveys\copyquestions.aspx.vb">
+      <DependentUpon>copyquestions.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="surveys\printsurvey.aspx.designer.vb">
+      <DependentUpon>printsurvey.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="surveys\printsurvey.aspx.vb">
+      <DependentUpon>printsurvey.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="surveys\surveydetails.aspx.designer.vb">
+      <DependentUpon>surveydetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="surveys\surveydetails.aspx.vb">
+      <DependentUpon>surveydetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="surveys\surveys.aspx.designer.vb">
+      <DependentUpon>surveys.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="surveys\surveys.aspx.vb">
+      <DependentUpon>surveys.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TaskCalendar.aspx.designer.vb">
+      <DependentUpon>TaskCalendar.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TaskCalendar.aspx.vb">
+      <DependentUpon>TaskCalendar.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="users\userdetails.aspx.designer.vb">
+      <DependentUpon>userdetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="users\userdetails.aspx.vb">
+      <DependentUpon>userdetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="users\usergroupdetails.aspx.designer.vb">
+      <DependentUpon>usergroupdetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="users\usergroupdetails.aspx.vb">
+      <DependentUpon>usergroupdetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="users\usergroups.aspx.designer.vb">
+      <DependentUpon>usergroups.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="users\usergroups.aspx.vb">
+      <DependentUpon>usergroups.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="users\users.aspx.designer.vb">
+      <DependentUpon>users.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="users\users.aspx.vb">
+      <DependentUpon>users.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="users\usersessions.aspx.designer.vb">
+      <DependentUpon>usersessions.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="users\usersessions.aspx.vb">
+      <DependentUpon>usersessions.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ws\Service.asmx.vb">
+      <DependentUpon>Service.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ws\WebForm2.aspx.designer.vb">
+      <DependentUpon>WebForm2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ws\WebForm2.aspx.vb">
+      <DependentUpon>WebForm2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Content Include="batching\batches.aspx" />
+    <Content Include="batching\batchlogging.aspx" />
+    <Content Include="batching\batchlogging_byCRID.aspx" />
+    <Content Include="clients\clientdetails.aspx" />
+    <Content Include="clients\clients.aspx" />
+    <Content Include="default.aspx" />
+    <Content Include="events\eventlog.aspx" />
+    <Content Include="events\events.aspx" />
+    <Content Include="filedefinitions\ExcelExport.aspx" />
+    <Content Include="filedefinitions\executefiledef.aspx" />
+    <Content Include="filedefinitions\filedefinitiondetails.aspx" />
+    <Content Include="filedefinitions\filedefinitions.aspx" />
+    <Content Include="filedefinitions\previewimport.aspx" />
+    <Content Include="filedefinitions\progress.aspx" />
+    <Content Include="filedefinitions\templatedetails.aspx" />
+    <Content Include="filedefinitions\templates.aspx" />
+    <Content Include="Global.asax" />
+    <Content Include="HTMLEdit\1x1.gif" />
+    <Content Include="HTMLEdit\Bold.GIF" />
+    <Content Include="HTMLEdit\bullist.GIF" />
+    <Content Include="HTMLEdit\Center.GIF" />
+    <Content Include="HTMLEdit\Copy.GIF" />
+    <Content Include="HTMLEdit\Cut.GIF" />
+    <Content Include="HTMLEdit\DeIndent.GIF" />
+    <Content Include="HTMLEdit\fgcolor.GIF" />
+    <Content Include="HTMLEdit\HR.GIF" />
+    <Content Include="HTMLEdit\HTMLEditor.ascx" />
+    <Content Include="HTMLEdit\image.GIF" />
+    <Content Include="HTMLEdit\inindent.GIF" />
+    <Content Include="HTMLEdit\Italic.GIF" />
+    <Content Include="HTMLEdit\left.GIF" />
+    <Content Include="HTMLEdit\Link.gif" />
+    <Content Include="HTMLEdit\numlist.GIF" />
+    <Content Include="HTMLEdit\Paste.GIF" />
+    <Content Include="HTMLEdit\right.GIF" />
+    <Content Include="HTMLEdit\selcolor.htm" />
+    <Content Include="HTMLEdit\spacer.gif" />
+    <Content Include="HTMLEdit\under.GIF" />
+    <Content Include="images\admin-button.gif" />
+    <Content Include="images\ajax-loader.gif" />
+    <Content Include="images\clear.gif" />
+    <Content Include="images\data-input-button.gif" />
+    <Content Include="images\design-button.gif" />
+    <Content Include="images\header-bg.gif" />
+    <Content Include="images\header-top.gif" />
+    <Content Include="images\help-button.gif" />
+    <Content Include="images\home-button.gif" />
+    <Content Include="images\import-export-button.gif" />
+    <Content Include="images\logo-bottom.gif" />
+    <Content Include="images\logo-top.gif" />
+    <Content Include="images\logo.gif" />
+    <Content Include="images\operations-button.gif" />
+    <Content Include="images\pleasewait.gif" />
+    <Content Include="images\qms-logo.gif" />
+    <Content Include="images\qms_add_btn.gif" />
+    <Content Include="images\qms_add_expand_sym.gif" />
+    <Content Include="images\qms_arrow1_sym.gif" />
+    <Content Include="images\qms_arrow2_sym.gif" />
+    <Content Include="images\qms_arrow3_sym.gif" />
+    <Content Include="images\qms_arrowdown_sym.gif" />
+    <Content Include="images\qms_arrowleft_sym.gif" />
+    <Content Include="images\qms_arrowright_sym.gif" />
+    <Content Include="images\qms_arrowup_sym.gif" />
+    <Content Include="images\qms_autoscript_btn.gif" />
+    <Content Include="images\qms_cancel_btn.gif" />
+    <Content Include="images\qms_cati_sym.gif" />
+    <Content Include="images\qms_clearresponses_btn.gif" />
+    <Content Include="images\qms_clear_btn.gif" />
+    <Content Include="images\qms_close_delete1_sym.gif" />
+    <Content Include="images\qms_close_delete2_sym.gif" />
+    <Content Include="images\qms_close_delete3_sym.gif" />
+    <Content Include="images\qms_collapseform_btn.gif" />
+    <Content Include="images\qms_collapse_btn.gif" />
+    <Content Include="images\qms_copyto_btn.gif" />
+    <Content Include="images\qms_copy_btn.gif" />
+    <Content Include="images\qms_copy_sym.gif" />
+    <Content Include="images\qms_dataentry1_sym.gif" />
+    <Content Include="images\qms_dataentry2_sym.gif" />
+    <Content Include="images\qms_delete_btn.gif" />
+    <Content Include="images\qms_delete_trash_sym.gif" />
+    <Content Include="images\qms_details_btn.gif" />
+    <Content Include="images\qms_done_btn.gif" />
+    <Content Include="images\qms_download_btn.gif" />
+    <Content Include="images\qms_execute_btn.gif" />
+    <Content Include="images\qms_exit_btn.gif" />
+    <Content Include="images\qms_expandform_btn.gif" />
+    <Content Include="images\qms_expand_btn.gif" />
+    <Content Include="images\qms_incoming.gif" />
+    <Content Include="images\qms_log_btn.gif" />
+    <Content Include="images\qms_minus_collapse_sym.gif" />
+    <Content Include="images\qms_moveall_btn.gif" />
+    <Content Include="images\qms_move_btn.gif" />
+    <Content Include="images\qms_next_btn.gif" />
+    <Content Include="images\qms_noscore_exit_btn.gif" />
+    <Content Include="images\qms_previous_btn.gif" />
+    <Content Include="images\qms_reminder_sym.gif" />
+    <Content Include="images\qms_reorder_btn.gif" />
+    <Content Include="images\qms_reset_btn.gif" />
+    <Content Include="images\qms_savehsehld_btn.gif" />
+    <Content Include="images\qms_saverspndnt_btn.gif" />
+    <Content Include="images\qms_save_btn.gif" />
+    <Content Include="images\qms_save_new_btn.gif" />
+    <Content Include="images\qms_save_sym.gif" />
+    <Content Include="images\qms_schedule_btn.gif" />
+    <Content Include="images\qms_score_btn.gif" />
+    <Content Include="images\qms_score_exit_btn.gif" />
+    <Content Include="images\qms_search_btn.gif" />
+    <Content Include="images\qms_start_btn.gif" />
+    <Content Include="images\qms_submithsehld_btn.gif" />
+    <Content Include="images\qms_submitrspndnt_btn.gif" />
+    <Content Include="images\qms_submit_btn.gif" />
+    <Content Include="images\qms_test_btn.gif" />
+    <Content Include="images\qms_updatehsehld_btn.gif" />
+    <Content Include="images\qms_updaterspndnt_btn.gif" />
+    <Content Include="images\qms_update_btn.gif" />
+    <Content Include="images\qms_update_new_btn.gif" />
+    <Content Include="images\qms_verify_sym.gif" />
+    <Content Include="images\qms_view1_sym.gif" />
+    <Content Include="images\qms_view2_sym.gif" />
+    <Content Include="images\qms_viewresponses_btn.gif" />
+    <Content Include="images\reports-button.gif" />
+    <Content Include="images\respondents-button.gif" />
+    <Content Include="images\sign-out-button.gif" />
+    <Content Include="images\spacer.gif" />
+    <Content Include="images\surveypoint_header.gif" />
+    <Content Include="images\surveytracker_header.gif" />
+    <Content Include="images\surveytracker_logo.gif" />
+    <Content Include="images\tableheader.gif" />
+    <Content Include="images\top-rectangle.gif" />
+    <Content Include="includes\batch.wav" />
+    <Content Include="includes\ig_webmenu2.js" />
+    <Content Include="includes\ucQMSHeader.ascx" />
+    <Content Include="includes\ucTemplates.ascx" />
+    <Content Include="login.aspx" />
+    <Content Include="operations\appointments.aspx" />
+    <Content Include="operations\calllist.aspx" />
+    <Content Include="operations\interview.aspx" />
+    <Content Include="operations\interviewLite.aspx" />
+    <Content Include="operations\settemplateinfo.aspx" />
+    <Content Include="operations\triggerdetail.aspx" />
+    <Content Include="operations\triggers.aspx" />
+    <Content Include="protocols\protocoldetails.aspx" />
+    <Content Include="protocols\protocols.aspx" />
+    <Content Include="questionbank\questionbank.aspx" />
+    <Content Include="questionbank\questiondetails.aspx" />
+    <Content Include="questionbank\questionfolderdetails.aspx" />
+    <Content Include="Reports.aspx" />
+    <Content Include="respondents\email.aspx" />
+    <Content Include="respondents\getrespondent.aspx" />
+    <Content Include="respondents\getrespondent_byCRID.aspx" />
+    <Content Include="respondents\respondentdetails.aspx" />
+    <Content Include="respondents\respondents.aspx" />
+    <Content Include="respondents\responses.aspx" />
+    <Content Include="respondents\selectrespondent.aspx" />
+    <Content Include="scripts\printscript.aspx" />
+    <Content Include="scripts\scriptdetails.aspx" />
+    <Content Include="scripts\scripts.aspx" />
+    <Content Include="scripts\scriptscreendetails.aspx" />
+    <Content Include="scripts\scripttriggerdetails.aspx" />
+    <Content Include="scripts\scripttriggers.aspx" />
+    <Content Include="scripts\TextTokenHelp.htm" />
+    <Content Include="scripts\TriggerHelp.htm" />
+    <Content Include="Styles.css" />
+    <Content Include="surveyinstances\mailingseeds.aspx" />
+    <Content Include="surveyinstances\surveyinstancedetails.aspx" />
+    <Content Include="surveyinstances\surveyinstanceevents.aspx" />
+    <Content Include="surveyinstances\surveyinstances.aspx" />
+    <Content Include="surveys\copyquestions.aspx" />
+    <Content Include="surveys\printsurvey.aspx" />
+    <Content Include="surveys\surveydetails.aspx" />
+    <Content Include="surveys\surveys.aspx" />
+    <Content Include="TaskCalendar.aspx" />
+    <Content Include="users\userdetails.aspx" />
+    <Content Include="users\usergroupdetails.aspx" />
+    <Content Include="users\usergroups.aspx" />
+    <Content Include="users\users.aspx" />
+    <Content Include="users\usersessions.aspx" />
+    <Content Include="Web.config" />
+    <Content Include="ws\Service.asmx" />
+    <Content Include="ws\WebForm2.aspx" />
+    <EmbeddedResource Include="batching\batches.aspx.resx">
+      <DependentUpon>batches.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="batching\batchlogging.aspx.resx">
+      <DependentUpon>batchlogging.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="batching\batchlogging_byCRID.aspx.resx">
+      <DependentUpon>batchlogging_byCRID.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="clients\clientdetails.aspx.resx">
+      <DependentUpon>clientdetails.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="clients\clients.aspx.resx">
+      <DependentUpon>clients.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="default.aspx.resx">
+      <DependentUpon>default.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="events\eventlog.aspx.resx">
+      <DependentUpon>eventlog.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="events\events.aspx.resx">
+      <DependentUpon>events.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="filedefinitions\ExcelExport.aspx.resx">
+      <DependentUpon>ExcelExport.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="filedefinitions\executefiledef.aspx.resx">
+      <DependentUpon>executefiledef.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="filedefinitions\filedefinitiondetails.aspx.resx">
+      <DependentUpon>filedefinitiondetails.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="filedefinitions\filedefinitions.aspx.resx">
+      <DependentUpon>filedefinitions.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="filedefinitions\previewimport.aspx.resx">
+      <DependentUpon>previewimport.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="filedefinitions\progress.aspx.resx">
+      <DependentUpon>progress.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="filedefinitions\templatedetails.aspx.resx">
+      <DependentUpon>templatedetails.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="filedefinitions\templates.aspx.resx">
+      <DependentUpon>templates.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Global.asax.resx">
+      <DependentUpon>Global.asax.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HTMLEdit\HTMLEditor.ascx.resx">
+      <DependentUpon>HTMLEditor.ascx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="includes\ucQMSHeader.ascx.resx">
+      <DependentUpon>ucQMSHeader.ascx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="includes\ucTemplates.ascx.resx">
+      <DependentUpon>ucTemplates.ascx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="login.aspx.resx">
+      <DependentUpon>login.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="operations\appointments.aspx.resx">
+      <DependentUpon>appointments.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="operations\calllist.aspx.resx">
+      <DependentUpon>calllist.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="operations\interview.aspx.resx">
+      <DependentUpon>interview.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="operations\interviewLite.aspx.resx">
+      <DependentUpon>interviewLite.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="operations\settemplateinfo.aspx.resx">
+      <DependentUpon>settemplateinfo.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="operations\triggerdetail.aspx.resx">
+      <DependentUpon>triggerdetail.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="operations\triggers.aspx.resx">
+      <DependentUpon>triggers.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="protocols\protocoldetails.aspx.resx">
+      <DependentUpon>protocoldetails.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="protocols\protocols.aspx.resx">
+      <DependentUpon>protocols.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="questionbank\questionbank.aspx.resx">
+      <DependentUpon>questionbank.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="questionbank\questiondetails.aspx.resx">
+      <DependentUpon>questiondetails.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="questionbank\questionfolderdetails.aspx.resx">
+      <DependentUpon>questionfolderdetails.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="respondents\email.aspx.resx">
+      <DependentUpon>email.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="respondents\getrespondent.aspx.resx">
+      <DependentUpon>getrespondent.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="respondents\getrespondent_byCRID.aspx.resx">
+      <DependentUpon>getrespondent_byCRID.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="respondents\respondentdetails.aspx.resx">
+      <DependentUpon>respondentdetails.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="respondents\respondents.aspx.resx">
+      <DependentUpon>respondents.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="respondents\responses.aspx.resx">
+      <DependentUpon>responses.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="respondents\selectrespondent.aspx.resx">
+      <DependentUpon>selectrespondent.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="scripts\printscript.aspx.resx">
+      <DependentUpon>printscript.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="scripts\scriptdetails.aspx.resx">
+      <DependentUpon>scriptdetails.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="scripts\scripts.aspx.resx">
+      <DependentUpon>scripts.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="scripts\scriptscreendetails.aspx.resx">
+      <DependentUpon>scriptscreendetails.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="scripts\scripttriggerdetails.aspx.resx">
+      <DependentUpon>scripttriggerdetails.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="scripts\scripttriggers.aspx.resx">
+      <DependentUpon>scripttriggers.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="surveyinstances\mailingseeds.aspx.resx">
+      <DependentUpon>mailingseeds.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="surveyinstances\surveyinstancedetails.aspx.resx">
+      <DependentUpon>surveyinstancedetails.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="surveyinstances\surveyinstanceevents.aspx.resx">
+      <DependentUpon>surveyinstanceevents.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="surveyinstances\surveyinstances.aspx.resx">
+      <DependentUpon>surveyinstances.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="surveys\copyquestions.aspx.resx">
+      <DependentUpon>copyquestions.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="surveys\printsurvey.aspx.resx">
+      <DependentUpon>printsurvey.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="surveys\surveydetails.aspx.resx">
+      <DependentUpon>surveydetails.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="surveys\surveys.aspx.resx">
+      <DependentUpon>surveys.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TaskCalendar.aspx.resx">
+      <DependentUpon>TaskCalendar.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="users\userdetails.aspx.resx">
+      <DependentUpon>userdetails.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="users\usergroupdetails.aspx.resx">
+      <DependentUpon>usergroupdetails.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="users\usergroups.aspx.resx">
+      <DependentUpon>usergroups.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="users\users.aspx.resx">
+      <DependentUpon>users.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="users\usersessions.aspx.resx">
+      <DependentUpon>usersessions.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ws\Service.asmx.resx">
+      <DependentUpon>Service.asmx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ws\WebForm2.aspx.resx">
+      <DependentUpon>WebForm2.aspx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="QMSWeb.vsdisco" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CommonTools\CommonTools.csproj">
+      <Project>{ED60BCBD-1021-4B52-A37A-EB995C811C6C}</Project>
+      <Name>CommonTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DMIIncludes\DMIIncludes.vbproj">
+      <Project>{5052A84F-1BDA-4E98-BBCB-61DEF241E51F}</Project>
+      <Name>DMIIncludes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\QMSEntities\QMSEntities.vbproj">
+      <Project>{946175FC-3319-4D13-9D40-2CB0BDC9AE2E}</Project>
+      <Name>QMSEntities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SurveyPointClasses\SurveyPointClasses.csproj">
+      <Project>{4937D54C-DD38-422D-AFB0-B2110C42AFED}</Project>
+      <Name>SurveyPointClasses</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SurveyPointDAL\SurveyPointDAL.csproj">
+      <Project>{F30EADC4-56B4-4C2F-9BA2-90B47127C47A}</Project>
+      <Name>SurveyPointDAL</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="My Project\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>3630</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/surveytracker</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

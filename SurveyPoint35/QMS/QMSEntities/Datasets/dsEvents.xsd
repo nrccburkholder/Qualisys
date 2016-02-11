@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="dsEvents" targetNamespace="http://tempuri.org/dsEvents.xsd" elementFormDefault="qualified"
+	attributeFormDefault="qualified" xmlns="http://tempuri.org/dsEvents.xsd" xmlns:mstns="http://tempuri.org/dsEvents.xsd"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+	<xs:element name="dsEvents" msdata:IsDataSet="true">
+		<xs:complexType>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="Search">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="EventID" type="xs:int" minOccurs="0" />
+							<xs:element name="Keyword" type="xs:string" minOccurs="0" />
+							<xs:element name="EventTypeID" type="xs:int" minOccurs="0" />
+							<xs:element name="FinalCode" type="xs:unsignedByte" minOccurs="0" />
+							<xs:element name="UserCreated" type="xs:unsignedByte" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="tblEvents">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="EventID" type="xs:int" />
+							<xs:element name="Name" type="xs:string" />
+							<xs:element name="Description" type="xs:string" />
+							<xs:element name="EventTypeID" type="xs:int" />
+							<xs:element name="FinalCode" type="xs:unsignedByte" />
+							<xs:element name="UserCreated" type="xs:unsignedByte" />
+							<xs:element name="DefaultNonContact" type="xs:int" />
+							<xs:element name="EventTypeName" type="xs:string" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:complexType>
+		<xs:unique name="dsEventsKey2" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//tblEvents" />
+			<xs:field xpath="mstns:EventID" />
+		</xs:unique>
+	</xs:element>
+</xs:schema>

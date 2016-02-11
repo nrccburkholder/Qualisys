@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="dsScriptScreenCategories" targetNamespace="http://tempuri.org/dsScriptScreenCategories.xsd" elementFormDefault="qualified" attributeFormDefault="qualified" xmlns="http://tempuri.org/dsScriptScreenCategories.xsd" xmlns:mstns="http://tempuri.org/dsScriptScreenCategories.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+	<xs:element name="dsScriptScreenCategories" msdata:IsDataSet="true">
+		<xs:complexType>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="ScriptScreenCategories">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ScriptScreenCategoryID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="ScriptScreenID" type="xs:int" />
+							<xs:element name="AnswerCategoryID" type="xs:int" />
+							<xs:element name="JumpToScriptScreenID" type="xs:int" minOccurs="0" />
+							<xs:element name="Text" type="xs:string" minOccurs="0" />
+							<xs:element name="AnswerCategoryTypeID" type="xs:int" minOccurs="0" />
+							<xs:element name="AnswerText" type="xs:string" minOccurs="0" />
+							<xs:element name="QuestionID" type="xs:int" minOccurs="0" />
+							<xs:element name="AnswerValue" type="xs:int" minOccurs="0" />
+							<xs:element name="Show" type="xs:boolean" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Search">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ScriptScreenCategoryID" type="xs:int" minOccurs="0" />
+							<xs:element name="ScriptScreenID" type="xs:int" minOccurs="0" />
+							<xs:element name="AnswerCategoryID" type="xs:int" minOccurs="0" />
+							<xs:element name="JumpToScriptScreenID" type="xs:int" minOccurs="0" />
+							<xs:element name="ScriptID" type="xs:int" minOccurs="0" />
+							<xs:element name="QuestionID" type="xs:int" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="AnswerCategoryTypes">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="AnswerCategoryTypeID" type="xs:int" minOccurs="0" />
+							<xs:element name="Name" type="xs:string" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:complexType>
+		<xs:unique name="dsScriptScreenCategoriesKey_ScriptScreenCategoryID" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:ScriptScreenCategories" />
+			<xs:field xpath="mstns:ScriptScreenCategoryID" />
+		</xs:unique>
+		<xs:key name="dsScriptScreenCategoriesKey_AnswerCategoryID">
+			<xs:selector xpath=".//mstns:ScriptScreenCategories" />
+			<xs:field xpath="mstns:AnswerCategoryID" />
+		</xs:key>
+		<xs:key name="dsScriptScreenCategoriesKey_AnswerCategoryTypeID">
+			<xs:selector xpath=".//mstns:AnswerCategoryTypes" />
+			<xs:field xpath="mstns:AnswerCategoryTypeID" />
+		</xs:key>
+		<xs:keyref name="AnswerCategoryTypesScriptScreenCategories" refer="dsScriptScreenCategoriesKey_AnswerCategoryTypeID">
+			<xs:selector xpath=".//mstns:ScriptScreenCategories" />
+			<xs:field xpath="mstns:AnswerCategoryTypeID" />
+		</xs:keyref>
+	</xs:element>
+</xs:schema>

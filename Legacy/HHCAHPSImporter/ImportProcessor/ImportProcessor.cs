@@ -7,6 +7,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using HHCAHPSImporter.ImportProcessor.Extractors;
+using HHCAHPSImporter.ImportProcessor.Validation;
 
 namespace HHCAHPSImporter.ImportProcessor
 {
@@ -143,21 +144,25 @@ namespace HHCAHPSImporter.ImportProcessor
 
                     var sampleMonth = ExtractHelper.GetSampleMonth(extractedData);
                     var sampleYear = ExtractHelper.GetSampleYear(extractedData);
-                    var isUpdateFile = qpDataLoadManager.StudyHasAppliedData(client.Study_id, sampleMonth, sampleYear);
+
+                    if (CutoffDateHelper.IsPastCutoff(
+                        qpDataLoadManager.GetUpdateFileQ1Cutoff(),
+                        qpDataLoadManager.GetUpdateFileQ2Cutoff(),
+                        qpDataLoadManager.GetUpdateFileQ3Cutoff(),
+                        qpDataLoadManager.GetUpdateFileQ4Cutoff(),
+                        sampleMonth.Value,
+                        sampleYear.Value,
+                        DateTime.Now))
+                    {
+                        throw new InvalidOperationException("File received after cutoff date");
+                    }
+
+                    var isUpdateFile = uploadFile.OrigFile_Nm.ToLower().Contains("update");
                     if (isUpdateFile)
                     {
-                        if(CutoffDateHelper.IsPastCutoff(
-                            qpDataLoadManager.GetUpdateFileQ1Cutoff(),
-                            qpDataLoadManager.GetUpdateFileQ2Cutoff(),
-                            qpDataLoadManager.GetUpdateFileQ3Cutoff(),
-                            qpDataLoadManager.GetUpdateFileQ4Cutoff(),
-                            sampleMonth,
-                            sampleYear,
-                            DateTime.Now))
-                        {
-                            throw new InvalidOperationException("Update file received after cutoff date");
-                        }
+                        UpdateRecordMerger.Merge(sampleYear.Value, sampleMonth.Value, ccn, extractedData, qpDataLoadManager);
                     }
+                    UpdateRecordMerger.UpdateMergeRecords(sampleYear.Value, sampleMonth.Value, ccn, extractedData, qpDataLoadManager, isUpdateFile);
 
                     #region Add externally generated values to the metadata
                     extractedData.Root.Add(new XAttribute("uploadfile_id", uploadFileId));

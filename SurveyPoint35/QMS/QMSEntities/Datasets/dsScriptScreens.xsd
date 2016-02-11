@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="dsScriptScreens" targetNamespace="http://tempuri.org/dsScriptScreens.xsd" elementFormDefault="qualified" attributeFormDefault="qualified" xmlns="http://tempuri.org/dsScriptScreens.xsd" xmlns:mstns="http://tempuri.org/dsScriptScreens.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+	<xs:element name="dsScriptScreens" msdata:IsDataSet="true">
+		<xs:complexType>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="ScriptScreens">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ScriptScreenID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="ScriptID" type="xs:int" />
+							<xs:element name="SurveyQuestionID" type="xs:int" minOccurs="0" />
+							<xs:element name="Title" type="xs:string" />
+							<xs:element name="Text" type="xs:string" />
+							<xs:element name="CalculationTypeID" type="xs:int" />
+							<xs:element name="ItemOrder" type="xs:int" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ScriptScreenCategories">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ScriptScreenCategoryID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="ScriptScreenID" type="xs:int" />
+							<xs:element name="AnswerCategoryID" type="xs:int" />
+							<xs:element name="JumpToScriptScreenID" type="xs:int" minOccurs="0" />
+							<xs:element name="Text" type="xs:string" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Search">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ScriptScreenID" type="xs:int" minOccurs="0" />
+							<xs:element name="ScriptID" type="xs:int" minOccurs="0" />
+							<xs:element name="SurveyQuestionID" type="xs:int" minOccurs="0" />
+							<xs:element name="Keyword" type="xs:string" minOccurs="0" />
+							<xs:element name="ItemOrder" type="xs:int" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="CalculationType">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="CalculationTypeID" type="xs:int" minOccurs="0" />
+							<xs:element name="Name" type="xs:string" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="AnswerCategories">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="AnswerCategoryID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="QuestionID" type="xs:int" />
+							<xs:element name="AnswerValue" type="xs:int" />
+							<xs:element name="AnswerText" type="xs:string" />
+							<xs:element name="AnswerCategoryTypeID" type="xs:int" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="AnswerCategoryTypes">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="AnswerCategoryTypeID" type="xs:int" />
+							<xs:element name="Name" type="xs:string" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:complexType>
+		<xs:unique name="dsScriptScreensKey1" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:ScriptScreens" />
+			<xs:field xpath="mstns:ScriptScreenID" />
+		</xs:unique>
+		<xs:unique name="dsScriptScreensKey2" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:ScriptScreenCategories" />
+			<xs:field xpath="mstns:ScriptScreenCategoryID" />
+		</xs:unique>
+		<xs:keyref name="ScriptScreensScriptScreenCategories" refer="dsScriptScreensKey1">
+			<xs:selector xpath=".//mstns:ScriptScreenCategories" />
+			<xs:field xpath="mstns:ScriptScreenID" />
+		</xs:keyref>
+		<xs:key name="dsScriptScreens_Calculation_CalculationTypeIDKey">
+			<xs:selector xpath=".//mstns:CalculationType" />
+			<xs:field xpath="mstns:CalculationTypeID" />
+		</xs:key>
+		<xs:keyref name="CalculationTypeScriptScreens" refer="dsScriptScreens_Calculation_CalculationTypeIDKey">
+			<xs:selector xpath=".//mstns:ScriptScreens" />
+			<xs:field xpath="mstns:CalculationTypeID" />
+		</xs:keyref>
+		<xs:unique name="dsScriptScreensKey3" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:AnswerCategories" />
+			<xs:field xpath="mstns:AnswerCategoryID" />
+		</xs:unique>
+		<xs:key name="key1">
+			<xs:selector xpath=".//mstns:AnswerCategories" />
+			<xs:field xpath="mstns:AnswerCategoryID" />
+		</xs:key>
+		<xs:keyref name="AnswerCategoriesScriptScreenCategories" refer="key1">
+			<xs:selector xpath=".//mstns:ScriptScreenCategories" />
+			<xs:field xpath="mstns:AnswerCategoryID" />
+		</xs:keyref>
+		<xs:unique name="dsScriptScreensKey4" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:AnswerCategoryTypes" />
+			<xs:field xpath="mstns:AnswerCategoryTypeID" />
+		</xs:unique>
+		<xs:key name="key2">
+			<xs:selector xpath=".//mstns:AnswerCategoryTypes" />
+			<xs:field xpath="mstns:AnswerCategoryTypeID" />
+		</xs:key>
+		<xs:keyref name="AnswerCategoryTypesAnswerCategories" refer="key2">
+			<xs:selector xpath=".//mstns:AnswerCategories" />
+			<xs:field xpath="mstns:AnswerCategoryTypeID" />
+		</xs:keyref>
+	</xs:element>
+</xs:schema>

@@ -10,7 +10,6 @@
 *.output.txt
 .pubxml
 *.pdb
-*.dll
 bin/
 obj/
 publish/
@@ -25,3 +24,4 @@ thumbs.db
 /QualiSys Explorer Solution/QualiSysExplorer/App.config.bak
 /QualiSys Explorer Solution/QualiSysExplorer/QualiSysExplorer.vbproj.bak
 /Sprint_docs/Sprint28_docs/SQLQuery39.sql
+/Sprint_docs/Search

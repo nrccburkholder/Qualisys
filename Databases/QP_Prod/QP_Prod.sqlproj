@@ -8284,6 +8284,7 @@
     <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\temp_InvestigateMissingReturns.proc.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Tables\Questionform_Missing_datReturned.table.sql" />
     <Build Include="Schema Objects\Schemas\dbo\Tables\Indexes\IDX_ScanningResets_strLithocode.index.sql" />
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\SV_CAHPS_SupplementalQuestionCount.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\ScriptsIgnoredOnImport.sql">

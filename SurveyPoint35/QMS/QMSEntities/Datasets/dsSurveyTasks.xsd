@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="dsSurveyTasks" targetNamespace="http://tempuri.org/dsSurveyTasks.xsd" elementFormDefault="qualified" attributeFormDefault="qualified" xmlns="http://tempuri.org/dsSurveyTasks.xsd" xmlns:mstns="http://tempuri.org/dsSurveyTasks.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+	<xs:element name="dsSurveyTasks" msdata:IsDataSet="true">
+		<xs:complexType>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="Search">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="SurveyInstanceProtocolStepID" type="xs:int" minOccurs="0" />
+							<xs:element name="SurveyInstanceID" type="xs:int" minOccurs="0" />
+							<xs:element name="ProtocolStepID" type="xs:int" minOccurs="0" />
+							<xs:element name="SurveyID" type="xs:int" minOccurs="0" />
+							<xs:element name="ClientID" type="xs:int" minOccurs="0" />
+							<xs:element name="Active" type="xs:unsignedByte" minOccurs="0" />
+							<xs:element name="ProtocolStepTypeID" type="xs:int" minOccurs="0" />
+							<xs:element name="Cleared" msdata:ReadOnly="true" type="xs:int" minOccurs="0" />
+							<xs:element name="EndDateRange" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="StartDateRange" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="RowID" type="xs:int" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="SurveyTasks">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="SurveyInstanceProtocolStepID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" minOccurs="0" />
+							<xs:element name="SurveyInstanceID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="ProtocolStepID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="ClearedTimeStamp" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="ClearedUserID" type="xs:int" minOccurs="0" />
+							<xs:element name="SurveyID" type="xs:int" />
+							<xs:element name="ClientID" type="xs:int" />
+							<xs:element name="StartDate" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="Active" type="xs:unsignedByte" />
+							<xs:element name="ClientName" type="xs:string" />
+							<xs:element name="SurveyName" type="xs:string" />
+							<xs:element name="InstanceName" type="xs:string" />
+							<xs:element name="ProtocolStepTypeID" type="xs:int" />
+							<xs:element name="ProtocolStepTypeName" type="xs:string" />
+							<xs:element name="ProtocolStepName" type="xs:string" />
+							<xs:element name="StartDay" type="xs:int" />
+							<xs:element name="ProtocolStepDate" msdata:ReadOnly="true" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="Cleared" msdata:ReadOnly="true" type="xs:int" minOccurs="0" />
+							<xs:element name="RowID" msdata:ReadOnly="true" type="xs:int" minOccurs="0" />
+							<xs:element name="URL" type="xs:string" minOccurs="0" />
+							<xs:element name="RespondentCount" msdata:ReadOnly="true" type="xs:int" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

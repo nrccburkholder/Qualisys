@@ -19,8 +19,11 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
 
             if (result.Length == 0) throw new InvalidOperationException("No header found in file.");
             if (result.Length > 1) throw new InvalidOperationException("More than one header found in file.");
+            var header = result[0].Master;
+            CcnValidator.ValidateFileNameCcnAgainstFileContents(client.CCN, header.ProviderID);
+            SampleMonthValidator.Validate(header.SampleMonth, header.SampleYear);
 
-            ParseHeader(xml, result[0].Master);
+            ParseHeader(xml, header);
             ParseBody(xml, result[0].Details, isPtct);
 
             xml.Root.Add(CreateRootAttributes(client, fullFileName));
@@ -172,9 +175,9 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
         private static int? GetLookbackSkilledVisits(int? priorMonthSkilledVisits, int? currentMonthSkilledVisits, bool isPtct)
         {
             if (isPtct)
-                return (priorMonthSkilledVisits ?? 0) - (currentMonthSkilledVisits ?? 0);
+                return priorMonthSkilledVisits ?? 0;
             else
-                return priorMonthSkilledVisits ?? currentMonthSkilledVisits;
+                return priorMonthSkilledVisits ?? 0 + currentMonthSkilledVisits ?? 0;
         }
     }
 }

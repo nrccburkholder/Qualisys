@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="dsBatches" targetNamespace="http://tempuri.org/dsBatches.xsd" elementFormDefault="qualified" attributeFormDefault="qualified" xmlns="http://tempuri.org/dsBatches.xsd" xmlns:mstns="http://tempuri.org/dsBatches.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+	<xs:element name="dsBatches" msdata:IsDataSet="true">
+		<xs:complexType>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="Batches">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="BatchID" type="xs:int" minOccurs="0" />
+							<xs:element name="SurveyID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="ClientID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="SurveyInstanceID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="SurveyName" type="xs:string" />
+							<xs:element name="ClientName" type="xs:string" />
+							<xs:element name="SurveyInstanceName" type="xs:string" />
+							<xs:element name="ProtocolID" type="xs:int" />
+							<xs:element name="GroupBySurvey" type="xs:int" minOccurs="0" />
+							<xs:element name="GroupByClient" type="xs:int" minOccurs="0" />
+							<xs:element name="GroupBySurveyInstance" type="xs:int" minOccurs="0" />
+							<xs:element name="BatchSize" type="xs:int" minOccurs="0" />
+							<xs:element name="RespondentCount" type="xs:int" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Search">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="BatchID" type="xs:int" minOccurs="0" />
+							<xs:element name="SurveyID" type="xs:int" minOccurs="0" />
+							<xs:element name="ClientID" type="xs:int" minOccurs="0" />
+							<xs:element name="SurveyInstanceID" type="xs:int" minOccurs="0" />
+							<xs:element name="GroupBySurvey" type="xs:int" minOccurs="0" />
+							<xs:element name="GroupByClient" type="xs:int" minOccurs="0" />
+							<xs:element name="GroupBySurveyInstance" type="xs:int" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

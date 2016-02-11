@@ -1,0 +1,434 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Development</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{22006699-74C3-4AE2-B529-FA1F0804DA25}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Nrc.SurveyPoint.Library</RootNamespace>
+    <AssemblyName>Nrc.SurveyPoint.Library</AssemblyName>
+    <MyType>Windows</MyType>
+    <OptionStrict>On</OptionStrict>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Development|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Development\</OutputPath>
+    <DocumentationFile>SurveyPoint.Library.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Testing|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Testing\</OutputPath>
+    <DocumentationFile>SurveyPoint.Library.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>
+    </CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+    <CodeAnalysisRuleSet>Migrated rules for SurveyPoint.Library.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Staging|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Staging\</OutputPath>
+    <DocumentationFile>SurveyPoint.Library.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>
+    </CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+    <CodeAnalysisRuleSet>Migrated rules for SurveyPoint.Library.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Production|AnyCPU' ">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Production\</OutputPath>
+    <DocumentationFile>SurveyPoint.Library.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>
+    </CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+    <CodeAnalysisRuleSet>Migrated rules for SurveyPoint.Library.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Development|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Development\</OutputPath>
+    <DocumentationFile>SurveyPoint.Library.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Testing|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Testing\</OutputPath>
+    <DocumentationFile>SurveyPoint.Library.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Staging|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Staging\</OutputPath>
+    <DocumentationFile>SurveyPoint.Library.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Production|x86' ">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Production\</OutputPath>
+    <DocumentationFile>SurveyPoint.Library.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>\rules</CodeAnalysisRuleAssemblies>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>SurveyPoint.Library.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>Migrated rules for SurveyPoint.Library.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DocumentationFile>SurveyPoint.Library.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleAssemblies>\rules</CodeAnalysisRuleAssemblies>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Nrc.Framework, Version=1.10.0.0, Culture=neutral, PublicKeyToken=7f65ae6d961bde9c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Framework.BusinessLogic, Version=1.0.2.0, Culture=neutral, PublicKeyToken=7f65ae6d961bde9c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.BusinessLogic.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Diagnostics" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Classes\Config.vb" />
+    <Compile Include="Classes\ExportFileClasses\Medicare2012\ExportMedicare2012File.vb" />
+    <Compile Include="Classes\ExportFileClasses\Medicare2012\ExportMedicare2012QFile.vb" />
+    <Compile Include="Classes\ExportFileClasses\Medicare2012\ExportMedicare2012QFileController.vb" />
+    <Compile Include="Classes\ExportFileClasses\Medicare2012\ExportMedicare2012RFile.vb" />
+    <Compile Include="Classes\ExportFileClasses\Medicare2012\ExportMedicare2012RFileController.vb" />
+    <Compile Include="Classes\VRTDispositionWest.vb" />
+    <Compile Include="Classes\ExportFileClasses\Medicare\ExportMedicareQFile.vb" />
+    <Compile Include="Classes\ExportFileClasses\Medicare\ExportMedicareQFileController.vb" />
+    <Compile Include="Classes\ExportFileClasses\Medicare\ExportMedicareRFile.vb" />
+    <Compile Include="Classes\ExportFileClasses\Medicare\ExportMedicareRFileController.vb" />
+    <Compile Include="Classes\ExportFileClasses\WPMedicare\ExportWPMedicareFile.vb" />
+    <Compile Include="Classes\ExportFileClasses\WPMedicare\ExportWPMedicareQFile.vb" />
+    <Compile Include="Classes\ExportFileClasses\WPMedicare\ExportWPMedicareQFileController.vb" />
+    <Compile Include="Classes\ExportFileClasses\WPMedicare\ExportWPMedicareRFile.vb" />
+    <Compile Include="Classes\ExportFileClasses\WPMedicare\ExportWPMedicareRFileController.vb" />
+    <Compile Include="Classes\ExportFileLayout.vb" />
+    <Compile Include="Classes\ExportFileLog.vb" />
+    <Compile Include="Classes\ExportGroupTree.vb" />
+    <Compile Include="Classes\ExportClientSelected.vb" />
+    <Compile Include="Classes\ExportEventAvailable.vb" />
+    <Compile Include="Classes\ExportClientAvailable.vb" />
+    <Compile Include="Classes\ExportClientExtension.vb" />
+    <Compile Include="Classes\ExportEventSelected.vb" />
+    <Compile Include="Classes\ExportGroup.vb" />
+    <Compile Include="Classes\ExportExtension.vb" />
+    <Compile Include="Classes\ExportGroupExtension.vb" />
+    <Compile Include="Classes\ExportFileClasses\Medicaid\ExportMedicaidFile.vb" />
+    <Compile Include="Classes\ExportFileClasses\Medicaid\ExportMedicaidQFile.vb" />
+    <Compile Include="Classes\ExportFileClasses\Medicaid\ExportMedicaidQFileController.vb" />
+    <Compile Include="Classes\ExportFileClasses\Medicaid\ExportMedicaidRFile.vb" />
+    <Compile Include="Classes\ExportFileClasses\Medicaid\ExportMedicaidRFileController.vb" />
+    <Compile Include="Classes\ExportFileClasses\Medicare\ExportMedicareFile.vb" />
+    <Compile Include="Classes\ExportObjectMessage.vb" />
+    <Compile Include="Classes\ExportScriptAvailable.vb" />
+    <Compile Include="Classes\ExportScriptExtension.vb" />
+    <Compile Include="Classes\ExportScriptSelected.vb" />
+    <Compile Include="Classes\ExportSurvey.vb" />
+    <Compile Include="Classes\SPTI_ColumnDefinitions.vb" />
+    <Compile Include="Classes\SPTI_DataTypes.vb" />
+    <Compile Include="Classes\SPTI_DeDupRuleClientID.vb" />
+    <Compile Include="Classes\SPTI_DeDupRuleColumnMap.vb" />
+    <Compile Include="Classes\SPTI_DeDupRules.vb" />
+    <Compile Include="Classes\SPTI_Delimeter.vb" />
+    <Compile Include="Classes\SPTI_EncodingTypes.vb" />
+    <Compile Include="Classes\SPTI_ExportDefinition.vb" />
+    <Compile Include="Classes\SPTI_ExportDefinitionFile.vb" />
+    <Compile Include="Classes\SPTI_ExportDefinitionLog.vb" />
+    <Compile Include="Classes\SPTI_FileTemplates.vb" />
+    <Compile Include="Classes\SPTI_FormatingRule.vb" />
+    <Compile Include="Classes\UpdateFileLog.vb" />
+    <Compile Include="Classes\UpdateRespondent.vb" />
+    <Compile Include="Classes\ListItem.vb" />
+    <Compile Include="Classes\WPSplitRespondent.vb" />
+    <Compile Include="Collections\ExportFileCollection\Medicare2012\ExportMedicare2012FileCollection.vb" />
+    <Compile Include="Collections\ExportFileCollection\Medicare2012\ExportMedicare2012QFileCollection.vb" />
+    <Compile Include="Collections\ExportFileCollection\Medicare2012\ExportMedicare2012RFileCollection.vb" />
+    <Compile Include="Collections\VRTDispositionWests.vb" />
+    <Compile Include="Collections\ExportFileCollection\Medicare\ExportMedicareFileCollection.vb" />
+    <Compile Include="Collections\ExportFileCollection\Medicare\ExportMedicareQFileCollection.vb" />
+    <Compile Include="Collections\ExportFileCollection\Medicare\ExportMedicareRFileCollection.vb" />
+    <Compile Include="Collections\ExportFileCollection\WPMedicare\ExportWPMedicareFileCollection.vb" />
+    <Compile Include="Collections\ExportFileCollection\WPMedicare\ExportWPMedicareQFileCollection.vb" />
+    <Compile Include="Collections\ExportFileCollection\WPMedicare\ExportWPMedicareRFileCollection.vb" />
+    <Compile Include="Collections\ExportFileLayoutCollection.vb" />
+    <Compile Include="Collections\ExportFileLogCollection.vb" />
+    <Compile Include="Collections\ExportGroupTreeCollection.vb" />
+    <Compile Include="Collections\ExportFileCollection\Medicaid\ExportMedicaidFileCollection.vb" />
+    <Compile Include="Collections\ExportFileCollection\Medicaid\ExportMedicaidQFileCollection.vb" />
+    <Compile Include="Collections\ExportFileCollection\Medicaid\ExportMedicaidRFileCollection.vb" />
+    <Compile Include="Collections\ExportObjectMessageCollection.vb" />
+    <Compile Include="Collections\ExportScriptExtensionCollection.vb" />
+    <Compile Include="Collections\ExportClientSelectedCollection.vb" />
+    <Compile Include="Collections\ExportEventAvailableCollection.vb" />
+    <Compile Include="Collections\ExportClientAvailableCollection.vb" />
+    <Compile Include="Collections\ExportClientExtensionCollection.vb" />
+    <Compile Include="Collections\ExportEventSelectedCollection.vb" />
+    <Compile Include="Collections\ExportGroupCollection.vb" />
+    <Compile Include="Collections\ExportGroupExtensionCollection.vb" />
+    <Compile Include="Collections\ExportScriptAvailableCollection.vb" />
+    <Compile Include="Collections\ExportScriptSelectedCollection.vb" />
+    <Compile Include="Collections\SPTI_ColumnDefinitionsCollection.vb" />
+    <Compile Include="Collections\SPTI_DataTypesCollection.vb" />
+    <Compile Include="Collections\SPTI_DeDupRuleClientIDCollection.vb" />
+    <Compile Include="Collections\SPTI_DeDupRuleCollection.vb" />
+    <Compile Include="Collections\SPTI_DeDupRuleColumnMapCollection.vb" />
+    <Compile Include="Collections\SPTI_DelimeterCollection.vb" />
+    <Compile Include="Collections\SPTI_EncodingTypesCollection.vb" />
+    <Compile Include="Collections\SPTI_ExportDefinitionCollection.vb" />
+    <Compile Include="Collections\SPTI_ExportDefinitionFileCollection.vb" />
+    <Compile Include="Collections\SPTI_ExportDefinitionLogCollection.vb" />
+    <Compile Include="Collections\SPTI_FileTemplatesCollection.vb" />
+    <Compile Include="Collections\SPTI_FormatingRuleCollection.vb" />
+    <Compile Include="Collections\SurveyCollection.vb" />
+    <Compile Include="Collections\UpdateFileLogCollection.vb" />
+    <Compile Include="Collections\UpdateRespondentCollection.vb" />
+    <Compile Include="Collections\UpdateTypeCollection.vb" />
+    <Compile Include="Collections\UpdateMappingCollection.vb" />
+    <Compile Include="Collections\UpdateFileCollection.vb" />
+    <Compile Include="Classes\UpdateType.vb" />
+    <Compile Include="Collections\WPSplitRespondentCollection.vb" />
+    <Compile Include="DataProviders\ExportFileProviders\Medicare2012\ExportMedicare2012FileProvider.vb" />
+    <Compile Include="DataProviders\ExportFileProviders\Medicare2012\ExportMedicare2012QFileProvider.vb" />
+    <Compile Include="DataProviders\ExportFileProviders\Medicare2012\ExportMedicare2012RFileControllerProvider.vb" />
+    <Compile Include="DataProviders\VRTDispositionWestProvider.vb" />
+    <Compile Include="DataProviders\ExportFileLayoutProvider.vb" />
+    <Compile Include="DataProviders\ExportFileLogProvider.vb" />
+    <Compile Include="DataProviders\ExportFileProviders\Medicare\ExportMedicareFileProvider.vb" />
+    <Compile Include="DataProviders\ExportFileProviders\Medicare\ExportMedicareQFileProvider.vb" />
+    <Compile Include="DataProviders\ExportFileProviders\Medicare\ExportMedicareRFileControllerProvider.vb" />
+    <Compile Include="DataProviders\ExportFileProviders\WPMedicare\ExportWPMedicareFileProvider.vb" />
+    <Compile Include="DataProviders\ExportFileProviders\WPMedicare\ExportWPMedicareQFileProvider.vb" />
+    <Compile Include="DataProviders\ExportFileProviders\WPMedicare\ExportWPMedicareRFileControllerProvider.vb" />
+    <Compile Include="DataProviders\ExportGroupTreeDataProvider.vb" />
+    <Compile Include="DataProviders\ExportClientSelectedProvider.vb" />
+    <Compile Include="DataProviders\ExportEventAvailableProvider.vb" />
+    <Compile Include="DataProviders\ExportClientExtensionProvider.vb" />
+    <Compile Include="DataProviders\ExportClientAvailableProvider.vb" />
+    <Compile Include="DataProviders\ExportEventSelectedProvider.vb" />
+    <Compile Include="DataProviders\ExportGroupProvider.vb" />
+    <Compile Include="DataProviders\ExportFileProviders\Medicaid\ExportMedicaidFileProvider.vb" />
+    <Compile Include="DataProviders\ExportFileProviders\Medicaid\ExportMedicaidQFileProvider.vb" />
+    <Compile Include="DataProviders\ExportFileProviders\Medicaid\ExportMedicaidRFileControllerProvider.vb" />
+    <Compile Include="DataProviders\ExportScriptAvailableProvider.vb" />
+    <Compile Include="DataProviders\ExportScriptSelectedProvider.vb" />
+    <Compile Include="DataProviders\ExportSurveyProvider.vb" />
+    <Compile Include="DataProviders\SPTI_ColumnDefinitionsProvider.vb" />
+    <Compile Include="DataProviders\SPTI_DataTypesProvider.vb" />
+    <Compile Include="DataProviders\SPTI_DeDupRuleClientIDProvider.vb" />
+    <Compile Include="DataProviders\SPTI_DeDupRuleColumnMapProvider.vb" />
+    <Compile Include="DataProviders\SPTI_DeDupRuleProvider.vb" />
+    <Compile Include="DataProviders\SPTI_DelimeterProvider.vb" />
+    <Compile Include="DataProviders\SPTI_EncodingTypesProvider.vb" />
+    <Compile Include="DataProviders\SPTI_ExportDefinitionFileProvider.vb" />
+    <Compile Include="DataProviders\SPTI_ExportDefinitionLogProvider.vb" />
+    <Compile Include="DataProviders\SPTI_ExportDefinitionProvider.vb" />
+    <Compile Include="DataProviders\SPTI_FileTemplatesProvider.vb" />
+    <Compile Include="DataProviders\SPTI_FormatingRuleProvider.vb" />
+    <Compile Include="DataProviders\UpdateFileLogProvider.vb" />
+    <Compile Include="DataProviders\UpdateRespondentProvider.vb" />
+    <Compile Include="DataProviders\UpdateTypeProvider.vb" />
+    <Compile Include="DataProviders\DataProviderFactory.vb" />
+    <Compile Include="Classes\UpdateMapping.vb" />
+    <Compile Include="DataProviders\UpdateMappingProvider.vb" />
+    <Compile Include="DataProviders\UpdateFileProvider.vb" />
+    <Compile Include="DataProviders\WPSplitRespondentProvider.vb" />
+    <Compile Include="Enums\EventTypesEnum.vb" />
+    <Compile Include="Enums\ExportGroupMoveDirection.vb" />
+    <Compile Include="Enums\ExportMoveEventsFromEnum.vb" />
+    <Compile Include="Enums\ExportObjectMessageType.vb" />
+    <Compile Include="Enums\OrdinalDirection.vb" />
+    <Compile Include="Enums\PadDirection.vb" />
+    <Compile Include="Enums\RespondentStatusTypes.vb" />
+    <Compile Include="Enums\UpdateTypeGroups.vb" />
+    <Compile Include="EventArgs\ExportFileProgress.vb" />
+    <Compile Include="EventArgs\ExportMessageArgs.vb" />
+    <Compile Include="EventArgs\UpdateProgressEventArgs.vb" />
+    <Compile Include="Exceptions\ExportGroupException.vb" />
+    <Compile Include="Exceptions\ExportGroupMaxRespondentException.vb" />
+    <Compile Include="Exceptions\FileTooLargeToProcessException.vb" />
+    <Compile Include="Exceptions\UpdateMappingsException.vb" />
+    <Compile Include="Exceptions\UpdateMissingEventCodesException.vb" />
+    <Compile Include="Exceptions\UpdateFileException.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Classes\UpdateFile.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Migrated rules for SurveyPoint.Library.ruleset" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Classes\IU_ImportUpdate.vb" />
+    <Compile Include="Classes\SPETL_RespondentImportValidator.vb" />
+    <Compile Include="Classes\VRTDisposition.vb" />
+    <Compile Include="Classes\VRTDispositionTVX.vb" />
+    <Compile Include="Collections\VRTDispositions.vb" />
+    <Compile Include="Collections\VRTDispositionTVXs.vb" />
+    <Compile Include="DataProviders\IU_ImportUpdateProvider.vb" />
+    <Compile Include="DataProviders\SPETL_RespondentImportValidatorProvider.vb" />
+    <Compile Include="DataProviders\VRTDispositionProvider.vb" />
+    <Compile Include="DataProviders\VRTDispositionTVXProvider.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
