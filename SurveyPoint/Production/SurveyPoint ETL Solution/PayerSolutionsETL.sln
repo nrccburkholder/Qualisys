@@ -11,6 +11,8 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "SurveyPoint.Library.SqlData
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
 		Development|Any CPU = Development|Any CPU
 		Development|x86 = Development|x86
 		Production|Any CPU = Production|Any CPU
@@ -23,6 +25,10 @@ Global
 		Testing|x86 = Testing|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C4B5A838-2708-40D6-8E76-24BD5EED239F}.Debug|Any CPU.ActiveCfg = Development|Any CPU
+		{C4B5A838-2708-40D6-8E76-24BD5EED239F}.Debug|Any CPU.Build.0 = Development|Any CPU
+		{C4B5A838-2708-40D6-8E76-24BD5EED239F}.Debug|x86.ActiveCfg = Development|x86
+		{C4B5A838-2708-40D6-8E76-24BD5EED239F}.Debug|x86.Build.0 = Development|x86
 		{C4B5A838-2708-40D6-8E76-24BD5EED239F}.Development|Any CPU.ActiveCfg = Development|Any CPU
 		{C4B5A838-2708-40D6-8E76-24BD5EED239F}.Development|Any CPU.Build.0 = Development|Any CPU
 		{C4B5A838-2708-40D6-8E76-24BD5EED239F}.Development|x86.ActiveCfg = Development|x86
@@ -43,6 +49,10 @@ Global
 		{C4B5A838-2708-40D6-8E76-24BD5EED239F}.Testing|Any CPU.Build.0 = Testing|Any CPU
 		{C4B5A838-2708-40D6-8E76-24BD5EED239F}.Testing|x86.ActiveCfg = Testing|x86
 		{C4B5A838-2708-40D6-8E76-24BD5EED239F}.Testing|x86.Build.0 = Testing|x86
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Debug|Any CPU.ActiveCfg = Development|Any CPU
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Debug|Any CPU.Build.0 = Development|Any CPU
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Debug|x86.ActiveCfg = Development|x86
+		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Debug|x86.Build.0 = Development|x86
 		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Development|Any CPU.ActiveCfg = Development|Any CPU
 		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Development|Any CPU.Build.0 = Development|Any CPU
 		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Development|x86.ActiveCfg = Development|x86
@@ -63,6 +73,10 @@ Global
 		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Testing|Any CPU.Build.0 = Testing|Any CPU
 		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Testing|x86.ActiveCfg = Testing|x86
 		{22006699-74C3-4AE2-B529-FA1F0804DA25}.Testing|x86.Build.0 = Testing|x86
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Debug|Any CPU.ActiveCfg = Development|Any CPU
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Debug|Any CPU.Build.0 = Development|Any CPU
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Debug|x86.ActiveCfg = Development|x86
+		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Debug|x86.Build.0 = Development|x86
 		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Development|Any CPU.ActiveCfg = Development|Any CPU
 		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Development|Any CPU.Build.0 = Development|Any CPU
 		{2AD098FB-4201-43D4-8133-F8A5EDC5E155}.Development|x86.ActiveCfg = Development|x86
