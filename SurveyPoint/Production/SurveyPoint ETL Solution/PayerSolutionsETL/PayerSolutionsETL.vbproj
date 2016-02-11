@@ -13,7 +13,7 @@
     <MyType>WindowsForms</MyType>
     <OptionStrict>Off</OptionStrict>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
     <SccProjectName>
     </SccProjectName>
     <SccLocalPath>
@@ -41,8 +41,8 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>3</ApplicationRevision>
-    <ApplicationVersion>2.2.30.3</ApplicationVersion>
+    <ApplicationRevision>4</ApplicationRevision>
+    <ApplicationVersion>2.2.30.4</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
