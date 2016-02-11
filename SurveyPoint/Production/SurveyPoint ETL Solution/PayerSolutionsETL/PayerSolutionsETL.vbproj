@@ -13,7 +13,7 @@
     <MyType>WindowsForms</MyType>
     <OptionStrict>Off</OptionStrict>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
     <SccProjectName>
     </SccProjectName>
     <SccLocalPath>
