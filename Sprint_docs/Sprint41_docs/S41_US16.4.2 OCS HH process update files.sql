@@ -266,7 +266,7 @@ or hhhospice = 'Y')
 group by schm.samplepop_id
 
 insert into dispositionlog
-select sentmail_id, samplepop_id, 8, @receipttype_id, @ltime, 'DBA', NULL, NULL, NULL
+select sentmail_id, samplepop_id, 8, @receipttype_id, @ltime, 'DBA', NULL, NULL, 0
 from #tmp
 
 drop table #tmp
@@ -281,7 +281,7 @@ and hhdeceased = 'Y'
 group by schm.samplepop_id
 
 insert into dispositionlog
-select sentmail_id, samplepop_id, 3, @receipttype_id, @ltime, 'DBA', NULL, NULL, NULL
+select sentmail_id, samplepop_id, 3, @receipttype_id, @ltime, 'DBA', NULL, NULL, 0
 from #tmp2
 
 drop table #tmp2
