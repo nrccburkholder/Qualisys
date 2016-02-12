@@ -13,7 +13,7 @@
     <MyType>WindowsForms</MyType>
     <OptionStrict>Off</OptionStrict>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <SignManifests>false</SignManifests>
+    <SignManifests>true</SignManifests>
     <SccProjectName>
     </SccProjectName>
     <SccLocalPath>
@@ -30,7 +30,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>2.0</OldToolsVersion>
-    <PublishUrl>\\tiqualfil02\TestNRCapplications\SurveyPointETL\</PublishUrl>
+    <PublishUrl>\\piqualfil02\NRCapplications\SurveyPointETL\</PublishUrl>
     <Install>false</Install>
     <InstallFrom>Unc</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -40,6 +40,8 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
+    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
+    <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <ApplicationRevision>5</ApplicationRevision>
     <ApplicationVersion>2.2.30.5</ApplicationVersion>
