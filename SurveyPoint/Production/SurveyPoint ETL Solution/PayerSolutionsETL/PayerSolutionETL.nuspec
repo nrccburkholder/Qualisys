@@ -3,11 +3,11 @@
   <metadata>
     <id>Qualisys.PayerSolutionETL</id>
     <title>SurveyPoint ETL</title>
-    <version>2.2.30.5</version>
+    <version>2.2.30.6</version>
     <authors>NRC</authors>
     <description>GUI for managing one-off client file transformations</description>
   </metadata>
   <files>
-    <file src="bin\Testing\app.publish\**\*"/>
+    <file src="bin\Production\app.publish\**\*"/>
   </files>
 </package>
