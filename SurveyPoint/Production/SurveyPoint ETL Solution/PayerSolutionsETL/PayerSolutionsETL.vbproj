@@ -22,7 +22,7 @@
     </SccAuxPath>
     <SccProvider>
     </SccProvider>
-    <ManifestCertificateThumbprint>4D26FDBAD3AC388489577CF89990C6DD2DC98955</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>397604704090BE1DDE2592BF12E532CF206C1498</ManifestCertificateThumbprint>
     <GenerateManifests>true</GenerateManifests>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
@@ -163,7 +163,7 @@
     <CodeAnalysisRuleAssemblies>C:\Program Files\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>PayerSolutionsETL_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>PayerSolutionsETL_2_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DevExpress.Data.v6.3">
@@ -485,8 +485,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="PayerSolutionsETL_1_TemporaryKey.pfx" />
-    <None Include="PayerSolutionsETL_TemporaryKey.pfx" />
+    <None Include="PayerSolutionsETL_2_TemporaryKey.pfx" />
     <None Include="Resources\GoLtr.bmp" />
   </ItemGroup>
   <ItemGroup>
