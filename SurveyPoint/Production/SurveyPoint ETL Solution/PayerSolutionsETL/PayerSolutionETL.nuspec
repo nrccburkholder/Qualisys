@@ -8,6 +8,6 @@
     <description>GUI for managing one-off client file transformations</description>
   </metadata>
   <files>
-    <file src="bin\Development\app.publish\**\*"/>
+    <file src="bin\Testing\app.publish\**\*"/>
   </files>
 </package>
