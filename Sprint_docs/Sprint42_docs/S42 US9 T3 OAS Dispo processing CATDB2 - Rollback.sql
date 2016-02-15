@@ -35,7 +35,7 @@ from CahpsDispositionMapping where CahpsTypeID=9
 
 delete
 --select * 
-from CAHPSDisposition where CahpsTypeID=9
+from CAHPSDisposition where CahpsTypeID=9 --and CahpsDispositionid >= 900 and CahpsDispositionId < 1000
 
 select * from CAHPSDisposition where CahpsTypeID=9
 
