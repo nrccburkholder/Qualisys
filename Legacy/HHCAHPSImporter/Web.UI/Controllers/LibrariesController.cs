@@ -88,7 +88,7 @@ namespace HHCAHPSImporter.Web.UI.Controllers
 
                 return RedirectToAction("Index");
             }
-            catch (Exception ex)
+            catch
             {
                 return View(transformLibrary);
             }

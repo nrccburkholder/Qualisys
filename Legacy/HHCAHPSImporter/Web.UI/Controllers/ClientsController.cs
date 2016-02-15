@@ -70,7 +70,7 @@ namespace HHCAHPSImporter.Web.UI.Controllers
 
                 return RedirectToAction("Index");
             }
-            catch (Exception ex)
+            catch
             {
                 return this.Edit(clientId, studyId, surveyId);
             }
@@ -142,7 +142,7 @@ namespace HHCAHPSImporter.Web.UI.Controllers
 
                 return RedirectToAction("TransformMappings", new { clientId = clientId, studyId = studyId, surveyId = surveyId, transformId = transformId, transformTargetId = transformTargetId });
             }
-            catch (Exception ex)
+            catch
             {
                 return View(clientDetailInfo);
             }
