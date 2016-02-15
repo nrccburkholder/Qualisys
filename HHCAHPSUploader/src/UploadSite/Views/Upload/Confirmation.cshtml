@@ -1,0 +1,28 @@
+﻿@model UploadSite.Controllers.UploadResult
+
+@if (Model.Success)
+{
+    <div class="alert alert-success">
+        <p>The following files were uploaded successfully.</p>
+        <ul>
+            @foreach (var file in Model.Files)
+            {
+                <li>@file.Name</li>
+            }
+        </ul>
+    </div>
+    <a asp-controller="Upload" asp-action="Index">Upload more files</a>
+}
+else
+{
+    <div class="alert alert-danger">
+        <p>The following files had problems. Please fix and re-upload all files including those that didn't have issues.</p>
+        <ul>
+            @foreach (var file in Model.ErrorFiles)
+            {
+                <li>@file.Name : @file.Error</li>
+            }
+        </ul>
+    </div>
+    <a asp-controller="Upload" asp-action="Index">Return to upload</a>
+}

@@ -43,7 +43,7 @@ namespace UploadSite
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Upload/Error");
             }
 
             app.UseIISPlatformHandler();
@@ -54,7 +54,7 @@ namespace UploadSite
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Upload}/{action=Index}/{id?}");
             });
         }
 
