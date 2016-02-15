@@ -74,39 +74,34 @@ namespace HHCAHPSImporter.ImportProcessor.DAL
             return db.ClientFormat.FirstOrDefault(t => t.CCN.Equals(ccn));
         }
 
-        public bool StudyHasAppliedData(int studyId, int sampleMonth, int sampleYear)
-        {
-            return db.StudyHasAppliedData(studyId, sampleMonth, sampleYear) == 1;
-        }
-
-        private const string UpdateFileQ1CutoffParam = "UpdateFileQ1Cutoff";
-        private const string UpdateFileQ2CutoffParam = "UpdateFileQ2Cutoff";
-        private const string UpdateFileQ3CutoffParam = "UpdateFileQ3Cutoff";
-        private const string UpdateFileQ4CutoffParam = "UpdateFileQ4Cutoff";
+        private const string Q1CutoffParam = "Q1Cutoff";
+        private const string Q2CutoffParam = "Q2Cutoff";
+        private const string Q3CutoffParam = "Q3Cutoff";
+        private const string Q4CutoffParam = "Q4Cutoff";
 
         private DateTime GetDateParam(string name)
         {
             return db.Loading_PARAMS.First(param => param.STRPARAM_NM.Equals(name)).DATPARAM_VALUE.Value;
         }
 
-        public DateTime GetUpdateFileQ1Cutoff()
+        public DateTime GetQ1Cutoff()
         {
-            return GetDateParam(UpdateFileQ1CutoffParam);
+            return GetDateParam(Q1CutoffParam);
         }
 
-        public DateTime GetUpdateFileQ2Cutoff()
+        public DateTime GetQ2Cutoff()
         {
-            return GetDateParam(UpdateFileQ2CutoffParam);
+            return GetDateParam(Q2CutoffParam);
         }
 
-        public DateTime GetUpdateFileQ3Cutoff()
+        public DateTime GetQ3Cutoff()
         {
-            return GetDateParam(UpdateFileQ3CutoffParam);
+            return GetDateParam(Q3CutoffParam);
         }
 
-        public DateTime GetUpdateFileQ4Cutoff()
+        public DateTime GetQ4Cutoff()
         {
-            return GetDateParam(UpdateFileQ4CutoffParam);
+            return GetDateParam(Q4CutoffParam);
         }
 
         public Dictionary<string, XElement> GetMergeRecords(int sampleYear, int sampleMonth, string CCN)

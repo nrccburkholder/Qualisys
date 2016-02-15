@@ -15,6 +15,6 @@ use QP_DataLoad
 go
 
 delete from dbo.Loading_PARAMS
-where STRPARAM_NM in ('UpdateFileQ1Cutoff', 'UpdateFileQ2Cutoff', 'UpdateFileQ3Cutoff', 'UpdateFileQ4Cutoff')
+where STRPARAM_NM in ('Q1Cutoff', 'Q2Cutoff', 'Q3Cutoff', 'Q4Cutoff')
 
 go
