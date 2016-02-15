@@ -146,10 +146,10 @@ namespace HHCAHPSImporter.ImportProcessor
                     var sampleYear = ExtractHelper.GetSampleYear(extractedData);
 
                     if (CutoffDateHelper.IsPastCutoff(
-                        qpDataLoadManager.GetUpdateFileQ1Cutoff(),
-                        qpDataLoadManager.GetUpdateFileQ2Cutoff(),
-                        qpDataLoadManager.GetUpdateFileQ3Cutoff(),
-                        qpDataLoadManager.GetUpdateFileQ4Cutoff(),
+                        qpDataLoadManager.GetQ1Cutoff(),
+                        qpDataLoadManager.GetQ2Cutoff(),
+                        qpDataLoadManager.GetQ3Cutoff(),
+                        qpDataLoadManager.GetQ4Cutoff(),
                         sampleMonth.Value,
                         sampleYear.Value,
                         DateTime.Now))
