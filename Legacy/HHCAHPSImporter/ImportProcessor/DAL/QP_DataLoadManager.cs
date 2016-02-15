@@ -74,11 +74,6 @@ namespace HHCAHPSImporter.ImportProcessor.DAL
             return db.ClientFormat.FirstOrDefault(t => t.CCN.Equals(ccn));
         }
 
-        public bool StudyHasAppliedData(int studyId, int sampleMonth, int sampleYear)
-        {
-            return db.StudyHasAppliedData(studyId, sampleMonth, sampleYear) == 1;
-        }
-
         private const string UpdateFileQ1CutoffParam = "UpdateFileQ1Cutoff";
         private const string UpdateFileQ2CutoffParam = "UpdateFileQ2Cutoff";
         private const string UpdateFileQ3CutoffParam = "UpdateFileQ3Cutoff";

@@ -937,14 +937,6 @@ namespace HHCAHPSImporter.ImportProcessor.DAL.Generated
 			return ((ISingleResult<LD_ViewWarningResult>)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.StudyHasAppliedData")]
-		[return: global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")]
-		public int StudyHasAppliedData([global::System.Data.Linq.Mapping.ParameterAttribute(Name="StudyId", DbType="Int")] System.Nullable<int> studyId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="SampleMonth", DbType="Int")] System.Nullable<int> sampleMonth, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="SampleYear", DbType="Int")] System.Nullable<int> sampleYear)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), studyId, sampleMonth, sampleYear);
-			return ((int)(result.ReturnValue));
-		}
-		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.UpdateMergeRecords")]
 		[return: global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")]
 		public int UpdateMergeRecords([global::System.Data.Linq.Mapping.ParameterAttribute(Name="SampleYear", DbType="Int")] System.Nullable<int> sampleYear, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="SampleMonth", DbType="Int")] System.Nullable<int> sampleMonth, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CCN", DbType="VarChar(10)")] string cCN, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Records", DbType="Xml")] System.Xml.Linq.XElement records)
@@ -19010,7 +19002,7 @@ namespace HHCAHPSImporter.ImportProcessor.DAL.Generated
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MatchKey", DbType="VarChar(100) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MatchKey", DbType="NVarChar(100) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
 		public string MatchKey
 		{
 			get
@@ -19030,7 +19022,7 @@ namespace HHCAHPSImporter.ImportProcessor.DAL.Generated
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RecordXml", DbType="VarChar(MAX)", UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RecordXml", DbType="NVarChar(MAX)", UpdateCheck=UpdateCheck.Never)]
 		public string RecordXml
 		{
 			get
