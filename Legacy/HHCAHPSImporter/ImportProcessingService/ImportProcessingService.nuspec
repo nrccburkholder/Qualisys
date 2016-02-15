@@ -3,7 +3,7 @@
   <metadata>
     <id>Qualisys.OCSHHCAHPS.ImportProcessingService</id>
     <title>OCSHHCAHPS Import Processing Service</title>
-    <version>2.9.2.0</version>
+    <version>2.9.3.0</version>
     <authors>NRC</authors>
     <description>Service for importing HHCAHPS files</description>
   </metadata>
