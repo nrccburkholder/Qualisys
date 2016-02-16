@@ -109,9 +109,13 @@ namespace HHCAHPSImporter.Web.UI.Models
             return item;
         }
 
-        public IEnumerable<Generated.ClientDetail> GetClients()
+        public IEnumerable<ClientInfo> GetClients()
         {
-            return dbContext.ClientDetail;
+            return from c in dbContext.ClientDetail
+                   join f in dbContext.ClientFormat
+                        on c.CCN equals f.CCN into r
+                   from x in r.DefaultIfEmpty()
+                   select new ClientInfo { ClientDetail = c, FileFormat = x.Format };
         }
 
         public Generated.ClientDetail GetClientDetail(int clientId, int studyId, int surveyId)
@@ -146,6 +150,12 @@ namespace HHCAHPSImporter.Web.UI.Models
                 v.Transform = associatedTransform.Transform;
                 v.Transform.TransformDefinition.Load();
             }
+
+            v.FileFormat = dbContext
+                .ClientFormat
+                .Where(client => client.CCN == v.ClientDetail.CCN)
+                .Select(client => client.Format)
+                .FirstOrDefault();
 
             return v;
         }
@@ -311,6 +321,23 @@ namespace HHCAHPSImporter.Web.UI.Models
         {
             transformClientMapping.UpdateDate = DateTime.Now;
             transformClientMapping.UpdateUser = HttpContext.Current.User.Identity.Name;
+            dbContext.SubmitChanges();
+        }
+
+        public void UpdateFileFormat(string CCN, string fileFormat)
+        {
+            var existing = dbContext.ClientFormat.FirstOrDefault(client => client.CCN == CCN);
+
+            if (string.IsNullOrEmpty(fileFormat))
+            {
+                if (existing != null) dbContext.ClientFormat.DeleteOnSubmit(existing);
+            }
+            else
+            {
+                if (existing == null) dbContext.ClientFormat.InsertOnSubmit(new Generated.ClientFormat { CCN = CCN, Format = fileFormat, CreateDate = DateTime.Now });
+                else existing.Format = fileFormat;
+            }
+
             dbContext.SubmitChanges();
         }
 

@@ -33,11 +33,13 @@ namespace HHCAHPSImporter.Web.UI.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(int clientId, int studyId, int surveyId, int currentTransformId, int selectedTransformId)
+        public ActionResult Edit(int clientId, int studyId, int surveyId, int currentTransformId, int selectedTransformId, string CCN, string fileFormat)
         {
             try
             {
                 var db = TransformRepository.GetRepository();
+
+                db.UpdateFileFormat(CCN, fileFormat);
 
                 if (selectedTransformId.Equals(-1))
                 {

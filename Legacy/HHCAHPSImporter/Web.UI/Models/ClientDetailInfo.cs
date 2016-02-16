@@ -22,5 +22,6 @@ namespace HHCAHPSImporter.Web.UI.Models
 
         public List<Generated.GetClientTransformsResult> TransformMappings { get; set; }
 
+        public string FileFormat { get; set; }
     }
 }

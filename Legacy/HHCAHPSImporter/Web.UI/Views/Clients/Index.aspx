@@ -1,4 +1,4 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<IEnumerable<HHCAHPSImporter.ImportProcessor.DAL.Generated.ClientDetail>>" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<IEnumerable<HHCAHPSImporter.Web.UI.Models.ClientInfo>>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
 	Index
@@ -29,33 +29,39 @@
             <th>
                 Languages
             </th>
+            <th>
+                File Format
+            </th>
         </tr>
 
     <% foreach (var item in Model) { %>
     
         <tr>
             <td>
-                <%: Html.ActionLink("Edit", "Edit", new { clientId=item.Client_id, studyId=item.Study_id, surveyId=item.Survey_id }) %> |
-                <%: Html.ActionLink("Details", "Details", new { clientId = item.Client_id, studyId = item.Study_id, surveyId = item.Survey_id })%> | 
-                <%: Html.ActionLink("DataFiles", "DataFiles", new { clientId = item.Client_id })%> 
+                <%: Html.ActionLink("Edit", "Edit", new { clientId=item.ClientDetail.Client_id, studyId=item.ClientDetail.Study_id, surveyId=item.ClientDetail.Survey_id }) %> |
+                <%: Html.ActionLink("Details", "Details", new { clientId = item.ClientDetail.Client_id, studyId = item.ClientDetail.Study_id, surveyId = item.ClientDetail.Survey_id })%> | 
+                <%: Html.ActionLink("DataFiles", "DataFiles", new { clientId = item.ClientDetail.Client_id })%> 
             </td>
             <td>
-                <%: item.Client_id %>
+                <%: item.ClientDetail.Client_id %>
             </td>
             <td>
-                <%: item.ClientName %>
+                <%: item.ClientDetail.ClientName %>
             </td>
             <td>
-                <%: item.CCN %>
+                <%: item.ClientDetail.CCN %>
             </td>
             <td>
-                <%: item.Study_id %>
+                <%: item.ClientDetail.Study_id %>
             </td>
             <td>
-                <%: item.Survey_id %>
+                <%: item.ClientDetail.Survey_id %>
             </td>
             <td>
-                <%: item.Languages %>
+                <%: item.ClientDetail.Languages %>
+            </td>
+            <td>
+                <%: item.FileFormat %>
             </td>
         </tr>
     

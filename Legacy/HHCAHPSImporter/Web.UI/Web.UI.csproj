@@ -132,6 +132,7 @@
     </Compile>
     <Compile Include="Models\ClientDetailInfo.cs" />
     <Compile Include="Models\ClientEditInfo.cs" />
+    <Compile Include="Models\ClientInfo.cs" />
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Models\TransformLibraryImportItem.cs" />
     <Compile Include="Models\TransformRepository.cs" />
