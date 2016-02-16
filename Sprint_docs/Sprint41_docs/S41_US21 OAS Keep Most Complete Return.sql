@@ -286,15 +286,15 @@ AND ACODisposition = 34
 
 			exec dbo.QFResponseCount
 
-			insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_id,datLogged,LoggedBy)
-			select sentmail_id, samplepop_id, 25, receipttype_id, @LogTime, 'CheckForCAHPSIncompletes'
+			insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_id,datLogged,LoggedBy,DaysFromFirst,DaysFromCurrent)
+			select sentmail_id, samplepop_id, 25, receipttype_id, @LogTime, 'CheckForCAHPSIncompletes',0,0
 			--, strMailingStep_nm, ResponseCount
 			from #qfResponseCount rc
 			where strMailingStep_nm='1st Survey'
 			and ResponseCount=0
 
- 			insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_id,datLogged,LoggedBy)
-			select sentmail_id, samplepop_id, 26, receipttype_id, @LogTime, 'CheckForCAHPSIncompletes'
+ 			insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_id,datLogged,LoggedBy,DaysFromFirst,DaysFromCurrent)
+			select sentmail_id, samplepop_id, 26, receipttype_id, @LogTime, 'CheckForCAHPSIncompletes',0,0
 			--, strMailingStep_nm, ResponseCount
 			from #qfResponseCount rc
 			where strMailingStep_nm='2nd Survey'
