@@ -131,7 +131,7 @@ namespace HHCAHPSImporter.ImportProcessor.DAL
             var transformMapping = db.GetTransforms(client.Client_id, client.Study_id, client.Survey_id).ToList();
             if (transformMapping.Count() == 0)
             {
-                throw new Exception( string.Format(@"No transform defined for css {0}, {1}, {2}", client.Client_id, client.Study_id, client.Survey_id) );
+                throw new Exception( string.Format(@"No transform defined for client {0}, {1}, {2}", client.Client_id, client.Study_id, client.Survey_id) );
             }
 
             string transformName = transformMapping.First().TransformName;
