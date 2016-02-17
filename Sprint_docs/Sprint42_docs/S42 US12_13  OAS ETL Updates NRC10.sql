@@ -1451,6 +1451,7 @@ GO
 USE [QP_Prod]
 GO
 
+
 -- Trigger
 ALTER TRIGGER [dbo].[trg_NRC_DataMart_ETL_dbo_SENTMAILING]
    ON  [dbo].[SENTMAILING] 
@@ -1466,7 +1467,21 @@ SET NOCOUNT ON
         inner join QUESTIONFORM qf With (NOLOCK) on  qf.SentMail_id = i.SentMail_id   
         where i.strlithocode is not null
     END
+	
+	/*	
+		We are queueing up the samplepop here to so when a survey is mailed the NumberOfMailAttempts can be calculated as part of the SamplePop extract.
+		02/16/2016 TSB (with Dave G's help)
+	*/
+	IF ( UPDATE (DatMailed))
+    BEGIN
+		insert NRC_DataMart_ETL.dbo.ExtractQueue (EntityTypeID, PKey1, PKey2, IsMetaData,Source)
+		select 7, qf.SAMPLEPOP_ID, sp.SAMPLESET_ID, 0,'trg_NRC_DataMart_ETL_dbo_SENTMAILING'
+		from INSERTED i
+        inner join QUESTIONFORM qf With (NOLOCK) on  qf.SentMail_id = i.SentMail_id   
+		inner join SAMPLEPOP sp with (NOLOCK) on sp.samplepop_id = qf.SAMPLEPOP_ID
+        where i.strlithocode is not null
+		and i.DatMailed is not null
+    END
 
 END
 
-GO
