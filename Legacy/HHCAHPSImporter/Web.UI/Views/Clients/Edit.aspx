@@ -13,6 +13,7 @@
     <% using (Html.BeginForm()) {%>
         <%: Html.ValidationSummary(true) %>
         
+        <%: Html.Hidden("CCN", Model.ClientDetailInfo.CCN)%>
         <%: Html.HiddenFor(model => model.ClientId)%>
         <%: Html.HiddenFor(model => model.StudyId)%>
         <%: Html.HiddenFor(model => model.SurveyId)%>
@@ -49,6 +50,7 @@
                 <tr>
                     <td><%: Html.LabelFor(model => model.ClientDetailInfo.Languages) %></td>
                     <td><%: Model.ClientDetailInfo.ClientDetail.Languages %></td>
+                    <td></td>
 <%--                    <td><%: Html.TextBoxFor(model => model.ClientDetailInfo.ClientDetail.Languages)%></td>
                     <td><%: Html.ValidationMessageFor(model => model.ClientDetailInfo.ClientDetail.Languages)%></td>--%>
                 </tr>
@@ -77,6 +79,18 @@
                                 <% }
                            } %>
                         </ul>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>File Format</td>
+                    <td>
+                        <label><input type="radio" name="fileFormat" value="" <%: string.IsNullOrEmpty(Model.ClientDetailInfo.FileFormat) ? "checked=\"checked\"" : "" %> /> Unknown</label><br />
+                        <label><input type="radio" name="fileFormat" value="OCS_CSV" <%: Model.ClientDetailInfo.FileFormat == "OCS_CSV" ? "checked=\"checked\"" : "" %> /> OCS_CSV</label><br />
+                        <label><input type="radio" name="fileFormat" value="OCS_FW" <%: Model.ClientDetailInfo.FileFormat == "OCS_FW" ? "checked=\"checked\"" : "" %> /> OCS_FW</label><br />
+                        <label><input type="radio" name="fileFormat" value="CMS_CSV" <%: Model.ClientDetailInfo.FileFormat == "CMS_CSV" ? "checked=\"checked\"" : "" %> /> CMS_CSV</label><br />
+                        <label><input type="radio" name="fileFormat" value="PG_CSV" <%: Model.ClientDetailInfo.FileFormat == "PG_CSV" ? "checked=\"checked\"" : "" %> /> PG_CSV</label><br />
+                        <label><input type="radio" name="fileFormat" value="PTCT_CSV" <%: Model.ClientDetailInfo.FileFormat == "PTCT_CSV" ? "checked=\"checked\"" : "" %> /> PTCT_CSV</label><br />
                     </td>
                     <td></td>
                 </tr>

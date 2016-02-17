@@ -33,11 +33,13 @@ namespace HHCAHPSImporter.Web.UI.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(int clientId, int studyId, int surveyId, int currentTransformId, int selectedTransformId)
+        public ActionResult Edit(int clientId, int studyId, int surveyId, int currentTransformId, int selectedTransformId, string CCN, string fileFormat)
         {
             try
             {
                 var db = TransformRepository.GetRepository();
+
+                db.UpdateFileFormat(CCN, fileFormat);
 
                 if (selectedTransformId.Equals(-1))
                 {
@@ -70,7 +72,7 @@ namespace HHCAHPSImporter.Web.UI.Controllers
 
                 return RedirectToAction("Index");
             }
-            catch (Exception ex)
+            catch
             {
                 return this.Edit(clientId, studyId, surveyId);
             }
@@ -142,7 +144,7 @@ namespace HHCAHPSImporter.Web.UI.Controllers
 
                 return RedirectToAction("TransformMappings", new { clientId = clientId, studyId = studyId, surveyId = surveyId, transformId = transformId, transformTargetId = transformTargetId });
             }
-            catch (Exception ex)
+            catch
             {
                 return View(clientDetailInfo);
             }

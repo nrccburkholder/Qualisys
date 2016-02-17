@@ -219,13 +219,14 @@ DROP TABLE #Identity
 --First to work on the NULL counts              
             
 Select @surveyType_ID = surveytype_ID from Survey_Def where SURVEY_ID = @survey_ID            
+if @surveyType_ID <> 3    --HHCAHPS survey
+	raiserror('This can only be run on HHCAHPS surveys.', 1, 1);
         
 /***************************************************************/        
 /* Added 08/31/2010 dmp        
  Warning for records that have both HHPay_Mcare & HHPay_Mcaid missing */        
         
-If @surveyType_ID = 3    --HHCAHPS survey        
-begin        
+      
  declare @totalrows int    
  --check for fields in data structure        
  select @totalrows = count(*) from INFORMATION_SCHEMA.COLUMNS        
@@ -266,598 +267,561 @@ begin
 	if (((@PayerNullCount * 1.0) / @RecordCount) * 100  >= 30)      
 	  insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)  select @File_id, 3, 'Count of missing Medicare/Medicaid: ' + LTRIM(STR(@PayerNullCount))
   drop table #dmp_tmp      
- end        
-end        
+ end            
 
 
 /*************************************************************/
 /* Validate total patients served */
 
-if @surveyType_ID = 3    --HHCAHPS survey
-begin
-	declare @HHPatServedColumnCount int;
-	select @HHPatServedColumnCount = count(*) from INFORMATION_SCHEMA.COLUMNS
-	where TABLE_NAME = 'ENCOUNTER_load'
-		and TABLE_SCHEMA = 's' + CAST(@Study_id as varchar(10))
-		and COLUMN_NAME in ('HHPatServed');
+declare @HHPatServedColumnCount int;
+select @HHPatServedColumnCount = count(*) from INFORMATION_SCHEMA.COLUMNS
+where TABLE_NAME = 'ENCOUNTER_load'
+	and TABLE_SCHEMA = 's' + CAST(@Study_id as varchar(10))
+	and COLUMN_NAME in ('HHPatServed');
  
-	if @HHPatServedColumnCount < 1
+if @HHPatServedColumnCount < 1
+	insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+	select @File_id, 3, 'HHPatServed column doesn''t exist.';
+else
+begin
+	create table #HHPatServedTooLow (total int);
+
+	set @sql =
+		'insert into #HHPatServedTooLow
+		select COUNT(*) as total
+		from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
+		where HHPatServed < ' + cast(@RecordCount as varchar(10)) + '
+		and DataFile_id = ' + LTRIM(STR(@File_id));
+	if @indebug = 1 print @sql;
+
+	declare @HHPatServedTooLowCount int;
+	exec(@sql);
+	select @HHPatServedTooLowCount = total from #HHPatServedTooLow;
+
+	drop table #HHPatServedTooLow;
+
+	if @indebug = 1 print @HHPatServedTooLowCount;
+
+	if @HHPatServedTooLowCount > 0
 		insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-		select @File_id, 3, 'HHPatServed column doesn''t exist.';
-	else
-	begin
-		create table #HHPatServedTooLow (total int);
-
-		set @sql =
-			'insert into #HHPatServedTooLow
-			select COUNT(*) as total
-			from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
-			where HHPatServed < ' + cast(@RecordCount as varchar(10)) + '
-			and DataFile_id = ' + LTRIM(STR(@File_id));
-		if @indebug = 1 print @sql;
-
-		declare @HHPatServedTooLowCount int;
-		exec(@sql);
-		select @HHPatServedTooLowCount = total from #HHPatServedTooLow;
-
-		drop table #HHPatServedTooLow;
-
-		if @indebug = 1 print @HHPatServedTooLowCount;
-
-		if @HHPatServedTooLowCount > 0
-			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-			select @File_id, 3, 'Number of patients served is less than the number of records in the file.';
+		select @File_id, 3, 'Number of patients served is less than the number of records in the file.';
 
 
-		create table #HHPatServedTooHigh (total int);
+	create table #HHPatServedTooHigh (total int);
 
-		set @sql =
-			'insert into #HHPatServedTooHigh
-			select COUNT(*) as total
-			from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
-			where HHPatServed > 9999
-			and DataFile_id = ' + LTRIM(STR(@File_id));
-		if @indebug = 1 print @sql;
+	set @sql =
+		'insert into #HHPatServedTooHigh
+		select COUNT(*) as total
+		from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
+		where HHPatServed > 9999
+		and DataFile_id = ' + LTRIM(STR(@File_id));
+	if @indebug = 1 print @sql;
 
-		declare @HHPatServedTooHighCount int;
-		exec(@sql);
-		select @HHPatServedTooHighCount = total from #HHPatServedTooHigh;
+	declare @HHPatServedTooHighCount int;
+	exec(@sql);
+	select @HHPatServedTooHighCount = total from #HHPatServedTooHigh;
 
-		drop table #HHPatServedTooHigh;
+	drop table #HHPatServedTooHigh;
 
-		if @indebug = 1 print @HHPatServedTooHighCount;
+	if @indebug = 1 print @HHPatServedTooHighCount;
 
-		if @HHPatServedTooHighCount > 0
-			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-			select @File_id, 3, 'Number of patients served is greater than 9999.';
-	end
+	if @HHPatServedTooHighCount > 0
+		insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+		select @File_id, 3, 'Number of patients served is greater than 9999.';
 end
 
 
 /*************************************************************/
 /* Validate NPI */
 
-if @surveyType_ID = 3    --HHCAHPS survey
-begin
-	declare @NPIColumnCount int;
-	select @NPIColumnCount = count(*) from INFORMATION_SCHEMA.COLUMNS
-	where TABLE_NAME = 'ENCOUNTER_load'
-		and TABLE_SCHEMA = 's' + CAST(@Study_id as varchar(10))
-		and COLUMN_NAME in ('npi');
+declare @NPIColumnCount int;
+select @NPIColumnCount = count(*) from INFORMATION_SCHEMA.COLUMNS
+where TABLE_NAME = 'ENCOUNTER_load'
+	and TABLE_SCHEMA = 's' + CAST(@Study_id as varchar(10))
+	and COLUMN_NAME in ('npi');
  
-	if @NPIColumnCount < 1
+if @NPIColumnCount < 1
+	insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+	select @File_id, 3, 'npi column doesn''t exist.';
+else
+begin
+	create table #NPINonNumeric (total int);
+
+	set @sql =
+		'insert into #NPINonNumeric
+		select COUNT(*) as total
+		from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
+		where npi like ''%[^0-9]%''
+		and DataFile_id = ' + LTRIM(STR(@File_id));
+	if @indebug = 1 print @sql;
+
+	declare @NPINonNumericCount int;
+	exec(@sql);
+	select @NPINonNumericCount = total from #NPINonNumeric;
+
+	drop table #NPINonNumeric;
+
+	if @indebug = 1 print @NPINonNumericCount;
+
+	if @NPINonNumericCount > 0
 		insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-		select @File_id, 3, 'npi column doesn''t exist.';
-	else
-	begin
-		create table #NPINonNumeric (total int);
-
-		set @sql =
-			'insert into #NPINonNumeric
-			select COUNT(*) as total
-			from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
-			where npi like ''%[^0-9]%''
-			and DataFile_id = ' + LTRIM(STR(@File_id));
-		if @indebug = 1 print @sql;
-
-		declare @NPINonNumericCount int;
-		exec(@sql);
-		select @NPINonNumericCount = total from #NPINonNumeric;
-
-		drop table #NPINonNumeric;
-
-		if @indebug = 1 print @NPINonNumericCount;
-
-		if @NPINonNumericCount > 0
-			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-			select @File_id, 2, 'NPI is not numeric.';
+		select @File_id, 2, 'NPI is not numeric.';
 
 
-		create table #NPITooLong (total int);
+	create table #NPITooLong (total int);
 
-		set @sql =
-			'insert into #NPITooLong
-			select COUNT(*) as total
-			from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
-			where len(npi) > 10
-			and DataFile_id = ' + LTRIM(STR(@File_id));
-		if @indebug = 1 print @sql;
+	set @sql =
+		'insert into #NPITooLong
+		select COUNT(*) as total
+		from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
+		where len(npi) > 10
+		and DataFile_id = ' + LTRIM(STR(@File_id));
+	if @indebug = 1 print @sql;
 
-		declare @NPITooLongCount int;
-		exec(@sql);
-		select @NPITooLongCount = total from #NPITooLong;
+	declare @NPITooLongCount int;
+	exec(@sql);
+	select @NPITooLongCount = total from #NPITooLong;
 
-		drop table #NPITooLong;
+	drop table #NPITooLong;
 
-		if @indebug = 1 print @NPITooLongCount;
+	if @indebug = 1 print @NPITooLongCount;
 
-		if @NPITooLongCount > 0
-			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-			select @File_id, 2, 'NPI is more than 10 digits long.';
-	end 
-end
+	if @NPITooLongCount > 0
+		insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+		select @File_id, 2, 'NPI is more than 10 digits long.';
+end 
 
 
 /*************************************************************/
 /* Validate Payer Fields */
 
-if @surveyType_ID = 3    --HHCAHPS survey
-begin
-	declare @PayerColumnCount int;
-	select @PayerColumnCount = count(*) from INFORMATION_SCHEMA.COLUMNS
-	where TABLE_NAME = 'ENCOUNTER_load'
-		and TABLE_SCHEMA = 's' + CAST(@Study_id as varchar(10))
-		and COLUMN_NAME in ('HHPay_Mcaid', 'HHPay_Mcare', 'HHPay_Other');
+declare @PayerColumnCount int;
+select @PayerColumnCount = count(*) from INFORMATION_SCHEMA.COLUMNS
+where TABLE_NAME = 'ENCOUNTER_load'
+	and TABLE_SCHEMA = 's' + CAST(@Study_id as varchar(10))
+	and COLUMN_NAME in ('HHPay_Mcaid', 'HHPay_Mcare', 'HHPay_Other');
  
-	if @PayerColumnCount < 3
+if @PayerColumnCount < 3
+	insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+	select @File_id, 3, 'Payer fields do not exist.';
+else
+begin
+	create table #PayerAllMissing (total int);
+
+	set @sql =
+		'insert into #PayerAllMissing
+		select COUNT(*) as total
+		from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
+		where HHPay_Mcaid = ''M'' and HHPay_Mcare = ''M'' and HHPay_Other = ''M''
+		and DataFile_id = ' + LTRIM(STR(@File_id));
+	if @indebug = 1 print @sql;
+
+	declare @PayerAllMissingCount int;
+	exec(@sql);
+	select @PayerAllMissingCount = total from #PayerAllMissing;
+
+	drop table #PayerAllMissing;
+
+	if @indebug = 1 print @PayerAllMissingCount;
+
+	if @PayerAllMissingCount = @RecordCount
 		insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-		select @File_id, 3, 'Payer fields do not exist.';
-	else
-	begin
-		create table #PayerAllMissing (total int);
-
-		set @sql =
-			'insert into #PayerAllMissing
-			select COUNT(*) as total
-			from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
-			where HHPay_Mcaid = ''M'' and HHPay_Mcare = ''M'' and HHPay_Other = ''M''
-			and DataFile_id = ' + LTRIM(STR(@File_id));
-		if @indebug = 1 print @sql;
-
-		declare @PayerAllMissingCount int;
-		exec(@sql);
-		select @PayerAllMissingCount = total from #PayerAllMissing;
-
-		drop table #PayerAllMissing;
-
-		if @indebug = 1 print @PayerAllMissingCount;
-
-		if @PayerAllMissingCount = @RecordCount
-			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-			select @File_id, 2, 'All payer fields are missing on all records.';
-	end
+		select @File_id, 2, 'All payer fields are missing on all records.';
 end
 
 
 /*************************************************************/
 /* Validate EOM Age */
 
-if @surveyType_ID = 3    --HHCAHPS survey
-begin
-	declare @EOMAgeColumnCount int;
-	select @EOMAgeColumnCount = count(*) from INFORMATION_SCHEMA.COLUMNS
-	where TABLE_NAME = 'ENCOUNTER_load'
-		and TABLE_SCHEMA = 's' + CAST(@Study_id as varchar(10))
-		and COLUMN_NAME in ('HHEOMAge');
+declare @EOMAgeColumnCount int;
+select @EOMAgeColumnCount = count(*) from INFORMATION_SCHEMA.COLUMNS
+where TABLE_NAME = 'ENCOUNTER_load'
+	and TABLE_SCHEMA = 's' + CAST(@Study_id as varchar(10))
+	and COLUMN_NAME in ('HHEOMAge');
  
-	if @EOMAgeColumnCount < 1
+if @EOMAgeColumnCount < 1
+	insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+	select @File_id, 3, 'HHEOMAge field doesn''t exist.';
+else
+begin
+	create table #EOMAgeLessThan0 (total int);
+
+	set @sql =
+		'insert into #EOMAgeLessThan0
+		select COUNT(*) as total
+		from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
+		where HHEOMAge < 0
+		and DataFile_id = ' + LTRIM(STR(@File_id));
+	if @indebug = 1 print @sql;
+
+	declare @EOMAgeLessThan0Count int;
+	exec(@sql);
+	select @EOMAgeLessThan0Count = total from #EOMAgeLessThan0;
+
+	drop table #EOMAgeLessThan0;
+
+	if @indebug = 1 print @EOMAgeLessThan0Count;
+
+	if @EOMAgeLessThan0Count > 0
 		insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-		select @File_id, 3, 'HHEOMAge field doesn''t exist.';
-	else
-	begin
-		create table #EOMAgeLessThan0 (total int);
-
-		set @sql =
-			'insert into #EOMAgeLessThan0
-			select COUNT(*) as total
-			from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
-			where HHEOMAge < 0
-			and DataFile_id = ' + LTRIM(STR(@File_id));
-		if @indebug = 1 print @sql;
-
-		declare @EOMAgeLessThan0Count int;
-		exec(@sql);
-		select @EOMAgeLessThan0Count = total from #EOMAgeLessThan0;
-
-		drop table #EOMAgeLessThan0;
-
-		if @indebug = 1 print @EOMAgeLessThan0Count;
-
-		if @EOMAgeLessThan0Count > 0
-			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-			select @File_id, 3, 'An end of month age is less than 0 years.';
+		select @File_id, 3, 'An end of month age is less than 0 years.';
 
 
-		create table #EOMAgeTooOld (total int);
+	create table #EOMAgeTooOld (total int);
 
-		set @sql =
-			'insert into #EOMAgeTooOld
-			select COUNT(*) as total
-			from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
-			where HHEOMAge >= 150
-			and DataFile_id = ' + LTRIM(STR(@File_id));
-		if @indebug = 1 print @sql;
+	set @sql =
+		'insert into #EOMAgeTooOld
+		select COUNT(*) as total
+		from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
+		where HHEOMAge >= 150
+		and DataFile_id = ' + LTRIM(STR(@File_id));
+	if @indebug = 1 print @sql;
 
-		declare @EOMAgeTooOldCount int;
-		exec(@sql);
-		select @EOMAgeTooOldCount = total from #EOMAgeTooOld;
+	declare @EOMAgeTooOldCount int;
+	exec(@sql);
+	select @EOMAgeTooOldCount = total from #EOMAgeTooOld;
 
-		drop table #EOMAgeTooOld;
+	drop table #EOMAgeTooOld;
 
-		if @indebug = 1 print @EOMAgeTooOldCount;
+	if @indebug = 1 print @EOMAgeTooOldCount;
 
-		if @EOMAgeTooOldCount > 0
-			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-			select @File_id, 3, 'An end of month age is more than 150 years.';
+	if @EOMAgeTooOldCount > 0
+		insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+		select @File_id, 3, 'An end of month age is more than 150 years.';
 
 
-		create table #EOMAgeNotAtLeast18 (total int);
+	create table #EOMAgeNotAtLeast18 (total int);
 
-		set @sql =
-			'insert into #EOMAgeNotAtLeast18
-			select COUNT(*) as total
-			from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
-			where HHEOMAge < 18
-			and DataFile_id = ' + LTRIM(STR(@File_id));
-		if @indebug = 1 print @sql;
+	set @sql =
+		'insert into #EOMAgeNotAtLeast18
+		select COUNT(*) as total
+		from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
+		where HHEOMAge < 18
+		and DataFile_id = ' + LTRIM(STR(@File_id));
+	if @indebug = 1 print @sql;
 
-		declare @EOMAgeNotAtLeast18Count int;
-		exec(@sql);
-		select @EOMAgeNotAtLeast18Count = total from #EOMAgeNotAtLeast18;
+	declare @EOMAgeNotAtLeast18Count int;
+	exec(@sql);
+	select @EOMAgeNotAtLeast18Count = total from #EOMAgeNotAtLeast18;
 
-		drop table #EOMAgeNotAtLeast18;
+	drop table #EOMAgeNotAtLeast18;
 
-		if @indebug = 1 print @EOMAgeNotAtLeast18Count;
-		declare @EOMAgeNotAtLeast18Percentage float = 0;
-		if @RecordCount <> 0 set @EOMAgeNotAtLeast18Percentage = round(100.0 * @EOMAgeNotAtLeast18Count / @RecordCount, 0);
+	if @indebug = 1 print @EOMAgeNotAtLeast18Count;
+	declare @EOMAgeNotAtLeast18Percentage float = 0;
+	if @RecordCount <> 0 set @EOMAgeNotAtLeast18Percentage = round(100.0 * @EOMAgeNotAtLeast18Count / @RecordCount, 0);
 
-		if @EOMAgeNotAtLeast18Percentage >= 80.0
-			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-			select @File_id, 3, 'End of month age is not at least 18 years on ' + cast(@EOMAgeNotAtLeast18Percentage as varchar(10)) + '% of records.';
-	end
+	if @EOMAgeNotAtLeast18Percentage >= 80.0
+		insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+		select @File_id, 3, 'End of month age is not at least 18 years on ' + cast(@EOMAgeNotAtLeast18Percentage as varchar(10)) + '% of records.';
 end
 
 
 /*************************************************************/
 /* Validate Drop in Record Count */
 
-if @surveyType_ID = 3    --HHCAHPS survey
-begin
-	create table #AverageRecordCount (Average int);
+create table #AverageRecordCount (Average int);
 
-	set @sql =
-		'insert into #AverageRecordCount
-		select avg(intRecords) as Average
-		from DataFile f inner join DataFileState s on s.DataFile_id = f.DataFile_id
-		where
-			f.Study_ID = ' + LTRIM(STR(@Study_id)) + '
-			and f.datReceived >= dateadd(month, -6, ''' + cast(@currentDate as varchar(20)) + ''')
-			and s.State_ID = 10'
-	if @indebug = 1 print @sql;
+set @sql =
+	'insert into #AverageRecordCount
+	select avg(intRecords) as Average
+	from DataFile f inner join DataFileState s on s.DataFile_id = f.DataFile_id
+	where
+		f.Study_ID = ' + LTRIM(STR(@Study_id)) + '
+		and f.datReceived >= dateadd(month, -6, ''' + cast(@currentDate as varchar(20)) + ''')
+		and s.State_ID = 10'
+if @indebug = 1 print @sql;
 
-	declare @AverageRecordCount int;
-	exec(@sql);
-	select @AverageRecordCount = Average from #AverageRecordCount;
+declare @AverageRecordCount int;
+exec(@sql);
+select @AverageRecordCount = Average from #AverageRecordCount;
 
-	drop table #AverageRecordCount;
+drop table #AverageRecordCount;
 
-	if @indebug = 1 print @AverageRecordCount;
+if @indebug = 1 print @AverageRecordCount;
 
-	declare @RecordCountPercentageDrop float = 0.0;
-	if @AverageRecordCount <> 0 set @RecordCountPercentageDrop = round(100.0 - 100.0 * @RecordCount / @AverageRecordCount, 0);
+declare @RecordCountPercentageDrop float = 0.0;
+if @AverageRecordCount <> 0 set @RecordCountPercentageDrop = round(100.0 - 100.0 * @RecordCount / @AverageRecordCount, 0);
 
-	if @RecordCountPercentageDrop >= 50.0 and @AverageRecordCount >= 25
-		insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-		select @File_id, 3, 'The number of records has dropped by ' + cast(@RecordCountPercentageDrop as varchar(10)) + '% from the average.';
-end
+if @RecordCountPercentageDrop >= 50.0 and @AverageRecordCount >= 25
+	insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+	select @File_id, 3, 'The number of records has dropped by ' + cast(@RecordCountPercentageDrop as varchar(10)) + '% from the average.';
 
 
 /*************************************************************/
 /* Validate ADL Fields */
 
-if @surveyType_ID = 3    --HHCAHPS survey
-begin
-	declare @ADLColumnCount int;
-	select @ADLColumnCount = count(*) from INFORMATION_SCHEMA.COLUMNS
-	where TABLE_NAME = 'ENCOUNTER_load'
-		and TABLE_SCHEMA = 's' + CAST(@Study_id as varchar(10))
-		and COLUMN_NAME in ('HHADL_Bath', 'HHADL_DressLow', 'HHADL_DressUp', 'HHADL_Feed', 'HHADL_Toilet', 'HHADL_Transfer');
+declare @ADLColumnCount int;
+select @ADLColumnCount = count(*) from INFORMATION_SCHEMA.COLUMNS
+where TABLE_NAME = 'ENCOUNTER_load'
+	and TABLE_SCHEMA = 's' + CAST(@Study_id as varchar(10))
+	and COLUMN_NAME in ('HHADL_Bath', 'HHADL_DressLow', 'HHADL_DressUp', 'HHADL_Feed', 'HHADL_Toilet', 'HHADL_Transfer');
  
-	if @ADLColumnCount < 6
+if @ADLColumnCount < 6
+	insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+	select @File_id, 3, 'ADL fields do not exist.';
+else
+begin
+	create table #ADLAllMissing (total int);
+
+	set @sql =
+		'insert into #ADLAllMissing
+		select COUNT(*) as total
+		from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
+		where HHADL_Bath = ''M'' and HHADL_DressLow = ''M'' and HHADL_DressUp = ''M'' and HHADL_Feed = ''M'' and HHADL_Toilet = ''M'' and HHADL_Transfer = ''M''
+		and DataFile_id = ' + LTRIM(STR(@File_id));
+	if @indebug = 1 print @sql;
+
+	declare @ADLAllMissingCount int;
+	exec(@sql);
+	select @ADLAllMissingCount = total from #ADLAllMissing;
+
+	drop table #ADLAllMissing;
+
+	if @indebug = 1 print @ADLAllMissingCount;
+	declare @ADLAllMissingPercentage float = 0;
+	if @RecordCount <> 0 set @ADLAllMissingPercentage = round(100.0 * @ADLAllMissingCount / @RecordCount, 0);
+
+	if @ADLAllMissingPercentage >= 20.0
 		insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-		select @File_id, 3, 'ADL fields do not exist.';
-	else
-	begin
-		create table #ADLAllMissing (total int);
-
-		set @sql =
-			'insert into #ADLAllMissing
-			select COUNT(*) as total
-			from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
-			where HHADL_Bath = ''M'' and HHADL_DressLow = ''M'' and HHADL_DressUp = ''M'' and HHADL_Feed = ''M'' and HHADL_Toilet = ''M'' and HHADL_Transfer = ''M''
-			and DataFile_id = ' + LTRIM(STR(@File_id));
-		if @indebug = 1 print @sql;
-
-		declare @ADLAllMissingCount int;
-		exec(@sql);
-		select @ADLAllMissingCount = total from #ADLAllMissing;
-
-		drop table #ADLAllMissing;
-
-		if @indebug = 1 print @ADLAllMissingCount;
-		declare @ADLAllMissingPercentage float = 0;
-		if @RecordCount <> 0 set @ADLAllMissingPercentage = round(100.0 * @ADLAllMissingCount / @RecordCount, 0);
-
-		if @ADLAllMissingPercentage >= 20.0
-			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-			select @File_id, 2, 'All ADL fields are missing on ' + cast(@ADLAllMissingPercentage as varchar(10)) + '% of records.';
-	end
+		select @File_id, 2, 'All ADL fields are missing on ' + cast(@ADLAllMissingPercentage as varchar(10)) + '% of records.';
 end
 
 
 /*************************************************************/
 /* Validate Admission Source Fields */
 
-if @surveyType_ID = 3    --HHCAHPS survey
-begin
-	declare @AdmSourceColumnCount int;
-	select @AdmSourceColumnCount = count(*) from INFORMATION_SCHEMA.COLUMNS
-	where TABLE_NAME = 'ENCOUNTER_load'
-		and TABLE_SCHEMA = 's' + CAST(@Study_id as varchar(10))
-		and COLUMN_NAME in ('HHAdm_Comm', 'HHAdm_Hosp', 'HHAdm_OthIP', 'HHAdm_OthLTC', 'HHAdm_Rehab', 'HHAdm_SNF');
+declare @AdmSourceColumnCount int;
+select @AdmSourceColumnCount = count(*) from INFORMATION_SCHEMA.COLUMNS
+where TABLE_NAME = 'ENCOUNTER_load'
+	and TABLE_SCHEMA = 's' + CAST(@Study_id as varchar(10))
+	and COLUMN_NAME in ('HHAdm_Comm', 'HHAdm_Hosp', 'HHAdm_OthIP', 'HHAdm_OthLTC', 'HHAdm_Rehab', 'HHAdm_SNF');
  
-	if @AdmSourceColumnCount < 6
+if @AdmSourceColumnCount < 6
+	insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+	select @File_id, 3, 'Admission source fields do not exist.';
+else
+begin
+	create table #AdmSourceAllMissing (total int);
+
+	set @sql =
+		'insert into #AdmSourceAllMissing
+		select COUNT(*) as total
+		from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
+		where HHAdm_Comm = ''M'' and HHAdm_Hosp = ''M'' and HHAdm_OthIP = ''M'' and HHAdm_OthLTC = ''M'' and HHAdm_Rehab = ''M'' and HHAdm_SNF = ''M''
+		and DataFile_id = ' + LTRIM(STR(@File_id));
+	if @indebug = 1 print @sql;
+
+	declare @AdmSourceAllMissingCount int;
+	exec(@sql);
+	select @AdmSourceAllMissingCount = total from #AdmSourceAllMissing;
+
+	drop table #AdmSourceAllMissing;
+
+	if @indebug = 1 print @AdmSourceAllMissingCount;
+	declare @AdmSourceAllMissingPercentage float = 0;
+	if @RecordCount <> 0 set @AdmSourceAllMissingPercentage = round(100.0 * @AdmSourceAllMissingCount / @RecordCount, 0);
+
+	if @AdmSourceAllMissingPercentage >= 20.0
 		insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-		select @File_id, 3, 'Admission source fields do not exist.';
-	else
-	begin
-		create table #AdmSourceAllMissing (total int);
-
-		set @sql =
-			'insert into #AdmSourceAllMissing
-			select COUNT(*) as total
-			from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
-			where HHAdm_Comm = ''M'' and HHAdm_Hosp = ''M'' and HHAdm_OthIP = ''M'' and HHAdm_OthLTC = ''M'' and HHAdm_Rehab = ''M'' and HHAdm_SNF = ''M''
-			and DataFile_id = ' + LTRIM(STR(@File_id));
-		if @indebug = 1 print @sql;
-
-		declare @AdmSourceAllMissingCount int;
-		exec(@sql);
-		select @AdmSourceAllMissingCount = total from #AdmSourceAllMissing;
-
-		drop table #AdmSourceAllMissing;
-
-		if @indebug = 1 print @AdmSourceAllMissingCount;
-		declare @AdmSourceAllMissingPercentage float = 0;
-		if @RecordCount <> 0 set @AdmSourceAllMissingPercentage = round(100.0 * @AdmSourceAllMissingCount / @RecordCount, 0);
-
-		if @AdmSourceAllMissingPercentage >= 20.0
-			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-			select @File_id, 2, 'All admission source fields are missing on ' + cast(@AdmSourceAllMissingPercentage as varchar(10)) + '% of records.';
-	end
+		select @File_id, 2, 'All admission source fields are missing on ' + cast(@AdmSourceAllMissingPercentage as varchar(10)) + '% of records.';
 end
 
 
 /*************************************************************/
 /* Validate ESRD */
 
-if @surveyType_ID = 3    --HHCAHPS survey
-begin
-	declare @ESRDColumnCount int;
-	select @ESRDColumnCount = count(*) from INFORMATION_SCHEMA.COLUMNS
-	where TABLE_NAME = 'ENCOUNTER_load'
-		and TABLE_SCHEMA = 's' + CAST(@Study_id as varchar(10))
-		and COLUMN_NAME in ('HHESRD');
+declare @ESRDColumnCount int;
+select @ESRDColumnCount = count(*) from INFORMATION_SCHEMA.COLUMNS
+where TABLE_NAME = 'ENCOUNTER_load'
+	and TABLE_SCHEMA = 's' + CAST(@Study_id as varchar(10))
+	and COLUMN_NAME in ('HHESRD');
  
-	if @ESRDColumnCount < 1
+if @ESRDColumnCount < 1
+	insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+	select @File_id, 3, 'HHESRD field does not exist.';
+else
+begin
+	create table #ESRDInvalid (total int);
+
+	set @sql =
+		'insert into #ESRDInvalid
+		select COUNT(*) as total
+		from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
+		where HHESRD not in (''1'', ''2'', ''M'')
+		and DataFile_id = ' + LTRIM(STR(@File_id));
+	if @indebug = 1 print @sql;
+
+	declare @ESRDInvalidCount int;
+	exec(@sql);
+	select @ESRDInvalidCount = total from #ESRDInvalid;
+
+	drop table #ESRDInvalid;
+
+	if @indebug = 1 print @ESRDInvalidCount;
+	declare @ESRDInvalidPercentage float = 0;
+	if @RecordCount <> 0 set @ESRDInvalidPercentage = round(100.0 * @ESRDInvalidCount / @RecordCount, 0);
+
+	if @ESRDInvalidPercentage >= 5.0
 		insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-		select @File_id, 3, 'HHESRD field does not exist.';
-	else
-	begin
-		create table #ESRDInvalid (total int);
-
-		set @sql =
-			'insert into #ESRDInvalid
-			select COUNT(*) as total
-			from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
-			where HHESRD not in (''1'', ''2'', ''M'')
-			and DataFile_id = ' + LTRIM(STR(@File_id));
-		if @indebug = 1 print @sql;
-
-		declare @ESRDInvalidCount int;
-		exec(@sql);
-		select @ESRDInvalidCount = total from #ESRDInvalid;
-
-		drop table #ESRDInvalid;
-
-		if @indebug = 1 print @ESRDInvalidCount;
-		declare @ESRDInvalidPercentage float = 0;
-		if @RecordCount <> 0 set @ESRDInvalidPercentage = round(100.0 * @ESRDInvalidCount / @RecordCount, 0);
-
-		if @ESRDInvalidPercentage >= 5.0
-			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-			select @File_id, 2, 'There are invalid ESRD values on ' + cast(@ESRDInvalidPercentage as varchar(10)) + '% of records.';
-	end
+		select @File_id, 2, 'There are invalid ESRD values on ' + cast(@ESRDInvalidPercentage as varchar(10)) + '% of records.';
 end
 
 
 /*************************************************************/
 /* Validate Surgical Discharge */
 
-if @surveyType_ID = 3    --HHCAHPS survey
-begin
-	declare @SurgDisColumnCount int;
-	select @SurgDisColumnCount = count(*) from INFORMATION_SCHEMA.COLUMNS
-	where TABLE_NAME = 'ENCOUNTER_load'
-		and TABLE_SCHEMA = 's' + CAST(@Study_id as varchar(10))
-		and COLUMN_NAME in ('HHSurg');
+declare @SurgDisColumnCount int;
+select @SurgDisColumnCount = count(*) from INFORMATION_SCHEMA.COLUMNS
+where TABLE_NAME = 'ENCOUNTER_load'
+	and TABLE_SCHEMA = 's' + CAST(@Study_id as varchar(10))
+	and COLUMN_NAME in ('HHSurg');
  
-	if @SurgDisColumnCount < 1
+if @SurgDisColumnCount < 1
+	insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+	select @File_id, 3, 'HHSurg field does not exist.';
+else
+begin
+	create table #SurgDisInvalid (total int);
+
+	set @sql =
+		'insert into #SurgDisInvalid
+		select COUNT(*) as total
+		from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
+		where HHSurg not in (''1'', ''2'', ''M'')
+		and DataFile_id = ' + LTRIM(STR(@File_id));
+	if @indebug = 1 print @sql;
+
+	declare @SurgDisInvalidCount int;
+	exec(@sql);
+	select @SurgDisInvalidCount = total from #SurgDisInvalid;
+
+	drop table #SurgDisInvalid;
+
+	if @indebug = 1 print @SurgDisInvalidCount;
+	declare @SurgDisInvalidPercentage float = 0;
+	if @RecordCount <> 0 set @SurgDisInvalidPercentage = round(100.0 * @SurgDisInvalidCount / @RecordCount, 0);
+
+	if @SurgDisInvalidPercentage >= 5.0
 		insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-		select @File_id, 3, 'HHSurg field does not exist.';
-	else
-	begin
-		create table #SurgDisInvalid (total int);
-
-		set @sql =
-			'insert into #SurgDisInvalid
-			select COUNT(*) as total
-			from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
-			where HHSurg not in (''1'', ''2'', ''M'')
-			and DataFile_id = ' + LTRIM(STR(@File_id));
-		if @indebug = 1 print @sql;
-
-		declare @SurgDisInvalidCount int;
-		exec(@sql);
-		select @SurgDisInvalidCount = total from #SurgDisInvalid;
-
-		drop table #SurgDisInvalid;
-
-		if @indebug = 1 print @SurgDisInvalidCount;
-		declare @SurgDisInvalidPercentage float = 0;
-		if @RecordCount <> 0 set @SurgDisInvalidPercentage = round(100.0 * @SurgDisInvalidCount / @RecordCount, 0);
-
-		if @SurgDisInvalidPercentage >= 5.0
-			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-			select @File_id, 2, 'There are invalid surgical discharge values on ' + cast(@SurgDisInvalidPercentage as varchar(10)) + '% of records.';
-	end
+		select @File_id, 2, 'There are invalid surgical discharge values on ' + cast(@SurgDisInvalidPercentage as varchar(10)) + '% of records.';
 end
 
 
 /*************************************************************/
 /* Validate LangID */
 
-if @surveyType_ID = 3    --HHCAHPS survey
-begin
-	declare @LangColumnCount int;
-	select @LangColumnCount = count(*) from INFORMATION_SCHEMA.COLUMNS
-	where TABLE_NAME = 'POPULATION_load'
-		and TABLE_SCHEMA = 's' + CAST(@Study_id as varchar(10))
-		and COLUMN_NAME in ('LangID');
+declare @LangColumnCount int;
+select @LangColumnCount = count(*) from INFORMATION_SCHEMA.COLUMNS
+where TABLE_NAME = 'POPULATION_load'
+	and TABLE_SCHEMA = 's' + CAST(@Study_id as varchar(10))
+	and COLUMN_NAME in ('LangID');
  
-	if @LangColumnCount < 1
+if @LangColumnCount < 1
+	insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+	select @File_id, 3, 'LangID field does not exist.';
+else
+begin
+	create table #LangNotEnglish (total int);
+
+	set @sql =
+		'insert into #LangNotEnglish
+		select COUNT(*) as total
+		from s' + LTRIM(STR(@Study_id)) + '.POPULATION_load
+		where LangID <> ''1''
+		and DataFile_id = ' + LTRIM(STR(@File_id));
+	if @indebug = 1 print @sql;
+
+	declare @LangNotEnglishCount int;
+	exec(@sql);
+	select @LangNotEnglishCount = total from #LangNotEnglish;
+
+	drop table #LangNotEnglish;
+
+	if @indebug = 1 print @LangNotEnglishCount;
+	declare @LangNotEnglishPercentage float = 0;
+	if @RecordCount <> 0 set @LangNotEnglishPercentage = round(100.0 * @LangNotEnglishCount / @RecordCount, 0);
+
+	if @LangNotEnglishPercentage >= 80.0
 		insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-		select @File_id, 3, 'LangID field does not exist.';
-	else
-	begin
-		create table #LangNotEnglish (total int);
-
-		set @sql =
-			'insert into #LangNotEnglish
-			select COUNT(*) as total
-			from s' + LTRIM(STR(@Study_id)) + '.POPULATION_load
-			where LangID <> ''1''
-			and DataFile_id = ' + LTRIM(STR(@File_id));
-		if @indebug = 1 print @sql;
-
-		declare @LangNotEnglishCount int;
-		exec(@sql);
-		select @LangNotEnglishCount = total from #LangNotEnglish;
-
-		drop table #LangNotEnglish;
-
-		if @indebug = 1 print @LangNotEnglishCount;
-		declare @LangNotEnglishPercentage float = 0;
-		if @RecordCount <> 0 set @LangNotEnglishPercentage = round(100.0 * @LangNotEnglishCount / @RecordCount, 0);
-
-		if @LangNotEnglishPercentage >= 80.0
-			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-			select @File_id, 3, 'The language is not English on ' + cast(@LangNotEnglishPercentage as varchar(10)) + '% of records.';
-	end
+		select @File_id, 3, 'The language is not English on ' + cast(@LangNotEnglishPercentage as varchar(10)) + '% of records.';
 end
 
 
 /*************************************************************/
 /* Validate ICD10_1 */
 
-if @surveyType_ID = 3    --HHCAHPS survey
-begin
-	declare @PrimaryICDColumnCount int;
-	select @PrimaryICDColumnCount = count(*) from INFORMATION_SCHEMA.COLUMNS
-	where TABLE_NAME = 'ENCOUNTER_load'
-		and TABLE_SCHEMA = 's' + CAST(@Study_id as varchar(10))
-		and COLUMN_NAME in ('ICD10_1');
+declare @PrimaryICDColumnCount int;
+select @PrimaryICDColumnCount = count(*) from INFORMATION_SCHEMA.COLUMNS
+where TABLE_NAME = 'ENCOUNTER_load'
+	and TABLE_SCHEMA = 's' + CAST(@Study_id as varchar(10))
+	and COLUMN_NAME in ('ICD10_1');
  
-	if @PrimaryICDColumnCount < 1
+if @PrimaryICDColumnCount < 1
+	insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+	select @File_id, 3, 'ICD10_1 field does not exist.';
+else
+begin
+	create table #PrimaryICDBlank (total int);
+
+	set @sql =
+		'insert into #PrimaryICDBlank
+		select COUNT(*) as total
+		from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
+		where ICD10_1 is null
+		and DataFile_id = ' + LTRIM(STR(@File_id));
+	if @indebug = 1 print @sql;
+
+	declare @PrimaryICDBlankCount int;
+	exec(@sql);
+	select @PrimaryICDBlankCount = total from #PrimaryICDBlank;
+
+	drop table #PrimaryICDBlank;
+
+	if @indebug = 1 print @PrimaryICDBlankCount;
+	declare @PrimaryICDBlankPercentage float = 0;
+	if @RecordCount <> 0 set @PrimaryICDBlankPercentage = round(100.0 * @PrimaryICDBlankCount / @RecordCount, 0);
+
+	if @PrimaryICDBlankPercentage >= 20.0
 		insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-		select @File_id, 3, 'ICD10_1 field does not exist.';
-	else
-	begin
-		create table #PrimaryICDBlank (total int);
-
-		set @sql =
-			'insert into #PrimaryICDBlank
-			select COUNT(*) as total
-			from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
-			where ICD10_1 is null
-			and DataFile_id = ' + LTRIM(STR(@File_id));
-		if @indebug = 1 print @sql;
-
-		declare @PrimaryICDBlankCount int;
-		exec(@sql);
-		select @PrimaryICDBlankCount = total from #PrimaryICDBlank;
-
-		drop table #PrimaryICDBlank;
-
-		if @indebug = 1 print @PrimaryICDBlankCount;
-		declare @PrimaryICDBlankPercentage float = 0;
-		if @RecordCount <> 0 set @PrimaryICDBlankPercentage = round(100.0 * @PrimaryICDBlankCount / @RecordCount, 0);
-
-		if @PrimaryICDBlankPercentage >= 20.0
-			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-			select @File_id, 2, 'The ICD10_1 is missing on ' + cast(@PrimaryICDBlankPercentage as varchar(10)) + '% of records.';
-	end
+		select @File_id, 2, 'The ICD10_1 is missing on ' + cast(@PrimaryICDBlankPercentage as varchar(10)) + '% of records.';
 end
 
 
 /*************************************************************/
 /* Validate Skilled Visits */
 
-if @surveyType_ID = 3    --HHCAHPS survey
-begin
-	declare @NoSkilledVisitsColumnCount int;
-	select @NoSkilledVisitsColumnCount = count(*) from INFORMATION_SCHEMA.COLUMNS
-	where TABLE_NAME = 'ENCOUNTER_load'
-		and TABLE_SCHEMA = 's' + CAST(@Study_id as varchar(10))
-		and COLUMN_NAME in ('HHVisitCnt', 'ServiceInd_5', 'ServiceInd_6', 'ServiceInd_9', 'ServiceInd_11');
+declare @NoSkilledVisitsColumnCount int;
+select @NoSkilledVisitsColumnCount = count(*) from INFORMATION_SCHEMA.COLUMNS
+where TABLE_NAME = 'ENCOUNTER_load'
+	and TABLE_SCHEMA = 's' + CAST(@Study_id as varchar(10))
+	and COLUMN_NAME in ('HHVisitCnt', 'ServiceInd_5', 'ServiceInd_6', 'ServiceInd_9', 'ServiceInd_11');
  
-	if @NoSkilledVisitsColumnCount < 5
+if @NoSkilledVisitsColumnCount < 5
+	insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
+	select @File_id, 3, 'Skilled visits fields don''t exist.';
+else
+begin
+	create table #NoSkilledVisitsMismatch (total int);
+
+	set @sql =
+		'insert into #NoSkilledVisitsMismatch
+		select COUNT(*) as total
+		from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
+		where HHVisitCnt > 0 and ServiceInd_5 = ''2'' and ServiceInd_6 = ''2'' and ServiceInd_9 = ''2'' and ServiceInd_11 = ''2''
+		and DataFile_id = ' + LTRIM(STR(@File_id));
+	if @indebug = 1 print @sql;
+
+	declare @NoSkilledVisitsMismatchCount int;
+	exec(@sql);
+	select @NoSkilledVisitsMismatchCount = total from #NoSkilledVisitsMismatch;
+
+	drop table #NoSkilledVisitsMismatch;
+
+	if @indebug = 1 print @NoSkilledVisitsMismatchCount;
+
+	if @NoSkilledVisitsMismatchCount > 0
 		insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-		select @File_id, 3, 'Skilled visits fields don''t exist.';
-	else
-	begin
-		create table #NoSkilledVisitsMismatch (total int);
-
-		set @sql =
-			'insert into #NoSkilledVisitsMismatch
-			select COUNT(*) as total
-			from s' + LTRIM(STR(@Study_id)) + '.ENCOUNTER_load
-			where HHVisitCnt > 0 and ServiceInd_5 = ''2'' and ServiceInd_6 = ''2'' and ServiceInd_9 = ''2'' and ServiceInd_11 = ''2''
-			and DataFile_id = ' + LTRIM(STR(@File_id));
-		if @indebug = 1 print @sql;
-
-		declare @NoSkilledVisitsMismatchCount int;
-		exec(@sql);
-		select @NoSkilledVisitsMismatchCount = total from #NoSkilledVisitsMismatch;
-
-		drop table #NoSkilledVisitsMismatch;
-
-		if @indebug = 1 print @NoSkilledVisitsMismatchCount;
-
-		if @NoSkilledVisitsMismatchCount > 0
-			insert into DataFileLoadMsg (DataFile_ID, ErrorLevel_ID, ErrorMessage)
-			select @File_id, 3, 'Skilled visits is not zero, but there was no skilled nursing, physical therapy, occupational therapy, or speech therapy.';
-	end
+		select @File_id, 3, 'Skilled visits is not zero, but there was no skilled nursing, physical therapy, occupational therapy, or speech therapy.';
 end
 
       

@@ -26,6 +26,14 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
             }
         }
 
+        public bool MonthOutOfRange
+        {
+            get
+            {
+                return Month > 12;
+            }
+        }
+
         public override bool Equals(object obj)
         {
             var compareTo = obj as SampleMonth;

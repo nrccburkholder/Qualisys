@@ -11,7 +11,7 @@ begin
 		select MatchKey, min(RecordXml) as RecordXml
 		from
 		(
-			select T.r.value('./@matchkey', 'varchar(100)') as MatchKey, cast(T.r.query('.') as varchar(max)) as RecordXml
+			select T.r.value('./@matchkey', 'nvarchar(100)') as MatchKey, cast(T.r.query('.') as nvarchar(max)) as RecordXml
 			from @Records.nodes('/rows/r') as T(r)
 		) as records
 		group by MatchKey

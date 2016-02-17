@@ -69,6 +69,10 @@
                         </td>
                     <td></td>
                 </tr>
+                <tr>
+                    <td>File Format</td>
+                    <td><%: Model.FileFormat %></td>
+                </tr>
             </table>
         </fieldset>
 

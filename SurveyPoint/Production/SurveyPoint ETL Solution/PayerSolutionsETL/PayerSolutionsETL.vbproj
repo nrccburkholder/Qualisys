@@ -13,7 +13,7 @@
     <MyType>WindowsForms</MyType>
     <OptionStrict>Off</OptionStrict>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <SignManifests>false</SignManifests>
+    <SignManifests>true</SignManifests>
     <SccProjectName>
     </SccProjectName>
     <SccLocalPath>
@@ -22,7 +22,7 @@
     </SccAuxPath>
     <SccProvider>
     </SccProvider>
-    <ManifestCertificateThumbprint>4D26FDBAD3AC388489577CF89990C6DD2DC98955</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>397604704090BE1DDE2592BF12E532CF206C1498</ManifestCertificateThumbprint>
     <GenerateManifests>true</GenerateManifests>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
@@ -30,7 +30,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>2.0</OldToolsVersion>
-    <PublishUrl>\\tiqualfil02\TestNRCapplications\SurveyPointETL\</PublishUrl>
+    <PublishUrl>\\piqualfil02\NRCapplications\SurveyPointETL\</PublishUrl>
     <Install>false</Install>
     <InstallFrom>Unc</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -40,9 +40,11 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
+    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
+    <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>5</ApplicationRevision>
-    <ApplicationVersion>2.2.30.5</ApplicationVersion>
+    <ApplicationRevision>6</ApplicationRevision>
+    <ApplicationVersion>2.2.30.6</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -161,7 +163,7 @@
     <CodeAnalysisRuleAssemblies>C:\Program Files\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>PayerSolutionsETL_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>PayerSolutionsETL_2_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DevExpress.Data.v6.3">
@@ -483,8 +485,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="PayerSolutionsETL_1_TemporaryKey.pfx" />
-    <None Include="PayerSolutionsETL_TemporaryKey.pfx" />
+    <None Include="PayerSolutionsETL_2_TemporaryKey.pfx" />
     <None Include="Resources\GoLtr.bmp" />
   </ItemGroup>
   <ItemGroup>
