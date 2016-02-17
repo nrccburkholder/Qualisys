@@ -359,12 +359,24 @@ AS
          AND @reportDateField IS NOT NULL 
          INSERT   INTO @tbl
                   SELECT   @reportDateField, 'D', 4, '9999'  
-				  
-	  IF NOT EXISTS ( SELECT  1
+
+	DECLARE @schema varchar(10)
+
+	SET @schema = 'S' + CAST(@study_id as varchar)
+
+	IF EXISTS (select 1
+	from QP_PROD.information_schema.columns c
+	where table_schema = @schema and table_name = 'Big_View' and
+		  column_name = 'EncounterCCN')
+	BEGIN
+		-- it exists, so add it
+		  IF NOT EXISTS ( SELECT  1
                       FROM    @tbl
                       WHERE   FieldName = 'EncounterCCN' ) 
          INSERT   INTO @tbl
                   SELECT   'EncounterCCN', 'V', 10, '9999'    
+	END
+
 				                                            
       CREATE TABLE #BVUK (POPULATIONPop_id INT)                                             
                                                  

@@ -1373,6 +1373,3 @@ end
    END 
 
 
-
-USE [NRC_DataMart_ETL]
-GO
