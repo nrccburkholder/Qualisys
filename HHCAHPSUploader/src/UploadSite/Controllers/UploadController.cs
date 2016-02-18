@@ -28,10 +28,8 @@ namespace UploadSite.Controllers
         [AcceptVerbs("POST")]
         public IActionResult Index(ICollection<IFormFile> files, bool isUpdate)
         {
-            _logger.LogInformation($"{files.Count} files uploaded.");
-
             var result = new UploadResult();
-            
+
             foreach (var file in files)
             {
                 var disposition = ContentDispositionHeaderValue.Parse(file.ContentDisposition);
@@ -58,20 +56,25 @@ namespace UploadSite.Controllers
                 }
             }
 
-            if (result.Success)
-                _logger.LogInformation("File upload was successful.");
-            else
-                _logger.LogInformation("File upload was unsuccessful.");
+            LogResult(result, isUpdate);
+
+            return View("Confirmation", result);
+        }
+
+        private void LogResult(UploadResult result, bool isUpdate)
+        {
+            var uploadDate = DateTime.Now;
+            var clientIP = Request.HttpContext.Connection.RemoteIpAddress;
+
+            _logger.LogInformation($"{uploadDate} {clientIP} {result.Files.Count} {(isUpdate ? "update" : "regular")} files uploaded {(result.Success ? "successfully" : "unsuccessfully")}.");
 
             foreach (var file in result.Files)
             {
                 if (file.Success)
-                    _logger.LogInformation($"File {file.Name} was okay.");
+                    _logger.LogInformation($"{uploadDate} {clientIP} File {file.Name} was okay.");
                 else
-                    _logger.LogInformation($"File {file.Name} had an error. {file.Error}");
+                    _logger.LogInformation($"{uploadDate} {clientIP} File {file.Name} had an error. {file.Error}");
             }
-
-            return View("Confirmation", result);
         }
 
         public string GetError(string fileName)
