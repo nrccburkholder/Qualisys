@@ -21,7 +21,7 @@
     <SccProvider>
     </SccProvider>
     <SignManifests>true</SignManifests>
-    <ManifestCertificateThumbprint>49E0D67DC29E006998B1AB515E00038D20D93729</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>BA22B43A97626E7D6020800A402EBA31A9E46C71</ManifestCertificateThumbprint>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <GenerateManifests>true</GenerateManifests>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
@@ -90,7 +90,7 @@
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>AddressCleaningTest_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>AddressCleaningTest_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -161,7 +161,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="AddressCleaningTest.nuspec" />
-    <None Include="AddressCleaningTest_TemporaryKey.pfx" />
+    <None Include="AddressCleaningTest_1_TemporaryKey.pfx" />
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>

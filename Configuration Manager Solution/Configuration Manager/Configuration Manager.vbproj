@@ -23,11 +23,11 @@
     <OptionStrict>On</OptionStrict>
     <SignManifests>true</SignManifests>
     <ManifestCertificateThumbprint>13E09AAD0FFC1E7667935AC08A3A46200504109E</ManifestCertificateThumbprint>
-    <ManifestCertificateThumbprint>5A71A56E298D541D5E2B8C5954E41C6B418841DD</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>B3C66B75A7D127BEE5E72D3195BCCD1FC7608A9F</ManifestCertificateThumbprint>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <GenerateManifests>true</GenerateManifests>
     <SignAssembly>false</SignAssembly>
-    <ManifestKeyFile>Configuration Manager_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>Configuration Manager_1_TemporaryKey.pfx</ManifestKeyFile>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileUpgradeFlags>
@@ -683,7 +683,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Configuration Manager_TemporaryKey.pfx" />
+    <None Include="Configuration Manager_1_TemporaryKey.pfx" />
     <None Include="ConfigurationManager.nuspec">
       <SubType>Designer</SubType>
     </None>
