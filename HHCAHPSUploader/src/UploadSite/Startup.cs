@@ -27,12 +27,17 @@ namespace UploadSite
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddOptions();
+            services.Configure<FileDropSettings>(Configuration.GetSection("FileDrop"));
+
             // Add framework services.
             services.AddMvc();
-            services.Configure<MvcOptions>(options =>
-            {
-                options.Filters.Add(new RequireHttpsAttribute());
-            });
+
+            services.Configure<MvcOptions>(options => options.Filters.Add(new RequireHttpsAttribute()));
+
+            services.AddTransient<IUploadService, UploadService>();
+            services.AddTransient<IUploadValidator, UploadValidator>();
+            services.AddTransient<IUploadSaver, UploadSaver>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
