@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("National Research Corporation")> 
 <Assembly: AssemblyProduct("QualiSys Scanner Interface")> 
-<Assembly: AssemblyCopyright("Copyright © 2015")> 
+<Assembly: AssemblyCopyright("Copyright © 2016")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.12.0.0")>
-<Assembly: AssemblyFileVersion("1.12.0.0")>
+<Assembly: AssemblyVersion("1.12.1.0")> 
+<Assembly: AssemblyFileVersion("1.12.1.0")> 
