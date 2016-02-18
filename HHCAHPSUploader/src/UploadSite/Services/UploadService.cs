@@ -7,7 +7,7 @@ using Microsoft.Extensions.OptionsModel;
 using Microsoft.Extensions.Logging;
 using System.Net;
 
-namespace UploadSite.Service
+namespace UploadSite.Services
 {
     public class UploadService : IUploadService
     {

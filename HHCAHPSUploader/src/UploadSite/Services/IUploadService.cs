@@ -5,7 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace UploadSite.Service
+namespace UploadSite.Services
 {
     public interface IUploadService
     {

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace UploadSite.Service
+namespace UploadSite.Services
 {
     public class UploadValidator : IUploadValidator
     {
