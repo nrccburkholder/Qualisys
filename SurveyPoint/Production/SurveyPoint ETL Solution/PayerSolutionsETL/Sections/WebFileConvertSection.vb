@@ -2376,8 +2376,8 @@ Public Class WebFileConvertSection
                 newLine.Append(PadString(Convert.ToDateTime(row(123).ToString()).ToString("yyyyMMdd"), 8, Direction.Left, " ")) ' Last Modified Start: 2 End: 9
                 newLine.Append(PadString("", 1, Direction.Left, " "))       ' BLANK(1)  Start 10 End 10
                 newLine.Append(PadString(row(2), 8, Direction.Left, " ")) ' (Q7_1) FAQSS Template ID Start: 11 End: 18
-                newLine.Append(PadString(row(130), 1, Direction.Left, " ")) ' Key 3 Start: 19 End: 23
-                newLine.Append(PadString(row(129), 5, Direction.Left, " ")) ' Key 2 Start: 24 End: 31
+                newLine.Append(PadString(row(134), 5, Direction.Left, " ")) ' Key 3 Start: 19 End: 23
+                newLine.Append(PadString(row(133), 8, Direction.Left, " ")) ' Key 2 Start: 24 End: 31
                 newLine.Append(PadString("", 4, Direction.Left, " "))       ' BLANK(3) Start 32 END 35
                 newLine.Append(PadString(row(4), 1, Direction.Left, " ")) ' (Q23_A_1) 1-10 Start: 36 End: 36
                 newLine.Append(PadString(row(5), 1, Direction.Left, " ")) ' (Q23_A_2) 1-10 Start: 37 End: 37
