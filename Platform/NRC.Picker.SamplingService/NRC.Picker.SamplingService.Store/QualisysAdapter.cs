@@ -52,12 +52,12 @@ namespace NRC.Picker.SamplingService.Store
                 string[] finishedStateStrings = { State.Completed.ToString(), State.Failed.ToString(), State.Locked.ToString() };
 
                 foreach (int datasetID in dbContext.DB.QualisysDatasets
-                                                      .Where(ds => ds.ApplyDate != null)
-                                                      .Where(ds => ds.Study.bitAutosample)
-                                                      .Where(ds => ds.SampleDataset.Count == 0)
+                                                      .Where(ds => (ds.ApplyDate != null) && ds.Study.bitAutosample && (ds.SampleDataset.Count == 0))
+                                                      //.Where(ds => ds.Study.bitAutosample)
+                                                      //.Where(ds => ds.SampleDataset.Count == 0)
                                                       .Where(ds => !dbContext.DB.QueuedDatasets
-                                                                                .Where(qds => qds.Dataset.StudyID == ds.StudyID)
-                                                                                .Where(qds => !finishedStateStrings.Contains(qds.StateString))
+                                                                                .Where(qds => (qds.Dataset.StudyID == ds.StudyID) && !finishedStateStrings.Contains(qds.StateString))
+                                                                                //.Where(qds => !finishedStateStrings.Contains(qds.StateString))
                                                                                 .Any())
                                                       .Select(ds => ds.DatasetID)
                                                       .Except(dbContext.DB.QueuedDatasets.Select(ds => ds.DatasetID)))
