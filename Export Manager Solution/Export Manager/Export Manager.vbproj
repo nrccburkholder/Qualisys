@@ -22,8 +22,8 @@
     <SccProvider>
     </SccProvider>
     <ApplicationIcon>ExportMan.ico</ApplicationIcon>
-    <ManifestCertificateThumbprint>81DA1787B28C91236C4CEC2A466C766B70B0BC17</ManifestCertificateThumbprint>
-    <ManifestKeyFile>Export Manager_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestCertificateThumbprint>53BF35C6B04BAECA69EB0250454E562F4B3E02B1</ManifestCertificateThumbprint>
+    <ManifestKeyFile>Export Manager_2_TemporaryKey.pfx</ManifestKeyFile>
     <GenerateManifests>true</GenerateManifests>
     <SignManifests>true</SignManifests>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
@@ -455,8 +455,7 @@
     <None Include="Export Manager.nuspec">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Export Manager_1_TemporaryKey.pfx" />
-    <None Include="Export Manager_TemporaryKey.pfx" />
+    <None Include="Export Manager_2_TemporaryKey.pfx" />
     <None Include="My Project\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <CustomToolNamespace>My</CustomToolNamespace>
