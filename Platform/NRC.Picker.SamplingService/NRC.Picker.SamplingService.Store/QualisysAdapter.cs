@@ -50,9 +50,10 @@ namespace NRC.Picker.SamplingService.Store
             using (DBContext dbContext = new DBContext())
             {
                 string[] finishedStateStrings = { State.Completed.ToString(), State.Failed.ToString(), State.Locked.ToString() };
-
+                
+                DateTime earliestDate = DateTime.Now.AddMonths(-6);
                 foreach (int datasetID in dbContext.DB.QualisysDatasets
-                                                      .Where(ds => (ds.ApplyDate > DateTime.Now.AddMonths(-6)) && ds.Study.bitAutosample && (ds.SampleDataset.Count == 0))
+                                                      .Where(ds => (ds.ApplyDate > earliestDate) && ds.Study.bitAutosample && (ds.SampleDataset.Count == 0))
                                                       //.Where(ds => ds.Study.bitAutosample)
                                                       //.Where(ds => ds.SampleDataset.Count == 0)
                                                       .Where(ds => !dbContext.DB.QueuedDatasets

@@ -3,7 +3,7 @@
   <metadata>
     <id>Qualisys.SamplingService.QueueService</id>
     <title>Qualisys Sampling Service Queue Service</title>
-    <version>1.0.5.0</version>
+    <version>1.0.6.0</version>
     <authors>NRC</authors>
     <description>This service manages the Queue Service component of Sampling Service</description>
   </metadata>
