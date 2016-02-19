@@ -30,7 +30,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>2.0</OldToolsVersion>
-    <PublishUrl>\\tiqualfil02\TestNRCapplications\SurveyPointETL\</PublishUrl>
+    <PublishUrl>\\siqualfil02\StageNRCapplications\SurveyPointETL\</PublishUrl>
     <Install>false</Install>
     <InstallFrom>Unc</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -564,7 +564,9 @@
   <ItemGroup>
     <None Include="Resources\SurveyPoint.jpg" />
     <None Include="Resources\online-survey.jpg" />
-    <None Include="PayerSolutionETL.nuspec" />
+    <None Include="PayerSolutionETL.nuspec">
+      <SubType>Designer</SubType>
+    </None>
     <Content Include="Resources\prodicon.ico" />
     <None Include="Resources\SplashScreen.bmp" />
   </ItemGroup>
