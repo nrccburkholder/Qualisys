@@ -30,7 +30,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>2.0</OldToolsVersion>
-    <PublishUrl>\\piqualfil02\NRCapplications\SurveyPointETL\</PublishUrl>
+    <PublishUrl>\\tiqualfil02\TestNRCapplications\SurveyPointETL\</PublishUrl>
     <Install>false</Install>
     <InstallFrom>Unc</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
