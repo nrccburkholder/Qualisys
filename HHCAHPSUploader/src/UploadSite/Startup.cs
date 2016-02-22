@@ -39,6 +39,7 @@ namespace UploadSite
             services.AddTransient<IUploadService, UploadService>();
             services.AddTransient<IUploadValidator, UploadValidator>();
             services.AddTransient<IUploadSaver, UploadSaver>();
+            services.AddTransient<IUnzipper, Unzipper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
