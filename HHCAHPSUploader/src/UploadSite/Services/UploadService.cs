@@ -26,7 +26,7 @@ namespace UploadSite.Services
 
         public UploadResult ProcessFiles(ICollection<IFormFile> files, bool isUpdate, IPAddress clientIP)
         {
-            var result = _validator.ValidateFiles(files);
+            var result = _validator.ValidateFiles(files, isUpdate);
             if (result.Success) _saver.SaveFilesToDropFolder(_fileDropSettings.Path, result);
             LogResult(result, isUpdate, clientIP);
 
@@ -42,9 +42,9 @@ namespace UploadSite.Services
             foreach (var file in result.Files)
             {
                 if (file.Success)
-                    _logger.LogInformation($"{uploadDate} {clientIP} File {file.Name} was okay.");
+                    _logger.LogInformation($"{uploadDate} {clientIP} File {file.OriginalName} was okay.");
                 else
-                    _logger.LogInformation($"{uploadDate} {clientIP} File {file.Name} had an error. {file.Error}");
+                    _logger.LogInformation($"{uploadDate} {clientIP} File {file.OriginalName} had an error. {file.Error}");
             }
         }
     }

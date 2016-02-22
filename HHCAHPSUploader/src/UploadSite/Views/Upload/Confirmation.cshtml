@@ -7,7 +7,7 @@
         <ul>
             @foreach (var file in Model.Files)
             {
-                <li>@file.Name</li>
+                <li>@file.OriginalName</li>
             }
         </ul>
     </div>
@@ -20,7 +20,7 @@ else
         <ul>
             @foreach (var file in Model.ErrorFiles)
             {
-                <li>@file.Name : @file.Error</li>
+                <li>@file.OriginalName : @file.Error</li>
             }
         </ul>
     </div>
