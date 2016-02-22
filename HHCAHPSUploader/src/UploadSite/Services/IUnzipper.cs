@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNet.Http;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace UploadSite.Services
 {
-    public interface IUploadValidator
+    public interface IUnzipper
     {
-        void ValidateFiles(UploadResult files, bool isUpdate);
+        IEnumerable<UploadFileResult> Unzip(Stream uploadData, string fileName);
     }
 }
