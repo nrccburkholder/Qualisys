@@ -103,9 +103,12 @@ begin
 end;
 
 procedure TfrmPCLGeneration.FormCreate(Sender: TObject);
-var dummy : string;
+var dummy, suffix : string;
 begin
-  CompName := ComputerName;
+  suffix := '';
+  if uppercase(ExtractFileName(Application.ExeName)) <> 'PCLGEN.EXE' then
+    suffix := '-' + Copy(Application.ExeName, length(Application.ExeName)-4, 1);
+  CompName := ComputerName + suffix;
   dummy := GetFileVersion(application.exename, Version);
   if paramstr(4)='/C' then timer.interval := 1000;
   timer.enabled := true;

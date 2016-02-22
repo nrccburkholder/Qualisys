@@ -1445,7 +1445,6 @@ end;
 
 function tdmPCLGen.GetNextBatch:integer;
 var success : boolean;
-    suffix : string;
 begin
   success := true;
   repeat begin
@@ -1470,10 +1469,7 @@ begin
     frmPCLGeneration.txtSurvey_id.text := '0'
   else
     frmPCLGeneration.ProgressReport('  waiting for a batch for survey_id='+frmPCLGeneration.txtSurvey_id.text,'','');
-  suffix := '';
-  if uppercase(ExtractFileName(Application.ExeName)) <> 'PCLGEN.EXE' then
-    suffix := '-' + Copy(Application.ExeName, length(Application.ExeName)-4, 1);
-  QPQuery('execute sp_PCL_NextBatch ''' + frmPCLGeneration.CompName + suffix + ''', '+frmPCLGeneration.txtSurvey_id.text + ', ''' + frmPCLGeneration.Version + '''',wwSQLQuery,true);
+  QPQuery('execute sp_PCL_NextBatch ''' + frmPCLGeneration.CompName + ''', '+frmPCLGeneration.txtSurvey_id.text + ', ''' + frmPCLGeneration.Version + '''',wwSQLQuery,true);
   QPQuery('execute sp_PCL_CleanBatch',wwSQLQuery,true);
 
   ww_sql.SQL.Add('Update #MyPCLNeeded set #MyPCLNeeded.LithoCode = cast(sm.strLithoCode as integer),'+
