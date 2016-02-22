@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Http;
+﻿using Ionic.Zip;
+using Microsoft.AspNet.Http;
 using Microsoft.Net.Http.Headers;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace UploadSite.Services
         private static Regex regexFileName = new Regex(fileNamePattern, RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
         private static HashSet<string> allowedExtensions = new HashSet<string> { ".txt", ".csv", ".zip" };
 
-        public UploadResult ValidateFiles(ICollection<IFormFile> files)
+        public UploadResult ValidateFiles(ICollection<IFormFile> files, bool isUpdate)
         {
             var result = new UploadResult();
 
@@ -24,33 +25,93 @@ namespace UploadSite.Services
                 var disposition = ContentDispositionHeaderValue.Parse(file.ContentDisposition);
                 var fileName = disposition.FileName.Trim('"');
 
-                result.Files.Add(
-                    new UploadFileResult
-                    {
-                        Name = fileName,
-                        Error = file.Length > 0 ? GetError(fileName) : "The file has zero length.",
-                        Data = file
-                    });
+                var extension = Path.GetExtension(fileName).ToLower();
+
+                if (extension == ".zip")
+                {
+                    ValidateZip(isUpdate, result, file, fileName);
+                }
+                else
+                {
+                    result.Files.Add(
+                        new UploadFileResult
+                        {
+                            OriginalName = fileName,
+                            FinalName = AddUpdateToFileName(fileName, isUpdate),
+                            Error = file.Length > 0 ? GetError(fileName, isUpdate) : "The file has zero length.",
+                            UploadData = file
+                        });
+                }
             }
 
             return result;
         }
 
-        private string GetError(string fileName)
+        private void ValidateZip(bool isUpdate, UploadResult result, IFormFile file, string fileName)
+        {
+            var entryCount = 0;
+
+            try
+            {
+                using (var zip = new ZipInputStream(file.OpenReadStream()))
+                {
+                    ZipEntry entry;
+                    while ((entry = zip.GetNextEntry()) != null)
+                    {
+                        entryCount++;
+                        if (entry.IsDirectory) continue;
+
+                        var binaryReader = new BinaryReader(zip);
+                        var fileData = binaryReader.ReadBytes((int)zip.Length);
+
+                        result.Files.Add(
+                            new UploadFileResult
+                            {
+                                ZipName = fileName,
+                                OriginalName = fileName + "/" + entry.FileName,
+                                FinalName = AddUpdateToFileName(Path.GetFileName(entry.FileName), isUpdate),
+                                Error = entry.UncompressedSize > 0L ? GetError(entry.FileName, isUpdate) : "The file has zero length.",
+                                ZipData = fileData
+                            });
+                    }
+                }
+            }
+            catch (ZipException)
+            {
+                entryCount = 0;
+                result.Files.RemoveAll(resultFile => resultFile.ZipName == fileName);
+            }
+
+            if (entryCount == 0)
+            {
+                result.Files.Add(
+                    new UploadFileResult
+                    {
+                        ZipName = fileName,
+                        OriginalName = fileName,
+                        FinalName = fileName,
+                        Error = "The zip file couldn't be opened."
+                    });
+            }
+        }
+
+        private string GetError(string fileName, bool isUpdate)
         {
             var extension = Path.GetExtension(fileName).ToLower();
             if (!allowedExtensions.Contains(extension)) return "The file has an invalid extension.";
+            if (!regexFileName.IsMatch(fileName)) return "The CCN couldn't be found in the file name.";
 
-            if (extension != ".zip")
-            {
-                if (!regexFileName.IsMatch(fileName)) return "The CCN couldn't be found in the file name.";
-            }
-            else
-            {
-                if (fileName.Contains("HHCAHPS_Version1.2_OCFW.zip")) return "The zip file couldn't be opened.";
-            }
+            var hasUpdateInFileName = fileName.ToLower().Contains("update");
+            if (hasUpdateInFileName && !isUpdate) return "The file name has 'update' in it but 'These are update files' was not checked. If this is not an update file, then remove the word 'update' from the file name.";
 
             return null;
+        }
+
+        private string AddUpdateToFileName(string fileName, bool isUpdate)
+        {
+            if (!isUpdate) return fileName;
+            if (fileName.ToLower().Contains("update")) return fileName;
+            return "UPDATE_" + fileName;
         }
     }
 }

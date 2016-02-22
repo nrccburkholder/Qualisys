@@ -8,6 +8,6 @@ namespace UploadSite.Services
 {
     public interface IUploadValidator
     {
-        UploadResult ValidateFiles(ICollection<IFormFile> files);
+        UploadResult ValidateFiles(ICollection<IFormFile> files, bool isUpdate);
     }
 }
