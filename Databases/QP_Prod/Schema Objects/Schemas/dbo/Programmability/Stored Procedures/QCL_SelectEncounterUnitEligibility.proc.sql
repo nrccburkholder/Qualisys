@@ -15,6 +15,14 @@
    @samplingAlgorithmId AS INT                                     
  --,@indebug int = 0                                                
 AS 
+
+/* 
+=============================================
+
+	S42 US12     02/06/2016 T.Butler  OAS: Count Fields As an OAS-CAHPS vendor, we need to report in the submission file the number of patients in the data file & the number of eligible patients, so our files are accepted.
+
+=============================================
+*/
    BEGIN                                                
       SET NOCOUNT ON                                                
       SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED                                                
@@ -56,7 +64,7 @@ AS
                                                  
       CREATE TABLE #DataSets (DataSet_id INT)                                           
       SET @Sel = 'INSERT INTO #DataSets                                                
-  SELECT DataSet_id FROM Data_Set WHERE DataSet_id IN (' + @DataSet + ')'                                      
+				  SELECT DataSet_id FROM Data_Set WHERE DataSet_id IN (' + @DataSet + ')'                                      
       EXEC (@Sel)                                                
                           
       IF @SamplingLogInsert = 1 
@@ -74,7 +82,7 @@ AS
                                                  
  --Get HouseHolding Variables if needed                                           
       DECLARE @HouseHoldFieldSelectSyntax VARCHAR(1000) ,
-  @HouseHoldFieldSelectBigViewSyntax VARCHAR(1000) ,
+		 @HouseHoldFieldSelectBigViewSyntax VARCHAR(1000) ,
          @HouseHoldFieldCreateTableSyntax VARCHAR(1000) ,
          @HouseHoldJoinSyntax VARCHAR(1000) ,
          @HouseHoldingType CHAR(1)                                                
@@ -95,7 +103,7 @@ AS
 
 		declare @HHCAHPS int
 		SELECT @HHCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'Home Health CAHPS'
-
+		
 		declare @ACOCAHPS int
 		SELECT @ACOCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'CIHI CPES-IC'
 
@@ -107,6 +115,9 @@ AS
 
 		declare @CIHI int
 		select @CIHI = SurveyType_Id from SurveyType where SurveyType_dsc = 'CIHI CPES-IC'
+
+		declare @OASCAHPS int
+		select @OASCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'OAS CAHPS'
 	                                             
               
  --MWB 9/2/08  HCAHPS Prop Sampling Sprint                                              
@@ -295,7 +306,7 @@ AS
  --Add fields to bigview                                                
       IF @encTableExists = 1 
          INSERT   INTO @tbl
-         VALUES   ('ENCOUNTEREnc_id', 'I', 4, 0)                                                
+         VALUES   ('ENCOUNTEREnc_id', 'V', 4, 0)                                                
                                                  
       INSERT   INTO @tbl
                SELECT DISTINCT
@@ -329,8 +340,27 @@ AS
             WHERE   FieldName = @reportDateField )
          AND @reportDateField IS NOT NULL 
          INSERT   INTO @tbl
-                  SELECT   @reportDateField, 'D', 4, '9999'                                                
-      CREATE TABLE #BVUK (POPULATIONPop_id INT)                                                
+                  SELECT   @reportDateField, 'D', 4, '9999'  
+
+	DECLARE @schema varchar(10)
+
+	SET @schema = 'S' + CAST(@study_id as varchar)
+
+	IF EXISTS (select 1
+	from QP_PROD.information_schema.columns c
+	where table_schema = @schema and table_name = 'Big_View' and
+		  column_name = 'EncounterCCN')
+	BEGIN
+		-- it exists, so add it
+		  IF NOT EXISTS ( SELECT  1
+                      FROM    @tbl
+                      WHERE   FieldName = 'EncounterCCN' ) 
+         INSERT   INTO @tbl
+                  SELECT   'EncounterCCN', 'V', 10, '9999'    
+	END
+
+				                                            
+      CREATE TABLE #BVUK (POPULATIONPop_id INT)                                             
                                                  
  --Add fields to bigview                                                
       SET @sel = 'ALTER TABLE #BVUK ADD ,'                                                
@@ -344,7 +374,8 @@ AS
       ORDER BY Field_id                                                
       SET @sel = REPLACE(@sel, ',,', '')                                                
                                                  
-      EXEC (@Sel)                                                
+      EXEC (@Sel)         
+	                          
                       
       IF @SamplingLogInsert = 1 
          BEGIN                          
@@ -376,9 +407,13 @@ AS
                                                  
                                                  
       IF @encTableExists = 1 
-         CREATE INDEX popenc ON #BVUK (Populationpop_id, EncounterEnc_id)                                                
+	  BEGIN
+         CREATE INDEX popenc ON #BVUK (Populationpop_id, EncounterEnc_id) 
+	  END                                               
       ELSE 
-         CREATE INDEX Populationpop_id ON #BVUK (Populationpop_id)                                       
+	  BEGIN
+         CREATE INDEX Populationpop_id ON #BVUK (Populationpop_id) 
+	  END                                      
                                                  
       CREATE TABLE #Criters (Survey_id INT ,
                              CriteriaStmt_id INT ,
@@ -524,62 +559,67 @@ AS
                   WHERE    Fieldname NOT IN ('Populationpop_id', 'EncounterEnc_id')
                   ORDER BY Field_id                                                
                                                   
-                  IF @encTableExists = 1                                                
+                  IF @encTableExists = 1 
+				  BEGIN                                               
     --build the temp table.                                                
                      SET @Sel = 'INSERT INTO #BVUK(' + @Sql + ')                                                
-  SELECT ' + @Sel + '                                                
-  FROM s' + CONVERT(VARCHAR, @Study_id)
-                        + '.Big_View b(NOLOCK), DataSetMember dsm(NOLOCK), #DataSets t                            
-  WHERE dsm.DataSet_id=t.DataSet_id                                                
-  AND dsm.Enc_id=b.EncounterEnc_id                                                
-  AND (' + @Criteria + ')' + @strDateWhere                                                
-                  ELSE 
+								  SELECT ' + @Sel + '                                                
+								  FROM s' + CONVERT(VARCHAR, @Study_id)
+														+ '.Big_View b(NOLOCK), DataSetMember dsm(NOLOCK), #DataSets t                            
+								  WHERE dsm.DataSet_id=t.DataSet_id                                                
+								  AND dsm.Enc_id=b.EncounterEnc_id                                                
+								  AND (' + @Criteria + ')' + @strDateWhere                                                                   							   
+				END			                                               
+                ELSE
+				BEGIN
                      SET @Sel = 'INSERT INTO #BVUK(' + @Sql + ')                                                
-  SELECT ' + @Sel + '                                                
-  FROM s' + CONVERT(VARCHAR, @Study_id)
-                        + '.Big_View b(NOLOCK), DataSetMember dsm(NOLOCK), #DataSets t                                                
-  WHERE dsm.DataSet_id=t.DataSet_id                        
-  AND dsm.Pop_id=b.PopulationPop_id                                                
-  AND (' + @Criteria + ')' + @strDateWhere                                                
-                                         
+								  SELECT ' + @Sel + '                                                
+								  FROM s' + CONVERT(VARCHAR, @Study_id)
+														+ '.Big_View b(NOLOCK), DataSetMember dsm(NOLOCK), #DataSets t                                                
+								  WHERE dsm.DataSet_id=t.DataSet_id                        
+								  AND dsm.Pop_id=b.PopulationPop_id                                                
+								  AND (' + @Criteria + ')' + @strDateWhere                                                
+                 END  
+				                      
                   IF @indebug = 1 
                      PRINT @sel                                      
                   EXEC (@Sel)                                                
-                                                 
+                             
                   IF @encTableExists = 0 
                      SET @sel = 'INSERT INTO #PreSample (Pop_id,SampleUnit_id,DQ_id)                                                
-  SELECT Populationpop_id,' + CONVERT(VARCHAR, @SampleUnit) + ',0                                                
-  FROM #bvuk b                                                
-  WHERE (' + @Criteria + ')'                                                
+								  SELECT Populationpop_id,' + CONVERT(VARCHAR, @SampleUnit) + ',0                                                
+								  FROM #bvuk b                                                
+								  WHERE (' + @Criteria + ')'                                                
                   ELSE 
                      SET @sel = 'INSERT INTO #PreSample (Pop_id,Enc_id,SampleUnit_id,DQ_id)                                                
-  SELECT Populationpop_id,EncounterEnc_id,' + CONVERT(VARCHAR, @SampleUnit) + ',0                         
-  FROM #bvuk b             
-  WHERE (' + @Criteria + ')'                                                
+								  SELECT Populationpop_id,EncounterEnc_id,' + CONVERT(VARCHAR, @SampleUnit) + ',0                         
+								  FROM #bvuk b             
+								  WHERE (' + @Criteria + ')'                                                
                END                                           
             ELSE 
                BEGIN                                                
                   IF @encTableExists = 0 
                      SET @sel = 'INSERT INTO #PreSample (Pop_id,SampleUnit_id,DQ_id)                                                
-  SELECT b.Populationpop_id,' + CONVERT(VARCHAR, @SampleUnit) + ',0                                                
-  FROM #bvuk b, #PreSample p                                                
-  WHERE p.SampleUnit_id=' + CONVERT(VARCHAR, @ParentSampleUnit) + '                                            
-  AND p.Pop_id=b.Populationpop_id                                      
-  AND (' + @Criteria + ')'                                                
+								  SELECT b.Populationpop_id,' + CONVERT(VARCHAR, @SampleUnit) + ',0                                                
+								  FROM #bvuk b, #PreSample p                                                
+								  WHERE p.SampleUnit_id=' + CONVERT(VARCHAR, @ParentSampleUnit) + '                                            
+								  AND p.Pop_id=b.Populationpop_id                                      
+								  AND (' + @Criteria + ')'                                                
                   ELSE 
                      SET @sel = 'INSERT INTO #PreSample (Pop_id,Enc_id,SampleUnit_id,DQ_id)                                                
-  SELECT b.Populationpop_id,b.EncounterEnc_id,' + CONVERT(VARCHAR, @SampleUnit)
-                        + ',0                                                
-  FROM #bvuk b, #PreSample p                                                
-  WHERE p.SampleUnit_id=' + CONVERT(VARCHAR, @ParentSampleUnit) + '                                                
-  AND p.Enc_id=b.EncounterEnc_id                                                
-  AND (' + @Criteria + ')'                                                
+								  SELECT b.Populationpop_id,b.EncounterEnc_id,' + CONVERT(VARCHAR, @SampleUnit)
+														+ ',0                                                
+								  FROM #bvuk b, #PreSample p                                                
+								  WHERE p.SampleUnit_id=' + CONVERT(VARCHAR, @ParentSampleUnit) + '                                                
+								  AND p.Enc_id=b.EncounterEnc_id                                                
+								  AND (' + @Criteria + ')'                                                
                END                                      
                                               
             IF @indebug = 1 
                PRINT @sel                                          
-            EXEC (@Sel)                      
-                          
+            EXEC (@Sel)    
+			
+			
             IF @SamplingLogInsert = 1 
                BEGIN                          
                   INSERT   INTO SamplingLog (SampleSet_id, StepName, Occurred, SQLCode)
@@ -600,7 +640,7 @@ AS
             ORDER BY intTreeOrder                                                
                      
          END                                                
-                                                 
+                                            
       DROP TABLE #SampleUnits                                                
                   
  --Remove Records that can't be sampled and update the counts in SPW if                                                
@@ -662,34 +702,27 @@ AS
       ORDER BY CriteriaStmt_id                                                
       WHILE @@ROWCOUNT > 0 
          BEGIN                                                
-                                                 
-  --This needs to be an update statement, not an insert statement.                                                  
+                                                                                                  
             IF @encTableExists = 0 
                BEGIN                                               
                   SELECT   @Sel = 'UPDATE p                                                
-   SET DQ_id=' + CONVERT(VARCHAR, @DQ_id) + '                                                
-   FROM #PreSample p, #BVUK b                                                
-   WHERE p.Pop_id=b.Populationpop_id                                                
-   AND (' + @Criteria + ')                                                
-   AND DQ_id=0'                                                
+								   SET DQ_id=' + CONVERT(VARCHAR, @DQ_id) + '                                                
+								   FROM #PreSample p, #BVUK b                                                
+								   WHERE p.Pop_id=b.Populationpop_id                                                
+								   AND (' + @Criteria + ')                                                
+								   AND DQ_id=0'                                                
                                          
                   IF @indebug = 1 
                      PRINT @sel                                        
                   EXEC (@Sel)                                          
                                            
                   SELECT   @Sel = 'insert into Sampling_ExclusionLog (Survey_ID,Sampleset_ID,Sampleunit_ID,Pop_ID,SamplingExclusionType_ID,DQ_BusRule_ID)                                          
-   Select ' + CAST(@survey_ID AS VARCHAR(10)) + ' as Survey_ID, ' + CAST(@Sampleset_ID AS VARCHAR(10))
-                           + ' as Sampleset_ID, Sampleunit_ID, Pop_ID,  4 as SamplingExclusionType_ID, '
-                           + CONVERT(VARCHAR, @DQ_id) + ' as DQ_BusRule_ID                               
-  
-    
-      
-        
-          
-           
-   FROM #PreSample p, #BVUK b                                  
-   WHERE p.Pop_id=b.Populationpop_id                                                
-   AND (' + @Criteria + ')'                                                
+								   Select ' + CAST(@survey_ID AS VARCHAR(10)) + ' as Survey_ID, ' + CAST(@Sampleset_ID AS VARCHAR(10))
+									+ ' as Sampleset_ID, Sampleunit_ID, Pop_ID,  4 as SamplingExclusionType_ID, '
+									+ CONVERT(VARCHAR, @DQ_id) + ' as DQ_BusRule_ID                               
+								   FROM #PreSample p, #BVUK b                                  
+								   WHERE p.Pop_id=b.Populationpop_id                                                
+								   AND (' + @Criteria + ')'                                                
                                          
                   IF @indebug = 1 
                      PRINT @sel                                        
@@ -698,31 +731,22 @@ AS
             ELSE 
                BEGIN                                          
                   SELECT   @Sel = 'UPDATE p                                                
-   SET DQ_id=' + CONVERT(VARCHAR, @DQ_id) + '                                                
-   FROM #PreSample p, #BVUK b                                                
-   WHERE p.Pop_id=b.Populationpop_id                                                 
-   AND p.Enc_id=b.EncounterEnc_id                                                
-   AND (' + @Criteria + ')                                                
-   AND DQ_id=0'                                                
+								   SET DQ_id=' + CONVERT(VARCHAR, @DQ_id) + '                                                
+								   FROM #PreSample p, #BVUK b                                                
+								   WHERE p.Pop_id=b.Populationpop_id                                                 
+								   AND p.Enc_id=b.EncounterEnc_id                                                
+								   AND (' + @Criteria + ')                                                
+								   AND DQ_id=0'                                                
                   EXEC (@Sel)                                          
                                            
                   SELECT   @Sel = 'insert into Sampling_ExclusionLog (Survey_ID,Sampleset_ID,Sampleunit_ID,Pop_ID,Enc_ID,SamplingExclusionType_ID,DQ_BusRule_ID)                                          
-   Select ' + CAST(@survey_ID AS VARCHAR(10)) + ' as Survey_ID, ' + CAST(@Sampleset_ID AS VARCHAR(10))
-                           + ' as Sampleset_ID, Sampleunit_ID, Pop_ID, Enc_ID, 4 as SamplingExclusionType_ID, '
-                           + CONVERT(VARCHAR, @DQ_id) + ' as DQ_BusRule_ID                        
-   
-    
-      
-        
-          
-           
-              
-                
-                  
-   FROM #PreSample p, #BVUK b                                                
-   WHERE p.Pop_id=b.Populationpop_id                                                 
-   AND p.Enc_id=b.EncounterEnc_id                                                
-   AND (' + @Criteria + ')'                                                
+								   Select ' + CAST(@survey_ID AS VARCHAR(10)) + ' as Survey_ID, ' + CAST(@Sampleset_ID AS VARCHAR(10))
+								   + ' as Sampleset_ID, Sampleunit_ID, Pop_ID, Enc_ID, 4 as SamplingExclusionType_ID, '
+								   + CONVERT(VARCHAR, @DQ_id) + ' as DQ_BusRule_ID                                  
+								   FROM #PreSample p, #BVUK b                                                
+								   WHERE p.Pop_id=b.Populationpop_id                                                 
+								   AND p.Enc_id=b.EncounterEnc_id                                                
+								   AND (' + @Criteria + ')'                                                
                   IF @indebug = 1 
                      PRINT @sel                                              
                   EXEC (@Sel)                                  
@@ -745,7 +769,26 @@ AS
             WHERE    BusRule_cd = 'Q'
             ORDER BY CriteriaStmt_id                                                
                                                  
-         END                                             
+         END   -- End While Evaluate the DQ rules  
+		 
+
+		 -- Update SampleSet.IneligibleCount  Sprint 18 US16  -- update IneligibleCount column in SampleSet table
+		select cs.CRITERIASTMT_ID, cs.STRCRITERIASTMT_NM
+		INTO #CRITERIASTMT
+		from CRITERIASTMT cs
+		where cs.STUDY_ID = @Study_ID
+
+		UPDATE SampleSet
+			SET IneligibleCount = b.[Count]
+		FROM (
+			SELECT count(*) 'Count'
+			FROM (select distinct Sampleset_ID, Pop_ID
+				from Sampling_ExclusionLog sel
+				INNER JOIN #CRITERIASTMT cs on (cs.CRITERIASTMT_ID = sel.DQ_BusRule_ID) 
+				where Sampleset_ID = @sampleset_Id) a 
+			GROUP BY a.Sampleset_ID ) b
+		WHERE Sampleset_ID = @sampleset_Id
+		                                            
                                                  
  --Evaluate the Bad Address                                                 
       SELECT TOP 1
@@ -755,23 +798,22 @@ AS
       ORDER BY CriteriaStmt_id                                                
       WHILE @@ROWCOUNT > 0 
          BEGIN                                                
-                                                 
-  --This needs to be an update statement, not an insert statement.                                                  
+                                                                                              
             IF @encTableExists = 0 
                SELECT   @Sel = 'UPDATE p                           
-   SET bitBadAddress=1                                                
-   FROM #PreSample p, #BVUK b                                                
-   WHERE p.Pop_id=b.Populationpop_id                                                
-   AND (' + @Criteria + ')                               
-   AND DQ_id=0'                                                
+							   SET bitBadAddress=1                                                
+							   FROM #PreSample p, #BVUK b                                                
+							   WHERE p.Pop_id=b.Populationpop_id                                                
+							   AND (' + @Criteria + ')                               
+							   AND DQ_id=0'                                                
             ELSE 
                SELECT   @Sel = 'UPDATE p                                                
-   SET bitBadAddress=1                                                
-   FROM #PreSample p, #BVUK b                                                
-   WHERE p.Pop_id=b.Populationpop_id                                                 
-   AND p.Enc_id=b.EncounterEnc_id                                                
-   AND (' + @Criteria + ')                                                
-   AND DQ_id=0'                                      
+							   SET bitBadAddress=1                                                
+							   FROM #PreSample p, #BVUK b                                                
+							   WHERE p.Pop_id=b.Populationpop_id                                                 
+							   AND p.Enc_id=b.EncounterEnc_id                                                
+							   AND (' + @Criteria + ')                                                
+							   AND DQ_id=0'                                      
                                          
             IF @indebug = 1 
                PRINT @sel                                                 
@@ -806,19 +848,19 @@ AS
                                            --This needs to be an update statement, not an insert statement.                                                  
             IF @encTableExists = 0 
                SELECT   @Sel = 'UPDATE p                                                
-   SET bitBadPhone=1                                                
-   FROM #PreSample p, #BVUK b                                                
-   WHERE p.Pop_id=b.Populationpop_id                                                
-   AND (' + @Criteria + ')                                                
-   AND DQ_id=0'                                                
+							   SET bitBadPhone=1                                                
+							   FROM #PreSample p, #BVUK b                                                
+							   WHERE p.Pop_id=b.Populationpop_id                                                
+							   AND (' + @Criteria + ')                                                
+							   AND DQ_id=0'                                                
             ELSE 
                SELECT   @Sel = 'UPDATE p                                                
-   SET bitBadPhone=1                                                
-   FROM #PreSample p, #BVUK b                                                
-   WHERE p.Pop_id=b.Populationpop_id                                                 
-   AND p.Enc_id=b.EncounterEnc_id                                                
-   AND (' + @Criteria + ')                                 
-   AND DQ_id=0'                                       
+							   SET bitBadPhone=1                                                
+							   FROM #PreSample p, #BVUK b                                                
+							   WHERE p.Pop_id=b.Populationpop_id                                                 
+							   AND p.Enc_id=b.EncounterEnc_id                                                
+							   AND (' + @Criteria + ')                                 
+							   AND DQ_id=0'                                       
                                          
             IF @indebug = 1 
                PRINT @sel                                               
@@ -837,25 +879,25 @@ AS
 
       IF @encTableExists = 0 
          SET @Sel = 'INSERT INTO #SampleUnit_Universe                                                 
-  SELECT DISTINCT SampleUnit_id, ' + 'x.pop_id, null as enc_ID, POPULATIONAge, DQ_ID, '
-            + 'Case When DQ_ID > 0 THEN 4 ELSE 0 END, ''N'', '
-            + CASE WHEN @EncounterDateField IS NOT NULL THEN @EncounterDateField
-                   ELSE 'null'
-              END
-            + ', null as resurveyDate, null as household_id, bitBadAddress, bitBadPhone,                                            
-  ' + CASE WHEN @reportDateField IS NOT NULL THEN @reportDateField
-           ELSE 'null'
+					  SELECT DISTINCT SampleUnit_id, ' + 'x.pop_id, null as enc_ID, POPULATIONAge, DQ_ID, '
+								+ 'Case When DQ_ID > 0 THEN 4 ELSE 0 END, ''N'', '
+								+ CASE WHEN @EncounterDateField IS NOT NULL THEN @EncounterDateField
+									   ELSE 'null'
+								  END
+								+ ', null as resurveyDate, null as household_id, bitBadAddress, bitBadPhone,                                            
+					  ' + CASE WHEN @reportDateField IS NOT NULL THEN @reportDateField
+							   ELSE 'null'
       END                                                 
       ELSE 
          SET @Sel = 'INSERT INTO #SampleUnit_Universe                         
-  SELECT DISTINCT SampleUnit_id, ' + 'x.pop_id, x.enc_id, POPULATIONAge, DQ_ID, '
-            + 'Case When DQ_ID > 0 THEN 4 ELSE 0 END, ''N'', '
-            + CASE WHEN @EncounterDateField IS NOT NULL THEN @EncounterDateField
-                   ELSE 'null'
-              END
-            + ', null as resurveyDate, null as household_id, bitBadAddress, bitBadPhone,                                                 
-  ' + CASE WHEN @reportDateField IS NOT NULL THEN @reportDateField
-           ELSE 'null'
+					  SELECT DISTINCT SampleUnit_id, ' + 'x.pop_id, x.enc_id, POPULATIONAge, DQ_ID, '
+								+ 'Case When DQ_ID > 0 THEN 4 ELSE 0 END, ''N'', '
+								+ CASE WHEN @EncounterDateField IS NOT NULL THEN @EncounterDateField
+									   ELSE 'null'
+								  END
+								+ ', null as resurveyDate, null as household_id, bitBadAddress, bitBadPhone,                                                 
+					  ' + CASE WHEN @reportDateField IS NOT NULL THEN @reportDateField
+							   ELSE 'null'
       END                                                 
                                                    
       IF @HouseHoldingType <> 'N' 
@@ -902,9 +944,9 @@ AS
  --MWB 04/08/2010                                    
  --If SurveyType = HHCAHPS need to capture the distinct count of pop_IDs that fit the HHCAHPS Unit                                  
  --and save it off to new table.                                  
-      IF @SurveyType_ID in (@HHCAHPS, @hospiceCAHPS) -- 2/4/2015 CJB now doing this for all CAHPS
+      IF @SurveyType_ID in (@HHCAHPS) 
          BEGIN                                  
-            INSERT   INTO CAHPS_PatInfileCount (Sampleset_ID, Sampleunit_ID, MedicareNumber, NumPatInFile)
+           INSERT INTO CAHPS_PatInfileCount (Sampleset_ID, Sampleunit_ID, MedicareNumber, NumPatInFile)
                      SELECT   @sampleSet_id, suni.SampleUnit_id, ml.MedicareNumber, COUNT(DISTINCT suni.Pop_id)
                      FROM     #SampleUnit_Universe suni ,
                               SAMPLEUNIT su ,
@@ -913,9 +955,23 @@ AS
                      WHERE    suni.SampleUnit_id = su.SAMPLEUNIT_ID
                               AND su.SUFacility_id = f.SUFacility_id
                               AND f.MedicareNumber = ml.MedicareNumber
-                              AND su.CAHPSType_id in (@HHCAHPS, @hospiceCAHPS)
-                     GROUP BY suni.SampleUnit_id, ml.MedicareNumber                                    
-         END                                   
+                              AND su.CAHPSType_id in (@HHCAHPS)
+                     GROUP BY suni.SampleUnit_id, ml.MedicareNumber                                               
+         END     
+		 
+		 -- as per QA, hospice and OAS counts are for the entire dataset BEFORE criteria are applied
+		 IF @SurveyType_ID in (@hospiceCAHPS,  @OASCAHPS) -- 02/4/2016 TSB  S42 US12: added OAS
+         BEGIN                                  
+           INSERT INTO CAHPS_PatInfileCount (Sampleset_ID, Sampleunit_ID, MedicareNumber, NumPatInFile)
+		    SELECT @sampleset_id,su.SampleUnit_id, f.MedicareNumber, COUNT(*)
+		    FROM     #BVUK b	
+			inner join SUFacility f on f.MedicareNumber = b.EncounterCCN
+			inner join SampleUnit su on su.SUFacility_id = f.SUFacility_id
+            WHERE    su.CAHPSType_id in (@hospiceCAHPS,@OASCAHPS)
+            GROUP BY su.SampleUnit_id, f.MedicareNumber              
+                                                  
+         END     
+                              
                                                  
  --MWB 9/2/08  HCAHPS Prop Sampling Sprint -- run TOCL before writing HCAHPSEligibleEncLog table                                               
       IF @bitDoTOCL = 1 
@@ -1080,8 +1136,8 @@ AS
       SET      HouseHold_id = NULL, Removed_Rule = 0
       WHERE    Removed_Rule = -7      
                                         
-	  -- 2015.01.26 TSB -- 
-	  if @SurveyType_ID in (@HCAHPS,@HHCAHPS,@HospiceCAHPS, @CIHI)  -- Added CIHI S17 US23 
+
+	  if @SurveyType_ID in (@HCAHPS,@HHCAHPS,@HospiceCAHPS, @CIHI, @OASCAHPS)  -- Added CIHI S17 US23 , OASCAHPS S42 US12
 	  BEGIN
 
 		INSERT   INTO EligibleEncLog (sampleset_id, sampleunit_id, pop_Id, enc_id, sampleEncounterDate, SurveyType_ID)
@@ -1347,4 +1403,4 @@ end
                           
                           
                                                 
-   END
+   END 
