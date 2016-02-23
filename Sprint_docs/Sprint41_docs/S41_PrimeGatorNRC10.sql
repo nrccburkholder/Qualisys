@@ -8,8 +8,8 @@ Chris Burkholder
 
 */
 
-:r "\ATLASRelease41&42\Sprint41_docs\S41 US20 T1 OAS CAHPS Skip Instructions.sql"
+--:r "\ATLASRelease41&42\Sprint41_docs\S41 US20 T1 OAS CAHPS Skip Instructions.sql" already deployed
 
-:r "\ATLASRelease41&42\Sprint41_docs\S41_US21 OAS Keep Most Complete Return.sql"
+--:r "\ATLASRelease41&42\Sprint41_docs\S41_US21 OAS Keep Most Complete Return.sql" already deployed
 
 :r "\ATLASRelease41&42\Sprint41_docs\S41_US16.4.2 OCS HH process update files.sql"
