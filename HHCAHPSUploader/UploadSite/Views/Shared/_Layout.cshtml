@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload HHCAHPS Files</title>
+
+    @*<environment names="Development">*@
+        <link rel="stylesheet" href="~/Content/bootstrap.css" />
+        <link rel="stylesheet" href="~/Content/Site.css" />
+    @*</environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.5/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>*@
+</head>
+<body>
+    <div class="container body-content">
+        <a href="http://nationalresearch.com/home/"><img src="http://www.nationalresearch.com/images/main/logo.png" alt="National Research Corporation" /></a>
+        <hr />
+        @using (Html.BeginForm("Index", "Upload", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <h2>Upload HHCAHPS Files</h2>
+            <h3>Instructions</h3>
+            <ul>
+                <li>Files with .csv or .txt extensions are allowed.</li>
+                <li>
+                    Files must include HHCAHPS_[CCN] as part of their name. The following are examples of allowed file names.
+                    <ul>
+                        <li>HHCAHPS_123456_Version1.2_02122016.csv</li>
+                        <li>HHCAHPS_123456_022016.csv</li>
+                        <li>HH-CAHPS_123456_Version1.2_02122016.csv</li>
+                        <li>HH_CAHPS_123456_Version1.2_02122016.csv</li>
+                    </ul>
+                </li>
+                <li>Files may be placed in a .zip file. Each file within the .zip file must follow the above rules.</li>
+                <li>
+                    Check "These are update files" if you are uploading update files.
+                    Update files are where a second file is submitted for a sample month due to not having all information available at the time the first file was submitted.
+                </li>
+            </ul>
+
+            <h3>Upload your files</h3>
+            @RenderBody()
+        }
+        <hr />
+        <footer>
+            <p>&copy; @(DateTime.Now.Year) - National Research Corporation</p>
+        </footer>
+    </div>
+
+    @*<environment names="Development">*@
+        <script src="~/Scripts/jquery-2.2.0.js"></script>
+        <script src="~/Scripts/bootstrap.js"></script>
+    @*</environment>
+    <environment names="Staging,Production">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.1.4.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery">
+        </script>
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.5/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>*@
+
+    @RenderSection("scripts", required: false)
+
+
+    <script>
+    jQuery(document).ready(
+        function () {
+            jQuery('input:file').change(
+                function () {
+                    jQuery('button:submit').attr('disabled', !jQuery(this).val());
+                }
+                );
+        });
+    </script>
+</body>
+</html>
