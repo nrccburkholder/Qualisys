@@ -1,0 +1,28 @@
+﻿@model UploadSite.Services.UploadResult
+
+@if (Model.Success)
+{
+    <div class="alert alert-success">
+        <p>The following files were uploaded successfully.</p>
+        <ul>
+            @foreach (var file in Model.Files)
+            {
+                <li>@file.OriginalName</li>
+            }
+        </ul>
+    </div>
+    @Html.ActionLink("Upload more files", "Index", "Upload")
+}
+else
+{
+    <div class="alert alert-danger">
+        <p>The following files had problems. Please fix and re-upload all files including those that didn't have issues.</p>
+        <ul>
+            @foreach (var file in Model.ErrorFiles)
+            {
+                <li>@file.OriginalName : @file.Error</li>
+            }
+        </ul>
+    </div>
+    @Html.ActionLink("Return to upload", "Index", "Upload")
+}

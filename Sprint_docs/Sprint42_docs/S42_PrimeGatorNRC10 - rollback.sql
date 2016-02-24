@@ -8,8 +8,8 @@ Chris Burkholder
 
 */
 
-:r "\ATLASRelease41&42\Sprint42_docs\S42 US9 T2 OAS Dispo processing QP_PROD - Rollback.sql"
+--:r "\ATLASRelease41&42\Sprint42_docs\S42 US9 T2 OAS Dispo processing QP_PROD - Rollback.sql" --already deployed
 
-:r "\ATLASRelease41&42\Sprint42_docs\S42 US12_13  OAS ETL Updates NRC10 ROLLBACK.sql"
+-- :r "\ATLASRelease41&42\Sprint42_docs\S42 US12_13  OAS ETL Updates NRC10 ROLLBACK.sql" --already deployed
 
-:r "\ATLASRelease41&42\Sprint42_docs\S42_US12  ALTER PROCEDURE QCL_SelectEncounterUnitEligibility ROLLBACK.sql"
+-- :r "\ATLASRelease41&42\Sprint42_docs\S42_US12  ALTER PROCEDURE QCL_SelectEncounterUnitEligibility ROLLBACK.sql" --already deployed
