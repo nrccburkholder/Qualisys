@@ -2,6 +2,7 @@ using System;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
 using UploadSite.Services;
+using NRC.Common;
 
 namespace UploadSite.App_Start
 {
@@ -37,6 +38,7 @@ namespace UploadSite.App_Start
             container.RegisterType<IUploadSaver, UploadSaver>();
             container.RegisterType<IUploadService, UploadService>();
             container.RegisterType<IUploadValidator, UploadValidator>();
+            container.RegisterInstance(Logger.GetLogger("HHCAHPSUploader"));
         }
     }
 }

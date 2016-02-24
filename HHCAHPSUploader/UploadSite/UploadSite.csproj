@@ -82,6 +82,9 @@
       <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NRC.Common">
+      <HintPath>..\..\Referenced Assemblies\NRC.Common.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -164,6 +167,7 @@
     <Compile Include="Services\UploadSaver.cs" />
     <Compile Include="Services\UploadService.cs" />
     <Compile Include="Services\UploadValidator.cs" />
+    <Compile Include="UnhandledErrorAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />

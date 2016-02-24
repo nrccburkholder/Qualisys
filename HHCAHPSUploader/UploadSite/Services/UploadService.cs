@@ -6,6 +6,7 @@ using System.Net;
 using System.IO;
 using System.Web;
 using Microsoft.Practices.Unity;
+using NRC.Common;
 
 namespace UploadSite.Services
 {
@@ -14,16 +15,14 @@ namespace UploadSite.Services
         private readonly IUploadValidator _validator;
         private readonly IUploadSaver _saver;
         private readonly IUnzipper _unzipper;
-        //private readonly ILogger<UploadService> _logger;
+        private readonly Logger _logger;
 
-        public UploadService([Dependency] IUploadValidator validator, [Dependency] IUploadSaver saver, [Dependency] IUnzipper unzipper
-            //, ILogger<UploadService> logger
-            )
+        public UploadService([Dependency] IUploadValidator validator, [Dependency] IUploadSaver saver, [Dependency] IUnzipper unzipper, [Dependency] Logger logger)
         {
             _validator = validator;
             _saver = saver;
             _unzipper = unzipper;
-            //_logger = logger;
+            _logger = logger;
         }
 
         public UploadResult ProcessFiles(ICollection<HttpPostedFileBase> files, bool isUpdate, string clientIP, string dropFolder)
@@ -75,17 +74,15 @@ namespace UploadSite.Services
 
         private void LogResult(UploadResult result, bool isUpdate, string clientIP)
         {
-            var uploadDate = DateTime.Now;
-
-            //_logger.LogInformation($"{uploadDate} {clientIP} {result.Files.Count} {(isUpdate ? "update" : "regular")} files uploaded {(result.Success ? "successfully" : "unsuccessfully")}.");
-
-            //foreach (var file in result.Files)
-            //{
-            //    if (file.Success)
-            //        _logger.LogInformation($"{uploadDate} {clientIP} File {file.OriginalName} was okay.");
-            //    else
-            //        _logger.LogInformation($"{uploadDate} {clientIP} File {file.OriginalName} had an error. {file.Error}");
-            //}
+            _logger.Info($"{clientIP} {result.Files.Count} {(isUpdate ? "update" : "regular")} files uploaded {(result.Success ? "successfully" : "unsuccessfully")}.");
+            
+            foreach (var file in result.Files)
+            {
+                if (file.Success)
+                    _logger.Info($"{clientIP} File {file.OriginalName} was okay.");
+                else
+                    _logger.Info($"{clientIP} File {file.OriginalName} had an error. {file.Error}");
+            }
         }
     }
 }
