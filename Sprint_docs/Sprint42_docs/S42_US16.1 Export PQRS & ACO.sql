@@ -1,4 +1,5 @@
 -- PQRS/ACO extract
+-- not for deployment!
 
 -- interim submission ExportQueueIDs:
 --	64	ACO CAHPS	ACO-12	ExportTemplateID=4
@@ -26,6 +27,8 @@ select @eqid, SurveyID
 from cem.exportqueuesurvey 
 where exportqueueid = 64 
 
+select * from cem.exportqueue order by 1 desc
+-- declare @eqid int = 83  delete from cem.exportdataset00000004 where exportqueueid=@eqid
 exec cem.PullExportData @eqid 
 
 declare @subnum int 
@@ -70,6 +73,7 @@ select @eqid, SurveyID
 from cem.exportqueuesurvey 
 where exportqueueid = 65 
 
+-- declare @eqid int = 84  delete from cem.exportdataset00000005 where exportqueueid=@eqid
 exec cem.PullExportData @eqid
 
 declare @subnum int 
@@ -113,6 +117,7 @@ select @eqid, SurveyID
 from cem.exportqueuesurvey 
 where exportqueueid = 66
 
+-- declare @eqid int = 85  delete from cem.exportdataset00000006 where exportqueueid=@eqid
 exec cem.PullExportData @eqid
 
 declare @subnum int 
