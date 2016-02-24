@@ -211,6 +211,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Upload\Confirmation.cshtml" />
     <Content Include="Views\Upload\Index.cshtml" />
+    <Content Include="UploadSite.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
