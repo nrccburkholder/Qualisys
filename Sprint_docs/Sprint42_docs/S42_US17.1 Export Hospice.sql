@@ -1,4 +1,5 @@
 -- CAHPS Hospice Q3 Extract
+-- not for deployment!
 
 use NRC_Datamart_Extracts
 go
@@ -21,6 +22,7 @@ select count(distinct surveyid) from #x
 select count(distinct samplesetid) from #x
 select count(distinct medicarenumber) from #x
 
+begin tran
 declare @eqid int
 insert into cem.exportqueue (ExportTemplateName,ExportTemplateVersionMajor,ExportTemplateVersionMinor,ExportDateStart,ExportDateEnd,ReturnsOnly,RequestDate)
 select ExportTemplateName,ExportTemplateVersionMajor,ExportTemplateVersionMinor,'7/1/15','9/30/15',0 as ReturnsOnly,getdate() as RequestDate
@@ -34,11 +36,12 @@ insert into cem.exportqueuesurvey (ExportQueueID, SurveyID)
 select distinct @eqid, SurveyID
 from #x
 
+-- declare @eqid int=75 delete from cem.ExportDataset00000010 where exportqueueid=@eqid
 exec cem.PullExportData @eqid
 
 declare @subnum int 
 select @subnum=max([vendordata.file-submission-number]) 
-from cem.ExportDataset00000009 eds 
+from cem.ExportDataset00000010 eds 
 inner join cem.exportqueuefile eqf on eds.exportqueueid=eqf.exportqueueid and eds.filemakername=eqf.filemakername
 where [vendordata.file-submission-yr]='2016'
 and [vendordata.file-submission-month]='02'
@@ -46,19 +49,24 @@ and [vendordata.file-submission-day]=right('0'+convert(varchar,datepart(day,getd
 and eqf.SubmissionDate is not null
 and eds.exportqueueid<@eqid
 
-update cem.ExportDataset00000009 
+update cem.ExportDataset00000010 
 set  [vendordata.file-submission-yr]='2016'
 	,[vendordata.file-submission-month]='02'
 	,[vendordata.file-submission-day]=right('0'+convert(varchar,datepart(day,getdate())),2)
 	,[vendordata.file-submission-number]=isnull(@subnum,0)+1
 where exportqueueid=@eqid
 
-update cem.ExportDataset00000009 
+update cem.ExportDataset00000010 
 set filemakername=[vendordata.vendor-name]+'.'+[vendordata.file-submission-month]+[vendordata.file-submission-day]+[vendordata.file-submission-yr]+'.'+[vendordata.file-submission-number]
 where exportqueueid=@eqid
 
 insert into cem.exportqueuefile (ExportQueueID,FileState,FileMakerType,FileMakerName)
 select distinct exportqueueid, 0, 1, FileMakerName
-from cem.ExportDataset00000009 
+from cem.ExportDataset00000010 
 where exportqueueid=@eqid
 
+SELECT * FROM CEM.ExportQueue ORDER BY 1 DESC
+SELECT * FROM cem.ExportDataset00000010 WHERE EXPORTQUEUEID=076
+select * from cem.exportqueuefile where exportqueueid=076
+rollback tran
+commit tran
