@@ -187,6 +187,7 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="Scripts\jquery-2.2.0.intellisense.js" />
+    <Content Include="robots.txt" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-2.2.0.js" />
@@ -215,7 +216,9 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Upload\Confirmation.cshtml" />
     <Content Include="Views\Upload\Index.cshtml" />
-    <Content Include="UploadSite.nuspec" />
+    <Content Include="UploadSite.nuspec">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
