@@ -31,7 +31,7 @@ namespace UploadSite.Services
                             new UploadFileResult
                             {
                                 ZipName = fileName,
-                                FileName = fileName,
+                                FileName = Path.GetFileName(entry.FileName),
                                 OriginalName = fileName + "/" + entry.FileName,
                                 ZipData = zipData.ToArray()
                             });
