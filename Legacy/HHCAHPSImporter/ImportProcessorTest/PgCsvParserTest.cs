@@ -704,11 +704,10 @@ namespace HHCAHPS.ImportProcessorTest
         }
 
         [TestMethod]
-        public void Parse_EmptyFile_NoExceptions()
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void Parse_EmptyFile_InvalidOperationException()
         {
             var xml = PgCsvParser.Parse(new ClientDetail { CCN = "147714" }, "HHCAHPS_147714_1.csv", "");
-            var rows = ParserTestHelper.GetRows(xml);
-            Assert.AreEqual(0, rows.Count());
         }
 
         [TestMethod]

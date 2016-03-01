@@ -695,11 +695,10 @@ namespace HHCAHPS.ImportProcessorTest
         }
 
         [TestMethod]
-        public void Parse_EmptyFile_NoExceptions()
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void Parse_EmptyFile_InvalidOperationException()
         {
             var xml = CmsCsvParser.Parse(new ClientDetail { CCN = "107207" }, "file.csv", "");
-            var rows = ParserTestHelper.GetRows(xml);
-            Assert.AreEqual(0, rows.Count());
         }
 
         [TestMethod]
