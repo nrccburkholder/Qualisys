@@ -142,6 +142,8 @@ namespace HHCAHPSImporter.ImportProcessor
                     Extractors.IExtract extractProcessor = Extractors.Factory.GetExtractor(client, uploadFileInfo.Name, qpDataLoadManager);
                     XDocument extractedData = extractProcessor.Extract(client, file.FullName);
 
+                    if (ExtractHelper.BodyRecordCount(extractedData) == 0) throw new InvalidOperationException("The file contains no data.");
+
                     var sampleMonth = ExtractHelper.GetSampleMonth(extractedData);
                     var sampleYear = ExtractHelper.GetSampleYear(extractedData);
 

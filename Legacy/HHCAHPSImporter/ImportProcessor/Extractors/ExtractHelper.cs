@@ -356,6 +356,11 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
                 return null;
         }
 
+        public static int BodyRecordCount(XDocument xml)
+        {
+            return GetRowsElement(xml).Elements(RowElementName).Count();
+        }
+
         public static string GetESRD(string ESRD, string ICD_A2, string ICD_B2, string ICD_C2, string ICD_D2, string ICD_E2, string ICD_F2)
         {
             if (ESRD != null || ESRD.Trim().Equals("1")) return ESRD;

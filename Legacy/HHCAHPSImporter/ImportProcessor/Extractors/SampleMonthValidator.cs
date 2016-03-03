@@ -21,7 +21,7 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
 
         public static void Validate(IEnumerable<SampleMonth> sampleMonths)
         {
-            if (!sampleMonths.Any()) throw new InvalidOperationException("Sample month or year is missing.");
+            if (!sampleMonths.Any()) return;
 
             var distinctMonths = sampleMonths.Distinct();
 
