@@ -31,7 +31,7 @@ namespace UploadSite.Services
                             new UploadFileResult
                             {
                                 ZipName = fileName,
-                                FileName = fileName,
+                                FileName = Path.GetFileName(entry.FileName),
                                 OriginalName = fileName + "/" + entry.FileName,
                                 ZipData = zipData.ToArray()
                             });
@@ -47,6 +47,7 @@ namespace UploadSite.Services
                     new UploadFileResult
                     {
                         ZipName = fileName,
+                        FileName = fileName,
                         OriginalName = fileName,
                         FinalName = fileName,
                         Error = "The zip file couldn't be open because it is password protected."
@@ -66,6 +67,7 @@ namespace UploadSite.Services
                     new UploadFileResult
                     {
                         ZipName = fileName,
+                        FileName = fileName,
                         OriginalName = fileName,
                         FinalName = fileName,
                         Error = "The zip file couldn't be opened."

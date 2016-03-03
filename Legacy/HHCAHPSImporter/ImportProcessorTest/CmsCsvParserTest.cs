@@ -695,14 +695,6 @@ namespace HHCAHPS.ImportProcessorTest
         }
 
         [TestMethod]
-        public void Parse_EmptyFile_NoExceptions()
-        {
-            var xml = CmsCsvParser.Parse(new ClientDetail { CCN = "107207" }, "file.csv", "");
-            var rows = ParserTestHelper.GetRows(xml);
-            Assert.AreEqual(0, rows.Count());
-        }
-
-        [TestMethod]
         public void Parse_ProviderNameHasComma_ProviderNameParses()
         {
             const string fileContents =

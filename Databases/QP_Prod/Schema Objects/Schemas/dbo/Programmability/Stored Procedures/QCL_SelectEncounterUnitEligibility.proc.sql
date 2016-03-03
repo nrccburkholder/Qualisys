@@ -343,7 +343,7 @@ AS
                   SELECT   @reportDateField, 'D', 4, '9999'  
 
 
-	IF @SurveyType_ID = @OASCAHPS
+	IF @SurveyType_ID in (@hospiceCAHPS,  @OASCAHPS) --IF @SurveyType_ID = @OASCAHPS CJB for TMB 2/25/2016
 	BEGIN
 
 		DECLARE @schema varchar(10)
@@ -1408,3 +1408,4 @@ end
                           
                                                 
    END 
+

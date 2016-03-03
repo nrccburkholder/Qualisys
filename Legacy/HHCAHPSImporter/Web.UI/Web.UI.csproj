@@ -53,6 +53,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PublishDatabases>false</PublishDatabases>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
@@ -158,6 +159,7 @@
     <Content Include="Content\ui-lightness\images\ui-icons_ffffff_256x240.png" />
     <Content Include="Content\ui-lightness\jquery-ui-1.8.9.custom.css" />
     <Content Include="packages.config" />
+    <None Include="Properties\PublishProfiles\Default.pubxml" />
     <None Include="Settings.xml.template">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

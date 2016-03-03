@@ -20,7 +20,7 @@ namespace UploadSite.Services
             foreach (var file in files.Files)
             {
                 if (!file.Success) continue;
-                file.Error = file.IsZeroLength ? "The file has zero length." : GetError(file.FileName, isUpdate);
+                file.Error = file.IsZeroLength ? "The file contains no data." : GetError(file.FileName, isUpdate);
             }
         }
 

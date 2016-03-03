@@ -704,14 +704,6 @@ namespace HHCAHPS.ImportProcessorTest
         }
 
         [TestMethod]
-        public void Parse_EmptyFile_NoExceptions()
-        {
-            var xml = PgCsvParser.Parse(new ClientDetail { CCN = "147714" }, "HHCAHPS_147714_1.csv", "");
-            var rows = ParserTestHelper.GetRows(xml);
-            Assert.AreEqual(0, rows.Count());
-        }
-
-        [TestMethod]
         public void Parse_AddressHasComma_ProviderNameParses()
         {
             const string fileContents =

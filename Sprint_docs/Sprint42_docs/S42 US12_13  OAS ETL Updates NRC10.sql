@@ -1477,10 +1477,13 @@ SET NOCOUNT ON
 		insert NRC_DataMart_ETL.dbo.ExtractQueue (EntityTypeID, PKey1, PKey2, IsMetaData,Source)
 		select 7, qf.SAMPLEPOP_ID, sp.SAMPLESET_ID, 0,'trg_NRC_DataMart_ETL_dbo_SENTMAILING'
 		from INSERTED i
-        inner join QUESTIONFORM qf With (NOLOCK) on  qf.SentMail_id = i.SentMail_id   
-		inner join SAMPLEPOP sp with (NOLOCK) on sp.samplepop_id = qf.SAMPLEPOP_ID
+        inner join dbo.QUESTIONFORM qf With (NOLOCK) on  qf.SentMail_id = i.SentMail_id   
+		inner join dbo.SAMPLEPOP sp with (NOLOCK) on sp.samplepop_id = qf.SAMPLEPOP_ID
+		inner join dbo.SURVEY_DEF sd with (NOLOCK) on sd.SURVEY_ID = qf.SURVEY_ID
+		inner join dbo.SurveyType st with (NOLOCK) on st.SurveyType_ID = sd.SurveyType_id
         where i.strlithocode is not null
 		and i.DatMailed is not null
+		and st.SurveyType_dsc in ('OAS CAHPS', 'Hospice CAHPS')
     END
 
 END

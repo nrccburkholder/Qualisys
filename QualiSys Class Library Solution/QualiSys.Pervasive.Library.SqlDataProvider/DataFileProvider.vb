@@ -88,7 +88,7 @@ Friend Class DataFileProvider
 
     'Returns True if valid; False if invalid
     Public Overrides Function Validate(ByVal instance As DataFile) As Boolean
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.ValidateDataFile, instance.Id, 0)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.ValidateDataFile, instance.Id, 0, Date.Now)
         Return ExecuteBoolean(cmd)
     End Function
 #End Region
