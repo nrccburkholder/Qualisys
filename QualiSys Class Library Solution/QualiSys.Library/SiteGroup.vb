@@ -22,7 +22,7 @@ Public Class SiteGroup
     Private mState As String
     Private mZip5 As String
     Private mPhone As String
-    Private mGroupOwnerShip As String
+    Private mGroupOwnership As String
     Private mGroupContactName As String
     Private mGroupContactPhone As String
     Private mGroupContactEmail As String
@@ -148,15 +148,15 @@ Public Class SiteGroup
             mPhone = value
         End Set
     End Property
-    Public Property GroupOwnerShip As String
+    Public Property GroupOwnership As String
         Get
-            Return mGroupOwnerShip
+            Return mGroupOwnership
         End Get
         Set(value As String)
-            If mGroupOwnerShip = value Then
+            If mGroupOwnership = value Then
                 Return
             End If
-            mGroupOwnerShip = value
+            mGroupOwnership = value
         End Set
     End Property
     Public Property GroupContactName As String
@@ -232,7 +232,7 @@ Public Class SiteGroup
         Get
             Return mPracticeSites
         End Get
-        Set(value As PracticeSiteList)           
+        Set(value As PracticeSiteList)
             mPracticeSites = value
         End Set
     End Property

@@ -242,7 +242,7 @@ Public Class FacilityProvider
         newObj.ST = rdr.GetString("ST")
         newObj.Zip5 = rdr.GetString("Zip5")
         newObj.Phone = rdr.GetString("Phone")
-        newObj.GroupOwnerShip = rdr.GetString("GroupOwnership")
+        newObj.GroupOwnership = rdr.GetString("GroupOwnership")
         newObj.GroupContactName = rdr.GetString("GroupContactName")
         newObj.GroupContactPhone = rdr.GetString("GroupContactPhone")
         newObj.GroupContactEmail = rdr.GetString("GroupContactEmail")
@@ -306,7 +306,7 @@ Public Class FacilityProvider
         Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.UpdateSiteGroup, siteGroup.SiteGroup_ID,
                                                        siteGroup.IsActive, siteGroup.AssignedID,
                                                        siteGroup.GroupName, siteGroup.Addr1, siteGroup.Addr2, siteGroup.City,
-                                                       siteGroup.ST, siteGroup.Zip5, siteGroup.Phone, siteGroup.GroupOwnerShip,
+                                                       siteGroup.ST, siteGroup.Zip5, siteGroup.Phone, siteGroup.GroupOwnership,
                                                        siteGroup.GroupContactName, siteGroup.GroupContactPhone, siteGroup.GroupContactEmail,
                                                        siteGroup.MasterGroupID, siteGroup.MasterGroupName)
         ExecuteNonQuery(cmd)
@@ -322,12 +322,12 @@ Public Class FacilityProvider
                                                        practiceSite.PracticeContactEmail, practiceSite.SampleUnit_id)
         ExecuteNonQuery(cmd)
     End Sub
-    
+
     Public Overrides Sub InsertSiteGroup(ByVal siteGroup As SiteGroup)
 
         Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.InsertSiteGroup, siteGroup.AssignedID,
                                                        siteGroup.GroupName, siteGroup.Addr1, siteGroup.Addr2, siteGroup.City,
-                                                       siteGroup.ST, siteGroup.Zip5, siteGroup.Phone, siteGroup.GroupOwnerShip,
+                                                       siteGroup.ST, siteGroup.Zip5, siteGroup.Phone, siteGroup.GroupOwnership,
                                                        siteGroup.GroupContactName, siteGroup.GroupContactPhone, siteGroup.GroupContactEmail,
                                                        siteGroup.MasterGroupID, siteGroup.MasterGroupName, siteGroup.IsActive)
         Dim newId As Integer = ExecuteInteger(cmd)

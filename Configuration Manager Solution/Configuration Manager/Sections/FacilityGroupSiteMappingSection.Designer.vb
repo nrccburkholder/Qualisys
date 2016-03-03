@@ -323,7 +323,7 @@ Partial Class FacilityGroupSiteMappingSection
         'GridColumn8
         '
         Me.GridColumn8.Caption = "Ownership"
-        Me.GridColumn8.FieldName = "GroupOwnerShip"
+        Me.GridColumn8.FieldName = "GroupOwnership"
         Me.GridColumn8.Name = "GridColumn8"
         Me.GridColumn8.Visible = True
         Me.GridColumn8.VisibleIndex = 8

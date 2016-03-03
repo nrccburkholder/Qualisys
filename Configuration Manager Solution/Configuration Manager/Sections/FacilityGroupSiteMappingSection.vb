@@ -83,7 +83,7 @@ Public Class FacilityGroupSiteMappingSection
                                         .ST = dr("ST").ToString(),
                                         .Zip5 = dr("Zip5").ToString(),
                                         .Phone = dr("Phone").ToString(),
-                                        .GroupOwnerShip = dr("GroupOwnership").ToString(),
+                                        .GroupOwnership = dr("GroupOwnership").ToString(),
                                         .GroupContactName = dr("GroupContactName").ToString(),
                                         .GroupContactPhone = dr("GroupContactPhone").ToString(),
                                         .GroupContactEmail = dr("GroupContactEmail").ToString(),
