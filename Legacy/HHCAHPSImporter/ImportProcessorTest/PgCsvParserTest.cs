@@ -704,13 +704,6 @@ namespace HHCAHPS.ImportProcessorTest
         }
 
         [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
-        public void Parse_EmptyFile_InvalidOperationException()
-        {
-            var xml = PgCsvParser.Parse(new ClientDetail { CCN = "147714" }, "HHCAHPS_147714_1.csv", "");
-        }
-
-        [TestMethod]
         public void Parse_AddressHasComma_ProviderNameParses()
         {
             const string fileContents =
