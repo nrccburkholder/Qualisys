@@ -24,6 +24,7 @@ CREATE TABLE [dbo].[PracticeSite](
 	[PracticeContactEmail] [nvarchar](255) NULL,
 	[SampleUnit_id] [int] NULL,
 	[bitActive] [bit] NOT NULL,
+	[Sampling] [tinyint] NOT NULL constraint DF_PracticeSite_Sampling default ((1)),
  CONSTRAINT [PK_PracticeSite] PRIMARY KEY CLUSTERED 
 (
 	[PracticeSite_ID] ASC
