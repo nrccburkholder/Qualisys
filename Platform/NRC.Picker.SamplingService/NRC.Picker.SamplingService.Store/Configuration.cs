@@ -15,5 +15,9 @@ namespace NRC.Picker.SamplingService.Store
 
         [ConfigUse("enable-scheduling")]
         public bool EnableScheduling { get; set; }
+
+        [ConfigUse("run-interval")]
+        public int RunInterval { get; set; }
+
     }
 }

@@ -42,7 +42,7 @@ namespace NRC.Picker.SamplingService.QueueService
             while (!_stop)
             {
                 DoWork();
-                Thread.Sleep(1000);
+                Thread.Sleep(_config.RunInterval);
             }
             _logger.Info("Ended QueueService");
         }

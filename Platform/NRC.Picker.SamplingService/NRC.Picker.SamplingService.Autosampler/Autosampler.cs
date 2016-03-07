@@ -86,7 +86,7 @@ namespace NRC.Picker.SamplingService.Autosampler
                     _logger.Info((String.Format("dataset ({0}) began sampling", p.Dataset.ID)));
                 }
 
-                Thread.Sleep(1000);
+                Thread.Sleep(_config.RunInterval);
             }
             _logger.Info("Ended Autosampler");
         }
