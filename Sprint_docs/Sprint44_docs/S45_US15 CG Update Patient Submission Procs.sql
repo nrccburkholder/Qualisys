@@ -3553,7 +3553,7 @@ create procedure dbo.GetCGCAHPSdata2_sub_Child12MonthB
  @begindate VARCHAR(10),
  @enddate   VARCHAR(10)
 as
-update #results set surveytype=18
+update #results set surveytype=17
 
 -- Load question responses into #results, mapping NULL & -9 to 9 and -8 to 8
 -- (unless the #results field is char(2), then map them to 99 and 88, respectively)
