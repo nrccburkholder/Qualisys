@@ -158,7 +158,7 @@
       <Name>Nrc.Framework.BusinessLogic</Name>
     </ProjectReference>
     <ProjectReference Include="..\Nrc.Framework\Nrc.Framework.vbproj">
-      <Project>{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}</Project>
+      <Project>{4616369f-a6a3-4192-93a9-23b3e6e2d0bc}</Project>
       <Name>Nrc.Framework</Name>
     </ProjectReference>
   </ItemGroup>
