@@ -31,7 +31,7 @@ select
  right('00' + isnull(groupownership,'  '), 2)+   --Group Ownership and Affiliation  
  right(space(30) + rtrim(ltrim(isnull(groupcontactname,''))), 30)+  --Group Contact Name  
  right(space(10) + rtrim(ltrim(isnull(groupcontactphone,''))), 10)+  --Group Contact Phone  
- right(space(30) + rtrim(ltrim(isnull(groupcontactemail,''))), 50)  --Group Contact Email  
+ right(space(50) + rtrim(ltrim(isnull(groupcontactemail,''))), 50)  --Group Contact Email  
 from Qualisys.QP_Prod.dbo.SiteGroup
 where AssignedID = cast(@groupid as nvarchar(20))
 go
