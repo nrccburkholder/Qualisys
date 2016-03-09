@@ -43,6 +43,8 @@ namespace UploadSite.Services
 
             foreach (var file in files)
             {
+                if (file == null) continue;
+
                 var fileName = file.FileName.Trim('"');
                 var extension = Path.GetExtension(fileName).ToLower();
 
