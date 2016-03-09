@@ -17,7 +17,8 @@
 	[DaysFromCurrentMailing] [int] NULL,
 	[SURVEY_ID] [int] NULL,
 	[SurveyType_id] [int] NULL,
-	[IsDeleted] [bit] NOT NULL
+	[IsDeleted] [bit] NOT NULL,
+	[LangID] [int] NULL
 ) ON [PRIMARY]
 
 

@@ -13,7 +13,8 @@ AS
 	-- S23 U8  Removed NumPatInFile from SampleSetTemp and add new code to insert records into SampleUnitTemp
 	-- S28 U31 Add NumberOfMailAttempts and NumberOfPhoneAttempts to SamplePopTemp
 	-- S35 US18,20  Add ineligibleCount and isCensus to SampleUnitTemp 
-	-- S35 US19  Fix NumberOfMailAttempts to return correct number based on disposition and heirarchy
+	-- S35 US19  Fix NumberOfMailAttempts to return correct number based on disposition and hierarchy
+	-- S42 US12  OAS: Count Fields As an OAS-CAHPS vendor, we need to report in the submission file the number of patients in the data file & the number of eligible patients, so our files are accepted. 02/04/2016 TSB
 	---------------------------------------------------------------------------------------
 	SET NOCOUNT ON 
     
@@ -70,8 +71,8 @@ AS
 
 
 	-- S28 US 31  Update NumberOfMailAttempts and NumberOfPhoneAttempts
-	-- S35 US17  fixed so that we are getting the correct NumberOfMailAttempts based on disposition and heirarchy
-	select smg.SAMPLEPOP_ID , sm.SENTMAIL_ID, sm.DATUNDELIVERABLE,  ms.INTSEQUENCE, qf.datReturned, dlog.Disposition_id, min(std.Hierarchy) heirarchy
+	-- S35 US17  fixed so that we are getting the correct NumberOfMailAttempts based on disposition and hierarchy
+	select smg.SAMPLEPOP_ID , sm.SENTMAIL_ID, sm.DATUNDELIVERABLE,  ms.INTSEQUENCE, qf.datReturned, dlog.Disposition_id, min(std.Hierarchy) hierarchy
 	INTO #Mailings
 	FROM SamplePopTemp spt
 	inner join QP_Prod.[dbo].[SCHEDULEDMAILING] smg on smg.SAMPLEPOP_ID = spt.SAMPLEPOP_ID
@@ -97,7 +98,7 @@ AS
 		END
 	FROM SamplePopTemp spt
 	left join #Mailings m1 on m1.SAMPLEPOP_ID = spt.SAMPLEPOP_ID  
-	and m1.heirarchy = (SELECT min(heirarchy) FROM #Mailings m WHERE m.SAMPLEPOP_ID = spt.SAMPLEPOP_ID) 
+	and m1.hierarchy = (SELECT min(hierarchy) FROM #Mailings m WHERE m.SAMPLEPOP_ID = spt.SAMPLEPOP_ID) 
 
 	drop table #Mailings
 
@@ -185,6 +186,24 @@ AS
 		inner join QP_Prod.dbo.SamplePlanWorksheet spw on sut.Sampleset_id=spw.Sampleset_id and sut.SampleUnit_id=spw.SampleUnit_id 
 		where sut.ExtractFileID = @ExtractFileID  
 
+	 -- S42 US12 - eligibleCount  TSB 02/04/2016
+	 UPDATE sut
+	  SET sut.eligibleCount = sel.eligibleCount
+	   FROM dbo.SampleunitTemp sut
+	   INNER JOIN (
+			SELECT  dt.[sampleset_id]
+					,dt.[sampleunit_id]
+					,count(*) eligibleCount
+		    FROM (
+					 SELECT distinct se.SampleSet_id, se.SampleUnit_id, pop_id
+					 FROM [QP_Prod].[dbo].[EligibleEncLog] se
+					 INNER JOIN dbo.SampleunitTemp su on su.SAMPLESET_ID = se.Sampleset_ID and su.SAMPLEUNIT_ID = se.Sampleunit_ID
+					 WHERE su.ExtractFileID = @ExtractFileID  ) dt
+		    GROUP BY dt.sampleset_id, dt.sampleunit_id
+	   )   sel
+	   ON sel.sampleset_id = sut.SAMPLESET_ID and sel.Sampleunit_ID = sut.SAMPLEUNIT_ID
+	 WHERE sut.ExtractFileID = @ExtractFileID  
+
 	 UPDATE sp
 	  SET ENC_ID = ss.ENC_ID
 	   FROM dbo.SamplePopTemp sp
@@ -208,7 +227,6 @@ AS
 	SET @currDateTime2 = GETDATE();
 	SELECT @oExtractRunLogID,@currDateTime2,@TaskName
 	EXEC [UpdateExtractRunLog] @oExtractRunLogID, @currDateTime2
-
 
 
 GO

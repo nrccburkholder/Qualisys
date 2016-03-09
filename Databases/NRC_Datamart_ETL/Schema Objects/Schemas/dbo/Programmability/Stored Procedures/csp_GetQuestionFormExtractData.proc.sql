@@ -11,8 +11,7 @@
 --          1.5 by dgilsdorf: moved CAHPS processing procs to earlier in the ETL
 --          1.6 by dgilsdorf: changed call to HHCAHPSCompleteness from a function to a procedure
 --			1.7 by ccaouette: check for duplicate questionform (same samplepop_id)
---			1.8 by ccaouette: fix issue with missed comments
---			1.9 by ccaouette: fix issue where deleted questionforms are not properly inactivated in Catalyst
+--			S42 US13 OAS: Language in which Survey Completed As an OAS-CAHPS vendor, we need to report the language in which the survey was completed, so we follow submission file specs. 02/04/2016 TSB
 -- =============================================
 CREATE PROCEDURE [dbo].[csp_GetQuestionFormExtractData] 
 	@ExtractFileID int 
@@ -81,7 +80,8 @@ AS
 			, ReceiptType_id
             , returnDate
 			, DatMailed, DatExpire, DatGenerated, DatPrinted, DatBundled, DatUndeliverable
-			,IsDeleted)
+			,IsDeleted
+			,[LangID])
 	SELECT DISTINCT @ExtractFileID
 						, qf.QUESTIONFORM_ID
 						, qf.SURVEY_ID
@@ -93,6 +93,7 @@ AS
 						, qf.datReturned 
 						, sm.DatMailed, sm.DatExpire, sm.DatGenerated, sm.DatPrinted, sm.DatBundled, sm.DatUndeliverable
 						, eh.IsDeleted
+						, sm.[LangID]
 		 FROM (SELECT  t1.PKey1, t1.Pkey2, t1.IsDeleted
 					FROM cteEH t1 
 					INNER JOIN cteEH t2 ON t1.PKey1 = t2.PKey1 AND (t1.PKey2 = t2.Pkey2 OR t2.PKey2 IS NULL) AND t1.EntityTypeID = t2.EntityTypeID
@@ -133,7 +134,8 @@ AS
 			, ReceiptType_id
             , returnDate
 			, DatMailed, DatExpire, DatGenerated, DatPrinted, DatBundled, DatUndeliverable
-			,IsDeleted)
+			,IsDeleted
+			,[LangID])
 	SELECT DISTINCT @ExtractFileID
 						, qf.QUESTIONFORM_ID
 						, qf.SURVEY_ID
@@ -145,6 +147,7 @@ AS
 						, qf.datReturned 
 						, sm.DatMailed, sm.DatExpire, sm.DatGenerated, sm.DatPrinted, sm.DatBundled, sm.DatUndeliverable
 						, eh.IsDeleted
+						, sm.[LangID]
 		 FROM (SELECT  t1.PKey1, t1.Pkey2, t1.IsDeleted
 					FROM cteEH t1 
 					) eh 
@@ -263,7 +266,4 @@ AS
   	SET @currDateTime2 = GETDATE();
 	SELECT @oExtractRunLogID,@currDateTime2,@TaskName
 	EXEC [UpdateExtractRunLog] @oExtractRunLogID, @currDateTime2
-
 GO
-
-

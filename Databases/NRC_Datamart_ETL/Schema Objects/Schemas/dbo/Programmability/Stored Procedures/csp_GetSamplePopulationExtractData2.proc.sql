@@ -4,6 +4,11 @@ AS
 	SET NOCOUNT ON 
 --exec csp_GetSamplePopulationExtractData2 2714
 	
+	DECLARE @oExtractRunLogID INT;
+	DECLARE @currDateTime1 DATETIME = GETDATE();
+	DECLARE @currDateTime2 DATETIME;
+	DECLARE @TaskName VARCHAR(200) =  OBJECT_NAME(@@PROCID);
+	EXEC [InsertExtractRunLog] @ExtractFileID, @TaskName, @currDateTime1, @ExtractRunLogID = @oExtractRunLogID OUTPUT
 	
 			declare @SamplePopEntityTypeID int
 			set @SamplePopEntityTypeID = 7 -- SamplePopulation
@@ -18,9 +23,15 @@ AS
 			set @TestString = '%[' + NCHAR(0) + NCHAR(1) + NCHAR(2) + NCHAR(3) + NCHAR(4) + NCHAR(5) + NCHAR(6) + NCHAR(7) + NCHAR(8) + NCHAR(11) + NCHAR(12) + NCHAR(14) + NCHAR(15) + NCHAR(16) + NCHAR(17) + NCHAR(18) + NCHAR(19) + NCHAR(20) + NCHAR(21) + NCHAR(22) + NCHAR(23) + NCHAR(24) + NCHAR(25) + NCHAR(26) + NCHAR(27) + NCHAR(28) + NCHAR(29) + NCHAR(30) + NCHAR(31) + ']%'
           
 	---------------------------------------------------------------------------------------
-	-- Formmats data for XML export
+	-- Formats data for XML export
 	-- Changed on 2009.11.09 by kmn to remove CAPHS & nrc disposition columns
-	-- Changed on 2012.12.19 by tsb S14.2 US11 Add StandardMethodologyID column to SampleSet
+	-- Changed on 2014.12.19 by tsb S14.2 US11 Add StandardMethodologyID column to SampleSet
+	-- Changes on 2015.02.06 Tim Butler - S18 US16 Add IneligibleCount column to SampleSet
+	-- Changes on 2015.02.10 Tim Butler - S18 US17 Add SupplementalQuestionCount column to SamplePop
+	-- S20 US09 Add SamplingMethod  Tim Butler
+	-- S23 US8 Add Patient In File Count  Tim Butler
+	-- S28 U31 Add NumberOfMailAttempts and NumberOfPhoneAttempts to SamplePopTemp
+	-- S35 US17 Add datFirstMailed		Tim Butler
 	---------------------------------------------------------------------------------------
 declare @country varchar(75)
 SELECT @country = [STRPARAM_VALUE] FROM [QP_Prod].[dbo].[qualpro_params] WHERE STRPARAM_NM = 'Country'
@@ -68,7 +79,10 @@ begin
 				[sampleSet!1!sampleDate] datetime NULL,	    
 				[sampleSet!1!deleteEntity] nvarchar(5) NULL,
 				[sampleSet!1!standardMethodologyID] int NULL, -- S15 US11
-			
+				[sampleSet!1!ineligibleCount] int NULL, -- S18 US16
+				[sampleSet!1!SamplingMethodID] int NULL, -- S20 US9
+				[sampleSet!1!datFirstMailed] datetime NULL, -- S35 US17
+					
 				[samplePop!2!id] nvarchar(200) NULL,--sample pop
 				[samplePop!2!isMale] bit NULL,
 				[samplePop!2!firstName] nvarchar(100) NULL,
@@ -84,9 +98,18 @@ begin
 				[samplePop!2!serviceDate] datetime NULL,
 				[samplePop!2!dischargeDate] datetime NULL,
 				[samplePop!2!deleteEntity] nvarchar(5) NULL,
+				[samplePop!2!supplementalQuestionCount] int NULL, -- S18 US17
+				[samplePop!2!numberOfMailAttempts] int NULL, --S28 US31
+				[samplePop!2!numberOfPhoneAttempts] int NULL, --S28 US31
 
 				[selectedSample!3!sampleunitid] nvarchar(200) NULL,
-				[selectedSample!3!selectedTypeID] int NULL
+				[selectedSample!3!selectedTypeID] int NULL,
+
+				[sampleUnit!4!sampleunitid] nvarchar(200) NULL, -- S20 US11, --S35 US18,20  - changed Element name from numPatInFile to sampleUnit
+				[sampleUnit!4!numPatInFile] int NULL, --S35 US18,20  - changed attribute name from patientCount to numPatInFile
+				[sampleUnit!4!ineligibleCount] int NULL,--S35 US18  - changed Element name to sampleUnit
+				[sampleUnit!4!isCensus] int NULL, --S35 US20  - added attribute samplingMethodID
+				[sampleUnit!4!eligibleCount] int NULL --S42 US12  - added EligibleCount
 	       
 		  )
   
@@ -97,10 +120,20 @@ begin
 				   SampleSetTemp.CLIENT_ID,          
 				   IsNull(SampleSetTemp.sampleDate,GetDate()),             
 				   Case When IsDeleted = 1 Then 'true' Else 'false' End,
-				    SampleSetTemp.StandardMethodologyID, -- S15 US11
-					NULL, NULL , NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL ,  NULL ,
+				   SampleSetTemp.StandardMethodologyID, -- S15 US11
+				   SampleSetTemp.IneligibleCount, -- S18 US16
+				   SampleSetTemp.SamplingMethodID, -- S20 US9
+				   SampleSetTemp.datFirstMailed, -- S35 US17
+
+				   NULL, NULL , NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL ,  NULL , 
+				   NULL, --S18 US17
+				   NULL,NULL, -- S28 US31
 		  
-					NULL, NULL 
+				   NULL, NULL,  
+
+				   NULL, NULL, -- S23 US8
+				   NULL, NULL, -- S35 US 18,20
+				   NULL -- S42 US12
 
 		--	  select *	   
 			  from SampleSetTemp with (NOLOCK) 
@@ -163,6 +196,10 @@ begin
   			select 2 as Tag, 1 as Parent,
 				   spt.SAMPLESET_ID,NULL, NULL, NULL, 
 				   NULL, -- S15 US11
+				   NULL, -- S18 US16
+				   NULL, -- S20 US09
+				   NULL, -- S35 US17
+
 				   spt.SAMPLEPOP_ID, 
 				   spt.isMale,
 				   isnull(case when (Select deident from #ttt_deident where study_id = spt.STUDY_ID and strfield_nm = 'fname')='' then spt.firstName else (Select deident from #ttt_deident where study_id = spt.STUDY_ID and strfield_nm = 'fname') end,spt.firstName) as firstName,
@@ -178,7 +215,15 @@ begin
 				   isnull(case when (Select deident from #ttt_deident where study_id = spt.STUDY_ID and strfield_nm = 'ServiceDate')='' then dbo.FirstDayOfMonth(spt.serviceDate) else (Select deident from #ttt_deident where study_id = spt.STUDY_ID and strfield_nm = 'ServiceDate') end,dbo.FirstDayOfMonth(spt.serviceDate)) as serviceDate,
 				   isnull(case when (Select deident from #ttt_deident where study_id = spt.STUDY_ID and strfield_nm = 'DischargeDate')='' then dbo.FirstDayOfMonth(spt.dischargeDate) else (Select deident from #ttt_deident where study_id = spt.STUDY_ID and strfield_nm = 'DischargeDate') end,dbo.FirstDayOfMonth(spt.dischargeDate)) as dischargeDate,
 				   Case When spt.IsDeleted = 1 Then 'true' Else 'false' End,
-				   NULL, NULL 
+				   NULL, --S18 US17
+				   NULL,NULL, -- S28 US31
+
+				   NULL, NULL,  -- selectedsample
+
+				   NULL, NULL, -- S23 US8
+				   NULL, NULL, -- S35 US 18,20
+				   NULL -- S42 US12
+				
 			 --select *	   
 			 from	SamplePopTemp spt with (NOLOCK)
 			left join #ttt_error e with (NOLOCK)
@@ -191,7 +236,10 @@ begin
 		   insert #ttt
   			select 2 as Tag, 1 as Parent,
 				   SamplePopTemp.SAMPLESET_ID,NULL, NULL, NULL,
-				   NULL, -- S15 US11 
+				   NULL, -- S15 US11
+				   NULL, -- S18 US16 
+				   NULL, -- S20 US09
+				   NULL, -- S35 US17
 				   SamplePopTemp.SAMPLEPOP_ID, 
 				   SamplePopTemp.isMale,
 				   SamplePopTemp.firstName,
@@ -207,7 +255,15 @@ begin
 				   SamplePopTemp.serviceDate,
 				   SamplePopTemp.dischargeDate,	    
 				   Case When SamplePopTemp.IsDeleted = 1 Then 'true' Else 'false' End,
-				   NULL, NULL 
+				   SamplePopTemp.SupplementalQuestionCount, --S18 US17
+				   SamplePopTemp.NumberOfMailAttempts, -- S28 US31
+				   SamplePopTemp.NumberOfPhoneAttempts, -- S28 US31
+
+				   NULL, NULL, -- selectedsample
+				   
+				   NULL, NULL, -- S23 US8 
+				   NULL, NULL, -- S35 US 18,20
+				   NULL -- S42 US12
 			 --select *	   
 			 from SamplePopTemp with (NOLOCK)
 			 left join #ttt_error error with (NOLOCK)
@@ -223,11 +279,20 @@ begin
 
   				   SelectedSampleTemp.sampleset_id , NULL, NULL, NULL,
 				   NULL, -- S15 US11
+				   NULL, -- S18 US16
+				   NULL, -- S20 US9
+				   NULL, -- S35 US17
  
   				   SelectedSampleTemp.samplepop_id,  NULL , NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+				   NULL , -- S18 US17
+				   NULL, NULL,  -- S28 US31
 
 				   SelectedSampleTemp.sampleunit_id, 
-				   selectedTypeID
+				   selectedTypeID,
+
+				   NULL, NULL, -- S23 US8
+				   NULL, NULL, -- S35 US 18,20
+				   NULL -- S42 US12
 		   
 			  from SelectedSampleTemp with (NOLOCK)	    
 			  left join #ttt_error error with (NOLOCK)
@@ -236,6 +301,30 @@ begin
 			  where SelectedSampleTemp.ExtractFileID = @ExtractFileID 
 			   and error.samplepop_id is null 
 			  --and SelectedSampleTemp.SAMPLEPOP_ID <> 68475428
+
+			insert #ttt
+  			select 4 as Tag, 1 as Parent,  		   
+
+  				   SampleUnitTemp.SAMPLESET_ID , NULL, NULL, NULL,
+				   NULL, -- S15 US11
+				   NULL, -- S18 US16
+				   NULL, -- S20 US09
+				   NULL, -- S35 US17
+ 
+  				   NULL,  NULL , NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+				   NULL, --S18 US17
+				   NULL,NULL, -- S28 US31
+
+				   NULL, NULL,  -- selectedsample
+
+				  SampleUnitTemp.SAMPLEUNIT_ID, -- S23 US8
+				  SampleUnitTemp.NumPatInFile,
+				  SampleUnitTemp.IneligibleCount, -- S35 US18
+				  SampleUnitTemp.isCensus, -- S35 US 20
+				  SampleUnitTemp.eligibleCount -- S42 US12
+   
+			  from SampleUnitTemp with (NOLOCK)	    
+			  where SampleUnitTemp.ExtractFileID = @ExtractFileID 
 	 
 			select * 
 			from #ttt    
@@ -290,7 +379,10 @@ begin
 	    [sampleSet!1!sampleDate] datetime NULL,	    
 	    [sampleSet!1!deleteEntity] nvarchar(5) NULL,
 		[sampleSet!1!standardMethodologyID] int NULL, -- S15 US11
-			
+		[sampleSet!1!ineligibleCount] int NULL, -- S18 US16
+		[sampleSet!1!SamplingMethodID] int NULL, -- S20 US9
+		[sampleSet!1!datFirstMailed] datetime NULL, -- S35 US17
+					
 	    [samplePop!2!id] nvarchar(200) NULL,--sample pop
 	    [samplePop!2!isMale] bit NULL,
 	    [samplePop!2!firstName] nvarchar(100) NULL,
@@ -306,9 +398,19 @@ begin
 	    [samplePop!2!serviceDate] datetime NULL,
 	    [samplePop!2!dischargeDate] datetime NULL,
 	    [samplePop!2!deleteEntity] nvarchar(5) NULL,
+		[samplePop!2!supplementalQuestionCount] int NULL, -- S18 US17
+		[samplePop!2!numberOfMailAttempts] int NULL, --S28 US31
+		[samplePop!2!numberOfPhoneAttempts] int NULL, --S28 US31
 
 	    [selectedSample!3!sampleunitid] nvarchar(200) NULL,
-	    [selectedSample!3!selectedTypeID] int NULL
+	    [selectedSample!3!selectedTypeID] int NULL,
+
+		[sampleUnit!4!sampleunitid] nvarchar(200) NULL, -- S20 US11, --S35 US18,20  - changed Element name from numPatInFile to sampleUnit
+		[sampleUnit!4!numPatInFile] int NULL, --S35 US18,20  - changed attribute name from patientCount to numPatInFile
+		[sampleUnit!4!ineligibleCount] int NULL,--S35 US18  - changed Element name to sampleUnit
+		[sampleUnit!4!isCensus] int NULL, --S35 US20  - added attribute samplingMethodID
+		[sampleUnit!4!eligibleCount] int NULL --S42 US12  - added EligibleCount
+		
 	       
   )
   
@@ -320,9 +422,20 @@ begin
            IsNull(SampleSetTemp.sampleDate,GetDate()),             
 		   Case When IsDeleted = 1 Then 'true' Else 'false' End,
 		   SampleSetTemp.StandardMethodologyID, -- S15 US11
-		    NULL, NULL , NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL ,  NULL ,
+		   SampleSetTemp.IneligibleCount, -- S18 US16
+		   SampleSetTemp.SamplingMethodID, -- S20 US9
+		   SampleSetTemp.datFirstMailed, -- S35 US17
+
+		   NULL, NULL , NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL ,  NULL , 
+		   NULL, --S18 US17
+		   NULL,NULL, -- S28 US31
 		  
-		    NULL, NULL  
+		   NULL, NULL,  
+
+		   NULL, NULL, -- S23 US8
+		   NULL, NULL, -- S35 US 18,20
+		   NULL -- S42 US12
+
 
 --	  select *	   
 	  from SampleSetTemp with (NOLOCK) 
@@ -334,9 +447,11 @@ begin
   	  		             
            SamplePopTemp.SAMPLESET_ID,NULL, NULL, NULL, 
 		   NULL, -- S15 US11
+		   NULL, -- S18 US16
+		   NULL, -- S20 US9
+		   NULL, -- S35 US17
 
-		   SamplePopTemp.SAMPLEPOP_ID, 
-		   
+		   SamplePopTemp.SAMPLEPOP_ID, 		   
 		   SamplePopTemp.isMale,
 		   SamplePopTemp.firstName,
 		   SamplePopTemp.lastName,
@@ -351,8 +466,16 @@ begin
 		   SamplePopTemp.serviceDate,
 		   SamplePopTemp.dischargeDate,	    
 		   Case When SamplePopTemp.IsDeleted = 1 Then 'true' Else 'false' End,
+		   ISNULL(SamplePopTemp.SupplementalQuestionCount,0), -- S18 US17
+		   SamplePopTemp.NumberOfMailAttempts,
+		   SamplePopTemp.NumberOfPhoneAttempts,
 		   
-		   NULL, NULL 
+		   NULL, NULL, --selectedsample
+		   
+		   NULL, NULL, -- S23 US8 
+		   NULL, NULL, -- S35 US 18,20
+		   NULL -- S42 US12
+
 	 --select *	   
 	 from SamplePopTemp with (NOLOCK)
 	 left join #ttt_errorUS error with (NOLOCK)
@@ -368,11 +491,20 @@ begin
 
   		   SelectedSampleTemp.sampleset_id , NULL, NULL, NULL,
 		   NULL, -- S15 US11
+		   NULL, -- S18 US16
+		   NULL, -- S20 US9
+		   NULL, -- S35 US17
  
   		   SelectedSampleTemp.samplepop_id,  NULL , NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+		   NULL , -- S18 US17
+		   NULL, NULL,  -- S28 US31
 
 		   SelectedSampleTemp.sampleunit_id, 
-		   selectedTypeID
+		   selectedTypeID,
+
+		   NULL, NULL, -- S23 US8
+		   NULL, NULL, -- S35 US 18,20
+		   NULL -- S42 US12
 		   
 	  from SelectedSampleTemp with (NOLOCK)	    
 	  left join #ttt_errorUS error with (NOLOCK)
@@ -381,18 +513,43 @@ begin
 	  where SelectedSampleTemp.ExtractFileID = @ExtractFileID 
 	   and error.samplepop_id is null 
 	  --and SelectedSampleTemp.SAMPLEPOP_ID <> 68475428
+
+	-- Add the SampleUnit/SampletSet mappings
+	insert #tttUS
+  			select 4 as Tag, 1 as Parent,  		   
+
+  				   SampleUnitTemp.SAMPLESET_ID , NULL, NULL, NULL,
+				   NULL, -- S15 US11
+				   NULL, -- S18 US16
+				   NULL, -- S20 US09
+				   NULL, -- S35 US17
+ 
+  				   NULL,  NULL , NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+				   NULL, --S18 US17
+				   NULL,NULL, -- S28 US31
+
+				   NULL, NULL,  -- selectedsample
+
+				  SampleUnitTemp.SAMPLEUNIT_ID, -- S23 US8
+				  SampleUnitTemp.NumPatInFile,
+				  SampleUnitTemp.IneligibleCount, -- S35 US18
+				  SampleUnitTemp.isCensus, -- S35 US 20
+				  SampleUnitTemp.eligibleCount -- S42 US12
+
+
+			  from SampleUnitTemp with (NOLOCK)	    
+			  where SampleUnitTemp.ExtractFileID = @ExtractFileID 
 	 
 	select * 
 	from #tttUS    
 	--where [sampleSet!1!id] <> 725591 -- and 725591
-	order by [sampleSet!1!id],[samplePop!2!id], [selectedSample!3!sampleunitid] 
+	order by [sampleSet!1!id],[sampleUnit!4!sampleunitid], [samplePop!2!id], [selectedSample!3!sampleunitid] 
     for xml explicit
           
     drop table #tttUS
     drop table #ttt_errorUS
 
-
+	SET @currDateTime2 = GETDATE();
+	SELECT @oExtractRunLogID,@currDateTime2,@TaskName
+	EXEC [UpdateExtractRunLog] @oExtractRunLogID, @currDateTime2
 end
-
-
-

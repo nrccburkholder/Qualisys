@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE SP_BDUS_UpdateBackgroundInfo      
+﻿CREATE PROCEDURE [dbo].[SP_BDUS_UpdateBackgroundInfo]
     @intStudyID         INT,      
     @intPopID           INT,      
     @intSamplePopID     INT,      
@@ -8,7 +8,9 @@
     @intProgram  int      
       
 AS      
-      
+/*
+	S42 US13 OAS: Language in which Survey Completed - added code to update SentMailing.LangID for Phone step processed through QSI TransferResults 02/08/2016 TSB
+*/      
 SET NOCOUNT ON      
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED      
       
@@ -19,7 +21,39 @@ DECLARE @strSql VARCHAR(8000)
 SET @strSql='UPDATE S'+CONVERT(VARCHAR,@intStudyID)+'.Population '+CHAR(10)+      
             'SET '+@strSetClause+' '+CHAR(10)+      
             'WHERE Pop_id='+CONVERT(VARCHAR,@intPopID)      
-EXEC (@strSql)      
+EXEC (@strSql)    
+
+-- S42 US13
+if SUBSTRING(@strSetClause,1, 6) = 'LangID'
+BEGIN
+
+	SET @strSQL = '
+		if not exists (
+			select 1
+			from dbo.SENTMAILING sm
+			inner join dbo.questionform qf on (sm.SENTMAIL_ID = qf.SENTMAIL_ID)
+			inner join ScheduledMailing scm on sm.ScheduledMailing_id=scm.ScheduledMailing_id
+			inner join MailingStep ms on scm.Methodology_id=ms.Methodology_id and scm.MailingStep_id=ms.MailingStep_id
+			inner join MailingStepMethod msm on msm.MailingStepMethod_id= ms.MailingStepMethod_id
+			where qf.SAMPLEPOP_ID = ' + CONVERT(VARCHAR,@intSamplePopID) +' '+ CHAR(10) + 
+			'and msm.MailingStepMethod_nm = ''Phone''
+			and sm.'+ @strSetClause + ')'+ CHAR(10) +  
+			'begin ' + CHAR(10) +  
+				'update sm '+ CHAR(10) +  
+				'SET ' + @strSetClause + ' '+ CHAR(10) + 
+				'from dbo.SENTMAILING sm
+				inner join dbo.questionform qf on (sm.SENTMAIL_ID = qf.SENTMAIL_ID)
+				inner join ScheduledMailing scm on sm.ScheduledMailing_id=scm.ScheduledMailing_id
+				inner join MailingStep ms on scm.Methodology_id=ms.Methodology_id and scm.MailingStep_id=ms.MailingStep_id
+				inner join MailingStepMethod msm on msm.MailingStepMethod_id= ms.MailingStepMethod_id
+				where qf.SAMPLEPOP_ID = ' + CONVERT(VARCHAR,@intSamplePopID) +' '+ CHAR(10) + 
+				'and msm.MailingStepMethod_nm = ''Phone''' + CHAR(10) +  
+			'end '
+
+	EXEC (@strSql)  
+	 
+END
+  
       
 --Add the entries into the HandEntry_Log table      
 SELECT @strSql='INSERT INTO HandEntry_Log (QuestionForm_id,Field_id,datEntered,intProgram)      
@@ -41,10 +75,8 @@ SELECT @intStudyID,@intPopID,@intSamplePopID,@strSetClause,GETDATE()
 --insert into Catalyst extract queue so new address will be updated    
 insert NRC_DataMart_ETL.dbo.ExtractQueue (EntityTypeID, PKey1, PKey2, IsMetaData,IsDeleted, source)      
 select 7, @intSamplePopID, NULL, 0,0, 'SP_BDUS_UpdateBackgroundInfo'    
-    
-    
+        
 --Cleanup      
 SET NOCOUNT OFF      
 SET TRANSACTION ISOLATION LEVEL READ COMMITTED
-
-
+GO

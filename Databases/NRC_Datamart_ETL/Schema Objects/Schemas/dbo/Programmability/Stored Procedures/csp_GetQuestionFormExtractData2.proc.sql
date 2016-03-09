@@ -1,10 +1,20 @@
 ﻿CREATE PROCEDURE [dbo].[csp_GetQuestionFormExtractData2]
 @ExtractFileID INT
 AS
+/*
+--			S42 US13 OAS: Language in which Survey Completed As an OAS-CAHPS vendor, we need to report the language in which the survey was completed, so we follow submission file specs. 02/04/2016 TSB
+*/
 SET NOCOUNT ON 
 	
 	declare @EntityTypeID int
 	set @EntityTypeID = 11 -- QuestionForm
+
+
+	DECLARE @oExtractRunLogID INT;
+	DECLARE @currDateTime1 DATETIME = GETDATE();
+	DECLARE @currDateTime2 DATETIME;
+	DECLARE @TaskName VARCHAR(200) =  OBJECT_NAME(@@PROCID);
+	EXEC [InsertExtractRunLog] @ExtractFileID, @TaskName, @currDateTime1, @ExtractRunLogID = @oExtractRunLogID OUTPUT;
 
 --    declare @ExtractFileID int
 --	set @ExtractFileID = 527
@@ -27,6 +37,7 @@ SET NOCOUNT ON
         [questionForm!1!DatUndeliverable] datetime NULL, 	   
         [questionForm!1!DatFirstMailed] datetime NULL, 	 
 	    [questionForm!1!deleteEntity] nvarchar(5) NULL,
+		[questionForm!1!LangID] int NULL,
 	    
 	    [bubbleData!2!nrcQuestionCore] int NULL,
 	    [bubbleData!2!sampleunitid] nvarchar(200) NULL,
@@ -72,6 +83,7 @@ SET NOCOUNT ON
   		   returnDate,
   		   ReceiptType_ID,DatMailed,DatExpire,DatGenerated,DatPrinted,DatBundled,DatUndeliverable,DatFirstMailed,
   		   NULL, -- deleteEntity defaults to FALSE
+		   [LangID], 
 
 		   NULL,NULL,
 		   NULL,
@@ -88,6 +100,7 @@ SET NOCOUNT ON
   		   strLithoCode As questionform_id, samplepop_id, NULL, NULL, NULL                     
            ,NULL,NULL,NULL,NULL,NULL,NULL,NULL
            ,'true' as deleteEntity,
+		   NULL, -- LangID
 
 		   NULL,NULL,
 		   NULL,
@@ -103,6 +116,7 @@ SET NOCOUNT ON
   insert #ttt
   	select 4 as Tag, 1 as Parent,
   	  	   LithoCode As questionform_id, NULL, NULL, NULL, NULL, NULL,
+		   NULL, -- LangID
 
            NULL,NULL,NULL,NULL,NULL,NULL,NULL,
 
@@ -127,6 +141,7 @@ SET NOCOUNT ON
   insert #ttt
   	select 5 as Tag, 4 as Parent,  	
   	  	   LithoCode As questionform_id, NULL, NULL, NULL, NULL, NULL,
+		   NULL, -- LangID
 
            NULL,NULL,NULL,NULL,NULL,NULL,NULL,
 
@@ -143,6 +158,7 @@ SET NOCOUNT ON
   insert #ttt
   	select 6 as Tag, 4 as Parent,  	
   	  	   LithoCode As questionform_id, NULL, NULL, NULL, NULL, NULL,
+		   NULL, -- LangID
 
            NULL,NULL,NULL,NULL,NULL,NULL,NULL,
 
@@ -169,6 +185,7 @@ SET NOCOUNT ON
   insert #ttt
   	select 7 as Tag, 4 as Parent,  	
   	  	   LithoCode As questionform_id, NULL, NULL, NULL, NULL, NULL,
+		   NULL, -- LangID
 
            NULL,NULL,NULL,NULL,NULL,NULL,NULL,
 
@@ -201,4 +218,7 @@ SET NOCOUNT ON
 
   drop table #ttt
 
-
+  	SET @currDateTime2 = GETDATE();
+	SELECT @oExtractRunLogID,@currDateTime2,@TaskName
+	EXEC [UpdateExtractRunLog] @oExtractRunLogID, @currDateTime2
+GO
