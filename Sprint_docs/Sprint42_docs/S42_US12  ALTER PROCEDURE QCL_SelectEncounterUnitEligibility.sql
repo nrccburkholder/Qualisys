@@ -361,7 +361,7 @@ AS
                   SELECT   @reportDateField, 'D', 4, '9999'  
 
 
-	IF @SurveyType_ID = @OASCAHPS
+	IF @SurveyType_ID IN (@OASCAHPS,@HospiceCAHPS)
 	BEGIN
 
 		DECLARE @schema varchar(10)

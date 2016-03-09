@@ -13,8 +13,6 @@ As an OAS-CAHPS vendor, we need to report in the submission file the number of p
 */
 
 
-
-
 USE [QP_Prod]
 GO
 
