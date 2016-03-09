@@ -29,7 +29,10 @@
 */
 use qp_comments
 go
-alter PROCEDURE dbo.GetCGCAHPSdata2            
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2')
+	drop procedure GetCGCAHPSdata2
+go
+create PROCEDURE dbo.GetCGCAHPSdata2            
  @survey_id INT,             
  @begindate VARCHAR(10),             
  @enddate   VARCHAR(10),             
@@ -673,7 +676,10 @@ drop table #Study_Results
 drop table #mncm_units  
 drop table #tmp_samplesets 
 go
-alter procedure dbo.GetCGCAHPSdata2_sub_Adult12MonthA
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_Adult12MonthA')
+	drop procedure GetCGCAHPSdata2_sub_Adult12MonthA
+go
+create procedure dbo.GetCGCAHPSdata2_sub_Adult12MonthA
 as
 alter table #results add
 	Q1   char(1), -- Q046385
@@ -720,10 +726,13 @@ alter table #results add
 	Q34d char(1), -- Q044458d
 	Q34e char(1)  -- Q044458e
 go
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_Adult12MonthB')
+	drop procedure GetCGCAHPSdata2_sub_Adult12MonthB
+go
 --DRM 06/18/2013 Added check for empty results.  This was causing a problem for empty returns.    
 --DRM 01/20/2014 Added left pad on Q23.    
 --DRM 03/06/2014 Added phone and web surveys to check at end of proc.  
-alter procedure dbo.GetCGCAHPSdata2_sub_Adult12MonthB    
+create procedure dbo.GetCGCAHPSdata2_sub_Adult12MonthB    
  @survey_id INT,     
  @begindate VARCHAR(10),     
  @enddate   VARCHAR(10)     
@@ -875,7 +884,10 @@ update #results set
 where --disposition not in (11, 21, 12, 22, 14, 24) or 
 q1 is null 
 go
-alter procedure dbo.GetCGCAHPSdata2_sub_Adult12MonthPCMHa
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_Adult12MonthPCMHa')
+	drop procedure GetCGCAHPSdata2_sub_Adult12MonthPCMHa
+go
+create procedure dbo.GetCGCAHPSdata2_sub_Adult12MonthPCMHa
 as
 alter table #results add
 	Q1   char(1), -- Q044121
@@ -940,10 +952,13 @@ alter table #results add
 	Q52d char(1), -- Q048665d / 44235d
 	Q52e char(1)  -- Q048665e / 44235e
 go
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_Adult12MonthPCMHb')
+	drop procedure GetCGCAHPSdata2_sub_Adult12MonthPCMHb
+go
 --DRM 06/18/2013 Added check for empty results.  This was causing a problem for empty returns.    
 --DRM 01/20/2014 Added left pad on Q32.    
 --DRM 03/06/2014 Added phone and web surveys to check at end of proc.  
-alter procedure [dbo].[GetCGCAHPSdata2_sub_Adult12MonthPCMHb]    
+create procedure [dbo].[GetCGCAHPSdata2_sub_Adult12MonthPCMHb]    
  @survey_id INT,     
  @begindate VARCHAR(10),     
  @enddate   VARCHAR(10)     
@@ -1182,8 +1197,11 @@ where --disposition not in (11, 21, 12, 22, 14, 24) or
 q1 is null 
 end    
 go
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_Adult6MonthA')
+	drop procedure GetCGCAHPSdata2_sub_Adult6MonthA
+go
 --DRM 03/04/2015 Created.
-alter procedure dbo.GetCGCAHPSdata2_sub_Adult6MonthA
+create procedure dbo.GetCGCAHPSdata2_sub_Adult6MonthA
 as  
 alter table #results add  
  Q1   char(1), -- Q050344  
@@ -1230,8 +1248,11 @@ alter table #results add
  Q34d char(1), -- Q050257d  
  Q34e char(1)  -- Q050257e  
 go
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_Adult6MonthB')
+	drop procedure GetCGCAHPSdata2_sub_Adult6MonthB
+go
 --DRM 03/04/2015 Created.  
-alter procedure dbo.GetCGCAHPSdata2_sub_Adult6MonthB      
+create procedure dbo.GetCGCAHPSdata2_sub_Adult6MonthB      
  @survey_id INT,       
  @begindate VARCHAR(10),       
  @enddate   VARCHAR(10)       
@@ -1381,8 +1402,11 @@ Q16 =' ',
 where --disposition not in (11, 21, 12, 22, 14, 24) or 
 q1 is null 
 go
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_Adult6MonthPCMHa')
+	drop procedure GetCGCAHPSdata2_sub_Adult6MonthPCMHa
+go
 --DRM 03/04/2015 Created.
-alter procedure dbo.GetCGCAHPSdata2_sub_Adult6MonthPCMHa  
+create procedure dbo.GetCGCAHPSdata2_sub_Adult6MonthPCMHa  
 as  
 alter table #results add  
  Q1   char(1), -- Q050344  
@@ -1447,8 +1471,11 @@ alter table #results add
  Q52d char(1), -- Q050257d  
  Q52e char(1)  -- Q050257e  
 go
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_Adult6MonthPCMHb')
+	drop procedure GetCGCAHPSdata2_sub_Adult6MonthPCMHb
+go
 --DRM 03/04/2015 Created.    
-alter procedure [dbo].[GetCGCAHPSdata2_sub_Adult6MonthPCMHb]        
+create procedure [dbo].[GetCGCAHPSdata2_sub_Adult6MonthPCMHb]        
  @survey_id INT,         
  @begindate VARCHAR(10),         
  @enddate   VARCHAR(10)         
@@ -1691,7 +1718,10 @@ where --disposition not in (11, 21, 12, 22, 14, 24) or
 q1 is null 
 end 
 go
-alter procedure dbo.GetCGCAHPSdata2_sub_AdultVisitA
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_AdultVisitA')
+	drop procedure GetCGCAHPSdata2_sub_AdultVisitA
+go
+create procedure dbo.GetCGCAHPSdata2_sub_AdultVisitA
 as
 alter table #results add
 	Q1   char(1), -- Q039113
@@ -1741,10 +1771,13 @@ alter table #results add
 	Q37d char(1), -- Q039162d
 	Q37e char(1)  -- Q039162e
 go
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_AdultVisitB')
+	drop procedure GetCGCAHPSdata2_sub_AdultVisitB
+go
 --DRM 06/18/2013 Added check for empty results.  This was causing a problem for empty returns.    
 --DRM 01/20/2014 Added left pad on Q25.    
 --DRM 03/06/2014 Added phone and web surveys to check at end of proc.  
-alter procedure [dbo].[GetCGCAHPSdata2_sub_AdultVisitB]    
+create procedure [dbo].[GetCGCAHPSdata2_sub_AdultVisitB]    
  @survey_id INT,     
  @begindate VARCHAR(10),     
  @enddate   VARCHAR(10)    
@@ -1945,7 +1978,10 @@ update #results set
 where --disposition not in (11, 21, 12, 22, 14, 24) or 
 q1 is null 
 go
-alter procedure dbo.GetCGCAHPSdata2_sub_Child12MonthPCMHa
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_Child12MonthPCMHa')
+	drop procedure GetCGCAHPSdata2_sub_Child12MonthPCMHa
+go
+create procedure dbo.GetCGCAHPSdata2_sub_Child12MonthPCMHa
 as
 alter table #results add
 	Q1   char(1), -- Q046265
@@ -2024,10 +2060,13 @@ alter table #results add
 	Q66d char(1), -- Q048668d / 46330d
 	Q66e char(1)  -- Q048668e / 46330e
 go
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_Child12MonthPCMHb')
+	drop procedure GetCGCAHPSdata2_sub_Child12MonthPCMHb
+go
 --DRM 06/18/2013 Added check for empty results.  This was causing a problem for empty returns.    
 --DRM 01/20/2014 Added left pad on Q35.    
 --DRM 03/06/2014 Added phone and web surveys to check at end of proc.  
-alter procedure dbo.GetCGCAHPSdata2_sub_Child12MonthPCMHb    
+create procedure dbo.GetCGCAHPSdata2_sub_Child12MonthPCMHb    
  @survey_id INT,     
  @begindate VARCHAR(10),     
  @enddate   VARCHAR(10)     
@@ -2329,8 +2368,11 @@ update #results set
 where --disposition not in (11, 21, 12, 22, 14, 24) or 
 q1 is null 
 go
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_Child6Montha')
+	drop procedure GetCGCAHPSdata2_sub_Child6Montha
+go
 --DRM 03/04/2015 Created.
-alter procedure dbo.GetCGCAHPSdata2_sub_Child6Montha  
+create procedure dbo.GetCGCAHPSdata2_sub_Child6Montha  
 as  
 alter table #results add  
  Q1   char(1), -- Q050483  
@@ -2398,8 +2440,11 @@ alter table #results add
  Q55d char(1), -- Q050537d
  Q55e char(1) -- Q050537e
 go
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_Child6Monthb')
+	drop procedure GetCGCAHPSdata2_sub_Child6Monthb
+go
 --DRM 03/04/2015 Created.  
-alter procedure dbo.GetCGCAHPSdata2_sub_Child6Monthb  
+create procedure dbo.GetCGCAHPSdata2_sub_Child6Monthb  
  @survey_id INT,       
  @begindate VARCHAR(10),       
  @enddate   VARCHAR(10)       
@@ -2614,8 +2659,11 @@ update #results set
 where --disposition not in (11, 21, 12, 22, 14, 24) or 
 q1 is null 
 go
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_Child6MonthPCMHa')
+	drop procedure GetCGCAHPSdata2_sub_Child6MonthPCMHa
+go
 --DRM 03/04/2015 Created.
-alter procedure dbo.GetCGCAHPSdata2_sub_Child6MonthPCMHa  
+create procedure dbo.GetCGCAHPSdata2_sub_Child6MonthPCMHa  
 as  
 alter table #results add  
  Q1   char(1), -- Q050483  
@@ -2694,8 +2742,11 @@ alter table #results add
  Q66d char(1), -- Q050537d
  Q66e char(1)  -- Q050537e
 go
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_Child6MonthPCMHb')
+	drop procedure GetCGCAHPSdata2_sub_Child6MonthPCMHb
+go
 --DRM 03/04/2015 Created.      
-alter procedure dbo.GetCGCAHPSdata2_sub_Child6MonthPCMHb          
+create procedure dbo.GetCGCAHPSdata2_sub_Child6MonthPCMHb          
  @survey_id INT,           
  @begindate VARCHAR(10),           
  @enddate   VARCHAR(10)           

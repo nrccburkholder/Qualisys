@@ -137,7 +137,7 @@ select
 	right(space(8) + cast(cast(cast(completes as float)/cast(intSampled-ineligibles as float) as decimal(8,6)) as varchar), 8)+		--Response Rate
 	right(space(30) + rtrim(ltrim(isnull(ps.practicecontactname,''))), 30)+				--Practice Contact Name
 	right(space(10) + rtrim(ltrim(isnull(ps.practicecontactphone,''))), 10)+			--Practice Contact Phone
-	right(space(30) + rtrim(ltrim(isnull(ps.practicecontactemail,''))), 50)				--Practice Contact Email
+	right(space(50) + rtrim(ltrim(isnull(ps.practicecontactemail,''))), 50)				--Practice Contact Email
 from
 	Qualisys.QP_Prod.dbo.PracticeSite ps
 	inner join Qualisys.QP_Prod.dbo.SiteGroup sg on sg.SiteGroup_ID = ps.SiteGroup_ID

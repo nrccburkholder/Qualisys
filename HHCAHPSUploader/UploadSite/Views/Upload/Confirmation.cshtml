@@ -13,6 +13,13 @@
     </div>
     @Html.ActionLink("Upload more files", "Index", "Upload")
 }
+else if (Model.NoFiles)
+{
+    <div class="alert alert-danger">
+        <p>No files were selected. Please return to upload and select a file.</p>
+    </div>
+    @Html.ActionLink("Return to upload", "Index", "Upload")
+}
 else
 {
     <div class="alert alert-danger">

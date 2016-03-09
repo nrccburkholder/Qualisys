@@ -31,7 +31,10 @@
 */
 use qp_comments
 go
-alter PROCEDURE dbo.GetCGCAHPSdata2
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2')
+	drop procedure GetCGCAHPSdata2
+go
+create PROCEDURE dbo.GetCGCAHPSdata2
  @survey_id INT,
  @begindate VARCHAR(10),
  @enddate   VARCHAR(10)
@@ -362,8 +365,8 @@ SELECT DISTINCT
     END AS CompletionDate, 
     CASE WHEN mncmdisposition in ('1','2') THEN RIGHT('0' + Cast(tmm.intsequence AS VARCHAR(1)), 2) ELSE 'NC' END AS CompletionRound, 
     CASE 
-        WHEN (mncmdisposition IN ('1','2') AND bt.langid IN (2,8,18,19)) THEN '2' 
-        WHEN (mncmdisposition IN ('1','2') AND bt.langid NOT IN (2,8,18,19)) THEN '1' 
+        WHEN (mncmdisposition IN ('1','2','3','4') AND bt.langid IN (2,8,18,19)) THEN '2' 
+        WHEN (mncmdisposition IN ('1','2','3','4') AND bt.langid = 1) THEN '1' 
         ELSE '3' 
     END AS SurveyLanguage, 
 	isnull(convert(varchar,year(dob)),'M') as BirthYear, 
@@ -423,7 +426,7 @@ insert into #surveyQ1 (field_nm, bitFlag)
 select name, 0
 from tempdb.sys.columns sc
 where object_id=object_id('tempdb..#Study_Results')
-and name in ('Q044121','Q044127','Q050344','Q050541','Q050226','Q039113','Q046265','Q050483','Q050500','Q050629')
+and name in ('Q044121','Q044127','Q050344','Q050541','Q050226','Q039113','Q046265','Q050483','Q050500','Q050629','Q046278')
 
 -- remove any qstncore from #SurveyQ1 if no one was asked the question
 -- declare @sql varchar(max)
@@ -477,13 +480,23 @@ if exists (select * from #surveyQ1 where field_nm='q044121')
  end
 
 
-if exists (select * from #surveyQ1 where field_nm='q046265')
+if exists (select * from #surveyQ1 where field_nm='q046278')
  begin
   print 'Child12Month2.0PCMH'
   exec dbo.GetCGCAHPSdata2_sub_Child12MonthPCMHa
   exec dbo.GetCGCAHPSdata2_sub_Child12MonthPCMHb @survey_id, @begindate, @enddate
   goto subdone
  end
+
+ -- TSB 03/08/2016 - added Child 6 Month 3.0
+if exists (select * from #surveyQ1 where field_nm='q046265')
+begin
+  print 'Child12Month2.0'
+  exec dbo.GetCGCAHPSdata2_sub_Child12MonthA
+  exec dbo.GetCGCAHPSdata2_sub_Child12MonthB @survey_id, @begindate, @enddate
+  goto subdone
+end
+
 
 -- DBG 03/07/2016 - added Adult 6 Month 3.0
 if exists (select * from #surveyQ1 where field_nm='q050226')
@@ -577,7 +590,10 @@ drop table #Study_Results
 drop table #mncm_units
 drop table #tmp_samplesets
 go
-alter procedure dbo.GetCGCAHPSdata2_sub_Adult12MonthA
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_Adult12MonthA')
+	drop procedure GetCGCAHPSdata2_sub_Adult12MonthA
+go
+create procedure dbo.GetCGCAHPSdata2_sub_Adult12MonthA
 as
 alter table #results add
 	Q1   char(1),	-- Q044121 (was Q046385)
@@ -624,10 +640,13 @@ alter table #results add
 	Q34d char(1),	-- Q044235d (was Q044458d)
 	Q34e char(1) 	-- Q044235e (was Q044458e)
 go
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_Adult12MonthB')
+	drop procedure GetCGCAHPSdata2_sub_Adult12MonthB
+go
 --DRM 06/18/2013 Added check for empty results.  This was causing a problem for empty returns.
 --DRM 01/20/2014 Added left pad on Q23.
 --DRM 03/06/2014 Added phone and web surveys to check at end of proc.
-alter procedure dbo.GetCGCAHPSdata2_sub_Adult12MonthB
+create procedure dbo.GetCGCAHPSdata2_sub_Adult12MonthB
  @survey_id INT,
  @begindate VARCHAR(10),
  @enddate   VARCHAR(10)
@@ -777,7 +796,10 @@ update #results set
 where --disposition not in (11, 21, 12, 22, 14, 24) or
 q1 is null
 go
-alter procedure dbo.GetCGCAHPSdata2_sub_Adult12MonthPCMHa
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_Adult12MonthPCMHa')
+	drop procedure GetCGCAHPSdata2_sub_Adult12MonthPCMHa
+go
+create procedure dbo.GetCGCAHPSdata2_sub_Adult12MonthPCMHa
 as
 alter table #results add
 	Q1   char(1), -- Q044121
@@ -842,10 +864,13 @@ alter table #results add
 	Q52d char(1), -- Q048665d / 44235d
 	Q52e char(1)  -- Q048665e / 44235e
 go
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_Adult12MonthPCMHb')
+	drop procedure GetCGCAHPSdata2_sub_Adult12MonthPCMHb
+go
 --DRM 06/18/2013 Added check for empty results.  This was causing a problem for empty returns.
 --DRM 01/20/2014 Added left pad on Q32.
 --DRM 03/06/2014 Added phone and web surveys to check at end of proc.
-alter procedure [dbo].[GetCGCAHPSdata2_sub_Adult12MonthPCMHb]
+create procedure [dbo].[GetCGCAHPSdata2_sub_Adult12MonthPCMHb]
  @survey_id INT,
  @begindate VARCHAR(10),
  @enddate   VARCHAR(10)
@@ -1084,8 +1109,11 @@ where --disposition not in (11, 21, 12, 22, 14, 24) or
 q1 is null
 end
 go
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_Adult6MonthA')
+	drop procedure GetCGCAHPSdata2_sub_Adult6MonthA
+go
 --DRM 03/04/2015 Created.
-alter procedure dbo.GetCGCAHPSdata2_sub_Adult6MonthA
+create procedure dbo.GetCGCAHPSdata2_sub_Adult6MonthA
 as
 alter table #results add
  Q1   char(1), -- Q050344
@@ -1132,8 +1160,11 @@ alter table #results add
  Q34d char(1), -- Q050257d
  Q34e char(1)  -- Q050257e
 go
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_Adult6MonthB')
+	drop procedure GetCGCAHPSdata2_sub_Adult6MonthB
+go
 --DRM 03/04/2015 Created.
-alter procedure dbo.GetCGCAHPSdata2_sub_Adult6MonthB
+create procedure dbo.GetCGCAHPSdata2_sub_Adult6MonthB
  @survey_id INT,
  @begindate VARCHAR(10),
  @enddate   VARCHAR(10)
@@ -1283,8 +1314,11 @@ Q16 =' ',
 where --disposition not in (11, 21, 12, 22, 14, 24) or
 q1 is null
 go
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_Adult6MonthPCMHa')
+	drop procedure GetCGCAHPSdata2_sub_Adult6MonthPCMHa
+go
 --DRM 03/04/2015 Created.
-alter procedure dbo.GetCGCAHPSdata2_sub_Adult6MonthPCMHa
+create procedure dbo.GetCGCAHPSdata2_sub_Adult6MonthPCMHa
 as
 alter table #results add
  Q1   char(1), -- Q050344
@@ -1349,8 +1383,11 @@ alter table #results add
  Q52d char(1), -- Q050257d
  Q52e char(1)  -- Q050257e
 go
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_Adult6MonthPCMHb')
+	drop procedure GetCGCAHPSdata2_sub_Adult6MonthPCMHb
+go
 --DRM 03/04/2015 Created.
-alter procedure [dbo].[GetCGCAHPSdata2_sub_Adult6MonthPCMHb]
+create procedure [dbo].[GetCGCAHPSdata2_sub_Adult6MonthPCMHb]
  @survey_id INT,
  @begindate VARCHAR(10),
  @enddate   VARCHAR(10)
@@ -1593,7 +1630,10 @@ where --disposition not in (11, 21, 12, 22, 14, 24) or
 q1 is null
 end
 go
-alter procedure dbo.GetCGCAHPSdata2_sub_AdultVisitA
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_AdultVisitA')
+	drop procedure GetCGCAHPSdata2_sub_AdultVisitA
+go
+create procedure dbo.GetCGCAHPSdata2_sub_AdultVisitA
 as
 alter table #results add
 	Q1   char(1), -- Q039113
@@ -1643,10 +1683,13 @@ alter table #results add
 	Q37d char(1), -- Q039162d
 	Q37e char(1)  -- Q039162e
 go
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_AdultVisitB')
+	drop procedure GetCGCAHPSdata2_sub_AdultVisitB
+go
 --DRM 06/18/2013 Added check for empty results.  This was causing a problem for empty returns.
 --DRM 01/20/2014 Added left pad on Q25.
 --DRM 03/06/2014 Added phone and web surveys to check at end of proc.
-alter procedure [dbo].[GetCGCAHPSdata2_sub_AdultVisitB]
+create procedure [dbo].[GetCGCAHPSdata2_sub_AdultVisitB]
  @survey_id INT,
  @begindate VARCHAR(10),
  @enddate   VARCHAR(10)
@@ -1847,7 +1890,10 @@ update #results set
 where --disposition not in (11, 21, 12, 22, 14, 24) or
 q1 is null
 go
-alter procedure dbo.GetCGCAHPSdata2_sub_Child12MonthPCMHa
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_Child12MonthPCMHa')
+	drop procedure GetCGCAHPSdata2_sub_Child12MonthPCMHa
+go
+create procedure dbo.GetCGCAHPSdata2_sub_Child12MonthPCMHa
 as
 alter table #results add
 	Q1   char(1), -- Q046265
@@ -1926,10 +1972,13 @@ alter table #results add
 	Q66d char(1), -- Q048668d / 46330d
 	Q66e char(1)  -- Q048668e / 46330e
 go
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_Child12MonthPCMHb')
+	drop procedure GetCGCAHPSdata2_sub_Child12MonthPCMHb
+go
 --DRM 06/18/2013 Added check for empty results.  This was causing a problem for empty returns.
 --DRM 01/20/2014 Added left pad on Q35.
 --DRM 03/06/2014 Added phone and web surveys to check at end of proc.
-alter procedure dbo.GetCGCAHPSdata2_sub_Child12MonthPCMHb
+create procedure dbo.GetCGCAHPSdata2_sub_Child12MonthPCMHb
  @survey_id INT,
  @begindate VARCHAR(10),
  @enddate   VARCHAR(10)
@@ -2231,8 +2280,11 @@ update #results set
 where --disposition not in (11, 21, 12, 22, 14, 24) or
 q1 is null
 go
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_Child6Montha')
+	drop procedure GetCGCAHPSdata2_sub_Child6Montha
+go
 --DRM 03/04/2015 Created.
-alter procedure dbo.GetCGCAHPSdata2_sub_Child6Montha
+create procedure dbo.GetCGCAHPSdata2_sub_Child6Montha
 as
 alter table #results add
  Q1   char(1), -- Q050483
@@ -2300,8 +2352,11 @@ alter table #results add
  Q55d char(1), -- Q050537d
  Q55e char(1) -- Q050537e
 go
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_Child6Monthb')
+	drop procedure GetCGCAHPSdata2_sub_Child6Monthb
+go
 --DRM 03/04/2015 Created.
-alter procedure dbo.GetCGCAHPSdata2_sub_Child6Monthb
+create procedure dbo.GetCGCAHPSdata2_sub_Child6Monthb
  @survey_id INT,
  @begindate VARCHAR(10),
  @enddate   VARCHAR(10)
@@ -2541,8 +2596,11 @@ update #results set
 where --disposition not in (11, 21, 12, 22, 14, 24) or
 q1 is null
 go
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_Child6MonthPCMHa')
+	drop procedure GetCGCAHPSdata2_sub_Child6MonthPCMHa
+go
 --DRM 03/04/2015 Created.
-alter procedure dbo.GetCGCAHPSdata2_sub_Child6MonthPCMHa
+create procedure dbo.GetCGCAHPSdata2_sub_Child6MonthPCMHa
 as
 alter table #results add
  Q1   char(1), -- Q050483
@@ -2621,8 +2679,11 @@ alter table #results add
  Q66d char(1), -- Q050537d
  Q66e char(1)  -- Q050537e
 go
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_Child6MonthPCMHb')
+	drop procedure GetCGCAHPSdata2_sub_Child6MonthPCMHb
+go
 --DRM 03/04/2015 Created.
-alter procedure dbo.GetCGCAHPSdata2_sub_Child6MonthPCMHb
+create procedure dbo.GetCGCAHPSdata2_sub_Child6MonthPCMHb
  @survey_id INT,
  @begindate VARCHAR(10),
  @enddate   VARCHAR(10)
@@ -3404,6 +3465,371 @@ update #results set
 	Q39c = ' ',
 	Q39d = ' ',
 	Q39e = ' '
+where --disposition not in (11, 21, 12, 22, 14, 24) or
+q1 is null
+go
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_Child12MonthA')
+	drop procedure GetCGCAHPSdata2_sub_Child12MonthA
+go
+create procedure dbo.GetCGCAHPSdata2_sub_Child12MonthA
+as
+alter table #results add
+	Q1   char(1), -- Q046265
+	Q2   char(1), -- Q046266
+	Q3   char(1), -- Q046267
+	Q4   char(1), -- Q046268
+	Q5   char(1), -- Q046269
+	Q6   char(1), -- Q046270
+	Q7   char(1), -- Q046271
+	Q8   char(1), -- Q046272
+	Q9   char(1), -- Q046273
+	Q10  char(1), -- Q046274
+	Q11  char(1), -- Q046275
+	Q12  char(1), -- Q046276
+	Q13  char(1), -- Q046277
+
+	Q15  char(1), -- Q046279
+	Q16  char(1), -- Q046280
+
+	Q20  char(1), -- Q046284
+	Q21  char(1), -- Q046285
+	Q22  char(1), -- Q046286
+	Q23  char(1), -- Q046287
+
+	Q25  char(1), -- Q046289
+	Q26  char(1), -- Q046290
+	Q27  char(1), -- Q046291
+	Q28  char(1), -- Q046292
+	Q29  char(1), -- Q046293
+	Q30  char(1), -- Q046294
+	Q31  char(1), -- Q046295
+	Q32  char(1), -- Q046296
+	Q33  char(1), -- Q046297
+	Q34  char(1), -- Q046298
+	Q35  char(2), -- Q046299
+	Q36  char(1), -- Q046300
+	Q37  char(1), -- Q046301
+	Q38  char(1), -- Q046302
+	Q39  char(1), -- Q046303
+	Q40  char(1), -- Q046304
+	Q41  char(1), -- Q046305
+	Q42  char(1), -- Q046306
+	Q43  char(1), -- Q046307
+	Q44  char(1), -- Q046308
+	Q45  char(1), -- Q046309
+	Q46  char(1), -- Q046310
+	Q47  char(1), -- Q046311
+	Q48  char(1), -- Q046312
+
+	Q53  char(1), -- Q046317
+	Q54  char(1), -- Q046318
+	Q55  char(1), -- Q046319
+	Q56  char(1), -- Q046320
+	Q57  char(2), -- Q046321
+	Q58  char(1), -- Q046322
+	Q59  char(1), -- Q046323
+	Q60a char(1), -- Q046324a
+	Q60b char(1), -- Q046324b
+	Q60c char(1), -- Q046324c
+	Q60d char(1), -- Q046324d
+	Q60e char(1), -- Q046324e
+	Q60f char(1), -- Q046324f
+	Q61  char(1), -- Q048856 / 46325   <-- some surveys use 488856, 48666, 48667 and 48668. Others use 46325, 46328, 46329 and 46330.
+	Q62  char(1), -- Q046326
+	Q63  char(1), -- Q046327
+	Q64  char(1), -- Q048666 / 46328
+	Q65  char(1), -- Q048667 / 46329
+	Q66a char(1), -- Q048668a / 46330a
+	Q66b char(1), -- Q048668b / 46330b
+	Q66c char(1), -- Q048668c / 46330c
+	Q66d char(1), -- Q048668d / 46330d
+	Q66e char(1)  -- Q048668e / 46330e
+go
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_Child12MonthB')
+	drop procedure GetCGCAHPSdata2_sub_Child12MonthB
+go
+create procedure dbo.GetCGCAHPSdata2_sub_Child12MonthB
+ @survey_id INT,
+ @begindate VARCHAR(10),
+ @enddate   VARCHAR(10)
+as
+update #results set surveytype=17
+
+-- Load question responses into #results, mapping NULL & -9 to 9 and -8 to 8
+-- (unless the #results field is char(2), then map them to 99 and 88, respectively)
+-- if any of the responses had been altered by skip enforcement, subtract 10000 from them.
+update r set
+ Q1   = case isnull(q046265,-9) when -9 then 'M' when -8 then 'H' else q046265%10000 end,
+ Q2   = case isnull(q046266,-9) when -9 then 'M' when -8 then 'H' else q046266%10000 end,
+ Q3   = case isnull(q046267,-9) when -9 then 'M' when -8 then 'H' else q046267%10000 end,
+ Q4   = case isnull(q046268,-9) when -9 then 'M' when -8 then 'H' else Q046268%10000 end,
+ Q5   = case isnull(q046269,-9) when -9 then 'M' when -8 then 'H' else q046269%10000 end,
+ Q6   = case isnull(q046270,-9) when -9 then 'M' when -8 then 'H' else q046270%10000 end,
+ Q7   = case isnull(q046271,-9) when -9 then 'M' when -8 then 'H' else q046271%10000 end,
+ Q8   = case isnull(q046272,-9) when -9 then 'M' when -8 then 'H' else q046272%10000 end,
+ Q9   = case isnull(q046273,-9) when -9 then 'M' when -8 then 'H' else q046273%10000 end,
+ Q10  = case isnull(q046274,-9) when -9 then 'M' when -8 then 'H' else q046274%10000 end,
+ Q11  = case isnull(q046275,-9) when -9 then 'M' when -8 then 'H' else q046275%10000 end,
+ Q12  = case isnull(q046276,-9) when -9 then 'M' when -8 then 'H' else q046276%10000 end,
+ Q13  = case isnull(q046277,-9) when -9 then 'M' when -8 then 'H' else q046277%10000 end,
+
+ Q15  = case isnull(q046279,-9) when -9 then 'M' when -8 then 'H' else q046279%10000 end,
+ Q16  = case isnull(q046280,-9) when -9 then 'M' when -8 then 'H' else q046280%10000 end,
+
+ Q20  = case isnull(q046284,-9) when -9 then 'M' when -8 then 'H' else q046284%10000 end,
+ Q21  = case isnull(q046285,-9) when -9 then 'M' when -8 then 'H' else q046285%10000 end,
+ Q22  = case isnull(q046286,-9) when -9 then 'M' when -8 then 'H' else q046286%10000 end,
+ Q23  = case isnull(q046287,-9) when -9 then 'M' when -8 then 'H' else q046287%10000 end,
+
+ Q25  = case isnull(q046289,-9) when -9 then 'M' when -8 then 'H' else q046289%10000 end,
+ Q26  = case isnull(q046290,-9) when -9 then 'M' when -8 then 'H' else q046290%10000 end,
+ Q27  = case isnull(q046291,-9) when -9 then 'M' when -8 then 'H' else q046291%10000 end,
+ Q28  = case isnull(q046292,-9) when -9 then 'M' when -8 then 'H' else q046292%10000 end,
+ Q29  = case isnull(q046293,-9) when -9 then 'M' when -8 then 'H' else q046293%10000 end,
+ Q30  = case isnull(q046294,-9) when -9 then 'M' when -8 then 'H' else q046294%10000 end,
+ Q31  = case isnull(q046295,-9) when -9 then 'M' when -8 then 'H' else q046295%10000 end,
+ Q32  = case isnull(q046296,-9) when -9 then 'M' when -8 then 'H' else q046296%10000 end,
+ Q33  = case isnull(q046297,-9) when -9 then 'M' when -8 then 'H' else q046297%10000 end,
+ Q34  = case isnull(q046298,-9) when -9 then 'M' when -8 then 'H' else q046298%10000 end,
+--DRM 01/20/2014 Added left pad on Q35.
+ Q35  = case isnull(q046299,-9) when -9 then 'M ' when -8 then 'H ' else right('00'+cast(q046299%10000 as varchar),2) end,
+-- Q35  = case isnull(q046299,-9) when -9 then 'M ' when -8 then 'H ' else Q046299%10000 end,
+
+ Q38  = case isnull(q046302,-9) when -9 then 'M' when -8 then 'H' else q046302%10000 end,
+ Q39  = case isnull(q046303,-9) when -9 then 'M' when -8 then 'H' else q046303%10000 end,
+ Q40  = case isnull(q046304,-9) when -9 then 'M' when -8 then 'H' else q046304%10000 end,
+ Q41  = case isnull(q046305,-9) when -9 then 'M' when -8 then 'H' else q046305%10000 end,
+ Q42  = case isnull(q046306,-9) when -9 then 'M' when -8 then 'H' else q046306%10000 end,
+ Q43  = case isnull(q046307,-9) when -9 then 'M' when -8 then 'H' else q046307%10000 end,
+ Q44  = case isnull(q046308,-9) when -9 then 'M' when -8 then 'H' else q046308%10000 end,
+ Q45  = case isnull(q046309,-9) when -9 then 'M' when -8 then 'H' else q046309%10000 end,
+ Q46  = case isnull(q046310,-9) when -9 then 'M' when -8 then 'H' else q046310%10000 end,
+ Q47  = case isnull(q046311,-9) when -9 then 'M' when -8 then 'H' else q046311%10000 end,
+ Q48  = case isnull(q046312,-9) when -9 then 'M' when -8 then 'H' else q046312%10000 end,
+ Q49  = case isnull(q046313,-9) when -9 then 'M' when -8 then 'H' else q046313%10000 end,
+
+ Q53  = case isnull(q046317,-9) when -9 then 'M' when -8 then 'H' else q046317%10000 end,
+ Q54  = case isnull(q046318,-9) when -9 then 'M' when -8 then 'H' else q046318%10000 end,
+ Q55  = case isnull(q046319,-9) when -9 then 'M' when -8 then 'H' else q046319%10000 end,
+ Q56  = case isnull(q046320,-9) when -9 then 'M' when -8 then 'H' else q046320%10000 end,
+ -- Q57 (46321) is "What is your child's age?" (1) less than 1 year old (2) ____ years old (write in)
+ -- the hand-entry is mapped to the HECGPedsAge metafield
+ -- case  Q045321  HECGPedsAge    Result               comment
+ -- a     -9       (numeric)      (HECGPedsAge value)  respondent didn't fill out either bubble, but they filled out the hand-entry
+ -- a     -9       (non-numeric)  99 (missing)
+ -- b     -8       (numeric)      88 (multi-mark)
+ -- b     -8       (non-numeric)  88 (multi-mark)
+ -- c     1        (numeric)      88 (multi-mark)      respondent marked the "less than 1" bubble and still filled out the hand-entry
+ -- c     1        (non-numeric)  0
+ -- d     2        (NULL)         99 (missing)         respondent marked the "___ years old" bubble, but didn't fill out the hand-entry
+ -- e     2        (non-numeric)  99 (missing)         respondent marked the "___ years old" bubble, but filled in the hand-entry with a non-number
+ -- f     2        (numeric)      (HECGPedsAge value)
+ Q57  = case
+     -- case a:
+     when isnull(q046321,-9) = -9 then case when isnumeric(bt.HECGPedsAge)=1 then floor(bt.HECGPedsAge) else 'M ' end
+     -- case b:
+     when isnull(q046321,-9) = -8 then 'H ' 
+     -- case c:
+     when q046321%10000 = 1 then case when isnumeric(bt.HECGPedsAge)=1 then 88 else 0 end
+     -- case d:
+     when bt.HECGPedsAge is null then 'M '
+     -- case e:
+     when isnumeric(bt.HECGPedsAge)=0 then 'M '
+     -- case f:
+     else floor(bt.HECGPedsAge)
+    end,
+ Q58  = case isnull(q046322,-9) when -9 then 'M' when -8 then 'H' else q046322%10000 end,
+ Q59  = case isnull(q046323,-9) when -9 then 'M' when -8 then 'H' else q046323%10000 end,
+ Q60a = case isnull(q046324a,-9) when -9 then 0 else 1 end,
+ Q60b = case isnull(q046324b,-9) when -9 then 0 else 1 end,
+ Q60c = case isnull(q046324c,-9) when -9 then 0 else 1 end,
+Q60d = case isnull(q046324d,-9) when -9 then 0 else 1 end,
+ Q60e = case isnull(q046324e,-9) when -9 then 0 else 1 end,
+ Q60f = case isnull(q046324f,-9) when -9 then 0 else 1 end,
+ Q62  = case isnull(q046326,-9) when -9 then 'M' when -8 then 'H' else q046326%10000 end,
+ Q63  = case isnull(q046327,-9) when -9 then 'M' when -8 then 'H' else q046327%10000 end
+from #results r
+ inner join #Big_Table bt on r.samplepop_id=bt.samplepop_id and r.sampleunit_id=bt.sampleunit_id
+ left outer join #Study_Results sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id
+ inner join #tmp_mncm_mailsteps tmm on tmm.samplepop_id = sr.samplepop_id and tmm.sampleunit_id = sr.sampleunit_id
+-- #tmp_mncm_mailsteps only has records that we're exporting, so this where clause is redundant:
+--   where tmm.bitmncm = 1
+--   and bt.datsampleencounterdate between @begindate and @enddate
+--   and bt.survey_id = @survey
+
+-- some surveys use cores 46325, 46328, 46329 and 46330 for Q61, Q64, Q65 and Q66.
+-- others use cores 48856, 48666, 48667 and 48668.
+-- check which cores currently appear in sel_qstns.
+-- according to client services "Looking at what is currently on the survey in Qualisys would be our best option.  The core numbers shouldn’t change."
+-- that said, if the survey was using different questions at the time of fielding or didn't ask one of these questions at all - this might crash.
+declare @SQL nvarchar(4000)
+if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (46325,46328,46329,46330))
+ set @SQL = N'
+ update r set
+  Q61  = case isnull(q046325,-9) when -9 then ''M'' when -8 then ''H'' else q046325%10000 end,
+  Q64  = case isnull(q046328,-9) when -9 then ''M'' when -8 then ''H'' else q046328%10000 end,
+  Q65  = case isnull(q046329,-9) when -9 then ''M'' when -8 then ''H'' else q046329%10000 end,
+  Q66a = case isnull(q046330a,-9) when -9 then 0 else 1 end,
+  Q66b = case isnull(q046330b,-9) when -9 then 0 else 1 end,
+  Q66c = case isnull(q046330c,-9) when -9 then 0 else 1 end,
+  Q66d = case isnull(q046330d,-9) when -9 then 0 else 1 end,
+  Q66e = case isnull(q046330e,-9) when -9 then 0 else 1 end'
+else
+ set @SQL = N'
+ update r set
+  Q61  = case isnull(q048856,-9) when -9 then ''M'' when -8 then ''H'' else q048856%10000 end,
+  Q64  = case isnull(q048666,-9) when -9 then ''M'' when -8 then ''H'' else q048666%10000 end,
+  Q65  = case isnull(q048667,-9) when -9 then ''M'' when -8 then ''H'' else q048667%10000 end,
+  Q66a = case isnull(q048668a,-9) when -9 then 0 else 1 end,
+  Q66b = case isnull(q048668b,-9) when -9 then 0 else 1 end,
+  Q66c = case isnull(q048668c,-9) when -9 then 0 else 1 end,
+  Q66d = case isnull(q048668d,-9) when -9 then 0 else 1 end,
+  Q66e = case isnull(q048668e,-9) when -9 then 0 else 1 end'
+
+set @SQL = @SQL + N'
+ from #results r
+  inner join #Big_Table bt on r.samplepop_id=bt.samplepop_id and r.sampleunit_id=bt.sampleunit_id
+  left outer join #Study_Results sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id
+  inner join #tmp_mncm_mailsteps tmm on tmm.samplepop_id = sr.samplepop_id and tmm.sampleunit_id = sr.sampleunit_id'
+-- #tmp_mncm_mailsteps only has records that we're exporting, so this where clause is redundant:
+--   where tmm.bitmncm = 1
+--   and bt.datsampleencounterdate between @begindate and @enddate
+--   and bt.survey_id = @survey
+
+EXEC sp_executesql @SQL, N'@begindate datetime, @enddate datetime, @survey_id int', @begindate, @enddate, @survey_id
+
+-- Child 12-month w/ PCMH:
+-- Q1 = core 46265
+-- If Q1 = 2 (“No”) Questions 2-54 should have case logic applied
+-- If Q4 = 1 ("none") Questions 5-54 should have case logic applied
+
+-- If they didn’t answer the question, look at how they answered the screener question (Q1).
+ -- If they answered Q1 “No”, invoking the skip, then mark the question appropriately skipped.
+ update #results set Q2   = 'S'  where Q2   = 'M'  and (Q1='2')
+ update #results set Q3   = 'S'  where Q3   = 'M'  and (Q1='2')
+ update #results set Q4   = 'S'  where Q4   = 'M'  and (Q1='2')
+ update #results set Q5   = 'S'  where Q5   = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q6   = 'S'  where Q6   = 'M'  and (Q1='2' or Q4='1' or Q5='1')
+ update #results set Q7   = 'S'  where Q7   = 'M'  and (Q1='2' or Q4='1' or Q6='1' or Q6='2')
+ update #results set Q8   = 'S'  where Q8   = 'M'  and (Q1='2' or Q4='1' or Q6='1' or Q6='2' or Q7='2')
+ update #results set Q9   = 'S'  where Q9   = 'M'  and (Q1='2' or Q4='1' or Q6='1' or Q6='2' or Q7='2')
+ update #results set Q10  = 'S'  where Q10  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q11  = 'S'  where Q11  = 'M'  and (Q1='2' or Q4='1' or Q10='2')
+ update #results set Q12  = 'S'  where Q12  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q13  = 'S'  where Q13  = 'M'  and (Q1='2' or Q4='1' or Q12='2')
+ 
+ update #results set Q15  = 'S'  where Q15  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q16  = 'S'  where Q16  = 'M'  and (Q1='2' or Q4='1' or Q15='2')
+
+ update #results set Q20  = 'S'  where Q20  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q21  = 'S'  where Q21  = 'M'  and (Q1='2' or Q4='1' or Q20='2')
+ update #results set Q22  = 'S'  where Q22  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q23  = 'S'  where Q23  = 'M'  and (Q1='2' or Q4='1' or Q22='2')
+
+ update #results set Q25  = 'S'  where Q25  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q26  = 'S'  where Q26  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q27  = 'S'  where Q27  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q28  = 'S'  where Q28  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q29  = 'S'  where Q29  = 'M'  and (Q1='2' or Q4='1' or Q28='2')
+ update #results set Q30  = 'S'  where Q30  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q31  = 'S'  where Q31  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q32  = 'S'  where Q32  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q33  = 'S'  where Q33  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q34  = 'S'  where Q34  = 'M'  and (Q1='2' or Q4='1' or Q33='2')
+ update #results set Q35  = 'S ' where Q35  = 'M ' and (Q1='2' or Q4='1')
+
+ update #results set Q38  = 'S'  where Q38  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q39  = 'S'  where Q39  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q40  = 'S'  where Q40  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q41  = 'S'  where Q41  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q42  = 'S'  where Q42  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q43  = 'S'  where Q43  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q44  = 'S'  where Q44  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q45  = 'S'  where Q45  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q46  = 'S'  where Q46  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q47  = 'S'  where Q47  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q48  = 'S'  where Q48  = 'M'  and (Q1='2' or Q4='1')
+
+ update #results set Q53  = 'S'  where Q53  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q54  = 'S'  where Q54  = 'M'  and (Q1='2' or Q4='1')
+
+-- If Q65 = 2 (“No”) Skip to end of the survey
+-- Questions 66a-e should have case logic applied
+
+-- If they didn’t answer the question (i.e. all 5 multi-mark responses are '0'), look at how they answered the screener question (Q65).
+ -- If they answered Q65 “No”, invoking the skip, then mark the question appropriately skipped.
+ update #results set Q66a='S',Q66b='S',Q66c='S',Q66d='S',Q66e='S' where Q65 = '2' and Q66a+Q66b+Q66c+Q66d+Q66e='00000'
+
+update #results set
+ Q1  =' ',
+ Q2  =' ',
+ Q3  =' ',
+ Q4  =' ',
+ Q5  =' ',
+ Q6  =' ',
+ Q7  =' ',
+ Q8  =' ',
+ Q9  =' ',
+ Q10 =' ',
+ Q11 =' ',
+ Q12 =' ',
+ Q13 =' ',
+
+ Q15 =' ',
+ Q16 =' ',
+
+ Q20 =' ',
+ Q21 =' ',
+ Q22 =' ',
+ Q23 =' ',
+
+ Q25 =' ',
+ Q26 =' ',
+ Q27 =' ',
+ Q28 =' ',
+ Q29 =' ',
+ Q30 =' ',
+ Q31 =' ',
+ Q32 =' ',
+ Q33 =' ',
+ Q34 =' ',
+ Q35 ='  ',
+
+ Q38 =' ',
+ Q39 =' ',
+ Q40 =' ',
+ Q41 =' ',
+ Q42 =' ',
+ Q43 =' ',
+ Q44 =' ',
+ Q45 =' ',
+ Q46 =' ',
+ Q47 =' ',
+ Q48 =' ',
+
+ Q53 =' ',
+ Q54 =' ',
+ Q55 =' ',
+ Q56 =' ',
+ Q57 ='  ',
+ Q58 =' ',
+ Q59 =' ',
+ Q60a=' ',
+ Q60b=' ',
+ Q60c=' ',
+ Q60d=' ',
+ Q60e=' ',
+ Q60f=' ',
+ Q61 =' ',
+ Q62 =' ',
+ Q63 =' ',
+ Q64 =' ',
+ Q65 =' ',
+ Q66a=' ',
+ Q66b=' ',
+ Q66c=' ',
+ Q66d=' ',
+ Q66e=' '
 where --disposition not in (11, 21, 12, 22, 14, 24) or
 q1 is null
 go
