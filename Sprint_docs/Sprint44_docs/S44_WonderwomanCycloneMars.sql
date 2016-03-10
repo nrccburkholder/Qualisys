@@ -1,12 +1,14 @@
 /*
 
-Sprint 42 SQLCMD Script for Wonderwoman/Cyclone/Mars
+Sprint 44 SQLCMD Script for Wonderwoman/Cyclone/Mars
 
-\Sprint_docs\Sprint42_docs\S42_WonderwomanCycloneMars.sql
+\Sprint_docs\Sprint44_docs\S44_WonderwomanCycloneMars.sql
 
 Chris Burkholder
 
 */
 
 
-:r "\ATLASRelease41&42\Sprint42_docs\S42_S39_R18_QLoader_LD_SaveSource.sql"
+:r "\ATLASRelease43&44\Sprint44_docs\S44_US14 Update Practice Site Submission File Proc - QP_Comments.sql"
+
+:r "\ATLASRelease43&44\Sprint44_docs\S45_US15 CG Update Patient Submission Procs.sql"
