@@ -20,8 +20,8 @@ begin
 		drop procedure dbo.TestReturns_assembleSTR
 end
 go
-alter procedure dbo.TestReturns
-@survey_id int=0, @numReturns int=0, @intSequence int=0, @testSkips bit=1, @testCompleteness bit=1
+alter procedure [dbo].[TestReturns]
+@survey_id int=0, @Sampleset_id int=0, @numReturns int=0, @intSequence int=0, @testSkips bit=1, @testCompleteness bit=1
 as
 
 if exists (select * from qp_prod..qualpro_params where strparam_nm = 'EnvName' and strParam_Value='PRODUCTION')
@@ -63,9 +63,11 @@ select sq.selqstns_id, sd.surveytype_id, 0 as subtype_id, sq.survey_id, sq.secti
 from qp_prod..sel_qstns sq
 	inner join qp_prod..sel_scls ss on sq.survey_id=ss.survey_id and sq.language=ss.language and sq.scaleid=ss.qpc_id
 	inner join qp_prod..survey_def sd on sq.survey_id=sd.survey_id
+	inner join qp_prod..SampleSet sp on sq.SURVEY_ID = sp.SURVEY_ID
 	left outer join qp_prod..sel_skip sk on sq.survey_id=sk.survey_id and sq.selqstns_id=sk.selqstns_id and sq.scaleid=sk.selscls_id and ss.item=sk.scaleitem
 where sq.language=1	
 and sq.survey_id=@survey_id
+and (@sampleset_id=0 or sp.SAMPLESET_ID = @Sampleset_id)
 order by sq.section_id, sq.subsection, sq.item, ss.item
 
 create table #Fake (dummy int, testCase varchar(100))
@@ -397,11 +399,13 @@ select @qfCount=count(*)
 from qp_prod..questionform qf
 inner join qp_prod..sentmailing sm on qf.sentmail_id=sm.sentmail_id
 inner join qp_prod..ScheduledMailing scm on sm.sentmail_id=scm.sentmail_id
+inner join qp_prod..Samplepop sp on scm.samplepop_id=sp.samplepop_id
 inner join qp_prod..mailingstep ms on scm.mailingstep_id=ms.mailingstep_id
 where qf.survey_id=@survey_id 
 and qf.datreturned is null
 and sm.datmailed is not null
 and qf.questionform_id in (select questionform_id from qp_scan.dbo.bubblepos)
+and (@sampleset_id=0 or sp.SAMPLESET_ID = @Sampleset_id)
 and (ms.intSequence=@intSequence or @intSequence=0)
 
 if @qfCount=0
@@ -507,11 +511,13 @@ select row_number() over(order by qf.questionform_id) as fake_id, getdate() as d
 from qp_prod..questionform qf
 inner join qp_prod..sentmailing sm on qf.sentmail_id=sm.sentmail_id
 inner join qp_prod..ScheduledMailing scm on sm.sentmail_id=scm.sentmail_id
+inner join qp_prod..Samplepop sp on scm.samplepop_id=sp.samplepop_id
 inner join qp_prod..mailingstep ms on scm.mailingstep_id=ms.mailingstep_id
 where qf.survey_id=@survey_id 
 and qf.datreturned is null
 and sm.datmailed is not null
 and qf.questionform_id in (select questionform_id from qp_scan.dbo.bubblepos)
+and (@sampleset_id=0 or sp.SAMPLESET_ID = @Sampleset_id)
 and (ms.intSequence=@intSequence or @intSequence=0)
 
 set rowcount 0 
