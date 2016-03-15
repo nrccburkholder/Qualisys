@@ -1477,7 +1477,7 @@ INSERT INTO drm_tracktimes
     INTO   #cgcahps_negrespscreenqstn 
     FROM   cmnt_QuestionResult_work q, 
            Survey_def sd 
-    WHERE  qstncore in (39113,44121,46265,50176,50483)
+    WHERE  qstncore in (39113,44121,46265,50344,50483)
            AND val = 2
            AND sd.Survey_id = q.Survey_id 
            AND sd.Surveytype_id = 4 
@@ -2207,7 +2207,7 @@ and (hh.numAnswersAfterQ1 > 0 or hh.Q1=1)
     INTO   #cgcahps_negrespscreenqstn 
     FROM   cmnt_QuestionResult_work q, 
            Survey_def sd 
-    WHERE  qstncore in (39113,44121,46265,50176,50483)
+    WHERE  qstncore in (39113,44121,46265,50344,50483)
            AND val = 2 
            AND sd.Survey_id = q.Survey_id 
            AND sd.Surveytype_id = 4 
