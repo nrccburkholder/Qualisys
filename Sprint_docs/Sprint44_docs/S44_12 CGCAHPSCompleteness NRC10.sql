@@ -277,7 +277,9 @@ INSERT INTO [dbo].[SurveyTypeQuestionMappings]([SurveyType_id],[QstnCore],[intOr
 INSERT INTO [dbo].[SurveyTypeQuestionMappings]([SurveyType_id],[QstnCore],[intOrder],[bitFirstOnForm],[bitExpanded],[datEncounterStart_dt],[datEncounterEnd_dt], [SubType_Id],[IsATA],[IsMeasure])VALUES(@SurveyType_ID,44229,31,1,0,'1900-01-01 00:00:00.000','2999-12-31 00:00:00.000',@Subtype_id,1,0)
 INSERT INTO [dbo].[SurveyTypeQuestionMappings]([SurveyType_id],[QstnCore],[intOrder],[bitFirstOnForm],[bitExpanded],[datEncounterStart_dt],[datEncounterEnd_dt], [SubType_Id],[IsATA],[IsMeasure])VALUES(@SurveyType_ID,44230,32,1,0,'1900-01-01 00:00:00.000','2999-12-31 00:00:00.000',@Subtype_id,1,0)
 INSERT INTO [dbo].[SurveyTypeQuestionMappings]([SurveyType_id],[QstnCore],[intOrder],[bitFirstOnForm],[bitExpanded],[datEncounterStart_dt],[datEncounterEnd_dt], [SubType_Id],[IsATA],[IsMeasure])VALUES(@SurveyType_ID,44234,33,1,0,'1900-01-01 00:00:00.000','2999-12-31 00:00:00.000',@Subtype_id,1,0)
+INSERT INTO [dbo].[SurveyTypeQuestionMappings]([SurveyType_id],[QstnCore],[intOrder],[bitFirstOnForm],[bitExpanded],[datEncounterStart_dt],[datEncounterEnd_dt], [SubType_Id],[IsATA],[IsMeasure])VALUES(@SurveyType_ID,48664,33,1,0,'1900-01-01 00:00:00.000','2999-12-31 00:00:00.000',@Subtype_id,1,0)
 INSERT INTO [dbo].[SurveyTypeQuestionMappings]([SurveyType_id],[QstnCore],[intOrder],[bitFirstOnForm],[bitExpanded],[datEncounterStart_dt],[datEncounterEnd_dt], [SubType_Id],[IsATA],[IsMeasure])VALUES(@SurveyType_ID,44235,34,1,0,'1900-01-01 00:00:00.000','2999-12-31 00:00:00.000',@Subtype_id,0,0)
+INSERT INTO [dbo].[SurveyTypeQuestionMappings]([SurveyType_id],[QstnCore],[intOrder],[bitFirstOnForm],[bitExpanded],[datEncounterStart_dt],[datEncounterEnd_dt], [SubType_Id],[IsATA],[IsMeasure])VALUES(@SurveyType_ID,48665,34,1,0,'1900-01-01 00:00:00.000','2999-12-31 00:00:00.000',@Subtype_id,0,0)
 
 
 
@@ -452,7 +454,9 @@ INSERT INTO [dbo].[SurveyTypeQuestionMappings]([SurveyType_id],[QstnCore],[intOr
 INSERT INTO [dbo].[SurveyTypeQuestionMappings]([SurveyType_id],[QstnCore],[intOrder],[bitFirstOnForm],[bitExpanded],[datEncounterStart_dt],[datEncounterEnd_dt], [SubType_Id],[IsATA],[IsMeasure])VALUES(@SurveyType_ID,44229,49,1,0,'1900-01-01 00:00:00.000','2999-12-31 00:00:00.000',@Subtype_id,1,0)
 INSERT INTO [dbo].[SurveyTypeQuestionMappings]([SurveyType_id],[QstnCore],[intOrder],[bitFirstOnForm],[bitExpanded],[datEncounterStart_dt],[datEncounterEnd_dt], [SubType_Id],[IsATA],[IsMeasure])VALUES(@SurveyType_ID,44230,50,1,0,'1900-01-01 00:00:00.000','2999-12-31 00:00:00.000',@Subtype_id,1,0)
 INSERT INTO [dbo].[SurveyTypeQuestionMappings]([SurveyType_id],[QstnCore],[intOrder],[bitFirstOnForm],[bitExpanded],[datEncounterStart_dt],[datEncounterEnd_dt], [SubType_Id],[IsATA],[IsMeasure])VALUES(@SurveyType_ID,44234,51,1,0,'1900-01-01 00:00:00.000','2999-12-31 00:00:00.000',@Subtype_id,1,0)
+INSERT INTO [dbo].[SurveyTypeQuestionMappings]([SurveyType_id],[QstnCore],[intOrder],[bitFirstOnForm],[bitExpanded],[datEncounterStart_dt],[datEncounterEnd_dt], [SubType_Id],[IsATA],[IsMeasure])VALUES(@SurveyType_ID,48664,51,1,0,'1900-01-01 00:00:00.000','2999-12-31 00:00:00.000',@Subtype_id,1,0)
 INSERT INTO [dbo].[SurveyTypeQuestionMappings]([SurveyType_id],[QstnCore],[intOrder],[bitFirstOnForm],[bitExpanded],[datEncounterStart_dt],[datEncounterEnd_dt], [SubType_Id],[IsATA],[IsMeasure])VALUES(@SurveyType_ID,44235,52,1,0,'1900-01-01 00:00:00.000','2999-12-31 00:00:00.000',@Subtype_id,0,0)
+INSERT INTO [dbo].[SurveyTypeQuestionMappings]([SurveyType_id],[QstnCore],[intOrder],[bitFirstOnForm],[bitExpanded],[datEncounterStart_dt],[datEncounterEnd_dt], [SubType_Id],[IsATA],[IsMeasure])VALUES(@SurveyType_ID,48665,52,1,0,'1900-01-01 00:00:00.000','2999-12-31 00:00:00.000',@Subtype_id,0,0)
 
 
 
