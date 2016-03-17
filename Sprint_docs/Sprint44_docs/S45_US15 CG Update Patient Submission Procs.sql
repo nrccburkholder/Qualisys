@@ -588,7 +588,6 @@ drop table #tmp_mncm_mailsteps
 drop table #Big_Table
 drop table #Study_Results
 drop table #mncm_units
-drop table #tmp_samplesets
 go
 if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_Adult12MonthA')
 	drop procedure GetCGCAHPSdata2_sub_Adult12MonthA
