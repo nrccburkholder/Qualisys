@@ -118,7 +118,7 @@ inner join qualisys.qp_prod.dbo.sentmailing sm
 
 --select @FieldPeriodStart, @FieldPeriodEnd
 
-select
+select distinct
 	right(space(10) + isnull(ps.AssignedID,cast(ps.PracticeSite_id as nvarchar(20))), 10)+		--Practice Site ID
 	right(space(10) + isnull(sg.AssignedID,cast(sg.SiteGroup_id as nvarchar(20))), 10)+			--GroupID
 	right(space(50) + rtrim(ltrim(isnull(ps.practicename,''))), 50)+					--PracticeName
@@ -141,5 +141,6 @@ select
 from
 	Qualisys.QP_Prod.dbo.PracticeSite ps
 	inner join Qualisys.QP_Prod.dbo.SiteGroup sg on sg.SiteGroup_ID = ps.SiteGroup_ID
-	inner join #tmp_data t on ps.SampleUnit_id = t.sampleunit_id
+	inner join Qualisys.QP_Prod.dbo.SampleUnit su on su.SUFacility_id = ps.PracticeSite_id
+	inner join #tmp_data t on su.SampleUnit_id = t.sampleunit_id
 go
