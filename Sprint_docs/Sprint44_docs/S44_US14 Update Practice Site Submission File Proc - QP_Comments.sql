@@ -119,8 +119,8 @@ inner join qualisys.qp_prod.dbo.sentmailing sm
 --select @FieldPeriodStart, @FieldPeriodEnd
 
 select
-	right(space(10) + isnull(ps.AssignedID,0), 10)+										--Practice Site ID
-	right(space(10) + isnull(sg.AssignedID,0), 10)+										--GroupID
+	right(space(10) + isnull(ps.AssignedID,cast(ps.PracticeSite_id as nvarchar(20))), 10)+		--Practice Site ID
+	right(space(10) + isnull(sg.AssignedID,cast(sg.SiteGroup_id as nvarchar(20))), 10)+			--GroupID
 	right(space(50) + rtrim(ltrim(isnull(ps.practicename,''))), 50)+					--PracticeName
 	right(space(30) + rtrim(ltrim(isnull(ps.addr1,''))), 30)+							--Street Address 1
 	right(space(30) + rtrim(ltrim(isnull(ps.addr2,''))), 30)+							--Street Address 2
