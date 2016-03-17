@@ -67,7 +67,7 @@ inner join qualisys.qp_prod.dbo.selectedsample ss
  and sp.sampleset_id = ss.sampleset_id
 inner join #tmp_sampleunit t2
  on ss.sampleunit_id = t2.sampleunit_id
-where dl.disposition_id in (19,20)
+where dl.disposition_id in (13) -- CJB changed as of 3/17/2016 old was (19,20)
 and dl.bitevaluated = 1
 group by t2.sampleunit_id
 
@@ -83,7 +83,7 @@ inner join qualisys.qp_prod.dbo.selectedsample ss
  and sp.sampleset_id = ss.sampleset_id
 inner join #tmp_sampleunit t2
  on ss.sampleunit_id = t2.sampleunit_id
-where dl.disposition_id in (3,23)
+where dl.disposition_id in (2,23) -- CJB changed as of 3/17/2016 old was (3,23)
 and dl.bitevaluated = 1
 group by t2.sampleunit_id
 
