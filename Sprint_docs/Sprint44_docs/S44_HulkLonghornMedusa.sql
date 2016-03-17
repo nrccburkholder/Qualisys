@@ -1,14 +1,14 @@
 /*
 
-Sprint 44 SQLCMD Script for Ratchet/Irish/Minerva
+Sprint 44 SQLCMD Script for Hulk/Longhorn/Medusa
 
-\Sprint_docs\Sprint44_docs\S44_RatchetIrishMinerva.sql
+\Sprint_docs\Sprint44_docs\S44_HulkLonghornMedusa.sql
 
 Chris Burkholder
 
 */
 
-:r "\ATLASRelease43&44\Sprint44_docs\S44_11.1_CGCAHPSDispositions MINERVA.sql"
+:r "\ATLASRelease43&44\Sprint44_docs\S44_11.1_CGCAHPSDispositions MEDUSA.sql"
 
 :r "\ATLASRelease43&44\Sprint44_docs\S44_US14 Update Practice Site Submission File Proc - QP_Comments.sql"
 

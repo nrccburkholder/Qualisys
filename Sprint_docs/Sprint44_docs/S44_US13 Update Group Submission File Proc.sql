@@ -33,5 +33,5 @@ select
  right(space(10) + rtrim(ltrim(isnull(groupcontactphone,''))), 10)+  --Group Contact Phone  
  right(space(50) + rtrim(ltrim(isnull(groupcontactemail,''))), 50)  --Group Contact Email  
 from Qualisys.QP_Prod.dbo.SiteGroup
-where AssignedID = cast(@groupid as nvarchar(20))
+where SiteGroup_id = cast(@groupid as nvarchar(20))
 go
