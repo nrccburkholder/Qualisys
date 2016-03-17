@@ -8,6 +8,6 @@ ROLLBACK
 
 */
 
-:r "\ATLASRelease43&44\Sprint44_docs\S44_11.2 CGCAHPSDispositions CATDB2 ROLLBACK .sql
+:r "\ATLASRelease43&44\Sprint44_docs\S44_11.2 CGCAHPSDispositions CATDB2 ROLLBACK .sql"
 
 

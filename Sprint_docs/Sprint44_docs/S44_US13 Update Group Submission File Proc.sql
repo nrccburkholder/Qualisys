@@ -21,7 +21,7 @@ CREATE proc [dbo].[GetCGCahpsGroupInfo]
 @groupid int  
 as  
 select  
- right(space(10) + isnull(AssignedID,0), 10)+   --GroupID  
+ right(space(10) + isnull(AssignedID,cast(SiteGroup_id as nvarchar(20))), 10)+   --GroupID  
  right(space(50) + rtrim(ltrim(isnull(groupname,''))), 50)+    --GroupName  
  right(space(30) + rtrim(ltrim(isnull(addr1,''))), 30)+     --Street Address 1  
  right(space(30) + rtrim(ltrim(isnull(addr2,''))), 30)+     --Street Address 2  
@@ -33,5 +33,5 @@ select
  right(space(10) + rtrim(ltrim(isnull(groupcontactphone,''))), 10)+  --Group Contact Phone  
  right(space(50) + rtrim(ltrim(isnull(groupcontactemail,''))), 50)  --Group Contact Email  
 from Qualisys.QP_Prod.dbo.SiteGroup
-where AssignedID = cast(@groupid as nvarchar(20))
+where isnull(AssignedID,cast(SiteGroup_id as nvarchar(20))) = cast(@groupid as nvarchar(20))
 go

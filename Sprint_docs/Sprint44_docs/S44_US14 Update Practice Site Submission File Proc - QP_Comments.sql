@@ -67,7 +67,7 @@ inner join qualisys.qp_prod.dbo.selectedsample ss
  and sp.sampleset_id = ss.sampleset_id
 inner join #tmp_sampleunit t2
  on ss.sampleunit_id = t2.sampleunit_id
-where dl.disposition_id in (19,20)
+where dl.disposition_id in (13) -- CJB changed as of 3/17/2016 old was (19,20)
 and dl.bitevaluated = 1
 group by t2.sampleunit_id
 
@@ -83,7 +83,7 @@ inner join qualisys.qp_prod.dbo.selectedsample ss
  and sp.sampleset_id = ss.sampleset_id
 inner join #tmp_sampleunit t2
  on ss.sampleunit_id = t2.sampleunit_id
-where dl.disposition_id in (3,23)
+where dl.disposition_id in (2,23) -- CJB changed as of 3/17/2016 old was (3,23)
 and dl.bitevaluated = 1
 group by t2.sampleunit_id
 
@@ -119,8 +119,8 @@ inner join qualisys.qp_prod.dbo.sentmailing sm
 --select @FieldPeriodStart, @FieldPeriodEnd
 
 select
-	right(space(10) + isnull(ps.AssignedID,0), 10)+										--Practice Site ID
-	right(space(10) + isnull(sg.AssignedID,0), 10)+										--GroupID
+	right(space(10) + isnull(ps.AssignedID,cast(ps.PracticeSite_id as nvarchar(20))), 10)+		--Practice Site ID
+	right(space(10) + isnull(sg.AssignedID,cast(sg.SiteGroup_id as nvarchar(20))), 10)+			--GroupID
 	right(space(50) + rtrim(ltrim(isnull(ps.practicename,''))), 50)+					--PracticeName
 	right(space(30) + rtrim(ltrim(isnull(ps.addr1,''))), 30)+							--Street Address 1
 	right(space(30) + rtrim(ltrim(isnull(ps.addr2,''))), 30)+							--Street Address 2
