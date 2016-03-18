@@ -3538,8 +3538,6 @@ alter table #results add
 	Q33  char(1), -- Q046297
 	Q34  char(1), -- Q046298
 	Q35  char(2), -- Q046299
-	Q36  char(1), -- Q046300
-	Q37  char(1), -- Q046301
 	Q38  char(1), -- Q046302
 	Q39  char(1), -- Q046303
 	Q40  char(1), -- Q046304
