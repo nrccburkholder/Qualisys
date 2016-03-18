@@ -365,7 +365,7 @@ SELECT DISTINCT
         ELSE Replace(CONVERT(VARCHAR(10), datsampleencounterdate, 101), '/', '') 
     END AS DOV, 
     RIGHT('  ' + Rtrim(Isnull(mncmdisposition, '9')), 1) AS Disposition, 
-	CASE WHEN (mncmdisposition IN ('1','2','3','4') then case tmm.ReceiptType_id 
+	CASE WHEN mncmdisposition IN ('1','2','3','4') then case tmm.ReceiptType_id 
 	                                                          when 17 then '1' -- mail
 															  when 12 then '2' -- phone
 															  when 13 then '5' -- web 
@@ -373,8 +373,8 @@ SELECT DISTINCT
 	     ElSE '7' -- not applicable 
 	end as CompletionMode, 
     CASE 
-        WHEN datreturned IS NULL THEN 'M       '
-		when mncmdisposition in ('1','2','3','4') then Replace(CONVERT(VARCHAR(10), datreturned, 101), '/', '') 
+        WHEN sr.datreturned IS NULL THEN 'M       '
+		when mncmdisposition in ('1','2','3','4') then Replace(CONVERT(VARCHAR(10), sr.datreturned, 101), '/', '') 
 		else 'M       '
     END AS CompletionDate, 
     CASE WHEN mncmdisposition in ('1','2') THEN RIGHT('0' + Cast(tmm.intsequence AS VARCHAR(1)), 2) ELSE 'NC' END AS CompletionRound, 
