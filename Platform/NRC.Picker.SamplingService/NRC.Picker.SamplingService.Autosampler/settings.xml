@@ -2,7 +2,7 @@
 <settings>
 	<autosampler-threads>5</autosampler-threads>
 	<sample-count-threshold>0.8</sample-count-threshold>
-	<mailer-url>http://lnk0pdiapp01:3417/Service</mailer-url>
+	<mailer-url>#{mailer-url}</mailer-url>
 	<enable-scheduling>True</enable-scheduling>
-  <run-interval>10000</run-interval>
+  <run-interval>#{run-interval}</run-interval>
 </settings>
