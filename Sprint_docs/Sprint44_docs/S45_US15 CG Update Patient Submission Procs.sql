@@ -39,7 +39,8 @@ go
 create PROCEDURE dbo.GetCGCAHPSdata2
  @survey_id INT,
  @begindate VARCHAR(10),
- @enddate   VARCHAR(10)
+ @enddate   VARCHAR(10),
+ @ReturnGrid bit = 0
 AS
 /**
 12/14/2010 dmp
@@ -163,15 +164,16 @@ PRINT 'starting meth step check'
 print 'getting mail step for returns'
 --Get the mail step sequence (1 or 2) for the returns. Have to do it here so we only
 --have mailing step data for the returns to avoid duplicate records
-create table #tmp_mncm_mailsteps (survey_id int, samplepop_id int, mailstep int, intsequence int, bitMNCM bit, sampleunit_id int)
+create table #tmp_mncm_mailsteps (survey_id int, samplepop_id int, mailstep int, intsequence int, bitMNCM bit, sampleunit_id int, datReturned datetime, ReceiptType_id int)
 create table #mncm_units (sampleunit_id int, bitMNCM bit, survey_id int, surveytype_id int, subtype_id int)
 
 INSERT INTO #tmp_mncm_mailsteps
-select ms.survey_id, sp.samplepop_id, ms.mailingstep_id, ms.intsequence, su.bitMNCM, su.sampleunit_id
+select ms.survey_id, sp.samplepop_id, ms.mailingstep_id, ms.intsequence, su.bitMNCM, su.sampleunit_id, qf.datReturned, qf.ReceiptType_id
 from qualisys.qp_prod.dbo.sampleunit su
 INNER JOIN qualisys.qp_prod.dbo.selectedsample sel ON su.sampleunit_id = sel.sampleunit_id
 inner join qualisys.qp_prod.dbo.samplepop sp on sel.sampleset_id=sp.sampleset_id and sel.pop_id=sp.pop_id
 INNER JOIN qualisys.qp_prod.dbo.scheduledmailing scm ON sp.samplepop_id=scm.samplepop_id
+INNER JOIN qualisys.qp_prod.dbo.questionform qf ON scm.sentmail_id=qf.sentmail_id
 inner join qualisys.qp_prod.dbo.mailingstep ms on scm.mailingstep_id=ms.mailingstep_id
 where sel.sampleEncounterDate BETWEEN @begindate and @enddate
 and ms.survey_id = @survey_id -- 16384
@@ -184,6 +186,8 @@ inner join qualisys.qp_prod.dbo.surveysubtype sst on ms.survey_id=sst.survey_id
 inner join qualisys.qp_prod.dbo.subtype st on sst.subtype_id=st.subtype_id
 where st.subtypecategory_id=2 -- 2=Questionnaire Type
 
+-- now that we've used #tmp_mncm_mailsteps to populate #mncm_units, we can remove any mailsteps that weren't returned.
+delete from #tmp_mncm_mailsteps where datReturned is null
 
 -- DRM 03/03/2014   Remove check for number of steps as per INC0031083
 -- Make sure the methodology contains only two steps
@@ -297,6 +301,7 @@ create table #results (
  DrSpecialty char(3), -- cg_physspec
  DOV char(8), -- datsampleencounterdate
  Disposition char(1), -- mncmdisposition
+ CompletionMode char(1), -- ReceiptType_id
  CompletionDate char(8), -- datreturned
  CompletionRound char(2), -- tmm.intsequence
  SurveyLanguage char(1), -- bt.langid
@@ -338,7 +343,7 @@ end
 
 insert into #results (
  SamplePop_id, SampleUnit_id, SurveyType, RecordID, PracticeSiteID, GroupID, DocID, DrFirst, DrLast, DrSpecialty,
- DOV, Disposition, CompletionDate, CompletionRound, SurveyLanguage, BirthYear, Gender, Zip
+ DOV, Disposition, CompletionMode, CompletionDate, CompletionRound, SurveyLanguage, BirthYear, Gender, Zip
  )
 SELECT DISTINCT 
 	bt.samplepop_id, 
@@ -360,6 +365,13 @@ SELECT DISTINCT
         ELSE Replace(CONVERT(VARCHAR(10), datsampleencounterdate, 101), '/', '') 
     END AS DOV, 
     RIGHT('  ' + Rtrim(Isnull(mncmdisposition, '9')), 1) AS Disposition, 
+	CASE WHEN (mncmdisposition IN ('1','2','3','4') then case tmm.ReceiptType_id 
+	                                                          when 17 then '1' -- mail
+															  when 12 then '2' -- phone
+															  when 13 then '5' -- web 
+													      end 
+	     ElSE '7' -- not applicable 
+	end as CompletionMode, 
     CASE 
         WHEN datreturned IS NULL THEN 'M       '
 		when mncmdisposition in ('1','2','3','4') then Replace(CONVERT(VARCHAR(10), datreturned, 101), '/', '') 
@@ -594,8 +606,13 @@ exec (@SQL)
 
 if @@error=0
 begin
-	set @sql='select ' + @fieldlist + ' from #results'
-	exec (@SQL)
+	if @ReturnGrid=1
+		select * from #results
+	else
+	begin
+		set @sql='select ' + @fieldlist + ' from #results'
+		exec (@SQL)
+	end
 end
 /*
 select * from #results
