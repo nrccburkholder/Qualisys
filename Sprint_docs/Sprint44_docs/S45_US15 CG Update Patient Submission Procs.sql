@@ -26,6 +26,8 @@
 	CREATE procedure GetCGCAHPSdata2_sub_Adult6Month30B
 	CREATE procedure GetCGCAHPSdata2_sub_Child6Month30a
 	CREATE procedure GetCGCAHPSdata2_sub_Child6Month30b
+	CREATE procedure GetCGCAHPSdata2_sub_Child12MonthA
+	CREATE procedure GetCGCAHPSdata2_sub_Child12MonthB
 
 	Dave Gilsdorf
 */
@@ -488,7 +490,7 @@ if exists (select * from #surveyQ1 where field_nm='q046278')
   goto subdone
  end
 
- -- TSB 03/08/2016 - added Child 6 Month 3.0
+ -- TSB 03/08/2016 - added Child 12 Month 2.0
 if exists (select * from #surveyQ1 where field_nm='q046265')
 begin
   print 'Child12Month2.0'
@@ -2082,7 +2084,7 @@ update r set
  -- f     2        (numeric)      (HECGPedsAge value)
  Q57  = case
      -- case a:
-     when isnull(q046321,-9) = -9 then case when isnumeric(bt.HECGPedsAge)=1 then cast(floor(bt.HECGPedsAge) as varchar(2)) else 'M ' end
+     when isnull(q046321,-9) = -9 then case when isnumeric(bt.HECGPedsAge)=1 and bt.HECGPedsAge not like '%,%' and floor(bt.HECGPedsAge) between 0 and 99 then cast(floor(bt.HECGPedsAge) as varchar(2)) else 'M ' end
      -- case b:
      when isnull(q046321,-9) = -8 then 'H ' 
      -- case c:
@@ -2090,16 +2092,18 @@ update r set
      -- case d:
      when bt.HECGPedsAge is null then 'M '
      -- case e:
-     when isnumeric(bt.HECGPedsAge)=0 then 'M '
+     when isnumeric(bt.HECGPedsAge)=0 or bt.HECGPedsAge like '%,%' then 'M '
      -- case f:
-     else cast(floor(bt.HECGPedsAge) as varchar(2))
+     when floor(bt.HECGPedsAge) between 0 and 99 then cast(floor(bt.HECGPedsAge) as varchar(2))
+     else 'M '
+     --case f was: else cast(floor(bt.HECGPedsAge) as varchar(2))
     end,
  Q58  = case isnull(q046322,-9) when -9 then 'M' when -8 then 'H' else cast(Q046322%10000 as varchar) end,
  Q59  = case isnull(q046323,-9) when -9 then 'M' when -8 then 'H' else cast(Q046323%10000 as varchar) end,
  Q60a = case isnull(q046324a,-9) when -9 then 0 else 1 end,
  Q60b = case isnull(q046324b,-9) when -9 then 0 else 1 end,
  Q60c = case isnull(q046324c,-9) when -9 then 0 else 1 end,
-Q60d = case isnull(q046324d,-9) when -9 then 0 else 1 end,
+ Q60d = case isnull(q046324d,-9) when -9 then 0 else 1 end,
  Q60e = case isnull(q046324e,-9) when -9 then 0 else 1 end,
  Q60f = case isnull(q046324f,-9) when -9 then 0 else 1 end,
  Q62  = case isnull(q046326,-9) when -9 then 'M' when -8 then 'H' else cast(Q046326%10000 as varchar) end,
@@ -2447,17 +2451,19 @@ update r set
  -- f     2        (numeric)      (HECGPedsAge value)
  Q46  = case
      -- case a:
-     when isnull(q050528,-9) = -9 then case when isnumeric(bt.HECGPedsAge)=1 then cast(floor(bt.HECGPedsAge) as varchar(2)) else 'M ' end
+     when isnull(q046321,-9) = -9 then case when isnumeric(bt.HECGPedsAge)=1 and bt.HECGPedsAge not like '%,%' and floor(bt.HECGPedsAge) between 0 and 99 then cast(floor(bt.HECGPedsAge) as varchar(2)) else 'M ' end
      -- case b:
-     when isnull(q050528,-9) = -8 then 'H ' 
+     when isnull(q046321,-9) = -8 then 'H ' 
      -- case c:
-     when q050528%10000 = 1 then case when isnumeric(bt.HECGPedsAge)=1 then 'H ' else '0 ' end
+     when q046321%10000 = 1 then case when isnumeric(bt.HECGPedsAge)=1 then 'H ' else '0 ' end
      -- case d:
      when bt.HECGPedsAge is null then 'M '
      -- case e:
-     when isnumeric(bt.HECGPedsAge)=0 then 'M '
+     when isnumeric(bt.HECGPedsAge)=0 or bt.HECGPedsAge like '%,%' then 'M '
      -- case f:
-     else cast(floor(bt.HECGPedsAge) as varchar(2))
+     when floor(bt.HECGPedsAge) between 0 and 99 then cast(floor(bt.HECGPedsAge) as varchar(2))
+     else 'M '
+     --case f was: else cast(floor(bt.HECGPedsAge) as varchar(2))
     end,
  Q47  = case isnull(Q050529,-9) when -9 then 'M' when -8 then 'H' else cast(Q050529%10000 as varchar) end,
  Q48  = case isnull(Q050530,-9) when -9 then 'M' when -8 then 'H' else cast(Q050530%10000 as varchar) end,
@@ -2785,17 +2791,19 @@ update r set
  -- f     2        (numeric)      (HECGPedsAge value)
  Q57  = case
      -- case a:
-     when isnull(Q050528,-9) = -9 then case when isnumeric(bt.HECGPedsAge)=1 then cast(floor(bt.HECGPedsAge) as varchar(2)) else 'M ' end
+     when isnull(q046321,-9) = -9 then case when isnumeric(bt.HECGPedsAge)=1 and bt.HECGPedsAge not like '%,%' and floor(bt.HECGPedsAge) between 0 and 99 then cast(floor(bt.HECGPedsAge) as varchar(2)) else 'M ' end
      -- case b:
-     when isnull(Q050528,-9) = -8 then 'H '
+     when isnull(q046321,-9) = -8 then 'H ' 
      -- case c:
-     when Q050528%10000 = 1 then case when isnumeric(bt.HECGPedsAge)=1 then 'H ' else '0 ' end
+     when q046321%10000 = 1 then case when isnumeric(bt.HECGPedsAge)=1 then 'H ' else '0 ' end
      -- case d:
      when bt.HECGPedsAge is null then 'M '
      -- case e:
-     when isnumeric(bt.HECGPedsAge)=0 then 'M '
+     when isnumeric(bt.HECGPedsAge)=0 or bt.HECGPedsAge like '%,%' then 'M '
      -- case f:
-     else cast(floor(bt.HECGPedsAge) as varchar(2))
+     when floor(bt.HECGPedsAge) between 0 and 99 then cast(floor(bt.HECGPedsAge) as varchar(2))
+     else 'M '
+     --case f was: else cast(floor(bt.HECGPedsAge) as varchar(2))
     end,
  Q58  = case isnull(Q050529,-9) when -9 then 'M' when -8 then 'H' else cast(Q050529%10000 as varchar) end,
  Q59  = case isnull(Q050530,-9) when -9 then 'M' when -8 then 'H' else cast(Q050530%10000 as varchar) end,
@@ -3321,17 +3329,19 @@ update r set
  -- f     2        (numeric)      (HECGPedsAge value)
  Q30  = case
      -- case a:
-     when isnull(Q050528,-9) = -9 then case when isnumeric(bt.HECGPedsAge)=1 then cast(floor(bt.HECGPedsAge) as varchar(2)) else 'M ' end
+     when isnull(q046321,-9) = -9 then case when isnumeric(bt.HECGPedsAge)=1 and bt.HECGPedsAge not like '%,%' and floor(bt.HECGPedsAge) between 0 and 99 then cast(floor(bt.HECGPedsAge) as varchar(2)) else 'M ' end
      -- case b:
-     when isnull(Q050528,-9) = -8 then 'H ' 
+     when isnull(q046321,-9) = -8 then 'H ' 
      -- case c:
-     when Q050528%10000 = 1 then case when isnumeric(bt.HECGPedsAge)=1 then 'H ' else '0 ' end
+     when q046321%10000 = 1 then case when isnumeric(bt.HECGPedsAge)=1 then 'H ' else '0 ' end
      -- case d:
      when bt.HECGPedsAge is null then 'M '
      -- case e:
-     when isnumeric(bt.HECGPedsAge)=0 then 'M '
+     when isnumeric(bt.HECGPedsAge)=0 or bt.HECGPedsAge like '%,%' then 'M '
      -- case f:
-     else cast(floor(bt.HECGPedsAge) as varchar(2))
+     when floor(bt.HECGPedsAge) between 0 and 99 then cast(floor(bt.HECGPedsAge) as varchar(2))
+     else 'M '
+     --case f was: else cast(floor(bt.HECGPedsAge) as varchar(2))
     end,
  Q31  = case isnull(Q050529,-9) when -9 then 'M' when -8 then 'H' else cast(Q050529%10000 as varchar) end,
  Q32  = case isnull(Q050530,-9) when -9 then 'M' when -8 then 'H' else cast(Q050530%10000 as varchar) end,
@@ -3541,7 +3551,7 @@ alter table #results add
 	Q46  char(1), -- Q046310
 	Q47  char(1), -- Q046311
 	Q48  char(1), -- Q046312
-
+	
 	Q53  char(1), -- Q046317
 	Q54  char(1), -- Q046318
 	Q55  char(1), -- Q046319
@@ -3627,8 +3637,6 @@ update r set
  Q46  = case isnull(q046310,-9) when -9 then 'M' when -8 then 'H' else cast(Q046310%10000 as varchar) end,
  Q47  = case isnull(q046311,-9) when -9 then 'M' when -8 then 'H' else cast(Q046311%10000 as varchar) end,
  Q48  = case isnull(q046312,-9) when -9 then 'M' when -8 then 'H' else cast(Q046312%10000 as varchar) end,
- Q49  = case isnull(q046313,-9) when -9 then 'M' when -8 then 'H' else cast(Q046313%10000 as varchar) end,
-                                                                                     
  Q53  = case isnull(q046317,-9) when -9 then 'M' when -8 then 'H' else cast(Q046317%10000 as varchar) end,
  Q54  = case isnull(q046318,-9) when -9 then 'M' when -8 then 'H' else cast(Q046318%10000 as varchar) end,
  Q55  = case isnull(q046319,-9) when -9 then 'M' when -8 then 'H' else cast(Q046319%10000 as varchar) end,
@@ -3647,7 +3655,7 @@ update r set
  -- f     2        (numeric)      (HECGPedsAge value)
  Q57  = case
      -- case a:
-     when isnull(q046321,-9) = -9 then case when isnumeric(bt.HECGPedsAge)=1 then cast(floor(bt.HECGPedsAge) as varchar(2)) else 'M ' end
+     when isnull(q046321,-9) = -9 then case when isnumeric(bt.HECGPedsAge)=1 and bt.HECGPedsAge not like '%,%' and floor(bt.HECGPedsAge) between 0 and 99 then cast(floor(bt.HECGPedsAge) as varchar(2)) else 'M ' end
      -- case b:
      when isnull(q046321,-9) = -8 then 'H ' 
      -- case c:
@@ -3655,16 +3663,18 @@ update r set
      -- case d:
      when bt.HECGPedsAge is null then 'M '
      -- case e:
-     when isnumeric(bt.HECGPedsAge)=0 then 'M '
+     when isnumeric(bt.HECGPedsAge)=0 or bt.HECGPedsAge like '%,%' then 'M '
      -- case f:
-     else cast(floor(bt.HECGPedsAge) as varchar(2))
+     when floor(bt.HECGPedsAge) between 0 and 99 then cast(floor(bt.HECGPedsAge) as varchar(2))
+     else 'M '
+     --case f was: else cast(floor(bt.HECGPedsAge) as varchar(2))
     end,
  Q58  = case isnull(q046322,-9) when -9 then 'M' when -8 then 'H' else cast(Q046322%10000 as varchar) end,
  Q59  = case isnull(q046323,-9) when -9 then 'M' when -8 then 'H' else cast(Q046323%10000 as varchar) end,
  Q60a = case isnull(q046324a,-9) when -9 then 0 else 1 end,
  Q60b = case isnull(q046324b,-9) when -9 then 0 else 1 end,
  Q60c = case isnull(q046324c,-9) when -9 then 0 else 1 end,
-Q60d = case isnull(q046324d,-9) when -9 then 0 else 1 end,
+ Q60d = case isnull(q046324d,-9) when -9 then 0 else 1 end,
  Q60e = case isnull(q046324e,-9) when -9 then 0 else 1 end,
  Q60f = case isnull(q046324f,-9) when -9 then 0 else 1 end,
  Q62  = case isnull(q046326,-9) when -9 then 'M' when -8 then 'H' else cast(Q046326%10000 as varchar) end,
