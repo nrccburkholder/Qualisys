@@ -938,6 +938,8 @@ BEGIN
 	and SubType_ID = @Subtype_id
 	and isATA = 1  
 
+	If @ATACnt = 0 RETURN 0
+
 
 	SELECT @Complete = case 
 		when (cast(@ATARespCnt as float)/cast(@ATACnt as float)) * 100 >= 50 AND @MeasRespCnt >= 1 then 1 
