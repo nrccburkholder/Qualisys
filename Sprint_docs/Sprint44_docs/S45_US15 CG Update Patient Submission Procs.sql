@@ -564,15 +564,37 @@ RETURN
 
 subdone:
 
-set @SQL='select '
-select @sql=@sql + name + '+'
+set @FieldList = ''
+select @FieldList=@FieldList + name + '+'
 from tempdb.sys.columns
 where object_id = object_id('tempdb..#results')
 and name not in ('sampleunit_id','samplepop_id')
 order by column_id;
 
-set @sql=left(@sql,len(@sql)-1)+' from #results'
+set @FieldList=left(@FieldList,len(@FieldList)-1)
+
+set @SQL = 'if exists (	select *
+			from (select *,' + @fieldlist + ' as SubmissionRow
+			from #results) x
+			where SubmissionRow is null)
+begin
+	select ' + replace(@fieldlist,'+',',') + '
+	from (select *,' + @fieldlist + ' as SubmissionRow
+	from #results) x
+	where SubmissionRow is null
+
+	 RAISERROR (''Some submission fields have NULL values.'', -- Message text.
+               16, -- Severity.
+               1 -- State.
+               ); 
+end'
 exec (@SQL)
+
+if @@error=0
+begin
+	set @sql='select ' + @fieldlist + ' from #results'
+	exec (@SQL)
+end
 /*
 select * from #results
 select * from #tmp_mncm_mailsteps
@@ -2060,17 +2082,17 @@ update r set
  -- f     2        (numeric)      (HECGPedsAge value)
  Q57  = case
      -- case a:
-     when isnull(q046321,-9) = -9 then case when isnumeric(bt.HECGPedsAge)=1 then floor(bt.HECGPedsAge) else 'M ' end
+     when isnull(q046321,-9) = -9 then case when isnumeric(bt.HECGPedsAge)=1 then cast(floor(bt.HECGPedsAge) as varchar(2)) else 'M ' end
      -- case b:
      when isnull(q046321,-9) = -8 then 'H ' 
      -- case c:
-     when q046321%10000 = 1 then case when isnumeric(bt.HECGPedsAge)=1 then 88 else 0 end
+     when q046321%10000 = 1 then case when isnumeric(bt.HECGPedsAge)=1 then 'H ' else '0 ' end
      -- case d:
      when bt.HECGPedsAge is null then 'M '
      -- case e:
      when isnumeric(bt.HECGPedsAge)=0 then 'M '
      -- case f:
-     else floor(bt.HECGPedsAge)
+     else cast(floor(bt.HECGPedsAge) as varchar(2))
     end,
  Q58  = case isnull(q046322,-9) when -9 then 'M' when -8 then 'H' else cast(Q046322%10000 as varchar) end,
  Q59  = case isnull(q046323,-9) when -9 then 'M' when -8 then 'H' else cast(Q046323%10000 as varchar) end,
@@ -2425,17 +2447,17 @@ update r set
  -- f     2        (numeric)      (HECGPedsAge value)
  Q46  = case
      -- case a:
-     when isnull(q050528,-9) = -9 then case when isnumeric(bt.HECGPedsAge)=1 then floor(bt.HECGPedsAge) else 'M ' end
+     when isnull(q050528,-9) = -9 then case when isnumeric(bt.HECGPedsAge)=1 then cast(floor(bt.HECGPedsAge) as varchar(2)) else 'M ' end
      -- case b:
      when isnull(q050528,-9) = -8 then 'H ' 
      -- case c:
-     when q050528%10000 = 1 then case when isnumeric(bt.HECGPedsAge)=1 then 88 else 0 end
+     when q050528%10000 = 1 then case when isnumeric(bt.HECGPedsAge)=1 then 'H ' else '0 ' end
      -- case d:
      when bt.HECGPedsAge is null then 'M '
      -- case e:
      when isnumeric(bt.HECGPedsAge)=0 then 'M '
      -- case f:
-     else floor(bt.HECGPedsAge)
+     else cast(floor(bt.HECGPedsAge) as varchar(2))
     end,
  Q47  = case isnull(Q050529,-9) when -9 then 'M' when -8 then 'H' else cast(Q050529%10000 as varchar) end,
  Q48  = case isnull(Q050530,-9) when -9 then 'M' when -8 then 'H' else cast(Q050530%10000 as varchar) end,
@@ -2763,17 +2785,17 @@ update r set
  -- f     2        (numeric)      (HECGPedsAge value)
  Q57  = case
      -- case a:
-     when isnull(Q050528,-9) = -9 then case when isnumeric(bt.HECGPedsAge)=1 then floor(bt.HECGPedsAge) else 'M ' end
+     when isnull(Q050528,-9) = -9 then case when isnumeric(bt.HECGPedsAge)=1 then cast(floor(bt.HECGPedsAge) as varchar(2)) else 'M ' end
      -- case b:
      when isnull(Q050528,-9) = -8 then 'H '
      -- case c:
-     when Q050528%10000 = 1 then case when isnumeric(bt.HECGPedsAge)=1 then 'H'  else 0 end
+     when Q050528%10000 = 1 then case when isnumeric(bt.HECGPedsAge)=1 then 'H ' else '0 ' end
      -- case d:
      when bt.HECGPedsAge is null then 'M '
      -- case e:
      when isnumeric(bt.HECGPedsAge)=0 then 'M '
      -- case f:
-     else floor(bt.HECGPedsAge)
+     else cast(floor(bt.HECGPedsAge) as varchar(2))
     end,
  Q58  = case isnull(Q050529,-9) when -9 then 'M' when -8 then 'H' else cast(Q050529%10000 as varchar) end,
  Q59  = case isnull(Q050530,-9) when -9 then 'M' when -8 then 'H' else cast(Q050530%10000 as varchar) end,
@@ -3299,17 +3321,17 @@ update r set
  -- f     2        (numeric)      (HECGPedsAge value)
  Q30  = case
      -- case a:
-     when isnull(Q050528,-9) = -9 then case when isnumeric(bt.HECGPedsAge)=1 then floor(bt.HECGPedsAge) else 'M ' end
+     when isnull(Q050528,-9) = -9 then case when isnumeric(bt.HECGPedsAge)=1 then cast(floor(bt.HECGPedsAge) as varchar(2)) else 'M ' end
      -- case b:
      when isnull(Q050528,-9) = -8 then 'H ' 
      -- case c:
-     when Q050528%10000 = 1 then case when isnumeric(bt.HECGPedsAge)=1 then 88 else 0 end
+     when Q050528%10000 = 1 then case when isnumeric(bt.HECGPedsAge)=1 then 'H ' else '0 ' end
      -- case d:
      when bt.HECGPedsAge is null then 'M '
      -- case e:
      when isnumeric(bt.HECGPedsAge)=0 then 'M '
      -- case f:
-     else floor(bt.HECGPedsAge)
+     else cast(floor(bt.HECGPedsAge) as varchar(2))
     end,
  Q31  = case isnull(Q050529,-9) when -9 then 'M' when -8 then 'H' else cast(Q050529%10000 as varchar) end,
  Q32  = case isnull(Q050530,-9) when -9 then 'M' when -8 then 'H' else cast(Q050530%10000 as varchar) end,
@@ -3625,17 +3647,17 @@ update r set
  -- f     2        (numeric)      (HECGPedsAge value)
  Q57  = case
      -- case a:
-     when isnull(q046321,-9) = -9 then case when isnumeric(bt.HECGPedsAge)=1 then floor(bt.HECGPedsAge) else 'M ' end
+     when isnull(q046321,-9) = -9 then case when isnumeric(bt.HECGPedsAge)=1 then cast(floor(bt.HECGPedsAge) as varchar(2)) else 'M ' end
      -- case b:
      when isnull(q046321,-9) = -8 then 'H ' 
      -- case c:
-     when q046321%10000 = 1 then case when isnumeric(bt.HECGPedsAge)=1 then 88 else 0 end
+     when q046321%10000 = 1 then case when isnumeric(bt.HECGPedsAge)=1 then 'H ' else '0 ' end
      -- case d:
      when bt.HECGPedsAge is null then 'M '
      -- case e:
      when isnumeric(bt.HECGPedsAge)=0 then 'M '
      -- case f:
-     else floor(bt.HECGPedsAge)
+     else cast(floor(bt.HECGPedsAge) as varchar(2))
     end,
  Q58  = case isnull(q046322,-9) when -9 then 'M' when -8 then 'H' else cast(Q046322%10000 as varchar) end,
  Q59  = case isnull(q046323,-9) when -9 then 'M' when -8 then 'H' else cast(Q046323%10000 as varchar) end,
