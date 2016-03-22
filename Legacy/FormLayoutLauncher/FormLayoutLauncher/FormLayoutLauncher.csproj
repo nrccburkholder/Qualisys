@@ -55,7 +55,7 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>B135A59E99D974E5E7931533FBEEEBB792B1E06D</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>7C29243989019529DF95B92DD71E2385703FCA9F</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
@@ -68,7 +68,7 @@
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>FormLayoutLauncher_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>FormLayoutLauncher_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -106,7 +106,7 @@
     </Compile>
     <None Include="app.config" />
     <None Include="FormLayoutLauncher.nuspec" />
-    <None Include="FormLayoutLauncher_TemporaryKey.pfx" />
+    <None Include="FormLayoutLauncher_1_TemporaryKey.pfx" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
