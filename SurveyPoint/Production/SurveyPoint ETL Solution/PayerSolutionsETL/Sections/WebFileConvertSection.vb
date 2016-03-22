@@ -180,6 +180,8 @@ Public Class WebFileConvertSection
             ConvertPriorityHealth()
         ElseIf CStr(cboFileType.SelectedItem).ToUpper() = "MED MUTUAL" Then
             ConvertMedMutual()
+        ElseIf CStr(cboFileType.SelectedItem).ToUpper() = "AZ BLUE" Then
+            ConvertAZBlue()
         End If
     End Sub
 
@@ -2505,6 +2507,127 @@ Public Class WebFileConvertSection
         End Try
     End Sub
 
+    Private Sub ConvertAZBlue()
+        Dim writer As System.IO.StreamWriter = Nothing
+        Dim blnSkipHeader As Boolean = True
+        Try
+            writer = New StreamWriter(Me.txtConvertFile.Text, False)
+            Dim readTable As System.Data.DataTable = GetImportTable()
+
+            For Each col As DataColumn In readTable.Columns
+                Debug.Print(col.ColumnName)
+            Next
+
+            For Each row As Data.DataRow In readTable.Rows
+                Dim newLine As New StringBuilder()
+                Dim tempVar As String = ""
+
+                newLine.Append(PadString("", 1, Direction.Left, " "))       ' BLANK(1)
+                newLine.Append(PadString(Convert.ToDateTime(row(97).ToString()).ToString("yyyyMMdd"), 8, Direction.Left, " ")) ' Last Modified Start: 2 End: 9
+                newLine.Append(PadString("", 1, Direction.Left, " "))       ' BLANK(1)  Start 10 End 10
+                newLine.Append(PadString(row(2), 8, Direction.Left, " ")) ' (Q7_1) FAQSS Template ID Start: 11 End: 18
+                newLine.Append(PadString(row(107), 5, Direction.Left, " ")) ' Key 3 Start: 19 End: 23
+                newLine.Append(PadString(row(106), 8, Direction.Left, " ")) ' Key 2 Start: 24 End: 31
+                newLine.Append(PadString("", 3, Direction.Left, " "))       ' BLANK(3) Start 32 END 35
+                newLine.Append(PadString(row(4), 1, Direction.Left, " ")) ' (Q1) 1 Start: 35 End: 35 Length: 1
+                newLine.Append(PadString(row(5), 1, Direction.Left, " ")) ' (Q66) 2 Start: 36 End: 36 Length: 1
+                newLine.Append(PadString(row(6), 1, Direction.Left, " ")) ' (Q15) 2a Start: 37 End: 37 Length: 1
+                newLine.Append(PadString(row(7), 1, Direction.Left, " ")) ' (Q29) 2b Start: 38 End: 38 Length: 1
+                newLine.Append(PadString(row(8), 1, Direction.Left, " ")) ' (Q55) 3 Start: 39 End: 39 Length: 1
+                newLine.Append(PadString(row(9), 1, Direction.Left, " ")) ' (Q37) 4 Start: 40 End: 40 Length: 1
+                newLine.Append(PadString(row(10), 1, Direction.Left, " ")) ' (Q30_A_1) 5 Start: 41 End: 41 Length: 1
+                newLine.Append(PadString(row(11), 1, Direction.Left, " ")) ' (Q30_A_2) 5 Start: 42 End: 42 Length: 1
+                newLine.Append(PadString(row(12), 1, Direction.Left, " ")) ' (Q30_A_3) 5 Start: 43 End: 43 Length: 1
+                newLine.Append(PadString(row(13), 1, Direction.Left, " ")) ' (Q30_A_4) 5 Start: 44 End: 44 Length: 1
+                newLine.Append(PadString(row(14), 1, Direction.Left, " ")) ' (Q10) 6 Start: 45 End: 45 Length: 1
+                newLine.Append(PadString(row(15), 1, Direction.Left, " ")) ' (Q45) 7 Start: 46 End: 46 Length: 1
+                newLine.Append(PadString(row(16), 1, Direction.Left, " ")) ' (Q58) 8 Start: 47 End: 47 Length: 1
+                newLine.Append(PadString(row(17), 1, Direction.Left, " ")) ' (Q35_A_1) 9 Start: 48 End: 48 Length: 1
+                newLine.Append(PadString(row(18), 1, Direction.Left, " ")) ' (Q35_A_2) 9 Start: 49 End: 49 Length: 1
+                newLine.Append(PadString(row(19), 1, Direction.Left, " ")) ' (Q35_A_3) 9 Start: 50 End: 50 Length: 1
+                newLine.Append(PadString(row(20), 1, Direction.Left, " ")) ' (Q35_A_4) 9 Start: 51 End: 51 Length: 1
+                newLine.Append(PadString(row(21), 1, Direction.Left, " ")) ' (Q35_A_5) 9 Start: 52 End: 52 Length: 1
+                newLine.Append(PadString(row(22), 1, Direction.Left, " ")) ' (Q35_A_6) 9 Start: 53 End: 53 Length: 1
+                newLine.Append(PadString(row(23), 1, Direction.Left, " ")) ' (Q35_A_7) 9 Start: 54 End: 54 Length: 1
+                newLine.Append(PadString(row(24), 1, Direction.Left, " ")) ' (Q35_A_8) 9 Start: 55 End: 55 Length: 1
+                newLine.Append(PadString(row(25), 1, Direction.Left, " ")) ' (Q35_A_9) 9 Start: 56 End: 56 Length: 1
+                newLine.Append(PadString(row(26), 1, Direction.Left, " ")) ' (Q35_A_10) 9 Start: 57 End: 57 Length: 1
+                newLine.Append(PadString(row(27), 1, Direction.Left, " ")) ' (Q35_A_11) 9 Start: 58 End: 58 Length: 1
+                newLine.Append(PadString(row(28), 1, Direction.Left, " ")) ' (Q35_A_12) 9 Start: 59 End: 59 Length: 1
+                newLine.Append(PadString(row(29), 1, Direction.Left, " ")) ' (Q59) 10 Start: 60 End: 60 Length: 1
+                newLine.Append(PadString(row(30), 1, Direction.Left, " ")) ' (Q36) 11 Start: 61 End: 61 Length: 1
+                newLine.Append(PadString(row(31), 1, Direction.Left, " ")) ' (Q74) 11 Start: 62 End: 62 Length: 1
+                newLine.Append(PadString(row(32), 1, Direction.Left, " ")) ' (Q38) 11a Start: 63 End: 63 Length: 1
+                newLine.Append(PadString(row(33), 1, Direction.Left, " ")) ' (Q65) 12 Start: 64 End: 64 Length: 1
+                newLine.Append(PadString(row(34), 15, Direction.Left, " ")) ' (Q16_1) 12a Start: 65 End: 79 Length: 15
+                newLine.Append(PadString(row(35), 1, Direction.Left, " ")) ' (Q51) 12b Start: 80 End: 80 Length: 1
+                newLine.Append(PadString(row(36), 1, Direction.Left, " ")) ' (Q75) 13 Start: 81 End: 81 Length: 1
+                newLine.Append(PadString(row(37), 1, Direction.Left, " ")) ' (Q76) 13a Start: 82 End: 82 Length: 1
+                newLine.Append(PadString(row(38), 2, Direction.Left, " ")) ' (Q39_1) 14 Start: 83 End: 84 Length: 2
+                newLine.Append(PadString(row(39), 2, Direction.Left, " ")) ' (Q39_2) 14 Start: 85 End: 86 Length: 2
+                newLine.Append(PadString(row(40), 1, Direction.Left, " ")) ' (Q40) 15 Start: 87 End: 87 Length: 1
+                newLine.Append(PadString(row(41), 1, Direction.Left, " ")) ' (Q52) 16 Start: 88 End: 88 Length: 1
+                newLine.Append(PadString(row(42), 1, Direction.Left, " ")) ' (Q41_A_1) 17 Start: 89 End: 89 Length: 1
+                newLine.Append(PadString(row(43), 1, Direction.Left, " ")) ' (Q41_A_2) 17 Start: 90 End: 90 Length: 1
+                newLine.Append(PadString(row(44), 1, Direction.Left, " ")) ' (Q41_A_3) 17 Start: 91 End: 91 Length: 1
+                newLine.Append(PadString(row(45), 1, Direction.Left, " ")) ' (Q41_A_4) 17 Start: 92 End: 92 Length: 1
+                newLine.Append(PadString(row(46), 1, Direction.Left, " ")) ' (Q41_A_5) 17 Start: 93 End: 93 Length: 1
+                newLine.Append(PadString(row(47), 1, Direction.Left, " ")) ' (Q47) 18 Start: 94 End: 94 Length: 1
+                newLine.Append(PadString(row(48), 1, Direction.Left, " ")) ' (Q43) 19 Start: 95 End: 95 Length: 1
+                newLine.Append(PadString(row(49), 1, Direction.Left, " ")) ' (Q21) 20 Start: 96 End: 96 Length: 1
+                newLine.Append(PadString(row(50), 1, Direction.Left, " ")) ' (Q70) 21 Start: 97 End: 97 Length: 1
+                newLine.Append(PadString(row(51), 1, Direction.Left, " ")) ' (Q71) 22 Start: 98 End: 98 Length: 1
+                newLine.Append(PadString(row(52), 1, Direction.Left, " ")) ' (Q73) 23 Start: 99 End: 99 Length: 1
+                newLine.Append(PadString(row(53), 1, Direction.Left, " ")) ' (Q3_A_1) 24 Start: 100 End: 100 Length: 1
+                newLine.Append(PadString(row(54), 1, Direction.Left, " ")) ' (Q3_A_2) 24 Start: 101 End: 101 Length: 1
+                newLine.Append(PadString(row(55), 1, Direction.Left, " ")) ' (Q3_A_3) 24 Start: 102 End: 102 Length: 1
+                newLine.Append(PadString(row(56), 1, Direction.Left, " ")) ' (Q3_A_4) 24 Start: 103 End: 103 Length: 1
+                newLine.Append(PadString(row(57), 1, Direction.Left, " ")) ' (Q3_A_5) 24 Start: 104 End: 104 Length: 1
+                newLine.Append(PadString(row(58), 1, Direction.Left, " ")) ' (Q3_A_6) 24 Start: 105 End: 105 Length: 1
+                newLine.Append(PadString(row(59), 1, Direction.Left, " ")) ' (Q3_A_7) 24 Start: 106 End: 106 Length: 1
+                newLine.Append(PadString(row(60), 1, Direction.Left, " ")) ' (Q3_A_8) 24 Start: 107 End: 107 Length: 1
+                newLine.Append(PadString(row(61), 1, Direction.Left, " ")) ' (Q3_A_9) 24 Start: 108 End: 108 Length: 1
+                newLine.Append(PadString(row(62), 1, Direction.Left, " ")) ' (Q3_A_10) 24 Start: 109 End: 109 Length: 1
+                newLine.Append(PadString(row(63), 1, Direction.Left, " ")) ' (Q3_A_11) 24 Start: 110 End: 110 Length: 1
+                newLine.Append(PadString(row(64), 1, Direction.Left, " ")) ' (Q3_A_12) 24 Start: 111 End: 111 Length: 1
+                newLine.Append(PadString(row(65), 1, Direction.Left, " ")) ' (Q17) 25 Start: 112 End: 112 Length: 1
+                newLine.Append(PadString(row(66), 1, Direction.Left, " ")) ' (Q62) 26 Start: 113 End: 113 Length: 1
+                newLine.Append(PadString(row(67), 1, Direction.Left, " ")) ' (Q24) 27 Start: 114 End: 114 Length: 1
+                newLine.Append(PadString(row(68), 1, Direction.Left, " ")) ' (Q44_1) 28 Start: 115 End: 115 Length: 1
+                newLine.Append(PadString(row(69), 1, Direction.Left, " ")) ' (Q44_2) 28 Start: 116 End: 116 Length: 1
+                newLine.Append(PadString(row(70), 1, Direction.Left, " ")) ' (Q44_3) 28 Start: 117 End: 117 Length: 1
+                newLine.Append(PadString(row(71), 1, Direction.Left, " ")) ' (Q44_4) 28 Start: 118 End: 118 Length: 1
+                newLine.Append(PadString(row(72), 1, Direction.Left, " ")) ' (Q44_5) 28 Start: 119 End: 119 Length: 1
+                newLine.Append(PadString(row(73), 1, Direction.Left, " ")) ' (Q44_6) 28 Start: 120 End: 120 Length: 1
+                newLine.Append(PadString(row(74), 1, Direction.Left, " ")) ' (Q18) 29 Start: 121 End: 121 Length: 1
+                newLine.Append(PadString(row(75), 1, Direction.Left, " ")) ' (Q42) 30 Start: 122 End: 122 Length: 1
+                newLine.Append(PadString(row(76), 1, Direction.Left, " ")) ' (Q19) 31 Start: 123 End: 123 Length: 1
+                newLine.Append(PadString(row(77), 1, Direction.Left, " ")) ' (Q25) 32 Start: 124 End: 124 Length: 1
+                newLine.Append(PadString(row(78), 1, Direction.Left, " ")) ' (Q6) 33 Start: 125 End: 125 Length: 1
+                newLine.Append(PadString(row(79), 1, Direction.Left, " ")) ' (Q60_A_1) 34 Start: 126 End: 126 Length: 1
+                newLine.Append(PadString(row(80), 1, Direction.Left, " ")) ' (Q60_A_2) 34 Start: 127 End: 127 Length: 1
+                newLine.Append(PadString(row(81), 1, Direction.Left, " ")) ' (Q48) 35 Start: 128 End: 128 Length: 1
+                newLine.Append(PadString(row(82), 1, Direction.Left, " ")) ' (Q49) 36 Start: 129 End: 129 Length: 1
+                newLine.Append(PadString(row(83), 1, Direction.Left, " ")) ' (Q32) 37 Start: 130 End: 130 Length: 1
+                newLine.Append(PadString(row(84), 1, Direction.Left, " ")) ' (Q54) 38 Start: 131 End: 131 Length: 1
+                newLine.Append(PadString(row(85), 30, Direction.Left, " ")) ' (Q57_1) 39 Start: 132 End: 161 Length: 30
+                newLine.Append(PadString(row(86), 15, Direction.Left, " ")) ' (Q57_2) 39 Start: 162 End: 176 Length: 15
+                newLine.Append(PadString(row(87), 10, Direction.Left, " ")) ' (Q57_3) 39 Start: 177 End: 186 Length: 10
+                newLine.Append(PadString(row(88), 30, Direction.Left, " ")) ' (Q61_1) 40 Start: 187 End: 216 Length: 30
+                newLine.Append(PadString(row(89), 10, Direction.Left, " ")) ' (Q61_2) 40 Start: 217 End: 226 Length: 10
+                newLine.Append(PadString(row(90), 1000, Direction.Left, " ")) ' (Q63) 41 Start: 227 End: 1226 Length: 1000
+
+                writer.WriteLine(newLine.ToString)
+            Next
+            MessageBox.Show("Proccess Complete")
+        Catch ex As Exception
+            Globals.ReportException(ex)
+        Finally
+            If Not writer Is Nothing Then
+                writer.Close()
+            End If
+        End Try
+    End Sub
     Private Function PadString(ByVal value As Object, ByVal length As Integer, ByVal padDir As Direction, ByVal fillChar As String, Optional ByVal truncateNonNumeric As Boolean = False) As String
         Dim retVal As String = "'"
         If IsDBNull(value) Then
