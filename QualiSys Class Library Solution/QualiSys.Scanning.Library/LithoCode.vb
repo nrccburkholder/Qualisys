@@ -541,7 +541,7 @@ Public Class LithoCode
 
                 Try
                     'If we have a final disposition then save everything
-                    If Dispositions.DoesFinalExist AndAlso Not IsUndeliverable() Then
+                    If Dispositions.DoesFinalExist Then  ' removed check for IsUndeliverable() S45 US12 TSB
                         If DoResultsExist(noResponseChar, dontKnowResponseChar, refusedResponseChar) Then
                             'Save the litho code data
                             LithoCodeProvider.Instance.SaveLithoCodeToQualiSys(Me, trans)

@@ -20,6 +20,7 @@ Public Class NameSub
         End Get
         Set(ByVal value As String)
             If value Is Nothing Then value = String.Empty
+            If value.ToUpper.Equals("NULL") Then value = String.Empty ' S45 US15 
             If Not value = mTitle Then
                 mTitle = value
             End If
@@ -68,6 +69,7 @@ Public Class NameSub
         End Get
         Set(ByVal value As String)
             If value Is Nothing Then value = String.Empty
+            If value.ToUpper.Equals("NULL") Then value = String.Empty ' S45 US15 
             If Not value = mSuffix Then
                 mSuffix = value
             End If

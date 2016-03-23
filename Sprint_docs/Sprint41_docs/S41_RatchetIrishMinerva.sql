@@ -17,5 +17,3 @@ Chris Burkholder
 :r "\ATLASRelease41&42\Sprint41_docs\S41_US16.2 OCS HH process update files.sql"
 
 :r "\ATLASRelease41&42\Sprint41_docs\S41_US16.4 OCS HH process update files.sql"
-
-:r "\ATLASRelease41&42\Sprint41_docs\S41_US16.4.2 OCS HH process update files.sql"

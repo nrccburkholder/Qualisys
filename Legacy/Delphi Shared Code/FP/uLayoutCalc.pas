@@ -1297,7 +1297,13 @@ begin
 
             parsedSubOrInsertFormatOverride:= ParseQstnCoreSkipInstructionOverride(SubOrInsertFormatOverride, rDQRichEdit[Qid].QstnCore, isRepeatsScaleText);
 
-            case dmOpenQ.CurrentLanguage of
+            if SubOrInsertFormatOverride <> '' then            //CJB 3/22/2016 moved outside individual case option blocks so it works for any language
+              if isRepeatsScaleText then
+                vScaleText := format('%s ' + _BeginChars + parsedSubOrInsertFormatOverride + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])
+              else
+                vScaleText := format('%s ' + _BeginChars + parsedSubOrInsertFormatOverride + _EndChars,[vScaleText, wwt_sclsItem.asString])
+            else
+            case dmOpenQ.CurrentLanguage of                //CJB 3/22/2016 only using this case if there is no Format Override
             2 : // Spanish
                  if SkipRepeatsScaleText then
                    vScaleText := format('%s ' + _BeginChars + 'Si·%s,·vaya·al·#·[S%s]' + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])
@@ -1361,21 +1367,15 @@ begin
                    vScaleText := format('%s ' + _BeginChars + 'U·gudub·[S%s]' + _EndChars,[vScaleText, wwt_sclsItem.asString]);
             18,19,20: // Magnus Spanish GN03, HCAHPS Spanish GN08, Sodexho GN16
                  if SkipRepeatsScaleText then
-                   if SubOrInsertFormatOverride = '' then
-                     if SubOrInsertPoundSignForQuestion then
-                       vScaleText := format('%s ' + _BeginChars + 'Si·%s,·pase a la pregunta #[S%s]' + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])      //default
-                     else
-                       vScaleText := format('%s ' + _BeginChars + 'Si·%s,·vaya·al·#·[S%s]' + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])
+                   if SubOrInsertPoundSignForQuestion then
+                     vScaleText := format('%s ' + _BeginChars + 'Si·%s,·pase a la pregunta #[S%s]' + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])      //default
                    else
-                     if isRepeatsScaleText then
-                        vScaleText := format('%s ' + _BeginChars + parsedSubOrInsertFormatOverride + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])
-                     else
-                         vScaleText := format('%s ' + _BeginChars + parsedSubOrInsertFormatOverride + _EndChars,[vScaleText, wwt_sclsItem.asString])
+                     vScaleText := format('%s ' + _BeginChars + 'Si·%s,·vaya·al·#·[S%s]' + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])
                  else
-                     if SubOrInsertPoundSignForQuestion then
-                       vScaleText := format('%s ' + _BeginChars + 'Pase a la pregunta #[S%s]' + _EndChars,[vScaleText, wwt_sclsItem.asString])
-                     else
-                       vScaleText := format('%s ' + _BeginChars + 'Vaya·al·#·[S%s]' + _EndChars,[vScaleText, wwt_sclsItem.asString]);
+                   if SubOrInsertPoundSignForQuestion then
+                     vScaleText := format('%s ' + _BeginChars + 'Pase a la pregunta #[S%s]' + _EndChars,[vScaleText, wwt_sclsItem.asString])
+                   else
+                     vScaleText := format('%s ' + _BeginChars + 'Vaya·al·#·[S%s]' + _EndChars,[vScaleText, wwt_sclsItem.asString]);
             21: //GN19: Polish
                  if SkipRepeatsScaleText then
                    vScaleText := format('%s ' + _BeginChars + 'W·przypadku·%s,·prosze·przejsc·do·nr·[S%s]' + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])
@@ -1385,16 +1385,10 @@ begin
                  //if CAHPSNumbering or DoDBenSkips then
                    //vScaleText := vScaleText + '  ›··Go·to·Question·[S'+wwt_sclsItem.asString+']' // Alt-0155 = ›
                  if SkipRepeatsScaleText then
-                   if SubOrInsertFormatOverride = '' then
-                     if SubOrInsertPoundSignForQuestion then
-                       vScaleText := format('%s ' + _BeginChars + 'If·%s,·go·to·#[S%s]' + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])    // default
-                     else
-                       vScaleText := format('%s ' + _BeginChars + 'If·%s,·go·to·Question·[S%s]' + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])
+                   if SubOrInsertPoundSignForQuestion then
+                     vScaleText := format('%s ' + _BeginChars + 'If·%s,·go·to·#[S%s]' + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])    // default
                    else
-                       if isRepeatsScaleText then
-                          vScaleText := format('%s ' + _BeginChars + parsedSubOrInsertFormatOverride + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])
-                       else
-                           vScaleText := format('%s ' + _BeginChars + parsedSubOrInsertFormatOverride + _EndChars,[vScaleText, wwt_sclsItem.asString])
+                     vScaleText := format('%s ' + _BeginChars + 'If·%s,·go·to·Question·[S%s]' + _EndChars,[vScaleText, vScaleText, wwt_sclsItem.asString])
                  else
                    if SubOrInsertPoundSignForQuestion then
                      vScaleText := format('%s ' + _BeginChars + 'Go·to·#[S%s]' + _EndChars,[vScaleText, wwt_sclsItem.asString])
