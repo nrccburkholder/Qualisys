@@ -163,7 +163,7 @@ begin
 	where ExportQueueID=@ExportQueueID
 	and ([hospicedata.survey-mode] = '' or [hospicedata.survey-mode] is null)
 
-	--•	The number of attempts should be included for dispositions 1, 6 and 7 for appropriate mail modes (Dave/James)
+	--•	The number of mail attempts should be included for dispositions 1, 6 and 7 for mail-only methodologies (Dave/James)
 	insert into #ErrorLog (ErrorDateTime, ExportQueueID, ErrorType, ErrorSource, ErrorIdentity, ErrorDescription)
 	select getdate()
 		, ExportQueueID
@@ -175,9 +175,25 @@ begin
 	from cem.ExportDataset00000011 
 	where ExportQueueID=@ExportQueueID
 	and [decedentleveldata.survey-status] in (1,6,7)
-	and [hospicedata.survey-mode] in ('1','3') -- mail only or mixed
+	and [hospicedata.survey-mode] in ('1') -- mail only
 	and isnull(convert(varchar,[decedentleveldata.number-survey-attempts-mail]),'88')='88'
 	
+	--•	The number of mail attempts should NOT be included for dispositions 1, 6 and 7 for mixed mode methodologies
+	insert into #ErrorLog (ErrorDateTime, ExportQueueID, ErrorType, ErrorSource, ErrorIdentity, ErrorDescription)
+	select getdate()
+		, ExportQueueID
+		, 'Hospice.Need MailAttempts'
+		, 'CEM.HospiceChecks'
+		, 'SamplePopulationID='+isnull(convert(varchar,SamplePopulationID),'null')+';decedent-id='+isnull(convert(varchar,[decedentleveldata.decedent-id]),'null')+';survey-status='+isnull(convert(varchar,[decedentleveldata.survey-status]),'null')
+		, 'survey-mode='+isnull(convert(varchar,[hospicedata.survey-mode]),'null')
+			+ ';number-survey-attempts-mail='+isnull(convert(varchar,[decedentleveldata.number-survey-attempts-mail]),'null')
+	from cem.ExportDataset00000011 
+	where ExportQueueID=@ExportQueueID
+	and [decedentleveldata.survey-status] in (1,6,7)
+	and [hospicedata.survey-mode] in ('3') -- mixed mode
+	and [decedentleveldata.number-survey-attempts-mail]<>'88'
+	
+	--•	The number of phone attempts should be included for dispositions 1, 6 and 7 for phone-only and mixed mode methodologies (Dave/James)
 	insert into #ErrorLog (ErrorDateTime, ExportQueueID, ErrorType, ErrorSource, ErrorIdentity, ErrorDescription)
 	select getdate()
 		, ExportQueueID
