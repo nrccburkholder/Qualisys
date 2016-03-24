@@ -500,7 +500,7 @@ Public Class SamplePeriod
         If Not Me.Parent Is Nothing Then
             Dim samplePeriods As SamplePeriodCollection
             samplePeriods = DirectCast(Me.Parent, SamplePeriodCollection)
-            For Each item As SamplePeriod In samplePeriods.Where(Function(samplePeriod) samplePeriod.Id <> Me.Id) 'filter out new sample period because we don't want to check it against itself
+            For Each item As SamplePeriod In samplePeriods.Where(Function(samplePeriod) samplePeriod.GetIdValue.ToString() <> Me.GetIdValue.ToString()) 'filter out new sample period because we don't want to check it against itself
                 ' checking for overlapping dates
                 If (ExpectedStartDate <= item.ExpectedEndDate) And (item.ExpectedStartDate <= ExpectedEndDate) Then
                     e.Description = "The expected start and end dates must not overlap existing Sample Periods"
