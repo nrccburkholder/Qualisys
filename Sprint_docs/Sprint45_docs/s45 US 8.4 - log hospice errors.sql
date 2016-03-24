@@ -167,20 +167,21 @@ begin
 	insert into #ErrorLog (ErrorDateTime, ExportQueueID, ErrorType, ErrorSource, ErrorIdentity, ErrorDescription)
 	select getdate()
 		, ExportQueueID
-		, 'Hospice.MixedAttempts'
+		, 'Hospice.Need MailAttempts'
 		, 'CEM.HospiceChecks'
-		, 'SamplePopulationID='+isnull(convert(varchar,SamplePopulationID),'null')+';decedent-id='+isnull(convert(varchar,[decedentleveldata.decedent-id]),'null')+'survey-status='+isnull(convert(varchar,[decedentleveldata.survey-status]),'null')
+		, 'SamplePopulationID='+isnull(convert(varchar,SamplePopulationID),'null')+';decedent-id='+isnull(convert(varchar,[decedentleveldata.decedent-id]),'null')+';survey-status='+isnull(convert(varchar,[decedentleveldata.survey-status]),'null')
 		, 'survey-mode='+isnull(convert(varchar,[hospicedata.survey-mode]),'null')
 			+ ';number-survey-attempts-mail='+isnull(convert(varchar,[decedentleveldata.number-survey-attempts-mail]),'null')
 	from cem.ExportDataset00000011 
 	where ExportQueueID=@ExportQueueID
 	and [decedentleveldata.survey-status] in (1,6,7)
-	and [hospicedata.survey-mode]='1' -- mail only
-
+	and [hospicedata.survey-mode] in ('1','3') -- mail only or mixed
+	and isnull(convert(varchar,[decedentleveldata.number-survey-attempts-mail]),'88')='88'
+	
 	insert into #ErrorLog (ErrorDateTime, ExportQueueID, ErrorType, ErrorSource, ErrorIdentity, ErrorDescription)
 	select getdate()
 		, ExportQueueID
-		, 'Hospice.MixedAttempts'
+		, 'Hospice.Need PhoneAttempts'
 		, 'CEM.HospiceChecks'
 		, 'SamplePopulationID='+isnull(convert(varchar,SamplePopulationID),'null')+';decedent-id='+isnull(convert(varchar,[decedentleveldata.decedent-id]),'null')+'survey-status='+isnull(convert(varchar,[decedentleveldata.survey-status]),'null')
 		, 'survey-mode='+isnull(convert(varchar,[hospicedata.survey-mode]),'null')
@@ -188,22 +189,8 @@ begin
 	from cem.ExportDataset00000011 
 	where ExportQueueID=@ExportQueueID
 	and [decedentleveldata.survey-status] in (1,6,7)
-	and [hospicedata.survey-mode]='2' -- telephone only
-
-	insert into #ErrorLog (ErrorDateTime, ExportQueueID, ErrorType, ErrorSource, ErrorIdentity, ErrorDescription)
-	select getdate()
-		, ExportQueueID
-		, 'Hospice.MixedAttempts'
-		, 'CEM.HospiceChecks'
-		, 'SamplePopulationID='+isnull(convert(varchar,SamplePopulationID),'null')+';decedent-id='+isnull(convert(varchar,[decedentleveldata.decedent-id]),'null')+'survey-status='+isnull(convert(varchar,[decedentleveldata.survey-status]),'null')
-		, 'survey-mode='+isnull(convert(varchar,[hospicedata.survey-mode]),'null')
-			+ ';survey-completion-mode='+isnull(convert(varchar,[decedentleveldata.survey-completion-mode]),'null')
-			+ ';number-survey-attempts-mail='+isnull(convert(varchar,[decedentleveldata.number-survey-attempts-mail]),'null')
-			+ ';number-survey-attempts-telephone='+isnull(convert(varchar,[decedentleveldata.number-survey-attempts-telephone]),'null')
-	from cem.ExportDataset00000011 
-	where ExportQueueID=@ExportQueueID
-	and [decedentleveldata.survey-status] in (1,6,7)
-	and [hospicedata.survey-mode]='3' -- mixed mode
+	and [hospicedata.survey-mode] in ('2','3') -- telephone only or mixed
+	and isnull(convert(varchar,[decedentleveldata.number-survey-attempts-telephone]),'88')='88'
 
 	--•	NULL or blank ineligible-pre-sample fields
 	insert into #ErrorLog (ErrorDateTime, ExportQueueID, ErrorType, ErrorSource, ErrorIdentity, ErrorDescription)
