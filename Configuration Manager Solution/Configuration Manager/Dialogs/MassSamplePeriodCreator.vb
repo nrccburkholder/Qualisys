@@ -2,6 +2,23 @@ Imports Nrc.Qualisys.Library
 Public Class MassSamplePeriodCreator
     Private mSurvey As Survey
 
+    Private mSamplePeriods As SamplePeriodCollection
+
+#Region "Public Properties"
+
+
+    Public Property ParentSamplePeriods() As SamplePeriodCollection
+        Get
+            Return mSamplePeriods
+        End Get
+        Set(ByVal value As SamplePeriodCollection)
+            mSamplePeriods = value
+        End Set
+    End Property
+
+
+#End Region
+
 #Region "Constructor"
     Public Sub New(ByVal survey As survey)
 
@@ -79,33 +96,59 @@ Public Class MassSamplePeriodCreator
             expectedStartDate = newPeriod.ExpectedEndDate.Value.AddDays(1)
         Next
 
-        For Each newPeriod In samplePeriods
-            newPeriod.SamplingScheduleName = SchedulingWizard.SamplingSchedule
-            counter = 1
+        If Not ValidateExpectedDates(samplePeriods) Then
+            MessageBox.Show("The Properties you have selected will result in overlapping sample periods!", "Mass Create Periods Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        Else
 
-            dates = SchedulingWizard.CalculateDates(newPeriod.ExpectedStartDate.Value)
-            For Each tmpDate As Date In dates
+            For Each newPeriod In samplePeriods
+                newPeriod.SamplingScheduleName = SchedulingWizard.SamplingSchedule
+                counter = 1
 
-                scheduledSample = SamplePeriodScheduledSample.NewSamplePeriodScheduledSample
-                scheduledSample.SampleNumber = counter
-                scheduledSample.ScheduledSampleDate = tmpDate
-                scheduledSample.SamplePeriodId = newPeriod.Id
-                newPeriod.SamplePeriodScheduledSamples.Add(scheduledSample)
+                dates = SchedulingWizard.CalculateDates(newPeriod.ExpectedStartDate.Value)
+                For Each tmpDate As Date In dates
 
-                'Prepare for next scheduled sample to add
-                counter += 1
+                    scheduledSample = SamplePeriodScheduledSample.NewSamplePeriodScheduledSample
+                    scheduledSample.SampleNumber = counter
+                    scheduledSample.ScheduledSampleDate = tmpDate
+                    scheduledSample.SamplePeriodId = newPeriod.Id
+                    newPeriod.SamplePeriodScheduledSamples.Add(scheduledSample)
+
+                    'Prepare for next scheduled sample to add
+                    counter += 1
+                Next
+                'ReValidate
+                newPeriod.ReValidate()
+
+                'Add to the surveys collection
+                Me.mSurvey.SamplePeriods.Add(newPeriod)
             Next
-            'ReValidate
-            newPeriod.ReValidate()
 
-            'Add to the surveys collection
-            Me.mSurvey.SamplePeriods.Add(newPeriod)
-        Next
+            Me.Close()
 
-        Me.Close()
+        End If
+
+
     End Sub
 
     Private Sub CancelButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         Me.Close()
     End Sub
+
+
+    Private Function ValidateExpectedDates(ByVal periods As Collection(Of SamplePeriod)) As Boolean
+
+        If Not Me.ParentSamplePeriods Is Nothing Then
+            For Each period As SamplePeriod In periods
+                For Each item As SamplePeriod In ParentSamplePeriods
+                    ' checking for overlapping dates
+                    If (period.ExpectedStartDate <= item.ExpectedEndDate) And (item.ExpectedStartDate <= period.ExpectedEndDate) Then
+                        Return False
+                    End If
+                Next
+            Next
+        End If
+
+        Return True
+
+    End Function
 End Class

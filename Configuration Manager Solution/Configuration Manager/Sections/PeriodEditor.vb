@@ -510,6 +510,7 @@ Public Class PeriodEditor
 
     Private Sub MassCreatePeriodsButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MassCreatePeriodsButton.Click
         Dim massCreator As New MassSamplePeriodCreator(Me.mModule.Survey)
+        massCreator.ParentSamplePeriods = mSamplePeriods
         massCreator.ShowDialog()
 
         Me.SamplePeriodGridView.RefreshData()
