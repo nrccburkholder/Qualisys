@@ -39,19 +39,18 @@ Non-response: Bad/no phone number            11           QuestionForm.datUndeli
 Non-response: Incomplete Caregiver Name      12           SamplePopulationDispositionLog.LoggedDate     May change depending on solution for identifying these
 Non-response: Incomplete Decedent Name       13           SamplePopulationDispositionLog.LoggedDate     May change depending on solution for identifying these
 Ineligible: Institutionalized                14           SamplePopulationDispositionLog.LoggedDate    
-
-
+Non-Response: Hospice Disavowal              15           SamplePopulationDispositionLog.LoggedDate    
 */
 
 update eds set [decedentleveldata.lag-time]=datediff(day,convert(datetime,[decedentleveldata.death-month]+'/'+[decedentleveldata.death-day]+'/'+[decedentleveldata.death-yr]),spdl.LoggedDate)
 --select distinct eds.samplepopulationid, convert(datetime,[decedentleveldata.death-month]+'/'+[decedentleveldata.death-day]+'/'+[decedentleveldata.death-yr]) as DayOfDeath, [decedentleveldata.survey-status]
---, case when ltrim([decedentleveldata.survey-status]) in (2,3,4,5,8,12,13,14) then 'SamplePopulationDispositionLog.LoggedDate' 
+--, case when ltrim([decedentleveldata.survey-status]) in (2,3,4,5,8,12,13,14,15) then 'SamplePopulationDispositionLog.LoggedDate' 
 --	   end
 --,spdl.DispositionID,spdl.ReceiptTypeID,spdl.CahpsTypeID,spdl.LoggedBy,spdl.LoggedDate
 from CEM.ExportDataset00000011 eds
 inner join nrc_datamart.dbo.samplepopulationdispositionlog spdl on spdl.SamplePopulationID=eds.SamplePopulationID
 inner join nrc_datamart.dbo.CahpsDispositionMapping cdm on cdm.dispositionid=spdl.DispositionID and [decedentleveldata.survey-status]=(cdm.CahpsDispositionID-600)
-where ltrim([decedentleveldata.survey-status]) in ('2','3','4','5','8','12','13','14')
+where ltrim([decedentleveldata.survey-status]) in ('2','3','4','5','8','12','13','14','15')
 and eds.ExportQueueID = @ExportQueueID 
 
 update eds set [decedentleveldata.lag-time]=datediff(day,convert(datetime,[decedentleveldata.death-month]+'/'+[decedentleveldata.death-day]+'/'+[decedentleveldata.death-yr]),qf.returndate)
