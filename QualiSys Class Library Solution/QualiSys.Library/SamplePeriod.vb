@@ -1,6 +1,7 @@
 Imports Nrc.QualiSys.Library.DataProvider
 Imports Nrc.Framework.BusinessLogic
 Imports Nrc.Framework.BusinessLogic.Configuration
+Imports System.Linq
 
 ''' <summary>
 ''' Represents a Period in which various SampleSets are created
@@ -440,6 +441,16 @@ Public Class SamplePeriod
 
 #End Region
 
+#Region "Private Properties"
+
+    Private ReadOnly Property BrokenRules() As Validation.BrokenRulesCollection
+        Get
+            Return Me.ValidationRules.GetBrokenRules()
+        End Get
+    End Property
+
+#End Region
+
 #Region "Overrides"
     Protected Overrides Function GetIdValue() As Object
         If Me.IsNew = True Then
@@ -484,6 +495,20 @@ Public Class SamplePeriod
         End If
 
         Dim survey As Survey = survey.Get(Me.SurveyId)
+
+        ' check for duplicate or overlapping start and end dates 
+        If Not Me.Parent Is Nothing Then
+            Dim samplePeriods As SamplePeriodCollection
+            samplePeriods = DirectCast(Me.Parent, SamplePeriodCollection)
+            For Each item As SamplePeriod In samplePeriods.Where(Function(samplePeriod) samplePeriod.Id <> Me.Id) 'filter out new sample period because we don't want to check it against itself
+                ' checking for overlapping dates
+                If (ExpectedStartDate <= item.ExpectedEndDate) And (item.ExpectedStartDate <= ExpectedEndDate) Then
+                    e.Description = "The expected start and end dates must not overlap existing Sample Periods"
+                    Return False
+                End If
+            Next
+        End If
+
         If Not survey Is Nothing AndAlso survey.IsMonthlyOnly AndAlso HasSamplesPulled = False AndAlso _
             (ExpectedStartDate.HasValue = False OrElse ExpectedEndDate.HasValue = False) Then
             e.Description = "Periods for HCAHPS surveys cannot have null encounter dates"
@@ -519,6 +544,7 @@ Public Class SamplePeriod
         Return True
     End Function
 
+
 #End Region
 
 #Region " Constructors "
@@ -528,6 +554,7 @@ Public Class SamplePeriod
 #End Region
 
 #Region "Private Methods"
+
     Private Sub UpdateAllSurveyTimeFramesForPeriod()
         Dim samplePeriods As SamplePeriodCollection
         Dim existingPeriod As New SamplePeriod
@@ -637,6 +664,16 @@ Public Class SamplePeriod
         Return SamplePeriodProvider.Instance.SelectActivePeriodId(surveyId)
     End Function
 
+    Private Function HasRule(ByVal ruleText As String) As Boolean
+
+        If BrokenRules.Count > 0 Then
+            For Each Rule As Validation.BrokenRule In BrokenRules
+                If Rule.Description = ruleText Then Return True
+            Next
+        Else
+            Return False
+        End If
+    End Function
 
 #End Region
 
