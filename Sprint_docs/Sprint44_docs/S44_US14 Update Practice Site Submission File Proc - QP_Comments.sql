@@ -22,14 +22,14 @@ Procedure to return practice site information for cgcahps submissions.  Is used 
 01/13/2012	DRM		Initial creation.
 */
 CREATE proc [dbo].[GetCGCahpsPracticeSiteInfo] 
-	@survey_id int,
+	@survey_id nvarchar(1000),
 	@encounter_begindate datetime,
 	@encounter_enddate datetime,
 	@asTable bit = 0
 as
 
 --test
---declare @survey_id int, @encounter_begindate datetime, @encounter_enddate datetime, @asTable bit = 1
+--declare @survey_id nvarchar(1000), @encounter_begindate datetime, @encounter_enddate datetime, @asTable bit = 1
 --select @survey_id=16986
 --select @encounter_begindate = '1/1/2015'
 --select @encounter_enddate = '12/31/2015'
@@ -39,13 +39,16 @@ declare @FieldPeriodEnd datetime
 
 if @encounter_enddate > getdate() set @encounter_enddate = dateadd(day,-1,getdate())
 
+create table #tmp_sampleunit(sampleunit_id INT, suFacility_id INT)  
+
 --Get MNCM sampleunits for the passed in survey_id.
-select su.sampleunit_id, qsu.suFacility_id suFacility_id
-into #tmp_sampleunit
+declare @sql1250 nvarchar(1250) = 'insert into #tmp_sampleunit select su.sampleunit_id, qsu.suFacility_id suFacility_id
 from sampleunit su
 inner join Qualisys.QP_Prod.dbo.SampleUnit qsu on su.sampleunit_id = qsu.sampleunit_id
-where su.survey_id = @survey_id 
-and su.bitmncm = 1
+where su.survey_id in ('+ @survey_id + ')
+and su.bitmncm = 1'
+
+exec (@sql1250)
 
 --Get samplesets that were sampled for the units from previous step.
 select distinct sampleset_id 
@@ -179,6 +182,8 @@ from
 	Qualisys.QP_Prod.dbo.PracticeSite ps
 	inner join Qualisys.QP_Prod.dbo.SiteGroup sg on sg.SiteGroup_ID = ps.SiteGroup_ID
 	inner join #tmp_data t on ps.PracticeSite_id = t.SUFacility_id
+
+drop table #tmp_sampleunit
 
 go
 
