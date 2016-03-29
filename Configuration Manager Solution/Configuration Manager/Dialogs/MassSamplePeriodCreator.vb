@@ -97,7 +97,7 @@ Public Class MassSamplePeriodCreator
         Next
 
         If Not ValidateExpectedDates(samplePeriods) Then
-            MessageBox.Show("The Properties you have selected will result in overlapping sample periods!", "Mass Create Periods Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("The Properties you have selected will create new periods that overlap with existing periods.  This is not allowed.", "Overlapping Periods Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Else
 
             For Each newPeriod In samplePeriods
