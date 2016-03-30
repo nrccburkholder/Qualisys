@@ -1495,12 +1495,12 @@ update r set
  Q50d = case when (q050255k=1 or q050255l=1 or q050255m=1 or q050255n=1) then 1 else 0 end,
  Q50e = case isnull(q050255c,-9) when -9 then 0 else 1 end,
  Q50f = 0,
- Q51  = case isnull(q050256,-9) when -9 then 'M' when -8 then 'H' else cast(Q050256%10000 as varchar) end,
- Q52a = case isnull(q050257a,-9) when -9 then 0 else 1 end,
- Q52b = case isnull(q050257b,-9) when -9 then 0 else 1 end,
- Q52c = case isnull(q050257c,-9) when -9 then 0 else 1 end,
- Q52d = case isnull(q050257d,-9) when -9 then 0 else 1 end,
- Q52e = case isnull(q050257e,-9) when -9 then 0 else 1 end
+ Q51  = ' ',
+ Q52a = ' ',
+ Q52b = ' ',
+ Q52c = ' ',
+ Q52d = ' ',
+ Q52e = ' '
 from #results r
  inner join #Big_Table bt on r.samplepop_id=bt.samplepop_id and r.sampleunit_id=bt.sampleunit_id
  left outer join #Study_Results sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id
@@ -1516,10 +1516,20 @@ from #results r
 -- according to client services "Looking at what is currently on the survey in Qualisys would be our best option.  The core numbers shouldn’t change."
 -- that said, if the survey was using different questions at the time of fielding or didn't ask one of these questions at all - this might crash.
 declare @sql nvarchar(4000)
-if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (44234,44235))
+
+if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (50256,50257))
  set @SQL =
  N'update r set
-  Q51  = case isnull(q044234,-9) when -9 then ''M'' when -8 then ''H'' else  as varchar)044234%10000 as varchar) end,
+  Q51  = case isnull(q050256,-9) when -9 then ''M'' when -8 then ''H'' else  as cast(q050256%10000 as varchar) end,
+  Q52a = case isnull(q050257a,-9) when -9 then 0 else 1 end,
+  Q52b = case isnull(q050257b,-9) when -9 then 0 else 1 end,
+  Q52c = case isnull(q050257c,-9) when -9 then 0 else 1 end,
+  Q52d = case isnull(q050257d,-9) when -9 then 0 else 1 end,
+  Q52e = case isnull(q050257e,-9) when -9 then 0 else 1 end'
+else if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (44234,44235))
+ set @SQL =
+ N'update r set
+  Q51  = case isnull(q044234,-9) when -9 then ''M'' when -8 then ''H'' else  as cast(Q044234%10000 as varchar) end,
   Q52a = case isnull(q044235a,-9) when -9 then 0 else 1 end,
   Q52b = case isnull(q044235b,-9) when -9 then 0 else 1 end,
   Q52c = case isnull(q044235c,-9) when -9 then 0 else 1 end,
