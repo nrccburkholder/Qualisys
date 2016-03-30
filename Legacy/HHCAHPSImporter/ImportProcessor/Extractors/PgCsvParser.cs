@@ -69,7 +69,7 @@ namespace HHCAHPSImporter.ImportProcessor.Extractors
                             CreateFieldElement(LanguageField, body.Language),
                             CreateFieldElement(StartofCareDateField, body.SOC_Date),
                             CreateFieldElement(NumberofskilledvisitsField, body.CurrentMonth_Skilled_Visits),
-                            CreateFieldElement(LookbackPeriodVisitsField, body.LastTwoMonths_Skilled_Visits - body.CurrentMonth_Skilled_Visits),
+                            CreateFieldElement(LookbackPeriodVisitsField, body.LastTwoMonths_Skilled_Visits),
                             CreateFieldElement(PayerNoneField, body.Payer_None),
                             CreateFieldElement(PayerMedicareFFSField, body.Payer_MedicareFFS),
                             CreateFieldElement(PayerMedicareHMOField, body.Payer_MedicareHMO),
