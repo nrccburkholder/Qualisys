@@ -2839,7 +2839,7 @@ update r set
  Q62  = case isnull(Q050533,-9) when -9 then 'M' when -8 then 'H' else cast(Q050533%10000 as varchar) end,
  Q63  = case isnull(Q050534,-9) when -9 then 'M' when -8 then 'H' else cast(Q050534%10000 as varchar) end,
  Q64  = case isnull(Q050535,-9) when -9 then 'M' when -8 then 'H' else cast(Q050535%10000 as varchar) end,
- Q65  = case isnull(Q050536,-9) when -9 then 'M' when -8 then 'H' else cast(Q050536%10000 as varchar) end
+ Q65  = 'M'
 from #results r
  inner join #Big_Table bt on r.samplepop_id=bt.samplepop_id and r.sampleunit_id=bt.sampleunit_id
  left outer join #Study_Results sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id
@@ -2855,7 +2855,7 @@ from #results r
 -- according to client services "Looking at what is currently on the survey in Qualisys would be our best option.  The core numbers shouldn’t change."
 -- that said, if the survey was using different questions at the time of fielding or didn't ask one of these questions at all - this might crash.
 declare @SQL nvarchar(4000)
-if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (46325,46328,46329,46330))
+if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore=50531)
  set @SQL = N'
  update r set
   Q60a = case isnull(q050531a,-9) when -9 then 0 else 1 end,
@@ -2864,7 +2864,7 @@ if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_
   Q60d = case isnull(q050531d,-9) when -9 then 0 else 1 end,
   Q60e = case isnull(q050531e,-9) when -9 then 0 else 1 end,
   Q60f = 0,'
-else
+else if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore=52325)
  set @SQL = N'
  update r set
   Q60a = case isnull(q052325a,-9) when -9 then 0 else 1 end,
@@ -2873,13 +2873,19 @@ else
   Q60d = case isnull(q052325d,-9) when -9 then 0 else 1 end,
   Q60e = case isnull(q052325e,-9) when -9 then 0 else 1 end,
   Q60f = case isnull(q052325f,-9) when -9 then 0 else 1 end,'
+else
+ set @SQL = N'update r set '
 
-
---At the time of this writing, many surveys don't yet contain question 50537.
+--At the time of this writing, many surveys don't yet contain question 50536 or 50537.
 --  So check for its existence.
-if exists (select name as col_nm
-   from tempdb.sys.columns
-   where object_id = object_id('tempdb..#Study_Results') and name like '%50537%')
+if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore=50536)
+ set @SQL = @sql + N'
+  Q65  = case isnull(Q050536 ,-9) when -9 then ''M'' when -8 then ''H'' else cast(Q050536%10000 as varchar) end,'
+else
+ set @SQL = @SQL + N'
+  Q65 = ''M'','
+  
+if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore=50537)
  set @SQL = @sql + N'
   Q66a = case isnull(q050537a,-9) when -9 then 0 else 1 end,
   Q66b = case isnull(q050537b,-9) when -9 then 0 else 1 end,
@@ -2893,7 +2899,6 @@ else
   Q66c = 0,
   Q66d = 0,
   Q66e = 0'
-
 
 set @SQL = @SQL + N'
  from #results r
