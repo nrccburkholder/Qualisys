@@ -2819,11 +2819,11 @@ update r set
  -- f     2        (numeric)      (HECGPedsAge value)
  Q57  = case
      -- case a:
-     when isnull(q046321,-9) = -9 then case when isnumeric(bt.HECGPedsAge)=1 and bt.HECGPedsAge not like '%,%' and floor(bt.HECGPedsAge) between 1 and 99 then cast(floor(bt.HECGPedsAge) as varchar(2)) else 'M ' end
+     when isnull(Q050528,-9) = -9 then case when isnumeric(bt.HECGPedsAge)=1 and bt.HECGPedsAge not like '%,%' and floor(bt.HECGPedsAge) between 1 and 99 then cast(floor(bt.HECGPedsAge) as varchar(2)) else 'M ' end
      -- case b:
-     when isnull(q046321,-9) = -8 then 'H ' 
+     when isnull(Q050528,-9) = -8 then 'H ' 
      -- case c:
-     when q046321%10000 = 1 then case when isnumeric(bt.HECGPedsAge)=1 then 'H ' else '0 ' end
+     when Q050528%10000 = 1 then case when isnumeric(bt.HECGPedsAge)=1 then 'H ' else '0 ' end
      -- case d:
      when bt.HECGPedsAge is null then 'M '
      -- case e:
