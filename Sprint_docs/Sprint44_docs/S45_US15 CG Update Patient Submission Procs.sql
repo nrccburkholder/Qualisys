@@ -1245,7 +1245,6 @@ update r set
  Q26  = case isnull(Q050234,-9) when -9 then 'M' when -8 then 'H' else cast(Q050234%10000 as varchar) end,
  Q27  = case isnull(Q050235,-9) when -9 then 'M' when -8 then 'H' else cast(Q050235%10000 as varchar) end,
  Q28  = case isnull(Q050241%10000,-9) when -9 then 'M' when -8 then 'H' when 7 then '6' when 8 then '7' when 9 then '7' when 10 then '7' else cast(Q050241%10000 as varchar) end,
- Q29  = case isnull(Q050699,-9) when -9 then 'M' when -8 then 'H' else cast(Q050699%10000 as varchar) end,
  Q30  = case isnull(Q050243,-9) when -9 then 'M' when -8 then 'H' else cast(Q050243%10000 as varchar) end,
  Q31  = case isnull(Q050253,-9) when -9 then 'M' when -8 then 'H' else cast(Q050253%10000 as varchar) end,
  Q32a = case isnull(q050255a,-9) when -9 then 0 else 1 end,
@@ -1268,6 +1267,19 @@ from #results r
 --   where tmm.bitmncm = 1
 --   and bt.datsampleencounterdate between @begindate and @enddate
 --   and bt.survey_id = @survey
+
+if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (50699))
+	update r set
+		Q29  = case isnull(Q050699,-9) when -9 then 'M' when -8 then 'H' else cast(Q050699%10000 as varchar) end
+	from #results r
+	inner join #Big_Table bt on r.samplepop_id=bt.samplepop_id and r.sampleunit_id=bt.sampleunit_id
+	left outer join #Study_Results sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id
+else if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (50242))
+	update r set
+		Q29  = case isnull(Q050242,-9) when -9 then 'M' when -8 then 'H' else cast(Q050242%10000 as varchar) end
+	from #results r
+	inner join #Big_Table bt on r.samplepop_id=bt.samplepop_id and r.sampleunit_id=bt.sampleunit_id
+	left outer join #Study_Results sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id	
 
 -- Adult 12-month:
 -- Q1 = core 46385
@@ -1486,7 +1498,7 @@ update r set
  Q44  = case isnull(Q050234,-9) when -9 then 'M' when -8 then 'H' else cast(Q050234%10000 as varchar) end,
  Q45  = case isnull(Q050235,-9) when -9 then 'M' when -8 then 'H' else cast(Q050235%10000 as varchar) end,
  Q46  = case isnull(Q050241%10000,-9) when -9 then 'M' when -8 then 'H' when 7 then '6' when 8 then '7' when 9 then '7' when 10 then '7' else cast(Q050241%10000 as varchar) end,
- Q47  = case isnull(Q050699,-9) when -9 then 'M' when -8 then 'H' else cast(Q050699%10000 as varchar) end,
+ --Q47  = case isnull(Q050699,-9) when -9 then 'M' when -8 then 'H' else cast(Q050699%10000 as varchar) end,
  Q48  = case isnull(Q050243,-9) when -9 then 'M' when -8 then 'H' else cast(Q050243%10000 as varchar) end,
  Q49  = case isnull(Q050253,-9) when -9 then 'M' when -8 then 'H' else cast(Q050253%10000 as varchar) end,
  Q50a = case isnull(q050255a,-9) when -9 then 0 else 1 end,
@@ -1525,7 +1537,7 @@ if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_
   Q52b = case isnull(q050257b,-9) when -9 then 0 else 1 end,
   Q52c = case isnull(q050257c,-9) when -9 then 0 else 1 end,
   Q52d = case isnull(q050257d,-9) when -9 then 0 else 1 end,
-  Q52e = case isnull(q050257e,-9) when -9 then 0 else 1 end'
+  Q52e = case isnull(q050257e,-9) when -9 then 0 else 1 end,'
 else if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (44234,44235))
  set @SQL =
  N'update r set
@@ -1534,7 +1546,7 @@ else if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@su
   Q52b = case isnull(q044235b,-9) when -9 then 0 else 1 end,
   Q52c = case isnull(q044235c,-9) when -9 then 0 else 1 end,
   Q52d = case isnull(q044235d,-9) when -9 then 0 else 1 end,
-  Q52e = case isnull(q044235e,-9) when -9 then 0 else 1 end'
+  Q52e = case isnull(q044235e,-9) when -9 then 0 else 1 end,'
 else
  set @SQL =
  N'update r set
@@ -1543,7 +1555,14 @@ else
   Q52b = case isnull(q048665b,-9) when -9 then 0 else 1 end,
   Q52c = case isnull(q048665c,-9) when -9 then 0 else 1 end,
   Q52d = case isnull(q048665d,-9) when -9 then 0 else 1 end,
-  Q52e = case isnull(q048665e,-9) when -9 then 0 else 1 end'
+  Q52e = case isnull(q048665e,-9) when -9 then 0 else 1 end,'
+
+if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (50699))
+ set @sql = @SQL + N'
+  Q47  = case isnull(Q050699,-9) when -9 then ''M'' when -8 then ''H'' else cast(Q050699%10000 as varchar) end'
+else if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (50242))
+ set @sql = @SQL + N'
+  Q47  = case isnull(Q050242,-9) when -9 then ''M'' when -8 then ''H'' else cast(Q050242%10000 as varchar) end'
 
 set @SQL = @SQL + N'
  from #results r
@@ -2886,6 +2905,9 @@ else
   Q65 = ''M'','
   
 if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore=50537)
+	and exists (select name as col_nm
+			   from tempdb.sys.columns
+			   where object_id = object_id('tempdb..#Study_Results') and name like '%50537%')
  set @SQL = @sql + N'
   Q66a = case isnull(q050537a,-9) when -9 then 0 else 1 end,
   Q66b = case isnull(q050537b,-9) when -9 then 0 else 1 end,
@@ -3378,7 +3400,7 @@ update r set
     end,
  Q31  = case isnull(Q050529,-9) when -9 then 'M' when -8 then 'H' else cast(Q050529%10000 as varchar) end,
  Q32  = case isnull(Q050530,-9) when -9 then 'M' when -8 then 'H' else cast(Q050530%10000 as varchar) end,
- Q34  = case isnull(Q050532,-9) when -9 then 'M' when -8 then 'H' else cast(Q050532%10000 as varchar) end,
+ --Q34  = case isnull(Q050532,-9) when -9 then 'M' when -8 then 'H' else cast(Q050532%10000 as varchar) end,
  Q35  = case isnull(Q050533,-9) when -9 then 'M' when -8 then 'H' else cast(Q050533%10000 as varchar) end,
  Q36  = case isnull(Q050534,-9) when -9 then 'M' when -8 then 'H' else cast(Q050534%10000 as varchar) end,
  Q37  = case isnull(Q050535,-9) when -9 then 'M' when -8 then 'H' else cast(Q050535%10000 as varchar) end,
@@ -3392,11 +3414,7 @@ from #results r
  inner join #Big_Table bt on r.samplepop_id=bt.samplepop_id and r.sampleunit_id=bt.sampleunit_id
  left outer join #Study_Results sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id
  inner join #tmp_mncm_mailsteps tmm on tmm.samplepop_id = sr.samplepop_id and tmm.sampleunit_id = sr.sampleunit_id
-
-
-
-
-
+ 
 -- #tmp_mncm_mailsteps only has records that we're exporting, so this where clause is redundant:
 --   where tmm.bitmncm = 1
 --   and bt.datsampleencounterdate between @begindate and @enddate
@@ -3426,6 +3444,13 @@ else
   Q33d = case isnull(q052325d,-9) when -9 then 0 else 1 end,
   Q33e = case isnull(q052325e,-9) when -9 then 0 else 1 end,
   Q33f = case isnull(q052325f,-9) when -9 then 0 else 1 end,'
+
+if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (54052))
+ set @SQL = @SQL + N'
+  Q34  = case isnull(Q054052,-9) when -9 then ''M'' when -8 then ''H'' else cast(Q054052%10000 as varchar) end'
+else if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (50532))
+ set @SQL = @SQL + N'
+  Q34  = case isnull(Q050532,-9) when -9 then ''M'' when -8 then ''H'' else cast(Q050532%10000 as varchar) end'
 
 set @SQL = @SQL + N'
  from #results r
