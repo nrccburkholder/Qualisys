@@ -42,6 +42,7 @@ Public Class Survey
     Private mCutoffTable As StudyTable
     Private mCutoffField As StudyTableColumn
     Private mBusinessRules As Collection(Of BusinessRule)
+    Private mClearFacilityMappings As Boolean
 
 #Region "private variables used as temporary stores of Survey Rules"
 
@@ -653,6 +654,22 @@ Public Class Survey
         Get
             Return mIsDirty
         End Get
+    End Property
+
+    Public ReadOnly Property HasFacilityMapping() As Boolean
+        Get
+            Return SurveyProvider.Instance.HasFacilityMapping(Id)
+        End Get
+    End Property
+
+    Public Property ClearFacilityMappings As Boolean
+        Get
+            Return mClearFacilityMappings
+        End Get
+        Set(ByVal value As Boolean)
+            mClearFacilityMappings = value
+        End Set
+
     End Property
 
 #Region "Survey rules generic getters currently hooked up to AppConfig / QualPro_Params"

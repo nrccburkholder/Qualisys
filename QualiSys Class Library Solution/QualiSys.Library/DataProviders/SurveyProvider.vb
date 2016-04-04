@@ -67,6 +67,7 @@ Namespace DataProvider
         Public MustOverride Function AllowDelete(ByVal surveyId As Integer) As Boolean
         Public MustOverride Function PerformSurveyValidation(ByVal surveyId As Integer) As SurveyValidationResult
         Public MustOverride Function SelectSubTypes(ByVal surveytypeid As Integer, ByVal categorytype_id As SubtypeCategories, ByVal survey_id As Integer) As SubTypeList
+        Public MustOverride Function HasFacilityMapping(ByVal surveyId As Integer) As Boolean
 
 #End Region
 

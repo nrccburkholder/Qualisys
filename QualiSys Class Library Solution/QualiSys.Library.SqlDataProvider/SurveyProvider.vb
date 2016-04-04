@@ -272,6 +272,11 @@ Public Class SurveyProvider
                         End If                   
                     End If
 
+
+                    If srvy.ClearFacilityMappings Then
+                        ClearSurveyFacilityMappings(srvy.Id, tran)
+                    End If
+
                     tran.Commit()
 
                 Catch ex As Exception
@@ -600,6 +605,27 @@ Public Class SurveyProvider
     '    ExecuteNonQuery(cmd, tran)
 
     'End Sub
+
+    Public Shared Sub ClearSurveyFacilityMappings(ByVal surveyId As Integer, ByVal tran As DbTransaction)
+
+        Dim cmd As DbCommand = Db.GetStoredProcCommand("QCL_ClearSurveyFacilityMappings", surveyId)
+        ExecuteNonQuery(cmd, tran)
+
+    End Sub
+
+    Public Overrides Function HasFacilityMapping(ByVal surveyID As Integer) As Boolean
+
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.HasFacilityMapping, surveyID)
+
+        Using rdr As New SafeDataReader(ExecuteReader(cmd))
+            If rdr.Read Then
+                Return rdr.GetBoolean(0)
+            End If
+        End Using
+
+        Return False
+
+    End Function
 
 
 End Class
