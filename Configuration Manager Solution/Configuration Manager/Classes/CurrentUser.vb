@@ -112,6 +112,12 @@ Public NotInheritable Class CurrentUser
             Return Member.HasMemberPrivilege("Configuration Manager", "Copy Data Structure")
         End Get
     End Property
+    Public Shared ReadOnly Property MayDeleteGroupsAndSites() As Boolean
+        Get
+            Return Member.HasMemberPrivilege("Configuration Manager", "Delete Sites And Groups")
+        End Get
+    End Property
+
 
     Private Sub New()
 
