@@ -40,6 +40,8 @@ Namespace DataProvider
         Public MustOverride Sub UpdatePracticeSite(ByVal practiceSite As PracticeSite)
         Public MustOverride Sub InsertSiteGroup(ByVal siteGroup As SiteGroup)
         Public MustOverride Sub InsertPracticeSite(ByVal practiceSite As PracticeSite)
+        Public MustOverride Sub DeleteSiteGroup(ByVal siteGroup As SiteGroup)
+        Public MustOverride Sub DeletePracticeSite(ByVal practiceSite As PracticeSite)
 
         Protected Shared Function GetNewFacility(ByVal id As Integer) As Facility
             Return New Facility(id)

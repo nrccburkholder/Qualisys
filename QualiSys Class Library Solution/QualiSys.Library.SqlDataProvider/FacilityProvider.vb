@@ -348,4 +348,12 @@ Public Class FacilityProvider
         practiceSite.Id = newId
     End Sub
 
+    Public Overrides Sub DeleteSiteGroup(ByVal siteGroup As SiteGroup)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.DeleteSiteGroup, siteGroup.SiteGroup_ID)
+    End Sub
+
+    Public Overrides Sub DeletePracticeSite(ByVal practiceSite As PracticeSite)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.DeletePracticeSite, practiceSite.PracticeSite_ID)
+    End Sub
+
 End Class

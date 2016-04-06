@@ -90,11 +90,14 @@ Public Class FacilityGroupSiteMappingSection
                                         .MasterGroupID = If(IsDBNull(dr("MasterGroupID")), .MasterGroupID, CInt(dr("MasterGroupID"))),
                                         .MasterGroupName = dr("MasterGroupName").ToString(),
                                         .IsActive = If(IsDBNull(dr("bitActive")), True, CBool(dr("bitActive")))}
-
-                If (CInt(dr("RecordState")) = 1) Then
-                    siteGroup.InsertSiteGroup(siteGroup)
+                If (siteGroup.IsDeleted) Then
+                    siteGroup.DeleteSiteGroup(siteGroup)
                 Else
-                    siteGroup.UpdateSiteGroup(siteGroup)
+                    If (CInt(dr("RecordState")) = 1) Then
+                        siteGroup.InsertSiteGroup(siteGroup)
+                    Else
+                        siteGroup.UpdateSiteGroup(siteGroup)
+                    End If
                 End If
 
             Next
@@ -130,10 +133,14 @@ Public Class FacilityGroupSiteMappingSection
                                                 .SampleUnit_id = If(IsDBNull(drow("SampleUnit_id")), .SampleUnit_id, CInt(drow("SampleUnit_id"))),
                                                 .bitActive = If(IsDBNull(drow("bitActive")), True, CBool(drow("bitActive")))}
 
-                    If (practiceSite.PracticeSite_ID > 0) Then
-                        SiteGroup.UpdatePracticeSite(practiceSite)
+                    If (practiceSite.IsDeleted) Then
+                        SiteGroup.DeletePracticeSite(practiceSite)
                     Else
-                        SiteGroup.InsertPracticeSite(practiceSite)
+                        If (practiceSite.PracticeSite_ID > 0) Then
+                            SiteGroup.UpdatePracticeSite(practiceSite)
+                        Else
+                            SiteGroup.InsertPracticeSite(practiceSite)
+                        End If
                     End If
 
                 Next

@@ -8,43 +8,74 @@ Limited by NRCAuth permission
 
 Chris Burkholder
 
-Create permission in NRC Auth (do in interface & create script)
+Task 2 - Hook up delete button, include checks if group/site assigned to facility
 */
 
-Use [NRCAuth]
+Use [QP_Prod]
 go
 
 begin tran
 
-if not exists(select * from Privilege where strPrivilege_nm = 'Delete Sites And Groups')
-Insert into Privilege (Application_id,strPrivilege_nm,strPrivilege_dsc,Author,datOccurred,PrivilegeLevel_id)
-select a.Application_id,'Delete Sites And Groups','Allows access to the Delete button on the grid for Sites and Groups',150002,GetDate(),1
-from Application a
-where a.strApplication_nm = 'Configuration Manager'
+USE [QP_Prod]
+GO
 
-declare @NewDeletePrivilegeId int
-select @NewDeletePrivilegeId = Privilege_id from Privilege where strPrivilege_nm = 'Delete Sites And Groups'
+/****** Object:  StoredProcedure [dbo].[QCL_PracticeSiteDelete]    Script Date: 4/6/2016 10:20:33 AM ******/
+if exists (select * from sys.procedures where name = 'QCL_PracticeSiteDelete' and schema_id = SCHEMA_ID('dbo'))
+	DROP PROCEDURE [dbo].[QCL_PracticeSiteDelete]
+GO
 
-if not exists(select * from OrgUnitPrivilege where privilege_id = @NewDeletePrivilegeId)
-insert into OrgUnitPrivilege
-(OrgUnit_id,	Privilege_id,	datGranted,	datRevoked,	Author,	datOccurred)
-select OrgUnit_id,@NewDeletePrivilegeId,GetDate(),NULL,150002,GetDate()
-from orgunit where strOrgUnit_nm in ('NRCIS','NRC General')
+/****** Object:  StoredProcedure [dbo].[QCL_PracticeSiteDelete]    Script Date: 4/6/2016 10:20:33 AM ******/
+SET ANSI_NULLS ON
+GO
 
-declare @NewDeleteOrgUnitPrivId int
-select @NewDeleteOrgUnitPrivId = min(OrgUnitPrivilege_id) from OrgUnitPrivilege where Privilege_id = @NewDeletePrivilegeId
+SET QUOTED_IDENTIFIER ON
+GO
 
-insert into memberprivilege
-(Member_id,OrgUnitPrivilege_id,Author,datOccurred,datGranted,datRevoked)
-select Member_id, @NewDeleteOrgUnitPrivId, 150002, GetDate(), GetDate(), null 
-from member where strMember_nm in ('JWilley','RBeavers','SFryda','JTobey','CBurkholder','TButler','VRuenprom')
 
-select m.strMember_nm, mp.MemberPrivilege_id, p.strPrivilege_nm from memberprivilege mp
-inner join member m on m.member_id = mp.member_id
-inner join OrgUnitPrivilege oup on mp.OrgUnitPrivilege_id = oup.OrgUnitPrivilege_id
-inner join Privilege p on p.Privilege_id = oup.Privilege_id
-where p.strPrivilege_nm = 'Delete Sites And Groups'
-or p.strPrivilege_nm = 'Copy Data Structure'
+CREATE PROCEDURE [dbo].[QCL_PracticeSiteDelete]
+	@PracticeSite_id int 
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	DELETE
+	  FROM [dbo].[PracticeSite]
+	  where (PracticeSite_ID = @PracticeSite_id)
+
+END
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[QCL_SiteGroupDelete]    Script Date: 4/6/2016 10:20:33 AM ******/
+if exists (select * from sys.procedures where name = 'QCL_SiteGroupDelete' and schema_id = SCHEMA_ID('dbo'))
+	DROP PROCEDURE [dbo].[QCL_SiteGroupDelete]
+GO
+
+/****** Object:  StoredProcedure [dbo].[QCL_SiteGroupDelete]    Script Date: 4/6/2016 10:20:33 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE PROCEDURE [dbo].[QCL_SiteGroupDelete]
+	@SiteGroup_id int 
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	DELETE
+	  FROM [dbo].[SiteGroup]
+	  where (SiteGroup_ID = @SiteGroup_id)
+
+END
+
+GO
 
 --rollback tran
 
