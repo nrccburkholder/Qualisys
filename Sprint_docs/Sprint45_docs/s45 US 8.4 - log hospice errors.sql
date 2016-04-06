@@ -99,6 +99,7 @@ begin
 	*/
 
 	insert into #ErrorLog (ErrorDateTime, ExportQueueID, ErrorType, ErrorSource, ErrorIdentity, ErrorDescription)
+	-- declare @exportqueueid int=80
 	select getdate()
 		, ExportQueueID
 		, 'Hospice.completeness checks'
@@ -112,41 +113,59 @@ begin
 			when ' 7' then case when PctAnswered <  0.50 then 'ok' else 'Partial (break-off) disposition should have 1-49.0% ATA questions answered' end
 			else '?'
 		  end as CompletionStatus
-	from (select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 1.0*sum(case when response like '%m%' then 0 else 1 end)/count(distinct qstncore) as PctAnswered
-		from (select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51574 as qstncore, [caregiverresponse.related]  as response from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
-			union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51575 as qstncore, [caregiverresponse.location-assisted]+[caregiverresponse.location-home]+[caregiverresponse.location-hospice-facility]+[caregiverresponse.location-hospital]+[caregiverresponse.location-nursinghome]+[caregiverresponse.location-other] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
-			union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51576 as qstncore, [caregiverresponse.oversee] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
-			union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51577 as qstncore, [caregiverresponse.needhelp] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
-			union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51579 as qstncore, [caregiverresponse.h_informtime] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
-			union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51580 as qstncore, [caregiverresponse.helpasan] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
-			union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51581 as qstncore, [caregiverresponse.h_explain] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
-			union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51582 as qstncore, [caregiverresponse.h_inform] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
-			union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51583 as qstncore, [caregiverresponse.h_confuse] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
-			union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51584 as qstncore, [caregiverresponse.h_dignity] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
-			union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51585 as qstncore, [caregiverresponse.h_cared] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
-			union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51586 as qstncore, [caregiverresponse.h_talk] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
-			union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51588 as qstncore, [caregiverresponse.pain] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
-			union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51590 as qstncore, [caregiverresponse.painrx] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
-			union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51594 as qstncore, [caregiverresponse.breath] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
-			union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51597 as qstncore, [caregiverresponse.constip] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
-			union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51599 as qstncore, [caregiverresponse.sad] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
-			union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51601 as qstncore, [caregiverresponse.restless] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
-			union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51603 as qstncore, [caregiverresponse.movetrain] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
-			union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51604 as qstncore, [caregiverresponse.expectinfo] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
-			union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51605 as qstncore, [caregiverresponse.receivednh] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
-			union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51608 as qstncore, [caregiverresponse.h_clisten] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
-			union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51609 as qstncore, [caregiverresponse.cbeliefrespect] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
-			union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51610 as qstncore, [caregiverresponse.cemotion] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
-			union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51611 as qstncore, [caregiverresponse.cemotionafter] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
-			union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51612 as qstncore, [caregiverresponse.ratehospice] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
-			union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51613 as qstncore, [caregiverresponse.h_recommend] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
-			union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51614 as qstncore, [caregiverresponse.pEdu] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
-			union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51615 as qstncore, [caregiverresponse.pLatino] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
-			union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51616 as qstncore, [caregiverresponse.race-african-amer]+[caregiverresponse.race-amer-indian-ak]+[caregiverresponse.race-asian]+[caregiverresponse.race-hi-pacific-islander] +[caregiverresponse.race-white] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
-			union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51617 as qstncore, [caregiverresponse.cAge] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
-			union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51618 as qstncore, [caregiverresponse.cSex] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
-			union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51619 as qstncore, [caregiverresponse.cEdu] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID) x
-		group by SamplePopulationID,ExportQueueID,[decedentleveldata.survey-status]) y
+	from (	
+		select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 1.0*sum(isAnswered)/count(distinct qstncore) as PctAnswered
+		from (	-- single response questions
+				select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], qstncore, qstn, response, ExportColumnName, RecodeValue, ResponseLabel
+					, case when exportcolumnname is null then 0 else 1 end as isAnswered
+				from (    select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51574 as qstncore, 'related' as qstn, [caregiverresponse.related]  as response from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
+					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51576 as qstncore, 'oversee', [caregiverresponse.oversee] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
+					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51577 as qstncore, 'needhelp', [caregiverresponse.needhelp] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
+					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51579 as qstncore, 'h_informtime', [caregiverresponse.h_informtime] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
+					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51580 as qstncore, 'helpasan', [caregiverresponse.helpasan] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
+					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51581 as qstncore, 'h_explain', [caregiverresponse.h_explain] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
+					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51582 as qstncore, 'h_inform', [caregiverresponse.h_inform] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
+					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51583 as qstncore, 'h_confuse', [caregiverresponse.h_confuse] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
+					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51584 as qstncore, 'h_dignity', [caregiverresponse.h_dignity] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
+					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51585 as qstncore, 'h_cared', [caregiverresponse.h_cared] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
+					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51586 as qstncore, 'h_talk', [caregiverresponse.h_talk] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
+					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51588 as qstncore, 'pain', [caregiverresponse.pain] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
+					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51590 as qstncore, 'painrx', [caregiverresponse.painrx] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
+					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51594 as qstncore, 'breath', [caregiverresponse.breath] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
+					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51597 as qstncore, 'constip', [caregiverresponse.constip] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
+					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51599 as qstncore, 'sad', [caregiverresponse.sad] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
+					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51601 as qstncore, 'restless', [caregiverresponse.restless] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
+					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51603 as qstncore, 'movetrain', [caregiverresponse.movetrain] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
+					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51604 as qstncore, 'expectinfo', [caregiverresponse.expectinfo] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
+					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51605 as qstncore, 'receivednh', [caregiverresponse.receivednh] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
+					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51608 as qstncore, 'h_clisten', [caregiverresponse.h_clisten] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
+					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51609 as qstncore, 'cbeliefrespect', [caregiverresponse.cbeliefrespect] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
+					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51610 as qstncore, 'cemotion', [caregiverresponse.cemotion] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
+					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51611 as qstncore, 'cemotionafter', [caregiverresponse.cemotionafter] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
+					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51612 as qstncore, 'ratehospice', [caregiverresponse.ratehospice] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
+					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51613 as qstncore, 'h_recommend', [caregiverresponse.h_recommend] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
+					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51614 as qstncore, 'pEdu', [caregiverresponse.pEdu] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
+					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51615 as qstncore, 'pLatino', [caregiverresponse.pLatino] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
+					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51617 as qstncore, 'cAge', [caregiverresponse.cAge] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
+					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51618 as qstncore, 'cSex', [caregiverresponse.cSex] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
+					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51619 as qstncore, 'cEdu', [caregiverresponse.cEdu] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID) x
+				left join (select distinct ExportColumnName,RecodeValue,ResponseLabel 
+							from cem.exporttemplate_view 
+							where exporttemplateid=11
+							and ExportTemplateSectionName='caregiverresponse') lbl
+						on x.qstn=lbl.exportcolumnname and x.response=lbl.RecodeValue
+				UNION ALL
+				-- multiple response questions
+				select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], qstncore, qstn, response
+					, qstn as ExportColumnName 
+					, response as RecodeValue
+					, 'doesnt matter' as ResponseLabel
+					, case when response like '%1%' then 1 else 0 end as isAnswered
+				from (	      select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51575 as qstncore, 'location-*' as qstn, [caregiverresponse.location-assisted]+[caregiverresponse.location-home]+[caregiverresponse.location-hospice-facility]+[caregiverresponse.location-hospital]+[caregiverresponse.location-nursinghome]+[caregiverresponse.location-other] as response from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
+						union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51616 as qstncore, 'race-*', [caregiverresponse.race-african-amer]+[caregiverresponse.race-amer-indian-ak]+[caregiverresponse.race-asian]+[caregiverresponse.race-hi-pacific-islander] +[caregiverresponse.race-white] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
+						) multiresp
+			) c
+		group by SamplePopulationID,ExportQueueID,[decedentleveldata.survey-status]) PctComplete
 	where [decedentleveldata.survey-status] in (' 1', ' 7')) z
 	where z.CompletionStatus <> 'ok'
 
