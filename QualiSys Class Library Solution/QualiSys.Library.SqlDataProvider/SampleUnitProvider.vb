@@ -61,7 +61,7 @@ Public Class SampleUnitProvider
         End Select
         newObj.CAHPSType = CType(rdr.GetInteger("CAHPSType_Id"), CAHPSType)
         newObj.CAHPSTypeName = GetCAHPSTypeName(rdr.GetInteger("CAHPSType_Id"))
-        newObj.IsLowVolumeUnit = Convert.ToBoolean(rdr.GetByte("bitLowVolumeUnit"))
+        newObj.IsLowVolumeUnit = rdr.GetBoolean("bitLowVolumeUnit")
         newObj.ResetDirtyFlag()
 
         Return newObj

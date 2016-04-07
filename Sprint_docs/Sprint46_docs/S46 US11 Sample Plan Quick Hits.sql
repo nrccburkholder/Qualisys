@@ -50,11 +50,12 @@ if not exists (	SELECT 1
 					   AND st.NAME = 'SampleUnit' 
 					   AND sc.NAME = 'bitLowVolumeUnit' )
 BEGIN
-	alter table [dbo].[SampleUnit] add bitLowVolumeUnit int NULL DEFAULT(0)
+	alter table [dbo].[SampleUnit] add bitLowVolumeUnit bit NOT NULL DEFAULT(0)
 END
 
 
 GO
+
 
 USE [QP_Prod]
 GO
