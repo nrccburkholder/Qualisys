@@ -29,7 +29,9 @@ where ProcedureName = 'SV_CAHPS_AHA_Id'
 
 begin tran
 
-delete from dbo.SurveyValidationProcsBySurveyType
+update sv
+	SET CAHPSType_ID = 0
+from dbo.SurveyValidationProcsBySurveyType sv
 where SurveyValidationProcs_id = @SurveyValidationProcs_id
 and CAHPSType_ID = @SurveyType_id
 
@@ -38,7 +40,7 @@ commit tran
 
 SELECT * from dbo.SurveyValidationProcsBySurveyType
 where SurveyValidationProcs_id = @SurveyValidationProcs_id
-and CAHPSType_ID = @SurveyType_id
+
 
 
 use QP_Prod

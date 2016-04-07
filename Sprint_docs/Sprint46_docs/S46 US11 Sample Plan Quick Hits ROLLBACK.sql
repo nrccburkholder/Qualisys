@@ -30,17 +30,11 @@ where ProcedureName = 'SV_CAHPS_AHA_Id'
 
 begin tran
 
-IF NOT EXISTS (SELECT 1 from dbo.SurveyValidationProcsBySurveyType
-				where SurveyValidationProcs_id = @SurveyValidationProcs_id
-				and CAHPSType_ID = @SurveyType_id)
-	INSERT INTO [dbo].[SurveyValidationProcsBySurveyType]
-			   ([SurveyValidationProcs_id]
-			   ,[CAHPSType_ID]
-			   ,[SubType_ID])
-		 VALUES
-			   (@SurveyValidationProcs_id
-			   ,@SurveyType_id
-			   ,NULL)
+update sv
+	SET CAHPSType_ID = @SurveyType_id
+from dbo.SurveyValidationProcsBySurveyType sv
+where SurveyValidationProcs_id = @SurveyValidationProcs_id
+and CAHPSType_ID = 0
 
 commit tran
 
