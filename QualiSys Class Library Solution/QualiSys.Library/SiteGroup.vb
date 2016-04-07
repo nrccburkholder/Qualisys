@@ -313,6 +313,14 @@ Public Class SiteGroup
         FacilityProvider.Instance.DeletePracticeSite(practiceSite)
     End Sub
 
+    Public Shared Function AllowSiteDelete(practiceSite As PracticeSite) As Boolean
+        Return FacilityProvider.Instance.AllowSiteDelete(practiceSite)
+    End Function
+
+    Public Shared Function AllowSiteDelete(siteGroup As SiteGroup) As Boolean
+        Return FacilityProvider.Instance.AllowSiteDelete(siteGroup)
+    End Function
+
 #End Region
 
 

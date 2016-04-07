@@ -77,6 +77,29 @@ END
 
 GO
 
+
+/****** Object:  StoredProcedure [dbo].[QCL_SiteAllowDelete]    Script Date: 4/6/2016 10:20:33 AM ******/
+if exists (select * from sys.procedures where name = 'QCL_SiteAllowDelete' and schema_id = SCHEMA_ID('dbo'))
+	DROP PROCEDURE [dbo].[QCL_SiteAllowDelete]
+GO
+
+CREATE PROCEDURE [dbo].[QCL_SiteAllowDelete]
+	@SiteGroup_id int,
+	@PracticeSite_id int
+AS
+
+--Return 1 if facility can be deleted otherwise return 0
+IF EXISTS ( SELECT * FROM SampleUnit su inner join
+			SamplePlan sp on su.sampleplan_id = sp.SAMPLEPLAN_ID
+			WHERE (SUFacility_id = @PracticeSite_id 
+			OR SUFacility_id in (select PracticeSite_id from PracticeSite where SiteGroup_ID = @SiteGroup_id))
+			AND exists(select dbo.SurveyProperty('FacilitiesArePracticeSites',null, sp.SURVEY_ID)))
+	SELECT 0
+ELSE
+	SELECT 1
+
+GO
+
 --rollback tran
 
 commit tran
