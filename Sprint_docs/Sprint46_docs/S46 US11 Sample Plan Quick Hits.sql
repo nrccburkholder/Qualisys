@@ -187,7 +187,7 @@ ALTER PROCEDURE [dbo].[QCL_InsertSampleUnit]
 @SampleSelectionType_id INT,
 @DontSampleUnit tinyint,
 @CAHPSType_id INT,
-@IsLowVolumeUnit BIT
+@IsLowVolumeUnit BIT = 0
 AS
 BEGIN
 	DECLARE @su INT
@@ -249,7 +249,7 @@ ALTER PROCEDURE [dbo].[QCL_UpdateSampleUnit]
 @SampleSelectionType_id INT,
 @DontSampleUnit tinyint,
 @CAHPSType_id INT,
-@IsLowVolumeUnit BIT
+@IsLowVolumeUnit BIT = 0
 AS
 
 UPDATE SampleUnit 
