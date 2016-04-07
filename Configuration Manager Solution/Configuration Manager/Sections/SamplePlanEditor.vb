@@ -255,7 +255,7 @@ Public Class SamplePlanEditor
             If (FacilityComboBox.SelectedIndex < 0) Then Return
             Dim fac As Facility = TryCast(FacilityComboBox.SelectedItem, Facility)
             If (fac IsNot Nothing) Then
-                AhaIdTextBox.Text = fac.AhaId.ToString
+                'AhaIdTextBox.Text = fac.AhaId.ToString  'S46 US11 TSB 04/05/2016
                 StateTextBox.Text = fac.State
 
                 If fac.MedicareNumber Is Nothing Then
@@ -264,7 +264,7 @@ Public Class SamplePlanEditor
                     MedicareIdTextBox.Text = fac.MedicareNumber.MedicareNumber
                 End If
             Else
-                AhaIdTextBox.Text = ""
+                'AhaIdTextBox.Text = "" 'S46 US11 TSB 04/05/2016
                 MedicareIdTextBox.Text = ""
                 StateTextBox.Text = ""
             End If
@@ -413,7 +413,6 @@ Public Class SamplePlanEditor
     End Sub
 
     Private Sub TextBox_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles SampleUnitNameTextBox.GotFocus, _
-                                                                                              AhaIdTextBox.GotFocus, _
                                                                                               MedicareIdTextBox.GotFocus, StateTextBox.GotFocus
         Dim ctrl As TextBox = TryCast(sender, TextBox)
         If ctrl IsNot Nothing Then ctrl.SelectAll()
@@ -662,6 +661,8 @@ Public Class SamplePlanEditor
         'Is suppressed in eReport?
         SuppressReportCheckBox.Checked = mSelectedSampleUnit.IsSuppressed
 
+        LowVolumeUnitCheckBox.Checked = mSelectedSampleUnit.IsLowVolumeUnit
+
         'Priority
         PriorityTextBox.Text = mSelectedSampleUnit.Priority.ToString
 
@@ -670,6 +671,14 @@ Public Class SamplePlanEditor
         If (mSelectedSampleUnit.Service IsNot Nothing) Then
             For Each service As SampleUnitServiceType In ServiceTypeComboBox.Items
                 If (service.Id = mSelectedSampleUnit.Service.Id) Then
+                    ServiceTypeComboBox.SelectedItem = service
+                    Exit For
+                End If
+            Next
+        Else
+            ' S46 US11  if there was no servicetype selected, default to N/A because user were tired of having to do this TSB 04/05/2016
+            For Each service As SampleUnitServiceType In ServiceTypeComboBox.Items
+                If (service.Name = "N/A") Then
                     ServiceTypeComboBox.SelectedItem = service
                     Exit For
                 End If
@@ -795,6 +804,7 @@ Public Class SamplePlanEditor
             .DontSampleUnit = DontSampleCheckBox.Checked
             .IsSuppressed = SuppressReportCheckBox.Checked
             .Service = SaveServiceType()
+            .IsLowVolumeUnit = LowVolumeUnitCheckBox.Checked
         End With
     End Sub
 
