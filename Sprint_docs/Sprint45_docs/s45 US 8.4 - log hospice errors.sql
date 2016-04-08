@@ -58,6 +58,7 @@ begin
 	from cem.ExportDataset00000011 
 	where ExportQueueID=@ExportQueueID
 	and ([decedentleveldata.decedent-race] = '' or [decedentleveldata.decedent-race] is null)
+	and SamplePopulationID is not NULL
 
 	--•	NULL or blank [decedentleveldata.lag-time] fields
 	--•	This has been related to surveys that have NULL datReturned and NULL datUnusedReturn but have something in strScanBatch
@@ -71,6 +72,7 @@ begin
 	from cem.ExportDataset00000011 
 	where ExportQueueID=@ExportQueueID
 	and ([decedentleveldata.lag-time] = '' or [decedentleveldata.lag-time] is null)
+	and SamplePopulationID is not NULL
 
 	--•	Respondents who answer “NEVER” to being involved in the decedent’s care, should have a disposition of 6
 	--Find where this happens (completeness check?). Was this all cases or just some?
@@ -336,6 +338,7 @@ begin
 	from cem.ExportDataset00000011 
 	where ExportQueueID=@ExportQueueID
 	and ([decedentleveldata.diagnosis-code-format] = '' or [decedentleveldata.diagnosis-code-format] is null)
+	and SamplePopulationID is not NULL
 
 	set @sql = ''
 	select @sql=@sql + '
