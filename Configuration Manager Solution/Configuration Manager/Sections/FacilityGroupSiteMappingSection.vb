@@ -64,6 +64,9 @@ Public Class FacilityGroupSiteMappingSection
         'Set the wait cursor
         Me.Cursor = Cursors.WaitCursor
 
+        Dim siteGroupIDsNotDeleted As String = String.Empty
+        Dim practiceSiteIDsNotDeleted As String = String.Empty
+
         Dim dTable As New DataTable
         dTable = CType(SiteGroupBindingSource.DataSource, DataTable)
 
@@ -103,6 +106,8 @@ Public Class FacilityGroupSiteMappingSection
 
                     If SiteGroup.AllowSiteDelete(sg) Then
                         SiteGroup.DeleteSiteGroup(sg)
+                    Else
+                        siteGroupIDsNotDeleted = siteGroupIDsNotDeleted + ", " + sg.SiteGroup_ID.ToString
                     End If
                 End If
 
@@ -153,6 +158,8 @@ Public Class FacilityGroupSiteMappingSection
 
                         If SiteGroup.AllowSiteDelete(practiceSite) Then
                             SiteGroup.DeletePracticeSite(practiceSite)
+                        Else
+                            practiceSiteIDsNotDeleted = practiceSiteIDsNotDeleted + ", " + practiceSite.PracticeSite_ID.ToString
                         End If
                     End If
 
@@ -161,6 +168,14 @@ Public Class FacilityGroupSiteMappingSection
             End If
 
         Next
+
+        If siteGroupIDsNotDeleted.Length > 0 Then
+            MessageBox.Show("The following Site Group IDs could not be deleted because they included Practice Sites which were mapped:" + siteGroupIDsNotDeleted.Remove(0, 1))
+        End If
+
+        If practiceSiteIDsNotDeleted.Length > 0 Then
+            MessageBox.Show("The following Practice Site IDs could not be deleted because they were mapped:" + practiceSiteIDsNotDeleted.Remove(0, 1))
+        End If
 
         PopulateSiteGroupList()
 

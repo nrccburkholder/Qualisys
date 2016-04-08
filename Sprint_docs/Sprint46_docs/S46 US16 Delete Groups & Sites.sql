@@ -69,6 +69,10 @@ BEGIN
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
+	DELETE 
+	  FROM [dbo].[ClientPracticeSiteGroupLookup]
+	  where (SiteGroup_ID = @SiteGroup_id)
+
 	DELETE
 	  FROM [dbo].[SiteGroup]
 	  where (SiteGroup_ID = @SiteGroup_id)
