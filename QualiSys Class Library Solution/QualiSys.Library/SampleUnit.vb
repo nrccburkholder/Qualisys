@@ -36,6 +36,7 @@ Public Class SampleUnit
     Private mHasLoadedQuestionSections As Boolean
     Private mPropertiesAreDirty As Boolean
     Private mDontSampleUnit As Boolean
+    Private mIsLowVolumeUnit As Boolean
 
 #End Region
 
@@ -642,6 +643,25 @@ Public Class SampleUnit
         End Get
         Set(value As String)
             mCAHPSTypeName = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Is this a low volume unit
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    <Logable()> _
+    Public Property IsLowVolumeUnit() As Boolean
+        Get
+            Return mIsLowVolumeUnit
+        End Get
+        Set(ByVal value As Boolean)
+            If mIsLowVolumeUnit <> value Then
+                mIsLowVolumeUnit = value
+                mPropertiesAreDirty = True
+            End If
         End Set
     End Property
 
