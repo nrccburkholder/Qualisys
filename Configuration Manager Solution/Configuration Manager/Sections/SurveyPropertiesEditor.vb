@@ -14,6 +14,8 @@ Public Class SurveyPropertiesEditor
     Private mEndConfigCallBack As EndConfigCallBackMethod
     Private mIsLoading As Boolean = False
     Private mSubTypeList As SubTypeList = New SubTypeList()
+    Private previousSurveyTypeIndex As Integer = 0
+    Private deleteFacilityMapping As Boolean = False
 
 #End Region
 
@@ -43,6 +45,9 @@ Public Class SurveyPropertiesEditor
     Private Sub SurveyTypeComboBox_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SurveyTypeComboBox.SelectedIndexChanged
 
         Try
+
+            Dim cgCahpsSurveyType As SurveyType = GetSurveyTypeByName("CGCAHPS")
+
             If (SurveyTypeComboBox.SelectedIndex < 0) Then Return
             Dim surveyType As SurveyTypes = CType(SurveyTypeComboBox.SelectedValue, Library.SurveyTypes)
 
@@ -55,6 +60,29 @@ Public Class SurveyPropertiesEditor
             Dim questionnairetypeid As Integer = 0
 
             surveytypeid = surveyType
+
+            If Not mIsLoading Then
+                If IsCGCahpsSurveyTypeChange(surveytypeid) Then
+
+                    Dim previousSurveyTypeName As String = mModule.EditingSurvey.SurveyTypeName
+                    Dim targetSurveyTypeName As String = GetSurveyTypeByID(surveytypeid).Description
+
+                    Dim message As New StringBuilder()
+
+                    message.AppendLine(String.Format("You are changing the Survey Type from {0} to {1}.", previousSurveyTypeName, targetSurveyTypeName))
+                    message.AppendLine("")
+                    message.AppendLine("This survey has existing facility mappings.")
+                    message.AppendLine("Facility mappings will be cleared.")
+                    message.AppendLine("")
+                    message.AppendLine("Are you sure you want to do that?")
+
+                    If MessageBox.Show(message.ToString(), "Are you sure about this?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2) = DialogResult.No Then
+                        SurveyTypeComboBox.SelectedIndex = previousSurveyTypeIndex
+                        Exit Sub
+                    End If
+
+                End If
+            End If
 
             LoadQuestionnaireTypeComboBox(surveytypeid, questionnairetypeid, survey.Id)
 
@@ -79,6 +107,8 @@ Public Class SurveyPropertiesEditor
             ResurveyExcludionDaysNumeric.Enabled = Not survey.IsResurveyExclusionPeriodsNumericDisabled
 
             UseUSPSAddrChangeServiceCheckBox.Checked = survey.UseUSPSAddrChangeServiceDefault
+
+            previousSurveyTypeIndex = SurveyTypeComboBox.SelectedIndex
 
         Catch ex As System.InvalidCastException
             Return
@@ -240,7 +270,7 @@ Public Class SurveyPropertiesEditor
                 End If
             End If
 
-            
+
 
         End If
     End Sub
@@ -579,6 +609,9 @@ Public Class SurveyPropertiesEditor
 
     Private Sub SaveInputData()
 
+        Dim surveyTypeId As Integer = CType(SurveyTypeComboBox.SelectedValue, SurveyTypes)
+        Dim clearFacilityMappings As Boolean = IsCGCahpsSurveyTypeChange(surveyTypeId)
+
         With mModule.EditingSurvey
             .SurveyType = CType(SurveyTypeComboBox.SelectedValue, SurveyTypes)
             .Name = SurveyNameTextBox.Text.Trim
@@ -591,6 +624,8 @@ Public Class SurveyPropertiesEditor
             .SurveyEndDate = SurveyEndDatePicker.Value
             .SurveySubTypes = SetSurveySubTypes()
             .QuestionnaireType = SetQuestionnaireType()
+            .ClearFacilityMappings = clearFacilityMappings
+
 
             Dim dateField As CutoffDateField = DirectCast(SampleEncounterDateComboBox.SelectedValue, CutoffDateField)
             If (dateField.CutoffDateFieldType = CutoffFieldType.NotApplicable) Then
@@ -832,6 +867,41 @@ Public Class SurveyPropertiesEditor
             End If
         Next
     End Sub
+
+    Private Function GetSurveyTypeByName(ByVal name As String) As SurveyType
+
+        For Each s As SurveyType In Library.SurveyType.GetAll()
+            If s.Description.ToUpper().Equals(name.ToUpper()) Then Return s
+
+        Next
+
+        Return Nothing
+
+    End Function
+
+    Private Function GetSurveyTypeByID(ByVal ID As Integer) As SurveyType
+
+        For Each s As SurveyType In Library.SurveyType.GetAll()
+            If s.Id = ID Then Return s
+
+        Next
+
+        Return Nothing
+
+    End Function
+
+    Private Function IsCGCahpsSurveyTypeChange(ByVal selectedSurveyTypeId As Integer) As Boolean
+
+        Dim hasFacilityMapping As Boolean = mModule.EditingSurvey.HasFacilityMapping
+        Dim previousSurveyTypeId As Integer = mModule.EditingSurvey.SurveyType
+        Dim cgCahpsSurveyType As SurveyType = GetSurveyTypeByName("CGCAHPS")
+
+        If previousSurveyTypeId <> selectedSurveyTypeId AndAlso (selectedSurveyTypeId = cgCahpsSurveyType.CAHPSTypeId Or previousSurveyTypeId = cgCahpsSurveyType.CAHPSTypeId) AndAlso hasFacilityMapping Then
+            Return True
+        End If
+
+    End Function
+
 #End Region
 
 End Class

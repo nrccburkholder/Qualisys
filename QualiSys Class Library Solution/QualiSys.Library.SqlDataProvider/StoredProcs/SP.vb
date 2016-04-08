@@ -124,7 +124,9 @@ Public NotInheritable Class SP
     Public Const UpdatePracticeSite As String = "QCL_PracticeSiteUpdate"
     Public Const InsertSiteGroup As String = "QCL_SiteGroupInsert"
     Public Const InsertPracticeSite As String = "QCL_PracticeSiteInsert"
-
+    Public Const DeleteSiteGroup As String = "QCL_SiteGroupDelete"
+    Public Const DeletePracticeSite As String = "QCL_PracticeSiteDelete"
+    Public Const PracticeSiteAllowDelete As String = "QCL_SiteAllowDelete"
 
 
 #Region "Legacy Sampling Procedures"

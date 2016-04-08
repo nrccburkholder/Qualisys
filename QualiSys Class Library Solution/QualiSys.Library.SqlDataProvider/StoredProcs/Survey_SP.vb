@@ -22,5 +22,6 @@ Partial Public NotInheritable Class SP
     Public Const SelectSurveySubTypes As String = "QCL_SelectSurveySubTypes"
     Public Const SelectQuestionnaireTypes As String = "QCL_SelectQuestionnaireTypes"
     Public Const SelectSurveySubTypeBySubTypeID As String = "QCL_SelectSurveySubTypeBySubTypeID"
+    Public Const HasFacilityMapping As String = "QCL_HasFacilityMapping"
 
 End Class

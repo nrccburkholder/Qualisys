@@ -243,7 +243,8 @@ namespace HHCAHPS.ImportProcessorTest
         [TestMethod]
         public void Parse_Sample1File_RowsHaveLookbackSkilledVisits()
         {
-            AssertSample1FileRowsHaveField(ExtractHelper.LookbackPeriodVisitsField, "3", "0", "0", "4");
+            //AssertSample1FileRowsHaveField(ExtractHelper.LookbackPeriodVisitsField, "3", "0", "0", "4");
+            AssertSample1FileRowsHaveField(ExtractHelper.LookbackPeriodVisitsField, "7", "1", "1", "6");
         }
 
         [TestMethod]

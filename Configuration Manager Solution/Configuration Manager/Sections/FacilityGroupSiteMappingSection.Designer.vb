@@ -243,6 +243,7 @@ Partial Class FacilityGroupSiteMappingSection
         Me.gcGroupsAndSites.Size = New System.Drawing.Size(1458, 796)
         Me.gcGroupsAndSites.TabIndex = 5
         Me.gcGroupsAndSites.UseEmbeddedNavigator = True
+        Me.gcGroupsAndSites.EmbeddedNavigator.Buttons.Remove.Visible = CurrentUser.MayDeleteGroupsAndSites
         Me.gcGroupsAndSites.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.gvSiteGroups, Me.gvPracticeSites})
         '
         'gvSiteGroups

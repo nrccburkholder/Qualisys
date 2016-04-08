@@ -297,6 +297,10 @@ Public Class SiteGroup
         FacilityProvider.Instance.InsertSiteGroup(siteGroup)
     End Sub
 
+    Public Shared Sub DeleteSiteGroup(siteGroup As SiteGroup)
+        FacilityProvider.Instance.DeleteSiteGroup(siteGroup)
+    End Sub
+
     Public Shared Sub UpdatePracticeSite(practiceSite As PracticeSite)
         FacilityProvider.Instance.UpdatePracticeSite(practiceSite)
     End Sub
@@ -304,6 +308,18 @@ Public Class SiteGroup
     Public Shared Sub InsertPracticeSite(practiceSite As PracticeSite)
         FacilityProvider.Instance.InsertPracticeSite(practiceSite)
     End Sub
+
+    Public Shared Sub DeletePracticeSite(practiceSite As PracticeSite)
+        FacilityProvider.Instance.DeletePracticeSite(practiceSite)
+    End Sub
+
+    Public Shared Function AllowSiteDelete(practiceSite As PracticeSite) As Boolean
+        Return FacilityProvider.Instance.AllowSiteDelete(practiceSite)
+    End Function
+
+    Public Shared Function AllowSiteDelete(siteGroup As SiteGroup) As Boolean
+        Return FacilityProvider.Instance.AllowSiteDelete(siteGroup)
+    End Function
 
 #End Region
 

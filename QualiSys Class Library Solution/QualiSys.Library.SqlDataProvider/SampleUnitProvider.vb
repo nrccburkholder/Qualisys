@@ -61,6 +61,7 @@ Public Class SampleUnitProvider
         End Select
         newObj.CAHPSType = CType(rdr.GetInteger("CAHPSType_Id"), CAHPSType)
         newObj.CAHPSTypeName = GetCAHPSTypeName(rdr.GetInteger("CAHPSType_Id"))
+        newObj.IsLowVolumeUnit = rdr.GetBoolean("bitLowVolumeUnit")
         newObj.ResetDirtyFlag()
 
         Return newObj
@@ -392,7 +393,7 @@ Public Class SampleUnitProvider
                                                        parentSampleUnitId, unit.Name, unit.Target, unit.InitialResponseRate, _
                                                        facilityId, unit.IsSuppressed, _
                                                        unit.Priority, _
-                                                       selectionType, unit.DontSampleUnit, unit.CAHPSType)
+                                                       selectionType, unit.DontSampleUnit, unit.CAHPSType, unit.IsLowVolumeUnit)
         Using rdr As New SafeDataReader(ExecuteReader(cmd, tran))
             If rdr.Read Then
                 ReadOnlyAccessor.SampleUnitId(unit) = rdr.GetInteger("SampleUnit_id")
@@ -424,7 +425,7 @@ Public Class SampleUnitProvider
             Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.UpdateSampleUnit, unit.Id, unit.CriteriaStatementId.Value, _
                                                            unit.SamplePlanId, parentSampleUnitId, unit.Name, unit.Target, _
                                                            unit.InitialResponseRate, unit.FacilityId, unit.IsSuppressed, _
-                                                           unit.Priority, selectionType, unit.DontSampleUnit, unit.CAHPSType)
+                                                           unit.Priority, selectionType, unit.DontSampleUnit, unit.CAHPSType, unit.IsLowVolumeUnit)
             ExecuteNonQuery(cmd, tran)
             unit.ResetDirtyFlag()
         End If

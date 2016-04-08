@@ -1895,7 +1895,8 @@ begin
 {$ENDIF}
     if GetNextBatch>0 then begin
       timer.enabled := false;
-      MainLoop;
+      if timer.Tag <> 99 then
+        MainLoop;
       MessageBeep(0); MessageBeep(0); MessageBeep(0);
       frmPCLGeneration.btnErrorLog.Enabled := true;
       if dmopenq.createok and frmLayoutcalc.createok and createok then begin
@@ -1904,6 +1905,7 @@ begin
       end;
       frmPCLGeneration.close;
     end else begin
+      timer.Tag := 99; //'Holding Pattern'
       dmopenq.dbQualPro.keepconnection := false;
       dmopenq.dbQualPro.close;
       dmopenq.dbScan.keepconnection := false;
