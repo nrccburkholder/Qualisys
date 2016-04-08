@@ -34,6 +34,7 @@ from orgunit where strOrgUnit_nm in ('NRCIS','NRC General')
 declare @NewDeleteOrgUnitPrivId int
 select @NewDeleteOrgUnitPrivId = min(OrgUnitPrivilege_id) from OrgUnitPrivilege where Privilege_id = @NewDeletePrivilegeId
 
+if not exists(select * from memberprivilege where OrgUnitPrivilege_id = @NewDeleteOrgUnitPrivId)
 insert into memberprivilege
 (Member_id,OrgUnitPrivilege_id,Author,datOccurred,datGranted,datRevoked)
 select Member_id, @NewDeleteOrgUnitPrivId, 150002, GetDate(), GetDate(), null 

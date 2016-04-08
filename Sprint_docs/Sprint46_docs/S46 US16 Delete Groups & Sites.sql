@@ -16,9 +16,6 @@ go
 
 begin tran
 
-USE [QP_Prod]
-GO
-
 /****** Object:  StoredProcedure [dbo].[QCL_PracticeSiteDelete]    Script Date: 4/6/2016 10:20:33 AM ******/
 if exists (select * from sys.procedures where name = 'QCL_PracticeSiteDelete' and schema_id = SCHEMA_ID('dbo'))
 	DROP PROCEDURE [dbo].[QCL_PracticeSiteDelete]
