@@ -137,7 +137,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="libs\QueueManDLL.dll" />
     <Content Include="QueueManager.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
