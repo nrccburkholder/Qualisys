@@ -78,7 +78,7 @@ namespace QueueManagerLibrary.DataProviders
                                                        };
 
             DataSet ds = new DataSet();
-            SqlProvider.Fill(ref ds, "sp_Queue_ClientList", CommandType.StoredProcedure, param);
+            SqlProvider.Fill(ref ds, "QQM_ClientList", CommandType.StoredProcedure, param);
 
             using (ds)
             {
