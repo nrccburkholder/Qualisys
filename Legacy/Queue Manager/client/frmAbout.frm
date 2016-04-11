@@ -5,7 +5,7 @@ Begin VB.Form frmAbout
    ClientHeight    =   3555
    ClientLeft      =   2340
    ClientTop       =   1935
-   ClientWidth     =   5730
+   ClientWidth     =   7365
    ClipControls    =   0   'False
    Icon            =   "frmAbout.frx":0000
    LinkTopic       =   "Form2"
@@ -13,14 +13,14 @@ Begin VB.Form frmAbout
    MinButton       =   0   'False
    ScaleHeight     =   2453.724
    ScaleMode       =   0  'User
-   ScaleWidth      =   5380.766
+   ScaleWidth      =   6916.116
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.PictureBox picIcon 
       AutoSize        =   -1  'True
       ClipControls    =   0   'False
       Height          =   1020
-      Left            =   240
+      Left            =   360
       Picture         =   "frmAbout.frx":164A
       ScaleHeight     =   674.24
       ScaleMode       =   0  'User
@@ -34,25 +34,25 @@ Begin VB.Form frmAbout
       Caption         =   "OK"
       Default         =   -1  'True
       Height          =   345
-      Left            =   4245
+      Left            =   5760
       TabIndex        =   0
-      Top             =   2625
+      Top             =   2520
       Width           =   1260
    End
    Begin VB.CommandButton cmdSysInfo 
       Caption         =   "&System Info..."
       Height          =   345
-      Left            =   4260
+      Left            =   5760
       TabIndex        =   2
-      Top             =   3075
+      Top             =   3000
       Width           =   1245
    End
    Begin VB.Line Line1 
       BorderColor     =   &H00808080&
       BorderStyle     =   6  'Inside Solid
       Index           =   1
-      X1              =   84.515
-      X2              =   5309.398
+      X1              =   112.686
+      X2              =   6761.172
       Y1              =   1687.583
       Y2              =   1687.583
    End
@@ -60,36 +60,36 @@ Begin VB.Form frmAbout
       Caption         =   $"frmAbout.frx":2C94
       ForeColor       =   &H00000000&
       Height          =   1170
-      Left            =   1050
+      Left            =   2010
       TabIndex        =   3
       Top             =   1125
-      Width           =   3885
+      Width           =   4965
    End
    Begin VB.Label lblTitle 
       Caption         =   "Application Title"
       ForeColor       =   &H00000000&
       Height          =   480
-      Left            =   1050
+      Left            =   2010
       TabIndex        =   5
       Top             =   240
-      Width           =   3885
+      Width           =   4965
    End
    Begin VB.Line Line1 
       BorderColor     =   &H00FFFFFF&
       BorderWidth     =   2
       Index           =   0
       X1              =   98.6
-      X2              =   5309.398
+      X2              =   6873.858
       Y1              =   1697.936
       Y2              =   1697.936
    End
    Begin VB.Label lblVersion 
       Caption         =   "Version"
       Height          =   225
-      Left            =   1050
+      Left            =   2040
       TabIndex        =   6
       Top             =   780
-      Width           =   3885
+      Width           =   4965
    End
    Begin VB.Label lblDisclaimer 
       ForeColor       =   &H00000000&

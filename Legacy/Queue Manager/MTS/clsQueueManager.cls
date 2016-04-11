@@ -31,6 +31,7 @@ Dim strPCL As String
 Dim strQueue As String
 Dim strThisServer As String
 Dim strThisDatabase As String
+Dim strBundlingSheetPrinter As String
 
 Private Enum col
         iTrayNumber = 1
@@ -1116,6 +1117,8 @@ Private Function oldPrintBundleReport(ByVal strSurvey_idSelect As String, _
 
 End Function
 
+
+
 Public Function GroupedPrintList(ByVal bolReprint As Boolean) As Variant
     Dim rs As New Recordset
     Dim oGroupedCm As ADODB.Command
@@ -2034,11 +2037,14 @@ Public Function GetPrintBundle(ByVal Survey_id As Long, _
             .Parameters("datBundled") = strBundled
             .Execute
         End With 'oCommand
+       
     End If
     
     Terminate
     
 End Function
+
+
 
 Public Function SetRePrintIndiv(ByVal QList As String) As Boolean
 
@@ -2449,8 +2455,9 @@ Public Function GetRePrintBundle(ByVal Survey_id As Long, _
                        "       AND abs(datediff(second,S.datBundled,'" & strBundled & "'))<=1 " & _
                        "       AND S.datPrinted IS NOT NULL "
         SetPrintDate "UPDATE Sentmailing SET datReprinted=getdate(), intReprinted=intReprinted+1 " & strFromWhere
+
     End If
-    
+
     Terminate
 
 End Function
@@ -3333,6 +3340,8 @@ Private Function finalPDFPath() As String
 End Function
 
 
+
+
 Private Function AcrobatEXE() As String
     If strAcrobatEXE = "" Then
         strAcrobatEXE = GetRegValue(HKEY_CLASSES_ROOT, "AcroExch.Document\shell\open\command", "")
@@ -3363,5 +3372,173 @@ Public Function ShowGroupedPrint() As Boolean
   
 End Function
 
+
+Public Function CreateBundleSheet(ByVal strSurvey_idSelect As String, _
+                                   ByVal strConfig_idSelect As String, _
+                                   ByVal datBundledSelect As Date) As String
+
+    Dim tmpStr As String
+    Dim strProjName As String
+    Dim strSurvey_id As String
+    Dim strConfig_nm As String
+    Dim datBundled As Date
+    Dim rs As ADODB.Recordset
+    Dim strFileName As String
+    Dim curBundle As String, strBundle As String, strGroup As String
+    Dim UnprintedBundles As Long
+    Dim UnprintedPieces As Long
+    Dim LastUnprintedBundle As String
+    Dim boolFlats As Boolean
+    Dim oBunRepCm As ADODB.Command      '** Added 09-12-02 JJF
+    Dim pieces As Long                  '** Added 12-01-2004 SH
+    Dim runningTotal As Long            '** Added 12-01-2004 SH
+    Dim isGroupedPrint As Boolean
+        
+    CreateBundleSheet = ""
+    Initialize
+    
+    Set oBunRepCm = New ADODB.Command
+    With oBunRepCm
+        .CommandText = "sp_Queue_BundleReport"
+        .CommandType = adCmdStoredProc
+        .CommandTimeout = 0
+        .ActiveConnection = moConn
+        .Parameters.Append .CreateParameter("datBundled", adDBTimeStamp, adParamInput)
+        .Parameters.Append .CreateParameter("Survey_id", adVarChar, adParamInput, 10)
+        .Parameters.Append .CreateParameter("PaperConfig", adInteger, adParamInput)
+    End With 'oBunRepCm
+    
+    Set rs = New ADODB.Recordset
+    moConn.CommandTimeout = 0
+    
+    With oBunRepCm
+        .Parameters("datBundled") = datBundledSelect
+        .Parameters("Survey_id") = strSurvey_idSelect
+        .Parameters("PaperConfig") = Val(strConfig_idSelect)
+        Set rs = .Execute()
+    End With
+    
+    
+    If Not rs.EOF And Not rs.BOF Then
+        strProjName = ""
+        strConfig_nm = ""
+        strSurvey_id = ""
+        datBundled = Now
+        UnprintedBundles = 0
+        UnprintedPieces = 0
+        LastUnprintedBundle = ""
+        
+        boolFlats = (Left(rs.Fields("strPostalBundle"), 1) >= "K")
+               
+                runningTotal = 0
+                strProjName = rs.Fields("strProjName").Value
+                strConfig_nm = rs.Fields("strPaperConfig_nm").Value
+                strSurvey_id = rs.Fields("Survey_id").Value
+                datBundled = rs.Fields("datBundled").Value
+                tmpStr = vbTab + "BUNDLING REPORT" & "" & GetSurveyType(Val(strSurvey_idSelect)) & vbCrLf & vbCrLf
+                tmpStr = tmpStr + strProjName & vbCrLf
+                tmpStr = tmpStr + strConfig_nm & vbCrLf
+                tmpStr = tmpStr + "Spooled on: " & datBundled & vbCrLf & vbCrLf
+                If boolFlats Then
+                    ' ** 12-01-2004 SH - Added Running Total column
+                    tmpStr = tmpStr + "Tray        Bundle   Litho Range             Pieces   Running Total" & vbCrLf
+                    tmpStr = tmpStr + "---------   ------   ---------------------   ------   -------------" & vbCrLf
+                Else
+                    ' ** 12-01-2004 SH - Added Running Total column
+                    tmpStr = tmpStr + "Bundle   Group   Litho Range             Pieces   Running Total" & vbCrLf
+                    tmpStr = tmpStr + "------   -----   ---------------------   ------   -------------" & vbCrLf
+                End If
+                
+                strGroup = ""
+                curBundle = ""
+            'End If
+        
+        isGroupedPrint = (strSurvey_id = "0")
+        
+        While (Not rs.EOF) And ((Not isGroupedPrint) Or strSurvey_id = "0")
+            'until rs.eof or (isgroupedprint and survey_id <> "0")
+            If IsNull(rs.Fields("strGroupDest").Value) Then
+                strGroup = ""
+            Else
+                strGroup = rs.Fields("strGroupDest").Value
+            End If
+            If curBundle <> rs.Fields("strpostalbundle").Value Then
+                strBundle = rs.Fields("strPostalBundle").Value
+                curBundle = strBundle
+            Else
+                strBundle = ""
+            End If
+            
+            If boolFlats Then
+                tmpStr = tmpStr & Pad(strBundle, 12) & Pad(strGroup, 9) & Pad(rs.Fields("MinLitho").Value & " - " & rs.Fields("MaxLitho").Value, 24) & Pad(rs.Fields("pieces").Value, 8)
+            Else
+                tmpStr = tmpStr & Pad(strBundle, 9) & Pad(strGroup, 8) & Pad(rs.Fields("MinLitho").Value & " - " & rs.Fields("MaxLitho").Value, 24) & Pad(rs.Fields("pieces").Value, 8)
+            End If
+            pieces = rs.Fields("Pieces").Value
+            runningTotal = runningTotal + pieces
+            tmpStr = tmpStr & str(runningTotal) & vbCrLf
+            
+            If IsNull(rs.Fields("MinLitho").Value) Then
+                UnprintedPieces = UnprintedPieces + rs.Fields("Pieces").Value
+                If LastUnprintedBundle <> curBundle Then
+                    UnprintedBundles = UnprintedBundles + 1
+                    LastUnprintedBundle = curBundle
+                End If
+            
+            End If
+            rs.MoveNext
+            If Not rs.EOF Then strSurvey_id = rs.Fields("Survey_id").Value
+        Wend
+        
+        If isGroupedPrint Then
+            tmpStr = tmpStr + vbCrLf & vbCrLf
+            tmpStr = tmpStr + "Project                                                      Litho Range             #" & vbCrLf
+            tmpStr = tmpStr + "-----------------------------------------------------------  ----------------------  ----" & vbCrLf
+            
+            runningTotal = 0
+            While Not rs.EOF
+                tmpStr = Pad(rs.Fields("strProjName").Value, 61) & Pad(rs.Fields("MinLitho").Value & " - " & rs.Fields("MaxLitho").Value, 24) & Pad(rs.Fields("pieces").Value, 4)
+                pieces = rs.Fields("Pieces").Value
+                runningTotal = runningTotal + pieces
+                tmpStr = tmpStr & vbCrLf
+                
+                rs.MoveNext
+            Wend
+        End If
+                
+        If UnprintedPieces > 0 Then
+            tmpStr = vbCrLf & "There are " & UnprintedPieces & " questionnaires in " & UnprintedBundles & " bundle(s) that haven't been printed yet"
+        End If
+        CreateBundleSheet = tmpStr
+    End If
+
+    If rs.State = adStateOpen Then
+        rs.Close
+    End If
+    Set rs = Nothing
+        
+    Set oBunRepCm = Nothing     '** Added 09-12-02 JJF
+
+End Function
+
+Public Function BundlingSheetPrinter() As String
+    
+  If strBundlingSheetPrinter = "" Then
+    Initialize
+    
+    Dim rs As New ADODB.Recordset
+    
+    'Set rs = New ADODB.Recordset
+    rs.Open "SELECT strParam_Value FROM QualPro_Params WHERE strParam_grp = 'QueueManager' and strParam_nm = 'BundlingSheetPrinter'", moConn, adOpenForwardOnly
+    If Not rs.EOF And Not rs.BOF Then
+        strBundlingSheetPrinter = rs!strParam_Value
+    Else
+        Err.Raise vbError + 10001, "QueManagerDB:clsQueueManager:PrintBundleSheet", "'BundlingSheetPrinter' Param does not exist"
+    End If
+    rs.Close
+  End If
+  BundlingSheetPrinter = strBundlingSheetPrinter
+  
+End Function
 
 

@@ -59,6 +59,7 @@ Begin VB.Form frmMain
          _Version        =   393217
          BackColor       =   -2147483644
          BorderStyle     =   0
+         Enabled         =   -1  'True
          HideSelection   =   0   'False
          ReadOnly        =   -1  'True
          DisableNoScroll =   -1  'True
@@ -741,6 +742,7 @@ Option Explicit
     Private Const mknSplitLimit = 5250
 
     Private mlButtonUsed As Long
+    Private msVersion As String
 
 Public Sub CheckQueue()
     
@@ -1646,7 +1648,9 @@ Private Sub cmdClose_Click()
 End Sub
 
 Private Sub Form_Load()
-    
+
+    msVersion = " v" & App.Major & "." & App.Minor & "." & App.Revision
+      
     ' *** Added 01-13-2003 SH
     Dim pGetEmpObj As New getEmpId.GetEmpIdDll
     Dim lngEmployee_id As Long
@@ -1772,7 +1776,7 @@ End Sub
 
 Private Sub mnuAbout_Click()
     txtProperties.TextRTF = "{ "
-    txtProperties.TextRTF = txtProperties.Text & "{\ul \b \qc \cell \fs25 National Research Corporation }"
+    txtProperties.TextRTF = txtProperties.Text & "{\ul \b \qc \cell \fs25 National Research Corporation - QueueManager" & msVersion & " }"
     txtProperties.TextRTF = txtProperties.Text & "{ \b \qc \line \fs20 \line \line }"
     txtProperties.TextRTF = txtProperties.Text & " }"
 End Sub
@@ -2242,6 +2246,8 @@ Public Sub PrintNode(NodeIndex As Long)
     moQueueManager.SetLithoCodes mbReprint, Survey_id, PostalBundle, PaperConfig, Page_num, strBundled
     If Not moQueueManager.GetPrintBundle(Survey_id, PostalBundle, PaperConfig, Page_num, strBundled) Then
         MsgBox "No surveys were printed for the " & PostalBundle & " bundle!", vbExclamation, "Print Warning"
+    Else
+        Call PrintBundlingSheets(Survey_id, PaperConfig, strBundled)
     End If
     frmMain.tvTreeView.Nodes(NodeIndex).Image = (frmMain.tvTreeView.Nodes(NodeIndex).Image \ TotalStates) * TotalStates + Bundle
 End Sub
@@ -2390,7 +2396,11 @@ Public Function RePrintBundles(nodSelected As Node) As Boolean
             n = frmMain.tvTreeView.Nodes(X).Image
             n = (n \ TotalStates) * TotalStates + Printing
             If Not oQueueManager.GetRePrintBundle(Survey_id, PostalBundle, PaperConfig, Page_num, strBundled) Then
+            
                 MsgBox "No surveys were printed for the " & PostalBundle & " bundle!", vbExclamation, "Print Warning"
+                
+            Else
+                'Call PrintBundlingSheets(Survey_id, PaperConfig, strBundled)
             End If
             If strMailedOn = "Not Mailed" Then
                 n = (n \ TotalStates) * TotalStates + Bundle
@@ -2448,3 +2458,71 @@ Public Property Let ButtonUsed(ByVal lData As Long)
     mlButtonUsed = lData
     
 End Property
+
+
+Private Sub PrintBundlingSheets(ByVal strSurvey_id As String, _
+                               ByVal strConfig_id As Long, _
+                               ByVal strBundled As String)
+                               
+    On Error GoTo ErrorHandler
+
+    Dim oQueueManager As New QueueManDLL.clsQueueManager
+    Dim strReportContent As String
+    strReportContent = oQueueManager.CreateBundleSheet(strSurvey_id, strConfig_id, strBundled)
+              
+    If Len(Trim(strReportContent)) Then
+    
+        Dim PrinterName As String
+        PrinterName = oQueueManager.BundlingSheetPrinter()
+        
+        If PrinterIsExist(PrinterName) Then
+        
+            Dim intX As Integer
+             For intX = 0 To Printer.FontCount - 1
+                If Printer.Fonts(intX) Like "Courier*" Then
+                Printer.FontName = Printer.Fonts(intX)
+                Exit For
+                End If
+            Next
+        
+            Dim prt As Printer
+            For Each prt In Printers
+              If prt.DeviceName = PrinterName Then
+                Set Printer = prt
+                Exit For
+              End If
+            Next
+            
+            Printer.FontSize = 12
+            Printer.Print strReportContent
+            Printer.EndDoc
+        Else
+            Dim msg As String
+            msg = "Printer " & "'" & PrinterName & "' not found!" & vbCrLf & vbCrLf
+            msg = msg & "Bunding Sheet cannot be automatically printed."
+            MsgBox msg, vbExclamation, "Bundling Sheet Auto Print"
+            Exit Sub
+        End If
+        
+    
+    End If
+    
+ErrorHandler:
+    MsgBox "Unable to print automatically print bundling sheet: " & Chr(10) & vbTab & Err.Description & "!", vbOKOnly, "Bundling Sheet Auto Print"
+        
+End Sub
+
+
+Private Function PrinterIsExist(PrinterName As String) As Boolean
+
+Dim Printer1 As Printer
+PrinterIsExist = False
+
+For Each Printer1 In Printers
+ If Printer1.DeviceName = PrinterName Then
+  PrinterIsExist = True
+  Exit Function
+ End If
+Next
+
+End Function
