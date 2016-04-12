@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin VB.Form frmReprintIndiv 
    Caption         =   "Reprint Individual Surveys"
-   ClientHeight    =   3195
+   ClientHeight    =   3810
    ClientLeft      =   60
    ClientTop       =   345
    ClientWidth     =   4680
@@ -9,7 +9,7 @@ Begin VB.Form frmReprintIndiv
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   3195
+   ScaleHeight     =   3810
    ScaleWidth      =   4680
    StartUpPosition =   1  'CenterOwner
    Begin VB.CommandButton cmdSort 

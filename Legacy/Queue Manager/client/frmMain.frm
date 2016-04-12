@@ -735,7 +735,7 @@ Option Explicit
     Private mbMoving As Boolean
     Private mlUniqueKey As Long
     Private msUserName As String ' 11-30-2004 SH added - needs in Rollback Generation
-    Private moQueueManager As QueueManDLL.clsQueueManager
+    Private moQueueManager As clsQueueManager
     Private mvStartLitho As Variant
     Private mvEndLitho As Variant
 
@@ -1017,7 +1017,7 @@ Skip:
 End Sub
 
 Private Sub CheckConfiguration(nodParent As Node, ByVal lngSurveyId As Long)
-    Dim n, X As Long
+    Dim n, x As Long
     Dim nodConfiguration As Node
     Dim varConfiguration As Variant
     Dim strProperties As String
@@ -1034,25 +1034,25 @@ Private Sub CheckConfiguration(nodParent As Node, ByVal lngSurveyId As Long)
     'varConfiguration(7,X)=datMailed
     
     If Not IsEmpty(varConfiguration) Then
-        For X = 0 To UBound(varConfiguration, 2)
+        For x = 0 To UBound(varConfiguration, 2)
             ' I am hold the description of the node in the
             ' key value of the node.  this is what is
             ' displayed when clicked on in the tree
-            strProperties = "{\ul \b \pard \qc " & varConfiguration(0, X) & " \ulnone \par}"
-            strProperties = strProperties & "{ \cell \ql Number of pieces: \tab \cell " & varConfiguration(5, X) & " \par }"
+            strProperties = "{\ul \b \pard \qc " & varConfiguration(0, x) & " \ulnone \par}"
+            strProperties = strProperties & "{ \cell \ql Number of pieces: \tab \cell " & varConfiguration(5, x) & " \par }"
             '** Modified 09-19-02 JJF
             'strProperties = strProperties & " }"
             strProperties = strProperties & " }" & lngSurveyId
             '** End of modification 09-19-02 JJF
-            lngBundleCount = IIf(varConfiguration(6, X) = varConfiguration(5, X), _
+            lngBundleCount = IIf(varConfiguration(6, x) = varConfiguration(5, x), _
                              (nodParent.Image \ TotalStates) * TotalStates + CheckedConfiguration, _
                              (nodParent.Image \ TotalStates) * TotalStates + Configuration)
-            Set nodConfiguration = tvTreeView.Nodes.Add(nodParent, tvwChild, strProperties, varConfiguration(0, X), lngBundleCount)
-            strProperties = varConfiguration(4, X) & vbTab & varConfiguration(1, X) & vbTab & Trim(Left(varConfiguration(0, X), InStr(varConfiguration(0, X), "  "))) & vbTab & varConfiguration(5, X)
+            Set nodConfiguration = tvTreeView.Nodes.Add(nodParent, tvwChild, strProperties, varConfiguration(0, x), lngBundleCount)
+            strProperties = varConfiguration(4, x) & vbTab & varConfiguration(1, x) & vbTab & Trim(Left(varConfiguration(0, x), InStr(varConfiguration(0, x), "  "))) & vbTab & varConfiguration(5, x)
             n = FindNodeByTag(strProperties)
             nodConfiguration.Tag = strProperties
-            If varConfiguration(7, X) <> #1/1/4000# Then _
-                nodConfiguration.Tag = strProperties & vbTab & varConfiguration(7, X)
+            If varConfiguration(7, x) <> #1/1/4000# Then _
+                nodConfiguration.Tag = strProperties & vbTab & varConfiguration(7, x)
             If n > -1 Then
                 nodConfiguration.Key = Mid(tvTreeView.Nodes(n).Key, 18)
                 nodConfiguration.Image = (nodConfiguration.Image \ TotalStates) * TotalStates + FadedConfiguration
@@ -1061,42 +1061,42 @@ Private Sub CheckConfiguration(nodParent As Node, ByVal lngSurveyId As Long)
                 ' We will only get one level, and let the clicks to the rest.
                 ' However, we need to know the study id, which we are going to
                 ' store as the first child (which will eventually get deleted).
-                If Left(varConfiguration(0, X), InStr(varConfiguration(0, X), "  ")) <> "(unbundled) " Then
+                If Left(varConfiguration(0, x), InStr(varConfiguration(0, x), "  ")) <> "(unbundled) " Then
                   Set nodConfiguration = tvTreeView.Nodes.Add(nodConfiguration, tvwChild, "QUERY=" & _
-                                         lngSurveyId & "|" & varConfiguration(1, X) & "|" & _
-                                         Left(varConfiguration(0, X), InStr(varConfiguration(0, X), "  ")), "")
+                                         lngSurveyId & "|" & varConfiguration(1, x) & "|" & _
+                                         Left(varConfiguration(0, x), InStr(varConfiguration(0, x), "  ")), "")
                 End If
             End If
-        Next X
+        Next x
     End If
 End Sub
 
 Private Sub DeleteConfiguration(nodSelected As Node)
-    Dim X As Long
+    Dim x As Long
     Dim AnotherNode As Node
     
     nodSelected.Image = (nodSelected.Image \ TotalStates) * TotalStates + Deleted
     Set AnotherNode = nodSelected.Child
-    For X = 1 To nodSelected.Children
+    For x = 1 To nodSelected.Children
         DeleteBundleId AnotherNode
         Set AnotherNode = AnotherNode.Next
-    Next X
+    Next x
 End Sub
 
 Private Sub UnDeleteConfiguration(nodSelected As Node)
-    Dim X As Long
+    Dim x As Long
     Dim AnotherNode As Node
     
     nodSelected.Image = (nodSelected.Image \ TotalStates) * TotalStates + Configuration
     Set AnotherNode = nodSelected.Child
-    For X = 1 To nodSelected.Children
+    For x = 1 To nodSelected.Children
         UnDeleteBundleId AnotherNode
         Set AnotherNode = AnotherNode.Next
-    Next X
+    Next x
 End Sub
 
 Private Function CheckBundleId(nodParent As Node, ByVal lngSurveyId As Long, ByVal lngPaperConfig As Long, ByVal strBundled As String) As Long
-    Dim X As Long
+    Dim x As Long
     Dim nodBundle As Node
     Dim strProperties As String
     Dim varBundle As Variant
@@ -1114,18 +1114,18 @@ Private Function CheckBundleId(nodParent As Node, ByVal lngSurveyId As Long, ByV
     'varBundle(8,X)=datMailed
     
     If Not IsEmpty(varBundle) Then
-        For X = 0 To UBound(varBundle, 2)
+        For x = 0 To UBound(varBundle, 2)
             ' I am hold the description of the node in the
             ' key value of the node.  this is what is
             ' displayed when clicked on in the tree
-            strProperties = "{\ul \b \pard \qc " & varBundle(0, X) & " \ulnone \par}"
-            If Not IsNull(varBundle(8, X)) Then
-                strProperties = strProperties & "{ \ul \b \pard \qc This bundle was mailed on " & varBundle(8, X) & " \ulnone \par}"
+            strProperties = "{\ul \b \pard \qc " & varBundle(0, x) & " \ulnone \par}"
+            If Not IsNull(varBundle(8, x)) Then
+                strProperties = strProperties & "{ \ul \b \pard \qc This bundle was mailed on " & varBundle(8, x) & " \ulnone \par}"
             End If
-            strProperties = strProperties & "{ \cell \ql Number of pieces: \tab \cell " & varBundle(5, X) & " \par }"
-            strProperties = strProperties & "{ \cell \ql Use Letter Head: \tab \cell " & IIf(varBundle(6, X) = "1", "Yes", "No") & " \par }"
+            strProperties = strProperties & "{ \cell \ql Number of pieces: \tab \cell " & varBundle(5, x) & " \par }"
+            strProperties = strProperties & "{ \cell \ql Use Letter Head: \tab \cell " & IIf(varBundle(6, x) = "1", "Yes", "No") & " \par }"
             If frmMain.Caption = "Mailing Queue Manager" Then
-                varLithoRange = moQueueManager.LithoRange(IIf(IsNull(varBundle(0, X)), " ", varBundle(0, X)), lngSurveyId, lngPaperConfig, strBundled)
+                varLithoRange = moQueueManager.LithoRange(IIf(IsNull(varBundle(0, x)), " ", varBundle(0, x)), lngSurveyId, lngPaperConfig, strBundled)
                 If IsEmpty(varLithoRange) Then
                     strProperties = strProperties & "{ \cell \ql LithoCode Range: \tab \cell UnAssigned \par }"
                 Else
@@ -1151,15 +1151,15 @@ Private Function CheckBundleId(nodParent As Node, ByVal lngSurveyId As Long, ByV
             mlUniqueKey = mlUniqueKey + 1
             strProperties = strProperties & mlUniqueKey
             Set nodBundle = tvTreeView.Nodes.Add(nodParent, tvwChild, strProperties, _
-                                                 IIf(IsNull(varBundle(0, X)), "Not Bundled", varBundle(0, X)), _
-                                                 IIf(IsNull(varBundle(8, X)), (nodParent.Image \ TotalStates) * TotalStates + Bundle, _
+                                                 IIf(IsNull(varBundle(0, x)), "Not Bundled", varBundle(0, x)), _
+                                                 IIf(IsNull(varBundle(8, x)), (nodParent.Image \ TotalStates) * TotalStates + Bundle, _
                                                      (nodParent.Image \ TotalStates) * TotalStates + AlreadyMailed))
-            nodBundle.Tag = varBundle(2, X) & vbTab & varBundle(0, X) & vbTab & varBundle(3, X) & _
-                            vbTab & varBundle(4, X) & vbTab & mvStartLitho & vbTab & mvEndLitho & vbTab & _
-                            varBundle(7, X) & vbTab & IIf(IsNull(varBundle(8, X)), "Not Mailed", varBundle(8, X))
-        Next X
+            nodBundle.Tag = varBundle(2, x) & vbTab & varBundle(0, x) & vbTab & varBundle(3, x) & _
+                            vbTab & varBundle(4, x) & vbTab & mvStartLitho & vbTab & mvEndLitho & vbTab & _
+                            varBundle(7, x) & vbTab & IIf(IsNull(varBundle(8, x)), "Not Mailed", varBundle(8, x))
+        Next x
     End If
-    CheckBundleId = X
+    CheckBundleId = x
 End Function
 
 Private Sub DeleteBundleId(nodSelected As Node)
@@ -1480,7 +1480,7 @@ End Sub
 ' 11-30-2004 SH Added
 Private Sub mnuRollbackGen_Click()
     Dim strID As String
-    Dim surveyID As String
+    Dim SurveyID As String
     Dim bundleCode As String
     Dim paperConfigID As String
     Dim pages As String
@@ -1500,7 +1500,7 @@ Private Sub mnuRollbackGen_Click()
     ' 440                 1                                     2004-05-27 16:05:01
     ' 645      PVEND      1             1     44672104 44672123 2004-11-30 07:32:06 2004-11-30 12:00:00
     strID = tvTreeView.SelectedItem.Tag
-    surveyID = NextValue(strID, vbTab)
+    SurveyID = NextValue(strID, vbTab)
     
     If frmMain.tvTreeView.SelectedItem.Image Mod TotalStates = Configuration Then
         Dim SelectedNode As ComctlLib.Node
@@ -1569,7 +1569,7 @@ Private Sub mnuRollbackGen_Click()
     With frmRollbackMessage
         .Caption = "ROLLBACK GENERATION?"
         .txtMessage = "Do you want to rollback the generation for:" & vbCrLf & _
-                      "Survey ID: " & surveyID & vbCrLf & _
+                      "Survey ID: " & SurveyID & vbCrLf & _
                       "Date Bundled: " & dateBundled & vbCrLf & _
                       "Bundle Code: " & _
                       IIf(bundleCode = "", "ALL", bundleCode) & " ?"
@@ -1577,7 +1577,7 @@ Private Sub mnuRollbackGen_Click()
         .WindowState = 0
         .Show vbModal, Me
         If .Rollback Then
-            GenerationRollback surveyID, dateBundled, paperConfigID, bundleCode
+            GenerationRollback SurveyID, dateBundled, paperConfigID, bundleCode
             mnuRefresh_Click
         End If
     End With
@@ -1607,7 +1607,7 @@ End Sub
 '\\ Revisions:
 '\\     Date        By      Description
 '\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-Private Sub GenerationRollback(ByVal surveyID As String, _
+Private Sub GenerationRollback(ByVal SurveyID As String, _
                                ByVal dateBundled As String, _
                                ByVal paperConfigID As String, _
                                ByVal bundleCode As String)
@@ -1626,7 +1626,7 @@ Private Sub GenerationRollback(ByVal surveyID As String, _
     con.CommandTimeout = 0
 
     SQL = "EXEC sp_Queue_GenerationRollback " & _
-          "@Survey_id=" + surveyID & ", " & _
+          "@Survey_id=" + SurveyID & ", " & _
           "@datBundled='" + dateBundled & "', " & _
           "@PaperConfig_id=" + paperConfigID & ", " & _
           IIf(bundleCode = "", "", "@BundleCode='" + bundleCode & "', ") & _
@@ -1677,7 +1677,7 @@ Private Sub Form_Load()
 
     mbTreeSel = False
     mbListSel = False
-    Set moQueueManager = CreateObject("QueueManDLL.clsQueueManager")
+    Set moQueueManager = New clsQueueManager
     mbReprint = False
 'D    moQueueManager.RePrints = False
     mnuAbout_Click
@@ -1705,7 +1705,7 @@ Private Sub Form_Resize()
     On Error GoTo 0
 End Sub
 
-Private Sub imgSplitter_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub imgSplitter_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
     With imgSplitter
         picSplitter.Move .Left, .Top, .Width \ 2, .Height - 20
     End With
@@ -1713,11 +1713,11 @@ Private Sub imgSplitter_MouseDown(Button As Integer, Shift As Integer, X As Sing
     mbMoving = True
 End Sub
 
-Private Sub imgSplitter_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub imgSplitter_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
     Dim sglPos As Single
 
     If mbMoving Then
-        sglPos = X + imgSplitter.Left
+        sglPos = x + imgSplitter.Left
         If sglPos < mknSplitLimit Then
             picSplitter.Left = mknSplitLimit
         ElseIf sglPos > Me.Width - mknSplitLimit - 1400 Then
@@ -1728,23 +1728,23 @@ Private Sub imgSplitter_MouseMove(Button As Integer, Shift As Integer, X As Sing
     End If
 End Sub
 
-Private Sub imgSplitter_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub imgSplitter_MouseUp(Button As Integer, Shift As Integer, x As Single, Y As Single)
     If picSplitter.Left > cmdPrint.Left Then picSplitter.Left = cmdPrint.Left - 200
     SizeControls picSplitter.Left
     picSplitter.Visible = False
     mbMoving = False
 End Sub
 
-Sub SizeControls(X As Single)
+Sub SizeControls(x As Single)
     On Error Resume Next
     'set the width
-    If X < mknSplitLimit Then X = mknSplitLimit
-    If X > (Me.Width - 3000) Then X = Me.Width - 1500
+    If x < mknSplitLimit Then x = mknSplitLimit
+    If x > (Me.Width - 3000) Then x = Me.Width - 1500
     If Me.Height < 3000 Then Me.Height = 3000
     If Me.Width < 8000 Then Me.Width = 8000
-    imgSplitter.Left = X
+    imgSplitter.Left = x
     
-    tvTreeView.Width = X
+    tvTreeView.Width = x
     lblTitle(0).Width = tvTreeView.Width
 
     tvTreeView.Height = Me.Height - 1200
@@ -1828,7 +1828,7 @@ End Sub
 
 Private Sub mnuDelete_Click()
 On Error GoTo NoSelection
-    Dim X As Long
+    Dim x As Long
     If mbTreeSel Then
         If tvTreeView.SelectedItem.Image Mod TotalStates <> Deleted Then
             Select Case tvTreeView.SelectedItem.Image Mod TotalStates
@@ -2050,7 +2050,7 @@ Private Sub tvTreeView_KeyUp(KeyCode As Integer, Shift As Integer)
     End If
 End Sub
 
-Private Sub tvTreeView_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub tvTreeView_MouseUp(Button As Integer, Shift As Integer, x As Single, Y As Single)
     Dim bolReprint, bolShowGroupedPrint As Boolean
     bolReprint = (mnuReprint.Caption = "View Print &Queue")
     bolShowGroupedPrint = moQueueManager.ShowGroupedPrint()
@@ -2253,7 +2253,7 @@ Public Sub PrintNode(NodeIndex As Long)
 End Sub
 
 Public Function PrintBundles(nodSelected As Node) As String
-    Dim X, lngTotalChildren As Long
+    Dim x, lngTotalChildren As Long
     Dim SelectedNode As Node
     
 '    On Error GoTo NoPrint
@@ -2282,10 +2282,10 @@ Public Function PrintBundles(nodSelected As Node) As String
     Else
         lngTotalChildren = nodSelected.Children
         ' This will go through all the children for the selected paper configuration
-        For X = nodSelected.Child.Index To nodSelected.Child.Index + lngTotalChildren - 1
+        For x = nodSelected.Child.Index To nodSelected.Child.Index + lngTotalChildren - 1
             DoEvents
-            PrintNode (X)
-        Next X
+            PrintNode (x)
+        Next x
     End If
     Me.MousePointer = vbDefault
     nodSelected.Image = (nodSelected.Image \ TotalStates) * TotalStates + Configuration
@@ -2313,7 +2313,7 @@ End Function
 
 Public Function RePrintBundles(nodSelected As Node) As Boolean
     Dim varPrintQueue As Variant
-    Dim X, Y, z As Long
+    Dim x, Y, z As Long
     Dim AnotherNode As Node
     Dim Survey_id As Long
     Dim PostalBundle As String
@@ -2329,7 +2329,7 @@ Public Function RePrintBundles(nodSelected As Node) As Boolean
     Dim strInit As String
     Dim strReset As String
     Dim SelectedNode As ComctlLib.Node
-    Dim oQueueManager As New QueueManDLL.clsQueueManager
+    Dim oQueueManager As New clsQueueManager
     Dim n As Integer
     
     On Error GoTo NoPrint
@@ -2383,8 +2383,8 @@ Public Function RePrintBundles(nodSelected As Node) As Boolean
     Else
         lngTotalChildren = nodSelected.Children
         Set AnotherNode = nodSelected
-        For X = nodSelected.Child.Index To nodSelected.Child.Index + lngTotalChildren - 1
-            strID = frmMain.tvTreeView.Nodes(X).Tag
+        For x = nodSelected.Child.Index To nodSelected.Child.Index + lngTotalChildren - 1
+            strID = frmMain.tvTreeView.Nodes(x).Tag
             Survey_id = NextValue(strID, vbTab)
             PostalBundle = NextValue(strID, vbTab)
             PaperConfig = NextValue(strID, vbTab)
@@ -2393,13 +2393,12 @@ Public Function RePrintBundles(nodSelected As Node) As Boolean
             mvEndLitho = NextValue(strID, vbTab)
             strBundled = NextValue(strID, vbTab)
             strMailedOn = NextValue(strID, vbTab)
-            n = frmMain.tvTreeView.Nodes(X).Image
+            n = frmMain.tvTreeView.Nodes(x).Image
             n = (n \ TotalStates) * TotalStates + Printing
             If Not oQueueManager.GetRePrintBundle(Survey_id, PostalBundle, PaperConfig, Page_num, strBundled) Then
-            
                 MsgBox "No surveys were printed for the " & PostalBundle & " bundle!", vbExclamation, "Print Warning"
-                
             Else
+                'Commenting out the following line because we are not automatically printing bundling sheet for reprints
                 'Call PrintBundlingSheets(Survey_id, PaperConfig, strBundled)
             End If
             If strMailedOn = "Not Mailed" Then
@@ -2407,8 +2406,8 @@ Public Function RePrintBundles(nodSelected As Node) As Boolean
             Else
                 n = (n \ TotalStates) * TotalStates + AlreadyMailed
             End If
-            frmMain.tvTreeView.Nodes(X).Image = n
-        Next X
+            frmMain.tvTreeView.Nodes(x).Image = n
+        Next x
     End If
     ' This will go through all the children for
     ' the selected paper configuration
@@ -2466,7 +2465,7 @@ Private Sub PrintBundlingSheets(ByVal strSurvey_id As String, _
                                
     On Error GoTo ErrorHandler
 
-    Dim oQueueManager As New QueueManDLL.clsQueueManager
+    Dim oQueueManager As New clsQueueManager
     Dim strReportContent As String
     strReportContent = oQueueManager.CreateBundleSheet(strSurvey_id, strConfig_id, strBundled)
               

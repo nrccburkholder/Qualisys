@@ -334,12 +334,11 @@ End Sub
 
 Public Function GetIDs(LithoCode As String) As Boolean
     
-    Dim objDataAccess 'As QueueManDLL.cMRDataAccess
+    Dim objDataAccess As New cMRDataAccess
     Dim objTempRS As ADODB.Recordset
     
     On Error GoTo ErrorHandler
     
-    Set objDataAccess = CreateObject("QueueManDLL.cMRDataAccess")
     
     Set objTempRS = objDataAccess.DB_GetIDs(LithoCode)
     
@@ -373,9 +372,8 @@ Public Sub TOCL_proc()
     
     On Error GoTo ErrorHandler
     
-    Dim objDataAccess As QueueManDLL.cMRDataAccess
+    Dim objDataAccess As New cMRDataAccess
     
-    Set objDataAccess = CreateObject("QueueManDLL.cMRDataAccess")
     Call objDataAccess.DB_TOCL(mlngStudyID, mlngPopID, mlngSamplePopID)
 
 ErrorHandlerDone:
@@ -391,9 +389,8 @@ Public Sub Lang_proc()
     
     On Error GoTo ErrorHandler
     
-    Dim objDataAccess 'As QueueManDLL.cMRDataAccess
+    Dim objDataAccess As New cMRDataAccess
     
-    Set objDataAccess = CreateObject("QueueManDLL.cMRDataAccess")
     mstrCurrentLanguage = objDataAccess.DB_GetLang(mlngStudyID, mlngPopID)
     Set mobjLanguageRS = objDataAccess.DB_GetAllLangs(mlngSurveyID)
         
@@ -421,9 +418,8 @@ Public Sub OverRide_proc()
     
     On Error GoTo ErrorHandler
     
-    Dim objDataAccess As QueueManDLL.cMRDataAccess
+    Dim objDataAccess As New cMRDataAccess
     
-    Set objDataAccess = CreateObject("QueueManDLL.cMRDataAccess")
     Call objDataAccess.DB_UpdateLang(mlngStudyID, mlngPopID, mlngSamplePopID, mlngMethodologyID, mlngNewLanguageID, mlngIntervalDays, mbolLanguageFlag)
 
 ErrorHandlerDone:
