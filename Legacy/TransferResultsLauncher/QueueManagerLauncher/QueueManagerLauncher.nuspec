@@ -3,7 +3,7 @@
   <metadata>
     <id>Qualisys.QueueManagerLauncher</id>
     <title>QualiSys Queue Manager Launcher</title>
-    <version>4.7.0.0</version>
+    <version>4.7.1.0</version>
     <authors>NRC</authors>
     <description>Queue Manager Launcher shell which launches Queue Manager</description>
   </metadata>
