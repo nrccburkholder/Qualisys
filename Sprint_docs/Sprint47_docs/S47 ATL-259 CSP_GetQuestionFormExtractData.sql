@@ -262,7 +262,20 @@ AS
 
 	-- Hospice CAHPS
 	-- ICH CAHPS
-	-- ACO CAHPS
+	-- ACO CAHPS / PQRS CAHPS
+	select QuestionForm_id, 0 as ATACnt, 0 as ATAComplete, 0 as MeasureCnt, 0 as MeasureComplete, 0 as Disposition, Subtype_nm, SurveyType_id
+	into #ACOQF
+	from QuestionFormTemp qft
+	left join (select sst.Survey_id, sst.Subtype_id, st.Subtype_nm from [QP_Prod].[dbo].[SurveySubtype] sst INNER JOIN [QP_Prod].[dbo].[Subtype] st on (st.Subtype_id = sst.Subtype_id)) sstx on sstx.Survey_id = qft.SURVEY_ID
+	WHERE ExtractFileID = @ExtractFileID AND SurveyType_id in (10,13)
+
+	exec QP_Prod.dbo.ACOCAHPSCompleteness
+
+	update QFT
+	SET isComplete=CASE WHEN qf.disposition=10 THEN 'true' ELSE 'false' END
+	from QuestionFormTemp qft
+	inner join #ACOQF qf on qft.QuestionForm_id=qf.QuestionForm_id
+
 	-- CIHI
 	-- OAS CAHPS
 
