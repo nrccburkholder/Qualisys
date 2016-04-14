@@ -1268,18 +1268,20 @@ from #results r
 --   and bt.datsampleencounterdate between @begindate and @enddate
 --   and bt.survey_id = @survey
 
+declare @sql varchar(max)
+set @sql = 'update r set
+		Q29  = case isnull(Q0XXXXX,-9) when -9 then ''M'' when -8 then ''H'' else cast(Q0XXXXX%10000 as varchar) end
+	from #results r
+	inner join #Big_Table bt on r.samplepop_id=bt.samplepop_id and r.sampleunit_id=bt.sampleunit_id
+	left outer join #Study_Results sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id'
+
 if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (50699))
-	update r set
-		Q29  = case isnull(Q050699,-9) when -9 then 'M' when -8 then 'H' else cast(Q050699%10000 as varchar) end
-	from #results r
-	inner join #Big_Table bt on r.samplepop_id=bt.samplepop_id and r.sampleunit_id=bt.sampleunit_id
-	left outer join #Study_Results sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id
+	set @sql = replace(@sql,'XXXXX','50699')
 else if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (50242))
-	update r set
-		Q29  = case isnull(Q050242,-9) when -9 then 'M' when -8 then 'H' else cast(Q050242%10000 as varchar) end
-	from #results r
-	inner join #Big_Table bt on r.samplepop_id=bt.samplepop_id and r.sampleunit_id=bt.sampleunit_id
-	left outer join #Study_Results sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id	
+	set @sql = replace(@sql,'XXXXX','50242')
+
+if @sql not like '%XXXXX%'
+	exec (@SQL)
 
 -- Adult 12-month:
 -- Q1 = core 46385
