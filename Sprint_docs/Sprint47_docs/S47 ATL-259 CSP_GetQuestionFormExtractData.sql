@@ -227,14 +227,16 @@ AS
 	WHERE DaysFromCurrentMailing < 0 AND ExtractFileID = @ExtractFileID    
   
  ---------------------------------------------------------------------------------------
- -- Update bitComplete flag for HCACHPS seurveys
+ -- Update bitComplete flag for CAHPS surveys
  ---------------------------------------------------------------------------------------
+	-- HCAHPS
 	UPDATE qft 
 	SET isComplete=CASE WHEN QP_Prod.dbo.HCAHPSCompleteness(QUESTIONFORM_ID) <> 0 THEN 'true' ELSE 'false' END
 	--SELECT *--isComplete=QP_Prod.dbo.HCAHPSCompleteness(QUESTIONFORM_ID),*
 	FROM QuestionFormTemp qft 
     WHERE ExtractFileID = @ExtractFileID AND SurveyType_id=2
     
+	-- Home Health HHCAHPS
     CREATE TABLE #HHQF (QuestionForm_id INT, Complete INT, ATACnt INT, Q1 INT, numAnswersAfterQ1 INT)
     INSERT INTO #HHQF (QuestionForm_id)
     select QuestionForm_id 
@@ -251,11 +253,18 @@ AS
 	
 	DROP TABLE #HHQF
     
+	-- CGCAHPS
     UPDATE qft 
 	SET isComplete=CASE WHEN QP_Prod.dbo.MNCMCompleteness(QUESTIONFORM_ID) <> 0 THEN 'true' ELSE 'false' END
 	--SELECT *--isComplete=QP_Prod.dbo.HCAHPSCompleteness(QUESTIONFORM_ID),*
 	FROM QuestionFormTemp qft 
     WHERE ExtractFileID = @ExtractFileID AND SurveyType_id=4
+
+	-- Hospice CAHPS
+	-- ICH CAHPS
+	-- ACO CAHPS
+	-- CIHI
+	-- OAS CAHPS
 
  ---------------------------------------------------------------------------------------
  -- Load records to deletes into a temp table
