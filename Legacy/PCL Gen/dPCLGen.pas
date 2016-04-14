@@ -215,8 +215,10 @@ begin
         close;
       end;
       CreateMyTables;
-      if GetNextBatch>0 then
-        MainLoop
+      if GetNextBatch>0 then begin
+        if timer.Tag <> 99 then
+          MainLoop
+      end
       else begin
         Timer.Enabled := true;
         CleanMockupDirectory;
@@ -225,6 +227,7 @@ begin
         dmopenq.dbScan.keepconnection := false;
         dmopenq.dbScan.close;
         frmPCLGeneration.ProgressReport('Waiting for PCLNeeded'+strTP+' to be populated','','');
+        Timer.Tag := 99; //holding pattern
       end;
     end;
 {$IFDEF TrapErrors}
@@ -1465,73 +1468,86 @@ begin
     end;
   end until success;
   logSQLQuery := true;
-  if strtointdef(frmPCLGeneration.txtSurvey_id.text,0) = 0 then
-    frmPCLGeneration.txtSurvey_id.text := '0'
-  else
-    frmPCLGeneration.ProgressReport('  waiting for a batch for survey_id='+frmPCLGeneration.txtSurvey_id.text,'','');
-  QPQuery('execute sp_PCL_NextBatch ''' + frmPCLGeneration.CompName + ''', '+frmPCLGeneration.txtSurvey_id.text + ', ''' + frmPCLGeneration.Version + '''',wwSQLQuery,true);
-  QPQuery('execute sp_PCL_CleanBatch',wwSQLQuery,true);
+  if Timer.Tag <> 99 then begin //not in 'Holding Pattern'
+    if strtointdef(frmPCLGeneration.txtSurvey_id.text,0) = 0 then
+      frmPCLGeneration.txtSurvey_id.text := '0'
+    else
+      frmPCLGeneration.ProgressReport('  waiting for a batch for survey_id='+frmPCLGeneration.txtSurvey_id.text,'','');
+    QPQuery('execute sp_PCL_NextBatch ''' + frmPCLGeneration.CompName + ''', '+frmPCLGeneration.txtSurvey_id.text + ', ''' + frmPCLGeneration.Version + '''',wwSQLQuery,true);
+    QPQuery('execute sp_PCL_CleanBatch',wwSQLQuery,true);
 
-  ww_sql.SQL.Add('Update #MyPCLNeeded set #MyPCLNeeded.LithoCode = cast(sm.strLithoCode as integer),'+
-                  'Bundle = sm.strpostalbundle, GroupDest = sm.strGroupDest '+
-                  'from #MyPCLNeeded pn, SentMailing sm  where pn.SentMail_id=sm.SentMail_id and bitTestPrints = 1');
-   ww_sql.ExecSQL;
-   ww_sql.SQL.Clear;
+    ww_sql.SQL.Add('Update #MyPCLNeeded set #MyPCLNeeded.LithoCode = cast(sm.strLithoCode as integer),'+
+                    'Bundle = sm.strpostalbundle, GroupDest = sm.strGroupDest '+
+                    'from #MyPCLNeeded pn, SentMailing sm  where pn.SentMail_id=sm.SentMail_id and bitTestPrints = 1');
+     ww_sql.ExecSQL;
+     ww_sql.SQL.Clear;
 
-  QPQuery('Select Survey_id,SelCover_id,Language,SentMail_id,Samplepop_id, '+
-          'QuestionForm_id,Batch_id,PCLGenRun_id,bitTestPrints,LithoCode,Bundle,GroupDest '+
-          'from #MyPCLNeeded',wwSQLQuery,false);
+    QPQuery('Select Survey_id,SelCover_id,Language,SentMail_id,Samplepop_id, '+
+            'QuestionForm_id,Batch_id,PCLGenRun_id,bitTestPrints,LithoCode,Bundle,GroupDest '+
+            'from #MyPCLNeeded',wwSQLQuery,false);
 
 
-  with wwSQLQuery do begin
-    result := recordcount;
-    CurrentBatch := fieldbyname('Batch_id').asInteger;
-    CurrentRun := fieldbyname('PCLGenRun_id').asInteger;
-    TestPrints := fieldbyname('bitTestPrints').asBoolean;
-    Survey_id := fieldbyname('Survey_id').asString;
+    with wwSQLQuery do begin
+      result := recordcount;
+      CurrentBatch := fieldbyname('Batch_id').asInteger;
+      CurrentRun := fieldbyname('PCLGenRun_id').asInteger;
+      TestPrints := fieldbyname('bitTestPrints').asBoolean;
+      Survey_id := fieldbyname('Survey_id').asString;
+    end;
+
+    emptytable(wwt_MyPCLNeeded);
+    wwt_MyPCLNeeded.batchmove(wwSQLQuery,batAppend);
+
+    strTP:='';
+    PdfPath:='';
+    PrnPath:='';
+    Email:='';
+    Mockup:=false;
+    WhereField:='SentMail_id';
+    if TestPrints then
+    begin
+      ww_sql.SQL.Add('Create table #printfiles (tp_id int, pop_id int, FileName varchar(50),copied bit )');
+      ww_sql.ExecSQL;
+      ww_sql.SQL.Clear;
+      ww_sql.SQL.Add('insert into #printfiles(tp_id,pop_id,copied) select pn.SentMail_id, pop_id, 0 as copied from scheduled_TP ps, #MyPCLNeeded pn where ps.tp_id=pn.SentMail_id');
+      ww_sql.ExecSQL;
+      ww_sql.SQL.Clear;
+     //filelist.Clear;
+     strTP:='_TP';
+     WhereField:='TP_id';
+     QPQuery('select top 1 s.bitMockup,p.strEmail from #mypclneeded mp inner join pclneeded_tp p on mp.SentMail_id = p.tp_id inner join scheduled_tp s on p.tp_id = s.tp_id where p.batch_id ='+inttostr(CurrentBatch),wwSQLQuery,false);
+     Email:=wwSQLQuery.fieldbyname('strEmail').asString;
+     Mockup:=wwSQLQuery.fieldbyname('bitMockup').asBoolean;
+    end;
+    QPQuery('select STRPARAM_NM,STRPARAM_VALUE from qualpro_params where STRPARAM_NM in (''PCLGenPDFLoc_TP'',''PCLGenPrnLoc_TP'')',wwSQLQuery,false);
+    if wwSQLQuery.locate('STRPARAM_NM','PCLGenPDFLoc_TP',[loCaseInsensitive]) then
+      PdfPath:=trim(wwSQLQuery.fieldbyname('STRPARAM_VALUE').asString);
+    if wwSQLQuery.locate('STRPARAM_NM','PCLGenPrnLoc_TP',[loCaseInsensitive]) then
+      PrnPath:=trim(wwSQLQuery.fieldbyname('STRPARAM_VALUE').asString);
+    if PdfPath[length(PdfPath)] <> '\' then
+      PdfPath:=PdfPath+'\';
+    if PrnPath[length(PrnPath)] <> '\' then
+      PrnPath:=PrnPath+'\';
+
+    wwSQLQuery.close;
+    if (result>0) and (currentbatch > 0) then
+      frmPCLGeneration.ProgressReport('Load Batch '+inttostr(currentbatch)+
+                                      ' - '+inttostr(result)+' mail items','','')
+    else
+      frmPCLGeneration.ProgressReport('Waiting for PCLNeeded'+strTP+
+                                      ' to be populated','','');
+  end
+  else begin //'Holding Pattern' so if there is work, return 1 else stay in holding pattern
+    QPQuery( 'declare @result int '+
+             'exec @result = sp_PCL_TimeFor '+
+             'if @result = 1      select Survey_id from dbo.PCLNeeded where bitdone=0 '+
+             'else if @result = 2 Select Survey_id from dbo.PCLNeeded_TP where bitdone=0 '+
+             'else                select Survey_id from dbo.PCLNeeded where 0 = 1',wwSQLQuery,false);
+
+    with wwSQLQuery do begin
+      result := recordcount; //0 here means no work so stay in holding pattern; 1 means work so restart
+    end;
   end;
-
-  emptytable(wwt_MyPCLNeeded);
-  wwt_MyPCLNeeded.batchmove(wwSQLQuery,batAppend);
-
-  strTP:='';
-  PdfPath:='';
-  PrnPath:='';
-  Email:='';
-  Mockup:=false;
-  WhereField:='SentMail_id';
-  if TestPrints then
-  begin
-    ww_sql.SQL.Add('Create table #printfiles (tp_id int, pop_id int, FileName varchar(50),copied bit )');
-    ww_sql.ExecSQL;
-    ww_sql.SQL.Clear;
-    ww_sql.SQL.Add('insert into #printfiles(tp_id,pop_id,copied) select pn.SentMail_id, pop_id, 0 as copied from scheduled_TP ps, #MyPCLNeeded pn where ps.tp_id=pn.SentMail_id');
-    ww_sql.ExecSQL;
-    ww_sql.SQL.Clear;
-   //filelist.Clear;
-   strTP:='_TP';
-   WhereField:='TP_id';
-   QPQuery('select top 1 s.bitMockup,p.strEmail from #mypclneeded mp inner join pclneeded_tp p on mp.SentMail_id = p.tp_id inner join scheduled_tp s on p.tp_id = s.tp_id where p.batch_id ='+inttostr(CurrentBatch),wwSQLQuery,false);
-   Email:=wwSQLQuery.fieldbyname('strEmail').asString;
-   Mockup:=wwSQLQuery.fieldbyname('bitMockup').asBoolean;
-  end;
-  QPQuery('select STRPARAM_NM,STRPARAM_VALUE from qualpro_params where STRPARAM_NM in (''PCLGenPDFLoc_TP'',''PCLGenPrnLoc_TP'')',wwSQLQuery,false);
-  if wwSQLQuery.locate('STRPARAM_NM','PCLGenPDFLoc_TP',[loCaseInsensitive]) then
-    PdfPath:=trim(wwSQLQuery.fieldbyname('STRPARAM_VALUE').asString);
-  if wwSQLQuery.locate('STRPARAM_NM','PCLGenPrnLoc_TP',[loCaseInsensitive]) then
-    PrnPath:=trim(wwSQLQuery.fieldbyname('STRPARAM_VALUE').asString);
-  if PdfPath[length(PdfPath)] <> '\' then
-    PdfPath:=PdfPath+'\';
-  if PrnPath[length(PrnPath)] <> '\' then
-    PrnPath:=PrnPath+'\';
-
-  wwSQLQuery.close;
-  if (result>0) and (currentbatch > 0) then
-    frmPCLGeneration.ProgressReport('Load Batch '+inttostr(currentbatch)+
-                                    ' - '+inttostr(result)+' mail items','','')
-  else
-    frmPCLGeneration.ProgressReport('Waiting for PCLNeeded'+strTP+
-                                    ' to be populated','','');
   logSQLQuery := false;
 end;
 
@@ -1899,13 +1915,12 @@ begin
         MainLoop;
       MessageBeep(0); MessageBeep(0); MessageBeep(0);
       frmPCLGeneration.btnErrorLog.Enabled := true;
-      if dmopenq.createok and frmLayoutcalc.createok and createok then begin
+      if (timer.Tag = 99) or (dmopenq.createok and frmLayoutcalc.createok and createok) then begin
         frmPCLGeneration.progressreport('Relaunching PCLGen (from dPCLGen)','','');
         winExec(strpcopy(zExeName,application.exename+' /2 '+paramstr(2)+' '+paramstr(3)),sw_shownormal)
       end;
       frmPCLGeneration.close;
     end else begin
-      timer.Tag := 99; //'Holding Pattern'
       dmopenq.dbQualPro.keepconnection := false;
       dmopenq.dbQualPro.close;
       dmopenq.dbScan.keepconnection := false;
