@@ -277,6 +277,8 @@ AS
 	inner join #ACOQF qf on qft.QuestionForm_id=qf.QuestionForm_id
 
 	-- CIHI
+	-- qp_prod.dbo.CIHICompleteness sets questionform.bitComplete to conform to CIHI's definition of complete. So we should be good.
+
 	-- OAS CAHPS
 
  ---------------------------------------------------------------------------------------
