@@ -254,12 +254,12 @@ inner join [CEM].[ExportDataset00000011] eds on ccn.MedicareNumber=eds.[hospiced
 where eds.ExportQueueid=@ExportQueueID
 
 select *
-	, char(7) as [hospicedata.no-publicity]
-	, char(7) as [hospicedata.total-decedents]
-	, char(7) as [hospicedata.ineligible-presample]
-	, char(7) as [hospicedata.live-discharges]
-	, char(7) as [hospicedata.missing-dod]
-	, char(7) as [hospicedata.number-offices]
+	, char(7) as [no-publicity]
+	, char(7) as [total-decedents]
+	, char(7) as [ineligible-presample]
+	, char(7) as [live-discharges]
+	, char(7) as [missing-dod]
+	, char(7) as [number-offices]
 into #everything
 from #months m, #ccn c
 
@@ -295,14 +295,10 @@ where eds.ExportQueueID=@ExportQueueID
 --Thanks,
 --James
 
-update #everything set	[hospicedata.no-publicity]='0',	[hospicedata.total-decedents]='0',	[hospicedata.ineligible-presample]='0',	[hospicedata.live-discharges]='3',	[hospicedata.missing-dod]='0',	[hospicedata.number-offices]='1'
-where [hospicedata.reference-yr]='2015' and [hospicedata.reference-month]='10' and MedicareNumber='141613'
-update #everything set	[hospicedata.no-publicity]='0',	[hospicedata.total-decedents]='0',	[hospicedata.ineligible-presample]='0',	[hospicedata.live-discharges]='2',	[hospicedata.missing-dod]='0',	[hospicedata.number-offices]='1'
-where [hospicedata.reference-yr]='2015' and [hospicedata.reference-month]='11' and MedicareNumber='141613'
-update #everything set	[hospicedata.no-publicity]='0',	[hospicedata.total-decedents]='0',	[hospicedata.ineligible-presample]='0',	[hospicedata.live-discharges]='1',	[hospicedata.missing-dod]='0',	[hospicedata.number-offices]='1'
-where [hospicedata.reference-yr]='2015' and [hospicedata.reference-month]='12' and MedicareNumber='191572'
-update #everything set	[hospicedata.no-publicity]='0',	[hospicedata.total-decedents]='0',	[hospicedata.ineligible-presample]='0',	[hospicedata.live-discharges]='2',	[hospicedata.missing-dod]='0',	[hospicedata.number-offices]='1'
-where [hospicedata.reference-yr]='2015' and [hospicedata.reference-month]='11' and MedicareNumber='671765'
+update #everything set [no-publicity]='0',[total-decedents]='0',[ineligible-presample]='0',[live-discharges]='3',[missing-dod]='0',[number-offices]='1' where [hospicedata.reference-yr]='2015' and [hospicedata.reference-month]='10' and MedicareNumber='141613'
+update #everything set [no-publicity]='0',[total-decedents]='0',[ineligible-presample]='0',[live-discharges]='2',[missing-dod]='0',[number-offices]='1' where [hospicedata.reference-yr]='2015' and [hospicedata.reference-month]='11' and MedicareNumber='141613'
+update #everything set [no-publicity]='0',[total-decedents]='0',[ineligible-presample]='0',[live-discharges]='1',[missing-dod]='0',[number-offices]='1' where [hospicedata.reference-yr]='2015' and [hospicedata.reference-month]='12' and MedicareNumber='191572'
+update #everything set [no-publicity]='0',[total-decedents]='0',[ineligible-presample]='0',[live-discharges]='2',[missing-dod]='0',[number-offices]='1' where [hospicedata.reference-yr]='2015' and [hospicedata.reference-month]='11' and MedicareNumber='671765'
 -- /more 2015 Q4 hardcoding
 
 INSERT INTO [CEM].[exportdataset00000011] 
@@ -342,16 +338,16 @@ SELECT DISTINCT eds.[exportqueueid],
                 LEFT(e.facilityname, 100), 
                 e.medicarenumber, 
                 e.npi, 
-                '8' AS [hospicedata.survey-mode], 
-				     e.[hospicedata.total-decedents], 
-				     e.[hospicedata.live-discharges], 
-				     e.[hospicedata.no-publicity], 
-				     e.[hospicedata.ineligible-presample], 
-				     e.[hospicedata.missing-dod],
-                '0' AS [hospicedata.sample-size], 
-                '0' AS [hospicedata.ineligible-postsample], 
-				     e.[hospicedata.number-offices],
-                '8' AS [hospicedata.sample-type] 
+                '8' AS [survey-mode], 
+				     e.[total-decedents], 
+				     e.[live-discharges], 
+				     e.[no-publicity], 
+				     e.[ineligible-presample], 
+				     e.[missing-dod],
+                '0' AS [sample-size], 
+                '0' AS [ineligible-postsample], 
+				     e.[number-offices],
+                '8' AS [sample-type] 
 FROM   [CEM].[exportdataset00000011] eds, #everything e 
 WHERE  eds.exportqueueid = @ExportQueueID 
 
