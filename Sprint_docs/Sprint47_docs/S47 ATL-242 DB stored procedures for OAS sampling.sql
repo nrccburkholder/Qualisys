@@ -1091,23 +1091,23 @@ AS
 				   LEFT JOIN SUFacility suf on su.SUFacility_id=suf.SUFacility_id
 		  ORDER BY rp.numrandom, Enc_id
 
-		  -- NULL out all random numbers, except for the smallest one per CCN
+		  -- NULL out all random numbers, except for the smallest one per SampleUnit
 		  UPDATE o set numRandom=NULL
 		  FROM #OAS o
-		  LEFT JOIN (SELECT CCN,MIN(numRandom) as SmallestRand from #OAS group by CCN) small on o.CCN=small.CCN and o.numRandom=small.SmallestRand
-		  WHERE small.CCN is NULL
+		  LEFT JOIN (SELECT SampleUnit_id,MIN(numRandom) as SmallestRand from #OAS group by SampleUnit_id) small on o.SampleUnit_id=small.SampleUnit_id and o.numRandom=small.SmallestRand
+		  WHERE small.SampleUnit_id is NULL
 		  
 		  -- update numRandom to be enc_id so that when we sort by numRandom, it's sorting by enc_id
 		  -- also, add an offset to encounters before the smallest so that the smallest will be first in the list, followed 
 		  -- by encounters after the smallest, then loop back to the beginning of the list.
 		  update o set numRandom=o.enc_id+case when o.enc_id<small.enc_id then 100000000 else 0 end 
 		  from #OAS o
-		  inner join (select CCN,ENC_id,numRandom from #OAS where numRandom is not NULL) small on o.ccn=small.ccn
+		  inner join (select SampleUnit_id,ENC_id,numRandom from #OAS where numRandom is not NULL) small on o.SampleUnit_id=small.SampleUnit_id
 
 		  select SampleUnit_id, Pop_id, Enc_id, DQ_Bus_Rule, Removed_Rule, EncDate, HouseHold_id,
 				 bitBadAddress, bitBadPhone, reportDate, numRandom, CCN
 		  from #OAS
-		  order by CCN, numRandom
+		  order by SampleUnit_id, numRandom
 		  
 		  DROP TABLE #OAS
 	  END
