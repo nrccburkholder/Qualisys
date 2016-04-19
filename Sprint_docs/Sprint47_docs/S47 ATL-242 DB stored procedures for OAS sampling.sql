@@ -1080,14 +1080,21 @@ AS
                         random_numbers rn
                WHERE    ((dsp.id_num + @Seed) % 1000000) = rn.random_id
 
-
- --Return data sorted by randomPop_id
-      SELECT   su.SampleUnit_id, su.Pop_id, su.Enc_id, su.DQ_Bus_Rule, su.Removed_Rule, su.EncDate, su.HouseHold_id,
-               su.bitBadAddress, su.bitBadPhone, su.reportDate
-      FROM     #SampleUnit_Universe su ,
-               #randomPops rp
-      WHERE    su.Pop_id = rp.Pop_id
-      ORDER BY rp.numrandom, Enc_id
+      IF @SurveyType_ID = (select surveytype_id from surveytype where SurveyType_dsc = 'OAS CAHPS')
+	  BEGIN
+		-- do something else
+	  END
+	  ELSE
+	  BEGIN
+		  --Return data sorted by randomPop_id
+		  SELECT   suu.SampleUnit_id, suu.Pop_id, suu.Enc_id, suu.DQ_Bus_Rule, suu.Removed_Rule, suu.EncDate, suu.HouseHold_id,
+				   suu.bitBadAddress, suu.bitBadPhone, suu.reportDate, rp.numRandom, suf.MedicareNumber
+		  FROM     #SampleUnit_Universe suu 
+				   INNER JOIN #randomPops rp ON suu.Pop_id = rp.Pop_id
+				   INNER JOIN SampleUnit su on suu.SampleUnit_id=su.SampleUnit_id
+				   LEFT JOIN SUFacility suf on su.SUFacility_id=suf.SUFacility_id
+		  ORDER BY rp.numrandom, Enc_id
+	  END
 
 
 
