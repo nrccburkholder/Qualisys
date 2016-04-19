@@ -941,6 +941,7 @@ namespace HHCAHPSImporter.ImportProcessor.DAL.Generated
 		[return: global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")]
 		public int UpdateMergeRecords([global::System.Data.Linq.Mapping.ParameterAttribute(Name="SampleYear", DbType="Int")] System.Nullable<int> sampleYear, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="SampleMonth", DbType="Int")] System.Nullable<int> sampleMonth, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CCN", DbType="VarChar(10)")] string cCN, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Records", DbType="Xml")] System.Xml.Linq.XElement records)
 		{
+            this.CommandTimeout = 0;
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), sampleYear, sampleMonth, cCN, records);
 			return ((int)(result.ReturnValue));
 		}

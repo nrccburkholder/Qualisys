@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Service")]
+[assembly: AssemblyTitle("PersonatorAddressCleaner_POC")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("National Research Corporation")]
-[assembly: AssemblyProduct("Service")]
-[assembly: AssemblyCopyright("Copyright © National Research Corporation 2015")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("PersonatorAddressCleaner_POC")]
+[assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("4d64637b-db92-42d4-b364-d8d98ca770d6")]
+[assembly: Guid("596ddbc2-b3cc-4426-93ee-659236143837")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.9.12.0")]
-[assembly: AssemblyFileVersion("2.9.12.0")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
