@@ -1115,7 +1115,7 @@ AS
 	  BEGIN
 		  --Return data sorted by randomPop_id
 		  SELECT   suu.SampleUnit_id, suu.Pop_id, suu.Enc_id, suu.DQ_Bus_Rule, suu.Removed_Rule, suu.EncDate, suu.HouseHold_id,
-				   suu.bitBadAddress, suu.bitBadPhone, suu.reportDate, rp.numRandom, suf.MedicareNumber
+				   suu.bitBadAddress, suu.bitBadPhone, suu.reportDate, rp.numRandom, suf.MedicareNumber as CCN
 		  FROM     #SampleUnit_Universe suu 
 				   INNER JOIN #randomPops rp ON suu.Pop_id = rp.Pop_id
 				   INNER JOIN SampleUnit su on suu.SampleUnit_id=su.SampleUnit_id
