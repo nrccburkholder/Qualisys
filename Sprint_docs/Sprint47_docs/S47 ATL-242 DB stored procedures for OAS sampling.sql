@@ -918,7 +918,7 @@ AS
      
 
  -- Apply the resurvey exclusion rule
-      EXEC sp_helptext QCL_SampleSetResurveyExclusion_StaticPlus @study_id, @Survey_id, @resurveyMethod_id, @ReSurvey_Period,
+      EXEC QCL_SampleSetResurveyExclusion_StaticPlus @study_id, @Survey_id, @resurveyMethod_id, @ReSurvey_Period,
          @samplingAlgorithmId, @HouseHoldFieldCreateTableSyntax, @HouseHoldFieldSelectSyntax, @HouseHoldJoinSyntax,
          @HouseHoldingType, @sampleSet_id, @indebug
 
