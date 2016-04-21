@@ -168,6 +168,7 @@
     <Compile Include="DataProviders\USPS_ACS_Provider.vb" />
     <Compile Include="DataProviders\VendorFile_VoviciDetailProvider.vb" />
     <Compile Include="Disposition.vb" />
+    <Compile Include="EncounterUnitEligibility.vb" />
     <Compile Include="Enums\ApprovalModes.vb" />
     <Compile Include="Enums\AuditLogChangeType.vb" />
     <Compile Include="AuditLogObject.vb" />
