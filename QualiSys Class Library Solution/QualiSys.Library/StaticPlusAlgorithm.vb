@@ -95,7 +95,9 @@ Partial Public Class SampleSet
                     dataSetIds.Append(ds.Id.ToString)
                     InsertSampleDataSet(sampleSetId, ds.Id)
                 Next
-
+                ''''''''''''''''''''''''''''''''''''''''''''''''
+                'TODO: Does OASCAHPS adhere to this in any way? Need to determine if OASCAHPS unit then Systematic...
+                ''''''''''''''''''''''''''''''''''''''''''''''''
                 'Determine if we are sampling the HCAHPS units
                 If isOverSample Then
                     If hcahpsOverSample Then
@@ -128,9 +130,9 @@ Partial Public Class SampleSet
                 sampleSetUnits = BuildSampleUnitOutGoNeeded(srvy, outGoList)
 
                 '------------------------------------------------------------------------------------
-                'TODO: Incorporate new fields (random, CCN) in result set from SelectEncounterUnitEligibility
+                'DONE: Incorporate new fields (random, CCN) in result set from SelectEncounterUnitEligibility
                 '
-                'TODO: Write a function IsSystematic which is true only for OAS with multiple locations
+                'TODO: Write a function IsSystematic which is true only for OAS all cases--with multiple locations 
                 '
                 'TODO: Build an EncounterUnitEligibility class and collection for LINQ usage 
                 '(Dim CCN = From EncUnit in rdrEncUnit Where EncUnit.CCN = CCN1) etc.
@@ -152,15 +154,20 @@ Partial Public Class SampleSet
 
                 'Loop through each encounter
                 Using rdr As SafeDataReader = SampleSetProvider.Instance.SelectEncounterUnitEligibility(srvy.Id, srvy.StudyId, dataSetIds.ToString, startDate, endDate, randomNumber, srvy.ResurveyPeriod, sampleEncounterDateField, reportDateField, encounterTableExists, sampleSetId, period.SamplingMethod, srvy.ResurveyMethod, SamplingAlgorithm.StaticPlus)
+
+                    Dim EncounterUnitEligibility_s As EncounterUnitEligibilityCollection
+                    EncounterUnitEligibility_s = EncounterUnitEligibility.FillCollection(rdr)
+
                     'Get the number of seconds it took to perform the presample steps
 
                     ''TEST CODE BLOCK
-                    'Dim CCN = From EncUnit In rdr Where EncUnit.CCN = "CC1"
-                    'For Each CCNitem As EncounterUnitEligibility In EncounterUnitEligibility_s Distinct.ToList
-                    '    For Each item As EncounterUnitEligibility In EncouterUnitEligiblity_s.Where(Me.GetCCNValue.ToString() = CCNitem.CCN)
+                    'Dim CCN = From EncUnit In rdr Where EncUnit.CCN = "CC1" --ONE CCN PER SURVEY FOR OASCAHPS!!!
+                    Dim locations As List(Of Integer) = (From row In EncounterUnitEligibility_s.AsEnumerable() Select row.Sampleunit_id).Distinct().ToList()
+                    For Each location As Integer In locations
+                        For Each item As EncounterUnitEligibility In (From row In EncounterUnitEligibility_s Where item.Sampleunit_id = location)
 
-                    '    Next
-                    'Next
+                        Next
+                    Next
 
                     ''TEST CODE BLOCK
 
@@ -212,6 +219,7 @@ Partial Public Class SampleSet
                     '------------------------------------------------------------------------------------
                     'TODO:
                     '
+                    ' Update algorithm used in SPW (per Josh)...
                     'Maybe add OAS RR for display on SPW
                     '------------------------------------------------------------------------------------
 
@@ -250,6 +258,15 @@ Partial Public Class SampleSet
 
             Return sampleSetId
 
+        End Function
+        ''' <summary>
+        ''' IsSystematic indicates cases requiring Systematic sampling, currently all OASCAHPS
+        ''' </summary>
+        ''' <param name="srvy"></param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Private Function IsSystematic(ByVal srvy As Survey) As Boolean
+            Return (srvy.Description.Contains("OAS")) 'TODO: this must be true only for OASCAHPS' CAHPS unit
         End Function
 
         ''' <summary>

@@ -1,6 +1,7 @@
 ﻿Imports Nrc.QualiSys.Library.DataProvider
 Imports Nrc.Framework.BusinessLogic
 Imports Nrc.Framework.BusinessLogic.Configuration
+Imports Nrc.Framework.Data
 
 Public Interface IEncounterUnitEligibility
     Property Id() As Integer
@@ -39,7 +40,7 @@ Public Class EncounterUnitEligibility
     Private mCCN As String
 #End Region
 
-#Region "Overrides"
+#Region " Overrides "
     Protected Overrides Function GetIdValue() As Object
         If IsNew Then
             Return mInstanceGuid
@@ -162,6 +163,34 @@ Public Class EncounterUnitEligibility
         End Set
     End Property
 
+
+#End Region
+
+#Region " Public Methods "
+
+    Public Shared Function FillCollection(rdr As SafeDataReader) As EncounterUnitEligibilityCollection
+        Dim collection As New EncounterUnitEligibilityCollection
+        Dim encounter As New EncounterUnitEligibility
+
+        While rdr.Read
+            encounter.Pop_id = rdr.GetInteger("pop_id")
+            encounter.Id = rdr.GetInteger("enc_id")
+            encounter.Sampleunit_id = rdr.GetInteger("Sampleunit_id")
+            encounter.DQ_Bus_Rule = rdr.GetInteger("DQ_Bus_Rule")
+            encounter.Removed_Rule = rdr.GetInteger("Removed_Rule")
+            encounter.EncDate = rdr.GetDate("EncDate")
+            encounter.HouseHold_id = rdr.GetInteger("HouseHold_id")
+            encounter.BitBadAddress = rdr.GetBoolean("BitBadAddress")
+            encounter.BitBadPhone = rdr.GetBoolean("BitBadPhone")
+            encounter.ReportDate = rdr.GetDate("ReportDate")
+            encounter.NumRandom = rdr.GetInteger("NumRandom")
+            encounter.CCN = rdr.GetString("CCN")
+
+            collection.Add(encounter)
+        End While
+
+        Return collection
+    End Function
 
 #End Region
 
