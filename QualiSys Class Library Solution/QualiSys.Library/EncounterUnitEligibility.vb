@@ -170,9 +170,11 @@ Public Class EncounterUnitEligibility
 
     Public Shared Function FillCollection(rdr As SafeDataReader) As EncounterUnitEligibilityCollection
         Dim collection As New EncounterUnitEligibilityCollection
-        Dim encounter As New EncounterUnitEligibility
+        Dim encounter As EncounterUnitEligibility
 
         While rdr.Read
+            encounter = New EncounterUnitEligibility
+
             encounter.Pop_id = rdr.GetInteger("pop_id")
             encounter.Id = rdr.GetInteger("enc_id")
             encounter.Sampleunit_id = rdr.GetInteger("Sampleunit_id")
