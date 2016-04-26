@@ -9,6 +9,8 @@ using System.Web;
 using System.Net;
 using System.IO;
 using System.Xml;
+using System.Data;
+using System.Data.SqlClient;
 
 
 
@@ -18,109 +20,280 @@ namespace PersonatorAddressCleaner_POC
     {
         static void Main(string[] args)
         {
+            string environment = "STAGE";
+            int dataFile_id = 427336;
+            int study_id = 4329;
+            int batchSize = 100;
+            int totalBatches = 59;
 
-            Console.WriteLine("Personator Address Cleaner:  POC ");
+            Console.WriteLine("MelissaData Personator Address Cleaner");
+            Console.WriteLine(string.Format("Running for:\n\tQualisys Environment {0}\n\tDataFile_Id {1}\n\tStudy_Id {2}\n\tMaxRecords {3}\n\tTotalBatches {4}",
+                environment, dataFile_id, study_id, batchSize, totalBatches));
             Console.WriteLine();
-            Console.WriteLine("Press ENTER to begin.");
-            Console.ReadLine();
-            Start();
-            Console.WriteLine("End of Processing");
+
+            int totalMatch = 0, totalMismatch = 0;
+
+            for(int batchIdx = 0; batchIdx < totalBatches; ++batchIdx)
+            {
+                int countMatch, countMismatch;
+                ProcessBatch(environment, dataFile_id, study_id, batchIdx, batchSize, out countMatch, out countMismatch);
+                totalMatch += countMatch;
+                totalMismatch += countMismatch;
+            }
+
+            Console.WriteLine("FINAL Compare Counts");
+            Console.WriteLine("      MATCHES " + totalMatch);
+            Console.WriteLine("   MISMATCHES " + totalMismatch);
+
+            
             Console.WriteLine("Press ENTER to exit.");
             Console.ReadLine();
-            Console.WriteLine("Exiting application...");
-
         }
 
 
-        static void Start()
+        static void ProcessBatch(string environment, int DataFile_id, int Study_id, int batchIdx, int batchSize, out int countMatch, out int countMismatch)
         {
-            HttpWebRequest request;
-            HttpWebResponse response;
-            Stream responseReader;
-            XmlDocument xmlDoc;
+            countMatch = countMismatch = 0;
 
-            Uri apiUri = new Uri("https://personator.melissadata.net/v3/WEB/ContactVerify/doContactVerify");
-            string customerID = "99869570";
-            string tAction = "Check";
-            string tCols = "";
-            string tCentricHint = "Address";
-            string tAppend = "CheckError";
-            string tFirstName = "Timothy";
-            string tLastName = "Butler";
-            string tMiddleInit = "S";
-            string tFullName = $"{tFirstName} {tMiddleInit} {tLastName}";
-            string tCompany = "";
-            string tAddress1 = "610 S Evergreen Drive";
-            string tAddress2 = "";
-            string tCity = "Seward";
-            string tState = "Nebraska";
-            string tPostalCode = "68444";
-            string tCountry = "USA";
-            string tLastLines = "";
-            string tFreeForm = "";
-            string tPhone = "4026416896";
-            string tEmail = "tbutler1@neb.rr.com";
+            string responseText = MelissaDataApiJsonCall(environment, DataFile_id, Study_id, batchIdx, batchSize);
 
-            string parameters = "?t=" + "Testing.";
-            parameters += "&id=" + customerID;
-            parameters += "&act=" + tAction;
-            parameters += "&cols="+ tCols;
-            parameters += "&opt=CentricHint:" + tCentricHint;
-            parameters += "Append:" + tAppend;
-            parameters += "&first=" + tFirstName;
-            parameters += "&last=" + tLastName;
-            parameters += "&full=" + tFullName;
-            parameters += "&comp="+ tCompany;
-            parameters += "&a1=" + tAddress1;
-            parameters += "&a2=" + tAddress2;
-            parameters += "&city=" + tCity;
-            parameters += "&state=" + tState;
-            parameters += "&postal=" + tPostalCode;
-            parameters += "&ctry=" + tCountry;
-            parameters += "&lastlines=" + tLastLines;
-            parameters += "&freeform=" + tFreeForm;
-            parameters += "&email=" + tEmail;
-            parameters += "&phone=" + tPhone;
-            parameters += "&reserved=";
-
-            //https://personator.melissadata.net/v3/WEB/ContactVerify/doContactVerify?t=Testing.&id=99869570&act=Check,&cols=&opt=CentricHint:AddressAppend:CheckError&first=&last=&full=Mr. Timothy S. Butler&comp=&a1=610 S Evergreen Drove&a2=&city=Seward&state=NE&postal=68433&ctry=USA&lastlines=&freeform=&email=tbutler1@neb.rr.com&phone=4026416741&reserved=
+            JObject jObj = null;
+            try
+            {
+                jObj = JObject.Parse(responseText);
+                //Console.WriteLine("API RESPONSE");
+                //Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(jObj, Newtonsoft.Json.Formatting.Indented));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Unable to parse json: " + ex.Message);
+                Console.WriteLine("API RESPONSE");
+                Console.WriteLine(responseText);
+                Console.WriteLine();
+            }
 
 
-            string tRequest = apiUri + parameters;
-
-            // create the web request
-            request = (HttpWebRequest)WebRequest.Create(tRequest);
-
-            // get response
-            response = (HttpWebResponse)request.GetResponse();
-
-            // get the response into a reader
-            responseReader = response.GetResponseStream();
-
-            XmlTextWriter outXML = new XmlTextWriter("response.xml", null);
-
-            xmlDoc = new XmlDocument();
-            xmlDoc.Load(responseReader);
-            xmlDoc.Save(outXML);
-            outXML.Close();
-
-            response.Close();
-            responseReader.Close();
-
-            Console.WriteLine();
-            Console.WriteLine(xmlDoc.InnerText);
-            Console.WriteLine();
-
-            WriteOutput(xmlDoc);
-
-
+            try
+            {
+                if (jObj != null)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Comparing Against QP_Load..EncounterTable");
+                    CompareResultAgainStudyPopulationTable(jObj, environment, DataFile_id, Study_id, batchIdx, batchSize, out countMatch, out countMismatch);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Unable to compare against encounters: " + ex.Message);
+                Console.WriteLine();
+            }
         }
 
-
-        static void WriteOutput(XmlDocument xmlDoc)
+        public static string MelissaDataApiJsonCall(string environment, int DataFile_id, int Study_id, int batchIdx, int batchSize)
         {
-            //TODO:
+            string TransmissionReference = "";
+            string CustomerID = "99869570";
+            string Actions = "Check";
+            string Options = "AdvancedAddressCorrection:on";//UsePreferredCity:on
+            string Columns = "";
+            
+            //string RecordID = "1";
+            //string CompanyName = "NRC";
+            //string FullName = "Timothy S Butler";
+            //string AddressLine1 = "610 S Evergreen Drive";
+            //string AddressLine2 = "";
+            //string Suite = "";
+            //string City = "Seward";
+            //string State = "Nebraska";
+            //string PostalCode = "68444";
+            //string Country = "USA";
+            //string PhoneNumber = "4026416896";
+            //string EmailAddress = "tbutler1@neb.rr.com";
+            //string FreeForm = "";
+            
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://personator.melissadata.net/v3/WEB/ContactVerify/doContactVerify");
+            httpWebRequest.ContentType = "text/json";
+            httpWebRequest.Method = "POST";
 
+            var serializer = new Newtonsoft.Json.JsonSerializer();
+            using (var sw = new StreamWriter(httpWebRequest.GetRequestStream()))
+            {
+                using (var tw = new Newtonsoft.Json.JsonTextWriter(sw))
+                {
+                    var requestData = new
+                        {
+                            TransmissionReference = TransmissionReference,
+                            CustomerID = CustomerID,
+                            Actions = Actions,
+                            Options = Options,
+                            Columns = Columns,
+                            Records = BuildAddressRecords(environment, DataFile_id, Study_id, batchIdx, batchSize)
+                        };
+
+                    serializer.Serialize(tw, requestData);
+                }
+            }
+            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                var responseText = streamReader.ReadToEnd();
+                return responseText;
+            }
         }
+
+        private static object[] BuildAddressRecords(string environment, int DataFile_Id, int Study_Id, int batchIdx, int batchSize)
+        {
+            bool CLEAN_PHONE = false;
+            bool CLEAN_NAME = false;
+
+            List<object> addressCleanRecords = new List<object>();
+
+            //Pull records from DataFile
+            DataTable encounters = GetDataFileRecords(environment, DataFile_Id, batchIdx, batchSize);
+
+            foreach (DataRow e in encounters.Rows)
+            {
+                string RecordID = e["DF_id"].ToString(); //e["DataFile_id"].ToString() + "_" + 
+                string CompanyName = "";
+                string FullName;
+                string Middle = e["Middle"].ToString().Trim();
+                if (CLEAN_NAME)
+                {
+                    if (string.IsNullOrWhiteSpace(Middle))
+                    { FullName = string.Concat(e["FName"], " ", e["LName"]); }
+                    else
+                    { FullName = string.Concat(e["FName"], " ", Middle, " ", e["LName"]); }
+                }
+                else
+                {
+                    FullName = "";
+                }
+                string AddressLine1 = e["Addr"].ToString();
+                string AddressLine2 = e["Addr2"].ToString();
+                string Suite = "";
+                string City = e["City"].ToString();
+                string State = e["ST"].ToString();
+                string PostalCode = e["Zip5"].ToString();
+                string Country = "";
+                string PhoneNumber = CLEAN_PHONE ? string.Concat(e["AreaCode"], e["Phone"]) : "";
+                string EmailAddress = "";
+                string FreeForm = "";
+
+                var o = new
+                {
+                    RecordID = RecordID,
+                    CompanyName = CompanyName,
+                    FullName = FullName,
+                    AddressLine1 = AddressLine1,
+                    AddressLine2 = AddressLine2,
+                    Suite = Suite,
+                    City = City,
+                    State = State,
+                    PostalCode = PostalCode,
+                    Country = Country,
+                    PhoneNumber = PhoneNumber,
+                    EmailAddress = EmailAddress,
+                    FreeForm = FreeForm,
+                };
+
+                addressCleanRecords.Add(o);
+            }
+
+
+            return addressCleanRecords.ToArray();
+        }
+
+        private static DataTable GetDataFileRecords(string environment, int datafile_id, int batchIdx, int batchSize)
+        {
+            //string limitExpression = maxRecords > 0 ? string.Format(" WHERE DF_ID <= {0} ", maxRecords) : "";
+            //string sql = string.Format("SELECT * FROM DataFile_{0}{1}", datafile_id, limitExpression);
+            int offset = (batchIdx * batchSize) + 1;
+            string sql = string.Format("SELECT * FROM DataFile_{0} WHERE DF_ID >= {1} AND DF_ID<{2} ORDER BY DF_ID", datafile_id, offset, offset + batchSize);
+            return SelectTableFromDB(environment, sql);
+        }
+
+        private static DataTable SelectTableFromDB(string environment, string sql)
+        {
+            Console.WriteLine("Executing SQL: " + sql);
+
+            string serverName = GetEnvironmentQPLoadServerName(environment);
+
+            string connStr = string.Format("Server={0};Database=QP_Load;Trusted_Connection=True;", serverName);
+
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                SqlDataAdapter sda = new SqlDataAdapter(sql, conn);
+                DataTable table = new DataTable();
+                try
+                {
+                    conn.Open();
+                    sda.Fill(table);
+                }
+                finally
+                {
+                    conn.Close();
+                }
+                return table;
+            }
+        }
+
+        private static string GetEnvironmentQPLoadServerName(string environment)
+        {
+            string serverName;
+            if (environment.ToUpper() == "STAGE")
+            {
+                serverName = "Cyclone";
+                return serverName;
+            }
+            {
+                throw new Exception(string.Format("Don't know how to reach environment: [{0}]", environment));
+            }
+        }
+
+        private static void CompareResultAgainStudyPopulationTable(dynamic personatorResponse, string environment, int datafile_id, int study_id, int batchIdx, int batchSize, out int countMatch, out int countMismatch)
+        {
+            Console.WriteLine("Starting Data Compare");
+            int offset = (batchIdx * batchSize) + 1;
+            string sql = string.Format("SELECT * FROM S{0}.POPULATION_Load WHERE DataFile_id = {1} AND DF_ID >= {2} AND DF_ID<{3} ORDER BY DF_ID", study_id, datafile_id , offset, offset + batchSize);
+            DataTable pops = SelectTableFromDB(environment, sql);
+
+            countMatch = 0; countMismatch = 0;
+
+            for (int i = 0; i < pops.Rows.Count; ++i )
+            {
+                var cleanRecord = personatorResponse.Records[i];
+                DataRow pop = pops.Rows[i];
+
+                string cleanAddr1 = cleanRecord["AddressLine1"].ToString().Trim().ToUpper();
+                string cleanAddr2 = cleanRecord["AddressLine2"].ToString().Trim().ToUpper();
+                string cleanAddr = cleanAddr1 + (string.IsNullOrWhiteSpace(cleanAddr2) ? "" : (" " + cleanAddr2));
+                string cleanResultCode = cleanRecord["Results"];
+
+                string popAddr1 = pop["Addr"].ToString();
+                string popAddr2 = pop["Addr2"].ToString();
+                string popAddr = popAddr1 + (string.IsNullOrWhiteSpace(popAddr2) ? "" : (" " + popAddr2));
+                string popResultCode = pop["AddrStat"].ToString();
+
+                if(cleanAddr == popAddr && cleanResultCode == popResultCode)
+                {
+                    countMatch++;
+                    //Console.WriteLine("PSEUDO-MATCH (upper casing, unsplit)");
+                    //Console.WriteLine("Personator: [" + cleanAddr + "]\t[" + cleanResultCode + "]");
+                    //Console.WriteLine("Legacy:     [" + popAddr + "]\t[" + popResultCode + "]");
+                }
+                else
+                {
+                    countMismatch++;
+                    Console.WriteLine("MISMATCH");
+                    Console.WriteLine("Personator: [" + cleanAddr + "]\t[" + cleanResultCode + "]");
+                    Console.WriteLine("Legacy:     [" + popAddr + "]\t[" + popResultCode + "]");
+                    Console.WriteLine();
+                }
+            }
+            Console.WriteLine("Batch Compare Counts");
+            Console.WriteLine("      MATCHES " + countMatch);
+            Console.WriteLine("   MISMATCHES " + countMismatch);
+        }
+
     }
 }
