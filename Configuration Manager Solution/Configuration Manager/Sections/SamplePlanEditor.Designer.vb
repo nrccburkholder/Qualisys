@@ -28,9 +28,16 @@ Partial Class SamplePlanEditor
         Me.UnitTreeContextMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.AddUnitMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.DeleteUnitMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.btnClearSearch = New System.Windows.Forms.Button()
+        Me.btnFindPrev = New System.Windows.Forms.Button()
+        Me.btnFindNext = New System.Windows.Forms.Button()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.txtSearchText = New System.Windows.Forms.TextBox()
         Me.PropertyCommandPanel = New System.Windows.Forms.Panel()
         Me.DeleteUnitButton = New System.Windows.Forms.Button()
         Me.AddUnitButton = New System.Windows.Forms.Button()
+        Me.LowVolumeUnitCheckBox = New System.Windows.Forms.CheckBox()
         Me.CAHPSTypeLabel = New System.Windows.Forms.Label()
         Me.CAHPSTypeComboBox = New System.Windows.Forms.ComboBox()
         Me.RespRateTextBox = New System.Windows.Forms.TextBox()
@@ -74,7 +81,6 @@ Partial Class SamplePlanEditor
         Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton2 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton3 = New System.Windows.Forms.ToolStripButton()
-        Me.LowVolumeUnitCheckBox = New System.Windows.Forms.CheckBox()
         Me.CriteriaEditorControl = New Nrc.Qualisys.ConfigurationManager.CriteriaEditor()
         Me.UnitPrioritizer = New Nrc.Qualisys.ConfigurationManager.SampleUnitPrioritizer()
         Me.InformationBar = New Nrc.Qualisys.ConfigurationManager.InformationBar()
@@ -85,6 +91,7 @@ Partial Class SamplePlanEditor
         Me.PropertySplitContainer.Panel2.SuspendLayout()
         Me.PropertySplitContainer.SuspendLayout()
         Me.UnitTreeContextMenu.SuspendLayout()
+        Me.Panel1.SuspendLayout()
         Me.PropertyCommandPanel.SuspendLayout()
         CType(Me.InitRespRateNumeric, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TargetReturnNumeric, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -127,6 +134,7 @@ Partial Class SamplePlanEditor
         'PropertySplitContainer.Panel1
         '
         Me.PropertySplitContainer.Panel1.Controls.Add(Me.SampleUnitTreeView)
+        Me.PropertySplitContainer.Panel1.Controls.Add(Me.Panel1)
         Me.PropertySplitContainer.Panel1.Controls.Add(Me.PropertyCommandPanel)
         '
         'PropertySplitContainer.Panel2
@@ -177,10 +185,10 @@ Partial Class SamplePlanEditor
         Me.SampleUnitTreeView.ContextMenuStrip = Me.UnitTreeContextMenu
         Me.SampleUnitTreeView.Dock = System.Windows.Forms.DockStyle.Fill
         Me.SampleUnitTreeView.HideSelection = False
-        Me.SampleUnitTreeView.Location = New System.Drawing.Point(0, 0)
+        Me.SampleUnitTreeView.Location = New System.Drawing.Point(0, 86)
         Me.SampleUnitTreeView.Name = "SampleUnitTreeView"
-        Me.SampleUnitTreeView.Size = New System.Drawing.Size(271, 510)
-        Me.SampleUnitTreeView.TabIndex = 0
+        Me.SampleUnitTreeView.Size = New System.Drawing.Size(271, 424)
+        Me.SampleUnitTreeView.TabIndex = 3
         '
         'UnitTreeContextMenu
         '
@@ -201,6 +209,67 @@ Partial Class SamplePlanEditor
         Me.DeleteUnitMenuItem.Name = "DeleteUnitMenuItem"
         Me.DeleteUnitMenuItem.Size = New System.Drawing.Size(174, 22)
         Me.DeleteUnitMenuItem.Text = "Delete Sample Unit"
+        '
+        'Panel1
+        '
+        Me.Panel1.Controls.Add(Me.btnClearSearch)
+        Me.Panel1.Controls.Add(Me.btnFindPrev)
+        Me.Panel1.Controls.Add(Me.btnFindNext)
+        Me.Panel1.Controls.Add(Me.Label6)
+        Me.Panel1.Controls.Add(Me.txtSearchText)
+        Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
+        Me.Panel1.Location = New System.Drawing.Point(0, 0)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(271, 86)
+        Me.Panel1.TabIndex = 2
+        '
+        'btnClearSearch
+        '
+        Me.btnClearSearch.FlatAppearance.BorderSize = 0
+        Me.btnClearSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnClearSearch.Image = Global.Nrc.Qualisys.ConfigurationManager.My.Resources.Resources.cross
+        Me.btnClearSearch.Location = New System.Drawing.Point(250, 21)
+        Me.btnClearSearch.Name = "btnClearSearch"
+        Me.btnClearSearch.Size = New System.Drawing.Size(17, 24)
+        Me.btnClearSearch.TabIndex = 4
+        Me.toolTip.SetToolTip(Me.btnClearSearch, "Clear Search Text")
+        Me.btnClearSearch.UseVisualStyleBackColor = True
+        '
+        'btnFindPrev
+        '
+        Me.btnFindPrev.Location = New System.Drawing.Point(100, 50)
+        Me.btnFindPrev.Name = "btnFindPrev"
+        Me.btnFindPrev.Size = New System.Drawing.Size(85, 23)
+        Me.btnFindPrev.TabIndex = 3
+        Me.btnFindPrev.Text = "Find Previous"
+        Me.btnFindPrev.UseVisualStyleBackColor = True
+        '
+        'btnFindNext
+        '
+        Me.btnFindNext.Location = New System.Drawing.Point(7, 50)
+        Me.btnFindNext.Name = "btnFindNext"
+        Me.btnFindNext.Size = New System.Drawing.Size(87, 23)
+        Me.btnFindNext.TabIndex = 2
+        Me.btnFindNext.Text = "Find Next"
+        Me.btnFindNext.UseVisualStyleBackColor = True
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Location = New System.Drawing.Point(4, 4)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(129, 13)
+        Me.Label6.TabIndex = 1
+        Me.Label6.Text = "Sample Unit Tree Search:"
+        '
+        'txtSearchText
+        '
+        Me.txtSearchText.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtSearchText.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtSearchText.Location = New System.Drawing.Point(7, 20)
+        Me.txtSearchText.Name = "txtSearchText"
+        Me.txtSearchText.Size = New System.Drawing.Size(261, 26)
+        Me.txtSearchText.TabIndex = 0
         '
         'PropertyCommandPanel
         '
@@ -239,6 +308,16 @@ Partial Class SamplePlanEditor
         Me.AddUnitButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.toolTip.SetToolTip(Me.AddUnitButton, "Create a new sample unit")
         Me.AddUnitButton.UseVisualStyleBackColor = True
+        '
+        'LowVolumeUnitCheckBox
+        '
+        Me.LowVolumeUnitCheckBox.AutoSize = True
+        Me.LowVolumeUnitCheckBox.Location = New System.Drawing.Point(8, 239)
+        Me.LowVolumeUnitCheckBox.Name = "LowVolumeUnitCheckBox"
+        Me.LowVolumeUnitCheckBox.Size = New System.Drawing.Size(106, 17)
+        Me.LowVolumeUnitCheckBox.TabIndex = 14
+        Me.LowVolumeUnitCheckBox.Text = "Low Volume Unit"
+        Me.LowVolumeUnitCheckBox.UseVisualStyleBackColor = True
         '
         'CAHPSTypeLabel
         '
@@ -656,16 +735,6 @@ Partial Class SamplePlanEditor
         Me.ToolStripButton3.Size = New System.Drawing.Size(23, 22)
         Me.ToolStripButton3.Text = "Delete Unit"
         '
-        'LowVolumeUnitCheckBox
-        '
-        Me.LowVolumeUnitCheckBox.AutoSize = True
-        Me.LowVolumeUnitCheckBox.Location = New System.Drawing.Point(8, 239)
-        Me.LowVolumeUnitCheckBox.Name = "LowVolumeUnitCheckBox"
-        Me.LowVolumeUnitCheckBox.Size = New System.Drawing.Size(106, 17)
-        Me.LowVolumeUnitCheckBox.TabIndex = 14
-        Me.LowVolumeUnitCheckBox.Text = "Low Volume Unit"
-        Me.LowVolumeUnitCheckBox.UseVisualStyleBackColor = True
-        '
         'CriteriaEditorControl
         '
         Me.CriteriaEditorControl.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
@@ -721,6 +790,8 @@ Partial Class SamplePlanEditor
         Me.PropertySplitContainer.Panel2.PerformLayout()
         Me.PropertySplitContainer.ResumeLayout(False)
         Me.UnitTreeContextMenu.ResumeLayout(False)
+        Me.Panel1.ResumeLayout(False)
+        Me.Panel1.PerformLayout()
         Me.PropertyCommandPanel.ResumeLayout(False)
         CType(Me.InitRespRateNumeric, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TargetReturnNumeric, System.ComponentModel.ISupportInitialize).EndInit()
@@ -770,7 +841,6 @@ Partial Class SamplePlanEditor
     Friend WithEvents Label13 As System.Windows.Forms.Label
     Friend WithEvents FacilityComboBox As System.Windows.Forms.ComboBox
     Friend WithEvents PropertyCommandPanel As System.Windows.Forms.Panel
-    Friend WithEvents SampleUnitTreeView As System.Windows.Forms.TreeView
     Friend WithEvents DeleteUnitButton As System.Windows.Forms.Button
     Friend WithEvents AddUnitButton As System.Windows.Forms.Button
     Friend WithEvents UnitPrioritizer As Nrc.Qualisys.ConfigurationManager.SampleUnitPrioritizer
@@ -788,5 +858,12 @@ Partial Class SamplePlanEditor
     Friend WithEvents CAHPSTypeComboBox As System.Windows.Forms.ComboBox
     Friend WithEvents CAHPSTypeLabel As System.Windows.Forms.Label
     Friend WithEvents LowVolumeUnitCheckBox As System.Windows.Forms.CheckBox
+    Friend WithEvents SampleUnitTreeView As System.Windows.Forms.TreeView
+    Friend WithEvents Panel1 As System.Windows.Forms.Panel
+    Friend WithEvents btnFindPrev As System.Windows.Forms.Button
+    Friend WithEvents btnFindNext As System.Windows.Forms.Button
+    Friend WithEvents Label6 As System.Windows.Forms.Label
+    Friend WithEvents txtSearchText As System.Windows.Forms.TextBox
+    Friend WithEvents btnClearSearch As System.Windows.Forms.Button
 
 End Class
