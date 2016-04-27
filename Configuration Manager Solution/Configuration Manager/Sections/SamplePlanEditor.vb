@@ -17,6 +17,7 @@ Public Class SamplePlanEditor
     Private tvWalkerPrev As TreeViewWalker
     Private matchingNode As TreeNode
     Private processedSelectedNode As Boolean
+    Private isMatch As Boolean
 
 #End Region
 
@@ -427,17 +428,21 @@ Public Class SamplePlanEditor
     End Sub
 
     Private Sub btnFindNext_Click(sender As Object, e As EventArgs) Handles btnFindNext.Click
-        processedSelectedNode = False
-        tvWalkerNext.ProcessTree()
+        processedSelectedNode = False     
+        ProcessTree()
     End Sub
 
     Private Sub btnFindPrev_Click(sender As Object, e As EventArgs) Handles btnFindPrev.Click
         matchingNode = Nothing
-        tvWalkerPrev.ProcessTree()
+        ProcessTree()
     End Sub
 
     Private Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
         txtSearchText.Clear()
+    End Sub
+
+    Private Sub txtSearchText_TextChanged(sender As Object, e As EventArgs) Handles txtSearchText.TextChanged
+
     End Sub
 
     Public Sub IdleEvent(ByVal sender As System.Object, ByVal e As System.EventArgs)
@@ -540,6 +545,7 @@ Public Class SamplePlanEditor
         AddHandler tvWalkerNext.ProcessNode, AddressOf tvWalkerNext_ProcessNode
         AddHandler tvWalkerPrev.ProcessNode, AddressOf tvWalkerPrev_ProcessNode
 
+        isMatch = False
 
     End Sub
 
@@ -997,12 +1003,39 @@ Public Class SamplePlanEditor
 
 #Region "TreeViewWalker"
 
+    Private Sub ProcessTree()
+        isMatch = False
+        tvWalkerNext.ProcessTree()
+        If isMatch = False Then
+            Dim msg As String
+            If SampleUnitTreeView.SelectedNode.Text.ToLower().Contains(txtSearchText.Text.ToLower()) Then
+                msg = "No additional matches found for specified text: {0} {1} {2}"
+            Else
+                msg = "Could not find matches for specified text: {0} {1} {2}"
+            End If
+            MessageBox.Show(String.Format(msg, vbCrLf, vbCrLf, txtSearchText.Text), "Sample Unit Tree Search", MessageBoxButtons.OK, MessageBoxIcon.None)
+        End If
+    End Sub
 
     Private Sub tvWalkerNext_ProcessNode(ByVal sender As Object, ByVal e As ProcessNodeEventArgs)
 
+
+        If Not SampleUnitTreeView.SelectedNode.Text.ToLower().Contains(txtSearchText.Text.ToLower()) Then
+            'This is a new search.  Just find the first match.
+            If ContainsSearchText(e.Node) Then
+                SampleUnitTreeView.SelectedNode = e.Node
+                e.StopProcessing = True
+                isMatch = True
+                Exit Sub
+            End If
+
+        End If
+
+        ' subsequent search for same text continues here
         If e.Node.Handle = SampleUnitTreeView.SelectedNode.Handle Then
             processedSelectedNode = True
         End If
+
 
         ' If we have already processed the selected node and the current node 
         ' matches the search text, then we have found the "next" node and it
@@ -1010,9 +1043,9 @@ Public Class SamplePlanEditor
         If processedSelectedNode AndAlso e.Node.Handle <> SampleUnitTreeView.SelectedNode.Handle AndAlso ContainsSearchText(e.Node) Then
             SampleUnitTreeView.SelectedNode = e.Node
             e.StopProcessing = True
+            isMatch = True
             Exit Sub
         End If
-
 
     End Sub
 
@@ -1022,6 +1055,7 @@ Public Class SamplePlanEditor
             If matchingNode IsNot Nothing Then
                 SampleUnitTreeView.SelectedNode = matchingNode
                 e.StopProcessing = True
+                isMatch = True
                 Exit Sub
             End If
         End If
@@ -1042,7 +1076,7 @@ Public Class SamplePlanEditor
             Return False
         End If
 
-        Return node.Text.IndexOf(txtSearchText.Text) > -1
+        Return node.Text.ToLower().Contains(txtSearchText.Text.ToLower())
 
     End Function
 
@@ -1070,6 +1104,7 @@ Public Class SamplePlanEditor
 #End Region
 
 #End Region
+
 
 
 End Class

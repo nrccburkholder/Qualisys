@@ -24,7 +24,6 @@ Partial Class SamplePlanEditor
         Me.WorkTabControl = New System.Windows.Forms.TabControl()
         Me.PropertyTabPage = New System.Windows.Forms.TabPage()
         Me.PropertySplitContainer = New System.Windows.Forms.SplitContainer()
-        Me.SampleUnitTreeView = New System.Windows.Forms.TreeView()
         Me.UnitTreeContextMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.AddUnitMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.DeleteUnitMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -81,6 +80,7 @@ Partial Class SamplePlanEditor
         Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton2 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton3 = New System.Windows.Forms.ToolStripButton()
+        Me.SampleUnitTreeView = New Nrc.Qualisys.ConfigurationManager.CustomTreeView(Me.components)
         Me.CriteriaEditorControl = New Nrc.Qualisys.ConfigurationManager.CriteriaEditor()
         Me.UnitPrioritizer = New Nrc.Qualisys.ConfigurationManager.SampleUnitPrioritizer()
         Me.InformationBar = New Nrc.Qualisys.ConfigurationManager.InformationBar()
@@ -179,16 +179,6 @@ Partial Class SamplePlanEditor
         Me.PropertySplitContainer.Size = New System.Drawing.Size(1056, 543)
         Me.PropertySplitContainer.SplitterDistance = 271
         Me.PropertySplitContainer.TabIndex = 28
-        '
-        'SampleUnitTreeView
-        '
-        Me.SampleUnitTreeView.ContextMenuStrip = Me.UnitTreeContextMenu
-        Me.SampleUnitTreeView.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.SampleUnitTreeView.HideSelection = False
-        Me.SampleUnitTreeView.Location = New System.Drawing.Point(0, 86)
-        Me.SampleUnitTreeView.Name = "SampleUnitTreeView"
-        Me.SampleUnitTreeView.Size = New System.Drawing.Size(271, 424)
-        Me.SampleUnitTreeView.TabIndex = 3
         '
         'UnitTreeContextMenu
         '
@@ -735,6 +725,14 @@ Partial Class SamplePlanEditor
         Me.ToolStripButton3.Size = New System.Drawing.Size(23, 22)
         Me.ToolStripButton3.Text = "Delete Unit"
         '
+        'SampleUnitTreeView
+        '
+        Me.SampleUnitTreeView.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.SampleUnitTreeView.Location = New System.Drawing.Point(0, 86)
+        Me.SampleUnitTreeView.Name = "SampleUnitTreeView"
+        Me.SampleUnitTreeView.Size = New System.Drawing.Size(271, 424)
+        Me.SampleUnitTreeView.TabIndex = 3
+        '
         'CriteriaEditorControl
         '
         Me.CriteriaEditorControl.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
@@ -858,12 +856,12 @@ Partial Class SamplePlanEditor
     Friend WithEvents CAHPSTypeComboBox As System.Windows.Forms.ComboBox
     Friend WithEvents CAHPSTypeLabel As System.Windows.Forms.Label
     Friend WithEvents LowVolumeUnitCheckBox As System.Windows.Forms.CheckBox
-    Friend WithEvents SampleUnitTreeView As System.Windows.Forms.TreeView
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Friend WithEvents btnFindPrev As System.Windows.Forms.Button
     Friend WithEvents btnFindNext As System.Windows.Forms.Button
     Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents txtSearchText As System.Windows.Forms.TextBox
     Friend WithEvents btnClearSearch As System.Windows.Forms.Button
+    Friend WithEvents SampleUnitTreeView As Nrc.Qualisys.ConfigurationManager.CustomTreeView
 
 End Class
