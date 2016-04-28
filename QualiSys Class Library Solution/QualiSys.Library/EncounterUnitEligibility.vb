@@ -36,7 +36,7 @@ Public Class EncounterUnitEligibility
     Private mBitBadAddress As Boolean
     Private mBitBadPhone As Boolean
     Private mReportDate As Date
-    Private mNumRandom As Integer
+    Private mStipulatedOrder As Integer
     Private mCCN As String
 #End Region
 
@@ -145,12 +145,12 @@ Public Class EncounterUnitEligibility
         End Set
     End Property
 
-    Public Property NumRandom() As Integer
+    Public Property StipulatedOrder() As Integer
         Get
-            Return mNumRandom
+            Return mStipulatedOrder
         End Get
         Friend Set(ByVal value As Integer)
-            mNumRandom = value
+            mStipulatedOrder = value
         End Set
     End Property
 
@@ -185,7 +185,7 @@ Public Class EncounterUnitEligibility
             encounter.BitBadAddress = rdr.GetBoolean("BitBadAddress")
             encounter.BitBadPhone = rdr.GetBoolean("BitBadPhone")
             encounter.ReportDate = rdr.GetDate("ReportDate")
-            encounter.NumRandom = rdr.GetInteger("NumRandom")
+            encounter.StipulatedOrder = rdr.GetInteger("NumRandom")
             encounter.CCN = rdr.GetString("CCN")
 
             collection.Add(encounter)

@@ -132,14 +132,16 @@ Partial Public Class SampleSet
                 '------------------------------------------------------------------------------------
                 'DONE: Incorporate new fields (random, CCN) in result set from SelectEncounterUnitEligibility
                 '
-                'TODO: Write a function IsSystematic which is true only for OAS all cases--with multiple locations 
+                'DONE: using a property on Survey
+                '(was Write a function IsSystematic which is true only for OAS all cases--with multiple locations)
                 '
-                'TODO: Build an EncounterUnitEligibility class and collection for LINQ usage 
+                'DONE: Build an EncounterUnitEligibility class and collection for LINQ usage 
                 '(Dim CCN = From EncUnit in rdrEncUnit Where EncUnit.CCN = CCN1) etc.
                 'For Each item As EncounterUnitEligibility In EncouterUnitEligiblity_s Distinct.ToList.Where(Me.GetCCNValue.ToString() = CCNItem.CCN) 
                 'Dim a = (From row In table.AsEnumerable() Select row.Field(Of String)("name")).Distinct().ToList()
                 '
-                'TODO: For OAS, Loop through each CCN, sampleunit, with systematic selection having interval by CCN
+                'DONE: For OAS, Loop through each location (sampleunit), with systematic selection having interval by CCN
+                '
                 'Make sure somewhere in here we keep the most recent encounter only
                 '
                 'OAS must resurvey at CCN level
@@ -155,16 +157,30 @@ Partial Public Class SampleSet
                 'Loop through each encounter
                 Using rdr As SafeDataReader = SampleSetProvider.Instance.SelectEncounterUnitEligibility(srvy.Id, srvy.StudyId, dataSetIds.ToString, startDate, endDate, randomNumber, srvy.ResurveyPeriod, sampleEncounterDateField, reportDateField, encounterTableExists, sampleSetId, period.SamplingMethod, srvy.ResurveyMethod, SamplingAlgorithm.StaticPlus)
 
-                    Dim EncounterUnitEligibility_s As EncounterUnitEligibilityCollection
-                    EncounterUnitEligibility_s = EncounterUnitEligibility.FillCollection(rdr)
+                    Dim encounterUnitEligibility_s As EncounterUnitEligibilityCollection
+                    encounterUnitEligibility_s = EncounterUnitEligibility.FillCollection(rdr)
+
+                    'Validate 1 and only 1 CCN for Systematic (OAS)
+
+                    If srvy.IsSystematic Then
+                        Dim CCNs As List(Of String) = (From row In encounterUnitEligibility_s.AsEnumerable() Select row.CCN).Distinct().ToList()
+                        If CCNs.Count > 1 Then
+                            Dim CCNlist As String = String.Empty
+                            For Each CCN As String In CCNs
+                                CCNlist = CCNlist & ", " & CCN
+                            Next
+                            Throw New DataException("Multiple CCNs in Systematic Sampling Sampleset. Sampleset_id:" & sampleSetId.ToString() & CCNlist)
+                        End If
+                    End If
 
                     'Get the number of seconds it took to perform the presample steps
 
+
                     ''TEST CODE BLOCK
                     'Dim CCN = From EncUnit In rdr Where EncUnit.CCN = "CC1" --ONE CCN PER SURVEY FOR OASCAHPS!!!
-                    Dim locations As List(Of Integer) = (From row In EncounterUnitEligibility_s.AsEnumerable() Select row.Sampleunit_id).Distinct().ToList()
-                    For Each location As Integer In locations
-                        For Each item As EncounterUnitEligibility In (From row In EncounterUnitEligibility_s Where item.Sampleunit_id = location)
+                    Dim locs As List(Of Integer) = (From row In encounterUnitEligibility_s.AsEnumerable() Select row.Sampleunit_id).Distinct().ToList()
+                    For Each location As Integer In locs
+                        For Each item As EncounterUnitEligibility In (From row In encounterUnitEligibility_s Where item.Sampleunit_id = location)
 
                         Next
                     Next
@@ -180,11 +196,11 @@ Partial Public Class SampleSet
                     End If
 
                     '------------------------------------------------------------------------------------
-                    'TODO: Rename RecalcHCAHPSOutgoNeeded to RecalcDelayedOutgoNeeded 
+                    'Done: Rename RecalcHCAHPSOutgoNeeded to RecalcDelayedOutgoNeeded 
                     '
                     'TODO: Make RecalcDelayedOutgoNeeded able to interact with new OASTargetLookup tables
                     '
-                    'TODO: Create OASTargetLookup & OASTargetHistory tables and CRUD
+                    'Dave: Create OASTargetLookup & OASTargetHistory tables and CRUD
                     '
                     'Don’t sort OAS CAHPS!
                     'Checking w/ CMS about sort by enc_id to maintain client file order
@@ -198,7 +214,8 @@ Partial Public Class SampleSet
                     '------------------------------------------------------------------------------------
 
                     'Calculate the outgo needed for all of the HCAHPS units using the Medicare Proportion and HCAHPS Eligilbe Encounter count
-                    RecalcHCAHPSOutGoNeeded(sampleSetId, sampleSetUnits, startDate, sampleHCAHPSUnit, period)
+                    'Calculate the outgo needed for all of the OASCAHPS units using the Annual sample size (calc if needed) to get monthly & interval
+                    RecalcDeleyedOutGoNeeded(sampleSetId, sampleSetUnits, startDate, sampleHCAHPSUnit, period)
 
                     'Logging
                     If AppConfig.Params("SamplingLogEnabled").IntegerValue = 1 Then
@@ -206,7 +223,7 @@ Partial Public Class SampleSet
                     End If
 
                     '------------------------------------------------------------------------------------
-                    'TODO: For Systematic, ExecuteSample must operate on the current subset by CCN, SampleUnit
+                    'TODO: For Systematic, ExecuteSample must operate on the current subset by SampleUnit
                     '
                     'Loop through sampleunits, then loop  through pops
                     'Not sorted by random num for OAS
@@ -214,7 +231,14 @@ Partial Public Class SampleSet
                     '------------------------------------------------------------------------------------
 
                     'This will iterate through the reader and perform the sample
-                    ExecuteSample(rdr, sampleSetUnits, encounterTableExists, sampleSetId, srvy)
+                    If srvy.IsSystematic Then
+                        Dim locations As List(Of Integer) = (From row In encounterUnitEligibility_s.AsEnumerable() Select row.Sampleunit_id).Distinct().ToList()
+                        For Each location As Integer In locations
+                            ExecuteSample(rdr, encounterUnitEligibility_s, sampleSetUnits, encounterTableExists, sampleSetId, srvy, location)
+                        Next
+                    Else
+                        ExecuteSample(rdr, encounterUnitEligibility_s, sampleSetUnits, encounterTableExists, sampleSetId, srvy)
+                    End If
 
                     '------------------------------------------------------------------------------------
                     'TODO:
@@ -277,7 +301,7 @@ Partial Public Class SampleSet
         ''' <param name="startDate">The starting date for the encounters being sampled.</param>
         ''' <param name="sampleHCAHPSUnit">Specifies whether or not we are sampling the HCAHPS unit.</param>
         ''' <remarks></remarks>
-        Private Shared Sub RecalcHCAHPSOutGoNeeded(ByVal sampleSetId As Integer, ByVal sampleSetUnits As Dictionary(Of Integer, SampleSetUnit), _
+        Private Shared Sub RecalcDeleyedOutGoNeeded(ByVal sampleSetId As Integer, ByVal sampleSetUnits As Dictionary(Of Integer, SampleSetUnit), _
                                                    ByVal startDate As Nullable(Of Date), ByVal sampleHCAHPSUnit As Boolean, ByVal period As SamplePeriod)
 
             Dim strtDate As Date
@@ -435,7 +459,9 @@ Partial Public Class SampleSet
         ''' </summary>
         ''' <param name="rdr"></param>
         ''' <remarks></remarks>
-        Private Shared Sub ExecuteSample(ByVal rdr As SafeDataReader, ByVal sampleSetUnits As Dictionary(Of Integer, SampleSetUnit), ByVal encounterTableExists As Boolean, ByVal sampleSetId As Integer, ByVal srvy As Survey)
+        Private Shared Sub ExecuteSample(ByVal rdr As SafeDataReader, ByVal encounterUnitEligibility_s As EncounterUnitEligibilityCollection, _
+                                         ByVal sampleSetUnits As Dictionary(Of Integer, SampleSetUnit), ByVal encounterTableExists As Boolean, ByVal sampleSetId As Integer, ByVal srvy As Survey, _
+                                         Optional ByVal location As Integer = -1)
 
             Dim popID As Integer = 0
             Dim encID As Integer = 0
