@@ -243,7 +243,7 @@ where eds.exportqueueid=@ExportQueueID
 select distinct MedicareNumber, FacilityName, convert(char(10), NULL) as NPI
 into #CCN
 from nrc_datamart.dbo.SampleUnitFacilityAttributes 
-where medicarenumber in ('141613')  --> this is the hardcoding
+where medicarenumber in ('141613','191572','671765')  --> this is the hardcoding
 
 update #ccn set NPI='M'
 
@@ -254,6 +254,12 @@ inner join [CEM].[ExportDataset00000011] eds on ccn.MedicareNumber=eds.[hospiced
 where eds.ExportQueueid=@ExportQueueID
 
 select *
+	, char(7) as [no-publicity]
+	, char(7) as [total-decedents]
+	, char(7) as [ineligible-presample]
+	, char(7) as [live-discharges]
+	, char(7) as [missing-dod]
+	, char(7) as [number-offices]
 into #everything
 from #months m, #ccn c
 
@@ -264,6 +270,36 @@ inner join [CEM].[ExportDataset00000011] eds
 		and e.[hospicedata.reference-month]=eds.[hospicedata.reference-month]
 		and e.MedicareNumber=eds.[hospicedata.provider-id]
 where eds.ExportQueueID=@ExportQueueID
+
+-- more 2015 Q4 hardcoding
+--From: James Tobey 
+--Sent: Thursday, April 14, 2016 11:58 AM
+--To: Dave Gilsdorf <dgilsdorf@nationalresearch.com>
+--Cc: ATLAS SCRUM Team <ATLASSCRUMTeam@nationalresearch.com>
+--Subject: RE: Hospice Q4 submission data issues
+
+--Hi Dave,
+
+--Here are the numbers you need for GentlePro, and two additional hospices with zero outgo I found:
+
+--reference-yr	reference-month	provider-name					provider-id	no-publicity	total-decedents	ineligible-presample	live-discharges	missing-dod	number-offices
+--2015			10				Gentlepro Home Health Care		141613		0				0				0						3				0			1
+--2015			11				Gentlepro Home Health Care		141613		0				0				0						2				0			1
+--2015			12				St. Joseph Hospice-New Orleans	191572		0				0				0						1				0			1
+--2015			11				St. Joseph Hospice-Texas		671765		0				0				0						2				0			1
+
+--You mentioned that your “zero outgo” would have caught any CCN with at least one row in the extract but did not have all three months. Both CCN 191572 and 671765 had two sample months in the extract and were missing one month.
+
+--I reconciled the extract CCNs against our authorization list and found no gap. All CCNs are accounted for.
+
+--Thanks,
+--James
+
+update #everything set [no-publicity]='0',[total-decedents]='0',[ineligible-presample]='0',[live-discharges]='3',[missing-dod]='0',[number-offices]='1' where [hospicedata.reference-yr]='2015' and [hospicedata.reference-month]='10' and MedicareNumber='141613'
+update #everything set [no-publicity]='0',[total-decedents]='0',[ineligible-presample]='0',[live-discharges]='2',[missing-dod]='0',[number-offices]='1' where [hospicedata.reference-yr]='2015' and [hospicedata.reference-month]='11' and MedicareNumber='141613'
+update #everything set [no-publicity]='0',[total-decedents]='0',[ineligible-presample]='0',[live-discharges]='1',[missing-dod]='0',[number-offices]='1' where [hospicedata.reference-yr]='2015' and [hospicedata.reference-month]='12' and MedicareNumber='191572'
+update #everything set [no-publicity]='0',[total-decedents]='0',[ineligible-presample]='0',[live-discharges]='2',[missing-dod]='0',[number-offices]='1' where [hospicedata.reference-yr]='2015' and [hospicedata.reference-month]='11' and MedicareNumber='671765'
+-- /more 2015 Q4 hardcoding
 
 INSERT INTO [CEM].[exportdataset00000011] 
             ([exportqueueid], 
@@ -302,39 +338,20 @@ SELECT DISTINCT eds.[exportqueueid],
                 LEFT(e.facilityname, 100), 
                 e.medicarenumber, 
                 e.npi, 
-                '8'     AS [hospicedata.survey-mode], 
-                Char(7) AS [hospicedata.total-decedents], 
-                Char(7) AS [hospicedata.live-discharges], 
-                Char(7) AS [hospicedata.no-publicity], 
-                Char(7) AS [hospicedata.ineligible-presample], 
-				Char(7) AS [hospicedata.missing-dod],
-                '0'     AS [hospicedata.sample-size], 
-                '0'     AS [hospicedata.ineligible-postsample], 
-				Char(7) AS [hospicedata.number-offices],
-                '8'     AS [hospicedata.sample-type] 
+                '8' AS [survey-mode], 
+				     e.[total-decedents], 
+				     e.[live-discharges], 
+				     e.[no-publicity], 
+				     e.[ineligible-presample], 
+				     e.[missing-dod],
+                '0' AS [sample-size], 
+                '0' AS [ineligible-postsample], 
+				     e.[number-offices],
+                '8' AS [sample-type] 
 FROM   [CEM].[exportdataset00000011] eds, #everything e 
 WHERE  eds.exportqueueid = @ExportQueueID 
 
--- hardcoding zero eligible cases
---From: James Tobey 
---Sent: Monday, February 1, 2016 10:57 AM
---To: Dave Gilsdorf <dgilsdorf@nationalresearch.com>
---Subject: INC0053179 -- zero eligible cases for one hospice
-
---there was one hospice that had two months with zero eligible cases that we’ll need to submit a header record for. Details below:
-
---CCN 141613
-
---July 2015:
---•	0 total decedents
---•	0 live discharges
---•	0 no-publicity patients
-
---September 2015:
---•	0 total decedents
---•	3 live discharges
---•	0 no-publicity patients
-
+-- hardcoding zero eligible cases 2015 Q3
 update [CEM].[ExportDataset00000011] 
 set [hospicedata.total-decedents] = 0,
 	[hospicedata.live-discharges] = case [hospicedata.reference-month] when 7 then 0 when 9 then 3 end,
@@ -346,7 +363,7 @@ and [hospicedata.provider-id]='141613'
 and [hospicedata.reference-yr]='2015'
 and [hospicedata.reference-month] in (7,9)
 
--- /hardcoding zero eligible cases
+-- /hardcoding zero eligible cases 2015 Q3
 
 -- recode blank NPI's to 'M'
 update eds
