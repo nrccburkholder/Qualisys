@@ -22,3 +22,12 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.divbox {
+
+    height: 80px;
+    border: 2px solid red; 
+    padding: 25px;
+    box-sizing: border-box;
+
+}
