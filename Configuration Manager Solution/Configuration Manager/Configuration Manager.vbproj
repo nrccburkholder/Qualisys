@@ -49,7 +49,7 @@
     <PublisherName>National Research Corporation</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>4.8.22.0</ApplicationVersion>
+    <ApplicationVersion>4.8.23.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -229,6 +229,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="Classes\CustomTreeView.Designer.vb">
+      <DependentUpon>CustomTreeView.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Classes\CustomTreeView.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Classes\TreeViewWalker.vb" />
     <Compile Include="Configuration Modules\ClientPropertiesModule.vb" />
     <Compile Include="Configuration Modules\ClientGroupPropertiesModule.vb" />
     <Compile Include="Configuration Modules\SampleUnitCoverLetterMappingModule.vb" />

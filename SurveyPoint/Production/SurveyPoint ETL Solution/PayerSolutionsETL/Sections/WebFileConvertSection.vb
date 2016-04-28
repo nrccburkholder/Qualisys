@@ -4,6 +4,559 @@ Imports System.Data
 
 Public Class WebFileConvertSection
 
+#Region " Enums "
+
+    Enum ExcelColumns
+        [B] = 1
+        [C] = 2
+        [D] = 3
+        [E] = 4
+        [F] = 5
+        [G] = 6
+        [H] = 7
+        [I] = 8
+        [J] = 9
+        [K] = 10
+        [L] = 11
+        [M] = 12
+        [N] = 13
+        [O] = 14
+        [P] = 15
+        [Q] = 16
+        [R] = 17
+        [S] = 18
+        [T] = 19
+        [U] = 20
+        [V] = 21
+        [W] = 22
+        [X] = 23
+        [Y] = 24
+        [Z] = 25
+        [AA] = 26
+        [AB] = 27
+        [AC] = 28
+        [AD] = 29
+        [AE] = 30
+        [AF] = 31
+        [AG] = 32
+        [AH] = 33
+        [AI] = 34
+        [AJ] = 35
+        [AK] = 36
+        [AL] = 37
+        [AM] = 38
+        [AN] = 39
+        [AO] = 40
+        [AP] = 41
+        [AQ] = 42
+        [AR] = 43
+        [AS] = 44
+        [AT] = 45
+        [AU] = 46
+        [AV] = 47
+        [AW] = 48
+        [AX] = 49
+        [AY] = 50
+        [AZ] = 51
+        [BA] = 52
+        [BB] = 53
+        [BC] = 54
+        [BD] = 55
+        [BE] = 56
+        [BF] = 57
+        [BG] = 58
+        [BH] = 59
+        [BI] = 60
+        [BJ] = 61
+        [BK] = 62
+        [BL] = 63
+        [BM] = 64
+        [BN] = 65
+        [BO] = 66
+        [BP] = 67
+        [BQ] = 68
+        [BR] = 69
+        [BS] = 70
+        [BT] = 71
+        [BU] = 72
+        [BV] = 73
+        [BW] = 74
+        [BX] = 75
+        [BY] = 76
+        [BZ] = 77
+        [CA] = 78
+        [CB] = 79
+        [CC] = 80
+        [CD] = 81
+        [CE] = 82
+        [CF] = 83
+        [CG] = 84
+        [CH] = 85
+        [CI] = 86
+        [CJ] = 87
+        [CK] = 88
+        [CL] = 89
+        [CM] = 90
+        [CN] = 91
+        [CO] = 92
+        [CP] = 93
+        [CQ] = 94
+        [CR] = 95
+        [CS] = 96
+        [CT] = 97
+        [CU] = 98
+        [CV] = 99
+        [CW] = 100
+        [CX] = 101
+        [CY] = 102
+        [CZ] = 103
+        [DA] = 104
+        [DB] = 105
+        [DC] = 106
+        [DD] = 107
+        [DE] = 108
+        [DF] = 109
+        [DG] = 110
+        [DH] = 111
+        [DI] = 112
+        [DJ] = 113
+        [DK] = 114
+        [DL] = 115
+        [DM] = 116
+        [DN] = 117
+        [DO] = 118
+        [DP] = 119
+        [DQ] = 120
+        [DR] = 121
+        [DS] = 122
+        [DT] = 123
+        [DU] = 124
+        [DV] = 125
+        [DW] = 126
+        [DX] = 127
+        [DY] = 128
+        [DZ] = 129
+        [EA] = 130
+        [EB] = 131
+        [EC] = 132
+        [ED] = 133
+        [EE] = 134
+        [EF] = 135
+        [EG] = 136
+        [EH] = 137
+        [EI] = 138
+        [EJ] = 139
+        [EK] = 140
+        [EL] = 141
+        [EM] = 142
+        [EN] = 143
+        [EO] = 144
+        [EP] = 145
+        [EQ] = 146
+        [ER] = 147
+        [ES] = 148
+        [ET] = 149
+        [EU] = 150
+        [EV] = 151
+        [EW] = 152
+        [EX] = 153
+        [EY] = 154
+        [EZ] = 155
+        [FA] = 156
+        [FB] = 157
+        [FC] = 158
+        [FD] = 159
+        [FE] = 160
+        [FF] = 161
+        [FG] = 162
+        [FH] = 163
+        [FI] = 164
+        [FJ] = 165
+        [FK] = 166
+        [FL] = 167
+        [FM] = 168
+        [FN] = 169
+        [FO] = 170
+        [FP] = 171
+        [FQ] = 172
+        [FR] = 173
+        [FS] = 174
+        [FT] = 175
+        [FU] = 176
+        [FV] = 177
+        [FW] = 178
+        [FX] = 179
+        [FY] = 180
+        [FZ] = 181
+        [GA] = 182
+        [GB] = 183
+        [GC] = 184
+        [GD] = 185
+        [GE] = 186
+        [GF] = 187
+        [GG] = 188
+        [GH] = 189
+        [GI] = 190
+        [GJ] = 191
+        [GK] = 192
+        [GL] = 193
+        [GM] = 194
+        [GN] = 195
+        [GO] = 196
+        [GP] = 197
+        [GQ] = 198
+        [GR] = 199
+        [GS] = 200
+        [GT] = 201
+        [GU] = 202
+        [GV] = 203
+        [GW] = 204
+        [GX] = 205
+        [GY] = 206
+        [GZ] = 207
+        [HA] = 208
+        [HB] = 209
+        [HC] = 210
+        [HD] = 211
+        [HE] = 212
+        [HF] = 213
+        [HG] = 214
+        [HH] = 215
+        [HI] = 216
+        [HJ] = 217
+        [HK] = 218
+        [HL] = 219
+        [HM] = 220
+        [HN] = 221
+        [HO] = 222
+        [HP] = 223
+        [HQ] = 224
+        [HR] = 225
+        [HS] = 226
+        [HT] = 227
+        [HU] = 228
+        [HV] = 229
+        [HW] = 230
+        [HX] = 231
+        [HY] = 232
+        [HZ] = 233
+        [IA] = 234
+        [IB] = 235
+        [IC] = 236
+        [ID] = 237
+        [IE] = 238
+        [IF] = 239
+        [IG] = 240
+        [IH] = 241
+        [II] = 242
+        [IJ] = 243
+        [IK] = 244
+        [IL] = 245
+        [IM] = 246
+        [IN] = 247
+        [IO] = 248
+        [IP] = 249
+        [IQ] = 250
+        [IR] = 251
+        [IS] = 252
+        [IT] = 253
+        [IU] = 254
+        [IV] = 255
+        [IW] = 256
+        [IX] = 257
+        [IY] = 258
+        [IZ] = 259
+        [JA] = 260
+        [JB] = 261
+        [JC] = 262
+        [JD] = 263
+        [JE] = 264
+        [JF] = 265
+        [JG] = 266
+        [JH] = 267
+        [JI] = 268
+        [JJ] = 269
+        [JK] = 270
+        [JL] = 271
+        [JM] = 272
+        [JN] = 273
+        [JO] = 274
+        [JP] = 275
+        [JQ] = 276
+        [JR] = 277
+        [JS] = 278
+        [JT] = 279
+        [JU] = 280
+        [JV] = 281
+        [JW] = 282
+        [JX] = 283
+        [JY] = 284
+        [JZ] = 285
+        [KA] = 286
+        [KB] = 287
+        [KC] = 288
+        [KD] = 289
+        [KE] = 290
+        [KF] = 291
+        [KG] = 292
+        [KH] = 293
+        [KI] = 294
+        [KJ] = 295
+        [KK] = 296
+        [KL] = 297
+        [KM] = 298
+        [KN] = 299
+        [KO] = 300
+        [KP] = 301
+        [KQ] = 302
+        [KR] = 303
+        [KS] = 304
+        [KT] = 305
+        [KU] = 306
+        [KV] = 307
+        [KW] = 308
+        [KX] = 309
+        [KY] = 310
+        [KZ] = 311
+        [LA] = 312
+        [LB] = 313
+        [LC] = 314
+        [LD] = 315
+        [LE] = 316
+        [LF] = 317
+        [LG] = 318
+        [LH] = 319
+        [LI] = 320
+        [LJ] = 321
+        [LK] = 322
+        [LL] = 323
+        [LM] = 324
+        [LN] = 325
+        [LO] = 326
+        [LP] = 327
+        [LQ] = 328
+        [LR] = 329
+        [LS] = 330
+        [LT] = 331
+        [LU] = 332
+        [LV] = 333
+        [LW] = 334
+        [LX] = 335
+        [LY] = 336
+        [LZ] = 337
+        [MA] = 338
+        [MB] = 339
+        [MC] = 340
+        [MD] = 341
+        [ME] = 342
+        [MF] = 343
+        [MG] = 344
+        [MH] = 345
+        [MI] = 346
+        [MJ] = 347
+        [MK] = 348
+        [ML] = 349
+        [MM] = 350
+        [MN] = 351
+        [MO] = 352
+        [MP] = 353
+        [MQ] = 354
+        [MR] = 355
+        [MS] = 356
+        [MT] = 357
+        [MU] = 358
+        [MV] = 359
+        [MW] = 360
+        [MX] = 361
+        [MY] = 362
+        [MZ] = 363
+        [NA] = 364
+        [NB] = 365
+        [NC] = 366
+        [ND] = 367
+        [NE] = 368
+        [NF] = 369
+        [NG] = 370
+        [NH] = 371
+        [NI] = 372
+        [NJ] = 373
+        [NK] = 374
+        [NL] = 375
+        [NM] = 376
+        [NN] = 377
+        [NO] = 378
+        [NP] = 379
+        [NQ] = 380
+        [NR] = 381
+        [NS] = 382
+        [NT] = 383
+        [NU] = 384
+        [NV] = 385
+        [NW] = 386
+        [NX] = 387
+        [NY] = 388
+        [NZ] = 389
+        [OA] = 390
+        [OB] = 391
+        [OC] = 392
+        [OD] = 393
+        [OE] = 394
+        [OF] = 395
+        [OG] = 396
+        [OH] = 397
+        [OI] = 398
+        [OJ] = 399
+        [OK] = 400
+        [OL] = 401
+        [OM] = 402
+        [ON] = 403
+        [OO] = 404
+        [OP] = 405
+        [OQ] = 406
+        [OR] = 407
+        [OS] = 408
+        [OT] = 409
+        [OU] = 410
+        [OV] = 411
+        [OW] = 412
+        [OX] = 413
+        [OY] = 414
+        [OZ] = 415
+        [PA] = 416
+        [PB] = 417
+        [PC] = 418
+        [PD] = 419
+        [PE] = 420
+        [PF] = 421
+        [PG] = 422
+        [PH] = 423
+        [PI] = 424
+        [PJ] = 425
+        [PK] = 426
+        [PL] = 427
+        [PM] = 428
+        [PN] = 429
+        [PO] = 430
+        [PP] = 431
+        [PQ] = 432
+        [PR] = 433
+        [PS] = 434
+        [PT] = 435
+        [PU] = 436
+        [PV] = 437
+        [PW] = 438
+        [PX] = 439
+        [PY] = 440
+        [PZ] = 441
+        [QA] = 442
+        [QB] = 443
+        [QC] = 444
+        [QD] = 445
+        [QE] = 446
+        [QF] = 447
+        [QG] = 448
+        [QH] = 449
+        [QI] = 450
+        [QJ] = 451
+        [QK] = 452
+        [QL] = 453
+        [QM] = 454
+        [QN] = 455
+        [QO] = 456
+        [QP] = 457
+        [QQ] = 458
+        [QR] = 459
+        [QS] = 460
+        [QT] = 461
+        [QU] = 462
+        [QV] = 463
+        [QW] = 464
+        [QX] = 465
+        [QY] = 466
+        [QZ] = 467
+        [RA] = 468
+        [RB] = 469
+        [RC] = 470
+        [RD] = 471
+        [RE] = 472
+        [RF] = 473
+        [RG] = 474
+        [RH] = 475
+        [RI] = 476
+        [RJ] = 477
+        [RK] = 478
+        [RL] = 479
+        [RM] = 480
+        [RN] = 481
+        [RO] = 482
+        [RP] = 483
+        [RQ] = 484
+        [RR] = 485
+        [RS] = 486
+        [RT] = 487
+        [RU] = 488
+        [RV] = 489
+        [RW] = 490
+        [RX] = 491
+        [RY] = 492
+        [RZ] = 493
+        [SA] = 494
+        [SB] = 495
+        [SC] = 496
+        [SD] = 497
+        [SE] = 498
+        [SF] = 499
+        [SG] = 500
+        [SH] = 501
+        [SI] = 502
+        [SJ] = 503
+        [SK] = 504
+        [SL] = 505
+        [SM] = 506
+        [SN] = 507
+        [SO] = 508
+        [SP] = 509
+        [SQ] = 510
+        [SR] = 511
+        [SS] = 512
+        [ST] = 513
+        [SU] = 514
+        [SV] = 515
+        [SW] = 516
+        [SX] = 517
+        [SY] = 518
+        [SZ] = 519
+        [TA] = 520
+        [TB] = 521
+        [TC] = 522
+        [TD] = 523
+        [TE] = 524
+        [TF] = 525
+        [TG] = 526
+        [TH] = 527
+        [TI] = 528
+        [TJ] = 529
+        [TK] = 530
+        [TL] = 531
+        [TM] = 532
+        [TN] = 533
+        [TO] = 534
+        [TP] = 535
+        [TQ] = 536
+        [TR] = 537
+        [TS] = 538
+        [TT] = 539
+        [TU] = 540
+        [TV] = 541
+        [TW] = 542
+        [TX] = 543
+        [TY] = 544
+        [TZ] = 545
+
+    End Enum
+
+#End Region
+
 #Region " Fields "
     Dim mNavigator As WebFileConvertNavigator
 #End Region
@@ -182,6 +735,8 @@ Public Class WebFileConvertSection
             ConvertMedMutual()
         ElseIf CStr(cboFileType.SelectedItem).ToUpper() = "AZ BLUE" Then
             ConvertAZBlue()
+        ElseIf CStr(cboFileType.SelectedItem).ToUpper() = "EXCELLUS UPDATE 2016" Then
+            ConvertExcellusUpdate2016()
         End If
     End Sub
 
@@ -2628,6 +3183,93 @@ Public Class WebFileConvertSection
             End If
         End Try
     End Sub
+
+    Private Sub ConvertExcellusUpdate2016()
+        Dim writer As System.IO.StreamWriter = Nothing
+        Dim blnSkipHeader As Boolean = True
+        Try
+            writer = New StreamWriter(Me.txtConvertFile.Text, False)
+            Dim readTable As System.Data.DataTable = GetImportTable()
+
+            For Each col As DataColumn In readTable.Columns
+                Debug.Print(col.ColumnName)
+            Next
+
+            For Each row As Data.DataRow In readTable.Rows
+                Dim newLine As New StringBuilder()
+                Dim tempVar As String = ""
+                newLine.Append(PadString("", 1, Direction.Left, " "))       ' 1: BLANK(1)
+                newLine.Append(PadString(Convert.ToDateTime(row(ExcelColumns.BR).ToString()).ToString("yyyyMMdd"), 8, Direction.Left, " "))  'Last Modified --> Start: 2 End: 9 Length: 8
+                newLine.Append(PadString("", 1, Direction.Left, " "))       ' 10: BLANK(1)
+                newLine.Append(PadString(row(ExcelColumns.L), 8, Direction.Left, " ")) ' (Q45_1) FAQs --> Start: 11 End: 18 Length: 8
+                newLine.Append(PadString(row(ExcelColumns.M), 5, Direction.Right, "0")) ' (Q112_1) TEMPLATEDID --> Start: 19 End: 23 Length: 5
+                newLine.Append(PadString(row(ExcelColumns.N), 8, Direction.Right, "0")) ' (Q113_1) RespondentID --> Start: 24 End: 31 Length: 8
+                newLine.Append(PadString("", 3, Direction.Left, " "))       ' 32-34: BLANK(3)
+                newLine.Append(PadString(row(ExcelColumns.T), 1, Direction.Left, " ")) ' (Q1) Rate health --> Start: 35 End: 35 Length: 1
+                newLine.Append(PadString("", 1, Direction.Left, " ")) ' Blank --> Start: 36 End: 36 Length: 1
+                newLine.Append(PadString(row(ExcelColumns.V), 1, Direction.Left, " ")) ' (Q4) Overnight in the last 12 mo --> Start: 37 End: 37 Length: 1
+                newLine.Append(PadString(row(ExcelColumns.U), 1, Direction.Left, " ")) ' (Q57) Rate Mental Health  --> Start: 38 End: 38 Length: 1
+                newLine.Append(PadString(row(ExcelColumns.X), 1, Direction.Left, " ")) ' (Q18) Doctor Visits --> Start: 39 End: 39 Length: 1
+                newLine.Append(PadString(row(ExcelColumns.Y), 1, Direction.Left, " ")) ' (Q9) Diabetes --> Start: 40 End: 40 Length: 1
+                newLine.Append(PadString(row(ExcelColumns.Z), 1, Direction.Left, " ")) ' (Q19_A_1) Heart Health --> Start: 41 End: 41 Length: 1
+                newLine.Append(PadString(row(ExcelColumns.AA), 1, Direction.Left, " ")) ' (Q19_A_2) Heart Health --> Start: 42 End: 42 Length: 1
+                newLine.Append(PadString(row(ExcelColumns.AB), 1, Direction.Left, " ")) ' (Q19_A_3) Heart Health --> Start: 43 End: 43 Length: 1
+                newLine.Append(PadString(row(ExcelColumns.AC), 1, Direction.Left, " ")) ' (Q19_A_4) Heart Health --> Start: 44 End: 44 Length: 1
+                newLine.Append(PadString(row(ExcelColumns.AD), 1, Direction.Left, " ")) ' (Q10) Currently being treated for heart problems --> Start: 45 End: 45 Length: 1
+                newLine.Append(PadString(row(ExcelColumns.AE), 1, Direction.Left, " ")) ' (Q15) Neighbor --> Start: 46 End: 46 Length: 1
+                newLine.Append(PadString(row(ExcelColumns.AF), 1, Direction.Left, " ")) ' (Q29) Help bathe --> Start: 47 End: 47 Length: 1
+                newLine.Append(PadString(row(ExcelColumns.AG), 1, Direction.Left, " ")) ' (Q31) Help taking Meds --> Start: 48 End: 48 Length: 1
+                newLine.Append(PadString(row(ExcelColumns.AH), 1, Direction.Left, " ")) ' (Q55) Health Interfere Daily  --> Start: 49 End: 49 Length: 1
+                newLine.Append(PadString(row(ExcelColumns.AI), 1, Direction.Left, " ")) ' (Q58) Trouble with Doctor and Shopping  --> Start: 50 End: 50 Length: 1
+                newLine.Append(PadString(row(ExcelColumns.AJ), 1, Direction.Left, " ")) ' (Q34) Help with Doctor and Shopping  --> Start: 51 End: 51 Length: 1
+                newLine.Append(PadString("", 5, Direction.Left, " ")) ' Blank --> Start: 52 End: 56 Length: 5
+                newLine.Append(PadString(row(ExcelColumns.AP), 1, Direction.Left, " ")) ' (Q25_A_1) 2 --> Start: 57 End: 57 Length: 1
+                newLine.Append(PadString(row(ExcelColumns.AQ), 1, Direction.Left, " ")) ' (Q25_A_2) 2 --> Start: 58 End: 58 Length: 1
+                newLine.Append(PadString("", 47, Direction.Left, " ")) ' Blank --> Start: 59 End: 105 Length: 47
+                newLine.Append(PadString(row(ExcelColumns.AT), 1, Direction.Left, " ")) ' (Q35_A_1) Currently being treated for --> Start: 106 End: 106 Length: 1
+                newLine.Append(PadString(row(ExcelColumns.AU), 1, Direction.Left, " ")) ' (Q35_A_2) Currently being treated for --> Start: 107 End: 107 Length: 1
+                newLine.Append(PadString(row(ExcelColumns.AV), 1, Direction.Left, " ")) ' (Q35_A_3) Currently being treated for --> Start: 108 End: 108 Length: 1
+                newLine.Append(PadString(row(ExcelColumns.AW), 1, Direction.Left, " ")) ' (Q35_A_4) Currently being treated for --> Start: 109 End: 109 Length: 1
+                newLine.Append(PadString("", 1, Direction.Left, " ")) ' Blank --> Start: 110 End: 110 Length: 1
+                newLine.Append(PadString(row(ExcelColumns.AY), 1, Direction.Left, " ")) ' (Q35_A_6) Currently being treated for --> Start: 111 End: 111 Length: 1
+                newLine.Append(PadString(row(ExcelColumns.AZ), 1, Direction.Left, " ")) ' (Q35_A_7) Currently being treated for --> Start: 112 End: 112 Length: 1
+                newLine.Append(PadString(row(ExcelColumns.BA), 1, Direction.Left, " ")) ' (Q35_A_8) Currently being treated for --> Start: 113 End: 113 Length: 1
+                newLine.Append(PadString(row(ExcelColumns.BB), 1, Direction.Left, " ")) ' (Q35_A_9) Currently being treated for --> Start: 114 End: 114 Length: 1
+                newLine.Append(PadString("", 1, Direction.Left, " ")) ' Blank --> Start: 115 End: 115 Length: 1
+                newLine.Append(PadString(row(ExcelColumns.BC), 1, Direction.Left, " ")) ' (Q36) Other health conditions --> Start: 116 End: 116 Length: 1
+                newLine.Append(PadString(row(ExcelColumns.BD), 30, Direction.Left, " ")) ' (Q38) Describe other health conditions --> Start: 117 End: 146 Length: 30
+                newLine.Append(PadString("", 36, Direction.Left, " ")) ' Blank --> Start: 145 End: 182 Length: 38
+                newLine.Append(PadString(row(ExcelColumns.AK), 1, Direction.Left, " ")) ' (Q16) Exercise --> Start: 183 End: 183 Length: 1
+                newLine.Append(PadString("", 2, Direction.Left, " ")) ' Blank --> Start: 184 End: 185 Length: 2
+                newLine.Append(PadString(row(ExcelColumns.AL), 1, Direction.Left, " ")) ' (Q11) Fallen in past 12 months --> Start: 186 End: 186 Length: 1
+                newLine.Append(PadString(row(ExcelColumns.AM), 1, Direction.Left, " ")) ' (Q33) BMD Test  --> Start: 187 End: 187 Length: 1
+                newLine.Append(PadString(row(ExcelColumns.AN), 1, Direction.Left, " ")) ' (Q59) Hip Fracture  --> Start: 188 End: 188 Length: 1
+                newLine.Append(PadString("", 125, Direction.Left, " ")) ' Blank --> Start: 189 End: 313 Length: 125
+                newLine.Append(PadString(row(ExcelColumns.BE), 1, Direction.Left, " ")) ' (Q26) Advance directives --> Start: 314 End: 314 Length: 1
+                newLine.Append(PadString("", 3, Direction.Left, " ")) ' Blank --> Start: 315 End: 317 Length: 3
+                newLine.Append(PadString(row(ExcelColumns.BG), 1, Direction.Left, " ")) ' (Q6) MOLST --> Start: 318 End: 318 Length: 1
+                newLine.Append(PadString(row(ExcelColumns.BH), 1, Direction.Left, " ")) ' (Q17) Help with Questionnaire --> Start: 319 End: 319 Length: 1
+                newLine.Append(PadString("", 5, Direction.Left, " ")) ' Blank --> Start: 320 End: 324 Length: 5
+                newLine.Append(PadString(row(ExcelColumns.BI), 30, Direction.Left, " ")) ' (Q61_1) who helped fill out the form --> Start: 325 End: 354 Length: 30
+                newLine.Append(PadString(row(ExcelColumns.BJ), 15, Direction.Left, " ")) ' (Q61_2)  who helped fill out the form --> Start: 355 End: 369 Length: 15
+                newLine.Append(PadString(row(ExcelColumns.BK), 10, Direction.Left, " ")) ' (Q61_3) who helped fill out the form --> Start: 370 End: 379 Length: 10
+
+
+
+                writer.WriteLine(newLine.ToString)
+
+            Next
+            MessageBox.Show("Proccess Complete")
+        Catch ex As Exception
+            Globals.ReportException(ex)
+        Finally
+            If Not writer Is Nothing Then
+                writer.Close()
+            End If
+        End Try
+    End Sub
+
+
     Private Function PadString(ByVal value As Object, ByVal length As Integer, ByVal padDir As Direction, ByVal fillChar As String, Optional ByVal truncateNonNumeric As Boolean = False) As String
         Dim retVal As String = "'"
         If IsDBNull(value) Then
@@ -2666,6 +3308,13 @@ Public Class WebFileConvertSection
     End Function
 
     Private Function GetImportTable() As System.Data.DataTable
+
+        ' When running this from Visual Studio, if you get the error "The 'Microsoft.Jet.OLEDB.4.0' provider is not registered on the local machine." 
+        ' make sure the Development environment is selected as the configuration.
+
+        ' Before committing changes and pushing to GIT, change the environment configuration back to production.
+
+
         Dim path As String = Me.txtOriginalFile.Text.Substring(0, Me.txtOriginalFile.Text.LastIndexOf("\"c))
         Dim headerVal As String
         Dim fileName As String = Me.txtOriginalFile.Text.Substring(Me.txtOriginalFile.Text.LastIndexOf("\"c) + 1)

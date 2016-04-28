@@ -1,6 +1,7 @@
 Imports Nrc.Qualisys.Library
 Imports Nrc.Framework.BusinessLogic.Configuration
 
+
 Public Class SamplePlanEditor
 
     Public Event PrioritierViewModeChanged(ByVal sender As Object, ByVal eventArgs As PrioritierViewModeChangedEventArgs)
@@ -11,6 +12,12 @@ Public Class SamplePlanEditor
     Private mModule As SamplePlanModule
     Private mSelectedSampleUnit As SampleUnit
     Private mNeedCheck As Boolean = True
+    Private tvWalkerFirst As TreeViewWalker
+    Private tvWalkerNext As TreeViewWalker
+    Private tvWalkerPrev As TreeViewWalker
+    Private matchingNode As TreeNode
+    Private processedSelectedNode As Boolean
+    Private isMatch As Boolean
 
 #End Region
 
@@ -42,6 +49,8 @@ Public Class SamplePlanEditor
     Public Sub New(ByVal endConfigCallBack As EndConfigCallBackMethod, ByVal configModule As SamplePlanModule)
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
+
+        AddHandler Application.Idle, AddressOf IdleEvent
 
         ' Add any initialization after the InitializeComponent() call.
         Me.mEndConfigCallBack = endConfigCallBack
@@ -418,6 +427,38 @@ Public Class SamplePlanEditor
         If ctrl IsNot Nothing Then ctrl.SelectAll()
     End Sub
 
+    Private Sub btnFindNext_Click(sender As Object, e As EventArgs) Handles btnFindNext.Click
+        processedSelectedNode = False     
+        ProcessTree()
+    End Sub
+
+    Private Sub btnFindPrev_Click(sender As Object, e As EventArgs) Handles btnFindPrev.Click
+        matchingNode = Nothing
+        ProcessTree()
+    End Sub
+
+    Private Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
+        txtSearchText.Clear()
+    End Sub
+
+    Private Sub txtSearchText_TextChanged(sender As Object, e As EventArgs) Handles txtSearchText.TextChanged
+
+    End Sub
+
+    Public Sub IdleEvent(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
+        Dim isRootNodeSelected As Boolean = False
+
+        If SampleUnitTreeView.Nodes.Count > 0 Then
+            isRootNodeSelected = SampleUnitTreeView.Nodes(0).IsSelected
+        End If
+
+        btnFindNext.Enabled = SampleUnitTreeView.SelectedNode IsNot Nothing AndAlso txtSearchText.Text.Length > 0
+        btnFindPrev.Enabled = SampleUnitTreeView.SelectedNode IsNot Nothing AndAlso processedSelectedNode AndAlso txtSearchText.Text.Length > 0
+
+
+    End Sub
+
 #End Region
 
 #Region " Event Handlers for Priority Tab Page "
@@ -462,6 +503,9 @@ Public Class SamplePlanEditor
 
         'Initialize other controls
         InitializeOther()
+
+        InitializeTreeViewWalker()
+
     End Sub
 
     Private Sub InitializeOther()
@@ -484,6 +528,24 @@ Public Class SamplePlanEditor
 
         'Disable all the fields when viewing properties
         Me.PropertySplitContainer.Panel2.Enabled = Me.mModule.IsEditable
+
+
+
+    End Sub
+
+
+
+    Private Sub InitializeTreeViewWalker()
+
+        processedSelectedNode = False
+
+        tvWalkerNext = New TreeViewWalker(SampleUnitTreeView)
+        tvWalkerPrev = New TreeViewWalker(SampleUnitTreeView)
+
+        AddHandler tvWalkerNext.ProcessNode, AddressOf tvWalkerNext_ProcessNode
+        AddHandler tvWalkerPrev.ProcessNode, AddressOf tvWalkerPrev_ProcessNode
+
+        isMatch = False
 
     End Sub
 
@@ -938,6 +1000,89 @@ Public Class SamplePlanEditor
         Next
     End Sub
 
+
+#Region "TreeViewWalker"
+
+    Private Sub ProcessTree()
+        isMatch = False
+        tvWalkerNext.ProcessTree()
+        If isMatch = False Then
+            Dim msg As String
+            If SampleUnitTreeView.SelectedNode.Text.ToLower().Contains(txtSearchText.Text.ToLower()) Then
+                msg = "No additional matches found for specified text: {0} {1} {2}"
+            Else
+                msg = "Could not find matches for specified text: {0} {1} {2}"
+            End If
+            MessageBox.Show(String.Format(msg, vbCrLf, vbCrLf, txtSearchText.Text), "Sample Unit Tree Search", MessageBoxButtons.OK, MessageBoxIcon.None)
+        End If
+    End Sub
+
+    Private Sub tvWalkerNext_ProcessNode(ByVal sender As Object, ByVal e As ProcessNodeEventArgs)
+
+
+        If Not SampleUnitTreeView.SelectedNode.Text.ToLower().Contains(txtSearchText.Text.ToLower()) Then
+            'This is a new search.  Just find the first match.
+            If ContainsSearchText(e.Node) Then
+                SampleUnitTreeView.SelectedNode = e.Node
+                e.StopProcessing = True
+                isMatch = True
+                Exit Sub
+            End If
+
+        End If
+
+        ' subsequent search for same text continues here
+        If e.Node.Handle = SampleUnitTreeView.SelectedNode.Handle Then
+            processedSelectedNode = True
+        End If
+
+
+        ' If we have already processed the selected node and the current node 
+        ' matches the search text, then we have found the "next" node and it
+        ' should be selected.
+        If processedSelectedNode AndAlso e.Node.Handle <> SampleUnitTreeView.SelectedNode.Handle AndAlso ContainsSearchText(e.Node) Then
+            SampleUnitTreeView.SelectedNode = e.Node
+            e.StopProcessing = True
+            isMatch = True
+            Exit Sub
+        End If
+
+    End Sub
+
+    Private Sub tvWalkerPrev_ProcessNode(ByVal sender As Object, ByVal e As ProcessNodeEventArgs)
+
+        If e.Node Is SampleUnitTreeView.SelectedNode Then
+            If matchingNode IsNot Nothing Then
+                SampleUnitTreeView.SelectedNode = matchingNode
+                e.StopProcessing = True
+                isMatch = True
+                Exit Sub
+            End If
+        End If
+
+        ' If we have walked all the way down to the selected node then the
+        ' most recently discovered matching node is the "previous" node, 
+        ' and it should be selected.
+        If ContainsSearchText(e.Node) Then
+            matchingNode = e.Node
+        End If
+
+
+    End Sub
+
+
+    Private Function ContainsSearchText(ByVal node As TreeNode) As Boolean
+        If node Is Nothing Or node.Text Is Nothing Then
+            Return False
+        End If
+
+        Return node.Text.ToLower().Contains(txtSearchText.Text.ToLower())
+
+    End Function
+
+
+#End Region
+
 #End Region
 
 #Region " Private Methods for Priority Tab Page "
@@ -959,5 +1104,7 @@ Public Class SamplePlanEditor
 #End Region
 
 #End Region
+
+
 
 End Class
