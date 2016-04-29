@@ -25,9 +25,8 @@ textarea {
 
 .divbox {
 
-    height: 80px;
-    border: 2px solid red; 
-    padding: 25px;
-    box-sizing: border-box;
+    border: 0px; 
+    padding: 10px;
+    background: yellow;
 
 }
