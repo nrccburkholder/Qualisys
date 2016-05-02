@@ -40,7 +40,8 @@ begin
 		, ExportQueueID
 		, 'Hospice.no-publicity is null'
 		, 'CEM.HospiceChecks'
-		, 'reference-yr='+isnull(convert(varchar,[hospicedata.reference-yr]),'null')+';reference-month='+isnull(convert(varchar,[hospicedata.reference-month]),'null')+';provider-name='+isnull(convert(varchar,[hospicedata.provider-name]),'null')+';provider-id='+isnull(convert(varchar,[hospicedata.provider-id]),'null')
+		, 'reference-yr='+isnull(convert(varchar,[hospicedata.reference-yr]),'null')+';reference-month='+isnull(convert(varchar,[hospicedata.reference-month]),'null')+';provider-name='+isnull(convert(varchar,[hospicedata.provider-name]),'null')
+			+';provider-id='+isnull(convert(varchar,[hospicedata.provider-id]),'null')
 		, 'no-publicity='+isnull(convert(varchar,[hospicedata.no-publicity]),'null')
 	from cem.ExportDataset00000011 
 	where ExportQueueID=@ExportQueueID
@@ -92,7 +93,8 @@ begin
 	--•	All records with a Partial (break-off) disposition should have 1-49.0% ATA questions answered
 	/*
 	select distinct qm.*, etv.ExportTemplateSectionName, isnull(etv.ExportColumnName,etv.[ExportColumnName.mr]) as ExportColumnName
-		, 'union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], '+convert(varchar,qm.qstncore)+' as qstncore, ['+etv.ExportTemplateSectionName+'.'+isnull(etv.ExportColumnName,etv.[ExportColumnName.mr])+'] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID' as snippet
+		, 'union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], '+convert(varchar,qm.qstncore)+' as qstncore, ['+etv.ExportTemplateSectionName+'.'+isnull(etv.ExportColumnName,etv.[ExportColumnName.mr])+']'
+			+' from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID' as snippet
 	from qualisys.qp_prod.dbo.surveytypequestionmappings qm
 	inner join cem.ExportTemplate_view etv on exporttemplateid=11 and convert(varchar,qm.qstncore)=right(sourcecolumnname,5)
 	where qm.surveytype_id=11
@@ -147,6 +149,7 @@ begin
 					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51612 as qstncore, 'ratehospice', [caregiverresponse.ratehospice] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
 					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51613 as qstncore, 'h_recommend', [caregiverresponse.h_recommend] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
 					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51614 as qstncore, 'pEdu', [caregiverresponse.pEdu] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
+					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 54067 as qstncore, 'cHomeLang', [caregiverresponse.cHomeLang] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
 					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51615 as qstncore, 'pLatino', [caregiverresponse.pLatino] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
 					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51617 as qstncore, 'cAge', [caregiverresponse.cAge] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
 					union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51618 as qstncore, 'cSex', [caregiverresponse.cSex] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
@@ -163,8 +166,10 @@ begin
 					, response as RecodeValue
 					, 'doesnt matter' as ResponseLabel
 					, case when response like '%1%' then 1 else 0 end as isAnswered
-				from (	      select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51575 as qstncore, 'location-*' as qstn, [caregiverresponse.location-assisted]+[caregiverresponse.location-home]+[caregiverresponse.location-hospice-facility]+[caregiverresponse.location-hospital]+[caregiverresponse.location-nursinghome]+[caregiverresponse.location-other] as response from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
-						union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51616 as qstncore, 'race-*', [caregiverresponse.race-african-amer]+[caregiverresponse.race-amer-indian-ak]+[caregiverresponse.race-asian]+[caregiverresponse.race-hi-pacific-islander] +[caregiverresponse.race-white] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
+				from (	      select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51575 as qstncore, 'location-*' as qstn, [caregiverresponse.location-assisted]+[caregiverresponse.location-home]+[caregiverresponse.location-hospice-facility]+
+									[caregiverresponse.location-hospital]+[caregiverresponse.location-nursinghome]+[caregiverresponse.location-other] as response from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
+						union select SamplePopulationID, ExportQueueID, [decedentleveldata.survey-status], 51616 as qstncore, 'race-*', [caregiverresponse.race-african-amer]+[caregiverresponse.race-amer-indian-ak]+[caregiverresponse.race-asian]+
+									[caregiverresponse.race-hi-pacific-islander] +[caregiverresponse.race-white] from cem.ExportDataset00000011 where ExportQueueID=@ExportQueueID
 						) multiresp
 			) c
 		group by SamplePopulationID,ExportQueueID,[decedentleveldata.survey-status]) PctComplete
@@ -178,7 +183,8 @@ begin
 		, ExportQueueID
 		, 'Hospice.survey-mode is null'
 		, 'CEM.HospiceChecks'
-		, 'reference-yr='+isnull(convert(varchar,[hospicedata.reference-yr]),'null')+';reference-month='+isnull(convert(varchar,[hospicedata.reference-month]),'null')+';provider-name='+isnull(convert(varchar,[hospicedata.provider-name]),'null')+';provider-id='+isnull(convert(varchar,[hospicedata.provider-id]),'null')
+		, 'reference-yr='+isnull(convert(varchar,[hospicedata.reference-yr]),'null')+';reference-month='+isnull(convert(varchar,[hospicedata.reference-month]),'null')+';provider-name='+isnull(convert(varchar,[hospicedata.provider-name]),'null')+
+			';provider-id='+isnull(convert(varchar,[hospicedata.provider-id]),'null')
 		, 'survey-mode='+isnull(convert(varchar,[hospicedata.survey-mode]),'null')
 	from cem.ExportDataset00000011 
 	where ExportQueueID=@ExportQueueID
@@ -251,7 +257,8 @@ begin
 		, ExportQueueID
 		, 'Hospice.ineligible-presample is null'
 		, 'CEM.HospiceChecks'
-		, 'reference-yr='+isnull(convert(varchar,[hospicedata.reference-yr]),'null')+';reference-month='+isnull(convert(varchar,[hospicedata.reference-month]),'null')+';provider-name='+isnull(convert(varchar,[hospicedata.provider-name]),'null')+';provider-id='+isnull(convert(varchar,[hospicedata.provider-id]),'null')
+		, 'reference-yr='+isnull(convert(varchar,[hospicedata.reference-yr]),'null')+';reference-month='+isnull(convert(varchar,[hospicedata.reference-month]),'null')+';provider-name='+isnull(convert(varchar,[hospicedata.provider-name]),'null')+
+			';provider-id='+isnull(convert(varchar,[hospicedata.provider-id]),'null')
 		, 'ineligible-presample='+isnull(convert(varchar,[hospicedata.ineligible-presample]),'null')
 	from cem.ExportDataset00000011 
 	where ExportQueueID=@ExportQueueID
@@ -265,7 +272,8 @@ begin
 		, ExportQueueID
 		, 'Hospice.sample-type is null'
 		, 'CEM.HospiceChecks'
-		, 'reference-yr='+isnull(convert(varchar,[hospicedata.reference-yr]),'null')+';reference-month='+isnull(convert(varchar,[hospicedata.reference-month]),'null')+';provider-name='+isnull(convert(varchar,[hospicedata.provider-name]),'null')+';provider-id='+isnull(convert(varchar,[hospicedata.provider-id]),'null')
+		, 'reference-yr='+isnull(convert(varchar,[hospicedata.reference-yr]),'null')+';reference-month='+isnull(convert(varchar,[hospicedata.reference-month]),'null')+';provider-name='+isnull(convert(varchar,[hospicedata.provider-name]),'null')+'
+			;provider-id='+isnull(convert(varchar,[hospicedata.provider-id]),'null')
 		, 'sample-type='+isnull(convert(varchar,[hospicedata.sample-type]),'null')
 	from cem.ExportDataset00000011 
 	where ExportQueueID=@ExportQueueID
@@ -277,7 +285,8 @@ begin
 		, ExportQueueID
 		, 'Hospice.ineligible-postsample is null'
 		, 'CEM.HospiceChecks'
-		, 'reference-yr='+isnull(convert(varchar,[hospicedata.reference-yr]),'null')+';reference-month='+isnull(convert(varchar,[hospicedata.reference-month]),'null')+';provider-name='+isnull(convert(varchar,[hospicedata.provider-name]),'null')+';provider-id='+isnull(convert(varchar,[hospicedata.provider-id]),'null')
+		, 'reference-yr='+isnull(convert(varchar,[hospicedata.reference-yr]),'null')+';reference-month='+isnull(convert(varchar,[hospicedata.reference-month]),'null')+';provider-name='+isnull(convert(varchar,[hospicedata.provider-name]),'null')+
+			';provider-id='+isnull(convert(varchar,[hospicedata.provider-id]),'null')
 		, 'ineligible-postsample='+isnull(convert(varchar,[hospicedata.ineligible-postsample]),'null')
 	from cem.ExportDataset00000011 
 	where ExportQueueID=@ExportQueueID
@@ -288,7 +297,8 @@ begin
 		, ExportQueueID
 		, 'Hospice.total-decedents is null'
 		, 'CEM.HospiceChecks'
-		, 'reference-yr='+isnull(convert(varchar,[hospicedata.reference-yr]),'null')+';reference-month='+isnull(convert(varchar,[hospicedata.reference-month]),'null')+';provider-name='+isnull(convert(varchar,[hospicedata.provider-name]),'null')+';provider-id='+isnull(convert(varchar,[hospicedata.provider-id]),'null')
+		, 'reference-yr='+isnull(convert(varchar,[hospicedata.reference-yr]),'null')+';reference-month='+isnull(convert(varchar,[hospicedata.reference-month]),'null')+';provider-name='+isnull(convert(varchar,[hospicedata.provider-name]),'null')+
+			';provider-id='+isnull(convert(varchar,[hospicedata.provider-id]),'null')
 		, 'total-decedents='+isnull(convert(varchar,[hospicedata.total-decedents]),'null')
 	from cem.ExportDataset00000011 
 	where ExportQueueID=@ExportQueueID
@@ -299,7 +309,8 @@ begin
 		, ExportQueueID
 		, 'Hospice.live-discharges is null'
 		, 'CEM.HospiceChecks'
-		, 'reference-yr='+isnull(convert(varchar,[hospicedata.reference-yr]),'null')+';reference-month='+isnull(convert(varchar,[hospicedata.reference-month]),'null')+';provider-name='+isnull(convert(varchar,[hospicedata.provider-name]),'null')+';provider-id='+isnull(convert(varchar,[hospicedata.provider-id]),'null')
+		, 'reference-yr='+isnull(convert(varchar,[hospicedata.reference-yr]),'null')+';reference-month='+isnull(convert(varchar,[hospicedata.reference-month]),'null')+';provider-name='+isnull(convert(varchar,[hospicedata.provider-name]),'null')+
+			';provider-id='+isnull(convert(varchar,[hospicedata.provider-id]),'null')
 		, 'live-discharges='+isnull(convert(varchar,[hospicedata.live-discharges]),'null')
 	from cem.ExportDataset00000011 
 	where ExportQueueID=@ExportQueueID
@@ -310,7 +321,8 @@ begin
 		, ExportQueueID
 		, 'Hospice.number-offices is null'
 		, 'CEM.HospiceChecks'
-		, 'reference-yr='+isnull(convert(varchar,[hospicedata.reference-yr]),'null')+';reference-month='+isnull(convert(varchar,[hospicedata.reference-month]),'null')+';provider-name='+isnull(convert(varchar,[hospicedata.provider-name]),'null')+';provider-id='+isnull(convert(varchar,[hospicedata.provider-id]),'null')
+		, 'reference-yr='+isnull(convert(varchar,[hospicedata.reference-yr]),'null')+';reference-month='+isnull(convert(varchar,[hospicedata.reference-month]),'null')+';provider-name='+isnull(convert(varchar,[hospicedata.provider-name]),'null')+
+			';provider-id='+isnull(convert(varchar,[hospicedata.provider-id]),'null')
 		, 'number-offices='+isnull(convert(varchar,[hospicedata.number-offices]),'null')
 	from cem.ExportDataset00000011 
 	where ExportQueueID=@ExportQueueID
@@ -321,7 +333,8 @@ begin
 		, ExportQueueID
 		, 'Hospice.missing-dod is null'
 		, 'CEM.HospiceChecks'
-		, 'reference-yr='+isnull(convert(varchar,[hospicedata.reference-yr]),'null')+';reference-month='+isnull(convert(varchar,[hospicedata.reference-month]),'null')+';provider-name='+isnull(convert(varchar,[hospicedata.provider-name]),'null')+';provider-id='+isnull(convert(varchar,[hospicedata.provider-id]),'null')
+		, 'reference-yr='+isnull(convert(varchar,[hospicedata.reference-yr]),'null')+';reference-month='+isnull(convert(varchar,[hospicedata.reference-month]),'null')+';provider-name='+isnull(convert(varchar,[hospicedata.provider-name]),'null')
+			+';provider-id='+isnull(convert(varchar,[hospicedata.provider-id]),'null')
 		, 'missing-dod='+isnull(convert(varchar,[hospicedata.missing-dod]),'null')
 	from cem.ExportDataset00000011 
 	where ExportQueueID=@ExportQueueID
@@ -347,7 +360,8 @@ begin
 		, ExportQueueID
 		, ''Hospice.'+ExportColumnName+' is OOR''
 		, ''CEM.HospiceChecks''
-		, ''reference-yr=''+isnull(convert(varchar,[hospicedata.reference-yr]),''null'')+'';reference-month=''+isnull(convert(varchar,[hospicedata.reference-month]),''null'')+'';provider-name=''+isnull(convert(varchar,[hospicedata.provider-name]),''null'')+'';provider-id=''+isnull(convert(varchar,[hospicedata.provider-id]),''null'')
+		, ''reference-yr=''+isnull(convert(varchar,[hospicedata.reference-yr]),''null'')+'';reference-month=''+isnull(convert(varchar,[hospicedata.reference-month]),''null'')+'';provider-name=''+isnull(convert(varchar,[hospicedata.provider-name]),''null'')+
+			'';provider-id=''+isnull(convert(varchar,[hospicedata.provider-id]),''null'')
 		, '''+ExportColumnName+'=out-of-range''
 	from cem.ExportDataset00000011 
 	where ExportQueueID='+convert(varchar,@ExportQueueID)+'
@@ -359,7 +373,8 @@ begin
 		, ''CEM.HospiceChecks''
 		, ''reference-yr=''+isnull(convert(varchar,[hospicedata.reference-yr]),''null'')+'';reference-month=''+isnull(convert(varchar,[hospicedata.reference-month]),''null'')+'';provider-id=''+isnull(convert(varchar,[hospicedata.provider-id]),''null'')
 		, '''+ExportColumnName+' has ''+convert(varchar,freq)+'' values, such as "''+minVal+''" and "''+maxVal+''"''
-	from (select ExportQueueID,[hospicedata.reference-yr],[hospicedata.reference-month],[hospicedata.provider-id], count(distinct [hospicedata.'+ExportColumnName+']) as freq, min([hospicedata.'+ExportColumnName+']) as minVal, max([hospicedata.'+ExportColumnName+']) as maxVal
+	from (select ExportQueueID,[hospicedata.reference-yr],[hospicedata.reference-month],[hospicedata.provider-id], count(distinct [hospicedata.'+ExportColumnName+']) as freq, min([hospicedata.'+ExportColumnName+']) as minVal, '+
+		' max([hospicedata.'+ExportColumnName+']) as maxVal
 		from cem.ExportDataset00000011 
 		where ExportQueueID='+convert(varchar,@ExportQueueID)+'
 		group by ExportQueueID,[hospicedata.reference-yr],[hospicedata.reference-month],[hospicedata.provider-id]
@@ -422,5 +437,4 @@ if @SQL <> 'ExportQueueID in )'
 
 drop table #queues
 drop table #errorlog
-
 go
