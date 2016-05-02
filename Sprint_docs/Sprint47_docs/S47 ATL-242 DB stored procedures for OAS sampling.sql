@@ -50,8 +50,8 @@ select dbo.yearqtr(@samplingdate) as SampleQuarter
 	, case when dbo.yearqtr(min(SwitchToCalcDate)) < dbo.yearqtr(@samplingdate) then 'Default' else 'Historic' end as RespRateType
 	, case when dbo.yearqtr(min(SwitchToCalcDate)) < dbo.yearqtr(@samplingdate) then min(mlu.EstRespRate) else NULL end as numResponseRate 
 	, min(mlu.AnnualReturnTarget) as AnnualTarget
-	, min(mlu.AnnualReturnTarget)/4 as QuarterTarget
-	, min(mlu.AnnualReturnTarget)/12 as MonthTarget
+	, ceiling(min(mlu.AnnualReturnTarget)/4.0) as QuarterTarget
+	, ceiling(min(mlu.AnnualReturnTarget)/12.0) as MonthTarget
 from sampleplan sp
 inner join sampleunit su on sp.SAMPLEPLAN_ID=su.sampleplan_id
 inner join SUFacility suf on su.SUFacility_id=suf.SUFacility_id
@@ -64,6 +64,10 @@ if @@rowcount > 1
 	RAISERROR (N'Surveys using Systematic Sampling can only reference one CCN.',
            10, -- Severity
            1); -- State
+
+-- if MedicareLookup.AnnualReturnTarget isn't evenly divisible by 12, change AnnualTarget and QuarterTarget so that they align with the CEILING'd MonthTarget
+if exists (select * from #SystematicSamplingTarget where AnnualTarget % 12 <> 0)
+	update #SystematicSamplingTarget set AnnualTarget=12*MonthTarget, QuarterTarget=3*MonthTarget
 
 if exists (select * from #SystematicSamplingTarget where RespRateType='Historic')
 begin
@@ -95,7 +99,7 @@ begin
 end
 
 update #SystematicSamplingTarget 
-set SamplesetsPerMonth=(select count(*)/3 
+set SamplesetsPerMonth=(select CEILING(count(*)/3.0)
 						from #SystematicSamplingTarget sst
 						inner join PeriodDef pd on sst.samplequarter = dbo.yearqtr(pd.datExpectedEncStart) and pd.survey_id=@survey_id)
 
