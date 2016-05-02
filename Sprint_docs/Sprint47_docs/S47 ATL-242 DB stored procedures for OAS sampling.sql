@@ -61,7 +61,9 @@ and su.CAHPSType_id=16
 group by suf.medicarenumber 
 
 if @@rowcount > 1
-raise an error?	
+	RAISERROR (N'Surveys using Systematic Sampling can only reference one CCN.',
+           10, -- Severity
+           1); -- State
 
 if exists (select * from #SystematicSamplingTarget where RespRateType='Historic')
 begin
@@ -74,12 +76,22 @@ begin
 			inner join scheduledmailing scm on sp.samplepop_id=scm.samplepop_id
 			inner join sentmailing sm on scm.sentmail_id=sm.sentmail_id
 			inner join questionform qf on scm.sentmail_id=qf.sentmail_id
-			where ss.survey_id =15801
+			where ss.survey_id = @survey_id
 			group by ss.sampleset_id
 			having max(sm.datExpire)<getdate()
 		) x
 
 	update #SystematicSamplingTarget set numResponseRate = @rr where RespRateType='Historic'
+end
+
+if exists (select * from #SystematicSamplingTarget where numResponseRate is NULL or numResponseRate=0)
+begin
+	declare @RRtype varchar(15)
+	select @RRType = RespRateType from #SystematicSamplingTarget
+	RAISERROR (N'%s response rate cannot be 0 percent.',
+           10, -- Severity,
+           1, -- State
+		   @RRtype); 
 end
 
 update #SystematicSamplingTarget 
