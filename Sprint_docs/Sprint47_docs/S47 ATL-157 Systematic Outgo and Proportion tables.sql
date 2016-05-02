@@ -17,7 +17,7 @@ create table dbo.SystematicSamplingTarget
 ,	numLocations smallint
 ,	SamplingAlgorithmID int
 ,	RespRateType varchar(15)
-,	numResponseRate int
+,	numResponseRate numeric(5,4)
 ,	AnnualTarget int
 ,	QuarterTarget int
 ,	MonthTarget int
@@ -36,7 +36,7 @@ create table dbo.SystematicSamplingProportion
 ,	SampleUnit_id int
 ,	Sampleset_id int
 ,	EligibleCount int
-,	EligibleProportion numeric(5,3)
+,	EligibleProportion numeric(5,4)
 ,	OutgoNeeded int
 )
 
