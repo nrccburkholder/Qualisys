@@ -3252,7 +3252,7 @@ Public Class WebFileConvertSection
                 newLine.Append(PadString("", 5, Direction.Left, " ")) ' Blank --> Start: 320 End: 324 Length: 5
                 newLine.Append(PadString(row(ExcelColumns.BI), 30, Direction.Left, " ")) ' (Q61_1) who helped fill out the form --> Start: 325 End: 354 Length: 30
                 newLine.Append(PadString(row(ExcelColumns.BJ), 15, Direction.Left, " ")) ' (Q61_2)  who helped fill out the form --> Start: 355 End: 369 Length: 15
-                newLine.Append(PadString(row(ExcelColumns.BK), 10, Direction.Left, " ")) ' (Q61_3) who helped fill out the form --> Start: 370 End: 379 Length: 10
+                newLine.Append(PadString(row(ExcelColumns.BK), 13, Direction.Left, " ")) ' (Q61_3) who helped fill out the form --> Start: 370 End: 379 Length: 10
 
 
 
