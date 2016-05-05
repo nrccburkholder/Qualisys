@@ -215,7 +215,7 @@ Partial Public Class SampleSet
 
                 'Calculate the outgo needed for all of the HCAHPS units using the Medicare Proportion and HCAHPS Eligilbe Encounter count
                 'Calculate the outgo needed for all of the OASCAHPS units using the Annual sample size (calc if needed) to get monthly & interval
-                RecalcDeleyedOutGoNeeded(sampleSetId, sampleSetUnits, startDate, sampleHCAHPSUnit, period)
+                RecalcDelayedOutGoNeeded(sampleSetId, sampleSetUnits, startDate, sampleHCAHPSUnit, period, srvy)
 
                 'Logging
                 If AppConfig.Params("SamplingLogEnabled").IntegerValue = 1 Then
@@ -300,8 +300,8 @@ Partial Public Class SampleSet
         ''' <param name="startDate">The starting date for the encounters being sampled.</param>
         ''' <param name="sampleHCAHPSUnit">Specifies whether or not we are sampling the HCAHPS unit.</param>
         ''' <remarks></remarks>
-        Private Shared Sub RecalcDeleyedOutGoNeeded(ByVal sampleSetId As Integer, ByVal sampleSetUnits As Dictionary(Of Integer, SampleSetUnit), _
-                                                   ByVal startDate As Nullable(Of Date), ByVal sampleHCAHPSUnit As Boolean, ByVal period As SamplePeriod)
+        Private Shared Sub RecalcDelayedOutGoNeeded(ByVal sampleSetId As Integer, ByVal sampleSetUnits As Dictionary(Of Integer, SampleSetUnit), _
+                                                   ByVal startDate As Nullable(Of Date), ByVal sampleHCAHPSUnit As Boolean, ByVal period As SamplePeriod, srvy As Survey)
 
             Dim strtDate As Date
             Dim medRecalc As MedicareRecalcHistory
@@ -356,7 +356,13 @@ Partial Public Class SampleSet
 
                     'Update the SampleSetUnitTarget table
                     SampleSetProvider.Instance.UpdateSampleSetUnitTarget(sampleSetId, unit.SampUnit.Id, unit.OutGoNeeded, updateSPW)
-                End If
+                ElseIf srvy.IsSystematic Then 'OAS CAHPS block
+                    Dim SystematicOutgoSet As Dictionary(Of Integer, Dictionary(Of String, Object)) = _
+                        SampleSetProvider.Instance.SelectSystematicSamplingOutgo(sampleSetId, srvy.Id, strtDate)
+
+                    'Update the SampleSetUnitTarget table
+                    SampleSetProvider.Instance.UpdateSampleSetUnitTarget(sampleSetId, unit.SampUnit.Id, unit.OutGoNeeded, updateSPW)
+                End If 'End OAS CAHPS block
             Next
 
         End Sub

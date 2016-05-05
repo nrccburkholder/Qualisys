@@ -436,6 +436,47 @@ Public Class SampleSetProvider
     End Function
 
     ''' <summary>
+    ''' Returns a dictionary of sample unit Ids and the eligiblecount, eligibleproportion, and outgoneeded for each unit.
+    ''' </summary>
+    ''' <param name="sampleSetID"></param>
+    ''' <param name="surveyId"></param>
+    ''' <param name="samplingDate"></param>
+    ''' <returns></returns>
+    ''' <remarks>This method is currently used with systematic sampling only.</remarks>
+    Public Overrides Function SelectSystematicSamplingOutgo(ByVal sampleSetID As Integer, ByVal surveyId As Integer, samplingDate As Date) As Dictionary(Of Integer, Dictionary(Of String, Object))
+
+        Dim outGoList As New Dictionary(Of Integer, Dictionary(Of String, Object))
+
+        'Logging
+        If AppConfig.Params("SamplingLogEnabled").IntegerValue = 1 Then
+            SampleSetProvider.Instance.InsertSamplingLog(sampleSetID, SP.SelectSystematicSamplingOutgo, String.Format("QCL_SelectSystematicSamplingOutgo {0}, {1}, {2}", sampleSetID, surveyId, samplingDate))
+        End If
+
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectSystematicSamplingOutgo, surveyId, samplingDate)
+        Using rdr As New SafeDataReader(ExecuteReader(cmd))
+            While rdr.Read
+                Dim innerList As New Dictionary(Of String, Object)
+                innerList.Add("EligibleCount", rdr.GetInteger("EligibleCount"))
+                innerList.Add("EligibleProportion", rdr.GetDecimal("EligibleProportion"))
+                innerList.Add("OutgoNeeded", rdr.GetInteger("OutgoNeeded"))
+
+                outGoList.Add(rdr.GetInteger("SampleUnit_Id"), innerList)
+
+                If AppConfig.Params("SamplingLogEnabled").IntegerValue = 1 Then
+                    SampleSetProvider.Instance.InsertSamplingLog(sampleSetID, SP.SelectSystematicSamplingOutgo, String.Format("QCL_SelectSystematicSamplingOutgo {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}", sampleSetID, surveyId, samplingDate, rdr.GetString("SampleQuarter"), rdr.GetString("CCN"), innerList("EligibleCount"), innerList("EligibleProportion"), innerList("OutgoNeeded")))
+                End If
+            End While
+        End Using
+
+        If outGoList.Count = 0 Then
+            Return Nothing
+        Else
+            Return outGoList
+        End If
+
+    End Function
+
+    ''' <summary>
     ''' Updates the Sampleplanworksheet table after sampling is completed.
     ''' </summary>
     ''' <param name="sampleSetId"></param>

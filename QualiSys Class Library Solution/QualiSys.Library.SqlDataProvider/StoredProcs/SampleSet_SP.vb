@@ -6,6 +6,7 @@ Partial Public NotInheritable Class SP
     Public Const SelectEncounterUnitEligibility As String = "QCL_SelectEncounterUnitEligibility"
     Public Const SelectOutGoNeeded As String = "QCL_SelectOutGoNeeded"
     Public Const SelectHCAHPSEligibleEncountersBySampleSetID As String = "QCL_GetHCAHPSEligibleCount"
+    Public Const SelectSystematicSamplingOutgo As String = "QCL_SelectSystematicSamplingOutgo"
     Public Const InsertSampleSet As String = "QCL_InsertSampleSet"
     Public Const InsertSamplePop As String = "QCL_InsertSamplePop"
     Public Const InsertSelectedSample As String = "QCL_InsertSelectedSample"
