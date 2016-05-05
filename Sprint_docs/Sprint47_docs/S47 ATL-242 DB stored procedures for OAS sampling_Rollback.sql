@@ -6,6 +6,12 @@
 */
 use QP_Prod
 go
+if exists (select * from sys.procedures where name = 'QCL_CalculateSystematicSamplingOutgo')
+	drop procedure QCL_CalculateSystematicSamplingOutgo
+go
+if exists (select * from sys.procedures where name = 'QCL_GetSystematicSamplingOutgo')
+	drop procedure QCL_GetSystematicSamplingOutgo
+go
 ALTER PROCEDURE [dbo].[QCL_SelectEncounterUnitEligibility]
    @Survey_id INT ,
    @Study_id INT ,

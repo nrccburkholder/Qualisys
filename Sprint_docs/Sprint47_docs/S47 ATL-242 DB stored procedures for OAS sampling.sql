@@ -6,6 +6,125 @@
 */
 use QP_Prod
 go
+if exists (select * from sys.procedures where name = 'QCL_CalculateSystematicSamplingOutgo')
+	drop procedure QCL_CalculateSystematicSamplingOutgo
+go
+create procedure dbo.QCL_CalculateSystematicSamplingOutgo
+@survey_id int, @samplingdate datetime
+as
+
+declare @CCN varchar(20)
+select @CCN = suf.medicarenumber
+from sampleplan sp
+inner join sampleunit su on sp.SAMPLEPLAN_ID=su.sampleplan_id
+inner join SUFacility suf on su.SUFacility_id=suf.SUFacility_id
+where sp.survey_id=@survey_id
+
+
+if exists (select * from SystematicSamplingTarget where SampleQuarter = dbo.yearqtr(@samplingdate) and CCN=@CCN)
+begin
+	return
+end
+
+-- declare @survey_id int=19009, @samplingdate datetime = '7/1/16'
+create table #SystematicSamplingTarget
+(	SampleQuarter char(6)
+,	CCN varchar(20)
+,	numLocations smallint
+,	SamplingAlgorithmID int
+,	RespRateType varchar(15)
+,	numResponseRate decimal(5,4)
+,	AnnualTarget int
+,	QuarterTarget int
+,	MonthTarget int
+,	SamplesetsPerMonth smallint
+,	SamplesetTarget numeric(6,2)
+,	OutgoNeededPerSampleset int
+)
+
+insert into #SystematicSamplingTarget (SampleQuarter, CCN, numLocations, SamplingAlgorithmID, RespRateType, numResponseRate, AnnualTarget, QuarterTarget, MonthTarget)
+select dbo.yearqtr(@samplingdate) as SampleQuarter
+	, suf.medicarenumber as CCN
+	, count(su.SAMPLEUNIT_ID) as numLocations
+	, 4 as SamplingAlgorithmID
+	, case when dbo.yearqtr(min(SwitchToCalcDate)) < dbo.yearqtr(@samplingdate) then 'Default' else 'Historic' end as RespRateType
+	, case when dbo.yearqtr(min(SwitchToCalcDate)) < dbo.yearqtr(@samplingdate) then min(mlu.EstRespRate) else NULL end as numResponseRate 
+	, min(mlu.AnnualReturnTarget) as AnnualTarget
+	, ceiling(min(mlu.AnnualReturnTarget)/4.0) as QuarterTarget
+	, ceiling(min(mlu.AnnualReturnTarget)/12.0) as MonthTarget
+from sampleplan sp
+inner join sampleunit su on sp.SAMPLEPLAN_ID=su.sampleplan_id
+inner join SUFacility suf on su.SUFacility_id=suf.SUFacility_id
+inner join medicarelookup mlu on suf.medicarenumber=mlu.medicarenumber
+where sp.survey_id=@survey_id
+and su.CAHPSType_id=16
+group by suf.medicarenumber 
+
+if @@rowcount > 1
+	RAISERROR (N'Surveys using Systematic Sampling can only reference one CCN.',
+           10, -- Severity
+           1); -- State
+
+-- if MedicareLookup.AnnualReturnTarget isn't evenly divisible by 12, change AnnualTarget and QuarterTarget so that they align with the CEILING'd MonthTarget
+if exists (select * from #SystematicSamplingTarget where AnnualTarget % 12 <> 0)
+	update #SystematicSamplingTarget set AnnualTarget=12*MonthTarget, QuarterTarget=3*MonthTarget
+
+if exists (select * from #SystematicSamplingTarget where RespRateType='Historic')
+begin
+	declare @rr float
+	
+	select @rr=1.0*sum(numReturned)/sum(numSampled)
+	from (	select ss.sampleset_id, count(distinct sp.samplepop_id) as numSampled, count(distinct case when qf.datReturned is not null then qf.samplepop_id end) as numReturned, max(sm.datExpire) as datExpire
+			from sampleset ss
+			inner join samplepop sp on ss.sampleset_id=sp.sampleset_id
+			inner join scheduledmailing scm on sp.samplepop_id=scm.samplepop_id
+			inner join sentmailing sm on scm.sentmail_id=sm.sentmail_id
+			inner join questionform qf on scm.sentmail_id=qf.sentmail_id
+			where ss.survey_id = @survey_id
+			group by ss.sampleset_id
+			having max(sm.datExpire)<getdate()
+		) x
+
+	update #SystematicSamplingTarget set numResponseRate = @rr where RespRateType='Historic'
+end
+
+if exists (select * from #SystematicSamplingTarget where numResponseRate is NULL or numResponseRate=0)
+begin
+	declare @RRtype varchar(15)
+	select @RRType = RespRateType from #SystematicSamplingTarget
+	RAISERROR (N'%s response rate cannot be 0 percent.',
+           10, -- Severity,
+           1, -- State
+		   @RRtype); 
+end
+
+update #SystematicSamplingTarget 
+set SamplesetsPerMonth=(select CEILING(count(*)/3.0)
+						from #SystematicSamplingTarget sst
+						inner join PeriodDef pd on sst.samplequarter = dbo.yearqtr(pd.datExpectedEncStart) and pd.survey_id=@survey_id)
+
+update #SystematicSamplingTarget set SamplesetTarget=1.0*MonthTarget/SamplesetsPerMonth
+update #SystematicSamplingTarget set OutgoNeededPerSampleset=CEILING(SamplesetTarget/numResponseRate)
+
+insert into dbo.SystematicSamplingTarget (SampleQuarter, CCN, numLocations, SamplingAlgorithmID, RespRateType, numResponseRate, AnnualTarget, QuarterTarget, MonthTarget, SamplesetsPerMonth, SamplesetTarget, OutgoNeededPerSampleset)
+select SampleQuarter, CCN, numLocations, SamplingAlgorithmID, RespRateType, numResponseRate, AnnualTarget, QuarterTarget, MonthTarget, SamplesetsPerMonth, SamplesetTarget, OutgoNeededPerSampleset
+from #SystematicSamplingTarget 
+
+drop table #SystematicSamplingTarget
+go
+if exists (select * from sys.procedures where name = 'QCL_GetSystematicSamplingOutgo')
+	drop procedure QCL_GetSystematicSamplingOutgo
+go
+CREATE PROCEDURE dbo.QCL_GetSystematicSamplingOutgo
+@survey_id INT, @samplingdate DATETIME 
+AS 
+SELECT ssp.samplequarter, ssp.ccn, ssp.sampleunit_id, ssp.sampleset_id, ssp.eligiblecount, ssp.eligibleproportion, ssp.outgoneeded 
+FROM SystematicSamplingProportion ssp 
+     INNER JOIN sampleunit su ON ssp.sampleunit_id = su.sampleunit_id 
+     INNER JOIN sampleplan sp ON su.sampleplan_id = sp.sampleplan_id 
+WHERE sp.survey_id = @survey_id 
+AND ssp.samplequarter = dbo.Yearqtr(@samplingdate) 
+go
 ALTER PROCEDURE [dbo].[QCL_SelectEncounterUnitEligibility]
    @Survey_id INT ,
    @Study_id INT ,
@@ -1083,7 +1202,7 @@ AS
       IF @SurveyType_ID = (select surveytype_id from surveytype where SurveyType_dsc = 'OAS CAHPS')
 	  BEGIN
 		  SELECT   suu.SampleUnit_id, suu.Pop_id, suu.Enc_id, suu.DQ_Bus_Rule, suu.Removed_Rule, suu.EncDate, suu.HouseHold_id,
-				   suu.bitBadAddress, suu.bitBadPhone, suu.reportDate, rp.numRandom, suf.MedicareNumber as CCN
+				   suu.bitBadAddress, suu.bitBadPhone, suu.reportDate, rp.numRandom, su.SurveyType_id, suf.MedicareNumber as CCN
 		  INTO #OAS
 		  FROM     #SampleUnit_Universe suu 
 				   INNER JOIN #randomPops rp ON suu.Pop_id = rp.Pop_id
@@ -1104,12 +1223,49 @@ AS
 		  from #OAS o
 		  inner join (select SampleUnit_id,ENC_id,numRandom from #OAS where numRandom is not NULL) small on o.SampleUnit_id=small.SampleUnit_id
 
+		  create table #SystematicSamplingProportion
+		  (	SampleQuarter char(6)
+		  ,	CCN varchar(20)
+		  ,	SampleUnit_id int
+		  ,	Sampleset_id int
+		  ,	EligibleCount int
+		  ,	EligibleProportion numeric(5,4)
+		  ,	OutgoNeeded int
+		  )
+
+		  insert into #SystematicSamplingProportion (SampleQuarter, CCN, SampleUnit_id, Sampleset_id, EligibleCount)
+		  select dbo.yearqtr(encDate), CCN, SampleUnit_id, @Sampleset_id, count(*) as EligibleCount
+		  from #OAS
+		  where SurveyType_id=16
+		  group by dbo.yearqtr(encDate), CCN, SampleUnit_id
+
+		  if @startDate is null
+			select @startDate=min(encDate)
+			from #OAS
+			where encDate is not null
+
+		  -- make sure there's a record in SystematicSamplingTarget 
+		  exec QCL_CalculateSystematicSamplingOutgo @survey_id, @startDate 
+
+		  update #SystematicSamplingProportion 
+		  set EligibleProportion = 1.0 * EligibleCount / (select sum(EligibleCount) from #SystematicSamplingProportion)
+
+		  update ssp 
+		  set OutGoNeeded = sst.OutgoNeededPerSampleset * ssp.EligibleProportion
+		  from #SystematicSamplingProportion ssp
+		  inner join SystematicSamplingTarget sst on ssp.SampleQuarter=sst.SampleQuarter and ssp.CCN=sst.CCN
+
+		  insert into SystematicSamplingProportion (SampleQuarter, CCN, SampleUnit_id, Sampleset_id, EligibleCount, EligibleProportion, OutgoNeeded)
+		  select SampleQuarter, CCN, SampleUnit_id, Sampleset_id, EligibleCount, EligibleProportion, OutgoNeeded
+		  from #SystematicSamplingProportion 
+
 		  select SampleUnit_id, Pop_id, Enc_id, DQ_Bus_Rule, Removed_Rule, EncDate, HouseHold_id,
 				 bitBadAddress, bitBadPhone, reportDate, numRandom, CCN
 		  from #OAS
 		  order by SampleUnit_id, numRandom
 		  
 		  DROP TABLE #OAS
+		  DROP TABLE #SystematicSamplingProportion 
 	  END
 	  ELSE
 	  BEGIN
