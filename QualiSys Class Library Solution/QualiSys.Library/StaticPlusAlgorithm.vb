@@ -178,12 +178,12 @@ Partial Public Class SampleSet
 
                 ''TEST CODE BLOCK
                 'Dim CCN = From EncUnit In rdr Where EncUnit.CCN = "CC1" --ONE CCN PER SURVEY FOR OASCAHPS!!!
-                Dim locs As List(Of Integer) = (From row In encounterUnitEligibility_s.AsEnumerable() Select row.Sampleunit_id).Distinct().ToList()
-                For Each location As Integer In locs
-                    For Each item As EncounterUnitEligibility In (From row In encounterUnitEligibility_s Where item.Sampleunit_id = location)
+                'Dim locs As List(Of Integer) = (From row In encounterUnitEligibility_s.AsEnumerable() Select row.Sampleunit_id).Distinct().ToList()
+                'For Each location As Integer In locs
+                '    For Each item As EncounterUnitEligibility In (From row In encounterUnitEligibility_s Where item.Sampleunit_id = location)
 
-                    Next
-                Next
+                '    Next
+                'Next
 
                 ''TEST CODE BLOCK
 
@@ -359,6 +359,7 @@ Partial Public Class SampleSet
                 ElseIf srvy.IsSystematic Then 'OAS CAHPS block
                     Dim SystematicOutgoSet As Dictionary(Of Integer, Dictionary(Of String, Object)) = _
                         SampleSetProvider.Instance.SelectSystematicSamplingOutgo(sampleSetId, srvy.Id, strtDate)
+
 
                     'Update the SampleSetUnitTarget table
                     SampleSetProvider.Instance.UpdateSampleSetUnitTarget(sampleSetId, unit.SampUnit.Id, unit.OutGoNeeded, updateSPW)
