@@ -31,11 +31,11 @@ Public Class EncounterUnitEligibility
     Private mSampleunit_id As Integer
     Private mDQ_Bus_Rule As Integer
     Private mRemoved_Rule As Integer
-    Private mEncDate As Date
-    Private mHouseHold_id As Integer
+    Private mEncDate As Nullable(Of Date)
+    Private mHouseHold_id As Nullable(Of Integer)
     Private mBitBadAddress As Boolean
     Private mBitBadPhone As Boolean
-    Private mReportDate As Date
+    Private mReportDate As Nullable(Of Date)
     Private mStipulatedOrder As Integer
     Private mCCN As String
 #End Region
@@ -100,20 +100,20 @@ Public Class EncounterUnitEligibility
         End Set
     End Property
 
-    Public Property EncDate() As Date
+    Public Property EncDate() As Nullable(Of Date)
         Get
             Return mEncDate
         End Get
-        Friend Set(ByVal value As Date)
+        Friend Set(ByVal value As Nullable(Of Date))
             mEncDate = value
         End Set
     End Property
 
-    Public Property HouseHold_id() As Integer
+    Public Property HouseHold_id() As Nullable(Of Integer)
         Get
             Return mHouseHold_id
         End Get
-        Friend Set(ByVal value As Integer)
+        Friend Set(ByVal value As Nullable(Of Integer))
             mHouseHold_id = value
         End Set
     End Property
@@ -136,11 +136,11 @@ Public Class EncounterUnitEligibility
         End Set
     End Property
 
-    Public Property ReportDate() As Date
+    Public Property ReportDate() As Nullable(Of Date)
         Get
             Return mReportDate
         End Get
-        Friend Set(ByVal value As Date)
+        Friend Set(ByVal value As Nullable(Of Date))
             mReportDate = value
         End Set
     End Property
@@ -180,11 +180,11 @@ Public Class EncounterUnitEligibility
             encounter.Sampleunit_id = rdr.GetInteger("Sampleunit_id")
             encounter.DQ_Bus_Rule = rdr.GetInteger("DQ_Bus_Rule")
             encounter.Removed_Rule = rdr.GetInteger("Removed_Rule")
-            encounter.EncDate = rdr.GetDate("EncDate")
-            encounter.HouseHold_id = rdr.GetInteger("HouseHold_id")
+            encounter.EncDate = rdr.GetNullableDate("EncDate")
+            encounter.HouseHold_id = rdr.GetNullableInteger("HouseHold_id")
             encounter.BitBadAddress = rdr.GetBoolean("BitBadAddress")
             encounter.BitBadPhone = rdr.GetBoolean("BitBadPhone")
-            encounter.ReportDate = rdr.GetDate("ReportDate")
+            encounter.ReportDate = rdr.GetNullableDate("ReportDate")
             encounter.StipulatedOrder = rdr.GetInteger("NumRandom")
             encounter.CCN = rdr.GetString("CCN")
 

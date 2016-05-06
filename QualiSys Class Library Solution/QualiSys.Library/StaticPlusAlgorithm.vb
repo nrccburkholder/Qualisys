@@ -360,6 +360,9 @@ Partial Public Class SampleSet
                     Dim SystematicOutgoSet As Dictionary(Of Integer, Dictionary(Of String, Object)) = _
                         SampleSetProvider.Instance.SelectSystematicSamplingOutgo(sampleSetId, srvy.Id, strtDate)
 
+                    Dim eligibleCount As Integer = Integer.Parse(SystematicOutgoSet(unit.SampUnit.Id)("EligibleCount").ToString)
+                    Dim eligibleProportion As Double = Double.Parse(SystematicOutgoSet(unit.SampUnit.Id)("EligibleProportion").ToString)
+                    Dim outgoNeededAs As Integer = Integer.Parse(SystematicOutgoSet(unit.SampUnit.Id)("OutgoNeeded").ToString)
 
                     'Update the SampleSetUnitTarget table
                     SampleSetProvider.Instance.UpdateSampleSetUnitTarget(sampleSetId, unit.SampUnit.Id, unit.OutGoNeeded, updateSPW)
