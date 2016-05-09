@@ -80,14 +80,15 @@ AS
 
 	-- S28 US 31  Update NumberOfMailAttempts and NumberOfPhoneAttempts
 	-- S35 US17  fixed so that we are getting the correct NumberOfMailAttempts based on disposition and hierarchy
-	select smg.SAMPLEPOP_ID , sm.SENTMAIL_ID, sm.DATUNDELIVERABLE,  ms.INTSEQUENCE, qf.datReturned, dlog.Disposition_id, min(std.Hierarchy) hierarchy
+	select smg.SAMPLEPOP_ID , sm.SENTMAIL_ID, sm.DATUNDELIVERABLE,  ms.INTSEQUENCE,ms.INTSEQUENCE as MailSequence, ms.methodology_id, qf.datReturned, dlog.Disposition_id, min(std.Hierarchy) hierarchy
 	INTO #Mailings
 	FROM SamplePopTemp spt
 	inner join QP_Prod.[dbo].[SCHEDULEDMAILING] smg on smg.SAMPLEPOP_ID = spt.SAMPLEPOP_ID
 	inner join QP_Prod.[dbo].[SENTMAILING] sm on sm.SCHEDULEDMAILING_ID = smg.SCHEDULEDMAILING_ID
 	inner join QP_Prod.[dbo].[MAILINGSTEP] ms on ms.MAILINGSTEP_ID = smg.MAILINGSTEP_ID
-	inner join QP_Prod.[dbo].[MAILINGMETHODOLOGY] mmg on mmg.METHODOLOGY_ID = ms.METHODOLOGY_ID and mmg.SURVEY_ID = ms.SURVEY_ID
-	inner join QP_Prod.[dbo].[StandardMethodology] stmg on stmg.StandardMethodologyID = mmg.StandardMethodologyID
+--	inner join QP_Prod.[dbo].[MAILINGMETHODOLOGY] mmg on mmg.METHODOLOGY_ID = ms.METHODOLOGY_ID and mmg.SURVEY_ID = ms.SURVEY_ID
+--	inner join QP_Prod.[dbo].[StandardMethodology] stmg on stmg.StandardMethodologyID = mmg.StandardMethodologyID
+	inner join QP_Prod.[dbo].[MAILINGSTEPMETHOD] msm on ms.mailingstepmethod_id = MSM.mailingstepmethod_id
 	inner join QP_Prod.dbo.QUESTIONFORM qf With (NOLOCK) on qf.SAMPLEPOP_ID = smg.SAMPLEPOP_ID and qf.SENTMAIL_ID = sm.SENTMAIL_ID
 	inner join QP_Prod.[dbo].SURVEY_DEF sd on sd.survey_id = qf.survey_id
 	inner join QP_Prod.[dbo].SurveyType st on st.SurveyType_id = sd.surveytype_id
@@ -95,18 +96,50 @@ AS
 	left join QP_Prod.[dbo].[Disposition] d on d.Disposition_id = dlog.Disposition_id
 	left join QP_Prod.dbo.SurveyTypeDispositions std on std.Disposition_ID = d.Disposition_id and std.SurveyType_ID = st.SurveyType_ID
 	where smg.OVERRIDEITEM_ID is null
-	and stmg.MethodologyType = 'Mail Only'
-	group by smg.SAMPLEPOP_ID , sm.SENTMAIL_ID, sm.DATUNDELIVERABLE,  ms.INTSEQUENCE, qf.datReturned, dlog.Disposition_id
+	--and stmg.MethodologyType = 'Mail Only'
+	AND MSM.IsNonMailGeneration = 0
+	and ms.bitSendSurvey=1
+	group by smg.SAMPLEPOP_ID , sm.SENTMAIL_ID, sm.DATUNDELIVERABLE,  ms.INTSEQUENCE, ms.methodology_id, qf.datReturned, dlog.Disposition_id
+
+	-- we want to update intSequence so it holds the nth MAILED SURVEY step, not just the nth methodology step (i.e. exclude prenotes, phone steps, etc.)
+	-- get a list of all the non-mailed survey mail steps
+	declare @nonMailedSurvey table (methodology_id int, intSequence int)
+	insert into @nonMailedSurvey
+	select distinct m.methodology_id, ms.intSequence
+	from #mailings m
+	inner join qp_prod.dbo.mailingstep ms on m.METHODOLOGY_ID=ms.METHODOLOGY_ID
+	inner join QP_Prod.[dbo].[MAILINGSTEPMETHOD] msm on ms.mailingstepmethod_id = MSM.mailingstepmethod_id
+	where msm.IsNonMailGeneration =1 or ms.bitSendSurvey=0
+	
+	while exists (select * from @nonMailedSurvey)
+	begin
+		-- starting with the last non-survey step of each methodology, decrement MailSequence for all steps that come after it
+		update m 
+		set MailSequence=m.MailSequence-1
+		from #mailings m
+		inner join (select methodology_id, max(intSequence) as intSequence
+					from @nonMailedSurvey
+					group by methodology_id) ns
+				on m.methodology_id=ns.methodology_id and m.MailSequence > ns.intSequence
+
+		-- delete the last non-survey step of each methodology from the temp table
+		delete ns
+		from @nonMailedSurvey ns
+		inner join (select methodology_id, max(intSequence) as intSequence
+					from @nonMailedSurvey
+					group by methodology_id) mx
+				on ns.methodology_id=mx.methodology_id and ns.intSequence=mx.intSequence
+	end
 
 	update spt
 	SET NumberOfMailAttempts = 
 		CASE 
-			WHEN (m1.Disposition_id NOT IN (15)) THEN m1.INTSEQUENCE
-			ELSE (SELECT MAX(INTSEQUENCE) FROM #Mailings m WHERE m.SAMPLEPOP_ID = spt.SAMPLEPOP_ID)
+			WHEN (m1.Disposition_id NOT IN (15)) THEN m1.MailSequence
+			ELSE (SELECT MAX(MailSequence) FROM #Mailings m WHERE m.SAMPLEPOP_ID = spt.SAMPLEPOP_ID)
 		END
 	FROM SamplePopTemp spt
 	left join #Mailings m1 on m1.SAMPLEPOP_ID = spt.SAMPLEPOP_ID  
-	and m1.hierarchy = (SELECT min(hierarchy) FROM #Mailings m WHERE m.SAMPLEPOP_ID = spt.SAMPLEPOP_ID) 
+								and m1.hierarchy = (SELECT min(hierarchy) FROM #Mailings m WHERE m.SAMPLEPOP_ID = spt.SAMPLEPOP_ID) 
 
 	drop table #Mailings
 
