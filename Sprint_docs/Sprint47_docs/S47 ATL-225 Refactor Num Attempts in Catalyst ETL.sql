@@ -86,8 +86,6 @@ AS
 	inner join QP_Prod.[dbo].[SCHEDULEDMAILING] smg on smg.SAMPLEPOP_ID = spt.SAMPLEPOP_ID
 	inner join QP_Prod.[dbo].[SENTMAILING] sm on sm.SCHEDULEDMAILING_ID = smg.SCHEDULEDMAILING_ID
 	inner join QP_Prod.[dbo].[MAILINGSTEP] ms on ms.MAILINGSTEP_ID = smg.MAILINGSTEP_ID
---	inner join QP_Prod.[dbo].[MAILINGMETHODOLOGY] mmg on mmg.METHODOLOGY_ID = ms.METHODOLOGY_ID and mmg.SURVEY_ID = ms.SURVEY_ID
---	inner join QP_Prod.[dbo].[StandardMethodology] stmg on stmg.StandardMethodologyID = mmg.StandardMethodologyID
 	inner join QP_Prod.[dbo].[MAILINGSTEPMETHOD] msm on ms.mailingstepmethod_id = MSM.mailingstepmethod_id
 	inner join QP_Prod.dbo.QUESTIONFORM qf With (NOLOCK) on qf.SAMPLEPOP_ID = smg.SAMPLEPOP_ID and qf.SENTMAIL_ID = sm.SENTMAIL_ID
 	inner join QP_Prod.[dbo].SURVEY_DEF sd on sd.survey_id = qf.survey_id
@@ -96,7 +94,6 @@ AS
 	left join QP_Prod.[dbo].[Disposition] d on d.Disposition_id = dlog.Disposition_id
 	left join QP_Prod.dbo.SurveyTypeDispositions std on std.Disposition_ID = d.Disposition_id and std.SurveyType_ID = st.SurveyType_ID
 	where smg.OVERRIDEITEM_ID is null
-	--and stmg.MethodologyType = 'Mail Only'
 	AND MSM.IsNonMailGeneration = 0
 	and ms.bitSendSurvey=1
 	group by smg.SAMPLEPOP_ID , sm.SENTMAIL_ID, sm.DATUNDELIVERABLE,  ms.INTSEQUENCE, ms.methodology_id, qf.datReturned, dlog.Disposition_id
