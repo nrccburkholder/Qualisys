@@ -47,8 +47,8 @@ select dbo.yearqtr(@samplingdate) as SampleQuarter
 	, suf.medicarenumber as CCN
 	, count(su.SAMPLEUNIT_ID) as numLocations
 	, 4 as SamplingAlgorithmID
-	, case when dbo.yearqtr(min(SwitchToCalcDate)) < dbo.yearqtr(@samplingdate) then 'Default' else 'Historic' end as RespRateType
-	, case when dbo.yearqtr(min(SwitchToCalcDate)) < dbo.yearqtr(@samplingdate) then min(mlu.EstRespRate) else NULL end as numResponseRate 
+	, case when dbo.yearqtr(min(SwitchToCalcDate)) < dbo.yearqtr(@samplingdate) then 'Historic' else 'Default' end as RespRateType
+	, case when dbo.yearqtr(min(SwitchToCalcDate)) < dbo.yearqtr(@samplingdate) then NULL else min(mlu.EstRespRate) end as numResponseRate 
 	, min(mlu.AnnualReturnTarget) as AnnualTarget
 	, ceiling(min(mlu.AnnualReturnTarget)/4.0) as QuarterTarget
 	, ceiling(min(mlu.AnnualReturnTarget)/12.0) as MonthTarget
