@@ -225,7 +225,7 @@ Public Class EncounterUnitEligibility
             Do While systematicCollection.Count < newCount
                 Do While newCollection(SysSelector - 1).Selector <> 0
                     SysSelector += 1
-                    If SysSelector = newCount + 1 Then
+                    If SysSelector >= newCount + 1 Then
                         SysSelector = 1
                     End If
                 Loop
@@ -233,8 +233,8 @@ Public Class EncounterUnitEligibility
                 systematicCollection.Add(newCollection(SysSelector - 1))
 
                 SysSelector += SystematicIncrement
-                If SysSelector = newCount + 1 Then
-                    SysSelector = 1
+                If SysSelector >= newCount + 1 Then
+                    SysSelector = SysSelector Mod newCount
                 End If
             Loop
             Return systematicCollection
