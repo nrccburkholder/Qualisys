@@ -38,6 +38,7 @@ Public Class EncounterUnitEligibility
     Private mReportDate As Nullable(Of Date)
     Private mStipulatedOrder As Integer
     Private mCCN As String
+    Private mSelector As Integer
 #End Region
 
 #Region " Overrides "
@@ -163,6 +164,15 @@ Public Class EncounterUnitEligibility
         End Set
     End Property
 
+    Public Property Selector() As Integer
+        Get
+            Return mSelector
+        End Get
+        Friend Set(ByVal value As Integer)
+            mSelector = value
+        End Set
+    End Property
+
 
 #End Region
 
@@ -192,6 +202,19 @@ Public Class EncounterUnitEligibility
         End While
 
         Return collection
+    End Function
+
+    Public Shared Function PareCollection(originalCollection As EncounterUnitEligibilityCollection, filter As EncounterUnitEligibility) As EncounterUnitEligibilityCollection
+        Dim newCollection As EncounterUnitEligibilityCollection
+        newCollection = New EncounterUnitEligibilityCollection
+
+        For Each enc As EncounterUnitEligibility In originalCollection
+            If (enc.Sampleunit_id = filter.Sampleunit_id) Then
+                newCollection.Add(enc)
+            End If
+        Next
+
+        Return newCollection
     End Function
 
 #End Region

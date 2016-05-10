@@ -349,6 +349,18 @@ Public Class SampleSetProvider
     End Sub
 
     ''' <summary>
+    ''' Deletes a sampleset
+    ''' </summary>
+    ''' <param name="sampleSetId"></param>
+    ''' <remarks></remarks>
+    Public Overrides Sub DeleteSystematicOutgo(ByVal sampleSetId As Integer)
+
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.DeleteSystematicOutgo, sampleSetId)
+        ExecuteNonQuery(cmd)
+
+    End Sub
+
+    ''' <summary>
     ''' Returns a recordset with all individuals eligible to be sampled.
     ''' </summary>
     ''' <param name="surveyId"></param>
@@ -449,7 +461,7 @@ Public Class SampleSetProvider
 
         'Logging
         If AppConfig.Params("SamplingLogEnabled").IntegerValue = 1 Then
-            SampleSetProvider.Instance.InsertSamplingLog(sampleSetID, SP.SelectSystematicSamplingOutgo, String.Format("QCL_SelectSystematicSamplingOutgo {0}, {1}, {2}", sampleSetID, surveyId, samplingDate))
+            SampleSetProvider.Instance.InsertSamplingLog(sampleSetID, SP.SelectSystematicSamplingOutgo, String.Format("QCL_GetSystematicSamplingOutgo {0}, {1}, {2}", sampleSetID, surveyId, samplingDate))
         End If
 
         Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectSystematicSamplingOutgo, surveyId, samplingDate)
@@ -463,7 +475,7 @@ Public Class SampleSetProvider
                 outGoList.Add(rdr.GetInteger("SampleUnit_Id"), innerList)
 
                 If AppConfig.Params("SamplingLogEnabled").IntegerValue = 1 Then
-                    SampleSetProvider.Instance.InsertSamplingLog(sampleSetID, SP.SelectSystematicSamplingOutgo, String.Format("QCL_SelectSystematicSamplingOutgo {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}", sampleSetID, surveyId, samplingDate, rdr.GetString("SampleQuarter"), rdr.GetString("CCN"), innerList("EligibleCount"), innerList("EligibleProportion"), innerList("OutgoNeeded")))
+                    SampleSetProvider.Instance.InsertSamplingLog(sampleSetID, SP.SelectSystematicSamplingOutgo, String.Format("SamplingOutgo {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}", sampleSetID, surveyId, samplingDate, rdr.GetString("SampleQuarter"), rdr.GetString("CCN"), innerList("EligibleCount"), innerList("EligibleProportion"), innerList("OutgoNeeded")))
                 End If
             End While
         End Using

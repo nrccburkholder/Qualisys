@@ -340,6 +340,7 @@ Public Class SampleSet
     Public Shared Sub DeleteSampleSet(ByVal sampleSetId As Integer)
 
         SampleSetProvider.Instance.Delete(sampleSetId)
+        SampleSetProvider.Instance.DeleteSystematicOutgo(sampleSetId)
 
     End Sub
 

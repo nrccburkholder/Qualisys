@@ -26,7 +26,7 @@ Namespace DataProvider
         Public MustOverride Function SelectByPeriodId(ByVal periodId As Integer) As Collection(Of SampleSet)
         Public MustOverride Function Insert(ByVal surveyId As Integer, ByVal employeeId As Integer, ByVal sampleEncounterStartDate As Nullable(Of Date), ByVal sampleEncounterEndDate As Nullable(Of Date), ByVal isOverSample As Boolean, ByVal isFirstSampleInPeriod As Boolean, ByVal periodId As Integer, ByVal surveyName As String, ByVal sampleEncounterDateTableId As Integer, ByVal sampleEncounterDateFieldId As Integer, ByVal algorithm As SamplingAlgorithm, ByVal samplePlanId As Integer, ByVal surveyTypeId As Integer, ByVal hcahpsOverSample As Boolean) As Integer
         Public MustOverride Sub Delete(ByVal sampleSetId As Integer)
-
+        Public MustOverride Sub DeleteSystematicOutgo(ByVal sampleSetId As Integer)
         Public MustOverride Sub InsertSelectedSample(ByVal sampleSetId As Integer, ByVal studyId As Integer, ByVal popId As Integer, ByVal sampleUnitId As Integer, ByVal selectionType As SampleSet.UnitSelectType, ByVal encId As Integer, ByVal sampleEncounterDate As Nullable(Of Date), ByVal reportDate As Nullable(Of Date))
         Public MustOverride Sub InsertSampleSetInPeriod(ByVal sampleSetId As Integer, ByVal periodId As Integer)
         Public MustOverride Sub InsertSamplePop(ByVal sampleSetId As Integer, ByVal studyId As Integer, ByVal popId As Integer, ByVal badAddress As Boolean, ByVal badPhone As Boolean)
