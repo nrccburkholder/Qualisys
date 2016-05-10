@@ -52,6 +52,7 @@ Partial Public Class SampleSet
             Dim sampleEncounterDateFieldId As Integer = -1
             Dim sampleHCAHPSUnit As Boolean
             Dim randomNumber As Integer
+            Dim systematicIncrement As Integer
 
             If specificSampleSeed >= 0 Then
                 'New feature allows specifying sample seed for IT users only - INC0019623
@@ -215,7 +216,7 @@ Partial Public Class SampleSet
 
                 'Calculate the outgo needed for all of the HCAHPS units using the Medicare Proportion and HCAHPS Eligilbe Encounter count
                 'Calculate the outgo needed for all of the OASCAHPS units using the Annual sample size (calc if needed) to get monthly & interval
-                RecalcDelayedOutGoNeeded(sampleSetId, sampleSetUnits, startDate, sampleHCAHPSUnit, period, srvy)
+                RecalcDelayedOutGoNeeded(sampleSetId, sampleSetUnits, startDate, sampleHCAHPSUnit, period, srvy, systematicIncrement)
 
                 'Logging
                 If AppConfig.Params("SamplingLogEnabled").IntegerValue = 1 Then
@@ -236,7 +237,7 @@ Partial Public Class SampleSet
                     Dim subEncounterUnitEligibility As EncounterUnitEligibilityCollection
                     For Each location As Integer In locations
                         If sampleSetUnits.ContainsKey(location) And sampleSetUnits(location).OutGoNeeded > 0 Then
-                            subEncounterUnitEligibility = EncounterUnitEligibility.PareCollection(encounterUnitEligibility_s, New EncounterUnitEligibility With {.Sampleunit_id = location})
+                            subEncounterUnitEligibility = EncounterUnitEligibility.PareCollection(encounterUnitEligibility_s, New EncounterUnitEligibility With {.Sampleunit_id = location}, systematicIncrement)
                             ExecuteSample(subEncounterUnitEligibility, sampleSetUnits, encounterTableExists, sampleSetId, srvy, location)
                         End If
                     Next
@@ -308,7 +309,7 @@ Partial Public Class SampleSet
         ''' <param name="sampleHCAHPSUnit">Specifies whether or not we are sampling the HCAHPS unit.</param>
         ''' <remarks></remarks>
         Private Shared Sub RecalcDelayedOutGoNeeded(ByVal sampleSetId As Integer, ByVal sampleSetUnits As Dictionary(Of Integer, SampleSetUnit), _
-                                                   ByVal startDate As Nullable(Of Date), ByVal sampleHCAHPSUnit As Boolean, ByVal period As SamplePeriod, srvy As Survey)
+                                                   ByVal startDate As Nullable(Of Date), ByVal sampleHCAHPSUnit As Boolean, ByVal period As SamplePeriod, srvy As Survey, ByRef SystematicIncrement As Integer)
 
             Dim strtDate As Date
             Dim medRecalc As MedicareRecalcHistory
@@ -328,18 +329,26 @@ Partial Public Class SampleSet
                 Dim SystematicOutgoSet As Dictionary(Of Integer, Dictionary(Of String, Object)) = _
                     SampleSetProvider.Instance.SelectSystematicSamplingOutgo(sampleSetId, srvy.Id, strtDate)
 
-                For Each unit As SampleSetUnit In sampleSetUnits.Values
-                    If SystematicOutgoSet.ContainsKey(unit.SampUnit.Id) Then
-                        Dim eligibleCount As Integer = Integer.Parse(SystematicOutgoSet(unit.SampUnit.Id)("EligibleCount").ToString)
-                        Dim eligibleProportion As Double = Double.Parse(SystematicOutgoSet(unit.SampUnit.Id)("EligibleProportion").ToString)
-                        Dim outgoNeeded As Integer = Integer.Parse(SystematicOutgoSet(unit.SampUnit.Id)("OutgoNeeded").ToString)
+                If Not (SystematicOutgoSet Is Nothing) Then
+                    Dim sumEligibleCount As Integer = 0
+                    Dim sumOutgoNeeded As Integer = 0
+                    For Each unit As SampleSetUnit In sampleSetUnits.Values
+                        If SystematicOutgoSet.ContainsKey(unit.SampUnit.Id) Then
+                            Dim eligibleCount As Integer = Integer.Parse(SystematicOutgoSet(unit.SampUnit.Id)("EligibleCount").ToString)
+                            Dim eligibleProportion As Double = Double.Parse(SystematicOutgoSet(unit.SampUnit.Id)("EligibleProportion").ToString)
+                            Dim outgoNeeded As Integer = Integer.Parse(SystematicOutgoSet(unit.SampUnit.Id)("OutgoNeeded").ToString)
 
-                        unit.OutGoNeeded = outgoNeeded
-                    End If
+                            sumEligibleCount += eligibleCount
+                            sumOutgoNeeded += outgoNeeded
 
-                    'Update the SampleSetUnitTarget table
-                    SampleSetProvider.Instance.UpdateSampleSetUnitTarget(sampleSetId, unit.SampUnit.Id, unit.OutGoNeeded, updateSPW)
-                Next
+                            unit.OutGoNeeded = outgoNeeded
+                        End If
+
+                        'Update the SampleSetUnitTarget table
+                        SampleSetProvider.Instance.UpdateSampleSetUnitTarget(sampleSetId, unit.SampUnit.Id, unit.OutGoNeeded, updateSPW)
+                    Next
+                    SystematicIncrement = sumEligibleCount \ sumOutgoNeeded
+                End If
             Else
                 'Find the HCAHPS units
                 For Each unit As SampleSetUnit In sampleSetUnits.Values

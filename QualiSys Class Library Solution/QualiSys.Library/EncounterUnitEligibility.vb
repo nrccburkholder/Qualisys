@@ -204,7 +204,7 @@ Public Class EncounterUnitEligibility
         Return collection
     End Function
 
-    Public Shared Function PareCollection(originalCollection As EncounterUnitEligibilityCollection, filter As EncounterUnitEligibility) As EncounterUnitEligibilityCollection
+    Public Shared Function PareCollection(originalCollection As EncounterUnitEligibilityCollection, filter As EncounterUnitEligibility, Optional ByVal SystematicIncrement As Integer = 0) As EncounterUnitEligibilityCollection
         Dim newCollection As EncounterUnitEligibilityCollection
         newCollection = New EncounterUnitEligibilityCollection
 
@@ -214,7 +214,31 @@ Public Class EncounterUnitEligibility
             End If
         Next
 
-        Return newCollection
+        If SystematicIncrement = 0 Then
+            Return newCollection
+        Else
+            Dim systematicCollection As EncounterUnitEligibilityCollection
+            systematicCollection = New EncounterUnitEligibilityCollection
+
+            Dim newCount As Integer = newCollection.Count
+            Dim SysSelector As Integer = 1
+            Do While systematicCollection.Count < newCount
+                Do While newCollection(SysSelector - 1).Selector <> 0
+                    SysSelector += 1
+                    If SysSelector = newCount + 1 Then
+                        SysSelector = 1
+                    End If
+                Loop
+                newCollection(SysSelector - 1).Selector = SysSelector
+                systematicCollection.Add(newCollection(SysSelector - 1))
+
+                SysSelector += SystematicIncrement
+                If SysSelector = newCount + 1 Then
+                    SysSelector = 1
+                End If
+            Loop
+            Return systematicCollection
+        End If
     End Function
 
 #End Region
