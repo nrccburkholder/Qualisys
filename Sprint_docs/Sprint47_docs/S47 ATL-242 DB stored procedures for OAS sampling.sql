@@ -1202,7 +1202,7 @@ AS
       IF @SurveyType_ID = (select surveytype_id from surveytype where SurveyType_dsc = 'OAS CAHPS')
 	  BEGIN
 		  SELECT   suu.SampleUnit_id, suu.Pop_id, suu.Enc_id, suu.DQ_Bus_Rule, suu.Removed_Rule, suu.EncDate, suu.HouseHold_id,
-				   suu.bitBadAddress, suu.bitBadPhone, suu.reportDate, rp.numRandom, su.SurveyType_id, suf.MedicareNumber as CCN
+				   suu.bitBadAddress, suu.bitBadPhone, suu.reportDate, rp.numRandom, su.CAHPSType_id, suf.MedicareNumber as CCN
 		  INTO #OAS
 		  FROM     #SampleUnit_Universe suu 
 				   INNER JOIN #randomPops rp ON suu.Pop_id = rp.Pop_id
@@ -1236,7 +1236,7 @@ AS
 		  insert into #SystematicSamplingProportion (SampleQuarter, CCN, SampleUnit_id, Sampleset_id, EligibleCount)
 		  select dbo.yearqtr(encDate), CCN, SampleUnit_id, @Sampleset_id, count(*) as EligibleCount
 		  from #OAS
-		  where SurveyType_id=16
+		  where CAHPSType_id=16
 		  group by dbo.yearqtr(encDate), CCN, SampleUnit_id
 
 		  if @startDate is null
