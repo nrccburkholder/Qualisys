@@ -19,7 +19,7 @@ from sampleplan sp
 inner join sampleunit su on sp.SAMPLEPLAN_ID=su.sampleplan_id
 inner join SUFacility suf on su.SUFacility_id=suf.SUFacility_id
 where sp.survey_id=@survey_id
-
+--! and su.CAHPSType_id=16?  make sure the ccn is associated with an oas cahps unit
 
 if exists (select * from SystematicSamplingTarget where SampleQuarter = dbo.yearqtr(@samplingdate) and CCN=@CCN)
 begin
@@ -99,7 +99,7 @@ begin
 end
 
 update #SystematicSamplingTarget 
-set SamplesetsPerMonth=(select CEILING(count(*)/3.0)
+set SamplesetsPerMonth=(select CEILING(count(*)/3.0) --! sum(intexpectedsamples)? or Perioddates?
 						from #SystematicSamplingTarget sst
 						inner join PeriodDef pd on sst.samplequarter = dbo.yearqtr(pd.datExpectedEncStart) and pd.survey_id=@survey_id)
 
@@ -143,6 +143,7 @@ ALTER PROCEDURE [dbo].[QCL_SelectEncounterUnitEligibility]
  --,@indebug int = 0
 AS
 
+
 /*
 =============================================
 
@@ -151,6 +152,24 @@ AS
 =============================================
 */
    BEGIN
+/*
+begin tran
+declare 
+   @Survey_id INT                   = 16088,
+   @Study_id INT 					= 4858,
+   @DataSet VARCHAR(2000) 			= 291258,
+   @startDate DATETIME 				= '2/1/2016',
+   @EndDate DATETIME 				= '2/29/2016',
+   @seed INT 						= 1286916015,
+   @ReSurvey_Period INT 			= 6,
+   @EncounterDateField VARCHAR(42) 	= 'ENCOUNTERServiceDate',
+   @ReportDateField VARCHAR(42) 	= 'ENCOUNTERServiceDate',
+   @encTableExists BIT 				= 1,
+   @sampleSet_id INT 				= 1219045,
+   @samplingMethod INT				= 2, --SpecifyOutgo
+   @resurveyMethod_id INT 			= 2, --CalendarMonths
+   @samplingAlgorithmId AS INT		= 3  --StaticPlus
+--*/
       SET NOCOUNT ON
       SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 
@@ -1237,6 +1256,7 @@ AS
 		  select dbo.yearqtr(encDate), CCN, SampleUnit_id, @Sampleset_id, count(*) as EligibleCount
 		  from #OAS
 		  where CAHPSType_id=16
+		  and DQ_Bus_Rule = 0
 		  group by dbo.yearqtr(encDate), CCN, SampleUnit_id
 
 		  if @startDate is null
