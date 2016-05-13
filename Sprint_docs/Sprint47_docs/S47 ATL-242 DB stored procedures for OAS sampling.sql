@@ -6,6 +6,9 @@
 */
 use QP_Prod
 go
+if not exists (select * from sys.columns where name = 'Increment' and object_id=object_id('SystematicSamplingProportion'))
+	ALTER TABLE dbo.SystematicSamplingProportion add Increment int
+go
 if exists (select * from sys.procedures where name = 'QCL_CalculateSystematicSamplingOutgo')
 	drop procedure QCL_CalculateSystematicSamplingOutgo
 go
@@ -1250,6 +1253,7 @@ declare
 		  ,	EligibleCount int
 		  ,	EligibleProportion numeric(5,4)
 		  ,	OutgoNeeded int
+		  , Increment int
 		  )
 
 		  insert into #SystematicSamplingProportion (SampleQuarter, CCN, SampleUnit_id, Sampleset_id, EligibleCount)
@@ -1271,12 +1275,16 @@ declare
 		  set EligibleProportion = 1.0 * EligibleCount / (select sum(EligibleCount) from #SystematicSamplingProportion)
 
 		  update ssp 
-		  set OutGoNeeded = sst.OutgoNeededPerSampleset * ssp.EligibleProportion
+		  set OutGoNeeded = ceiling(sst.OutgoNeededPerSampleset * ssp.EligibleProportion)
 		  from #SystematicSamplingProportion ssp
 		  inner join SystematicSamplingTarget sst on ssp.SampleQuarter=sst.SampleQuarter and ssp.CCN=sst.CCN
 
-		  insert into SystematicSamplingProportion (SampleQuarter, CCN, SampleUnit_id, Sampleset_id, EligibleCount, EligibleProportion, OutgoNeeded)
-		  select SampleQuarter, CCN, SampleUnit_id, Sampleset_id, EligibleCount, EligibleProportion, OutgoNeeded
+		  update #SystematicSamplingProportion 
+		  set Increment=(select sum(EligibleCount) / sum(OutGoNeeded)
+						 from #SystematicSamplingProportion)
+
+		  insert into SystematicSamplingProportion (SampleQuarter, CCN, SampleUnit_id, Sampleset_id, EligibleCount, EligibleProportion, OutgoNeeded, Increment)
+		  select SampleQuarter, CCN, SampleUnit_id, Sampleset_id, EligibleCount, EligibleProportion, OutgoNeeded, Increment
 		  from #SystematicSamplingProportion 
 
 		  select SampleUnit_id, Pop_id, Enc_id, DQ_Bus_Rule, Removed_Rule, EncDate, HouseHold_id,
