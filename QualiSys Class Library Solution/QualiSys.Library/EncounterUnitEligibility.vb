@@ -204,12 +204,12 @@ Public Class EncounterUnitEligibility
         Return collection
     End Function
 
-    Public Shared Function PareCollection(originalCollection As EncounterUnitEligibilityCollection, filter As EncounterUnitEligibility, Optional ByVal SystematicIncrement As Integer = 0) As EncounterUnitEligibilityCollection
+    Public Shared Function FilterForSystematic(originalCollection As EncounterUnitEligibilityCollection, filter As EncounterUnitEligibility, Optional ByVal SystematicIncrement As Integer = 0, Optional ByVal OutgoNeeded As Integer = 0) As EncounterUnitEligibilityCollection
         Dim newCollection As EncounterUnitEligibilityCollection
         newCollection = New EncounterUnitEligibilityCollection
 
         For Each enc As EncounterUnitEligibility In originalCollection
-            If (enc.Sampleunit_id = filter.Sampleunit_id) Then
+            If (enc.Sampleunit_id = filter.Sampleunit_id) And (enc.DQ_Bus_Rule = filter.DQ_Bus_Rule) Then
                 newCollection.Add(enc)
             End If
         Next
@@ -220,23 +220,11 @@ Public Class EncounterUnitEligibility
             Dim systematicCollection As EncounterUnitEligibilityCollection
             systematicCollection = New EncounterUnitEligibilityCollection
 
-            Dim newCount As Integer = newCollection.Count
-            Dim SysSelector As Integer = 1
-            Do While systematicCollection.Count < newCount
-                Do While newCollection(SysSelector - 1).Selector <> 0
-                    SysSelector += 1
-                    If SysSelector >= newCount + 1 Then
-                        SysSelector = 1
-                    End If
-                Loop
+            For SysSelector As Integer = 1 To OutgoNeeded * SystematicIncrement Step SystematicIncrement
                 newCollection(SysSelector - 1).Selector = SysSelector
                 systematicCollection.Add(newCollection(SysSelector - 1))
+            Next
 
-                SysSelector += SystematicIncrement
-                If SysSelector >= newCount + 1 Then
-                    SysSelector = SysSelector Mod newCount
-                End If
-            Loop
             Return systematicCollection
         End If
     End Function

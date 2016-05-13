@@ -471,11 +471,13 @@ Public Class SampleSetProvider
                 innerList.Add("EligibleCount", rdr.GetInteger("EligibleCount"))
                 innerList.Add("EligibleProportion", rdr.GetDecimal("EligibleProportion"))
                 innerList.Add("OutgoNeeded", rdr.GetInteger("OutgoNeeded"))
+                innerList.Add("Increment", rdr.GetInteger("Increment"))
 
                 outGoList.Add(rdr.GetInteger("SampleUnit_Id"), innerList)
 
                 If AppConfig.Params("SamplingLogEnabled").IntegerValue = 1 Then
-                    SampleSetProvider.Instance.InsertSamplingLog(sampleSetID, SP.SelectSystematicSamplingOutgo, String.Format("SamplingOutgo {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}", sampleSetID, surveyId, samplingDate, rdr.GetString("SampleQuarter"), rdr.GetString("CCN"), innerList("EligibleCount"), innerList("EligibleProportion"), innerList("OutgoNeeded")))
+                    SampleSetProvider.Instance.InsertSamplingLog(sampleSetID, SP.SelectSystematicSamplingOutgo, String.Format("SamplingOutgo {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}", _
+                        sampleSetID, surveyId, samplingDate, rdr.GetString("SampleQuarter"), rdr.GetString("CCN"), innerList("EligibleCount"), innerList("EligibleProportion"), innerList("OutgoNeeded"), innerList("Increment")))
                 End If
             End While
         End Using

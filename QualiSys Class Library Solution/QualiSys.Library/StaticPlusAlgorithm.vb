@@ -156,10 +156,10 @@ Partial Public Class SampleSet
                 '------------------------------------------------------------------------------------
 
                 'Loop through each encounter
-                Dim rdr As SafeDataReader = SampleSetProvider.Instance.SelectEncounterUnitEligibility(srvy.Id, srvy.StudyId, dataSetIds.ToString, startDate, endDate, randomNumber, srvy.ResurveyPeriod, sampleEncounterDateField, reportDateField, encounterTableExists, sampleSetId, period.SamplingMethod, srvy.ResurveyMethod, SamplingAlgorithm.StaticPlus)
-
                 Dim encounterUnitEligibility_s As EncounterUnitEligibilityCollection
-                encounterUnitEligibility_s = EncounterUnitEligibility.FillCollection(rdr)
+                Using rdr As SafeDataReader = SampleSetProvider.Instance.SelectEncounterUnitEligibility(srvy.Id, srvy.StudyId, dataSetIds.ToString, startDate, endDate, randomNumber, srvy.ResurveyPeriod, sampleEncounterDateField, reportDateField, encounterTableExists, sampleSetId, period.SamplingMethod, srvy.ResurveyMethod, SamplingAlgorithm.StaticPlus)
+                    encounterUnitEligibility_s = EncounterUnitEligibility.FillCollection(rdr)
+                End Using
 
                 'Validate 1 and only 1 CCN for Systematic (OAS)
 
@@ -236,9 +236,12 @@ Partial Public Class SampleSet
                     Dim locations As List(Of Integer) = (From row In encounterUnitEligibility_s.AsEnumerable() Select row.Sampleunit_id).Distinct().ToList()
                     Dim subEncounterUnitEligibility As EncounterUnitEligibilityCollection
                     For Each location As Integer In locations
-                        If sampleSetUnits.ContainsKey(location) And sampleSetUnits(location).OutGoNeeded > 0 Then
-                            subEncounterUnitEligibility = EncounterUnitEligibility.PareCollection(encounterUnitEligibility_s, New EncounterUnitEligibility With {.Sampleunit_id = location}, systematicIncrement)
-                            ExecuteSample(subEncounterUnitEligibility, sampleSetUnits, encounterTableExists, sampleSetId, srvy, location)
+                        'If sampleSetUnits.ContainsKey(location) And sampleSetUnits(location).OutGoNeeded > 0 Then
+                        If sampleSetUnits(location).OutGoNeeded > 0 Then
+                            subEncounterUnitEligibility = EncounterUnitEligibility.FilterForSystematic(encounterUnitEligibility_s, _
+                                                            New EncounterUnitEligibility With {.Sampleunit_id = location, .DQ_Bus_Rule = 0}, _
+                                                            systematicIncrement, sampleSetUnits(location).OutGoNeeded)
+                            ExecuteSample(subEncounterUnitEligibility, sampleSetUnits, encounterTableExists, sampleSetId, srvy)
                         End If
                     Next
                 Else
@@ -321,16 +324,13 @@ Partial Public Class SampleSet
                     SampleSetProvider.Instance.SelectSystematicSamplingOutgo(sampleSetId, srvy.Id, strtDate)
 
                 If Not (SystematicOutgoSet Is Nothing) Then
-                    Dim sumEligibleCount As Integer = 0
-                    Dim sumOutgoNeeded As Integer = 0
                     For Each unit As SampleSetUnit In sampleSetUnits.Values
                         If SystematicOutgoSet.ContainsKey(unit.SampUnit.Id) Then
                             Dim eligibleCount As Integer = Integer.Parse(SystematicOutgoSet(unit.SampUnit.Id)("EligibleCount").ToString)
                             Dim eligibleProportion As Double = Double.Parse(SystematicOutgoSet(unit.SampUnit.Id)("EligibleProportion").ToString)
                             Dim outgoNeeded As Integer = Integer.Parse(SystematicOutgoSet(unit.SampUnit.Id)("OutgoNeeded").ToString)
 
-                            sumEligibleCount += eligibleCount
-                            sumOutgoNeeded += outgoNeeded
+                            SystematicIncrement = Integer.Parse(SystematicOutgoSet(unit.SampUnit.Id)("Increment").ToString)
 
                             unit.OutGoNeeded = outgoNeeded
                         End If
@@ -338,7 +338,8 @@ Partial Public Class SampleSet
                         'Update the SampleSetUnitTarget table
                         SampleSetProvider.Instance.UpdateSampleSetUnitTarget(sampleSetId, unit.SampUnit.Id, unit.OutGoNeeded, updateSPW)
                     Next
-                    SystematicIncrement = sumEligibleCount \ sumOutgoNeeded
+                    'Calculate increment as Total Eligible Count DIV Total Outgo Needed (integer quotient)
+
                 End If
             Else
                 'Find the HCAHPS units
@@ -484,8 +485,7 @@ Partial Public Class SampleSet
         ''' <param name="rdr"></param>
         ''' <remarks></remarks>
         Private Shared Sub ExecuteSample(ByVal encounterUnitEligibility_s As EncounterUnitEligibilityCollection, _
-                                         ByVal sampleSetUnits As Dictionary(Of Integer, SampleSetUnit), ByVal encounterTableExists As Boolean, ByVal sampleSetId As Integer, ByVal srvy As Survey, _
-                                         Optional ByVal location As Integer = -1)
+                                         ByVal sampleSetUnits As Dictionary(Of Integer, SampleSetUnit), ByVal encounterTableExists As Boolean, ByVal sampleSetId As Integer, ByVal srvy As Survey)
 
             Dim popID As Integer = 0
             Dim encID As Integer = 0
