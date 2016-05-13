@@ -6,9 +6,6 @@
 */
 use QP_Prod
 go
-if not exists (select * from sys.columns where name = 'Increment' and object_id=object_id('SystematicSamplingProportion'))
-	ALTER TABLE dbo.SystematicSamplingProportion add Increment int
-go
 if exists (select * from sys.procedures where name = 'QCL_CalculateSystematicSamplingOutgo')
 	drop procedure QCL_CalculateSystematicSamplingOutgo
 go
