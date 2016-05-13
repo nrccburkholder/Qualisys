@@ -6,6 +6,9 @@
 */
 use QP_Prod
 go
+if not exists (select * from sys.columns where name = 'Increment' and object_id=object_id('SystematicSamplingProportion'))
+	ALTER TABLE dbo.SystematicSamplingProportion add Increment int
+go
 if exists (select * from sys.procedures where name = 'QCL_CalculateSystematicSamplingOutgo')
 	drop procedure QCL_CalculateSystematicSamplingOutgo
 go
@@ -19,7 +22,12 @@ from sampleplan sp
 inner join sampleunit su on sp.SAMPLEPLAN_ID=su.sampleplan_id
 inner join SUFacility suf on su.SUFacility_id=suf.SUFacility_id
 where sp.survey_id=@survey_id
+and su.CAHPSType_id>0
 
+if @CCN is null
+	RAISERROR (N'Surveys using Systematic Sampling must have at least one unit defined as a CAHPS unit and linked to a CCN.',
+           10, -- Severity
+           1); -- State
 
 if exists (select * from SystematicSamplingTarget where SampleQuarter = dbo.yearqtr(@samplingdate) and CCN=@CCN)
 begin
@@ -47,8 +55,8 @@ select dbo.yearqtr(@samplingdate) as SampleQuarter
 	, suf.medicarenumber as CCN
 	, count(su.SAMPLEUNIT_ID) as numLocations
 	, 4 as SamplingAlgorithmID
-	, case when dbo.yearqtr(min(SwitchToCalcDate)) < dbo.yearqtr(@samplingdate) then 'Default' else 'Historic' end as RespRateType
-	, case when dbo.yearqtr(min(SwitchToCalcDate)) < dbo.yearqtr(@samplingdate) then min(mlu.EstRespRate) else NULL end as numResponseRate 
+	, case when dbo.yearqtr(min(SwitchToCalcDate)) < dbo.yearqtr(@samplingdate) then 'Historic' else 'Default' end as RespRateType
+	, case when dbo.yearqtr(min(SwitchToCalcDate)) < dbo.yearqtr(@samplingdate) then NULL else min(mlu.EstRespRate) end as numResponseRate 
 	, min(mlu.AnnualReturnTarget) as AnnualTarget
 	, ceiling(min(mlu.AnnualReturnTarget)/4.0) as QuarterTarget
 	, ceiling(min(mlu.AnnualReturnTarget)/12.0) as MonthTarget
@@ -99,7 +107,7 @@ begin
 end
 
 update #SystematicSamplingTarget 
-set SamplesetsPerMonth=(select CEILING(count(*)/3.0)
+set SamplesetsPerMonth=(select CEILING(sum(intExpectedSamples)/3.0)
 						from #SystematicSamplingTarget sst
 						inner join PeriodDef pd on sst.samplequarter = dbo.yearqtr(pd.datExpectedEncStart) and pd.survey_id=@survey_id)
 
@@ -118,7 +126,7 @@ go
 CREATE PROCEDURE dbo.QCL_GetSystematicSamplingOutgo
 @survey_id INT, @samplingdate DATETIME 
 AS 
-SELECT ssp.samplequarter, ssp.ccn, ssp.sampleunit_id, ssp.sampleset_id, ssp.eligiblecount, ssp.eligibleproportion, ssp.outgoneeded 
+SELECT ssp.samplequarter, ssp.ccn, ssp.sampleunit_id, ssp.sampleset_id, ssp.eligiblecount, ssp.eligibleproportion, ssp.outgoneeded, ssp.Increment
 FROM SystematicSamplingProportion ssp 
      INNER JOIN sampleunit su ON ssp.sampleunit_id = su.sampleunit_id 
      INNER JOIN sampleplan sp ON su.sampleplan_id = sp.sampleplan_id 
@@ -143,6 +151,7 @@ ALTER PROCEDURE [dbo].[QCL_SelectEncounterUnitEligibility]
  --,@indebug int = 0
 AS
 
+
 /*
 =============================================
 
@@ -151,6 +160,24 @@ AS
 =============================================
 */
    BEGIN
+/*
+begin tran
+declare 
+   @Survey_id INT                   = 16088,
+   @Study_id INT 					= 4858,
+   @DataSet VARCHAR(2000) 			= 291258,
+   @startDate DATETIME 				= '2/1/2016',
+   @EndDate DATETIME 				= '2/29/2016',
+   @seed INT 						= 1286916015,
+   @ReSurvey_Period INT 			= 6,
+   @EncounterDateField VARCHAR(42) 	= 'ENCOUNTERServiceDate',
+   @ReportDateField VARCHAR(42) 	= 'ENCOUNTERServiceDate',
+   @encTableExists BIT 				= 1,
+   @sampleSet_id INT 				= 1219045,
+   @samplingMethod INT				= 2, --SpecifyOutgo
+   @resurveyMethod_id INT 			= 2, --CalendarMonths
+   @samplingAlgorithmId AS INT		= 3  --StaticPlus
+--*/
       SET NOCOUNT ON
       SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 
@@ -1199,7 +1226,7 @@ AS
                         random_numbers rn
                WHERE    ((dsp.id_num + @Seed) % 1000000) = rn.random_id
 
-      IF @SurveyType_ID = (select surveytype_id from surveytype where SurveyType_dsc = 'OAS CAHPS')
+      IF dbo.SurveyProperty ('IsSystematic', null, @Survey_id) = 1	  
 	  BEGIN
 		  SELECT   suu.SampleUnit_id, suu.Pop_id, suu.Enc_id, suu.DQ_Bus_Rule, suu.Removed_Rule, suu.EncDate, suu.HouseHold_id,
 				   suu.bitBadAddress, suu.bitBadPhone, suu.reportDate, rp.numRandom, su.CAHPSType_id, suf.MedicareNumber as CCN
@@ -1231,12 +1258,14 @@ AS
 		  ,	EligibleCount int
 		  ,	EligibleProportion numeric(5,4)
 		  ,	OutgoNeeded int
+		  , Increment int
 		  )
 
 		  insert into #SystematicSamplingProportion (SampleQuarter, CCN, SampleUnit_id, Sampleset_id, EligibleCount)
 		  select dbo.yearqtr(encDate), CCN, SampleUnit_id, @Sampleset_id, count(*) as EligibleCount
 		  from #OAS
 		  where CAHPSType_id=16
+		  and DQ_Bus_Rule = 0
 		  group by dbo.yearqtr(encDate), CCN, SampleUnit_id
 
 		  if @startDate is null
@@ -1251,12 +1280,16 @@ AS
 		  set EligibleProportion = 1.0 * EligibleCount / (select sum(EligibleCount) from #SystematicSamplingProportion)
 
 		  update ssp 
-		  set OutGoNeeded = sst.OutgoNeededPerSampleset * ssp.EligibleProportion
+		  set OutGoNeeded = ceiling(sst.OutgoNeededPerSampleset * ssp.EligibleProportion)
 		  from #SystematicSamplingProportion ssp
 		  inner join SystematicSamplingTarget sst on ssp.SampleQuarter=sst.SampleQuarter and ssp.CCN=sst.CCN
 
-		  insert into SystematicSamplingProportion (SampleQuarter, CCN, SampleUnit_id, Sampleset_id, EligibleCount, EligibleProportion, OutgoNeeded)
-		  select SampleQuarter, CCN, SampleUnit_id, Sampleset_id, EligibleCount, EligibleProportion, OutgoNeeded
+		  update #SystematicSamplingProportion 
+		  set Increment=(select sum(EligibleCount) / sum(OutGoNeeded)
+						 from #SystematicSamplingProportion)
+
+		  insert into SystematicSamplingProportion (SampleQuarter, CCN, SampleUnit_id, Sampleset_id, EligibleCount, EligibleProportion, OutgoNeeded, Increment)
+		  select SampleQuarter, CCN, SampleUnit_id, Sampleset_id, EligibleCount, EligibleProportion, OutgoNeeded, Increment
 		  from #SystematicSamplingProportion 
 
 		  select SampleUnit_id, Pop_id, Enc_id, DQ_Bus_Rule, Removed_Rule, EncDate, HouseHold_id,
