@@ -193,7 +193,7 @@ Partial Public Class SampleSet
 
                 'Logging
                 If AppConfig.Params("SamplingLogEnabled").IntegerValue = 1 Then
-                    SampleSetProvider.Instance.InsertSamplingLog(sampleSetId, "RecalcHCAHPSOutGoNeeded()", String.Empty)
+                    SampleSetProvider.Instance.InsertSamplingLog(sampleSetId, "RecalcDelayedOutGoNeeded()", String.Empty)
                 End If
 
                 '------------------------------------------------------------------------------------
@@ -289,15 +289,6 @@ Partial Public Class SampleSet
 
             Return sampleSetId
 
-        End Function
-        ''' <summary>
-        ''' IsSystematic indicates cases requiring Systematic sampling, currently all OASCAHPS
-        ''' </summary>
-        ''' <param name="srvy"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Private Function IsSystematic(ByVal srvy As Survey) As Boolean
-            Return (srvy.Description.Contains("OAS")) 'TODO: this must be true only for OASCAHPS' CAHPS unit
         End Function
 
         ''' <summary>

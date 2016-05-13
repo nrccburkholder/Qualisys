@@ -4,6 +4,9 @@ S48 ATL-157 Implement OAS Systematic Sampling Algorithm.sql
 Chris Burkholder
 
 select dbo.SurveyProperty ('IsSystematic', 16, null)
+select dbo.SurveyProperty ('IsSystematic', null, 16088)
+
+CREATE PROCEDURE dbo.QCL_DeleteSystematicOutgo
 
 */
 use QP_Prod
