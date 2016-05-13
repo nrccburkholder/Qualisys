@@ -22,7 +22,12 @@ from sampleplan sp
 inner join sampleunit su on sp.SAMPLEPLAN_ID=su.sampleplan_id
 inner join SUFacility suf on su.SUFacility_id=suf.SUFacility_id
 where sp.survey_id=@survey_id
---! and su.CAHPSType_id=16?  make sure the ccn is associated with an oas cahps unit
+and su.CAHPSType_id>0
+
+if @CCN is null
+	RAISERROR (N'Surveys using Systematic Sampling must have at least one unit defined as a CAHPS unit and linked to a CCN.',
+           10, -- Severity
+           1); -- State
 
 if exists (select * from SystematicSamplingTarget where SampleQuarter = dbo.yearqtr(@samplingdate) and CCN=@CCN)
 begin
@@ -1221,7 +1226,7 @@ declare
                         random_numbers rn
                WHERE    ((dsp.id_num + @Seed) % 1000000) = rn.random_id
 
-      IF @SurveyType_ID = (select surveytype_id from surveytype where SurveyType_dsc = 'OAS CAHPS')
+      IF dbo.SurveyProperty ('IsSystematic', null, @Survey_id) = 1	  
 	  BEGIN
 		  SELECT   suu.SampleUnit_id, suu.Pop_id, suu.Enc_id, suu.DQ_Bus_Rule, suu.Removed_Rule, suu.EncDate, suu.HouseHold_id,
 				   suu.bitBadAddress, suu.bitBadPhone, suu.reportDate, rp.numRandom, su.CAHPSType_id, suf.MedicareNumber as CCN
