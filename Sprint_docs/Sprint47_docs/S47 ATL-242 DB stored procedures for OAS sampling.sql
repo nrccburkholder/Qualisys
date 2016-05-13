@@ -107,7 +107,7 @@ begin
 end
 
 update #SystematicSamplingTarget 
-set SamplesetsPerMonth=(select CEILING(count(*)/3.0) --! sum(intexpectedsamples)? or Perioddates?
+set SamplesetsPerMonth=(select CEILING(sum(intExpectedSamples)/3.0)
 						from #SystematicSamplingTarget sst
 						inner join PeriodDef pd on sst.samplequarter = dbo.yearqtr(pd.datExpectedEncStart) and pd.survey_id=@survey_id)
 
