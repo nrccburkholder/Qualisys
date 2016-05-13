@@ -121,7 +121,7 @@ go
 CREATE PROCEDURE dbo.QCL_GetSystematicSamplingOutgo
 @survey_id INT, @samplingdate DATETIME 
 AS 
-SELECT ssp.samplequarter, ssp.ccn, ssp.sampleunit_id, ssp.sampleset_id, ssp.eligiblecount, ssp.eligibleproportion, ssp.outgoneeded 
+SELECT ssp.samplequarter, ssp.ccn, ssp.sampleunit_id, ssp.sampleset_id, ssp.eligiblecount, ssp.eligibleproportion, ssp.outgoneeded, ssp.Increment
 FROM SystematicSamplingProportion ssp 
      INNER JOIN sampleunit su ON ssp.sampleunit_id = su.sampleunit_id 
      INNER JOIN sampleplan sp ON su.sampleplan_id = sp.sampleplan_id 
