@@ -204,7 +204,7 @@ Public Class EncounterUnitEligibility
         Return collection
     End Function
 
-    Public Shared Function FilterForSystematic(originalCollection As EncounterUnitEligibilityCollection, filter As EncounterUnitEligibility, Optional ByVal SystematicIncrement As Integer = 0, Optional ByVal OutgoNeeded As Integer = 0) As EncounterUnitEligibilityCollection
+    Public Shared Function FilterForSystematic(ByVal originalCollection As EncounterUnitEligibilityCollection, ByVal filter As EncounterUnitEligibility, ByVal SystematicIncrement As Integer, ByVal OutgoNeeded As Integer) As EncounterUnitEligibilityCollection
         Dim newCollection As EncounterUnitEligibilityCollection
         newCollection = New EncounterUnitEligibilityCollection
 
@@ -225,6 +225,13 @@ Public Class EncounterUnitEligibility
                 systematicCollection.Add(newCollection(SysSelector - 1))
             Next
 
+            'Pick up this encounter as connected to any other sample units and include them for indirect sampling purposes (root unit, minor modules)
+            For Each otherUnitEnc As EncounterUnitEligibility In originalCollection
+                If (otherUnitEnc.Sampleunit_id <> filter.Sampleunit_id) And (systematicCollection.ContainsId(otherUnitEnc.Id)) Then
+                    systematicCollection.Add(otherUnitEnc)
+                End If
+            Next
+
             Return systematicCollection
         End If
     End Function
@@ -236,4 +243,14 @@ End Class
 <Serializable()> _
 Public Class EncounterUnitEligibilityCollection
     Inherits BusinessListBase(Of EncounterUnitEligibilityCollection, EncounterUnitEligibility)
+
+    Public Function ContainsId(ByVal id As Integer) As Boolean
+        For Each mapping As EncounterUnitEligibility In Me
+            If mapping.Id = id Then
+                Return True
+            End If
+        Next
+
+        Return False
+    End Function
 End Class
