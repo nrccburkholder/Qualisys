@@ -239,7 +239,7 @@ Partial Public Class SampleSet
                         'If sampleSetUnits.ContainsKey(location) And sampleSetUnits(location).OutGoNeeded > 0 Then
                         If sampleSetUnits(location).OutGoNeeded > 0 Then
                             subEncounterUnitEligibility = EncounterUnitEligibility.FilterForSystematic(encounterUnitEligibility_s, _
-                                                            New EncounterUnitEligibility With {.Sampleunit_id = location, .DQ_Bus_Rule = 0}, _
+                                                            New EncounterUnitEligibility With {.Sampleunit_id = location, .Removed_Rule = 0}, _
                                                             systematicIncrement, sampleSetUnits(location).OutGoNeeded)
                             ExecuteSample(subEncounterUnitEligibility, sampleSetUnits, encounterTableExists, sampleSetId, srvy)
                         End If
@@ -330,6 +330,7 @@ Partial Public Class SampleSet
                             Dim eligibleProportion As Double = Double.Parse(SystematicOutgoSet(unit.SampUnit.Id)("EligibleProportion").ToString)
                             Dim outgoNeeded As Integer = Integer.Parse(SystematicOutgoSet(unit.SampUnit.Id)("OutgoNeeded").ToString)
 
+                            'This value is constant for all sample units (locations)
                             SystematicIncrement = Integer.Parse(SystematicOutgoSet(unit.SampUnit.Id)("Increment").ToString)
 
                             unit.OutGoNeeded = outgoNeeded

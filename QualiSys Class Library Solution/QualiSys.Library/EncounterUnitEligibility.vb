@@ -209,7 +209,7 @@ Public Class EncounterUnitEligibility
         newCollection = New EncounterUnitEligibilityCollection
 
         For Each enc As EncounterUnitEligibility In originalCollection
-            If (enc.Sampleunit_id = filter.Sampleunit_id) And (enc.DQ_Bus_Rule = filter.DQ_Bus_Rule) Then
+            If (enc.Sampleunit_id = filter.Sampleunit_id) And (enc.Removed_Rule = filter.Removed_Rule) Then
                 newCollection.Add(enc)
             End If
         Next
@@ -220,9 +220,31 @@ Public Class EncounterUnitEligibility
             Dim systematicCollection As EncounterUnitEligibilityCollection
             systematicCollection = New EncounterUnitEligibilityCollection
 
-            For SysSelector As Integer = 1 To OutgoNeeded * SystematicIncrement Step SystematicIncrement
+            'For SysSelector As Integer = 1 To OutgoNeeded * SystematicIncrement Step SystematicIncrement
+            Dim newCount As Integer = newCollection.Count
+            Dim SysSelector As Integer = 1
+            Do While systematicCollection.Count < newCount
+                Do While newCollection(SysSelector - 1).Selector <> 0
+                    SysSelector += 1
+                    If SysSelector >= newCount + 1 Then
+                        SysSelector = 1
+                    End If
+                Loop
                 newCollection(SysSelector - 1).Selector = SysSelector
                 systematicCollection.Add(newCollection(SysSelector - 1))
+
+                SysSelector += SystematicIncrement
+                If SysSelector >= newCount + 1 Then
+                    SysSelector = SysSelector Mod newCount
+                End If
+            Loop
+            'Next
+
+            'Pick up the DQ's for this sample unit and include them for SPW purposes (DQ counts)
+            For Each DQUnitEnc As EncounterUnitEligibility In originalCollection
+                If (DQUnitEnc.Sampleunit_id = filter.Sampleunit_id) And (DQUnitEnc.Removed_Rule <> filter.Removed_Rule) Then
+                    systematicCollection.Add(DQUnitEnc)
+                End If
             Next
 
             'Pick up this encounter as connected to any other sample units and include them for indirect sampling purposes (root unit, minor modules)
