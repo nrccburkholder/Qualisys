@@ -38,6 +38,7 @@ create table dbo.SystematicSamplingProportion
 ,	EligibleCount int
 ,	EligibleProportion numeric(5,4)
 ,	OutgoNeeded int
+,   Increment int
 )
 
 if not exists (select * from SamplingAlgorithm where AlgorithmName='Systematic')
