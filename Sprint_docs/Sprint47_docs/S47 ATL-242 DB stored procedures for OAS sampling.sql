@@ -1285,6 +1285,9 @@ declare
 		  set Increment=(select sum(EligibleCount) / sum(OutGoNeeded)
 						 from #SystematicSamplingProportion)
 
+		  delete from SystematicSamplingProportion 
+		  where Sampleset_id=@sampleSet_id
+
 		  insert into SystematicSamplingProportion (SampleQuarter, CCN, SampleUnit_id, Sampleset_id, EligibleCount, EligibleProportion, OutgoNeeded, Increment)
 		  select SampleQuarter, CCN, SampleUnit_id, Sampleset_id, EligibleCount, EligibleProportion, OutgoNeeded, Increment
 		  from #SystematicSamplingProportion 
