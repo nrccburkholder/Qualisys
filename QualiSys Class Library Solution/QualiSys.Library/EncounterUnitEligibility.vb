@@ -204,19 +204,22 @@ Public Class EncounterUnitEligibility
         Return collection
     End Function
 
-    Public Shared Function FilterForSystematic(ByVal originalCollection As EncounterUnitEligibilityCollection, ByVal filter As EncounterUnitEligibility, ByVal SystematicIncrement As Integer, ByVal OutgoNeeded As Integer) As EncounterUnitEligibilityCollection
-        Dim newCollection As EncounterUnitEligibilityCollection
-        newCollection = New EncounterUnitEligibilityCollection
+    Public Shared Function FilterForSystematic(ByVal originalCollection As EncounterUnitEligibilityCollection, ByVal locations As List(Of Integer), ByVal SystematicIncrement As Integer) As EncounterUnitEligibilityCollection
 
-        For Each enc As EncounterUnitEligibility In originalCollection
-            If (enc.Sampleunit_id = filter.Sampleunit_id) And (enc.Removed_Rule = filter.Removed_Rule) Then
-                newCollection.Add(enc)
-            End If
-        Next
+        Dim finalCollection As EncounterUnitEligibilityCollection
+        finalCollection = New EncounterUnitEligibilityCollection
 
-        If SystematicIncrement = 0 Then
-            Return newCollection
-        Else
+        For Each location As Integer In locations
+
+            Dim newCollection As EncounterUnitEligibilityCollection
+            newCollection = New EncounterUnitEligibilityCollection
+
+            For Each enc As EncounterUnitEligibility In originalCollection
+                If (enc.Sampleunit_id = location) And (enc.Removed_Rule = 0) Then
+                    newCollection.Add(enc)
+                End If
+            Next
+
             Dim systematicCollection As EncounterUnitEligibilityCollection
             systematicCollection = New EncounterUnitEligibilityCollection
 
@@ -242,20 +245,23 @@ Public Class EncounterUnitEligibility
 
             'Pick up the DQ's for this sample unit and include them for SPW purposes (DQ counts)
             For Each DQUnitEnc As EncounterUnitEligibility In originalCollection
-                If (DQUnitEnc.Sampleunit_id = filter.Sampleunit_id) And (DQUnitEnc.Removed_Rule <> filter.Removed_Rule) Then
+                If (DQUnitEnc.Sampleunit_id = location) And (DQUnitEnc.Removed_Rule <> 0) Then
                     systematicCollection.Add(DQUnitEnc)
                 End If
             Next
 
-            'Pick up this encounter as connected to any other sample units and include them for indirect sampling purposes (root unit, minor modules)
-            For Each otherUnitEnc As EncounterUnitEligibility In originalCollection
-                If (otherUnitEnc.Sampleunit_id <> filter.Sampleunit_id) And (systematicCollection.ContainsId(otherUnitEnc.Id)) Then
-                    systematicCollection.Add(otherUnitEnc)
-                End If
-            Next
+            ''Pick up this encounter as connected to any other sample units and include them for indirect sampling purposes (root unit, minor modules)
+            'For Each otherUnitEnc As EncounterUnitEligibility In originalCollection
+            '    If (otherUnitEnc.Sampleunit_id <> Filter.Sampleunit_id) And (systematicCollection.ContainsId(otherUnitEnc.Id)) Then
+            '        systematicCollection.Add(otherUnitEnc)
+            '    End If
+            'Next
 
-            Return systematicCollection
-        End If
+            finalCollection.AddCollection(systematicCollection)
+
+        Next
+        Return finalCollection
+
     End Function
 
 #End Region
@@ -275,4 +281,10 @@ Public Class EncounterUnitEligibilityCollection
 
         Return False
     End Function
+
+    Public Sub AddCollection(addCollection As EncounterUnitEligibilityCollection)
+        For Each enc As EncounterUnitEligibility In addCollection
+            Me.Add(enc)
+        Next
+    End Sub
 End Class

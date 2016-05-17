@@ -16,7 +16,7 @@ if not exists (select * from qualpro_params where strparam_nm = 'SurveyRule: IsS
 insert into qualpro_params (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, COMMENTS)
 values ('SurveyRule: IsSystematic - OAS CAHPS', 'S', 'SurveyRules', '1', 'OAS CAHPS uses Systematic sampling')
 GO
-
+--update qualpro_params set strparam_value = 1 where strparam_nm = 'SurveyRule: IsSystematic - OAS CAHPS'
 
 if exists (select * from sys.procedures where name = 'QCL_DeleteSystematicOutgo')
 	drop procedure QCL_DeleteSystematicOutgo

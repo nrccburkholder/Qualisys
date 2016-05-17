@@ -234,16 +234,11 @@ Partial Public Class SampleSet
                 'This will iterate through the reader and perform the sample
                 If srvy.IsSystematic Then
                     Dim locations As List(Of Integer) = (From row In encounterUnitEligibility_s.AsEnumerable() Select row.Sampleunit_id).Distinct().ToList()
-                    Dim subEncounterUnitEligibility As EncounterUnitEligibilityCollection
-                    For Each location As Integer In locations
-                        'If sampleSetUnits.ContainsKey(location) And sampleSetUnits(location).OutGoNeeded > 0 Then
-                        If sampleSetUnits(location).OutGoNeeded > 0 Then
-                            subEncounterUnitEligibility = EncounterUnitEligibility.FilterForSystematic(encounterUnitEligibility_s, _
-                                                            New EncounterUnitEligibility With {.Sampleunit_id = location, .Removed_Rule = 0}, _
-                                                            systematicIncrement, sampleSetUnits(location).OutGoNeeded)
-                            ExecuteSample(subEncounterUnitEligibility, sampleSetUnits, encounterTableExists, sampleSetId, srvy)
-                        End If
-                    Next
+
+                    Dim systematicEncounterUnitEligibility As EncounterUnitEligibilityCollection
+                    systematicEncounterUnitEligibility = EncounterUnitEligibility.FilterForSystematic(encounterUnitEligibility_s, locations, systematicIncrement)
+
+                    ExecuteSample(systematicEncounterUnitEligibility, sampleSetUnits, encounterTableExists, sampleSetId, srvy)
                 Else
                     ExecuteSample(encounterUnitEligibility_s, sampleSetUnits, encounterTableExists, sampleSetId, srvy)
                 End If
@@ -325,6 +320,8 @@ Partial Public Class SampleSet
 
                 If Not (SystematicOutgoSet Is Nothing) Then
                     For Each unit As SampleSetUnit In sampleSetUnits.Values
+                        updateSPW = False
+
                         If SystematicOutgoSet.ContainsKey(unit.SampUnit.Id) Then
                             Dim eligibleCount As Integer = Integer.Parse(SystematicOutgoSet(unit.SampUnit.Id)("EligibleCount").ToString)
                             Dim eligibleProportion As Double = Double.Parse(SystematicOutgoSet(unit.SampUnit.Id)("EligibleProportion").ToString)
@@ -334,6 +331,9 @@ Partial Public Class SampleSet
                             SystematicIncrement = Integer.Parse(SystematicOutgoSet(unit.SampUnit.Id)("Increment").ToString)
 
                             unit.OutGoNeeded = outgoNeeded
+
+                            'Set the update flag
+                            updateSPW = True
                         End If
 
                         'Update the SampleSetUnitTarget table
