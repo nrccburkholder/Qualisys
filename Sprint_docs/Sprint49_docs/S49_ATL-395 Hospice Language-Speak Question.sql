@@ -120,7 +120,7 @@ DECLARE @NewScale_id int
 SET @OldQstnCore = 54067 
 SET @NewQstnCore = 55137
 
-SET @NewScale_id = 9029 -- this id comes from the new scale created in QuestionLibrary
+SET @NewScale_id = 9029 -- this id comes from the new scale created in QuestionLibrary - old Scale id (qpc_id) was 8850
 
 -- the current list of surveys using the old question core
 
@@ -199,7 +199,10 @@ select ss.SURVEY_ID
 	,CASE 
 		WHEN ss.[Language] IN (2,8,18,19) THEN -- Spanish
 		'{\rtf1\ansi\deff0{\fonttbl{\f0\fnil MS Sans Serif;}}\viewkind4\uc1\pard\lang1033\f0\fs16 Vietnamita\par }'
-		ELSE '{\rtf1\ansi\deff0{\fonttbl{\f0\fswiss\fcharset0 MS Sans Serif;}}{\colortbl ;\red0\green0\blue0;}\viewkind4\uc1\pard\cf1\lang1033\f0\fs16 Vietnamese\par }'
+		ELSE '{\rtf1\ansi\deff0{\fonttbl{\f0\fnil MS Sans Serif;}}
+\viewkind4\uc1\pard\lang1033\f0\fs16 Vietnamese
+\par }
+'
 	END RICHTEXT
 	,ss.MISSING
 	,ss.CHARSET
@@ -278,7 +281,7 @@ end
 IF not EXISTS (SELECT 1 
            FROM INFORMATION_SCHEMA.TABLES 
            WHERE TABLE_SCHEMA = 'dbo' 
-           AND TABLE_NAME='bak_SEL_SCLS_AllCAHPS_Release039') 
+           AND TABLE_NAME='bak_SEL_SCLS_AllCAHPS_Release049') 
 begin
 
 	print '---------------------------------------'
