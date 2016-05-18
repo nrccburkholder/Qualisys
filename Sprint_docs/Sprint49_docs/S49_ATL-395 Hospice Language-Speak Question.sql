@@ -111,7 +111,7 @@ select @SurveyType_ID = SurveyType_Id from SurveyType where SurveyType_dsc = @Su
 
 DECLARE @DO_IT as bit
 
-SET @DO_IT = 0   -- set to 1 to do the actual updates, otherwise it will skip the update/insert/delete statements
+SET @DO_IT = 1   -- set to 1 to do the actual updates, otherwise it will skip the update/insert/delete statements
 
 DECLARE @OldQstnCore int
 DECLARE @NewQstnCore int
