@@ -178,6 +178,12 @@ Public Class EncounterUnitEligibility
 
 #Region " Public Methods "
 
+    ''' <summary>
+    ''' Fill Collection reads from the SafeDataReader and fills out a collection of those rows
+    ''' </summary>
+    ''' <param name="rdr">the SafeDataReader which reads in the rows</param>
+    ''' <returns>the collection which matches the rows</returns>
+    ''' <remarks></remarks>
     Public Shared Function FillCollection(rdr As SafeDataReader) As EncounterUnitEligibilityCollection
         Dim collection As New EncounterUnitEligibilityCollection
         Dim encounter As EncounterUnitEligibility
@@ -203,62 +209,75 @@ Public Class EncounterUnitEligibility
 
         Return collection
     End Function
-
-    Public Shared Function FilterForSystematic(ByVal originalCollection As EncounterUnitEligibilityCollection, ByVal locations As List(Of Integer), ByVal SystematicIncrement As Integer) As EncounterUnitEligibilityCollection
+    ''' <summary>
+    ''' This method must comply with two requirements: systematic selection (every Xth encounter) and sampleunits grouped by encounter
+    ''' </summary>
+    ''' <param name="originalCollection">The master list from QCL_SelectEncounterUnitEligibility</param>
+    ''' <param name="locations">The list of locations in the originalCollection</param>
+    ''' <param name="outgo_s">The outgo per location</param>
+    ''' <param name="SystematicIncrement">The X in every Xth encounter</param>
+    ''' <returns>The systematic ordered, encounter grouped EncounterUnitEligibilityCollection</returns>
+    ''' <remarks></remarks>
+    Public Shared Function FilterForSystematic(ByVal originalCollection As EncounterUnitEligibilityCollection, ByVal locations As List(Of Integer), ByVal outgo_s As Dictionary(Of Integer, Integer), ByVal SystematicIncrement As Integer) As EncounterUnitEligibilityCollection
 
         Dim finalCollection As EncounterUnitEligibilityCollection
         finalCollection = New EncounterUnitEligibilityCollection
 
         For Each location As Integer In locations
+            If outgo_s(location) > 0 Then
+                Dim newCollection As EncounterUnitEligibilityCollection
+                newCollection = New EncounterUnitEligibilityCollection
 
-            Dim newCollection As EncounterUnitEligibilityCollection
-            newCollection = New EncounterUnitEligibilityCollection
+                For Each enc As EncounterUnitEligibility In originalCollection
+                    If (enc.Sampleunit_id = location) And (enc.Removed_Rule = 0) Then
+                        newCollection.Add(enc)
+                    End If
+                Next
 
-            For Each enc As EncounterUnitEligibility In originalCollection
-                If (enc.Sampleunit_id = location) And (enc.Removed_Rule = 0) Then
-                    newCollection.Add(enc)
-                End If
-            Next
+                Dim systematicCollection As EncounterUnitEligibilityCollection
+                systematicCollection = New EncounterUnitEligibilityCollection
 
-            Dim systematicCollection As EncounterUnitEligibilityCollection
-            systematicCollection = New EncounterUnitEligibilityCollection
+                'For SysSelector As Integer = 1 To OutgoNeeded * SystematicIncrement Step SystematicIncrement
+                Dim newCount As Integer = newCollection.Count
+                Dim SysSelector As Integer = 1
+                Do While systematicCollection.Count < newCount
+                    Do While newCollection(SysSelector - 1).Selector <> 0
+                        SysSelector += 1
+                        If SysSelector >= newCount + 1 Then
+                            SysSelector = 1
+                        End If
+                    Loop
+                    newCollection(SysSelector - 1).Selector = SysSelector
+                    systematicCollection.Add(newCollection(SysSelector - 1))
 
-            'For SysSelector As Integer = 1 To OutgoNeeded * SystematicIncrement Step SystematicIncrement
-            Dim newCount As Integer = newCollection.Count
-            Dim SysSelector As Integer = 1
-            Do While systematicCollection.Count < newCount
-                Do While newCollection(SysSelector - 1).Selector <> 0
-                    SysSelector += 1
+                    SysSelector += SystematicIncrement
                     If SysSelector >= newCount + 1 Then
-                        SysSelector = 1
+                        SysSelector = SysSelector Mod newCount
                     End If
                 Loop
-                newCollection(SysSelector - 1).Selector = SysSelector
-                systematicCollection.Add(newCollection(SysSelector - 1))
+                'Next
 
-                SysSelector += SystematicIncrement
-                If SysSelector >= newCount + 1 Then
-                    SysSelector = SysSelector Mod newCount
-                End If
-            Loop
-            'Next
+                'Pick up the DQ's for this sample unit and include them for SPW purposes (DQ counts)
+                For Each DQUnitEnc As EncounterUnitEligibility In originalCollection
+                    If (DQUnitEnc.Sampleunit_id = location) And (DQUnitEnc.Removed_Rule <> 0) Then
+                        systematicCollection.Add(DQUnitEnc)
+                    End If
+                Next
 
-            'Pick up the DQ's for this sample unit and include them for SPW purposes (DQ counts)
-            For Each DQUnitEnc As EncounterUnitEligibility In originalCollection
-                If (DQUnitEnc.Sampleunit_id = location) And (DQUnitEnc.Removed_Rule <> 0) Then
-                    systematicCollection.Add(DQUnitEnc)
-                End If
-            Next
+                Dim systematicWithIndirectsCollection As EncounterUnitEligibilityCollection
+                systematicWithIndirectsCollection = New EncounterUnitEligibilityCollection
 
-            ''Pick up this encounter as connected to any other sample units and include them for indirect sampling purposes (root unit, minor modules)
-            'For Each otherUnitEnc As EncounterUnitEligibility In originalCollection
-            '    If (otherUnitEnc.Sampleunit_id <> Filter.Sampleunit_id) And (systematicCollection.ContainsId(otherUnitEnc.Id)) Then
-            '        systematicCollection.Add(otherUnitEnc)
-            '    End If
-            'Next
+                'Pick up all the encounters as connected to this or any other sample units and include them for indirect sampling purposes (root unit, minor modules)
+                For Each systematicEnc As EncounterUnitEligibility In systematicCollection
+                    For Each origUnitEnc As EncounterUnitEligibility In originalCollection
+                        If systematicEnc.Id = origUnitEnc.Id Then
+                            systematicWithIndirectsCollection.Add(origUnitEnc)
+                        End If
+                    Next
+                Next
 
-            finalCollection.AddCollection(systematicCollection)
-
+                finalCollection.AddCollection(systematicWithIndirectsCollection)
+            End If
         Next
         Return finalCollection
 
@@ -272,16 +291,11 @@ End Class
 Public Class EncounterUnitEligibilityCollection
     Inherits BusinessListBase(Of EncounterUnitEligibilityCollection, EncounterUnitEligibility)
 
-    Public Function ContainsId(ByVal id As Integer) As Boolean
-        For Each mapping As EncounterUnitEligibility In Me
-            If mapping.Id = id Then
-                Return True
-            End If
-        Next
-
-        Return False
-    End Function
-
+    ''' <summary>
+    ''' Tacks on the addCollection to the end of this collection
+    ''' </summary>
+    ''' <param name="addCollection">the collection to be added to the end</param>
+    ''' <remarks></remarks>
     Public Sub AddCollection(addCollection As EncounterUnitEligibilityCollection)
         For Each enc As EncounterUnitEligibility In addCollection
             Me.Add(enc)

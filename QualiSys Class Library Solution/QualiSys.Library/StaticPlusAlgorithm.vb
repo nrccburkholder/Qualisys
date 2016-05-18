@@ -234,9 +234,13 @@ Partial Public Class SampleSet
                 'This will iterate through the reader and perform the sample
                 If srvy.IsSystematic Then
                     Dim locations As List(Of Integer) = (From row In encounterUnitEligibility_s.AsEnumerable() Select row.Sampleunit_id).Distinct().ToList()
+                    Dim outgo_s As Dictionary(Of Integer, Integer) = New Dictionary(Of Integer, Integer)
+                    For Each location As Integer In locations
+                        outgo_s.Add(location, sampleSetUnits(location).OutGoNeeded)
+                    Next
 
                     Dim systematicEncounterUnitEligibility As EncounterUnitEligibilityCollection
-                    systematicEncounterUnitEligibility = EncounterUnitEligibility.FilterForSystematic(encounterUnitEligibility_s, locations, systematicIncrement)
+                    systematicEncounterUnitEligibility = EncounterUnitEligibility.FilterForSystematic(encounterUnitEligibility_s, locations, outgo_s, systematicIncrement)
 
                     ExecuteSample(systematicEncounterUnitEligibility, sampleSetUnits, encounterTableExists, sampleSetId, srvy)
                 Else
