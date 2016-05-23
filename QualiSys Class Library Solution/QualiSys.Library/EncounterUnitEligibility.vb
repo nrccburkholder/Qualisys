@@ -203,6 +203,7 @@ Public Class EncounterUnitEligibility
             encounter.ReportDate = rdr.GetNullableDate("ReportDate")
             encounter.StipulatedOrder = rdr.GetInteger("NumRandom")
             encounter.CCN = rdr.GetString("CCN")
+            encounter.Selector = 0
 
             collection.Add(encounter)
         End While
@@ -212,74 +213,76 @@ Public Class EncounterUnitEligibility
     ''' <summary>
     ''' This method must comply with two requirements: systematic selection (every Xth encounter) and sampleunits grouped by encounter
     ''' </summary>
-    ''' <param name="originalCollection">The master list from QCL_SelectEncounterUnitEligibility</param>
+    ''' <param name="shiftedUniverse">The master list from QCL_SelectEncounterUnitEligibility</param>
     ''' <param name="locations">The list of locations in the originalCollection</param>
     ''' <param name="outgo_s">The outgo per location</param>
     ''' <param name="SystematicIncrement">The X in every Xth encounter</param>
     ''' <returns>The systematic ordered, encounter grouped EncounterUnitEligibilityCollection</returns>
     ''' <remarks></remarks>
-    Public Shared Function FilterForSystematic(ByVal originalCollection As EncounterUnitEligibilityCollection, ByVal locations As List(Of Integer), ByVal outgo_s As Dictionary(Of Integer, Integer), ByVal SystematicIncrement As Integer) As EncounterUnitEligibilityCollection
+    Public Shared Function SortForSystematic(ByVal shiftedUniverse As EncounterUnitEligibilityCollection, ByVal locations As List(Of Integer), ByVal outgo_s As Dictionary(Of Integer, Integer), ByVal SystematicIncrement As Integer) As EncounterUnitEligibilityCollection
 
-        Dim finalCollection As EncounterUnitEligibilityCollection
-        finalCollection = New EncounterUnitEligibilityCollection
+        Dim sortedForSystematicCollection As EncounterUnitEligibilityCollection
+        sortedForSystematicCollection = New EncounterUnitEligibilityCollection
 
         For Each location As Integer In locations
             If outgo_s(location) > 0 Then
-                Dim newCollection As EncounterUnitEligibilityCollection
-                newCollection = New EncounterUnitEligibilityCollection
+                Dim locationEligibleCollection As EncounterUnitEligibilityCollection
+                locationEligibleCollection = New EncounterUnitEligibilityCollection
 
-                For Each enc As EncounterUnitEligibility In originalCollection
+                For Each enc As EncounterUnitEligibility In shiftedUniverse
                     If (enc.Sampleunit_id = location) And (enc.Removed_Rule = 0) Then
-                        newCollection.Add(enc)
+                        locationEligibleCollection.Add(enc)
                     End If
                 Next
 
-                Dim systematicCollection As EncounterUnitEligibilityCollection
-                systematicCollection = New EncounterUnitEligibilityCollection
+                Dim sortedLocationEligibleCollection As EncounterUnitEligibilityCollection
+                sortedLocationEligibleCollection = New EncounterUnitEligibilityCollection
 
-                'For SysSelector As Integer = 1 To OutgoNeeded * SystematicIncrement Step SystematicIncrement
-                Dim newCount As Integer = newCollection.Count
+                'The following will order the new set in a systematic fashion.
+                'For example, with locationCount 23 and increment of 5, the order should be: 1,6,11,16,21,3,8,13,18,23,5,10,15,20,2,7,12,17,22,4,9,14,19
+                'For example, with locationCount 25 and increment of 5, the order should be: 1,6,11,16,21,2,7,12,17,22,3,8,13,18,23,4,9,14,19,24,5,10,15,20,25
+                Dim locationCount As Integer = locationEligibleCollection.Count
                 Dim SysSelector As Integer = 1
-                Do While systematicCollection.Count < newCount
-                    Do While newCollection(SysSelector - 1).Selector <> 0
+                Do While sortedLocationEligibleCollection.Count < locationCount
+                    ' SystematicIncrement = 0 will census sample within the following block CJB 5/23/2016
+                    Do While locationEligibleCollection(SysSelector - 1).Selector <> 0
                         SysSelector += 1
-                        If SysSelector >= newCount + 1 Then
+                        If SysSelector >= locationCount + 1 Then
                             SysSelector = 1
                         End If
                     Loop
-                    newCollection(SysSelector - 1).Selector = SysSelector
-                    systematicCollection.Add(newCollection(SysSelector - 1))
+                    locationEligibleCollection(SysSelector - 1).Selector = SysSelector
+                    sortedLocationEligibleCollection.Add(locationEligibleCollection(SysSelector - 1))
 
                     SysSelector += SystematicIncrement
-                    If SysSelector >= newCount + 1 Then
-                        SysSelector = SysSelector Mod newCount
+                    If SysSelector >= locationCount + 1 Then
+                        SysSelector = SysSelector Mod locationCount
                     End If
                 Loop
-                'Next
 
                 'Pick up the DQ's for this sample unit and include them for SPW purposes (DQ counts)
-                For Each DQUnitEnc As EncounterUnitEligibility In originalCollection
+                For Each DQUnitEnc As EncounterUnitEligibility In shiftedUniverse
                     If (DQUnitEnc.Sampleunit_id = location) And (DQUnitEnc.Removed_Rule <> 0) Then
-                        systematicCollection.Add(DQUnitEnc)
+                        sortedLocationEligibleCollection.Add(DQUnitEnc)
                     End If
                 Next
 
-                Dim systematicWithIndirectsCollection As EncounterUnitEligibilityCollection
-                systematicWithIndirectsCollection = New EncounterUnitEligibilityCollection
+                Dim sortedLocationWithIndirectsCollection As EncounterUnitEligibilityCollection
+                sortedLocationWithIndirectsCollection = New EncounterUnitEligibilityCollection
 
                 'Pick up all the encounters as connected to this or any other sample units and include them for indirect sampling purposes (root unit, minor modules)
-                For Each systematicEnc As EncounterUnitEligibility In systematicCollection
-                    For Each origUnitEnc As EncounterUnitEligibility In originalCollection
-                        If systematicEnc.Id = origUnitEnc.Id Then
-                            systematicWithIndirectsCollection.Add(origUnitEnc)
+                For Each systematicEnc As EncounterUnitEligibility In sortedLocationEligibleCollection
+                    For Each universeEnc As EncounterUnitEligibility In shiftedUniverse
+                        If systematicEnc.Id = universeEnc.Id Then
+                            sortedLocationWithIndirectsCollection.Add(universeEnc)
                         End If
                     Next
                 Next
 
-                finalCollection.AddCollection(systematicWithIndirectsCollection)
+                sortedForSystematicCollection.AddCollection(sortedLocationWithIndirectsCollection)
             End If
         Next
-        Return finalCollection
+        Return sortedForSystematicCollection
 
     End Function
 

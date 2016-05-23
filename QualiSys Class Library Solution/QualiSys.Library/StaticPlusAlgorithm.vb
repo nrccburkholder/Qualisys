@@ -96,9 +96,7 @@ Partial Public Class SampleSet
                     dataSetIds.Append(ds.Id.ToString)
                     InsertSampleDataSet(sampleSetId, ds.Id)
                 Next
-                ''''''''''''''''''''''''''''''''''''''''''''''''
-                'TODO: Does OASCAHPS adhere to this in any way? Need to determine if OASCAHPS unit then Systematic...
-                ''''''''''''''''''''''''''''''''''''''''''''''''
+
                 'Determine if we are sampling the HCAHPS units
                 If isOverSample Then
                     If hcahpsOverSample Then
@@ -110,15 +108,6 @@ Partial Public Class SampleSet
                     sampleHCAHPSUnit = True
                 End If
 
-                '------------------------------------------------------------------------------------
-                'TODO: Ensure that SelectOutgoNeeded treats Systematic/OASCAHPS in a benign fashion, like HCAHPS
-
-                'Make sure we don’t calc OAS unit, but do RR later (step b.)
-                'Consider making generic to cover H & OAS exception (calculate later)
-                'H may not do anything simply because it’s 0 targeted on sample unit
-
-                '------------------------------------------------------------------------------------
-
                 'Get the outgo needed for all sampleunits
                 outGoList = SampleSetProvider.Instance.SelectOutGoNeeded(sampleSetId, srvy.Id, period.Id, period.ExpectedSamples, period.SampleSets.Count, period.SamplingMethod, srvy.ResponseRateRecalculationPeriod, sampleHCAHPSUnit)
 
@@ -129,31 +118,6 @@ Partial Public Class SampleSet
 
                 'Build the SampleSetUnit collection
                 sampleSetUnits = BuildSampleUnitOutGoNeeded(srvy, outGoList)
-
-                '------------------------------------------------------------------------------------
-                'DONE: Incorporate new fields (random, CCN) in result set from SelectEncounterUnitEligibility
-                '
-                'DONE: using a property on Survey
-                '(was Write a function IsSystematic which is true only for OAS all cases--with multiple locations)
-                '
-                'DONE: Build an EncounterUnitEligibility class and collection for LINQ usage 
-                '(Dim CCN = From EncUnit in rdrEncUnit Where EncUnit.CCN = CCN1) etc.
-                'For Each item As EncounterUnitEligibility In EncouterUnitEligiblity_s Distinct.ToList.Where(Me.GetCCNValue.ToString() = CCNItem.CCN) 
-                'Dim a = (From row In table.AsEnumerable() Select row.Field(Of String)("name")).Distinct().ToList()
-                '
-                'DONE: For OAS, Loop through each location (sampleunit), with systematic selection having interval by CCN
-                '
-                'Make sure somewhere in here we keep the most recent encounter only
-                '
-                'OAS must resurvey at CCN level
-                '
-                '(QCL_SampleSetResurveyExclusion_StaticPlus)
-                'Check for any survey type specific logic for H and/or HH
-                'Calendar month & number of months should pull from survey props
-                'Resurvey exclude if eligible, like HCAHPS, to accommodate > 1 sample per month
-                '
-                '
-                '------------------------------------------------------------------------------------
 
                 'Loop through each encounter
                 Dim encounterUnitEligibility_s As EncounterUnitEligibilityCollection
@@ -176,18 +140,6 @@ Partial Public Class SampleSet
 
                 'Get the number of seconds it took to perform the presample steps
 
-
-                ''TEST CODE BLOCK
-                'Dim CCN = From EncUnit In rdr Where EncUnit.CCN = "CC1" --ONE CCN PER SURVEY FOR OASCAHPS!!!
-                'Dim locs As List(Of Integer) = (From row In encounterUnitEligibility_s.AsEnumerable() Select row.Sampleunit_id).Distinct().ToList()
-                'For Each location As Integer In locs
-                '    For Each item As EncounterUnitEligibility In (From row In encounterUnitEligibility_s Where item.Sampleunit_id = location)
-
-                '    Next
-                'Next
-
-                ''TEST CODE BLOCK
-
                 preSampleTime = CInt(Math.Ceiling((System.DateTime.Now - now).TotalSeconds))
                 now = System.DateTime.Now
 
@@ -195,24 +147,6 @@ Partial Public Class SampleSet
                 If AppConfig.Params("SamplingLogEnabled").IntegerValue = 1 Then
                     SampleSetProvider.Instance.InsertSamplingLog(sampleSetId, "RecalcDelayedOutGoNeeded()", String.Empty)
                 End If
-
-                '------------------------------------------------------------------------------------
-                'Done: Rename RecalcHCAHPSOutgoNeeded to RecalcDelayedOutgoNeeded 
-                '
-                'TODO: Make RecalcDelayedOutgoNeeded able to interact with new OASTargetLookup tables
-                '
-                'Dave: Create OASTargetLookup & OASTargetHistory tables and CRUD
-                '
-                'Don’t sort OAS CAHPS!
-                'Checking w/ CMS about sort by enc_id to maintain client file order
-                '**CMS indicated we should maintain the sort order of the client file.
-                '
-                'Consider minor refactor to have new function that calls H & OAS recalcs (Delayed Calc or something like that)
-                'Calc OAS Sample Size & outgo here
-                'See if there is an annual sample size calc for the qtr, if not do it
-                'Use annual sample size to determine month size
-                'Determine interval &  store it somewhere (probably sampleset table)
-                '------------------------------------------------------------------------------------
 
                 'Calculate the outgo needed for all of the HCAHPS units using the Medicare Proportion and HCAHPS Eligilbe Encounter count
                 'Calculate the outgo needed for all of the OASCAHPS units using the Annual sample size (calc if needed) to get monthly & interval
@@ -223,15 +157,7 @@ Partial Public Class SampleSet
                     SampleSetProvider.Instance.InsertSamplingLog(sampleSetId, "ExecuteSample()", String.Empty)
                 End If
 
-                '------------------------------------------------------------------------------------
-                'TODO: For Systematic, ExecuteSample must operate on the current subset by SampleUnit
-                '
-                'Loop through sampleunits, then loop  through pops
-                'Not sorted by random num for OAS
-                'We've assigned random nums to each; select lowest as starting point for each unit
-                '------------------------------------------------------------------------------------
-
-                'This will iterate through the reader and perform the sample
+                'This will iterate through the collection and perform the sample
                 If srvy.IsSystematic Then
                     Dim locations As List(Of Integer) = (From row In encounterUnitEligibility_s.AsEnumerable() Select row.Sampleunit_id).Distinct().ToList()
                     Dim outgo_s As Dictionary(Of Integer, Integer) = New Dictionary(Of Integer, Integer)
@@ -239,20 +165,13 @@ Partial Public Class SampleSet
                         outgo_s.Add(location, sampleSetUnits(location).OutGoNeeded)
                     Next
 
-                    Dim systematicEncounterUnitEligibility As EncounterUnitEligibilityCollection
-                    systematicEncounterUnitEligibility = EncounterUnitEligibility.FilterForSystematic(encounterUnitEligibility_s, locations, outgo_s, systematicIncrement)
+                    Dim sortedForSystematicEncounterUnitEligibility As EncounterUnitEligibilityCollection
+                    sortedForSystematicEncounterUnitEligibility = EncounterUnitEligibility.SortForSystematic(encounterUnitEligibility_s, locations, outgo_s, systematicIncrement)
 
-                    ExecuteSample(systematicEncounterUnitEligibility, sampleSetUnits, encounterTableExists, sampleSetId, srvy)
+                    ExecuteSample(sortedForSystematicEncounterUnitEligibility, sampleSetUnits, encounterTableExists, sampleSetId, srvy)
                 Else
                     ExecuteSample(encounterUnitEligibility_s, sampleSetUnits, encounterTableExists, sampleSetId, srvy)
                 End If
-
-                '------------------------------------------------------------------------------------
-                'TODO:
-                '
-                ' Update algorithm used in SPW (per Josh)...
-                'Maybe add OAS RR for display on SPW
-                '------------------------------------------------------------------------------------
 
                 'Finalize the sample
                 UpdatePeriods(sampleSetId, period.Id)
