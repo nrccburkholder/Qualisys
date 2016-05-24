@@ -121,14 +121,11 @@ if exists (select * from sys.procedures where name = 'QCL_GetSystematicSamplingO
 	drop procedure QCL_GetSystematicSamplingOutgo
 go
 CREATE PROCEDURE dbo.QCL_GetSystematicSamplingOutgo
-@survey_id INT, @samplingdate DATETIME 
+@Sampleset_id int
 AS 
-SELECT ssp.samplequarter, ssp.ccn, ssp.sampleunit_id, ssp.sampleset_id, ssp.eligiblecount, ssp.eligibleproportion, ssp.outgoneeded, ssp.Increment
+SELECT ssp.SampleQuarter, ssp.CCN, ssp.SampleUnit_id, ssp.sampleset_id, ssp.EligibleCount, ssp.EligibleProportion, ssp.OutgoNeeded, ssp.Increment
 FROM SystematicSamplingProportion ssp 
-     INNER JOIN sampleunit su ON ssp.sampleunit_id = su.sampleunit_id 
-     INNER JOIN sampleplan sp ON su.sampleplan_id = sp.sampleplan_id 
-WHERE sp.survey_id = @survey_id 
-AND ssp.samplequarter = dbo.Yearqtr(@samplingdate) 
+WHERE ssp.Sampleset_id=@Sampleset_id
 go
 ALTER PROCEDURE [dbo].[QCL_SelectEncounterUnitEligibility]
    @Survey_id INT ,
