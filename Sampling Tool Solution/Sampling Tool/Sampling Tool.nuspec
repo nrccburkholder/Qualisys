@@ -3,7 +3,7 @@
   <metadata>
     <id>Qualisys.SamplingTool</id>
     <title>Qualisys Sampling Tool</title>
-    <version>4.0.10.0</version>
+    <version>4.1.9.0</version>
     <authors>NRC</authors>
     <description>GUI to sample survey populations for data collection</description>
   </metadata>

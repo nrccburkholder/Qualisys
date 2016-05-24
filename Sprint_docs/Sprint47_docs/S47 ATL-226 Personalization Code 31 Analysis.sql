@@ -18,7 +18,7 @@ and c.code = 31
 USE [QP_Prod]
 GO
 
-delete from codetexttag where codetext_id = 48 and tag_id in (28,29)
+delete from codetexttag where codetext_id = 48 --and tag_id in (28,29)
 
 --ROLLBACK
 /*

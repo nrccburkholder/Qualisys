@@ -49,6 +49,7 @@ Public Class Survey
     Private mIsCAHPS As Boolean = False
     Private mHasOptionCHART As Boolean = False
     Private mIsMonthlyOnly As Boolean = False
+    Private mIsSystematic As Boolean = False
     Private mSamplingToolPriority As Integer = 0
     Private mSamplingMethodDefault As String = String.Empty
     Private mIsSamplingMethodDisabled As Boolean = False
@@ -922,6 +923,13 @@ Public Class Survey
         Get
             GetSurveyRule("DefaultScheduleDateAdjustmentByMonths", mDefaultScheduleDateAdjustmentByMonths, override)
             Return mDefaultScheduleDateAdjustmentByMonths
+        End Get
+    End Property
+
+    Public ReadOnly Property IsSystematic(Optional ByVal override As String = vbNullString) As Boolean
+        Get
+            GetSurveyRule("IsSystematic", mIsSystematic, override)
+            Return mIsSystematic
         End Get
     End Property
 

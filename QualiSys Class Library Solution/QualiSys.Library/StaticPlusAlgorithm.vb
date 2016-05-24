@@ -1,6 +1,7 @@
 Imports Nrc.Framework.Data
 Imports Nrc.QualiSys.Library.DataProvider
 Imports Nrc.Framework.BusinessLogic.Configuration
+Imports System.Linq
 
 
 Partial Public Class SampleSet
@@ -51,6 +52,7 @@ Partial Public Class SampleSet
             Dim sampleEncounterDateFieldId As Integer = -1
             Dim sampleHCAHPSUnit As Boolean
             Dim randomNumber As Integer
+            Dim systematicIncrement As Integer
 
             If specificSampleSeed >= 0 Then
                 'New feature allows specifying sample seed for IT users only - INC0019623
@@ -118,40 +120,71 @@ Partial Public Class SampleSet
                 sampleSetUnits = BuildSampleUnitOutGoNeeded(srvy, outGoList)
 
                 'Loop through each encounter
+                Dim encounterUnitEligibility_s As EncounterUnitEligibilityCollection
                 Using rdr As SafeDataReader = SampleSetProvider.Instance.SelectEncounterUnitEligibility(srvy.Id, srvy.StudyId, dataSetIds.ToString, startDate, endDate, randomNumber, srvy.ResurveyPeriod, sampleEncounterDateField, reportDateField, encounterTableExists, sampleSetId, period.SamplingMethod, srvy.ResurveyMethod, SamplingAlgorithm.StaticPlus)
-                    'Get the number of seconds it took to perform the presample steps
-                    preSampleTime = CInt(Math.Ceiling((System.DateTime.Now - now).TotalSeconds))
-                    now = System.DateTime.Now
-
-                    'Logging
-                    If AppConfig.Params("SamplingLogEnabled").IntegerValue = 1 Then
-                        SampleSetProvider.Instance.InsertSamplingLog(sampleSetId, "RecalcHCAHPSOutGoNeeded()", String.Empty)
-                    End If
-
-                    'Calculate the outgo needed for all of the HCAHPS units using the Medicare Proportion and HCAHPS Eligilbe Encounter count
-                    RecalcHCAHPSOutGoNeeded(sampleSetId, sampleSetUnits, startDate, sampleHCAHPSUnit, period)
-
-                    'Logging
-                    If AppConfig.Params("SamplingLogEnabled").IntegerValue = 1 Then
-                        SampleSetProvider.Instance.InsertSamplingLog(sampleSetId, "ExecuteSample()", String.Empty)
-                    End If
-
-                    'This will iterate through the reader and perform the sample
-                    ExecuteSample(rdr, sampleSetUnits, encounterTableExists, sampleSetId, srvy)
-
-                    'Finalize the sample
-                    UpdatePeriods(sampleSetId, period.Id)
-                    updateSamplePlanWorksheet(sampleSetId, sampleSetUnits)
-
-                    'Determine the encounter date range if required
-                    If startDate.HasValue = False Then encounterDateRange = CalculateSampleSetUnitMinMaxDates(sampleSetUnits)
-
-                    'Determine the number of seconds it took to perform the sample
-                    postSampleTime = CInt(Math.Ceiling((System.DateTime.Now - now).TotalSeconds))
-
-                    'Update the sampleset in the database
-                    UpdateSampleSetPostSample(sampleSetId, preSampleTime, postSampleTime, randomNumber, encounterDateRange)
+                    encounterUnitEligibility_s = EncounterUnitEligibility.FillCollection(rdr)
                 End Using
+
+                'Validate 1 and only 1 CCN for Systematic (OAS)
+
+                If srvy.IsSystematic Then
+                    Dim CCNs As List(Of String) = (From row In encounterUnitEligibility_s.AsEnumerable() Select row.CCN).Distinct().ToList()
+                    If CCNs.Count > 1 Then
+                        Dim CCNlist As String = String.Empty
+                        For Each CCN As String In CCNs
+                            CCNlist = CCNlist & ", " & CCN
+                        Next
+                        Throw New DataException("Multiple CCNs in Systematic Sampling Sampleset. Sampleset_id:" & sampleSetId.ToString() & CCNlist)
+                    End If
+                End If
+
+                'Get the number of seconds it took to perform the presample steps
+
+                preSampleTime = CInt(Math.Ceiling((System.DateTime.Now - now).TotalSeconds))
+                now = System.DateTime.Now
+
+                'Logging
+                If AppConfig.Params("SamplingLogEnabled").IntegerValue = 1 Then
+                    SampleSetProvider.Instance.InsertSamplingLog(sampleSetId, "RecalcDelayedOutGoNeeded()", String.Empty)
+                End If
+
+                'Calculate the outgo needed for all of the HCAHPS units using the Medicare Proportion and HCAHPS Eligilbe Encounter count
+                'Calculate the outgo needed for all of the OASCAHPS units using the Annual sample size (calc if needed) to get monthly & interval
+                RecalcDelayedOutGoNeeded(sampleSetId, sampleSetUnits, startDate, sampleHCAHPSUnit, period, srvy, systematicIncrement)
+
+                'Logging
+                If AppConfig.Params("SamplingLogEnabled").IntegerValue = 1 Then
+                    SampleSetProvider.Instance.InsertSamplingLog(sampleSetId, "ExecuteSample()", String.Empty)
+                End If
+
+                'This will iterate through the collection and perform the sample
+                If srvy.IsSystematic Then
+                    Dim locations As List(Of Integer) = (From row In encounterUnitEligibility_s.AsEnumerable() Select row.Sampleunit_id).Distinct().ToList()
+                    Dim outgo_s As Dictionary(Of Integer, Integer) = New Dictionary(Of Integer, Integer)
+                    For Each location As Integer In locations
+                        outgo_s.Add(location, sampleSetUnits(location).OutGoNeeded)
+                    Next
+
+                    Dim sortedForSystematicEncounterUnitEligibility As EncounterUnitEligibilityCollection
+                    sortedForSystematicEncounterUnitEligibility = EncounterUnitEligibility.SortForSystematic(encounterUnitEligibility_s, locations, outgo_s, systematicIncrement)
+
+                    ExecuteSample(sortedForSystematicEncounterUnitEligibility, sampleSetUnits, encounterTableExists, sampleSetId, srvy)
+                Else
+                    ExecuteSample(encounterUnitEligibility_s, sampleSetUnits, encounterTableExists, sampleSetId, srvy)
+                End If
+
+                'Finalize the sample
+                UpdatePeriods(sampleSetId, period.Id)
+                updateSamplePlanWorksheet(sampleSetId, sampleSetUnits)
+
+                'Determine the encounter date range if required
+                If startDate.HasValue = False Then encounterDateRange = CalculateSampleSetUnitMinMaxDates(sampleSetUnits)
+
+                'Determine the number of seconds it took to perform the sample
+                postSampleTime = CInt(Math.Ceiling((System.DateTime.Now - now).TotalSeconds))
+
+                'Update the sampleset in the database
+                UpdateSampleSetPostSample(sampleSetId, preSampleTime, postSampleTime, randomNumber, encounterDateRange)
 
                 'Add Seeded Mailing encounters to the SampleSet
                 Dim seed As ToBeSeeded = ToBeSeeded.GetBySurveyIDSampleDate(srvy.Id, startDate)
@@ -163,6 +196,9 @@ Partial Public Class SampleSet
             Catch ex As Exception
                 'We have encountered an error so delete the sampleset from the database and throw the error upstream.
                 SampleSetProvider.Instance.Delete(sampleSetId)
+                If srvy.IsSystematic Then
+                    SampleSetProvider.Instance.DeleteSystematicOutgo(sampleSetId)
+                End If
                 Throw
 
             End Try
@@ -184,8 +220,8 @@ Partial Public Class SampleSet
         ''' <param name="startDate">The starting date for the encounters being sampled.</param>
         ''' <param name="sampleHCAHPSUnit">Specifies whether or not we are sampling the HCAHPS unit.</param>
         ''' <remarks></remarks>
-        Private Shared Sub RecalcHCAHPSOutGoNeeded(ByVal sampleSetId As Integer, ByVal sampleSetUnits As Dictionary(Of Integer, SampleSetUnit), _
-                                                   ByVal startDate As Nullable(Of Date), ByVal sampleHCAHPSUnit As Boolean, ByVal period As SamplePeriod)
+        Private Shared Sub RecalcDelayedOutGoNeeded(ByVal sampleSetId As Integer, ByVal sampleSetUnits As Dictionary(Of Integer, SampleSetUnit), _
+                                                   ByVal startDate As Nullable(Of Date), ByVal sampleHCAHPSUnit As Boolean, ByVal period As SamplePeriod, srvy As Survey, ByRef SystematicIncrement As Integer)
 
             Dim strtDate As Date
             Dim medRecalc As MedicareRecalcHistory
@@ -200,49 +236,79 @@ Partial Public Class SampleSet
                 strtDate = Date.Now
             End If
 
-            'Find the HCAHPS units
-            For Each unit As SampleSetUnit In sampleSetUnits.Values
-                'Modified 02-17-09 JJF - Fixed so it checks to see if the Survey is an HCAHPS survey as well as the unit itself
-                'If unit.SampUnit.IsHcahps Then
-                If unit.SampUnit.IsHcahps AndAlso unit.SampUnit.Survey.SurveyTypeName.StartsWith("HCAHPS") Then
-                    'Reset the update flag
-                    updateSPW = False
-                    If sampleHCAHPSUnit Then
-                        'Determine if we are in a period that starts at or after the switch date Q408 (10/01/2008)
-                        '  If not then we just leave things as they are
-                        If period.ExpectedStartDate.HasValue AndAlso period.ExpectedStartDate.Value >= Nrc.Framework.BusinessLogic.Configuration.AppConfig.Params("SwitchToPropSamplingDate").DateValue Then
-                            'We need to get the appropriate proportion calculation
-                            medRecalc = MedicareRecalcHistory.GetLatestBySampleDate(unit.SampUnit.Facility.MedicareNumber.MedicareNumber, strtDate)
 
-                            'Save the Medicare Recalc History ID used for this Sample Unit
-                            SampleSetProvider.Instance.InsertSampleSetMedicareCalcLookup(sampleSetId, unit.SampUnit.Id, medRecalc.MedicareReCalcLogId)
+            If srvy.IsSystematic Then 'OAS CAHPS block
+                Dim SystematicOutgoSet As Dictionary(Of Integer, Dictionary(Of String, Object)) = _
+                    SampleSetProvider.Instance.SelectSystematicSamplingOutgo(sampleSetId, srvy.Id, strtDate)
 
-                            'Determine the proportion to use
-                            If medRecalc.CensusForced Then
-                                proportion = 1
-                            Else
-                                proportion = medRecalc.ProportionCalcPct
-                            End If
+                If Not (SystematicOutgoSet Is Nothing) Then
+                    For Each unit As SampleSetUnit In sampleSetUnits.Values
+                        updateSPW = False
 
-                            'Let's get the quantity of eligible encounters for this unit
-                            eligibleEncounters = SampleSetProvider.Instance.SelectHCAHPSEligibleEncountersBySampleSetID(sampleSetId, unit.SampUnit.Id)
+                        If SystematicOutgoSet.ContainsKey(unit.SampUnit.Id) Then
+                            Dim eligibleCount As Integer = Integer.Parse(SystematicOutgoSet(unit.SampUnit.Id)("EligibleCount").ToString)
+                            Dim eligibleProportion As Double = Double.Parse(SystematicOutgoSet(unit.SampUnit.Id)("EligibleProportion").ToString)
+                            Dim outgoNeeded As Integer = Integer.Parse(SystematicOutgoSet(unit.SampUnit.Id)("OutgoNeeded").ToString)
 
-                            'Calculate the OutGoNeeded
-                            unit.OutGoNeeded = CInt(Decimal.Ceiling(eligibleEncounters * proportion))
+                            'This value is constant for all sample units (locations)
+                            SystematicIncrement = Integer.Parse(SystematicOutgoSet(unit.SampUnit.Id)("Increment").ToString)
+
+                            unit.OutGoNeeded = outgoNeeded
 
                             'Set the update flag
                             updateSPW = True
                         End If
-                    Else
-                        'We are not sampling the HCAHPS unit so set the outgo needed to zero
-                        unit.OutGoNeeded = 0
-                    End If
 
-                    'Update the SampleSetUnitTarget table
-                    SampleSetProvider.Instance.UpdateSampleSetUnitTarget(sampleSetId, unit.SampUnit.Id, unit.OutGoNeeded, updateSPW)
+                        'Update the SampleSetUnitTarget table
+                        SampleSetProvider.Instance.UpdateSampleSetUnitTarget(sampleSetId, unit.SampUnit.Id, unit.OutGoNeeded, updateSPW)
+                    Next
+                    'Calculate increment as Total Eligible Count DIV Total Outgo Needed (integer quotient)
+
                 End If
-            Next
+            Else
+                'Find the HCAHPS units
+                For Each unit As SampleSetUnit In sampleSetUnits.Values
+                    'Modified 02-17-09 JJF - Fixed so it checks to see if the Survey is an HCAHPS survey as well as the unit itself
+                    'If unit.SampUnit.IsHcahps Then
+                    If unit.SampUnit.IsHcahps AndAlso unit.SampUnit.Survey.SurveyTypeName.StartsWith("HCAHPS") Then
+                        'Reset the update flag
+                        updateSPW = False
+                        If sampleHCAHPSUnit Then
+                            'Determine if we are in a period that starts at or after the switch date Q408 (10/01/2008)
+                            '  If not then we just leave things as they are
+                            If period.ExpectedStartDate.HasValue AndAlso period.ExpectedStartDate.Value >= Nrc.Framework.BusinessLogic.Configuration.AppConfig.Params("SwitchToPropSamplingDate").DateValue Then
+                                'We need to get the appropriate proportion calculation
+                                medRecalc = MedicareRecalcHistory.GetLatestBySampleDate(unit.SampUnit.Facility.MedicareNumber.MedicareNumber, strtDate)
 
+                                'Save the Medicare Recalc History ID used for this Sample Unit
+                                SampleSetProvider.Instance.InsertSampleSetMedicareCalcLookup(sampleSetId, unit.SampUnit.Id, medRecalc.MedicareReCalcLogId)
+
+                                'Determine the proportion to use
+                                If medRecalc.CensusForced Then
+                                    proportion = 1
+                                Else
+                                    proportion = medRecalc.ProportionCalcPct
+                                End If
+
+                                'Let's get the quantity of eligible encounters for this unit
+                                eligibleEncounters = SampleSetProvider.Instance.SelectHCAHPSEligibleEncountersBySampleSetID(sampleSetId, unit.SampUnit.Id)
+
+                                'Calculate the OutGoNeeded
+                                unit.OutGoNeeded = CInt(Decimal.Ceiling(eligibleEncounters * proportion))
+
+                                'Set the update flag
+                                updateSPW = True
+                            End If
+                        Else
+                            'We are not sampling the HCAHPS unit so set the outgo needed to zero
+                            unit.OutGoNeeded = 0
+                        End If
+
+                        'Update the SampleSetUnitTarget table
+                        SampleSetProvider.Instance.UpdateSampleSetUnitTarget(sampleSetId, unit.SampUnit.Id, unit.OutGoNeeded, updateSPW)
+                    End If
+                Next
+            End If
         End Sub
 
         Private Shared Sub updateSamplePlanWorksheet(ByVal sampleSetId As Integer, ByVal samplesetUnits As Dictionary(Of Integer, SampleSetUnit))
@@ -342,7 +408,8 @@ Partial Public Class SampleSet
         ''' </summary>
         ''' <param name="rdr"></param>
         ''' <remarks></remarks>
-        Private Shared Sub ExecuteSample(ByVal rdr As SafeDataReader, ByVal sampleSetUnits As Dictionary(Of Integer, SampleSetUnit), ByVal encounterTableExists As Boolean, ByVal sampleSetId As Integer, ByVal srvy As Survey)
+        Private Shared Sub ExecuteSample(ByVal encounterUnitEligibility_s As EncounterUnitEligibilityCollection, _
+                                         ByVal sampleSetUnits As Dictionary(Of Integer, SampleSetUnit), ByVal encounterTableExists As Boolean, ByVal sampleSetId As Integer, ByVal srvy As Survey)
 
             Dim popID As Integer = 0
             Dim encID As Integer = 0
@@ -352,7 +419,7 @@ Partial Public Class SampleSet
             Dim HouseHoldingDQList As New Dictionary(Of Integer, Encounter)
 
             Try
-                While rdr.Read
+                For Each encounterUE As EncounterUnitEligibility In encounterUnitEligibility_s 'While rdr.Read
                     Dim nextPop As Boolean
                     Dim nextEnc As Boolean
 
@@ -361,9 +428,9 @@ Partial Public Class SampleSet
                     nextEnc = False
 
                     'Determine if this is the next pop or encounter
-                    nextPop = popID <> rdr.GetInteger("pop_id")
+                    nextPop = popID <> encounterUE.Pop_id 'rdr.GetInteger("pop_id")
                     If encounterTableExists Then
-                        nextEnc = encID <> rdr.GetInteger("enc_id")
+                        nextEnc = encID <> encounterUE.Id 'rdr.GetInteger("enc_id")
                     Else
                         'If no Encounter Table exists, then each now Pop is also a new Enc
                         nextEnc = nextPop
@@ -375,29 +442,29 @@ Partial Public Class SampleSet
 
                         'Create new Pop Record
                         popRecord = New Pop
-                        popRecord.ID = rdr.GetInteger("pop_id")
+                        popRecord.ID = encounterUE.Pop_id 'rdr.GetInteger("pop_id")
                         popRecord.StudyID = srvy.StudyId
-                        popRecord.BadAddress = rdr.GetBoolean("bitBadAddress")
-                        popRecord.BadPhone = rdr.GetBoolean("bitBadPhone")
-                        popRecord.HouseHoldId = rdr.GetNullableInteger("HouseHold_id")
+                        popRecord.BadAddress = encounterUE.BitBadAddress 'rdr.GetBoolean("bitBadAddress")
+                        popRecord.BadPhone = encounterUE.BitBadPhone 'rdr.GetBoolean("bitBadPhone")
+                        popRecord.HouseHoldId = encounterUE.HouseHold_id 'rdr.GetNullableInteger("HouseHold_id")
                     End If
 
                     If nextEnc Then
                         'Create New Enc Record
                         enc = New Encounter
                         enc.PopRecord = popRecord
-                        If encounterTableExists Then enc.ID = rdr.GetInteger("enc_id")
-                        enc.EncounterDate = rdr.GetNullableDate("EncDate")
-                        enc.ReportDate = rdr.GetNullableDate("ReportDate")
-                        enc.DQID = rdr.GetInteger("DQ_Bus_Rule")
+                        If encounterTableExists Then enc.ID = encounterUE.Id 'rdr.GetInteger("enc_id")
+                        enc.EncounterDate = encounterUE.EncDate 'rdr.GetNullableDate("EncDate")
+                        enc.ReportDate = encounterUE.ReportDate 'rdr.GetNullableDate("ReportDate")
+                        enc.DQID = encounterUE.DQ_Bus_Rule 'rdr.GetInteger("DQ_Bus_Rule")
                         popRecord.Encounters.Add(enc)
                     End If
 
                     'Add the encounterUnit records
                     encUnit = New EncounterUnit
-                    encUnit.SmpleSetUnit = sampleSetUnits.Item(rdr.GetInteger("SampleUnit_id"))
-                    If System.Enum.IsDefined(GetType(RemovedRule), rdr.GetInteger("Removed_Rule")) Then
-                        encUnit.RemovedCode = DirectCast(rdr.GetInteger("Removed_Rule"), RemovedRule)
+                    encUnit.SmpleSetUnit = sampleSetUnits.Item(encounterUE.Sampleunit_id) 'rdr.GetInteger("SampleUnit_id"))
+                    If System.Enum.IsDefined(GetType(RemovedRule), encounterUE.Removed_Rule) Then 'rdr.GetInteger("Removed_Rule")) Then
+                        encUnit.RemovedCode = DirectCast(encounterUE.Removed_Rule, RemovedRule) 'rdr.GetInteger("Removed_Rule"), RemovedRule)
                     End If
 
                     'Take action based on the removed rule value
@@ -423,10 +490,12 @@ Partial Public Class SampleSet
                     'The universe count includes everyone, even people who have been removed
                     encUnit.SmpleSetUnit.UniverseCount += 1
 
-                    popID = rdr.GetInteger("pop_id")
-                    encID = rdr.GetInteger("enc_id")
+                    popID = encounterUE.Pop_id 'rdr.GetInteger("pop_id")
+                    encID = encounterUE.Id 'rdr.GetInteger("enc_id")
 
-                End While
+                    'End While
+
+                Next 'For Each encounterUE In encounterUnitEligibility_s
 
                 If popRecord.ID <> 0 Then
                     'Sample the last individual
