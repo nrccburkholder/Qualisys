@@ -464,7 +464,7 @@ Public Class SampleSetProvider
             SampleSetProvider.Instance.InsertSamplingLog(sampleSetID, SP.SelectSystematicSamplingOutgo, String.Format("QCL_GetSystematicSamplingOutgo {0}, {1}, {2}", sampleSetID, surveyId, samplingDate))
         End If
 
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectSystematicSamplingOutgo, surveyId, samplingDate)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectSystematicSamplingOutgo, sampleSetID)
         Using rdr As New SafeDataReader(ExecuteReader(cmd))
             While rdr.Read
                 Dim innerList As New Dictionary(Of String, Object)
