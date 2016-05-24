@@ -8,3 +8,15 @@ Sprint 47 SQLCMD Script for Prime/Gator/NRC10
 
 :r "\ATLASRelease47&48\Sprint47_docs\S43_US8 Disposition Log Days.sql"
 
+--:r "\ATLASRelease47&48\Sprint47_docs\S47 ATL-157 Systematic Outgo and Proportion tables.sql"
+
+:r "\ATLASRelease47&48\Sprint47_docs\S47 ATL-225 Refactor Num Attempts in Catalyst ETL.sql"
+
+--:r "\ATLASRelease47&48\Sprint47_docs\S47 ATL-226 Personalization Code 31 Analysis.sql"
+
+--:r "\ATLASRelease47&48\Sprint47_docs\S47 ATL-242 DB stored procedures for OAS sampling.sql"
+
+:r "\ATLASRelease47&48\Sprint47_docs\S47 ATL-259 CSP_GetQuestionFormExtractData.sql"
+
+
+ 
