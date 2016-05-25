@@ -1,8 +1,8 @@
 /*
 
-Sprint 46 SQLCMD Script for catsql01-catdb2
+Sprint 47 SQLCMD Script for catsql01-catdb2
 
-\Sprint_docs\Sprint46_docs\S46_catsql01-catdb2.sql
+\Sprint_docs\Sprint47_docs\S47_catsql01-catdb2 - Rollback.sql
 
 */
 

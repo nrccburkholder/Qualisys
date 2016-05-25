@@ -2,7 +2,7 @@
 
 Sprint 49 SQLCMD Script for Prime/Gator/NRC10
 
-\Sprint_docs\Sprint49_docs\S49_PrimeGatorNRC10.sql
+\Sprint_docs\Sprint49_docs\S49_PrimeGatorNRC10 - Rollback.sql
 
 */
 
