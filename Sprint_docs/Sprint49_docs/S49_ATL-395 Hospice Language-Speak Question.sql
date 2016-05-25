@@ -131,7 +131,7 @@ INNER JOIN [dbo].[SURVEY_DEF] sd on sd.survey_id = sq.survey_id
 INNER JOIN [dbo].[MAILINGMETHODOLOGY] mm on (mm.SURVEY_ID = sq.SURVEY_ID)
 INNER JOIN [dbo].[StandardMethodology] sm ON (sm.StandardMethodologyID = mm.StandardMethodologyID)
 where sq.QSTNCORE = @OldQstnCore
---and sq.survey_id not in (17516) -- excluding this survey as per Rachel 12/21/2015
+and sq.survey_id not in (17458) -- excluding this survey as per Rachel 5/25/2016
 and sd.surveytype_id = @SurveyType_ID
 
 
