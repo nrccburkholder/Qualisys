@@ -6,7 +6,7 @@ Sprint 48 SQLCMD Script for Prime/Gator/NRC10
 
 */
 
-:r "\ATLASRelease47&48\Sprint49_docs\S49 ATL-395 Run Test Prints for Hospice QuestionCore change.sql"
+--:r "\ATLASRelease47&48\Sprint49_docs\S49 ATL-395 Run Test Prints for Hospice QuestionCore change.sql"
 
 :r "\ATLASRelease47&48\Sprint49_docs\S49 ATL-395 Update CompletenessCheck.sql"
 
