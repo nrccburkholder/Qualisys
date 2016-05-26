@@ -84,6 +84,7 @@
     <Compile Include="XmlExporters\XMLExporter_Hospice.cs" />
     <Compile Include="XmlExporters\XMLExporter_ICH.cs" />
     <Compile Include="XmlExporters\BaseXmlExporter.cs" />
+    <Compile Include="XmlExporters\XMLExporter_OAS.cs" />
     <Compile Include="XMLWriter.cs" />
   </ItemGroup>
   <ItemGroup>

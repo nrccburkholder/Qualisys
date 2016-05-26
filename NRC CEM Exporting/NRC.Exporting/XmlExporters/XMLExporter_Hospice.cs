@@ -65,7 +65,7 @@ namespace CEM.Exporting.XmlExporters
                     returnXMLdoc.Schemas.Add(schema);
                     returnXMLdoc.LoadXml(writer.XmlString);
 
-                    //returnXMLdoc.Validate();
+                    returnXMLdoc.Validate();
 
                     return returnXMLdoc;
                 }

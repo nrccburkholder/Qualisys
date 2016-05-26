@@ -15,6 +15,7 @@ namespace CEM.Exporting.Enums
         HospiceCAHPS = 11,
         CIHI = 12,
         PQRS = 13,
+        OAS = 16
 
     }
 }

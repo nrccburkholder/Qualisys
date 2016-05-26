@@ -239,6 +239,8 @@ namespace CEM.Exporting
                     return new XMLExporter_ICH();
                 case SurveyTypes.HospiceCAHPS:
                     return new XMLExporter_Hospice();
+                case SurveyTypes.OAS:
+                    return new XMLExporter_OAS();
                 default:
                     return null;
             }
