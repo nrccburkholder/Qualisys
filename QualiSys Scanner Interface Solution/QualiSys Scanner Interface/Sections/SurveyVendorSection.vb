@@ -231,10 +231,11 @@ Public Class SurveyVendorSection
 
     Private Sub PopulateVoviciSurveyList()
 
-        Dim surveys As New VoviciProjectData
-        surveys.Login()
+        Dim projectData As New VoviciProjectData
+        'TODO: Login based on vendorId: 3->US; 7->CA(nada)
+        projectData.Login()
         Dim pattern As String = AppConfig.Params("QSIVoviciSurveyPattern").StringValue
-        VendorSurveyBindingSource.DataSource = surveys.GetSurveyList(String.Format("Name Like '{0}'", pattern))
+        VendorSurveyBindingSource.DataSource = projectData.GetSurveyList(String.Format("Name Like '{0}'", pattern))
 
     End Sub
 
@@ -470,7 +471,8 @@ Public Class SurveyVendorSection
         Dim view As GridView = TryCast(sender, GridView)
         If view.FocusedColumn.FieldName = "VendorID" Then
             'if not vovici and survery name has a value, clear the value in the survey name
-            If CType(view.GetRowCellValue(view.FocusedRowHandle, colVendorID), Integer) <> AppConfig.Params("QSIVoviciVendorID").IntegerValue AndAlso _
+            If CType(view.GetRowCellValue(view.FocusedRowHandle, colVendorID), Integer) <> AppConfig.Params("QSIVerint-US-VendorID").IntegerValue AndAlso _
+               CType(view.GetRowCellValue(view.FocusedRowHandle, colVendorID), Integer) <> AppConfig.Params("QSIVerint-CA-VendorID").IntegerValue AndAlso _
                CType(view.GetRowCellValue(view.FocusedRowHandle, colVendorSurveyID), Integer) > 0 Then
                 view.SetRowCellValue(view.FocusedRowHandle, colVendorSurveyID, -1)
             End If
@@ -509,7 +511,8 @@ Public Class SurveyVendorSection
         End If
 
         'if vovici, allow them to enter a survey id
-        If CType(view.GetRowCellValue(view.FocusedRowHandle, colVendorID), Integer) = AppConfig.Params("QSIVoviciVendorID").IntegerValue AndAlso _
+        If (CType(view.GetRowCellValue(view.FocusedRowHandle, colVendorID), Integer) = AppConfig.Params("QSIVerint-US-VendorID").IntegerValue) Or _
+           (CType(view.GetRowCellValue(view.FocusedRowHandle, colVendorID), Integer) = AppConfig.Params("QSIVerint-CA-VendorID").IntegerValue) AndAlso _
            view.FocusedColumn.FieldName = "VendorSurveyID" Then
             view.ActiveEditor.Properties.ReadOnly = False
         End If

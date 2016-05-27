@@ -157,7 +157,8 @@ Public Class QSIVendorFileService
 
             'Determine if we have a vendor set
             If methStep.VendorID.HasValue AndAlso _
-               methStep.VendorID.Value <> AppConfig.Params("QSIVoviciVendorID").IntegerValue AndAlso _
+               methStep.VendorID.Value <> AppConfig.Params("QSIVerint-US-VendorID").IntegerValue AndAlso _
+               methStep.VendorID.Value <> AppConfig.Params("QSIVerint-CA-VendorID").IntegerValue AndAlso _
                methStep.VendorID.Value <> AppConfig.Params("QSIBedsideVendorID").IntegerValue Then
                 'Get the vendor
                 Dim vendor As Vendor = vendor.Get(methStep.VendorID.Value)

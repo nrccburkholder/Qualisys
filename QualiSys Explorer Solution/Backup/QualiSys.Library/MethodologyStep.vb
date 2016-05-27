@@ -888,7 +888,8 @@ Public Class MethodologyStep
     Private Function ValidateVendorSurveyID(ByVal target As Object, ByVal e As Validation.RuleArgs) As Boolean
 
         If VendorID.HasValue Then
-            If VendorID.Value = AppConfig.Params("QSIVoviciVendorID").IntegerValue AndAlso VendorSurveyID = -1 Then
+            If ((VendorID.Value = AppConfig.Params("QSIVerint-US-VendorID").IntegerValue) Or _
+                (VendorID.Value = AppConfig.Params("QSIVerint-CA-VendorID").IntegerValue)) AndAlso VendorSurveyID = -1 Then
                 e.Description = "Must select a survey for this vendor."
                 Return False
             End If

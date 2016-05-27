@@ -27,7 +27,8 @@ Public Class VoviciProjectData
     ''' <remarks></remarks>
     Public Sub Login()
 
-        mSvcProjectData.Login("nrcpickermdi", "nrcpicker1234")
+        'TODO: Login based on vendorId: 3->US; 7->CA(nada)
+        mSvcProjectData.Login("nrcpickermdi", "nrcpicker1234") 'M00se&Squ1rr3l'???
 
     End Sub
 
