@@ -231,12 +231,16 @@ Public Class SurveyVendorSection
 
     Private Sub PopulateVoviciSurveyList()
 
-        Dim projectData As New VoviciProjectData
-        'TODO: Login based on vendorId: 3->US; 7->CA(nada)
-        projectData.Login()
-        Dim pattern As String = AppConfig.Params("QSIVoviciSurveyPattern").StringValue
-        VendorSurveyBindingSource.DataSource = projectData.GetSurveyList(String.Format("Name Like '{0}'", pattern))
+        Dim vendorId As Integer = Integer.Parse(VendorBindingSource.Current.ToString)
 
+        Dim projectData As New VoviciProjectData
+        If VoviciProjectData.VerintProjectDataInstances.ContainsKey(vendorId) Then
+            projectData = VoviciProjectData.VerintProjectDataInstances(vendorId)
+
+            'projectData.Login()
+            Dim pattern As String = AppConfig.Params("QSIVoviciSurveyPattern").StringValue
+            VendorSurveyBindingSource.DataSource = projectData.GetSurveyList(String.Format("Name Like '{0}'", pattern))
+        End If
     End Sub
 
     ''' <summary>

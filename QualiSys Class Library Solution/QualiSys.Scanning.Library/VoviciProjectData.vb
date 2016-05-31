@@ -13,6 +13,9 @@ Public Class VoviciProjectData
 
     Private mSvcProjectData As ProjectData
 
+    Private _Login As String
+    Private _Password As String
+
     Public Sub New()
 
         mSvcProjectData = New ProjectData
@@ -21,14 +24,26 @@ Public Class VoviciProjectData
 
     End Sub
 
+
+    Public Sub New(ByVal login As String, ByVal password As String, ByVal url As String)
+
+        mSvcProjectData = New ProjectData
+        mSvcProjectData.Url = url '"https://efm.nrcsurveyor.net/ws/projectdata.asmx"
+        Me._Login = login
+        Me._Password = password
+        Dim cookies As CookieContainer = New CookieContainer
+        mSvcProjectData.CookieContainer = cookies
+
+    End Sub
+
+
     ''' <summary>
     ''' Logs into the Vovici projectdata web service.
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub Login()
 
-        'TODO: Login based on vendorId: 3->US; 7->CA(nada)
-        mSvcProjectData.Login("nrcpickermdi", "nrcpicker1234") 'M00se&Squ1rr3l'???
+        mSvcProjectData.Login(_Login, _Password)
 
     End Sub
 
@@ -291,5 +306,22 @@ Public Class VoviciProjectData
 
         Return mSvcProjectData.GetReportDataMap(projectID)
 
+    End Function
+
+    Public Shared Function VerintProjectDataInstances() As Dictionary(Of Integer, VoviciProjectData)
+        Dim IdVerintUS As Integer = AppConfig.Params("QSIVerint-US-VendorID").IntegerValue
+        Dim IdVerintCA As Integer = AppConfig.Params("QSIVerint-CA-VendorID").IntegerValue
+
+        Dim projData As New Dictionary(Of Integer, VoviciProjectData)
+        projData.Add(IdVerintUS, New VoviciProjectData(AppConfig.Params("VerintUserName-US").StringValue, AppConfig.Params("VerintPassword-US").StringValue, AppConfig.Params("VerintURL-US").StringValue))
+        projData(IdVerintUS).Login()
+
+        Dim Country As String = AppConfig.Params("Country").StringValue()
+        If Country = "CA" Then
+            projData.Add(IdVerintCA, New VoviciProjectData(AppConfig.Params("VerintUserName-CA").StringValue, AppConfig.Params("VerintPassword-CA").StringValue, AppConfig.Params("VerintURL-CA").StringValue))
+            projData(IdVerintCA).Login()
+        End If
+
+        Return projData
     End Function
 End Class

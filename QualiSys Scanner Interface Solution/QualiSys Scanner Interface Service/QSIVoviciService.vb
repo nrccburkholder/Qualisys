@@ -103,32 +103,36 @@ Public Class QSIVoviciService
 
     Private Sub CheckForOutboundWork()
 
-        Dim projectData As New VoviciProjectData
+        Dim IdVerintUS As Integer = AppConfig.Params("QSIVerint-US-VendorID").IntegerValue
+        Dim IdVerintCA As Integer = AppConfig.Params("QSIVerint-CA-VendorID").IntegerValue
+
+        Dim projectDataInstances As New Dictionary(Of Integer, VoviciProjectData)
+        projectDataInstances = VoviciProjectData.VerintProjectDataInstances
+
         Dim cultureCode As String
 
         Try
             'Get all approved (Status = 3) records from the Vendor File Creation Queue
             Dim files As VendorFileCreationQueueCollection = VendorFileCreationQueue.GetByVendorFileStatusId(VendorFileStatusCodes.Approved)
 
-            'TODO: Login based on vendorId: 3->US; 7->CA(nada)
             'Connect to Vovici
-            If files.Count > 0 Then projectData.Login()
+            'If files.Count > 0 Then projectData.Login()
             'This variable is going to be used to hide PII depending on if it is CA
             Dim Country As String = AppConfig.Params("Country").StringValue()
 
             For Each file As VendorFileCreationQueue In files
                 Dim methStep As MethodologyStep = MethodologyStep.Get(file.MailingStepId)
 
-                Dim supressPiiFromVovici As Boolean = (Country = "CA") AndAlso (methStep.VendorID.Value = AppConfig.Params("QSIVerint-US-VendorID").IntegerValue)
+                Dim supressPiiFromVovici As Boolean = (Country = "CA") AndAlso (methStep.VendorID.Value = IdVerintUS)
 
-                If (Country = "US") AndAlso (methStep.VendorID.Value = AppConfig.Params("QSIVerint-CA-VendorID").IntegerValue) Then
+                If (Country = "US") AndAlso (methStep.VendorID.Value = IdVerintCA) Then
                     Throw New Exception(String.Format("US Environment has attempted to use Verint-CA Instance!"))
                 End If
 
                 'Check to see if it is a Vovici web survey step
                 If (methStep.StepMethodId = MailingStepMethodCodes.Web OrElse methStep.StepMethodId = MailingStepMethodCodes.MailWeb OrElse methStep.StepMethodId = MailingStepMethodCodes.LetterWeb) AndAlso methStep.VendorID.HasValue Then
-                    If (methStep.VendorID.Value = AppConfig.Params("QSIVerint-US-VendorID").IntegerValue) Or
-                       (methStep.VendorID.Value = AppConfig.Params("QSIVerint-CA-VendorID").IntegerValue) Then
+                    If (methStep.VendorID.Value = IdVerintUS) Or
+                       (methStep.VendorID.Value = IdVerintCA) Then
 
                         Try
                             'Get the project ID (Vovici's internal survey ID)
@@ -167,7 +171,7 @@ Public Class QSIVoviciService
                                             End If
 
                                             Try
-                                                participantID = projectData.AddParticipantToSurvey(projectId, emailForVovici, participant.WAC, Nothing, Nothing, cultureCode)
+                                                participantID = projectDataInstances(methStep.VendorID.Value).AddParticipantToSurvey(projectId, emailForVovici, participant.WAC, Nothing, Nothing, cultureCode)
                                                 participant.ExternalRespondentID = participantID.ToString
                                             Catch ex1 As Exception
                                                 If ex1.Message.Contains(sMalformedEmailErrorMessage) Then
@@ -175,7 +179,7 @@ Public Class QSIVoviciService
                                                     errorList.Add(New TranslatorError(participant.Id, participant.Litho, ex1.Message))
 
                                                     emailForVovici = "noreply@nationalresearch.com"
-                                                    participantID = projectData.AddParticipantToSurvey(projectId, emailForVovici, participant.WAC, Nothing, Nothing, cultureCode)
+                                                    participantID = projectDataInstances(methStep.VendorID.Value).AddParticipantToSurvey(projectId, emailForVovici, participant.WAC, Nothing, Nothing, cultureCode)
                                                     participant.ExternalRespondentID = participantID.ToString
                                                 Else
                                                     Throw ex1
@@ -187,7 +191,7 @@ Public Class QSIVoviciService
                                         End If
 
                                         'Add responses to the hidden personalization questions for participant
-                                        projectData.AddHiddenQuestionDataToSurveyForParticipant(projectId, participantID, participant, supressPiiFromVovici)
+                                        projectDataInstances(methStep.VendorID.Value).AddHiddenQuestionDataToSurveyForParticipant(projectId, participantID, participant, supressPiiFromVovici)
 
 
                                         'Mark successful
@@ -244,6 +248,7 @@ Public Class QSIVoviciService
 
     Private Sub CheckVerintInstance(ByVal vendorId As Integer, ByVal endTime As DateTime)
         Dim projectData As New VoviciProjectData
+        projectData = VoviciProjectData.VerintProjectDataInstances(vendorId)
 
         Try
             'Get translator for Vovici
@@ -264,9 +269,8 @@ Public Class QSIVoviciService
             'Get temp work directory
             Dim tempPath As String = AppConfig.Params("QSITransferTempFolder").StringValue
 
-            'TODO: Login based on vendorId: 3->US; 7->CA(nada)
             'Connect to Vovici
-            projectData.Login()
+            'projectData.Login()
 
             'Get NRC Picker active survey list and process
             Dim pattern As String = AppConfig.Params("QSIVoviciSurveyPattern").StringValue
