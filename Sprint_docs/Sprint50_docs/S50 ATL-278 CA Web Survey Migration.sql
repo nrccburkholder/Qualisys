@@ -17,7 +17,11 @@ GO
 
 DELETE from DL_TranslationModules where vendor_id = 7
 
+GO
+
 DELETE from vendors where vendor_id = 7
+
+GO
 
 set IDENTITY_INSERT vendors ON
 
@@ -39,10 +43,6 @@ select * from DL_TranslationModules where vendor_id = 7
 select * from vendors where vendor_id = 7
 
 GO
-
-GO
-
-
 
 if not exists(select 1 from qualpro_params where strparam_nm = 'QSIVerint-US-VendorID')
 insert into qualpro_params (strparam_nm, strparam_type, strparam_grp, numparam_value, comments)
