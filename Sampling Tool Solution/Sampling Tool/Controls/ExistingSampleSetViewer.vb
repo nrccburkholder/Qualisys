@@ -1,5 +1,5 @@
 Imports System
-Imports Nrc.QualiSys.Library
+Imports Nrc.Qualisys.Library
 Imports Nrc.Framework.BusinessLogic.Configuration
 
 Public Class ExistingSampleSetViewer
@@ -172,7 +172,7 @@ Public Class ExistingSampleSetViewer
             Dim tbl As DataTable = srvy.GetExistingSampleSetData(Me.mSampleSetFilterStartDate.Value, Me.mSampleSetFilterEndDate.Value, showOnlyUnscheduled)
             Dim i As Integer = 0
             For Each row As DataRow In tbl.Rows
- 
+
 
                 Dim srvyName As String = String.Format("{0} ({1})", row("strSurvey_nm").ToString.Trim, row("Survey_id").ToString)
                 Dim periodName As String = row("strPeriodDef_nm").ToString
@@ -312,37 +312,41 @@ Public Class ExistingSampleSetViewer
         Try
             Me.Cursor = Cursors.WaitCursor
 
-            Dim srvy As Survey
-            Dim ss As SampleSet = SampleSet.GetSampleSet(CInt(SampleSetGridView.SelectedRows(0).Tag))
-            srvy = Survey.Get(ss.SurveyId)
+            Dim firstSampleSet As SampleSet = SampleSet.GetSampleSet(CInt(SampleSetGridView.SelectedRows(0).Tag))
+            Dim firstSurvey As Survey = Survey.Get(firstSampleSet.SurveyId)
 
-            Dim genDateDialog As New GenerationDateDialog
+            Dim dateConfirmationDialog As New GenerationDateDialog
+            dateConfirmationDialog.AffectsMultipleRows = SampleSetGridView.SelectedRows.Count > 1
 
-            Dim defaultScheduleDateByMonths As Integer = srvy.DefaultScheduleDateAdjustmentByMonths
+            Dim defaultAdjustment As Integer = firstSurvey.DefaultScheduleDateAdjustmentByMonths
 
-            If defaultScheduleDateByMonths <> 0 Then
-
-                'Dim dt As DateTime = Convert.ToDateTime(srvy.ActiveSamplePeriod.ExpectedStartDate.Value)
-                Dim dt As DateTime = Convert.ToDateTime(ss.DateRangeFrom.Value)
-                genDateDialog.SelectedDate = dt.AddMonths(defaultScheduleDateByMonths).AddDays(-1)
+            If defaultAdjustment <> 0 Then
+                Dim startDate As DateTime = Convert.ToDateTime(firstSampleSet.DateRangeFrom.Value)
+                dateConfirmationDialog.SelectedDate = startDate.AddMonths(defaultAdjustment).AddDays(-1)
             Else
-                genDateDialog.SelectedDate = Date.Today
+                dateConfirmationDialog.SelectedDate = Date.Today
             End If
 
-            If genDateDialog.ShowDialog = DialogResult.OK Then
-                Dim generationDate As Date = genDateDialog.SelectedDate
+            If dateConfirmationDialog.ShowDialog = DialogResult.OK Then
+                Dim generationDate As Date = dateConfirmationDialog.SelectedDate
 
                 For Each row As DataGridViewRow In SampleSetGridView.SelectedRows
                     Dim sampleSetId As Integer = CType(row.Tag, Integer)
-                    Dim sample As SampleSet = SampleSet.GetSampleSet(sampleSetId)
-                    If sample Is Nothing Then
-                        errMsg = String.Format("Sample set {0} for survey {1} has been deleted by someone else and will not be scheduled.", row.Cells(Me.SamplesetCreatedColumn.Index).Value.ToString, row.Cells(Me.SampleSetSurveyColumn.Index).Value.ToString)
+                    Dim theSampleSet As SampleSet = SampleSet.GetSampleSet(sampleSetId)
+                    If theSampleSet Is Nothing Then
+                        errMsg = String.Format("Sample set {0} for survey {1} has been deleted by someone else and will not be scheduled.",
+                                               row.Cells(Me.SamplesetCreatedColumn.Index).Value.ToString,
+                                               row.Cells(Me.SampleSetSurveyColumn.Index).Value.ToString)
                         MessageBox.Show(errMsg, "Deleted Sample", MessageBoxButtons.OK, MessageBoxIcon.Information)
                     Else
                         Try
-                            sample.ScheduleSampleSetGeneration(generationDate)
+                            theSampleSet.ScheduleSampleSetGeneration(generationDate)
                         Catch ex As Exception
-                            errMsg = String.Format("Sample set {0} for survey {1} could not be scheduled.  {2}{3}", sample.DateCreated.ToString, row.Cells(Me.SampleSetSurveyColumn.Index).Value.ToString, Environment.NewLine, ex.Message)
+                            errMsg = String.Format("Sample set {0} for survey {1} could not be scheduled.  {2}{3}",
+                                                   theSampleSet.DateCreated.ToString,
+                                                   row.Cells(Me.SampleSetSurveyColumn.Index).Value.ToString,
+                                                   Environment.NewLine,
+                                                   ex.Message)
                             MessageBox.Show(errMsg, "Scheduling Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
                         End Try
                     End If
