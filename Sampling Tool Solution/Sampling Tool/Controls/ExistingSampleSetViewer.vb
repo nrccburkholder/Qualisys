@@ -311,49 +311,61 @@ Public Class ExistingSampleSetViewer
         Dim errMsg As String = ""
         Try
             Me.Cursor = Cursors.WaitCursor
+            Dim affectsMultipleRows As Boolean = SampleSetGridView.SelectedRows.Count > 1
 
-            Dim firstSampleSet As SampleSet = SampleSet.GetSampleSet(CInt(SampleSetGridView.SelectedRows(0).Tag))
-            Dim firstSurvey As Survey = Survey.Get(firstSampleSet.SurveyId)
-
-            Dim dateConfirmationDialog As New GenerationDateDialog
-            dateConfirmationDialog.AffectsMultipleRows = SampleSetGridView.SelectedRows.Count > 1
-
-            Dim defaultAdjustment As Integer = firstSurvey.DefaultScheduleDateAdjustmentByMonths
-
-            If defaultAdjustment <> 0 Then
-                Dim startDate As DateTime = Convert.ToDateTime(firstSampleSet.DateRangeFrom.Value)
-                dateConfirmationDialog.SelectedDate = startDate.AddMonths(defaultAdjustment).AddDays(-1)
-            Else
-                dateConfirmationDialog.SelectedDate = Date.Today
+            ' warn the user when multiple rows are selected
+            If affectsMultipleRows AndAlso MessageBox.Show("Multiple sample set dates will be set.",
+                                                           "Multiple selection",
+                                                           MessageBoxButtons.OKCancel,
+                                                           MessageBoxIcon.Warning) <> DialogResult.OK Then
+                Return
             End If
 
-            If dateConfirmationDialog.ShowDialog = DialogResult.OK Then
-                Dim generationDate As Date = dateConfirmationDialog.SelectedDate
+            For Each row As DataGridViewRow In SampleSetGridView.SelectedRows
+                Dim sampleSetId As Integer = CType(row.Tag, Integer)
+                Dim theSampleSet As SampleSet = SampleSet.GetSampleSet(sampleSetId)
+                If theSampleSet Is Nothing Then
+                    errMsg = String.Format("Sample set {0} for survey {1} has been deleted by someone else and will not be scheduled.",
+                                           row.Cells(Me.SamplesetCreatedColumn.Index).Value.ToString,
+                                           row.Cells(Me.SampleSetSurveyColumn.Index).Value.ToString)
+                    MessageBox.Show(errMsg, "Deleted Sample", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    Return
+                End If
 
-                For Each row As DataGridViewRow In SampleSetGridView.SelectedRows
-                    Dim sampleSetId As Integer = CType(row.Tag, Integer)
-                    Dim theSampleSet As SampleSet = SampleSet.GetSampleSet(sampleSetId)
-                    If theSampleSet Is Nothing Then
-                        errMsg = String.Format("Sample set {0} for survey {1} has been deleted by someone else and will not be scheduled.",
-                                               row.Cells(Me.SamplesetCreatedColumn.Index).Value.ToString,
-                                               row.Cells(Me.SampleSetSurveyColumn.Index).Value.ToString)
-                        MessageBox.Show(errMsg, "Deleted Sample", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                    Else
-                        Try
-                            theSampleSet.ScheduleSampleSetGeneration(generationDate)
-                        Catch ex As Exception
-                            errMsg = String.Format("Sample set {0} for survey {1} could not be scheduled.  {2}{3}",
-                                                   theSampleSet.DateCreated.ToString,
-                                                   row.Cells(Me.SampleSetSurveyColumn.Index).Value.ToString,
-                                                   Environment.NewLine,
-                                                   ex.Message)
-                            MessageBox.Show(errMsg, "Scheduling Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                        End Try
+                Dim theSurvey As Survey = Survey.Get(theSampleSet.SurveyId)
+                Dim defaultAdjustment As Integer = theSurvey.DefaultScheduleDateAdjustmentByMonths
+                Dim generationDate As Date = Date.Today
+
+                If defaultAdjustment <> 0 Then
+                    Dim startDate As DateTime = Convert.ToDateTime(theSampleSet.DateRangeFrom.Value)
+                    generationDate = startDate.AddMonths(defaultAdjustment).AddDays(-1)
+                End If
+
+                ' only confirm the date when one row has been selected
+                If Not affectsMultipleRows Then
+                    Dim dateConfirmationDialog As New GenerationDateDialog
+                    dateConfirmationDialog.SelectedDate = generationDate
+
+                    If dateConfirmationDialog.ShowDialog <> DialogResult.OK Then
+                        Return
                     End If
-                Next
 
-                Me.PopulateSampleSets(mSurveys)
-            End If
+                    generationDate = dateConfirmationDialog.SelectedDate
+                End If
+
+                Try
+                    theSampleSet.ScheduleSampleSetGeneration(generationDate)
+                Catch ex As Exception
+                    errMsg = String.Format("Sample set {0} for survey {1} could not be scheduled.  {2}{3}",
+                                           theSampleSet.DateCreated.ToString,
+                                           row.Cells(Me.SampleSetSurveyColumn.Index).Value.ToString,
+                                           Environment.NewLine,
+                                           ex.Message)
+                    MessageBox.Show(errMsg, "Scheduling Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                End Try
+            Next
+
+            Me.PopulateSampleSets(mSurveys)
         Finally
             Me.Cursor = Me.DefaultCursor
         End Try
