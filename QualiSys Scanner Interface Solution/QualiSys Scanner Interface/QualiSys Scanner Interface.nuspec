@@ -3,7 +3,7 @@
   <metadata>
     <id>Qualisys.QualisysScannerInterface</id>
     <title>Qualisys Scanner Interface</title>
-    <version>1.13.0.0</version>
+    <version>1.13.1.0</version>
     <authors>NRC</authors>
     <description>GUI manager for non-mail survey results</description>
   </metadata>

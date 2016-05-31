@@ -485,7 +485,10 @@ Public Class QSIVoviciServiceTest
 
         CheckVerintInstance(AppConfig.Params("QSIVerint-US-VendorID").IntegerValue, endTime)
 
-        CheckVerintInstance(AppConfig.Params("QSIVerint-CA-VendorID").IntegerValue, endTime)
+        Dim Country As String = AppConfig.Params("Country").StringValue()
+        If Country = "CA" Then
+            CheckVerintInstance(AppConfig.Params("QSIVerint-CA-VendorID").IntegerValue, endTime)
+        End If
 
     End Sub
 
