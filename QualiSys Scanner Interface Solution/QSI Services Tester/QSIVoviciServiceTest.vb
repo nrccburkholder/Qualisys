@@ -191,18 +191,25 @@ Public Class QSIVoviciServiceTest
             'Get all approved (Status = 3) records from the Vendor File Creation Queue
             Dim files As VendorFileCreationQueueCollection = VendorFileCreationQueue.GetByVendorFileStatusId(VendorFileStatusCodes.Approved)
 
+            'TODO: Login based on vendorId: 3->US; 7->CA(nada)
             'Connect to Vovici
             If files.Count > 0 Then projectData.Login()
             'This variable is going to be used to hide PII depending on if it is CA
             Dim Country As String = AppConfig.Params("Country").StringValue()
-            Dim supressPiiFromVovici As Boolean = (Country = "CA")
 
             For Each file As VendorFileCreationQueue In files
                 Dim methStep As MethodologyStep = MethodologyStep.Get(file.MailingStepId)
 
+                Dim supressPiiFromVovici As Boolean = (Country = "CA") AndAlso (methStep.VendorID.Value = AppConfig.Params("QSIVerint-US-VendorID").IntegerValue)
+
+                If (Country = "US") AndAlso (methStep.VendorID.Value = AppConfig.Params("QSIVerint-CA-VendorID").IntegerValue) Then
+                    Throw New Exception(String.Format("US Environment has attempted to use Verint-CA Instance!"))
+                End If
+
                 'Check to see if it is a Vovici web survey step
                 If (methStep.StepMethodId = MailingStepMethodCodes.Web OrElse methStep.StepMethodId = MailingStepMethodCodes.MailWeb OrElse methStep.StepMethodId = MailingStepMethodCodes.LetterWeb) AndAlso methStep.VendorID.HasValue Then
-                    If methStep.VendorID.Value = AppConfig.Params("QSIVoviciVendorID").IntegerValue Then
+                    If (methStep.VendorID.Value = AppConfig.Params("QSIVerint-US-VendorID").IntegerValue) Or
+                       (methStep.VendorID.Value = AppConfig.Params("QSIVerint-CA-VendorID").IntegerValue) Then
 
                         Try
                             'Get the project ID (Vovici's internal survey ID)
@@ -314,18 +321,18 @@ Public Class QSIVoviciServiceTest
 
     End Sub
 
-    Private Sub CheckForInboundWork(ByVal endTime As DateTime)
+    Private Sub CheckVerintInstance(ByVal vendorId As Integer, ByVal endTime As DateTime)
 
-        'Display a message
         ServiceTextBox.Text = String.Format("CheckForInboundWork at: {0}{1}{2}", DateTime.Now.ToLongTimeString, vbCrLf, ServiceTextBox.Text)
 
         Dim projectData As New VoviciProjectData
 
         Try
             'Get translator for Vovici
-            Dim translatorMod As TranslationModule = TranslationModule.GetByVendorId(AppConfig.Params("QSIVoviciVendorID").IntegerValue).Item(0)
+            Dim translatorMod As TranslationModule = TranslationModule.GetByVendorId(vendorId).Item(0)
             If translatorMod Is Nothing Then
-                Throw New Exception(String.Format("No translation module set up for vendor Vovici ({0}).", AppConfig.Params("QSIVoviciVendorID").IntegerValue))
+                ServiceTextBox.Text = String.Format("No translation module set up for vendor Vovici ({0}).{1}{2}", vendorId.ToString, vbCrLf, ServiceTextBox.Text)
+                Return
             End If
 
             'Make sure the folders exists
@@ -339,6 +346,7 @@ Public Class QSIVoviciServiceTest
             'Get temp work directory
             Dim tempPath As String = AppConfig.Params("QSITransferTempFolder").StringValue
 
+            'TODO: Login based on vendorId: 3->US; 7->CA(nada)
             'Connect to Vovici
             projectData.Login()
 
@@ -470,6 +478,14 @@ Public Class QSIVoviciServiceTest
             'Send the notification
             LogEvent(Translator.SendNotification("QSI Vovici Service", "Error encountered, unable to check for inbound work", ex, False), EventLogEntryType.Error)
         End Try
+
+    End Sub
+
+    Private Sub CheckForInboundWork(ByVal endTime As DateTime)
+
+        CheckVerintInstance(AppConfig.Params("QSIVerint-US-VendorID").IntegerValue, endTime)
+
+        CheckVerintInstance(AppConfig.Params("QSIVerint-CA-VendorID").IntegerValue, endTime)
 
     End Sub
 
