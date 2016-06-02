@@ -231,6 +231,7 @@ Public Class SurveyVendorSection
 
     Private Sub PopulateVoviciSurveyList()
 
+        VendorSurveyBindingSource.DataSource = Nothing
         Dim vendorId As Integer = Integer.Parse(VendorBindingSource.Current.ToString)
 
         Dim projectData As New VoviciProjectData
@@ -475,6 +476,7 @@ Public Class SurveyVendorSection
         Dim view As GridView = TryCast(sender, GridView)
         If view.FocusedColumn.FieldName = "VendorID" Then
             'if not vovici and survery name has a value, clear the value in the survey name
+            PopulateVoviciSurveyList()
             If CType(view.GetRowCellValue(view.FocusedRowHandle, colVendorID), Integer) <> AppConfig.Params("QSIVerint-US-VendorID").IntegerValue AndAlso _
                CType(view.GetRowCellValue(view.FocusedRowHandle, colVendorID), Integer) <> AppConfig.Params("QSIVerint-CA-VendorID").IntegerValue AndAlso _
                CType(view.GetRowCellValue(view.FocusedRowHandle, colVendorSurveyID), Integer) > 0 Then
@@ -515,8 +517,8 @@ Public Class SurveyVendorSection
         End If
 
         'if vovici, allow them to enter a survey id
-        If (CType(view.GetRowCellValue(view.FocusedRowHandle, colVendorID), Integer) = AppConfig.Params("QSIVerint-US-VendorID").IntegerValue) Or _
-           (CType(view.GetRowCellValue(view.FocusedRowHandle, colVendorID), Integer) = AppConfig.Params("QSIVerint-CA-VendorID").IntegerValue) AndAlso _
+        If ((CType(view.GetRowCellValue(view.FocusedRowHandle, colVendorID), Integer) = AppConfig.Params("QSIVerint-US-VendorID").IntegerValue) Or _
+           (CType(view.GetRowCellValue(view.FocusedRowHandle, colVendorID), Integer) = AppConfig.Params("QSIVerint-CA-VendorID").IntegerValue)) AndAlso _
            view.FocusedColumn.FieldName = "VendorSurveyID" Then
             view.ActiveEditor.Properties.ReadOnly = False
         End If
