@@ -108,10 +108,9 @@ Public Class SurveyVendorSection
         PopulateLanguage()
         PopulateVendors()
         PopulateEmailBlastOptions()
-        If VendorSurveyBindingSource.List.Count <= 0 Then
-            PopulateVoviciSurveyList()
-        End If
-        PopulateMethology()
+        'If VendorSurveyBindingSource.List.Count <= 0 Then
+        'End If
+        PopulateMethodology()
         SetMethToolbar()
         Windows.Forms.Cursor.Current = Cursors.Default
 
@@ -129,7 +128,7 @@ Public Class SurveyVendorSection
 
 #Region "Private Methods - Methodology"
 
-    Private Sub PopulateMethology()
+    Private Sub PopulateMethodology()
 
         'Populate the methology grid
         mLoading = True
@@ -140,6 +139,8 @@ Public Class SurveyVendorSection
         MethGridView.MoveLast()
         MethGridView.MakeRowVisible(MethGridView.FocusedRowHandle, False)
         PopulateMethSteps()
+
+        PopulateVoviciSurveyList()
         SetMethToolbar()
 
     End Sub
@@ -226,13 +227,25 @@ Public Class SurveyVendorSection
 
         Dim vendors As VendorCollection = Vendor.GetAll
         VendorBindingSource.DataSource = vendors
+        VendorBindingSource.MoveLast() 'sets VendorBindingSource.Current to VendorBindingSource.Count which acts as default/unselected CJB 6/3/2016
 
     End Sub
 
     Private Sub PopulateVoviciSurveyList()
 
         VendorSurveyBindingSource.DataSource = Nothing
-        Dim vendorId As Integer = Integer.Parse(VendorBindingSource.Current.ToString)
+
+        Dim vendorId As Integer
+        vendorId = Integer.Parse(VendorBindingSource.Current.ToString)
+
+        If vendorId = VendorBindingSource.Count Then 'if VendorBindingSource.Current = VendorBindingSource.Count then this is default/unselected CJB 6/3/2016
+            Dim methStep As MethodologyStep = DirectCast(MethStepBindingSource.Current, MethodologyStep) 'try to get stored vendor_id 
+            If Not methStep Is Nothing Then
+                If methStep.VendorID.HasValue Then
+                    vendorId = methStep.VendorID.Value
+                End If
+            End If
+        End If
 
         Dim projectData As New VoviciProjectData
         If VoviciProjectData.VerintProjectDataInstances.ContainsKey(vendorId) Then
@@ -270,7 +283,7 @@ Public Class SurveyVendorSection
     End Function
 
 #End Region
- 
+
 #Region "Private Methods - Methodology Step Properties"
 
     Private Sub DisplayMethStepProps(ByVal methStep As MethodologyStep)
@@ -618,7 +631,7 @@ Public Class SurveyVendorSection
             If meth.IsDirty Or meth.IsNew Then meth.UpdateVendor()
         Next
 
-        PopulateMethology()
+        PopulateMethodology()
 
         Windows.Forms.Cursor.Current = Cursors.Default
 
@@ -627,7 +640,7 @@ Public Class SurveyVendorSection
     Private Sub CancelButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CancelButton.Click
 
         Windows.Forms.Cursor.Current = Cursors.WaitCursor
-        PopulateMethology()
+        PopulateMethodology()
         Windows.Forms.Cursor.Current = Cursors.Default
 
     End Sub
