@@ -111,7 +111,7 @@ Public Class SurveyVendorSection
         'If VendorSurveyBindingSource.List.Count <= 0 Then
         'End If
         PopulateMethodology()
-        SetMethToolbar()
+        'SetMethToolbar()
         Windows.Forms.Cursor.Current = Cursors.Default
 
     End Sub
@@ -255,6 +255,9 @@ Public Class SurveyVendorSection
             Dim pattern As String = AppConfig.Params("QSIVoviciSurveyPattern").StringValue
             VendorSurveyBindingSource.DataSource = projectData.GetSurveyList(String.Format("Name Like '{0}'", pattern))
         End If
+
+        MethStepGridView.RefreshData()
+
     End Sub
 
     ''' <summary>
@@ -475,6 +478,7 @@ Public Class SurveyVendorSection
 
         If Not mLoading Then
             PopulateMethSteps()
+            PopulateVoviciSurveyList()
             SetMethToolbar()
         End If
 
