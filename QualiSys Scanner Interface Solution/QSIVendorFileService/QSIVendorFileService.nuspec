@@ -3,7 +3,7 @@
   <metadata>
     <id>Qualisys.QSIVendorFileService</id>
     <title>QSI Vendor File Service</title>
-    <version>2.2.0</version>
+    <version>2.2.1</version>
     <authors>NRC</authors>
     <description>This service submits and recieves files from Telematch and sends them to the Vendor</description>
   </metadata>
