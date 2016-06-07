@@ -293,7 +293,11 @@ Public Class QSIVoviciServiceTest
 
 
                             If errorList.Count > 0 Then
-                                Throw New InvalidFileException(String.Format("Process error(s) occurred, ({0}) records out of ({1}) did not process.  Will retry on next pass!", errorList.Count.ToString, participants.Count.ToString), file.ArchiveFileName, errorList)
+                                Dim errCount As Integer = errorList.Count
+                                If errCount > 2500 Then
+                                    errorList.RemoveRange(2500, errCount - 2500)
+                                End If
+                                Throw New InvalidFileException(String.Format("Process error(s) occurred, ({0}) records out of ({1}) did not process.  Will retry on next pass!", errCount.ToString, participants.Count.ToString), file.ArchiveFileName, errorList)
                             End If
 
                         Catch ex As Exception
