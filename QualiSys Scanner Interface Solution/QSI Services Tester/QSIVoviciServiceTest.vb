@@ -186,8 +186,8 @@ Public Class QSIVoviciServiceTest
         Dim IdVerintUS As Integer = AppConfig.Params("QSIVerint-US-VendorID").IntegerValue
         Dim IdVerintCA As Integer = AppConfig.Params("QSIVerint-CA-VendorID").IntegerValue
 
-        Dim projectDataInstances As New Dictionary(Of Integer, VoviciProjectData)
-        projectDataInstances = VoviciProjectData.VerintProjectDataInstances
+        'Dim projectDataInstances As New Dictionary(Of Integer, VoviciProjectData)
+        'projectDataInstances = VoviciProjectData.VerintProjectDataInstances
 
         Dim Country As String = AppConfig.Params("Country").StringValue()
 
@@ -248,7 +248,7 @@ Public Class QSIVoviciServiceTest
                                             End If
 
                                             Try
-                                                participantID = projectDataInstances(methStep.VendorID.Value).AddParticipantToSurvey(projectId, emailForVovici, participant.WAC, Nothing, Nothing, cultureCode)
+                                                participantID = VoviciProjectData.VerintProjectDataInstances(methStep.VendorID.Value).AddParticipantToSurvey(projectId, emailForVovici, participant.WAC, Nothing, Nothing, cultureCode)
                                                 participant.ExternalRespondentID = participantID.ToString
                                             Catch ex1 As Exception
                                                 If ex1.Message.Contains(sMalformedEmailErrorMessage) Then
@@ -256,7 +256,7 @@ Public Class QSIVoviciServiceTest
                                                     errorList.Add(New TranslatorError(participant.Id, participant.Litho, ex1.Message))
 
                                                     emailForVovici = "noreply@nationalresearch.com"
-                                                    participantID = projectDataInstances(methStep.VendorID.Value).AddParticipantToSurvey(projectId, emailForVovici, participant.WAC, Nothing, Nothing, cultureCode)
+                                                    participantID = VoviciProjectData.VerintProjectDataInstances(methStep.VendorID.Value).AddParticipantToSurvey(projectId, emailForVovici, participant.WAC, Nothing, Nothing, cultureCode)
                                                     participant.ExternalRespondentID = participantID.ToString
                                                 Else
                                                     Throw ex1
@@ -268,7 +268,7 @@ Public Class QSIVoviciServiceTest
                                         End If
 
                                         'Add responses to the hidden personalization questions for participant
-                                        projectDataInstances(methStep.VendorID.Value).AddHiddenQuestionDataToSurveyForParticipant(projectId, participantID, participant, supressPiiFromVovici)
+                                        VoviciProjectData.VerintProjectDataInstances(methStep.VendorID.Value).AddHiddenQuestionDataToSurveyForParticipant(projectId, participantID, participant, supressPiiFromVovici)
 
 
                                         'Mark successful
@@ -288,7 +288,7 @@ Public Class QSIVoviciServiceTest
 
                             If Not bIsOtherError Then
                                 'All participants were successfully added to Vovici, mark file as sent.
-                                file.VendorFileStatusId = 5
+                                file.VendorFileStatusId = VendorFileStatusCodes.Sent
                             End If
 
 
