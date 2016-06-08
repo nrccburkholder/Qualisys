@@ -17,7 +17,11 @@ GO
 
 DELETE from DL_TranslationModules where vendor_id = 7
 
+GO
+
 DELETE from vendors where vendor_id = 7
+
+GO
 
 set IDENTITY_INSERT vendors ON
 
@@ -40,8 +44,6 @@ select * from vendors where vendor_id = 7
 
 GO
 
-GO
-
 if not exists(select 1 from qualpro_params where strparam_nm = 'QSIVerint-US-VendorID')
 insert into qualpro_params (strparam_nm, strparam_type, strparam_grp, numparam_value, comments)
 select 'QSIVerint-US-VendorID', StrParam_Type, StrParam_Grp, NumParam_value, 'Specifies the VendorID to be used when referencing Verint-US'
@@ -56,6 +58,30 @@ update qualpro_params set Comments = 'Deprecated: Vovici -> Verint US / CA'
 --select * from qualpro_params
 where strparam_nm = 'QSIVoviciVendorID'
 and comments <> 'Deprecated: Vovici -> Verint US / CA'
+
+if not exists(select 1 from qualpro_params where strparam_nm = 'VerintUserName-US')
+insert into QualPro_Params (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, COMMENTS)
+values ('VerintUserName-US','S','ScannerInterface','nrcpickermdi','The Vovici/Verint User Name for the US')
+
+if not exists(select 1 from qualpro_params where strparam_nm = 'VerintPassword-US')
+insert into QualPro_Params (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, COMMENTS)
+values ('VerintPassword-US','S','ScannerInterface','nrcpicker1234','The Vovici/Verint Password for the US')
+
+if not exists(select 1 from qualpro_params where strparam_nm = 'VerintURL-US')
+insert into QualPro_Params (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, COMMENTS)
+values ('VerintURL-US','S','ScannerInterface','https://efm.nrcsurveyor.net/ws/projectdata.asmx','The Vovici/Verint URL for the US')
+
+if not exists(select 1 from qualpro_params where strparam_nm = 'VerintUserName-CA')
+insert into QualPro_Params (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, COMMENTS)
+values ('VerintUserName-CA','S','ScannerInterface','NRCCService','The Vovici/Verint User Name for Canada')
+
+if not exists(select 1 from qualpro_params where strparam_nm = 'VerintPassword-CA')
+insert into QualPro_Params (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, COMMENTS)
+values ('VerintPassword-CA','S','ScannerInterface','M00se&Squ1rr3L','The Vovici/Verint Password for Canada')
+
+if not exists(select 1 from qualpro_params where strparam_nm = 'VerintURL-CA')
+insert into QualPro_Params (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, COMMENTS)
+values ('VerintURL-CA','S','ScannerInterface','http://efm.nrcsurveyorcan.net/ws/projectdata.asmx','The Vovici/Verint URL for Canada')
 
 select vendor_id, count(*) from MailingStep 
 group by vendor_id

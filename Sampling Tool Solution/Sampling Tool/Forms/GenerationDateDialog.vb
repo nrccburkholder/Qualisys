@@ -7,7 +7,6 @@ Public Class GenerationDateDialog
 
 #Region " Private Members "
     Private Const GENERATION_FUTURE_DAYS_WARNING As Integer = 5
-    Private mAffectsMultipleRows As Boolean = False
 #End Region
 
 #Region " Public Properties "
@@ -22,24 +21,12 @@ Public Class GenerationDateDialog
             Me.GenerationDate.Value = value
         End Set
     End Property
-
-    Public Property AffectsMultipleRows() As Boolean
-        Get
-            Return Me.mAffectsMultipleRows
-        End Get
-        Set(value As Boolean)
-            Me.mAffectsMultipleRows = value
-        End Set
-    End Property
 #End Region
 
 #Region " Private Methods "
 
 #Region " Control Event Handlers "
     Private Sub GenerationDateDialog_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        If Me.AffectsMultipleRows Then
-            Me.ShowWarning("Multiple sample sets will be set to this date.")
-        End If
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click

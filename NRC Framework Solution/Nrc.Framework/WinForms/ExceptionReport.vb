@@ -139,7 +139,7 @@ Namespace WinForms
         Sub New(ByVal ex As Exception)
 
             mException = ex
-            mSMTPServer = "smtp2.nationalresearch.com"
+            mSMTPServer = "smtp2"
 
         End Sub
 

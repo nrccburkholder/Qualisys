@@ -108,11 +108,10 @@ Public Class SurveyVendorSection
         PopulateLanguage()
         PopulateVendors()
         PopulateEmailBlastOptions()
-        If VendorSurveyBindingSource.List.Count <= 0 Then
-            PopulateVoviciSurveyList()
-        End If
-        PopulateMethology()
-        SetMethToolbar()
+        'If VendorSurveyBindingSource.List.Count <= 0 Then
+        'End If
+        PopulateMethodology()
+        'SetMethToolbar()
         Windows.Forms.Cursor.Current = Cursors.Default
 
     End Sub
@@ -129,7 +128,7 @@ Public Class SurveyVendorSection
 
 #Region "Private Methods - Methodology"
 
-    Private Sub PopulateMethology()
+    Private Sub PopulateMethodology()
 
         'Populate the methology grid
         mLoading = True
@@ -140,6 +139,8 @@ Public Class SurveyVendorSection
         MethGridView.MoveLast()
         MethGridView.MakeRowVisible(MethGridView.FocusedRowHandle, False)
         PopulateMethSteps()
+
+        PopulateVoviciSurveyList()
         SetMethToolbar()
 
     End Sub
@@ -226,16 +227,36 @@ Public Class SurveyVendorSection
 
         Dim vendors As VendorCollection = Vendor.GetAll
         VendorBindingSource.DataSource = vendors
+        VendorBindingSource.MoveLast() 'sets VendorBindingSource.Current to VendorBindingSource.Count which acts as default/unselected CJB 6/3/2016
 
     End Sub
 
     Private Sub PopulateVoviciSurveyList()
 
+        VendorSurveyBindingSource.DataSource = Nothing
+
+        Dim vendorId As Integer
+        vendorId = Integer.Parse(VendorBindingSource.Current.ToString)
+
+        If vendorId = VendorBindingSource.Count Then 'if VendorBindingSource.Current = VendorBindingSource.Count then this is default/unselected CJB 6/3/2016
+            Dim methStep As MethodologyStep = DirectCast(MethStepBindingSource.Current, MethodologyStep) 'try to get stored vendor_id 
+            If Not methStep Is Nothing Then
+                If methStep.VendorID.HasValue Then
+                    vendorId = methStep.VendorID.Value
+                End If
+            End If
+        End If
+
         Dim projectData As New VoviciProjectData
-        'TODO: Login based on vendorId: 3->US; 7->CA(nada)
-        projectData.Login()
-        Dim pattern As String = AppConfig.Params("QSIVoviciSurveyPattern").StringValue
-        VendorSurveyBindingSource.DataSource = projectData.GetSurveyList(String.Format("Name Like '{0}'", pattern))
+        If VoviciProjectData.VerintProjectDataInstances.ContainsKey(vendorId) Then
+            projectData = VoviciProjectData.VerintProjectDataInstances(vendorId)
+
+            'projectData.Login()
+            Dim pattern As String = AppConfig.Params("QSIVoviciSurveyPattern").StringValue
+            VendorSurveyBindingSource.DataSource = projectData.GetSurveyList(String.Format("Name Like '{0}'", pattern))
+        End If
+
+        MethStepGridView.RefreshData()
 
     End Sub
 
@@ -265,7 +286,7 @@ Public Class SurveyVendorSection
     End Function
 
 #End Region
- 
+
 #Region "Private Methods - Methodology Step Properties"
 
     Private Sub DisplayMethStepProps(ByVal methStep As MethodologyStep)
@@ -457,6 +478,7 @@ Public Class SurveyVendorSection
 
         If Not mLoading Then
             PopulateMethSteps()
+            PopulateVoviciSurveyList()
             SetMethToolbar()
         End If
 
@@ -471,6 +493,7 @@ Public Class SurveyVendorSection
         Dim view As GridView = TryCast(sender, GridView)
         If view.FocusedColumn.FieldName = "VendorID" Then
             'if not vovici and survery name has a value, clear the value in the survey name
+            PopulateVoviciSurveyList()
             If CType(view.GetRowCellValue(view.FocusedRowHandle, colVendorID), Integer) <> AppConfig.Params("QSIVerint-US-VendorID").IntegerValue AndAlso _
                CType(view.GetRowCellValue(view.FocusedRowHandle, colVendorID), Integer) <> AppConfig.Params("QSIVerint-CA-VendorID").IntegerValue AndAlso _
                CType(view.GetRowCellValue(view.FocusedRowHandle, colVendorSurveyID), Integer) > 0 Then
@@ -511,8 +534,8 @@ Public Class SurveyVendorSection
         End If
 
         'if vovici, allow them to enter a survey id
-        If (CType(view.GetRowCellValue(view.FocusedRowHandle, colVendorID), Integer) = AppConfig.Params("QSIVerint-US-VendorID").IntegerValue) Or _
-           (CType(view.GetRowCellValue(view.FocusedRowHandle, colVendorID), Integer) = AppConfig.Params("QSIVerint-CA-VendorID").IntegerValue) AndAlso _
+        If ((CType(view.GetRowCellValue(view.FocusedRowHandle, colVendorID), Integer) = AppConfig.Params("QSIVerint-US-VendorID").IntegerValue) Or _
+           (CType(view.GetRowCellValue(view.FocusedRowHandle, colVendorID), Integer) = AppConfig.Params("QSIVerint-CA-VendorID").IntegerValue)) AndAlso _
            view.FocusedColumn.FieldName = "VendorSurveyID" Then
             view.ActiveEditor.Properties.ReadOnly = False
         End If
@@ -612,7 +635,7 @@ Public Class SurveyVendorSection
             If meth.IsDirty Or meth.IsNew Then meth.UpdateVendor()
         Next
 
-        PopulateMethology()
+        PopulateMethodology()
 
         Windows.Forms.Cursor.Current = Cursors.Default
 
@@ -621,7 +644,7 @@ Public Class SurveyVendorSection
     Private Sub CancelButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CancelButton.Click
 
         Windows.Forms.Cursor.Current = Cursors.WaitCursor
-        PopulateMethology()
+        PopulateMethodology()
         Windows.Forms.Cursor.Current = Cursors.Default
 
     End Sub
