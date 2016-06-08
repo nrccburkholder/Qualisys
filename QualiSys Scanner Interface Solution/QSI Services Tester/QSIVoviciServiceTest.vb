@@ -301,7 +301,11 @@ Public Class QSIVoviciServiceTest
                             End If
 
                         Catch ex As Exception
-                            LogEvent(Translator.SendNotification(QSIServiceNames.QSIVoviciService, "Exception Encountered While Attempting to Process File!", ex, False), EventLogEntryType.Error)
+                            Try
+                                LogEvent(Translator.SendNotification(QSIServiceNames.QSIVoviciService, "Exception Encountered While Attempting to Process File!", ex, False), EventLogEntryType.Error)
+                            Catch ex1 As Exception
+                                'The Notification most likely got sent but we don't want an unhandled exception to be thrown here
+                            End Try
 
                         End Try
                     End If
