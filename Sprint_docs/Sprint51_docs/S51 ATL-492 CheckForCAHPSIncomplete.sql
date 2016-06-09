@@ -14,6 +14,13 @@ ALTER PROCEDURE dbo.CheckForCAHPSIncompletes
 */
 use qp_prod
 go
+-- There is one known Hospice CAHPS return from production that brought this situation to light. So we'll re-queue it when we release this to production.
+if exists (select * from qualpro_params where STRPARAM_NM ='EnvName' and strParam_value in ('STAGING','PRODUCTION'))
+	update questionform 
+	set datreturned=datreturned
+	where samplepop_id=134293485 
+	and datreturned is not null
+go
 ALTER PROCEDURE [dbo].[CheckForCAHPSIncompletes]
 AS
 -- =============================================
