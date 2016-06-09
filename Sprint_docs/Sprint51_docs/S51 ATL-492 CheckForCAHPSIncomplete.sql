@@ -564,15 +564,15 @@ AND ACODisposition = 34
 			set bitComplete=case when ATACnt>=19 then 1 else 0 end
 			from #TodaysReturns tr
 			inner join (select qr.QuestionForm_id, count(distinct sq.qstncore) as ATACnt
-						from (	select rc.QuestionForm_id, rc.survey_id, qr.qstncore, qr.intResponseVal
+						from (	select rc.QuestionForm_id, rc.survey_id, rc.sampleset_id, qr.qstncore, qr.intResponseVal
 								from #qfResponseCount rc
 								inner join questionresult qr on rc.QuestionForm_id=qr.QuestionForm_id
 								union
-								select rc.QuestionForm_id, rc.survey_id, qr2.qstncore, qr2.intResponseVal
+								select rc.QuestionForm_id, rc.survey_id, rc.sampleset_id, qr2.qstncore, qr2.intResponseVal
 								from #qfResponseCount rc
 								inner join questionresult2 qr2 on rc.QuestionForm_id=qr2.QuestionForm_id) qr
-						inner join sel_qstns sq on qr.survey_id = sq.survey_id and qr.qstncore = sq.qstncore 
-						inner join sel_scls ss on sq.scaleid = ss.qpc_id AND sq.survey_id = ss.survey_id and qr.intresponseval = ss.val
+						inner join DL_SEL_QSTNS_BySampleSet sq on qr.survey_id = sq.survey_id and qr.qstncore = sq.qstncore and qr.sampleset_id=sq.SampleSet_ID
+						inner join DL_SEL_SCLS_BySampleSet ss on sq.scaleid = ss.qpc_id AND sq.survey_id = ss.survey_id and qr.intresponseval = ss.val and sq.SampleSet_ID=ss.Sampleset_ID
 						where sq.qstncore in (51198,51199,47159,47160,47161,47162,47163,47164,47165,47166,47167,47168,47169,47170,47171,47172,47173,47174,47175,
 											  47176,47178,47179,47181,47182,47183,47184,47185,47186,47187,47188,47189,47190,47191,47192,47193,47195,47196,47197)
 						and sq.subtype = 1 
@@ -589,15 +589,15 @@ AND ACODisposition = 34
 			set bitComplete=case when ATACnt>9 then 1 else 0 end
 			from #TodaysReturns tr
 			inner join (select qr.QuestionForm_id, count(distinct sq.qstncore) as ATACnt
-						from (	select rc.QuestionForm_id, rc.survey_id, qr.qstncore, qr.intResponseVal
+						from (	select rc.QuestionForm_id, rc.survey_id, rc.sampleset_id, qr.qstncore, qr.intResponseVal
 								from #qfResponseCount rc
 								inner join questionresult qr on rc.QuestionForm_id=qr.QuestionForm_id
 								union
-								select rc.QuestionForm_id, rc.survey_id, qr2.qstncore, qr2.intResponseVal
+								select rc.QuestionForm_id, rc.survey_id, rc.sampleset_id, qr2.qstncore, qr2.intResponseVal
 								from #qfResponseCount rc
 								inner join questionresult2 qr2 on rc.QuestionForm_id=qr2.QuestionForm_id) qr
-						inner join sel_qstns sq on qr.survey_id = sq.survey_id and qr.qstncore = sq.qstncore 
-						inner join sel_scls ss on sq.scaleid = ss.qpc_id AND sq.survey_id = ss.survey_id and qr.intresponseval = ss.val
+						inner join DL_SEL_QSTNS_BySampleSet sq on qr.survey_id = sq.survey_id and qr.qstncore = sq.qstncore and qr.sampleset_id=sq.SampleSet_ID
+						inner join DL_SEL_SCLS_BySampleSet ss on sq.scaleid = ss.qpc_id AND sq.survey_id = ss.survey_id and qr.intresponseval = ss.val and sq.SampleSet_ID=ss.Sampleset_ID
 						where sq.qstncore in (38694,38695,38696,38697,38698,38699,38700,38701,38702,38703,38704,38708,38709,38710,38711,38712,38713,38714,38717,38718)
 						and sq.subtype = 1 
 						AND sq.language = 1 
@@ -611,15 +611,15 @@ AND ACODisposition = 34
 			set bitComplete = case when (cast(ATACnt as float)/cast(22 as float)) * 100 >= 50 then 1 else 0 end
 			from #TodaysReturns tr
 			inner join (select qr.QuestionForm_id, count(distinct sq.qstncore) as ATACnt
-						from (	select rc.QuestionForm_id, rc.survey_id, qr.qstncore, qr.intResponseVal
+						from (	select rc.QuestionForm_id, rc.survey_id, rc.sampleset_id, qr.qstncore, qr.intResponseVal
 								from #qfResponseCount rc
 								inner join questionresult qr on rc.QuestionForm_id=qr.QuestionForm_id
 								union
-								select rc.QuestionForm_id, rc.survey_id, qr2.qstncore, qr2.intResponseVal
+								select rc.QuestionForm_id, rc.survey_id, rc.sampleset_id, qr2.qstncore, qr2.intResponseVal
 								from #qfResponseCount rc
 								inner join questionresult2 qr2 on rc.QuestionForm_id=qr2.QuestionForm_id) qr
-						inner join sel_qstns sq on qr.survey_id = sq.survey_id and qr.qstncore = sq.qstncore 
-						inner join sel_scls ss on sq.scaleid = ss.qpc_id AND sq.survey_id = ss.survey_id and qr.intresponseval = ss.val
+						inner join DL_SEL_QSTNS_BySampleSet sq on qr.survey_id = sq.survey_id and qr.qstncore = sq.qstncore and qr.sampleset_id=sq.SampleSet_ID
+						inner join DL_SEL_SCLS_BySampleSet ss on sq.scaleid = ss.qpc_id AND sq.survey_id = ss.survey_id and qr.intresponseval = ss.val and sq.SampleSet_ID=ss.Sampleset_ID
 						where sq.qstncore in (54086,54087,54088,54089,54090,54091,54092,54093,54094,54095,54098,54099,54100,
 											  54101,54102,54103,54104,54105,54106,54107,54108,54109)
 						and sq.subtype = 1 
@@ -673,15 +673,15 @@ AND ACODisposition = 34
 		, bitComplete = case when rc.ATACnt >= (34 * 0.50) then 1 else 0 end
 	from #TodaysReturns tr
 	inner join (select qr.QuestionForm_id, count(distinct sq.qstncore) as ATACnt
-				from (	select rc.QuestionForm_id, rc.survey_id, qr.qstncore, qr.intResponseVal
+				from (	select rc.QuestionForm_id, rc.survey_id, rc.sampleset_id, qr.qstncore, qr.intResponseVal
 						from #qfResponseCount rc
 						inner join questionresult qr on rc.QuestionForm_id=qr.QuestionForm_id
 						union
-						select rc.QuestionForm_id, rc.survey_id, qr2.qstncore, qr2.intResponseVal
+						select rc.QuestionForm_id, rc.survey_id, rc.sampleset_id, qr2.qstncore, qr2.intResponseVal
 						from #qfResponseCount rc
 						inner join questionresult2 qr2 on rc.QuestionForm_id=qr2.QuestionForm_id) qr
-				inner join sel_qstns sq on qr.survey_id = sq.survey_id and qr.qstncore = sq.qstncore 
-				inner join sel_scls ss on sq.scaleid = ss.qpc_id AND sq.survey_id = ss.survey_id and qr.intresponseval = ss.val
+				inner join DL_SEL_QSTNS_BySampleSet sq on qr.survey_id = sq.survey_id and qr.qstncore = sq.qstncore and qr.sampleset_id=sq.SampleSet_ID
+				inner join DL_SEL_SCLS_BySampleSet ss on sq.scaleid = ss.qpc_id AND sq.survey_id = ss.survey_id and qr.intresponseval = ss.val and sq.SampleSet_ID=ss.Sampleset_ID
 				where sq.qstncore in (51574,51575,51576,51577,51579,51580,51581,51582,51583,51584,51585,51586,51588,51590,51594,51597,51599,51601,51603,51604,51605,51608,51609,51610,51611,51612,51613,51614,51615
 					,51616,51617,51618,51619,51620,54067,55137) -- S49 ATL-395: added qstncore 55137
 				and sq.subtype = 1 
