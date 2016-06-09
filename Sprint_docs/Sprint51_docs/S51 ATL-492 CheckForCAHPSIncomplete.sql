@@ -182,6 +182,7 @@ AND ACODisposition = 34
 			select Surveytype_dsc, survey_id, QuestionForm_id, sentmail_id, samplepop_id, receipttype_id, strMailingStep_nm, 0 as ResponseCount, 0 as FutureScheduledMailing, 1 as AllMailStepsAreBack	
 			, 0 as tempFlag
 			, DaysFromFirst, DaysFromCurrent --	S43 US8
+			, Sampleset_id
 			into #QFResponseCount
 			from #TodaysReturns
 			where Surveytype_dsc in ('ICHCAHPS','Home Health CAHPS','OAS CAHPS')
@@ -295,9 +296,9 @@ AND ACODisposition = 34
 				end
 
 				-- if we're ETLing something, check to see if any other returned mailsteps had more questions answered. If so, ETL the other mailstep
-				insert into #qfresponsecount (Surveytype_dsc, survey_id, QuestionForm_id, sentmail_id, samplepop_id, receipttype_id, strMailingStep_nm, ResponseCount, FutureScheduledMailing,AllMailStepsAreBack,tempFlag,DaysFromFirst,DaysFromCurrent)
+				insert into #qfresponsecount (Surveytype_dsc, survey_id, QuestionForm_id, sentmail_id, samplepop_id, receipttype_id, strMailingStep_nm, ResponseCount, FutureScheduledMailing,AllMailStepsAreBack,tempFlag,DaysFromFirst,DaysFromCurrent,Sampleset_id)
 				select tr.Surveytype_dsc, tr.survey_id, qf.QuestionForm_id, qf.sentmail_id, qf.samplepop_id, qf.receipttype_id, ms.strmailingStep_nm, 0 as ResponseCount, 0 as FutureScheduledMailing, 1 as AllMailStepsAreBack, 1 as tempFlag
-				, tr.DaysFromFirst, tr.DaysFromCurrent
+				, tr.DaysFromFirst, tr.DaysFromCurrent, tr.Sampleset_id
 				from #TodaysReturns tr
 				inner join questionform qf on tr.samplepop_id=qf.samplepop_id
 				inner join ScheduledMailing scm on qf.sentmail_id=scm.sentmail_id
@@ -643,6 +644,7 @@ AND ACODisposition = 34
 	select Surveytype_dsc, survey_id, QuestionForm_id, sentmail_id, samplepop_id, receipttype_id, strMailingStep_nm, 0 as ResponseCount, 0 as FutureScheduledMailing, 1 as AllMailStepsAreBack
 	, 0 as tempFlag
 	, DaysFromFirst, DaysFromCurrent --	S43 US8
+	, Sampleset_id
 	from #TodaysReturns
 	where Surveytype_dsc in ('HCAHPS IP', 'Hospice CAHPS') -- added Hospice CAHPS 2015-02-19
 
