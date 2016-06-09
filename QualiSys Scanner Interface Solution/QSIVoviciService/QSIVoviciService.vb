@@ -106,8 +106,8 @@ Public Class QSIVoviciService
         Dim IdVerintUS As Integer = AppConfig.Params("QSIVerint-US-VendorID").IntegerValue
         Dim IdVerintCA As Integer = AppConfig.Params("QSIVerint-CA-VendorID").IntegerValue
 
-        Dim projData As New Dictionary(Of Integer, VoviciProjectData)
-        projData = VoviciProjectData.VerintProjectDataInstances
+        'Dim projectDataInstances As New Dictionary(Of Integer, VoviciProjectData)
+        'projectDataInstances = VoviciProjectData.VerintProjectDataInstances
 
         Dim cultureCode As String
 
@@ -171,7 +171,7 @@ Public Class QSIVoviciService
                                             End If
 
                                             Try
-                                                participantID = projData(methStep.VendorID.Value).AddParticipantToSurvey(projectId, emailForVovici, participant.WAC, Nothing, Nothing, cultureCode)
+                                                participantID = VoviciProjectData.VerintProjectDataInstances(methStep.VendorID.Value).AddParticipantToSurvey(projectId, emailForVovici, participant.WAC, Nothing, Nothing, cultureCode)
                                                 participant.ExternalRespondentID = participantID.ToString
                                             Catch ex1 As Exception
                                                 If ex1.Message.Contains(sMalformedEmailErrorMessage) Then
@@ -179,7 +179,7 @@ Public Class QSIVoviciService
                                                     errorList.Add(New TranslatorError(participant.Id, participant.Litho, ex1.Message))
 
                                                     emailForVovici = "noreply@nationalresearch.com"
-                                                    participantID = projData(methStep.VendorID.Value).AddParticipantToSurvey(projectId, emailForVovici, participant.WAC, Nothing, Nothing, cultureCode)
+                                                    participantID = VoviciProjectData.VerintProjectDataInstances(methStep.VendorID.Value).AddParticipantToSurvey(projectId, emailForVovici, participant.WAC, Nothing, Nothing, cultureCode)
                                                     participant.ExternalRespondentID = participantID.ToString
                                                 Else
                                                     Throw ex1
@@ -191,7 +191,7 @@ Public Class QSIVoviciService
                                         End If
 
                                         'Add responses to the hidden personalization questions for participant
-                                        projData(methStep.VendorID.Value).AddHiddenQuestionDataToSurveyForParticipant(projectId, participantID, participant, supressPiiFromVovici)
+                                        VoviciProjectData.VerintProjectDataInstances(methStep.VendorID.Value).AddHiddenQuestionDataToSurveyForParticipant(projectId, participantID, participant, supressPiiFromVovici)
 
 
                                         'Mark successful
@@ -212,7 +212,7 @@ Public Class QSIVoviciService
                             Dim errMessage As String = "Process error(s) occurred, ({0}) records out of ({1}) did not process.  Will retry on next pass!"
                             If Not bIsOtherError Then
                                 'All participants were successfully added to Vovici, mark file as sent.
-                                file.VendorFileStatusId = 5
+                                file.VendorFileStatusId = VendorFileStatusCodes.Sent
                                 errMessage = "Process error(s) occurred, ({0}) records out of ({1}) did not process."
                             End If
 
@@ -227,8 +227,11 @@ Public Class QSIVoviciService
                             End If
 
                         Catch ex As Exception
-                            LogEvent(Translator.SendNotification(QSIServiceNames.QSIVoviciService, "Exception Encountered While Attempting to Process File!", ex, False), EventLogEntryType.Error)
-
+                            Try
+                                LogEvent(Translator.SendNotification(QSIServiceNames.QSIVoviciService, "Exception Encountered While Attempting to Process File!", ex, False), EventLogEntryType.Error)
+                            Catch ex1 As Exception
+                                'The Notification most likely got sent but we don't want an unhandled exception to be thrown here
+                            End Try
                         End Try
                     End If
                 End If

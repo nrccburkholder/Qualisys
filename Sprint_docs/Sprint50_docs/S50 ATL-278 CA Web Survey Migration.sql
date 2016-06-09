@@ -31,6 +31,9 @@ VALUES (7,'VRNT CA','Verint Canada','','','','','','','','',GetDate(),null,1,'M'
 if exists(select * from qualpro_params where strparam_nm = 'Country' and strparam_value = 'US')
 update Vendors set Vendor_nm = 'DO NOT USE' where vendor_id = 7 and Vendor_nm <> 'DO NOT USE'
 
+if exists(select * from qualpro_params where strparam_nm = 'Country' and strparam_value <> 'US')
+update vendors set LocalFTPLoginName = 'VOV' where Vendor_ID = 7
+
 set IDENTITY_INSERT vendors OFF
 
 insert into DL_TranslationModules (Vendor_ID, ModuleName, WatchedFolderPath, FileType, Study_ID, Survey_ID, LithoLookupType_id)
