@@ -76,10 +76,12 @@ select qf.datReturned, qf.datResultsImported, sd.Survey_id, st.Surveytype_id, st
 , convert(tinyint,null) as HospiceDisposition --S19 US15
 , convert(int,null) as DaysFromFirst	--		S43 US8
 , DATEDIFF(DAY,CONVERT(DATETIME,CONVERT(VARCHAR(10),sm.datMailed,120)),qf.datReturned) as DaysFromCurrent	--		S43 US8
+, sp.Sampleset_id
 into #TodaysReturns
 from CTE_Returns eq
 inner join QuestionForm qf on qf.QuestionForm_id=eq.PKey1 
 inner join SentMailing sm on qf.SentMail_id=sm.SentMail_id
+inner join SamplePop sp on qf.samplepop_id=sp.samplepop_id
 inner join ScheduledMailing scm on sm.ScheduledMailing_id=scm.ScheduledMailing_id
 inner join Survey_def sd on qf.Survey_id=sd.Survey_id
 inner join SurveyType st on sd.Surveytype_id=st.Surveytype_id
@@ -505,14 +507,17 @@ AND ACODisposition = 34
 						OVERRIDEITEM_ID, SENTMAIL_ID, METHODOLOGY_ID, DATGENERATE, QuestionForm_id, datExpire, ACODisposition, DispositionAction, ReceiptType_id, 
 						strMailingStep_nm, bitComplete, bitETLThisReturn, bitContinueWithMailings
 						,DaysFromFirst
-						,DaysFromCurrent)
+						,DaysFromCurrent
+						,Sampleset_id)
 					select qf.datReturned, qf.datResultsImported, qf.Survey_id, sd.Surveytype_id, st.Surveytype_dsc, ms.intSequence, scm.SCHEDULEDMAILING_ID, ms.MAILINGSTEP_ID, qf.SAMPLEPOP_ID, 
 						scm.OVERRIDEITEM_ID, qf.SENTMAIL_ID, scm.METHODOLOGY_ID, scm.DATGENERATE, qf.QuestionForm_id, sm.datExpire, null as ACODisposition, null as DispositionAction, qf.ReceiptType_id, 
 						ms.strMailingStep_nm, qf.bitComplete, tb.newbitETLThisReturn, 0 as bitContinueWithMailings
 						, convert(int,null) as DaysFromFirst	--		S43 US8
 						, DATEDIFF(DAY,CONVERT(DATETIME,CONVERT(VARCHAR(10),sm.datMailed,120)),qf.datReturned) as DaysFromCurrent	--		S43 US8
+						, sp.Sampleset_id
 					from #takeBest tb
 					inner join questionform qf on tb.QuestionForm_id=qf.QuestionForm_id
+					inner join SamplePop sp on qf.samplepop_id=sp.samplepop_id
 					inner join survey_def sd on qf.survey_id=sd.survey_id
 					inner join surveytype st on sd.surveytype_id=st.surveytype_id
 					inner join sentmailing sm on qf.sentmail_id=sm.sentmail_id
