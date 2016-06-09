@@ -233,7 +233,7 @@ VALUES (@ETSid, 'Type of Header Record',						1, 				0, 				'headertype', 		'1',
 	 , (@ETSid, 'Sample Year', 									5, 				3, 				'sampleyear', 		'year([servicedate])', 				167,				NULL, 														NULL, 					4, 					NULL, 			NULL, 		0.95, 						0)
 	 , (@ETSid, 'Survey Mode', 									6, 				5, 				'surveymode', 		'StandardMethodologyID', 			56, 				NULL, 														NULL, 					1, 					NULL, 			NULL, 		0.95, 						0)
 	 , (@ETSid, 'Sampling Type', 								7, 				0, 				'sampletype', 		'3', 								56, 				NULL, 														NULL, 					1, 					NULL, 			NULL, 		0.95, 						0)
-	 , (@ETSid, 'Number of Patients Served', 					8, 				4, 				'patientserved', 	'columnname = ''OAS_PATSERVED''', 	56, 				NULL, 														NULL, 					6, 					NULL, 			NULL, 		0.95, 						0)
+	 , (@ETSid, 'Number of Patients Served', 					8, 				4, 				'patientsserved', 	'columnname = ''OAS_PATSERVED''', 	56, 				NULL, 														NULL, 					6, 					NULL, 			NULL, 		0.95, 						0)
 	 , (@ETSid, 'Number of Patients in File', 					9,  			10,				'patientsfile', 	'NumPatInFile', 					56, 				NULL, 														NULL, 					6, 					NULL, 			NULL, 		0.95, 						0)
 	 , (@ETSid, 'Number of Eligible Patients', 					10, 			10,				'eligiblepatients', 'EligibleCount',					56, 				NULL, 														NULL, 					6, 					NULL, 			NULL, 		0.95, 						0)
 	 , (@ETSid, 'Number of Sampled Patients', 					11, 			3, 				'sampledpatients', 	'SamplePopulationID', 				56, 				'count distinct [header.samplemonth],[header.providernum]', NULL, 					6, 					NULL, 			NULL, 		0.95, 						0)
@@ -851,10 +851,10 @@ create procedure CEM.ExportPostProcess00000014
 @ExportQueueID int
 as
 begin
-	-- patientserved Unknown/Missing=M
+	-- patientsserved Unknown/Missing=M
 	update CEM.ExportDataset00000014 
-	set [header.patientserved] = 'M'
-	where [header.patientserved] = ''
+	set [header.patientsserved] = 'M'
+	where [header.patientsserved] = ''
 	and ExportQueueID = @ExportQueueID
 	
 	-- if a patient's sex doesn't fall into the gender binary or is missing, isMale will equal '0' but the patient's sex isn't Female. 
@@ -996,8 +996,6 @@ begin
 	update cem.ExportDataset00000014 set [patientresponse.helpnone]			= case when [patientresponse.help]		='2' then 'X' else 'M' end where [patientresponse.helpnone] <>'1'						  and [administration.finalstatus] IN ('110','120','310') and [administration.surveymode] ='1' and ExportQueueID=@ExportQueueID
 
 	
-	
-	
 	-- some questions are only fielded on mail the survey. code them "Not Applicable" for phone returns
 	update cem.ExportDataset00000014  
 	set [patientresponse.racewhite-mail]='X',
@@ -1022,7 +1020,7 @@ begin
 		[patientresponse.helpother]='X',
 		[patientresponse.helpnone]='X'
 	where [administration.finalstatus] IN ('110','120','310')
-	and [administration.finalstatus] IN ('110','120','310') and [administration.surveymode]='2'
+	and [administration.surveymode]='2'
 	and ExportQueueID=@ExportQueueID
 
 	-- some questions are only fielded on the phone survey. code them "Not Applicable" for mail returns
@@ -1047,8 +1045,41 @@ begin
 		[patientresponse.raceotherpacificislander-phone]='X',
 		[patientresponse.racenoneofabovepacific-phone]='X'
 	where [administration.finalstatus] IN ('110','120','310')
-	and [administration.finalstatus] IN ('110','120','310') and [administration.surveymode]='1'
+	and [administration.surveymode]='1'
 	and ExportQueueID=@ExportQueueID
+
+	-- if a respondent returned the survey but didn't answer a multiple response question at all and all responses are still blank, code all responses to 'M'
+	select distinct ExportTemplateColumnID, ExportTemplateSectionName, [ExportColumnName.MR], isnull(RawValue,'') as RawValue, RecodeValue, FixedWidthLength
+	into #unansweredMR
+	from cem.ExportTemplate_view
+	where exportTemplateId=14
+	and [ExportColumnName.MR] is not null 
+
+	declare @sqlwhere varchar(max)	
+	declare @etcID int
+	select top 1 @etcID=ExportTemplateColumnID from #unansweredMR where RawValue=-9
+	while @@rowcount>0
+	begin
+		set @sql='update CEM.ExportDataset00000014 set '
+		set @SQLwhere = 'ExportQueueID='+convert(varchar,@ExportQueueID)+' and [administration.finalstatus] IN (''110'',''120'',''310'') and len('
+		select @sql = @sql + '['+ExportTemplateSectionName+'.'+[ExportColumnName.MR]+']=''M'','
+			, @sqlwhere=@sqlwhere + '['+ExportTemplateSectionName+'.'+[ExportColumnName.MR]+']+'
+		from #unansweredMR
+		where ExportTemplateColumnID = @etcID
+		and [ExportColumnName.MR] <> 'unmarked'
+
+		set @sqlwhere = left(@sqlwhere,len(@sqlwhere)-1) + ')=0'
+		set @sql = left(@sql,len(@sql)-1) + ' where ' + @sqlwhere + char(10)
+		
+		print @SQL
+		if len(@Sql)>8000 print '~'+substring(@sql,8001,7000)
+		exec (@SQL)
+		
+		delete from #unansweredMR where ExportTemplateColumnID = @etcID
+		select top 1 @etcID=ExportTemplateColumnID from #unansweredMR where RawValue=-9
+	end
+
+	drop table #unansweredMR
 	
 end
 go
