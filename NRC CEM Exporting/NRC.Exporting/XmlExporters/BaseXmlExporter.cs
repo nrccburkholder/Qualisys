@@ -40,7 +40,7 @@ namespace CEM.Exporting.XmlExporters
         {
             try
             {
-                string value = dr[fieldname].ToString();
+                string value = dr[fieldname].ToString().Trim();
                 writer.WriteElementString(nodename, dr[fieldname] == DBNull.Value ? "NULL" : value);
             }
             catch { }

@@ -127,6 +127,7 @@ Partial Class MethodologyEditor
         Me.InformationBar = New Nrc.QualiSys.ConfigurationManager.InformationBar()
         Me.MethPropsErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.WebBlastErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
+        Me.WebExcludePIICheckBox = New System.Windows.Forms.CheckBox()
         Me.BottomPanel.SuspendLayout()
         Me.SplitContainer.Panel1.SuspendLayout()
         Me.SplitContainer.Panel2.SuspendLayout()
@@ -675,6 +676,7 @@ Partial Class MethodologyEditor
         Me.MethodologyPropsWebPanel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.MethodologyPropsWebPanel.Controls.Add(Me.WebExcludePIICheckBox)
         Me.MethodologyPropsWebPanel.Controls.Add(Me.WebEmailBlastGridControl)
         Me.MethodologyPropsWebPanel.Controls.Add(Me.WebEmailBlastCheckBox)
         Me.MethodologyPropsWebPanel.Controls.Add(Me.WebQuotasGroupBox)
@@ -1162,6 +1164,17 @@ Partial Class MethodologyEditor
         '
         Me.WebBlastErrorProvider.ContainerControl = Me
         '
+        'WebExcludePIICheckBox
+        '
+        Me.WebExcludePIICheckBox.AutoSize = True
+        Me.WebExcludePIICheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.WebExcludePIICheckBox.Location = New System.Drawing.Point(216, 35)
+        Me.WebExcludePIICheckBox.Name = "WebExcludePIICheckBox"
+        Me.WebExcludePIICheckBox.Size = New System.Drawing.Size(119, 25)
+        Me.WebExcludePIICheckBox.TabIndex = 4
+        Me.WebExcludePIICheckBox.Text = "Exclude PII"
+        Me.WebExcludePIICheckBox.UseVisualStyleBackColor = True
+        '
         'MethodologyEditor
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1323,5 +1336,6 @@ Partial Class MethodologyEditor
     Friend WithEvents MethNameColumn As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents MethTypeColumn As System.Windows.Forms.DataGridViewComboBoxColumn
     Friend WithEvents MethCreatedColumn As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents WebExcludePIICheckBox As System.Windows.Forms.CheckBox
 
 End Class

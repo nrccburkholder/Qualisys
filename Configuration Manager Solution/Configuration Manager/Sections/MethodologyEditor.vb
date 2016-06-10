@@ -1303,9 +1303,12 @@ Public Class MethodologyEditor
             Case MailingStepMethodCodes.Web, MailingStepMethodCodes.MailWeb, MailingStepMethodCodes.LetterWeb
                 SplitContainer1.Panel2.Enabled = True
                 MethodologyPropsWebPanel.Visible = True
+                'Only want the ExcludePII checkbox to be visible for Mailing Steps MailWeb or LetterWeb (not Web only) CJB 6/10/2016
+                WebExcludePIICheckBox.Visible = Not (methStep.StepMethodId = MailingStepMethodCodes.Web) AndAlso (QualisysParams.CountryCode = CountryCode.Canada)
                 PopulateEmailBlastOptions()
                 PopulateMethProps(methStep)
                 PopulateEmailBlast(methStep)
+
 
             Case MailingStepMethodCodes.IVR
                 SplitContainer1.Panel2.Enabled = True
@@ -1409,6 +1412,10 @@ Public Class MethodologyEditor
             .DataBindings.Clear()
             .Checked = False
         End With
+        With WebExcludePIICheckBox
+            .DataBindings.Clear()
+            .Checked = False
+        End With
         With WebQuotasStopReturnsTextBox
             .DataBindings.Clear()
             .Text = ""
@@ -1508,6 +1515,7 @@ Public Class MethodologyEditor
         WebDaysInFieldTextBox.DataBindings.Add("Text", methStep, "DaysInField", False, DataSourceUpdateMode.OnPropertyChanged)
         WebQuotasStopReturnsTextBox.DataBindings.Add("Text", methStep, "QuotaStopCollectionAt", False, DataSourceUpdateMode.OnPropertyChanged)
         WebAcceptPartialCheckBox.DataBindings.Add("Checked", methStep, "IsAcceptPartial", False, DataSourceUpdateMode.OnPropertyChanged)
+        WebExcludePIICheckBox.DataBindings.Add("Checked", methStep, "IsExcludePII", False, DataSourceUpdateMode.OnPropertyChanged)
         WebEmailBlastCheckBox.DataBindings.Add("Checked", methStep, "IsEmailBlast", False, DataSourceUpdateMode.OnPropertyChanged)
         WebQuotasAllReturnsRadioButton.DataBindings.Add("Checked", methStep, "QuotaIDAllReturns", False, DataSourceUpdateMode.OnValidation)
         WebQuotasStopReturnsRadioButton.DataBindings.Add("Checked", methStep, "QuotaIDStopReturns", False, DataSourceUpdateMode.OnValidation)
