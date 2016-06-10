@@ -38,6 +38,7 @@ Public Class MethodologyStep
     Private mIsCallBackUsingTTY As Boolean
     Private mIsAcceptPartial As Boolean
     Private mIsEmailBlast As Boolean
+    Private mIsExcludePII As Boolean
     Private mVendorId As Nullable(Of Integer)
     Private mOrgVendorId As Nullable(Of Integer)
     Private mVendorVoviciDetail As VendorFile_VoviciDetail
@@ -463,6 +464,19 @@ Public Class MethodologyStep
     End Property
 
     <Logable()> _
+    Public Property IsExcludePII() As Boolean
+        Get
+            Return mIsExcludePII
+        End Get
+        Set(ByVal value As Boolean)
+            If mIsExcludePII <> value Then
+                mIsExcludePII = value
+                PropertyChanged()
+            End If
+        End Set
+    End Property
+
+    <Logable()> _
     Public Property VendorID() As Nullable(Of Integer)
         Get
             Return mVendorID
@@ -659,6 +673,7 @@ Public Class MethodologyStep
         mIsCallBackUsingTTY = stepType.IsCallBackUsingTTY
         mIsAcceptPartial = stepType.IsAcceptPartial
         mIsEmailBlast = stepType.IsEmailBlast
+        mIsExcludePII = stepType.IsExcludePII
 
     End Sub
 

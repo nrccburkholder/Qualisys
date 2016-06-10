@@ -31,6 +31,7 @@ Public Class MethodologyStepType
     Private mIsCallBackUsingTTY As Boolean
     Private mIsAcceptPartial As Boolean
     Private mIsEmailBlast As Boolean
+    Private mIsExcludePII As Boolean
 
 #End Region
 
@@ -228,6 +229,15 @@ Public Class MethodologyStepType
         End Get
         Set(ByVal value As Boolean)
             mIsEmailBlast = value
+        End Set
+    End Property
+
+    Public Property IsExcludePII() As Boolean
+        Get
+            Return mIsExcludePII
+        End Get
+        Set(ByVal value As Boolean)
+            mIsExcludePII = value
         End Set
     End Property
 

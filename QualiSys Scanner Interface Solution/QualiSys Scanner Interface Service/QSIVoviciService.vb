@@ -123,7 +123,7 @@ Public Class QSIVoviciService
             For Each file As VendorFileCreationQueue In files
                 Dim methStep As MethodologyStep = MethodologyStep.Get(file.MailingStepId)
 
-                Dim supressPiiFromVovici As Boolean = (Country = "CA") AndAlso (methStep.VendorID.Value = IdVerintUS)
+                Dim supressPiiFromVovici As Boolean = ((Country = "CA") AndAlso (methStep.VendorID.Value = IdVerintUS)) Or (methStep.IsExcludePII)
 
                 If (Country = "US") AndAlso (methStep.VendorID.Value = IdVerintCA) Then
                     Throw New Exception(String.Format("US Environment has attempted to use Verint-CA Instance!"))

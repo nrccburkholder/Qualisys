@@ -94,7 +94,7 @@ Public NotInheritable Class SP
     Public Const UpdateFormGenJobPriority As String = "QCL_UpdateFormGenJobPriority"
     Public Const UpdateMethodology As String = "QCL_UpdateMethodology"
     Public Const UpdateMethodologyActiveFlag As String = "QCL_UpdateMethodologyActiveState"
-    Public Const UpdateMethodologyStep As String = "QCL_UpdateMethodologyStep"
+    '    Public Const UpdateMethodologyStep As String = "QCL_UpdateMethodologyStep"
     Public Const UpdateMethodologyStepVendor As String = "QCL_UpdateMethodologyStepVendor"
     Public Const UpdateSamplePeriodScheduledSample As String = "dbo.QCL_UpdateSamplePeriodScheduledSample"
     Public Const UpdateSamplePeriod As String = "dbo.QCL_UpdateSamplePeriod"

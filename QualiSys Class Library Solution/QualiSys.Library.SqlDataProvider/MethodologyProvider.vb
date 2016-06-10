@@ -53,6 +53,7 @@ Public Class MethodologyProvider
         newObj.IsCallBackUsingTTY = rdr.GetBoolean("CallbackUsingTTY")
         newObj.IsAcceptPartial = rdr.GetBoolean("AcceptPartial")
         newObj.IsEmailBlast = rdr.GetBoolean("SendEmailBlast")
+        newObj.IsExcludePII = rdr.GetBoolean("ExcludePII")
         newObj.VendorID = rdr.GetNullableInteger("Vendor_ID")
         newObj.OrgVendorID = rdr.GetNullableInteger("Vendor_ID")
 
@@ -121,6 +122,7 @@ Public Class MethodologyProvider
         newObj.IsCallBackUsingTTY = rdr.GetBoolean("CallbackUsingTTY")
         newObj.IsAcceptPartial = rdr.GetBoolean("AcceptPartial")
         newObj.IsEmailBlast = rdr.GetBoolean("SendEmailBlast")
+        newObj.IsExcludePII = rdr.GetBoolean("ExcludePII")
 
         If rdr.IsDBNull("MMMailingStep_id") Then
             'Set it to itself
@@ -172,7 +174,8 @@ Public Class MethodologyProvider
                                             rdr.GetBoolean("CallBackOtherLang"), _
                                             rdr.GetBoolean("CallbackUsingTTY"), _
                                             rdr.GetBoolean("AcceptPartial"), _
-                                            rdr.GetBoolean("SendEmailBlast"))
+                                            rdr.GetBoolean("SendEmailBlast"),
+                                            rdr.GetBoolean("ExcludePII"))
 
         Return newObj
     End Function
@@ -399,6 +402,7 @@ Public Class MethodologyProvider
                         params(26) = methStep.IsAcceptPartial
                         params(27) = methStep.IsEmailBlast
                         params(28) = GetNullableParam(Of Integer)(methStep.VendorID)
+                        params(29) = methStep.IsExcludePII
                         cmd = Db.GetStoredProcCommand(SP.InsertMethodologyStep, params)
                         stepId = ExecuteInteger(cmd, tran)
 
@@ -507,6 +511,7 @@ Public Class MethodologyProvider
                         params(26) = methStep.IsAcceptPartial
                         params(27) = methStep.IsEmailBlast
                         params(28) = GetNullableParam(Of Integer)(methStep.VendorID)
+                        params(29) = methStep.IsExcludePII
                         cmd = Db.GetStoredProcCommand(SP.InsertMethodologyStep, params)
                         stepId = ExecuteInteger(cmd, tran)
 

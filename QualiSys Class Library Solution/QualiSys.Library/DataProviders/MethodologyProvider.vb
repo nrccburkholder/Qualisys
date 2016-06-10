@@ -67,7 +67,7 @@ Namespace DataProvider
 
         End Function
 
-        Protected Shared Function CreateMethodologyStepType(ByVal id As Integer, ByVal isSurvey As Boolean, ByVal isThankYou As Boolean, ByVal name As String, ByVal stepMethodId As Integer, ByVal isCoverLetterRequired As Boolean, ByVal expirationDays As Integer, ByVal quotaID As Nullable(Of Integer), ByVal quotaStopCollectionAt As Integer, ByVal daysInField As Integer, ByVal numberOfAttempts As Integer, ByVal isWeekDayDayCall As Boolean, ByVal isWeekDayEveCall As Boolean, ByVal isSaturdayDayCall As Boolean, ByVal isSaturdayEveCall As Boolean, ByVal isSundayDayCall As Boolean, ByVal isSundayEveCall As Boolean, ByVal isCallBackOtherLang As Boolean, ByVal isCallBackUsingTTY As Boolean, ByVal isAcceptPartial As Boolean, ByVal isEmailBlast As Boolean) As MethodologyStepType
+        Protected Shared Function CreateMethodologyStepType(ByVal id As Integer, ByVal isSurvey As Boolean, ByVal isThankYou As Boolean, ByVal name As String, ByVal stepMethodId As Integer, ByVal isCoverLetterRequired As Boolean, ByVal expirationDays As Integer, ByVal quotaID As Nullable(Of Integer), ByVal quotaStopCollectionAt As Integer, ByVal daysInField As Integer, ByVal numberOfAttempts As Integer, ByVal isWeekDayDayCall As Boolean, ByVal isWeekDayEveCall As Boolean, ByVal isSaturdayDayCall As Boolean, ByVal isSaturdayEveCall As Boolean, ByVal isSundayDayCall As Boolean, ByVal isSundayEveCall As Boolean, ByVal isCallBackOtherLang As Boolean, ByVal isCallBackUsingTTY As Boolean, ByVal isAcceptPartial As Boolean, ByVal isEmailBlast As Boolean, ByVal isExcludePII As Boolean) As MethodologyStepType
 
             Dim stepType As New MethodologyStepType
 
@@ -92,6 +92,7 @@ Namespace DataProvider
             stepType.IsCallBackUsingTTY = isCallBackUsingTTY
             stepType.IsAcceptPartial = isAcceptPartial
             stepType.IsEmailBlast = isEmailBlast
+            stepType.IsExcludePII = isExcludePII
 
             Return stepType
 
