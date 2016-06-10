@@ -3,22 +3,32 @@ S51 ATL-425 Survey level setting for switchover.sql
 
 Chris Burkholder
 
+ALTER TABLE METHODOLOGYSTEPTYPE
 ALTER TABLE MAILINGSTEP
+ALTER TABLE STANDARDMAILINGSTEP
 ALTER PROCEDURE QCL_InsertMethodologyStep
 ALTER PROCEDURE QCL_SelectMethodologyStep
 ALTER PROCEDURE QCL_SelectMethodologyStepsByMethodologyId
+ALTER PROCEDURE QCL_SelectAllMethodologyStepTypes
+ALTER PROCEDURE QCL_SelectStandardMethodologySteps
 
 */
 
 USE [QP_Prod]
 GO
 
+IF NOT EXISTS ( SELECT * FROM sys.columns   WHERE  object_id = OBJECT_ID(N'[dbo].[MethodologyStepType]') AND name = 'ExcludePII' )
 ALTER TABLE METHODOLOGYSTEPTYPE
 ADD ExcludePII bit 
 GO
 
-
+IF NOT EXISTS ( SELECT * FROM sys.columns   WHERE  object_id = OBJECT_ID(N'[dbo].[MailingStep]') AND name = 'ExcludePII' )
 ALTER TABLE MAILINGSTEP
+ADD ExcludePII bit 
+GO
+
+IF NOT EXISTS ( SELECT * FROM sys.columns   WHERE  object_id = OBJECT_ID(N'[dbo].[STANDARDMAILINGSTEP]') AND name = 'ExcludePII' )
+ALTER TABLE STANDARDMAILINGSTEP
 ADD ExcludePII bit 
 GO
 
@@ -184,3 +194,26 @@ FROM MethodologyStepType
 ORDER BY strMailingStep_nm
 
 GO
+
+USE [QP_Prod]
+GO
+/****** Object:  StoredProcedure [dbo].[QCL_SelectStandardMethodologySteps]    Script Date: 6/10/2016 1:19:15 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[QCL_SelectStandardMethodologySteps]
+ @StandardMethodologyId INT
+AS
+
+SELECT StandardMailingStepId, StandardMethodologyID,intSequence,bitSurveyInLine,bitSendSurvey,
+       intIntervalDays,bitThankYouItem,strMailingStep_nm,bitFirstSurvey,
+       OverRide_Langid,MMMailingStep_id,MailingStepMethod_id,ExpireInDays,
+       ExpireFromStep, Quota_ID, QuotaStopCollectionAt, DaysInField,
+       NumberOfAttempts, WeekDay_Day_Call, WeekDay_Eve_Call, Sat_Day_Call,
+       Sat_Eve_Call, Sun_Day_Call, Sun_Eve_Call, CallBackOtherLang,
+       CallbackUsingTTY, AcceptPartial, SendEmailBlast, ExcludePII
+FROM StandardMailingStep
+WHERE StandardMethodologyID=@StandardMethodologyID 
+ORDER BY intSequence
+
