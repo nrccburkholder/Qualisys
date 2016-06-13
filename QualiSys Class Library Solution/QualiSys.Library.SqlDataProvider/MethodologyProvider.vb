@@ -372,7 +372,7 @@ Public Class MethodologyProvider
                         methStep.MethodologyId = methodologyId
                         methStep.SurveyId = meth.SurveyId
 
-                        Dim params(28) As Object
+                        Dim params(29) As Object
                         params(0) = methodologyId
                         params(1) = meth.SurveyId
                         params(2) = methStep.SequenceNumber
@@ -481,7 +481,7 @@ Public Class MethodologyProvider
                         'Need to reset methodology id since we deleted existing steps
                         'This ensures that step linkings to same step are sent to db properly
                         ReadOnlyAccessor.MethodologyStepId(methStep) = 0
-                        Dim params(28) As Object
+                        Dim params(29) As Object
                         params(0) = meth.Id
                         params(1) = meth.SurveyId
                         params(2) = methStep.SequenceNumber
