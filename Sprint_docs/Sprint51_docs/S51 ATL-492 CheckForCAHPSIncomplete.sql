@@ -14,6 +14,11 @@ ALTER PROCEDURE dbo.CheckForCAHPSIncompletes
 */
 use qp_prod
 go
+-- fill out isMeasure and isATA for OAS CAHPS
+update SurveyTypeQuestionMappings set isATA=0, isMeasure=0 where surveytype_id=16
+update SurveyTypeQuestionMappings set isATA=1 where surveytype_id=16
+and qstncore in (54086,54087,54088,54089,54090,54091,54092,54093,54094,54095,54098,54099,54100,54101,54102,54103,54104,54105,54106,54107,54108,54109)
+go
 -- There is one known Hospice CAHPS return from production that brought this situation to light. So we'll re-queue it when we release this to production.
 if exists (select * from qualpro_params where STRPARAM_NM ='EnvName' and strParam_value in ('STAGING','PRODUCTION'))
 	update questionform 
