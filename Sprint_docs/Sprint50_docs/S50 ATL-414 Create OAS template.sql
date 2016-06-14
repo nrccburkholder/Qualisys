@@ -250,6 +250,24 @@ values(@ETCid, '38','3','Mixed')
 	, (@ETCid, '39','1','Mail Only')
 	, (@ETCid, '40','2','Phone Only')	
 
+select @ETCid=ExportTemplateColumnID
+from CEM.ExportTemplateColumn  etc
+where etc.ExportTemplateSectionID=@ETSid
+and ExportColumnName='samplemonth'
+
+insert into cem.ExportTemplateColumnResponse (ExportTemplateColumnID, RawValue, RecodeValue, ResponseLabel)
+values(@ETCid, '1','01','January')
+	, (@ETCid, '2','02','February')
+	, (@ETCid, '3','03','March')
+	, (@ETCid, '4','04','April')
+	, (@ETCid, '5','05','May')
+	, (@ETCid, '6','06','June')
+	, (@ETCid, '7','07','July')
+	, (@ETCid, '8','08','August')
+	, (@ETCid, '9','09','September')
+	, (@ETCid, '10','10','October')
+	, (@ETCid, '11','11','November')
+	, (@ETCid, '12','12','December')
 
 insert into cem.ExportTemplateSection (ExportTemplateSectionName,ExportTemplateID,DefaultNamingConvention)
 select 'administration' as ExportTemplateSectionName,
@@ -285,6 +303,25 @@ from cem.ExportTemplate ET, cem.ExportTemplateColumn etc
 where et.ExportTemplateID=@ETid
 and etc.ExportColumnName='servicedate'
 and etc.ExportTemplateSectionID=@ETSid
+
+select @ETCid=ExportTemplateColumnID
+from CEM.ExportTemplateColumn  etc
+where etc.ExportTemplateSectionID=@ETSid
+and ExportColumnName='samplemonth'
+
+insert into cem.ExportTemplateColumnResponse (ExportTemplateColumnID, RawValue, RecodeValue, ResponseLabel)
+values(@ETCid, '1','01','January')
+	, (@ETCid, '2','02','February')
+	, (@ETCid, '3','03','March')
+	, (@ETCid, '4','04','April')
+	, (@ETCid, '5','05','May')
+	, (@ETCid, '6','06','June')
+	, (@ETCid, '7','07','July')
+	, (@ETCid, '8','08','August')
+	, (@ETCid, '9','09','September')
+	, (@ETCid, '10','10','October')
+	, (@ETCid, '11','11','November')
+	, (@ETCid, '12','12','December')
 
 select @ETCid=ExportTemplateColumnID
 from CEM.ExportTemplateColumn  etc
