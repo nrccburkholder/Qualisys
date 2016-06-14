@@ -20,7 +20,7 @@ GO
 
 IF NOT EXISTS(select * from QUALPRO_PARAMS where strparam_nm = 'SystematicAnnualReturnTarget')
 INSERT INTO QUALPRO_PARAMS (STRPARAM_NM, STRPARAM_GRP, STRPARAM_TYPE, NUMPARAM_VALUE, COMMENTS)
-VALUES ('SystematicAnnualReturnTarget','SystematicDefaults','N',300,'Systematic Annual Return Target for OASCAHPS')
+VALUES ('SystematicAnnualReturnTarget','SystematicDefaults','N',384,'Systematic Annual Return Target for OASCAHPS')
 GO
 
 IF NOT EXISTS(select * from QUALPRO_PARAMS where strparam_nm = 'SystematicEstimatedResponseRate')
@@ -48,7 +48,7 @@ ALTER TABLE MEDICARELOOKUP
 ADD SystematicEstRespRate [decimal] (8,4)
 GO
 
-update medicarelookup set SystematicAnnualReturnTarget = 300, SystematicEstRespRate = 0.32
+update medicarelookup set SystematicAnnualReturnTarget = 384, SystematicEstRespRate = 0.32
 
 update medicarelookup set SystematicAnnualReturnTarget = ml.AnnualReturnTarget, SystematicEstRespRate = ml.EstRespRate 
 --select *
