@@ -9,7 +9,7 @@ NRC_Datamart_Extracts
 ALTER PROCEDURE [CEM].[PullExportData]
 
 */
-use NRC_Datamart_Extracts
+use NRC_DataMart_Extracts
 go
 ALTER PROCEDURE [CEM].[PullExportData]
 @ExportQueueID int, @doRecode bit=1, @doDispositionProc bit=1, @doPostProcess bit=1
@@ -357,8 +357,7 @@ where ExportTemplateID=@ExportTemplateID
 
 while charindex('{',@SQL) > 0
 begin
-	--declare @SQL varchar(max)='{vendordata.vendor-name}.{vendordata.file-submission-day}{vendordata.file-submission-month}{vendordata.file-submission-yr}.{vendordata.file-submission-number}', @sqlfrom varchar(max), @colname varchar(200) set @sqlfrom=''''+@
-sql+''''
+	--declare @SQL varchar(max)='{vendordata.vendor-name}.{vendordata.file-submission-day}{vendordata.file-submission-month}{vendordata.file-submission-yr}.{vendordata.file-submission-number}', @sqlfrom varchar(max), @colname varchar(200) set @sqlfrom=''''+@sql+''''
 	set @colname = substring(@SQL, 1 + charindex('{', @SQL),  charindex('}', @SQL) - charindex('{', @SQL) - 1)
 	set @sqlfrom = replace(@sqlfrom,@sqlfrom,'replace('+@sqlfrom+',''{'+@colname+'}'',['+@colname+'])')
 	set @sql = replace(@sql,'{'+@colname+'}','')
@@ -702,6 +701,30 @@ begin
 	update CEM.ExportQueue 
 	set PullDate=getdate()
 	where ExportQueueID=@ExportQueueID
+end
+
+-- if any of the fields used in FileMakerName were updated in the Recode/Disposition/Post processes, we'll need to re-population the FileMakerName field
+-- declare @sql varchar(max), @sqlfrom varchar(max), @sectname varchar(200), @colname varchar(200)
+select @sql = DefaultNamingConvention, @sqlfrom=''''+DefaultNamingConvention+''''
+from cem.ExportTemplate 
+where ExportTemplateID=@ExportTemplateID
+
+--declare @SQL varchar(max)='OAS_{header.providername}_{header.providernum}_{header.sampleyear}_{header.samplemonth}', @sqlfrom varchar(max), @colname varchar(200) set @sqlfrom=''''+@sql+''''
+while charindex('{',@SQL) > 0
+begin
+	set @colname = substring(@SQL, 1 + charindex('{', @SQL),  charindex('}', @SQL) - charindex('{', @SQL) - 1)
+	set @sqlfrom = replace(@sqlfrom,@sqlfrom,'replace('+@sqlfrom+',''{'+@colname+'}'',['+@colname+'])')
+	set @sql = replace(@sql,'{'+@colname+'}','')
+end
+set @sql = 'update #results set FileMakerName='+@sqlfrom
+print substring(@sql,1,8000)
+if len(@Sql)>8000 print '~'+substring(@sql,8001,7000)
+if len(@Sql)>15000 print '~'+substring(@sql,16001,7000)
+exec (@sql)
+if @doRecode=1 and @doDispositionProc=1
+begin
+	set @sql = replace(@sql,'#results','CEM.ExportDataset' + right(100000000+@ExportTemplateID,8))
+	exec (@SQL)
 end
 
 -- drop table #results
