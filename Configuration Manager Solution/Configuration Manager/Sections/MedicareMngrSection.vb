@@ -215,6 +215,10 @@ Public Class MedicareMngrSection
             .DataBindings.Clear()
             .Value = 0
         End With
+        With SSAnnualReturnTargetNumericUpDown
+            .DataBindings.Clear()
+            .Value = 0
+        End With
         With ChangeThresholdNumericUpDown
             .DataBindings.Clear()
             .Value = 0
@@ -227,6 +231,10 @@ Public Class MedicareMngrSection
             .DataBindings.Clear()
             .Value = 0
         End With
+        With SSEstimatedResponseRateNumericUpDown
+            .DataBindings.Clear()
+            .Value = 0
+        End With
         With EstimatedIneligibleRateNumericUpDown
             .DataBindings.Clear()
             .Value = 0
@@ -235,13 +243,13 @@ Public Class MedicareMngrSection
             .DataBindings.Clear()
             .EditValue = Date.MinValue
         End With
+        With SSSwitchToCalcOnDateEdit
+            .DataBindings.Clear()
+            .EditValue = Date.MinValue
+        End With
         With ForceCensusSampleCheckBox
             .DataBindings.Clear()
             .Checked = False
-        End With
-        With PENumberTextBox
-            .DataBindings.Clear()
-            .Text = ""
         End With
         With InactiveCheckBox
             .DataBindings.Clear()
@@ -273,13 +281,15 @@ Public Class MedicareMngrSection
                 .ReadOnly = (Not mMedicareNumber.IsNew)
             End With
             MedicareNameTextBox.DataBindings.Add("Text", mMedicareNumber, "Name", False, DataSourceUpdateMode.OnPropertyChanged)
-            PENumberTextBox.DataBindings.Add("Text", mMedicareNumber, "PENumber", False, DataSourceUpdateMode.OnPropertyChanged)
             AnnualReturnTargetNumericUpDown.DataBindings.Add("Value", mMedicareNumber, "AnnualReturnTarget", False, DataSourceUpdateMode.OnPropertyChanged)
+            SSAnnualReturnTargetNumericUpDown.DataBindings.Add("Value", mMedicareNumber, "SystematicAnnualReturnTarget", False, DataSourceUpdateMode.OnPropertyChanged)
             ChangeThresholdNumericUpDown.DataBindings.Add("Value", mMedicareNumber, "ProportionChangeThresholdDisplay", False, DataSourceUpdateMode.OnPropertyChanged)
             EstimatedAnnualVolumeNumericUpDown.DataBindings.Add("Value", mMedicareNumber, "EstAnnualVolume", False, DataSourceUpdateMode.OnPropertyChanged)
             EstimatedResponseRateNumericUpDown.DataBindings.Add("Value", mMedicareNumber, "EstResponseRateDisplay", False, DataSourceUpdateMode.OnPropertyChanged)
+            SSEstimatedResponseRateNumericUpDown.DataBindings.Add("Value", mMedicareNumber, "SystematicEstRespRate", False, DataSourceUpdateMode.OnPropertyChanged)
             EstimatedIneligibleRateNumericUpDown.DataBindings.Add("Value", mMedicareNumber, "EstIneligibleRateDisplay", False, DataSourceUpdateMode.OnPropertyChanged)
             SwitchToCalcOnDateEdit.DataBindings.Add("EditValue", mMedicareNumber, "SwitchToCalcDate", False, DataSourceUpdateMode.OnPropertyChanged)
+            SSSwitchToCalcOnDateEdit.DataBindings.Add("EditValue", mMedicareNumber, "SystematicSwitchToCalcDate", False, DataSourceUpdateMode.OnPropertyChanged)
             ForceCensusSampleCheckBox.DataBindings.Add("Checked", mMedicareNumber, "CensusForced", False, DataSourceUpdateMode.OnPropertyChanged)
             InactiveCheckBox.DataBindings.Add("Checked", mMedicareNumber, "IsInactive", False, DataSourceUpdateMode.OnPropertyChanged)
 
