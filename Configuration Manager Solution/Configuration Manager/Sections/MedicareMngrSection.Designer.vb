@@ -23,6 +23,21 @@ Partial Class MedicareMngrSection
         Me.MedicareMngrSectionPanel = New Nrc.Framework.WinForms.SectionPanel()
         Me.CAHPSTabControl = New System.Windows.Forms.TabControl()
         Me.HCAHPS = New System.Windows.Forms.TabPage()
+        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.LastCalculatedPanel = New System.Windows.Forms.Panel()
+        Me.LastCalcDateLabel = New System.Windows.Forms.Label()
+        Me.LastCalcDateTextBox = New System.Windows.Forms.TextBox()
+        Me.CalculatedProportionPanel = New System.Windows.Forms.Panel()
+        Me.CalcProportionLabel = New System.Windows.Forms.Label()
+        Me.CalcProportionNumericUpDown = New System.Windows.Forms.NumericUpDown()
+        Me.SamplingLockStatusPanel = New System.Windows.Forms.Panel()
+        Me.SampleLockLabel = New System.Windows.Forms.Label()
+        Me.SamplingLockTextBox = New System.Windows.Forms.TextBox()
+        Me.LastCalcTypePanel = New System.Windows.Forms.Panel()
+        Me.LastCalcTypeLabel = New System.Windows.Forms.Label()
+        Me.LastCalcTypeTextBox = New System.Windows.Forms.TextBox()
+        Me.ProportionUsedPanel = New System.Windows.Forms.Panel()
+        Me.ProportionUsedLabel = New System.Windows.Forms.Label()
         Me.ProportionUsedNumericUpDown = New System.Windows.Forms.NumericUpDown()
         Me.NextCalcGroupBox = New System.Windows.Forms.GroupBox()
         Me.NextCalcTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
@@ -53,15 +68,6 @@ Partial Class MedicareMngrSection
         Me.ForceCensusSampleCheckBox = New System.Windows.Forms.CheckBox()
         Me.AnnualReturnTargetNumericUpDown = New System.Windows.Forms.NumericUpDown()
         Me.AnnualReturnTargetLabel = New System.Windows.Forms.Label()
-        Me.LastCalcTypeTextBox = New System.Windows.Forms.TextBox()
-        Me.ProportionUsedLabel = New System.Windows.Forms.Label()
-        Me.SamplingLockTextBox = New System.Windows.Forms.TextBox()
-        Me.LastCalcTypeLabel = New System.Windows.Forms.Label()
-        Me.SampleLockLabel = New System.Windows.Forms.Label()
-        Me.CalcProportionNumericUpDown = New System.Windows.Forms.NumericUpDown()
-        Me.LastCalcDateTextBox = New System.Windows.Forms.TextBox()
-        Me.CalcProportionLabel = New System.Windows.Forms.Label()
-        Me.LastCalcDateLabel = New System.Windows.Forms.Label()
         Me.OASCAHPS = New System.Windows.Forms.TabPage()
         Me.SSAnnualReturnTargetNumericUpDown = New System.Windows.Forms.NumericUpDown()
         Me.SSAnnualReturnTargetLabel = New System.Windows.Forms.Label()
@@ -90,6 +96,13 @@ Partial Class MedicareMngrSection
         Me.MedicareMngrSectionPanel.SuspendLayout()
         Me.CAHPSTabControl.SuspendLayout()
         Me.HCAHPS.SuspendLayout()
+        Me.TableLayoutPanel1.SuspendLayout()
+        Me.LastCalculatedPanel.SuspendLayout()
+        Me.CalculatedProportionPanel.SuspendLayout()
+        CType(Me.CalcProportionNumericUpDown, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.SamplingLockStatusPanel.SuspendLayout()
+        Me.LastCalcTypePanel.SuspendLayout()
+        Me.ProportionUsedPanel.SuspendLayout()
         CType(Me.ProportionUsedNumericUpDown, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.NextCalcGroupBox.SuspendLayout()
         Me.NextCalcTableLayoutPanel.SuspendLayout()
@@ -109,7 +122,6 @@ Partial Class MedicareMngrSection
         CType(Me.ChangeThresholdNumericUpDown, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.AnnualReturnTargetPanel.SuspendLayout()
         CType(Me.AnnualReturnTargetNumericUpDown, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.CalcProportionNumericUpDown, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.OASCAHPS.SuspendLayout()
         CType(Me.SSAnnualReturnTargetNumericUpDown, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.SSSwitchToCalcOnDateEdit.Properties.VistaTimeProperties, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -151,29 +163,186 @@ Partial Class MedicareMngrSection
         Me.CAHPSTabControl.Location = New System.Drawing.Point(11, 146)
         Me.CAHPSTabControl.Name = "CAHPSTabControl"
         Me.CAHPSTabControl.SelectedIndex = 0
-        Me.CAHPSTabControl.Size = New System.Drawing.Size(1367, 352)
+        Me.CAHPSTabControl.Size = New System.Drawing.Size(1367, 368)
         Me.CAHPSTabControl.TabIndex = 12
         '
         'HCAHPS
         '
-        Me.HCAHPS.Controls.Add(Me.ProportionUsedNumericUpDown)
+        Me.HCAHPS.Controls.Add(Me.TableLayoutPanel1)
         Me.HCAHPS.Controls.Add(Me.NextCalcGroupBox)
-        Me.HCAHPS.Controls.Add(Me.LastCalcTypeTextBox)
-        Me.HCAHPS.Controls.Add(Me.ProportionUsedLabel)
-        Me.HCAHPS.Controls.Add(Me.SamplingLockTextBox)
-        Me.HCAHPS.Controls.Add(Me.LastCalcTypeLabel)
-        Me.HCAHPS.Controls.Add(Me.SampleLockLabel)
-        Me.HCAHPS.Controls.Add(Me.CalcProportionNumericUpDown)
-        Me.HCAHPS.Controls.Add(Me.LastCalcDateTextBox)
-        Me.HCAHPS.Controls.Add(Me.CalcProportionLabel)
-        Me.HCAHPS.Controls.Add(Me.LastCalcDateLabel)
         Me.HCAHPS.Location = New System.Drawing.Point(4, 30)
         Me.HCAHPS.Name = "HCAHPS"
         Me.HCAHPS.Padding = New System.Windows.Forms.Padding(3)
-        Me.HCAHPS.Size = New System.Drawing.Size(1359, 318)
+        Me.HCAHPS.Size = New System.Drawing.Size(1359, 334)
         Me.HCAHPS.TabIndex = 0
         Me.HCAHPS.Text = "HCAHPS"
         Me.HCAHPS.UseVisualStyleBackColor = True
+        '
+        'TableLayoutPanel1
+        '
+        Me.TableLayoutPanel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.TableLayoutPanel1.ColumnCount = 2
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.81845!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.18155!))
+        Me.TableLayoutPanel1.Controls.Add(Me.LastCalculatedPanel, 0, 1)
+        Me.TableLayoutPanel1.Controls.Add(Me.CalculatedProportionPanel, 0, 2)
+        Me.TableLayoutPanel1.Controls.Add(Me.SamplingLockStatusPanel, 1, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.LastCalcTypePanel, 1, 1)
+        Me.TableLayoutPanel1.Controls.Add(Me.ProportionUsedPanel, 1, 2)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(6, 0)
+        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+        Me.TableLayoutPanel1.RowCount = 3
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(1357, 114)
+        Me.TableLayoutPanel1.TabIndex = 2
+        '
+        'LastCalculatedPanel
+        '
+        Me.LastCalculatedPanel.Controls.Add(Me.LastCalcDateLabel)
+        Me.LastCalculatedPanel.Controls.Add(Me.LastCalcDateTextBox)
+        Me.LastCalculatedPanel.Location = New System.Drawing.Point(3, 41)
+        Me.LastCalculatedPanel.Name = "LastCalculatedPanel"
+        Me.LastCalculatedPanel.Size = New System.Drawing.Size(682, 27)
+        Me.LastCalculatedPanel.TabIndex = 0
+        '
+        'LastCalcDateLabel
+        '
+        Me.LastCalcDateLabel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.LastCalcDateLabel.AutoSize = True
+        Me.LastCalcDateLabel.Location = New System.Drawing.Point(2, 3)
+        Me.LastCalcDateLabel.Name = "LastCalcDateLabel"
+        Me.LastCalcDateLabel.Size = New System.Drawing.Size(155, 21)
+        Me.LastCalcDateLabel.TabIndex = 0
+        Me.LastCalcDateLabel.Text = "Last Calculated On:"
+        '
+        'LastCalcDateTextBox
+        '
+        Me.LastCalcDateTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.MedicareErrorProvider.SetIconAlignment(Me.LastCalcDateTextBox, System.Windows.Forms.ErrorIconAlignment.MiddleLeft)
+        Me.LastCalcDateTextBox.Location = New System.Drawing.Point(127, 0)
+        Me.LastCalcDateTextBox.Name = "LastCalcDateTextBox"
+        Me.LastCalcDateTextBox.ReadOnly = True
+        Me.LastCalcDateTextBox.Size = New System.Drawing.Size(533, 27)
+        Me.LastCalcDateTextBox.TabIndex = 1
+        '
+        'CalculatedProportionPanel
+        '
+        Me.CalculatedProportionPanel.Controls.Add(Me.CalcProportionLabel)
+        Me.CalculatedProportionPanel.Controls.Add(Me.CalcProportionNumericUpDown)
+        Me.CalculatedProportionPanel.Location = New System.Drawing.Point(3, 79)
+        Me.CalculatedProportionPanel.Name = "CalculatedProportionPanel"
+        Me.CalculatedProportionPanel.Size = New System.Drawing.Size(682, 28)
+        Me.CalculatedProportionPanel.TabIndex = 1
+        '
+        'CalcProportionLabel
+        '
+        Me.CalcProportionLabel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.CalcProportionLabel.AutoSize = True
+        Me.CalcProportionLabel.Location = New System.Drawing.Point(2, 2)
+        Me.CalcProportionLabel.Name = "CalcProportionLabel"
+        Me.CalcProportionLabel.Size = New System.Drawing.Size(174, 21)
+        Me.CalcProportionLabel.TabIndex = 0
+        Me.CalcProportionLabel.Text = "Calculated Proportion:"
+        '
+        'CalcProportionNumericUpDown
+        '
+        Me.CalcProportionNumericUpDown.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.CalcProportionNumericUpDown.DecimalPlaces = 4
+        Me.CalcProportionNumericUpDown.Enabled = False
+        Me.MedicareErrorProvider.SetIconAlignment(Me.CalcProportionNumericUpDown, System.Windows.Forms.ErrorIconAlignment.MiddleLeft)
+        Me.CalcProportionNumericUpDown.Increment = New Decimal(New Integer() {1, 0, 0, 262144})
+        Me.CalcProportionNumericUpDown.Location = New System.Drawing.Point(127, 0)
+        Me.CalcProportionNumericUpDown.Name = "CalcProportionNumericUpDown"
+        Me.CalcProportionNumericUpDown.ReadOnly = True
+        Me.CalcProportionNumericUpDown.Size = New System.Drawing.Size(533, 27)
+        Me.CalcProportionNumericUpDown.TabIndex = 1
+        '
+        'SamplingLockStatusPanel
+        '
+        Me.SamplingLockStatusPanel.Controls.Add(Me.SampleLockLabel)
+        Me.SamplingLockStatusPanel.Controls.Add(Me.SamplingLockTextBox)
+        Me.SamplingLockStatusPanel.Location = New System.Drawing.Point(692, 3)
+        Me.SamplingLockStatusPanel.Name = "SamplingLockStatusPanel"
+        Me.SamplingLockStatusPanel.Size = New System.Drawing.Size(656, 27)
+        Me.SamplingLockStatusPanel.TabIndex = 2
+        '
+        'SampleLockLabel
+        '
+        Me.SampleLockLabel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.SampleLockLabel.AutoSize = True
+        Me.SampleLockLabel.Location = New System.Drawing.Point(-1, 6)
+        Me.SampleLockLabel.Name = "SampleLockLabel"
+        Me.SampleLockLabel.Size = New System.Drawing.Size(173, 21)
+        Me.SampleLockLabel.TabIndex = 0
+        Me.SampleLockLabel.Text = "Sampling Lock Status:"
+        '
+        'SamplingLockTextBox
+        '
+        Me.SamplingLockTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.MedicareErrorProvider.SetIconAlignment(Me.SamplingLockTextBox, System.Windows.Forms.ErrorIconAlignment.MiddleLeft)
+        Me.SamplingLockTextBox.Location = New System.Drawing.Point(119, 3)
+        Me.SamplingLockTextBox.Name = "SamplingLockTextBox"
+        Me.SamplingLockTextBox.ReadOnly = True
+        Me.SamplingLockTextBox.Size = New System.Drawing.Size(523, 27)
+        Me.SamplingLockTextBox.TabIndex = 1
+        '
+        'LastCalcTypePanel
+        '
+        Me.LastCalcTypePanel.Controls.Add(Me.LastCalcTypeLabel)
+        Me.LastCalcTypePanel.Controls.Add(Me.LastCalcTypeTextBox)
+        Me.LastCalcTypePanel.Location = New System.Drawing.Point(692, 41)
+        Me.LastCalcTypePanel.Name = "LastCalcTypePanel"
+        Me.LastCalcTypePanel.Size = New System.Drawing.Size(656, 27)
+        Me.LastCalcTypePanel.TabIndex = 3
+        '
+        'LastCalcTypeLabel
+        '
+        Me.LastCalcTypeLabel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.LastCalcTypeLabel.AutoSize = True
+        Me.LastCalcTypeLabel.Location = New System.Drawing.Point(-1, 3)
+        Me.LastCalcTypeLabel.Name = "LastCalcTypeLabel"
+        Me.LastCalcTypeLabel.Size = New System.Drawing.Size(174, 21)
+        Me.LastCalcTypeLabel.TabIndex = 0
+        Me.LastCalcTypeLabel.Text = "Last Calculation Type:"
+        '
+        'LastCalcTypeTextBox
+        '
+        Me.LastCalcTypeTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.MedicareErrorProvider.SetIconAlignment(Me.LastCalcTypeTextBox, System.Windows.Forms.ErrorIconAlignment.MiddleLeft)
+        Me.LastCalcTypeTextBox.Location = New System.Drawing.Point(119, 0)
+        Me.LastCalcTypeTextBox.Name = "LastCalcTypeTextBox"
+        Me.LastCalcTypeTextBox.ReadOnly = True
+        Me.LastCalcTypeTextBox.Size = New System.Drawing.Size(523, 27)
+        Me.LastCalcTypeTextBox.TabIndex = 1
+        '
+        'ProportionUsedPanel
+        '
+        Me.ProportionUsedPanel.Controls.Add(Me.ProportionUsedLabel)
+        Me.ProportionUsedPanel.Controls.Add(Me.ProportionUsedNumericUpDown)
+        Me.ProportionUsedPanel.Location = New System.Drawing.Point(692, 79)
+        Me.ProportionUsedPanel.Name = "ProportionUsedPanel"
+        Me.ProportionUsedPanel.Size = New System.Drawing.Size(656, 28)
+        Me.ProportionUsedPanel.TabIndex = 4
+        '
+        'ProportionUsedLabel
+        '
+        Me.ProportionUsedLabel.AutoSize = True
+        Me.ProportionUsedLabel.Location = New System.Drawing.Point(-1, 2)
+        Me.ProportionUsedLabel.Name = "ProportionUsedLabel"
+        Me.ProportionUsedLabel.Size = New System.Drawing.Size(134, 21)
+        Me.ProportionUsedLabel.TabIndex = 0
+        Me.ProportionUsedLabel.Text = "Proportion Used:"
         '
         'ProportionUsedNumericUpDown
         '
@@ -183,10 +352,10 @@ Partial Class MedicareMngrSection
         Me.ProportionUsedNumericUpDown.Enabled = False
         Me.MedicareErrorProvider.SetIconAlignment(Me.ProportionUsedNumericUpDown, System.Windows.Forms.ErrorIconAlignment.MiddleLeft)
         Me.ProportionUsedNumericUpDown.Increment = New Decimal(New Integer() {1, 0, 0, 262144})
-        Me.ProportionUsedNumericUpDown.Location = New System.Drawing.Point(790, 63)
+        Me.ProportionUsedNumericUpDown.Location = New System.Drawing.Point(119, 0)
         Me.ProportionUsedNumericUpDown.Name = "ProportionUsedNumericUpDown"
         Me.ProportionUsedNumericUpDown.ReadOnly = True
-        Me.ProportionUsedNumericUpDown.Size = New System.Drawing.Size(576, 27)
+        Me.ProportionUsedNumericUpDown.Size = New System.Drawing.Size(523, 27)
         Me.ProportionUsedNumericUpDown.TabIndex = 1
         '
         'NextCalcGroupBox
@@ -194,9 +363,9 @@ Partial Class MedicareMngrSection
         Me.NextCalcGroupBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.NextCalcGroupBox.Controls.Add(Me.NextCalcTableLayoutPanel)
-        Me.NextCalcGroupBox.Location = New System.Drawing.Point(6, 93)
+        Me.NextCalcGroupBox.Location = New System.Drawing.Point(3, 112)
         Me.NextCalcGroupBox.Name = "NextCalcGroupBox"
-        Me.NextCalcGroupBox.Size = New System.Drawing.Size(1370, 229)
+        Me.NextCalcGroupBox.Size = New System.Drawing.Size(1351, 229)
         Me.NextCalcGroupBox.TabIndex = 0
         Me.NextCalcGroupBox.TabStop = False
         Me.NextCalcGroupBox.Text = "Values To Be Used For Next Calculation"
@@ -219,17 +388,17 @@ Partial Class MedicareMngrSection
         Me.NextCalcTableLayoutPanel.RowCount = 2
         Me.NextCalcTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 52.0!))
         Me.NextCalcTableLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.NextCalcTableLayoutPanel.Size = New System.Drawing.Size(1358, 204)
+        Me.NextCalcTableLayoutPanel.Size = New System.Drawing.Size(1339, 204)
         Me.NextCalcTableLayoutPanel.TabIndex = 0
         '
         'HistoricPanel
         '
         Me.HistoricPanel.Controls.Add(Me.HistoricGroupBox)
         Me.HistoricPanel.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.HistoricPanel.Location = New System.Drawing.Point(679, 52)
+        Me.HistoricPanel.Location = New System.Drawing.Point(669, 52)
         Me.HistoricPanel.Margin = New System.Windows.Forms.Padding(0)
         Me.HistoricPanel.Name = "HistoricPanel"
-        Me.HistoricPanel.Size = New System.Drawing.Size(679, 152)
+        Me.HistoricPanel.Size = New System.Drawing.Size(670, 152)
         Me.HistoricPanel.TabIndex = 3
         '
         'HistoricGroupBox
@@ -246,13 +415,13 @@ Partial Class MedicareMngrSection
         Me.HistoricGroupBox.Controls.Add(Me.HistoricRadioButton)
         Me.HistoricGroupBox.Location = New System.Drawing.Point(6, 13)
         Me.HistoricGroupBox.Name = "HistoricGroupBox"
-        Me.HistoricGroupBox.Size = New System.Drawing.Size(670, 136)
+        Me.HistoricGroupBox.Size = New System.Drawing.Size(661, 136)
         Me.HistoricGroupBox.TabIndex = 0
         Me.HistoricGroupBox.TabStop = False
         '
         'HistoricWarningPictureBox
         '
-        Me.HistoricWarningPictureBox.Image = Global.NRC.Qualisys.ConfigurationManager.My.Resources.Resources.Caution16
+        Me.HistoricWarningPictureBox.Image = Global.Nrc.Qualisys.ConfigurationManager.My.Resources.Resources.Caution16
         Me.HistoricWarningPictureBox.Location = New System.Drawing.Point(10, 72)
         Me.HistoricWarningPictureBox.Name = "HistoricWarningPictureBox"
         Me.HistoricWarningPictureBox.Size = New System.Drawing.Size(20, 20)
@@ -265,7 +434,7 @@ Partial Class MedicareMngrSection
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.HistoricWarningLabel.Location = New System.Drawing.Point(30, 72)
         Me.HistoricWarningLabel.Name = "HistoricWarningLabel"
-        Me.HistoricWarningLabel.Size = New System.Drawing.Size(631, 61)
+        Me.HistoricWarningLabel.Size = New System.Drawing.Size(622, 61)
         Me.HistoricWarningLabel.TabIndex = 5
         Me.HistoricWarningLabel.Text = "There is insufficient data available.  Selecting this option will force the syste" & _
     "m to evaluate data availability at each calculation."
@@ -281,7 +450,7 @@ Partial Class MedicareMngrSection
         Me.HistoricResponseRateNumericUpDown.Location = New System.Drawing.Point(136, 48)
         Me.HistoricResponseRateNumericUpDown.Name = "HistoricResponseRateNumericUpDown"
         Me.HistoricResponseRateNumericUpDown.ReadOnly = True
-        Me.HistoricResponseRateNumericUpDown.Size = New System.Drawing.Size(525, 27)
+        Me.HistoricResponseRateNumericUpDown.Size = New System.Drawing.Size(511, 27)
         Me.HistoricResponseRateNumericUpDown.TabIndex = 4
         '
         'AnnualEligibleVolumeNumericUpDown
@@ -294,7 +463,7 @@ Partial Class MedicareMngrSection
         Me.AnnualEligibleVolumeNumericUpDown.Maximum = New Decimal(New Integer() {999999999, 0, 0, 0})
         Me.AnnualEligibleVolumeNumericUpDown.Name = "AnnualEligibleVolumeNumericUpDown"
         Me.AnnualEligibleVolumeNumericUpDown.ReadOnly = True
-        Me.AnnualEligibleVolumeNumericUpDown.Size = New System.Drawing.Size(525, 27)
+        Me.AnnualEligibleVolumeNumericUpDown.Size = New System.Drawing.Size(511, 27)
         Me.AnnualEligibleVolumeNumericUpDown.TabIndex = 2
         '
         'HistoricResponseRateLabel
@@ -333,7 +502,7 @@ Partial Class MedicareMngrSection
         Me.EstimatedPanel.Location = New System.Drawing.Point(0, 52)
         Me.EstimatedPanel.Margin = New System.Windows.Forms.Padding(0)
         Me.EstimatedPanel.Name = "EstimatedPanel"
-        Me.EstimatedPanel.Size = New System.Drawing.Size(679, 152)
+        Me.EstimatedPanel.Size = New System.Drawing.Size(669, 152)
         Me.EstimatedPanel.TabIndex = 2
         '
         'EstimatedGroupBox
@@ -352,7 +521,7 @@ Partial Class MedicareMngrSection
         Me.EstimatedGroupBox.Controls.Add(Me.EstimatedAnnualVolumeLabel)
         Me.EstimatedGroupBox.Location = New System.Drawing.Point(3, 13)
         Me.EstimatedGroupBox.Name = "EstimatedGroupBox"
-        Me.EstimatedGroupBox.Size = New System.Drawing.Size(670, 136)
+        Me.EstimatedGroupBox.Size = New System.Drawing.Size(660, 136)
         Me.EstimatedGroupBox.TabIndex = 0
         Me.EstimatedGroupBox.TabStop = False
         '
@@ -369,7 +538,7 @@ Partial Class MedicareMngrSection
         Me.SwitchToCalcOnDateEdit.Properties.LookAndFeel.UseWindowsXPTheme = True
         Me.SwitchToCalcOnDateEdit.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor
         Me.SwitchToCalcOnDateEdit.Properties.VistaTimeProperties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton()})
-        Me.SwitchToCalcOnDateEdit.Size = New System.Drawing.Size(540, 26)
+        Me.SwitchToCalcOnDateEdit.Size = New System.Drawing.Size(530, 26)
         Me.SwitchToCalcOnDateEdit.TabIndex = 8
         '
         'EstimatedRadioButton
@@ -411,7 +580,7 @@ Partial Class MedicareMngrSection
         Me.EstimatedIneligibleRateNumericUpDown.Location = New System.Drawing.Point(121, 75)
         Me.EstimatedIneligibleRateNumericUpDown.Maximum = New Decimal(New Integer() {99, 0, 0, 0})
         Me.EstimatedIneligibleRateNumericUpDown.Name = "EstimatedIneligibleRateNumericUpDown"
-        Me.EstimatedIneligibleRateNumericUpDown.Size = New System.Drawing.Size(540, 27)
+        Me.EstimatedIneligibleRateNumericUpDown.Size = New System.Drawing.Size(530, 27)
         Me.EstimatedIneligibleRateNumericUpDown.TabIndex = 6
         '
         'EstimatedResponseRateNumericUpDown
@@ -423,7 +592,7 @@ Partial Class MedicareMngrSection
         Me.EstimatedResponseRateNumericUpDown.Increment = New Decimal(New Integer() {1, 0, 0, 262144})
         Me.EstimatedResponseRateNumericUpDown.Location = New System.Drawing.Point(121, 48)
         Me.EstimatedResponseRateNumericUpDown.Name = "EstimatedResponseRateNumericUpDown"
-        Me.EstimatedResponseRateNumericUpDown.Size = New System.Drawing.Size(540, 27)
+        Me.EstimatedResponseRateNumericUpDown.Size = New System.Drawing.Size(530, 27)
         Me.EstimatedResponseRateNumericUpDown.TabIndex = 4
         '
         'EstimatedResponseRateLabel
@@ -443,7 +612,7 @@ Partial Class MedicareMngrSection
         Me.EstimatedAnnualVolumeNumericUpDown.Location = New System.Drawing.Point(121, 21)
         Me.EstimatedAnnualVolumeNumericUpDown.Maximum = New Decimal(New Integer() {999999999, 0, 0, 0})
         Me.EstimatedAnnualVolumeNumericUpDown.Name = "EstimatedAnnualVolumeNumericUpDown"
-        Me.EstimatedAnnualVolumeNumericUpDown.Size = New System.Drawing.Size(540, 27)
+        Me.EstimatedAnnualVolumeNumericUpDown.Size = New System.Drawing.Size(530, 27)
         Me.EstimatedAnnualVolumeNumericUpDown.TabIndex = 2
         '
         'EstimatedAnnualVolumeLabel
@@ -460,10 +629,10 @@ Partial Class MedicareMngrSection
         Me.ChangeThresholdPanel.Controls.Add(Me.ChangeThresholdNumericUpDown)
         Me.ChangeThresholdPanel.Controls.Add(Me.ChangeThresholdLabel)
         Me.ChangeThresholdPanel.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ChangeThresholdPanel.Location = New System.Drawing.Point(679, 0)
+        Me.ChangeThresholdPanel.Location = New System.Drawing.Point(669, 0)
         Me.ChangeThresholdPanel.Margin = New System.Windows.Forms.Padding(0)
         Me.ChangeThresholdPanel.Name = "ChangeThresholdPanel"
-        Me.ChangeThresholdPanel.Size = New System.Drawing.Size(679, 52)
+        Me.ChangeThresholdPanel.Size = New System.Drawing.Size(670, 52)
         Me.ChangeThresholdPanel.TabIndex = 1
         '
         'ChangeThresholdNumericUpDown
@@ -475,7 +644,7 @@ Partial Class MedicareMngrSection
         Me.ChangeThresholdNumericUpDown.Increment = New Decimal(New Integer() {1, 0, 0, 262144})
         Me.ChangeThresholdNumericUpDown.Location = New System.Drawing.Point(165, 5)
         Me.ChangeThresholdNumericUpDown.Name = "ChangeThresholdNumericUpDown"
-        Me.ChangeThresholdNumericUpDown.Size = New System.Drawing.Size(511, 27)
+        Me.ChangeThresholdNumericUpDown.Size = New System.Drawing.Size(488, 27)
         Me.ChangeThresholdNumericUpDown.TabIndex = 1
         '
         'ChangeThresholdLabel
@@ -496,7 +665,7 @@ Partial Class MedicareMngrSection
         Me.AnnualReturnTargetPanel.Location = New System.Drawing.Point(0, 0)
         Me.AnnualReturnTargetPanel.Margin = New System.Windows.Forms.Padding(0)
         Me.AnnualReturnTargetPanel.Name = "AnnualReturnTargetPanel"
-        Me.AnnualReturnTargetPanel.Size = New System.Drawing.Size(679, 52)
+        Me.AnnualReturnTargetPanel.Size = New System.Drawing.Size(669, 52)
         Me.AnnualReturnTargetPanel.TabIndex = 0
         '
         'ForceCensusSampleCheckBox
@@ -514,10 +683,10 @@ Partial Class MedicareMngrSection
         Me.AnnualReturnTargetNumericUpDown.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.MedicareErrorProvider.SetIconAlignment(Me.AnnualReturnTargetNumericUpDown, System.Windows.Forms.ErrorIconAlignment.MiddleLeft)
-        Me.AnnualReturnTargetNumericUpDown.Location = New System.Drawing.Point(124, 5)
+        Me.AnnualReturnTargetNumericUpDown.Location = New System.Drawing.Point(127, 5)
         Me.AnnualReturnTargetNumericUpDown.Maximum = New Decimal(New Integer() {99999, 0, 0, 0})
         Me.AnnualReturnTargetNumericUpDown.Name = "AnnualReturnTargetNumericUpDown"
-        Me.AnnualReturnTargetNumericUpDown.Size = New System.Drawing.Size(546, 27)
+        Me.AnnualReturnTargetNumericUpDown.Size = New System.Drawing.Size(533, 27)
         Me.AnnualReturnTargetNumericUpDown.TabIndex = 1
         '
         'AnnualReturnTargetLabel
@@ -529,106 +698,6 @@ Partial Class MedicareMngrSection
         Me.AnnualReturnTargetLabel.TabIndex = 0
         Me.AnnualReturnTargetLabel.Text = "Annual Return Target:"
         '
-        'LastCalcTypeTextBox
-        '
-        Me.LastCalcTypeTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.MedicareErrorProvider.SetIconAlignment(Me.LastCalcTypeTextBox, System.Windows.Forms.ErrorIconAlignment.MiddleLeft)
-        Me.LastCalcTypeTextBox.Location = New System.Drawing.Point(790, 33)
-        Me.LastCalcTypeTextBox.Name = "LastCalcTypeTextBox"
-        Me.LastCalcTypeTextBox.ReadOnly = True
-        Me.LastCalcTypeTextBox.Size = New System.Drawing.Size(576, 27)
-        Me.LastCalcTypeTextBox.TabIndex = 1
-        '
-        'ProportionUsedLabel
-        '
-        Me.ProportionUsedLabel.AutoSize = True
-        Me.ProportionUsedLabel.Location = New System.Drawing.Point(671, 66)
-        Me.ProportionUsedLabel.Name = "ProportionUsedLabel"
-        Me.ProportionUsedLabel.Size = New System.Drawing.Size(134, 21)
-        Me.ProportionUsedLabel.TabIndex = 0
-        Me.ProportionUsedLabel.Text = "Proportion Used:"
-        '
-        'SamplingLockTextBox
-        '
-        Me.SamplingLockTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.MedicareErrorProvider.SetIconAlignment(Me.SamplingLockTextBox, System.Windows.Forms.ErrorIconAlignment.MiddleLeft)
-        Me.SamplingLockTextBox.Location = New System.Drawing.Point(790, 3)
-        Me.SamplingLockTextBox.Name = "SamplingLockTextBox"
-        Me.SamplingLockTextBox.ReadOnly = True
-        Me.SamplingLockTextBox.Size = New System.Drawing.Size(569, 27)
-        Me.SamplingLockTextBox.TabIndex = 1
-        '
-        'LastCalcTypeLabel
-        '
-        Me.LastCalcTypeLabel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.LastCalcTypeLabel.AutoSize = True
-        Me.LastCalcTypeLabel.Location = New System.Drawing.Point(671, 36)
-        Me.LastCalcTypeLabel.Name = "LastCalcTypeLabel"
-        Me.LastCalcTypeLabel.Size = New System.Drawing.Size(174, 21)
-        Me.LastCalcTypeLabel.TabIndex = 0
-        Me.LastCalcTypeLabel.Text = "Last Calculation Type:"
-        '
-        'SampleLockLabel
-        '
-        Me.SampleLockLabel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.SampleLockLabel.AutoSize = True
-        Me.SampleLockLabel.Location = New System.Drawing.Point(666, 0)
-        Me.SampleLockLabel.Name = "SampleLockLabel"
-        Me.SampleLockLabel.Size = New System.Drawing.Size(173, 21)
-        Me.SampleLockLabel.TabIndex = 0
-        Me.SampleLockLabel.Text = "Sampling Lock Status:"
-        '
-        'CalcProportionNumericUpDown
-        '
-        Me.CalcProportionNumericUpDown.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.CalcProportionNumericUpDown.DecimalPlaces = 4
-        Me.CalcProportionNumericUpDown.Enabled = False
-        Me.MedicareErrorProvider.SetIconAlignment(Me.CalcProportionNumericUpDown, System.Windows.Forms.ErrorIconAlignment.MiddleLeft)
-        Me.CalcProportionNumericUpDown.Increment = New Decimal(New Integer() {1, 0, 0, 262144})
-        Me.CalcProportionNumericUpDown.Location = New System.Drawing.Point(119, 60)
-        Me.CalcProportionNumericUpDown.Name = "CalcProportionNumericUpDown"
-        Me.CalcProportionNumericUpDown.ReadOnly = True
-        Me.CalcProportionNumericUpDown.Size = New System.Drawing.Size(574, 27)
-        Me.CalcProportionNumericUpDown.TabIndex = 1
-        '
-        'LastCalcDateTextBox
-        '
-        Me.LastCalcDateTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.MedicareErrorProvider.SetIconAlignment(Me.LastCalcDateTextBox, System.Windows.Forms.ErrorIconAlignment.MiddleLeft)
-        Me.LastCalcDateTextBox.Location = New System.Drawing.Point(119, 33)
-        Me.LastCalcDateTextBox.Name = "LastCalcDateTextBox"
-        Me.LastCalcDateTextBox.ReadOnly = True
-        Me.LastCalcDateTextBox.Size = New System.Drawing.Size(574, 27)
-        Me.LastCalcDateTextBox.TabIndex = 1
-        '
-        'CalcProportionLabel
-        '
-        Me.CalcProportionLabel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.CalcProportionLabel.AutoSize = True
-        Me.CalcProportionLabel.Location = New System.Drawing.Point(-1, 63)
-        Me.CalcProportionLabel.Name = "CalcProportionLabel"
-        Me.CalcProportionLabel.Size = New System.Drawing.Size(174, 21)
-        Me.CalcProportionLabel.TabIndex = 0
-        Me.CalcProportionLabel.Text = "Calculated Proportion:"
-        '
-        'LastCalcDateLabel
-        '
-        Me.LastCalcDateLabel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.LastCalcDateLabel.AutoSize = True
-        Me.LastCalcDateLabel.Location = New System.Drawing.Point(-1, 36)
-        Me.LastCalcDateLabel.Name = "LastCalcDateLabel"
-        Me.LastCalcDateLabel.Size = New System.Drawing.Size(155, 21)
-        Me.LastCalcDateLabel.TabIndex = 0
-        Me.LastCalcDateLabel.Text = "Last Calculated On:"
-        '
         'OASCAHPS
         '
         Me.OASCAHPS.Controls.Add(Me.SSAnnualReturnTargetNumericUpDown)
@@ -637,10 +706,10 @@ Partial Class MedicareMngrSection
         Me.OASCAHPS.Controls.Add(Me.SSEstimatedResponseRateLabel)
         Me.OASCAHPS.Controls.Add(Me.SSSwitchToCalcOnLabel)
         Me.OASCAHPS.Controls.Add(Me.SSEstimatedResponseRateNumericUpDown)
-        Me.OASCAHPS.Location = New System.Drawing.Point(4, 30)
+        Me.OASCAHPS.Location = New System.Drawing.Point(4, 29)
         Me.OASCAHPS.Name = "OASCAHPS"
         Me.OASCAHPS.Padding = New System.Windows.Forms.Padding(3)
-        Me.OASCAHPS.Size = New System.Drawing.Size(1359, 318)
+        Me.OASCAHPS.Size = New System.Drawing.Size(1359, 335)
         Me.OASCAHPS.TabIndex = 1
         Me.OASCAHPS.Text = "OASCAHPS (Systematic)"
         Me.OASCAHPS.UseVisualStyleBackColor = True
@@ -650,16 +719,16 @@ Partial Class MedicareMngrSection
         Me.SSAnnualReturnTargetNumericUpDown.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.MedicareErrorProvider.SetIconAlignment(Me.SSAnnualReturnTargetNumericUpDown, System.Windows.Forms.ErrorIconAlignment.MiddleLeft)
-        Me.SSAnnualReturnTargetNumericUpDown.Location = New System.Drawing.Point(132, 6)
+        Me.SSAnnualReturnTargetNumericUpDown.Location = New System.Drawing.Point(150, 42)
         Me.SSAnnualReturnTargetNumericUpDown.Maximum = New Decimal(New Integer() {99999, 0, 0, 0})
         Me.SSAnnualReturnTargetNumericUpDown.Name = "SSAnnualReturnTargetNumericUpDown"
-        Me.SSAnnualReturnTargetNumericUpDown.Size = New System.Drawing.Size(507, 27)
+        Me.SSAnnualReturnTargetNumericUpDown.Size = New System.Drawing.Size(485, 27)
         Me.SSAnnualReturnTargetNumericUpDown.TabIndex = 4
         '
         'SSAnnualReturnTargetLabel
         '
         Me.SSAnnualReturnTargetLabel.AutoSize = True
-        Me.SSAnnualReturnTargetLabel.Location = New System.Drawing.Point(2, 9)
+        Me.SSAnnualReturnTargetLabel.Location = New System.Drawing.Point(6, 44)
         Me.SSAnnualReturnTargetLabel.Name = "SSAnnualReturnTargetLabel"
         Me.SSAnnualReturnTargetLabel.Size = New System.Drawing.Size(199, 21)
         Me.SSAnnualReturnTargetLabel.TabIndex = 3
@@ -671,20 +740,20 @@ Partial Class MedicareMngrSection
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.SSSwitchToCalcOnDateEdit.EditValue = Nothing
         Me.MedicareErrorProvider.SetIconAlignment(Me.SSSwitchToCalcOnDateEdit, System.Windows.Forms.ErrorIconAlignment.MiddleLeft)
-        Me.SSSwitchToCalcOnDateEdit.Location = New System.Drawing.Point(132, 72)
+        Me.SSSwitchToCalcOnDateEdit.Location = New System.Drawing.Point(150, 108)
         Me.SSSwitchToCalcOnDateEdit.Name = "SSSwitchToCalcOnDateEdit"
         Me.SSSwitchToCalcOnDateEdit.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
         Me.SSSwitchToCalcOnDateEdit.Properties.LookAndFeel.UseDefaultLookAndFeel = False
         Me.SSSwitchToCalcOnDateEdit.Properties.LookAndFeel.UseWindowsXPTheme = True
         Me.SSSwitchToCalcOnDateEdit.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor
         Me.SSSwitchToCalcOnDateEdit.Properties.VistaTimeProperties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton()})
-        Me.SSSwitchToCalcOnDateEdit.Size = New System.Drawing.Size(507, 28)
+        Me.SSSwitchToCalcOnDateEdit.Size = New System.Drawing.Size(485, 26)
         Me.SSSwitchToCalcOnDateEdit.TabIndex = 10
         '
         'SSEstimatedResponseRateLabel
         '
         Me.SSEstimatedResponseRateLabel.AutoSize = True
-        Me.SSEstimatedResponseRateLabel.Location = New System.Drawing.Point(10, 42)
+        Me.SSEstimatedResponseRateLabel.Location = New System.Drawing.Point(6, 78)
         Me.SSEstimatedResponseRateLabel.Name = "SSEstimatedResponseRateLabel"
         Me.SSEstimatedResponseRateLabel.Size = New System.Drawing.Size(151, 21)
         Me.SSEstimatedResponseRateLabel.TabIndex = 5
@@ -693,7 +762,7 @@ Partial Class MedicareMngrSection
         'SSSwitchToCalcOnLabel
         '
         Me.SSSwitchToCalcOnLabel.AutoSize = True
-        Me.SSSwitchToCalcOnLabel.Location = New System.Drawing.Point(10, 77)
+        Me.SSSwitchToCalcOnLabel.Location = New System.Drawing.Point(6, 113)
         Me.SSSwitchToCalcOnLabel.Name = "SSSwitchToCalcOnLabel"
         Me.SSSwitchToCalcOnLabel.Size = New System.Drawing.Size(174, 21)
         Me.SSSwitchToCalcOnLabel.TabIndex = 9
@@ -706,9 +775,9 @@ Partial Class MedicareMngrSection
         Me.SSEstimatedResponseRateNumericUpDown.DecimalPlaces = 4
         Me.MedicareErrorProvider.SetIconAlignment(Me.SSEstimatedResponseRateNumericUpDown, System.Windows.Forms.ErrorIconAlignment.MiddleLeft)
         Me.SSEstimatedResponseRateNumericUpDown.Increment = New Decimal(New Integer() {1, 0, 0, 262144})
-        Me.SSEstimatedResponseRateNumericUpDown.Location = New System.Drawing.Point(132, 39)
+        Me.SSEstimatedResponseRateNumericUpDown.Location = New System.Drawing.Point(150, 75)
         Me.SSEstimatedResponseRateNumericUpDown.Name = "SSEstimatedResponseRateNumericUpDown"
-        Me.SSEstimatedResponseRateNumericUpDown.Size = New System.Drawing.Size(507, 27)
+        Me.SSEstimatedResponseRateNumericUpDown.Size = New System.Drawing.Size(485, 27)
         Me.SSEstimatedResponseRateNumericUpDown.TabIndex = 6
         '
         'CurrentTableLayoutPanel
@@ -801,7 +870,7 @@ Partial Class MedicareMngrSection
         Me.MedicareErrorProvider.SetIconAlignment(Me.MedicareNameTextBox, System.Windows.Forms.ErrorIconAlignment.MiddleLeft)
         Me.MedicareNameTextBox.Location = New System.Drawing.Point(123, 4)
         Me.MedicareNameTextBox.Name = "MedicareNameTextBox"
-        Me.MedicareNameTextBox.Size = New System.Drawing.Size(1244, 27)
+        Me.MedicareNameTextBox.Size = New System.Drawing.Size(1240, 27)
         Me.MedicareNameTextBox.TabIndex = 1
         '
         'MedicareNameLabel
@@ -866,7 +935,7 @@ Partial Class MedicareMngrSection
         '
         'MedicareReCalcTSButton
         '
-        Me.MedicareReCalcTSButton.Image = Global.NRC.Qualisys.ConfigurationManager.My.Resources.Resources.MagicButton
+        Me.MedicareReCalcTSButton.Image = Global.Nrc.Qualisys.ConfigurationManager.My.Resources.Resources.MagicButton
         Me.MedicareReCalcTSButton.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.MedicareReCalcTSButton.Name = "MedicareReCalcTSButton"
         Me.MedicareReCalcTSButton.Size = New System.Drawing.Size(140, 29)
@@ -874,7 +943,7 @@ Partial Class MedicareMngrSection
         '
         'MedicareCalcHistoryTSButton
         '
-        Me.MedicareCalcHistoryTSButton.Image = Global.NRC.Qualisys.ConfigurationManager.My.Resources.Resources.DataStructure16
+        Me.MedicareCalcHistoryTSButton.Image = Global.Nrc.Qualisys.ConfigurationManager.My.Resources.Resources.DataStructure16
         Me.MedicareCalcHistoryTSButton.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.MedicareCalcHistoryTSButton.Name = "MedicareCalcHistoryTSButton"
         Me.MedicareCalcHistoryTSButton.Size = New System.Drawing.Size(176, 29)
@@ -882,7 +951,7 @@ Partial Class MedicareMngrSection
         '
         'MedicareUnlockSamplingTSButton
         '
-        Me.MedicareUnlockSamplingTSButton.Image = Global.NRC.Qualisys.ConfigurationManager.My.Resources.Resources.StudyAccess16
+        Me.MedicareUnlockSamplingTSButton.Image = Global.Nrc.Qualisys.ConfigurationManager.My.Resources.Resources.StudyAccess16
         Me.MedicareUnlockSamplingTSButton.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.MedicareUnlockSamplingTSButton.Name = "MedicareUnlockSamplingTSButton"
         Me.MedicareUnlockSamplingTSButton.Size = New System.Drawing.Size(174, 29)
@@ -903,7 +972,18 @@ Partial Class MedicareMngrSection
         Me.MedicareMngrSectionPanel.PerformLayout()
         Me.CAHPSTabControl.ResumeLayout(False)
         Me.HCAHPS.ResumeLayout(False)
-        Me.HCAHPS.PerformLayout()
+        Me.TableLayoutPanel1.ResumeLayout(False)
+        Me.LastCalculatedPanel.ResumeLayout(False)
+        Me.LastCalculatedPanel.PerformLayout()
+        Me.CalculatedProportionPanel.ResumeLayout(False)
+        Me.CalculatedProportionPanel.PerformLayout()
+        CType(Me.CalcProportionNumericUpDown, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.SamplingLockStatusPanel.ResumeLayout(False)
+        Me.SamplingLockStatusPanel.PerformLayout()
+        Me.LastCalcTypePanel.ResumeLayout(False)
+        Me.LastCalcTypePanel.PerformLayout()
+        Me.ProportionUsedPanel.ResumeLayout(False)
+        Me.ProportionUsedPanel.PerformLayout()
         CType(Me.ProportionUsedNumericUpDown, System.ComponentModel.ISupportInitialize).EndInit()
         Me.NextCalcGroupBox.ResumeLayout(False)
         Me.NextCalcTableLayoutPanel.ResumeLayout(False)
@@ -927,7 +1007,6 @@ Partial Class MedicareMngrSection
         Me.AnnualReturnTargetPanel.ResumeLayout(False)
         Me.AnnualReturnTargetPanel.PerformLayout()
         CType(Me.AnnualReturnTargetNumericUpDown, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.CalcProportionNumericUpDown, System.ComponentModel.ISupportInitialize).EndInit()
         Me.OASCAHPS.ResumeLayout(False)
         Me.OASCAHPS.PerformLayout()
         CType(Me.SSAnnualReturnTargetNumericUpDown, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1016,5 +1095,11 @@ Partial Class MedicareMngrSection
     Friend WithEvents CAHPSTabControl As System.Windows.Forms.TabControl
     Friend WithEvents HCAHPS As System.Windows.Forms.TabPage
     Friend WithEvents OASCAHPS As System.Windows.Forms.TabPage
+    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents LastCalculatedPanel As System.Windows.Forms.Panel
+    Friend WithEvents CalculatedProportionPanel As System.Windows.Forms.Panel
+    Friend WithEvents SamplingLockStatusPanel As System.Windows.Forms.Panel
+    Friend WithEvents LastCalcTypePanel As System.Windows.Forms.Panel
+    Friend WithEvents ProportionUsedPanel As System.Windows.Forms.Panel
 
 End Class

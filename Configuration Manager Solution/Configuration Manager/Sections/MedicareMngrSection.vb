@@ -363,4 +363,15 @@ Public Class MedicareMngrSection
 
 #End Region
 
+    Private Sub CAHPSTabControl_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CAHPSTabControl.SelectedIndexChanged
+        If CAHPSTabControl.SelectedIndex = 0 Then
+            DisplaySamplingLock(mMedicareNumber.SamplingLocked)
+            MedicareCalcHistoryTSButton.Enabled = True
+            MedicareReCalcTSButton.Enabled = True
+        Else
+            MedicareUnlockSamplingTSButton.Enabled = False
+            MedicareCalcHistoryTSButton.Enabled = False
+            MedicareReCalcTSButton.Enabled = False
+        End If
+    End Sub
 End Class
