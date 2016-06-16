@@ -1012,6 +1012,31 @@ begin
 	update CEM.ExportDataset00000014 
 	set [administration.lagtime]=datediff(day,[administration.servicedate],[administration.firstmailed])
 	WHERE exportqueueid = @ExportQueueID 
+
+	-- change surveymode to out-of-range if its value doesn't square with finalstatus
+	-- surveymode should be 1 (Mail) for finalstatus=Completed Mail
+	update eds
+	set [administration.surveymode]=char(7)
+	from CEM.ExportDataset00000014 eds
+	where [administration.finalstatus] = '110'
+	and [administration.surveymode] <> '1'
+	and ExportQueueID = @ExportQueueID 
+
+	-- surveymode should be 2 (Phone) for finalstatus=Completed Phone
+	update eds
+	set [administration.surveymode]=char(7)
+	from CEM.ExportDataset00000014 eds
+	where [administration.finalstatus] = '120'
+	and [administration.surveymode] <> '2'
+	and ExportQueueID = @ExportQueueID 
+
+	-- surveymode should be 1 or 2 for finalstatus=Breakoff
+	update eds
+	set [administration.surveymode]=char(7)
+	from CEM.ExportDataset00000014 eds
+	where [administration.finalstatus] = '310'
+	and [administration.surveymode] not in ('1','2')
+	and ExportQueueID = @ExportQueueID 
 	
 	/*
 	--Skip Pattern Coding
