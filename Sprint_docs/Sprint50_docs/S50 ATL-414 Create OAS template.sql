@@ -492,10 +492,29 @@ values (@ETCid,	1, '1', 'Male')
 	 , (@ETCid, 0, '2', 'Female')
 	 , (@ETCid, NULL, 'X', 'Unknown/Missing')
 	 
+
+declare @DPid int, @DCid int
+-- disposition process to recode to 'X' for any records that don't have a complete or breakoff final disposition.
+insert into cem.DispositionProcess (RecodeValue, DispositionActionID) values ('X',1)  										-- recode to 'X'
+set @DPid=SCOPE_IDENTITY()
+
+select @ETCid=ExportTemplateColumnID
+from CEM.ExportTemplateColumn  etc
+where etc.ExportTemplateSectionID=@ETSid
+and ExportColumnName='finalstatus'																							-- (where) finalstatus
+
+insert into cem.DispositionClause (DispositionProcessID,DispositionPhraseKey,ExportTemplateColumnID,OperatorID)
+values (@DPid, 1, @ETCid, 12) 																								-- 12=Not In
+set @DCid=SCOPE_IDENTITY()
+
+insert into cem.DispositionInList (DispositionClauseID, ListValue) values (@DCid, '110'), (@DCid, '120'), (@DCid, '310')  	-- 110=Complete Mail, 120=Complete Phone, 310=Breakoff
+
 select @ETCid=ExportTemplateColumnID
 from CEM.ExportTemplateColumn  etc
 where etc.ExportTemplateSectionID=@ETSid
 and ExportColumnName='surveymode'
+
+update CEM.ExportTemplateColumn set DispositionProcessID=@DPid where ExportTemplateColumnID=@ETCid 							-- assign the disposition process to the surveymode column
 
 insert into cem.ExportTemplateColumnResponse (ExportTemplateColumnID, RawValue, RecodeValue, ResponseLabel)
 values (@ETCid,	17, '1', 'Mail only')
@@ -813,20 +832,19 @@ values
 , (	54122,	74,	'helpnone',	'X',	'NOT APPLICABLE',	'Q37 How did that person help you? Check all that apply. (mail only)')
 
 
-declare @DPid int, @DCid int
-insert into cem.DispositionProcess (RecodeValue, DispositionActionID) values (' ',1)
+insert into cem.DispositionProcess (RecodeValue, DispositionActionID) values (' ',1)  										-- recode to ' '
 set @DPid=SCOPE_IDENTITY()
 
 select @ETCid=ExportTemplateColumnID
 from CEM.ExportTemplateColumn  etc
 where etc.ExportTemplateSectionID=@ETSid
-and ExportColumnName='finalstatus'
+and ExportColumnName='finalstatus'																							-- (where) finalstatus
 
 insert into cem.DispositionClause (DispositionProcessID,DispositionPhraseKey,ExportTemplateColumnID,OperatorID)
-values (@DPid, 1, @ETCid, 12) -- 12=Not In
+values (@DPid, 1, @ETCid, 12) 																								-- 12=Not In
 set @DCid=SCOPE_IDENTITY()
 
-insert into cem.DispositionInList (DispositionClauseID, ListValue) values (@DCid, '110'), (@DCid, '120'), (@DCid, '310')
+insert into cem.DispositionInList (DispositionClauseID, ListValue) values (@DCid, '110'), (@DCid, '120'), (@DCid, '310')	-- 110=Complete Mail, 120=Complete Phone, 310=Breakoff
 
 
 insert into cem.ExportTemplateSection (ExportTemplateSectionName,ExportTemplateID,DefaultNamingConvention)
