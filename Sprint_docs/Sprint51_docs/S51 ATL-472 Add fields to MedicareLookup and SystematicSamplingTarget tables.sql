@@ -62,14 +62,19 @@ ALTER TABLE MEDICARELOOKUP
 ADD SystematicEstRespRate [decimal] (8,4)
 GO
 
+IF NOT EXISTS ( SELECT * FROM sys.columns   WHERE  object_id = OBJECT_ID(N'[dbo].[MEDICARELOOKUP]') AND name = 'NonSubmitting' )
+ALTER TABLE MEDICARELOOKUP
+ADD NonSubmitting bit
+GO
+
 IF NOT EXISTS ( SELECT * FROM sys.columns   WHERE  object_id = OBJECT_ID(N'[dbo].[SystematicSamplingTarget]') AND name = 'DateCalculated' )
 ALTER TABLE SystematicSamplingTarget
 ADD DateCalculated DateTime
 GO
 
-update medicarelookup set SystematicAnnualReturnTarget = 384, SystematicEstRespRate = 32, SystematicSwitchToCalcDate = '1/1/2000'
+update medicarelookup set SystematicAnnualReturnTarget = 384, SystematicEstRespRate = 32, SystematicSwitchToCalcDate = '1/1/2000', NonSubmitting = 0
 
-update medicarelookup set SystematicAnnualReturnTarget = ml.AnnualReturnTarget, SystematicEstRespRate = 100 * ml.EstRespRate 
+update medicarelookup set SystematicAnnualReturnTarget = ml.AnnualReturnTarget, SystematicEstRespRate = 100 * ml.EstRespRate, SystematicSwitchToCalcDate = ml.SwitchToCalcDate 
 --select *
 from medicarelookup ml
 inner join systematicsamplingtarget sst on ml.MedicareNumber = sst.CCN
@@ -207,7 +212,8 @@ ALTER PROCEDURE [dbo].[QCL_InsertMedicareNumber]
     @Active bit,
 	@SystematicAnnualReturnTarget int,
 	@SystematicEstRespRate decimal(8,4),
-	@SystematicSwitchToCalcDate datetime
+	@SystematicSwitchToCalcDate datetime,
+	@NonSubmitting bit
 AS  
   
 IF EXISTS (SELECT * FROM MedicareLookup WHERE MedicareNumber=@MedicareNumber)  
@@ -220,11 +226,11 @@ INSERT INTO MedicareLookup (MedicareNumber, MedicareName, MedicarePropCalcType_I
                             EstAnnualVolume, EstRespRate, EstIneligibleRate, 
                             SwitchToCalcDate, AnnualReturnTarget, SamplingLocked,
                             ProportionChangeThreshold, CensusForced, PENumber, Active,
-							SystematicAnnualReturnTarget, SystematicEstRespRate, SystematicSwitchToCalcDate)  
+							SystematicAnnualReturnTarget, SystematicEstRespRate, SystematicSwitchToCalcDate, NonSubmitting)
 SELECT @MedicareNumber, @MedicareName, @MedicarePropCalcType_ID, @EstAnnualVolume,
        @EstRespRate, @EstIneligibleRate, @SwitchToCalcDate, @AnnualReturnTarget, 
        @SamplingLocked, @ProportionChangeThreshold, @CensusForced, @PENumber, @Active,
-	   @SystematicAnnualReturnTarget, @SystematicEstRespRate, @SystematicSwitchToCalcDate
+	   @SystematicAnnualReturnTarget, @SystematicEstRespRate, @SystematicSwitchToCalcDate, @NonSubmitting
 
 SELECT @MedicareNumber
 
@@ -239,7 +245,7 @@ SET NOCOUNT ON
 SELECT MedicareNumber, MedicareName, MedicarePropCalcType_ID, EstAnnualVolume,  
        EstRespRate, EstIneligibleRate, SwitchToCalcDate, AnnualReturnTarget,  
        SamplingLocked, ProportionChangeThreshold, CensusForced, PENumber, Active,
-	   SystematicAnnualReturnTarget, SystematicEstRespRate, SystematicSwitchToCalcDate
+	   SystematicAnnualReturnTarget, SystematicEstRespRate, SystematicSwitchToCalcDate, NonSubmitting
 FROM MedicareLookup
 
 SET NOCOUNT OFF    
@@ -256,7 +262,7 @@ SET NOCOUNT ON
 SELECT MedicareNumber, MedicareName, MedicarePropCalcType_ID, EstAnnualVolume,
        EstRespRate, EstIneligibleRate, SwitchToCalcDate, AnnualReturnTarget,
        SamplingLocked, ProportionChangeThreshold, CensusForced, PENumber, Active,
-	   SystematicAnnualReturnTarget, SystematicEstRespRate, SystematicSwitchToCalcDate
+	   SystematicAnnualReturnTarget, SystematicEstRespRate, SystematicSwitchToCalcDate, NonSubmitting
 FROM MedicareLookup  
 WHERE MedicareNumber = @MedicareNumber
   
@@ -272,7 +278,7 @@ SET NOCOUNT ON
 SELECT DISTINCT ml.MedicareNumber, ml.MedicareName, ml.MedicarePropCalcType_ID, ml.EstAnnualVolume,  
        ml.EstRespRate, ml.EstIneligibleRate, ml.SwitchToCalcDate, ml.AnnualReturnTarget,  
        ml.SamplingLocked, ml.ProportionChangeThreshold, ml.CensusForced, ml.PENumber, ml.Active,
-	   ml.SystematicAnnualReturnTarget, ml.SystematicEstRespRate, ml.SystematicSwitchToCalcDate 
+	   ml.SystematicAnnualReturnTarget, ml.SystematicEstRespRate, ml.SystematicSwitchToCalcDate, ml.NonSubmitting
 FROM MedicareLookup ml, SUFacility sf, SampleUnit su, SamplePlan sp, Survey_Def sd   
 WHERE ml.MedicareNumber = sf.MedicareNumber  
   AND sf.SUFacility_id = su.SUFacility_id  
@@ -298,7 +304,8 @@ ALTER PROCEDURE [dbo].[QCL_UpdateMedicareNumber]
     @Active bit,
 	@SystematicAnnualReturnTarget int,
 	@SystematicEspRespRate decimal(8,4),
-	@SystematicSwitchToCalcDate datetime
+	@SystematicSwitchToCalcDate datetime,
+	@NonSubmitting bit
 AS  
 
 UPDATE MedicareLookup  
@@ -316,7 +323,8 @@ SET MedicareName = @MedicareName,
     Active = @Active,
 	SystematicAnnualReturnTarget = @SystematicAnnualReturnTarget,
 	SystematicEstRespRate = @SystematicEspRespRate,
-	SystematicSwitchToCalcDate = @SystematicSwitchToCalcDate
+	SystematicSwitchToCalcDate = @SystematicSwitchToCalcDate,
+	NonSubmitting = @NonSubmitting
 WHERE MedicareNumber = @MedicareNumber
 
 GO

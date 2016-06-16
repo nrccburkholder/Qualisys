@@ -255,6 +255,10 @@ Public Class MedicareMngrSection
             .DataBindings.Clear()
             .Checked = False
         End With
+        With NonSubmittingCheckbox
+            .DataBindings.Clear()
+            .Checked = False
+        End With
         SamplingLockTextBox.Text = ""
         AnnualEligibleVolumeNumericUpDown.Value = 0
         HistoricResponseRateNumericUpDown.Value = 0
@@ -292,6 +296,7 @@ Public Class MedicareMngrSection
             SSSwitchToCalcOnDateEdit.DataBindings.Add("EditValue", mMedicareNumber, "SystematicSwitchToCalcDate", False, DataSourceUpdateMode.OnPropertyChanged)
             ForceCensusSampleCheckBox.DataBindings.Add("Checked", mMedicareNumber, "CensusForced", False, DataSourceUpdateMode.OnPropertyChanged)
             InactiveCheckBox.DataBindings.Add("Checked", mMedicareNumber, "IsInactive", False, DataSourceUpdateMode.OnPropertyChanged)
+            NonSubmittingCheckbox.DataBindings.Add("Checked", mMedicareNumber, "NonSubmitting", False, DataSourceUpdateMode.OnPropertyChanged)
 
             'Unbound controls
             DisplaySamplingLock(mMedicareNumber.SamplingLocked)

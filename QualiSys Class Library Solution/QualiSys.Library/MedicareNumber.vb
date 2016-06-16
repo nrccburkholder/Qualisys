@@ -35,6 +35,7 @@ Public Class MedicareNumber
     Private mSystematicAnnualReturnTarget As Integer
     Private mSystematicEstRespRate As Decimal
     Private mSystematicSwitchToCalcDate As Date
+    Private mNonSubmitting As Boolean = False
 
     Private mCalculationErrors As New List(Of String)
 
@@ -209,6 +210,18 @@ Public Class MedicareNumber
             If Not value = mIsActive Then
                 mIsActive = value
                 PropertyHasChanged("IsActive")
+            End If
+        End Set
+    End Property
+
+    Public Property NonSubmitting() As Boolean
+        Get
+            Return mNonSubmitting
+        End Get
+        Set(ByVal value As Boolean)
+            If Not value = mNonSubmitting Then
+                mNonSubmitting = value
+                PropertyHasChanged("NonSubmitting")
             End If
         End Set
     End Property

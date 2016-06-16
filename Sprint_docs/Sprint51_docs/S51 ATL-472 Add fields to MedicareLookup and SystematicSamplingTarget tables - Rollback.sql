@@ -290,6 +290,11 @@ ALTER TABLE MEDICARELOOKUP
 DROP COLUMN SystematicEstRespRate 
 GO
 
+IF EXISTS ( SELECT * FROM sys.columns   WHERE  object_id = OBJECT_ID(N'[dbo].[MEDICARELOOKUP]') AND name = 'NonSubmitting' )
+ALTER TABLE MEDICARELOOKUP
+DROP COLUMN NonSubmitting
+GO
+
 IF EXISTS ( SELECT * FROM sys.columns   WHERE  object_id = OBJECT_ID(N'[dbo].[SystematicSamplingTarget]') AND name = 'DateCalculated' )
 ALTER TABLE SystematicSamplingTarget
 DROP COLUMN DateCalculated

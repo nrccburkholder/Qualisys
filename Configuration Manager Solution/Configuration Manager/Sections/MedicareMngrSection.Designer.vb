@@ -93,6 +93,7 @@ Partial Class MedicareMngrSection
         Me.MedicareCalcHistoryTSButton = New System.Windows.Forms.ToolStripButton()
         Me.MedicareUnlockSamplingTSButton = New System.Windows.Forms.ToolStripButton()
         Me.MedicareErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
+        Me.NonSubmittingCheckbox = New System.Windows.Forms.CheckBox()
         Me.MedicareMngrSectionPanel.SuspendLayout()
         Me.CAHPSTabControl.SuspendLayout()
         Me.HCAHPS.SuspendLayout()
@@ -421,7 +422,7 @@ Partial Class MedicareMngrSection
         '
         'HistoricWarningPictureBox
         '
-        Me.HistoricWarningPictureBox.Image = Global.Nrc.Qualisys.ConfigurationManager.My.Resources.Resources.Caution16
+        Me.HistoricWarningPictureBox.Image = Global.Nrc.QualiSys.ConfigurationManager.My.Resources.Resources.Caution16
         Me.HistoricWarningPictureBox.Location = New System.Drawing.Point(10, 72)
         Me.HistoricWarningPictureBox.Name = "HistoricWarningPictureBox"
         Me.HistoricWarningPictureBox.Size = New System.Drawing.Size(20, 20)
@@ -833,6 +834,7 @@ Partial Class MedicareMngrSection
         '
         'SampleLockPanel
         '
+        Me.SampleLockPanel.Controls.Add(Me.NonSubmittingCheckbox)
         Me.SampleLockPanel.Controls.Add(Me.InactiveCheckBox)
         Me.SampleLockPanel.Dock = System.Windows.Forms.DockStyle.Fill
         Me.SampleLockPanel.Location = New System.Drawing.Point(685, 0)
@@ -935,7 +937,7 @@ Partial Class MedicareMngrSection
         '
         'MedicareReCalcTSButton
         '
-        Me.MedicareReCalcTSButton.Image = Global.Nrc.Qualisys.ConfigurationManager.My.Resources.Resources.MagicButton
+        Me.MedicareReCalcTSButton.Image = Global.Nrc.QualiSys.ConfigurationManager.My.Resources.Resources.MagicButton
         Me.MedicareReCalcTSButton.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.MedicareReCalcTSButton.Name = "MedicareReCalcTSButton"
         Me.MedicareReCalcTSButton.Size = New System.Drawing.Size(140, 29)
@@ -943,7 +945,7 @@ Partial Class MedicareMngrSection
         '
         'MedicareCalcHistoryTSButton
         '
-        Me.MedicareCalcHistoryTSButton.Image = Global.Nrc.Qualisys.ConfigurationManager.My.Resources.Resources.DataStructure16
+        Me.MedicareCalcHistoryTSButton.Image = Global.Nrc.QualiSys.ConfigurationManager.My.Resources.Resources.DataStructure16
         Me.MedicareCalcHistoryTSButton.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.MedicareCalcHistoryTSButton.Name = "MedicareCalcHistoryTSButton"
         Me.MedicareCalcHistoryTSButton.Size = New System.Drawing.Size(176, 29)
@@ -951,7 +953,7 @@ Partial Class MedicareMngrSection
         '
         'MedicareUnlockSamplingTSButton
         '
-        Me.MedicareUnlockSamplingTSButton.Image = Global.Nrc.Qualisys.ConfigurationManager.My.Resources.Resources.StudyAccess16
+        Me.MedicareUnlockSamplingTSButton.Image = Global.Nrc.QualiSys.ConfigurationManager.My.Resources.Resources.StudyAccess16
         Me.MedicareUnlockSamplingTSButton.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.MedicareUnlockSamplingTSButton.Name = "MedicareUnlockSamplingTSButton"
         Me.MedicareUnlockSamplingTSButton.Size = New System.Drawing.Size(174, 29)
@@ -961,6 +963,16 @@ Partial Class MedicareMngrSection
         '
         Me.MedicareErrorProvider.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink
         Me.MedicareErrorProvider.ContainerControl = Me
+        '
+        'NonSubmittingCheckbox
+        '
+        Me.NonSubmittingCheckbox.AutoSize = True
+        Me.NonSubmittingCheckbox.Location = New System.Drawing.Point(257, 4)
+        Me.NonSubmittingCheckbox.Name = "NonSubmittingCheckbox"
+        Me.NonSubmittingCheckbox.Size = New System.Drawing.Size(144, 25)
+        Me.NonSubmittingCheckbox.TabIndex = 1
+        Me.NonSubmittingCheckbox.Text = "Do Not Submit"
+        Me.NonSubmittingCheckbox.UseVisualStyleBackColor = True
         '
         'MedicareMngrSection
         '
@@ -1101,5 +1113,6 @@ Partial Class MedicareMngrSection
     Friend WithEvents SamplingLockStatusPanel As System.Windows.Forms.Panel
     Friend WithEvents LastCalcTypePanel As System.Windows.Forms.Panel
     Friend WithEvents ProportionUsedPanel As System.Windows.Forms.Panel
+    Friend WithEvents NonSubmittingCheckbox As System.Windows.Forms.CheckBox
 
 End Class
