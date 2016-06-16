@@ -25,14 +25,16 @@ if exists (select * from sys.procedures where schema_name(schema_id)='CEM' and n
 	drop procedure CEM.ExportPostProcess00000014
 go
 -- prior to creating the OAS template, these queries returned these values in both Prod and Staging. Test returned some different values but they were all lower.
-select max(ExportTemplateColumnResponseid) from cem.ExportTemplateColumnResponse -- 4841 
-select max(exporttemplatecolumnid) from cem.ExportTemplateColumn -- 1306 
-select max(exporttemplatesectionid) from cem.ExportTemplateSection -- 44 
-select max(exporttemplateid) from cem.ExportTemplate -- 13 
-select max(ExportTemplateDefaultResponseid) from cem.ExportTemplateDefaultResponse -- 238 
-select max(dispositionprocessid) from cem.DispositionProcess -- 29 
-select max(dispositionclauseid) from  cem.DispositionClause -- 44 
-select max(dispositioninlistid) from  cem.Dispositioninlist -- 196 
+if (select ExportTemplateName+'.'+ExportTemplateVersionMajor+'.'+convert(varchar,ExportTemplateVersionMinor) from cem.ExportTemplate where exporttemplateid=14)<>'OAS CAHPS.2016Q1.1'
+	or (select max(ExportTemplateColumnResponseid) from cem.ExportTemplate_view where exporttemplateid<>14) > 4841 
+	or (select max(exporttemplatecolumnid) from cem.ExportTemplate_view where exporttemplateid<>14) > 1306 
+	or (select max(exporttemplatesectionid) from cem.ExportTemplate_view where exporttemplateid<>14) > 44 
+	or (select max(exporttemplateid) from cem.ExportTemplate_view where exporttemplateid<>14) > 13 
+	or (select max(ExportTemplateDefaultResponseid) from cem.ExportTemplateDefaultResponse where exporttemplateid<>14) > 238 
+	or (select max(dispositionprocessid) from cem.DispositionProcess_view where exporttemplateid<>14) > 29 
+	or (select max(dispositionclauseid) from cem.DispositionProcess_view where exporttemplateid<>14) > 44 
+	or (select max(dispositioninlistid) from cem.Dispositioninlist where DispositionClauseID not in (select dispositionclauseid from cem.DispositionProcess_view where exporttemplateid=14)) > 196 
+	SELECT 'error' from [Something isn't right - do not continue with the rollback! Contact Dave Gilsdorf for guidance."]
 
 
 delete from cem.ExportTemplateColumnResponse where ExportTemplateColumnResponseID>4841
