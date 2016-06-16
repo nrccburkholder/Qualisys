@@ -6,7 +6,14 @@ Chris Burkholder
 INSERT INTO QUALPRO_PARAMS
 CREATE PROCEDURE QCL_SelectSystematicDefaultSamplingTargetValues
 ALTER TABLE MEDICARELOOKUP
+ALTER TABLE SystematicSamplingTarget
 ALTER PROCEDURE QCL_CalculateSystematicSamplingOutgo
+
+ALTER PROCEDURE QCL_InsertMedicareNumber
+ALTER PROCEDURE QCL_SelectAllMedicareNumbers
+ALTER PROCEDURE QCL_SelectMedicareNumbers
+ALTER PROCEDURE QCL_SelectMedicareNumbersBySurveyID
+ALTER PROCEDURE QCL_UpdateMedicareNumber
 
 select ml.* from medicarelookup ml
 inner join systematicsamplingtarget sst on ml.MedicareNumber = sst.CCN
@@ -60,7 +67,7 @@ ALTER TABLE SystematicSamplingTarget
 ADD DateCalculated DateTime
 GO
 
-update medicarelookup set SystematicAnnualReturnTarget = 384, SystematicEstRespRate = 32
+update medicarelookup set SystematicAnnualReturnTarget = 384, SystematicEstRespRate = 32, SystematicSwitchToCalcDate = '1/1/2000'
 
 update medicarelookup set SystematicAnnualReturnTarget = ml.AnnualReturnTarget, SystematicEstRespRate = 100 * ml.EstRespRate 
 --select *

@@ -6,6 +6,7 @@ Chris Burkholder
 INSERT INTO QUALPRO_PARAMS
 CREATE PROCEDURE QCL_SelectSystematicDefaultSamplingTargetValues
 ALTER TABLE MEDICARELOOKUP
+ALTER TABLE SystematicSamplingTarget
 ALTER PROCEDURE QCL_CalculateSystematicSamplingOutgo
 
 ALTER PROCEDURE QCL_InsertMedicareNumber
