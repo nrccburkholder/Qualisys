@@ -31,6 +31,9 @@ Public Class MedicareProvider
         End If
         newObj.PENumber = rdr.GetString("PENumber")
         newObj.IsActive = rdr.GetBoolean("Active")
+        newObj.SystematicAnnualReturnTarget = rdr.GetInteger("SystematicAnnualReturnTarget")
+        newObj.SystematicEstRespRate = rdr.GetDecimal("SystematicEstRespRate")
+        newObj.SystematicSwitchToCalcDate = rdr.GetDate("SystematicSwitchToCalcDate")
         newObj.EndPopulate()
 
         Return newObj

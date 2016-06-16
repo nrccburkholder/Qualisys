@@ -596,7 +596,7 @@ Public Class MedicareNumber
         ProportionChangeThreshold = globalDef.ProportionChangeThreshold
         AnnualReturnTarget = globalDef.AnnualReturnTarget
 
-        SystematicSwitchToCalcDate = Date.Now.AddMonths(6)
+        SystematicSwitchToCalcDate = Date.Now.AddMonths(8)
         SystematicAnnualReturnTarget = AppConfig.Params("SystematicAnnualReturnTarget").IntegerValue
         SystematicEstRespRate = AppConfig.Params("SystematicEstimatedResponseRate").IntegerValue
 
