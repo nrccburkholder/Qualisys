@@ -18,7 +18,7 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
-    <ManifestCertificateThumbprint>23E4A46E0D00D08A59AD7C81943201E2148E0BD2</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>2BFA8A6185489F4B977634BF45CBFFB1DB5467F7</ManifestCertificateThumbprint>
     <TargetZone>LocalIntranet</TargetZone>
     <GenerateManifests>true</GenerateManifests>
     <ApplicationIcon>Resources\letter_p.ico</ApplicationIcon>
@@ -29,7 +29,7 @@
     </UpgradeBackupLocation>
     <OldToolsVersion>2.0</OldToolsVersion>
     <TargetFrameworkProfile />
-    <PublishUrl>\\Mercury\QualiSysApps\Prod\PervasiveViewer\</PublishUrl>
+    <PublishUrl>\\superman\TestNRCApplications\PervasiveViewer\</PublishUrl>
     <Install>false</Install>
     <InstallFrom>Unc</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -41,8 +41,9 @@
     <MapFileExtensions>true</MapFileExtensions>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.1.1.0</ApplicationVersion>
+    <ApplicationVersion>1.1.2.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Development|AnyCPU' ">
@@ -166,6 +167,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>Pervasive Viewer_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Nrc.Framework, Version=1.10.0.0, Culture=neutral, PublicKeyToken=7f65ae6d961bde9c, processorArchitecture=MSIL">
@@ -327,6 +331,7 @@
   <ItemGroup>
     <Content Include="Resources\DeleteRed16.png" />
     <None Include="Pervasive Viewer.nuspec" />
+    <None Include="Pervasive Viewer_TemporaryKey.pfx" />
     <None Include="Resources\letter_p.ico" />
     <Content Include="Resources\SamplePlan16.png" />
     <Content Include="Resources\YellowLight.png" />
