@@ -88,7 +88,7 @@ Public Class StudyProvider
             conn.Open()
             Dim cmd As DbCommand
             Using tran As DbTransaction = conn.BeginTransaction
-                cmd = Db.GetStoredProcCommand(SP.InsertStudy, instance.Name, instance.Description, instance.Client.Id, instance.AccountDirectorEmployeeId, instance.CreateDate, instance.UseAddressCleaning, instance.UseProperCase, instance.IsActive)
+                cmd = Db.GetStoredProcCommand(SP.InsertStudy, instance.Name, instance.Description, instance.Client.Id, instance.AccountDirectorEmployeeId, instance.CreateDate, instance.UseAddressCleaning, instance.UseProperCase, instance.IsActive, instance.IsAutoSample)
                 Try
                     'Insert the Study
                     Dim studyId As Integer = ExecuteInteger(cmd, tran)
