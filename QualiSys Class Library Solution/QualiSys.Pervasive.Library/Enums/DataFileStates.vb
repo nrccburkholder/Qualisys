@@ -14,4 +14,5 @@ Public Enum DataFileStates
     RolledBack = 12
     DRGUpdating = 13
     DRGApplied = 14
+    DuplicateCCNInSampleMonth = 25
 End Enum

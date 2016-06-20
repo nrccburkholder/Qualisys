@@ -109,6 +109,43 @@ Public Class NavigationProvider
 
     End Function
 
+    Public Overloads Overrides Function GetNavigationTreeByUser(ByVal userName As String, ByVal initialDepth As Navigation.InitialPopulationDepth, ByVal includeGroups As Boolean, ByVal dataFileStates As List(Of DataFileStates)) As Navigation.NavigationTree
+
+
+        Dim strDataFileStates As String = String.Empty
+
+        For Each item As Integer In dataFileStates
+            strDataFileStates += "," & item.ToString()
+        Next
+
+        strDataFileStates = strDataFileStates.Substring(1)
+
+        Dim cmd As DbCommand
+
+        'Determine the population depth required
+        Dim depth As Integer = GetPopulationDepth(initialDepth)
+
+        'Get the stored prcedure to be used
+        If includeGroups Then
+            cmd = Db.GetStoredProcCommand(SP.SelectClientGroupsClientsStudysAndSurveysByUserAndFileStates, userName, True, strDataFileStates)
+        Else
+            cmd = Db.GetStoredProcCommand(SP.SelectClientsStudysAndSurveysByUserAndFileStates, userName, True, strDataFileStates)
+        End If
+
+        'Populate the tree as specified
+        Using ds As DataSet = ExecuteDataSet(cmd)
+            'Define the relationships for the data tables
+            DefineRelations(ds, depth, includeGroups)
+
+            If includeGroups Then
+                Return PopulateTreeFromClientGroup(depth, ds)
+            Else
+                Return PopulateTreeFromClient(depth, ds)
+            End If
+        End Using
+
+    End Function
+
 #End Region
 
 #Region " Private Methods "

@@ -28,6 +28,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>2.0</OldToolsVersion>
+    <TargetFrameworkProfile />
     <PublishUrl>\\Mercury\QualiSysApps\Prod\PervasiveViewer\</PublishUrl>
     <Install>false</Install>
     <InstallFrom>Unc</InstallFrom>
@@ -40,10 +41,9 @@
     <MapFileExtensions>true</MapFileExtensions>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.1.0.2</ApplicationVersion>
+    <ApplicationVersion>1.1.1.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Development|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -323,6 +323,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\DeleteRed16.png" />
+    <None Include="Pervasive Viewer.nuspec" />
     <None Include="Resources\letter_p.ico" />
     <Content Include="Resources\SamplePlan16.png" />
     <Content Include="Resources\YellowLight.png" />

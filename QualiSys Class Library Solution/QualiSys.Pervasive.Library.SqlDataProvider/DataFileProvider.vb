@@ -91,6 +91,23 @@ Friend Class DataFileProvider
         Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.ValidateDataFile, instance.Id, 0, Date.Now)
         Return ExecuteBoolean(cmd)
     End Function
+
+    Public Overrides Function CheckForDuplicateCCNInSampleMonth(ByVal instance As DataFile) As Integer
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.CheckForDuplicateCCNInSampleMonth, instance.Id, 0, Date.Now)
+        Return ExecuteInteger(cmd)
+    End Function
+
+    Public Overrides Sub DisableAutoSampling(ByVal instance As DataFile)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.DisableAutoSampling, instance.StudyId)
+        ExecuteNonQuery(cmd)
+    End Sub
+
+
+    Public Overrides Sub UnscheduleSampleSet(ByVal instance As DataFile)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.UnscheduledSamplesetByDataFileID, instance.DuplicateCCNDataFileID)
+        ExecuteNonQuery(cmd)
+    End Sub
+
 #End Region
 
 End Class

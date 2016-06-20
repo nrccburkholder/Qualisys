@@ -7,5 +7,7 @@ Partial Public NotInheritable Class SP
     'End Sub
     Public Const SelectClientsStudysAndSurveysByUser As String = "dbo.LD_SelectClientsStudiesAndSurveysByUser"
     Public Const SelectClientGroupsClientsStudysAndSurveysByUser As String = "dbo.LD_SelectClientGroupsClientsStudysAndSurveysByUser"
+    Public Const SelectClientsStudysAndSurveysByUserAndFileStates As String = "dbo.LD_SelectClientsStudiesAndSurveysByUserAndDataFileStates"
+    Public Const SelectClientGroupsClientsStudysAndSurveysByUserAndFileStates As String = "dbo.LD_SelectClientGroupsClientsStudysAndSurveysByUserAndDataFileStates"
 End Class
 #End Region
