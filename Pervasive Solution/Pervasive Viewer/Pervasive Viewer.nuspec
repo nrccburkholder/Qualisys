@@ -3,7 +3,7 @@
   <metadata>
     <id>Qualisys.PervasiveViewer</id>
     <title>QualiSys Pervasive Viewer</title>
-    <version>1.1.2.0</version>
+    <version>1.1.3.0</version>
     <authors>NRC</authors>
     <description>GUI to display HHCAHPS files awaiting approval</description>
   </metadata>
