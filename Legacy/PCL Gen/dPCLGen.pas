@@ -61,6 +61,7 @@ type
     logSQLQuery : boolean;
     DODSurveys : string;
     SMTPHost   : string;
+    function PrintFilesTableName : string;
     function GetNextBatch:integer;
     procedure MakeLocalTables;
     procedure MainLoop;
@@ -828,7 +829,7 @@ begin
   begin
     strTo:=strTo+'@nationalresearch.com';
   end;
-  QPQuery('select * from #printfiles',ww_sql,false) ;
+  QPQuery('select * from '+PrintFilesTableName,ww_sql,false) ;
   while not ww_sql.eof do
   begin
     strBody:=strBody+'------------------------------------------------------------------------------------------'#13#10;
@@ -888,7 +889,7 @@ var i:integer;
     fn:string;
     MovedAll:boolean;
 begin
-  QPQuery('select * from #printfiles where copied=0',ww_sql,false) ;
+  QPQuery('select * from ' + PrintFilesTableName + ' where copied=0',ww_sql,false) ;
   for i:= 1 to 30 do
   begin
     frmPCLGeneration.progressreport('checking for complete PDFs','','');
@@ -901,7 +902,7 @@ begin
       if movefile(pchar(prnpath+fn),pchar(pdfpath+fn)) then
       begin //update flag if file is moved successfully
         frmPCLGeneration.progressreport('copying PDF for tp_id '+ww_sql.fieldbyname('tp_id').asstring ,s_id,ww_sql.fieldbyname('tp_id').asstring);
-        QPQuery('update #printfiles set Copied = 1 where tp_id ='+ww_sql.fieldbyname('tp_id').asstring,wwSQLQuery,true);
+        QPQuery('update ' + PrintFilesTableName + ' set Copied = 1 where tp_id ='+ww_sql.fieldbyname('tp_id').asstring,wwSQLQuery,true);
         fn := copy(fn,1,pos('.prn',lowercase(fn))) + 'log';
         deletefile(pchar(prnpath+fn));
       end
@@ -1078,7 +1079,7 @@ var chkpos : array[1..10] of string;
       if Mockup then
         fn:=fn+'_Mockup';
       //filelist.addobject(fn+'.pdf',tobject(false));
-      QPQuery('update #printfiles set FileName = '''+fn+'.pdf'', copied = 0 where tp_id ='+sm_id,ww_sql,true);
+      QPQuery('update ' + PrintFilesTableName + ' set FileName = '''+fn+'.pdf'', copied = 0 where tp_id ='+sm_id,ww_sql,true);
       //dmOpenQ.sqlcn.execute('update #printfiles set FileName = '''+fn+'.pdf'', copied = 0 where tp_id ='+sm_id);
       fn:=fn+'.prn';
       if FileExists(Tempdir+fn) then
@@ -1446,6 +1447,18 @@ begin
   currentRun := -1;
 end;
 
+function tdmPCLGen.PrintFilesTableName : string;
+var
+  suffix1, suffix2: string;
+begin
+  suffix1 := '';
+  if uppercase(ExtractFileName(Application.ExeName)) <> 'PCLGEN.EXE' then
+    suffix1 := '-' + Copy(Application.ExeName, length(Application.ExeName)-4, 1);
+  suffix2 := ComputerName + suffix1;
+
+  result := '#printfiles' + suffix2;
+end;
+
 function tdmPCLGen.GetNextBatch:integer;
 var success : boolean;
 begin
@@ -1506,10 +1519,10 @@ begin
     WhereField:='SentMail_id';
     if TestPrints then
     begin
-      ww_sql.SQL.Add('Create table #printfiles (tp_id int, pop_id int, FileName varchar(50),copied bit )');
+      ww_sql.SQL.Add('Create table ' + PrintFilesTableName + ' (tp_id int, pop_id int, FileName varchar(50),copied bit )');
       ww_sql.ExecSQL;
       ww_sql.SQL.Clear;
-      ww_sql.SQL.Add('insert into #printfiles(tp_id,pop_id,copied) select pn.SentMail_id, pop_id, 0 as copied from scheduled_TP ps, #MyPCLNeeded pn where ps.tp_id=pn.SentMail_id');
+      ww_sql.SQL.Add('insert into ' + PrintFilesTableName + '(tp_id,pop_id,copied) select pn.SentMail_id, pop_id, 0 as copied from scheduled_TP ps, #MyPCLNeeded pn where ps.tp_id=pn.SentMail_id');
       ww_sql.ExecSQL;
       ww_sql.SQL.Clear;
      //filelist.Clear;
