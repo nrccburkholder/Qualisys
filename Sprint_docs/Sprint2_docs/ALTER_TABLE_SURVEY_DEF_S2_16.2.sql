@@ -1,5 +1,0 @@
-USE QP_PROD
-
--- add SurveySubType_ID to SURVEY_DEF
-ALTER TABLE SURVEY_DEF
-ADD SurveySubType_ID int NULL
