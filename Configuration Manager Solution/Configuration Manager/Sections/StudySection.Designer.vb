@@ -19,43 +19,44 @@ Partial Class StudySection
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
-        Me.InformationBar = New Nrc.Qualisys.ConfigurationManager.InformationBar
-        Me.BottomPanel = New System.Windows.Forms.Panel
-        Me.OKButton = New System.Windows.Forms.Button
-        Me.CancelButton = New System.Windows.Forms.Button
-        Me.WorkAreaPanel = New System.Windows.Forms.Panel
-        Me.CopyDataStructureGroupBox = New System.Windows.Forms.GroupBox
-        Me.CopyDataStructureBrowseButton = New System.Windows.Forms.Button
-        Me.CopyDataStructureLabel = New System.Windows.Forms.Label
-        Me.CopyDataStructureTextBox = New System.Windows.Forms.TextBox
-        Me.AssociateSelectionGroupBox = New System.Windows.Forms.GroupBox
-        Me.AssociateSelectionTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel
-        Me.AuthorizedAssociatePanel = New System.Windows.Forms.Panel
-        Me.AuthorizedAssociateListBox = New System.Windows.Forms.ListBox
-        Me.AuthorizedAssociateLabel = New System.Windows.Forms.Label
-        Me.AvailableAssociatePanel = New System.Windows.Forms.Panel
-        Me.AvailableAssociateListBox = New System.Windows.Forms.ListBox
-        Me.AvailableAssociateLabel = New System.Windows.Forms.Label
-        Me.AssociateSelectionButtonPanel = New System.Windows.Forms.Panel
-        Me.AddAllButton = New System.Windows.Forms.Button
-        Me.AddButton = New System.Windows.Forms.Button
-        Me.RemoveAllButton = New System.Windows.Forms.Button
-        Me.RemoveButton = New System.Windows.Forms.Button
-        Me.StudyOwnerLabel = New System.Windows.Forms.Label
-        Me.StudyOwnerComboBox = New System.Windows.Forms.ComboBox
-        Me.InActivateCheckBox = New System.Windows.Forms.CheckBox
-        Me.UseProperCaseCheckBox = New System.Windows.Forms.CheckBox
-        Me.UseAddressCleaningCheckBox = New System.Windows.Forms.CheckBox
-        Me.StudyDescriptionTextBox = New System.Windows.Forms.TextBox
-        Me.StudyDescriptionLabel = New System.Windows.Forms.Label
-        Me.StudyNameLabel = New System.Windows.Forms.Label
-        Me.StudyNameTextBox = New System.Windows.Forms.TextBox
-        Me.DateCreatedLabel = New System.Windows.Forms.Label
-        Me.DateCreatedTextBox = New System.Windows.Forms.TextBox
+        Me.components = New System.ComponentModel.Container()
+        Me.InformationBar = New Nrc.QualiSys.ConfigurationManager.InformationBar()
+        Me.BottomPanel = New System.Windows.Forms.Panel()
+        Me.OKButton = New System.Windows.Forms.Button()
+        Me.CancelButton = New System.Windows.Forms.Button()
+        Me.WorkAreaPanel = New System.Windows.Forms.Panel()
+        Me.CopyDataStructureGroupBox = New System.Windows.Forms.GroupBox()
+        Me.CopyDataStructureBrowseButton = New System.Windows.Forms.Button()
+        Me.CopyDataStructureLabel = New System.Windows.Forms.Label()
+        Me.CopyDataStructureTextBox = New System.Windows.Forms.TextBox()
+        Me.AssociateSelectionGroupBox = New System.Windows.Forms.GroupBox()
+        Me.AssociateSelectionTableLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
+        Me.AuthorizedAssociatePanel = New System.Windows.Forms.Panel()
+        Me.AuthorizedAssociateListBox = New System.Windows.Forms.ListBox()
+        Me.AuthorizedAssociateLabel = New System.Windows.Forms.Label()
+        Me.AvailableAssociatePanel = New System.Windows.Forms.Panel()
+        Me.AvailableAssociateListBox = New System.Windows.Forms.ListBox()
+        Me.AvailableAssociateLabel = New System.Windows.Forms.Label()
+        Me.AssociateSelectionButtonPanel = New System.Windows.Forms.Panel()
+        Me.AddAllButton = New System.Windows.Forms.Button()
+        Me.AddButton = New System.Windows.Forms.Button()
+        Me.RemoveAllButton = New System.Windows.Forms.Button()
+        Me.RemoveButton = New System.Windows.Forms.Button()
+        Me.StudyOwnerLabel = New System.Windows.Forms.Label()
+        Me.StudyOwnerComboBox = New System.Windows.Forms.ComboBox()
+        Me.InActivateCheckBox = New System.Windows.Forms.CheckBox()
+        Me.UseProperCaseCheckBox = New System.Windows.Forms.CheckBox()
+        Me.UseAddressCleaningCheckBox = New System.Windows.Forms.CheckBox()
+        Me.StudyDescriptionTextBox = New System.Windows.Forms.TextBox()
+        Me.StudyDescriptionLabel = New System.Windows.Forms.Label()
+        Me.StudyNameLabel = New System.Windows.Forms.Label()
+        Me.StudyNameTextBox = New System.Windows.Forms.TextBox()
+        Me.DateCreatedLabel = New System.Windows.Forms.Label()
+        Me.DateCreatedTextBox = New System.Windows.Forms.TextBox()
         Me.StudyEmployeeBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.StudyOwnerBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.NRCEmployeeBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.UseAutoSample = New System.Windows.Forms.CheckBox()
         Me.BottomPanel.SuspendLayout()
         Me.WorkAreaPanel.SuspendLayout()
         Me.CopyDataStructureGroupBox.SuspendLayout()
@@ -114,6 +115,7 @@ Partial Class StudySection
         '
         'WorkAreaPanel
         '
+        Me.WorkAreaPanel.Controls.Add(Me.UseAutoSample)
         Me.WorkAreaPanel.Controls.Add(Me.CopyDataStructureGroupBox)
         Me.WorkAreaPanel.Controls.Add(Me.AssociateSelectionGroupBox)
         Me.WorkAreaPanel.Controls.Add(Me.InActivateCheckBox)
@@ -166,7 +168,7 @@ Partial Class StudySection
         'CopyDataStructureTextBox
         '
         Me.CopyDataStructureTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.CopyDataStructureTextBox.Location = New System.Drawing.Point(126, 19)
         Me.CopyDataStructureTextBox.Name = "CopyDataStructureTextBox"
         Me.CopyDataStructureTextBox.ReadOnly = True
@@ -178,7 +180,7 @@ Partial Class StudySection
         'AssociateSelectionGroupBox
         '
         Me.AssociateSelectionGroupBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.AssociateSelectionGroupBox.Controls.Add(Me.AssociateSelectionTableLayoutPanel)
         Me.AssociateSelectionGroupBox.Controls.Add(Me.StudyOwnerLabel)
         Me.AssociateSelectionGroupBox.Controls.Add(Me.StudyOwnerComboBox)
@@ -192,8 +194,8 @@ Partial Class StudySection
         'AssociateSelectionTableLayoutPanel
         '
         Me.AssociateSelectionTableLayoutPanel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.AssociateSelectionTableLayoutPanel.ColumnCount = 3
         Me.AssociateSelectionTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.AssociateSelectionTableLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50.0!))
@@ -224,8 +226,8 @@ Partial Class StudySection
         'AuthorizedAssociateListBox
         '
         Me.AuthorizedAssociateListBox.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.AuthorizedAssociateListBox.FormattingEnabled = True
         Me.AuthorizedAssociateListBox.IntegralHeight = False
         Me.AuthorizedAssociateListBox.Location = New System.Drawing.Point(0, 16)
@@ -257,8 +259,8 @@ Partial Class StudySection
         'AvailableAssociateListBox
         '
         Me.AvailableAssociateListBox.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.AvailableAssociateListBox.FormattingEnabled = True
         Me.AvailableAssociateListBox.IntegralHeight = False
         Me.AvailableAssociateListBox.Location = New System.Drawing.Point(-3, 16)
@@ -291,7 +293,7 @@ Partial Class StudySection
         'AddAllButton
         '
         Me.AddAllButton.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.AddAllButton.Location = New System.Drawing.Point(0, 0)
         Me.AddAllButton.Name = "AddAllButton"
         Me.AddAllButton.Size = New System.Drawing.Size(44, 23)
@@ -302,7 +304,7 @@ Partial Class StudySection
         'AddButton
         '
         Me.AddButton.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.AddButton.Location = New System.Drawing.Point(0, 29)
         Me.AddButton.Name = "AddButton"
         Me.AddButton.Size = New System.Drawing.Size(44, 23)
@@ -313,7 +315,7 @@ Partial Class StudySection
         'RemoveAllButton
         '
         Me.RemoveAllButton.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.RemoveAllButton.Location = New System.Drawing.Point(0, 96)
         Me.RemoveAllButton.Name = "RemoveAllButton"
         Me.RemoveAllButton.Size = New System.Drawing.Size(44, 23)
@@ -324,7 +326,7 @@ Partial Class StudySection
         'RemoveButton
         '
         Me.RemoveButton.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.RemoveButton.Location = New System.Drawing.Point(0, 67)
         Me.RemoveButton.Name = "RemoveButton"
         Me.RemoveButton.Size = New System.Drawing.Size(44, 23)
@@ -440,7 +442,7 @@ Partial Class StudySection
         'StudyEmployeeBindingSource
         '
         Me.StudyEmployeeBindingSource.AllowNew = True
-        Me.StudyEmployeeBindingSource.DataSource = GetType(Nrc.Qualisys.Library.STUDY_EMPLOYEE)
+        Me.StudyEmployeeBindingSource.DataSource = GetType(Nrc.QualiSys.Library.STUDY_EMPLOYEE)
         '
         'StudyOwnerBindingSource
         '
@@ -449,7 +451,17 @@ Partial Class StudySection
         '
         'NRCEmployeeBindingSource
         '
-        Me.NRCEmployeeBindingSource.DataSource = GetType(Nrc.Qualisys.Library.Employee)
+        Me.NRCEmployeeBindingSource.DataSource = GetType(Nrc.QualiSys.Library.Employee)
+        '
+        'UseAutoSample
+        '
+        Me.UseAutoSample.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.UseAutoSample.Location = New System.Drawing.Point(196, 160)
+        Me.UseAutoSample.Name = "UseAutoSample"
+        Me.UseAutoSample.Size = New System.Drawing.Size(146, 20)
+        Me.UseAutoSample.TabIndex = 11
+        Me.UseAutoSample.Text = "Auto-Sample"
+        Me.UseAutoSample.UseVisualStyleBackColor = True
         '
         'StudySection
         '
@@ -513,5 +525,6 @@ Partial Class StudySection
     Friend WithEvents CopyDataStructureBrowseButton As System.Windows.Forms.Button
     Friend WithEvents CopyDataStructureLabel As System.Windows.Forms.Label
     Friend WithEvents CopyDataStructureTextBox As System.Windows.Forms.TextBox
+    Friend WithEvents UseAutoSample As System.Windows.Forms.CheckBox
 
 End Class

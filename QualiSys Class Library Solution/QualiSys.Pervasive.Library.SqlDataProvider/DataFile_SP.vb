@@ -12,5 +12,8 @@ Public NotInheritable Partial Class SP
     Public Const UpdateDataFile As String = "dbo.LD_UpdateDataFile"
     Public Const ValidateDataFile As String = "dbo.LD_RunValidation"
     Public Const ApplyDataFile As String = "dbo.LD_ApplyShell"
+    Public Const CheckForDuplicateCCNInSampleMonth As String = "dbo.LD_CheckForDuplicateCCNInSampleMonth"
+    Public Const DisableAutoSampling As String = "dbo.LD_DisableAutoSamplingByStudyID"
+    Public Const UnscheduledSamplesetByDataFileID As String = "LD_UnscheduledSamplesetByDataFileID"
 End Class
 #End Region

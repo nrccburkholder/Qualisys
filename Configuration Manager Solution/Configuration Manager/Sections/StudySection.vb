@@ -139,6 +139,7 @@ Public Class StudySection
             UseAddressCleaningCheckBox.Checked = .UseAddressCleaning
             UseProperCaseCheckBox.Checked = .UseProperCase
             InActivateCheckBox.Checked = Not .IsActive
+            UseAutoSample.Checked = .IsAutoSample
         End With
 
         NRCEmployeeBindingSource.DataSource = Employee.GetAllStudyUnAuthorized(mModule.Study.Id)
@@ -252,6 +253,7 @@ Public Class StudySection
             .StudyEmployees = DirectCast(StudyEmployeeBindingSource.DataSource, STUDY_EMPLOYEECollection)
             .AccountDirectorEmployeeId = CInt(StudyOwnerComboBox.SelectedValue)
             .CopyDataStructureFromStudyID = CInt(CopyDataStructureTextBox.Tag)
+            .IsAutoSample = UseAutoSample.Checked
         End With
 
     End Sub

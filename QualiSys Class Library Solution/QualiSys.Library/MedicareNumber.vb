@@ -32,6 +32,10 @@ Public Class MedicareNumber
     Private mPENumber As String = String.Empty
     Private mIsActive As Boolean = True
     Private mUserCensusForced As Integer
+    Private mSystematicAnnualReturnTarget As Integer
+    Private mSystematicEstRespRate As Decimal
+    Private mSystematicSwitchToCalcDate As Date
+    Private mNonSubmitting As Boolean = False
 
     Private mCalculationErrors As New List(Of String)
 
@@ -206,6 +210,54 @@ Public Class MedicareNumber
             If Not value = mIsActive Then
                 mIsActive = value
                 PropertyHasChanged("IsActive")
+            End If
+        End Set
+    End Property
+
+    Public Property NonSubmitting() As Boolean
+        Get
+            Return mNonSubmitting
+        End Get
+        Set(ByVal value As Boolean)
+            If Not value = mNonSubmitting Then
+                mNonSubmitting = value
+                PropertyHasChanged("NonSubmitting")
+            End If
+        End Set
+    End Property
+
+    Public Property SystematicAnnualReturnTarget() As Integer
+        Get
+            Return mSystematicAnnualReturnTarget
+        End Get
+        Set(ByVal value As Integer)
+            If Not value = mSystematicAnnualReturnTarget Then
+                mSystematicAnnualReturnTarget = value
+                PropertyHasChanged("SystematicAnnualReturnTarget")
+            End If
+        End Set
+    End Property
+
+    Public Property SystematicEstRespRate() As Decimal
+        Get
+            Return mSystematicEstRespRate
+        End Get
+        Set(ByVal value As Decimal)
+            If Not value = mSystematicEstRespRate Then
+                mSystematicEstRespRate = value
+                PropertyHasChanged("SystematicEstRespRate")
+            End If
+        End Set
+    End Property
+
+    Public Property SystematicSwitchToCalcDate() As Date
+        Get
+            Return mSystematicSwitchToCalcDate
+        End Get
+        Set(ByVal value As Date)
+            If Not value = mSystematicSwitchToCalcDate Then
+                mSystematicSwitchToCalcDate = value
+                PropertyHasChanged("SystematicEstRespRate")
             End If
         End Set
     End Property
@@ -479,7 +531,7 @@ Public Class MedicareNumber
         ValidationRules.AddRule(AddressOf Validation.StringRequired, "Name")
         ValidationRules.AddRule(AddressOf Validation.StringMaxLength, New Validation.MaxLengthRuleArgs("Name", 45))
         ValidationRules.AddRule(AddressOf Validation.StringMaxLength, New Validation.MaxLengthRuleArgs("MedicareNumber", 20))
-        ValidationRules.AddRule(AddressOf Validation.StringMaxLength, New Validation.MaxLengthRuleArgs("PENumber", 50))
+        '        ValidationRules.AddRule(AddressOf Validation.StringMaxLength, New Validation.MaxLengthRuleArgs("PENumber", 50))
         ValidationRules.AddRule(AddressOf ValidateMedicareNumber, "MedicareNumber")
         ValidationRules.AddRule(AddressOf ValidateMedicareNumberIsUnique, "MedicareNumber")
         ValidationRules.AddRule(AddressOf Validation.IntegerMinValue, New Validation.IntegerMinValueRuleArgs("EstAnnualVolume", 1))
@@ -488,6 +540,9 @@ Public Class MedicareNumber
         ValidationRules.AddRule(AddressOf Validation.MinValue(Of Date), New Validation.MinValueRuleArgs(Of Date)("SwitchToCalcDate", CDate("1/1/2000")))
         ValidationRules.AddRule(AddressOf Validation.IntegerMinValue, New Validation.IntegerMinValueRuleArgs("AnnualReturnTarget", 1))
         ValidationRules.AddRule(AddressOf Validation.MinValue(Of Decimal), New Validation.MinValueRuleArgs(Of Decimal)("ProportionChangeThresholdDisplay", CDec(0.99)))
+        ValidationRules.AddRule(AddressOf Validation.IntegerMinValue, New Validation.IntegerMinValueRuleArgs("SystematicAnnualReturnTarget", 1))
+        ValidationRules.AddRule(AddressOf Validation.IntegerMinValue, New Validation.IntegerMinValueRuleArgs("SystematicEstRespRate", 1))
+        ValidationRules.AddRule(AddressOf Validation.MinValue(Of Date), New Validation.MinValueRuleArgs(Of Date)("SystematicSwitchToCalcDate", CDate("1/1/2000")))
 
     End Sub
 
@@ -553,6 +608,10 @@ Public Class MedicareNumber
         EstIneligibleRate = globalDef.IneligibleRate
         ProportionChangeThreshold = globalDef.ProportionChangeThreshold
         AnnualReturnTarget = globalDef.AnnualReturnTarget
+
+        SystematicSwitchToCalcDate = Date.Now.AddMonths(8)
+        SystematicAnnualReturnTarget = AppConfig.Params("SystematicAnnualReturnTarget").IntegerValue
+        SystematicEstRespRate = AppConfig.Params("SystematicEstimatedResponseRate").IntegerValue
 
         'Validate the object
         ValidationRules.CheckRules()

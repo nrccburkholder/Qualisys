@@ -21,6 +21,7 @@ Public Class Study
     Private mbitProperCase As Boolean
     Private mbitAddressClean As Boolean
     Private mIsActive As Boolean
+    Private mIsAutoSample As Boolean
 
 #End Region
 
@@ -161,6 +162,19 @@ Public Class Study
         Set(ByVal value As Boolean)
             If Not value = mIsActive Then
                 mIsActive = value
+                mIsDirty = True
+            End If
+        End Set
+    End Property
+
+    <Logable()> _
+    Public Property IsAutoSample() As Boolean
+        Get
+            Return mIsAutoSample
+        End Get
+        Set(ByVal value As Boolean)
+            If Not value = mIsAutoSample Then
+                mIsAutoSample = value
                 mIsDirty = True
             End If
         End Set

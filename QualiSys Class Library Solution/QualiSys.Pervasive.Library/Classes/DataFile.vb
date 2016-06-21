@@ -34,6 +34,8 @@ Public Class DataFile
     Private mdatDeleted As Date
     Private mDataSetId As Integer
     Private mAssocDataFiles As String = String.Empty
+    Private mHasDuplicateCCNInSampleMonth As Boolean = False
+    Private mDuplicateCCNDataFileID As Integer = 0
 
 #End Region
 
@@ -277,6 +279,24 @@ Public Class DataFile
         End Get
     End Property
 
+    Public Property DuplicateCCNDataFileID() As Integer
+        Get
+            Return mDuplicateCCNDataFileID
+        End Get
+        Set(ByVal value As Integer)
+            If Not value = mDuplicateCCNDataFileID Then
+                mDuplicateCCNDataFileID = value
+            End If
+        End Set
+    End Property
+
+    Public ReadOnly Property HasDuplicateCCNInSampleMonth() As Boolean
+        Get
+            Return mDuplicateCCNDataFileID > 0
+        End Get
+
+    End Property
+
 #End Region
 
 #Region " Constructors "
@@ -383,6 +403,24 @@ Public Class DataFile
     Public Sub ChangeState(ByVal stateID As DataFileStates, ByVal stateParam As String)
 
         DataFileStateProvider.Instance.ChangeDataFileState(mId, stateID, stateParam)
+
+    End Sub
+
+    Public Sub CheckForDuplicateCCNInSampleMonth()
+
+        mDuplicateCCNDataFileID = DataFileProvider.Instance.CheckForDuplicateCCNInSampleMonth(Me)
+
+    End Sub
+
+    Public Sub DisableAutoSampling()
+
+        DataFileProvider.Instance.DisableAutoSampling(Me)
+
+    End Sub
+
+    Public Sub UnscheduleSampleSet()
+
+        DataFileProvider.Instance.UnscheduleSampleSet(Me)
 
     End Sub
 

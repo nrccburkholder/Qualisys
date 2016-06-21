@@ -128,7 +128,7 @@ Partial Public Class SampleSet
                 'Validate 1 and only 1 CCN for Systematic (OAS)
 
                 If srvy.IsSystematic Then
-                    Dim CCNs As List(Of String) = (From row In encounterUnitEligibility_s.AsEnumerable() Select row.CCN).Distinct().ToList()
+                    Dim CCNs As List(Of String) = (From row In encounterUnitEligibility_s.AsEnumerable() Select row.CCN Where Not String.IsNullOrEmpty(CCN)).Distinct().ToList()
                     If CCNs.Count > 1 Then
                         Dim CCNlist As String = String.Empty
                         For Each CCN As String In CCNs

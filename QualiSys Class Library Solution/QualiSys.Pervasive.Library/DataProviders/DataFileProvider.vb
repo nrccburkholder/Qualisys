@@ -27,5 +27,9 @@ Public MustInherit Class DataFileProvider
     Public MustOverride Sub DeleteDataFile(ByVal instance As DataFile)
     Public MustOverride Sub Apply(ByVal instance As DataFile)
     Public MustOverride Function Validate(ByVal instance As DataFile) As Boolean
+    Public MustOverride Function CheckForDuplicateCCNInSampleMonth(ByVal instance As DataFile) As Integer
+    Public MustOverride Sub DisableAutoSampling(ByVal instance As DataFile)
+    Public MustOverride Sub UnscheduleSampleSet(ByVal instance As DataFile)
+
 End Class
 

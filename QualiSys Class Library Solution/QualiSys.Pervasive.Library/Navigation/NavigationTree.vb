@@ -53,6 +53,12 @@ Namespace Navigation
 
         End Function
 
+        Public Shared Function GetByUser(ByVal userName As String, ByVal depth As InitialPopulationDepth, ByVal includeGroups As Boolean, ByVal dataFileStates As List(Of DataFileStates)) As NavigationTree
+
+            Return NavigationProvider.Instance.GetNavigationTreeByUser(userName, depth, includeGroups, dataFileStates)
+
+        End Function
+
 #End Region
 
     End Class

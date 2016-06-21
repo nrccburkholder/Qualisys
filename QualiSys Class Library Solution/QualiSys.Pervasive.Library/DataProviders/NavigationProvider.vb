@@ -32,6 +32,7 @@ Namespace DataProvider
 #Region " Public MustOverride Methods "
 
         Public MustOverride Function GetNavigationTreeByUser(ByVal userName As String, ByVal initialDepth As InitialPopulationDepth, ByVal includeGroups As Boolean, ByVal dataFileState As DataFileStates) As NavigationTree
+        Public MustOverride Function GetNavigationTreeByUser(ByVal userName As String, ByVal initialDepth As InitialPopulationDepth, ByVal includeGroups As Boolean, ByVal dataFileStates As List(Of DataFileStates)) As NavigationTree
 
 #End Region
 

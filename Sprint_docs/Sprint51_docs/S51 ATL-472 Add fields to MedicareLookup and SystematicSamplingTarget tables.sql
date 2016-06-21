@@ -6,7 +6,14 @@ Chris Burkholder
 INSERT INTO QUALPRO_PARAMS
 CREATE PROCEDURE QCL_SelectSystematicDefaultSamplingTargetValues
 ALTER TABLE MEDICARELOOKUP
+ALTER TABLE SystematicSamplingTarget
 ALTER PROCEDURE QCL_CalculateSystematicSamplingOutgo
+
+ALTER PROCEDURE QCL_InsertMedicareNumber
+ALTER PROCEDURE QCL_SelectAllMedicareNumbers
+ALTER PROCEDURE QCL_SelectMedicareNumbers
+ALTER PROCEDURE QCL_SelectMedicareNumbersBySurveyID
+ALTER PROCEDURE QCL_UpdateMedicareNumber
 
 select ml.* from medicarelookup ml
 inner join systematicsamplingtarget sst on ml.MedicareNumber = sst.CCN
@@ -40,17 +47,34 @@ where qpp1.strparam_nm = 'SystematicAnnualReturnTarget'
 and qpp2.strparam_nm = 'SystematicEstimatedResponseRate'
 GO
 
+IF NOT EXISTS ( SELECT * FROM sys.columns   WHERE  object_id = OBJECT_ID(N'[dbo].[MEDICARELOOKUP]') AND name = 'SystematicSwitchToCalcDate' )
+ALTER TABLE MEDICARELOOKUP
+ADD SystematicSwitchToCalcDate DateTime
+GO
+
+IF NOT EXISTS ( SELECT * FROM sys.columns   WHERE  object_id = OBJECT_ID(N'[dbo].[MEDICARELOOKUP]') AND name = 'SystematicAnnualReturnTarget' )
 ALTER TABLE MEDICARELOOKUP
 ADD SystematicAnnualReturnTarget int
 GO
 
+IF NOT EXISTS ( SELECT * FROM sys.columns   WHERE  object_id = OBJECT_ID(N'[dbo].[MEDICARELOOKUP]') AND name = 'SystematicEstRespRate' )
 ALTER TABLE MEDICARELOOKUP
 ADD SystematicEstRespRate [decimal] (8,4)
 GO
 
-update medicarelookup set SystematicAnnualReturnTarget = 384, SystematicEstRespRate = 0.32
+IF NOT EXISTS ( SELECT * FROM sys.columns   WHERE  object_id = OBJECT_ID(N'[dbo].[MEDICARELOOKUP]') AND name = 'NonSubmitting' )
+ALTER TABLE MEDICARELOOKUP
+ADD NonSubmitting bit
+GO
 
-update medicarelookup set SystematicAnnualReturnTarget = ml.AnnualReturnTarget, SystematicEstRespRate = ml.EstRespRate 
+IF NOT EXISTS ( SELECT * FROM sys.columns   WHERE  object_id = OBJECT_ID(N'[dbo].[SystematicSamplingTarget]') AND name = 'DateCalculated' )
+ALTER TABLE SystematicSamplingTarget
+ADD DateCalculated DateTime
+GO
+
+update medicarelookup set SystematicAnnualReturnTarget = 384, SystematicEstRespRate = 32, SystematicSwitchToCalcDate = '1/1/2000', NonSubmitting = 0
+
+update medicarelookup set SystematicAnnualReturnTarget = ml.AnnualReturnTarget, SystematicEstRespRate = 100 * ml.EstRespRate, SystematicSwitchToCalcDate = ml.SwitchToCalcDate 
 --select *
 from medicarelookup ml
 inner join systematicsamplingtarget sst on ml.MedicareNumber = sst.CCN
@@ -106,7 +130,7 @@ select dbo.yearqtr(@samplingdate) as SampleQuarter
 	, count(su.SAMPLEUNIT_ID) as numLocations
 	, 4 as SamplingAlgorithmID
 	, case when dbo.yearqtr(min(SwitchToCalcDate)) < dbo.yearqtr(@samplingdate) then 'Historic' else 'Default' end as RespRateType
-	, case when dbo.yearqtr(min(SwitchToCalcDate)) < dbo.yearqtr(@samplingdate) then NULL else min(mlu.SystematicEstRespRate) end as numResponseRate 
+	, case when dbo.yearqtr(min(SwitchToCalcDate)) < dbo.yearqtr(@samplingdate) then NULL else min(mlu.SystematicEstRespRate / 100.0) end as numResponseRate 
 	, min(mlu.SystematicAnnualReturnTarget) as AnnualTarget
 	, ceiling(min(mlu.SystematicAnnualReturnTarget)/4.0) as QuarterTarget
 	, ceiling(min(mlu.SystematicAnnualReturnTarget)/12.0) as MonthTarget
@@ -164,11 +188,143 @@ set SamplesetsPerMonth=(select CEILING(sum(intExpectedSamples)/3.0)
 update #SystematicSamplingTarget set SamplesetTarget=1.0*MonthTarget/SamplesetsPerMonth
 update #SystematicSamplingTarget set OutgoNeededPerSampleset=CEILING(SamplesetTarget/numResponseRate)
 
-insert into dbo.SystematicSamplingTarget (SampleQuarter, CCN, numLocations, SamplingAlgorithmID, RespRateType, numResponseRate, AnnualTarget, QuarterTarget, MonthTarget, SamplesetsPerMonth, SamplesetTarget, OutgoNeededPerSampleset)
-select SampleQuarter, CCN, numLocations, SamplingAlgorithmID, RespRateType, numResponseRate, AnnualTarget, QuarterTarget, MonthTarget, SamplesetsPerMonth, SamplesetTarget, OutgoNeededPerSampleset
+insert into dbo.SystematicSamplingTarget (SampleQuarter, CCN, numLocations, SamplingAlgorithmID, RespRateType, numResponseRate, AnnualTarget, QuarterTarget, MonthTarget, SamplesetsPerMonth, SamplesetTarget, OutgoNeededPerSampleset, DateCalculated)
+select SampleQuarter, CCN, numLocations, SamplingAlgorithmID, RespRateType, numResponseRate, AnnualTarget, QuarterTarget, MonthTarget, SamplesetsPerMonth, SamplesetTarget, OutgoNeededPerSampleset, GetDate()
 from #SystematicSamplingTarget 
 
 drop table #SystematicSamplingTarget
 
 GO
 
+ALTER PROCEDURE [dbo].[QCL_InsertMedicareNumber]  
+    @MedicareNumber VARCHAR(20),  
+    @MedicareName varchar(45),
+    @MedicarePropCalcType_ID int,
+    @EstAnnualVolume int,
+    @EstRespRate decimal(8,4),
+    @EstIneligibleRate decimal(8,4),
+    @SwitchToCalcDate datetime,
+    @AnnualReturnTarget int,
+    @SamplingLocked tinyint,
+    @ProportionChangeThreshold decimal(8,4),
+    @CensusForced tinyint,
+    @PENumber VARCHAR(50), 
+    @Active bit,
+	@SystematicAnnualReturnTarget int,
+	@SystematicEstRespRate decimal(8,4),
+	@SystematicSwitchToCalcDate datetime,
+	@NonSubmitting bit
+AS  
+  
+IF EXISTS (SELECT * FROM MedicareLookup WHERE MedicareNumber=@MedicareNumber)  
+BEGIN  
+    RAISERROR ('MedicareNumber already exists.',18,1)  
+    RETURN  
+END  
+  
+INSERT INTO MedicareLookup (MedicareNumber, MedicareName, MedicarePropCalcType_ID, 
+                            EstAnnualVolume, EstRespRate, EstIneligibleRate, 
+                            SwitchToCalcDate, AnnualReturnTarget, SamplingLocked,
+                            ProportionChangeThreshold, CensusForced, PENumber, Active,
+							SystematicAnnualReturnTarget, SystematicEstRespRate, SystematicSwitchToCalcDate, NonSubmitting)
+SELECT @MedicareNumber, @MedicareName, @MedicarePropCalcType_ID, @EstAnnualVolume,
+       @EstRespRate, @EstIneligibleRate, @SwitchToCalcDate, @AnnualReturnTarget, 
+       @SamplingLocked, @ProportionChangeThreshold, @CensusForced, @PENumber, @Active,
+	   @SystematicAnnualReturnTarget, @SystematicEstRespRate, @SystematicSwitchToCalcDate, @NonSubmitting
+
+SELECT @MedicareNumber
+
+GO
+
+ALTER PROCEDURE [dbo].[QCL_SelectAllMedicareNumbers]    
+AS    
+    
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED    
+SET NOCOUNT ON    
+    
+SELECT MedicareNumber, MedicareName, MedicarePropCalcType_ID, EstAnnualVolume,  
+       EstRespRate, EstIneligibleRate, SwitchToCalcDate, AnnualReturnTarget,  
+       SamplingLocked, ProportionChangeThreshold, CensusForced, PENumber, Active,
+	   SystematicAnnualReturnTarget, SystematicEstRespRate, SystematicSwitchToCalcDate, NonSubmitting
+FROM MedicareLookup
+
+SET NOCOUNT OFF    
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+
+GO
+
+ALTER PROCEDURE [dbo].[QCL_SelectMedicareNumbers] (@MedicareNumber varchar(20))
+AS  
+  
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED  
+SET NOCOUNT ON  
+  
+SELECT MedicareNumber, MedicareName, MedicarePropCalcType_ID, EstAnnualVolume,
+       EstRespRate, EstIneligibleRate, SwitchToCalcDate, AnnualReturnTarget,
+       SamplingLocked, ProportionChangeThreshold, CensusForced, PENumber, Active,
+	   SystematicAnnualReturnTarget, SystematicEstRespRate, SystematicSwitchToCalcDate, NonSubmitting
+FROM MedicareLookup  
+WHERE MedicareNumber = @MedicareNumber
+  
+GO
+
+ALTER PROCEDURE [dbo].[QCL_SelectMedicareNumbersBySurveyID]  
+    @SurveyID int  
+AS  
+  
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED  
+SET NOCOUNT ON  
+  
+SELECT DISTINCT ml.MedicareNumber, ml.MedicareName, ml.MedicarePropCalcType_ID, ml.EstAnnualVolume,  
+       ml.EstRespRate, ml.EstIneligibleRate, ml.SwitchToCalcDate, ml.AnnualReturnTarget,  
+       ml.SamplingLocked, ml.ProportionChangeThreshold, ml.CensusForced, ml.PENumber, ml.Active,
+	   ml.SystematicAnnualReturnTarget, ml.SystematicEstRespRate, ml.SystematicSwitchToCalcDate, ml.NonSubmitting
+FROM MedicareLookup ml, SUFacility sf, SampleUnit su, SamplePlan sp, Survey_Def sd   
+WHERE ml.MedicareNumber = sf.MedicareNumber  
+  AND sf.SUFacility_id = su.SUFacility_id  
+  AND su.SamplePlan_id = sp.SamplePlan_id  
+  AND sp.Survey_id = sd.Survey_id  
+  AND sd.Survey_id = @SurveyID  
+  
+GO
+
+ALTER PROCEDURE [dbo].[QCL_UpdateMedicareNumber]  
+    @MedicareNumber VARCHAR(20),  
+    @MedicareName VARCHAR(45),
+    @MedicarePropCalcType_ID int,
+    @EstAnnualVolume int,
+    @EstRespRate decimal(8,4),
+    @EstIneligibleRate decimal(8,4),
+    @SwitchToCalcDate datetime,
+    @AnnualReturnTarget int,
+    @SamplingLocked tinyint,
+    @ProportionChangeThreshold decimal(8,4),
+    @CensusForced tinyint,
+    @PENumber VARCHAR(50), 
+    @Active bit,
+	@SystematicAnnualReturnTarget int,
+	@SystematicEspRespRate decimal(8,4),
+	@SystematicSwitchToCalcDate datetime,
+	@NonSubmitting bit
+AS  
+
+UPDATE MedicareLookup  
+SET MedicareName = @MedicareName,  
+    MedicarePropCalcType_ID = @MedicarePropCalcType_ID,
+    EstAnnualVolume = @EstAnnualVolume ,
+    EstRespRate = @EstRespRate ,
+    EstIneligibleRate = @EstIneligibleRate,
+    SwitchToCalcDate = @SwitchToCalcDate ,
+    AnnualReturnTarget = @AnnualReturnTarget,
+    SamplingLocked = @SamplingLocked ,
+    ProportionChangeThreshold = @ProportionChangeThreshold ,
+    CensusForced = @CensusForced,
+    PENumber = @PENumber, 
+    Active = @Active,
+	SystematicAnnualReturnTarget = @SystematicAnnualReturnTarget,
+	SystematicEstRespRate = @SystematicEspRespRate,
+	SystematicSwitchToCalcDate = @SystematicSwitchToCalcDate,
+	NonSubmitting = @NonSubmitting
+WHERE MedicareNumber = @MedicareNumber
+
+GO

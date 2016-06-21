@@ -29,6 +29,7 @@ Public Class StudyProvider
         newObj.UseAddressCleaning = rdr.GetBoolean("bitCleanAddr")
         newObj.UseProperCase = rdr.GetBoolean("bitProperCase")
         newObj.IsActive = rdr.GetBoolean("Active")
+        newObj.IsAutoSample = rdr.GetBoolean("bitAutoSample")
         newObj.EndPopulate()
         newObj.ResetDirtyFlag()
 
@@ -87,7 +88,7 @@ Public Class StudyProvider
             conn.Open()
             Dim cmd As DbCommand
             Using tran As DbTransaction = conn.BeginTransaction
-                cmd = Db.GetStoredProcCommand(SP.InsertStudy, instance.Name, instance.Description, instance.Client.Id, instance.AccountDirectorEmployeeId, instance.CreateDate, instance.UseAddressCleaning, instance.UseProperCase, instance.IsActive)
+                cmd = Db.GetStoredProcCommand(SP.InsertStudy, instance.Name, instance.Description, instance.Client.Id, instance.AccountDirectorEmployeeId, instance.CreateDate, instance.UseAddressCleaning, instance.UseProperCase, instance.IsActive, instance.IsAutoSample)
                 Try
                     'Insert the Study
                     Dim studyId As Integer = ExecuteInteger(cmd, tran)
@@ -138,7 +139,7 @@ Public Class StudyProvider
             conn.Open()
             Dim cmd As DbCommand
             Using tran As DbTransaction = conn.BeginTransaction
-                cmd = Db.GetStoredProcCommand(SP.UpdateStudy, instance.Id, instance.Name, instance.Description, instance.Client.Id, instance.AccountDirectorEmployeeId, instance.CreateDate, instance.UseAddressCleaning, instance.UseProperCase, instance.IsActive)
+                cmd = Db.GetStoredProcCommand(SP.UpdateStudy, instance.Id, instance.Name, instance.Description, instance.Client.Id, instance.AccountDirectorEmployeeId, instance.CreateDate, instance.UseAddressCleaning, instance.UseProperCase, instance.IsActive, instance.IsAutoSample)
                 Try
                     'Update the study record
                     ExecuteNonQuery(cmd, tran)

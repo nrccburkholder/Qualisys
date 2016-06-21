@@ -1,4 +1,4 @@
-Imports Nrc.Qualisys.Pervasive.Library.Navigation
+Imports Nrc.QualiSys.Pervasive.Library.Navigation
 Imports Nrc.QualiSys.Pervasive.Library
 
 Public Class ClientStudySurveyNavigator
@@ -13,6 +13,7 @@ Public Class ClientStudySurveyNavigator
     Private mSelectedDataFile As DataFileNavNode
     Private mDataFileState As DataFileStates
     Private mLoading As Boolean
+    Private mDataFileStates As List(Of DataFileStates)
 
 #End Region
 
@@ -62,7 +63,20 @@ Public Class ClientStudySurveyNavigator
 
 #Region " Constructors "
 
-    Public Sub New(ByVal dataFileState As DataFileStates)
+    'Public Sub New(ByVal dataFileState As DataFileStates)
+
+    '    ' This call is required by the Windows Form Designer.
+    '    InitializeComponent()
+
+    '    ' Add any initialization after the InitializeComponent() call.
+    '    mLoading = True
+    '    ClientFilterList.SelectedIndex = 0
+    '    mDataFileState = dataFileState
+    '    mLoading = False
+
+    'End Sub
+
+    Public Sub New(ByVal dataFileStates As List(Of DataFileStates))
 
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
@@ -70,7 +84,7 @@ Public Class ClientStudySurveyNavigator
         ' Add any initialization after the InitializeComponent() call.
         mLoading = True
         ClientFilterList.SelectedIndex = 0
-        mDataFileState = dataFileState
+        mDataFileStates = dataFileStates
         mLoading = False
 
     End Sub
@@ -233,7 +247,7 @@ Public Class ClientStudySurveyNavigator
     Public Sub PopulateTree()
 
         If Not mLoading Then
-            mNavigationTree = NavigationTree.GetByUser(CurrentUser.UserName, InitialPopulationDepth.Survey, ShowClientGroupsTSButton.Checked, mDataFileState)
+            mNavigationTree = NavigationTree.GetByUser(CurrentUser.UserName, InitialPopulationDepth.Survey, ShowClientGroupsTSButton.Checked, mDataFileStates)
 
             ClientStudySurveyTree.BeginUpdate()
             ClientStudySurveyTree.Nodes.Clear()
@@ -248,6 +262,8 @@ Public Class ClientStudySurveyNavigator
         End If
 
     End Sub
+
+
 #End Region
 
 #Region " Private Methods "

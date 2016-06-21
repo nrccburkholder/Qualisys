@@ -39,7 +39,7 @@ Public Class MainForm
         VersionLabel.Text = "v" & My.Application.Info.Version.ToString
         UserNameLabel.Text = String.Format("{0} ({1})", CurrentUser.DisplayName, My.User.Name)
 
-        mClientStudySurveyNavigator = New ClientStudySurveyNavigator(DataFileStates.AwaitingFirstApproval)
+        mClientStudySurveyNavigator = New ClientStudySurveyNavigator(New List(Of DataFileStates) From {DataFileStates.AwaitingFirstApproval, DataFileStates.DuplicateCCNInSampleMonth})
         mUIRelations.Add(ReportsTab, New UIRelation(mClientStudySurveyNavigator, mReportSection))
 
         If MultiPane.Tabs.Count > 0 Then

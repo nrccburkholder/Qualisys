@@ -122,7 +122,7 @@ Public Class PervasiveService
         Dim queueFile As DataFileState = Nothing
         Dim loadFile As DataFile = Nothing
         Dim passValidation As Boolean
-
+        
         Try
             queueFile = DirectCast(mValidateQueue.Dequeue, DataFileState)
             LogEvent(String.Format("Begin Validation {0}", queueFile.DataFileId), EventLogEntryType.Information)
@@ -138,16 +138,31 @@ Public Class PervasiveService
 
             passValidation = loadFile.Validate()
 
+            If passValidation Then
+                loadFile.CheckForDuplicateCCNInSampleMonth() ' HasDuplicateCCNInSampleMonth property defaults to false
+            End If
+
             'Change state
             With queueFile
-                If passValidation Then
+                If passValidation And Not loadFile.HasDuplicateCCNInSampleMonth Then
                     .StateId = DataFileStates.AwaitingApply
+                ElseIf loadFile.HasDuplicateCCNInSampleMonth Then ' pass validation will be true if HasDuplicateCCNInSampleMonth is true
+                    .StateId = DataFileStates.DuplicateCCNInSampleMonth
                 Else
                     .StateId = DataFileStates.AwaitingFirstApproval
                 End If
                 .datOccurred = Now
                 .Save()
             End With
+
+            If loadFile.HasDuplicateCCNInSampleMonth Then
+
+                'Here we reach across to QP_PROD and set Study.bitAutoSample = 0
+                loadFile.DisableAutoSampling()
+                ' Next, we unschedule the sampleset if it has not already been generated.
+                loadFile.UnscheduleSampleSet()
+
+            End If
 
             LogEvent(String.Format("End Validation {0}", queueFile.DataFileId), EventLogEntryType.Information)
 
