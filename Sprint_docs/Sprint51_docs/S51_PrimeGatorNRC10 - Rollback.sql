@@ -10,7 +10,7 @@ Sprint 51 SQLCMD Script for Prime/Gator/NRC10
 
 :r "\ATLASRelease51&52\Sprint51_docs\S51 ATL-425 Survey level setting for switchover - Rollback.sql"
 
-:r "\ATLASRelease51&52\Sprint51_docs\S51 ATL-492 CheckForCAHPSIncomplete_ROLLBACK.sql"
+-- already released :r "\ATLASRelease51&52\Sprint51_docs\S51 ATL-492 CheckForCAHPSIncomplete_ROLLBACK.sql"
 
 :r "\ATLASRelease51&52\Sprint51_docs\S51 ATL-363 Process Multiple Files in HH Importer - QP_PROD -- ROLLBACK.sql"
 
