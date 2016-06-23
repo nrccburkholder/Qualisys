@@ -84,7 +84,7 @@ ALTER TABLE SystematicSamplingTarget
 ADD DateCalculated DateTime
 GO
 
-update medicarelookup set SystematicAnnualReturnTarget = 384, SystematicEstRespRate = 32, SystematicSwitchToCalcDate = '1/1/2000', NonSubmitting = 0
+update medicarelookup set SystematicAnnualReturnTarget = 384, SystematicEstRespRate = 32, SystematicSwitchToCalcDate = '4/1/2017', NonSubmitting = 0
 
 update medicarelookup set SystematicAnnualReturnTarget = ml.AnnualReturnTarget, SystematicEstRespRate = 100 * ml.EstRespRate, SystematicSwitchToCalcDate = ml.SwitchToCalcDate 
 --select *
@@ -141,8 +141,8 @@ select dbo.yearqtr(@samplingdate) as SampleQuarter
 	, suf.medicarenumber as CCN
 	, count(su.SAMPLEUNIT_ID) as numLocations
 	, 4 as SamplingAlgorithmID
-	, case when dbo.yearqtr(min(SwitchToCalcDate)) < dbo.yearqtr(@samplingdate) then 'Historic' else 'Default' end as RespRateType
-	, case when dbo.yearqtr(min(SwitchToCalcDate)) < dbo.yearqtr(@samplingdate) then NULL else min(mlu.SystematicEstRespRate / 100.0) end as numResponseRate 
+	, case when dbo.yearqtr(min(SystematicSwitchToCalcDate)) < dbo.yearqtr(@samplingdate) then 'Historic' else 'Default' end as RespRateType
+	, case when dbo.yearqtr(min(SystematicSwitchToCalcDate)) < dbo.yearqtr(@samplingdate) then NULL else min(mlu.SystematicEstRespRate / 100.0) end as numResponseRate 
 	, min(mlu.SystematicAnnualReturnTarget) as AnnualTarget
 	, ceiling(min(mlu.SystematicAnnualReturnTarget)/4.0) as QuarterTarget
 	, ceiling(min(mlu.SystematicAnnualReturnTarget)/12.0) as MonthTarget
