@@ -10,7 +10,7 @@ Sprint 51 SQLCMD Script for Prime/Gator/NRC10 (but deployed with ATLAS Release f
 
 --:r "\ATLASRelease51&52\Sprint51_docs\S51 ATL-425 Survey level setting for switchover.sql"
 
-:r "\ATLASRelease51&52\Sprint51_docs\S51 ATL-492 CheckForCAHPSIncomplete.sql"
+:r "\ATLASRelease49&50\Sprint51_docs\S51 ATL-492 CheckForCAHPSIncomplete.sql"
 
 --:r "\ATLASRelease51&52\Sprint51_docs\S51 ATL-363 Process Multiple Files in HH Importer - QP_PROD.sql"
 
