@@ -9,7 +9,7 @@ using System.Data.Common;
 
 namespace CEM.Exporting.DataProviders
 {
-    internal static class ExportTemplateProvider
+    public static class ExportTemplateProvider
     {
         private static SqlDataProvider mSDP;
 
@@ -84,7 +84,7 @@ namespace CEM.Exporting.DataProviders
 
         #region public methods
 
-        internal static List<ExportTemplate>Select(ExportTemplate template, bool IncludeChildProperties = false)
+        public static List<ExportTemplate>Select(ExportTemplate template, bool IncludeChildProperties = false)
         {
             SqlParameter[] param = new SqlParameter[] {new SqlParameter("@ExportTemplateID",template.ExportTemplateID),
                                                        new SqlParameter("@SurveyTypeId", template.SurveyTypeID),
