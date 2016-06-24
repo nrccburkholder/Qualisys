@@ -6,4 +6,4 @@ Sprint 50 SQLCMD Script for Prime/Gator/NRC10
 
 */
 
-:r "\ATLASRelease49&50\Sprint50_docs\S50 ATL-278 CA Web Survey Migration - Rollback.sql"
+:r "\ATLASRelease51&52\Sprint50_docs\S50 ATL-278 CA Web Survey Migration - Rollback.sql"
