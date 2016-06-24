@@ -3,7 +3,7 @@
   <metadata>
     <id>Qualisys.PervasiveService</id>
     <title>QualiSys Pervasive Service</title>
-    <version>1.0.5.1</version>
+    <version>1.0.5.2</version>
     <authors>NRC</authors>
     <description>Validates the file and applies it to the database</description>
   </metadata>

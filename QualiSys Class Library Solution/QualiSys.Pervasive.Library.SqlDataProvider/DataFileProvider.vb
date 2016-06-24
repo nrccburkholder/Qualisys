@@ -93,7 +93,7 @@ Friend Class DataFileProvider
     End Function
 
     Public Overrides Function CheckForDuplicateCCNInSampleMonth(ByVal instance As DataFile) As Integer
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.CheckForDuplicateCCNInSampleMonth, instance.Id, 0, Date.Now)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.CheckForDuplicateCCNInSampleMonth, instance.Id, 0)
         Return ExecuteInteger(cmd)
     End Function
 
