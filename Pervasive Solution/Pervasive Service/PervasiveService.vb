@@ -136,11 +136,10 @@ Public Class PervasiveService
                 .Save()
             End With
 
-            passValidation = loadFile.Validate()
 
-            If passValidation Then
-                loadFile.CheckForDuplicateCCNInSampleMonth() ' HasDuplicateCCNInSampleMonth property defaults to false
-            End If
+            loadFile.CheckForDuplicateCCNInSampleMonth() ' HasDuplicateCCNInSampleMonth property defaults to false
+
+            passValidation = loadFile.Validate()
 
             'Change state
             With queueFile
