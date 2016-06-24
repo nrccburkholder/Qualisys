@@ -72,40 +72,35 @@ begin
 	SET    [administration.surgicalcat] = NULL 
 	WHERE  exportqueueid = @ExportQueueID 
 
-	UPDATE CEM.ExportDataset00000014 
-	SET    [administration.surgicalcat] = '1' 
-	WHERE  exportqueueid = @ExportQueueID 
-		   AND [administration.surgicalcat] IS NULL 
-		   AND ( [administration.cpt4] BETWEEN '40000' AND '49999' 
-				  OR [administration.cpt4_2] BETWEEN '40000' AND '49999' 
-				  OR [administration.cpt4_3] BETWEEN '40000' AND '49999' 
-				  OR [administration.hcpcslvl2cd] IN ( 'G0105', 'G0121', 'G0104' ) 
-				  OR [administration.hcpcslvl2cd_2] IN ( 'G0105', 'G0121', 'G0104' ) 
-				  OR [administration.hcpcslvl2cd_3] IN ( 'G0105', 'G0121', 'G0104' ) ) 
+	UPDATE CEM.ExportDataset00000014 SET [administration.surgicalcat] = '1' 
+	WHERE exportqueueid = @ExportQueueID AND [administration.surgicalcat] IS NULL AND ([administration.cpt4] BETWEEN '40000' AND '49999' OR [administration.hcpcslvl2cd] IN ('G0105', 'G0121', 'G0104')) 
 
-	UPDATE CEM.ExportDataset00000014 
-	SET    [administration.surgicalcat] = '2' 
-	WHERE  exportqueueid = @ExportQueueID 
-		   AND [administration.surgicalcat] IS NULL 
-		   AND ( [administration.cpt4] BETWEEN '20000' AND '29999' 
-				  OR [administration.cpt4_2] BETWEEN '20000' AND '29999' 
-				  OR [administration.cpt4_3] BETWEEN '20000' AND '29999' 
-				  OR [administration.hcpcslvl2cd] IN ( 'G0260' ) 
-				  OR [administration.hcpcslvl2cd_2] IN ( 'G0260' ) 
-				  OR [administration.hcpcslvl2cd_3] IN ( 'G0260' ) ) 
+	UPDATE CEM.ExportDataset00000014 SET [administration.surgicalcat] = '2' 
+	WHERE exportqueueid = @ExportQueueID AND [administration.surgicalcat] IS NULL AND ([administration.cpt4] BETWEEN '20000' AND '29999' OR [administration.hcpcslvl2cd] IN ('G0260')) 
 
-	UPDATE CEM.ExportDataset00000014 
-	SET    [administration.surgicalcat] = '3' 
-	WHERE  exportqueueid = @ExportQueueID 
-		   AND [administration.surgicalcat] IS NULL 
-		   AND ( [administration.cpt4] BETWEEN '65000' AND '68899' 
-				  OR [administration.cpt4_2] BETWEEN '65000' AND '68899' 
-				  OR [administration.cpt4_3] BETWEEN '65000' AND '68899' ) 
+	UPDATE CEM.ExportDataset00000014 SET [administration.surgicalcat] = '3' 
+	WHERE exportqueueid = @ExportQueueID AND [administration.surgicalcat] IS NULL AND ([administration.cpt4] BETWEEN '65000' AND '68899') 
 
-	UPDATE CEM.ExportDataset00000014 
-	SET    [administration.surgicalcat] = '4' 
-	WHERE  exportqueueid = @ExportQueueID 
-		   AND [administration.surgicalcat] IS NULL 
+	UPDATE CEM.ExportDataset00000014 SET [administration.surgicalcat] = '1' 
+	WHERE exportqueueid = @ExportQueueID AND [administration.surgicalcat] IS NULL AND ([administration.cpt4_2] BETWEEN '40000' AND '49999' OR [administration.hcpcslvl2cd_2] IN ('G0105', 'G0121', 'G0104')) 
+
+	UPDATE CEM.ExportDataset00000014 SET [administration.surgicalcat] = '2' 
+	WHERE exportqueueid = @ExportQueueID AND [administration.surgicalcat] IS NULL AND ([administration.cpt4_2] BETWEEN '20000' AND '29999' OR [administration.hcpcslvl2cd_2] IN ('G0260')) 
+
+	UPDATE CEM.ExportDataset00000014 SET [administration.surgicalcat] = '3' 
+	WHERE exportqueueid = @ExportQueueID AND [administration.surgicalcat] IS NULL AND ([administration.cpt4_2] BETWEEN '65000' AND '68899') 
+	
+	UPDATE CEM.ExportDataset00000014 SET [administration.surgicalcat] = '1' 
+	WHERE exportqueueid = @ExportQueueID AND [administration.surgicalcat] IS NULL AND ([administration.cpt4_3] BETWEEN '40000' AND '49999' OR [administration.hcpcslvl2cd_3] IN ('G0105', 'G0121', 'G0104')) 
+
+	UPDATE CEM.ExportDataset00000014 SET [administration.surgicalcat] = '2' 
+	WHERE exportqueueid = @ExportQueueID AND [administration.surgicalcat] IS NULL AND ([administration.cpt4_3] BETWEEN '20000' AND '29999' OR [administration.hcpcslvl2cd_3] IN ('G0260')) 
+
+	UPDATE CEM.ExportDataset00000014 SET [administration.surgicalcat] = '3' 
+	WHERE exportqueueid = @ExportQueueID AND [administration.surgicalcat] IS NULL AND ([administration.cpt4_3] BETWEEN '65000' AND '68899') 
+		 
+	UPDATE CEM.ExportDataset00000014 SET [administration.surgicalcat] = '4' 
+	WHERE exportqueueid = @ExportQueueID AND [administration.surgicalcat] IS NULL 
 	
 	-- administration.LagTime
 	-- The number of calendar days between the date of eligible surgery/procedure and the date when this patient’s survey was initiated.
