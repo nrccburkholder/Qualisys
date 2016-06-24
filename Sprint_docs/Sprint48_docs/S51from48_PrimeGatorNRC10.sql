@@ -1,8 +1,8 @@
 /*
 
-Sprint 49 SQLCMD Script for Prime/Gator/NRC10
+Sprint 51 SQLCMD Script for Prime/Gator/NRC10
 
-\Sprint_docs\Sprint48_docs\S49_PrimeGatorNRC10.sql
+\Sprint_docs\Sprint48_docs\S51from48_PrimeGatorNRC10.sql
 
 */
 

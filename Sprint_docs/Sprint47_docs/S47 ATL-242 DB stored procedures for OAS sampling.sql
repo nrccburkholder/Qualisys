@@ -732,7 +732,7 @@ declare
                      sampleunit s
             WHERE    p.sampleunit_id = s.sampleunit_id
                      AND (s.inttargetReturn > 0
-                          OR (s.bitHCAHPS = 1
+                          OR ((s.bitHCAHPS = 1 or s.CahpsType_id = @OASCahps)
                               AND s.dontsampleunit = 0))
             GROUP BY Pop_id
             HAVING   COUNT(*) > 0

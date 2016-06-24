@@ -2,7 +2,7 @@
 
 Sprint 50 SQLCMD Script for Prime/Gator/NRC10
 
-\Sprint_docs\Sprint50_docs\S50_PrimeGatorNRC10.sql
+\Sprint_docs\Sprint50_docs\S51fromS50_PrimeGatorNRC10.sql
 
 */
 

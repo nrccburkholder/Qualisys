@@ -29,9 +29,9 @@
     </UpgradeBackupLocation>
     <OldToolsVersion>2.0</OldToolsVersion>
     <TargetFrameworkProfile />
-    <PublishUrl>publish\</PublishUrl>
+    <PublishUrl>\\tiqualfil02\TestNRCapplications\PervasiveViewer\</PublishUrl>
     <Install>false</Install>
-    <InstallFrom>Disk</InstallFrom>
+    <InstallFrom>Unc</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateMode>Foreground</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
@@ -43,7 +43,7 @@
     <PublisherName>National Research Corporation</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.1.7.0</ApplicationVersion>
+    <ApplicationVersion>1.1.8.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -290,7 +290,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <BaseApplicationManifest Include="My Project\app.manifest" />
   </ItemGroup>
   <ItemGroup>
@@ -332,7 +334,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\DeleteRed16.png" />
-    <None Include="PervasiveViewer.nuspec" />
+    <None Include="PervasiveViewer.nuspec">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Pervasive Viewer_TemporaryKey.pfx" />
     <Content Include="Resources\letter_p.ico" />
     <Content Include="Resources\SamplePlan16.png" />
