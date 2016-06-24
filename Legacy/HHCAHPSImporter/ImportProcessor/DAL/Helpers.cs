@@ -136,7 +136,7 @@ namespace HHCAHPSImporter.ImportProcessor.DAL
         /// <summary>
         /// 25
         /// </summary>
-        DuplicateCCNInSampleMonth = 25,
+        DuplicateCCN = 25,
 
     }
 
