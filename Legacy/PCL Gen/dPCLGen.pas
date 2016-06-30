@@ -1453,7 +1453,7 @@ var
 begin
   suffix1 := '';
   if uppercase(ExtractFileName(Application.ExeName)) <> 'PCLGEN.EXE' then
-    suffix1 := '-' + Copy(Application.ExeName, length(Application.ExeName)-4, 1);
+    suffix1 := '_' + Copy(Application.ExeName, length(Application.ExeName)-4, 1);
   suffix2 := ComputerName + suffix1;
 
   result := '#printfiles' + suffix2;
