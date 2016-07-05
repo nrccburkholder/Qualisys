@@ -183,6 +183,12 @@ declare
       DECLARE @FromDate VARCHAR(10) ,
          @ToDate VARCHAR(10)
 
+      IF @SamplingLogInsert = 1 
+         BEGIN                          
+            INSERT   INTO SamplingLog (SampleSet_id, StepName, Occurred, SQLCode)
+                     SELECT   @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - Start Proc', GETDATE(), ''                          
+         END                   
+                                                 
       SET @fromDate = CONVERT(VARCHAR, @startdate, 101)
       SET @toDate = CONVERT(VARCHAR, @EndDate, 101)
 
@@ -203,6 +209,13 @@ declare
                   SELECT DataSet_id FROM Data_Set WHERE DataSet_id IN (' + @DataSet + ')'
       EXEC (@Sel)
 
+      IF @SamplingLogInsert = 1 
+         BEGIN                          
+            INSERT   INTO SamplingLog (SampleSet_id, StepName, Occurred, SQLCode)
+                     SELECT   @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - Marker 1', GETDATE(), ''                          
+         END                          
+                          
+                                                 
  --get the list of Fields needed
       DECLARE @tbl TABLE (Fieldname VARCHAR(50) ,
                           DataType VARCHAR(20) ,
@@ -308,6 +321,12 @@ declare
 
 
 
+            IF @SamplingLogInsert = 1 
+               BEGIN                          
+                  INSERT   INTO SamplingLog (SampleSet_id, StepName, Occurred, SQLCode)
+                           SELECT   @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - Marker 2', GETDATE(), ''                          
+               END                          
+                                                 
             IF @encTableExists = 1
                SELECT   @sel = 'ALTER TABLE #HH_Dup_People ADD EncounterEnc_id INT'
             ELSE
@@ -325,7 +344,13 @@ declare
 
             EXEC (@Sel)
 
-
+            IF @SamplingLogInsert = 1 
+               BEGIN                          
+                  INSERT   INTO SamplingLog (SampleSet_id, StepName, Occurred, SQLCode)
+                           SELECT   @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - Marker 3', GETDATE(), ''                          
+               END                          
+                          
+                                        
             SELECT   @sel = REPLACE(@sel, '#HH_Dup_People', '#Minor_Universe')
             EXEC (@Sel)
 
@@ -373,8 +398,13 @@ declare
          @PopID_EncID_CreateTable VARCHAR(100) ,
          @PopID_EncID_Select_Aliased VARCHAR(100)
 
-
-
+      IF @SamplingLogInsert = 1 
+         BEGIN                          
+            INSERT   INTO SamplingLog (SampleSet_id, StepName, Occurred, SQLCode)
+                     SELECT   @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - Marker 4', GETDATE(), ''                          
+         END                          
+                          
+                                                 
       IF @encTableExists = 1
          BEGIN
             SELECT   @BVJOIN = 'X.Pop_id=BV.POPULATIONPop_id AND X.Enc_id=BV.ENCOUNTEREnc_id'
@@ -486,7 +516,13 @@ declare
       EXEC (@Sel)
 
 
-
+      IF @SamplingLogInsert = 1 
+         BEGIN                          
+            INSERT   INTO SamplingLog (SampleSet_id, StepName, Occurred, SQLCode)
+                     SELECT   @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - Marker 5', GETDATE(), ''                          
+         END                          
+                          
+                                                 
  --Add HH fields to #sampleunitUniverse
       IF EXISTS ( SELECT TOP 1
                            *
@@ -551,8 +587,13 @@ declare
                         AND BusRule_cd IN ('F', 'A')
                         AND Survey_id = @Survey_id
 
-
-
+      IF @SamplingLogInsert = 1 
+         BEGIN                          
+            INSERT   INTO SamplingLog (SampleSet_id, StepName, Occurred, SQLCode)
+                     SELECT   @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - Marker 6', GETDATE(), ''                          
+         END                
+                          
+                                                 
       DECLARE @Tables TABLE (tablename VARCHAR(40))
       INSERT   INTO @Tables
                SELECT DISTINCT
@@ -617,6 +658,12 @@ declare
             WHERE    SampleUnit_id = @SampleUnit
                      AND su.CriteriaStmt_id = c.CriteriaStmt_id
 
+            IF @SamplingLogInsert = 1 
+               BEGIN                          
+                  INSERT   INTO SamplingLog (SampleSet_id, StepName, Occurred, SQLCode)
+                           SELECT   @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - Marker 7', GETDATE(), ''                          
+               END                          
+                      
 
             IF @ParentSampleUnit IS NULL
                BEGIN
@@ -700,7 +747,12 @@ declare
             EXEC (@Sel)
 
 
-
+            IF @SamplingLogInsert = 1 
+               BEGIN                          
+                  INSERT   INTO SamplingLog (SampleSet_id, StepName, Occurred, SQLCode)
+                           SELECT   @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - Marker 8', GETDATE(), ''                          
+               END                          
+                          
 
             DELETE   c
             FROM     #SampleUnits su ,
@@ -762,8 +814,13 @@ declare
 
          END
 
-
-
+      IF @SamplingLogInsert = 1 
+         BEGIN                          
+            INSERT   INTO SamplingLog (SampleSet_id, StepName, Occurred, SQLCode)
+                     SELECT   @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - Marker 9', GETDATE(), ''                          
+         END                          
+                          
+                                                 
  --Evaluate the DQ rules
       SELECT TOP 1
                @Criteria = strCriteriaStmt, @DQ_id = CriteriaStmt_id
@@ -819,8 +876,13 @@ declare
                   EXEC (@Sel)
                END
 
-
-
+            IF @SamplingLogInsert = 1 
+               BEGIN                          
+                  INSERT   INTO SamplingLog (SampleSet_id, StepName, Occurred, SQLCode)
+                           SELECT   @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - Marker 10', GETDATE(), ''                          
+               END                          
+                                            
+                                                 
             DELETE   #Criters
             WHERE    CriteriaStmt_id = @DQ_id
 
@@ -890,7 +952,13 @@ declare
 
          END
 
-
+      IF @SamplingLogInsert = 1 
+         BEGIN                          
+            INSERT   INTO SamplingLog (SampleSet_id, StepName, Occurred, SQLCode)
+                     SELECT   @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - Marker 11', GETDATE(), ''                          
+         END                          
+                                                 
+                                                 
  --Evaluate the Bad Phone rules
       SELECT TOP 1
                @Criteria = strCriteriaStmt, @DQ_id = CriteriaStmt_id
@@ -961,8 +1029,13 @@ declare
 
       EXEC (@Sel)
 
-
-
+      IF @SamplingLogInsert = 1 
+         BEGIN                          
+            INSERT   INTO SamplingLog (SampleSet_id, StepName, Occurred, SQLCode)
+                     SELECT   @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - Marker 12', GETDATE(), ''                          
+         END                          
+                          
+                                                 
       DECLARE @CutOffCode INT ,
          @SampleDate DATETIME
       SELECT   @CutOffCode = strCutOffResponse_cd, @SampleDate = datSampleCreate_dt
@@ -978,8 +1051,13 @@ declare
 
       EXEC QCL_SampleSetIndexUniverse @encTableExists
 
-
-
+      IF @SamplingLogInsert = 1 
+         BEGIN                          
+            INSERT   INTO SamplingLog (SampleSet_id, StepName, Occurred, SQLCode)
+                     SELECT   @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - Marker 13', GETDATE(), ''                          
+         END                          
+                                  
+                                  
  --MWB 04/08/2010
  --If SurveyType = HHCAHPS need to capture the distinct count of pop_IDs that fit the HHCAHPS Unit
  --and save it off to new table.
@@ -1018,10 +1096,23 @@ declare
             EXEC QCL_SampleSetTOCLRule @study_id, @Survey_id, @sampleSet_id, 1
          END
 
+      IF @SamplingLogInsert = 1 
+         BEGIN                          
+            INSERT   INTO SamplingLog (SampleSet_id, StepName, Occurred, SQLCode)
+                     SELECT   @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - Marker 14', GETDATE(), ''                          
+         END                          
+                          
+                                              
  --MWB 9/2/08  HCAHPS Prop Sampling Sprint -- Exclude encounters already sampled.  Fix of existing bug
       EXEC QCL_RemovePreviousSampledEncounters @study_id, @Survey_id, @sampleSet_id
 
 
+      IF @SamplingLogInsert = 1 
+         BEGIN                          
+            INSERT   INTO SamplingLog (SampleSet_id, StepName, Occurred, SQLCode)
+                     SELECT   @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - Marker 15', GETDATE(), ''                          
+         END                          
+                  
  /******moved this code later, after resurvey and householding occurs 4/19/2012 dmp *****/
 
 
@@ -1055,15 +1146,24 @@ declare
       EXEC QCL_SampleSetAssignHouseHold @HouseHoldFieldCreateTableSyntax, @HouseHoldFieldSelectSyntax,
          @HouseHoldJoinSyntax, @HouseHoldingType
 
-     
+      IF @SamplingLogInsert = 1 
+         BEGIN                          
+            INSERT   INTO SamplingLog (SampleSet_id, StepName, Occurred, SQLCode)
+                     SELECT   @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - Marker 17', GETDATE(), ''                          
+         END                     
+                          
 
  -- Apply the resurvey exclusion rule
       EXEC QCL_SampleSetResurveyExclusion_StaticPlus @study_id, @Survey_id, @resurveyMethod_id, @ReSurvey_Period,
          @samplingAlgorithmId, @HouseHoldFieldCreateTableSyntax, @HouseHoldFieldSelectSyntax, @HouseHoldJoinSyntax,
          @HouseHoldingType, @sampleSet_id, @indebug
 
-   
-
+      IF @SamplingLogInsert = 1 
+         BEGIN                          
+            INSERT   INTO SamplingLog (SampleSet_id, StepName, Occurred, SQLCode)
+                     SELECT   @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - Marker 18', GETDATE(), ''                          
+         END                          
+            
 --adding check for HCAHPS survey type 4/24/2012 dmp
       IF @SurveyType_ID = 2
          BEGIN
@@ -1074,11 +1174,22 @@ declare
                @sampleSet_id, @indebug
          END
 
+      IF @SamplingLogInsert = 1 
+         BEGIN                          
+            INSERT   INTO SamplingLog (SampleSet_id, StepName, Occurred, SQLCode)
+                     SELECT   @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - Marker 19A', GETDATE(), ''                    
+         END                                    
+          
 
  --DRM 3/19/2012 Householding
       EXEC QCL_SampleSetPerformHousehold @survey_id, @sampleset_id
 
-
+      IF @SamplingLogInsert = 1 
+         BEGIN                          
+            INSERT   INTO SamplingLog (SampleSet_id, StepName, Occurred, SQLCode)
+                     SELECT   @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - Marker 19B', GETDATE(), ''                    
+         END            
+            
 
  /******
  Moved eligible enc log insert after resurvey and householding 4/19 dmp
@@ -1149,8 +1260,19 @@ declare
 
 --------------9/10/2014
 
-    
-
+      IF @SamplingLogInsert = 1 
+         BEGIN                          
+            INSERT   INTO SamplingLog (SampleSet_id, StepName, Occurred, SQLCode)
+                     SELECT   @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - Marker 16', GETDATE(), ''                          
+         END                          
+                                                                              
+                          
+      IF @SamplingLogInsert = 1 
+         BEGIN                          
+            INSERT   INTO SamplingLog (SampleSet_id, StepName, Occurred, SQLCode)
+                     SELECT   @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - Marker 19', GETDATE(), ''                    
+         END                          
+                          
 --Modified by Lee Kohrs 2013-04-24 This segment was previously located here, after all of the
 --inserts to HCAHPSEligibleEncLog.  Nursing home residents are eligible (not housholded)
 --per HCAHPS QAG. So this code was moved to a location prior to the inserts to HCAHPSEligibleEncLog
@@ -1180,8 +1302,56 @@ declare
       DELETE   FROM #SampleUnit_Universe
       WHERE    Removed_Rule NOT IN (0, 4)
 
+      IF @SamplingLogInsert = 1 
+         BEGIN                          
+            INSERT   INTO SamplingLog (SampleSet_id, StepName, Occurred, SQLCode)
+                     SELECT   @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - Marker 20', GETDATE(), ''                          
+         END                          
+                                          
+	  --added debug code back, changing table name to start w/ "debug"  06/30/2016 dmp
+      If @indebug = 1
+	  begin
+	    SET @sql = 'if exists (select 1 from sysobjects where name = ''debug_samplingUniverse_' + CAST(@sampleset_Id AS VARCHAR(10)) + ''')                                          
+			begin                                           
+				drop table debug_samplingUniverse_' + CAST(@sampleset_Id AS VARCHAR(10)) + '                                          
+			end                                          
+                                           
+			Select *                                          
+			into debug_samplingUniverse_' + CAST(@sampleset_Id AS VARCHAR(10)) + '                                          
+			from #SampleUnit_Universe'  
+	
+		exec(@sql)
+	
+		SET @sql = 'if exists (select 1 from sysobjects where name = ''debug_sampling_UnSampleAbleRR_' + CAST(@sampleset_Id AS VARCHAR(10)) + ''')                                          
+			begin                                           
+				drop table debug_sampling_UnSampleAbleRR_' + CAST(@sampleset_Id AS VARCHAR(10)) + '                                          
+			end                                          
+                                           
+			Select *                                          
+			into debug_sampling_UnSampleAbleRR_' + CAST(@sampleset_Id AS VARCHAR(10)) + '                                          
+			from #UnSampleAbleRR'                                      
+
+		exec(@sql)
+	  end  --end @indebug
 
 
+      IF @SamplingLogInsert = 1 
+         BEGIN                          
+            INSERT   INTO SamplingLog (SampleSet_id, StepName, Occurred, SQLCode)
+                     SELECT   @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - Marker 21', GETDATE(), ''                          
+         END                          
+                                           
+                                                 
+--      DELETE   FROM #SampleUnit_Universe
+--      WHERE    Removed_Rule NOT IN (0, 4)                                                
+                                          
+      IF @SamplingLogInsert = 1 
+         BEGIN                          
+            INSERT   INTO SamplingLog (SampleSet_id, StepName, Occurred, SQLCode)
+                     SELECT   @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - Marker 22', GETDATE(), ''                          
+         END                          
+                                           
+                                                 
  --Update the Universe count in SPW
       SELECT TOP 1
                @RemovedRule = Removed_Rule, @unit = sampleunit_Id, @freq = freq
@@ -1205,7 +1375,11 @@ declare
             FROM     #UnSampleAbleRR
          END
 
-
+      IF @SamplingLogInsert = 1 
+         BEGIN                          
+            INSERT   INTO SamplingLog (SampleSet_id, StepName, Occurred, SQLCode)
+                     SELECT   @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - Marker 23', GETDATE(), ''                          
+         END                          
 
 
  --Randomize file by Pop_id
@@ -1294,11 +1468,33 @@ declare
 		  from #OAS
 		  order by SampleUnit_id, numRandom
 		  
+		  IF @SamplingLogInsert = 1 
+			 BEGIN                          
+				INSERT   INTO SamplingLog (SampleSet_id, StepName, Occurred, SQLCode)
+						 SELECT   @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - End Systematic Block', GETDATE(), ''                          
+			 END                      
+
 		  DROP TABLE #OAS
 		  DROP TABLE #SystematicSamplingProportion 
 	  END
 	  ELSE
 	  BEGIN
+			--debug code added back, 06/30/2016 dmp
+			if @indebug = 1
+			BEGIN
+				set @sql = 'if exists (select 1 from sysobjects where name = ''debug_returnedrandomizedrecs_' + CAST(@sampleset_Id as varchar(10)) + ''')                                          
+				begin                                           
+				drop table debug_returnedrandomizedrecs_' + CAST(@sampleset_Id as varchar(10)) + '                                          
+				end                                          
+                                           
+				SELECT su.SampleUnit_id, su.Pop_id, su.Enc_id, su.DQ_Bus_Rule, su.Removed_Rule, su.EncDate, su.HouseHold_id, su.bitBadAddress, su.bitBadPhone, su.reportDate                                          
+				into debug_returnedrandomizedrecs_' + CAST(@sampleset_Id as varchar(10)) + '                                          
+				FROM #SampleUnit_Universe su, #randomPops rp       
+				WHERE su.Pop_id=rp.Pop_id               
+				ORDER BY rp.numrandom,Enc_id'   
+				
+				exec (@SQL)                                       
+			END 
 		  --Return data sorted by randomPop_id
 		  SELECT   suu.SampleUnit_id, suu.Pop_id, suu.Enc_id, suu.DQ_Bus_Rule, suu.Removed_Rule, suu.EncDate, suu.HouseHold_id,
 				   suu.bitBadAddress, suu.bitBadPhone, suu.reportDate, rp.numRandom, suf.MedicareNumber as CCN
@@ -1307,8 +1503,19 @@ declare
 				   INNER JOIN SampleUnit su on suu.SampleUnit_id=su.SampleUnit_id
 				   LEFT JOIN SUFacility suf on su.SUFacility_id=suf.SUFacility_id
 		  ORDER BY rp.numrandom, Enc_id
+
+		  IF @SamplingLogInsert = 1 
+			 BEGIN                          
+				INSERT   INTO SamplingLog (SampleSet_id, StepName, Occurred, SQLCode)
+						 SELECT   @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - End Non-Systematic Block', GETDATE(), ''                          
+			 END                      
 	  END
 
+	IF @SamplingLogInsert = 1 
+		BEGIN                          
+		INSERT   INTO SamplingLog (SampleSet_id, StepName, Occurred, SQLCode)
+					SELECT   @sampleset_Id, 'QCL_SelectEncounterUnitEligibility - End Proc', GETDATE(), ''                          
+		END                      
 
 
 
