@@ -441,6 +441,7 @@ AND ACODisposition = 34
 			inner join questionform qf on rc.samplepop_id=qf.samplepop_id
 			inner join sentmailing sm on qf.sentmail_id=sm.sentmail_id
 			where qf.datreturned is null and qf.datunusedreturn is null and sm.datUndeliverable is null
+			and sm.datExpire > getdate()
 
 			-- we can etl a return if the samplepop meets these criteria:
 			update tr
