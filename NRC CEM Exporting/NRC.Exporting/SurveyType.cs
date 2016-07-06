@@ -25,5 +25,10 @@ namespace CEM.Exporting
             return DataProviders.SurveyTypeDataProvider.Select();
         }
 
+
+        public static SurveyType Select(int surveyTypeId)
+        {
+            return DataProviders.SurveyTypeDataProvider.Select(surveyTypeId);
+        }
     }
 }

@@ -89,7 +89,9 @@ namespace NRC.Platform.FileCopyService
             source.Prepare();
             //whether or not dest and backup have been prepared
             bool havePrepared = false, hadError = false;
-            
+
+            logger.Info("Working on source " + source.Path);
+
             IEnumerable<string> files = source.ListFiles();
             foreach (string file in files)
             {

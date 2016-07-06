@@ -68,6 +68,25 @@ namespace CEM.Exporting.DataProviders
             }
         }
 
+
+        public static SurveyType Select(int surveyTypeId)
+        {
+            DataSet ds = new DataSet();
+            SqlProvider.Fill(ref ds, "QCL_SelectSurveyType", CommandType.StoredProcedure, new SqlParameter("@SurveyType_Id", surveyTypeId));
+
+            using (ds)
+            {               
+                if (ds.Tables.Count > 0)
+                {
+                    if  (ds.Tables[0].Rows.Count > 0)
+                    {
+                        return PopulateSurveyType(ds.Tables[0].Rows[0]);
+                    }
+                }
+            }
+            return null;
+        }
+
         #endregion
 
     }

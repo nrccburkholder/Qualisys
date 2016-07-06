@@ -217,3 +217,4 @@ FROM StandardMailingStep
 WHERE StandardMethodologyID=@StandardMethodologyID 
 ORDER BY intSequence
 
+GO

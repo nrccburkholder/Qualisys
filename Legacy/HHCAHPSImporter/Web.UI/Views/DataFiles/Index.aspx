@@ -114,7 +114,7 @@
                 <% } %>
             </td>
             <td>
-                <% if (item.DataFileState_id == (int)HHCAHPSImporter.ImportProcessor.DAL.DataFileState.Abandoned)
+                <% if ((item.DataFileState_id == (int)HHCAHPSImporter.ImportProcessor.DAL.DataFileState.Abandoned) | (item.DataFileState_id == (int)HHCAHPSImporter.ImportProcessor.DAL.DataFileState.DuplicateCCN))
                    { %>
                 <div class="errorHead" id='<%: string.Format("abandonded-target-d{0}", item.DataFile_id) %>'><%: ((HHCAHPSImporter.ImportProcessor.DAL.DataFileState)item.DataFileState_id).ToString()%></div>
                 <div class="errorBody" id='<%: string.Format("abandonded-content-d{0}", item.DataFile_id) %>' >

@@ -1453,7 +1453,7 @@ var
 begin
   suffix1 := '';
   if uppercase(ExtractFileName(Application.ExeName)) <> 'PCLGEN.EXE' then
-    suffix1 := '-' + Copy(Application.ExeName, length(Application.ExeName)-4, 1);
+    suffix1 := '_' + Copy(Application.ExeName, length(Application.ExeName)-4, 1);
   suffix2 := ComputerName + suffix1;
 
   result := '#printfiles' + suffix2;
@@ -1519,7 +1519,8 @@ begin
     WhereField:='SentMail_id';
     if TestPrints then
     begin
-      ww_sql.SQL.Add('Create table ' + PrintFilesTableName + ' (tp_id int, pop_id int, FileName varchar(50),copied bit )');
+      ww_sql.SQL.Add('if object_id(''tempdb..' + PrintFilesTableName +
+                     ''') is NULL Create table ' + PrintFilesTableName + ' (tp_id int, pop_id int, FileName varchar(50),copied bit ) Else Delete '+ PrintFilesTableName);
       ww_sql.ExecSQL;
       ww_sql.SQL.Clear;
       ww_sql.SQL.Add('insert into ' + PrintFilesTableName + '(tp_id,pop_id,copied) select pn.SentMail_id, pop_id, 0 as copied from scheduled_TP ps, #MyPCLNeeded pn where ps.tp_id=pn.SentMail_id');

@@ -131,7 +131,13 @@ namespace HHCAHPSImporter.ImportProcessor.DAL
         /// <summary>
         /// 24
         /// </summary>
-        HHCAHPSUpdateAbandoned = 24
+        HHCAHPSUpdateAbandoned = 24,
+
+        /// <summary>
+        /// 25
+        /// </summary>
+        DuplicateCCN = 25,
+
     }
 
     public enum UploadState
