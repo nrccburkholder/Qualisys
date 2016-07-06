@@ -25,10 +25,11 @@ as
 
 
 select qf.SamplePop_id, qf.QuestionForm_id, qf.datReturned, qf.unusedreturn_id, qf.datUnusedReturn, 0 as bitUse, 0 as numResponses
-, sstx.Subtype_id, sstx.Subtype_nm, sd.survey_id, sd.surveytype_id, 0 as bitComplete
+, sstx.Subtype_id, sstx.Subtype_nm, sd.survey_id, sd.surveytype_id, 0 as bitComplete, sp.sampleset_id
 into #partials
 from QuestionForm qf
 inner join SentMailing sm on qf.SentMail_id=sm.SentMail_id
+inner join samplepop sp on qf.samplepop_id=sp.samplepop_id
 inner join survey_def sd on qf.survey_id=sd.survey_id
 left join (	SELECT sst.survey_id, sst.subtype_id, st.subtype_nm 
 			FROM [dbo].[surveysubtype] sst 
@@ -38,6 +39,7 @@ where qf.SamplePop_id in (select SamplePop_id from QuestionForm where unusedretu
 and (qf.datReturned is not null or unusedreturn_id=5)
 and sd.Surveytype_id in (3, 8, 16) -- HH CAHPS and ICHCAHPS and OAS 
 and isnull(sm.datexpire,getdate())<getdate()
+
 
 if @@rowcount=0
 	RETURN
@@ -62,7 +64,7 @@ where samplepop_id in (select samplepop_id from #partials group by samplepop_id 
 
 
 -- if there are two unused returns, use the one with the most responses
-select samplepop_id, questionform_id, datUnusedReturn, 0 as responsecount, survey_id
+select sampleset_id, samplepop_id, questionform_id, datUnusedReturn, 0 as responsecount, survey_id
 into #QFResponseCount
 from #partials
 where samplepop_id in (select samplepop_id from #partials group by samplepop_id having count(*)>1)
@@ -135,11 +137,11 @@ begin
 	set bitComplete=case when ATACnt>=19 then 1 else 0 end
 	from #partials p
 	inner join (select qr.questionform_id, count(distinct sq.qstncore) as ATACnt
-				from (	select rc.questionform_id, rc.survey_id, qr.qstncore, qr.intResponseVal
+				from (	select rc.sampleset_id, rc.questionform_id, rc.survey_id, qr.qstncore, qr.intResponseVal
 						from #qfResponseCount rc
 						inner join questionresult qr on rc.questionform_id=qr.questionform_id
 						union
-						select rc.questionform_id, rc.survey_id, qr2.qstncore, qr2.intResponseVal
+						select rc.sampleset_id, rc.questionform_id, rc.survey_id, qr2.qstncore, qr2.intResponseVal
 						from #qfResponseCount rc
 						inner join questionresult2 qr2 on rc.questionform_id=qr2.questionform_id) qr
 				inner join DL_SEL_QSTNS_BySampleSet sq on qr.survey_id = sq.survey_id and qr.qstncore = sq.qstncore and qr.sampleset_id=sq.SampleSet_ID
@@ -157,11 +159,11 @@ begin
 	set bitComplete=case when ATACnt>9 then 1 else 0 end
 	from #partials p
 	inner join (select qr.questionform_id, count(distinct sq.qstncore) as ATACnt
-				from (	select rc.questionform_id, rc.survey_id, qr.qstncore, qr.intResponseVal
+				from (	select rc.sampleset_id, rc.questionform_id, rc.survey_id, qr.qstncore, qr.intResponseVal
 						from #qfResponseCount rc
 						inner join questionresult qr on rc.questionform_id=qr.questionform_id
 						union
-						select rc.questionform_id, rc.survey_id, qr2.qstncore, qr2.intResponseVal
+						select rc.sampleset_id, rc.questionform_id, rc.survey_id, qr2.qstncore, qr2.intResponseVal
 						from #qfResponseCount rc
 						inner join questionresult2 qr2 on rc.questionform_id=qr2.questionform_id) qr
 				inner join DL_SEL_QSTNS_BySampleSet sq on qr.survey_id = sq.survey_id and qr.qstncore = sq.qstncore and qr.sampleset_id=sq.SampleSet_ID
@@ -179,11 +181,11 @@ begin
 	set bitComplete=case when (cast(ATACnt as float)/cast(22 as float)) * 100 >= 50 then 1 else 0 end
 	from #partials p
 	inner join (select qr.questionform_id, count(distinct sq.qstncore) as ATACnt
-				from (	select rc.questionform_id, rc.survey_id, qr.qstncore, qr.intResponseVal
+				from (	select rc.sampleset_id, rc.questionform_id, rc.survey_id, qr.qstncore, qr.intResponseVal
 						from #qfResponseCount rc
 						inner join questionresult qr on rc.questionform_id=qr.questionform_id
 						union
-						select rc.questionform_id, rc.survey_id, qr2.qstncore, qr2.intResponseVal
+						select rc.sampleset_id, rc.questionform_id, rc.survey_id, qr2.qstncore, qr2.intResponseVal
 						from #qfResponseCount rc
 						inner join questionresult2 qr2 on rc.questionform_id=qr2.questionform_id) qr
 				inner join DL_SEL_QSTNS_BySampleSet sq on qr.survey_id = sq.survey_id and qr.qstncore = sq.qstncore and qr.sampleset_id=sq.SampleSet_ID
