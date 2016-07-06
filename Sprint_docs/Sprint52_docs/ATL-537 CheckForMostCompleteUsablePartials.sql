@@ -142,8 +142,8 @@ begin
 						select rc.questionform_id, rc.survey_id, qr2.qstncore, qr2.intResponseVal
 						from #qfResponseCount rc
 						inner join questionresult2 qr2 on rc.questionform_id=qr2.questionform_id) qr
-				inner join sel_qstns sq on qr.survey_id = sq.survey_id and qr.qstncore = sq.qstncore 
-				inner join sel_scls ss on sq.scaleid = ss.qpc_id AND sq.survey_id = ss.survey_id and qr.intresponseval = ss.val
+				inner join DL_SEL_QSTNS_BySampleSet sq on qr.survey_id = sq.survey_id and qr.qstncore = sq.qstncore and qr.sampleset_id=sq.SampleSet_ID
+				inner join DL_SEL_SCLS_BySampleSet ss on sq.scaleid = ss.qpc_id AND sq.survey_id = ss.survey_id and qr.intresponseval = ss.val and sq.SampleSet_ID=ss.Sampleset_ID
 				where sq.qstncore in (51198,51199,47159,47160,47161,47162,47163,47164,47165,47166,47167,47168,47169,47170,47171,47172,47173,47174,47175,
 										47176,47178,47179,47181,47182,47183,47184,47185,47186,47187,47188,47189,47190,47191,47192,47193,47195,47196,47197)
 				and sq.subtype = 1 
@@ -164,8 +164,8 @@ begin
 						select rc.questionform_id, rc.survey_id, qr2.qstncore, qr2.intResponseVal
 						from #qfResponseCount rc
 						inner join questionresult2 qr2 on rc.questionform_id=qr2.questionform_id) qr
-				inner join sel_qstns sq on qr.survey_id = sq.survey_id and qr.qstncore = sq.qstncore 
-				inner join sel_scls ss on sq.scaleid = ss.qpc_id AND sq.survey_id = ss.survey_id and qr.intresponseval = ss.val
+				inner join DL_SEL_QSTNS_BySampleSet sq on qr.survey_id = sq.survey_id and qr.qstncore = sq.qstncore and qr.sampleset_id=sq.SampleSet_ID
+				inner join DL_SEL_SCLS_BySampleSet ss on sq.scaleid = ss.qpc_id AND sq.survey_id = ss.survey_id and qr.intresponseval = ss.val and sq.SampleSet_ID=ss.Sampleset_ID
 				where sq.qstncore in (38694,38695,38696,38697,38698,38699,38700,38701,38702,38703,38704,38708,38709,38710,38711,38712,38713,38714,38717,38718)
 				and sq.subtype = 1 
 				AND sq.language = 1 
@@ -186,17 +186,16 @@ begin
 						select rc.questionform_id, rc.survey_id, qr2.qstncore, qr2.intResponseVal
 						from #qfResponseCount rc
 						inner join questionresult2 qr2 on rc.questionform_id=qr2.questionform_id) qr
-				inner join sel_qstns sq on qr.survey_id = sq.survey_id and qr.qstncore = sq.qstncore 
-				inner join sel_scls ss on sq.scaleid = ss.qpc_id AND sq.survey_id = ss.survey_id and qr.intresponseval = ss.val
+				inner join DL_SEL_QSTNS_BySampleSet sq on qr.survey_id = sq.survey_id and qr.qstncore = sq.qstncore and qr.sampleset_id=sq.SampleSet_ID
+				inner join DL_SEL_SCLS_BySampleSet ss on sq.scaleid = ss.qpc_id AND sq.survey_id = ss.survey_id and qr.intresponseval = ss.val and sq.SampleSet_ID=ss.Sampleset_ID
 				where sq.qstncore in (54086,54087,54088,54089,54090,54091,54092,54093,54094,54095,54098,54099,54100,
-											  54101,54102,54103,54104,54105,54106,54107,54108,54109)
+									    54101,54102,54103,54104,54105,54106,54107,54108,54109)
 				and sq.subtype = 1 
 				AND sq.language = 1 
 				AND ss.language = 1 
 				group by qr.questionform_id) rc
 			on p.questionform_id=rc.questionform_id
 	where p.Surveytype_id in (16) -- OAS CAHPS 
-
 
 	update qf 
 	set bitComplete = p.bitComplete
