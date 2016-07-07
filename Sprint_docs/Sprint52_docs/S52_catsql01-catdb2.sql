@@ -8,4 +8,4 @@ Sprint 52 SQLCMD Script for catsql01-catdb2
 
 :r "\ATLASRelease51&52\Sprint52_docs\S52 ATL-505 ICH Nondels with Blank Dispo fix.sql"
 
-
+--:r "\ATLASRelease51&52\Sprint52_docs\S52 ATL-547 OAS Surgical Category.sql"
