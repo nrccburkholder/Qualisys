@@ -52,11 +52,11 @@ select dbo.yearqtr(@samplingdate) as SampleQuarter
 	, suf.medicarenumber as CCN
 	, count(su.SAMPLEUNIT_ID) as numLocations
 	, 4 as SamplingAlgorithmID
-	, case when dbo.yearqtr(min(SwitchToCalcDate)) < dbo.yearqtr(@samplingdate) then 'Historic' else 'Default' end as RespRateType
-	, case when dbo.yearqtr(min(SwitchToCalcDate)) < dbo.yearqtr(@samplingdate) then NULL else min(mlu.EstRespRate) end as numResponseRate 
-	, min(mlu.AnnualReturnTarget) as AnnualTarget
-	, ceiling(min(mlu.AnnualReturnTarget)/4.0) as QuarterTarget
-	, ceiling(min(mlu.AnnualReturnTarget)/12.0) as MonthTarget
+	, case when dbo.yearqtr(min(SystematicSwitchToCalcDate)) < dbo.yearqtr(@samplingdate) then 'Historic' else 'Default' end as RespRateType
+	, case when dbo.yearqtr(min(SystematicSwitchToCalcDate)) < dbo.yearqtr(@samplingdate) then NULL else min(mlu.SystematicEstRespRate / 100.0) end as numResponseRate 
+	, min(mlu.SystematicAnnualReturnTarget) as AnnualTarget
+	, ceiling(min(mlu.SystematicAnnualReturnTarget)/4.0) as QuarterTarget
+	, ceiling(min(mlu.SystematicAnnualReturnTarget)/12.0) as MonthTarget
 from sampleplan sp
 inner join sampleunit su on sp.SAMPLEPLAN_ID=su.sampleplan_id
 inner join SUFacility suf on su.SUFacility_id=suf.SUFacility_id
