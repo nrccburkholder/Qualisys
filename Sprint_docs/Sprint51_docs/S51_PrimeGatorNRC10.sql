@@ -12,6 +12,6 @@ Sprint 51 SQLCMD Script for Prime/Gator/NRC10
 
 -- already released :r "\ATLASRelease51&52\Sprint51_docs\S51 ATL-492 CheckForCAHPSIncomplete.sql"
 
-:r "\ATLASRelease51&52\Sprint51_docs\S51 ATL-363 Process Multiple Files in HH Importer - QP_PROD.sql"
+-- upcoming off cycle :r "\ATLASRelease51&52\Sprint51_docs\S51 ATL-363 Process Multiple Files in HH Importer - QP_PROD.sql"
 
 --run separately :r "\ATLASRelease51&52\Sprint51_docs\S51 ATL-513 Update QualPro Params with Skip Instruction variations.sql"
