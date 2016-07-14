@@ -21,6 +21,8 @@ Please make sure these get scripted so they’re included when we release sampling
 	ALTER PROCEDURE [dbo].[QCL_SelectEncounterUnitEligibility]
 	ALTER PROCEDURE [dbo].[QCL_RemovePreviousSampledEncounters]
 	ALTER PROCEDURE [dbo].[QCL_SampleSetResurveyExclusion_StaticPlus]
+	create procedure dbo.QCL_CalculateSystematicSamplingOutgo
+	CREATE PROCEDURE dbo.QCL_GetSystematicSamplingOutgo
 */
 
 USE [QP_Prod]
@@ -2011,4 +2013,12 @@ AS
 --insert into mb_sampling_samplesql
 --select @sql as SQL
 GO
+
+if exists (select * from sys.procedures where name = 'QCL_CalculateSystematicSamplingOutgo')
+	drop procedure QCL_CalculateSystematicSamplingOutgo
+go
+
+if exists (select * from sys.procedures where name = 'QCL_GetSystematicSamplingOutgo')
+	drop procedure QCL_GetSystematicSamplingOutgo
+go
 
