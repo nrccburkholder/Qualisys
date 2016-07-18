@@ -123,33 +123,35 @@ begin
 end;
 
 
-function NewGetDiskFreeSpaceA(lpPath: LPCTSTR; lpSectorsPerCluster: LPDWORD
-; lpBytesPerSector: LPDWORD; lpNoFreeClusters: LPDWORD;
-lpTotalNoClusters: LPDWORD): LongBool; stdcall;
+function NewGetDiskFreeSpaceA(lpPath: PAnsiChar; var lpSectorsPerCluster,
+lpBytesPerSector, lpNoFreeClusters, lpTotalNoClusters: DWORD): LongBool; stdcall;
 var
   FreeBytesAvailableToCaller, TotalNoBytes,
-  TotalNoFreeBytes: ULARGE_INTEGER;
+  TotalNoFreeBytes: TLargeInteger;
 
   PFreeBytesAvailableToCaller, PTotalBytes,
-  PTotalFreeBytes: PLargeInteger;
+  PTotalFreeBytes: PInteger;
 begin
   PFreeBytesAvailableToCaller := @FreeBytesAvailableToCaller;
   PTotalBytes := @TotalNoBytes;
   PTotalFreeBytes := @TotalNoFreeBytes;
 
   result := GetDiskFreeSpaceEx(lpPath,
-    PFreeBytesAvailableToCaller,
-    PTotalBytes, PTotalFreeBytes);
+    PFreeBytesAvailableToCaller^,
+    PTotalBytes^, PTotalFreeBytes);
   if not result then Exit;
 
-  lpSectorsPerCluster^ := 1;
-  lpBytesPerSector^ := 1;
+  lpSectorsPerCluster := 1;
+  lpBytesPerSector := 1;
 
   if (FreeBytesAvailableToCaller.QuadPart > $ffffffff) then
-    lpNoFreeClusters^ := $ffffffff
+    lpNoFreeClusters := $ffffffff
   else
-    lpNoFreeClusters^ := FreeBytesAvailableToCaller.QuadPart;
-  lpTotalNoClusters^ := $ffffffff;
+    if (FreeBytesAvailableToCaller.LowPart > $ffffffff) then
+      lpNoFreeClusters := $ffffffff
+    else
+      lpNoFreeClusters := FreeBytesAvailableToCaller.LowPart;
+  lpTotalNoClusters := $ffffffff;
 end;
 
 
