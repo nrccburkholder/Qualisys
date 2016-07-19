@@ -28,8 +28,8 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ProductName>Create Definition Files</ProductName>
     <PublisherName>National Research Corporation</PublisherName>
-    <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>2.17.0.1</ApplicationVersion>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>2.17.1.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -54,10 +54,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>F266A0C5D8DFC95DFAF37428E3B0A6E8113DD0C8</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>A8A4697BDACB912C2DFA2783816C0FCAFA7AFC0A</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>CreateDefinitionFilesLauncher_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>CreateDefinitionFilesLauncher_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -113,7 +113,7 @@
     </Compile>
     <None Include="app.manifest" />
     <None Include="CreateDefinitionFilesLauncher.nuspec" />
-    <None Include="CreateDefinitionFilesLauncher_TemporaryKey.pfx" />
+    <None Include="CreateDefinitionFilesLauncher_1_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
