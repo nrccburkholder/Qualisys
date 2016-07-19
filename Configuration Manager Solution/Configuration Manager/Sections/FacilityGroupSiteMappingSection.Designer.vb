@@ -41,6 +41,7 @@ Partial Class FacilityGroupSiteMappingSection
         Me.GridColumn26 = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.GridColumn27 = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.GridColumn28 = New DevExpress.XtraGrid.Columns.GridColumn()
+        Me.GridColumn35 = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.GridColumn29 = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.GridColumn32 = New DevExpress.XtraGrid.Columns.GridColumn()
         Me.gcGroupsAndSites = New DevExpress.XtraGrid.GridControl()
@@ -77,7 +78,7 @@ Partial Class FacilityGroupSiteMappingSection
         '
         'gvPracticeSites
         '
-        Me.gvPracticeSites.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.GridColumn34, Me.GridColumn33, Me.GridColumn14, Me.GridColumn16, Me.GridColumn17, Me.GridColumn18, Me.GridColumn19, Me.GridColumn20, Me.GridColumn21, Me.GridColumn22, Me.GridColumn23, Me.GridColumn24, Me.GridColumn25, Me.GridColumn26, Me.GridColumn27, Me.GridColumn28, Me.GridColumn29, Me.GridColumn32})
+        Me.gvPracticeSites.Columns.AddRange(New DevExpress.XtraGrid.Columns.GridColumn() {Me.GridColumn34, Me.GridColumn33, Me.GridColumn14, Me.GridColumn16, Me.GridColumn17, Me.GridColumn18, Me.GridColumn19, Me.GridColumn20, Me.GridColumn21, Me.GridColumn22, Me.GridColumn23, Me.GridColumn24, Me.GridColumn25, Me.GridColumn26, Me.GridColumn27, Me.GridColumn28, Me.GridColumn35, Me.GridColumn29, Me.GridColumn32})
         Me.gvPracticeSites.GridControl = Me.gcGroupsAndSites
         Me.gvPracticeSites.Name = "gvPracticeSites"
         Me.gvPracticeSites.OptionsBehavior.AllowAddRows = DevExpress.Utils.DefaultBoolean.[True]
@@ -214,13 +215,21 @@ Partial Class FacilityGroupSiteMappingSection
         Me.GridColumn28.Visible = True
         Me.GridColumn28.VisibleIndex = 15
         '
+        'GridColumn35
+        '
+        Me.GridColumn35.Caption = "Medicare Number"
+        Me.GridColumn35.FieldName = "CCN"
+        Me.GridColumn35.Name = "GridColumn35"
+        Me.GridColumn35.Visible = True
+        Me.GridColumn35.VisibleIndex = 16
+        '
         'GridColumn29
         '
         Me.GridColumn29.Caption = "Active"
         Me.GridColumn29.FieldName = "bitActive"
         Me.GridColumn29.Name = "GridColumn29"
         Me.GridColumn29.Visible = True
-        Me.GridColumn29.VisibleIndex = 16
+        Me.GridColumn29.VisibleIndex = 17
         '
         'GridColumn32
         '
@@ -232,18 +241,15 @@ Partial Class FacilityGroupSiteMappingSection
         '
         Me.gcGroupsAndSites.DataSource = Me.SiteGroupBindingSource
         Me.gcGroupsAndSites.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gcGroupsAndSites.EmbeddedNavigator.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         GridLevelNode1.LevelTemplate = Me.gvPracticeSites
         GridLevelNode1.RelationName = "FK_Master_Detail"
         Me.gcGroupsAndSites.LevelTree.Nodes.AddRange(New DevExpress.XtraGrid.GridLevelNode() {GridLevelNode1})
-        Me.gcGroupsAndSites.Location = New System.Drawing.Point(0, 62)
+        Me.gcGroupsAndSites.Location = New System.Drawing.Point(0, 52)
         Me.gcGroupsAndSites.MainView = Me.gvSiteGroups
-        Me.gcGroupsAndSites.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.gcGroupsAndSites.Name = "gcGroupsAndSites"
-        Me.gcGroupsAndSites.Size = New System.Drawing.Size(1458, 796)
+        Me.gcGroupsAndSites.Size = New System.Drawing.Size(972, 506)
         Me.gcGroupsAndSites.TabIndex = 5
         Me.gcGroupsAndSites.UseEmbeddedNavigator = True
-        Me.gcGroupsAndSites.EmbeddedNavigator.Buttons.Remove.Visible = CurrentUser.MayDeleteGroupsAndSites
         Me.gcGroupsAndSites.ViewCollection.AddRange(New DevExpress.XtraGrid.Views.Base.BaseView() {Me.gvSiteGroups, Me.gvPracticeSites})
         '
         'gvSiteGroups
@@ -392,18 +398,16 @@ Partial Class FacilityGroupSiteMappingSection
         Me.HeaderStrip1.ImageScalingSize = New System.Drawing.Size(24, 24)
         Me.HeaderStrip1.Location = New System.Drawing.Point(0, 0)
         Me.HeaderStrip1.Name = "HeaderStrip1"
-        Me.HeaderStrip1.Padding = New System.Windows.Forms.Padding(0, 0, 2, 0)
-        Me.HeaderStrip1.Size = New System.Drawing.Size(1458, 37)
+        Me.HeaderStrip1.Size = New System.Drawing.Size(972, 27)
         Me.HeaderStrip1.TabIndex = 0
         Me.HeaderStrip1.Text = "HeaderStrip1"
         '
         'ToolStrip1
         '
         Me.ToolStrip1.ImageScalingSize = New System.Drawing.Size(24, 24)
-        Me.ToolStrip1.Location = New System.Drawing.Point(0, 37)
+        Me.ToolStrip1.Location = New System.Drawing.Point(0, 27)
         Me.ToolStrip1.Name = "ToolStrip1"
-        Me.ToolStrip1.Padding = New System.Windows.Forms.Padding(0, 0, 2, 0)
-        Me.ToolStrip1.Size = New System.Drawing.Size(1458, 25)
+        Me.ToolStrip1.Size = New System.Drawing.Size(972, 25)
         Me.ToolStrip1.TabIndex = 2
         Me.ToolStrip1.Text = "ToolStrip1"
         '
@@ -413,19 +417,17 @@ Partial Class FacilityGroupSiteMappingSection
         Me.Panel1.Controls.Add(Me.ApplyButton)
         Me.Panel1.Controls.Add(Me.Label1)
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.Panel1.Location = New System.Drawing.Point(0, 858)
-        Me.Panel1.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.Panel1.Location = New System.Drawing.Point(0, 558)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(1458, 54)
+        Me.Panel1.Size = New System.Drawing.Size(972, 35)
         Me.Panel1.TabIndex = 4
         '
         'Cancel_Button
         '
         Me.Cancel_Button.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Cancel_Button.Location = New System.Drawing.Point(1341, 9)
-        Me.Cancel_Button.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.Cancel_Button.Location = New System.Drawing.Point(894, 6)
         Me.Cancel_Button.Name = "Cancel_Button"
-        Me.Cancel_Button.Size = New System.Drawing.Size(112, 35)
+        Me.Cancel_Button.Size = New System.Drawing.Size(75, 23)
         Me.Cancel_Button.TabIndex = 5
         Me.Cancel_Button.Text = "Cancel"
         Me.Cancel_Button.UseVisualStyleBackColor = True
@@ -433,10 +435,9 @@ Partial Class FacilityGroupSiteMappingSection
         'ApplyButton
         '
         Me.ApplyButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ApplyButton.Location = New System.Drawing.Point(1220, 9)
-        Me.ApplyButton.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.ApplyButton.Location = New System.Drawing.Point(813, 6)
         Me.ApplyButton.Name = "ApplyButton"
-        Me.ApplyButton.Size = New System.Drawing.Size(112, 35)
+        Me.ApplyButton.Size = New System.Drawing.Size(75, 23)
         Me.ApplyButton.TabIndex = 4
         Me.ApplyButton.Text = "Apply"
         Me.ApplyButton.UseVisualStyleBackColor = True
@@ -446,23 +447,21 @@ Partial Class FacilityGroupSiteMappingSection
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.Red
-        Me.Label1.Location = New System.Drawing.Point(99, 14)
-        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label1.Location = New System.Drawing.Point(66, 9)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(0, 29)
+        Me.Label1.Size = New System.Drawing.Size(0, 20)
         Me.Label1.TabIndex = 2
         '
         'FacilityGroupSiteMappingSection
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 20.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.gcGroupsAndSites)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.ToolStrip1)
         Me.Controls.Add(Me.HeaderStrip1)
-        Me.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.Name = "FacilityGroupSiteMappingSection"
-        Me.Size = New System.Drawing.Size(1458, 912)
+        Me.Size = New System.Drawing.Size(972, 593)
         CType(Me.gvPracticeSites, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.gcGroupsAndSites, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.SiteGroupBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
@@ -517,5 +516,6 @@ Partial Class FacilityGroupSiteMappingSection
     Friend WithEvents GridColumn34 As DevExpress.XtraGrid.Columns.GridColumn
     Friend WithEvents GridColumn32 As DevExpress.XtraGrid.Columns.GridColumn
     Friend WithEvents GridColumn33 As DevExpress.XtraGrid.Columns.GridColumn
+    Friend WithEvents GridColumn35 As DevExpress.XtraGrid.Columns.GridColumn
 
 End Class

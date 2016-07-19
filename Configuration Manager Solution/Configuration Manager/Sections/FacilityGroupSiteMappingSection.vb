@@ -4,7 +4,6 @@ Imports DevExpress.Data.Filtering
 
 Public Class FacilityGroupSiteMappingSection
 
-
 #Region " Private Members "
 
     Private mViewMode As FacilityAdminSection.DataViewMode
@@ -144,7 +143,8 @@ Public Class FacilityGroupSiteMappingSection
                                                     .PracticeContactPhone = drow("PracticeContactPhone").ToString(),
                                                     .PracticeContactEmail = drow("PracticeContactEmail").ToString(),
                                                     .SampleUnit_id = If(IsDBNull(drow("SampleUnit_id")), .SampleUnit_id, CInt(drow("SampleUnit_id"))),
-                                                    .bitActive = If(IsDBNull(drow("bitActive")), True, CBool(drow("bitActive")))}
+                                                    .bitActive = If(IsDBNull(drow("bitActive")), True, CBool(drow("bitActive"))),
+                                                    .CCN = drow("CCN").ToString()}
 
                         If (practiceSite.PracticeSite_ID > 0) Then
                             SiteGroup.UpdatePracticeSite(practiceSite)
@@ -203,12 +203,12 @@ Public Class FacilityGroupSiteMappingSection
 
     End Sub
 
-    Private Sub InitializeNewPracticeSiteRecord(ByVal rowHandle As Integer)
+    Private Sub InitializeNewPracticeSiteRecord(ByVal view As DevExpress.XtraGrid.Views.Grid.GridView, ByVal rowHandle As Integer)
 
         ' The SiteGroup_id needs to be unique in the grid.  However, the assigned ID is just temporary for this session.  It will not be the value assigned in the database.
-        gvPracticeSites.SetRowCellValue(rowHandle, gvPracticeSites.Columns("SiteGroup_ID"), UniqueSiteGroupId)
-        gvPracticeSites.SetRowCellValue(rowHandle, gvPracticeSites.Columns("bitActive"), 1)
-        gvPracticeSites.SetRowCellValue(rowHandle, gvPracticeSites.Columns("RecordState"), 1)
+        view.SetRowCellValue(rowHandle, gvPracticeSites.Columns("SiteGroup_ID"), UniqueSiteGroupId)
+        view.SetRowCellValue(rowHandle, gvPracticeSites.Columns("bitActive"), 1)
+        view.SetRowCellValue(rowHandle, gvPracticeSites.Columns("RecordState"), 1)
 
 
     End Sub
@@ -228,7 +228,9 @@ Public Class FacilityGroupSiteMappingSection
 #Region "Events"
 
     Private Sub gvPracticeSites_InitNewRow(sender As System.Object, e As DevExpress.XtraGrid.Views.Grid.InitNewRowEventArgs) Handles gvPracticeSites.InitNewRow
-        InitializeNewPracticeSiteRecord(e.RowHandle)
+        Dim view As DevExpress.XtraGrid.Views.Grid.GridView = TryCast(sender, DevExpress.XtraGrid.Views.Grid.GridView)
+
+        InitializeNewPracticeSiteRecord(view, e.RowHandle)
     End Sub
 
     Private Sub gvSiteGroups_MasterRowExpanding(sender As System.Object, e As DevExpress.XtraGrid.Views.Grid.MasterRowCanExpandEventArgs) Handles gvSiteGroups.MasterRowExpanding
@@ -260,12 +262,56 @@ Public Class FacilityGroupSiteMappingSection
 
 
 
-#End Region
 
     Private Sub Cancel_Button_Click(sender As Object, e As EventArgs) Handles Cancel_Button.Click
 
         PopulateSiteGroupList()
 
     End Sub
+
+    Private Sub gvPracticeSites_ValidateRow(sender As Object, e As DevExpress.XtraGrid.Views.Base.ValidateRowEventArgs) Handles gvPracticeSites.ValidateRow
+
+        ' Create a dictionary of the columns that will require values.  The Key will be the grid's fieldName, the Value will be the column's display name.
+        Dim columns As New Dictionary(Of String, String)
+
+        columns.Add("ST", "State")
+        columns.Add("PracticeContactEmail", "Contact Email")
+
+        ValidateColumnRequired(sender, e, columns)
+
+    End Sub
+
+
+    Private Sub gvSiteGroups_ValidateRow(sender As Object, e As DevExpress.XtraGrid.Views.Base.ValidateRowEventArgs) Handles gvSiteGroups.ValidateRow
+
+        ' Create a dictionary of the columns that will require values.  The Key will be the grid's fieldName, the Value will be the column's display name.
+        Dim columns As New Dictionary(Of String, String)
+
+        columns.Add("ST", "State")
+
+        ValidateColumnRequired(sender, e, columns)
+
+    End Sub
+
+#End Region
+
+    Private Sub ValidateColumnRequired(sender As Object, e As DevExpress.XtraGrid.Views.Base.ValidateRowEventArgs, ByVal columns As Dictionary(Of String, String))
+
+        Dim view As DevExpress.XtraGrid.Views.Grid.GridView = TryCast(sender, DevExpress.XtraGrid.Views.Grid.GridView)
+
+        For Each item As KeyValuePair(Of String, String) In columns
+            Dim col As DevExpress.XtraGrid.Columns.GridColumn = view.Columns(item.Key)
+
+            Dim value As String = view.GetRowCellValue(e.RowHandle, col).ToString()
+
+            If String.IsNullOrEmpty(value.ToString()) Then
+                e.Valid = False
+                view.SetColumnError(col, String.Format("'{0}' is required.", item.Value))
+                e.ErrorText = "One or more required fields is missing!"
+            End If
+        Next
+
+    End Sub
+
 End Class
 

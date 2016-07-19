@@ -296,6 +296,7 @@ Public Class FacilityProvider
         newObj.PracticeContactEmail = rdr.GetString("PracticeContactEmail")
         newObj.SampleUnit_id = rdr.GetInteger("SampleUnit_id")
         newObj.bitActive = rdr.GetBoolean("bitActive")
+        newObj.CCN = rdr.GetString("CCN")
 
         Return newObj
 
@@ -319,7 +320,7 @@ Public Class FacilityProvider
                                                        practiceSite.Addr2, practiceSite.City, practiceSite.ST, practiceSite.Zip5,
                                                        practiceSite.Phone, practiceSite.PracticeOwnership, practiceSite.PatVisitsWeek,
                                                        practiceSite.ProvWorkWeek, practiceSite.PracticeContactName, practiceSite.PracticeContactPhone,
-                                                       practiceSite.PracticeContactEmail, practiceSite.SampleUnit_id)
+                                                       practiceSite.PracticeContactEmail, practiceSite.SampleUnit_id, practiceSite.CCN)
         ExecuteNonQuery(cmd)
     End Sub
 
@@ -342,7 +343,7 @@ Public Class FacilityProvider
                                                        practiceSite.Addr2, practiceSite.City, practiceSite.ST, practiceSite.Zip5,
                                                        practiceSite.Phone, practiceSite.PracticeOwnership, practiceSite.PatVisitsWeek,
                                                        practiceSite.ProvWorkWeek, practiceSite.PracticeContactName, practiceSite.PracticeContactPhone,
-                                                       practiceSite.PracticeContactEmail, practiceSite.SampleUnit_id, practiceSite.bitActive)
+                                                       practiceSite.PracticeContactEmail, practiceSite.SampleUnit_id, practiceSite.bitActive, practiceSite.CCN)
         Dim newId As Integer = ExecuteInteger(cmd)
         Dim privateInterface As IPracticeSite = practiceSite
         practiceSite.Id = newId

@@ -32,6 +32,7 @@ Public Class PracticeSite
     Private mPracticeContactEmail As String
     Private mSampleUnit_id? As Integer
     Private mbitActive As Boolean
+    Private mCCN As String
 #End Region
 
 #Region "Public Properties"
@@ -245,6 +246,18 @@ Public Class PracticeSite
                 Return
             End If
             mbitActive = value
+        End Set
+    End Property
+
+    Public Property CCN As String
+        Get
+            Return mCCN
+        End Get
+        Set(value As String)
+            If mCCN = value Then
+                Return
+            End If
+            mCCN = value
         End Set
     End Property
 
