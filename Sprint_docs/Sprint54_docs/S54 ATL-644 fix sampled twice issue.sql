@@ -1,4 +1,20 @@
-﻿/*
+-- S54 ATL-644 fix sampled twice issue.sql
+
+USE [QP_Prod]
+GO
+
+/****** Object:  StoredProcedure [dbo].[QCL_SampleSetResurveyExclusion_StaticPlus]    Script Date: 7/21/2016 10:36:43 AM ******/
+DROP PROCEDURE [dbo].[QCL_SampleSetResurveyExclusion_StaticPlus]
+GO
+
+/****** Object:  StoredProcedure [dbo].[QCL_SampleSetResurveyExclusion_StaticPlus]    Script Date: 7/21/2016 10:36:43 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+/*
 Business Purpose:
 This procedure is used to support the Qualisys Class Library.  It determines
 which records should be DQ'd because of resurvey exclusion
@@ -43,6 +59,9 @@ Modified:
 
 11/25/2013 Dave Hansen - CanadaQualisysUpgrade - DFCT0010966 - conditioned delete/update statements using
 													vw_Billians_NursingHomeAssistedLiving to be run in country=US only
+
+02/26/2016 Dave Gilsdorf - added D_HH index on #Distinct 
+
 */
 CREATE PROCEDURE [dbo].[QCL_SampleSetResurveyExclusion_StaticPlus]
   @Study_id                      INT,
@@ -322,6 +341,8 @@ AS
 		  AND sampleEncounterDate BETWEEN ''' + CONVERT(VARCHAR, @minDate) + ''' AND ''' + CONVERT(VARCHAR, @maxDate) + '''
 		  and su.bitHCAHPS = 1
 
+		CREATE NONCLUSTERED INDEX D_HH ON #Distinct ('+REPLACE(@strHouseHoldField_Select, 'X.', '')+', CCN)
+										
 		--11/25/2013 Dave Hansen - CanadaQualisysUpgrade - DFCT0010966 - conditioned delete/update statements using
 		--													vw_Billians_NursingHomeAssistedLiving to be run in country=US only
 		declare @country nvarchar(255)
@@ -404,6 +425,8 @@ AS
 		  WHERE ss.Study_id=' + LTRIM(STR(@Study_id)) + '
 		  AND sset.datSampleCreate_dt>''' + CONVERT(VARCHAR, DATEADD(DAY, -@ReSurvey_Excl_Period, GETDATE())) + '''
 
+		  CREATE NONCLUSTERED INDEX D_HH ON #Distinct ('+REPLACE(@strHouseHoldField_Select, 'X.', '')+')
+
 		--11/25/2013 Dave Hansen - CanadaQualisysUpgrade - DFCT0010966 - conditioned delete/update statements using
 		--													vw_Billians_NursingHomeAssistedLiving to be run in country=US only
 		declare @country nvarchar(255)
@@ -470,5 +493,5 @@ AS
 --test code should not be in production unless there is a specific sampling error
 --insert into mb_sampling_samplesql
 --select @sql as SQL
-
+GO
 
