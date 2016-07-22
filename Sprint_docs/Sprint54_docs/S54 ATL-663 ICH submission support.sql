@@ -96,7 +96,8 @@ BEGIN
 	begin
 		declare @eligibilityOverride table (Q1 int, Q2 int, Q3to44Answers int, AnyAnswers int, DispositionOverride int, CahpsDispositionOverride int, ReceiptTypeID int NULL)
 
-		insert into @eligibilityOverride values (-9,-9,0,1,32,5130,17)-- [blank] (-9) / [blank] (-9)									--> Completed Mail Questionnaire—Survey Eligibility Unknown
+		-- Review by DMP & DBG on 7/22/16. the following scenario should not have a disposition override. We should retain any existing highest-ranked disposition.
+		--insert into @eligibilityOverride values (-9,-9,0,1,32,5130,17)-- [blank] (-9) / [blank] (-9)									--> Completed Mail Questionnaire—Survey Eligibility Unknown
 		
 		insert into @eligibilityOverride values (-9,1,0,1,8,5160,NULL)	-- [blank] (-9) / < 3 months (1)								--> Ineligible: Does Not Meet Eligibility Criteria
 																		-- [blank] (-9) / 3 months+ (2-4*)								--> No override - use original heirarchical disposition
