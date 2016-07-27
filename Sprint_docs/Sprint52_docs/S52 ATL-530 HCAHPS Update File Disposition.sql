@@ -429,10 +429,14 @@ insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @
 --because the function requires that the record already exist in the DispositionLog,               
 --rather can calc @ time of insertion.    
 UPDATE DL SET                       
-  DaysFromFirst   =  dbo.fn_DispDaysFromFirst(dl.SentMail_ID,tdl.datLogged,tdl.Disposition_id),                         
-  DaysFromCurrent =  dbo.fn_DispDaysFromCurrent(dl.SentMail_ID,tdl.datLogged,tdl.Disposition_id)                      
+  DaysFromFirst   =  dbo.fn_DispDaysFromFirst(dl.SentMail_ID,dl.datLogged,dl.Disposition_id),                         
+  DaysFromCurrent =  dbo.fn_DispDaysFromCurrent(dl.SentMail_ID,dl.datLogged,dl.Disposition_id)                    
 FROM DispositionLog DL                       
-INNER JOIN #DispositionLog tdl ON dl.sentmail_id = tdl.sentmail_id and dl.samplepop_id = tdl.samplepop_id and dl.disposition_id = tdl.Disposition_id and dl.receipttype_Id = tdl.ReceiptType AND dl.datLogged = tdl.datLogged                        
+INNER JOIN #DispositionLog tdl ON dl.sentmail_id = tdl.sentmail_id 
+								  and dl.samplepop_id = tdl.samplepop_id 
+								  and dl.disposition_id = tdl.Disposition_id 
+								  and dl.receipttype_Id = tdl.ReceiptType 
+								  and dl.datLogged = @LTime                        
         
 DROP TABLE #HCAHPSUpdateLog   
 DROP TABLE #DispositionLog         
