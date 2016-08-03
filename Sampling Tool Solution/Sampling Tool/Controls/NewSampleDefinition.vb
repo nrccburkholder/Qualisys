@@ -126,7 +126,7 @@ Public Class NewSampleDefinition
             sampleDef = New SampleDefinition(Me, row)
 
             'Add this sample definition to the collection
-            If sampleDef.Survey.CompliesWithSwitchToPropSamplingDate Then 'IsHCAHPS Then 'Possible TODO: create separate property for CheckMedicareProportion CJB 7/3/2014
+            If sampleDef.Survey.CheckMedicareProportion Then 'IsHCAHPS Then 'Possible TODO: create separate property for CheckMedicareProportion CJB 7/3/2014
                 'This is an HCAHPS survey so recalculate the Medicare Proportion(s)
                 If sampleDef.RecalcMedicareProportion() Then
                     'Recalculation succeeded so add the sample definition to the collection

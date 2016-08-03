@@ -88,7 +88,7 @@ Public Class SampleDefinition
         'DoHCAHPSOversample can be set to True only when
         'DoOverSample and IsHCAHPS are True
         Set(ByVal value As Boolean)
-            If mSurvey.CompliesWithSwitchToPropSamplingDate AndAlso DoOverSample Then 'IsHCAHPS Then 'Possible TODO: create separate property for AllowDoOverSample CJB 7/3/2014
+            If mSurvey.AllowOverSample AndAlso DoOverSample Then 'IsHCAHPS Then 'Possible TODO: create separate property for AllowDoOverSample CJB 7/3/2014
                 mDoHCAHPSOverSample = value
             Else
                 mDoHCAHPSOverSample = False
