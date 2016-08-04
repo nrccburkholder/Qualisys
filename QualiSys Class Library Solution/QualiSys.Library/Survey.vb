@@ -65,6 +65,8 @@ Public Class Survey
     Private mMedicareIdTextMayBeBlank As Boolean = False
     Private mFacilitiesArePracticeSites As Boolean = False
     Private mCompliesWithSwitchToPropSamplingDate As Boolean = False
+    Private mAllowOverSample As Boolean = False
+    Private mCheckMedicareProportion As Boolean = False
     Private mByPassInitRespRateNumericEnforcement As Boolean = False
     Private mUseUSPSAddrChangeServiceDefault As Boolean = False
     Private mDefaultScheduleDateAdjustmentByMonths As Integer = 0
@@ -909,6 +911,20 @@ Public Class Survey
         Get
             GetSurveyRule("CompliesWithSwitchToPropSamplingDate", mCompliesWithSwitchToPropSamplingDate, override)
             Return mCompliesWithSwitchToPropSamplingDate
+        End Get
+    End Property
+
+    Public ReadOnly Property AllowOverSample(Optional ByVal override As String = vbNullString) As Boolean
+        Get
+            GetSurveyRule("AllowOverSample", mAllowOverSample, override)
+            Return mAllowOverSample
+        End Get
+    End Property
+
+    Public ReadOnly Property CheckMedicareProportion(Optional ByVal override As String = vbNullString) As Boolean
+        Get
+            GetSurveyRule("CheckMedicareProportion", mCheckMedicareProportion, override)
+            Return mCheckMedicareProportion
         End Get
     End Property
 
