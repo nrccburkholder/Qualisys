@@ -19,6 +19,13 @@ ALTER PROCEDURE [dbo].[QCL_SampleSetAssignHouseHold]
  @HouseHoldingType CHAR(1)
 AS
 
+/*
+declare  
+  @strHouseholdField_CreateTable  VARCHAR(8000)='POPULATIONAddr VARCHAR(60),POPULATIONCity VARCHAR(42),POPULATIONST VARCHAR(2),POPULATIONZIP5 VARCHAR(5),POPULATIONAddr2 VARCHAR(42)'
+ ,@strHouseholdField_Select       VARCHAR(8000)=' X.POPULATIONAddr, X.POPULATIONCity, X.POPULATIONST, X.POPULATIONZIP5, X.POPULATIONAddr2'
+ ,@strHousehold_Join              VARCHAR(8000)=' X.POPULATIONAddr=Y.POPULATIONAddr AND  X.POPULATIONCity=Y.POPULATIONCity AND  X.POPULATIONST=Y.POPULATIONST AND  X.POPULATIONZIP5=Y.POPULATIONZIP5 AND  X.POPULATIONAddr2=Y.POPULATIONAddr2' 
+ ,@HouseHoldingType CHAR(1)='A' 
+--*/
 --print '@strhouseholdfield_createtable = ' + @strHouseholdField_CreateTable
 --print '@strHouseholdField_Select = ' + @strHouseholdField_Select
 --print '@strHousehold_Join = ' + @strHousehold_Join
@@ -52,13 +59,16 @@ BEGIN
 		and '+REPLACE(REPLACE(@strHouseHold_Join,'x.','ISNULL(X.'),'=',',9999999)=')+'
 		and su.bitHCAHPS=1
 
-		-- if the same pop_id that’s in an HCAHPS unit is also in some other (non-HCAHPS eligible) units, assign them the same household_id we just assigned them
+		-- if the same pop_id/enc_id that’s in an HCAHPS unit is also in some other (non-HCAHPS eligible) units, assign them the same household_id we just assigned them
 		update x
 		set household_id=sub.household_id
 		from #SampleUnit_Universe x
 		inner join (SELECT POP_ID,HOUSEHOLD_ID FROM #SampleUnit_Universe WHERE HOUSEHOLD_ID IS NOT NULL) sub
-			on x.pop_id=sub.pop_id
+			on x.pop_id=sub.pop_id and x.enc_id=sub.enc_id
 		where x.household_id is null
+
+		-- if a CCN based HH hasn’t been used yet - we don’t wanna use it 
+		delete from #distinct where ccn<>''dummy'' and a not in (select household_id from #SampleUnit_Universe where household_id is not null)
 
 		-- if there’s anyone in the household that wasn’t HCAHPS eligible, assign them to their HCAHPS-eligible housemate’s household_id 
 		UPDATE x
