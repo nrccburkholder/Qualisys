@@ -63,7 +63,7 @@ BEGIN
 		update x
 		set household_id=sub.household_id
 		from #SampleUnit_Universe x
-		inner join (SELECT POP_ID,HOUSEHOLD_ID FROM #SampleUnit_Universe WHERE HOUSEHOLD_ID IS NOT NULL) sub
+		inner join (SELECT POP_ID,ENC_ID,HOUSEHOLD_ID FROM #SampleUnit_Universe WHERE HOUSEHOLD_ID IS NOT NULL) sub
 			on x.pop_id=sub.pop_id and x.enc_id=sub.enc_id
 		where x.household_id is null
 
