@@ -566,7 +566,7 @@ insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @
 PRINT 'Insert the actual records into HCAHPSUpdateLog'
 --S52 ATL-192 Insert the actual records into HCAHPSUpdateLog
 INSERT INTO HCAHPSUpdateLog
-	SELECT samplepop_id, field_name, old_value, new_value, getdate()
+	SELECT samplepop_id, field_name, old_value, new_value, @LTime
 	FROM #HCAHPSUpdateLog
    
 set @myRowCount = @@ROWCOUNT    
