@@ -371,7 +371,7 @@ set @myRowCount = @@ROWCOUNT
 PRINT LTRIM(STR(@myRowCount)) +' check for records with no match in Submission Schedule table.'                      
 insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  @DRGOption+': Records with no match in Submission Schedule table:' + LTRIM(STR(@myRowCount)) 
 
-
+INSERT INTO #Log (RecordType, RecordsValue) Select @DRGOption+': Records with no match in Submission Schedule table:' + LTRIM(STR(@myRowCount)) 
                     
 -- **********************************************************************************************                      
 --SELECT * FROM #Work --for checking                      

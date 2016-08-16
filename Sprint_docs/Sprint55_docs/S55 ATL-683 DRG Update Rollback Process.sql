@@ -274,7 +274,8 @@ set @myRowCount = @@ROWCOUNT
 PRINT LTRIM(STR(@myRowCount)) +' check for records with no match in Submission Schedule table.'                      
 insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  @DRGOption+': Records with no match in Submission Schedule table:' + LTRIM(STR(@myRowCount)) 
 
-                    
+INSERT INTO #Log (RecordType, RecordsValue) Select @DRGOption+': Records with no match in Submission Schedule table:', LTRIM(STR(@myRowCount)) 
+           
 -- **********************************************************************************************                      
 --SELECT * FROM #Work --for checking                      
                       
@@ -769,7 +770,7 @@ if exists (select * from sys.procedures where name = 'LD_UpdateDRG_Rollback')
 GO
 
 
-CREATE PROCEDURE [dbo].[LD_UpdateDRGRollback] @Study_ID int, @DataFile_id int        
+CREATE PROCEDURE [dbo].[LD_UpdateDRG_Rollback] @Study_ID int, @DataFile_id int        
 AS        
         
 begin        
