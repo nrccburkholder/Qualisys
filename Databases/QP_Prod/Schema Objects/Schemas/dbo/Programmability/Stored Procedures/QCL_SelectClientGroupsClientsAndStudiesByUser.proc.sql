@@ -16,7 +16,8 @@ CREATE TABLE #EmpStudy (
     datCreate_dt datetime,
     bitCleanAddr bit,
     bitProperCase bit,
-    Active bit
+    Active bit,
+	bitAutoSample bit
 )    
 
 --Need a temp table to hold the client groups
@@ -39,9 +40,9 @@ ORDER BY ClientGroup_nm
 
 --Populate the temp table with the studies they have rights to.    
 INSERT INTO #EmpStudy (Client_id, Study_id, strStudy_nm, strStudy_dsc, ADEmployee_id,
-	                   datCreate_dt, bitCleanAddr, bitProperCase, Active)    
+	                   datCreate_dt, bitCleanAddr, bitProperCase, Active, bitAutoSample)    
 SELECT st.Client_id, st.Study_id, st.strStudy_nm, st.strStudy_dsc, st.ADEmployee_id,
-	   st.datCreate_dt, st.bitCleanAddr, st.bitProperCase, st.Active   
+	   st.datCreate_dt, st.bitCleanAddr, st.bitProperCase, st.Active, st.bitAutosample  
 FROM Employee em, Study_Employee se, Study st    
 WHERE em.strNTLogin_nm = @UserName    
   AND em.Employee_id = se.Employee_id    
@@ -83,7 +84,7 @@ END
     
 --Third recordset.  List of studies they have rights to    
 SELECT Client_id, Study_id, strStudy_nm, strStudy_dsc, ADEmployee_id,
-	   datCreate_dt, bitCleanAddr, bitProperCase, Active
+	   datCreate_dt, bitCleanAddr, bitProperCase, Active, bitAutoSample
 FROM #EmpStudy
 ORDER BY strStudy_nm
 
@@ -93,5 +94,4 @@ DROP TABLE #ClientGroups
 
 SET TRANSACTION ISOLATION LEVEL READ COMMITTED
 SET NOCOUNT OFF
-
 

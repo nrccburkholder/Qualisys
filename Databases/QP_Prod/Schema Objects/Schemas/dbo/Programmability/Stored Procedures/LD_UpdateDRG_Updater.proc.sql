@@ -2,7 +2,7 @@
 AS                      
                       
                       
--- Developed by DK 9/2006                      
+- Developed by DK 9/2006                      
 -- Created by SJS 10/12/2006                      
 -- Purpose: Update Study background data in Qualysis and Datamart for a specified Study and Datafile in the QP_Load DB.
 
@@ -15,7 +15,8 @@ AS
 -- Modified by MWB 03/31/2009: Uncommented the "Update non-Sampled" section as we now want         
 --   to update sampled and non sampled records        
 -- Modified by MWB 07/30/2009: Modified the Update non-Sampled code to improve performance  
--- Modified by MWB 11/19/2009: Added source column to ExtractQueue insert to track source of key values being added.                      
+-- Modified by MWB 11/19/2009: Added source column to ExtractQueue insert to track source of key values being added.  
+-- Modified by TSB 06/24/2016: S52 ATL-192 HCAHPS Update file dispostions - modified to insert into DispositionLog for specific value updates on specified fields.                       
                       
 DECLARE @MCond varchar(200), @LTime datetime, @DataMart varchar(50)                      
 DECLARE @Owner varchar(10), @Sql varchar(8000), @Now datetime, @BTableName varchar(100), @Server VARCHAR(20)                      
@@ -128,7 +129,7 @@ SELECT @DataMart = strParam_Value FROM QualPro_Params WHERE strParam_nm = 'DataM
 --   ' WHERE w.Enc_id NOT IN (SELECT Enc_ID FROM SelectedSample WHERE Study_ID = '+LTRIM(STR(@Study_ID))+')'                    
 --EXEC (@Sql)                    
   
-SET @Sql = 'UPDATE e SET ' + @DRGOption + ' = w.DRG, HServiceType = w.HServiceType, HVisitType = w.HVisitType, HAdmissionSource = w.HAdmissionSource, HDischargeStatus = w.HDischargeStatus, HAdmitAge = w.HAdmitAge, WCatAge = w.HCatAge ' +   
+SET @Sql = 'UPDATE e SET ' + @DRGOption + ' = w.DRG, HServiceType = w.HServiceType, HVisitType = w.HVisitType, HAdmissionSource = w.HAdmissionSource, HDischargeStatus = w.HDischargeStatus, HAdmitAge = w.HAdmitAge, HCatAge = w.HCatAge ' +   
 ' FROM '+@Owner+'.Encounter e INNER JOIN #Work w ON e.Enc_id = w.Enc_id ' +     
 'LEFT JOIN SelectedSample ss (NOLOCK) ON e.Enc_id = ss.Enc_id and ss.Study_ID = '+LTRIM(STR(@Study_ID)) +       
 'where ss.enc_id is null'  
@@ -206,11 +207,17 @@ UPDATE sps SET SentMail_ID = sm.SentMail_id
  FROM #SPs sps inner join ScheduledMailing sm on sps.SamplePop_id =sm.SamplePop_id                      
  WHERE sm.SentMail_id is not NULL                      
                       
---SELECT * FROM #SPs --for checking                      
-                      
+--SELECT * FROM #SPs --for checking      
+
+--S52 ATL-192 writing changes to temp table
+CREATE TABLE #HCAHPSUpdateLog (samplepop_ID int, field_name varchar(42), old_value varchar(42), new_value varchar(42))                 
+       
+	   
+PRINT 'Log DRG data changes' 
+               
 --Log DRG data changes                      
-SET @Sql = 'INSERT HCAHPSUpdateLog (samplepop_id, field_name, old_value, new_value, Change_Date) ' +                       
-   ' SELECT DISTINCT sps.SamplePop_id, ''' + @DRGOption + ''', e.' + @DRGOption + ', w.DRG, GETDATE() ' +                      
+SET @Sql = 'INSERT #HCAHPSUpdateLog (samplepop_id, field_name, old_value, new_value) ' +                       
+   ' SELECT DISTINCT sps.SamplePop_id, ''' + @DRGOption + ''', e.' + @DRGOption + ', w.DRG ' +                      
    ' FROM #SPs sps INNER JOIN #Work w ON sps.Enc_ID = w.Enc_ID ' +                      
    '  INNER JOIN '+@Owner+'.Encounter e ON w.Enc_ID = e.Enc_ID'                      
 --print @SQL                  
@@ -218,97 +225,147 @@ EXEC (@Sql)
                
 set @myRowCount = @@ROWCOUNT    
                
-insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT HCAHPSUpdateLog ' + @DRGOption + ' Records Updated: ' + + LTRIM(STR(@myRowCount))     
-               
-                      
+insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT #HCAHPSUpdateLog ' + @DRGOption + ' Records Updated: ' + + LTRIM(STR(@myRowCount))     
+     
+PRINT 'Log HServiceType data changes'                          
 --Log HServiceType data changes                      
-SET @Sql = 'INSERT HCAHPSUpdateLog (samplepop_id, field_name, old_value, new_value, Change_Date) ' +                       
-   ' SELECT DISTINCT sps.SamplePop_id, ''HServiceType'', e.HServiceType, w.HServiceType, GETDATE() ' +                      
+SET @Sql = 'INSERT #HCAHPSUpdateLog (samplepop_id, field_name, old_value, new_value) ' +                       
+   ' SELECT DISTINCT sps.SamplePop_id, ''HServiceType'', e.HServiceType, w.HServiceType ' +                      
    ' FROM #SPs sps INNER JOIN #Work w ON sps.Enc_ID = w.Enc_ID ' +                      
    '  INNER JOIN '+@Owner+'.Encounter e ON w.Enc_ID = e.Enc_ID'                      
 EXEC (@Sql)                      
     
 set @myRowCount = @@ROWCOUNT    
                       
-insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT HCAHPSUpdateLog HServiceType Records Updated: ' + + LTRIM(STR(@myRowCount))                       
+insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT #HCAHPSUpdateLog HServiceType Records Updated: ' + + LTRIM(STR(@myRowCount))                       
                       
-                      
+PRINT 'Log HVisitType data changes'                 
 --Log HVisitType data changes                      
-SET @Sql = 'INSERT HCAHPSUpdateLog (samplepop_id, field_name, old_value, new_value, Change_Date) ' +                       
-   ' SELECT DISTINCT sps.SamplePop_id, ''HVisitType'', e.HVisitType, w.HVisitType, GETDATE() ' +                      
+SET @Sql = 'INSERT #HCAHPSUpdateLog (samplepop_id, field_name, old_value, new_value) ' +                       
+   ' SELECT DISTINCT sps.SamplePop_id, ''HVisitType'', e.HVisitType, w.HVisitType ' +                      
    ' FROM #SPs sps INNER JOIN #Work w ON sps.Enc_ID = w.Enc_ID ' +                      
    '  INNER JOIN '+@Owner+'.Encounter e ON w.Enc_ID = e.Enc_ID'                      
 EXEC (@Sql)                      
     
 set @myRowCount = @@ROWCOUNT    
                       
-insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT HCAHPSUpdateLog HVisitType Records Updated: ' + + LTRIM(STR(@myRowCount))                       
+insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT #HCAHPSUpdateLog HVisitType Records Updated: ' + + LTRIM(STR(@myRowCount))                       
                       
-                      
+PRINT 'Log HAdmissionSource data changes'                    
 --Log HAdmissionSource data changes                      
-SET @Sql = 'INSERT HCAHPSUpdateLog (samplepop_id, field_name, old_value, new_value, Change_Date) ' +                       
-   ' SELECT DISTINCT sps.SamplePop_id, ''HAdmissionSource'', e.HAdmissionSource, w.HAdmissionSource, GETDATE() ' +                      
+SET @Sql = 'INSERT #HCAHPSUpdateLog (samplepop_id, field_name, old_value, new_value) ' +                       
+   ' SELECT DISTINCT sps.SamplePop_id, ''HAdmissionSource'', e.HAdmissionSource, w.HAdmissionSource ' +                      
    ' FROM #SPs sps INNER JOIN #Work w ON sps.Enc_ID = w.Enc_ID ' +                      
    '  INNER JOIN '+@Owner+'.Encounter e ON w.Enc_ID = e.Enc_ID'                      
 EXEC (@Sql)                      
     
 set @myRowCount = @@ROWCOUNT    
                       
-insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT HCAHPSUpdateLog HAdmissionSource Records Updated: ' + + LTRIM(STR(@myRowCount))                       
+insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT #HCAHPSUpdateLog HAdmissionSource Records Updated: ' + + LTRIM(STR(@myRowCount))                       
                       
-                      
+   
+PRINT 'Log HDischargeStatus data changes'                   
 --Log HDischargeStatus data changes                      
-SET @Sql = 'INSERT HCAHPSUpdateLog (samplepop_id, field_name, old_value, new_value, Change_Date) ' +                       
-   ' SELECT DISTINCT sps.SamplePop_id, ''HDischargeStatus'', e.HDischargeStatus, w.HDischargeStatus, GETDATE() ' +                      
+SET @Sql = 'INSERT #HCAHPSUpdateLog (samplepop_id, field_name, old_value, new_value) ' +                       
+   ' SELECT DISTINCT sps.SamplePop_id, ''HDischargeStatus'', e.HDischargeStatus, w.HDischargeStatus ' +                      
    ' FROM #SPs sps INNER JOIN #Work w ON sps.Enc_ID = w.Enc_ID ' +                      
    '  INNER JOIN '+@Owner+'.Encounter e ON w.Enc_ID = e.Enc_ID'                      
 EXEC (@Sql)                      
     
 set @myRowCount = @@ROWCOUNT    
                       
-insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT HCAHPSUpdateLog HDischargeStatus Records Updated: ' + + LTRIM(STR(@myRowCount))                       
+insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT #HCAHPSUpdateLog HDischargeStatus Records Updated: ' + + LTRIM(STR(@myRowCount))                       
                       
-                      
+PRINT 'Log HAdmitAge data changes'                      
 --Log HAdmitAge data changes                      
-SET @Sql = 'INSERT HCAHPSUpdateLog (samplepop_id, field_name, old_value, new_value, Change_Date) ' +                       
-   ' SELECT DISTINCT sps.SamplePop_id, ''HAdmitAge'', e.HAdmitAge, w.HAdmitAge, GETDATE() ' +                      
+SET @Sql = 'INSERT #HCAHPSUpdateLog (samplepop_id, field_name, old_value, new_value) ' +                       
+   ' SELECT DISTINCT sps.SamplePop_id, ''HAdmitAge'', e.HAdmitAge, w.HAdmitAge ' +                      
    ' FROM #SPs sps INNER JOIN #Work w ON sps.Enc_ID = w.Enc_ID ' +                      
    '  INNER JOIN '+@Owner+'.Encounter e ON w.Enc_ID = e.Enc_ID'                      
 EXEC (@Sql)                      
     
 set @myRowCount = @@ROWCOUNT    
                       
-insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT HCAHPSUpdateLog HAdmitAge Records Updated: ' + + LTRIM(STR(@myRowCount))                       
+insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT #HCAHPSUpdateLog HAdmitAge Records Updated: ' + + LTRIM(STR(@myRowCount))                       
                       
-                      
+   
+PRINT 'Log HCatAge data changes'                   
 --Log HCatAge data changes                      
-SET @Sql = 'INSERT HCAHPSUpdateLog (samplepop_id, field_name, old_value, new_value, Change_Date) ' +                       
-   ' SELECT DISTINCT sps.SamplePop_id, ''HCatAge'', e.HCatAge, w.HCatAge, GETDATE() ' +                      
+SET @Sql = 'INSERT #HCAHPSUpdateLog (samplepop_id, field_name, old_value, new_value) ' +                       
+   ' SELECT DISTINCT sps.SamplePop_id, ''HCatAge'', e.HCatAge, w.HCatAge ' +                      
    ' FROM #SPs sps INNER JOIN #Work w ON sps.Enc_ID = w.Enc_ID ' +                      
    '  INNER JOIN '+@Owner+'.Encounter e ON w.Enc_ID = e.Enc_ID'                      
 EXEC (@Sql)                      
     
 set @myRowCount = @@ROWCOUNT    
                       
-insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT HCAHPSUpdateLog HCatAge Records Updated: ' + + LTRIM(STR(@myRowCount))                       
+insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT #HCAHPSUpdateLog HCatAge Records Updated: ' + + LTRIM(STR(@myRowCount))                       
                       
+   
+PRINT 'Insert the actual records into HCAHPSUpdateLog'
+--S52 ATL-192 Insert the actual records into HCAHPSUpdateLog
+INSERT INTO HCAHPSUpdateLog
+	SELECT samplepop_id, field_name, old_value, new_value, getdate()
+	FROM #HCAHPSUpdateLog
+   
+set @myRowCount = @@ROWCOUNT    
                       
---Log Disposition if there is any                      
-          
+insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT HCAHPSUpdateLog - Total Records: ' + + LTRIM(STR(@myRowCount)) 
+                      
+--Log Dispositions if there is any    
+
+PRINT 'write the new dispositions to a temp table'
+-- S52 ATL-192 First, write the new dispositions to a temp table           
+SELECT DISTINCT sps.SentMail_ID, sps.SamplePop_ID, d.Disposition_id, 0 ReceiptType, @LTime datLogged, 'DBA' LoggedBy
+INTO #DispositionLog
+from #HCAHPSUpdateLog ul
+inner join dbo.DRGUpdateDispositionMapping d on d.fieldname = ul.field_name and d.UpdateValue = ul.new_value
+inner join #SPs sps on sps.SamplePop_ID = ul.samplepop_ID
+WHERE ISNULL(ul.new_value,'NULL') <> ISNULL(ul.old_value,'NULL')
+
+
+DECLARE @dispositionRowCount int = 0
+
+print 'Now, do the actual insert into DispositionLog'
+--S52 ATL-192  Now, do the actual insert into DispositionLog
+INSERT DispositionLog (SentMail_id, SamplePop_id, Disposition_id, ReceiptType_id, datLogged, LoggedBy)
+	SELECT SentMail_ID, SamplePop_ID, Disposition_id, ReceiptType, datLogged, LoggedBy
+	FROM #DispositionLog
+      
+set @dispositionRowCount = @@ROWCOUNT    
+                      
+insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT DispositionLog Records Updated(1): ' + + LTRIM(STR(@dispositionRowCount))   
+
+--S52 ATL-192 
+-- Need to run an update against the newly inserted records,               
+--because the function requires that the record already exist in the DispositionLog,               
+--rather can calc @ time of insertion.    
+UPDATE DL SET                       
+  DaysFromFirst   =  dbo.fn_DispDaysFromFirst(dl.SentMail_ID,dl.datLogged,dl.Disposition_id),                         
+  DaysFromCurrent =  dbo.fn_DispDaysFromCurrent(dl.SentMail_ID,dl.datLogged,dl.Disposition_id)                    
+FROM DispositionLog DL                       
+INNER JOIN #DispositionLog tdl ON dl.sentmail_id = tdl.sentmail_id 
+								  and dl.samplepop_id = tdl.samplepop_id 
+								  and dl.disposition_id = tdl.Disposition_id 
+								  and dl.receipttype_Id = tdl.ReceiptType 
+								  and dl.datLogged = @LTime                        
+        
+DROP TABLE #HCAHPSUpdateLog   
+DROP TABLE #DispositionLog         
           
 SELECT DISTINCT sps.SentMail_ID, sps.SamplePop_ID, 8, 0, @LTime, 'DBA'                       
  FROM #SPs sps INNER JOIN #Work w ON sps.enc_id = w.enc_id                       
  WHERE w.HServiceType = 'X'               
                       
-INSERT DispositionLog (SentMail_id, SamplePop_id, Disposition_id, ReceiptType_id,                       
- datLogged, LoggedBy)              
+INSERT DispositionLog (SentMail_id, SamplePop_id, Disposition_id, ReceiptType_id, datLogged, LoggedBy)              
 SELECT DISTINCT sps.SentMail_ID, sps.SamplePop_ID, 8, 0, @LTime, 'DBA'                       
- FROM #SPs sps INNER JOIN #Work w ON sps.enc_id = w.enc_id                       
+ FROM #SPs sps 
+ INNER JOIN #Work w ON sps.enc_id = w.enc_id                       
  WHERE w.HServiceType = 'X'                      
     
 set @myRowCount = @@ROWCOUNT    
                       
-insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT DispositionLog Records Updated: ' + + LTRIM(STR(@myRowCount))                       
+insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT DispositionLog Records Updated(2): ' + + LTRIM(STR(@myRowCount))                       
           
                       
 -- Need to run an update against the newly inserted records,               
@@ -324,7 +381,7 @@ INNER JOIN #Work w ON sps.enc_id = w.enc_id
 WHERE w.HServiceType = 'X'                      
                  
     
-set @myRowCount = @@ROWCOUNT    
+set @myRowCount = @@ROWCOUNT + @dispositionRowCount 
             
 -- Update #Log                      
 INSERT INTO #Log (RecordType, RecordsValue)                      
@@ -336,11 +393,9 @@ insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @
  --SELECT LTRIM(STR(@@ROWCOUNT))+' disposition records inserted.'                      
                       
 --PRINT LTRIM(STR(@@ROWCOUNT))+' disposition records inserted.'                      
-                      
---Update Encounter table                       
-                  
-          
-                      
+    
+PRINT 'Updating Encounter table'                
+--Update Encounter table                                         
 SET @Sql = 'UPDATE e SET ' + @DRGOption + ' = w.DRG, HServiceType = w.HServiceType, HVisitType = w.HVisitType, HAdmissionSource = w.HAdmissionSource, HDischargeStatus = w.HDischargeStatus, HAdmitAge = w.HAdmitAge, HCatAge = w.HCatAge ' +                      
    ' FROM #SPs sps INNER JOIN #Work w ON sps.Enc_ID = w.Enc_ID ' +                      
    '  INNER JOIN '+@Owner+'.Encounter e ON w.Enc_ID = e.Enc_ID'                      
@@ -440,3 +495,5 @@ IF OBJECT_ID('tempdb..#Work') IS NOT NULL DROP TABLE #Work
 -- 10/30/07 MWB now done in Calling procedure (LD_UpdateDRG)              
 --DROP TABLE #Log                      
 IF OBJECT_ID('tempdb..#EncounterDates') IS NOT NULL DROP TABLE #EncounterDates
+
+
