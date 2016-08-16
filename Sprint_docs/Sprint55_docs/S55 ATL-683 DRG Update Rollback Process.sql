@@ -1,156 +1,59 @@
 /*
 
-	S55 ATL-685 DRG Update disallowed for submitted data
+	S55 ATL-683 DRG Update Rollback Process
 
-	As a CAHPS compliant organization, we want to prevent load-to-lives from updating DRGs for records that have already been submitted to CMS.
+	As the Manager of Client Operations, I want to review a report and approve DRG updates, so that we avoid potential compliance issues & discrepancies.
 
-	ATL-703 Submission deadline table
-	ATL-704 Ignore DRG update for submitted record
-	ATL-705 Modify DRG update email
-	
 	Tim Butler
 
-	CREATE TABLE [dbo].[CMSDataSubmissionSchedule]
-	INSERT INTO [dbo].[CMSDataSubmissionSchedule] -- only records for HCAHPS for now
-	ALTER PROCEDURE [dbo].[LD_UpdateDRG]
+	alter table [dbo].[HCAHPSUpdateLog] -- adding columns for DataFile_ID and isRollback
 	ALTER PROCEDURE [dbo].[LD_UpdateDRG_Updater]
+	CREATE PROCEDURE [dbo].[LD_UpdateDRG_UpdateRollback]
+	CREATE PROCEDURE [dbo].[LD_UpdateDRGRollback]
 
 */
 
 use QP_PROD
 
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES 
-           WHERE TABLE_NAME = 'CMSDataSubmissionSchedule'
-		   and TABLE_SCHEMA = 'dbo')
-BEGIN
-  DROP table dbo.CMSDataSubmissionSchedule
-END
+go
 
 
-GO
-
-CREATE TABLE [dbo].[CMSDataSubmissionSchedule](
-	[CMSDataSubmissionSchedule_ID] [int] IDENTITY(1,1) NOT NULL,
-	[SurveyType_ID] [int] NOT NULL,
-	[Month] [smallint] NOT NULL,
-	[Year] [smallint] NOT NULL,
-	[SubmissionDateOpen] [date] NULL,
-	[SubmissionDateClose] [date] NOT NULL,
- CONSTRAINT [PK_CMSDataSubmissionSchedule] PRIMARY KEY CLUSTERED 
-(
-	[CMSDataSubmissionSchedule_ID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-GO
-
-CREATE UNIQUE NONCLUSTERED INDEX [IX_CMSDataSubmissionSchedule] ON [dbo].[CMSDataSubmissionSchedule]
-(
-	[SurveyType_ID] ASC,
-	[Month] ASC,
-	[Year] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-GO
+go
+if not exists (	SELECT 1 
+				FROM   sys.tables st 
+					   INNER JOIN sys.columns sc ON st.object_id = sc.object_id 
+				WHERE  st.schema_id = 1 
+					   AND st.NAME = 'HCAHPSUpdateLog' 
+					   AND sc.NAME = 'DataFile_ID' )
+	alter table [dbo].[HCAHPSUpdateLog] add DataFile_ID int
+go
 
 
-USE [QP_Prod]
+
+go
 
 
-INSERT INTO [dbo].[CMSDataSubmissionSchedule]([SurveyType_ID],[Month],[Year],[SubmissionDateOpen],[SubmissionDateClose])
-VALUES(2,1,2016,NULL,'07/06/2016')
+go
+if not exists (	SELECT 1 
+				FROM   sys.tables st 
+					   INNER JOIN sys.columns sc ON st.object_id = sc.object_id 
+				WHERE  st.schema_id = 1 
+					   AND st.NAME = 'HCAHPSUpdateLog' 
+					   AND sc.NAME = 'bitRollback' )
+begin
+	ALTER TABLE [dbo].[HCAHPSUpdateLog] add bitRollback bit CONSTRAINT [DF_BITROLLBACK]  DEFAULT ((0)) 
 
-INSERT INTO [dbo].[CMSDataSubmissionSchedule]([SurveyType_ID],[Month],[Year],[SubmissionDateOpen],[SubmissionDateClose])
-VALUES(2,2,2016,NULL,'07/06/2016')
+	UPDATE h
+		SET h.bitRollback = 0
+	FROM [dbo].[HCAHPSUpdateLog] h
 
-INSERT INTO [dbo].[CMSDataSubmissionSchedule]([SurveyType_ID],[Month],[Year],[SubmissionDateOpen],[SubmissionDateClose])
-VALUES(2,3,2016,NULL,'07/06/2016')
-
-INSERT INTO [dbo].[CMSDataSubmissionSchedule]([SurveyType_ID],[Month],[Year],[SubmissionDateOpen],[SubmissionDateClose])
-VALUES(2,4,2016,NULL,'10/05/2016')
-
-INSERT INTO [dbo].[CMSDataSubmissionSchedule]([SurveyType_ID],[Month],[Year],[SubmissionDateOpen],[SubmissionDateClose])
-VALUES(2,5,2016,NULL,'10/05/2016')
-
-INSERT INTO [dbo].[CMSDataSubmissionSchedule]([SurveyType_ID],[Month],[Year],[SubmissionDateOpen],[SubmissionDateClose])
-VALUES(2,6,2016,NULL,'10/05/2016')
-
-INSERT INTO [dbo].[CMSDataSubmissionSchedule]([SurveyType_ID],[Month],[Year],[SubmissionDateOpen],[SubmissionDateClose])
-VALUES(2,7,2016,NULL,'01/04/2017')
-
-INSERT INTO [dbo].[CMSDataSubmissionSchedule]([SurveyType_ID],[Month],[Year],[SubmissionDateOpen],[SubmissionDateClose])
-VALUES(2,8,2016,NULL,'01/04/2017')
-
-INSERT INTO [dbo].[CMSDataSubmissionSchedule]([SurveyType_ID],[Month],[Year],[SubmissionDateOpen],[SubmissionDateClose])
-VALUES(2,9,2016,NULL,'01/04/2017')
-
-INSERT INTO [dbo].[CMSDataSubmissionSchedule]([SurveyType_ID],[Month],[Year],[SubmissionDateOpen],[SubmissionDateClose])
-VALUES(2,10,2016,NULL,'04/05/2017')
-
-INSERT INTO [dbo].[CMSDataSubmissionSchedule]([SurveyType_ID],[Month],[Year],[SubmissionDateOpen],[SubmissionDateClose])
-VALUES(2,11,2016,NULL,'04/05/2017')
-
-INSERT INTO [dbo].[CMSDataSubmissionSchedule]([SurveyType_ID],[Month],[Year],[SubmissionDateOpen],[SubmissionDateClose])
-VALUES(2,12,2016,NULL,'04/05/2017')
-
-
-GO
-
-
-SELECT *
-FROM [dbo].[CMSDataSubmissionSchedule]
-
-GO
-
-
-ALTER PROCEDURE [dbo].[LD_UpdateDRG] @Study_ID int, @DataFile_id int        
-AS        
-        
-begin        
- -- Developed by DK 9/2006        
- -- Created by SJS 10/12/2006        
- -- Modified by dmp 11/09/2006: un-commented code for deleting records > 42 days old        
- -- Modified by dmp 12/15/2006: commented out code for deleting recs >42 days old, per new reqs from CS        
- -- Renamed by ADL 06/20/2007: added the record count log dataset        
- -- ReOrganized by MWB 10/25/07: This procedure is now the driver for DRG and MSDRG updates.  It will check the QLoader    
- --        Qualisys DB to make sure the fields exist.  if they do then the appopriate DRG update    
- --        worker (_Updater) procedure is called, if not it is skipped.    
- -- Modified by DRH 3/3/2014: added section that calls the new LD_UpdateAPRDRG_Updater proc
- -- Purpose: Update Study background data in Qualysis and Datamart for a specified Study and Datafile in the QP_Load DB.       
- -- Modified by TSB 08/04/2016: S55 ATL-685 DRG Update disallowed for submitted data - extended length RecordType column on #log table so it can hold a longer message generated in LD_UpdateDRG_Updater proc
-    
-     
- --create the #log table that each of the Update SPs will use.    
- CREATE TABLE #log (RecordType varchar(150), RecordsValue VArchar(50))        
-    
-    
- if exists (select 'x' from MetaData_view where Study_ID = @Study_ID and strField_nm = 'DRG')    
-  begin    
-   exec LD_UpdateDRG_Updater @Study_ID , @DataFile_id, 'DRG'
-  end     
- else    
-  insert into #log (RecordType, RecordsValue) values ('DRG Update Failed', 'Your study does not contain a DRG field.')    
-    
-    
- if exists (select 'x' from MetaData_view where Study_ID = @Study_ID and strField_nm = 'MSDRG')    
-  begin    
-   exec LD_UpdateDRG_Updater @Study_ID , @DataFile_id, 'MSDRG'
-  end     
- else    
-  insert into #log (RecordType, RecordsValue) values ('MSDRG Update Failed', 'Your study does not contain a MSDRG field.')    
-     
-if exists (select 'x' from MetaData_view where Study_ID = @Study_ID and strField_nm = 'APRDRG')    
-  begin    
-   exec LD_UpdateDRG_Updater @Study_ID , @DataFile_id, 'APRDRG'
-  end     
- else    
-  insert into #log (RecordType, RecordsValue) values ('APRDRG Update Failed', 'Your study does not contain a APRDRG field.')    
-    
- SELECT * FROM #LOG    
- drop table #log    
-    
 end
 
-GO
+go
+
+
+
+go
 
 
 ALTER PROCEDURE [dbo].[LD_UpdateDRG_Updater] @Study_ID int, @DataFile_id int, @DRGOption varchar(20) = 'DRG'
@@ -173,6 +76,7 @@ AS
 -- Modified by MWB 11/19/2009: Added source column to ExtractQueue insert to track source of key values being added.  
 -- Modified by TSB 06/24/2016: S52 ATL-192 HCAHPS Update file dispostions - modified to insert into DispositionLog for specific value updates on specified fields.
 -- Modified by TSB 08/04/2016: S55 ATL-685 DRG Update disallowed for submitted data - modified to  prevent load-to-lives from updating DRGs for records that have already been submitted to CMS                        
+-- Modified by TSB 08/09/2016: S55 ATL-683 DRG Update Rollback Process - modified to write DataFile_id to HCAHPSUpdateLog table.  
                       
 DECLARE @MCond varchar(200), @LTime datetime, @DataMart varchar(50)                      
 DECLARE @Owner varchar(10), @Sql varchar(8000), @Now datetime, @BTableName varchar(100), @Server VARCHAR(20)                      
@@ -334,7 +238,6 @@ begin
 	END  
 
 end
-
 	
 -- Now delete those records past the submission date from the #Work table because we don't want to update them	
     
@@ -370,7 +273,6 @@ set @myRowCount = @@ROWCOUNT
                     
 PRINT LTRIM(STR(@myRowCount)) +' check for records with no match in Submission Schedule table.'                      
 insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  @DRGOption+': Records with no match in Submission Schedule table:' + LTRIM(STR(@myRowCount)) 
-
 
                     
 -- **********************************************************************************************                      
@@ -566,7 +468,9 @@ insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @
 PRINT 'Insert the actual records into HCAHPSUpdateLog'
 --S52 ATL-192 Insert the actual records into HCAHPSUpdateLog
 INSERT INTO HCAHPSUpdateLog
-	SELECT samplepop_id, field_name, old_value, new_value, @LTime
+	SELECT samplepop_id, field_name, old_value, new_value, getdate()
+	, @DataFile_id		-- S55 ATL-683
+	, 0					-- S55 ATL-683 (bitRollback)
 	FROM #HCAHPSUpdateLog
    
 set @myRowCount = @@ROWCOUNT    
@@ -759,5 +663,145 @@ IF OBJECT_ID('tempdb..#Work') IS NOT NULL DROP TABLE #Work
 --DROP TABLE #Log                      
 IF OBJECT_ID('tempdb..#EncounterDates') IS NOT NULL DROP TABLE #EncounterDates
 
+
+GO
+
+
+if exists (select * from sys.procedures where name = 'LD_UpdateDRG_UpdateRollback')
+	drop procedure LD_UpdateDRG_UpdateRollback
+
+GO
+
+CREATE  PROCEDURE [dbo].[LD_UpdateDRG_UpdateRollback] @Study_ID int, @DataFile_id int, @DRGOption varchar(20) = 'DRG'
+AS    
+
+begin
+
+	IF OBJECT_ID('tempdb..#temp') IS NOT NULL DROP TABLE #temp
+	IF OBJECT_ID('tempdb..#fields') IS NOT NULL DROP TABLE #fields
+	IF OBJECT_ID('tempdb..#Work') IS NOT NULL DROP TABLE #Work 
+
+	SELECT distinct h.field_name
+	INTO #fields
+	FROM dbo.HCAHPSUpdateLog h
+	where DataFile_ID = @Datafile_ID  
+	and ISNULL(old_value,'NULL') <> ISNULL(new_value,'NULL')
+
+	SELECT distinct h.samplepop_id, ss.STUDY_ID, ss.POP_ID, ss.enc_id,h.field_name, h.old_value, h.new_value, h.DataFile_ID, dm.Disposition_id, h.Change_Date 
+	INTO #Work
+	FROM dbo.HCAHPSUpdateLog h
+	LEFT JOIN dbo.HCAHPSUpdateLog h1 on h1.samplepop_id = h.samplepop_id and h1.field_name = h.field_name and h1.DataFile_id = h.DataFile_id and h1.bitRollback = 1
+	INNER JOIN SamplePop sp on h.samplepop_id = sp.SAMPLEPOP_ID
+	INNER JOIN SELECTEDSAMPLE ss on ss.Sampleset_id = sp.Sampleset_id and ss.Pop_id = sp.Pop_id 
+	INNER JOIN SampleUnit su on su.SampleUnit_id = ss.SampleUnit_id  
+	LEFT Join dbo.DRGUpdateDispositionMapping dm on dm.FieldName = h.field_name and dm.UpdateValue = h.new_value
+	where h.DataFile_ID = @Datafile_ID  
+	and ISNULL(h.old_value,'NULL') <> ISNULL(h.new_value,'NULL')
+	and h1.DataFile_ID is null -- if it has NOT already been rolledback
+
+
+
+ DECLARE @Owner varchar(10)
+
+ SET @Owner = 'S'+RTRIM(LTRIM(STR(@Study_ID)))  
+ 
+ DECLARE @myRowCount int
+ DECLARE @fieldName varchar(20)
+ DECLARE @sql varchar(8000)
+ 
+ SELECT TOP 1 @fieldName = field_name FROM #fields
+ WHILE @@ROWCOUNT > 0
+    BEGIN
+
+	 IF EXISTS (select 1
+	from QP_PROD.information_schema.columns c
+	where table_schema = @Owner and table_name = 'encounter' and column_name = @fieldName)
+	BEGIN
+	                                     
+		SET @Sql = 'UPDATE e SET e.' + @fieldName + ' = w.old_value ' + 
+		   ' FROM S' +RTRIM(LTRIM(STR(@Study_ID)))  + '.ENCOUNTER e ' +
+		   'inner join #work w on e.pop_id = w.POP_ID and e.enc_id = w.POP_ID ' +
+		   'where w.field_name = ''' + @fieldName + '''' 
+
+		EXEC (@Sql)    
+
+		set @myRowCount = @@ROWCOUNT   
+  
+		if @myRowCount > 0
+		begin
+         
+		   INSERT INTO #Log (RecordType, RecordsValue)                      
+		   Select @DRGOption + ': Encounter ' + @fieldName + ' Records Updated (rollback): ',LTRIM(STR(@myRowCount))  
+		   --Log data changes                      
+		   INSERT #HCAHPSUpdateLog (samplepop_id, field_name, old_value, new_value, datafile_id, isRollback)                       
+		   SELECT DISTINCT w.SamplePop_id, @fieldName, w.new_value, w.old_value, w.datafile_id, 1                      
+		   FROM #Work w
+		   where w.field_name = @fieldName                      
+
+			set @myRowCount = @@ROWCOUNT 
+			insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT HCAHPSUpdateLog ' + @fieldName + ' Records Updated (rollback): ' + + LTRIM(STR(@myRowCount))     
+		end  
+
+	END  
+
+	DELETE FROM #fields WHERE  field_name = @fieldName
+     SELECT TOP 1 @fieldName = field_name FROM #fields
+  END
+
+  DELETE dl
+  FROM dbo.DispositionLog dl
+  INNER JOIN #Work w on w.samplepop_id = dl.SamplePop_id and w.disposition_id = dl.Disposition_id and w.Change_Date = dl.datLogged 
+  WHERE w.Disposition_id is not null
+  and dl.LoggedBy = 'DBA'
+
+  set @myRowCount = @@ROWCOUNT 
+  insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'DispositionLog Records Deleted (rollback): ' + + LTRIM(STR(@myRowCount))  
+
+  INSERT INTO #Log (RecordType, RecordsValue)                      
+  Select @DRGOption + ': DispositionLog Records Deleted (rollback): ',LTRIM(STR(@myRowCount))  
+
+end 
+
+
+
+if exists (select * from sys.procedures where name = 'LD_UpdateDRG_Rollback')
+	drop procedure LD_UpdateDRG_Rollback
+GO
+
+
+CREATE PROCEDURE [dbo].[LD_UpdateDRGRollback] @Study_ID int, @DataFile_id int        
+AS        
+        
+begin        
+ 
+ CREATE TABLE #log (RecordType varchar(150), RecordsValue VArchar(50))        
+    
+    
+ if exists (select 'x' from MetaData_view where Study_ID = @Study_ID and strField_nm = 'DRG')    
+  begin    
+   exec LD_UpdateDRG_UpdateRollback @Study_ID , @DataFile_id, 'DRG'
+  end     
+ else    
+  insert into #log (RecordType, RecordsValue) values ('DRG Update Rollback Failed', 'Your study does not contain a DRG field.')    
+    
+    
+ if exists (select 'x' from MetaData_view where Study_ID = @Study_ID and strField_nm = 'MSDRG')    
+  begin    
+   exec LD_UpdateDRG_UpdateRollback @Study_ID , @DataFile_id, 'MSDRG'
+  end     
+ else    
+  insert into #log (RecordType, RecordsValue) values ('MSDRG Update Rollback Failed', 'Your study does not contain a MSDRG field.')    
+     
+if exists (select 'x' from MetaData_view where Study_ID = @Study_ID and strField_nm = 'APRDRG')    
+  begin    
+   exec LD_UpdateDRG_UpdateRollback @Study_ID , @DataFile_id, 'APRDRG'
+  end     
+ else    
+  insert into #log (RecordType, RecordsValue) values ('APRDRG Update Rollback Failed', 'Your study does not contain a APRDRG field.')    
+    
+ SELECT * FROM #LOG    
+ drop table #log    
+    
+end
 
 GO

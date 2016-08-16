@@ -1,156 +1,58 @@
 /*
 
-	S55 ATL-685 DRG Update disallowed for submitted data
+	ROLLBACK!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-	As a CAHPS compliant organization, we want to prevent load-to-lives from updating DRGs for records that have already been submitted to CMS.
+	S55 ATL-683 DRG Update Rollback Process
 
-	ATL-703 Submission deadline table
-	ATL-704 Ignore DRG update for submitted record
-	ATL-705 Modify DRG update email
-	
+	As the Manager of Client Operations, I want to review a report and approve DRG updates, so that we avoid potential compliance issues & discrepancies.
+
 	Tim Butler
 
-	CREATE TABLE [dbo].[CMSDataSubmissionSchedule]
-	INSERT INTO [dbo].[CMSDataSubmissionSchedule] -- only records for HCAHPS for now
-	ALTER PROCEDURE [dbo].[LD_UpdateDRG]
+	alter table [dbo].[HCAHPSUpdateLog]
 	ALTER PROCEDURE [dbo].[LD_UpdateDRG_Updater]
 
 */
 
 use QP_PROD
 
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES 
-           WHERE TABLE_NAME = 'CMSDataSubmissionSchedule'
-		   and TABLE_SCHEMA = 'dbo')
-BEGIN
-  DROP table dbo.CMSDataSubmissionSchedule
-END
+go
+
+begin tran
+go
+if exists (	SELECT 1 
+				FROM   sys.tables st 
+					   INNER JOIN sys.columns sc ON st.object_id = sc.object_id 
+				WHERE  st.schema_id = 1 
+					   AND st.NAME = 'HCAHPSUpdateLog' 
+					   AND sc.NAME = 'DataFile_ID' )
+	alter table [dbo].[HCAHPSUpdateLog] drop column DataFile_ID
+go
+
+commit tran
+
+go
+
+begin tran
+go
+if exists (	SELECT 1 
+				FROM   sys.tables st 
+					   INNER JOIN sys.columns sc ON st.object_id = sc.object_id 
+				WHERE  st.schema_id = 1 
+					   AND st.NAME = 'HCAHPSUpdateLog' 
+					   AND sc.NAME = 'bitRollback' )
+
+	begin
 
 
-GO
+		ALTER TABLE [dbo].[HCAHPSUpdateLog] DROP CONSTRAINT [DF_BITROLLBACK]
+		ALTER TABLE [dbo].[HCAHPSUpdateLog] drop column bitRollback 
+	end
+go
 
-CREATE TABLE [dbo].[CMSDataSubmissionSchedule](
-	[CMSDataSubmissionSchedule_ID] [int] IDENTITY(1,1) NOT NULL,
-	[SurveyType_ID] [int] NOT NULL,
-	[Month] [smallint] NOT NULL,
-	[Year] [smallint] NOT NULL,
-	[SubmissionDateOpen] [date] NULL,
-	[SubmissionDateClose] [date] NOT NULL,
- CONSTRAINT [PK_CMSDataSubmissionSchedule] PRIMARY KEY CLUSTERED 
-(
-	[CMSDataSubmissionSchedule_ID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
+commit tran
 
-GO
+go
 
-CREATE UNIQUE NONCLUSTERED INDEX [IX_CMSDataSubmissionSchedule] ON [dbo].[CMSDataSubmissionSchedule]
-(
-	[SurveyType_ID] ASC,
-	[Month] ASC,
-	[Year] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-GO
-
-
-USE [QP_Prod]
-
-
-INSERT INTO [dbo].[CMSDataSubmissionSchedule]([SurveyType_ID],[Month],[Year],[SubmissionDateOpen],[SubmissionDateClose])
-VALUES(2,1,2016,NULL,'07/06/2016')
-
-INSERT INTO [dbo].[CMSDataSubmissionSchedule]([SurveyType_ID],[Month],[Year],[SubmissionDateOpen],[SubmissionDateClose])
-VALUES(2,2,2016,NULL,'07/06/2016')
-
-INSERT INTO [dbo].[CMSDataSubmissionSchedule]([SurveyType_ID],[Month],[Year],[SubmissionDateOpen],[SubmissionDateClose])
-VALUES(2,3,2016,NULL,'07/06/2016')
-
-INSERT INTO [dbo].[CMSDataSubmissionSchedule]([SurveyType_ID],[Month],[Year],[SubmissionDateOpen],[SubmissionDateClose])
-VALUES(2,4,2016,NULL,'10/05/2016')
-
-INSERT INTO [dbo].[CMSDataSubmissionSchedule]([SurveyType_ID],[Month],[Year],[SubmissionDateOpen],[SubmissionDateClose])
-VALUES(2,5,2016,NULL,'10/05/2016')
-
-INSERT INTO [dbo].[CMSDataSubmissionSchedule]([SurveyType_ID],[Month],[Year],[SubmissionDateOpen],[SubmissionDateClose])
-VALUES(2,6,2016,NULL,'10/05/2016')
-
-INSERT INTO [dbo].[CMSDataSubmissionSchedule]([SurveyType_ID],[Month],[Year],[SubmissionDateOpen],[SubmissionDateClose])
-VALUES(2,7,2016,NULL,'01/04/2017')
-
-INSERT INTO [dbo].[CMSDataSubmissionSchedule]([SurveyType_ID],[Month],[Year],[SubmissionDateOpen],[SubmissionDateClose])
-VALUES(2,8,2016,NULL,'01/04/2017')
-
-INSERT INTO [dbo].[CMSDataSubmissionSchedule]([SurveyType_ID],[Month],[Year],[SubmissionDateOpen],[SubmissionDateClose])
-VALUES(2,9,2016,NULL,'01/04/2017')
-
-INSERT INTO [dbo].[CMSDataSubmissionSchedule]([SurveyType_ID],[Month],[Year],[SubmissionDateOpen],[SubmissionDateClose])
-VALUES(2,10,2016,NULL,'04/05/2017')
-
-INSERT INTO [dbo].[CMSDataSubmissionSchedule]([SurveyType_ID],[Month],[Year],[SubmissionDateOpen],[SubmissionDateClose])
-VALUES(2,11,2016,NULL,'04/05/2017')
-
-INSERT INTO [dbo].[CMSDataSubmissionSchedule]([SurveyType_ID],[Month],[Year],[SubmissionDateOpen],[SubmissionDateClose])
-VALUES(2,12,2016,NULL,'04/05/2017')
-
-
-GO
-
-
-SELECT *
-FROM [dbo].[CMSDataSubmissionSchedule]
-
-GO
-
-
-ALTER PROCEDURE [dbo].[LD_UpdateDRG] @Study_ID int, @DataFile_id int        
-AS        
-        
-begin        
- -- Developed by DK 9/2006        
- -- Created by SJS 10/12/2006        
- -- Modified by dmp 11/09/2006: un-commented code for deleting records > 42 days old        
- -- Modified by dmp 12/15/2006: commented out code for deleting recs >42 days old, per new reqs from CS        
- -- Renamed by ADL 06/20/2007: added the record count log dataset        
- -- ReOrganized by MWB 10/25/07: This procedure is now the driver for DRG and MSDRG updates.  It will check the QLoader    
- --        Qualisys DB to make sure the fields exist.  if they do then the appopriate DRG update    
- --        worker (_Updater) procedure is called, if not it is skipped.    
- -- Modified by DRH 3/3/2014: added section that calls the new LD_UpdateAPRDRG_Updater proc
- -- Purpose: Update Study background data in Qualysis and Datamart for a specified Study and Datafile in the QP_Load DB.       
- -- Modified by TSB 08/04/2016: S55 ATL-685 DRG Update disallowed for submitted data - extended length RecordType column on #log table so it can hold a longer message generated in LD_UpdateDRG_Updater proc
-    
-     
- --create the #log table that each of the Update SPs will use.    
- CREATE TABLE #log (RecordType varchar(150), RecordsValue VArchar(50))        
-    
-    
- if exists (select 'x' from MetaData_view where Study_ID = @Study_ID and strField_nm = 'DRG')    
-  begin    
-   exec LD_UpdateDRG_Updater @Study_ID , @DataFile_id, 'DRG'
-  end     
- else    
-  insert into #log (RecordType, RecordsValue) values ('DRG Update Failed', 'Your study does not contain a DRG field.')    
-    
-    
- if exists (select 'x' from MetaData_view where Study_ID = @Study_ID and strField_nm = 'MSDRG')    
-  begin    
-   exec LD_UpdateDRG_Updater @Study_ID , @DataFile_id, 'MSDRG'
-  end     
- else    
-  insert into #log (RecordType, RecordsValue) values ('MSDRG Update Failed', 'Your study does not contain a MSDRG field.')    
-     
-if exists (select 'x' from MetaData_view where Study_ID = @Study_ID and strField_nm = 'APRDRG')    
-  begin    
-   exec LD_UpdateDRG_Updater @Study_ID , @DataFile_id, 'APRDRG'
-  end     
- else    
-  insert into #log (RecordType, RecordsValue) values ('APRDRG Update Failed', 'Your study does not contain a APRDRG field.')    
-    
- SELECT * FROM #LOG    
- drop table #log    
-    
-end
-
-GO
 
 
 ALTER PROCEDURE [dbo].[LD_UpdateDRG_Updater] @Study_ID int, @DataFile_id int, @DRGOption varchar(20) = 'DRG'
@@ -306,35 +208,8 @@ set @myRowCount = @@ROWCOUNT
 PRINT LTRIM(STR(@myRowCount)) +' check for records that are past the submission date.'                      
 insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  @DRGOption+': Records not applied because they are past the submission date:' + LTRIM(STR(@myRowCount)) 
 
-if @myRowCount > 0
-begin
-	
-	IF EXISTS (SELECT 1 FROM #Work WHERE isPastSubmission = 1 and DischargeDate is not null and ServiceDate is null)
-	BEGIN
-
-		SELECT @myRowCount = count(*) FROM #Work WHERE isPastSubmission = 1 and DischargeDate is not null and ServiceDate is null
-
-		INSERT INTO #Log (RecordType, RecordsValue) Select @DRGOption +': Records not applied because DischargeDate is past the submission:',  LTRIM(STR(@myRowCount))
-	END
-
-	IF EXISTS (SELECT 1 FROM #Work WHERE isPastSubmission = 1 and ServiceDate is not null and DischargeDate is null)
-	BEGIN
-
-		SELECT @myRowCount = count(*) FROM #Work WHERE isPastSubmission = 1 and ServiceDate is not null and DischargeDate is null
-
-		INSERT INTO #Log (RecordType, RecordsValue) Select @DRGOption +': Records not applied because ServiceDate is past the submission:',  LTRIM(STR(@myRowCount))
-	END
-
-	IF EXISTS (SELECT 1 FROM #Work WHERE isPastSubmission = 1 and DischargeDate is not null and ServiceDate is not null)
-	BEGIN
-
-		SELECT @myRowCount = count(*) FROM #Work WHERE isPastSubmission = 1 and DischargeDate is not null and ServiceDate is not null
-
-		INSERT INTO #Log (RecordType, RecordsValue) Select @DRGOption +': Records not applied because DischargeDate is past the submission.<br>(Study also contains a ServiceDate field, which was ignored):',  LTRIM(STR(@myRowCount))
-	END  
-
-end
-
+if @myRowCount > 0 
+	INSERT INTO #Log (RecordType, RecordsValue) Select @DRGOption +': Records not applied because they are past the submission date:',  LTRIM(STR(@myRowCount))  
 	
 -- Now delete those records past the submission date from the #Work table because we don't want to update them	
     
@@ -371,7 +246,34 @@ set @myRowCount = @@ROWCOUNT
 PRINT LTRIM(STR(@myRowCount)) +' check for records with no match in Submission Schedule table.'                      
 insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  @DRGOption+': Records with no match in Submission Schedule table:' + LTRIM(STR(@myRowCount)) 
 
+if @myRowCount > 0
+begin
+	
+	IF EXISTS (SELECT 1 FROM #Work WHERE isPastSubmission = 1 and DischargeDate is not null and ServiceDate is null)
+	BEGIN
 
+		SELECT @myRowCount = count(*) FROM #Work WHERE isPastSubmission = 1 and DischargeDate is not null and ServiceDate is null
+
+		INSERT INTO #Log (RecordType, RecordsValue) Select @DRGOption +': Records not applied because DischargeDate is past the submission:',  LTRIM(STR(@myRowCount))
+	END
+
+	IF EXISTS (SELECT 1 FROM #Work WHERE isPastSubmission = 1 and ServiceDate is not null and DischargeDate is null)
+	BEGIN
+
+		SELECT @myRowCount = count(*) FROM #Work WHERE isPastSubmission = 1 and ServiceDate is not null and DischargeDate is null
+
+		INSERT INTO #Log (RecordType, RecordsValue) Select @DRGOption +': Records not applied because ServiceDate is past the submission:',  LTRIM(STR(@myRowCount))
+	END
+
+	IF EXISTS (SELECT 1 FROM #Work WHERE isPastSubmission = 1 and DischargeDate is not null and ServiceDate is not null)
+	BEGIN
+
+		SELECT @myRowCount = count(*) FROM #Work WHERE isPastSubmission = 1 and DischargeDate is not null and ServiceDate is not null
+
+		INSERT INTO #Log (RecordType, RecordsValue) Select @DRGOption +': Records not applied because DischargeDate is past the submission.<br>(Study also contains a ServiceDate field, which was ignored):',  LTRIM(STR(@myRowCount))
+	END  
+
+end
                     
 -- **********************************************************************************************                      
 --SELECT * FROM #Work --for checking                      
@@ -566,7 +468,7 @@ insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @
 PRINT 'Insert the actual records into HCAHPSUpdateLog'
 --S52 ATL-192 Insert the actual records into HCAHPSUpdateLog
 INSERT INTO HCAHPSUpdateLog
-	SELECT samplepop_id, field_name, old_value, new_value, @LTime
+	SELECT samplepop_id, field_name, old_value, new_value, getdate()
 	FROM #HCAHPSUpdateLog
    
 set @myRowCount = @@ROWCOUNT    
@@ -759,5 +661,15 @@ IF OBJECT_ID('tempdb..#Work') IS NOT NULL DROP TABLE #Work
 --DROP TABLE #Log                      
 IF OBJECT_ID('tempdb..#EncounterDates') IS NOT NULL DROP TABLE #EncounterDates
 
+
+GO
+
+if exists (select * from sys.procedures where name = 'LD_UpdateDRG_Rollback')
+	drop procedure LD_UpdateDRG_Rollback
+GO
+
+
+if exists (select * from sys.procedures where name = 'LD_UpdateDRG_UpdateRollback')
+	drop procedure LD_UpdateDRG_UpdateRollback
 
 GO
