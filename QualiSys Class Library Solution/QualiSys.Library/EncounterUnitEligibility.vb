@@ -257,6 +257,9 @@ Public Class EncounterUnitEligibility
                     SysSelector += SystematicIncrement
                     If SysSelector >= locationCount + 1 Then
                         SysSelector = SysSelector Mod locationCount
+                        If SysSelector = 0 Then
+                            SysSelector = 1
+                        End If
                     End If
                 Loop
 
