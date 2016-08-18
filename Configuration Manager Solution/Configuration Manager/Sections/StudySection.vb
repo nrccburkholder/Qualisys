@@ -140,7 +140,9 @@ Public Class StudySection
             UseProperCaseCheckBox.Checked = .UseProperCase
             InActivateCheckBox.Checked = Not .IsActive
             UseAutoSample.Checked = .IsAutoSample
+            UseAutoSample.Enabled = (Not IsNothing(.Client.ClientGroup)) AndAlso (.Client.ClientGroup.Name.ToUpper() = "OCS")
         End With
+
 
         NRCEmployeeBindingSource.DataSource = Employee.GetAllStudyUnAuthorized(mModule.Study.Id)
         With AvailableAssociateListBox
