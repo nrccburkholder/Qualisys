@@ -8,6 +8,6 @@
     <description>Website for HHCAHPS import file admin</description>
   </metadata>
   <files>
-    <file src="**"/>
+    <file src="**" exclude="settings.xml; Web.config"/>
   </files>
 </package>
