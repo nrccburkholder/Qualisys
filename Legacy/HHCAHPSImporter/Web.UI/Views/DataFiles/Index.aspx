@@ -36,6 +36,9 @@
                 Client
             </th>
             <th>
+                CCN
+            </th>
+            <th>
                 StudyId
             </th>
             <th>
@@ -74,6 +77,9 @@
             </td>
             <td>
                 <%: string.Format("{0} ({1})", item.ClientName, item.Client_ID) %>
+            </td>
+            <td>
+                <%: item.CCN %>
             </td>
             <td>
                 <%: item.Study_ID %>

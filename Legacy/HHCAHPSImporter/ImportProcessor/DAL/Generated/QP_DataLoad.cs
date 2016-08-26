@@ -30967,7 +30967,9 @@ namespace HHCAHPSImporter.ImportProcessor.DAL.Generated
 		private string _ClientName;
 		
 		private System.Nullable<int> _Client_ID;
-		
+
+        private string _CCN;
+
 		private System.Nullable<int> _Study_ID;
 		
 		private System.Nullable<int> _Survey_ID;
@@ -31187,8 +31189,24 @@ namespace HHCAHPSImporter.ImportProcessor.DAL.Generated
 				}
 			}
 		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Study_ID", DbType="Int")]
+
+        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage = "_CCN", DbType = "VarChar(20)")]
+        public string CCN
+        {
+            get
+            {
+                return this._CCN;
+            }
+            set
+            {
+                if ((this._CCN != value))
+                {
+                    this._CCN = value;
+                }
+            }
+        }
+
+        [global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Study_ID", DbType="Int")]
 		public System.Nullable<int> Study_ID
 		{
 			get

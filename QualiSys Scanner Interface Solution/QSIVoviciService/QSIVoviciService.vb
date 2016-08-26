@@ -106,6 +106,8 @@ Public Class QSIVoviciService
         Dim IdVerintUS As Integer = AppConfig.Params("QSIVerint-US-VendorID").IntegerValue
         Dim IdVerintCA As Integer = AppConfig.Params("QSIVerint-CA-VendorID").IntegerValue
 
+        Dim VerintExceptionsToIgnore As String = AppConfig.Params("QSIVerintExceptionsToIgnoreAndMarkSent").StringValue
+
         'Dim projectDataInstances As New Dictionary(Of Integer, VoviciProjectData)
         'projectDataInstances = VoviciProjectData.VerintProjectDataInstances
 
@@ -200,14 +202,27 @@ Public Class QSIVoviciService
                                     End If
 
                                 Catch ex As Exception
-                                    errorList.Add(New TranslatorError(participant.Id, participant.Litho, ex.Message))
-                                    bIsOtherError = True
+                                    Dim IsIgnored As Boolean = False
+                                    For Each ignoreString As String In VerintExceptionsToIgnore.Split("|"c)
+                                        If ex.Message.Contains(ignoreString) Then
+                                            IsIgnored = True
+                                            Exit For
+                                        End If
+                                    Next
+
+                                    Dim markedSent As String = String.Empty
+                                    If IsIgnored Then
+                                        participant.SentToVendor = True
+                                        markedSent = " [Marked Sent]"
+                                    Else
+                                        bIsOtherError = True
+                                    End If
+                                    errorList.Add(New TranslatorError(participant.Id, participant.Litho, ex.Message + markedSent))
                                 End Try
                             Next
 
                             'Save file participants
                             participants.Save()
-
 
                             Dim errMessage As String = "Process error(s) occurred, ({0}) records out of ({1}) did not process.  Will retry on next pass!"
                             If Not bIsOtherError Then
@@ -215,7 +230,6 @@ Public Class QSIVoviciService
                                 file.VendorFileStatusId = VendorFileStatusCodes.Sent
                                 errMessage = "Process error(s) occurred, ({0}) records out of ({1}) did not process."
                             End If
-
 
                             If errorList.Count > 0 Then
                                 Dim errCount As Integer = errorList.Count

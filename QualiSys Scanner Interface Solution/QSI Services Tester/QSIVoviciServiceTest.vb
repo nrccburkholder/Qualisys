@@ -183,19 +183,25 @@ Public Class QSIVoviciServiceTest
 #Region "Private Methods"
 
     Private Sub CheckForOutboundWork()
+
         Dim IdVerintUS As Integer = AppConfig.Params("QSIVerint-US-VendorID").IntegerValue
         Dim IdVerintCA As Integer = AppConfig.Params("QSIVerint-CA-VendorID").IntegerValue
 
+        Dim VerintExceptionsToIgnore As String = AppConfig.Params("QSIVerintExceptionsToIgnoreAndMarkSent").StringValue
+
         'Dim projectDataInstances As New Dictionary(Of Integer, VoviciProjectData)
         'projectDataInstances = VoviciProjectData.VerintProjectDataInstances
-
-        Dim Country As String = AppConfig.Params("Country").StringValue()
 
         Dim cultureCode As String
 
         Try
             'Get all approved (Status = 3) records from the Vendor File Creation Queue
             Dim files As VendorFileCreationQueueCollection = VendorFileCreationQueue.GetByVendorFileStatusId(VendorFileStatusCodes.Approved)
+
+            'Connect to Vovici
+            'If files.Count > 0 Then projectData.Login()
+            'This variable is going to be used to hide PII depending on if it is CA
+            Dim Country As String = AppConfig.Params("Country").StringValue()
 
             For Each file As VendorFileCreationQueue In files
                 Dim methStep As MethodologyStep = MethodologyStep.Get(file.MailingStepId)
@@ -277,27 +283,42 @@ Public Class QSIVoviciServiceTest
                                     End If
 
                                 Catch ex As Exception
-                                    errorList.Add(New TranslatorError(participant.Id, participant.Litho, ex.Message))
-                                    bIsOtherError = True
+                                    Dim IsIgnored As Boolean = False
+                                    For Each ignoreString As String In VerintExceptionsToIgnore.Split("|"c)
+                                        If ex.Message.Contains(ignoreString) Then
+                                            IsIgnored = True
+                                            Exit For
+                                        End If
+                                    Next
+
+                                    Dim markedSent As String = String.Empty
+                                    If IsIgnored Then
+                                        participant.SentToVendor = True
+                                        markedSent = " [Marked Sent]"
+                                    Else
+                                        bIsOtherError = True
+                                    End If
+                                    errorList.Add(New TranslatorError(participant.Id, participant.Litho, ex.Message + markedSent))
                                 End Try
                             Next
 
                             'Save file participants
                             participants.Save()
 
-
+                            Dim errMessage As String = "Process error(s) occurred, ({0}) records out of ({1}) did not process.  Will retry on next pass!"
                             If Not bIsOtherError Then
                                 'All participants were successfully added to Vovici, mark file as sent.
                                 file.VendorFileStatusId = VendorFileStatusCodes.Sent
+                                errMessage = "Process error(s) occurred, ({0}) records out of ({1}) did not process."
                             End If
-
 
                             If errorList.Count > 0 Then
                                 Dim errCount As Integer = errorList.Count
                                 If errCount > 2500 Then
                                     errorList.RemoveRange(2500, errCount - 2500)
+                                    errMessage = errMessage + " *** "
                                 End If
-                                Throw New InvalidFileException(String.Format("Process error(s) occurred, ({0}) records out of ({1}) did not process.  Will retry on next pass!", errCount.ToString, participants.Count.ToString), file.ArchiveFileName, errorList)
+                                Throw New InvalidFileException(String.Format(errMessage, errCount.ToString, participants.Count.ToString), file.ArchiveFileName, errorList)
                             End If
 
                         Catch ex As Exception
@@ -306,7 +327,6 @@ Public Class QSIVoviciServiceTest
                             Catch ex1 As Exception
                                 'The Notification most likely got sent but we don't want an unhandled exception to be thrown here
                             End Try
-
                         End Try
                     End If
                 End If

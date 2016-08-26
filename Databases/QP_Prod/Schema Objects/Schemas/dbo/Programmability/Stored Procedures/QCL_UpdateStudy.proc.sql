@@ -7,7 +7,8 @@
 @DATCREATE_DT datetime,
 @BITCLEANADDR bit,
 @bitProperCase bit,
-@Active bit
+@Active bit,
+@bitAutosample bit
 AS
 
 SET NOCOUNT ON
@@ -20,7 +21,8 @@ SET STRSTUDY_NM = @STRSTUDY_NM,
 	DATCREATE_DT = @DATCREATE_DT,
 	BITCLEANADDR = @BITCLEANADDR,
 	bitProperCase = @bitProperCase,
-	Active = @Active
+	Active = @Active,
+	bitAutosample = @bitAutosample
 WHERE STUDY_ID = @STUDY_ID
 
 SET NOCOUNT OFF

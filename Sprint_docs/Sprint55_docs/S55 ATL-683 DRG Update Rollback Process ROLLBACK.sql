@@ -1,8 +1,65 @@
-﻿CREATE PROCEDURE [dbo].[LD_UpdateDRG_Updater] @Study_ID int, @DataFile_id int, @DRGOption varchar(20) = 'DRG'
+/*
+
+	ROLLBACK!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+	S55 ATL-683 DRG Update Rollback Process
+
+	As the Manager of Client Operations, I want to review a report and approve DRG updates, so that we avoid potential compliance issues & discrepancies.
+
+	Tim Butler
+
+	alter table [dbo].[HCAHPSUpdateLog]
+	ALTER PROCEDURE [dbo].[LD_UpdateDRG_Updater]
+
+*/
+
+use QP_PROD
+
+go
+
+begin tran
+go
+if exists (	SELECT 1 
+				FROM   sys.tables st 
+					   INNER JOIN sys.columns sc ON st.object_id = sc.object_id 
+				WHERE  st.schema_id = 1 
+					   AND st.NAME = 'HCAHPSUpdateLog' 
+					   AND sc.NAME = 'DataFile_ID' )
+	alter table [dbo].[HCAHPSUpdateLog] drop column DataFile_ID
+go
+
+commit tran
+
+go
+
+begin tran
+go
+if exists (	SELECT 1 
+				FROM   sys.tables st 
+					   INNER JOIN sys.columns sc ON st.object_id = sc.object_id 
+				WHERE  st.schema_id = 1 
+					   AND st.NAME = 'HCAHPSUpdateLog' 
+					   AND sc.NAME = 'bitRollback' )
+
+	begin
+
+
+		ALTER TABLE [dbo].[HCAHPSUpdateLog] DROP CONSTRAINT [DF_BITROLLBACK]
+		ALTER TABLE [dbo].[HCAHPSUpdateLog] drop column bitRollback 
+	end
+go
+
+commit tran
+
+go
+
+
+
+ALTER PROCEDURE [dbo].[LD_UpdateDRG_Updater] @Study_ID int, @DataFile_id int, @DRGOption varchar(20) = 'DRG'
 AS                      
                       
                       
-- Developed by DK 9/2006                      
+-- Developed by DK 9/2006                      
 -- Created by SJS 10/12/2006                      
 -- Purpose: Update Study background data in Qualysis and Datamart for a specified Study and Datafile in the QP_Load DB.
 
@@ -16,7 +73,8 @@ AS
 --   to update sampled and non sampled records        
 -- Modified by MWB 07/30/2009: Modified the Update non-Sampled code to improve performance  
 -- Modified by MWB 11/19/2009: Added source column to ExtractQueue insert to track source of key values being added.  
--- Modified by TSB 06/24/2016: S52 ATL-192 HCAHPS Update file dispostions - modified to insert into DispositionLog for specific value updates on specified fields.                       
+-- Modified by TSB 06/24/2016: S52 ATL-192 HCAHPS Update file dispostions - modified to insert into DispositionLog for specific value updates on specified fields.
+-- Modified by TSB 08/04/2016: S55 ATL-685 DRG Update disallowed for submitted data - modified to  prevent load-to-lives from updating DRGs for records that have already been submitted to CMS                        
                       
 DECLARE @MCond varchar(200), @LTime datetime, @DataMart varchar(50)                      
 DECLARE @Owner varchar(10), @Sql varchar(8000), @Now datetime, @BTableName varchar(100), @Server VARCHAR(20)                      
@@ -32,12 +90,12 @@ SET @Server = (SELECT strparam_value from qualpro_params where strparam_nm = 'QL
 -- create all tables needed up front              
 -- 10/30/07 MWB now done in Calling procedure (LD_UpdateDRG)                    
 --CREATE TABLE #log (RecordType varchar(100), RecordsValue VArchar(50))                      
-CREATE TABLE #Work (DRG varchar(3), HServiceType varchar(42), HVisitType varchar(42), HAdmissionSource varchar(42), HDischargeStatus varchar(42), HAdmitAge int, HCatAge varchar(42), Enc_id int)                      
+CREATE TABLE #Work (DRG varchar(3), HServiceType varchar(42), HVisitType varchar(42), HAdmissionSource varchar(42), HDischargeStatus varchar(42), HAdmitAge int, HCatAge varchar(42), Enc_id int, isPastSubmission bit,  DischargeDate datetime, ServiceDate datetime)                      
 CREATE TABLE #lt (ltime datetime)                      
 CREATE TABLE #BTableNames (BigTableName varchar(100))                   
 CREATE TABLE #SPs (SampleUnit_ID int, SamplePop_ID int, Enc_ID int, DaysFromFirst int,                       
     ReportDate DateTime, BigTableName varchar(100), SentMail_id int, EncDate Datetime)                      
-CREATE TABLE #CatalsytWork (Study_ID int, Pop_ID int, Enc_ID int)                  
+CREATE TABLE #CatalystWork (Study_ID int, Pop_ID int, Enc_ID int,isPastSubmission bit, DischargeDate datetime, ServiceDate datetime)                  
                   
 exec @FieldExists = QLoader.QP_Load.dbo.columnAlreadyExists @owner,'Encounter_load',@DRGOption
 exec @FieldExists2 = dbo.columnAlreadyExists @owner,'Encounter',@DRGOption                    
@@ -74,23 +132,49 @@ WHERE t.table_id = s.table_id and
  t.study_id = @Study_ID                      
 SET @MCond = SUBSTRING(@MCond, 1, LEN(@MCond)-3)                      
                       
---SET @Sql = 'INSERT #Work (DRG, HServiceType, Enc_ID) ' +                       
---   ' SELECT L.DRG, L.HServiceType, E.Enc_id ' +                      
---   ' FROM ' + @server + '.QP_Load.'+@Owner+'.encounter_load L INNER JOIN '+@Owner+ '.Encounter E ON ' + @MCond +                      
---   ' WHERE (((E.DRG IS Null OR E.DRG = ''0'' OR E.DRG=''000'') AND (L.DRG IS NOT NULL AND L.DRG != ''0'' AND L.DRG != ''000'')) OR ' +                      
---   ' ((E.HServiceType IS NULL OR E.HServiceType = ''9'') AND (L.HServiceType IS NOT NULL AND L.HServiceType != ''9''))) AND ' +                      
---   ' L.DataFile_ID = ' +LTRIM(STR(@DataFile_ID))                           
---EXEC (@Sql)              
+
+DECLARE @hasDischargeDate bit = 0
+DECLARE @hasServiceDate bit = 0
+
+
+-- check to see if the dischargedate column exists in the encounter table for this study
+IF EXISTS (select 1
+	from QP_PROD.information_schema.columns c
+	where table_schema = @Owner and table_name = 'encounter' and
+			column_name = 'DischargeDate')
+BEGIN
+	SET @hasDischargeDate = 1
+END    
+
+-- check to see if the servicedate column exists in the encounter table for this study
+IF EXISTS (select 1
+	from QP_PROD.information_schema.columns c
+	where table_schema = @Owner and table_name = 'encounter' and
+			column_name = 'ServiceDate')
+BEGIN
+	SET @hasServiceDate = 1
+END         
           
-SET @Sql = 'INSERT #Work (DRG, HServiceType, HVisitType, HAdmissionSource, HDischargeStatus, HAdmitAge, HCatAge, Enc_ID) ' +                         
-   ' SELECT L.' + @DRGOption + ', L.HServiceType, L.HVisitType, L.HAdmissionSource, L.HDischargeStatus, L.HAdmitAge, L.HCatAge, E.Enc_id ' +                        
-   ' FROM ' + @server + '.QP_Load.'+@Owner+'.encounter_load L INNER JOIN '+@Owner+ '.Encounter E ON ' + @MCond +                        
+SET @Sql = 'INSERT #Work (DRG, HServiceType, HVisitType, HAdmissionSource, HDischargeStatus, HAdmitAge, HCatAge, Enc_ID, isPastSubmission, DischargeDate, ServiceDate) ' +                         
+   ' SELECT L.' + @DRGOption + ', L.HServiceType, L.HVisitType, L.HAdmissionSource, L.HDischargeStatus, L.HAdmitAge, L.HCatAge, E.Enc_id, 0 ' 
+     
+	if @hasDischargeDate = 1 SET @Sql = @Sql + ', E.DischargeDate' ELSE SET @Sql = @Sql + ', NULL '
+	if @hasServiceDate = 1 SET @Sql = @Sql + ', E.ServiceDate' ELSE SET @Sql = @Sql + ', NULL '
+                          
+    SET @Sql = @Sql +' FROM ' + @server + '.QP_Load.'+@Owner+'.encounter_load L ' +
+   ' INNER JOIN '+@Owner+ '.Encounter E ON ' + @MCond +                        
    ' WHERE  ((L.' + @DRGOption + ' IS NOT NULL AND L.' + @DRGOption + ' != ''0'' AND L.' + @DRGOption + ' != ''000'') and (L.HServiceType IS NOT NULL AND L.HServiceType != ''9'')) and L.DataFile_ID = ' +LTRIM(STR(@DataFile_ID))                             
 EXEC (@Sql)         
   
-SET @Sql = 'INSERT #CatalsytWork (Study_ID, Pop_ID, Enc_ID ) ' +                     
-   ' SELECT ' + cast(@Study_ID as varchar(10)) + ', E.Pop_ID, E.Enc_id ' +                    
-   ' FROM ' + @server + '.QP_Load.'+@Owner+'.encounter_load L INNER JOIN '+@Owner+ '.Encounter E ON ' + @MCond +                    
+SET @Sql = 'INSERT #CatalystWork (Study_ID, Pop_ID, Enc_ID, isPastSubmission, DischargeDate, ServiceDate) ' +                     
+   ' SELECT ' + cast(@Study_ID as varchar(10)) + ', E.Pop_ID, E.Enc_id, 0 ' 
+   
+    if @hasDischargeDate = 1 SET @Sql = @Sql + ', E.DischargeDate' ELSE SET @Sql = @Sql + ', NULL '
+	if @hasServiceDate = 1 SET @Sql = @Sql + ', E.ServiceDate' ELSE SET @Sql = @Sql + ', NULL '
+   
+                      
+   SET @Sql = @Sql +' FROM ' + @server + '.QP_Load.'+@Owner+'.encounter_load L ' +
+   ' INNER JOIN '+@Owner+ '.Encounter E ON ' + @MCond +                    
    ' WHERE  ((L.' + @DRGOption + ' IS NOT NULL AND L.' + @DRGOption + ' != ''0'' AND L.' + @DRGOption + ' != ''000'') and (L.HServiceType IS NOT NULL AND L.HServiceType != ''9'')) and L.DataFile_ID = ' +LTRIM(STR(@DataFile_ID))  
 EXEC (@Sql)         
                           
@@ -107,6 +191,89 @@ BEGIN
 END       
     
 insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  @DRGOption+': Matching Records With Updates:' + LTRIM(STR(@myRowCount))     
+
+-- ****************************** Check to see if #Work has records that are past the submission date ************************    
+
+	SET @Sql = 'UPDATE w ' +
+	' SET IsPastSubmission = 1 ' + 
+	'FROM #Work w ' + 
+	'INNER JOIN dbo.CMSDataSubmissionSchedule sub on sub.[month] = DATEPART(month,ISNULL(w.DischargeDate,w.ServiceDate)) and sub.[year] = DATEPART(year,ISNULL(w.DischargeDate,w.ServiceDate)) ' +
+	'WHERE sub.SurveyType_id = 2 ' +
+	'AND sub.SubmissionDateClose < GETDATE()'
+
+EXEC (@Sql)
+    
+set @myRowCount = @@ROWCOUNT    
+                      
+PRINT LTRIM(STR(@myRowCount)) +' check for records that are past the submission date.'                      
+insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  @DRGOption+': Records not applied because they are past the submission date:' + LTRIM(STR(@myRowCount)) 
+
+if @myRowCount > 0 
+	INSERT INTO #Log (RecordType, RecordsValue) Select @DRGOption +': Records not applied because they are past the submission date:',  LTRIM(STR(@myRowCount))  
+	
+-- Now delete those records past the submission date from the #Work table because we don't want to update them	
+    
+	DELETE FROM #Work
+	WHERE isPastSubmission = 1
+
+--************************ For records past the submission date, update the #CatalystWork table 
+
+	SET @Sql = 'UPDATE w ' +
+	' SET IsPastSubmission = 1 ' + 
+	'FROM #CatalystWork w ' + 
+	'INNER JOIN dbo.CMSDataSubmissionSchedule sub on sub.[month] = DATEPART(month,ISNULL(w.DischargeDate,w.ServiceDate)) and sub.[year] = DATEPART(year,ISNULL(w.DischargeDate,w.ServiceDate)) ' +
+	'WHERE sub.SurveyType_id = 2 ' +
+	'AND sub.SubmissionDateClose < GetDate()'
+
+EXEC (@Sql)
+
+-- Now delete those records past the submission date from the #CatalystWork table 	
+    
+	DELETE FROM #CatalystWork
+	WHERE isPastSubmission = 1
+
+-- ****************************** Check to see if #Work has records that don't have a record in CMSDataSubmissionSchedule ************************    
+
+	SET @Sql = 'SELECT * ' +
+	'FROM #Work w ' + 
+	'Left JOIN dbo.CMSDataSubmissionSchedule sub on sub.[month] = DATEPART(month,ISNULL(w.DischargeDate,w.ServiceDate)) and sub.[year] = DATEPART(year,ISNULL(w.DischargeDate,w.ServiceDate)) and sub.SurveyType_id = 2 ' +
+	'WHERE sub.CMSDataSubmissionSchedule_id is null'
+
+EXEC (@Sql)
+    
+set @myRowCount = @@ROWCOUNT   
+                    
+PRINT LTRIM(STR(@myRowCount)) +' check for records with no match in Submission Schedule table.'                      
+insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  @DRGOption+': Records with no match in Submission Schedule table:' + LTRIM(STR(@myRowCount)) 
+
+if @myRowCount > 0
+begin
+	
+	IF EXISTS (SELECT 1 FROM #Work WHERE isPastSubmission = 1 and DischargeDate is not null and ServiceDate is null)
+	BEGIN
+
+		SELECT @myRowCount = count(*) FROM #Work WHERE isPastSubmission = 1 and DischargeDate is not null and ServiceDate is null
+
+		INSERT INTO #Log (RecordType, RecordsValue) Select @DRGOption +': Records not applied because DischargeDate is past the submission:',  LTRIM(STR(@myRowCount))
+	END
+
+	IF EXISTS (SELECT 1 FROM #Work WHERE isPastSubmission = 1 and ServiceDate is not null and DischargeDate is null)
+	BEGIN
+
+		SELECT @myRowCount = count(*) FROM #Work WHERE isPastSubmission = 1 and ServiceDate is not null and DischargeDate is null
+
+		INSERT INTO #Log (RecordType, RecordsValue) Select @DRGOption +': Records not applied because ServiceDate is past the submission:',  LTRIM(STR(@myRowCount))
+	END
+
+	IF EXISTS (SELECT 1 FROM #Work WHERE isPastSubmission = 1 and DischargeDate is not null and ServiceDate is not null)
+	BEGIN
+
+		SELECT @myRowCount = count(*) FROM #Work WHERE isPastSubmission = 1 and DischargeDate is not null and ServiceDate is not null
+
+		INSERT INTO #Log (RecordType, RecordsValue) Select @DRGOption +': Records not applied because DischargeDate is past the submission.<br>(Study also contains a ServiceDate field, which was ignored):',  LTRIM(STR(@myRowCount))
+	END  
+
+end
                     
 -- **********************************************************************************************                      
 --SELECT * FROM #Work --for checking                      
@@ -121,18 +288,13 @@ DROP TABLE #lt
                       
 SELECT @DataMart = strParam_Value FROM QualPro_Params WHERE strParam_nm = 'DataMart'                       
                       
---************************************** Update non-Sampled *************************************                      
-                      
---mwb 7-30-09 modified for performance reasons.          
---SET @Sql = 'UPDATE e SET DRG = w.DRG, HServiceType = w.HServiceType ' +                    
---   ' FROM '+@Owner+'.Encounter e INNER JOIN #Work w ON e.Enc_id = w.Enc_id ' +                    
---   ' WHERE w.Enc_id NOT IN (SELECT Enc_ID FROM SelectedSample WHERE Study_ID = '+LTRIM(STR(@Study_ID))+')'                    
---EXEC (@Sql)                    
+--************************************** Update non-Sampled *************************************                                      
   
 SET @Sql = 'UPDATE e SET ' + @DRGOption + ' = w.DRG, HServiceType = w.HServiceType, HVisitType = w.HVisitType, HAdmissionSource = w.HAdmissionSource, HDischargeStatus = w.HDischargeStatus, HAdmitAge = w.HAdmitAge, HCatAge = w.HCatAge ' +   
-' FROM '+@Owner+'.Encounter e INNER JOIN #Work w ON e.Enc_id = w.Enc_id ' +     
-'LEFT JOIN SelectedSample ss (NOLOCK) ON e.Enc_id = ss.Enc_id and ss.Study_ID = '+LTRIM(STR(@Study_ID)) +       
-'where ss.enc_id is null'  
+' FROM '+@Owner+'.Encounter e ' +
+' INNER JOIN #Work w ON e.Enc_id = w.Enc_id ' +     
+' LEFT JOIN SelectedSample ss (NOLOCK) ON e.Enc_id = ss.Enc_id and ss.Study_ID = '+LTRIM(STR(@Study_ID)) +       
+' where ss.enc_id is null'  
 
 EXEC (@Sql)
     
@@ -218,8 +380,9 @@ PRINT 'Log DRG data changes'
 --Log DRG data changes                      
 SET @Sql = 'INSERT #HCAHPSUpdateLog (samplepop_id, field_name, old_value, new_value) ' +                       
    ' SELECT DISTINCT sps.SamplePop_id, ''' + @DRGOption + ''', e.' + @DRGOption + ', w.DRG ' +                      
-   ' FROM #SPs sps INNER JOIN #Work w ON sps.Enc_ID = w.Enc_ID ' +                      
-   '  INNER JOIN '+@Owner+'.Encounter e ON w.Enc_ID = e.Enc_ID'                      
+   ' FROM #SPs sps ' +
+   ' INNER JOIN #Work w ON sps.Enc_ID = w.Enc_ID ' +                      
+   ' INNER JOIN '+@Owner+'.Encounter e ON w.Enc_ID = e.Enc_ID '
 --print @SQL                  
 EXEC (@Sql)                                  
                
@@ -232,7 +395,7 @@ PRINT 'Log HServiceType data changes'
 SET @Sql = 'INSERT #HCAHPSUpdateLog (samplepop_id, field_name, old_value, new_value) ' +                       
    ' SELECT DISTINCT sps.SamplePop_id, ''HServiceType'', e.HServiceType, w.HServiceType ' +                      
    ' FROM #SPs sps INNER JOIN #Work w ON sps.Enc_ID = w.Enc_ID ' +                      
-   '  INNER JOIN '+@Owner+'.Encounter e ON w.Enc_ID = e.Enc_ID'                      
+   '  INNER JOIN '+@Owner+'.Encounter e ON w.Enc_ID = e.Enc_ID'
 EXEC (@Sql)                      
     
 set @myRowCount = @@ROWCOUNT    
@@ -244,7 +407,7 @@ PRINT 'Log HVisitType data changes'
 SET @Sql = 'INSERT #HCAHPSUpdateLog (samplepop_id, field_name, old_value, new_value) ' +                       
    ' SELECT DISTINCT sps.SamplePop_id, ''HVisitType'', e.HVisitType, w.HVisitType ' +                      
    ' FROM #SPs sps INNER JOIN #Work w ON sps.Enc_ID = w.Enc_ID ' +                      
-   '  INNER JOIN '+@Owner+'.Encounter e ON w.Enc_ID = e.Enc_ID'                      
+   '  INNER JOIN '+@Owner+'.Encounter e ON w.Enc_ID = e.Enc_ID'
 EXEC (@Sql)                      
     
 set @myRowCount = @@ROWCOUNT    
@@ -256,7 +419,7 @@ PRINT 'Log HAdmissionSource data changes'
 SET @Sql = 'INSERT #HCAHPSUpdateLog (samplepop_id, field_name, old_value, new_value) ' +                       
    ' SELECT DISTINCT sps.SamplePop_id, ''HAdmissionSource'', e.HAdmissionSource, w.HAdmissionSource ' +                      
    ' FROM #SPs sps INNER JOIN #Work w ON sps.Enc_ID = w.Enc_ID ' +                      
-   '  INNER JOIN '+@Owner+'.Encounter e ON w.Enc_ID = e.Enc_ID'                      
+   '  INNER JOIN '+@Owner+'.Encounter e ON w.Enc_ID = e.Enc_ID'
 EXEC (@Sql)                      
     
 set @myRowCount = @@ROWCOUNT    
@@ -269,7 +432,7 @@ PRINT 'Log HDischargeStatus data changes'
 SET @Sql = 'INSERT #HCAHPSUpdateLog (samplepop_id, field_name, old_value, new_value) ' +                       
    ' SELECT DISTINCT sps.SamplePop_id, ''HDischargeStatus'', e.HDischargeStatus, w.HDischargeStatus ' +                      
    ' FROM #SPs sps INNER JOIN #Work w ON sps.Enc_ID = w.Enc_ID ' +                      
-   '  INNER JOIN '+@Owner+'.Encounter e ON w.Enc_ID = e.Enc_ID'                      
+   '  INNER JOIN '+@Owner+'.Encounter e ON w.Enc_ID = e.Enc_ID'
 EXEC (@Sql)                      
     
 set @myRowCount = @@ROWCOUNT    
@@ -281,7 +444,7 @@ PRINT 'Log HAdmitAge data changes'
 SET @Sql = 'INSERT #HCAHPSUpdateLog (samplepop_id, field_name, old_value, new_value) ' +                       
    ' SELECT DISTINCT sps.SamplePop_id, ''HAdmitAge'', e.HAdmitAge, w.HAdmitAge ' +                      
    ' FROM #SPs sps INNER JOIN #Work w ON sps.Enc_ID = w.Enc_ID ' +                      
-   '  INNER JOIN '+@Owner+'.Encounter e ON w.Enc_ID = e.Enc_ID'                      
+   '  INNER JOIN '+@Owner+'.Encounter e ON w.Enc_ID = e.Enc_ID'
 EXEC (@Sql)                      
     
 set @myRowCount = @@ROWCOUNT    
@@ -294,7 +457,7 @@ PRINT 'Log HCatAge data changes'
 SET @Sql = 'INSERT #HCAHPSUpdateLog (samplepop_id, field_name, old_value, new_value) ' +                       
    ' SELECT DISTINCT sps.SamplePop_id, ''HCatAge'', e.HCatAge, w.HCatAge ' +                      
    ' FROM #SPs sps INNER JOIN #Work w ON sps.Enc_ID = w.Enc_ID ' +                      
-   '  INNER JOIN '+@Owner+'.Encounter e ON w.Enc_ID = e.Enc_ID'                      
+   '  INNER JOIN '+@Owner+'.Encounter e ON w.Enc_ID = e.Enc_ID'
 EXEC (@Sql)                      
     
 set @myRowCount = @@ROWCOUNT    
@@ -398,7 +561,7 @@ PRINT 'Updating Encounter table'
 --Update Encounter table                                         
 SET @Sql = 'UPDATE e SET ' + @DRGOption + ' = w.DRG, HServiceType = w.HServiceType, HVisitType = w.HVisitType, HAdmissionSource = w.HAdmissionSource, HDischargeStatus = w.HDischargeStatus, HAdmitAge = w.HAdmitAge, HCatAge = w.HCatAge ' +                      
    ' FROM #SPs sps INNER JOIN #Work w ON sps.Enc_ID = w.Enc_ID ' +                      
-   '  INNER JOIN '+@Owner+'.Encounter e ON w.Enc_ID = e.Enc_ID'                      
+   '  INNER JOIN '+@Owner+'.Encounter e ON w.Enc_ID = e.Enc_ID'
 EXEC (@Sql)                      
           
 -- Update #Log                      
@@ -439,8 +602,9 @@ set @FieldExists3 = 0
                   
  --Update datamart big table                       
  SET @Sql = 'UPDATE b SET ' + @DRGOption + ' = w.DRG, HServiceType = w.HServiceType, HVisitType = w.HVisitType, HAdmissionSource = w.HAdmissionSource, HDischargeStatus = w.HDischargeStatus, HAdmitAge = w.HAdmitAge, HCatAge = w.HCatAge ' +                      
-    ' FROM #SPs sps INNER JOIN #Work w ON sps.Enc_ID = w.Enc_ID ' +                      
-    '  INNER JOIN '+@DataMart+'.QP_Comments.'+@Owner+'.'+@BTableName+' b ON b.SamplePop_id = sps.SamplePop_id '                       
+    ' FROM #SPs sps ' +
+	' INNER JOIN #Work w ON sps.Enc_ID = w.Enc_ID ' +                      
+    '  INNER JOIN '+@DataMart+'.QP_Comments.'+@Owner+'.'+@BTableName+' b ON b.SamplePop_id = sps.SamplePop_id '
  EXEC (@Sql)                      
                  
 set @myRowCount = @@ROWCOUNT    
@@ -463,12 +627,13 @@ END
 --insert into Catalyst extract queue so MSDRG will be updated    
 insert NRC_DataMart_ETL.dbo.ExtractQueue (EntityTypeID, PKey1, PKey2, IsMetaData, Source)      
 select distinct 7, sp.SAMPLEPOP_ID, NULL, 0, 'LD_UpdateDRG_Updater' + @DRGOption      
-from  #CatalsytWork cw, samplepop sp, selectedsample ss    
+from  #CatalystWork cw, samplepop sp, selectedsample ss    
 where sp.study_Id = ss.study_ID and    
  sp.pop_ID = ss.pop_ID and    
  cw.study_ID = sp.study_ID and    
  cw.pop_Id = sp.pop_ID and    
- cw.enc_Id = ss.enc_ID    
+ cw.enc_Id = ss.enc_ID and
+ cw.IsPastSubmission = 0 
   
                   
 ExitDRGUpdate:                  
@@ -497,3 +662,14 @@ IF OBJECT_ID('tempdb..#Work') IS NOT NULL DROP TABLE #Work
 IF OBJECT_ID('tempdb..#EncounterDates') IS NOT NULL DROP TABLE #EncounterDates
 
 
+GO
+
+if exists (select * from sys.procedures where name = 'LD_UpdateDRG_Rollback')
+	drop procedure LD_UpdateDRG_Rollback
+GO
+
+
+if exists (select * from sys.procedures where name = 'LD_UpdateDRG_UpdateRollback')
+	drop procedure LD_UpdateDRG_UpdateRollback
+
+GO

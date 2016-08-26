@@ -6,7 +6,7 @@ SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 SET NOCOUNT ON  
 
 SELECT Study_id, strStudy_nm, strStudy_dsc, Client_id, ADEmployee_id,
-	DATCREATE_DT, BITCLEANADDR, bitProperCase, Active
+	DATCREATE_DT, BITCLEANADDR, bitProperCase, Active, bitAutosample
 FROM Study 
 WHERE Study_id=@StudyId
 

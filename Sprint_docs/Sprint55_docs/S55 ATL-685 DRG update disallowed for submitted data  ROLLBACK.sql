@@ -1,8 +1,102 @@
-﻿CREATE PROCEDURE [dbo].[LD_UpdateDRG_Updater] @Study_ID int, @DataFile_id int, @DRGOption varchar(20) = 'DRG'
+/*
+
+	ROLLBACK!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+	S55 ATL-685 DRG Update disallowed for submitted data
+
+	As a CAHPS compliant organization, we want to prevent load-to-lives from updating DRGs for records that have already been submitted to CMS.
+
+	ATL-703 Submission deadline table
+	ATL-704 Ignore DRG update for submitted record
+	ATL-705 Modify DRG update email
+	
+	Tim Butler
+
+	CREATE TABLE [dbo].[CMSDataSubmissionSchedule]
+	INSERT INTO [dbo].[CMSDataSubmissionSchedule] -- only records for HCAHPS for now
+	ALTER PROCEDURE [dbo].[LD_UpdateDRG_Updater]
+
+*/
+
+use QP_PROD
+
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES 
+           WHERE TABLE_NAME = 'CMSDataSubmissionSchedule'
+		   and TABLE_SCHEMA = 'dbo')
+BEGIN
+  DROP table dbo.CMSDataSubmissionSchedule
+END
+
+
+GO
+
+USE [QP_Prod]
+GO
+/****** Object:  StoredProcedure [dbo].[LD_UpdateDRG]    Script Date: 8/9/2016 8:09:24 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+  
+ALTER PROCEDURE [dbo].[LD_UpdateDRG] @Study_ID int, @DataFile_id int        
+AS        
+        
+begin        
+ -- Developed by DK 9/2006        
+ -- Created by SJS 10/12/2006        
+ -- Modified by dmp 11/09/2006: un-commented code for deleting records > 42 days old        
+ -- Modified by dmp 12/15/2006: commented out code for deleting recs >42 days old, per new reqs from CS        
+ -- Renamed by ADL 06/20/2007: added the record count log dataset        
+ -- ReOrganized by MWB 10/25/07: This procedure is now the driver for DRG and MSDRG updates.  It will check the QLoader    
+ --        Qualisys DB to make sure the fields exist.  if they do then the appopriate DRG update    
+ --        worker (_Updater) procedure is called, if not it is skipped.    
+ -- Modified by DRH 3/3/2014: added section that calls the new LD_UpdateAPRDRG_Updater proc
+ -- Purpose: Update Study background data in Qualysis and Datamart for a specified Study and Datafile in the QP_Load DB.        
+    
+     
+ --create the #log table that each of the Update SPs will use.    
+ CREATE TABLE #log (RecordType varchar(100), RecordsValue VArchar(50))        
+    
+    
+ if exists (select 'x' from MetaData_view where Study_ID = @Study_ID and strField_nm = 'DRG')    
+  begin    
+   exec LD_UpdateDRG_Updater @Study_ID , @DataFile_id, 'DRG'
+  end     
+ else    
+  insert into #log (RecordType, RecordsValue) values ('DRG Update Failed', 'Your study does not contain a DRG field.')    
+    
+    
+ if exists (select 'x' from MetaData_view where Study_ID = @Study_ID and strField_nm = 'MSDRG')    
+  begin    
+   exec LD_UpdateDRG_Updater @Study_ID , @DataFile_id, 'MSDRG'
+  end     
+ else    
+  insert into #log (RecordType, RecordsValue) values ('MSDRG Update Failed', 'Your study does not contain a MSDRG field.')    
+     
+if exists (select 'x' from MetaData_view where Study_ID = @Study_ID and strField_nm = 'APRDRG')    
+  begin    
+   exec LD_UpdateDRG_Updater @Study_ID , @DataFile_id, 'APRDRG'
+  end     
+ else    
+  insert into #log (RecordType, RecordsValue) values ('APRDRG Update Failed', 'Your study does not contain a APRDRG field.')    
+    
+ SELECT * FROM #LOG    
+ drop table #log    
+    
+end
+
+
+
+
+USE [QP_Prod]
+GO
+
+ALTER PROCEDURE [dbo].[LD_UpdateDRG_Updater] @Study_ID int, @DataFile_id int, @DRGOption varchar(20) = 'DRG'
 AS                      
                       
                       
-- Developed by DK 9/2006                      
+-- Developed by DK 9/2006                      
 -- Created by SJS 10/12/2006                      
 -- Purpose: Update Study background data in Qualysis and Datamart for a specified Study and Datafile in the QP_Load DB.
 
@@ -497,3 +591,4 @@ IF OBJECT_ID('tempdb..#Work') IS NOT NULL DROP TABLE #Work
 IF OBJECT_ID('tempdb..#EncounterDates') IS NOT NULL DROP TABLE #EncounterDates
 
 
+GO
