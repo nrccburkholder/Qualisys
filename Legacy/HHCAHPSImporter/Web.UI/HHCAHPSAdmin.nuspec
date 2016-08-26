@@ -8,6 +8,8 @@
     <description>Website for HHCAHPS import file administration</description>
   </metadata>
   <files>
-    <file src="**" exclude="settings.xml; settings.xml.template; Web.config"/>
+    <file src="**" exclude="settings.xml"/>
+    <file src="**" exclude="settings.xml.template" />
+    <file src="**" exclude="Web.config" />
   </files>
 </package>
