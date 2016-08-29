@@ -61,8 +61,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Referenced Assemblies\NRC.NRCAuthLib.dll</HintPath>
     </Reference>
-    <Reference Include="Nrc.Qualisys.QLoader.Library, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="Nrc.Qualisys.QLoader.Library.SqlProvider, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="Nrc.Qualisys.QLoader.Library, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+		<SpecificVersion>False</SpecificVersion>
+		<HintPath>..\RefererencedAssemblies\Nrc.Qualisys.QLoader.Library.dll</HintPath>
+	</Reference>
+    <Reference Include="Nrc.Qualisys.QLoader.Library.SqlProvider, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+		<SpecificVersion>False</SpecificVersion>
+		<HintPath>..\RefererencedAssemblies\Nrc.Qualisys.QLoader.Library.SqlProvider.dll</HintPath>
+	</Reference>
     <Reference Include="System">
       <Private>True</Private>
     </Reference>
