@@ -716,6 +716,7 @@
     <Content Include="Logs.txt" />
     <Content Include="UserControls\ucHeader.ascx" />
     <Content Include="UserControls\ucSecurity.ascx" />
+    <None Include="DataLoaderWebsite.nuspec" />
     <None Include="Help\Data Loader User Manual.pdf" />
     <None Include="img\Data Loader User Manual.pdf" />
     <None Include="img\DataLoader\DataLoader_off.gif.old" />
