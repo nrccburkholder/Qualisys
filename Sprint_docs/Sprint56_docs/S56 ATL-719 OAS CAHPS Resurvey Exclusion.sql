@@ -1,5 +1,17 @@
--- S56 ATL-719 OAS CAHPS Resurvey Exclusion.sql
--- XiQualSQL02
+/*
+       S56 ATL-719 OAS CAHPS Resurvey
+       
+       Refactor the resurvey exclusion logic for HCAHPS/HHCAHPS and add support for OAS CAHPS
+       
+       Merged HCAHPS and HHCAHPS logic in the stored procedure, then added OAS CAHPS.  
+
+       
+       Lanny Boswell
+       8/25/2016
+       
+       ALTER PROCEDURE [dbo].[QCL_SampleSetResurveyExclusion_StaticPlus]
+*/
+
 USE [QP_Prod]
 GO
 
