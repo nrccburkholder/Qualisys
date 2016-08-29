@@ -5,7 +5,6 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DataLoader Website", "Data 
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "42348"
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C464E10C-07CB-40F3-BE2C-1A5DC3C8CA75}"
@@ -30,18 +29,6 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DataLoader.Library.SQLProvi
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Qualisys.QLoader.Library", "..\QualiSys Class Library Solution\Qualisys.QLoader.Library\Qualisys.QLoader.Library.vbproj", "{9E12046E-7AB1-4BB4-89F8-D2ACAA7CD811}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Qualisys.QLoader.Library.SqlProvider", "..\QualiSys Class Library Solution\Qualisys.QLoader.Library.SqlProvider\Qualisys.QLoader.Library.SqlProvider.vbproj", "{8C82B762-7494-478C-B8D6-E75958616F05}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,14 +47,6 @@ Global
 		{59AE7F31-D5B5-47AB-AA81-9780E2BD7C6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{59AE7F31-D5B5-47AB-AA81-9780E2BD7C6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{59AE7F31-D5B5-47AB-AA81-9780E2BD7C6A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9E12046E-7AB1-4BB4-89F8-D2ACAA7CD811}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9E12046E-7AB1-4BB4-89F8-D2ACAA7CD811}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9E12046E-7AB1-4BB4-89F8-D2ACAA7CD811}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9E12046E-7AB1-4BB4-89F8-D2ACAA7CD811}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8C82B762-7494-478C-B8D6-E75958616F05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8C82B762-7494-478C-B8D6-E75958616F05}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8C82B762-7494-478C-B8D6-E75958616F05}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8C82B762-7494-478C-B8D6-E75958616F05}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
