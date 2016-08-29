@@ -10,10 +10,14 @@
     <RootNamespace>NRC.DataLoader.Library</RootNamespace>
     <AssemblyName>NRC.DataLoader.Library</AssemblyName>
     <MyType>Windows</MyType>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -57,6 +61,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Referenced Assemblies\NRC.NRCAuthLib.dll</HintPath>
     </Reference>
+    <Reference Include="Nrc.Qualisys.QLoader.Library, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="Nrc.Qualisys.QLoader.Library.SqlProvider, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System">
       <Private>True</Private>
     </Reference>
@@ -142,16 +148,6 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\QualiSys Class Library Solution\Qualisys.QLoader.Library.SqlProvider\Qualisys.QLoader.Library.SqlProvider.vbproj">
-      <Project>{8C82B762-7494-478C-B8D6-E75958616F05}</Project>
-      <Name>Qualisys.QLoader.Library.SqlProvider</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\QualiSys Class Library Solution\Qualisys.QLoader.Library\Qualisys.QLoader.Library.vbproj">
-      <Project>{9E12046E-7AB1-4BB4-89F8-D2ACAA7CD811}</Project>
-      <Name>Qualisys.QLoader.Library</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
