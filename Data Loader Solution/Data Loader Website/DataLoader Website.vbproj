@@ -92,22 +92,28 @@
       <HintPath>..\RefererencedAssemblies\AjaxControlToolkit.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
-      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RefererencedAssemblies\DevExpress.Data.v7.3.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Web.ASPxDataControls.v6.3, Version=6.3.2.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4, processorArchitecture=MSIL">
-      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RefererencedAssemblies\DevExpress.Web.ASPxDataControls.v6.3.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Web.ASPxEditors.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
-      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RefererencedAssemblies\DevExpress.Web.ASPxEditors.v7.3.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Web.ASPxGrid.v6.3, Version=6.3.2.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4, processorArchitecture=MSIL">
-      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RefererencedAssemblies\DevExpress.Web.ASPxGrid.v6.3.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Web.ASPxGridView.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
-      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RefererencedAssemblies\DevExpress.Web.ASPxGridView.v7.3.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Web.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1">
-      <Private>True</Private>
+    <Reference Include="DevExpress.Web.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RefererencedAssemblies\DevExpress.Web.v7.3.dll</HintPath>
     </Reference>
     <Reference Include="NRC, Version=1.14.1.0, Culture=neutral, PublicKeyToken=0c9e538f562d9317">
       <SpecificVersion>False</SpecificVersion>
@@ -125,9 +131,18 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\RefererencedAssemblies\Nrc.Framework.Notification.dll</HintPath>
     </Reference>
-    <Reference Include="NRC.NRCAuthLib, Version=1.1.1.0, Culture=neutral" />
-    <Reference Include="Nrc.Qualisys.QLoader.Library, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="Nrc.Qualisys.QLoader.Library.SqlProvider, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="NRC.NRCAuthLib, Version=1.1.1.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RefererencedAssemblies\NRC.NRCAuthLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Qualisys.QLoader.Library, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RefererencedAssemblies\Nrc.Qualisys.QLoader.Library.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Qualisys.QLoader.Library.SqlProvider, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RefererencedAssemblies\Nrc.Qualisys.QLoader.Library.SqlProvider.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Private>True</Private>
     </Reference>
