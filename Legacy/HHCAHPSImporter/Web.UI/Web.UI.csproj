@@ -173,6 +173,9 @@
     <Content Include="Scripts\jquery.textarea.js" />
     <Content Include="Scripts\lang-vb.js" />
     <Content Include="Scripts\prettify.js" />
+    <Content Include="Settings.PROD.xml" />
+    <Content Include="Settings.STAGE.xml" />
+    <Content Include="Settings.TEST.xml" />
     <Content Include="Settings.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

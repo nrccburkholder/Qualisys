@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<settings>
+  <QP_DataLoadConnectionString>Server=RATCHET;Database=QP_DataLoad;user id=qpsa;password=qpsa</QP_DataLoadConnectionString>
+  
+  <UploadFailureDirectory>\\tiqualfil02\nrc4\Pervasive\OCS\UploadFailure</UploadFailureDirectory>
+  <AbandonedUploadsDirectory>\\tiqualfil02\nrc4\Pervasive\OCS\AbandonedUploads</AbandonedUploadsDirectory>
+
+  <ClientsDirectory>\\tiqualfil02\NRC4\Pervasive\Prod</ClientsDirectory>  
+
+</settings>

@@ -10,10 +10,14 @@
     <OutputType>Library</OutputType>
     <RootNamespace>NRC.DataLoader</RootNamespace>
     <AssemblyName>NRC.DataLoader</AssemblyName>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -77,53 +81,67 @@
   <ItemGroup>
     <Reference Include="ABCUpload6, Version=6.0.0.0, Culture=neutral, PublicKeyToken=572826f585f78c3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\ABCUpload6.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\RefererencedAssemblies\ABCUpload6.dll</HintPath>
     </Reference>
     <Reference Include="ActiveUp.Net.Mail, Version=3.0.3056.269, Culture=neutral, PublicKeyToken=851b9e39ef2572fb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\ActiveUp.Net.Mail.dll</HintPath>
+      <HintPath>..\RefererencedAssemblies\ActiveUp.Net.Mail.dll</HintPath>
     </Reference>
     <Reference Include="AjaxControlToolkit, Version=1.0.10301.0, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\AjaxControlToolkit.dll</HintPath>
+      <HintPath>..\RefererencedAssemblies\AjaxControlToolkit.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
-      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RefererencedAssemblies\DevExpress.Data.v7.3.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Web.ASPxDataControls.v6.3, Version=6.3.2.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4, processorArchitecture=MSIL">
-      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RefererencedAssemblies\DevExpress.Web.ASPxDataControls.v6.3.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Web.ASPxEditors.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
-      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RefererencedAssemblies\DevExpress.Web.ASPxEditors.v7.3.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Web.ASPxGrid.v6.3, Version=6.3.2.0, Culture=neutral, PublicKeyToken=79868b8147b5eae4, processorArchitecture=MSIL">
-      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RefererencedAssemblies\DevExpress.Web.ASPxGrid.v6.3.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Web.ASPxGridView.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
-      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RefererencedAssemblies\DevExpress.Web.ASPxGridView.v7.3.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Web.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1">
-      <Private>True</Private>
+    <Reference Include="DevExpress.Web.v7.3, Version=7.3.10.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RefererencedAssemblies\DevExpress.Web.v7.3.dll</HintPath>
     </Reference>
     <Reference Include="NRC, Version=1.14.1.0, Culture=neutral, PublicKeyToken=0c9e538f562d9317">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\NRC.dll</HintPath>
+      <HintPath>..\RefererencedAssemblies\NRC.dll</HintPath>
     </Reference>
-    <Reference Include="Nrc.Framework, Version=1.10.0.0, Culture=neutral, PublicKeyToken=7f65ae6d961bde9c, processorArchitecture=MSIL">
+    <Reference Include="Nrc.Framework, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.dll</HintPath>
+      <HintPath>..\RefererencedAssemblies\Nrc.Framework.dll</HintPath>
     </Reference>
-    <Reference Include="Nrc.Framework.BusinessLogic, Version=1.0.5.0, Culture=neutral, PublicKeyToken=7f65ae6d961bde9c, processorArchitecture=MSIL">
+    <Reference Include="Nrc.Framework.BusinessLogic, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.BusinessLogic.dll</HintPath>
+      <HintPath>..\RefererencedAssemblies\Nrc.Framework.BusinessLogic.dll</HintPath>
     </Reference>
     <Reference Include="Nrc.Framework.Notification, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.Notification.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RefererencedAssemblies\Nrc.Framework.Notification.dll</HintPath>
     </Reference>
     <Reference Include="NRC.NRCAuthLib, Version=1.1.1.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\NRC.NRCAuthLib.dll</HintPath>
+      <HintPath>..\RefererencedAssemblies\NRC.NRCAuthLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Qualisys.QLoader.Library, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RefererencedAssemblies\Nrc.Qualisys.QLoader.Library.dll</HintPath>
+    </Reference>
+    <Reference Include="Nrc.Qualisys.QLoader.Library.SqlProvider, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RefererencedAssemblies\Nrc.Qualisys.QLoader.Library.SqlProvider.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Private>True</Private>
@@ -137,7 +155,7 @@
     <Reference Include="System.Web">
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+        <Reference Include="System.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Windows.Forms">
@@ -330,7 +348,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="My Project\licenses.licx" />
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
@@ -712,6 +729,7 @@
     <Content Include="Logs.txt" />
     <Content Include="UserControls\ucHeader.ascx" />
     <Content Include="UserControls\ucSecurity.ascx" />
+    <None Include="DataLoaderWebsite.nuspec" />
     <None Include="Help\Data Loader User Manual.pdf" />
     <None Include="img\Data Loader User Manual.pdf" />
     <None Include="img\DataLoader\DataLoader_off.gif.old" />
@@ -729,14 +747,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\QualiSys Class Library Solution\Qualisys.QLoader.Library.SqlProvider\Qualisys.QLoader.Library.SqlProvider.vbproj">
-      <Project>{8C82B762-7494-478C-B8D6-E75958616F05}</Project>
-      <Name>Qualisys.QLoader.Library.SqlProvider</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\QualiSys Class Library Solution\Qualisys.QLoader.Library\Qualisys.QLoader.Library.vbproj">
-      <Project>{9E12046E-7AB1-4BB4-89F8-D2ACAA7CD811}</Project>
-      <Name>Qualisys.QLoader.Library</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DataLoader.Library.SQLProvider\DataLoader.Library.SQLProvider.vbproj">
       <Project>{59AE7F31-D5B5-47AB-AA81-9780E2BD7C6A}</Project>
       <Name>DataLoader.Library.SQLProvider</Name>

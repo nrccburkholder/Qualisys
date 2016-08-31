@@ -129,10 +129,9 @@ Public Class UploadFileEmailClass
         End If
 
         EMessage.From = New NRC.Framework.Notification.Address(Config.ClientSupportEmailAddress)
-        Try
-            newmess = EMessage.Send()
-        Catch exc As Exception
-        End Try
+
+        newmess = EMessage.Send()
+
         EMessage = Nothing
         infos = Nothing
         dt.Clear()
@@ -176,10 +175,8 @@ Public Class UploadFileEmailClass
             EMessage.ReplacementValues.Add("Environment", enviro)
             EMessage.From = New NRC.Framework.Notification.Address(Config.MySolutionsEmailAddress)
             EMessage.To.Add(New NRC.Framework.Notification.Address(Config.LoadingTeamTestEmailAddress))
-            Try
-                newmess = EMessage.Send()
-            Catch exc1 As Exception
-            End Try
+
+            newmess = EMessage.Send()
 
             If newmess = False Then
                 Exit For
@@ -243,10 +240,9 @@ Public Class UploadFileEmailClass
         EMessage.From = New NRC.Framework.Notification.Address(Config.ClientSupportEmailAddress)
         EMessage.To.Add(New NRC.Framework.Notification.Address(MemberEmail.EmailAddress))
         'EMessage.Bcc.Add(New NRC.Framework.Notification.Address(Config.LoadingTeamTestEmailAddress))
-        Try
-            newmess = EMessage.Send()
-        Catch exc As Exception
-        End Try
+
+        newmess = EMessage.Send()
+
         newlist = Nothing
         EMessage = Nothing
         dt.Rows(0).Delete()

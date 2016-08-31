@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<settings>
+  <QP_DataLoadConnectionString>Server=IRISH;Database=QP_DataLoad;user id=qpsa;password=qpsa</QP_DataLoadConnectionString>
+  
+  <UploadFailureDirectory>\\huskers\nrc4\Pervasive\OCS\UploadFailure</UploadFailureDirectory>
+  <AbandonedUploadsDirectory>\\huskers\nrc4\Pervasive\OCS\AbandonedUploads</AbandonedUploadsDirectory>
+
+  <ClientsDirectory>\\huskers\NRC4\Pervasive\Prod</ClientsDirectory>  
+
+</settings>
