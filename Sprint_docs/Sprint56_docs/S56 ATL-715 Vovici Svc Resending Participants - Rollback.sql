@@ -15,3 +15,4 @@ Chris Burkholder
 
 delete from qualpro_params where strparam_nm = 'QSIVerintExceptionsToIgnoreAndMarkSent'
 
+GO

@@ -10,4 +10,6 @@ Sprint 56 SQLCMD Script for Prime/Gator/NRC10
 
 :r "\ATLASRelease55&56\Sprint56_docs\S56 ATL-715 Vovici Svc Resending Participants.sql"
 
-:r "\ATLASRelease55&56\Sprint56_docs\S56 ATL-719 OAS CAHPS Resurvey Exclusion.sql"
+--OC Release on 9/1/2016 :r "\ATLASRelease55&56\Sprint56_docs\S56 ATL-719 OAS CAHPS Resurvey Exclusion.sql"
+
+:r "\ATLASRelease55&56\Sprint56_docs\S56_ATL-742 datExpireUsage in ETL - NRC10.sql"
