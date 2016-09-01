@@ -86,6 +86,7 @@ if exists (select 'x' from MetaData_view where Study_ID = @Study_ID and strField
     
 end
 
+GO
 
 
 

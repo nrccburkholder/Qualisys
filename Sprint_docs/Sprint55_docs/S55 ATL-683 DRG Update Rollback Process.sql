@@ -16,9 +16,6 @@
 use QP_PROD
 
 go
-
-
-go
 if not exists (	SELECT 1 
 				FROM   sys.tables st 
 					   INNER JOIN sys.columns sc ON st.object_id = sc.object_id 
@@ -30,30 +27,17 @@ go
 
 
 
-go
 
-
-go
 if not exists (	SELECT 1 
 				FROM   sys.tables st 
 					   INNER JOIN sys.columns sc ON st.object_id = sc.object_id 
 				WHERE  st.schema_id = 1 
 					   AND st.NAME = 'HCAHPSUpdateLog' 
 					   AND sc.NAME = 'bitRollback' )
-begin
 	ALTER TABLE [dbo].[HCAHPSUpdateLog] add bitRollback bit CONSTRAINT [DF_BITROLLBACK]  DEFAULT ((0)) 
 
-	UPDATE h
-		SET h.bitRollback = 0
-	FROM [dbo].[HCAHPSUpdateLog] h
-
-end
-
 go
 
-
-
-go
 
 
 ALTER PROCEDURE [dbo].[LD_UpdateDRG_Updater] @Study_ID int, @DataFile_id int, @DRGOption varchar(20) = 'DRG'
@@ -769,6 +753,10 @@ if exists (select * from sys.procedures where name = 'LD_UpdateDRG_Rollback')
 	drop procedure LD_UpdateDRG_Rollback
 GO
 
+if exists (select * from sys.procedures where name = 'LD_UpdateDRG_Rollback')
+	drop procedure LD_UpdateDRG_Rollback
+
+GO
 
 CREATE PROCEDURE [dbo].[LD_UpdateDRG_Rollback] @Study_ID int, @DataFile_id int        
 AS        
