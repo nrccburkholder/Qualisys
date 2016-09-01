@@ -486,7 +486,7 @@ EXEC (@Sql)
                
 set @myRowCount = @@ROWCOUNT    
                
-insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT #HCAHPSUpdateLog ' + @DRGOption + ' Records Updated: ' + + LTRIM(STR(@myRowCount))     
+insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT #HCAHPSUpdateLog ' + @DRGOption + ' Records Updated: ' + LTRIM(STR(@myRowCount))     
      
 PRINT 'Log HServiceType data changes'                          
 --Log HServiceType data changes                      
@@ -498,7 +498,7 @@ EXEC (@Sql)
     
 set @myRowCount = @@ROWCOUNT    
                       
-insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT #HCAHPSUpdateLog HServiceType Records Updated: ' + + LTRIM(STR(@myRowCount))                       
+insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT #HCAHPSUpdateLog HServiceType Records Updated: ' + LTRIM(STR(@myRowCount))                       
                       
 PRINT 'Log HVisitType data changes'                 
 --Log HVisitType data changes                      
@@ -510,7 +510,7 @@ EXEC (@Sql)
     
 set @myRowCount = @@ROWCOUNT    
                       
-insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT #HCAHPSUpdateLog HVisitType Records Updated: ' + + LTRIM(STR(@myRowCount))                       
+insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT #HCAHPSUpdateLog HVisitType Records Updated: ' + LTRIM(STR(@myRowCount))                       
                       
 PRINT 'Log HAdmissionSource data changes'                    
 --Log HAdmissionSource data changes                      
@@ -522,7 +522,7 @@ EXEC (@Sql)
     
 set @myRowCount = @@ROWCOUNT    
                       
-insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT #HCAHPSUpdateLog HAdmissionSource Records Updated: ' + + LTRIM(STR(@myRowCount))                       
+insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT #HCAHPSUpdateLog HAdmissionSource Records Updated: ' + LTRIM(STR(@myRowCount))                       
                       
    
 PRINT 'Log HDischargeStatus data changes'                   
@@ -535,7 +535,7 @@ EXEC (@Sql)
     
 set @myRowCount = @@ROWCOUNT    
                       
-insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT #HCAHPSUpdateLog HDischargeStatus Records Updated: ' + + LTRIM(STR(@myRowCount))                       
+insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT #HCAHPSUpdateLog HDischargeStatus Records Updated: ' + LTRIM(STR(@myRowCount))                       
                       
 PRINT 'Log HAdmitAge data changes'                      
 --Log HAdmitAge data changes                      
@@ -547,7 +547,7 @@ EXEC (@Sql)
     
 set @myRowCount = @@ROWCOUNT    
                       
-insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT #HCAHPSUpdateLog HAdmitAge Records Updated: ' + + LTRIM(STR(@myRowCount))                       
+insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT #HCAHPSUpdateLog HAdmitAge Records Updated: ' + LTRIM(STR(@myRowCount))                       
                       
    
 PRINT 'Log HCatAge data changes'                   
@@ -560,7 +560,7 @@ EXEC (@Sql)
     
 set @myRowCount = @@ROWCOUNT    
                       
-insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT #HCAHPSUpdateLog HCatAge Records Updated: ' + + LTRIM(STR(@myRowCount))                       
+insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT #HCAHPSUpdateLog HCatAge Records Updated: ' + LTRIM(STR(@myRowCount))                       
                       
    
 PRINT 'Insert the actual records into HCAHPSUpdateLog'
@@ -571,7 +571,7 @@ INSERT INTO HCAHPSUpdateLog
    
 set @myRowCount = @@ROWCOUNT    
                       
-insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT HCAHPSUpdateLog - Total Records: ' + + LTRIM(STR(@myRowCount)) 
+insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT HCAHPSUpdateLog - Total Records: ' + LTRIM(STR(@myRowCount)) 
                       
 --Log Dispositions if there is any    
 
@@ -595,7 +595,7 @@ INSERT DispositionLog (SentMail_id, SamplePop_id, Disposition_id, ReceiptType_id
       
 set @dispositionRowCount = @@ROWCOUNT    
                       
-insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT DispositionLog Records Updated(1): ' + + LTRIM(STR(@dispositionRowCount))   
+insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT DispositionLog Records Updated(1): ' + LTRIM(STR(@dispositionRowCount))   
 
 --S52 ATL-192 
 -- Need to run an update against the newly inserted records,               
@@ -626,7 +626,7 @@ SELECT DISTINCT sps.SentMail_ID, sps.SamplePop_ID, 8, 0, @LTime, 'DBA'
     
 set @myRowCount = @@ROWCOUNT    
                       
-insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT DispositionLog Records Updated(2): ' + + LTRIM(STR(@myRowCount))                       
+insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT DispositionLog Records Updated(2): ' + LTRIM(STR(@myRowCount))                       
           
                       
 -- Need to run an update against the newly inserted records,               
@@ -648,7 +648,7 @@ set @myRowCount = @@ROWCOUNT + @dispositionRowCount
 INSERT INTO #Log (RecordType, RecordsValue)                      
     Select @DRGOption + ': Disposition Records Inserted:',LTRIM(STR(@myRowCount))         
     
-insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  @DRGOption + ': Disposition Records Inserted: ' + + LTRIM(STR(@myRowCount))                       
+insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  @DRGOption + ': Disposition Records Inserted: ' + LTRIM(STR(@myRowCount))                       
         
                      
  --SELECT LTRIM(STR(@@ROWCOUNT))+' disposition records inserted.'                      
@@ -668,7 +668,7 @@ set @myRowCount = @@ROWCOUNT
 INSERT INTO #Log (RecordType, RecordsValue)                      
    Select @DRGOption + ': Encounter Records Updated: ',LTRIM(STR(@myRowCount))       
        
-   insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  @DRGOption + ': Encounter Records Updated: ' + + LTRIM(STR(@myRowCount))                       
+   insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  @DRGOption + ': Encounter Records Updated: ' + LTRIM(STR(@myRowCount))                       
                    
  --SELECT LTRIM(STR(@@ROWCOUNT))+' disposition records inserted.'                      
                       
@@ -711,7 +711,7 @@ set @myRowCount = @@ROWCOUNT
  INSERT INTO #Log (RecordType, RecordsValue)                      
        Select @DRGOption + ': Records in '+@BTableName + ': ',  LTRIM(STR(@myRowCount))                    
     
-insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  @DRGOption + ': Records in '+@BTableName + ': ' + + LTRIM(STR(@myRowCount))                       
+insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  @DRGOption + ': Records in '+@BTableName + ': ' + LTRIM(STR(@myRowCount))                       
                       
 --SELECT LTRIM(STR(@@ROWCOUNT))+' records in '+@BTableName + ' have been updated.'                      
                       
