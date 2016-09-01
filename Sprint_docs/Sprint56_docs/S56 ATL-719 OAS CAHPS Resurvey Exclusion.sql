@@ -183,12 +183,18 @@ AS
 
 		DECLARE @HCAHPS INT = 2
 		DECLARE @HHCAHPS INT = 3
+		DECLARE @CIHI INT = 12
 		DECLARE @OASCAHPS INT = 16
 
-		IF @surveyType_ID IN (@HCAHPS, @HHCAHPS, @OASCAHPS)
+		--9/1/2016 Added CIHI to be 12 here as a quick fix		--TODO REFACTOR TO USE Survey_Def.IntResurvey_Period
+
+		IF @surveyType_ID IN (@HCAHPS, @HHCAHPS, @OASCAHPS, @CIHI)
 		BEGIN
 			DECLARE @LookbackMonths INT
-			SET @LookbackMonths = CASE WHEN @surveyType_ID = @HCAHPS THEN 1 ELSE 6 END
+			SET @LookbackMonths = CASE WHEN @surveyType_ID = @HCAHPS THEN 1 
+									WHEN @SurveyType_id = @CIHI THEN 12 
+									ELSE 6 
+								  END
 
 			--Get the distinct months of the reportdate for each pop_id
 			INSERT INTO #ReSurvey (pop_ID, CCN, ReSurveyDate)
