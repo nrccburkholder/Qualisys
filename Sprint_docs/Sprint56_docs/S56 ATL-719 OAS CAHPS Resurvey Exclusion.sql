@@ -206,7 +206,7 @@ AS
 				--Get all the reportdates for all the eligible records for sample
 				SELECT t.Pop_id,
 					sampleEncounterDate,
-					CASE WHEN @surveyType_ID in (@HCAHPS, @OASCAHPS) THEN suf.MedicareNumber ELSE 0 END AS CCN
+					CASE WHEN @surveyType_ID in (@HCAHPS, @OASCAHPS) THEN suf.MedicareNumber ELSE '0' END AS CCN
 				FROM dbo.SelectedSample ss
 					INNER JOIN dbo.SampleUnit su ON ss.sampleunit_id = su.sampleunit_Id
 					INNER JOIN #SampleUnit_Universe t ON t.Pop_id = ss.Pop_id
