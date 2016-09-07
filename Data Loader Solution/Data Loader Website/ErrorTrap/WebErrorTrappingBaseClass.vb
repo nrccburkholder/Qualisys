@@ -87,7 +87,7 @@ Public Class WebErrorTrappingBaseClass
                 redirectpage = RedirectToCustomPage
                 mHandled = True
             Else
-                redirectpage = "ErrorTrap/StaticError.aspx";
+                redirectpage = "ErrorTrap/StaticError.aspx"
                 mHandled = False
             End If
 
