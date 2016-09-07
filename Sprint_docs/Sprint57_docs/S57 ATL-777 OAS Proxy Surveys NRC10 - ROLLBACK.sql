@@ -36,8 +36,27 @@ select @proxyId = disposition_id from disposition where strdispositionlabel = 'P
 
 
 if exists(select 1 from SurveyTypeDispositions where SurveyType_ID = @surveytype_id and Disposition_ID = @proxyId)
-	delete from dbo.SurveyTypeDispositions
-	where Disposition_ID = @proxyId
-	and SurveyType_ID = @surveytype_id
+begin
+
+	begin tran
+
+		update t
+		set hierarchy = hierarchy - 1
+		from SurveyTypeDispositions t
+		where t.SurveyType_ID = @SurveyType_ID
+		and Hierarchy >= 7
+
+		delete from dbo.SurveyTypeDispositions
+		where Disposition_ID = @proxyId
+		and SurveyType_ID = @surveytype_id
+
+	commit tran
+
+end
+
+select *
+from SurveyTypeDispositions
+where SurveyType_ID = @surveytype_id
+order by Hierarchy
 
 GO

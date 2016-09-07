@@ -34,7 +34,25 @@ select @proxyId = disposition_id from disposition where strdispositionlabel = 'P
 
 
 if not exists(select 1 from SurveyTypeDispositions where SurveyType_ID = @surveytype_id and Disposition_ID = @proxyId)
-insert into SurveyTypeDispositions (Value, [Desc], Hierarchy, Disposition_ID, ExportReportResponses, SurveyType_ID)
-values ('320','Survey completed by Proxy',0,@proxyId,1,@surveytype_id)
+begin
+	begin tran 
+
+		update t
+		set hierarchy = hierarchy + 1
+		from SurveyTypeDispositions t
+		where t.SurveyType_ID = @SurveyType_ID
+		and Hierarchy >= 6
+	
+
+		insert into SurveyTypeDispositions (Value, [Desc], Hierarchy, Disposition_ID, ExportReportResponses, SurveyType_ID)
+		values ('320','Survey completed by Proxy',6,@proxyId,1,@surveytype_id)
+
+	commit tran
+end
+
+select *
+from SurveyTypeDispositions
+where SurveyType_ID = @surveytype_id
+order by Hierarchy
 
 GO
