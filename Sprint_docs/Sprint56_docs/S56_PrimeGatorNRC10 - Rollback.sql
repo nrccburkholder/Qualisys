@@ -12,4 +12,4 @@ Sprint 56 SQLCMD Script for Prime/Gator/NRC10
 
 --OC Release on 9/1/2016 :r "\ATLASRelease55&56\Sprint56_docs\S56 ATL-719 OAS CAHPS Resurvey Exclusion ROLLBACK.sql"
 
-:r "\ATLASRelease55&56\Sprint56_docs\S56_ATL-742 datExpireUsage in ETL - NRC10 - ROLLBACK.sql"
+--:r "\ATLASRelease55&56\Sprint56_docs\S56_ATL-742 datExpireUsage in ETL - NRC10 - ROLLBACK.sql"

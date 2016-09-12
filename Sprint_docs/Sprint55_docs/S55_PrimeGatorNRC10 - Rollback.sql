@@ -12,4 +12,4 @@ Sprint 55 SQLCMD Rollback Script for Prime/Gator/NRC10
 
 :r "\ATLASRelease55&56\Sprint55_docs\S55 ATL-683 DRG Update Rollback Process ROLLBACK.sql"
 
-:r "\ATLASRelease55&56\Sprint55_docs\S55 ATL-685 DRG update disallowed for submitted data  ROLLBACK.sql"
+--:r "\ATLASRelease55&56\Sprint55_docs\S55 ATL-685 DRG update disallowed for submitted data  ROLLBACK.sql"
