@@ -628,9 +628,16 @@ Friend Class CmsExporter
             End If
         End If
      
+        Dim lagTime As String = reader("lag-time").ToString
+        Dim lagTimeInt As Integer
+        If Integer.TryParse(lagTime, lagTimeInt) Then
+            If (surveyStatusTrim = "1" OrElse surveyStatusTrim = "6") AndAlso lagTimeInt > 84 Then '9-15-2016 C Burkholder    ATL-825    Add Lag Time TPS to HCAHPS Export
+                mTPSReport.AddValue("survey-status equals 1 or 6 and Lag Time > 84")
+            End If
+        End If
 
         writer.WriteElementString("language", language)
-        writer.WriteElementString("lag-time", reader("lag-time").ToString)
+        writer.WriteElementString("lag-time", lagTime)
 
         If dischargeDate >= Date.Parse("7/1/2013") Then
             If reader("supplemental-question-count").ToString = String.Empty Then
