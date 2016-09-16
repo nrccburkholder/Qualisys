@@ -224,8 +224,7 @@ AS
 			INNER JOIN SampleUnit su 
 				ON u.sampleunit_id = su.sampleunit_id 
 				AND su.CAHPSType_id = @surveyType_ID
-			INNER JOIN SUFacility suf 
-				ON su.SUFacility_ID = suf.SUFacility_ID
+			--INNER JOIN SUFacility suf ON su.SUFacility_ID = suf.SUFacility_ID
 			INNER JOIN #ReSurvey MM 
 				ON U.Pop_id = MM.Pop_id 
 				AND DATEDIFF(MONTH, U.ReSurveyDate, MM.ReSurveyDate) < @LookbackMonths
@@ -252,7 +251,7 @@ AS
 			INNER JOIN SampleUnit su
 				ON u.sampleunit_id=su.sampleunit_id
 				AND su.CAHPSType_id = @surveyType_ID
-			INNER JOIN SUFacility suf on su.SUFacility_ID = suf.SUFacility_ID
+			--INNER JOIN SUFacility suf on su.SUFacility_ID = suf.SUFacility_ID
 			INNER JOIN #ReSurvey MM
 				ON U.Pop_id = MM.Pop_id
 				AND DATEDIFF(MONTH, U.ReSurveyDate, MM.ReSurveyDate) < @LookbackMonths
