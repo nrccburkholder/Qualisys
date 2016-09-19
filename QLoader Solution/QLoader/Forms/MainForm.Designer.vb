@@ -20,26 +20,26 @@ Partial Class MainForm
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
-        Me.MenuStrip1 = New System.Windows.Forms.MenuStrip
-        Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.FunctionLibraryToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStrip1 = New System.Windows.Forms.ToolStrip
-        Me.StatusStrip1 = New System.Windows.Forms.StatusStrip
-        Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel
-        Me.ServiceStatusLabel = New System.Windows.Forms.ToolStripStatusLabel
-        Me.EnvironmentLabel = New System.Windows.Forms.ToolStripStatusLabel
-        Me.UserNameLabel = New System.Windows.Forms.ToolStripStatusLabel
-        Me.VersionLabel = New System.Windows.Forms.ToolStripStatusLabel
-        Me.MainPanel = New System.Windows.Forms.SplitContainer
-        Me.MultiPane = New Nrc.Framework.WinForms.MultiPane
-        Me.PackageSetupTab = New Nrc.Framework.WinForms.MultiPaneTab
-        Me.LoadingQueueTab = New Nrc.Framework.WinForms.MultiPaneTab
-        Me.LoadReviewTab = New Nrc.Framework.WinForms.MultiPaneTab
-        Me.RollbacksTab = New Nrc.Framework.WinForms.MultiPaneTab
-        Me.ReportsTab = New Nrc.Framework.WinForms.MultiPaneTab
-        Me.svcController = New System.ServiceProcess.ServiceController
+        Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
+        Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.FunctionLibraryToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
+        Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
+        Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.ServiceStatusLabel = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.EnvironmentLabel = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.UserNameLabel = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.VersionLabel = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.MainPanel = New System.Windows.Forms.SplitContainer()
+        Me.MultiPane = New Nrc.Framework.WinForms.MultiPane()
+        Me.PackageSetupTab = New Nrc.Framework.WinForms.MultiPaneTab()
+        Me.LoadingQueueTab = New Nrc.Framework.WinForms.MultiPaneTab()
+        Me.LoadReviewTab = New Nrc.Framework.WinForms.MultiPaneTab()
+        Me.RollbacksTab = New Nrc.Framework.WinForms.MultiPaneTab()
+        Me.ReportsTab = New Nrc.Framework.WinForms.MultiPaneTab()
+        Me.svcController = New System.ServiceProcess.ServiceController()
         Me.MenuStrip1.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
         Me.MainPanel.Panel1.SuspendLayout()

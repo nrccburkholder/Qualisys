@@ -149,6 +149,7 @@
     <Compile Include="DataProviders\ContractedLanguageProvider.vb" />
     <Compile Include="DataProviders\CoverLetterMappingProvider.vb" />
     <Compile Include="DataProviders\DispositionProvider.vb" />
+    <Compile Include="DataProviders\DRGUpdateProvider.vb" />
     <Compile Include="DataProviders\HCAHPSDispositionProvider.vb" />
     <Compile Include="DataProviders\HHCAHPSDispositionProvider.vb" />
     <Compile Include="DataProviders\MedicarePropCalcTypeProvider.vb" />
@@ -172,6 +173,7 @@
     <Compile Include="DataProviders\USPS_ACS_Provider.vb" />
     <Compile Include="DataProviders\VendorFile_VoviciDetailProvider.vb" />
     <Compile Include="Disposition.vb" />
+    <Compile Include="DRGUpdate.vb" />
     <Compile Include="EncounterUnitEligibility.vb" />
     <Compile Include="Enums\ApprovalModes.vb" />
     <Compile Include="Enums\AuditLogChangeType.vb" />

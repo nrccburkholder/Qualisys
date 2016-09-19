@@ -21,6 +21,7 @@ Public Class RollbacksSection
     Public Overrides Sub ActivateSection()
 
         If mPackageNavigator IsNot Nothing Then
+            AddHandler Application.Idle, AddressOf IdleEvent
             AddHandler mPackageNavigator.SelectedNodeChanged, AddressOf mPackageNavigator_SelectedNodeChanged
             mPackageNavigator.AllowMultiSelect = False
             mPackageNavigator.RefreshTree(ClientTreeTypes.AllStudiesNoPackages)
@@ -47,6 +48,7 @@ Public Class RollbacksSection
 
             mStudyId = e.SelectedNode.StudyID
             PopulateDatasetGrid()
+            PopulateRollbackGrid()
 
         Finally
             ParentForm.Cursor = Cursors.Default
@@ -157,7 +159,6 @@ Public Class RollbacksSection
 
     End Sub
 
-
     Private Function GetUnsampledDataSets(ByVal studyId As Integer) As Collection(Of StudyDataset)
 
         Dim list As Collection(Of StudyDataset) = StudyDataset.GetByStudyId(studyId, Date.Today.AddYears(-1), Date.Today)
@@ -220,6 +221,144 @@ Public Class RollbacksSection
 
         Finally
             ParentForm.Cursor = DefaultCursor
+
+        End Try
+
+    End Sub
+
+    Private Sub PopulateRollbackGrid()
+
+        'Clear existing datasets
+        RollbackGridView.Rows.Clear()
+
+        If Not mStudyId > 0 Then
+            Exit Sub
+        End If
+
+        Dim drgUpdateCollection As Collection(Of DRGUpdate) = DRGUpdate.SelectDRGUpdates(mStudyId)
+
+        bsDRGUpdate.DataSource = drgUpdateCollection
+
+        RollbackGridView.AutoGenerateColumns = True
+
+        With RollbackGridView
+            .Columns(0).HeaderText = "DataFile ID"
+            .Columns(1).HeaderText = "Study ID"
+            .Columns(2).HeaderText = "Original File Name"
+            .Columns(3).HeaderText = "Min Encounter Date"
+            .Columns(4).HeaderText = "Max Encounter Date"
+            .Columns(5).HeaderText = "User"
+            .Columns(6).HeaderText = "Member ID"
+            .Columns(7).HeaderText = "Rolled Back"
+            .Columns(8).HeaderText = "Status"
+            .ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+            .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells
+
+            .Columns(6).Visible = False
+            .Columns(7).Visible = False
+        End With
+
+    End Sub
+
+    Private Sub RollbackGridView_CellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs) Handles RollbackGridView.CellFormatting
+
+        Dim gridView As DataGridView = DirectCast(sender, DataGridView)
+
+        If e.ColumnIndex = gridView.Columns("Status").Index Then
+            If e.Value.ToString = "DRGRolledBack" Then
+                gridView.Rows(e.RowIndex).DefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(242, 243, 244)
+                gridView.Rows(e.RowIndex).DefaultCellStyle.ForeColor = Color.DarkGray
+            Else
+                gridView.Rows(e.RowIndex).DefaultCellStyle.BackColor = Nothing
+                gridView.Rows(e.RowIndex).DefaultCellStyle.ForeColor = Color.Black
+            End If
+        End If
+
+    End Sub
+
+    Private Sub RollbackGridView_SelectionChanged(sender As Object, e As EventArgs) Handles RollbackGridView.SelectionChanged
+
+        Dim gridView As DataGridView = DirectCast(sender, DataGridView)
+
+        If gridView.CurrentRow IsNot Nothing Then
+
+            Dim isRolledBack As Boolean = CBool(gridView.CurrentRow.Cells("IsRollback").Value)
+
+            If isRolledBack Then
+                gridView.CurrentRow.Selected = False
+            End If
+        End If
+
+    End Sub
+
+    Private Sub RollbackGridView_DataBindingComplete(sender As Object, e As DataGridViewBindingCompleteEventArgs) Handles RollbackGridView.DataBindingComplete
+        Dim gridView As DataGridView
+        gridView = CType(sender, DataGridView)
+        gridView.ClearSelection()
+    End Sub
+
+    Private Sub RefreshDRGButton_Click(sender As Object, e As EventArgs) Handles RefreshDRGButton.Click
+        PopulateRollbackGrid()
+        lbDRGResults.Items.Clear()
+    End Sub
+
+    Private Sub RollbackButton_Click(sender As Object, e As EventArgs) Handles RollbackButton.Click
+
+        DoDRGRollback()
+
+    End Sub
+
+    Public Sub IdleEvent(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
+        RollbackButton.Enabled = RollbackGridView.SelectedRows.Count > 0
+
+    End Sub
+
+    Private Sub DoDRGRollback()
+
+        Try
+            'Show wait
+            Cursor = Cursors.WaitCursor
+
+            lbDRGResults.Items.Clear()
+
+            If RollbackGridView.SelectedRows.Count > 0 Then
+
+                Dim logString As List(Of String) = New List(Of String)
+                For Each dgrow As DataGridViewRow In RollbackGridView.SelectedRows
+
+                    Dim drg As DRGUpdate = DirectCast(dgrow.DataBoundItem, DRGUpdate)
+
+                    Dim dt As DataTable = DRGUpdate.RollbackDRGUpdates(drg)  ' the resulting datatable contain the log information
+
+                    If dt IsNot Nothing Then
+                        For Each dr As DataRow In dt.Rows
+                            logString.Add(String.Format("{0}: {1}", dr(0).ToString, dr(1).ToString))
+                        Next
+                    End If
+
+                    Dim state_id As Integer = DataFileStates.DRGRolledBack
+                    Dim stateparameter As String = String.Format("Rolled back by {0}", CurrentUser.LoginName)
+                    Dim memberId As Integer = CurrentUser.MemberId
+                    Dim statedescription As String = [Enum].GetName(GetType(DataFileStates), state_id)
+                    DRGUpdate.UpdateFileState(drg.DataFileID, state_id, stateparameter, statedescription, memberId)
+
+                Next
+
+                For Each s As String In logString
+                    lbDRGResults.Items.Add(s)
+                Next
+
+                PopulateRollbackGrid()
+
+            End If
+
+        Catch ex As Exception
+            'Show friendly message
+            MessageBox.Show(ex.Message, "Error Rolling Back Update(s)", MessageBoxButtons.OK, MessageBoxIcon.Error)
+
+        Finally
+            Cursor = DefaultCursor
 
         End Try
 

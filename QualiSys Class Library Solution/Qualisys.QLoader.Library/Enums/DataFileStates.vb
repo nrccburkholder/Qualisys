@@ -24,4 +24,5 @@ Public Enum DataFileStates
     OCSHHCAHPSUpdateApplied = 22
     LoadToLiveAwaitingDupApproval = 23
     OCSHHCAHPSUpdateAbandoned = 24
+    DRGRolledBack = 25
 End Enum

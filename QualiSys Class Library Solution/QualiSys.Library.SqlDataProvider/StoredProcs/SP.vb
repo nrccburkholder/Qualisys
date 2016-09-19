@@ -128,6 +128,11 @@ Public NotInheritable Class SP
     Public Const DeletePracticeSite As String = "QCL_PracticeSiteDelete"
     Public Const PracticeSiteAllowDelete As String = "QCL_SiteAllowDelete"
 
+    'Added 2015.09.15 Sprint 58 ATL-772
+    Public Const SelectDRGUpdates As String = "LD_SelectDRGUpdates"
+    Public Const RollbackDRGUpdates As String = "LD_UpdateDRG_Rollback"
+    Public Const UpdateFileStateDRG As String = "LD_UpdateFileStateDRG"
+
 
 #Region "Legacy Sampling Procedures"
 
