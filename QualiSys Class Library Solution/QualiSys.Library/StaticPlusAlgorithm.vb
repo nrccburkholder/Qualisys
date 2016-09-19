@@ -196,9 +196,7 @@ Partial Public Class SampleSet
             Catch ex As Exception
                 'We have encountered an error so delete the sampleset from the database and throw the error upstream.
                 SampleSetProvider.Instance.Delete(sampleSetId)
-                If srvy.IsSystematic Then
-                    SampleSetProvider.Instance.DeleteSystematicOutgo(sampleSetId)
-                End If
+
                 Throw
 
             End Try
