@@ -33,7 +33,7 @@ BEGIN
 CREATE TABLE #Work (Study_id int, DataFile_id int, MinEncounterDate datetime, MaxEncounterDate datetime, bitRollback bit)
 
 INSERT #Work
-	SELECT ss.STUDY_ID, h.DataFile_ID, MIN(ss.SampleEncounterDate) as MinEncounterDate,  MAX(ss.SampleEncounterDate) as MaxEncounterDate, MAX(CONVERT(int,h.bitRollback))
+	SELECT ss.STUDY_ID, h.DataFile_ID, MIN(ss.SampleEncounterDate) as MinEncounterDate,  MAX(ss.SampleEncounterDate) as MaxEncounterDate,  MAX(CONVERT(int,ISNULL(h.bitRollback,0)))
 		FROM dbo.HCAHPSUpdateLog h
 		INNER JOIN SamplePop sp on h.samplepop_id = sp.SAMPLEPOP_ID
 		INNER JOIN SELECTEDSAMPLE ss on ss.Sampleset_id = sp.Sampleset_id and ss.Pop_id = sp.Pop_id 
