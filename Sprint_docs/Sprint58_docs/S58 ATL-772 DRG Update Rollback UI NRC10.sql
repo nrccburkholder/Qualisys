@@ -45,7 +45,7 @@ INSERT #Work
 
 
 SELECT df.[DataFile_id]
-		  ,df.[strOrigFile_nm] 
+		  ,df.[strOrigFile_nm] origFileName
 		  ,dfs.[StateDescription]
 		  ,dfs.[Member_id]
 		  ,dfs.StateParameter
@@ -67,7 +67,7 @@ SELECT df.[DataFile_id]
 	INNER JOIN dbo.CMSDataSubmissionSchedule sub on sub.[month] = DATEPART(month,df.MinEncounterDate) and sub.[year] = DATEPART(year,df.MinEncounterDate) and sub.SurveyType_ID = 2
 	WHERE sub.SubmissionDateClose < GETDATE()
 
-	select Study_id, DataFile_id, MinEncounterDate, MaxEncounterDate,strOrigFile_nm, LoadedBy,  bitRollback, StateDescription as Status  from #datafiles
+	select Study_id, DataFile_id, MinEncounterDate, MaxEncounterDate,origFileName, LoadedBy, Member_id, bitRollback, StateDescription as Status  from #datafiles
 
 	IF OBJECT_ID('tempdb..#Work') IS NOT NULL DROP TABLE #Work 
 	IF OBJECT_ID('tempdb..#datafiles') IS NOT NULL DROP TABLE #datafiles
