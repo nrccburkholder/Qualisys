@@ -88,7 +88,7 @@ Public Class _UploadFile
     Private Shared Sub writelog(ByVal txt As String)
         If sLogPath <> String.Empty Then
             Dim sWrite As StreamWriter = File.AppendText(sLogPath)
-            sWrite.WriteLine(txt)
+            sWrite.WriteLine(DateTime.Now.ToString & ": " & txt)
             sWrite.Close()
         End If
     End Sub
@@ -97,6 +97,16 @@ Public Class _UploadFile
                                             ByVal UpCol As WebSupergoo.ABCUpload6.Upload) As Boolean
         Try
             Dim Upfilecol As UploadFileCollection = AddItemsToUploadFileCollection(dt)
+
+            writelog("UploadControler")
+            ' temporary logging
+            For Each ul As UploadFile In Upfilecol
+
+                writelog("UploadControler: UploadFile.")
+
+            Next
+
+
             UploadFiles(Upfilecol, UpCol)
             Return True
         Catch ex As Exception
@@ -121,20 +131,38 @@ Public Class _UploadFile
                                         ByVal Upload As WebSupergoo.ABCUpload6.Upload)
         Dim excreturn As String = String.Empty
         Dim NewUpCol As New List(Of UploadFile)
+
+        writelog("UploadFiles")
+        writelog("UploadFiles: Upload.Files.Count = " & Upload.Files.Count.ToString)
+
         For iCnt As Integer = 0 To Upload.Files.Count - 1
             Dim UploadedFile As UploadedFile
             UploadedFile = Upload.Files(iCnt)
-
+            writelog("UploadFiles: UploadedFile.FileName = " & UploadedFile.FileName)
             Dim HtmlFileUploadControlName As String = Upload.Files.AllKeys(iCnt)
+            writelog("UploadFiles: HtmlFileUploadControlName = " & HtmlFileUploadControlName)
             Dim tempUpload As UploadFile '= myUploads(iCnt)
+
+            writelog("UploadFiles: FindUploadFile")
             tempUpload = FindUploadFile(HtmlFileUploadControlName, myUploads)
+
+
+
             If Not tempUpload Is Nothing Then
                 Try
+                    writelog("UploadFiles: tempUpload.OrigFileName = " & tempUpload.OrigFileName)
+                    writelog("UploadFiles: tempUpload.FileName = " & tempUpload.FileName)
 
                     If tempUpload IsNot Nothing Then
                         tempUpload.UploadFileState.StateOfUpload = UploadState.GetByName(UploadState.AvailableStates.Uploading)
                         tempUpload.FileSize = UploadedFile.ContentLength
+
+                        writelog("UploadFiles: tempUpload.FileSize = " & tempUpload.FileSize.ToString)
+
                         tempUpload.FileName = tempUpload.Id & "_" & UploadedFile.WinSafeFileName()
+
+                        writelog("UploadFiles: tempUpload.FileName using UploadedFile.WinSafeFileName = " & tempUpload.FileName)
+
                         tempUpload.Save()
                         'TODO:  How do we update status.                                    
                         If UploadedFile.ContentLength <= 0 Then
@@ -142,6 +170,9 @@ Public Class _UploadFile
                             tempUpload.UploadFileState.StateOfUpload = UploadState.GetByName(UploadState.AvailableStates.UploadAbandoned)
                             tempUpload.Save()
                             tempUpload.FileStatusSaved = False
+
+                            writelog("UploadFiles: tempUpload.UploadFileState.StateParameter = " & tempUpload.UploadFileState.StateParameter)
+
                             UploadFileEmailClass.makeemail(tempUpload, UploadNotificationMailType.UploadFailed)
                             tempUpload.FileNotificationHandled = True
                         Else
@@ -151,22 +182,32 @@ Public Class _UploadFile
                             tempUpload.UploadFileState.StateOfUpload = UploadState.GetByName(UploadState.AvailableStates.Uploaded)
                             tempUpload.Save()
                             tempUpload.FileStatusSaved = True
+
+                            writelog("UploadFiles: tempUpload.UploadFileState.StateOfUpload = " & UploadState.AvailableStates.Uploaded)
+
                             UploadFileEmailClass.makeemail(tempUpload, UploadNotificationMailType.UploadSuccessful)
                             tempUpload.FileNotificationHandled = True
                             'TODO:  Remove from myUploads collection and add to session collection.
                         End If
                     End If
                 Catch ex As Exception
+                    writelog("UploadFiles: tempUpload.Exception encountered")
                     writelog("Before" & Config.EnvironmentName & ex.Message & vbCrLf & ex.StackTrace)
                     excreturn = ex.Message & vbCrLf & ex.StackTrace
                     tempUpload.UploadFileState.StateParameter = ex.Message & vbCrLf & ex.StackTrace
                     tempUpload.UploadFileState.StateOfUpload = UploadState.GetByName(UploadState.AvailableStates.UploadAbandoned)
                     tempUpload.Save()
                     tempUpload.FileStatusSaved = True
+
+                    writelog("UploadFiles: tempUpload.UploadFileState.StateOfUpload = " & UploadState.AvailableStates.Uploaded)
+
                     UploadFileEmailClass.makeTeamemail(ex, tempUpload, UploadNotificationMailType.UploadFailed)
                     tempUpload.FileNotificationHandled = True
                 End Try
                 Library.UploadedFiles.UploadedFileCollection.AddToList(tempUpload)
+
+                writelog("UploadFiles: tempUpload Added To UploadedFileCollection")
+
             End If
             NewUpCol.Add(tempUpload)
         Next
