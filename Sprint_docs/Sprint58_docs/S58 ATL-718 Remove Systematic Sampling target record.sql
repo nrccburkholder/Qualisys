@@ -164,6 +164,7 @@ BEGIN
 	inner join sampleset ss on ss.sampleplan_id = sp.SAMPLEPLAN_ID
 	where ss.sampleset_id = @intSampleSet_id 
 	and su.CAHPSType_id>0	
+	group by suf.medicarenumber, dbo.YearQtr(ss.datDateRange_FromDate)
 
 	DELETE FROM dbo.SystematicSamplingTarget 
 	where CCN = @CCN and SampleQuarter = @quarterToDelete
