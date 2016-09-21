@@ -98,12 +98,13 @@ Public Class _UploadFile
         Try
             Dim Upfilecol As UploadFileCollection = AddItemsToUploadFileCollection(dt)
 
-            writelog("UploadControler")
+            writelog("UploadControler: ========================================")
             ' temporary logging
             For Each ul As UploadFile In Upfilecol
-
-                writelog("UploadControler: UploadFile.")
-
+                writelog("UploadControler: UploadFile.OrigFileName = " & ul.OrigFileName)
+                writelog("UploadControler: UploadFile.FileName = " & ul.FileName)
+                writelog("UploadControler: UploadFile.ClientFileID = " & ul.ClientFileId.ToString)
+                writelog("UploadControler: ========================================")
             Next
 
 
@@ -119,6 +120,9 @@ Public Class _UploadFile
                                            ByVal MyUploads As UploadFileCollection) As UploadFile
         Dim upsfileIds As Integer = CInt(Right(htmlFileUploadControlName, _
                             Len(htmlFileUploadControlName) - htmlFileUploadControlName.LastIndexOf("_") - 1))
+
+        writelog("FindUploadFile: upsfileIds = " & upsfileIds.ToString)
+
         For Each upload As UploadFile In MyUploads
             If upsfileIds = upload.ClientFileId.ToString Then
                 Return upload
