@@ -145,11 +145,15 @@ Public Class _UploadFile
         For iCnt As Integer = 0 To Upload.Files.Count - 1
 
             writelog("UploadFiles: Upload.Files iCnt = " & iCnt.ToString)
+
             Dim UploadedFile As UploadedFile
             UploadedFile = Upload.Files(iCnt)
+
             writelog("UploadFiles: UploadedFile.FileName = " & UploadedFile.FileName)
+
             Dim HtmlFileUploadControlName As String = Upload.Files.AllKeys(iCnt)
             writelog("UploadFiles: HtmlFileUploadControlName = " & HtmlFileUploadControlName)
+
             Dim tempUpload As UploadFile '= myUploads(iCnt)
 
             writelog("UploadFiles: FindUploadFile")
@@ -160,7 +164,6 @@ Public Class _UploadFile
             If Not tempUpload Is Nothing Then
                 Try
                     writelog("UploadFiles: tempUpload.OrigFileName = " & tempUpload.OrigFileName)
-                    writelog("UploadFiles: tempUpload.FileName = " & tempUpload.FileName)
 
                     If tempUpload IsNot Nothing Then
                         tempUpload.UploadFileState.StateOfUpload = UploadState.GetByName(UploadState.AvailableStates.Uploading)
@@ -170,7 +173,11 @@ Public Class _UploadFile
 
                         tempUpload.FileName = tempUpload.Id & "_" & UploadedFile.WinSafeFileName()
 
-                        writelog("UploadFiles: tempUpload.FileName using UploadedFile.WinSafeFileName = " & tempUpload.FileName)
+                        writelog("UploadFiles: tempUpload.FileName (from UploadedFile.WinSafeFileName) = " & tempUpload.FileName)
+
+                        If Not UploadedFile.FileName.ToLower.Equals(UploadedFile.WinSafeFileName().ToLower) Then
+                            writelog("!!!!!!!!!!UploadFiles: OrigFileName\FileName DO NOT MATCH!!!!!!!!!!!!!!!!!!!")
+                        End If
 
                         tempUpload.Save()
                         'TODO:  How do we update status.                                    
@@ -187,10 +194,10 @@ Public Class _UploadFile
                         Else
                             Dim FinalDirectory As String = System.IO.Path.Combine(Config.DataLoaderSaveFolder, tempUpload.UploadAction.FolderName)
                             If Not System.IO.Directory.Exists(FinalDirectory) Then System.IO.Directory.CreateDirectory(FinalDirectory)
+
                             UploadedFile.SaveAs(FinalDirectory & "\" & tempUpload.FileName)
 
                             writelog("UploadFiles: UploadedFile.Saved to..." & FinalDirectory & "\" & tempUpload.FileName)
-
 
                             tempUpload.UploadFileState.StateOfUpload = UploadState.GetByName(UploadState.AvailableStates.Uploaded)
                             tempUpload.Save()
