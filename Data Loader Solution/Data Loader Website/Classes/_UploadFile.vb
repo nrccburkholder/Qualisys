@@ -77,6 +77,7 @@ Public Class _UploadFile
 
     Public Shared Function DoUpload(ByVal dt As DataTable, _
                                         ByVal UpCol As WebSupergoo.ABCUpload6.Upload) As List(Of UploadFile)
+        writelog("DoUpload => UploadControler")
         Dim Verify As Boolean = UploadControler(dt, UpCol)
         Return Upcols
     End Function
@@ -107,7 +108,7 @@ Public Class _UploadFile
                 writelog("UploadControler: ========================================")
             Next
 
-
+            writelog("UploadControler => UploadFiles")
             UploadFiles(Upfilecol, UpCol)
             Return True
         Catch ex As Exception
@@ -121,13 +122,15 @@ Public Class _UploadFile
         Dim upsfileIds As Integer = CInt(Right(htmlFileUploadControlName, _
                             Len(htmlFileUploadControlName) - htmlFileUploadControlName.LastIndexOf("_") - 1))
 
-        writelog("FindUploadFile: upsfileIds = " & upsfileIds.ToString)
+        writelog("UploadFiles => FindUploadFile: htmlFileUploadControl Id = " & upsfileIds.ToString)
 
         For Each upload As UploadFile In MyUploads
             If upsfileIds = upload.ClientFileId.ToString Then
+                writelog("UploadFiles => FindUploadFile: UploadFile[" & upload.ClientFileId.ToString & "] found in UploadFileCollection")
                 Return upload
             End If
         Next
+        writelog("UploadFiles => FindUploadFile: UploadFile NOT FOUND in UploadFileCollection")
         Return Nothing
     End Function
 
@@ -138,8 +141,10 @@ Public Class _UploadFile
 
         writelog("UploadFiles")
         writelog("UploadFiles: Upload.Files.Count = " & Upload.Files.Count.ToString)
-
+        writelog("UploadFiles: ========================================")
         For iCnt As Integer = 0 To Upload.Files.Count - 1
+
+            writelog("UploadFiles: Upload.Files iCnt = " & iCnt.ToString)
             Dim UploadedFile As UploadedFile
             UploadedFile = Upload.Files(iCnt)
             writelog("UploadFiles: UploadedFile.FileName = " & UploadedFile.FileName)
@@ -183,6 +188,10 @@ Public Class _UploadFile
                             Dim FinalDirectory As String = System.IO.Path.Combine(Config.DataLoaderSaveFolder, tempUpload.UploadAction.FolderName)
                             If Not System.IO.Directory.Exists(FinalDirectory) Then System.IO.Directory.CreateDirectory(FinalDirectory)
                             UploadedFile.SaveAs(FinalDirectory & "\" & tempUpload.FileName)
+
+                            writelog("UploadFiles: UploadedFile.Saved to..." & FinalDirectory & "\" & tempUpload.FileName)
+
+
                             tempUpload.UploadFileState.StateOfUpload = UploadState.GetByName(UploadState.AvailableStates.Uploaded)
                             tempUpload.Save()
                             tempUpload.FileStatusSaved = True
@@ -210,12 +219,24 @@ Public Class _UploadFile
                 End Try
                 Library.UploadedFiles.UploadedFileCollection.AddToList(tempUpload)
 
-                writelog("UploadFiles: tempUpload Added To UploadedFileCollection")
+                writelog("UploadFiles: tempUpload Added To Library.UploadedFiles.UploadedFileCollection")
+            Else
 
             End If
             NewUpCol.Add(tempUpload)
+            writelog("UploadFiles: ========================================")
         Next
         Upcols = NewUpCol
+
+
+        writelog("Library.UploadedFiles.UploadedFileCollection: These records are being passed to MakeClientsEmail")
+        ' temporary logging
+        For Each ul As UploadFile In Library.UploadedFiles.UploadedFileCollection.GetList
+            writelog("Library.UploadedFiles.UploadedFileCollection: UploadFile.OrigFileName = " & ul.OrigFileName)
+            writelog("Library.UploadedFiles.UploadedFileCollection: UploadFile.FileName = " & ul.FileName)
+            writelog("Library.UploadedFiles.UploadedFileCollection: ========================================")
+        Next
+
         UploadFileEmailClass.makeclientsemail()
         Library.UploadedFiles.DisposeUploadFilesCollection()
         Return excreturn
