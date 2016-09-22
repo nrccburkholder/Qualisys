@@ -103,7 +103,6 @@ Public Class _UploadFile
             ' temporary logging
             For Each ul As UploadFile In Upfilecol
                 writelog("UploadControler: UploadFile.OrigFileName = " & ul.OrigFileName)
-                writelog("UploadControler: UploadFile.FileName = " & ul.FileName)
                 writelog("UploadControler: UploadFile.ClientFileID = " & ul.ClientFileId.ToString)
                 writelog("UploadControler: ========================================")
             Next
@@ -202,9 +201,6 @@ Public Class _UploadFile
                             tempUpload.UploadFileState.StateOfUpload = UploadState.GetByName(UploadState.AvailableStates.Uploaded)
                             tempUpload.Save()
                             tempUpload.FileStatusSaved = True
-
-                            writelog("UploadFiles: tempUpload.UploadFileState.StateOfUpload = " & UploadState.AvailableStates.Uploaded)
-
                             UploadFileEmailClass.makeemail(tempUpload, UploadNotificationMailType.UploadSuccessful)
                             tempUpload.FileNotificationHandled = True
                             'TODO:  Remove from myUploads collection and add to session collection.
@@ -224,6 +220,10 @@ Public Class _UploadFile
                     UploadFileEmailClass.makeTeamemail(ex, tempUpload, UploadNotificationMailType.UploadFailed)
                     tempUpload.FileNotificationHandled = True
                 End Try
+
+                writelog("UploadFiles: tempUpload.UploadFileState.datOccurred - " & tempUpload.UploadFileState.datOccurred.ToString)
+                writelog("UploadFiles: tempUpload.UploadFileState.StateOfUpload.UploadStateName - " & tempUpload.UploadFileState.StateOfUpload.UploadStateName)
+
                 Library.UploadedFiles.UploadedFileCollection.AddToList(tempUpload)
 
                 writelog("UploadFiles: tempUpload Added To Library.UploadedFiles.UploadedFileCollection")
