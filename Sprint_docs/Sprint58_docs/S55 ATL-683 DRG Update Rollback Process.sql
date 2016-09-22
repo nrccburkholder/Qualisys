@@ -705,7 +705,7 @@ begin
 	                                     
 		SET @Sql = 'UPDATE e SET e.' + @fieldName + ' = w.old_value ' + 
 		   ' FROM S' +RTRIM(LTRIM(STR(@Study_ID)))  + '.ENCOUNTER e ' +
-		   'inner join #work w on e.pop_id = w.POP_ID and e.enc_id = w.POP_ID ' +
+		   'inner join #work w on e.pop_id = w.POP_ID and e.enc_id = w.enc_ID ' +
 		   'where w.field_name = ''' + @fieldName + '''' 
 
 		EXEC (@Sql)    
