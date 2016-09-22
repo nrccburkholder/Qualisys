@@ -322,6 +322,7 @@ Partial Public Class Upload
     Public Sub ClearAll()
         Dim dt As DataTable = TryCast(Session(ParentDataSetSessionName), DataTable)
         If CheckLimitedAccessDisplay() = True Then disableDropEntries()
+        ResetOptions(dt.Rows(dt.Rows.Count - 1).Item(UploadDataTable._TransactionID))
         'If Not dt Is Nothing Then
         '    fgridrebind(dt)
         '    ResetOptions(dt.Rows(dt.Rows.Count - 1).Item(UploadDataTable._TransactionID))
@@ -332,9 +333,7 @@ Partial Public Class Upload
         '    ScriptManager.RegisterClientScriptBlock(Me, GetType(Page), "Clear Options", _
         '    BuildRemoveUploadControlAllJavaFunction(), True)
         'End If
-        ResetOptions(1)
-        ScriptManager.RegisterClientScriptBlock(Me, GetType(Page), "Clear Options", _
-        BuildRemoveUploadControlAllJavaFunction(), True)
+
     End Sub
 
 #End Region
