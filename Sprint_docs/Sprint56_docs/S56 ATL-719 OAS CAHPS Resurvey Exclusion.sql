@@ -1,16 +1,44 @@
 /*
-       S56 ATL-719 OAS CAHPS Resurvey
+       S56 ATL-719 OAS CAHPS Resurvey ROLLBACK
        
        Refactor the resurvey exclusion logic for HCAHPS/HHCAHPS and add support for OAS CAHPS
        
        Merged HCAHPS and HHCAHPS logic in the stored procedure, then added OAS CAHPS.  
 
        
-       Lanny Boswell
-       8/25/2016
+       Lanny Boswell / Chris Burkholder
+       8/25/2016 / 9/20/2016
        
+	   INSERT INTO QUALPRO_PARAMS
        ALTER PROCEDURE [dbo].[QCL_SampleSetResurveyExclusion_StaticPlus]
+
+	   --QCL_SamplesetHouseholdingExclusion noted by Dana to investigate for possible DQ Count issues
 */
+USE [QP_Prod]
+GO
+
+--select * from qualpro_params where strparam_nm like '%iscahps%'
+--select dbo.SurveyProperty('DoesResurveyByCCN',2,null), dbo.SurveyProperty('DoesResurvey',2,null)
+--select dbo.SurveyProperty('DoesResurveyByCCN',3,null), dbo.SurveyProperty('DoesResurvey',3,null)
+
+
+if not exists (select 1 from QUALPRO_PARAMS where STRPARAM_NM = 'SurveyRule: DoesResurveyByCCN - HCAHPS IP')
+INSERT INTO QUALPRO_PARAMS (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, COMMENTS)
+VALUES ('SurveyRule: DoesResurveyByCCN - HCAHPS IP', 'S', 'SurveyRules', '1', 'Resurvey Determination is within a CCN')
+
+if not exists (select 1 from QUALPRO_PARAMS where STRPARAM_NM = 'SurveyRule: DoesResurveyByCCN - OAS CAHPS')
+INSERT INTO QUALPRO_PARAMS (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, COMMENTS)
+VALUES ('SurveyRule: DoesResurveyByCCN - OAS CAHPS', 'S', 'SurveyRules', '1', 'Resurvey Determination is within a CCN')
+
+if not exists (select 1 from QUALPRO_PARAMS where STRPARAM_NM = 'SurveyRule: DoesResurvey - Home Health CAHPS')
+INSERT INTO QUALPRO_PARAMS (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, COMMENTS)
+VALUES ('SurveyRule: DoesResurvey - Home Health CAHPS', 'S', 'SurveyRules', '1', 'Resurvey Determination is NOT within a CCN')
+
+if not exists (select 1 from QUALPRO_PARAMS where STRPARAM_NM = 'SurveyRule: DoesResurvey - CIHI CPES-IC')
+INSERT INTO QUALPRO_PARAMS (STRPARAM_NM, STRPARAM_TYPE, STRPARAM_GRP, STRPARAM_VALUE, COMMENTS)
+VALUES ('SurveyRule: DoesResurvey - CIHI CPES-IC', 'S', 'SurveyRules', '1', 'Resurvey Determination is NOT within a CCN')
+
+GO
 
 USE [QP_Prod]
 GO
@@ -70,7 +98,6 @@ Modified:
 													vw_Billians_NursingHomeAssistedLiving to be run in country=US only
 
 02/26/2016 Dave Gilsdorf - added D_HH index on #Distinct 
-08/18/2016 Lanny Boswell - added OAS CAHPS resurvey exclusion
 
 */
 ALTER PROCEDURE [dbo].[QCL_SampleSetResurveyExclusion_StaticPlus]
@@ -170,96 +197,131 @@ AS
       UPDATE #SampleUnit_Universe
       SET    ReSurveyDate = dbo.FirstDayOfMonth(EncDate)
 
-		IF EXISTS (SELECT *
-			FROM tempdb.dbo.sysobjects o
-			WHERE o.xtype IN ('U')
-			AND o.id = OBJECT_ID(N'tempdb..#ReSurvey'))
-		DROP TABLE #ReSurvey;
+      IF EXISTS (SELECT *
+                 FROM   tempdb.dbo.sysobjects o
+                 WHERE  o.xtype IN ('U')
+                        AND o.id = OBJECT_ID(N'tempdb..#ReSurvey'))
+        DROP TABLE #ReSurvey;
 
-		CREATE TABLE #ReSurvey (
-			pop_ID INT,
-			CCN VARCHAR(20),
-			ReSurveyDate DATETIME )
+      CREATE TABLE #ReSurvey (pop_ID       INT,
+							  enc_ID	   INT,
+	                          CCN          VARCHAR(20),
+                              ReSurveyDate DATETIME)
 
-		DECLARE @HCAHPS INT = 2
-		DECLARE @HHCAHPS INT = 3
-		DECLARE @CIHI INT = 12
-		DECLARE @OASCAHPS INT = 16
+  	  DECLARE @IntResurvey_Period int
+	  select @IntResurvey_Period = INTRESURVEY_PERIOD from survey_def where survey_id = @survey_id
 
-		--9/1/2016 Added CIHI to be 12 here as a quick fix		--TODO REFACTOR TO USE Survey_Def.IntResurvey_Period
+      --if HCAHPS / OAS
+      IF dbo.SurveyProperty('DoesResurveyByCCN', @surveyType_ID, null) = 1 -- in (2, 16)
+        BEGIN
+          --Get the distinct months of the reportdate for each pop_id
+          INSERT INTO #ReSurvey (pop_ID, enc_ID, CCN, ReSurveyDate)
+		  SELECT DISTINCT 
+				 a.Pop_id,
+				 a.Enc_id,
+				 a.CCN,
+				 dbo.FirstDayOfMonth(sampleEncounterDate) ReSurveyDate
+          FROM   (
+                 --Get all the reportdates for all the eligible records for sample
+                 SELECT t.Pop_id,
+						t.Enc_id,
+                        sampleEncounterDate,
+						suf.MedicareNumber as CCN
+                  FROM  dbo.SelectedSample ss
+                        INNER JOIN dbo.SampleUnit su ON ss.sampleunit_id = su.sampleunit_Id
+                        INNER JOIN #SampleUnit_Universe t ON t.Pop_id = ss.Pop_id
+						INNER JOIN SUFacility suf on su.SUFacility_ID = suf.SUFacility_ID
+                  WHERE su.CAHPSType_id = @surveyType_ID
+                        AND ss.Study_id = @Study_id
+                        AND sampleEncounterDate BETWEEN @minDate AND @maxDate) a
 
-		IF @surveyType_ID IN (@HCAHPS, @HHCAHPS, @OASCAHPS, @CIHI)
-		BEGIN
-			DECLARE @LookbackMonths INT
-			SET @LookbackMonths = CASE WHEN @surveyType_ID = @HCAHPS THEN 1 
-									WHEN @SurveyType_id = @CIHI THEN 12 
-									ELSE 6 
-								  END
+          CREATE INDEX tmpIndex
+            ON #ReSurvey (Pop_id)
 
-			--Get the distinct months of the reportdate for each pop_id
-			INSERT INTO #ReSurvey (pop_ID, CCN, ReSurveyDate)
-			SELECT DISTINCT 
-				a.Pop_id,
-				a.CCN,
-				dbo.FirstDayOfMonth(sampleEncounterDate) ReSurveyDate
-			FROM (
-				--Get all the reportdates for all the eligible records for sample
-				SELECT t.Pop_id,
-					sampleEncounterDate,
-					CASE WHEN @surveyType_ID in (@HCAHPS, @OASCAHPS) THEN suf.MedicareNumber ELSE '0' END AS CCN
-				FROM dbo.SelectedSample ss
-					INNER JOIN dbo.SampleUnit su ON ss.sampleunit_id = su.sampleunit_Id
-					INNER JOIN #SampleUnit_Universe t ON t.Pop_id = ss.Pop_id
-					INNER JOIN SUFacility suf on su.SUFacility_ID = suf.SUFacility_ID
-				WHERE su.CAHPSType_id = @surveyType_ID
-					AND ss.Study_id = @Study_id
-					AND sampleEncounterDate BETWEEN @minDate AND @maxDate ) a
+          UPDATE u
+          SET    Removed_Rule = 1
+          FROM   #SampleUnit_Universe U
+                 INNER JOIN SampleUnit su 
+					ON u.sampleunit_id=su.sampleunit_id 
+					AND su.CAHPSType_id = @surveyType_ID 
+                 INNER JOIN SUFacility suf ON su.SUFacility_ID = suf.SUFacility_ID
+                 INNER JOIN #ReSurvey MM 
+					ON U.Pop_id = MM.Pop_id 
+					AND mm.resurveydate >= dateadd(month, ((@IntResurvey_Period - 1) * -1), u.ReSurveyDate)
+					AND suf.MedicareNumber=mm.CCN
+          WHERE  isnull(Removed_Rule, 0) = 0
 
-			CREATE INDEX tmpIndex
-				ON #ReSurvey (Pop_id)
+        END  --dbo.SurveyProperty('DoesResurveyByCCN', @surveyType_ID, null) = 1 -- in (2, 16/HCAHPS, OAS CAHPS)
+      ELSE
+	  IF dbo.SurveyProperty('DoesResurvey', @surveyType_ID, null) = 1 -- in (3,12/HHCAHPS,CIHI)
+        BEGIN
+          --Get the distinct months of the reportdate for each pop_id
+          INSERT INTO #ReSurvey (pop_ID, Enc_id, ReSurveyDate)
+          SELECT DISTINCT 
+				 a.Pop_id,
+				 a.Enc_id,
+				 --a.CCN,
+                 dbo.FirstDayOfMonth(a.sampleEncounterDate) ReSurveyDate
+          FROM   (
+                 --Get all the reportdates for all the eligible records for sample
+                 SELECT t.Pop_id,
+						t.Enc_id,
+                        sampleEncounterDate
+                  FROM   dbo.SelectedSample ss
+                        INNER JOIN dbo.SampleUnit su ON ss.sampleunit_id = su.sampleunit_Id
+                        INNER JOIN #SampleUnit_Universe t ON t.Pop_id = ss.Pop_id
+						--INNER JOIN SUFacility suf on su.SUFacility_ID = suf.SUFacility_ID
+                  WHERE  su.CAHPSType_id = @surveyType_ID
+                         AND ss.Study_id = @Study_id
+                         AND sampleEncounterDate BETWEEN @minDate AND @maxDate) a
 
-			UPDATE u 
-			SET Removed_Rule = 1
-			FROM #SampleUnit_Universe U
-			INNER JOIN SampleUnit su 
-				ON u.sampleunit_id = su.sampleunit_id 
-				AND su.CAHPSType_id = @surveyType_ID
-			--INNER JOIN SUFacility suf ON su.SUFacility_ID = suf.SUFacility_ID
-			INNER JOIN #ReSurvey MM 
-				ON U.Pop_id = MM.Pop_id 
-				AND DATEDIFF(MONTH, U.ReSurveyDate, MM.ReSurveyDate) < @LookbackMonths
-				and (CASE WHEN @surveyType_ID in (@HCAHPS, @OASCAHPS) THEN suf.MedicareNumber ELSE mm.CCN END) = mm.CCN
-			WHERE isnull(Removed_Rule, 0) = 0
+          CREATE INDEX tmpIndex
+            ON #ReSurvey (Pop_id)
 
-			INSERT INTO dbo.Sampling_ExclusionLog (
-				Survey_ID,
-				Sampleset_ID,
-				Sampleunit_ID,
-				Pop_ID,
-				Enc_ID,
-				SamplingExclusionType_ID,
-				DQ_BusRule_ID )
-			SELECT 
-				@survey_ID,
-				@Sampleset_ID,
-				U.Sampleunit_ID,
-				U.Pop_ID,
-				U.Enc_ID,
-				1,
-				NULL
-			FROM #SampleUnit_Universe U
-			INNER JOIN SampleUnit su
-				ON u.sampleunit_id=su.sampleunit_id
-				AND su.CAHPSType_id = @surveyType_ID
-			--INNER JOIN SUFacility suf on su.SUFacility_ID = suf.SUFacility_ID
-			INNER JOIN #ReSurvey MM
-				ON U.Pop_id = MM.Pop_id
-				AND DATEDIFF(MONTH, U.ReSurveyDate, MM.ReSurveyDate) < @LookbackMonths
-				AND CASE WHEN @surveyType_ID in (@HCAHPS, @OASCAHPS) THEN suf.MedicareNumber ELSE mm.CCN END = mm.CCN
+          UPDATE u
+          SET    Removed_Rule = 1
+          FROM   #SampleUnit_Universe U
+                 --INNER JOIN SUFacility suf ON su.SUFacility_ID = suf.SUFacility_ID
+				 INNER JOIN #ReSurvey MM 
+					ON U.Pop_id = MM.Pop_id
+					AND mm.resurveydate >= dateadd(month, ((@IntResurvey_Period - 1) * -1), u.ReSurveyDate)
+					--AND suf.MedicareNumber=mm.CCN
+          WHERE isnull(Removed_Rule, 0) = 0
 
-			DROP TABLE #ReSurvey;
-		END -- @surveyType_ID IN (@HCAHPS, @HHCAHPS, @OASCAHPS)
-	END -- @ReSurveyMethod_id = 2
+        END  -- dbo.SurveyProperty('DoesResurvey', @surveyType_ID, null) = 1) -- in (3,12)
+
+		--Assign the encounters just marked as removed to other sampleunit/encounter pairs for that encounter
+        UPDATE u
+        SET    Removed_Rule = 1
+        FROM   #SampleUnit_Universe U
+                INNER JOIN #SampleUnit_Universe U2 on U.enc_id = U2.enc_id and U2.Removed_Rule = 1
+		WHERE  isnull(u.Removed_Rule, 0) = 0
+
+		--use removed rule = 1 to determine all rows to insert in the exclusion log
+        INSERT INTO dbo.Sampling_ExclusionLog
+                    (Survey_ID,
+                    Sampleset_ID,
+                    Sampleunit_ID,
+                    Pop_ID,
+                    Enc_ID,
+                    SamplingExclusionType_ID,
+                    DQ_BusRule_ID)
+        SELECT @survey_ID AS Survey_ID,
+                @Sampleset_ID AS Sampleset_ID,
+                U.Sampleunit_ID,
+                U.Pop_ID,
+                U.Enc_ID,
+                1 AS SamplingExclusionType_ID,
+                NULL AS DQ_BusRule_ID
+        FROM   #SampleUnit_Universe U
+        WHERE  isnull(Removed_Rule, 0) = 1 --was set to 1 in the UPDATES just prior and further back
+
+        IF EXISTS (SELECT *
+                    FROM   tempdb.dbo.sysobjects o
+                    WHERE  o.xtype IN ('U')
+                        AND o.id = OBJECT_ID(N'tempdb..#ReSurvey'))
+        DROP TABLE #ReSurvey;
+    END  -- @ReSurveyMethod_id = 2
 
   --If Static Plus
   IF @SamplingAlgorithmID = 3
