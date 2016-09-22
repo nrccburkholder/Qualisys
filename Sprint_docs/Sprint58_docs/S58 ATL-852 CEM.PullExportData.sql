@@ -327,7 +327,7 @@ from (	select distinct 'update r set ['+ExportTemplateSectionName+'.'+ExportColu
 		from #results r
 		inner join nrc_datamart.dbo.ResponseBubble rb on r.QuestionFormID=rb.QuestionFormID
 		where rb.'+SourceColumnName+'
-		and rb.ResponseValue='+convert(varchar,RawValue) as cmd
+		and rb.ResponseValue % 10000 ='+convert(varchar,RawValue) as cmd
 		from #allcolumns 
 		where flag=0
 		and AggregateFunction is null
