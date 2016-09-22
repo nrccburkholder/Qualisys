@@ -321,13 +321,17 @@ exec (@sql)
 update #allcolumns set flag=1 where flag=0 and AggregateFunction is null and DataSourceID=2 and ExportColumnName is not null
 
 
+declare @includeInappropriatelyAnswered bit = 0
+if exists (select * from cem.ExportTemplateDefaultResponse where rawvalue between 10001 and 10021 and ExportTemplateID=@ExportTemplateID)
+	set @includeInappropriatelyAnswered = 1
+
 set @SQL = ''
 select @SQL = @SQL + cmd + char(10)
 from (	select distinct 'update r set ['+ExportTemplateSectionName+'.'+ExportColumnNameMR+']='''+convert(varchar,RecodeValue)+'''
 		from #results r
 		inner join nrc_datamart.dbo.ResponseBubble rb on r.QuestionFormID=rb.QuestionFormID
 		where rb.'+SourceColumnName+'
-		and rb.ResponseValue % 10000 ='+convert(varchar,RawValue) as cmd
+		and rb.ResponseValue' + case when @includeInappropriatelyAnswered=1 then '% 10000' else '' end + '='+convert(varchar,RawValue) as cmd
 		from #allcolumns 
 		where flag=0
 		and AggregateFunction is null
