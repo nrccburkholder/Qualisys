@@ -162,7 +162,11 @@ Public Class _UploadFile
 
             If Not tempUpload Is Nothing Then
                 Try
-                    writelog("UploadFiles: tempUpload.OrigFileName = " & tempUpload.OrigFileName)
+
+                    Dim origFileName As String = Right(tempUpload.OrigFileName, _
+                            Len(tempUpload.OrigFileName) - tempUpload.OrigFileName.LastIndexOf("\") - 1)
+
+                    writelog("UploadFiles: tempUpload.OrigFileName = " & origFileName)
 
                     If tempUpload IsNot Nothing Then
                         tempUpload.UploadFileState.StateOfUpload = UploadState.GetByName(UploadState.AvailableStates.Uploading)
@@ -174,8 +178,10 @@ Public Class _UploadFile
 
                         writelog("UploadFiles: tempUpload.FileName (from UploadedFile.WinSafeFileName) = " & tempUpload.FileName)
 
-                        If Not UploadedFile.FileName.ToLower.Equals(UploadedFile.WinSafeFileName().ToLower) Then
+                        If Not origFileName.ToLower.Contains(UploadedFile.WinSafeFileName().ToLower) Then
                             writelog("!!!!!!!!!!UploadFiles: OrigFileName\FileName DO NOT MATCH!!!!!!!!!!!!!!!!!!!")
+                            writelog("!!!!!!!!!!UploadFiles: OrigFileName = " & origFileName & " !!!!!!!!!!!!!!!!!!!")
+                            writelog("!!!!!!!!!!UploadFiles: FileName = " & UploadedFile.WinSafeFileName().ToLower & " !!!!!!!!!!!!!!!!!!!")
                         End If
 
                         tempUpload.Save()
