@@ -258,18 +258,17 @@ begin
 		select top 1 @etcID=ExportTemplateColumnID from #unansweredMR where RawValue=-9
 	end
 
-	drop table #unansweredMR
+	drop table #unansweredMR;
 
 	-- some sampleplans changed which units were their CAHPS units to accomodate requirements for systematic sampling.
-	-- those units' NumPatInFile and EligibleCount values are stored at the unit that was the cahps unit at time of sampling
+	-- those samplesets' NumPatInFile and EligibleCount values are stored at the unit that was the cahps unit at time of sampling
 	-- the data is submitted under whatever the current cahps unit is, so these values are appearing in the submission file as NULL or 0
 	-- we're adding code to the post process to grab the values from the non-cahps unit, but just for Q2/2016 submission
 	with Q2SS as (
-		Select distinct [header.providernum],[header.sampleyear],[header.samplemonth], sp.samplesetid, sel.sampleunitid
+		-- get the sampleset(s) for each CCN/month
+		Select distinct [header.providernum],[header.sampleyear],[header.samplemonth], sp.samplesetid
 		FROM CEM.ExportDataset00000014 eds
 		inner join NRC_Datamart.dbo.samplepopulation sp on eds.samplepopulationid=sp.samplepopulationid
-		inner join NRC_Datamart.dbo.sampleset ss on sp.SampleSetID=ss.SampleSetID
-		inner join NRC_Datamart.dbo.selectedsample sel on sp.SamplePopulationID=sel.SamplePopulationID
 		where exportqueueid = @ExportQueueID
 		and [header.sampleyear]='2016' 
 		and [header.samplemonth] between '04' and '06'
@@ -279,11 +278,12 @@ begin
 	update eds set [header.patientsfile]=agg.numPatInFile, [header.eligiblepatients]=agg.EligibleCount
 	--select eds.samplepopulationid, eds.[header.sampleyear], eds.[header.samplemonth], eds.[header.providernum], [header.patientsfile],agg.numPatInFile, [header.eligiblepatients],agg.EligibleCount
 	from CEM.ExportDataset00000014 eds
-	join (-- the units that have info in numPatInFile and EligibleCount are not CAHPS units
+	join (-- get the non-CAHPS unit(s) for each sampleset and SUM the numPatinFile and EligibleCount
+		  -- for Q2/2016 the units that have info in numPatInFile and EligibleCount are not the CAHPS units
 		Select [header.providernum],[header.sampleyear],[header.samplemonth], sum(suss.NumPatInFile) as NumPatInFile, sum(suss.EligibleCount) as EligibleCount
 		FROM Q2ss Q2
-		inner join NRC_Datamart.dbo.sampleunit su on Q2.sampleunitid=su.sampleunitid
-		inner join NRC_Datamart.dbo.SampleUnitBySampleset suss on Q2.sampleunitid=suss.sampleunitid and Q2.samplesetid=suss.samplesetid
+		inner join NRC_Datamart.dbo.SampleUnitBySampleset suss on Q2.samplesetid=suss.samplesetid
+		inner join NRC_Datamart.dbo.sampleunit su on suss.sampleunitid=su.sampleunitid
 		where isCAHPS=0
 		group by [header.providernum],[header.sampleyear],[header.samplemonth]) agg
 	on eds.[header.providernum]=agg.[header.providernum] and eds.[header.sampleyear]=agg.[header.sampleyear] and eds.[header.samplemonth]=agg.[header.samplemonth] 
