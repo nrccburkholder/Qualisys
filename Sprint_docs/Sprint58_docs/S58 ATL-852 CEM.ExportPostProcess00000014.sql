@@ -68,7 +68,7 @@ begin
 		select top 1 @study=study_id from #sexcheck where sex is null
 	end
 
-	update #sexcheck set patientgender=char(7) where isMale=0 and sex <> 'F'
+	update #sexcheck set patientgender='M' where sex not in ('M','F')
 	update #sexcheck set patientgender='X' where sex is null
 	update #sexcheck set patientgender='1' where sex='M' and patientgender<>'1'
 	update #sexcheck set patientgender='2' where sex='F' and patientgender<>'2'
