@@ -288,7 +288,15 @@ begin
 		group by [header.providernum],[header.sampleyear],[header.samplemonth]) agg
 	on eds.[header.providernum]=agg.[header.providernum] and eds.[header.sampleyear]=agg.[header.sampleyear] and eds.[header.samplemonth]=agg.[header.samplemonth] 
 	where exportqueueid = @ExportQueueID
-	
+
+	-- MedicareLookup.MedicareName is not currently brought over to Catalyst, just the suFacility.FacilityName. 
+	-- but MedicareName is more accurate, esp when two facilities use the same CCN.
+	update eds set [header.providername] = mlu.MedicareName
+	from [NRC_DataMart_Extracts].[CEM].[ExportDataset00000014] eds
+	join qualisys.qp_prod.dbo.medicarelookup mlu on eds.[header.providernum] = mlu.medicarenumber
+	where eds.ExportQueueID = @ExportQueueID
+	and eds.[header.providername] <> mlu.MedicareName
+
 end
 GO
 
