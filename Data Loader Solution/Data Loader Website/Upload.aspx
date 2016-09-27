@@ -262,10 +262,10 @@
                             </tr>
                             <tr>
                                 <td colspan = "2" id = "QueueButtons">
-                                    <asp:button runat = "server" id = "ClearFileOptions" text = "Clear Options" 
+                                   <%-- <asp:button runat = "server" id = "ClearFileOptions" text = "Clear Options" 
                                     style = "font-size:10px;" 
                                     onclientclick = "Javascript:if(confirm('Are you sure you would like to clear all file options?')) {PostPanel(this.id);} else { return false; }"/>
-                                        &nbsp;
+                                        &nbsp;--%>
                                        
                                     <input type="button" name="AddFileToQueue23" value="Add File To Queue" style="font-size:10px;"
                                         onclick="javascript:AddUploadFileControl()" /> 

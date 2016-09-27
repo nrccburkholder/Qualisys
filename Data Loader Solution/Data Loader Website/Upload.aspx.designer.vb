@@ -202,15 +202,6 @@ Partial Public Class Upload
     Protected WithEvents SelectedNotes As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
-    '''ClearFileOptions control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents ClearFileOptions As Global.System.Web.UI.WebControls.Button
-
-    '''<summary>
     '''BottomGridPanel control.
     '''</summary>
     '''<remarks>
