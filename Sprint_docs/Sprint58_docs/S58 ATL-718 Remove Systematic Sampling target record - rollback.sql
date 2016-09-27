@@ -1,5 +1,5 @@
 /*
-    ATL-718 Remove Systematic Sampling target record.sql
+    ATL-718 Remove Systematic Sampling target record - rollback.sql
 
 	Chris Burkholder
 
