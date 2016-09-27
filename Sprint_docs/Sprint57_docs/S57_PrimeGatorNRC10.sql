@@ -8,4 +8,4 @@ Sprint 57 SQLCMD Script for Prime/Gator/NRC10
 
 :r "\ATLASRelease57&58\Sprint57_docs\S57 ATL-194 Sampling Householding.sql"
 
-:r "\ATLASRelease57&58\Sprint57_docs\S57 ATL-777 OAS Proxy Surveys NRC10 - ROLLBACK.sql"
+:r "\ATLASRelease57&58\Sprint57_docs\S57 ATL-777 OAS Proxy Surveys NRC10.sql"
