@@ -60,7 +60,8 @@ AS
 -- Modified by MWB 11/19/2009: Added source column to ExtractQueue insert to track source of key values being added.  
 -- Modified by TSB 06/24/2016: S52 ATL-192 HCAHPS Update file dispostions - modified to insert into DispositionLog for specific value updates on specified fields.
 -- Modified by TSB 08/04/2016: S55 ATL-685 DRG Update disallowed for submitted data - modified to  prevent load-to-lives from updating DRGs for records that have already been submitted to CMS                        
--- Modified by TSB 08/09/2016: S55 ATL-683 DRG Update Rollback Process - modified to write DataFile_id to HCAHPSUpdateLog table.  
+-- Modified by TSB 08/09/2016: S55 ATL-683 DRG Update Rollback Process - modified to write DataFile_id to HCAHPSUpdateLog table.
+-- Modified by TSB 09/23/2016:  commented out section that updates non-sampled records as per Dana Petersen  
                       
 DECLARE @MCond varchar(200), @LTime datetime, @DataMart varchar(50)                      
 DECLARE @Owner varchar(10), @Sql varchar(8000), @Now datetime, @BTableName varchar(100), @Server VARCHAR(20)                      
@@ -272,7 +273,8 @@ SELECT @ltime = ltime FROM #lt
 DROP TABLE #lt                      
                       
 SELECT @DataMart = strParam_Value FROM QualPro_Params WHERE strParam_nm = 'DataMart'                       
-                      
+ 
+ /*  ommenting out the section for updating non-sampled records as per Dana Petersen 2016.09.23  TSB                     
 --************************************** Update non-Sampled *************************************                                      
   
 SET @Sql = 'UPDATE e SET ' + @DRGOption + ' = w.DRG, HServiceType = w.HServiceType, HVisitType = w.HVisitType, HAdmissionSource = w.HAdmissionSource, HDischargeStatus = w.HDischargeStatus, HAdmitAge = w.HAdmitAge, HCatAge = w.HCatAge ' +   
@@ -287,7 +289,8 @@ set @myRowCount = @@ROWCOUNT
                       
 PRINT LTRIM(STR(@@ROWCOUNT))+' non-sampled Encounter records have been updated.'                      
 insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) select @study_ID, @DataFile_ID,  LTRIM(STR(@myRowCount))+' non-sampled Encounter records have been updated.'    
-                      
+       
+*/               
                       
 --************************************** Update sampled records *********************                      
 --Create a temp table to hold all samplepops                      
