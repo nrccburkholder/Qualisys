@@ -14,6 +14,9 @@
 	--update MetafieldGroupDef set STRFIELDGROUP_NM = 'CGCAHPS' where FIELDGROUP_ID = 28
 */
 
+USE [QP_PROD]
+GO
+
 begin tran
 
 ----------------------- ATL-836 Standard Methodologies ----------------------
@@ -75,3 +78,5 @@ values ('PQRS_LangProt','PQRS CAHPS Language protocol for survey',@PQRS,'S',5,NU
 commit tran
 
 	select * from Metafield where fieldGroup_id in (select fieldgroup_id from MetafieldGroupDef where strFieldGroup_nm in ('ACOCAHPS','PQRS CAHPS'))
+
+GO
