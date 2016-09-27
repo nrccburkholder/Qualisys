@@ -241,7 +241,10 @@ Public Class SamplePlanEditor
             TargetReturnNumeric.Enabled = False
         Else
             'JJF TargetReturnNumeric.Enabled = True
-            If mSelectedSampleUnit IsNot Nothing AndAlso mSelectedSampleUnit.IsHcahps Then
+            Dim survey As New Survey()
+            survey.SurveyType = CType(CAHPSTypeComboBox.SelectedValue, SurveyTypes)
+
+            If mSelectedSampleUnit IsNot Nothing AndAlso survey.CompliesWithSwitchToPropSamplingDate Then
                 TargetReturnNumeric.Enabled = False
             Else
                 TargetReturnNumeric.Enabled = True
@@ -672,7 +675,10 @@ Public Class SamplePlanEditor
         'JJF InitRespRateNumeric.Value = mSelectedSampleUnit.InitialResponseRate
 
         'JJF - Added this to replace above
-        If mSelectedSampleUnit.IsHcahps AndAlso mModule.Survey.ActiveSamplePeriod IsNot Nothing AndAlso _
+        Dim survey As New Survey()
+        survey.SurveyType = CType(CAHPSTypeComboBox.SelectedValue, SurveyTypes)
+
+        If survey.CompliesWithSwitchToPropSamplingDate AndAlso mModule.Survey.ActiveSamplePeriod IsNot Nothing AndAlso _
            mModule.Survey.ActiveSamplePeriod.ExpectedStartDate.HasValue AndAlso _
            mModule.Survey.ActiveSamplePeriod.ExpectedStartDate.Value >= AppConfig.Params("SwitchToPropSamplingDate").DateValue Then
             'Target return
