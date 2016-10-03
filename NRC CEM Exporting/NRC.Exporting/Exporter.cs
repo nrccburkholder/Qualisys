@@ -183,7 +183,7 @@ namespace CEM.Exporting
             }
             catch (Exception ex)
             {
-                Logs.Error("", "XMLFILECREATIONERR", "Error Creating XML file.", EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name, ex);
+                Logs.Error("", "XMLFILECREATIONERR", "Error Creating XML file: " + filepath, EventSource, EventClass, System.Reflection.MethodBase.GetCurrentMethod().Name, ex);
                 Messages.Add(string.Format("Error Message: {0}", ex.Message));
                 Messages.Add(string.Format("Stack Trace: {0}", ex.StackTrace));
             }
