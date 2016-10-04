@@ -466,11 +466,9 @@ BEGIN
               --
               --2013-05-08  Lee Kohrs changed 'bt.datundeliverable is null' to 'bt.datundeliverable is NOT null'.
               --            Per the HCAHPS 2012 Audit project Technical Requirements Document, item TR#11
-              SET @sql = 'UPDATE sd SET lagtime = isnull(abs(datediff(dd, '
-                         + ' bt.datundeliverable, bt.dischargedate)), 0) '
-                         + ' FROM '
-                         + @BT
-                         + ' bt, #SampDispo sd WHERE bt.samplepop_id = sd.samplepop_id '
+              SET @sql = 'UPDATE sd SET lagtime = isnull(datediff(dd, bt.dischargedate, bt.datundeliverable), 0) ' -- is the ISNULL() neccessary? we know datUndeliverable is not NULL. if DischargeDate is NULL, then ... we should raise some sort of flag or something.
+                         + ' FROM ' + @BT + ' bt, #SampDispo sd '
+						 + ' WHERE bt.samplepop_id = sd.samplepop_id '
                          + ' AND sd.lagtime = 0 and bt.datundeliverable is NOT null'
 
               --if @indebug = 1
