@@ -1,5 +1,11 @@
--- rollback script
+/*
+	S59 ATL-946
+	Medusa ETL: Lag time calculation business logic bug fix
 
+	Dave Gilsdorf
+
+	ALTER PROCEDURE [dbo].[SP_Extract_HCAHPSDispositionBigTable]
+*/
 use qp_comments
 go
 ALTER PROCEDURE [dbo].[SP_Extract_HCAHPSDispositionBigTable]
@@ -204,12 +210,12 @@ BEGIN
                  dl.study_id,
                  dl.samplepop_id
           FROM   dbo.DispositionLog dl,
-                 dbo.clientstudySurvey css,
+                 --dbo.clientstudySurvey css, -- the records in #AllSP are already for surveys with surveytype_id=2, so there's no need to join to clientstudysurvey and filter on surveytype_id=2
                  #AllSP sp
           WHERE  dl.bitEvaluated = 0
                  AND dl.study_id = @study_id
                  AND dl.samplepop_id = sp.samplepop_id
-                 AND css.surveyType_ID = 2
+                 --AND css.surveyType_ID = 2  -- plus, this is the only place CSS is mentioned in the where clause - there's no joining logic (which should probably be dl.survey_id=css.survey_id)
 
           -- Find all logged dispositions for samplepops identified in #DispoNew
           TRUNCATE TABLE #DispoWork
@@ -402,11 +408,11 @@ BEGIN
                             + 'where column_name = ''lagtime'' '
                             + ' and table_schema + ''.'' + table_name = '''
                             + @BT
-                            + ''' ) alter table '
-                            + @BT
-                            + ' add LagTime int exec sp_dbm_makeview ''s'
-                            + Cast(@study_id AS VARCHAR)
-                            + ''', ''big_table'''
+                            + ''' )
+							begin
+								alter table ' + @BT + ' add LagTime int
+								exec sp_dbm_makeview ''s' + Cast(@study_id AS VARCHAR) + ''', ''big_table''
+							end'
 
       EXEC (@sql)
 
@@ -441,9 +447,10 @@ BEGIN
                          + ' sr, #SampDispo sd '
                          + ' WHERE bt.samplepop_id = sd.samplepop_id '
                          + ' AND bt.samplepop_id = sr.samplepop_id '
+						 + ' and bt.Sampleunit_id = sr.SampleUnit_id '
                          + ' AND sd.lagtime = 0'
                          + ' AND sd.hcahpsvalue IN (''01'',''06'')'
-
+						 -- this assumes that any patient with a dispo of 01 or 06 will have a non-null datReturned. Which, yes, should be true. But what if it's not? LagTime would be NULL
               --if @indebug = 1
               PRINT @SQL
 
@@ -813,12 +820,11 @@ BEGIN
                             + ' where column_name = ''HNumAttempts'' '
                             + ' and table_schema + ''.'' + table_name = '''
                             + @BT
-                            + ''' ) alter table '
-                            + @BT
-                            + ' add HNumAttempts int
-                                  exec dbo.sp_dbm_makeview ''s'
-                            + Cast(@study_id AS VARCHAR)
-                            + ''', ''big_table'''
+                            + ''' )
+							begin
+								alter table ' + @BT + ' add HNumAttempts int
+								exec dbo.sp_dbm_makeview ''s' + Cast(@study_id AS VARCHAR) + ''', ''big_table''
+							end'
 
               EXEC (@sql)
 
