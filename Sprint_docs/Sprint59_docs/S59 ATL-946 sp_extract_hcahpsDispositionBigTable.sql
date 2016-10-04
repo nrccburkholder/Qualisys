@@ -488,6 +488,7 @@ BEGIN
 								FROM dbo.dispositionlog x
 								WHERE x.samplepop_id = dw.samplepop_id
 								AND x.study_id = dw.study_id
+								AND x.disposition_id = hd.disposition_id
 								AND x.DaysFromFirst < 43
 								ORDER BY datLogged DESC)) '
                          + ' FROM ' + @BT + ' bt, #SampDispo sd, #dispowork dw, surveytypedispositions hd '
