@@ -426,14 +426,14 @@ BEGIN
                 --2013-05-22 Lee Kohrs Recoded this section to test for the existence of the work table first.
                 --          If it exists, use it along with the live study_results table. otherwise, just use the live study_results table.
                 SET @SQL = 'UPDATE sd
-							SET lagtime = abs(datediff(dd, isnull(srw.datReturned, sr.datreturned), bt.dischargedate))
+							SET lagtime = datediff(dd, bt.dischargedate, isnull(srw.datReturned, sr.datreturned))
 							--select sd.lagtime, isnull(srw.datReturned, sr.datreturned) as datReturned, bt.dischargeDate, datediff(dd, bt.dischargedate, isnull(srw.datReturned, sr.datreturned)) as LagTime, bt.samplepop_id, sd.hcahpsvalue
 							FROM ' + @bt + ' bt
 							left join ' + @study + '.study_results_work srw on bt.samplepop_id = srw.samplepop_id and bt.sampleunit_id = srw.sampleunit_id
 							left join ' + @study + '.study_results' + RIGHT(@BT, 7) + ' sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id '
               ELSE
                 SET @SQL = 'UPDATE sd
-							SET lagtime = abs(datediff(dd, sr.datreturned, bt.dischargedate))
+							SET lagtime = datediff(dd, bt.dischargedate, sr.datreturned)
 							--select sd.lagtime, sr.datReturned, bt.dischargeDate, datediff(dd, bt.dischargedate, sr.datReturned) as LagTime, bt.samplepop_id, sd.hcahpsvalue
 							FROM ' + @bt + ' bt
 							left join ' + @study + '.study_results' + RIGHT(@BT, 7) + ' sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id '
@@ -442,7 +442,7 @@ BEGIN
               --2013-05-08 Lee Kohrs Added ' AND sd.hcahpsvalue IN (''01'',''06'')'.
               --           Per TR#9 of HCAHPS 2012 Audit Project.
               SET @SQL = @SQL
-                         + ' join #SampDispo sd on join #SampDispo sd on bt.samplepop_id = sd.samplepop_id
+                         + ' join #SampDispo sd on bt.samplepop_id = sd.samplepop_id
 							WHERE sd.lagtime = 0
 							AND sd.hcahpsvalue IN (''01'',''06'')'
 						 -- this assumes that any patient with a dispo of 01 or 06 will have a non-null datReturned. Which, yes, should be true. But what if it's not? LagTime would be NULL
