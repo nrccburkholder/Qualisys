@@ -483,15 +483,14 @@ BEGIN
               --Step 3: Else, lagtime = disposition date - dischargedate
 
 			  -- 2014-06-16 TSB using surveytypedisposition table instead of hcahpsdispositions
-              SET @sql = 'UPDATE sd SET lagtime = abs(datediff(dd, (SELECT TOP 1 x.datlogged
-                                      FROM   dbo.dispositionlog x
-                                      WHERE  x.samplepop_id = dw.samplepop_id
-                              AND x.study_id = dw.study_id
-                                             AND x.DaysFromFirst < 43
-                                      ORDER  BY datLogged DESC), bt.dischargedate)) '
-                         + ' FROM '
-                         + @BT
-                         + ' bt, #SampDispo sd, #dispowork dw, surveytypedispositions hd '
+              SET @sql = 'UPDATE sd SET lagtime = datediff(dd, bt.dischargedate,
+								(SELECT TOP 1 x.datlogged
+								FROM dbo.dispositionlog x
+								WHERE x.samplepop_id = dw.samplepop_id
+								AND x.study_id = dw.study_id
+								AND x.DaysFromFirst < 43
+								ORDER BY datLogged DESC)) '
+                         + ' FROM ' + @BT + ' bt, #SampDispo sd, #dispowork dw, surveytypedispositions hd '
                          + ' WHERE bt.samplepop_id = sd.samplepop_id and bt.samplepop_id = dw.samplepop_id '
                          + ' and sd.hcahpsvalue = hd.value '
                          + ' and hd.disposition_id = dw.disposition_id '
