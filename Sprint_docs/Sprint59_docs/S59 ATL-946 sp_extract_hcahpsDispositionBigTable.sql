@@ -422,7 +422,7 @@ BEGIN
               --2013-05-08 Lee Kohrs commented out "Replace(@BT, 'big_table', 'study_results')"
               --           and added "LEFT(@BT, len(@BT) -16) + 'study_results_work' "
               --           Per TR#10 of HCAHPS 2012 Audit Project.
-              SET @sql = 'UPDATE sd SET lagtime = abs(datediff(dd, sr.datreturned, bt.dischargedate)) FROM '
+              SET @sql = 'UPDATE sd SET lagtime = datediff(dd, bt.dischargedate, sr.datreturned) FROM '
                          + @BT
                          + ' bt, '
                          --+ Replace(@BT, 'big_table', 'study_results')
