@@ -423,11 +423,11 @@ BEGIN
                          + @BT
                          + ' bt, '
                          --+ Replace(@BT, 'big_table', 'study_results')
-                         + LEFT(@BT, len(@BT) -16) -- Pick off the schema_name
+                         + @study -- Pick off the schema_name
               --
               IF (EXISTS (SELECT *
                           FROM   INFORMATION_SCHEMA.TABLES
-                          WHERE  table_schema = LEFT(@BT, len(@BT) - 17)
+                          WHERE  table_schema = @study
                                  AND table_name = 'study_results_work'))
                 --2013-05-22 Lee Kohrs Recoded this section to test for the existence of the work table first.
                 --          If it exists, use it.  If not, look to the live study_results table instead.
