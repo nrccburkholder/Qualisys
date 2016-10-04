@@ -602,7 +602,7 @@ BEGIN
               TRUNCATE TABLE #tmp_samplepops
 
               --
-              --TR#8 LeeKohrs 2013-07-22 HCAHPS2012 HnumAttempts part 1 fix
+              --TR#8 LeeKohrs 2013-07-22 HCAHPS2012 HnumAttempts part 1 fix		-- dbg: does this need to loop through each samplepop individually? Pretty sure it could be done in a single UPDATE query
               INSERT INTO #tmp_samplepops
                           (samplepop_id,
                            datlogged)
@@ -676,7 +676,7 @@ BEGIN
               --Phone methodology where receipttype_id <> 12
               TRUNCATE TABLE #tmp_samplepops
 
-              --TR#8 Lee Kohrs 2013-07-22 HCAHPS2012 HnumAttempts part 2 fix
+              --TR#8 Lee Kohrs 2013-07-22 HCAHPS2012 HnumAttempts part 2 fix		-- dbg: does this need to loop through each samplepop individually? Pretty sure it could be done in a single UPDATE query
               INSERT INTO #tmp_samplepops
                           (samplepop_id,
                 datlogged)
@@ -750,7 +750,7 @@ BEGIN
               --Mail methodology
               TRUNCATE TABLE #tmp_samplepops2
 
-              --TR#8 LeeKohrs 2013-07-22 HCAHPS2012 HnumAttempts part 3 fix
+              --TR#8 LeeKohrs 2013-07-22 HCAHPS2012 HnumAttempts part 3 fix		-- dbg: does this need to loop through each samplepop individually? Pretty sure it could be done in a single UPDATE query
               INSERT INTO #tmp_samplepops2
                           (samplepop_id,
                            sentmail_id)
@@ -841,7 +841,7 @@ BEGIN
                          + @BT
                          + ' bt, #SampDispo sd '
                          + 'WHERE bt.samplepop_id = sd.samplepop_id '
-                         + 'AND bt.HDisposition IS NOT NULL'
+                         + 'AND bt.HDisposition IS NOT NULL'		--> dbg: so after all that, we only update big_table if HDisposition is NULL. Could we remove these patients before the loop starts and maybe save a little time?
 
               IF @indebug = 1
                 PRINT @SQL
@@ -868,7 +868,7 @@ BEGIN
           SET    dl.bitEvaluated = sd.bitEvaluated,
                  DateEvaluated = Getdate()
           FROM   dbo.DispositionLog dl,
-                 #SampDispo sd
+                 #SampDispo sd		--> dbg: but #SampDispo only has the one disposition that had the highest ranking. We evaluated all of these patients' dispositions. There may be other reasons bitEvaluated=0 (there are such records that go back YEARS)
           WHERE  dl.study_id = sd.study_id
                  AND dl.samplepop_id = sd.samplepop_id
                  AND dl.bitEvaluated = 0
