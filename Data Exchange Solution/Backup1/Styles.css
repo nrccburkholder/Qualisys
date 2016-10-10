@@ -1,0 +1,187 @@
+/* Default CSS Stylesheet for a new Web Application project */
+
+BODY
+{
+    BACKGROUND-COLOR: white;
+    FONT-FAMILY: Verdana, Arial, Helvetica;
+    FONT-SIZE: 10pt;
+    FONT-WEIGHT: normal;
+    LETTER-SPACING: normal;
+    TEXT-TRANSFORM: none;
+    WORD-SPACING: normal
+}
+
+td {
+	font-size: 10pt;
+}
+
+td li {
+	text-indent: 30px;
+}
+
+.Login{
+	BORDER-RIGHT: #017663 1px solid; 
+	BORDER-TOP: #017663 1px solid; 
+	BORDER-LEFT: #017663 1px solid; 
+	BORDER-BOTTOM: #017663 1px solid; 
+	BACKGROUND-COLOR: #F7F6F3;
+}
+.grad
+{
+filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=1, StartColorStr='#FF000080', EndColorStr='#FFFFFFFF')
+}
+
+.feedback 
+{
+	font-size: smaller;
+}
+
+.imgHeader {
+	color: #00624D;
+	font-variant: small-caps;
+	font-weight: bolder;
+	font-size: 15px;
+}
+
+.hash {
+	font-weight: bolder;
+	color: #00624D;
+}
+
+h2.h2help {
+	color: #583976;
+}
+
+h3.h3help {
+	color: #00624D;
+}
+
+.nrcDarkGreen {
+	background-color: #318991;
+}
+.nrcLightGreen {
+	background-color: #FFFFFF;
+}
+
+.nrcLanguagePicker
+{
+	font-family:Arial;
+	font-size: 11px;
+	font-weight: normal;
+	color: #318991;
+}
+.nrcLanguagePicker A
+{
+	font-weight: normal;
+	color: #318991;
+}
+.nrcLanguagePicker A:visited
+{
+	font-weight: normal;
+	color: #318991;
+}
+.nrcLanguagePicker A:hover
+{
+	font-weight: normal;
+	color: #318991;
+}
+
+.nrcBorder {
+	BACKGROUND: #666666
+}
+.nrcFooterText
+{
+	font-family: Arial, Geneva, Helvetica, Verdana, sans-serif;
+	font-size: 11px;
+	color: #318991;
+}
+.nrcFooterText A
+{
+	font-weight:normal;
+	color: #318991;
+	text-decoration: none;
+}
+
+.nrcFooterText A:visited
+{
+	font-weight:normal;
+	color: #318991;
+}
+
+.nrcFooterText A:active {
+	font-weight: normal;
+	color: #318991;
+}
+
+.nrcFooterText A:hover
+{
+	font-weight:normal;
+	color: #318991;
+	text-decoration: underline;
+}
+
+.HeaderTable
+{
+	padding: 0px;
+	width: 760px;
+}
+.HeaderLinks
+{
+	text-align: right;
+	height: 36px;
+}
+.HeaderUser{
+	text-align: right;
+	vertical-align: top;
+	padding-top: 0px;
+	height: 28px;
+}
+
+
+/***************** Expandable Panel *****************/
+.Expander
+{
+	border-top: Solid 1px #ECE9D8;
+	border-right: Solid 1px #ACA899;
+	border-bottom: Solid 1px #ACA899;
+	border-left: Solid 1px #ECE9D8;
+	padding: 1px;
+}
+.ExpanderHeader
+{
+	font-weight: bold;
+    background-image: url(Img/PanelBg.gif); 
+    background-repeat: repeat-x;
+}
+.ExpanderContent
+{
+	margin: 0px;
+	padding-left: 1px;
+	padding-top: 1px;
+	padding-right: 1px;
+	padding-bottom: 1px;
+}
+
+/***************** Property Tables *****************/
+.PropertyTable
+{
+	width: 98%;
+	
+}
+.PropertyTable td {padding: 3px; font-size: xx-small;}
+.PropertyLabel
+{	
+	background-color: #DBE9E9;
+	white-space: nowrap;
+	width: 175px;
+}
+.PropertyValue
+{
+	background-color:White;	
+	border-top: Solid 1px #BDD6D6;
+	border-left: Solid 1px #BDD6D6;
+}
+.PropertyValue input, .PropertyValue span, .PropertyValue a
+{
+	font-size: x-small;
+}

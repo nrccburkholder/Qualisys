@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="Data Exchange Solution">
+</Property><Property Name="Solution File" Value="C:\gitrepo\Qualisys\Data Exchange Solution\Data Exchange Solution.sln">
+</Property><Property Name="Date" Value="Tuesday, September 13, 2016">
+</Property><Property Name="Time" Value="10:28:29 AM">
+</Property><Property Name="Log Number" Value="5">
+</Property></Properties><Event ErrorLevel="2" Project="Data Exchange" Source="DataExchange\Global.asax.vb" Description="unable to open backup file">
+</Event><Event ErrorLevel="3" Project="Data Exchange" Source="DataExchange\Global.asax.vb" Description="file not converted">
+</Event><Event ErrorLevel="3" Project="Data Exchange" Source="Data Exchange.vbproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="Data Exchange" Source="Data Exchange.vbproj" Description="You have completed the first step in converting your Visual Studio .NET 2003 web project. To complete the conversion, please select your project in the Solution Explorer and choose the 'Convert to Web Application' context menu item.">
+</Event></UpgradeLog>
