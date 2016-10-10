@@ -1035,8 +1035,6 @@ Public Class NewSampleDefinition
             Else
                 MessageBox.Show("No Holds to show")
             End If
-        Else
-            MessageBox.Show("No Holds to show")
         End If
 
     End Sub

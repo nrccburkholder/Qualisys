@@ -1,4 +1,5 @@
 ﻿Imports System.Text
+Imports Nrc.Framework.BusinessLogic.Configuration
 Imports Nrc.Qualisys.Library
 Imports System.Configuration
 
@@ -10,7 +11,7 @@ Namespace ODSDBDataAccess
 
 
         Public Sub New()
-            MyBase.New(ConfigurationManager.ConnectionStrings("ODSDB").ConnectionString)
+            MyBase.New(AppConfig.ODSConnection)
         End Sub
 
 #Region "public methods"
@@ -24,9 +25,10 @@ Namespace ODSDBDataAccess
                                                 "Client + ' (' + CONVERT(varchar,ClientID) + ')' Client, " &
                                                 "Study + ' (' + CONVERT(varchar,StudyID) + ')' Study, " &
                                                 "Survey + ' (' + CONVERT(varchar,SurveyID) + ')' Survey, " &
-                                                "EncounterHoldDate,HoldReason,hst.HoldDescription HoldStatus," &
+                                                "CAST(EncounterHoldDate as date) EncounterHoldDate,HoldReason,hst.HoldDescription HoldStatus," &
                                                 "TicketNumber," &
-                                                "SurveyManager,AccountManager,DataManager,Requester,CompletionDate,DateCreated,DateModified " &
+                                                "SurveyManager,AccountManager,DataManager,Requester,CompletionDate, " &
+                                                "CAST(DateCreated as datetime) DateCreated, CAST(DateModified as datetime)DateModified " &
                                                 "FROM odsdb.dbo.HoldSurveys hss " &
                                                 "INNER JOIN odsdb.dbo.Holds hs on hss.HoldID = hs.HoldID " &
                                                 "INNER JOIN odsdb.dbo.HoldStatus hst on hst.HoldStatusID = hs.HoldStatusID " &
@@ -46,7 +48,7 @@ Namespace ODSDBDataAccess
 
         Public Function GetMinEncounterHoldDate(clientid As Integer, studyid As Integer, surveyID As Integer) As Date Implements IODSDBRepository.GetMinEncounterHoldDate
             Dim query As String = String.Format("SELECT " &
-                                                "min(EncounterHoldDate) EncounterHoldDate " &
+                                                "min(CAST(EncounterHoldDate as date)) EncounterHoldDate " &
                                                 "FROM odsdb.dbo.HoldSurveys hss " &
                                                 "INNER JOIN odsdb.dbo.Holds hs on hss.HoldID = hs.HoldID " &
                                                 "INNER JOIN odsdb.dbo.HoldStatus hst on hst.HoldStatusID = hs.HoldStatusID " &
