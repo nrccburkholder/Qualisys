@@ -454,6 +454,8 @@ Public Class SurveyPropertiesEditor
         End If
 
         UseUSPSAddrChangeServiceCheckBox.Checked = mModule.EditingSurvey.UseUSPSAddrChangeService
+        HandoutCheckBox.Checked = mModule.EditingSurvey.IsHandout
+        PointInTimeCheckBox.Checked = mModule.EditingSurvey.IsPointInTime
 
         'Disable all the fields when viewing properties
         WorkAreaPanel.Enabled = mModule.IsEditable
@@ -650,6 +652,8 @@ Public Class SurveyPropertiesEditor
             .IsActive = Not InActivateCheckBox.Checked
             .ContractedLanguages = ContractedLanguages
             .UseUSPSAddrChangeService = UseUSPSAddrChangeServiceCheckBox.Checked
+            .IsHandout = HandoutCheckBox.Checked
+            .IsPointInTime = PointInTimeCheckBox.Checked
 
         End With
 
