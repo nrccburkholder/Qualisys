@@ -66,8 +66,8 @@ Namespace ODSDBDataAccess
                                                 "WHERE hss.ClientID = {0} " &
                                                 "AND hss.StudyID = {1} " &
                                                 "AND hss.SurveyID in ({2}) " &
-                                                "AND CompletionDate IS NULL" &
-                                                "ORDER BY EncounterHoldDate", clientid, studyid, surveys)
+                                                "AND CompletionDate IS NULL " &
+                                                "ORDER BY EncounterHoldDate, SurveyID", clientid, studyid, surveys)
 
             Dim dt As New DataTable
             Me.Fill(dt, query, CommandType.Text)
