@@ -1003,8 +1003,6 @@ Public Class NewSampleDefinition
 
     End Sub
 
-    ' Private Sub AddNameColumns(ByVal clientid As Integer, ByVal clientname As String, ByVal studyid As Integer, ByVal studyname As String, ByVal surveyid As Integer, surveyname As String)
-
     Private Sub AddNameColumns()
         Dim column As DataColumn
 
