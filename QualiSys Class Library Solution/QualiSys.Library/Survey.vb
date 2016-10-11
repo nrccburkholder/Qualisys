@@ -977,6 +977,20 @@ Public Class Survey
         End Get
     End Property
 
+    Public ReadOnly Property HandoutsPermitted(Optional ByVal override As String = vbNullString) As Boolean
+        Get
+            GetSurveyRule("HandoutsPermitted", mIsSystematic, override)
+            Return mIsSystematic
+        End Get
+    End Property
+
+    Public ReadOnly Property PointInTimeDisallowed(Optional ByVal override As String = vbNullString) As Boolean
+        Get
+            GetSurveyRule("PointInTimeDisallowed", mIsSystematic, override)
+            Return mIsSystematic
+        End Get
+    End Property
+
 #End Region
 
     Public ReadOnly Property AllowDelete() As Boolean

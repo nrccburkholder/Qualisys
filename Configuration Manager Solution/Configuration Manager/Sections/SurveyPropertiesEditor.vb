@@ -453,6 +453,11 @@ Public Class SurveyPropertiesEditor
             ContractedLanguagesListBox.Visible = False
         End If
 
+        PointInTimeCheckBox.Visible = Not mModule.EditingSurvey.PointInTimeDisallowed
+        HandoutCheckBox.Visible = mModule.EditingSurvey.HandoutsPermitted
+        PointInTimeLabel.Visible = Not mModule.EditingSurvey.PointInTimeDisallowed
+        HandoutLabel.Visible = mModule.EditingSurvey.HandoutsPermitted
+
         UseUSPSAddrChangeServiceCheckBox.Checked = mModule.EditingSurvey.UseUSPSAddrChangeService
         HandoutCheckBox.Checked = mModule.EditingSurvey.IsHandout
         PointInTimeCheckBox.Checked = mModule.EditingSurvey.IsPointInTime

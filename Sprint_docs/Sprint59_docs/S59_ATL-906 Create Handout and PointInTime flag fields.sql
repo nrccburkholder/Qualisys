@@ -31,6 +31,36 @@ ADD IsPointInTime bit
 
 UPDATE Survey_Def set IsHandout = 0, IsPointInTime = 0
 
+--select * from qualpro_params where strparam_grp = 'SurveyRules'
+
+Insert into QualPro_Params (strparam_nm, strparam_type, strparam_grp, strparam_value, comments)
+values ('SurveyRule: HandoutsPermitted - NRC/Picker','S','SurveyRules','1','Handouts are permitted for NRC/Picker')
+Insert into QualPro_Params (strparam_nm, strparam_type, strparam_grp, strparam_value, comments)
+values ('SurveyRule: HandoutsPermitted - Physician','S','SurveyRules','1','Handouts are permitted for Physician')
+Insert into QualPro_Params (strparam_nm, strparam_type, strparam_grp, strparam_value, comments)
+values ('SurveyRule: HandoutsPermitted - Employee','S','SurveyRules','1','Handouts are permitted for Employee')
+Insert into QualPro_Params (strparam_nm, strparam_type, strparam_grp, strparam_value, comments)
+values ('SurveyRule: HandoutsPermitted - NRC Canada','S','SurveyRules','1','Handouts are permitted for NRC Canada')
+Insert into QualPro_Params (strparam_nm, strparam_type, strparam_grp, strparam_value, comments)
+values ('SurveyRule: HandoutsPermitted - PostAcuteFam','S','SurveyRules','1','Handouts are permitted for PostAcuteFam')
+Insert into QualPro_Params (strparam_nm, strparam_type, strparam_grp, strparam_value, comments)
+values ('SurveyRule: HandoutsPermitted - PostAcuteRes','S','SurveyRules','1','Handouts are permitted for PostAcuteRes')
+
+Insert into QualPro_Params (strparam_nm, strparam_type, strparam_grp, strparam_value, comments)
+values ('SurveyRule: PointInTimeDisallowed - HCAHPS IP','S','SurveyRules','1','Point In Time is disallowed for HCAHPS IP')
+Insert into QualPro_Params (strparam_nm, strparam_type, strparam_grp, strparam_value, comments)
+values ('SurveyRule: PointInTimeDisallowed - Home Health CAHPS','S','SurveyRules','1','Point In Time is disallowed for Home Health CAHPS')
+Insert into QualPro_Params (strparam_nm, strparam_type, strparam_grp, strparam_value, comments)
+values ('SurveyRule: PointInTimeDisallowed - CGCAHPS','S','SurveyRules','1','Point In Time is disallowed for CGCAHPS')
+Insert into QualPro_Params (strparam_nm, strparam_type, strparam_grp, strparam_value, comments)
+values ('SurveyRule: PointInTimeDisallowed - Hospice CAHPS','S','SurveyRules','1','Point In Time is disallowed for Hospice CAHPS')
+Insert into QualPro_Params (strparam_nm, strparam_type, strparam_grp, strparam_value, comments)
+values ('SurveyRule: PointInTimeDisallowed - OAS CAHPS','S','SurveyRules','1','Point In Time is disallowed for OAS CAHPS')
+
+--select * from surveytype
+
+--select dbo.SurveyProperty('PointInTimeDisallowed',2,null) 'HCAHPS PIT NA', dbo.SurveyProperty('PointInTimeDisallowed',1,null) 'NRC/Picker PIT NA',dbo.SurveyProperty('HandoutsPermitted',2,null) 'HCAHPS PIT OK', dbo.SurveyProperty('HandoutsPermitted',1,null) 'NRC/Picker handout OK'
+
 GO
 
 ALTER PROCEDURE [dbo].[QCL_InsertSurvey]
@@ -266,7 +296,8 @@ SELECT s.Survey_id, s.strSurvey_nm, s.strSurvey_dsc, s.Study_id, s.strCutoffResp
        s.INTRESPONSE_RECALC_PERIOD, s.intResurvey_Period, s.datSurvey_Start_dt,  
        s.datSurvey_End_dt, s.SamplingAlgorithmID, s.bitEnforceSkip, s.strClientFacingName,  
        s.SurveyType_id, s.SurveyTypeDef_id, s.ReSurveyMethod_id, s.strHouseholdingType,
-	   s.Contract, s.Active, s.ContractedLanguages, s.UseUSPSAddrChangeService
+	   s.Contract, s.Active, s.ContractedLanguages, s.UseUSPSAddrChangeService,
+	   s.IsHandout, s.IsPointInTime
   FROM #EmpStudy t  
        JOIN Survey_def s  
          ON t.Study_id = s.Study_id  
@@ -301,7 +332,7 @@ SELECT Survey_id, strSurvey_Nm, strSurvey_Dsc, Study_id, strCutoffResponse_Cd, C
        datValidated, bitFormGenRelease, @intSamplePlan_id as SamplePlan_id, intResponse_Recalc_Period,  
        intResurvey_Period, datSurvey_Start_Dt, datSurvey_End_Dt, SamplingAlgorithmID, bitEnforceSkip,
        strClientFacingName, SurveyType_id, SurveyTypeDef_id, ReSurveyMethod_id, strHouseholdingType,  
-	   Contract, Active, ContractedLanguages, UseUSPSAddrChangeService
+	   Contract, Active, ContractedLanguages, UseUSPSAddrChangeService, IsHandout, IsPointInTime
 FROM Survey_Def 
 WHERE Survey_id = @SurveyId 
 

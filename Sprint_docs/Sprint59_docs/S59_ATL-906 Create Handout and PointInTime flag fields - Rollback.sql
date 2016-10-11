@@ -31,6 +31,19 @@ DROP COLUMN IsPointInTime
 
 --UPDATE Survey_Def set IsHandout = 0, IsPointInTime = 0
 
+delete QualPro_Params where strparam_nm='SurveyRule: HandoutsPermitted - NRC/Picker'
+delete QualPro_Params where strparam_nm='SurveyRule: HandoutsPermitted - Physician'
+delete QualPro_Params where strparam_nm='SurveyRule: HandoutsPermitted - Employee'
+delete QualPro_Params where strparam_nm='SurveyRule: HandoutsPermitted - NRC Canada'
+delete QualPro_Params where strparam_nm='SurveyRule: HandoutsPermitted - PostAcuteFam'
+delete QualPro_Params where strparam_nm='SurveyRule: HandoutsPermitted - PostAcuteRes'
+
+delete QualPro_Params where strparam_nm='SurveyRule: PointInTimeDisallowed - HCAHPS IP'
+delete QualPro_Params where strparam_nm='SurveyRule: PointInTimeDisallowed - Home Health CAHPS'
+delete QualPro_Params where strparam_nm='SurveyRule: PointInTimeDisallowed - CGCAHPS'
+delete QualPro_Params where strparam_nm='SurveyRule: PointInTimeDisallowed - Hospice CAHPS'
+delete QualPro_Params where strparam_nm='SurveyRule: PointInTimeDisallowed - OAS CAHPS'
+
 GO
 
 ALTER PROCEDURE [dbo].[QCL_InsertSurvey]
