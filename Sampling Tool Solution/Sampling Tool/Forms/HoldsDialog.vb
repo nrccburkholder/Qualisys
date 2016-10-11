@@ -22,21 +22,43 @@ Public Class HoldsDialog
 
         With dgvHolds
 
+            .ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+
+
+            .Columns("HoldID").DisplayIndex = 0
+            .Columns("ClientID").DisplayIndex = 1
+            .Columns("StudyID").DisplayIndex = 2
+            .Columns("SurveyID").DisplayIndex = 3
+            .Columns("ClientName").DisplayIndex = 4
+            .Columns("StudyName").DisplayIndex = 5
+            .Columns("SurveyName").DisplayIndex = 6
+            .Columns("EncounterHoldDate").DisplayIndex = 7
+            .Columns("HoldReason").DisplayIndex = 8
+            .Columns("HoldStatus").DisplayIndex = 9
+            .Columns("TicketNumber").DisplayIndex = 10
+            .Columns("Requester").DisplayIndex = 11
+            .Columns("CompletionDate").DisplayIndex = 12
+            .Columns("DateCreated").DisplayIndex = 13
+            .Columns("DateModified").DisplayIndex = 14
+
+
+            .Columns("EncounterHoldDate").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+            .Columns("DateCreated").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+
             .Columns("EncounterHoldDate").HeaderText = "Encounter Hold Date"
             .Columns("HoldReason").HeaderText = "Reason"
             .Columns("HoldStatus").HeaderText = "Status"
-            .Columns("SurveyManager").HeaderText = "Survey Manager"
-            .Columns("AccountManager").HeaderText = "Account Manager"
-            .Columns("DataManager").HeaderText = "Data Manager"
             .Columns("Requester").HeaderText = "Requestor"
             .Columns("DateCreated").HeaderText = "Created"
 
-
-            .ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
             .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells
 
             .Columns("HoldID").Visible = False
+            .Columns("ClientID").Visible = False
+            .Columns("StudyID").Visible = False
+            .Columns("SurveyID").Visible = False
             .Columns("TicketNumber").Visible = False
+            .Columns("RequesterID").Visible = False
             .Columns("CompletionDate").Visible = False
             .Columns("DateModified").Visible = False
 

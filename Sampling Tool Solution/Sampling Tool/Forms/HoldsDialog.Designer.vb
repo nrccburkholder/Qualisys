@@ -20,6 +20,7 @@ Partial Class HoldsDialog
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.dgvHolds = New System.Windows.Forms.DataGridView()
         Me.btnOK = New System.Windows.Forms.Button()
         Me.lblInfo = New System.Windows.Forms.Label()
@@ -51,7 +52,7 @@ Partial Class HoldsDialog
         'mPaneCaption
         '
         Me.mPaneCaption.Caption = "Holds"
-        Me.mPaneCaption.Size = New System.Drawing.Size(929, 26)
+        Me.mPaneCaption.Size = New System.Drawing.Size(868, 26)
         Me.mPaneCaption.Text = "Holds"
         '
         'dgvHolds
@@ -68,13 +69,16 @@ Partial Class HoldsDialog
         Me.dgvHolds.Location = New System.Drawing.Point(18, 50)
         Me.dgvHolds.Name = "dgvHolds"
         Me.dgvHolds.ReadOnly = True
-        Me.dgvHolds.Size = New System.Drawing.Size(886, 158)
+        Me.dgvHolds.RowHeadersVisible = False
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        Me.dgvHolds.RowsDefaultCellStyle = DataGridViewCellStyle2
+        Me.dgvHolds.Size = New System.Drawing.Size(825, 146)
         Me.dgvHolds.TabIndex = 6
         '
         'btnOK
         '
         Me.btnOK.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnOK.Location = New System.Drawing.Point(789, 235)
+        Me.btnOK.Location = New System.Drawing.Point(728, 223)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(112, 23)
         Me.btnOK.TabIndex = 5
@@ -117,7 +121,6 @@ Partial Class HoldsDialog
         Me.DataGridViewTextBoxColumn3.Name = "DataGridViewTextBoxColumn3"
         Me.DataGridViewTextBoxColumn3.ReadOnly = True
         Me.DataGridViewTextBoxColumn3.Visible = False
-        Me.DataGridViewTextBoxColumn3.Width = 96
         '
         'DataGridViewTextBoxColumn4
         '
@@ -127,7 +130,6 @@ Partial Class HoldsDialog
         Me.DataGridViewTextBoxColumn4.Name = "DataGridViewTextBoxColumn4"
         Me.DataGridViewTextBoxColumn4.ReadOnly = True
         Me.DataGridViewTextBoxColumn4.Visible = False
-        Me.DataGridViewTextBoxColumn4.Width = 69
         '
         'DataGridViewTextBoxColumn5
         '
@@ -289,7 +291,7 @@ Partial Class HoldsDialog
         'HoldsDialog
         '
         Me.Caption = "Holds"
-        Me.ClientSize = New System.Drawing.Size(931, 274)
+        Me.ClientSize = New System.Drawing.Size(870, 262)
         Me.Controls.Add(Me.lblInfo)
         Me.Controls.Add(Me.dgvHolds)
         Me.Controls.Add(Me.btnOK)

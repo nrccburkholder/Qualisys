@@ -135,6 +135,7 @@
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
     <Compile Include="Classes\CurrentUser.vb" />
+    <Compile Include="Classes\Globals.vb" />
     <Compile Include="Classes\MultiSelectTreeView.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -332,6 +333,8 @@
     <None Include="Resources\Validation16.png" />
     <None Include="Resources\Refresh32.png" />
     <None Include="Resources\checkbox-checked.gif" />
+    <None Include="Resources\Error16.png" />
+    <None Include="Resources\Error.PNG" />
     <Content Include="SampTool.ico" />
   </ItemGroup>
   <ItemGroup>

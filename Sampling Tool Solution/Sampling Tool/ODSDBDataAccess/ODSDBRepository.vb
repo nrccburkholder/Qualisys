@@ -2,6 +2,7 @@
 Imports Nrc.Framework.BusinessLogic.Configuration
 Imports Nrc.Qualisys.Library
 Imports System.Configuration
+Imports System.Linq
 
 Namespace ODSDBDataAccess
 
@@ -16,18 +17,48 @@ Namespace ODSDBDataAccess
 
 #Region "public methods"
 
-        Public Function GetHoldsTable(clientid As Integer, studyid As Integer, surveyIDs As List(Of String)) As DataTable Implements IODSDBRepository.GetHoldsTable
+        'Public Function GetHoldsTable(clientid As Integer, studyid As Integer, surveyIDs As List(Of String)) As DataTable Implements IODSDBRepository.GetHoldsTable
 
-            Dim surveys As String = String.Join(",", surveyIDs.ToArray())
+        '    Dim surveys As String = String.Join(",", surveyIDs.ToArray())
+
+        '    Dim query As String = String.Format("SELECT " &
+        '                                        "hss.HoldID, " &
+        '                                        "ClientID, " &
+        '                                        "StudyID, " &
+        '                                        "SurveyID, " &
+        '                                        "CAST(EncounterHoldDate as date) EncounterHoldDate,HoldReason,hst.HoldDescription HoldStatus," &
+        '                                        "TicketNumber," &
+        '                                        "RequesterID, Requester, CompletionDate, " &
+        '                                        "CAST(DateCreated as datetime) DateCreated, CAST(DateModified as datetime)DateModified " &
+        '                                        "FROM odsdb.dbo.HoldSurveys hss " &
+        '                                        "INNER JOIN odsdb.dbo.Holds hs on hss.HoldID = hs.HoldID " &
+        '                                        "INNER JOIN odsdb.dbo.HoldStatus hst on hst.HoldStatusID = hs.HoldStatusID " &
+        '                                        "WHERE hss.ClientID = {0} " &
+        '                                        "AND hss.StudyID = {1} " &
+        '                                        "AND hss.SurveyID in ({2}) " &
+        '                                        "AND CompletionDate IS NULL", clientid, studyid, surveys)
+
+        '    Dim dt As New DataTable
+        '    Me.Fill(dt, query, CommandType.Text)
+
+        '    Using dt
+        '        Return dt
+        '    End Using
+
+        'End Function
+
+        Public Function GetHoldsTable(clientid As Integer, studyid As Integer, surveyIDs As Dictionary(Of String, String)) As DataTable Implements IODSDBRepository.GetHoldsTable
+
+            Dim surveys As String = String.Join(",", surveyIDs.Keys.ToArray())
 
             Dim query As String = String.Format("SELECT " &
                                                 "hss.HoldID, " &
-                                                "Client + ' (' + CONVERT(varchar,ClientID) + ')' Client, " &
-                                                "Study + ' (' + CONVERT(varchar,StudyID) + ')' Study, " &
-                                                "Survey + ' (' + CONVERT(varchar,SurveyID) + ')' Survey, " &
+                                                "ClientID, " &
+                                                "StudyID, " &
+                                                "SurveyID, " &
                                                 "CAST(EncounterHoldDate as date) EncounterHoldDate,HoldReason,hst.HoldDescription HoldStatus," &
                                                 "TicketNumber," &
-                                                "SurveyManager,AccountManager,DataManager,Requester,CompletionDate, " &
+                                                "RequesterID, Requester, CompletionDate, " &
                                                 "CAST(DateCreated as datetime) DateCreated, CAST(DateModified as datetime)DateModified " &
                                                 "FROM odsdb.dbo.HoldSurveys hss " &
                                                 "INNER JOIN odsdb.dbo.Holds hs on hss.HoldID = hs.HoldID " &
@@ -35,7 +66,8 @@ Namespace ODSDBDataAccess
                                                 "WHERE hss.ClientID = {0} " &
                                                 "AND hss.StudyID = {1} " &
                                                 "AND hss.SurveyID in ({2}) " &
-                                                "AND CompletionDate IS NULL", clientid, studyid, surveys)
+                                                "AND CompletionDate IS NULL" &
+                                                "ORDER BY EncounterHoldDate", clientid, studyid, surveys)
 
             Dim dt As New DataTable
             Me.Fill(dt, query, CommandType.Text)
