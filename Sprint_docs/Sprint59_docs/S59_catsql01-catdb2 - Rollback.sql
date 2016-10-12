@@ -8,4 +8,5 @@ Sprint 59 SQLCMD Script for catsql01-catdb2
 
 :r "\ATLASRelease59&60\Sprint59_docs\S59 ATL-871 Processing for ACO_PQRS Bad Addr & Bad Phone CATDB - ROLLBACK.sql"
 
+:r "\ATLASRelease59&60\Sprint59_docs\S59 ATL-864 Update ACO & PQRS CEM Templates - ROLLBACK.sql"
 

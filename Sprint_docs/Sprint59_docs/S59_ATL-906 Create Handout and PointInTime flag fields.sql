@@ -26,10 +26,16 @@ GO
 ALTER TABLE Survey_Def
 ADD IsHandout bit
 
+GO
+
 ALTER TABLE Survey_Def
 ADD IsPointInTime bit
 
+GO
+
 UPDATE Survey_Def set IsHandout = 0, IsPointInTime = 0
+
+GO
 
 --select * from qualpro_params where strparam_grp = 'SurveyRules'
 

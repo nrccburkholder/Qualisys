@@ -26,10 +26,16 @@ GO
 ALTER TABLE Survey_Def
 DROP COLUMN IsHandout 
 
+GO
+
 ALTER TABLE Survey_Def
 DROP COLUMN IsPointInTime
 
+GO
+
 --UPDATE Survey_Def set IsHandout = 0, IsPointInTime = 0
+
+--GO
 
 delete QualPro_Params where strparam_nm='SurveyRule: HandoutsPermitted - NRC/Picker'
 delete QualPro_Params where strparam_nm='SurveyRule: HandoutsPermitted - Physician'
