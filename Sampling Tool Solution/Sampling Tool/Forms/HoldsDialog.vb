@@ -1,11 +1,16 @@
 Public Class HoldsDialog
 
-    Public Sub New(ByVal holds As DataTable)
+    Private mShowAlert As Boolean = False
+
+    Public Sub New(ByVal holds As DataTable, ByVal showAlert As Boolean)
 
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
+        mShowAlert = showAlert
+
+        SetAlertMessage()
         PopulateHoldsGrid(holds)
 
     End Sub
@@ -63,6 +68,19 @@ Public Class HoldsDialog
             .Columns("DateModified").Visible = False
 
         End With
+
+    End Sub
+
+    Private Sub SetAlertMessage()
+        If mShowAlert Then
+            pbAlert.Visible = True
+            lblAlertMessage.Visible = True
+            lblAlertMessage.Text = "Sampling is disabled due to existing holds!"
+        Else
+            pbAlert.Visible = False
+            lblAlertMessage.Visible = False
+        End If
+
 
     End Sub
 

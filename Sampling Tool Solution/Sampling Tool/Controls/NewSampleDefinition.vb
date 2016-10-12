@@ -79,7 +79,7 @@ Public Class NewSampleDefinition
             Try
                 PopulateHoldTable(mSurveys)
             Catch ex As Exception
-                Globals.ReportException(ex)
+                ReportException(ex)
             End Try
 
 
@@ -187,14 +187,13 @@ Public Class NewSampleDefinition
 
             If holdSampleDefs.Count > 0 Then
                 ' there is a hold lock on one or more sampledefinitions
-                ShowHoldsDialog()
+                ShowHoldsDialog(True)
                 RemoveOnHoldSamplesFromSampleDefinitions(holdSampleDefs)
             End If
         Catch ex As Exception
-            Globals.ReportException(ex)
+            ReportException(ex)
             Exit Sub
         End Try
-        
 
 
         'If we have any locked samples then show them and remove them from the
@@ -1097,28 +1096,28 @@ Public Class NewSampleDefinition
             While i < mSampleDefinitions.Count
                 Dim sampleDefRow As SampleDefinition = mSampleDefinitions(i)
                 If sampleDefRow.Survey.Id = surveyID Then
-                    sampleDefRow.RowErrorText = "Sample Not Executed Due To Hold."
-                    mSampleDefinitions.RemoveAt(i)
+                    sampleDefRow.RowErrorText = "Unable to Sample Due To Hold." ' setting the error message on the row
                 Else
                     i += 1
                 End If
+                mSampleDefinitions.RemoveAt(i) ' removing everything
             End While
         Next
 
     End Sub
 
-    Private Sub ShowHoldsDialog()
+    Private Sub ShowHoldsDialog(Optional ByVal showAlert As Boolean = False)
 
         Try
             If mHoldTable IsNot Nothing AndAlso mHoldTable.Rows.Count > 0 Then
-                Dim holdDialog As New HoldsDialog(mHoldTable)
+                Dim holdDialog As New HoldsDialog(mHoldTable, showAlert)
                 holdDialog.ShowDialog()
             Else
                 MessageBox.Show("No Holds to show", "Holds", MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
 
         Catch ex As Exception
-            Globals.ReportException(ex)
+            ReportException(ex)
         End Try
 
     End Sub

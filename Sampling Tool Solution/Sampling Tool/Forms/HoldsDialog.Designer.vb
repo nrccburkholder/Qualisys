@@ -46,7 +46,10 @@ Partial Class HoldsDialog
         Me.DataGridViewTextBoxColumn20 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.DataGridViewTextBoxColumn21 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.DataGridViewTextBoxColumn22 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.pbAlert = New System.Windows.Forms.PictureBox()
+        Me.lblAlertMessage = New System.Windows.Forms.Label()
         CType(Me.dgvHolds, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbAlert, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'mPaneCaption
@@ -288,10 +291,33 @@ Partial Class HoldsDialog
         Me.DataGridViewTextBoxColumn22.ReadOnly = True
         Me.DataGridViewTextBoxColumn22.Width = 90
         '
+        'pbAlert
+        '
+        Me.pbAlert.ErrorImage = Nothing
+        Me.pbAlert.Image = Global.Nrc.Qualisys.SamplingTool.My.Resources.Resources.Error_32x32
+        Me.pbAlert.Location = New System.Drawing.Point(39, 207)
+        Me.pbAlert.Name = "pbAlert"
+        Me.pbAlert.Size = New System.Drawing.Size(32, 32)
+        Me.pbAlert.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.pbAlert.TabIndex = 8
+        Me.pbAlert.TabStop = False
+        '
+        'lblAlertMessage
+        '
+        Me.lblAlertMessage.AutoSize = True
+        Me.lblAlertMessage.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblAlertMessage.Location = New System.Drawing.Point(77, 223)
+        Me.lblAlertMessage.Name = "lblAlertMessage"
+        Me.lblAlertMessage.Size = New System.Drawing.Size(55, 16)
+        Me.lblAlertMessage.TabIndex = 9
+        Me.lblAlertMessage.Text = "Label1"
+        '
         'HoldsDialog
         '
         Me.Caption = "Holds"
         Me.ClientSize = New System.Drawing.Size(870, 262)
+        Me.Controls.Add(Me.lblAlertMessage)
+        Me.Controls.Add(Me.pbAlert)
         Me.Controls.Add(Me.lblInfo)
         Me.Controls.Add(Me.dgvHolds)
         Me.Controls.Add(Me.btnOK)
@@ -300,7 +326,10 @@ Partial Class HoldsDialog
         Me.Controls.SetChildIndex(Me.btnOK, 0)
         Me.Controls.SetChildIndex(Me.dgvHolds, 0)
         Me.Controls.SetChildIndex(Me.lblInfo, 0)
+        Me.Controls.SetChildIndex(Me.pbAlert, 0)
+        Me.Controls.SetChildIndex(Me.lblAlertMessage, 0)
         CType(Me.dgvHolds, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbAlert, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -330,5 +359,7 @@ Partial Class HoldsDialog
     Friend WithEvents DataGridViewTextBoxColumn20 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents DataGridViewTextBoxColumn21 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents DataGridViewTextBoxColumn22 As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents pbAlert As System.Windows.Forms.PictureBox
+    Friend WithEvents lblAlertMessage As System.Windows.Forms.Label
 
 End Class
