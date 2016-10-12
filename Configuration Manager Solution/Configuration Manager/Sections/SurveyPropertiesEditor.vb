@@ -108,6 +108,12 @@ Public Class SurveyPropertiesEditor
 
             UseUSPSAddrChangeServiceCheckBox.Checked = survey.UseUSPSAddrChangeServiceDefault
 
+            HandoutCheckBox.Visible = survey.HandoutsPermitted
+            HandoutLabel.Visible = survey.HandoutsPermitted
+
+            PointInTimeCheckBox.Visible = Not survey.PointInTimeDisallowed
+            PointInTimeLabel.Visible = Not survey.PointInTimeDisallowed
+
             previousSurveyTypeIndex = SurveyTypeComboBox.SelectedIndex
 
         Catch ex As System.InvalidCastException
@@ -453,10 +459,12 @@ Public Class SurveyPropertiesEditor
             ContractedLanguagesListBox.Visible = False
         End If
 
-        PointInTimeCheckBox.Visible = Not mModule.EditingSurvey.PointInTimeDisallowed
-        HandoutCheckBox.Visible = mModule.EditingSurvey.HandoutsPermitted
-        PointInTimeLabel.Visible = Not mModule.EditingSurvey.PointInTimeDisallowed
-        HandoutLabel.Visible = mModule.EditingSurvey.HandoutsPermitted
+        If mModule.EditingSurvey.Id <> 0 Then
+            PointInTimeCheckBox.Visible = Not mModule.EditingSurvey.PointInTimeDisallowed
+            HandoutCheckBox.Visible = mModule.EditingSurvey.HandoutsPermitted
+            PointInTimeLabel.Visible = Not mModule.EditingSurvey.PointInTimeDisallowed
+            HandoutLabel.Visible = mModule.EditingSurvey.HandoutsPermitted
+        End If
 
         UseUSPSAddrChangeServiceCheckBox.Checked = mModule.EditingSurvey.UseUSPSAddrChangeService
         HandoutCheckBox.Checked = mModule.EditingSurvey.IsHandout
