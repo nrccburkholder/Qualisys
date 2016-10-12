@@ -1,6 +1,7 @@
 Imports Nrc.Qualisys.Library
 Imports Nrc.Qualisys.SamplingTool.ODSDBDataAccess
 Imports System.Linq
+Imports System.Data.SqlClient
 
 Public Class NewSampleDefinition
 
@@ -974,7 +975,6 @@ Public Class NewSampleDefinition
         mHoldTable = Nothing
         mHoldTable = New DataTable()
 
-
         Dim clientid As Integer = surveys(0).Study.ClientId
         Dim clientName As String = surveys(0).Study.Client.Name
 
@@ -1005,7 +1005,6 @@ Public Class NewSampleDefinition
 
     Private Sub AddNameColumns()
         Dim column As DataColumn
-
 
         column = New DataColumn
         With column
@@ -1111,18 +1110,6 @@ Public Class NewSampleDefinition
     Private Sub ShowHoldsDialog()
 
         Try
-            Dim studyid As Integer = mSurveys(0).StudyId
-            Dim clientid As Integer = mSurveys(0).Study.ClientId
-
-            Dim surveyList As New List(Of String)
-
-            For Each svy As Survey In mSurveys
-                surveyList.Add(svy.Id.ToString())
-
-            Next
-
-            PopulateHoldTable(mSurveys)
-
             If mHoldTable IsNot Nothing AndAlso mHoldTable.Rows.Count > 0 Then
                 Dim holdDialog As New HoldsDialog(mHoldTable)
                 holdDialog.ShowDialog()
