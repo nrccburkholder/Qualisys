@@ -1,6 +1,6 @@
 /*
 
-S59_ATL-906 Create Handout and PointInTime flag fields.sql
+S59_ATL-906 Create Handout and PointInTime flag fields - Rollback.sql
 
 Chris Burkholder
 
