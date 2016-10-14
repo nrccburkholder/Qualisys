@@ -41,7 +41,7 @@ Public Class HoldsDialog
             .Columns("HoldReason").DisplayIndex = 8
             .Columns("HoldStatus").DisplayIndex = 9
             .Columns("TicketNumber").DisplayIndex = 10
-            .Columns("Requester").DisplayIndex = 11
+            .Columns("RequesterID").DisplayIndex = 11
             .Columns("CompletionDate").DisplayIndex = 12
             .Columns("DateCreated").DisplayIndex = 13
             .Columns("DateModified").DisplayIndex = 14
@@ -53,7 +53,7 @@ Public Class HoldsDialog
             .Columns("EncounterHoldDate").HeaderText = "Encounter Hold Date"
             .Columns("HoldReason").HeaderText = "Reason"
             .Columns("HoldStatus").HeaderText = "Status"
-            .Columns("Requester").HeaderText = "Requestor"
+            .Columns("RequesterID").HeaderText = "Requestor"
             .Columns("DateCreated").HeaderText = "Created"
 
             .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells
@@ -63,7 +63,6 @@ Public Class HoldsDialog
             .Columns("StudyID").Visible = False
             .Columns("SurveyID").Visible = False
             .Columns("TicketNumber").Visible = False
-            .Columns("RequesterID").Visible = False
             .Columns("CompletionDate").Visible = False
             .Columns("DateModified").Visible = False
 
