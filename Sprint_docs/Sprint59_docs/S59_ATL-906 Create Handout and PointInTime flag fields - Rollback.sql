@@ -10,13 +10,15 @@ Create Handout and PointInTime flag fields on the Survey definition table
 
 select top 1 * from survey_def
 
-EXEC sp_helptext 'dbo.QCL_InsertSurvey'
-EXEC sp_helptext 'dbo.QCL_SelectClientGroupsClientsStudysAndSurveysByUser'
-EXEC sp_helptext 'dbo.QCL_SelectClientsStudiesAndSurveysByUser'
-EXEC sp_helptext 'dbo.QCL_SelectSurvey'
-EXEC sp_helptext 'dbo.QCL_SelectSurveysByStudyId'
-EXEC sp_helptext 'dbo.QCL_SelectSurveysBySurveyTypeMailOnly'
-EXEC sp_helptext 'dbo.QCL_UpdateSurvey'
+INSERT INTO QUALPRO_PARAMS
+
+ALTER PROCEDURE 'dbo.QCL_InsertSurvey'
+ALTER PROCEDURE 'dbo.QCL_SelectClientGroupsClientsStudysAndSurveysByUser'
+ALTER PROCEDURE 'dbo.QCL_SelectClientsStudiesAndSurveysByUser'
+ALTER PROCEDURE 'dbo.QCL_SelectSurvey'
+ALTER PROCEDURE 'dbo.QCL_SelectSurveysByStudyId'
+ALTER PROCEDURE 'dbo.QCL_SelectSurveysBySurveyTypeMailOnly'
+ALTER PROCEDURE 'dbo.QCL_UpdateSurvey'
 
 */
 
