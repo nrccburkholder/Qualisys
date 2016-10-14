@@ -6,6 +6,12 @@
 
 	Update ClientGroups.AllowAutoSample = 1 for OCS
 
+	ALTER PROCEDURE [dbo].[QCL_SelectAllClientGroups]
+	ALTER PROCEDURE [dbo].[QCL_SelectClientGroup]
+	ALTER PROCEDURE [dbo].[QCL_SelectClientGroupsAndClientsByUser] 
+	ALTER PROCEDURE [dbo].[QCL_SelectClientGroupsClientsAndStudiesByUser]
+	ALTER PROCEDURE [dbo].[QCL_SelectClientGroupsClientsStudysAndSurveysByUser] 
+
 */
 
 
