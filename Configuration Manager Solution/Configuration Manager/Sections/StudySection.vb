@@ -140,7 +140,7 @@ Public Class StudySection
             UseProperCaseCheckBox.Checked = .UseProperCase
             InActivateCheckBox.Checked = Not .IsActive
             UseAutoSample.Checked = .IsAutoSample
-            UseAutoSample.Enabled = (Not IsNothing(.Client.ClientGroup)) AndAlso (.Client.ClientGroup.Name.ToUpper() = "OCS")
+            UseAutoSample.Enabled = (Not IsNothing(.Client.ClientGroup)) AndAlso (.Client.ClientGroup.IsAllowAutoSample = True)
         End With
 
 

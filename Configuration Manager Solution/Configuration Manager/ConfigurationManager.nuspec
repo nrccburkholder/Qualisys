@@ -3,7 +3,7 @@
   <metadata>
     <id>Qualisys.ConfigurationManager</id>
     <title>Configuration Manager</title>
-    <version>4.11.2.0</version>
+    <version>4.11.3.0</version>
     <authors>NRC</authors>
     <description>GUI for managing study/survey setup and configuration</description>
   </metadata>
