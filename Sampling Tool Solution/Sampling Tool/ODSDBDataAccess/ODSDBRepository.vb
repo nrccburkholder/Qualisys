@@ -28,7 +28,7 @@ Namespace ODSDBDataAccess
                                                 "SurveyID, " &
                                                 "CAST(EncounterHoldDate as date) EncounterHoldDate,HoldReason,hst.HoldDescription HoldStatus," &
                                                 "TicketNumber," &
-                                                "RequesterID, Requester, CompletionDate, " &
+                                                "RequesterID, CompletionDate, " &
                                                 "CAST(DateCreated as datetime) DateCreated, CAST(DateModified as datetime)DateModified " &
                                                 "FROM odsdb.dbo.HoldSurveys hss " &
                                                 "INNER JOIN odsdb.dbo.Holds hs on hss.HoldID = hs.HoldID " &
