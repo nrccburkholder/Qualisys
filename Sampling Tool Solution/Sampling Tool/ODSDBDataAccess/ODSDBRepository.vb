@@ -61,7 +61,7 @@ Namespace ODSDBDataAccess
 
             Dim o As Object = Me.ExecuteScalar(query, CommandType.Text)
 
-            If o IsNot Nothing Then
+            If Not IsDBNull(o) Then
                 Return Convert.ToDateTime(o)
             Else
                 Return Date.MinValue
