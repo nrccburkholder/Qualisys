@@ -39,6 +39,7 @@ AS
 -- Modified by TSB 08/09/2016: S55 ATL-683 DRG Update Rollback Process - modified to write DataFile_id to HCAHPSUpdateLog table.
 -- Modified by TSB 09/23/2016:  commented out section that updates non-sampled records as per Dana Petersen  
 -- Modified by TSB 10/17/2016:  S60 ATL-974 DRG Update/Rollback modification -- change date comparison on SubmissionDateClose
+-- Modified by TSB 10/17/2016:  S60 ATL-974 DRG Update/Rollback modification -- added code to prevent update on records with discharge/service dates older than 1/1/2016
                       
 DECLARE @MCond varchar(200), @LTime datetime, @DataMart varchar(50)                      
 DECLARE @Owner varchar(10), @Sql varchar(8000), @Now datetime, @BTableName varchar(100), @Server VARCHAR(20)                      
@@ -46,7 +47,8 @@ declare @FieldExists smallint, @FieldExists2 smallint, @FieldExists3 smallint
                   
 declare @VarOwner varchar(50)                    
 declare @varBTableName varchar(100)                    
-declare @myRowCount int    
+declare @myRowCount int   
+declare @dropDeadDate date = '2016-01-01'  -- records older than this date cannot be updated 
                   
 SET @Owner = 'S'+RTRIM(LTRIM(STR(@Study_ID)))                      
 SET @Server = (SELECT strparam_value from qualpro_params where strparam_nm = 'QLoader')                      
@@ -200,6 +202,51 @@ begin
 	END  
 
 end
+
+
+-- ****************************** Check to see if #Work has records older than 1/1/2106 - we don't want to allow these to be updated. ************************    
+
+	SET @Sql = 'UPDATE w ' +
+	' SET IsPastSubmission = 1 ' + 
+	'FROM #Work w ' + 
+	'WHERE IsPastSubmission = 0 ' +
+	'AND Convert(Date,ISNULL(w.DischargeDate,w.ServiceDate)) < ''' + Convert(varchar,@dropDeadDate) + ''''
+
+EXEC (@Sql)
+    
+set @myRowCount = @@ROWCOUNT    
+                      
+PRINT LTRIM(STR(@myRowCount)) +' check for records that too old to update.'                      
+insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  @DRGOption+': Records not applied because they are older than ' + Convert(varchar,@dropDeadDate) +':' + LTRIM(STR(@myRowCount)) 
+
+if @myRowCount > 0
+begin
+	
+	IF EXISTS (SELECT 1 FROM #Work WHERE isPastSubmission = 1 and DischargeDate is not null and ServiceDate is null)
+	BEGIN
+
+		SELECT @myRowCount = count(*) FROM #Work WHERE isPastSubmission = 1 and DischargeDate is not null and ServiceDate is null
+
+		INSERT INTO #Log (RecordType, RecordsValue) Select @DRGOption +': Records not applied because DischargeDate is older than ' + Convert(varchar,@dropDeadDate) +':',  LTRIM(STR(@myRowCount))
+	END
+
+	IF EXISTS (SELECT 1 FROM #Work WHERE isPastSubmission = 1 and ServiceDate is not null and DischargeDate is null)
+	BEGIN
+
+		SELECT @myRowCount = count(*) FROM #Work WHERE isPastSubmission = 1 and ServiceDate is not null and DischargeDate is null
+
+		INSERT INTO #Log (RecordType, RecordsValue) Select @DRGOption +': Records not applied because ServiceDate is older than ' + Convert(varchar,@dropDeadDate) +':',  LTRIM(STR(@myRowCount))
+	END
+
+	IF EXISTS (SELECT 1 FROM #Work WHERE isPastSubmission = 1 and DischargeDate is not null and ServiceDate is not null)
+	BEGIN
+
+		SELECT @myRowCount = count(*) FROM #Work WHERE isPastSubmission = 1 and DischargeDate is not null and ServiceDate is not null
+
+		INSERT INTO #Log (RecordType, RecordsValue) Select @DRGOption +': Records not applied because DischargeDate is older than ' + Convert(varchar,@dropDeadDate) +'.<br>(Study also contains a ServiceDate field, which was ignored):',  LTRIM(STR(@myRowCount))
+	END  
+
+end
 	
 -- Now delete those records past the submission date from the #Work table because we don't want to update them	
     
@@ -217,6 +264,15 @@ end
 
 EXEC (@Sql)
 
+
+	SET @Sql = 'UPDATE w ' +
+	' SET IsPastSubmission = 1 ' + 
+	'FROM #CatalystWork w ' + 
+	'WHERE IsPastSubmission = 0 ' +
+	'AND Convert(Date,ISNULL(w.DischargeDate,w.ServiceDate)) < ''' + Convert(varchar,@dropDeadDate) + ''''
+
+EXEC (@Sql)
+
 -- Now delete those records past the submission date from the #CatalystWork table 	
     
 	DELETE FROM #CatalystWork
@@ -227,7 +283,7 @@ EXEC (@Sql)
 	SET @Sql = 'SELECT * ' +
 	'FROM #Work w ' + 
 	'Left JOIN dbo.CMSDataSubmissionSchedule sub on sub.[month] = DATEPART(month,ISNULL(w.DischargeDate,w.ServiceDate)) and sub.[year] = DATEPART(year,ISNULL(w.DischargeDate,w.ServiceDate)) and sub.SurveyType_id = 2 ' +
-	'WHERE sub.CMSDataSubmissionSchedule_id is null'
+	'WHERE sub.CMSDataSubmissionSchedule_id is null '
 
 EXEC (@Sql)
     
