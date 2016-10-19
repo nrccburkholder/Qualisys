@@ -17,7 +17,6 @@ publish/
 TestResults/
 FakesAssemblies/
 .metadata/
-packages/
 .recommenders/
 thumbs.db
 /Legacy/Scanner Interface/Create Definition Files/CreateDefinitionFiles.vbw
