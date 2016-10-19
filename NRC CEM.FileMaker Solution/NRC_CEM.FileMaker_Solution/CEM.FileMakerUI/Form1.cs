@@ -601,6 +601,7 @@ namespace CEM.FileMakerUI
             string connStr = ConfigurationManager.ConnectionStrings["CEMConnection"].ConnectionString.ToUpper();
 
             if (connStr.Contains("LNK0TCATSQL01")) return "TEST";
+            else if (connStr.Contains("TICATSQL01")) return "TEST";
             else if (connStr.Contains("STGCATCLUSTDB2")) return "STAGE";
             else return "PROD";
 
