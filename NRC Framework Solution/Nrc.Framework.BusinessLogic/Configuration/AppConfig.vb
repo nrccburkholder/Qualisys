@@ -141,6 +141,12 @@ Namespace Configuration
             End Get
         End Property
 
+        Public Shared ReadOnly Property ODSConnection() As String
+            Get
+                Return Params("ODSConnection").StringValue
+            End Get
+        End Property
+
 #End Region
 
 #End Region

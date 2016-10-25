@@ -19,57 +19,59 @@ Partial Class NewSampleDefinition
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
-        Me.SectionPanel3 = New Nrc.Framework.WinForms.SectionPanel
-        Me.SampleSeedSpecifiedTextBox = New System.Windows.Forms.TextBox
-        Me.SampleSeedSpecifiedLabel = New System.Windows.Forms.Label
-        Me.MoveUpButton = New System.Windows.Forms.Button
-        Me.MoveDownButton = New System.Windows.Forms.Button
-        Me.SampleStatusLabel = New System.Windows.Forms.Label
-        Me.SampleProgressBar = New System.Windows.Forms.ProgressBar
-        Me.NewSampleGridView = New System.Windows.Forms.DataGridView
+        Me.components = New System.ComponentModel.Container()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Me.SectionPanel3 = New Nrc.Framework.WinForms.SectionPanel()
+        Me.SampleSeedSpecifiedTextBox = New System.Windows.Forms.TextBox()
+        Me.SampleSeedSpecifiedLabel = New System.Windows.Forms.Label()
+        Me.MoveUpButton = New System.Windows.Forms.Button()
+        Me.MoveDownButton = New System.Windows.Forms.Button()
+        Me.SampleStatusLabel = New System.Windows.Forms.Label()
+        Me.SampleProgressBar = New System.Windows.Forms.ProgressBar()
+        Me.NewSampleGridView = New System.Windows.Forms.DataGridView()
+        Me.NewSampleSetOrderColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.NewSampleSetSurveyColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.NewSampleSetPriorityColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.NewSampleEncounterFieldColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.NewSampleSetPeriodColumn = New System.Windows.Forms.DataGridViewComboBoxColumn()
+        Me.NewSampleSetMethodColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.NewSampleSetPeriodStatusColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.NewSampleSetSpecifyDatesColumn = New System.Windows.Forms.DataGridViewCheckBoxColumn()
+        Me.NewSampleSetStartDateColumn = New Nrc.Qualisys.SamplingTool.CalendarColumn()
         Me.SampleDefinitionDatesContextMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.SampleDefinitionCopyDatesMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.SampleButton = New System.Windows.Forms.Button
-        Me.SectionPanel1 = New Nrc.Framework.WinForms.SectionPanel
-        Me.DatasetsToolStrip = New System.Windows.Forms.ToolStrip
-        Me.FilterDatasetsButton2 = New System.Windows.Forms.ToolStripButton
-        Me.DeSelectAllButton = New System.Windows.Forms.ToolStripButton
-        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
-        Me.SelectAllButton = New System.Windows.Forms.ToolStripButton
-        Me.NoDataSetsLabel = New System.Windows.Forms.Label
-        Me.DatasetGridView = New System.Windows.Forms.DataGridView
-        Me.DatasetSelectedColumn = New System.Windows.Forms.DataGridViewCheckBoxColumn
-        Me.DatasetIdColumn = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.DatasetCreationColumn = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.DatasetRecordsColumn = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.DatasetSampledColumn = New System.Windows.Forms.DataGridViewImageColumn
-        Me.SampleWorker = New System.ComponentModel.BackgroundWorker
-        Me.DataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.DataGridViewTextBoxColumn2 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.DataGridViewTextBoxColumn3 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.DataGridViewTextBoxColumn4 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.DataGridViewTextBoxColumn5 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.DataGridViewTextBoxColumn6 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.DataGridViewTextBoxColumn7 = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.CalendarColumn1 = New Nrc.Qualisys.SamplingTool.CalendarColumn
-        Me.CalendarColumn2 = New Nrc.Qualisys.SamplingTool.CalendarColumn
-        Me.NewSampleSetOrderColumn = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.NewSampleSetSurveyColumn = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.NewSampleSetPriorityColumn = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.NewSampleEncounterFieldColumn = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.NewSampleSetPeriodColumn = New System.Windows.Forms.DataGridViewComboBoxColumn
-        Me.NewSampleSetMethodColumn = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.NewSampleSetPeriodStatusColumn = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.NewSampleSetSpecifyDatesColumn = New System.Windows.Forms.DataGridViewCheckBoxColumn
-        Me.NewSampleSetStartDateColumn = New Nrc.Qualisys.SamplingTool.CalendarColumn
-        Me.NewSampleSetEndDateColumn = New Nrc.Qualisys.SamplingTool.CalendarColumn
+        Me.SampleDefinitionCopyDatesMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.NewSampleSetEndDateColumn = New Nrc.Qualisys.SamplingTool.CalendarColumn()
+        Me.SampleButton = New System.Windows.Forms.Button()
+        Me.SectionPanel1 = New Nrc.Framework.WinForms.SectionPanel()
+        Me.DatasetsToolStrip = New System.Windows.Forms.ToolStrip()
+        Me.FilterDatasetsButton2 = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
+        Me.HoldStatusButton = New System.Windows.Forms.ToolStripButton()
+        Me.DeSelectAllButton = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.SelectAllButton = New System.Windows.Forms.ToolStripButton()
+        Me.NoDataSetsLabel = New System.Windows.Forms.Label()
+        Me.DatasetGridView = New System.Windows.Forms.DataGridView()
+        Me.DatasetSelectedColumn = New System.Windows.Forms.DataGridViewCheckBoxColumn()
+        Me.DatasetIdColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DatasetCreationColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DatasetRecordsColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DatasetSampledColumn = New System.Windows.Forms.DataGridViewImageColumn()
+        Me.SampleWorker = New System.ComponentModel.BackgroundWorker()
+        Me.DataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataGridViewTextBoxColumn2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataGridViewTextBoxColumn3 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataGridViewTextBoxColumn4 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataGridViewTextBoxColumn5 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataGridViewTextBoxColumn6 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataGridViewTextBoxColumn7 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.CalendarColumn1 = New Nrc.Qualisys.SamplingTool.CalendarColumn()
+        Me.CalendarColumn2 = New Nrc.Qualisys.SamplingTool.CalendarColumn()
         Me.SectionPanel3.SuspendLayout()
         CType(Me.NewSampleGridView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SampleDefinitionDatesContextMenu.SuspendLayout()
@@ -81,8 +83,8 @@ Partial Class NewSampleDefinition
         'SectionPanel3
         '
         Me.SectionPanel3.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.SectionPanel3.BorderColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(45, Byte), Integer), CType(CType(150, Byte), Integer))
         Me.SectionPanel3.Caption = "Sample Definition"
         Me.SectionPanel3.Controls.Add(Me.SampleSeedSpecifiedTextBox)
@@ -167,8 +169,8 @@ Partial Class NewSampleDefinition
         DataGridViewCellStyle1.BackColor = System.Drawing.Color.WhiteSmoke
         Me.NewSampleGridView.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.NewSampleGridView.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control
         DataGridViewCellStyle2.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -197,6 +199,76 @@ Partial Class NewSampleDefinition
         Me.NewSampleGridView.Size = New System.Drawing.Size(633, 201)
         Me.NewSampleGridView.TabIndex = 11
         '
+        'NewSampleSetOrderColumn
+        '
+        Me.NewSampleSetOrderColumn.HeaderText = "Order"
+        Me.NewSampleSetOrderColumn.Name = "NewSampleSetOrderColumn"
+        Me.NewSampleSetOrderColumn.ReadOnly = True
+        Me.NewSampleSetOrderColumn.Width = 50
+        '
+        'NewSampleSetSurveyColumn
+        '
+        Me.NewSampleSetSurveyColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        Me.NewSampleSetSurveyColumn.HeaderText = "Survey"
+        Me.NewSampleSetSurveyColumn.Name = "NewSampleSetSurveyColumn"
+        Me.NewSampleSetSurveyColumn.ReadOnly = True
+        Me.NewSampleSetSurveyColumn.Width = 66
+        '
+        'NewSampleSetPriorityColumn
+        '
+        Me.NewSampleSetPriorityColumn.HeaderText = "Priority"
+        Me.NewSampleSetPriorityColumn.Name = "NewSampleSetPriorityColumn"
+        Me.NewSampleSetPriorityColumn.ReadOnly = True
+        Me.NewSampleSetPriorityColumn.Width = 50
+        '
+        'NewSampleEncounterFieldColumn
+        '
+        Me.NewSampleEncounterFieldColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        Me.NewSampleEncounterFieldColumn.HeaderText = "Sample Encounter Date"
+        Me.NewSampleEncounterFieldColumn.Name = "NewSampleEncounterFieldColumn"
+        Me.NewSampleEncounterFieldColumn.ReadOnly = True
+        Me.NewSampleEncounterFieldColumn.Width = 144
+        '
+        'NewSampleSetPeriodColumn
+        '
+        Me.NewSampleSetPeriodColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        Me.NewSampleSetPeriodColumn.HeaderText = "Period"
+        Me.NewSampleSetPeriodColumn.Name = "NewSampleSetPeriodColumn"
+        Me.NewSampleSetPeriodColumn.Width = 43
+        '
+        'NewSampleSetMethodColumn
+        '
+        Me.NewSampleSetMethodColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        Me.NewSampleSetMethodColumn.HeaderText = "Sampling Method"
+        Me.NewSampleSetMethodColumn.Name = "NewSampleSetMethodColumn"
+        Me.NewSampleSetMethodColumn.ReadOnly = True
+        Me.NewSampleSetMethodColumn.Width = 113
+        '
+        'NewSampleSetPeriodStatusColumn
+        '
+        Me.NewSampleSetPeriodStatusColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader
+        Me.NewSampleSetPeriodStatusColumn.HeaderText = "Sample Count"
+        Me.NewSampleSetPeriodStatusColumn.Name = "NewSampleSetPeriodStatusColumn"
+        Me.NewSampleSetPeriodStatusColumn.ReadOnly = True
+        Me.NewSampleSetPeriodStatusColumn.Width = 98
+        '
+        'NewSampleSetSpecifyDatesColumn
+        '
+        Me.NewSampleSetSpecifyDatesColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader
+        Me.NewSampleSetSpecifyDatesColumn.HeaderText = "Specify Dates"
+        Me.NewSampleSetSpecifyDatesColumn.Name = "NewSampleSetSpecifyDatesColumn"
+        Me.NewSampleSetSpecifyDatesColumn.Width = 79
+        '
+        'NewSampleSetStartDateColumn
+        '
+        Me.NewSampleSetStartDateColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        Me.NewSampleSetStartDateColumn.ContextMenuStrip = Me.SampleDefinitionDatesContextMenu
+        Me.NewSampleSetStartDateColumn.HeaderText = "Start Date"
+        Me.NewSampleSetStartDateColumn.Name = "NewSampleSetStartDateColumn"
+        Me.NewSampleSetStartDateColumn.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.NewSampleSetStartDateColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
+        Me.NewSampleSetStartDateColumn.Width = 82
+        '
         'SampleDefinitionDatesContextMenu
         '
         Me.SampleDefinitionDatesContextMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SampleDefinitionCopyDatesMenuItem})
@@ -208,6 +280,16 @@ Partial Class NewSampleDefinition
         Me.SampleDefinitionCopyDatesMenuItem.Name = "SampleDefinitionCopyDatesMenuItem"
         Me.SampleDefinitionCopyDatesMenuItem.Size = New System.Drawing.Size(164, 22)
         Me.SampleDefinitionCopyDatesMenuItem.Text = "Copy to All Rows"
+        '
+        'NewSampleSetEndDateColumn
+        '
+        Me.NewSampleSetEndDateColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        Me.NewSampleSetEndDateColumn.ContextMenuStrip = Me.SampleDefinitionDatesContextMenu
+        Me.NewSampleSetEndDateColumn.HeaderText = "End Date"
+        Me.NewSampleSetEndDateColumn.Name = "NewSampleSetEndDateColumn"
+        Me.NewSampleSetEndDateColumn.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.NewSampleSetEndDateColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
+        Me.NewSampleSetEndDateColumn.Width = 76
         '
         'SampleButton
         '
@@ -221,13 +303,12 @@ Partial Class NewSampleDefinition
         '
         'SectionPanel1
         '
-        Me.SectionPanel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.SectionPanel1.BorderColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(45, Byte), Integer), CType(CType(150, Byte), Integer))
         Me.SectionPanel1.Caption = "Datasets Available for Sampling"
         Me.SectionPanel1.Controls.Add(Me.DatasetsToolStrip)
         Me.SectionPanel1.Controls.Add(Me.NoDataSetsLabel)
         Me.SectionPanel1.Controls.Add(Me.DatasetGridView)
+        Me.SectionPanel1.Dock = System.Windows.Forms.DockStyle.Top
         Me.SectionPanel1.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.SectionPanel1.Location = New System.Drawing.Point(0, 0)
         Me.SectionPanel1.Name = "SectionPanel1"
@@ -238,7 +319,7 @@ Partial Class NewSampleDefinition
         '
         'DatasetsToolStrip
         '
-        Me.DatasetsToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FilterDatasetsButton2, Me.DeSelectAllButton, Me.ToolStripSeparator1, Me.SelectAllButton})
+        Me.DatasetsToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FilterDatasetsButton2, Me.ToolStripSeparator2, Me.HoldStatusButton, Me.DeSelectAllButton, Me.ToolStripSeparator1, Me.SelectAllButton})
         Me.DatasetsToolStrip.Location = New System.Drawing.Point(1, 27)
         Me.DatasetsToolStrip.Name = "DatasetsToolStrip"
         Me.DatasetsToolStrip.Size = New System.Drawing.Size(673, 25)
@@ -254,6 +335,20 @@ Partial Class NewSampleDefinition
         Me.FilterDatasetsButton2.Size = New System.Drawing.Size(23, 22)
         Me.FilterDatasetsButton2.Text = "ToolStripButton1"
         Me.FilterDatasetsButton2.ToolTipText = "Apply Filter"
+        '
+        'ToolStripSeparator2
+        '
+        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(6, 25)
+        '
+        'HoldStatusButton
+        '
+        Me.HoldStatusButton.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.HoldStatusButton.Image = Global.Nrc.Qualisys.SamplingTool.My.Resources.Resources.Caution16
+        Me.HoldStatusButton.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.HoldStatusButton.Name = "HoldStatusButton"
+        Me.HoldStatusButton.Size = New System.Drawing.Size(91, 22)
+        Me.HoldStatusButton.Text = "Hold Status"
         '
         'DeSelectAllButton
         '
@@ -299,8 +394,8 @@ Partial Class NewSampleDefinition
         DataGridViewCellStyle4.BackColor = System.Drawing.Color.WhiteSmoke
         Me.DatasetGridView.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
         Me.DatasetGridView.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.DatasetGridView.BackgroundColor = System.Drawing.SystemColors.Control
         Me.DatasetGridView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
@@ -436,86 +531,6 @@ Partial Class NewSampleDefinition
         Me.CalendarColumn2.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
         Me.CalendarColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
         '
-        'NewSampleSetOrderColumn
-        '
-        Me.NewSampleSetOrderColumn.HeaderText = "Order"
-        Me.NewSampleSetOrderColumn.Name = "NewSampleSetOrderColumn"
-        Me.NewSampleSetOrderColumn.ReadOnly = True
-        Me.NewSampleSetOrderColumn.Width = 50
-        '
-        'NewSampleSetSurveyColumn
-        '
-        Me.NewSampleSetSurveyColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        Me.NewSampleSetSurveyColumn.HeaderText = "Survey"
-        Me.NewSampleSetSurveyColumn.Name = "NewSampleSetSurveyColumn"
-        Me.NewSampleSetSurveyColumn.ReadOnly = True
-        Me.NewSampleSetSurveyColumn.Width = 66
-        '
-        'NewSampleSetPriorityColumn
-        '
-        Me.NewSampleSetPriorityColumn.HeaderText = "Priority"
-        Me.NewSampleSetPriorityColumn.Name = "NewSampleSetPriorityColumn"
-        Me.NewSampleSetPriorityColumn.ReadOnly = True
-        Me.NewSampleSetPriorityColumn.Width = 50
-        '
-        'NewSampleEncounterFieldColumn
-        '
-        Me.NewSampleEncounterFieldColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        Me.NewSampleEncounterFieldColumn.HeaderText = "Sample Encounter Date"
-        Me.NewSampleEncounterFieldColumn.Name = "NewSampleEncounterFieldColumn"
-        Me.NewSampleEncounterFieldColumn.ReadOnly = True
-        Me.NewSampleEncounterFieldColumn.Width = 144
-        '
-        'NewSampleSetPeriodColumn
-        '
-        Me.NewSampleSetPeriodColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        Me.NewSampleSetPeriodColumn.HeaderText = "Period"
-        Me.NewSampleSetPeriodColumn.Name = "NewSampleSetPeriodColumn"
-        Me.NewSampleSetPeriodColumn.Width = 43
-        '
-        'NewSampleSetMethodColumn
-        '
-        Me.NewSampleSetMethodColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        Me.NewSampleSetMethodColumn.HeaderText = "Sampling Method"
-        Me.NewSampleSetMethodColumn.Name = "NewSampleSetMethodColumn"
-        Me.NewSampleSetMethodColumn.ReadOnly = True
-        Me.NewSampleSetMethodColumn.Width = 113
-        '
-        'NewSampleSetPeriodStatusColumn
-        '
-        Me.NewSampleSetPeriodStatusColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader
-        Me.NewSampleSetPeriodStatusColumn.HeaderText = "Sample Count"
-        Me.NewSampleSetPeriodStatusColumn.Name = "NewSampleSetPeriodStatusColumn"
-        Me.NewSampleSetPeriodStatusColumn.ReadOnly = True
-        Me.NewSampleSetPeriodStatusColumn.Width = 98
-        '
-        'NewSampleSetSpecifyDatesColumn
-        '
-        Me.NewSampleSetSpecifyDatesColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader
-        Me.NewSampleSetSpecifyDatesColumn.HeaderText = "Specify Dates"
-        Me.NewSampleSetSpecifyDatesColumn.Name = "NewSampleSetSpecifyDatesColumn"
-        Me.NewSampleSetSpecifyDatesColumn.Width = 79
-        '
-        'NewSampleSetStartDateColumn
-        '
-        Me.NewSampleSetStartDateColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        Me.NewSampleSetStartDateColumn.ContextMenuStrip = Me.SampleDefinitionDatesContextMenu
-        Me.NewSampleSetStartDateColumn.HeaderText = "Start Date"
-        Me.NewSampleSetStartDateColumn.Name = "NewSampleSetStartDateColumn"
-        Me.NewSampleSetStartDateColumn.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.NewSampleSetStartDateColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
-        Me.NewSampleSetStartDateColumn.Width = 82
-        '
-        'NewSampleSetEndDateColumn
-        '
-        Me.NewSampleSetEndDateColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
-        Me.NewSampleSetEndDateColumn.ContextMenuStrip = Me.SampleDefinitionDatesContextMenu
-        Me.NewSampleSetEndDateColumn.HeaderText = "End Date"
-        Me.NewSampleSetEndDateColumn.Name = "NewSampleSetEndDateColumn"
-        Me.NewSampleSetEndDateColumn.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.NewSampleSetEndDateColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
-        Me.NewSampleSetEndDateColumn.Width = 76
-        '
         'NewSampleDefinition
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -580,5 +595,7 @@ Partial Class NewSampleDefinition
     Friend WithEvents NewSampleSetSpecifyDatesColumn As System.Windows.Forms.DataGridViewCheckBoxColumn
     Friend WithEvents NewSampleSetStartDateColumn As Nrc.Qualisys.SamplingTool.CalendarColumn
     Friend WithEvents NewSampleSetEndDateColumn As Nrc.Qualisys.SamplingTool.CalendarColumn
+    Friend WithEvents HoldStatusButton As System.Windows.Forms.ToolStripButton
+    Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
 
 End Class

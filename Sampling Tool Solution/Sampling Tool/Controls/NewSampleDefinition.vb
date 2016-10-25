@@ -1,15 +1,22 @@
 Imports Nrc.Qualisys.Library
+Imports Nrc.Qualisys.SamplingTool.ODSDBDataAccess
+Imports System.Linq
+Imports System.Data.SqlClient
 
 Public Class NewSampleDefinition
 
     Private mSurveys As Collection(Of Survey)
     Private mIsSampling As Boolean
     Private mIsClearing As Boolean = False
+    Private mHoldTable As DataTable
+    Private mIsHoldsAccessible As Boolean = True
 
     Private dragBoxFromMouseDown As Rectangle
     Private rowIndexFromMouseDown As Integer
     Private rowUnderDrag As DataGridViewRow
     Private mSampleDefinitions As Collection(Of SampleDefinition)
+    Private mIsActiveHold As Boolean = False
+    Private odsdb As ODSDBRepository
 
     Private WithEvents mDataSetFilterStartDate As ToolStripDateTimePicker
     Private WithEvents mDataSetFilterEndDate As ToolStripDateTimePicker
@@ -21,6 +28,8 @@ Public Class NewSampleDefinition
 
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
+
+        odsdb = New ODSDBRepository()
 
         ' Add any initialization after the InitializeComponent() call.
         Me.InitializeDataSetToolStrip()
@@ -45,11 +54,12 @@ Public Class NewSampleDefinition
 
     Private ReadOnly Property IsSamplingButtonEnabled() As Boolean
         Get
-            Return Me.GetSelectedDatasets.Count > 0
+            Return Me.GetSelectedDatasets.Count > 0 And mIsHoldsAccessible = True
         End Get
     End Property
 
 #End Region
+
 
 #Region " Public Methods "
 
@@ -58,9 +68,23 @@ Public Class NewSampleDefinition
         'Store the survey list
         Me.mSurveys = surveys
 
+        If mHoldTable IsNot Nothing Then
+            mHoldTable.Clear()
+        End If
+
         'Populate dataset list
         If mSurveys.Count > 0 Then
+
+            'Populate the HoldSheet datatable for selected surveys
+            Try
+                PopulateHoldTable(mSurveys)
+            Catch ex As Exception
+                ReportException(ex)
+            End Try
+
+
             Me.PopulateDatasets(mSurveys(0).Study)
+
         Else
             Me.DatasetGridView.Rows.Clear()
             Me.SampleButton.Enabled = False
@@ -69,6 +93,8 @@ Public Class NewSampleDefinition
 
         'Populate existing sample set list
         Me.PopulateNewSampleSets(mSurveys)
+
+        SetHoldStatusButton()
 
     End Sub
 
@@ -143,6 +169,32 @@ Public Class NewSampleDefinition
                 mSampleDefinitions.Add(sampleDef)
             End If
         Next
+
+
+        'check the SampleDefinitions to see if there is a holdlock
+
+        Try
+            Dim holdSampleDefs As New List(Of SampleDefinition)
+            For Each sampleDef In mSampleDefinitions
+                Dim encounterHoldDate As Date = GetMinEncounterHoldDate(sampleDef.Survey)
+                If encounterHoldDate <> Date.MinValue Then
+                    If sampleDef.StartDate >= encounterHoldDate Or sampleDef.EndDate >= encounterHoldDate Then
+                        ' this one cannot be sampled
+                        holdSampleDefs.Add(sampleDef)
+                    End If
+                End If
+            Next
+
+            If holdSampleDefs.Count > 0 Then
+                ' there is a hold lock on one or more sampledefinitions
+                ShowHoldsDialog(True)
+                RemoveOnHoldSamplesFromSampleDefinitions(holdSampleDefs)
+            End If
+        Catch ex As Exception
+            ReportException(ex)
+            Exit Sub
+        End Try
+
 
         'If we have any locked samples then show them and remove them from the
         '  mSampleDefinitions collection so that they don't get sampled.
@@ -460,6 +512,10 @@ Public Class NewSampleDefinition
 
     End Sub
 
+    Private Sub HoldStatusButton_Click(sender As Object, e As EventArgs) Handles HoldStatusButton.Click
+        ShowHoldsDialog()
+    End Sub
+
 #Region " NewSampleGridView Drag and Drop"
 
     Private Sub NewSampleGridView_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles NewSampleGridView.MouseMove
@@ -609,6 +665,11 @@ Public Class NewSampleDefinition
 
         'Readd the filter button
         Me.DatasetsToolStrip.Items.Add(Me.FilterDatasetsButton2)
+
+        Me.DatasetsToolStrip.Items.Add(Me.ToolStripSeparator2)
+        Me.HoldStatusButton.Text = String.Empty
+        Me.HoldStatusButton.Image = Nothing
+        Me.DatasetsToolStrip.Items.Add(Me.HoldStatusButton)
 
         Me.DatasetsToolStrip.Items.Add(Me.DeSelectAllButton)
         Me.DatasetsToolStrip.Items.Add(Me.ToolStripSeparator1)
@@ -905,7 +966,168 @@ Public Class NewSampleDefinition
         Return -1
     End Function
 
+#Region "hold sheet stuff"
+
+    Private Sub PopulateHoldTable(ByVal surveys As Collection(Of Survey))
+
+        mIsHoldsAccessible = True
+        mHoldTable = Nothing
+        mHoldTable = New DataTable()
+
+        Dim clientid As Integer = surveys(0).Study.ClientId
+        Dim clientName As String = surveys(0).Study.Client.Name
+
+        Dim studyid As Integer = surveys(0).StudyId
+        Dim studyName As String = surveys(0).Study.Name
+        Dim surveyDict As New Dictionary(Of String, String)
+
+        For Each srvy As Survey In surveys
+            surveyDict.Add(srvy.Id.ToString(), srvy.Name)
+        Next
+
+        If surveyDict.Count > 0 Then
+            Try
+                mHoldTable = odsdb.GetHoldsTable(clientid, studyid, surveyDict)
+
+                If mHoldTable IsNot Nothing Then
+                    AddNameColumns()
+                    AddNameValues(clientid, clientName, studyid, studyName, surveyDict)
+                End If
+            Catch ex As Exception
+                mIsHoldsAccessible = False
+                Throw
+            End Try
+
+        End If
+
+    End Sub
+
+    Private Sub AddNameColumns()
+        Dim column As DataColumn
+
+        column = New DataColumn
+        With column
+            .DataType = System.Type.GetType("System.String")
+            .ColumnName = "ClientName"
+            .Unique = False
+        End With
+        mHoldTable.Columns.Add(column)
+
+        column = New DataColumn
+        With column
+            .DataType = System.Type.GetType("System.String")
+            .ColumnName = "StudyName"
+            .Unique = False
+        End With
+        mHoldTable.Columns.Add(column)
+
+        column = New DataColumn
+        With column
+            .DataType = System.Type.GetType("System.String")
+            .ColumnName = "SurveyName"
+            .Unique = False
+        End With
+        mHoldTable.Columns.Add(column)
+
+    End Sub
+
+    Private Sub AddNameValues(ByVal clientid As Integer, ByVal clientname As String, ByVal studyid As Integer, ByVal studyname As String, ByVal surveydict As Dictionary(Of String, String))
+
+        If mHoldTable.Rows.Count > 0 Then
+            For Each r As DataRow In mHoldTable.Rows
+
+                r("ClientName") = String.Format("{0} ({1})", clientname, clientid.ToString)
+                r("StudyName") = String.Format("{0} ({1})", studyname, studyid.ToString)
+
+                Dim surveyid As String = r("SurveyID").ToString
+
+                If surveydict.ContainsKey(surveyid) Then
+                    Dim surveyname As String = surveydict.Item(surveyid)
+                    If surveyname <> String.Empty Then
+                        r("SurveyName") = String.Format("{0} ({1})", surveyname, surveyid)
+                    End If
+                Else
+                    r("SurveyName") = surveyid.ToString
+                End If
+            Next
+        End If
+
+    End Sub
+
+    Private Function GetMinEncounterHoldDate(ByVal survey As Survey) As Date
+        Try
+            Dim studyid As Integer = survey.StudyId
+            Dim clientid As Integer = survey.Study.ClientId
+            Return odsdb.GetMinEncounterHoldDate(clientid, studyid, survey.Id)
+        Catch ex As Exception
+            Throw
+        End Try
+
+    End Function
+
+    Private Sub SetHoldStatusButton()
+
+        Me.HoldStatusButton.Text = String.Empty
+        Me.HoldStatusButton.Image = Nothing
+        Me.HoldStatusButton.Enabled = False
+
+        If mIsHoldsAccessible = True Then
+            If mHoldTable IsNot Nothing Then
+                If mHoldTable.Rows.Count > 0 Then
+                    Me.HoldStatusButton.Text = String.Format("Active Holds on this selection!")
+                    Me.HoldStatusButton.Image = My.Resources.Caution16
+                    Me.HoldStatusButton.Enabled = True
+                End If
+            End If
+        Else
+            Me.HoldStatusButton.Text = String.Format("Hold data is inaccessible!")
+            Me.HoldStatusButton.Image = My.Resources.Error16
+        End If
+
+
+    End Sub
+
+    Private Sub RemoveOnHoldSamplesFromSampleDefinitions(ByVal onHoldSamples As List(Of SampleDefinition))
+
+        For Each sampledef As SampleDefinition In onHoldSamples
+            Dim i As Integer = 0
+            Dim surveyID As Integer = sampledef.Survey.Id
+
+            While i < mSampleDefinitions.Count
+                Dim sampleDefRow As SampleDefinition = mSampleDefinitions(i)
+                If sampleDefRow.Survey.Id = surveyID Then
+                    sampleDefRow.RowErrorText = "Unable to Sample Due To Hold." ' setting the error message on the row
+                Else
+                    i += 1
+                End If
+                mSampleDefinitions.RemoveAt(i) ' removing everything
+            End While
+        Next
+
+    End Sub
+
+    Private Sub ShowHoldsDialog(Optional ByVal showAlert As Boolean = False)
+
+        Try
+            If mHoldTable IsNot Nothing AndAlso mHoldTable.Rows.Count > 0 Then
+                Dim holdDialog As New HoldsDialog(mHoldTable, showAlert)
+                holdDialog.ShowDialog()
+            Else
+                MessageBox.Show("No Holds to show", "Holds", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            End If
+
+        Catch ex As Exception
+            ReportException(ex)
+        End Try
+
+    End Sub
+
 #End Region
+
+
+
+#End Region
+
 
 
 End Class

@@ -22,6 +22,8 @@ Public Class Survey
     Private mSamplingAlgorithm As SamplingAlgorithm
     Private mIsActive As Boolean
     Private mUseUSPSAddrChangeService As Boolean
+    Private mIsHandout As Boolean
+    Private mIsPointInTime As Boolean
     Private mContractedLanguages As String = String.Empty
     Private mEnforceSkip As Boolean = True
     Private mClientFacingName As String = String.Empty
@@ -411,6 +413,32 @@ Public Class Survey
         Set(ByVal value As Boolean)
             If mUseUSPSAddrChangeService <> value Then
                 mUseUSPSAddrChangeService = value
+                mIsDirty = True
+            End If
+        End Set
+    End Property
+
+    <Logable()> _
+    Public Property IsHandout() As Boolean
+        Get
+            Return mIsHandout
+        End Get
+        Set(ByVal value As Boolean)
+            If mIsHandout <> value Then
+                mIsHandout = value
+                mIsDirty = True
+            End If
+        End Set
+    End Property
+
+    <Logable()> _
+    Public Property IsPointInTime() As Boolean
+        Get
+            Return mIsPointInTime
+        End Get
+        Set(ByVal value As Boolean)
+            If mIsPointInTime <> value Then
+                mIsPointInTime = value
                 mIsDirty = True
             End If
         End Set
@@ -949,6 +977,20 @@ Public Class Survey
         End Get
     End Property
 
+    Public ReadOnly Property HandoutsPermitted(Optional ByVal override As String = vbNullString) As Boolean
+        Get
+            GetSurveyRule("HandoutsPermitted", mIsSystematic, override)
+            Return mIsSystematic
+        End Get
+    End Property
+
+    Public ReadOnly Property PointInTimeDisallowed(Optional ByVal override As String = vbNullString) As Boolean
+        Get
+            GetSurveyRule("PointInTimeDisallowed", mIsSystematic, override)
+            Return mIsSystematic
+        End Get
+    End Property
+
 #End Region
 
     Public ReadOnly Property AllowDelete() As Boolean
@@ -1040,12 +1082,13 @@ Public Class Survey
                                      ByVal cutoffFieldId As Integer, ByVal sampleEncounterField As StudyTableColumn, ByVal clientFacingName As String, _
                                      ByVal surveyTypeId As Integer, ByVal surveyTypeDefId As Integer, ByVal houseHoldingType As HouseHoldingType, _
                                      ByVal contractNumber As String, ByVal isActive As Boolean, ByVal contractedLanguages As String, ByVal srvySubTypes As SubTypeList, _
-                                     ByVal questionnairesubtype As SubType, ByVal UseUSPSAddrChangeService As Boolean) As Survey
+                                     ByVal questionnairesubtype As SubType, ByVal UseUSPSAddrChangeService As Boolean,
+                                     ByVal isHandout As Boolean, ByVal isPointInTime As Boolean) As Survey
 
         Return SurveyProvider.Instance.Insert(studyId, name, description, responseRateRecalculationPeriod, resurveyMethodId, resurveyPeriod, surveyStartDate, surveyEndDate, _
                                               samplingAlgorithmId, enforceSkip, cutoffResponseCode, cutoffTableId, cutoffFieldId, sampleEncounterField, clientFacingName, _
                                               surveyTypeId, surveyTypeDefId, houseHoldingType, contractNumber, isActive, contractedLanguages, srvySubTypes, questionnairesubtype, _
-                                              UseUSPSAddrChangeService)
+                                              UseUSPSAddrChangeService, isHandout, isPointInTime)
 
     End Function
 

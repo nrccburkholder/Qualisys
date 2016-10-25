@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DataUploadConfig xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SavePath>C:\Temp\</SavePath>
+  <BkupPath>C:\Temp\Bkup\</BkupPath>
+  <ClientSupportEmail>JCamp@NationalResearch.com</ClientSupportEmail>
+  <LogFile>C:\Temp\DataUpload.Log</LogFile>
+</DataUploadConfig>

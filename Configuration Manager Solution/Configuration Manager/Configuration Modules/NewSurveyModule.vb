@@ -56,7 +56,8 @@ Public Class NewSurveyModule
                                                                       .ResurveyPeriod, .SurveyStartDate, .SurveyEndDate, .SamplingAlgorithm, .EnforceSkip, _
                                                                       CStr(.CutoffResponseCode), .CutoffTableId, .CutoffFieldId, .SampleEncounterField, _
                                                                       .ClientFacingName, .SurveyType, .SurveyTypeDefId, .HouseHoldingType, .ContractNumber, _
-                                                                      .IsActive, .ContractedLanguages, .SurveySubTypes, .QuestionnaireType, .UseUSPSAddrChangeService)
+                                                                      .IsActive, .ContractedLanguages, .SurveySubTypes, .QuestionnaireType, .UseUSPSAddrChangeService,
+                                                                      .IsHandout, .IsPointInTime)
                 End With
                 Study.Surveys.Add(EditingSurvey)
             End If

@@ -78,8 +78,9 @@ IF @surveyType_id in (@CIHI)
 		select  1, p1.strPeriodDef_nm + ' must be at least three consecutive months.'
 		from PeriodDef p1
 		where p1.Survey_id = @Survey_id and
-		DATEDIFF(MONTH, [datExpectedEncStart], DateAdd(d,1,[datExpectedEncEnd])) >= 3
+		DATEDIFF(MONTH, [datExpectedEncStart], DateAdd(d,1,[datExpectedEncEnd])) < 3  --DRM 10/01/2016 Changed ">= 3" to "< 3"
 		and p1.intExpectedSamples <> 1
+		and 1 = 2	--DRM 10/11/2016  Added this temporary hack to "disable" this validation check
 	END
 	ELSE
 	BEGIN 

@@ -21,6 +21,7 @@ Public Class ClientGroupProvider
             .ReportName = rdr.GetString("ClientGroupReporting_Nm").Trim
             .IsActive = rdr.GetBoolean("Active")
             .Created = rdr.GetDate("DateCreated")
+            .IsAllowAutoSample = rdr.GetBoolean("AllowAutoSample")
             .ResetDirtyFlag()
         End With
 

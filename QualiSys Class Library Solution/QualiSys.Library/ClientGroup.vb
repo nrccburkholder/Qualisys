@@ -14,6 +14,7 @@ Public Class ClientGroup
     Private mReportName As String
     Private mIsActive As Boolean = True
     Private mCreated As Date
+    Private mIsAllowAutoSample As Boolean = False
 
     Private mIsDirty As Boolean
     Private mClients As Collection(Of Client)
@@ -79,6 +80,19 @@ Public Class ClientGroup
         Set(ByVal value As Date)
             If Not value = mCreated Then
                 mCreated = value
+                mIsDirty = True
+            End If
+        End Set
+    End Property
+
+    <Logable()> _
+    Public Property IsAllowAutoSample() As Boolean
+        Get
+            Return mIsAllowAutoSample
+        End Get
+        Set(ByVal value As Boolean)
+            If Not value = mIsAllowAutoSample Then
+                mIsAllowAutoSample = value
                 mIsDirty = True
             End If
         End Set

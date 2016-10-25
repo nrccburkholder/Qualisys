@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="Data Exchange Solution">
+</Property><Property Name="Solution File" Value="C:\gitrepo\Qualisys\Data Exchange Solution\Data Exchange Solution.sln">
+</Property><Property Name="Date" Value="Tuesday, September 13, 2016">
+</Property><Property Name="Time" Value="10:24 AM">
+</Property><Property Name="Log Number" Value="4">
+</Property></Properties><Event ErrorLevel="2" Project="NRC Class Library" Source="..\..\NRC Class Library\NRC Class Library.vbproj" Description="Unable open project file to perform upgrade.  ">
+</Event><Event ErrorLevel="2" Project="Data Exchange" Source="http://localhost/DataExchange/Data Exchange.vbproj" Description="Unable to open the Web 'http://localhost/DataExchange/Data Exchange.vbproj'.  The Web 'http://localhost/DataExchange/Data Exchange.vbproj' does not exist.">
+</Event><Event ErrorLevel="0" Project="" Source="Data Exchange Solution.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="Data Exchange Solution.sln" Description="Converted">
+</Event></UpgradeLog>

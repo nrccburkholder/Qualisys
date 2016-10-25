@@ -49,7 +49,7 @@
     <PublisherName>National Research Corporation</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>4.1.16.0</ApplicationVersion>
+    <ApplicationVersion>4.3.4.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -145,6 +145,14 @@
     <Compile Include="Controls\CalendarEditingControl.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Forms\HoldsDialog.Designer.vb">
+      <DependentUpon>HoldsDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\HoldsDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ODSDBDataAccess\BaseSqlDataProvider.vb" />
+    <Compile Include="ODSDBDataAccess\IODSDBRepository.vb" />
     <Compile Include="Navigators\ClientStudySurveyNavigator.Designer.vb">
       <DependentUpon>ClientStudySurveyNavigator.vb</DependentUpon>
     </Compile>
@@ -172,6 +180,7 @@
     <Compile Include="Navigators\ReportNavigator.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="ODSDBDataAccess\ODSDBRepository.vb" />
     <Compile Include="Sections\ReportSection.Designer.vb">
       <DependentUpon>ReportSection.vb</DependentUpon>
     </Compile>
@@ -233,6 +242,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Forms\HoldsDialog.resx">
+      <DependentUpon>HoldsDialog.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Navigators\ClientStudySurveyNavigator.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ClientStudySurveyNavigator.vb</DependentUpon>
@@ -282,7 +295,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
@@ -317,6 +332,9 @@
     <None Include="Resources\Validation16.png" />
     <None Include="Resources\Refresh32.png" />
     <None Include="Resources\checkbox-checked.gif" />
+    <None Include="Resources\Error16.png" />
+    <None Include="Resources\Error.PNG" />
+    <None Include="Resources\Error 32x32.png" />
     <Content Include="SampTool.ico" />
   </ItemGroup>
   <ItemGroup>

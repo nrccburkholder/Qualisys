@@ -61,7 +61,9 @@ Namespace DataProvider
                                             ByVal contractedLanguages As String, _
                                             ByVal surveysubtypes As SubTypeList, _
                                             ByVal questionnairesubtype As SubType, _
-                                            ByVal UseUSPSAddrChangeService As Boolean _
+                                            ByVal UseUSPSAddrChangeService As Boolean, _
+                                            ByVal isHandout As Boolean, _
+                                            ByVal isPointInTime As Boolean _
                                            ) As Survey
         Public MustOverride Sub Delete(ByVal surveyId As Integer)
         Public MustOverride Function AllowDelete(ByVal surveyId As Integer) As Boolean
