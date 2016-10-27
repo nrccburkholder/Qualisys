@@ -6,7 +6,7 @@ Sprint 59 SQLCMD Rollback Script for Prime/Gator/NRC10
 
 */
 
-:r "\ATLASRelease59&60\Sprint59_docs\S59 ATL-628 Fix Letter-Web Mailing Step for Comments importing - ROLLBACK.sql"
+--:r "\ATLASRelease59&60\Sprint59_docs\S59 ATL-628 Fix Letter-Web Mailing Step for Comments importing - ROLLBACK.sql" --deployed on 10/27 Off-Cycle CHG0032836
 
 :r "\ATLASRelease59&60\Sprint59_docs\S59 ATL-862 UPDATE ACO_PQRS Completeness ROLLBACK.sql"
 
@@ -15,3 +15,5 @@ Sprint 59 SQLCMD Rollback Script for Prime/Gator/NRC10
 :r "\ATLASRelease59&60\Sprint59_docs\S59_ATL-906 Create Handout and PointInTime flag fields - Rollback.sql"
 
 --:r "\ATLASRelease59&60\Sprint59_docs\S59_INC0060990_Update_QualPro_Params_to_FQDN - rollback.sql" --already deployed
+
+:r "\ATLASRelease59&60\Sprint59_docs\S59 ATL-928 Implement Hold on Sampling Tool - ROLLBACK.sql"
