@@ -26,13 +26,16 @@ Namespace ODSDBDataAccess
                                                 "ClientID, " &
                                                 "StudyID, " &
                                                 "SurveyID, " &
-                                                "CAST(EncounterHoldDate as date) EncounterHoldDate,HoldReason,hst.HoldDescription HoldStatus," &
+                                                "CAST(EncounterHoldDate as date) EncounterHoldDate," &
+                                                "hr.Description as HoldReason," &
+                                                "hst.HoldDescription HoldStatus," &
                                                 "TicketNumber," &
-                                                "RequesterID, CompletionDate, " &
+                                                "Requester, CompletionDate, " &
                                                 "CAST(DateCreated as datetime) DateCreated, CAST(DateModified as datetime)DateModified " &
                                                 "FROM odsdb.dbo.HoldSurveys hss " &
                                                 "INNER JOIN odsdb.dbo.Holds hs on hss.HoldID = hs.HoldID " &
                                                 "INNER JOIN odsdb.dbo.HoldStatus hst on hst.HoldStatusID = hs.HoldStatusID " &
+                                                "INNER JOIN odsdb.dbo.HoldReason hr on hr.HoldReasonID = hs.HoldReasonID " &
                                                 "WHERE hss.ClientID = {0} " &
                                                 "AND hss.StudyID = {1} " &
                                                 "AND hss.SurveyID in ({2}) " &
