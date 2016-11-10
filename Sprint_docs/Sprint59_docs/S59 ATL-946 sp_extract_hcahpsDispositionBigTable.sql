@@ -465,6 +465,7 @@ BEGIN
                          + ' FROM ' + @BT + ' bt, #SampDispo sd '
 						 + ' WHERE bt.samplepop_id = sd.samplepop_id '
                          + ' AND sd.lagtime = 0 and bt.datundeliverable is NOT null'
+                         + ' AND sd.HCAHPSValue in (''09'',''10'')'
 
               --if @indebug = 1
               PRINT @SQL
