@@ -6,7 +6,7 @@ Sprint 59 SQLCMD Script for Prime/Gator/NRC10
 
 */
 
-:r "\ATLASRelease59&60\Sprint59_docs\S59 ATL-628 Fix Letter-Web Mailing Step for Comments importing.sql"
+--:r "\ATLASRelease59&60\Sprint59_docs\S59 ATL-628 Fix Letter-Web Mailing Step for Comments importing.sql" --deployed on 10/27 Off-Cycle CHG0032836
 
 :r "\ATLASRelease59&60\Sprint59_docs\S59 ATL-862 UPDATE ACO_PQRS Completeness.sql"
 
@@ -18,3 +18,4 @@ Sprint 59 SQLCMD Script for Prime/Gator/NRC10
 
 --:r "\ATLASRelease59&60\Sprint59_docs\S59 ATL-957 INC0061708 - fix bug in SV_CAHPS_SamplePeriods.sql" -- already deployed
 
+:r "\ATLASRelease59&60\Sprint59_docs\S59 ATL-928 Implement Hold on Sampling Tool.sql"

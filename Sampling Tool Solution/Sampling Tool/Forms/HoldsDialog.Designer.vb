@@ -24,6 +24,8 @@ Partial Class HoldsDialog
         Me.dgvHolds = New System.Windows.Forms.DataGridView()
         Me.btnOK = New System.Windows.Forms.Button()
         Me.lblInfo = New System.Windows.Forms.Label()
+        Me.pbAlert = New System.Windows.Forms.PictureBox()
+        Me.lblAlertMessage = New System.Windows.Forms.Label()
         Me.DataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.DataGridViewTextBoxColumn2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.DataGridViewTextBoxColumn3 = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -46,8 +48,6 @@ Partial Class HoldsDialog
         Me.DataGridViewTextBoxColumn20 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.DataGridViewTextBoxColumn21 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.DataGridViewTextBoxColumn22 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.pbAlert = New System.Windows.Forms.PictureBox()
-        Me.lblAlertMessage = New System.Windows.Forms.Label()
         CType(Me.dgvHolds, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbAlert, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -55,7 +55,7 @@ Partial Class HoldsDialog
         'mPaneCaption
         '
         Me.mPaneCaption.Caption = "Holds"
-        Me.mPaneCaption.Size = New System.Drawing.Size(868, 26)
+        Me.mPaneCaption.Size = New System.Drawing.Size(900, 26)
         Me.mPaneCaption.Text = "Holds"
         '
         'dgvHolds
@@ -75,13 +75,13 @@ Partial Class HoldsDialog
         Me.dgvHolds.RowHeadersVisible = False
         DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         Me.dgvHolds.RowsDefaultCellStyle = DataGridViewCellStyle2
-        Me.dgvHolds.Size = New System.Drawing.Size(825, 146)
+        Me.dgvHolds.Size = New System.Drawing.Size(857, 146)
         Me.dgvHolds.TabIndex = 6
         '
         'btnOK
         '
         Me.btnOK.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnOK.Location = New System.Drawing.Point(728, 223)
+        Me.btnOK.Location = New System.Drawing.Point(760, 223)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(112, 23)
         Me.btnOK.TabIndex = 5
@@ -97,6 +97,27 @@ Partial Class HoldsDialog
         Me.lblInfo.Size = New System.Drawing.Size(330, 13)
         Me.lblInfo.TabIndex = 7
         Me.lblInfo.Text = "The following is a list of Holds for the selected survey(s):"
+        '
+        'pbAlert
+        '
+        Me.pbAlert.ErrorImage = Nothing
+        Me.pbAlert.Image = Global.Nrc.Qualisys.SamplingTool.My.Resources.Resources.Error_32x32
+        Me.pbAlert.Location = New System.Drawing.Point(39, 207)
+        Me.pbAlert.Name = "pbAlert"
+        Me.pbAlert.Size = New System.Drawing.Size(32, 32)
+        Me.pbAlert.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.pbAlert.TabIndex = 8
+        Me.pbAlert.TabStop = False
+        '
+        'lblAlertMessage
+        '
+        Me.lblAlertMessage.AutoSize = True
+        Me.lblAlertMessage.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblAlertMessage.Location = New System.Drawing.Point(77, 223)
+        Me.lblAlertMessage.Name = "lblAlertMessage"
+        Me.lblAlertMessage.Size = New System.Drawing.Size(55, 16)
+        Me.lblAlertMessage.TabIndex = 9
+        Me.lblAlertMessage.Text = "Label1"
         '
         'DataGridViewTextBoxColumn1
         '
@@ -291,31 +312,10 @@ Partial Class HoldsDialog
         Me.DataGridViewTextBoxColumn22.ReadOnly = True
         Me.DataGridViewTextBoxColumn22.Width = 90
         '
-        'pbAlert
-        '
-        Me.pbAlert.ErrorImage = Nothing
-        Me.pbAlert.Image = Global.Nrc.Qualisys.SamplingTool.My.Resources.Resources.Error_32x32
-        Me.pbAlert.Location = New System.Drawing.Point(39, 207)
-        Me.pbAlert.Name = "pbAlert"
-        Me.pbAlert.Size = New System.Drawing.Size(32, 32)
-        Me.pbAlert.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.pbAlert.TabIndex = 8
-        Me.pbAlert.TabStop = False
-        '
-        'lblAlertMessage
-        '
-        Me.lblAlertMessage.AutoSize = True
-        Me.lblAlertMessage.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblAlertMessage.Location = New System.Drawing.Point(77, 223)
-        Me.lblAlertMessage.Name = "lblAlertMessage"
-        Me.lblAlertMessage.Size = New System.Drawing.Size(55, 16)
-        Me.lblAlertMessage.TabIndex = 9
-        Me.lblAlertMessage.Text = "Label1"
-        '
         'HoldsDialog
         '
         Me.Caption = "Holds"
-        Me.ClientSize = New System.Drawing.Size(870, 262)
+        Me.ClientSize = New System.Drawing.Size(902, 262)
         Me.Controls.Add(Me.lblAlertMessage)
         Me.Controls.Add(Me.pbAlert)
         Me.Controls.Add(Me.lblInfo)
