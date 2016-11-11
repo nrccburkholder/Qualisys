@@ -20,16 +20,18 @@ DECLARE @numparam_value int
 DECLARE @dataparam_value datetime
 DECLARE @comments varchar(255)
 DECLARE @serverName varchar(20)
-DECLARE @dbName varchar(20)
+DECLARE @dbName varchar(50)
 
 SET @serverName = @@SERVERNAME 
 
 SET @strparam_grp = 'ConnectionStrings'
 
 SET @dbName = CASE @serverName 
-		WHEN 'nrc10' THEN 'pidisql01'
-		WHEN 'gator' THEN 'sidisql01'
-		ELSE 'didisql01'
+		WHEN 'nrc10' THEN 'pidisql01.nationalresearch.com'
+		WHEN 'MHM0PQUALSQL02' THEN 'pidisql01.nationalresearch.com'
+		WHEN 'gator' THEN 'sidisql01.devnrcus.local'
+		WHEN 'MHM0SQUALSQL02' THEN 'sidisql01.devnrcus.local'
+		ELSE 'didisql01.devnrcus.local'
 END	
 
 print @serverName + ' ' + @dbName
@@ -38,7 +40,7 @@ begin tran
 
 SET @strparam_nm = 'ODSConnection'
 SET @strparam_type = 'S'
-SET @strparam_value = 'Data Source=' + @dbName + '.devnrcus.local;Initial Catalog=odsdb;user=odsdb;password=pho3nix!'
+SET @strparam_value = 'Data Source=' + @dbName + ';Initial Catalog=odsdb;user=odsdb;password=pho3nix!'
 SET @numparam_value = NULL
 SET @dataparam_value = NULL
 SET @comments = 'Specifies the connection string for the ODS database'
