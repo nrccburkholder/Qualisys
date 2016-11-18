@@ -162,6 +162,7 @@ namespace USPS_ACS_Library
         {
             string proc = "USPS_ACS_ProcessFile";
             DbCommand cmd = Db.GetStoredProcCommand(proc, args);
+            cmd.CommandTimeout = 120;
 
             try
             {
