@@ -15,6 +15,7 @@ using System.Xml.Linq;
 using System.Data;
 using ConsoleApplication1.DataProviders;
 using ConsoleApplication1.Classes;
+using System.Reflection;
 
 
 /*
@@ -65,18 +66,24 @@ namespace ConsoleApplication1
 
 
             string xmlOutputFile = @"C:\TEMP\CIHI_submission_file_test.xml";
-            string xsd = @"C:\Users\tbutler\Documents\cpesic-submission_v1.0.xsd";
+            string xsdPath = @"C:\Users\tbutler\Documents\cpesic-submission_v1.0.xsd";
+            //string xsdPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"XSD\cpesic-submission_v1.0.xsd");
+           // string resourceName = "cpesic-submission_v1.0";
+
             //string xsd = @"C:\Users\tbutler\Documents\CPES-IC-non-stratified-sample (October 2014)2.xsd";
             //string xsd = @"C:\Users\tbutler\Documents\ICH_Data_Submission_Standard_20141219.xsd";
 
-            //CreateEmptyXMLFromXSD(xmlOutputFile, xsd);
+            //CreateEmptyXMLFromXSD(xmlOutputFile, xsdPath);
             string xmlOutputFile1 = @"C:\TEMP\CIHI_submission_file.xml";
             string xmlOutputFile2 = @"C:\TEMP\CIHI_submission_file_update.xml";
             string xmlOutputFile3 = @"C:\TEMP\CIHI_submission_file_delete.xml";
 
-            MakeExportXMLDocument(xmlOutputFile1, xsd, 1);
-            MakeExportXMLDocument(xmlOutputFile2, xsd, 2);
-            MakeExportXMLDocument(xmlOutputFile3, xsd, 3);
+            MakeExportXMLDocument(xmlOutputFile1, 1);
+            MakeExportXMLDocument(xmlOutputFile2, 1);
+            MakeExportXMLDocument(xmlOutputFile3, 1);
+            //MakeExportXMLDocument(xmlOutputFile1, xsdPath, 1);
+            //MakeExportXMLDocument(xmlOutputFile2, xsdPath, 2);
+            //MakeExportXMLDocument(xmlOutputFile3, xsdPath, 3);
 
             //XmlDocumentEx xmlDoc = new XmlDocumentEx();
 
@@ -98,7 +105,7 @@ namespace ConsoleApplication1
             //}
 
             //Console.WriteLine(xmlstring);
-            
+
             //ValidateXML();
             //ParseXSD();
             //WalkXSD();
@@ -150,7 +157,7 @@ namespace ConsoleApplication1
             //                queuefile.Save();
             //            }
             //            else Console.WriteLine("Validation errors encountered! File NOT created.");
- 
+
             //        }
             //    }
 
@@ -162,7 +169,7 @@ namespace ConsoleApplication1
 
             //XMLExporter.CreateExportXMLFile(ExportDataProvider.Select(1), filepath, exportTemplate.XMLSchemaDefinition);
 
-           //ValidateXML(filepath);
+            //ValidateXML(filepath);
 
             //LoadXSDasXML();
 
@@ -656,7 +663,7 @@ namespace ConsoleApplication1
             FileStream fs = new FileStream(xsd, FileMode.Open);
             XmlSchema schema = XmlSchema.Read(fs, new ValidationEventHandler(ValidationCallBack));
             fs.Close();
-            schema.Compile(ValidationCallBack);
+            //schema.Compile(ValidationCallBack);
             return schema;
         }
 
@@ -668,11 +675,11 @@ namespace ConsoleApplication1
 
         private static void ValidationCallBack(object sender, ValidationEventArgs args)
         {
-            //Console.WriteLine("\tValidation error: {0}", args.Message);
+            Console.WriteLine("\tValidation error: {0}", args.Message);
 
-            XmlDocumentEx xmlDoc = (XmlDocumentEx)sender;
+            //XmlDocumentEx xmlDoc = (XmlDocumentEx)sender;
 
-            xmlDoc.ValidationErrorList.Add(new ExportValidationError(args.Message));
+            //xmlDoc.ValidationErrorList.Add(new ExportValidationError(args.Message));
         }
 
 
@@ -852,15 +859,19 @@ namespace ConsoleApplication1
 
             ds = ExportProvider.SelectSubmissionMetadata(id);
 
+            //XmlDocumentEx xmlDoc = new XmlDocumentEx();
 
             if (ds.Tables[0].Rows.Count > 0)
             {
                 Encoding encoding = new UTF8Encoding(false);
 
-                XmlSchema schema = new XmlSchema();
-                schema = GetXSDFileAsXMLSchema(xsd);
+                //XmlSchema schema = new XmlSchema();
+                FileStream fs = new FileStream(xsd, FileMode.Open);
+                XmlSchema schema = XmlSchema.Read(fs, new ValidationEventHandler(ValidationCallBack));
+                //schema = GetXSDFileAsXMLSchema(xsd);
                 string ns = schema.TargetNamespace;
                 schema.Compile(ValidationCallBack);
+                ///XmlDocument xmlDoc = new XmlDocument();
 
                 XmlDocumentEx xmlDoc = new XmlDocumentEx();
 
@@ -908,7 +919,87 @@ namespace ConsoleApplication1
             else throw new Exception("No SubmissionMetadata found!");
         }
 
-        
+        public static void MakeExportXMLDocument(string outputFileName, int id = 1)
+        {
+
+            DataSet ds = new DataSet();
+
+            ds = ExportProvider.SelectSubmissionMetadata(id);
+
+            
+
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                Encoding encoding = new UTF8Encoding(false);
+
+                using (XmlReader reader = XmlReader.Create(new StringReader(Properties.Resources.cpesic_submission_v1_0), new XmlReaderSettings(), XmlResolver.BaseUri))
+                {
+                    XmlSchemaSet xset = RetrieveSchemaSet(reader);
+                    Console.WriteLine(xset.IsCompiled);
+
+
+                    foreach (XmlSchema schema in xset.Schemas())
+                    {
+                        Console.WriteLine(schema.TargetNamespace);
+
+
+                        XmlDocumentEx xmlDoc = new XmlDocumentEx();
+
+                        xmlDoc.LoadXml(GenerateEmptyXMLFromSchema(schema));
+
+                        using (XMLWriter writer = new XMLWriter())
+                        {
+                            XmlSchemaElement root = schema.Items[0] as XmlSchemaElement;
+                            writer.StartElement(string.Format("{0}:{1}", "cpesic", root.Name));
+                            //writer.WriteAttribute("xmlns",schema.TargetNamespace);
+                            writer.WriteAttribute("xmlns", "cpesic", null, schema.TargetNamespace);
+                            writer.WriteAttribute("xmlns", "xsi", null, "http://www.w3.org/2001/XMLSchema-instance");
+                            writer.WriteAttribute("xsi", "schemaLocation", null, string.Format("{0} {1},", schema.TargetNamespace, "cpesic-submission_v1.0.xsd"));
+
+                            XmlNode rootNode = xmlDoc.DocumentElement;
+
+                            // DataSubmission section
+                            WriteDataSubmissionSection(ds.Tables[0].Rows[0], writer, rootNode);
+
+                            writer.EndElement();
+
+                            XmlDocumentEx returnXMLdoc = new XmlDocumentEx();
+                            returnXMLdoc.Schemas.Add(schema);
+                            returnXMLdoc.LoadXml(writer.XmlString);
+                            returnXMLdoc.Save(outputFileName);
+
+                            returnXMLdoc.Validate();
+
+                            if (!returnXMLdoc.IsValid)
+                            {
+                                foreach (ExportValidationError eve in returnXMLdoc.ValidationErrorList)
+                                {
+                                    //Logging to the database.  The elements of the message are pipe delimited, with the template name, queueid, queuefileid, the file name, and the validation error description
+                                    Console.WriteLine(eve.ErrorDescription);
+                                }
+                            }
+                            else
+                            {
+
+                                Console.WriteLine("This XML Validated successfully!");
+                            }
+                            Console.WriteLine();
+                        }
+
+                    }
+                }
+            }
+            else throw new Exception("No SubmissionMetadata found!");
+        }
+
+        private static XmlSchemaSet RetrieveSchemaSet(XmlReader reader)
+        {
+            XmlSchemaSet xset = new XmlSchemaSet() { XmlResolver = new XmlResolver() };
+            xset.Add(XmlSchema.Read(reader, null));
+            xset.Compile();
+            return xset;
+        }
+
         static string GenerateEmptyXMLFromSchema(XmlSchema schema)
         {
             string xmlString = string.Empty;
@@ -1769,4 +1860,27 @@ namespace ConsoleApplication1
         #endregion
 
     }
+
+    class XmlResolver : XmlUrlResolver
+    {
+        internal const string BaseUri = "schema://";
+
+        public override object GetEntity(Uri absoluteUri, string role, Type ofObjectToReturn)
+        {
+            if (absoluteUri.Scheme == "schema")
+            {
+                switch (absoluteUri.LocalPath)
+                {
+                    case "/cpesic_v1.0.xsd":
+                        return new MemoryStream(Encoding.UTF8.GetBytes(Properties.Resources.cpesic_v1_0));
+                    case "/cdssb-bc_v1.1.xsd":
+                        return new MemoryStream(Encoding.UTF8.GetBytes(Properties.Resources.cdssb_bc_v1_1));
+                    case "/cdssb-bt_v1.1.xsd":
+                        return new MemoryStream(Encoding.UTF8.GetBytes(Properties.Resources.cdssb_bt_v1_1));
+                }
+            }
+            return base.GetEntity(absoluteUri, role, ofObjectToReturn);
+        }
+    }
+
 }
