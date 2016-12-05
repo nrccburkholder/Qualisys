@@ -1,10 +1,10 @@
 use qp_prod
 
-IF EXISTS (SELECT * FROM SYS.TABLES where schema_name(schema_id)='CIHI' and name = 'SubmissionMetadata')
-	DROP TABLE [CIHI].[SubmissionMetadata];
+IF EXISTS (SELECT * FROM SYS.TABLES where schema_name(schema_id)='CIHI' and name = 'Final_Metadata')
+	DROP TABLE [CIHI].[Final_Metadata];
 
-CREATE TABLE CIHI.SubmissionMetadata (
-	SubmissionMetadataID int identity(1,1),
+CREATE TABLE CIHI.Final_Metadata (
+	Final_MetadataID int identity(1,1),
 	submissionID int,
 	[creationTime_value] varchar(8),
 	[sender.device.manufacturer.id.value] varchar(5),
@@ -13,54 +13,54 @@ CREATE TABLE CIHI.SubmissionMetadata (
 	[versionCode_codeSystem] varchar(50),
 	[purpose_code] char(1),
 	[purpose_codeSystem] varchar(50),
-	PRIMARY KEY (SubmissionMetadataID)
+	PRIMARY KEY (Final_MetadataID)
 );
 
-IF EXISTS (SELECT * FROM SYS.TABLES where schema_name(schema_id)='CIHI' and name = 'SubmissionOrgProfile')
-	DROP TABLE [CIHI].[SubmissionOrgProfile];
+IF EXISTS (SELECT * FROM SYS.TABLES where schema_name(schema_id)='CIHI' and name = 'Final_OrgProfile')
+	DROP TABLE [CIHI].[Final_OrgProfile];
 
-CREATE TABLE CIHI.SubmissionOrgProfile (
-	SubmissionOrgProfileID int identity(1,1),
-	SubmissionMetadataID int,
+CREATE TABLE CIHI.Final_OrgProfile (
+	Final_OrgProfileID int identity(1,1),
+	Final_MetadataID int,
 	[organizationProfile.organization.id.value] varchar(10),
 	[organizationProfile.surveyingFrequency_code] varchar(9),
 	[organizationProfile.surveyingFrequency_codeSystem] varchar(50),
 	[organizationProfile.device.manufacturer.id.value] varchar(10),
-	PRIMARY KEY (SubmissionOrgProfileID)
+	PRIMARY KEY (Final_OrgProfileID)
 );
 
-IF EXISTS (SELECT * FROM SYS.TABLES where schema_name(schema_id)='CIHI' and name = 'SubmissionContact')
-	DROP TABLE [CIHI].[SubmissionContact];
+IF EXISTS (SELECT * FROM SYS.TABLES where schema_name(schema_id)='CIHI' and name = 'Final_Contact')
+	DROP TABLE [CIHI].[Final_Contact];
 
-CREATE TABLE CIHI.SubmissionContact (
-	SubmissionContactID int identity(1,1),
-	SubmissionOrgProfileID int,
+CREATE TABLE CIHI.Final_Contact (
+	Final_ContactID int identity(1,1),
+	Final_OrgProfileID int,
 	[organizationProfile.organization.contact.code_code] varchar(3),
 	[organizationProfile.organization.contact.code_codeSystem] varchar(50),
 	[organizationProfile.organization.contact.email] varchar(50),
 	[organizationProfile.organization.contact.name] varchar(25),
 	[organizationProfile.organization.contact.phone_extension] varchar(10),
 	[organizationProfile.organization.contact.phone_number] varchar(20),
-	PRIMARY KEY (SubmissionContactID)
+	PRIMARY KEY (Final_ContactID)
 );
 
-IF EXISTS (SELECT * FROM SYS.TABLES where schema_name(schema_id)='CIHI' and name = 'SubmissionRole')
-	DROP TABLE [CIHI].[SubmissionRole];
+IF EXISTS (SELECT * FROM SYS.TABLES where schema_name(schema_id)='CIHI' and name = 'Final_Role')
+	DROP TABLE [CIHI].[Final_Role];
 
-CREATE TABLE CIHI.SubmissionRole (
-	SubmissionRoleID int identity(1,1),
-	SubmissionOrgProfileID int,
+CREATE TABLE CIHI.Final_Role (
+	Final_RoleID int identity(1,1),
+	Final_OrgProfileID int,
 	[organizationProfile.role_code] varchar(3),
 	[organizationProfile.role_codeSystem] varchar(50),
-	PRIMARY KEY (SubmissionRoleID)
+	PRIMARY KEY (Final_RoleID)
 );
 
 
-IF EXISTS (SELECT * FROM SYS.TABLES where schema_name(schema_id)='CIHI' and name = 'SubmissionQuestionnaireCycle')
-	DROP TABLE [CIHI].[SubmissionQuestionnaireCycle];
+IF EXISTS (SELECT * FROM SYS.TABLES where schema_name(schema_id)='CIHI' and name = 'Final_QuestionnaireCycle')
+	DROP TABLE [CIHI].[Final_QuestionnaireCycle];
 
-CREATE TABLE CIHI.SubmissionQuestionnaireCycle (
-	SubmissionQuestionnaireCycleID int identity(1,1),
+CREATE TABLE CIHI.Final_QuestionnaireCycle (
+	Final_QuestionnaireCycleID int identity(1,1),
 	submissionID int,
 	[questionnaireCycle.id.value] varchar(15),
 	[questionnaireCycle.healthCareFacility.id.value] varchar(10),
@@ -75,29 +75,29 @@ CREATE TABLE CIHI.SubmissionQuestionnaireCycle (
 	[questionnaireCycle.sampleInformation.populationInformation.dischargeCount] int,
 	[questionnaireCycle.sampleInformation.populationInformation.sampleSize] int,
 	[questionnaireCycle.sampleInformation.populationInformation.nonResponseCount] int,
-	PRIMARY KEY (SubmissionQuestionnaireCycleID)
+	PRIMARY KEY (Final_QuestionnaireCycleID)
 );
 
-IF EXISTS (SELECT * FROM SYS.TABLES where schema_name(schema_id)='CIHI' and name = 'SubmissionStratum')
-	DROP TABLE [CIHI].[SubmissionStratum];
+IF EXISTS (SELECT * FROM SYS.TABLES where schema_name(schema_id)='CIHI' and name = 'Final_Stratum')
+	DROP TABLE [CIHI].[Final_Stratum];
 
-CREATE TABLE CIHI.SubmissionStratum (
-	SubmissionStratumID int identity(1,1),
-	SubmissionQuestionnaireCycleID int,
+CREATE TABLE CIHI.Final_Stratum (
+	Final_StratumID int identity(1,1),
+	Final_QuestionnaireCycleID int,
 	[questionnaireCycle.sampleInformation.populationInformation.stratum.stratumCode] varchar(15),
 	[questionnaireCycle.sampleInformation.populationInformation.stratum.stratumDescription] varchar(25),
 	[questionnaireCycle.sampleInformation.populationInformation.stratum.dischargeCount] int,
 	[questionnaireCycle.sampleInformation.populationInformation.stratum.sampleSize] int,
 	[questionnaireCycle.sampleInformation.populationInformation.stratum.nonResponseCount] int,
-	PRIMARY KEY (SubmissionStratumID)
+	PRIMARY KEY (Final_StratumID)
 );
 
-IF EXISTS (SELECT * FROM SYS.TABLES where schema_name(schema_id)='CIHI' and name = 'SubmissionQuestionnaire')
-	DROP TABLE [CIHI].[SubmissionQuestionnaire];
+IF EXISTS (SELECT * FROM SYS.TABLES where schema_name(schema_id)='CIHI' and name = 'Final_Questionnaire')
+	DROP TABLE [CIHI].[Final_Questionnaire];
 
-CREATE TABLE CIHI.SubmissionQuestionnaire (
-	SubmissionQuestionnaireID int identity(1,1),
-	SubmissionQuestionnaireCycleID int,
+CREATE TABLE CIHI.Final_Questionnaire (
+	Final_QuestionnaireID int identity(1,1),
+	Final_QuestionnaireCycleID int,
 	[questionnaireCycle.questionnaire.id.value] varchar(15),
 	[questionnaireCycle.questionnaire.subject.id.value] varchar(12),
 	[questionnaireCycle.questionnaire.subject.id.issuer.code_code] char(2),
@@ -117,18 +117,18 @@ CREATE TABLE CIHI.SubmissionQuestionnaire (
 	[questionnaireCycle.questionnaire.authorMode_codeSystem] varchar(50),
 	[questionnaireCycle.questionnaire.language_code] char(3),
 	[questionnaireCycle.questionnaire.language_codeSystem] varchar(50),
-	PRIMARY KEY (SubmissionQuestionnaireID)
+	PRIMARY KEY (Final_QuestionnaireID)
 );
 
-IF EXISTS (SELECT * FROM SYS.TABLES where schema_name(schema_id)='CIHI' and name = 'SubmissionQuestion')
-	DROP TABLE [CIHI].[SubmissionQuestion];
+IF EXISTS (SELECT * FROM SYS.TABLES where schema_name(schema_id)='CIHI' and name = 'Final_Question')
+	DROP TABLE [CIHI].[Final_Question];
 
-CREATE TABLE CIHI.SubmissionQuestion (
-	SubmissionQuestionID int identity(1,1),
-	SubmissionQuestionnaireID int,
+CREATE TABLE CIHI.Final_Question (
+	Final_QuestionID int identity(1,1),
+	Final_QuestionnaireID int,
 	[questionnaireCycle.questionnaire.questions.question.code_code] char(4),
 	[questionnaireCycle.questionnaire.questions.question.code_codeSystem] varchar(50),
 	[questionnaireCycle.questionnaire.questions.question.answer_code] varchar(10),
 	[questionnaireCycle.questionnaire.questions.question.answer_codeSystem] varchar(50),
-	PRIMARY KEY (SubmissionQuestionID)
+	PRIMARY KEY (Final_QuestionID)
 );
