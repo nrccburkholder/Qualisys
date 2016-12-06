@@ -48,9 +48,9 @@ CREATE TABLE #tempQA_QuestionnaireCycleAndStratum(
 
 declare @SubmissionID int = 1
 
-insert into #tempQA_QuestionnaireCycleAndStratum (Study_id, sampleunitID, strSampleunit_nm, SubmissionTypeCD, EncounterDateStart, EncounterDateEnd, SubmissionID)
+insert into #tempQA_QuestionnaireCycleAndStratum (Study_id, sampleunitID, strSampleunit_nm, SubmissionTypeCD, EncounterDateStart, EncounterDateEnd, CPESVersionCD, SubmissionID)
 --declare @SubmissionID int = 1
-select distinct sd.study_id, su.sampleunit_id, su.strSampleUnit_nm, cs.SubmissionTypeCd, cs.encounterDateStart, cs.encounterDateEnd, cs.CPESVersionCD, cs.SubmissionID
+select distinct sd.study_id, su.sampleunit_id, su.strSampleUnit_nm, cs.SubmissionTypeCd, CONVERT(VARCHAR(8), cs.encounterDateStart, 112), CONVERT(VARCHAR(8), cs.encounterDateEnd, 112), cs.CPESVersionCD, cs.SubmissionID
 from CIHI.Submission cs
 join CIHI.SubmissionSurvey css on cs.submissionID=css.submissionID
 join survey_def sd on css.surveyID=sd.survey_id
@@ -131,6 +131,9 @@ study_id	sampleunit_id
 --3 sampleunits so DSRS
 
 --TODO: FacilityNum: (Dave G) First look demonstrates two FacilityNum values for the same SampleUnit_id
+--TODO: FacilityNum Error Trap: appropriately report "*****" when a FacilityNum is not a singleton per SampleUnit_id
+
+select * from #tempQA_QuestionnaireCycleAndStratum where sampleunitid = 5008479
 
 select distinct * from #work w 
 inner join s26231.Encounter e on w.pop_id = e.pop_id and w.enc_id = e.enc_id
@@ -140,15 +143,57 @@ select distinct FacilityNum, DischargeUnit from #work w
 inner join s26231.Encounter e on w.pop_id = e.pop_id and w.enc_id = e.enc_id
 where w.sampleunit_id = 5008479
 
---TODO: calc       CycleCD varchar(15),              --Derive from ENCOUNTERFacilityNum & encounter dates? Max length = 15.  Maybe ENCOUNTERFacilityNum + begin MMYY + end MMYY (e.g. 27907_0416_0616)
+select * from #tempQA_QuestionnaireCycleAndStratum where sampleunitid = 5008793
 
---TODO: calc       samplingMethod_CD varchar(4),     --if dischargeCount=sampleSize for all strata then CEN, if one stratum then SRS, if multiple strata then DSRS
+select distinct * from #work w 
+inner join s26289.Encounter e on w.pop_id = e.pop_id and w.enc_id = e.enc_id
+where w.sampleunit_id = 5008793
+
+select distinct FacilityNum, DischargeUnit from #work w 
+inner join s26289.Encounter e on w.pop_id = e.pop_id and w.enc_id = e.enc_id
+where w.sampleunit_id = 5008793
+
+--TODO: calc       CycleCD varchar(15),              --Derive from ENCOUNTERFacilityNum & encounter dates? Max length = 15.  Maybe ENCOUNTERFacilityNum + begin MMYY + end MMYY (e.g. 27907_0416_0616)
 
 --TODO: calc       dischargeCount int,               --count from eligible enc log
 
+select count(distinct w.pop_id) from #work w 
+inner join eligibleenclog eel on w.pop_id = eel.pop_id and w.enc_id = eel.enc_id and w.sampleunit_id = eel.sampleunit_id
+where w.sampleunit_id = 5008479
+
 --TODO: calc       sampleSize int,                   --count (distinct pop_id) from samplepop, sum counts for all units
 
+select count(distinct w.pop_id) from #work w
+inner join samplepop sp on w.study_id = sp.study_id and w.pop_id = sp.pop_id
+inner join sampleset ss on sp.sampleset_id = ss.sampleset_id
+inner join #tempQA_QuestionnaireCycleAndStratum tq on tq.sampleunitid = w.sampleunit_id
+where tq.EncounterDateEnd >= ss.datDateRange_ToDate and tq.EncounterDateStart <= ss.datDateRange_FromDate
+and w.sampleunit_id = 5008479
+
 --TODO: calc       nonResponseCount int,             --Calculate using dispositionlog, plus non response after max attempts (nothing in dispositionlog for that)
+
+select count(distinct w.pop_id) from #work w
+inner join samplepop sp on w.study_id = sp.study_id and w.pop_id = sp.pop_id
+inner join sampleset ss on sp.sampleset_id = ss.sampleset_id
+inner join #tempQA_QuestionnaireCycleAndStratum tq on tq.sampleunitid = w.sampleunit_id
+left join DispositionLog dl on dl.SamplePop_id = sp.SAMPLEPOP_ID
+where tq.EncounterDateEnd >= ss.datDateRange_ToDate and tq.EncounterDateStart <= ss.datDateRange_FromDate
+and (dl.Disposition_id in (14,16,27,46,47,52) /*bad addr, bad phone, refusal*/ 
+	or dl.Disposition_id is null /*non-response after max attempts*/ )
+and w.sampleunit_id = 5008479
+
+/*
+select * from disposition where disposition_id in (14,16,27,46,47,52)
+Disposition_id	strDispositionLabel
+14	The intended respondent is not at this phone
+16	Bad/Missing/Wrong phone number
+27	Declined to participate
+46	Unused Bad Address
+47	Unused Bad Phone
+52	Bad address and bad phone
+*/
+
+--TODO: calc       samplingMethod_CD varchar(4),     --if dischargeCount=sampleSize for all strata then CEN, if one stratum then SRS, if multiple strata then DSRS
 
 --INSERT FOR NOW, s/b a MERGE most likely
 
