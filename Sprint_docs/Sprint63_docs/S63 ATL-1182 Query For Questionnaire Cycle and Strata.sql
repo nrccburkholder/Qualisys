@@ -6,28 +6,10 @@ Chris Burkholder
 
 12/6/2016
 
-CREATE TABLE CIHI.QA_QuestionnaireCycleAndStrata (
-       QuestionnaireCycleAndStrataID int identity(1,1),
-0       SubmissionID int,
-calc       CycleCD varchar(15),              --Derive from ENCOUNTERFacilityNum & encounter dates? Max length = 15.  Maybe ENCOUNTERFacilityNum + begin MMYY + end MMYY (e.g. 27907_0416_0616)
-+       FacilityNum varchar(10),          --ENCOUNTERFacilityNum
-4       SubmissionTypeCD varchar(2),      --CIHI.Submission.SubmissionTypeCD
-7       CPESVersionCD varchar(15),        --"CPES-IC_PM_V1.0"--CIHI.Submission.SPESVersionCD
-5       EncounterDateStart varchar(8),    --CIHI.Submission.EncounterDateStart
-6       EncounterDateEnd varchar(8),      --CIHI.Submission.EncounterDateEnd
-calc       samplingMethod_CD varchar(4),     --if dischargeCount=sampleSize for all strata then CEN, if one stratum then SRS, if multiple strata then DSRS
-calc       dischargeCount int,               --count from eligible enc log
-calc       sampleSize int,                   --count (distinct pop_id) from samplepop, sum counts for all units
-calc       nonResponseCount int,             --Calculate using dispositionlog, plus non response after max attempts (nothing in dispositionlog for that)
-2       sampleunitID int,                 --sampleunit_id
-3       strSampleunit_nm varchar(42),     --sampleunit name. Max length in submission file = 25; strsampleunit_nm is varchar(42).
-       PRIMARY KEY (QuestionnaireCycleAndStrataID)
-);
-
-
 */
 
---select * from CIHI.QA_QuestionnaireCycleAndStratum
+--truncate table CIHI.QA_QuestionnaireCycleAndStratum
+--select * from CIHI.QA_QuestionnaireCycleAndStratum order by FacilityNum
 
 CREATE TABLE #tempQA_QuestionnaireCycleAndStratum(
 	[SubmissionID] [int] NULL,
@@ -44,23 +26,23 @@ CREATE TABLE #tempQA_QuestionnaireCycleAndStratum(
 	[nonResponseCount] [int] NULL,
 	[sampleunitID] [int] NULL,
 	[strSampleunit_nm] [varchar](42) NULL,
+	[bitflag] bit
 )
 
 declare @SubmissionID int = 1
 
-insert into #tempQA_QuestionnaireCycleAndStratum (Study_id, sampleunitID, strSampleunit_nm, SubmissionTypeCD, EncounterDateStart, EncounterDateEnd, CPESVersionCD, SubmissionID)
---declare @SubmissionID int = 1
-select distinct sd.study_id, su.sampleunit_id, su.strSampleUnit_nm, cs.SubmissionTypeCd, CONVERT(VARCHAR(8), cs.encounterDateStart, 112), CONVERT(VARCHAR(8), cs.encounterDateEnd, 112), cs.CPESVersionCD, cs.SubmissionID
-from CIHI.Submission cs
-join CIHI.SubmissionSurvey css on cs.submissionID=css.submissionID
-join survey_def sd on css.surveyID=sd.survey_id
-join SAMPLESET ss on sd.survey_id=ss.survey_id
-join SampleUnit su on ss.sampleplan_id=su.sampleplan_id
-join SelectedSample sel on ss.sampleset_id=sel.sampleset_id and su.sampleunit_id=sel.sampleunit_id
-where cs.SubmissionID=@SubmissionID
-and su.CahpsType_id=12
-and sel.strUnitSelectType='D'
-and ss.datDateRange_FromDate>=cs.EncounterDateStart and ss.datDateRange_ToDate<=cs.EncounterDateEnd
+insert into #tempQA_QuestionnaireCycleAndStratum (Study_id, sampleunitID, strSampleunit_nm, SubmissionTypeCD, EncounterDateStart, EncounterDateEnd, CPESVersionCD, SubmissionID, bitFlag)
+select distinct sd.study_id, su.sampleunit_id, su.strSampleUnit_nm, cs.SubmissionTypeCd, CONVERT(VARCHAR(8), cs.encounterDateStart, 112), CONVERT(VARCHAR(8), cs.encounterDateEnd, 112), cs.CPESVersionCD, cs.SubmissionID, 0
+	from CIHI.Submission cs
+		join CIHI.SubmissionSurvey css on cs.submissionID=css.submissionID
+		join survey_def sd on css.surveyID=sd.survey_id
+		join SAMPLESET ss on sd.survey_id=ss.survey_id
+		join SampleUnit su on ss.sampleplan_id=su.sampleplan_id
+		join SelectedSample sel on ss.sampleset_id=sel.sampleset_id and su.sampleunit_id=sel.sampleunit_id
+	where cs.SubmissionID=@SubmissionID
+		and su.CahpsType_id=12
+		and sel.strUnitSelectType='D'
+		and ss.datDateRange_FromDate>=cs.EncounterDateStart and ss.datDateRange_ToDate<=cs.EncounterDateEnd
 
 /*
 This will get you the granularity you want for insertion into the table. But notice that it joins 
@@ -80,23 +62,21 @@ CREATE TABLE #work(
 	[Study_ID] [int] NULL,
 	[SampleUnit_ID] [int] NULL,
 	[Pop_ID] [int] NULL,
-	[Enc_ID] [int] NULL,
-	bitflag bit
+	[Enc_ID] [int] NULL
 )
 
-declare @SubmissionID int = 1 --copied here for debugging temporarily
-insert into #work (Study_id, SampleUnit_id, Pop_ID, Enc_ID, bitflag)
-select sd.study_id, su.Sampleunit_id, pop_id, enc_id, 0
-from CIHI.Submission cs
-join CIHI.SubmissionSurvey css on cs.submissionID=css.submissionID
-join survey_def sd on css.surveyID=sd.survey_id
-join SAMPLESET ss on sd.survey_id=ss.survey_id
-join SampleUnit su on ss.sampleplan_id=su.sampleplan_id
-join SelectedSample sel on ss.sampleset_id=sel.sampleset_id and su.sampleunit_id=sel.sampleunit_id
-where cs.SubmissionID=@SubmissionID
-and su.CahpsType_id=12
-and sel.strUnitSelectType='D'
-and ss.datDateRange_FromDate>=cs.EncounterDateStart and ss.datDateRange_ToDate<=cs.EncounterDateEnd
+insert into #work (Study_id, SampleUnit_id, Pop_ID, Enc_ID)
+select sd.study_id, su.Sampleunit_id, pop_id, enc_id
+	from CIHI.Submission cs
+		join CIHI.SubmissionSurvey css on cs.submissionID=css.submissionID
+		join survey_def sd on css.surveyID=sd.survey_id
+		join SAMPLESET ss on sd.survey_id=ss.survey_id
+		join SampleUnit su on ss.sampleplan_id=su.sampleplan_id
+		join SelectedSample sel on ss.sampleset_id=sel.sampleset_id and su.sampleunit_id=sel.sampleunit_id
+	where cs.SubmissionID=@SubmissionID
+		and su.CahpsType_id=12
+		and sel.strUnitSelectType='D'
+		and ss.datDateRange_FromDate>=cs.EncounterDateStart and ss.datDateRange_ToDate<=cs.EncounterDateEnd
 
 /*
 You’ll then also need to join to EligibleEncLog, samplepop and perhaps others to calculate 
@@ -122,78 +102,116 @@ If 1 sampleunit, then
 
 */
 
-/*
-study_id	sampleunit_id
-26231	5008479
-26231	5008480
-26231	5009008
-*/
---3 sampleunits so DSRS
+declare @sql nvarchar(max)
+declare @SampleUnitID int
+declare @Study varchar(10)
+declare @FacilityNum varchar(10)
+declare @countFacility int
+declare @dischargeCount int
+declare @strataCount int
+declare @sampleSize int
+declare @nonResponseCount int
 
---TODO: FacilityNum: (Dave G) First look demonstrates two FacilityNum values for the same SampleUnit_id
---TODO: FacilityNum Error Trap: appropriately report "*****" when a FacilityNum is not a singleton per SampleUnit_id
+while exists (select * from #tempQA_QuestionnaireCycleAndStratum where bitFlag = 0)
+begin
+	select @SampleUnitID = min(SampleUnitId) from #tempQA_QuestionnaireCycleAndStratum where bitFlag = 0
+	select @Study = study_id from #tempQA_QuestionnaireCycleAndStratum where SampleUnitId = @SampleUnitID
 
-select * from #tempQA_QuestionnaireCycleAndStratum where sampleunitid = 5008479
+	select @sql = convert(nvarchar(max), 'select @Result = min(FacilityNum) from #work w ' +
+	'inner join s' + @Study + '.Encounter e on w.pop_id = e.pop_id and w.enc_id = e.enc_id ' +
+	'where w.sampleunit_id = ' + convert(nvarchar,@SampleUnitId))
+	exec sp_executesql @sql, N'@Result varchar(10) out', @FacilityNum out
 
-select distinct * from #work w 
-inner join s26231.Encounter e on w.pop_id = e.pop_id and w.enc_id = e.enc_id
-where w.sampleunit_id = 5008479
+	--First look demonstrates two FacilityNum values for the same SampleUnit_id
+	--FacilityNum Error Trap: appropriately append "*" when a FacilityNum is not a singleton per SampleUnit_id
 
-select distinct FacilityNum, DischargeUnit from #work w 
-inner join s26231.Encounter e on w.pop_id = e.pop_id and w.enc_id = e.enc_id
-where w.sampleunit_id = 5008479
+	select @sql = convert(nvarchar(max),'select @Result = count (distinct FacilityNum) from #work w ' +
+	'inner join s' + @Study + '.Encounter e on w.pop_id = e.pop_id and w.enc_id = e.enc_id ' +
+	'where w.sampleunit_id = ' + convert(nvarchar,@SampleUnitId))
+	exec sp_executesql @sql, N'@Result int out', @countFacility out
 
-select * from #tempQA_QuestionnaireCycleAndStratum where sampleunitid = 5008793
+	if @countFacility > 1
+		select @FacilityNum = @FacilityNum + '*'
 
-select distinct * from #work w 
-inner join s26289.Encounter e on w.pop_id = e.pop_id and w.enc_id = e.enc_id
-where w.sampleunit_id = 5008793
+	/*
+	select min(FacilityNum) from #work w 
+	inner join s26231.Encounter e on w.pop_id = e.pop_id and w.enc_id = e.enc_id
+	where w.sampleunit_id = 5008479
 
-select distinct FacilityNum, DischargeUnit from #work w 
-inner join s26289.Encounter e on w.pop_id = e.pop_id and w.enc_id = e.enc_id
-where w.sampleunit_id = 5008793
+	select count (distinct FacilityNum) from #work w 
+	inner join s26231.Encounter e on w.pop_id = e.pop_id and w.enc_id = e.enc_id
+	where w.sampleunit_id = 5008479
 
---TODO: calc       CycleCD varchar(15),              --Derive from ENCOUNTERFacilityNum & encounter dates? Max length = 15.  Maybe ENCOUNTERFacilityNum + begin MMYY + end MMYY (e.g. 27907_0416_0616)
+	select min(FacilityNum) from #work w 
+	inner join s26289.Encounter e on w.pop_id = e.pop_id and w.enc_id = e.enc_id
+	where w.sampleunit_id = 5008793
 
---TODO: calc       dischargeCount int,               --count from eligible enc log
+	select count (distinct FacilityNum) from #work w 
+	inner join s26289.Encounter e on w.pop_id = e.pop_id and w.enc_id = e.enc_id
+	where w.sampleunit_id = 5008793
 
-select count(distinct w.pop_id) from #work w 
-inner join eligibleenclog eel on w.pop_id = eel.pop_id and w.enc_id = eel.enc_id and w.sampleunit_id = eel.sampleunit_id
-where w.sampleunit_id = 5008479
+	select study_id, count(distinct sampleunit_id) from #work
+	group by study_id
+	*/
 
---TODO: calc       sampleSize int,                   --count (distinct pop_id) from samplepop, sum counts for all units
+	--dischargeCount int,               --count from eligible enc log
+	select @dischargeCount = count(distinct w.pop_id) from #work w 
+	inner join eligibleenclog eel on w.pop_id = eel.pop_id and w.enc_id = eel.enc_id and w.sampleunit_id = eel.sampleunit_id
+	where w.sampleunit_id = @SampleUnitId
+	--TODO: need to do by sampleset_id in order to get universe 
 
-select count(distinct w.pop_id) from #work w
-inner join samplepop sp on w.study_id = sp.study_id and w.pop_id = sp.pop_id
-inner join sampleset ss on sp.sampleset_id = ss.sampleset_id
-inner join #tempQA_QuestionnaireCycleAndStratum tq on tq.sampleunitid = w.sampleunit_id
-where tq.EncounterDateEnd >= ss.datDateRange_ToDate and tq.EncounterDateStart <= ss.datDateRange_FromDate
-and w.sampleunit_id = 5008479
+	--sampleSize int,                   --count (distinct pop_id) from samplepop, sum counts for all units
+	select @sampleSize = count(distinct w.pop_id) from #work w
+	inner join samplepop sp on w.study_id = sp.study_id and w.pop_id = sp.pop_id --TODO use sampleset_id
+	inner join sampleset ss on sp.sampleset_id = ss.sampleset_id
+	inner join #tempQA_QuestionnaireCycleAndStratum tq on tq.sampleunitid = w.sampleunit_id
+	where tq.EncounterDateEnd >= ss.datDateRange_ToDate and tq.EncounterDateStart <= ss.datDateRange_FromDate
+	and w.sampleunit_id = @SampleUnitId
+	--need to ???
 
---TODO: calc       nonResponseCount int,             --Calculate using dispositionlog, plus non response after max attempts (nothing in dispositionlog for that)
+	--nonResponseCount int,             --Calculate using dispositionlog, plus non response after max attempts (nothing in dispositionlog for that)
+	select @nonResponseCount = count(distinct w.pop_id) from #work w
+	inner join samplepop sp on w.study_id = sp.study_id and w.pop_id = sp.pop_id --TODO use sampleset_id
+	inner join sampleset ss on sp.sampleset_id = ss.sampleset_id
+	inner join #tempQA_QuestionnaireCycleAndStratum tq on tq.sampleunitid = w.sampleunit_id
+	left join DispositionLog dl on dl.SamplePop_id = sp.SAMPLEPOP_ID
+	where tq.EncounterDateEnd >= ss.datDateRange_ToDate and tq.EncounterDateStart <= ss.datDateRange_FromDate
+	and (dl.Disposition_id in (14,16,27,46,47,52) /*bad addr, bad phone, refusal*/ 
+		or dl.Disposition_id is null /*non-response after max attempts*/ )
+	and w.sampleunit_id = @SampleUnitId
+	--need to ???
 
-select count(distinct w.pop_id) from #work w
-inner join samplepop sp on w.study_id = sp.study_id and w.pop_id = sp.pop_id
-inner join sampleset ss on sp.sampleset_id = ss.sampleset_id
-inner join #tempQA_QuestionnaireCycleAndStratum tq on tq.sampleunitid = w.sampleunit_id
-left join DispositionLog dl on dl.SamplePop_id = sp.SAMPLEPOP_ID
-where tq.EncounterDateEnd >= ss.datDateRange_ToDate and tq.EncounterDateStart <= ss.datDateRange_FromDate
-and (dl.Disposition_id in (14,16,27,46,47,52) /*bad addr, bad phone, refusal*/ 
-	or dl.Disposition_id is null /*non-response after max attempts*/ )
-and w.sampleunit_id = 5008479
+	/*
+	select * from disposition where disposition_id in (14,16,27,46,47,52)
+	Disposition_id	strDispositionLabel
+	14	The intended respondent is not at this phone
+	16	Bad/Missing/Wrong phone number
+	27	Declined to participate
+	46	Unused Bad Address
+	47	Unused Bad Phone
+	52	Bad address and bad phone
+	*/
 
-/*
-select * from disposition where disposition_id in (14,16,27,46,47,52)
-Disposition_id	strDispositionLabel
-14	The intended respondent is not at this phone
-16	Bad/Missing/Wrong phone number
-27	Declined to participate
-46	Unused Bad Address
-47	Unused Bad Phone
-52	Bad address and bad phone
-*/
+	select @strataCount = count(distinct sampleunit_id) from #work where Study_ID = @Study
+	--TODO: s/b by facility rather than study (need facilitynum on @work table) do in a post process loop
 
---TODO: calc       samplingMethod_CD varchar(4),     --if dischargeCount=sampleSize for all strata then CEN, if one stratum then SRS, if multiple strata then DSRS
+	update #tempQA_QuestionnaireCycleAndStratum set 
+		FacilityNum = @FacilityNum,
+		--CycleCD varchar(15),              --Derive from ENCOUNTERFacilityNum & encounter dates? Max length = 15.  Maybe ENCOUNTERFacilityNum + begin MMYY + end MMYY (e.g. 27907_0416_0616)
+		CycleCD = LEFT(@FacilityNum + '_' + 
+			SUBSTRING(EncounterDateStart,5,2) + SUBSTRING(EncounterDateStart,3,2) + '_' + 
+			SUBSTRING(EncounterDateEnd,5,2) + SUBSTRING(EncounterDateEnd,3,2), 15),
+		dischargeCount = @dischargeCount,
+		sampleSize = @sampleSize,
+		nonResponseCount = @nonResponseCount,
+		--samplingMethod_CD varchar(4),     --if dischargeCount=sampleSize for all strata then CEN, if one stratum then SRS, if multiple strata then DSRS
+		samplingMethod_CD = case 
+			when @StrataCount > 1 then 'DSRS' 
+			when @dischargeCount = @sampleSize then 'CEN' 
+			else 'SRS' end,
+		bitflag = 1 
+	where SampleUnitId = @SampleUnitId
+end
 
 --INSERT FOR NOW, s/b a MERGE most likely
 
