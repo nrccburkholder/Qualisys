@@ -112,6 +112,7 @@ CREATE TABLE CIHI.QA_Questionnaire (
 	questionnaireCycleID int,					--NULL, until we hook it up to Chris' work
 	SubmissionID int,							--CIHI.Submission.SubmissionID
 	samplePopID int,							--samplePop_id
+	sampleSetID int, 							--sampleset_ID
 	sampleunitID int,							--sampleunit_id
 	HCN varchar(12),							--population.HCN
 	HCN_Issuer char(2),							--population.HCN_Issuer

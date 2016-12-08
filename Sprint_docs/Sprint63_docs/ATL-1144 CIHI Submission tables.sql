@@ -21,6 +21,7 @@ IF EXISTS (SELECT * FROM SYS.TABLES where schema_name(schema_id)='CIHI' and name
 
 CREATE TABLE CIHI.Final_OrgProfile (
 	Final_OrgProfileID int identity(1,1),
+	SubmissionID int,
 	Final_MetadataID int,
 	[organizationProfile.organization.id.value] varchar(10),
 	[organizationProfile.surveyingFrequency_code] varchar(9),
@@ -34,6 +35,7 @@ IF EXISTS (SELECT * FROM SYS.TABLES where schema_name(schema_id)='CIHI' and name
 
 CREATE TABLE CIHI.Final_Contact (
 	Final_ContactID int identity(1,1),
+	SubmissionID int,
 	Final_OrgProfileID int,
 	[organizationProfile.organization.contact.code_code] varchar(3),
 	[organizationProfile.organization.contact.code_codeSystem] varchar(50),
@@ -49,6 +51,7 @@ IF EXISTS (SELECT * FROM SYS.TABLES where schema_name(schema_id)='CIHI' and name
 
 CREATE TABLE CIHI.Final_Role (
 	Final_RoleID int identity(1,1),
+	SubmissionID int,
 	Final_OrgProfileID int,
 	[organizationProfile.role_code] varchar(3),
 	[organizationProfile.role_codeSystem] varchar(50),
@@ -83,6 +86,7 @@ IF EXISTS (SELECT * FROM SYS.TABLES where schema_name(schema_id)='CIHI' and name
 
 CREATE TABLE CIHI.Final_Stratum (
 	Final_StratumID int identity(1,1),
+	SubmissionID int,
 	Final_QuestionnaireCycleID int,
 	[questionnaireCycle.sampleInformation.populationInformation.stratum.stratumCode] varchar(15),
 	[questionnaireCycle.sampleInformation.populationInformation.stratum.stratumDescription] varchar(25),
@@ -97,6 +101,7 @@ IF EXISTS (SELECT * FROM SYS.TABLES where schema_name(schema_id)='CIHI' and name
 
 CREATE TABLE CIHI.Final_Questionnaire (
 	Final_QuestionnaireID int identity(1,1),
+	SubmissionID int,
 	Final_QuestionnaireCycleID int,
 	[questionnaireCycle.questionnaire.id.value] varchar(15),
 	[questionnaireCycle.questionnaire.subject.id.value] varchar(12),
@@ -125,6 +130,7 @@ IF EXISTS (SELECT * FROM SYS.TABLES where schema_name(schema_id)='CIHI' and name
 
 CREATE TABLE CIHI.Final_Question (
 	Final_QuestionID int identity(1,1),
+	SubmissionID int,
 	Final_QuestionnaireID int,
 	[questionnaireCycle.questionnaire.questions.question.code_code] char(4),
 	[questionnaireCycle.questionnaire.questions.question.code_codeSystem] varchar(50),
