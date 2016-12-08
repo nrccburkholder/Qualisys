@@ -21,8 +21,8 @@ namespace PersonatorAddressCleaner_POC
         static void Main(string[] args)
         {
             string environment = "STAGE";
-            int dataFile_id = 427336;
-            int study_id = 4329;
+            int dataFile_id = 475774;
+            int study_id = 5575;
             int batchSize = 100;
             int totalBatches = 59;
 
@@ -91,26 +91,12 @@ namespace PersonatorAddressCleaner_POC
 
         public static string MelissaDataApiJsonCall(string environment, int DataFile_id, int Study_id, int batchIdx, int batchSize)
         {
-            string TransmissionReference = "";
-            string CustomerID = "99869570";
-            string Actions = "Check";
+            string TransmissionReference = ""; //The Transmission Reference is a unique string value that identifies this particular request
+            string CustomerID = "99869570"; // I think this was provided by BJ
+            string Actions = "Check"; //The Check action will validate the individual input data pieces for validity and correct them if possible. 
             string Options = "AdvancedAddressCorrection:on";//UsePreferredCity:on
-            string Columns = "";
-            
-            //string RecordID = "1";
-            //string CompanyName = "NRC";
-            //string FullName = "Timothy S Butler";
-            //string AddressLine1 = "610 S Evergreen Drive";
-            //string AddressLine2 = "";
-            //string Suite = "";
-            //string City = "Seward";
-            //string State = "Nebraska";
-            //string PostalCode = "68444";
-            //string Country = "USA";
-            //string PhoneNumber = "4026416896";
-            //string EmailAddress = "tbutler1@neb.rr.com";
-            //string FreeForm = "";
-            
+            string Columns = "GrpCensus,GrpGeocode"; //To use Geocode, you must have the geocode columns on: GrpCensus or GrpGeocode.
+
             var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://personator.melissadata.net/v3/WEB/ContactVerify/doContactVerify");
             httpWebRequest.ContentType = "text/json";
             httpWebRequest.Method = "POST";
@@ -157,6 +143,7 @@ namespace PersonatorAddressCleaner_POC
                 string CompanyName = "";
                 string FullName;
                 string Middle = e["Middle"].ToString().Trim();
+
                 if (CLEAN_NAME)
                 {
                     if (string.IsNullOrWhiteSpace(Middle))
@@ -168,7 +155,10 @@ namespace PersonatorAddressCleaner_POC
                 {
                     FullName = "";
                 }
-                string AddressLine1 = e["Addr"].ToString();
+
+
+                /* NOTE:  The "raw" column names for a datafile will not always match these.  The current AddressCleaner makes a call to AC_GetMetaGroups and then reassigns to use "common" names*/
+                string AddressLine1 = e["Addr"].ToString(); //e["Addr"].ToString();
                 string AddressLine2 = e["Addr2"].ToString();
                 string Suite = "";
                 string City = e["City"].ToString();
@@ -185,7 +175,7 @@ namespace PersonatorAddressCleaner_POC
                     CompanyName = CompanyName,
                     FullName = FullName,
                     AddressLine1 = AddressLine1,
-                    AddressLine2 = AddressLine2,
+                    AddressLine2 = "", //AddressLine2,
                     Suite = Suite,
                     City = City,
                     State = State,
