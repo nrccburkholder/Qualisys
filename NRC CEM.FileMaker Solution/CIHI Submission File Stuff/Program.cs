@@ -16,6 +16,7 @@ using System.Data;
 using ConsoleApplication1.DataProviders;
 using ConsoleApplication1.Classes;
 using System.Reflection;
+using System.Configuration;
 
 
 /*
@@ -42,19 +43,34 @@ namespace ConsoleApplication1
         {
 
             RussianDoll,
-
             SeparateComplexTypes
 
         }
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Press return to start");
-            Console.ReadLine();
 
-            Start();
+            try
+            {
 
-            Console.WriteLine("Press return to exit");
+                Console.WriteLine();
+                Console.WriteLine(string.Format("Environment: {0}", GetEnvironment()));
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine("Press <ENTER> to start");
+                Console.ReadLine();
+
+                Start();
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine();
+                Console.WriteLine(ex.Message);
+                Console.WriteLine();   
+            }
+
+            Console.WriteLine("Press <Enter> to exit");
             Console.ReadLine();
 
         }
@@ -62,320 +78,31 @@ namespace ConsoleApplication1
         static void Start()
         {
 
-           // string xmlstring =  GenerateXMLFromXSD();
+            string fiscalYear = "2016";
+            string submittingOrganizationIdentifier = "5M262";
+            string submissionSequenceIdentifier = "001";
+
+            string outputFileName = $"CPE{fiscalYear}00{submittingOrganizationIdentifier}1{submissionSequenceIdentifier}";
+
+            string xmlOutputFile1 = $@"C:\TEMP\{outputFileName}.xml";
+           // string xmlOutputFile2 = $@"C:\TEMP\{outputFileName}_update.xml";
+           // string xmlOutputFile3 = $@"C:\TEMP\{outputFileName}_delete.xml";
 
 
-            string xmlOutputFile = @"C:\TEMP\CIHI_submission_file_test.xml";
-            string xsdPath = @"C:\Users\tbutler\Documents\cpesic-submission_v1.0.xsd";
-            //string xsdPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"XSD\cpesic-submission_v1.0.xsd");
-           // string resourceName = "cpesic-submission_v1.0";
-
-            //string xsd = @"C:\Users\tbutler\Documents\CPES-IC-non-stratified-sample (October 2014)2.xsd";
-            //string xsd = @"C:\Users\tbutler\Documents\ICH_Data_Submission_Standard_20141219.xsd";
-
-            //CreateEmptyXMLFromXSD(xmlOutputFile, xsdPath);
-            string xmlOutputFile1 = @"C:\TEMP\CIHI_submission_file.xml";
-            string xmlOutputFile2 = @"C:\TEMP\CIHI_submission_file_update.xml";
-            string xmlOutputFile3 = @"C:\TEMP\CIHI_submission_file_delete.xml";
-
-            MakeExportXMLDocument(xmlOutputFile1, 1);
-            MakeExportXMLDocument(xmlOutputFile2, 1);
-            MakeExportXMLDocument(xmlOutputFile3, 1);
-            //MakeExportXMLDocument(xmlOutputFile1, xsdPath, 1);
-            //MakeExportXMLDocument(xmlOutputFile2, xsdPath, 2);
-            //MakeExportXMLDocument(xmlOutputFile3, xsdPath, 3);
-
-            //XmlDocumentEx xmlDoc = new XmlDocumentEx();
-
-            //xmlDoc.Load(@"\\lnk0pusers01\users\tbutler\My Documents\CPES-IC-non-stratified-sample (December 2014).xml");
-
-            //xmlDoc.l
-
-            //xmlDoc.Validate();
-
-            //if (!xmlDoc.IsValid)
-            //{
-            //    foreach (ExportValidationError eve in xmlDoc.ValidationErrorList)
-            //    {
-            //        //Logging to the database.  The elements of the message are pipe delimited, with the template name, queueid, queuefileid, the file name, and the validation error description
-            //        Console.WriteLine(eve.ErrorDescription);
-
-
-            //    }
-            //}
-
-            //Console.WriteLine(xmlstring);
-
-            //ValidateXML();
-            //ParseXSD();
-            //WalkXSD();
-
-            //exportTemplate = ExportTemplateProvider.Select(new ExportTemplate { ExportTemplateID = 1 }).First();
-
-            //XmlSerializer x = new System.Xml.Serialization.XmlSerializer(exportTemplate.GetType());
-
-            //x.Serialize(Console.Out, exportTemplate);
-
-            //Console.WriteLine();
-
-            //List<ExportTemplate> list = ExportTemplateProvider.Select(new ExportTemplate{ExportTemplateID = 1},true);
-
-            //List<ExportTemplate> list = ExportTemplateProvider.Select(new ExportTemplate(), false);
-
-            //exportTemplate = list[0];
-
-
-            // Create XML from data
-            //List<ExportQueueFile> queuefiles = ExportQueueFileProvider.Select(new ExportQueueFile());
-
-            //foreach (ExportQueueFile queuefile in queuefiles.Where(x => x.FileMakerDate == null))
-            //{
-            //    List<ExportQueue> queues = ExportQueueProvider.Select(new ExportQueue { ExportQueueID = queuefile.ExportQueueID });
-
-            //    foreach (ExportQueue queue in queues)
-            //    {
-            //        ExportTemplate template = ExportTemplateProvider.Select(new ExportTemplate { ExportTemplateVersionMajor = queue.ExportTemplateVersionMajor, ExportTemplateVersionMinor = queue.ExportTemplateVersionMinor }).First();
-
-            //        DataSet ds = ExportDataProvider.Select(queue.ExportQueueID, template.ExportTemplateID);
-
-            //        if (ds.Tables.Count > 0) 
-            //        {
-            //            string filename = template.DefaultNamingConvention;
-            //            XMLExporter.SetFileName(ref filename, ds.Tables[0]);
-
-            //            string filepath = Path.Combine(@"C:\Users\tbutler\Documents\", filename + ".xml");
-
-            //            XmlDocument xmlDoc = new XmlDocument();
-            //            xmlDoc = XMLExporter.MakeExportXMLDocument(ds, template);
-
-            //            if (ValidateXML(xmlDoc, template.XMLSchemaDefinition))
-            //            {
-            //                xmlDoc.Save(filepath);
-            //                //Update ExportQueueFile with FileName and FileMakerDate
-            //                queuefile.FileMakerName = filepath;
-            //                queuefile.FileMakerDate = DateTime.Now;
-            //                queuefile.Save();
-            //            }
-            //            else Console.WriteLine("Validation errors encountered! File NOT created.");
-
-            //        }
-            //    }
-
-            //}
-
-            //List<ExportQueue> queues = ExportQueueProvider.Select(new ExportQueue());
-
-            //string filepath =  @"C:\Users\tbutler\Documents\test.xml";
-
-            //XMLExporter.CreateExportXMLFile(ExportDataProvider.Select(1), filepath, exportTemplate.XMLSchemaDefinition);
-
-            //ValidateXML(filepath);
-
-            //LoadXSDasXML();
-
-            //if (!exportTemplate.ValidateAgainstXSD())
-            //{
-            //    foreach (string item in exportTemplate.MissingColumns)
-            //    {
-            //        Console.WriteLine(item);
-            //    }
-            //}
-            //else { Console.WriteLine("ExportTemplate validated successfully with XSD."); }
-
-            //Console.WriteLine("MISSING");
-            //foreach (string item in MissingColumns)
-            //{
-            //    Console.WriteLine(item);
-            //}
-            //Console.WriteLine("----------------------");
-            //Console.WriteLine("FOUND");
-            //foreach (string item in FoundColumns)
-            //{
-            //    Console.WriteLine(item);
-            //}
-
-
-
-            //SchemaBuilder sb = new SchemaBuilder();
-
-            //string xml = @"C:\Users\tbutler\Documents\HHCAHPS_XML_Sample_File.xml";
-            //xml = @"C:\Users\tbutler\Documents\XMLFile1.xml";
-
-
-            //string schema = sb.BuildSchema(xml, GenerateSchema.NestingType.RussianDoll);
-
-            //Console.WriteLine(schema);
-
-            //File.WriteAllText(@"C:\Users\tbutler\Documents\HHCAHPS_XML_Sample_File.xsd", schema);
-
-
-            //sb.MakeObject(schema);
-
-        }
-
-       
-
-        static bool ValidateXML()
-        {
-
-            string xsd = @"C:\Users\tbutler\Documents\ICH_Data_Submission_Standard.xsd";
-            XmlSchema schema = new XmlSchema();
-            schema = GetXSDFileAsXMLSchema(xsd);
-            string ns = schema.TargetNamespace;
-
-            XmlSchemaSet schemas = new XmlSchemaSet();
-            schemas.Add(ns,xsd);
-
-            XmlReaderSettings schemaSettings = new XmlReaderSettings();
-            schemaSettings.ValidationType = ValidationType.Schema;
-            schemaSettings.ValidationFlags |= XmlSchemaValidationFlags.ReportValidationWarnings;
-            schemaSettings.ValidationEventHandler += new ValidationEventHandler(ValidationCallBack);
-            schemaSettings.Schemas.Add(null, xsd);
-
-            //string xml = @"C:\Users\tbutler\Documents\XMLFile1.xml";
-            string xml = @"C:\Users\tbutler\Documents\_HHCAHPS_XML_Sample_File.xml";
-            //string xml = @"C:\Users\tbutler\Documents\HHCAHPS_XML_Sample_File.xml";
-
-            using (XmlReader xmlreader = XmlReader.Create(xml, schemaSettings))
+            try
             {
-                while (xmlreader.Read()) { }
+
+                MakeExportXMLDocument(xmlOutputFile1, 1);
+                //MakeExportXMLDocument(xmlOutputFile2, 2);
+                //MakeExportXMLDocument(xmlOutputFile3, 3);
+
             }
-
-            // Check whether the document is valid or invalid.
-            if (isValid)
-                Console.WriteLine("Document is valid");
-            else
-                Console.WriteLine("Document is invalid");
-
-            return isValid;
-        }
-
-        static bool ValidateXML(string filepath)
-        {
-            //string xsd = @"C:\Users\tbutler\Documents\HHCAHPS_XML_Sample_File.xsd";
-            string xsd = @"C:\Users\tbutler\Documents\ICH_Data_Submission_Standard_20140814.xsd";
-            XmlSchema schema = new XmlSchema();
-            schema = GetXSDFileAsXMLSchema(xsd);
-            string ns = schema.TargetNamespace;
-
-            XmlSchemaSet schemas = new XmlSchemaSet();
-            schemas.Add(ns, xsd);
-
-            XmlReaderSettings schemaSettings = new XmlReaderSettings();
-            schemaSettings.ValidationType = ValidationType.Schema;
-            schemaSettings.ValidationFlags |= XmlSchemaValidationFlags.ReportValidationWarnings;
-            schemaSettings.ValidationEventHandler += new ValidationEventHandler(ValidationCallBack);
-            schemaSettings.Schemas.Add(null, xsd);
-
-            using (XmlReader xmlreader = XmlReader.Create(filepath, schemaSettings))
+            catch (Exception ex)
             {
-                while (xmlreader.Read()) { }
+                Console.WriteLine();
+                Console.WriteLine(ex.Message);
+                Console.WriteLine();
             }
-
-            // Check whether the document is valid or invalid.
-            if (isValid)
-                Console.WriteLine("Document is valid");
-            else
-                Console.WriteLine("Document is invalid");
-
-            return isValid;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="xmlDoc"></param>
-        /// <param name="xsd"></param>
-        /// <returns></returns>
-        static bool ValidateXML(XmlDocument xmlDoc, string xsd)
-        {
-            bool isValid = true;
-
-            //XmlSchema schema = XmlSchema.Read(new StringReader(xsd), new ValidationEventHandler(ValidationCallBack));
-
-            //XmlSchema schema = XmlSchema.Read(new StringReader(xsd), null);
-            //string ns = schema.TargetNamespace;
-
-            XmlSchema schema = new XmlSchema();
-            schema = GetXSDFileAsXMLSchema(xsd);
-            string ns = schema.TargetNamespace;
-
-            XmlSchemaSet schemas = new XmlSchemaSet();
-            schemas.Add(ns, xsd);
-            //schemas.Add(ns, XmlReader.Create(new StringReader(xsd)));
-
-            XDocument xDoc = XDocument.Parse(xmlDoc.OuterXml);
-
-            xDoc.Validate(schemas, (o, e) =>
-            {
-                Console.WriteLine("\tValidation error: {0}", e.Message);
-                isValid = false;
-            });
-
-            return isValid;
-        }
-
-        static bool ValidateXML(string xsd, string xml)
-        {
-
-            XmlSchema schema = new XmlSchema();
-            schema = GetXSDFileAsXMLSchema(xsd);
-            string ns = schema.TargetNamespace;
-
-            XmlSchemaSet schemas = new XmlSchemaSet();
-            schemas.Add(ns, xsd);
-
-            XmlReaderSettings schemaSettings = new XmlReaderSettings();
-            schemaSettings.ValidationType = ValidationType.Schema;
-            schemaSettings.ValidationFlags |= XmlSchemaValidationFlags.ReportValidationWarnings;
-            schemaSettings.ValidationEventHandler += new ValidationEventHandler(ValidationCallBack);
-            schemaSettings.Schemas.Add(null, xsd);
-
-            using (XmlReader xmlreader = XmlReader.Create(xml, schemaSettings))
-            {
-                while (xmlreader.Read()) { }
-            }
-
-            // Check whether the document is valid or invalid.
-            if (isValid)
-                Console.WriteLine("Document is valid");
-            else
-                Console.WriteLine("Document is invalid");
-
-            return isValid;
-        }
-
-        static void ParseXSD()
-        {
-
-            string xmlOutputFile = @"C:\Users\tbutler\Documents\Test_ICH_Data_Submission_Standard.xml";
-            XMLOutWriter = new XmlTextWriter(xmlOutputFile, System.Text.Encoding.UTF8);
-            XMLOutWriter.WriteStartDocument();
-            
-
-            string xsd = @"C:\Users\tbutler\Documents\ICH_Data_Submission_Standard.xsd";
-
-            XmlSchema schema = new XmlSchema();
-            schema = GetXSDFileAsXMLSchema(xsd);
-            string ns = schema.TargetNamespace;
-            // Iterate over each XmlSchemaElement in the Values collection 
-            // of the Elements property. 
-            XmlSchemaElement root = schema.Items[0] as XmlSchemaElement;
-
-            XMLOutWriter.WriteStartElement(root.Name);
-            XMLOutWriter.WriteAttributeString("xmlns", ns);
-
-            XmlSchemaSequence children = ((XmlSchemaComplexType)root.ElementSchemaType).ContentTypeParticle as XmlSchemaSequence;
-            foreach (XmlSchemaObject child in children.Items.OfType<XmlSchemaElement>())
-            {
-                ParseXSDChildren(child, root.Name);      
-            }
-
-            XMLOutWriter.WriteEndElement();
-            XMLOutWriter.WriteEndDocument();
-            XMLOutWriter.Close();
-
-            ValidateXML(xsd, xmlOutputFile);
 
         }
 
@@ -487,82 +214,6 @@ namespace ConsoleApplication1
             
         }
 
-
-        static string GenerateXMLFromXSD()
-        {
-
-            string xmlString = string.Empty;
-            XmlDocument xDoc = new XmlDocument();
-
-            using (StringWriter sw = new StringWriter())
-            {
-
-                XMLOutWriter = new XmlTextWriter(sw);
-                XMLOutWriter.WriteStartDocument();
-
-                string xsd = @"C:\Users\tbutler\Documents\ICH_Data_Submission_Standard_20141219.xsd";
-                
-               // XmlSchema schema = XmlSchema.Read(new StringReader(xsd), new ValidationEventHandler(ValidationCallBack));
-
-                XmlSchema schema = new XmlSchema();
-                schema = GetXSDFileAsXMLSchema(xsd);
-
-                schema.Compile(ValidationCallBack);
-                string ns = schema.TargetNamespace;
-                // Iterate over each XmlSchemaElement in the Values collection 
-                // of the Elements property. 
-                XmlSchemaElement root = schema.Items[0] as XmlSchemaElement;
-
-                XMLOutWriter.WriteStartElement(root.Name);
-                XMLOutWriter.WriteAttributeString("xmlns", ns);
-
-                XmlSchemaSequence children = ((XmlSchemaComplexType)root.ElementSchemaType).ContentTypeParticle as XmlSchemaSequence;
-                foreach (XmlSchemaObject child in children.Items.OfType<XmlSchemaElement>())
-                {
-                    WriteOutXMLChildrenFromXSD(child);
-                }
-
-                XMLOutWriter.WriteEndElement();
-                XMLOutWriter.WriteEndDocument();
-                XMLOutWriter.Close();
-
-                xmlString = sw.ToString();
-            }
-
-            return xmlString;
-        }
-
-
-        static void CreateEmptyXMLFromXSD(string xmlOutputFile, string xsd)
-        {
-            
-            XMLOutWriter = new XmlTextWriter(xmlOutputFile, System.Text.Encoding.UTF8);
-            XMLOutWriter.WriteStartDocument();
-
-
-            XmlSchema schema = new XmlSchema();
-            schema = GetXSDFileAsXMLSchema(xsd);
-            string ns = schema.TargetNamespace;
-            // Iterate over each XmlSchemaElement in the Values collection 
-            // of the Elements property. 
-            XmlSchemaElement root = schema.Items[0] as XmlSchemaElement;
-
-            XMLOutWriter.WriteStartElement(root.Name);
-            XMLOutWriter.WriteAttributeString("xmlns", ns);
-
-            XmlSchemaSequence children = ((XmlSchemaComplexType)root.ElementSchemaType).ContentTypeParticle as XmlSchemaSequence;
-            foreach (XmlSchemaObject child in children.Items.OfType<XmlSchemaElement>())
-            {
-                WriteOutXMLChildrenFromXSD(child);
-            }
-
-            XMLOutWriter.WriteEndElement();
-            XMLOutWriter.WriteEndDocument();
-            XMLOutWriter.Close();
-
-            ValidateXML(xsd, xmlOutputFile);
-        }
-
         static void WriteOutXMLChildrenFromXSD(XmlSchemaObject xso, string parentName = null)
         {
             if (xso.GetType().Equals(typeof(XmlSchemaElement)))
@@ -667,12 +318,6 @@ namespace ConsoleApplication1
             return schema;
         }
 
-        //static void ValidationCallBack(object sender, ValidationEventArgs args)
-        //{   
-        //    Console.WriteLine("\tValidation error: {0}", args.Message);
-        //    isValid = false;
-        //}
-
         private static void ValidationCallBack(object sender, ValidationEventArgs args)
         {
             Console.WriteLine("\tValidation error: {0}", args.Message);
@@ -681,104 +326,6 @@ namespace ConsoleApplication1
 
             //xmlDoc.ValidationErrorList.Add(new ExportValidationError(args.Message));
         }
-
-
-        //static ExportTemplate GetTemplate(int id)
-        //{
-
-        //    Exporter exp = new Exporter();
-
-        //    ExportTemplate template = exp.GetExportTemplates().First(x => x.ExportTemplateID == 1);
-        //    return template;
-        //}
-
-
-        //static List<ExportTemplate> GetTemplates()
-        //{
-        //    Exporter exp = new Exporter();
-
-        //    List<ExportTemplate> templates = new List<ExportTemplate>();
-
-        //    templates = exp.GetExportTemplates();
-
-        //    return templates;
-        //}
-
-        //static void WalkXSD()
-        //{
-        //    MissingColumns = new List<string>();
-        //    FoundColumns = new List<string>();
-        //    exportTemplate = GetTemplate(1);
-
-        //    string xsd = exportTemplate.XMLSchemaDefinition; // @"C:\Users\tbutler\Documents\ICH_Data_Submission_Standard_20140814.xsd";
-
-        //    XmlSchema schema = XmlSchema.Read(new StringReader(xsd), new ValidationEventHandler(ValidationCallBack));
-        //    schema.Compile(ValidationCallBack);
-        //    string ns = schema.TargetNamespace;
-        //    // Iterate over each XmlSchemaElement in the Values collection 
-        //    // of the Elements property. 
-        //    XmlSchemaElement root = schema.Items[0] as XmlSchemaElement;
-
-
-        //    XmlSchemaSequence children = ((XmlSchemaComplexType)root.ElementSchemaType).ContentTypeParticle as XmlSchemaSequence;
-        //    foreach (XmlSchemaObject child in children.Items.OfType<XmlSchemaElement>())
-        //    {
-        //        WalkXSDChildren(child, root.Name);
-        //    }
-
-        //}
-
-        //static void WalkXSDChildren(XmlSchemaObject xso, string parentName)
-        //{
-
-        //    if (xso.GetType().Equals(typeof(XmlSchemaElement)))
-        //    {
-        //        XmlSchemaElement xse = (XmlSchemaElement)xso;
-
-        //        // Get the complex type of the element.
-        //        XmlSchemaComplexType complexType = xse.ElementSchemaType as XmlSchemaComplexType;
-
-        //        if (complexType == null)
-        //        {
-        //            // it's a simple type, so no sub elements
-        //            XmlSchemaElement parent = GetParentElement(xse);
-
-        //            bool HasMatchingColumn = exportTemplate.IsExist(xse.Name);
-
-        //            if (HasMatchingColumn)
-        //            { FoundColumns.Add(parent.Name + ":" + xse.Name); }
-        //            else
-        //            { MissingColumns.Add(parent.Name + ":" + xse.Name); }
-
-        //        }
-        //        else
-        //        {
-        //            // If the complex type has any attributes, get an enumerator  
-        //            // and write each attribute name to the console. 
-        //            if (complexType.AttributeUses.Count > 0)
-        //            {
-        //                IDictionaryEnumerator enumerator = complexType.AttributeUses.GetEnumerator();
-
-        //                while (enumerator.MoveNext())
-        //                {
-        //                    XmlSchemaAttribute attribute = (XmlSchemaAttribute)enumerator.Value;
-        //                }
-        //            }
-
-        //            // Get the sequence particle of the complex type.
-        //            XmlSchemaSequence sequence = complexType.ContentTypeParticle as XmlSchemaSequence;
-        //            if (sequence != null)
-        //            {
-        //                // Iterate over each XmlSchemaElement in the Items collection. 
-        //                foreach (XmlSchemaObject childElement in sequence.Items)
-        //                {
-        //                    //Console.WriteLine("Child Element: {0}", childElement.Name);
-        //                    WalkXSDChildren(childElement, xse.Name);
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
 
         static XmlSchemaElement GetParentElement(XmlSchemaObject xse)
         {
@@ -795,138 +342,12 @@ namespace ConsoleApplication1
             
         }
 
-        static void LoadXSDasXML()
-        {
-            XmlDocument xDoc = new XmlDocument();
-            xDoc.LoadXml(GenerateXMLFromXSD());
-
-            XmlNodeList patientLevelNodeList = xDoc.GetElementsByTagName("patientleveldata");
-            XmlNode headerNode = xDoc.GetElementsByTagName("header")[0];
-
-            foreach (XmlNode node in headerNode.ChildNodes)
-            {
-
-                Console.WriteLine(string.Format("{0}.{1}", headerNode.Name, node.Name));
-
-            }
-
-
-            foreach (XmlNode node in patientLevelNodeList)
-            {
-
-                XmlNode adminNode = node.FirstChild;
-                XmlNode responseNode = node.LastChild;
-                foreach (XmlNode subnode in adminNode.ChildNodes)
-                {
-                    
-
-                    Console.WriteLine(string.Format("{0}.{1}", subnode.ParentNode.Name, subnode.Name));
-
-                }
-
-                foreach (XmlNode subnode in responseNode.ChildNodes)
-                {
-
-
-                    Console.WriteLine(string.Format("{0}.{1}", subnode.ParentNode.Name, subnode.Name));
-
-                }
-
-            }        
-        }
-
-        static string GetDataValue(string elementname, string dataType)
-        {
-
-            string value = string.Empty;
-            if (dataType.Contains("string"))
-            {
-                value = "x";
-            }
-            else if (dataType.Contains("integer"))
-            {
-                value = "1";
-            }
-
-            return value;
-
-        }
-
-        public static void MakeExportXMLDocument(string outputFileName, string xsd, int id = 1)
-        {
-
-            DataSet ds = new DataSet();
-
-            ds = ExportProvider.SelectSubmissionMetadata(id);
-
-            //XmlDocumentEx xmlDoc = new XmlDocumentEx();
-
-            if (ds.Tables[0].Rows.Count > 0)
-            {
-                Encoding encoding = new UTF8Encoding(false);
-
-                //XmlSchema schema = new XmlSchema();
-                FileStream fs = new FileStream(xsd, FileMode.Open);
-                XmlSchema schema = XmlSchema.Read(fs, new ValidationEventHandler(ValidationCallBack));
-                //schema = GetXSDFileAsXMLSchema(xsd);
-                string ns = schema.TargetNamespace;
-                schema.Compile(ValidationCallBack);
-                ///XmlDocument xmlDoc = new XmlDocument();
-
-                XmlDocumentEx xmlDoc = new XmlDocumentEx();
-
-                xmlDoc.LoadXml(GenerateEmptyXMLFromSchema(schema));
-
-                using (XMLWriter writer = new XMLWriter())
-                {
-                    XmlSchemaElement root = schema.Items[0] as XmlSchemaElement;
-                    writer.StartElement(string.Format("{0}:{1}","cpesic",root.Name));
-                    //writer.WriteAttribute("xmlns",schema.TargetNamespace);
-                    writer.WriteAttribute("xmlns", "cpesic", null, schema.TargetNamespace);
-                    writer.WriteAttribute("xmlns","xsi", null, "http://www.w3.org/2001/XMLSchema-instance");
-                    writer.WriteAttribute("xsi", "schemaLocation", null, string.Format("{0} {1},", schema.TargetNamespace,"cpesic-submission_v1.0.xsd"));
-
-                    XmlNode rootNode = xmlDoc.DocumentElement;
-
-                    // DataSubmission section
-                    WriteDataSubmissionSection(ds.Tables[0].Rows[0], writer, rootNode);
-
-                    writer.EndElement();
-
-                    XmlDocumentEx returnXMLdoc = new XmlDocumentEx();
-                    returnXMLdoc.Schemas.Add(schema);
-                    returnXMLdoc.LoadXml(writer.XmlString);
-                    returnXMLdoc.Save(outputFileName);
-
-                    returnXMLdoc.Validate();
-
-                    if (!returnXMLdoc.IsValid)
-                    {
-                        foreach (ExportValidationError eve in returnXMLdoc.ValidationErrorList)
-                        {
-                            //Logging to the database.  The elements of the message are pipe delimited, with the template name, queueid, queuefileid, the file name, and the validation error description
-                            Console.WriteLine(eve.ErrorDescription);
-                        }
-                    }
-                    else 
-                    {
-                        
-                        Console.WriteLine("This XML Validated successfully!");                      
-                    }
-                    Console.WriteLine();
-                }
-            }
-            else throw new Exception("No SubmissionMetadata found!");
-        }
-
         public static void MakeExportXMLDocument(string outputFileName, int id = 1)
         {
 
             DataSet ds = new DataSet();
 
             ds = ExportProvider.SelectSubmissionMetadata(id);
-
-            
 
             if (ds.Tables[0].Rows.Count > 0)
             {
@@ -951,7 +372,6 @@ namespace ConsoleApplication1
                         {
                             XmlSchemaElement root = schema.Items[0] as XmlSchemaElement;
                             writer.StartElement(string.Format("{0}:{1}", "cpesic", root.Name));
-                            //writer.WriteAttribute("xmlns",schema.TargetNamespace);
                             writer.WriteAttribute("xmlns", "cpesic", null, schema.TargetNamespace);
                             writer.WriteAttribute("xmlns", "xsi", null, "http://www.w3.org/2001/XMLSchema-instance");
                             writer.WriteAttribute("xsi", "schemaLocation", null, string.Format("{0} {1},", schema.TargetNamespace, "cpesic-submission_v1.0.xsd"));
@@ -1155,8 +575,6 @@ namespace ConsoleApplication1
 
         }
 
-       
-
         private static void WriteElementWithAttributes(DataRow dr, XMLWriter writer, XmlNode node)
         {
             try
@@ -1198,13 +616,27 @@ namespace ConsoleApplication1
 
         }
 
+        private static Boolean SkipIfNullValue(DataRow dr, XmlNode parentNode, string nameOfNode)
+        {
+            Boolean skip = false;
+            XmlNode mNode = parentNode.SelectSingleNode(nameOfNode);
+            if (mNode == null) return true;
+
+            string fieldName = GetNodePath(mNode);
+            if (dr.Table.Columns.Contains(fieldName))
+            {
+                skip = (dr[fieldName] == DBNull.Value);
+            }
+
+            return skip;
+        }
+
         #endregion
 
         #region CIHI xmlsections
 
         private static void WriteDataSubmissionSection(DataRow dr, XMLWriter writer, XmlNode parentNode)
         {
-
 
             WriteCreationTime(dr, writer, parentNode);
 
@@ -1215,13 +647,14 @@ namespace ConsoleApplication1
             WritePurposeSection(dr, writer, parentNode);
 
 
-            int SubmissionFileID = Convert.ToInt32(dr["submissionFileID"]);
+            int SubmissionID = Convert.ToInt32(dr["submissionID"]);
+            int Final_MetadataID = Convert.ToInt32(dr["Final_MetadataID"]);
 
-            DataSet dsOrgProfile = ExportProvider.SelectSubmission_OrgProfile(SubmissionFileID);
+            DataSet dsOrgProfile = ExportProvider.SelectSubmission_OrgProfile(Final_MetadataID);
 
             WriteOrganizationProfileSection(dsOrgProfile, writer, parentNode);
 
-            DataSet dsQuestionnaireCycle = ExportProvider.SelectSubmission_QuestionnaireCycle(SubmissionFileID);
+            DataSet dsQuestionnaireCycle = ExportProvider.SelectSubmission_QuestionnaireCycle(SubmissionID);
 
             WriteQuestionnaireCycleSection(dsQuestionnaireCycle, writer, parentNode);
 
@@ -1276,7 +709,7 @@ namespace ConsoleApplication1
 
                     WriteOrganization(dr, writer, node, true);
 
-                    DataSet dsRole = ExportProvider.SelectSubmission_Role(Convert.ToInt32(dr["orgProfileID"]));
+                    DataSet dsRole = ExportProvider.SelectSubmission_Role(Convert.ToInt32(dr["Final_MetaDataID"]));
 
                     WriteRoles(dsRole, writer, node);
 
@@ -1324,7 +757,7 @@ namespace ConsoleApplication1
 
             if (includeContact) 
             {
-                int orgProfileID = Convert.ToInt32(dr["orgProfileID"]);
+                int orgProfileID = Convert.ToInt32(dr["Final_OrgProfileID"]);
                 DataSet dsContacts = ExportProvider.SelectSubmission_OrgProfile_Contacts(orgProfileID);
                 if (dsContacts.Tables[0].Rows.Count > 0)
                 {
@@ -1373,14 +806,17 @@ namespace ConsoleApplication1
 
             if (node == null) return;
 
-            writer.StartElement(node.Name);
+            if (!SkipIfNullValue(dr, node, "value"))
+            {
+                writer.StartElement(node.Name);
 
-            WriteElementString(dr, node, "value", writer);
+                WriteElementString(dr, node, "value", writer);
 
-            if (includeIssuer) {WriteIssuer(dr, writer, node);}
+                if (includeIssuer) { WriteIssuer(dr, writer, node); }
 
-            writer.EndElement();
-
+                writer.EndElement();
+            }
+         
         }
 
         private static void WriteIssuer(DataRow dr, XMLWriter writer, XmlNode parentNode)
@@ -1445,7 +881,7 @@ namespace ConsoleApplication1
 
                     WriteSampleInformation(dr, writer, node);
 
-                    int questionnaireCycleID = Convert.ToInt32(dr["questionnaireCycleID"]);
+                    int questionnaireCycleID = Convert.ToInt32(dr["Final_QuestionnaireCycleID"]);
                     DataSet dsQuestionnaire = ExportProvider.SelectSubmission_Questionnaire(questionnaireCycleID);
 
                     WriteQuestionnaireSection(dsQuestionnaire, writer, node);
@@ -1519,6 +955,11 @@ namespace ConsoleApplication1
             //{
             //    WriteDischargeInformation(dr, writer, dischargeInformationNode);
             //}
+
+            foreach (XmlNode stratumDetailsNode in node.SelectNodes("stratumDetails"))
+            {
+                WriteDischargeInformation(dr, writer, stratumDetailsNode);
+            }
 
             writer.EndElement();
         }
@@ -1597,13 +1038,16 @@ namespace ConsoleApplication1
 
             if (node == null) return;
 
-            writer.StartElement(node.Name);
+            if (!SkipIfNullValue(dr, node, "value"))
+            {
+                writer.StartElement(node.Name);
 
-            WriteElementString(dr, node, "value", writer);
+                WriteElementString(dr, node, "value", writer);
 
-            WriteElementWithAttributes(dr, writer, node, "code");
+                WriteElementWithAttributes(dr, writer, node, "code");
 
-            writer.EndElement();
+                writer.EndElement();
+            }
         }
 
         private static void WritePersonInformation(DataRow dr, XMLWriter writer, XmlNode parentNode)
@@ -1646,7 +1090,7 @@ namespace ConsoleApplication1
 
             writer.StartElement(node.Name);
 
-             int questionnaireID = Convert.ToInt32(dr["questionnaireID"]);
+             int questionnaireID = Convert.ToInt32(dr["Final_QuestionnaireID"]);
              DataSet dsQuestions = ExportProvider.SelectSubmission_Questions(questionnaireID);
 
              foreach (DataRow dr1 in dsQuestions.Tables[0].Rows)
@@ -1715,7 +1159,20 @@ namespace ConsoleApplication1
             return nodePath;
         }
 
-#endregion
+        static string GetEnvironment()
+        {
+            string connStr = ConfigurationManager.ConnectionStrings["QPPRODConnection"].ConnectionString.ToUpper();
+
+            if (connStr.Contains("PRIME")) return "US TEST";
+            else if (connStr.Contains("GATOR")) return "US STAGE";
+            else if (connStr.Contains("NRC10")) return "US PROD";
+            else if (connStr.Contains("MHM0SQUALSQL02")) return "CA STAGE";
+            else if (connStr.Contains("MHM0PQUALSQL02")) return "CA PROD";
+            else throw new Exception( "INVALID ENVIRONMENT");
+
+        }
+
+        #endregion
 
     }
 
