@@ -36,8 +36,6 @@ CREATE TABLE #tempQA_QuestionnaireCycleAndStratum(
 	[bitflag] bit
 )
 
-declare @SubmissionID int = 1
-
 insert into #tempQA_QuestionnaireCycleAndStratum (Study_id, sampleunitID, strSampleunit_nm, SubmissionTypeCD, EncounterDateStart, EncounterDateEnd, CPESVersionCD, SubmissionID, bitFlag)
 select distinct sd.study_id, su.sampleunit_id, su.strSampleUnit_nm, cs.SubmissionTypeCd, CONVERT(VARCHAR(8), cs.encounterDateStart, 112), CONVERT(VARCHAR(8), cs.encounterDateEnd, 112), cs.CPESVersionCD, cs.SubmissionID, 0
 	from CIHI.Submission cs
