@@ -20,8 +20,6 @@ insert into CIHI.QA_Question (SubmissionID, samplePopID, qstncore, intResponseVa
 	and sel.strunitselecttype = 'D'
 )
 
-GO
-
 --if gate is answered in a way where child should be skipped, if that child contains -8 or -9 update child response to -4
 
 create table #surveyInfo (
@@ -37,9 +35,7 @@ select cq.questionID, qf.survey_id, cq.intResponseVal, cq.qstnCore, cq.samplePop
 from CIHI.QA_Question cq
 join QuestionForm qf on cq.samplepopid = qf.samplepop_id
 join sentmailing sm on qf.sentmail_id = sm.sentmail_id
-where qf.datReturned is not null
-
-GO
+where qf.datReturned is not null and cq.submissionID = @SubmissionID
 
 --CIHI questions that are Gates
 create table #cihiInvokedGate (
@@ -54,8 +50,6 @@ from #surveyInfo surv
 join SkipIdentifier si on si.survey_id = surv.survey_id and si.qstnCore = surv.qstnCore and surv.intResponseVal = si.intResponseVal and si.datGenerated = surv.datGenerated
 join SkipQstns sq on si.skip_id = sq.skip_id
 
-GO
-
 update cq
 set cq.intResponseVal = -4
 from CIHI.QA_Question cq
@@ -63,6 +57,7 @@ join #cihiInvokedGate cg
 	on cq.samplepopID = cg.samplePopID and cq.qstnCore = cg.SkipQstn
 where
 	cq.intResponseVal = -9 or cq.intResponseVal = -8
+	and cq.submissionID = @SubmissionID
 
 GO
 
