@@ -6,10 +6,17 @@ Chris Burkholder
 
 12/6/2016
 
+create procedure CIHI.PullSubmissionData_QuestionnaireCycle
+
 */
 
 --truncate table CIHI.QA_QuestionnaireCycleAndStratum
 --select * from CIHI.QA_QuestionnaireCycleAndStratum order by FacilityNum
+
+create procedure CIHI.PullSubmissionData_QuestionnaireCycle
+@SubmissionID int
+as
+begin
 
 CREATE TABLE #tempQA_QuestionnaireCycleAndStratum(
 	[SubmissionID] [int] NULL,
@@ -60,13 +67,14 @@ each sampleunit should have the same FacilityNum value.
 
 CREATE TABLE #work(
 	[Study_ID] [int] NULL,
+	[SampleSet_ID] [int] NULL,
 	[SampleUnit_ID] [int] NULL,
 	[Pop_ID] [int] NULL,
 	[Enc_ID] [int] NULL
 )
 
-insert into #work (Study_id, SampleUnit_id, Pop_ID, Enc_ID)
-select sd.study_id, su.Sampleunit_id, pop_id, enc_id
+insert into #work (Study_id, SampleSet_ID, SampleUnit_ID, Pop_ID, Enc_ID)
+select sd.study_id, ss.Sampleset_id, su.Sampleunit_id, pop_id, enc_id
 	from CIHI.Submission cs
 		join CIHI.SubmissionSurvey css on cs.submissionID=css.submissionID
 		join survey_def sd on css.surveyID=sd.survey_id
@@ -155,35 +163,33 @@ begin
 	*/
 
 	--dischargeCount int,               --count from eligible enc log
-	select @dischargeCount = count(distinct w.pop_id) from #work w 
-	inner join eligibleenclog eel on w.pop_id = eel.pop_id and w.enc_id = eel.enc_id and w.sampleunit_id = eel.sampleunit_id
+	select @dischargeCount = count(distinct eel.pop_id) from #work w 
+	inner join eligibleenclog eel on w.SampleSet_ID = eel.sampleset_id and w.SampleUnit_ID = eel.SampleUnit_id
 	where w.sampleunit_id = @SampleUnitId
-	--TODO: need to do by sampleset_id in order to get universe 
 
 	--sampleSize int,                   --count (distinct pop_id) from samplepop, sum counts for all units
 	select @sampleSize = count(distinct w.pop_id) from #work w
-	inner join samplepop sp on w.study_id = sp.study_id and w.pop_id = sp.pop_id --TODO use sampleset_id
+	inner join samplepop sp on w.sampleset_id = sp.sampleset_id and w.pop_id = sp.pop_id
 	inner join sampleset ss on sp.sampleset_id = ss.sampleset_id
 	inner join #tempQA_QuestionnaireCycleAndStratum tq on tq.sampleunitid = w.sampleunit_id
-	where tq.EncounterDateEnd >= ss.datDateRange_ToDate and tq.EncounterDateStart <= ss.datDateRange_FromDate
+	where tq.EncounterDateStart <= ss.datDateRange_FromDate and tq.EncounterDateEnd >= ss.datDateRange_ToDate
 	and w.sampleunit_id = @SampleUnitId
-	--need to ???
 
 	--nonResponseCount int,             --Calculate using dispositionlog, plus non response after max attempts (nothing in dispositionlog for that)
 	select @nonResponseCount = count(distinct w.pop_id) from #work w
-	inner join samplepop sp on w.study_id = sp.study_id and w.pop_id = sp.pop_id --TODO use sampleset_id
+	inner join samplepop sp on w.sampleset_id = sp.sampleset_id and w.pop_id = sp.pop_id
 	inner join sampleset ss on sp.sampleset_id = ss.sampleset_id
 	inner join #tempQA_QuestionnaireCycleAndStratum tq on tq.sampleunitid = w.sampleunit_id
 	left join DispositionLog dl on dl.SamplePop_id = sp.SAMPLEPOP_ID
-	where tq.EncounterDateEnd >= ss.datDateRange_ToDate and tq.EncounterDateStart <= ss.datDateRange_FromDate
-	and (dl.Disposition_id in (14,16,27,46,47,52) /*bad addr, bad phone, refusal*/ 
+	where tq.EncounterDateStart <= ss.datDateRange_FromDate and tq.EncounterDateEnd >= ss.datDateRange_ToDate
+	and (dl.Disposition_id in (5,14,16,27,46,47,52) /*bad addr, bad phone, refusal*/ 
 		or dl.Disposition_id is null /*non-response after max attempts*/ )
 	and w.sampleunit_id = @SampleUnitId
-	--need to ???
 
 	/*
 	select * from disposition where disposition_id in (14,16,27,46,47,52)
 	Disposition_id	strDispositionLabel
+	5	The intended respondent is not at this address
 	14	The intended respondent is not at this phone
 	16	Bad/Missing/Wrong phone number
 	27	Declined to participate
@@ -191,9 +197,6 @@ begin
 	47	Unused Bad Phone
 	52	Bad address and bad phone
 	*/
-
-	select @strataCount = count(distinct sampleunit_id) from #work where Study_ID = @Study
-	--TODO: s/b by facility rather than study (need facilitynum on @work table) do in a post process loop
 
 	update #tempQA_QuestionnaireCycleAndStratum set 
 		FacilityNum = @FacilityNum,
@@ -204,16 +207,27 @@ begin
 		dischargeCount = @dischargeCount,
 		sampleSize = @sampleSize,
 		nonResponseCount = @nonResponseCount,
-		--samplingMethod_CD varchar(4),     --if dischargeCount=sampleSize for all strata then CEN, if one stratum then SRS, if multiple strata then DSRS
-		samplingMethod_CD = case 
-			when @StrataCount > 1 then 'DSRS' 
-			when @dischargeCount = @sampleSize then 'CEN' 
-			else 'SRS' end,
 		bitflag = 1 
 	where SampleUnitId = @SampleUnitId
 end
 
---INSERT FOR NOW, s/b a MERGE most likely
+while exists (select * from #tempQA_QuestionnaireCycleAndStratum where samplingMethod_CD is null)
+begin
+	select @SampleUnitID = min(SampleUnitId) from #tempQA_QuestionnaireCycleAndStratum where samplingMethod_CD is null
+	select @FacilityNum = FacilityNum from #tempQA_QuestionnaireCycleAndStratum where SampleUnitid = @SampleUnitID
+
+	select @strataCount = count(distinct SampleUnitId) from #tempQA_QuestionnaireCycleAndStratum where FacilityNum = @FacilityNum
+
+	update #tempQA_QuestionnaireCycleAndStratum set 
+		--samplingMethod_CD varchar(4),     --if dischargeCount=sampleSize for all strata then CEN, if one stratum then SRS, if multiple strata then DSRS
+		samplingMethod_CD = case 
+			when @StrataCount > 1 then 'DSRS' 
+			when dischargeCount = sampleSize then 'CEN' 
+			else 'SRS' end
+	where SampleUnitId = @SampleUnitId
+end
+
+--INSERT (Blindly), Clearing the Deck for an additional time will be the reponsibility of the calling application per Dave G 12/8/2016
 
 INSERT INTO [CIHI].[QA_QuestionnaireCycleAndStratum]
            ([SubmissionID],[CycleCD],[FacilityNum],[SubmissionTypeCD],[CPESVersionCD],[EncounterDateStart],[EncounterDateEnd]
@@ -226,3 +240,6 @@ SELECT /*[QuestionnaireCycleAndStratumID]
 DROP TABLE #work
 DROP TABLE #tempQA_QuestionnaireCycleAndStratum
 
+end 
+
+GO
