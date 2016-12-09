@@ -542,8 +542,11 @@ INSERT INTO [CIHI].[Recode]([QATable],[FinalTable],[QAField],[FinalField],[QstnC
 ('QA_Questionnaire','Final_Questionnaire','mailingStepMethodID','questionnaireCycle.questionnaire.authorMode_code','','2','ONLINEWRIT','2.16.840.1.113883.5.1064'),
 ('QA_Questionnaire','Final_Questionnaire','mailingStepMethodID','questionnaireCycle.questionnaire.authorMode_code','','4','MAILWRIT','2.16.840.1.113883.5.1064'),
 ('QA_Questionnaire','Final_Questionnaire','mailingStepMethodID','questionnaireCycle.questionnaire.authorMode_code','','0','MAILWRIT','2.16.840.1.113883.5.1064'),
-('QA_QuestionnaireCycleAndStratum','Final_QuestionnaireCycle','SubmissionTypeCD','questionnaireCycle.submissionType_code','','','','2.16.840.1.113883.3.1780.1.12.1.10'),
-('QA_QuestionnaireCycleAndStratum','Final_QuestionnaireCycle','samplingMethod_CD','questionnaireCycle.sampleInformation.samplingMethod_code','','','','2.16.840.1.113883.3.1780.4.12.1.1'),
+('QA_QuestionnaireCycleAndStratum','Final_QuestionnaireCycle','SubmissionTypeCD','questionnaireCycle.submissionType_code','','NW','NW','2.16.840.1.113883.3.1780.1.12.1.10'),
+('QA_QuestionnaireCycleAndStratum','Final_QuestionnaireCycle','SubmissionTypeCD','questionnaireCycle.submissionType_code','','UP','UP','2.16.840.1.113883.3.1780.1.12.1.10'),
+('QA_QuestionnaireCycleAndStratum','Final_QuestionnaireCycle','SubmissionTypeCD','questionnaireCycle.submissionType_code','','DE','DE','2.16.840.1.113883.3.1780.1.12.1.10'),
+('QA_QuestionnaireCycleAndStratum','Final_QuestionnaireCycle','samplingMethod_CD','questionnaireCycle.sampleInformation.samplingMethod_code','','CEN','CEN','2.16.840.1.113883.3.1780.4.12.1.1'),
+('QA_QuestionnaireCycleAndStratum','Final_QuestionnaireCycle','samplingMethod_CD','questionnaireCycle.sampleInformation.samplingMethod_code','','DSRS','DSRS','2.16.840.1.113883.3.1780.4.12.1.1'),
+('QA_QuestionnaireCycleAndStratum','Final_QuestionnaireCycle','samplingMethod_CD','questionnaireCycle.sampleInformation.samplingMethod_code','','PSRS','PSRS','2.16.840.1.113883.3.1780.4.12.1.1'),
+('QA_QuestionnaireCycleAndStratum','Final_QuestionnaireCycle','samplingMethod_CD','questionnaireCycle.sampleInformation.samplingMethod_code','','SRS','SRS','2.16.840.1.113883.3.1780.4.12.1.1'),
 ('QA_QuestionnaireCycleAndStratum','Final_Stratum','strSampleunit_nm','questionnaireCycle.sampleInformation.populationInformation.stratum.stratumDescription','','','','2.16.840.1.113883.3.1780.4.12.1.1')
-
-
