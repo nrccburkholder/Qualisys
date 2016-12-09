@@ -130,7 +130,7 @@ namespace PersonatorAddressCleaner_POC
         private static object[] BuildAddressRecords(string environment, int DataFile_Id, int Study_Id, int batchIdx, int batchSize)
         {
             bool CLEAN_PHONE = false;
-            bool CLEAN_NAME = false;
+            bool CLEAN_NAME = true;
 
             List<object> addressCleanRecords = new List<object>();
 
@@ -264,12 +264,12 @@ namespace PersonatorAddressCleaner_POC
                 string popAddr = popAddr1 + (string.IsNullOrWhiteSpace(popAddr2) ? "" : (" " + popAddr2));
                 string popResultCode = pop["AddrStat"].ToString();
 
-                if(cleanAddr == popAddr && cleanResultCode == popResultCode)
+                if(cleanAddr == popAddr && cleanResultCode.Contains(popResultCode))
                 {
                     countMatch++;
-                    //Console.WriteLine("PSEUDO-MATCH (upper casing, unsplit)");
-                    //Console.WriteLine("Personator: [" + cleanAddr + "]\t[" + cleanResultCode + "]");
-                    //Console.WriteLine("Legacy:     [" + popAddr + "]\t[" + popResultCode + "]");
+                    Console.WriteLine("PSEUDO-MATCH (upper casing, unsplit)");
+                    Console.WriteLine("Personator: [" + cleanAddr + "]\t[" + cleanResultCode + "]");
+                    Console.WriteLine("Legacy:     [" + popAddr + "]\t[" + popResultCode + "]");
                 }
                 else
                 {
