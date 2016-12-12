@@ -58,20 +58,11 @@ namespace ConsoleApplication1
                 Console.WriteLine();
                 Console.WriteLine();
 
-                Console.WriteLine("Enter SubmissionID: ");
-                string submissionID = Console.ReadLine();
-
-                Console.WriteLine();
-
-                Console.WriteLine("Enter Submission Type (1 = PAT, 2 = ORG): ");
-                string submissionType = Console.ReadLine();
-
-                Console.WriteLine();
-
+  
                 Console.WriteLine("Press <ENTER> to start");
                 Console.ReadLine();
 
-                Start(submissionID, submissionType);
+                Start();
 
             }
             catch (Exception ex)
@@ -86,25 +77,18 @@ namespace ConsoleApplication1
 
         }
 
-        static void Start(string submissionID, string submissionType)
+        static void Start()
         {
 
-            string fiscalYear = "2016";
-            string submittingOrganizationIdentifier = "5M262";
-            string submissionSequenceIdentifier = submissionType.PadLeft(3, '0');
 
-            string outputFileName = $"CPE{fiscalYear}00{submittingOrganizationIdentifier}1{submissionSequenceIdentifier}";
-
-            string xmlOutputFile1 = $@"C:\TEMP\{outputFileName}.xml";
-           // string xmlOutputFile2 = $@"C:\TEMP\{outputFileName}_update.xml";
-           // string xmlOutputFile3 = $@"C:\TEMP\{outputFileName}_delete.xml";
-
-            int id = Convert.ToInt32(submissionID);
+            int patSubmissionID = 1;
+            int orgSubmissionID = 2;
 
             try
             {
 
-                MakeExportXMLDocuments(id, submissionSequenceIdentifier);
+                MakeExportXMLDocuments(patSubmissionID);
+                //MakeExportXMLDocuments(orgSubmissionID);
                 //MakeExportXMLDocument(xmlOutputFile1, 1);
                 //MakeExportXMLDocument(xmlOutputFile2, 2);
                 //MakeExportXMLDocument(xmlOutputFile3, 3);
@@ -357,14 +341,12 @@ namespace ConsoleApplication1
 
 
 
-        public static void MakeExportXMLDocuments(int id, string submissionSequenceIdentifier)
+        public static void MakeExportXMLDocuments(int id)
         {
             string fiscalYear = "2016";
+            string submissionSequenceIdentifier = id.ToString().PadLeft(3, '0');
             string submittingOrganizationIdentifier;
 
-            //string submissionSequenceIdentifier = "001";
-
-            
             DataSet ds = new DataSet();
 
             ds = ExportProvider.SelectSubmissionMetadata(id);
@@ -376,8 +358,8 @@ namespace ConsoleApplication1
                 foreach (DataRow dr in dt.Rows)
                 {
                     submittingOrganizationIdentifier = dr["sender.organization.id.value"].ToString().Replace("-","").Replace("*","").PadLeft(5,'0');
-
                     string outputFileName = $@"C:\TEMP\CPE{fiscalYear}00{submittingOrganizationIdentifier}1{submissionSequenceIdentifier}.xml";
+
                     MakeExportXMLDocument(outputFileName, dr, id);
                    
                 }
@@ -387,11 +369,10 @@ namespace ConsoleApplication1
         }
 
 
-        public static void MakeExportXMLDocument(string outputFileName, DataRow dr, int id = 1)
+        public static void MakeExportXMLDocument(string outputFileName, DataRow dr, int id)
         {
 
-
-                Encoding encoding = new UTF8Encoding(false);
+            Encoding encoding = new UTF8Encoding(false);
 
                 using (XmlReader reader = XmlReader.Create(new StringReader(Properties.Resources.cpesic_submission_v1_0), new XmlReaderSettings(), XmlResolver.BaseUri))
                 {
@@ -419,7 +400,7 @@ namespace ConsoleApplication1
                             XmlNode rootNode = xmlDoc.DocumentElement;
 
                             // DataSubmission section
-                            WriteDataSubmissionSection(dr, writer, rootNode);
+                            WriteDataSubmissionSection(dr, writer, rootNode, id);
 
                             writer.EndElement();
 
@@ -451,76 +432,6 @@ namespace ConsoleApplication1
 
         }
 
-
-        public static void MakeExportXMLDocument(string outputFileName, int id = 1)
-        {
-
-            DataSet ds = new DataSet();
-
-            ds = ExportProvider.SelectSubmissionMetadata(id);
-
-            if (ds.Tables[0].Rows.Count > 0)
-            {
-                Encoding encoding = new UTF8Encoding(false);
-
-                using (XmlReader reader = XmlReader.Create(new StringReader(Properties.Resources.cpesic_submission_v1_0), new XmlReaderSettings(), XmlResolver.BaseUri))
-                {
-                    XmlSchemaSet xset = RetrieveSchemaSet(reader);
-                    Console.WriteLine(xset.IsCompiled);
-
-
-                    foreach (XmlSchema schema in xset.Schemas())
-                    {
-                        Console.WriteLine(schema.TargetNamespace);
-
-
-                        XmlDocumentEx xmlDoc = new XmlDocumentEx();
-
-                        xmlDoc.LoadXml(GenerateEmptyXMLFromSchema(schema));
-
-                        using (XMLWriter writer = new XMLWriter())
-                        {
-                            XmlSchemaElement root = schema.Items[0] as XmlSchemaElement;
-                            writer.StartElement(string.Format("{0}:{1}", "cpesic", root.Name));
-                            writer.WriteAttribute("xmlns", "cpesic", null, schema.TargetNamespace);
-                            writer.WriteAttribute("xmlns", "xsi", null, "http://www.w3.org/2001/XMLSchema-instance");
-                            writer.WriteAttribute("xsi", "schemaLocation", null, string.Format("{0} {1},", schema.TargetNamespace, "cpesic-submission_v1.0.xsd"));
-
-                            XmlNode rootNode = xmlDoc.DocumentElement;
-
-                            // DataSubmission section
-                            WriteDataSubmissionSection(ds.Tables[0].Rows[0], writer, rootNode);
-
-                            writer.EndElement();
-
-                            XmlDocumentEx returnXMLdoc = new XmlDocumentEx();
-                            returnXMLdoc.Schemas.Add(schema);
-                            returnXMLdoc.LoadXml(writer.XmlString);
-                            returnXMLdoc.Save(outputFileName);
-
-                            returnXMLdoc.Validate();
-
-                            if (!returnXMLdoc.IsValid)
-                            {
-                                foreach (ExportValidationError eve in returnXMLdoc.ValidationErrorList)
-                                {
-                                    //Logging to the database.  The elements of the message are pipe delimited, with the template name, queueid, queuefileid, the file name, and the validation error description
-                                    Console.WriteLine(eve.ErrorDescription);
-                                }
-                            }
-                            else
-                            {
-
-                                Console.WriteLine("This XML Validated successfully!");
-                            }
-                            Console.WriteLine();
-                        }
-
-                    }
-                }
-            }
-            else throw new Exception("No SubmissionMetadata found!");
-        }
 
         private static XmlSchemaSet RetrieveSchemaSet(XmlReader reader)
         {
@@ -646,7 +557,10 @@ namespace ConsoleApplication1
                 {
 
                     string value = dr[fieldName].ToString();
-                    writer.WriteElementString(nameOfNode, dr[fieldName] == DBNull.Value ? "NULL" : value);
+                    if (dr[fieldName] != DBNull.Value)
+                    { 
+                        writer.WriteElementString(nameOfNode, dr[fieldName] == DBNull.Value ? "NULL" : value);
+                    }
                 }
             }
             catch (Exception ex)
@@ -745,8 +659,10 @@ namespace ConsoleApplication1
 
         #region CIHI xmlsections
 
-        private static void WriteDataSubmissionSection(DataRow dr, XMLWriter writer, XmlNode parentNode)
+        private static void WriteDataSubmissionSection(DataRow dr, XMLWriter writer, XmlNode parentNode, int submissionid)
         {
+
+            string submissionSubject = dr["SubmissionSubject"].ToString();
 
             WriteCreationTime(dr, writer, parentNode);
 
@@ -757,16 +673,21 @@ namespace ConsoleApplication1
             WritePurposeSection(dr, writer, parentNode);
 
 
-            int SubmissionID = Convert.ToInt32(dr["submissionID"]);
+            
             int Final_MetadataID = Convert.ToInt32(dr["Final_MetadataID"]);
 
-            DataSet dsOrgProfile = ExportProvider.SelectSubmission_OrgProfile(Final_MetadataID);
-
-            WriteOrganizationProfileSection(dsOrgProfile, writer, parentNode);
-
-            DataSet dsQuestionnaireCycle = ExportProvider.SelectSubmission_QuestionnaireCycle(SubmissionID);
-
-            WriteQuestionnaireCycleSection(dsQuestionnaireCycle, writer, parentNode);
+            if (submissionSubject.ToUpper() == "ORG")
+            {
+                DataSet dsOrgProfile = ExportProvider.SelectSubmission_OrgProfile(Final_MetadataID);
+                WriteOrganizationProfileSection(dsOrgProfile, writer, parentNode);
+            }
+            else
+            {
+                int submissionID = Convert.ToInt32(dr["submissionID"]);
+                string FacilityNumber = dr["sender.organization.id.value"].ToString();
+                DataSet dsQuestionnaireCycle = ExportProvider.SelectSubmission_QuestionnaireCycle(submissionID, FacilityNumber);
+                WriteQuestionnaireCycleSection(dsQuestionnaireCycle, writer, parentNode);
+            }
 
 
         }
@@ -1068,10 +989,11 @@ namespace ConsoleApplication1
             //    WriteDischargeInformation(dr, writer, dischargeInformationNode);
             //}
 
-            foreach (XmlNode stratumDetailsNode in node.SelectNodes("stratumDetails"))
-            {
-                WriteDischargeInformation(dr, writer, stratumDetailsNode);
-            }
+
+            int Final_QuestionnaireCycleID = Convert.ToInt32(dr["Final_QuestionnaireCycleID"]);
+            DataSet ds = ExportProvider.SelectSubmission_Stratum(Final_QuestionnaireCycleID);
+
+            WriteStatumInformation(ds, writer, node);
 
             writer.EndElement();
         }
@@ -1093,6 +1015,37 @@ namespace ConsoleApplication1
             WriteElementString(dr, node, "dischargeCount", writer);
 
             writer.EndElement();
+        }
+
+        private static void WriteStatumInformation(DataSet ds, XMLWriter writer, XmlNode parentNode)
+        {
+
+            if (ds != null)
+            {
+                DataTable dt = ds.Tables[0];
+
+                XmlNode node = parentNode.SelectSingleNode("stratum");
+
+                if (node == null) return;
+
+                foreach (DataRow dr in dt.Rows)
+                {
+
+                    writer.StartElement(node.Name);
+
+                    WriteElementString(dr, node, "stratumCode", writer);
+
+                    WriteElementString(dr, node, "stratumDescription", writer);
+
+                    WriteElementString(dr, node, "dischargeCount", writer);
+
+                    WriteElementString(dr, node, "sampleSize", writer);
+
+                    WriteElementString(dr, node, "nonResponseCount", writer);
+
+                    writer.EndElement();
+                }
+            }
         }
 
         private static void WriteQuestionnaireSection(DataSet ds, XMLWriter writer, XmlNode parentNode)
