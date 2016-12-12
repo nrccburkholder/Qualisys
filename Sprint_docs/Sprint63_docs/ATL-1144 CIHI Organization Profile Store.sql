@@ -11,6 +11,7 @@ CREATE TABLE [CIHI].[Submission] (
 	DeviceManufacturer varchar(15) DEFAULT 'N0002',
 	OrganizationCD varchar(20),
 	CPESVersionCD varchar(20) DEFAULT 'CPES-IC_1.0',
+	CPESManualVersionCD varchar(20) DEFAULT 'CPES-IC_PM_V1.0',
 	SubmissionSubject char(3),
 	SubmissionTypeCD char(2),
 	PurposeCD char(1),
