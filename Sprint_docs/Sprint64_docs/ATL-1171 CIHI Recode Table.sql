@@ -29,14 +29,11 @@ SET ANSI_PADDING OFF
 GO
 
 INSERT INTO [CIHI].[Recode]([QATable],[FinalTable],[QAField],[FinalField],[QstnCore],[NRCValue],[CIHIValue],[CodeSystem]) VALUES 
-('Submission','Final_Metadata','CPESVersionCD','versionCode_code','','CPES-IC_1.0','CPES-IC_1.0','2.16.840.1.113883.3.1780.4.12.1.9'),
-('Submission','Final_Metadata','PurposeCD','purpose_code','','D','D','2.16.840.1.113883.5.100'),
-('Submission','Final_Metadata','PurposeCD','purpose_code','','P','P','2.16.840.1.113883.5.100'),
-('OrgProfile','Final_Role','RoleCD','organizationProfile.role_code','','SRC','SRC','2.16.840.1.113883.3.1780.1.12.1.12'),
-('OrgProfile','Final_Role','RoleCD','organizationProfile.role_code','','SUB','SUB','2.16.840.1.113883.3.1780.1.12.1.12'),
-('OrgProfile','Final_OrgProfile','SurveyingFrequency','organizationProfile.surveyingFrequency_code','','annual','annual','2.16.840.1.113883.3.1780.4.12.1.2'),
-('OrgProfile','Final_Contact','ContactCD','organizationProfile.organization.contact.code_code','','OC','OC','2.16.840.1.113883.3.1780.1.12.1.13'),
-('OrgProfile','Final_Contact','ContactCD','organizationProfile.organization.contact.code_code','','DSC','DSC','2.16.840.1.113883.3.1780.1.12.1.13'),
+('Submission','Final_Metadata','CPESVersionCD','versionCode_code','','','','2.16.840.1.113883.3.1780.4.12.1.9'),
+('Submission','Final_Metadata','PurposeCD','purpose_code','','','','2.16.840.1.113883.5.100'),
+('OrgProfile','Final_Role','RoleCD','organizationProfile.role_code','','','','2.16.840.1.113883.3.1780.1.12.1.12'),
+('OrgProfile','Final_OrgProfile','SurveyingFrequency','organizationProfile.surveyingFrequency_code','','','','2.16.840.1.113883.3.1780.4.12.1.2'),
+('OrgProfile','Final_Contact','ContactCD','organizationProfile.organization.contact.code_code','','','','2.16.840.1.113883.3.1780.1.12.1.13'),
 ('QA_Questionnaire','Final_Questionnaire','HCN','questionnaireCycle.questionnaire.subject.id.value','','','',NULL),
 ('QA_Questionnaire','Final_Questionnaire','HCN_Issuer','questionnaireCycle.questionnaire.subject.id.issuer.code_code','','','','1.0.3166.1'),
 ('QA_Questionnaire','Final_Questionnaire','HCN_Issuer','questionnaireCycle.questionnaire.subject.id.issuer.code_code','','AB','AB','1.0.3166.1'),
@@ -54,13 +51,11 @@ INSERT INTO [CIHI].[Recode]([QATable],[FinalTable],[QAField],[FinalField],[QstnC
 ('QA_Questionnaire','Final_Questionnaire','HCN_Issuer','questionnaireCycle.questionnaire.subject.id.issuer.code_code','','YT','YT','1.0.3166.1'),
 ('QA_Questionnaire','Final_Questionnaire','HCN_Issuer','questionnaireCycle.questionnaire.subject.id.issuer.code_code','','OTH','OTH','2.16.840.1.113883.5.1008'),
 ('QA_Questionnaire','Final_Questionnaire','HCN_Issuer','questionnaireCycle.questionnaire.subject.id.issuer.code_code','','UNK','UNK','2.16.840.1.113883.5.1008'),
-('QA_Questionnaire','Final_Questionnaire','HCN_Issuer','questionnaireCycle.questionnaire.subject.id.issuer.code_code','','%else%','UNK','2.16.840.1.113883.5.1008'),
 ('QA_Questionnaire','Final_Questionnaire','HCN_Issuer','questionnaireCycle.questionnaire.subject.id.issuer.code_code','','<NULL>','','2.16.840.1.113883.5.1008'),
 ('QA_Questionnaire','Final_Questionnaire','HCN_Issuer','questionnaireCycle.questionnaire.subject.id.issuer.code_code','','<NULL>','','2.16.840.1.113883.5.1008'),
 ('QA_Questionnaire','Final_Questionnaire','CIHI_PID','questionnaireCycle.questionnaire.subject.otherId.value','','','',NULL),
-('QA_Questionnaire','Final_Questionnaire','CIHI_PIDType','questionnaireCycle.questionnaire.subject.otherId.code_code','','MR','MR','2.16.840.1.113883.12.203'),
-('QA_Questionnaire','Final_Questionnaire','CIHI_PIDType','questionnaireCycle.questionnaire.subject.otherId.code_code','','OTH','OTH','2.16.840.1.113883.5.1008'),
-('QA_Questionnaire','Final_Questionnaire','estimatedBirthCD','questionnaireCycle.questionnaire.subject.personInformation.estimatedBirthTimeInd_code','','N','N','2.16.840.1.113883.3.1780.1.12.1.5'),
+('QA_Questionnaire','Final_Questionnaire','CIHI_PIDType','questionnaireCycle.questionnaire.subject.otherId.code_code','','MR','MR',NULL),
+('QA_Questionnaire','Final_Questionnaire','CIHI_PIDType','questionnaireCycle.questionnaire.subject.otherId.code_code','','OTH','OTH',NULL),
 ('QA_Questionnaire','Final_Questionnaire','sex','questionnaireCycle.questionnaire.subject.personInformation.gender_code','','M','M','2.16.840.1.113883.5.1'),
 ('QA_Questionnaire','Final_Questionnaire','sex','questionnaireCycle.questionnaire.subject.personInformation.gender_code','','F','F','2.16.840.1.113883.5.1'),
 ('QA_Questionnaire','Final_Questionnaire','sex','questionnaireCycle.questionnaire.subject.personInformation.gender_code','','OTH','OTH','2.16.840.1.113883.5.1008'),
@@ -541,7 +536,6 @@ INSERT INTO [CIHI].[Recode]([QATable],[FinalTable],[QAField],[FinalField],[QstnC
 ('QA_Question','Final_Question','intResponseVal','questionnaireCycle.questionnaire.questions.question.answer_code','54606','-9','UNK','2.16.840.1.113883.5.1008'),
 ('QA_Question','Final_Question','intResponseVal','questionnaireCycle.questionnaire.questions.question.answer_code','54606','-6','UNK','2.16.840.1.113883.5.1008'),
 ('QA_Question','Final_Question','intResponseVal','questionnaireCycle.questionnaire.questions.question.answer_code','54606','-5','UNK','2.16.840.1.113883.5.1008'),
-
 ('QA_Question','Final_Question','intResponseVal','questionnaireCycle.questionnaire.questions.question.code_code','51377','51377','Q1','2.16.840.1.113883.3.1780.4.12.1.10'),
 ('QA_Question','Final_Question','intResponseVal','questionnaireCycle.questionnaire.questions.question.code_code','51378','51378','Q2','2.16.840.1.113883.3.1780.4.12.1.10'),
 ('QA_Question','Final_Question','intResponseVal','questionnaireCycle.questionnaire.questions.question.code_code','51379','51379','Q3','2.16.840.1.113883.3.1780.4.12.1.10'),
@@ -589,7 +583,6 @@ INSERT INTO [CIHI].[Recode]([QATable],[FinalTable],[QAField],[FinalField],[QstnC
 ('QA_Question','Final_Question','intResponseVal','questionnaireCycle.questionnaire.questions.question.code_code','51423','51423','Q47','2.16.840.1.113883.3.1780.4.12.1.10'),
 ('QA_Question','Final_Question','intResponseVal','questionnaireCycle.questionnaire.questions.question.code_code','51424','51424','Q48','2.16.840.1.113883.3.1780.4.12.1.10'),
 ('QA_Question','Final_Question','intResponseVal','questionnaireCycle.questionnaire.questions.question.code_code','54606','54606','Q48','2.16.840.1.113883.3.1780.4.12.1.10'),
-
 ('QA_Questionnaire','Final_Questionnaire','langID','questionnaireCycle.questionnaire.language_code','','1','eng','1.0.639.3'),
 ('QA_Questionnaire','Final_Questionnaire','langID','questionnaireCycle.questionnaire.language_code','','12','fra','1.0.639.3'),
 ('QA_Questionnaire','Final_Questionnaire','mailingStepMethodID','questionnaireCycle.questionnaire.authorMode_code','','1','phone','2.16.840.1.113883.5.1064'),
@@ -603,7 +596,16 @@ INSERT INTO [CIHI].[Recode]([QATable],[FinalTable],[QAField],[FinalField],[QstnC
 ('QA_QuestionnaireCycleAndStratum','Final_QuestionnaireCycle','samplingMethod_CD','questionnaireCycle.sampleInformation.samplingMethod_code','','DSRS','DSRS','2.16.840.1.113883.3.1780.4.12.1.1'),
 ('QA_QuestionnaireCycleAndStratum','Final_QuestionnaireCycle','samplingMethod_CD','questionnaireCycle.sampleInformation.samplingMethod_code','','PSRS','PSRS','2.16.840.1.113883.3.1780.4.12.1.1'),
 ('QA_QuestionnaireCycleAndStratum','Final_QuestionnaireCycle','samplingMethod_CD','questionnaireCycle.sampleInformation.samplingMethod_code','','SRS','SRS','2.16.840.1.113883.3.1780.4.12.1.1'),
-('QA_QuestionnaireCycleAndStratum','Final_QuestionnaireCycle','CPESManualVersionCD','questionnaireCycle.proceduresManualVersion_code','','CPES-IC_PM_V1.0','CPES-IC_PM_V1.0','2.16.840.1.113883.3.1780.4.12.1.8'),
-('QA_QuestionnaireCycleAndStratum','Final_Stratum','strSampleunit_nm','questionnaireCycle.sampleInformation.populationInformation.stratum.stratumDescription','','','','2.16.840.1.113883.3.1780.4.12.1.1')
+('QA_QuestionnaireCycleAndStratum','Final_Stratum','strSampleunit_nm','questionnaireCycle.sampleInformation.populationInformation.stratum.stratumDescription','','','','2.16.840.1.113883.3.1780.4.12.1.1'),
+('QA_Questionnaire','Final_Questionnaire','mailingStepMethodID','questionnaireCycle.questionnaire.authorMode_code','','0','MAILWRIT','2.16.840.1.113883.5.1064'),
+('QA_QuestionnaireCycleAndStratum','Final_QuestionnaireCycle','SubmissionTypeCD','questionnaireCycle.submissionType_code','','NW','NW','2.16.840.1.113883.3.1780.1.12.1.10'),
+('QA_QuestionnaireCycleAndStratum','Final_QuestionnaireCycle','SubmissionTypeCD','questionnaireCycle.submissionType_code','','DE','DE','2.16.840.1.113883.3.1780.1.12.1.10'),
+('QA_QuestionnaireCycleAndStratum','Final_QuestionnaireCycle','samplingMethod_CD','questionnaireCycle.sampleInformation.samplingMethod_code','','CEN','CEN','2.16.840.1.113883.3.1780.4.12.1.1'),
+('QA_QuestionnaireCycleAndStratum','Final_QuestionnaireCycle','samplingMethod_CD','questionnaireCycle.sampleInformation.samplingMethod_code','','DSRS','DSRS','2.16.840.1.113883.3.1780.4.12.1.1'),
+('QA_QuestionnaireCycleAndStratum','Final_QuestionnaireCycle','samplingMethod_CD','questionnaireCycle.sampleInformation.samplingMethod_code','','PSRS','PSRS','2.16.840.1.113883.3.1780.4.12.1.1'),
+('QA_QuestionnaireCycleAndStratum','Final_QuestionnaireCycle','samplingMethod_CD','questionnaireCycle.sampleInformation.samplingMethod_code','','SRS','SRS','2.16.840.1.113883.3.1780.4.12.1.1'),
+('QA_QuestionnaireCycleAndStratum','Final_Stratum','strSampleunit_nm','questionnaireCycle.sampleInformation.populationInformation.stratum.stratumDescription','','','','2.16.840.1.113883.3.1780.4.12.1.1'),
+('QA_QuestionnaireCycleAndStratum','Final_QuestionnaireCycle','CPESVersionCD','questionnaireCycle.proceduresManualVersion_code','','CPES-IC_PM_V1.0','CPES-IC_PM_V1.0','2.16.840.1.113883.3.1780.4.12.1.8')
+
 
 go
