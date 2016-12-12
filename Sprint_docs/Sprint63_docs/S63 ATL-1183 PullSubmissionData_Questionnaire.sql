@@ -117,7 +117,8 @@ BEGIN
 	join dbo.ScheduledMailing schm
 		on schm.Samplepop_ID = sp.Samplepop_ID
 	join dbo.SENTMAILING sm
-		on sm.ScheduledMailing_ID = schm.SCHEDULEDMAILING_ID
+		on sm.ScheduledMailing_ID = schm.SCHEDULEDMAILING_ID 
+		and sm.SentMail_id = qf.SentMail_id
 	join dbo.MAILINGSTEP ms
 		on ms.Mailingstep_id = schm.MailingStep_ID
 	join ' + @StudySchema + '.Population p
