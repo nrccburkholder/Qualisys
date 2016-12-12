@@ -51,6 +51,7 @@ INSERT INTO [CIHI].[Recode]([QATable],[FinalTable],[QAField],[FinalField],[QstnC
 ('QA_Questionnaire','Final_Questionnaire','HCN_Issuer','questionnaireCycle.questionnaire.subject.id.issuer.code_code','','YT','YT','1.0.3166.1'),
 ('QA_Questionnaire','Final_Questionnaire','HCN_Issuer','questionnaireCycle.questionnaire.subject.id.issuer.code_code','','OTH','OTH','2.16.840.1.113883.5.1008'),
 ('QA_Questionnaire','Final_Questionnaire','HCN_Issuer','questionnaireCycle.questionnaire.subject.id.issuer.code_code','','UNK','UNK','2.16.840.1.113883.5.1008'),
+('QA_Questionnaire','Final_Questionnaire','HCN_Issuer','questionnaireCycle.questionnaire.subject.id.issuer.code_code','','%else%','UNK','2.16.840.1.113883.5.1008'),
 ('QA_Questionnaire','Final_Questionnaire','HCN_Issuer','questionnaireCycle.questionnaire.subject.id.issuer.code_code','','<NULL>','','2.16.840.1.113883.5.1008'),
 ('QA_Questionnaire','Final_Questionnaire','HCN_Issuer','questionnaireCycle.questionnaire.subject.id.issuer.code_code','','<NULL>','','2.16.840.1.113883.5.1008'),
 ('QA_Questionnaire','Final_Questionnaire','CIHI_PID','questionnaireCycle.questionnaire.subject.otherId.value','','','',NULL),
@@ -599,4 +600,6 @@ INSERT INTO [CIHI].[Recode]([QATable],[FinalTable],[QAField],[FinalField],[QstnC
 ('QA_QuestionnaireCycleAndStratum','Final_QuestionnaireCycle','samplingMethod_CD','questionnaireCycle.sampleInformation.samplingMethod_code','','DSRS','DSRS','2.16.840.1.113883.3.1780.4.12.1.1'),
 ('QA_QuestionnaireCycleAndStratum','Final_QuestionnaireCycle','samplingMethod_CD','questionnaireCycle.sampleInformation.samplingMethod_code','','PSRS','PSRS','2.16.840.1.113883.3.1780.4.12.1.1'),
 ('QA_QuestionnaireCycleAndStratum','Final_QuestionnaireCycle','samplingMethod_CD','questionnaireCycle.sampleInformation.samplingMethod_code','','SRS','SRS','2.16.840.1.113883.3.1780.4.12.1.1'),
+('QA_QuestionnaireCycleAndStratum','Final_QuestionnaireCycle','<hardcoded>','questionnaireCycle.proceduresManualVersion_code','','CPES-IC_PM_V1.0','CPES-IC_PM_V1.0','2.16.840.1.113883.3.1780.4.12.1.8'),
 ('QA_QuestionnaireCycleAndStratum','Final_Stratum','strSampleunit_nm','questionnaireCycle.sampleInformation.populationInformation.stratum.stratumDescription','','','','2.16.840.1.113883.3.1780.4.12.1.1')
+
