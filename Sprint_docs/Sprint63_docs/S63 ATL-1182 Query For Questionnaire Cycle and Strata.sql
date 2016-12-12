@@ -241,6 +241,31 @@ SELECT /*[QuestionnaireCycleAndStratumID]
 DROP TABLE #work
 DROP TABLE #tempQA_QuestionnaireCycleAndStratum
 
+-- Remove Double-sampled Patients - shouldn't be necessary after 2016Q2
+--select qcs.FacilityNum, q.CIHI_PID as [patient was sampled twice!]
+delete q
+from CIHI.QA_QuestionnaireCycleAndStratum qcs
+inner join CIHI.QA_Questionnaire q on q.SampleUnitId = qcs.SampleunitId
+inner join
+(select FacilityNum, CIHI_PID, count(*) [Cnt], min(SamplesetID) [FirstSamplesetID], max(SamplesetID) [LastSamplesetID] from CIHI.QA_QuestionnaireCycleAndStratum qcs2
+inner join CIHI.QA_Questionnaire q2 on q2.SampleUnitId = qcs2.SampleunitId
+group by FacilityNum, CIHI_PID
+having count(*) > 1) a on a.FacilityNum = qcs.FacilityNum and a.CIHI_PID = q.CIHI_PID
+where q.SampleSetId > a.FirstSamplesetID
+
+-- people who were directly sampled at multiple sample units which were both designated as CIHI units
+update q set SampleUnitId = q.SampleUnitId + '*'
+--select qcs.FacilityNum, q.CIHI_PID, q.SampleUnitId as [patient was sampled for multiple CIHI units]
+from CIHI.QA_QuestionnaireCycleAndStratum qcs
+	inner join CIHI.QA_Questionnaire q on q.SampleUnitId = qcs.SampleunitId
+	inner join
+  (select FacilityNum, CIHI_PID, count(*) [Cnt] from CIHI.QA_QuestionnaireCycleAndStratum qcs2
+  inner join CIHI.QA_Questionnaire q2 on q2.SampleUnitId = qcs2.SampleunitId
+  group by FacilityNum, CIHI_PID, SamplesetID
+  having count(*) > 1) a on a.FacilityNum = qcs.FacilityNum and a.CIHI_PID = q.CIHI_PID
+where q.SampleUnitId not like '%*'
+  
+  
 end 
 
 GO
