@@ -606,3 +606,4 @@ INSERT INTO [CIHI].[Recode]([QATable],[FinalTable],[QAField],[FinalField],[QstnC
 ('QA_QuestionnaireCycleAndStratum','Final_QuestionnaireCycle','CPESManualVersionCD','questionnaireCycle.proceduresManualVersion_code','','CPES-IC_PM_V1.0','CPES-IC_PM_V1.0','2.16.840.1.113883.3.1780.4.12.1.8'),
 ('QA_QuestionnaireCycleAndStratum','Final_Stratum','strSampleunit_nm','questionnaireCycle.sampleInformation.populationInformation.stratum.stratumDescription','','','','2.16.840.1.113883.3.1780.4.12.1.1')
 
+go
