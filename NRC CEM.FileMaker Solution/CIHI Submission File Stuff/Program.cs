@@ -57,10 +57,21 @@ namespace ConsoleApplication1
                 Console.WriteLine(string.Format("Environment: {0}", GetEnvironment()));
                 Console.WriteLine();
                 Console.WriteLine();
+
+                Console.WriteLine("Enter SubmissionID: ");
+                string submissionID = Console.ReadLine();
+
+                Console.WriteLine();
+
+                Console.WriteLine("Enter Submission Type (1 = PAT, 2 = ORG): ");
+                string submissionType = Console.ReadLine();
+
+                Console.WriteLine();
+
                 Console.WriteLine("Press <ENTER> to start");
                 Console.ReadLine();
 
-                Start();
+                Start(submissionID, submissionType);
 
             }
             catch (Exception ex)
@@ -75,12 +86,12 @@ namespace ConsoleApplication1
 
         }
 
-        static void Start()
+        static void Start(string submissionID, string submissionType)
         {
 
             string fiscalYear = "2016";
             string submittingOrganizationIdentifier = "5M262";
-            string submissionSequenceIdentifier = "001";
+            string submissionSequenceIdentifier = submissionType.PadLeft(3, '0');
 
             string outputFileName = $"CPE{fiscalYear}00{submittingOrganizationIdentifier}1{submissionSequenceIdentifier}";
 
@@ -88,11 +99,13 @@ namespace ConsoleApplication1
            // string xmlOutputFile2 = $@"C:\TEMP\{outputFileName}_update.xml";
            // string xmlOutputFile3 = $@"C:\TEMP\{outputFileName}_delete.xml";
 
+            int id = Convert.ToInt32(submissionID);
 
             try
             {
 
-                MakeExportXMLDocument(xmlOutputFile1, 1);
+                MakeExportXMLDocuments(id, submissionSequenceIdentifier);
+                //MakeExportXMLDocument(xmlOutputFile1, 1);
                 //MakeExportXMLDocument(xmlOutputFile2, 2);
                 //MakeExportXMLDocument(xmlOutputFile3, 3);
 
@@ -341,6 +354,103 @@ namespace ConsoleApplication1
             }
             
         }
+
+
+
+        public static void MakeExportXMLDocuments(int id, string submissionSequenceIdentifier)
+        {
+            string fiscalYear = "2016";
+            string submittingOrganizationIdentifier;
+
+            //string submissionSequenceIdentifier = "001";
+
+            
+            DataSet ds = new DataSet();
+
+            ds = ExportProvider.SelectSubmissionMetadata(id);
+
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                DataTable dt = ds.Tables[0];
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    submittingOrganizationIdentifier = dr["sender.organization.id.value"].ToString().Replace("-","").Replace("*","").PadLeft(5,'0');
+
+                    string outputFileName = $@"C:\TEMP\CPE{fiscalYear}00{submittingOrganizationIdentifier}1{submissionSequenceIdentifier}.xml";
+                    MakeExportXMLDocument(outputFileName, dr, id);
+                   
+                }
+
+            }
+            else throw new Exception("No Submission Metadata found!");
+        }
+
+
+        public static void MakeExportXMLDocument(string outputFileName, DataRow dr, int id = 1)
+        {
+
+
+                Encoding encoding = new UTF8Encoding(false);
+
+                using (XmlReader reader = XmlReader.Create(new StringReader(Properties.Resources.cpesic_submission_v1_0), new XmlReaderSettings(), XmlResolver.BaseUri))
+                {
+                    XmlSchemaSet xset = RetrieveSchemaSet(reader);
+                    Console.WriteLine(xset.IsCompiled);
+
+
+                    foreach (XmlSchema schema in xset.Schemas())
+                    {
+                        Console.WriteLine(schema.TargetNamespace);
+
+
+                        XmlDocumentEx xmlDoc = new XmlDocumentEx();
+
+                        xmlDoc.LoadXml(GenerateEmptyXMLFromSchema(schema));
+
+                        using (XMLWriter writer = new XMLWriter())
+                        {
+                            XmlSchemaElement root = schema.Items[0] as XmlSchemaElement;
+                            writer.StartElement(string.Format("{0}:{1}", "cpesic", root.Name));
+                            writer.WriteAttribute("xmlns", "cpesic", null, schema.TargetNamespace);
+                            writer.WriteAttribute("xmlns", "xsi", null, "http://www.w3.org/2001/XMLSchema-instance");
+                            writer.WriteAttribute("xsi", "schemaLocation", null, string.Format("{0} {1},", schema.TargetNamespace, "cpesic-submission_v1.0.xsd"));
+
+                            XmlNode rootNode = xmlDoc.DocumentElement;
+
+                            // DataSubmission section
+                            WriteDataSubmissionSection(dr, writer, rootNode);
+
+                            writer.EndElement();
+
+                            XmlDocumentEx returnXMLdoc = new XmlDocumentEx();
+                            returnXMLdoc.Schemas.Add(schema);
+                            returnXMLdoc.LoadXml(writer.XmlString);
+                            returnXMLdoc.Save(outputFileName);
+
+                            returnXMLdoc.Validate();
+
+                            if (!returnXMLdoc.IsValid)
+                            {
+                                foreach (ExportValidationError eve in returnXMLdoc.ValidationErrorList)
+                                {
+                                    //Logging to the database.  The elements of the message are pipe delimited, with the template name, queueid, queuefileid, the file name, and the validation error description
+                                    Console.WriteLine(eve.ErrorDescription);
+                                }
+                            }
+                            else
+                            {
+
+                                Console.WriteLine("This XML Validated successfully!");
+                            }
+                            Console.WriteLine();
+                        }
+
+                    }
+                }
+
+        }
+
 
         public static void MakeExportXMLDocument(string outputFileName, int id = 1)
         {
@@ -709,7 +819,9 @@ namespace ConsoleApplication1
 
                     WriteOrganization(dr, writer, node, true);
 
-                    DataSet dsRole = ExportProvider.SelectSubmission_Role(Convert.ToInt32(dr["Final_MetaDataID"]));
+                    int Final_OrgProfileID = Convert.ToInt32(dr["Final_OrgProfileID"]);
+
+                    DataSet dsRole = ExportProvider.SelectSubmission_Role(Final_OrgProfileID);
 
                     WriteRoles(dsRole, writer, node);
 
@@ -757,8 +869,8 @@ namespace ConsoleApplication1
 
             if (includeContact) 
             {
-                int orgProfileID = Convert.ToInt32(dr["Final_OrgProfileID"]);
-                DataSet dsContacts = ExportProvider.SelectSubmission_OrgProfile_Contacts(orgProfileID);
+                int Final_OrgProfileID = Convert.ToInt32(dr["Final_OrgProfileID"]);
+                DataSet dsContacts = ExportProvider.SelectSubmission_OrgProfile_Contacts(Final_OrgProfileID);
                 if (dsContacts.Tables[0].Rows.Count > 0)
                 {
                     foreach (DataRow dr1 in dsContacts.Tables[0].Rows)
