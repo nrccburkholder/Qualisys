@@ -109,20 +109,20 @@ IF EXISTS (SELECT * FROM SYS.TABLES where schema_name(schema_id)='CIHI' and name
 
 CREATE TABLE CIHI.QA_Questionnaire (
 	questionnaireID int identity(1,1),
-	questionnaireCycleID int,					--NULL, until we hook it up to Chris' work
+	CycleCD varchar(15),						--same as in QA_QuestionnaireCycleAndStratum
 	SubmissionID int,							--CIHI.Submission.SubmissionID
 	samplePopID int,							--samplePop_id
 	sampleSetID int, 							--sampleset_ID
 	sampleunitID int,							--sampleunit_id
 	HCN varchar(12),							--population.HCN
-	HCN_Issuer char(2),							--population.HCN_Issuer
+	HCN_Issuer char(3),							--population.HCN_Issuer
 	CIHI_PID varchar(15),						--ENCOUNTER.CIHI_PID
 	CIHI_PIDType char(3),						--ENCOUNTER.CIHI_PIDType
 	DOB datetime,								--population.DOB
 	estimatedBirthCD char(1),					--"N"
 	sex char(3),								--population.sex
 	dischargedate datetime,						--encounter.dischargedate
-	CIHI_ServiceLine char(4),					--encounter.CIHI_ServiceLine
+	CIHI_ServiceLine char(42),					--encounter.CIHI_ServiceLine
 	mailingStepMethodID int,					--"derive from methodology/mailing step
 	langID int,									--mailingStepMethod.mailingStepMethod_id"
 	PRIMARY KEY (questionnaireID)				--sentmail.langid
