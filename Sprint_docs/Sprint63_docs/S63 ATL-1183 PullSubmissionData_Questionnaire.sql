@@ -25,6 +25,11 @@ BEGIN
 	if object_id('tempdb..#SampleSets') is not null
 		drop table #SampleSets
 
+	declare @CycleCd_dates char(9)
+	select @CycleCd_dates = replace(right(convert(varchar,EncounterDateStart, 3),5),'/','') + '_' + replace(right(convert(varchar,EncounterDateEnd, 3),5),'/','')
+	from CIHI.Submission cs
+	where SubmissionID=@SubmissionID
+	
 	create table #SampleSets (
 		SampleSetID int,
 		StudySchema varchar(50)
@@ -62,9 +67,10 @@ BEGIN
 
 	'insert into CIHI.QA_Questionnaire
 	(
-		QuestionnaireCycleID,
+		CycleCD,
 		SubmissionID,
 		SamplePopID,
+		SamplesetID,
 		SampleunitID,
 		HCN,
 		HCN_Issuer,
@@ -79,9 +85,10 @@ BEGIN
 		LangID
 	)
 	select distinct
-		null,
+		left(e.FacilityNum,5) + ''_'+@CycleCd_dates+''',
 		' + cast(@SubmissionID as varchar) + ',
 		sp.samplepop_id,
+		sp.sampleset_id,
 		su.sampleunit_id,
 		p.HCN,
 		case when p.HCN is null then null else isnull(p.HCN_Issuer, ''UNK'') end,
@@ -117,9 +124,9 @@ BEGIN
 		on p.pop_id = sel.POP_ID
 	join ' + @StudySchema + '.ENCOUNTER e
 		on e.enc_id = sel.enc_id
-	where ss.SAMPLESET_ID = ' + cast(@SampleSetID as varchar)
+	where sel.strUnitSelectType=''D'' and ss.SAMPLESET_ID = ' + cast(@SampleSetID as varchar)
 
-	exec @cmd
+	exec (@cmd)
 
 	fetch next from SampleSetCursor into @SampleSetID, @StudySchema
 	end
