@@ -13,6 +13,9 @@ create procedure CIHI.PullSubmissionData_QuestionnaireCycle
 --truncate table CIHI.QA_QuestionnaireCycleAndStratum
 --select * from CIHI.QA_QuestionnaireCycleAndStratum order by FacilityNum
 
+if exists (select * from sys.procedures where schema_name(schema_id)='CIHI' and name = 'PullSubmissionData_QuestionnaireCycle')
+       drop procedure CIHI.PullSubmissionData_QuestionnaireCycle
+go
 create procedure CIHI.PullSubmissionData_QuestionnaireCycle
 @SubmissionID int
 as
@@ -37,7 +40,7 @@ CREATE TABLE #tempQA_QuestionnaireCycleAndStratum(
 )
 
 insert into #tempQA_QuestionnaireCycleAndStratum (Study_id, sampleunitID, strSampleunit_nm, SubmissionTypeCD, EncounterDateStart, EncounterDateEnd, CPESVersionCD, SubmissionID, bitFlag)
-select distinct sd.study_id, su.sampleunit_id, su.strSampleUnit_nm, cs.SubmissionTypeCd, CONVERT(VARCHAR(8), cs.encounterDateStart, 112), CONVERT(VARCHAR(8), cs.encounterDateEnd, 112), cs.CPESVersionCD, cs.SubmissionID, 0
+select distinct sd.study_id, su.sampleunit_id, su.strSampleUnit_nm, cs.SubmissionTypeCd, CONVERT(VARCHAR(8), cs.encounterDateStart, 112), CONVERT(VARCHAR(8), cs.encounterDateEnd, 112), cs.CPESManualVersionCD, cs.SubmissionID, 0
 	from CIHI.Submission cs
 		join CIHI.SubmissionSurvey css on cs.submissionID=css.submissionID
 		join survey_def sd on css.surveyID=sd.survey_id
@@ -123,7 +126,7 @@ begin
 	select @SampleUnitID = min(SampleUnitId) from #tempQA_QuestionnaireCycleAndStratum where bitFlag = 0
 	select @Study = study_id from #tempQA_QuestionnaireCycleAndStratum where SampleUnitId = @SampleUnitID
 
-	select @sql = convert(nvarchar(max), 'select @Result = min(FacilityNum) from #work w ' +
+	select @sql = convert(nvarchar(max), 'select @Result = min(replace(FacilityNum,''-'','''')) from #work w ' +
 	'inner join s' + @Study + '.Encounter e on w.pop_id = e.pop_id and w.enc_id = e.enc_id ' +
 	'where w.sampleunit_id = ' + convert(nvarchar,@SampleUnitId))
 	exec sp_executesql @sql, N'@Result varchar(10) out', @FacilityNum out
@@ -131,7 +134,7 @@ begin
 	--First look demonstrates two FacilityNum values for the same SampleUnit_id
 	--FacilityNum Error Trap: appropriately append "*" when a FacilityNum is not a singleton per SampleUnit_id
 
-	select @sql = convert(nvarchar(max),'select @Result = count (distinct FacilityNum) from #work w ' +
+	select @sql = convert(nvarchar(max),'select @Result = count (distinct replace(FacilityNum,''-'','''')) from #work w ' +
 	'inner join s' + @Study + '.Encounter e on w.pop_id = e.pop_id and w.enc_id = e.enc_id ' +
 	'where w.sampleunit_id = ' + convert(nvarchar,@SampleUnitId))
 	exec sp_executesql @sql, N'@Result int out', @countFacility out
