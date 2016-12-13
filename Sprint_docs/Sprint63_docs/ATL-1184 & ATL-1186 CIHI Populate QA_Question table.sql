@@ -54,7 +54,7 @@ BEGIN
 	delete
 	from cihi.qa_questionnaire 
 	where submissionID=@submissionID
-	and samplepopid not in (select samplepopid from cihi.qa_question)
+	and samplepopid not in (select samplepopid from cihi.qa_question where submissionid=@submissionid)
 	
 	-- add a -9 response to any respondant who didn't answer a multiple response question
 	declare @sql varchar(max) = ''
@@ -66,7 +66,8 @@ BEGIN
 	where submissionID='+convert(varchar,@submissionID)+'
 	and samplepopid not in (select distinct qq.samplepopid 
 							from cihi.qa_question qq
-							where qq.qstncore='+convert(varchar,qstncore)+')'
+							where qq.qstncore='+convert(varchar,qstncore)+'
+							and submissionid='+convert(varchar,@submissionID)+')'
 	from (select distinct qq.qstncore
 		from cihi.qa_question qq
 		join samplepop sp on qq.samplePopID=sp.SAMPLEPOP_ID
