@@ -131,7 +131,7 @@ select q.SubmissionID, qc.[Final_QuestionnaireCycleID]
 	, langID as [questionnaireCycle.questionnaire.language_code]
 	, null as   [questionnaireCycle.questionnaire.language_codeSystem]
 from CIHI.QA_Questionnaire q 
-join CIHI.Final_QuestionnaireCycle qc on q.CycleCD=qc.[questionnaireCycle.id.value]
+join CIHI.Final_QuestionnaireCycle qc on q.CycleCD=qc.[questionnaireCycle.id.value] and q.submissionID=qc.submissionID
 where q.submissionID=@SubmissionID
 
 -- blank out stratumCode (sampleunitID) for questionnaires that don't have strata (i.e. SRS and CEN samples)
