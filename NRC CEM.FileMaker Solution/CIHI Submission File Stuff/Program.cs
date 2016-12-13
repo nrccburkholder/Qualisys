@@ -52,17 +52,38 @@ namespace ConsoleApplication1
 
             try
             {
+                string submissionID;
 
                 Console.WriteLine();
                 Console.WriteLine(string.Format("Environment: {0}", GetEnvironment()));
                 Console.WriteLine();
                 Console.WriteLine();
+                int top = Console.CursorTop;
+                Console.WriteLine("Enter SubmissionID:");
+                Console.SetCursorPosition(20 , top);
+                submissionID = Console.ReadLine();
 
-  
-                Console.WriteLine("Press <ENTER> to start");
-                Console.ReadLine();
+                int number;
+                bool result = Int32.TryParse(submissionID, out number);
 
-                Start();
+                if (result)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine();
+                    Console.WriteLine("Press <ENTER> to start");
+                    
+                    Console.ReadLine();
+
+                    Start(submissionID);
+                }
+                else
+                {
+
+                    Console.WriteLine("Attempted conversion of SubmissionID '{0}' failed.", submissionID == null ? "<null>" : submissionID);
+
+                }
+
+
 
             }
             catch (Exception ex)
@@ -77,22 +98,11 @@ namespace ConsoleApplication1
 
         }
 
-        static void Start()
+        static void Start(string submissionID)
         {
-
-
-            int patSubmissionID = 1;
-            int orgSubmissionID = 2;
-
             try
             {
-
-                MakeExportXMLDocuments(patSubmissionID);
-                //MakeExportXMLDocuments(orgSubmissionID);
-                //MakeExportXMLDocument(xmlOutputFile1, 1);
-                //MakeExportXMLDocument(xmlOutputFile2, 2);
-                //MakeExportXMLDocument(xmlOutputFile3, 3);
-
+                MakeExportXMLDocuments(Convert.ToInt32(submissionID));
             }
             catch (Exception ex)
             {
@@ -100,7 +110,6 @@ namespace ConsoleApplication1
                 Console.WriteLine(ex.Message);
                 Console.WriteLine();
             }
-
         }
 
         static void ParseXSDChildren(XmlSchemaObject xso, string parentName)
@@ -347,18 +356,20 @@ namespace ConsoleApplication1
             string submissionSequenceIdentifier = id.ToString().PadLeft(3, '0');
             string submittingOrganizationIdentifier;
 
+
             DataSet ds = new DataSet();
 
             ds = ExportProvider.SelectSubmissionMetadata(id);
 
             if (ds.Tables[0].Rows.Count > 0)
             {
+
                 DataTable dt = ds.Tables[0];
 
                 foreach (DataRow dr in dt.Rows)
                 {
                     submittingOrganizationIdentifier = dr["sender.organization.id.value"].ToString().Replace("-","").Replace("*","").PadLeft(5,'0');
-                    string outputFileName = $@"C:\TEMP\CPE{fiscalYear}00{submittingOrganizationIdentifier}1{submissionSequenceIdentifier}.xml";
+                    string outputFileName = $@"C:\CIHISubmissions\CPE{fiscalYear}00{submittingOrganizationIdentifier}1{submissionSequenceIdentifier}.xml";
 
                     MakeExportXMLDocument(outputFileName, dr, id);
                    
@@ -371,8 +382,11 @@ namespace ConsoleApplication1
 
         public static void MakeExportXMLDocument(string outputFileName, DataRow dr, int id)
         {
+            Console.WriteLine();
+            Console.WriteLine($"Processing {outputFileName} ...");
 
             Encoding encoding = new UTF8Encoding(false);
+
 
                 using (XmlReader reader = XmlReader.Create(new StringReader(Properties.Resources.cpesic_submission_v1_0), new XmlReaderSettings(), XmlResolver.BaseUri))
                 {
@@ -400,7 +414,9 @@ namespace ConsoleApplication1
                             XmlNode rootNode = xmlDoc.DocumentElement;
 
                             // DataSubmission section
+
                             WriteDataSubmissionSection(dr, writer, rootNode, id);
+
 
                             writer.EndElement();
 
@@ -409,7 +425,15 @@ namespace ConsoleApplication1
                             returnXMLdoc.LoadXml(writer.XmlString);
                             returnXMLdoc.Save(outputFileName);
 
-                            returnXMLdoc.Validate();
+                            try
+                            {
+                                returnXMLdoc.Validate();
+                            }
+                            catch (Exception ex)
+                            {
+     
+                                returnXMLdoc.ValidationErrorList.Add(new ExportValidationError($"Error in XML.Validate()! {ex.Message}"));
+                            }
 
                             if (!returnXMLdoc.IsValid)
                             {
@@ -431,6 +455,7 @@ namespace ConsoleApplication1
                 }
 
         }
+
 
 
         private static XmlSchemaSet RetrieveSchemaSet(XmlReader reader)
@@ -559,7 +584,7 @@ namespace ConsoleApplication1
                     string value = dr[fieldName].ToString();
                     if (dr[fieldName] != DBNull.Value)
                     { 
-                        writer.WriteElementString(nameOfNode, dr[fieldName] == DBNull.Value ? "NULL" : value);
+                        writer.WriteElementString(nameOfNode, dr[fieldName] == DBNull.Value ? "NULL" : value.Trim());
                     }
                 }
             }
@@ -630,7 +655,11 @@ namespace ConsoleApplication1
             {
                 if (dr.Table.Columns.Contains(fieldname)) { 
                     string value = dr[fieldname].ToString();
-                    writer.WriteAttribute(attributename, dr[fieldname] == DBNull.Value ? "NULL" : value);
+                    if (dr[fieldname] != DBNull.Value)
+                    {
+                        writer.WriteAttribute(attributename, dr[fieldname] == DBNull.Value ? "NULL" : value.Trim());
+                    }
+                        
                 }
             }
             catch (Exception ex) 
@@ -740,9 +769,7 @@ namespace ConsoleApplication1
 
                     WriteOrganization(dr, writer, node, true);
 
-                    int Final_OrgProfileID = Convert.ToInt32(dr["Final_OrgProfileID"]);
-
-                    DataSet dsRole = ExportProvider.SelectSubmission_Role(Final_OrgProfileID);
+                    DataSet dsRole = ExportProvider.SelectSubmission_Role(Convert.ToInt32(dr["Final_OrgProfileID"]));
 
                     WriteRoles(dsRole, writer, node);
 
@@ -790,8 +817,8 @@ namespace ConsoleApplication1
 
             if (includeContact) 
             {
-                int Final_OrgProfileID = Convert.ToInt32(dr["Final_OrgProfileID"]);
-                DataSet dsContacts = ExportProvider.SelectSubmission_OrgProfile_Contacts(Final_OrgProfileID);
+                int orgProfileID = Convert.ToInt32(dr["Final_OrgProfileID"]);
+                DataSet dsContacts = ExportProvider.SelectSubmission_OrgProfile_Contacts(orgProfileID);
                 if (dsContacts.Tables[0].Rows.Count > 0)
                 {
                     foreach (DataRow dr1 in dsContacts.Tables[0].Rows)
