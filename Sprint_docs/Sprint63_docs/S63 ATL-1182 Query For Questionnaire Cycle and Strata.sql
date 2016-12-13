@@ -169,31 +169,43 @@ begin
 	select @sampleSize = count(distinct w.pop_id) from #work w
 	inner join samplepop sp on w.sampleset_id = sp.sampleset_id and w.pop_id = sp.pop_id
 	inner join sampleset ss on sp.sampleset_id = ss.sampleset_id
+	inner join questionform qf on qf.samplepop_id = sp.samplepop_id
 	inner join #tempQA_QuestionnaireCycleAndStratum tq on tq.sampleunitid = w.sampleunit_id
 	where tq.EncounterDateStart <= ss.datDateRange_FromDate and tq.EncounterDateEnd >= ss.datDateRange_ToDate
 	and w.sampleunit_id = @SampleUnitId
 
-	--nonResponseCount int,             --Calculate using dispositionlog, plus non response after max attempts (nothing in dispositionlog for that)
-	select @nonResponseCount = count(distinct w.pop_id) from #work w
+	--nonResponseCount int,             --Calculate by looking in questionform for completed surveys minus 'other' dispositionlog dispositions CJB 12/13/2016
+	declare @responseCount int
+	select @responseCount = count(distinct w.pop_id) from #work w
 	inner join samplepop sp on w.sampleset_id = sp.sampleset_id and w.pop_id = sp.pop_id
 	inner join sampleset ss on sp.sampleset_id = ss.sampleset_id
+	inner join questionform qf on qf.samplepop_id = sp.samplepop_id
+	inner join #tempQA_QuestionnaireCycleAndStratum tq on tq.sampleunitid = w.sampleunit_id
+	where tq.EncounterDateStart <= ss.datDateRange_FromDate and tq.EncounterDateEnd >= ss.datDateRange_ToDate
+	and qf.DATRETURNED is not null
+	and w.sampleunit_id = @SampleUnitId
+	
+	declare @otherResponseCount int
+	select @otherResponseCount = count(distinct w.pop_id) from #work w
+	inner join samplepop sp on w.sampleset_id = sp.sampleset_id and w.pop_id = sp.pop_id
+	inner join sampleset ss on sp.sampleset_id = ss.sampleset_id
+	inner join questionform qf on qf.samplepop_id = sp.samplepop_id
 	inner join #tempQA_QuestionnaireCycleAndStratum tq on tq.sampleunitid = w.sampleunit_id
 	left join DispositionLog dl on dl.SamplePop_id = sp.SAMPLEPOP_ID
 	where tq.EncounterDateStart <= ss.datDateRange_FromDate and tq.EncounterDateEnd >= ss.datDateRange_ToDate
-	and (dl.Disposition_id in (5,14,16,27,46,47,52) /*bad addr, bad phone, refusal*/ 
-		or dl.Disposition_id is null /*non-response after max attempts*/ )
+	and dl.Disposition_id in (2,3,4,8,10) /*refusal, deceased, incapacitated, NA, language barrier*/ 
 	and w.sampleunit_id = @SampleUnitId
 
+	select @nonResponseCount = @sampleSize - @responseCount - @otherResponseCount
+
 	/*
-	select * from disposition where disposition_id in (14,16,27,46,47,52)
+	select * from disposition where disposition_id in (2,3,4,8,10)
 	Disposition_id	strDispositionLabel
-	5	The intended respondent is not at this address
-	14	The intended respondent is not at this phone
-	16	Bad/Missing/Wrong phone number
-	27	Declined to participate
-	46	Unused Bad Address
-	47	Unused Bad Phone
-	52	Bad address and bad phone
+	2	I do not wish to participate in this survey
+	3	The intended respondent has passed on
+	4	The intended respondent is incapacitated and cannot participate in this survey
+	8	The survey is not applicable to me
+	10	Language Barrier
 	*/
 
 	update #tempQA_QuestionnaireCycleAndStratum set 
