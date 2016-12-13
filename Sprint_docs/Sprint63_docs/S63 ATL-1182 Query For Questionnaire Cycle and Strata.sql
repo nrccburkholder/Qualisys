@@ -37,7 +37,7 @@ CREATE TABLE #tempQA_QuestionnaireCycleAndStratum(
 )
 
 insert into #tempQA_QuestionnaireCycleAndStratum (Study_id, sampleunitID, strSampleunit_nm, SubmissionTypeCD, EncounterDateStart, EncounterDateEnd, CPESVersionCD, SubmissionID, bitFlag)
-select distinct sd.study_id, su.sampleunit_id, su.strSampleUnit_nm, cs.SubmissionTypeCd, CONVERT(VARCHAR(8), cs.encounterDateStart, 112), CONVERT(VARCHAR(8), cs.encounterDateEnd, 112), cs.CPESVersionCD, cs.SubmissionID, 0
+select distinct sd.study_id, su.sampleunit_id, su.strSampleUnit_nm, cs.SubmissionTypeCd, CONVERT(VARCHAR(8), cs.encounterDateStart, 112), CONVERT(VARCHAR(8), cs.encounterDateEnd, 112), cs.CPESManualVersionCD, cs.SubmissionID, 0
 	from CIHI.Submission cs
 		join CIHI.SubmissionSurvey css on cs.submissionID=css.submissionID
 		join survey_def sd on css.surveyID=sd.survey_id
