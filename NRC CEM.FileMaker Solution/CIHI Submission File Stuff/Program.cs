@@ -3,20 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Schema;
-using System.Xml.Serialization;
-using GenerateSchema;
-using System.CodeDom;
-using Microsoft.CSharp;
 using System.IO;
-using System.Xml.Linq;
 using System.Data;
 using ConsoleApplication1.DataProviders;
 using ConsoleApplication1.Classes;
-using System.Reflection;
 using System.Configuration;
+using NRC.Logging;
 
 
 /*
@@ -30,13 +24,9 @@ namespace ConsoleApplication1
 {
     class Program
     {
-        private static bool isValid = true;      // If a validation error occurs,
-                                         // set this flag to false in the
-                                         // validation event handler. 
-        static int ErrorsCount;
-        static XmlTextWriter XMLOutWriter;
-        static List<string> MissingColumns;
-        static List<string> FoundColumns;
+
+        private static int totalCount = 0;
+        private static int fileCounter = 0;
 
 
         public enum NestingType
@@ -49,41 +39,59 @@ namespace ConsoleApplication1
 
         static void Main(string[] args)
         {
-
+            int top;
             try
             {
                 string submissionID;
+                string sequenceNumber;
+                bool submissionID_Result = false;
+                bool sequenceNumber_Result = false;
+                int seqNum = 0;
+                int subID = 0;
 
                 Console.WriteLine();
                 Console.WriteLine(string.Format("Environment: {0}", GetEnvironment()));
                 Console.WriteLine();
                 Console.WriteLine();
-                int top = Console.CursorTop;
+                top = Console.CursorTop;
                 Console.WriteLine("Enter SubmissionID:");
-                Console.SetCursorPosition(20 , top);
+                Console.SetCursorPosition(20, top);
                 submissionID = Console.ReadLine();
 
-                int number;
-                bool result = Int32.TryParse(submissionID, out number);
+                submissionID_Result = Int32.TryParse(submissionID, out subID);
 
-                if (result)
+                if (!submissionID_Result)
                 {
-                    Console.WriteLine();
-                    Console.WriteLine();
-                    Console.WriteLine("Press <ENTER> to start");
-                    
-                    Console.ReadLine();
-
-                    Start(submissionID);
+                    Console.WriteLine("Attempted conversion of SubmissionID '{0}' failed.", submissionID == null ? "<null>" : submissionID);
                 }
                 else
                 {
+                    Console.WriteLine();
+                    top = Console.CursorTop;
+                    Console.WriteLine("Enter Sequence Number:");
+                    Console.SetCursorPosition(23, top);
+                    sequenceNumber = Console.ReadLine();
 
-                    Console.WriteLine("Attempted conversion of SubmissionID '{0}' failed.", submissionID == null ? "<null>" : submissionID);
+                    sequenceNumber_Result = Int32.TryParse(sequenceNumber, out seqNum);
 
+                    if (!sequenceNumber_Result)
+                    {
+                        Console.WriteLine("Attempted conversion of SequenceNumber '{0}' failed.", submissionID == null ? "<null>" : submissionID);
+                    }
                 }
 
+                if (submissionID_Result && sequenceNumber_Result)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine();
+                    top = Console.CursorTop;
+                    Console.WriteLine("Press <ENTER> to start:");
+                    Console.SetCursorPosition(24, top);
 
+                    Console.ReadLine();
+
+                    Start(subID, seqNum);
+                }
 
             }
             catch (Exception ex)
@@ -93,244 +101,31 @@ namespace ConsoleApplication1
                 Console.WriteLine();   
             }
 
-            Console.WriteLine("Press <Enter> to exit");
+            top = Console.CursorTop;
+            Console.WriteLine("Press <Enter> to exit:");
+            Console.SetCursorPosition(23, top);
             Console.ReadLine();
+            Console.WriteLine();
+            Console.WriteLine("Goodbye!");
 
         }
 
-        static void Start(string submissionID)
+        static void Start(int submissionID, int sequenceNumber)
         {
+            Logs.Info(string.Format("CIHI FileMaker Begin Work"));
             try
             {
-                MakeExportXMLDocuments(Convert.ToInt32(submissionID));
+                
+                MakeExportXMLDocuments(submissionID, sequenceNumber);
             }
             catch (Exception ex)
             {
                 Console.WriteLine();
                 Console.WriteLine(ex.Message);
                 Console.WriteLine();
+                Logs.Error("Error in Start", ex);
             }
-        }
-
-        static void ParseXSDChildren(XmlSchemaObject xso, string parentName)
-        {
-            
-            if (xso.GetType().Equals(typeof(XmlSchemaElement)))
-            {
-                // Do something with an element.
-          
-                XmlSchemaElement xse = (XmlSchemaElement)xso;
-                //Console.WriteLine("Parent: {0}   Element: {1}", parentName, xse.Name);
-
-                XMLOutWriter.WriteStartElement(xse.Name);
-
-                // Get the complex type of the element.
-                XmlSchemaComplexType complexType = xse.ElementSchemaType as XmlSchemaComplexType;
-            
-                if (complexType == null )
-                {
-                    // it's a simple type, so no sub elements
-                    //Console.WriteLine("simpletype");
-
-
-                    //XmlSchemaSimpleType simpleType = xse.ElementSchemaType as XmlSchemaSimpleType;
-                    //XmlSchemaSimpleTypeRestriction restriction = simpleType.Content as XmlSchemaSimpleTypeRestriction;
-
-                    //Console.WriteLine("type: {0}", restriction.BaseTypeName.Name);
-                    //var facets = restriction.Facets;
-
-                    //foreach (var facet in facets)
-                    //{
-                    //    if (facet.GetType().Equals(typeof(XmlSchemaLengthFacet)))
-                    //    {
-                    //        Console.WriteLine("length: {0}", (facet as XmlSchemaLengthFacet).Value);
-                    //    }
-                    //    if (facet.GetType().Equals(typeof(XmlSchemaMinLengthFacet)))
-                    //    {
-                    //        Console.WriteLine("Minlength: {0}", (facet as XmlSchemaMinLengthFacet).Value);
-                    //    }
-                    //    if (facet.GetType().Equals(typeof(XmlSchemaMaxLengthFacet)))
-                    //    {
-                    //        Console.WriteLine("MaXlength: {0}", (facet as XmlSchemaMaxLengthFacet).Value);
-                    //    }
-                    //    else if (facet.GetType().Equals(typeof(XmlSchemaPatternFacet)))
-                    //    {
-                    //        Console.WriteLine("pattern: {0}", (facet as XmlSchemaPatternFacet).Value);
-                    //    }
-                    //    else if (facet.GetType().Equals(typeof(XmlSchemaNumericFacet)))
-                    //    {
-                    //        Console.WriteLine("number: {0}", (facet as XmlSchemaNumericFacet).Value);
-                    //    }
-                    //    else if (facet.GetType().Equals(typeof(XmlSchemaMinInclusiveFacet)))
-                    //    {
-                    //        Console.WriteLine("MinInclusive: {0}", (facet as XmlSchemaMinInclusiveFacet).Value);
-                    //    }
-                    //    else if (facet.GetType().Equals(typeof(XmlSchemaMinExclusiveFacet)))
-                    //    {
-                    //        Console.WriteLine("MinExclusive: {0}", (facet as XmlSchemaMinExclusiveFacet).Value);
-                    //    }
-                    //    else if (facet.GetType().Equals(typeof(XmlSchemaMaxInclusiveFacet)))
-                    //    {
-                    //        Console.WriteLine("MaxInclusive: {0}", (facet as XmlSchemaMaxInclusiveFacet).Value);
-                    //    }
-                    //    else if (facet.GetType().Equals(typeof(XmlSchemaMaxExclusiveFacet)))
-                    //    {
-                    //        Console.WriteLine("MaxExclusive: {0}", (facet as XmlSchemaMaxExclusiveFacet).Value);
-                    //    }
-                    //    else if (facet.GetType().Equals(typeof(XmlSchemaEnumerationFacet)))
-                    //    {
-                    //        Console.WriteLine("enumeration: {0}", (facet as XmlSchemaEnumerationFacet).Value);
-                    //    }
-                    //}
-
-                }
-                else 
-                {
-                    // If the complex type has any attributes, get an enumerator  
-                    // and write each attribute name to the console. 
-                    if (complexType.AttributeUses.Count > 0)
-                    {
-                        IDictionaryEnumerator enumerator = complexType.AttributeUses.GetEnumerator();
-
-                        while (enumerator.MoveNext())
-                        {
-                            XmlSchemaAttribute attribute = (XmlSchemaAttribute)enumerator.Value;
-
-                            //Console.WriteLine("Attribute: {0}", attribute.Name);
-                        }
-                    }
-
-
-                    // Get the sequence particle of the complex type.
-                    XmlSchemaSequence sequence = complexType.ContentTypeParticle as XmlSchemaSequence;
-
-                    if (sequence != null)
-                    {
-                        // Iterate over each XmlSchemaElement in the Items collection. 
-                        foreach (XmlSchemaObject childElement in sequence.Items)
-                        {
-                            //Console.WriteLine("Child Element: {0}", childElement.Name);
-                            ParseXSDChildren(childElement, xse.Name);
-                        }
-                    }
-                }
-
-                XMLOutWriter.WriteEndElement();
-            }
-            
-        }
-
-        static void WriteOutXMLChildrenFromXSD(XmlSchemaObject xso, string parentName = null)
-        {
-            if (xso.GetType().Equals(typeof(XmlSchemaElement)))
-            {
-                // Do something with an element.
-
-                XmlSchemaElement xse = (XmlSchemaElement)xso;
-
-
-                string fullname;
-
-                if (parentName == null)
-                {
-                    fullname = xse.Name;
-
-                }
-                else
-                {
-                    fullname = string.Format("{0}.{1}", parentName, xse.Name);
-                }
-
-                
-                XMLOutWriter.WriteStartElement(xse.Name);
-
-                // Get the complex type of the element.
-                XmlSchemaComplexType complexType = xse.ElementSchemaType as XmlSchemaComplexType;
-
-                if (complexType == null)
-                {
-
-                }
-                else
-                {
-                    // If the complex type has any attributes, get an enumerator  
-                    // and write each attribute name to the console. 
-                    if (complexType.AttributeUses.Count > 0)
-                    {
-                        IDictionaryEnumerator enumerator = complexType.AttributeUses.GetEnumerator();
-
-                        while (enumerator.MoveNext())
-                        {
-                            XmlSchemaAttribute attribute = (XmlSchemaAttribute)enumerator.Value;
-                            //if (attribute.Use !=  XmlSchemaUse.Optional){
-
-                                if (attribute.AttributeSchemaType.Datatype != null)
-                                {
-
-                                    string attributeDataType = attribute.AttributeSchemaType.Datatype.GetType().Name;
-
-                                    //string attrValue = string.Empty;
-                                    //if (attributeDataType.Contains("string"))
-                                    //{
-                                    //    attrValue = "y";
-                                    //}
-                                    //else if (attributeDataType.Contains("integer"))
-                                    //{
-                                    //    attrValue = "1";
-                                    //}
-
-                                    XMLOutWriter.WriteAttributeString(attribute.Name, "");
-                                }
-
-                                
-                            //}                            
-                        }
-                    }
-
-                    // Get the sequence particle of the complex type.
-                    XmlSchemaSequence sequence = complexType.ContentTypeParticle as XmlSchemaSequence;
-
-                    if (sequence != null)
-                    {
-                        // Iterate over each XmlSchemaElement in the Items collection. 
-                        foreach (XmlSchemaObject childElement in sequence.Items)
-                        {
-                            WriteOutXMLChildrenFromXSD(childElement, fullname);
-                        }
-                    }
-                }
-
-               //if (xse.ElementSchemaType.Datatype != null)
-               //{ 
-               //     string elementDataType = xse.ElementSchemaType.Datatype.GetType().Name;
-
-               //     string elementValue = GetDataValue(fullname, elementDataType);
-
-               //     XMLOutWriter.WriteString(elementValue);
-               // }
-               
-
-                XMLOutWriter.WriteEndElement();
-            }
-        }
-
-        static XmlSchema GetXSDFileAsXMLSchema(string xsd)
-        {
-
-            FileStream fs = new FileStream(xsd, FileMode.Open);
-            XmlSchema schema = XmlSchema.Read(fs, new ValidationEventHandler(ValidationCallBack));
-            fs.Close();
-            //schema.Compile(ValidationCallBack);
-            return schema;
-        }
-
-        private static void ValidationCallBack(object sender, ValidationEventArgs args)
-        {
-            Console.WriteLine("\tValidation error: {0}", args.Message);
-
-            //XmlDocumentEx xmlDoc = (XmlDocumentEx)sender;
-
-            //xmlDoc.ValidationErrorList.Add(new ExportValidationError(args.Message));
+            Logs.Info(string.Format("CIHI FileMaker End Work"));
         }
 
         static XmlSchemaElement GetParentElement(XmlSchemaObject xse)
@@ -348,14 +143,12 @@ namespace ConsoleApplication1
             
         }
 
-
-
-        public static void MakeExportXMLDocuments(int id)
+        public static void MakeExportXMLDocuments(int id, int seqNum)
         {
-            string fiscalYear = "2016";
-            string submissionSequenceIdentifier = id.ToString().PadLeft(3, '0');
+            string fiscalYear = ConfigurationManager.AppSettings["FiscalYear"].ToString();
+            string submissionSequenceIdentifier = seqNum.ToString().PadLeft(3, '0');
             string submittingOrganizationIdentifier;
-
+            string outputFileLocation = ConfigurationManager.AppSettings["OutputFileLocation"].ToString();
 
             DataSet ds = new DataSet();
 
@@ -365,25 +158,28 @@ namespace ConsoleApplication1
             {
 
                 DataTable dt = ds.Tables[0];
-
+                totalCount = dt.Rows.Count;
+                fileCounter = 0;
                 foreach (DataRow dr in dt.Rows)
                 {
                     submittingOrganizationIdentifier = dr["sender.organization.id.value"].ToString().Replace("-","").Replace("*","").PadLeft(5,'0');
-                    string outputFileName = $@"C:\CIHISubmissions\CPE{fiscalYear}00{submittingOrganizationIdentifier}1{submissionSequenceIdentifier}.xml";
+                    string outputFileName = $@"{outputFileLocation}CPE{fiscalYear}00{submittingOrganizationIdentifier}1{submissionSequenceIdentifier}.xml";
 
                     MakeExportXMLDocument(outputFileName, dr, id);
                    
                 }
 
             }
-            else throw new Exception("No Submission Metadata found!");
+            else throw new Exception($"No Submission Metadata found for SubmissionID {id.ToString()}!");
         }
-
 
         public static void MakeExportXMLDocument(string outputFileName, DataRow dr, int id)
         {
+            fileCounter++;
+
             Console.WriteLine();
-            Console.WriteLine($"Processing {outputFileName} ...");
+            Console.WriteLine($"Processing {outputFileName} ({fileCounter.ToString()} of {totalCount.ToString()})...");
+            Logs.Info($"MakeExportXMLDocument - Processing {outputFileName} ({fileCounter.ToString()} of {totalCount.ToString()})...");
 
             Encoding encoding = new UTF8Encoding(false);
 
@@ -391,12 +187,12 @@ namespace ConsoleApplication1
                 using (XmlReader reader = XmlReader.Create(new StringReader(Properties.Resources.cpesic_submission_v1_0), new XmlReaderSettings(), XmlResolver.BaseUri))
                 {
                     XmlSchemaSet xset = RetrieveSchemaSet(reader);
-                    Console.WriteLine(xset.IsCompiled);
+                   // Console.WriteLine(xset.IsCompiled);
 
 
                     foreach (XmlSchema schema in xset.Schemas())
                     {
-                        Console.WriteLine(schema.TargetNamespace);
+                        //Console.WriteLine(schema.TargetNamespace);
 
 
                         XmlDocumentEx xmlDoc = new XmlDocumentEx();
@@ -433,6 +229,7 @@ namespace ConsoleApplication1
                             {
      
                                 returnXMLdoc.ValidationErrorList.Add(new ExportValidationError($"Error in XML.Validate()! {ex.Message}"));
+                                Logs.Error("MakeExportXMLDocument - returnXMLdoc.Validate() error", ex);
                             }
 
                             if (!returnXMLdoc.IsValid)
@@ -440,14 +237,16 @@ namespace ConsoleApplication1
                                 foreach (ExportValidationError eve in returnXMLdoc.ValidationErrorList)
                                 {
                                     //Logging to the database.  The elements of the message are pipe delimited, with the template name, queueid, queuefileid, the file name, and the validation error description
-                                    Console.WriteLine(eve.ErrorDescription);
-                                }
+                                    Console.WriteLine($" XML validation error: Name = {eve.ElementName} Value={eve.ElementValue} {eve.ErrorDescription}");
+                                    Logs.Info($"MakeExportXMLDocument - XML validation error: Name = {eve.ElementName} Value={eve.ElementValue} {eve.ErrorDescription}");
+                            }
                             }
                             else
                             {
 
                                 Console.WriteLine("This XML Validated successfully!");
-                            }
+                                Logs.Info($"MakeExportXMLDocument - XML validated successfully.");
+                        }
                             Console.WriteLine();
                         }
 
@@ -455,8 +254,6 @@ namespace ConsoleApplication1
                 }
 
         }
-
-
 
         private static XmlSchemaSet RetrieveSchemaSet(XmlReader reader)
         {
@@ -499,6 +296,7 @@ namespace ConsoleApplication1
         }
 
         #region xmlwritemethods
+
         private static void WriteOutXMLChildrenFromXSD(XmlSchemaObject xso, XmlTextWriter writer,string parentName = null)
         {
             if (xso.GetType().Equals(typeof(XmlSchemaElement)))
@@ -580,11 +378,11 @@ namespace ConsoleApplication1
                 string fieldName = GetNodePath(mNode);
                 if (dr.Table.Columns.Contains(fieldName))
                 {
-
-                    string value = dr[fieldName].ToString();
+      
                     if (dr[fieldName] != DBNull.Value)
-                    { 
-                        writer.WriteElementString(nameOfNode, dr[fieldName] == DBNull.Value ? "NULL" : value.Trim());
+                    {
+                        string value = dr[fieldName].ToString().Trim();
+                        writer.WriteElementString(nameOfNode, value);
                     }
                 }
             }
@@ -654,10 +452,11 @@ namespace ConsoleApplication1
             try
             {
                 if (dr.Table.Columns.Contains(fieldname)) { 
-                    string value = dr[fieldname].ToString();
+                    
                     if (dr[fieldname] != DBNull.Value)
                     {
-                        writer.WriteAttribute(attributename, dr[fieldname] == DBNull.Value ? "NULL" : value.Trim());
+                        string value = dr[fieldname].ToString().Trim();
+                        writer.WriteAttribute(attributename, value);
                     }
                         
                 }
@@ -1099,6 +898,8 @@ namespace ConsoleApplication1
                     WriteElementWithAttributes(dr, writer, node, "authorMode");
 
                     WriteElementWithAttributes(dr, writer, node, "language");
+
+                    WriteElementString(dr, node, "stratumCode", writer);
 
                     WriteQuestionsSection(dr, writer, node);
 

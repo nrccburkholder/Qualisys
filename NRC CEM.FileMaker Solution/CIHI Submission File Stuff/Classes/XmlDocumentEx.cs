@@ -33,7 +33,7 @@ namespace ConsoleApplication1.Classes
             xDoc.Validate(this.Schemas, (o, e) =>
             {
                 XElement element = (XElement)o;
-                ValidationErrorList.Add(new ExportValidationError(element.Name.ToString(), element.Value, e.Message, e.Severity));
+                ValidationErrorList.Add(new ExportValidationError(element.ToString(), element.Value, e.Message, e.Severity));
                 isValid = false;
             });
 
