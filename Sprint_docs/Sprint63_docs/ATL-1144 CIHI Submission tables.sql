@@ -104,6 +104,7 @@ CREATE TABLE CIHI.Final_Questionnaire (
 	SubmissionID int,
 	Final_QuestionnaireCycleID int,
 	[questionnaireCycle.questionnaire.id.value] varchar(15),
+	[questionnaireCycle.questionnaire.stratumCode] varchar(15),
 	[questionnaireCycle.questionnaire.subject.id.value] varchar(12),
 	[questionnaireCycle.questionnaire.subject.id.issuer.code_code] char(3),
 	[questionnaireCycle.questionnaire.subject.id.issuer.code_codeSystem] varchar(50),
