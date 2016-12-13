@@ -7,7 +7,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Data.Common;
 
-namespace ConsoleApplication1.DataProviders
+namespace cihifilemaker.DataProviders
 {
     internal static class ExportProvider
     {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Schema;
 
-namespace ConsoleApplication1.Classes
+namespace cihifilemaker.Classes
 {
     public class ExportValidationError
     {

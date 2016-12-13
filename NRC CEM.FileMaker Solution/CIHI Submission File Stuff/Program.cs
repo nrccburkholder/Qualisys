@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Schema;
+
 using System.IO;
 using System.Data;
-using ConsoleApplication1.DataProviders;
-using ConsoleApplication1.Classes;
+using cihifilemaker.DataProviders;
+using cihifilemaker.Classes;
 using System.Configuration;
 using NRC.Logging;
 
@@ -20,7 +21,7 @@ using NRC.Logging;
  * 
  */
 
-namespace ConsoleApplication1
+namespace cihifilemaker
 {
     class Program
     {
