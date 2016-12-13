@@ -25,7 +25,58 @@ BEGIN
 		and qf.datreturned is not null
 		and sel.strunitselecttype = 'D'
 	)
+	
+	-- delete responses from surveys where no CIHI questions were answered (if max(intresponseval) < 0 ==> no questions were answered)
+	delete 
+	from cihi.qa_question
+	where submissionID=@submissionID
+	and samplepopid in (select samplepopid
+						from cihi.qa_question
+						where submissionid=@submissionID
+						and qstncore in (select distinct qstncore from cihi.recode where QATable = 'QA_Question' and qaField='intResponseVal')
+						group by samplepopid
+						having max(intresponseval) < 0 )
 
+	/*  we DON'T want to change nonResponseCount. a non-Response is someone who we didn't hear from at all.
+	-- increment nonResponseCount by the number of deleted surveys
+	update qc set nonResponseCount = nonResponseCount + numDeleted
+	from cihi.QA_QuestionnaireCycleAndStratum qc
+	join (	select sampleunitid,count(*) as numDeleted
+			from cihi.qa_questionnaire 
+			where submissionID=@submissionID
+			and samplepopid not in (select samplepopid from cihi.qa_question)
+			group by sampleunitid) d
+		on qc.sampleunitid=d.sampleunitid
+	where qc.submissionID=@submissionID
+	*/
+
+	-- delete those who returned blank surveys from QA_Questionnaire 
+	delete
+	from cihi.qa_questionnaire 
+	where submissionID=@submissionID
+	and samplepopid not in (select samplepopid from cihi.qa_question)
+	
+	-- add a -9 response to any respondant who didn't answer a multiple response question
+	declare @sql varchar(max) = ''
+	
+	select @sql = @sql + '
+	insert into cihi.qa_question (SubmissionID, samplepopid, qstncore, intresponseval)
+	select distinct '+convert(varchar,@submissionID)+' as submissionID, samplepopid, '+convert(varchar,qstncore)+', -9
+	from cihi.qa_question qq
+	where submissionID='+convert(varchar,@submissionID)+'
+	and samplepopid not in (select distinct qq.samplepopid 
+							from cihi.qa_question qq
+							where qq.qstncore='+convert(varchar,qstncore)+')'
+	from (select distinct qq.qstncore
+		from cihi.qa_question qq
+		join samplepop sp on qq.samplePopID=sp.SAMPLEPOP_ID
+		join DL_SEL_QSTNS_BySampleSet sq on sp.sampleset_id=sq.sampleset_id and qq.qstncore=sq.QSTNCORE
+		where sq.numMarkCount = 2
+		and qq.qstncore in (select distinct qstncore from cihi.recode where QATable = 'QA_Question' and qaField='intResponseVal')
+		and qq.submissionID = @submissionID) MR
+	exec (@sql)
+
+	
 	--if gate is answered in a way where child should be skipped, if that child contains -8 or -9 update child response to -4
 
 	create table #surveyInfo (
