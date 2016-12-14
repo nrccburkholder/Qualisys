@@ -95,7 +95,8 @@ namespace PersonatorAddressCleaner_POC
             string CustomerID = "99869570"; // I think this was provided by BJ
             string Actions = "Check"; //The Check action will validate the individual input data pieces for validity and correct them if possible. 
             string Options = "AdvancedAddressCorrection:on";//UsePreferredCity:on
-            string Columns = "GrpCensus,GrpGeocode"; //To use Geocode, you must have the geocode columns on: GrpCensus or GrpGeocode.
+            string Columns = "GrpCensus,GrpGeocode, GrpNameDetails"; //To use Geocode, you must have the geocode columns on: GrpCensus or GrpGeocode.
+            string NameHint = "2";
 
             var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://personator.melissadata.net/v3/WEB/ContactVerify/doContactVerify");
             httpWebRequest.ContentType = "text/json";
@@ -113,6 +114,7 @@ namespace PersonatorAddressCleaner_POC
                             Actions = Actions,
                             Options = Options,
                             Columns = Columns,
+                            NameHint = NameHint,
                             Records = BuildAddressRecords(environment, DataFile_id, Study_id, batchIdx, batchSize)
                         };
 
@@ -248,6 +250,8 @@ namespace PersonatorAddressCleaner_POC
             DataTable pops = SelectTableFromDB(environment, sql);
 
             countMatch = 0; countMismatch = 0;
+            int countNameMatch = 0;
+            int countNameMismatch = 0;
 
             for (int i = 0; i < pops.Rows.Count; ++i )
             {
@@ -257,33 +261,91 @@ namespace PersonatorAddressCleaner_POC
                 string cleanAddr1 = cleanRecord["AddressLine1"].ToString().Trim().ToUpper();
                 string cleanAddr2 = cleanRecord["AddressLine2"].ToString().Trim().ToUpper();
                 string cleanAddr = cleanAddr1 + (string.IsNullOrWhiteSpace(cleanAddr2) ? "" : (" " + cleanAddr2));
+
+                string cleanFname = cleanRecord["NameFirst"].ToString().Trim().ToUpper();
+                string cleanLname = cleanRecord["NameLast"].ToString().Trim().ToUpper();
+                string cleanFullName = cleanRecord["NameFull"].ToString().Trim().ToUpper();
+                string cleanFullName2 = cleanFname + (string.IsNullOrWhiteSpace(cleanLname) ? "" : (" " + cleanLname));
+
                 string cleanResultCode = cleanRecord["Results"];
 
                 string popAddr1 = pop["Addr"].ToString();
                 string popAddr2 = pop["Addr2"].ToString();
                 string popAddr = popAddr1 + (string.IsNullOrWhiteSpace(popAddr2) ? "" : (" " + popAddr2));
-                string popResultCode = pop["AddrStat"].ToString();
 
-                if(cleanAddr == popAddr && cleanResultCode.Contains(popResultCode))
+                string popFname = pop["FName"].ToString().ToUpper();
+                string popLname = pop["LName"].ToString().ToUpper();
+                string popMname = pop["Middle"].ToString().ToUpper();
+                string popFullName = popFname + (string.IsNullOrWhiteSpace(popMname) ? "" : (" " + popMname)) + (string.IsNullOrWhiteSpace(popLname) ? "" : (" " + popLname));
+
+                string popResultCode = pop["AddrStat"].ToString();
+                string popResultName = pop["NameStat"].ToString();
+
+                string addressResultsCode = GetResults(cleanResultCode, "A");
+                string nameResultsCode = GetResults(cleanResultCode, "N");
+
+                Console.WriteLine();
+                if (cleanAddr == popAddr && addressResultsCode.Contains(popResultCode))
                 {
                     countMatch++;
-                    Console.WriteLine("PSEUDO-MATCH (upper casing, unsplit)");
-                    Console.WriteLine("Personator: [" + cleanAddr + "]\t[" + cleanResultCode + "]");
+                    Console.WriteLine("ADDRESS PSEUDO-MATCH (upper casing, unsplit)");
+                    Console.WriteLine("Personator: [" + cleanAddr + "]\t[" + addressResultsCode + "]");
                     Console.WriteLine("Legacy:     [" + popAddr + "]\t[" + popResultCode + "]");
                 }
                 else
                 {
                     countMismatch++;
-                    Console.WriteLine("MISMATCH");
-                    Console.WriteLine("Personator: [" + cleanAddr + "]\t[" + cleanResultCode + "]");
+                    Console.WriteLine("ADDRESS MISMATCH");
+                    Console.WriteLine("Personator: [" + cleanAddr + "]\t[" + addressResultsCode + "]");
                     Console.WriteLine("Legacy:     [" + popAddr + "]\t[" + popResultCode + "]");
                     Console.WriteLine();
                 }
+                Console.WriteLine();
+                if (cleanFullName == popFullName && nameResultsCode.Contains(popResultName))
+                {
+                    countNameMatch++;
+                    Console.WriteLine("NAME PSEUDO-MATCH (upper casing, unsplit)");
+                    Console.WriteLine("Personator: [" + cleanFullName + "]\t[" +nameResultsCode + "]");
+                    Console.WriteLine("Legacy:     [" + popFullName + "]\t[" + popResultName + "]");
+                }
+                else
+                {
+                    countNameMismatch++;
+                    Console.WriteLine("NAME MISMATCH");
+                    Console.WriteLine("Personator: [" + cleanFullName + "]\t[" + nameResultsCode + "]");
+                    Console.WriteLine("Legacy:     [" + popFullName + "]\t[" + popResultName + "]");
+                    Console.WriteLine();
+                }
+
+
             }
+
+            Console.WriteLine();
             Console.WriteLine("Batch Compare Counts");
-            Console.WriteLine("      MATCHES " + countMatch);
-            Console.WriteLine("   MISMATCHES " + countMismatch);
+            Console.WriteLine("   ADDRESS    MATCHES " + countMatch);
+            Console.WriteLine("   ADDRESS MISMATCHES " + countMismatch);
+            Console.WriteLine();
+            Console.WriteLine("   NAME       MATCHES " + countNameMatch);
+            Console.WriteLine("   NAME    MISMATCHES " + countNameMismatch);
+            Console.WriteLine();
         }
+
+        private static string GetResults(string cleanResultCode, string code)
+        {
+            string s = string.Empty;
+            foreach (string result in cleanResultCode.Split(','))
+            {
+                string c = result.Substring(0, 1);
+                if (result.Substring(0,1) == code){
+                    s = s + result + ",";
+                }     
+            }
+
+            return s;
+
+        }
+
+
 
     }
 }
