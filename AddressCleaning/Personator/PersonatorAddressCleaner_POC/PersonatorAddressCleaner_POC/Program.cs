@@ -281,8 +281,8 @@ namespace PersonatorAddressCleaner_POC
                 string popResultCode = pop["AddrStat"].ToString();
                 string popResultName = pop["NameStat"].ToString();
 
-                string addressResultsCode = GetResults(cleanResultCode, "A");
-                string nameResultsCode = GetResults(cleanResultCode, "N");
+                string addressResultsCode = GetResultCodes(cleanResultCode, "A");
+                string nameResultsCode = GetResultCodes(cleanResultCode, "N");
 
                 Console.WriteLine();
                 if (cleanAddr == popAddr && addressResultsCode.Contains(popResultCode))
@@ -330,7 +330,7 @@ namespace PersonatorAddressCleaner_POC
             Console.WriteLine();
         }
 
-        private static string GetResults(string cleanResultCode, string code)
+        private static string GetResultCodes(string cleanResultCode, string code)
         {
             string s = string.Empty;
             foreach (string result in cleanResultCode.Split(','))
