@@ -26,7 +26,7 @@ BEGIN
 		drop table #SampleSets
 
 	declare @CycleCd_dates char(9)
-	select @CycleCd_dates = replace(right(convert(varchar,EncounterDateStart, 3),5),'/','') + '_' + replace(right(convert(varchar,EncounterDateEnd, 3),5),'/','')
+	select @CycleCd_dates = replace(right(convert(varchar,EncounterDateStart, 3),5),'/','') + replace(right(convert(varchar,EncounterDateEnd, 3),5),'/','')
 	from CIHI.Submission cs
 	where SubmissionID=@SubmissionID
 	
@@ -85,7 +85,7 @@ BEGIN
 		LangID
 	)
 	select distinct
-		left(e.FacilityNum,5) + ''_'+@CycleCd_dates+''',
+		left(e.FacilityNum,5) + '''+@CycleCd_dates+''',
 		' + cast(@SubmissionID as varchar) + ',
 		sp.samplepop_id,
 		sp.sampleset_id,

@@ -213,8 +213,8 @@ begin
 	update #tempQA_QuestionnaireCycleAndStratum set 
 		FacilityNum = @FacilityNum,
 		--CycleCD varchar(15),              --Derive from ENCOUNTERFacilityNum & encounter dates? Max length = 15.  Maybe ENCOUNTERFacilityNum + begin MMYY + end MMYY (e.g. 27907_0416_0616)
-		CycleCD = LEFT(@FacilityNum + '_' + 
-			SUBSTRING(EncounterDateStart,5,2) + SUBSTRING(EncounterDateStart,3,2) + '_' + 
+		CycleCD = LEFT(@FacilityNum + 
+			SUBSTRING(EncounterDateStart,5,2) + SUBSTRING(EncounterDateStart,3,2) + 
 			SUBSTRING(EncounterDateEnd,5,2) + SUBSTRING(EncounterDateEnd,3,2), 15),
 		dischargeCount = @dischargeCount,
 		sampleSize = @sampleSize,
