@@ -110,10 +110,11 @@ BEGIN
 	join SkipQstns sq on si.skip_id = sq.skip_id
 	join cihi.recode r on convert(varchar,surv.qstncore)=r.nrcvalue and r.FinalField='questionnaireCycle.questionnaire.questions.question.code_code'
 	-- unanswered gate questions invoke their skips 
-	union select distinct surv.qstnCore, surv.intResponseVal, sq.QstnCore, surv.samplepopID
+	union select distinct surv.qstnCore, surv.intResponseVal, sq.QstnCore, surv.samplepopID, r.cihiValue
 	from #surveyInfo surv
 	join SkipIdentifier si on si.survey_id = surv.survey_id and si.qstnCore = surv.qstnCore and surv.intResponseVal<0 and si.datGenerated = surv.datGenerated
 	join SkipQstns sq on si.skip_id = sq.skip_id
+	join cihi.recode r on convert(varchar,surv.qstncore)=r.nrcvalue and r.FinalField='questionnaireCycle.questionnaire.questions.question.code_code'
 
 	declare @currentGate varchar(10)
 	select @currentGate = min(gateQstn) from #cihiInvokedGate
