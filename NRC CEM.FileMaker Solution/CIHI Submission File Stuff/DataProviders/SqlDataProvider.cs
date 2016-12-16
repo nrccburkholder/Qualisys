@@ -10,7 +10,7 @@ using System.Xml;
 using System.Configuration;
 
 
-namespace ConsoleApplication1.DataProviders
+namespace cihifilemaker.DataProviders
 {
     public class SqlDataProvider: IDisposable
     {

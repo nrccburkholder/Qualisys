@@ -7,7 +7,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Schema;
 
-namespace ConsoleApplication1.Classes
+namespace cihifilemaker.Classes
 {
     /// <summary>
     /// This is an extension of the XmlDocument class.  It contains a Validate method that writes all the validation errors to a list.
