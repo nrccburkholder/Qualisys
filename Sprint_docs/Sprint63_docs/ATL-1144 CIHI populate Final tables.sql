@@ -210,3 +210,17 @@ exec sp_executesql @sql
 
 -- the CIHI surveys can have custom questions. These are not submitted to CIHI and can be deleted.
 delete from CIHI.final_Question where [questionnaireCycle.questionnaire.questions.question.code_codeSystem] is NULL
+
+-- if Q23 = UNK, Q24-29 should all be skipped. 
+delete fq
+--select gate.Q23, fq.*
+from cihi.final_question fq
+join (	select Final_QuestionnaireID,[questionnaireCycle.questionnaire.questions.question.answer_code] as Q23 
+		from cihi.final_question 
+		where submissionid=@submissionID
+		and [questionnaireCycle.questionnaire.questions.question.code_code]='Q23' 
+		and [questionnaireCycle.questionnaire.questions.question.answer_code]='UNK') gate
+	on fq.Final_QuestionnaireID = gate.Final_QuestionnaireID 
+where fq.submissionid=@submissionID
+and fq.[questionnaireCycle.questionnaire.questions.question.code_code] between 'Q24' and 'Q29' 
+and fq.[questionnaireCycle.questionnaire.questions.question.answer_code]='UNK'
