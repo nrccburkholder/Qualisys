@@ -203,7 +203,7 @@ set @sql=''
 select @sql = @sql + '
 update fq set ['+FinalField+']='''+CIHIValue+''', ['+FinalField+'system]='''+codeSystem+'''
 from cihi.final_questionnaire fq
-where f.SubmissionID='+convert(varchar,@SubmissionID)+' and ['+FinalField+'system] is null' 
+where fq.SubmissionID='+convert(varchar,@SubmissionID)+' and ['+FinalField+'system] is null' 
 from cihi.recode 
 where nrcvalue = '%else%'
 exec sp_executesql @sql
