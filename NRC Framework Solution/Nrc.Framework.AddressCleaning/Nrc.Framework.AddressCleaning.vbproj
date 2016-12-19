@@ -19,7 +19,7 @@
     </SccAuxPath>
     <SccProvider>
     </SccProvider>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
@@ -79,10 +79,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Referenced Assemblies\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\QLoader Solution\packages\Newtonsoft.Json.9.0.1\lib\net35\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Referenced Assemblies\NLog.4.2.2\lib\net35\NLog.dll</HintPath>
@@ -102,13 +99,11 @@
     <Import Include="System.Diagnostics" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\AddressName.vb" />
     <Compile Include="Classes\Address.vb" />
     <Compile Include="Classes\AddressSub.vb" />
     <Compile Include="Classes\NameSub.vb" />
     <Compile Include="Classes\GeoCode.vb" />
     <Compile Include="Classes\RequestData.vb" />
-    <Compile Include="Collections\AddressNameCollection.vb" />
     <Compile Include="Collections\AddressCollection.vb" />
     <Compile Include="Classes\Cleaner.vb" />
     <Compile Include="DataProviders\AddressProvider.vb" />
@@ -229,7 +224,6 @@
     <None Include="Nrc.Framework.AddressCleaning.nuspec">
       <SubType>Designer</SubType>
     </None>
-    <None Include="packages.config" />
     <None Include="Web References\net.melissadata.addresscheck\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.vb</LastGenOutput>

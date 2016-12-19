@@ -41,40 +41,6 @@ Friend Class MetaGroupProvider
 
     End Sub
 
-    Private Shared Sub PopulateMergedMetaGroup(ByVal rdr As SafeDataReader, ByVal metaGroups As MetaGroupCollection)
-
-        Dim newObject As MetaGroup = Nothing
-
-        'Check to see if this metagroup exists already
-        Dim tableID As Integer = rdr.GetInteger("Table_id")
-        For Each metaGrp As MetaGroup In metaGroups
-            If metaGrp.TableID = tableID Then
-                newObject = metaGrp
-                Exit For
-            End If
-        Next
-
-        'Add the group if it does not already exist
-        If newObject Is Nothing Then
-            newObject = MetaGroup.NewMetaGroup
-            Dim privateInterface As IMetaGroup = newObject
-            newObject.BeginPopulate()
-            privateInterface.GroupID = 9999
-            newObject.GroupName = "AddressName"
-            newObject.GroupType = "A"
-            newObject.CleanDefault = rdr.GetBoolean("bitAddrCleanDefault")
-            newObject.TableID = rdr.GetInteger("Table_id")
-            newObject.TableName = rdr.GetString("strTable_Nm")
-            newObject.KeyFieldName = rdr.GetString("strKeyField_Nm")
-            newObject.ProperCase = rdr.GetBoolean("bitProperCase")
-            newObject.EndPopulate()
-            metaGroups.Add(newObject)
-        End If
-
-        'Add this MetaField
-        newObject.MetaFields.Add(PopulateMetaField(rdr))
-
-    End Sub
 
     Private Shared Function PopulateMetaField(ByVal rdr As SafeDataReader) As MetaField
 
@@ -127,20 +93,6 @@ Friend Class MetaGroupProvider
 
     End Function
 
-    Friend Shared Function SelectMergedMetaGroupByStudyID(ByVal studyID As Integer) As MetaGroupCollection
-
-        Dim metaGroups As New MetaGroupCollection
-
-        Dim cmd As DbCommand = QualiSysDatabaseHelper.Db.GetStoredProcCommand(SP.SelectMetaGroupsByStudyID, studyID)
-        Using rdr As New SafeDataReader(QualiSysDatabaseHelper.ExecuteReader(cmd))
-            While rdr.Read
-                PopulateMergedMetaGroup(rdr, metaGroups)
-            End While
-        End Using
-
-        Return metaGroups
-
-    End Function
 
     Friend Shared Sub GetMetaGroupCounts(ByVal dataFileID As Integer, ByVal studyID As Integer, ByVal metaGroups As MetaGroupCollection, ByVal loadDB As LoadDatabases)
 

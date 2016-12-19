@@ -24,7 +24,7 @@
     <ManifestCertificateThumbprint>BA22B43A97626E7D6020800A402EBA31A9E46C71</ManifestCertificateThumbprint>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <GenerateManifests>true</GenerateManifests>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>

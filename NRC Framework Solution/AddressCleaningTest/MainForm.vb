@@ -157,7 +157,7 @@ Public Class MainForm
         Dim clean As Cleaner = New Cleaner(mCountryID, mLoadDB)
 
         'Add the Address
-        Dim item As AddressName = AddressName.NewAddressName
+        Dim item As Address = Address.NewAddress
         With item.OriginalAddress
             .StreetLine1 = OriginalStreetLine1TextBox.Text
             .StreetLine2 = OriginalStreetLine2TextBox.Text
@@ -180,10 +180,10 @@ Public Class MainForm
 
             End Select
         End With
-        clean.AddressNames.Add(item)
+        clean.Addresses.Add(item)
 
         'Clean the address
-        clean.AddressNames.Clean(PopulateGeoCodingCheckBox.Checked, CInt(FileIDTextBox.Text), True)
+        clean.Addresses.Clean(ForceProxyCheckBox.Checked, PopulateGeoCodingCheckBox.Checked, CInt(FileIDTextBox.Text))
 
         'Load the working address
         With item.WorkingAddress
@@ -301,9 +301,8 @@ Public Class MainForm
         Dim clean As Cleaner = New Cleaner(mCountryID, mLoadDB)
 
         'Clean the specified file
-        'Dim metaGroups As MetaGroupCollection = clean.CleanAll(CInt(FileIDTextBox.Text), CInt(StudyIDTextBox.Text), CInt(BatchSizeTextBox.Text), ForceProxyCheckBox.Checked)
+        Dim metaGroups As MetaGroupCollection = clean.CleanAll(CInt(FileIDTextBox.Text), CInt(StudyIDTextBox.Text), CInt(BatchSizeTextBox.Text), ForceProxyCheckBox.Checked)
 
-        Dim metaGroups As MetaGroupCollection = clean.PersonatorCleanAll(CInt(FileIDTextBox.Text), CInt(StudyIDTextBox.Text), CInt(BatchSizeTextBox.Text))
 
         'Add the MetaGroup's statistics to the message
         For Each metaGroup As MetaGroup In metaGroups

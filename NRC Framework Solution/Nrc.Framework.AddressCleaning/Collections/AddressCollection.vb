@@ -1,4 +1,9 @@
+Imports Newtonsoft.Json.Linq
+Imports Newtonsoft.Json
+Imports System.IO
 Imports System.Net
+Imports System.Data
+Imports System.Data.SqlClient
 Imports Nrc.Framework.BusinessLogic
 Imports Nrc.Framework.BusinessLogic.Configuration
 
@@ -56,19 +61,6 @@ Public Class AddressCollection
     ''' addresses currently contained in collection.
     ''' </summary>
     ''' <param name="forceProxy">Specifies whether or not to force the use of a proxy server for web requests</param>
-    ''' <remarks></remarks>
-    Public Sub Clean(ByVal forceProxy As Boolean)
-
-        'The DBKey property of the address object is not publicly exposed so it will need to be set by the application.
-        Clean(True, forceProxy, True, -1)
-
-    End Sub
-
-    ''' <summary>
-    ''' This routine is the public interface called to clean all of the 
-    ''' addresses currently contained in collection.
-    ''' </summary>
-    ''' <param name="forceProxy">Specifies whether or not to force the use of a proxy server for web requests</param>
     ''' <param name="populateGeoCoding">Specifies whether or not to populate the geocoding information</param>
     ''' <remarks></remarks>
     Public Sub Clean(ByVal forceProxy As Boolean, ByVal populateGeoCoding As Boolean, ByVal dataFileId As Integer)
@@ -83,116 +75,48 @@ Public Class AddressCollection
 #Region " Friend Methods "
 
     ''' <summary>
-    ''' Calls the melissadata.addresscheck.Service with retry logic
-    ''' If the failed attempts exceed the specified number of retries, it will bubble the exception up to the caller
+    ''' 
     ''' </summary>
-    ''' <param name="addrCheckRequest"></param>
+    ''' <param name="addressCleanRecords"></param>
     ''' <param name="dataFileId"></param>
-    ''' <param name="forceProxy"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Function DoAddressCheckWithRetries(ByRef addrCheckRequest As net.melissadata.addresscheck.RequestArray, ByVal dataFileId As Integer, ByVal forceProxy As Boolean) As net.melissadata.addresscheck.ResponseArray
+    Private Function DoAddressCheckWithRetries(ByRef addressCleanRecords As List(Of Object), ByVal dataFileId As Integer) As JObject
 
-        'Create the address cleaning web service connection
-        Using addrCheckService As New net.melissadata.addresscheck.Service
-            'Initialize the web service
-            addrCheckService.Url = AppConfig.Params("AddressWebServiceURL").StringValue
+        Dim tryCount As Integer = 0
 
-            'Determine if we need to use a proxy
-            If forceProxy Then
-                addrCheckService.Proxy = New WebProxy(AppConfig.Params("WebServiceProxyServer").StringValue, AppConfig.Params("WebServiceProxyPort").IntegerValue)
-                addrCheckService.Proxy.Credentials = CredentialCache.DefaultCredentials
+        Dim responseText As String = String.Empty
+        Dim jObj As JObject = Nothing
+
+        Do
+            tryCount += 1
+
+            If (tryCount > 1) Then
+                'Sleep for some seconds before retrying
+                Threading.Thread.Sleep(5 * 1000)
             End If
 
-            Dim tryCount As Integer = 0
-
-            Dim addrCheckResponse As net.melissadata.addresscheck.ResponseArray = Nothing
-
-            Do
-                tryCount += 1
+            Try
+                responseText = MelissaDataApiJsonCall(addressCleanRecords)
+                jObj = JObject.Parse(responseText)
 
                 If (tryCount > 1) Then
-                    'Sleep for some seconds before retrying
-                    Threading.Thread.Sleep(5 * 1000)
+                    Logs.Info(String.Format("SUCCESS DoAddressCheckWithRetries - DataFile_Id:{0} Attempt:{1}", dataFileId, tryCount))
+                End If
+                Exit Do
+            Catch ex As Exception
+                Logs.LogException(ex, String.Format("ERROR DoAddressCheckWithRetries - DataFile_Id:{0} Attempt:{1}", dataFileId, tryCount))
+                If (tryCount >= WEB_SERVICE_MAX_RETRIES) Then
+                    Throw
                 End If
 
-                Try
-                    addrCheckResponse = addrCheckService.doAddressCheck(addrCheckRequest)
-                    If (tryCount > 1) Then
-                        Logs.Info(String.Format("SUCCESS DoAddressCheckWithRetries - DataFile_Id:{0} Attempt:{1}", dataFileId, tryCount))
-                    End If
-                    Exit Do
-                Catch ex As Exception
-                    Logs.LogException(ex, String.Format("ERROR DoAddressCheckWithRetries - DataFile_Id:{0} Attempt:{1}", dataFileId, tryCount))
-                    If (tryCount >= WEB_SERVICE_MAX_RETRIES) Then
-                        Throw
-                    End If
+            End Try
 
-                End Try
+        Loop While tryCount < WEB_SERVICE_MAX_RETRIES
 
-            Loop While tryCount < WEB_SERVICE_MAX_RETRIES
-
-            Return addrCheckResponse
-        End Using
+        Return jObj
 
     End Function
-
-
-    ''' <summary>
-    ''' Calls the net.melissadata.geocoder.Service with retry logic
-    ''' If the failed attempts exceed the specified number of retries, it will bubble the exception up to the caller
-    ''' </summary>
-    ''' <param name="geoCodingRequest"></param>
-    ''' <param name="dataFileId"></param>
-    ''' <param name="forceProxy"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Private Function DoGeoCodingWithRetries(ByRef geoCodingRequest As net.melissadata.geocoder.RequestArray, ByVal dataFileId As Integer, ByVal forceProxy As Boolean) As net.melissadata.geocoder.ResponseArray
-
-        'Create the address cleaning web service connection
-        Using geoCodingService As New net.melissadata.geocoder.Service
-            'Initialize the web service
-            geoCodingService.Url = AppConfig.Params("GeoCodingWebServiceURL").StringValue
-
-            'Determine if we need to use a proxy
-            If forceProxy Then
-                geoCodingService.Proxy = New WebProxy(AppConfig.Params("WebServiceProxyServer").StringValue, AppConfig.Params("WebServiceProxyPort").IntegerValue)
-                geoCodingService.Proxy.Credentials = CredentialCache.DefaultCredentials
-            End If
-
-            Dim tryCount As Integer = 0
-
-            Dim geoCodingResponse As New net.melissadata.geocoder.ResponseArray
-            Do
-                tryCount += 1
-
-                If (tryCount > 1) Then
-                    'Sleep for some seconds before retrying
-                    Threading.Thread.Sleep(5 * 1000)
-                End If
-
-                Try
-                    geoCodingResponse = geoCodingService.doGeoCode(geoCodingRequest)
-                    If (tryCount > 1) Then
-                        Logs.Info(String.Format("SUCCESS DoGeoCodingWithRetries - DataFile_Id:{0} Attempt:{1}", dataFileId, tryCount))
-                    End If
-                    Exit Do
-                Catch ex As Exception
-                    Logs.LogException(ex, String.Format("ERROR DoGeoCodingWithRetries - DataFile_Id:{0} Attempt:{1}", dataFileId, tryCount))
-                    If (tryCount >= WEB_SERVICE_MAX_RETRIES) Then
-                        Throw
-                    End If
-
-                End Try
-
-            Loop While tryCount < WEB_SERVICE_MAX_RETRIES
-
-            Return geoCodingResponse
-        End Using
-
-    End Function
-
-
 
 
     ''' <summary>
@@ -205,23 +129,31 @@ Public Class AddressCollection
     ''' <remarks></remarks>
     Friend Sub Clean(ByVal assignIDs As Boolean, ByVal forceProxy As Boolean, ByVal populateGeoCoding As Boolean, ByVal dataFileId As Integer)
 
-        Dim addrCount As Integer = 0
+          Dim addrCount As Integer = 0
         Dim addrUsed As Integer = 0
         Dim webCallCount As Integer = 0
         Dim maxRecords As Integer = AppConfig.Params("AddressWebServiceMaxRecords").IntegerValue
-        Dim addrCheckRequest As New net.melissadata.addresscheck.RequestArray
-        Dim addrCheckResponse As New net.melissadata.addresscheck.ResponseArray
-        Dim geoCodingCount As Integer = 0
-        Dim geoCodingUsed As Integer = 0
-        Dim geoCodingRequest As New net.melissadata.geocoder.RequestArray
-        Dim geoCodingResponse As New net.melissadata.geocoder.ResponseArray
 
-        'Initialize the SOAP request message
-        addrCheckRequest.CustomerID = AppConfig.Params("AddressWebServiceCustomerID").StringValue
-        addrCheckRequest.OptAddressParsed = "False"
+        Dim personatorResponse As JObject
+        Dim transmissionResults As String
 
-        'Dimension the SOAP request message array for the first set of records
-        ReDim addrCheckRequest.Record(GetArraySize(Count, addrUsed, maxRecords) - 1)
+        Dim nameCleaningPrefixes As List(Of String) = New List(Of String)
+
+        For numNameCleaningPrefixParam As Integer = 1 To 100
+            Try
+                Dim prefixsLine As String
+                Dim paramVal As Param = AppConfig.Params("NameCleaningPrefix" + numNameCleaningPrefixParam.ToString())
+                If paramVal Is Nothing Then Exit For
+                prefixsLine = paramVal.StringValue
+                For Each prefix As String In prefixsLine.Split(";".ToCharArray())
+                    nameCleaningPrefixes.Add(prefix)
+                Next
+            Catch ex As Exception
+                Exit For
+            End Try
+        Next
+
+        Dim addressCleanRecords As New List(Of Object)
 
         'Clean all addresses in the collection
         For Each addr As Address In Me
@@ -234,8 +166,9 @@ Public Class AddressCollection
                 addr.DBKey = addrUsed
             End If
 
-            'Add this address to the web service SOAP message
-            AddAddress(addrCount, addr, addrCheckRequest)
+            'Add this address to the web service request
+
+            AddAddress(addrCount, addr, addressCleanRecords)
 
             'Determine if it is time to call the web service
             If addrCount = maxRecords OrElse addrUsed = Count Then
@@ -244,7 +177,8 @@ Public Class AddressCollection
                 Logs.Info(String.Format("Begin addrCheckService.doAddressCheck - DataFile_Id:{0}, AddrCount: {1}, WebCallCount: {2}, Pop_Id: {3}", dataFileId, addrCount, webCallCount, addr.DBKey))
 
                 Try
-                    addrCheckResponse = DoAddressCheckWithRetries(addrCheckRequest, dataFileId, forceProxy)
+                    personatorResponse = DoAddressCheckWithRetries(addressCleanRecords, dataFileId)
+                    transmissionResults = personatorResponse.Item("TransmissionResults").ToString()
                 Catch ex As Exception
                     Logs.LogException(ex, String.Format("ERROR addrCheckService.doAddressCheck - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
                     Throw ex
@@ -253,66 +187,17 @@ Public Class AddressCollection
                 Logs.Info(String.Format("End addrCheckService.doAddressCheck - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
                 'Check to see if the web service returned any errors
                 Dim message As String = String.Empty
-                If CheckForAddressWebRequestErrors(addrCheckResponse.Results, message) Then
+                If CheckForAddressWebRequestErrors(transmissionResults, message) Then
                     'We have encountered a general error from the web service.
                     Throw New Exception(message)
                 End If
 
-                'Find and update the returned addresses
-                UpdateAddresses(addrCheckResponse, dataFileId)
+                'Find and update the returned addresses and names
+                UpdateAddresses(personatorResponse, populateGeoCoding, dataFileId)
 
-                'Reset and prepare for next set of addresses to be added to the SOAP message
+                'Reset and prepare for next set of addresses to be added to the request
                 addrCount = 0
-                ReDim addrCheckRequest.Record(GetArraySize(Count, addrUsed, maxRecords) - 1)
-            End If
-        Next
-
-        'Determine if we are doing the GeoCoding
-        If Not populateGeoCoding Then Exit Sub
-
-        'Initialize the SOAP request message
-        geoCodingRequest.CustomerID = AppConfig.Params("GeoCodingWebServiceCustomerID").StringValue
-
-        'Dimension the SOAP request message array for the first set of records
-        ReDim geoCodingRequest.Record(GetArraySize(Count, geoCodingUsed, maxRecords) - 1)
-
-        'Add GeoCoding for all addresses in the collection
-        For Each addr As Address In Me
-            'Increment the counters
-            geoCodingCount += 1
-            geoCodingUsed += 1
-
-            'Add this address to the web service SOAP message
-            AddGeoCoding(geoCodingCount, addr, geoCodingRequest)
-
-            'Determine if it is time to call the web service
-            If geoCodingCount = maxRecords OrElse geoCodingUsed = Count Then
-                'Call the web service to clean the current SOAP message
-
-
-                Logs.Info(String.Format("Begin geoCodingService.doGeoCode - DataFile_Id:{0}", dataFileId))
-                Try
-                    geoCodingResponse = DoGeoCodingWithRetries(geoCodingRequest, dataFileId, forceProxy)
-                Catch ex As Exception
-                    Logs.LogException(ex, String.Format("ERROR geoCodingService.doGeoCode - DataFile_Id:{0}", dataFileId))
-                    Throw ex
-                End Try
-
-                Logs.Info(String.Format("End geoCodingService.doGeoCode - DataFile_Id:{0}", dataFileId))
-
-                'Check to see if the web service returned any errors
-                Dim message As String = String.Empty
-                If CheckForGeoCodingWebRequestErrors(geoCodingResponse.Results, message) Then
-                    'We have encountered a general error from the web service.
-                    Throw New Exception(message)
-                End If
-
-                'Find and update the returned addresses
-                UpdateGeoCoding(geoCodingResponse)
-
-                'Reset and prepare for next set of addresses to be added to the SOAP message
-                geoCodingCount = 0
-                ReDim geoCodingRequest.Record(GetArraySize(Count, geoCodingUsed, maxRecords) - 1)
+                addressCleanRecords.Clear()
             End If
         Next
 
@@ -335,47 +220,91 @@ Public Class AddressCollection
 
     End Sub
 
-    Private Function cleanSingleAddress(ByVal assignIDs As Boolean, ByVal forceProxy As Boolean, ByVal populateGeoCoding As Boolean, ByRef addr As Address, ByVal dataFileId As Integer) As net.melissadata.addresscheck.ResponseArray
-        Dim addrCount As Integer = 1
-        Dim addrUsed As Integer = 1
+    Friend Function MelissaDataApiJsonCall(ByRef addressCleanRecords As List(Of Object)) As String
+        Dim TransmissionReference As String = ""
+        'The Transmission Reference is a unique string value that identifies this particular request
+        Dim CustomerID As String = AppConfig.Params("AddressWebServiceCustomerID").StringValue
+        ' I think this was provided by BJ
+        Dim Actions As String = "Check"
+        'The Check action will validate the individual input data pieces for validity and correct them if possible. 
+        Dim Options As String = "AdvancedAddressCorrection:on"
+        'UsePreferredCity:on
+        Dim Columns As String = "GrpCensus,GrpGeocode,GrpAddressDetails,PrivateMailBox,GrpParsedAddress,Plus4"
+        'To use Geocode, you must have the geocode columns on: GrpCensus or GrpGeocode.
+        Dim NameHint As String = "2"
+
+        Dim httpWebRequest As HttpWebRequest = DirectCast(WebRequest.Create("https://personator.melissadata.net/v3/WEB/ContactVerify/doContactVerify"), HttpWebRequest)
+        httpWebRequest.ContentType = "text/json"
+        httpWebRequest.Method = "POST"
+
+        Dim serializer As Newtonsoft.Json.JsonSerializer = New Newtonsoft.Json.JsonSerializer()
+        Using sw As StreamWriter = New StreamWriter(httpWebRequest.GetRequestStream())
+            Using tw As Newtonsoft.Json.JsonTextWriter = New Newtonsoft.Json.JsonTextWriter(sw)
+                Dim requestData As Object = New With {
+                Key .TransmissionReference = TransmissionReference,
+                Key .CustomerID = CustomerID,
+                Key .Actions = Actions,
+                Key .Options = Options,
+                Key .Columns = Columns,
+                Key .NameHint = NameHint,
+                Key .Records = addressCleanRecords.ToArray()
+            }
+
+                serializer.Serialize(tw, requestData)
+            End Using
+        End Using
+        Dim httpResponse As HttpWebResponse = DirectCast(httpWebRequest.GetResponse(), HttpWebResponse)
+        Using streamReader As StreamReader = New StreamReader(httpResponse.GetResponseStream())
+            Dim responseText As String = streamReader.ReadToEnd()
+            Return responseText
+        End Using
+    End Function
+
+    Private Function cleanSingleAddress(ByVal assignIDs As Boolean, ByVal forceProxy As Boolean, ByVal populateGeoCoding As Boolean, ByRef addr As Address, ByVal dataFileId As Integer) As JObject
+        Dim addrCount As Integer = 0
+        Dim addrUsed As Integer = 0
+        Dim webCallCount As Integer = 0
         Dim maxRecords As Integer = AppConfig.Params("AddressWebServiceMaxRecords").IntegerValue
-        Dim addrCheckRequest As New net.melissadata.addresscheck.RequestArray
-        Dim addrCheckResponse As New net.melissadata.addresscheck.ResponseArray
-        Dim geoCodingCount As Integer = 1
-        Dim geoCodingUsed As Integer = 1
-        Dim geoCodingRequest As New net.melissadata.geocoder.RequestArray
-        Dim geoCodingResponse As New net.melissadata.geocoder.ResponseArray
 
-        'Initialize the SOAP request message
-        addrCheckRequest.CustomerID = AppConfig.Params("AddressWebServiceCustomerID").StringValue
-        addrCheckRequest.OptAddressParsed = "False"
+        Dim personatorResponse As JObject
+        Dim transmissionResults As String
 
-        'Dimension the SOAP request message array for the first set of records
-        ReDim addrCheckRequest.Record(GetArraySize(addrCount, addrUsed, maxRecords))
+        Dim nameCleaningPrefixes As List(Of String) = New List(Of String)
 
-        'Create the address cleaning web service connection
+        For numNameCleaningPrefixParam As Integer = 1 To 100
+            Try
+                Dim prefixsLine As String
+                Dim paramVal As Param = AppConfig.Params("NameCleaningPrefix" + numNameCleaningPrefixParam.ToString())
+                If paramVal Is Nothing Then Exit For
+                prefixsLine = paramVal.StringValue
+                For Each prefix As String In prefixsLine.Split(";".ToCharArray())
+                    nameCleaningPrefixes.Add(prefix)
+                Next
+            Catch ex As Exception
+                Exit For
+            End Try
+        Next
 
-        'Clean all addresses in the collection
-
-        'Increment the counters
-        addrCount = 1
-        addrUsed = 1
+        addrCount += 1
+        addrUsed += 1
 
         'Check to see if we need to assign the id
         If assignIDs Then
             addr.DBKey = addrUsed
         End If
 
+        Dim addressCleanRecords As New List(Of Object)
         'Add this address to the web service SOAP message
-        AddAddress(addrCount, addr, addrCheckRequest)
+        AddAddress(addrCount, addr, addressCleanRecords)
 
         'Call the web service   
         Logs.Info(String.Format("Begin Single addrCheckService.doAddressCheck - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
 
         Try
-            addrCheckResponse = DoAddressCheckWithRetries(addrCheckRequest, dataFileId, forceProxy)
+            personatorResponse = DoAddressCheckWithRetries(addressCleanRecords, dataFileId)
+            transmissionResults = personatorResponse.Item("TransmissionResults").ToString()
         Catch ex As Exception
-            Logs.LogException(ex, String.Format("ERROR Single addrCheckService.doAddressCheck - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
+            Logs.LogException(ex, String.Format("ERROR addrCheckService.doAddressCheck - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
             Throw ex
         End Try
 
@@ -384,48 +313,18 @@ Public Class AddressCollection
         'Check to see if the web service returned any errors
         Dim message As String = String.Empty
 
-        If CheckForAddressWebRequestErrors(addrCheckResponse.Results, message) Then
+        If CheckForAddressWebRequestErrors(transmissionResults, message) Then
             'We have encountered a general error from the web service.
             Throw New Exception(message)
 
         End If
 
-        'Initialize the SOAP request message
-        geoCodingRequest.CustomerID = AppConfig.Params("GeoCodingWebServiceCustomerID").StringValue
+        'Find and update the returned addresses and names
+        Return personatorResponse
 
-        'Dimension the SOAP request message array for the first set of records
-        ReDim geoCodingRequest.Record(GetArraySize(geoCodingCount, geoCodingUsed, maxRecords))
-
-        'Add this address to the web service SOAP message
-        AddGeoCoding(geoCodingCount, addr, geoCodingRequest)
-
-        'Call the web service
-
-        Logs.Info(String.Format("Begin Single geoCodingService.doGeoCode - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
-        Try
-            geoCodingResponse = DoGeoCodingWithRetries(geoCodingRequest, dataFileId, forceProxy)
-        Catch ex As Exception
-            Logs.LogException(ex, String.Format("ERROR Single geoCodingService.doGeoCode - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
-            Throw ex
-        End Try
-
-        Logs.Info(String.Format("End Single geoCodingService.doGeoCode - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
-
-        'Check to see if the web service returned any errors
-        message = String.Empty
-        If CheckForGeoCodingWebRequestErrors(geoCodingResponse.Results, message) Then
-            'We have encountered a general error from the web service.
-            Throw New Exception(message)
-        End If
-
-        'Find and update the returned addresses
-        UpdateGeoCoding(geoCodingResponse)
-
-        Logs.Info(String.Format("End cleanSingleAddress - DataFile_Id:{0}", dataFileId))
-
-        Return addrCheckResponse
 
     End Function
+
 
 #End Region
 
@@ -456,81 +355,91 @@ Public Class AddressCollection
     ''' <param name="addr">The address to be added to the request object.</param>
     ''' <param name="request">The request object that the address should be added to.</param>
     ''' <remarks></remarks>
-    Private Sub AddAddress(ByVal cnt As Integer, ByVal addr As Address, ByVal request As net.melissadata.addresscheck.RequestArray)
+    Private Sub AddAddress(ByVal cnt As Integer, ByVal addr As Address, ByRef addressCleanRecords As List(Of Object))
 
-        'Initialize this address request record
-        request.Record(cnt - 1) = New net.melissadata.addresscheck.RequestArrayRecord
+        Dim RecordID As String = addr.DBKey.ToString
+        Dim CompanyName As String = ""
 
-        'Populate the address request record
-        With request.Record(cnt - 1)
-            'Add the address key
-            .RecordID = addr.DBKey.ToString
+        Dim AddressLine1 As String = CleanString(addr.OriginalAddress.StreetLine1, True, True)
+        Dim AddressLine2 As String = String.Empty
+        If addr.OriginalAddress.StreetLine2 <> "%NOT%USED%" Then
+            AddressLine2 = CleanString(addr.OriginalAddress.StreetLine2, True, True)
+        End If
+        Dim Suite As String = ""
+        Dim City As String = addr.OriginalAddress.City
 
-            'Add StreetLine1
-            .AddressLine1 = CleanString(addr.OriginalAddress.StreetLine1, True, True)
+        'Add the State/Province
+        '-----------------------------------------------------------
+        'State      Province    Use
+        '-----------------------------------------------------------
+        'Null       Not Null    Province
+        'Null       Null        State
+        'Not Null   Null        State
+        'Not Null   Not Null    State
+        '-----------------------------------------------------------
+        Dim State As String = String.Empty
+        If String.IsNullOrEmpty(addr.OriginalAddress.State) AndAlso Not String.IsNullOrEmpty(addr.OriginalAddress.Province) Then
+            State = addr.OriginalAddress.Province
+        Else
+            State = addr.OriginalAddress.State
+        End If
 
-            'Add StreetLine2
-            If addr.OriginalAddress.StreetLine2 <> "%NOT%USED%" Then
-                .AddressLine2 = CleanString(addr.OriginalAddress.StreetLine2, True, True)
-            End If
 
-            'Add City
-            .City = addr.OriginalAddress.City
+        Dim Zip As String = String.Empty
 
-            'Add the State/Province
-            '-----------------------------------------------------------
-            'State      Province    Use
-            '-----------------------------------------------------------
-            'Null       Not Null    Province
-            'Null       Null        State
-            'Not Null   Null        State
-            'Not Null   Not Null    State
-            '-----------------------------------------------------------
-            If String.IsNullOrEmpty(addr.OriginalAddress.State) AndAlso Not String.IsNullOrEmpty(addr.OriginalAddress.Province) Then
-                .State = addr.OriginalAddress.Province
-            Else
-                .State = addr.OriginalAddress.State
-            End If
+        'Add the Zip/Postal Code
+        'Zip5 = 88888 => Canadian address
+        'Zip5 = 99999 => US or Canadian address with foreign language
+        '--------------------------------------------------------------
+        'Zip5   Postal      Use             Country     Language
+        '--------------------------------------------------------------
+        'Null   Not Null    Postal Code     Canada      English
+        '88888  Not Null    Postal Code     Canada      English
+        '99999  Not Null    Postal Code     Canada      Foreign
+        '#####  Null        Zip5(-Zip4)     US          English
+        '99999  Null        Zip5(-Zip4)     US          Foreign
+        '--------------------------------------------------------------
+        If (String.IsNullOrEmpty(addr.OriginalAddress.Zip5) OrElse addr.OriginalAddress.Zip5 = "88888" OrElse addr.OriginalAddress.Zip5 = "99999") AndAlso Not String.IsNullOrEmpty(addr.OriginalAddress.Postal) Then
+            Zip = addr.OriginalAddress.Postal
+        Else
+            Zip = GetZipCode(addr.OriginalAddress)
+        End If
 
-            'Add the Country
-            If String.IsNullOrEmpty(addr.OriginalAddress.Country) Then
-                Select Case mCountryID
-                    Case CountryIDs.US
-                        .Country = "US"
+        Dim Country As String = ""
 
-                    Case CountryIDs.Canada
-                        .Country = "CA"
+        'Add the Country
+        If String.IsNullOrEmpty(addr.OriginalAddress.Country) Then
+            Select Case mCountryID
+                Case CountryIDs.US
+                    Country = "US"
 
-                    Case Else
-                        .Country = String.Empty
+                Case CountryIDs.Canada
+                    Country = "CA"
 
-                End Select
-            Else
-                .Country = addr.OriginalAddress.Country
-            End If
-            '.Country = addr.OriginalAddress.Country
+                Case Else
+                    Country = String.Empty
 
-            'Add the Zip/Postal Code
-            'Zip5 = 88888 => Canadian address
-            'Zip5 = 99999 => US or Canadian address with foreign language
-            '--------------------------------------------------------------
-            'Zip5   Postal      Use             Country     Language
-            '--------------------------------------------------------------
-            'Null   Not Null    Postal Code     Canada      English
-            '88888  Not Null    Postal Code     Canada      English
-            '99999  Not Null    Postal Code     Canada      Foreign
-            '#####  Null        Zip5(-Zip4)     US          English
-            '99999  Null        Zip5(-Zip4)     US          Foreign
-            '--------------------------------------------------------------
-            If (String.IsNullOrEmpty(addr.OriginalAddress.Zip5) OrElse addr.OriginalAddress.Zip5 = "88888" OrElse addr.OriginalAddress.Zip5 = "99999") AndAlso Not String.IsNullOrEmpty(addr.OriginalAddress.Postal) Then
-                .Zip = addr.OriginalAddress.Postal
-            Else
-                .Zip = GetZipCode(addr.OriginalAddress)
-            End If
+            End Select
+        Else
+            Country = addr.OriginalAddress.Country
+        End If
 
-            'Set NewZip5 for Canada address to keep Zip5 as it is.
-            If mCountryID = CountryIDs.Canada Then addr.WorkingAddress.Zip5 = addr.OriginalAddress.Zip5
-        End With
+        'Set NewZip5 for Canada address to keep Zip5 as it is.
+        If mCountryID = CountryIDs.Canada Then addr.WorkingAddress.Zip5 = addr.OriginalAddress.Zip5
+
+        Dim o As Object = New With {
+            Key .RecordID = RecordID,
+            Key .CompanyName = CompanyName,
+            Key .AddressLine1 = AddressLine1,
+            Key .AddressLine2 = AddressLine2,
+            Key .Suite = Suite,
+            Key .City = City,
+            Key .State = State,
+            Key .PostalCode = Zip,
+            Key .Country = Country
+        }
+
+        addressCleanRecords.Add(o)
 
     End Sub
 
@@ -539,24 +448,26 @@ Public Class AddressCollection
     ''' </summary>
     ''' <param name="responseArray">The response object containing the updated addresses.</param>
     ''' <remarks></remarks>
-    Private Sub UpdateAddresses(ByRef responseArray As net.melissadata.addresscheck.ResponseArray, ByVal datafileId As Integer)
-
-        Dim cnt As Integer
+    Private Sub UpdateAddresses(ByVal personatorResponse As JObject, ByVal populateGeoCoding As Boolean, ByVal datafileId As Integer)
 
         'Loop through all of the returned addresses and update them
-        For cnt = 0 To CInt(responseArray.TotalRecords) - 1
-            With responseArray.Record(cnt)
-                'Find the address to be updated
-                Dim addr As Address = FindAddress(CInt(.RecordID))
+        For i As Integer = 0 To CInt(personatorResponse.Item("TotalRecords")) - 1
 
-                'Check to see that the address was found
-                If addr Is Nothing Then
-                    Throw New Exception(String.Format("The Address Cleaning web service returned the following RecordID that could not be found in our collection: {0}", .RecordID))
-                End If
+            Dim cleanRecord As JToken = personatorResponse.Item("Records").Item(i)
+            Dim recordID As Integer = CInt(cleanRecord("RecordID"))
+            'Find the address to be updated
+            Dim addr As Address = FindAddress(recordID)
 
-                'If we are here then we need to update the address
-                UpdateAddress(addr, .Address, .Results, datafileId)
-            End With
+            'Check to see that the address was found
+            If addr Is Nothing Then
+                Throw New Exception(String.Format("The Address Cleaning web service returned the following RecordID that could not be found in our collection: {0}", recordID))
+            End If
+
+            'If we are here then we need to update the address
+            UpdateAddress(addr, cleanRecord, datafileId)
+            If populateGeoCoding Then
+                UpdateGeoCode(addr, cleanRecord)
+            End If
         Next
 
     End Sub
@@ -582,17 +493,19 @@ Public Class AddressCollection
     End Function
 
     ''' <summary>
-    ''' This routine updates all of the individual elements of the specified address object.
+    ''' 
     ''' </summary>
-    ''' <param name="addr">The address object to be updated.</param>
-    ''' <param name="response">The response object containing the cleaned address.</param>
-    ''' <param name="results">The result string for this address.</param>
+    ''' <param name="addr"></param>
+    ''' <param name="response"></param>
+    ''' <param name="datafileId"></param>
     ''' <remarks></remarks>
-    Private Sub UpdateAddress(ByRef addr As Address, ByRef response As net.melissadata.addresscheck.ResponseArrayRecordAddress, ByVal results As String, ByVal datafileId As Integer)
+    Private Sub UpdateAddress(ByRef addr As Address, ByRef response As JToken, ByVal datafileId As Integer)
+
+        Dim results As String = response("Results").ToString
 
         With addr.WorkingAddress
             'Get the Address Type
-            Select Case response.Type.Address.Code.Trim.ToUpper
+            Select Case response("AddressTypeCode").ToString().Trim.ToUpper
                 Case "F"
                     .AddressType = AddressTypes.FirmOrCompany
 
@@ -617,7 +530,7 @@ Public Class AddressCollection
             End Select
 
             'Get the Zip Type
-            Select Case response.Type.Zip.Code.Trim.ToUpper
+            Select Case response("AddressTypeCode").ToString().Trim.ToUpper
                 Case "P"
                     .ZipCodeType = ZipCodeTypes.POBox
 
@@ -633,13 +546,13 @@ Public Class AddressCollection
             End Select
 
             'Get the Urbanization
-            .UrbanizationName = response.Urbanization.Name
+            .UrbanizationName = response("UrbanizationName").ToString().Trim.ToUpper
 
             'Get the Private Mail Box
-            .PrivateMailBox = response.PrivateMailBox
+            .PrivateMailBox = response("PrivateMailBox").ToString().Trim.ToUpper
 
             'Get line 1 of the address
-            .StreetLine1 = CleanString(response.Address1, True, False).ToUpper
+            .StreetLine1 = CleanString(response("AddressLine1").ToString(), True, False).ToUpper
 
             'Get line 2 of the address
             If addr.OriginalAddress.StreetLine2 = "%NOT%USED%" Then
@@ -647,11 +560,12 @@ Public Class AddressCollection
                 .StreetLine2 = String.Empty
             Else
                 'Line 2 is used
-                .StreetLine2 = CleanString(response.Address2, True, False).ToUpper
+                .StreetLine2 = CleanString(response("AddressLine2").ToString(), True, False).ToUpper
             End If
 
             'Get the suite information
-            Dim suite As String = CleanString(response.Suite, True, False).ToUpper
+            Dim suiteInfo As String = String.Format("{0} {1}", response("AddressSuiteName").ToString(), response("AddressSuiteNumber").ToString()).Trim
+            Dim suite As String = CleanString(suiteInfo, True, False).ToUpper
             If Not String.IsNullOrEmpty(suite) Then
                 'Suite information exists
                 If addr.OriginalAddress.StreetLine2 = "%NOT%USED%" Then
@@ -668,13 +582,13 @@ Public Class AddressCollection
             End If
 
             'Get the city
-            .City = CleanString(response.City.Name, True, False).ToUpper
+            .City = CleanString(response("City").ToString(), True, False).ToUpper
 
             'Get remaining address parts based on country
             Select Case mCountryID
                 Case CountryIDs.US
                     'Get the state
-                    .State = response.State.Abbreviation.ToUpper
+                    .State = response("State").ToString().ToUpper
 
                     'Get the zip5
                     If addr.OriginalAddress.Zip5 = "99999" OrElse addr.OriginalAddress.Zip5 = "88888" Then
@@ -682,42 +596,42 @@ Public Class AddressCollection
                         .Zip5 = addr.OriginalAddress.Zip5
                     Else
                         'Save zip5
-                        .Zip5 = response.Zip
+                        .Zip5 = response("PostalCode").ToString()
                     End If
 
                     'Get the zip4
-                    .Zip4 = response.Plus4
+                    .Zip4 = response("Plus4").ToString()
 
                     'Get the delivery point information
-                    .DeliveryPoint = response.DeliveryPointCode & response.DeliveryPointCheckDigit
+                    .DeliveryPoint = response("DeliveryPointCode").ToString & response("DeliveryPointCheckDigit").ToString
 
                     'Get the carrier route information
-                    .Carrier = response.CarrierRoute
+                    .Carrier = response("CarrierRoute").ToString
 
                 Case CountryIDs.Canada
                     'Get the province
-                    .Province = CleanString(response.State.Abbreviation, True, False).ToUpper
+                    .Province = CleanString(response("State").ToString(), True, False).ToUpper
 
                     'Get the postal code
-                    .Postal = response.Zip
+                    .Postal = response("PostalCode").ToString()
 
             End Select
 
             'Set the Country
-            .Country = response.Country.Abbreviation.ToUpper
+            .Country = response("CountryCode").ToString.ToUpper
 
             'Set the Status Code
-            .AddressStatus = GetAddressStatus(results)
+            .AddressStatus = GetAddressStatus(GetResultCodes(response("Results").ToString, "A"))
 
             'Save the unique address key used for other Melissa services
-            .AddressKey = response.AddressKey
+            .AddressKey = response("AddressKey").ToString
 
             'Set the Error Code
-            .AddressError = GetAddressError(results)
+            .AddressError = GetAddressError(GetResultCodes(response("Results").ToString, "A"))
         End With
 
-        If (response.Country.Abbreviation.ToUpper = "US" AndAlso mCountryID <> CountryIDs.US) OrElse _
-           (response.Country.Abbreviation.ToUpper = "CA" AndAlso mCountryID <> CountryIDs.Canada) OrElse _
+        If (response("CountryCode").ToString.ToUpper = "US" AndAlso mCountryID <> CountryIDs.US) OrElse _
+           (response("CountryCode").ToString.ToUpper = "CA" AndAlso mCountryID <> CountryIDs.Canada) OrElse _
            (IsForeignError(results)) Then
             'Foreign address detected so set to original with error FO (Foreign)
             addr.SetCleanedTo(addr.OriginalAddress, "FO")
@@ -742,17 +656,14 @@ Public Class AddressCollection
 
     End Sub
 
-    Private Function ParseSingleAddress(ByRef responseArray As net.melissadata.addresscheck.ResponseArray, ByRef addr As Address) As Address
+    Private Function ParseSingleAddress(ByRef responses As JObject, ByRef addr As Address) As Address
 
-        Dim response As net.melissadata.addresscheck.ResponseArrayRecordAddress
-        Dim results As String
-
-        response = responseArray.Record(0).Address
-        results = responseArray.Record(0).Results
+        Dim response As JToken = responses.Item("Records").Item(0)
+        Dim results As String = response("Results").ToString
 
         With addr.WorkingAddress
             'Get the Address Type
-            Select Case response.Type.Address.Code.Trim.ToUpper
+            Select Case response("AddressTypeCode").ToString().Trim.ToUpper
                 Case "F"
                     .AddressType = AddressTypes.FirmOrCompany
 
@@ -777,7 +688,7 @@ Public Class AddressCollection
             End Select
 
             'Get the Zip Type
-            Select Case response.Type.Zip.Code.Trim.ToUpper
+            Select Case response("AddressTypeCode").ToString().Trim.ToUpper
                 Case "P"
                     .ZipCodeType = ZipCodeTypes.POBox
 
@@ -793,13 +704,13 @@ Public Class AddressCollection
             End Select
 
             'Get the Urbanization
-            .UrbanizationName = response.Urbanization.Name
+            .UrbanizationName = response("UrbanizationName").ToString().Trim.ToUpper
 
             'Get the Private Mail Box
-            .PrivateMailBox = response.PrivateMailBox
+            .PrivateMailBox = response("PrivateMailBox").ToString().Trim.ToUpper
 
             'Get line 1 of the address
-            .StreetLine1 = CleanString(response.Address1, True, False).ToUpper
+            .StreetLine1 = CleanString(response("AddressLine1").ToString(), True, False).ToUpper
 
             'Get line 2 of the address
             If addr.OriginalAddress.StreetLine2 = "%NOT%USED%" Then
@@ -807,11 +718,12 @@ Public Class AddressCollection
                 .StreetLine2 = String.Empty
             Else
                 'Line 2 is used
-                .StreetLine2 = CleanString(response.Address2, True, False).ToUpper
+                .StreetLine2 = CleanString(response("AddressLine2").ToString(), True, False).ToUpper
             End If
 
             'Get the suite information
-            Dim suite As String = CleanString(response.Suite, True, False).ToUpper
+            Dim suiteInfo As String = String.Format("{0} {1}", response("AddressSuiteName").ToString(), response("AddressSuiteNumber").ToString()).Trim
+            Dim suite As String = CleanString(suiteInfo, True, False).ToUpper
             If Not String.IsNullOrEmpty(suite) Then
                 'Suite information exists
                 If addr.OriginalAddress.StreetLine2 = "%NOT%USED%" Then
@@ -828,13 +740,13 @@ Public Class AddressCollection
             End If
 
             'Get the city
-            .City = CleanString(response.City.Name, True, False).ToUpper
+            .City = CleanString(response("City").ToString(), True, False).ToUpper
 
             'Get remaining address parts based on country
             Select Case mCountryID
                 Case CountryIDs.US
                     'Get the state
-                    .State = response.State.Abbreviation.ToUpper
+                    .State = response("State").ToString().ToUpper
 
                     'Get the zip5
                     If addr.OriginalAddress.Zip5 = "99999" OrElse addr.OriginalAddress.Zip5 = "88888" Then
@@ -842,38 +754,38 @@ Public Class AddressCollection
                         .Zip5 = addr.OriginalAddress.Zip5
                     Else
                         'Save zip5
-                        .Zip5 = response.Zip
+                        .Zip5 = response("PostalCode").ToString()
                     End If
 
                     'Get the zip4
-                    .Zip4 = response.Plus4
+                    .Zip4 = response("Plus4").ToString()
 
                     'Get the delivery point information
-                    .DeliveryPoint = response.DeliveryPointCode & response.DeliveryPointCheckDigit
+                    .DeliveryPoint = response("DeliveryPointCode").ToString & response("DeliveryPointCheckDigit").ToString
 
                     'Get the carrier route information
-                    .Carrier = response.CarrierRoute
+                    .Carrier = response("CarrierRoute").ToString
 
                 Case CountryIDs.Canada
                     'Get the province
-                    .Province = CleanString(response.State.Abbreviation, True, False).ToUpper
+                    .Province = CleanString(response("State").ToString(), True, False).ToUpper
 
                     'Get the postal code
-                    .Postal = response.Zip
+                    .Postal = response("PostalCode").ToString()
 
             End Select
 
             'Set the Country
-            .Country = response.Country.Abbreviation.ToUpper
+            .Country = response("CountryCode").ToString.ToUpper
 
             'Set the Status Code
-            .AddressStatus = GetAddressStatus(results)
+            .AddressStatus = GetAddressStatus(GetResultCodes(response("Results").ToString, "A"))
 
             'Save the unique address key used for other Melissa services
-            .AddressKey = response.AddressKey
+            .AddressKey = response("AddressKey").ToString
 
             'Set the Error Code
-            .AddressError = GetAddressError(results)
+            .AddressError = GetAddressError(GetResultCodes(response("Results").ToString, "A"))
         End With
 
         Return addr
@@ -934,7 +846,7 @@ Public Class AddressCollection
         origAddr.WorkingAddress.StreetLine2 = clonedAddress.OriginalAddress.StreetLine1
 
         'Make the web service call with the clone/swapped address
-        Dim responseArray As net.melissadata.addresscheck.ResponseArray = cleanSingleAddress(False, False, True, origAddr, datafileId)
+        Dim responseArray As JObject = cleanSingleAddress(False, False, True, origAddr, datafileId)
 
         'Parse the address clean response into an Address object
         Dim returnedAddress As Address = ParseSingleAddress(responseArray, origAddr)
@@ -1212,80 +1124,73 @@ Public Class AddressCollection
 
     End Function
 
-    ''' <summary>
-    ''' This routine updates the addresses in the collection with those returned in the response object.
-    ''' </summary>
-    ''' <param name="responseArray">The response object containing the updated addresses.</param>
-    ''' <remarks></remarks>
-    Private Sub UpdateGeoCoding(ByVal responseArray As net.melissadata.geocoder.ResponseArray)
 
-        Dim cnt As Integer
-
-        'Loop through all of the returned geocodes and update them
-        For cnt = 0 To CInt(responseArray.TotalRecords) - 1
-            With responseArray.Record(cnt)
-                'Find the address to be updated
-                Dim addr As Address = FindAddress(CInt(.RecordID))
-
-                'Check to see that the address was found
-                If addr Is Nothing Then
-                    Throw New Exception(String.Format("The Address Cleaning web service returned the following RecordID that could not be found in our collection: {0}", .RecordID))
-                End If
-
-                'If we are here then we need to update the addresses geocode
-                UpdateGeoCode(addr, .Address, .Results)
-            End With
-        Next
-
-    End Sub
 
     ''' <summary>
-    ''' This routine updates all of the individual elements of the specified address object.
+    ''' 
     ''' </summary>
-    ''' <param name="addr">The address object to be updated.</param>
-    ''' <param name="response">The response object containing the cleaned address.</param>
-    ''' <param name="results">The result string for this address.</param>
+    ''' <param name="addr"></param>
+    ''' <param name="response"></param>
     ''' <remarks></remarks>
-    Private Sub UpdateGeoCode(ByVal addr As Address, ByVal response As net.melissadata.geocoder.ResponseArrayRecordAddress, ByVal results As String)
+    Private Sub UpdateGeoCode(ByVal addr As Address, ByRef response As JToken)
 
         'Set the Status Code
-        addr.GeoCode.GeoCodeStatus = GetGeoCodeStatus(results)
+        Dim GeoCodeResultCodes As String = GetResultCodes(response("Results").ToString, "G") & GetResultCodes(response("Results").ToString, "D")
+        addr.GeoCode.GeoCodeStatus = GeoCodeResultCodes
 
-        If Not CheckForGeoCodeErrors(results) Then
+
+        If Not CheckForGeoCodeErrors(GeoCodeResultCodes) Then
             With addr.GeoCode
                 'Get the County
-                .CountyFIPS = response.County.Fips
-                .CountyName = response.County.Name
+                .CountyFIPS = response("CountyFIPS").ToString
+                .CountyName = response("CountyName").ToString
 
                 'Get the latitude
-                .Latitude = response.Latitude
+                .Latitude = response("Latitude").ToString
 
                 'Get the longitude
-                .Longitude = response.Longitude
+                .Longitude = response("Longitude").ToString
 
                 'Get the Cencus Bureau's Place
-                .PlaceCode = response.Place.Code
-                .PlaceName = response.Place.Name
+                .PlaceCode = response("PlaceCode").ToString
+                .PlaceName = response("PlaceName").ToString
 
-                'Get the time zone
-                .TimeZoneCode = response.TimeZone.Code
-                .TimeZoneName = response.TimeZone.Name
+                ''Get the time zone  - personator data only includes UTC offset
+                '.TimeZoneCode = response("TimeZone.Code").ToString
+                '.TimeZoneName = response("TimeZone.Name").ToString
 
                 'Get the Census Bureau's Code Based Statistical Area (CBSA)
-                .CBSACode = response.CBSA.Code
-                .CBSALevel = response.CBSA.Level
-                .CBSATitle = response.CBSA.Title
-                .CBSADivisionCode = response.CBSA.CBSADivisionCode
-                .CBSADivisionLevel = response.CBSA.CBSADivisionLevel
-                .CBSADivisionTitle = response.CBSA.CBSADivisionTitle
+                .CBSACode = response("CBSACode").ToString
+                .CBSALevel = response("CBSALevel").ToString
+                .CBSATitle = response("CBSATitle").ToString
+                .CBSADivisionCode = response("CBSADivisionCode").ToString
+                .CBSADivisionLevel = response("CBSADivisionLevel").ToString
+                .CBSADivisionTitle = response("CBSADivisionTitle").ToString
 
                 'Get the Census Block
-                .CensusBlock = response.Census.Block
-                .CensusTract = response.Census.Tract
+                .CensusBlock = response("CensusBlock").ToString
+                .CensusTract = response("CensusTract").ToString
             End With
         End If
 
     End Sub
+
+    Private Function GetResultCodes(cleanResultCode As String, code As String) As String
+        Dim s As String = String.Empty
+        For Each result As String In cleanResultCode.Split(","c)
+            Dim c As String = result.Substring(0, 1)
+            If result.StartsWith(code) Then
+                s = s & result & ","
+            End If
+        Next
+
+        If s.Length > 0 Then
+            Return s.Substring(0, s.Length - 1)
+        Else
+            Return String.Empty
+        End If
+
+    End Function
 
 #End Region
 
