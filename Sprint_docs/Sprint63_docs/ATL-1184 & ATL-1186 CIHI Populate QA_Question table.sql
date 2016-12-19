@@ -97,26 +97,53 @@ BEGIN
 
 	--CIHI questions that are Gates
 	create table #cihiInvokedGate (
-		GateQstn		INT,
+		GateQstnCore	INT,
+		GateQstn		varchar(10), 
 		intResponseVal	INT,
 		skipQstn		INT,
 		samplePopID		INT
 	)
-	insert into #cihiInvokedGate (GateQstn, intResponseVal, skipQstn, samplePopID)
-	select surv.qstnCore, surv.intResponseVal, sq.QstnCore, surv.samplepopID
+	insert into #cihiInvokedGate (GateQstnCore, intResponseVal, skipQstn, samplePopID, GateQstn)
+	select surv.qstnCore, surv.intResponseVal, sq.QstnCore, surv.samplepopID, r.CihiValue
 	from #surveyInfo surv
 	join SkipIdentifier si on si.survey_id = surv.survey_id and si.qstnCore = surv.qstnCore and surv.intResponseVal = si.intResponseVal and si.datGenerated = surv.datGenerated
 	join SkipQstns sq on si.skip_id = sq.skip_id
+	join cihi.recode r on convert(varchar,surv.qstncore)=r.nrcvalue and r.FinalField='questionnaireCycle.questionnaire.questions.question.code_code'
+	-- unanswered gate questions invoke their skips 
+	union select distinct surv.qstnCore, surv.intResponseVal, sq.QstnCore, surv.samplepopID, r.cihiValue
+	from #surveyInfo surv
+	join SkipIdentifier si on si.survey_id = surv.survey_id and si.qstnCore = surv.qstnCore and surv.intResponseVal<0 and si.datGenerated = surv.datGenerated
+	join SkipQstns sq on si.skip_id = sq.skip_id
+	join cihi.recode r on convert(varchar,surv.qstncore)=r.nrcvalue and r.FinalField='questionnaireCycle.questionnaire.questions.question.code_code'
 
-	update cq
-	set cq.intResponseVal = -4
-	from CIHI.QA_Question cq
-	join #cihiInvokedGate cg
-		on cq.samplepopID = cg.samplePopID and cq.qstnCore = cg.SkipQstn
-	where
-		cq.intResponseVal = -9 or cq.intResponseVal = -8
-		and cq.submissionID = @SubmissionID
+	declare @currentGate varchar(10)
+	select @currentGate = min(gateQstn) from #cihiInvokedGate
+	while @currentGate is not null
+	begin
+		update cq
+		set cq.intResponseVal = -4
+		from CIHI.QA_Question cq
+		join #cihiInvokedGate cg
+			on cq.samplepopID = cg.samplePopID and cq.qstnCore = cg.SkipQstn
+		where
+			(cq.intResponseVal = -9 or cq.intResponseVal = -8)
+			and cq.submissionID = @SubmissionID
+			and cg.GateQstn = @currentGate
 
+		-- if a gate should no longer be invoked because the gate question should have been skipped, remove their nested skip
+		delete cq
+		from #cihiInvokedGate cq
+		join #cihiInvokedGate cg
+			on cq.samplepopID = cg.samplePopID and cq.GateqstnCore = cg.SkipQstn
+		where
+			cg.GateQstn = @currentGate
+			--and cq.intResponseVal = -9 or cq.intResponseVal = -8
+
+		delete #cihiInvokedGate where gateQstn=@currentGate 
+		set @currentGate=NULL
+		select @currentGate = min(gateQstn) from #cihiInvokedGate
+	end
+	
 	drop table #surveyInfo
 	drop table #cihiInvokedGate
 

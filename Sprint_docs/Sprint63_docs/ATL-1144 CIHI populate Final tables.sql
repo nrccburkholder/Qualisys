@@ -161,7 +161,7 @@ where qr.SubmissionID=@SubmissionID
 DECLARE @sql nvarchar(max)
 
 --we shouldn't submit appropriately skipped questions
-DELETE FROM CIHI.Final_Question where [questionnaireCycle.questionnaire.questions.question.answer_code]='-4'
+DELETE FROM CIHI.Final_Question where [questionnaireCycle.questionnaire.questions.question.answer_code]='-4' and SubmissionID=@SubmissionID
 
 IF OBJECT_ID('tempdb..#Recode') IS NOT NULL DROP TABLE #Recode
 
@@ -183,7 +183,7 @@ begin
 		set f.['+r.Finalfield+'] = r.CIHIValue'+case when right(r.FinalField,4)='Code' then ',f.['+r.FinalField+'System]=r.codesystem' else '' end+'
 	from cihi.[' + FinalTable + '] f
 	join cihi.recode r on f.[' + r.FinalField + ']=r.nrcValue
-	where r.finalTable=''' + r.FinalTable + ''' and r.finalField = ''' + r.FinalField + ''' '
+	where f.SubmissionID='+convert(varchar,@SubmissionID)+' and r.finalTable=''' + r.FinalTable + ''' and r.finalField = ''' + r.FinalField + ''' '
 	from cihi.Recode r
 	WHERE r.FinalTable = @FinalTable
 	and r.FinalField = @FinalField
@@ -203,10 +203,24 @@ set @sql=''
 select @sql = @sql + '
 update fq set ['+FinalField+']='''+CIHIValue+''', ['+FinalField+'system]='''+codeSystem+'''
 from cihi.final_questionnaire fq
-where ['+FinalField+'system] is null' 
+where fq.SubmissionID='+convert(varchar,@SubmissionID)+' and ['+FinalField+'system] is null' 
 from cihi.recode 
 where nrcvalue = '%else%'
 exec sp_executesql @sql
 
 -- the CIHI surveys can have custom questions. These are not submitted to CIHI and can be deleted.
-delete from CIHI.final_Question where [questionnaireCycle.questionnaire.questions.question.code_codeSystem] is NULL
+delete from CIHI.final_Question where [questionnaireCycle.questionnaire.questions.question.code_codeSystem] is NULL and SubmissionID=@SubmissionID
+
+-- if Q23 = UNK, Q24-29 should all be skipped. 
+delete fq
+--select gate.Q23, fq.*
+from cihi.final_question fq
+join (	select Final_QuestionnaireID,[questionnaireCycle.questionnaire.questions.question.answer_code] as Q23 
+		from cihi.final_question 
+		where submissionid=@submissionID
+		and [questionnaireCycle.questionnaire.questions.question.code_code]='Q23' 
+		and [questionnaireCycle.questionnaire.questions.question.answer_code]='UNK') gate
+	on fq.Final_QuestionnaireID = gate.Final_QuestionnaireID 
+where fq.submissionid=@submissionID
+and fq.[questionnaireCycle.questionnaire.questions.question.code_code] between 'Q24' and 'Q29' 
+and fq.[questionnaireCycle.questionnaire.questions.question.answer_code]='UNK'
