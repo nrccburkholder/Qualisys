@@ -220,6 +220,241 @@ Friend Class AddressProvider
 
     End Sub
 
+    Public Shared Sub PersonatorCleanAll(ByVal dataFileID As Integer, ByVal studyID As Integer, ByVal batchSize As Integer, ByRef metaGroups As MetaGroupCollection, ByVal addresses As AddressNameCollection, ByVal loadDB As LoadDatabases)
+
+        Dim done As Boolean
+        Dim cmd As DbCommand
+        Dim addrTable As DataTable
+
+        'Loop through all of the address and name groups and create the SelectFieldList
+        Dim SelectFieldList As String = metaGroups.SelectFieldList 
+
+        'Loop through all of the groups
+        For Each metaGrp As MetaGroup In metaGroups
+            'If this is an address group then process it
+            If metaGrp.IsAddress And metaGrp.Selected Then
+                'Store the start time
+                metaGrp.Duration = New TimeSpan(0)
+                Dim startDate As Date = Date.Now
+
+                'Get the population records
+                If loadDB = LoadDatabases.QPLoad Then
+                    cmd = QLoaderDatabaseHelper.Db.GetStoredProcCommand(SP.SelectAddressesByMetaGroup, batchSize, SelectFieldList, metaGrp.KeyFieldName, metaGrp.SQLTableName(studyID), metaGrp.StatusFieldName, dataFileID)
+                    addrTable = QLoaderDatabaseHelper.ExecuteDataSet(cmd).Tables(0)
+                Else
+                    cmd = DataLoadDatabaseHelper.Db.GetStoredProcCommand(SP.SelectAddressesByMetaGroup, batchSize, metaGrp.SelectFieldList, metaGrp.KeyFieldName, metaGrp.SQLTableName(studyID), metaGrp.StatusFieldName, dataFileID)
+                    addrTable = DataLoadDatabaseHelper.ExecuteDataSet(cmd).Tables(0)
+                End If
+
+                'Check to see if we got any records
+                If addrTable.Rows.Count = 0 Then
+                    'If there are no records then we are done
+                    done = True
+                    addrTable.Dispose()
+                Else
+                    'There are some records so process them
+                    done = False
+                End If
+
+                'Clear the addresses collection
+                addresses.Clear()
+
+                'Since we are only selecting a subset of the records on each pass
+                'this loop is used to keep it going until all records have been cleaned
+                Do Until done
+                    'Add these records to the collection
+                    For Each row As DataRow In addrTable.Rows
+                        'Create a new address object and add it to the collection
+                        Dim addr As AddressName = AddressName.NewAddressName
+                        addresses.Add(addr)
+
+                        'Reset variables
+                        addr.OriginalAddress.StreetLine2 = "%NOT%USED%"
+
+                        'Loop through each field in the record and populate the address object
+                        For Each col As DataColumn In addrTable.Columns
+                            'Set the properties
+                            Select Case col.ColumnName.ToUpper
+                                Case "DBKEY"
+                                    addr.DBKey = CInt(row.Item(col))
+
+                                Case "FIELDADDRSTREET1"
+                                    If Not row.IsNull(col) Then
+                                        addr.OriginalAddress.StreetLine1 = row.Item(col).ToString.Trim
+                                    Else
+                                        addr.OriginalAddress.StreetLine1 = String.Empty
+                                    End If
+
+                                Case "FIELDADDRSTREET2"
+                                    If Not row.IsNull(col) Then
+                                        addr.OriginalAddress.StreetLine2 = row.Item(col).ToString.Trim
+                                    Else
+                                        addr.OriginalAddress.StreetLine2 = String.Empty
+                                    End If
+
+                                Case "FIELDADDRCITY"
+                                    If Not row.IsNull(col) Then
+                                        addr.OriginalAddress.City = row.Item(col).ToString.Trim
+                                    Else
+                                        addr.OriginalAddress.City = String.Empty
+                                    End If
+
+                                Case "FIELDADDRSTATE"
+                                    If Not row.IsNull(col) Then
+                                        addr.OriginalAddress.State = row.Item(col).ToString.Trim
+                                    Else
+                                        addr.OriginalAddress.State = String.Empty
+                                    End If
+
+                                Case "FIELDADDRCOUNTRY"
+                                    If Not row.IsNull(col) Then
+                                        addr.OriginalAddress.Country = row.Item(col).ToString.Trim
+                                    Else
+                                        addr.OriginalAddress.Country = String.Empty
+                                    End If
+
+                                Case "FIELDADDRZIP5"
+                                    If Not row.IsNull(col) Then
+                                        addr.OriginalAddress.Zip5 = row.Item(col).ToString.Trim
+                                    Else
+                                        addr.OriginalAddress.Zip5 = String.Empty
+                                    End If
+
+                                Case "FIELDADDRZIP4"
+                                    If Not row.IsNull(col) Then
+                                        addr.OriginalAddress.Zip4 = row.Item(col).ToString.Trim
+                                    Else
+                                        addr.OriginalAddress.Zip4 = String.Empty
+                                    End If
+
+                                Case "FIELDADDRPROVINCE"
+                                    If Not row.IsNull(col) Then
+                                        addr.OriginalAddress.Province = row.Item(col).ToString.Trim
+                                    Else
+                                        addr.OriginalAddress.Province = String.Empty
+                                    End If
+
+                                Case "FIELDADDRPOSTAL"
+                                    If Not row.IsNull(col) Then
+                                        addr.OriginalAddress.Postal = row.Item(col).ToString.Trim
+                                    Else
+                                        addr.OriginalAddress.Postal = String.Empty
+                                    End If
+
+                                Case "FIELDADDRTIMEZONE"
+                                    If Not row.IsNull(col) Then
+                                        addr.GeoCode.TimeZoneName = row.Item(col).ToString.Trim
+                                    Else
+                                        addr.GeoCode.TimeZoneName = String.Empty
+                                    End If
+
+                                Case "FIELDADDRFIPSCOUNTY"
+                                    If Not row.IsNull(col) Then
+                                        addr.GeoCode.CountyFIPS = row.Item(col).ToString.Trim
+                                    Else
+                                        addr.GeoCode.CountyFIPS = String.Empty
+                                    End If
+
+                                Case "FIELDADDRFIPSSTATE"
+                                    If Not row.IsNull(col) Then
+                                        addr.GeoCode.CountyFIPS = row.Item(col).ToString.Trim
+                                    Else
+                                        addr.GeoCode.CountyFIPS = String.Empty
+                                    End If
+
+                                Case "FIELDADDRTITLENAME"
+                                    If Not row.IsNull(col) Then
+                                        addr.OriginalName.Title = row.Item(col).ToString.Trim
+                                    Else
+                                        addr.OriginalName.Title = String.Empty
+                                    End If
+
+                                Case "FIELDADDRFNAME"
+                                    If Not row.IsNull(col) Then
+                                        addr.OriginalName.FirstName = row.Item(col).ToString.Trim
+                                    Else
+                                        addr.OriginalName.FirstName = String.Empty
+                                    End If
+
+                                Case "FIELDADDRMNAME"
+                                    If Not row.IsNull(col) Then
+                                        addr.OriginalName.MiddleInitial = row.Item(col).ToString.Trim
+                                    Else
+                                        addr.OriginalName.MiddleInitial = String.Empty
+                                    End If
+
+                                Case "FIELDADDRLNAME"
+                                    If Not row.IsNull(col) Then
+                                        addr.OriginalName.LastName = row.Item(col).ToString.Trim
+                                    Else
+                                        addr.OriginalName.LastName = String.Empty
+                                    End If
+
+                                Case "FIELDADDRSUFFIXNAME"
+                                    If Not row.IsNull(col) Then
+                                        addr.OriginalName.Suffix = row.Item(col).ToString.Trim
+                                    Else
+                                        addr.OriginalName.Suffix = String.Empty
+                                    End If
+                            End Select
+                        Next
+                    Next
+
+                    'Cleanup
+                    addrTable.Dispose()
+
+                    'Clean the addresses
+                    Logs.Info(String.Format("Begin CleanAll.addresses.Clean - DataFile_id: {0}, Study_id: {1}", dataFileID, studyID))
+                    addresses.Clean(False, True, dataFileID, metaGrp.ProperCase)
+                    Logs.Info(String.Format("End CleanAll.addresses.Clean - DataFile_id: {0}, Study_id: {1}", dataFileID, studyID))
+
+
+
+                    'Update these addresses to the database
+                    For Each addr As AddressName In addresses
+
+                        Dim updateFieldList As String = metaGrp.UpdateFieldListAddressName(addr)
+
+                        'Update this Address
+                        Dim updateCmd As DbCommand
+                        If loadDB = LoadDatabases.QPLoad Then
+                            updateCmd = QLoaderDatabaseHelper.Db.GetStoredProcCommand(SP.UpdateAddressesByMetaGroup, metaGrp.SQLTableName(studyID), metaGrp.UpdateFieldListAddressName(addr), metaGrp.KeyFieldName, addr.DBKey)
+                            QLoaderDatabaseHelper.ExecuteNonQuery(updateCmd)
+                        Else
+                            updateCmd = DataLoadDatabaseHelper.Db.GetStoredProcCommand(SP.UpdateAddressesByMetaGroup, metaGrp.SQLTableName(studyID), metaGrp.UpdateFieldListAddressName(addr), metaGrp.KeyFieldName, addr.DBKey)
+                            DataLoadDatabaseHelper.ExecuteNonQuery(updateCmd)
+                        End If
+                    Next
+
+                    'Clear the addresses collection
+                    addresses.Clear()
+
+                    'Get the next set of population records
+                    If loadDB = LoadDatabases.QPLoad Then
+                        cmd = QLoaderDatabaseHelper.Db.GetStoredProcCommand(SP.SelectAddressesByMetaGroup, batchSize, metaGrp.SelectFieldList, metaGrp.KeyFieldName, metaGrp.SQLTableName(studyID), metaGrp.StatusFieldName, dataFileID)
+                        addrTable = QLoaderDatabaseHelper.ExecuteDataSet(cmd).Tables(0)
+                    Else
+                        cmd = DataLoadDatabaseHelper.Db.GetStoredProcCommand(SP.SelectAddressesByMetaGroup, batchSize, metaGrp.SelectFieldList, metaGrp.KeyFieldName, metaGrp.SQLTableName(studyID), metaGrp.StatusFieldName, dataFileID)
+                        addrTable = DataLoadDatabaseHelper.ExecuteDataSet(cmd).Tables(0)
+                    End If
+
+                    'Check to see if we got any records
+                    If addrTable.Rows.Count = 0 Then
+                        'If there are no records then we are done
+                        done = True
+                        addrTable.Dispose()
+                    End If
+                Loop
+
+                'Store the duration
+                metaGrp.Duration = Date.Now.Subtract(startDate)
+
+            End If
+        Next metaGrp
+
+    End Sub
+
+
 #End Region
 
 End Class

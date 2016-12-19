@@ -249,6 +249,7 @@ Public Class MetaGroup
         End Get
     End Property
 
+
     ''' <summary>
     ''' Returns the name of the field that contains the error information 
     ''' for this address.
@@ -392,6 +393,97 @@ Public Class MetaGroup
         End Get
     End Property
 
+    Friend ReadOnly Property UpdateFieldListAddressName(ByVal address As AddressName) As String
+        Get
+            Dim thisField As String = String.Empty
+            Dim updateList As String = String.Empty
+
+            'Loop through all of the fields
+            For Each metaFld As MetaField In mMetaFields
+                With metaFld
+                    'Get the update field and value for this field
+                    Select Case .ParamName
+                        Case "FieldAddrStreet1"
+                            thisField = String.Format("{0} = {1}", .FieldName, GetFieldValue(CleanString(address.CleanedAddress.StreetLine1, True, True)))
+
+                        Case "FieldAddrStreet2"
+                            thisField = String.Format("{0} = {1}", .FieldName, GetFieldValue(CleanString(address.CleanedAddress.StreetLine2, True, True)))
+
+                        Case "FieldAddrCity"
+                            thisField = String.Format("{0} = {1}", .FieldName, GetFieldValue(address.CleanedAddress.City))
+
+                        Case "FieldAddrState"
+                            thisField = String.Format("{0} = {1}", .FieldName, GetFieldValue(address.CleanedAddress.State))
+
+                        Case "FieldAddrCountry"
+                            thisField = String.Format("{0} = {1}", .FieldName, GetFieldValue(address.CleanedAddress.Country))
+
+                        Case "FieldAddrZip5"
+                            thisField = String.Format("{0} = {1}", .FieldName, GetFieldValue(address.CleanedAddress.Zip5))
+
+                        Case "FieldAddrZip4"
+                            thisField = String.Format("{0} = {1}", .FieldName, GetFieldValue(address.CleanedAddress.Zip4))
+
+                        Case "FieldAddrProvince"
+                            thisField = String.Format("{0} = {1}", .FieldName, GetFieldValue(address.CleanedAddress.Province))
+
+                        Case "FieldAddrPostal"
+                            thisField = String.Format("{0} = {1}", .FieldName, GetFieldValue(address.CleanedAddress.Postal))
+
+                        Case "FieldAddrDel_Pt"
+                            thisField = String.Format("{0} = {1}", .FieldName, GetFieldValue(address.CleanedAddress.DeliveryPoint))
+
+                        Case "FieldAddrCarrier"
+                            thisField = String.Format("{0} = {1}", .FieldName, GetFieldValue(address.CleanedAddress.Carrier))
+
+                        Case "FieldAddrErrorCode"
+                            thisField = String.Format("{0} = {1}", .FieldName, GetFieldValue(address.CleanedAddress.AddressError))
+
+                        Case "FieldAddrStatusCode"
+                            thisField = String.Format("{0} = '{1}'", .FieldName, address.CleanedAddress.AddressStatus)
+
+                        Case "FieldAddrTimeZone"
+                            thisField = String.Format("{0} = {1}", .FieldName, GetFieldValue(address.GeoCode.TimeZoneName))
+
+                        Case "FieldAddrFipsState"
+                            Dim fieldVal As String = ExtractFIPSIntegerValue(address.GeoCode.CountyFIPS, 1, 2)
+                            thisField = String.Format("{0} = {1}", .FieldName, fieldVal)
+
+                        Case "FieldAddrFipsCounty"
+                            Dim fieldVal As String = ExtractFIPSIntegerValue(address.GeoCode.CountyFIPS, 3, 3)
+                            thisField = String.Format("{0} = {1}", .FieldName, fieldVal)
+
+                        Case "FieldAddrTitleName"
+                            thisField = String.Format("{0} = {1}", .FieldName, GetFieldValue(address.CleanedName.Title))
+
+                        Case "FieldAddrFName"
+                            thisField = String.Format("{0} = {1}", .FieldName, GetFieldValue(address.CleanedName.FirstName))
+
+                        Case "FieldAddrMName"
+                            thisField = String.Format("{0} = {1}", .FieldName, GetFieldValue(address.CleanedName.MiddleInitial))
+
+                        Case "FieldAddrLName"
+                            thisField = String.Format("{0} = {1}", .FieldName, GetFieldValue(address.CleanedName.LastName))
+
+                        Case "FieldAddrSuffixName"
+                            thisField = String.Format("{0} = {1}", .FieldName, GetFieldValue(address.CleanedName.Suffix))
+
+                        Case "FieldAddrNameStatus"
+                            thisField = String.Format("{0} = '{1}'", .FieldName, address.CleanedName.NameStatus)
+
+                    End Select
+
+                    'Add this field to the list
+                    If updateList.Length > 0 Then updateList &= ", "
+                    updateList &= thisField
+                End With
+            Next metaFld
+
+            Return updateList
+
+        End Get
+    End Property
+
     ''' <summary>
     ''' Takes the FIPS string, substrings the given range, checks if it can be parsed to as an Integer
     ''' If it isn't then it will return the "0" string
@@ -493,8 +585,8 @@ Public Class MetaGroup
 
     Friend Shared Function GetByStudyID(ByVal studyID As Integer) As MetaGroupCollection
 
-        Return MetaGroupProvider.SelectMetaGroupsByStudyID(studyID)
-
+        'Return MetaGroupProvider.SelectMetaGroupsByStudyID(studyID)
+        Return MetaGroupProvider.SelectMergedMetaGroupByStudyID(studyID)
     End Function
 
 #End Region

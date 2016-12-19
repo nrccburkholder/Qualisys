@@ -21,6 +21,7 @@ Public Class MetaGroupCollection
 
 #End Region
 
+
 #Region " Friend ReadOnly Properties "
 
     ''' <summary>
@@ -62,6 +63,21 @@ Public Class MetaGroupCollection
             Return cnt
         End Get
     End Property
+
+    Friend ReadOnly Property SelectFieldList() As String
+        Get
+            Dim fieldList As String = String.Empty
+            For Each metaGrp As MetaGroup In Me
+                'Loop through all of the meta fields in this collection
+                For Each metaFld As MetaField In metaGrp.MetaFields
+                    If fieldList.Length > 0 Then fieldList &= ", "
+                    fieldList &= String.Format("{0} AS {1}", metaFld.FieldName, metaFld.ParamName)
+                Next metaFld
+            Next metaGrp
+            Return fieldList
+        End Get
+    End Property
+
 
 #End Region
 
