@@ -1011,28 +1011,6 @@ Public Class AddressCollection
 
     End Function
 
-    ''' <summary>
-    ''' This routine adds the specified addresses geocode to the request object.
-    ''' </summary>
-    ''' <param name="cnt">Specifies which element of the request object to add this geocode to.</param>
-    ''' <param name="addr">The address to be added to the request object.</param>
-    ''' <param name="request">The request object that the geocode should be added to.</param>
-    ''' <remarks></remarks>
-    Private Sub AddGeoCoding(ByVal cnt As Integer, ByVal addr As Address, ByVal request As net.melissadata.geocoder.RequestArray)
-
-        'Initialize this geocode request record
-        request.Record(cnt - 1) = New net.melissadata.geocoder.RequestArrayRecord
-
-        'Populate the geocode request record
-        With request.Record(cnt - 1)
-            'Add the address DB key
-            .RecordID = addr.DBKey.ToString
-
-            'Add the AddressKey
-            .AddressKey = addr.CleanedAddress.AddressKey
-        End With
-
-    End Sub
 
     ''' <summary>
     ''' This routine checks the result string for an addresses geocode and determines whether or not an error was encountered.
@@ -1051,80 +1029,6 @@ Public Class AddressCollection
         Return False
 
     End Function
-
-    ''' <summary>
-    ''' This routine checks the result string for the web service call and determines whether or not an error was encountered.
-    ''' </summary>
-    ''' <param name="results">The result string for the web service call.</param>
-    ''' <param name="message">The error message to throw if an error was encountered.</param>
-    ''' <returns>Returns a boolean indicating whether or not an error was encountered.</returns>
-    ''' <remarks></remarks>
-    Private Function CheckForGeoCodingWebRequestErrors(ByVal results As String, ByRef message As String) As Boolean
-
-        If Not String.IsNullOrEmpty(results.Trim) Then
-            'Errors have been encountered so lets build the error message
-            message = String.Format("The GeoCoding web service returned the following error(s):{0}{1}{0}", vbCrLf, results)
-
-            'Loop through each returned result and add it to the message
-            For Each result As String In results.Split(","c)
-                Select Case result
-                    Case "SE01"
-                        message &= String.Format("{0}{1}: Web Service Internal Error;", vbCrLf, result)
-
-                    Case "GE01"
-                        message &= String.Format("{0}{1}: Empty XML Request Structure;", vbCrLf, result)
-
-                    Case "GE02"
-                        message &= String.Format("{0}{1}: Empty XML Request Record Structure;", vbCrLf, result)
-
-                    Case "GE03"
-                        message &= String.Format("{0}{1}: Counted records send more than number of records allowed per request;", vbCrLf, result)
-
-                    Case "GE04"
-                        message &= String.Format("{0}{1}: CustomerID empty;", vbCrLf, result)
-
-                    Case "GE05"
-                        message &= String.Format("{0}{1}: CustomerID not valid;", vbCrLf, result)
-
-                    Case "GE06"
-                        message &= String.Format("{0}{1}: CustomerID disabled;", vbCrLf, result)
-
-                    Case "GE07"
-                        message &= String.Format("{0}{1}: XML Request invalid;", vbCrLf, result)
-
-                End Select
-            Next result
-
-            Return True
-        Else
-            'No web request errors exist
-            Return False
-        End If
-
-    End Function
-
-    ''' <summary>
-    ''' This routine cleans up the result string to make sure it will fit in the database column.
-    ''' </summary>
-    ''' <param name="results">The result string to be cleaned up.</param>
-    ''' <returns>Returns a result string that will fit in the database column.</returns>
-    ''' <remarks></remarks>
-    Private Function GetGeoCodeStatus(ByVal results As String) As String
-
-        results = results.Trim
-        If Not String.IsNullOrEmpty(results) Then
-            If results.Length > 42 Then
-                Return results.Substring(0, 42)
-            Else
-                Return results
-            End If
-        Else
-            Return String.Empty
-        End If
-
-    End Function
-
-
 
     ''' <summary>
     ''' 
