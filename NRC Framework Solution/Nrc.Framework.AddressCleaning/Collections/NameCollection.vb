@@ -1,4 +1,9 @@
+Imports Newtonsoft.Json.Linq
+Imports Newtonsoft.Json
+Imports System.IO
 Imports System.Net
+Imports System.Data
+Imports System.Data.SqlClient
 Imports Nrc.Framework.BusinessLogic
 Imports Nrc.Framework.BusinessLogic.Configuration
 
@@ -81,20 +86,15 @@ Public Class NameCollection
         Dim nameCount As Integer = 0
         Dim nameUsed As Integer = 0
         Dim maxRecords As Integer = AppConfig.Params("NameWebServiceMaxRecords").IntegerValue
-        Dim nameCheckRequest As New net.melissadata.name.RequestArray
-        Dim nameCheckResponse As New net.melissadata.name.ResponseArray
-
-        'Initialize the SOAP request message
-        nameCheckRequest.CustomerID = AppConfig.Params("NameWebServiceCustomerID").StringValue
-        nameCheckRequest.OptCorrectSpelling = "True"
-        'CAMELINCKX Fixing bug that was introduced on first attempt to resolve INC40090 (forgot to default hint to 2)
-        nameCheckRequest.OptNameHint = "2"
 
         'CAMELINCKX INC40090 IU Health Incorrect Name Issue
         'For this incident here we will introduce logic that will based on a list of MelissaData prefixes
         'decide whether the OptNameHint should be 1 (instead of default of 2), where the values are:
         '1 - DefinitelyFull: Name will always be treated as normal name order, regardless of formatting or punctuation.
         '2 - Name will be treated as normal name order unless inverse order is clearly indicated by formatting or punctuation.
+
+        Dim personatorResponse As JObject
+        Dim transmissionResults As String
 
         Dim nameCleaningPrefixes As List(Of String) = New List(Of String)
 
@@ -113,8 +113,7 @@ Public Class NameCollection
         Next
 
         'Dimension the SOAP request message array for the first set of records
-        ReDim nameCheckRequest.Record(GetArraySize(Count, nameUsed, maxRecords) - 1)
-
+        Dim nameCleanRecords As New List(Of Object)
 
         'Clean all names in the collection
         For Each item As Name In Me
@@ -128,7 +127,7 @@ Public Class NameCollection
             End If
 
             'Add this name to the web service SOAP message
-            AddName(nameCount, item, nameCheckRequest, nameCleaningPrefixes)
+            AddName(nameCount, item, nameCleanRecords, nameCleaningPrefixes)
 
             'Determine if it is time to call the web service
             If nameCount = maxRecords OrElse nameUsed = Count Then
@@ -138,7 +137,8 @@ Public Class NameCollection
                 Logs.Info(String.Format("Begin nameCheckService.doNameCheck - DataFile_Id:{0}, AddrCount: {1}", dataFileId, nameCount))
 
                 Try
-                    nameCheckResponse = DoNameCheckWithRetries(nameCheckRequest, dataFileId, forceProxy)
+                    personatorResponse = DoNameCheckWithRetries(nameCleanRecords, dataFileId)
+                    transmissionResults = personatorResponse.Item("TransmissionResults").ToString()
                 Catch ex As Exception
                     Logs.LogException(ex, String.Format("ERROR nameCheckService.doNameCheck - DataFile_Id:{0}", dataFileId))
                     Throw ex
@@ -146,20 +146,19 @@ Public Class NameCollection
 
                 Logs.Info(String.Format("End nameCheckService.doNameCheck - DataFile_Id:{0}", dataFileId))
 
-
                 'Check to see if the web service returned any errors
                 Dim message As String = String.Empty
-                If CheckForWebRequestErrors(nameCheckResponse.Results, message) Then
+                If CheckForWebRequestErrors(transmissionResults, message) Then
                     'We have encountered a general error from the web service.
                     Throw New Exception(message)
                 End If
 
                 'Find and update the returned names
-                UpdateNames(nameCheckResponse, properCase)
+                UpdateNames(personatorResponse, properCase, dataFileId)
 
                 'Reset and prepare for next set of names to be added to the SOAP message
                 nameCount = 0
-                ReDim nameCheckRequest.Record(GetArraySize(Count, nameUsed, maxRecords) - 1)
+                nameCleanRecords.Clear()
             End If
         Next
 
@@ -188,53 +187,84 @@ Public Class NameCollection
 
     Private Const WEB_SERVICE_MAX_RETRIES As Integer = 3
 
-    Private Function DoNameCheckWithRetries(ByRef nameCheckRequest As net.melissadata.name.RequestArray, ByVal dataFileId As Integer, ByVal forceProxy As Boolean) As net.melissadata.name.ResponseArray
+    Private Function DoNameCheckWithRetries(ByRef nameCleanRecords As List(Of Object), ByVal dataFileId As Integer) As JObject
 
-        Dim nameCheckResponse As New net.melissadata.name.ResponseArray
+        Dim tryCount As Integer = 0
 
-        'Create the name cleaning web service connection
-        Using nameCheckService As New net.melissadata.name.Service
-            'Initialize the web service
-            nameCheckService.Url = AppConfig.Params("NameWebServiceURL").StringValue
+        Dim responseText As String = String.Empty
+            Dim jObj As JObject = Nothing
 
-            'Determine if we need to use a proxy
-            If forceProxy Then
-                nameCheckService.Proxy = New WebProxy(AppConfig.Params("WebServiceProxyServer").StringValue, AppConfig.Params("WebServiceProxyPort").IntegerValue)
-                nameCheckService.Proxy.Credentials = CredentialCache.DefaultCredentials
+        Do
+            tryCount += 1
+
+            If (tryCount > 1) Then
+                'Sleep for some seconds before retrying
+                Threading.Thread.Sleep(5 * 1000)
             End If
 
-            Dim tryCount As Integer = 0
-
-            Dim addrCheckResponse As net.melissadata.addresscheck.ResponseArray = Nothing
-
-            Do
-                tryCount += 1
+            Try
+                responseText = MelissaDataApiJsonCall(nameCleanRecords)
+                jObj = JObject.Parse(responseText)
 
                 If (tryCount > 1) Then
-                    'Sleep for some seconds before retrying
-                    Threading.Thread.Sleep(5 * 1000)
+                    Logs.Info(String.Format("SUCCESS DoNameCheckWithRetries - DataFile_Id:{0} Attempt:{1}", dataFileId, tryCount))
+                End If
+                Exit Do
+            Catch ex As Exception
+                Logs.LogException(ex, String.Format("ERROR DoNameCheckWithRetries - DataFile_Id:{0} Attempt:{1}", dataFileId, tryCount))
+                If (tryCount >= WEB_SERVICE_MAX_RETRIES) Then
+                    Throw
                 End If
 
-                Try
-                    nameCheckResponse = nameCheckService.doNameCheck(nameCheckRequest)
-                    If (tryCount > 1) Then
-                        Logs.Info(String.Format("SUCCESS DoNameCheckWithRetries - DataFile_Id:{0} Attempt:{1}", dataFileId, tryCount))
-                    End If
-                    Exit Do
-                Catch ex As Exception
-                    Logs.LogException(ex, String.Format("ERROR DoNameCheckWithRetries - DataFile_Id:{0} Attempt:{1}", dataFileId, tryCount))
-                    If (tryCount >= WEB_SERVICE_MAX_RETRIES) Then
-                        Throw
-                    End If
+            End Try
 
-                End Try
+        Loop While tryCount < WEB_SERVICE_MAX_RETRIES
 
-            Loop While tryCount < WEB_SERVICE_MAX_RETRIES
-
-            Return nameCheckResponse
-        End Using
+        Return jObj
 
     End Function
+
+
+    Friend Function MelissaDataApiJsonCall(ByRef addressCleanRecords As List(Of Object)) As String
+        Dim TransmissionReference As String = ""
+        'The Transmission Reference is a unique string value that identifies this particular request
+        Dim CustomerID As String = AppConfig.Params("AddressWebServiceCustomerID").StringValue
+        ' I think this was provided by BJ
+        Dim Actions As String = "Check"
+        'The Check action will validate the individual input data pieces for validity and correct them if possible. 
+        Dim Options As String = "AdvancedAddressCorrection:on"
+        'UsePreferredCity:on
+        Dim Columns As String = "GrpCensus,GrpGeocode,GrpAddressDetails,PrivateMailBox,GrpParsedAddress,Plus4"
+        'To use Geocode, you must have the geocode columns on: GrpCensus or GrpGeocode.
+        Dim NameHint As String = "2"
+
+        Dim httpWebRequest As HttpWebRequest = DirectCast(WebRequest.Create("https://personator.melissadata.net/v3/WEB/ContactVerify/doContactVerify"), HttpWebRequest)
+        httpWebRequest.ContentType = "text/json"
+        httpWebRequest.Method = "POST"
+
+        Dim serializer As Newtonsoft.Json.JsonSerializer = New Newtonsoft.Json.JsonSerializer()
+        Using sw As StreamWriter = New StreamWriter(httpWebRequest.GetRequestStream())
+            Using tw As Newtonsoft.Json.JsonTextWriter = New Newtonsoft.Json.JsonTextWriter(sw)
+                Dim requestData As Object = New With {
+                Key .TransmissionReference = TransmissionReference,
+                Key .CustomerID = CustomerID,
+                Key .Actions = Actions,
+                Key .Options = Options,
+                Key .Columns = Columns,
+                Key .NameHint = NameHint,
+                Key .Records = addressCleanRecords.ToArray()
+            }
+
+                serializer.Serialize(tw, requestData)
+            End Using
+        End Using
+        Dim httpResponse As HttpWebResponse = DirectCast(httpWebRequest.GetResponse(), HttpWebResponse)
+        Using streamReader As StreamReader = New StreamReader(httpResponse.GetResponseStream())
+            Dim responseText As String = streamReader.ReadToEnd()
+            Return responseText
+        End Using
+    End Function
+
     ''' <summary>
     ''' This routine determines the array size for the request object.
     ''' </summary>
@@ -260,49 +290,52 @@ Public Class NameCollection
     ''' <param name="item">The name to be added to the request object.</param>
     ''' <param name="request">The request object that the name should be added to.</param>
     ''' <remarks></remarks>
-    Private Sub AddName(ByVal cnt As Integer, ByVal item As Name, ByVal request As net.melissadata.name.RequestArray, ByRef nameCleaningPrefixes As List(Of String))
+    Private Sub AddName(ByVal cnt As Integer, ByVal item As Name, ByRef nameCleanRecords As List(Of Object), ByRef nameCleaningPrefixes As List(Of String))
 
-        'Initialize this address request record
-        request.Record(cnt - 1) = New net.melissadata.name.RequestArrayRecord
+        Dim RecordID As String = item.DBKey.ToString
 
-        'Populate the address request record
-        With request.Record(cnt - 1)
-            'Add the address key
-            .RecordID = item.DBKey.ToString
+        'Let's try to deal with nulls
+        Dim firstName As String = String.Empty
+        Dim middleName As String = String.Empty
+        Dim lastName As String = String.Empty
 
-            'Let's try to deal with nulls
-            Dim firstName As String = String.Empty
-            Dim middleName As String = String.Empty
-            Dim lastName As String = String.Empty
+        If String.IsNullOrEmpty(item.OriginalName.FirstName) Then
+            firstName = "XXXXX"
+        Else
+            firstName = item.OriginalName.FirstName
+        End If
 
-            If String.IsNullOrEmpty(item.OriginalName.FirstName) Then
-                firstName = "XXXXX"
-            Else
-                firstName = item.OriginalName.FirstName
-            End If
+        If String.IsNullOrEmpty(item.OriginalName.MiddleInitial) Then
+            middleName = String.Empty
+        Else
+            middleName = item.OriginalName.MiddleInitial
+        End If
 
-            If String.IsNullOrEmpty(item.OriginalName.MiddleInitial) Then
-                middleName = String.Empty
-            Else
-                middleName = item.OriginalName.MiddleInitial
-            End If
+        If String.IsNullOrEmpty(item.OriginalName.LastName) Then
+            lastName = "ZZZZZ"
+        Else
+            lastName = item.OriginalName.LastName
+        End If
 
-            If String.IsNullOrEmpty(item.OriginalName.LastName) Then
-                lastName = "ZZZZZ"
-            Else
-                lastName = item.OriginalName.LastName
-            End If
+        'Build the name string
+        Dim fullName As String = String.Format("{0} {1} {2} {3}", firstName, middleName, lastName, item.OriginalName.Suffix).Trim
 
-            'Build the name string
-            .FullName = String.Format("{0} {1} {2} {3}", firstName, middleName, lastName, item.OriginalName.Suffix).Trim
+        'If nameCleaningPrefixes.Contains(firstName.ToUpper()) _
+        '    Or (nameCleaningPrefixes.Contains(middleName.ToUpper())) _
+        '    Or (nameCleaningPrefixes.Contains(lastName.ToUpper())) Then
+        '    request.OptNameHint = "1"
+        'End If
 
-            If nameCleaningPrefixes.Contains(firstName.ToUpper()) _
-                Or (nameCleaningPrefixes.Contains(middleName.ToUpper())) _
-                Or (nameCleaningPrefixes.Contains(lastName.ToUpper())) Then
-                request.OptNameHint = "1"
-            End If
-        End With
+        Dim o As Object = New With {
+            Key .RecordID = RecordID,
+            Key .FirstName = firstName,
+            Key .MiddleName = middleName,
+            Key .LastName = lastName,
+            Key .Suffix = item.OriginalName.Suffix,
+            Key .FullName = fullName
+        }
 
+        nameCleanRecords.Add(o)
     End Sub
 
     ''' <summary>
@@ -311,24 +344,24 @@ Public Class NameCollection
     ''' <param name="responseArray">The response object containing the updated names.</param>
     ''' <param name="properCase">Specifies if proper case formatting should be applied.</param>
     ''' <remarks></remarks>
-    Private Sub UpdateNames(ByVal responseArray As net.melissadata.name.ResponseArray, ByVal properCase As Boolean)
-
-        Dim cnt As Integer
+    Private Sub UpdateNames(ByVal personatorResponse As JObject, ByVal properCase As Boolean, ByVal datafileId As Integer)
 
         'Loop through all of the returned names and update them
-        For cnt = 0 To CInt(responseArray.TotalRecords) - 1
-            With responseArray.Record(cnt)
-                'Find the name to be updated
-                Dim item As Name = FindName(CInt(.RecordID))
+        For i As Integer = 0 To CInt(personatorResponse.Item("TotalRecords")) - 1
 
-                'Check to see that the name was found
-                If item Is Nothing Then
-                    Throw New Exception(String.Format("The Name Cleaning web service returned the following RecordID that could not be found in our collection: {0}", .RecordID))
-                End If
+            Dim cleanRecord As JToken = personatorResponse.Item("Records").Item(i)
+            Dim recordID As Integer = CInt(cleanRecord("RecordID"))
 
-                'If we are here then we need to update the name
-                UpdateName(item, .Name, .Results, properCase)
-            End With
+            'Find the name to be updated
+            Dim item As Name = FindName(recordID)
+
+            'Check to see that the name was found
+            If item Is Nothing Then
+                Throw New Exception(String.Format("The Name Cleaning web service returned the following RecordID that could not be found in our collection: {0}", recordID))
+            End If
+
+            'If we are here then we need to update the name
+            UpdateName(item, cleanRecord, properCase, datafileId)
         Next
 
     End Sub
@@ -360,7 +393,7 @@ Public Class NameCollection
     ''' <param name="response">The response object containing the cleaned name.</param>
     ''' <param name="results">The result string for this name.</param>
     ''' <remarks></remarks>
-    Private Sub UpdateName(ByVal item As Name, ByVal response As net.melissadata.name.ResponseArrayRecordName, ByVal results As String, ByVal properCase As Boolean)
+    Private Sub UpdateName(ByVal item As Name, ByRef response As JToken, ByVal properCase As Boolean, ByVal datafileId As Integer)
 
         Dim stringConv As Microsoft.VisualBasic.VbStrConv
         If mCountryID = CountryIDs.Canada OrElse Not properCase Then
@@ -372,11 +405,11 @@ Public Class NameCollection
         With item.WorkingName
             'Save the new name
             .Title = String.Empty
-            .FirstName = CleanString(response.First, True, False)
-            .MiddleInitial = CleanString(response.Middle, True, False)
-            .LastName = CleanString(response.Last, True, False)
-            .Suffix = CleanString(response.Suffix, True, False)
-            .NameStatus = GetNameStatus(results)
+            .FirstName = CleanString(response("FirstName").ToString(), True, False)
+            .MiddleInitial = CleanString(response("MiddleName").ToString(), True, False)
+            .LastName = CleanString(response("LastName").ToString(), True, False)
+            .Suffix = CleanString(response("Suffix").ToString(), True, False)
+            .NameStatus = GetNameStatus(GetResultCodes(response("Results").ToString, "A"))
 
             'Check for error conditions
             Dim numString As String = "0123456789"
@@ -412,7 +445,7 @@ Public Class NameCollection
             End If
         End With
 
-        If CheckForNameErrors(results) Then
+        If CheckForNameErrors(GetResultCodes(response("Results").ToString, "A")) Then
             'Name errors were detected so set to original with working status
             item.SetCleanedTo(item.OriginalName, item.WorkingName.NameStatus)
         ElseIf Not item.WorkingName.NameStatus.StartsWith("ERR") Then
@@ -532,6 +565,22 @@ Public Class NameCollection
 
     End Function
 
+    Private Function GetResultCodes(cleanResultCode As String, code As String) As String
+        Dim s As String = String.Empty
+        For Each result As String In cleanResultCode.Split(","c)
+            Dim c As String = result.Substring(0, 1)
+            If result.StartsWith(code) Then
+                s = s & result & ","
+            End If
+        Next
+
+        If s.Length > 0 Then
+            Return s.Substring(0, s.Length - 1)
+        Else
+            Return String.Empty
+        End If
+
+    End Function
 #End Region
 
 End Class

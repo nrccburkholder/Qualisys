@@ -1003,7 +1003,6 @@ Public Class AddressCollection
 
     End Function
 
-
     ''' <summary>
     ''' 
     ''' </summary>
