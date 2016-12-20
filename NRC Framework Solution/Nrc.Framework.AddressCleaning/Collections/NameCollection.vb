@@ -232,9 +232,9 @@ Public Class NameCollection
         ' I think this was provided by BJ
         Dim Actions As String = "Check"
         'The Check action will validate the individual input data pieces for validity and correct them if possible. 
-        Dim Options As String = "AdvancedAddressCorrection:on"
+        Dim Options As String = "NameHint:MixedLastName"
         'UsePreferredCity:on
-        Dim Columns As String = "GrpCensus,GrpGeocode,GrpAddressDetails,PrivateMailBox,GrpParsedAddress,Plus4"
+        Dim Columns As String = "GrpNameDetails"
         'To use Geocode, you must have the geocode columns on: GrpCensus or GrpGeocode.
         Dim NameHint As String = "2"
 
@@ -405,11 +405,11 @@ Public Class NameCollection
         With item.WorkingName
             'Save the new name
             .Title = String.Empty
-            .FirstName = CleanString(response("FirstName").ToString(), True, False)
-            .MiddleInitial = CleanString(response("MiddleName").ToString(), True, False)
-            .LastName = CleanString(response("LastName").ToString(), True, False)
-            .Suffix = CleanString(response("Suffix").ToString(), True, False)
-            .NameStatus = GetNameStatus(GetResultCodes(response("Results").ToString, "A"))
+            .FirstName = CleanString(response("NameFirst").ToString(), True, False)
+            .MiddleInitial = CleanString(response("NameMiddle").ToString(), True, False)
+            .LastName = CleanString(response("NameLast").ToString(), True, False)
+            .Suffix = CleanString(response("NameSuffix").ToString(), True, False)
+            .NameStatus = GetNameStatus(GetResultCodes(response("Results").ToString, "N"))
 
             'Check for error conditions
             Dim numString As String = "0123456789"
@@ -445,7 +445,7 @@ Public Class NameCollection
             End If
         End With
 
-        If CheckForNameErrors(GetResultCodes(response("Results").ToString, "A")) Then
+        If CheckForNameErrors(GetResultCodes(response("Results").ToString, "N")) Then
             'Name errors were detected so set to original with working status
             item.SetCleanedTo(item.OriginalName, item.WorkingName.NameStatus)
         ElseIf Not item.WorkingName.NameStatus.StartsWith("ERR") Then
