@@ -183,7 +183,11 @@ Public Class MainForm
         clean.Addresses.Add(item)
 
         'Clean the address
-        clean.Addresses.Clean(ForceProxyCheckBox.Checked, PopulateGeoCodingCheckBox.Checked, CInt(FileIDTextBox.Text))
+        If String.IsNullOrEmpty(FileIDTextBox.Text) Then
+            clean.Addresses.Clean(ForceProxyCheckBox.Checked)
+        Else
+            clean.Addresses.Clean(ForceProxyCheckBox.Checked, PopulateGeoCodingCheckBox.Checked, CInt(FileIDTextBox.Text))
+        End If
 
         'Load the working address
         With item.WorkingAddress

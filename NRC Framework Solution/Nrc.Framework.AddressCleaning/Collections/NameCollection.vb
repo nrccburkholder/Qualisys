@@ -232,7 +232,7 @@ Public Class NameCollection
         ' I think this was provided by BJ
         Dim Actions As String = "Check"
         'The Check action will validate the individual input data pieces for validity and correct them if possible. 
-        Dim Options As String = "NameHint:MixedLastName"
+        Dim Options As String = ""
         'UsePreferredCity:on
         Dim Columns As String = "GrpNameDetails"
         'To use Geocode, you must have the geocode columns on: GrpCensus or GrpGeocode.
@@ -318,7 +318,7 @@ Public Class NameCollection
         End If
 
         'Build the name string
-        Dim fullName As String = String.Format("{0} {1} {2} {3}", firstName, middleName, lastName, item.OriginalName.Suffix).Trim
+        Dim fullName As String = String.Format("{0} {1} {2} {3} {4}", item.OriginalName.Title, firstName, middleName, lastName, item.OriginalName.Suffix).Trim
 
         'If nameCleaningPrefixes.Contains(firstName.ToUpper()) _
         '    Or (nameCleaningPrefixes.Contains(middleName.ToUpper())) _
@@ -328,12 +328,12 @@ Public Class NameCollection
 
         Dim o As Object = New With {
             Key .RecordID = RecordID,
-            Key .FirstName = firstName,
-            Key .MiddleName = middleName,
-            Key .LastName = lastName,
-            Key .Suffix = item.OriginalName.Suffix,
             Key .FullName = fullName
         }
+        'Key .LastName = lastName,
+        'Key.FirstName = firstName,
+        'Key.MiddleName = middleName,
+        'Key.Suffix = item.OriginalName.Suffix,
 
         nameCleanRecords.Add(o)
     End Sub
