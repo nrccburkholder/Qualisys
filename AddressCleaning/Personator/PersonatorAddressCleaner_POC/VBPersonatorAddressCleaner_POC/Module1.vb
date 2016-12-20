@@ -10,8 +10,8 @@ Module Module1
 
     Public Sub Main()
         Dim environment As String = "STAGE"
-        Dim dataFile_id As Integer = 475774
-        Dim study_id As Integer = 5575
+        Dim dataFile_id As Integer = 481008
+        Dim study_id As Integer = 4602
         Dim batchSize As Integer = 100
         Dim totalBatches As Integer = 59
 
@@ -74,17 +74,21 @@ Module Module1
 
 
     Public Function MelissaDataApiJsonCall(environment As String, DataFile_id As Integer, Study_id As Integer, batchIdx As Integer, batchSize As Integer) As String
+
+
         Dim TransmissionReference As String = ""
         'The Transmission Reference is a unique string value that identifies this particular request
         Dim CustomerID As String = "99869570"
         ' I think this was provided by BJ
         Dim Actions As String = "Check"
         'The Check action will validate the individual input data pieces for validity and correct them if possible. 
-        Dim Options As String = "AdvancedAddressCorrection:on"
+        Dim Options As String
+
+        Options = "AdvancedAddressCorrection:on; NameHint:DefinitelyFull"
+
         'UsePreferredCity:on
         Dim Columns As String = "GrpCensus,GrpGeocode, GrpNameDetails"
         'To use Geocode, you must have the geocode columns on: GrpCensus or GrpGeocode.
-        Dim NameHint As String = "2"
 
         Dim httpWebRequest = DirectCast(WebRequest.Create("https://personator.melissadata.net/v3/WEB/ContactVerify/doContactVerify"), HttpWebRequest)
         httpWebRequest.ContentType = "text/json"
@@ -99,7 +103,6 @@ Module Module1
                 Key .Actions = Actions,
                 Key .Options = Options,
                 Key .Columns = Columns,
-                Key .NameHint = NameHint,
                 Key .Records = BuildAddressRecords(environment, DataFile_id, Study_id, batchIdx, batchSize)
             }
 
@@ -129,12 +132,14 @@ Module Module1
             Dim CompanyName As String = ""
             Dim FullName As String
             Dim Middle As String = e("Middle").ToString().Trim()
-
+            Dim FirstName As String = e("FName").ToString().Trim()
+            Dim LastName As String = e("LName").ToString().Trim()
+            Dim Prefix As String = String.Empty
             If CLEAN_NAME Then
                 If String.IsNullOrWhiteSpace(Middle) Then
-                    FullName = String.Concat(e("FName"), " ", e("LName"))
+                    FullName = String.Concat(FirstName, " ", LastName)
                 Else
-                    FullName = String.Concat(e("FName"), " ", Middle, " ", e("LName"))
+                    FullName = String.Concat(FirstName, " ", Middle, " ", LastName)
                 End If
             Else
                 FullName = ""
@@ -155,7 +160,7 @@ Module Module1
             Dim EmailAddress As String = ""
             Dim FreeForm As String = ""
 
-            'AddressLine2,
+
             Dim o = New With {
             Key .RecordID = RecordID,
             Key .CompanyName = CompanyName,
