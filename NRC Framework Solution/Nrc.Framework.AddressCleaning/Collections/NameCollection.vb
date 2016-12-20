@@ -87,6 +87,7 @@ Public Class NameCollection
         Dim nameUsed As Integer = 0
         Dim maxRecords As Integer = AppConfig.Params("NameWebServiceMaxRecords").IntegerValue
 
+        'CBURKHOLDER 12/20/2016 Determined that we will always use DefinitelyFull starting now with Personator
         'CAMELINCKX INC40090 IU Health Incorrect Name Issue
         'For this incident here we will introduce logic that will based on a list of MelissaData prefixes
         'decide whether the OptNameHint should be 1 (instead of default of 2), where the values are:
@@ -96,21 +97,21 @@ Public Class NameCollection
         Dim personatorResponse As JObject
         Dim transmissionResults As String
 
-        Dim nameCleaningPrefixes As List(Of String) = New List(Of String)
+        'Dim nameCleaningPrefixes As List(Of String) = New List(Of String)
 
-        For numNameCleaningPrefixParam As Integer = 1 To 100
-            Try
-                Dim prefixsLine As String
-                Dim paramVal As Param = AppConfig.Params("NameCleaningPrefix" + numNameCleaningPrefixParam.ToString())
-                If paramVal Is Nothing Then Exit For
-                prefixsLine = paramVal.StringValue
-                For Each prefix As String In prefixsLine.Split(";".ToCharArray())
-                    nameCleaningPrefixes.Add(prefix)
-                Next
-            Catch ex As Exception
-                Exit For
-            End Try
-        Next
+        'For numNameCleaningPrefixParam As Integer = 1 To 100
+        '    Try
+        '        Dim prefixsLine As String
+        '        Dim paramVal As Param = AppConfig.Params("NameCleaningPrefix" + numNameCleaningPrefixParam.ToString())
+        '        If paramVal Is Nothing Then Exit For
+        '        prefixsLine = paramVal.StringValue
+        '        For Each prefix As String In prefixsLine.Split(";".ToCharArray())
+        '            nameCleaningPrefixes.Add(prefix)
+        '        Next
+        '    Catch ex As Exception
+        '        Exit For
+        '    End Try
+        'Next
 
         'Dimension the SOAP request message array for the first set of records
         Dim nameCleanRecords As New List(Of Object)
@@ -127,7 +128,7 @@ Public Class NameCollection
             End If
 
             'Add this name to the web service SOAP message
-            AddName(nameCount, item, nameCleanRecords, nameCleaningPrefixes)
+            AddName(nameCount, item, nameCleanRecords)
 
             'Determine if it is time to call the web service
             If nameCount = maxRecords OrElse nameUsed = Count Then
@@ -232,7 +233,7 @@ Public Class NameCollection
         ' I think this was provided by BJ
         Dim Actions As String = "Check"
         'The Check action will validate the individual input data pieces for validity and correct them if possible. 
-        Dim Options As String = ""
+        Dim Options As String = "NameHint:DefinitelyFull"
         'UsePreferredCity:on
         Dim Columns As String = "GrpNameDetails"
         'To use Geocode, you must have the geocode columns on: GrpCensus or GrpGeocode.
@@ -290,7 +291,7 @@ Public Class NameCollection
     ''' <param name="item">The name to be added to the request object.</param>
     ''' <param name="request">The request object that the name should be added to.</param>
     ''' <remarks></remarks>
-    Private Sub AddName(ByVal cnt As Integer, ByVal item As Name, ByRef nameCleanRecords As List(Of Object), ByRef nameCleaningPrefixes As List(Of String))
+    Private Sub AddName(ByVal cnt As Integer, ByVal item As Name, ByRef nameCleanRecords As List(Of Object))
 
         Dim RecordID As String = item.DBKey.ToString
 
