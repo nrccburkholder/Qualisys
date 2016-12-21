@@ -13,7 +13,7 @@ CREATE TABLE [CIHI].[Submission] (
 	CPESVersionCD varchar(20) DEFAULT 'CPES-IC_1.0',
 	CPESManualVersionCD varchar(20) DEFAULT 'CPES-IC_PM_V1.0',
 	SubmissionSubject char(3),
-	SubmissionTypeCD char(2),
+	SubmissionTypeCD char(3),
 	PurposeCD char(1),
 	EncounterDateStart datetime,
 	EncounterDateEnd datetime,
