@@ -8,6 +8,7 @@ Public Class Cleaner
     Private mLoadDB As LoadDatabases
     Private mNames As NameCollection
     Private mAddresses As AddressCollection
+    Private mAddressNames As AddressNameCollection
 
     Private Const mkMinCleanBatchSize As Integer = 1000
 
@@ -24,6 +25,12 @@ Public Class Cleaner
     Public ReadOnly Property Names() As NameCollection
         Get
             Return mNames
+        End Get
+    End Property
+
+    Public ReadOnly Property AddressNames() As AddressNameCollection
+        Get
+            Return mAddressNames
         End Get
     End Property
 
@@ -50,6 +57,9 @@ Public Class Cleaner
 
         'Create the addresses collection
         mAddresses = New AddressCollection(countryID)
+
+        'Create the addresses collection
+        mAddressNames = New AddressNameCollection(countryID)
 
     End Sub
 
@@ -135,11 +145,39 @@ Public Class Cleaner
             batchSize = mkMinCleanBatchSize
         End If
 
-        'Clean selected names
-        mNames.CleanAll(dataFileID, studyID, batchSize, metaGroups, mLoadDB, forceProxy)
+        ''Clean selected names
+        'mNames.CleanAll(dataFileID, studyID, batchSize, metaGroups, mLoadDB, forceProxy)
 
         'Clean selected addresses
         mAddresses.CleanAll(dataFileID, studyID, batchSize, metaGroups, mLoadDB, forceProxy)
+
+        'Get the counts
+        MetaGroup.GetCounts(dataFileID, studyID, metaGroups, mLoadDB)
+
+        'Set the return value and cleanup the lookup data
+        Return metaGroups
+
+    End Function
+
+    Public Function PersonatorCleanAll(ByVal dataFileID As Integer, ByVal studyID As Integer, ByVal batchSize As Integer) As MetaGroupCollection
+
+        Dim metaGroups As MetaGroupCollection = MetaGroup.GetByStudyID(studyID)
+
+        'Setup the groups
+        For Each metaGrp As MetaGroup In metaGroups
+            metaGrp.Selected = True
+        Next metaGrp
+
+        'Get the processing batch size
+        If batchSize < mkMinCleanBatchSize Then
+            batchSize = mkMinCleanBatchSize
+        End If
+
+        ''Clean selected names
+        'mNames.CleanAll(dataFileID, studyID, batchSize, metaGroups, mLoadDB, False)
+
+        'Clean selected addresses
+        mAddressNames.CleanAll(dataFileID, studyID, batchSize, metaGroups, mLoadDB)
 
         'Get the counts
         MetaGroup.GetCounts(dataFileID, studyID, metaGroups, mLoadDB)

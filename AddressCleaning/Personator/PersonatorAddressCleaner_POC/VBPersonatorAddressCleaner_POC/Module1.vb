@@ -1,4 +1,5 @@
-﻿Imports Newtonsoft.Json.Linq
+﻿Imports System.TimeZoneInfo
+Imports Newtonsoft.Json.Linq
 Imports Newtonsoft.Json
 Imports System.IO
 Imports System.Net
@@ -87,7 +88,7 @@ Module Module1
         Options = "AdvancedAddressCorrection:on; NameHint:DefinitelyFull"
 
         'UsePreferredCity:on
-        Dim Columns As String = "GrpCensus,GrpGeocode, GrpNameDetails"
+        Dim Columns As String = "GrpCensus,GrpGeocode, GrpNameDetails,GrpAddressDetails,PrivateMailBox,GrpParsedAddress,Plus4"
         'To use Geocode, you must have the geocode columns on: GrpCensus or GrpGeocode.
 
         Dim httpWebRequest = DirectCast(WebRequest.Create("https://personator.melissadata.net/v3/WEB/ContactVerify/doContactVerify"), HttpWebRequest)
@@ -97,7 +98,7 @@ Module Module1
         Dim serializer = New Newtonsoft.Json.JsonSerializer()
         Using sw = New StreamWriter(httpWebRequest.GetRequestStream())
             Using tw = New Newtonsoft.Json.JsonTextWriter(sw)
-                Dim requestData = New With {
+                Dim requestData As Object = New With {
                 Key .TransmissionReference = TransmissionReference,
                 Key .CustomerID = CustomerID,
                 Key .Actions = Actions,
@@ -236,21 +237,35 @@ Module Module1
         Dim countNameMatch As Integer = 0
         Dim countNameMismatch As Integer = 0
 
+        Dim totalRecords As String = personatorResponse.Item("TotalRecords").ToString()
+        Dim transmissionResults As String = personatorResponse.Item("TransmissionResults").ToString()
+
         For i As Integer = 0 To pops.Rows.Count - 1
 
-            Dim cleanRecord = personatorResponse.Item("Records").Item(i)
+            Dim cleanRecord As JToken = personatorResponse.Item("Records").Item(i)
             Dim pop As DataRow = pops.Rows(i)
 
             Dim cleanAddr1 As String = cleanRecord("AddressLine1").ToString().Trim().ToUpper()
             Dim cleanAddr2 As String = cleanRecord("AddressLine2").ToString().Trim().ToUpper()
             Dim cleanAddr As String = cleanAddr1 & (If(String.IsNullOrWhiteSpace(cleanAddr2), "", (" " & cleanAddr2)))
 
+            Dim suiteInfo As String = String.Format("{0} {1}", cleanRecord("AddressSuiteName").ToString(), cleanRecord("AddressSuiteNumber").ToString()).Trim
+
+            If suiteInfo.Length > 0 Then
+                Console.WriteLine(suiteInfo)
+            End If
+
             Dim cleanFname As String = cleanRecord("NameFirst").ToString().Trim().ToUpper()
             Dim cleanLname As String = cleanRecord("NameLast").ToString().Trim().ToUpper()
             Dim cleanFullName As String = cleanRecord("NameFull").ToString().Trim().ToUpper()
             Dim cleanFullName2 As String = cleanFname & (If(String.IsNullOrWhiteSpace(cleanLname), "", (" " & cleanLname)))
 
-            Dim cleanResultCode As String = cleanRecord("Results")
+            Dim utc As String = cleanRecord("UTC").ToString
+            Dim tspan As TimeSpan = TimeSpan.Parse(utc)
+
+            Dim cleanResultCode As String = cleanRecord("Results").ToString
+
+
 
             Dim popAddr1 As String = pop("Addr").ToString()
             Dim popAddr2 As String = pop("Addr2").ToString()
@@ -266,6 +281,8 @@ Module Module1
 
             Dim addressResultsCode As String = GetResultCodes(cleanResultCode, "A")
             Dim nameResultsCode As String = GetResultCodes(cleanResultCode, "N")
+
+
 
             Console.WriteLine()
             If cleanAddr = popAddr AndAlso addressResultsCode.Contains(popResultCode) Then
