@@ -137,7 +137,7 @@ Public Class Cleaner
         End If
 
         ''Clean selected names
-        'mNames.CleanAll(dataFileID, studyID, batchSize, metaGroups, mLoadDB, forceProxy)
+        mNames.CleanAll(dataFileID, studyID, batchSize, metaGroups, mLoadDB, forceProxy)
 
         'Clean selected addresses
         mAddresses.CleanAll(dataFileID, studyID, batchSize, metaGroups, mLoadDB, forceProxy)
