@@ -67,7 +67,7 @@ CREATE TABLE CIHI.Final_QuestionnaireCycle (
 	submissionID int,
 	[questionnaireCycle.id.value] varchar(15),
 	[questionnaireCycle.healthCareFacility.id.value] varchar(10),
-	[questionnaireCycle.submissionType_code] varchar(2),
+	[questionnaireCycle.submissionType_code] varchar(3),
 	[questionnaireCycle.submissionType_codeSystem] varchar(50),
 	[questionnaireCycle.proceduresManualVersion_code] varchar(15),
 	[questionnaireCycle.proceduresManualVersion_codeSystem] varchar(50),

@@ -224,3 +224,13 @@ join (	select Final_QuestionnaireID,[questionnaireCycle.questionnaire.questions.
 where fq.submissionid=@submissionID
 and fq.[questionnaireCycle.questionnaire.questions.question.code_code] between 'Q24' and 'Q29' 
 and fq.[questionnaireCycle.questionnaire.questions.question.answer_code]='UNK'
+
+-- if there is no Q47 (qstncore = 51423), we should add a record for it and populate it with ‘N’.
+insert into cihi.Final_Question ([SubmissionID], [Final_QuestionnaireID], [questionnaireCycle.questionnaire.questions.question.code_code], [questionnaireCycle.questionnaire.questions.question.code_codeSystem], [questionnaireCycle.questionnaire.questions.question.answer_code], [questionnaireCycle.questionnaire.questions.question.answer_codeSystem])
+select fqn.submissionID, fqn.Final_QuestionnaireID, rq.CIHIValue, rq.CodeSystem, ra.cihiValue, ra.CodeSystem
+from cihi.Final_Questionnaire fqn
+left join cihi.final_question fq on fqn.final_questionnaireID=fq.final_questionnaireID and [questionnaireCycle.questionnaire.questions.question.code_code]='Q47' and fqn.submissionID=fq.submissionID
+join cihi.recode rq on rq.CIHIValue='Q47'
+join cihi.recode ra on rq.qstncore=ra.qstncore and ra.cihiValue='N'
+where fqn.submissionid=@submissionID
+and fq.Final_QuestionnaireID is null
