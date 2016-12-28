@@ -107,6 +107,7 @@ Public NotInheritable Class SP
     Public Const RegenerateMailing As String = "QCL_ReGenerateMailing"
     Public Const ScheduleNextMailSteps As String = "QCL_SetNextGeneration"
     Public Const TakeOffCallList As String = "QCL_TakeOffCallList"
+    Public Const LogDispositionByLitho As String = "QCL_LogDispositionByLitho"
     Public Const UnassignFacilityFromClient As String = "QCL_UnassignFacilityFromClient"
 
     'Added 2014.07.18 All Cahps Teams - Sprint 4, User story 6 
