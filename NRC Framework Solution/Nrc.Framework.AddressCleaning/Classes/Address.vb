@@ -4,7 +4,7 @@ Imports NRC.Framework.BusinessLogic
 Public Class Address
     Inherits BusinessBase(Of Address)
 
-#Region " Private Members "
+#Region "Private Properties"
 
     Private mInstanceGuid As Guid = Guid.NewGuid
     Private mDBKey As Integer
@@ -12,6 +12,22 @@ Public Class Address
     Private mCleanedAddress As New AddressSub
     Private mWorkingAddress As New AddressSub
     Private mGeoCode As GeoCode = GeoCode.NewGeoCode
+
+    Private mOriginalName As New NameSub
+    Private mCleanedName As New NameSub
+    Private mWorkingName As New NameSub
+
+    Private mTitle As String = String.Empty
+    Private mFirstName As String = String.Empty
+    Private mMiddleInitial As String = String.Empty
+    Private mLastName As String = String.Empty
+    Private mSuffix As String = String.Empty
+    Private mNewTitle As String = String.Empty
+    Private mNewFirstName As String = String.Empty
+    Private mNewMiddleInitial As String = String.Empty
+    Private mNewLastName As String = String.Empty
+    Private mNewSuffix As String = String.Empty
+    Private mNameStatus As String = String.Empty
 
 #End Region
 
@@ -38,6 +54,24 @@ Public Class Address
     Public ReadOnly Property GeoCode() As GeoCode
         Get
             Return mGeoCode
+        End Get
+    End Property
+
+    Public ReadOnly Property OriginalName() As NameSub
+        Get
+            Return mOriginalName
+        End Get
+    End Property
+
+    Public ReadOnly Property CleanedName() As NameSub
+        Get
+            Return mCleanedName
+        End Get
+    End Property
+
+    Public ReadOnly Property WorkingName() As NameSub
+        Get
+            Return mWorkingName
         End Get
     End Property
 
@@ -118,9 +152,9 @@ Public Class Address
 
 #Region " Friend Methods "
 
-    Friend Sub SetCleanedTo(ByVal setToAddr As AddressSub, ByVal addrErr As String)
+    Friend Sub SetAddressCleanedTo(ByVal setToAddr As AddressSub, ByVal addrErr As String)
 
-        SetCleanedTo(setToAddr)
+        SetAddressCleanedTo(setToAddr)
 
         With mCleanedAddress
             .AddressKey = mWorkingAddress.AddressKey
@@ -130,7 +164,15 @@ Public Class Address
 
     End Sub
 
-    Friend Sub SetCleanedTo(ByVal setToAddr As AddressSub)
+    Friend Sub SetNameCleanedTo(ByVal setToName As NameSub, ByVal nameStat As String)
+
+        SetNameCleanedTo(setToName)
+
+        mCleanedName.NameStatus = nameStat
+
+    End Sub
+
+    Friend Sub SetAddressCleanedTo(ByVal setToAddr As AddressSub)
 
         With mCleanedAddress
             .StreetLine1 = CleanString(setToAddr.StreetLine1, True, True).ToUpper
@@ -151,6 +193,21 @@ Public Class Address
             .AddressKey = setToAddr.AddressKey
             .AddressStatus = setToAddr.AddressStatus
             .AddressError = setToAddr.AddressError
+        End With
+
+
+
+    End Sub
+
+    Friend Sub SetNameCleanedTo(ByVal setToName As NameSub)
+
+        With mCleanedName
+            .Title = CleanString(setToName.Title, True, True)
+            .FirstName = CleanString(setToName.FirstName, True, True)
+            .MiddleInitial = CleanString(setToName.MiddleInitial, True, True)
+            .LastName = CleanString(setToName.LastName, True, True)
+            .Suffix = CleanString(setToName.Suffix, True, True)
+            .NameStatus = setToName.NameStatus
         End With
 
     End Sub

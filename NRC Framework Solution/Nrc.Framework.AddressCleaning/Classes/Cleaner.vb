@@ -6,7 +6,6 @@ Public Class Cleaner
 
     Private mCountryID As CountryIDs
     Private mLoadDB As LoadDatabases
-    Private mNames As NameCollection
     Private mAddresses As AddressCollection
 
     Private Const mkMinCleanBatchSize As Integer = 1000
@@ -18,12 +17,6 @@ Public Class Cleaner
     Public ReadOnly Property Addresses() As AddressCollection
         Get
             Return mAddresses
-        End Get
-    End Property
-
-    Public ReadOnly Property Names() As NameCollection
-        Get
-            Return mNames
         End Get
     End Property
 
@@ -46,11 +39,9 @@ Public Class Cleaner
         mCountryID = countryID
         mLoadDB = loadDB
 
-        'Create the names collection
-        mNames = New NameCollection(countryID)
-
         'Create the addresses collection
         mAddresses = New AddressCollection(countryID)
+
 
     End Sub
 
@@ -61,7 +52,6 @@ Public Class Cleaner
     Protected Overrides Sub Finalize()
 
         'Cleanup the collections
-        mNames = Nothing
         mAddresses = Nothing
 
         'Call the base clase
@@ -84,16 +74,16 @@ Public Class Cleaner
     ''' <returns>Returns a reference to the MetaGroups collection so the calling 
     ''' application can obtain the current statistics for this run.</returns>
     ''' <remarks></remarks>
-    Public Function GetInitialCounts(ByVal dataFileID As Integer, ByVal studyID As Integer) As MetaGroupCollection
+    Public Function GetInitialCounts(ByVal dataFileID As Integer, ByVal studyID As Integer) As AddressMetadata
 
         'Populate the lookup data
-        Dim metaGroups As MetaGroupCollection = MetaGroup.GetByStudyID(studyID)
+        Dim metaData As AddressMetadata = AddressMetadata.GetByStudyID(studyID)
 
         'Get the counts
-        MetaGroup.GetCounts(dataFileID, studyID, metaGroups, mLoadDB)
+        AddressMetadata.GetCounts(dataFileID, studyID, metaData, mLoadDB)
 
         'Set the return value and cleanup the lookup data
-        Return metaGroups
+        Return metaData
 
     End Function
 
@@ -106,9 +96,9 @@ Public Class Cleaner
     ''' <returns>Returns a reference to the MetaGroups collection so the calling 
     ''' application can obtain the current statistics for this run.</returns>
     ''' <remarks></remarks>
-    Public Function CleanAll(ByVal dataFileID As Integer, ByVal studyID As Integer, ByVal forceProxy As Boolean) As MetaGroupCollection
+    Public Function CleanAll(ByVal dataFileID As Integer, ByVal studyID As Integer) As AddressMetadata
 
-        Return CleanAll(dataFileID, studyID, mkMinCleanBatchSize, forceProxy)
+        Return CleanAll(dataFileID, studyID, mkMinCleanBatchSize)
 
     End Function
 
@@ -122,31 +112,23 @@ Public Class Cleaner
     ''' <returns>Returns a reference to the MetaGroups collection so the calling 
     ''' application can obtain the current statistics for this run.</returns>
     ''' <remarks></remarks>
-    Public Function CleanAll(ByVal dataFileID As Integer, ByVal studyID As Integer, ByVal batchSize As Integer, ByVal forceProxy As Boolean) As MetaGroupCollection
+    Public Function CleanAll(ByVal dataFileID As Integer, ByVal studyID As Integer, ByVal batchSize As Integer) As AddressMetadata
 
-        Dim metaGroups As MetaGroupCollection = MetaGroup.GetByStudyID(studyID)
-
-        'Setup the groups
-        For Each metaGrp As MetaGroup In metaGroups
-            metaGrp.Selected = True
-        Next metaGrp
+        Dim metaData As AddressMetadata = AddressMetadata.GetByStudyID(studyID)
 
         'Get the processing batch size
         If batchSize < mkMinCleanBatchSize Then
             batchSize = mkMinCleanBatchSize
         End If
 
-        ''Clean selected names
-        'mNames.CleanAll(dataFileID, studyID, batchSize, metaGroups, mLoadDB, forceProxy)
-
         'Clean selected addresses
-        mAddresses.CleanAll(dataFileID, studyID, batchSize, metaGroups, mLoadDB, forceProxy)
+        mAddresses.CleanAll(dataFileID, studyID, batchSize, metaData, mLoadDB)
 
-        'Get the counts
-        MetaGroup.GetCounts(dataFileID, studyID, metaGroups, mLoadDB)
+        ''Get the counts  
+        AddressMetadata.GetCounts(dataFileID, studyID, metaData, mLoadDB)
 
         'Set the return value and cleanup the lookup data
-        Return metaGroups
+        Return metaData
 
     End Function
 

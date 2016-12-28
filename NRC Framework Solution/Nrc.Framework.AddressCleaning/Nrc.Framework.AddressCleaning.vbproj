@@ -107,25 +107,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Address.vb" />
+    <Compile Include="Classes\AddressMetadata.vb" />
+    <Compile Include="Classes\AddressName.vb" />
     <Compile Include="Classes\AddressSub.vb" />
     <Compile Include="Classes\NameSub.vb" />
     <Compile Include="Classes\GeoCode.vb" />
     <Compile Include="Classes\RequestData.vb" />
     <Compile Include="Collections\AddressCollection.vb" />
     <Compile Include="Classes\Cleaner.vb" />
+    <Compile Include="Collections\MetaGroupCollection.vb" />
     <Compile Include="DataProviders\AddressProvider.vb" />
     <Compile Include="DataProviders\DataLoadDatabaseHelper.vb" />
-    <Compile Include="DataProviders\NameProvider.vb" />
-    <Compile Include="DataProviders\MetaGroupProvider.vb" />
+    <Compile Include="DataProviders\AddressMetadataProvider.vb" />
     <Compile Include="DataProviders\PhoneProvider.vb" />
     <Compile Include="DataProviders\QLoaderDatabaseHelper.vb" />
     <Compile Include="DataProviders\QualiSysDatabaseHelper.vb" />
     <Compile Include="Classes\MetaField.vb" />
     <Compile Include="Collections\MetaFieldCollection.vb" />
     <Compile Include="Classes\MetaGroup.vb" />
-    <Compile Include="Collections\MetaGroupCollection.vb" />
-    <Compile Include="Classes\Name.vb" />
-    <Compile Include="Collections\NameCollection.vb" />
     <Compile Include="Enums\AddressTypes.vb" />
     <Compile Include="Enums\LoadDatabases.vb" />
     <Compile Include="Enums\ZipCodeTypes.vb" />

@@ -109,15 +109,12 @@ Public Class AddressCleaner
                 'Mark file as Cleaning
                 file.ChangeState(QLoader.Library.DataFileStates.AddressCleaning, "")
 
-                'Determine if we need to use a web proxy
-                Dim forceProxy As Boolean = ((AppConfig.Params("WebServiceProxyRequiredServer").IntegerValue = 1) OrElse System.Diagnostics.Debugger.IsAttached)
-
                 'BEGIN ADDRESS CLEAN
                 addrCleaner = New Cleaner(AppConfig.CountryID, loadDB)
-                Dim groups As MetaGroupCollection
+                Dim metaData As AddressMetadata
                 If addrCleaner.IsCleanAddrBitSet(package.Study.StudyID) Then
-                    groups = addrCleaner.CleanAll(dataFileID, package.Study.StudyID, AppConfig.Params("BatchSize").IntegerValue, forceProxy)
-                    MetaGroup.SaveCounts(dataFileID, groups, loadDB)
+                    metaData = addrCleaner.CleanAll(dataFileID, package.Study.StudyID, AppConfig.Params("BatchSize").IntegerValue)
+                    AddressMetadata.SaveCounts(dataFileID, metaData, loadDB)
                     addrCleaner = Nothing
                 End If
                 'END CLEAN
@@ -174,15 +171,13 @@ Public Class AddressCleaner
             'Mark file as Cleaning
             file.ChangeState(Pervasive.Library.DataFileStates.AddressCleaning, "")
 
-            'Determine if we need to use a web proxy
-            Dim forceProxy As Boolean = ((AppConfig.Params("WebServiceProxyRequiredServer").IntegerValue = 1) OrElse System.Diagnostics.Debugger.IsAttached)
 
             'BEGIN ADDRESS CLEAN
             addrCleaner = New Cleaner(AppConfig.CountryID, loadDB)
-            Dim groups As MetaGroupCollection
+            Dim metaData As AddressMetadata
             If addrCleaner.IsCleanAddrBitSet(file.StudyId) Then
-                groups = addrCleaner.CleanAll(dataFileID, file.StudyId, AppConfig.Params("BatchSize").IntegerValue, forceProxy)
-                MetaGroup.SaveCounts(dataFileID, groups, loadDB)
+                metaData = addrCleaner.CleanAll(dataFileID, file.StudyId, AppConfig.Params("BatchSize").IntegerValue)
+                AddressMetadata.SaveCounts(dataFileID, metaData, loadDB)
                 addrCleaner = Nothing
             End If
             'END CLEAN

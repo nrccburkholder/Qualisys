@@ -20,6 +20,7 @@ Friend Class MetaField
 #Region " Private Fields "
 
     Private mInstanceGuid As Guid = Guid.NewGuid
+    Private mFieldType As String = String.Empty
     Private mFieldID As Integer
     Private mFieldName As String = String.Empty
     Private mFieldDataType As String = String.Empty
@@ -28,9 +29,23 @@ Friend Class MetaField
     Private mAddrCleanGroup As Integer
     Private mParamName As String = String.Empty
 
+
 #End Region
 
 #Region " Public Properties "
+
+    Public Property FieldType() As String
+        Get
+            Return mFieldType
+        End Get
+        Set(ByVal value As String)
+            If value Is Nothing Then value = String.Empty
+            If Not value = mFieldType Then
+                mFieldType = value
+                PropertyHasChanged("FieldType")
+            End If
+        End Set
+    End Property
 
     Public Property FieldID() As Integer Implements IMetaField.FieldID
         Get
@@ -64,7 +79,7 @@ Friend Class MetaField
         Set(ByVal value As String)
             If value Is Nothing Then value = String.Empty
             If Not value = mFieldDataType Then
-                mFieldDataType = value
+                mFieldDataType = value.ToUpper()
                 PropertyHasChanged("FieldDataType")
             End If
         End Set
@@ -117,6 +132,20 @@ Friend Class MetaField
                 PropertyHasChanged("ParamName")
             End If
         End Set
+    End Property
+
+    Public ReadOnly Property IsAddress() As Boolean
+        Get
+            Return mFieldType = "A"
+        End Get
+
+    End Property
+
+    Public ReadOnly Property IsName() As Boolean
+        Get
+            Return mFieldType = "N"
+        End Get
+
     End Property
 
 #End Region

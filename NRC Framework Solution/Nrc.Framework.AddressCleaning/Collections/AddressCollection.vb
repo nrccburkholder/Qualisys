@@ -9,11 +9,16 @@ Imports Nrc.Framework.BusinessLogic.Configuration
 
 Public Class AddressCollection
     Inherits BusinessListBase(Of AddressCollection, Address)
-
 #Region " Private Members "
 
     Private mCountryID As CountryIDs
     Private Const WEB_SERVICE_MAX_RETRIES As Integer = 3
+    Private customerID As String
+    Private transmissionReference As String = "" 'The Transmission Reference is a unique string value that identifies this particular request
+    Private actions As String 'The Check action will validate the individual input data pieces for validity and correct them if possible. 
+    Private options As String 'The Options field allows you to configure a number of options that change the way the service behaves.
+    Private columns As String 'The Columns input field allows you to select either individual columns Or groups which will then be returned in the outpu
+
 
 #End Region
 
@@ -38,6 +43,7 @@ Public Class AddressCollection
 
         'Store the parameters
         mCountryID = countryID
+        ' addressCleanRecords = New List(Of Object)()
 
     End Sub
 
@@ -59,21 +65,29 @@ Public Class AddressCollection
     Public Sub Clean(ByVal forceProxy As Boolean)
 
         'The DBKey property of the address object is not publicly exposed so it will need to be set by the application.
-        Clean(True, forceProxy, True, -1)
+        Clean(True, -1)
 
     End Sub
 
-    ''' <summary>
-    ''' This routine is the public interface called to clean all of the 
-    ''' addresses currently contained in collection.
-    ''' </summary>
-    ''' <param name="forceProxy">Specifies whether or not to force the use of a proxy server for web requests</param>
-    ''' <param name="populateGeoCoding">Specifies whether or not to populate the geocoding information</param>
-    ''' <remarks></remarks>
-    Public Sub Clean(ByVal forceProxy As Boolean, ByVal populateGeoCoding As Boolean, ByVal dataFileId As Integer)
+    Public Sub Clean()
 
         'The DBKey property of the address object is not publicly exposed so it will need to be set by the application.
-        Clean(True, forceProxy, populateGeoCoding, dataFileId)
+        Clean(True, -1)
+
+    End Sub
+
+
+    Public Sub Clean(ByVal populateGeoCoding As Boolean, ByVal dataFileId As Integer)
+
+        'The DBKey property of the address object is not publicly exposed so it will need to be set by the application.
+        Clean(populateGeoCoding, dataFileId, False)
+
+    End Sub
+
+    Public Sub Clean(ByVal populateGeoCoding As Boolean, ByVal dataFileId As Integer, ByVal propCase As Boolean)
+
+        'The DBKey property of the address object is not publicly exposed so it will need to be set by the application.
+        Clean(True, populateGeoCoding, dataFileId, propCase)
 
     End Sub
 
@@ -81,13 +95,6 @@ Public Class AddressCollection
 
 #Region " Friend Methods "
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="addressCleanRecords"></param>
-    ''' <param name="dataFileId"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Private Function DoAddressCheckWithRetries(ByRef addressCleanRecords As List(Of Object), ByVal dataFileId As Integer) As JObject
 
         Dim tryCount As Integer = 0
@@ -123,23 +130,23 @@ Public Class AddressCollection
 
         Return jObj
 
+
     End Function
 
 
-    ''' <summary>
-    ''' This routine is the internal interface called to clean all of the
-    ''' addresses currently contained in collection
-    ''' </summary>
-    ''' <param name="assignIDs">Specified whether or not the addresses need to have the DBKey set</param>
-    ''' <param name="forceProxy">Specifies whether or not to force the use of a proxy server for web requests</param>
-    ''' <param name="populateGeoCoding">Specifies whether or not to populate the geocoding information</param>
-    ''' <remarks></remarks>
-    Friend Sub Clean(ByVal assignIDs As Boolean, ByVal forceProxy As Boolean, ByVal populateGeoCoding As Boolean, ByVal dataFileId As Integer)
+    Friend Sub Clean(ByVal assignIDs As Boolean, ByVal populateGeoCoding As Boolean, ByVal dataFileId As Integer, ByVal propCase As Boolean)
 
-          Dim addrCount As Integer = 0
+        Dim addrCount As Integer = 0
         Dim addrUsed As Integer = 0
         Dim webCallCount As Integer = 0
         Dim maxRecords As Integer = AppConfig.Params("AddressWebServiceMaxRecords").IntegerValue
+
+
+        transmissionReference = Guid.NewGuid().ToString()
+        customerID = AppConfig.Params("AddressWebServiceCustomerID").StringValue
+        actions = AppConfig.Params("AddressCleaningActions").StringValue
+        options = AppConfig.Params("AddressCleaningOptions").StringValue
+        columns = AppConfig.Params("AddressCleaningColumns").StringValue
 
         Dim personatorResponse As JObject
         Dim transmissionResults As String
@@ -178,13 +185,13 @@ Public Class AddressCollection
                 Logs.Info(String.Format("End addrCheckService.doAddressCheck - DataFile_Id:{0}, Pop_Id: {1}", dataFileId, addr.DBKey))
                 'Check to see if the web service returned any errors
                 Dim message As String = String.Empty
-                If CheckForAddressWebRequestErrors(transmissionResults, message) Then
+                If CheckForWebRequestErrors(transmissionResults, message) Then
                     'We have encountered a general error from the web service.
                     Throw New Exception(message)
                 End If
 
                 'Find and update the returned addresses and names
-                UpdateAddresses(personatorResponse, populateGeoCoding, dataFileId)
+                UpdateAddresses(personatorResponse, populateGeoCoding, dataFileId, propCase)  ' modify UpdateAddress to update name, address and geocode
 
                 'Reset and prepare for next set of addresses to be added to the request
                 addrCount = 0
@@ -192,37 +199,17 @@ Public Class AddressCollection
             End If
         Next
 
-    End Sub
-
-    ''' <summary>
-    ''' This routine is the internal interface called to clean all of the 
-    ''' addresses in the specified datafile and study.
-    ''' </summary>
-    ''' <param name="dataFileID">The datafile to be cleaned.</param>
-    ''' <param name="studyID">The study to be cleaned.</param>
-    ''' <param name="batchSize">The quantity of records to process on each pass.</param>
-    ''' <param name="metaGroups">Collection of meta groups that specify information about this group.</param>
-    ''' <param name="loadDB">The database these records are stored in.</param>
-    ''' <param name="forceProxy">Specifies whether or not to force the use of a proxy server for web requests.</param>
-    ''' <remarks></remarks>
-    Friend Sub CleanAll(ByVal dataFileID As Integer, ByVal studyID As Integer, ByVal batchSize As Integer, ByRef metaGroups As MetaGroupCollection, ByVal loadDB As LoadDatabases, ByVal forceProxy As Boolean)
-
-        AddressProvider.CleanAll(dataFileID, studyID, batchSize, metaGroups, Me, loadDB, forceProxy)
 
     End Sub
 
-    Friend Function MelissaDataApiJsonCall(ByRef addressCleanRecords As List(Of Object)) As String
-        Dim TransmissionReference As String = ""
-        'The Transmission Reference is a unique string value that identifies this particular request
-        Dim CustomerID As String = AppConfig.Params("AddressWebServiceCustomerID").StringValue
-        ' I think this was provided by BJ
-        Dim Actions As String = "Check"
-        'The Check action will validate the individual input data pieces for validity and correct them if possible. 
-        Dim Options As String = "AdvancedAddressCorrection:on"
-        'UsePreferredCity:on
-        Dim Columns As String = "GrpCensus,GrpGeocode,GrpAddressDetails,PrivateMailBox,GrpParsedAddress,Plus4"
-        'To use Geocode, you must have the geocode columns on: GrpCensus or GrpGeocode.
-        Dim NameHint As String = "2"
+    Friend Sub CleanAll(ByVal dataFileID As Integer, ByVal studyID As Integer, ByVal batchSize As Integer, ByRef metaData As AddressMetadata, ByVal loadDB As LoadDatabases)
+
+        AddressProvider.CleanAll(dataFileID, studyID, batchSize, metaData, Me, loadDB)
+
+    End Sub
+
+    Friend Function MelissaDataApiJsonCall(ByVal addressCleanRecords As List(Of Object)) As String
+
 
         Dim httpWebRequest As HttpWebRequest = DirectCast(WebRequest.Create("https://personator.melissadata.net/v3/WEB/ContactVerify/doContactVerify"), HttpWebRequest)
         httpWebRequest.ContentType = "text/json"
@@ -232,12 +219,11 @@ Public Class AddressCollection
         Using sw As StreamWriter = New StreamWriter(httpWebRequest.GetRequestStream())
             Using tw As Newtonsoft.Json.JsonTextWriter = New Newtonsoft.Json.JsonTextWriter(sw)
                 Dim requestData As Object = New With {
-                Key .TransmissionReference = TransmissionReference,
-                Key .CustomerID = CustomerID,
-                Key .Actions = Actions,
-                Key .Options = Options,
-                Key .Columns = Columns,
-                Key .NameHint = NameHint,
+                Key .TransmissionReference = transmissionReference,
+                Key .CustomerID = customerID,
+                Key .Actions = actions,
+                Key .Options = options,
+                Key .Columns = columns,
                 Key .Records = addressCleanRecords.ToArray()
             }
 
@@ -259,22 +245,6 @@ Public Class AddressCollection
 
         Dim personatorResponse As JObject
         Dim transmissionResults As String
-
-        Dim nameCleaningPrefixes As List(Of String) = New List(Of String)
-
-        For numNameCleaningPrefixParam As Integer = 1 To 100
-            Try
-                Dim prefixsLine As String
-                Dim paramVal As Param = AppConfig.Params("NameCleaningPrefix" + numNameCleaningPrefixParam.ToString())
-                If paramVal Is Nothing Then Exit For
-                prefixsLine = paramVal.StringValue
-                For Each prefix As String In prefixsLine.Split(";".ToCharArray())
-                    nameCleaningPrefixes.Add(prefix)
-                Next
-            Catch ex As Exception
-                Exit For
-            End Try
-        Next
 
         addrCount += 1
         addrUsed += 1
@@ -304,7 +274,7 @@ Public Class AddressCollection
         'Check to see if the web service returned any errors
         Dim message As String = String.Empty
 
-        If CheckForAddressWebRequestErrors(transmissionResults, message) Then
+        If CheckForWebRequestErrors(transmissionResults, message) Then
             'We have encountered a general error from the web service.
             Throw New Exception(message)
 
@@ -316,22 +286,40 @@ Public Class AddressCollection
 
     End Function
 
-
 #End Region
 
 #Region " Private Methods "
 
-    ''' <summary>
-    ''' This routine adds the specified address to the request object.
-    ''' </summary>
-    ''' <param name="cnt">Specifies which element of the request object to add this address to.</param>
-    ''' <param name="addr">The address to be added to the request object.</param>
-    ''' <param name="request">The request object that the address should be added to.</param>
-    ''' <remarks></remarks>
     Private Sub AddAddress(ByVal cnt As Integer, ByVal addr As Address, ByRef addressCleanRecords As List(Of Object))
 
         Dim RecordID As String = addr.DBKey.ToString
         Dim CompanyName As String = ""
+
+        Dim firstName As String = String.Empty
+        Dim middleName As String = String.Empty
+        Dim lastName As String = String.Empty
+        Dim FullName As String = String.Empty
+
+        If String.IsNullOrEmpty(addr.OriginalName.FirstName) Then
+            firstName = "XXXXX"
+        Else
+            firstName = addr.OriginalName.FirstName
+        End If
+
+        If String.IsNullOrEmpty(addr.OriginalName.MiddleInitial) Then
+            middleName = String.Empty
+        Else
+            middleName = addr.OriginalName.MiddleInitial
+        End If
+
+        If String.IsNullOrEmpty(addr.OriginalName.LastName) Then
+            lastName = "ZZZZZ"
+        Else
+            lastName = addr.OriginalName.LastName
+        End If
+
+        'Build the name string
+        FullName = String.Format("{0} {1} {2} {3}", firstName, middleName, lastName, addr.OriginalName.Suffix).Trim
 
         Dim AddressLine1 As String = CleanString(addr.OriginalAddress.StreetLine1, True, True)
         Dim AddressLine2 As String = String.Empty
@@ -403,6 +391,7 @@ Public Class AddressCollection
         Dim o As Object = New With {
             Key .RecordID = RecordID,
             Key .CompanyName = CompanyName,
+            Key .FullName = FullName,
             Key .AddressLine1 = AddressLine1,
             Key .AddressLine2 = AddressLine2,
             Key .Suite = Suite,
@@ -416,12 +405,7 @@ Public Class AddressCollection
 
     End Sub
 
-    ''' <summary>
-    ''' This routine updates the addresses in the collection with those returned in the response object.
-    ''' </summary>
-    ''' <param name="responseArray">The response object containing the updated addresses.</param>
-    ''' <remarks></remarks>
-    Private Sub UpdateAddresses(ByVal personatorResponse As JObject, ByVal populateGeoCoding As Boolean, ByVal datafileId As Integer)
+    Private Sub UpdateAddresses(ByVal personatorResponse As JObject, ByVal populateGeoCoding As Boolean, ByVal datafileId As Integer, ByVal propCase As Boolean)
 
         'Loop through all of the returned addresses and update them
         For i As Integer = 0 To CInt(personatorResponse.Item("TotalRecords")) - 1
@@ -438,12 +422,18 @@ Public Class AddressCollection
 
             'If we are here then we need to update the address
             UpdateAddress(addr, cleanRecord, datafileId)
+            UpdateName(addr, cleanRecord, propCase)
             If populateGeoCoding Then
                 UpdateGeoCode(addr, cleanRecord)
             End If
+
+
+
+            Dim a As Address = addr
         Next
 
     End Sub
+
 
     ''' <summary>
     ''' This routine finds the address object with the specified dbKey.
@@ -465,14 +455,8 @@ Public Class AddressCollection
 
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="addr"></param>
-    ''' <param name="response"></param>
-    ''' <param name="datafileId"></param>
-    ''' <remarks></remarks>
-    Private Sub UpdateAddress(ByRef addr As Address, ByRef response As JToken, ByVal datafileId As Integer)
+
+    Private Sub UpdateAddress(ByVal addr As Address, ByRef response As JToken, ByVal datafileId As Integer)
 
         Dim results As String = response("Results").ToString
 
@@ -603,33 +587,135 @@ Public Class AddressCollection
             .AddressError = GetAddressError(GetResultCodes(response("Results").ToString, "A"))
         End With
 
-        If (response("CountryCode").ToString.ToUpper = "US" AndAlso mCountryID <> CountryIDs.US) OrElse _
-           (response("CountryCode").ToString.ToUpper = "CA" AndAlso mCountryID <> CountryIDs.Canada) OrElse _
+        If (response("CountryCode").ToString.ToUpper = "US" AndAlso mCountryID <> CountryIDs.US) OrElse
+           (response("CountryCode").ToString.ToUpper = "CA" AndAlso mCountryID <> CountryIDs.Canada) OrElse
            (IsForeignError(results)) Then
             'Foreign address detected so set to original with error FO (Foreign)
-            addr.SetCleanedTo(addr.OriginalAddress, "FO")
+            addr.SetAddressCleanedTo(addr.OriginalAddress, "FO")
         ElseIf CheckForAddressErrors(results) Then
             If CheckForAddressSuccess(results) Then
                 'At least one Address error was detected but so was one Address success so set to original with error NU (No Unit)
-                addr.SetCleanedTo(addr.OriginalAddress, "NU")
+                addr.SetAddressCleanedTo(addr.OriginalAddress, "NU")
             ElseIf CheckForValidSecondAddress(results, addr) Then
-                addr.SetCleanedTo(addr.OriginalAddress, "NC")
+                addr.SetAddressCleanedTo(addr.OriginalAddress, "NC")
                 ResendSecondaryAddress(addr, datafileId)
             Else
                 'Address errors only were detected so set to original with error NC (Not Cleaned)
-                addr.SetCleanedTo(addr.OriginalAddress, "NC")
+                addr.SetAddressCleanedTo(addr.OriginalAddress, "NC")
             End If
         ElseIf addr.WorkingAddress.StreetLine1.Length > 60 OrElse addr.WorkingAddress.StreetLine2.Length > 42 Then
             'The address is too long so set to original with error TL (Too Long)
-            addr.SetCleanedTo(addr.OriginalAddress, "TL")
+            addr.SetAddressCleanedTo(addr.OriginalAddress, "TL")
         Else
             'The new address is good so set to working
-            addr.SetCleanedTo(addr.WorkingAddress)
+            addr.SetAddressCleanedTo(addr.WorkingAddress)
         End If
 
     End Sub
 
+    Private Sub UpdateName(ByVal item As Address, ByRef response As JToken, ByVal properCase As Boolean)
+
+        Dim results As String = GetResultCodes(response("Results").ToString, "N")
+
+        Dim stringConv As Microsoft.VisualBasic.VbStrConv
+        If mCountryID = CountryIDs.Canada OrElse Not properCase Then
+            stringConv = VbStrConv.Uppercase
+        Else
+            stringConv = VbStrConv.ProperCase
+        End If
+
+        With item.WorkingName
+            'Save the new name
+            .Title = String.Empty
+            .FirstName = CleanString(response("NameFirst").ToString, True, False)
+            .MiddleInitial = CleanString(response("NameMiddle").ToString, True, False)
+            .LastName = CleanString(response("NameLast").ToString, True, False)
+            .Suffix = CleanString(response("NameSuffix").ToString, True, False)
+            .NameStatus = GetNameStatus(results)
+
+            'Check for error conditions
+            Dim numString As String = "0123456789"
+            Dim numArray As Char() = numString.ToCharArray()
+
+            'Check the first name
+            If .FirstName.ToUpper = "XXXXX" Then
+                .FirstName = String.Empty
+            ElseIf .FirstName.Length = 0 And item.OriginalName.FirstName.Length > 0 Then
+                If item.OriginalName.FirstName.IndexOfAny(numArray) > -1 Then  ' checking to see if the firstname contains a number
+                    .NameStatus = "ERROR"
+                Else
+                    .FirstName = StrConv(CleanString(item.OriginalName.FirstName, True, False), stringConv)
+                End If
+            End If
+
+            'Check the middle name
+            If .MiddleInitial.Length = 0 And item.OriginalName.MiddleInitial.Length > 0 Then
+                .MiddleInitial = item.OriginalName.MiddleInitial.Substring(0, 1).ToUpper
+            ElseIf .MiddleInitial.Length > 1 Then
+                .MiddleInitial = .MiddleInitial.Substring(0, 1).ToUpper
+            End If
+
+            'Check the last name
+            If .LastName.ToUpper = "ZZZZZ" Then
+                .LastName = String.Empty
+            ElseIf .LastName.Length = 0 And item.OriginalName.LastName.Length > 0 Then
+                If item.OriginalName.LastName.IndexOfAny(numArray) > -1 Then ' checking to see if the lastname contains a number
+                    .NameStatus = "ERROR"
+                Else
+                    .LastName = StrConv(CleanString(item.OriginalName.LastName, True, False), stringConv)
+                End If
+            End If
+        End With
+
+        If CheckForNameErrors(results) Then
+            'Name errors were detected so set to original with working status
+            item.SetNameCleanedTo(item.OriginalName, item.WorkingName.NameStatus)
+        ElseIf Not item.WorkingName.NameStatus.StartsWith("ERR") Then
+            'Check lengths
+            If item.WorkingName.FirstName.Length > 42 OrElse item.WorkingName.LastName.Length > 42 Then
+                'One of the working name fields is to long so set to original with status ERROR
+                item.SetNameCleanedTo(item.OriginalName, "ERROR")
+            Else
+                'The new name is good so set to working
+                item.SetNameCleanedTo(item.WorkingName)
+            End If
+        Else
+            'The new name is good so set to working
+            item.SetNameCleanedTo(item.WorkingName)
+        End If
+
+        'Determine if the result is supposed to be in UPPERCASE
+        If stringConv = VbStrConv.Uppercase Then
+            With item.CleanedName
+                .Title = .Title.ToUpper
+                .FirstName = .FirstName.ToUpper
+                .MiddleInitial = .MiddleInitial.ToUpper
+                .LastName = .LastName.ToUpper
+                .Suffix = .Suffix.ToUpper
+            End With
+        End If
+
+    End Sub
+
+    Private Function GetResultCodes(cleanResultCode As String, code As String) As String
+        Dim s As String = String.Empty
+        For Each result As String In cleanResultCode.Split(","c)
+            If result.StartsWith(code) Then
+                s = s & result & ","
+            End If
+        Next
+        If s = String.Empty Then
+            Return s
+        Else
+            Return s.Substring(0, s.Length - 1)
+        End If
+
+
+    End Function
+
+
     Private Function ParseSingleAddress(ByRef responses As JObject, ByRef addr As Address) As Address
+
 
         Dim response As JToken = responses.Item("Records").Item(0)
         Dim results As String = response("Results").ToString
@@ -784,7 +870,6 @@ Public Class AddressCollection
     End Function
 
 
-
     Private Function CheckForValidSecondAddress(ByVal results As String, ByRef addr As Address) As Boolean
 
 
@@ -800,12 +885,6 @@ Public Class AddressCollection
 
     End Function
 
-    ''' <summary>
-    ''' This method is used to try a second time to clean a single address with Line1/Line2 swapped
-    ''' </summary>
-    ''' <param name="origAddr">If the </param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Private Sub ResendSecondaryAddress(ByRef origAddr As Address, ByVal datafileId As Integer)
 
         'Make clone of the address being passed in
@@ -826,7 +905,7 @@ Public Class AddressCollection
 
         If CheckForAddressSuccess(returnedAddress.WorkingAddress.AddressStatus) Then
             'Success, use new address
-            origAddr.SetCleanedTo(returnedAddress.WorkingAddress)
+            origAddr.SetAddressCleanedTo(returnedAddress.WorkingAddress)
         Else
             'return the original address
             origAddr = clonedAddress
@@ -852,21 +931,14 @@ Public Class AddressCollection
 
     End Function
 
-    ''' <summary>
-    ''' This routine checks the result string for the web service call and determines whether or not an error was encountered.
-    ''' </summary>
-    ''' <param name="results">The result string for the web service call.</param>
-    ''' <param name="message">The error message to throw if an error was encountered.</param>
-    ''' <returns>Returns a boolean indicating whether or not an error was encountered.</returns>
-    ''' <remarks></remarks>
-    Private Function CheckForAddressWebRequestErrors(ByVal results As String, ByRef message As String) As Boolean
+    Private Function CheckForWebRequestErrors(ByVal transmissionResults As String, ByRef message As String) As Boolean
 
-        If Not String.IsNullOrEmpty(results.Trim) Then
+        If Not String.IsNullOrEmpty(transmissionResults.Trim) Then
             'Errors have been encountered so lets build the error message
-            message = String.Format("The Address Cleaning web service returned the following error(s):{0}{1}{0}", vbCrLf, results)
+            message = String.Format("The Address Cleaning web service returned the following error(s):{0}{1}{0}", vbCrLf, transmissionResults)
 
             'Loop through each returned result and add it to the message
-            For Each result As String In results.Split(","c)
+            For Each result As String In transmissionResults.Split(","c)
                 Select Case result
                     Case "SE01"
                         message &= String.Format("{0}{1}: Web Service Internal Error;", vbCrLf, result)
@@ -1003,13 +1075,8 @@ Public Class AddressCollection
 
     End Function
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="addr"></param>
-    ''' <param name="response"></param>
-    ''' <remarks></remarks>
-    Private Sub UpdateGeoCode(ByVal addr As Address, ByRef response As JToken)
+
+    Private Sub UpdateGeoCode(ByRef addr As Address, ByRef response As JToken)
 
         'Set the Status Code
         Dim GeoCodeResultCodes As String = GetResultCodes(response("Results").ToString, "G") & GetResultCodes(response("Results").ToString, "D")
@@ -1052,17 +1119,27 @@ Public Class AddressCollection
 
     End Sub
 
-    Private Function GetResultCodes(cleanResultCode As String, code As String) As String
-        Dim s As String = String.Empty
-        For Each result As String In cleanResultCode.Split(","c)
-            Dim c As String = result.Substring(0, 1)
-            If result.StartsWith(code) Then
-                s = s & result & ","
+    Private Function CheckForNameErrors(ByVal results As String) As Boolean
+
+        For Each result As String In results.Split(","c)
+            If result.StartsWith("NE") Then
+                Return True
             End If
         Next
 
-        If s.Length > 0 Then
-            Return s.Substring(0, s.Length - 1)
+        Return False
+
+    End Function
+
+    Private Function GetNameStatus(ByVal results As String) As String
+
+        results = results.Trim
+        If Not String.IsNullOrEmpty(results) Then
+            If results.Length > 42 Then
+                Return results.Substring(0, 42)
+            Else
+                Return results
+            End If
         Else
             Return String.Empty
         End If

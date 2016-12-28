@@ -22,181 +22,180 @@ Partial Class MainForm
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.LocationGroupBox = New System.Windows.Forms.GroupBox
-        Me.ForceProxyCheckBox = New System.Windows.Forms.CheckBox
-        Me.CountryComboBox = New System.Windows.Forms.ComboBox
-        Me.CountryLabel = New System.Windows.Forms.Label
-        Me.CleaningTabControl = New System.Windows.Forms.TabControl
-        Me.AddressCleaningTabPage = New System.Windows.Forms.TabPage
-        Me.AddressCleaningTabControl = New System.Windows.Forms.TabControl
-        Me.OriginalAddressTabPage = New System.Windows.Forms.TabPage
-        Me.OriginalStreetLine2Label = New System.Windows.Forms.Label
-        Me.OriginalCountryTextBox = New System.Windows.Forms.TextBox
-        Me.OriginalCountryLabel = New System.Windows.Forms.Label
-        Me.OriginalZip4TextBox = New System.Windows.Forms.TextBox
-        Me.OriginalZip5TextBox = New System.Windows.Forms.TextBox
-        Me.OriginalStateTextBox = New System.Windows.Forms.TextBox
-        Me.OriginalCityTextBox = New System.Windows.Forms.TextBox
-        Me.OriginalZip4Label = New System.Windows.Forms.Label
-        Me.OriginalZip5Label = New System.Windows.Forms.Label
-        Me.OriginalStateLabel = New System.Windows.Forms.Label
-        Me.OriginalCityLabel = New System.Windows.Forms.Label
-        Me.OriginalStreetLine2TextBox = New System.Windows.Forms.TextBox
-        Me.OriginalStreetLine1TextBox = New System.Windows.Forms.TextBox
-        Me.OriginalStreetLine1Label = New System.Windows.Forms.Label
-        Me.WorkingAddressTabPage = New System.Windows.Forms.TabPage
-        Me.WorkingStreetLine2Label = New System.Windows.Forms.Label
-        Me.WorkingPrivateMailBoxTextBox = New System.Windows.Forms.TextBox
-        Me.WorkingUrbanizationNameTextBox = New System.Windows.Forms.TextBox
-        Me.WorkingPrivateMailBoxLabel = New System.Windows.Forms.Label
-        Me.WorkingUrbanizationNameLabel = New System.Windows.Forms.Label
-        Me.WorkingZipCodeTypeTextBox = New System.Windows.Forms.TextBox
-        Me.WorkingAddressTypeTextBox = New System.Windows.Forms.TextBox
-        Me.WorkingZipCodeTypeLabel = New System.Windows.Forms.Label
-        Me.WorkingAddressTypeLabel = New System.Windows.Forms.Label
-        Me.WorkingAddressErrorTextBox = New System.Windows.Forms.TextBox
-        Me.WorkingAddressStatusTextBox = New System.Windows.Forms.TextBox
-        Me.WorkingCarrierTextBox = New System.Windows.Forms.TextBox
-        Me.WorkingDeliveryPointTextBox = New System.Windows.Forms.TextBox
-        Me.WorkingCarrierLabel = New System.Windows.Forms.Label
-        Me.WorkingDeliveryPointLabel = New System.Windows.Forms.Label
-        Me.WorkingAddressErrorLabel = New System.Windows.Forms.Label
-        Me.WorkingAddressStatusLabel = New System.Windows.Forms.Label
-        Me.WorkingCountryTextBox = New System.Windows.Forms.TextBox
-        Me.WorkingCountryLabel = New System.Windows.Forms.Label
-        Me.WorkingZip4TextBox = New System.Windows.Forms.TextBox
-        Me.WorkingZip5TextBox = New System.Windows.Forms.TextBox
-        Me.WorkingStateTextBox = New System.Windows.Forms.TextBox
-        Me.WorkingCityTextBox = New System.Windows.Forms.TextBox
-        Me.WorkingZip4Label = New System.Windows.Forms.Label
-        Me.WorkingZip5Label = New System.Windows.Forms.Label
-        Me.WorkingStateLabel = New System.Windows.Forms.Label
-        Me.WorkingCityLabel = New System.Windows.Forms.Label
-        Me.WorkingStreetLine2TextBox = New System.Windows.Forms.TextBox
-        Me.WorkingStreetLine1TextBox = New System.Windows.Forms.TextBox
-        Me.WorkingStreetLine1Label = New System.Windows.Forms.Label
-        Me.CleanedAddressTabPage = New System.Windows.Forms.TabPage
-        Me.CleanedStreetLine2Label = New System.Windows.Forms.Label
-        Me.CleanedPrivateMailBoxTextBox = New System.Windows.Forms.TextBox
-        Me.CleanedUrbanizationNameTextBox = New System.Windows.Forms.TextBox
-        Me.CleanedPrivateMailBoxLabel = New System.Windows.Forms.Label
-        Me.CleanedUrbanizationNameLabel = New System.Windows.Forms.Label
-        Me.CleanedZipCodeTypeTextBox = New System.Windows.Forms.TextBox
-        Me.CleanedAddressTypeTextBox = New System.Windows.Forms.TextBox
-        Me.CleanedZipCodeTypeLabel = New System.Windows.Forms.Label
-        Me.CleanedAddressTypeLabel = New System.Windows.Forms.Label
-        Me.CleanedAddressErrorTextBox = New System.Windows.Forms.TextBox
-        Me.CleanedAddressStatusTextBox = New System.Windows.Forms.TextBox
-        Me.CleanedCarrierTextBox = New System.Windows.Forms.TextBox
-        Me.CleanedDeliveryPointTextBox = New System.Windows.Forms.TextBox
-        Me.CleanedCarrierLabel = New System.Windows.Forms.Label
-        Me.CleanedDeliveryPointLabel = New System.Windows.Forms.Label
-        Me.CleanedAddressErrorLabel = New System.Windows.Forms.Label
-        Me.CleanedAddressStatusLabel = New System.Windows.Forms.Label
-        Me.CleanedCountryTextBox = New System.Windows.Forms.TextBox
-        Me.CleanedCountryLabel = New System.Windows.Forms.Label
-        Me.CleanedZip4TextBox = New System.Windows.Forms.TextBox
-        Me.CleanedZip5TextBox = New System.Windows.Forms.TextBox
-        Me.CleanedStateTextBox = New System.Windows.Forms.TextBox
-        Me.CleanedCityTextBox = New System.Windows.Forms.TextBox
-        Me.CleanedZip4Label = New System.Windows.Forms.Label
-        Me.CleanedZip5Label = New System.Windows.Forms.Label
-        Me.CleanedStateLabel = New System.Windows.Forms.Label
-        Me.CleanedCityLabel = New System.Windows.Forms.Label
-        Me.CleanedStreetLine2TextBox = New System.Windows.Forms.TextBox
-        Me.CleanedStreetLine1TextBox = New System.Windows.Forms.TextBox
-        Me.CleanedStreetLine1Label = New System.Windows.Forms.Label
-        Me.GeoCodeTabPage = New System.Windows.Forms.TabPage
-        Me.GeoCodeStatTextBox = New System.Windows.Forms.TextBox
-        Me.GeoCodeStatLabel = New System.Windows.Forms.Label
-        Me.CensusTractTextBox = New System.Windows.Forms.TextBox
-        Me.CensusBlockTextBox = New System.Windows.Forms.TextBox
-        Me.CensusTractLabel = New System.Windows.Forms.Label
-        Me.CensusBlockLabel = New System.Windows.Forms.Label
-        Me.CoreBasedStatisticalGroupBox = New System.Windows.Forms.GroupBox
-        Me.CBSADivisionTitleTextBox = New System.Windows.Forms.TextBox
-        Me.CBSADivisionTitleLabel = New System.Windows.Forms.Label
-        Me.CBSADivisionLevelTextBox = New System.Windows.Forms.TextBox
-        Me.CBSADivisionLevelLabel = New System.Windows.Forms.Label
-        Me.CBSADivisionCodeTextBox = New System.Windows.Forms.TextBox
-        Me.CBSADivisionCodeLabel = New System.Windows.Forms.Label
-        Me.CBSATitleTextBox = New System.Windows.Forms.TextBox
-        Me.CBSATitleLabel = New System.Windows.Forms.Label
-        Me.CBSALevelTextBox = New System.Windows.Forms.TextBox
-        Me.CBSALevelLabel = New System.Windows.Forms.Label
-        Me.CBSACodeTextBox = New System.Windows.Forms.TextBox
-        Me.CBSACodeLabel = New System.Windows.Forms.Label
-        Me.TimeZoneCodeTextBox = New System.Windows.Forms.TextBox
-        Me.TimeZoneNameTextBox = New System.Windows.Forms.TextBox
-        Me.TimeZoneCodeLabel = New System.Windows.Forms.Label
-        Me.TimeZoneNameLabel = New System.Windows.Forms.Label
-        Me.PlaceCodeTextBox = New System.Windows.Forms.TextBox
-        Me.PlaceNameTextBox = New System.Windows.Forms.TextBox
-        Me.PlaceCodeLabel = New System.Windows.Forms.Label
-        Me.PlaceNameLabel = New System.Windows.Forms.Label
-        Me.LongitudeTextBox = New System.Windows.Forms.TextBox
-        Me.LatitudeTextBox = New System.Windows.Forms.TextBox
-        Me.LongitudeLabel = New System.Windows.Forms.Label
-        Me.LatitudeLabel = New System.Windows.Forms.Label
-        Me.CountyFIPSTextBox = New System.Windows.Forms.TextBox
-        Me.CountyNameTextBox = New System.Windows.Forms.TextBox
-        Me.CountyFIPSLabel = New System.Windows.Forms.Label
-        Me.CountyNameLabel = New System.Windows.Forms.Label
-        Me.PopulateGeoCodingCheckBox = New System.Windows.Forms.CheckBox
-        Me.ClearAddressButton = New System.Windows.Forms.Button
-        Me.CleanAddressButton = New System.Windows.Forms.Button
-        Me.FileCleaningTabPage = New System.Windows.Forms.TabPage
-        Me.DatabaseComboBox = New System.Windows.Forms.ComboBox
-        Me.DatabaseLabel = New System.Windows.Forms.Label
-        Me.ClearFileButton = New System.Windows.Forms.Button
-        Me.CleanFileButton = New System.Windows.Forms.Button
-        Me.BatchSizeTextBox = New System.Windows.Forms.TextBox
-        Me.BatchSizeLabel = New System.Windows.Forms.Label
-        Me.FileIDTextBox = New System.Windows.Forms.TextBox
-        Me.FileIDLabel = New System.Windows.Forms.Label
-        Me.StudyIDTextBox = New System.Windows.Forms.TextBox
-        Me.StudyIDLabel = New System.Windows.Forms.Label
-        Me.NameCleaningTabPage = New System.Windows.Forms.TabPage
-        Me.NameCleaningTabControl = New System.Windows.Forms.TabControl
-        Me.OriginalNameTabPage = New System.Windows.Forms.TabPage
-        Me.OriginalSuffixTextBox = New System.Windows.Forms.TextBox
-        Me.OriginalSuffixLabel = New System.Windows.Forms.Label
-        Me.OriginalTitleTextBox = New System.Windows.Forms.TextBox
-        Me.OriginalTitleLabel = New System.Windows.Forms.Label
-        Me.OriginalLastNameTextBox = New System.Windows.Forms.TextBox
-        Me.OriginalLastNameLabel = New System.Windows.Forms.Label
-        Me.OriginalMiddleInitialTextBox = New System.Windows.Forms.TextBox
-        Me.OriginalMiddleInitialLabel = New System.Windows.Forms.Label
-        Me.OriginalFirstNameTextBox = New System.Windows.Forms.TextBox
-        Me.OriginalFirstNameLabel = New System.Windows.Forms.Label
-        Me.WorkingNameTabPage = New System.Windows.Forms.TabPage
-        Me.WorkingSuffixTextBox = New System.Windows.Forms.TextBox
-        Me.WorkingSuffixLabel = New System.Windows.Forms.Label
-        Me.WorkingTitleTextBox = New System.Windows.Forms.TextBox
-        Me.WorkingTitleLabel = New System.Windows.Forms.Label
-        Me.WorkingNameStatusTextBox = New System.Windows.Forms.TextBox
-        Me.WorkingNameStatusLabel = New System.Windows.Forms.Label
-        Me.WorkingLastNameTextBox = New System.Windows.Forms.TextBox
-        Me.WorkingLastNameLabel = New System.Windows.Forms.Label
-        Me.WorkingMiddleInitialTextBox = New System.Windows.Forms.TextBox
-        Me.WorkingMiddleInitialLabel = New System.Windows.Forms.Label
-        Me.WorkingFirstNameTextBox = New System.Windows.Forms.TextBox
-        Me.WorkingFirstNameLabel = New System.Windows.Forms.Label
-        Me.CleanedNameTabPage = New System.Windows.Forms.TabPage
-        Me.CleanedSuffixTextBox = New System.Windows.Forms.TextBox
-        Me.CleanedSuffixLabel = New System.Windows.Forms.Label
-        Me.CleanedTitleTextBox = New System.Windows.Forms.TextBox
-        Me.CleanedTitleLabel = New System.Windows.Forms.Label
-        Me.CleanedNameStatusTextBox = New System.Windows.Forms.TextBox
-        Me.CleanedNameStatusLabel = New System.Windows.Forms.Label
-        Me.CleanedLastNameTextBox = New System.Windows.Forms.TextBox
-        Me.CleanedLastNameLabel = New System.Windows.Forms.Label
-        Me.CleanedMiddleInitialTextBox = New System.Windows.Forms.TextBox
-        Me.CleanedMiddleInitialLabel = New System.Windows.Forms.Label
-        Me.CleanedFirstNameTextBox = New System.Windows.Forms.TextBox
-        Me.CleanedFirstNameLabel = New System.Windows.Forms.Label
-        Me.ClearNameButton = New System.Windows.Forms.Button
-        Me.CleanNameButton = New System.Windows.Forms.Button
+        Me.LocationGroupBox = New System.Windows.Forms.GroupBox()
+        Me.CountryComboBox = New System.Windows.Forms.ComboBox()
+        Me.CountryLabel = New System.Windows.Forms.Label()
+        Me.CleaningTabControl = New System.Windows.Forms.TabControl()
+        Me.AddressCleaningTabPage = New System.Windows.Forms.TabPage()
+        Me.AddressCleaningTabControl = New System.Windows.Forms.TabControl()
+        Me.OriginalAddressTabPage = New System.Windows.Forms.TabPage()
+        Me.OriginalStreetLine2Label = New System.Windows.Forms.Label()
+        Me.OriginalCountryTextBox = New System.Windows.Forms.TextBox()
+        Me.OriginalCountryLabel = New System.Windows.Forms.Label()
+        Me.OriginalZip4TextBox = New System.Windows.Forms.TextBox()
+        Me.OriginalZip5TextBox = New System.Windows.Forms.TextBox()
+        Me.OriginalStateTextBox = New System.Windows.Forms.TextBox()
+        Me.OriginalCityTextBox = New System.Windows.Forms.TextBox()
+        Me.OriginalZip4Label = New System.Windows.Forms.Label()
+        Me.OriginalZip5Label = New System.Windows.Forms.Label()
+        Me.OriginalStateLabel = New System.Windows.Forms.Label()
+        Me.OriginalCityLabel = New System.Windows.Forms.Label()
+        Me.OriginalStreetLine2TextBox = New System.Windows.Forms.TextBox()
+        Me.OriginalStreetLine1TextBox = New System.Windows.Forms.TextBox()
+        Me.OriginalStreetLine1Label = New System.Windows.Forms.Label()
+        Me.WorkingAddressTabPage = New System.Windows.Forms.TabPage()
+        Me.WorkingStreetLine2Label = New System.Windows.Forms.Label()
+        Me.WorkingPrivateMailBoxTextBox = New System.Windows.Forms.TextBox()
+        Me.WorkingUrbanizationNameTextBox = New System.Windows.Forms.TextBox()
+        Me.WorkingPrivateMailBoxLabel = New System.Windows.Forms.Label()
+        Me.WorkingUrbanizationNameLabel = New System.Windows.Forms.Label()
+        Me.WorkingZipCodeTypeTextBox = New System.Windows.Forms.TextBox()
+        Me.WorkingAddressTypeTextBox = New System.Windows.Forms.TextBox()
+        Me.WorkingZipCodeTypeLabel = New System.Windows.Forms.Label()
+        Me.WorkingAddressTypeLabel = New System.Windows.Forms.Label()
+        Me.WorkingAddressErrorTextBox = New System.Windows.Forms.TextBox()
+        Me.WorkingAddressStatusTextBox = New System.Windows.Forms.TextBox()
+        Me.WorkingCarrierTextBox = New System.Windows.Forms.TextBox()
+        Me.WorkingDeliveryPointTextBox = New System.Windows.Forms.TextBox()
+        Me.WorkingCarrierLabel = New System.Windows.Forms.Label()
+        Me.WorkingDeliveryPointLabel = New System.Windows.Forms.Label()
+        Me.WorkingAddressErrorLabel = New System.Windows.Forms.Label()
+        Me.WorkingAddressStatusLabel = New System.Windows.Forms.Label()
+        Me.WorkingCountryTextBox = New System.Windows.Forms.TextBox()
+        Me.WorkingCountryLabel = New System.Windows.Forms.Label()
+        Me.WorkingZip4TextBox = New System.Windows.Forms.TextBox()
+        Me.WorkingZip5TextBox = New System.Windows.Forms.TextBox()
+        Me.WorkingStateTextBox = New System.Windows.Forms.TextBox()
+        Me.WorkingCityTextBox = New System.Windows.Forms.TextBox()
+        Me.WorkingZip4Label = New System.Windows.Forms.Label()
+        Me.WorkingZip5Label = New System.Windows.Forms.Label()
+        Me.WorkingStateLabel = New System.Windows.Forms.Label()
+        Me.WorkingCityLabel = New System.Windows.Forms.Label()
+        Me.WorkingStreetLine2TextBox = New System.Windows.Forms.TextBox()
+        Me.WorkingStreetLine1TextBox = New System.Windows.Forms.TextBox()
+        Me.WorkingStreetLine1Label = New System.Windows.Forms.Label()
+        Me.CleanedAddressTabPage = New System.Windows.Forms.TabPage()
+        Me.CleanedStreetLine2Label = New System.Windows.Forms.Label()
+        Me.CleanedPrivateMailBoxTextBox = New System.Windows.Forms.TextBox()
+        Me.CleanedUrbanizationNameTextBox = New System.Windows.Forms.TextBox()
+        Me.CleanedPrivateMailBoxLabel = New System.Windows.Forms.Label()
+        Me.CleanedUrbanizationNameLabel = New System.Windows.Forms.Label()
+        Me.CleanedZipCodeTypeTextBox = New System.Windows.Forms.TextBox()
+        Me.CleanedAddressTypeTextBox = New System.Windows.Forms.TextBox()
+        Me.CleanedZipCodeTypeLabel = New System.Windows.Forms.Label()
+        Me.CleanedAddressTypeLabel = New System.Windows.Forms.Label()
+        Me.CleanedAddressErrorTextBox = New System.Windows.Forms.TextBox()
+        Me.CleanedAddressStatusTextBox = New System.Windows.Forms.TextBox()
+        Me.CleanedCarrierTextBox = New System.Windows.Forms.TextBox()
+        Me.CleanedDeliveryPointTextBox = New System.Windows.Forms.TextBox()
+        Me.CleanedCarrierLabel = New System.Windows.Forms.Label()
+        Me.CleanedDeliveryPointLabel = New System.Windows.Forms.Label()
+        Me.CleanedAddressErrorLabel = New System.Windows.Forms.Label()
+        Me.CleanedAddressStatusLabel = New System.Windows.Forms.Label()
+        Me.CleanedCountryTextBox = New System.Windows.Forms.TextBox()
+        Me.CleanedCountryLabel = New System.Windows.Forms.Label()
+        Me.CleanedZip4TextBox = New System.Windows.Forms.TextBox()
+        Me.CleanedZip5TextBox = New System.Windows.Forms.TextBox()
+        Me.CleanedStateTextBox = New System.Windows.Forms.TextBox()
+        Me.CleanedCityTextBox = New System.Windows.Forms.TextBox()
+        Me.CleanedZip4Label = New System.Windows.Forms.Label()
+        Me.CleanedZip5Label = New System.Windows.Forms.Label()
+        Me.CleanedStateLabel = New System.Windows.Forms.Label()
+        Me.CleanedCityLabel = New System.Windows.Forms.Label()
+        Me.CleanedStreetLine2TextBox = New System.Windows.Forms.TextBox()
+        Me.CleanedStreetLine1TextBox = New System.Windows.Forms.TextBox()
+        Me.CleanedStreetLine1Label = New System.Windows.Forms.Label()
+        Me.GeoCodeTabPage = New System.Windows.Forms.TabPage()
+        Me.GeoCodeStatTextBox = New System.Windows.Forms.TextBox()
+        Me.GeoCodeStatLabel = New System.Windows.Forms.Label()
+        Me.CensusTractTextBox = New System.Windows.Forms.TextBox()
+        Me.CensusBlockTextBox = New System.Windows.Forms.TextBox()
+        Me.CensusTractLabel = New System.Windows.Forms.Label()
+        Me.CensusBlockLabel = New System.Windows.Forms.Label()
+        Me.CoreBasedStatisticalGroupBox = New System.Windows.Forms.GroupBox()
+        Me.CBSADivisionTitleTextBox = New System.Windows.Forms.TextBox()
+        Me.CBSADivisionTitleLabel = New System.Windows.Forms.Label()
+        Me.CBSADivisionLevelTextBox = New System.Windows.Forms.TextBox()
+        Me.CBSADivisionLevelLabel = New System.Windows.Forms.Label()
+        Me.CBSADivisionCodeTextBox = New System.Windows.Forms.TextBox()
+        Me.CBSADivisionCodeLabel = New System.Windows.Forms.Label()
+        Me.CBSATitleTextBox = New System.Windows.Forms.TextBox()
+        Me.CBSATitleLabel = New System.Windows.Forms.Label()
+        Me.CBSALevelTextBox = New System.Windows.Forms.TextBox()
+        Me.CBSALevelLabel = New System.Windows.Forms.Label()
+        Me.CBSACodeTextBox = New System.Windows.Forms.TextBox()
+        Me.CBSACodeLabel = New System.Windows.Forms.Label()
+        Me.TimeZoneCodeTextBox = New System.Windows.Forms.TextBox()
+        Me.TimeZoneNameTextBox = New System.Windows.Forms.TextBox()
+        Me.TimeZoneCodeLabel = New System.Windows.Forms.Label()
+        Me.TimeZoneNameLabel = New System.Windows.Forms.Label()
+        Me.PlaceCodeTextBox = New System.Windows.Forms.TextBox()
+        Me.PlaceNameTextBox = New System.Windows.Forms.TextBox()
+        Me.PlaceCodeLabel = New System.Windows.Forms.Label()
+        Me.PlaceNameLabel = New System.Windows.Forms.Label()
+        Me.LongitudeTextBox = New System.Windows.Forms.TextBox()
+        Me.LatitudeTextBox = New System.Windows.Forms.TextBox()
+        Me.LongitudeLabel = New System.Windows.Forms.Label()
+        Me.LatitudeLabel = New System.Windows.Forms.Label()
+        Me.CountyFIPSTextBox = New System.Windows.Forms.TextBox()
+        Me.CountyNameTextBox = New System.Windows.Forms.TextBox()
+        Me.CountyFIPSLabel = New System.Windows.Forms.Label()
+        Me.CountyNameLabel = New System.Windows.Forms.Label()
+        Me.PopulateGeoCodingCheckBox = New System.Windows.Forms.CheckBox()
+        Me.ClearAddressButton = New System.Windows.Forms.Button()
+        Me.CleanAddressButton = New System.Windows.Forms.Button()
+        Me.FileCleaningTabPage = New System.Windows.Forms.TabPage()
+        Me.DatabaseComboBox = New System.Windows.Forms.ComboBox()
+        Me.DatabaseLabel = New System.Windows.Forms.Label()
+        Me.ClearFileButton = New System.Windows.Forms.Button()
+        Me.CleanFileButton = New System.Windows.Forms.Button()
+        Me.BatchSizeTextBox = New System.Windows.Forms.TextBox()
+        Me.BatchSizeLabel = New System.Windows.Forms.Label()
+        Me.FileIDTextBox = New System.Windows.Forms.TextBox()
+        Me.FileIDLabel = New System.Windows.Forms.Label()
+        Me.StudyIDTextBox = New System.Windows.Forms.TextBox()
+        Me.StudyIDLabel = New System.Windows.Forms.Label()
+        Me.NameCleaningTabPage = New System.Windows.Forms.TabPage()
+        Me.NameCleaningTabControl = New System.Windows.Forms.TabControl()
+        Me.OriginalNameTabPage = New System.Windows.Forms.TabPage()
+        Me.OriginalSuffixTextBox = New System.Windows.Forms.TextBox()
+        Me.OriginalSuffixLabel = New System.Windows.Forms.Label()
+        Me.OriginalTitleTextBox = New System.Windows.Forms.TextBox()
+        Me.OriginalTitleLabel = New System.Windows.Forms.Label()
+        Me.OriginalLastNameTextBox = New System.Windows.Forms.TextBox()
+        Me.OriginalLastNameLabel = New System.Windows.Forms.Label()
+        Me.OriginalMiddleInitialTextBox = New System.Windows.Forms.TextBox()
+        Me.OriginalMiddleInitialLabel = New System.Windows.Forms.Label()
+        Me.OriginalFirstNameTextBox = New System.Windows.Forms.TextBox()
+        Me.OriginalFirstNameLabel = New System.Windows.Forms.Label()
+        Me.WorkingNameTabPage = New System.Windows.Forms.TabPage()
+        Me.WorkingSuffixTextBox = New System.Windows.Forms.TextBox()
+        Me.WorkingSuffixLabel = New System.Windows.Forms.Label()
+        Me.WorkingTitleTextBox = New System.Windows.Forms.TextBox()
+        Me.WorkingTitleLabel = New System.Windows.Forms.Label()
+        Me.WorkingNameStatusTextBox = New System.Windows.Forms.TextBox()
+        Me.WorkingNameStatusLabel = New System.Windows.Forms.Label()
+        Me.WorkingLastNameTextBox = New System.Windows.Forms.TextBox()
+        Me.WorkingLastNameLabel = New System.Windows.Forms.Label()
+        Me.WorkingMiddleInitialTextBox = New System.Windows.Forms.TextBox()
+        Me.WorkingMiddleInitialLabel = New System.Windows.Forms.Label()
+        Me.WorkingFirstNameTextBox = New System.Windows.Forms.TextBox()
+        Me.WorkingFirstNameLabel = New System.Windows.Forms.Label()
+        Me.CleanedNameTabPage = New System.Windows.Forms.TabPage()
+        Me.CleanedSuffixTextBox = New System.Windows.Forms.TextBox()
+        Me.CleanedSuffixLabel = New System.Windows.Forms.Label()
+        Me.CleanedTitleTextBox = New System.Windows.Forms.TextBox()
+        Me.CleanedTitleLabel = New System.Windows.Forms.Label()
+        Me.CleanedNameStatusTextBox = New System.Windows.Forms.TextBox()
+        Me.CleanedNameStatusLabel = New System.Windows.Forms.Label()
+        Me.CleanedLastNameTextBox = New System.Windows.Forms.TextBox()
+        Me.CleanedLastNameLabel = New System.Windows.Forms.Label()
+        Me.CleanedMiddleInitialTextBox = New System.Windows.Forms.TextBox()
+        Me.CleanedMiddleInitialLabel = New System.Windows.Forms.Label()
+        Me.CleanedFirstNameTextBox = New System.Windows.Forms.TextBox()
+        Me.CleanedFirstNameLabel = New System.Windows.Forms.Label()
+        Me.ClearNameButton = New System.Windows.Forms.Button()
+        Me.CleanNameButton = New System.Windows.Forms.Button()
         Me.LocationGroupBox.SuspendLayout()
         Me.CleaningTabControl.SuspendLayout()
         Me.AddressCleaningTabPage.SuspendLayout()
@@ -216,7 +215,6 @@ Partial Class MainForm
         '
         'LocationGroupBox
         '
-        Me.LocationGroupBox.Controls.Add(Me.ForceProxyCheckBox)
         Me.LocationGroupBox.Controls.Add(Me.CountryComboBox)
         Me.LocationGroupBox.Controls.Add(Me.CountryLabel)
         Me.LocationGroupBox.Location = New System.Drawing.Point(12, 12)
@@ -225,16 +223,6 @@ Partial Class MainForm
         Me.LocationGroupBox.TabIndex = 0
         Me.LocationGroupBox.TabStop = False
         Me.LocationGroupBox.Text = "Location Selection"
-        '
-        'ForceProxyCheckBox
-        '
-        Me.ForceProxyCheckBox.AutoSize = True
-        Me.ForceProxyCheckBox.Location = New System.Drawing.Point(362, 23)
-        Me.ForceProxyCheckBox.Name = "ForceProxyCheckBox"
-        Me.ForceProxyCheckBox.Size = New System.Drawing.Size(84, 17)
-        Me.ForceProxyCheckBox.TabIndex = 2
-        Me.ForceProxyCheckBox.Text = "Force Proxy"
-        Me.ForceProxyCheckBox.UseVisualStyleBackColor = True
         '
         'CountryComboBox
         '
@@ -1443,7 +1431,7 @@ Partial Class MainForm
         Me.BatchSizeTextBox.Name = "BatchSizeTextBox"
         Me.BatchSizeTextBox.Size = New System.Drawing.Size(47, 21)
         Me.BatchSizeTextBox.TabIndex = 5
-        Me.BatchSizeTextBox.Text = "1000"
+        Me.BatchSizeTextBox.Text = "100"
         '
         'BatchSizeLabel
         '
@@ -1530,7 +1518,7 @@ Partial Class MainForm
         'OriginalSuffixTextBox
         '
         Me.OriginalSuffixTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.OriginalSuffixTextBox.Location = New System.Drawing.Point(80, 122)
         Me.OriginalSuffixTextBox.Name = "OriginalSuffixTextBox"
         Me.OriginalSuffixTextBox.Size = New System.Drawing.Size(331, 21)
@@ -1548,7 +1536,7 @@ Partial Class MainForm
         'OriginalTitleTextBox
         '
         Me.OriginalTitleTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.OriginalTitleTextBox.Location = New System.Drawing.Point(80, 14)
         Me.OriginalTitleTextBox.Name = "OriginalTitleTextBox"
         Me.OriginalTitleTextBox.Size = New System.Drawing.Size(331, 21)
@@ -1566,7 +1554,7 @@ Partial Class MainForm
         'OriginalLastNameTextBox
         '
         Me.OriginalLastNameTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.OriginalLastNameTextBox.Location = New System.Drawing.Point(80, 95)
         Me.OriginalLastNameTextBox.Name = "OriginalLastNameTextBox"
         Me.OriginalLastNameTextBox.Size = New System.Drawing.Size(331, 21)
@@ -1584,7 +1572,7 @@ Partial Class MainForm
         'OriginalMiddleInitialTextBox
         '
         Me.OriginalMiddleInitialTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.OriginalMiddleInitialTextBox.Location = New System.Drawing.Point(80, 68)
         Me.OriginalMiddleInitialTextBox.Name = "OriginalMiddleInitialTextBox"
         Me.OriginalMiddleInitialTextBox.Size = New System.Drawing.Size(331, 21)
@@ -1602,7 +1590,7 @@ Partial Class MainForm
         'OriginalFirstNameTextBox
         '
         Me.OriginalFirstNameTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.OriginalFirstNameTextBox.Location = New System.Drawing.Point(80, 41)
         Me.OriginalFirstNameTextBox.Name = "OriginalFirstNameTextBox"
         Me.OriginalFirstNameTextBox.Size = New System.Drawing.Size(331, 21)
@@ -1641,7 +1629,7 @@ Partial Class MainForm
         'WorkingSuffixTextBox
         '
         Me.WorkingSuffixTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.WorkingSuffixTextBox.Location = New System.Drawing.Point(80, 122)
         Me.WorkingSuffixTextBox.Name = "WorkingSuffixTextBox"
         Me.WorkingSuffixTextBox.ReadOnly = True
@@ -1660,7 +1648,7 @@ Partial Class MainForm
         'WorkingTitleTextBox
         '
         Me.WorkingTitleTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.WorkingTitleTextBox.Location = New System.Drawing.Point(80, 14)
         Me.WorkingTitleTextBox.Name = "WorkingTitleTextBox"
         Me.WorkingTitleTextBox.ReadOnly = True
@@ -1679,7 +1667,7 @@ Partial Class MainForm
         'WorkingNameStatusTextBox
         '
         Me.WorkingNameStatusTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.WorkingNameStatusTextBox.Location = New System.Drawing.Point(80, 149)
         Me.WorkingNameStatusTextBox.Name = "WorkingNameStatusTextBox"
         Me.WorkingNameStatusTextBox.ReadOnly = True
@@ -1698,7 +1686,7 @@ Partial Class MainForm
         'WorkingLastNameTextBox
         '
         Me.WorkingLastNameTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.WorkingLastNameTextBox.Location = New System.Drawing.Point(80, 95)
         Me.WorkingLastNameTextBox.Name = "WorkingLastNameTextBox"
         Me.WorkingLastNameTextBox.ReadOnly = True
@@ -1717,7 +1705,7 @@ Partial Class MainForm
         'WorkingMiddleInitialTextBox
         '
         Me.WorkingMiddleInitialTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.WorkingMiddleInitialTextBox.Location = New System.Drawing.Point(80, 68)
         Me.WorkingMiddleInitialTextBox.Name = "WorkingMiddleInitialTextBox"
         Me.WorkingMiddleInitialTextBox.ReadOnly = True
@@ -1736,7 +1724,7 @@ Partial Class MainForm
         'WorkingFirstNameTextBox
         '
         Me.WorkingFirstNameTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.WorkingFirstNameTextBox.Location = New System.Drawing.Point(80, 41)
         Me.WorkingFirstNameTextBox.Name = "WorkingFirstNameTextBox"
         Me.WorkingFirstNameTextBox.ReadOnly = True
@@ -1775,7 +1763,7 @@ Partial Class MainForm
         'CleanedSuffixTextBox
         '
         Me.CleanedSuffixTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.CleanedSuffixTextBox.Location = New System.Drawing.Point(80, 122)
         Me.CleanedSuffixTextBox.Name = "CleanedSuffixTextBox"
         Me.CleanedSuffixTextBox.ReadOnly = True
@@ -1794,7 +1782,7 @@ Partial Class MainForm
         'CleanedTitleTextBox
         '
         Me.CleanedTitleTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.CleanedTitleTextBox.Location = New System.Drawing.Point(80, 14)
         Me.CleanedTitleTextBox.Name = "CleanedTitleTextBox"
         Me.CleanedTitleTextBox.ReadOnly = True
@@ -1813,7 +1801,7 @@ Partial Class MainForm
         'CleanedNameStatusTextBox
         '
         Me.CleanedNameStatusTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.CleanedNameStatusTextBox.Location = New System.Drawing.Point(80, 149)
         Me.CleanedNameStatusTextBox.Name = "CleanedNameStatusTextBox"
         Me.CleanedNameStatusTextBox.ReadOnly = True
@@ -1832,7 +1820,7 @@ Partial Class MainForm
         'CleanedLastNameTextBox
         '
         Me.CleanedLastNameTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.CleanedLastNameTextBox.Location = New System.Drawing.Point(80, 95)
         Me.CleanedLastNameTextBox.Name = "CleanedLastNameTextBox"
         Me.CleanedLastNameTextBox.ReadOnly = True
@@ -1851,7 +1839,7 @@ Partial Class MainForm
         'CleanedMiddleInitialTextBox
         '
         Me.CleanedMiddleInitialTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.CleanedMiddleInitialTextBox.Location = New System.Drawing.Point(80, 68)
         Me.CleanedMiddleInitialTextBox.Name = "CleanedMiddleInitialTextBox"
         Me.CleanedMiddleInitialTextBox.ReadOnly = True
@@ -1870,7 +1858,7 @@ Partial Class MainForm
         'CleanedFirstNameTextBox
         '
         Me.CleanedFirstNameTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.CleanedFirstNameTextBox.Location = New System.Drawing.Point(80, 41)
         Me.CleanedFirstNameTextBox.Name = "CleanedFirstNameTextBox"
         Me.CleanedFirstNameTextBox.ReadOnly = True
@@ -1949,7 +1937,6 @@ Partial Class MainForm
     Friend WithEvents LocationGroupBox As System.Windows.Forms.GroupBox
     Friend WithEvents CountryComboBox As System.Windows.Forms.ComboBox
     Friend WithEvents CountryLabel As System.Windows.Forms.Label
-    Friend WithEvents ForceProxyCheckBox As System.Windows.Forms.CheckBox
     Friend WithEvents CleaningTabControl As System.Windows.Forms.TabControl
     Friend WithEvents AddressCleaningTabPage As System.Windows.Forms.TabPage
     Friend WithEvents FileCleaningTabPage As System.Windows.Forms.TabPage

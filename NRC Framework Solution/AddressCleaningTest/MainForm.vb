@@ -7,6 +7,7 @@ Public Class MainForm
 
     Private mCountryID As CountryIDs
     Private mLoadDB As LoadDatabases
+    Private mDefaultBatchSize As Integer = 100
 
 #End Region
 
@@ -104,7 +105,7 @@ Public Class MainForm
         Dim clean As Cleaner = New Cleaner(mCountryID, mLoadDB)
 
         'Add the name
-        Dim item As Name = Nrc.Framework.AddressCleaning.Name.NewName
+        Dim item As Address = Nrc.Framework.AddressCleaning.Address.NewAddress
         With item.OriginalName
             .Title = OriginalTitleTextBox.Text
             .FirstName = OriginalFirstNameTextBox.Text
@@ -112,10 +113,10 @@ Public Class MainForm
             .LastName = OriginalLastNameTextBox.Text
             .Suffix = OriginalSuffixTextBox.Text
         End With
-        clean.Names.Add(item)
+        clean.Addresses.Add(item)
 
         'Clean the name
-        clean.Names.Clean(True, ForceProxyCheckBox.Checked, 0)
+        clean.Addresses.Clean(False, 0)
 
         'Load the working name
         With item.WorkingName
@@ -184,9 +185,9 @@ Public Class MainForm
 
         'Clean the address
         If String.IsNullOrEmpty(FileIDTextBox.Text) Then
-            clean.Addresses.Clean(ForceProxyCheckBox.Checked)
+            clean.Addresses.Clean()
         Else
-            clean.Addresses.Clean(ForceProxyCheckBox.Checked, PopulateGeoCodingCheckBox.Checked, CInt(FileIDTextBox.Text))
+            clean.Addresses.Clean(PopulateGeoCodingCheckBox.Checked, CInt(FileIDTextBox.Text))
         End If
 
         'Load the working address
@@ -305,11 +306,14 @@ Public Class MainForm
         Dim clean As Cleaner = New Cleaner(mCountryID, mLoadDB)
 
         'Clean the specified file
-        Dim metaGroups As MetaGroupCollection = clean.CleanAll(CInt(FileIDTextBox.Text), CInt(StudyIDTextBox.Text), CInt(BatchSizeTextBox.Text), ForceProxyCheckBox.Checked)
+        If BatchSizeTextBox.Text.Length = 0 Then
+            BatchSizeTextBox.Text = mDefaultBatchSize.ToString()
+        End If
+        Dim metaData As AddressMetadata = clean.CleanAll(CInt(FileIDTextBox.Text), CInt(StudyIDTextBox.Text), CInt(BatchSizeTextBox.Text))
 
 
-        'Add the MetaGroup's statistics to the message
-        For Each metaGroup As MetaGroup In metaGroups
+        ''Add the MetaGroup's statistics to the message
+        For Each metaGroup As MetaGroup In metaData.MetaGroups
             With metaGroup
                 message &= String.Format(msgFormat, vbTab, vbCrLf, .GroupName, .GroupType, .QtyUpdated, .QtyErrors, .QtyRemaining, .QtyTotal)
             End With
@@ -432,6 +436,10 @@ Public Class MainForm
         FileIDTextBox.Text = String.Empty
         StudyIDTextBox.Text = String.Empty
         BatchSizeTextBox.Text = String.Empty
+
+    End Sub
+
+    Private Sub BatchSizeTextBox_TextChanged(sender As Object, e As EventArgs) Handles BatchSizeTextBox.TextChanged
 
     End Sub
 
