@@ -237,7 +237,7 @@ Public Class AddressCollection
         End Using
     End Function
 
-    Private Function cleanSingleAddress(ByVal assignIDs As Boolean, ByVal forceProxy As Boolean, ByVal populateGeoCoding As Boolean, ByRef addr As Address, ByVal dataFileId As Integer) As JObject
+    Private Function cleanSingleAddress(ByVal assignIDs As Boolean, ByVal populateGeoCoding As Boolean, ByRef addr As Address, ByVal dataFileId As Integer) As JObject
         Dim addrCount As Integer = 0
         Dim addrUsed As Integer = 0
         Dim webCallCount As Integer = 0
@@ -898,7 +898,7 @@ Public Class AddressCollection
         origAddr.WorkingAddress.StreetLine2 = clonedAddress.OriginalAddress.StreetLine1
 
         'Make the web service call with the clone/swapped address
-        Dim responseArray As JObject = cleanSingleAddress(False, False, True, origAddr, datafileId)
+        Dim responseArray As JObject = cleanSingleAddress(False, True, origAddr, datafileId)
 
         'Parse the address clean response into an Address object
         Dim returnedAddress As Address = ParseSingleAddress(responseArray, origAddr)

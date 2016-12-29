@@ -17,7 +17,7 @@ Imports System.Runtime.InteropServices
 <Assembly: CLSCompliant(True)> 
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM
-<Assembly: Guid("8DFEDEF8-138C-43A1-950F-5DAB2A13FAEB")> 
+<Assembly: Guid("8DFEDEF8-138C-43A1-950F-5DAB2A13FAEB")>
 
 ' Version information for an assembly consists of the following four values:
 '
@@ -35,4 +35,5 @@ Imports System.Runtime.InteropServices
 '           SK 08/24/2008 Added enhancement to "forgot your password"
 
 
-<Assembly: AssemblyVersion("1.1.2.0")> 
+<Assembly: AssemblyVersion("2.0.0.0")>
+<Assembly: AssemblyFileVersion("2.0.0")>

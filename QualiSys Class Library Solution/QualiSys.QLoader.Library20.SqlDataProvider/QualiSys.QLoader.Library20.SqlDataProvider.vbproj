@@ -95,14 +95,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Referenced Assemblies\Microsoft.Practices.ObjectBuilder.dll</HintPath>
     </Reference>
-    <Reference Include="Nrc.Framework, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Nrc.Framework.BusinessLogic, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.BusinessLogic.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -160,6 +152,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\NRC Framework Solution\Nrc.Framework.BusinessLogic\Nrc.Framework.BusinessLogic.vbproj">
+      <Project>{c5a6ee1a-d5bf-4059-87cf-aca302979820}</Project>
+      <Name>Nrc.Framework.BusinessLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NRC Framework Solution\Nrc.Framework\Nrc.Framework.vbproj">
+      <Project>{4616369f-a6a3-4192-93a9-23b3e6e2d0bc}</Project>
+      <Name>Nrc.Framework</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Qualisys.QLoader.Library.SqlProvider\Qualisys.QLoader.Library.SqlProvider.vbproj">
       <Project>{8C82B762-7494-478C-B8D6-E75958616F05}</Project>
       <Name>Qualisys.QLoader.Library.SqlProvider</Name>

@@ -18,7 +18,7 @@ Imports System.Runtime.InteropServices
 <Assembly: ComVisible(False)>
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM
-<Assembly: Guid("f5fec052-6e66-45ea-9733-bdd51a14128f")> 
+<Assembly: Guid("f5fec052-6e66-45ea-9733-bdd51a14128f")>
 
 ' Version information for an assembly consists of the following four values:
 '
@@ -37,7 +37,7 @@ Imports System.Runtime.InteropServices
 'v1.3.0.0   JPC 03/06/2006 - Added Data.DataRowReader class
 'v1.4.0.0   JPC 03/13/2006 - Modifed Data.SafeDataReader class to support Nullable "Get" methods
 'v1.5.0.0   BM  04/11/2006 - Modify ExceptionReport control to show all the inner exceptions
-<Assembly: AssemblyVersion("1.10.0.0")> 
-<Assembly: AssemblyFileVersion("1.10.0.0")> 
+<Assembly: AssemblyVersion("2.0.0.0")>
+<Assembly: AssemblyFileVersion("2.0.0.0")>
 
 
