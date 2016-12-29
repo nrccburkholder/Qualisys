@@ -11,8 +11,8 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyTitle("Nrc.Qualisys.QLoader.Library.SqlProvider")> 
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("")> 
-<Assembly: AssemblyProduct("Nrc.Qualisys.QLoader.Library.SqlProvider")> 
-<Assembly: AssemblyCopyright("Copyright ©  2006")> 
+<Assembly: AssemblyProduct("Nrc.Qualisys.QLoader.Library.SqlProvider")>
+<Assembly: AssemblyCopyright("Copyright ©  2006 - 2017")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>

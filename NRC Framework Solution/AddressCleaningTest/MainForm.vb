@@ -439,10 +439,6 @@ Public Class MainForm
 
     End Sub
 
-    Private Sub BatchSizeTextBox_TextChanged(sender As Object, e As EventArgs) Handles BatchSizeTextBox.TextChanged
-
-    End Sub
-
 #End Region
 
 End Class

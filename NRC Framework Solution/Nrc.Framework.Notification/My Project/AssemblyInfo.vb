@@ -11,8 +11,8 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyTitle("Nrc.Framework.Notification")> 
 <Assembly: AssemblyDescription("Implementation of the Notification Service")> 
 <Assembly: AssemblyCompany("National Research Corporation")> 
-<Assembly: AssemblyProduct("Nrc.Framework.Notification")> 
-<Assembly: AssemblyCopyright("Copyright ©  2008")> 
+<Assembly: AssemblyProduct("Nrc.Framework.Notification")>
+<Assembly: AssemblyCopyright("Copyright ©  2008 - 2017")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>

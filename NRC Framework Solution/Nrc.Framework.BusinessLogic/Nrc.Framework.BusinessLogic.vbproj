@@ -166,7 +166,6 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="Nrc.Framework.BusinessLogic.nuspec" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nrc.Framework\Nrc.Framework.vbproj">

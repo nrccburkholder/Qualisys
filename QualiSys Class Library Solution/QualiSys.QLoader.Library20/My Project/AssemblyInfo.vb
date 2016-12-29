@@ -11,8 +11,8 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyTitle("QualiSys.QLoader.Library20")> 
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("National Research Corporation")> 
-<Assembly: AssemblyProduct("QualiSys.QLoader.Library20")> 
-<Assembly: AssemblyCopyright("Copyright © 2011")> 
+<Assembly: AssemblyProduct("QualiSys.QLoader.Library20")>
+<Assembly: AssemblyCopyright("Copyright © 2011 - 2017")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>

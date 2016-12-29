@@ -145,10 +145,10 @@ Friend Class AddressMetadataProvider
         For Each md As MetaGroup In metaData.MetaGroups
             With md
                 If loadDB = LoadDatabases.QPLoad Then
-                    cmd = QLoaderDatabaseHelper.Db.GetStoredProcCommand(SP.InsertMetaGroupCounts, dataFileID, .RecordType, .GroupName, .QtyUpdated, .QtyErrors, .QtyRemaining, .QtyTotal)
+                    cmd = QLoaderDatabaseHelper.Db.GetStoredProcCommand(SP.InsertMetadataCounts, dataFileID, .RecordType, .GroupName, .QtyUpdated, .QtyErrors, .QtyRemaining, .QtyTotal)
                     QLoaderDatabaseHelper.ExecuteNonQuery(cmd)
                 Else
-                    cmd = DataLoadDatabaseHelper.Db.GetStoredProcCommand(SP.InsertMetaGroupCounts, dataFileID, .RecordType, .GroupName, .QtyUpdated, .QtyErrors, .QtyRemaining, .QtyTotal)
+                    cmd = DataLoadDatabaseHelper.Db.GetStoredProcCommand(SP.InsertMetadataCounts, dataFileID, .RecordType, .GroupName, .QtyUpdated, .QtyErrors, .QtyRemaining, .QtyTotal)
                     DataLoadDatabaseHelper.ExecuteNonQuery(cmd)
                 End If
             End With

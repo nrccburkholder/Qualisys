@@ -43,7 +43,6 @@ Public Class AddressCollection
 
         'Store the parameters
         mCountryID = countryID
-        ' addressCleanRecords = New List(Of Object)()
 
     End Sub
 
@@ -426,10 +425,6 @@ Public Class AddressCollection
             If populateGeoCoding Then
                 UpdateGeoCode(addr, cleanRecord)
             End If
-
-
-
-            Dim a As Address = addr
         Next
 
     End Sub
@@ -578,7 +573,7 @@ Public Class AddressCollection
             .Country = response("CountryCode").ToString.ToUpper
 
             'Set the Status Code
-            .AddressStatus = GetAddressStatus(GetResultCodes(response("Results").ToString, "A"))
+            .AddressStatus = GetResultStatus(GetResultCodes(response("Results").ToString, "A"))
 
             'Save the unique address key used for other Melissa services
             .AddressKey = response("AddressKey").ToString
@@ -631,7 +626,7 @@ Public Class AddressCollection
             .MiddleInitial = CleanString(response("NameMiddle").ToString, True, False)
             .LastName = CleanString(response("NameLast").ToString, True, False)
             .Suffix = CleanString(response("NameSuffix").ToString, True, False)
-            .NameStatus = GetNameStatus(results)
+            .NameStatus = GetResultStatus(results)
 
             'Check for error conditions
             Dim numString As String = "0123456789"
@@ -838,7 +833,7 @@ Public Class AddressCollection
             .Country = response("CountryCode").ToString.ToUpper
 
             'Set the Status Code
-            .AddressStatus = GetAddressStatus(GetResultCodes(response("Results").ToString, "A"))
+            .AddressStatus = GetResultStatus(GetResultCodes(response("Results").ToString, "A"))
 
             'Save the unique address key used for other Melissa services
             .AddressKey = response("AddressKey").ToString
@@ -1003,7 +998,7 @@ Public Class AddressCollection
     ''' <param name="results">The result string to be cleaned up.</param>
     ''' <returns>Returns a result string the will fit in the database column.</returns>
     ''' <remarks></remarks>
-    Private Function GetAddressStatus(ByVal results As String) As String
+    Private Function GetResultStatus(ByVal results As String) As String
 
         results = results.Trim
         If Not String.IsNullOrEmpty(results) Then
@@ -1076,7 +1071,7 @@ Public Class AddressCollection
     End Function
 
 
-    Private Sub UpdateGeoCode(ByRef addr As Address, ByRef response As JToken)
+    Private Sub UpdateGeoCode(ByVal addr As Address, ByRef response As JToken)
 
         'Set the Status Code
         Dim GeoCodeResultCodes As String = GetResultCodes(response("Results").ToString, "G") & GetResultCodes(response("Results").ToString, "D")
@@ -1128,21 +1123,6 @@ Public Class AddressCollection
         Next
 
         Return False
-
-    End Function
-
-    Private Function GetNameStatus(ByVal results As String) As String
-
-        results = results.Trim
-        If Not String.IsNullOrEmpty(results) Then
-            If results.Length > 42 Then
-                Return results.Substring(0, 42)
-            Else
-                Return results
-            End If
-        Else
-            Return String.Empty
-        End If
 
     End Function
 

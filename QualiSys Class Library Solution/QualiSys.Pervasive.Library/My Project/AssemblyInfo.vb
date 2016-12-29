@@ -11,8 +11,8 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyTitle("QualiSys.Pervasive.Library")> 
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("")> 
-<Assembly: AssemblyProduct("QualiSys.Pervasive.Library")> 
-<Assembly: AssemblyCopyright("Copyright © 2006")> 
+<Assembly: AssemblyProduct("QualiSys.Pervasive.Library")>
+<Assembly: AssemblyCopyright("Copyright © 2006 - 2017")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>

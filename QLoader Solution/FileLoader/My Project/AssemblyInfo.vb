@@ -11,8 +11,8 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyTitle("FileLoader")> 
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("")> 
-<Assembly: AssemblyProduct("FileLoader")> 
-<Assembly: AssemblyCopyright("Copyright ©  2006")> 
+<Assembly: AssemblyProduct("FileLoader")>
+<Assembly: AssemblyCopyright("Copyright ©  2006 - 2017")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
