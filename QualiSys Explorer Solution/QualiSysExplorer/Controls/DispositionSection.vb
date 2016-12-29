@@ -780,7 +780,7 @@ Public Class DispositionSection
             Case DispositionAction.Tocl
                 pnl = New TakeOffCallListPanel
             Case Else
-                pnl = Nothing
+                pnl = New AnyActionPanel
         End Select
 
         If pnl Is Nothing Then

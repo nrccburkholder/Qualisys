@@ -701,6 +701,20 @@ Public Class Mailing
         Return Language.GetLanguagesAvailableForSurvey(Me.mSurveyId)
     End Function
 
+    ''' -----------------------------------------------------------------------------
+    ''' <summary>
+    ''' Sets the disposition for this mailing and then adds the respondant to the Study's Take Off Call List
+    ''' </summary>
+    ''' <remarks>
+    ''' </remarks>
+    ''' <history>
+    ''' 	[jcamp]	10/12/2005	Created
+    ''' </history>
+    ''' -----------------------------------------------------------------------------
+    Public Sub LogDispositionByLitho(ByVal dispositionId As Integer, ByVal receiptTypeId As Integer, ByVal userName As String)
+        MailingProvider.Instance.LogDispositionByLitho(Me.mLithoCode, dispositionId, receiptTypeId, userName)
+    End Sub
+
     Public Sub ResetDirtyFlag()
         mIsDirty = False
     End Sub

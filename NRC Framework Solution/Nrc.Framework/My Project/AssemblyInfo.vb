@@ -11,8 +11,8 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyTitle("NRC Framework")> 
 <Assembly: AssemblyDescription("A library of reusable classes for NRC applications")> 
 <Assembly: AssemblyCompany("National Research Corporation")> 
-<Assembly: AssemblyProduct("NRC Framework")> 
-<Assembly: AssemblyCopyright("Copyright ©  2005")> 
+<Assembly: AssemblyProduct("NRC Framework")>
+<Assembly: AssemblyCopyright("Copyright ©  2005-2017")>
 <Assembly: AssemblyTrademark("")> 
 <Assembly: CLSCompliant(True)> 
 <Assembly: ComVisible(False)>

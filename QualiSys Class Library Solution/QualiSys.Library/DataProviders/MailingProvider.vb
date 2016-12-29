@@ -28,7 +28,7 @@ Namespace DataProvider
         Public MustOverride Sub RegenerateMailing(ByVal litho As String, ByVal dispositionId As Integer, ByVal receiptTypeId As Integer, ByVal userName As String, ByVal languageId As Integer)
         Public MustOverride Sub TakeOffCallList(ByVal litho As String, ByVal dispositionId As Integer, ByVal receiptTypeId As Integer, ByVal userName As String)
         Public MustOverride Sub LogContactRequest(ByVal litho As String, ByVal dispositionId As Integer, ByVal receiptTypeId As Integer, ByVal userName As String, ByVal emailText As String)
-
+        Public MustOverride Sub LogDispositionByLitho(ByVal litho As String, ByVal dispositionId As Integer, ByVal receiptTypeId As Integer, ByVal userName As String)
 
         Protected NotInheritable Class ReadOnlyAccessor
             Private Sub New()

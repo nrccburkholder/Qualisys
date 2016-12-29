@@ -93,4 +93,9 @@ Public Class MailingProvider
         ExecuteNonQuery(cmd)
     End Sub
 
+    Public Overrides Sub LogDispositionByLitho(ByVal litho As String, ByVal dispositionId As Integer, ByVal receiptTypeId As Integer, ByVal userName As String)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.LogDispositionByLitho, litho, dispositionId, receiptTypeId, userName)
+        ExecuteNonQuery(cmd)
+    End Sub
+
 End Class

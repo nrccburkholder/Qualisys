@@ -11,8 +11,8 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyTitle("AddressCleaner")> 
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("")> 
-<Assembly: AssemblyProduct("AddressCleaner")> 
-<Assembly: AssemblyCopyright("Copyright ©  2006-2014")> 
+<Assembly: AssemblyProduct("AddressCleaner")>
+<Assembly: AssemblyCopyright("Copyright ©  2006-2017")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
@@ -31,5 +31,7 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
+
 <Assembly: AssemblyVersion("3.0.0.0")>
 <Assembly: AssemblyFileVersion("3.0.0.0")>
+

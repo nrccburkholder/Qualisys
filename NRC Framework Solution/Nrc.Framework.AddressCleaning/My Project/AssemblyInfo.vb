@@ -11,8 +11,8 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyTitle("Nrc.Framework.AddressCleaning")> 
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("")> 
-<Assembly: AssemblyProduct("Nrc.Framework.AddressCleaning")> 
-<Assembly: AssemblyCopyright("Copyright ©  2006-2015")> 
+<Assembly: AssemblyProduct("Nrc.Framework.AddressCleaning")>
+<Assembly: AssemblyCopyright("Copyright ©  2006-2017")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
@@ -33,3 +33,4 @@ Imports System.Runtime.InteropServices
 
 <Assembly: AssemblyVersion("3.0.0.0")>
 <Assembly: AssemblyFileVersion("3.0.0.0")>
+

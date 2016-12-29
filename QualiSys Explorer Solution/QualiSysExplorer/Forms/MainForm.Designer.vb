@@ -174,7 +174,7 @@ Partial Class MainForm
         Me.DispositionTab.NavControlType = Nothing
         Me.DispositionTab.Size = New System.Drawing.Size(217, 32)
         Me.DispositionTab.TabIndex = 0
-        Me.DispositionTab.Text = "Respondant Dispositions"
+        Me.DispositionTab.Text = "Respondent Dispositions"
         '
         'SearchTab
         '
@@ -190,7 +190,7 @@ Partial Class MainForm
         Me.SearchTab.NavControlType = Nothing
         Me.SearchTab.Size = New System.Drawing.Size(217, 32)
         Me.SearchTab.TabIndex = 1
-        Me.SearchTab.Text = "Respondant Search"
+        Me.SearchTab.Text = "Respondent Search"
         '
         'USPSAddressUpdatesTab
         '

@@ -58,7 +58,7 @@
     <PublisherName>National Research Corporation</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>2.0.12.0</ApplicationVersion>
+    <ApplicationVersion>2.1.1.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -225,6 +225,9 @@
     <None Include="Resources\block.jpg" />
     <None Include="Resources\cancel.bmp" />
     <None Include="Resources\Filter16.png" />
+    <EmbeddedResource Include="Controls\AnyActionPanel.resx">
+      <DependentUpon>AnyActionPanel.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\USPSAddressUpdateNavigator.resx">
       <DependentUpon>USPSAddressUpdateNavigator.vb</DependentUpon>
     </EmbeddedResource>
@@ -312,6 +315,9 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\StudyNavigator.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\AnyActionPanel.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\TakeOffCallListPanel.vb">
