@@ -188,6 +188,9 @@
       <HintPath>C:\Program Files (x86)\Microsoft.NET\Primary Interop Assemblies\Microsoft.stdformat.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="msdatasrc, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="NRC, Version=1.14.1.0, Culture=neutral, PublicKeyToken=0c9e538f562d9317">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Referenced Assemblies\NRC.dll</HintPath>
