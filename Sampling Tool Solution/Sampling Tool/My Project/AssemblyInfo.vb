@@ -11,14 +11,14 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyTitle("Sampling Tool")> 
 <Assembly: AssemblyDescription("Used to sample Qualisys data files and schedule mailings for generation")> 
 <Assembly: AssemblyCompany("National Research Corporation")> 
-<Assembly: AssemblyProduct("Sampling Tool")> 
-<Assembly: AssemblyCopyright("Copyright ©  2016")> 
+<Assembly: AssemblyProduct("Sampling Tool")>
+<Assembly: AssemblyCopyright("Copyright ©  2017")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)> 
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM
-<Assembly: Guid("36131df6-6533-4841-83b5-52442e056e57")> 
+<Assembly: Guid("36131df6-6533-4841-83b5-52442e056e57")>
 
 ' Version information for an assembly consists of the following four values:
 '
@@ -32,6 +32,6 @@ Imports System.Runtime.InteropServices
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
 
-<Assembly: AssemblyVersion("4.3.5.0")> 
-<Assembly: AssemblyFileVersion("4.3.5.0")> 
+<Assembly: AssemblyVersion("5.0.0.0")>
+<Assembly: AssemblyFileVersion("5.0.0.0")>
 

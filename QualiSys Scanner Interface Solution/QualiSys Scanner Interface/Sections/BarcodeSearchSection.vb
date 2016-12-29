@@ -302,7 +302,7 @@ Public Class BarcodeSearchSection
             If .ShowDialog() = DialogResult.OK Then
                 Me.Cursor = Cursors.WaitCursor
                 colSelected.Visible = False
-                Dim ExportOptions As New DevExpress.XtraPrinting.XlsExportOptions(True)
+                Dim ExportOptions As New DevExpress.XtraPrinting.XlsExportOptions(DevExpress.XtraPrinting.TextExportMode.Text)
                 SearchResultsGridView.ExportToXls(.FileName, ExportOptions)
                 colSelected.Visible = True
                 Me.Cursor = Cursors.Default

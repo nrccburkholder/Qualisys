@@ -3,7 +3,7 @@
   <metadata>
     <id>Qualisys.QSIVoviciService</id>
     <title>QSI Vovici Service</title>
-    <version>2.2.7</version>
+    <version>3.0.0</version>
     <authors>NRC</authors>
     <description>This service interfaces with Vovici web surveys</description>
   </metadata>

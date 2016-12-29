@@ -207,7 +207,7 @@ Public Class VendorMaintenanceSection
                     System.Windows.Forms.Cursor.Current = Cursors.WaitCursor
                     Dim xlsexportopt As New DevExpress.XtraPrinting.XlsExportOptions
                     With xlsexportopt
-                        .UseNativeFormat = False
+                        .TextExportMode = DevExpress.XtraPrinting.TextExportMode.Value
                         .SheetName = "Vendor Dispositions"
                     End With
                     Me.DispositionGridView.ExportToXls(.FileName, xlsexportopt)

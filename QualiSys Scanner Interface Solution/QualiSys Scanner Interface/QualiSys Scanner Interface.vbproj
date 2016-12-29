@@ -25,7 +25,7 @@
     <SignManifests>true</SignManifests>
     <ManifestCertificateThumbprint>CF2D0B017D0EAA125C1C95E225B0FA395DBD36FD</ManifestCertificateThumbprint>
     <GenerateManifests>true</GenerateManifests>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
@@ -42,8 +42,8 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>5</ApplicationRevision>
-    <ApplicationVersion>1.13.7.5</ApplicationVersion>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>2.0.0.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -104,33 +104,29 @@
     <ManifestKeyFile>QualiSys Scanner Interface_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DevExpress.Data.v7.3, Version=7.3.11.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.Data.v9.3, Version=9.3.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ThirdParty\DevExpress.Data.v7.3.dll</HintPath>
+      <HintPath>..\..\Referenced Assemblies\DevExpress.Data.v9.3.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Utils.v7.3, Version=7.3.11.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.Utils.v9.3, Version=9.3.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ThirdParty\DevExpress.Utils.v7.3.dll</HintPath>
+      <HintPath>..\..\Referenced Assemblies\DevExpress.Utils.v9.3.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.XtraBars.v7.3, Version=7.3.11.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.XtraBars.v9.3, Version=9.3.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ThirdParty\DevExpress.XtraBars.v7.3.dll</HintPath>
+      <HintPath>..\..\Referenced Assemblies\DevExpress.XtraBars.v9.3.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.XtraEditors.v7.3, Version=7.3.11.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.XtraEditors.v9.3, Version=9.3.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ThirdParty\DevExpress.XtraEditors.v7.3.dll</HintPath>
+      <HintPath>..\..\Referenced Assemblies\DevExpress.XtraEditors.v9.3.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.XtraGrid.v7.3, Version=7.3.11.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.XtraGrid.v9.3, Version=9.3.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ThirdParty\DevExpress.XtraGrid.v7.3.dll</HintPath>
+      <HintPath>..\..\Referenced Assemblies\DevExpress.XtraGrid.v9.3.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.XtraNavBar.v7.3, Version=7.3.11.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
+    <Reference Include="DevExpress.XtraPrinting.v9.3, Version=9.3.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ThirdParty\DevExpress.XtraNavBar.v7.3.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.XtraPrinting.v7.3, Version=7.3.11.0, Culture=neutral, PublicKeyToken=9b171c9fd64da1d1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ThirdParty\DevExpress.XtraPrinting.v7.3.dll</HintPath>
+      <HintPath>..\..\Referenced Assemblies\DevExpress.XtraPrinting.v9.3.dll</HintPath>
     </Reference>
     <Reference Include="ExpTreeLib, Version=1.0.1918.39263, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
