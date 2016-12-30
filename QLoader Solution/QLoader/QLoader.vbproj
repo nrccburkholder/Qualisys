@@ -22,11 +22,11 @@
     </SccProvider>
     <ApplicationIcon>QLoader.ico</ApplicationIcon>
     <SignManifests>true</SignManifests>
-    <ManifestCertificateThumbprint>9AF7C85035ED9EBD56ACBE5FAFEDE6EB743E73FA</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>D5758CB9FDB7166BE697EDA34A256CFB8B307573</ManifestCertificateThumbprint>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <GenerateManifests>true</GenerateManifests>
-    <ManifestKeyFile>QLoader_3_TemporaryKey.pfx</ManifestKeyFile>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <ManifestKeyFile>QLoader_TemporaryKey.pfx</ManifestKeyFile>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -47,7 +47,7 @@
     <PublisherName>National Research Corporation</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.9.0.0</ApplicationVersion>
+    <ApplicationVersion>2.0.0.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -144,18 +144,6 @@
     <Reference Include="DevExpress.XtraTreeList.v9.3, Version=9.3.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Referenced Assemblies\DevExpress.XtraTreeList.v9.3.dll</HintPath>
-    </Reference>
-    <Reference Include="Nrc.Framework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=7f65ae6d961bde9c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Nrc.Framework.BusinessLogic, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.BusinessLogic.dll</HintPath>
-    </Reference>
-    <Reference Include="NRC.NRCAuthLib, Version=1.0.2406.35323, Culture=neutral">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\NRC.NRCAuthLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -461,7 +449,7 @@
     <None Include="QLoader.nuspec">
       <SubType>Designer</SubType>
     </None>
-    <None Include="QLoader_3_TemporaryKey.pfx" />
+    <None Include="QLoader_TemporaryKey.pfx" />
     <None Include="Resources\Undo32.png" />
   </ItemGroup>
   <ItemGroup>
@@ -480,6 +468,22 @@
     <None Include="Resources\Reports32.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\NRC Auth Solution\NRCAuthLib\NRCAuthlib.vbproj">
+      <Project>{6ed47ceb-9896-4be5-a7f2-cf2a5693f1ed}</Project>
+      <Name>NRCAuthlib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NRC Framework Solution\Nrc.Framework.BusinessLogic\Nrc.Framework.BusinessLogic.vbproj">
+      <Project>{c5a6ee1a-d5bf-4059-87cf-aca302979820}</Project>
+      <Name>Nrc.Framework.BusinessLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NRC Framework Solution\Nrc.Framework.Notification\Nrc.Framework.Notification.vbproj">
+      <Project>{27ab551e-d67f-4b03-bab5-e7172e105217}</Project>
+      <Name>Nrc.Framework.Notification</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NRC Framework Solution\Nrc.Framework\Nrc.Framework.vbproj">
+      <Project>{4616369f-a6a3-4192-93a9-23b3e6e2d0bc}</Project>
+      <Name>Nrc.Framework</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\QualiSys Class Library Solution\QualiSys.Library.SqlDataProvider\QualiSys.Library.SqlDataProvider.vbproj">
       <Project>{31F9022F-D830-410D-90AE-98C59F34E552}</Project>
       <Name>QualiSys.Library.SqlDataProvider</Name>
