@@ -227,7 +227,7 @@ Namespace Legacy
             If mMemberGroupPreference Is Nothing Then
                 mMemberGroupPreference = MemberGroupReportPreference.NewMemberGroupReportPreference(selectedMemberId, selectedGroupId)
             End If
-            AddHandler mMemberGroupPreference.PropertyChanged, AddressOf OnPreferenceChanged
+            AddHandler mMemberGroupPreference.PropertyChanged, AddressOf OnGroupPreferenceChanged
 
             'Save the WebAccount object
             'mobjWebAccount = objWebAccount
@@ -1080,8 +1080,26 @@ Namespace Legacy
         End Sub
 
         Private Sub OnPreferenceChanged(ByVal sender As Object, ByVal e As System.ComponentModel.PropertyChangedEventArgs)
-            'Dim base As BusinessBase = TryCast(sender, BusinessBase)
-            'If base IsNot Nothing AndAlso base.IsDirty = False Then Return
+            Dim base As MemberReportPreference = TryCast(sender, MemberReportPreference)
+            If base IsNot Nothing AndAlso base.IsDirty = False Then Return
+            Select Case e.PropertyName
+                Case "ReportStartDate", "ReportEndDate", "QualityProgramId", "CompDatasetId", "AnalysisId", "SelectedUnit"
+                    mbolDimDataLoaded = False
+                Case "ServiceTypeId"
+                    mbolDimDataLoaded = False
+                    mbolAvailUnitsLoaded = False
+                    mUnitTree = Nothing
+                Case "SelectedViewId"
+                    ' No-op
+                Case Else
+                    ' TODO: Uncomment the following line for debugging this routine...
+                    'Throw New ArgumentOutOfRangeException("e.PropertyName", e.PropertyName, "Unexpected property changed")
+            End Select
+        End Sub
+
+        Private Sub OnGroupPreferenceChanged(ByVal sender As Object, ByVal e As System.ComponentModel.PropertyChangedEventArgs)
+            Dim base As MemberGroupReportPreference = TryCast(sender, MemberGroupReportPreference)
+            If base IsNot Nothing AndAlso base.IsDirty = False Then Return
             Select Case e.PropertyName
                 Case "ReportStartDate", "ReportEndDate", "QualityProgramId", "CompDatasetId", "AnalysisId", "SelectedUnit"
                     mbolDimDataLoaded = False
