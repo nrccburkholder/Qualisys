@@ -11,14 +11,14 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyTitle("NRC Class Library")> 
 <Assembly: AssemblyDescription("Various classes that implement common functionality in NRC solutions.")> 
 <Assembly: AssemblyCompany("National Research Corporation")> 
-<Assembly: AssemblyProduct("NRC Class Library")> 
-<Assembly: AssemblyCopyright("Copyright 2005 National Research Corporation")> 
+<Assembly: AssemblyProduct("NRC Class Library")>
+<Assembly: AssemblyCopyright("Copyright 2005-2017 National Research Corporation")>
 <Assembly: AssemblyTrademark("")> 
 <Assembly: CLSCompliant(True)> 
 <Assembly: AssemblyKeyFileAttribute("..\..\NationalResearch.snk")> 
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM
-<Assembly: Guid("73B31976-026C-4E65-BC19-A165DD5FF00F")> 
+<Assembly: Guid("73B31976-026C-4E65-BC19-A165DD5FF00F")>
 
 ' Version information for an assembly consists of the following four values:
 '
@@ -72,4 +72,4 @@ Imports System.Runtime.InteropServices
 '                            Created NRC.Data.SqlCommandException Class - Provides more detailed information when exceptions occur trying to access data.  
 '                            Modified NRC.WinForms.ExceptionReport to display info from SqlCommandException when applicable
 'v1.14.1.0  JPC 12/09/2005 - Minor modification to Data.Null to support byte arrays
-<Assembly: AssemblyVersion("1.14.1.0")> 
+<Assembly: AssemblyVersion("2.0.0.0")>

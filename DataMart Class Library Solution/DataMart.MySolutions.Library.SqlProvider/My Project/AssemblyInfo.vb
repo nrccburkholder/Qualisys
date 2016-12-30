@@ -11,14 +11,14 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyTitle("DataMart.MySolutions.Library.SqlProvider")> 
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("")> 
-<Assembly: AssemblyProduct("DataMart.MySolutions.Library.SqlProvider")> 
-<Assembly: AssemblyCopyright("Copyright ©  2006")> 
+<Assembly: AssemblyProduct("DataMart.MySolutions.Library.SqlProvider")>
+<Assembly: AssemblyCopyright("Copyright ©  2006-2017")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM
-<Assembly: Guid("3b43d13f-7c3f-464e-a807-408fd67fe394")> 
+<Assembly: Guid("3b43d13f-7c3f-464e-a807-408fd67fe394")>
 
 ' Version information for an assembly consists of the following four values:
 '
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.0.0.0")> 
-<Assembly: AssemblyFileVersion("1.0.0.0")> 
+<Assembly: AssemblyVersion("2.0.0.0")>
+<Assembly: AssemblyFileVersion("2.0.0.0")>
