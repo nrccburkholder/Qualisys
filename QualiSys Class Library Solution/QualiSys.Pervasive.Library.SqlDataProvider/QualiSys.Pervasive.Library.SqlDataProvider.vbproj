@@ -158,6 +158,7 @@
     <ProjectReference Include="..\..\NRC Framework Solution\Nrc.Framework\Nrc.Framework.vbproj">
       <Project>{4616369f-a6a3-4192-93a9-23b3e6e2d0bc}</Project>
       <Name>Nrc.Framework</Name>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </ProjectReference>
     <ProjectReference Include="..\QualiSys.Pervasive.Library\QualiSys.Pervasive.Library.vbproj">
       <Project>{1bc993f6-721e-44a9-a1cd-cc2decfc5464}</Project>
