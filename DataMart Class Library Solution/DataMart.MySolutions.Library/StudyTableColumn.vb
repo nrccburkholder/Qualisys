@@ -1,3 +1,5 @@
+Imports Nrc.Framework.BusinessLogic
+
 Public Interface IStudyTableColumn
 
     Property Id() As Integer

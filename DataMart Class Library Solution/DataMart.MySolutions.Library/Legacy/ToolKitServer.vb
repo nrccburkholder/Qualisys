@@ -1,6 +1,7 @@
 Imports Nrc.Framework.Data
 Imports Microsoft.Practices.EnterpriseLibrary.Data
 Imports System.Data.Common
+Imports Nrc.Framework.BusinessLogic
 
 Namespace Legacy
 
@@ -1079,8 +1080,8 @@ Namespace Legacy
         End Sub
 
         Private Sub OnPreferenceChanged(ByVal sender As Object, ByVal e As System.ComponentModel.PropertyChangedEventArgs)
-            Dim base As BusinessBase = TryCast(sender, BusinessBase)
-            If base IsNot Nothing AndAlso base.IsDirty = False Then Return
+            'Dim base As BusinessBase = TryCast(sender, BusinessBase)
+            'If base IsNot Nothing AndAlso base.IsDirty = False Then Return
             Select Case e.PropertyName
                 Case "ReportStartDate", "ReportEndDate", "QualityProgramId", "CompDatasetId", "AnalysisId", "SelectedUnit"
                     mbolDimDataLoaded = False

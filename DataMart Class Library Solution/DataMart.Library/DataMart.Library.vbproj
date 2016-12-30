@@ -21,7 +21,7 @@
     </SccProvider>
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>NationalResearch.snk</AssemblyOriginatorKeyFile>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
@@ -95,15 +95,6 @@
   <ItemGroup>
     <Reference Include="NRC">
       <HintPath>..\..\Referenced Assemblies\NRC.dll</HintPath>
-    </Reference>
-    <Reference Include="Nrc.Framework">
-      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Nrc.Framework.BusinessLogic">
-      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.BusinessLogic.dll</HintPath>
-    </Reference>
-    <Reference Include="NRC.NRCAuthLib">
-      <HintPath>..\..\Referenced Assemblies\NRC.NRCAuthLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -239,6 +230,20 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\NRC Auth Solution\NRCAuthLib\NRCAuthlib.vbproj">
+      <Project>{6ed47ceb-9896-4be5-a7f2-cf2a5693f1ed}</Project>
+      <Name>NRCAuthlib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NRC Framework Solution\Nrc.Framework.BusinessLogic\Nrc.Framework.BusinessLogic.vbproj">
+      <Project>{c5a6ee1a-d5bf-4059-87cf-aca302979820}</Project>
+      <Name>Nrc.Framework.BusinessLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NRC Framework Solution\Nrc.Framework\Nrc.Framework.vbproj">
+      <Project>{4616369f-a6a3-4192-93a9-23b3e6e2d0bc}</Project>
+      <Name>Nrc.Framework</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

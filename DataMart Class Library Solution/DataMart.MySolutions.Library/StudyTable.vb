@@ -1,3 +1,5 @@
+Imports Nrc.Framework.BusinessLogic
+
 Public Interface IStudyTable
     Property Id() As Integer
     Property IsView() As Boolean
