@@ -11,8 +11,8 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyTitle("Export Manager")> 
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("National Research Corporation")> 
-<Assembly: AssemblyProduct("Export Manager")> 
-<Assembly: AssemblyCopyright("Copyright © 2005-2016")> 
+<Assembly: AssemblyProduct("Export Manager")>
+<Assembly: AssemblyCopyright("Copyright © 2005-2017")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("4.6.20.0")> 
-<Assembly: AssemblyFileVersion("4.6.20.0")> 
+<Assembly: AssemblyVersion("5.0.0.0")>
+<Assembly: AssemblyFileVersion("5.0.0.0")>

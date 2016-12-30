@@ -23,7 +23,7 @@
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <SignManifests>true</SignManifests>
     <ManifestCertificateThumbprint>17B000FE5ADD8817D78BD87A1F5C99CC57972A6F</ManifestCertificateThumbprint>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
@@ -92,14 +92,6 @@
     <ManifestKeyFile>DataMart Export Service_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Nrc.Framework, Version=1.5.1.0, Culture=neutral, PublicKeyToken=7f65ae6d961bde9c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Nrc.Framework.BusinessLogic, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Referenced Assemblies\Nrc.Framework.BusinessLogic.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Data" />
@@ -183,6 +175,14 @@
     <ProjectReference Include="..\..\DataMart Class Library Solution\DataMart.Library\DataMart.Library.vbproj">
       <Project>{D94DDA87-FE09-4644-9416-2BF8FE136D93}</Project>
       <Name>DataMart.Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NRC Framework Solution\Nrc.Framework.BusinessLogic\Nrc.Framework.BusinessLogic.vbproj">
+      <Project>{c5a6ee1a-d5bf-4059-87cf-aca302979820}</Project>
+      <Name>Nrc.Framework.BusinessLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NRC Framework Solution\Nrc.Framework\Nrc.Framework.vbproj">
+      <Project>{4616369f-a6a3-4192-93a9-23b3e6e2d0bc}</Project>
+      <Name>Nrc.Framework</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
