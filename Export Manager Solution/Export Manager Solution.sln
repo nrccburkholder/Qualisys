@@ -9,8 +9,6 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DataMart.Library", "..\Data
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DataMart.Library.SqlProvider", "..\DataMart Class Library Solution\DataMart.Library.SqlProvider\DataMart.Library.SqlProvider.vbproj", "{EA181BE1-8009-48A1-B389-02642319C079}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ExportServiceTester", "ExportServiceTester\ExportServiceTester.vbproj", "{EC132B71-7E89-441C-8119-1F7D49B4EDE0}"
-EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DataMart Export Service", "DataMart Export Service\DataMart Export Service.vbproj", "{EA7996E6-22A2-4999-8781-EBFFF2329338}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Nrc.Framework", "..\NRC Framework Solution\Nrc.Framework\Nrc.Framework.vbproj", "{4616369F-A6A3-4192-93A9-23B3E6E2D0BC}"
@@ -65,18 +63,6 @@ Global
 		{EA181BE1-8009-48A1-B389-02642319C079}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EA181BE1-8009-48A1-B389-02642319C079}.Release|x86.ActiveCfg = Release|x86
 		{EA181BE1-8009-48A1-B389-02642319C079}.Release|x86.Build.0 = Release|x86
-		{EC132B71-7E89-441C-8119-1F7D49B4EDE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EC132B71-7E89-441C-8119-1F7D49B4EDE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EC132B71-7E89-441C-8119-1F7D49B4EDE0}.Debug|x86.ActiveCfg = Debug|x86
-		{EC132B71-7E89-441C-8119-1F7D49B4EDE0}.Debug|x86.Build.0 = Debug|x86
-		{EC132B71-7E89-441C-8119-1F7D49B4EDE0}.Production|Any CPU.ActiveCfg = Release|Any CPU
-		{EC132B71-7E89-441C-8119-1F7D49B4EDE0}.Production|Any CPU.Build.0 = Release|Any CPU
-		{EC132B71-7E89-441C-8119-1F7D49B4EDE0}.Production|x86.ActiveCfg = Release|x86
-		{EC132B71-7E89-441C-8119-1F7D49B4EDE0}.Production|x86.Build.0 = Release|x86
-		{EC132B71-7E89-441C-8119-1F7D49B4EDE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EC132B71-7E89-441C-8119-1F7D49B4EDE0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EC132B71-7E89-441C-8119-1F7D49B4EDE0}.Release|x86.ActiveCfg = Release|x86
-		{EC132B71-7E89-441C-8119-1F7D49B4EDE0}.Release|x86.Build.0 = Release|x86
 		{EA7996E6-22A2-4999-8781-EBFFF2329338}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EA7996E6-22A2-4999-8781-EBFFF2329338}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA7996E6-22A2-4999-8781-EBFFF2329338}.Debug|x86.ActiveCfg = Debug|x86
