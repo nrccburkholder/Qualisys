@@ -27,7 +27,6 @@ Partial Class SplashScreen
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(SplashScreen))
         Me.MainLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
         Me.DetailsLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
         Me.Version = New System.Windows.Forms.Label()
@@ -39,7 +38,7 @@ Partial Class SplashScreen
         '
         'MainLayoutPanel
         '
-        Me.MainLayoutPanel.BackgroundImage = CType(resources.GetObject("MainLayoutPanel.BackgroundImage"), System.Drawing.Image)
+        Me.MainLayoutPanel.BackgroundImage = Global.Nrc.PayerSolutionsETL.My.Resources.Resources.online_survey
         Me.MainLayoutPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.MainLayoutPanel.ColumnCount = 2
         Me.MainLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 243.0!))
@@ -96,12 +95,12 @@ Partial Class SplashScreen
         '
         Me.ApplicationTitle.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.ApplicationTitle.BackColor = System.Drawing.Color.Transparent
-        Me.ApplicationTitle.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ApplicationTitle.Font = New System.Drawing.Font("Microsoft Sans Serif", 20.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ApplicationTitle.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
         Me.ApplicationTitle.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.ApplicationTitle.Location = New System.Drawing.Point(251, 15)
+        Me.ApplicationTitle.Location = New System.Drawing.Point(251, 33)
         Me.ApplicationTitle.Name = "ApplicationTitle"
-        Me.ApplicationTitle.Size = New System.Drawing.Size(237, 188)
+        Me.ApplicationTitle.Size = New System.Drawing.Size(237, 151)
         Me.ApplicationTitle.TabIndex = 0
         Me.ApplicationTitle.Text = "ApplicationTitle"
         Me.ApplicationTitle.TextAlign = System.Drawing.ContentAlignment.BottomLeft
