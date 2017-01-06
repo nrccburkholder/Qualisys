@@ -412,6 +412,20 @@ namespace CEM.FileMakerUI
 
             dgQueues.Columns.Add(endDateColumn);
 
+            DataGridViewTextBoxColumn requestDateColumn = new DataGridViewTextBoxColumn();
+            requestDateColumn.Name = "Request Date";
+            requestDateColumn.DataPropertyName = "RequestDate";
+            requestDateColumn.ReadOnly = true;
+
+            dgQueues.Columns.Add(requestDateColumn);
+
+            DataGridViewTextBoxColumn pullDateColumn = new DataGridViewTextBoxColumn();
+            pullDateColumn.Name = "Pull Date";
+            pullDateColumn.DataPropertyName = "PullDate";
+            pullDateColumn.ReadOnly = true;
+
+            dgQueues.Columns.Add(pullDateColumn);
+
             dgQueues.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
 
         }
