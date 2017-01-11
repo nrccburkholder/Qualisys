@@ -334,7 +334,11 @@ var
 
 implementation
 
-uses DOpenQ, FileUtil;
+uses DOpenQ, FileUtil
+{$ifndef FormLayout}
+  , Log4Pascal
+{$endif}
+;
 
 {$R *.DFM}
 
@@ -434,7 +438,12 @@ var s,QPFresult,func : string;
     funcpos,funclen : integer;
 begin
   if (mockup=ptRealSurvey) and ({pos(codedelim,text) +} pos('«',text) + pos('¯',text) > 0) then
-    raise EOrphanTagError.Create( 'FormGenError '+inttostr(errcode)+' (Orphan Tag)');
+    begin
+{$ifndef FormLayout}
+      logger.info('FormGenError '+inttostr(errcode)+' (Orphan Tag) in '+text);
+{$endif}
+      raise EOrphanTagError.Create( 'FormGenError '+inttostr(errcode)+' (Orphan Tag)');
+    end;
   result := text;
   while pos('s''s ',result)>0 do delete(result,pos('s''s ',result)+2,1);
   while pos('z''s ',result)>0 do delete(result,pos('z''s ',result)+2,1);
@@ -3825,7 +3834,14 @@ begin
     dmopenq.currentSampleUnit_id := 0
   else begin
     dmopenq.LocalQuery('select min(SampleUnit_id) as RootUnit from PopSection',false);
-    dmopenq.currentSampleUnit_id := dmOpenQ.ww_Query.fieldbyname('RootUnit').value;
+    try
+      dmopenq.currentSampleUnit_id := dmOpenQ.ww_Query.fieldbyname('RootUnit').value;
+    except
+{$ifndef FormLayout}
+      logger.info('Data Error: Root Unit Not Found');
+{$endif}
+      raise eGenErr.Create('Data Missing: select min(SampleUnit_id) as RootUnit from PopSection');
+    end;
     dmOpenQ.ww_Query.close;
   end;
   with DMOpenQ.wwt_TextBox do begin
