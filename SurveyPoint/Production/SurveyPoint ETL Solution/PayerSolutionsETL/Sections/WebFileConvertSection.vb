@@ -2848,8 +2848,8 @@ Public Class WebFileConvertSection
                 newLine.Append(PadString(row(108), 28, Direction.Left, " ")) ' Q27_1 Start: 278 End: 305
                 newLine.Append(PadString(row(20), 1, Direction.Left, " ")) ' Q12 Start: 306 End: 306
                 newLine.Append(PadString(row(63), 1, Direction.Left, " ")) ' Q22 Start: 307 End: 307
-                newLine.Append(PadString(row(109), 10, Direction.Left, " ")) ' Q27_2 Start: 308 End: 317
-
+                newLine.Append(PadString(row(109), 10, Direction.Left, " ")) ' Q27_2 Start: 308 End: 317   
+                newLine.Append(PadString("", 1, Direction.Left, " "))       ' BLANK(1) <-- added 1 character length as per INC0064963
 
                 writer.WriteLine(newLine.ToString)
             Next
