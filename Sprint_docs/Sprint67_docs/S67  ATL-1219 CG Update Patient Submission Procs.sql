@@ -109,6 +109,9 @@ Added 6 mo surveys
 03/26/2015 DRM
 Pull practicesiteid and groupid from CGCAHPSPracticeSite instead of big table
 
+01/25/2017 TSB
+Refactored to determine subtype from survey_id.  Added code to handle Adult 3.0 w/PCMH and Child 3.0 w/PCMH
+
 **/
 ---- testing code
 --declare  @survey_id int,
@@ -168,7 +171,8 @@ select  @Subtype_id = st.Subtype_id, @subtype_nm = st.subtype_nm
 from qualisys.qp_prod.dbo.survey_def sd 
 inner join qualisys.qp_prod.dbo.SurveySubtype sst on sst.Survey_id = sd.SURVEY_ID
 inner join qualisys.qp_prod.dbo.Subtype st on sst.Subtype_id = st.Subtype_id
-where sd.SurveyType_id = @Surveytype_id
+where sd.survey_id = @survey_id
+and sd.SurveyType_id = @Surveytype_id
 and st.SubtypeCategory_id = 2
 
 if @Subtype_id = 0
@@ -570,39 +574,22 @@ end
 if @Subtype_nm = '6-month Adult 3.0'
 begin
 
-	if exists (select * from #surveyQ1 where field_nm='q050542')
-	begin
-		print 'Adult6Month3.0PCMH'
-		exec dbo.GetCGCAHPSdata3_sub_Adult6Month30a
-		exec dbo.GetCGCAHPSdata3_sub_Adult6Month30b @survey_id, @begindate, @enddate,21
-		goto subdone
-	end
-	else
-	begin
-		print 'Adult6Month3.0'
-		exec dbo.GetCGCAHPSdata3_sub_Adult6Month30a
-		exec dbo.GetCGCAHPSdata3_sub_Adult6Month30b @survey_id, @begindate, @enddate,19
-		goto subdone
-	end
+	print 'Adult6Month3.0'
+	exec dbo.GetCGCAHPSdata3_sub_Adult6Month30a
+	exec dbo.GetCGCAHPSdata3_sub_Adult6Month30b @survey_id, @begindate, @enddate
+	goto subdone
+
 end
 
 if @Subtype_nm = '6-month Child 3.0'
 begin
 
-	if exists (select * from #surveyQ1 where field_nm in ('q050630'))
-	begin
-		print 'Child6Month3.0PCMH'
-		exec dbo.GetCGCAHPSdata3_sub_Child6Month30a
-		exec dbo.GetCGCAHPSdata3_sub_Child6Month30b @survey_id, @begindate, @enddate,22
-		goto subdone
-	end
-	else
-	begin
-		print 'Child6Month3.0'
-		exec dbo.GetCGCAHPSdata3_sub_Child6Month30a
-		exec dbo.GetCGCAHPSdata3_sub_Child6Month30b @survey_id, @begindate, @enddate,20
-		goto subdone
-	end
+
+	print 'Child6Month3.0'
+	exec dbo.GetCGCAHPSdata3_sub_Child6Month30a
+	exec dbo.GetCGCAHPSdata3_sub_Child6Month30b @survey_id, @begindate, @enddate
+	goto subdone
+
 end
 
 
@@ -3179,11 +3166,26 @@ go
 create procedure dbo.GetCGCAHPSdata3_sub_Adult6Month30B
  @survey_id INT,
  @begindate VARCHAR(10),
- @enddate   VARCHAR(10),
- @surveytype INT
+ @enddate   VARCHAR(10)
 as
 -- This is for Adult Survey 3.0 with PCMH items
-update #results set surveytype=@surveytype -- was 19, changing to 21 for version 3.0 with PCMH
+
+DECLARE @surveytype int
+
+if exists (select 1 from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (50542))
+begin
+	SET @surveytype = 21
+	print 'Adult Survey 3.0 w/PCMH'
+end
+ELSE 
+begin
+	SET @surveytype = 19
+	print 'Adult Survey 3.0'
+end
+
+print 'surveytype: ' + CAST(@surveytype as varchar)
+
+update #results set surveytype=@surveytype 
 
 -- Load question responses into #results, mapping NULL & -9 to 9 and -8 to 8
 -- (unless the #results field is char(2), then map them to 99 and 88, respectively)
@@ -3231,54 +3233,36 @@ update r set
  Q31b  = case isnull(q050257b,-9) when -9 then 0 else 1 end,
  Q31c  = case isnull(q050257c,-9) when -9 then 0 else 1 end,
  Q31d  = case isnull(q050257d,-9) when -9 then 0 else 1 end,
- Q31e  = case isnull(q050257e,-9) when -9 then 0 else 1 end,
- --PCMH
-PCMH1_Q9= case isnull(Q050542,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050542%10000 as varchar) end,
-PCMH2_Q19= case isnull(Q050550,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050550%10000 as varchar) end,
-PCMH3_Q20= case isnull(Q050551,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050551%10000 as varchar) end,
-PCMH4_Q21= case isnull(Q050552,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050552%10000 as varchar) end,
-PCMH5_Q22= case isnull(Q050553,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050553%10000 as varchar) end,
-PCMH6_Q23= case isnull(Q050557,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050557%10000 as varchar) end
-from #results r
+ Q31e  = case isnull(q050257e,-9) when -9 then 0 else 1 end
+ from #results r
  inner join #Big_Table bt on r.samplepop_id=bt.samplepop_id and r.sampleunit_id=bt.sampleunit_id
  left outer join #Study_Results sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id
  inner join #tmp_mncm_mailsteps tmm on tmm.samplepop_id = sr.samplepop_id and tmm.sampleunit_id = sr.sampleunit_id
 
+ if @surveytype = 21
+ begin
+ --PCMH
+	 update r set
+	PCMH1_Q9= case isnull(Q050542,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050542%10000 as varchar) end,
+	PCMH2_Q19= case isnull(Q050550,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050550%10000 as varchar) end,
+	PCMH3_Q20= case isnull(Q050551,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050551%10000 as varchar) end,
+	PCMH4_Q21= case isnull(Q050552,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050552%10000 as varchar) end,
+	PCMH5_Q22= case isnull(Q050553,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050553%10000 as varchar) end,
+	PCMH6_Q23= case isnull(Q050557,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050557%10000 as varchar) end
+	from #results r
+	 inner join #Big_Table bt on r.samplepop_id=bt.samplepop_id and r.sampleunit_id=bt.sampleunit_id
+	 left outer join #Study_Results sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id
+	 inner join #tmp_mncm_mailsteps tmm on tmm.samplepop_id = sr.samplepop_id and tmm.sampleunit_id = sr.sampleunit_id
+
+end
 declare @SQL nvarchar(4000)
-
-if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (50531))
- set @SQL = N'
- update r set
- Q29a  = case isnull(Q050255a,-9) when -9 then 0 else 1 end,
- Q29b  = case isnull(Q050255b,-9) when -9 then 0 else 1 end,
- Q29c  = case when (q050255d=1 or q050255e=1 or q050255f=1 or q050255g=1 or q050255h=1 or q050255i=1 or q050255j=1) then 1 else 0 end,
- Q29d  = case when (q050255k=1 or q050255l=1 or q050255m=1 or q050255n=1) then 1 else 0 end,
- Q29e  = case isnull(q050255c,-9) when -9 then 0 else 1 end,
- Q29f  = 0,'
-else
- set @SQL = N'
- update r set
- Q29a  = case isnull(Q050255a,-9) when -9 then 0 else 1 end,
- Q29b  = case isnull(Q050255b,-9) when -9 then 0 else 1 end,
- Q29c  = case when (q050255d=1 or q050255e=1 or q050255f=1 or q050255g=1 or q050255h=1 or q050255i=1 or q050255j=1) then 1 else 0 end,
- Q29d  = case when (q050255k=1 or q050255l=1 or q050255m=1 or q050255n=1) then 1 else 0 end,
- Q29e  = case isnull(q050255c,-9) when -9 then 0 else 1 end,
- Q29f  = 0,'
-
-set @SQL = @SQL + N'
- from #results r
-  inner join #Big_Table bt on r.samplepop_id=bt.samplepop_id and r.sampleunit_id=bt.sampleunit_id
-  left outer join #Study_Results sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id
-  inner join #tmp_mncm_mailsteps tmm on tmm.samplepop_id = sr.samplepop_id and tmm.sampleunit_id = sr.sampleunit_id'
-
-EXEC sp_executesql @SQL, N'@begindate datetime, @enddate datetime, @survey_id int', @begindate, @enddate, @survey_id
 
 if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (50253))
  set @SQL =  N'
   update r set
   Q28  = case isnull(Q050253,-9) when -9 then ''M'' when -8 then ''H'' else cast(Q050253%10000 as varchar) end'
 else if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (55064))
- set @SQL = @SQL + N'
+ set @SQL =  N'
   update r set
   Q28  = case isnull(Q055064,-9) when -9 then ''M'' when -8 then ''H'' else cast(Q055064%10000 as varchar) end'
 
@@ -3290,6 +3274,33 @@ set @SQL = @SQL + N'
 
 EXEC sp_executesql @SQL, N'@begindate datetime, @enddate datetime, @survey_id int', @begindate, @enddate, @survey_id
 
+
+if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (55065))
+ set @SQL = N'
+ update r set
+ Q29a  = case isnull(Q055065a,-9) when -9 then 0 else 1 end,
+ Q29b  = case isnull(Q055065b,-9) when -9 then 0 else 1 end,
+ Q29c  = case when (q055065d=1 or q055065e=1 or q055065f=1 or q055065g=1 or q055065h=1 or q055065i=1 or q055065j=1) then 1 else 0 end,
+ Q29d  = case when (q055065k=1 or q055065l=1 or q055065m=1 or q055065n=1) then 1 else 0 end,
+ Q29e  = case isnull(q055065c,-9) when -9 then 0 else 1 end,
+ Q29f  = 0'
+else
+ set @SQL = N'
+ update r set
+ Q29a  = case isnull(Q050255a,-9) when -9 then 0 else 1 end,
+ Q29b  = case isnull(Q050255b,-9) when -9 then 0 else 1 end,
+ Q29c  = case when (q050255d=1 or q050255e=1 or q050255f=1 or q050255g=1 or q050255h=1 or q050255i=1 or q050255j=1) then 1 else 0 end,
+ Q29d  = case when (q050255k=1 or q050255l=1 or q050255m=1 or q050255n=1) then 1 else 0 end,
+ Q29e  = case isnull(q050255c,-9) when -9 then 0 else 1 end,
+ Q29f  = 0'
+
+set @SQL = @SQL + N'
+ from #results r
+  inner join #Big_Table bt on r.samplepop_id=bt.samplepop_id and r.sampleunit_id=bt.sampleunit_id
+  left outer join #Study_Results sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id
+  inner join #tmp_mncm_mailsteps tmm on tmm.samplepop_id = sr.samplepop_id and tmm.sampleunit_id = sr.sampleunit_id'
+
+EXEC sp_executesql @SQL, N'@begindate datetime, @enddate datetime, @survey_id int', @begindate, @enddate, @survey_id
 
 
 -- Adult 12-month:
@@ -3320,13 +3331,17 @@ update #results set Q19  = 'S'  where Q19  = 'M'  and (Q1='2' or Q4='1')
 update #results set Q20  = 'S'  where Q20  = 'M'  and (Q1='2' or Q4='1' or Q19='2')
 update #results set Q21  = 'S'  where Q21  = 'M'  and (Q1='2' or Q4='1')
 update #results set Q22  = 'S'  where Q22  = 'M'  and (Q1='2' or Q4='1')
+
+ if @surveytype = 21
+ begin
 --PCMH
-update #results set PCMH1_Q9  = 'S'  where PCMH1_Q9  = 'M'  and (Q1='2' or Q4='1')
-update #results set PCMH2_Q19  = 'S'  where PCMH2_Q19  = 'M'  and (Q1='2' or Q4='1')
-update #results set PCMH3_Q20  = 'S'  where PCMH3_Q20  = 'M'  and (Q1='2' or Q4='1')
-update #results set PCMH4_Q21  = 'S'  where PCMH4_Q21  = 'M'  and (Q1='2' or Q4='1')
-update #results set PCMH5_Q22  = 'S'  where PCMH5_Q22  = 'M'  and (Q1='2' or Q4='1')
-update #results set PCMH6_Q23  = 'S'  where PCMH6_Q23  = 'M'  and (Q1='2' or Q4='1')
+	update #results set PCMH1_Q9  = 'S'  where PCMH1_Q9  = 'M'  and (Q1='2' or Q4='1')
+	update #results set PCMH2_Q19  = 'S'  where PCMH2_Q19  = 'M'  and (Q1='2' or Q4='1')
+	update #results set PCMH3_Q20  = 'S'  where PCMH3_Q20  = 'M'  and (Q1='2' or Q4='1')
+	update #results set PCMH4_Q21  = 'S'  where PCMH4_Q21  = 'M'  and (Q1='2' or Q4='1')
+	update #results set PCMH5_Q22  = 'S'  where PCMH5_Q22  = 'M'  and (Q1='2' or Q4='1')
+	update #results set PCMH6_Q23  = 'S'  where PCMH6_Q23  = 'M'  and (Q1='2' or Q4='1')
+end
 
 
 -- If they didn’t answer the question (i.e. all 5 multi-mark responses are '0'), look at how they answered the screener question (Q30).
@@ -3365,7 +3380,7 @@ update #results set
 	Q29a= ' ',
 	Q29b= ' ',
 	Q29c= ' ',
-	Q32d= ' ',
+	Q29d= ' ',
 	Q29e= ' ',
 	Q29f= ' ',
 	Q30	= ' ',
@@ -3458,10 +3473,21 @@ go
 create procedure dbo.GetCGCAHPSdata3_sub_Child6Month30b
  @survey_id INT,
  @begindate VARCHAR(10),
- @enddate   VARCHAR(10),
- @surveytype INT
+ @enddate   VARCHAR(10)
 as
-update #results set surveytype=@surveytype
+
+DECLARE @surveytype int
+
+if exists (select 1 from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (50630))
+begin
+	SET @surveytype = 22
+	print 'Child Survey 3.0 w/PCMH'
+end
+ELSE 
+begin
+	SET @surveytype = 20
+	print 'Child Survey 3.0 w/PCMH'
+end
 
 -- Load question responses into #results, mapping NULL & -9 to 9 and -8 to 8
 -- (unless the #results field is char(2), then map them to 99 and 88, respectively)
@@ -3535,22 +3561,31 @@ update r set
  Q39b  = case isnull(Q050537b,-9) when -9 then 0 else 1 end,
  Q39c  = case isnull(Q050537c,-9) when -9 then 0 else 1 end,
  Q39d  = case isnull(Q050537d,-9) when -9 then 0 else 1 end,
- Q39e  = case isnull(Q050537e,-9) when -9 then 0 else 1 end,
- -- PCMH
- PCMH1_Q16   = case isnull(Q050630,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050630%10000 as varchar) end,
- PCMH2_Q26   = case isnull(Q050634,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050634%10000 as varchar) end,
- PCMH3_Q27   = case isnull(Q050635,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050635%10000 as varchar) end,
- PCMH4_Q28   = case isnull(Q050514,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050514%10000 as varchar) end,
- PCMH5_Q29   = case isnull(Q050515,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050515%10000 as varchar) end,
- PCMH6_Q30   = case isnull(Q050516,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050516%10000 as varchar) end,
- PCMH7_Q31   = case isnull(Q050517,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050517%10000 as varchar) end,
- PCMH8_Q32   = case isnull(Q050520,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050520%10000 as varchar) end,
- PCMH9_Q33   = case isnull(Q050521,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050521%10000 as varchar) end,
- PCMH10_Q34   = case isnull(Q050522,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050522%10000 as varchar) end
+ Q39e  = case isnull(Q050537e,-9) when -9 then 0 else 1 end
 from #results r
- inner join #Big_Table bt on r.samplepop_id=bt.samplepop_id and r.sampleunit_id=bt.sampleunit_id
- left outer join #Study_Results sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id
- inner join #tmp_mncm_mailsteps tmm on tmm.samplepop_id = sr.samplepop_id and tmm.sampleunit_id = sr.sampleunit_id
+inner join #Big_Table bt on r.samplepop_id=bt.samplepop_id and r.sampleunit_id=bt.sampleunit_id
+left outer join #Study_Results sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id
+inner join #tmp_mncm_mailsteps tmm on tmm.samplepop_id = sr.samplepop_id and tmm.sampleunit_id = sr.sampleunit_id
+
+  if @surveytype = 22
+ begin
+ -- PCMH
+	update r set
+	 PCMH1_Q16   = case isnull(Q050630,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050630%10000 as varchar) end,
+	 PCMH2_Q26   = case isnull(Q050634,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050634%10000 as varchar) end,
+	 PCMH3_Q27   = case isnull(Q050635,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050635%10000 as varchar) end,
+	 PCMH4_Q28   = case isnull(Q050514,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050514%10000 as varchar) end,
+	 PCMH5_Q29   = case isnull(Q050515,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050515%10000 as varchar) end,
+	 PCMH6_Q30   = case isnull(Q050516,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050516%10000 as varchar) end,
+	 PCMH7_Q31   = case isnull(Q050517,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050517%10000 as varchar) end,
+	 PCMH8_Q32   = case isnull(Q050520,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050520%10000 as varchar) end,
+	 PCMH9_Q33   = case isnull(Q050521,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050521%10000 as varchar) end,
+	 PCMH10_Q34   = case isnull(Q050522,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050522%10000 as varchar) end
+	from #results r
+	 inner join #Big_Table bt on r.samplepop_id=bt.samplepop_id and r.sampleunit_id=bt.sampleunit_id
+	 left outer join #Study_Results sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id
+	 inner join #tmp_mncm_mailsteps tmm on tmm.samplepop_id = sr.samplepop_id and tmm.sampleunit_id = sr.sampleunit_id
+ end
  
 -- #tmp_mncm_mailsteps only has records that we're exporting, so this where clause is redundant:
 --   where tmm.bitmncm = 1
@@ -3643,16 +3678,20 @@ update #results set Q25  = 'S ' where Q25  = 'M ' and (Q1='2' or Q4='1')
 update #results set Q26  = 'S'  where Q26  = 'M'  and (Q1='2' or Q4='1')
 update #results set Q27  = 'S'  where Q27  = 'M'  and (Q1='2' or Q4='1')
 --PCMH
-update #results set PCMH1_Q16 = 'S'  where PCMH1_Q16  = 'M'  and (Q1='2' or Q4='1')
-update #results set PCMH2_Q26 = 'S'  where PCMH2_Q26  = 'M'  and (Q1='2' or Q4='1')
-update #results set PCMH3_Q27 = 'S'  where PCMH3_Q27  = 'M'  and (Q1='2' or Q4='1')
-update #results set PCMH4_Q28 = 'S'  where PCMH4_Q28  = 'M'  and (Q1='2' or Q4='1')
-update #results set PCMH5_Q29 = 'S'  where PCMH5_Q29  = 'M'  and (Q1='2' or Q4='1')
-update #results set PCMH6_Q30 = 'S'  where PCMH6_Q30  = 'M'  and (Q1='2' or Q4='1')
-update #results set PCMH7_Q31 = 'S'  where PCMH7_Q31  = 'M'  and (Q1='2' or Q4='1')
-update #results set PCMH8_Q32 = 'S'  where PCMH8_Q32  = 'M'  and (Q1='2' or Q4='1')
-update #results set PCMH9_Q33 = 'S'  where PCMH9_Q33  = 'M'  and (Q1='2' or Q4='1')
-update #results set PCMH10_Q34 = 'S'  where PCMH10_Q34  = 'M'  and (Q1='2' or Q4='1')
+
+ if @surveytype = 22
+ begin
+	update #results set PCMH1_Q16 = 'S'  where PCMH1_Q16  = 'M'  and (Q1='2' or Q4='1')
+	update #results set PCMH2_Q26 = 'S'  where PCMH2_Q26  = 'M'  and (Q1='2' or Q4='1')
+	update #results set PCMH3_Q27 = 'S'  where PCMH3_Q27  = 'M'  and (Q1='2' or Q4='1')
+	update #results set PCMH4_Q28 = 'S'  where PCMH4_Q28  = 'M'  and (Q1='2' or Q4='1')
+	update #results set PCMH5_Q29 = 'S'  where PCMH5_Q29  = 'M'  and (Q1='2' or Q4='1')
+	update #results set PCMH6_Q30 = 'S'  where PCMH6_Q30  = 'M'  and (Q1='2' or Q4='1')
+	update #results set PCMH7_Q31 = 'S'  where PCMH7_Q31  = 'M'  and (Q1='2' or Q4='1')
+	update #results set PCMH8_Q32 = 'S'  where PCMH8_Q32  = 'M'  and (Q1='2' or Q4='1')
+	update #results set PCMH9_Q33 = 'S'  where PCMH9_Q33  = 'M'  and (Q1='2' or Q4='1')
+	update #results set PCMH10_Q34 = 'S'  where PCMH10_Q34  = 'M'  and (Q1='2' or Q4='1')
+end
  
 -- If Q38 = 2 (“No”) Skip to end of the survey
 -- Questions 39a-e should have case logic applied
