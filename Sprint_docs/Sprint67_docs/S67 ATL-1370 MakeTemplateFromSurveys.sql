@@ -899,7 +899,7 @@ SELECT [ID]
       ,[MailingStepMethod_nm]
       ,[Section_Id]
       ,[SectionLabel]
-  FROM [RTPhoenix].[ModeSectionMappingTemplate] msmt inner join
+  FROM [dbo].[ModeSectionMapping] msmt inner join
   [dbo].[SURVEY_DEF] sd on msmt.Survey_id = sd.SURVEY_ID
   where Study_id = @study_id
 
