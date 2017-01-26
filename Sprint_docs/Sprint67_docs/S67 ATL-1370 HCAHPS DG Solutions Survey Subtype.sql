@@ -22,11 +22,11 @@ if not exists (select * from subtype where subtype_nm = 'RT')
 insert into subtype (Subtype_nm,SubtypeCategory_id,bitRuleOverride,bitQuestionnaireRequired,bitActive)
 values ('RT',1,0,0,1)
 
-declare @DG int 
-select @DG = Subtype_id from subtype where subtype_nm = 'RT'
+declare @RT int 
+select @RT = Subtype_id from subtype where subtype_nm = 'RT'
 
 if not exists (select * from surveytypesubtype where surveytype_id = 2)
 insert into SurveyTypeSubType(SurveyType_id,Subtype_id)
-values (2, @DG)
+values (2, @RT)
 
 GO
