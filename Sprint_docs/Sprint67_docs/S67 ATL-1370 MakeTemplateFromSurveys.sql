@@ -156,7 +156,7 @@ SELECT -ms.[TABLE_ID]
       ,[BITPOSTEDFIELD_FLG]
       ,[bitPII]
       ,[bitAllowUS]
-  FROM [dbo].[METASTRUCTURE] ms inner join
+  FROM [dbo].[METASTRUCTURE] ms inner join --row expansion check TODO
 		[dbo].[METATABLE] mt on ms.TABLE_ID = mt.TABLE_ID
 		where Study_id = @Study_id
 

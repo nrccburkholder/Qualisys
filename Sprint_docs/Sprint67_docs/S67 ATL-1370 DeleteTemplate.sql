@@ -100,7 +100,7 @@ delete RTPhoenix.SUFacilityTemplate
 delete RTPhoenix.MedicareLookupTemplate
   FROM RTPhoenix.MedicareLookupTemplate ml left join
   RTPhoenix.SUFacilityTemplate suf on ml.medicarenumber = suf.medicarenumber 
-  where suf.medicarenumber is null
+  where suf.medicarenumber is null --TODO: may want to put Template_ID on all tables...
 
 delete RTPhoenix.CriteriaInlistTemplate
   FROM RTPhoenix.CriteriaInlistTemplate ci inner join
@@ -192,10 +192,26 @@ delete rtphoenix.CLIENTTemplate
   FROM rtphoenix.CLIENTTemplate
 where client_id = @client_id
 
+delete rtphoenix.DTSMappingQLTemplate 
+  FROM rtphoenix.DTSMappingQLTemplate dtsm inner join 
+  rtphoenix.PackageQLTemplate p on dtsm.Package_id = p.Package_id
+  where study_id = -@study_id
+
+delete rtphoenix.SourceQLTemplate 
+  FROM rtphoenix.SourceQLTemplate s inner join 
+  rtphoenix.PackageQLTemplate p on s.Package_id = p.Package_id
+  where study_id = -@study_id
+
+delete rtphoenix.DestinationQLTemplate 
+  FROM rtphoenix.DestinationQLTemplate d inner join 
+  rtphoenix.PackageQLTemplate p on d.Package_id = p.Package_id
+  where study_id = -@study_id
+
+delete rtphoenix.PackageQLTemplate 
+  where study_id = -@study_id
+
 delete RTPhoenix.Template
 where study_id = -@study_id
-
-
 
 INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
      VALUES (@Template_ID, 'Template Deleted for study_id '+convert(varchar,@study_id), @user, GetDate())
