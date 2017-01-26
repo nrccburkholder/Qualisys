@@ -975,8 +975,6 @@ SELECT [QPC_ID]
   [dbo].[SURVEY_DEF] sd on ct.Survey_id = sd.SURVEY_ID
   where Study_id = @study_id
 
---declare @study_id int = 4955 declare @client_id int select @client_id = client_id from study where study_id = @study_id
-
 INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
      VALUES (@Template_ID, 'CODE* template tables exported for study_id '+convert(varchar,@study_id), @user, GetDate())
 
@@ -990,3 +988,112 @@ SELECT [EMPLOYEE_ID]
 
 INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
      VALUES (@Template_ID, 'Study_Employee template table exported for study_id '+convert(varchar,@study_id), @user, GetDate())
+
+/**********************
+******* QP_LOAD *******
+**********************/
+
+--declare @study_id int = 4955 declare @client_id int select @client_id = client_id from study where study_id = @study_id
+
+INSERT INTO [RTPhoenix].[PackageQLTemplate]
+           ([Package_id]
+           ,[intVersion]
+           ,[strPackage_nm]
+           ,[Client_id]
+           ,[Study_id]
+           ,[intTeamNumber]
+           ,[strLogin_nm]
+           ,[datLastModified]
+           ,[bitArchive]
+           ,[datArchive]
+           ,[FileType_id]
+           ,[FileTypeSettings]
+           ,[SignOffBy_id]
+           ,[datCreated]
+           ,[strPackageFriendly_nm]
+           ,[bitActive]
+           ,[bitDeleted]
+           ,[OwnerMember_id])
+SELECT -[Package_id]
+      ,[intVersion]
+      ,[strPackage_nm]
+      ,-[Client_id]
+      ,-[Study_id]
+      ,[intTeamNumber]
+      ,[strLogin_nm]
+      ,[datLastModified]
+      ,[bitArchive]
+      ,[datArchive]
+      ,[FileType_id]
+      ,[FileTypeSettings]
+      ,[SignOffBy_id]
+      ,[datCreated]
+      ,[strPackageFriendly_nm]
+      ,[bitActive]
+      ,[bitDeleted]
+      ,[OwnerMember_id]
+  FROM [QLoader].[QP_Load].[dbo].[Package]
+  where study_id = @study_id
+
+INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+     VALUES (@Template_ID, 'QLoader Package table exported for study_id '+convert(varchar,@study_id), @user, GetDate())
+
+INSERT INTO [RTPhoenix].[DestinationQLTemplate]
+           ([Destination_id]
+           ,[Package_id]
+           ,[intVersion]
+           ,[Table_id]
+           ,[Field_id]
+           ,[Formula]
+           ,[bitNULLCount]
+           ,[intFreqLimit]
+           ,[Sources])
+SELECT -[Destination_id]
+      ,-d.[Package_id]
+      ,d.[intVersion]
+      ,-[Table_id]
+      ,[Field_id]
+      ,[Formula]
+      ,[bitNULLCount]
+      ,[intFreqLimit]
+      ,[Sources]
+  FROM [QLoader].[QP_Load].[dbo].[Destination] d inner join 
+	[QLoader].[QP_Load].[dbo].[Package] p on d.package_id = p.package_id
+  where study_id = @study_id
+
+INSERT INTO [RTPhoenix].[SourceQLTemplate]
+           ([Source_id]
+           ,[Package_id]
+           ,[intVersion]
+           ,[strName]
+           ,[strAlias]
+           ,[intLength]
+           ,[DataType_id]
+           ,[Ordinal])
+SELECT -[Source_id]
+      ,-s.[Package_id]
+      ,s.[intVersion]
+      ,[strName]
+      ,[strAlias]
+      ,[intLength]
+      ,[DataType_id]
+      ,[Ordinal]
+  FROM [QLoader].[QP_Load].[dbo].[Source] s inner join
+	[QLoader].[QP_Load].[dbo].[Package] p on s.package_id = p.package_id
+  where study_id = @study_id
+
+INSERT INTO [RTPhoenix].[DTSMappingQLTemplate]
+           ([intVersion]
+           ,[Source_id]
+           ,[Destination_id]
+           ,[Package_id])
+SELECT dtsm.[intVersion]
+      ,-[Source_id]
+      ,-[Destination_id]
+      ,-dtsm.[Package_id]
+  FROM [QLoader].[QP_Load].[dbo].[DTSMapping] dtsm inner join
+	[QLoader].[QP_Load].[dbo].[Package] p on dtsm.package_id = p.package_id
+  where study_id = @study_id
+
+INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+     VALUES (@Template_ID, 'QLoader Source/Destination/DTSMapping tables exported for study_id '+convert(varchar,@study_id), @user, GetDate())
