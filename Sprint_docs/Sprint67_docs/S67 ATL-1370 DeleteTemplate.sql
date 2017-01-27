@@ -188,6 +188,7 @@ delete rtphoenix.STUDYTemplate
   FROM rtphoenix.STUDYTemplate
   where Study_id = -@study_id
 
+if not exists (select 1 from rtphoenix.StudyTemplate where client_id = @client_id)
 delete rtphoenix.CLIENTTemplate
   FROM rtphoenix.CLIENTTemplate
 where client_id = @client_id

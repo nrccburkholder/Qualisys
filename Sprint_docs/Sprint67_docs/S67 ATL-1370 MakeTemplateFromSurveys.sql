@@ -19,6 +19,12 @@ declare @study_id int = 4955
 declare @client_id int
 select @client_id = client_id from study where study_id = @study_id
 
+INSERT INTO [RTPhoenix].[Template]([Client_ID],[Study_ID],[Template_NM],[Active],[DateCreated])
+     VALUES (-@client_id, -@study_id, 'First Template Piece by Piece', 0, GetDate())
+
+declare @template_id int = scope_identity()
+
+if not exists(select 1 from [RTPhoenix].[CLIENTTemplate] where client_id = -@client_id)
 INSERT INTO [RTPhoenix].[CLIENTTemplate]
            ([CLIENT_ID]
            ,[STRCLIENT_NM]
@@ -30,12 +36,6 @@ SELECT -[CLIENT_ID]
       ,[ClientGroup_ID]
   FROM [dbo].[CLIENT]
 where client_id = @client_id
-
-INSERT INTO [RTPhoenix].[Template]([Client_ID],[Study_ID],[Template_NM],[Active],[DateCreated])
-     VALUES (-@client_id, -@study_id, 'First Template Piece by Piece', 0, GetDate())
-
-declare @template_id int
-select @template_id = scope_identity()
 
 INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
      VALUES (@Template_ID, 'Template Created for study_id '+convert(varchar,@study_id), @user, GetDate())
