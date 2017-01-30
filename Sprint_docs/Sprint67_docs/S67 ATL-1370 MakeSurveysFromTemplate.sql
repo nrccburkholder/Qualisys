@@ -51,11 +51,13 @@ SELECT TOP 1
   FROM [RTPhoenix].[TemplateJob]
   where CompletedAt is null
 
+if @TemplateJob_ID is null
+	RETURN
+
 declare @template_NM varchar(40)
 declare @user varchar(40) = @LoggedBy
 declare @study_id int 
 declare @client_id int
---select @client_id = client_id from study where study_id = @study_id
 
 --if @Template_ID is null
 --begin
@@ -72,7 +74,7 @@ SELECT @Template_ID = [Template_ID]
   where Template_ID = @Template_ID
 	and [Active] = 1
 
-if @Template_ID is null 
+if @study_id is null 
 begin
 	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 		 VALUES (@Template_ID, 'Template ID missing or not Active for TemplateJob_ID: '+convert(varchar,@TemplateJob_id), @user, GetDate())
@@ -175,7 +177,7 @@ SELECT @TargetClient_ID
   FROM [RTPhoenix].[STUDYTemplate]
   where Study_id = @study_id
 
-SET @TargetStudy_ID = scope_identity()
+SET @TargetStudy_ID = ident_current('dbo.study')
 
 INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
      VALUES (@Template_ID, 'Study Table Inserted from Template for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
@@ -334,21 +336,21 @@ SELECT @TargetStudy_Id
       ,[IsPointInTime]
   FROM [RTPhoenix].[SURVEY_DEFTemplate] sd inner join
 		[RTPhoenix].[METATABLETemplate] mt on sd.CutOffTABLE_ID = mt.TABLE_ID inner join
-		[dbo].[METATABLE] db0 on mt.strtable_nm = db0.strtable_nm
-					and db0.study_id = @TargetStudy_id and mt.study_id = @study_id
+		[dbo].[METATABLE] db0 on mt.strtable_nm = db0.strtable_nm and
+					db0.study_id = @TargetStudy_id and mt.study_id = @study_id
 				inner join
 		[RTPhoenix].[METATABLETemplate] mt2 on sd.SampleEncounterTABLE_ID = mt2.TABLE_ID inner join
-		[dbo].[METATABLE] db02 on mt2.strtable_nm = db02.strtable_nm
-					and db02.study_id = @TargetStudy_id and mt2.study_id = @study_id
+		[dbo].[METATABLE] db02 on mt2.strtable_nm = db02.strtable_nm and 
+					db02.study_id = @TargetStudy_id and mt2.study_id = @study_id
 
 INSERT INTO [dbo].[SurveySubtype]
            ([Survey_id]
-           ,[Subtype_id])
+           ,[Subtype_id]) --declare @study_id int = -4955 declare @TargetStudy_id int = 4958
 SELECT db0.[Survey_id]
-      ,[Subtype_id]
+      ,sst.[Subtype_id]
   FROM [RTPhoenix].[SurveySubtypeTemplate] sst inner join
 		[RTPhoenix].[SURVEY_DEFTemplate] sd on sst.Survey_id = sd.SURVEY_ID inner join
-		[dbo].[Survey_Def] db0 on sd.strsurvey_dsc = db0.strsurvey_dsc and
+		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm and
 					db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 
 INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
@@ -359,17 +361,17 @@ INSERT INTO [dbo].[MAILINGMETHODOLOGY]
            ,[BITACTIVEMETHODOLOGY]
            ,[STRMETHODOLOGY_NM]
            ,[DATCREATE_DT]
-           ,[StandardMethodologyID])
+           ,[StandardMethodologyID]) --declare @study_id int = -4955 declare @TargetStudy_id int = 4958
 SELECT db0.[SURVEY_ID]
-      ,[BITACTIVEMETHODOLOGY]
-      ,[STRMETHODOLOGY_NM]
-      ,[DATCREATE_DT]
-      ,[StandardMethodologyID]
+      ,mm.[BITACTIVEMETHODOLOGY]
+      ,mm.[STRMETHODOLOGY_NM]
+      ,mm.[DATCREATE_DT]
+      ,mm.[StandardMethodologyID]
   FROM [RTPhoenix].[MAILINGMETHODOLOGYTemplate] mm inner join
 		[RTPhoenix].[SURVEY_DEFTemplate] sd on mm.Survey_id = sd.SURVEY_ID inner join
-		[dbo].[Survey_Def] db0 on sd.strsurvey_dsc = db0.strsurvey_dsc and
+		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm and
 					db0.study_id = @TargetStudy_id and sd.study_id = @study_id
-
+/*
 INSERT INTO [dbo].[MAILINGSTEP]
            ([METHODOLOGY_ID]
            ,[SURVEY_ID]
@@ -436,12 +438,12 @@ SELECT db01.[METHODOLOGY_ID]
   FROM [RTPhoenix].[MAILINGSTEPTemplate] ms inner join
         [RTPhoenix].[MAILINGMETHODOLOGYTemplate] mm on ms.METHODOLOGY_ID = mm.METHODOLOGY_ID inner join
 		[RTPhoenix].[SURVEY_DEFTemplate] sd on mm.Survey_id = sd.SURVEY_ID inner join
-		[dbo].[Survey_Def] db0 on sd.strsurvey_dsc = db0.strsurvey_dsc and
+		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm and
 					db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 				inner join
 		[dbo].[MAILINGMETHODOLOGY] db01 on mm.STRMETHODOLOGY_NM = db01.STRMETHODOLOGY_NM and
-					mm.SURVEY_ID = sd.SURVEY_ID and db01.SURVEY_ID = mm.survey_id
-
+					db01.SURVEY_ID = db0.survey_id
+*/
 INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
      VALUES (@Template_ID, 'MAILING* template tables imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
@@ -456,7 +458,7 @@ SELECT [ROOTSAMPLEUNIT_ID] --trying to leave the negative id in temporarily...
       ,[DATCREATE_DT]
   FROM [RTPhoenix].[SAMPLEPLANTemplate] sp inner join
 		[RTPhoenix].[SURVEY_DEFTemplate] sd on sp.Survey_id = sd.SURVEY_ID inner join
-		[dbo].[Survey_Def] db0 on sd.strsurvey_dsc = db0.strsurvey_dsc and
+		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm and
 					db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 
 INSERT INTO [dbo].[CRITERIASTMT]
@@ -489,9 +491,9 @@ INSERT INTO [dbo].[SAMPLEUNIT]
            ,[DontSampleUnit]
            ,[CAHPSType_id]
            ,[bitLowVolumeUnit])
-SELECT [CRITERIASTMT_ID] --trying to leave the negative id in temporarily...
+SELECT null--[CRITERIASTMT_ID] --trying to leave as null temporarily...
       ,db02.[SAMPLEPLAN_ID]
-      ,[PARENTSAMPLEUNIT_ID] --trying to leave the negative id in temporarily...
+      ,null--[PARENTSAMPLEUNIT_ID] --trying to leave as null temporarily...
       ,[STRSAMPLEUNIT_NM]
       ,[INTTARGETRETURN]
       ,[INTMINCONFIDENCE]
@@ -499,7 +501,7 @@ SELECT [CRITERIASTMT_ID] --trying to leave the negative id in temporarily...
       ,[NUMINITRESPONSERATE]
       ,[NUMRESPONSERATE]
       ,[REPORTING_HIERARCHY_ID]
-      ,[SUFacility_id] --trying to leave the negative id in temporarily...
+      ,null--[SUFacility_id] --trying to leave the as null temporarily...
       ,[SUServices]
       ,[bitsuppress]
       ,[bitCHART]
@@ -515,13 +517,13 @@ SELECT [CRITERIASTMT_ID] --trying to leave the negative id in temporarily...
   FROM [RTPhoenix].[SAMPLEUNITTemplate] su inner join
   [RTPhoenix].[SAMPLEPLANTemplate] sp on su.SAMPLEPLAN_ID = sp.SAMPLEPLAN_ID inner join
   [RTPhoenix].[SURVEY_DEFTemplate] sd on sp.Survey_id = sd.SURVEY_ID inner join
-		[dbo].[Survey_Def] db0 on sd.strsurvey_dsc = db0.strsurvey_dsc and
+		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm and
 					db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 				inner join
 		[dbo].[SamplePlan] db02 on db02.DATCREATE_DT = sp.DATCREATE_DT and 
 					db02.survey_id = db0.survey_id
 
-INSERT INTO [dbo].[SAMPLEUNITSECTION]
+INSERT INTO [dbo].[SAMPLEUNITSECTION] --TODO: 0 records, Foreign Key conflict NEED IDENTITY STEP OF -1
            ([SAMPLEUNIT_ID]
            ,[SELQSTNSSECTION]
            ,[SELQSTNSSURVEY_ID]) 
@@ -532,13 +534,14 @@ SELECT db03.[SAMPLEUNIT_ID]
   [RTPhoenix].[SAMPLEUNITTemplate] su on su.SAMPLEUNIT_ID = sus.SAMPLEUNIT_ID join
   [RTPhoenix].[SAMPLEPLANTemplate] sp on su.SAMPLEPLAN_ID = sp.SAMPLEPLAN_ID inner join
   [RTPhoenix].[SURVEY_DEFTemplate] sd on sp.Survey_id = sd.SURVEY_ID inner join
-		[dbo].[Survey_Def] db0 on sd.strsurvey_dsc = db0.strsurvey_dsc and
+		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm and
 					db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 				inner join
 		[dbo].[SamplePlan] db02 on db02.DATCREATE_DT = sp.DATCREATE_DT and 
 					db02.survey_id = db0.survey_id
 				inner join
-		[dbo].[SampleUnit] db03 on su.strsampleunit_nm = db03.strsampleunit_nm
+		[dbo].[SampleUnit] db03 on su.strsampleunit_nm = db03.strsampleunit_nm and
+					db03.SAMPLEPLAN_ID = db02.SAMPLEPLAN_ID
 
 INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
      VALUES (@Template_ID, 'SAMPLE* template tables imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
@@ -568,7 +571,7 @@ SELECT db0.[Survey_id]
       ,[SamplingMethod_id]
   FROM [RTPhoenix].[PeriodDefTemplate] pd inner join
   [RTPhoenix].[SURVEY_DEFTemplate] sd on pd.Survey_id = sd.SURVEY_ID inner join
-		[dbo].[Survey_Def] db0 on sd.strsurvey_dsc = db0.strsurvey_dsc and
+		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm and
 					db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 
 INSERT INTO [dbo].[PeriodDates]
@@ -585,7 +588,7 @@ SELECT db01.[PeriodDef_id]
   FROM [RTPhoenix].[PeriodDatesTemplate] pdt inner join
   [RTPhoenix].[PeriodDefTemplate] pdf on pdt.PeriodDef_id = pdf.PeriodDef_id inner join
   [RTPhoenix].[SURVEY_DEFTemplate] sd on pdf.Survey_id = sd.SURVEY_ID inner join
-		[dbo].[Survey_Def] db0 on sd.strsurvey_dsc = db0.strsurvey_dsc and
+		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm and
 					db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 				inner join
 		[dbo].[PeriodDef] db01 on db01.strPeriodDef_nm = pdf.strPeriodDef_nm and
@@ -605,7 +608,7 @@ SELECT db0.[SURVEY_ID]
       ,[BUSRULE_CD]
   FROM [RTPhoenix].[BUSINESSRULETemplate] br inner join
   [RTPhoenix].[SURVEY_DEFTemplate] sd on br.Survey_id = sd.SURVEY_ID inner join
-		[dbo].[Survey_Def] db0 on sd.strsurvey_dsc = db0.strsurvey_dsc and
+		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm and
 					db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 				inner join
   [RTPhoenix].[CriteriaStmtTemplate] cst on cst.CRITERIASTMT_ID = br.CRITERIASTMT_ID inner join
@@ -621,12 +624,12 @@ SELECT db01.[TABLE_ID]
       ,db0.[SURVEY_ID]
   FROM [RTPhoenix].[HOUSEHOLDRULETemplate] hhr inner join
   [RTPhoenix].[SURVEY_DEFTemplate] sd on hhr.Survey_id = sd.SURVEY_ID inner join
-		[dbo].[Survey_Def] db0 on sd.strsurvey_dsc = db0.strsurvey_dsc and
+		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm and
 					db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 				inner join
   [RTPhoenix].[METATABLETemplate] mt on hhr.TABLE_ID = mt.TABLE_ID inner join
 		[dbo].[METATABLE] db01 on mt.strtable_nm = db01.strtable_nm and
-					db0.study_id = @TargetStudy_id and mt.study_id = @study_id
+					db01.study_id = @TargetStudy_id and mt.study_id = @study_id
 
 INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
      VALUES (@Template_ID, 'HOUSEHOLDRULE/BUSINESSRULE template tables imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
@@ -655,14 +658,11 @@ SELECT cc.[CRITERIAPHRASE_ID]
 				inner join
 		[dbo].[CriteriaStmt] db01 on cs.STRCRITERIASTMT_NM = db01.STRCRITERIASTMT_NM and
 					cs.study_id = @study_id and db01.study_id = @TargetStudy_id
-				inner join
-		[dbo].[CRITERIACLAUSE] db02 on db01.CRITERIASTMT_ID = db02.CRITERIASTMT_ID and
-					cc.CRITERIAPHRASE_ID = db02.CRITERIAPHRASE_ID
 
 INSERT INTO [dbo].[CRITERIAINLIST] 
            ([CRITERIACLAUSE_ID]
            ,[STRLISTVALUE])
-SELECT db02.[CRITERIACLAUSE_ID]
+SELECT db01.[CRITERIACLAUSE_ID]
       ,ci.[STRLISTVALUE]
   FROM [RTPhoenix].[CRITERIAINLISTTemplate] ci inner join
   [RTPhoenix].[CRITERIACLAUSETemplate] cc on ci.CRITERIACLAUSE_ID = cc.CRITERIACLAUSE_ID inner join
@@ -672,9 +672,6 @@ SELECT db02.[CRITERIACLAUSE_ID]
 				inner join
 		[dbo].[CRITERIACLAUSE] db01 on db01.CRITERIASTMT_ID = db0.CRITERIASTMT_ID and
 					cc.CRITERIAPHRASE_ID = db01.CRITERIAPHRASE_ID
-				inner join
-		[dbo].[CRITERIAINLIST] db02 on db01.CRITERIACLAUSE_ID = db02.CRITERIACLAUSE_ID and
-					db02.STRLISTVALUE = ci.STRLISTVALUE
 
 INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
      VALUES (@Template_ID, 'CRITERIA* template tables imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
@@ -786,7 +783,7 @@ SELECT [SelCover_id]
       ,[bitLetterHead]
   FROM [RTPhoenix].[Sel_CoverTemplate] sel inner join
   [RTPhoenix].[SURVEY_DEFTemplate] sd on sel.Survey_id = sd.SURVEY_ID inner join
-		[dbo].[Survey_Def] db0 on sd.strsurvey_dsc = db0.strsurvey_dsc and
+		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm and
 					db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 
 INSERT INTO [dbo].[SEL_LOGO] 
@@ -814,7 +811,7 @@ SELECT [QPC_ID]
       ,[VISIBLE]
   FROM [RTPhoenix].[SEL_LOGOTemplate] sel inner join
   [RTPhoenix].[SURVEY_DEFTemplate] sd on sel.Survey_id = sd.SURVEY_ID inner join
-		[dbo].[Survey_Def] db0 on sd.strsurvey_dsc = db0.strsurvey_dsc and
+		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm and
 					db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 
 INSERT INTO [dbo].[SEL_PCL]
@@ -842,7 +839,7 @@ SELECT [QPC_ID]
       ,[KNOWNDIMENSIONS]
   FROM [RTPhoenix].[SEL_PCLTemplate] sel inner join
   [RTPhoenix].[SURVEY_DEFTemplate] sd on sel.Survey_id = sd.SURVEY_ID inner join
-		[dbo].[Survey_Def] db0 on sd.strsurvey_dsc = db0.strsurvey_dsc and
+		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm and
 					db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 
 INSERT INTO [dbo].[SEL_QSTNS]
@@ -890,7 +887,7 @@ SELECT [SELQSTNS_ID]
       ,[strFullQuestion]
   FROM [RTPhoenix].[SEL_QSTNSTemplate] sel inner join
   [RTPhoenix].[SURVEY_DEFTemplate] sd on sel.Survey_id = sd.SURVEY_ID inner join
-		[dbo].[Survey_Def] db0 on sd.strsurvey_dsc = db0.strsurvey_dsc and
+		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm and
 					db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 
 INSERT INTO [dbo].[SEL_SCLS] 
@@ -918,7 +915,7 @@ SELECT db0.[SURVEY_ID]
       ,[INTRESPTYPE]
   FROM [RTPhoenix].[SEL_SCLSTemplate] sel inner join
   [RTPhoenix].[SURVEY_DEFTemplate] sd on sel.Survey_id = sd.SURVEY_ID inner join
-		[dbo].[Survey_Def] db0 on sd.strsurvey_dsc = db0.strsurvey_dsc and
+		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm and
 					db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 
 INSERT INTO [dbo].[SEL_SKIP] 
@@ -936,7 +933,7 @@ SELECT db0.[SURVEY_ID]
       ,[NUMSKIPTYPE]
   FROM [RTPhoenix].[SEL_SKIPTemplate] sel inner join
   [RTPhoenix].[SURVEY_DEFTemplate] sd on sel.Survey_id = sd.SURVEY_ID inner join
-		[dbo].[Survey_Def] db0 on sd.strsurvey_dsc = db0.strsurvey_dsc and
+		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm and
 					db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 
 INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
@@ -971,18 +968,16 @@ SELECT [QPC_ID]
       ,[LABEL]
   FROM [RTPhoenix].[SEL_TEXTBOXTemplate] sel inner join
   [RTPhoenix].[SURVEY_DEFTemplate] sd on sel.Survey_id = sd.SURVEY_ID inner join
-		[dbo].[Survey_Def] db0 on sd.strsurvey_dsc = db0.strsurvey_dsc and
+		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm and
 					db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 
 INSERT INTO [dbo].[ModeSectionMapping]
-           ([ID]
-           ,[Survey_Id]
+           ([Survey_Id]
            ,[MailingStepMethod_Id]
            ,[MailingStepMethod_nm]
            ,[Section_Id]
            ,[SectionLabel])
-SELECT [ID]
-      ,db0.[Survey_Id]
+SELECT db0.[Survey_Id]
       ,db01.[MailingStepMethod_Id]
       ,[MailingStepMethod_nm]
       ,[Section_Id]
@@ -990,22 +985,20 @@ SELECT [ID]
   FROM [RTPhoenix].[ModeSectionMappingTemplate] msmt inner join
   [RTPhoenix].[SURVEY_DEFTemplate] sd on msmt.Survey_id = sd.SURVEY_ID inner join
 		[dbo].[MailingStep] ms on ms.SURVEY_ID = sd.survey_id inner join
-		[dbo].[Survey_Def] db0 on sd.strsurvey_dsc = db0.strsurvey_dsc and
+		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm and
 					db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 				inner join
 		[dbo].[MailingStep] db01 on db01.SURVEY_ID = db0.survey_id and
 					ms.STRMAILINGSTEP_NM = db01.STRMAILINGSTEP_NM
 
 INSERT INTO [dbo].[TAGFIELD] 
-           ([TAGFIELD_ID]
-           ,[TAG_ID]
+           ([TAG_ID]
            ,[TABLE_ID]
            ,[FIELD_ID]
            ,[STUDY_ID]
            ,[REPLACEFIELD_FLG]
            ,[STRREPLACELITERAL])
-SELECT db01.[TAGFIELD_ID]
-      ,tf.[TAG_ID]
+SELECT tf.[TAG_ID]
       ,db0.[TABLE_ID]
       ,tf.[FIELD_ID]
       ,@TargetStudy_ID
@@ -1015,9 +1008,6 @@ SELECT db01.[TAGFIELD_ID]
   [RTPhoenix].[METATABLETemplate] mt on tf.TABLE_ID = mt.TABLE_ID inner join
 		[dbo].[METATABLE] db0 on db0.STRTABLE_NM = mt.STRTABLE_NM and
 					db0.study_id = @TargetStudy_ID and mt.STUDY_ID = @study_id
-				inner join
-		[dbo].[TAGFIELD] db01 on db01.STRREPLACELITERAL = tf.STRREPLACELITERAL and
-					db01.STUDY_ID = @TargetStudy_ID and mt.STUDY_ID = @study_id
 
 INSERT INTO [dbo].[CODEQSTNS]
            ([SELQSTNS_ID]
@@ -1034,7 +1024,7 @@ SELECT [SELQSTNS_ID]
       ,[INTLENGTH]
   FROM [RTPhoenix].[CODEQSTNSTemplate] cq inner join
   [RTPhoenix].[SURVEY_DEFTemplate] sd on cq.Survey_id = sd.SURVEY_ID inner join
-		[dbo].[Survey_Def] db0 on sd.strsurvey_dsc = db0.strsurvey_dsc and
+		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm and
 					db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 
 INSERT INTO [dbo].[CODESCLS] 
@@ -1054,7 +1044,7 @@ SELECT db0.[SURVEY_ID]
       ,[INTLENGTH]
   FROM [RTPhoenix].[CODESCLSTemplate] cs inner join
   [RTPhoenix].[SURVEY_DEFTemplate] sd on cs.Survey_id = sd.SURVEY_ID inner join
-		[dbo].[Survey_Def] db0 on sd.strsurvey_dsc = db0.strsurvey_dsc and
+		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm and
 					db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 
 INSERT INTO [dbo].[CODETXTBOX] 
@@ -1072,7 +1062,7 @@ SELECT [QPC_ID]
       ,[INTLENGTH]
   FROM [RTPhoenix].[CODETXTBOXTemplate] ct inner join
   [RTPhoenix].[SURVEY_DEFTemplate] sd on ct.Survey_id = sd.SURVEY_ID inner join
-		[dbo].[Survey_Def] db0 on sd.strsurvey_dsc = db0.strsurvey_dsc and
+		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm and
 					db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 
 --declare @study_id int = 4955 declare @client_id int select @client_id = client_id from study where study_id = @study_id
@@ -1086,13 +1076,14 @@ INSERT INTO [dbo].[STUDY_EMPLOYEE]
 SELECT [EMPLOYEE_ID]
       ,@TargetStudy_ID
   FROM [RTPhoenix].[STUDY_EMPLOYEETemplate]
-  where Study_id = @study_id
+  where Study_id = @study_id and Employee_id not in
+  (select Employee_id from [dbo].[study_employee] where study_id = @TargetStudy_ID)
 
 INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
      VALUES (@Template_ID, 'Study_Employee template table imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
-SET @TargetStudy_ID = @study_id
-SET @TargetClient_ID = @client_id
+SET @CompletedNotes = 'Completed import of Study_id '+convert(varchar,@TargetStudy_ID)+
+	' from Template_id '+convert(varchar,@Template_ID)+' via TemplateJob_id '+convert(varchar,@TemplateJob_Id)
 
 UPDATE [RTPhoenix].[TemplateJob]
    SET [TargetClient_ID] = @TargetClient_ID
