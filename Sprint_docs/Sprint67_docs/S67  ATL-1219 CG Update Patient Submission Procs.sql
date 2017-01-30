@@ -3106,8 +3106,15 @@ update #results set
 where --disposition not in (11, 21, 12, 22, 14, 24) or
 q1 is null
 go
+
+
+
+-- Adult 6.0 Month 3.0 + PCMH
 if exists (select * from sys.procedures where name = 'GetCGCAHPSdata3_sub_Adult6Month30A')
 	drop procedure GetCGCAHPSdata3_sub_Adult6Month30A
+go
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata3_sub_Adult6Month30B')
+	drop procedure GetCGCAHPSdata3_sub_Adult6Month30B
 go
 create procedure dbo.GetCGCAHPSdata3_sub_Adult6Month30A
 as
@@ -3159,9 +3166,6 @@ alter table #results add
 	PCMH5_Q22	char(1),	--Q050553
 	PCMH6_Q23	char(1)		--Q050557
 
-go
-if exists (select * from sys.procedures where name = 'GetCGCAHPSdata3_sub_Adult6Month30B')
-	drop procedure GetCGCAHPSdata3_sub_Adult6Month30B
 go
 create procedure dbo.GetCGCAHPSdata3_sub_Adult6Month30B
  @survey_id INT,
@@ -3400,6 +3404,7 @@ where --disposition not in (11, 21, 12, 22, 14, 24) or
 q1 is null
 go
 
+-- Child 6.0 Month 3.0 + PCMH
 if exists (select * from sys.procedures where name = 'GetCGCAHPSdata3_sub_Child6Month30a')
 	drop procedure GetCGCAHPSdata3_sub_Child6Month30a
 go
@@ -3486,8 +3491,12 @@ end
 ELSE 
 begin
 	SET @surveytype = 20
-	print 'Child Survey 3.0 w/PCMH'
+	print 'Child Survey 3.0'
 end
+
+print 'surveytype: ' + CAST(@surveytype as varchar)
+
+update #results set surveytype=@surveytype 
 
 -- Load question responses into #results, mapping NULL & -9 to 9 and -8 to 8
 -- (unless the #results field is char(2), then map them to 99 and 88, respectively)
@@ -3763,6 +3772,7 @@ update #results set
 where --disposition not in (11, 21, 12, 22, 14, 24) or
 q1 is null
 go
+
 
 
 if exists (select * from sys.procedures where name = 'GetCGCAHPSdata3_sub_Child12MonthA')
