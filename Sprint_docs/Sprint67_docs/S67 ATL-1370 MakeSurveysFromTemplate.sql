@@ -371,7 +371,10 @@ SELECT db0.[SURVEY_ID]
 		[RTPhoenix].[SURVEY_DEFTemplate] sd on mm.Survey_id = sd.SURVEY_ID inner join
 		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm and
 					db0.study_id = @TargetStudy_id and sd.study_id = @study_id
-/*
+
+declare @ExpireFromStepStub int 
+select @ExpireFromStepStub = ident_current('dbo.mailingstep') + 1
+
 INSERT INTO [dbo].[MAILINGSTEP]
            ([METHODOLOGY_ID]
            ,[SURVEY_ID]
@@ -418,7 +421,7 @@ SELECT db01.[METHODOLOGY_ID]
       ,[MMMailingStep_id]
       ,[MailingStepMethod_id]
       ,[ExpireInDays]
-      ,[ExpireFromStep]
+      ,@ExpireFromStepStub --[ExpireFromStep]
       ,[Quota_ID]
       ,[QuotaStopCollectionAt]
       ,[DaysInField]
@@ -443,7 +446,13 @@ SELECT db01.[METHODOLOGY_ID]
 				inner join
 		[dbo].[MAILINGMETHODOLOGY] db01 on mm.STRMETHODOLOGY_NM = db01.STRMETHODOLOGY_NM and
 					db01.SURVEY_ID = db0.survey_id
-*/
+
+update ms set ExpireFromStep = ms2.mailingstep_id 
+--select ms.ExpireFromStep, ms2.ExpireFromStep 
+from [dbo].[mailingstep] ms inner join [dbo].[mailingstep] ms2 on 
+	ms.survey_id = ms2.survey_id and ms2.intsequence = 1
+	where ms.MAILINGSTEP_ID > @ExpireFromStepStub
+
 INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
      VALUES (@Template_ID, 'MAILING* template tables imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
@@ -452,7 +461,7 @@ INSERT INTO [dbo].[SAMPLEPLAN]
            ,[EMPLOYEE_ID]
            ,[SURVEY_ID]
            ,[DATCREATE_DT])
-SELECT [ROOTSAMPLEUNIT_ID] --trying to leave the negative id in temporarily...
+SELECT -[ROOTSAMPLEUNIT_ID] --fill in later, negate back to original positive ID...
       ,[EMPLOYEE_ID]
       ,db0.[SURVEY_ID]
       ,[DATCREATE_DT]
@@ -491,9 +500,9 @@ INSERT INTO [dbo].[SAMPLEUNIT]
            ,[DontSampleUnit]
            ,[CAHPSType_id]
            ,[bitLowVolumeUnit])
-SELECT null--[CRITERIASTMT_ID] --trying to leave as null temporarily...
+SELECT -[CRITERIASTMT_ID] --fill in later, negate back to original positive ID...
       ,db02.[SAMPLEPLAN_ID]
-      ,null--[PARENTSAMPLEUNIT_ID] --trying to leave as null temporarily...
+      ,-[PARENTSAMPLEUNIT_ID] --fill in later, negate back to original positive ID...
       ,[STRSAMPLEUNIT_NM]
       ,[INTTARGETRETURN]
       ,[INTMINCONFIDENCE]
@@ -501,7 +510,7 @@ SELECT null--[CRITERIASTMT_ID] --trying to leave as null temporarily...
       ,[NUMINITRESPONSERATE]
       ,[NUMRESPONSERATE]
       ,[REPORTING_HIERARCHY_ID]
-      ,null--[SUFacility_id] --trying to leave the as null temporarily...
+      ,db04.[SUFacility_id] 
       ,[SUServices]
       ,[bitsuppress]
       ,[bitCHART]
@@ -522,8 +531,17 @@ SELECT null--[CRITERIASTMT_ID] --trying to leave as null temporarily...
 				inner join
 		[dbo].[SamplePlan] db02 on db02.DATCREATE_DT = sp.DATCREATE_DT and 
 					db02.survey_id = db0.survey_id
+				left join
+		[dbo].[SUFacility] db04 on su.SUFacility_id <> 0 and 
+					db04.MedicareNumber = @MedicareNumber
 
-INSERT INTO [dbo].[SAMPLEUNITSECTION] --TODO: 0 records, Foreign Key conflict NEED IDENTITY STEP OF -1
+--TODO backfill SAMPLEPLAN.ROOTSAMPLEUNIT_ID
+
+--TODO backfill sampleunit.CRITERIASTMT_ID
+
+--TODO backfill SAMPLEUNIT.PARENTSAMPLEUNIT_ID
+
+INSERT INTO [dbo].[SAMPLEUNITSECTION] 
            ([SAMPLEUNIT_ID]
            ,[SELQSTNSSECTION]
            ,[SELQSTNSSURVEY_ID]) 
@@ -634,7 +652,7 @@ SELECT db01.[TABLE_ID]
 INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
      VALUES (@Template_ID, 'HOUSEHOLDRULE/BUSINESSRULE template tables imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
-INSERT INTO [dbo].[CRITERIACLAUSE] 
+INSERT INTO [dbo].[CRITERIACLAUSE] --TODO: Narrow down join
            ([CRITERIAPHRASE_ID]
            ,[CRITERIASTMT_ID]
            ,[TABLE_ID]
@@ -657,6 +675,7 @@ SELECT cc.[CRITERIAPHRASE_ID]
 					db0.study_id = @TargetStudy_id and mt.study_id = @study_id
 				inner join
 		[dbo].[CriteriaStmt] db01 on cs.STRCRITERIASTMT_NM = db01.STRCRITERIASTMT_NM and
+					convert(varchar,cs.strCriteriaString) = convert(varchar,db01.strCriteriaString) and
 					cs.study_id = @study_id and db01.study_id = @TargetStudy_id
 
 INSERT INTO [dbo].[CRITERIAINLIST] 
@@ -670,8 +689,7 @@ SELECT db01.[CRITERIACLAUSE_ID]
 		[dbo].[CriteriaStmt] db0 on cs.STRCRITERIASTMT_NM = db0.STRCRITERIASTMT_NM and
 					cs.study_id = @study_id and db0.study_id = @TargetStudy_id
 				inner join
-		[dbo].[CRITERIACLAUSE] db01 on db01.CRITERIASTMT_ID = db0.CRITERIASTMT_ID and
-					cc.CRITERIAPHRASE_ID = db01.CRITERIAPHRASE_ID
+		[dbo].[CRITERIACLAUSE] db01 on db01.CRITERIASTMT_ID = db0.CRITERIASTMT_ID
 
 INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
      VALUES (@Template_ID, 'CRITERIA* template tables imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
