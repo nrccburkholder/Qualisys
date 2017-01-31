@@ -3147,11 +3147,11 @@ alter table #results add
 	Q26	 	char(1), 	-- Q050699
 	Q27	 	char(1), 	-- Q050243
 	Q28	 	char(1), 	-- Q050253 or Q055064
-	Q29a	char(1), 	-- Q050255a
-	Q29b	char(1), 	-- Q050255b
-	Q29c	char(1), 	-- Q050255d through j
-	Q29d	char(1), 	-- Q050255k through n
-	Q29e	char(1), 	-- Q050255c
+	Q29a	char(1), 	-- Q050255a or Q055065a
+	Q29b	char(1), 	-- Q050255b or Q055065b
+	Q29c	char(1), 	-- Q050255d through j or Q055065c
+	Q29d	char(1), 	-- Q050255k through n or Q055065d
+	Q29e	char(1), 	-- Q050255c or Q055065e
 	Q29f	char(1), 	-- Other was not included on the scale, so will always be 0.
 	Q30		char(1), 	-- Q050256
 	Q31a	char(1), 	-- Q050257a
@@ -3279,25 +3279,36 @@ set @SQL = @SQL + N'
 EXEC sp_executesql @SQL, N'@begindate datetime, @enddate datetime, @survey_id int', @begindate, @enddate, @survey_id
 
 
-if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (55065))
- set @SQL = N'
- update r set
- Q29a  = case isnull(Q055065a,-9) when -9 then 0 else 1 end,
- Q29b  = case isnull(Q055065b,-9) when -9 then 0 else 1 end,
- Q29c  = case when (q055065d=1 or q055065e=1 or q055065f=1 or q055065g=1 or q055065h=1 or q055065i=1 or q055065j=1) then 1 else 0 end,
- Q29d  = case when (q055065k=1 or q055065l=1 or q055065m=1 or q055065n=1) then 1 else 0 end,
- Q29e  = case isnull(q055065c,-9) when -9 then 0 else 1 end,
- Q29f  = 0'
-else
- set @SQL = N'
- update r set
- Q29a  = case isnull(Q050255a,-9) when -9 then 0 else 1 end,
- Q29b  = case isnull(Q050255b,-9) when -9 then 0 else 1 end,
- Q29c  = case when (q050255d=1 or q050255e=1 or q050255f=1 or q050255g=1 or q050255h=1 or q050255i=1 or q050255j=1) then 1 else 0 end,
- Q29d  = case when (q050255k=1 or q050255l=1 or q050255m=1 or q050255n=1) then 1 else 0 end,
- Q29e  = case isnull(q050255c,-9) when -9 then 0 else 1 end,
- Q29f  = 0'
 
+if exists (select name as col_nm
+   from tempdb.sys.columns
+   where object_id = object_id('tempdb..#Study_Results') and name like '%55065%')
+
+
+if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (55065))
+begin
+
+	 set @SQL = N'
+	 update r set 
+	 Q29a  = case isnull(Q055065a,-9) when -9 then 0 else 1 end,
+	 Q29b  = case isnull(Q055065b,-9) when -9 then 0 else 1 end,
+	 Q29c  = case isnull(Q055065c,-9) when -9 then 0 else 1 end,
+	 Q29d  = case isnull(Q055065d,-9) when -9 then 0 else 1 end,
+	 Q29e  = case isnull(q055065e,-9) when -9 then 0 else 1 end,
+	 Q29f  = 0'
+end
+else
+begin
+
+	 set @SQL = N'
+	 update r set
+	 Q29a  = case isnull(Q050255a,-9) when -9 then 0 else 1 end,
+	 Q29b  = case isnull(Q050255b,-9) when -9 then 0 else 1 end,
+	 Q29c  = case when (q050255d=1 or q050255e=1 or q050255f=1 or q050255g=1 or q050255h=1 or q050255i=1 or q050255j=1) then 1 else 0 end,
+	 Q29d  = case when (q050255k=1 or q050255l=1 or q050255m=1 or q050255n=1) then 1 else 0 end,
+	 Q29e  = case isnull(q050255c,-9) when -9 then 0 else 1 end,
+	 Q29f  = 0'
+end
 set @SQL = @SQL + N'
  from #results r
   inner join #Big_Table bt on r.samplepop_id=bt.samplepop_id and r.sampleunit_id=bt.sampleunit_id
