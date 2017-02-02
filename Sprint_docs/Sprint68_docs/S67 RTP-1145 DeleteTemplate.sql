@@ -1,5 +1,5 @@
 /*
-ATL-1370 DeleteTemplate.sql
+S67 RTP-1145 DeleteTemplate.sql
 
 Chris Burkholder
 

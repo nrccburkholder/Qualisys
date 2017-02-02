@@ -1,5 +1,5 @@
 /*
-ATL-1370 HCAHPS DG Solutions Survey Subtype.sql
+S67 RTP-1145 HCAHPS DG Solutions Survey Subtype.sql
 
 Chris Burkholder
 
@@ -32,6 +32,7 @@ values (2, @RT)
 GO
 
 /****** Object:  Trigger [dbo].[tr_MailingStep_ExpireFromStep]    Script Date: 1/31/2017 11:19:26 AM ******/
+/*
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -47,3 +48,4 @@ FROM MailingStep ms, Inserted i
 WHERE i.MailingStep_id=ms.MailingStep_id
 
 GO
+*/

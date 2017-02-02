@@ -1,9 +1,9 @@
 /*
-ATL-1370 MakeSurveysFromTemplate.sql
+S67 RTP-1145 MakeSurveysFromTemplate.sql
 
 Chris Burkholder
 
-1/26/2017
+2/2/2017
 
 Insert into client select from ClientTemplate 
 Insert into study select from StudyTemplate
@@ -461,7 +461,7 @@ INSERT INTO [dbo].[SAMPLEPLAN]
            ,[EMPLOYEE_ID]
            ,[SURVEY_ID]
            ,[DATCREATE_DT])
-SELECT -[ROOTSAMPLEUNIT_ID] --fill in later, negate back to original positive ID...
+SELECT null --[ROOTSAMPLEUNIT_ID] --fill in later from template
       ,[EMPLOYEE_ID]
       ,db0.[SURVEY_ID]
       ,[DATCREATE_DT]
@@ -500,30 +500,31 @@ INSERT INTO [dbo].[SAMPLEUNIT]
            ,[DontSampleUnit]
            ,[CAHPSType_id]
            ,[bitLowVolumeUnit])
-SELECT -[CRITERIASTMT_ID] --fill in later, negate back to original positive ID...
+SELECT db01.[CRITERIASTMT_ID] 
       ,db02.[SAMPLEPLAN_ID]
-      ,-[PARENTSAMPLEUNIT_ID] --fill in later, negate back to original positive ID...
-      ,[STRSAMPLEUNIT_NM]
-      ,[INTTARGETRETURN]
-      ,[INTMINCONFIDENCE]
-      ,[INTMAXMARGIN]
-      ,[NUMINITRESPONSERATE]
-      ,[NUMRESPONSERATE]
-      ,[REPORTING_HIERARCHY_ID]
+      ,null --[PARENTSAMPLEUNIT_ID] --fill in later from template
+      ,su.[STRSAMPLEUNIT_NM]
+      ,su.[INTTARGETRETURN]
+      ,su.[INTMINCONFIDENCE]
+      ,su.[INTMAXMARGIN]
+      ,su.[NUMINITRESPONSERATE]
+      ,su.[NUMRESPONSERATE]
+      ,su.[REPORTING_HIERARCHY_ID]
       ,db04.[SUFacility_id] 
-      ,[SUServices]
-      ,[bitsuppress]
-      ,[bitCHART]
-      ,[Priority]
-      ,[SampleSelectionType_id]
-      ,[DontSampleUnit]
-      ,[CAHPSType_id]
+      ,su.[SUServices]
+      ,su.[bitsuppress]
+      ,su.[bitCHART]
+      ,su.[Priority]
+      ,su.[SampleSelectionType_id]
+      ,su.[DontSampleUnit]
+      ,su.[CAHPSType_id]
 /*      ,[bitHCAHPS]
       ,[bitHHCAHPS]
       ,[bitMNCM]
       ,[bitACOCAHPS]*/
-      ,[bitLowVolumeUnit]
+      ,su.[bitLowVolumeUnit]
   FROM [RTPhoenix].[SAMPLEUNITTemplate] su inner join
+  [RTPhoenix].[CRITERIASTMTTemplate] cs on su.CRITERIASTMT_ID = cs.CRITERIASTMT_ID inner join
   [RTPhoenix].[SAMPLEPLANTemplate] sp on su.SAMPLEPLAN_ID = sp.SAMPLEPLAN_ID inner join
   [RTPhoenix].[SURVEY_DEFTemplate] sd on sp.Survey_id = sd.SURVEY_ID inner join
 		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm and
@@ -531,13 +532,19 @@ SELECT -[CRITERIASTMT_ID] --fill in later, negate back to original positive ID..
 				inner join
 		[dbo].[SamplePlan] db02 on db02.DATCREATE_DT = sp.DATCREATE_DT and 
 					db02.survey_id = db0.survey_id
+				inner join
+		[dbo].[CriteriaStmt] db01 on cs.STRCRITERIASTMT_NM = db01.STRCRITERIASTMT_NM and
+					convert(varchar,cs.strCriteriaString) = convert(varchar,db01.strCriteriaString) and
+					cs.study_id = @study_id and db01.study_id = @TargetStudy_id
+				inner join
+		[dbo].[SampleUnit] db01a on db01a.CRITERIASTMT_ID = db01.CRITERIASTMT_ID and
+					cs.[_STRSAMPLEUNIT_NM] = db01a.[STRSAMPLEUNIT_NM] and
+					cs.study_id = @study_id and db01.study_id = @TargetStudy_id
 				left join
 		[dbo].[SUFacility] db04 on su.SUFacility_id <> 0 and 
 					db04.MedicareNumber = @MedicareNumber
 
 --TODO backfill SAMPLEPLAN.ROOTSAMPLEUNIT_ID
-
---TODO backfill sampleunit.CRITERIASTMT_ID
 
 --TODO backfill SAMPLEUNIT.PARENTSAMPLEUNIT_ID
 
@@ -676,6 +683,10 @@ SELECT cc.[CRITERIAPHRASE_ID]
 				inner join
 		[dbo].[CriteriaStmt] db01 on cs.STRCRITERIASTMT_NM = db01.STRCRITERIASTMT_NM and
 					convert(varchar,cs.strCriteriaString) = convert(varchar,db01.strCriteriaString) and
+					cs.study_id = @study_id and db01.study_id = @TargetStudy_id
+				inner join
+		[dbo].[SampleUnit] db02 on db02.CRITERIASTMT_ID = db01.CRITERIASTMT_ID and
+					cs.[_STRSAMPLEUNIT_NM] = db02.[STRSAMPLEUNIT_NM] and
 					cs.study_id = @study_id and db01.study_id = @TargetStudy_id
 
 INSERT INTO [dbo].[CRITERIAINLIST] 
