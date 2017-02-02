@@ -546,7 +546,37 @@ SELECT db01.[CRITERIASTMT_ID]
 
 --TODO backfill SAMPLEPLAN.ROOTSAMPLEUNIT_ID
 
+update db02 set ROOTSAMPLEUNIT_ID = db03.SAMPLEUNIT_ID
+--select sp.[_STRSAMPLEUNIT_NM_ROOT], db03.[SAMPLEUNIT_ID]
+  from [RTPhoenix].[SAMPLEPLANTemplate] sp inner join
+  [RTPhoenix].SURVEY_DEFTemplate sd on sp.SURVEY_ID = sd.SURVEY_ID inner join
+		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm and
+					db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+				inner join
+		[dbo].[SamplePlan] db02 on db02.DATCREATE_DT = sp.DATCREATE_DT and 
+					db02.survey_id = db0.survey_id
+				inner join
+		[dbo].[SampleUnit] db03 on db02.SAMPLEPLAN_ID = db03.SAMPLEPLAN_ID and
+					db03.STRSAMPLEUNIT_NM = sp._STRSAMPLEUNIT_NM_ROOT
+
 --TODO backfill SAMPLEUNIT.PARENTSAMPLEUNIT_ID
+
+update db03 set [PARENTSAMPLEUNIT_ID] = db03p.[SAMPLEUNIT_ID]
+--select su.[_STRSAMPLEUNIT_NM_PARENT], su.[STRSAMPLEUNIT_NM], db03p.SAMPLEUNIT_ID
+  from [RTPhoenix].[SAMPLEUNITTemplate] su inner join
+  [RTPhoenix].[SAMPLEPLANTemplate] sp on su.SAMPLEPLAN_ID = sp.SAMPLEPLAN_ID inner join
+  [RTPhoenix].SURVEY_DEFTemplate sd on sp.SURVEY_ID = sd.SURVEY_ID inner join
+		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm and
+					db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+				inner join
+		[dbo].[SamplePlan] db02 on db02.DATCREATE_DT = sp.DATCREATE_DT and 
+					db02.survey_id = db0.survey_id
+				inner join
+		[dbo].[SampleUnit] db03 on db02.SAMPLEPLAN_ID = db03.SAMPLEPLAN_ID and
+					db03.STRSAMPLEUNIT_NM = su.STRSAMPLEUNIT_NM
+				inner join
+		[dbo].[SampleUnit] db03p on db02.SAMPLEPLAN_ID = db03p.SAMPLEPLAN_ID and
+					db03p.STRSAMPLEUNIT_NM = su._STRSAMPLEUNIT_NM_PARENT
 
 INSERT INTO [dbo].[SAMPLEUNITSECTION] 
            ([SAMPLEUNIT_ID]
