@@ -1127,6 +1127,103 @@ SELECT [EMPLOYEE_ID]
 INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
      VALUES (@Template_ID, 'Study_Employee template table imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
+INSERT INTO [QLoader].[QP_Load].[dbo].[Package]
+           ([intVersion]
+           ,[strPackage_nm]
+           ,[Client_id]
+           ,[Study_id]
+           ,[intTeamNumber]
+           ,[strLogin_nm]
+           ,[datLastModified]
+           ,[bitArchive]
+           ,[datArchive]
+           ,[FileType_id]
+           ,[FileTypeSettings]
+           ,[SignOffBy_id]
+           ,[datCreated]
+           ,[strPackageFriendly_nm]
+           ,[bitActive]
+           ,[bitDeleted]
+           ,[OwnerMember_id])
+SELECT [intVersion]
+      ,[strPackage_nm]
+      ,@TargetClient_ID
+      ,@TargetStudy_ID
+      ,[intTeamNumber]
+      ,[strLogin_nm]
+      ,[datLastModified]
+      ,[bitArchive]
+      ,[datArchive]
+      ,[FileType_id]
+      ,[FileTypeSettings]
+      ,[SignOffBy_id]
+      ,[datCreated]
+      ,[strPackageFriendly_nm]+convert(nvarchar,@TargetStudy_id)
+      ,[bitActive]
+      ,[bitDeleted]
+      ,[OwnerMember_id]
+  FROM [RTPhoenix].[PackageQLTemplate]
+  where Study_id = @Study_id
+
+INSERT INTO [QLoader].[QP_Load].[dbo].[Destination]
+           ([Package_id]
+           ,[intVersion]
+           ,[Table_id]
+           ,[Field_id]
+           ,[Formula]
+           ,[bitNULLCount]
+           ,[intFreqLimit]
+           ,[Sources])
+SELECT db0.[Package_id]
+      ,d.[intVersion]
+      ,db1.Table_id
+      ,d.[Field_id]
+      ,[Formula]
+      ,[bitNULLCount]
+      ,[intFreqLimit]
+      ,[Sources]
+  FROM [RTPhoenix].[DestinationQLTemplate] d inner join
+  [RTPhoenix].[PackageQLTemplate] p on d.Package_id = p.Package_id and p.Study_id = @study_id inner join
+  [RTPhoenix].[METATABLETemplate] mt on mt.TABLE_ID = d.table_id inner join
+		[QLoader].[QP_Load].[dbo].[Package] db0 on db0.study_id = @TargetStudy_ID inner join
+		[dbo].[METATABLE] db1 on db1.STUDY_ID = @TargetStudy_ID and db1.STRTABLE_NM = mt.STRTABLE_NM inner join
+		[dbo].[METASTRUCTURE] db2 on db2.TABLE_ID = db1.TABLE_ID and db2.FIELD_ID = d.Field_id 
+
+INSERT INTO [QLoader].[QP_Load].[dbo].[Source]
+           ([Package_id]
+           ,[intVersion]
+           ,[strName]
+           ,[strAlias]
+           ,[intLength]
+           ,[DataType_id]
+           ,[Ordinal])
+SELECT db0.[Package_id]
+      ,s.[intVersion]
+      ,[strName]
+      ,[strAlias]
+      ,[intLength]
+      ,[DataType_id]
+      ,[Ordinal]
+  FROM [RTPhoenix].[SourceQLTemplate] s inner join
+  [RTPhoenix].[PackageQLTemplate] p on s.Package_id = p.Package_id and p.Study_id = @study_id inner join
+		[QLoader].[QP_Load].[dbo].[Package] db0 on db0.study_id = @TargetStudy_ID 
+
+/* -- DTSMapping is not needed for RTPhoenix ingestion -- CJB 2/3/2017
+INSERT INTO [QLoader].[QP_Load].[dbo].[DTSMapping]
+           ([intVersion]
+           ,[Source_id]
+           ,[Destination_id]
+           ,[Package_id])
+SELECT [intVersion]
+      ,[Source_id]
+      ,[Destination_id]
+      ,[Package_id]
+  FROM [RTPhoenix].[DTSMappingQLTemplate]
+*/
+
+INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+     VALUES (@Template_ID, 'QLoader template tables imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+
 SET @CompletedNotes = 'Completed import of Study_id '+convert(varchar,@TargetStudy_ID)+
 	' from Template_id '+convert(varchar,@Template_ID)+' via TemplateJob_id '+convert(varchar,@TemplateJob_Id)
 
