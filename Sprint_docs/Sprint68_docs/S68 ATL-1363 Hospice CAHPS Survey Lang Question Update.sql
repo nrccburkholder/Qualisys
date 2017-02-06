@@ -114,7 +114,7 @@ DECLARE @NewScale_id int
 SET @OldQstnCore = 55137 
 SET @NewQstnCore = 56642
 
-SET @NewScale_id = ????? -- this id comes from the new scale created in QuestionLibrary - old Scale id (qpc_id) was 9029
+SET @NewScale_id =  9212 -- this id comes from the new scale created in QuestionLibrary - old Scale id (qpc_id) was 9029
 
 -- the current list of surveys using the old question core
 
