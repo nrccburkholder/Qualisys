@@ -456,97 +456,112 @@ from [dbo].[mailingstep] ms inner join [dbo].[mailingstep] ms2 on
 INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
      VALUES (@Template_ID, 'MAILING* template tables imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
-INSERT INTO [dbo].[MedicareLookup] 
-           ([MedicareNumber]
-           ,[MedicareName]
-           ,[Active]
-           ,[MedicarePropCalcType_ID]
-           ,[EstAnnualVolume]
-           ,[EstRespRate]
-           ,[EstIneligibleRate]
-           ,[SwitchToCalcDate]
-           ,[AnnualReturnTarget]
-           ,[SamplingLocked]
-           ,[ProportionChangeThreshold]
-           ,[CensusForced]
-           ,[PENumber]
-           ,[SystematicAnnualReturnTarget]
-           ,[SystematicEstRespRate]
-           ,[SystematicSwitchToCalcDate]
-           ,[NonSubmitting])
-SELECT @MedicareNumber
-      ,[MedicareName]
-      ,ml.[Active]
-      ,[MedicarePropCalcType_ID]
-      ,[EstAnnualVolume]
-      ,[EstRespRate]
-      ,[EstIneligibleRate]
-      ,[SwitchToCalcDate]
-      ,[AnnualReturnTarget]
-      ,[SamplingLocked]
-      ,[ProportionChangeThreshold]
-      ,[CensusForced]
-      ,[PENumber]
-      ,[SystematicAnnualReturnTarget]
-      ,[SystematicEstRespRate]
-      ,[SystematicSwitchToCalcDate]
-      ,[NonSubmitting]
-  FROM [RTPhoenix].[MedicareLookupTemplate] ml inner join
-  [RTPhoenix].[SUFacilityTemplate] suf on ml.medicarenumber = suf.medicarenumber inner join
-  [RTPhoenix].[SAMPLEUNITTemplate] su on suf.SUFacility_id = su.SUFacility_id inner join
-  [RTPhoenix].[SAMPLEPLANTemplate] sp on su.SAMPLEPLAN_ID = sp.SAMPLEPLAN_ID inner join
-  [RTPhoenix].[SURVEY_DEFTemplate] sd on sp.Survey_id = sd.SURVEY_ID
-  where Study_id = @study_id
-  
-  INSERT INTO [dbo].[SUFacility]
-           ([strFacility_nm]
-           ,[City]
-           ,[State]
-           ,[Country]
-           ,[Region_id]
-           ,[AdmitNumber]
-           ,[BedSize]
-           ,[bitPeds]
-           ,[bitTeaching]
-           ,[bitTrauma]
-           ,[bitReligious]
-           ,[bitGovernment]
-           ,[bitRural]
-           ,[bitForProfit]
-           ,[bitRehab]
-           ,[bitCancerCenter]
-           ,[bitPicker]
-           ,[bitFreeStanding]
-           ,[AHA_id]
-           ,[MedicareNumber])
-SELECT [strFacility_nm]
-      ,[City]
-      ,[State]
-      ,[Country]
-      ,[Region_id]
-      ,[AdmitNumber]
-      ,[BedSize]
-      ,[bitPeds]
-      ,[bitTeaching]
-      ,[bitTrauma]
-      ,[bitReligious]
-      ,[bitGovernment]
-      ,[bitRural]
-      ,[bitForProfit]
-      ,[bitRehab]
-      ,[bitCancerCenter]
-      ,[bitPicker]
-      ,[bitFreeStanding]
-      ,[AHA_id]
-      ,@MedicareNumber
-  FROM [RTPhoenix].[SUFacilityTemplate] suf inner join
-  [RTPhoenix].[SAMPLEUNITTemplate] su on suf.SUFacility_id = su.SUFacility_id inner join
-  [RTPhoenix].[SAMPLEPLANTemplate] sp on su.SAMPLEPLAN_ID = sp.SAMPLEPLAN_ID inner join
-  [RTPhoenix].[SURVEY_DEFTemplate] sd on sp.Survey_id = sd.SURVEY_ID
-  where Study_id = @study_id
+IF NOT EXISTS(select 1 from [dbo].[MedicareLookup] where MedicareNumber = @MedicareNumber)
+BEGIN
+	INSERT INTO [dbo].[MedicareLookup] 
+			   ([MedicareNumber]
+			   ,[MedicareName]
+			   ,[Active]
+			   ,[MedicarePropCalcType_ID]
+			   ,[EstAnnualVolume]
+			   ,[EstRespRate]
+			   ,[EstIneligibleRate]
+			   ,[SwitchToCalcDate]
+			   ,[AnnualReturnTarget]
+			   ,[SamplingLocked]
+			   ,[ProportionChangeThreshold]
+			   ,[CensusForced]
+			   ,[PENumber]
+			   ,[SystematicAnnualReturnTarget]
+			   ,[SystematicEstRespRate]
+			   ,[SystematicSwitchToCalcDate]
+			   ,[NonSubmitting])
+	SELECT @MedicareNumber
+		  ,[MedicareName]
+		  ,ml.[Active]
+		  ,[MedicarePropCalcType_ID]
+		  ,[EstAnnualVolume]
+		  ,[EstRespRate]
+		  ,[EstIneligibleRate]
+		  ,[SwitchToCalcDate]
+		  ,[AnnualReturnTarget]
+		  ,[SamplingLocked]
+		  ,[ProportionChangeThreshold]
+		  ,[CensusForced]
+		  ,[PENumber]
+		  ,[SystematicAnnualReturnTarget]
+		  ,[SystematicEstRespRate]
+		  ,[SystematicSwitchToCalcDate]
+		  ,[NonSubmitting]
+	  FROM [RTPhoenix].[MedicareLookupTemplate] ml inner join
+	  [RTPhoenix].[SUFacilityTemplate] suf on ml.medicarenumber = suf.medicarenumber inner join
+	  [RTPhoenix].[SAMPLEUNITTemplate] su on suf.SUFacility_id = su.SUFacility_id inner join
+	  [RTPhoenix].[SAMPLEPLANTemplate] sp on su.SAMPLEPLAN_ID = sp.SAMPLEPLAN_ID inner join
+	  [RTPhoenix].[SURVEY_DEFTemplate] sd on sp.Survey_id = sd.SURVEY_ID
+	  where Study_id = @study_id
 
-INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-     VALUES (@Template_ID, 'SUFacility/MedicareLookup template tables imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@Template_ID, 'MedicareLookup template table imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+END
+  
+IF NOT EXISTS(select 1 from [dbo].[SUFacility]
+			where MedicareNumber = @MedicareNumber and strFacility_nm in 
+			(select strfacility_nm from [RTPhoenix].[SUFacilityTemplate] suf inner join
+	  [RTPhoenix].[SAMPLEUNITTemplate] su on suf.SUFacility_id = su.SUFacility_id inner join
+	  [RTPhoenix].[SAMPLEPLANTemplate] sp on su.SAMPLEPLAN_ID = sp.SAMPLEPLAN_ID inner join
+	  [RTPhoenix].[SURVEY_DEFTemplate] sd on sp.Survey_id = sd.SURVEY_ID
+	  where Study_id = @study_id))
+BEGIN
+	INSERT INTO [dbo].[SUFacility]
+			   ([strFacility_nm]
+			   ,[City]
+			   ,[State]
+			   ,[Country]
+			   ,[Region_id]
+			   ,[AdmitNumber]
+			   ,[BedSize]
+			   ,[bitPeds]
+			   ,[bitTeaching]
+			   ,[bitTrauma]
+			   ,[bitReligious]
+			   ,[bitGovernment]
+			   ,[bitRural]
+			   ,[bitForProfit]
+			   ,[bitRehab]
+			   ,[bitCancerCenter]
+			   ,[bitPicker]
+			   ,[bitFreeStanding]
+			   ,[AHA_id]
+			   ,[MedicareNumber])
+	SELECT [strFacility_nm]
+		  ,[City]
+		  ,[State]
+		  ,[Country]
+		  ,[Region_id]
+		  ,[AdmitNumber]
+		  ,[BedSize]
+		  ,[bitPeds]
+		  ,[bitTeaching]
+		  ,[bitTrauma]
+		  ,[bitReligious]
+		  ,[bitGovernment]
+		  ,[bitRural]
+		  ,[bitForProfit]
+		  ,[bitRehab]
+		  ,[bitCancerCenter]
+		  ,[bitPicker]
+		  ,[bitFreeStanding]
+		  ,[AHA_id]
+		  ,@MedicareNumber
+	  FROM [RTPhoenix].[SUFacilityTemplate] suf inner join
+	  [RTPhoenix].[SAMPLEUNITTemplate] su on suf.SUFacility_id = su.SUFacility_id inner join
+	  [RTPhoenix].[SAMPLEPLANTemplate] sp on su.SAMPLEPLAN_ID = sp.SAMPLEPLAN_ID inner join
+	  [RTPhoenix].[SURVEY_DEFTemplate] sd on sp.Survey_id = sd.SURVEY_ID
+	  where Study_id = @study_id
+
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@Template_ID, 'SUFacility template table imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+END
 
 INSERT INTO [dbo].[SAMPLEPLAN]
            ([ROOTSAMPLEUNIT_ID]
