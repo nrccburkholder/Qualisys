@@ -460,7 +460,7 @@ SELECT su.[SAMPLEUNIT_ID]
   [dbo].[SAMPLEUNIT] sup on su.[PARENTSAMPLEUNIT_ID] = sup.[SAMPLEUNIT_ID]
   where Study_id = @study_id
 
-INSERT INTO [dbo].[SAMPLEUNITTREEINDEX]
+INSERT INTO [RTPhoenix].[SAMPLEUNITTREEINDEXTemplate]
            ([SAMPLEUNIT_ID]
            ,[ANCESTORUNIT_ID] 
            ,[_STRSAMPLEUNIT_NM_ANCESTOR])
@@ -474,6 +474,23 @@ SELECT suti.[SAMPLEUNIT_ID]
   [dbo].[SAMPLEUNIT] sua on suti.[ANCESTORUNIT_ID] = sua.[SAMPLEUNIT_ID]
   where Study_id = @study_id
   
+INSERT INTO [RTPhoenix].[SampleUnitServiceTemplate]
+           ([SampleUnitService_id]
+           ,[SampleUnit_id]
+           ,[Service_id]
+           ,[strAltService_nm]
+           ,[datLastUpdated])
+SELECT [SampleUnitService_id]
+      ,sus.[SampleUnit_id]
+      ,[Service_id]
+      ,[strAltService_nm]
+      ,[datLastUpdated]
+  FROM [dbo].[SampleUnitService] sus inner join
+  [dbo].[SAMPLEUNIT] su on su.SAMPLEUNIT_ID = sus.SAMPLEUNIT_ID join
+  [dbo].[SAMPLEPLAN] sp on su.SAMPLEPLAN_ID = sp.SAMPLEPLAN_ID inner join
+  [dbo].[SURVEY_DEF] sd on sp.Survey_id = sd.SURVEY_ID
+  where Study_id = @study_id
+
 INSERT INTO [RTPhoenix].[SAMPLEUNITSECTIONTemplate]
            ([SAMPLEUNITSECTION_ID]
            ,[SAMPLEUNIT_ID]

@@ -144,6 +144,13 @@ delete RTPhoenix.SAMPLEUNITTREEINDEXTemplate
   RTPhoenix.[SURVEY_DEFTemplate] sd on sp.Survey_id = sd.SURVEY_ID
   where Study_id = @study_id
 
+delete RTPhoenix.SAMPLEUNITSERVICETemplate
+  FROM RTPhoenix.SAMPLEUNITSERVICETemplate sus inner join
+  RTPhoenix.[SAMPLEUNITTemplate] su on su.SAMPLEUNIT_ID = sus.SAMPLEUNIT_ID join
+  RTPhoenix.[SAMPLEPLANTemplate] sp on su.SAMPLEPLAN_ID = sp.SAMPLEPLAN_ID inner join
+  RTPhoenix.[SURVEY_DEFTemplate] sd on sp.Survey_id = sd.SURVEY_ID
+  where Study_id = @study_id
+
 delete RTPhoenix.SAMPLEUNITSECTIONTemplate
   FROM RTPhoenix.SAMPLEUNITSECTIONTemplate sus inner join
   RTPhoenix.[SAMPLEUNITTemplate] su on su.SAMPLEUNIT_ID = sus.SAMPLEUNIT_ID join

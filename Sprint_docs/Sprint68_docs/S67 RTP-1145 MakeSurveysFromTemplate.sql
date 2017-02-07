@@ -696,6 +696,27 @@ SELECT db02.[SAMPLEUNIT_ID]
 		[dbo].[SampleUnit] db03 on db03.STRSAMPLEUNIT_NM = suti._STRSAMPLEUNIT_NM_ANCESTOR and
 					db03.sampleplan_id = db01.sampleplan_id
 
+INSERT INTO [dbo].[SampleUnitService]
+           ([SampleUnit_id]
+           ,[Service_id]
+           ,[strAltService_nm]
+           ,[datLastUpdated])
+SELECT db03.[SampleUnit_id]
+      ,[Service_id]
+      ,[strAltService_nm]
+      ,[datLastUpdated]
+  FROM [RTPhoenix].[SampleUnitServiceTemplate] sus inner join
+  [RTPhoenix].[SAMPLEUNITTemplate] su on su.SAMPLEUNIT_ID = sus.SAMPLEUNIT_ID join
+  [RTPhoenix].[SAMPLEPLANTemplate] sp on su.SAMPLEPLAN_ID = sp.SAMPLEPLAN_ID inner join
+  [RTPhoenix].[SURVEY_DEFTemplate] sd on sp.Survey_id = sd.SURVEY_ID inner join
+		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm and
+					db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+				inner join
+		[dbo].[SamplePlan] db02 on db02.survey_id = db0.survey_id
+				inner join
+		[dbo].[SampleUnit] db03 on su.strsampleunit_nm = db03.strsampleunit_nm and
+					db03.SAMPLEPLAN_ID = db02.SAMPLEPLAN_ID
+
 INSERT INTO [dbo].[SAMPLEUNITSECTION] 
            ([SAMPLEUNIT_ID]
            ,[SELQSTNSSECTION]
