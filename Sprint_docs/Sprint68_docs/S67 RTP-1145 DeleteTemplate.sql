@@ -17,7 +17,7 @@ USE [QP_Prod]
 GO
 
 declare @user varchar(40) = 'Template Deletion'
-declare @study_id int = 5821
+declare @study_id int = 5820
 declare @client_id int
 select @client_id = client_id from RTPhoenix.studyTemplate where study_id = @study_id
 
@@ -135,6 +135,13 @@ delete RTPhoenix.PeriodDatesTemplate
 delete RTPhoenix.PeriodDefTemplate
   FROM RTPhoenix.PeriodDefTemplate pd inner join
   RTPhoenix.[SURVEY_DEFTemplate] sd on pd.Survey_id = sd.SURVEY_ID
+  where Study_id = @study_id
+
+delete RTPhoenix.SAMPLEUNITTREEINDEXTemplate
+  FROM RTPhoenix.SAMPLEUNITTREEINDEXTemplate suti inner join
+  RTPhoenix.[SAMPLEUNITTemplate] su on su.SAMPLEUNIT_ID = suti.SAMPLEUNIT_ID join
+  RTPhoenix.[SAMPLEPLANTemplate] sp on su.SAMPLEPLAN_ID = sp.SAMPLEPLAN_ID inner join
+  RTPhoenix.[SURVEY_DEFTemplate] sd on sp.Survey_id = sd.SURVEY_ID
   where Study_id = @study_id
 
 delete RTPhoenix.SAMPLEUNITSECTIONTemplate

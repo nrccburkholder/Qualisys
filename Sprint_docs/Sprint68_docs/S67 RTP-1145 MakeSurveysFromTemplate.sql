@@ -676,6 +676,26 @@ update db03 set [PARENTSAMPLEUNIT_ID] = db03p.[SAMPLEUNIT_ID]
 		[dbo].[SampleUnit] db03p on db02.SAMPLEPLAN_ID = db03p.SAMPLEPLAN_ID and
 					db03p.STRSAMPLEUNIT_NM = su._STRSAMPLEUNIT_NM_PARENT
 
+INSERT INTO [dbo].[SAMPLEUNITTREEINDEX] 
+           ([SAMPLEUNIT_ID]
+           ,[ANCESTORUNIT_ID])
+SELECT db02.[SAMPLEUNIT_ID]
+      ,db03.[SAMPLEUNIT_ID]
+  FROM [RTPhoenix].[SAMPLEUNITTREEINDEXTemplate] suti inner join
+  [RTPhoenix].[SAMPLEUNITTemplate] su on su.SAMPLEUNIT_ID = suti.SAMPLEUNIT_ID join
+  [RTPhoenix].[SAMPLEPLANTemplate] sp on su.SAMPLEPLAN_ID = sp.SAMPLEPLAN_ID inner join
+  [RTPhoenix].[SURVEY_DEFTemplate] sd on sp.Survey_id = sd.SURVEY_ID inner join
+		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm and
+					db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+				inner join
+		[dbo].[SamplePlan] db01 on db01.survey_id = db0.survey_id
+				inner join
+		[dbo].[SampleUnit] db02 on su.strsampleunit_nm = db02.strsampleunit_nm and
+					db02.SAMPLEPLAN_ID = db01.SAMPLEPLAN_ID
+				inner join
+		[dbo].[SampleUnit] db03 on db03.STRSAMPLEUNIT_NM = suti._STRSAMPLEUNIT_NM_ANCESTOR and
+					db03.sampleplan_id = db01.sampleplan_id
+
 INSERT INTO [dbo].[SAMPLEUNITSECTION] 
            ([SAMPLEUNIT_ID]
            ,[SELQSTNSSECTION]
