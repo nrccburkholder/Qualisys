@@ -14,13 +14,26 @@ etc.
 USE [QP_Prod]
 GO
 
+	  declare @TemplateLogEntryInfo int
+	  declare @TemplateLogEntryWarning int
+	  declare @TemplateLogEntryError int
+
+	  select @TemplateLogEntryInfo = TemplateLogEntryType_ID 
+	  from RTPhoenix.TemplateLogEntryType where TemplateLogEntryTypeName = 'INFORMATIONAL'
+
+	  select @TemplateLogEntryWarning = TemplateLogEntryType_ID 
+	  from RTPhoenix.TemplateLogEntryType where TemplateLogEntryTypeName = 'WARNING'
+
+	  select @TemplateLogEntryError = TemplateLogEntryType_ID 
+	  from RTPhoenix.TemplateLogEntryType where TemplateLogEntryTypeName = 'ERROR'
+
 declare @user varchar(40) = CURRENT_USER
 declare @study_id int = 5821
 declare @client_id int
 select @client_id = client_id from study where study_id = @study_id
 
 INSERT INTO [RTPhoenix].[Template]([Client_ID],[Study_ID],[Template_NM],[Active],[DateCreated])
-     VALUES (@client_id, @study_id, 'First Template Piece by Piece', 0, GetDate())
+     VALUES (@client_id, @study_id, 'Template imported from existing study', 0, GetDate())
 
 declare @template_id int = scope_identity()
 
@@ -30,8 +43,8 @@ if exists (select STRSURVEY_NM, count(*)
 			group by STRSURVEY_NM 
 			having count(*) > 1)
 begin
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		VALUES (@Template_ID, 'Template Export Failed: Duplicate survey names for study_id '+convert(varchar,@study_id), @user, GetDate())
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		VALUES (@TemplateLogEntryError, @Template_ID, 'Template Export Failed: Duplicate survey names for study_id '+convert(varchar,@study_id), @user, GetDate())
 
 	RETURN
 end
@@ -43,8 +56,8 @@ if exists (select STRSURVEY_NM, STRSAMPLEUNIT_NM, count(*) from SampleUnit su in
 			group by STRSURVEY_NM, STRSAMPLEUNIT_NM 
 			having count(*) > 1)
 begin
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		VALUES (@Template_ID, 'Template Export Failed: Duplicate Sample Unit names within a Survey_ID for study_id '+convert(varchar,@study_id), @user, GetDate())
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		VALUES (@TemplateLogEntryError, @Template_ID, 'Template Export Failed: Duplicate Sample Unit names within a Survey_ID for study_id '+convert(varchar,@study_id), @user, GetDate())
 
 	RETURN
 end
@@ -55,8 +68,8 @@ if exists (select strCriteriaStmt_nm, convert(nvarchar, strCriteriaString), coun
 			group by STRCRITERIASTMT_NM, convert(nvarchar, strCriteriaString) 
 			having count(*) > 1)
 begin
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		VALUES (@Template_ID, 'Template Export Failed: Duplicate Criteria Statement names and descriptions for study_id '+convert(varchar,@study_id), @user, GetDate())
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		VALUES (@TemplateLogEntryError, @Template_ID, 'Template Export Failed: Duplicate Criteria Statement names and descriptions for study_id '+convert(varchar,@study_id), @user, GetDate())
 
 	RETURN
 end
@@ -74,8 +87,8 @@ SELECT [CLIENT_ID]
   FROM [dbo].[CLIENT]
 where client_id = @client_id
 
-INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-     VALUES (@Template_ID, 'Template Created for study_id '+convert(varchar,@study_id), @user, GetDate())
+INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+     VALUES (@TemplateLogEntryInfo, @Template_ID, 'Template Created for study_id '+convert(varchar,@study_id), @user, GetDate())
 
 INSERT INTO [RTPhoenix].[STUDYTemplate]
            ([STUDY_ID]
@@ -158,8 +171,8 @@ SELECT [STUDY_ID]
   where Study_id = @study_id
 
 
-INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-     VALUES (@Template_ID, 'Study Inserted for study_id '+convert(varchar,@study_id), @user, GetDate())
+INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+     VALUES (@TemplateLogEntryInfo, @Template_ID, 'Study Inserted for study_id '+convert(varchar,@study_id), @user, GetDate())
 
 
 INSERT INTO [RTPhoenix].[METATABLETemplate]
@@ -197,8 +210,8 @@ SELECT ms.[TABLE_ID]
 		[dbo].[METATABLE] mt on ms.TABLE_ID = mt.TABLE_ID
 		where Study_id = @Study_id
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'META tables (MetaStructure row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
@@ -323,8 +336,8 @@ SELECT [SURVEY_ID]
   FROM [dbo].[SURVEY_DEF]
   where Study_id = @study_id
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'Survey_def table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
@@ -340,8 +353,8 @@ SELECT [SurveySubtype_id]
   [dbo].[SURVEY_DEF] sd on sst.Survey_id = sd.SURVEY_ID
   where Study_id = @study_id
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'SurveySubType table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
@@ -363,8 +376,8 @@ SELECT [METHODOLOGY_ID]
   [dbo].[SURVEY_DEF] sd on mm.Survey_id = sd.SURVEY_ID
   where Study_id = @study_id
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'MailingMethodology table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
@@ -439,8 +452,8 @@ SELECT [MAILINGSTEP_ID]
   [dbo].[SURVEY_DEF] sd on mm.Survey_id = sd.SURVEY_ID
   where Study_id = @study_id
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'MailingStep table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
@@ -463,8 +476,8 @@ SELECT sp.[SAMPLEPLAN_ID]
   [dbo].[SAMPLEUNIT] sur on sp.[ROOTSAMPLEUNIT_ID] = sur.[SAMPLEUNIT_ID]
   where Study_id = @study_id
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'SamplePlan table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
@@ -524,8 +537,8 @@ SELECT su.[SAMPLEUNIT_ID]
   [dbo].[SAMPLEUNIT] sup on su.[PARENTSAMPLEUNIT_ID] = sup.[SAMPLEUNIT_ID]
   where Study_id = @study_id
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'SampleUnit table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
@@ -544,8 +557,8 @@ SELECT suti.[SAMPLEUNIT_ID]
   [dbo].[SAMPLEUNIT] sua on suti.[ANCESTORUNIT_ID] = sua.[SAMPLEUNIT_ID]
   where Study_id = @study_id
   
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'SampleUnitTreeIndex table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
@@ -567,8 +580,8 @@ SELECT [SampleUnitService_id]
   [dbo].[SURVEY_DEF] sd on sp.Survey_id = sd.SURVEY_ID
   where Study_id = @study_id
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'SampleUnitService table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
@@ -588,8 +601,8 @@ SELECT [SAMPLEUNITSECTION_ID]
   [dbo].[SURVEY_DEF] sd on sp.Survey_id = sd.SURVEY_ID
   where Study_id = @study_id
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'SampleUnitSection table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
@@ -623,8 +636,8 @@ SELECT [PeriodDef_id]
   [dbo].[SURVEY_DEF] sd on pd.Survey_id = sd.SURVEY_ID
   where Study_id = @study_id
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'PeriodDef table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
@@ -645,8 +658,8 @@ SELECT pdt.[PeriodDef_id]
   [dbo].[SURVEY_DEF] sd on pdf.Survey_id = sd.SURVEY_ID
   where Study_id = @study_id
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'PeriodDates table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
@@ -665,8 +678,8 @@ SELECT [BUSINESSRULE_ID]
   FROM [dbo].[BUSINESSRULE]
   where Study_id = @study_id
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'BusinessRule table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
@@ -684,8 +697,8 @@ SELECT [HOUSEHOLDRULE_ID]
   [dbo].[SURVEY_DEF] sd on hhr.Survey_id = sd.SURVEY_ID
   where Study_id = @study_id
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'HouseholdRule table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
@@ -705,8 +718,8 @@ SELECT cs.[CRITERIASTMT_ID]
        [dbo].[SampleUnit] su on cs.[CRITERIASTMT_ID] = su.[CRITERIASTMT_ID]
   where Study_id = @study_id
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'CriteriaStmt table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
@@ -732,8 +745,8 @@ SELECT [CRITERIACLAUSE_ID]
   [dbo].[CRITERIASTMT] cs on cc.CRITERIASTMT_ID = cs.CRITERIASTMT_ID
   where Study_id = @study_id
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'CriteriaClause table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
@@ -750,8 +763,8 @@ SELECT [CRITERIAINLIST_ID]
   [dbo].[CRITERIASTMT] cs on cc.CRITERIASTMT_ID = cs.CRITERIASTMT_ID
   where Study_id = @study_id
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'CriteriaInList table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
@@ -798,8 +811,8 @@ SELECT ml.[MedicareNumber]
   [dbo].[SURVEY_DEF] sd on sp.Survey_id = sd.SURVEY_ID
   where Study_id = @study_id
   
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'MedicareLookup table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
@@ -853,8 +866,8 @@ SELECT suf.[SUFacility_id]
   [dbo].[SURVEY_DEF] sd on sp.Survey_id = sd.SURVEY_ID
   where Study_id = @study_id
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'SUFacility table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
@@ -876,8 +889,8 @@ SELECT [SelCover_id]
   [dbo].[SURVEY_DEF] sd on sc.Survey_id = sd.SURVEY_ID
   where Study_id = @study_id
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'Sel_Cover table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
@@ -909,8 +922,8 @@ SELECT [QPC_ID]
   [dbo].[SURVEY_DEF] sd on sl.Survey_id = sd.SURVEY_ID
   where Study_id = @study_id
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'Sel_Logo table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
@@ -942,8 +955,8 @@ SELECT [QPC_ID]
   [dbo].[SURVEY_DEF] sd on sp.Survey_id = sd.SURVEY_ID
   where Study_id = @study_id
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'Sel_PCL table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
@@ -995,8 +1008,8 @@ SELECT [SELQSTNS_ID]
   [dbo].[SURVEY_DEF] sd on sq.Survey_id = sd.SURVEY_ID
   where Study_id = @study_id
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'Sel_Qstns table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
@@ -1028,8 +1041,8 @@ SELECT ss.[SURVEY_ID]
   [dbo].[SURVEY_DEF] sd on ss.Survey_id = sd.SURVEY_ID
   where Study_id = @study_id
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'Sel_Scls table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
@@ -1051,14 +1064,14 @@ SELECT ss.[SURVEY_ID]
   [dbo].[SURVEY_DEF] sd on ss.Survey_id = sd.SURVEY_ID
   where Study_id = @study_id
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'Sel_Skip table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
 
-INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-     VALUES (@Template_ID, 'SEL* template tables exported for study_id '+convert(varchar,@study_id), @user, GetDate())
+INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+     VALUES (@TemplateLogEntryInfo, @Template_ID, 'SEL* template tables exported for study_id '+convert(varchar,@study_id), @user, GetDate())
 
 INSERT INTO [RTPhoenix].[SEL_TEXTBOXTemplate]
            ([QPC_ID]
@@ -1091,8 +1104,8 @@ SELECT [QPC_ID]
   [dbo].[SURVEY_DEF] sd on st.Survey_id = sd.SURVEY_ID
   where Study_id = @study_id
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'Sel_Textbox table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
@@ -1114,8 +1127,8 @@ SELECT [ID]
   [dbo].[SURVEY_DEF] sd on msmt.Survey_id = sd.SURVEY_ID
   where Study_id = @study_id
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'ModeSectionMapping table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
@@ -1139,8 +1152,8 @@ SELECT [TAGFIELD_ID]
   [dbo].[METATABLE] mt on tf.table_id = mt.table_id
   where tf.study_id = @study_id
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'TagField table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
@@ -1162,8 +1175,8 @@ SELECT [SELQSTNS_ID]
   [dbo].[SURVEY_DEF] sd on cq.Survey_id = sd.SURVEY_ID
   where Study_id = @study_id
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'CodeQstns table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
@@ -1187,8 +1200,8 @@ SELECT cs.[SURVEY_ID]
   [dbo].[SURVEY_DEF] sd on cs.Survey_id = sd.SURVEY_ID
   where Study_id = @study_id
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'CodeScls table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
@@ -1210,8 +1223,8 @@ SELECT [QPC_ID]
   [dbo].[SURVEY_DEF] sd on ct.Survey_id = sd.SURVEY_ID
   where Study_id = @study_id
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'CodeTxtbox table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
@@ -1224,8 +1237,8 @@ SELECT [EMPLOYEE_ID]
   FROM [dbo].[STUDY_EMPLOYEE] 
   where Study_id = @study_id
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'Study_Employee table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
@@ -1276,8 +1289,8 @@ SELECT [Package_id]
   FROM [QLoader].[QP_Load].[dbo].[Package]
   where study_id = @study_id
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'QLoader Package table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
@@ -1305,8 +1318,8 @@ SELECT [Destination_id]
 	[QLoader].[QP_Load].[dbo].[Package] p on d.package_id = p.package_id
   where study_id = @study_id
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'QLoader Destination table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
@@ -1332,8 +1345,8 @@ SELECT [Source_id]
 	[QLoader].[QP_Load].[dbo].[Package] p on s.package_id = p.package_id
   where study_id = @study_id
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'QLoader Source table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
@@ -1351,11 +1364,11 @@ SELECT dtsm.[intVersion]
 	[QLoader].[QP_Load].[dbo].[Package] p on dtsm.package_id = p.package_id
   where study_id = @study_id
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, 
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
 		 'QLoader DTSMapping table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
 
-INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-     VALUES (@Template_ID, 'QLoader Source/Destination/DTSMapping tables exported for study_id '+convert(varchar,@study_id), @user, GetDate())
+INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+     VALUES (@TemplateLogEntryInfo, @Template_ID, 'QLoader Source/Destination/DTSMapping tables exported for study_id '+convert(varchar,@study_id), @user, GetDate())
