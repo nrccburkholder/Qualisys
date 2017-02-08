@@ -576,12 +576,7 @@ END
 */
   
 IF NOT EXISTS(select 1 from [dbo].[SUFacility]
-			where MedicareNumber = @MedicareNumber and strFacility_nm in 
-			(select strfacility_nm from [RTPhoenix].[SUFacilityTemplate] suf inner join
-	  [RTPhoenix].[SAMPLEUNITTemplate] su on suf.SUFacility_id = su.SUFacility_id inner join
-	  [RTPhoenix].[SAMPLEPLANTemplate] sp on su.SAMPLEPLAN_ID = sp.SAMPLEPLAN_ID inner join
-	  [RTPhoenix].[SURVEY_DEFTemplate] sd on sp.Survey_id = sd.SURVEY_ID
-	  where Study_id = @study_id))
+			where MedicareNumber = @MedicareNumber)
 BEGIN
 	INSERT INTO [dbo].[SUFacility]
 			   ([strFacility_nm]
@@ -636,6 +631,21 @@ BEGIN
 			convert(nvarchar,Ident_Current('dbo.SUFacility'))+
 			') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 END
+
+INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		select @Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
+		strFacility_nm + ' is SUFacility to be used for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate()
+		from [dbo].[SUFacility] where MedicareNumber = @MedicareNumber
+if @@rowcount > 1
+begin
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+			select @Template_ID, @TemplateJob_ID, @TemplateLogEntryError, 
+			'More than one SUFacility found for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate()
+
+	commit tran
+
+	RETURN
+end
 
 INSERT INTO [dbo].[SAMPLEPLAN]
            ([ROOTSAMPLEUNIT_ID]
