@@ -74,7 +74,12 @@ SELECT TOP 1
   where CompletedAt is null
 
 if @TemplateJob_ID is null
+begin
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 SELECT -1, NULL, @TemplateLogEntryWarning, 'No Template Job Found To Process', SYSTEM_USER, GetDate()
+
 	RETURN
+end
 
 declare @template_NM varchar(40)
 declare @user varchar(40) = @LoggedBy
@@ -103,6 +108,10 @@ begin
 	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 		 SELECT @Template_ID, @TemplateJob_ID, @TemplateLogEntryError, 'Template ID missing or not Active for TemplateJob_ID: '+convert(varchar,@TemplateJob_id), @user, GetDate()
 
+	UPDATE [RTPhoenix].[TemplateJob]
+	   SET [CompletedNotes] = 'Template ID missing or not Active for TemplateJob_ID: '+convert(varchar,@TemplateJob_id)
+		  ,[CompletedAt] = GetDate()
+	 WHERE TemplateJob_ID = @TemplateJob_ID
 	RETURN
 end
 
@@ -124,7 +133,7 @@ end
 
 
 INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-     VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 'Template to Export Found: '+convert(varchar,@Template_id), @user, GetDate())
+     VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 'Template to Import Found: '+convert(varchar,@Template_id), @user, GetDate())
 
 if not exists(select 1 from [dbo].[study] where study_id = @TargetStudy_ID)
 begin
@@ -641,6 +650,12 @@ SELECT @TargetStudy_id
       ,[strCriteriaString]
   FROM [RTPhoenix].[CRITERIASTMTTemplate]
   where Study_id = @study_id
+
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
+			'CriteriaStmt template (row count:'+ 
+			convert(varchar,@@RowCount) + 
+			') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 INSERT INTO [dbo].[SAMPLEUNIT]
            ([CRITERIASTMT_ID]
@@ -1385,8 +1400,8 @@ where Study_id = @TargetStudy_id
 
 INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
      VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
-		'Package QLoader template (Package ID: '+
-		convert(nvarchar,@Package_id))+
+		'QLoader Package template (Package ID: '+
+		convert(nvarchar,@Package_id)+
 		') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 INSERT INTO [QLoader].[QP_Load].[dbo].[Destination]
@@ -1415,7 +1430,7 @@ SELECT db0.[Package_id]
 
 	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 		 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
-		 'Destination QLoader template (row count:'+ 
+		 'QLoader Destination template (row count:'+ 
 		 convert(varchar,@@RowCount) + 
 		 ') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
@@ -1440,7 +1455,7 @@ SELECT db0.[Package_id]
 
 	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 		 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
-		 'Source QLoader template (row count:'+ 
+		 'QLoader Source template (row count:'+ 
 		 convert(varchar,@@RowCount) + 
 		 ') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
@@ -1474,6 +1489,5 @@ UPDATE [RTPhoenix].[TemplateJob]
 
 INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
      VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 'Completed TemplateJob '+convert(varchar,@TemplateJob_ID)+
-	 ', Client/Study '+@client_nm+'('+convert(varchar,@TargetClient_id)+')/'+
-	 @study_nm+'('+convert(varchar,@TargetStudy_id)+')', @user, GetDate())
+	 ', Client/Study '+convert(varchar,@TargetClient_id)+'/'+convert(varchar,@TargetStudy_id)+')', @user, GetDate())
 

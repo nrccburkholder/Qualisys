@@ -16,16 +16,21 @@ delete clientTemplate
 USE [QP_Prod]
 GO
 
-declare @user varchar(40) = 'Template Deletion'
-declare @study_id int = 5820
+	  declare @TemplateLogEntryInfo int
+
+	  select @TemplateLogEntryInfo = TemplateLogEntryType_ID 
+	  from RTPhoenix.TemplateLogEntryType where TemplateLogEntryTypeName = 'INFORMATIONAL'
+
+declare @user varchar(40) = SYSTEM_USER
+declare @study_id int = 5821
 declare @client_id int
 select @client_id = client_id from RTPhoenix.studyTemplate where study_id = @study_id
 
 declare @Template_ID int
 select @Template_id = Template_id from RTPhoenix.Template where study_id = @study_id
 
-INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-     VALUES (@Template_ID, 'Begin Template Delete for study_id '+convert(varchar,@study_id), @user, GetDate())
+INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+     VALUES (@TemplateLogEntryInfo, @Template_ID, 'Begin Template Delete for study_id '+convert(varchar,@study_id), @user, GetDate())
 
 delete RTPhoenix.Study_EmployeeTemplate
   where Study_id = @study_id
@@ -228,6 +233,6 @@ delete rtphoenix.PackageQLTemplate
 delete RTPhoenix.Template
 where study_id = @study_id
 
-INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-     VALUES (@Template_ID, 'Template Deleted for study_id '+convert(varchar,@study_id), @user, GetDate())
+INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+     VALUES (@TemplateLogEntryInfo, @Template_ID, 'Template Deleted for study_id '+convert(varchar,@study_id), @user, GetDate())
 

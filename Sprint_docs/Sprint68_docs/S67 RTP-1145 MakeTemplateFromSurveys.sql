@@ -27,7 +27,7 @@ GO
 	  select @TemplateLogEntryError = TemplateLogEntryType_ID 
 	  from RTPhoenix.TemplateLogEntryType where TemplateLogEntryTypeName = 'ERROR'
 
-declare @user varchar(40) = CURRENT_USER
+declare @user varchar(40) = SYSTEM_USER
 declare @study_id int = 5821
 declare @client_id int
 select @client_id = client_id from study where study_id = @study_id
@@ -1070,9 +1070,6 @@ SELECT ss.[SURVEY_ID]
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
 
-INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-     VALUES (@TemplateLogEntryInfo, @Template_ID, 'SEL* template tables exported for study_id '+convert(varchar,@study_id), @user, GetDate())
-
 INSERT INTO [RTPhoenix].[SEL_TEXTBOXTemplate]
            ([QPC_ID]
            ,[SURVEY_ID]
@@ -1369,6 +1366,3 @@ SELECT dtsm.[intVersion]
 		 'QLoader DTSMapping table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
-
-INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-     VALUES (@TemplateLogEntryInfo, @Template_ID, 'QLoader Source/Destination/DTSMapping tables exported for study_id '+convert(varchar,@study_id), @user, GetDate())
