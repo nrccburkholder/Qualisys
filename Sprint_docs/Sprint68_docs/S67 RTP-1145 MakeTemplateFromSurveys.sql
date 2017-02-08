@@ -14,7 +14,7 @@ etc.
 USE [QP_Prod]
 GO
 
-declare @user varchar(40) = 'Template Creation'
+declare @user varchar(40) = CURRENT_USER
 declare @study_id int = 5821
 declare @client_id int
 select @client_id = client_id from study where study_id = @study_id
@@ -23,6 +23,43 @@ INSERT INTO [RTPhoenix].[Template]([Client_ID],[Study_ID],[Template_NM],[Active]
      VALUES (@client_id, @study_id, 'First Template Piece by Piece', 0, GetDate())
 
 declare @template_id int = scope_identity()
+
+if exists (select STRSURVEY_NM, count(*) 
+			from Survey_Def 
+			where study_id = @study_id 
+			group by STRSURVEY_NM 
+			having count(*) > 1)
+begin
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		VALUES (@Template_ID, 'Template Export Failed: Duplicate survey names for study_id '+convert(varchar,@study_id), @user, GetDate())
+
+	RETURN
+end
+
+if exists (select STRSURVEY_NM, STRSAMPLEUNIT_NM, count(*) from SampleUnit su inner join
+			SamplePlan sp on su.SAMPLEPLAN_ID = sp.SAMPLEPLAN_ID inner join
+			Survey_Def sd on sd.SURVEY_ID = sp.SURVEY_ID 
+			where study_id = @study_id 
+			group by STRSURVEY_NM, STRSAMPLEUNIT_NM 
+			having count(*) > 1)
+begin
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		VALUES (@Template_ID, 'Template Export Failed: Duplicate Sample Unit names within a Survey_ID for study_id '+convert(varchar,@study_id), @user, GetDate())
+
+	RETURN
+end
+
+if exists (select strCriteriaStmt_nm, convert(nvarchar, strCriteriaString), count(*) 
+			from CRITERIASTMT cs 
+			where study_id = @study_id 
+			group by STRCRITERIASTMT_NM, convert(nvarchar, strCriteriaString) 
+			having count(*) > 1)
+begin
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		VALUES (@Template_ID, 'Template Export Failed: Duplicate Criteria Statement names and descriptions for study_id '+convert(varchar,@study_id), @user, GetDate())
+
+	RETURN
+end
 
 if not exists(select 1 from [RTPhoenix].[CLIENTTemplate] where client_id = @client_id)
 INSERT INTO [RTPhoenix].[CLIENTTemplate]
