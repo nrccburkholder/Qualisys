@@ -232,7 +232,10 @@ begin
 	WHERE db0.study_id = @TargetStudy_id and mt.study_id = @study_id
 
 	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, @TemplateJob_ID, 'META* template tables imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+		 VALUES (@Template_ID, @TemplateJob_ID, 
+		 'META tables template (MetaStructure row count:'+ 
+		 convert(varchar,@@RowCount) + ') imported for study_id '+
+		 convert(varchar,@TargetStudy_id), @user, GetDate())
 end
 
 INSERT INTO [dbo].[SURVEY_DEF]
@@ -370,7 +373,10 @@ SELECT db0.[Survey_id]
 WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 
 INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-     VALUES (@Template_ID, @TemplateJob_ID, 'SURVEY* template tables imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+     VALUES (@Template_ID, @TemplateJob_ID, 
+		'SURVEY template (newest Survey ID: '+
+		convert(nvarchar,Ident_Current('dbo.Survey_Def'))+
+		') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 INSERT INTO [dbo].[MAILINGMETHODOLOGY]
            ([SURVEY_ID]
@@ -387,6 +393,12 @@ SELECT db0.[SURVEY_ID]
 		[RTPhoenix].[SURVEY_DEFTemplate] sd on mm.Survey_id = sd.SURVEY_ID inner join
 		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm 
 WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+
+INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+     VALUES (@Template_ID, @TemplateJob_ID, 
+		'MAILINGMETHODOLOGY template (newest MailingMethodology ID: '+
+		convert(nvarchar,Ident_Current('dbo.MailingMethodology'))+
+		') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 declare @ExpireFromStepStub int 
 select @ExpireFromStepStub = ident_current('dbo.mailingstep') + 1
@@ -469,7 +481,10 @@ from [dbo].[mailingstep] ms inner join [dbo].[mailingstep] ms2 on
 	where ms.MAILINGSTEP_ID >= @ExpireFromStepStub
 
 INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-     VALUES (@Template_ID, @TemplateJob_ID, 'MAILING* template tables imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+     VALUES (@Template_ID, @TemplateJob_ID, 
+		'MAILINGSTEP template (newest MailingStep ID: '+
+		convert(nvarchar,Ident_Current('dbo.MailingStep'))+
+		') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 IF NOT EXISTS(select 1 from [dbo].[MedicareLookup] where MedicareNumber = @MedicareNumber)
 BEGIN
@@ -516,7 +531,9 @@ BEGIN
 	  where Study_id = @study_id
 
 	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, @TemplateJob_ID, 'MedicareLookup template table imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+		 VALUES (@Template_ID, @TemplateJob_ID, 
+			'MedicareLookup template table imported for study_id '+
+			convert(varchar,@TargetStudy_id), @user, GetDate())
 END
   
 IF NOT EXISTS(select 1 from [dbo].[SUFacility]
@@ -575,7 +592,10 @@ BEGIN
 	  where Study_id = @study_id
 
 	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, @TemplateJob_ID, 'SUFacility template table imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+		 VALUES (@Template_ID, @TemplateJob_ID, 
+			'SUFacility template (newest SUFacility ID: '+
+			convert(nvarchar,Ident_Current('dbo.SUFacility'))+
+			') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 END
 
 INSERT INTO [dbo].[SAMPLEPLAN]
@@ -591,6 +611,12 @@ SELECT null --[ROOTSAMPLEUNIT_ID] --fill in later from template
 		[RTPhoenix].[SURVEY_DEFTemplate] sd on sp.Survey_id = sd.SURVEY_ID inner join
 		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm 
 WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+
+INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		VALUES (@Template_ID, @TemplateJob_ID, 
+		'SamplePlan template (newest Sample Plan ID: '+
+		convert(nvarchar,Ident_Current('dbo.SamplePlan'))+
+		') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 INSERT INTO [dbo].[CRITERIASTMT]
            ([STUDY_ID]
@@ -659,6 +685,11 @@ SELECT db01.[CRITERIASTMT_ID]
 WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id and
 		cs.study_id = @study_id and db01.study_id = @TargetStudy_id
 
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@Template_ID, @TemplateJob_ID, 
+			'SampleUnit template (newest Sample Unit ID: '+
+			convert(nvarchar,Ident_Current('dbo.SampleUnit'))+
+			') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 --backfill SAMPLEPLAN.ROOTSAMPLEUNIT_ID
 
@@ -707,6 +738,12 @@ SELECT db02.[SAMPLEUNIT_ID]
 					db03.sampleplan_id = db01.sampleplan_id
 WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 				
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@Template_ID, @TemplateJob_ID, 
+		 'SampleUnitTreeIndex template (row count:'+
+		 convert(varchar, @@RowCount) + 
+		 ') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+
 INSERT INTO [dbo].[SampleUnitService]
            ([SampleUnit_id]
            ,[Service_id]
@@ -726,6 +763,12 @@ SELECT db03.[SampleUnit_id]
 					db03.SAMPLEPLAN_ID = db02.SAMPLEPLAN_ID
 WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 				
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@Template_ID, @TemplateJob_ID, 
+			'SampleUnitService template (row count:'+ 
+			convert(varchar,@@RowCount) + 
+			') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+
 INSERT INTO [dbo].[SAMPLEUNITSECTION] 
            ([SAMPLEUNIT_ID]
            ,[SELQSTNSSECTION]
@@ -743,8 +786,11 @@ SELECT db03.[SAMPLEUNIT_ID]
 					db03.SAMPLEPLAN_ID = db02.SAMPLEPLAN_ID
 WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 				
-INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-     VALUES (@Template_ID, @TemplateJob_ID, 'SAMPLE* template tables imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@Template_ID, @TemplateJob_ID, 
+			'SampleUnitSection template (row count:'+ 
+			convert(varchar,@@RowCount) + 
+			') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 INSERT INTO [dbo].[PeriodDef]
            ([Survey_id]
@@ -774,6 +820,12 @@ SELECT db0.[Survey_id]
 		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm 
 WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@Template_ID, @TemplateJob_ID, 
+		 'PeriodDef template (row count:'+
+		 convert(varchar,@@RowCount) + 
+		 ') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+
 INSERT INTO [dbo].[PeriodDates]
            ([PeriodDef_id]
            ,[SampleNumber]
@@ -793,8 +845,11 @@ SELECT db01.[PeriodDef_id]
 					db01.Survey_id = db0.Survey_id and pdf.Survey_id = sd.Survey_id
 WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 				
-INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-     VALUES (@Template_ID, @TemplateJob_ID, 'Period* template tables imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@Template_ID, @TemplateJob_ID, 
+		 'PeriodDates template (row count:'+ 
+		 convert(varchar,@@RowCount) + 
+		 ') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 INSERT INTO [dbo].[BUSINESSRULE]
            ([SURVEY_ID]
@@ -814,6 +869,12 @@ SELECT db0.[SURVEY_ID]
 					db01.study_id = @TargetStudy_id and cst.study_id = @study_id 
 WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 				
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@Template_ID, @TemplateJob_ID, 
+		 'BusinessRule template (row count:'+ 
+		 convert(varchar,@@RowCount) + 
+		 ') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+
 INSERT INTO [dbo].[HOUSEHOLDRULE] 
            ([TABLE_ID]
            ,[FIELD_ID]
@@ -829,8 +890,11 @@ SELECT db01.[TABLE_ID]
 					db01.study_id = @TargetStudy_id and mt.study_id = @study_id
 WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 				
-INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-     VALUES (@Template_ID, @TemplateJob_ID, 'HOUSEHOLDRULE/BUSINESSRULE template tables imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@Template_ID, @TemplateJob_ID, 
+		 'HouseholdRule template (row count:'+ 
+		 convert(varchar,@@RowCount) + 
+		 ') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 INSERT INTO [dbo].[CRITERIACLAUSE] 
            ([CRITERIAPHRASE_ID]
@@ -857,6 +921,12 @@ SELECT cc.[CRITERIAPHRASE_ID]
 					cs.study_id = @study_id and db01.study_id = @TargetStudy_id
 WHERE db0.study_id = @TargetStudy_id and mt.study_id = @study_id
 				
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@Template_ID, @TemplateJob_ID, 
+		 'CriteriaClause template (row count:'+ 
+		 convert(varchar,@@RowCount) + 
+		 ') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+
 INSERT INTO [dbo].[CRITERIAINLIST] 
            ([CRITERIACLAUSE_ID]
            ,[STRLISTVALUE])
@@ -870,8 +940,11 @@ SELECT db01.[CRITERIACLAUSE_ID]
 					db01.CRITERIAPHRASE_ID = cc.CRITERIAPHRASE_ID
 WHERE cs.study_id = @study_id and db0.study_id = @TargetStudy_id
 				
-INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-     VALUES (@Template_ID, @TemplateJob_ID, 'CRITERIA* template tables imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@Template_ID, @TemplateJob_ID, 
+		 'CriteriaInList template (row count:'+ 
+		 convert(varchar,@@RowCount) + 
+		 ') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 INSERT INTO [dbo].[Sel_Cover] 
            ([SelCover_id]
@@ -890,6 +963,12 @@ SELECT [SelCover_id]
   [RTPhoenix].[SURVEY_DEFTemplate] sd on sel.Survey_id = sd.SURVEY_ID inner join
 		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm 
 WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@Template_ID, @TemplateJob_ID, 
+		 'Sel_Cover template (row count:'+ 
+		 convert(varchar,@@RowCount) + 
+		 ') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 INSERT INTO [dbo].[SEL_LOGO] 
            ([QPC_ID]
@@ -919,6 +998,12 @@ SELECT [QPC_ID]
 		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm 
 WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@Template_ID, @TemplateJob_ID, 
+		 'Sel_Logo template (row count:'+ 
+		 convert(varchar,@@RowCount) + 
+		 ') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+
 INSERT INTO [dbo].[SEL_PCL]
            ([QPC_ID]
            ,[SURVEY_ID]
@@ -946,6 +1031,12 @@ SELECT [QPC_ID]
   [RTPhoenix].[SURVEY_DEFTemplate] sd on sel.Survey_id = sd.SURVEY_ID inner join
 		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm 
 WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@Template_ID, @TemplateJob_ID, 
+		 'Sel_PCL template (row count:'+ 
+		 convert(varchar,@@RowCount) + 
+		 ') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 INSERT INTO [dbo].[SEL_QSTNS]
            ([SELQSTNS_ID]
@@ -995,6 +1086,12 @@ SELECT [SELQSTNS_ID]
 		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm 
 WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@Template_ID, @TemplateJob_ID, 
+		 'Sel_Qstns template (row count:'+ 
+		 convert(varchar,@@RowCount) + 
+		 ') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+
 INSERT INTO [dbo].[SEL_SCLS] 
            ([SURVEY_ID]
            ,[QPC_ID]
@@ -1023,6 +1120,12 @@ SELECT db0.[SURVEY_ID]
 		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm 
 WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@Template_ID, @TemplateJob_ID, 
+		 'Sel_Scls template (row count:'+ 
+		 convert(varchar,@@RowCount) + 
+		 ') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+
 INSERT INTO [dbo].[SEL_SKIP] 
            ([SURVEY_ID]
            ,[SELQSTNS_ID]
@@ -1040,6 +1143,12 @@ SELECT db0.[SURVEY_ID]
   [RTPhoenix].[SURVEY_DEFTemplate] sd on sel.Survey_id = sd.SURVEY_ID inner join
 		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm 
 WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@Template_ID, @TemplateJob_ID, 
+		 'Sel_Skip template (row count:'+ 
+		 convert(varchar,@@RowCount) + 
+		 ') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 INSERT INTO [dbo].[SEL_TEXTBOX] 
            ([QPC_ID]
@@ -1073,8 +1182,11 @@ SELECT [QPC_ID]
 		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm 
 WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 
-INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-     VALUES (@Template_ID, @TemplateJob_ID, 'SEL* template tables imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@Template_ID, @TemplateJob_ID, 
+		 'Sel_Textbox template (row count:'+ 
+		 convert(varchar,@@RowCount) + 
+		 ') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 INSERT INTO [dbo].[ModeSectionMapping]
            ([Survey_Id]
@@ -1095,6 +1207,12 @@ SELECT db0.[Survey_Id]
 					ms.STRMAILINGSTEP_NM = db01.STRMAILINGSTEP_NM
 WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 				
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@Template_ID, @TemplateJob_ID, 
+		 'ModeSectionMapping template (row count:'+ 
+		 convert(varchar,@@RowCount) + 
+		 ') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+
 INSERT INTO [dbo].[TAGFIELD] 
            ([TAG_ID]
            ,[TABLE_ID]
@@ -1113,6 +1231,12 @@ SELECT tf.[TAG_ID]
 		[dbo].[METATABLE] db0 on db0.STRTABLE_NM = mt.STRTABLE_NM 
 WHERE db0.study_id = @TargetStudy_ID and mt.STUDY_ID = @study_id
 
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@Template_ID, @TemplateJob_ID, 
+		 'TagField template (row count:'+ 
+		 convert(varchar,@@RowCount) + 
+		 ') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+
 INSERT INTO [dbo].[CODEQSTNS]
            ([SELQSTNS_ID]
            ,[SURVEY_ID]
@@ -1130,6 +1254,12 @@ SELECT [SELQSTNS_ID]
   [RTPhoenix].[SURVEY_DEFTemplate] sd on cq.Survey_id = sd.SURVEY_ID inner join
 		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm 
 WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@Template_ID, @TemplateJob_ID, 
+		 'CodeQstns template (row count:'+ 
+		 convert(varchar,@@RowCount) + 
+		 ') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 INSERT INTO [dbo].[CODESCLS] 
            ([SURVEY_ID]
@@ -1151,6 +1281,12 @@ SELECT db0.[SURVEY_ID]
 		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm 
 WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@Template_ID, @TemplateJob_ID, 
+		 'CodeScls template (row count:'+ 
+		 convert(varchar,@@RowCount) + 
+		 ') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+
 INSERT INTO [dbo].[CODETXTBOX] 
            ([QPC_ID]
            ,[SURVEY_ID]
@@ -1169,8 +1305,12 @@ SELECT [QPC_ID]
 		[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm 
 WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 
-INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-     VALUES (@Template_ID, @TemplateJob_ID, 'CODE* template tables imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@Template_ID, @TemplateJob_ID, 
+		 'CodeTxtBox template (row count:'+ 
+		 convert(varchar,@@RowCount) + 
+		 ') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+
 
 INSERT INTO [dbo].[STUDY_EMPLOYEE] 
            ([EMPLOYEE_ID]
@@ -1181,8 +1321,11 @@ SELECT [EMPLOYEE_ID]
   where Study_id = @study_id and Employee_id not in
   (select Employee_id from [dbo].[study_employee] where study_id = @TargetStudy_ID)
 
-INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-     VALUES (@Template_ID, @TemplateJob_ID, 'Study_Employee template table imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@Template_ID, @TemplateJob_ID, 
+		 'Study_Employee template (row count:'+ 
+		 convert(varchar,@@RowCount) + 
+		 ') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 INSERT INTO [QLoader].[QP_Load].[dbo].[Package]
            ([intVersion]
@@ -1222,6 +1365,16 @@ SELECT [intVersion]
   FROM [RTPhoenix].[PackageQLTemplate]
   where Study_id = @Study_id
 
+Declare @Package_id int
+Select @Package_id = Package_id from [QLoader].[QP_Load].[dbo].[Package]
+where Study_id = @TargetStudy_id
+
+INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+     VALUES (@Template_ID, @TemplateJob_ID, 
+		'Package QLoader template (Package ID: '+
+		convert(nvarchar,@Package_id))+
+		') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+
 INSERT INTO [QLoader].[QP_Load].[dbo].[Destination]
            ([Package_id]
            ,[intVersion]
@@ -1246,6 +1399,12 @@ SELECT db0.[Package_id]
 		[dbo].[METATABLE] db1 on db1.STUDY_ID = @TargetStudy_ID and db1.STRTABLE_NM = mt.STRTABLE_NM inner join
 		[dbo].[METASTRUCTURE] db2 on db2.TABLE_ID = db1.TABLE_ID and db2.FIELD_ID = d.Field_id 
 
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@Template_ID, @TemplateJob_ID, 
+		 'Destination QLoader template (row count:'+ 
+		 convert(varchar,@@RowCount) + 
+		 ') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+
 INSERT INTO [QLoader].[QP_Load].[dbo].[Source]
            ([Package_id]
            ,[intVersion]
@@ -1264,6 +1423,12 @@ SELECT db0.[Package_id]
   FROM [RTPhoenix].[SourceQLTemplate] s inner join
   [RTPhoenix].[PackageQLTemplate] p on s.Package_id = p.Package_id and p.Study_id = @study_id inner join
 		[QLoader].[QP_Load].[dbo].[Package] db0 on db0.study_id = @TargetStudy_ID 
+
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@Template_ID, @TemplateJob_ID, 
+		 'Source QLoader template (row count:'+ 
+		 convert(varchar,@@RowCount) + 
+		 ') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 /* -- DTSMapping is not needed for RTPhoenix ingestion -- CJB 2/3/2017
 INSERT INTO [QLoader].[QP_Load].[dbo].[DTSMapping]
@@ -1287,7 +1452,6 @@ SET @CompletedNotes = 'Completed import of Study_id '+convert(varchar,@TargetStu
 UPDATE [RTPhoenix].[TemplateJob]
    SET [TargetClient_ID] = @TargetClient_ID
       ,[TargetStudy_ID] = @TargetStudy_ID
-      ,[Client_nm] = @Client_nm
       ,[Study_nm] = @Study_nm
       ,[Study_desc] = @Study_desc
       ,[CompletedNotes] = @CompletedNotes
