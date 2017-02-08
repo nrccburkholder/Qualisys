@@ -878,7 +878,7 @@ SELECT [SelCover_id]
 
 	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 		 VALUES (@Template_ID, 
-		 'SelCover table (row count:'+ 
+		 'Sel_Cover table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
 
@@ -911,7 +911,7 @@ SELECT [QPC_ID]
 
 	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 		 VALUES (@Template_ID, 
-		 'SelLogo table (row count:'+ 
+		 'Sel_Logo table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
 
@@ -944,7 +944,7 @@ SELECT [QPC_ID]
 
 	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 		 VALUES (@Template_ID, 
-		 'SelPCL table (row count:'+ 
+		 'Sel_PCL table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
 
@@ -997,7 +997,7 @@ SELECT [SELQSTNS_ID]
 
 	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 		 VALUES (@Template_ID, 
-		 'SelQstns table (row count:'+ 
+		 'Sel_Qstns table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
 
@@ -1030,7 +1030,7 @@ SELECT ss.[SURVEY_ID]
 
 	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 		 VALUES (@Template_ID, 
-		 'SelScls table (row count:'+ 
+		 'Sel_Scls table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
 
@@ -1053,7 +1053,7 @@ SELECT ss.[SURVEY_ID]
 
 	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 		 VALUES (@Template_ID, 
-		 'SelSkip table (row count:'+ 
+		 'Sel_Skip table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
 
@@ -1093,7 +1093,7 @@ SELECT [QPC_ID]
 
 	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 		 VALUES (@Template_ID, 
-		 'SelTextbox table (row count:'+ 
+		 'Sel_Textbox table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
 
