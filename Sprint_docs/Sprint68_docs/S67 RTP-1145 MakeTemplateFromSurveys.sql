@@ -14,6 +14,10 @@ etc.
 USE [QP_Prod]
 GO
 
+begin tran
+
+begin try
+
 	  declare @TemplateLogEntryInfo int
 	  declare @TemplateLogEntryWarning int
 	  declare @TemplateLogEntryError int
@@ -1366,3 +1370,15 @@ SELECT dtsm.[intVersion]
 		 'QLoader DTSMapping table (row count:'+ 
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
+
+commit tran
+
+end try
+begin catch
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 SELECT @Template_ID, @TemplateLogEntryError, 'Create Template did not succeed and was rolled back', SYSTEM_USER, GetDate()
+
+	rollback tran
+end catch
+
+GO

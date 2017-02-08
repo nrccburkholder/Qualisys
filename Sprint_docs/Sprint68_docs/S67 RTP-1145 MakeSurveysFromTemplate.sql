@@ -14,6 +14,10 @@ etc.
 USE [QP_Prod]
 GO
 
+begin tran
+
+begin try
+
 	  declare @TemplateJob_ID int
 	  declare @TemplateJobType_ID int
       declare @Template_ID int
@@ -1491,3 +1495,14 @@ INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Template
      VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 'Completed TemplateJob '+convert(varchar,@TemplateJob_ID)+
 	 ', Client/Study '+convert(varchar,@TargetClient_id)+'/'+convert(varchar,@TargetStudy_id)+')', @user, GetDate())
 
+commit tran
+
+end try
+begin catch
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 SELECT @Template_ID, @TemplateJob_ID, @TemplateLogEntryError, 'Template Job did not succeed and was rolled back', SYSTEM_USER, GetDate()
+
+	rollback tran
+end catch
+
+GO

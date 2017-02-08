@@ -16,10 +16,22 @@ delete clientTemplate
 USE [QP_Prod]
 GO
 
+begin tran
+
+begin try
+
 	  declare @TemplateLogEntryInfo int
+	  declare @TemplateLogEntryWarning int
+	  declare @TemplateLogEntryError int
 
 	  select @TemplateLogEntryInfo = TemplateLogEntryType_ID 
 	  from RTPhoenix.TemplateLogEntryType where TemplateLogEntryTypeName = 'INFORMATIONAL'
+
+	  select @TemplateLogEntryWarning = TemplateLogEntryType_ID 
+	  from RTPhoenix.TemplateLogEntryType where TemplateLogEntryTypeName = 'WARNING'
+
+	  select @TemplateLogEntryError = TemplateLogEntryType_ID 
+	  from RTPhoenix.TemplateLogEntryType where TemplateLogEntryTypeName = 'ERROR'
 
 declare @user varchar(40) = SYSTEM_USER
 declare @study_id int = 5821
@@ -236,3 +248,14 @@ where study_id = @study_id
 INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
      VALUES (@TemplateLogEntryInfo, @Template_ID, 'Template Deleted for study_id '+convert(varchar,@study_id), @user, GetDate())
 
+commit tran
+
+end try
+begin catch
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 SELECT @Template_ID, @TemplateLogEntryError, 'Delete Template did not succeed and was rolled back', SYSTEM_USER, GetDate()
+
+	rollback tran
+end catch
+
+GO
