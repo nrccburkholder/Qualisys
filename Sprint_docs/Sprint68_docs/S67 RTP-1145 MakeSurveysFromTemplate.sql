@@ -82,6 +82,8 @@ begin
 	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 		 SELECT -1, NULL, @TemplateLogEntryWarning, 'No Template Job Found To Process', SYSTEM_USER, GetDate()
 
+	commit tran
+
 	RETURN
 end
 
@@ -116,6 +118,9 @@ begin
 	   SET [CompletedNotes] = 'Template ID missing or not Active for TemplateJob_ID: '+convert(varchar,@TemplateJob_id)
 		  ,[CompletedAt] = GetDate()
 	 WHERE TemplateJob_ID = @TemplateJob_ID
+
+	commit tran
+
 	RETURN
 end
 
@@ -124,6 +129,8 @@ begin
 	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 		 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryError, 'Client ID missing for TemplateJob_ID: '+convert(varchar,@TemplateJob_id), @user, GetDate())
 		
+	commit tran
+
 	RETURN
 end
 
@@ -131,6 +138,8 @@ IF NOT EXISTS(select 1 from [dbo].[MedicareLookup] where MedicareNumber = @Medic
 begin
 	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 		 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryError, 'MedicareNumber ('+@MedicareNumber+') not found for TemplateJob_ID: '+convert(varchar,@TemplateJob_id), @user, GetDate())
+
+	commit tran
 		
 	RETURN
 end
@@ -513,6 +522,8 @@ INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [Template
 		convert(nvarchar,Ident_Current('dbo.MailingStep'))+
 		') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
+/* ----------- The MedicareLookup record must be pre-existing according to the code review on 2/6/2017 CJB
+
 IF NOT EXISTS(select 1 from [dbo].[MedicareLookup] where MedicareNumber = @MedicareNumber)
 BEGIN
 	INSERT INTO [dbo].[MedicareLookup] 
@@ -562,6 +573,7 @@ BEGIN
 			'MedicareLookup template table imported for study_id '+
 			convert(varchar,@TargetStudy_id), @user, GetDate())
 END
+*/
   
 IF NOT EXISTS(select 1 from [dbo].[SUFacility]
 			where MedicareNumber = @MedicareNumber and strFacility_nm in 

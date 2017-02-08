@@ -50,6 +50,8 @@ begin
 	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 		VALUES (@TemplateLogEntryError, @Template_ID, 'Template Export Failed: Duplicate survey names for study_id '+convert(varchar,@study_id), @user, GetDate())
 
+	commit tran
+
 	RETURN
 end
 
@@ -63,6 +65,8 @@ begin
 	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 		VALUES (@TemplateLogEntryError, @Template_ID, 'Template Export Failed: Duplicate Sample Unit names within a Survey_ID for study_id '+convert(varchar,@study_id), @user, GetDate())
 
+	commit tran
+
 	RETURN
 end
 
@@ -74,6 +78,8 @@ if exists (select strCriteriaStmt_nm, convert(nvarchar, strCriteriaString), coun
 begin
 	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 		VALUES (@TemplateLogEntryError, @Template_ID, 'Template Export Failed: Duplicate Criteria Statement names and descriptions for study_id '+convert(varchar,@study_id), @user, GetDate())
+
+	commit tran
 
 	RETURN
 end
