@@ -21,8 +21,7 @@ GO
       declare @CAHPSSurveySubtype_ID int
       declare @RTSurveyType_ID int
       declare @RTSurveySubtype_ID int
-      declare @BeginDate datetime
-      declare @EndDate datetime
+      declare @AsOfDate datetime
       declare @TargetClient_ID int
       declare @TargetStudy_ID int
       declare @TargetSurvey_ID int
@@ -44,8 +43,7 @@ SELECT TOP 1
       ,@CAHPSSurveySubtype_ID = [CAHPSSurveySubtype_ID]
       ,@RTSurveyType_ID = [RTSurveyType_ID]
       ,@RTSurveySubtype_ID = [RTSurveySubtype_ID]
-      ,@BeginDate = [BeginDate]	  
-      ,@EndDate = [EndDate]	  
+      ,@AsOfDate = ISNULL([AsOfDate], GetDate())
       ,@TargetClient_ID = [TargetClient_ID]
       ,@TargetStudy_id = [TargetStudy_ID]
       ,@TargetSurvey_id = [TargetStudy_ID]
@@ -74,6 +72,8 @@ declare @client_id int
 	--TODO: Try to resolve which Template by matching CAHPSSurveyType_ID,
 	--CAHPSSurveySubtype_ID, RTSurveyType_ID and RTSurveySubtype_ID against 
 	--active templates
+	--TODO: Also use AsOfDate to determine which Template based on BeginDate,
+	--EndDate of Template
 --end
 
 SELECT @Template_ID = [Template_ID]
