@@ -1382,6 +1382,16 @@ SELECT [EMPLOYEE_ID]
 		 convert(varchar,@@RowCount) + 
 		 ') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
+commit tran
+
+end try
+begin catch
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 SELECT @Template_ID, @TemplateJob_ID, @TemplateLogEntryError, 'Template Job did not succeed and was rolled back', SYSTEM_USER, GetDate()
+
+	rollback tran
+end catch
+
 INSERT INTO [QLoader].[QP_Load].[dbo].[Package]
            ([intVersion]
            ,[strPackage_nm]
@@ -1516,15 +1526,5 @@ UPDATE [RTPhoenix].[TemplateJob]
 INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
      VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 'Completed TemplateJob '+convert(varchar,@TemplateJob_ID)+
 	 ', Client/Study '+convert(varchar,@TargetClient_id)+'/'+convert(varchar,@TargetStudy_id)+')', @user, GetDate())
-
-commit tran
-
-end try
-begin catch
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 SELECT @Template_ID, @TemplateJob_ID, @TemplateLogEntryError, 'Template Job did not succeed and was rolled back', SYSTEM_USER, GetDate()
-
-	rollback tran
-end catch
 
 GO
