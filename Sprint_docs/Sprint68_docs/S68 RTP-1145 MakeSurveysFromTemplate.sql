@@ -286,11 +286,11 @@ begin
 		  ,[STRLKUP_TYPE]
 	  FROM [RTPhoenix].[METALOOKUPTemplate] ml inner join
 			[RTPhoenix].[METATABLETemplate] mt on ml.NUMMASTERTABLE_ID = mt.TABLE_ID inner join
-			[dbo].[METATABLE] db0 on mt.strtable_nm = db0.strtable_nm
+			[dbo].[METATABLE] db0 on mt.strtable_nm = db0.strtable_nm inner join
 			[RTPhoenix].[METATABLETemplate] mt2 on ml.NUMLKUPTABLE_ID = mt2.TABLE_ID inner join
-			[dbo].[METATABLE] db1 on mt.strtable_nm = db1.strtable_nm
-			where db0.Study_id = @Study_id and db1.Study_id = @Study_id and 
-				mt.Study_id = @TargetStudy_id and mt2.Study_id = @TargetStudy_id
+			[dbo].[METATABLE] db1 on mt2.strtable_nm = db1.strtable_nm
+			where db0.Study_id = @TargetStudy_id and db1.Study_id = @TargetStudy_id and 
+				mt.Study_id = @Study_id and mt2.Study_id = @Study_id 
 end
 
 INSERT INTO [dbo].[SURVEY_DEF]

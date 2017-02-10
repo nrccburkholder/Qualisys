@@ -32,7 +32,7 @@ GO
 	  from RTPhoenix.TemplateLogEntryType where TemplateLogEntryTypeName = 'ERROR'
 
 declare @user varchar(40) = SYSTEM_USER
-declare @TargetStudy_id int = 5821
+declare @TargetStudy_id int = 5849
 declare @Study varchar(10) = 'S' + convert(varchar, @TargetStudy_id)
 declare @Template_ID int = -1, @TemplateJob_ID int = -1
 select @Template_id = Template_id, @TemplateJob_id = TemplateJob_id from RTPhoenix.TemplateJob where TargetStudy_id = @TargetStudy_id
@@ -177,7 +177,7 @@ BEGIN
 				INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 						VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, @Table+'.'+@Field+' Key Field added on QP_Prod for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
-		Select @ConstraintString = REPLACE(REPLACE(@ConstraintString, @Table, @Table+'_Load'),'IDENTITY (1,1) ','')
+		Select @ConstraintString = REPLACE(@ConstraintString, @Table, @Table+'_Load')
 			
 		Exec('IF NOT EXISTS(select * from sys.columns c inner join'+
 			' sys.tables t on t.object_id = c.object_id inner join'+
