@@ -1,5 +1,5 @@
 /*
-S67 RTP-1145 DeleteTemplate.sql
+S68 RTP-1145 DeleteTemplate.sql
 
 Chris Burkholder
 
