@@ -272,6 +272,25 @@ begin
 		 'META tables template (MetaStructure row count:'+ 
 		 convert(varchar,@@RowCount) + ') imported for study_id '+
 		 convert(varchar,@TargetStudy_id), @user, GetDate())
+
+	INSERT INTO [dbo].[METALOOKUP]
+			   ([NUMMASTERTABLE_ID]
+			   ,[NUMMASTERFIELD_ID]
+			   ,[NUMLKUPTABLE_ID]
+			   ,[NUMLKUPFIELD_ID]
+			   ,[STRLKUP_TYPE])
+	SELECT db0.table_id
+		  ,[NUMMASTERFIELD_ID]
+		  ,db1.table_id
+		  ,[NUMLKUPFIELD_ID]
+		  ,[STRLKUP_TYPE]
+	  FROM [RTPhoenix].[METALOOKUPTemplate] ml inner join
+			[RTPhoenix].[METATABLETemplate] mt on ml.NUMMASTERTABLE_ID = mt.TABLE_ID inner join
+			[dbo].[METATABLE] db0 on mt.strtable_nm = db0.strtable_nm
+			[RTPhoenix].[METATABLETemplate] mt2 on ml.NUMLKUPTABLE_ID = mt2.TABLE_ID inner join
+			[dbo].[METATABLE] db1 on mt.strtable_nm = db1.strtable_nm
+			where db0.Study_id = @Study_id and db1.Study_id = @Study_id and 
+				mt.Study_id = @TargetStudy_id and mt2.Study_id = @TargetStudy_id
 end
 
 INSERT INTO [dbo].[SURVEY_DEF]

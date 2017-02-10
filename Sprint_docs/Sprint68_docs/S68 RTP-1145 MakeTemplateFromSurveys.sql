@@ -226,6 +226,21 @@ SELECT ms.[TABLE_ID]
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
 
+INSERT INTO [RTPhoenix].[METALOOKUPTemplate]
+           ([NUMMASTERTABLE_ID]
+           ,[NUMMASTERFIELD_ID]
+           ,[NUMLKUPTABLE_ID]
+           ,[NUMLKUPFIELD_ID]
+           ,[STRLKUP_TYPE])
+SELECT [NUMMASTERTABLE_ID]
+      ,[NUMMASTERFIELD_ID]
+      ,[NUMLKUPTABLE_ID]
+      ,[NUMLKUPFIELD_ID]
+      ,[STRLKUP_TYPE]
+  FROM [dbo].[METALOOKUP] ml inner join
+		[dbo].[METATABLE] mt on ml.NUMMASTERTABLE_ID = mt.TABLE_ID
+		where Study_id = @Study_id
+
 INSERT INTO [RTPhoenix].[SURVEY_DEFTemplate]
            ([SURVEY_ID]
            ,[STUDY_ID]

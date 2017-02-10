@@ -206,6 +206,11 @@ delete RTPhoenix.SURVEY_DEFTemplate
   FROM RTPhoenix.SURVEY_DEFTemplate
   where Study_id = @study_id
 
+delete RTPhoenix.METALOOKUPTemplate
+  FROM RTPhoenix.METALOOKUPTemplate ml inner join
+		RTPhoenix.METATABLETemplate mt on ml.NUMMASTERTABLE_ID = mt.TABLE_ID
+		where Study_id = @Study_id
+
 delete RTPhoenix.METASTRUCTURETemplate
   FROM RTPhoenix.METASTRUCTURETemplate ms inner join
 		RTPhoenix.METATABLETemplate mt on ms.TABLE_ID = mt.TABLE_ID
