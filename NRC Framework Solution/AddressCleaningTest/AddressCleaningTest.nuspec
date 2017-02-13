@@ -3,7 +3,7 @@
   <metadata>
     <id>Qualisys.AddressCleaningTest</id>
     <title>AddressCleaningTest</title>
-    <version>3.0.0.0</version>
+    <version>3.0.1.0</version>
     <authors>NRC</authors>
     <description>GUI wrapper around the Melissa address cleaning functionality</description>
   </metadata>

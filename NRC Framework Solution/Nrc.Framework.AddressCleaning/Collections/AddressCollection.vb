@@ -522,12 +522,12 @@ Public Class AddressCollection
                 'Suite information exists
                 If addr.OriginalAddress.StreetLine2 = "%NOT%USED%" Then
                     'Line 2 is not used for this study so add the suite information to line 1
-                    If Not .StreetLine1.ToUpper.Contains(suite) Then
+                    If Not .StreetLine1.ToUpper.Contains(suite) And Not .StreetLine2.ToUpper.Contains(suite) Then
                         .StreetLine1 = String.Format("{0} {1}", .StreetLine1, suite).Trim
                     End If
                 Else
                     'Add the suite information to line 2
-                    If Not .StreetLine2.ToUpper.Contains(suite) Then
+                    If Not .StreetLine1.ToUpper.Contains(suite) And Not .StreetLine2.ToUpper.Contains(suite) Then
                         .StreetLine2 = String.Format("{0} {1}", .StreetLine2, suite).Trim
                     End If
                 End If
