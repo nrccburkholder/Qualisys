@@ -14,9 +14,6 @@ if not(exists...)
 USE [QP_Prod]
 GO
 
---begin tran sp_grantdbaccess cannot be executed within a transaction...
-
---begin try
 
 	  declare @TemplateLogEntryInfo int
 	  declare @TemplateLogEntryWarning int
@@ -217,9 +214,56 @@ BEGIN
 --For QP_Load
 --	add [TABLE]_LOAD INDEXes
 
+	EXEC('if exists(SELECT * FROM sysindexes WHERE name=''IDX_'+@study+@Table+'DataFile'''+
+		' DROP INDEX '+@study+'.'+@Table+'.IDX_'+@study+@Table+'DataFile')
+		At [QLoader]
+	EXEC('CREATE NONCLUSTERED INDEX [IDX_'+@study+@Table+'DataFile] ON '+@study+'.'+@Table+
+		' (	[DataFile_id] ASC,	[DF_id] ASC )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 90) ON [PRIMARY]')
+		At [QLoader]
+
 --For QP_Prod
 --  add [TABLE]_LOAD INDEXes
 --  add [TABLE] INDEXes
+
+	if @Table = 'ENCOUNTER' 
+	begin
+
+		EXEC('if exists(select * from sys.indexes where name = ''ENCOUNTERpop_idI'' and object_id = OBJECT_ID('+@study+'.Encounter))'+
+			' DROP INDEX ENCOUNTERpop_idI from '+@study+'.ENCOUNTER')
+		EXEC('CREATE NONCLUSTERED INDEX [ENCOUNTERpop_idI] ON ['+@study+'].[ENCOUNTER]'+
+		'(	[pop_id] ASC)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]')
+
+		EXEC('if exists(select * from sys.indexes where name = ''ENCOUNTERpop_idI'' and object_id = OBJECT_ID('+@study+'.Encounter_load))'+
+			' DROP INDEX ENCOUNTERpop_idI from '+@study+'.ENCOUNTER')
+		EXEC('CREATE NONCLUSTERED INDEX [ENCOUNTERpop_idI] ON ['+@study+'].[ENCOUNTER_load]'+
+		'(	[pop_id] ASC)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]')
+
+		EXEC('if exists(select * from sys.indexes where name = '''+@study+'CDXENCOUNTER'' and object_id = OBJECT_ID('+@study+'.Encounter))'+
+			' DROP INDEX '+@study+'CDXENCOUNTER from '+@study+'.ENCOUNTER')
+		EXEC('CREATE NONCLUSTERED INDEX ['+@study+'CDXENCOUNTER] ON ['+@study+'].[ENCOUNTER]'+
+		'(	[Enc_Mtch] ASC)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]')
+
+		EXEC('if exists(select * from sys.indexes where name = '''+@study+'CDXENCOUNTER'' and object_id = OBJECT_ID('+@study+'.Encounter_load))'+
+			' DROP INDEX '+@study+'CDXENCOUNTER from '+@study+'.ENCOUNTER_Load')
+		EXEC('CREATE NONCLUSTERED INDEX ['+@study+'_LOADCDXENCOUNTER] ON ['+@study+'].[ENCOUNTER_load]'+
+		'(	[Enc_Mtch] ASC)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]')
+
+	end
+
+	if @Table = 'POPULATION'
+	begin
+
+		EXEC('if exists(select * from sys.indexes where name = '''+@study+'CDXPOPULATION'' and object_id = OBJECT_ID('+@study+'.Population))'+
+			' DROP INDEX '+@study+'CDXPOPULATION from '+@study+'.POPULATION')
+		EXEC('CREATE NONCLUSTERED INDEX ['+@study+'CDXPOPULATION] ON ['+@study+'].[POPULATION]'+
+		'(	[Pop_Mtch] ASC)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]')
+
+		EXEC('if exists(select * from sys.indexes where name = '''+@study+'CDXPOPULATION'' and object_id = OBJECT_ID('+@study+'.Population_Load))'+
+			' DROP INDEX '+@study+'CDXPOPULATION from '+@study+'.POPULATION_Load')
+		EXEC('CREATE NONCLUSTERED INDEX ['+@study+'_LOADCDXPOPULATION] ON ['+@study+'].[POPULATION_load]'+
+		'(	[Pop_Mtch] ASC)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]')
+
+	end
 
 	exec ('Select top 1 '''' as ''QP_Prod ' + @study + '.' + @table +''',* from '+@study+'.'+@table)
 	exec ('Select top 1 '''' as ''QP_Prod ' + @study + '.' + @table +'_Load'',* from '+@study+'.'+@table+'_Load')
@@ -259,29 +303,5 @@ exec ee_MakeBigView @TargetStudy_id, '_WEB', 1, 1
 	exec ('Select top 1 '''' as ''BIG_VIEW'',* from '+@study+'.BIG_VIEW')
 	exec ('Select top 1 '''' as ''BIG_VIEW_LOAD'',* from '+@study+'.BIG_VIEW_LOAD')
 	exec ('Select top 1 '''' as ''BIG_VIEW_WEB'',* from '+@study+'.BIG_VIEW_WEB')
-
-
-/*
-Exec ('Exec dbo.LD_StudyTables ' + @TargetStudy_id) AT [QLoader]
---Exec [QLoader].[QP_Load].[dbo].[LD_StudyTables] @TargetStudy_id
-
-INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-     VALUES (@TemplateLogEntryInfo, @Template_ID, 'Study Owned QLoader Schema Tables Processed for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
-
-Exec ('Exec dbo.LD_StudyTables ' + @TargetStudy_id + ', 1') AT [Pervasive]
---Exec [Pervasive].[qp_Dataload].[dbo].[LD_StudyTables] @study_id, 1
-
-INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-     VALUES (@TemplateLogEntryInfo, @Template_ID, 'Study Owned Pervasive Schema Tables Processed for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
-*/
---commit tran
-
---end try
---begin catch
-	--INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-	--	 SELECT @Template_ID, @TemplateLogEntryError, 'Study Owned Schema Table Processing did not succeed and is in an error state (unable to be rolled back)', SYSTEM_USER, GetDate()
-
---	rollback tran
---end catch
 
 GO
