@@ -3,7 +3,7 @@
   <metadata>
     <id>Qualisys.QLoaderService</id>
     <title>QLoaderService</title>
-    <version>3.0.0.0</version>
+    <version>3.0.1.0</version>
     <authors>NRC</authors>
     <description>Windows service for Loading patient discharge records onto Qualisys</description>
   </metadata>
