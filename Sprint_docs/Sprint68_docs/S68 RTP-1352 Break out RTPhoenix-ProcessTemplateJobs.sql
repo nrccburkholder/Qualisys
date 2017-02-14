@@ -55,7 +55,7 @@ begin
 			Exec RTPhoenix.MakeStudyFromTemplate @TemplateJob_id
 
 			INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-				VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 'RTPhoenix.MakeStudyFromTemplate' + convert(varchar, @TemplateJob_id), @user, GetDate())
+				VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 'RTPhoenix.MakeStudyFromTemplate ' + convert(varchar, @TemplateJob_id), @user, GetDate())
 		end
 		else
 		if @TemplateJobType_ID = 2 
@@ -63,7 +63,7 @@ begin
 			Exec RTPhoenix.MakeSurveysFromTemplate @TemplateJob_id
 
 			INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-				VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 'RTPhoenix.MakeSurveysFromTemplate' + convert(varchar, @TemplateJob_id), @user, GetDate())
+				VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 'RTPhoenix.MakeSurveysFromTemplate ' + convert(varchar, @TemplateJob_id), @user, GetDate())
 		end
 		else 
 		if @TemplateJobType_ID = 3 
@@ -71,7 +71,7 @@ begin
 			Exec RTPhoenix.MakeSampleUnitsFromTemplate @TemplateJob_id
 
 			INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-				VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 'RTPhoenix.MakeSampleUnitsFromTemplate' + convert(varchar, @TemplateJob_id), @user, GetDate())
+				VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 'RTPhoenix.MakeSampleUnitsFromTemplate ' + convert(varchar, @TemplateJob_id), @user, GetDate())
 		end
 		else
 		if @TemplateJobType_ID = 4 
@@ -79,11 +79,11 @@ begin
 			Exec RTPhoenix.ProcessStudyOwnedTables @TemplateJob_id
 
 			INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-				VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 'RTPhoenix.ProcessStudyOwnedTables' + convert(varchar, @TemplateJob_id), @user, GetDate())
+				VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 'RTPhoenix.ProcessStudyOwnedTables ' + convert(varchar, @TemplateJob_id), @user, GetDate())
 		end
 		Else
 			INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-				VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryError, 'Unknown Template Job Type', @user, GetDate())
+				VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryError, 'Unknown Template Job Type ', @user, GetDate())
 	end
 	
 end

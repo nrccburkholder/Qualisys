@@ -123,7 +123,7 @@ begin
 	if @TemplateSampleUnit_ID <> 0 -- if >0, then a survey ID, or -1 means all surveys
 		INSERT INTO [RTPhoenix].[TemplateJob]
 				   ([TemplateJobType_ID]
-				   ,[MasterTemplateJobType_ID]
+				   ,[MasterTemplateJob_ID]
 				   ,[Template_ID]
 				   ,[TemplateSurvey_ID]
 				   ,[TemplateSampleUnit_ID]
@@ -145,7 +145,7 @@ begin
 				   ,[CompletedNotes]
 				   ,[CompletedAt])
 		SELECT 3--[TemplateJobType_ID]
-			  ,@TemplateJob_ID--[MasterTemplateJobType_ID]
+			  ,@TemplateJob_ID--[MasterTemplateJob_ID]
 			  ,[Template_ID]
 			  ,[TemplateSurvey_ID]
 			  ,[TemplateSampleUnit_ID]
