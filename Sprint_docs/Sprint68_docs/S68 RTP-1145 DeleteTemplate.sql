@@ -34,7 +34,7 @@ begin try
 	  from RTPhoenix.TemplateLogEntryType where TemplateLogEntryTypeName = 'ERROR'
 
 declare @user varchar(40) = SYSTEM_USER
-declare @study_id int = 5821
+declare @study_id int = 5852
 declare @client_id int
 select @client_id = client_id from RTPhoenix.studyTemplate where study_id = @study_id
 
@@ -42,7 +42,7 @@ declare @Template_ID int
 select @Template_id = Template_id from RTPhoenix.Template where study_id = @study_id
 
 INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-     VALUES (@TemplateLogEntryInfo, @Template_ID, 'Begin Template Delete for study_id '+convert(varchar,@study_id), @user, GetDate())
+     VALUES (@Template_ID, @TemplateLogEntryInfo, 'Begin Template Delete for study_id '+convert(varchar,@study_id), @user, GetDate())
 
 delete RTPhoenix.Study_EmployeeTemplate
   where Study_id = @study_id

@@ -29,7 +29,7 @@ GO
 	  from RTPhoenix.TemplateLogEntryType where TemplateLogEntryTypeName = 'ERROR'
 
 declare @user varchar(40) = SYSTEM_USER
-declare @TargetStudy_id int = 5849
+declare @TargetStudy_id int = 5853
 declare @Study varchar(10) = 'S' + convert(varchar, @TargetStudy_id)
 declare @Template_ID int = -1, @TemplateJob_ID int = -1
 select @Template_id = Template_id, @TemplateJob_id = TemplateJob_id from RTPhoenix.TemplateJob where TargetStudy_id = @TargetStudy_id
@@ -214,11 +214,11 @@ BEGIN
 --For QP_Load
 --	add [TABLE]_LOAD INDEXes
 
-	EXEC('if exists(SELECT * FROM sysindexes WHERE name=''IDX_'+@study+@Table+'DataFile'''+
-		' DROP INDEX '+@study+'.'+@Table+'.IDX_'+@study+@Table+'DataFile')
+	EXEC('if exists(SELECT * FROM sysindexes WHERE name=''IDX_'+@study+@Table+'DataFile'')'+
+		' DROP INDEX '+@study+'.'+@Table+'_Load.IDX_'+@study+@Table+'DataFile')
 		At [QLoader]
-	EXEC('CREATE NONCLUSTERED INDEX [IDX_'+@study+@Table+'DataFile] ON '+@study+'.'+@Table+
-		' (	[DataFile_id] ASC,	[DF_id] ASC )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 90) ON [PRIMARY]')
+	EXEC('CREATE NONCLUSTERED INDEX [IDX_'+@study+@Table+'DataFile] ON '+@study+'.'+@Table+'_Load'+
+		' (	[DataFile_id] ASC,	[DF_id] ASC ) WITH FILLFACTOR = 90 ON [PRIMARY]')
 		At [QLoader]
 
 --For QP_Prod
@@ -228,23 +228,23 @@ BEGIN
 	if @Table = 'ENCOUNTER' 
 	begin
 
-		EXEC('if exists(select * from sys.indexes where name = ''ENCOUNTERpop_idI'' and object_id = OBJECT_ID('+@study+'.Encounter))'+
-			' DROP INDEX ENCOUNTERpop_idI from '+@study+'.ENCOUNTER')
+		EXEC('if exists(select * from sys.indexes where name = ''ENCOUNTERpop_idI'' and object_id = OBJECT_ID('''+@study+'.Encounter''))'+
+			' DROP INDEX ENCOUNTERpop_idI ON '+@study+'.ENCOUNTER')
 		EXEC('CREATE NONCLUSTERED INDEX [ENCOUNTERpop_idI] ON ['+@study+'].[ENCOUNTER]'+
 		'(	[pop_id] ASC)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]')
 
-		EXEC('if exists(select * from sys.indexes where name = ''ENCOUNTERpop_idI'' and object_id = OBJECT_ID('+@study+'.Encounter_load))'+
-			' DROP INDEX ENCOUNTERpop_idI from '+@study+'.ENCOUNTER')
+		EXEC('if exists(select * from sys.indexes where name = ''ENCOUNTERpop_idI'' and object_id = OBJECT_ID('''+@study+'.Encounter_load''))'+
+			' DROP INDEX ENCOUNTERpop_idI ON '+@study+'.ENCOUNTER_load')
 		EXEC('CREATE NONCLUSTERED INDEX [ENCOUNTERpop_idI] ON ['+@study+'].[ENCOUNTER_load]'+
 		'(	[pop_id] ASC)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]')
 
-		EXEC('if exists(select * from sys.indexes where name = '''+@study+'CDXENCOUNTER'' and object_id = OBJECT_ID('+@study+'.Encounter))'+
-			' DROP INDEX '+@study+'CDXENCOUNTER from '+@study+'.ENCOUNTER')
+		EXEC('if exists(select * from sys.indexes where name = '''+@study+'CDXENCOUNTER'' and object_id = OBJECT_ID('''+@study+'.Encounter''))'+
+			' DROP INDEX '+@study+'CDXENCOUNTER ON '+@study+'.ENCOUNTER')
 		EXEC('CREATE NONCLUSTERED INDEX ['+@study+'CDXENCOUNTER] ON ['+@study+'].[ENCOUNTER]'+
 		'(	[Enc_Mtch] ASC)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]')
 
-		EXEC('if exists(select * from sys.indexes where name = '''+@study+'CDXENCOUNTER'' and object_id = OBJECT_ID('+@study+'.Encounter_load))'+
-			' DROP INDEX '+@study+'CDXENCOUNTER from '+@study+'.ENCOUNTER_Load')
+		EXEC('if exists(select * from sys.indexes where name = '''+@study+'_LOADCDXENCOUNTER'' and object_id = OBJECT_ID('''+@study+'.Encounter_load''))'+
+			' DROP INDEX '+@study+'_LOADCDXENCOUNTER ON '+@study+'.ENCOUNTER_Load')
 		EXEC('CREATE NONCLUSTERED INDEX ['+@study+'_LOADCDXENCOUNTER] ON ['+@study+'].[ENCOUNTER_load]'+
 		'(	[Enc_Mtch] ASC)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]')
 
@@ -253,13 +253,13 @@ BEGIN
 	if @Table = 'POPULATION'
 	begin
 
-		EXEC('if exists(select * from sys.indexes where name = '''+@study+'CDXPOPULATION'' and object_id = OBJECT_ID('+@study+'.Population))'+
-			' DROP INDEX '+@study+'CDXPOPULATION from '+@study+'.POPULATION')
+		EXEC('if exists(select * from sys.indexes where name = '''+@study+'CDXPOPULATION'' and object_id = OBJECT_ID('''+@study+'.Population''))'+
+			' DROP INDEX '+@study+'CDXPOPULATION ON '+@study+'.POPULATION')
 		EXEC('CREATE NONCLUSTERED INDEX ['+@study+'CDXPOPULATION] ON ['+@study+'].[POPULATION]'+
 		'(	[Pop_Mtch] ASC)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]')
 
-		EXEC('if exists(select * from sys.indexes where name = '''+@study+'CDXPOPULATION'' and object_id = OBJECT_ID('+@study+'.Population_Load))'+
-			' DROP INDEX '+@study+'CDXPOPULATION from '+@study+'.POPULATION_Load')
+		EXEC('if exists(select * from sys.indexes where name = '''+@study+'_LOADCDXPOPULATION'' and object_id = OBJECT_ID('''+@study+'.Population_Load''))'+
+			' DROP INDEX '+@study+'_LOADCDXPOPULATION ON '+@study+'.POPULATION_Load')
 		EXEC('CREATE NONCLUSTERED INDEX ['+@study+'_LOADCDXPOPULATION] ON ['+@study+'].[POPULATION_load]'+
 		'(	[Pop_Mtch] ASC)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]')
 

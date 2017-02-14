@@ -32,7 +32,7 @@ begin try
 	  from RTPhoenix.TemplateLogEntryType where TemplateLogEntryTypeName = 'ERROR'
 
 declare @user varchar(40) = SYSTEM_USER
-declare @study_id int = 5821
+declare @study_id int = 5852
 declare @client_id int
 select @client_id = client_id from study where study_id = @study_id
 
@@ -70,6 +70,7 @@ begin
 	RETURN
 end
 
+/*
 if exists (select strCriteriaStmt_nm, convert(nvarchar, strCriteriaString), count(*) 
 			from CRITERIASTMT cs 
 			where study_id = @study_id 
@@ -83,6 +84,7 @@ begin
 
 	RETURN
 end
+*/
 
 if not exists(select 1 from [RTPhoenix].[CLIENTTemplate] where client_id = @client_id)
 INSERT INTO [RTPhoenix].[CLIENTTemplate]

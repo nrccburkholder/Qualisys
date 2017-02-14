@@ -129,6 +129,11 @@ begin
 	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 		 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryError, 'Client ID missing for TemplateJob_ID: '+convert(varchar,@TemplateJob_id), @user, GetDate())
 		
+	UPDATE [RTPhoenix].[TemplateJob]
+	   SET [CompletedNotes] = 'Client ID missing for TemplateJob_ID: '+convert(varchar,@TemplateJob_id)
+		  ,[CompletedAt] = GetDate()
+	 WHERE TemplateJob_ID = @TemplateJob_ID
+
 	commit tran
 
 	RETURN
@@ -138,6 +143,11 @@ IF NOT EXISTS(select 1 from [dbo].[MedicareLookup] where MedicareNumber = @Medic
 begin
 	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 		 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryError, 'MedicareNumber ('+@MedicareNumber+') not found for TemplateJob_ID: '+convert(varchar,@TemplateJob_id), @user, GetDate())
+
+	UPDATE [RTPhoenix].[TemplateJob]
+	   SET [CompletedNotes] = 'Medicare Number not found for TemplateJob_ID: '+convert(varchar,@TemplateJob_id)
+		  ,[CompletedAt] = GetDate()
+	 WHERE TemplateJob_ID = @TemplateJob_ID
 
 	commit tran
 		
@@ -994,11 +1004,24 @@ SELECT cc.[CRITERIAPHRASE_ID]
 					convert(varchar,cs.strCriteriaString) = convert(varchar,db01.strCriteriaString) and
 					cs.study_id = @study_id and db01.study_id = @TargetStudy_id
 WHERE db0.study_id = @TargetStudy_id and mt.study_id = @study_id
+
+	declare @ccRowCount int = @@RowCount
+
+--Eliminate duplicate criteriaclause rows having the higher id
+delete cc1
+--select cc1.* 
+from [dbo].[criteriaclause] cc1 inner join
+[dbo].[criteriaclause] cc2 on cc1.criteriastmt_id = cc2.criteriastmt_id and
+					cc1.criteriaphrase_id = cc2.criteriaphrase_id 
+inner join [dbo].[criteriastmt] cs on cs.criteriastmt_id = cc1.criteriastmt_id
+where cs.study_id = @TargetStudy_id and cc1.CRITERIACLAUSE_ID > cc2.CRITERIACLAUSE_ID
+
+	set @ccRowCount = @ccRowCount - @@RowCount
 				
 	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 		 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
 		 'CriteriaClause template (row count:'+ 
-		 convert(varchar,@@RowCount) + 
+		 convert(varchar,@ccRowCount) + 
 		 ') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 INSERT INTO [dbo].[CRITERIAINLIST] 
