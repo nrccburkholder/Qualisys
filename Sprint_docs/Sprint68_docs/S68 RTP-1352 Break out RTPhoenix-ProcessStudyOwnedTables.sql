@@ -298,17 +298,17 @@ exec ee_MakeBigView @TargetStudy_id, '_LOAD', 1
 	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 			VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, ' Big_View_Load added on QP_Load for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
-if object_id(@study+'.BIG_VIEW_WEB', 'v') is not null
-	exec ('drop view '+@study+'.BIG_VIEW_WEB')
+--if object_id(@study+'.BIG_VIEW_WEB', 'v') is not null
+--	exec ('drop view '+@study+'.BIG_VIEW_WEB')
 
-exec ee_MakeBigView @TargetStudy_id, '_WEB', 1, 1
+exec ee_MakeBigView @TargetStudy_id, '_WEB', 0, 1 --this fails so I set this up not to execute, only to show --CJB 2/15/2017
 
 	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 			VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, ' Big_View_Web added on QP_Load for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 	exec ('Select top 1 '''' as ''BIG_VIEW'',* from '+@study+'.BIG_VIEW')
 	exec ('Select top 1 '''' as ''BIG_VIEW_LOAD'',* from '+@study+'.BIG_VIEW_LOAD')
-	exec ('Select top 1 '''' as ''BIG_VIEW_WEB'',* from '+@study+'.BIG_VIEW_WEB')
+--	exec ('Select top 1 '''' as ''BIG_VIEW_WEB'',* from '+@study+'.BIG_VIEW_WEB') --this fails so I set this up not to execute, only to show --CJB 2/15/2017
 
 	declare @CompletedNotes varchar(255)
 	SET @CompletedNotes = 'Completed Study Owned Tables for Study_id '+convert(varchar,@TargetStudy_ID)+

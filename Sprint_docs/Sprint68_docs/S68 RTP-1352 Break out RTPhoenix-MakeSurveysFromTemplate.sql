@@ -246,6 +246,51 @@ begin
 			convert(nvarchar,Ident_Current('dbo.Survey_Def'))+
 			') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
+	INSERT INTO [dbo].[BUSINESSRULE]
+			   ([SURVEY_ID]
+			   ,[STUDY_ID]
+			   ,[CRITERIASTMT_ID]
+			   ,[BUSRULE_CD])
+	SELECT db0.[SURVEY_ID]
+		  ,@TargetStudy_ID
+		  ,db01.[CRITERIASTMT_ID]
+		  ,[BUSRULE_CD]
+	  FROM [RTPhoenix].[BUSINESSRULETemplate] br inner join
+	  [RTPhoenix].[SURVEY_DEFTemplate] sd on br.Survey_id = sd.SURVEY_ID inner join
+			[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm inner join
+	  [RTPhoenix].[CriteriaStmtTemplate] cst on cst.CRITERIASTMT_ID = br.CRITERIASTMT_ID inner join
+			[dbo].[CriteriaStmt] db01 on cst.STRCRITERIASTMT_NM = db01.STRCRITERIASTMT_NM and
+						convert(nvarchar,cst.strCriteriaString) = convert(nvarchar,db01.strCriteriaString) and
+						db01.study_id = @TargetStudy_id and cst.study_id = @study_id 
+	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+				
+		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
+			 'BusinessRule template (row count:'+ 
+			 convert(varchar,@@RowCount) + 
+			 ') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+
+	INSERT INTO [dbo].[HOUSEHOLDRULE] 
+			   ([TABLE_ID]
+			   ,[FIELD_ID]
+			   ,[SURVEY_ID])
+	SELECT db01.[TABLE_ID]
+		  ,[FIELD_ID]
+		  ,db0.[SURVEY_ID]
+	  FROM [RTPhoenix].[HOUSEHOLDRULETemplate] hhr inner join
+	  [RTPhoenix].[SURVEY_DEFTemplate] sd on hhr.Survey_id = sd.SURVEY_ID inner join
+			[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm inner join
+	  [RTPhoenix].[METATABLETemplate] mt on hhr.TABLE_ID = mt.TABLE_ID inner join
+			[dbo].[METATABLE] db01 on mt.strtable_nm = db01.strtable_nm and
+						db01.study_id = @TargetStudy_id and mt.study_id = @study_id
+	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+				
+		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
+			 'HouseholdRule template (row count:'+ 
+			 convert(varchar,@@RowCount) + 
+			 ') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+
 	INSERT INTO [dbo].[MAILINGMETHODOLOGY]
 			   ([SURVEY_ID]
 			   ,[BITACTIVEMETHODOLOGY]
@@ -498,22 +543,6 @@ begin
 			'SamplePlan template (newest Sample Plan ID: '+
 			convert(nvarchar,Ident_Current('dbo.SamplePlan'))+
 			') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
-
-	INSERT INTO [dbo].[CRITERIASTMT]
-			   ([STUDY_ID]
-			   ,[STRCRITERIASTMT_NM]
-			   ,[strCriteriaString])
-	SELECT @TargetStudy_id
-		  ,[STRCRITERIASTMT_NM]
-		  ,[strCriteriaString]
-	  FROM [RTPhoenix].[CRITERIASTMTTemplate]
-	  where Study_id = @study_id
-
-		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
-				'CriteriaStmt template (row count:'+ 
-				convert(varchar,@@RowCount) + 
-				') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 	INSERT INTO [dbo].[PeriodDef]
 			   ([Survey_id]
