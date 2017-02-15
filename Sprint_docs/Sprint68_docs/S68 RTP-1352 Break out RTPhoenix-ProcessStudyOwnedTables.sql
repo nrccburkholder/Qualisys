@@ -144,7 +144,7 @@ BEGIN
 			FROM dbo.MetaField mf inner join 
 				dbo.MetaStructure ms on mf.FIELD_ID = ms.FIELD_ID inner join
 				dbo.MetaTable mt ON ms.TABLE_ID = mt.TABLE_ID
-			WHERE ms.Field_ID = @FieldId 
+			WHERE ms.Field_ID = @FieldId and ms.Table_ID = @TableId
 
 		Declare @FieldTypeString varchar(20), @FieldLengthString varchar(10), @ConstraintString varchar(200)
 

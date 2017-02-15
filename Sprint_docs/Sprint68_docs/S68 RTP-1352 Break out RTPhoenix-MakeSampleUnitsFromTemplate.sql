@@ -18,7 +18,7 @@ begin
 
 	begin tran
 
---TODO: handle @TemplateSampleUnit_ID = -1 case (all Sample Units)
+--TODO: handle @TemplateSampleUnit_ID <> -1 case (0 Sample Units or 1 specific Sample Units)
 
 		  declare @TemplateJobType_ID int
 		  declare @Template_ID int
@@ -104,7 +104,7 @@ begin
 	  where Template_ID = @Template_ID
 		and [Active] = 1
 
-	--TODO: Add Sample Unit(s) here
+	--Add Sample Unit(s) here
 
 	INSERT INTO [dbo].[SAMPLEUNIT]
 			   ([CRITERIASTMT_ID]

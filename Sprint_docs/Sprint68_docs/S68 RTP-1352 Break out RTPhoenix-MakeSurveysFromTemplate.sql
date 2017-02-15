@@ -18,7 +18,9 @@ begin
 
 	begin tran
 
---TODO: handle @TemplateSurvey_ID = -1 case (all Surveys)
+--TODO: handle @TemplateSurvey_ID <> -1 case (0 Surveys or 1 specific Survey)
+
+--TODO: handle @TargetSurvey_ID <> -1 case (1 specific Survey)
 
 		  declare @TemplateJobType_ID int
 		  declare @Template_ID int
