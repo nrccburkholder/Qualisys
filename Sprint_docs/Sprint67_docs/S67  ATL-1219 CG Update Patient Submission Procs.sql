@@ -439,7 +439,7 @@ if exists (select name as col_nm
    where object_id = object_id('tempdb..#Big_Table')
    and name = 'cg_ProvType')
 begin
- -- cg_ProvType is fine if it’s between 101 and 116 or 998, otherwise it’s missing.
+ -- cg_ProvType is fine if it’s between 100 and 116 or 998, otherwise it’s missing.
  update r
  set ProviderType =  case
         when rtrim(isnull(bt.cg_ProvType,'')) in ('', '0') then 'M  '
@@ -4148,4 +4148,607 @@ update #results set
  Q66e=' '
 where --disposition not in (11, 21, 12, 22, 14, 24) or
 q1 is null
+go
+
+USE [QP_Comments]
+GO
+/****** Object:  StoredProcedure [dbo].[GetCGCAHPSdata2]    Script Date: 2/16/2017 9:32:00 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[GetCGCAHPSdata2]
+ @survey_id INT,
+ @begindate VARCHAR(10),
+ @enddate   VARCHAR(10),
+ @ReturnGrid bit = 0
+AS
+/**
+12/14/2010 dmp
+Modified GetMNCMData_Quello SP to create GetCGCAHPSData SP.
+Changes to MNCM proc:
+**Turned on NOCOUNT so users won't have to delete those lines from the results
+**Change source metafield serviceind_3 to cg_siteid
+**Change source metafield serviceind_4 to cg_groupid
+**Change source metafield drspec to cg_physspec
+**Change source field gender to cg_physsex
+**Change source metafield servicedate to datsampleencounterdate.
+  Some CG-CAHPS surveys sample using DischargeDate instead of ServiceDate.
+**Set disposition to 38 (max attempts) if MNCMDisposition is null. Have to do this because some
+  of these records were sampled before the surveys were set to survey type MNCM, so have nulls.
+**Some older surveys use(d) Q039161 instead of Q040716 for the how-helped question. Need to be able
+  to accomodate either core or both.
+  So, added a check of INFORMATION_SCHEMA.COLUMNS to see which column(s) exist in the view
+  and code to create dynamic SQL variable to pull from the correct field.
+**Changed join to study_results_view from inner to left outer,
+  as we should be including records for everyone who was sampled.
+  Also added code to create temp table and get mailing step info before the select to get
+  the file data. We lose the non-returns if we join sentmailing to study_results,
+  and other joins using big_table caused duplicate records for the two mail steps.
+
+01/12/2012 dmp
+**Changed else for Q4 to get rid of leading zeroes where original value > 10000
+
+01/16/2012 dmp
+**Changed group and site IDs to be right aligned to match group and practice site files
+
+01/22/2011 dmp
+**Added isNumeric and length checks to zip5 to replace bad data with 99999 (value for missing)
+
+02/20/2013 dbg
+modified getcgchapsdata to create getcgcahpsdata2 - which exports questions related to version 2.0 of the CG CAHPS survey
+changed the structure of the proc to (hopefully) make it more readable.
+
+04/26/2013 dbg
+added WCHQClinicID column to the CGCAHPSPracticeSite table and added @useWiscID as a parameter to this procedure.
+if @useWiscID=1, replace CGPracticeSiteID value with the value in WCHQClinicID. Wisconsin has their own clinic IDs they want to use.
+Everybody else just uses CGPracticeSiteID (which are the same values as the associated SampleUnit_ids)
+
+06/05/2013 dbg
+split the population of #results into fields from Big_Table vs. fields from Survey_results
+all surveys get the same fields from Big_Table, but Survey_Results are different depending on the type of survey.
+type of survey is identified by looking for specific cores as the survey's Q1
+the original CGCAHPS Q1 is Q039113
+the Adult 12 month survey Q1 is Q046385
+the Adult 12 month with PCMH Q1 is Q044121
+the Child 12 month with PCMH Q1 is Q046265
+Based on which type of survey is being exported, different sub-procedures are called to append the appropriate fields onto #results
+
+01/20/2014 drm
+INC0029376 Added values 101 through 113.
+
+03/03/2014 drm
+INC0031083 Removed check for number of steps.
+
+03/04/2015 DRM
+Added ProviderType
+Took values 101 through 113 back out for cg_physspec
+
+03/05/2014 DRM
+Added 6 mo surveys
+
+03/26/2015 DRM
+Pull practicesiteid and groupid from CGCAHPSPracticeSite instead of big table
+
+**/
+---- testing code
+--declare  @survey_id int,
+-- @begindate varchar(10),
+-- @enddate varchar(10),
+-- @useWiscID bit
+
+--set @survey_id = 13499
+--set @begindate =  '1/1/12'
+--set @enddate ='6/1/13'
+--set @useWiscID = 0
+-- end testing code
+DECLARE @study VARCHAR(10)
+DECLARE @survey VARCHAR(10)
+DECLARE @SQL VARCHAR(max)
+
+SELECT @survey = Cast(@survey_id AS VARCHAR)
+
+SELECT @study = Cast(study_id AS VARCHAR)
+FROM   qualisys.qp_prod.dbo.survey_def       WHERE  survey_id = @survey_id
+
+IF NOT EXISTS(SELECT *
+              FROM   information_schema.tables
+              WHERE  table_name = 'big_table_view'
+                     AND table_schema = 's' + @study)
+  BEGIN
+      PRINT 'Table s'+@study+'.big_table_view does not exist.  Exiting...'
+      RETURN
+  END
+
+IF Isdate(@begindate) = 0
+  BEGIN
+      PRINT 'Please enter a valid begin date.  Exiting...'
+      RETURN
+  END
+
+IF Isdate(@enddate) = 0
+  BEGIN
+      PRINT 'Please enter a valid end date.  Exiting...'
+      RETURN
+  END
+
+
+/*
+drop table #tmp_mncm_mailsteps 
+drop table #mncm_units 
+declare @survey_id int=16000, @study varchar(4), @begindate char(10)='1/1/2015', @enddate char(10)='12/31/2015', @survey char(5)
+select @study=study_id, @survey=survey_id
+from clientstudysurvey where survey_id=@survey_id
+--*/
+
+PRINT 'starting meth step check'
+print 'getting mail step for returns'
+--Get the mail step sequence (1 or 2) for the returns. Have to do it here so we only
+--have mailing step data for the returns to avoid duplicate records
+create table #tmp_mncm_mailsteps (survey_id int, samplepop_id int, mailstep int, intsequence int, bitMNCM bit, sampleunit_id int, datReturned datetime, ReceiptType_id int)
+create table #mncm_units (sampleunit_id int, bitMNCM bit, survey_id int, surveytype_id int, subtype_id int)
+
+INSERT INTO #tmp_mncm_mailsteps
+select ms.survey_id, sp.samplepop_id, ms.mailingstep_id, ms.intsequence, su.bitMNCM, su.sampleunit_id, qf.datReturned, qf.ReceiptType_id
+from qualisys.qp_prod.dbo.sampleunit su
+INNER JOIN qualisys.qp_prod.dbo.selectedsample sel ON su.sampleunit_id = sel.sampleunit_id
+inner join qualisys.qp_prod.dbo.samplepop sp on sel.sampleset_id=sp.sampleset_id and sel.pop_id=sp.pop_id
+INNER JOIN qualisys.qp_prod.dbo.scheduledmailing scm ON sp.samplepop_id=scm.samplepop_id
+INNER JOIN qualisys.qp_prod.dbo.questionform qf ON scm.sentmail_id=qf.sentmail_id
+inner join qualisys.qp_prod.dbo.mailingstep ms on scm.mailingstep_id=ms.mailingstep_id
+where sel.sampleEncounterDate BETWEEN @begindate and @enddate
+and ms.survey_id = @survey_id -- 16384
+and su.CAHPSType_id=4
+
+insert into #mncm_units (sampleunit_id, bitMNCM, survey_id, surveytype_id, subtype_id)
+select distinct  ms.sampleunit_id, ms.bitMNCM, ms.survey_id, 4, st.subtype_id
+from #tmp_mncm_mailsteps ms
+inner join qualisys.qp_prod.dbo.surveysubtype sst on ms.survey_id=sst.survey_id
+inner join qualisys.qp_prod.dbo.subtype st on sst.subtype_id=st.subtype_id
+where st.subtypecategory_id=2 -- 2=Questionnaire Type
+
+-- now that we've used #tmp_mncm_mailsteps to populate #mncm_units, we can remove any mailsteps that weren't returned.
+delete from #tmp_mncm_mailsteps where datReturned is null
+
+-- DRM 03/03/2014   Remove check for number of steps as per INC0031083
+-- Make sure the methodology contains only two steps
+--IF EXISTS (SELECT * FROM #tmp_mncm_mailsteps where bitMNCM=1 and intsequence not in (1,2))
+--  BEGIN
+--      PRINT 'Problem with intsequence.  Exiting...'
+--   select * from #tmp_mncm_mailsteps where bitMNCM=1
+--      RETURN
+--  END
+
+if not exists (SELECT * FROM #mncm_units where bitMNCM=1)
+  BEGIN
+      PRINT 'There are no CGCAHPS assigned units.  Exiting...'
+      RETURN
+  END
+
+/*
+drop table #big_table 
+drop table #Study_results  
+declare @sql varchar(max), @begindate char(10)='01/01/2015', @enddate char(10)='12/31/2015', @study char(4), @survey char(5), @survey_id int=16000
+select @study=study_id, @survey=survey_id
+from clientstudysurvey where survey_id=@survey_id
+--*/
+declare @fieldlist varchar(max)='bt.TableName,'
+CREATE TABLE #Big_Table (TableName varchar(16))
+set @SQL = 'alter table #big_table add '
+
+select @fieldlist = @fieldlist + 'bt.' + sc.name +','
+, @sql = @sql + sc.name + ' ' + st.name + case when st.name in ('char','varchar','nvarchar') then '('+convert(varchar,sc.max_length)+')' else '' end + '
+,'
+from sys.schemas ss
+inner join sys.views sv on ss.schema_id=sv.schema_id
+inner join sys.columns sc on sv.object_id=sc.object_id
+inner join sys.types st on sc.system_type_id=st.system_type_id
+where ss.name = 's' + @study
+and sv.name = 'big_table_view'
+and sc.name <> 'tablename'
+
+if charindex('bt.drid,',@fieldlist)=0
+begin
+	set @SQL = @SQL+'drid varchar(42),'
+	set @fieldlist = @fieldlist + 'NULL as drid,'
+end
+if charindex('bt.drnpi,',@fieldlist)=0
+begin
+	set @SQL = @sql+'drnpi varchar(10),'
+	set @fieldlist = @fieldlist + 'NULL as drnpi,'
+end
+
+set @sql = left(@sql,len(@sql)-1) 
+set @fieldlist = left(@fieldlist,len(@fieldlist)-1)
+exec (@SQL)
+
+set @SQL = 'INSERT INTO #Big_Table ('+replace(replace(@fieldlist,'bt.',''),'NULL as ','')+')
+SELECT '+@fieldlist+ '
+FROM s'+@study+'.big_table_view bt
+inner join #mncm_units mu on bt.sampleunit_id=mu.sampleunit_id
+where bt.datSampleEncounterDate between '''+@begindate+''' and '''+@enddate+''''
+
+exec (@SQL)
+
+set @fieldlist='sr.TableName,'
+CREATE TABLE #Study_Results (TableName varchar(20))
+set @SQL = 'alter table #Study_Results add '
+
+select @fieldlist = @fieldlist + 'sr.' + sc.name +','
+, @sql = @sql + sc.name + ' ' + st.name + case when st.name in ('char','varchar','nvarchar') then '('+convert(varchar,sc.max_length)+')' else '' end + '
+,'
+from sys.schemas ss
+inner join sys.views sv on ss.schema_id=sv.schema_id
+inner join sys.columns sc on sv.object_id=sc.object_id
+inner join sys.types st on sc.system_type_id=st.system_type_id
+where ss.name = 's' + @study
+and sv.name = 'study_results_view'
+and sc.name <> 'tablename'
+
+if charindex('sr.Q039161,',@fieldlist)=0
+begin
+	set @SQL = @SQL+'Q039161 int,'
+	set @fieldlist = @fieldlist + 'NULL as Q039161,'
+end
+if charindex('sr.Q040716,',@fieldlist)=0
+begin
+	set @SQL = @sql+'Q040716 int,'
+	set @fieldlist = @fieldlist + 'NULL as Q040716,'
+end
+
+set @sql = left(@sql,len(@sql)-1) 
+set @fieldlist = left(@fieldlist,len(@fieldlist)-1)
+exec (@SQL)
+
+set @SQL = 'INSERT INTO #Study_Results ('+replace(replace(@fieldlist,'sr.',''),'NULL as ','')+')
+SELECT '+@fieldlist+ '
+FROM s'+@study+'.Study_Results_view sr
+inner join #Big_Table bt on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id'
+exec (@SQL)
+
+
+create table #results (
+ samplepop_id int,
+ sampleunit_id int,
+ SurveyType char(2), -- 33, 15, 16 or 18
+ RecordID char(10), -- bt.samplepop_id
+ PracticeSiteID char(10), -- cg_siteID
+ GroupID char(10), -- cg_group_id
+ DocID char(10), -- isnull(drnpi, isnull(drid, left(isnull(drlastname, ''),10)))
+ DrFirst char(20), -- drfirstname
+ DrLast char(20), -- drlastname
+--DRM 03/04/2015 Added ProviderType
+ ProviderType char(3), -- providertype if it exists, else cg_physspec if > 100
+ DrSpecialty char(3), -- cg_physspec
+ DOV char(8), -- datsampleencounterdate
+ Disposition char(1), -- mncmdisposition
+ CompletionMode char(1), -- ReceiptType_id
+ CompletionDate char(8), -- datreturned
+ CompletionRound char(2), -- tmm.intsequence
+ SurveyLanguage char(1), -- bt.langid
+ BirthYear char(4), -- year(dob)
+ Gender char(1), -- sex
+ Zip char(5) -- zip5
+ )
+ -- declare @sql varchar(max)
+set @SQL = ''
+select @sql = @SQL + field_nm + ', '
+from (select 'samplepop_id' as field_nm
+ union select 'sampleunit_id'
+ --union select 'cg_siteid'
+ --union select 'cg_groupid'
+ union select 'drnpi'
+ union select 'drid'
+union select 'drlastname'
+ union select 'drfirstname'
+ union select 'cg_physspec'
+ union select 'datsampleencounterdate'
+ union select 'mncmdisposition'
+ union select 'langid'
+ union select 'dob'
+ union select 'sex'
+ union select 'zip5') list
+left outer join ( select name as col_nm
+     from tempdb.sys.columns
+     where object_id = object_id('tempdb..#Big_Table')
+    ) sv on field_nm=col_nm
+where col_nm is null
+
+if len(@SQL)>0
+begin
+ print 'ERROR: the study''s metadata doesn''t include these required fields: ' + @SQL
+ drop table #Big_Table
+ drop table #Study_Results
+ RETURN
+end
+
+insert into #results (
+ SamplePop_id, SampleUnit_id, SurveyType, RecordID, PracticeSiteID, GroupID, DocID, DrFirst, DrLast, DrSpecialty,
+ DOV, Disposition, CompletionMode, CompletionDate, CompletionRound, SurveyLanguage, BirthYear, Gender, Zip
+ )
+SELECT DISTINCT 
+	bt.samplepop_id, 
+    bt.sampleunit_id, 
+    0 AS SurveyType, 
+    RIGHT(Space(3) + Cast(bt.samplepop_id AS VARCHAR), 10) AS RecordID, 
+    --right(space(10) + isnull(cg_siteid,''), 10) as PracticeSiteID, 
+    --right(space(10) + isnull(cg_groupid,''), 10) as GroupID, 
+    '' AS PracticeSiteID, 
+    '' AS GroupID,
+    RIGHT(Space(10) + Isnull(CONVERT(VARCHAR, drnpi), Isnull(CONVERT(VARCHAR, drid), LEFT(Isnull(drlastname, ''), 10))), 10) AS DocID, 
+    RIGHT(Space(20) + Isnull(drfirstname, ''), 20) AS DrFirst, 
+    RIGHT(Space(20) + Isnull(drlastname, ''), 20) AS DrLast, 
+    CASE WHEN Rtrim(Isnull(cg_physspec, '')) IN ('','0') THEN 'M  ' 
+         WHEN (Isnumeric(cg_physspec) = 1 AND RIGHT('000' + cg_physspec, 3) BETWEEN '001' AND '037') THEN RIGHT('000' + cg_physspec, 3) 
+		 ELSE 'M  ' END AS DrSpecialty, 
+    CASE 
+        WHEN datsampleencounterdate IS NULL THEN 'M       ' 
+        ELSE Replace(CONVERT(VARCHAR(10), datsampleencounterdate, 101), '/', '') 
+    END AS DOV, 
+    RIGHT('  ' + Rtrim(Isnull(mncmdisposition, '9')), 1) AS Disposition, 
+	CASE WHEN mncmdisposition IN ('1','2','3','4') then case tmm.ReceiptType_id 
+	                                                          when 17 then '1' -- mail
+															  when 12 then '2' -- phone
+															  when 13 then '5' -- web 
+													      end 
+	     ElSE '7' -- not applicable 
+	end as CompletionMode, 
+    CASE 
+        WHEN sr.datreturned IS NULL THEN 'M       '
+		when mncmdisposition in ('1','2','3','4') then Replace(CONVERT(VARCHAR(10), sr.datreturned, 101), '/', '') 
+		else 'M       '
+    END AS CompletionDate, 
+    CASE WHEN mncmdisposition in ('1','2') THEN RIGHT('0' + Cast(tmm.intsequence AS VARCHAR(1)), 2) ELSE 'NC' END AS CompletionRound, 
+    CASE 
+        WHEN (mncmdisposition IN ('1','2','3','4') AND bt.langid IN (2,8,18,19)) THEN '2' 
+        WHEN (mncmdisposition IN ('1','2','3','4') AND bt.langid = 1) THEN '1' 
+        ELSE '3' 
+    END AS SurveyLanguage, 
+	isnull(convert(varchar,year(dob)),'M') as BirthYear, 
+    CASE sex WHEN 'M' THEN '1' WHEN 'F' THEN '2' ELSE 'M' END AS Gender, 
+    CASE WHEN Isnumeric(zip5) <> 1 OR Len(zip5) < 5 THEN 'M' ELSE zip5 END AS Zip 
+from #Big_Table bt
+ left outer join #Study_Results sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id
+ left outer join #tmp_mncm_mailsteps tmm on tmm.samplepop_id = sr.samplepop_id and tmm.sampleunit_id = sr.sampleunit_id
+
+--DRM 03/26/2015 Pull practicesiteid and groupid from CGCAHPSPracticeSite instead of big table
+update r
+set PracticeSiteID = right(space(10) + coalesce(ps.AssignedID,convert(varchar,ps.PracticeSite_ID),''), 10),
+ GroupID = right(space(10) + coalesce(sg.AssignedID,convert(varchar,ps.SiteGroup_ID),''), 10)
+from #results r 
+inner join qualisys.qp_prod.dbo.sampleunit su on r.sampleunit_id = su.sampleunit_id
+inner join qualisys.qp_prod.dbo.practicesite ps on su.SUFacility_id= ps.PracticeSite_ID 
+inner join Qualisys.QP_Prod.dbo.SiteGroup sg on sg.SiteGroup_ID = ps.SiteGroup_ID
+
+
+--DRM 03/04/2015 Added ProviderType
+if exists (select name as col_nm
+   from tempdb.sys.columns
+   where object_id = object_id('tempdb..#Big_Table')
+   and name = 'cg_ProvType')
+begin
+ -- cg_ProvType is fine if it’s between 100 and 116 or 998, otherwise it’s missing.
+ update r
+ set ProviderType =  case
+        when rtrim(isnull(bt.cg_ProvType,'')) in ('', '0') then 'M  '
+        when (isnumeric(bt.cg_ProvType) = 1 and right('000' + bt.cg_ProvType, 3) between '100' and '116') then right('000' + bt.cg_ProvType, 3)
+		when (isnumeric(bt.cg_ProvType) = 1 and bt.cg_provType = '998') then '998'
+        else 'M  '
+      end
+ from #results r 
+ inner join #big_table bt 
+	on bt.samplepop_id = r.samplepop_id and bt.sampleunit_id = r.sampleunit_id
+end
+else
+	update #results set ProviderType = 'M  '
+
+
+-- #tmp_mncm_mailsteps only has records that we're exporting, so this where clause is redundant:
+--   where tmm.bitMNCM = 1
+--   and bt.datsampleencounterdate between @begindate and @enddate
+--   and bt.survey_id = @survey
+
+
+-- call the appropriate sub procedure based on the type of survey we're dealing with.
+-- each survey has a unique core for question 1.
+-- the original procedure assumed Q039113 was Q1
+-- Adult 12 month uses Q046385 as Q1
+-- Adult 12 month with PCMH uses Q044121 as Q1
+-- Child 12 month with PCMH uses Q046265 as Q1
+
+-- find out which of these 4 cores have fields in #Study_Results
+create table #surveyQ1 (ID int identity(1,1), field_nm varchar(15), bitFlag bit)
+insert into #surveyQ1 (field_nm, bitFlag)
+select name, 0
+from tempdb.sys.columns sc
+where object_id=object_id('tempdb..#Study_Results')
+and name in ('Q044121','Q044127','Q050344','Q050541','Q050226','Q039113','Q046265','Q050483','Q050500','Q050629','Q046278')
+
+-- remove any qstncore from #SurveyQ1 if no one was asked the question
+-- declare @sql varchar(max)
+declare @i int
+select top 1 @i=ID, @SQL=field_nm from #SurveyQ1 where bitFlag=0
+while @@rowcount>0
+begin
+	set @SQL = '
+	if exists (select * from #Study_Results where '+@SQL+' is not null)
+		update #SurveyQ1 set bitFlag=1 where ID='+convert(varchar,@i)+'
+	else
+		delete from #surveyQ1 where ID='+convert(varchar,@i)
+	print @SQL
+	exec (@SQL)
+	select top 1 @i=ID, @SQL=field_nm from #SurveyQ1 where bitFlag=0
+end
+
+
+--DRM 03/05/2014 Added 6 mo surveys
+-- q050344 6 Mo Adult
+-- q050541 6 Mo Adult PCMH
+-- q050483 6 Mo Child
+-- q050629 6 Mo Child PCMH
+
+
+-- checking for the mere existence of the field isn't sufficient, as a single study could contain more than one of these surveys
+-- if the core we're looking for exists in the view, check to see if any of the records for the survey we're exporting has responses
+-- if so, run the sub procedure associated with the survey type
+if exists (select * from #surveyQ1 where field_nm='q039113')
+ begin
+  print 'AdultVisit2.0'
+  exec dbo.GetCGCAHPSdata2_sub_AdultVisitA
+  exec dbo.GetCGCAHPSdata2_sub_AdultVisitB @survey_id, @begindate, @enddate
+  goto subdone
+ end
+
+if exists (select * from #surveyQ1 where field_nm='q044127')
+ begin
+  print 'Adult12Month2.0PCMH'
+  exec dbo.GetCGCAHPSdata2_sub_Adult12MonthPCMHa
+  exec dbo.GetCGCAHPSdata2_sub_Adult12MonthPCMHb @survey_id, @begindate, @enddate
+  goto subdone
+ end
+
+if exists (select * from #surveyQ1 where field_nm='q044121')
+ begin
+  print 'Adult12Month2.0'
+  exec dbo.GetCGCAHPSdata2_sub_Adult12MonthA
+  exec dbo.GetCGCAHPSdata2_sub_Adult12MonthB @survey_id, @begindate, @enddate
+  goto subdone
+ end
+
+
+if exists (select * from #surveyQ1 where field_nm='q046278')
+ begin
+  print 'Child12Month2.0PCMH'
+  exec dbo.GetCGCAHPSdata2_sub_Child12MonthPCMHa
+  exec dbo.GetCGCAHPSdata2_sub_Child12MonthPCMHb @survey_id, @begindate, @enddate
+  goto subdone
+ end
+
+ -- TSB 03/08/2016 - added Child 12 Month 2.0
+if exists (select * from #surveyQ1 where field_nm='q046265')
+begin
+  print 'Child12Month2.0'
+  exec dbo.GetCGCAHPSdata2_sub_Child12MonthA
+  exec dbo.GetCGCAHPSdata2_sub_Child12MonthB @survey_id, @begindate, @enddate
+  goto subdone
+end
+
+
+-- DBG 03/07/2016 - added Adult 6 Month 3.0
+if exists (select * from #surveyQ1 where field_nm='q050226')
+begin
+	print 'Adult6Month3.0'
+	exec dbo.GetCGCAHPSdata2_sub_Adult6Month30a
+	exec dbo.GetCGCAHPSdata2_sub_Adult6Month30b @survey_id, @begindate, @enddate
+	goto subdone
+end
+
+--DRM 03/05/2014 Added 6 mo surveys
+-- q050344 6 Mo Adult
+if exists (select * from #surveyQ1 where field_nm='q050541')
+begin
+	print 'Adult6Month2.0PCMH'
+	exec dbo.GetCGCAHPSdata2_sub_Adult6MonthPCMHa
+	exec dbo.GetCGCAHPSdata2_sub_Adult6MonthPCMHb @survey_id, @begindate, @enddate
+	goto subdone
+end
+
+if exists (select * from #surveyQ1 where field_nm='q050344')
+begin
+	print 'Adult6Month2.0'
+	exec dbo.GetCGCAHPSdata2_sub_Adult6MonthA
+	exec dbo.GetCGCAHPSdata2_sub_Adult6MonthB @survey_id, @begindate, @enddate
+	goto subdone
+end
+
+
+--DRM 03/05/2014 Added 6 mo surveys
+-- q050483 6 Mo Child
+-- q050629 6 Mo Child PCMH
+if exists (select * from #surveyQ1 where field_nm='q050629')
+begin
+	print 'Child6Month2.0PCMH'
+	exec dbo.GetCGCAHPSdata2_sub_Child6MonthPCMHa
+	exec dbo.GetCGCAHPSdata2_sub_Child6MonthPCMHb @survey_id, @begindate, @enddate
+	goto subdone
+end
+
+if exists (select * from #surveyQ1 where field_nm='q050500')
+begin
+	print 'Child6Month2.0'
+	exec dbo.GetCGCAHPSdata2_sub_Child6Montha
+	exec dbo.GetCGCAHPSdata2_sub_Child6Monthb @survey_id, @begindate, @enddate
+	goto subdone
+end
+
+-- DBG 03/07/2016 - added Child 6 Month 3.0
+if exists (select * from #surveyQ1 where field_nm='q050483')
+begin
+	print 'Child6Month3.0'
+	exec dbo.GetCGCAHPSdata2_sub_Child6Month30a
+	exec dbo.GetCGCAHPSdata2_sub_Child6Month30b @survey_id, @begindate, @enddate
+	goto subdone
+end
+
+
+
+
+PRINT 'ERROR! none of the sub-procedures were executed, indicating the specific survey type (Adult/Child, with/without PCMH) couldn''t be determined, or there are no returns for the specified time period.'
+drop table #Big_Table
+drop table #Study_Results
+RETURN
+
+subdone:
+
+set @FieldList = ''
+select @FieldList=@FieldList + name + '+'
+from tempdb.sys.columns
+where object_id = object_id('tempdb..#results')
+and name not in ('sampleunit_id','samplepop_id')
+order by column_id;
+
+set @FieldList=left(@FieldList,len(@FieldList)-1)
+
+set @SQL = 'if exists (	select *
+			from (select *,' + @fieldlist + ' as SubmissionRow
+			from #results) x
+			where SubmissionRow is null)
+begin
+	select ' + replace(@fieldlist,'+',',') + '
+	from (select *,' + @fieldlist + ' as SubmissionRow
+	from #results) x
+	where SubmissionRow is null
+
+	 RAISERROR (''Some submission fields have NULL values.'', -- Message text.
+               16, -- Severity.
+               1 -- State.
+               ); 
+end'
+exec (@SQL)
+
+if @@error=0
+begin
+	if @ReturnGrid=1
+		select * from #results
+	else
+	begin
+		set @sql='select ' + @fieldlist + ' from #results'
+		exec (@SQL)
+	end
+end
+/*
+select * from #results
+select * from #tmp_mncm_mailsteps
+select * from #tmp_mncm_mailsteps where samplepop_id = 107851568
+select bt.samplepop_id, tmm.*
+from #Big_Table bt
+ left outer join #Study_Results sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id
+ left outer join #tmp_mncm_mailsteps tmm on tmm.samplepop_id = sr.samplepop_id and tmm.sampleunit_id = sr.sampleunit_id
+*/
+drop table #surveyQ1
+drop table #results
+drop table #tmp_mncm_mailsteps
+drop table #Big_Table
+drop table #Study_Results
+drop table #mncm_units
 go
