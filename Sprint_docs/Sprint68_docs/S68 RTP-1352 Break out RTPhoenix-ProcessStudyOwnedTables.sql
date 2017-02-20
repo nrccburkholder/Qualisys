@@ -39,7 +39,7 @@ from RTPhoenix.TemplateJob
 where @TemplateJob_id = TemplateJob_id 
 
 INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID],[TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-     VALUES (@TemplateJob_ID, @Template_ID, @TemplateLogEntryInfo,'Begin Study Owned Schema Table Process for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+     VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo,'Begin Study Owned Schema Table Process for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 declare @Study varchar(10) = 'S' + convert(varchar, @TargetStudy_id)
 

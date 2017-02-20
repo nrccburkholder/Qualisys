@@ -82,8 +82,24 @@ begin
 				VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 'RTPhoenix.ProcessStudyOwnedTables ' + convert(varchar, @TemplateJob_id), @user, GetDate())
 		end
 		Else
+		begin
+			update RTPhoenix.TemplateJob set
+				CompletedNotes = 'Unknown Template Job Type: '+ convert(varchar, @TemplateJobType_ID),
+				CompletedAt = GetDate()
+			where TemplateJob_ID = @TemplateJob_ID
+
 			INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 				VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryError, 'Unknown Template Job Type ', @user, GetDate())
+		end
+
+		if exists(select * from RTPhoenix.TemplateJob 
+				where TemplateJob_ID = @TemplateJob_ID and
+					CompletedAt is null)
+			update RTPhoenix.TemplateJob set
+				CompletedNotes = 'Unknown Template Job Flow Error',
+				CompletedAt = GetDate()
+			where TemplateJob_ID = @TemplateJob_ID
+			
 	end
 	
 end

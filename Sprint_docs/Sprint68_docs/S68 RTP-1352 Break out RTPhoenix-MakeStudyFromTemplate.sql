@@ -96,14 +96,22 @@ begin try
 	declare @study_id int 
 	declare @client_id int
 
-	--if @Template_ID is null
-	--begin
-		--TODO: Try to resolve which Template by matching CAHPSSurveyType_ID,
-		--CAHPSSurveySubtype_ID, RTSurveyType_ID and RTSurveySubtype_ID against 
-		--active templates
-		--TODO: Also use AsOfDate to determine which Template based on BeginDate,
-		--EndDate of Template
-	--end
+	if @Template_ID is null or @Template_ID <= 0
+	begin
+		select @Template_ID = T.Template_ID 
+		from RTPhoenix.Template t
+			inner join RTPhoenix.ClientStudySurvey_viewTemplate cssv1 on t.Template_id = cssv1.Template_ID
+			inner join RTPhoenix.ClientStudySurvey_viewTemplate cssv2 on t.Template_ID = cssv2.Template_ID
+		where cssv1.SurveyType_id = @CAHPSSurveyType_ID and
+			IsNull(cssv1.Subtype_id, -1) = IsNull(@CAHPSSurveySubtype_ID, -1) and
+			cssv2.SurveyType_id = @RTSurveyType_ID and
+			IsNull(cssv2.Subtype_id, -1) = IsNull(@RTSurveySubtype_ID, -1) and
+			@AsOfDate > isnull(T.BeginDate, '1/1/2001') and
+			@AsOfDate < isnull(T.EndDate, '1/1/3001')
+
+		update RTPhoenix.TemplateJob set Template_ID = @Template_ID
+		where TemplateJob_id = @TemplateJob_ID
+	end
 
 	SELECT @Template_ID = [Template_ID]
 		  ,@client_id = [Client_ID]
