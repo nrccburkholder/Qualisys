@@ -231,6 +231,7 @@ begin
 			[RTPhoenix].[METATABLETemplate] mt2 on sd.SampleEncounterTABLE_ID = mt2.TABLE_ID inner join
 			[dbo].[METATABLE] db02 on mt2.strtable_nm = db02.strtable_nm 
 	WHERE db02.study_id = @TargetStudy_id and mt2.study_id = @study_id
+		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 
 	INSERT INTO [dbo].[SurveySubtype]
 			   ([Survey_id]
@@ -241,6 +242,7 @@ begin
 			[RTPhoenix].[SURVEY_DEFTemplate] sd on sst.Survey_id = sd.SURVEY_ID inner join
 			[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm 
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 
 	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 		 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
@@ -265,6 +267,7 @@ begin
 						convert(nvarchar,cst.strCriteriaString) = convert(nvarchar,db01.strCriteriaString) and
 						db01.study_id = @TargetStudy_id and cst.study_id = @study_id 
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 				
 		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
@@ -286,6 +289,7 @@ begin
 			[dbo].[METATABLE] db01 on mt.strtable_nm = db01.strtable_nm and
 						db01.study_id = @TargetStudy_id and mt.study_id = @study_id
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 				
 		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
@@ -308,6 +312,7 @@ begin
 			[RTPhoenix].[SURVEY_DEFTemplate] sd on mm.Survey_id = sd.SURVEY_ID inner join
 			[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm 
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 
 	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 		 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
@@ -388,6 +393,7 @@ begin
 			[dbo].[MAILINGMETHODOLOGY] db01 on mm.STRMETHODOLOGY_NM = db01.STRMETHODOLOGY_NM and
 						db01.SURVEY_ID = db0.survey_id
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 
 	update ms set ExpireFromStep = ms2.mailingstep_id 
 	--select ms.ExpireFromStep, ms2.ExpireFromStep 
@@ -503,6 +509,7 @@ begin
 		  [RTPhoenix].[SAMPLEPLANTemplate] sp on su.SAMPLEPLAN_ID = sp.SAMPLEPLAN_ID inner join
 		  [RTPhoenix].[SURVEY_DEFTemplate] sd on sp.Survey_id = sd.SURVEY_ID
 		  where Study_id = @study_id
+			AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 
 		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
@@ -539,6 +546,7 @@ begin
 			[RTPhoenix].[SURVEY_DEFTemplate] sd on sp.Survey_id = sd.SURVEY_ID inner join
 			[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm 
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 
 	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 			VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
@@ -573,6 +581,7 @@ begin
 	  [RTPhoenix].[SURVEY_DEFTemplate] sd on pd.Survey_id = sd.SURVEY_ID inner join
 			[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm 
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 
 		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
@@ -598,6 +607,7 @@ begin
 			[dbo].[PeriodDef] db01 on db01.strPeriodDef_nm = pdf.strPeriodDef_nm and
 						db01.Survey_id = db0.Survey_id and pdf.Survey_id = sd.Survey_id
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 				
 		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
@@ -622,6 +632,7 @@ begin
 	  [RTPhoenix].[SURVEY_DEFTemplate] sd on sel.Survey_id = sd.SURVEY_ID inner join
 			[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm 
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 
 		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
@@ -656,6 +667,7 @@ begin
 	  [RTPhoenix].[SURVEY_DEFTemplate] sd on sel.Survey_id = sd.SURVEY_ID inner join
 			[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm 
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 
 		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
@@ -690,6 +702,7 @@ begin
 	  [RTPhoenix].[SURVEY_DEFTemplate] sd on sel.Survey_id = sd.SURVEY_ID inner join
 			[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm 
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 
 		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
@@ -744,6 +757,7 @@ begin
 	  [RTPhoenix].[SURVEY_DEFTemplate] sd on sel.Survey_id = sd.SURVEY_ID inner join
 			[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm 
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 
 		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
@@ -778,6 +792,7 @@ begin
 	  [RTPhoenix].[SURVEY_DEFTemplate] sd on sel.Survey_id = sd.SURVEY_ID inner join
 			[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm 
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 
 		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
@@ -802,6 +817,7 @@ begin
 	  [RTPhoenix].[SURVEY_DEFTemplate] sd on sel.Survey_id = sd.SURVEY_ID inner join
 			[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm 
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 
 		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
@@ -840,6 +856,7 @@ begin
 	  [RTPhoenix].[SURVEY_DEFTemplate] sd on sel.Survey_id = sd.SURVEY_ID inner join
 			[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm 
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 
 		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
@@ -865,6 +882,7 @@ begin
 			[dbo].[MailingStep] db01 on db01.SURVEY_ID = db0.survey_id and
 						ms.STRMAILINGSTEP_NM = db01.STRMAILINGSTEP_NM
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 				
 		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
@@ -889,6 +907,7 @@ begin
 	  [RTPhoenix].[SURVEY_DEFTemplate] sd on cq.Survey_id = sd.SURVEY_ID inner join
 			[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm 
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 
 		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
@@ -915,6 +934,7 @@ begin
 	  [RTPhoenix].[SURVEY_DEFTemplate] sd on cs.Survey_id = sd.SURVEY_ID inner join
 			[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm 
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 
 		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
@@ -939,6 +959,7 @@ begin
 	  [RTPhoenix].[SURVEY_DEFTemplate] sd on ct.Survey_id = sd.SURVEY_ID inner join
 			[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm 
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 
 		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
@@ -949,10 +970,24 @@ begin
 	SET @CompletedNotes = 'Completed Make Surveys From Template for Study_id '+convert(varchar,@TargetStudy_ID)+
 		' from Template_id '+convert(varchar,@Template_ID)+' via TemplateJob_id '+convert(varchar,@TemplateJob_Id)
 
-	UPDATE [RTPhoenix].[TemplateJob]
-	   SET [CompletedNotes] = @CompletedNotes
-		  ,[CompletedAt] = GetDate()
-	 WHERE TemplateJob_ID = @TemplateJob_ID
+	if (@TemplateSurvey_ID > 0) --specific TemplateSurvey_ID  yields a specific TargetSurvey_ID
+		UPDATE [RTPhoenix].[TemplateJob]
+		   SET [TargetSurvey_ID] = db0.survey_id
+			  ,[Survey_nm] = db0.STRSURVEY_NM
+			  ,[CompletedNotes] = @CompletedNotes
+			  ,[CompletedAt] = GetDate()
+		  FROM [RTPhoenix].[TemplateJob] tj INNER JOIN
+			   [RTPhoenix].[Template] t on tj.Template_ID = t.Template_ID INNER JOIN
+			   [RTPhoenix].[SURVEY_DEFTemplate] sd on sd.STUDY_ID = t.Study_ID INNER JOIN
+			   [dbo].[Survey_Def] db0 on db0.STRSURVEY_NM = sd.STRSURVEY_NM
+		 WHERE TemplateJob_ID = @TemplateJob_ID and
+			db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+			AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
+	else
+		UPDATE [RTPhoenix].[TemplateJob]
+		   SET [CompletedNotes] = @CompletedNotes
+			  ,[CompletedAt] = GetDate()
+		 WHERE TemplateJob_ID = @TemplateJob_ID
 
 	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 		 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 'Completed Make Surveys From Template for TemplateJob_id '+convert(varchar,@TemplateJob_ID)+
@@ -960,7 +995,61 @@ begin
 
 	--Determine if a MakeSampleUnitsFromTemplate job is needed and add (if so)
 
-	if @TemplateSampleUnit_ID <> 0 -- if >0, then a survey ID, or -1 means all surveys
+	if @TemplateSampleUnit_ID = -1 -- if >0, then a survey ID, or -1 means all surveys
+		INSERT INTO [RTPhoenix].[TemplateJob]
+				   ([TemplateJobType_ID]
+				   ,[MasterTemplateJob_ID]
+				   ,[Template_ID]
+				   ,[TemplateSurvey_ID]
+				   ,[TemplateSampleUnit_ID]
+				   ,[CAHPSSurveyType_ID]
+				   ,[CAHPSSurveySubtype_ID]
+				   ,[RTSurveyType_ID]
+				   ,[RTSurveySubtype_ID]
+				   ,[AsOfDate]
+				   ,[TargetClient_ID]
+				   ,[TargetStudy_ID]
+				   ,[TargetSurvey_ID]
+				   ,[Study_nm]
+				   ,[Study_desc]
+				   ,[Survey_nm]
+				   ,[SampleUnit_nm]
+				   ,[MedicareNumber]
+				   ,[LoggedBy]
+				   ,[LoggedAt]
+				   ,[CompletedNotes]
+				   ,[CompletedAt])
+		SELECT 3--[TemplateJobType_ID]
+			  ,@TemplateJob_ID--[MasterTemplateJob_ID]
+			  ,tj.[Template_ID]
+			  ,[TemplateSurvey_ID]
+			  ,su.SampleUnit_id
+			  ,[CAHPSSurveyType_ID]
+			  ,[CAHPSSurveySubtype_ID]
+			  ,[RTSurveyType_ID]
+			  ,[RTSurveySubtype_ID]
+			  ,[AsOfDate]
+			  ,[TargetClient_ID]
+			  ,[TargetStudy_ID]
+			  ,[TargetSurvey_ID]
+			  ,[Study_nm]
+			  ,[Study_desc]
+			  ,IsNull([Survey_nm], sd.strSurvey_NM)
+			  ,IsNull([SampleUnit_nm], su.strSampleUnit_NM)
+			  ,[MedicareNumber]
+			  ,[LoggedBy]
+			  ,getdate()
+			  ,null
+			  ,null
+		  FROM [RTPhoenix].[TemplateJob] tj
+		  INNER JOIN [RTPhoenix].[Template] t on tj.Template_ID = t.Template_ID
+		  INNER JOIN [RTPhoenix].[Survey_DefTemplate] sd on sd.STUDY_ID = t.Study_ID
+		  INNER JOIN [RTPhoenix].[SAMPLEPLANTemplate] sp on sp.SURVEY_ID = sd.SURVEY_ID
+		  INNER JOIN [RTPhoenix].[SampleUnitTemplate] su on su.SAMPLEPLAN_ID = sp.SAMPLEPLAN_ID
+		  WHERE [TemplateJob_ID] = @TemplateJob_ID
+			AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
+	else
+	if @TemplateSampleUnit_ID > 0 -- if >0, then a survey ID, or -1 means all surveys
 		INSERT INTO [RTPhoenix].[TemplateJob]
 				   ([TemplateJobType_ID]
 				   ,[MasterTemplateJob_ID]

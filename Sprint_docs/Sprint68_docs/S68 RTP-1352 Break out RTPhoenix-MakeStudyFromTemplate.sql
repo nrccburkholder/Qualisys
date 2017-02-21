@@ -631,7 +631,58 @@ begin try
 
 	--Determine if a MakeSurveysFromTemplate job is needed and add (if so)
 
-	if @TemplateSurvey_ID <> 0 -- if >0, then a survey ID, or -1 means all surveys
+	if @TemplateSurvey_ID = -1 -- -1 means all surveys
+		INSERT INTO [RTPhoenix].[TemplateJob]
+				   ([TemplateJobType_ID]
+				   ,[MasterTemplateJob_ID]
+				   ,[Template_ID]
+				   ,[TemplateSurvey_ID]
+				   ,[TemplateSampleUnit_ID]
+				   ,[CAHPSSurveyType_ID]
+				   ,[CAHPSSurveySubtype_ID]
+				   ,[RTSurveyType_ID]
+				   ,[RTSurveySubtype_ID]
+				   ,[AsOfDate]
+				   ,[TargetClient_ID]
+				   ,[TargetStudy_ID]
+				   ,[TargetSurvey_ID]
+				   ,[Study_nm]
+				   ,[Study_desc]
+				   ,[Survey_nm]
+				   ,[SampleUnit_nm]
+				   ,[MedicareNumber]
+				   ,[LoggedBy]
+				   ,[LoggedAt]
+				   ,[CompletedNotes]
+				   ,[CompletedAt])
+		SELECT 2--[TemplateJobType_ID]
+			  ,@TemplateJob_ID--[MasterTemplateJob_ID]
+			  ,tj.[Template_ID]
+			  ,sd.Survey_ID
+			  ,[TemplateSampleUnit_ID]
+			  ,[CAHPSSurveyType_ID]
+			  ,[CAHPSSurveySubtype_ID]
+			  ,[RTSurveyType_ID]
+			  ,[RTSurveySubtype_ID]
+			  ,[AsOfDate]
+			  ,[TargetClient_ID]
+			  ,[TargetStudy_ID]
+			  ,[TargetSurvey_ID]
+			  ,[Study_nm]
+			  ,[Study_desc]
+			  ,IsNull([Survey_nm], sd.strSurvey_NM)
+			  ,[SampleUnit_nm]
+			  ,[MedicareNumber]
+			  ,[LoggedBy]
+			  ,getdate()
+			  ,null
+			  ,null
+		  FROM [RTPhoenix].[TemplateJob] tj
+		  INNER JOIN [RTPhoenix].[Template] t on tj.Template_ID = t.Template_ID
+		  INNER JOIN [RTPhoenix].[Survey_DefTemplate] sd on sd.STUDY_ID = t.Study_ID
+		  WHERE [TemplateJob_ID] = @TemplateJob_ID
+	else
+	if @TemplateSurvey_ID > 0 -- if >0, then a survey ID, or -1 means all surveys
 		INSERT INTO [RTPhoenix].[TemplateJob]
 				   ([TemplateJobType_ID]
 				   ,[MasterTemplateJob_ID]

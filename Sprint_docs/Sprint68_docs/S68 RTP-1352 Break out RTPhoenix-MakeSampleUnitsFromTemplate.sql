@@ -162,6 +162,8 @@ begin
 						db04.MedicareNumber = @MedicareNumber
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id and
 			cs.study_id = @study_id and db01.study_id = @TargetStudy_id
+	  AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
+	  AND ((@TemplateSampleUnit_ID = -1) OR (su.SampleUnit_ID = @TemplateSampleUnit_ID))
 
 		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
@@ -180,6 +182,7 @@ begin
 			[dbo].[SampleUnit] db03 on db02.SAMPLEPLAN_ID = db03.SAMPLEPLAN_ID and
 						db03.STRSAMPLEUNIT_NM = sp._STRSAMPLEUNIT_NM_ROOT
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+	  AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 
 	--backfill SAMPLEUNIT.PARENTSAMPLEUNIT_ID
 
@@ -196,6 +199,8 @@ begin
 			[dbo].[SampleUnit] db03p on db02.SAMPLEPLAN_ID = db03p.SAMPLEPLAN_ID and
 						db03p.STRSAMPLEUNIT_NM = su._STRSAMPLEUNIT_NM_PARENT
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+	  AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
+	  AND ((@TemplateSampleUnit_ID = -1) OR (su.SampleUnit_ID = @TemplateSampleUnit_ID))
 				
 	INSERT INTO [dbo].[SAMPLEUNITTREEINDEX] 
 			   ([SAMPLEUNIT_ID]
@@ -215,6 +220,8 @@ begin
 			[dbo].[SampleUnit] db03 on db03.STRSAMPLEUNIT_NM = suti._STRSAMPLEUNIT_NM_ANCESTOR and
 						db03.sampleplan_id = db01.sampleplan_id
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+	  AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
+	  AND ((@TemplateSampleUnit_ID = -1) OR (su.SampleUnit_ID = @TemplateSampleUnit_ID))
 				
 		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
@@ -240,6 +247,8 @@ begin
 			[dbo].[SampleUnit] db03 on su.strsampleunit_nm = db03.strsampleunit_nm and
 						db03.SAMPLEPLAN_ID = db02.SAMPLEPLAN_ID
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+	  AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
+	  AND ((@TemplateSampleUnit_ID = -1) OR (su.SampleUnit_ID = @TemplateSampleUnit_ID))
 				
 		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
@@ -263,6 +272,8 @@ begin
 			[dbo].[SampleUnit] db03 on su.strsampleunit_nm = db03.strsampleunit_nm and
 						db03.SAMPLEPLAN_ID = db02.SAMPLEPLAN_ID
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+	  AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
+	  AND ((@TemplateSampleUnit_ID = -1) OR (su.SampleUnit_ID = @TemplateSampleUnit_ID))
 				
 		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
