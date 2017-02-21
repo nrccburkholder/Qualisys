@@ -22,7 +22,7 @@
     </SccAuxPath>
     <SccProvider>
     </SccProvider>
-    <ManifestCertificateThumbprint>397604704090BE1DDE2592BF12E532CF206C1498</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>8415B94655AA932F8429B8A89CD8B5E8DAB37904</ManifestCertificateThumbprint>
     <GenerateManifests>true</GenerateManifests>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
@@ -44,7 +44,7 @@
     <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>2.3.1.0</ApplicationVersion>
+    <ApplicationVersion>2.4.0.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -163,7 +163,7 @@
     <CodeAnalysisRuleAssemblies>C:\Program Files\Microsoft Visual Studio 8\Team Tools\Static Analysis Tools\FxCop\\rules</CodeAnalysisRuleAssemblies>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>PayerSolutionsETL_2_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>PayerSolutionsETL_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DevExpress.Data.v6.3">
@@ -487,7 +487,7 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="PayerSolutionsETL_2_TemporaryKey.pfx" />
+    <None Include="PayerSolutionsETL_TemporaryKey.pfx" />
     <None Include="Resources\GoLtr.bmp" />
   </ItemGroup>
   <ItemGroup>

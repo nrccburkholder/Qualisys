@@ -3153,8 +3153,8 @@ Public Class WebFileConvertSection
                 newLine.Append(PadString(Convert.ToDateTime(row(ExcelColumns.CW).ToString()).ToString("yyyyMMdd"), 8, Direction.Left, " "))  ' Last Modified Start: 2 End: 9 Length: 8
                 newLine.Append(PadString("", 1, Direction.Left, " ")) ' Blank Start: 10 End: 10 Length: 1
                 newLine.Append(PadString(row(ExcelColumns.C), 8, Direction.Left, " ")) ' (Q7_1) FAQSS Template ID Start: 11 End: 18 Length: 8
-                newLine.Append(PadString(row(ExcelColumns.DG), 5, Direction.Left, " ")) ' Key 3 Start: 19 End: 23 Length: 5
-                newLine.Append(PadString(row(ExcelColumns.DF), 8, Direction.Left, " ")) ' Key 2 Start: 24 End: 31 Length: 8
+                newLine.Append(PadString(row(ExcelColumns.DH), 5, Direction.Left, " ")) ' Key 3 Start: 19 End: 23 Length: 5
+                newLine.Append(PadString(row(ExcelColumns.DG), 8, Direction.Left, " ")) ' Key 2 Start: 24 End: 31 Length: 8
                 newLine.Append(PadString("", 3, Direction.Left, " ")) ' Blank Start: 32 End: 34 Length: 3
                 newLine.Append(PadString(row(ExcelColumns.G), 1, Direction.Left, " ")) ' (Q1) 1 Start: 35 End: 35 Length: 1
                 newLine.Append(PadString(row(ExcelColumns.H), 1, Direction.Left, " ")) ' (Q66) 2 Start: 36 End: 36 Length: 1
