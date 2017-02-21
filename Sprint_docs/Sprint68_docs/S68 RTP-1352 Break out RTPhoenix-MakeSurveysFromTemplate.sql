@@ -16,31 +16,32 @@ CREATE PROCEDURE [RTPhoenix].[MakeSurveysFromTemplate]
 AS
 begin
 
+begin try
+
 	begin tran
-
---TODO: handle @TemplateSurvey_ID <> -1 case (0 Surveys or 1 specific Survey)
-
---TODO: handle @TargetSurvey_ID <> -1 case (1 specific Survey)
 
 		  declare @TemplateJobType_ID int
 		  declare @Template_ID int
 		  declare @TemplateSurvey_ID int
 		  declare @TemplateSampleUnit_ID int		
-		  declare @CAHPSSurveyType_ID int
-		  declare @CAHPSSurveySubtype_ID int
-		  declare @RTSurveyType_ID int
-		  declare @RTSurveySubtype_ID int
-		  declare @AsOfDate datetime
-		  declare @TargetClient_ID int
+		  --declare @CAHPSSurveyType_ID int
+		  --declare @CAHPSSurveySubtype_ID int
+		  --declare @RTSurveyType_ID int
+		  --declare @RTSurveySubtype_ID int
+		  --declare @AsOfDate datetime
+		  --declare @TargetClient_ID int
 		  declare @TargetStudy_ID int
 		  declare @TargetSurvey_ID int
-		  declare @Study_nm varchar(10)
-		  declare @Study_desc varchar(255)
+		  --declare @Study_nm varchar(10)
+		  --declare @Study_desc varchar(255)
 		  declare @Survey_nm varchar(10)
-		  declare @SampleUnit_nm varchar(42) 
+		  --declare @SampleUnit_nm varchar(42) 
 		  declare @MedicareNumber varchar(20)
+		  declare @ContractNumber [varchar](9) 
+		  declare @Survey_Start_Dt [datetime] 
+		  declare @Survey_End_Dt [datetime] 
 		  declare @LoggedBy varchar(40)
-		  declare @LoggedAt datetime
+		  --declare @LoggedAt datetime
 		  declare @CompletedNotes varchar(255)
 		  declare @CompletedAt datetime
 
@@ -63,21 +64,24 @@ begin
 		  ,@Template_ID = [Template_ID]
 		  ,@TemplateSurvey_ID = [TemplateSurvey_ID]
 		  ,@TemplateSampleUnit_ID = [TemplateSampleUnit_ID]
-		  ,@CAHPSSurveyType_ID = [CAHPSSurveyType_ID]
-		  ,@CAHPSSurveySubtype_ID = [CAHPSSurveySubtype_ID]
-		  ,@RTSurveyType_ID = [RTSurveyType_ID]
-		  ,@RTSurveySubtype_ID = [RTSurveySubtype_ID]
-		  ,@AsOfDate = ISNULL([AsOfDate], GetDate())
-		  ,@TargetClient_ID = [TargetClient_ID]
+		  --,@CAHPSSurveyType_ID = [CAHPSSurveyType_ID]
+		  --,@CAHPSSurveySubtype_ID = [CAHPSSurveySubtype_ID]
+		  --,@RTSurveyType_ID = [RTSurveyType_ID]
+		  --,@RTSurveySubtype_ID = [RTSurveySubtype_ID]
+		  --,@AsOfDate = ISNULL([AsOfDate], GetDate())
+		  --,@TargetClient_ID = [TargetClient_ID]
 		  ,@TargetStudy_id = [TargetStudy_ID]
 		  ,@TargetSurvey_id = [TargetStudy_ID]
-		  ,@Study_nm = [Study_nm]
-		  ,@Study_desc = [Study_desc]
+		  --,@Study_nm = [Study_nm]
+		  --,@Study_desc = [Study_desc]
 		  ,@Survey_nm = [Survey_nm]
-		  ,@SampleUnit_nm = [SampleUnit_nm]
+		  --,@SampleUnit_nm = [SampleUnit_nm]
 		  ,@MedicareNumber = [MedicareNumber]
+		  ,@ContractNumber = [ContractNumber]
+		  ,@Survey_Start_Dt = [Survey_Start_Dt]
+		  ,@Survey_End_Dt = [Survey_End_Dt]
 		  ,@LoggedBy = [LoggedBy]
-		  ,@LoggedAt = [LoggedAt]
+		  --,@LoggedAt = [LoggedAt]
 		  ,@CompletedNotes = [CompletedNotes]
 		  ,@CompletedAt = [CompletedAt]
 	  FROM [RTPhoenix].[TemplateJob]
@@ -167,7 +171,7 @@ begin
 			   ,[IsHandout]
 			   ,[IsPointInTime])
 	SELECT @TargetStudy_Id
-		  ,[STRSURVEY_NM]
+		  ,[STRSURVEY_NM]--insert new survey name here only after inner joins dependent on the template's survey name
 		  ,[STRSURVEY_DSC]
 		  ,[INTRESPONSE_RECALC_PERIOD]
 		  ,[INTRESURVEY_PERIOD]
@@ -175,8 +179,8 @@ begin
 		  ,[BITPHYSASSIST_NAME_FLG]
 		  ,[BITMINOR_EXCEPT_FLG]
 		  ,[BITNEWBORN_FLG]
-		  ,[DATSURVEY_START_DT]
-		  ,[DATSURVEY_END_DT]
+		  ,IsNull(@Survey_Start_Dt,[DATSURVEY_START_DT])
+		  ,IsNull(@Survey_End_Dt,[DATSURVEY_END_DT])
 		  ,[STRMAILFREQ]
 		  ,[INTSAMPLESINPERIOD]
 		  ,[STRXMITROUTE]
@@ -191,7 +195,7 @@ begin
 		  ,[STRCMNTTYPING_DBVER]
 		  ,[BITCMNTTYPING_ONDISK]
 		  ,[STRCMNT_CMNT]
-		  ,[BITVALIDATED_FLG]
+		  ,0--[BITVALIDATED_FLG]
 		  ,[DATVALIDATED]
 		  ,[BITFORMGENRELEASE]
 		  ,[BITLAYOUTVALID]
@@ -215,7 +219,7 @@ begin
 		  ,[SamplingAlgorithmID]
 		  ,[SampleEncounterField_id]
 		  ,db02.[TABLE_ID]
-		  ,[Contract]
+		  ,IsNull(@ContractNumber,[Contract])
 		  ,[bitPhoneTelematch]
 		  ,[Active]
 		  ,[PervasiveMapName]
@@ -971,6 +975,11 @@ begin
 		' from Template_id '+convert(varchar,@Template_ID)+' via TemplateJob_id '+convert(varchar,@TemplateJob_Id)
 
 	if (@TemplateSurvey_ID > 0) --specific TemplateSurvey_ID  yields a specific TargetSurvey_ID
+	begin
+		UPDATE [dbo].[Survey_DEF]
+		set [STRSURVEY_NM] = IsNull(@Survey_nm, [STRSURVEY_NM])
+		where [Survey_ID] = @TargetSurvey_ID
+
 		UPDATE [RTPhoenix].[TemplateJob]
 		   SET [TargetSurvey_ID] = db0.survey_id
 			  ,[Survey_nm] = db0.STRSURVEY_NM
@@ -983,6 +992,7 @@ begin
 		 WHERE TemplateJob_ID = @TemplateJob_ID and
 			db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 			AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
+	end
 	else
 		UPDATE [RTPhoenix].[TemplateJob]
 		   SET [CompletedNotes] = @CompletedNotes
@@ -1069,6 +1079,11 @@ begin
 				   ,[Survey_nm]
 				   ,[SampleUnit_nm]
 				   ,[MedicareNumber]
+				   ,[ContractNumber]
+				   ,[Survey_Start_Dt]
+				   ,[Survey_End_Dt]
+ 				   ,[Methodology_ID]
+				   ,[Language_ID]
 				   ,[LoggedBy]
 				   ,[LoggedAt]
 				   ,[CompletedNotes]
@@ -1091,6 +1106,11 @@ begin
 			  ,[Survey_nm]
 			  ,[SampleUnit_nm]
 			  ,[MedicareNumber]
+			  ,[ContractNumber]
+			  ,[Survey_Start_Dt]
+			  ,[Survey_End_Dt]
+			  ,[Methodology_ID]
+			  ,[Language_ID]
 			  ,[LoggedBy]
 			  ,getdate()
 			  ,null
@@ -1099,5 +1119,18 @@ begin
 		  WHERE [TemplateJob_ID] = @TemplateJob_ID
 
 	commit tran
+
+end try
+begin catch
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+			SELECT @Template_ID, @TemplateJob_ID, @TemplateLogEntryError, 'Make Sample Units From Template Job did not succeed and was rolled back', SYSTEM_USER, GetDate()
+
+	UPDATE [RTPhoenix].[TemplateJob]
+	   SET [CompletedNotes] = 'Make Surveys From Template Job did not succeed and was rolled back: '+@CompletedNotes
+		  ,[CompletedAt] = GetDate()
+	 WHERE TemplateJob_ID = @TemplateJob_ID
+
+	rollback tran
+end catch
 
 end

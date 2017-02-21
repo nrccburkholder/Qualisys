@@ -16,14 +16,14 @@ CREATE PROCEDURE [RTPhoenix].[MakeStudyFromTemplate]
 AS
 begin
 
-begin tran
-
 begin try
+
+	begin tran
 
 		  declare @TemplateJobType_ID int
 		  declare @Template_ID int
 		  declare @TemplateSurvey_ID int
-		  declare @TemplateSampleUnit_ID int		
+		  --declare @TemplateSampleUnit_ID int		
 		  declare @CAHPSSurveyType_ID int
 		  declare @CAHPSSurveySubtype_ID int
 		  declare @RTSurveyType_ID int
@@ -34,11 +34,14 @@ begin try
 		  declare @TargetSurvey_ID int
 		  declare @Study_nm varchar(10)
 		  declare @Study_desc varchar(255)
-		  declare @Survey_nm varchar(10)
-		  declare @SampleUnit_nm varchar(42) 
+		  --declare @Survey_nm varchar(10)
+		  --declare @SampleUnit_nm varchar(42) 
 		  declare @MedicareNumber varchar(20)
+		  --declare @ContractNumber [varchar](9) 
+		  --declare @Survey_Start_Dt [datetime] 
+		  --declare @Survey_End_Dt [datetime] 
 		  declare @LoggedBy varchar(40)
-		  declare @LoggedAt datetime
+		  --declare @LoggedAt datetime
 		  declare @CompletedNotes varchar(255)
 		  declare @CompletedAt datetime
 
@@ -60,7 +63,7 @@ begin try
 		  @TemplateJobType_ID = [TemplateJobType_ID]
 		  ,@Template_ID = [Template_ID]
 		  ,@TemplateSurvey_ID = [TemplateSurvey_ID]
-		  ,@TemplateSampleUnit_ID = [TemplateSampleUnit_ID]
+		  --,@TemplateSampleUnit_ID = [TemplateSampleUnit_ID]
 		  ,@CAHPSSurveyType_ID = [CAHPSSurveyType_ID]
 		  ,@CAHPSSurveySubtype_ID = [CAHPSSurveySubtype_ID]
 		  ,@RTSurveyType_ID = [RTSurveyType_ID]
@@ -71,11 +74,14 @@ begin try
 		  ,@TargetSurvey_id = [TargetStudy_ID]
 		  ,@Study_nm = [Study_nm]
 		  ,@Study_desc = [Study_desc]
-		  ,@Survey_nm = [Survey_nm]
-		  ,@SampleUnit_nm = [SampleUnit_nm]
+		  --,@Survey_nm = [Survey_nm]
+		  --,@SampleUnit_nm = [SampleUnit_nm]
 		  ,@MedicareNumber = [MedicareNumber]
+		  --,@ContractNumber = [ContractNumber]
+		  --,@Survey_Start_Dt = [Survey_Start_Dt]
+		  --,@Survey_End_Dt = [Survey_End_Dt]
 		  ,@LoggedBy = [LoggedBy]
-		  ,@LoggedAt = [LoggedAt]
+		  --,@LoggedAt = [LoggedAt]
 		  ,@CompletedNotes = [CompletedNotes]
 		  ,@CompletedAt = [CompletedAt]
 	  FROM [RTPhoenix].[TemplateJob]
@@ -212,8 +218,8 @@ begin try
 				   ,[bitAutosample])
 		SELECT @TargetClient_ID
 			  ,[STRACCOUNTING_CD]
-			  ,[STRSTUDY_NM]
-			  ,[STRSTUDY_DSC]
+			  ,IsNull(@Study_NM,[STRSTUDY_NM])
+			  ,IsNull(@Study_Desc,[STRSTUDY_DSC])
 			  ,[STRBBS_USERNAME]
 			  ,[STRBBS_PASSWORD]
 			  ,[DATCREATE_DT]
@@ -436,13 +442,13 @@ begin try
 
 	commit tran
 
-	end try
-	begin catch
-		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-			 SELECT @Template_ID, @TemplateJob_ID, @TemplateLogEntryError, 'Template Job did not succeed and was rolled back', SYSTEM_USER, GetDate()
+end try
+begin catch
+	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+			SELECT @Template_ID, @TemplateJob_ID, @TemplateLogEntryError, 'Make Study From Template Job did not succeed and was rolled back', SYSTEM_USER, GetDate()
 
-		rollback tran
-	end catch
+	rollback tran
+end catch
 
 	INSERT INTO [QLoader].[QP_Load].[dbo].[Package]
 			   ([intVersion]
@@ -600,6 +606,11 @@ begin try
 			   ,[Survey_nm]
 			   ,[SampleUnit_nm]
 			   ,[MedicareNumber]
+			   ,[ContractNumber]
+			   ,[Survey_Start_Dt]
+			   ,[Survey_End_Dt]
+			   ,[Methodology_ID]
+			   ,[Language_ID]
 			   ,[LoggedBy]
 			   ,[LoggedAt]
 			   ,[CompletedNotes]
@@ -622,6 +633,11 @@ begin try
 		  ,[Survey_nm]
 		  ,[SampleUnit_nm]
 		  ,[MedicareNumber]
+		  ,[ContractNumber]
+		  ,[Survey_Start_Dt]
+		  ,[Survey_End_Dt]
+		  ,[Methodology_ID]
+		  ,[Language_ID]
 		  ,[LoggedBy]
 		  ,getdate()
 		  ,null
@@ -651,6 +667,11 @@ begin try
 				   ,[Survey_nm]
 				   ,[SampleUnit_nm]
 				   ,[MedicareNumber]
+				   ,[ContractNumber]
+				   ,[Survey_Start_Dt]
+				   ,[Survey_End_Dt]
+				   ,[Methodology_ID]
+				   ,[Language_ID]
 				   ,[LoggedBy]
 				   ,[LoggedAt]
 				   ,[CompletedNotes]
@@ -673,6 +694,11 @@ begin try
 			  ,IsNull([Survey_nm], sd.strSurvey_NM)
 			  ,[SampleUnit_nm]
 			  ,[MedicareNumber]
+			  ,[ContractNumber]
+			  ,[Survey_Start_Dt]
+			  ,[Survey_End_Dt]
+			  ,[Methodology_ID]
+			  ,[Language_ID]
 			  ,[LoggedBy]
 			  ,getdate()
 			  ,null
@@ -702,10 +728,15 @@ begin try
 				   ,[Survey_nm]
 				   ,[SampleUnit_nm]
 				   ,[MedicareNumber]
+				   ,[ContractNumber]
+				   ,[Survey_Start_Dt]
+				   ,[Survey_End_Dt]
+				   ,[Methodology_ID]
+				   ,[Language_ID]
 				   ,[LoggedBy]
 				   ,[LoggedAt]
 				   ,[CompletedNotes]
-				   ,[CompletedAt])
+				   ,[CompletedAt])		
 		SELECT 2--[TemplateJobType_ID]
 			  ,@TemplateJob_ID--[MasterTemplateJob_ID]
 			  ,[Template_ID]
@@ -724,6 +755,11 @@ begin try
 			  ,[Survey_nm]
 			  ,[SampleUnit_nm]
 			  ,[MedicareNumber]
+			  ,[ContractNumber]
+			  ,[Survey_Start_Dt]
+			  ,[Survey_End_Dt]
+			  ,[Methodology_ID]
+			  ,[Language_ID]
 			  ,[LoggedBy]
 			  ,getdate()
 			  ,null
