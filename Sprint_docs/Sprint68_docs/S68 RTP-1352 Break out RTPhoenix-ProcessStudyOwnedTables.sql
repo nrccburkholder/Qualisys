@@ -19,26 +19,26 @@ begin
 	  declare @TemplateLogEntryWarning int
 	  declare @TemplateLogEntryError int
 
-	  select @TemplateLogEntryInfo = TemplateLogEntryType_ID 
+	  select @TemplateLogEntryInfo = TemplateLogEntryTypeID 
 	  from RTPhoenix.TemplateLogEntryType where TemplateLogEntryTypeName = 'INFORMATIONAL'
 
-	  select @TemplateLogEntryWarning = TemplateLogEntryType_ID 
+	  select @TemplateLogEntryWarning = TemplateLogEntryTypeID 
 	  from RTPhoenix.TemplateLogEntryType where TemplateLogEntryTypeName = 'WARNING'
 
-	  select @TemplateLogEntryError = TemplateLogEntryType_ID 
+	  select @TemplateLogEntryError = TemplateLogEntryTypeID 
 	  from RTPhoenix.TemplateLogEntryType where TemplateLogEntryTypeName = 'ERROR'
 
 declare @user varchar(40) 
 declare @TargetStudy_id int 
 declare @Template_ID int
 
-select @TargetStudy_id = TargetStudy_id, 
-	@Template_id = Template_id, 
+select @TargetStudy_id = [TargetStudyID], 
+	@Template_id = [TemplateID], 
 	@user = LoggedBy  
 from RTPhoenix.TemplateJob 
-where @TemplateJob_id = TemplateJob_id 
+where @TemplateJob_id = [TemplateJobID] 
 
-INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID],[TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID],[TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
      VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo,'Begin Study Owned Schema Table Process for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 declare @Study varchar(10) = 'S' + convert(varchar, @TargetStudy_id)
@@ -53,8 +53,8 @@ exec ('IF NOT EXISTS (SELECT * FROM Master.dbo.sysLogins WHERE name='''+@Study+
 		''') exec sp_addlogin N'''+@Study+''', null, ''master'', ''us_english'' ') 
 		at [QLoader];
 
-INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-     VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo,  convert(varchar,@@ROWCOUNT)+' Study Owned Schema added on QP_Load for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
+     VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo,  'Study Owned Schema added on QP_Load for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 exec ('if not exists (select * from dbo.sysusers where name='''+@Study+
 		''' and uid < 16382)	EXEC sp_grantdbaccess N'''+@Study+''' ') 
@@ -65,7 +65,7 @@ exec ('if not exists (select * from dbo.sysusers where name='''+@Study+
 exec ('IF NOT EXISTS (SELECT * FROM sys.schemas where name = '''+@Study+
 		''') BEGIN EXEC sp_executesql N''Create Schema '+@Study+''' END');
 
-INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
      VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, convert(varchar,@@ROWCOUNT)+' Study Owned Schema added on QP_Prod for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 ------------------For each Table Name [Table] according to MetaTable: 
@@ -97,7 +97,7 @@ BEGIN
 			'_LOAD (DataFile_id int NOT NULL, DF_id int NOT NULL)') 
 			at [QLoader];
 
-		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, @Table+'_Load Study Owned Table added on QP_Load for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 --QP_Prod
@@ -110,7 +110,7 @@ BEGIN
 			'_LOAD'') create table '+@Study+'.'+@Table+
 			'_LOAD (DataFile_id int NOT NULL, DF_id int NOT NULL)') 
 
-		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, @Table+'_Load Study Owned Table added on QP_Load for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 	exec ('if not exists (select * from sys.tables t inner join sys.schemas s '+
@@ -118,7 +118,7 @@ BEGIN
 			''') create table '+@Study+'.'+@Table+
 			' (DataFile_id int NOT NULL, DF_id int NOT NULL)') 
 
-		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, @Table+' Study Owned Table added on QP_Load for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 --For each Table instance [Instance]:
@@ -177,7 +177,7 @@ BEGIN
 			@ConstraintString)
 
 			IF (@IsFieldKey = 1)	
-				INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+				INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 						VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, @Table+'.'+@Field+' Key Field added on QP_Prod for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 		Select @ConstraintString = REPLACE(@ConstraintString, @Table, @Table+'_Load')
@@ -191,7 +191,7 @@ BEGIN
 			@ConstraintString)
 
 			IF (@IsFieldKey = 1)	
-				INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+				INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 						VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, @Table+'_Load.'+@Field+' Key Field added on QP_Prod for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 --QP_Load (SQL Server 2000)
@@ -209,12 +209,12 @@ BEGIN
 		At [QLoader]
 
 			IF (@IsFieldKey = 1)	
-				INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+				INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 						VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, @Table+'_Load.'+@Field+' Key Field added on QP_Load for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 	END --FIELD LOOP
 
-		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 				VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, @Field+' was last Field added on QPProd/QP_Load for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 --For QP_Load
@@ -287,7 +287,7 @@ if object_id(@study+'.BIG_VIEW', 'v') is not null
 
 exec ee_MakeBigView @TargetStudy_id, '', 1
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 			VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, ' Big_View added on QP_Load for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 if object_id(@study+'.BIG_VIEW_LOAD', 'v') is not null
@@ -295,7 +295,7 @@ if object_id(@study+'.BIG_VIEW_LOAD', 'v') is not null
 
 exec ee_MakeBigView @TargetStudy_id, '_LOAD', 1
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 			VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, ' Big_View_Load added on QP_Load for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 --if object_id(@study+'.BIG_VIEW_WEB', 'v') is not null
@@ -303,7 +303,7 @@ exec ee_MakeBigView @TargetStudy_id, '_LOAD', 1
 
 exec ee_MakeBigView @TargetStudy_id, '_WEB', 0, 1 --this fails so I set this up not to execute, only to show --CJB 2/15/2017
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 			VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, ' Big_View_Web added on QP_Load for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 	exec ('Select top 1 '''' as ''BIG_VIEW'',* from '+@study+'.BIG_VIEW')
@@ -317,9 +317,9 @@ exec ee_MakeBigView @TargetStudy_id, '_WEB', 0, 1 --this fails so I set this up 
 	UPDATE [RTPhoenix].[TemplateJob]
 	   SET [CompletedNotes] = @CompletedNotes
 		  ,[CompletedAt] = GetDate()
-	 WHERE TemplateJob_ID = @TemplateJob_ID
+	 WHERE [TemplateJobID] = @TemplateJob_ID
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 		 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 'Completed Study Owned Tables for TemplateJob_id '+convert(varchar,@TemplateJob_ID)+
 		 ', Study '+convert(varchar,@TargetStudy_id)+')', @user, GetDate())
 

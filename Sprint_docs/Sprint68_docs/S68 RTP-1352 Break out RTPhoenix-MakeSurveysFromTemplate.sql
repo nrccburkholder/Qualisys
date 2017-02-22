@@ -49,47 +49,47 @@ begin try
 		  declare @TemplateLogEntryWarning int
 		  declare @TemplateLogEntryError int
 
-		  select @TemplateLogEntryInfo = TemplateLogEntryType_ID 
+		  select @TemplateLogEntryInfo = TemplateLogEntryTypeID 
 		  from RTPhoenix.TemplateLogEntryType where TemplateLogEntryTypeName = 'INFORMATIONAL'
 
-		  select @TemplateLogEntryWarning = TemplateLogEntryType_ID 
+		  select @TemplateLogEntryWarning = TemplateLogEntryTypeID 
 		  from RTPhoenix.TemplateLogEntryType where TemplateLogEntryTypeName = 'WARNING'
 
-		  select @TemplateLogEntryError = TemplateLogEntryType_ID 
+		  select @TemplateLogEntryError = TemplateLogEntryTypeID 
 		  from RTPhoenix.TemplateLogEntryType where TemplateLogEntryTypeName = 'ERROR'
 
 
 	SELECT 
-		  @TemplateJobType_ID = [TemplateJobType_ID]
-		  ,@Template_ID = [Template_ID]
-		  ,@TemplateSurvey_ID = [TemplateSurvey_ID]
-		  ,@TemplateSampleUnit_ID = [TemplateSampleUnit_ID]
-		  --,@CAHPSSurveyType_ID = [CAHPSSurveyType_ID]
-		  --,@CAHPSSurveySubtype_ID = [CAHPSSurveySubtype_ID]
-		  --,@RTSurveyType_ID = [RTSurveyType_ID]
-		  --,@RTSurveySubtype_ID = [RTSurveySubtype_ID]
+		  @TemplateJobType_ID = [TemplateJobTypeID]
+		  ,@Template_ID = [TemplateID]
+		  ,@TemplateSurvey_ID = [TemplateSurveyID]
+		  ,@TemplateSampleUnit_ID = [TemplateSampleUnitID]
+		  --,@CAHPSSurveyType_ID = [CAHPSSurveyTypeID]
+		  --,@CAHPSSurveySubtype_ID = [CAHPSSurveySubtypeID]
+		  --,@RTSurveyType_ID = [RTSurveyTypeID]
+		  --,@RTSurveySubtype_ID = [RTSurveySubtypeID]
 		  --,@AsOfDate = ISNULL([AsOfDate], GetDate())
-		  --,@TargetClient_ID = [TargetClient_ID]
-		  ,@TargetStudy_id = [TargetStudy_ID]
-		  ,@TargetSurvey_id = [TargetStudy_ID]
-		  --,@Study_nm = [Study_nm]
-		  --,@Study_desc = [Study_desc]
-		  ,@Survey_nm = [Survey_nm]
-		  --,@SampleUnit_nm = [SampleUnit_nm]
+		  --,@TargetClient_ID = [TargetClientID]
+		  ,@TargetStudy_id = [TargetStudyID]
+		  ,@TargetSurvey_id = [TargetStudyID]
+		  --,@Study_nm = [StudyName]
+		  --,@Study_desc = [StudyDescription]
+		  ,@Survey_nm = [SurveyName]
+		  --,@SampleUnit_nm = [SampleUnitName]
 		  ,@MedicareNumber = [MedicareNumber]
 		  ,@ContractNumber = [ContractNumber]
-		  ,@Survey_Start_Dt = [Survey_Start_Dt]
-		  ,@Survey_End_Dt = [Survey_End_Dt]
+		  ,@Survey_Start_Dt = [SurveyStartDate]
+		  ,@Survey_End_Dt = [SurveyEndDate]
 		  ,@LoggedBy = [LoggedBy]
 		  --,@LoggedAt = [LoggedAt]
 		  ,@CompletedNotes = [CompletedNotes]
 		  ,@CompletedAt = [CompletedAt]
 	  FROM [RTPhoenix].[TemplateJob]
-	  where [TemplateJob_ID] = @TemplateJob_ID 
+	  where [TemplateJobID] = @TemplateJob_ID 
 
 	if @TemplateJob_ID is null
 	begin
-		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 SELECT -1, NULL, @TemplateLogEntryWarning, 'No Template Job Found To Process', SYSTEM_USER, GetDate()
 
 		commit tran
@@ -102,12 +102,12 @@ begin try
 	declare @study_id int 
 	declare @client_id int
 
-	SELECT @Template_ID = [Template_ID]
+	SELECT @Template_ID = [TemplateID]
 		  ,@client_id = [Client_ID]
 		  ,@study_id = [Study_ID]
-		  ,@Template_NM = [Template_NM]
+		  ,@Template_NM = [TemplateName]
 	  FROM [RTPhoenix].[Template]
-	  where Template_ID = @Template_ID
+	  where TemplateID = @Template_ID
 		and [Active] = 1
 
 	--TODO: Add Survey(s) here
@@ -248,7 +248,7 @@ begin try
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 		 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
 			'SURVEY template (newest Survey ID: '+
 			convert(nvarchar,Ident_Current('dbo.Survey_Def'))+
@@ -273,7 +273,7 @@ begin try
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 				
-		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
 			 'BusinessRule template (row count:'+ 
 			 convert(varchar,@@RowCount) + 
@@ -295,7 +295,7 @@ begin try
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 				
-		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
 			 'HouseholdRule template (row count:'+ 
 			 convert(varchar,@@RowCount) + 
@@ -318,7 +318,7 @@ begin try
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 		 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
 			'MAILINGMETHODOLOGY template (newest MailingMethodology ID: '+
 			convert(nvarchar,Ident_Current('dbo.MailingMethodology'))+
@@ -405,7 +405,7 @@ begin try
 		ms.survey_id = ms2.survey_id and ms2.intsequence = 1
 		where ms.MAILINGSTEP_ID >= @ExpireFromStepStub
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 		 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
 			'MAILINGSTEP template (newest MailingStep ID: '+
 			convert(nvarchar,Ident_Current('dbo.MailingStep'))+
@@ -457,7 +457,7 @@ begin try
 		  [RTPhoenix].[SURVEY_DEFTemplate] sd on sp.Survey_id = sd.SURVEY_ID
 		  where Study_id = @study_id
 
-		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
 				'MedicareLookup template table imported for study_id '+
 				convert(varchar,@TargetStudy_id), @user, GetDate())
@@ -515,20 +515,20 @@ begin try
 		  where Study_id = @study_id
 			AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 
-		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
 				'SUFacility template (newest SUFacility ID: '+
 				convert(nvarchar,Ident_Current('dbo.SUFacility'))+
 				') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 	END
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 			select @Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
 			strFacility_nm + ' is SUFacility to be used for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate()
 			from [dbo].[SUFacility] where MedicareNumber = @MedicareNumber
 	if @@rowcount > 1
 	begin
-		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 				select @Template_ID, @TemplateJob_ID, @TemplateLogEntryError, 
 				'More than one SUFacility found for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate()
 
@@ -552,7 +552,7 @@ begin try
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 			VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
 			'SamplePlan template (newest Sample Plan ID: '+
 			convert(nvarchar,Ident_Current('dbo.SamplePlan'))+
@@ -587,7 +587,7 @@ begin try
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 
-		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
 			 'PeriodDef template (row count:'+
 			 convert(varchar,@@RowCount) + 
@@ -613,7 +613,7 @@ begin try
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 				
-		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
 			 'PeriodDates template (row count:'+ 
 			 convert(varchar,@@RowCount) + 
@@ -638,7 +638,7 @@ begin try
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 
-		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
 			 'Sel_Cover template (row count:'+ 
 			 convert(varchar,@@RowCount) + 
@@ -673,7 +673,7 @@ begin try
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 
-		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
 			 'Sel_Logo template (row count:'+ 
 			 convert(varchar,@@RowCount) + 
@@ -708,7 +708,7 @@ begin try
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 
-		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
 			 'Sel_PCL template (row count:'+ 
 			 convert(varchar,@@RowCount) + 
@@ -763,7 +763,7 @@ begin try
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 
-		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
 			 'Sel_Qstns template (row count:'+ 
 			 convert(varchar,@@RowCount) + 
@@ -798,7 +798,7 @@ begin try
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 
-		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
 			 'Sel_Scls template (row count:'+ 
 			 convert(varchar,@@RowCount) + 
@@ -823,7 +823,7 @@ begin try
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 
-		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
 			 'Sel_Skip template (row count:'+ 
 			 convert(varchar,@@RowCount) + 
@@ -862,7 +862,7 @@ begin try
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 
-		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
 			 'Sel_Textbox template (row count:'+ 
 			 convert(varchar,@@RowCount) + 
@@ -888,7 +888,7 @@ begin try
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 				
-		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
 			 'ModeSectionMapping template (row count:'+ 
 			 convert(varchar,@@RowCount) + 
@@ -913,7 +913,7 @@ begin try
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 
-		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
 			 'CodeQstns template (row count:'+ 
 			 convert(varchar,@@RowCount) + 
@@ -940,7 +940,7 @@ begin try
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 
-		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
 			 'CodeScls template (row count:'+ 
 			 convert(varchar,@@RowCount) + 
@@ -965,7 +965,7 @@ begin try
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 
-		INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
 			 'CodeTxtBox template (row count:'+ 
 			 convert(varchar,@@RowCount) + 
@@ -981,15 +981,15 @@ begin try
 		where [Survey_ID] = @TargetSurvey_ID
 
 		UPDATE [RTPhoenix].[TemplateJob]
-		   SET [TargetSurvey_ID] = db0.survey_id
-			  ,[Survey_nm] = db0.STRSURVEY_NM
+		   SET [TargetSurveyID] = db0.survey_id
+			  ,[SurveyName] = db0.STRSURVEY_NM
 			  ,[CompletedNotes] = @CompletedNotes
 			  ,[CompletedAt] = GetDate()
 		  FROM [RTPhoenix].[TemplateJob] tj INNER JOIN
-			   [RTPhoenix].[Template] t on tj.Template_ID = t.Template_ID INNER JOIN
+			   [RTPhoenix].[Template] t on tj.TemplateID = t.TemplateID INNER JOIN
 			   [RTPhoenix].[SURVEY_DEFTemplate] sd on sd.STUDY_ID = t.Study_ID INNER JOIN
 			   [dbo].[Survey_Def] db0 on db0.STRSURVEY_NM = sd.STRSURVEY_NM
-		 WHERE TemplateJob_ID = @TemplateJob_ID and
+		 WHERE TemplateJobID = @TemplateJob_ID and
 			db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 			AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 	end
@@ -997,9 +997,9 @@ begin try
 		UPDATE [RTPhoenix].[TemplateJob]
 		   SET [CompletedNotes] = @CompletedNotes
 			  ,[CompletedAt] = GetDate()
-		 WHERE TemplateJob_ID = @TemplateJob_ID
+		 WHERE [TemplateJobID] = @TemplateJob_ID
 
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 		 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 'Completed Make Surveys From Template for TemplateJob_id '+convert(varchar,@TemplateJob_ID)+
 		 ', Study '+convert(varchar,@TargetStudy_id)+')', @user, GetDate())
 
@@ -1007,128 +1007,138 @@ begin try
 
 	if @TemplateSampleUnit_ID = -1 -- if >0, then a survey ID, or -1 means all surveys
 		INSERT INTO [RTPhoenix].[TemplateJob]
-				   ([TemplateJobType_ID]
-				   ,[MasterTemplateJob_ID]
-				   ,[Template_ID]
-				   ,[TemplateSurvey_ID]
-				   ,[TemplateSampleUnit_ID]
-				   ,[CAHPSSurveyType_ID]
-				   ,[CAHPSSurveySubtype_ID]
-				   ,[RTSurveyType_ID]
-				   ,[RTSurveySubtype_ID]
+				   ([TemplateJobTypeID]
+				   ,[MasterTemplateJobID]
+				   ,[TemplateID]
+				   ,[TemplateSurveyID]
+				   ,[TemplateSampleUnitID]
+				   ,[CAHPSSurveyTypeID]
+				   ,[CAHPSSurveySubtypeID]
+				   ,[RTSurveyTypeID]
+				   ,[RTSurveySubtypeID]
 				   ,[AsOfDate]
-				   ,[TargetClient_ID]
-				   ,[TargetStudy_ID]
-				   ,[TargetSurvey_ID]
-				   ,[Study_nm]
-				   ,[Study_desc]
-				   ,[Survey_nm]
-				   ,[SampleUnit_nm]
+				   ,[TargetClientID]
+				   ,[TargetStudyID]
+				   ,[TargetSurveyID]
+				   ,[StudyName]
+				   ,[StudyDescription]
+				   ,[SurveyName]
+				   ,[SampleUnitName]
 				   ,[MedicareNumber]
+				   ,[ContractNumber]
+				   ,[SurveyStartDate]
+				   ,[SurveyEndDate]
+ 				   ,[MethodologyID]
+				   ,[LanguageID]
 				   ,[LoggedBy]
 				   ,[LoggedAt]
 				   ,[CompletedNotes]
 				   ,[CompletedAt])
-		SELECT 3--[TemplateJobType_ID]
-			  ,@TemplateJob_ID--[MasterTemplateJob_ID]
-			  ,tj.[Template_ID]
-			  ,[TemplateSurvey_ID]
+		SELECT 3--[TemplateJobTypeID]
+			  ,@TemplateJob_ID--[MasterTemplateJobID]
+			  ,tj.[TemplateID]
+			  ,[TemplateSurveyID]
 			  ,su.SampleUnit_id
-			  ,[CAHPSSurveyType_ID]
-			  ,[CAHPSSurveySubtype_ID]
-			  ,[RTSurveyType_ID]
-			  ,[RTSurveySubtype_ID]
+			  ,[CAHPSSurveyTypeID]
+			  ,[CAHPSSurveySubtypeID]
+			  ,[RTSurveyTypeID]
+			  ,[RTSurveySubtypeID]
 			  ,[AsOfDate]
-			  ,[TargetClient_ID]
-			  ,[TargetStudy_ID]
-			  ,[TargetSurvey_ID]
-			  ,[Study_nm]
-			  ,[Study_desc]
-			  ,IsNull([Survey_nm], sd.strSurvey_NM)
-			  ,IsNull([SampleUnit_nm], su.strSampleUnit_NM)
+			  ,[TargetClientID]
+			  ,[TargetStudyID]
+			  ,[TargetSurveyID]
+			  ,[StudyName]
+			  ,[StudyDescription]
+			  ,IsNull([SurveyName], sd.strSurvey_NM)
+			  ,IsNull([SampleUnitName], su.strSampleUnit_NM)
 			  ,[MedicareNumber]
+			  ,[ContractNumber]
+			  ,[SurveyStartDate]
+			  ,[SurveyEndDate]
+			  ,[MethodologyID]
+			  ,[LanguageID]
 			  ,[LoggedBy]
 			  ,getdate()
 			  ,null
 			  ,null
 		  FROM [RTPhoenix].[TemplateJob] tj
-		  INNER JOIN [RTPhoenix].[Template] t on tj.Template_ID = t.Template_ID
+		  INNER JOIN [RTPhoenix].[Template] t on tj.TemplateID = t.TemplateID
 		  INNER JOIN [RTPhoenix].[Survey_DefTemplate] sd on sd.STUDY_ID = t.Study_ID
 		  INNER JOIN [RTPhoenix].[SAMPLEPLANTemplate] sp on sp.SURVEY_ID = sd.SURVEY_ID
 		  INNER JOIN [RTPhoenix].[SampleUnitTemplate] su on su.SAMPLEPLAN_ID = sp.SAMPLEPLAN_ID
-		  WHERE [TemplateJob_ID] = @TemplateJob_ID
+		  WHERE [TemplateJobID] = @TemplateJob_ID
 			AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 	else
 	if @TemplateSampleUnit_ID > 0 -- if >0, then a survey ID, or -1 means all surveys
 		INSERT INTO [RTPhoenix].[TemplateJob]
-				   ([TemplateJobType_ID]
-				   ,[MasterTemplateJob_ID]
-				   ,[Template_ID]
-				   ,[TemplateSurvey_ID]
-				   ,[TemplateSampleUnit_ID]
-				   ,[CAHPSSurveyType_ID]
-				   ,[CAHPSSurveySubtype_ID]
-				   ,[RTSurveyType_ID]
-				   ,[RTSurveySubtype_ID]
+				   ([TemplateJobTypeID]
+				   ,[MasterTemplateJobID]
+				   ,[TemplateID]
+				   ,[TemplateSurveyID]
+				   ,[TemplateSampleUnitID]
+				   ,[CAHPSSurveyTypeID]
+				   ,[CAHPSSurveySubtypeID]
+				   ,[RTSurveyTypeID]
+				   ,[RTSurveySubtypeID]
 				   ,[AsOfDate]
-				   ,[TargetClient_ID]
-				   ,[TargetStudy_ID]
-				   ,[TargetSurvey_ID]
-				   ,[Study_nm]
-				   ,[Study_desc]
-				   ,[Survey_nm]
-				   ,[SampleUnit_nm]
+				   ,[TargetClientID]
+				   ,[TargetStudyID]
+				   ,[TargetSurveyID]
+				   ,[StudyName]
+				   ,[StudyDescription]
+				   ,[SurveyName]
+				   ,[SampleUnitName]
 				   ,[MedicareNumber]
 				   ,[ContractNumber]
-				   ,[Survey_Start_Dt]
-				   ,[Survey_End_Dt]
- 				   ,[Methodology_ID]
-				   ,[Language_ID]
+				   ,[SurveyStartDate]
+				   ,[SurveyEndDate]
+ 				   ,[MethodologyID]
+				   ,[LanguageID]
 				   ,[LoggedBy]
 				   ,[LoggedAt]
 				   ,[CompletedNotes]
 				   ,[CompletedAt])
-		SELECT 3--[TemplateJobType_ID]
-			  ,@TemplateJob_ID--[MasterTemplateJob_ID]
-			  ,[Template_ID]
-			  ,[TemplateSurvey_ID]
-			  ,[TemplateSampleUnit_ID]
-			  ,[CAHPSSurveyType_ID]
-			  ,[CAHPSSurveySubtype_ID]
-			  ,[RTSurveyType_ID]
-			  ,[RTSurveySubtype_ID]
+		SELECT 3--[TemplateJobTypeID]
+			  ,@TemplateJob_ID--[MasterTemplateJobID]
+			  ,[TemplateID]
+			  ,[TemplateSurveyID]
+			  ,[TemplateSampleUnitID]
+			  ,[CAHPSSurveyTypeID]
+			  ,[CAHPSSurveySubtypeID]
+			  ,[RTSurveyTypeID]
+			  ,[RTSurveySubtypeID]
 			  ,[AsOfDate]
-			  ,[TargetClient_ID]
-			  ,[TargetStudy_ID]
-			  ,[TargetSurvey_ID]
-			  ,[Study_nm]
-			  ,[Study_desc]
-			  ,[Survey_nm]
-			  ,[SampleUnit_nm]
+			  ,[TargetClientID]
+			  ,[TargetStudyID]
+			  ,[TargetSurveyID]
+			  ,[StudyName]
+			  ,[StudyDescription]
+			  ,[SurveyName]
+			  ,[SampleUnitName]
 			  ,[MedicareNumber]
 			  ,[ContractNumber]
-			  ,[Survey_Start_Dt]
-			  ,[Survey_End_Dt]
-			  ,[Methodology_ID]
-			  ,[Language_ID]
+			  ,[SurveyStartDate]
+			  ,[SurveyEndDate]
+			  ,[MethodologyID]
+			  ,[LanguageID]
 			  ,[LoggedBy]
 			  ,getdate()
 			  ,null
 			  ,null
 		  FROM [RTPhoenix].[TemplateJob]
-		  WHERE [TemplateJob_ID] = @TemplateJob_ID
+		  WHERE [TemplateJobID] = @TemplateJob_ID
 
 	commit tran
 
 end try
 begin catch
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateJob_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 			SELECT @Template_ID, @TemplateJob_ID, @TemplateLogEntryError, 'Make Sample Units From Template Job did not succeed and was rolled back', SYSTEM_USER, GetDate()
 
 	UPDATE [RTPhoenix].[TemplateJob]
 	   SET [CompletedNotes] = 'Make Surveys From Template Job did not succeed and was rolled back: '+@CompletedNotes
 		  ,[CompletedAt] = GetDate()
-	 WHERE TemplateJob_ID = @TemplateJob_ID
+	 WHERE [TemplateJobID] = @TemplateJob_ID
 
 	rollback tran
 end catch
