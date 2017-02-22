@@ -42,7 +42,7 @@ begin
 	declare @EncDateStart datetime, @EncDateEnd datetime  
 	exec QCL_CreateHCHAPSRollingYear @PeriodDate, @EncDateStart OUTPUT, @EncDateEnd OUTPUT  
 	  
-	select count(he.pop_ID)  
+	select count(distinct he.pop_id)
 	from medicarelookup ml, sufacility sf, sampleunit su, EligibleEncLog hE , periodDef pd1, periodDates pd2  
 	where ml.medicareNumber = sf.MedicareNumber and  
 	  sf.SUFacility_ID = su.SuFacility_ID and  
@@ -74,7 +74,7 @@ as
 
 begin
 
-	Select count(pop_ID) from EligibleEncLog
+	Select count(distinct pop_ID) from EligibleEncLog
 	where Sampleset_ID = @Sampleset_ID and SampleUnit_ID = @SampleUnit_ID
 
 end
