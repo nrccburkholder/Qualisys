@@ -6,16 +6,12 @@ Chris Burkholder
 
 February 23, 2017
 
+INSERT MAILINGSTEPMETHOD
 INSERT STANDARDMETHODOLOGY
 INSERT STANDARDMETHODOLOGYBYSURVEYTYPE
+INSERT METHODOLOGYSTEPTYPE
+INSERT STANDARDMAILINGSTEP
 
-select * from StandardMethodology
-select * from StandardMethodologyBySurveyType
-select * from MethodologyStepType
-select * from StandardMailingStep
-select * from MailingStepMethod
-
-EXEC sp_helptext 'dbo.QCL_SelectAllMethodologyStepTypes'
 */
 
 USE [QP_Prod]
