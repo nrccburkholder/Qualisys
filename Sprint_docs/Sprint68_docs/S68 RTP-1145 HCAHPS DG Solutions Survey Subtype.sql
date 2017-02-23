@@ -20,7 +20,7 @@ GO
 
 if not exists (select * from subtype where subtype_nm = 'RT')
 insert into subtype (Subtype_nm,SubtypeCategory_id,bitRuleOverride,bitQuestionnaireRequired,bitActive)
-values ('RT',1,0,0,1)
+values ('RT',1,1,0,1)
 
 declare @RT int 
 select @RT = Subtype_id from subtype where subtype_nm = 'RT'
