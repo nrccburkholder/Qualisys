@@ -21,6 +21,7 @@ begin try
 	begin tran
 
 		  declare @TemplateJobType_ID int
+		  declare @MasterTemplateJob_ID int
 		  declare @Template_ID int
 		  declare @TemplateSurvey_ID int
 		  declare @TemplateSampleUnit_ID int		
@@ -61,6 +62,7 @@ begin try
 
 	SELECT 
 		  @TemplateJobType_ID = [TemplateJobTypeID]
+		  ,@MasterTemplateJob_ID = [MasterTemplateJobID]
 		  ,@Template_ID = [TemplateID]
 		  ,@TemplateSurvey_ID = [TemplateSurveyID]
 		  ,@TemplateSampleUnit_ID = [TemplateSampleUnitID]
@@ -410,132 +412,6 @@ begin try
 			'MAILINGSTEP template (newest MailingStep ID: '+
 			convert(nvarchar,Ident_Current('dbo.MailingStep'))+
 			') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
-
-	/* ----------- The MedicareLookup record must be pre-existing according to the code review on 2/6/2017 CJB
-
-	IF NOT EXISTS(select 1 from [dbo].[MedicareLookup] where MedicareNumber = @MedicareNumber)
-	BEGIN
-		INSERT INTO [dbo].[MedicareLookup] 
-				   ([MedicareNumber]
-				   ,[MedicareName]
-				   ,[Active]
-				   ,[MedicarePropCalcType_ID]
-				   ,[EstAnnualVolume]
-				   ,[EstRespRate]
-				   ,[EstIneligibleRate]
-				   ,[SwitchToCalcDate]
-				   ,[AnnualReturnTarget]
-				   ,[SamplingLocked]
-				   ,[ProportionChangeThreshold]
-				   ,[CensusForced]
-				   ,[PENumber]
-				   ,[SystematicAnnualReturnTarget]
-				   ,[SystematicEstRespRate]
-				   ,[SystematicSwitchToCalcDate]
-				   ,[NonSubmitting])
-		SELECT @MedicareNumber
-			  ,[MedicareName]
-			  ,ml.[Active]
-			  ,[MedicarePropCalcType_ID]
-			  ,[EstAnnualVolume]
-			  ,[EstRespRate]
-			  ,[EstIneligibleRate]
-			  ,[SwitchToCalcDate]
-			  ,[AnnualReturnTarget]
-			  ,[SamplingLocked]
-			  ,[ProportionChangeThreshold]
-			  ,[CensusForced]
-			  ,[PENumber]
-			  ,[SystematicAnnualReturnTarget]
-			  ,[SystematicEstRespRate]
-			  ,[SystematicSwitchToCalcDate]
-			  ,[NonSubmitting]
-		  FROM [RTPhoenix].[MedicareLookupTemplate] ml inner join
-		  [RTPhoenix].[SUFacilityTemplate] suf on ml.medicarenumber = suf.medicarenumber inner join
-		  [RTPhoenix].[SAMPLEUNITTemplate] su on suf.SUFacility_id = su.SUFacility_id inner join
-		  [RTPhoenix].[SAMPLEPLANTemplate] sp on su.SAMPLEPLAN_ID = sp.SAMPLEPLAN_ID inner join
-		  [RTPhoenix].[SURVEY_DEFTemplate] sd on sp.Survey_id = sd.SURVEY_ID
-		  where Study_id = @study_id
-
-		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
-			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
-				'MedicareLookup template table imported for study_id '+
-				convert(varchar,@TargetStudy_id), @user, GetDate())
-	END
-	*/
-  
-	IF NOT EXISTS(select 1 from [dbo].[SUFacility]
-				where MedicareNumber = @MedicareNumber)
-	BEGIN
-		INSERT INTO [dbo].[SUFacility]
-				   ([strFacility_nm]
-				   ,[City]
-				   ,[State]
-				   ,[Country]
-				   ,[Region_id]
-				   ,[AdmitNumber]
-				   ,[BedSize]
-				   ,[bitPeds]
-				   ,[bitTeaching]
-				   ,[bitTrauma]
-				   ,[bitReligious]
-				   ,[bitGovernment]
-				   ,[bitRural]
-				   ,[bitForProfit]
-				   ,[bitRehab]
-				   ,[bitCancerCenter]
-				   ,[bitPicker]
-				   ,[bitFreeStanding]
-				   ,[AHA_id]
-				   ,[MedicareNumber])
-		SELECT [strFacility_nm]
-			  ,[City]
-			  ,[State]
-			  ,[Country]
-			  ,[Region_id]
-			  ,[AdmitNumber]
-			  ,[BedSize]
-			  ,[bitPeds]
-			  ,[bitTeaching]
-			  ,[bitTrauma]
-			  ,[bitReligious]
-			  ,[bitGovernment]
-			  ,[bitRural]
-			  ,[bitForProfit]
-			  ,[bitRehab]
-			  ,[bitCancerCenter]
-			  ,[bitPicker]
-			  ,[bitFreeStanding]
-			  ,[AHA_id]
-			  ,@MedicareNumber
-		  FROM [RTPhoenix].[SUFacilityTemplate] suf inner join
-		  [RTPhoenix].[SAMPLEUNITTemplate] su on suf.SUFacility_id = su.SUFacility_id inner join
-		  [RTPhoenix].[SAMPLEPLANTemplate] sp on su.SAMPLEPLAN_ID = sp.SAMPLEPLAN_ID inner join
-		  [RTPhoenix].[SURVEY_DEFTemplate] sd on sp.Survey_id = sd.SURVEY_ID
-		  where Study_id = @study_id
-			AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
-
-		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
-			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
-				'SUFacility template (newest SUFacility ID: '+
-				convert(nvarchar,Ident_Current('dbo.SUFacility'))+
-				') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
-	END
-
-	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
-			select @Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
-			strFacility_nm + ' is SUFacility to be used for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate()
-			from [dbo].[SUFacility] where MedicareNumber = @MedicareNumber
-	if @@rowcount > 1
-	begin
-		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
-				select @Template_ID, @TemplateJob_ID, @TemplateLogEntryError, 
-				'More than one SUFacility found for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate()
-
-		commit tran
-
-		RETURN
-	end
 
 	INSERT INTO [dbo].[SAMPLEPLAN]
 			   ([ROOTSAMPLEUNIT_ID]
@@ -1005,6 +881,21 @@ begin try
 
 	--Determine if a MakeSampleUnitsFromTemplate job is needed and add (if so)
 
+	--First see if there are any SampleUnitJobs having the same parent as myself
+	--and if so, line up the ones belonging to this one (having a matching survey name)
+
+	if exists(select * from [RTPhoenix].[TemplateJob] tj inner join
+				dbo.survey_def sd on tj.[SurveyName] = sd.[STRSURVEY_NM]
+				where [MasterTemplateJobID] = @MasterTemplateJob_ID and [TemplateJobTypeID] = 3
+				  and sd.survey_id = @TargetSurvey_ID)
+		update [RTPhoenix].[TemplateJob] set
+			[TargetSurveyID] = @TargetSurvey_ID,
+			[TargetStudyID] = @TargetStudy_ID
+		from [RTPhoenix].[TemplateJob] tj inner join
+				dbo.survey_def sd on tj.[SurveyName] = sd.[STRSURVEY_NM]
+				where [MasterTemplateJobID] = @MasterTemplateJob_ID and [TemplateJobTypeID] = 3
+				  and sd.survey_id = @TargetSurvey_ID
+	else --no preexisting jobs so @TemplateSampleUnit_ID drives bulk or singleton creation
 	if @TemplateSampleUnit_ID = -1 -- if >0, then a survey ID, or -1 means all surveys
 		INSERT INTO [RTPhoenix].[TemplateJob]
 				   ([TemplateJobTypeID]

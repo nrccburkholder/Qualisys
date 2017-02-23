@@ -30,12 +30,19 @@ begin
 
 	declare @TemplateJob_ID int = 0
 
-	--Select top job and execute corresponding process for each job
+	--Select top job by Template Job Type and execute corresponding process for each job
 	while 1=1
 	begin
-		select @TemplateJob_ID = Min([TemplateJobID])
-		from [RTPhoenix].[TemplateJob]
-		where [CompletedAt] is null
+		select @TemplateJob_ID = Min([TemplateJobID]) from [RTPhoenix].[TemplateJob]
+		where [CompletedAt] is null and [TemplateJobtypeID] in (1,4) -- studies must be made first
+
+		if @TemplateJob_ID is null
+			select @TemplateJob_ID = Min([TemplateJobID]) from [RTPhoenix].[TemplateJob]
+			where [CompletedAt] is null and [TemplateJobtypeID] in (2) -- surveys must be made after studies/before sample units
+
+		if @TemplateJob_ID is null
+			select @TemplateJob_ID = Min([TemplateJobID]) from [RTPhoenix].[TemplateJob]
+			where [CompletedAt] is null -- sample units must be made after surveys
 
 		if @TemplateJob_ID is null
 			break

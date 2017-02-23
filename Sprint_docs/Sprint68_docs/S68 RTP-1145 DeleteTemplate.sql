@@ -24,13 +24,13 @@ begin try
 	  declare @TemplateLogEntryWarning int
 	  declare @TemplateLogEntryError int
 
-	  select @TemplateLogEntryInfo = TemplateLogEntryType_ID 
+	  select @TemplateLogEntryInfo = TemplateLogEntryTypeID 
 	  from RTPhoenix.TemplateLogEntryType where TemplateLogEntryTypeName = 'INFORMATIONAL'
 
-	  select @TemplateLogEntryWarning = TemplateLogEntryType_ID 
+	  select @TemplateLogEntryWarning = TemplateLogEntryTypeID 
 	  from RTPhoenix.TemplateLogEntryType where TemplateLogEntryTypeName = 'WARNING'
 
-	  select @TemplateLogEntryError = TemplateLogEntryType_ID 
+	  select @TemplateLogEntryError = TemplateLogEntryTypeID 
 	  from RTPhoenix.TemplateLogEntryType where TemplateLogEntryTypeName = 'ERROR'
 
 declare @user varchar(40) = SYSTEM_USER
@@ -38,11 +38,11 @@ declare @study_id int = 5852
 declare @client_id int
 select @client_id = client_id from RTPhoenix.studyTemplate where study_id = @study_id
 
-declare @Template_ID int
-select @Template_id = Template_id from RTPhoenix.Template where study_id = @study_id
+declare @TemplateID int
+select @TemplateID = TemplateID from RTPhoenix.Template where study_id = @study_id
 
-INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-     VALUES (@Template_ID, @TemplateLogEntryInfo, 'Begin Template Delete for study_id '+convert(varchar,@study_id), @user, GetDate())
+INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
+     VALUES (@TemplateID, @TemplateLogEntryInfo, 'Begin Template Delete for study_id '+convert(varchar,@study_id), @user, GetDate())
 
 delete RTPhoenix.Study_EmployeeTemplate
   where Study_id = @study_id
@@ -117,7 +117,7 @@ delete RTPhoenix.SUFacilityTemplate
 delete RTPhoenix.MedicareLookupTemplate
   FROM RTPhoenix.MedicareLookupTemplate ml left join
   RTPhoenix.SUFacilityTemplate suf on ml.medicarenumber = suf.medicarenumber 
-  where suf.medicarenumber is null --TODO: may want to put Template_ID on all tables...
+  where suf.medicarenumber is null --TODO: may want to put TemplateID on all tables...
 
 delete RTPhoenix.CriteriaInlistTemplate
   FROM RTPhoenix.CriteriaInlistTemplate ci inner join
@@ -250,15 +250,15 @@ delete rtphoenix.PackageQLTemplate
 delete RTPhoenix.Template
 where study_id = @study_id
 
-INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryType_ID], [Template_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-     VALUES (@TemplateLogEntryInfo, @Template_ID, 'Template Deleted for study_id '+convert(varchar,@study_id), @user, GetDate())
+INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryTypeID], [TemplateID], [Message] ,[LoggedBy] ,[LoggedAt])
+     VALUES (@TemplateLogEntryInfo, @TemplateID, 'Template Deleted for study_id '+convert(varchar,@study_id), @user, GetDate())
 
 commit tran
 
 end try
 begin catch
-	INSERT INTO [RTPhoenix].[TemplateLog]([Template_ID], [TemplateLogEntryType_ID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 SELECT @Template_ID, @TemplateLogEntryError, 'Delete Template did not succeed and was rolled back', SYSTEM_USER, GetDate()
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 SELECT @TemplateID, @TemplateLogEntryError, 'Delete Template did not succeed and was rolled back', SYSTEM_USER, GetDate()
 
 	rollback tran
 end catch

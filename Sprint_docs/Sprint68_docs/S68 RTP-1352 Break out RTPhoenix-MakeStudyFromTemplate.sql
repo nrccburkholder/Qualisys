@@ -157,22 +157,6 @@ begin try
 		RETURN
 	end
 
-	IF NOT EXISTS(select 1 from [dbo].[MedicareLookup] where MedicareNumber = @MedicareNumber)
-	begin
-		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
-			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryError, 'MedicareNumber ('+@MedicareNumber+') not found for TemplateJob_ID: '+convert(varchar,@TemplateJob_id), @user, GetDate())
-
-		UPDATE [RTPhoenix].[TemplateJob]
-		   SET [CompletedNotes] = 'Medicare Number not found for TemplateJob_ID: '+convert(varchar,@TemplateJob_id)
-			  ,[CompletedAt] = GetDate()
-		 WHERE [TemplateJobID] = @TemplateJob_ID
-
-		commit tran
-		
-		RETURN
-	end
-
-
 	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 		 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 'Template to Import Found: '+convert(varchar,@Template_id), @user, GetDate())
 
@@ -647,6 +631,16 @@ end catch
 
 	--Determine if a MakeSurveysFromTemplate job is needed and add (if so)
 
+	--First, there may be preexisting Make Survey Jobs that are children of this Make Study master job
+
+	if exists(select * from [RTPhoenix].[TemplateJob] 
+				where [MasterTemplateJobID] = @TemplateJob_ID and [TemplateJobTypeID] = 2)
+		update [RTPhoenix].[TemplateJob] set
+			[TargetStudyID] = @TargetStudy_ID,
+			[TargetClientID] = @TargetClient_ID
+		from [RTPhoenix].[TemplateJob]
+		where [MasterTemplateJobID] = @TemplateJob_ID and [TemplateJobTypeID] = 2
+	else --no preexisting jobs so @TemplateSurvey_ID drives bulk or singleton creation
 	if @TemplateSurvey_ID = -1 -- -1 means all surveys
 		INSERT INTO [RTPhoenix].[TemplateJob]
 				   ([TemplateJobTypeID]

@@ -29,7 +29,7 @@ begin try
 		  --declare @RTSurveyType_ID int
 		  --declare @RTSurveySubtype_ID int
 		  --declare @AsOfDate datetime
-		  --declare @TargetClient_ID int
+		  declare @TargetClient_ID int
 		  declare @TargetStudy_ID int
 		  --declare @TargetSurvey_ID int
 		  --declare @Study_nm varchar(10)
@@ -69,7 +69,7 @@ begin try
 		  --,@RTSurveyType_ID = [RTSurveyTypeID]
 		  --,@RTSurveySubtype_ID = [RTSurveySubtypeID]
 		  --,@AsOfDate = ISNULL([AsOfDate], GetDate())
-		  --,@TargetClient_ID = [TargetClientID]
+		  ,@TargetClient_ID = [TargetClientID]
 		  ,@TargetStudy_id = [TargetStudyID]
 		  --,@TargetSurvey_id = [TargetStudyID]
 		  --,@Study_nm = [StudyName]
@@ -110,6 +110,101 @@ begin try
 	  where [TemplateID] = @Template_ID
 		and [Active] = 1
 
+	-- if @MedicareNumber is null, we assume this Sample Unit is not for CAHPS and continue
+	-- if @MedicareNumber is not null, and does not exist in MedicareLookup this is an error
+	
+	IF @MedicareNumber is not null and NOT EXISTS(select 1 from [dbo].[MedicareLookup] where MedicareNumber = @MedicareNumber)
+	begin
+		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
+			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryError, 'MedicareNumber ('+@MedicareNumber+') not found for TemplateJob_ID: '+convert(varchar,@TemplateJob_id), @user, GetDate())
+
+		UPDATE [RTPhoenix].[TemplateJob]
+		   SET [CompletedNotes] = 'Medicare Number not found for TemplateJob_ID: '+convert(varchar,@TemplateJob_id)
+			  ,[CompletedAt] = GetDate()
+		 WHERE [TemplateJobID] = @TemplateJob_ID
+
+		commit tran
+		
+		RETURN
+	end
+
+	IF @MedicareNumber is not null and NOT EXISTS(select 1 from [dbo].[SUFacility]
+				where MedicareNumber = @MedicareNumber)
+	BEGIN
+		INSERT INTO [dbo].[SUFacility]
+				   ([strFacility_nm]
+				   ,[City]
+				   ,[State]
+				   ,[Country]
+				   ,[Region_id]
+				   ,[AdmitNumber]
+				   ,[BedSize]
+				   ,[bitPeds]
+				   ,[bitTeaching]
+				   ,[bitTrauma]
+				   ,[bitReligious]
+				   ,[bitGovernment]
+				   ,[bitRural]
+				   ,[bitForProfit]
+				   ,[bitRehab]
+				   ,[bitCancerCenter]
+				   ,[bitPicker]
+				   ,[bitFreeStanding]
+				   ,[AHA_id]
+				   ,[MedicareNumber])
+		SELECT LEFT(db0.[MedicareName],100)
+			  ,[City]
+			  ,[State]
+			  ,[Country]
+			  ,[Region_id]
+			  ,[AdmitNumber]
+			  ,[BedSize]
+			  ,[bitPeds]
+			  ,[bitTeaching]
+			  ,[bitTrauma]
+			  ,[bitReligious]
+			  ,[bitGovernment]
+			  ,[bitRural]
+			  ,[bitForProfit]
+			  ,[bitRehab]
+			  ,[bitCancerCenter]
+			  ,[bitPicker]
+			  ,[bitFreeStanding]
+			  ,[AHA_id]
+			  ,@MedicareNumber
+		  FROM [RTPhoenix].[SUFacilityTemplate] suf inner join
+		  [RTPhoenix].[SAMPLEUNITTemplate] su on suf.SUFacility_id = su.SUFacility_id inner join
+		  [RTPhoenix].[SAMPLEPLANTemplate] sp on su.SAMPLEPLAN_ID = sp.SAMPLEPLAN_ID inner join
+		  [RTPhoenix].[SURVEY_DEFTemplate] sd on sp.Survey_id = sd.SURVEY_ID inner join
+		  [dbo].[MedicareLookup] db0 on db0.MedicareNumber = @MedicareNumber
+		  where Study_id = @study_id
+			AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
+
+		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
+			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
+				'SUFacility template (newest SUFacility ID: '+
+				convert(nvarchar,Ident_Current('dbo.SUFacility'))+
+				') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+
+		INSERT INTO [dbo].[ClientSUFacilityLookup]([client_ID], [SUFacility_ID])
+			VALUES(@TargetClient_ID, Ident_Current('dbo.SUFacility'))
+	END
+
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
+			select @Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
+			strFacility_nm + ' is SUFacility to be used for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate()
+			from [dbo].[SUFacility] where MedicareNumber = @MedicareNumber
+	if @@rowcount > 1
+	begin
+		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
+				select @Template_ID, @TemplateJob_ID, @TemplateLogEntryError, 
+				'More than one SUFacility found for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate()
+
+		commit tran
+
+		RETURN
+	end
+
 	--Add Sample Unit(s) here
 
 	INSERT INTO [dbo].[SAMPLEUNIT]
@@ -132,7 +227,7 @@ begin try
 			   ,[DontSampleUnit]
 			   ,[CAHPSType_id]
 			   ,[bitLowVolumeUnit])
-	SELECT db01.[CRITERIASTMT_ID] 
+	SELECT null --db01.[CRITERIASTMT_ID] --fill in later from job, else get from template
 		  ,db02.[SAMPLEPLAN_ID]
 		  ,null --[PARENTSAMPLEUNIT_ID] --fill in later from template
 		  ,su.[STRSAMPLEUNIT_NM]--insert new sample unit name here only after inner joins dependent on the template's sample unit name
@@ -160,14 +255,14 @@ begin try
 	  [RTPhoenix].[SAMPLEPLANTemplate] sp on su.SAMPLEPLAN_ID = sp.SAMPLEPLAN_ID inner join
 	  [RTPhoenix].[SURVEY_DEFTemplate] sd on sp.Survey_id = sd.SURVEY_ID inner join
 			[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm inner join
-			[dbo].[SamplePlan] db02 on db02.survey_id = db0.survey_id inner join
+			[dbo].[SamplePlan] db02 on db02.survey_id = db0.survey_id /*inner join
 			[dbo].[CriteriaStmt] db01 on cs.STRCRITERIASTMT_NM = db01.STRCRITERIASTMT_NM and
-						convert(varchar,cs.strCriteriaString) = convert(varchar,db01.strCriteriaString) 
+						convert(varchar,cs.strCriteriaString) = convert(varchar,db01.strCriteriaString) */
 					left join
 			[dbo].[SUFacility] db04 on su.SUFacility_id <> 0 and 
 						db04.MedicareNumber = @MedicareNumber
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id and
-			cs.study_id = @study_id and db01.study_id = @TargetStudy_id
+			cs.study_id = @study_id --and db01.study_id = @TargetStudy_id
 	  AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 	  AND ((@TemplateSampleUnit_ID = -1) OR (su.SampleUnit_ID = @TemplateSampleUnit_ID))
 
@@ -293,7 +388,11 @@ begin try
 	if (@TemplateSampleUnit_ID > 0) --specific TemplateSampleUnit_ID  yields a specific TargetSampleUnit_ID
 	begin
 		UPDATE [dbo].[SampleUnit]
-		set [STRSAMPLEUNIT_NM] = IsNull(@SampleUnit_nm, [STRSAMPLEUNIT_NM])
+		set [STRSAMPLEUNIT_NM] = 
+			CASE WHEN @MedicareNumber is not null 
+				THEN 'HCAHPS-'+@MedicareNumber 
+				ELSE IsNull(@SampleUnit_nm, [STRSAMPLEUNIT_NM])
+			END
 		from [dbo].[SampleUnit]
 		where [SampleUnit_ID] = @TemplateSurvey_ID
 	end
