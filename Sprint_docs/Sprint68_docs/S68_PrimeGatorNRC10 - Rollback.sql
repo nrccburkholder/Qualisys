@@ -16,8 +16,3 @@ Sprint 68 SQLCMD Rollback Script for Prime/Gator/NRC10
 
 :r "\ATLASRelease68\Sprint68_docs\S68 ATL-1404 IsHomeless Metafield - ROLLBACK.sql"
 
-:r "\ATLASRelease68\Sprint68_docs\S68 RTP-1145 Automate the study data structure creation process for an HCAHPS client - Rollback.sql"
-
-:r "\ATLASRelease68\Sprint68_docs\S68 RTP-1145 ee_makebigview - Rollback.sql"
-
-:r "\ATLASRelease68\Sprint68_docs\S68 RTP-1145 HCAHPS DG Solutions Survey Subtype - Rollback.sql"
