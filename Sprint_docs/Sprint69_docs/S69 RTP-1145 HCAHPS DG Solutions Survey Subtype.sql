@@ -25,27 +25,25 @@ values ('RT',1,1,0,1)
 declare @RT int 
 select @RT = Subtype_id from subtype where subtype_nm = 'RT'
 
-if not exists (select * from surveytypesubtype where surveytype_id = 2)
+if not exists (select * from surveytypesubtype where surveytype_id = 2 and Subtype_id = @RT)
 insert into SurveyTypeSubType(SurveyType_id,Subtype_id)
 values (2, @RT)
 
 GO
 
-/****** Object:  Trigger [dbo].[tr_MailingStep_ExpireFromStep]    Script Date: 1/31/2017 11:19:26 AM ******/
-/*
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-ALTER TRIGGER [dbo].[tr_MailingStep_ExpireFromStep] ON [dbo].[MAILINGSTEP] 
-FOR INSERT
-AS
+if not exists (select * from subtype where subtype_nm = 'IP')
+insert into subtype (Subtype_nm,SubtypeCategory_id,bitRuleOverride,bitQuestionnaireRequired,bitActive)
+values ('IP',1,0,0,1)
 
-IF exists (SELECT 1 FROM Inserted where ExpireFromStep IS NULL) 
-UPDATE ms
-SET ms.ExpireFromStep=i.MailingStep_id
-FROM MailingStep ms, Inserted i
-WHERE i.MailingStep_id=ms.MailingStep_id
+declare @IP int 
+select @IP = Subtype_id from subtype where subtype_nm = 'IP'
+
+declare @Connect int
+select @Connect = SurveyType_ID from SurveyType where SurveyType_dsc = 'Connect'
+
+if not exists (select * from surveytypesubtype where surveytype_id = @Connect and Subtype_id = @IP)
+insert into SurveyTypeSubType(SurveyType_id,Subtype_id)
+values (@Connect, @IP)
 
 GO
-*/
+
