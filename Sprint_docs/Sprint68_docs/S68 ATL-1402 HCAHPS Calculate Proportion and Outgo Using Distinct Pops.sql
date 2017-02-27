@@ -42,15 +42,22 @@ begin
 	declare @EncDateStart datetime, @EncDateEnd datetime  
 	exec QCL_CreateHCHAPSRollingYear @PeriodDate, @EncDateStart OUTPUT, @EncDateEnd OUTPUT  
 	  
-	select count(distinct he.pop_id)
-	from medicarelookup ml, sufacility sf, sampleunit su, EligibleEncLog hE , periodDef pd1, periodDates pd2  
-	where ml.medicareNumber = sf.MedicareNumber and  
-	  sf.SUFacility_ID = su.SuFacility_ID and  
-	  su.Sampleunit_ID = he.sampleunit_ID and  
-	  pd1.periodDef_Id = pd2.PeriodDef_ID and  
-	  pd2.sampleset_ID = he.sampleset_ID and  
-	  pd1.datExpectedEncStart >= @EncDateStart and pd1.datExpectedEncEnd <= @EncDateEnd and   
-	  ml.medicareNumber = @MedicareNumber  
+    select datepart(month, pd1.datExpectedEncStart) as encmonth, 
+    datepart(year, pd1.datExpectedEncStart) as encyear,
+    count(distinct he.pop_id) as countpops  --was count(he.enc_ID) 
+    into #countsbymonth
+    from qp_prod.dbo.medicarelookup ml, qp_prod.dbo.sufacility sf, qp_prod.dbo.sampleunit su, 
+    qp_prod.dbo.EligibleEncLog hE , qp_prod.dbo.periodDef pd1, qp_prod.dbo.periodDates pd2  
+    where ml.medicareNumber = sf.MedicareNumber and  
+        sf.SUFacility_ID = su.SuFacility_ID and  
+        su.Sampleunit_ID = he.sampleunit_ID and  
+        pd1.periodDef_Id = pd2.PeriodDef_ID and  
+        pd2.sampleset_ID = he.sampleset_ID and  
+        pd1.datExpectedEncStart >= @EncDateStart and pd1.datExpectedEncEnd <= @EncDateEnd and   
+        ml.medicareNumber = @MedicareNumber  
+        group by datepart(month, pd1.datExpectedEncStart), datepart(year, pd1.datExpectedEncStart)
+
+    select sum(countpops) from #countsbymonth
 end
 
 GO
