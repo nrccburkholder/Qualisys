@@ -29,6 +29,10 @@
 	CREATE procedure GetCGCAHPSdata3_sub_Child12MonthA
 	CREATE procedure GetCGCAHPSdata3_sub_Child12MonthB
 
+	create PROCEDURE	[dbo].[GetCGCAHPSdata2_sub_Child6Monthb]
+	create PROCEDURE	dbo.GetCGCAHPSdata2_sub_Child6Month30b
+	create PROCEDURE	dbo.GetCGCAHPSdata2_sub_Child6MonthPCMHb
+
 	Tim Butler
 */
 use qp_comments
@@ -1018,7 +1022,9 @@ from #results r
 -- according to client services "Looking at what is currently on the survey in Qualisys would be our best option.  The core numbers shouldn’t change."
 -- that said, if the survey was using different questions at the time of fielding or didn't ask one of these questions at all - this might crash.
 declare @sql nvarchar(4000)
-if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (44234,44235))
+
+if exists (select name as col_nm from tempdb.sys.columns 
+	where object_id = object_id('tempdb..#Study_Results') and name in ('Q044234','Q044235')) 
  set @SQL =
  N'update r set
   Q51  = case isnull(q044234,-9) when -9 then ''M'' when -8 then ''H'' else cast(Q044234%10000 as varchar) end,
@@ -1027,7 +1033,8 @@ if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_
   Q52c = case isnull(q044235c,-9) when -9 then 0 else 1 end,
   Q52d = case isnull(q044235d,-9) when -9 then 0 else 1 end,
   Q52e = case isnull(q044235e,-9) when -9 then 0 else 1 end'
-else
+else if exists (select name as col_nm from tempdb.sys.columns 
+	where object_id = object_id('tempdb..#Study_Results') and name in ('Q048664','Q048665')) 
  set @SQL =
  N'update r set
   Q51  = case isnull(q048664,-9) when -9 then ''M'' when -8 then ''H'' else cast(Q048664%10000 as varchar) end,
@@ -1298,9 +1305,9 @@ set @sql = 'update r set
 	inner join #Big_Table bt on r.samplepop_id=bt.samplepop_id and r.sampleunit_id=bt.sampleunit_id
 	left outer join #Study_Results sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id'
 
-if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (50699))
+if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q050699')) 
 	set @sql = replace(@sql,'XXXXX','50699')
-else if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (50242))
+else if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q050242')) 
 	set @sql = replace(@sql,'XXXXX','50242')
 
 if @sql not like '%XXXXX%'
@@ -1554,7 +1561,8 @@ from #results r
 -- that said, if the survey was using different questions at the time of fielding or didn't ask one of these questions at all - this might crash.
 declare @sql nvarchar(4000)
 
-if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (50256,50257))
+if exists (select name as col_nm from tempdb.sys.columns 
+	where object_id = object_id('tempdb..#Study_Results') and name in ('Q050256','Q050257')) 
  set @SQL =
  N'update r set
   Q51  = case isnull(q050256,-9) when -9 then ''M'' when -8 then ''H'' else cast(q050256%10000 as varchar) end,
@@ -1563,7 +1571,8 @@ if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_
   Q52c = case isnull(q050257c,-9) when -9 then 0 else 1 end,
   Q52d = case isnull(q050257d,-9) when -9 then 0 else 1 end,
   Q52e = case isnull(q050257e,-9) when -9 then 0 else 1 end,'
-else if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (44234,44235))
+else if exists (select name as col_nm from tempdb.sys.columns 
+	where object_id = object_id('tempdb..#Study_Results') and name in ('Q044234','Q044235'))
  set @SQL =
  N'update r set
   Q51  = case isnull(q044234,-9) when -9 then ''M'' when -8 then ''H'' else cast(Q044234%10000 as varchar) end,
@@ -1572,7 +1581,8 @@ else if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@su
   Q52c = case isnull(q044235c,-9) when -9 then 0 else 1 end,
   Q52d = case isnull(q044235d,-9) when -9 then 0 else 1 end,
   Q52e = case isnull(q044235e,-9) when -9 then 0 else 1 end,'
-else
+else if exists (select name as col_nm from tempdb.sys.columns 
+	where object_id = object_id('tempdb..#Study_Results') and name in ('Q048664','Q048665'))
  set @SQL =
  N'update r set
   Q51  = case isnull(q048664,-9) when -9 then ''M'' when -8 then ''H'' else cast(Q048664%10000 as varchar) end,
@@ -1582,10 +1592,10 @@ else
   Q52d = case isnull(q048665d,-9) when -9 then 0 else 1 end,
   Q52e = case isnull(q048665e,-9) when -9 then 0 else 1 end,'
 
-if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (50699))
+if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q050699'))
  set @sql = @SQL + N'
   Q47  = case isnull(Q050699,-9) when -9 then ''M'' when -8 then ''H'' else cast(Q050699%10000 as varchar) end'
-else if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (50242))
+else if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q050242'))
  set @sql = @SQL + N'
   Q47  = case isnull(Q050242,-9) when -9 then ''M'' when -8 then ''H'' else cast(Q050242%10000 as varchar) end'
 
@@ -1851,7 +1861,7 @@ from #results r
 --If it's a phone survey, it won't have the last two "helped" questions, (cores 40716 & 39162)
 --So we populate those columns with the appropriate values for "missing" or "appropriately skipped"
 declare @sql nvarchar(4000)
-if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (40716,39162))
+if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q040716','Q039162'))
  set @SQL =
  N'update r set
   Q36  = case isnull(q040716,-9) when -9 then ''M'' when -8 then ''H'' else cast(Q040716%10000 as varchar) end,
@@ -2195,7 +2205,8 @@ from #results r
 -- according to client services "Looking at what is currently on the survey in Qualisys would be our best option.  The core numbers shouldn’t change."
 -- that said, if the survey was using different questions at the time of fielding or didn't ask one of these questions at all - this might crash.
 declare @SQL nvarchar(4000)
-if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (46325,46328,46329,46330))
+if exists (select name as col_nm from tempdb.sys.columns 
+	where object_id = object_id('tempdb..#Study_Results') and name in ('Q046325','Q046328','Q046329','Q046330'))
  set @SQL = N'
  update r set
   Q61  = case isnull(q046325,-9) when -9 then ''M'' when -8 then ''H'' else cast(Q046325%10000 as varchar) end,
@@ -2206,7 +2217,8 @@ if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_
   Q66c = case isnull(q046330c,-9) when -9 then 0 else 1 end,
   Q66d = case isnull(q046330d,-9) when -9 then 0 else 1 end,
   Q66e = case isnull(q046330e,-9) when -9 then 0 else 1 end'
-else
+else if exists (select name as col_nm from tempdb.sys.columns 
+	where object_id = object_id('tempdb..#Study_Results') and name in ('Q048856','Q048666','Q048667','Q048668'))
  set @SQL = N'
  update r set
   Q61  = case isnull(q048856,-9) when -9 then ''M'' when -8 then ''H'' else cast(Q048856%10000 as varchar) end,
@@ -2572,7 +2584,8 @@ exec(@SQL)
 -- check which cores currently appear in sel_qstns.
 -- according to client services "Looking at what is currently on the survey in Qualisys would be our best option.  The core numbers shouldn’t change."
 -- that said, if the survey was using different questions at the time of fielding or didn't ask one of these questions at all - this might crash.
-if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (50531))
+if exists (select name as col_nm from tempdb.sys.columns 
+	where object_id = object_id('tempdb..#Study_Results') and name in ('Q050531'))
  set @SQL = N'
  update r set
   Q49a = case isnull(q050531a,-9) when -9 then 0 else 1 end,
@@ -2581,7 +2594,8 @@ if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_
   Q49d = case isnull(q050531d,-9) when -9 then 0 else 1 end,
   Q49e = case isnull(q050531e,-9) when -9 then 0 else 1 end,
   Q49f = 0,'
-else
+else if exists (select name as col_nm from tempdb.sys.columns 
+	where object_id = object_id('tempdb..#Study_Results') and name in ('Q052325'))
  set @SQL = N'
  update r set
   Q49a = case isnull(q052325a,-9) when -9 then 0 else 1 end,
@@ -2926,7 +2940,8 @@ exec(@SQL)
 -- according to client services "Looking at what is currently on the survey in Qualisys would be our best option.  The core numbers shouldn’t change."
 -- that said, if the survey was using different questions at the time of fielding or didn't ask one of these questions at all - this might crash.
 
-if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore=50531)
+if exists (select name as col_nm from tempdb.sys.columns 
+	where object_id = object_id('tempdb..#Study_Results') and name in ('Q050531'))
  set @SQL = N'
  update r set
   Q60a = case isnull(q050531a,-9) when -9 then 0 else 1 end,
@@ -2935,7 +2950,8 @@ if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_
   Q60d = case isnull(q050531d,-9) when -9 then 0 else 1 end,
   Q60e = case isnull(q050531e,-9) when -9 then 0 else 1 end,
   Q60f = 0,'
-else if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore=52325)
+else if exists (select name as col_nm from tempdb.sys.columns 
+	where object_id = object_id('tempdb..#Study_Results') and name in ('Q052325'))
  set @SQL = N'
  update r set
   Q60a = case isnull(q052325a,-9) when -9 then 0 else 1 end,
@@ -2949,15 +2965,15 @@ else
 
 --At the time of this writing, many surveys don't yet contain question 50536 or 50537.
 --  So check for its existence.
-if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore=50536)
+if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q050536'))
  set @SQL = @sql + N'
   Q65  = case isnull(Q050536 ,-9) when -9 then ''M'' when -8 then ''H'' else cast(Q050536%10000 as varchar) end,'
 else
  set @SQL = @SQL + N'
   Q65 = ''M'','
   
-if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore=50537)
-	and exists (select name as col_nm
+if --exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore=50537) and 
+	exists (select name as col_nm
 			   from tempdb.sys.columns
 			   where object_id = object_id('tempdb..#Study_Results') and name like '%50537%')
  set @SQL = @sql + N'
@@ -3140,9 +3156,6 @@ go
 if exists (select * from sys.procedures where name = 'GetCGCAHPSdata3_sub_Adult6Month30A')
 	drop procedure GetCGCAHPSdata3_sub_Adult6Month30A
 go
-if exists (select * from sys.procedures where name = 'GetCGCAHPSdata3_sub_Adult6Month30B')
-	drop procedure GetCGCAHPSdata3_sub_Adult6Month30B
-go
 create procedure dbo.GetCGCAHPSdata3_sub_Adult6Month30A
 as
 alter table #results add
@@ -3193,6 +3206,9 @@ alter table #results add
 	PCMH5_Q22	char(1),	--Q050553
 	PCMH6_Q23	char(1)		--Q050557
 
+go
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata3_sub_Adult6Month30B')
+	drop procedure GetCGCAHPSdata3_sub_Adult6Month30B
 go
 create procedure dbo.GetCGCAHPSdata3_sub_Adult6Month30B
  @survey_id INT,
@@ -3270,29 +3286,45 @@ update r set
  left outer join #Study_Results sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id
  inner join #tmp_mncm_mailsteps tmm on tmm.samplepop_id = sr.samplepop_id and tmm.sampleunit_id = sr.sampleunit_id
 
- if @surveytype = 21
- begin
+declare @SQL nvarchar(4000)
+
+if @surveytype = 21
  --PCMH
+	begin
+	set @SQL = N'
 	 update r set
-	PCMH1_Q9= case isnull(Q050542,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050542%10000 as varchar) end,
-	PCMH2_Q19= case isnull(Q050550,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050550%10000 as varchar) end,
-	PCMH3_Q20= case isnull(Q050551,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050551%10000 as varchar) end,
-	PCMH4_Q21= case isnull(Q050552,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050552%10000 as varchar) end,
-	PCMH5_Q22= case isnull(Q050553,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050553%10000 as varchar) end,
-	PCMH6_Q23= case isnull(Q050557,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050557%10000 as varchar) end
+	PCMH1_Q9= case isnull(Q050542,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050542%10000 as varchar) end,
+	PCMH2_Q19= case isnull(Q050550,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050550%10000 as varchar) end,
+	PCMH3_Q20= case isnull(Q050551,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050551%10000 as varchar) end,
+	PCMH4_Q21= case isnull(Q050552,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050552%10000 as varchar) end,
+	PCMH5_Q22= case isnull(Q050553,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050553%10000 as varchar) end,
+	PCMH6_Q23= case isnull(Q050557,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050557%10000 as varchar) end
+	from #results r
+	 inner join #Big_Table bt on r.samplepop_id=bt.samplepop_id and r.sampleunit_id=bt.sampleunit_id
+	 left outer join #Study_Results sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id
+	 inner join #tmp_mncm_mailsteps tmm on tmm.samplepop_id = sr.samplepop_id and tmm.sampleunit_id = sr.sampleunit_id'
+
+	exec (@SQL)
+
+	end
+else
+	update r set
+	PCMH1_Q9= 'M',
+	PCMH2_Q19= 'M',
+	PCMH3_Q20= 'M',
+	PCMH4_Q21= 'M',
+	PCMH5_Q22= 'M',
+	PCMH6_Q23= 'M'
 	from #results r
 	 inner join #Big_Table bt on r.samplepop_id=bt.samplepop_id and r.sampleunit_id=bt.sampleunit_id
 	 left outer join #Study_Results sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id
 	 inner join #tmp_mncm_mailsteps tmm on tmm.samplepop_id = sr.samplepop_id and tmm.sampleunit_id = sr.sampleunit_id
 
-end
-declare @SQL nvarchar(4000)
-
-if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (50253))
+if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q050253'))
  set @SQL =  N'
   update r set
   Q28  = case isnull(Q050253,-9) when -9 then ''M'' when -8 then ''H'' else cast(Q050253%10000 as varchar) end'
-else if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (55064))
+else if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q055064'))
  set @SQL =  N'
   update r set
   Q28  = case isnull(Q055064,-9) when -9 then ''M'' when -8 then ''H'' else cast(Q055064%10000 as varchar) end'
@@ -3307,12 +3339,12 @@ EXEC sp_executesql @SQL, N'@begindate datetime, @enddate datetime, @survey_id in
 
 
 
-if exists (select name as col_nm
-   from tempdb.sys.columns
-   where object_id = object_id('tempdb..#Study_Results') and name like '%55065%')
+--if exists (select name as col_nm
+--   from tempdb.sys.columns
+--   where object_id = object_id('tempdb..#Study_Results') and name like '%55065%')
 
 
-if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (55065))
+if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q055065'))
 begin
 
 	 set @SQL = N'
@@ -3324,9 +3356,8 @@ begin
 	 Q29e  = case isnull(q055065e,-9) when -9 then 0 else 1 end,
 	 Q29f  = 0'
 end
-else
+else if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q050255'))
 begin
-
 	 set @SQL = N'
 	 update r set
 	 Q29a  = case isnull(Q050255a,-9) when -9 then 0 else 1 end,
@@ -3374,7 +3405,8 @@ update #results set Q20  = 'S'  where Q20  = 'M'  and (Q1='2' or Q4='1' or Q19='
 update #results set Q21  = 'S'  where Q21  = 'M'  and (Q1='2' or Q4='1')
 update #results set Q22  = 'S'  where Q22  = 'M'  and (Q1='2' or Q4='1')
 
- if @surveytype = 21
+ if @surveytype = 21 and exists (select name as col_nm from tempdb.sys.columns 
+							where object_id = object_id('tempdb..#Study_Results') and name in ('Q050542'))
  begin
 --PCMH
 	update #results set PCMH1_Q9  = 'S'  where PCMH1_Q9  = 'M'  and (Q1='2' or Q4='1')
@@ -3446,9 +3478,6 @@ go
 if exists (select * from sys.procedures where name = 'GetCGCAHPSdata3_sub_Child6Month30a')
 	drop procedure GetCGCAHPSdata3_sub_Child6Month30a
 go
-if exists (select * from sys.procedures where name = 'GetCGCAHPSdata3_sub_Child6Month30b')
-	drop procedure GetCGCAHPSdata3_sub_Child6Month30b
-go
 create procedure dbo.GetCGCAHPSdata3_sub_Child6Month30a
 as
 alter table #results add
@@ -3512,6 +3541,10 @@ alter table #results add
 	PCMH9_Q33	    char(1),	-- Q050521
 	PCMH10_Q34	    char(1)		-- Q050522
 
+go
+
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata3_sub_Child6Month30b')
+	drop procedure GetCGCAHPSdata3_sub_Child6Month30b
 go
 create procedure dbo.GetCGCAHPSdata3_sub_Child6Month30b
  @survey_id INT,
@@ -3614,24 +3647,45 @@ inner join #Big_Table bt on r.samplepop_id=bt.samplepop_id and r.sampleunit_id=b
 left outer join #Study_Results sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id
 inner join #tmp_mncm_mailsteps tmm on tmm.samplepop_id = sr.samplepop_id and tmm.sampleunit_id = sr.sampleunit_id
 
+declare @SQL nvarchar(4000)
+
   if @surveytype = 22
  begin
  -- PCMH
+	set @SQL = N'
 	update r set
-	 PCMH1_Q16   = case isnull(Q050630,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050630%10000 as varchar) end,
-	 PCMH2_Q26   = case isnull(Q050634,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050634%10000 as varchar) end,
-	 PCMH3_Q27   = case isnull(Q050635,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050635%10000 as varchar) end,
-	 PCMH4_Q28   = case isnull(Q050514,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050514%10000 as varchar) end,
-	 PCMH5_Q29   = case isnull(Q050515,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050515%10000 as varchar) end,
-	 PCMH6_Q30   = case isnull(Q050516,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050516%10000 as varchar) end,
-	 PCMH7_Q31   = case isnull(Q050517,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050517%10000 as varchar) end,
-	 PCMH8_Q32   = case isnull(Q050520,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050520%10000 as varchar) end,
-	 PCMH9_Q33   = case isnull(Q050521,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050521%10000 as varchar) end,
-	 PCMH10_Q34   = case isnull(Q050522,-9)  when -9 then 'M' when -8 then 'H' else cast(Q050522%10000 as varchar) end
+	 PCMH1_Q16   = case isnull(Q050630,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050630%10000 as varchar) end,
+	 PCMH2_Q26   = case isnull(Q050634,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050634%10000 as varchar) end,
+	 PCMH3_Q27   = case isnull(Q050635,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050635%10000 as varchar) end,'
+	 
+	if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q050514'))
+		 set @SQL = @SQL + 'PCMH4_Q28   = case isnull(Q050514,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050514%10000 as varchar) end,'
+	else set @SQL = @SQL + 'PCMH4_Q28   = ''M'','
+	if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q050515'))
+		 set @SQL = @SQL + 'PCMH5_Q29   = case isnull(Q050515,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050515%10000 as varchar) end,'
+	else set @SQL = @SQL + 'PCMH5_Q29   = ''M'','
+	if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q050516'))
+		 set @SQL = @SQL + 'PCMH6_Q30   = case isnull(Q050516,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050516%10000 as varchar) end,'
+	else set @SQL = @SQL + 'PCMH6_Q30   = ''M'','
+	if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q050517'))
+		 set @SQL = @SQL + 'PCMH7_Q31   = case isnull(Q050517,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050517%10000 as varchar) end,'
+	else set @SQL = @SQL + 'PCMH7_Q31   = ''M'','
+	if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q050520'))
+		 set @SQL = @SQL + 'PCMH8_Q32   = case isnull(Q050520,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050520%10000 as varchar) end,'
+	else set @SQL = @SQL + 'PCMH8_Q32   = ''M'','
+	if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q050521'))
+		 set @SQL = @SQL + 'PCMH9_Q33   = case isnull(Q050521,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050521%10000 as varchar) end,'
+	else set @SQL = @SQL + 'PCMH9_Q33   = ''M'','
+	if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q050522'))
+		 set @SQL = @SQL + '	 PCMH10_Q34   = case isnull(Q050522,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050522%10000 as varchar) end'
+	else set @SQL = @SQL + '	 PCMH10_Q34   = ''M'''
+
+	set @SQL = @SQL + '
 	from #results r
 	 inner join #Big_Table bt on r.samplepop_id=bt.samplepop_id and r.sampleunit_id=bt.sampleunit_id
 	 left outer join #Study_Results sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id
-	 inner join #tmp_mncm_mailsteps tmm on tmm.samplepop_id = sr.samplepop_id and tmm.sampleunit_id = sr.sampleunit_id
+	 inner join #tmp_mncm_mailsteps tmm on tmm.samplepop_id = sr.samplepop_id and tmm.sampleunit_id = sr.sampleunit_id'
+	exec (@SQL)
  end
  
 -- #tmp_mncm_mailsteps only has records that we're exporting, so this where clause is redundant:
@@ -3644,8 +3698,9 @@ inner join #tmp_mncm_mailsteps tmm on tmm.samplepop_id = sr.samplepop_id and tmm
 -- check which cores currently appear in sel_qstns.
 -- according to client services "Looking at what is currently on the survey in Qualisys would be our best option.  The core numbers shouldn’t change."
 -- that said, if the survey was using different questions at the time of fielding or didn't ask one of these questions at all - this might crash.
-declare @SQL nvarchar(4000)
-if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (50531))
+
+if exists (select name as col_nm from tempdb.sys.columns 
+	where object_id = object_id('tempdb..#Study_Results') and name in ('Q050531'))
  set @SQL = N'
  update r set
   Q33a = case isnull(q050531a,-9) when -9 then 0 else 1 end,
@@ -3654,8 +3709,9 @@ if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_
   Q33d = case isnull(q050531d,-9) when -9 then 0 else 1 end,
   Q33e = case isnull(q050531e,-9) when -9 then 0 else 1 end,
   Q33f = 0'
-else
- set @SQL = N'
+else if exists (select name as col_nm from tempdb.sys.columns 
+	where object_id = object_id('tempdb..#Study_Results') and name in ('Q052325'))
+set @SQL = N'
  update r set
   Q33a = case isnull(q052325a,-9) when -9 then 0 else 1 end,
   Q33b = case isnull(q052325b,-9) when -9 then 0 else 1 end,
@@ -3672,12 +3728,11 @@ set @SQL = @SQL + N'
 
 EXEC sp_executesql @SQL, N'@begindate datetime, @enddate datetime, @survey_id int', @begindate, @enddate, @survey_id
 
-
-if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (54052))
+if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q054052'))
  set @SQL = N'
   update r set
   Q34  = case isnull(Q054052,-9) when -9 then ''M'' when -8 then ''H'' else cast(Q054052%10000 as varchar) end'
-else if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (50532))
+else if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q050532'))
  set @SQL = N'
   update r set
   Q34  = case isnull(Q050532,-9) when -9 then ''M'' when -8 then ''H'' else cast(Q050532%10000 as varchar) end'
@@ -4006,7 +4061,8 @@ from #results r
 -- according to client services "Looking at what is currently on the survey in Qualisys would be our best option.  The core numbers shouldn’t change."
 -- that said, if the survey was using different questions at the time of fielding or didn't ask one of these questions at all - this might crash.
 declare @SQL nvarchar(4000)
-if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (46325,46328,46329,46330))
+if exists (select name as col_nm from tempdb.sys.columns 
+	where object_id = object_id('tempdb..#Study_Results') and name in ('Q046325','Q046328','Q046329','Q046330'))
  set @SQL = N'
  update r set
   Q61  = case isnull(q046325,-9) when -9 then ''M'' when -8 then ''H'' else cast(Q046325%10000 as varchar) end,
@@ -4017,7 +4073,8 @@ if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_
   Q66c = case isnull(q046330c,-9) when -9 then 0 else 1 end,
   Q66d = case isnull(q046330d,-9) when -9 then 0 else 1 end,
   Q66e = case isnull(q046330e,-9) when -9 then 0 else 1 end'
-else
+else if exists (select name as col_nm from tempdb.sys.columns 
+	where object_id = object_id('tempdb..#Study_Results') and name in ('Q048856','Q048666','Q048667','Q048668'))
  set @SQL = N'
  update r set
   Q61  = case isnull(q048856,-9) when -9 then ''M'' when -8 then ''H'' else cast(Q048856%10000 as varchar) end,
@@ -4910,7 +4967,8 @@ exec(@SQL)
 -- according to client services "Looking at what is currently on the survey in Qualisys would be our best option.  The core numbers shouldn’t change."
 -- that said, if the survey was using different questions at the time of fielding or didn't ask one of these questions at all - this might crash.
 
-if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (50531))
+if exists (select name as col_nm from tempdb.sys.columns 
+	where object_id = object_id('tempdb..#Study_Results') and name = 'Q050531')
  set @SQL = N'
  update r set
   Q49a = case isnull(q050531a,-9) when -9 then 0 else 1 end,
@@ -4919,7 +4977,8 @@ if exists (select * from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_
   Q49d = case isnull(q050531d,-9) when -9 then 0 else 1 end,
   Q49e = case isnull(q050531e,-9) when -9 then 0 else 1 end,
   Q49f = 0,'
-else
+else if exists (select name as col_nm from tempdb.sys.columns 
+	where object_id = object_id('tempdb..#Study_Results') and name = 'Q052325')
  set @SQL = N'
  update r set
   Q49a = case isnull(q052325a,-9) when -9 then 0 else 1 end,
@@ -5046,3 +5105,564 @@ update #results set
 where --disposition not in (11, 21, 12, 22, 14, 24) or
 q1 is null
 go
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_Child6Month30b')
+	drop procedure GetCGCAHPSdata2_sub_Child6Month30b
+go
+create procedure dbo.GetCGCAHPSdata2_sub_Child6Month30b
+ @survey_id INT,
+ @begindate VARCHAR(10),
+ @enddate   VARCHAR(10)
+as
+update #results set surveytype=17
+
+-- Load question responses into #results, mapping NULL & -9 to 9 and -8 to 8
+-- (unless the #results field is char(2), then map them to 99 and 88, respectively)
+-- if any of the responses had been altered by skip enforcement, subtract 10000 from them.
+update r set
+ Q1   = case isnull(Q050483,-9) when -9 then 'M' when -8 then 'H' else cast(Q050483%10000 as varchar) end,
+ Q2   = case isnull(Q050484,-9) when -9 then 'M' when -8 then 'H' else cast(Q050484%10000 as varchar) end,
+ Q3   = case isnull(Q050485,-9) when -9 then 'M' when -8 then 'H' else cast(Q050485%10000 as varchar) end,
+ Q4   = case isnull(Q050486,-9) when -9 then 'M' when -8 then 'H' else cast(Q050486%10000 as varchar) end,
+ Q5   = case isnull(Q050487,-9) when -9 then 'M' when -8 then 'H' else cast(Q050487%10000 as varchar) end,
+ Q6   = case isnull(Q050488,-9) when -9 then 'M' when -8 then 'H' else cast(Q050488%10000 as varchar) end,
+ Q7   = case isnull(Q050489,-9) when -9 then 'M' when -8 then 'H' else cast(Q050489%10000 as varchar) end,
+ Q8   = case isnull(Q050490,-9) when -9 then 'M' when -8 then 'H' else cast(Q050490%10000 as varchar) end,
+ Q9   = case isnull(Q050491,-9) when -9 then 'M' when -8 then 'H' else cast(Q050491%10000 as varchar) end,
+ Q10  = case isnull(Q050492,-9) when -9 then 'M' when -8 then 'H' else cast(Q050492%10000 as varchar) end,
+ Q11  = case isnull(Q050493,-9) when -9 then 'M' when -8 then 'H' else cast(Q050493%10000 as varchar) end,
+ Q12  = case isnull(Q050494,-9) when -9 then 'M' when -8 then 'H' else cast(Q050494%10000 as varchar) end,
+ Q13  = case isnull(Q050495,-9) when -9 then 'M' when -8 then 'H' else cast(Q050495%10000 as varchar) end,
+ Q14  = case isnull(Q050496,-9) when -9 then 'M' when -8 then 'H' else cast(Q050496%10000 as varchar) end,
+ Q15  = case isnull(Q050497,-9) when -9 then 'M' when -8 then 'H' else cast(Q050497%10000 as varchar) end,
+ Q16  = case isnull(Q050498,-9) when -9 then 'M' when -8 then 'H' else cast(Q050498%10000 as varchar) end,
+ Q17  = case isnull(Q050499,-9) when -9 then 'M' when -8 then 'H' else cast(Q050499%10000 as varchar) end,
+ Q18  = case isnull(Q050503,-9) when -9 then 'M' when -8 then 'H' else cast(Q050503%10000 as varchar) end,
+ Q19  = case isnull(Q050504,-9) when -9 then 'M' when -8 then 'H' else cast(Q050504%10000 as varchar) end,
+ Q20  = case isnull(Q050507,-9) when -9 then 'M' when -8 then 'H' else cast(Q050507%10000 as varchar) end,
+ Q21  = case isnull(Q050508,-9) when -9 then 'M' when -8 then 'H' else cast(Q050508%10000 as varchar) end,
+ Q22  = case isnull(Q050509,-9) when -9 then 'M' when -8 then 'H' else cast(Q050509%10000 as varchar) end,
+ Q23  = case isnull(Q050510,-9) when -9 then 'M' when -8 then 'H' else cast(Q050510%10000 as varchar) end,
+ Q24  = case isnull(Q050511,-9) when -9 then 'M' when -8 then 'H' else cast(Q050511%10000 as varchar) end,
+ Q25  = case isnull(Q050512,-9) when -9 then 'M ' when -8 then 'H ' else right('00'+cast(Q050512%10000 as varchar),2) end,
+ Q26  = case isnull(Q050524,-9) when -9 then 'M' when -8 then 'H' else cast(Q050524%10000 as varchar) end,
+ Q27  = case isnull(Q050525,-9) when -9 then 'M' when -8 then 'H' else cast(Q050525%10000 as varchar) end,
+ Q28  = case isnull(Q050526,-9) when -9 then 'M' when -8 then 'H' else cast(Q050526%10000 as varchar) end,
+ Q29  = case isnull(Q050527,-9) when -9 then 'M' when -8 then 'H' else cast(Q050527%10000 as varchar) end,
+ -- Q30 (50528) is "What is your child's age?" (1) less than 1 year old (2) ____ years old (write in)
+ -- the hand-entry is mapped to the HECGPedsAge metafield
+ -- case  Q050528  HECGPedsAge    Result               comment
+ -- a     -9       (numeric)      (HECGPedsAge value)  respondent didn't fill out either bubble, but they filled out the hand-entry
+ -- a     -9       (non-numeric)  99 (missing)
+ -- b  -8       (numeric)      88 (multi-mark)
+ -- b     -8       (non-numeric)  88 (multi-mark)
+ -- c     1        (numeric)      88 (multi-mark)      respondent marked the "less than 1" bubble and still filled out the hand-entry
+ -- c     1        (non-numeric)  0
+ -- d     2        (NULL)         99 (missing)         respondent marked the "___ years old" bubble, but didn't fill out the hand-entry
+ -- e     2        (non-numeric)  99 (missing)         respondent marked the "___ years old" bubble, but filled in the hand-entry with a non-number
+ -- f     2        (numeric)      (HECGPedsAge value)
+ Q30  = case
+     -- case a:
+     when isnull(Q050528,-9) = -9 then case when isnumeric(bt.HECGPedsAge)=1 and bt.HECGPedsAge not like '%,%' and floor(bt.HECGPedsAge) between 1 and 99 then cast(floor(bt.HECGPedsAge) as varchar(2)) else 'M ' end
+     -- case b:
+     when isnull(Q050528,-9) = -8 then 'H ' 
+     -- case c:
+     when Q050528%10000 = 1 then case when isnumeric(bt.HECGPedsAge)=1 then 'H ' else '0 ' end
+     -- case d:
+     when bt.HECGPedsAge is null then 'M '
+     -- case e:
+     when isnumeric(bt.HECGPedsAge)=0 or bt.HECGPedsAge like '%,%' then 'M '
+     -- case f:
+     when floor(bt.HECGPedsAge) between 1 and 99 then cast(floor(bt.HECGPedsAge) as varchar(2))
+     else 'M '
+     --case f was: else cast(floor(bt.HECGPedsAge) as varchar(2))
+    end,
+ Q31  = case isnull(Q050529,-9) when -9 then 'M' when -8 then 'H' else cast(Q050529%10000 as varchar) end,
+ Q32  = case isnull(Q050530,-9) when -9 then 'M' when -8 then 'H' else cast(Q050530%10000 as varchar) end,
+ Q34  = case isnull(Q050532,-9) when -9 then 'M' when -8 then 'H' else cast(Q050532%10000 as varchar) end,
+ Q35  = case isnull(Q050533,-9) when -9 then 'M' when -8 then 'H' else cast(Q050533%10000 as varchar) end,
+ Q36  = case isnull(Q050534,-9) when -9 then 'M' when -8 then 'H' else cast(Q050534%10000 as varchar) end,
+ Q37  = case isnull(Q050535,-9) when -9 then 'M' when -8 then 'H' else cast(Q050535%10000 as varchar) end,
+ Q38  = case isnull(Q050536,-9) when -9 then 'M' when -8 then 'H' else cast(Q050536%10000 as varchar) end,
+ Q39a  = case isnull(Q050537a,-9) when -9 then 0 else 1 end,
+ Q39b  = case isnull(Q050537b,-9) when -9 then 0 else 1 end,
+ Q39c  = case isnull(Q050537c,-9) when -9 then 0 else 1 end,
+ Q39d  = case isnull(Q050537d,-9) when -9 then 0 else 1 end,
+ Q39e  = case isnull(Q050537e,-9) when -9 then 0 else 1 end
+from #results r
+ inner join #Big_Table bt on r.samplepop_id=bt.samplepop_id and r.sampleunit_id=bt.sampleunit_id
+ left outer join #Study_Results sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id
+ inner join #tmp_mncm_mailsteps tmm on tmm.samplepop_id = sr.samplepop_id and tmm.sampleunit_id = sr.sampleunit_id
+
+
+
+
+
+-- #tmp_mncm_mailsteps only has records that we're exporting, so this where clause is redundant:
+--   where tmm.bitmncm = 1
+--   and bt.datsampleencounterdate between @begindate and @enddate
+--   and bt.survey_id = @survey
+
+-- some surveys use cores 46325, 46328, 46329 and 46330 for Q61, Q64, Q65 and Q66.
+-- others use cores 48856, 48666, 48667 and 48668.
+-- check which cores currently appear in sel_qstns.
+-- according to client services "Looking at what is currently on the survey in Qualisys would be our best option.  The core numbers shouldn’t change."
+-- that said, if the survey was using different questions at the time of fielding or didn't ask one of these questions at all - this might crash.
+declare @SQL nvarchar(4000)
+if exists (select name as col_nm from tempdb.sys.columns 
+	where object_id = object_id('tempdb..#Study_Results') and name in ('Q050531'))
+ set @SQL = N'
+ update r set
+  Q33a = case isnull(q050531a,-9) when -9 then 0 else 1 end,
+  Q33b = case isnull(q050531b,-9) when -9 then 0 else 1 end,
+  Q33c = case isnull(q050531c,-9) when -9 then 0 else 1 end,
+  Q33d = case isnull(q050531d,-9) when -9 then 0 else 1 end,
+  Q33e = case isnull(q050531e,-9) when -9 then 0 else 1 end,
+  Q33f = 0'
+else if exists (select name as col_nm from tempdb.sys.columns 
+	where object_id = object_id('tempdb..#Study_Results') and name in ('Q052325'))
+ set @SQL = N'
+ update r set
+  Q33a = case isnull(q052325a,-9) when -9 then 0 else 1 end,
+  Q33b = case isnull(q052325b,-9) when -9 then 0 else 1 end,
+  Q33c = case isnull(q052325c,-9) when -9 then 0 else 1 end,
+  Q33d = case isnull(q052325d,-9) when -9 then 0 else 1 end,
+  Q33e = case isnull(q052325e,-9) when -9 then 0 else 1 end,
+  Q33f = case isnull(q052325f,-9) when -9 then 0 else 1 end'
+
+set @SQL = @SQL + N'
+ from #results r
+  inner join #Big_Table bt on r.samplepop_id=bt.samplepop_id and r.sampleunit_id=bt.sampleunit_id
+  left outer join #Study_Results sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id
+  inner join #tmp_mncm_mailsteps tmm on tmm.samplepop_id = sr.samplepop_id and tmm.sampleunit_id = sr.sampleunit_id'
+-- #tmp_mncm_mailsteps only has records that we're exporting, so this where clause is redundant:
+--   where tmm.bitmncm = 1
+--   and bt.datsampleencounterdate between @begindate and @enddate
+--   and bt.survey_id = @survey
+
+EXEC sp_executesql @SQL, N'@begindate datetime, @enddate datetime, @survey_id int', @begindate, @enddate, @survey_id
+
+-- Child 12-month w/ PCMH:
+-- Q1 = core 46265
+-- If Q1 = 2 (“No”) Questions 2-54 should have case logic applied
+-- If Q4 = 1 ("none") Questions 5-54 should have case logic applied
+
+-- If they didn’t answer the question, look at how they answered the screener question (Q1).
+ -- If they answered Q1 “No”, invoking the skip, then mark the question appropriately skipped.
+update #results set Q2   = 'S'  where Q2   = 'M'  and (Q1='2')
+update #results set Q3   = 'S'  where Q3   = 'M'  and (Q1='2')
+update #results set Q4   = 'S'  where Q4   = 'M'  and (Q1='2')
+update #results set Q5   = 'S'  where Q5   = 'M'  and (Q1='2' or Q4='1')
+update #results set Q6   = 'S'  where Q6   = 'M'  and (Q1='2' or Q4='1' or Q5='1')
+update #results set Q7   = 'S'  where Q7   = 'M'  and (Q1='2' or Q4='1' or Q6 in ('1','2'))
+update #results set Q8   = 'S'  where Q8   = 'M'  and (Q1='2' or Q4='1' or Q6 in ('1','2') or Q7='2')
+update #results set Q9   = 'S'  where Q9   = 'M'  and (Q1='2' or Q4='1' or Q6 in ('1','2') or Q7='2')
+update #results set Q10  = 'S'  where Q10  = 'M'  and (Q1='2' or Q4='1')
+update #results set Q11  = 'S'  where Q11  = 'M'  and (Q1='2' or Q4='1' or Q10='2')
+update #results set Q12  = 'S'  where Q12  = 'M'  and (Q1='2' or Q4='1')
+update #results set Q13  = 'S'  where Q13  = 'M'  and (Q1='2' or Q4='1' or Q12='2')
+update #results set Q14  = 'S'  where Q14  = 'M'  and (Q1='2' or Q4='1')
+update #results set Q15  = 'S'  where Q15  = 'M'  and (Q1='2' or Q4='1' or Q14='2')
+update #results set Q16  = 'S'  where Q16  = 'M'  and (Q1='2' or Q4='1')
+update #results set Q17  = 'S'  where Q17  = 'M'  and (Q1='2' or Q4='1' or Q16='2')
+update #results set Q18  = 'S'  where Q18  = 'M'  and (Q1='2' or Q4='1')
+update #results set Q19  = 'S'  where Q19  = 'M'  and (Q1='2' or Q4='1')
+update #results set Q20  = 'S'  where Q20  = 'M'  and (Q1='2' or Q4='1')
+update #results set Q21  = 'S'  where Q21  = 'M'  and (Q1='2' or Q4='1')
+update #results set Q22  = 'S'  where Q22  = 'M'  and (Q1='2' or Q4='1')
+update #results set Q23  = 'S'  where Q23  = 'M'  and (Q1='2' or Q4='1')
+update #results set Q24  = 'S'  where Q24  = 'M'  and (Q1='2' or Q4='1' or Q23='2')
+update #results set Q25  = 'S ' where Q25  = 'M ' and (Q1='2' or Q4='1')
+update #results set Q26  = 'S'  where Q26  = 'M'  and (Q1='2' or Q4='1')
+update #results set Q27  = 'S'  where Q27  = 'M'  and (Q1='2' or Q4='1')
+ 
+-- If Q38 = 2 (“No”) Skip to end of the survey
+-- Questions 39a-e should have case logic applied
+
+-- If they didn’t answer the question (i.e. all 5 multi-mark responses are '0'), look at how they answered the screener question (Q38).
+ -- If they answered Q65 “No”, invoking the skip, then mark the question appropriately skipped.
+ update #results set Q39a='S',Q39b='S',Q39c='S',Q39d='S',Q39e='S' where Q38 = '2' and Q39a+Q39b+Q39c+Q39d+Q39e='00000'
+
+update #results set
+	Q1	 = ' ',
+	Q2	 = ' ',
+	Q3	 = ' ',
+	Q4	 = ' ',
+	Q5	 = ' ',
+	Q6	 = ' ',
+	Q7	 = ' ',
+	Q8	 = ' ',
+	Q9	 = ' ',
+	Q10	 = ' ',
+	Q11	 = ' ',
+	Q12	 = ' ',
+	Q13	 = ' ',
+	Q14	 = ' ',
+	Q15	 = ' ',
+	Q16	 = ' ',
+	Q17	 = ' ',
+	Q18	 = ' ',
+	Q19	 = ' ',
+	Q20	 = ' ',
+	Q21	 = ' ',
+	Q22	 = ' ',
+	Q23	 = ' ',
+	Q24	 = ' ',
+	Q25	 = '  ',
+	Q26	 = ' ',
+	Q27	 = ' ',
+	Q28	 = ' ',
+	Q29	 = ' ',
+	Q30	 = '  ',
+	Q31	 = ' ',
+	Q32	 = ' ',
+	Q33a = ' ',
+	Q33b = ' ',
+	Q33c = ' ',
+	Q33d = ' ',
+	Q33e = ' ',
+	Q33f = ' ',
+	Q34	 = ' ',
+	Q35	 = ' ',
+	Q36	 = ' ',
+	Q37	 = ' ',
+	Q38	 = ' ',
+	Q39a = ' ',
+	Q39b = ' ',
+	Q39c = ' ',
+	Q39d = ' ',
+	Q39e = ' '
+where --disposition not in (11, 21, 12, 22, 14, 24) or
+q1 is null
+
+GO
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--DRM 03/04/2015 Created.
+if exists (select * from sys.procedures where name = 'GetCGCAHPSdata2_sub_Child6MonthPCMHb')
+	drop procedure GetCGCAHPSdata2_sub_Child6MonthPCMHb
+go
+create procedure dbo.GetCGCAHPSdata2_sub_Child6MonthPCMHb
+ @survey_id INT,
+ @begindate VARCHAR(10),
+ @enddate   VARCHAR(10)
+as
+update #results set surveytype=18
+
+-- Load question responses into #results, mapping NULL & -9 to 9 and -8 to 8
+-- (unless the #results field is char(2), then map them to 99 and 88, respectively)
+-- if any of the responses had been altered by skip enforcement, subtract 10000 from them.
+update r set
+ Q1   = case isnull(Q050483,-9) when -9 then 'M' when -8 then 'H' else cast(Q050483%10000 as varchar) end,
+ Q2   = case isnull(Q050484,-9) when -9 then 'M' when -8 then 'H' else cast(Q050484%10000 as varchar) end,
+ Q3   = case isnull(Q050485,-9) when -9 then 'M' when -8 then 'H' else cast(Q050485%10000 as varchar) end,
+ Q4   = case isnull(Q050486,-9) when -9 then 'M' when -8 then 'H' else cast(Q050486%10000 as varchar) end,
+ Q5   = case isnull(Q050487,-9) when -9 then 'M' when -8 then 'H' else cast(Q050487%10000 as varchar) end,
+ Q6   = case isnull(Q050488,-9) when -9 then 'M' when -8 then 'H' else cast(Q050488%10000 as varchar) end,
+ Q7   = case isnull(Q050489,-9) when -9 then 'M' when -8 then 'H' else cast(Q050489%10000 as varchar) end,
+ Q8   = case isnull(Q050490,-9) when -9 then 'M' when -8 then 'H' else cast(Q050490%10000 as varchar) end,
+ Q9   = case isnull(Q050491,-9) when -9 then 'M' when -8 then 'H' else cast(Q050491%10000 as varchar) end,
+ Q10  = case isnull(Q050492,-9) when -9 then 'M' when -8 then 'H' else cast(Q050492%10000 as varchar) end,
+ Q11  = case isnull(Q050493,-9) when -9 then 'M' when -8 then 'H' else cast(Q050493%10000 as varchar) end,
+ Q12  = case isnull(Q050494,-9) when -9 then 'M' when -8 then 'H' else cast(Q050494%10000 as varchar) end,
+ Q13  = case isnull(Q050495,-9) when -9 then 'M' when -8 then 'H' else cast(Q050495%10000 as varchar) end,
+ Q14  = case isnull(Q050629,-9) when -9 then 'M' when -8 then 'H' else cast(Q050629%10000 as varchar) end,
+ Q15  = case isnull(Q050496,-9) when -9 then 'M' when -8 then 'H' else cast(Q050496%10000 as varchar) end,
+ Q16  = case isnull(Q050497,-9) when -9 then 'M' when -8 then 'H' else cast(Q050497%10000 as varchar) end,
+ Q17  = case isnull(Q050630,-9) when -9 then 'M' when -8 then 'H' else cast(Q050630%10000 as varchar) end,
+ Q18  = case isnull(Q050631,-9) when -9 then 'M' when -8 then 'H' else cast(Q050631%10000 as varchar) end,
+ Q19  = case isnull(Q050632,-9) when -9 then 'M' when -8 then 'H' else cast(Q050632%10000 as varchar) end,
+ Q20  = case isnull(Q050498,-9) when -9 then 'M' when -8 then 'H' else cast(Q050498%10000 as varchar) end,
+ Q21  = case isnull(Q050499,-9) when -9 then 'M' when -8 then 'H' else cast(Q050499%10000 as varchar) end,
+ Q22  = case isnull(Q050500,-9) when -9 then 'M' when -8 then 'H' else cast(Q050500%10000 as varchar) end,
+ Q23  = case isnull(Q050501,-9) when -9 then 'M' when -8 then 'H' else cast(Q050501%10000 as varchar) end,
+ Q24  = case isnull(Q050633,-9) when -9 then 'M' when -8 then 'H' else cast(Q050633%10000 as varchar) end,
+ Q25  = case isnull(Q050502,-9) when -9 then 'M' when -8 then 'H' else cast(Q050502%10000 as varchar) end,
+ Q26  = case isnull(Q050503,-9) when -9 then 'M' when -8 then 'H' else cast(Q050503%10000 as varchar) end,
+ Q27  = case isnull(Q050504,-9) when -9 then 'M' when -8 then 'H' else cast(Q050504%10000 as varchar) end,
+ Q28  = case isnull(Q050505,-9) when -9 then 'M' when -8 then 'H' else cast(Q050505%10000 as varchar) end,
+ Q29  = case isnull(Q050506,-9) when -9 then 'M' when -8 then 'H' else cast(Q050506%10000 as varchar) end,
+ Q30  = case isnull(Q050507,-9) when -9 then 'M' when -8 then 'H' else cast(Q050507%10000 as varchar) end,
+ Q31  = case isnull(Q050508,-9) when -9 then 'M' when -8 then 'H' else cast(Q050508%10000 as varchar) end,
+ Q32  = case isnull(Q050509,-9) when -9 then 'M' when -8 then 'H' else cast(Q050509%10000 as varchar) end,
+ Q33  = case isnull(Q050510,-9) when -9 then 'M' when -8 then 'H' else cast(Q050510%10000 as varchar) end,
+ Q34  = case isnull(Q050511,-9) when -9 then 'M' when -8 then 'H' else cast(Q050511%10000 as varchar) end,
+ Q35  = case isnull(Q050512,-9) when -9 then 'M ' when -8 then 'H ' else right('00'+cast(Q050512%10000 as varchar),2) end,
+ Q36  = case isnull(Q050634,-9) when -9 then 'M' when -8 then 'H' else cast(Q050634%10000 as varchar) end,
+ Q37  = case isnull(Q050635,-9) when -9 then 'M' when -8 then 'H' else cast(Q050635%10000 as varchar) end,
+ Q38  = case isnull(Q050513,-9) when -9 then 'M' when -8 then 'H' else cast(Q050513%10000 as varchar) end,
+ Q39  = case isnull(Q050514,-9) when -9 then 'M' when -8 then 'H' else cast(Q050514%10000 as varchar) end,
+ Q40  = case isnull(Q050515,-9) when -9 then 'M' when -8 then 'H' else cast(Q050515%10000 as varchar) end,
+ Q41  = case isnull(Q050516,-9) when -9 then 'M' when -8 then 'H' else cast(Q050516%10000 as varchar) end,
+ Q42  = case isnull(Q050517,-9) when -9 then 'M' when -8 then 'H' else cast(Q050517%10000 as varchar) end,
+ Q43  = case isnull(Q050518,-9) when -9 then 'M' when -8 then 'H' else cast(Q050518%10000 as varchar) end,
+ Q44  = case isnull(Q050519,-9) when -9 then 'M' when -8 then 'H' else cast(Q050519%10000 as varchar) end,
+ Q45  = case isnull(Q050520,-9) when -9 then 'M' when -8 then 'H' else cast(Q050520%10000 as varchar) end,
+ Q46  = case isnull(Q050521,-9) when -9 then 'M' when -8 then 'H' else cast(Q050521%10000 as varchar) end,
+ Q47  = case isnull(Q050522,-9) when -9 then 'M' when -8 then 'H' else cast(Q050522%10000 as varchar) end,
+ Q48  = case isnull(Q050523,-9) when -9 then 'M' when -8 then 'H' else cast(Q050523%10000 as varchar) end,
+ Q49  = case isnull(Q050636,-9) when -9 then 'M' when -8 then 'H' else cast(Q050636%10000 as varchar) end,
+ Q50  = case isnull(Q050637,-9) when -9 then 'M' when -8 then 'H' else cast(Q050637%10000 as varchar) end,
+ Q51  = case isnull(Q050638,-9) when -9 then 'M' when -8 then 'H' else cast(Q050638%10000 as varchar) end,
+ Q52  = case isnull(Q050639,-9) when -9 then 'M' when -8 then 'H' else cast(Q050639%10000 as varchar) end,
+ Q53  = case isnull(Q050524,-9) when -9 then 'M' when -8 then 'H' else cast(Q050524%10000 as varchar) end,
+ Q54  = case isnull(Q050525,-9) when -9 then 'M' when -8 then 'H' else cast(Q050525%10000 as varchar) end,
+ Q55  = case isnull(Q050526,-9) when -9 then 'M' when -8 then 'H' else cast(Q050526%10000 as varchar) end,
+ Q56  = case isnull(Q050527,-9) when -9 then 'M' when -8 then 'H' else cast(Q050527%10000 as varchar) end,
+ -- Q57 (50528) is "What is your child's age?" (1) less than 1 year old (2) ____ years old (write in)
+ -- the hand-entry is mapped to the HECGPedsAge metafield
+ -- case  Q050528  HECGPedsAge    Result               comment
+ -- a     -9       (numeric)      (HECGPedsAge value)  respondent didn't fill out either bubble, but they filled out the hand-entry
+ -- a     -9       (non-numeric)  99 (missing)
+ -- b     -8       (numeric)      88 (multi-mark)
+ -- b     -8       (non-numeric)  88 (multi-mark)
+ -- c     1        (numeric)      88 (multi-mark)      respondent marked the "less than 1" bubble and still filled out the hand-entry
+ -- c     1        (non-numeric)  0
+ -- d     2        (NULL)         99 (missing)         respondent marked the "___ years old" bubble, but didn't fill out the hand-entry
+ -- e     2        (non-numeric)  99 (missing)         respondent marked the "___ years old" bubble, but filled in the hand-entry with a non-number
+ -- f     2        (numeric)      (HECGPedsAge value)
+ Q57  = case
+     -- case a:
+     when isnull(Q050528,-9) = -9 then case when isnumeric(bt.HECGPedsAge)=1 and bt.HECGPedsAge not like '%,%' and floor(bt.HECGPedsAge) between 1 and 99 then cast(floor(bt.HECGPedsAge) as varchar(2)) else 'M ' end
+     -- case b:
+     when isnull(Q050528,-9) = -8 then 'H ' 
+     -- case c:
+     when Q050528%10000 = 1 then case when isnumeric(bt.HECGPedsAge)=1 then 'H ' else '0 ' end
+     -- case d:
+     when bt.HECGPedsAge is null then 'M '
+     -- case e:
+     when isnumeric(bt.HECGPedsAge)=0 or bt.HECGPedsAge like '%,%' then 'M '
+     -- case f:
+     when floor(bt.HECGPedsAge) between 1 and 99 then cast(floor(bt.HECGPedsAge) as varchar(2))
+     else 'M '
+     --case f was: else cast(floor(bt.HECGPedsAge) as varchar(2))
+    end,
+ Q58  = case isnull(Q050529,-9) when -9 then 'M' when -8 then 'H' else cast(Q050529%10000 as varchar) end,
+ Q59  = case isnull(Q050530,-9) when -9 then 'M' when -8 then 'H' else cast(Q050530%10000 as varchar) end,
+ Q61  = case isnull(Q050532,-9) when -9 then 'M' when -8 then 'H' else cast(Q050532%10000 as varchar) end,
+ Q62  = case isnull(Q050533,-9) when -9 then 'M' when -8 then 'H' else cast(Q050533%10000 as varchar) end,
+ Q63  = case isnull(Q050534,-9) when -9 then 'M' when -8 then 'H' else cast(Q050534%10000 as varchar) end,
+ Q64  = case isnull(Q050535,-9) when -9 then 'M' when -8 then 'H' else cast(Q050535%10000 as varchar) end,
+ Q65  = 'M'
+from #results r
+ inner join #Big_Table bt on r.samplepop_id=bt.samplepop_id and r.sampleunit_id=bt.sampleunit_id
+ left outer join #Study_Results sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id
+ inner join #tmp_mncm_mailsteps tmm on tmm.samplepop_id = sr.samplepop_id and tmm.sampleunit_id = sr.sampleunit_id
+-- #tmp_mncm_mailsteps only has records that we're exporting, so this where clause is redundant:
+--   where tmm.bitmncm = 1
+--   and bt.datsampleencounterdate between @begindate and @enddate
+--   and bt.survey_id = @survey
+
+-- some surveys use cores 46325, 46328, 46329 and 46330 for Q61, Q64, Q65 and Q66.
+-- others use cores 48856, 48666, 48667 and 48668.
+-- check which cores currently appear in sel_qstns.
+-- according to client services "Looking at what is currently on the survey in Qualisys would be our best option.  The core numbers shouldn’t change."
+-- that said, if the survey was using different questions at the time of fielding or didn't ask one of these questions at all - this might crash.
+declare @SQL nvarchar(4000)
+if exists (select name as col_nm from tempdb.sys.columns 
+	where object_id = object_id('tempdb..#Study_Results') and name in ('Q050531'))
+ set @SQL = N'
+ update r set
+  Q60a = case isnull(q050531a,-9) when -9 then 0 else 1 end,
+  Q60b = case isnull(q050531b,-9) when -9 then 0 else 1 end,
+  Q60c = case isnull(q050531c,-9) when -9 then 0 else 1 end,
+  Q60d = case isnull(q050531d,-9) when -9 then 0 else 1 end,
+  Q60e = case isnull(q050531e,-9) when -9 then 0 else 1 end,
+  Q60f = 0,'
+else if exists (select name as col_nm from tempdb.sys.columns 
+	where object_id = object_id('tempdb..#Study_Results') and name in ('Q052325'))
+ set @SQL = N'
+ update r set
+  Q60a = case isnull(q052325a,-9) when -9 then 0 else 1 end,
+  Q60b = case isnull(q052325b,-9) when -9 then 0 else 1 end,
+  Q60c = case isnull(q052325c,-9) when -9 then 0 else 1 end,
+  Q60d = case isnull(q052325d,-9) when -9 then 0 else 1 end,
+  Q60e = case isnull(q052325e,-9) when -9 then 0 else 1 end,
+  Q60f = case isnull(q052325f,-9) when -9 then 0 else 1 end,'
+else
+ set @SQL = N'update r set '
+
+--At the time of this writing, many surveys don't yet contain question 50536 or 50537.
+--  So check for its existence.
+if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q050536'))
+ set @SQL = @sql + N'
+  Q65  = case isnull(Q050536 ,-9) when -9 then ''M'' when -8 then ''H'' else cast(Q050536%10000 as varchar) end,'
+else
+ set @SQL = @SQL + N'
+  Q65 = ''M'','
+  
+if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q050537'))
+ set @SQL = @sql + N'
+  Q66a = case isnull(q050537a,-9) when -9 then 0 else 1 end,
+  Q66b = case isnull(q050537b,-9) when -9 then 0 else 1 end,
+  Q66c = case isnull(q050537c,-9) when -9 then 0 else 1 end,
+  Q66d = case isnull(q050537d,-9) when -9 then 0 else 1 end,
+  Q66e = case isnull(q050537e,-9) when -9 then 0 else 1 end '
+else
+ set @SQL = @sql + N'
+  Q66a = 0,
+  Q66b = 0,
+  Q66c = 0,
+  Q66d = 0,
+  Q66e = 0'
+
+set @SQL = @SQL + N'
+ from #results r
+  inner join #Big_Table bt on r.samplepop_id=bt.samplepop_id and r.sampleunit_id=bt.sampleunit_id
+  left outer join #Study_Results sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id
+  inner join #tmp_mncm_mailsteps tmm on tmm.samplepop_id = sr.samplepop_id and tmm.sampleunit_id = sr.sampleunit_id'
+-- #tmp_mncm_mailsteps only has records that we're exporting, so this where clause is redundant:
+--   where tmm.bitmncm = 1
+--   and bt.datsampleencounterdate between @begindate and @enddate
+--   and bt.survey_id = @survey
+
+EXEC sp_executesql @SQL, N'@begindate datetime, @enddate datetime, @survey_id int', @begindate, @enddate, @survey_id
+
+-- Child 12-month w/ PCMH:
+-- Q1 = core 46265
+-- If Q1 = 2 (“No”) Questions 2-54 should have case logic applied
+-- If Q4 = 1 ("none") Questions 5-54 should have case logic applied
+
+-- If they didn’t answer the question, look at how they answered the screener question (Q1).
+ -- If they answered Q1 “No”, invoking the skip, then mark the question appropriately skipped.
+ update #results set Q2   = 'S'  where Q2   = 'M'  and (Q1='2')
+ update #results set Q3   = 'S'  where Q3   = 'M'  and (Q1='2')
+ update #results set Q4   = 'S'  where Q4   = 'M'  and (Q1='2')
+ update #results set Q5   = 'S'  where Q5   = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q6   = 'S'  where Q6   = 'M'  and (Q1='2' or Q4='1' or Q5='1')
+ update #results set Q7   = 'S'  where Q7   = 'M'  and (Q1='2' or Q4='1' or Q6='1' or Q6='2')
+ update #results set Q8   = 'S'  where Q8   = 'M'  and (Q1='2' or Q4='1' or Q6='1' or Q6='2' or Q7='2')
+ update #results set Q9   = 'S'  where Q9   = 'M'  and (Q1='2' or Q4='1' or Q6='1' or Q6='2' or Q7='2')
+ update #results set Q10  = 'S'  where Q10  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q11  = 'S'  where Q11  = 'M'  and (Q1='2' or Q4='1' or Q10='2')
+ update #results set Q12  = 'S'  where Q12  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q13  = 'S'  where Q13  = 'M'  and (Q1='2' or Q4='1' or Q12='2')
+ update #results set Q14  = 'S'  where Q14  = 'M'  and (Q1='2' or Q4='1' or Q12='2')
+ update #results set Q15  = 'S'  where Q15  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q16  = 'S'  where Q16  = 'M'  and (Q1='2' or Q4='1' or Q15='2')
+ update #results set Q17  = 'S'  where Q17  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q18  = 'S'  where Q18  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q19  = 'S'  where Q19  = 'M'  and (Q1='2' or Q4='1' or Q18='2')
+ update #results set Q20  = 'S'  where Q20  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q21  = 'S'  where Q21  = 'M'  and (Q1='2' or Q4='1' or Q20='2')
+ update #results set Q22  = 'S'  where Q22  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q23  = 'S'  where Q23  = 'M'  and (Q1='2' or Q4='1' or Q22='2')
+ update #results set Q24  = 'S'  where Q24  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q25  = 'S'  where Q25  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q26  = 'S'  where Q26  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q27  = 'S'  where Q27  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q28  = 'S'  where Q28  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q29  = 'S'  where Q29  = 'M'  and (Q1='2' or Q4='1' or Q28='2')
+ update #results set Q30  = 'S'  where Q30  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q31  = 'S'  where Q31  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q32  = 'S'  where Q32  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q33  = 'S'  where Q33  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q34  = 'S'  where Q34  = 'M'  and (Q1='2' or Q4='1' or Q33='2')
+ update #results set Q35  = 'S ' where Q35  = 'M ' and (Q1='2' or Q4='1')
+ update #results set Q36  = 'S'  where Q36  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q37  = 'S'  where Q37  = 'M'  and (Q1='2' or Q4='1' or Q36='2')
+ update #results set Q38  = 'S'  where Q38  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q39  = 'S'  where Q39  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q40  = 'S'  where Q40  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q41  = 'S'  where Q41  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q42  = 'S'  where Q42  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q43  = 'S'  where Q43  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q44  = 'S'  where Q44  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q45  = 'S'  where Q45  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q46  = 'S'  where Q46  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q47  = 'S'  where Q47  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q48  = 'S'  where Q48  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q49  = 'S'  where Q49  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q50  = 'S'  where Q50  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q51  = 'S'  where Q51  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q52  = 'S'  where Q52  = 'M'  and (Q1='2' or Q4='1' or Q51='2')
+ update #results set Q53  = 'S'  where Q53  = 'M'  and (Q1='2' or Q4='1')
+ update #results set Q54  = 'S'  where Q54  = 'M'  and (Q1='2' or Q4='1')
+
+-- If Q65 = 2 (“No”) Skip to end of the survey
+-- Questions 66a-e should have case logic applied
+
+-- If they didn’t answer the question (i.e. all 5 multi-mark responses are '0'), look at how they answered the screener question (Q65).
+ -- If they answered Q65 “No”, invoking the skip, then mark the question appropriately skipped.
+ update #results set Q66a='S',Q66b='S',Q66c='S',Q66d='S',Q66e='S' where Q65 = '2' and Q66a+Q66b+Q66c+Q66d+Q66e='00000'
+
+update #results set
+ Q1  =' ',
+ Q2  =' ',
+ Q3  =' ',
+ Q4  =' ',
+ Q5  =' ',
+ Q6  =' ',
+ Q7  =' ',
+ Q8  =' ',
+ Q9  =' ',
+ Q10 =' ',
+ Q11 =' ',
+ Q12 =' ',
+ Q13 =' ',
+ Q14 =' ',
+ Q15 =' ',
+ Q16 =' ',
+ Q17 =' ',
+ Q18 =' ',
+ Q19 =' ',
+ Q20 =' ',
+ Q21 =' ',
+ Q22 =' ',
+ Q23 =' ',
+ Q24 =' ',
+ Q25 =' ',
+ Q26 =' ',
+ Q27 =' ',
+ Q28 =' ',
+ Q29 =' ',
+ Q30 =' ',
+ Q31 =' ',
+ Q32 =' ',
+ Q33 =' ',
+ Q34 =' ',
+ Q35 ='  ',
+ Q36 =' ',
+ Q37 =' ',
+ Q38 =' ',
+ Q39 =' ',
+ Q40 =' ',
+ Q41 =' ',
+ Q42 =' ',
+ Q43 =' ',
+ Q44 =' ',
+ Q45 =' ',
+ Q46 =' ',
+ Q47 =' ',
+ Q48 =' ',
+ Q49 =' ',
+ Q50 =' ',
+ Q51 =' ',
+ Q52 =' ',
+ Q53 =' ',
+ Q54 =' ',
+ Q55 =' ',
+ Q56 =' ',
+ Q57 ='  ',
+ Q58 =' ',
+ Q59 =' ',
+ Q60a=' ',
+ Q60b=' ',
+ Q60c=' ',
+ Q60d=' ',
+ Q60e=' ',
+ Q60f=' ',
+ Q61 =' ',
+ Q62 =' ',
+ Q63 =' ',
+ Q64 =' ',
+ Q65 =' ',
+ Q66a=' ',
+ Q66b=' ',
+ Q66c=' ',
+ Q66d=' ',
+ Q66e=' '
+where --disposition not in (11, 21, 12, 22, 14, 24) or
+q1 is null
+
+GO
