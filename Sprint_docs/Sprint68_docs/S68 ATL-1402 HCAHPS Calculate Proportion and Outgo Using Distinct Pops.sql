@@ -46,13 +46,13 @@ begin
     datepart(year, pd1.datExpectedEncStart) as encyear,
     count(distinct he.pop_id) as countpops  --was count(he.enc_ID) 
     into #countsbymonth
-    from qp_prod.dbo.medicarelookup ml, qp_prod.dbo.sufacility sf, qp_prod.dbo.sampleunit su, 
-    qp_prod.dbo.EligibleEncLog hE , qp_prod.dbo.periodDef pd1, qp_prod.dbo.periodDates pd2  
-    where ml.medicareNumber = sf.MedicareNumber and  
-        sf.SUFacility_ID = su.SuFacility_ID and  
-        su.Sampleunit_ID = he.sampleunit_ID and  
-        pd1.periodDef_Id = pd2.PeriodDef_ID and  
-        pd2.sampleset_ID = he.sampleset_ID and  
+    from qp_prod.dbo.medicarelookup ml inner join
+	qp_prod.dbo.sufacility sf		on ml.medicareNumber = sf.MedicareNumber inner join
+	qp_prod.dbo.sampleunit su		on sf.SUFacility_ID = su.SuFacility_ID  inner join
+    qp_prod.dbo.EligibleEncLog hE	on su.Sampleunit_ID = he.sampleunit_ID inner join
+	qp_prod.dbo.periodDates pd2		on pd2.sampleset_ID = he.sampleset_ID inner join
+	qp_prod.dbo.periodDef pd1		on pd1.periodDef_Id = pd2.PeriodDef_ID 
+    where 
         pd1.datExpectedEncStart >= @EncDateStart and pd1.datExpectedEncEnd <= @EncDateEnd and   
         ml.medicareNumber = @MedicareNumber  
         group by datepart(month, pd1.datExpectedEncStart), datepart(year, pd1.datExpectedEncStart)
