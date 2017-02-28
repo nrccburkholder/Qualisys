@@ -1383,9 +1383,11 @@ declare
 			SELECT Pop_id,Enc_id,EncDate,numRandom
 			INTO #INCLUDE
 			FROM   (
-			   SELECT Pop_id,Enc_id,EncDate,numRandom
-					, row_number() OVER(PARTITION BY pop_id ORDER BY numRandom) AS rn
-			   FROM   #OAS a where EncDate = (select Max(EncDate) from #OAS b where a.pop_id = b.pop_id)
+				SELECT pop_id, enc_id, encdate, a.numrandom, rn.numRandom as encRandom,
+					   Row_number() OVER( partition BY pop_id ORDER BY a.numrandom, rn.numRandom) AS rn 
+				FROM   #oas a 
+				join   Random_Numbers rn on ((a.Enc_id+@seed) % 1000000) = rn.random_id
+				WHERE  encdate = (SELECT Max(encdate) FROM #oas b WHERE a.pop_id = b.pop_id) 
 			   ) sub
 			WHERE  rn = 1;
 
