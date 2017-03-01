@@ -3653,11 +3653,17 @@ declare @SQL nvarchar(4000)
  begin
  -- PCMH
 	set @SQL = N'
-	update r set
-	 PCMH1_Q16   = case isnull(Q050630,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050630%10000 as varchar) end,
-	 PCMH2_Q26   = case isnull(Q050634,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050634%10000 as varchar) end,
-	 PCMH3_Q27   = case isnull(Q050635,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050635%10000 as varchar) end,'
-	 
+	update r set '
+ 
+	if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q050630'))
+		 set @SQL = @SQL + 'PCMH1_Q16   = case isnull(Q050630,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050630%10000 as varchar) end,'
+	else set @SQL = @SQL + 'PCMH1_Q16   = ''M'','
+	if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q050634'))
+		 set @SQL = @SQL + 'PCMH2_Q26   = case isnull(Q050634,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050634%10000 as varchar) end,'
+	else set @SQL = @SQL + 'PCMH2_Q26   = ''M'','
+	if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q050635'))
+		 set @SQL = @SQL + 'PCMH3_Q27   = case isnull(Q050635,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050635%10000 as varchar) end,'
+	else set @SQL = @SQL + 'PCMH3_Q27   = ''M'','
 	if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q050514'))
 		 set @SQL = @SQL + 'PCMH4_Q28   = case isnull(Q050514,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050514%10000 as varchar) end,'
 	else set @SQL = @SQL + 'PCMH4_Q28   = ''M'','
