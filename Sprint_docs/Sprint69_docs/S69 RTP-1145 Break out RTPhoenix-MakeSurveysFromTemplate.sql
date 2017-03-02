@@ -881,22 +881,27 @@ begin try
 
 	--Determine if a MakeSampleUnitsFromTemplate job is needed and add (if so)
 
+	if @TemplateSampleUnit_ID = -1 -- if >0, then a sample unit ID, or -1 means all sample units (except those already requested)
+	begin
 	--First see if there are any SampleUnitJobs having the same parent as myself
-	--and if so, line up the ones belonging to this one (having a matching survey name)
+	--and if so, line up the ones belonging to this one (having a matching survey name and sample unit name)
 
-	if exists(select * from [RTPhoenix].[TemplateJob] tj inner join
-				dbo.survey_def sd on tj.[SurveyName] = sd.[STRSURVEY_NM]
-				where [MasterTemplateJobID] = @MasterTemplateJob_ID and [TemplateJobTypeID] = 3
-				  and sd.survey_id = @TargetSurvey_ID)
-		update [RTPhoenix].[TemplateJob] set
-			[TargetSurveyID] = @TargetSurvey_ID,
-			[TargetStudyID] = @TargetStudy_ID
-		from [RTPhoenix].[TemplateJob] tj inner join
-				dbo.survey_def sd on tj.[SurveyName] = sd.[STRSURVEY_NM]
-				where [MasterTemplateJobID] = @MasterTemplateJob_ID and [TemplateJobTypeID] = 3
-				  and sd.survey_id = @TargetSurvey_ID
-	else --no preexisting jobs so @TemplateSampleUnit_ID drives bulk or singleton creation
-	if @TemplateSampleUnit_ID = -1 -- if >0, then a survey ID, or -1 means all surveys
+	--For each sample unit name in the template, and for this survey name
+	----If supplied in TemplateJob table, update and continue with those
+	----Else generate from Template (using left join to TemplateJob where null)
+
+		if exists(select * from [RTPhoenix].[TemplateJob] tj inner join
+					dbo.survey_def sd on tj.[SurveyName] = sd.[STRSURVEY_NM]
+					where [MasterTemplateJobID] = @MasterTemplateJob_ID and [TemplateJobTypeID] = 3
+					  and sd.survey_id = @TargetSurvey_ID)
+			update [RTPhoenix].[TemplateJob] set
+				[TargetSurveyID] = @TargetSurvey_ID,
+				[TargetStudyID] = @TargetStudy_ID
+			from [RTPhoenix].[TemplateJob] tj inner join
+					dbo.survey_def sd on tj.[SurveyName] = sd.[STRSURVEY_NM]
+					where [MasterTemplateJobID] = @MasterTemplateJob_ID and [TemplateJobTypeID] = 3
+					  and sd.survey_id = @TargetSurvey_ID
+
 		INSERT INTO [RTPhoenix].[TemplateJob]
 				   ([TemplateJobTypeID]
 				   ,[MasterTemplateJobID]
@@ -928,27 +933,27 @@ begin try
 		SELECT 3--[TemplateJobTypeID]
 			  ,@TemplateJob_ID--[MasterTemplateJobID]
 			  ,tj.[TemplateID]
-			  ,[TemplateSurveyID]
+			  ,tj.[TemplateSurveyID]
 			  ,su.SampleUnit_id
-			  ,[CAHPSSurveyTypeID]
-			  ,[CAHPSSurveySubtypeID]
-			  ,[RTSurveyTypeID]
-			  ,[RTSurveySubtypeID]
-			  ,[AsOfDate]
-			  ,[TargetClientID]
-			  ,[TargetStudyID]
-			  ,[TargetSurveyID]
-			  ,[StudyName]
-			  ,[StudyDescription]
-			  ,IsNull([SurveyName], sd.strSurvey_NM)
-			  ,IsNull([SampleUnitName], su.strSampleUnit_NM)
-			  ,[MedicareNumber]
-			  ,[ContractNumber]
-			  ,[SurveyStartDate]
-			  ,[SurveyEndDate]
-			  ,[MethodologyID]
-			  ,[LanguageID]
-			  ,[LoggedBy]
+			  ,tj.[CAHPSSurveyTypeID]
+			  ,tj.[CAHPSSurveySubtypeID]
+			  ,tj.[RTSurveyTypeID]
+			  ,tj.[RTSurveySubtypeID]
+			  ,tj.[AsOfDate]
+			  ,tj.[TargetClientID]
+			  ,tj.[TargetStudyID]
+			  ,tj.[TargetSurveyID]
+			  ,tj.[StudyName]
+			  ,tj.[StudyDescription]
+			  ,IsNull(tj.[SurveyName], sd.strSurvey_NM)
+			  ,IsNull(tj.[SampleUnitName], su.strSampleUnit_NM)
+			  ,tj.[MedicareNumber]
+			  ,tj.[ContractNumber]
+			  ,tj.[SurveyStartDate]
+			  ,tj.[SurveyEndDate]
+			  ,tj.[MethodologyID]
+			  ,tj.[LanguageID]
+			  ,tj.[LoggedBy]
 			  ,getdate()
 			  ,null
 			  ,null
@@ -957,10 +962,16 @@ begin try
 		  INNER JOIN [RTPhoenix].[Survey_DefTemplate] sd on sd.STUDY_ID = t.Study_ID
 		  INNER JOIN [RTPhoenix].[SAMPLEPLANTemplate] sp on sp.SURVEY_ID = sd.SURVEY_ID
 		  INNER JOIN [RTPhoenix].[SampleUnitTemplate] su on su.SAMPLEPLAN_ID = sp.SAMPLEPLAN_ID
-		  WHERE [TemplateJobID] = @TemplateJob_ID
-			AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
+		  LEFT JOIN [RTPhoenix].[TemplateJob] tj2 
+					on tj2.[MasterTemplateJobID] = @MasterTemplateJob_ID
+					and tj2.[TemplateJobTypeID] = 3 
+					and sd.STRSURVEY_NM = tj2.[SurveyName]
+					and su.STRSAMPLEUNIT_NM = tj2.[SampleUnitName]
+		  WHERE tj.[TemplateJobID] = @TemplateJob_ID
+					and tj2.TemplateJobID is null --means no existing template job exists for this survey name/sample unit name combination
+	end
 	else
-	if @TemplateSampleUnit_ID > 0 -- if >0, then a survey ID, or -1 means all surveys
+	if @TemplateSampleUnit_ID > 0 -- if >0, then a sample unit ID, or -1 means all sample units (above)
 		INSERT INTO [RTPhoenix].[TemplateJob]
 				   ([TemplateJobTypeID]
 				   ,[MasterTemplateJobID]
