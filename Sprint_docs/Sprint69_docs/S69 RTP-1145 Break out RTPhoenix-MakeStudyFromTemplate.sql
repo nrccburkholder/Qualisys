@@ -644,9 +644,16 @@ end catch
 					where [MasterTemplateJobID] = @TemplateJob_ID and [TemplateJobTypeID] = 2)
 			update [RTPhoenix].[TemplateJob] set
 				[TargetStudyID] = @TargetStudy_ID,
-				[TargetClientID] = @TargetClient_ID
-			from [RTPhoenix].[TemplateJob]
+				[TargetClientID] = @TargetClient_ID,
+				[TemplateID] = @Template_ID,
+				[TemplateSurveyID] = sd.Survey_ID
+			from [RTPhoenix].[TemplateJob] tj inner join
+				[RTPhoenix].[Template] t on t.TemplateID = tj.TemplateID inner join
+				[RTPhoenix].[SURVEY_DEFTemplate] sd on sd.study_id = t.study_id
 			where [MasterTemplateJobID] = @TemplateJob_ID and [TemplateJobTypeID] = 2
+				and sd.STRSURVEY_NM = tj.SurveyName
+
+			--just filled Template_ID, TemplateSurvey_ID for these records from associated Template
 
 		INSERT INTO [RTPhoenix].[TemplateJob]
 				   ([TemplateJobTypeID]

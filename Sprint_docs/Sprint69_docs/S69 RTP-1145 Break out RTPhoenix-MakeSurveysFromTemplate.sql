@@ -896,11 +896,20 @@ begin try
 					  and sd.survey_id = @TargetSurvey_ID)
 			update [RTPhoenix].[TemplateJob] set
 				[TargetSurveyID] = @TargetSurvey_ID,
-				[TargetStudyID] = @TargetStudy_ID
+				[TargetStudyID] = @TargetStudy_ID,
+				[TemplateID] = @Template_ID,
+				[TemplateSurveyID] = sd.Survey_ID,
+				[TemplateSampleUnitID] = su.SampleUnit_ID
 			from [RTPhoenix].[TemplateJob] tj inner join
-					dbo.survey_def sd on tj.[SurveyName] = sd.[STRSURVEY_NM]
-					where [MasterTemplateJobID] = @MasterTemplateJob_ID and [TemplateJobTypeID] = 3
-					  and sd.survey_id = @TargetSurvey_ID
+				[RTPhoenix].[Template] t on t.TemplateID = tj.TemplateID inner join
+				[RTPhoenix].[SURVEY_DEFTemplate] sd on sd.study_id = t.study_id inner join
+				[RTPhoenix].[SAMPLEPLANTemplate] sp on sd.survey_id = sp.survey_id inner join
+				[RTPhoenix].[SampleUnitTemplate] su on sp.SAMPLEPLAN_ID = su.SAMPLEPLAN_ID
+			where [MasterTemplateJobID] = @MasterTemplateJob_ID and [TemplateJobTypeID] = 3
+					  and sd.STRSURVEY_NM = tj.SurveyName
+					  and su.STRSAMPLEUNIT_NM = tj.SampleUnitName
+
+			--just filled Template_ID, TemplateSurvey_ID, TemplateSampleUnit_ID for these records from associated Template
 
 		INSERT INTO [RTPhoenix].[TemplateJob]
 				   ([TemplateJobTypeID]
