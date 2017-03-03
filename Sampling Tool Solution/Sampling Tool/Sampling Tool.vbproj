@@ -23,7 +23,7 @@
     <OptionStrict>On</OptionStrict>
     <SignManifests>true</SignManifests>
     <ManifestCertificateThumbprint>13E09AAD0FFC1E7667935AC08A3A46200504109E</ManifestCertificateThumbprint>
-    <ManifestCertificateThumbprint>3D7039F333E5770D400FFBE37A961A8EC3B801CF</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>275210D6B28A7735EE7BDB81706E65FBC3F3AC22</ManifestCertificateThumbprint>
     <SignAssembly>false</SignAssembly>
     <TargetZone>LocalIntranet</TargetZone>
     <GenerateManifests>true</GenerateManifests>
@@ -108,7 +108,7 @@
     <NoWarn>42353,42354,42355</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>Sampling Tool_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>Sampling Tool_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -308,7 +308,7 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="Sampling Tool.nuspec" />
-    <None Include="Sampling Tool_1_TemporaryKey.pfx" />
+    <None Include="Sampling Tool_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <BaseApplicationManifest Include="My Project\app.manifest" />
