@@ -3320,6 +3320,12 @@ else
 	 left outer join #Study_Results sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id
 	 inner join #tmp_mncm_mailsteps tmm on tmm.samplepop_id = sr.samplepop_id and tmm.sampleunit_id = sr.sampleunit_id
 
+if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q050253')) and
+	exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q055064'))
+set @SQL = N'
+  update r set
+  Q28  = case isnull(Q055064,isnull(Q050253,-9)) when -9 then ''M'' when -8 then ''H'' else cast(isnull(Q055064,Q050253)%10000 as varchar) end'
+else
 if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q050253'))
  set @SQL =  N'
   update r set
