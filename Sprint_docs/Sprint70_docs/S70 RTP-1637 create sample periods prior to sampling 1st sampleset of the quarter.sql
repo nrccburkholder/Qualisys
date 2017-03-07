@@ -36,12 +36,9 @@ if exists (select * from sys.procedures where name = 'QCL_InsertQuarterlyRTPerio
 GO
 
 CREATE PROCEDURE [dbo].[QCL_InsertQuarterlyRTPeriodsbySurveyId]
-@surveyId int 
+@surveyId int,
+@DateToCheck datetime
 AS
-
-declare @SurveyStartDate date = null
-
-select @SurveyStartDate = datSurvey_Start_Dt from survey_def where survey_id = @surveyId
 
 if exists(select * from SurveySubType sst inner join 
 		SubType st on sst.Subtype_id = st.Subtype_id 
@@ -50,7 +47,7 @@ if exists(select * from SurveySubType sst inner join
 	and
 	not exists(select * from perioddef 
 		where survey_id = @surveyid and 
-			dbo.YearQtr(@SurveyStartDate) = dbo.YearQtr(datExpectedEncStart))
+			dbo.YearQtr(@DateToCheck) = dbo.YearQtr(datExpectedEncStart))
 BEGIN
 	declare @Employee_id INT, --954
 	@strPeriodDef_nm VARCHAR(42),  --Jan17
@@ -64,7 +61,8 @@ BEGIN
 	@SampleNumber INT, --1,2,3
 	@datScheduledSample_dt DATETIME --2017-01-01 2017-01-02 2017-01-03 
 
-	declare @StartingDate datetime = convert(varchar(2),((month(@SurveyStartDate)-1) / 3) * 3 + 1) + '/01/' + convert(varchar(4), year(@SurveyStartDate))
+	declare @StartingDate datetime = convert(varchar(2),((month(@DateToCheck)-1) / 3) * 3 + 1) + 
+							'/01/' + convert(varchar(4), year(@DateToCheck))
 
 	declare @WorkingDate datetime = @StartingDate
 
@@ -102,59 +100,80 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[QCL_SelectActivePeriodbySurveyId]    Script Date: 3/6/2017 9:08:37 AM ******/
+/****** Object:  StoredProcedure [dbo].[QCL_InsertSampleSet]    Script Date: 3/7/2017 3:40:09 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+/*  
+Business Purpose:   
+This procedure is used to support the Qualisys Class Library.  It creates a new  
+sampleset record and also adds placeholders in the sampleplanworksheet table.  
+  
+Created:  2/23/2006 by DC  
+  
+Modified: 5/18/2006 by SS -- If Table_id or Field_id is passed as zero set it to NULL because of FK to metatable
+Modified: 7/15/2009 by DRM -- Changed @@identity to Scope_Identity()  
+Modified: 3/07/2017 by CJB -- RTP-1449 create RT HCAHPS sample periods
+*/   
+  
+ALTER PROCEDURE [dbo].[QCL_InsertSampleSet]   
+ @intSurvey_id INT,  
+ @intEmployee_id INT,  
+ @vcDateRange_FromDate VARCHAR(24) = NULL,  
+ @vcDateRange_ToDate VARCHAR(24) = NULL,  
+ @tiOverSample_flag bit,  
+ @tiNewPeriod_flag bit,  
+ @intPeriodDef_id int,  
+ @strSurvey_nm VARCHAR(10),   
+ @intSampleEncounterDateRange_Table_id int,   
+ @intSampleEncounterDateRange_Field_id int,  
+ @SamplingAlgorithmId int,  
+ @intSamplePlan_id INT,  
+ @SurveyType_id INT,  
+ @HCAHPSOverSample bit  
+AS  
+  
+BEGIN  
 
-/*
-Business Purpose: 
+  --RTP-1449 create RT HCAHPS sample periods
+  exec [dbo].[QCL_InsertQuarterlyRTPeriodsbySurveyId] @intSurvey_id, @vcDateRange_FromDate
+  -------------------
 
-This procedure is used to select the active period for a survey.
-
-Created:  01/27/2006 by Dan Christensen
-
-Modified:
-
-*/
-
-ALTER   PROCEDURE [dbo].[QCL_SelectSamplePeriodsBySurvey]
-	@survey_id int
-AS
-
-SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED  
-CREATE TABLE #activePeriod (periodDef_id int, ActivePeriod bit default 0)
-
-EXEC [dbo].[QCL_InsertQuarterlyRTPeriodsbySurveyId] @survey_id
-
-INSERT INTO #activePeriod
-EXEC [dbo].[QCL_SelectActivePeriodbySurveyId] @survey_id
-
-SELECT p.PeriodDef_id, Survey_id, Employee_id, datAdded, strPeriodDef_nm,
-    intExpectedSamples, datExpectedEncStart, datExpectedEncEnd,
-    SamplingMethod_id, DaysToSample, monthWeek, coalesce(a.ActivePeriod,0) as ActivePeriod,
-	case
-		when a.ActivePeriod is not null then 1
-		else 0
-	end as TimeFrame
-INTO #AllPeriods
-FROM PeriodDef p LEFT JOIN #activePeriod a
-ON p.perioddef_id=a.perioddef_id 
-WHERE p.survey_id =@survey_id
-
---Mark any periods that are in the future
-UPDATE #AllPeriods
-SET TimeFrame=2
-WHERE perioddef_id in 
-	(select p.perioddef_id
-	 from #AllPeriods p, perioddates pd
-	 WHERE p.perioddef_id=pd.perioddef_id and
-			p.activeperiod=0 and
-			pd.samplenumber=1 and
-			pd.datsamplecreate_dt is null)
-
-SELECT *
-FROM #AllPeriods
-
+  DECLARE @intSampleSet_id int  
+  
+ --If Table_id or Field_id is passed as zero set it to NULL because of FK to metatable  
+  SELECT @intSampleEncounterDateRange_Table_id = CASE WHEN @intSampleEncounterDateRange_Table_id = -1 THEN NULL ELSE @intSampleEncounterDateRange_Table_id END,  
+  @intSampleEncounterDateRange_Field_id = CASE WHEN @intSampleEncounterDateRange_Field_id = -1 THEN NULL ELSE @intSampleEncounterDateRange_Field_id END  
+  
+  
+  INSERT INTO dbo.SampleSet  
+   (SamplePlan_id, Survey_id, Employee_id, datSampleCreate_dt,   
+    intDateRange_Table_id, intDateRange_Field_id,   
+    datDateRange_FromDate,   
+    datDateRange_ToDate, tiOverSample_flag, tiNewPeriod_flag, strSampleSurvey_nm,  
+  SamplingAlgorithmId,surveytype_id, HCAHPSOverSample)  
+  VALUES  
+   (@intSamplePlan_id, @intSurvey_id, @intEmployee_id, GETDATE(),   
+    @intSampleEncounterDateRange_Table_id, @intSampleEncounterDateRange_Field_id, @vcDateRange_FromDate,   
+    @vcDateRange_ToDate, @tiOverSample_flag, @tiNewPeriod_flag, @strSurvey_nm,  
+  @SamplingAlgorithmId,@SurveyType_id, @HCAHPSOverSample)  
+                                                                                                                                                                           
+  SELECT @intSampleSet_id = Scope_Identity()
+  
+  --Insert into SamplePlanWorkSheet table  
+  INSERT INTO SamplePlanWorkSheet (SampleSet_id, SampleUnit_id, strSampleUnit_nm, ParentSampleUnit_id, intPeriodReturnTarget,   
+   numDefaultResponseRate, intSamplesInPeriod)  
+  SELECT @intSampleSet_id, SampleUnit_id, strSampleUnit_nm, ParentSampleUnit_id, intTargetReturn,   
+   numInitResponseRate, intExpectedSamples  
+  FROM SampleUnit su, SamplePlan sp, Survey_def sd, Perioddef p  
+  WHERE sp.Survey_id = @intSurvey_id  
+  AND sp.SamplePlan_id = su.SamplePlan_id  
+  AND sp.Survey_id = sd.Survey_id   
+  AND sd.survey_id=p.survey_Id  
+  AND p.periodDef_id=@intPeriodDef_id  
+  
+ SELECT @intSampleSet_id AS intSampleSet_id  
+END  
+  
 GO
