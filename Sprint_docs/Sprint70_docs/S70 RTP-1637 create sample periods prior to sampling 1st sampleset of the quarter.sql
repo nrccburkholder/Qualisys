@@ -39,6 +39,10 @@ CREATE PROCEDURE [dbo].[QCL_InsertQuarterlyRTPeriodsbySurveyId]
 @surveyId int 
 AS
 
+declare @SurveyStartDate date = null
+
+select @SurveyStartDate = datSurvey_Start_Dt from survey_def where survey_id = @surveyId
+
 if exists(select * from SurveySubType sst inner join 
 		SubType st on sst.Subtype_id = st.Subtype_id 
 		where survey_ID = @surveyid and 
@@ -46,7 +50,7 @@ if exists(select * from SurveySubType sst inner join
 	and
 	not exists(select * from perioddef 
 		where survey_id = @surveyid and 
-			dbo.YearQtr(GetDate()) = dbo.YearQtr(datExpectedEncStart))
+			dbo.YearQtr(@SurveyStartDate) = dbo.YearQtr(datExpectedEncStart))
 BEGIN
 	declare @Employee_id INT, --954
 	@strPeriodDef_nm VARCHAR(42),  --Jan17
@@ -60,7 +64,7 @@ BEGIN
 	@SampleNumber INT, --1,2,3
 	@datScheduledSample_dt DATETIME --2017-01-01 2017-01-02 2017-01-03 
 
-	declare @StartingDate datetime = convert(varchar(2),((month(GetDate())-1) / 3) * 3 + 1) + '/01/' + convert(varchar(4), year(GetDate()))
+	declare @StartingDate datetime = convert(varchar(2),((month(@SurveyStartDate)-1) / 3) * 3 + 1) + '/01/' + convert(varchar(4), year(@SurveyStartDate))
 
 	declare @WorkingDate datetime = @StartingDate
 
