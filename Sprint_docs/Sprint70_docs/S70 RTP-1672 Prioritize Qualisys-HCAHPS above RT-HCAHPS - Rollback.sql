@@ -11,6 +11,6 @@ Chris Burkholder
 Use [QP_Prod]
 GO
 
-delete from QUALPRO_PARAMS where strparam_nm like '%samplingToolPriority%'
+delete from QUALPRO_PARAMS where strparam_nm = 'SurveyRule: SamplingToolPriority - RT'
 
 GO
