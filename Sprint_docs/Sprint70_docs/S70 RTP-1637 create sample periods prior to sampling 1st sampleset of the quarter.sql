@@ -6,7 +6,7 @@
 	3/6/2017
 
 	CREATE PROCEDURE [dbo].[QCL_InsertQuarterlyRTPeriodsbySurveyId]
-	ALTER PROCEDURE [dbo].[QCL_SelectSamplePeriodsBySurvey]
+	ALTER PROCEDURE [dbo].[QCL_InsertSampleSet]   
 
 PeriodDef_id	Survey_id	Employee_id	datAdded	strPeriodDef_nm	intExpectedSamples	DaysToSample	datExpectedEncStart	datExpectedEncEnd	strDayOrder	MonthWeek	SamplingMethod_id
 457135	20617	954	2017-01-12 16:17:12.320	Jan17	31	2	2017-01-01 00:00:00.000	2017-01-31 00:00:00.000	NULL	D	1
