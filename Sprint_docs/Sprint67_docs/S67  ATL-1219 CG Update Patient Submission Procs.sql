@@ -3320,6 +3320,12 @@ else
 	 left outer join #Study_Results sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id
 	 inner join #tmp_mncm_mailsteps tmm on tmm.samplepop_id = sr.samplepop_id and tmm.sampleunit_id = sr.sampleunit_id
 
+if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q050253')) and
+	exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q055064'))
+set @SQL = N'
+  update r set
+  Q28  = case isnull(Q055064,isnull(Q050253,-9)) when -9 then ''M'' when -8 then ''H'' else cast(isnull(Q055064,Q050253)%10000 as varchar) end'
+else
 if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q050253'))
  set @SQL =  N'
   update r set
@@ -3649,15 +3655,21 @@ inner join #tmp_mncm_mailsteps tmm on tmm.samplepop_id = sr.samplepop_id and tmm
 
 declare @SQL nvarchar(4000)
 
-  if @surveytype = 22
+if @surveytype = 22
  begin
  -- PCMH
 	set @SQL = N'
-	update r set
-	 PCMH1_Q16   = case isnull(Q050630,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050630%10000 as varchar) end,
-	 PCMH2_Q26   = case isnull(Q050634,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050634%10000 as varchar) end,
-	 PCMH3_Q27   = case isnull(Q050635,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050635%10000 as varchar) end,'
-	 
+	update r set '
+ 
+	if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q050630'))
+		 set @SQL = @SQL + 'PCMH1_Q16   = case isnull(Q050630,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050630%10000 as varchar) end,'
+	else set @SQL = @SQL + 'PCMH1_Q16   = ''M'','
+	if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q050634'))
+		 set @SQL = @SQL + 'PCMH2_Q26   = case isnull(Q050634,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050634%10000 as varchar) end,'
+	else set @SQL = @SQL + 'PCMH2_Q26   = ''M'','
+	if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q050635'))
+		 set @SQL = @SQL + 'PCMH3_Q27   = case isnull(Q050635,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050635%10000 as varchar) end,'
+	else set @SQL = @SQL + 'PCMH3_Q27   = ''M'','
 	if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q050514'))
 		 set @SQL = @SQL + 'PCMH4_Q28   = case isnull(Q050514,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050514%10000 as varchar) end,'
 	else set @SQL = @SQL + 'PCMH4_Q28   = ''M'','
@@ -3687,6 +3699,16 @@ declare @SQL nvarchar(4000)
 	 inner join #tmp_mncm_mailsteps tmm on tmm.samplepop_id = sr.samplepop_id and tmm.sampleunit_id = sr.sampleunit_id'
 	exec (@SQL)
  end
+ else
+	update r set 
+		PCMH1_Q16   = 'M',PCMH2_Q26   = 'M',PCMH3_Q27   = 'M',
+		PCMH4_Q28   = 'M',PCMH5_Q29   = 'M',PCMH6_Q30   = 'M',
+		PCMH7_Q31   = 'M',PCMH8_Q32   = 'M',PCMH9_Q33   = 'M',
+		PCMH10_Q34   = 'M'
+		from #results r
+		 inner join #Big_Table bt on r.samplepop_id=bt.samplepop_id and r.sampleunit_id=bt.sampleunit_id
+		 left outer join #Study_Results sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id
+		 inner join #tmp_mncm_mailsteps tmm on tmm.samplepop_id = sr.samplepop_id and tmm.sampleunit_id = sr.sampleunit_id	
  
 -- #tmp_mncm_mailsteps only has records that we're exporting, so this where clause is redundant:
 --   where tmm.bitmncm = 1

@@ -302,6 +302,34 @@ begin try
 	WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
 	  AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 	  AND ((@TemplateSampleUnit_ID = -1) OR (su.SampleUnit_ID = @TemplateSampleUnit_ID))
+
+	--fill in SAMPLEUNIT.CriteriaStmt_ID later from job, else get from template
+
+	declare @TargetSampleUnit_ID int = null
+	if @TemplateSampleUnit_ID > 0
+		set @TargetSampleUnit_ID = ident_current('dbo.sampleunit')
+
+	if @TargetSampleUnit_ID > 0
+	begin
+		insert into CriteriaStmt (STUDY_ID,STRCRITERIASTMT_NM,strCriteriaString)
+		values (@TargetStudy_ID,'SampUnit','(ENCOUNTERCCN = "'+@MedicareNumber+'")')
+
+		declare @CriteriaStmtID int = ident_current('dbo.criteriastmt')
+		declare @TableID int, @FieldID int
+		select @TableID = Table_ID from MetaTable 
+			where study_id = @TargetStudy_ID and strTable_NM = 'ENCOUNTER'
+		select @FieldID = ms.Field_ID from MetaStructure ms inner join 
+				MetaField mf on mf.field_id = ms.field_id 
+			where Table_ID = @TableID and STRFIELD_NM = 'CCN'
+
+		insert into CriteriaClause (CRITERIAPHRASE_ID, CRITERIASTMT_ID,TABLE_ID,FIELD_ID,INTOPERATOR,STRLOWVALUE,STRHIGHVALUE)
+		values (1,@CriteriaStmtID,@TableID,@FieldID,1,@MedicareNumber,NULL)
+
+		update dbo.SampleUnit set CRITERIASTMT_ID = @CriteriaStmtID
+		where sampleunit_id = @TargetSampleUnit_ID
+	end
+
+	--end SAMPLEUNIT.CriteriaStmt_ID
 				
 	INSERT INTO [dbo].[SAMPLEUNITTREEINDEX] 
 			   ([SAMPLEUNIT_ID]
@@ -385,7 +413,7 @@ begin try
 	SET @CompletedNotes = 'Completed Make Sample Units From Template for Study_id '+convert(varchar,@TargetStudy_ID)+
 		' from Template_id '+convert(varchar,@Template_ID)+' via TemplateJob_id '+convert(varchar,@TemplateJob_Id)
 
-	if (@TemplateSampleUnit_ID > 0) --specific TemplateSampleUnit_ID  yields a specific TargetSampleUnit_ID
+	if (@TargetSampleUnit_ID > 0) --specific TemplateSampleUnit_ID  yields a specific TargetSampleUnit_ID
 	begin
 		UPDATE [dbo].[SampleUnit]
 		set [STRSAMPLEUNIT_NM] = 
@@ -394,7 +422,7 @@ begin try
 				ELSE IsNull(@SampleUnit_nm, [STRSAMPLEUNIT_NM])
 			END
 		from [dbo].[SampleUnit]
-		where [SampleUnit_ID] = @TemplateSurvey_ID
+		where [SampleUnit_ID] = @TargetSampleUnit_ID
 	end
 
 	UPDATE [RTPhoenix].[TemplateJob]
