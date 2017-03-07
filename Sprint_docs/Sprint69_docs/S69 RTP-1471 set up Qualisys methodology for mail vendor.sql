@@ -19,11 +19,21 @@ GO
 
 BEGIN TRAN
 
+declare @maxseed int
+
+delete from MAILINGSTEPMETHOD where MailingStepMethod_nm='Vendor Mail'
+select @maxseed=max(MailingStepMethod_id) from MAILINGSTEPMETHOD
+DBCC CHECKIDENT ('dbo.MAILINGSTEPMETHOD', RESEED, @maxseed);  
+
 INSERT INTO [dbo].[MAILINGSTEPMETHOD]
 			(MailingStepMethod_nm,CreateDataFileAtGeneration,IsNonMailGeneration)
 	VALUES('Vendor Mail',1,1)
 
 declare @VendorMailMailingStep int = IDENT_CURRENT('dbo.MailingStepMethod')
+
+delete from StandardMethodology where strStandardMethodology_nm='HCAHPS + RT Mail Only'
+select @maxseed=max(StandardMethodologyID) from StandardMethodology
+DBCC CHECKIDENT ('dbo.StandardMethodology', RESEED, @maxseed);  
 
 INSERT INTO [dbo].[StandardMethodology]
            ([strStandardMethodology_nm],[bitCustom],[MethodologyType])
@@ -41,10 +51,18 @@ INSERT INTO [dbo].[StandardMethodologyBySurveyType]
            ([StandardMethodologyID],[SurveyType_id],[SubType_ID],[bitExpired])
      VALUES (@VendorMailStandardMethodology,2,@HCAHPSRTSubType,0)
 
+delete from MethodologyStepType where strMailingStep_nm in ('1st Svy Vendor Mail','2nd Svy Vendor Mail')
+select @maxseed=max(MethodologyStepTypeId) from MethodologyStepType
+DBCC CHECKIDENT ('dbo.MethodologyStepType', RESEED, @maxseed);  
+
 INSERT INTO [dbo].[MethodologyStepType]
 			(bitSurveyInLine,bitSendSurvey,bitThankYouItem,strMailingStep_nm,MailingStepMethod_id,CoverLetterRequired,ExpireInDays)
 	VALUES(0,1,0,'1st Svy Vendor Mail',@VendorMailMailingStep,0,42),
 		(0,1,0,'2nd Svy Vendor Mail',@VendorMailMailingStep,0,42)
+
+delete from StandardMailingStep where strMailingStep_nm in ('1st Svy Vendor Mail','2nd Svy Vendor Mail')
+select @maxseed=max(StandardMailingStepID) from StandardMailingStep
+DBCC CHECKIDENT ('dbo.StandardMailingStep', RESEED, @maxseed);  
 
 INSERT INTO [dbo].[StandardMailingStep]
 			(StandardMethodologyID,intSequence,bitSurveyInLine,bitSendSurvey,intIntervalDays,bitThankYouItem,strMailingStep_nm,

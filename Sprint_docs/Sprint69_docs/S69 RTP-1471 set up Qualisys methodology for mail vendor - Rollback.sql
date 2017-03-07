@@ -40,6 +40,21 @@ where StandardMethodologyID = @VendorMailStandardMethodology
 delete from MailingStepMethod
 where MailingStepMethod_nm = 'Vendor Mail'
 
+
+declare @maxseed int
+select @maxseed=max(MailingStepMethod_id) from MAILINGSTEPMETHOD
+DBCC CHECKIDENT ('dbo.MAILINGSTEPMETHOD', RESEED, @maxseed);  
+
+select @maxseed=max(StandardMethodologyID) from StandardMethodology
+DBCC CHECKIDENT ('dbo.StandardMethodology', RESEED, @maxseed);  
+
+select @maxseed=max(MethodologyStepTypeId) from MethodologyStepType
+DBCC CHECKIDENT ('dbo.MethodologyStepType', RESEED, @maxseed);  
+
+select @maxseed=max(StandardMailingStepID) from StandardMailingStep
+DBCC CHECKIDENT ('dbo.StandardMailingStep', RESEED, @maxseed);  
+
+
 select * from StandardMethodology where StandardMethodologyID = @VendorMailStandardMethodology
 select * from StandardMethodologyBySurveyType where StandardMethodologyID = @VendorMailStandardMethodology
 select * from MethodologyStepType 
