@@ -115,6 +115,14 @@ namespace NRC.Picker.SamplingService.Store
         {
             Primary,
             Secondary,
+            Tertiary,
+            Quaternary,
+            Quinary,
+            Senary,
+            Septenary,
+            Octonary,
+            Nonary,
+            Denary,
             Inpatient,
             Outpatient,
             EmergencyRoom,
@@ -124,31 +132,36 @@ namespace NRC.Picker.SamplingService.Store
 
         private static SurveyOrder GetOrderForSurvey(Survey survey)
         {
-            // Done: analyzed survey rules need for new property here or not; non-HCAHPS is more complicated than this service is able to handle (needs work)
-            if (survey.get_IsMonthlyOnly()) // HCAHPS or HHCAHPS only
-                switch (survey.get_ResurveyExclusionPeriodsNumericDefault())
-                {
-                    case 1: // HCAHPS
-                        return SurveyOrder.Primary;
-                    case 6: // HHCAHPS
-                        return SurveyOrder.Secondary;
-                }
-
-            if (survey.SamplePeriods[0].SamplingMethod == SampleSet.SamplingMethod.Census)
+            switch (survey.get_SamplingToolPriority())
             {
-                return SurveyOrder.Census;
-            }
-            if (survey.Name.ToLower().Contains("ip") || survey.Name.ToLower().Contains("inpatient"))
-            {
-                return SurveyOrder.Inpatient;
-            }
-            if (survey.Name.ToLower().Contains("op") || survey.Name.ToLower().Contains("outpatient"))
-            {
-                return SurveyOrder.Outpatient;
-            }
-            if (survey.Name.ToLower().Contains("ed") || survey.Name.ToLower().Contains("er"))
-            {
-                return SurveyOrder.EmergencyRoom;
+                case 1: return SurveyOrder.Primary;
+                case 2: return SurveyOrder.Secondary;
+                case 3: return SurveyOrder.Tertiary;
+                case 4: return SurveyOrder.Quaternary;
+                case 5: return SurveyOrder.Quinary;
+                case 6: return SurveyOrder.Senary;
+                case 7: return SurveyOrder.Septenary;
+                case 8: return SurveyOrder.Octonary;
+                case 9: return SurveyOrder.Nonary;
+                case 10: return SurveyOrder.Denary;
+                case 99:
+                    if (survey.SamplePeriods[0].SamplingMethod == SampleSet.SamplingMethod.Census)
+                    {
+                        return SurveyOrder.Census;
+                    }
+                    if (survey.Name.ToLower().Contains("ip") || survey.Name.ToLower().Contains("inpatient"))
+                    {
+                        return SurveyOrder.Inpatient;
+                    }
+                    if (survey.Name.ToLower().Contains("op") || survey.Name.ToLower().Contains("outpatient"))
+                    {
+                        return SurveyOrder.Outpatient;
+                    }
+                    if (survey.Name.ToLower().Contains("ed") || survey.Name.ToLower().Contains("er"))
+                    {
+                        return SurveyOrder.EmergencyRoom;
+                    }
+                else  return SurveyOrder.Other;
             }
             return SurveyOrder.Other;
         }
