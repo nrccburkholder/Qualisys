@@ -37,7 +37,8 @@ GO
 
 CREATE PROCEDURE [dbo].[QCL_InsertQuarterlyRTPeriodsbySurveyId]
 @surveyId int,
-@DateToCheck datetime
+@DateToCheck datetime,
+@employee_id int
 AS
 
 if exists(select * from SurveySubType sst inner join 
@@ -49,7 +50,7 @@ if exists(select * from SurveySubType sst inner join
 		where survey_id = @surveyid and 
 			dbo.YearQtr(@DateToCheck) = dbo.YearQtr(datExpectedEncStart))
 BEGIN
-	declare @Employee_id INT, --954
+	declare 
 	@strPeriodDef_nm VARCHAR(42),  --Jan17
 	@intExpectedSamples INT, --31
 	@DaysToSample INT = 2,
@@ -68,7 +69,6 @@ BEGIN
 
 	while DateDiff(month, @StartingDate, @WorkingDate) < 3
 	begin
-		select @Employee_ID = IsNull(Employee_id, 930) from Employee where SYSTEM_USER like '%'+STRNTLOGIN_NM
 		Select @strPeriodDef_nm = convert(varchar(3), DateName(month, @WorkingDate)) + convert(varchar(2),Year(@WorkingDate) % 100)
 		select @intExpectedSamples = datediff(day,@workingDate, dateadd(month, 1, @workingDate))
 		select @datExpectedEncStart = @workingDate
@@ -137,7 +137,7 @@ AS
 BEGIN  
 
   --RTP-1449 create RT HCAHPS sample periods
-  exec [dbo].[QCL_InsertQuarterlyRTPeriodsbySurveyId] @intSurvey_id, @vcDateRange_FromDate
+  exec [dbo].[QCL_InsertQuarterlyRTPeriodsbySurveyId] @intSurvey_id, @vcDateRange_FromDate, @intEmployee_id
   -------------------
 
   DECLARE @intSampleSet_id int  
