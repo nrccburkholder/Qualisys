@@ -3722,6 +3722,18 @@ if @surveytype = 22
 -- that said, if the survey was using different questions at the time of fielding or didn't ask one of these questions at all - this might crash.
 
 if exists (select name as col_nm from tempdb.sys.columns 
+	where object_id = object_id('tempdb..#Study_Results') and name in ('Q050531')) and
+   exists (select name as col_nm from tempdb.sys.columns 
+	where object_id = object_id('tempdb..#Study_Results') and name in ('Q052325'))
+ set @SQL = N'
+ update r set
+  Q33a = case isnull(q052325a,isnull(q050531a,-9)) when -9 then 0 else 1 end,
+  Q33b = case isnull(q052325b,isnull(q050531b,-9)) when -9 then 0 else 1 end,
+  Q33c = case isnull(q052325c,isnull(q050531c,-9)) when -9 then 0 else 1 end,
+  Q33d = case isnull(q052325d,isnull(q050531d,-9)) when -9 then 0 else 1 end,
+  Q33e = case isnull(q052325e,isnull(q050531e,-9)) when -9 then 0 else 1 end,
+  Q33f = 0'
+else if exists (select name as col_nm from tempdb.sys.columns 
 	where object_id = object_id('tempdb..#Study_Results') and name in ('Q050531'))
  set @SQL = N'
  update r set
