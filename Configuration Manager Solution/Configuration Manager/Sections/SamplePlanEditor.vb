@@ -321,10 +321,10 @@ Public Class SamplePlanEditor
         Dim survey As New Survey()
         survey.SurveyType = CType(CAHPSTypeComboBox.SelectedValue, SurveyTypes)
 
-        If survey.CompliesWithSwitchToPropSamplingDate AndAlso _
-                mModule.Survey.ActiveSamplePeriod IsNot Nothing AndAlso _
-                mModule.Survey.ActiveSamplePeriod.ExpectedStartDate.HasValue AndAlso _
-                mModule.Survey.ActiveSamplePeriod.ExpectedStartDate.Value >= AppConfig.Params("SwitchToPropSamplingDate").DateValue Then
+        If survey.CompliesWithSwitchToPropSamplingDate AndAlso ((mModule.Survey.ActiveSamplePeriod Is Nothing) Or
+           (mModule.Survey.ActiveSamplePeriod IsNot Nothing AndAlso
+           mModule.Survey.ActiveSamplePeriod.ExpectedStartDate.HasValue AndAlso
+           mModule.Survey.ActiveSamplePeriod.ExpectedStartDate.Value >= AppConfig.Params("SwitchToPropSamplingDate").DateValue)) Then
 
             'Target return
             With TargetReturnNumeric
@@ -678,9 +678,10 @@ Public Class SamplePlanEditor
         Dim survey As New Survey()
         survey.SurveyType = CType(CAHPSTypeComboBox.SelectedValue, SurveyTypes)
 
-        If survey.CompliesWithSwitchToPropSamplingDate AndAlso mModule.Survey.ActiveSamplePeriod IsNot Nothing AndAlso _
-           mModule.Survey.ActiveSamplePeriod.ExpectedStartDate.HasValue AndAlso _
-           mModule.Survey.ActiveSamplePeriod.ExpectedStartDate.Value >= AppConfig.Params("SwitchToPropSamplingDate").DateValue Then
+        If survey.CompliesWithSwitchToPropSamplingDate AndAlso ((mModule.Survey.ActiveSamplePeriod Is Nothing) Or _
+           (mModule.Survey.ActiveSamplePeriod IsNot Nothing AndAlso
+           mModule.Survey.ActiveSamplePeriod.ExpectedStartDate.HasValue AndAlso
+           mModule.Survey.ActiveSamplePeriod.ExpectedStartDate.Value >= AppConfig.Params("SwitchToPropSamplingDate").DateValue)) Then
             'Target return
             With TargetReturnNumeric
                 .Value = 0
