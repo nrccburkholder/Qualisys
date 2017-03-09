@@ -59,7 +59,7 @@
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath></OutputPath>
+    <OutputPath>bin\debug\</OutputPath>
     <DocumentationFile>NRC.xml</DocumentationFile>
     <BaseAddress>285212672</BaseAddress>
     <ConfigurationOverrideFile>
@@ -78,7 +78,7 @@
     <DebugType>full</DebugType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath></OutputPath>
+    <OutputPath>bin\release\</OutputPath>
     <DocumentationFile>NRC.xml</DocumentationFile>
     <BaseAddress>285212672</BaseAddress>
     <ConfigurationOverrideFile>
@@ -97,7 +97,8 @@
     <DebugType>none</DebugType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'PRODUCTION|AnyCPU'">
-    <OutputPath></OutputPath>
+    <OutputPath>
+    </OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
