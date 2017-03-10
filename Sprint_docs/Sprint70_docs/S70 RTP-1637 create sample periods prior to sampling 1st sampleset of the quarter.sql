@@ -32,6 +32,13 @@ select * from period where survey_id = 20693
 use [qp_prod]
 GO
 
+if not exists (select * from Employee where STREMPLOYEE_TITLE = 'Automation' and STRNTLOGIN_NM = 'SystemUser')
+	insert into Employee(STREMPLOYEE_FIRST_NM,STREMPLOYEE_LAST_NM,STREMPLOYEE_TITLE,STRNTLOGIN_NM,strPhoneExt,
+		strEmail,FullAccess,Dashboard_FullAccess,bitActive,role_id,Country_id)
+	values('System','User','Automation','SystemUser','SUse',
+		'SystemUser@nrchealth.com',0,0,1,0,1)
+GO
+
 if exists (select * from sys.procedures where name = 'QCL_InsertQuarterlyRTPeriodsbySurveyId')
 	drop procedure QCL_InsertQuarterlyRTPeriodsbySurveyId
 GO
@@ -179,7 +186,7 @@ END
   
 GO
 
-/****** Object:  StoredProcedure [dbo].[QCL_SelectActivePeriodbySurveyId]    Script Date: 3/6/2017 9:08:37 AM ******/
+/****** Object:  StoredProcedure [dbo].[QCL_SelectSamplePeriodsbySurveyId]    Script Date: 3/6/2017 9:08:37 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -204,9 +211,8 @@ SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 CREATE TABLE #activePeriod (periodDef_id int, ActivePeriod bit default 0)
 
 --RTP-1449 create RT HCAHPS sample periods
-declare @Employee_ID int = 930
-if exists(select Employee_id from Employee where SYSTEM_USER like '%'+STRNTLOGIN_NM )
-	select @Employee_id = Employee_id from Employee where SYSTEM_USER like '%'+STRNTLOGIN_NM
+declare @Employee_ID int 
+select @Employee_ID = Employee_id from Employee where STREMPLOYEE_TITLE = 'Automation' and STRNTLOGIN_NM = 'SystemUser'
 declare @DateToCheck datetime = DateAdd(Day, -2, GetDate())
 EXEC [dbo].[QCL_InsertQuarterlyRTPeriodsbySurveyId] @survey_id, @DateToCheck, @Employee_ID
 -------------------

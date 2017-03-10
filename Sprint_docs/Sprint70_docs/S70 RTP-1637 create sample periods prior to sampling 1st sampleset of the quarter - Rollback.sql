@@ -32,6 +32,9 @@ select * from period where survey_id = 20693
 use [qp_prod]
 go
 
+delete from Employee where STREMPLOYEE_TITLE = 'Automation' and STRNTLOGIN_NM = 'SystemUser'
+GO
+
 if exists (select * from sys.procedures where name = 'QCL_InsertQuarterlyRTPeriodsbySurveyId')
 	drop procedure QCL_InsertQuarterlyRTPeriodsbySurveyId
 GO
