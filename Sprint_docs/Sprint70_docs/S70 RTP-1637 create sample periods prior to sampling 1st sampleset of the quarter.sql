@@ -213,6 +213,9 @@ CREATE TABLE #activePeriod (periodDef_id int, ActivePeriod bit default 0)
 --RTP-1449 create RT HCAHPS sample periods
 declare @Employee_ID int 
 select @Employee_ID = Employee_id from Employee where STREMPLOYEE_TITLE = 'Automation' and STRNTLOGIN_NM = 'SystemUser'
+if exists(select Employee_id from Employee where SYSTEM_USER like '%'+STRNTLOGIN_NM )
+	select @Employee_id = Employee_id from Employee where SYSTEM_USER like '%'+STRNTLOGIN_NM
+
 declare @DateToCheck datetime = DateAdd(Day, -2, GetDate())
 EXEC [dbo].[QCL_InsertQuarterlyRTPeriodsbySurveyId] @survey_id, @DateToCheck, @Employee_ID
 -------------------
