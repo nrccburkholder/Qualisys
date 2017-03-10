@@ -7,6 +7,7 @@
 
 	CREATE PROCEDURE [dbo].[QCL_InsertQuarterlyRTPeriodsbySurveyId]
 	ALTER PROCEDURE [dbo].[QCL_InsertSampleSet]   
+	ALTER   PROCEDURE [dbo].[QCL_SelectSamplePeriodsBySurvey]
 
 PeriodDef_id	Survey_id	Employee_id	datAdded	strPeriodDef_nm	intExpectedSamples	DaysToSample	datExpectedEncStart	datExpectedEncEnd	strDayOrder	MonthWeek	SamplingMethod_id
 457135	20617	954	2017-01-12 16:17:12.320	Jan17	31	2	2017-01-01 00:00:00.000	2017-01-31 00:00:00.000	NULL	D	1
@@ -29,6 +30,13 @@ select * from period where survey_id = 20693
 */
 
 use [qp_prod]
+GO
+
+if not exists (select * from Employee where STREMPLOYEE_TITLE = 'Automation' and STRNTLOGIN_NM = 'SystemUser')
+	insert into Employee(STREMPLOYEE_FIRST_NM,STREMPLOYEE_LAST_NM,STREMPLOYEE_TITLE,STRNTLOGIN_NM,strPhoneExt,
+		strEmail,FullAccess,Dashboard_FullAccess,bitActive,role_id,Country_id)
+	values('System','User','Automation','SystemUser','SUse',
+		'SystemUser@nrchealth.com',0,0,1,0,1)
 GO
 
 if exists (select * from sys.procedures where name = 'QCL_InsertQuarterlyRTPeriodsbySurveyId')
@@ -176,4 +184,69 @@ BEGIN
  SELECT @intSampleSet_id AS intSampleSet_id  
 END  
   
+GO
+
+/****** Object:  StoredProcedure [dbo].[QCL_SelectSamplePeriodsbySurveyId]    Script Date: 3/6/2017 9:08:37 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+/*
+Business Purpose: 
+
+This procedure is used to select the active period for a survey.
+
+Created:  01/27/2006 by Dan Christensen
+
+Modified: QCL_InsertQuarterlyRTPeriodsbySurveyId now appears here as first best guess, and again in QCL_InsertSampleSet
+
+*/
+
+ALTER   PROCEDURE [dbo].[QCL_SelectSamplePeriodsBySurvey]
+	@survey_id int
+AS
+
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED  
+CREATE TABLE #activePeriod (periodDef_id int, ActivePeriod bit default 0)
+
+--RTP-1449 create RT HCAHPS sample periods
+declare @Employee_ID int 
+select @Employee_ID = Employee_id from Employee where STREMPLOYEE_TITLE = 'Automation' and STRNTLOGIN_NM = 'SystemUser'
+if exists(select Employee_id from Employee where SYSTEM_USER like '%'+STRNTLOGIN_NM )
+	select @Employee_id = Employee_id from Employee where SYSTEM_USER like '%'+STRNTLOGIN_NM
+
+declare @DateToCheck datetime = DateAdd(Day, -2, GetDate())
+EXEC [dbo].[QCL_InsertQuarterlyRTPeriodsbySurveyId] @survey_id, @DateToCheck, @Employee_ID
+-------------------
+
+INSERT INTO #activePeriod
+EXEC [dbo].[QCL_SelectActivePeriodbySurveyId] @survey_id
+
+SELECT p.PeriodDef_id, Survey_id, Employee_id, datAdded, strPeriodDef_nm,
+    intExpectedSamples, datExpectedEncStart, datExpectedEncEnd,
+    SamplingMethod_id, DaysToSample, monthWeek, coalesce(a.ActivePeriod,0) as ActivePeriod,
+	case
+		when a.ActivePeriod is not null then 1
+		else 0
+	end as TimeFrame
+INTO #AllPeriods
+FROM PeriodDef p LEFT JOIN #activePeriod a
+ON p.perioddef_id=a.perioddef_id 
+WHERE p.survey_id =@survey_id
+
+--Mark any periods that are in the future
+UPDATE #AllPeriods
+SET TimeFrame=2
+WHERE perioddef_id in 
+	(select p.perioddef_id
+	 from #AllPeriods p, perioddates pd
+	 WHERE p.perioddef_id=pd.perioddef_id and
+			p.activeperiod=0 and
+			pd.samplenumber=1 and
+			pd.datsamplecreate_dt is null)
+
+SELECT *
+FROM #AllPeriods
+
 GO
