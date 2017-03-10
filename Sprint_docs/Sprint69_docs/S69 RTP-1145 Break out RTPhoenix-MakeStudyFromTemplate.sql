@@ -428,10 +428,10 @@ begin try
 
 end try
 begin catch
-	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
-			SELECT @Template_ID, @TemplateJob_ID, @TemplateLogEntryError, 'Make Study From Template Job did not succeed and was rolled back', SYSTEM_USER, GetDate()
-
 	rollback tran
+
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
+			SELECT @Template_ID, @TemplateJob_ID, @TemplateLogEntryError, 'Make Study From Template Job (QP_Prod) did not succeed and was rolled back', SYSTEM_USER, GetDate()
 end catch
 
 	INSERT INTO [QLoader].[QP_Load].[dbo].[Package]

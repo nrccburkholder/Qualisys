@@ -196,11 +196,11 @@ begin try
 			from [dbo].[SUFacility] where MedicareNumber = @MedicareNumber
 	if @@rowcount > 1
 	begin
+		rollback tran
+
 		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 				select @Template_ID, @TemplateJob_ID, @TemplateLogEntryError, 
 				'More than one SUFacility found for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate()
-
-		commit tran
 
 		RETURN
 	end
@@ -322,6 +322,17 @@ begin try
 				MetaField mf on mf.field_id = ms.field_id 
 			where Table_ID = @TableID and STRFIELD_NM = 'CCN'
 
+		if @FieldID is null
+		begin
+			rollback tran
+
+			INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
+					select @Template_ID, @TemplateJob_ID, @TemplateLogEntryError, 
+					'CCN not found on ENCOUNTER table for Study:'+convert(varchar,@TargetStudy_id), @user, GetDate()
+
+			return
+		end		
+
 		insert into CriteriaClause (CRITERIAPHRASE_ID, CRITERIASTMT_ID,TABLE_ID,FIELD_ID,INTOPERATOR,STRLOWVALUE,STRHIGHVALUE)
 		values (1,@CriteriaStmtID,@TableID,@FieldID,1,@MedicareNumber,NULL)
 
@@ -438,6 +449,8 @@ begin try
 
 end try
 begin catch
+	rollback tran
+
 	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 			SELECT @Template_ID, @TemplateJob_ID, @TemplateLogEntryError, 'Make Sample Units From Template Job did not succeed and was rolled back', SYSTEM_USER, GetDate()
 
@@ -445,8 +458,6 @@ begin catch
 	   SET [CompletedNotes] = 'Make Sample Units From Template Job did not succeed and was rolled back: '+@CompletedNotes
 		  ,[CompletedAt] = GetDate()
 	 WHERE [TemplateJobID] = @TemplateJob_ID
-
-	rollback tran
 end catch
 
 end

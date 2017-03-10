@@ -905,7 +905,8 @@ begin try
 				[RTPhoenix].[SURVEY_DEFTemplate] sd on sd.study_id = t.study_id inner join
 				[RTPhoenix].[SAMPLEPLANTemplate] sp on sd.survey_id = sp.survey_id inner join
 				[RTPhoenix].[SampleUnitTemplate] su on sp.SAMPLEPLAN_ID = su.SAMPLEPLAN_ID
-			where [MasterTemplateJobID] = @MasterTemplateJob_ID and [TemplateJobTypeID] = 3
+			where [MasterTemplateJobID] in (@MasterTemplateJob_ID, @TemplateJob_ID) --study or survey could be master
+					  and [TemplateJobTypeID] = 3
 					  and sd.STRSURVEY_NM = tj.SurveyName
 					  and su.STRSAMPLEUNIT_NM = tj.SampleUnitName
 
@@ -1043,6 +1044,8 @@ begin try
 
 end try
 begin catch
+	rollback tran
+
 	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 			SELECT @Template_ID, @TemplateJob_ID, @TemplateLogEntryError, 'Make Sample Units From Template Job did not succeed and was rolled back', SYSTEM_USER, GetDate()
 
@@ -1050,8 +1053,6 @@ begin catch
 	   SET [CompletedNotes] = 'Make Surveys From Template Job did not succeed and was rolled back: '+@CompletedNotes
 		  ,[CompletedAt] = GetDate()
 	 WHERE [TemplateJobID] = @TemplateJob_ID
-
-	rollback tran
 end catch
 
 end
