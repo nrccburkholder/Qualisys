@@ -204,8 +204,9 @@ SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 CREATE TABLE #activePeriod (periodDef_id int, ActivePeriod bit default 0)
 
 --RTP-1449 create RT HCAHPS sample periods
-declare @Employee_ID int
-select @Employee_ID = IsNull(Employee_id, 930) from Employee where SYSTEM_USER like '%'+STRNTLOGIN_NM
+declare @Employee_ID int = 930
+if exists(select Employee_id from Employee where SYSTEM_USER like '%'+STRNTLOGIN_NM )
+	select @Employee_id = Employee_id from Employee where SYSTEM_USER like '%'+STRNTLOGIN_NM
 declare @DateToCheck datetime = DateAdd(Day, -2, GetDate())
 EXEC [dbo].[QCL_InsertQuarterlyRTPeriodsbySurveyId] @survey_id, @DateToCheck, @Employee_ID
 -------------------
