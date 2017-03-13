@@ -820,6 +820,8 @@ Public Class NewSampleDefinition
 
     Private Sub AddNewSampleRow(ByVal srvy As Survey)
 
+        Dim override As String = srvy.SurveySubTypeOverrideName()
+
         Dim i As Integer = Me.NewSampleGridView.Rows.Add
         'Dim isHCAHPS As Boolean
         Dim row As DataGridViewRow = Me.NewSampleGridView.Rows(i)
@@ -831,7 +833,7 @@ Public Class NewSampleDefinition
         row.Cells(Me.NewSampleSetSurveyColumn.Index).Value = srvy.DisplayLabel
         row.Cells(Me.NewSampleEncounterFieldColumn.Index).Value = sampleEncounterDateFieldLabel
         row.Cells(Me.NewSampleSetSpecifyDatesColumn.Index).Value = True
-        row.Cells(Me.NewSampleSetPriorityColumn.Index).Value = srvy.SamplingToolPriority
+        row.Cells(Me.NewSampleSetPriorityColumn.Index).Value = srvy.SamplingToolPriority(override)
         If srvy.SampleablePeriods.Count > 0 Then
             periodList.DataSource = srvy.SampleablePeriods
             periodList.DisplayMember = "Name"
