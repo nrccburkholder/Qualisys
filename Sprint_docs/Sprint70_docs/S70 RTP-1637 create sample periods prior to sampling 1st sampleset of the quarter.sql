@@ -49,62 +49,85 @@ CREATE PROCEDURE [dbo].[QCL_InsertQuarterlyRTPeriodsbySurveyId]
 @employee_id int
 AS
 
-if exists(select * from SurveySubType sst inner join 
+if not exists(select * from SurveySubType sst inner join 
 		SubType st on sst.Subtype_id = st.Subtype_id 
 		where survey_ID = @surveyid and 
 			st.Subtype_nm = 'RT')
-	and
-	not exists(select * from perioddef 
-		where survey_id = @surveyid and 
-			dbo.YearQtr(@DateToCheck) = dbo.YearQtr(datExpectedEncStart))
-BEGIN
-	declare 
-	@strPeriodDef_nm VARCHAR(42),  --Jan17
-	@intExpectedSamples INT, --31
-	@DaysToSample INT = 2,
-	@datExpectedEncStart DATETIME, --2017-01-01 
-	@datExpectedEncEnd DATETIME, --2017-01-31
-	@SamplingMethod_id INT = 1,
-	@MonthWeek char(1) = 'D',
-	@PeriodDef_id INT, --457135
-	@SampleNumber INT, --1,2,3
-	@datScheduledSample_dt DATETIME --2017-01-01 2017-01-02 2017-01-03 
+	RETURN
 
-	declare @StartingDate datetime = convert(varchar(2),((month(@DateToCheck)-1) / 3) * 3 + 1) + 
-							'/01/' + convert(varchar(4), year(@DateToCheck))
+declare @FirstDate datetime, @LastDate datetime
 
-	declare @WorkingDate datetime = @StartingDate
+if @DateToCheck is not null
+	select @FirstDate = @DateToCheck, @LastDate = @DateToCheck
+else
+begin
+	select @FirstDate = Min(MinDate), @LastDate = Max(MaxDate) from DatasetDateRange dr 
+		inner join survey_def sd on dr.Table_id = sd.SampleEncounterTable_id and dr.Field_id = sd.SampleEncounterField_id
+		where survey_id = @surveyid
 
-	while DateDiff(month, @StartingDate, @WorkingDate) < 3
-	begin
-		Select @strPeriodDef_nm = convert(varchar(3), DateName(month, @WorkingDate)) + convert(varchar(2),Year(@WorkingDate) % 100)
-		select @intExpectedSamples = datediff(day,@workingDate, dateadd(month, 1, @workingDate))
-		select @datExpectedEncStart = @workingDate
-		select @datExpectedEncEnd = dateadd(day, -1, dateadd(month, 1, @workingdate))
+	select @DateToCheck = @FirstDate
+end
 
-		--exec [dbo].[QCL_InsertSamplePeriod] @Employee_id, @strPeriodDef_nm,	@intExpectedSamples, 
-		--	@DaysToSample, @datExpectedEncStart, @datExpectedEncEnd, @SamplingMethod_id, 
-		--	@MonthWeek,	@surveyId
-		INSERT INTO [dbo].PeriodDef (Employee_id, datAdded, strPeriodDef_nm, intExpectedSamples, DaysToSample, datExpectedEncStart, datExpectedEncEnd, SamplingMethod_id, MonthWeek, survey_id)
-		VALUES (@Employee_id, getdate(), @strPeriodDef_nm, @intExpectedSamples, @DaysToSample, @datExpectedEncStart, @datExpectedEncEnd, @SamplingMethod_id, @MonthWeek, @surveyID)
+while @DateToCheck <= @LastDate
+begin
+	if not exists(select * from perioddef 
+			where survey_id = @surveyid and 
+				dbo.YearQtr(@DateToCheck) = dbo.YearQtr(datExpectedEncStart))
+	BEGIN
+		declare 
+		@strPeriodDef_nm VARCHAR(42),  --Jan17
+		@intExpectedSamples INT, --31
+		@DaysToSample INT = 2,
+		@datExpectedEncStart DATETIME, --2017-01-01 
+		@datExpectedEncEnd DATETIME, --2017-01-31
+		@SamplingMethod_id INT = 1,
+		@MonthWeek char(1) = 'D',
+		@PeriodDef_id INT, --457135
+		@SampleNumber INT, --1,2,3
+		@datScheduledSample_dt DATETIME --2017-01-01 2017-01-02 2017-01-03 
 
-		select @PeriodDef_id = ident_current('PeriodDef')
-		select @SampleNumber = 1
-		select @datScheduledSample_dt = @WorkingDate
+		declare @StartingDate datetime = convert(varchar(2),((month(@DateToCheck)-1) / 3) * 3 + 1) + 
+								'/01/' + convert(varchar(4), year(@DateToCheck))
 
-		while DateDiff(day, @WorkingDate, @datScheduledSample_dt) < @intExpectedSamples
+		declare @WorkingDate datetime = @StartingDate
+
+		while DateDiff(month, @StartingDate, @WorkingDate) < 3
 		begin
-			--exec [dbo].[QCL_InsertSamplePeriodScheduledSample] @PeriodDef_ID, @SampleNumber, @datScheduledSample_dt
-			INSERT INTO [dbo].PeriodDates (datScheduledSample_dt, SampleNumber, PeriodDef_id)
-			VALUES (@datScheduledSample_dt,@SampleNumber,@PeriodDef_id)
-			
-			select @datScheduledSample_dt = DateAdd(Day, 1, @datScheduledSample_dt)
-			set @SampleNumber = @SampleNumber + 1
-		end
-		select @WorkingDate = DateAdd(Month, 1, @WorkingDate)
-	end
+			Select @strPeriodDef_nm = convert(varchar(3), DateName(month, @WorkingDate)) + convert(varchar(2),Year(@WorkingDate) % 100)
+			select @intExpectedSamples = datediff(day,@workingDate, dateadd(month, 1, @workingDate))
+			select @datExpectedEncStart = @workingDate
+			select @datExpectedEncEnd = dateadd(day, -1, dateadd(month, 1, @workingdate))
 
-END
+			--exec [dbo].[QCL_InsertSamplePeriod] @Employee_id, @strPeriodDef_nm,	@intExpectedSamples, 
+			--	@DaysToSample, @datExpectedEncStart, @datExpectedEncEnd, @SamplingMethod_id, 
+			--	@MonthWeek,	@surveyId
+			INSERT INTO [dbo].PeriodDef (Employee_id, datAdded, strPeriodDef_nm, intExpectedSamples, DaysToSample, datExpectedEncStart, datExpectedEncEnd, SamplingMethod_id, MonthWeek, survey_id)
+			VALUES (@Employee_id, getdate(), @strPeriodDef_nm, @intExpectedSamples, @DaysToSample, @datExpectedEncStart, @datExpectedEncEnd, @SamplingMethod_id, @MonthWeek, @surveyID)
+
+			select @PeriodDef_id = ident_current('PeriodDef')
+			select @SampleNumber = 1
+			select @datScheduledSample_dt = @WorkingDate
+
+			while DateDiff(day, @WorkingDate, @datScheduledSample_dt) < @intExpectedSamples
+			begin
+				--exec [dbo].[QCL_InsertSamplePeriodScheduledSample] @PeriodDef_ID, @SampleNumber, @datScheduledSample_dt
+				INSERT INTO [dbo].PeriodDates (datScheduledSample_dt, SampleNumber, PeriodDef_id)
+				VALUES (@datScheduledSample_dt,@SampleNumber,@PeriodDef_id)
+			
+				select @datScheduledSample_dt = DateAdd(Day, 1, @datScheduledSample_dt)
+				set @SampleNumber = @SampleNumber + 1
+			end
+			select @WorkingDate = DateAdd(Month, 1, @WorkingDate)
+		end
+
+	END
+
+	if @FirstDate <> @LastDate and @DateToCheck <> @LastDate
+		set @DateToCheck = @LastDate
+	else
+		set @DateToCheck = DateAdd(day,1,@LastDate)
+
+end
 
 GO
 
@@ -216,8 +239,7 @@ select @Employee_ID = Employee_id from Employee where STREMPLOYEE_TITLE = 'Autom
 if exists(select Employee_id from Employee where SYSTEM_USER like '%'+STRNTLOGIN_NM )
 	select @Employee_id = Employee_id from Employee where SYSTEM_USER like '%'+STRNTLOGIN_NM
 
-declare @DateToCheck datetime = DateAdd(Day, -2, GetDate())
-EXEC [dbo].[QCL_InsertQuarterlyRTPeriodsbySurveyId] @survey_id, @DateToCheck, @Employee_ID
+EXEC [dbo].[QCL_InsertQuarterlyRTPeriodsbySurveyId] @survey_id, null, @Employee_ID
 -------------------
 
 INSERT INTO #activePeriod
