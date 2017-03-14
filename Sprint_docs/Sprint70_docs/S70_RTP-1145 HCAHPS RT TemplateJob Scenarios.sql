@@ -55,7 +55,7 @@ select top 1
 	2 [TemplateJobTypeID], -1, -1, -1, -- tj.TemplateID, css.survey_id [TemplateSurveyID], su.sampleunit_id [TemplateSampleUnitID], 
     2, 41, 27, 40, GetDate(),
 	tj.TargetClientID, tj.TargetStudyId, -1 [TargetSurveyID],
-	tj.StudyName, tj.StudyDescription, css.strSurvey_nm [SurveyName], su.STRSAMPLEUNIT_NM [SampleUnitName],
+	tj.StudyName, tj.StudyDescription, null, null --css.strSurvey_nm [SurveyName], su.STRSAMPLEUNIT_NM [SampleUnitName],
 	'X91111' as [MedicareNumber], --'CCN'+convert(varchar, tj.TargetStudyId) [MedicareNumber],
 	tj.LoggedBy, tj.LoggedAt
 	--
@@ -142,7 +142,7 @@ INSERT INTO [RTPhoenix].[TemplateJob]
 		   ,3, -1, -1, -1
 		   ,2, 41, 27, 40, GetDate()
 		   ,3543, -1, -1
-           ,'HCAHPSRT7x','Everything Study Exported From RTPhoenix Template',null,null
+           ,'HCAHPSRT7x','Everything Study Exported From RTPhoenix Template','HCAHPS','HCAHPSRT'
            ,'T00001'
            ,SYSTEM_USER,GetDate()
            ,NULL,NULL)
@@ -161,7 +161,7 @@ INSERT INTO [RTPhoenix].[TemplateJob]
 		   ,3, -1, -1, -1
 		   ,2, 41, 27, 40, GetDate()
 		   ,3543, -1, -1
-           ,'HCAHPSRT7x','Everything Study Exported From RTPhoenix Template',null,null
+           ,'HCAHPSRT7x','Everything Study Exported From RTPhoenix Template','HCAHPS','HCAHPSRT'
            ,'T00004'
            ,SYSTEM_USER,GetDate()
            ,NULL,NULL)
