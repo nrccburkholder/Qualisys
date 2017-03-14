@@ -35,7 +35,7 @@ begin try
 		  declare @TargetSurvey_ID int
 		  --declare @Study_nm varchar(10)
 		  --declare @Study_desc varchar(255)
-		  declare @Survey_nm varchar(10)
+		  declare @Survey_nm char(10)
 		  --declare @SampleUnit_nm varchar(42) 
 		  declare @MedicareNumber varchar(20)
 		  declare @ContractNumber [varchar](9) 
@@ -73,7 +73,7 @@ begin try
 		  ,@AsOfDate = ISNULL([AsOfDate], GetDate())
 		  --,@TargetClient_ID = [TargetClientID]
 		  ,@TargetStudy_id = [TargetStudyID]
-		  ,@TargetSurvey_id = [TargetStudyID]
+		  ,@TargetSurvey_id = [TargetSurveyID]
 		  --,@Study_nm = [StudyName]
 		  --,@Study_desc = [StudyDescription]
 		  ,@Survey_nm = [SurveyName]
@@ -118,7 +118,7 @@ begin try
 			@AsOfDate < isnull(T.EndDate, '1/1/3001')
 
 		update RTPhoenix.TemplateJob set [TemplateID] = @Template_ID
-		where [TemplateJobID] = @TemplateJob_ID
+		where [TemplateJobID] = @TemplateJob_ID or [MasterTemplateJobID] = @TemplateJob_ID
 	end
 
 	SELECT @Template_ID = [TemplateID]
@@ -256,7 +256,7 @@ begin try
 	WHERE db02.study_id = @TargetStudy_id and mt2.study_id = @study_id
 		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 
-	set @TargetSurvey_ID = IDENT_CURRENT('dbo.survey_def')
+--	set @TargetSurvey_ID = IDENT_CURRENT('dbo.survey_def')
 
 	INSERT INTO [dbo].[SurveySubtype]
 			   ([Survey_id]
@@ -869,27 +869,6 @@ begin try
 	SET @CompletedNotes = 'Completed Make Surveys From Template for Study_id '+convert(varchar,@TargetStudy_ID)+
 		' from Template_id '+convert(varchar,@Template_ID)+' via TemplateJob_id '+convert(varchar,@TemplateJob_Id)
 
-	UPDATE [dbo].[Survey_DEF]
-	set [STRSURVEY_NM] = IsNull(@Survey_nm, [STRSURVEY_NM])
-	where [Survey_ID] = @TargetSurvey_ID
-
-	UPDATE [RTPhoenix].[TemplateJob]
-		SET [TargetSurveyID] = db0.survey_id
-			,[SurveyName] = db0.STRSURVEY_NM
-			,[CompletedNotes] = @CompletedNotes
-			,[CompletedAt] = GetDate()
-		FROM [RTPhoenix].[TemplateJob] tj INNER JOIN
-			[RTPhoenix].[Template] t on tj.TemplateID = t.TemplateID INNER JOIN
-			[RTPhoenix].[SURVEY_DEFTemplate] sd on sd.STUDY_ID = t.Study_ID INNER JOIN
-			[dbo].[Survey_Def] db0 on db0.STRSURVEY_NM = sd.STRSURVEY_NM
-		WHERE TemplateJobID = @TemplateJob_ID and
-		db0.study_id = @TargetStudy_id and sd.study_id = @study_id
-		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
-
-	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
-		 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 'Completed Make Surveys From Template for TemplateJob_id '+convert(varchar,@TemplateJob_ID)+
-		 ', Study '+convert(varchar,@TargetStudy_id)+')', @user, GetDate())
-
 	--Determine if a MakeSampleUnitsFromTemplate job is needed and add (if so)
 
 	if @TemplateSampleUnit_ID = -1 -- if >0, then a sample unit ID, or -1 means all sample units (except those already requested)
@@ -905,7 +884,7 @@ begin try
 					dbo.survey_def sd on tj.[SurveyName] = sd.[STRSURVEY_NM]
 					where [MasterTemplateJobID] in (@MasterTemplateJob_ID, @TemplateJob_ID) 
 						and [TemplateJobTypeID] = 3
-						and sd.survey_id = @TargetSurvey_ID)
+						and sd.study_id = @TargetStudy_ID)
 			update [RTPhoenix].[TemplateJob] set
 				[TargetSurveyID] = @TargetSurvey_ID,
 				[TargetStudyID] = @TargetStudy_ID,
@@ -1053,6 +1032,30 @@ begin try
 			  ,null
 		  FROM [RTPhoenix].[TemplateJob]
 		  WHERE [TemplateJobID] = @TemplateJob_ID
+
+	UPDATE db0 
+		set [STRSURVEY_NM] = IsNull(@Survey_nm, db0.[STRSURVEY_NM])
+		from [RTPhoenix].[SURVEY_DEFTemplate] sd inner join
+			[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm 
+		WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+			and @TemplateSurvey_ID <> -1 --only can do this for specified TemplateSurvey_ID
+
+	UPDATE [RTPhoenix].[TemplateJob]
+		SET [TargetSurveyID] = db0.survey_id
+			,[SurveyName] = db0.STRSURVEY_NM
+			,[CompletedNotes] = @CompletedNotes
+			,[CompletedAt] = GetDate()
+		FROM [RTPhoenix].[TemplateJob] tj INNER JOIN
+			[RTPhoenix].[Template] t on tj.TemplateID = t.TemplateID INNER JOIN
+			[RTPhoenix].[SURVEY_DEFTemplate] sd on sd.STUDY_ID = t.Study_ID INNER JOIN
+			[dbo].[Survey_Def] db0 on db0.STRSURVEY_NM = sd.STRSURVEY_NM
+		WHERE TemplateJobID = @TemplateJob_ID and
+		db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
+
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 'Completed Make Surveys From Template for TemplateJob_id '+convert(varchar,@TemplateJob_ID)+
+		 ', Study '+convert(varchar,@TargetStudy_id)+')', @user, GetDate())
 
 	commit tran
 

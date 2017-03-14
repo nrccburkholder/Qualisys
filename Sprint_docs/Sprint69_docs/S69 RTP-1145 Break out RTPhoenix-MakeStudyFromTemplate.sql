@@ -32,7 +32,7 @@ begin try
 		  declare @TargetClient_ID int
 		  declare @TargetStudy_ID int
 		  declare @TargetSurvey_ID int
-		  declare @Study_nm varchar(10)
+		  declare @Study_nm char(10)
 		  declare @Study_desc varchar(255)
 		  --declare @Survey_nm varchar(10)
 		  --declare @SampleUnit_nm varchar(42) 
@@ -116,7 +116,7 @@ begin try
 			@AsOfDate < isnull(T.EndDate, '1/1/3001')
 
 		update RTPhoenix.TemplateJob set [TemplateID] = @Template_ID
-		where [TemplateJobID] = @TemplateJob_ID
+		where [TemplateJobID] = @TemplateJob_ID or [MasterTemplateJobID] = @TemplateJob_ID
 	end
 
 	SELECT @Template_ID = [TemplateID]

@@ -32,7 +32,7 @@ begin try
 		  declare @TargetClient_ID int
 		  declare @TargetStudy_ID int
 		  --declare @TargetSurvey_ID int
-		  --declare @Study_nm varchar(10)
+		  --declare @Study_nm char(10)
 		  --declare @Study_desc varchar(255)
 		  declare @Survey_nm varchar(10)
 		  declare @SampleUnit_nm varchar(42) 
@@ -203,9 +203,16 @@ begin try
 				convert(nvarchar,Ident_Current('dbo.SUFacility'))+
 				') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
-		INSERT INTO [dbo].[ClientSUFacilityLookup]([client_ID], [SUFacility_ID])
-			VALUES(@TargetClient_ID, Ident_Current('dbo.SUFacility'))
 	END
+
+	if not exists (select * from [dbo].[ClientSUFacilityLookup] csu inner join
+						[dbo].[SUFacility] suf on csu.SUFacility_id = suf.SUFacility_id
+						where suf.MedicareNumber = @MedicareNumber
+							and csu.Client_id = @TargetClient_ID)
+		INSERT INTO [dbo].[ClientSUFacilityLookup]([client_ID], [SUFacility_ID])
+			select @TargetClient_ID, SUFacility_ID 
+			from SUFacility 
+			where MedicareNumber = @MedicareNumber
 
 	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 			select @Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
@@ -352,15 +359,6 @@ begin try
 
 		insert into CriteriaClause (CRITERIAPHRASE_ID, CRITERIASTMT_ID,TABLE_ID,FIELD_ID,INTOPERATOR,STRLOWVALUE,STRHIGHVALUE)
 		values (1,@CriteriaStmtID,@TableID,@FieldID,1,@MedicareNumber,NULL)
-
-		update dbo.SampleUnit 
-			set  [CRITERIASTMT_ID] = @CriteriaStmtID
-				,[STRSAMPLEUNIT_NM] = 
-				CASE WHEN @MedicareNumber is not null 
-					THEN @Survey_NM+'-'+@MedicareNumber 
-					ELSE IsNull(@SampleUnit_nm, [STRSAMPLEUNIT_NM])
-				END
-		where sampleunit_id = @TargetSampleUnit_ID
 	end
 	else
 	begin
@@ -467,8 +465,24 @@ begin try
 	SET @CompletedNotes = 'Completed Make Sample Units From Template for Study_id '+convert(varchar,@TargetStudy_ID)+
 		' from Template_id '+convert(varchar,@Template_ID)+' via TemplateJob_id '+convert(varchar,@TemplateJob_Id)
 
+	if exists(select * from sampleunit where sampleunit_id = @TargetSampleUnit_ID and CAHPSType_id > 0)
+	begin
+		update dbo.SampleUnit 
+			set  [CRITERIASTMT_ID] = @CriteriaStmtID
+				,[STRSAMPLEUNIT_NM] = 
+				CASE WHEN @MedicareNumber is not null 
+					THEN RTRIM(convert(nvarchar,@Survey_NM))+'-'+@MedicareNumber 
+					ELSE IsNull(@SampleUnit_nm, [STRSAMPLEUNIT_NM])
+				END
+		where sampleunit_id = @TargetSampleUnit_ID
+	end
+
+	declare @SampleUnitName varchar(42)
+	select @SampleUnitName = [STRSAMPLEUNIT_NM] from sampleunit where sampleunit_id = @TargetSampleUnit_ID
+
 	UPDATE [RTPhoenix].[TemplateJob]
-	   SET [CompletedNotes] = @CompletedNotes
+	   SET [SampleUnitName] = @SampleUnitName
+		  ,[CompletedNotes] = @CompletedNotes
 		  ,[CompletedAt] = GetDate()
 	 WHERE [TemplateJobID] = @TemplateJob_ID
 
