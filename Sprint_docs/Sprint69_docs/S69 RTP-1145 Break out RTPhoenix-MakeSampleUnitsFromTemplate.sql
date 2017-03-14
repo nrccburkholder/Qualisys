@@ -24,17 +24,17 @@ begin try
 		  declare @Template_ID int
 		  declare @TemplateSurvey_ID int
 		  declare @TemplateSampleUnit_ID int		
-		  --declare @CAHPSSurveyType_ID int
-		  --declare @CAHPSSurveySubtype_ID int
-		  --declare @RTSurveyType_ID int
-		  --declare @RTSurveySubtype_ID int
-		  --declare @AsOfDate datetime
+		  declare @CAHPSSurveyType_ID int
+		  declare @CAHPSSurveySubtype_ID int
+		  declare @RTSurveyType_ID int
+		  declare @RTSurveySubtype_ID int
+		  declare @AsOfDate datetime
 		  declare @TargetClient_ID int
 		  declare @TargetStudy_ID int
 		  --declare @TargetSurvey_ID int
 		  --declare @Study_nm varchar(10)
 		  --declare @Study_desc varchar(255)
-		  --declare @Survey_nm varchar(10)
+		  declare @Survey_nm varchar(10)
 		  declare @SampleUnit_nm varchar(42) 
 		  declare @MedicareNumber varchar(20)
 		  --declare @ContractNumber [varchar](9) 
@@ -64,17 +64,17 @@ begin try
 		  ,@Template_ID = [TemplateID]
 		  ,@TemplateSurvey_ID = [TemplateSurveyID]
 		  ,@TemplateSampleUnit_ID = [TemplateSampleUnitID]
-		  --,@CAHPSSurveyType_ID = [CAHPSSurveyTypeID]
-		  --,@CAHPSSurveySubtype_ID = [CAHPSSurveySubtypeID]
-		  --,@RTSurveyType_ID = [RTSurveyTypeID]
-		  --,@RTSurveySubtype_ID = [RTSurveySubtypeID]
-		  --,@AsOfDate = ISNULL([AsOfDate], GetDate())
+		  ,@CAHPSSurveyType_ID = [CAHPSSurveyTypeID]
+		  ,@CAHPSSurveySubtype_ID = [CAHPSSurveySubtypeID]
+		  ,@RTSurveyType_ID = [RTSurveyTypeID]
+		  ,@RTSurveySubtype_ID = [RTSurveySubtypeID]
+		  ,@AsOfDate = ISNULL([AsOfDate], GetDate())
 		  ,@TargetClient_ID = [TargetClientID]
 		  ,@TargetStudy_id = [TargetStudyID]
 		  --,@TargetSurvey_id = [TargetStudyID]
 		  --,@Study_nm = [StudyName]
 		  --,@Study_desc = [StudyDescription]
-		  --,@Survey_nm = [SurveyName]
+		  ,@Survey_nm = [SurveyName]
 		  ,@SampleUnit_nm = [SampleUnitName]
 		  ,@MedicareNumber = [MedicareNumber]
 		  --,@ContractNumber = [ContractNumber]
@@ -101,6 +101,23 @@ begin try
 	declare @user varchar(40) = @LoggedBy
 	declare @study_id int 
 	declare @client_id int
+
+	if @Template_ID is null or @Template_ID <= 0
+	begin
+		select @Template_ID = T.TemplateID 
+		from RTPhoenix.Template t
+			inner join RTPhoenix.ClientStudySurvey_viewTemplate cssv1 on t.TemplateID = cssv1.TemplateID
+			inner join RTPhoenix.ClientStudySurvey_viewTemplate cssv2 on t.TemplateID = cssv2.TemplateID
+		where cssv1.SurveyType_id = @CAHPSSurveyType_ID and
+			IsNull(cssv1.Subtype_id, -1) = IsNull(@CAHPSSurveySubtype_ID, -1) and
+			cssv2.SurveyType_id = @RTSurveyType_ID and
+			IsNull(cssv2.Subtype_id, -1) = IsNull(@RTSurveySubtype_ID, -1) and
+			@AsOfDate > isnull(T.BeginDate, '1/1/2001') and
+			@AsOfDate < isnull(T.EndDate, '1/1/3001')
+
+		update RTPhoenix.TemplateJob set [TemplateID] = @Template_ID
+		where [TemplateJobID] = @TemplateJob_ID
+	end
 
 	SELECT @Template_ID = [TemplateID]
 		  ,@client_id = [Client_ID]
@@ -306,10 +323,10 @@ begin try
 	--fill in SAMPLEUNIT.CriteriaStmt_ID later from job, else get from template
 
 	declare @TargetSampleUnit_ID int = null
-	if @TemplateSampleUnit_ID > 0
-		set @TargetSampleUnit_ID = ident_current('dbo.sampleunit')
 
-	if @TargetSampleUnit_ID > 0
+	set @TargetSampleUnit_ID = ident_current('dbo.sampleunit')
+
+	if exists(select * from sampleunit where sampleunit_id = @TargetSampleUnit_ID and CAHPSType_id > 0)
 	begin
 		insert into CriteriaStmt (STUDY_ID,STRCRITERIASTMT_NM,strCriteriaString)
 		values (@TargetStudy_ID,'SampUnit','(ENCOUNTERCCN = "'+@MedicareNumber+'")')
@@ -336,8 +353,34 @@ begin try
 		insert into CriteriaClause (CRITERIAPHRASE_ID, CRITERIASTMT_ID,TABLE_ID,FIELD_ID,INTOPERATOR,STRLOWVALUE,STRHIGHVALUE)
 		values (1,@CriteriaStmtID,@TableID,@FieldID,1,@MedicareNumber,NULL)
 
-		update dbo.SampleUnit set CRITERIASTMT_ID = @CriteriaStmtID
+		update dbo.SampleUnit 
+			set  [CRITERIASTMT_ID] = @CriteriaStmtID
+				,[STRSAMPLEUNIT_NM] = 
+				CASE WHEN @MedicareNumber is not null 
+					THEN @Survey_NM+'-'+@MedicareNumber 
+					ELSE IsNull(@SampleUnit_nm, [STRSAMPLEUNIT_NM])
+				END
 		where sampleunit_id = @TargetSampleUnit_ID
+	end
+	else
+	begin
+		update db03 set [CRITERIASTMT_ID] = db04.[CRITERIASTMT_ID]
+		--select su.STRSAMPLEUNIT_NM, db04.STRCRITERIASTRING, db04.STRCRITERIASTMT_NM
+		  from [RTPhoenix].[SAMPLEUNITTemplate] su inner join
+		  [RTPhoenix].[SAMPLEPLANTemplate] sp on su.SAMPLEPLAN_ID = sp.SAMPLEPLAN_ID inner join
+		  [RTPhoenix].SURVEY_DEFTemplate sd on sp.SURVEY_ID = sd.SURVEY_ID inner join
+		  [RTPhoenix].[CRITERIASTMTTemplate] cs on cs.STUDY_ID = sd.STUDY_ID inner join
+				[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm inner join
+				[dbo].[SamplePlan] db02 on db02.survey_id = db0.survey_id inner join
+				[dbo].[SampleUnit] db03 on db02.SAMPLEPLAN_ID = db03.SAMPLEPLAN_ID and
+							db03.STRSAMPLEUNIT_NM = su.STRSAMPLEUNIT_NM
+						inner join
+				[dbo].[CriteriaStmt] db04 on db04.study_id = db0.study_id and
+							db04.STRCRITERIASTMT_NM = cs.STRCRITERIASTMT_NM and
+							convert(nvarchar,db04.strCriteriaString) = convert(nvarchar,cs.strCriteriaString)
+		WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+		  AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
+		  AND ((@TemplateSampleUnit_ID = -1) OR (su.SampleUnit_ID = @TemplateSampleUnit_ID))
 	end
 
 	--end SAMPLEUNIT.CriteriaStmt_ID
@@ -423,18 +466,6 @@ begin try
 
 	SET @CompletedNotes = 'Completed Make Sample Units From Template for Study_id '+convert(varchar,@TargetStudy_ID)+
 		' from Template_id '+convert(varchar,@Template_ID)+' via TemplateJob_id '+convert(varchar,@TemplateJob_Id)
-
-	if (@TargetSampleUnit_ID > 0) --specific TemplateSampleUnit_ID  yields a specific TargetSampleUnit_ID
-	begin
-		UPDATE [dbo].[SampleUnit]
-		set [STRSAMPLEUNIT_NM] = 
-			CASE WHEN @MedicareNumber is not null 
-				THEN 'HCAHPS-'+@MedicareNumber 
-				ELSE IsNull(@SampleUnit_nm, [STRSAMPLEUNIT_NM])
-			END
-		from [dbo].[SampleUnit]
-		where [SampleUnit_ID] = @TargetSampleUnit_ID
-	end
 
 	UPDATE [RTPhoenix].[TemplateJob]
 	   SET [CompletedNotes] = @CompletedNotes

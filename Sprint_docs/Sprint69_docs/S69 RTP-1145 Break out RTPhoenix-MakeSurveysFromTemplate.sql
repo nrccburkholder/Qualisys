@@ -25,11 +25,11 @@ begin try
 		  declare @Template_ID int
 		  declare @TemplateSurvey_ID int
 		  declare @TemplateSampleUnit_ID int		
-		  --declare @CAHPSSurveyType_ID int
-		  --declare @CAHPSSurveySubtype_ID int
-		  --declare @RTSurveyType_ID int
-		  --declare @RTSurveySubtype_ID int
-		  --declare @AsOfDate datetime
+		  declare @CAHPSSurveyType_ID int
+		  declare @CAHPSSurveySubtype_ID int
+		  declare @RTSurveyType_ID int
+		  declare @RTSurveySubtype_ID int
+		  declare @AsOfDate datetime
 		  --declare @TargetClient_ID int
 		  declare @TargetStudy_ID int
 		  declare @TargetSurvey_ID int
@@ -62,15 +62,15 @@ begin try
 
 	SELECT 
 		  @TemplateJobType_ID = [TemplateJobTypeID]
-		  ,@MasterTemplateJob_ID = [MasterTemplateJobID]
+		  ,@MasterTemplateJob_ID = IsNull([MasterTemplateJobID],0)
 		  ,@Template_ID = [TemplateID]
 		  ,@TemplateSurvey_ID = [TemplateSurveyID]
 		  ,@TemplateSampleUnit_ID = [TemplateSampleUnitID]
-		  --,@CAHPSSurveyType_ID = [CAHPSSurveyTypeID]
-		  --,@CAHPSSurveySubtype_ID = [CAHPSSurveySubtypeID]
-		  --,@RTSurveyType_ID = [RTSurveyTypeID]
-		  --,@RTSurveySubtype_ID = [RTSurveySubtypeID]
-		  --,@AsOfDate = ISNULL([AsOfDate], GetDate())
+		  ,@CAHPSSurveyType_ID = [CAHPSSurveyTypeID]
+		  ,@CAHPSSurveySubtype_ID = [CAHPSSurveySubtypeID]
+		  ,@RTSurveyType_ID = [RTSurveyTypeID]
+		  ,@RTSurveySubtype_ID = [RTSurveySubtypeID]
+		  ,@AsOfDate = ISNULL([AsOfDate], GetDate())
 		  --,@TargetClient_ID = [TargetClientID]
 		  ,@TargetStudy_id = [TargetStudyID]
 		  ,@TargetSurvey_id = [TargetStudyID]
@@ -103,6 +103,23 @@ begin try
 	declare @user varchar(40) = @LoggedBy
 	declare @study_id int 
 	declare @client_id int
+
+	if @Template_ID is null or @Template_ID <= 0
+	begin
+		select @Template_ID = T.TemplateID 
+		from RTPhoenix.Template t
+			inner join RTPhoenix.ClientStudySurvey_viewTemplate cssv1 on t.TemplateID = cssv1.TemplateID
+			inner join RTPhoenix.ClientStudySurvey_viewTemplate cssv2 on t.TemplateID = cssv2.TemplateID
+		where cssv1.SurveyType_id = @CAHPSSurveyType_ID and
+			IsNull(cssv1.Subtype_id, -1) = IsNull(@CAHPSSurveySubtype_ID, -1) and
+			cssv2.SurveyType_id = @RTSurveyType_ID and
+			IsNull(cssv2.Subtype_id, -1) = IsNull(@RTSurveySubtype_ID, -1) and
+			@AsOfDate > isnull(T.BeginDate, '1/1/2001') and
+			@AsOfDate < isnull(T.EndDate, '1/1/3001')
+
+		update RTPhoenix.TemplateJob set [TemplateID] = @Template_ID
+		where [TemplateJobID] = @TemplateJob_ID
+	end
 
 	SELECT @Template_ID = [TemplateID]
 		  ,@client_id = [Client_ID]
@@ -238,6 +255,8 @@ begin try
 			[dbo].[METATABLE] db02 on mt2.strtable_nm = db02.strtable_nm 
 	WHERE db02.study_id = @TargetStudy_id and mt2.study_id = @study_id
 		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
+
+	set @TargetSurvey_ID = IDENT_CURRENT('dbo.survey_def')
 
 	INSERT INTO [dbo].[SurveySubtype]
 			   ([Survey_id]
@@ -850,30 +869,22 @@ begin try
 	SET @CompletedNotes = 'Completed Make Surveys From Template for Study_id '+convert(varchar,@TargetStudy_ID)+
 		' from Template_id '+convert(varchar,@Template_ID)+' via TemplateJob_id '+convert(varchar,@TemplateJob_Id)
 
-	if (@TemplateSurvey_ID > 0) --specific TemplateSurvey_ID  yields a specific TargetSurvey_ID
-	begin
-		UPDATE [dbo].[Survey_DEF]
-		set [STRSURVEY_NM] = IsNull(@Survey_nm, [STRSURVEY_NM])
-		where [Survey_ID] = @TargetSurvey_ID
+	UPDATE [dbo].[Survey_DEF]
+	set [STRSURVEY_NM] = IsNull(@Survey_nm, [STRSURVEY_NM])
+	where [Survey_ID] = @TargetSurvey_ID
 
-		UPDATE [RTPhoenix].[TemplateJob]
-		   SET [TargetSurveyID] = db0.survey_id
-			  ,[SurveyName] = db0.STRSURVEY_NM
-			  ,[CompletedNotes] = @CompletedNotes
-			  ,[CompletedAt] = GetDate()
-		  FROM [RTPhoenix].[TemplateJob] tj INNER JOIN
-			   [RTPhoenix].[Template] t on tj.TemplateID = t.TemplateID INNER JOIN
-			   [RTPhoenix].[SURVEY_DEFTemplate] sd on sd.STUDY_ID = t.Study_ID INNER JOIN
-			   [dbo].[Survey_Def] db0 on db0.STRSURVEY_NM = sd.STRSURVEY_NM
-		 WHERE TemplateJobID = @TemplateJob_ID and
-			db0.study_id = @TargetStudy_id and sd.study_id = @study_id
-			AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
-	end
-	else
-		UPDATE [RTPhoenix].[TemplateJob]
-		   SET [CompletedNotes] = @CompletedNotes
-			  ,[CompletedAt] = GetDate()
-		 WHERE [TemplateJobID] = @TemplateJob_ID
+	UPDATE [RTPhoenix].[TemplateJob]
+		SET [TargetSurveyID] = db0.survey_id
+			,[SurveyName] = db0.STRSURVEY_NM
+			,[CompletedNotes] = @CompletedNotes
+			,[CompletedAt] = GetDate()
+		FROM [RTPhoenix].[TemplateJob] tj INNER JOIN
+			[RTPhoenix].[Template] t on tj.TemplateID = t.TemplateID INNER JOIN
+			[RTPhoenix].[SURVEY_DEFTemplate] sd on sd.STUDY_ID = t.Study_ID INNER JOIN
+			[dbo].[Survey_Def] db0 on db0.STRSURVEY_NM = sd.STRSURVEY_NM
+		WHERE TemplateJobID = @TemplateJob_ID and
+		db0.study_id = @TargetStudy_id and sd.study_id = @study_id
+		AND ((@TemplateSurvey_ID = -1) OR (sd.SURVEY_ID = @TemplateSurvey_ID))
 
 	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 		 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 'Completed Make Surveys From Template for TemplateJob_id '+convert(varchar,@TemplateJob_ID)+
@@ -892,8 +903,9 @@ begin try
 
 		if exists(select * from [RTPhoenix].[TemplateJob] tj inner join
 					dbo.survey_def sd on tj.[SurveyName] = sd.[STRSURVEY_NM]
-					where [MasterTemplateJobID] = @MasterTemplateJob_ID and [TemplateJobTypeID] = 3
-					  and sd.survey_id = @TargetSurvey_ID)
+					where [MasterTemplateJobID] in (@MasterTemplateJob_ID, @TemplateJob_ID) 
+						and [TemplateJobTypeID] = 3
+						and sd.survey_id = @TargetSurvey_ID)
 			update [RTPhoenix].[TemplateJob] set
 				[TargetSurveyID] = @TargetSurvey_ID,
 				[TargetStudyID] = @TargetStudy_ID,
@@ -908,7 +920,8 @@ begin try
 			where [MasterTemplateJobID] in (@MasterTemplateJob_ID, @TemplateJob_ID) --study or survey could be master
 					  and [TemplateJobTypeID] = 3
 					  and sd.STRSURVEY_NM = tj.SurveyName
-					  and su.STRSAMPLEUNIT_NM = tj.SampleUnitName
+					  and su.STRSAMPLEUNIT_NM = tj.SampleUnitName 
+					  and su._STRSURVEY_NM = tj.SurveyName
 
 			--just filled Template_ID, TemplateSurvey_ID, TemplateSampleUnit_ID for these records from associated Template
 
@@ -973,10 +986,11 @@ begin try
 		  INNER JOIN [RTPhoenix].[SAMPLEPLANTemplate] sp on sp.SURVEY_ID = sd.SURVEY_ID
 		  INNER JOIN [RTPhoenix].[SampleUnitTemplate] su on su.SAMPLEPLAN_ID = sp.SAMPLEPLAN_ID
 		  LEFT JOIN [RTPhoenix].[TemplateJob] tj2 
-					on tj2.[MasterTemplateJobID] = @MasterTemplateJob_ID
+					on tj2.[MasterTemplateJobID] in (@MasterTemplateJob_ID, @TemplateJob_ID)
 					and tj2.[TemplateJobTypeID] = 3 
 					and sd.STRSURVEY_NM = tj2.[SurveyName]
 					and su.STRSAMPLEUNIT_NM = tj2.[SampleUnitName]
+					and su._STRSURVEY_NM = tj2.SurveyName
 		  WHERE tj.[TemplateJobID] = @TemplateJob_ID
 					and tj2.TemplateJobID is null --means no existing template job exists for this survey name/sample unit name combination
 	end

@@ -41,7 +41,7 @@ INSERT INTO [RTPhoenix].[TemplateJob]
 
 --STEP 2:
 --Now pretending prior inserted study is a preexisting study to which to add the HCAHPS template's HCAHPS survey 
---Add Prepopulated Survey and Specific Sample Unit from the template [2, -1, -1, 0] -> [3543, 5888, -1]
+--Add Prepopulated Survey and Specific Sample Unit from the template [2, -1, -1, -1] -> [3543, 5888, -1]
 INSERT INTO [RTPhoenix].[TemplateJob] 
            (--no master
 		    [TemplateJobTypeID],[TemplateID],[TemplateSurveyID],[TemplateSampleUnitID]
@@ -52,7 +52,7 @@ INSERT INTO [RTPhoenix].[TemplateJob]
            ,[LoggedBy],[LoggedAt])
            --,[CompletedNotes],[CompletedAt])
 select top 1
-	2 [TemplateJobTypeID], -1, -1, 0, -- tj.TemplateID, css.survey_id [TemplateSurveyID], su.sampleunit_id [TemplateSampleUnitID], 
+	2 [TemplateJobTypeID], -1, -1, -1, -- tj.TemplateID, css.survey_id [TemplateSurveyID], su.sampleunit_id [TemplateSampleUnitID], 
     2, 41, 27, 40, GetDate(),
 	tj.TargetClientID, tj.TargetStudyId, -1 [TargetSurveyID],
 	tj.StudyName, tj.StudyDescription, css.strSurvey_nm [SurveyName], su.STRSAMPLEUNIT_NM [SampleUnitName],
@@ -73,7 +73,7 @@ order by tj.LoggedAt desc
 
 Declare @SurveyTemplateJob_ID int = ident_current('RTPhoenix.TemplateJob')
 
---Add Prepopulated Survey and Specific Sample Unit from the template [3, -1, -1, 0] -> [3543, 5888, -1]
+--Add Prepopulated Survey and Specific Sample Unit from the template [3, -1, -1, -1] -> [3543, 5888, -1]
 INSERT INTO [RTPhoenix].[TemplateJob]
            (--no master
 		    [MasterTemplateJobID],
@@ -86,7 +86,7 @@ INSERT INTO [RTPhoenix].[TemplateJob]
            --,[CompletedNotes],[CompletedAt])
 select top 1
 	@SurveyTemplateJob_ID as [MasterTemplateJobID],
-	3 [TemplateJobTypeID], -1, -1, 0, -- tj.TemplateID, css.survey_id [TemplateSurveyID], su.sampleunit_id [TemplateSampleUnitID], 
+	3 [TemplateJobTypeID], -1, -1, -1, -- tj.TemplateID, css.survey_id [TemplateSurveyID], su.sampleunit_id [TemplateSampleUnitID], 
     2, 41, 27, 40, GetDate(),
 	tj.TargetClientID, tj.TargetStudyId, -1 [TargetSurveyID],
 	tj.StudyName, tj.StudyDescription, css.strSurvey_nm [SurveyName], su.STRSAMPLEUNIT_NM [SampleUnitName],
