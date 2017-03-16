@@ -127,6 +127,17 @@ begin try
 	  where [TemplateID] = @Template_ID
 		and [Active] = 1
 
+	if (@TemplateSampleUnit_ID = 0)
+		select @TemplateSampleUnit_ID = su.SAMPLEUNIT_ID,
+			@TemplateSurvey_id = sd.SURVEY_ID from
+			RTPhoenix.SAMPLEUNITTemplate su inner join
+			RTPhoenix.SAMPLEPLANTemplate sp on su.SAMPLEPLAN_ID = su.SAMPLEPLAN_ID inner join
+			RTPhoenix.SURVEY_DEFTemplate sd on sp.SURVEY_ID = sd.SURVEY_ID inner join
+			RTPhoenix.Template t on sd.STUDY_ID = t.Study_ID
+		where t.TemplateID = @Template_ID
+			and sd.STRSURVEY_NM = @Survey_nm
+			and su.STRSAMPLEUNIT_NM = @SampleUnit_nm
+
 	-- if @MedicareNumber is null, we assume this Sample Unit is not for CAHPS and continue
 	-- if @MedicareNumber is not null, and does not exist in MedicareLookup this is an error
 	
