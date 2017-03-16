@@ -970,7 +970,8 @@ begin try
 					and sd.STRSURVEY_NM = tj2.[SurveyName]
 					and su.STRSAMPLEUNIT_NM = tj2.[SampleUnitName]
 					and su._STRSURVEY_NM = tj2.SurveyName
-		  WHERE tj.[TemplateJobID] = @TemplateJob_ID
+		  WHERE tj.[TemplateJobID] = @TemplateJob_ID 
+					and ((sd.[Survey_ID] = @TemplateSurvey_ID) or (@TemplateSurvey_ID = -1))
 					and tj2.TemplateJobID is null --means no existing template job exists for this survey name/sample unit name combination
 	end
 	else
@@ -1038,7 +1039,8 @@ begin try
 		from [RTPhoenix].[SURVEY_DEFTemplate] sd inner join
 			[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm 
 		WHERE db0.study_id = @TargetStudy_id and sd.study_id = @study_id
-			and @TemplateSurvey_ID <> -1 --only can do this for specified TemplateSurvey_ID
+			--and @TemplateSurvey_ID <> -1 --only can do this for specified TemplateSurvey_ID
+			and sd.Survey_id = @TemplateSurvey_ID
 
 	UPDATE [RTPhoenix].[TemplateJob]
 		SET [TargetSurveyID] = db0.survey_id
