@@ -35,13 +35,13 @@ begin
 
 	update [NRC_Datamart_Extracts].[CEM].[ExportTemplate] 
 		set ExportTemplateVersionMinor = 4, 
-			ValidStartDate='2017-04-01',
+			ValidStartDate='2017-01-01',
 			ValidEndDate='2222-12-31',
 			CreatedOn = GetDate()
 	where ExportTemplateId = @newETId
 
 	update [NRC_Datamart_Extracts].[CEM].[ExportTemplate] 
-		set ValidEndDate='2017-03-31'
+		set ValidEndDate='2016-12-31'
 	where ExportTemplateName='CAHPS Hospice' and ExportTemplateVersionMajor='2.1.2' and ExportTemplateVersionMinor=3
 	
 	declare @ETCId int
