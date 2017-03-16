@@ -132,7 +132,9 @@ namespace NRC.Picker.SamplingService.Store
 
         private static SurveyOrder GetOrderForSurvey(Survey survey)
         {
-            switch (survey.get_SamplingToolPriority())
+            string _override = survey.SurveySubTypeOverrideName;
+
+            switch (survey.get_SamplingToolPriority(_override))
             {
                 case 1: return SurveyOrder.Primary;
                 case 2: return SurveyOrder.Secondary;

@@ -23,6 +23,9 @@ EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Nrc.Framework.Notification", "..\NRC Framework Solution\Nrc.Framework.Notification\Nrc.Framework.Notification.vbproj", "{27AB551E-D67F-4B03-BAB5-E7172E105217}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "NRCAuthlib", "..\NRC Auth Solution\NRCAuthLib\NRCAuthlib.vbproj", "{6ED47CEB-9896-4BE5-A7F2-CF2A5693F1ED}"
+	ProjectSection(ProjectDependencies) = postProject
+		{12BD4B86-4C6E-413C-B1CE-F023AAC40BB2} = {12BD4B86-4C6E-413C-B1CE-F023AAC40BB2}
+	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "NRC Class Library", "..\NRC Class Library Solution\NRC Class Library.vbproj", "{12BD4B86-4C6E-413C-B1CE-F023AAC40BB2}"
 EndProject

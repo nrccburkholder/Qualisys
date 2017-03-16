@@ -41,8 +41,15 @@ begin
 			where [CompletedAt] is null and [TemplateJobtypeID] in (2) -- surveys must be made after studies/before sample units
 
 		if @TemplateJob_ID is null
+			select @TemplateJob_ID = Min(tj.[TemplateJobID]) 
+			from [RTPhoenix].[TemplateJob] tj inner join
+				[RTPhoenix].[TemplateJob] tj2 on tj.MasterTemplateJobID = tj2.TemplateJobID
+			where tj.[CompletedAt] is null 
+				and tj.[MedicareNumber] = tj2.[MedicareNumber] -- template generated sample units next (root or other units from template)
+
+		if @TemplateJob_ID is null
 			select @TemplateJob_ID = Min([TemplateJobID]) from [RTPhoenix].[TemplateJob]
-			where [CompletedAt] is null -- sample units must be made after surveys
+			where [CompletedAt] is null -- sample units with unique medicare numbers last (child units grafted in)
 
 		if @TemplateJob_ID is null
 			break
