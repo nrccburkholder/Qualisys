@@ -802,43 +802,6 @@ AS
                 WHERE  SELQSTNSSURVEY_ID = @Survey
             END
 
-          IF NOT EXISTS (SELECT TOP 1 *
-                         FROM   dbo.VendorFileCreationQueue
-                         WHERE  SampleSet_ID = @Sampleset
-                                AND mailingstep_id = @mailingstep_id)
-            BEGIN
-                INSERT INTO dbo.VendorFileCreationQueue
-                            (Sampleset_ID,
-                             MailingStep_ID,
-                             VendorFileStatus_ID)
-                SELECT @Sampleset AS Sampleset_ID,
-                       @MailingStep_ID AS MailingStep_ID,
-                       1 AS VendorFileStatus_ID
-            END
-
-          SELECT TOP 1 @VendorFileID = VendorFile_ID
-          FROM   dbo.VendorFileCreationQueue
-          WHERE  sampleset_ID = @Sampleset
-                 AND mailingstep_ID = @MailingStep_ID
-
-          SELECT TOP 1 @CreateDataFileAtGeneration = CreateDataFileAtGeneration
-          FROM   dbo.mailingStep ms,
-                 dbo.mailingstepMethod msm
-          WHERE  msm.mailingstepmethod_ID = ms.mailingstepmethod_ID
-                 AND mailingStep_ID = @mailingstep_id
-
-          --this will save off the file data into VendorFile_data for later retrieval
-          IF @CreateDataFileAtGeneration = 1
-            BEGIN
-                EXEC dbo.QSL_SelectVendorSampleSetFileData
-                  @Sampleset,
-                  1,
-                  0,
-                  @VendorFileID,
-                  1,
-                  0
-            END
-
           DELETE #SurveySSet
           WHERE  Survey_id = @Survey
                  AND SampleSet_ID = @Sampleset
