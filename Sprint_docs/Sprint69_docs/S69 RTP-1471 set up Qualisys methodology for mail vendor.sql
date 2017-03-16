@@ -70,9 +70,9 @@ INSERT INTO [dbo].[StandardMailingStep]
 			(StandardMethodologyID,intSequence,bitSurveyInLine,bitSendSurvey,intIntervalDays,bitThankYouItem,strMailingStep_nm,
 			bitFirstSurvey,OverRide_Langid,MMMailingStep_id,MailingStepMethod_id,ExpireInDays,ExpireFromStep)
 	VALUES(@VendorMailStandardMethodology,1,0,1,0,0,'1st Svy Vendor Mail',
-			1,NULL,NULL,0,42,-1),
+			1,NULL,NULL,@VendorMailMailingStep,42,-1),
 		(@VendorMailStandardMethodology,2,0,1,21,0,'2nd Svy Vendor Mail',
-			0,NULL,NULL,0,42,-1)
+			0,NULL,NULL,@VendorMailMailingStep,42,-1)
 
 declare @NewStandardMailingStepOne int = IDENT_CURRENT('dbo.StandardMailingStep') - 1
 
