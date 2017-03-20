@@ -781,3 +781,5 @@ end catch
 		  WHERE [TemplateJobID] = @TemplateJob_ID
 
 end
+
+GO

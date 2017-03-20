@@ -326,3 +326,5 @@ exec ee_MakeBigView @TargetStudy_id, '_WEB', 0, 1 --this fails so I set this up 
 
 	
 end
+
+GO
