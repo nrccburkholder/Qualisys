@@ -166,3 +166,4 @@ WHERE perioddef_id in
 SELECT *
 FROM #AllPeriods
 
+GO
