@@ -104,6 +104,8 @@ begin try
 	declare @study_id int 
 	declare @client_id int
 
+--@Template_ID must be assigned here if it is not already set because MakeSurvey may be the first called
+
 	if @Template_ID is null or @Template_ID <= 0
 	begin
 		select @Template_ID = T.TemplateID 
@@ -129,7 +131,20 @@ begin try
 	  where TemplateID = @Template_ID
 		and [Active] = 1
 
-	--TODO: Add Survey(s) here
+	if @study_id is null 
+	begin
+		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
+			 SELECT @Template_ID, @TemplateJob_ID, @TemplateLogEntryError, 'Template ID missing or not Active for TemplateJob_ID: '+convert(varchar,@TemplateJob_id), @user, GetDate()
+
+		UPDATE [RTPhoenix].[TemplateJob]
+		   SET [CompletedNotes] = 'Template ID missing or not Active for TemplateJob_ID: '+convert(varchar,@TemplateJob_id)
+			  ,[CompletedAt] = GetDate()
+		 WHERE [TemplateJobID] = @TemplateJob_ID
+
+		commit tran
+
+		RETURN
+	end
 
 	INSERT INTO [dbo].[SURVEY_DEF]
 			   ([STUDY_ID]

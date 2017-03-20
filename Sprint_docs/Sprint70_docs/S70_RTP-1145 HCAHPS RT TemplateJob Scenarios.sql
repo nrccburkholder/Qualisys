@@ -50,15 +50,13 @@ INSERT INTO [RTPhoenix].[TemplateJob]
            ,[StudyName],[StudyDescription],[SurveyName],[SampleUnitName]
            ,[MedicareNumber]
            ,[LoggedBy],[LoggedAt])
-           --,[CompletedNotes],[CompletedAt])
 select top 1
 	2 [TemplateJobTypeID], -1, -1, -1, -- tj.TemplateID, css.survey_id [TemplateSurveyID], su.sampleunit_id [TemplateSampleUnitID], 
     2, 41, 27, 40, GetDate(),
 	tj.TargetClientID, tj.TargetStudyId, -1 [TargetSurveyID],
 	tj.StudyName, tj.StudyDescription, null, su.STRSAMPLEUNIT_NM [SampleUnitName],
-	'X91111' as [MedicareNumber], --'CCN'+convert(varchar, tj.TargetStudyId) [MedicareNumber],
+	'X91111' as [MedicareNumber], 
 	tj.LoggedBy, tj.LoggedAt
-	--
 from RTPhoenix.TemplateJob tj inner join
 	RTPhoenix.ClientStudySurvey_viewTemplate css on css.TemplateID = tj.TemplateID inner join
 	RTPhoenix.SAMPLEPLANTemplate sp on sp.SURVEY_ID = css.survey_id join 
@@ -83,16 +81,14 @@ INSERT INTO [RTPhoenix].[TemplateJob]
            ,[StudyName],[StudyDescription],[SurveyName],[SampleUnitName]
            ,[MedicareNumber]
            ,[LoggedBy],[LoggedAt])
-           --,[CompletedNotes],[CompletedAt])
 select top 1
 	@SurveyTemplateJob_ID as [MasterTemplateJobID],
 	3 [TemplateJobTypeID], -1, -1, -1, -- tj.TemplateID, css.survey_id [TemplateSurveyID], su.sampleunit_id [TemplateSampleUnitID], 
     2, 41, 27, 40, GetDate(),
 	tj.TargetClientID, tj.TargetStudyId, -1 [TargetSurveyID],
 	tj.StudyName, tj.StudyDescription, css.strSurvey_nm [SurveyName], su.STRSAMPLEUNIT_NM [SampleUnitName],
-	'T00001' as [MedicareNumber], --'CCN'+convert(varchar, tj.TargetStudyId) [MedicareNumber],
+	'T00001' as [MedicareNumber],
 	tj.LoggedBy, tj.LoggedAt
-	--
 from RTPhoenix.TemplateJob tj inner join
 	RTPhoenix.ClientStudySurvey_viewTemplate css on css.TemplateID = tj.TemplateID inner join
 	RTPhoenix.SAMPLEPLANTemplate sp on sp.SURVEY_ID = css.survey_id join 
@@ -180,15 +176,13 @@ INSERT INTO [RTPhoenix].[TemplateJob]
            ,[StudyName],[StudyDescription],[SurveyName],[SampleUnitName]
            ,[MedicareNumber]
            ,[LoggedBy],[LoggedAt])
-           --,[CompletedNotes],[CompletedAt])
 select top 1 
 	3 [TemplateJobTypeID], -1, 0, 0, -- tj.TemplateID, css.survey_id [TemplateSurveyID], su.sampleunit_id [TemplateSampleUnitID], 
     2, 41, 27, 40, GetDate(),
 	tj.TargetClientID, tj.TargetStudyId, tj.TargetSurveyID,
 	tj.StudyName, tj.StudyDescription, css.strSurvey_nm [SurveyName], su.STRSAMPLEUNIT_NM [SampleUnitName],
-	'260141' as [MedicareNumber], --'CCN'+convert(varchar, tj.TargetStudyId) [MedicareNumber],
+	'260141' as [MedicareNumber], 
 	tj.LoggedBy, tj.LoggedAt
-	--
 from RTPhoenix.TemplateJob tj inner join
 	RTPhoenix.ClientStudySurvey_viewTemplate css on css.TemplateID = tj.TemplateID inner join
 	RTPhoenix.SAMPLEPLANTemplate sp on sp.SURVEY_ID = css.survey_id join 
