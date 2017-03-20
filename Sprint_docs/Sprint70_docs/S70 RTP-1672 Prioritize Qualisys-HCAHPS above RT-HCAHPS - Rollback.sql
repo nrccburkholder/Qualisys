@@ -12,5 +12,7 @@ Use [QP_Prod]
 GO
 
 delete from QUALPRO_PARAMS where strparam_nm = 'SurveyRule: SamplingToolPriority - RT'
+delete from QUALPRO_PARAMS where strparam_nm = 'SurveyRule: SamplingToolPriority - ED'
+delete from QUALPRO_PARAMS where strparam_nm = 'SurveyRule: SamplingToolPriority - IP'
 
 GO
