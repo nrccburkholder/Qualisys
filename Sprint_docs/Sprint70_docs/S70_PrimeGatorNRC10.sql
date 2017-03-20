@@ -15,3 +15,5 @@ Sprint 70 SQLCMD Script for Prime/Gator/NRC10
 :r "\ATLASRelease69&70\Sprint70_docs\S70 RTP-1672 Prioritize Qualisys-HCAHPS above RT-HCAHPS.sql"
 
 :r "\ATLASRelease69&70\Sprint70_docs\S70 RTP-1677 Create OutreachRequest tables.sql"
+
+--:r "\ATLASRelease69&70\Sprint70_docs\S70_RTP-1145 HCAHPS RT TemplateJob Scenarios.sql"

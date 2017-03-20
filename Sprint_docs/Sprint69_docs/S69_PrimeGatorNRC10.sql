@@ -27,3 +27,5 @@ Sprint 69 SQLCMD Script for Prime/Gator/NRC10
 :r "\ATLASRelease69&70\Sprint69_docs\S69 RTP-1145 Break out RTPhoenix-ProcessTemplateJobs.sql" --HCAHPS RT Automation Process
 
 :r "\ATLASRelease69&70\Sprint69_docs\S69 RTP-1471 set up Qualisys methodology for mail vendor.sql" 
+
+:r "\ATLASRelease69&70\Sprint69_docs\S69 RTP-1472 modify FormGen for DGSolutions.sql"

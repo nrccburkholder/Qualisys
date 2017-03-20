@@ -1,3 +1,12 @@
+/*
+
+S69 RTP-1472 modify FormGen for DGSolutions.sql
+
+Dave Gilsdorf
+
+DROP/CREATE PROCEDURE [dbo].[SP_FG_OutreachVendorGen]
+
+*/
 use qp_prod
 go
 if object_id('[dbo].[SP_FG_OutreachVendorGen]') is not null
