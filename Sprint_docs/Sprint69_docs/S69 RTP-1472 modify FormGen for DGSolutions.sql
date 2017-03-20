@@ -18,7 +18,7 @@ if not exists (select * from FormGenErrorType where FGErrorType_id=44)
 go
 if not exists (select * from sys.tables st join sys.columns sc on sc.object_id=st.object_id where st.schema_id=1 and st.name='languages' and sc.name='ISO639')
 	alter table Languages add ISO639 varchar(10)
-
+go
 update Languages set ISO639 = 
 case langid
 	when 1 then 'eng' --English
