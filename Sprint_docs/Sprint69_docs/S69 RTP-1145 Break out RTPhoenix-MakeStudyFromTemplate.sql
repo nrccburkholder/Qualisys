@@ -36,7 +36,7 @@ begin try
 		  declare @Study_desc varchar(255)
 		  --declare @Survey_nm varchar(10)
 		  --declare @SampleUnit_nm varchar(42) 
-		  declare @MedicareNumber varchar(20)
+		  --declare @MedicareNumber varchar(20)
 		  --declare @ContractNumber [varchar](9) 
 		  --declare @Survey_Start_Dt [datetime] 
 		  --declare @Survey_End_Dt [datetime] 
@@ -76,7 +76,7 @@ begin try
 		  ,@Study_desc = [StudyDescription]
 		  --,@Survey_nm = [SurveyName]
 		  --,@SampleUnit_nm = [SampleUnitName]
-		  ,@MedicareNumber = [MedicareNumber]
+		  --,@MedicareNumber = [MedicareNumber]
 		  --,@ContractNumber = [ContractNumber]
 		  --,@Survey_Start_Dt = [SurveyStartDate]
 		  --,@Survey_End_Dt = [SurveyEndDate]

@@ -18,8 +18,8 @@ INSERT INTO [RTPhoenix].[TemplateJob]
            ,SYSTEM_USER,GetDate()
            ,NULL,NULL)
 ---------------------------------------------
---SCENARIO 2
---STEP 1: 
+--SCENARIO 1B
+
 --Study with nothing (no surveys nor sample units) [1, -1, 0, 0] -> [3543, -1, -1]
 INSERT INTO [RTPhoenix].[TemplateJob] 
            (--no master
@@ -35,12 +35,14 @@ INSERT INTO [RTPhoenix].[TemplateJob]
 		   ,2, 41, 27, 40, GetDate()
 		   ,3543, -1, -1
            ,'HCRT-Exist','Study Only Exported From RTPhoenix Template',null,null
-           ,'X91111'
+           ,NULL
            ,SYSTEM_USER,GetDate()
            ,NULL,NULL)
 
---STEP 2:
---Now pretending prior inserted study is a preexisting study to which to add the HCAHPS template's HCAHPS survey 
+---------------------------------------------
+--SCENARIO 2
+
+--Now pretending prior inserted study from scenario 1B is a preexisting study to which to add the HCAHPS template's HCAHPS survey 
 --Add Prepopulated Survey and Specific Sample Unit from the template [2, -1, -1, -1] -> [3543, 5888, -1]
 INSERT INTO [RTPhoenix].[TemplateJob] 
            (--no master
@@ -55,7 +57,7 @@ select top 1
     2, 41, 27, 40, GetDate(),
 	tj.TargetClientID, tj.TargetStudyId, -1 [TargetSurveyID],
 	tj.StudyName, tj.StudyDescription, null, su.STRSAMPLEUNIT_NM [SampleUnitName],
-	'X91111' as [MedicareNumber], 
+	NULL as [MedicareNumber], 
 	tj.LoggedBy, tj.LoggedAt
 from RTPhoenix.TemplateJob tj inner join
 	RTPhoenix.ClientStudySurvey_viewTemplate css on css.TemplateID = tj.TemplateID inner join
@@ -118,7 +120,7 @@ INSERT INTO [RTPhoenix].[TemplateJob]
 		   ,2, 41, 27, 40, GetDate()
 		   ,3543, -1, -1
            ,'HCRT-New','Study w/Everything From RTPhoenix Template',null,null
-           ,'X91111'
+           ,NULL
            ,SYSTEM_USER,GetDate()
            ,NULL,NULL)
 
