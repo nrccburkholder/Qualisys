@@ -1,6 +1,6 @@
 /*
 
-ATL-1419 Resurvey Exclusion for Returns Only.sql
+S71_ATL-1419 Resurvey Exclusion for Returns Only.sql
 
 Chris Burkholder
 
