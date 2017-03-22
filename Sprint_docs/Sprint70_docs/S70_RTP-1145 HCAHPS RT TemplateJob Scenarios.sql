@@ -11,7 +11,7 @@ INSERT INTO [RTPhoenix].[TemplateJob]
            ,[CompletedNotes],[CompletedAt])
      VALUES
            (1, -1, -1, -1
-		   ,2, 41, 27, 40, GetDate()
+		   ,2, 41, 27, 42, GetDate()
 		   ,3543, -1, -1
            ,'HCRT-All','Everything Study Exported From RTPhoenix Template',null,null
            ,'X91111'
@@ -32,7 +32,7 @@ INSERT INTO [RTPhoenix].[TemplateJob]
            ,[CompletedNotes],[CompletedAt])
      VALUES
            (1, -1, 0, 0
-		   ,2, 41, 27, 40, GetDate()
+		   ,2, 41, 27, 42, GetDate()
 		   ,3543, -1, -1
            ,'HCRT-Exist','Study Only Exported From RTPhoenix Template',null,null
            ,NULL
@@ -54,7 +54,7 @@ INSERT INTO [RTPhoenix].[TemplateJob]
            ,[LoggedBy],[LoggedAt])
 select top 1
 	2 [TemplateJobTypeID], -1, -1, -1, -- tj.TemplateID, css.survey_id [TemplateSurveyID], su.sampleunit_id [TemplateSampleUnitID], 
-    2, 41, 27, 40, GetDate(),
+    2, 41, 27, 42, GetDate(),
 	tj.TargetClientID, tj.TargetStudyId, -1 [TargetSurveyID],
 	tj.StudyName, tj.StudyDescription, null, su.STRSAMPLEUNIT_NM [SampleUnitName],
 	NULL as [MedicareNumber], 
@@ -86,7 +86,7 @@ INSERT INTO [RTPhoenix].[TemplateJob]
 select top 1
 	@SurveyTemplateJob_ID as [MasterTemplateJobID],
 	3 [TemplateJobTypeID], -1, -1, -1, -- tj.TemplateID, css.survey_id [TemplateSurveyID], su.sampleunit_id [TemplateSampleUnitID], 
-    2, 41, 27, 40, GetDate(),
+    2, 41, 27, 42, GetDate(),
 	tj.TargetClientID, tj.TargetStudyId, -1 [TargetSurveyID],
 	tj.StudyName, tj.StudyDescription, css.strSurvey_nm [SurveyName], su.STRSAMPLEUNIT_NM [SampleUnitName],
 	'T00001' as [MedicareNumber],
@@ -117,7 +117,7 @@ INSERT INTO [RTPhoenix].[TemplateJob]
            ,[CompletedNotes],[CompletedAt])
      VALUES
            (1, -1, -1, -1
-		   ,2, 41, 27, 40, GetDate()
+		   ,2, 41, 27, 42, GetDate()
 		   ,3543, -1, -1
            ,'HCRT-New','Study w/Everything From RTPhoenix Template',null,null
            ,NULL
@@ -138,7 +138,7 @@ INSERT INTO [RTPhoenix].[TemplateJob]
      VALUES
            (@StudyTemplateJob_ID --hooked up to original Study request record
 		   ,3, -1, -1, -1
-		   ,2, 41, 27, 40, GetDate()
+		   ,2, 41, 27, 42, GetDate()
 		   ,3543, -1, -1
            ,'HCRT-New','Study w/Everything From RTPhoenix Template','HCAHPS','HCAHPSRT'
            ,'T00001'
@@ -157,7 +157,7 @@ INSERT INTO [RTPhoenix].[TemplateJob]
      VALUES
            (@StudyTemplateJob_ID --hooked up to original Study request record
 		   ,3, -1, -1, -1
-		   ,2, 41, 27, 40, GetDate()
+		   ,2, 41, 27, 42, GetDate()
 		   ,3543, -1, -1
            ,'HCRT-New','Study w/Everything From RTPhoenix Template','HCAHPS','HCAHPSRT'
            ,'T00004'
@@ -180,7 +180,7 @@ INSERT INTO [RTPhoenix].[TemplateJob]
            ,[LoggedBy],[LoggedAt])
 select top 1 
 	3 [TemplateJobTypeID], -1, 0, 0, -- tj.TemplateID, css.survey_id [TemplateSurveyID], su.sampleunit_id [TemplateSampleUnitID], 
-    2, 41, 27, 40, GetDate(),
+    2, 41, 27, 42, GetDate(),
 	tj.TargetClientID, tj.TargetStudyId, tj.TargetSurveyID,
 	tj.StudyName, tj.StudyDescription, css.strSurvey_nm [SurveyName], su.STRSAMPLEUNIT_NM [SampleUnitName],
 	'260141' as [MedicareNumber], 
