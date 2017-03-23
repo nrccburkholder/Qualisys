@@ -376,7 +376,8 @@ begin try
 	  [RTPhoenix].[CRITERIASTMTTemplate] cs on cc.CRITERIASTMT_ID = cs.CRITERIASTMT_ID inner join
 			[dbo].[CriteriaStmt] db0 on cs.STRCRITERIASTMT_NM = db0.STRCRITERIASTMT_NM inner join
 			[dbo].[CRITERIACLAUSE] db01 on db01.CRITERIASTMT_ID = db0.CRITERIASTMT_ID and
-						db01.CRITERIAPHRASE_ID = cc.CRITERIAPHRASE_ID
+						db01.CRITERIAPHRASE_ID = cc.CRITERIAPHRASE_ID and
+						db01.FIELD_ID = cc.FIELD_ID
 	WHERE cs.study_id = @study_id and db0.study_id = @TargetStudy_id
 				
 		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
