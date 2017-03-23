@@ -32,7 +32,7 @@ begin try
 	  from RTPhoenix.TemplateLogEntryType where TemplateLogEntryTypeName = 'ERROR'
 
 declare @user varchar(40) = SYSTEM_USER
-declare @study_id int = 5852
+declare @study_id int = 5930
 declare @client_id int
 select @client_id = client_id from study where study_id = @study_id
 
@@ -70,21 +70,18 @@ begin
 	RETURN
 end
 
-/*
-if exists (select strCriteriaStmt_nm, convert(nvarchar, strCriteriaString), count(*) 
-			from CRITERIASTMT cs 
-			where study_id = @study_id 
-			group by STRCRITERIASTMT_NM, convert(nvarchar, strCriteriaString) 
-			having count(*) > 1)
+if not exists (SELECT *
+  FROM [QLoader].[QP_Load].[dbo].[Package]
+  where study_id = @study_id
+)
 begin
 	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryTypeID], [TemplateID], [Message] ,[LoggedBy] ,[LoggedAt])
-		VALUES (@TemplateLogEntryError, @Template_ID, 'Template Export Failed: Duplicate Criteria Statement names and descriptions for study_id '+convert(varchar,@study_id), @user, GetDate())
+		VALUES (@TemplateLogEntryError, @Template_ID, 'Template Export Failed: No Package found for study_id '+convert(varchar,@study_id), @user, GetDate())
 
 	commit tran
 
 	RETURN
 end
-*/
 
 if not exists(select 1 from [RTPhoenix].[CLIENTTemplate] where client_id = @client_id)
 INSERT INTO [RTPhoenix].[CLIENTTemplate]
