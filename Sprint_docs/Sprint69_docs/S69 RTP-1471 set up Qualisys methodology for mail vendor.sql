@@ -30,6 +30,7 @@ declare @maxseed int
 select @maxseed=max(MailingStepMethod_id) from MAILINGSTEPMETHOD
 DBCC CHECKIDENT ('dbo.MAILINGSTEPMETHOD', RESEED, @maxseed);  
 
+if not exists(select 1 from [dbo].[MAILINGSTEPMETHOD] where MailingStepMethod_nm = 'Vendor Mail')
 INSERT INTO [dbo].[MAILINGSTEPMETHOD]
 			(MailingStepMethod_nm,CreateDataFileAtGeneration,IsNonMailGeneration)
 	VALUES('Vendor Mail',1,1)
@@ -39,6 +40,7 @@ declare @VendorMailMailingStep int = IDENT_CURRENT('dbo.MailingStepMethod')
 select @maxseed=max(StandardMethodologyID) from StandardMethodology
 DBCC CHECKIDENT ('dbo.StandardMethodology', RESEED, @maxseed);  
 
+if not exists(select 1 from [dbo].[StandardMethodology] where strStandardMethodology_nm = 'HCAHPS + RT Mail Only')
 INSERT INTO [dbo].[StandardMethodology]
            ([strStandardMethodology_nm],[bitCustom],[MethodologyType])
      VALUES ('HCAHPS + RT Mail Only',0,'Mail Only')
@@ -51,6 +53,7 @@ select @HCAHPSRTSubtype = st.SubType_id
 from SubType st inner join SurveyTypeSubType stst on st.Subtype_id = stst.Subtype_id
 where Subtype_nm = 'RT' and stst.SurveyType_id = 2
 
+if not exists(select 1 from [dbo].[StandardMethodologyBySurveyType] where surveytype_id = 2 and SubType_ID > 0)
 INSERT INTO [dbo].[StandardMethodologyBySurveyType]
            ([StandardMethodologyID],[SurveyType_id],[SubType_ID],[bitExpired])
      VALUES (@VendorMailStandardMethodology,2,@HCAHPSRTSubType,0)
@@ -58,6 +61,7 @@ INSERT INTO [dbo].[StandardMethodologyBySurveyType]
 select @maxseed=max(MethodologyStepTypeId) from MethodologyStepType
 DBCC CHECKIDENT ('dbo.MethodologyStepType', RESEED, @maxseed);  
 
+if not exists(select * from [dbo].[MethodologyStepType] where strMailingStep_nm in ('1st Svy Vendor Mail','2nd Svy Vendor Mail'))
 INSERT INTO [dbo].[MethodologyStepType]
 			(bitSurveyInLine,bitSendSurvey,bitThankYouItem,strMailingStep_nm,MailingStepMethod_id,CoverLetterRequired,ExpireInDays)
 	VALUES(0,1,0,'1st Svy Vendor Mail',@VendorMailMailingStep,0,42),
@@ -66,6 +70,7 @@ INSERT INTO [dbo].[MethodologyStepType]
 select @maxseed=max(StandardMailingStepID) from StandardMailingStep
 DBCC CHECKIDENT ('dbo.StandardMailingStep', RESEED, @maxseed);  
 
+if not exists(select * from [dbo].[StandardMailingStep] where strMailingStep_nm in ('1st Svy Vendor Mail','2nd Svy Vendor Mail'))
 INSERT INTO [dbo].[StandardMailingStep]
 			(StandardMethodologyID,intSequence,bitSurveyInLine,bitSendSurvey,intIntervalDays,bitThankYouItem,strMailingStep_nm,
 			bitFirstSurvey,OverRide_Langid,MMMailingStep_id,MailingStepMethod_id,ExpireInDays,ExpireFromStep)
