@@ -353,7 +353,8 @@ begin try
 	--select cc1.* 
 	from [dbo].[criteriaclause] cc1 inner join
 	[dbo].[criteriaclause] cc2 on cc1.criteriastmt_id = cc2.criteriastmt_id and
-						cc1.criteriaphrase_id = cc2.criteriaphrase_id 
+						cc1.criteriaphrase_id = cc2.criteriaphrase_id and
+						cc1.FIELD_ID = cc2.FIELD_ID
 	inner join [dbo].[criteriastmt] cs on cs.criteriastmt_id = cc1.criteriastmt_id
 	where cs.study_id = @TargetStudy_id and cc1.CRITERIACLAUSE_ID > cc2.CRITERIACLAUSE_ID
 
