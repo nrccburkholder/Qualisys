@@ -395,7 +395,8 @@ begin try
 		  from [RTPhoenix].[SAMPLEUNITTemplate] su inner join
 		  [RTPhoenix].[SAMPLEPLANTemplate] sp on su.SAMPLEPLAN_ID = sp.SAMPLEPLAN_ID inner join
 		  [RTPhoenix].SURVEY_DEFTemplate sd on sp.SURVEY_ID = sd.SURVEY_ID inner join
-		  [RTPhoenix].[CRITERIASTMTTemplate] cs on cs.STUDY_ID = sd.STUDY_ID inner join
+		  [RTPhoenix].[CRITERIASTMTTemplate] cs on cs.STUDY_ID = sd.STUDY_ID and
+							su.CRITERIASTMT_ID = cs.CRITERIASTMT_ID inner join
 				[dbo].[Survey_Def] db0 on sd.strsurvey_nm = db0.strsurvey_nm inner join
 				[dbo].[SamplePlan] db02 on db02.survey_id = db0.survey_id inner join
 				[dbo].[SampleUnit] db03 on db02.SAMPLEPLAN_ID = db03.SAMPLEPLAN_ID and
