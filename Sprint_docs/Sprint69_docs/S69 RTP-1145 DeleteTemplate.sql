@@ -34,7 +34,7 @@ begin try
 	  from RTPhoenix.TemplateLogEntryType where TemplateLogEntryTypeName = 'ERROR'
 
 declare @user varchar(40) = SYSTEM_USER
-declare @study_id int = 5852
+declare @study_id int = 5930
 declare @client_id int
 select @client_id = client_id from RTPhoenix.studyTemplate where study_id = @study_id
 
@@ -204,6 +204,10 @@ delete RTPhoenix.SurveySubtypeTemplate
 
 delete RTPhoenix.SURVEY_DEFTemplate
   FROM RTPhoenix.SURVEY_DEFTemplate
+  where Study_id = @study_id
+
+delete RTPhoenix.MatchFieldValidationQLTemplate
+  FROM RTPhoenix.MatchFieldValidationQLTemplate
   where Study_id = @study_id
 
 delete RTPhoenix.METALOOKUPTemplate

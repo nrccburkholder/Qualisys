@@ -1391,6 +1391,26 @@ SELECT dtsm.[intVersion]
 		 convert(varchar,@@RowCount) + ') exported for study_id '+
 		 convert(varchar,@Study_id), @user, GetDate())
 
+INSERT INTO [RTPhoenix].[MatchFieldValidationQLTemplate]
+           ([MatchFieldValidation_id]
+           ,[Study_id]
+           ,[Table_id]
+           ,[Field_id]
+           ,[bitMatchField])
+SELECT [MatchFieldValidation_id]
+      ,[Study_id]
+      ,[Table_id]
+      ,[Field_id]
+      ,[bitMatchField]
+  FROM [QLoader].[QP_Load].[dbo].[MatchFieldValidation] mfv 
+  where Study_ID = @Study_id	
+
+	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateLogEntryTypeID], [TemplateID], [Message] ,[LoggedBy] ,[LoggedAt])
+		 VALUES (@TemplateLogEntryInfo, @Template_ID, 
+		 'QLoader MatchFieldValidation table (row count:'+ 
+		 convert(varchar,@@RowCount) + ') exported for study_id '+
+		 convert(varchar,@Study_id), @user, GetDate())
+
 commit tran
 
 end try

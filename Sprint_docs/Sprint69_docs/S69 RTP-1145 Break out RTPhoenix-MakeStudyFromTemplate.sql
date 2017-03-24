@@ -539,6 +539,26 @@ end catch
 			 convert(varchar,@@RowCount) + 
 			 ') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
+	INSERT INTO [QLoader].[QP_Load].[dbo].[MatchFieldValidation]
+			   ([Study_id]
+			   ,[Table_id]
+			   ,[Field_id]
+			   ,[bitMatchField])
+	SELECT @TargetStudy_id
+			,db0.Table_id
+			,mfv.Field_id
+			,mfv.bitMatchField
+		FROM [RTPhoenix].[MatchFieldValidationQLTemplate] mfv inner join
+			[RTPhoenix].[MetaTableTemplate] mt on mfv.table_id = mt.table_id inner join
+		  		  [dbo].[METATABLE] db0 on db0.STRTABLE_NM = mt.STRTABLE_NM 
+		WHERE db0.study_id = @TargetStudy_ID and mt.STUDY_ID = @study_id
+
+		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
+			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, 
+			 'QLoader MatchFieldValidation template (row count:'+ 
+			 convert(varchar,@@RowCount) + 
+			 ') imported for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+
 	/* -- DTSMapping is not needed for RTPhoenix ingestion -- CJB 2/3/2017
 	INSERT INTO [QLoader].[QP_Load].[dbo].[DTSMapping]
 			   ([intVersion]
