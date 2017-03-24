@@ -3,11 +3,11 @@
   <metadata>
     <id>Qualisys.PervasiveService</id>
     <title>QualiSys Pervasive Service</title>
-    <version>2.0.1.0</version>
+    <version>3.0.0.0</version>
     <authors>NRC</authors>
     <description>Validates the file and applies it to the database</description>
   </metadata>
   <files>
-    <file src="bin\Release\*"/>
+    <file src="bin\Release\**\*"/>
   </files>
 </package>

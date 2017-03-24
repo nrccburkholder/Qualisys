@@ -11,8 +11,8 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyTitle("Pervasive Viewer")> 
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("National Research Corporation")> 
-<Assembly: AssemblyProduct("Pervasive Viewer")> 
-<Assembly: AssemblyCopyright("Copyright © 2006")> 
+<Assembly: AssemblyProduct("Pervasive Viewer")>
+<Assembly: AssemblyCopyright("Copyright © 2006-2017")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("2.0.2.0")>
-<Assembly: AssemblyFileVersion("2.0.2.0")>
+<Assembly: AssemblyVersion("3.0.0.0")>
+<Assembly: AssemblyFileVersion("3.0.0.0")>
