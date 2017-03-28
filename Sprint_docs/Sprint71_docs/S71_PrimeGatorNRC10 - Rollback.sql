@@ -8,3 +8,4 @@ Sprint 71 SQLCMD Rollback Script for Prime/Gator/NRC10
 
 :r "\ATLASRelease71&72\Sprint71_docs\S71_ATL-1419 Resurvey Exclusion for Returns Only - Rollback.sql"
 
+:r "\ATLASRelease71&72\Sprint71_docs\S71_ATL-1434 Add Resurvey Type Control to Survey Properties Interface - Rollback.sql"
