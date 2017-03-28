@@ -36,8 +36,8 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <ManifestCertificateThumbprint>23E4A46E0D00D08A59AD7C81943201E2148E0BD2</ManifestCertificateThumbprint>
-    <ManifestKeyFile>QualiSysExplorer_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestCertificateThumbprint>3CDDCA9F300F74061F99B84F04828D3EC8C50C4A</ManifestCertificateThumbprint>
+    <ManifestKeyFile>QualiSysExplorer_TemporaryKey.pfx</ManifestKeyFile>
     <GenerateManifests>true</GenerateManifests>
     <SignManifests>true</SignManifests>
     <SignAssembly>false</SignAssembly>
@@ -213,7 +213,7 @@
     <None Include="QualisysExplorer.nuspec">
       <SubType>Designer</SubType>
     </None>
-    <None Include="QualiSysExplorer_1_TemporaryKey.pfx" />
+    <None Include="QualiSysExplorer_TemporaryKey.pfx" />
     <None Include="Resources\greencheck.png" />
     <None Include="Resources\Excel32.png" />
     <None Include="Resources\Excel16.png" />
