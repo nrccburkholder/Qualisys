@@ -109,6 +109,8 @@ Modified:
 
 02/26/2016 Dave Gilsdorf - added D_HH index on #Distinct 
 
+03/28/2017 Chris Burkholder - ATL-1419 added logic to handle the Resurvey Exclusion Type of Returns Only
+
 */
 ALTER PROCEDURE [dbo].[QCL_SampleSetResurveyExclusion_StaticPlus]
   @Study_id                      INT,
