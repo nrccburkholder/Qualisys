@@ -3219,7 +3219,7 @@ as
 
 DECLARE @surveytype int
 
-if exists (select 1 from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and qstncore in (50542))
+if exists (select 1 from qualisys.qp_prod.dbo.sel_qstns where survey_id=@survey_id and (qstncore in (50542) or @survey_id = 20149))
 begin
 	SET @surveytype = 21
 	print 'Adult Survey 3.0 w/PCMH'
@@ -3293,7 +3293,6 @@ if @surveytype = 21
 	begin
 	set @SQL = N'
 	 update r set
-	PCMH1_Q9= case isnull(Q050542,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050542%10000 as varchar) end,
 	PCMH2_Q19= case isnull(Q050550,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050550%10000 as varchar) end,
 	PCMH3_Q20= case isnull(Q050551,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050551%10000 as varchar) end,
 	PCMH4_Q21= case isnull(Q050552,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050552%10000 as varchar) end,
@@ -3319,6 +3318,30 @@ else
 	 inner join #Big_Table bt on r.samplepop_id=bt.samplepop_id and r.sampleunit_id=bt.sampleunit_id
 	 left outer join #Study_Results sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id
 	 inner join #tmp_mncm_mailsteps tmm on tmm.samplepop_id = sr.samplepop_id and tmm.sampleunit_id = sr.sampleunit_id
+
+
+if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q050542')) and
+	exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q050534'))
+set @SQL = N'
+	update r set
+	PCMH1_Q9= case isnull(Q050534,isnull(Q050542,-9))  when -9 then ''M'' when -8 then ''H'' else cast(isnull(Q050534,Q050542)%10000 as varchar) end'
+else
+if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q050542'))
+ set @SQL = N'
+	update r set
+	PCMH1_Q9= case isnull(Q050542,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050542%10000 as varchar) end'
+else if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q050534'))
+ set @SQL = N'
+	update r set
+	PCMH1_Q9= case isnull(Q050534,-9)  when -9 then ''M'' when -8 then ''H'' else cast(Q050534%10000 as varchar) end'
+
+set @SQL = @SQL + N'
+ from #results r
+  inner join #Big_Table bt on r.samplepop_id=bt.samplepop_id and r.sampleunit_id=bt.sampleunit_id
+  left outer join #Study_Results sr on bt.samplepop_id = sr.samplepop_id and bt.sampleunit_id = sr.sampleunit_id
+  inner join #tmp_mncm_mailsteps tmm on tmm.samplepop_id = sr.samplepop_id and tmm.sampleunit_id = sr.sampleunit_id'
+
+EXEC sp_executesql @SQL, N'@begindate datetime, @enddate datetime, @survey_id int', @begindate, @enddate, @survey_id
 
 if exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q050253')) and
 	exists (select name as col_nm from tempdb.sys.columns where object_id = object_id('tempdb..#Study_Results') and name in ('Q055064'))
