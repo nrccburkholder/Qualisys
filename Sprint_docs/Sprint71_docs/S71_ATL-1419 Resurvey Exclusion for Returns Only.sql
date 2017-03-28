@@ -177,7 +177,8 @@ AS
 				AND (DATEDIFF(day, ss.datLastMailed, GETDATE()) < @Resurvey_Excl_Period
 					OR ss.datLastMailed IS NULL)
 				AND ((st.Subtype_nm ='Returns Only' and qf.DATRETURNED is not null) --ATL-1419
-					OR st.Subtype_nm is NULL)
+					OR st.Subtype_nm is NULL 
+					OR st.Subtype_nm <> 'Returns Only')
 	  --ATL-1419 END ResurveyExclusionType ReturnsOnly -> only resurvey exclude those with a return for Returns Only subtype
 
       --Removed Rule value of 1 means it is resurvey exclusion.  This is not a bit field.
