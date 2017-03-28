@@ -56,8 +56,11 @@ Public Class SurveyProvider
         newObj.IsHandout = rdr.GetBoolean("IsHandout")
         newObj.IsPointInTime = rdr.GetBoolean("IsPointInTime")
 
-        newObj.QuestionnaireType = SelectSurveyQuestionnaireType(survey_id, SubtypeCategories.QuestionnaireType)
+        newObj.QuestionnaireType = SelectSurveyTypeForCategory(survey_id, SubtypeCategories.QuestionnaireType)
         newObj.QuestionnaireType.ResetDirtyFlag()
+
+        newObj.ResurveyExclusionType = SelectSurveyTypeForCategory(survey_id, SubtypeCategories.ResurveyExclusionType)
+        newObj.ResurveyExclusionType.ResetDirtyFlag()
 
         newObj.SurveySubTypes = SelectSurveySubTypes(survey_id, SubtypeCategories.Subtype)
         newObj.SurveySubTypes.ResetDirtyFlag()
@@ -269,11 +272,21 @@ Public Class SurveyProvider
                             If srvy.QuestionnaireType.SubTypeId > 0 Then
                                 SurveyProvider.UpdateSurveySubType(srvy.Id, srvy.QuestionnaireType.SubTypeId, SubtypeCategories.QuestionnaireType, tran)
                             ElseIf srvy.QuestionnaireType.NeedsDeleted Then
-                                SurveyProvider.DeleteSurveyQuestionnaireSubtype(srvy.Id, SubtypeCategories.QuestionnaireType, tran)
+                                SurveyProvider.DeleteSurveySubtypeForCategory(srvy.Id, SubtypeCategories.QuestionnaireType, tran)
                             End If
-                        End If                   
+                        End If
                     End If
 
+                    ' Now handle the resurveyexclusiontype subtypes
+                    If srvy.ResurveyExclusionType IsNot Nothing Then
+                        If srvy.ResurveyExclusionType.IsDirty Then
+                            If srvy.ResurveyExclusionType.SubTypeId > 0 Then
+                                SurveyProvider.UpdateSurveySubType(srvy.Id, srvy.ResurveyExclusionType.SubTypeId, SubtypeCategories.ResurveyExclusionType, tran)
+                            ElseIf srvy.ResurveyExclusionType.NeedsDeleted Then
+                                SurveyProvider.DeleteSurveySubtypeForCategory(srvy.Id, SubtypeCategories.ResurveyExclusionType, tran)
+                            End If
+                        End If
+                    End If
 
                     If srvy.ClearFacilityMappings Then
                         ClearSurveyFacilityMappings(srvy.Id, tran)
@@ -328,12 +341,12 @@ Public Class SurveyProvider
                 sampleEncounterFieldId = srvy.SampleEncounterField.Id
             End If
 
-            Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.UpdateSurveyProperties, .Id, .Name, .Description, .ResponseRateRecalculationPeriod, .ResurveyPeriod, .ResurveyMethod, _
-                                                           .SurveyStartDate, .SurveyEndDate, .SamplingAlgorithm, .EnforceSkip, CStr(.CutoffResponseCode), _
-                                                           SafeDataReader.ToDBValue(.CutoffTableId, -1), SafeDataReader.ToDBValue(.CutoffFieldId, -1), _
-                                                           SafeDataReader.ToDBValue(sampleEncounterTableId, -1), SafeDataReader.ToDBValue(sampleEncounterFieldId, -1), _
-                                                           .ClientFacingName, .SurveyType, .SurveyTypeDefId, GetHouseHoldingTypeCharacter(.HouseHoldingType), .IsValidated, _
-                                                           SafeDataReader.ToDBValue(.DateValidated), .IsFormGenReleased, .ContractNumber, .IsActive, .ContractedLanguages, .UseUSPSAddrChangeService, _
+            Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.UpdateSurveyProperties, .Id, .Name, .Description, .ResponseRateRecalculationPeriod, .ResurveyPeriod, .ResurveyMethod,
+                                                           .SurveyStartDate, .SurveyEndDate, .SamplingAlgorithm, .EnforceSkip, CStr(.CutoffResponseCode),
+                                                           SafeDataReader.ToDBValue(.CutoffTableId, -1), SafeDataReader.ToDBValue(.CutoffFieldId, -1),
+                                                           SafeDataReader.ToDBValue(sampleEncounterTableId, -1), SafeDataReader.ToDBValue(sampleEncounterFieldId, -1),
+                                                           .ClientFacingName, .SurveyType, .SurveyTypeDefId, GetHouseHoldingTypeCharacter(.HouseHoldingType), .IsValidated,
+                                                           SafeDataReader.ToDBValue(.DateValidated), .IsFormGenReleased, .ContractNumber, .IsActive, .ContractedLanguages, .UseUSPSAddrChangeService,
                                                            .IsHandout, .IsPointInTime)
 
             ExecuteNonQuery(cmd, tran)
@@ -341,32 +354,33 @@ Public Class SurveyProvider
 
     End Sub
 
-    Public Overrides Function Insert(ByVal studyId As Integer, _
-                                     ByVal name As String, _
-                                     ByVal description As String, _
-                                     ByVal responseRateRecalculationPeriod As Integer, _
-                                     ByVal resurveyMethodId As ResurveyMethod, _
-                                     ByVal resurveyPeriod As Integer, _
-                                     ByVal surveyStartDate As Date, _
-                                     ByVal surveyEndDate As Date, _
-                                     ByVal samplingAlgorithmId As Integer, _
-                                     ByVal enforceSkip As Boolean, _
-                                     ByVal cutoffResponseCode As String, _
-                                     ByVal cutoffTableId As Integer, _
-                                     ByVal cutoffFieldId As Integer, _
-                                     ByVal sampleEncounterField As StudyTableColumn, _
-                                     ByVal clientFacingName As String, _
-                                     ByVal surveyTypeId As Integer, _
-                                     ByVal surveyTypeDefId As Integer, _
-                                     ByVal houseHoldingType As HouseHoldingType, _
-                                     ByVal contractNumber As String, _
-                                     ByVal isActive As Boolean, _
-                                     ByVal contractedLanguages As String, _
-                                     ByVal surveysubtypes As SubTypeList, _
-                                     ByVal questionnairesubtype As SubType, _
-                                     ByVal useUSPSAddrChangeService As Boolean, _
-                                     ByVal isHandout As Boolean, _
-                                     ByVal isPointInTime As Boolean _
+    Public Overrides Function Insert(ByVal studyId As Integer,
+                                     ByVal name As String,
+                                     ByVal description As String,
+                                     ByVal responseRateRecalculationPeriod As Integer,
+                                     ByVal resurveyMethodId As ResurveyMethod,
+                                     ByVal resurveyPeriod As Integer,
+                                     ByVal surveyStartDate As Date,
+                                     ByVal surveyEndDate As Date,
+                                     ByVal samplingAlgorithmId As Integer,
+                                     ByVal enforceSkip As Boolean,
+                                     ByVal cutoffResponseCode As String,
+                                     ByVal cutoffTableId As Integer,
+                                     ByVal cutoffFieldId As Integer,
+                                     ByVal sampleEncounterField As StudyTableColumn,
+                                     ByVal clientFacingName As String,
+                                     ByVal surveyTypeId As Integer,
+                                     ByVal surveyTypeDefId As Integer,
+                                     ByVal houseHoldingType As HouseHoldingType,
+                                     ByVal contractNumber As String,
+                                     ByVal isActive As Boolean,
+                                     ByVal contractedLanguages As String,
+                                     ByVal surveysubtypes As SubTypeList,
+                                     ByVal questionnairesubtype As SubType,
+                                     ByVal resurveyExclustionSubtype As SubType,
+                                     ByVal useUSPSAddrChangeService As Boolean,
+                                     ByVal isHandout As Boolean,
+                                     ByVal isPointInTime As Boolean
                                     ) As Survey
 
         Dim surveyId As Integer
@@ -384,16 +398,14 @@ Public Class SurveyProvider
 
             Using tran As DbTransaction = con.BeginTransaction
                 Try
-                    Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.InsertSurvey, studyId, name, description, responseRateRecalculationPeriod, resurveyPeriod, _
-                                                                   CType(resurveyMethodId, Integer), surveyStartDate, surveyEndDate, samplingAlgorithmId, enforceSkip, _
-                                                                   cutoffResponseCode, SafeDataReader.ToDBValue(cutoffTableId, -1), SafeDataReader.ToDBValue(cutoffFieldId, -1), _
-                                                                   SafeDataReader.ToDBValue(sampleEncounterTableId, -1), SafeDataReader.ToDBValue(sampleEncounterFieldId, -1), _
-                                                                   clientFacingName, surveyTypeId, surveyTypeDefId, GetHouseHoldingTypeCharacter(houseHoldingType), _
+                    Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.InsertSurvey, studyId, name, description, responseRateRecalculationPeriod, resurveyPeriod,
+                                                                   CType(resurveyMethodId, Integer), surveyStartDate, surveyEndDate, samplingAlgorithmId, enforceSkip,
+                                                                   cutoffResponseCode, SafeDataReader.ToDBValue(cutoffTableId, -1), SafeDataReader.ToDBValue(cutoffFieldId, -1),
+                                                                   SafeDataReader.ToDBValue(sampleEncounterTableId, -1), SafeDataReader.ToDBValue(sampleEncounterFieldId, -1),
+                                                                   clientFacingName, surveyTypeId, surveyTypeDefId, GetHouseHoldingTypeCharacter(houseHoldingType),
                                                                    contractNumber, isActive, contractedLanguages, useUSPSAddrChangeService, isHandout, isPointInTime)
 
                     surveyId = ExecuteInteger(cmd, tran)
-
-
 
                     ' Now handle the subtype subtypes
                     If surveysubtypes.IsDirty Then
@@ -414,6 +426,12 @@ Public Class SurveyProvider
                         End If
                     End If
 
+                    ' Now handle the resurveyExclusionSubtype subtypes
+                    If resurveyExclustionSubtype IsNot Nothing Then
+                        If resurveyExclustionSubtype.SubTypeId > 0 Then
+                            SurveyProvider.UpdateSurveySubType(surveyId, resurveyExclustionSubtype.SubTypeId, SubtypeCategories.ResurveyExclusionType, tran)
+                        End If
+                    End If
 
                     tran.Commit()
 
@@ -510,7 +528,7 @@ Public Class SurveyProvider
             Dim isQuestionnaireRequired As Boolean
             Dim isActive As Boolean
 
-            If categorytype = SubtypeCategories.QuestionnaireType Then
+            If (categorytype = SubtypeCategories.QuestionnaireType Or categorytype = SubtypeCategories.ResurveyExclusionType) Then
                 items.Add(New SubType(0, 0, -1, "N/A", False, True, False))
             End If
 
@@ -562,7 +580,7 @@ Public Class SurveyProvider
 
     End Function
 
-    Private Shared Function SelectSurveyQuestionnaireType(ByVal surveyid As Integer, ByVal categorytype As SubtypeCategories) As SubType
+    Private Shared Function SelectSurveyTypeForCategory(ByVal surveyid As Integer, ByVal categorytype As SubtypeCategories) As SubType
         ' there will only be one questionnaire subtype in the list
 
         Dim list As SubTypeList = SelectSurveySubTypes(surveyid, categorytype)
@@ -597,7 +615,7 @@ Public Class SurveyProvider
 
     End Sub
 
-    Public Shared Sub DeleteSurveyQuestionnaireSubtype(ByVal surveyId As Integer, ByVal categorytype_id As Integer, ByVal tran As DbTransaction)
+    Public Shared Sub DeleteSurveySubtypeForCategory(ByVal surveyId As Integer, ByVal categorytype_id As Integer, ByVal tran As DbTransaction)
 
         Dim cmd As DbCommand = Db.GetStoredProcCommand("QCL_DeleteSurveyQuestionnaireSubtype", surveyId, categorytype_id)
         ExecuteNonQuery(cmd, tran)

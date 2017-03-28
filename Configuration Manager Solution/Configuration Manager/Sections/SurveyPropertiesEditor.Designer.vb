@@ -25,6 +25,10 @@ Partial Class SurveyPropertiesEditor
         Me.cnclButton = New System.Windows.Forms.Button()
         Me.BottomPanel = New System.Windows.Forms.Panel()
         Me.WorkAreaPanel = New System.Windows.Forms.Panel()
+        Me.HandoutLabel = New System.Windows.Forms.Label()
+        Me.HandoutCheckBox = New System.Windows.Forms.CheckBox()
+        Me.PointInTimeLabel = New System.Windows.Forms.Label()
+        Me.PointInTimeCheckBox = New System.Windows.Forms.CheckBox()
         Me.QuestionnaireTypeImageComboBox = New DevExpress.XtraEditors.ImageComboBoxEdit()
         Me.UseUSPSAddrChangeServiceLabel = New System.Windows.Forms.Label()
         Me.UseUSPSAddrChangeServiceCheckBox = New System.Windows.Forms.CheckBox()
@@ -73,12 +77,10 @@ Partial Class SurveyPropertiesEditor
         Me.SurveyNameLabel = New System.Windows.Forms.Label()
         Me.FacingNameTextBox = New System.Windows.Forms.TextBox()
         Me.Label5 = New System.Windows.Forms.Label()
-        Me.QuestionnaireTypeImageCollection = New DevExpress.Utils.ImageCollection(Me.components)
+        Me.SubtypeCategoryImageCollection = New DevExpress.Utils.ImageCollection(Me.components)
         Me.InformationBar = New Nrc.Qualisys.ConfigurationManager.InformationBar()
-        Me.HandoutLabel = New System.Windows.Forms.Label()
-        Me.HandoutCheckBox = New System.Windows.Forms.CheckBox()
-        Me.PointInTimeLabel = New System.Windows.Forms.Label()
-        Me.PointInTimeCheckBox = New System.Windows.Forms.CheckBox()
+        Me.ResurveyExclusionTypeImageComboBox = New DevExpress.XtraEditors.ImageComboBoxEdit()
+        Me.Label13 = New System.Windows.Forms.Label()
         Me.BottomPanel.SuspendLayout()
         Me.WorkAreaPanel.SuspendLayout()
         CType(Me.QuestionnaireTypeImageComboBox.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -86,7 +88,8 @@ Partial Class SurveyPropertiesEditor
         Me.ResurveyExcludionDaysPanel.SuspendLayout()
         CType(Me.ResurveyExcludionDaysNumeric, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.RespRateRecalcDaysNumeric, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.QuestionnaireTypeImageCollection, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.SubtypeCategoryImageCollection, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.ResurveyExclusionTypeImageComboBox.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'OKButton
@@ -126,6 +129,8 @@ Partial Class SurveyPropertiesEditor
         'WorkAreaPanel
         '
         Me.WorkAreaPanel.AutoScroll = True
+        Me.WorkAreaPanel.Controls.Add(Me.ResurveyExclusionTypeImageComboBox)
+        Me.WorkAreaPanel.Controls.Add(Me.Label13)
         Me.WorkAreaPanel.Controls.Add(Me.HandoutLabel)
         Me.WorkAreaPanel.Controls.Add(Me.HandoutCheckBox)
         Me.WorkAreaPanel.Controls.Add(Me.PointInTimeLabel)
@@ -179,6 +184,46 @@ Partial Class SurveyPropertiesEditor
         Me.WorkAreaPanel.Name = "WorkAreaPanel"
         Me.WorkAreaPanel.Size = New System.Drawing.Size(783, 953)
         Me.WorkAreaPanel.TabIndex = 1
+        '
+        'HandoutLabel
+        '
+        Me.HandoutLabel.AutoSize = True
+        Me.HandoutLabel.Location = New System.Drawing.Point(470, 639)
+        Me.HandoutLabel.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.HandoutLabel.Name = "HandoutLabel"
+        Me.HandoutLabel.Size = New System.Drawing.Size(71, 20)
+        Me.HandoutLabel.TabIndex = 47
+        Me.HandoutLabel.Text = "Handout"
+        '
+        'HandoutCheckBox
+        '
+        Me.HandoutCheckBox.AutoSize = True
+        Me.HandoutCheckBox.Location = New System.Drawing.Point(703, 639)
+        Me.HandoutCheckBox.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.HandoutCheckBox.Name = "HandoutCheckBox"
+        Me.HandoutCheckBox.Size = New System.Drawing.Size(22, 21)
+        Me.HandoutCheckBox.TabIndex = 46
+        Me.HandoutCheckBox.UseVisualStyleBackColor = True
+        '
+        'PointInTimeLabel
+        '
+        Me.PointInTimeLabel.AutoSize = True
+        Me.PointInTimeLabel.Location = New System.Drawing.Point(470, 605)
+        Me.PointInTimeLabel.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.PointInTimeLabel.Name = "PointInTimeLabel"
+        Me.PointInTimeLabel.Size = New System.Drawing.Size(153, 20)
+        Me.PointInTimeLabel.TabIndex = 45
+        Me.PointInTimeLabel.Text = "Point In Time Survey"
+        '
+        'PointInTimeCheckBox
+        '
+        Me.PointInTimeCheckBox.AutoSize = True
+        Me.PointInTimeCheckBox.Location = New System.Drawing.Point(703, 605)
+        Me.PointInTimeCheckBox.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.PointInTimeCheckBox.Name = "PointInTimeCheckBox"
+        Me.PointInTimeCheckBox.Size = New System.Drawing.Size(22, 21)
+        Me.PointInTimeCheckBox.TabIndex = 44
+        Me.PointInTimeCheckBox.UseVisualStyleBackColor = True
         '
         'QuestionnaireTypeImageComboBox
         '
@@ -235,7 +280,7 @@ Partial Class SurveyPropertiesEditor
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(9, 352)
+        Me.Label6.Location = New System.Drawing.Point(8, 343)
         Me.Label6.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(170, 20)
@@ -539,18 +584,18 @@ Partial Class SurveyPropertiesEditor
         '
         'SurveyDescriptionTextBox
         '
-        Me.SurveyDescriptionTextBox.Location = New System.Drawing.Point(266, 429)
+        Me.SurveyDescriptionTextBox.Location = New System.Drawing.Point(266, 459)
         Me.SurveyDescriptionTextBox.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.SurveyDescriptionTextBox.MaxLength = 40
         Me.SurveyDescriptionTextBox.Multiline = True
         Me.SurveyDescriptionTextBox.Name = "SurveyDescriptionTextBox"
-        Me.SurveyDescriptionTextBox.Size = New System.Drawing.Size(457, 84)
+        Me.SurveyDescriptionTextBox.Size = New System.Drawing.Size(457, 54)
         Me.SurveyDescriptionTextBox.TabIndex = 14
         '
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(9, 395)
+        Me.Label3.Location = New System.Drawing.Point(8, 429)
         Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(203, 20)
@@ -561,7 +606,7 @@ Partial Class SurveyPropertiesEditor
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(9, 432)
+        Me.Label4.Location = New System.Drawing.Point(8, 459)
         Me.Label4.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(145, 20)
@@ -675,7 +720,7 @@ Partial Class SurveyPropertiesEditor
         '
         'FacingNameTextBox
         '
-        Me.FacingNameTextBox.Location = New System.Drawing.Point(266, 389)
+        Me.FacingNameTextBox.Location = New System.Drawing.Point(265, 423)
         Me.FacingNameTextBox.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.FacingNameTextBox.MaxLength = 42
         Me.FacingNameTextBox.Name = "FacingNameTextBox"
@@ -695,10 +740,10 @@ Partial Class SurveyPropertiesEditor
         '
         'QuestionnaireTypeImageCollection
         '
-        Me.QuestionnaireTypeImageCollection.ImageStream = CType(resources.GetObject("QuestionnaireTypeImageCollection.ImageStream"), DevExpress.Utils.ImageCollectionStreamer)
-        Me.QuestionnaireTypeImageCollection.Images.SetKeyName(0, "NoWay16.png")
-        Me.QuestionnaireTypeImageCollection.Images.SetKeyName(1, "GreenLight.png")
-        Me.QuestionnaireTypeImageCollection.Images.SetKeyName(2, "YellowLight.png")
+        Me.SubtypeCategoryImageCollection.ImageStream = CType(resources.GetObject("QuestionnaireTypeImageCollection.ImageStream"), DevExpress.Utils.ImageCollectionStreamer)
+        Me.SubtypeCategoryImageCollection.Images.SetKeyName(0, "NoWay16.png")
+        Me.SubtypeCategoryImageCollection.Images.SetKeyName(1, "GreenLight.png")
+        Me.SubtypeCategoryImageCollection.Images.SetKeyName(2, "YellowLight.png")
         '
         'InformationBar
         '
@@ -706,52 +751,32 @@ Partial Class SurveyPropertiesEditor
         Me.InformationBar.Dock = System.Windows.Forms.DockStyle.Top
         Me.InformationBar.Information = " Information Bar"
         Me.InformationBar.Location = New System.Drawing.Point(0, 0)
-        Me.InformationBar.Margin = New System.Windows.Forms.Padding(6, 6, 6, 6)
+        Me.InformationBar.Margin = New System.Windows.Forms.Padding(6)
         Me.InformationBar.Name = "InformationBar"
         Me.InformationBar.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.InformationBar.Size = New System.Drawing.Size(783, 31)
         Me.InformationBar.TabIndex = 0
         Me.InformationBar.TabStop = False
         '
-        'HandoutLabel
+        'ResurveyExclusionTypeImageComboBox
         '
-        Me.HandoutLabel.AutoSize = True
-        Me.HandoutLabel.Location = New System.Drawing.Point(470, 639)
-        Me.HandoutLabel.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.HandoutLabel.Name = "HandoutLabel"
-        Me.HandoutLabel.Size = New System.Drawing.Size(71, 20)
-        Me.HandoutLabel.TabIndex = 47
-        Me.HandoutLabel.Text = "Handout"
+        Me.ResurveyExclusionTypeImageComboBox.Location = New System.Drawing.Point(267, 376)
+        Me.ResurveyExclusionTypeImageComboBox.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.ResurveyExclusionTypeImageComboBox.Name = "ResurveyExclusionTypeImageComboBox"
+        Me.ResurveyExclusionTypeImageComboBox.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
+        Me.ResurveyExclusionTypeImageComboBox.Size = New System.Drawing.Size(456, 26)
+        Me.ResurveyExclusionTypeImageComboBox.TabIndex = 49
         '
-        'HandoutCheckBox
+        'Label13
         '
-        Me.HandoutCheckBox.AutoSize = True
-        Me.HandoutCheckBox.Location = New System.Drawing.Point(703, 639)
-        Me.HandoutCheckBox.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.HandoutCheckBox.Name = "HandoutCheckBox"
-        Me.HandoutCheckBox.Size = New System.Drawing.Size(22, 21)
-        Me.HandoutCheckBox.TabIndex = 46
-        Me.HandoutCheckBox.UseVisualStyleBackColor = True
-        '
-        'PointInTimeLabel
-        '
-        Me.PointInTimeLabel.AutoSize = True
-        Me.PointInTimeLabel.Location = New System.Drawing.Point(470, 605)
-        Me.PointInTimeLabel.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.PointInTimeLabel.Name = "PointInTimeLabel"
-        Me.PointInTimeLabel.Size = New System.Drawing.Size(153, 20)
-        Me.PointInTimeLabel.TabIndex = 45
-        Me.PointInTimeLabel.Text = "Point In Time Survey"
-        '
-        'PointInTimeCheckBox
-        '
-        Me.PointInTimeCheckBox.AutoSize = True
-        Me.PointInTimeCheckBox.Location = New System.Drawing.Point(703, 605)
-        Me.PointInTimeCheckBox.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.PointInTimeCheckBox.Name = "PointInTimeCheckBox"
-        Me.PointInTimeCheckBox.Size = New System.Drawing.Size(22, 21)
-        Me.PointInTimeCheckBox.TabIndex = 44
-        Me.PointInTimeCheckBox.UseVisualStyleBackColor = True
+        Me.Label13.AutoSize = True
+        Me.Label13.Location = New System.Drawing.Point(8, 379)
+        Me.Label13.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(188, 20)
+        Me.Label13.TabIndex = 48
+        Me.Label13.Text = "Resurvey Exclusion Type:"
+        Me.Label13.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'SurveyPropertiesEditor
         '
@@ -773,7 +798,8 @@ Partial Class SurveyPropertiesEditor
         Me.ResurveyExcludionDaysPanel.PerformLayout()
         CType(Me.ResurveyExcludionDaysNumeric, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.RespRateRecalcDaysNumeric, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.QuestionnaireTypeImageCollection, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.SubtypeCategoryImageCollection, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.ResurveyExclusionTypeImageComboBox.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -830,10 +856,11 @@ Partial Class SurveyPropertiesEditor
     Friend WithEvents UseUSPSAddrChangeServiceLabel As System.Windows.Forms.Label
     Friend WithEvents UseUSPSAddrChangeServiceCheckBox As System.Windows.Forms.CheckBox
     Friend WithEvents QuestionnaireTypeImageComboBox As DevExpress.XtraEditors.ImageComboBoxEdit
-    Friend WithEvents QuestionnaireTypeImageCollection As DevExpress.Utils.ImageCollection
+    Friend WithEvents SubtypeCategoryImageCollection As DevExpress.Utils.ImageCollection
     Friend WithEvents HandoutLabel As System.Windows.Forms.Label
     Friend WithEvents HandoutCheckBox As System.Windows.Forms.CheckBox
     Friend WithEvents PointInTimeLabel As System.Windows.Forms.Label
     Friend WithEvents PointInTimeCheckBox As System.Windows.Forms.CheckBox
-
+    Friend WithEvents ResurveyExclusionTypeImageComboBox As DevExpress.XtraEditors.ImageComboBoxEdit
+    Friend WithEvents Label13 As Label
 End Class

@@ -52,12 +52,12 @@ Public Class NewSurveyModule
         Try
             If (action = ConfigResultActions.SurveyRefresh) Then
                 With EditingSurvey
-                    EditingSurvey = QualiSys.Library.Survey.CreateNew(.StudyId, .Name, .Description, .ResponseRateRecalculationPeriod, .ResurveyMethod, _
-                                                                      .ResurveyPeriod, .SurveyStartDate, .SurveyEndDate, .SamplingAlgorithm, .EnforceSkip, _
-                                                                      CStr(.CutoffResponseCode), .CutoffTableId, .CutoffFieldId, .SampleEncounterField, _
-                                                                      .ClientFacingName, .SurveyType, .SurveyTypeDefId, .HouseHoldingType, .ContractNumber, _
-                                                                      .IsActive, .ContractedLanguages, .SurveySubTypes, .QuestionnaireType, .UseUSPSAddrChangeService,
-                                                                      .IsHandout, .IsPointInTime)
+                    EditingSurvey = Qualisys.Library.Survey.CreateNew(.StudyId, .Name, .Description, .ResponseRateRecalculationPeriod, .ResurveyMethod,
+                                                                      .ResurveyPeriod, .SurveyStartDate, .SurveyEndDate, .SamplingAlgorithm, .EnforceSkip,
+                                                                      CStr(.CutoffResponseCode), .CutoffTableId, .CutoffFieldId, .SampleEncounterField,
+                                                                      .ClientFacingName, .SurveyType, .SurveyTypeDefId, .HouseHoldingType, .ContractNumber,
+                                                                      .IsActive, .ContractedLanguages, .SurveySubTypes, .QuestionnaireType, .ResurveyExclusionType,
+                                                                      .UseUSPSAddrChangeService, .IsHandout, .IsPointInTime)
                 End With
                 Study.Surveys.Add(EditingSurvey)
             End If

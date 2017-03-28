@@ -34,6 +34,7 @@ Public Class Survey
     Private mHouseHoldingColumns As StudyTableColumnCollection
     Private mSurveySubtypes As SubTypeList
     Private mQuestionnaireType As SubType
+    Private mResurveyExclusionType As SubType
 
     Private mIsDirty As Boolean
     Private mIsValidated As Boolean
@@ -485,6 +486,25 @@ Public Class Survey
             ElseIf mQuestionnaireType Is Nothing And value IsNot Nothing Then
                 mQuestionnaireType = New SubType()
                 mQuestionnaireType = value
+                mIsDirty = False
+            End If
+        End Set
+    End Property
+
+    <Logable()>
+    Public Property ResurveyExclusionType() As SubType
+        Get
+            Return mResurveyExclusionType
+        End Get
+        Set(ByVal value As SubType)
+            If mResurveyExclusionType IsNot Nothing And value IsNot Nothing Then
+                If mResurveyExclusionType.SubTypeId <> value.SubTypeId Then
+                    mResurveyExclusionType = value
+                    mIsDirty = True
+                End If
+            ElseIf mResurveyExclusionType Is Nothing And value IsNot Nothing Then
+                mResurveyExclusionType = New SubType()
+                mResurveyExclusionType = value
                 mIsDirty = False
             End If
         End Set
@@ -1076,19 +1096,19 @@ Public Class Survey
 
     End Sub
 
-    Public Shared Function CreateNew(ByVal studyId As Integer, ByVal name As String, ByVal description As String, ByVal responseRateRecalculationPeriod As Integer, _
-                                     ByVal resurveyMethodId As ResurveyMethod, ByVal resurveyPeriod As Integer, ByVal surveyStartDate As Date, ByVal surveyEndDate As Date, _
-                                     ByVal samplingAlgorithmId As Integer, ByVal enforceSkip As Boolean, ByVal cutoffResponseCode As String, ByVal cutoffTableId As Integer, _
-                                     ByVal cutoffFieldId As Integer, ByVal sampleEncounterField As StudyTableColumn, ByVal clientFacingName As String, _
-                                     ByVal surveyTypeId As Integer, ByVal surveyTypeDefId As Integer, ByVal houseHoldingType As HouseHoldingType, _
-                                     ByVal contractNumber As String, ByVal isActive As Boolean, ByVal contractedLanguages As String, ByVal srvySubTypes As SubTypeList, _
-                                     ByVal questionnairesubtype As SubType, ByVal UseUSPSAddrChangeService As Boolean,
+    Public Shared Function CreateNew(ByVal studyId As Integer, ByVal name As String, ByVal description As String, ByVal responseRateRecalculationPeriod As Integer,
+                                     ByVal resurveyMethodId As ResurveyMethod, ByVal resurveyPeriod As Integer, ByVal surveyStartDate As Date, ByVal surveyEndDate As Date,
+                                     ByVal samplingAlgorithmId As Integer, ByVal enforceSkip As Boolean, ByVal cutoffResponseCode As String, ByVal cutoffTableId As Integer,
+                                     ByVal cutoffFieldId As Integer, ByVal sampleEncounterField As StudyTableColumn, ByVal clientFacingName As String,
+                                     ByVal surveyTypeId As Integer, ByVal surveyTypeDefId As Integer, ByVal houseHoldingType As HouseHoldingType,
+                                     ByVal contractNumber As String, ByVal isActive As Boolean, ByVal contractedLanguages As String, ByVal srvySubTypes As SubTypeList,
+                                     ByVal questionnairesubtype As SubType, ByVal resurveyExclusionSubtype As SubType, ByVal UseUSPSAddrChangeService As Boolean,
                                      ByVal isHandout As Boolean, ByVal isPointInTime As Boolean) As Survey
 
-        Return SurveyProvider.Instance.Insert(studyId, name, description, responseRateRecalculationPeriod, resurveyMethodId, resurveyPeriod, surveyStartDate, surveyEndDate, _
-                                              samplingAlgorithmId, enforceSkip, cutoffResponseCode, cutoffTableId, cutoffFieldId, sampleEncounterField, clientFacingName, _
-                                              surveyTypeId, surveyTypeDefId, houseHoldingType, contractNumber, isActive, contractedLanguages, srvySubTypes, questionnairesubtype, _
-                                              UseUSPSAddrChangeService, isHandout, isPointInTime)
+        Return SurveyProvider.Instance.Insert(studyId, name, description, responseRateRecalculationPeriod, resurveyMethodId, resurveyPeriod, surveyStartDate, surveyEndDate,
+                                              samplingAlgorithmId, enforceSkip, cutoffResponseCode, cutoffTableId, cutoffFieldId, sampleEncounterField, clientFacingName,
+                                              surveyTypeId, surveyTypeDefId, houseHoldingType, contractNumber, isActive, contractedLanguages, srvySubTypes, questionnairesubtype,
+                                              resurveyExclusionSubtype, UseUSPSAddrChangeService, isHandout, isPointInTime)
 
     End Function
 

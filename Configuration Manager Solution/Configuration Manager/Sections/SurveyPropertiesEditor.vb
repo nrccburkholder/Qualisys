@@ -57,7 +57,6 @@ Public Class SurveyPropertiesEditor
             LoadSurveySubTypeListBox(surveyType, survey.Id)
 
             Dim surveytypeid As Integer = 0
-            Dim questionnairetypeid As Integer = 0
 
             surveytypeid = surveyType
 
@@ -84,7 +83,8 @@ Public Class SurveyPropertiesEditor
                 End If
             End If
 
-            LoadQuestionnaireTypeComboBox(surveytypeid, questionnairetypeid, survey.Id)
+            LoadQuestionnaireTypeComboBox(surveytypeid, survey.Id)
+            LoadResurveyExclusionTypeComboBox(surveytypeid, survey.Id)
 
             'lblResurveyMethod.Enabled = False
             ResurveyMethodComboBox.Enabled = False
@@ -204,7 +204,8 @@ Public Class SurveyPropertiesEditor
 
             Dim stl As SubTypeList = FilterQuestionnaireComboBox(cList)
 
-            LoadQuestionnaireTypeImageCombobBox(stl, mModule.EditingSurvey.Id)
+            LoadQuestionnaireTypeImageComboBox(stl, mModule.EditingSurvey.Id)
+            LoadResurveyExclusionTypeImageComboBox(stl, mModule.EditingSurvey.Id)
 
             If selectedItem.IsRuleOverride Then
                 If e.NewValue = CheckState.Checked Then
@@ -334,8 +335,10 @@ Public Class SurveyPropertiesEditor
         LoadSurveySubTypeListBox(surveyTypeID, mModule.EditingSurvey.Id)
 
         'questionnaire Type list
-        Dim questionnaireTypeID As Integer = 0
-        LoadQuestionnaireTypeComboBox(surveyTypeID, questionnaireTypeID, mModule.EditingSurvey.Id)
+        LoadQuestionnaireTypeComboBox(surveyTypeID, mModule.EditingSurvey.Id)
+
+        'resurvey exclusion Type list
+        LoadResurveyExclusionTypeComboBox(surveyTypeID, mModule.EditingSurvey.Id)
 
         'Set up disabled controls based on survey subtype (not a value saved with the survey, per se)
         Dim override As String = mModule.EditingSurvey.SurveySubTypeOverrideName() 'will retrieve PCMH for example CJB 8/14/2014
@@ -379,8 +382,8 @@ Public Class SurveyPropertiesEditor
                     End If
 
                 Case CutoffFieldType.CustomMetafield
-                    If (mModule.EditingSurvey.SampleEncounterField IsNot Nothing AndAlso _
-                        field.StudyTable.Id = mModule.EditingSurvey.SampleEncounterField.TableId AndAlso _
+                    If (mModule.EditingSurvey.SampleEncounterField IsNot Nothing AndAlso
+                        field.StudyTable.Id = mModule.EditingSurvey.SampleEncounterField.TableId AndAlso
                         field.StudyTableColumn.Id = mModule.EditingSurvey.SampleEncounterField.Id) Then
                         SampleEncounterDateComboBox.SelectedIndex = id
                         Exit For
@@ -408,8 +411,8 @@ Public Class SurveyPropertiesEditor
                     End If
 
                 Case CutoffFieldType.CustomMetafield
-                    If (field.CutoffDateFieldType = mModule.EditingSurvey.CutoffResponseCode AndAlso _
-                        field.StudyTable.Id = mModule.EditingSurvey.CutoffTableId AndAlso _
+                    If (field.CutoffDateFieldType = mModule.EditingSurvey.CutoffResponseCode AndAlso
+                        field.StudyTable.Id = mModule.EditingSurvey.CutoffTableId AndAlso
                         field.StudyTableColumn.Id = mModule.EditingSurvey.CutoffFieldId) Then
                         CutoffDateComboBox.SelectedIndex = id
                         Exit For
@@ -639,6 +642,8 @@ Public Class SurveyPropertiesEditor
             .SurveyEndDate = SurveyEndDatePicker.Value
             .SurveySubTypes = SetSurveySubTypes()
             .QuestionnaireType = SetQuestionnaireType()
+            .ResurveyExclusionType = SetResurveyExclusionType()
+
             .ClearFacilityMappings = clearFacilityMappings
 
 
@@ -721,7 +726,7 @@ Public Class SurveyPropertiesEditor
 
     End Sub
 
-    Private Sub LoadQuestionnaireTypeComboBox(ByVal surveytypeid As Integer, ByVal questionnairetypeid As Integer, ByVal surveyid As Integer)
+    Private Sub LoadQuestionnaireTypeComboBox(ByVal surveytypeid As Integer, ByVal surveyid As Integer)
 
         ' create a list of all questionnairetypes 
         mSubTypeList = Survey.GetSubTypes(surveytypeid, SubtypeCategories.QuestionnaireType, surveyid)
@@ -742,7 +747,7 @@ Public Class SurveyPropertiesEditor
             questionnaireSubtypeId = -1
         End If
 
-        LoadQuestionnaireTypeImageCombobBox(stl, surveyid, questionnaireSubtypeId)
+        LoadQuestionnaireTypeImageComboBox(stl, surveyid, questionnaireSubtypeId)
 
         QuestionnaireTypeImageComboBox.SelectedIndex = 0
 
@@ -761,7 +766,7 @@ Public Class SurveyPropertiesEditor
 
     End Sub
 
-    Private Sub LoadQuestionnaireTypeImageCombobBox(ByVal list As SubTypeList, ByVal surveyid As Integer, Optional ByVal selectedSubTypeId As Integer = -1)
+    Private Sub LoadQuestionnaireTypeImageComboBox(ByVal list As SubTypeList, ByVal surveyid As Integer, Optional ByVal selectedSubTypeId As Integer = -1)
         QuestionnaireTypeImageComboBox.Properties.Items.Clear()
         For Each item As SubType In list
 
@@ -787,7 +792,7 @@ Public Class SurveyPropertiesEditor
 
         Next
 
-        QuestionnaireTypeImageComboBox.Properties.SmallImages = QuestionnaireTypeImageCollection
+        QuestionnaireTypeImageComboBox.Properties.SmallImages = SubtypeCategoryImageCollection
     End Sub
 
     Private Function FilterQuestionnaireComboBox(ByVal _subTypeList As List(Of SubType)) As SubTypeList
@@ -863,6 +868,23 @@ Public Class SurveyPropertiesEditor
 
     End Function
 
+    Private Function SetResurveyExclusionType() As SubType
+
+        'If QuestionnaireTypeComboBox.SelectedItem Is Nothing Then
+        '    Return Nothing
+        'Else
+        '    Return CType(QuestionnaireTypeComboBox.SelectedItem, SubType)
+        'End If
+
+
+        If ResurveyExclusionTypeImageComboBox.SelectedItem Is Nothing Then
+            Return Nothing
+        Else
+            Return CType(CType(ResurveyExclusionTypeImageComboBox.SelectedItem, ImageComboBoxItem).Value, SubType)
+        End If
+
+    End Function
+
     Private Function GetSubtypeBitRuleOverrideCount() As Integer
 
         Dim iRuleOverrideCount As Integer = 0
@@ -880,6 +902,16 @@ Public Class SurveyPropertiesEditor
             Dim itemSubType As SubType = CType(item.Value, SubType)
             If itemSubType.SubTypeId = subtypeId Then
                 QuestionnaireTypeImageComboBox.SelectedItem = item
+                Exit For
+            End If
+        Next
+    End Sub
+
+    Private Sub SelectResurveyExclusionSubtype(ByVal subtypeId As Integer)
+        For Each item As ImageComboBoxItem In ResurveyExclusionTypeImageComboBox.Properties.Items
+            Dim itemSubType As SubType = CType(item.Value, SubType)
+            If itemSubType.SubTypeId = subtypeId Then
+                ResurveyExclusionTypeImageComboBox.SelectedItem = item
                 Exit For
             End If
         Next
@@ -915,6 +947,158 @@ Public Class SurveyPropertiesEditor
 
         If previousSurveyTypeId <> selectedSurveyTypeId AndAlso (selectedSurveyTypeId = cgCahpsSurveyType.CAHPSTypeId Or previousSurveyTypeId = cgCahpsSurveyType.CAHPSTypeId) AndAlso hasFacilityMapping Then
             Return True
+        End If
+
+    End Function
+
+    Private Sub ResurveyExclusionTypeImageComboBox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ResurveyExclusionTypeImageComboBox.SelectedIndexChanged
+        If Not mIsLoading Then
+
+            If ResurveyExclusionTypeImageComboBox.SelectedItem IsNot Nothing Then
+
+                Dim selectedItem As SubType = CType(CType(ResurveyExclusionTypeImageComboBox.SelectedItem, ImageComboBoxItem).Value, SubType)
+
+                If selectedItem.IsActive = False Then
+                    MessageBox.Show("You can't use that Resurvey Exclusion Type.  It's INACTIVE!", "Invalid Questionnaire Version", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                    If mModule.EditingSurvey.ResurveyExclusionType.IsActive = False Then
+                        ResurveyExclusionTypeImageComboBox.SelectedIndex = 0
+                    Else
+                        If mModule.EditingSurvey.ResurveyExclusionType IsNot Nothing Then
+                            SelectResurveyExclusionSubtype(mModule.EditingSurvey.ResurveyExclusionType.SubTypeId)
+                        End If
+                    End If
+                    Exit Sub
+                End If
+
+                If mModule.EditingSurvey.ResurveyExclusionType IsNot Nothing Then
+                    If selectedItem.SubTypeId <> mModule.EditingSurvey.ResurveyExclusionType.SubTypeId Then
+                        If selectedItem.SubTypeId = 0 Then selectedItem.NeedsDeleted = True
+                        selectedItem.IsDirty = True
+                    Else
+                        selectedItem.IsDirty = False
+                    End If
+                End If
+
+            Else
+                If mModule.EditingSurvey.ResurveyExclusionType IsNot Nothing Then
+                    SelectResurveyExclusionSubtype(mModule.EditingSurvey.ResurveyExclusionType.SubTypeId)
+                End If
+            End If
+
+        End If
+
+    End Sub
+
+    Private Sub LoadResurveyExclusionTypeComboBox(ByVal surveytypeid As Integer, ByVal surveyid As Integer)
+
+        ' create a list of all resurveyExclusionTypes 
+        mSubTypeList = Survey.GetSubTypes(surveytypeid, SubtypeCategories.ResurveyExclusionType, surveyid)
+
+        ' create a list of SubType items that are checked, then filter
+        Dim cList As List(Of SubType) = New List(Of SubType)
+        For Each item As SubType In SurveySubTypeListBox.CheckedItems
+            cList.Add(item)
+        Next
+
+        Dim stl As SubTypeList = FilterResurveyExclusionComboBox(cList)
+
+        Dim resurveyExclusionSubtypeId As Integer
+
+        If Not mModule.EditingSurvey.ResurveyExclusionType Is Nothing Then
+            resurveyExclusionSubtypeId = mModule.EditingSurvey.ResurveyExclusionType.SubTypeId
+        Else
+            resurveyExclusionSubtypeId = -1
+        End If
+
+        LoadResurveyExclusionTypeImageComboBox(stl, surveyid, resurveyExclusionSubtypeId)
+
+        ResurveyExclusionTypeImageComboBox.SelectedIndex = 0
+
+        If ResurveyExclusionTypeImageComboBox.Properties.Items.Count < 2 Then
+            ResurveyExclusionTypeImageComboBox.Enabled = False
+        Else
+            ResurveyExclusionTypeImageComboBox.Enabled = True
+            If mModule.EditingSurvey.ResurveyExclusionType IsNot Nothing Then
+                If mModule.EditingSurvey.ResurveyExclusionType.SubTypeId = 0 Then
+                    ResurveyExclusionTypeImageComboBox.SelectedIndex = 0
+                Else
+                    SelectResurveyExclusionSubtype(mModule.EditingSurvey.ResurveyExclusionType.SubTypeId)
+                End If
+            End If
+        End If
+
+    End Sub
+
+    Private Sub LoadResurveyExclusionTypeImageComboBox(ByVal list As SubTypeList, ByVal surveyid As Integer, Optional ByVal selectedSubTypeId As Integer = -1)
+        ResurveyExclusionTypeImageComboBox.Properties.Items.Clear()
+        For Each item As SubType In list
+
+            Dim display As Boolean = True
+            If (surveyid = 0 And item.IsActive = False) Or (item.IsActive = False And item.SubTypeId <> selectedSubTypeId) Then
+                display = False
+            End If
+
+            If display Then
+                Dim imageIndex As Integer
+
+                If item.SubTypeId = 0 Then
+                    imageIndex = 2
+                Else
+                    imageIndex = Convert.ToInt32(item.IsActive)
+                End If
+
+                Dim icbi As New ImageComboBoxItem(item, imageIndex)
+                icbi.Description = item.DisplayName
+                icbi.Value = item
+                ResurveyExclusionTypeImageComboBox.Properties.Items.Add(icbi)
+            End If
+
+        Next
+
+        ResurveyExclusionTypeImageComboBox.Properties.SmallImages = SubtypeCategoryImageCollection
+    End Sub
+
+    Private Function FilterResurveyExclusionComboBox(ByVal _subTypeList As List(Of SubType)) As SubTypeList
+
+        Dim parentSubTypeIDList As List(Of Integer) = New List(Of Integer)
+        ' create a list of the parentSubType ids for the checked items
+        If _subTypeList.Count > 0 Then
+
+            ' check if any of the selected subtypes is an override
+            If _subTypeList.Where(Function(s) (s.IsRuleOverride = True)).Count > 0 Then
+                ' add the overrides to the list.
+                For Each subtypeItem As SubType In _subTypeList.Where(Function(s) (s.IsRuleOverride = True))
+                    parentSubTypeIDList.Add(subtypeItem.ParentSubTypeId)
+                Next
+            Else
+                ' none of the selections is an override, so add them all to the list
+                For Each subtypeItem As SubType In _subTypeList
+                    parentSubTypeIDList.Add(subtypeItem.ParentSubTypeId)
+                Next
+
+            End If
+        Else
+            parentSubTypeIDList.Add(0)
+        End If
+
+        ' make a distinct list of subtype id's 
+        parentSubTypeIDList = parentSubTypeIDList.Distinct().ToList
+
+        '  if any of the Non-mapped subtypes are selected, we just return the whole list
+        If parentSubTypeIDList.Contains(0) Then
+            Return mSubTypeList
+        Else
+            ' otherwise, we filter on questionnaires that are mapped specifically to subtypes
+            Dim tempSubTypeList As New SubTypeList()
+
+            For Each item As SubType In mSubTypeList
+                If parentSubTypeIDList.Contains(item.ParentSubTypeId) Or item.SubTypeId = 0 Then ' item.Subtype = 0 represents N/A, so we always include it
+                    tempSubTypeList.Add(item)
+                End If
+            Next
+
+            Return tempSubTypeList
+
         End If
 
     End Function
