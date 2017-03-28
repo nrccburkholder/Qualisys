@@ -202,10 +202,10 @@ Public Class SurveyPropertiesEditor
                 cList.Remove(DirectCast(SurveySubTypeListBox.Items(e.Index), SubType))
             End If
 
-            Dim stl As SubTypeList = FilterQuestionnaireComboBox(cList)
+            Dim stl As SubTypeList = FilterSubtypeCategoryComboBox(cList)
 
-            LoadQuestionnaireTypeImageComboBox(stl, mModule.EditingSurvey.Id)
-            LoadResurveyExclusionTypeImageComboBox(stl, mModule.EditingSurvey.Id)
+            LoadSubtypeCategoryImageComboBox(QuestionnaireTypeImageComboBox, stl, mModule.EditingSurvey.Id)
+            LoadSubtypeCategoryImageComboBox(ResurveyExclusionTypeImageComboBox, stl, mModule.EditingSurvey.Id)
 
             If selectedItem.IsRuleOverride Then
                 If e.NewValue = CheckState.Checked Then
@@ -737,7 +737,7 @@ Public Class SurveyPropertiesEditor
             cList.Add(item)
         Next
 
-        Dim stl As SubTypeList = FilterQuestionnaireComboBox(cList)
+        Dim stl As SubTypeList = FilterSubtypeCategoryComboBox(cList)
 
         Dim questionnaireSubtypeId As Integer
 
@@ -747,7 +747,7 @@ Public Class SurveyPropertiesEditor
             questionnaireSubtypeId = -1
         End If
 
-        LoadQuestionnaireTypeImageComboBox(stl, surveyid, questionnaireSubtypeId)
+        LoadSubtypeCategoryImageComboBox(QuestionnaireTypeImageComboBox, stl, surveyid, questionnaireSubtypeId)
 
         QuestionnaireTypeImageComboBox.SelectedIndex = 0
 
@@ -766,36 +766,7 @@ Public Class SurveyPropertiesEditor
 
     End Sub
 
-    Private Sub LoadQuestionnaireTypeImageComboBox(ByVal list As SubTypeList, ByVal surveyid As Integer, Optional ByVal selectedSubTypeId As Integer = -1)
-        QuestionnaireTypeImageComboBox.Properties.Items.Clear()
-        For Each item As SubType In list
-
-            Dim display As Boolean = True
-            If (surveyid = 0 And item.IsActive = False) Or (item.IsActive = False And item.SubTypeId <> selectedSubTypeId) Then
-                display = False
-            End If
-
-            If display Then
-                Dim imageIndex As Integer
-
-                If item.SubTypeId = 0 Then
-                    imageIndex = 2
-                Else
-                    imageIndex = Convert.ToInt32(item.IsActive)
-                End If
-
-                Dim icbi As New ImageComboBoxItem(item, imageIndex)
-                icbi.Description = item.DisplayName
-                icbi.Value = item
-                QuestionnaireTypeImageComboBox.Properties.Items.Add(icbi)
-            End If
-
-        Next
-
-        QuestionnaireTypeImageComboBox.Properties.SmallImages = SubtypeCategoryImageCollection
-    End Sub
-
-    Private Function FilterQuestionnaireComboBox(ByVal _subTypeList As List(Of SubType)) As SubTypeList
+    Private Function FilterSubtypeCategoryComboBox(ByVal _subTypeList As List(Of SubType)) As SubTypeList
 
         Dim parentSubTypeIDList As List(Of Integer) = New List(Of Integer)
         ' create a list of the parentSubType ids for the checked items
@@ -1000,7 +971,7 @@ Public Class SurveyPropertiesEditor
             cList.Add(item)
         Next
 
-        Dim stl As SubTypeList = FilterResurveyExclusionComboBox(cList)
+        Dim stl As SubTypeList = FilterSubtypeCategoryComboBox(cList)
 
         Dim resurveyExclusionSubtypeId As Integer
 
@@ -1010,7 +981,7 @@ Public Class SurveyPropertiesEditor
             resurveyExclusionSubtypeId = -1
         End If
 
-        LoadResurveyExclusionTypeImageComboBox(stl, surveyid, resurveyExclusionSubtypeId)
+        LoadSubtypeCategoryImageComboBox(ResurveyExclusionTypeImageComboBox, stl, surveyid, resurveyExclusionSubtypeId)
 
         ResurveyExclusionTypeImageComboBox.SelectedIndex = 0
 
@@ -1029,8 +1000,8 @@ Public Class SurveyPropertiesEditor
 
     End Sub
 
-    Private Sub LoadResurveyExclusionTypeImageComboBox(ByVal list As SubTypeList, ByVal surveyid As Integer, Optional ByVal selectedSubTypeId As Integer = -1)
-        ResurveyExclusionTypeImageComboBox.Properties.Items.Clear()
+    Private Sub LoadSubtypeCategoryImageComboBox(ByRef SubtypeCategoryImageComboBox As ImageComboBoxEdit, ByVal list As SubTypeList, ByVal surveyid As Integer, Optional ByVal selectedSubTypeId As Integer = -1)
+        SubtypeCategoryImageComboBox.Properties.Items.Clear()
         For Each item As SubType In list
 
             Dim display As Boolean = True
@@ -1050,58 +1021,13 @@ Public Class SurveyPropertiesEditor
                 Dim icbi As New ImageComboBoxItem(item, imageIndex)
                 icbi.Description = item.DisplayName
                 icbi.Value = item
-                ResurveyExclusionTypeImageComboBox.Properties.Items.Add(icbi)
+                SubtypeCategoryImageComboBox.Properties.Items.Add(icbi)
             End If
 
         Next
 
-        ResurveyExclusionTypeImageComboBox.Properties.SmallImages = SubtypeCategoryImageCollection
+        SubtypeCategoryImageComboBox.Properties.SmallImages = SubtypeCategoryImageCollection
     End Sub
-
-    Private Function FilterResurveyExclusionComboBox(ByVal _subTypeList As List(Of SubType)) As SubTypeList
-
-        Dim parentSubTypeIDList As List(Of Integer) = New List(Of Integer)
-        ' create a list of the parentSubType ids for the checked items
-        If _subTypeList.Count > 0 Then
-
-            ' check if any of the selected subtypes is an override
-            If _subTypeList.Where(Function(s) (s.IsRuleOverride = True)).Count > 0 Then
-                ' add the overrides to the list.
-                For Each subtypeItem As SubType In _subTypeList.Where(Function(s) (s.IsRuleOverride = True))
-                    parentSubTypeIDList.Add(subtypeItem.ParentSubTypeId)
-                Next
-            Else
-                ' none of the selections is an override, so add them all to the list
-                For Each subtypeItem As SubType In _subTypeList
-                    parentSubTypeIDList.Add(subtypeItem.ParentSubTypeId)
-                Next
-
-            End If
-        Else
-            parentSubTypeIDList.Add(0)
-        End If
-
-        ' make a distinct list of subtype id's 
-        parentSubTypeIDList = parentSubTypeIDList.Distinct().ToList
-
-        '  if any of the Non-mapped subtypes are selected, we just return the whole list
-        If parentSubTypeIDList.Contains(0) Then
-            Return mSubTypeList
-        Else
-            ' otherwise, we filter on questionnaires that are mapped specifically to subtypes
-            Dim tempSubTypeList As New SubTypeList()
-
-            For Each item As SubType In mSubTypeList
-                If parentSubTypeIDList.Contains(item.ParentSubTypeId) Or item.SubTypeId = 0 Then ' item.Subtype = 0 represents N/A, so we always include it
-                    tempSubTypeList.Add(item)
-                End If
-            Next
-
-            Return tempSubTypeList
-
-        End If
-
-    End Function
 
 #End Region
 
