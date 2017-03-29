@@ -95,7 +95,7 @@ SET @NewQstnCore = 56642
 SET @NewScale_id = 9212  -- this id comes from the new scale created in QuestionLibrary - old Scale id (qpc_id) was 9029
 SET @OldScale_id = 9029
 
--- the current list of surveys using the old question core
+-- the current list of surveys using the new question core
 
 SELECT distinct sq.selqstns_id, sq.survey_id, sq.scaleid, sq.label, sq.[language]
   INTO #sel_qstns    
@@ -104,7 +104,7 @@ INNER JOIN [dbo].[SURVEY_DEF] sd on sd.survey_id = sq.survey_id
 INNER JOIN [dbo].[MAILINGMETHODOLOGY] mm on (mm.SURVEY_ID = sq.SURVEY_ID)
 INNER JOIN [dbo].[StandardMethodology] sm ON (sm.StandardMethodologyID = mm.StandardMethodologyID)
 where sq.QSTNCORE = @NewQstnCore
---and sq.survey_id not in (17458) -- excluding this survey as per Rachel 5/25/2016
+and sq.survey_id not in (17624) -- excluding this survey as per Rachel's email 03/22/2017
 and sd.surveytype_id = @SurveyType_ID
 
 
