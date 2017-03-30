@@ -49,18 +49,20 @@ declare @Study varchar(10) = 'S' + convert(varchar, @TargetStudy_id)
 
 --select * from [QLoader].[QP_Load].dbo.sysusers where name = 'SSSSS' --schema exists
 
-exec ('declare @version nvarchar(200) '+
-	  'select @version = @@version '+
-	  'if (@version like ''%SQL Server 2000%'') '+
-	  'begin '+
-		'IF NOT EXISTS (SELECT * FROM Master.dbo.sysLogins WHERE name='''+@Study+
-		  ''') exec sp_addlogin N'''+@Study+''', null, ''master'', ''us_english'' '+
-		'if not exists (select * from dbo.sysusers where name='''+@Study+
-		  ''' and uid < 16382)	EXEC sp_grantdbaccess N'''+@Study+''' '+
-	  'end '+
-	  'else IF NOT EXISTS (SELECT * FROM sys.schemas where name = '''+@Study+
-		''') BEGIN EXEC sp_executesql N''Create Schema '+@Study+''' END')
-	  at [QLoader];
+declare @sql nvarchar(1000)
+
+declare @version nvarchar(200) = ''
+select @version = convert(nvarchar,lsVer) from openquery(QLoader,'SELECT SERVERPROPERTY(''productversion'') as lsVer')
+if (@version like '8%') --SQL 2000
+	select @sql = 'IF NOT EXISTS (SELECT * FROM Master.dbo.sysLogins WHERE name='''+@Study+
+					''') exec sp_addlogin N'''+@Study+''', null, ''master'', ''us_english'' '+
+  				  'if not exists (select * from dbo.sysusers where name='''+@Study+
+					''' and uid < 16382)	EXEC sp_grantdbaccess N'''+@Study+''' '
+else
+	select @sql =  ' IF NOT EXISTS (SELECT * FROM sys.schemas where name = '''+@Study+
+					''') BEGIN EXEC sp_executesql N''Create Schema '+@Study+''' END'
+
+exec (@sql) at [QLoader];
 
 INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
      VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo,  'Study Owned Schema added on QP_Load for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
