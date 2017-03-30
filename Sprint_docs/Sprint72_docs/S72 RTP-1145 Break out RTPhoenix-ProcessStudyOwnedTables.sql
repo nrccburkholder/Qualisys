@@ -115,7 +115,7 @@ BEGIN
 	exec ('if not exists (select * from sys.tables t inner join sys.schemas s '+
 			'on t.schema_id = s.schema_id where s.name = '''+@Study+''' and t.name = '''+@Table+
 			'_LOAD'') create table '+@Study+'.'+@Table+
-			'_LOAD (DataFile_id int NOT NULL, DF_id int NOT NULL)') 
+			'_LOAD (DataFile_id int NULL, DF_id int NULL)') 
 
 		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, @Table+'_Load Study Owned Table added on QP_Load for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
@@ -123,7 +123,7 @@ BEGIN
 	exec ('if not exists (select * from sys.tables t inner join sys.schemas s '+
 			'on t.schema_id = s.schema_id where s.name = '''+@Study+''' and t.name = '''+@Table+
 			''') create table '+@Study+'.'+@Table+
-			' (DataFile_id int NOT NULL, DF_id int NOT NULL)') 
+			' (DataFile_id int NULL, DF_id int NULL)') 
 
 		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, @Table+' Study Owned Table added on QP_Load for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
