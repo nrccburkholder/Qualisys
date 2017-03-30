@@ -1,9 +1,9 @@
 /*
-S69 RTP-1145 Break out RTPhoenix-MakeStudyFromTemplate.sql
+S72 RTP-1145 Break out RTPhoenix-MakeStudyFromTemplate.sql
 
 Chris Burkholder
 
-2/14/2017
+3/30/2017
 
 CREATE PROCEDURE RTPhoenix.MakeStudyFromTemplate
 --DROP PROCEDURE RTPhoenix.MakeStudyFromTemplate

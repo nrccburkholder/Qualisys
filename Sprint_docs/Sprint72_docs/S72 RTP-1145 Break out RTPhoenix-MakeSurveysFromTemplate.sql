@@ -1,9 +1,9 @@
 /*
-S69 RTP-1145 Break out RTPhoenix-MakeSurveysFromTemplate.sql
+S72 RTP-1145 Break out RTPhoenix-MakeSurveysFromTemplate.sql
 
 Chris Burkholder
 
-2/14/2017
+3/30/2017
 
 CREATE PROCEDURE RTPhoenix.MakeSurveysFromTemplate
 --DROP PROCEDURE RTPhoenix.MakeSurveysFromTemplate
