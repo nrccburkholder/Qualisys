@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xs:schema targetNamespace="http://www.cihi.ca/CIHI" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.cihi.ca/CIHI" xmlns:cdssb-bt="http://www.cihi.ca/CIHI">
+	<xs:element name="Identifier" type="Identifier"/>
+	<xs:complexType name="Identifier">
+		<xs:annotation>
+			<xs:documentation>A datatype for generic identified entities.  The code contains the type of identifier, id is the identifier itself.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="value" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>id itself</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="issuer" type="Issuer" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+		<xs:attribute name="nullFlavor" use="optional" type="nullFlavorType"/>
+	</xs:complexType>
+	<xs:simpleType name="nullFlavorType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NA"/>
+			<xs:enumeration value="UNK"/>
+			<xs:enumeration value="OTH"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="PQ" type="PQ"/>
+	<xs:complexType name="PQ">
+		<xs:annotation>
+			<xs:documentation>Physical Quantity</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="pq">
+				<xs:sequence/>
+				<xs:attribute name="nullFlavor" use="optional" type="nullFlavorType"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="AD" type="AD"/>
+	<xs:complexType name="AD">
+		<xs:annotation>
+			<xs:documentation>Address (Canada only)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="streetAddressLine" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="city" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="state" type="CD" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Province/Territory or State code</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="postalCode" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="country" type="CD" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+		<xs:attribute name="use" use="required" type="x_BasicAddressUse"/>
+	</xs:complexType>
+	<xs:element name="IVL_TS" type="IVL_TS"/>
+	<xs:complexType name="IVL_TS">
+		<xs:annotation>
+			<xs:documentation>Interval timestamp.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="low" type="TS" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="high" type="TS" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="pq" type="pq"/>
+	<xs:complexType name="pq">
+		<xs:sequence>
+			<xs:element name="unit" type="x_BasicUnitsOfMeasure" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="value" type="xs:string" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="tele" type="tele"/>
+	<xs:complexType name="tele">
+		<xs:sequence/>
+		<xs:attribute name="number" use="required" type="xs:string"/>
+		<xs:attribute name="extension" use="optional" type="xs:string"/>
+	</xs:complexType>
+	<xs:element name="Issuer" type="Issuer"/>
+	<xs:complexType name="Issuer">
+		<xs:sequence>
+			<xs:element name="code" type="CD" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+		<xs:attribute name="nullFlavor" use="optional" type="nullFlavorType"/>
+	</xs:complexType>
+	<xs:element name="CD" type="CD"/>
+	<xs:complexType name="CD">
+		<xs:annotation>
+			<xs:documentation>A basic code datatype.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence/>
+		<xs:attribute name="code" use="required" type="xs:string"/>
+		<xs:attribute name="codeSystem" use="required" type="xs:string"/>
+		<xs:attribute name="codeSystemName" use="optional" type="xs:string"/>
+		<xs:attribute name="displayName" use="optional" type="xs:string"/>
+	</xs:complexType>
+	<xs:simpleType name="x_BasicAddressUse">
+		<xs:annotation>
+			<xs:documentation>This type corresponds to the x_BasicPostalAddressUse value set published by Canada Health Infoway.
+
+Value Set Name:  x_BasicPostalAddressUse
+Value Set OID: 2.16.840.1.113883.2.20.3.143</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="CONF"/>
+			<xs:enumeration value="DIR"/>
+			<xs:enumeration value="H"/>
+			<xs:enumeration value="OLD"/>
+			<xs:enumeration value="PHYS"/>
+			<xs:enumeration value="PST"/>
+			<xs:enumeration value="TMP"/>
+			<xs:enumeration value="WP"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ts">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{1,8}|([0-9]{9,14}|[0-9]{14,14}\.[0-9]+)([+\-][0-9]{1,4})?"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="TS" type="TS"/>
+	<xs:complexType name="TS">
+		<xs:annotation>
+			<xs:documentation>Timestamp</xs:documentation>
+		</xs:annotation>
+		<xs:sequence/>
+		<xs:attribute name="nullFlavor" use="optional" type="nullFlavorType"/>
+		<xs:attribute name="value" use="optional" type="ts"/>
+	</xs:complexType>
+	<xs:element name="TypedIdentifier" type="TypedIdentifier"/>
+	<xs:complexType name="TypedIdentifier">
+		<xs:complexContent>
+			<xs:extension base="Identifier">
+				<xs:sequence>
+					<xs:element name="code" type="CD" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:simpleType name="x_BasicUnitsOfMeasure">
+		<xs:annotation>
+			<xs:documentation>This type corresponds to the x_BasicUnitsOfMeasure value set published by Canada Health Infoway.
+
+Value Set Name:  x_BasicUnitsOfMeasure
+Value Set OID: 2.16.840.1.113883.2.20.3.145</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="%"/>
+			<xs:enumeration value="[cup_us]"/>
+			<xs:enumeration value="[deg]"/>
+			<xs:enumeration value="[foz_br]"/>
+			<xs:enumeration value="[ft_i]"/>
+			<xs:enumeration value="[gal_br]"/>
+			<xs:enumeration value="[in_i]"/>
+			<xs:enumeration value="[lb_av]"/>
+			<xs:enumeration value="[mi_us]"/>
+			<xs:enumeration value="[oz_av]"/>
+			<xs:enumeration value="[pt_br]"/>
+			<xs:enumeration value="[qt_br]"/>
+			<xs:enumeration value="[sft_i]"/>
+			<xs:enumeration value="[sin_i]"/>
+			<xs:enumeration value="[syd_i]"/>
+			<xs:enumeration value="[tbs_us]"/>
+			<xs:enumeration value="[tsp_us]"/>
+			<xs:enumeration value="[yd_i]"/>
+			<xs:enumeration value="1/d"/>
+			<xs:enumeration value="1/min"/>
+			<xs:enumeration value="a"/>
+			<xs:enumeration value="Cel"/>
+			<xs:enumeration value="cm"/>
+			<xs:enumeration value="cm2"/>
+			<xs:enumeration value="cm3"/>
+			<xs:enumeration value="d"/>
+			<xs:enumeration value="deg"/>
+			<xs:enumeration value="dg"/>
+			<xs:enumeration value="dl"/>
+			<xs:enumeration value="g"/>
+			<xs:enumeration value="g/d"/>
+			<xs:enumeration value="g/l"/>
+			<xs:enumeration value="h"/>
+			<xs:enumeration value="iU"/>
+			<xs:enumeration value="kg"/>
+			<xs:enumeration value="km"/>
+			<xs:enumeration value="l"/>
+			<xs:enumeration value="m"/>
+			<xs:enumeration value="m2"/>
+			<xs:enumeration value="meq"/>
+			<xs:enumeration value="mg"/>
+			<xs:enumeration value="mg/d"/>
+			<xs:enumeration value="min"/>
+			<xs:enumeration value="ml"/>
+			<xs:enumeration value="ml/s"/>
+			<xs:enumeration value="mm"/>
+			<xs:enumeration value="mm[Hg]"/>
+			<xs:enumeration value="mm2"/>
+			<xs:enumeration value="mm3"/>
+			<xs:enumeration value="mmol"/>
+			<xs:enumeration value="mmol/l"/>
+			<xs:enumeration value="mo"/>
+			<xs:enumeration value="mol"/>
+			<xs:enumeration value="ms"/>
+			<xs:enumeration value="mU"/>
+			<xs:enumeration value="ng"/>
+			<xs:enumeration value="nl"/>
+			<xs:enumeration value="pg/ml"/>
+			<xs:enumeration value="s"/>
+			<xs:enumeration value="U"/>
+			<xs:enumeration value="U/l"/>
+			<xs:enumeration value="ug"/>
+			<xs:enumeration value="ug/min"/>
+			<xs:enumeration value="ul"/>
+			<xs:enumeration value="umol"/>
+			<xs:enumeration value="umol/l"/>
+			<xs:enumeration value="wk"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="PN" type="PN"/>
+	<xs:complexType name="PN">
+		<xs:annotation>
+			<xs:documentation>Person name</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="family" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="prefix" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="suffix" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="given" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.cihi.ca/CIHI" xmlns:cdssb-bc="http://www.cihi.ca/CIHI" xmlns:cdssb-bt="http://www.cihi.ca/CIHI" targetNamespace="http://www.cihi.ca/CIHI">
+	<xs:include schemaLocation="cdssb-bt_v1.1.xsd"/>
+	<xs:element name="Client" type="Client"/>
+	<xs:complexType name="Client">
+		<xs:annotation>
+			<xs:documentation>Information regarding the client receiving care.  We distinguish between a physical person and their participation in an encounter in the role of a patient (as a client).</xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="1" maxOccurs="1">
+			<xs:element name="id" type="Identifier" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>health card number + assigning authority.  Use nullFlavors for 0 or 1</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="otherId" type="TypedIdentifier" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>health record number</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="personInformation" type="PersonInformation" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="addr" type="AD" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="PersonInformation" type="PersonInformation"/>
+	<xs:complexType name="PersonInformation">
+		<xs:annotation>
+			<xs:documentation>Information regarding a person.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="1" maxOccurs="1">
+			<xs:element name="birthTime" type="TS" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="estimatedBirthTimeInd" type="CD" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="gender" type="CD" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="education" type="CD" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="language" type="CD" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Medication" type="Medication"/>
+	<xs:complexType name="Medication">
+		<xs:annotation>
+			<xs:documentation>A datatype used for representing administration of a medication.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="medicationInformation" type="MedicationInformation" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="dose" type="PQ" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="frequency" type="CD" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="numberOfDoses" type="PQ" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="route" type="CD" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="CodedObservation" type="CodedObservation"/>
+	<xs:complexType name="CodedObservation">
+		<xs:annotation>
+			<xs:documentation>A CodedObservation is one for which all values are in a coded domain.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="Observation">
+				<xs:sequence>
+					<xs:element name="value" type="CD" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="MeasuredObservation" type="MeasuredObservation"/>
+	<xs:complexType name="MeasuredObservation">
+		<xs:annotation>
+			<xs:documentation>A MeasuredObservation is one where values are physical measurements.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="Observation">
+				<xs:sequence>
+					<xs:element name="value" type="PQ" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Observation" type="Observation"/>
+	<xs:complexType name="Observation">
+		<xs:annotation>
+			<xs:documentation>A base datatype for all Observations.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="code" type="CD" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Organization" type="Organization"/>
+	<xs:complexType name="Organization">
+		<xs:annotation>
+			<xs:documentation>A generic representation of an Organization.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="id" type="Identifier" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="code" type="CD" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>level of care</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="contact" type="Contact" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Device" type="Device"/>
+	<xs:complexType name="Device">
+		<xs:sequence>
+			<xs:element name="manufacturer" type="Organization" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Contact" type="Contact"/>
+	<xs:complexType name="Contact">
+		<xs:sequence>
+			<xs:element name="code" type="CD" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="email" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="phone" type="tele" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Sender" type="Sender"/>
+	<xs:complexType name="Sender">
+		<xs:annotation>
+			<xs:documentation>Information regarding the entity sending a submission to CIHI.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="device" type="Device" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="organization" type="Organization" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Sender's id is the identifier of the facility sending the submission</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="MedicationInformation" type="MedicationInformation"/>
+	<xs:complexType name="MedicationInformation">
+		<xs:annotation>
+			<xs:documentation>MedicationInformation contains details of the actual drug being administered.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="code" type="CD" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="DataSubmission" type="DataSubmission"/>
+	<xs:complexType name="DataSubmission">
+		<xs:sequence>
+			<xs:element name="creationTime" type="TS" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="sender" type="Sender" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="versionCode" type="CD" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

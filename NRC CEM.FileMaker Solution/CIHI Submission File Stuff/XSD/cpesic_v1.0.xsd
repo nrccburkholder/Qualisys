@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.cihi.ca/CIHI" xmlns:cpesic="http://www.cihi.ca/CIHI" xmlns:cdssb-bc="http://www.cihi.ca/CIHI" xmlns:cdssb-bt="http://www.cihi.ca/CIHI" targetNamespace="http://www.cihi.ca/CIHI">
+	<xs:include schemaLocation="cdssb-bc_v1.1.xsd"/>
+	<xs:element name="StratumDetails" type="StratumDetails"/>
+	<xs:complexType name="StratumDetails">
+		<xs:annotation>
+			<xs:documentation>Stratum details used for stratified sampling methodologies.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="stratumCode" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="stratumDescription" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="dischargeCount" type="xs:int" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="sampleSize" type="xs:int" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="nonResponseCount" type="xs:int" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="dischargeInformation" type="DischargeInformation" minOccurs="0" maxOccurs="26"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="DischargeInformation" type="DischargeInformation"/>
+	<xs:complexType name="DischargeInformation">
+		<xs:annotation>
+			<xs:documentation>Number of discharges broken down by service, admission source, gender, as well as age category.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="service" type="CD" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="admissionSource" type="CD" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="gender" type="CD" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="ageCategory" type="CD" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="dischargeCount" type="xs:int" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="SpecialProject" type="SpecialProject"/>
+	<xs:complexType name="SpecialProject">
+		<xs:sequence>
+			<xs:element name="code" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="data" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Question" type="Question"/>
+	<xs:complexType name="Question">
+		<xs:annotation>
+			<xs:documentation>A question is represented by a code identifying the question being answered as well as an answer.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="code" type="CD" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="answer" type="CD" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="SpecialProjectData" type="SpecialProjectData"/>
+	<xs:complexType name="SpecialProjectData">
+		<xs:sequence>
+			<xs:element name="questionnaireCycle" type="QuestionnaireCycle" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="specialProject" type="SpecialProject" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Questions" type="Questions"/>
+	<xs:complexType name="Questions">
+		<xs:annotation>
+			<xs:documentation>A container for questions.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="question" type="Question" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Questionnaire" type="Questionnaire"/>
+	<xs:complexType name="Questionnaire">
+		<xs:annotation>
+			<xs:documentation>A Questionnaire being submitted to CIHI contains answers to questions contained in a survey that was presented to a Client regarding that client's care at a health care facility. Additionally, the Questionnaire contains metadata regarding the Client and their discharge from the health care facility.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="id" type="Identifier" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="subject" type="Client" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="encompassingEncounter" type="CPERSEncounter" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="authorMode" type="CD" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="language" type="CD" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="stratumCode" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="questions" type="Questions" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="SampleInformation" type="SampleInformation"/>
+	<xs:complexType name="SampleInformation">
+		<xs:annotation>
+			<xs:documentation>Top level container for sample and population related metadata.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="samplingMethod" type="CD" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="populationInformation" type="PopulationInformation" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>For stratified sampling methodologies, an instance of this element is expected for each stratum.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="PopulationInformation" type="PopulationInformation"/>
+	<xs:complexType name="PopulationInformation">
+		<xs:annotation>
+			<xs:documentation>Metadata regarding the population that was available to be sampled. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="dischargeCount" type="xs:int" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="sampleSize" type="xs:int" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="nonResponseCount" type="xs:int" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="dischargeInformation" type="DischargeInformation" minOccurs="0" maxOccurs="26"/>
+			<xs:element name="stratum" type="StratumDetails" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="CPESICDataSubmission" type="CPESICDataSubmission"/>
+	<xs:complexType name="CPESICDataSubmission">
+		<xs:annotation>
+			<xs:documentation>Datatype for root element of a CPES-IC data submission.  Contains all organizational profiles, questionnaire cycles, as well as special project data that may be included in a data submission.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="DataSubmission">
+				<xs:sequence>
+					<xs:element name="purpose" type="CD" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="organizationProfile" type="OrganizationProfile" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="questionnaireCycle" type="QuestionnaireCycle" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="specialProjectData" type="SpecialProjectData" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="CPERSEncounter" type="CPERSEncounter"/>
+	<xs:complexType name="CPERSEncounter">
+		<xs:sequence>
+			<xs:element name="effectiveTime" type="IVL_TS" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="service" type="CD" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="QuestionnaireCycle" type="QuestionnaireCycle"/>
+	<xs:complexType name="QuestionnaireCycle">
+		<xs:annotation>
+			<xs:documentation>The Questionnaire Cycle contains one or more Questionnaires being submitted regarding Client care at a particular health care facility.  Additionally, metadata regarding the Questionnaire Cycle is contained within this construct.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="id" type="Identifier" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="healthCareFacility" type="Organization" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="submissionType" type="CD" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="proceduresManualVersion" type="CD" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="effectiveTime" type="IVL_TS" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="sampleInformation" type="SampleInformation" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="questionnaire" type="Questionnaire" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="OrganizationProfile" type="OrganizationProfile"/>
+	<xs:complexType name="OrganizationProfile">
+		<xs:sequence>
+			<xs:element name="organization" type="Organization" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="role" type="CD" minOccurs="1" maxOccurs="unbounded"/>
+			<xs:element name="surveyingFrequency" type="CD" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="device" type="Device" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>
