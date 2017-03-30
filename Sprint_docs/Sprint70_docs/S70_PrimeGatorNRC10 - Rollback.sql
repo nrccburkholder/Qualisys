@@ -6,7 +6,7 @@ Sprint 70 SQLCMD Rollback Script for Prime/Gator/NRC10
 
 */
 
-:r "\ATLASRelease69&70\Sprint70_docs\S70 ATL-1400 HCAHPS Don't Household Homeless ROLLBACK.sql"
+--:r "\ATLASRelease69&70\Sprint70_docs\S70 ATL-1400 HCAHPS Don't Household Homeless ROLLBACK.sql"
 
 :r "\ATLASRelease69&70\Sprint70_docs\S70 RTP-1637 create sample periods prior to sampling 1st sampleset of the quarter - Rollback.sql"
 
