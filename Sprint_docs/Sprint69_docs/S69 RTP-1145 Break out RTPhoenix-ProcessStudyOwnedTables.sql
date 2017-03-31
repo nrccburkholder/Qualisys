@@ -45,20 +45,27 @@ declare @Study varchar(10) = 'S' + convert(varchar, @TargetStudy_id)
 
 ------------------For each of QP_Prod and QP_Load, create [study-owner]
 
---QP_Load (SQL Server 2000)
+--QP_Load (Could be SQL Server 2000, could be SQL Server 2008)
 
 --select * from [QLoader].[QP_Load].dbo.sysusers where name = 'SSSSS' --schema exists
 
-exec ('IF NOT EXISTS (SELECT * FROM Master.dbo.sysLogins WHERE name='''+@Study+
-		''') exec sp_addlogin N'''+@Study+''', null, ''master'', ''us_english'' ') 
-		at [QLoader];
+declare @sql nvarchar(1000)
+
+declare @version nvarchar(200) = ''
+select @version = convert(nvarchar,lsVersion) from openquery(QLoader,'SELECT @@Version as lsVersion')
+if (@version like '%SQL Server% 2000 %') 
+	select @sql = 'IF NOT EXISTS (SELECT * FROM Master.dbo.sysLogins WHERE name='''+@Study+
+					''') exec sp_addlogin N'''+@Study+''', null, ''master'', ''us_english'' '+
+  				  'if not exists (select * from dbo.sysusers where name='''+@Study+
+					''' and uid < 16382)	EXEC sp_grantdbaccess N'''+@Study+''' '
+else
+	select @sql =  ' IF NOT EXISTS (SELECT * FROM sys.schemas where name = '''+@Study+
+					''') BEGIN EXEC sp_executesql N''Create Schema '+@Study+''' END'
+
+exec (@sql) at [QLoader];
 
 INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
      VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo,  'Study Owned Schema added on QP_Load for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
-
-exec ('if not exists (select * from dbo.sysusers where name='''+@Study+
-		''' and uid < 16382)	EXEC sp_grantdbaccess N'''+@Study+''' ') 
-		at [QLoader];
 
 --QP_Prod (SQL Server 2008)
 
@@ -108,18 +115,18 @@ BEGIN
 	exec ('if not exists (select * from sys.tables t inner join sys.schemas s '+
 			'on t.schema_id = s.schema_id where s.name = '''+@Study+''' and t.name = '''+@Table+
 			'_LOAD'') create table '+@Study+'.'+@Table+
-			'_LOAD (DataFile_id int NOT NULL, DF_id int NOT NULL)') 
+			'_LOAD (DataFile_id int NULL)') 
 
 		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
-			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, @Table+'_Load Study Owned Table added on QP_Load for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, @Table+'_Load Study Owned Table added on QP_Prod for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 	exec ('if not exists (select * from sys.tables t inner join sys.schemas s '+
 			'on t.schema_id = s.schema_id where s.name = '''+@Study+''' and t.name = '''+@Table+
 			''') create table '+@Study+'.'+@Table+
-			' (DataFile_id int NOT NULL, DF_id int NOT NULL)') 
+			' (DataFile_id int NULL)') 
 
 		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
-			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, @Table+' Study Owned Table added on QP_Load for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, @Table+' Study Owned Table added on QP_Prod for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 --For each Table instance [Instance]:
 --  add all fields mapped to Table according to MetaStructure
@@ -162,11 +169,31 @@ BEGIN
 			Else ''
 		End
 
+--QP_Load (SQL Server 2000)
+--select * from [QLoader].[QP_Load].dbo.sysusers where name = 'S5841' --schema exists
+--select * from [QLoader].[QP_Load].dbo.sysobjects where uid = 4193 and name = 'Encounter_Load' --table exists
+--select * from [QLoader].[QP_Load].dbo.syscolumns where id = 2052932096 --field exists
+
+		Exec('IF NOT EXISTS(select * from syscolumns c inner join'+
+			' sysobjects o on o.id = c.id inner join'+
+			' sysusers u on u.uid = o.uid'
+			+' where u.name = '''+@Study+''' and o.name = '''+@Table+'_Load'' and c.name = '''+@Field+
+			''') ALTER TABLE ' + @study + '.' + @Table+'_Load'+
+			' ADD ' + @Field + ' ' + @FieldTypeString + @FieldLengthString+
+			@ConstraintString)
+		At [QLoader]
+
+			IF (@IsFieldKey = 1)	
+				INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
+						VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, @Table+'_Load.'+@Field+' Key Field added on QP_Load for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+
 --QP_Prod
 
 --select * from sys.schemas where name = 'S5839'
 --select * from sys.tables where schema_id = 52
 --select * from sys.columns where object_id = 569209228
+
+		Select @ConstraintString = REPLACE(@ConstraintString, 'IDENTITY (1,1) ', '')
 
 		Exec('IF NOT EXISTS(select * from sys.columns c inner join'+
 			' sys.tables t on t.object_id = c.object_id inner join'+
@@ -194,28 +221,28 @@ BEGIN
 				INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 						VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, @Table+'_Load.'+@Field+' Key Field added on QP_Prod for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
---QP_Load (SQL Server 2000)
---select * from [QLoader].[QP_Load].dbo.sysusers where name = 'S5841' --schema exists
---select * from [QLoader].[QP_Load].dbo.sysobjects where uid = 4193 and name = 'Encounter_Load' --table exists
---select * from [QLoader].[QP_Load].dbo.syscolumns where id = 2052932096 --field exists
-
-		Exec('IF NOT EXISTS(select * from syscolumns c inner join'+
-			' sysobjects o on o.id = c.id inner join'+
-			' sysusers u on u.uid = o.uid'
-			+' where u.name = '''+@Study+''' and o.name = '''+@Table+'_Load'' and c.name = '''+@Field+
-			''') ALTER TABLE ' + @study + '.' + @Table+'_Load'+
-			' ADD ' + @Field + ' ' + @FieldTypeString + @FieldLengthString+
-			@ConstraintString)
-		At [QLoader]
-
-			IF (@IsFieldKey = 1)	
-				INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
-						VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, @Table+'_Load.'+@Field+' Key Field added on QP_Load for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
-
 	END --FIELD LOOP
 
 		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
 				VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, @Field+' was last Field added on QPProd/QP_Load for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+--For QP_Prod
+--  drop unwanted column inserted during table create
+
+	exec ('if exists (select * from sys.columns where name = ''DataFile_ID'' '+
+			'and object_ID = Object_ID('''+@Study+'.'+@Table+
+			'_LOAD'')) alter table '+@Study+'.'+@Table+
+			'_LOAD drop column DataFile_id') 
+
+		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
+			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, @Table+'_Load DataFile_ID dropped on QP_Prod for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+
+	exec ('if exists (select * from sys.columns where name = ''DataFile_ID'' '+
+			'and object_ID = Object_ID('''+@Study+'.'+@Table+
+			''')) alter table '+@Study+'.'+@Table+
+			' drop column DataFile_id') 
+
+		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
+			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, @Table+' DataFile_ID dropped on QP_Prod for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 --For QP_Load
 --	add [TABLE]_LOAD INDEXes
