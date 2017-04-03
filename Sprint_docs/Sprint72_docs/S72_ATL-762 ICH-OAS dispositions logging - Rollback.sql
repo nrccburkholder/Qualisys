@@ -5,925 +5,1044 @@
 
 	3/31/2017
 
-	ALTER View [dbo].[Dispositions_view]  
-	ALTER PROCEDURE [dbo].[sp_phase3_questionresult_for_extract] 
+	--ALTER View [dbo].[Dispositions_view]  
+	--ALTER PROCEDURE [dbo].[sp_phase3_questionresult_for_extract] 
 
+	ALTER PROCEDURE [dbo].[CheckForCAHPSIncompletes]
 */
 USE [QP_Prod]
 GO
 
-/****** Object:  View [dbo].[Dispositions_view]    Script Date: 3/31/2017 4:22:10 PM ******/
+/****** Object:  View [dbo].[CheckForCAHPSIncompletes]    Script Date: 3/31/2017 4:22:10 PM ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
 
+ALTER PROCEDURE [dbo].[CheckForCAHPSIncompletes]
+AS
+-- =============================================
+-- Author:	Dave Gilsdorf
+-- Procedure Name: CheckForCAHPSIncompletes (original name: CheckForACOCAHPSIncompletes)
+-- Create date: 1/2014 
+-- Description:	Stored Procedure that extracts question form data from QP_Prod
+-- History: 1.0  1/2014  by Dave Gilsdorf
+--			1.1  5/27/2014 by C Caouette: Integrate logic into Catalyst ETL.
+--          1.2  6/18/2014 by D Gilsdorf: Refactored ACOCAHPSCompleteness as a procedure instead of a function.
+--          1.3  8/7/2014 by D Gilsdorf: added ICHCAHPS processing and renamed to CheckForCAHPSIncompletes
+--          1.4  9/26/2014 by D Gilsdorf: added HCAHPS processing 
+--			1.4.1  10/23/2014 by D.Gilsdorf: bug fix introduced in CAHPS release 5
+--			1.5  10/02/2014 by T. Butler: ACO CAHPS processing -- modified follow-up by phone S10 US14
+--			1.6  10/03/2014 by T. Butler: ACO CAHPS processing -- ATA questions by questionnaire type S10 US 11
+--			1.7  10/09/2014 by T. Butler: ACO CAHPS processing -- update Complete disposition calculation S10 US 12
+--			1.8  12/23/2014 by D. Gilsdorf: Added HHCAHPS processing
+--          1.9  2/19/2015 by L. Boswell: Added Hospice CAHPS processing S19 US16
+--			S19 US14.2	 2/25/2010 T.Butler As a Hospice CAHPS vendor, we need to be able to assign the appropriate final disposition so it can be reported to CMS.
+--			S19 US15	 2/25/2010 T.Butler  Calculate if a returned survey is complete, so that we can assign the correct disposition.
+--			DFCT0011890  3/16/2015 T.Butler	 Increased column width for #TodaysReturns.DispositionAction from 15 to 16 to prevent truncation error.
+--			DFCT0011927  4/10/2015 T.Butler  HHCAHPS disposition - modified so that last return is used when all returns are blank.
+--			12/23/2015   D.Gilsdorf  -- fix to address missing infamous DATRETURNED issue.
+--			S41 US21     01/22/2016 T.Butler  OAS: Keep Most Complete Return - As an authorized OAS CAHPS vendor, we need to keep the most complete return when two returns are received, so that we comply protocols 
+--			S43 US8		02/18/2016 T.Butler  Disposition Log Days:  As the Atlas Team, we want to populate days from first in the NRC10 dispo log, so that dispositions are processed.
+--			S49 ATL-395 05/17/2016 T.Butler Hospice CAHPS Lang Speak Question Update : ATL-397 update the Hospice completeness check to question to include new qstncore 55137
+--          S56 ATL-742 08/22/2016 T.Butler Shore up datExpire usage in Catalyst ETL
+-- =============================================
 
-ALTER View [dbo].[Dispositions_view]  
-as  
 
-Select	d.* 
-		,hd.Value HCAHPSValue 
-		,hd.Hierarchy HCAHPSHierarchy
-		,hd.[Desc] HCAHPSDesc 
-		,hhd.Value HHCAHPSValue 
-		,hhd.Hierarchy HHCAHPSHierarchy 
-		,hhd.[Desc] HHCAHPSDesc
-		,mncm.Value MNCMValue 
-		,mncm.Hierarchy MNCMHierarchy 
-		,mncm.[Desc] MNCMDesc
-		,aco.Value ACOCAHPSValue 
-		,aco.Hierarchy ACOCAHPSHierarchy 
-		,aco.[Desc] ACOCAHPSDesc
-		,ich.Value ICHCAHPSValue 
-		,ich.Hierarchy ICHCAHPSHierarchy 
-		,ich.[Desc] ICHCAHPSDesc
+/* PART 1 -- find people who are going through the ETL tonight and check their completeness. If their survey was partial or incomplete, reschedule their next mailstep. */
+
+DECLARE @doLogging bit = 0, @LogTime datetime = getdate()
+
+SELECT @doLogging = NUMPARAM_VALUE
+FROM dbo.QUALPRO_PARAMS WHERE STRPARAM_NM = 'CAHPSCompletenessLogging' and STRPARAM_GRP = 'CAHPS'
+
+
+DECLARE @MinDate DATE;
+SET @MinDate = DATEADD(DAY, -4, GETDATE());
+
+DECLARE  @sql varchar(max);
+declare @maxQFerror int
+select @maxQFerror = max(QfMissingDatreturned_id) from Questionform_Missing_datReturned;
+
+-- v1.1  5/27/2014 by C Caouette
+WITH CTE_Returns AS
+(
+	SELECT DISTINCT PKey1 
+	FROM NRC_DataMart_ETL.dbo.ExtractQueue eq
+	WHERE eq.ExtractFileID IS NULL AND eq.EntityTypeID = 11 AND eq.Created > @MinDate
+	and Source = 'trg_NRC_DataMart_ETL_dbo_QUESTIONFORM'
+)
+
+--SELECT * FROM CTE_Returns
+-- list of everybody who returned an HCAHPS IP, ACOCAHPS, ICHCAHPS, Home Health CAHPS, or Hospice CAHPS survey today
+select qf.datReturned, qf.datResultsImported, sd.Survey_id, st.Surveytype_id, st.Surveytype_dsc, ms.intSequence
+, scm.*, qf.QuestionForm_id, sm.datExpire, convert(tinyint,null) as ACODisposition, convert(varchar(16),'') as DispositionAction
+, qf.ReceiptType_id, ms.strMailingStep_nm, qf.bitComplete, 0 as bitETLThisReturn, 0 as bitContinueWithMailings
+, sstx.Subtype_id, sstx.Subtype_nm	--> new: 1.6
+, convert(tinyint,null) as HospiceDisposition --S19 US15
+, convert(int,null) as DaysFromFirst	--		S43 US8
+, DATEDIFF(DAY,CONVERT(DATETIME,CONVERT(VARCHAR(10),sm.datMailed,120)),qf.datReturned) as DaysFromCurrent	--		S43 US8
+, sp.Sampleset_id
+into #TodaysReturns
+from CTE_Returns eq
+inner join QuestionForm qf on qf.QuestionForm_id=eq.PKey1 
+inner join SentMailing sm on qf.SentMail_id=sm.SentMail_id
+inner join SamplePop sp on qf.samplepop_id=sp.samplepop_id
+inner join ScheduledMailing scm on sm.ScheduledMailing_id=scm.ScheduledMailing_id
+inner join Survey_def sd on qf.Survey_id=sd.Survey_id
+inner join SurveyType st on sd.Surveytype_id=st.Surveytype_id
+left join (select sst.Survey_id, sst.Subtype_id, st.Subtype_nm from [dbo].[SurveySubtype] sst INNER JOIN [dbo].[Subtype] st on (st.Subtype_id = sst.Subtype_id)) sstx on sstx.Survey_id = qf.SURVEY_ID --> new: 1.6
+inner join MailingStep ms on scm.Methodology_id=ms.Methodology_id and scm.MailingStep_id=ms.MailingStep_id
+where qf.datResultsImported is not null
+and st.Surveytype_dsc in ('HCAHPS IP','ACOCAHPS','ICHCAHPS','Home Health CAHPS', 'Hospice CAHPS','PQRS CAHPS','OAS CAHPS') 
+and sm.datExpire > ISNULL(qf.DATRETURNED, qf.datUnusedReturn) --S56 ATL-742
+order by qf.datResultsImported desc
+
+--		S43 US8
+UPDATE tr
+SET DaysFromFirst = DATEDIFF(DAY,CONVERT(DATETIME,CONVERT(VARCHAR(10),sm.FirstMailed,120)),tr.datReturned)
+from #TodaysReturns tr
+inner join (select tr.samplepop_id, min(sm.datMailed) as FirstMailed
+			FROM #TodaysReturns tr
+			inner join dbo.ScheduledMailing scm on tr.samplepop_id=scm.samplepop_id
+			inner join dbo.SentMailing sm on scm.sentmail_id=sm.sentmail_id
+			WHERE tr.datReturned is not null
+			GROUP BY tr.samplepop_id) sm
+		on tr.samplepop_id=sm.samplepop_id
+
+
+-- ACO CAHPS Processing
+select QuestionForm_id, 0 as ATACnt, 0 as ATAComplete, 0 as MeasureCnt, 0 as MeasureComplete, 0 as Disposition
+, Subtype_nm, SurveyType_id													--> new: 1.6
+into #ACOQF
+from #TodaysReturns
+where Surveytype_dsc in ('ACOCAHPS','PQRS CAHPS')								--> new line
+
+exec dbo.ACOCAHPSCompleteness
+
+update tr
+set ACODisposition=qf.disposition
+	--, bitContinueWithMailings = case when qf.disposition in (31,34) then 1 else 0 end
+	, bitContinueWithMailings = case when qf.disposition in (34) then 1 else 0 end --> modified: 1.5
+	, bitETLThisReturn        = case when qf.disposition in (31,34) then 0 else 1 end
+	, bitComplete             = case when qf.disposition = 10 then 1 else 0 end
+--select tr.QuestionForm_id, tr.ACODisposition, qf.disposition, tr.bitContinueWithMailings, tr.bitETLThisReturn, qf.disposition 
+from #TodaysReturns tr
+inner join #ACOQF qf on tr.QuestionForm_id=qf.QuestionForm_id
+
+/* Begin Write ACO dispositions to DispositionLog - new 1.7 */  
+
+-- write the complete and partials
+insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_id,datLogged,LoggedBy
+, DaysFromFirst, DaysFromCurrent)
+select sentmail_id, samplepop_id, (SELECT Disposition_ID FROM ACOCAHPSDispositions WHERE ACOCAHPSValue = tr.ACODisposition),receipttype_id, @LogTime, 'CheckForCAHPSIncompletes'
+, tr.DaysFromFirst, tr.DaysFromCurrent --	S43 US8
+from #TodaysReturns tr
+where Surveytype_dsc in ('ACOCAHPS','PQRS CAHPS')
+AND strMailingStep_nm in ('1st Survey','2nd Survey')
+AND ACODisposition in ( 10, 31)
+
+
+-- first survey blanks
+insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_id,datLogged,LoggedBy
+, DaysFromFirst, DaysFromCurrent)
+select sentmail_id, samplepop_id, 25,receipttype_id, @LogTime, 'CheckForCAHPSIncompletes'
+, tr.DaysFromFirst, tr.DaysFromCurrent --	S43 US8
+from #TodaysReturns tr
+where Surveytype_dsc in ('ACOCAHPS','PQRS CAHPS')
+AND strMailingStep_nm='1st Survey'
+AND ACODisposition = 34
+
+
+--second survey blanks
+insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_id,datLogged,LoggedBy
+, DaysFromFirst, DaysFromCurrent)
+select sentmail_id, samplepop_id, 26,receipttype_id, @LogTime, 'CheckForCAHPSIncompletes'
+, tr.DaysFromFirst, tr.DaysFromCurrent --	S43 US8
+from #TodaysReturns tr
+where Surveytype_dsc in ('ACOCAHPS','PQRS CAHPS')
+AND strMailingStep_nm='2nd Survey'
+AND ACODisposition = 34
+
+
+/* End Write ACO dispotions to DispositionLog */
+
+--select * from #todaysreturns
+-- ACO Disposition 10 = complete
+-- ACO Disposition 31 = partial
+-- ACO Disposition 34 = blank/incomplete
+
+
+			-----
+			select qf.questionform_id, qf.survey_id, qf.samplepop_id, qf.datReturned, qf.unusedreturn_id, qf.datunusedreturn, qf.datresultsimported, qf.bitcomplete 
+			into #Audit
+			from questionform qf
+			inner join survey_def sd on qf.survey_id=sd.survey_id
+			where sd.surveytype_id in (3,8,16)
+			and qf.datreturned > convert(datetime,floor(convert(float,@LogTime)))
+			and @doLogging = 1
+			-----
+
+			-- ICH CAHPS & Home Health CAHPS & OAS CAHPS processing
+			/* begin addition */
+			select Surveytype_dsc, survey_id, QuestionForm_id, sentmail_id, samplepop_id, receipttype_id, strMailingStep_nm, 0 as ResponseCount, 0 as FutureScheduledMailing, 1 as AllMailStepsAreBack	
+			, 0 as tempFlag
+			, DaysFromFirst, DaysFromCurrent --	S43 US8
+			, Sampleset_id
+			into #QFResponseCount
+			from #TodaysReturns
+			where Surveytype_dsc in ('ICHCAHPS','Home Health CAHPS','OAS CAHPS')
+				/* for testing:
+				select 'Home Health CAHPS' as Surveytype_dsc, 15851 as survey_id, QuestionForm_id, qf.sentmail_id, qf.samplepop_id, receipttype_id, strMailingStep_nm, 0 as ResponseCount, 0 as FutureScheduledMailing, 1 as AllMailStepsAreBack, 
+					DaysFromFirst, DaysFromCurrent
+				into #QFResponseCount
+				from Questionform qf
+				inner join scheduledmailing scm on qf.sentmail_id=scm.sentmail_id
+				inner join mailingstep ms on scm.mailingstep_id=ms.mailingstep_id
+				where qf.survey_id=15851 -- was 15722
+				*/
+
+			exec dbo.QFResponseCount
+
+			insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_id,datLogged,LoggedBy
+			,DaysFromFirst,DaysFromCurrent)
+			select sentmail_id, samplepop_id, 25, receipttype_id, @LogTime, 'CheckForCAHPSIncompletes'
+			, DaysFromFirst, DaysFromCurrent --	S43 US8
+			--, strMailingStep_nm, ResponseCount
+			from #qfResponseCount rc
+			where strMailingStep_nm='1st Survey'
+			and ResponseCount=0
+
+ 			insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_id,datLogged,LoggedBy
+			,DaysFromFirst,DaysFromCurrent)
+			select sentmail_id, samplepop_id, 26, receipttype_id, @LogTime, 'CheckForCAHPSIncompletes'
+			, DaysFromFirst, DaysFromCurrent --	S43 US8
+			--, strMailingStep_nm, ResponseCount
+			from #qfResponseCount rc
+			where strMailingStep_nm='2nd Survey'
+			and ResponseCount=0
+			
+			update rc
+			set FutureScheduledMailing=1
+			-- select scm.*--rc.samplepop_id, scm.sentmail_id, rc.FutureScheduledMailing
+			from #qfResponseCount rc
+			inner join scheduledMailing scm on rc.samplepop_id=scm.samplepop_id
+			where scm.sentmail_id is null
+
+			-- samplepops with mailsteps that haven't been accounted for yet:
+			update rc
+			set AllMailStepsAreBack=0
+			-- select rc.samplepop_id, qf.sentmail_id, qf.datreturned, qf.datunusedreturn, sm.datundeliverable, rc.AllMailStepsAreBack
+			from #qfResponseCount rc
+			inner join questionform qf on rc.samplepop_id=qf.samplepop_id
+			inner join sentmailing sm on qf.sentmail_id=sm.sentmail_id
+			where qf.datreturned is null and qf.datunusedreturn is null and sm.datUndeliverable is null
+			and sm.datExpire > getdate()
+
+			-- we can etl a return if the samplepop meets these criteria:
+			update tr
+			set bitETLThisReturn=1, bitContinueWithMailings=0
+			-- select tr.QuestionForm_id, rc.AllMailStepsAreBack, rc.FutureScheduledMailing, tr.bitETLThisReturn, tr.bitContinueWithMailings
+			from #TodaysReturns tr
+			inner join #qfResponseCount rc on tr.QuestionForm_id=rc.QuestionForm_id
+			where rc.AllMailStepsAreBack=1 
+			and rc.FutureScheduledMailing=0
+			
+			if @@rowcount>0
+			begin
+
+				if @doLogging = 1
+				begin
+					insert into [temp_TodaysReturns] 
+						select		[datReturned]
+								  ,[datResultsImported]
+								  ,[Survey_id]
+								  ,[Surveytype_id]
+								  ,[Surveytype_dsc]
+								  ,[intSequence]
+								  ,[SCHEDULEDMAILING_ID]
+								  ,[MAILINGSTEP_ID]
+								  ,[SAMPLEPOP_ID]
+								  ,[OVERRIDEITEM_ID]
+								  ,[SENTMAIL_ID]
+								  ,[METHODOLOGY_ID]
+								  ,[DATGENERATE]
+								  ,[QuestionForm_id]
+								  ,[datExpire]
+								  ,[ACODisposition]
+								  ,[DispositionAction]
+								  ,[ReceiptType_id]
+								  ,[strMailingStep_nm]
+								  ,[bitComplete]
+								  ,[bitETLThisReturn]
+								  ,[bitContinueWithMailings]
+								  ,[Subtype_id]
+								  ,[Subtype_nm]
+								  ,[HospiceDisposition]								  
+								  , @LogTime 
+								  ,[DaysFromFirst]
+								  ,[DaysFromCurrent]
+						from #TodaysReturns
+
+					insert into [temp_qfResponseCount] 
+					SELECT [Surveytype_dsc]
+						  ,[survey_id]
+						  ,[QuestionForm_id]
+						  ,[sentmail_id]
+						  ,[samplepop_id]
+						  ,[receipttype_id]
+						  ,[strMailingStep_nm]
+						  ,[ResponseCount]
+						  ,[FutureScheduledMailing]
+						  ,[AllMailStepsAreBack]
+						  ,[tempFlag]					  
+						  , @LogTime 
+						  ,[DaysFromFirst]
+						  ,[DaysFromCurrent]
+						from #qfResponseCount
+				end
+
+				-- if we're ETLing something, check to see if any other returned mailsteps had more questions answered. If so, ETL the other mailstep
+				insert into #qfresponsecount (Surveytype_dsc, survey_id, QuestionForm_id, sentmail_id, samplepop_id, receipttype_id, strMailingStep_nm, ResponseCount, FutureScheduledMailing,AllMailStepsAreBack,tempFlag,DaysFromFirst,DaysFromCurrent,Sampleset_id)
+				select tr.Surveytype_dsc, tr.survey_id, qf.QuestionForm_id, qf.sentmail_id, qf.samplepop_id, qf.receipttype_id, ms.strmailingStep_nm, 0 as ResponseCount, 0 as FutureScheduledMailing, 1 as AllMailStepsAreBack, 1 as tempFlag
+				, tr.DaysFromFirst, tr.DaysFromCurrent, tr.Sampleset_id
+				from #TodaysReturns tr
+				inner join questionform qf on tr.samplepop_id=qf.samplepop_id
+				inner join ScheduledMailing scm on qf.sentmail_id=scm.sentmail_id
+				inner join MailingStep ms on scm.Methodology_id=ms.Methodology_id and scm.MailingStep_id=ms.MailingStep_id
+				where tr.bitETLThisReturn=1
+				and qf.UnusedReturn_id=5
+				and tr.Surveytype_dsc in ('ICHCAHPS','Home Health CAHPS','OAS CAHPS')
+				
+				if @@rowcount>0
+				begin
+					
+					exec dbo.QFResponseCount
+
+					if @doLogging = 1
+					begin
+						insert into [temp_qfResponseCount] SELECT [Surveytype_dsc]
+						  ,[survey_id]
+						  ,[QuestionForm_id]
+						  ,[sentmail_id]
+						  ,[samplepop_id]
+						  ,[receipttype_id]
+						  ,[strMailingStep_nm]
+						  ,[ResponseCount]
+						  ,[FutureScheduledMailing]
+						  ,[AllMailStepsAreBack]
+						  ,[tempFlag]					  
+						  , @LogTime 
+						  ,[DaysFromFirst]
+						  ,[DaysFromCurrent]
+						  from #qfResponseCount 
+						  where tempFlag=1
+					end
+
+					-- list of samplepops that have multiple returns
+					select rc.QuestionForm_id, rc.samplepop_id, ResponseCount, isnull(qf.datreturned,qf.datUnusedReturn) as datReturned, isnull(tr.bitETLThisReturn,0) as orgBitETLThisReturn, 0 as newBitETLThisReturn, 0 as useLast --> DFCT0011927
+					into #takeBest
+					from #qfresponsecount rc
+					inner join questionform qf on rc.QuestionForm_id=qf.QuestionForm_id
+					left join #todaysreturns tr on rc.QuestionForm_id=tr.QuestionForm_id
+					where rc.AllMailStepsAreBack=1
+
+					-- samplepops where all returns were blank  --> DFCT0011927
+					update tb
+					set useLast = 1
+					from #takebest tb
+					inner join (select samplepop_id, sum(ResponseCount) as allAnswers
+								from #TakeBest
+								group by samplepop_id
+								having count(*)>1) most
+						on tb.samplepop_id=most.samplepop_id and most.allAnswers = 0
+
+
+					-- we want to ETL the return with the most answers
+					update tb
+					set newBitETLThisReturn=1
+					from #takebest tb
+					inner join (select samplepop_id, max(ResponseCount) as mostAnswers
+								from #TakeBest
+								group by samplepop_id) most
+						on tb.samplepop_id=most.samplepop_id and tb.ResponseCount = most.mostAnswers
+
+					-- if a respondent has more than one return with the same number of answers, we want to ETL the return that was returned first
+					update tb
+					set newBitETLThisReturn=0
+					from #takebest tb
+					inner join (select samplepop_id, min(datreturned) as firstReturned 
+								from #takebest 
+								where newBitETLThisReturn=1 
+								and useLast = 0 --> DFCT0011927
+								group by samplepop_id 
+								having count(*)>1) frst
+						on tb.samplepop_id=frst.samplepop_id and tb.datReturned>frst.firstReturned 
+
+					-- however, if a respondent has all blank returns, we want to ETL the last return  --> DFCT0011927
+					-- Set previous blank returns to newBitETLThisReturn = 0
+					update tb
+					set newBitETLThisReturn=0
+					from #takebest tb
+					inner join (select samplepop_id, max(datreturned) as lastReturned 
+								from #takebest 
+								where newBitETLThisReturn=1 
+								and useLast = 1
+								group by samplepop_id 
+								having count(*)>1) lastRet
+						on tb.samplepop_id=lastRet.samplepop_id and tb.datReturned<lastRet.lastReturned 
+
+					if @doLogging = 1
+					begin
+						insert into [temp_takeBest] select *, @LogTime from #TakeBest
+					end
+
+					-- if newBitETLThisReturn is the same return as orgBitETLThisReturn, we don't need to adjust #TodaysReturn.bitETLThisReturn
+					-- but we do need to change the non-ETL'd return from UnusedReturn_id=5 to UnusedReturn_id=6 (i.e. from "we might use it" to "we're never gonna use it")
+					update qf
+					set unusedreturn_id=6
+					from #takebest tb
+					inner join questionform qf on tb.QuestionForm_id=qf.QuestionForm_id
+					where orgBitETLThisReturn=0 and newBitETLThisReturn=0
+					and qf.unusedreturn_id=5
+					-----
+
+					if exists (select * from Questionform_Missing_datReturned where QfMissingDatreturned_id>@maxQFerror)
+					begin
+						select @sql = 'yo! (a) There are ' + convert(varchar,count(*))+' new records in Questionform_Missing_datReturned. QfMissingDatreturned_id between ' + convert(varchar,min(QfMissingDatreturned_id)) + ' and ' 
+							+ convert(varchar,max(QfMissingDatreturned_id))
+						from Questionform_Missing_datReturned
+						where QfMissingDatreturned_id>@maxQFerror
+						print @SQL
+						select @maxQFerror = max(QfMissingDatreturned_id) from Questionform_Missing_datReturned
+					end
+
+					-----
+
+					delete from #takebest where orgBitETLThisReturn=newBitETLThisReturn
+
+					-- if newBitETLThisReturn is the NOT same return as orgBitETLThisReturn, we need to:
+					-- move today's return's results from questionresult to questionresult2
+					insert into QuestionResult2 (QuestionForm_id,SAMPLEUNIT_ID,QSTNCORE,INTRESPONSEVAL)
+					select qr.QuestionForm_id,SAMPLEUNIT_ID,QSTNCORE,INTRESPONSEVAL
+					from #takebest tb
+					inner join questionform qf on tb.QuestionForm_id=qf.QuestionForm_id
+					inner join questionresult qr on tb.QuestionForm_id=qr.QuestionForm_id
+					where orgBitETLThisReturn=1 and newBitETLThisReturn=0
+					and qf.datReturned is not NULL
+
+					delete qr 
+					from #takebest tb
+					inner join questionform qf on tb.QuestionForm_id=qf.QuestionForm_id
+					inner join questionresult qr on tb.QuestionForm_id=qr.QuestionForm_id
+					where orgBitETLThisReturn=1 and newBitETLThisReturn=0
+					and qf.datReturned is not NULL
+
+
+					-- change today's return to an unused return (this also removes it from the Catalyst ETL queue, via a trigger)
+					update qf
+					set unusedreturn_id=6, datUnusedReturn=qf.datReturned, datReturned=NULL
+					-- select qf.QuestionForm_id, orgBitETLThisReturn, newBitETLThisReturn, qf.unusedreturn_id, qf.datUnusedReturn, qf.datReturned
+					from #takebest tb
+					inner join questionform qf on tb.QuestionForm_id=qf.QuestionForm_id
+					where orgBitETLThisReturn=1 and newBitETLThisReturn=0
+					and qf.datReturned is not NULL
+					-----
+
+
+					if exists (select * from Questionform_Missing_datReturned where QfMissingDatreturned_id>@maxQFerror)
+					begin
+						select @sql = 'yo! (b) There are ' + convert(varchar,count(*))+' new records in Questionform_Missing_datReturned. QfMissingDatreturned_id between ' + convert(varchar,min(QfMissingDatreturned_id)) + ' and ' 
+							+ convert(varchar,max(QfMissingDatreturned_id))
+						from Questionform_Missing_datReturned
+						where QfMissingDatreturned_id>@maxQFerror
+						print @SQL
+						select @maxQFerror = max(QfMissingDatreturned_id) from Questionform_Missing_datReturned
+					end
+
+					-----
+					
+					-- move the previous return's results from questionresult2 to questionresult
+					insert into QuestionResult (QuestionForm_id,SAMPLEUNIT_ID,QSTNCORE,INTRESPONSEVAL)
+					select qr.QuestionForm_id,SAMPLEUNIT_ID,QSTNCORE,INTRESPONSEVAL
+					from #takebest tb
+					inner join questionform qf on tb.QuestionForm_id=qf.QuestionForm_id
+					inner join questionresult2 qr on tb.QuestionForm_id=qr.QuestionForm_id
+					where orgBitETLThisReturn=0 and newBitETLThisReturn=1
+					and qf.datUnusedReturn is not null
+					and qf.unusedreturn_id=5
+
+					delete qr
+					from #takebest tb
+					inner join questionform qf on tb.QuestionForm_id=qf.QuestionForm_id
+					inner join questionresult2 qr on tb.QuestionForm_id=qr.QuestionForm_id
+					where orgBitETLThisReturn=0 and newBitETLThisReturn=1
+					and qf.datUnusedReturn is not null
+					and qf.unusedreturn_id=5
+
+					-- change the previous return back into a used return  (this also adds it to the Catalyst ETL queue, via a trigger)
+					update qf
+					set unusedreturn_id=0, datReturned=qf.datUnusedReturn, qf.datUnusedReturn=NULL
+					-- select qf.QuestionForm_id, orgBitETLThisReturn, newBitETLThisReturn, qf.unusedreturn_id, qf.datUnusedReturn, qf.datReturned
+					from #takebest tb
+					inner join questionform qf on tb.QuestionForm_id=qf.QuestionForm_id
+					where orgBitETLThisReturn=0 and newBitETLThisReturn=1
+					and qf.datUnusedReturn is not null
+					and qf.unusedreturn_id=5
+					-----
+
+					if exists (select * from Questionform_Missing_datReturned where QfMissingDatreturned_id>@maxQFerror)
+					begin
+						select @sql = 'yo! (c) There are ' + convert(varchar,count(*))+' new records in Questionform_Missing_datReturned. QfMissingDatreturned_id between ' + convert(varchar,min(QfMissingDatreturned_id)) + ' and ' 
+							+ convert(varchar,max(QfMissingDatreturned_id))
+						from Questionform_Missing_datReturned
+						where QfMissingDatreturned_id>@maxQFerror
+						print @SQL
+						select @maxQFerror = max(QfMissingDatreturned_id) from Questionform_Missing_datReturned
+					end
+
+					-----
+				
+					-- change the record in #todaysreturns to bitETLThisReturn=0
+					update tr
+					set bitETLThisReturn=0
+					from #takebest tb
+					inner join #todaysreturns tr on tb.QuestionForm_id=tr.QuestionForm_id
+					where tb.newbitETLThisReturn=0
+					
+					-- insert the previous return into #todaysreturns
+					insert into #todaysReturns (datReturned, datResultsImported, Survey_id, Surveytype_id, Surveytype_dsc, intSequence, SCHEDULEDMAILING_ID, MAILINGSTEP_ID, SAMPLEPOP_ID, 
+						OVERRIDEITEM_ID, SENTMAIL_ID, METHODOLOGY_ID, DATGENERATE, QuestionForm_id, datExpire, ACODisposition, DispositionAction, ReceiptType_id, 
+						strMailingStep_nm, bitComplete, bitETLThisReturn, bitContinueWithMailings
+						,DaysFromFirst
+						,DaysFromCurrent
+						,Sampleset_id)
+					select qf.datReturned, qf.datResultsImported, qf.Survey_id, sd.Surveytype_id, st.Surveytype_dsc, ms.intSequence, scm.SCHEDULEDMAILING_ID, ms.MAILINGSTEP_ID, qf.SAMPLEPOP_ID, 
+						scm.OVERRIDEITEM_ID, qf.SENTMAIL_ID, scm.METHODOLOGY_ID, scm.DATGENERATE, qf.QuestionForm_id, sm.datExpire, null as ACODisposition, null as DispositionAction, qf.ReceiptType_id, 
+						ms.strMailingStep_nm, qf.bitComplete, tb.newbitETLThisReturn, 0 as bitContinueWithMailings
+						, convert(int,null) as DaysFromFirst	--		S43 US8
+						, DATEDIFF(DAY,CONVERT(DATETIME,CONVERT(VARCHAR(10),sm.datMailed,120)),qf.datReturned) as DaysFromCurrent	--		S43 US8
+						, sp.Sampleset_id
+					from #takeBest tb
+					inner join questionform qf on tb.QuestionForm_id=qf.QuestionForm_id
+					inner join SamplePop sp on qf.samplepop_id=sp.samplepop_id
+					inner join survey_def sd on qf.survey_id=sd.survey_id
+					inner join surveytype st on sd.surveytype_id=st.surveytype_id
+					inner join sentmailing sm on qf.sentmail_id=sm.sentmail_id
+					inner join scheduledmailing scm on qf.sentmail_id=scm.sentmail_id
+					inner join mailingstep ms on scm.mailingstep_id=ms.mailingstep_id
+					where tb.newBitETLThisReturn=1
+					and qf.QuestionForm_id not in (select QuestionForm_id from #todaysreturns)
+
+
+					--		S43 US8
+					UPDATE tr
+					SET DaysFromFirst = DATEDIFF(DAY,CONVERT(DATETIME,CONVERT(VARCHAR(10),sm.FirstMailed,120)),tr.datReturned)
+					from #TodaysReturns tr
+					inner join (select tr.samplepop_id, min(sm.datMailed) as FirstMailed
+								FROM #TodaysReturns tr
+								inner join dbo.ScheduledMailing scm on tr.samplepop_id=scm.samplepop_id
+								inner join dbo.SentMailing sm on scm.sentmail_id=sm.sentmail_id
+								WHERE tr.datReturned is not null
+								GROUP BY tr.samplepop_id) sm
+							on tr.samplepop_id=sm.samplepop_id
+					WHERE tr.DaysFromFirst is null
+
+					
+					-- removed today's return and insert the previous return in the medusa queue
+					delete qfe
+					from #takebest tb
+					inner join QuestionForm_extract qfe on tb.QuestionForm_id=qfe.QuestionForm_id
+					where tb.orgBitETLThisReturn=1 and 
+					tb.newBitETLThisReturn=0
+					
+					insert into QuestionForm_extract (QuestionForm_id, tiExtracted)
+					select QuestionForm_id, 0
+					from #todaysreturns
+					where bitETLThisReturn=1
+					and QuestionForm_id not in (select QuestionForm_id from QuestionForm_extract where datExtracted_dt is null)
+
+					/* Catalyst is taken care of by triggers that fired when we updated questionform.datReturned, above
+					*/
+				end
+			end
+			
+			update tr
+			set bitComplete=case when ATACnt>=19 then 1 else 0 end
+			from #TodaysReturns tr
+			inner join (select qr.QuestionForm_id, count(distinct sq.qstncore) as ATACnt
+						from (	select rc.QuestionForm_id, rc.survey_id, rc.sampleset_id, qr.qstncore, qr.intResponseVal
+								from #qfResponseCount rc
+								inner join questionresult qr on rc.QuestionForm_id=qr.QuestionForm_id
+								union
+								select rc.QuestionForm_id, rc.survey_id, rc.sampleset_id, qr2.qstncore, qr2.intResponseVal
+								from #qfResponseCount rc
+								inner join questionresult2 qr2 on rc.QuestionForm_id=qr2.QuestionForm_id) qr
+						inner join DL_SEL_QSTNS_BySampleSet sq on qr.survey_id = sq.survey_id and qr.qstncore = sq.qstncore and qr.sampleset_id=sq.SampleSet_ID
+						inner join DL_SEL_SCLS_BySampleSet ss on sq.scaleid = ss.qpc_id AND sq.survey_id = ss.survey_id and qr.intresponseval = ss.val and sq.SampleSet_ID=ss.Sampleset_ID
+						where sq.qstncore in (51198,51199,47159,47160,47161,47162,47163,47164,47165,47166,47167,47168,47169,47170,47171,47172,47173,47174,47175,
+											  47176,47178,47179,47181,47182,47183,47184,47185,47186,47187,47188,47189,47190,47191,47192,47193,47195,47196,47197)
+						and sq.subtype = 1 
+						AND sq.language = 1 
+						AND ss.language = 1 
+						group by qr.QuestionForm_id) rc
+					on tr.QuestionForm_id=rc.QuestionForm_id
+			where tr.Surveytype_dsc = 'ICHCAHPS'
+
+			-- similar code is used in the HHCAHPSCompleteness function (called during the Medusa ETL by in the sp_phase3_questionresult_for_extract and 
+			-- SP_Phase3_QuestionResult_For_Extract_by_Samplepop prodcedures), but the function (1) doesn't look in questionresult2 for possible answers 
+			-- and (2) is inefficient on large resultsets. Therefore, it's replicated here.
+			update tr
+			set bitComplete=case when ATACnt>9 then 1 else 0 end
+			from #TodaysReturns tr
+			inner join (select qr.QuestionForm_id, count(distinct sq.qstncore) as ATACnt
+						from (	select rc.QuestionForm_id, rc.survey_id, rc.sampleset_id, qr.qstncore, qr.intResponseVal
+								from #qfResponseCount rc
+								inner join questionresult qr on rc.QuestionForm_id=qr.QuestionForm_id
+								union
+								select rc.QuestionForm_id, rc.survey_id, rc.sampleset_id, qr2.qstncore, qr2.intResponseVal
+								from #qfResponseCount rc
+								inner join questionresult2 qr2 on rc.QuestionForm_id=qr2.QuestionForm_id) qr
+						inner join DL_SEL_QSTNS_BySampleSet sq on qr.survey_id = sq.survey_id and qr.qstncore = sq.qstncore and qr.sampleset_id=sq.SampleSet_ID
+						inner join DL_SEL_SCLS_BySampleSet ss on sq.scaleid = ss.qpc_id AND sq.survey_id = ss.survey_id and qr.intresponseval = ss.val and sq.SampleSet_ID=ss.Sampleset_ID
+						where sq.qstncore in (38694,38695,38696,38697,38698,38699,38700,38701,38702,38703,38704,38708,38709,38710,38711,38712,38713,38714,38717,38718)
+						and sq.subtype = 1 
+						AND sq.language = 1 
+						AND ss.language = 1 
+						group by qr.QuestionForm_id) rc
+					on tr.QuestionForm_id=rc.QuestionForm_id
+			where tr.Surveytype_dsc = 'Home Health CAHPS'
+
+			-- New: S41 US21     01/22/106 T.Butler
+			update tr 
+			set bitComplete = case when (cast(ATACnt as float)/cast(22 as float)) * 100 >= 50 then 1 else 0 end
+			from #TodaysReturns tr
+			inner join (select qr.QuestionForm_id, count(distinct sq.qstncore) as ATACnt
+						from (	select rc.QuestionForm_id, rc.survey_id, rc.sampleset_id, qr.qstncore, qr.intResponseVal
+								from #qfResponseCount rc
+								inner join questionresult qr on rc.QuestionForm_id=qr.QuestionForm_id
+								union
+								select rc.QuestionForm_id, rc.survey_id, rc.sampleset_id, qr2.qstncore, qr2.intResponseVal
+								from #qfResponseCount rc
+								inner join questionresult2 qr2 on rc.QuestionForm_id=qr2.QuestionForm_id) qr
+						inner join DL_SEL_QSTNS_BySampleSet sq on qr.survey_id = sq.survey_id and qr.qstncore = sq.qstncore and qr.sampleset_id=sq.SampleSet_ID
+						inner join DL_SEL_SCLS_BySampleSet ss on sq.scaleid = ss.qpc_id AND sq.survey_id = ss.survey_id and qr.intresponseval = ss.val and sq.SampleSet_ID=ss.Sampleset_ID
+						where sq.qstncore in (54086,54087,54088,54089,54090,54091,54092,54093,54094,54095,54098,54099,54100,
+											  54101,54102,54103,54104,54105,54106,54107,54108,54109)
+						and sq.subtype = 1 
+						AND sq.language = 1 
+						AND ss.language = 1 
+						group by qr.QuestionForm_id) rc
+					on tr.QuestionForm_id=rc.QuestionForm_id
+			where tr.Surveytype_dsc = 'OAS CAHPS'
+
+			update tr
+			set bitETLThisReturn=0, bitContinueWithMailings=1, bitComplete=0
+			-- select tr.QuestionForm_id, rc.ResponseCount, rc.strMailingStep_nm, rc.AllMailStepsAreBack, tr.bitETLThisReturn, tr.bitContinueWithMailings
+			from #TodaysReturns tr
+			inner join #qfResponseCount rc on tr.QuestionForm_id=rc.QuestionForm_id
+			where rc.ResponseCount=0			
 		
-from Disposition d 
-		left outer join SurveyTypeDispositions hd on d.Disposition_id = hd.Disposition_ID and hd.SurveyType_ID = 2
-		left outer join SurveyTypeDispositions hhd on d.Disposition_id = hhd.Disposition_ID and hhd.SurveyType_ID = 3
-		left outer join SurveyTypeDispositions mncm on d.Disposition_id = mncm.Disposition_ID and mncm.SurveyType_ID = 4
-		left outer join SurveyTypeDispositions aco on d.Disposition_id = aco.Disposition_ID and aco.SurveyType_ID = 10
-		left outer join SurveyTypeDispositions ich on d.Disposition_id = ich.Disposition_ID and aco.SurveyType_ID = 11
-
-GO
-
-ALTER PROCEDURE [dbo].[sp_phase3_questionresult_for_extract] 
-AS 
--- Modified 7/28/04 SJS (skip pattern recode) 
--- Modified 11/2/05 BGD Removed skip pattern enforcement. Now in the SP_Extract_BubbleData procedure 
--- Modified 11/16/05 BGD Calculate completeness for HCAHPS Surveys 
--- Modified 2/22/06 BGD Also enforce skip if question is left blank or has an invalid response. 
--- Modified 3/7/06 BGD Calculate the number of days since first and current mailing. 
--- Modified 3/16/06 BGD Add 10000 to answers that should have been skipped instead of recoding to -7 
--- Modified 5/2/06 BGD Populating the strUnitSelectType column in the Extract_Web_QuestionForm table 
--- Modified 5/22/06 BGD Bring over the langid from SentMailing to populate Big_Table_XXXX_X.LangID 
--- Modified 8/31/07 SJS Changed "INSERT INTO Extract_Web_QuestionForm" to use datReturned rather than datResultsImported data. 
--- Modified 9/19/09 MWB Added initial HHCAHPS Logic 
--- added #b (HHCAHPS completeness check) and final Disposition logic. 
--- added ReceiptType_ID to Extract_Web_QuestionForm insert 
--- Modified 11/2/09 added extra skip logic for qstncore 38694. 
--- HHCAHPS guidelines require all questions to be 
--- skipped if 38694 is not answered as 1 
--- Modified 4/5/2010 MWB Added SurveyType 4 (MNCM) Disposition logic. 
--- added #c (completeness check) and MNCM completeness check. 
--- Modified 5/27/10 MWB changed Disposition table insert from convert 110 to 120 to add time. 
--- this will avoid PK errors in the extract 
--- Modified 11/30/12 DRM Added changes to properly evaluate nested skip questions. 
--- i.e. when a gateway question is a skip question for a previous gateway question. 
--- Modified 12/28/2012 MWB added a bunch of debug writes to drm_tracktimes around skip patten  
--- logic to help identify why Survey's are taking so long    
--- Modified 01/03/2013 DRH changed @work to #work plus index
--- Modified 01/31/2013 DRH - correcting logic to check to see if the current gateway question was invalidated by being skipped by another gateway question
--- Modified 05/13/2013 DBG - added Survey_id in the link between cmnt_QuestionResult_work and skipidentifier in four places
--- Modified 05/14/2013 DBG - modifications to account for overlapping skips
--- Modified 01/14/2014 DBG - added check for ACO CAHPS usable partials and ACOCahps completeness check 
--- Modified 02/27/2014 CB - added -5 and -6 as non-response codes. Phone surveys can code -5 as "Refused" and -6 as "Don't Know"
--- Modified 06/18/2014 DBG - refactored ACOCAHPSCompleteness as a procedure instead of a function.
--- Modified 10/29/2014 DBG - added Subtype_nm to temp table because ACOCAHPSCompleteness now needs it
--- Modified 03/27/2015 TSB -- modified #HHQF to include STRMAILINGSTEP_NM
--- Modified 03/08/2015 TSB -- S44 US12 12 CG-CAHPS Completeness: As a CG-CAHPS vendor, we need to update completeness calculations for CG-CAHPS to match new guidelines, so that we can submit accurate data for state-level initiatives.
-
-    SET TRANSACTION isolation level READ uncommitted 
-
-    INSERT INTO drm_tracktimes 
-    SELECT Getdate(), 'Begin SP_Phase3_QuestionResult_For_Extract' 
-
-    --The Cmnt_QuestionResult_work table should be able to be removed.  
-    TRUNCATE TABLE cmnt_QuestionResult_work 
-    TRUNCATE TABLE extract_web_QuestionForm 
-
-    INSERT INTO drm_tracktimes 
-    SELECT Getdate(), 'H get hcahps records and index' 
-
-    --Get the records that are HCAHPS so we can compute completeness  
-    SELECT e.QuestionForm_id, CONVERT(INT, NULL) Complete 
-    INTO   #a 
-    FROM   QuestionForm_extract e, 
-           QuestionForm qf, 
-           Survey_def sd 
-    WHERE  e.study_id IS NOT NULL 
-           AND e.tiextracted = 0 
-           AND datextracted_dt IS NULL 
-           AND e.QuestionForm_id = qf.QuestionForm_id 
-           AND qf.Survey_id = sd.Survey_id 
-           AND Surveytype_id = 2 
-    GROUP  BY e.QuestionForm_id 
-
-  CREATE INDEX tmpindex ON #a (QuestionForm_id) 
-
-    INSERT INTO drm_tracktimes 
-    SELECT Getdate(), 'H update tmp table with function call' 
-
-    UPDATE #a 
-	SET    complete = dbo.Hcahpscompleteness(QuestionForm_id) 
-
-    INSERT INTO drm_tracktimes 
-    SELECT Getdate(), 'H update QuestionForm' 
-
-    UPDATE qf 
-    SET    bitComplete = Complete 
-    FROM   QuestionForm qf, #a t 
-    WHERE  t.QuestionForm_id = qf.QuestionForm_id 
-
-    DROP TABLE #a 
-
-    --END: Get the records that are HCAHPS so we can compute completeness  
-    INSERT INTO drm_tracktimes 
-    SELECT Getdate(), 'HH get hcahps records and index' 
-
-    ----Get the records that are HHCAHPS so we can compute completeness  
-    --SELECT e.QuestionForm_id, CONVERT(INT, NULL) Complete, convert(int,null) ATACnt, convert(int,null) Q1, convert(int,null) numAnswersAfterQ1
-    --INTO   #HHQF 
-    --FROM   QuestionForm_extract e, 
-    --       QuestionForm qf, 
-    --       Survey_def sd
-    --WHERE  e.study_id IS NOT NULL 
-    --       AND e.tiextracted = 0 
-    --       AND datextracted_dt IS NULL 
-    --       AND e.QuestionForm_id = qf.QuestionForm_id 
-    --       AND qf.Survey_id = sd.Survey_id 
-    --       AND Surveytype_id = 3 
-    --GROUP  BY e.QuestionForm_id 
-
-	--Modified 03/27/2015 TSB
-	select e.QuestionForm_id, CONVERT(INT, NULL) Complete, convert(int,null) ATACnt, convert(int,null) Q1, convert(int,null) numAnswersAfterQ1, ms.STRMAILINGSTEP_NM
-	into #HHQF
-	from QuestionForm_extract e
-	inner join QuestionForm qf on e.QuestionForm_id = qf.QuestionForm_id 
-	inner join survey_def sd on qf.survey_id=sd.survey_id
-	inner join SENTMAILING sm on sm.SENTMAIL_ID = qf.SENTMAIL_ID
-	inner join SCHEDULEDMAILING scm on scm.scheduledmailing_id = sm.scheduledmailing_id
-	inner join MAILINGSTEP ms on ms.MAILINGSTEP_ID = scm.mailingstep_id
-	where e.study_id IS NOT NULL 
-           AND e.tiextracted = 0
-		   AND sd.surveytype_id=3
-	GROUP  BY e.QuestionForm_id, ms.STRMAILINGSTEP_NM
-
-
-    CREATE INDEX tmpindex ON #HHQF (QuestionForm_id) 
-
-    INSERT INTO drm_tracktimes 
-    SELECT Getdate(), 'HH update tmp table with procedure call' 
-
---	UPDATE #HHQF
---	SET    complete = dbo.Hhcahpscompleteness(QuestionForm_id) 
-	exec dbo.HHCAHPSCompleteness
-
-    INSERT INTO drm_tracktimes 
-    SELECT Getdate(), 'HH update QuestionForm' 
-
-    UPDATE qf 
-    SET    bitComplete = Complete 
-    FROM   QuestionForm qf, #HHQF t 
-    WHERE  t.QuestionForm_id = qf.QuestionForm_id 
-
---	DROP TABLE #HHQF --> we're using this later, so don't drop it yet.
-
-    --END: Get the records that are HHCAHPS so we can compute completeness  
-    INSERT INTO drm_tracktimes 
-    SELECT Getdate(), 'CGCAHPS get hcahps records and index' 
-
-    --Get the records that are CGCAHPS so we can compute completeness  
-    SELECT e.QuestionForm_id, CONVERT(INT, NULL) Complete 
-    INTO   #c 
-    FROM   QuestionForm_extract e, 
-           QuestionForm qf, 
-           Survey_def sd 
-    WHERE  e.study_id IS NOT NULL 
-           AND e.tiextracted = 0 
-           AND datextracted_dt IS NULL 
-           AND e.QuestionForm_id = qf.QuestionForm_id 
-           AND qf.Survey_id = sd.Survey_id 
-           AND Surveytype_id = 4 
-    GROUP  BY e.QuestionForm_id 
-
-    --*******************************************************************   
-    --**  DRM 12/30/2012  Temp hack to allow hcahps only   
-    --*******************************************************************   
-    --delete #c   
-    --*******************************************************************   
-    --**  end hack   
-    --*******************************************************************   
-    CREATE INDEX tmpindex ON #c (QuestionForm_id) 
-
-    INSERT INTO drm_tracktimes 
-    SELECT Getdate(), 'CGCAHPS update tmp table with function call' 
-
-    UPDATE #c 
-	SET    complete = dbo.fn_CGCAHPSCompleteness(QuestionForm_id) --S44 US12
-
-    INSERT INTO drm_tracktimes 
-    SELECT Getdate(), 'CGCAHPS update QuestionForm' 
-
-    UPDATE qf 
-    SET    bitComplete = CASE WHEN complete = 1 THEN 1 ELSE 0 END -- S44 US12
-    FROM   QuestionForm qf, 
-           #c t 
-    WHERE  t.QuestionForm_id = qf.QuestionForm_id 
-
-    DROP TABLE #c 
-
-	-------------------------------------------------------------------
-	-- ccaouette 2014/04: Commented out and moved to Catalyst ETL
-	-------------------------------------------------------------------
-    --END: Get the records that are CGCAHPS so we can compute completeness  
-
- --   INSERT INTO drm_tracktimes 
- --   SELECT Getdate(), 'exec CheckForACOCAHPSUsablePartials' 
-
-	--exec dbo.CheckForACOCAHPSUsablePartials
-
- --   INSERT INTO drm_tracktimes 
- --   SELECT Getdate(), 'exec CheckForACOCAHPSIncompletes' 
-
-	--exec dbo.CheckForACOCAHPSIncompletes
- --   --END: Get the records that are ACO so we can compute completeness  
-
-INSERT INTO drm_tracktimes 
-    SELECT Getdate(), 'populate Cmnt_QuestionResult_Work' 
-
-    INSERT INTO cmnt_QuestionResult_work 
-                (QuestionForm_id, 
-                 strlithocode, 
-                 SamplePop_id, 
-                 val, 
-                 sampleunit_id, 
-                 qstncore, 
-                 datmailed, 
-                 datimported, 
-                 study_id, 
-                 datGenerated, 
-                 qf.Survey_id, 
-                 receipttype_id, 
-                 Surveytype_id, 
-                 bitcomplete) 
-    SELECT qf.QuestionForm_id, 
-           strlithocode, 
-           qf.SamplePop_id, 
-           intresponseval, 
-           sampleunit_id, 
-           qstncore, 
-           datmailed, 
-           datResultsImported, 
-           qfe.study_id, 
-           datGenerated, 
-           qf.Survey_id, 
-           Isnull(qf.receipttype_id, 17), 
-           sd.Surveytype_id, 
-           qf.bitcomplete 
-    FROM   (SELECT DISTINCT QuestionForm_id, study_id 
-            FROM   QuestionForm_extract 
-            WHERE  study_id IS NOT NULL 
-                   AND tiextracted = 0 
-                   AND datextracted_dt IS NULL) qfe, 
-           QuestionForm qf, 
-           SentMailing sm, 
-           QuestionResult qr, 
-           Survey_def sd 
-    WHERE  qfe.QuestionForm_id = qf.QuestionForm_id 
-           AND qf.QuestionForm_id = qr.QuestionForm_id 
-           AND qf.SentMail_id = sm.SentMail_id 
-           AND qf.Survey_id = sd.Survey_id 
-
-    --*******************************************************************   
-    --**  DRM 12/30/2012  Temp hack to allow hcahps only   
-    --*******************************************************************   
-    --and sd.SurveyType_id=2   
-    --*******************************************************************   
-    --**  end hack   
-    --*******************************************************************   
-    INSERT INTO drm_tracktimes 
-    SELECT Getdate(), 'populate Extract_Web_QuestionForm' 
-
-    --*******************************************************************   
-    --**  DRM 12/30/2012  Temp hack to allow hcahps only   
-    --*******************************************************************   
-    INSERT INTO extract_web_QuestionForm 
-                (study_id, 
-                 Survey_id, 
-                 QuestionForm_id, 
-                 SamplePop_id, 
-                 sampleunit_id, 
-                 strlithocode, 
-                 sampleset_id, 
-                 datReturned, 
-                 bitcomplete, 
-                 strunitselecttype, 
-                 langid, 
-                 receipttype_id) 
-    SELECT sp.study_id, 
-           qf.Survey_id, 
-           qf.QuestionForm_id, 
-           qf.SamplePop_id, 
-           sampleunit_id, 
-           strlithocode, 
-           sp.sampleset_id, 
-           qf.datReturned, 
-           qf.bitcomplete, 
-           ss.strunitselecttype, 
-           langid, 
-           qf.receipttype_id 
-    FROM   (SELECT DISTINCT QuestionForm_id, study_id 
-            FROM   cmnt_QuestionResult_work) qfe, 
-           QuestionForm qf, 
-           SentMailing sm, 
-           SamplePop sp, 
-           selectedsample ss 
-    WHERE  qfe.QuestionForm_id = qf.QuestionForm_id 
-           AND qf.SentMail_id = sm.SentMail_id 
-           AND qf.SamplePop_id = sp.SamplePop_id 
-           AND sp.sampleset_id = ss.sampleset_id 
-           AND sp.pop_id = ss.pop_id 
-
-    --INSERT INTO Extract_Web_QuestionForm (sp.Study_id, qf.Survey_ID, QuestionForm_id, SamplePop_id, SampleUnit_id,                   
-    -- strLithoCode, Sampleset_id, datReturned, bitComplete, strUnitSelectType, LangID, receiptType_ID)                  
-    --SELECT sp.Study_id, qf.Survey_ID, qf.QuestionForm_id, qf.SamplePop_id, SampleUnit_id, strLithoCode,                   
-    -- sp.SampleSet_id, qf.datReturned, qf.bitComplete, ss.strUnitSelectType, LangID, qf.ReceiptType_id                
-    --FROM (SELECT DISTINCT QuestionForm_id, Study_id               
-    --  FROM Cmnt_QuestionResult_work) qfe,                 
-    -- QuestionForm qf, SentMailing sm, SamplePop sp, selectedSample ss                   
-    --, Survey_def sd   
-    --WHERE qfe.QuestionForm_id=qf.QuestionForm_id                    
-    --AND qf.SentMail_id=sm.SentMail_id               
-    --AND qf.SamplePop_id=sp.SamplePop_id                   
-    --AND sp.Sampleset_id=ss.Sampleset_id                   
-    --AND sp.Pop_id=ss.Pop_id              
-    --and qf.Survey_id = sd.Survey_id      
-    --and sd.Surveytype_id = 2   
-    --*******************************************************************   
-    --**  end hack   
-    --*******************************************************************   
-    INSERT INTO drm_tracktimes 
-    SELECT Getdate(), 'Calc days from first mailing' 
-
-    -- Add code to determine days from first mailing as well as days from current mailing until the return 
-    -- Get all of the maildates for the SamplePops were are extracting  
-    SELECT e.SamplePop_id, 
-           strlithocode, 
-           MailingStep_id, 
-           CONVERT(DATETIME, CONVERT(VARCHAR(10), Isnull(datmailed, datprinted), 120 )) 
-           datMailed 
-    INTO   #mail 
-    FROM   (SELECT SamplePop_id 
-            FROM   extract_web_QuestionForm 
-            GROUP  BY SamplePop_id) e, 
-           ScheduledMailing schm, 
-           SentMailing sm 
-    WHERE  e.SamplePop_id = schm.SamplePop_id 
-           AND schm.SentMail_id = sm.SentMail_id 
-
-    CREATE INDEX tempindex ON #mail (SamplePop_id, strlithocode) 
-
-    -- Update the work table with the actual number of days  
-    UPDATE ewq 
-    SET    DaysFromFirstMailing = Datediff(day, firstmail, datReturned), 
-           DaysFromCurrentMailing = Datediff(day, c.datmailed, datReturned) 
-    FROM   extract_web_QuestionForm ewq, 
-           (SELECT SamplePop_id, Min(datmailed) FirstMail 
-            FROM   #mail 
-            GROUP  BY SamplePop_id) t, 
-           #mail c 
-    WHERE  ewq.SamplePop_id = t.SamplePop_id 
-           AND ewq.SamplePop_id = c.SamplePop_id 
-           AND ewq.strlithocode = c.strlithocode 
-
-    -- Make sure there are no negative days.  
-    UPDATE extract_web_QuestionForm 
-    SET    daysfromfirstmailing = 0 
-    WHERE  daysfromfirstmailing < 0 
-
-    UPDATE extract_web_QuestionForm 
-    SET    daysfromcurrentmailing = 0 
-    WHERE  daysfromcurrentmailing < 0 
-
-    DROP TABLE #mail 
-
-    -- Modification 7/28/04 SJS -- Replaced code for skip pattern recode so that nested skip patterns are handled correctly 
-	-- Modified 8/27/2013 CBC -- Removed explicit Primary Key constraint name 
-    --SET NOCOUNT ON  
-    -- Modified 01/03/2013 DRH changed @work to #work plus index 
-    --DECLARE @work TABLE (QuestionForm_id INT, SampleUnit_id INT, Skip_id INT, Survey_id INT)                
-    --CREATE TABLE #work 
-    --  (  workident       INT IDENTITY (1, 1) CONSTRAINT pk_work_workident_a PRIMARY KEY, 
-    --     QuestionForm_id INT, 
-    --     sampleunit_id   INT, 
-    --     skip_id         INT, 
-    --     Survey_id       INT 
-    --  )
-	 
-	CREATE TABLE #work 
-      (  workident       INT IDENTITY (1, 1) PRIMARY KEY, 
-         QuestionForm_id INT, 
-         sampleunit_id   INT, 
-         skip_id         INT, 
-         Survey_id       INT 
-      ) 
-
-
-    DECLARE @qf INT, @su INT, @sk INT, @svy INT, @bitUpdate BIT  
-
-    SET @bitUpdate = 1 
-
-    --Now to recode Skip pattern results  
-    --If we have a valid answer, we will add 10000 to the responsevalue  
-    INSERT INTO drm_tracktimes 
-    SELECT Getdate(), 'Skip patterns' 
-
-    -- Identify the first skip pattern that needs to be enforced for a QuestionForm_id  
-    DECLARE @rowcount INT 
-
-    -- Modified 01/03/2013 DRH changed @work to #work plus index 
-    --INSERT INTO @work (QuestionForm_id, SampleUnit_id, Skip_id, si.Survey_id)                 
-    INSERT INTO #work (QuestionForm_id, sampleunit_id, skip_id, Survey_id) 
-    SELECT QuestionForm_id, sampleunit_id, skip_id, si.Survey_id 
-    FROM   cmnt_QuestionResult_work qr 
-           INNER JOIN skipidentifier si  ON qr.Survey_id = si.Survey_id
-                                           AND qr.datGenerated = si.datGenerated 
-                                AND qr.qstncore = si.qstncore 
-                                           AND qr.val = si.intresponseval 
-           INNER JOIN Survey_def sd      ON si.Survey_id = sd.Survey_id 
-    WHERE  sd.bitenforceskip <> 0 
-    UNION 
-    SELECT QuestionForm_id, sampleunit_id, skip_id, si.Survey_id 
-    FROM   cmnt_QuestionResult_work qr 
-           INNER JOIN skipidentifier si ON qr.Survey_id = si.Survey_id
-                                           AND qr.datGenerated = si.datGenerated 
-                                           AND qr.qstncore = si.qstncore 
-                                           AND qr.val IN ( -8, -9, -6, -5 ) --Modified 02/27/2014 CB - now including -5/-6 Refused/Don't Know
-           INNER JOIN Survey_def sd     ON si.Survey_id = sd.Survey_id 
-    WHERE  sd.bitenforceskip <> 0 
-    UNION 
-    SELECT QuestionForm_id, sampleunit_id, -1 Skip_id, q.Survey_id 
-    FROM   cmnt_QuestionResult_work q, Survey_def sd 
-    WHERE  qstncore = 38694 
-           AND val <> 1 
-           AND sd.Survey_id = q.Survey_id 
-           AND sd.Surveytype_id = 3 
-    UNION 
-    SELECT QuestionForm_id, sampleunit_id, -2 Skip_id, q.Survey_id 
-    FROM   cmnt_QuestionResult_work q, Survey_def sd 
-    WHERE  qstncore = 38726 
-           AND val <> 1 
-           AND sd.Survey_id = q.Survey_id 
-           AND sd.Surveytype_id = 3 
-    -- Modified 01/03/2013 DRH changed @work to #work plus index 
-    ORDER  BY 1, 2, 3, 4 
-
-    CREATE INDEX tmpwork_index ON #work (QuestionForm_id, sampleunit_id, skip_id, Survey_id) 
-
-    SELECT @rowcount = @@rowcount 
-
-    PRINT 'After insert into #work: ' + Cast(@rowcount AS VARCHAR) 
-
-/*************************************************************************************************/
-    --Assign Final Dispositions for HCAHPS and HHCAHPS  
-    INSERT INTO drm_tracktimes 
-    SELECT Getdate(), 'Final Dispositions' 
-
-    --HCAHPS DispositionS  
-    UPDATE cqw 
-    SET    FinalDisposition = '01' 
-    FROM   cmnt_QuestionResult_work cqw 
-    WHERE  SurveyType_ID = 2 
-           AND bitcomplete = 1 
-
-    UPDATE cqw 
-    SET    FinalDisposition = '06' 
-    FROM   cmnt_QuestionResult_work cqw 
-    WHERE  SurveyType_ID = 2 
-           AND bitcomplete = 0 
-
-    --HHCAHPS DispositionS 
-    -- if more than half of the ATA questions have been answered, bitComplete=1 and it's coded as a Complete
-    UPDATE cqw 
-    SET    FinalDisposition = '110' -- Completed Mail Survey
-    FROM   cmnt_QuestionResult_work cqw 
-    WHERE  SurveyType_ID = 3 
-           AND bitcomplete = 1 
-           AND ReceiptType_ID = 17 
-
-    UPDATE cqw 
-    SET    FinalDisposition = '120' -- Completed Phone Interview
-    FROM   cmnt_QuestionResult_work cqw 
-    WHERE  SurveyType_ID = 3 
-           AND bitcomplete = 1 
-           AND ReceiptType_ID = 12 
-
-    --SELECT q.QuestionForm_id 
-    --INTO   #hhcahps_invalidDisposition 
-    --FROM   cmnt_QuestionResult_work q, 
-    --       Survey_def sd 
-    --WHERE  qstncore = 38694 
-    --       AND val <> 1 
-    --       AND sd.Survey_id = q.Survey_id 
-    --       AND sd.Surveytype_id = 3 
-    --       AND bitcomplete = 0 
-
-	-- if incomplete and Q1=No and they didn't answer any other questions, they're ineligible
-    UPDATE cqw 
-    SET    FinalDisposition = '220' -- Ineligible: Does not meet eligible Population criteria
-    FROM   cmnt_QuestionResult_work cqw 
-           inner join #HHQF hh on  hh.QuestionForm_id = cqw.QuestionForm_id 
-    WHERE  hh.Q1 = 2
-           AND hh.complete = 0
-           AND hh.numAnswersAfterQ1 = 0
-
-    --SELECT q.QuestionForm_id 
-    --INTO   #hhcahps_validDisposition 
-    --FROM   cmnt_QuestionResult_work q, 
-    --       Survey_def sd 
-    --WHERE  qstncore = 38694 
-    --       AND val = 1 
-    --       AND sd.Survey_id = q.Survey_id 
-    --       AND sd.Surveytype_id = 3 
-    --       AND bitcomplete = 0 
-
-	-- if incomplete and Q1=Yes or they answered questions after Q1, it's a breakoff
-    UPDATE cqw 
-    SET    FinalDisposition = '310' -- Breakoff
-    FROM   cmnt_QuestionResult_work cqw 
-           inner join #HHQF hh on hh.QuestionForm_id = cqw.QuestionForm_id 
-    WHERE  hh.complete=0
-           AND (hh.numAnswersAfterQ1 > 0 or hh.Q1=1)
-           
-	-- if incomplete and Q1 isn't answered and they didn't answer anything else either, it's just a blank survey.
-	-- Modified 03/27/2015 TSB  to only look at 2ndSurvey
-    UPDATE cqw 
-    SET    FinalDisposition = '320' -- Refusal
-    FROM   cmnt_QuestionResult_work cqw 
-           inner join #HHQF hh on hh.QuestionForm_id = cqw.QuestionForm_id 
-    WHERE  hh.complete=0
-           AND hh.numAnswersAfterQ1=0 
-           AND hh.Q1=-9
-		   AND hh.STRMAILINGSTEP_NM = '2nd Survey'
-
-    --CGCAHPS Dispositions  S44 US12
-    UPDATE cqw 
-    SET    FinalDisposition = dbo.fn_CGCAHPSCompleteness(cqw.questionform_id)
-    FROM   cmnt_QuestionResult_work cqw 
-    WHERE  SurveyType_ID = 4 
-
-
-    SELECT q.QuestionForm_id 
-    INTO   #cgcahps_negrespscreenqstn 
-    FROM   cmnt_QuestionResult_work q, 
-           Survey_def sd 
-    WHERE  qstncore in (39113,44121,46265,50344,50483)
-           AND val = 2
-           AND sd.Survey_id = q.Survey_id 
-           AND sd.Surveytype_id = 4 
-
-    UPDATE cqw 
-    SET    FinalDisposition = '4' -- answered no to q1
-    FROM   cmnt_QuestionResult_work cqw, 
-           #cgcahps_negrespscreenqstn i 
-    WHERE  i.QuestionForm_id = cqw.QuestionForm_id 
-
-
-    --ACO CAHPS Dispositions
-    select DISTINCT cqw.questionform_id, 0 as ATACnt, 0 as ATAComplete, 0 as MeasureCnt, 0 as MeasureComplete, 0 as Disposition, Subtype_nm, st.SurveyType_ID
-    into #ACOQF
-    FROM   cmnt_QuestionResult_work cqw 
-    inner join Surveytype st on cqw.Surveytype_id=st.Surveytype_id
-	left join (select sst.Survey_id, sst.Subtype_id, st.Subtype_nm 
-				from [dbo].[SurveySubtype] sst 
-				INNER JOIN [dbo].[Subtype] st on (st.Subtype_id = sst.Subtype_id)
-				) sst on sst.Survey_id = cqw.SURVEY_ID 
-    WHERE  st.SurveyType_dsc in ('ACOCAHPS','PQRS CAHPS')
-    
-    exec dbo.ACOCAHPSCompleteness
-        
-    UPDATE cqw 
-    SET    FinalDisposition = qf.Disposition
-    FROM   cmnt_QuestionResult_work cqw 
-    inner join #ACOQF qf on cqw.questionform_id=qf.questionform_id
-    WHERE  qf.disposition <> 255
-
-	drop table #ACOQF
-
-    /*************************************************************************************************/
-    /************************************************************************************************/
-    INSERT INTO drm_tracktimes 
-    SELECT Getdate(), 'Find ineligible hcahps' 
-
-    --round up all the HHCHAPS Surveys that were not eligible (qstncore 38694 <> 1) and set an inelig. Disposition. 
-    DECLARE @InEligDispo INT, @SQL VARCHAR(8000) 
-
-    SELECT @InEligDispo = d.Disposition_id 
-    FROM   Disposition d, 
-           hhcahpsDispositions hd 
-    WHERE  d.Disposition_id = hd.Disposition_id 
-           AND hd.hhcahpsvalue = '220' 
-
-    --SELECT q.QuestionForm_id  
-    --into #updateDisposition  
-    --FROM Cmnt_QuestionResult_Work q, Survey_DEF sd  
-    --WHERE qstncore = 38694 AND val <> 1 AND sd.Survey_ID = q.Survey_id AND sd.SurveyType_id = 3  
-    CREATE TABLE #updatedispsql (a INT IDENTITY (1, 1), strsql VARCHAR(8000))  
-
-    --HCHAPS  
-    INSERT INTO #updatedispsql 
-    SELECT DISTINCT 'Exec QCL_LogDisposition ' 
-                    + Cast(scm.SentMail_id AS VARCHAR(100)) + ', ' 
-                    + Cast(scm.SamplePop_id AS VARCHAR(100)) + ', ' 
-                    + Cast(dv.Disposition_id AS VARCHAR(100)) + ', ' 
-                    + Cast(qf.receipttype_id AS VARCHAR(100)) + ', ' 
-                    + '''#nrcsql''' + ', ' 
-                    + '''' + CONVERT(VARCHAR, Getdate(), 120) + '''' AS strSQL 
-    FROM   cmnt_QuestionResult_work cqw, 
-           QuestionForm qf, 
-           ScheduledMailing scm, 
-           Dispositions_view dv 
-    WHERE  cqw.QuestionForm_id = qf.QuestionForm_id 
-           AND qf.SentMail_id = scm.SentMail_id 
-           AND dv.hcahpsvalue = cqw.finalDisposition 
-           AND cqw.Surveytype_id = 2 
-
-    --HHCAHPS  
-    INSERT INTO #updatedispsql 
-                (strsql) 
-    SELECT DISTINCT 'Exec QCL_LogDisposition ' 
-                    + Cast(scm.SentMail_id AS VARCHAR(100)) + ', ' 
-                    + Cast(scm.SamplePop_id AS VARCHAR(100)) + ', ' 
-                    + Cast(dv.Disposition_id AS VARCHAR(100)) + ', ' 
-                    + Cast(qf.receipttype_id AS VARCHAR(100)) + ', ' 
-                    + '''#nrcsql''' + ', ' 
-                    + '''' + CONVERT(VARCHAR, Getdate(), 120) + '''' AS strSQL 
-    FROM   cmnt_QuestionResult_work cqw, 
-           QuestionForm qf, 
-           ScheduledMailing scm, 
-           Dispositions_view dv 
-    WHERE  cqw.QuestionForm_id = qf.QuestionForm_id 
-           AND qf.SentMail_id = scm.SentMail_id 
-           AND dv.hhcahpsvalue = cqw.finalDisposition 
-      AND cqw.Surveytype_id = 3 
-
-    --CGCAHPS 
-    INSERT INTO #updatedispsql (strsql) 
-    SELECT DISTINCT 'Exec QCL_LogDisposition ' 
-                    + Cast(scm.SentMail_id AS VARCHAR(100)) + ', ' 
-                    + Cast(scm.SamplePop_id AS VARCHAR(100)) + ', ' 
-                    + Cast(dv.Disposition_id AS VARCHAR(100)) + ', ' 
-                    + Cast(qf.receipttype_id AS VARCHAR(100)) + ', ' 
-                    + '''#nrcsql''' + ', ' 
-                    + '''' + CONVERT(VARCHAR, Getdate(), 120) + '''' AS strSQL 
-    FROM   cmnt_QuestionResult_work cqw, 
-           QuestionForm qf, 
-           ScheduledMailing scm, 
-           Dispositions_view dv 
-    WHERE  cqw.QuestionForm_id = qf.QuestionForm_id 
-           AND qf.SentMail_id = scm.SentMail_id 
-           AND dv.mncmvalue = cqw.finalDisposition 
-           AND cqw.Surveytype_id = 4 
-
-    --ACO
-    INSERT INTO #updatedispsql (strsql) 
-    SELECT DISTINCT 'Exec QCL_LogDisposition ' 
-                    + Cast(scm.SentMail_id AS VARCHAR(100)) + ', ' 
-                    + Cast(scm.SamplePop_id AS VARCHAR(100)) + ', ' 
-                    + Cast(dv.Disposition_id AS VARCHAR(100)) + ', ' 
-                    + Cast(qf.receipttype_id AS VARCHAR(100)) + ', ' 
-                    + '''#nrcsql''' + ', ' 
-                    + '''' + CONVERT(VARCHAR, Getdate(), 120) + '''' AS strSQL 
-    FROM   cmnt_QuestionResult_work cqw, 
-           QuestionForm qf, 
-           ScheduledMailing scm, 
-           Dispositions_view dv,
-		   surveytype st 
-    WHERE  cqw.QuestionForm_id = qf.QuestionForm_id 
-           AND qf.SentMail_id = scm.SentMail_id 
-           AND dv.acocahpsvalue = cqw.finalDisposition 
-           AND cqw.Surveytype_id = st.SurveyType_ID
-		   and st.SurveyType_dsc in ('ACOCAHPS','PQRS CAHPS')
-
-    WHILE (SELECT Count(*) FROM #updatedispsql) > 0 
-      BEGIN 
-          SELECT TOP 1 @SQL = strsql FROM #updatedispsql 
-          EXEC (@SQL) 
-
-          DELETE FROM #updatedispsql WHERE strsql = @SQL 
-      END 
-
-    /************************************************************************************************/
-    INSERT INTO drm_tracktimes 
-    SELECT Getdate(), 'Update skip questions' 
-
-    DECLARE @loopcnt INT 
-    SET @loopcnt = 0 
-
-    --Modified 01/31/2013 DRH - correcting logic to check to see if the current gateway question was invalidated by being skipped by another gateway question ... 
-    DECLARE @invskipcnt INT 
-    SET @invskipcnt = 0 
-
-    -- Modified 01/03/2013 DRH changed @work to #work plus index 
-    SELECT TOP 1 @qf = QuestionForm_id, 
-                 @su = sampleunit_id, 
-                 @sk = skip_id, 
-                 @svy = Survey_id 
-    --FROM @WORK              
-    FROM   #work 
-    ORDER  BY QuestionForm_id, 
-              sampleunit_id, 
-              skip_id 
-
-    -- Update skipped qstncores while we have work to process  
-    -- Modified 01/03/2013 DRH changed @work to #work plus index 
-    --WHILE (SELECT COUNT(*) FROM @work) > 0                 
-    WHILE (SELECT Count(*) FROM #work) > 0 
-      BEGIN 
-          SET @loopcnt = @loopcnt + 1 
-
-          --print 'QuestionForm_ID = ' + cast(@qf as varchar(10))  
-          --print 'Sampleunit_ID = ' + cast(@su as varchar(10))  
-          --print '@skip = ' + cast(@sk as varchar(10))  
-          --print '@svy = ' + cast(@svy as varchar(10))  
-          --print '@bitUpdate = ' + cast(@bitUpdate as varchar(10))  
-          --SkipPatternWork:  
-          IF @bitUpdate = 1 
-            BEGIN 
-                --print 'standard skip update'  
-                UPDATE qr 
-                -- SET Val=-7  
-                SET    Val = VAL + 10000 
-                FROM   cmnt_QuestionResult_work qr, 
-                       skipqstns sq 
-                WHERE  @qf = qr.QuestionForm_id 
-                       AND @su = qr.sampleunit_id 
-                       AND @sk = Skip_id 
-                       AND sq.qstncore = qr.qstncore 
-                       --dbg 5/14/13--AND Val NOT IN (-9,-8,-6,-5)  --Modified 02/27/2014 CB - now including -5/-6 Refused/Don't Know
-                       AND Val < 9000 
-
-                IF @loopcnt < 25 
-                  BEGIN 
-                      INSERT INTO drm_tracktimes 
-                      SELECT Getdate(), 'Start HHCAHPS qstncore 38694 skip update' 
-                  END 
-
-                --print 'HHCAHPS qstncore 38694 skip update'  
-                UPDATE qr 
-                -- SET Val=-7  
-                SET    Val = VAL + 10000 
-                FROM   cmnt_QuestionResult_work qr, 
-                       Survey_def sd, 
-                       (SELECT DISTINCT qstncore 
-                        FROM   sel_qstns 
-                        WHERE  Survey_id = @svy 
-                               AND qstncore <> 38694 
-                               AND nummarkcount > 0) a 
-                WHERE  @qf = qr.QuestionForm_id 
-                       AND @su = qr.sampleunit_id 
-                       AND @sk = -1 
-                       AND a.qstncore = qr.qstncore 
-                       AND sd.Survey_id = @svy 
-                       --dbg 5/14/13--AND Val NOT IN (-9,-8,-6,-5)  --Modified 02/27/2014 CB - now including -5/-6 Refused/Don't Know
-                       AND Val < 9000 
-                       AND sd.Surveytype_id = 3 
-
-                IF @loopcnt < 25 
-                  BEGIN 
-                      INSERT INTO drm_tracktimes 
-                      SELECT Getdate(), 'End HHCAHPS qstncore 38694 skip update' 
-                  END 
-
-                IF @loopcnt < 25 
-                  BEGIN 
-                      INSERT INTO drm_tracktimes 
-                      SELECT Getdate(), 'Start HHCAHPS qstncore 38726 skip update' 
-                  END 
-
-                --print 'HHCAHPS qstncore 38726 skip update'  
-                UPDATE qr 
-                -- SET Val=-7  
-                SET    Val = VAL + 10000 
-                FROM   cmnt_QuestionResult_work qr, 
-                       Survey_def sd 
-                WHERE  @qf = qr.QuestionForm_id 
-                       AND @su = qr.sampleunit_id 
-                       AND @sk = -2 
-                       AND qr.qstncore = 38727 
-                       AND sd.Survey_id = @svy 
-                       --dbg 5/14/13--AND Val NOT IN (-9,-8,-6,-5)  --Modified 02/27/2014 CB - now including -5/-6 Refused/Don't Know
-                       AND Val < 9000 
-                       AND sd.Surveytype_id = 3 
-
-                IF @loopcnt < 25 
-                  BEGIN 
-                      INSERT INTO drm_tracktimes 
-                      SELECT Getdate(), 'End HHCAHPS qstncore 38726 skip update' 
-                  END 
-            END 
-
-          -- Identify the NEXT skip pattern that needs to be enforced for a QuestionForm_id  
-          -- Modified 01/03/2013 DRH changed @work to #work plus index 
-          --DELETE FROM @work WHERE @qf=QuestionForm_id AND  @su=SampleUnit_id AND  @sk=Skip_id AND  @svy=Survey_id    
-          DELETE FROM #work 
-         WHERE  @qf = QuestionForm_id 
-                 AND @su = sampleunit_id 
-                 AND @sk = skip_id 
-                 AND @svy = Survey_id 
-
-          --SELECT TOP 1 @qf=QuestionForm_id, @su=SampleUnit_id, @sk=Skip_id, @svy=Survey_id  FROM @WORK ORDER BY QuestionForm_id, sampleunit_id, skip_id     
-          SELECT TOP 1 @qf = QuestionForm_id, 
-                   @su = sampleunit_id, 
-                       @sk = skip_id, 
-                       @svy = Survey_id 
-          FROM   #work 
-          ORDER  BY QuestionForm_id, 
-                    sampleunit_id, 
-                    skip_id 
-
-          IF @loopcnt < 25 
-            BEGIN 
-                INSERT INTO drm_tracktimes 
-                SELECT Getdate(), 'Start Check to see if next skip pattern gateway is still qualifies as a valid skip pattern gateway after last Update loop'
-            END 
-
-          --Modified 01/31/2013 DRH - correcting logic to check to see if the current gateway question was invalidated by being skipped by another gateway question ... 
-          SELECT @invskipcnt = Count(*) 
-          FROM   cmnt_QuestionResult_work qr 
-                 INNER JOIN skipidentifier si  ON qr.Survey_id = si.Survey_id
-                                                  AND qr.datGenerated = si.datGenerated 
-                                                  AND qr.qstncore = si.qstncore 
-                                                  AND ( qr.val = si.intresponseval OR qr.val IN ( -8, -9, -6, -5 ) ) --Modified 02/27/2014 CB - now including -5/-6 Refused/Don't Know
-                 INNER JOIN Survey_def sd      ON si.Survey_id = sd.Survey_id 
-                 INNER JOIN skipqstns sq       ON si.skip_id = sq.skip_id 
-                 INNER JOIN skipidentifier si2 ON sq.qstncore = si2.qstncore 
-                                                  AND si2.skip_id = @sk 
-          WHERE  sd.bitenforceskip <> 0 
-                 AND qr.QuestionForm_id = @qf 
-
-          -- Check to see if next skip pattern gateway is still qualifies as a valid skip pattern gateway after last Update loop 
-          IF (SELECT Count(*) 
-              FROM   cmnt_QuestionResult_work qr 
-                     INNER JOIN skipidentifier si ON qr.QuestionForm_id = @qf 
-                                                     AND qr.sampleunit_id = @su  
-                                                     AND qr.Survey_id = si.Survey_id
-                                                     AND qr.datGenerated = si.datGenerated 
-                                                     AND qr.qstncore = si.qstncore 
-                                                     AND ( qr.val = si.intresponseval OR qr.val IN ( -8, -9, -6, -5 ) ) --Modified 02/27/2014 CB - now including -5/-6 Refused/Don't Know
-                                     AND si.skip_id = @sk 
-                                                     --Modified 01/31/2013 DRH - correcting logic to check to see if the current gateway question was invalidated by being skipped by another gateway question ... 
-                                                     AND @invskipcnt = 0 
-             -- 11/30/12 DRM -- Nested skip questions  
-             -- If any previous gateway questions include the current gateway as a skip question,  
-             --  and if the previous gateway was answered so as to skip the current gateway,  
-             -- then don't enforce skip logic on the current gateway question.  
-             --select count(*)  
-             --FROM Cmnt_QuestionResult_Work qr  
-             --INNER JOIN SkipIdentifier si ON qr.datGenerated=si.datGenerated AND qr.QstnCore=si.QstnCore AND (qr.Val=si.intResponseVal OR qr.Val IN (-8,-9,-6,-5)) --Modified 02/27/2014 CB - now including -5/-6 Refused/Don't Know
-             --INNER JOIN Survey_def sd ON si.Survey_id = sd.Survey_id  
-             --inner join SkipQstns sq on si.Skip_id = sq.Skip_id  
-             --inner join skipidentifier si2 on sq.QstnCore = si2.QstnCore and si2.Skip_id = @sk  
-             --WHERE sd.bitEnforceSkip <> 0  
-             --and qr.QuestionForm_id = @qf  
-             ) > 0 
-              OR (SELECT count(*)
-                  FROM   cmnt_QuestionResult_work qr, 
-                         Survey_def sd 
-                  WHERE  qr.QuestionForm_id = @qf 
-                     AND qr.sampleunit_id = @su 
-                         AND qstncore = 38694 
-                         AND val <> 1 
-                         AND @sk = -1 
-                         AND sd.Survey_id = qr.Survey_id 
-                         AND sd.Surveytype_id = 3) > 0 
-              OR (SELECT count(*)
-                  FROM   cmnt_QuestionResult_work qr, 
-                         Survey_def sd 
-                  WHERE  qr.QuestionForm_id = @qf 
-                         AND qr.sampleunit_id = @su 
-                         AND qstncore = 38726 
-                         AND val <> 1 
-                         AND @sk = -2 
-                         AND sd.Survey_id = qr.Survey_id 
-                         AND sd.Surveytype_id = 3) > 0 
-            SET @bitUpdate = 1 
-          ELSE 
-            SET @bitUpdate = 0 
-
-          IF @loopcnt < 25 
-            BEGIN 
-                INSERT INTO drm_tracktimes 
-                SELECT Getdate(), 'End Check to see if next skip pattern gateway is still qualifies as a valid skip pattern gateway after last Update loop'
-            END 
-      END 
-
-    INSERT INTO drm_tracktimes 
-    SELECT Getdate(), 'End SP_Phase3_QuestionResult_For_Extract' 
-
-    -- Modified 01/03/2013 DRH changed @work to #work plus index 
-    DROP TABLE #work 
-
-	--dbg 5/14/13-- -8's and -9's are now being offset, but we don't really want them to be. So we're now offsetting them back.
-    UPDATE cmnt_QuestionResult_work 
-    SET    val = val - 10000 
-    WHERE  val IN ( 9991, 9992, 9995, 9994 ) --Modified 02/27/2014 CB - now including -5/-6 Refused/Don't Know
-
-    SET nocount OFF 
-    SET TRANSACTION isolation level READ committed
-
+			/* end addition */
+
+	-- HCAHPS and Hospice CAHPS processing - if a blank return comes in, continue data collection protocol
+	delete from #QFResponseCount
+	insert into #QFResponseCount
+	select Surveytype_dsc, survey_id, QuestionForm_id, sentmail_id, samplepop_id, receipttype_id, strMailingStep_nm, 0 as ResponseCount, 0 as FutureScheduledMailing, 1 as AllMailStepsAreBack
+	, 0 as tempFlag
+	, DaysFromFirst, DaysFromCurrent --	S43 US8
+	, Sampleset_id
+	from #TodaysReturns
+	where Surveytype_dsc in ('HCAHPS IP', 'Hospice CAHPS') -- added Hospice CAHPS 2015-02-19
+
+	exec dbo.QFResponseCount
+
+	update #todaysreturns  -- added by G.Gilsdorf 10/23/2014 to fix bug introduced in CAHPS release 5
+	set bitETLThisReturn=1, bitComplete=1, bitContinueWithMailings=0
+	where surveytype_dsc in ('HCAHPS IP', 'Hospice CAHPS') -- added Hospice CAHPS 2015-02-19
+
+	update tr 
+	set bitETLThisReturn=0, bitComplete=0, bitContinueWithMailings= case when rc.strMailingStep_nm = '1st Survey' then 1 else 0 end
+	-- select tr.QuestionForm_id, tr.surveytype_dsc, rc.ResponseCount, tr.bitETLThisReturn, tr.bitComplete, tr.bitContinueWithMailings, rc.strMailingStep_nm
+	from #todaysreturns tr
+	inner join #QFresponsecount rc on tr.QuestionForm_id=rc.QuestionForm_id
+	where tr.surveytype_dsc in ('HCAHPS IP', 'Hospice CAHPS') -- added Hospice CAHPS 2015-02-19
+	and rc.ResponseCount=0
+
+	/*
+		S19 US15 As a Hospice CAHPS vendor, we need to be able to calculate if a returned survey is complete, 
+		so that we can assign the correct disposition. - Tim Butler 
+	*/
+	update tr
+	set HospiceDisposition = case when rc.ATACnt >= (34 * 0.50) then 13 -- Complete
+							else case when rc.ATACnt >= 1 AND rc.ATACnt < (34 * 0.50) then 11 else NULL end -- Breakoff
+							end
+		, bitComplete = case when rc.ATACnt >= (34 * 0.50) then 1 else 0 end
+	from #TodaysReturns tr
+	inner join (select qr.QuestionForm_id, count(distinct sq.qstncore) as ATACnt
+				from (	select rc.QuestionForm_id, rc.survey_id, rc.sampleset_id, qr.qstncore, qr.intResponseVal
+						from #qfResponseCount rc
+						inner join questionresult qr on rc.QuestionForm_id=qr.QuestionForm_id
+						union
+						select rc.QuestionForm_id, rc.survey_id, rc.sampleset_id, qr2.qstncore, qr2.intResponseVal
+						from #qfResponseCount rc
+						inner join questionresult2 qr2 on rc.QuestionForm_id=qr2.QuestionForm_id) qr
+				inner join DL_SEL_QSTNS_BySampleSet sq on qr.survey_id = sq.survey_id and qr.qstncore = sq.qstncore and qr.sampleset_id=sq.SampleSet_ID
+				inner join DL_SEL_SCLS_BySampleSet ss on sq.scaleid = ss.qpc_id AND sq.survey_id = ss.survey_id and qr.intresponseval = ss.val and sq.SampleSet_ID=ss.Sampleset_ID
+				where sq.qstncore in (51574,51575,51576,51577,51579,51580,51581,51582,51583,51584,51585,51586,51588,51590,51594,51597,51599,51601,51603,51604,51605,51608,51609,51610,51611,51612,51613,51614,51615
+					,51616,51617,51618,51619,51620,54067,55137) -- S49 ATL-395: added qstncore 55137
+				and sq.subtype = 1 
+				AND sq.language = 1 
+				AND ss.language = 1 
+				group by qr.QuestionForm_id) rc
+			on tr.QuestionForm_id=rc.QuestionForm_id
+	where tr.Surveytype_dsc = 'Hospice CAHPS'
+
+	-- completes S19 US15
+	insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_id,datLogged,LoggedBy
+	, DaysFromFirst, DaysFromCurrent)
+	select sentmail_id, samplepop_id, tr.HospiceDisposition,receipttype_id, @LogTime, 'CheckForCAHPSIncompletes'
+	, tr.DaysFromFirst, tr.DaysFromCurrent --	S43 US8
+	from #TodaysReturns tr
+	where Surveytype_dsc='Hospice CAHPS'	
+	AND HospiceDisposition = 13
+
+	-- breakoffs S19 US15
+	insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_id,datLogged,LoggedBy
+	, DaysFromFirst, DaysFromCurrent)
+	select sentmail_id, samplepop_id, tr.HospiceDisposition,receipttype_id, @LogTime, 'CheckForCAHPSIncompletes'
+	, tr.DaysFromFirst, tr.DaysFromCurrent --	S43 US8
+	from #TodaysReturns tr
+	where Surveytype_dsc='Hospice CAHPS'	
+	AND HospiceDisposition = 11
+
+
+	insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_id,datLogged,LoggedBy
+	, DaysFromFirst, DaysFromCurrent)
+	select sentmail_id, samplepop_id, 25, receipttype_id, @LogTime, 'CheckForCAHPSIncompletes'
+	, DaysFromFirst, DaysFromCurrent --	S43 US8
+	--, strMailingStep_nm, ResponseCount
+	from #qfResponseCount rc
+	where strMailingStep_nm='1st Survey'
+	and ResponseCount=0
+
+	insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_id,datLogged,LoggedBy
+	, DaysFromFirst, DaysFromCurrent)
+	select sentmail_id, samplepop_id, 26, receipttype_id, @LogTime, 'CheckForCAHPSIncompletes'
+	, DaysFromFirst, DaysFromCurrent --	S43 US8
+	--, strMailingStep_nm, ResponseCount
+	from #qfResponseCount rc
+	where strMailingStep_nm='2nd Survey'
+	and ResponseCount=0
+	-- End HCahps & Hospice
+
+-- for complete surveys, set QuestionForm.bitComplete=1
+update qf 
+set bitComplete = tr.bitComplete
+-- select qf.QuestionForm_id, tr.ACODisposition, qf.bitcomplete, tr.bitcomplete
+from #TodaysReturns tr
+inner join QuestionForm qf on qf.QuestionForm_id=tr.QuestionForm_id
+
+
+-- for blank/incomplete or partial Surveys, set bitComplete=0, move datReturned to datUnusedReturn, blank out datResultsImported,
+-- and set UnusedReturn_id=5, which means a partial return that isn't used for now (it might be used later if it ends up being the only return we ever get)
+-- fyi: UnusedReturn_id=6 means a partial return whose fate we have decided (either we ignored it because a better return came in or we used it because it's the best we got.)
+update qf 
+set bitComplete = 0, datReturned=null, UnusedReturn_id=5, datUnusedReturn=qf.datReturned, datResultsImported = NULL
+-- select qf.QuestionForm_id, tr.bitETLThisReturn, qf.bitComplete, qf.datReturned, qf.UnusedReturn_id, qf.datUnusedReturn, qf.datResultsImported 
+from #TodaysReturns tr
+inner join QuestionForm qf on qf.QuestionForm_id=tr.QuestionForm_id
+where bitETLThisReturn=0
+and qf.UnusedReturn_id=0
+and qf.datReturned is not null
+					-----
+
+					if exists (select * from Questionform_Missing_datReturned where QfMissingDatreturned_id>@maxQFerror)
+					begin
+						select @sql = 'yo! (d) There are ' + convert(varchar,count(*))+' new records in Questionform_Missing_datReturned. QfMissingDatreturned_id between ' + convert(varchar,min(QfMissingDatreturned_id)) + ' and ' 
+							+ convert(varchar,max(QfMissingDatreturned_id))
+						from Questionform_Missing_datReturned
+						where QfMissingDatreturned_id>@maxQFerror
+						print @SQL
+						select @maxQFerror = max(QfMissingDatreturned_id) from Questionform_Missing_datReturned
+					end
+
+					-----
+
+-- move blank/incomplete and partial results into QuestionResult2
+insert into QuestionResult2 (QuestionForm_id,SampleUnit_ID,QstnCore,intResponseVal)
+select qr.QuestionForm_id,qr.SampleUnit_ID,qr.QstnCore,qr.intResponseVal
+from QuestionResult qr
+inner join #TodaysReturns tr on qr.QuestionForm_id=tr.QuestionForm_id
+where bitETLThisReturn=0
+
+-- delete blank/incomplete and partial results from QuestionResult
+delete qr
+-- select qr.*, tr.bitETLThisReturn
+from QuestionResult qr
+inner join #TodaysReturns tr on qr.QuestionForm_id=tr.QuestionForm_id
+where bitETLThisReturn=0
+
+-- remove blank/incomplete and partial Surveys from the ETL queue
+delete qre
+-- select qre.*, tr.bitETLThisReturn
+from QuestionForm_extract qre
+inner join #TodaysReturns tr on qre.QuestionForm_id=tr.QuestionForm_id
+where bitETLThisReturn=0
+
+
+/*
+select unusedreturn_ID,count(*)
+FROM QuestionForm
+group by unusedreturn_ID
+
+unusedreturn_ID	(No column name)
+NULL			1200636
+0				119186736
+1				310857		Another Mailstep already returned
+2				464039		Expired
+3				141751		This barcode previously scanned
+4				16307		Results already in QuestionResults2
+88				1457
+*/
+
+-- remove anybody who has one of the following Dispositions
+update tr 
+set bitContinueWithMailings=0
+-- select tr.SamplePop_id, dl.Disposition_id, tr.bitContinueWithMailings
+from #TodaysReturns tr
+inner join DispositionLog dl on tr.SamplePop_id=dl.SamplePop_id
+inner join Disposition d on dl.Disposition_id=d.Disposition_id
+where dl.Disposition_id in (
+		  2 --	I do not wish to participate in this Survey
+		, 3 --	The intended respondent has passed on
+		, 4 --	The intended respondent is incapacitated and cannot participate in this Survey
+		, 8 --	The Survey is not applicable to me
+		,10--	Language Barrier
+		,24 --	The intended respondent is institutionalized
+		)
+
+-- identify respondents who have Methodology-specific Dispositions
+update tr set DispositionAction='No Mail '
+-- select tr.SamplePop_id, dl.Disposition_id, tr.DispositionAction
+from #TodaysReturns tr
+inner join DispositionLog dl on tr.SamplePop_id=dl.SamplePop_id
+inner join Disposition d on dl.Disposition_id=d.Disposition_id
+where dl.Disposition_id=5 --	The intended respondent is not at this address
+
+update tr set DispositionAction=DispositionAction+'No Phone'
+-- select tr.SamplePop_id, dl.Disposition_id, tr.DispositionAction
+from #TodaysReturns tr
+inner join DispositionLog dl on tr.SamplePop_id=dl.SamplePop_id
+inner join Disposition d on dl.Disposition_id=d.Disposition_id
+where dl.Disposition_id in ( 14 --	The intended respondent is not at this phone
+							,16 --	Bad/Missing/Wrong phone number
+							)
+
+-- grab mailing step info 
+select distinct mm.Methodology_id, ms.intSequence, ms.MailingStep_id, ms.intIntervalDays, msm.MailingStepMethod_nm
+into #ms
+from mailingMethodology mm
+inner join MailingStep ms on mm.Methodology_id=ms.Methodology_id
+inner join MailingStepMethod msm on ms.MailingStepMethod_id=msm.MailingStepMethod_id
+inner join #TodaysReturns tr on mm.Methodology_id=tr.Methodology_id
+where tr.bitContinueWithMailings=1
+order by 1,2
+
+declare @maxint int
+set @maxint = 2147483647
+insert into #ms 
+select Methodology_id, max(intSequence)+1,@maxint,-1,'<no next step>'
+from #ms 
+group by Methodology_id
+
+-- delete from #TodaysReturns where the next mailing has already been generated.
+while @@rowcount>0
+	update tr
+	set intSequence=ms.intSequence
+		, MailingStep_id=ms.MailingStep_id
+		,ScheduledMailing_id=scm.ScheduledMailing_id
+		,SentMail_id=scm.SentMail_id
+		,datGenerate=scm.datGenerate
+		,QuestionForm_id=0
+	from #TodaysReturns tr
+	inner join ScheduledMailing scm on tr.SamplePop_id=scm.SamplePop_id
+	inner join MailingStep ms on scm.MailingStep_id=ms.MailingStep_id
+	where tr.intSequence+1 = ms.intSequence
+	and bitContinueWithMailings=1
+
+update tr
+set bitContinueWithMailings=0 
+-- select tr.MailingStep_id, tr.bitContinueWithMailings
+from #TodaysReturns tr 
+where tr.MailingStep_id=@maxint 
+
+-- list of ScheduledMailing records that need to be re-created
+select ms.MailingStep_id, tr.SamplePop_id, null as OverrideItem_id, NULL as SentMail_id, tr.Methodology_id, convert(datetime,null) as datGenerate, ms.intSequence, ms.intIntervalDays, tr.DispositionAction
+--, tr.*, ms.intSequence, ms.STRMailingStep_NM
+into #NewScheduledMailing 
+from #TodaysReturns tr
+inner join #ms ms on tr.Methodology_id=ms.Methodology_id and tr.intSequence=ms.intSequence-1
+where ms.Mailingstep_id <> @maxint
+and bitContinueWithMailings=1
+order by tr.SamplePop_id, ms.intSequence
+
+-- remove respondents with Methodology-specific Dispositions
+delete nsm
+-- select nsm.*
+from #NewScheduledMailing nsm
+inner join #ms ms on nsm.MailingStep_id=ms.MailingStep_id
+where nsm.DispositionAction like '%No Mail%'
+and ms.MailingStepMethod_nm='Mail'
+
+delete nsm
+-- select nsm.*
+from #NewScheduledMailing nsm
+inner join #ms ms on nsm.MailingStep_id=ms.MailingStep_id
+where nsm.DispositionAction like '%No Phone%'
+and ms.MailingStepMethod_nm='Phone'
+
+update nsm set datGenerate=dateadd(day,nsm.intIntervalDays,convert(datetime,floor(convert(float,sm.datMailed))))
+--select scm.SamplePop_id, scm.MailingStep_id, scm.SentMail_id, ms.intSequence, nsm.intSequence, nsm.datGenerate, dateadd(day,nsm.intIntervalDays,convert(datetime,floor(convert(float,sm.datMailed))))
+from #NewScheduledMailing nsm
+inner join ScheduledMailing scm on nsm.SamplePop_id=scm.SamplePop_id 
+inner join #ms ms on scm.MailingStep_id=ms.MailingStep_id
+inner join SentMailing sm on scm.SentMail_id=sm.SentMail_id
+where ms.intSequence=nsm.intSequence-1
+
+-- if the previous MailingStep hasn't mailed yet, the next mailing step will be scheduled when it mails, so we don't have to do anything
+delete #NewScheduledMailing where datGenerate is NULL 
+
+-- anything that should have already generated, generate it tonight.
+-- it should be within the last few days? should we check that it's not older than that?
+update #NewScheduledMailing 
+set datGenerate = convert(datetime,ceiling(convert(float,@LogTime))) 
+where datGenerate<@LogTime
+
+insert into ScheduledMailing (OverrideItem_id, Methodology_ID, MailingStep_ID, SamplePop_ID, SentMail_ID, datGenerate)
+select OverrideItem_id, Methodology_ID, MailingStep_ID, SamplePop_ID, SentMail_ID, datGenerate
+from #NewScheduledMailing
+
+drop table #NewScheduledMailing
+drop table #ms
+drop table #TodaysReturns
+drop table #ACOQF
+drop table #qfResponseCount 
+
+/* PART 2  Now we want to look at the sampleset/mailing steps that are being generated tonight, and check to see if there 
+   is anyone in the sampleset who should be getting generated tonight, but isn't in ScheduledMailing for whatever reason
+   (e.g. they had a bad address disposition, but we're generating a phone step. Or their litho got reset but never rescanned.
+     or who knows?)
+*/
+
+if object_id('tempdb..#ACOMailingSteps') is not null
+	drop table #ACOMailingSteps
+
+if object_id('tempdb..#ACOEverybody') is not null
+	drop table #ACOEverybody
+
+-- list of acocahps steps that are getting generated today
+SELECT SD.Study_id, SD.Survey_id, SP.SampleSet_id, SM.MailingStep_id, SM.Methodology_id, ms.MailingStepMethod_id, SM.datGenerate, count(*) as cnt
+into #ACOMailingSteps
+FROM   Survey_def SD
+inner join surveytype st on sd.surveytype_id=st.surveytype_id
+inner join MailingMethodology MM on MM.Survey_id = SD.Survey_id
+inner join ScheduledMailing SM on MM.Methodology_id = SM.Methodology_id 
+inner join MailingStep MS on SM.MailingStep_id=MS.MailingStep_id
+inner join SamplePop SP on SP.SamplePop_id = SM.SamplePop_id 
+left join FormGenError FGE on SM.ScheduledMailing_id = FGE.ScheduledMailing_id 
+WHERE  ST.surveytype_dsc in ('ACOCAHPS','PQRS CAHPS') AND
+       SM.SentMail_id IS NULL AND
+       SM.datGenerate <= DATEADD(HOUR,6,GETDATE()) AND
+       SD.bitFormGenRelease = 1 AND
+       FGE.ScheduledMailing_id is NULL
+GROUP BY SD.Study_id, SD.Survey_id, SP.SampleSet_id, SM.MailingStep_id, SM.Methodology_id, ms.MailingStepMethod_id, SM.datGenerate
+
+-- list of everybody who was sampled in the same sampleset(s)
+select distinct ams.Study_id, ams.Survey_id, ams.SampleSet_id, ams.MailingStep_id, ams.Methodology_id, ams.MailingStepMethod_id, sp.samplepop_id
+into #ACOEverybody
+from #ACOMailingSteps ams
+inner join samplepop sp on ams.sampleset_id=sp.sampleset_id
+
+-- delete people who have already returned the survey:
+delete ae
+from #ACOEverybody ae
+inner join questionform qf on ae.samplepop_id=qf.samplepop_id
+where qf.datReturned is not null
+
+-- delete people with terminating dispositions
+delete ae
+from #ACOEverybody ae
+inner join dispositionlog dl on ae.samplepop_id=dl.samplepop_id
+where dl.Disposition_id in (
+			  2 --	I do not wish to participate in this Survey
+			, 3 --	The intended respondent has passed on
+			, 4 --	The intended respondent is incapacitated and cannot participate in this Survey
+			, 8 --	The Survey is not applicable to me
+			,10 --	Language Barrier
+			,11 --  Partial
+			,13 --	Complete and Valid Survey
+			,19 --	Complete and Valid Survey by Mail
+			,20 --	Complete and Valid Survey by Phone
+			,24 --	The intended respondent is institutionalized
+			)
+
+-- if this is a mail step, "Non Response Bad Address" is a terminating disposition
+delete ae
+from #ACOEverybody ae
+inner join MailingStepMethod msm on ae.MailingStepMethod_id=msm.MailingStepMethod_id
+inner join dispositionlog dl on ae.samplepop_id=dl.samplepop_id
+where msm.MailingStepMethod_nm = 'Mail' and dl.disposition_id=5
+
+-- if this is a phone step, "Non Response Bad Phone" is a terminating disposition
+delete ae
+from #ACOEverybody ae
+inner join MailingStepMethod msm on ae.MailingStepMethod_id=msm.MailingStepMethod_id
+inner join dispositionlog dl on ae.samplepop_id=dl.samplepop_id
+where msm.MailingStepMethod_nm = 'Phone' and dl.disposition_id in (14,16)
+
+
+-- of the people who are scheduled to generate, we want to find the datGenerate that most of them use
+delete ams
+from #ACOMailingSteps ams
+inner join (select sampleset_id, mailingstep_id, max(cnt) as maxcnt 
+			from #ACOMailingSteps 
+			group by sampleset_id, mailingstep_id) mx 
+		on ams.mailingstep_id=mx.mailingstep_id and ams.sampleset_id=mx.sampleset_id
+where ams.cnt <> mx.maxcnt
+
+-- delete people who already have the mailing step scheduled (whether that be tonight or some other time)
+delete ae
+from #ACOEverybody ae
+inner join scheduledmailing schm on ae.samplepop_id=schm.samplepop_id and ae.mailingstep_id=schm.mailingstep_id
+
+-- throw the rest of these bad boys into scheduled mailing
+insert into scheduledmailing (MAILINGSTEP_ID,SAMPLEPOP_ID,SENTMAIL_ID,METHODOLOGY_ID,DATGENERATE)
+select ae.MAILINGSTEP_ID,ae.SAMPLEPOP_ID,NULL,ae.METHODOLOGY_ID,min(ams.DATGENERATE)
+from #ACOEverybody ae
+inner join #ACOMailingSteps ams on ams.mailingstep_id=ae.mailingstep_id and ams.sampleset_id=ae.sampleset_id
+group by ae.MAILINGSTEP_ID,ae.SAMPLEPOP_ID,ae.METHODOLOGY_ID
+
+if @doLogging = 1
+begin
+	select qf.questionform_id, qf.survey_id, qf.samplepop_id, qf.datReturned, qf.unusedreturn_id, qf.datunusedreturn, qf.datresultsimported, qf.bitcomplete 
+	into #Audit2
+	from questionform qf
+	where questionform_id in (select questionform_id from #audit)
+
+	Insert into [temp_CheckForCAHPSIncompletesAudit] select a.*, b.datReturned as newDatReturned, b.unusedreturn_id as newUnusedReturn_id, b.datunusedreturn as newDatUnusedReturn, b.datresultsimported as newDatResultsImported
+		, b.bitcomplete as newBitComplete, @LogTime
+	from #Audit a
+	inner join #audit2 b on a.questionform_id=b.questionform_id
+	where isnull(a.datReturned, '1/1/1910') <> isnull(b.datReturned, '1/1/1910') 
+	or isnull(a.unusedreturn_id,-1) <> isnull(b.unusedreturn_id,-1)
+	or isnull(a.datunusedreturn, '1/1/1910') <> isnull(b.datunusedreturn, '1/1/1910') 
+	or isnull(a.datresultsimported, '1/1/1910') <> isnull(b.datresultsimported, '1/1/1910') 
+	or a.bitcomplete <> b.bitcomplete
+	or (a.bitcomplete is null and b.bitcomplete is not null)
+	or (b.bitcomplete is null and a.bitcomplete is not null)
+
+end
 
 GO
