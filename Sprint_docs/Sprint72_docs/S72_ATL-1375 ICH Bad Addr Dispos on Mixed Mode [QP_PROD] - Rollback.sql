@@ -26,3 +26,8 @@ declare @maxseed int
 select @maxseed=max(SurveyTypeDispositionID) from SurveyTypeDispositions
 DBCC CHECKIDENT ('dbo.SurveyTypeDispositions', RESEED, @maxseed);
 GO
+
+update SurveyTypeDispositions set Hierarchy = 13 where surveytype_id = 8 and Disposition_id in (14,16)
+update SurveyTypeDispositions set Hierarchy = 14 where surveytype_id = 8 and Disposition_id = 5
+update SurveyTypeDispositions set Hierarchy = 15 where surveytype_id = 8 and Disposition_id in (12,25)
+GO

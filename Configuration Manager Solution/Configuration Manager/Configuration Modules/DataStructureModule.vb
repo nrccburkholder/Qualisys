@@ -1,3 +1,4 @@
+Imports Nrc.Qualisys.Library.DataProvider
 Imports Nrc.Qualisys.Library
 Public Class DataStructureModule
     Inherits ConfigurationModule
@@ -13,6 +14,12 @@ Public Class DataStructureModule
 
         If ConcurrencyManager.AcquireLock(lockCategory, studyId, CurrentUser.UserName, Environment.MachineName, Process.GetCurrentProcess.ProcessName) Then
             studyDataStruct.GO(studyId, True)
+
+            'Call LD_StudyTables from here in case it didn't work inside COM object
+            Dim studyProvider As StudyProvider
+            studyProvider = StudyProvider.Instance()
+            studyProvider.SetUpStudyOwnedTables(studyId)
+
             ConcurrencyManager.ReleaseLock(lockCategory, studyId)
         Else
             Dim lock As ConcurrencyLock = ConcurrencyManager.ViewLock(lockCategory, studyId)

@@ -24,6 +24,7 @@ Namespace DataProvider
         Public MustOverride Function AllowDelete(ByVal studyId As Integer) As Boolean
         Public MustOverride Function InsertStudy(ByVal instance As Study) As Integer
         Public MustOverride Sub UpdateStudy(ByVal instance As Study)
+        Public MustOverride Sub SetUpStudyOwnedTables(ByVal studyId As Integer)
 
         Protected NotInheritable Class ReadOnlyAccessor
             Private Sub New()
