@@ -16,9 +16,9 @@ Public Class DataStructureModule
             studyDataStruct.GO(studyId, True)
 
             'Call LD_StudyTables from here in case it didn't work inside COM object
-            Dim studyProvider As StudyProvider
-            studyProvider = StudyProvider.Instance()
-            studyProvider.SetUpStudyOwnedTables(studyId)
+            StudyProvider.Instance().SetUpStudyOwnedTables(studyId)
+            'Call LD_StudyTables again in case first time didn't take
+            StudyProvider.Instance().SetUpStudyOwnedTables(studyId)
 
             ConcurrencyManager.ReleaseLock(lockCategory, studyId)
         Else
