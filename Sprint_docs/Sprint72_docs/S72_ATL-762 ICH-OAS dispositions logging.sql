@@ -656,7 +656,7 @@ AND ACODisposition = 34
 			--(SELECT Disposition_ID FROM SurveyTypeDispositions WHERE SurveyType_ID = 8 and Value = tr.ACODisposition),
 			case when bitComplete = 1 then 19 --Completed Mail Questionnaire
 				else 11 --Breakoff
-			end
+			end,
 			receipttype_id, @LogTime, 'CheckForCAHPSIncompletes'
 			, tr.DaysFromFirst, tr.DaysFromCurrent --	S43 US8
 			from #TodaysReturns tr
