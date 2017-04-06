@@ -170,4 +170,10 @@ Public Class StudyProvider
 
     End Sub
 
+    Public Overrides Sub SetUpStudyOwnedTables(studyId As Integer)
+
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SetUpStudyOwnedTables, studyId, 0)
+        ExecuteNonQuery(cmd)
+
+    End Sub
 End Class

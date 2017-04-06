@@ -49,23 +49,23 @@ declare @Study varchar(10) = 'S' + convert(varchar, @TargetStudy_id)
 
 --select * from [QLoader].[QP_Load].dbo.sysusers where name = 'SSSSS' --schema exists
 
-declare @sql nvarchar(1000)
+--declare @sql nvarchar(1000)
 
-declare @version nvarchar(200) = ''
-select @version = convert(nvarchar,lsVersion) from openquery(QLoader,'SELECT @@Version as lsVersion')
-if (@version like '%SQL Server% 2000 %') 
-	select @sql = 'IF NOT EXISTS (SELECT * FROM Master.dbo.sysLogins WHERE name='''+@Study+
-					''') exec sp_addlogin N'''+@Study+''', null, ''master'', ''us_english'' '+
-  				  'if not exists (select * from dbo.sysusers where name='''+@Study+
-					''' and uid < 16382)	EXEC sp_grantdbaccess N'''+@Study+''' '
-else
-	select @sql =  ' IF NOT EXISTS (SELECT * FROM sys.schemas where name = '''+@Study+
-					''') BEGIN EXEC sp_executesql N''Create Schema '+@Study+''' END'
+--declare @version nvarchar(200) = ''
+--select @version = convert(nvarchar,lsVersion) from openquery(QLoader,'SELECT @@Version as lsVersion')
+--if (@version like '%SQL Server% 2000 %') 
+--	select @sql = 'IF NOT EXISTS (SELECT * FROM Master.dbo.sysLogins WHERE name='''+@Study+
+--					''') exec sp_addlogin N'''+@Study+''', null, ''master'', ''us_english'' '+
+--  				  'if not exists (select * from dbo.sysusers where name='''+@Study+
+--					''' and uid < 16382)	EXEC sp_grantdbaccess N'''+@Study+''' '
+--else
+--	select @sql =  ' IF NOT EXISTS (SELECT * FROM sys.schemas where name = '''+@Study+
+--					''') BEGIN EXEC sp_executesql N''Create Schema '+@Study+''' END'
 
-exec (@sql) at [QLoader];
+--exec (@sql) at [QLoader];
 
-INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
-     VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo,  'Study Owned Schema added on QP_Load for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+--INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
+--     VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo,  'Study Owned Schema added on QP_Load for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 --QP_Prod (SQL Server 2008)
 
@@ -98,14 +98,14 @@ BEGIN
 --select * from [QLoader].[QP_Load].dbo.sysobjects where uid = 4192 and name = 'Encounter' --table exists
 --select * from [QLoader].[QP_Load].dbo.syscolumns where id = 1780931127 --field exists
 
-	exec ('if not exists (select * from dbo.sysobjects o inner join dbo.sysusers u '+
-			'on u.uid = o.uid where u.name = '''+@Study+''' and o.name = '''+@Table+
-			'_LOAD'') create table qp_Load.'+@Study+'.'+@Table+
-			'_LOAD (DataFile_id int NOT NULL, DF_id int NOT NULL)') 
-			at [QLoader];
+	--exec ('if not exists (select * from dbo.sysobjects o inner join dbo.sysusers u '+
+	--		'on u.uid = o.uid where u.name = '''+@Study+''' and o.name = '''+@Table+
+	--		'_LOAD'') create table qp_Load.'+@Study+'.'+@Table+
+	--		'_LOAD (DataFile_id int NOT NULL, DF_id int NOT NULL)') 
+	--		at [QLoader];
 
-		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
-			 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, @Table+'_Load Study Owned Table added on QP_Load for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+	--	INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
+	--		 VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, @Table+'_Load Study Owned Table added on QP_Load for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 --QP_Prod
 
@@ -174,18 +174,18 @@ BEGIN
 --select * from [QLoader].[QP_Load].dbo.sysobjects where uid = 4193 and name = 'Encounter_Load' --table exists
 --select * from [QLoader].[QP_Load].dbo.syscolumns where id = 2052932096 --field exists
 
-		Exec('IF NOT EXISTS(select * from syscolumns c inner join'+
-			' sysobjects o on o.id = c.id inner join'+
-			' sysusers u on u.uid = o.uid'
-			+' where u.name = '''+@Study+''' and o.name = '''+@Table+'_Load'' and c.name = '''+@Field+
-			''') ALTER TABLE ' + @study + '.' + @Table+'_Load'+
-			' ADD ' + @Field + ' ' + @FieldTypeString + @FieldLengthString+
-			@ConstraintString)
-		At [QLoader]
+		--Exec('IF NOT EXISTS(select * from syscolumns c inner join'+
+		--	' sysobjects o on o.id = c.id inner join'+
+		--	' sysusers u on u.uid = o.uid'
+		--	+' where u.name = '''+@Study+''' and o.name = '''+@Table+'_Load'' and c.name = '''+@Field+
+		--	''') ALTER TABLE ' + @study + '.' + @Table+'_Load'+
+		--	' ADD ' + @Field + ' ' + @FieldTypeString + @FieldLengthString+
+		--	@ConstraintString)
+		--At [QLoader]
 
-			IF (@IsFieldKey = 1)	
-				INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
-						VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, @Table+'_Load.'+@Field+' Key Field added on QP_Load for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
+		--	IF (@IsFieldKey = 1)	
+		--		INSERT INTO [RTPhoenix].[TemplateLog]([TemplateID], [TemplateJobID], [TemplateLogEntryTypeID], [Message] ,[LoggedBy] ,[LoggedAt])
+		--				VALUES (@Template_ID, @TemplateJob_ID, @TemplateLogEntryInfo, @Table+'_Load.'+@Field+' Key Field added on QP_Load for study_id '+convert(varchar,@TargetStudy_id), @user, GetDate())
 
 --QP_Prod
 
@@ -247,12 +247,12 @@ BEGIN
 --For QP_Load
 --	add [TABLE]_LOAD INDEXes
 
-	EXEC('if exists(SELECT * FROM sysindexes WHERE name=''IDX_'+@study+@Table+'DataFile'')'+
-		' DROP INDEX '+@study+'.'+@Table+'_Load.IDX_'+@study+@Table+'DataFile')
-		At [QLoader]
-	EXEC('CREATE NONCLUSTERED INDEX [IDX_'+@study+@Table+'DataFile] ON '+@study+'.'+@Table+'_Load'+
-		' (	[DataFile_id] ASC,	[DF_id] ASC ) WITH FILLFACTOR = 90 ON [PRIMARY]')
-		At [QLoader]
+	--EXEC('if exists(SELECT * FROM sysindexes WHERE name=''IDX_'+@study+@Table+'DataFile'')'+
+	--	' DROP INDEX '+@study+'.'+@Table+'_Load.IDX_'+@study+@Table+'DataFile')
+	--	At [QLoader]
+	--EXEC('CREATE NONCLUSTERED INDEX [IDX_'+@study+@Table+'DataFile] ON '+@study+'.'+@Table+'_Load'+
+	--	' (	[DataFile_id] ASC,	[DF_id] ASC ) WITH FILLFACTOR = 90 ON [PRIMARY]')
+	--	At [QLoader]
 
 --For QP_Prod
 --  add [TABLE]_LOAD INDEXes
@@ -300,10 +300,18 @@ BEGIN
 
 	exec ('Select top 1 '''' as ''QP_Prod ' + @study + '.' + @table +''',* from '+@study+'.'+@table)
 	exec ('Select top 1 '''' as ''QP_Prod ' + @study + '.' + @table +'_Load'',* from '+@study+'.'+@table+'_Load')
-	exec ('Select top 1 '''' as ''QP_Load ' + @study + '.' + @table +'_Load'',* from '+@study+'.'+@table+'_Load')
-	At [QLoader]
+	--exec ('Select top 1 '''' as ''QP_Load ' + @study + '.' + @table +'_Load'',* from '+@study+'.'+@table+'_Load')
+	--At [QLoader]
 
 END --TABLE LOOP
+
+EXEC [dbo].[LD_StudyTables] @TargetStudy_id, 0
+
+EXEC ('Select top 1 '''' as ''QP_Load ' + @study + '.' + @table +'_Load'',* from QLoader.QP_Load.'+@study+'.'+@table+'_Load')
+--At [QLoader]
+
+EXEC ('Select top 1 '''' as ''QP_DataLoad ' + @study + '.' + @table +'_Load'',* from Pervasive.QP_DataLoad.'+@study+'.'+@table+'_Load')
+--At [Pervasive]
 
 --For QP_Prod
 --	add BIG_VIEW all <TABLE><FIELD> combinations
