@@ -654,14 +654,15 @@ AND ACODisposition = 34
 			, DaysFromFirst, DaysFromCurrent)
 			select sentmail_id, samplepop_id, 
 			--(SELECT Disposition_ID FROM SurveyTypeDispositions WHERE SurveyType_ID = 8 and Value = tr.ACODisposition),
-			case when bitComplete = 1 then 19 --Completed Mail Questionnaire
-				else 11 --Breakoff
+			case when bitComplete = 0 then 11				--Breakoff
+				when STRMAILINGSTEP_NM = 'Phone' then 20	--Completed Phone Interview
+				else 19										--Completed Mail Questionnaire
 			end,
 			receipttype_id, @LogTime, 'CheckForCAHPSIncompletes'
 			, tr.DaysFromFirst, tr.DaysFromCurrent --	S43 US8
 			from #TodaysReturns tr
 			where Surveytype_dsc in ('ICHCAHPS','OAS CAHPS')
-			AND strMailingStep_nm in ('1st Survey','2nd Survey')
+			AND strMailingStep_nm in ('1st Survey','2nd Survey','Phone')
 			AND (bitComplete = 1 OR bitETLThisReturn = 1)
 
 			--end ATL-762 ICH OAS dispositions logging
