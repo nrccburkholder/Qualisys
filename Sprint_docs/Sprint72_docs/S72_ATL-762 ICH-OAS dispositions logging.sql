@@ -137,7 +137,7 @@ inner join #ACOQF qf on tr.QuestionForm_id=qf.QuestionForm_id
 -- write the complete and partials
 insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_id,datLogged,LoggedBy
 , DaysFromFirst, DaysFromCurrent)
-select sentmail_id, samplepop_id, (SELECT Disposition_ID FROM ACOCAHPSDispositions WHERE ACOCAHPSValue = tr.ACODisposition),receipttype_id, @LogTime, 'CheckForCAHPSIncompletes'
+select sentmail_id, samplepop_id, (SELECT Disposition_ID FROM SurveyTypeDispositions WHERE SurveyType_ID = 10 and Value = tr.ACODisposition),receipttype_id, @LogTime, 'CheckForCAHPSIncompletes'
 , tr.DaysFromFirst, tr.DaysFromCurrent --	S43 US8
 from #TodaysReturns tr
 where Surveytype_dsc in ('ACOCAHPS','PQRS CAHPS')
@@ -646,6 +646,25 @@ AND ACODisposition = 34
 			where rc.ResponseCount=0			
 		
 			/* end addition */
+
+			--ATL-762 ICH OAS dispositions logging
+
+			-- write the complete and partials
+			insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_id,datLogged,LoggedBy
+			, DaysFromFirst, DaysFromCurrent)
+			select sentmail_id, samplepop_id, 
+			--(SELECT Disposition_ID FROM SurveyTypeDispositions WHERE SurveyType_ID = 8 and Value = tr.ACODisposition),
+			case when bitComplete = 1 then 19 --Completed Mail Questionnaire
+				else 11 --Breakoff
+			end
+			receipttype_id, @LogTime, 'CheckForCAHPSIncompletes'
+			, tr.DaysFromFirst, tr.DaysFromCurrent --	S43 US8
+			from #TodaysReturns tr
+			where Surveytype_dsc in ('ICHCAHPS','OAS CAHPS')
+			AND strMailingStep_nm in ('1st Survey','2nd Survey')
+			AND (bitComplete = 1 OR bitETLThisReturn = 1)
+
+			--end ATL-762 ICH OAS dispositions logging
 
 	-- HCAHPS and Hospice CAHPS processing - if a blank return comes in, continue data collection protocol
 	delete from #QFResponseCount
