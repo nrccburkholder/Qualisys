@@ -1,0 +1,20 @@
+﻿CREATE TABLE [ARCHIVE].[SAMPLEPOP] (
+    [SAMPLEPOP_ID]  INT      NOT NULL,
+    [SAMPLESET_ID]  INT      NOT NULL,
+    [STUDY_ID]      INT      NULL,
+    [POP_ID]        INT      NOT NULL,
+    [QPC_TIMESTAMP] INT      NULL,
+    [bitBadAddress] BIT      NOT NULL,
+    [bitBadPhone]   BIT      NOT NULL,
+    [ArchiveRunID]  INT      NULL,
+    [Recover]       BIT      CONSTRAINT [DF_SAMPLEPOP_Recover] DEFAULT ((0)) NOT NULL,
+    [RecoverDT]     DATETIME NULL,
+    CONSTRAINT [PK_SAMPLEPOP] PRIMARY KEY CLUSTERED ([SAMPLEPOP_ID] ASC) WITH (FILLFACTOR = 90)
+);
+
+
+GO
+CREATE NONCLUSTERED INDEX [ix_SAMPLEPOP_Recover_includes]
+    ON [ARCHIVE].[SAMPLEPOP]([Recover] ASC)
+    INCLUDE([SAMPLEPOP_ID]) WITH (FILLFACTOR = 90);
+

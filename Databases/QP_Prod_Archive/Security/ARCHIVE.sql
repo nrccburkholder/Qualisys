@@ -1,0 +1,3 @@
+﻿CREATE SCHEMA [ARCHIVE]
+    AUTHORIZATION [dbo];
+

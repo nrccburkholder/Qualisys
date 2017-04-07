@@ -14,7 +14,7 @@
     </RootPath>
     <RootNamespace>QP_Prod_Extracts</RootNamespace>
     <AssemblyName>QP_Prod_Extracts</AssemblyName>
-    <ModelCollation>1033, CI</ModelCollation>
+    <ModelCollation>1033,CI</ModelCollation>
     <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -23,6 +23,8 @@
     <SqlServerVerification>False</SqlServerVerification>
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseSet>True</TargetDatabaseSet>
+    <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
+    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -57,5 +59,51 @@
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="QualisysStudy\" />
+    <Folder Include="QualisysStudy\Tables\" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+    <Folder Include="Security\" />
+    <Folder Include="QualisysStudy\Functions\" />
+    <Folder Include="QualisysStudy\Stored Procedures\" />
+    <Folder Include="Database Triggers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="QualisysStudy\Tables\IncludedColumns.sql" />
+    <Build Include="QualisysStudy\Tables\ExcludedSurvey.sql" />
+    <Build Include="QualisysStudy\Tables\ExtractLogDetail.sql" />
+    <Build Include="QualisysStudy\Tables\ExtractLog.sql" />
+    <Build Include="QualisysStudy\Tables\Subscriber.sql" />
+    <Build Include="QualisysStudy\Tables\Schedule.sql" />
+    <Build Include="QualisysStudy\Tables\RunType.sql" />
+    <Build Include="QualisysStudy\Tables\ReportingPeriodConfig.sql" />
+    <Build Include="QualisysStudy\Tables\Queue.sql" />
+    <Build Include="QualisysStudy\Tables\ProcessingQueue.sql" />
+    <Build Include="QualisysStudy\Tables\OnDemandRequest.sql" />
+    <Build Include="QualisysStudy\Tables\IncludeSurvey.sql" />
+    <Build Include="QualisysStudy\Tables\ExtractClientStudy.sql" />
+    <Build Include="dbo\Tables\DatabaseAudit.sql" />
+    <Build Include="QualisysStudy\Tables\IncludeSurveyType.sql" />
+    <Build Include="Security\server_audit.sql" />
+    <Build Include="QualisysStudy\Functions\fn_GetDateRange.sql" />
+    <Build Include="QualisysStudy\Functions\fn_FindStartEndDates.sql" />
+    <Build Include="QualisysStudy\Stored Procedures\GetQualisysStudyExtract.sql" />
+    <Build Include="QualisysStudy\Stored Procedures\GetCAHPSDispositionCodes.sql" />
+    <Build Include="QualisysStudy\Stored Procedures\BuildEmailBody.sql" />
+    <Build Include="QualisysStudy\Stored Procedures\GetExtractLogDetails2.sql" />
+    <Build Include="QualisysStudy\Stored Procedures\InsertExtractLog.sql" />
+    <Build Include="QualisysStudy\Stored Procedures\AddClientToProcessingQueue.sql" />
+    <Build Include="QualisysStudy\Stored Procedures\GetEmailSubscribersByClientID.sql" />
+    <Build Include="QualisysStudy\Stored Procedures\GetEmailSubscribers.sql" />
+    <Build Include="QualisysStudy\Stored Procedures\GetQuestionsByStudy.sql" />
+    <Build Include="QualisysStudy\Stored Procedures\GetQuestionsByClient.sql" />
+    <Build Include="QualisysStudy\Stored Procedures\UpdateExtractLogErrorMsg.sql" />
+    <Build Include="QualisysStudy\Stored Procedures\UpdateExtractLog.sql" />
+    <Build Include="QualisysStudy\Stored Procedures\GetSamplePopByStudy.sql" />
+    <Build Include="QualisysStudy\Stored Procedures\GetRequestsByQueue.sql" />
+    <Build Include="QualisysStudy\Stored Procedures\GetExtractLogDetailSummary.sql" />
+    <Build Include="QualisysStudy\Stored Procedures\GetAllRequests.sql" />
+    <Build Include="Database Triggers\DatabaseAuditTrigger.sql" />
+    <Build Include="Security\QualisysStudy.sql" />
   </ItemGroup>
 </Project>
