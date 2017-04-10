@@ -46,7 +46,7 @@ from dbo.DefaultCriteriaClause_Removed dcc
 	inner join dbo.DefaultCriteriaStmt dcs on dcc.DefaultCriteriaStmt_id = dcs.DefaultCriteriaStmt_id
 	inner join dbo.CriteriaStmt cs on cs.strCriteriaStmt_Nm = dcs.strCriteriaStmt_NM
 	inner join dbo.CriteriaClause cc on cs.CRITERIASTMT_ID = cc.CRITERIASTMT_ID and dcc.CriteriaPhrase_ID = cc.CriteriaPhrase_ID
-	where dcs.strCriteriaSTMT_NM = 'DQ_SrgCd' and cc.INTOPERATOR = 1 and dcc.intOperator <> 1
+	where dcs.strCriteriaSTMT_NM = 'DQ_SrgCd' and cc.INTOPERATOR = 1 and cc.CRITERIAPHRASE_ID = 1 
 
 INSERT INTO [dbo].[CRITERIAINLIST]
            ([CRITERIACLAUSE_ID]
