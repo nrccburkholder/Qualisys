@@ -29,6 +29,11 @@ replace(convert(nvarchar(max),strCriteriaString), ')', 'AND ENCOUNTERHCPCSLvl2Cd
 from dbo.DefaultCriteriaStmt
 where strCriteriaSTMT_NM = 'DQ_SrgCd'
 
+DELETE
+--select *
+  FROM [dbo].[DefaultCriteriaStmt_Removed]
+	where strCriteriaSTMT_NM = 'DQ_SrgCd'
+
 INSERT INTO [dbo].[DefaultCriteriaClause] 
            ([DefaultCriteriaClause_id]
            ,[DefaultCriteriaStmt_id]
@@ -48,7 +53,13 @@ SELECT [DefaultCriteriaClause_id]
       ,[strHighValue]
   FROM [dbo].[DefaultCriteriaClause_Removed] where DefaultCriteriaStmt_id in
 	(select DefaultCriteriaStmt_id from dbo.DefaultCriteriaStmt where strCriteriaSTMT_NM = 'DQ_SrgCd')
-	and intOperator <> 1
+	and (intOperator <> 1 or CriteriaPhrase_id <> 1)
+
+delete dbo.DefaultCriteriaClause_Removed 
+--select *
+from dbo.DefaultCriteriaClause_Removed dcc
+	inner join dbo.DefaultCriteriaStmt dcs on dcc.DefaultCriteriaStmt_id = dcs.DefaultCriteriaStmt_id
+	where dcs.strCriteriaSTMT_NM = 'DQ_SrgCd' 
 
 declare @DefaultCriteriaClauseId int = -1
 

@@ -48,13 +48,13 @@ SELECT [DefaultCriteriaClause_id]
       ,[strHighValue]
   FROM [dbo].[DefaultCriteriaClause] where DefaultCriteriaStmt_id in
 	(select DefaultCriteriaStmt_id from dbo.DefaultCriteriaStmt where strCriteriaSTMT_NM = 'DQ_SrgCd')
-	and intOperator <> 1
+	and (intOperator <> 1 or CriteriaPhrase_id <> 1)
 
 delete 
 --select *
 from dbo.DefaultCriteriaClause where DefaultCriteriaStmt_id in
 (select DefaultCriteriaStmt_id from dbo.DefaultCriteriaStmt where strCriteriaSTMT_NM = 'DQ_SrgCd')
-and intOperator <> 1
+and (intOperator <> 1 or CriteriaPhrase_id <> 1)
 
 INSERT INTO [dbo].[DefaultCriteriaStmt_Removed]
            ([DefaultCriteriaStmt_id]

@@ -31,7 +31,7 @@ delete
 --select *
 from dbo.CriteriaClause where CriteriaStmt_id in
 (select CriteriaStmt_id from dbo.CriteriaStmt where strCriteriaSTMT_NM = 'DQ_SrgCd')
-and intOperator <> 1
+and (intOperator <> 1 or CRITERIAPHRASE_ID <> 1)
 
 update dbo.CriteriaStmt set strCriteriaString = 
 --select strCriteriaString,
