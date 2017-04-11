@@ -47,26 +47,45 @@ Function OASEligibleSurg(strCPT4,strCPT4_2,strCPT4_3,strHCPCS,strHCPCS_2,strHCPC
     Dim strSQL
     Dim objServiceRS
     
-    strSQL = "select CptCode from OasExcludedCptCode where CptCode = ''" & strCPT4 & "'' union 
-			select CptCode from OasExcludedCptCode where CptCode = ''" & strCPT4_2 & "'' union 
-			select CptCode from OasExcludedCptCode where CptCode = ''" & strCPT4_3 & "'' union 
-			select CptCode from OasExcludedCptCode where CptCode = ''" & strHCPCS & "'' union 
-			select CptCode from OasExcludedCptCode where CptCode = ''" & strHCPCS_2 & "'' union 
-			select CptCode from OasExcludedCptCode where CptCode = ''" & strHCPCS_3 & "'' "
+	Dim _OasEligibleSurg
+	_OasEligibleSurg = "0"
 
+    strSQL = "select CptCode from OasExcludedCptCode where CptCode = ''" & strCPT4 & "''"
     Set objServiceRS = mobjConn.Execute(strSQL)
-    
-    ''Get the Service
-    If objServiceRS.EOF Then
-        OASEligibleSurg = "0"
-    Else
-        OASEligibleSurg = "1"
+    If (strCPT4 >= "10021" And strCPT4 <= "69990" and objServiceRS.EOF) Then
+        _OASEligibleSurg = "1"
+    End If
+
+    strSQL = "select CptCode from OasExcludedCptCode where CptCode = ''" & strCPT4_2 & "''"
+    Set objServiceRS = mobjConn.Execute(strSQL)
+    If (strCPT4_2 >= "10021" And strCPT4_2 <= "69990" and objServiceRS.EOF) Then
+        _OASEligibleSurg = "1"
+    End If
+
+    strSQL = "select CptCode from OasExcludedCptCode where CptCode = ''" & strCPT4_3 & "''"
+    Set objServiceRS = mobjConn.Execute(strSQL)
+    If (strCPT4_3 >= "10021" And strCPT4_3 <= "69990" And objServiceRS.EOF) Then
+        _OASEligibleSurg = "1"
     End If
     
+	if (strHCPCS = "G0104" Or strHCPCS = "GO105" Or strHCPCS = "GO121" Or strHCPCS = "G0260")
+		_OASEligibleSurg = "1"
+	End If
+
+	if (strHCPCS_2 = "G0104" Or strHCPCS_2 = "GO105" Or strHCPCS_2 = "GO121" Or strHCPCS_2 = "G0260")
+		_OASEligibleSurg = "1"
+	End If
+
+	if (strHCPCS_3 = "G0104" Or strHCPCS_3 = "GO105" Or strHCPCS_3 = "GO121" Or strHCPCS_3 = "G0260")
+		_OASEligibleSurg = "1"
+	End If
+
     ''Cleanup
     objServiceRS.Close
     Set objServiceRS = Nothing
     
+	OASEligibleSurg = _OASEligibleSurg
+
 End Function'
 
 if not exists(select 1 from dbo.functions where strFunction_nm = 'OASEligibleSurg')
