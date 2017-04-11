@@ -19,3 +19,7 @@ Sprint 72 SQLCMD Script for Prime/Gator/NRC10
 :r "\ATLASRelease71&72\Sprint72_docs\S72_ATL-1080 Backpopulate existing OAS surveys DQ rules.sql"
 
 :r "\ATLASRelease71&72\Sprint72_docs\S72_ATL-1079 Modify default DQ rule.sql"
+
+:r "\ATLASRelease71&72\Sprint72_docs\S72_ATL-762 ICH-OAS dispositions logging.sql"
+
+:r "\ATLASRelease71&72\Sprint72_docs\S72_ATL-1375 ICH Bad Addr Dispos on Mixed Mode [QP_PROD].sql"
