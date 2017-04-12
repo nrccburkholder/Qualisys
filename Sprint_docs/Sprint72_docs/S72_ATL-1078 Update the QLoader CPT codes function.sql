@@ -80,6 +80,10 @@ Function OASEligibleSurg(strCPT4,strCPT4_2,strCPT4_3,strHCPCS,strHCPCS_2,strHCPC
 		_OASEligibleSurg = "1"
 	End If
 
+	If (strCPT4 = "" And strCPT4_2 = "" And strCPT4_3 = "" And strHCPCS = "" And strHCPCS_2 = "" And strHCPCS_3 = "")
+		_OASEligibleSurg = "1"
+	End If
+
     ''Cleanup
     objServiceRS.Close
     Set objServiceRS = Nothing
