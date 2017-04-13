@@ -45,7 +45,7 @@ INSERT INTO [dbo].[DefaultCriteriaClause]
            ,[intOperator]
            ,[strLowValue]
            ,[strHighValue])
-SELECT [DefaultCriteriaStmt_id]
+SELECT DISTINCT [DefaultCriteriaStmt_id]
       ,[CriteriaPhrase_id]
       ,[strTable_nm]
       ,[Field_id]
