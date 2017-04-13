@@ -11,6 +11,10 @@ CREATE PROCEDURE RTPhoenix.MakeSurveysFromTemplate
 Use [QP_Prod]
 GO
 
+if object_id('[RTPhoenix].[MakeSurveysFromTemplate]') is not null
+	DROP PROCEDURE [RTPhoenix].[MakeSurveysFromTemplate]
+GO
+
 CREATE PROCEDURE [RTPhoenix].[MakeSurveysFromTemplate]
 	@TemplateJob_ID int
 AS

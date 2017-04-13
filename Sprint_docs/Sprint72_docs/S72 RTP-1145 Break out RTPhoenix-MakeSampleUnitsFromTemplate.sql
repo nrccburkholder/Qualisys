@@ -11,6 +11,10 @@ CREATE PROCEDURE RTPhoenix.MakeSampleUnitsFromTemplate
 Use [QP_Prod]
 GO
 
+if object_id('[RTPhoenix].[MakeSampleUnitsFromTemplate]') is not null
+	DROP PROCEDURE [RTPhoenix].[MakeSampleUnitsFromTemplate]
+GO
+
 CREATE PROCEDURE [RTPhoenix].[MakeSampleUnitsFromTemplate]
 	@TemplateJob_ID int
 AS

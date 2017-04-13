@@ -11,6 +11,10 @@ CREATE PROCEDURE RTPhoenix.MakeStudyFromTemplate
 Use [QP_Prod]
 GO
 
+if object_id('[RTPhoenix].[MakeStudyFromTemplate]') is not null
+	DROP PROCEDURE [RTPhoenix].[MakeStudyFromTemplate]
+GO
+
 CREATE PROCEDURE [RTPhoenix].[MakeStudyFromTemplate]
 	@TemplateJob_ID int
 AS

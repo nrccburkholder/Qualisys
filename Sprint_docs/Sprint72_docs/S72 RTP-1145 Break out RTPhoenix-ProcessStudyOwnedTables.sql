@@ -11,6 +11,10 @@ CREATE PROCEDURE RTPhoenix.ProcessStudyOwnedTables
 Use [QP_Prod]
 GO
 
+if object_id('[RTPhoenix].[ProcessStudyOwnedTables]') is not null
+	DROP PROCEDURE [RTPhoenix].[ProcessStudyOwnedTables]
+GO
+
 CREATE PROCEDURE [RTPhoenix].[ProcessStudyOwnedTables]
 	@TemplateJob_ID int
 AS

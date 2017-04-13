@@ -38,16 +38,14 @@ DELETE
 	where strCriteriaSTMT_NM = 'DQ_SrgCd'
 
 INSERT INTO [dbo].[DefaultCriteriaClause] 
-           ([DefaultCriteriaClause_id]
-           ,[DefaultCriteriaStmt_id]
+           ([DefaultCriteriaStmt_id]
            ,[CriteriaPhrase_id]
            ,[strTable_nm]
            ,[Field_id]
            ,[intOperator]
            ,[strLowValue]
            ,[strHighValue])
-SELECT [DefaultCriteriaClause_id]
-      ,[DefaultCriteriaStmt_id]
+SELECT [DefaultCriteriaStmt_id]
       ,[CriteriaPhrase_id]
       ,[strTable_nm]
       ,[Field_id]
