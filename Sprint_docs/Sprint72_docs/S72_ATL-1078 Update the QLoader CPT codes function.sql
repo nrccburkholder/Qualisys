@@ -25,9 +25,8 @@ Select @QLoaderBox = case strparam_value when 'Development' then 'd-QualLoadSql0
 	from Qualisys.QP_Prod.dbo.QualPro_Params where strparam_nm = 'EnvName'
 
 declare @function nvarchar(max)
-select @function = N'
-''Define the QLoader connection string
-Private Const mkstrQPLoadOASESConn = "driver={SQL Server};server='++@QLoaderBox +N';UID=qpsa;PWD=qpsa;database=QP_Load"
+select @function = N'''Define the QLoader connection string
+Private Const mkstrQPLoadOASESConn = "driver={SQL Server};server=d-QualLoadSql01;UID=qpsa;PWD=qpsa;database=QP_Load"
 Private mobjOASESConn
 
 InitOASESConnection()
@@ -47,48 +46,48 @@ Function OASEligibleSurg(strCPT4,strCPT4_2,strCPT4_3,strHCPCS,strHCPCS_2,strHCPC
     Dim strSQL
     Dim objServiceRS
     
-	Dim _OasEligibleSurg
-	_OasEligibleSurg = "0"
+    Dim LOasEligibleSurg
+    LOasEligibleSurg = "0"
 
     strSQL = "select CptCode from OasExcludedCptCode where CptCode = ''" & strCPT4 & "''"
     Set objServiceRS = mobjOASESConn.Execute(strSQL)
     If (strCPT4 >= "10021" And strCPT4 <= "69990" and objServiceRS.EOF) Then
-        _OASEligibleSurg = "1"
+        LOASEligibleSurg = "1"
     End If
 
     strSQL = "select CptCode from OasExcludedCptCode where CptCode = ''" & strCPT4_2 & "''"
     Set objServiceRS = mobjOASESConn.Execute(strSQL)
     If (strCPT4_2 >= "10021" And strCPT4_2 <= "69990" and objServiceRS.EOF) Then
-        _OASEligibleSurg = "1"
+        LOASEligibleSurg = "1"
     End If
 
     strSQL = "select CptCode from OasExcludedCptCode where CptCode = ''" & strCPT4_3 & "''"
     Set objServiceRS = mobjOASESConn.Execute(strSQL)
     If (strCPT4_3 >= "10021" And strCPT4_3 <= "69990" And objServiceRS.EOF) Then
-        _OASEligibleSurg = "1"
+        LOASEligibleSurg = "1"
     End If
     
-	if (strHCPCS = "G0104" Or strHCPCS = "GO105" Or strHCPCS = "GO121" Or strHCPCS = "G0260")
-		_OASEligibleSurg = "1"
-	End If
+    If (strHCPCS = "G0104" Or strHCPCS = "GO105" Or strHCPCS = "GO121" Or strHCPCS = "G0260") Then
+        LOASEligibleSurg = "1"
+    End If
 
-	if (strHCPCS_2 = "G0104" Or strHCPCS_2 = "GO105" Or strHCPCS_2 = "GO121" Or strHCPCS_2 = "G0260")
-		_OASEligibleSurg = "1"
-	End If
+    If (strHCPCS_2 = "G0104" Or strHCPCS_2 = "GO105" Or strHCPCS_2 = "GO121" Or strHCPCS_2 = "G0260") Then
+        LOASEligibleSurg = "1"
+    End If
 
-	if (strHCPCS_3 = "G0104" Or strHCPCS_3 = "GO105" Or strHCPCS_3 = "GO121" Or strHCPCS_3 = "G0260")
-		_OASEligibleSurg = "1"
-	End If
+    If (strHCPCS_3 = "G0104" Or strHCPCS_3 = "GO105" Or strHCPCS_3 = "GO121" Or strHCPCS_3 = "G0260") Then
+        LOASEligibleSurg = "1"
+    End If
 
-	If (strCPT4 = "" And strCPT4_2 = "" And strCPT4_3 = "" And strHCPCS = "" And strHCPCS_2 = "" And strHCPCS_3 = "")
-		_OASEligibleSurg = "1"
-	End If
+    If (strCPT4 = "" And strCPT4_2 = "" And strCPT4_3 = "" And strHCPCS = "" And strHCPCS_2 = "" And strHCPCS_3 = "") Then
+        LOASEligibleSurg = "1"
+    End If
 
     ''Cleanup
     objServiceRS.Close
     Set objServiceRS = Nothing
     
-	OASEligibleSurg = _OASEligibleSurg
+    OASEligibleSurg = LOASEligibleSurg
 
 End Function'
 
