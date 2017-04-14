@@ -27,17 +27,17 @@ Select @QLoaderBox = case strparam_value when 'Development' then 'd-QualLoadSql0
 declare @function nvarchar(max)
 select @function = N'
 ''Define the QLoader connection string
-Private Const mkstrQPLoadConn = "driver={SQL Server};server='++@QLoaderBox +N';UID=qpsa;PWD=qpsa;database=QP_Load"
-Private mobjConn
+Private Const mkstrQPLoadOASESConn = "driver={SQL Server};server='++@QLoaderBox +N';UID=qpsa;PWD=qpsa;database=QP_Load"
+Private mobjOASESConn
 
-InitConnection()
+InitOASESConnection()
 
-Public Sub InitConnection()
+Public Sub InitOASESConnection()
     
     ''Open the database connection
-    ''If mobjConn Is Nothing Then
-        Set mobjConn = CreateObject("ADODB.connection")
-        mobjConn.Open mkstrQPLoadConn
+    ''If mobjOASESConn Is Nothing Then
+        Set mobjOASESConn = CreateObject("ADODB.connection")
+        mobjOASESConn.Open mkstrQPLoadOASESConn
     ''End If
 
 End Sub
@@ -51,19 +51,19 @@ Function OASEligibleSurg(strCPT4,strCPT4_2,strCPT4_3,strHCPCS,strHCPCS_2,strHCPC
 	_OasEligibleSurg = "0"
 
     strSQL = "select CptCode from OasExcludedCptCode where CptCode = ''" & strCPT4 & "''"
-    Set objServiceRS = mobjConn.Execute(strSQL)
+    Set objServiceRS = mobjOASESConn.Execute(strSQL)
     If (strCPT4 >= "10021" And strCPT4 <= "69990" and objServiceRS.EOF) Then
         _OASEligibleSurg = "1"
     End If
 
     strSQL = "select CptCode from OasExcludedCptCode where CptCode = ''" & strCPT4_2 & "''"
-    Set objServiceRS = mobjConn.Execute(strSQL)
+    Set objServiceRS = mobjOASESConn.Execute(strSQL)
     If (strCPT4_2 >= "10021" And strCPT4_2 <= "69990" and objServiceRS.EOF) Then
         _OASEligibleSurg = "1"
     End If
 
     strSQL = "select CptCode from OasExcludedCptCode where CptCode = ''" & strCPT4_3 & "''"
-    Set objServiceRS = mobjConn.Execute(strSQL)
+    Set objServiceRS = mobjOASESConn.Execute(strSQL)
     If (strCPT4_3 >= "10021" And strCPT4_3 <= "69990" And objServiceRS.EOF) Then
         _OASEligibleSurg = "1"
     End If
