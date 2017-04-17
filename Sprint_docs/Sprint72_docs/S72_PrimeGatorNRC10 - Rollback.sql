@@ -15,3 +15,5 @@ Sprint 72 SQLCMD Rollback Script for Prime/Gator/NRC10
 :r "\ATLASRelease71&72\Sprint72_docs\S72_ATL-762 ICH-OAS dispositions logging - Rollback.sql"
 
 :r "\ATLASRelease71&72\Sprint72_docs\S72_ATL-1375 ICH Bad Addr Dispos on Mixed Mode [QP_PROD] - Rollback.sql"
+
+:r "\ATLASRelease71&72\Sprint72_docs\S72_NRCAuthAdmin Branding Email Update - Rollback.sql"
