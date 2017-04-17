@@ -3,7 +3,7 @@
   <metadata>
     <id>Qualisys.NRCAuthAdmin</id>
     <title>NRC Auth Admin</title>
-    <version>2.1.0.0</version>
+    <version>2.1.1.0</version>
     <authors>NRC</authors>
     <description>Graphical user interface to NRCAuth</description>
   </metadata>
