@@ -11,7 +11,7 @@ Public Class EmailFormatter
         Dim html As New System.Web.UI.HtmlTextWriter(writer)
 
         html.Write("Your NRC Health password has been reset.  Below is your user name and temporary password. ")
-        html.Write("Please try to <a href='{0}'>sign in</a>&nbsp;again.  Just follow the provided link, select the appropriate area, and enter your user name and password provided below. ", url)
+        html.Write("Please try to sign in again. <a href='{0}'>{0}</a>&nbsp; Just follow the provided link, select the appropriate area, and enter your user name and password provided below. ", url)
         html.Write("When you login, you will be prompted to change your password. ")
         html.Write("<BR><BR>User name: {0}<BR>Temporary password: {1}", userName, password)
         html.Write("<BR>")
@@ -78,7 +78,7 @@ Public Class EmailFormatter
         html.Write("Upon your initial login, you will be prompted to change your password. ")
         html.Write("<BR>")
         html.Write("<BR>")
-        html.Write("User name: {0}<BR>Temporary password: {2}<BR>Web site: <a href='{1}'>NRC Health Home</a>", userName, url, password)
+        html.Write("User name: {0}<BR>Temporary password: {2}<BR>Web site: <a href='{1}'>{1}</a>", userName, url, password)
         html.Write("<BR>")
         html.Write("<BR>")
         html.Write("Please do not reply to this email. If you continue to have problems logging in, please call Log On Support at (US) 1-800-388-4264 | (CANADA) 1-866-771-8231.")

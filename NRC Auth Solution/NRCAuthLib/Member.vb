@@ -932,7 +932,7 @@ Public Class Member
 
         mail.To = Me.mEmailAddress
         mail.Bcc = AppConfig.Instance.MailFromAccount
-        mail.Subject = "National Research Corporation Log On Information"
+        mail.Subject = "NRC Health Log On Information"
         mail.From = AppConfig.Instance.MailFromAccount
         mail.BodyFormat = System.Web.Mail.MailFormat.Html
         If isReset Then
