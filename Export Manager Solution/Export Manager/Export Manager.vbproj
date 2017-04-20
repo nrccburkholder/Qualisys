@@ -112,9 +112,6 @@
     <Reference Include="DevExpress.XtraGrid.v9.3, Version=9.3.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="NRC">
-      <HintPath>..\..\Referenced Assemblies\NRC.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -524,6 +521,10 @@
     <ProjectReference Include="..\..\NRC Auth Solution\NRCAuthLib\NRCAuthlib.vbproj">
       <Project>{6ed47ceb-9896-4be5-a7f2-cf2a5693f1ed}</Project>
       <Name>NRCAuthlib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NRC Class Library Solution\NRC Class Library.vbproj">
+      <Project>{12bd4b86-4c6e-413c-b1ce-f023aac40bb2}</Project>
+      <Name>NRC Class Library</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\NRC Framework Solution\Nrc.Framework.BusinessLogic\Nrc.Framework.BusinessLogic.vbproj">
       <Project>{c5a6ee1a-d5bf-4059-87cf-aca302979820}</Project>
