@@ -330,7 +330,6 @@
     <Compile Include="WinForms\ThemeInfo.vb">
       <SubType>Code</SubType>
     </Compile>
-    <None Include="NationalResearch.snk" />
     <EmbeddedResource Include="AppUpdater\AppUpdater.resx" />
     <EmbeddedResource Include="AppUpdater\UpdateForm.resx" />
     <EmbeddedResource Include="Web\Web.ContentRegion.bmp" />
