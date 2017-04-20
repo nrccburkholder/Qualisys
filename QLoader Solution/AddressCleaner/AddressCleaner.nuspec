@@ -8,6 +8,6 @@
     <description>EXE to manage Address Cleaning activities</description>
   </metadata>
   <files>
-    <file src="bin\Release\**\*"/>
+    <file src="bin\x86\Release\**\*"/>
   </files>
 </package>
