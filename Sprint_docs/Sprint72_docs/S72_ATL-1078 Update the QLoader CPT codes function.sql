@@ -24,7 +24,7 @@ Select @QLoaderBox = case strparam_value when 'Development' then 'd-QualLoadSql0
 										when 'Production' then 'Mars' end
 	from Qualisys.QP_Prod.dbo.QualPro_Params where strparam_nm = 'EnvName'
 
-declare @function nvarchar(max)
+declare @function nvarchar(4000)
 select @function = N'''Define the QLoader connection string
 Private Const mkstrQPLoadOASESConn = "driver={SQL Server};server=d-QualLoadSql01;UID=qpsa;PWD=qpsa;database=QP_Load"
 Private mobjOASESConn
