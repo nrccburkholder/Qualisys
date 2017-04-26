@@ -359,7 +359,7 @@ Friend Class HHCAHPSRecodeReader
                 Dim dispo As String = RecodeHHDisposition(mReader("HHDispo")).ToString
                 Try
                     'The "Q038727c" column may not always exist.
-                    Return RecodeProxy(mReader("Q038727c"), "Q038726", 2, dispo)
+                    Return RecodeProxy("Q038726", mReader("Q038727c"), dispo, CType(mReader("Method"), String))
 
                 Catch ex As Exception
                     If dispo <> "110" AndAlso dispo <> "120" AndAlso dispo <> "310" Then
@@ -702,41 +702,37 @@ Friend Class HHCAHPSRecodeReader
 
     End Function
 
-    Private Function RecodeProxy(ByVal value As Object, ByVal screenQuestion As String, ByVal skipValue As Integer, ByVal dispo As String) As Object
+    Private Function IsEmpty(ByVal value As Object) As Boolean
+        Return value Is DBNull.Value OrElse String.IsNullOrEmpty(value.ToString()) OrElse CType(value, Integer) = -9
+    End Function
 
-        If dispo <> "110" AndAlso dispo <> "120" AndAlso dispo <> "310" Then
-            Return "M"
-        End If
+    Private Function RecodeProxy(ByVal someoneHelpedQuestion As String, ByVal howTheyHelpedQuestion As Object, ByVal disposition As String, ByVal method As String) As Object
 
-        Dim screen As Object = mReader(screenQuestion)
+        If (disposition = "110" Or disposition = "120" Or disposition = "310") Then
+            Dim howTheyHelpedValue As Integer = CType(howTheyHelpedQuestion, Integer)
 
-        If value Is DBNull.Value OrElse value.ToString.Trim = String.Empty OrElse CType(value, Integer) = -9 Then 'Q34
-            If screen Is DBNull.Value OrElse screen.ToString.Trim = String.Empty OrElse CType(screen, Integer) = -9 Then 'Q33
-                Return "M"
-            Else
-                Return 2 'Indicates CType(screen, Integer) is 1 or 2 'Q34 from QAG
+            If (method = "MAIL ONLY") Then
+                If (IsEmpty(howTheyHelpedQuestion)) Then
+                    If (Not IsEmpty(someoneHelpedQuestion) And CType(someoneHelpedQuestion, Integer) = 1) Then
+                        Return 2
+                    End If
+                Else
+                    If (howTheyHelpedValue = 3) Then
+                        Return 1
+                    Else
+                        Return 2
+                    End If
+                End If
+            ElseIf (method = "PHONE ONLY") Then
+                If howTheyHelpedValue = 3 Then
+                    Return 1
+                Else
+                    Return 2
+                End If
             End If
-        Else 'Indicates CType(value, Integer) Mod 10000 = 3 'Q34 from QAG
-            Return 1
         End If
 
-        'If value Is DBNull.Value OrElse value.ToString.Trim = String.Empty Then
-        '    Return 2
-        'End If
-
-        'If CType(screen, Integer) = skipValue Then
-        '    Return 2
-        'Else
-        '    Dim intVal As Integer = CType(value, Integer)
-        '    'If the value is > 10000 then we need to subtract it off
-        '    If intVal >= 10000 Then intVal -= 10000
-        '    If intVal = 3 Then
-        '        Return 1
-        '    Else
-        '        Return 2
-        '    End If
-        'End If
-
+        Return "M"
     End Function
 
     Private Function RecodeLanguage(ByVal value As Object, ByVal langdesc As Object, ByVal dispo As String) As Object
