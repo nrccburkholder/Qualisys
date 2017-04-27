@@ -159,8 +159,8 @@ Public Class QSIFileMoverService
     Private Sub LogEvent(ByVal eventData As String, ByVal entryType As EventLogEntryType)
 
         'Check the length of the eventData
-        If eventData.Length > 32000 Then
-            eventData = eventData.Substring(0, 32000)
+        If eventData.Length > AppConfig.Params("QSIEventLogMessageLengthMax").IntegerValue Then
+            eventData = eventData.Substring(0, AppConfig.Params("QSIEventLogMessageLengthMax").IntegerValue)
         End If
 
         'Write the log entry
