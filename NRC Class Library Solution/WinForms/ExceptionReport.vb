@@ -135,7 +135,7 @@ Namespace WinForms
 #Region " Constructors "
         Sub New(ByVal ex As Exception)
             mException = ex
-            mSMTPServer = "smtp.nationalresearch.com"
+            mSMTPServer = "smtp"
         End Sub
 #End Region
 
@@ -799,7 +799,7 @@ Namespace WinForms
                 Me.txtRecipient.Name = "txtRecipient"
                 Me.txtRecipient.Size = New System.Drawing.Size(248, 21)
                 Me.txtRecipient.TabIndex = 1
-                Me.txtRecipient.Text = "HelpDesk@NationalResearch.com"
+                Me.txtRecipient.Text = "HelpDesk@nrchealth.com"
                 '
                 'Label2
                 '
@@ -890,7 +890,7 @@ Namespace WinForms
                             email = email.Remove(1, start)
                         End If
 
-                        email &= "@NationalResearch.com"
+                        email &= "@nrchealth.com"
                     End If
 
                     txtRecipient.Text &= email & "; "

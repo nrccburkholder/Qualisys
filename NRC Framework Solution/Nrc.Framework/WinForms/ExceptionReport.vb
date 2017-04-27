@@ -52,7 +52,7 @@ Namespace WinForms
         Public Property ReportSender() As String
             Get
                 If mReportSender.IndexOf("@"c) < 1 Then
-                    mReportSender &= "@NationalResearch.com"
+                    mReportSender &= "@nrchealth.com"
                 End If
                 Return mReportSender
             End Get
@@ -971,7 +971,7 @@ Namespace WinForms
                             email = email.Remove(1, start)
                         End If
 
-                        email &= "@NationalResearch.com"
+                        email &= "@nrchealth.com"
                     End If
 
                     txtRecipient.Text &= email & "; "

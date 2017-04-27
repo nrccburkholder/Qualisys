@@ -463,7 +463,7 @@ Public Class ExportFile
 
         Dim html As String = GetNotificationHtml(files, pendingFiles)
         Dim mail As New System.Net.Mail.MailMessage
-        mail.From = New System.Net.Mail.MailAddress("ExportService@NationalResearch.com", "Export Service")
+        mail.From = New System.Net.Mail.MailAddress("ExportService@nrchealth.com", "Export Service")
         For Each addr As System.Net.Mail.MailAddress In toAddresses
             mail.To.Add(addr)
         Next

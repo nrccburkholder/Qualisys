@@ -38,7 +38,7 @@ Public NotInheritable Class CurrentUser
             Try
                 Return ADEntry.Properties("mail")(0).ToString
             Catch ex As Exception
-                Return UserName & "@NationalResearch.com"
+                Return UserName & "@nrchealth.com"
             End Try
         End Get
     End Property
