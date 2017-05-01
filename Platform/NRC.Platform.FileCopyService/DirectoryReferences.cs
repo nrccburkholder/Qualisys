@@ -82,7 +82,7 @@ namespace NRC.Platform.FileCopyService
                 string relativeFilePath = fullFilePath.Remove(0, Path.Length);
 
                 // Ensure file would pass the regex filter 
-                if (filter != null && filter.IsMatch(relativeFilePath)) {
+                if (filter != null || filter.IsMatch(relativeFilePath)) {
                     try
                     {
                         //string filepath = Path.Combine(path, relFilename);
