@@ -235,6 +235,190 @@ CREATE NONCLUSTERED INDEX idx4_w ON #work (bitFlag ASC, questionform_id ASC, sam
 
     DROP TABLE #work 
 
+-- ATL-1226 - ICH Skip pattern for questions with multiple gate responses
+	if object_id('tempdb..#ICHwork') is not null drop table #ICHwork
+
+	CREATE TABLE #ICHwork
+		(  work_id int identity(1,1),
+			questionform_id INT, 
+			sampleunit_id   INT, 
+			skip_id         INT, 
+			survey_id       INT,
+			bitFlag         INT,
+			GateQstn        INT,
+			bitUndo         INT
+		) 
+
+	if object_id('tempdb..#QuestionFormTemp') is not null drop table #QuestionFormTemp
+
+	select qf.* 
+	into #QuestionFormTemp 
+	from QuestionFormTemp qf
+	join qp_prod.dbo.survey_def sd on qf.SURVEY_ID=sd.survey_id
+	where sd.surveytype_id=8
+	and sd.bitenforceskip <> 0 
+	and qf.extractfileid = @ExtractFileID 
+
+	if object_id('tempdb..#bubbletemp') is not null drop table #bubbletemp
+
+	select bt.*
+	into #bubbletemp
+	from bubbletemp bt
+	join #QuestionFormTemp qf on bt.ExtractFileID=qf.ExtractFileID and bt.QUESTIONFORM_ID=qf.QUESTIONFORM_ID
+
+	if @@rowcount > 0 
+	BEGIN
+		-- undo whatever recoding happened above
+		update #bubbletemp set responseVal = -9 where responseVal = -4
+		update #bubbletemp set responseval = responseval-10000 where responseval >= 9000  -- there's an ICH question with a responseVal=-89, and its offset value would be 9911
+
+		-- insert into #ICHWork any gate question that was answered in such a way as to invoke to skip
+		INSERT INTO #ICHwork (questionform_id, sampleunit_id, skip_id, survey_id, bitFlag, GateQstn, bitUndo) 
+		SELECT qr.questionform_id, qr.sampleunit_id, si.skip_id, si.survey_id, 0, si.QstnCore, 0
+		FROM   #bubbletemp qr  
+			   INNER JOIN #questionformtemp qf          ON qf.questionform_id = qr.questionform_id 
+			   INNER JOIN qp_prod.dbo.skipidentifier si ON qf.survey_id = si.survey_id
+														   AND qf.datgenerated = si.datgenerated 
+														   AND qr.nrcquestioncore = si.qstncore 
+														   AND (qr.responseval = si.intresponseval 
+																/*   -- unanswered questions should not invoke the skip, which is different from when #Work is populated above
+																OR (qr.responseval IN ( -8, -9))
+																OR (qr.responseval IN (-5, -6)  AND NOT qr.nrcquestioncore = 50218) 
+																*/
+																) 
+
+		-- we'll be cycling through #ICHwork by looking at one skip_id at a time.
+		-- records are added to qp_prod.dbo.skipidentifier in the order the questions appear on the survey
+		-- so processing questions in skip_id order allows us to follow the order the questions appear on the survey.
+		declare @iteration int=0
+		declare @skip int = 0
+		while exists (select * from #ICHwork where bitflag=0) 
+		begin
+			select @skip = min(skip_id) from #ICHwork where bitflag=0
+			set @iteration=@iteration+1
+
+			/*
+			-- these two SELECTS mirror the logic of the next two UPDATES and are useful for debugging
+			select w.questionform_id, w.sampleunit_id, w.skip_id,sq.QstnCore,bt.nrcQuestionCore, bt.responseVal, bt.responseVal+10000, @iteration as iteration 
+			from #ICHwork w
+			join qp_prod.dbo.SkipQstns sq on w.skip_id=sq.Skip_id
+			join #bubbletemp bt on w.questionform_id=bt.questionform_id and w.sampleunit_id=bt.sampleunit_id and sq.QstnCore=bt.nrcQuestionCore
+			where w.skip_id = @skip
+			and w.bitUndo = 0
+			and bt.responseVal < 9000
+			--and sq.qstncore in (51199,47176,47177,47193,47194)
+			order by 1,2,3,charindex(convert(varchar,sq.qstncore),'51199,47176,47177,47193,47194')
+
+			select w.questionform_id, w.sampleunit_id, w.skip_id,sq.QstnCore,bt.nrcQuestionCore, bt.responseVal, bt.responseVal-10000, @iteration as iteration
+			from #ICHwork w
+			join qp_prod.dbo.SkipQstns sq on w.skip_id=sq.Skip_id
+			join #bubbletemp bt on w.questionform_id=bt.questionform_id and w.sampleunit_id=bt.sampleunit_id and sq.QstnCore=bt.nrcQuestionCore
+			where w.skip_id = @skip
+			and w.bitUndo = 1
+			and bt.responseVal > 9000
+			--and sq.qstncore in (51199,47176,47177,47193,47194)
+			order by 1,2,3,charindex(convert(varchar,sq.qstncore),'51199,47176,47177,47193,47194')
+			*/
+	
+			-- add a 10000 offset to any response to a question that should have been skipped.
+			-- in the case of unanswered questions, -9, -8, -6 and -5 will be recoded to 9991, 9992, 9994 and 9995	
+			update bt set responseVal=ResponseVal + 10000
+			from #ICHwork w
+			join qp_prod.dbo.SkipQstns sq on w.skip_id=sq.Skip_id
+			join #bubbletemp bt on w.questionform_id=bt.questionform_id and w.sampleunit_id=bt.sampleunit_id and sq.QstnCore=bt.nrcQuestionCore
+			where w.skip_id = @skip
+			and w.bitUndo = 0
+			and bt.responseVal < 9000 -- if the response has already been offset because of a prior skip, we don't want to offset it again.
+			--and sq.qstncore in (51199,47176,47177,47193,47194)	
+	
+			-- subtract a 10000 offset from any response to a question that was previously identified as should have been skipped, but needs to be changed to should not have been skipped due to a closer gateway 
+			-- this happens in the case of nested skips
+			-- in the case of unanswered questions, 9991, 9992, 9994 and 9995 will be recoded back to -9, -8, -6 and -5
+			update bt set responseVal=ResponseVal - 10000
+			from #ICHwork w
+			join qp_prod.dbo.SkipQstns sq on w.skip_id=sq.Skip_id
+			join #bubbletemp bt on w.questionform_id=bt.questionform_id and w.sampleunit_id=bt.sampleunit_id and sq.QstnCore=bt.nrcQuestionCore
+			where w.skip_id = @skip
+			and w.bitUndo = 1
+			and bt.responseVal > 9000
+			--and sq.qstncore in (51199,47176,47177,47193,47194)
+
+			-- we need to remove work that is no longer relevant.
+			-- it's no longer relevant when we code a gateway non-response to should not have been skipped (via bitUndo = 1)
+			update w2 set questionform_id=-abs(w2.questionform_id)
+			from #ICHwork w
+			join qp_prod.dbo.SkipQstns sq on w.skip_id=sq.Skip_id
+			join #bubbletemp bt on w.questionform_id=bt.questionform_id and w.sampleunit_id=bt.sampleunit_id and sq.QstnCore=bt.nrcQuestionCore
+			join #questionformtemp qf ON qf.questionform_id = bt.questionform_id 
+			JOIN qp_prod.dbo.skipidentifier si ON qf.survey_id = si.survey_id
+												  AND qf.datgenerated = si.datgenerated 
+												  AND bt.nrcquestioncore = si.qstncore  --> the skipped question we just updated is also a gate question 
+												  and bt.responseVal between -9 and -5 --> and it was changed back to inappropriately skipped
+			JOIN qp_prod.dbo.survey_def sd ON si.survey_id = sd.survey_id 
+			join #ICHwork w2 on w.questionform_id=w2.questionform_id and w.sampleunit_id=w2.sampleunit_id and sq.QstnCore=w2.gateQstn
+			WHERE sd.bitenforceskip <> 0 
+			and w.skip_id = @skip 
+			--and sq.qstncore in (51199,47176,47177,47193,47194)
+
+			-- #ICHwork originally contains cases in which the gate is explicitly invoked. That is, the respondent answered the gate question with a response that instructed them to skip some questions
+			-- now we need to add cases to #ICHwork in which the gate is implicitly invoked. That is, when the gate questions were appropriately skipped.
+			-- so if any of the values we just updated are (1) themselves gate questions and (2) are unanswered, we should add new records to #ICHwork
+			insert into #ICHwork
+			select bt.questionform_id, bt.sampleunit_id, min(si.skip_id) as skip_id, sd.survey_id, 0 as bitFlag, bt.nrcQuestionCore, 0 as bitUndo
+				--, min(bt.responseVal)
+			from #ICHwork w
+			join qp_prod.dbo.SkipQstns sq on w.skip_id=sq.Skip_id
+			join #bubbletemp bt on w.questionform_id=bt.questionform_id and w.sampleunit_id=bt.sampleunit_id and sq.QstnCore=bt.nrcQuestionCore
+			join #questionformtemp qf ON qf.questionform_id = bt.questionform_id 
+			JOIN qp_prod.dbo.skipidentifier si ON qf.survey_id = si.survey_id
+												  AND qf.datgenerated = si.datgenerated 
+												  AND bt.nrcquestioncore = si.qstncore  --> the skipped question we just updated is also a gate question 
+												  and bt.responseVal between 9090 and 9999 --> and it was unanswered (the -9 was changed to 9991, -8 was changed to 9992, etc.)
+			JOIN qp_prod.dbo.survey_def sd ON si.survey_id = sd.survey_id 
+			WHERE sd.bitenforceskip <> 0 
+			and w.skip_id = @skip
+			--and sq.qstncore in (51199,47176,47177,47193,47194)
+			group by bt.questionform_id, bt.sampleunit_id, sd.survey_id, bt.nrcQuestionCore
+			order by 1,2,3--,charindex(convert(varchar,sq.qstncore),'51199,47176,47177,47193,47194')
+
+			-- we also need to add cases to work in which a nested gate is NOT invoked because it was inappropriately answered 
+			-- so if any of the values we just updated are (1) themselves gate questions and (2) are answered in such a way that does NOT invoke the skip 
+			-- these are cases in which we need to undo the previously executed offset (that is, SUBTRACT 10000 from the response) 
+			insert into #ICHwork
+			select bt.questionform_id, bt.sampleunit_id, min(si.skip_id) as skip_id, sd.survey_id, 0 as bitFlag, bt.nrcQuestionCore, 1 as bitUndo
+				--, min(bt.responseVal), min(qf.DatGenerated)
+			from #ICHwork w
+			join qp_prod.dbo.SkipQstns sq on w.skip_id=sq.Skip_id
+			join #bubbletemp bt on w.questionform_id=bt.questionform_id and w.sampleunit_id=bt.sampleunit_id and sq.QstnCore=bt.nrcQuestionCore
+			join #questionformtemp qf ON qf.questionform_id = bt.questionform_id 
+			JOIN qp_prod.dbo.skipidentifier si ON qf.survey_id = si.survey_id
+												  AND qf.datgenerated = si.datgenerated 
+												  AND bt.nrcquestioncore = si.qstncore  --> the skipped question we just updated is also a gate question 										  
+			left join qp_prod.dbo.skipidentifier si2 on si2.Survey_id=si.Survey_id and si2.datGenerated=si.datGenerated and si2.qstncore=si.qstncore and bt.responseval-10000=si2.intResponseval
+			JOIN qp_prod.dbo.survey_def sd ON si.survey_id = sd.survey_id 
+			WHERE sd.bitenforceskip <> 0 
+			and w.skip_id = @skip
+			--and sq.qstncore in (51199,47176,47177,47193,47194)
+			and bt.responseVal >= 10000 --> and the skipped question that is also a gate question was answered (it was answered and skipped over, so it has the 10000 offset) 										  
+			and si2.intResponseval is NULL --> but it does not invoke the skip 
+			group by bt.questionform_id, bt.sampleunit_id, sd.survey_id, bt.nrcQuestionCore
+			order by 1,2,3--,charindex(convert(varchar,sq.qstncore),'51199,47176,47177,47193,47194')
+
+			update #ICHwork set bitflag=@iteration where skip_id = @skip
+		end
+
+		update #bubbletemp set responseval = -4 where responseVal between 9991 and 9999
+		UPDATE P set responseVal = t.responseVal
+		from #bubbletemp t
+		join bubbletemp p on t.QUESTIONFORM_ID=p.QUESTIONFORM_ID and t.SAMPLEUNIT_ID=p.SAMPLEUNIT_ID and t.nrcQuestionCore=p.nrcQuestionCore and t.ExtractFileID=p.ExtractFileID
+
+
+	END -- if @@rowcount>0 (i.e. if #bubbletemp had any records in it)
+
+	DROP TABLE #ICHwork 
+	DROP TABLE #bubbletemp
+	DROP TABLE #QuestionFormTemp
+
     -- drop table #validskippattern  
     EXEC dbo.Csp_processskippatterns_hhcahps @ExtractFileID 
 
