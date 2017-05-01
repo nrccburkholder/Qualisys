@@ -81,8 +81,8 @@ namespace NRC.Platform.FileCopyService
                 //including a trailing slash. Continuing to return the same as the business logic works with it.
                 string relativeFilePath = fullFilePath.Remove(0, Path.Length);
 
-                // Ensure file would pass the regex filter 
-                if (filter != null || filter.IsMatch(relativeFilePath)) {
+                // Ensure file would pass the regex filter (null means no filter, it would always pass)
+                if (filter == null || filter.IsMatch(relativeFilePath)) {
                     try
                     {
                         //string filepath = Path.Combine(path, relFilename);
