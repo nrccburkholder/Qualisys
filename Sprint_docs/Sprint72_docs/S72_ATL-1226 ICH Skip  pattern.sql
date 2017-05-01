@@ -418,10 +418,18 @@ CREATE NONCLUSTERED INDEX idx4_w ON #work (bitFlag ASC, questionform_id ASC, sam
 		end
 
 		update #bubbletemp set responseval = -4 where responseVal between 9991 and 9999
+
+		-- update single response questions
 		UPDATE P set responseVal = t.responseVal
 		from #bubbletemp t
 		join bubbletemp p on t.QUESTIONFORM_ID=p.QUESTIONFORM_ID and t.SAMPLEUNIT_ID=p.SAMPLEUNIT_ID and t.nrcQuestionCore=p.nrcQuestionCore and t.ExtractFileID=p.ExtractFileID
+		where t.numMarkCount = 1
 
+		-- update multiple response questions
+		UPDATE P set responseVal = t.responseVal
+		from #bubbletemp t
+		join bubbletemp p on t.QUESTIONFORM_ID=p.QUESTIONFORM_ID and t.SAMPLEUNIT_ID=p.SAMPLEUNIT_ID and t.nrcQuestionCore=p.nrcQuestionCore and t.ExtractFileID=p.ExtractFileID and p.responseVal % 10000 = t.responseVal % 10000
+		where t.numMarkCount = 2
 
 	END -- if @@rowcount>0 (i.e. if #bubbletemp had any records in it)
 
