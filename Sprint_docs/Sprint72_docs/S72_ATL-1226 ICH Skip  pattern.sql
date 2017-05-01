@@ -261,12 +261,22 @@ CREATE NONCLUSTERED INDEX idx4_w ON #work (bitFlag ASC, questionform_id ASC, sam
 
 	if object_id('tempdb..#bubbletemp') is not null drop table #bubbletemp
 
-	select bt.*
+	select bt.*, sq.NUMMARKCOUNT
 	into #bubbletemp
 	from bubbletemp bt
 	join #QuestionFormTemp qf on bt.ExtractFileID=qf.ExtractFileID and bt.QUESTIONFORM_ID=qf.QUESTIONFORM_ID
+	left join qp_prod.dbo.SEL_QSTNS sq on qf.survey_id=sq.survey_id and sq.language=1 and bt.nrcQuestionCore=sq.qstncore and sq.subtype=1
 
-	if @@rowcount > 0 
+	-- if questions have been removed from the form, some numMarkCount values will be NULL, so we grab them from the sampleset-specific copy of sel_qstns
+	update bt set NUMMARKCOUNT=sq.NUMMARKCOUNT
+	from #bubbletemp bt
+	join #QuestionFormTemp qf on bt.ExtractFileID=qf.ExtractFileID and bt.QUESTIONFORM_ID=qf.QUESTIONFORM_ID
+	join qp_prod.dbo.questionform pqf on qf.questionform_id=pqf.questionform_id
+	join qp_prod.dbo.samplepop sp on pqf.samplepop_id=sp.samplepop_id
+	join qp_prod.dbo.DL_SEL_QSTNS_BySampleSet sq on qf.survey_id=sq.survey_id and sp.sampleset_id=sq.sampleset_id and sq.language=1 and bt.nrcQuestionCore=sq.qstncore and sq.subtype=1
+	where bt.numMarkCount is null
+
+	if exists (select * from #bubbletemp)
 	BEGIN
 		-- undo whatever recoding happened above
 		update #bubbletemp set responseVal = -9 where responseVal = -4
