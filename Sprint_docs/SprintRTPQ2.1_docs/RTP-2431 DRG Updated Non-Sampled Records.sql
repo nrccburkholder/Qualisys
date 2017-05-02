@@ -39,7 +39,8 @@ begin
 	INNER JOIN SampleUnit su on su.SampleUnit_id = ss.SampleUnit_id
 	LEFT Join dbo.DRGUpdateDispositionMapping dm on dm.FieldName = h.field_name and dm.UpdateValue = h.new_value
 	where h.DataFile_ID = @Datafile_ID
-	and ISNULL(h.old_value,'NULL') <> ISNULL(h.new_value,'NULL')
+	-- and ISNULL(h.old_value,'NULL') <> ISNULL(h.new_value,'NULL') --> we want to retain values that didn't change because another changed field could affect eligibility 
+																	--  and without the unchanged values enc_id would drop out of the [old_values] CTE below
 	and h1.DataFile_ID is null -- if it has NOT already been rolledback
 
 	-- non-sampled records
@@ -48,10 +49,31 @@ begin
 	FROM dbo.HCAHPSUpdateLog h
 	LEFT JOIN dbo.HCAHPSUpdateLog h1 on h1.study_id = h.study_id and h1.enc_id = h.enc_id and h1.field_name = h.field_name and h1.DataFile_id = h.DataFile_id and h1.bitRollback = 1
 	where h.DataFile_ID = @Datafile_ID
-	and ISNULL(h.old_value,'NULL') <> ISNULL(h.new_value,'NULL')
 	and h1.DataFile_ID is null -- if it has NOT already been rolledback
-	and h.samplepop_id is null 
+	and h.samplepop_id is null;
+	
+	with old_values as (
+		select hst.enc_id, hst.HServiceType, has.HAdmissionSource, hds.HDischargeStatus
+		from (select enc_id, Old_value as HServiceType from #work where field_name='HServiceType') hst
+		join (select enc_id, Old_value as HAdmissionSource from #work where field_name='HAdmissionSource') has on hst.enc_id=has.enc_id
+		join (select enc_id, Old_value as HDischargeStatus from #work where field_name='HDischargeStatus') hds on hst.enc_id=hds.enc_id
+		)
+	, prior_eligibility as (
+		select ov.enc_id, ov.HServiceType, ov.HAdmissionSource, ov.HDischargeStatus
+			, case when admit.disposition_id is not null or discharge.disposition_id is not null or ov.HServiceType='X' then 1 else 0 end as Ineligible
+		from old_values ov
+		left join dbo.DRGUpdateDispositionMapping admit     on ov.HAdmissionSource=admit.UpdateValue     and admit.FieldName='HAdmissionSource'
+		left join dbo.DRGUpdateDispositionMapping discharge on ov.HDischargeStatus=discharge.UpdateValue and discharge.FieldName='HDischargeStatus'
+		)
+	update eel set IneligibleAfterDRGUpdate=pe.Ineligible
+	from prior_eligibility pe
+	join EligibleEncLog eel on pe.enc_id = eel.enc_id
+	join sampleset ss on eel.sampleset_id=ss.SAMPLESET_ID 
+	join survey_def sd on ss.survey_id=sd.survey_id
+	where sd.study_id=@Study_ID
 
+	-- now we can delete unchanged values out of #work
+	delete from #work where ISNULL(old_value,'NULL') = ISNULL(new_value,'NULL') 
 
 	DECLARE @Owner varchar(10)
 
@@ -390,6 +412,19 @@ SELECT @ltime = ltime FROM #lt
 DROP TABLE #lt
 
 SELECT @DataMart = strParam_Value FROM QualPro_Params WHERE strParam_nm = 'DataMart'
+
+-- update EligibleEncLog for records in which a change to HServiceType, HAdmissionSource or HDischargeStatus renders them ineligible 
+update eel set IneligibleAfterDRGUpdate=1
+from #work w
+join EligibleEncLog eel on w.Enc_id = eel.enc_id
+join sampleset ss on eel.sampleset_id=ss.SAMPLESET_ID 
+join survey_def sd on ss.survey_id=sd.survey_id
+left join dbo.DRGUpdateDispositionMapping admit     on w.HAdmissionSource=admit.UpdateValue     and admit.FieldName='HAdmissionSource'
+left join dbo.DRGUpdateDispositionMapping discharge on w.HDischargeStatus=discharge.UpdateValue and discharge.FieldName='HDischargeStatus'
+where sd.study_id=@Study_ID
+and (admit.disposition_id is not null or discharge.disposition_id is not null or w.HServiceType='X')
+
+
 
 CREATE TABLE #HCAHPSUpdateLog (samplepop_ID int, field_name varchar(42), old_value varchar(42), new_value varchar(42), study_id int, enc_id int)
 
