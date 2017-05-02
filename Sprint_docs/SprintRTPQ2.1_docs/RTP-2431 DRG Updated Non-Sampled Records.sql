@@ -41,65 +41,64 @@ begin
 	and h1.DataFile_ID is null -- if it has NOT already been rolledback
 
 
+	DECLARE @Owner varchar(10)
 
- DECLARE @Owner varchar(10)
-
- SET @Owner = 'S'+RTRIM(LTRIM(STR(@Study_ID)))  
+	SET @Owner = 'S'+RTRIM(LTRIM(STR(@Study_ID)))  
  
- DECLARE @myRowCount int
- DECLARE @fieldName varchar(20)
- DECLARE @sql varchar(8000)
+	DECLARE @myRowCount int
+	DECLARE @fieldName varchar(20)
+	DECLARE @sql varchar(8000)
  
- SELECT TOP 1 @fieldName = field_name FROM #fields
- WHILE @@ROWCOUNT > 0
-    BEGIN
-
-	 IF EXISTS (select 1
-	from QP_PROD.information_schema.columns c
-	where table_schema = @Owner and table_name = 'encounter' and column_name = @fieldName)
+	SELECT TOP 1 @fieldName = field_name FROM #fields
+	WHILE @@ROWCOUNT > 0
 	BEGIN
+		IF EXISTS (	select 1
+					from QP_PROD.information_schema.columns c
+					where table_schema = @Owner and table_name = 'encounter' and column_name = @fieldName)
+		BEGIN
 	                                     
-		SET @Sql = 'UPDATE e SET e.' + @fieldName + ' = w.old_value ' + 
-		   ' FROM S' +RTRIM(LTRIM(STR(@Study_ID)))  + '.ENCOUNTER e ' +
-		   'inner join #work w on e.pop_id = w.POP_ID and e.enc_id = w.enc_ID ' +
-		   'where w.field_name = ''' + @fieldName + '''' 
+			SET @Sql = 'UPDATE e SET e.' + @fieldName + ' = w.old_value ' + 
+			' FROM S' +RTRIM(LTRIM(STR(@Study_ID)))  + '.ENCOUNTER e ' +
+			'inner join #work w on e.pop_id = w.POP_ID and e.enc_id = w.enc_ID ' +
+			'where w.field_name = ''' + @fieldName + '''' 
 
-		EXEC (@Sql)    
+			EXEC (@Sql)    
 
-		set @myRowCount = @@ROWCOUNT   
+			set @myRowCount = @@ROWCOUNT   
   
-		if @myRowCount > 0
-		begin
+			if @myRowCount > 0
+			begin
          
-		   INSERT INTO #Log (RecordType, RecordsValue)                      
-		   Select @DRGOption + ': Encounter ' + @fieldName + ' Records Updated (rollback): ',LTRIM(STR(@myRowCount))  
-		   --Log data changes                      
-		   INSERT HCAHPSUpdateLog (samplepop_id, field_name, old_value, new_value, Change_Date, DataFile_ID, bitRollback)                       
-		   SELECT DISTINCT w.SamplePop_id, @fieldName, w.new_value, w.old_value, getdate(), w.datafile_id, 1                      
-		   FROM #Work w
-		   where w.field_name = @fieldName                      
+				INSERT INTO #Log (RecordType, RecordsValue)                      
+				Select @DRGOption + ': Encounter ' + @fieldName + ' Records Updated (rollback): ',LTRIM(STR(@myRowCount))  
 
-			set @myRowCount = @@ROWCOUNT 
-			insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT HCAHPSUpdateLog ' + @fieldName + ' Records Updated (rollback): ' + + LTRIM(STR(@myRowCount))     
-		end  
+				--Log data changes                      
+				INSERT HCAHPSUpdateLog (samplepop_id, field_name, old_value, new_value, Change_Date, DataFile_ID, bitRollback)                       
+				SELECT DISTINCT w.SamplePop_id, @fieldName, w.new_value, w.old_value, getdate(), w.datafile_id, 1                      
+				FROM #Work w
+				where w.field_name = @fieldName                      
 
-	END  
+				set @myRowCount = @@ROWCOUNT 
+				insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT HCAHPSUpdateLog ' + @fieldName + ' Records Updated (rollback): ' + + LTRIM(STR(@myRowCount))     
+			end  
 
-	DELETE FROM #fields WHERE  field_name = @fieldName
-     SELECT TOP 1 @fieldName = field_name FROM #fields
-  END
+		END  
 
-  DELETE dl
-  FROM dbo.DispositionLog dl
-  INNER JOIN #Work w on w.samplepop_id = dl.SamplePop_id and w.disposition_id = dl.Disposition_id and w.Change_Date = dl.datLogged 
-  WHERE w.Disposition_id is not null
-  and dl.LoggedBy = 'DBA'
+		DELETE FROM #fields WHERE  field_name = @fieldName
+		SELECT TOP 1 @fieldName = field_name FROM #fields
+	END
 
-  set @myRowCount = @@ROWCOUNT 
-  insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'DispositionLog Records Deleted (rollback): ' + + LTRIM(STR(@myRowCount))  
+	DELETE dl
+	FROM dbo.DispositionLog dl
+	INNER JOIN #Work w on w.samplepop_id = dl.SamplePop_id and w.disposition_id = dl.Disposition_id and w.Change_Date = dl.datLogged 
+	WHERE w.Disposition_id is not null
+	and dl.LoggedBy = 'DBA'
 
-  INSERT INTO #Log (RecordType, RecordsValue)                      
-  Select @DRGOption + ': DispositionLog Records Deleted (rollback): ',LTRIM(STR(@myRowCount))  
+	set @myRowCount = @@ROWCOUNT 
+	insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'DispositionLog Records Deleted (rollback): ' + + LTRIM(STR(@myRowCount))  
+
+	INSERT INTO #Log (RecordType, RecordsValue)                      
+	Select @DRGOption + ': DispositionLog Records Deleted (rollback): ',LTRIM(STR(@myRowCount))  
 
 end 
 GO
