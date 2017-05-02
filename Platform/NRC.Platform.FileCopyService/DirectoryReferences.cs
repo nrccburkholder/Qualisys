@@ -62,7 +62,7 @@ namespace NRC.Platform.FileCopyService
             Debug.WriteLine("Local Unprepare");
         }
 
-        public IEnumerable<string> ListFiles(Regex filter)
+        public IEnumerable<string> ListFiles(Regex filter = null)
         {
             System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(Path);
 
@@ -412,7 +412,7 @@ namespace NRC.Platform.FileCopyService
             sftp.Close();
         }
 
-        public IEnumerable<string> ListFiles(Regex regex)
+        public IEnumerable<string> ListFiles(Regex regex = null)
         {
             return
                 from string entry in ListFilesInternal(Path)
