@@ -5,6 +5,8 @@ if exists (select * from sys.columns where object_id = object_id('dbo.HCAHPSUpda
 	alter table dbo.HCAHPSUpdateLog drop column study_id
 if exists (select * from sys.columns where object_id = object_id('dbo.HCAHPSUpdateLog') and name='enc_id')
 	alter table dbo.HCAHPSUpdateLog drop column enc_id 
+if exists (select * from sys.columns where object_id = object_id('dbo.EligibleEncLog') and name='IneligibleAfterDRGUpdate')
+	alter table dbo.EligibleEncLog drop column IneligibleAfterDRGUpdate
 
 
 /****** Object:  StoredProcedure [dbo].[LD_UpdateDRG_Updater]    Script Date: 5/2/2017 10:30:15 AM ******/

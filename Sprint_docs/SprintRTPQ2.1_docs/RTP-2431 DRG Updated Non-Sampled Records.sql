@@ -5,7 +5,8 @@ if not exists (select * from sys.columns where object_id = object_id('dbo.HCAHPS
 	alter table dbo.HCAHPSUpdateLog add study_id int
 if not exists (select * from sys.columns where object_id = object_id('dbo.HCAHPSUpdateLog') and name='enc_id')
 	alter table dbo.HCAHPSUpdateLog add enc_id int
-
+if not exists (select * from sys.columns where object_id = object_id('dbo.EligibleEncLog') and name='IneligibleAfterDRGUpdate')
+	alter table dbo.EligibleEncLog add IneligibleAfterDRGUpdate bit DEFAULT (0)
 
 /****** Object:  StoredProcedure [dbo].[LD_UpdateDRG_Updater]    Script Date: 5/2/2017 10:30:15 AM ******/
 SET ANSI_NULLS ON
