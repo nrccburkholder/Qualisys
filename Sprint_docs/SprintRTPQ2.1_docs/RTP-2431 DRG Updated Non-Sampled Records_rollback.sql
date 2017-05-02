@@ -1,6 +1,12 @@
 USE [QP_Prod]
 GO
 
+if exists (select * from sys.columns where object_id = object_id('dbo.HCAHPSUpdateLog') and name='study_id')
+	alter table dbo.HCAHPSUpdateLog drop column study_id
+if exists (select * from sys.columns where object_id = object_id('dbo.HCAHPSUpdateLog') and name='enc_id')
+	alter table dbo.HCAHPSUpdateLog drop column enc_id 
+
+
 /****** Object:  StoredProcedure [dbo].[LD_UpdateDRG_Updater]    Script Date: 5/2/2017 10:30:15 AM ******/
 SET ANSI_NULLS ON
 GO
