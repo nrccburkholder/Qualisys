@@ -7,6 +7,8 @@ if not exists (select * from sys.columns where object_id = object_id('dbo.HCAHPS
 	alter table dbo.HCAHPSUpdateLog add enc_id int
 if not exists (select * from sys.columns where object_id = object_id('dbo.EligibleEncLog') and name='IneligibleAfterDRGUpdate')
 	alter table dbo.EligibleEncLog add IneligibleAfterDRGUpdate bit DEFAULT (0)
+go
+update dbo.EligibleEncLog set IneligibleAfterDRGUpdate = 0 where IneligibleAfterDRGUpdate is null
 
 /****** Object:  StoredProcedure [dbo].[LD_UpdateDRG_Updater]    Script Date: 5/2/2017 10:30:15 AM ******/
 SET ANSI_NULLS ON
@@ -42,7 +44,8 @@ select count(*)
 from (select distinct pop_id
   from EligibleEncLog
   where sampleunit_id=@sampleunit_id
-   and SampleEncounterDate between @startDate and dateadd(s,-1,dateadd(d,1,@EndDate))) p
+   and SampleEncounterDate between @startDate and dateadd(s,-1,dateadd(d,1,@EndDate))
+   and IneligibleAfterDRGUpdate=0) p
 GO
 ALTER PROCEDURE [dbo].[LD_UpdateDRG_UpdateRollback] @Study_ID int, @DataFile_id int, @DRGOption varchar(20) = 'DRG'
 AS
