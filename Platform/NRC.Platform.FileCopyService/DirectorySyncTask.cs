@@ -92,7 +92,7 @@ namespace NRC.Platform.FileCopyService
 
             logger.Info("Working on source " + source.Path);
 
-            IEnumerable<string> files = source.ListFiles();
+            IEnumerable<string> files = source.ListFiles(fileMatchRE);
             foreach (string file in files)
             {
                 string fromFullFilename = source.FullFilename(file);

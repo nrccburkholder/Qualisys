@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using NRC.Common.Configuration;
 
 namespace NRC.Platform.FileCopyService
@@ -28,8 +29,9 @@ namespace NRC.Platform.FileCopyService
         /// <summary>
         /// Get files available for moving.
         /// </summary>
+        /// <param name="filter">Regular expression for filtering results.  WARNING: not honored by all implementations, only used for performance enhancing</param>
         /// <returns>"\subdir\file.ext" formatted paths.  Paths are relative to referenced directory.</returns>
-        IEnumerable<string> ListFiles();
+        IEnumerable<string> ListFiles(Regex filter = null);
 
         /// <summary>
         /// Return true if file already exists on filesystem.
@@ -45,7 +47,6 @@ namespace NRC.Platform.FileCopyService
         /// <param name="local">Filename of the local temporary file.</param>
         /// <param name="file">Filename of the remote file, relative to the referenced directory.</param>
         void GetFile(string file, string local);
-
 
         /// <summary>
         /// Put a copy of a local temp file on the remote system.
