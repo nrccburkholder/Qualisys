@@ -114,7 +114,7 @@ begin
  
 	DECLARE @myRowCount int
 	DECLARE @fieldName varchar(20)
-	DECLARE @sql varchar(8000)
+	DECLARE @sql varchar(max)
  
 	SELECT TOP 1 @fieldName = field_name FROM #fields
 	WHILE @@ROWCOUNT > 0
@@ -194,7 +194,7 @@ AS
 -- Modified by TSB 10/27/2016:  S61 ATL-1039 Change logged by from DBA to DRG Update
 
 DECLARE @MCond varchar(200), @LTime datetime, @DataMart varchar(50)
-DECLARE @Owner varchar(10), @Sql varchar(8000), @Now datetime, @BTableName varchar(100), @Server VARCHAR(20)
+DECLARE @Owner varchar(10), @Sql varchar(max), @Now datetime, @BTableName varchar(100), @Server VARCHAR(20)
 declare @FieldExists smallint, @FieldExists2 smallint, @FieldExists3 smallint
 
 declare @VarOwner varchar(50)
@@ -281,7 +281,7 @@ SET @Sql = 'INSERT #Work (DRG, HServiceType, HVisitType, HAdmissionSource, HDisc
 
     SET @Sql = @Sql +' FROM ' + @server + '.QP_Load.'+@Owner+'.encounter_load L ' +
    ' INNER JOIN '+@Owner+ '.Encounter E ON ' + @MCond +
-   ' WHERE  ((L.' + @DRGOption + ' IS NOT NULL AND L.' + @DRGOption + ' != ''0'' AND L.' + @DRGOption + ' != ''000'') and (L.HServiceType IS NOT NULL AND L.HServiceType != ''9'')) and L.DataFile_ID = ' +LTRIM(STR(@DataFile_ID))
+   ' WHERE L.DataFile_ID = ' +LTRIM(STR(@DataFile_ID))
 
 EXEC (@Sql)
 
@@ -294,7 +294,7 @@ if @hasServiceDate = 1 SET @Sql = @Sql + ', E.ServiceDate' ELSE SET @Sql = @Sql 
 
 SET @Sql = @Sql +' FROM ' + @server + '.QP_Load.'+@Owner+'.encounter_load L ' +
    ' INNER JOIN '+@Owner+ '.Encounter E ON ' + @MCond +
-   ' WHERE  ((L.' + @DRGOption + ' IS NOT NULL AND L.' + @DRGOption + ' != ''0'' AND L.' + @DRGOption + ' != ''000'') and (L.HServiceType IS NOT NULL AND L.HServiceType != ''9'')) and L.DataFile_ID = ' +LTRIM(STR(@DataFile_ID))
+   ' WHERE L.DataFile_ID = ' +LTRIM(STR(@DataFile_ID))
 EXEC (@Sql)
 
 -- ****************************** Check to see if #Work has records and log if 0 ************************
@@ -464,22 +464,9 @@ CREATE TABLE #HCAHPSUpdateLog (samplepop_ID int, field_name varchar(42), old_val
 -- updating non-sampled records RTP-2431
 --************************************** Update non-Sampled *************************************
 
-SET @Sql = 'UPDATE e SET ' + @DRGOption + ' = w.DRG, HServiceType = w.HServiceType, HVisitType = w.HVisitType, HAdmissionSource = w.HAdmissionSource, HDischargeStatus = w.HDischargeStatus, HAdmitAge = w.HAdmitAge, HCatAge = w.HCatAge ' +
-' FROM '+@Owner+'.Encounter e ' +
-' INNER JOIN #Work w ON e.Enc_id = w.Enc_id ' +
-' LEFT JOIN SelectedSample ss (NOLOCK) ON e.Enc_id = ss.Enc_id and ss.Study_ID = '+LTRIM(STR(@Study_ID)) +
-' where ss.enc_id is null'
-
-EXEC (@Sql)
-
-set @myRowCount = @@ROWCOUNT
-
-PRINT LTRIM(STR(@@ROWCOUNT))+' non-sampled Encounter records have been updated.'
-insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) select @study_ID, @DataFile_ID,  LTRIM(STR(@myRowCount))+' non-sampled Encounter records have been updated.'
-
 PRINT 'Log non-sampled HServiceType data changes'
 SET @Sql = 'INSERT #HCAHPSUpdateLog (samplepop_id, field_name, old_value, new_value, study_id, enc_id) ' +
-	' SELECT DISTINCT sps.SamplePop_id, ''HServiceType'', e.HServiceType, w.DRG, HServiceType, w.enc_id ' +
+	' SELECT DISTINCT sps.SamplePop_id, ''HServiceType'', e.HServiceType, w.HServiceType, '+ ltrim(str(@study_id))+', w.enc_id ' +
 	' FROM #Work w ' +
 	' INNER JOIN '+@Owner+'.Encounter e ON w.Enc_ID = e.Enc_ID '+
 	' LEFT JOIN SelectedSample ss (NOLOCK) ON e.Enc_id = ss.Enc_id and ss.Study_ID = '+LTRIM(STR(@Study_ID)) +
@@ -508,7 +495,7 @@ insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @
 
 
 PRINT 'Log non-sampled HDischargeStatus data changes'
-set @Sql = replace(@Sql, 'HVisitType', 'HDischargeStatus')
+set @Sql = replace(@Sql, 'HAdmissionSource', 'HDischargeStatus')
 EXEC (@Sql)
 
 set @myRowCount = @@ROWCOUNT
@@ -541,6 +528,19 @@ set @myRowCount = @@ROWCOUNT
 
 insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @DataFile_ID,  'INSERT #HCAHPSUpdateLog ' + @DRGOption + ' non-sampled Records Updated: ' + + LTRIM(STR(@myRowCount))
 
+-- now actually update the encounter table
+SET @Sql = 'UPDATE e SET ' + @DRGOption + ' = w.DRG, HServiceType = w.HServiceType, HVisitType = w.HVisitType, HAdmissionSource = w.HAdmissionSource, HDischargeStatus = w.HDischargeStatus, HAdmitAge = w.HAdmitAge, HCatAge = w.HCatAge ' +
+' FROM '+@Owner+'.Encounter e ' +
+' INNER JOIN #Work w ON e.Enc_id = w.Enc_id ' +
+' LEFT JOIN SelectedSample ss (NOLOCK) ON e.Enc_id = ss.Enc_id and ss.Study_ID = '+LTRIM(STR(@Study_ID)) +
+' where ss.enc_id is null'
+
+EXEC (@Sql)
+
+set @myRowCount = @@ROWCOUNT
+
+PRINT LTRIM(STR(@@ROWCOUNT))+' non-sampled Encounter records have been updated.'
+insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) select @study_ID, @DataFile_ID,  LTRIM(STR(@myRowCount))+' non-sampled Encounter records have been updated.'
 
 -- /updating non-sampled records RTP-2431
 
