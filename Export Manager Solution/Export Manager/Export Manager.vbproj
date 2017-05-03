@@ -47,7 +47,7 @@
     <PublisherName>National Research Corporation</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>5.1.0.0</ApplicationVersion>
+    <ApplicationVersion>5.1.1.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -482,7 +482,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>DataMart.mdf</DependentUpon>
     </Content>
-    <Content Include="ExportMan.ico" />
+    <Content Include="ExportMan.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Chart_Line_32.png" />
     <Content Include="Resources\Export file.png" />
     <Content Include="Resources\File export_32.png" />
