@@ -9,6 +9,7 @@ using System.Diagnostics;
 
 using NRC.Common.Configuration;
 using Tamir.SharpSsh;
+using System.Text.RegularExpressions;
 
 namespace NRC.Platform.FileCopyService
 {
@@ -61,7 +62,7 @@ namespace NRC.Platform.FileCopyService
             Debug.WriteLine("Local Unprepare");
         }
 
-        public IEnumerable<string> ListFiles()
+        public IEnumerable<string> ListFiles(Regex filter = null)
         {
             System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(Path);
 
@@ -72,7 +73,6 @@ namespace NRC.Platform.FileCopyService
             //Let's verify for which of these files we can get an exclusive read/write lock on
             //if we can't it's possible they're still being written and not ready to be moved
             //This is an enhancement over the prior logic of looking at the last write time + 5 minutes.
-            //The list of failedToLockFilePaths is being left here mainly for debugging purposes and causes minimal overhead
             List<string> lockableRelativeFilePaths = new List<string>();
 
             foreach (string fullFilePath in fullFilePaths)
@@ -81,19 +81,22 @@ namespace NRC.Platform.FileCopyService
                 //including a trailing slash. Continuing to return the same as the business logic works with it.
                 string relativeFilePath = fullFilePath.Remove(0, Path.Length);
 
-                try
-                {
-                    //string filepath = Path.Combine(path, relFilename);
-                    using (FileStream fs = new FileStream(fullFilePath, FileMode.Open, FileAccess.ReadWrite, FileShare.None))
+                // Ensure file would pass the regex filter (null means no filter, it would always pass)
+                if (filter == null || filter.IsMatch(relativeFilePath)) {
+                    try
                     {
-                        lockableRelativeFilePaths.Add(relativeFilePath);
-                        Debug.WriteLine("Able to lock file: " + relativeFilePath);
+                        //string filepath = Path.Combine(path, relFilename);
+                        using (FileStream fs = new FileStream(fullFilePath, FileMode.Open, FileAccess.ReadWrite, FileShare.None))
+                        {
+                            lockableRelativeFilePaths.Add(relativeFilePath);
+                            Debug.WriteLine("Able to lock file: " + relativeFilePath);
+                        }
                     }
-                }
-                catch
-                {
-                    //We're unable to get a lock on this file
-                    Debug.WriteLine("NOT able to lock file: " + relativeFilePath);
+                    catch
+                    {
+                        //We're unable to get a lock on this file
+                        Debug.WriteLine("NOT able to lock file: " + relativeFilePath);
+                    }
                 }
             }
 
@@ -178,7 +181,7 @@ namespace NRC.Platform.FileCopyService
         {
         }
 
-        public IEnumerable<string> ListFiles()
+        public IEnumerable<string> ListFiles(Regex regex)
         {
             return ListFilesInternal("/");
         }
@@ -409,7 +412,7 @@ namespace NRC.Platform.FileCopyService
             sftp.Close();
         }
 
-        public IEnumerable<string> ListFiles()
+        public IEnumerable<string> ListFiles(Regex regex = null)
         {
             return
                 from string entry in ListFilesInternal(Path)

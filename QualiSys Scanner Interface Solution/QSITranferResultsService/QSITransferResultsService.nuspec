@@ -8,6 +8,6 @@
     <description>This service monitors the InBound folders specified in the DL_TranslationModules table for new files and transfers the data contained into QualiSys.</description>
   </metadata>
   <files>
-    <file src="bin\Release\**"/>
+    <file src="bin\x86\Release\**"/>
   </files>
 </package>
