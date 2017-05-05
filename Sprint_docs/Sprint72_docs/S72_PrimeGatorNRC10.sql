@@ -6,22 +6,24 @@ Sprint 72 SQLCMD Script for Prime/Gator/NRC10
 
 */
 
-:r "\ATLASRelease71&72\Sprint72_docs\S72 RTP-1145 Break out RTPhoenix-ProcessStudyOwnedTables.sql"
+--:r "\ATLASRelease71&72\Sprint72_docs\S72 RTP-1145 Break out RTPhoenix-ProcessStudyOwnedTables.sql" -- to release after 5/5
 
-:r "\ATLASRelease71&72\Sprint72_docs\S72 RTP-1145 Break out RTPhoenix-MakeSurveysFromTemplate.sql"
+--:r "\ATLASRelease71&72\Sprint72_docs\S72 RTP-1145 Break out RTPhoenix-MakeSurveysFromTemplate.sql" -- to release after 5/5
 
-:r "\ATLASRelease71&72\Sprint72_docs\S72 RTP-1145 Break out RTPhoenix-MakeStudyFromTemplate.sql"
+--:r "\ATLASRelease71&72\Sprint72_docs\S72 RTP-1145 Break out RTPhoenix-MakeStudyFromTemplate.sql" -- to release after 5/5
 
-:r "\ATLASRelease71&72\Sprint72_docs\S72 RTP-1145 Break out RTPhoenix-MakeSampleUnitsFromTemplate.sql"
+--:r "\ATLASRelease71&72\Sprint72_docs\S72 RTP-1145 Break out RTPhoenix-MakeSampleUnitsFromTemplate.sql" -- to release after 5/5
 
-:r "\ATLASRelease71&72\Sprint72_docs\S72_ATL-1443 Update Study Data Structure Process [QP_Prod].sql"
+--:r "\ATLASRelease71&72\Sprint72_docs\S72_ATL-1443 Update Study Data Structure Process [QP_Prod].sql" -- to release after 5/5
 
-:r "\ATLASRelease71&72\Sprint72_docs\S72_ATL-1080 Backpopulate existing OAS surveys DQ rules.sql"
+--:r "\ATLASRelease71&72\Sprint72_docs\S72_ATL-1080 Backpopulate existing OAS surveys DQ rules.sql" -- to release after 5/5
 
-:r "\ATLASRelease71&72\Sprint72_docs\S72_ATL-1079 Modify default DQ rule.sql"
+--:r "\ATLASRelease71&72\Sprint72_docs\S72_ATL-1079 Modify default DQ rule.sql" -- to release after 5/5
 
 :r "\ATLASRelease71&72\Sprint72_docs\S72_ATL-762 ICH-OAS dispositions logging.sql"
 
 :r "\ATLASRelease71&72\Sprint72_docs\S72_ATL-1375 ICH Bad Addr Dispos on Mixed Mode [QP_PROD].sql"
 
-:r "\ATLASRelease71&72\Sprint72_docs\S72_NRCAuthAdmin Branding Email Update.sql"
+--:r "\ATLASRelease71&72\Sprint72_docs\S72_ATL-1226 ICH Skip  pattern.sql" -- to release after 5/5
+
+--:r "\ATLASRelease71&72\Sprint72_docs\S72_NRCAuthAdmin Branding Email Update.sql" -- release on 4/27
