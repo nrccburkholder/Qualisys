@@ -466,7 +466,7 @@ CREATE TABLE #HCAHPSUpdateLog (samplepop_ID int, field_name varchar(42), old_val
 
 PRINT 'Log non-sampled HServiceType data changes'
 SET @Sql = 'INSERT #HCAHPSUpdateLog (samplepop_id, field_name, old_value, new_value, study_id, enc_id) ' +
-	' SELECT DISTINCT sps.SamplePop_id, ''HServiceType'', e.HServiceType, w.HServiceType, '+ ltrim(str(@study_id))+', w.enc_id ' +
+	' SELECT DISTINCT NULL as SamplePop_id, ''HServiceType'', e.HServiceType, w.HServiceType, '+ ltrim(str(@study_id))+', w.enc_id ' +
 	' FROM #Work w ' +
 	' INNER JOIN '+@Owner+'.Encounter e ON w.Enc_ID = e.Enc_ID '+
 	' LEFT JOIN SelectedSample ss (NOLOCK) ON e.Enc_id = ss.Enc_id and ss.Study_ID = '+LTRIM(STR(@Study_ID)) +
@@ -521,7 +521,12 @@ insert into DRGDebugLogging (Study_ID, DataFile_Id, Message) Select @study_ID, @
 
 
 PRINT 'Log non-sampled DRG data changes'
-set @Sql = replace(@Sql, 'HCatAge', @DRGOption)
+SET @Sql = 'INSERT #HCAHPSUpdateLog (samplepop_id, field_name, old_value, new_value, study_id, enc_id) ' +
+	' SELECT DISTINCT NULL as SamplePop_id, '''+@DRGOption+''', e.'+@DRGOption+', w.DRG, '+ ltrim(str(@study_id))+', w.enc_id ' +
+	' FROM #Work w ' +
+	' INNER JOIN '+@Owner+'.Encounter e ON w.Enc_ID = e.Enc_ID '+
+	' LEFT JOIN SelectedSample ss (NOLOCK) ON e.Enc_id = ss.Enc_id and ss.Study_ID = '+LTRIM(STR(@Study_ID)) +
+	' where ss.enc_id is null'
 EXEC (@Sql)
 
 set @myRowCount = @@ROWCOUNT
