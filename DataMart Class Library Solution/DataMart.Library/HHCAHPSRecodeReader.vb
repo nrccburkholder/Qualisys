@@ -359,7 +359,7 @@ Friend Class HHCAHPSRecodeReader
                 Dim dispo As String = RecodeHHDisposition(mReader("HHDispo")).ToString
                 Try
                     'The "Q038727c" column may not always exist.
-                    Return RecodeProxy("Q038726", mReader("Q038727c"), dispo, CType(mReader("Method"), String))
+                    Return RecodeProxy("Q038726", mReader("Q038727c"), dispo, CType(mReader("Method"), String).ToUpper)
 
                 Catch ex As Exception
                     If dispo <> "110" AndAlso dispo <> "120" AndAlso dispo <> "310" Then
