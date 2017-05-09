@@ -32,7 +32,7 @@ Public Class EncounterUnitEligibility
     Private mDQ_Bus_Rule As Integer
     Private mRemoved_Rule As Integer
     Private mEncDate As Nullable(Of Date)
-    Private mHouseHold_id As Nullable(Of Integer)
+    '    Private mHouseHold_id As Nullable(Of Integer) 'RTP-2566 5/9/2017
     Private mBitBadAddress As Boolean
     Private mBitBadPhone As Boolean
     Private mReportDate As Nullable(Of Date)
@@ -110,14 +110,14 @@ Public Class EncounterUnitEligibility
         End Set
     End Property
 
-    Public Property HouseHold_id() As Nullable(Of Integer)
-        Get
-            Return mHouseHold_id
-        End Get
-        Friend Set(ByVal value As Nullable(Of Integer))
-            mHouseHold_id = value
-        End Set
-    End Property
+    'Public Property HouseHold_id() As Nullable(Of Integer) 'RTP-2566 5/9/2017
+    '    Get
+    '        Return mHouseHold_id
+    '    End Get
+    '    Friend Set(ByVal value As Nullable(Of Integer))
+    '        mHouseHold_id = value
+    '    End Set
+    'End Property
 
     Public Property BitBadAddress() As Boolean
         Get
@@ -197,7 +197,7 @@ Public Class EncounterUnitEligibility
             encounter.DQ_Bus_Rule = rdr.GetInteger("DQ_Bus_Rule")
             encounter.Removed_Rule = rdr.GetInteger("Removed_Rule")
             encounter.EncDate = rdr.GetNullableDate("EncDate")
-            encounter.HouseHold_id = rdr.GetNullableInteger("HouseHold_id")
+            '            encounter.HouseHold_id = rdr.GetNullableInteger("HouseHold_id") 'RTP-2566 5/9/2017
             encounter.BitBadAddress = rdr.GetBoolean("BitBadAddress")
             encounter.BitBadPhone = rdr.GetBoolean("BitBadPhone")
             encounter.ReportDate = rdr.GetNullableDate("ReportDate")
