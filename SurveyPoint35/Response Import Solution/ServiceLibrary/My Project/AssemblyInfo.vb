@@ -11,14 +11,14 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyTitle("PS.ResponseImport.ServiceLibrary")> 
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("National Research")> 
-<Assembly: AssemblyProduct("PS.ResponseImport.ServiceLibrary")> 
-<Assembly: AssemblyCopyright("Copyright © National Research 2009")> 
+<Assembly: AssemblyProduct("PS.ResponseImport.ServiceLibrary")>
+<Assembly: AssemblyCopyright("Copyright © National Research 2009-2017")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM
-<Assembly: Guid("92d535bf-b814-4c22-836a-f85d9ec5e660")> 
+<Assembly: Guid("92d535bf-b814-4c22-836a-f85d9ec5e660")>
 
 ' Version information for an assembly consists of the following four values:
 '
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.0.0.0")> 
-<Assembly: AssemblyFileVersion("1.0.0.0")> 
+<Assembly: AssemblyVersion("2.0.0.0")>
+<Assembly: AssemblyFileVersion("2.0.0.0")>
