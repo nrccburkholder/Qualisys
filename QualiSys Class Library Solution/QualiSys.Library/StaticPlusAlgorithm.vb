@@ -414,7 +414,6 @@ Partial Public Class SampleSet
             Dim popRecord As New Pop
             Dim enc As New Encounter
             Dim encUnit As New EncounterUnit
-            Dim HouseHoldingDQList As New Dictionary(Of Integer, Encounter)
 
             Try
                 For Each encounterUE As EncounterUnitEligibility In encounterUnitEligibility_s 'While rdr.Read
@@ -436,7 +435,7 @@ Partial Public Class SampleSet
 
                     If nextPop Then
                         'Before populating a new popRecord, process the previous one
-                        If popRecord.ID <> 0 Then ExecuteIndividualSample(popRecord, sampleSetId, HouseHoldingDQList, srvy)
+                        If popRecord.ID <> 0 Then ExecuteIndividualSample(popRecord, sampleSetId, srvy)
 
                         'Create new Pop Record
                         popRecord = New Pop
@@ -444,7 +443,6 @@ Partial Public Class SampleSet
                         popRecord.StudyID = srvy.StudyId
                         popRecord.BadAddress = encounterUE.BitBadAddress 'rdr.GetBoolean("bitBadAddress")
                         popRecord.BadPhone = encounterUE.BitBadPhone 'rdr.GetBoolean("bitBadPhone")
-                        popRecord.HouseHoldId = encounterUE.HouseHold_id 'rdr.GetNullableInteger("HouseHold_id")
                     End If
 
                     If nextEnc Then
@@ -497,7 +495,7 @@ Partial Public Class SampleSet
 
                 If popRecord.ID <> 0 Then
                     'Sample the last individual
-                    ExecuteIndividualSample(popRecord, sampleSetId, HouseHoldingDQList, srvy)
+                    ExecuteIndividualSample(popRecord, sampleSetId, srvy)
                 End If
 
             Catch ex As Exception
@@ -584,17 +582,10 @@ Partial Public Class SampleSet
         ''' </summary>
         ''' <param name="popRecord"></param>
         ''' <remarks></remarks>
-        Private Shared Sub ExecuteIndividualSample(ByVal popRecord As Pop, ByVal samplesetId As Integer, ByVal HouseHoldingDQList As Dictionary(Of Integer, Encounter), ByVal srvy As Survey)
+        Private Shared Sub ExecuteIndividualSample(ByVal popRecord As Pop, ByVal samplesetId As Integer, ByVal srvy As Survey)
 
             'Order the encounters and encounter units
             SortEncountersAndEncounterUnits(popRecord)
-
-            'Check for Householding DQs
-            If popRecord.HouseHoldId.HasValue Then
-                If HouseHoldingDQList.ContainsKey(popRecord.HouseHoldId.Value) Then
-                    popRecord.SetHouseholdingRemovedRule(srvy, HouseHoldingDQList.Item(popRecord.HouseHoldId.Value))
-                End If
-            End If
 
             Dim minNonExclusivePriority As Integer = Integer.MaxValue
             Dim minExclusivePriority As Integer = Integer.MaxValue
@@ -645,10 +636,6 @@ Partial Public Class SampleSet
 
                     popRecord.IsSampled = enc.IsSampled
 
-                    'Add the pops household Id to the list of sampled households
-                    If popRecord.HouseHoldId.HasValue AndAlso popRecord.IsSampled Then
-                        HouseHoldingDQList.Add(popRecord.HouseHoldId.Value, enc)
-                    End If
                 Else
                     'Set all removed rules to Excluded Encounter if another encounter has already
                     'been sampled
@@ -1119,7 +1106,6 @@ Partial Public Class SampleSet
             Private mEncounters As New List(Of Encounter)
             Private mBadAddress As Boolean
             Private mBadPhone As Boolean
-            Private mHouseHoldId As Nullable(Of Integer)
             Private mNeedsSamplePopRecordAdded As Boolean = True
             Private mIsSampled As Boolean
 
@@ -1136,15 +1122,6 @@ Partial Public Class SampleSet
                 Get
                     Return mNeedsSamplePopRecordAdded
                 End Get
-            End Property
-
-            Public Property HouseHoldId() As Nullable(Of Integer)
-                Get
-                    Return mHouseHoldId
-                End Get
-                Set(ByVal value As Nullable(Of Integer))
-                    mHouseHoldId = value
-                End Set
             End Property
 
             Public Property BadPhone() As Boolean
@@ -1188,27 +1165,6 @@ Partial Public Class SampleSet
                     mStudyId = value
                 End Set
             End Property
-
-            Public Sub SetHouseholdingRemovedRule(ByVal srvy As Survey, ByVal selectedEncounter As Encounter)
-
-                'For all encounter that were not selected, set the removed rule to householding
-                For Each enc As Encounter In Me.Encounters
-                    If enc IsNot selectedEncounter Then
-                        For Each encUnitList As List(Of EncounterUnit) In enc.EncounterUnitLists
-                            For Each encUnit As EncounterUnit In encUnitList
-                                If encUnit.RemovedCode = RemovedRule.None Then
-                                    If srvy.HouseHoldingType = HouseHoldingType.All Then
-                                        encUnit.RemovedCode = RemovedRule.HouseHoldingAdult
-                                    Else
-                                        encUnit.RemovedCode = RemovedRule.HouseHoldingMinor
-                                    End If
-                                End If
-                            Next
-                        Next
-                    End If
-                Next
-
-            End Sub
 
             Public Sub InsertSamplePop(ByVal samplesetId As Integer)
 
