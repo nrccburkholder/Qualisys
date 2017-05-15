@@ -17,6 +17,24 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 /*
+Created 8/29/08 MWB
+Purpose:  This proc returns a count of the eligible HCAHPS encounters and is used for the Proportional Sampling 
+		  calculation to update the HCAHPS unit target
+			1/14/2015 CJB: switched from HCAHPS specific table to new EligibleEncLog table  
+			2/02/2017 TSB: S68 ATL-1402 HCAHPS Calculate Proportion & Outgo Using Distinct Pops  
+*/
+alter proc [dbo].[QCL_GetHCAHPSEligibleCount] (@Sampleset_ID int, @SampleUnit_ID int)
+as
+
+begin
+
+	Select count(distinct pop_ID) from EligibleEncLog
+	where Sampleset_ID = @Sampleset_ID and SampleUnit_ID = @SampleUnit_ID
+	and IneligibleAfterDRGUpdate=0
+
+end
+GO
+/*
 Business Purpose:
 This procedure is used to calculate the number of eligible discharges.  It
 is used IN the header record of the CMS export
@@ -63,7 +81,7 @@ begin
 	and ISNULL(old_value,'NULL') <> ISNULL(new_value,'NULL')
 
 	-- sampled records
-	SELECT distinct h.samplepop_id, ss.STUDY_ID, ss.POP_ID, ss.enc_id,h.field_name, h.old_value, h.new_value, h.DataFile_ID, dm.Disposition_id, h.Change_Date
+	SELECT distinct h.samplepop_id, ss.STUDY_ID, ss.enc_id,h.field_name, h.old_value, h.new_value, h.DataFile_ID, dm.Disposition_id, h.Change_Date
 	INTO #Work
 	FROM dbo.HCAHPSUpdateLog h
 	LEFT JOIN dbo.HCAHPSUpdateLog h1 on h1.samplepop_id = h.samplepop_id and h1.field_name = h.field_name and h1.DataFile_id = h.DataFile_id and h1.bitRollback = 1
@@ -78,7 +96,7 @@ begin
 
 	-- non-sampled records
 	INSERT INTO #Work
-	SELECT distinct h.samplepop_id, h.STUDY_ID, NULL as POP_ID, h.enc_id, h.field_name, h.old_value, h.new_value, h.DataFile_ID, NULL as Disposition_id, h.Change_Date
+	SELECT distinct h.samplepop_id, h.STUDY_ID, h.enc_id, h.field_name, h.old_value, h.new_value, h.DataFile_ID, NULL as Disposition_id, h.Change_Date
 	FROM dbo.HCAHPSUpdateLog h
 	LEFT JOIN dbo.HCAHPSUpdateLog h1 on h1.study_id = h.study_id and h1.enc_id = h.enc_id and h1.field_name = h.field_name and h1.DataFile_id = h.DataFile_id and h1.bitRollback = 1
 	where h.DataFile_ID = @Datafile_ID

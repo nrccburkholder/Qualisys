@@ -16,6 +16,23 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 /*
+Created 8/29/08 MWB
+Purpose:  This proc returns a count of the eligible HCAHPS encounters and is used for the Proportional Sampling 
+		  calculation to update the HCAHPS unit target
+			1/14/2015 CJB: switched from HCAHPS specific table to new EligibleEncLog table  
+			2/02/2017 TSB: S68 ATL-1402 HCAHPS Calculate Proportion & Outgo Using Distinct Pops  
+*/
+alter proc [dbo].[QCL_GetHCAHPSEligibleCount] (@Sampleset_ID int, @SampleUnit_ID int)
+as
+
+begin
+
+	Select count(distinct pop_ID) from EligibleEncLog
+	where Sampleset_ID = @Sampleset_ID and SampleUnit_ID = @SampleUnit_ID
+
+end
+GO
+/*
 Business Purpose:
 This procedure is used to calculate the number of eligible discharges.  It
 is used IN the header record of the CMS export
