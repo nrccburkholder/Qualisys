@@ -3,7 +3,7 @@
   <metadata>
     <id>Qualisys.PSResponseImportWinService</id>
     <title>PSResponseImportService</title>
-    <version>1.0.0.0</version>
+    <version>2.0.3.0</version>
     <authors>NRC</authors>
     <description>This service scans for data files to import into SurveyPoint</description>
   </metadata>
