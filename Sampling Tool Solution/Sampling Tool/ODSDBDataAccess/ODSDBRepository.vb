@@ -69,8 +69,33 @@ Namespace ODSDBDataAccess
             Else
                 Return Date.MinValue
             End If
+        End Function
 
+        Public Function GetCustomerSettings(ClientId As Integer, ConnectSurveyTypeId As String) As Dictionary(Of String, Object) Implements IODSDBRepository.GetCustomerSettings
+            Dim query As String = String.Format("SELECT " &
+                                                "ContractNumber, " &
+                                                "SurveyStartDate, " &
+                                                "SurveyEndDate, " &
+                                                "LocationProviderResurveyDays, " &
+                                                "IntraCustomerResurveyDays " &
+                                                "From ODSDB.dbo.CustomerSurveyConfig " &
+                                                "Where CustomerId = {0} And " &
+                                                "('{1}' = '' or SurveyTypeID = {1})", ClientId, ConnectSurveyTypeId)
 
+            Dim dt As New DataTable
+            Me.Fill(dt, query, CommandType.Text)
+
+            Dim settings As Dictionary(Of String, Object) = New Dictionary(Of String, Object)
+
+            If dt.Rows.Count = 1 Then
+                settings.Add("ContractNumber", dt.Rows(1).Item("ContractNumber").ToString())
+                settings.Add("SurveyStartDate", DateTime.Parse(dt.Rows(1).Item("SurveyStartDate").ToString()))
+                settings.Add("SurveyEndDate", DateTime.Parse(dt.Rows(1).Item("SurveyEndDate").ToString()))
+                settings.Add("LocationProviderResurveyDays", Integer.Parse(dt.Rows(1).Item("LocationProviderResurveyDays").ToString()))
+                settings.Add("IntraCustomerResurveyDays", Integer.Parse(dt.Rows(1).Item("IntraCustomerResurveyDays").ToString()))
+            End If
+
+            Return settings
         End Function
 
 #End Region
