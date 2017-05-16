@@ -8,11 +8,16 @@
 	INSERT into QUALPRO_PARAMS
 
 	select * from qualpro_params where strparam_grp = 'SamplingTool'
+	select * from qualpro_params where strparam_nm like '%resurvey%' order by strparam_nm
+	select * from qualpro_params where strparam_nm like '%- RT%'
 */
 Use [QP_Prod]
 GO
 
-if not exists (select * from QualPro_Params where strparam_nm = 'MasterSurveyTypeForODSDB')
-	insert into QualPro_Params(STRPARAM_NM,STRPARAM_TYPE,STRPARAM_GRP,STRPARAM_VALUE,NUMPARAM_VALUE,DATPARAM_VALUE,COMMENTS)
-	values ('MasterSurveyTypeForODSDB','S','SamplingTool','13',NULL,NULL,'Legacy Connect Survey Type needed to read CustomerSurveyConfig')
+delete from QualPro_Params where strparam_nm = 'MasterSurveyTypeForODSDB'
+delete from QualPro_Params where strparam_nm = 'SurveyRule: ResurveyMethodDefault - RT'
+delete from QualPro_Params where strparam_nm = 'SurveyRule: ResurveyExclusionPeriodsNumericDefault - RT'
+delete from QualPro_Params where strparam_nm = 'SurveyRule: IsResurveyExclusionPeriodsNumericDisabled - RT'
+delete from QualPro_Params where strparam_nm = 'SurveyRule: IsResurveyMethodDisabled - RT'
+
 GO
