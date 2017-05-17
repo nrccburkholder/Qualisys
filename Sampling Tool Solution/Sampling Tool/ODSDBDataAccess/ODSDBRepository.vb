@@ -98,6 +98,25 @@ Namespace ODSDBDataAccess
             Return settings
         End Function
 
+        Public Function GetCustomerQuestionPods(ClientId As Integer) As DataTable Implements IODSDBRepository.GetCustomerQuestionPods
+            Dim query As String = String.Format("SELECT " &
+                                                "QuestionModuleBK, " &
+                                                "QuestionModuleBKID, " &
+                                                "q.QuestionModuleName, " &
+                                                "q.QuestionModuleID " &
+                                                "From [odsdb].[dbo].[QuestionModuleBKs] qbk " &
+                                                "inner Join [odsdb].[dbo].[QuestionModule] q on qbk.questionmoduleid = q.questionmoduleid " &
+                                                "where qbk.IsIgnored = 0 " &
+                                                "Where CustomerId = {0}", ClientId)
+
+            Dim dt As New DataTable
+            Me.Fill(dt, query, CommandType.Text)
+
+            Using dt
+                Return dt
+            End Using
+        End Function
+
 #End Region
 
     End Class
