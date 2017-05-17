@@ -67,15 +67,15 @@ Function OASEligibleSurg(strCPT4,strCPT4_2,strCPT4_3,strHCPCS,strHCPCS_2,strHCPC
         LOASEligibleSurg = "1"
     End If
     
-    If (strHCPCS = "G0104" Or strHCPCS = "GO105" Or strHCPCS = "GO121" Or strHCPCS = "G0260") Then
+    If (strHCPCS = "G0104" Or strHCPCS = "G0105" Or strHCPCS = "G0121" Or strHCPCS = "G0260") Then
         LOASEligibleSurg = "1"
     End If
 
-    If (strHCPCS_2 = "G0104" Or strHCPCS_2 = "GO105" Or strHCPCS_2 = "GO121" Or strHCPCS_2 = "G0260") Then
+    If (strHCPCS_2 = "G0104" Or strHCPCS_2 = "G0105" Or strHCPCS_2 = "G0121" Or strHCPCS_2 = "G0260") Then
         LOASEligibleSurg = "1"
     End If
 
-    If (strHCPCS_3 = "G0104" Or strHCPCS_3 = "GO105" Or strHCPCS_3 = "GO121" Or strHCPCS_3 = "G0260") Then
+    If (strHCPCS_3 = "G0104" Or strHCPCS_3 = "G0105" Or strHCPCS_3 = "G0121" Or strHCPCS_3 = "G0260") Then
         LOASEligibleSurg = "1"
     End If
 
