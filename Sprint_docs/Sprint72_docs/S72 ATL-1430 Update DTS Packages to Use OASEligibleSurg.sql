@@ -284,6 +284,46 @@ and d4.formula not like '%"gcode_3"%'
 and d4.formula <> ''
 --12
 
+--Update destination.sources for OASEligibleSurg to include 3 more fields
+
+declare @package_id int = -1
+
+while 0=0 --package_id loop
+begin
+	select @package_id = min(package_id) from destination
+	where 
+	field_id in (1774,1768,1769,1770)
+	and package_id > @package_id
+
+	if @package_id is null break
+
+	declare @source_id int = -1
+
+	while 0=0 --source_id loop
+	begin
+		select @source_id = min(s.source_id) from source s
+		inner join dtsmapping map on s.package_id = map.package_id and s.source_id = map.source_id
+		inner join destination d on d.package_id = map.package_id and d.destination_id = map.destination_id
+		where 
+		map.package_id = @package_id 
+		and	field_id in (1768,1769,1770)
+		and strName not like '%CPT4%'
+		and s.source_id > @source_id
+
+		if @source_id is null break
+		
+		update d set sources = sources + ',' + convert(nvarchar, @source_id)
+			from source s
+			inner join dtsmapping map on s.package_id = map.package_id and s.source_id = map.source_id
+			inner join destination d on d.package_id = map.package_id and d.destination_id = map.destination_id
+			where 
+			map.package_id = @package_id 
+			and	field_id in (1774,1768,1769,1770)
+			and formula like '%OASEligibleSurg%'
+			and sources not like '%' + convert(nvarchar,@source_id) + '%'
+	end
+end
+
 select d.formula 
 from destination d left join
 	destination d2 on d.package_id = d2.package_id and d.table_id = d2.table_id and d.intversion = d2.intversion left join
