@@ -73,9 +73,9 @@ Namespace ODSDBDataAccess
 
         Public Function GetCustomerSettings(ClientId As Integer, ConnectSurveyTypeId As String) As Dictionary(Of String, Object) Implements IODSDBRepository.GetCustomerSettings
             Dim query As String = String.Format("SELECT " &
-                                                "ContractNumber, " &
-                                                "SurveyStartDate, " &
-                                                "SurveyEndDate, " &
+                                                "IsNull(ContractNumber,'') ContractNumber, " &
+                                                "IsNull(SurveyStartDate, '1/1/1900') SurveyStartDate, " &
+                                                "IsNull(SurveyEndDate, '1/1/1900') SurveyEndDate, " &
                                                 "LocationProviderResurveyDays, " &
                                                 "IntraCustomerResurveyDays " &
                                                 "From ODSDB.dbo.CustomerSurveyConfig " &
