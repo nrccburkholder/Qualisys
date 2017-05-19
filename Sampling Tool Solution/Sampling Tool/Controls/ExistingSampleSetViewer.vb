@@ -404,7 +404,7 @@ Public Class ExistingSampleSetViewer
         Next
 
         For Each srvy As Survey In mSurveys
-            srvy.refresh()
+            srvy.Refresh()
         Next
         RaiseEvent SampleSetDeleted(Me, EventArgs.Empty)
 
@@ -418,8 +418,9 @@ Public Class ExistingSampleSetViewer
         Me.ReportButton.Enabled = Me.IsReportCommandEnabled
         Me.ReportMenuItem.Enabled = Me.IsReportCommandEnabled
 
-        Me.ScheduleButton.Enabled = Me.IsScheduleCommandEnabled
-        Me.ScheduleMenuItem.Enabled = Me.IsScheduleCommandEnabled
+        Dim hasConnectSurveys As Boolean = Me.HasConnectSurveys()
+        Me.ScheduleButton.Enabled = Me.IsScheduleCommandEnabled And Not hasConnectSurveys
+        Me.ScheduleMenuItem.Enabled = Me.IsScheduleCommandEnabled And Not hasConnectSurveys
 
         Me.UnscheduleButton.Enabled = Me.IsUnscheduleCommandEnabled
         Me.UnscheduleMenuItem.Enabled = Me.IsUnscheduleCommandEnabled
@@ -427,5 +428,10 @@ Public Class ExistingSampleSetViewer
         Me.DeleteButton.Enabled = Me.IsDeleteCommandenabled
         Me.DeleteMenuItem.Enabled = Me.IsDeleteCommandenabled
     End Sub
+
+    Private Function HasConnectSurveys() As Boolean
+        Dim list As List(Of Survey) = New List(Of Survey)(Me.mSurveys)
+        Return list.Exists(Function(s) s.SurveyTypeName.ToLower = "connect")
+    End Function
 #End Region
 End Class
