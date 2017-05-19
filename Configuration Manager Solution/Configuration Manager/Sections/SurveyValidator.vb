@@ -64,6 +64,9 @@ Public Class SurveyValidator
         Me.LastValidationLabel.Text = lastValidation
         Me.CurrentStatusLabel.Text = "Status:  " & currentStatus
         Me.OKButton.Enabled = False
+
+        Me.SetStatusOptions()
+
         Me.CopyToClipboardButton.Enabled = False
     End Sub
 
@@ -317,5 +320,8 @@ Public Class SurveyValidator
         Me.OKButton.Enabled = True
     End Sub
 
-   
+    Private Sub SetStatusOptions()
+        Me.ValidatedFormGenReleasedRadioButton.Visible = Not Me.mSurvey.IsSamplesetSchedulingDisabled
+    End Sub
+
 End Class
