@@ -321,8 +321,7 @@ Public Class SurveyValidator
     End Sub
 
     Private Sub SetStatusOptions()
-        Me.ValidatedFormGenReleasedRadioButton.Visible = Me.mSurvey.SurveyTypeName.ToLower() <> "connect"
+        Me.ValidatedFormGenReleasedRadioButton.Visible = Not Me.mSurvey.IsSamplesetSchedulingDisabled
     End Sub
-
 
 End Class

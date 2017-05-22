@@ -431,7 +431,7 @@ Public Class ExistingSampleSetViewer
 
     Private Function HasConnectSurveys() As Boolean
         Dim list As List(Of Survey) = New List(Of Survey)(Me.mSurveys)
-        Return list.Exists(Function(s) s.SurveyTypeName.ToLower = "connect")
+        Return list.Exists(Function(s) s.IsSamplesetSchedulingDisabled)
     End Function
 #End Region
 End Class
