@@ -7,7 +7,7 @@ declare @newID int
 select @newID = exporttemplateid
 from cem.ExportTemplate 
 where exporttemplatename = 'oas cahps' 
-and ExportTemplateVersionMajor='2017Q1' 
+and ExportTemplateVersionMajor='2017Q2' 
 and ExportTemplateVersionMinor=1
 
 if @newID is not NULL
@@ -23,9 +23,9 @@ begin
 	delete from cem.exporttemplatesection where exporttemplateid=@newid
 	delete from cem.ExportTemplate where exporttemplateid=@newid
 
-	delete from cem.exportqueuefile where exportqueueid in (select ExportQueueID from cem.exportqueue where exporttemplatename = 'oas cahps' and ExportTemplateVersionMajor='2017Q1' and ExportTemplateVersionMinor=1)
-	delete from cem.ExportQueueSurvey where exportqueueid in (select ExportQueueID from cem.exportqueue where exporttemplatename = 'oas cahps' and ExportTemplateVersionMajor='2017Q1' and ExportTemplateVersionMinor=1)
-	delete from cem.exportqueue where exporttemplatename = 'oas cahps' and ExportTemplateVersionMajor='2017Q1' and ExportTemplateVersionMinor=1
+	delete from cem.exportqueuefile where exportqueueid in (select ExportQueueID from cem.exportqueue where exporttemplatename = 'oas cahps' and ExportTemplateVersionMajor='2017Q2' and ExportTemplateVersionMinor=1)
+	delete from cem.ExportQueueSurvey where exportqueueid in (select ExportQueueID from cem.exportqueue where exporttemplatename = 'oas cahps' and ExportTemplateVersionMajor='2017Q2' and ExportTemplateVersionMinor=1)
+	delete from cem.exportqueue where exporttemplatename = 'oas cahps' and ExportTemplateVersionMajor='2017Q2' and ExportTemplateVersionMinor=1
 
 	declare @sql varchar(max)
 	set @sql = '[CEM].[ExportPostProcess' + right('00000000'+convert(varchar,@newid),8) + ']'

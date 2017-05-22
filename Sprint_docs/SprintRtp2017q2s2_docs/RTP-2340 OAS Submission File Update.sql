@@ -11,7 +11,8 @@ begin
 	select @newID = max(exporttemplateid) from cem.ExportTemplate
 
 	update cem.ExportTemplate
-	set ExportTemplateVersionMajor='2017Q2', ExportTemplateVersionMinor=1, ValidStartDate='4/1/2017', ValidEndDate='12/31/2222', XMLSchemaDefinition='<xs:schema xmlns:mstns="http://oascahps.org" xmlns="http://oascahps.org" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="monthlydata" targetNamespace="http://oascahps.org" attributeFormDefault="qualified" elementFormDefault="qualified">
+	set ExportTemplateVersionMajor='2017Q2', ExportTemplateVersionMinor=1, ValidStartDate='4/1/2017', ValidEndDate='12/31/2222', CreatedBy='NRC\dgilsdorf', CreatedOn=getdate()
+		, XMLSchemaDefinition='<xs:schema xmlns:mstns="http://oascahps.org" xmlns="http://oascahps.org" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="monthlydata" targetNamespace="http://oascahps.org" attributeFormDefault="qualified" elementFormDefault="qualified">
     <xs:element name="monthlydata" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
         <xs:complexType>
             <xs:sequence>
@@ -739,7 +740,7 @@ begin
 
 	select @surgCatCol = ExportTemplateColumnID
 	from cem.ExportTemplate_view 
-	where exporttemplateid=14
+	where exporttemplateid=@newID
 	and ExportColumnName = 'surgicalcat' 
 	--SELECT * FROM cem.ExportTemplateColumnResponse WHERE ExportTemplateColumnID=@surgCatCol
 
