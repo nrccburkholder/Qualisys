@@ -73,7 +73,7 @@ Public Class Survey
     Private mByPassInitRespRateNumericEnforcement As Boolean = False
     Private mUseUSPSAddrChangeServiceDefault As Boolean = False
     Private mDefaultScheduleDateAdjustmentByMonths As Integer = 0
-
+    Private mIsSamplesetSchedulingDisabled As Boolean = False
 
 #End Region
 
@@ -1008,6 +1008,13 @@ Public Class Survey
         Get
             GetSurveyRule("PointInTimeDisallowed", mIsSystematic, override)
             Return mIsSystematic
+        End Get
+    End Property
+
+    Public ReadOnly Property IsSamplesetSchedulingDisabled(Optional ByVal override As String = vbNullString) As Boolean
+        Get
+            GetSurveyRule("IsSamplesetSchedulingDisabled", mIsSamplesetSchedulingDisabled, override)
+            Return mIsSamplesetSchedulingDisabled
         End Get
     End Property
 
