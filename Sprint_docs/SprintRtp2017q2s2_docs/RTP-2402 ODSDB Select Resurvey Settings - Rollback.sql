@@ -9,15 +9,31 @@
 
 	select * from qualpro_params where strparam_grp = 'SamplingTool'
 	select * from qualpro_params where strparam_nm like '%resurvey%' order by strparam_nm
-	select * from qualpro_params where strparam_nm like '%- RT%'
+	select * from qualpro_params where strparam_nm like '%- ED%'
+	select * from qualpro_params where strparam_nm like '%- IP%'
+	select * from subtype where subtype_NM IN ('ED','IP')
+
 */
 Use [QP_Prod]
 GO
 
 delete from QualPro_Params where strparam_nm = 'MasterSurveyTypeForODSDB'
-delete from QualPro_Params where strparam_nm = 'SurveyRule: ResurveyMethodDefault - RT'
-delete from QualPro_Params where strparam_nm = 'SurveyRule: ResurveyExclusionPeriodsNumericDefault - RT'
-delete from QualPro_Params where strparam_nm = 'SurveyRule: IsResurveyExclusionPeriodsNumericDisabled - RT'
-delete from QualPro_Params where strparam_nm = 'SurveyRule: IsResurveyMethodDisabled - RT'
+
+--subtype
+update subtype set bitRuleOverride = 0
+where subtype_NM in ('ED','IP')
+and bitRuleOverride = 1
+
+--ED
+delete from QualPro_Params where strparam_nm = 'SurveyRule: ResurveyMethodDefault - ED'
+delete from QualPro_Params where strparam_nm = 'SurveyRule: ResurveyExclusionPeriodsNumericDefault - ED'
+delete from QualPro_Params where strparam_nm = 'SurveyRule: IsResurveyExclusionPeriodsNumericDisabled - ED'
+delete from QualPro_Params where strparam_nm = 'SurveyRule: IsResurveyMethodDisabled - ED'
+
+--IP
+delete from QualPro_Params where strparam_nm = 'SurveyRule: ResurveyMethodDefault - IP'
+delete from QualPro_Params where strparam_nm = 'SurveyRule: ResurveyExclusionPeriodsNumericDefault - IP'
+delete from QualPro_Params where strparam_nm = 'SurveyRule: IsResurveyExclusionPeriodsNumericDisabled - IP'
+delete from QualPro_Params where strparam_nm = 'SurveyRule: IsResurveyMethodDisabled - IP'
 
 GO
