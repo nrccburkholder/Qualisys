@@ -866,7 +866,7 @@ begin
 	UPDATE CEM.ExportDataset00000014 
 	SET    [administration.surgicalcat] = ''5'' 
 	WHERE  exportqueueid = @ExportQueueID 
-	AND COALESCE([administration.cpt4],[administration.cpt4_2],[administration.cpt4_3],[administration.hcpcslvl2cd],[administration.hcpcslvl2cd_2],[administration.hcpcslvl2cd_3]) IS NULL
+	AND [administration.cpt4]+[administration.cpt4_2]+[administration.cpt4_3]+[administration.hcpcslvl2cd]+[administration.hcpcslvl2cd_2]+[administration.hcpcslvl2cd_3] = ''''
 
 	UPDATE CEM.ExportDataset00000014 
 	SET    [administration.surgicalcat] = ''4'' 
