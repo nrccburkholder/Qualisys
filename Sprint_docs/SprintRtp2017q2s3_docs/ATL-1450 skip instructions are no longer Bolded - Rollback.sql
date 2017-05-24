@@ -10,6 +10,10 @@
 	select * from qualpro_params where strparam_nm like 'Formlayout%'
 
 */
+Use [QP_Prod]
+GO
 
 update QualPro_Params set strparam_value = '3.38'
 where strparam_nm = 'FormLayoutVersion'
+
+GO
