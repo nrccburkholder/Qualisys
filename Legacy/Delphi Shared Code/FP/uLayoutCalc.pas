@@ -1260,7 +1260,7 @@ begin
     _ParenClose := ')';
   end;
 
-  if SkipRepeatsScaleText then begin
+  if DoDBenSkips or CAHPSNumbering then begin
     _PCLBoldOn := PCLBoldOn;
     _PCLBoldOff := PCLBoldOff;
   end

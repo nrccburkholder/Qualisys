@@ -55,7 +55,7 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>8C3B8B5F10067348C736ADC6639D811780BF30C5</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>D4A8D53C4F0C92242A38777C95A9CA0F7F4D39DB</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
@@ -68,7 +68,7 @@
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>QuestionLibraryLauncher_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>QuestionLibraryLauncher_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -115,7 +115,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="QuestionLibraryLauncher_1_TemporaryKey.pfx" />
+    <None Include="QuestionLibraryLauncher_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Question.exe" />
