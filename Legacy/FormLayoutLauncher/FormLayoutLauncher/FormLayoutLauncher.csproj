@@ -55,7 +55,7 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>DB675502BFD2F4A11309D93BCB53A9B0C8209AF0</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>49353582E1F1A0F25A36876ED1FB5D814420E888</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
@@ -106,7 +106,7 @@
     </Compile>
     <None Include="app.config" />
     <None Include="FormLayoutLauncher.nuspec" />
-    <None Include="FormLayoutLauncher_1_TemporaryKey.pfx" />
+    <None Include="FormLayoutLauncher_TemporaryKey.pfx" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
