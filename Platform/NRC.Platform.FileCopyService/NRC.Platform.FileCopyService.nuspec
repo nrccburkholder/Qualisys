@@ -3,12 +3,12 @@
   <metadata>
     <id>Qualisys.FileCopyService</id>
     <title>Qualisys File Copy Service</title>
-    <version>1.1.1.0</version>
+    <version>1.2.0.0</version>
     <authors>NRC</authors>
     <description>Qualisys file copy service</description>
   </metadata>
   <files>
-    <file src="bin\Release\**" exclude="bin\Release\Settings.xml" />
-    <file src="bin\Release\Settings.xml" target="Settings_Example.xml" />
+    <file src="bin\x64\Release\**" exclude="bin\x64\Release\Settings.xml" />
+    <file src="bin\x64\Release\Settings.xml" target="Settings_Example.xml" />
   </files>
 </package>
