@@ -55,7 +55,7 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>7C29243989019529DF95B92DD71E2385703FCA9F</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>DB675502BFD2F4A11309D93BCB53A9B0C8209AF0</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
@@ -68,7 +68,7 @@
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>FormLayoutLauncher_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>FormLayoutLauncher_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
