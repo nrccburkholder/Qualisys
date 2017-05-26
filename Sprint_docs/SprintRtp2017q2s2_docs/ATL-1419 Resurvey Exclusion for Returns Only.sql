@@ -170,7 +170,7 @@ AS
 		if exists(select st.subtype_nm from dbo.surveysubtype sst inner join 
 				dbo.subtype st on st.Subtype_id = sst.Subtype_id 
 				where survey_id = @survey_ID and
-					st.subtype_id = 'Returns Only')
+					st.subtype_nm = 'Returns Only')
 			INSERT INTO #Remove_Pops (Pop_id)
 			SELECT DISTINCT
 					sp.Pop_id
