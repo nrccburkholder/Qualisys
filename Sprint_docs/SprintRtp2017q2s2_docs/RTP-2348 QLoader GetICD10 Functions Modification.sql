@@ -47,9 +47,7 @@ End If
 End Function'
 UPDATE dbo.functions
 SET strFunction_Code = @function
-WHERE str_function_nm = 'GetHomeHealthICD10'
-
-GO
+WHERE strfunction_nm = 'GetHomeHealthICD10'
 
 select @function = N'''Function GetHospiceICD10(strValue)
 If Not IsNullOrBlank(strValue) Then
@@ -71,7 +69,8 @@ End If
 set objRegExp = nothing
 End If
 end function'
+
 UPDATE dbo.functions
 SET strFunction_Code = @function
-WHERE str_function_nm = 'GetHospiceICD10'
+WHERE strfunction_nm = 'GetHospiceICD10'
 
