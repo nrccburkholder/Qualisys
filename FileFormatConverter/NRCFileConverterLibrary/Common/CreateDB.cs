@@ -103,11 +103,14 @@ namespace NRCFileConverterLibrary.Common
 
             //2013-0830 [camelinckx] I have replaced the logic that used the Office PIA by an embedded binary resource
             //                       which has en empty Access database that gets copied from the assembly down to disk.
-            string resourceName = "NRCFileConverterLibrary.Resource.Template.accdb"; 
+            string resourceName = "NRCFileConverterLibrary.Resource.Template.accdb";
+            //using (Stream resourceStr = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
             using (Stream resourceStr = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
             {
                 using (Stream fileOutStr = File.Create(path))
                 {
+                    foreach (string sResource in System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceNames())
+                        Logs.Log(LogLevel.Info, sResource);
                     resourceStr.CopyTo(fileOutStr);
                 }
             } 
