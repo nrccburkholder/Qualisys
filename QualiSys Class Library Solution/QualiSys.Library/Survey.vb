@@ -24,6 +24,7 @@ Public Class Survey
     Private mUseUSPSAddrChangeService As Boolean
     Private mIsHandout As Boolean
     Private mIsPointInTime As Boolean
+    Private mLocationProviderResurveyDays As Integer
     Private mContractedLanguages As String = String.Empty
     Private mEnforceSkip As Boolean = True
     Private mClientFacingName As String = String.Empty
@@ -87,7 +88,7 @@ Public Class Survey
 
 #Region " Persisted Properties "
 
-    <Logable()> _
+    <Logable()>
     Public Property Id() As Integer
         Get
             Return mId
@@ -97,7 +98,7 @@ Public Class Survey
         End Set
     End Property
 
-    <Logable()> _
+    <Logable()>
     Public Property Name() As String
         Get
             Return mName
@@ -110,7 +111,7 @@ Public Class Survey
         End Set
     End Property
 
-    <Logable()> _
+    <Logable()>
     Public Property ContractNumber() As String
         Get
             Return mContractNumber
@@ -123,7 +124,7 @@ Public Class Survey
         End Set
     End Property
 
-    <Logable()> _
+    <Logable()>
     Public Property Description() As String
         Get
             Return mDescription
@@ -136,7 +137,7 @@ Public Class Survey
         End Set
     End Property
 
-    <Logable()> _
+    <Logable()>
     Public Property StudyId() As Integer
         Get
             Return mStudyId
@@ -149,7 +150,7 @@ Public Class Survey
         End Set
     End Property
 
-    <Logable()> _
+    <Logable()>
     Public Property SamplePlanId() As Integer
         Get
             Return mSamplePlanId
@@ -162,7 +163,7 @@ Public Class Survey
         End Set
     End Property
 
-    <Logable()> _
+    <Logable()>
     Public Property CutoffResponseCode() As CutoffFieldType
         Get
             Return mCutoffResponseCode
@@ -175,7 +176,7 @@ Public Class Survey
         End Set
     End Property
 
-    <Logable()> _
+    <Logable()>
     Public Property CutoffTableId() As Integer
         Get
             Return mCutoffTableId
@@ -188,7 +189,7 @@ Public Class Survey
         End Set
     End Property
 
-    <Logable()> _
+    <Logable()>
     Public Property CutoffFieldId() As Integer
         Get
             Return mCutoffFieldId
@@ -201,20 +202,20 @@ Public Class Survey
         End Set
     End Property
 
-    <Logable()> _
+    <Logable()>
     Public Property SampleEncounterField() As StudyTableColumn
         Get
             Return mSampleEncounterField
         End Get
         Set(ByVal value As StudyTableColumn)
-            If (mSampleEncounterField Is Nothing AndAlso _
+            If (mSampleEncounterField Is Nothing AndAlso
                 value Is Nothing) Then
                 Return
             End If
 
-            If (mSampleEncounterField IsNot Nothing AndAlso _
-                value IsNot Nothing AndAlso _
-                mSampleEncounterField.TableId = value.TableId AndAlso _
+            If (mSampleEncounterField IsNot Nothing AndAlso
+                value IsNot Nothing AndAlso
+                mSampleEncounterField.TableId = value.TableId AndAlso
                 mSampleEncounterField.Id = value.Id) Then
                 Return
             End If
@@ -224,7 +225,7 @@ Public Class Survey
         End Set
     End Property
 
-    <Logable()> _
+    <Logable()>
     Public Property ResponseRateRecalculationPeriod() As Integer
         Get
             Return mResponseRateRecalculationPeriod
@@ -237,7 +238,7 @@ Public Class Survey
         End Set
     End Property
 
-    <Logable()> _
+    <Logable()>
     Public Property ResurveyPeriod() As Integer
         Get
             Return mResurveyPeriod
@@ -250,7 +251,7 @@ Public Class Survey
         End Set
     End Property
 
-    <Logable()> _
+    <Logable()>
     Public Property SurveyStartDate() As Date
         Get
             Return mSurveyStartDate
@@ -263,7 +264,7 @@ Public Class Survey
         End Set
     End Property
 
-    <Logable()> _
+    <Logable()>
     Public Property SurveyEndDate() As Date
         Get
             Return mSurveyEndDate
@@ -276,7 +277,7 @@ Public Class Survey
         End Set
     End Property
 
-    <Logable()> _
+    <Logable()>
     Public Property SamplingAlgorithm() As SamplingAlgorithm
         Get
             Return mSamplingAlgorithm
@@ -289,7 +290,7 @@ Public Class Survey
         End Set
     End Property
 
-    <Logable()> _
+    <Logable()>
     Public Property EnforceSkip() As Boolean
         Get
             Return mEnforceSkip
@@ -302,7 +303,7 @@ Public Class Survey
         End Set
     End Property
 
-    <Logable()> _
+    <Logable()>
     Public Property ClientFacingName() As String
         Get
             Return mClientFacingName
@@ -315,7 +316,7 @@ Public Class Survey
         End Set
     End Property
 
-    <Logable()> _
+    <Logable()>
     Public Property SurveyType() As SurveyTypes
         Get
             Return mSurveyType
@@ -328,7 +329,7 @@ Public Class Survey
         End Set
     End Property
 
-    <Logable()> _
+    <Logable()>
     Public Property SurveyTypeDefId() As Integer
         Get
             Return mSurveyTypeDefId
@@ -341,7 +342,7 @@ Public Class Survey
         End Set
     End Property
 
-    <Logable()> _
+    <Logable()>
     Public Property ResurveyMethod() As ResurveyMethod
         Get
             Return mResurveyMethod
@@ -354,7 +355,7 @@ Public Class Survey
         End Set
     End Property
 
-    <Logable()> _
+    <Logable()>
     Public Property HouseHoldingType() As HouseHoldingType
         Get
             Return mHouseHoldingType
@@ -367,7 +368,7 @@ Public Class Survey
         End Set
     End Property
 
-    <Logable()> _
+    <Logable()>
     Public Property IsValidated() As Boolean
         Get
             Return mIsValidated
@@ -380,7 +381,7 @@ Public Class Survey
         End Set
     End Property
 
-    <Logable()> _
+    <Logable()>
     Public Property IsFormGenReleased() As Boolean
         Get
             Return mIsFormGenReleased
@@ -393,7 +394,7 @@ Public Class Survey
         End Set
     End Property
 
-    <Logable()> _
+    <Logable()>
     Public Property IsActive() As Boolean
         Get
             Return mIsActive
@@ -406,7 +407,7 @@ Public Class Survey
         End Set
     End Property
 
-    <Logable()> _
+    <Logable()>
     Public Property UseUSPSAddrChangeService() As Boolean
         Get
             Return mUseUSPSAddrChangeService
@@ -419,7 +420,7 @@ Public Class Survey
         End Set
     End Property
 
-    <Logable()> _
+    <Logable()>
     Public Property IsHandout() As Boolean
         Get
             Return mIsHandout
@@ -432,7 +433,7 @@ Public Class Survey
         End Set
     End Property
 
-    <Logable()> _
+    <Logable()>
     Public Property IsPointInTime() As Boolean
         Get
             Return mIsPointInTime
@@ -445,7 +446,20 @@ Public Class Survey
         End Set
     End Property
 
-    <Logable()> _
+    <Logable()>
+    Public Property LocationProviderResurveyDays() As Integer
+        Get
+            Return mLocationProviderResurveyDays
+        End Get
+        Set(ByVal value As Integer)
+            If mLocationProviderResurveyDays <> value Then
+                mLocationProviderResurveyDays = value
+                mIsDirty = True
+            End If
+        End Set
+    End Property
+
+    <Logable()>
     Public Property ContractedLanguages() As String
         Get
             Return mContractedLanguages
@@ -1110,12 +1124,12 @@ Public Class Survey
                                      ByVal surveyTypeId As Integer, ByVal surveyTypeDefId As Integer, ByVal houseHoldingType As HouseHoldingType,
                                      ByVal contractNumber As String, ByVal isActive As Boolean, ByVal contractedLanguages As String, ByVal srvySubTypes As SubTypeList,
                                      ByVal questionnairesubtype As SubType, ByVal resurveyExclusionSubtype As SubType, ByVal UseUSPSAddrChangeService As Boolean,
-                                     ByVal isHandout As Boolean, ByVal isPointInTime As Boolean) As Survey
+                                     ByVal isHandout As Boolean, ByVal isPointInTime As Boolean, ByVal locationProviderResurveyDays As Integer) As Survey
 
         Return SurveyProvider.Instance.Insert(studyId, name, description, responseRateRecalculationPeriod, resurveyMethodId, resurveyPeriod, surveyStartDate, surveyEndDate,
                                               samplingAlgorithmId, enforceSkip, cutoffResponseCode, cutoffTableId, cutoffFieldId, sampleEncounterField, clientFacingName,
                                               surveyTypeId, surveyTypeDefId, houseHoldingType, contractNumber, isActive, contractedLanguages, srvySubTypes, questionnairesubtype,
-                                              resurveyExclusionSubtype, UseUSPSAddrChangeService, isHandout, isPointInTime)
+                                              resurveyExclusionSubtype, UseUSPSAddrChangeService, isHandout, isPointInTime, locationProviderResurveyDays)
 
     End Function
 

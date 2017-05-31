@@ -64,7 +64,8 @@ Namespace DataProvider
                                             ByVal resurveyExclustionSubtype As SubType,
                                             ByVal UseUSPSAddrChangeService As Boolean,
                                             ByVal isHandout As Boolean,
-                                            ByVal isPointInTime As Boolean
+                                            ByVal isPointInTime As Boolean,
+                                            ByVal locationProviderResurveyDays As Integer
                                            ) As Survey
         Public MustOverride Sub Delete(ByVal surveyId As Integer)
         Public MustOverride Function AllowDelete(ByVal surveyId As Integer) As Boolean

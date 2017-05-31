@@ -347,7 +347,7 @@ Public Class SurveyProvider
                                                            SafeDataReader.ToDBValue(sampleEncounterTableId, -1), SafeDataReader.ToDBValue(sampleEncounterFieldId, -1),
                                                            .ClientFacingName, .SurveyType, .SurveyTypeDefId, GetHouseHoldingTypeCharacter(.HouseHoldingType), .IsValidated,
                                                            SafeDataReader.ToDBValue(.DateValidated), .IsFormGenReleased, .ContractNumber, .IsActive, .ContractedLanguages, .UseUSPSAddrChangeService,
-                                                           .IsHandout, .IsPointInTime)
+                                                           .IsHandout, .IsPointInTime, .LocationProviderResurveyDays)
 
             ExecuteNonQuery(cmd, tran)
         End With
@@ -380,7 +380,8 @@ Public Class SurveyProvider
                                      ByVal resurveyExclustionSubtype As SubType,
                                      ByVal useUSPSAddrChangeService As Boolean,
                                      ByVal isHandout As Boolean,
-                                     ByVal isPointInTime As Boolean
+                                     ByVal isPointInTime As Boolean,
+                                     ByVal locationProviderResurveyDays As Integer
                                     ) As Survey
 
         Dim surveyId As Integer
@@ -403,7 +404,8 @@ Public Class SurveyProvider
                                                                    cutoffResponseCode, SafeDataReader.ToDBValue(cutoffTableId, -1), SafeDataReader.ToDBValue(cutoffFieldId, -1),
                                                                    SafeDataReader.ToDBValue(sampleEncounterTableId, -1), SafeDataReader.ToDBValue(sampleEncounterFieldId, -1),
                                                                    clientFacingName, surveyTypeId, surveyTypeDefId, GetHouseHoldingTypeCharacter(houseHoldingType),
-                                                                   contractNumber, isActive, contractedLanguages, useUSPSAddrChangeService, isHandout, isPointInTime)
+                                                                   contractNumber, isActive, contractedLanguages, useUSPSAddrChangeService, isHandout, isPointInTime,
+                                                                   locationProviderResurveyDays)
 
                     surveyId = ExecuteInteger(cmd, tran)
 
