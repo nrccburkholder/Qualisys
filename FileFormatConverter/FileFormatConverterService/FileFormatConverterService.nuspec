@@ -3,7 +3,7 @@
   <metadata>
     <id>Qualisys.FileConversionService</id>
     <title>Qualisys File Conversion Service</title>
-    <version>1.0.2.2</version>
+    <version>1.0.3.0</version>
     <authors>NRC</authors>
     <description>Qualisys file format conversion service</description>
   </metadata>
