@@ -43,6 +43,7 @@ set objRegExp = nothing
 
 End If
 End Function'
+
 UPDATE dbo.functions
 SET strFunction_Code = @function
 WHERE strfunction_nm = 'GetHomeHealthICD10'
@@ -70,3 +71,4 @@ UPDATE dbo.functions
 SET strFunction_Code = @function
 WHERE strfunction_nm = 'GetHospiceICD10'
 
+GO
