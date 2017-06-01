@@ -50,8 +50,6 @@ UPDATE dbo.functions
 SET strFunction_Code = @function
 WHERE strfunction_nm = 'GetHomeHealthICD10'
 
-GO
-
 select @function = N'''Function GetHospiceICD10(strValue)
 If Not IsNullOrBlank(strValue) Then
 dim objRegExp : set objRegExp = new RegExp
