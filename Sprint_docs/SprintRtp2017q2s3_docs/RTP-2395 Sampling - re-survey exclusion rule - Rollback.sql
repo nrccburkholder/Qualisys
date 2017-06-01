@@ -416,7 +416,8 @@ ELSE
 BEGIN  
     SELECT c.Client_id, c.strClient_nm, c.Active, c.ClientGroup_ID  
     FROM #EmpStudy t, Client c  
-    WHERE t.Client_id = c.Client_id    GROUP BY c.Client_id, c.strClient_nm, c.Active, c.ClientGroup_ID
+    WHERE t.Client_id = c.Client_id
+    GROUP BY c.Client_id, c.strClient_nm, c.Active, c.ClientGroup_ID
     ORDER BY c.strClient_nm  
 END  
   
