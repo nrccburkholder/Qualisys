@@ -22,6 +22,15 @@
 use qp_prod
 go
 
+if exists (select 1 from SamplingExclusionTypes where SamplingExclusionType_nm in ('ResurveyProvider','ResurveyLocation'))
+	delete from SamplingExclusionTypes where SamplingExclusionType_nm in ('ResurveyProvider','ResurveyLocation')
+
+declare @maxseed int
+select @maxseed=max(SamplingExclusionType_id) from SamplingExclusionTypes
+DBCC CHECKIDENT ('dbo.SamplingExclusionTypes', RESEED, @maxseed); 
+
+go
+
 if exists(select * from sys.columns where name = 'LocationProviderResurveyDays'
 			and object_id = object_id('dbo.survey_def'))
 	alter table dbo.survey_def drop column LocationProviderResurveyDays

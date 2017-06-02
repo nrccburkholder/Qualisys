@@ -22,6 +22,15 @@
 use qp_prod
 go
 
+if not exists (select 1 from SamplingExclusionTypes where SamplingExclusionType_nm in ('ResurveyProvider','ResurveyLocation'))
+insert into SamplingExclusionTypes 
+	(SamplingExclusionType_nm,SamplingExclusionType_Desc)
+values
+	('ResurveyProvider','Respondent has been sent a survey for this provider in the last predefined time frame.'),
+	('ResurveyLocation','Respondent has been sent a survey for this location in the last predefined time frame.')
+
+go
+
 if not exists(select * from sys.columns where name = 'LocationProviderResurveyDays'
 			and object_id = object_id('dbo.survey_def'))
 	alter table dbo.survey_def add LocationProviderResurveyDays int
@@ -600,38 +609,174 @@ AS
 					 AND (DATEDIFF(day, ss.datLastMailed, GETDATE()) < @Resurvey_Excl_Period
 						   OR ss.datLastMailed IS NULL)
 
-	  --ATL-1419 END ResurveyExclusionType ReturnsOnly -> only resurvey exclude those with a return for Returns Only subtype
+		--ATL-1419 END ResurveyExclusionType ReturnsOnly -> only resurvey exclude those with a return for Returns Only subtype
+
+		--RTP-2395 ResurveyExclusion for RT: VisitType='M' -> use (Provider) NPI (on Encounter table)
+		--	                               VisitType<>'M' -> use LocationBK (on Encounter table)
+		--         Length of Time: LocationProviderSurveyDays (on Survey_Def table)
+		--         Also Join To: SelectedSample
+
+		DECLARE @LocationProviderResurveyDays int
+		SELECT @LocationProviderResurveyDays = LocationProviderResurveyDays from Survey_DEF where survey_id = @survey_id
+
+		if @LocationProviderResurveyDays > 0 
+		BEGIN
+		    IF EXISTS (SELECT *
+					 FROM   tempdb.dbo.sysobjects o
+					 WHERE  o.xtype IN ('U')
+							AND o.id = OBJECT_ID(N'tempdb..#Remove_Pops2'))
+			  DROP TABLE #Remove_Pops2;
+
+		    IF EXISTS (SELECT *
+					 FROM   tempdb.dbo.sysobjects o
+					 WHERE  o.xtype IN ('U')
+							AND o.id = OBJECT_ID(N'tempdb..#Remove_Pops3'))
+			  DROP TABLE #Remove_Pops3;
+
+			IF EXISTS(select 1 from sys.columns c inner join sys.tables t on c.object_id = t.object_id inner join sys.schemas s on t.schema_id = s.schema_id 
+				where t.name = 'ENCOUNTER' and c.name = 'VisitType' and s.name = 's' + convert(nvarchar, @study_id)) 
+			BEGIN
+				--if any Visit Type of Provider, then DrNPI must be present
+				Declare @countVisitTypeProvider int = 0
+				Declare @sqlVisitTypeProvider nvarchar(200) = 'select @count = count(*) from s' + convert(nvarchar, @study_id) + '.encounter where VisitType in (''MD0101'',''MD0102'')'
+				exec sp_executesql @sqlVisitTypeProvider, N'@count int out', @countVisitTypeProvider out
+
+				if @countVisitTypeProvider > 0 
+				IF NOT EXISTS(select 1 from sys.columns c inner join sys.tables t on c.object_id = t.object_id inner join sys.schemas s on t.schema_id = s.schema_id 
+					where t.name = 'ENCOUNTER' and c.name = 'DrNPI' and s.name = 's' + convert(nvarchar, @study_id))
+					BEGIN
+						declare @drNPIError varchar(100) = 'DrNPI column not present on s' + convert(nvarchar, @study_id) + '.encounter. Please contact service desk.'
+						RAISERROR(@drNPIError, 16, 1)
+						RETURN --exit now
+					END
+					ELSE --INSERT INTO #REMOVE_POPS2 based on DrNPI/Provider
+					BEGIN
+						CREATE TABLE #Remove_Pops2(Pop_id int)
+
+						select @sql =
+						N'INSERT INTO #Remove_Pops2 (Pop_id)
+						SELECT DISTINCT								
+								e1.Pop_id
+						FROM   (select suu.Pop_id, suu.Enc_id, e.drNPI
+								from #SampleUnit_Universe suu inner join 
+									s' + convert(nvarchar, @study_id) +
+									N'.encounter e on suu.enc_id = e.enc_id) eToday
+								 INNER JOIN 
+								(select e.enc_id, e.pop_id, e.drNPI
+								from s' + convert(nvarchar, @study_id) + N'.encounter e inner join
+								 dbo.SelectedSample ss ON e.enc_id = ss.enc_id
+								WHERE  DATEDIFF(day, ss.SampleEncouterDate, GETDATE()) < @LocationProviderResurveyDays) eHistory
+								 ON eToday.pop_id = eHistory.pop_id 
+								 and eToday.drNPI = eHistory.drNPI 
+								 and eToday.enc_id <> eHistory.enc_id'
+						
+						exec @sql
+					END
+
+				--if any Visit Type of non-Provider, then LocationBK must be present
+				Declare @countVisitTypeNonProvider int = 0
+				Declare @sqlVisitTypeNonProvider nvarchar(200) = 'select @count = count(*) from s' + convert(nvarchar, @study_id) + '.encounter where VisitType not in (''MD0101'',''MD0102'')'
+				exec sp_executesql @sqlVisitTypeNonProvider, N'@count int out', @countVisitTypeNonProvider out
+
+				if @countVisitTypeNonProvider > 0 
+					IF NOT EXISTS(select 1 from sys.columns c inner join sys.tables t on c.object_id = t.object_id inner join sys.schemas s on t.schema_id = s.schema_id 
+						where t.name = 'ENCOUNTER' and c.name = 'LocationBK' and s.name = 's' + convert(nvarchar, @study_id))
+					BEGIN
+						declare @locationBKError varchar(100) = 'LocationBK column not present on s' + convert(nvarchar, @study_id) + '.encounter. Please contact service desk.'
+						RAISERROR(@locationBKError, 16, 1)
+						RETURN --exit now
+					END
+					ELSE --INSERT INTO #REMOVE_POPS3 based on LocationBK/NonProvider
+					BEGIN
+						CREATE TABLE #Remove_Pops3(Pop_id int)
+
+						select @sql =
+						N'INSERT INTO #Remove_Pops3 (Pop_id)
+						SELECT DISTINCT								
+								e1.Pop_id
+						FROM   (select suu.Pop_id, suu.Enc_id, e.LocationBK
+								from #SampleUnit_Universe suu inner join 
+									s' + convert(nvarchar, @study_id) +
+									N'.encounter e on suu.enc_id = e.enc_id) eToday
+								 INNER JOIN 
+								(select e.enc_id, e.pop_id, e.LocationBK
+								from s' + convert(nvarchar, @study_id) + N'.encounter e inner join
+								 dbo.SelectedSample ss ON e.enc_id = ss.enc_id
+								WHERE  DATEDIFF(day, ss.SampleEncouterDate, GETDATE()) < @LocationProviderResurveyDays) eHistory
+								 ON eToday.pop_id = eHistory.pop_id 
+								 and eToday.LocationBK = eHistory.LocationBK 
+								 and eToday.enc_id <> eHistory.enc_id'
+						
+						exec @sql
+					END
+
+			END -- IF...where t.name = 'ENCOUNTER' and c.name = 'VisitType' and s.name = 's' + convert(nvarchar, @study_id)) 
+			ELSE
+			BEGIN
+				declare @visitTypeError varchar(100) = 'VisitType column not present on s' + convert(nvarchar, @study_id) + '.encounter. Please contact service desk.'
+				RAISERROR(@visitTypeError, 16, 1)
+				RETURN --exit now
+			END
+		END --IF @LocationProviderResurveyDays > 0 
+		--RTP-2395 END
 
       --Removed Rule value of 1 means it is resurvey exclusion.  This is not a bit field.
       UPDATE #SampleUnit_Universe
       SET    Removed_Rule = 1
       FROM   #SampleUnit_Universe U
-             INNER JOIN #Remove_Pops MM ON U.Pop_id = MM.Pop_id
+             INNER JOIN (select pop_id from #Remove_Pops UNION 
+						 select pop_id from #Remove_Pops2 UNION 
+						 select pop_id from #Remove_Pops3) MM ON U.Pop_id = MM.Pop_id
       WHERE  isnull(Removed_Rule, 0) = 0
 
       INSERT INTO dbo.Sampling_ExclusionLog
-                  (Survey_ID,
-                   Sampleset_ID,
-                   Sampleunit_ID,
-                   Pop_ID,
-                   Enc_ID,
-                   SamplingExclusionType_ID,
+                  (Survey_ID, Sampleset_ID, Sampleunit_ID,
+                   Pop_ID, Enc_ID, SamplingExclusionType_ID,
                    DQ_BusRule_ID)
-      SELECT @survey_ID AS Survey_ID,
-             @Sampleset_ID AS Sampleset_ID,
-             Sampleunit_ID,
-             U.Pop_ID,
-             U.Enc_ID,
-             1 AS SamplingExclusionType_ID,
+      SELECT @survey_ID AS Survey_ID, @Sampleset_ID AS Sampleset_ID, Sampleunit_ID,
+             U.Pop_ID, U.Enc_ID, 1 AS SamplingExclusionType_ID,
              NULL AS DQ_BusRule_ID
       FROM   #SampleUnit_Universe U
 	         INNER JOIN #Remove_Pops MM ON U.Pop_id = MM.Pop_id
+
+      INSERT INTO dbo.Sampling_ExclusionLog
+                  (Survey_ID, Sampleset_ID, Sampleunit_ID,
+                   Pop_ID, Enc_ID, SamplingExclusionType_ID,
+                   DQ_BusRule_ID)
+      SELECT @survey_ID AS Survey_ID, @Sampleset_ID AS Sampleset_ID, Sampleunit_ID,
+             U.Pop_ID, U.Enc_ID, 11 AS SamplingExclusionType_ID,
+             NULL AS DQ_BusRule_ID
+      FROM   #SampleUnit_Universe U
+	         INNER JOIN #Remove_Pops2 MM ON U.Pop_id = MM.Pop_id
+
+      INSERT INTO dbo.Sampling_ExclusionLog
+                  (Survey_ID, Sampleset_ID, Sampleunit_ID,
+                   Pop_ID, Enc_ID, SamplingExclusionType_ID,
+                   DQ_BusRule_ID)
+      SELECT @survey_ID AS Survey_ID, @Sampleset_ID AS Sampleset_ID, Sampleunit_ID,
+             U.Pop_ID, U.Enc_ID, 12 AS SamplingExclusionType_ID,
+             NULL AS DQ_BusRule_ID
+      FROM   #SampleUnit_Universe U
+	         INNER JOIN #Remove_Pops3 MM ON U.Pop_id = MM.Pop_id
 
       IF EXISTS (SELECT *
                  FROM   tempdb.dbo.sysobjects o
                  WHERE  o.xtype IN ('U')
                         AND o.id = OBJECT_ID(N'tempdb..#Remove_Pops'))
         DROP TABLE #Remove_Pops
+
+	  IF EXISTS (SELECT *
+				FROM   tempdb.dbo.sysobjects o
+				WHERE  o.xtype IN ('U')
+					AND o.id = OBJECT_ID(N'tempdb..#Remove_Pops2'))
+		DROP TABLE #Remove_Pops2;
+
+	  IF EXISTS (SELECT *
+				FROM   tempdb.dbo.sysobjects o
+				WHERE  o.xtype IN ('U')
+					AND o.id = OBJECT_ID(N'tempdb..#Remove_Pops3'))
+		DROP TABLE #Remove_Pops3;
+
     END  --if @ReSurveyMethod_id = 1
   ELSE IF @ReSurveyMethod_id = 2  --Calendar month
     BEGIN
