@@ -9,7 +9,7 @@ GO
 
 
 declare @function nvarchar(4000)
-select @function = N'''Function GetHomeHealthICD10(strValue)
+select @function = N'Function GetHomeHealthICD10(strValue)
 If Len(strValue) > 0 AND ISNULL(strValue) = false Then
 
 dim objRegExp : set objRegExp = new RegExp
@@ -50,7 +50,7 @@ UPDATE dbo.functions
 SET strFunction_Code = @function
 WHERE strfunction_nm = 'GetHomeHealthICD10'
 
-select @function = N'''Function GetHospiceICD10(strValue)
+select @function = N'Function GetHospiceICD10(strValue)
 If Not IsNullOrBlank(strValue) Then
 dim objRegExp : set objRegExp = new RegExp
 with objRegExp
