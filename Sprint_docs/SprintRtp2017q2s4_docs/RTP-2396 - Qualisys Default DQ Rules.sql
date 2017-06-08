@@ -122,3 +122,11 @@ VALUES  (@clauseID, 'E'  ),
         (@clauseID, 'R'  )
 END
 
+SELECT ID = DefaultCriteriaStmt_ID INTO #DQStatements FROM 
+DefaultCriteriaStmt WHERE strCriteriaStmt_NM IN ('DQ_DOB','DQ_MRN','DQ_VNUM','DQ_F','DQ_L','DQ_PHONE','DQ_DSCHD','DQ_VTYPE')
+
+INSERT INTO SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteriaStmt_id) 
+    SELECT 27, 1, ID FROM #DQStatements 
+
+DROP TABLE #DQStatements
+

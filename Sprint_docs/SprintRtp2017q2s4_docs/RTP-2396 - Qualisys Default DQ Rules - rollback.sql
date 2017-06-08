@@ -5,6 +5,8 @@ DELETE FROM DefaultCriteriaInList WHERE DefaultCriteriaClause_id in (SELECT Defa
 DELETE FROM DefaultCriteriaClause WHERE DefaultCriteriaStmt_id IN (SELECT ID FROM #DQStatements)
 DELETE FROM DefaultCriteriaStmt WHERE DefaultCriteriaStmt_id IN (SELECT ID FROM #DQStatements)
 
+DELETE FROM SurveyTypeDefaultCriteria WHERE SurveyType_id = 27 AND Country_id = 1 
+
 DROP TABLE #DQStatements
 
 DECLARE @maxID INT  
