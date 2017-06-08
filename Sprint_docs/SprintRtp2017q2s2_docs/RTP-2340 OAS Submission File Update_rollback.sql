@@ -1,4 +1,5 @@
 use nrc_datamart_extracts
+GO
 
 --select * from cem.ExportTemplate where exporttemplatename = 'oas cahps'
 --select * from cem.ExportTemplate_view where exporttemplatename = 'oas cahps' and ExportColumnName in ('patientsserved','patientsfile','eligiblepatients','sampledpatients')
@@ -43,3 +44,5 @@ begin
 	end
 
 END
+
+GO

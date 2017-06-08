@@ -8,3 +8,5 @@ USE [QP_Prod]
 GO
 
 DELETE FROM QUALPRO_PARAMS WHERE STRPARAM_NM = 'SurveyRule: IsSamplesetSchedulingDisabled - Connect'
+
+GO

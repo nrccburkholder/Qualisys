@@ -16,9 +16,9 @@ Sprint 72 SQLCMD Script for Prime/Gator/NRC10
 
 --:r "\ATLASRelease71&72\Sprint72_docs\S72_ATL-1443 Update Study Data Structure Process [QP_Prod].sql" -- released on 5/25
 
-:r "\ATLASRelease71&72\Sprint72_docs\S72_ATL-1080 Backpopulate existing OAS surveys DQ rules.sql" 
+:r "\AtlasReleaseCompliance2017-06-22\Sprint72_docs\S72_ATL-1080 Backpopulate existing OAS surveys DQ rules.sql" 
 
-:r "\ATLASRelease71&72\Sprint72_docs\S72_ATL-1079 Modify default DQ rule.sql" 
+:r "\AtlasReleaseCompliance2017-06-22\Sprint72_docs\S72_ATL-1079 Modify default DQ rule.sql" 
 
 --:r "\ATLASRelease71&72\Sprint72_docs\S72_ATL-762 ICH-OAS dispositions logging.sql" --released on 5/5
 
