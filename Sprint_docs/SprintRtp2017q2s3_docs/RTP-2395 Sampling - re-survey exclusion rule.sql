@@ -582,8 +582,22 @@ AS
                         AND o.id = OBJECT_ID(N'tempdb..#Remove_Pops'))
         DROP TABLE #Remove_Pops;
 
+	  IF EXISTS (SELECT *
+				FROM   tempdb.dbo.sysobjects o
+				WHERE  o.xtype IN ('U')
+					AND o.id = OBJECT_ID(N'tempdb..#Remove_PopsProvider'))
+		DROP TABLE #Remove_PopsProvider;
+
+	  IF EXISTS (SELECT *
+				FROM   tempdb.dbo.sysobjects o
+				WHERE  o.xtype IN ('U')
+					AND o.id = OBJECT_ID(N'tempdb..#Remove_PopsLocation'))
+		DROP TABLE #Remove_PopsLocation;
+
 	  --ATL-1419 ResurveyExclusionType ReturnsOnly -> only resurvey exclude those with a return for Returns Only subtype
 		CREATE TABLE #Remove_Pops(Pop_id int)
+		CREATE TABLE #Remove_PopsProvider(Pop_id int)
+		CREATE TABLE #Remove_PopsLocation(Pop_id int)
 		
 		if exists(select st.subtype_nm from dbo.surveysubtype sst inner join 
 				dbo.subtype st on st.Subtype_id = sst.Subtype_id 
@@ -623,18 +637,6 @@ AS
 			and not exists (select * from surveytype 
 							where surveytype_id = @surveytype_id and cahpstype_id > 0)
 		BEGIN
-		    IF EXISTS (SELECT *
-					 FROM   tempdb.dbo.sysobjects o
-					 WHERE  o.xtype IN ('U')
-							AND o.id = OBJECT_ID(N'tempdb..#Remove_PopsProvider'))
-			  DROP TABLE #Remove_PopsProvider;
-
-		    IF EXISTS (SELECT *
-					 FROM   tempdb.dbo.sysobjects o
-					 WHERE  o.xtype IN ('U')
-							AND o.id = OBJECT_ID(N'tempdb..#Remove_PopsLocation'))
-			  DROP TABLE #Remove_PopsLocation;
-
 			IF EXISTS(select 1 from sys.columns c inner join sys.tables t on c.object_id = t.object_id inner join sys.schemas s on t.schema_id = s.schema_id 
 				where t.name = 'ENCOUNTER' and c.name = 'ResurveyType' and s.name = '''s' + convert(nvarchar, @study_id) + '''')
 			BEGIN
@@ -658,19 +660,18 @@ AS
 				IF NOT EXISTS(select 1 from sys.columns c inner join sys.tables t on c.object_id = t.object_id inner join sys.schemas s on t.schema_id = s.schema_id 
 					where t.name = 'ENCOUNTER' and c.name = 'DrNPI' and s.name = '''s' + convert(nvarchar, @study_id) + '''')
 					BEGIN
+						declare @datErrorP datetime = GetDate()
 						declare @strErrorP nvarchar(200)
 						select @strErrorP = 'NOT EXISTS(select 1 from sys.columns c inner join sys.tables t on c.object_id = t.object_id inner join sys.schemas s on t.schema_id = s.schema_id ' +
 							'where t.name = ''ENCOUNTER'' and c.name = ''DrNPI'' and s.name = ''s' + convert(nvarchar, @study_id) + ''')'
 						exec QCL_InsertSamplingLog 
 							@SampleSet_id,        
-							@strErrorP, 
-							GetDate,        
-							@sqlResurveyTypeProvider
+							'QCL_SampleSetResurveyExclusion_StaticPlus', 
+							@datErrorP,        
+							@strErrorP
 					END
 					ELSE --INSERT INTO #Remove_PopsProvider based on DrNPI/Provider
 					BEGIN
-						CREATE TABLE #Remove_PopsProvider(Pop_id int)
-
 						select @sql =
 						N'INSERT INTO #Remove_PopsProvider (Pop_id)
 						SELECT DISTINCT								
@@ -700,19 +701,18 @@ AS
 					IF NOT EXISTS(select 1 from sys.columns c inner join sys.tables t on c.object_id = t.object_id inner join sys.schemas s on t.schema_id = s.schema_id 
 						where t.name = 'ENCOUNTER' and c.name = 'LocationBK' and s.name = '''s' + convert(nvarchar, @study_id) + '''')
 					BEGIN
+						declare @datErrorL datetime = GetDate()
 						declare @strErrorL nvarchar(200)
 						select @strErrorL = 'NOT EXISTS(select 1 from sys.columns c inner join sys.tables t on c.object_id = t.object_id inner join sys.schemas s on t.schema_id = s.schema_id ' +
 							'where t.name = ''ENCOUNTER'' and c.name = ''LocationBK'' and s.name = ''s' + convert(nvarchar, @study_id) + ''')'
 						exec QCL_InsertSamplingLog 
 							@SampleSet_id,        
-							@strErrorL, 
-							GetDate,        
-							@sqlResurveyTypeProvider
+							'QCL_SampleSetResurveyExclusion_StaticPlus',
+							@datErrorL,        
+							@strErrorL
 					END
 					ELSE --INSERT INTO #Remove_PopsLocation based on LocationBK/NonProvider
 					BEGIN
-						CREATE TABLE #Remove_PopsLocation(Pop_id int)
-
 						select @sql =
 						N'INSERT INTO #Remove_PopsLocation (Pop_id)
 						SELECT DISTINCT								
@@ -736,14 +736,15 @@ AS
 			END -- IF...where t.name = 'ENCOUNTER' and c.name = 'ResurveyType' and s.name = 's' + convert(nvarchar, @study_id)) 
 			ELSE
 			BEGIN
+				declare @datErrorR datetime = GetDate()
 				declare @strErrorR nvarchar(200)
 				select @strErrorR = 'NOT EXISTS(select 1 from sys.columns c inner join sys.tables t on c.object_id = t.object_id inner join sys.schemas s on t.schema_id = s.schema_id ' +
 					'where t.name = ''ENCOUNTER'' and c.name = ''ResurveyType'' and s.name = ''s' + convert(nvarchar, @study_id) + ''')'
 				exec QCL_InsertSamplingLog 
 				    @SampleSet_id,        
-					@strErrorR, 
-					GetDate,        
-					@sqlResurveyTypeProvider
+					'QCL_SampleSetResurveyExclusion_StaticPlus',
+					@datErrorR,        
+					@strErrorR
 			END
 		END --IF @LocationProviderResurveyDays > 0 
 		--RTP-2395 END
