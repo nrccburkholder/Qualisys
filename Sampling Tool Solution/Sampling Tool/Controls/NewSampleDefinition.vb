@@ -1,8 +1,5 @@
 Imports Nrc.Qualisys.Library
-Imports Nrc.Qualisys.SamplingTool.ODSDBDataAccess
-Imports System.Linq
-Imports System.Data.SqlClient
-Imports Nrc.Qualisys.Library.SqlDataProvider.ODSDBDataAccess
+Imports Nrc.Qualisys.Library.ODSDBDataAccess
 Imports Nrc.Framework.BusinessLogic.Configuration
 
 Public Class NewSampleDefinition

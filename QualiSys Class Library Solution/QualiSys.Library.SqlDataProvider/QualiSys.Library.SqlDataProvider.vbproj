@@ -127,9 +127,6 @@
     <Compile Include="EmailBlastOptionProvider.vb" />
     <Compile Include="MailingStepMethodProvider.vb" />
     <Compile Include="ModeSectionMappingProvider.vb" />
-    <Compile Include="ODSDBDataAccess\BaseSqlDataProvider.vb" />
-    <Compile Include="ODSDBDataAccess\IODSDBRepository.vb" />
-    <Compile Include="ODSDBDataAccess\ODSDBRepository.vb" />
     <Compile Include="QDispositionProvider.vb" />
     <Compile Include="EmployeeProvider.vb" />
     <Compile Include="FacilityProvider.vb" />
