@@ -1,8 +1,5 @@
 Imports Nrc.Qualisys.Library
-Imports Nrc.Qualisys.SamplingTool.ODSDBDataAccess
-Imports System.Linq
-Imports System.Data.SqlClient
-Imports Nrc.Framework.BusinessLogic.Configuration
+Imports Nrc.Qualisys.Library.ODSDBDataAccess
 
 Public Class NewSampleDefinition
 
@@ -398,16 +395,6 @@ Public Class NewSampleDefinition
                 If sampleDef.IsOverSample AndAlso Not sampleDef.DoOverSample Then
                     sampleDef.RowErrorText = "You chose not to oversample this survey."
                 Else
-                    'RTP-2395 Fill Resurvey Values from ODS at this time, prior to calling Sampling algorithm CJB 5/31/2017
-
-                    Dim clientId As Integer = Nrc.Qualisys.Library.Study.GetStudy(sampleDef.Survey.StudyId).ClientId
-                    Dim custSettings As Dictionary(Of String, Object) = odsdb.GetCustomerSettings(clientId, AppConfig.Params("MasterSurveyTypeForODSDB").StringValue)
-                    sampleDef.Survey.LocationProviderResurveyDays = Integer.Parse(custSettings("LocationProviderResurveyDays").ToString)
-                    sampleDef.Survey.ResurveyPeriod = Integer.Parse(custSettings("IntraCustomerResurveyDays").ToString())
-                    sampleDef.Survey.Update()
-
-                    'RTP-2395 End
-
                     Dim specificSampleSeed As Integer = GetSpecificSampleSeed()
                     'Create the sample set
                     sampleDef.Period.CreateSampleSet(datasets, sampleDef.StartDate, sampleDef.EndDate, CurrentUser.Employee, sampleDef.DoHCAHPSOverSample, specificSampleSeed)

@@ -220,6 +220,9 @@
     <Compile Include="FacilityRegion.vb" />
     <Compile Include="FacilityState.vb" />
     <Compile Include="FormGenJob.vb" />
+    <Compile Include="ODSDBDataAccess\BaseSqlDataProvider.vb" />
+    <Compile Include="ODSDBDataAccess\IODSDBRepository.vb" />
+    <Compile Include="ODSDBDataAccess\ODSDBRepository.vb" />
     <Compile Include="PracticeSite.vb" />
     <Compile Include="SiteGroup.vb" />
     <Compile Include="HCAHPSDisposition.vb" />
@@ -415,6 +418,7 @@
       <Name>Nrc.Framework</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

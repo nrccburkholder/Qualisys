@@ -1,5 +1,6 @@
 Imports Nrc.Framework.Data
 Imports Nrc.QualiSys.Library.DataProvider
+Imports Nrc.QualiSys.Library.DataProvider.ODSDBDataAccess
 Imports Nrc.Framework.BusinessLogic.Configuration
 Imports System.Linq
 
@@ -53,6 +54,23 @@ Partial Public Class SampleSet
             Dim sampleHCAHPSUnit As Boolean
             Dim randomNumber As Integer
             Dim systematicIncrement As Integer
+
+            'RTP-2395 Fill Resurvey Values from ODS at this time, prior to calling Sampling algorithm CJB 5/31/2017
+
+            If Not (srvy.IsCAHPS) Then
+                Dim odsdb As ODSDBDataAccess.ODSDBRepository = New ODSDBDataAccess.ODSDBRepository
+                Dim clientId As Integer = Nrc.QualiSys.Library.Study.GetStudy(srvy.StudyId).ClientId
+                Dim custSettings As Dictionary(Of String, Object) = odsdb.GetCustomerSettings(clientId, AppConfig.Params("MasterSurveyTypeForODSDB").StringValue)
+                If custSettings.ContainsKey("LocationProviderResurveyDays") Then
+                    srvy.LocationProviderResurveyDays = Integer.Parse(custSettings("LocationProviderResurveyDays").ToString)
+                End If
+                If custSettings.ContainsKey("IntraCustomerResurveyDays") Then
+                    srvy.ResurveyPeriod = Integer.Parse(custSettings("IntraCustomerResurveyDays").ToString())
+                End If
+                srvy.Update()
+            End If
+
+            'RTP-2395 End
 
             If specificSampleSeed >= 0 Then
                 'New feature allows specifying sample seed for IT users only - INC0019623
