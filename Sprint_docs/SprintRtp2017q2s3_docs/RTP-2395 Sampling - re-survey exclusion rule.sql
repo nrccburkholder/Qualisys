@@ -661,7 +661,7 @@ AS
 					where t.name = 'ENCOUNTER' and c.name = 'DrNPI' and s.name = '''s' + convert(nvarchar, @study_id) + '''')
 					BEGIN
 						declare @datErrorP datetime = GetDate()
-						declare @strErrorP nvarchar(200)
+						declare @strErrorP nvarchar(max)
 						select @strErrorP = 'NOT EXISTS(select 1 from sys.columns c inner join sys.tables t on c.object_id = t.object_id inner join sys.schemas s on t.schema_id = s.schema_id ' +
 							'where t.name = ''ENCOUNTER'' and c.name = ''DrNPI'' and s.name = ''s' + convert(nvarchar, @study_id) + ''')'
 						exec QCL_InsertSamplingLog 
@@ -702,7 +702,7 @@ AS
 						where t.name = 'ENCOUNTER' and c.name = 'LocationBK' and s.name = '''s' + convert(nvarchar, @study_id) + '''')
 					BEGIN
 						declare @datErrorL datetime = GetDate()
-						declare @strErrorL nvarchar(200)
+						declare @strErrorL nvarchar(max)
 						select @strErrorL = 'NOT EXISTS(select 1 from sys.columns c inner join sys.tables t on c.object_id = t.object_id inner join sys.schemas s on t.schema_id = s.schema_id ' +
 							'where t.name = ''ENCOUNTER'' and c.name = ''LocationBK'' and s.name = ''s' + convert(nvarchar, @study_id) + ''')'
 						exec QCL_InsertSamplingLog 
@@ -737,7 +737,7 @@ AS
 			ELSE
 			BEGIN
 				declare @datErrorR datetime = GetDate()
-				declare @strErrorR nvarchar(200)
+				declare @strErrorR nvarchar(max)
 				select @strErrorR = 'NOT EXISTS(select 1 from sys.columns c inner join sys.tables t on c.object_id = t.object_id inner join sys.schemas s on t.schema_id = s.schema_id ' +
 					'where t.name = ''ENCOUNTER'' and c.name = ''ResurveyType'' and s.name = ''s' + convert(nvarchar, @study_id) + ''')'
 				exec QCL_InsertSamplingLog 
