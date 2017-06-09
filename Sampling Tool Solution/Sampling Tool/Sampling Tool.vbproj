@@ -151,8 +151,6 @@
     <Compile Include="Forms\HoldsDialog.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ODSDBDataAccess\BaseSqlDataProvider.vb" />
-    <Compile Include="ODSDBDataAccess\IODSDBRepository.vb" />
     <Compile Include="Navigators\ClientStudySurveyNavigator.Designer.vb">
       <DependentUpon>ClientStudySurveyNavigator.vb</DependentUpon>
     </Compile>
@@ -180,7 +178,6 @@
     <Compile Include="Navigators\ReportNavigator.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ODSDBDataAccess\ODSDBRepository.vb" />
     <Compile Include="Sections\ReportSection.Designer.vb">
       <DependentUpon>ReportSection.vb</DependentUpon>
     </Compile>
