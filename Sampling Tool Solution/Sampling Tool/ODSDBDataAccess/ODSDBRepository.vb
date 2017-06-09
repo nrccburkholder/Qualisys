@@ -88,11 +88,11 @@ Namespace ODSDBDataAccess
             Dim settings As Dictionary(Of String, Object) = New Dictionary(Of String, Object)
 
             If dt.Rows.Count = 1 Then
-                settings.Add("ContractNumber", dt.Rows(1).Item("ContractNumber").ToString())
-                settings.Add("SurveyStartDate", DateTime.Parse(dt.Rows(1).Item("SurveyStartDate").ToString()))
-                settings.Add("SurveyEndDate", DateTime.Parse(dt.Rows(1).Item("SurveyEndDate").ToString()))
-                settings.Add("LocationProviderResurveyDays", Integer.Parse(dt.Rows(1).Item("LocationProviderResurveyDays").ToString()))
-                settings.Add("IntraCustomerResurveyDays", Integer.Parse(dt.Rows(1).Item("IntraCustomerResurveyDays").ToString()))
+                settings.Add("ContractNumber", dt.Rows(0).Item("ContractNumber").ToString())
+                settings.Add("SurveyStartDate", DateTime.Parse(dt.Rows(0).Item("SurveyStartDate").ToString()))
+                settings.Add("SurveyEndDate", DateTime.Parse(dt.Rows(0).Item("SurveyEndDate").ToString()))
+                settings.Add("LocationProviderResurveyDays", Integer.Parse(dt.Rows(0).Item("LocationProviderResurveyDays").ToString()))
+                settings.Add("IntraCustomerResurveyDays", Integer.Parse(dt.Rows(0).Item("IntraCustomerResurveyDays").ToString()))
             End If
 
             Return settings
