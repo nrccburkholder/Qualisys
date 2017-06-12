@@ -21,11 +21,6 @@ if not exists (select * from QualPro_Params where strparam_nm = 'MasterSurveyTyp
 	insert into QualPro_Params(STRPARAM_NM,STRPARAM_TYPE,STRPARAM_GRP,STRPARAM_VALUE,NUMPARAM_VALUE,DATPARAM_VALUE,COMMENTS)
 	values ('MasterSurveyTypeForODSDB','S','SamplingTool','13',NULL,NULL,'Legacy Connect Survey Type needed to read CustomerSurveyConfig')
 
---subtype
-update subtype set bitRuleOverride = 1
-where subtype_NM in ('ED','IP')
-and bitRuleOverride = 0
-
 --Connect
 if not exists (select * from QualPro_Params where strparam_nm = 'SurveyRule: ResurveyMethodDefault - Connect')
 	insert into QualPro_Params(STRPARAM_NM,STRPARAM_TYPE,STRPARAM_GRP,STRPARAM_VALUE,NUMPARAM_VALUE,DATPARAM_VALUE,COMMENTS)

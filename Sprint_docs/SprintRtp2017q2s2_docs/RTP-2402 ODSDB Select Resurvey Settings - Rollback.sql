@@ -19,11 +19,6 @@ GO
 
 delete from QualPro_Params where strparam_nm = 'MasterSurveyTypeForODSDB'
 
---subtype
-update subtype set bitRuleOverride = 0
-where subtype_NM in ('ED','IP')
-and bitRuleOverride = 1
-
 --Connect
 delete from QualPro_Params where strparam_nm = 'SurveyRule: ResurveyMethodDefault - Connect'
 delete from QualPro_Params where strparam_nm = 'SurveyRule: ResurveyExclusionPeriodsNumericDefault - Connect'
