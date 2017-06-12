@@ -17,9 +17,17 @@
 		ALTER QCL_SampleSetResurveyExclusion_StaticPlus
 
 		select t.name,c.name,* from sys.columns c inner join sys.tables t on c.object_id = t.object_id where c.name like '%resurvey%'
+		select * from qualpro_params where strparam_nm like '%resurvey%'
+		select * from surveytype
 */
 
 use qp_prod
+go
+
+if not exists (select 1 from QualPro_params where strparam_nm = 'SurveyRule: ResurveyLocationProvider - Connect')
+insert into qualpro_params(STRPARAM_NM,STRPARAM_TYPE,STRPARAM_GRP,STRPARAM_VALUE,NUMPARAM_VALUE,DATPARAM_VALUE,COMMENTS)
+values('SurveyRule: ResurveyLocationProvider - Connect','S','SurveyRules','1',NULL,NULL,'Resurvey by Location/Provider for Connect')
+
 go
 
 if not exists (select 1 from SamplingExclusionTypes where SamplingExclusionType_nm in ('ResurveyProvider','ResurveyLocation'))
@@ -634,15 +642,14 @@ AS
 		SELECT @LocationProviderResurveyDays = LocationProviderResurveyDays from Survey_DEF where survey_id = @survey_id
 
 		if @LocationProviderResurveyDays > 0 
-			and not exists (select * from surveytype 
-							where surveytype_id = @surveytype_id and cahpstype_id > 0)
+			and dbo.SurveyProperty('ResurveyLocationProvider',@surveytype_id,null) = 1
 		BEGIN
 			IF EXISTS(select 1 from sys.columns c inner join sys.tables t on c.object_id = t.object_id inner join sys.schemas s on t.schema_id = s.schema_id 
 				where t.name = 'ENCOUNTER' and c.name = 'ResurveyType' and s.name = '''s' + convert(nvarchar, @study_id) + '''')
 			BEGIN
 				--if any Resurvey Type other than 'P' or 'L' then bail out
 				Declare @countResurveyTypeOther int = 0
-				Declare @sqlResurveyTypeOther nvarchar(200) = 'select @count = count(*) from s' + convert(nvarchar, @study_id) + '.encounter where ResurveyType not in (''P'',''L'')'
+				Declare @sqlResurveyTypeOther nvarchar(200) = 'select @count = count(*) from s' + convert(nvarchar, @study_id) + '.encounter where ResurveyType not in (''P'',''L'') or ResurveyType is null'
 				exec sp_executesql @sqlResurveyTypeOther, N'@count int out', @countResurveyTypeOther out
 				if @countResurveyTypeOther > 0
 				BEGIN

@@ -22,6 +22,10 @@
 use qp_prod
 go
 
+delete from QualPro_params where strparam_nm = 'SurveyRule: ResurveyLocationProvider - Connect'
+
+go
+
 if exists (select 1 from SamplingExclusionTypes where SamplingExclusionType_nm in ('ResurveyProvider','ResurveyLocation'))
 	delete from SamplingExclusionTypes where SamplingExclusionType_nm in ('ResurveyProvider','ResurveyLocation')
 
