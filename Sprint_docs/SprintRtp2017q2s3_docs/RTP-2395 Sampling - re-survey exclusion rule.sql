@@ -645,7 +645,7 @@ AS
 			and dbo.SurveyProperty('ResurveyLocationProvider',@surveytype_id,null) = 1
 		BEGIN
 			IF EXISTS(select 1 from sys.columns c inner join sys.tables t on c.object_id = t.object_id inner join sys.schemas s on t.schema_id = s.schema_id 
-				where t.name = 'ENCOUNTER' and c.name = 'ResurveyType' and s.name = '''s' + convert(nvarchar, @study_id) + '''')
+				where t.name = 'ENCOUNTER' and c.name = 'ResurveyType' and s.name = 'S' + convert(nvarchar, @study_id))
 			BEGIN
 				--if any Resurvey Type other than 'P' or 'L' then bail out
 				Declare @countResurveyTypeOther int = 0
@@ -665,7 +665,7 @@ AS
 
 				if @countResurveyTypeProvider > 0 
 				IF NOT EXISTS(select 1 from sys.columns c inner join sys.tables t on c.object_id = t.object_id inner join sys.schemas s on t.schema_id = s.schema_id 
-					where t.name = 'ENCOUNTER' and c.name = 'DrNPI' and s.name = '''s' + convert(nvarchar, @study_id) + '''')
+					where t.name = 'ENCOUNTER' and c.name = 'DrNPI' and s.name = 'S' + convert(nvarchar, @study_id))
 					BEGIN
 						declare @drNPIError varchar(100) = 'DrNPI column not present on s' + convert(nvarchar, @study_id) + '.encounter. Please contact service desk.'
 						RAISERROR(@drNPIError, 16, 1)
@@ -676,7 +676,7 @@ AS
 						select @sql =
 						N'INSERT INTO #Remove_PopsProvider (Pop_id)
 						SELECT DISTINCT								
-								e1.Pop_id
+								eToday.Pop_id
 						FROM   (select suu.Pop_id, suu.Enc_id, e.drNPI
 								from #SampleUnit_Universe suu inner join 
 									s' + convert(nvarchar, @study_id) +
@@ -685,12 +685,12 @@ AS
 								(select e.enc_id, e.pop_id, e.drNPI
 								from s' + convert(nvarchar, @study_id) + N'.encounter e inner join
 								 dbo.SelectedSample ss ON e.enc_id = ss.enc_id
-								WHERE  DATEDIFF(day, ss.SampleEncouterDate, GETDATE()) < @LocationProviderResurveyDays) eHistory
+								WHERE  DATEDIFF(day, ss.SampleEncounterDate, GETDATE()) < ' + Convert(nvarchar,@LocationProviderResurveyDays) + N') eHistory
 								 ON eToday.pop_id = eHistory.pop_id 
 								 and eToday.drNPI = eHistory.drNPI 
 								 and eToday.enc_id <> eHistory.enc_id'
 						
-						exec @sql
+						exec (@sql)
 					END
 
 				--if any Resurvey Type of Location, then LocationBK must be present
@@ -700,7 +700,7 @@ AS
 
 				if @countResurveyTypeLocation > 0 
 					IF NOT EXISTS(select 1 from sys.columns c inner join sys.tables t on c.object_id = t.object_id inner join sys.schemas s on t.schema_id = s.schema_id 
-						where t.name = 'ENCOUNTER' and c.name = 'LocationBK' and s.name = '''s' + convert(nvarchar, @study_id) + '''')
+						where t.name = 'ENCOUNTER' and c.name = 'LocationBK' and s.name = 'S' + convert(nvarchar, @study_id))
 					BEGIN
 						declare @locationBKError varchar(100) = 'LocationBK column not present on s' + convert(nvarchar, @study_id) + '.encounter. Please contact service desk.'
 						RAISERROR(@locationBKError, 16, 1)
@@ -711,7 +711,7 @@ AS
 						select @sql =
 						N'INSERT INTO #Remove_PopsLocation (Pop_id)
 						SELECT DISTINCT								
-								e1.Pop_id
+								eToday.Pop_id
 						FROM   (select suu.Pop_id, suu.Enc_id, e.LocationBK
 								from #SampleUnit_Universe suu inner join 
 									s' + convert(nvarchar, @study_id) +
@@ -720,12 +720,12 @@ AS
 								(select e.enc_id, e.pop_id, e.LocationBK
 								from s' + convert(nvarchar, @study_id) + N'.encounter e inner join
 								 dbo.SelectedSample ss ON e.enc_id = ss.enc_id
-								WHERE  DATEDIFF(day, ss.SampleEncouterDate, GETDATE()) < @LocationProviderResurveyDays) eHistory
+								WHERE  DATEDIFF(day, ss.SampleEncounterDate, GETDATE()) < ' + Convert(nvarchar,@LocationProviderResurveyDays) + N') eHistory
 								 ON eToday.pop_id = eHistory.pop_id 
 								 and eToday.LocationBK = eHistory.LocationBK 
 								 and eToday.enc_id <> eHistory.enc_id'
 						
-						exec @sql
+						exec (@sql)
 					END
 
 			END -- IF...where t.name = 'ENCOUNTER' and c.name = 'ResurveyType' and s.name = 's' + convert(nvarchar, @study_id)) 
