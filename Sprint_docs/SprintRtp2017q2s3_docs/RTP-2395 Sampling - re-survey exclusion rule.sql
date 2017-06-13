@@ -667,15 +667,9 @@ AS
 				IF NOT EXISTS(select 1 from sys.columns c inner join sys.tables t on c.object_id = t.object_id inner join sys.schemas s on t.schema_id = s.schema_id 
 					where t.name = 'ENCOUNTER' and c.name = 'DrNPI' and s.name = '''s' + convert(nvarchar, @study_id) + '''')
 					BEGIN
-						declare @datErrorP datetime = GetDate()
-						declare @strErrorP nvarchar(max)
-						select @strErrorP = 'NOT EXISTS(select 1 from sys.columns c inner join sys.tables t on c.object_id = t.object_id inner join sys.schemas s on t.schema_id = s.schema_id ' +
-							'where t.name = ''ENCOUNTER'' and c.name = ''DrNPI'' and s.name = ''s' + convert(nvarchar, @study_id) + ''')'
-						exec QCL_InsertSamplingLog 
-							@SampleSet_id,        
-							'QCL_SampleSetResurveyExclusion_StaticPlus', 
-							@datErrorP,        
-							@strErrorP
+						declare @drNPIError varchar(100) = 'DrNPI column not present on s' + convert(nvarchar, @study_id) + '.encounter. Please contact service desk.'
+						RAISERROR(@drNPIError, 16, 1)
+						RETURN --exit now
 					END
 					ELSE --INSERT INTO #Remove_PopsProvider based on DrNPI/Provider
 					BEGIN
@@ -708,15 +702,9 @@ AS
 					IF NOT EXISTS(select 1 from sys.columns c inner join sys.tables t on c.object_id = t.object_id inner join sys.schemas s on t.schema_id = s.schema_id 
 						where t.name = 'ENCOUNTER' and c.name = 'LocationBK' and s.name = '''s' + convert(nvarchar, @study_id) + '''')
 					BEGIN
-						declare @datErrorL datetime = GetDate()
-						declare @strErrorL nvarchar(max)
-						select @strErrorL = 'NOT EXISTS(select 1 from sys.columns c inner join sys.tables t on c.object_id = t.object_id inner join sys.schemas s on t.schema_id = s.schema_id ' +
-							'where t.name = ''ENCOUNTER'' and c.name = ''LocationBK'' and s.name = ''s' + convert(nvarchar, @study_id) + ''')'
-						exec QCL_InsertSamplingLog 
-							@SampleSet_id,        
-							'QCL_SampleSetResurveyExclusion_StaticPlus',
-							@datErrorL,        
-							@strErrorL
+						declare @locationBKError varchar(100) = 'LocationBK column not present on s' + convert(nvarchar, @study_id) + '.encounter. Please contact service desk.'
+						RAISERROR(@locationBKError, 16, 1)
+						RETURN --exit now
 					END
 					ELSE --INSERT INTO #Remove_PopsLocation based on LocationBK/NonProvider
 					BEGIN
@@ -743,15 +731,9 @@ AS
 			END -- IF...where t.name = 'ENCOUNTER' and c.name = 'ResurveyType' and s.name = 's' + convert(nvarchar, @study_id)) 
 			ELSE
 			BEGIN
-				declare @datErrorR datetime = GetDate()
-				declare @strErrorR nvarchar(max)
-				select @strErrorR = 'NOT EXISTS(select 1 from sys.columns c inner join sys.tables t on c.object_id = t.object_id inner join sys.schemas s on t.schema_id = s.schema_id ' +
-					'where t.name = ''ENCOUNTER'' and c.name = ''ResurveyType'' and s.name = ''s' + convert(nvarchar, @study_id) + ''')'
-				exec QCL_InsertSamplingLog 
-				    @SampleSet_id,        
-					'QCL_SampleSetResurveyExclusion_StaticPlus',
-					@datErrorR,        
-					@strErrorR
+				declare @resurveyTypeError varchar(100) = 'ResurveyType column not present on s' + convert(nvarchar, @study_id) + '.encounter. Please contact service desk.'
+				RAISERROR(@resurveyTypeError, 16, 1)
+				RETURN --exit now
 			END
 		END --IF @LocationProviderResurveyDays > 0 
 		--RTP-2395 END
