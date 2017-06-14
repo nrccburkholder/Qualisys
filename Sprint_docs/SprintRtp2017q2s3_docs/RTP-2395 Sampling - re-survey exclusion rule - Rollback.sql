@@ -5,6 +5,8 @@
 
 		5/30/2017
 
+		INSERT to QUALPRO_PARAMS
+		INSERT to SAMPLINGEXCLUSIONTYPES
 		ADD COLUMN to SURVEY_DEF, Survey_DefTemplate
 		ALTER QCL_SelectSurvey
 		ALTER QCL_SelectSurveysByStudyId
@@ -20,6 +22,10 @@
 */
 
 use qp_prod
+go
+
+delete from QualPro_params where strparam_nm = 'SurveyRule: ResurveyLocationProvider - Connect'
+
 go
 
 if exists (select 1 from SamplingExclusionTypes where SamplingExclusionType_nm in ('ResurveyProvider','ResurveyLocation'))

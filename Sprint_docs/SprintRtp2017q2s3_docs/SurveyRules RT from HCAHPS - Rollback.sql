@@ -12,8 +12,7 @@ select * from qualpro_params where strparam_nm like 'SurveyRule%HCAHPS IP'
 USE [QP_Prod]
 GO
 
-delete
-from qualpro_params where strparam_nm like 'SurveyRule%RT' 
-and strparam_nm <> 'SurveyRule: SamplingToolPriority - RT'
+insert into qualpro_params (strparam_nm, strparam_type, strparam_grp, strparam_value, numparam_value, comments)
+select 'SurveyRule: SamplingToolPriority - RT','N','SurveyRules',NULL,3,'RT Sampling Tool Priority is 3'
 
 GO

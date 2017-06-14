@@ -5,6 +5,8 @@
 
 		5/30/2017
 
+		INSERT to QUALPRO_PARAMS
+		INSERT to SAMPLINGEXCLUSIONTYPES
 		ADD COLUMN to SURVEY_DEF, Survey_DefTemplate
 		ALTER QCL_SelectSurvey
 		ALTER QCL_SelectSurveysByStudyId
@@ -17,9 +19,17 @@
 		ALTER QCL_SampleSetResurveyExclusion_StaticPlus
 
 		select t.name,c.name,* from sys.columns c inner join sys.tables t on c.object_id = t.object_id where c.name like '%resurvey%'
+		select * from qualpro_params where strparam_nm like '%resurvey%'
+		select * from surveytype
 */
 
 use qp_prod
+go
+
+if not exists (select 1 from QualPro_params where strparam_nm = 'SurveyRule: ResurveyLocationProvider - Connect')
+insert into qualpro_params(STRPARAM_NM,STRPARAM_TYPE,STRPARAM_GRP,STRPARAM_VALUE,NUMPARAM_VALUE,DATPARAM_VALUE,COMMENTS)
+values('SurveyRule: ResurveyLocationProvider - Connect','S','SurveyRules','1',NULL,NULL,'Resurvey by Location/Provider for Connect')
+
 go
 
 if not exists (select 1 from SamplingExclusionTypes where SamplingExclusionType_nm in ('ResurveyProvider','ResurveyLocation'))
@@ -582,8 +592,22 @@ AS
                         AND o.id = OBJECT_ID(N'tempdb..#Remove_Pops'))
         DROP TABLE #Remove_Pops;
 
+	  IF EXISTS (SELECT *
+				FROM   tempdb.dbo.sysobjects o
+				WHERE  o.xtype IN ('U')
+					AND o.id = OBJECT_ID(N'tempdb..#Remove_PopsProvider'))
+		DROP TABLE #Remove_PopsProvider;
+
+	  IF EXISTS (SELECT *
+				FROM   tempdb.dbo.sysobjects o
+				WHERE  o.xtype IN ('U')
+					AND o.id = OBJECT_ID(N'tempdb..#Remove_PopsLocation'))
+		DROP TABLE #Remove_PopsLocation;
+
 	  --ATL-1419 ResurveyExclusionType ReturnsOnly -> only resurvey exclude those with a return for Returns Only subtype
 		CREATE TABLE #Remove_Pops(Pop_id int)
+		CREATE TABLE #Remove_PopsProvider(Pop_id int)
+		CREATE TABLE #Remove_PopsLocation(Pop_id int)
 		
 		if exists(select st.subtype_nm from dbo.surveysubtype sst inner join 
 				dbo.subtype st on st.Subtype_id = sst.Subtype_id 
@@ -611,8 +635,8 @@ AS
 
 		--ATL-1419 END ResurveyExclusionType ReturnsOnly -> only resurvey exclude those with a return for Returns Only subtype
 
-		--RTP-2395 ResurveyExclusion for RT: VisitType='M' -> use (Provider) NPI (on Encounter table)
-		--	                               VisitType<>'M' -> use LocationBK (on Encounter table)
+		--RTP-2395 ResurveyExclusion for RT: ResurveyType='P' -> use (Provider) DrNPI (on Encounter table)
+		--	                               ResurveyType='L' -> use LocationBK (on Encounter table)
 		--         Length of Time: LocationProviderSurveyDays (on Survey_Def table)
 		--         Also Join To: SelectedSample
 
@@ -620,43 +644,41 @@ AS
 		SELECT @LocationProviderResurveyDays = LocationProviderResurveyDays from Survey_DEF where survey_id = @survey_id
 
 		if @LocationProviderResurveyDays > 0 
+			and dbo.SurveyProperty('ResurveyLocationProvider',@surveytype_id,null) = 1
 		BEGIN
-		    IF EXISTS (SELECT *
-					 FROM   tempdb.dbo.sysobjects o
-					 WHERE  o.xtype IN ('U')
-							AND o.id = OBJECT_ID(N'tempdb..#Remove_Pops2'))
-			  DROP TABLE #Remove_Pops2;
-
-		    IF EXISTS (SELECT *
-					 FROM   tempdb.dbo.sysobjects o
-					 WHERE  o.xtype IN ('U')
-							AND o.id = OBJECT_ID(N'tempdb..#Remove_Pops3'))
-			  DROP TABLE #Remove_Pops3;
-
 			IF EXISTS(select 1 from sys.columns c inner join sys.tables t on c.object_id = t.object_id inner join sys.schemas s on t.schema_id = s.schema_id 
-				where t.name = 'ENCOUNTER' and c.name = 'VisitType' and s.name = 's' + convert(nvarchar, @study_id)) 
+				where t.name = 'ENCOUNTER' and c.name = 'ResurveyType' and s.name = 'S' + convert(nvarchar, @study_id))
 			BEGIN
-				--if any Visit Type of Provider, then DrNPI must be present
-				Declare @countVisitTypeProvider int = 0
-				Declare @sqlVisitTypeProvider nvarchar(200) = 'select @count = count(*) from s' + convert(nvarchar, @study_id) + '.encounter where VisitType in (''MD0101'',''MD0102'')'
-				exec sp_executesql @sqlVisitTypeProvider, N'@count int out', @countVisitTypeProvider out
+				--if any Resurvey Type other than 'P' or 'L' then bail out
+				Declare @countResurveyTypeOther int = 0
+				Declare @sqlResurveyTypeOther nvarchar(200) = 'select @count = count(*) from s' + convert(nvarchar, @study_id) + '.encounter where ResurveyType not in (''P'',''L'') or ResurveyType is null'
+				exec sp_executesql @sqlResurveyTypeOther, N'@count int out', @countResurveyTypeOther out
+				if @countResurveyTypeOther > 0
+				BEGIN
+					declare @ResurveyTypeOtherError varchar(100) = 'ResurveyType column is present on s' + convert(nvarchar, @study_id) + '.encounter but contains values other than ''P'' or ''L''. Please contact service desk.'
+					RAISERROR(@ResurveyTypeOtherError, 16, 1)
+					RETURN --exit now
+				END
 
-				if @countVisitTypeProvider > 0 
+				--if any Resurvey Type of Provider, then DrNPI must be present
+				Declare @countResurveyTypeProvider int = 0
+				Declare @sqlResurveyTypeProvider nvarchar(200) = 'select @count = count(*) from s' + convert(nvarchar, @study_id) + '.encounter where ResurveyType =''P'''
+				exec sp_executesql @sqlResurveyTypeProvider, N'@count int out', @countResurveyTypeProvider out
+
+				if @countResurveyTypeProvider > 0 
 				IF NOT EXISTS(select 1 from sys.columns c inner join sys.tables t on c.object_id = t.object_id inner join sys.schemas s on t.schema_id = s.schema_id 
-					where t.name = 'ENCOUNTER' and c.name = 'DrNPI' and s.name = 's' + convert(nvarchar, @study_id))
+					where t.name = 'ENCOUNTER' and c.name = 'DrNPI' and s.name = 'S' + convert(nvarchar, @study_id))
 					BEGIN
 						declare @drNPIError varchar(100) = 'DrNPI column not present on s' + convert(nvarchar, @study_id) + '.encounter. Please contact service desk.'
 						RAISERROR(@drNPIError, 16, 1)
 						RETURN --exit now
 					END
-					ELSE --INSERT INTO #REMOVE_POPS2 based on DrNPI/Provider
+					ELSE --INSERT INTO #Remove_PopsProvider based on DrNPI/Provider
 					BEGIN
-						CREATE TABLE #Remove_Pops2(Pop_id int)
-
 						select @sql =
-						N'INSERT INTO #Remove_Pops2 (Pop_id)
+						N'INSERT INTO #Remove_PopsProvider (Pop_id)
 						SELECT DISTINCT								
-								e1.Pop_id
+								eToday.Pop_id
 						FROM   (select suu.Pop_id, suu.Enc_id, e.drNPI
 								from #SampleUnit_Universe suu inner join 
 									s' + convert(nvarchar, @study_id) +
@@ -665,35 +687,33 @@ AS
 								(select e.enc_id, e.pop_id, e.drNPI
 								from s' + convert(nvarchar, @study_id) + N'.encounter e inner join
 								 dbo.SelectedSample ss ON e.enc_id = ss.enc_id
-								WHERE  DATEDIFF(day, ss.SampleEncouterDate, GETDATE()) < @LocationProviderResurveyDays) eHistory
+								WHERE  DATEDIFF(day, ss.SampleEncounterDate, GETDATE()) < ' + Convert(nvarchar,@LocationProviderResurveyDays) + N') eHistory
 								 ON eToday.pop_id = eHistory.pop_id 
 								 and eToday.drNPI = eHistory.drNPI 
 								 and eToday.enc_id <> eHistory.enc_id'
 						
-						exec @sql
+						exec (@sql)
 					END
 
-				--if any Visit Type of non-Provider, then LocationBK must be present
-				Declare @countVisitTypeNonProvider int = 0
-				Declare @sqlVisitTypeNonProvider nvarchar(200) = 'select @count = count(*) from s' + convert(nvarchar, @study_id) + '.encounter where VisitType not in (''MD0101'',''MD0102'')'
-				exec sp_executesql @sqlVisitTypeNonProvider, N'@count int out', @countVisitTypeNonProvider out
+				--if any Resurvey Type of Location, then LocationBK must be present
+				Declare @countResurveyTypeLocation int = 0
+				Declare @sqlResurveyTypeLocation nvarchar(200) = 'select @count = count(*) from s' + convert(nvarchar, @study_id) + '.encounter where ResurveyType =''L'''
+				exec sp_executesql @sqlResurveyTypeLocation, N'@count int out', @countResurveyTypeLocation out
 
-				if @countVisitTypeNonProvider > 0 
+				if @countResurveyTypeLocation > 0 
 					IF NOT EXISTS(select 1 from sys.columns c inner join sys.tables t on c.object_id = t.object_id inner join sys.schemas s on t.schema_id = s.schema_id 
-						where t.name = 'ENCOUNTER' and c.name = 'LocationBK' and s.name = 's' + convert(nvarchar, @study_id))
+						where t.name = 'ENCOUNTER' and c.name = 'LocationBK' and s.name = 'S' + convert(nvarchar, @study_id))
 					BEGIN
 						declare @locationBKError varchar(100) = 'LocationBK column not present on s' + convert(nvarchar, @study_id) + '.encounter. Please contact service desk.'
 						RAISERROR(@locationBKError, 16, 1)
 						RETURN --exit now
 					END
-					ELSE --INSERT INTO #REMOVE_POPS3 based on LocationBK/NonProvider
+					ELSE --INSERT INTO #Remove_PopsLocation based on LocationBK/NonProvider
 					BEGIN
-						CREATE TABLE #Remove_Pops3(Pop_id int)
-
 						select @sql =
-						N'INSERT INTO #Remove_Pops3 (Pop_id)
+						N'INSERT INTO #Remove_PopsLocation (Pop_id)
 						SELECT DISTINCT								
-								e1.Pop_id
+								eToday.Pop_id
 						FROM   (select suu.Pop_id, suu.Enc_id, e.LocationBK
 								from #SampleUnit_Universe suu inner join 
 									s' + convert(nvarchar, @study_id) +
@@ -702,19 +722,19 @@ AS
 								(select e.enc_id, e.pop_id, e.LocationBK
 								from s' + convert(nvarchar, @study_id) + N'.encounter e inner join
 								 dbo.SelectedSample ss ON e.enc_id = ss.enc_id
-								WHERE  DATEDIFF(day, ss.SampleEncouterDate, GETDATE()) < @LocationProviderResurveyDays) eHistory
+								WHERE  DATEDIFF(day, ss.SampleEncounterDate, GETDATE()) < ' + Convert(nvarchar,@LocationProviderResurveyDays) + N') eHistory
 								 ON eToday.pop_id = eHistory.pop_id 
 								 and eToday.LocationBK = eHistory.LocationBK 
 								 and eToday.enc_id <> eHistory.enc_id'
 						
-						exec @sql
+						exec (@sql)
 					END
 
-			END -- IF...where t.name = 'ENCOUNTER' and c.name = 'VisitType' and s.name = 's' + convert(nvarchar, @study_id)) 
+			END -- IF...where t.name = 'ENCOUNTER' and c.name = 'ResurveyType' and s.name = 's' + convert(nvarchar, @study_id)) 
 			ELSE
 			BEGIN
-				declare @visitTypeError varchar(100) = 'VisitType column not present on s' + convert(nvarchar, @study_id) + '.encounter. Please contact service desk.'
-				RAISERROR(@visitTypeError, 16, 1)
+				declare @resurveyTypeError varchar(100) = 'ResurveyType column not present on s' + convert(nvarchar, @study_id) + '.encounter. Please contact service desk.'
+				RAISERROR(@resurveyTypeError, 16, 1)
 				RETURN --exit now
 			END
 		END --IF @LocationProviderResurveyDays > 0 
@@ -725,8 +745,8 @@ AS
       SET    Removed_Rule = 1
       FROM   #SampleUnit_Universe U
              INNER JOIN (select pop_id from #Remove_Pops UNION 
-						 select pop_id from #Remove_Pops2 UNION 
-						 select pop_id from #Remove_Pops3) MM ON U.Pop_id = MM.Pop_id
+						 select pop_id from #Remove_PopsProvider UNION 
+						 select pop_id from #Remove_PopsLocation) MM ON U.Pop_id = MM.Pop_id
       WHERE  isnull(Removed_Rule, 0) = 0
 
       INSERT INTO dbo.Sampling_ExclusionLog
@@ -747,7 +767,7 @@ AS
              U.Pop_ID, U.Enc_ID, 11 AS SamplingExclusionType_ID,
              NULL AS DQ_BusRule_ID
       FROM   #SampleUnit_Universe U
-	         INNER JOIN #Remove_Pops2 MM ON U.Pop_id = MM.Pop_id
+	         INNER JOIN #Remove_PopsProvider MM ON U.Pop_id = MM.Pop_id
 
       INSERT INTO dbo.Sampling_ExclusionLog
                   (Survey_ID, Sampleset_ID, Sampleunit_ID,
@@ -757,7 +777,7 @@ AS
              U.Pop_ID, U.Enc_ID, 12 AS SamplingExclusionType_ID,
              NULL AS DQ_BusRule_ID
       FROM   #SampleUnit_Universe U
-	         INNER JOIN #Remove_Pops3 MM ON U.Pop_id = MM.Pop_id
+	         INNER JOIN #Remove_PopsLocation MM ON U.Pop_id = MM.Pop_id
 
       IF EXISTS (SELECT *
                  FROM   tempdb.dbo.sysobjects o
@@ -768,14 +788,14 @@ AS
 	  IF EXISTS (SELECT *
 				FROM   tempdb.dbo.sysobjects o
 				WHERE  o.xtype IN ('U')
-					AND o.id = OBJECT_ID(N'tempdb..#Remove_Pops2'))
-		DROP TABLE #Remove_Pops2;
+					AND o.id = OBJECT_ID(N'tempdb..#Remove_PopsProvider'))
+		DROP TABLE #Remove_PopsProvider;
 
 	  IF EXISTS (SELECT *
 				FROM   tempdb.dbo.sysobjects o
 				WHERE  o.xtype IN ('U')
-					AND o.id = OBJECT_ID(N'tempdb..#Remove_Pops3'))
-		DROP TABLE #Remove_Pops3;
+					AND o.id = OBJECT_ID(N'tempdb..#Remove_PopsLocation'))
+		DROP TABLE #Remove_PopsLocation;
 
     END  --if @ReSurveyMethod_id = 1
   ELSE IF @ReSurveyMethod_id = 2  --Calendar month

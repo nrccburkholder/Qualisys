@@ -286,7 +286,8 @@ and d4.formula <> ''
 
 --Update destination.sources for OASEligibleSurg to include 3 more fields
 
-declare @package_id int = -1
+declare @package_id int
+set @package_id = -1
 
 while 0=0 --package_id loop
 begin
@@ -297,7 +298,8 @@ begin
 
 	if @package_id is null break
 
-	declare @source_id int = -1
+	declare @source_id int
+	set @source_id = -1
 
 	while 0=0 --source_id loop
 	begin

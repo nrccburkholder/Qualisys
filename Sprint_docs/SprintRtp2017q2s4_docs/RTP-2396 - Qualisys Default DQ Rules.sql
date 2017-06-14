@@ -87,46 +87,78 @@ INSERT INTO DefaultCriteriaClause
 VALUES  (@statementID, 2,'ENCOUNTER', 54, 5, '1/1/1753', '')
 END
 
--- DQ_VTYPE
+-- DQ_DRNPI
 
-IF NOT EXISTS( SELECT * FROM DefaultCriteriaStmt WHERE strCriteriaStmt_nm = 'DQ_VTYPE')
+IF NOT EXISTS( SELECT * FROM DefaultCriteriaStmt WHERE strCriteriaStmt_nm = 'DQ_DRNPI')
 BEGIN
+
 INSERT INTO DefaultCriteriaStmt     
         (strCriteriaStmt_nm, strCriteriaString, BusRule_cd) 
-VALUES  ('DQ_VTYPE','(ENCOUNTERVisitType IS NULL) OR (ENCOUNTERVisitType NOT IN (''E'',''ED'',''ER'',''I'',''IN'',''MP'',''NA'',''O'',''OP'',''OPS'',''R''))','Q')
+VALUES  ('DQ_DRNPI','(ENCOUNTERDrNPI IS NULL)','Q')
 
 SELECT @statementID = @@IDENTITY
 
 INSERT INTO DefaultCriteriaClause 
         (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm,Field_id, intOperator, strLowValue, strHighValue)
-VALUES  (@statementID, 1,'ENCOUNTER', 144, 9, 'NULL', '')
-
-INSERT INTO DefaultCriteriaClause 
-        (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm,Field_id, intOperator)
-VALUES  (@statementID, 1,'ENCOUNTER', 144, 11)
-
-SELECT @clauseID = @@IDENTITY
-
-INSERT INTO DefaultCriteriaInList 
-        (DefaultCriteriaClause_id, strListValue)
-VALUES  (@clauseID, 'E'  ),
-        (@clauseID, 'ED' ),
-        (@clauseID, 'ER' ),
-        (@clauseID, 'I'  ),
-        (@clauseID, 'IN' ),
-        (@clauseID, 'MP' ),
-        (@clauseID, 'NA' ),
-        (@clauseID, 'O'  ),
-        (@clauseID, 'OP' ),
-        (@clauseID, 'OPS'),
-        (@clauseID, 'R'  )
+VALUES  (@statementID, 1,'ENCOUNTER', 1444, 9, 'NULL', '')
 END
 
+
+-- DQ_DRFNM
+
+IF NOT EXISTS( SELECT * FROM DefaultCriteriaStmt WHERE strCriteriaStmt_nm = 'DQ_DRFNM')
+BEGIN
+
+INSERT INTO DefaultCriteriaStmt     
+        (strCriteriaStmt_nm, strCriteriaString, BusRule_cd) 
+VALUES  ('DQ_DRFNM','(ENCOUNTERDrFirstName IS NULL)','Q')
+
+SELECT @statementID = @@IDENTITY
+
+INSERT INTO DefaultCriteriaClause 
+        (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm,Field_id, intOperator, strLowValue, strHighValue)
+VALUES  (@statementID, 1,'ENCOUNTER', 119, 9, 'NULL', '')
+END
+
+-- DQ_DRLNM
+
+IF NOT EXISTS( SELECT * FROM DefaultCriteriaStmt WHERE strCriteriaStmt_nm = 'DQ_DRLNM')
+BEGIN
+
+INSERT INTO DefaultCriteriaStmt     
+        (strCriteriaStmt_nm, strCriteriaString, BusRule_cd) 
+VALUES  ('DQ_DRLNM','(ENCOUNTERDrLastName IS NULL)','Q')
+
+SELECT @statementID = @@IDENTITY
+
+INSERT INTO DefaultCriteriaClause 
+        (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm,Field_id, intOperator, strLowValue, strHighValue)
+VALUES  (@statementID, 1,'ENCOUNTER', 118, 9, 'NULL', '')
+END
+
+
+-- DQ_PHON2
+
+IF NOT EXISTS( SELECT * FROM DefaultCriteriaStmt WHERE strCriteriaStmt_nm = 'DQ_PHON2')
+BEGIN
+
+INSERT INTO DefaultCriteriaStmt     
+        (strCriteriaStmt_nm, strCriteriaString, BusRule_cd) 
+VALUES  ('DQ_PHON2','(POPULATIONServiceind_99 = "0")','Q')
+
+SELECT @statementID = @@IDENTITY
+
+INSERT INTO DefaultCriteriaClause 
+        (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm,Field_id, intOperator, strLowValue, strHighValue)
+VALUES  (@statementID, 1,'POPULATION', 1540, 1, '0', '')
+END
+
+
 SELECT ID = DefaultCriteriaStmt_ID INTO #DQStatements FROM 
-DefaultCriteriaStmt WHERE strCriteriaStmt_NM IN ('DQ_DOB','DQ_MRN','DQ_VNUM','DQ_F','DQ_L','DQ_PHONE','DQ_DSCHD','DQ_VTYPE')
+DefaultCriteriaStmt WHERE strCriteriaStmt_NM IN ('DQ_MRN','DQ_VNUM','DQ_F','DQ_L','DQ_PHONE','DQ_DSCHD','DQ_DRNPI','DQ_DRFNM','DQ_DRLNM', 'DQ_PHON2')
 
 INSERT INTO SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteriaStmt_id) 
-    SELECT 27, 1, ID FROM #DQStatements 
+    SELECT 27, 1, ID FROM #DQStatements WHERE ID NOT IN (SELECT DefaultCriteriaStmt_id FROM SurveyTypeDefaultCriteria WHERE SurveyType_id = 27)
 
 DROP TABLE #DQStatements
 
