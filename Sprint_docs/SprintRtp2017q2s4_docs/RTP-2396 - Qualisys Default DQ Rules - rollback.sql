@@ -1,5 +1,5 @@
 SELECT ID = DefaultCriteriaStmt_ID INTO #DQStatements FROM 
-DefaultCriteriaStmt WHERE strCriteriaStmt_NM IN ('DQ_VNUM','DQ_F','DQ_L','DQ_PHONE','DQ_DSCHD','DQ_VTYPE')
+DefaultCriteriaStmt WHERE strCriteriaStmt_NM IN ('DQ_MRN','DQ_VNUM','DQ_F','DQ_L','DQ_PHONE','DQ_DSCHD','DQ_DRNPI','DQ_DRFNM','DQ_DRLNM', 'DQ_PHON2')
 
 DELETE FROM DefaultCriteriaInList WHERE DefaultCriteriaClause_id in (SELECT DefaultCriteriaClause_ID FROM DefaultCriteriaClause c JOIN #DQStatements s ON c.DefaultCriteriaStmt_id = s.ID)
 DELETE FROM DefaultCriteriaClause WHERE DefaultCriteriaStmt_id IN (SELECT ID FROM #DQStatements)
