@@ -5,6 +5,8 @@
 
 		5/30/2017
 
+		INSERT to QUALPRO_PARAMS
+		INSERT to SAMPLINGEXCLUSIONTYPES
 		ADD COLUMN to SURVEY_DEF, Survey_DefTemplate
 		ALTER QCL_SelectSurvey
 		ALTER QCL_SelectSurveysByStudyId
