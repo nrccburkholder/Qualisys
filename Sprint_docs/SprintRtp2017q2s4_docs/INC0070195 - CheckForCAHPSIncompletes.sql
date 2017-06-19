@@ -219,7 +219,8 @@ AND ACODisposition = 34
 			inner join questionform qf on rc.samplepop_id=qf.samplepop_id
 			inner join sentmailing sm on qf.sentmail_id=sm.sentmail_id
 			where qf.datreturned is null and qf.datunusedreturn is null and sm.datUndeliverable is null
-			and sm.datExpire > getdate()
+			and (sm.datExpire > getdate() 
+				OR sm.datExpire IS NULL) --> a NULL datExpire means it's been generated but not yet mailed. Once it does mail, it will expire in the future and so should be considered an outstanding mailstep
 
 			-- we can etl a return if the samplepop meets these criteria:
 			update tr
