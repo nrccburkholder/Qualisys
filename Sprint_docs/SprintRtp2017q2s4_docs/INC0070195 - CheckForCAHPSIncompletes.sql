@@ -756,7 +756,8 @@ set bitComplete = 0, datReturned=null, UnusedReturn_id=5, datUnusedReturn=qf.dat
 from #TodaysReturns tr
 inner join QuestionForm qf on qf.QuestionForm_id=tr.QuestionForm_id
 where bitETLThisReturn=0
-and qf.UnusedReturn_id=0
+and (qf.UnusedReturn_id in (0,3) or qf.UnusedReturn_id IS NULL) -- unusedreturn_id=3 means a form was rescanned. We'll be overwriting the '3' with a '5', but no one knows why the 3's get logged in the first place, so not worrying about overwriting
+																-- unusedreturn_ID IS NULL is the result of some rollback processes and should be treated the same as a '0' 
 and qf.datReturned is not null
 					-----
 
