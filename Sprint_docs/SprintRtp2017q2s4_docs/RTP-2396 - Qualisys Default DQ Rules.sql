@@ -68,6 +68,24 @@ INSERT INTO DefaultCriteriaClause
 VALUES  (@statementID, 1,'POPULATION', 76, 9, 'NULL', '')
 END
 
+
+-- DQ_MRN
+
+IF NOT EXISTS( SELECT * FROM DefaultCriteriaStmt WHERE strCriteriaStmt_nm = 'DQ_MRN')
+BEGIN
+
+INSERT INTO DefaultCriteriaStmt     
+        (strCriteriaStmt_nm, strCriteriaString, BusRule_cd) 
+VALUES  ('DQ_MRN','(POPULATIONMRN IS NULL)','Q')
+
+SELECT @statementID = @@IDENTITY
+
+INSERT INTO DefaultCriteriaClause 
+        (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm, Field_id, intOperator, strLowValue, strHighValue)
+VALUES  (@statementID, 1,'POPULATION', 1, 9, 'NULL', '')
+
+END
+
 -- DQ_DSCHD
 
 IF NOT EXISTS( SELECT * FROM DefaultCriteriaStmt WHERE strCriteriaStmt_nm = 'DQ_DSCHD')
