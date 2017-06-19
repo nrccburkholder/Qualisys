@@ -655,7 +655,7 @@ AS
 				exec sp_executesql @sqlResurveyTypeOther, N'@count int out', @countResurveyTypeOther out
 				if @countResurveyTypeOther > 0
 				BEGIN
-					declare @ResurveyTypeOtherError varchar(100) = 'ResurveyType column is present on s' + convert(nvarchar, @study_id) + '.encounter but contains values other than ''P'' or ''L''. Please contact service desk.'
+					declare @ResurveyTypeOtherError varchar(100) = 'ResurveyType column is present on s' + convert(nvarchar, @study_id) + '.encounter but contains values other than ''P'' or ''L''.'
 					RAISERROR(@ResurveyTypeOtherError, 16, 1)
 					RETURN --exit now
 				END
@@ -669,7 +669,7 @@ AS
 				IF NOT EXISTS(select 1 from sys.columns c inner join sys.tables t on c.object_id = t.object_id inner join sys.schemas s on t.schema_id = s.schema_id 
 					where t.name = 'ENCOUNTER' and c.name = 'DrNPI' and s.name = 'S' + convert(nvarchar, @study_id))
 					BEGIN
-						declare @drNPIError varchar(100) = 'DrNPI column not present on s' + convert(nvarchar, @study_id) + '.encounter. Please contact service desk.'
+						declare @drNPIError varchar(100) = 'DrNPI column not present on s' + convert(nvarchar, @study_id) + '.encounter.'
 						RAISERROR(@drNPIError, 16, 1)
 						RETURN --exit now
 					END
@@ -704,7 +704,7 @@ AS
 					IF NOT EXISTS(select 1 from sys.columns c inner join sys.tables t on c.object_id = t.object_id inner join sys.schemas s on t.schema_id = s.schema_id 
 						where t.name = 'ENCOUNTER' and c.name = 'LocationBK' and s.name = 'S' + convert(nvarchar, @study_id))
 					BEGIN
-						declare @locationBKError varchar(100) = 'LocationBK column not present on s' + convert(nvarchar, @study_id) + '.encounter. Please contact service desk.'
+						declare @locationBKError varchar(100) = 'LocationBK column not present on s' + convert(nvarchar, @study_id) + '.encounter.'
 						RAISERROR(@locationBKError, 16, 1)
 						RETURN --exit now
 					END
@@ -733,7 +733,7 @@ AS
 			END -- IF...where t.name = 'ENCOUNTER' and c.name = 'ResurveyType' and s.name = 's' + convert(nvarchar, @study_id)) 
 			ELSE
 			BEGIN
-				declare @resurveyTypeError varchar(100) = 'ResurveyType column not present on s' + convert(nvarchar, @study_id) + '.encounter. Please contact service desk.'
+				declare @resurveyTypeError varchar(100) = 'ResurveyType column not present on s' + convert(nvarchar, @study_id) + '.encounter.'
 				RAISERROR(@resurveyTypeError, 16, 1)
 				RETURN --exit now
 			END

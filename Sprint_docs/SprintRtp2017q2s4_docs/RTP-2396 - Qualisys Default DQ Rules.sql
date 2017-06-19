@@ -74,18 +74,13 @@ IF NOT EXISTS( SELECT * FROM DefaultCriteriaStmt WHERE strCriteriaStmt_nm = 'DQ_
 BEGIN
 INSERT INTO DefaultCriteriaStmt     
         (strCriteriaStmt_nm, strCriteriaString, BusRule_cd) 
-VALUES  ('DQ_DSCHD','(ENCOUNTERDischargeDate IS NULL) OR (ENCOUNTERDischargeDate < ''1/1/1753'')','Q')
+VALUES  ('DQ_DSCHD','(ENCOUNTERDischargeDate IS NULL)','Q')
 
 SELECT @statementID = @@IDENTITY
 
 INSERT INTO DefaultCriteriaClause 
         (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm,Field_id, intOperator, strLowValue, strHighValue)
 VALUES  (@statementID, 1,'ENCOUNTER', 54, 9, 'NULL', '')
-
-INSERT INTO DefaultCriteriaClause 
-        (DefaultCriteriaStmt_id, CriteriaPhrase_id, strTable_nm,Field_id, intOperator, strLowValue, strHighValue)
-VALUES  (@statementID, 2,'ENCOUNTER', 54, 5, '1/1/1753', '')
-END
 
 -- DQ_DRNPI
 
@@ -155,7 +150,7 @@ END
 
 
 SELECT ID = DefaultCriteriaStmt_ID INTO #DQStatements FROM 
-DefaultCriteriaStmt WHERE strCriteriaStmt_NM IN ('DQ_MRN','DQ_VNUM','DQ_F','DQ_L','DQ_PHONE','DQ_DSCHD','DQ_DRNPI','DQ_DRFNM','DQ_DRLNM', 'DQ_PHON2')
+DefaultCriteriaStmt WHERE strCriteriaStmt_NM IN ('DQ_DOB','DQ_MRN','DQ_VNUM','DQ_F','DQ_L','DQ_PHONE','DQ_DSCHD','DQ_DRNPI','DQ_DRFNM','DQ_DRLNM', 'DQ_PHON2')
 
 INSERT INTO SurveyTypeDefaultCriteria (SurveyType_id, Country_id, DefaultCriteriaStmt_id) 
     SELECT 27, 1, ID FROM #DQStatements WHERE ID NOT IN (SELECT DefaultCriteriaStmt_id FROM SurveyTypeDefaultCriteria WHERE SurveyType_id = 27)
