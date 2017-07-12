@@ -37,7 +37,7 @@ Function OASEligibleSurg(strCPT4,strCPT4_2,strCPT4_3,strHCPCS,strHCPCS_2,strHCPC
 if IsNumeric(strCPT4) Then
     strSQL = "select CptCode from OasExcludedCptCode where CptCode = ''" & strCPT4 & "''"
     Set objServiceRS = mobjOASESConn.Execute(strSQL)
-    If (strCPT4 >= "10021" And strCPT4 <= "69990" and objServiceRS.EOF) Then
+    If (strCPT4 >= 10021 And strCPT4 <= 69990 and objServiceRS.EOF) Then
         LOASEligibleSurg = "1"
     End If
 End If
@@ -45,7 +45,7 @@ End If
 If IsNumeric(strCPT4_2) Then
     strSQL = "select CptCode from OasExcludedCptCode where CptCode = ''" & strCPT4_2 & "''"
     Set objServiceRS = mobjOASESConn.Execute(strSQL)
-    If (strCPT4_2 >= "10021" And strCPT4_2 <= "69990" and objServiceRS.EOF) Then
+    If (strCPT4_2 >= 10021 And strCPT4_2 <= 69990 and objServiceRS.EOF) Then
         LOASEligibleSurg = "1"
     End If
 End If
@@ -53,7 +53,7 @@ End If
 If IsNumeric(strCPT4_3) Then
     strSQL = "select CptCode from OasExcludedCptCode where CptCode = ''" & strCPT4_3 & "''"
     Set objServiceRS = mobjOASESConn.Execute(strSQL)
-    If (strCPT4_3 >= "10021" And strCPT4_3 <= "69990" And objServiceRS.EOF) Then
+    If (strCPT4_3 >= 10021 And strCPT4_3 <= 69990 And objServiceRS.EOF) Then
         LOASEligibleSurg = "1"
     End If
 End If    
