@@ -70,7 +70,7 @@ End If
         LOASEligibleSurg = "1"
     End If
 
-    If (strCPT4 = "" And strCPT4_2 = "" And strCPT4_3 = "" And strHCPCS = "" And strHCPCS_2 = "" And strHCPCS_3 = "") Then
+    If ((IsNull(strCPT4) Or strCPT4 = "") And (IsNull(strCPT4_2) Or strCPT4_2 = "") And (IsNull(strCPT4_3) Or strCPT4_3 = "") And (IsNull(strHCPCS) Or strHCPCS = "") And (IsNull(strHCPCS_2) Or strHCPCS_2 = "") And (IsNull(strHCPCS_3) Or strHCPCS_3 = "")) Then
         LOASEligibleSurg = "1"
     End If
 
