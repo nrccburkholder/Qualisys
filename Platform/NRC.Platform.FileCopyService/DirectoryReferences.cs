@@ -10,6 +10,7 @@ using System.Diagnostics;
 using NRC.Common.Configuration;
 using Tamir.SharpSsh;
 using System.Text.RegularExpressions;
+using System.Reflection;
 
 namespace NRC.Platform.FileCopyService
 {
@@ -435,11 +436,13 @@ namespace NRC.Platform.FileCopyService
 
                 string fullEntry = ipath + "/" + entry;
 
-                if (sftp.IsDir(fullEntry))
+                //if (sftp.IsDir(fullEntry))
+                try
                 {
                     ret.AddRange(ListFilesInternal(fullEntry));
                 }
-                else
+                //else
+                catch
                 {
                     ret.Add(fullEntry.Replace("/", "\\"));
                 }
@@ -449,7 +452,8 @@ namespace NRC.Platform.FileCopyService
 
         public bool Exists(string file)
         {
-            return sftp.Exists(Path + file);
+            //return sftp.Exists(Path + file);
+            return true;
         }
 
         public void GetFile(string file, string local)
@@ -471,7 +475,11 @@ namespace NRC.Platform.FileCopyService
         {
             string fullpath = (Path + file).Replace("\\", "/");
             Debug.WriteLine("SFTP Remove " + fullpath);
-            sftp.Remove(fullpath);
+            var prop = sftp.GetType().GetProperty("SftpChannel", BindingFlags.NonPublic | BindingFlags.Instance);
+            var methodInfo = prop.GetGetMethod(true);
+            var sftpChannel = methodInfo.Invoke(sftp, null);
+            ((Tamir.SharpSsh.jsch.ChannelSftp)sftpChannel).rm(fullpath);
+            //sftp.Remove(fullpath);
         }
 
         public void EnsureDirectoryExists(string dir)
