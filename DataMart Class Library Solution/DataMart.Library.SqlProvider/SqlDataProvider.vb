@@ -329,6 +329,9 @@ Public Class SqlDataProvider
     Public Overrides Function SelectClientsStudiesAndSurveysByUser(ByVal userName As String) As System.Collections.ObjectModel.Collection(Of Client)
         Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectClientsStudiesAndSurveysByUser, userName)
         Using ds As DataSet = ExecuteDataSet(cmd)
+            'CJB 7/20/2017 DEBUGGING NOTE: If you crash here, try adding a False parameter to not bind constraints, and you will crash later with ID's to research
+            'ds.Relations.Add("ClientStudy", ds.Tables(0).Columns("Client_id"), ds.Tables(1).Columns("Client_id"), False)
+            'ds.Relations.Add("StudySurvey", ds.Tables(1).Columns("Study_id"), ds.Tables(2).Columns("Study_id"), False)
             ds.Relations.Add("ClientStudy", ds.Tables(0).Columns("Client_id"), ds.Tables(1).Columns("Client_id"))
             ds.Relations.Add("StudySurvey", ds.Tables(1).Columns("Study_id"), ds.Tables(2).Columns("Study_id"))
             Dim clientList As New Collection(Of Client)
