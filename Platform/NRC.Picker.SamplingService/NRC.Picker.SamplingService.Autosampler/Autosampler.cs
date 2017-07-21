@@ -70,6 +70,7 @@ namespace NRC.Picker.SamplingService.Autosampler
             _logger.Info("Started Autosampler");
             while (!_stop)
             {
+                _logger.Info("Checking for work");
                 Dataset dataset = Dataset.GetNextDataset(_config.SampleCountThreshold);
                 if (dataset != null)
                 {

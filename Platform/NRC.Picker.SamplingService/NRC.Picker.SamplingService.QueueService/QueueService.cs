@@ -41,6 +41,7 @@ namespace NRC.Picker.SamplingService.QueueService
             _logger.Info("Started QueueService");
             while (!_stop)
             {
+                _logger.Info("Checking for work");
                 DoWork();
                 Thread.Sleep(_config.RunInterval);
             }
