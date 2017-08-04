@@ -49,10 +49,16 @@ where SurveyType_ID = 8 and SkipRepeatsScaleText = 0
 
 GO
 
+--insert into qualpro_params (STRPARAM_NM,STRPARAM_TYPE,STRPARAM_GRP,STRPARAM_VALUE,NUMPARAM_VALUE,DATPARAM_VALUE,COMMENTS)
+--select 'SkipInstructionFormat - ICHCAHPS + ENGLISH','S','SurveyRules',
+--'|Q47176|If Don''t Know, Go to Question [S%s]|Q47193|If Don''t Know, Go to Question [S%s]|QElse|If %s, go to Question [S%s]|',
+--	NULL,	NULL,	'Question Variations for ICHCAHPS + ENGLISH'
+
+if not exists( select 1 from  qualpro_params where STRPARAM_NM = 'SkipInstructionFormat - ICHCAHPS + HCAHPS Spanish')
 insert into qualpro_params (STRPARAM_NM,STRPARAM_TYPE,STRPARAM_GRP,STRPARAM_VALUE,NUMPARAM_VALUE,DATPARAM_VALUE,COMMENTS)
-select 'SkipInstructionFormat - ICHCAHPS + ENGLISH','S','SurveyRules',
-'|Q47176|If Don''t Know, Go to Question [S%s]|Q47193|If Don''t Know, Go to Question [S%s]|QElse|If %s, go to Question [S%s]|',
-	NULL,	NULL,	'Question Variations for ICHCAHPS + ENGLISH'
+select 'SkipInstructionFormat - ICHCAHPS + HCAHPS Spanish','S','SurveyRules',
+'Si contestó "%s", pase a la pregunta [S%s]',
+	NULL,	NULL,	'Question Variations for ICHCAHPS + HCAHPS Spanish'
 
 
 GO

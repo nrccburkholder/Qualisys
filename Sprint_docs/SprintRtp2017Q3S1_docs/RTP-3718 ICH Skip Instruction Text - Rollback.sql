@@ -49,6 +49,8 @@ where SurveyType_ID = 8 and SkipRepeatsScaleText = 1
 
 GO
 
-delete qualpro_params where STRPARAM_NM = 'SkipInstructionFormat - ICHCAHPS + ENGLISH'
+--delete qualpro_params where STRPARAM_NM = 'SkipInstructionFormat - ICHCAHPS + ENGLISH'
+
+delete qualpro_params where STRPARAM_NM = 'SkipInstructionFormat - ICHCAHPS + HCAHPS Spanish'
 
 GO
