@@ -140,6 +140,15 @@ SELECT Computer_nm, COUNT(*) AS Total_Batches
  WHERE Start_dt BETWEEN @starttime AND @endtime      
  GROUP BY Computer_nm    
  ORDER BY Computer_nm        
+PRINT ''      
+PRINT '*************************************************************************************'      
+PRINT 'Number of samples TOCL''d During Generation'      
+select COUNT(*) AS Tocl_During_Generation
+from DispositionLog dl WITH (NOLOCK)
+inner join Disposition d WITH (NOLOCK)
+	on d.Disposition_id = dl.Disposition_id
+where dl.datLogged between @starttime and @endtime
+	and d.strDispositionLabel = 'TOCL During Generation'
 --PRINT ''      
 --PRINT '*************************************************************************************'      
 --PRINT 'Jobs'      
