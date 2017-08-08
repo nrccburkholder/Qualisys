@@ -1,0 +1,167 @@
+[PropertyInspector]
+Create=1
+Visible=1
+State=0
+Left=-2
+Top=111
+Width=232
+Height=707
+MaxLeft=-1
+MaxTop=-1
+ClientWidth=224
+ClientHeight=681
+SplitPos=84
+
+[HistoryLists\hiWatchExpression]
+Count=32
+H0=modlibrary.tblscaletext.filter
+H1=modlibrary.tblscaletext.filtered
+H2=modlibrary.tblvalues.filtered
+H3=modlibrary.tblvalues.filter
+H4=cldbrichcodebtn.lines[0]
+H5=modlibrary.tblValues.eof
+H6=modlibrary.tblValues.bof
+H7=modlibrary.tblValues.state
+H8=cldbrichcodebtn.lines
+H9=modlibrary.srcvalues.autoedit
+H10=modlibrary.tblvalues.autoedit
+H11=modlibrary.tblvaluesshort.autoedit
+H12=editshort.autoedit
+H13=modlibrary.tblvaluesshort.readonly
+H14=modlibrary.tblvaluesshort
+H15=modlibrary.tblvalues.readonly
+H16=modlibrary.srcvalues.dataset.name
+H17=modlibrary.srcvalues.dataset
+H18=modlibrary.srcvalues.readonly
+H19=modlibrary.srcvalues
+H20=moddata.srcvalues
+H21=srcvalues
+H22=editshort.datasource.name
+H23=editshort.datasource.enabled
+H24=editshort.datasource.readonly
+H25=editshort.datasource
+H26=editshort.readonly
+H27=finalcountdown
+H28=modlibrary.wtblquestionscale.value
+H29=modlibrary.wtblquestionscale
+H30=modlibrary.wtblquestion
+H31=modlibrary.wtblquestions
+
+[HistoryLists\hiEvalExpression]
+Count=6
+H0=modlibrary.ww_Query.Text
+H1=modLibrary.tblTransQ.Modified
+H2=result
+H3=0
+H4=modLibrary.ProblemScoresDefined
+H5=GetUser
+
+[HistoryLists\hiEvalNewValue]
+Count=0
+
+[HistoryLists\hiOpenFile]
+Count=25
+H0=e:\projects\qualisys\report manager\dashboard\decisioncubebugworkaround.pas
+H1=e:\projects\qualisys\configuration manager\form layout\formlayout.dpr
+H2=e:\projects\pdfgen\pdfgen.dpr
+H3=e:\projects\qualisys\pcl gen\pclgen.dpr
+H4=e:\projects\qualisys\question library\question.dpr
+H5=e:\projects\qualisys\delphi shared code\fp\fileutil.pas
+H6=e:\projects\qualisys\delphi shared code\qfp\common.pas
+H7=e:\projects\qualisys\export interface\exportinterface.dpr
+H8=e:\projects\qualisys\dashboard\datajunkie.dpr
+H9=c:\dq\qpde\source\qpde.dpr
+H10=c:\dq\dynaquest\development\dynaquest.dpr
+H11=c:\dq\library\source\dbrichedit.pas
+H12=c:\dq\dynaquest\development\dopenq.pas
+H13=c:\program files\borland\delphi 3\qualpro\dbrichedit.pas
+H14=c:\dq\library\source\upers.pas
+H15=c:\dq\_data\pdox2sql\pdox2sql2.dpr
+H16=c:\dq\library\utilities\loadfulltext.dpr
+H17=c:\dq\utils\ftemplateusage.pas
+H18=c:\dq\pclgen\source\dpclgen.pas
+H19=d:\fscmerge\fscmerge.dpr
+H20=c:\dq\pclgen\source\fviewdata.pas
+H21=c:\dq\pclgen\source\pclgen.dpr
+H22=y:\dq\dynaquest\development\dopenq.pas
+H23=y:\dq\library\source\data.pas
+H24=y:\dq\library\source\code.pas
+
+[HistoryLists\hiRunParams]
+Count=4
+H0=e:\nrc\data\net
+H1=e:\dq\data\net
+H2=Y:\net
+H3=\\capmts\capgemini\nrc\data\net
+
+[HistoryLists\hiUnitAlias]
+Count=1
+H0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
+
+[HistoryLists\hiLibUnitAliases]
+Count=1
+H0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
+
+[HistoryLists\hiSearchMasks]
+Count=5
+H0=E:\Projects\QualiSys
+H1=C:\Program Files\Borland\Delphi 3
+H2=E:\Projects
+H3=E:\Projects\QualiSys\Question Library
+H4=E:\Projects\PDFGen
+
+[Closed Files]
+File_0=SourceModule,'E:\Projects\QualiSys\Report Manager\Dashboard\fRptMgr.pas',0,1,1351,1,1379,0,0
+File_1=SourceModule,'E:\Projects\QualiSys\Report Manager\Dashboard\sheet.pas',0,1,133,11,163,0,0
+File_2=SourceModule,'E:\Projects\QualiSys\Report Manager\Dashboard\DecisionCubeBugWorkaround.pas',0,1,1,37,45,0,0
+File_3=SourceModule,'E:\Projects\QualiSys\Delphi Shared Code\QFP\Common.pas',0,1,8,41,889,0,0
+File_4=SourceModule,'E:\Projects\QualiSys\Delphi Shared Code\FP\Fileutil.pas',0,1,1,23,24,0,0
+File_5=SourceModule,'C:\Program Files\Borland\Delphi 3\SOURCE\VCL\consts.pas',0,1,1,34,8,0,0
+File_6=SourceModule,'E:\Projects\QualiSys\Question Library\Translation.pas',0,1,161,1,177,1,0
+File_7=SourceModule,'E:\Projects\QualiSys\Question Library\Data.pas',0,1,847,1,864,1,0
+File_8=SourceModule,'E:\Projects\QualiSys\Question Library\Lookup.pas',0,1,1,1,1,0,0
+File_9=SourceModule,'E:\Projects\QualiSys\Question Library\Support.pas',0,1,1,1,1,0,0
+
+[Modules]
+Module0=E:\Projects\QualiSys\Report Manager\Dashboard\Dashboard.dpr
+Count=1
+EditWindowCount=0
+
+[E:\Projects\QualiSys\Report Manager\Dashboard\Dashboard.dpr]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
+
+[Watches]
+Count=5
+Watch0='cldbrichcodebtn.lines[0]',256,0,18,1
+Watch1='modlibrary.tblValues.state',256,0,18,1
+Watch2='modlibrary.tblValues.bof',256,0,18,1
+Watch3='modlibrary.tblValues.eof',256,0,18,1
+Watch4='modlibrary.tblscaletext.filter',256,0,18,1
+
+[Breakpoints]
+Count=2
+Breakpoint0='E:\Projects\QualiSys\Report Manager\Dashboard\DecisionCubeBugWorkaround.pas',65,'',0,1
+Breakpoint1='E:\Projects\QualiSys\Report Manager\Dashboard\sheet.pas',238,'',0,1
+
+[PVCS Browser]
+Left=236
+Top=105
+Width=625
+Height=393
+State=0
+Visible=0
+[PVCS VDiff]
+Left=257
+Top=130
+Width=591
+Height=608
+Layout=1
+Orientation=1
+State=0
+Visible=0
+File1Color=16711680
+File2Color=255
+SpaceColor=16776960
+TextColor=0
