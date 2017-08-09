@@ -55,6 +55,13 @@ AS
  SET @TOCLRemoveRule = 3      
          
  set @indebug = 0  
+
+ DECLARE @BypassToclExclusion tinyint = 0
+ SELECT @BypassToclExclusion = t.BypassToclExclusion 
+	FROM SurveyType t
+	INNER JOIN SURVEY_DEF s
+		ON s.SurveyType_id = t.SurveyType_ID
+	WHERE s.SURVEY_ID = @survey_ID
    
  if @indebug = 1  
  begin  
@@ -63,13 +70,15 @@ AS
  print '@survey_ID = ' + cast(@survey_ID as varchar(10))  
  print '@Sampleset_ID = ' + cast(@Sampleset_ID as varchar(10))  
  print '@LogExclusion = ' + cast(@LogExclusion as varchar(10))  
+ print '@BypassToclExclusion = ' + cast(@BypassToclExclusion as varchar(10))
  end  
          
  UPDATE #Sampleunit_Universe        
   SET Removed_Rule = @TOCLRemoveRule        
   FROM #Sampleunit_Universe U, dbo.TOCL T        
   WHERE U.Pop_id = T.Pop_id        
-   AND T.Study_id = @Study_id        
+   AND T.Study_id = @Study_id
+   AND @BypassToclExclusion = 0
         
 if @LogExclusion = 1      
 BEGIN      
