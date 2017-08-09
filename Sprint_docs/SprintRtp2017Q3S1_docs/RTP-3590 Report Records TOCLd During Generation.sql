@@ -143,12 +143,28 @@ SELECT Computer_nm, COUNT(*) AS Total_Batches
 PRINT ''      
 PRINT '*************************************************************************************'      
 PRINT 'Number of samples TOCL''d During Generation'      
-select COUNT(*) AS Tocl_During_Generation
+select c.STRCLIENT_NM AS Client, 
+	st.STRSTUDY_NM AS Study, 
+	s.STRSURVEY_NM AS Survey, 
+	s.Survey_ID, 
+	COUNT(*) AS TOCL_During_Generation
 from DispositionLog dl WITH (NOLOCK)
 inner join Disposition d WITH (NOLOCK)
 	on d.Disposition_id = dl.Disposition_id
+inner join SAMPLEPOP sp WITH (NOLOCK)
+	on sp.SAMPLEPOP_ID = dl.SamplePop_id
+inner join SAMPLESET ss WITH (NOLOCK)
+	on ss.SampleSet_ID = sp.SampleSet_ID
+inner join Survey_Def s WITH (NOLOCK)
+	on s.Survey_ID = ss.Survey_ID
+inner join Study st WITH (NOLOCK)
+	on st.Study_ID = s.Study_ID
+inner join Client c WITH (NOLOCK)
+	on c.Client_ID = st.Client_ID
 where dl.datLogged between @starttime and @endtime
 	and d.strDispositionLabel = 'TOCL During Generation'
+group by c.STRCLIENT_NM, st.STRSTUDY_NM, s.STRSURVEY_NM, s.Survey_ID
+order by c.STRCLIENT_NM, st.STRSTUDY_NM, s.STRSURVEY_NM, s.Survey_ID
 --PRINT ''      
 --PRINT '*************************************************************************************'      
 --PRINT 'Jobs'      
