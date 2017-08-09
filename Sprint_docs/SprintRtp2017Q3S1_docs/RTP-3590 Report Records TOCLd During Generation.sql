@@ -147,7 +147,7 @@ select c.STRCLIENT_NM AS Client,
 	st.STRSTUDY_NM AS Study, 
 	s.STRSURVEY_NM AS Survey, 
 	s.Survey_ID, 
-	COUNT(*) AS TOCL_During_Generation
+	COUNT(DISTINCT sp.SAMPLEPOP_ID) AS TOCL_During_Generation
 from DispositionLog dl WITH (NOLOCK)
 inner join Disposition d WITH (NOLOCK)
 	on d.Disposition_id = dl.Disposition_id
