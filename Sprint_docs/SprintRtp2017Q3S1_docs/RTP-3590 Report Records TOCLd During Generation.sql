@@ -142,7 +142,7 @@ SELECT Computer_nm, COUNT(*) AS Total_Batches
  ORDER BY Computer_nm        
 PRINT ''      
 PRINT '*************************************************************************************'      
-PRINT 'Number of samples TOCL''d During Generation'      
+PRINT 'Number of samples TOCL''d During Generation for ACO and MIPS'      
 select c.STRCLIENT_NM AS Client, 
 	st.STRSTUDY_NM AS Study, 
 	s.STRSURVEY_NM AS Survey, 
@@ -165,6 +165,7 @@ where dl.datLogged between @starttime and @endtime
 	and d.strDispositionLabel = 'TOCL During Generation'
 group by c.STRCLIENT_NM, st.STRSTUDY_NM, s.STRSURVEY_NM, s.Survey_ID
 order by c.STRCLIENT_NM, st.STRSTUDY_NM, s.STRSURVEY_NM, s.Survey_ID
+IF (@@ROWCOUNT = 0) PRINT 'None found.'
 --PRINT ''      
 --PRINT '*************************************************************************************'      
 --PRINT 'Jobs'      
