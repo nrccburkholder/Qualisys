@@ -135,8 +135,7 @@ Public Class MedicareMngrSection
 
     End Sub
 
-    Private Sub MedicareReCalcTSButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MedicareReCalcTSButton.Click
-
+    Private Sub MedicareReCalcButton_Click(sender As Object, e As EventArgs) Handles MedicareReCalcButton.Click
         If Not mMedicareNumber.IsValid Then
             MessageBox.Show("Invalid data exists.  Please correct and try again.", "Recalc Proportion", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Exit Sub
@@ -155,18 +154,14 @@ Public Class MedicareMngrSection
             mMedicareNumber.BeginEdit()
             PopulateMedicareSection()
         End If
-
     End Sub
 
-    Private Sub MedicareCalcHistoryTSButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MedicareCalcHistoryTSButton.Click
-
+    Private Sub MedicareCalcHistoryButton_Click(sender As Object, e As EventArgs) Handles MedicareCalcHistoryButton.Click
         Dim dlg As PropCalcHistory = New PropCalcHistory(mMedicareNumber)
         dlg.ShowDialog()
-
     End Sub
 
-    Private Sub MedicareUnlockSamplingTSButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MedicareUnlockSamplingTSButton.Click
-
+    Private Sub MedicareUnlockSamplingButton_Click(sender As Object, e As EventArgs) Handles MedicareUnlockSamplingButton.Click
         If Not mMedicareNumber.SamplingLocked Then Exit Sub
 
         If Not mMedicareNumber.IsValid Then
@@ -215,10 +210,6 @@ Public Class MedicareMngrSection
             .DataBindings.Clear()
             .Value = 0
         End With
-        With SSAnnualReturnTargetNumericUpDown
-            .DataBindings.Clear()
-            .Value = 0
-        End With
         With ChangeThresholdNumericUpDown
             .DataBindings.Clear()
             .Value = 0
@@ -231,19 +222,11 @@ Public Class MedicareMngrSection
             .DataBindings.Clear()
             .Value = 0
         End With
-        With SSEstimatedResponseRateNumericUpDown
-            .DataBindings.Clear()
-            .Value = 0
-        End With
         With EstimatedIneligibleRateNumericUpDown
             .DataBindings.Clear()
             .Value = 0
         End With
         With SwitchToCalcOnDateEdit
-            .DataBindings.Clear()
-            .EditValue = Date.MinValue
-        End With
-        With SSSwitchToCalcOnDateEdit
             .DataBindings.Clear()
             .EditValue = Date.MinValue
         End With
@@ -286,14 +269,11 @@ Public Class MedicareMngrSection
             End With
             MedicareNameTextBox.DataBindings.Add("Text", mMedicareNumber, "Name", False, DataSourceUpdateMode.OnPropertyChanged)
             AnnualReturnTargetNumericUpDown.DataBindings.Add("Value", mMedicareNumber, "AnnualReturnTarget", False, DataSourceUpdateMode.OnPropertyChanged)
-            SSAnnualReturnTargetNumericUpDown.DataBindings.Add("Value", mMedicareNumber, "SystematicAnnualReturnTarget", False, DataSourceUpdateMode.OnPropertyChanged)
             ChangeThresholdNumericUpDown.DataBindings.Add("Value", mMedicareNumber, "ProportionChangeThresholdDisplay", False, DataSourceUpdateMode.OnPropertyChanged)
             EstimatedAnnualVolumeNumericUpDown.DataBindings.Add("Value", mMedicareNumber, "EstAnnualVolume", False, DataSourceUpdateMode.OnPropertyChanged)
             EstimatedResponseRateNumericUpDown.DataBindings.Add("Value", mMedicareNumber, "EstResponseRateDisplay", False, DataSourceUpdateMode.OnPropertyChanged)
-            SSEstimatedResponseRateNumericUpDown.DataBindings.Add("Value", mMedicareNumber, "SystematicEstRespRate", False, DataSourceUpdateMode.OnPropertyChanged)
             EstimatedIneligibleRateNumericUpDown.DataBindings.Add("Value", mMedicareNumber, "EstIneligibleRateDisplay", False, DataSourceUpdateMode.OnPropertyChanged)
             SwitchToCalcOnDateEdit.DataBindings.Add("EditValue", mMedicareNumber, "SwitchToCalcDate", False, DataSourceUpdateMode.OnPropertyChanged)
-            SSSwitchToCalcOnDateEdit.DataBindings.Add("EditValue", mMedicareNumber, "SystematicSwitchToCalcDate", False, DataSourceUpdateMode.OnPropertyChanged)
             ForceCensusSampleCheckBox.DataBindings.Add("Checked", mMedicareNumber, "CensusForced", False, DataSourceUpdateMode.OnPropertyChanged)
             InactiveCheckBox.DataBindings.Add("Checked", mMedicareNumber, "IsInactive", False, DataSourceUpdateMode.OnPropertyChanged)
             NonSubmittingCheckbox.DataBindings.Add("Checked", mMedicareNumber, "NonSubmitting", False, DataSourceUpdateMode.OnPropertyChanged)
@@ -362,7 +342,7 @@ Public Class MedicareMngrSection
             End If
         End With
 
-        MedicareUnlockSamplingTSButton.Enabled = locked
+        MedicareUnlockSamplingButton.Enabled = locked
 
     End Sub
 
@@ -371,12 +351,8 @@ Public Class MedicareMngrSection
     Private Sub CAHPSTabControl_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CAHPSTabControl.SelectedIndexChanged
         If CAHPSTabControl.SelectedIndex = 0 Then
             DisplaySamplingLock(mMedicareNumber.SamplingLocked)
-            MedicareCalcHistoryTSButton.Enabled = True
-            MedicareReCalcTSButton.Enabled = True
         Else
-            MedicareUnlockSamplingTSButton.Enabled = False
-            MedicareCalcHistoryTSButton.Enabled = False
-            MedicareReCalcTSButton.Enabled = False
         End If
     End Sub
+
 End Class
