@@ -38,7 +38,7 @@ Public Class MedicareMngrNavigator
         'Check whether the indicator cell belongs to a data row
         If e.Info.IsRowIndicator And e.RowHandle >= 0 Then
             e.Painter.DrawObject(e.Info)
-            e.Info.Graphics.DrawImage(medNum.SamplingLockedImage, e.Bounds.Left + 15, e.Bounds.Top + 2)
+            'e.Info.Graphics.DrawImage(medNum.SamplingLockedImage, e.Bounds.Left + 15, e.Bounds.Top + 2)
             e.Handled = True
         End If
 

@@ -12,6 +12,8 @@ Public Class MedicareProvider
         newObj.BeginPopulate()
         newObj.MedicareNumber = rdr.GetString("MedicareNumber")
         newObj.Name = rdr.GetString("MedicareName")
+
+        'HCAHPS
         newObj.ProportionCalcTypeID = rdr.GetEnum(Of MedicareProportionCalcTypes)("MedicarePropCalcType_ID")
         newObj.EstAnnualVolume = rdr.GetInteger("EstAnnualVolume")
         newObj.EstResponseRate = rdr.GetDecimal("EstRespRate")
@@ -31,10 +33,27 @@ Public Class MedicareProvider
         End If
         newObj.PENumber = rdr.GetString("PENumber")
         newObj.IsActive = rdr.GetBoolean("Active")
-        newObj.SystematicAnnualReturnTarget = rdr.GetInteger("SystematicAnnualReturnTarget")
-        newObj.SystematicEstRespRate = rdr.GetDecimal("SystematicEstRespRate")
-        newObj.SystematicSwitchToCalcDate = rdr.GetDate("SystematicSwitchToCalcDate")
         newObj.NonSubmitting = rdr.GetBoolean("NonSubmitting")
+
+        'HHCAHPS
+        newObj.HHCAHPS_ProportionCalcTypeID = If(CInt(rdr("HHCAHPS_MedicarePropCalcType_ID")) = 0, MedicareProportionCalcTypes.Estimated, rdr.GetEnum(Of MedicareProportionCalcTypes)("HHCAHPS_MedicarePropCalcType_ID"))
+        newObj.HHCAHPS_EstAnnualVolume = rdr.GetInteger("HHCAHPS_EstAnnualVolume")
+        newObj.HHCAHPS_EstResponseRate = rdr.GetDecimal("HHCAHPS_EstRespRate")
+        newObj.HHCAHPS_SwitchToCalcDate = rdr.GetDate("HHCAHPS_SwitchToCalcDate")
+        newObj.HHCAHPS_AnnualReturnTarget = rdr.GetInteger("HHCAHPS_AnnualReturnTarget")
+        If rdr.GetByte("HHCAHPS_SamplingLocked") = 0 Then
+            newObj.HHCAHPS_SamplingLocked = False
+        Else
+            newObj.HHCAHPS_SamplingLocked = True
+        End If
+        newObj.HHCAHPS_ProportionChangeThreshold = rdr.GetDecimal("HHCAHPS_ProportionChangeThreshold")
+        newObj.HHCAHPS_IsActive = rdr.GetBoolean("HHCAHPS_Active")
+        newObj.HHCAHPS_NonSubmitting = rdr.GetBoolean("HHCAHPS_NonSubmitting")
+        newObj.HHCAHPS_SwitchFromRateOverrideDate = rdr.GetDate("HHCAHPS_SwitchFromRateOverrideDate")
+        newObj.HHCAHPS_SamplingRateOverride = rdr.GetDecimal("HHCAHPS_SamplingRateOverride")
+
+        'End of population
+
         newObj.EndPopulate()
 
         Return newObj
