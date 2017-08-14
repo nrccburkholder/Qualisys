@@ -90,24 +90,20 @@ SET NOCOUNT ON
 DECLARE @sql VARCHAR(8000)
 
 declare @EncDateStart datetime, @EncDateEnd datetime
-exec QCL_CreateCAHPSRollingYear @PeriodDate, @SurveyType_id, @EncDateStart OUTPUT, @EncDateEnd OUTPUT
-
+exec QCL_CreateCAHPSRollingYear @PeriodDate, @SurveyType_id, @EncDateStart OUTPUT, @EncDateEnd OUTPUT;
 
 
 CREATE TABLE #SampleSets (SampleSet_id INT, datsamplecreate_dt datetime)
 INSERT INTO #SampleSets
 SELECT	sssu.Sampleset_ID, ss.datsamplecreate_dt
-FROM	medicarelookup ml, sufacility sf, sampleunit su, samplesetUnitTarget sssu, sampleset ss, periodDef pd1, periodDates pd2
-WHERE	ml.medicareNumber = sf.MedicareNumber and
-		sf.SUFacility_ID = su.SuFacility_ID and
-		su.sampleunit_ID = sssu.sampleunit_ID and
-		ss.sampleset_ID = sssu.sampleset_ID and
-		pd1.periodDef_Id = pd2.PeriodDef_ID and
-		pd2.sampleset_ID = ss.sampleset_ID and
-		pd2.sampleset_ID = sssu.sampleset_ID and
-		pd1.datExpectedEncStart >= @EncDateStart and
-		pd1.datExpectedEncEnd <= @EncDateEnd and
-		su.bithcahps = 1 and
+FROM medicarelookup ml
+JOIN sufacility sf				ON ml.medicareNumber = sf.MedicareNumber 
+JOIN sampleunit su				ON sf.SUFacility_ID = su.SuFacility_ID
+JOIN samplesetUnitTarget sssu	ON su.sampleunit_ID = sssu.sampleunit_ID 
+JOIN sampleset ss				ON ss.sampleset_ID = sssu.sampleset_ID 
+JOIN periodDef pd1				ON pd1.datExpectedEncStart >= @EncDateStart and pd1.datExpectedEncEnd <= @EncDateEnd
+JOIN periodDates pd2			ON pd1.periodDef_Id = pd2.PeriodDef_ID and pd2.sampleset_ID = ss.sampleset_ID AND pd2.sampleset_ID = sssu.sampleset_ID 
+WHERE	su.bithcahps = 1 and
 		ml.medicareNumber = @MedicareNumber
 
 if @indebug = 1
@@ -116,12 +112,12 @@ if @indebug = 1
 CREATE TABLE #SurveyIDs (Survey_ID INT)
 INSERT INTO #SurveyIDs
 SELECT	distinct ss.Survey_ID
-FROM	medicarelookup ml, sufacility sf, sampleunit su, samplesetUnitTarget sssu, sampleset ss
-WHERE	ml.medicareNumber = sf.MedicareNumber and
-		sf.SUFacility_ID = su.SuFacility_ID and
-		su.sampleunit_ID = sssu.sampleunit_ID and
-		ss.sampleset_ID = sssu.sampleset_ID and
-		su.bithcahps = 1 and
+FROM medicarelookup ml
+JOIN sufacility sf				ON ml.medicareNumber = sf.MedicareNumber
+JOIN sampleunit su				ON sf.SUFacility_ID = su.SuFacility_ID
+JOIN samplesetUnitTarget sssu	ON su.sampleunit_ID = sssu.sampleunit_ID
+JOIN sampleset ss				ON ss.sampleset_ID = sssu.sampleset_ID
+WHERE su.bithcahps = 1 and
 		ml.medicareNumber = @MedicareNumber
 
 if @indebug = 1
@@ -180,38 +176,35 @@ BEGIN
 	--Update the response rate for the HCAHPS unit(s)
 	INSERT INTO #Update (SampleUnit_id, intReturned)
 	SELECT a.SampleUnit_id, a.intReturned
-	FROM (SELECT tt.SampleUnit_id, SUM(r2.intReturned) intReturned
-		   FROM #rr rrc,
-		 #rrDays r2,
-		   #SampleSets ss, #r tt
-	WHERE rrc.SampleSet_id=ss.SampleSet_id
-	AND r2.sampleset_id=ss.sampleset_id
-	AND tt.SampleUnit_id=rrc.SampleUnit_id
-	AND tt.bitHCAHPS=1
-	AND tt.SampleUnit_id=r2.SampleUnit_id
-	AND ss.datSampleCreate_dt>''4/10/6''
-	GROUP BY tt.SampleUnit_id) a, #r t
-	WHERE a.SampleUnit_id=t.SampleUnit_id
+	FROM (	SELECT tt.SampleUnit_id, SUM(r2.intReturned) intReturned
+			FROM #r TT
+			JOIN #rr rrc ON tt.SampleUnit_id=rrc.SampleUnit_id
+			JOIN #rrDays r2 ON tt.SampleUnit_id=r2.SampleUnit_id
+			JOIN #SampleSets ss ON r2.sampleset_id=ss.sampleset_id
+			WHERE tt.bitHCAHPS=1
+			AND ss.datSampleCreate_dt>'4/10/2006'
+			GROUP BY tt.SampleUnit_id) a
+	JOIN #r t ON a.SampleUnit_id=t.SampleUnit_id
 
 	INSERT INTO #Update (SampleUnit_id, intReturned)
 	SELECT a.SampleUnit_id, a.intReturned
-	FROM (SELECT tt.SampleUnit_id, SUM(rrc.intReturned) intReturned
-		   FROM #rr rrc,
-		   #SampleSets ss, #r tt
-	WHERE rrc.SampleSet_id=ss.SampleSet_id
-	AND tt.SampleUnit_id=rrc.SampleUnit_id
-	AND tt.bitHCAHPS=1
-	AND ss.datSampleCreate_dt<'4/10/2006'
-	GROUP BY tt.SampleUnit_id) a, #r t
-	WHERE a.SampleUnit_id=t.SampleUnit_id
+	FROM (	SELECT tt.SampleUnit_id, SUM(rrc.intReturned) intReturned
+			FROM #r tt 
+			JOIN #rr rrc ON tt.SampleUnit_id=rrc.SampleUnit_id
+			JOIN #SampleSets ss ON rrc.SampleSet_id=ss.SampleSet_id
+			WHERE tt.bitHCAHPS=1
+			AND ss.datSampleCreate_dt<'4/10/2006'
+			GROUP BY tt.SampleUnit_id) a
+	JOIN #r t ON a.SampleUnit_id=t.SampleUnit_id
+
 	if @indebug = 1
 		select '#Update' as [#Update], * from #Update
 
 	UPDATE t
 	SET intReturned=u.intReturned
 	FROM #r t, (SELECT SampleUnit_id, SUM(intReturned) intReturned
-	FROM #Update
-	GROUP BY SampleUnit_id) u
+				FROM #Update
+				GROUP BY SampleUnit_id) u
 	WHERE t.SampleUnit_id=u.SampleUnit_id
 
 	DROP TABLE #Update
