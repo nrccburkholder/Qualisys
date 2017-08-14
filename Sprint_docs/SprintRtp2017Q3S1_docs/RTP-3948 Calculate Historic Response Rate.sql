@@ -102,7 +102,7 @@ JOIN samplesetUnitTarget sssu	ON su.sampleunit_ID = sssu.sampleunit_ID
 JOIN sampleset ss				ON ss.sampleset_ID = sssu.sampleset_ID 
 JOIN periodDef pd1				ON pd1.datExpectedEncStart >= @EncDateStart and pd1.datExpectedEncEnd <= @EncDateEnd
 JOIN periodDates pd2			ON pd1.periodDef_Id = pd2.PeriodDef_ID and pd2.sampleset_ID = ss.sampleset_ID AND pd2.sampleset_ID = sssu.sampleset_ID 
-WHERE	su.bithcahps = 1 and
+WHERE	su.CAHPSType_id = @SurveyType_id and
 		sf.medicareNumber = @MedicareNumber
 
 if @indebug = 1
@@ -111,7 +111,7 @@ if @indebug = 1
 
 --Everything from Here can Stay the same
 
-CREATE TABLE #r (SampleUnit_id INT, intSampled INT, intReturned INT, bitHCAHPS BIT)
+CREATE TABLE #r (SampleUnit_id INT, intSampled INT, intReturned INT, bitCAHPS BIT)
 CREATE TABLE #rr (sampleset_id INT, sampleunit_id INT, intreturned INT, intsampled INT, intUD INT)
 
 --
@@ -125,7 +125,7 @@ if @indebug = 1
 	select '#rr' as [#rr], * from #rr
 
 --SELECT SampleUnit_id, ((SUM(intReturned)*1.0)/(SUM(intSampled)-SUM(intUD))*100) AS RespRate
-INSERT INTO #r (SampleUnit_id, intSampled, intReturned, bitHCAHPS)
+INSERT INTO #r (SampleUnit_id, intSampled, intReturned, bitCAHPS)
 SELECT SampleUnit_id, SUM(intSampled), SUM(intReturned), 0
 FROM #rr rrc, #SampleSets ss
 WHERE rrc.SampleSet_id=ss.SampleSet_id
@@ -136,10 +136,10 @@ if @indebug = 1
 
 --Identify HCAHPS units
 UPDATE t
-SET bitHCAHPS=1
+SET bitCAHPS=1
 FROM #r t, SampleUnit su
 WHERE t.SampleUnit_id=su.SampleUnit_id
-AND su.bitHCAHPS=1
+AND su.CAHPSType_id = @SurveyType_id
 
 IF @@ROWCOUNT>0
 BEGIN
@@ -165,7 +165,7 @@ BEGIN
 			JOIN #rr rrc ON tt.SampleUnit_id=rrc.SampleUnit_id
 			JOIN #rrDays r2 ON tt.SampleUnit_id=r2.SampleUnit_id
 			JOIN #SampleSets ss ON r2.sampleset_id=ss.sampleset_id
-			WHERE tt.bitHCAHPS=1
+			WHERE tt.bitCAHPS=1
 			GROUP BY tt.SampleUnit_id) a
 	JOIN #r t ON a.SampleUnit_id=t.SampleUnit_id
 
