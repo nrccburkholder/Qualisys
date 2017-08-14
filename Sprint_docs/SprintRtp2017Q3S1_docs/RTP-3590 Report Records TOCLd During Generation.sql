@@ -7,6 +7,9 @@
 
 */
 
+USE QP_Prod
+GO
+
 SET ANSI_NULLS ON
 GO
 
@@ -136,6 +139,32 @@ SELECT Client, Client_id, Study, Study_id, Survey, Survey_id, strMailingStep, Su
  FROM #Generated  
 ORDER BY Ident  
 PRINT ''  
+
+PRINT '*************************************************************************************'      
+PRINT 'Number of samples TOCL''d During Generation for ACO and MIPS'      
+select c.STRCLIENT_NM AS Client, 
+	st.STRSTUDY_NM AS Study, 
+	s.STRSURVEY_NM AS Survey, 
+	s.Survey_ID, 
+	COUNT(DISTINCT sp.SAMPLEPOP_ID) AS TOCL_During_Generation
+from DispositionLog dl WITH (NOLOCK)
+inner join Disposition d WITH (NOLOCK)
+	on d.Disposition_id = dl.Disposition_id
+inner join SAMPLEPOP sp WITH (NOLOCK)
+	on sp.SAMPLEPOP_ID = dl.SamplePop_id
+inner join SAMPLESET ss WITH (NOLOCK)
+	on ss.SampleSet_ID = sp.SampleSet_ID
+inner join Survey_Def s WITH (NOLOCK)
+	on s.Survey_ID = ss.Survey_ID
+inner join Study st WITH (NOLOCK)
+	on st.Study_ID = s.Study_ID
+inner join Client c WITH (NOLOCK)
+	on c.Client_ID = st.Client_ID
+where dl.datLogged between @starttime and @endtime
+	and d.strDispositionLabel = 'TOCL During Generation'
+group by c.STRCLIENT_NM, st.STRSTUDY_NM, s.STRSURVEY_NM, s.Survey_ID
+order by c.STRCLIENT_NM, st.STRSTUDY_NM, s.STRSURVEY_NM, s.Survey_ID
+IF (@@ROWCOUNT = 0) PRINT 'None found.'
   
 GO
 

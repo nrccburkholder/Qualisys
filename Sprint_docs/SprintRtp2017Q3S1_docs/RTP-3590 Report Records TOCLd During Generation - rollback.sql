@@ -3,9 +3,12 @@
 
 	Lanny Boswell
 
-	ALTER PROCEDURE [dbo].[sp_sys_MorningStatus]
+	ALTER PROCEDURE [dbo].[sp_sys_MorningStatus1]
 
 */
+
+USE QP_Prod
+GO
 
 SET ANSI_NULLS ON
 GO
