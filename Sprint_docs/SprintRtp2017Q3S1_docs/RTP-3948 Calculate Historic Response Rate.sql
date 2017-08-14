@@ -15,24 +15,13 @@ GO
 /*
 Business Purpose:
 This procedure is used to support the Qualisys Class Library.
-It will take a date find the previous calander quarter and output the starting and ending date to create a rolling year.
+It will take a date find the appropriate Response Rate and Volume calculation windows for the specified SurveyType
 
-logic for Finding year block for rolling HCAHPS year is used in
+logic for Finding Response Rate and Volume windows is used in
 HCAHPS proportional Sampling to create the proportional sample percentage
 
 Created: 8/11/2008 by MB
-
-
-
---To Test this proc Test proc
-
-declare @outStart datetime, @outEnd Datetime
-exec QCL_CreateHCHAPSRollingYear '2004-8-01 1:00:00', @outStart OUTPUT, @outEnd OUTPUT
-
-print '@outStart called'
-print convert(varchar, @outStart,120)
-print '@outEnd called'
-print convert(varchar, @outEnd,120)
+Refactored: 8/14/2017 by DG
 
 */
 CREATE PROCEDURE dbo.QCL_CreateCAHPSRollingYear
