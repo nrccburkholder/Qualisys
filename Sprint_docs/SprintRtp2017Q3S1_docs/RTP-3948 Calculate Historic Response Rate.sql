@@ -96,15 +96,14 @@ exec QCL_CreateCAHPSRollingYear @PeriodDate, @SurveyType_id, @EncDateStart OUTPU
 CREATE TABLE #SampleSets (Survey_id INT, SampleSet_id INT, datsamplecreate_dt datetime)
 INSERT INTO #SampleSets
 SELECT	ss.Survey_id, sssu.Sampleset_ID, ss.datsamplecreate_dt
-FROM medicarelookup ml
-JOIN sufacility sf				ON ml.medicareNumber = sf.MedicareNumber 
+FROM sufacility sf
 JOIN sampleunit su				ON sf.SUFacility_ID = su.SuFacility_ID
 JOIN samplesetUnitTarget sssu	ON su.sampleunit_ID = sssu.sampleunit_ID 
 JOIN sampleset ss				ON ss.sampleset_ID = sssu.sampleset_ID 
 JOIN periodDef pd1				ON pd1.datExpectedEncStart >= @EncDateStart and pd1.datExpectedEncEnd <= @EncDateEnd
 JOIN periodDates pd2			ON pd1.periodDef_Id = pd2.PeriodDef_ID and pd2.sampleset_ID = ss.sampleset_ID AND pd2.sampleset_ID = sssu.sampleset_ID 
 WHERE	su.bithcahps = 1 and
-		ml.medicareNumber = @MedicareNumber
+		sf.medicareNumber = @MedicareNumber
 
 if @indebug = 1
 	select '#SampleSets' as [#SampleSets], * from #SampleSets
