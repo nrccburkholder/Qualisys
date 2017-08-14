@@ -37,6 +37,7 @@ print convert(varchar, @outEnd,120)
 */
 CREATE PROCEDURE dbo.QCL_CreateCAHPSRollingYear
 	@PeriodDate DATETIME, 
+	@SurveyType_id INT,
 	@StartDateOut DATETIME OUTPUT, 
 	@EndDateOut DATETIME OUTPUT
 as
@@ -59,6 +60,11 @@ DECLARE @QuartersToSkip int = 2
 -- @QuartersToUse is the number of mature quarters we want to include in Response Rate and Volume calculations
 DECLARE @QuartersToUse int = 4
 
+IF @SurveyType_id IN (3,16) -- HHCAHPS and OAS CAHPS
+BEGIN
+	SET @QuartersToSkip = 1
+	SET @QuartersToUse = 2
+END
 
 -- The response rate and volume window will start (@QuartersToSkip+@QuartersToUse) quarters back
 SELECT @StartDateOut = DATEADD(QUARTER, -(@QuartersToSkip+@QuartersToUse), @PeriodQtr)
@@ -76,7 +82,7 @@ Created:  8/7/2008 by MB
 
 */
 ALTER PROCEDURE [dbo].[QCL_PropSamp_CalcResponseRate]
- @MedicareNumber varchar(20), @PeriodDate datetime,   @indebug tinyint = 0
+ @MedicareNumber varchar(20), @PeriodDate datetime, @SurveyType_id int,  @indebug tinyint = 0
 AS
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 SET NOCOUNT ON
@@ -86,7 +92,7 @@ DECLARE @sql VARCHAR(8000), @DataMart VARCHAR(50)
 SELECT @DataMart=strParam_Value FROM QualPro_Params WHERE strParam_nm='DataMart'
 
 declare @EncDateStart datetime, @EncDateEnd datetime
-exec QCL_CreateHCHAPSRollingYear @PeriodDate, @EncDateStart OUTPUT, @EncDateEnd OUTPUT
+exec QCL_CreateCAHPSRollingYear @PeriodDate, @SurveyType_id, @EncDateStart OUTPUT, @EncDateEnd OUTPUT
 
 
 
