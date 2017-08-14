@@ -87,9 +87,7 @@ AS
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 SET NOCOUNT ON
 
-DECLARE @sql VARCHAR(8000), @DataMart VARCHAR(50)
-
-SELECT @DataMart=strParam_Value FROM QualPro_Params WHERE strParam_nm='DataMart'
+DECLARE @sql VARCHAR(8000)
 
 declare @EncDateStart datetime, @EncDateEnd datetime
 exec QCL_CreateCAHPSRollingYear @PeriodDate, @SurveyType_id, @EncDateStart OUTPUT, @EncDateEnd OUTPUT
@@ -147,12 +145,11 @@ if @indebug = 1
 	select '#rr' as [#rr], * from #rr
 
 --SELECT SampleUnit_id, ((SUM(intReturned)*1.0)/(SUM(intSampled)-SUM(intUD))*100) AS RespRate
-SELECT @sql='INSERT INTO #r (SampleUnit_id, intSampled, intReturned, bitHCAHPS)
+INSERT INTO #r (SampleUnit_id, intSampled, intReturned, bitHCAHPS)
 SELECT SampleUnit_id, SUM(intSampled), SUM(intReturned), 0
 FROM #rr rrc, #SampleSets ss
 WHERE rrc.SampleSet_id=ss.SampleSet_id
-GROUP BY SampleUnit_id'
-EXEC (@sql)
+GROUP BY SampleUnit_id
 
 if @indebug = 1
 	select '#r' as [#r], * from #r
@@ -167,63 +164,60 @@ AND su.bitHCAHPS=1
 IF @@ROWCOUNT>0
 BEGIN
 
-CREATE TABLE #Update (SampleUnit_id INT, intReturned INT)
-CREATE TABLE #rrDays (sampleset_id INT, sampleunit_id INT, intreturned INT)
+	CREATE TABLE #Update (SampleUnit_id INT, intReturned INT)
+	CREATE TABLE #rrDays (sampleset_id INT, sampleunit_id INT, intreturned INT)
 
-insert into #rrDays
-select sampleset_id, sampleunit_id, sum(intreturned) as intreturned
-from DATAMart.qp_comments.dbo.RR_ReturnCountByDays
-where survey_id in (select survey_Id from #SurveyIDs)
-  AND DaysFromFirstMailing<43
-group by sampleset_id, sampleunit_id
+	insert into #rrDays
+	select sampleset_id, sampleunit_id, sum(intreturned) as intreturned
+	from DATAMart.qp_comments.dbo.RR_ReturnCountByDays
+	where survey_id in (select survey_Id from #SurveyIDs)
+	  AND DaysFromFirstMailing<43
+	group by sampleset_id, sampleunit_id
 
-if @indebug = 1
-	select '#rrDays' as [#rrDays], * from #rrDays
+	if @indebug = 1
+		select '#rrDays' as [#rrDays], * from #rrDays
 
- --Update the response rate for the HCAHPS unit(s)
- SELECT @sql='INSERT INTO #Update (SampleUnit_id, intReturned)
- SELECT a.SampleUnit_id, a.intReturned
- FROM (SELECT tt.SampleUnit_id, SUM(r2.intReturned) intReturned
-       FROM #rr rrc,
-     #rrDays r2,
-       #SampleSets ss, #r tt
-  WHERE rrc.SampleSet_id=ss.SampleSet_id
-  AND r2.sampleset_id=ss.sampleset_id
-  AND tt.SampleUnit_id=rrc.SampleUnit_id
-  AND tt.bitHCAHPS=1
-  AND tt.SampleUnit_id=r2.SampleUnit_id
-  AND ss.datSampleCreate_dt>''4/10/6''
-  GROUP BY tt.SampleUnit_id) a, #r t
-  WHERE a.SampleUnit_id=t.SampleUnit_id
+	--Update the response rate for the HCAHPS unit(s)
+	INSERT INTO #Update (SampleUnit_id, intReturned)
+	SELECT a.SampleUnit_id, a.intReturned
+	FROM (SELECT tt.SampleUnit_id, SUM(r2.intReturned) intReturned
+		   FROM #rr rrc,
+		 #rrDays r2,
+		   #SampleSets ss, #r tt
+	WHERE rrc.SampleSet_id=ss.SampleSet_id
+	AND r2.sampleset_id=ss.sampleset_id
+	AND tt.SampleUnit_id=rrc.SampleUnit_id
+	AND tt.bitHCAHPS=1
+	AND tt.SampleUnit_id=r2.SampleUnit_id
+	AND ss.datSampleCreate_dt>''4/10/6''
+	GROUP BY tt.SampleUnit_id) a, #r t
+	WHERE a.SampleUnit_id=t.SampleUnit_id
 
- INSERT INTO #Update (SampleUnit_id, intReturned)
- SELECT a.SampleUnit_id, a.intReturned
- FROM (SELECT tt.SampleUnit_id, SUM(rrc.intReturned) intReturned
-       FROM #rr rrc,
-       #SampleSets ss, #r tt
-  WHERE rrc.SampleSet_id=ss.SampleSet_id
-  AND tt.SampleUnit_id=rrc.SampleUnit_id
-  AND tt.bitHCAHPS=1
-  AND ss.datSampleCreate_dt<''4/10/6''
-  GROUP BY tt.SampleUnit_id) a, #r t
-  WHERE a.SampleUnit_id=t.SampleUnit_id'
+	INSERT INTO #Update (SampleUnit_id, intReturned)
+	SELECT a.SampleUnit_id, a.intReturned
+	FROM (SELECT tt.SampleUnit_id, SUM(rrc.intReturned) intReturned
+		   FROM #rr rrc,
+		   #SampleSets ss, #r tt
+	WHERE rrc.SampleSet_id=ss.SampleSet_id
+	AND tt.SampleUnit_id=rrc.SampleUnit_id
+	AND tt.bitHCAHPS=1
+	AND ss.datSampleCreate_dt<'4/10/2006'
+	GROUP BY tt.SampleUnit_id) a, #r t
+	WHERE a.SampleUnit_id=t.SampleUnit_id
+	if @indebug = 1
+		select '#Update' as [#Update], * from #Update
 
- EXEC (@sql)
+	UPDATE t
+	SET intReturned=u.intReturned
+	FROM #r t, (SELECT SampleUnit_id, SUM(intReturned) intReturned
+	FROM #Update
+	GROUP BY SampleUnit_id) u
+	WHERE t.SampleUnit_id=u.SampleUnit_id
 
-if @indebug = 1
-	select '#Update' as [#Update], * from #Update
+	DROP TABLE #Update
 
- UPDATE t
- SET intReturned=u.intReturned
- FROM #r t, (SELECT SampleUnit_id, SUM(intReturned) intReturned
- FROM #Update
- GROUP BY SampleUnit_id) u
- WHERE t.SampleUnit_id=u.SampleUnit_id
-
- DROP TABLE #Update
-
-if @indebug = 1
-	select '#r' as [#r], * from #r
+	if @indebug = 1
+		select '#r' as [#r], * from #r
 
 END
 
