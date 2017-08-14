@@ -3,7 +3,7 @@
 
 	Lanny Boswell
 
-	ALTER PROCEDURE [dbo].[sp_sys_MorningStatus]
+	ALTER PROCEDURE [dbo].[sp_sys_MorningStatus1]
 
 */
 
@@ -13,181 +13,129 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-ALTER PROCEDURE [dbo].[sp_sys_MorningStatus] AS      
-      
-SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED      
-      
-DECLARE @starttime DATETIME      
-DECLARE @endtime DATETIME      
-DECLARE @formgened INT, @PCLGened INT      
-select @starttime = (CONVERT(VARCHAR(10),GETDATE()-1,120)) + ' 6:00'      
-select @endtime = (CONVERT(VARCHAR(10),GETDATE(),120)) + ' 6:00'      
-      
-set @formgened = (SELECT COUNT(*)       
- FROM SentMailing (NOLOCK)      
- WHERE datGenerated BETWEEN @starttime AND @endtime)      
-      
-SET @PCLGened = (SELECT COUNT(DISTINCT SM.SentMail_id)      
- FROM PCLGenLog PCL(NOLOCK), SentMailing SM(NOLOCK), Survey_def SD(NOLOCK)      
- WHERE PCL.SentMail_id = SM.SentMail_id      
-  AND PCL.datLogged BETWEEN @starttime AND @endtime      
-  AND PCL.Survey_id = SD.Survey_id)      
-      
-IF @formgened > (@PCLGened + 299)      
-BEGIN      
-PRINT '*************************************************************************************'      
-PRINT '** WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING **'      
-PRINT '*************************************************************************************'      
-PRINT 'There may have been Surveys formgened but not PCLGened.'      
-PRINT CONVERT(VARCHAR,@formgened) + ' Surveys went through formgen '      
-PRINT 'and ' + CONVERT(VARCHAR,@PCLGened) + ' Surveys were PCLGened.'      
-PRINT ''      
-END      
-      
-PRINT '*************************************************************************************'      
-PRINT 'Number of Questionnaires FormGen''ed by Batch'      
-SELECT datGenerated, COUNT(*) AS Total_Questionnaires      
- FROM SentMailing (NOLOCK)      
- WHERE datGenerated BETWEEN @starttime AND @endtime      
- GROUP BY datGenerated      
- ORDER BY datGenerated      
- COMPUTE SUM(COUNT(*))      
-PRINT ''      
-PRINT '*************************************************************************************'      
-PRINT 'Number of Questionnaires FormGen''ed & PCLGen''ed by Survey'      
-SELECT DISTINCT CONVERT(VARCHAR,SM.datGenerated ,101) AS 'Form Gen Date', PCL.Survey_id,     
-      SD.strSurvey_nm, LEFT(SurveyType_dsc,15) SurveyType, COUNT(DISTINCT SM.SentMail_id)      
- FROM PCLGenLog PCL(NOLOCK), SentMailing SM(NOLOCK), Survey_def SD(NOLOCK), SurveyType st (NOLOCK)      
- WHERE PCL.SentMail_id = SM.SentMail_id      
-  AND PCL.datLogged BETWEEN @starttime AND @endtime      
-  AND PCL.Survey_id = SD.Survey_id      
-  AND SM.SentMail_id>20000000      
-  AND sd.SurveyType_id=st.Surveytype_id    
- GROUP BY CONVERT(VARCHAR,SM.datGenerated ,101), PCL.Survey_id, SD.strSurvey_nm, LEFT(SurveyType_dsc,15)     
- ORDER BY PCL.Survey_id      
- COMPUTE SUM(COUNT(DISTINCT SM.SentMail_id))      
-PRINT ''      
-PRINT '*************************************************************************************'      
-PRINT 'FormGen Errors'      
-SELECT mm.Survey_id, sd.strSurvey_nm, LEFT(SurveyType_dsc,15) SurveyType,     
-       CONVERT(VARCHAR,fge.datGenerated,101) AS 'Date Generated', fget.FGErrorType_dsc, COUNT(*) AS 'Total'      
- FROM MailingMethodology mm(NOLOCK), Survey_def sd(NOLOCK), formgenerror fge(NOLOCK),     
-      formgenerrortype fget(NOLOCK), ScheduledMailing schm(NOLOCK), SurveyType st(NOLOCK)      
- WHERE mm.Methodology_id = schm.Methodology_id      
- AND mm.Survey_id = sd.Survey_id      
- AND fge.ScheduledMailing_id = schm.ScheduledMailing_id      
- AND fge.FGErrorType_id = fget.FGErrorType_id      
- AND fge.datGenerated BETWEEN @starttime AND @endtime      
- AND schm.Scheduledmailing_id>20000000    
- AND sd.SurveyType_id=st.SurveyType_id      
- group by mm.Survey_id, sd.strSurvey_nm, LEFT(SurveyType_dsc,15),     
-          CONVERT(VARCHAR,fge.datGenerated,101), fget.FGErrorType_dsc      
-PRINT ''      
-PRINT '*************************************************************************************'      
-PRINT 'Number of Questionnaires LEFT to FormGen'      
-SELECT COUNT(*) AS Total_Questionnaires      
-FROM   Survey_def SD(NOLOCK), SamplePop SP(NOLOCK), ScheduledMailing SM(NOLOCK), MailingMethodology MM(NOLOCK)    
-WHERE  SP.SamplePop_id = SM.SamplePop_id       
- AND SM.SentMail_id IS NULL       
- AND SM.datGenerate <= @endtime       
- AND SD.bitFormGenRelease = 1       
- AND MM.Methodology_id = SM.Methodology_id       
- AND MM.Survey_id = SD.Survey_id       
- AND SM.ScheduledMailing_id NOT IN (SELECT DISTINCT ScheduledMailing_id FROM FormGenError      
-      WHERE ScheduledMailing_id IS NOT NULL)      
-PRINT ''      
-PRINT '*************************************************************************************'      
-PRINT 'Number of Questionnaires in PCLNeeded with bitDone = 0'      
-SELECT COUNT(*) AS Total_Questionnaires      
-FROM PCLNeeded(NOLOCK)      
-WHERE bitDone = 0      
-PRINT ''      
-PRINT '*************************************************************************************'      
-PRINT 'Number of Questionnaires in PCLNeeded with bitDone = 1'      
-SELECT COUNT(*) AS Total_Questionnaires      
-FROM PCLNeeded(NOLOCK)      
-WHERE bitDone = 1      
-PRINT ''      
-PRINT '*************************************************************************************'      
-PRINT 'Number of Questionnaires PCLGen''ed per Batch'      
-SELECT PR.PCLGenRun_id, Start_dt, End_dt, COUNT(*) AS Total_Questionnaires      
- FROM PCLGenLog PL(NOLOCK), PCLGenRun PR(NOLOCK)      
- WHERE datLogged BETWEEN @starttime AND @endtime      
-  AND SentMail_id IS NOT NULL      
-  AND PL.PCLGenRun_id = PR.PCLGenRun_id      
-  AND SentMail_id>20000000      
- GROUP BY PR.PCLGenRun_id, Start_dt, End_dt      
- ORDER BY Start_dt      
- COMPUTE SUM(COUNT(*))      
-PRINT ''      
-PRINT '*************************************************************************************'      
-PRINT 'Number of Questionnaires PCLGen''ed per Survey'      
-SELECT pgl.Survey_id, sd.strSurvey_nm, LEFT(SurveyType_dsc,15) SurveyType, COUNT(*) AS Total_Questionnaires      
- FROM PCLGenLog pgl(NOLOCK), Survey_def sd(NOLOCK), SurveyType st(NOLOCK)    
- WHERE pgl.Survey_id = sd.Survey_id      
-  AND datLogged BETWEEN @starttime AND @endtime      
---  AND SentMail_id IS NOT NULL      
-  AND SentMail_id>20000000      
-  AND sd.SurveyType_id=st.SurveyType_id      
- GROUP BY pgl.Survey_id, sd.strSurvey_nm, LEFT(SurveyType_dsc,15)    
- ORDER BY pgl.Survey_id      
- COMPUTE SUM(COUNT(*))      
-PRINT ''      
-PRINT '*************************************************************************************'      
-PRINT 'Number of Batches PCLGen''ed'      
-SELECT Computer_nm, COUNT(*) AS Total_Batches      
- FROM PCLGenRun(NOLOCK)      
- WHERE Start_dt BETWEEN @starttime AND @endtime      
- GROUP BY Computer_nm    
- ORDER BY Computer_nm        
-PRINT ''      
-PRINT '*************************************************************************************'      
-PRINT 'Number of samples TOCL''d During Generation for ACO and MIPS'      
-select c.STRCLIENT_NM AS Client, 
-	st.STRSTUDY_NM AS Study, 
-	s.STRSURVEY_NM AS Survey, 
-	s.Survey_ID, 
-	COUNT(DISTINCT sp.SAMPLEPOP_ID) AS TOCL_During_Generation
-from DispositionLog dl WITH (NOLOCK)
-inner join Disposition d WITH (NOLOCK)
-	on d.Disposition_id = dl.Disposition_id
-inner join SAMPLEPOP sp WITH (NOLOCK)
-	on sp.SAMPLEPOP_ID = dl.SamplePop_id
-inner join SAMPLESET ss WITH (NOLOCK)
-	on ss.SampleSet_ID = sp.SampleSet_ID
-inner join Survey_Def s WITH (NOLOCK)
-	on s.Survey_ID = ss.Survey_ID
-inner join Study st WITH (NOLOCK)
-	on st.Study_ID = s.Study_ID
-inner join Client c WITH (NOLOCK)
-	on c.Client_ID = st.Client_ID
-where dl.datLogged between @starttime and @endtime
-	and d.strDispositionLabel = 'TOCL During Generation'
-group by c.STRCLIENT_NM, st.STRSTUDY_NM, s.STRSURVEY_NM, s.Survey_ID
-order by c.STRCLIENT_NM, st.STRSTUDY_NM, s.STRSURVEY_NM, s.Survey_ID
-IF (@@ROWCOUNT = 0) PRINT 'None found.'
---PRINT ''      
---PRINT '*************************************************************************************'      
---PRINT 'Jobs'      
---SELECT LEFT(name,40) AS 'Job Name',       
--- LEFT(Step_Name,20) AS 'Step Name',       
--- LEFT(Message, 20) AS 'Message',       
--- CONVERT(DATETIME,      
---  SUBSTRING( CONVERT( CHAR(8),Run_Date ),5,2 ) + '/' +       
---  RIGHT( CONVERT( CHAR(8),Run_Date ),2 ) + '/' +       
---  LEFT( CONVERT( CHAR(8),Run_Date ),4) + ' ' +       
---  LEFT( CONVERT( CHAR(6),RIGHT( REPLICATE('0',6-LEN(RTRIM(run_time))) + RTRIM(run_time),6 ) ),2 ) + ':' +      
---  SUBSTRING( CONVERT( CHAR(6),RIGHT( REPLICATE('0',6-LEN(RTRIM(run_time))) + RTRIM(run_time),6 ) ),3,2 ) + ':' +       
---  RIGHT(CONVERT( CHAR(6),RIGHT( REPLICATE('0',6-LEN(RTRIM(run_time))) + RTRIM(run_time),6 ) ),2 ) ,101 )      
---  AS 'Start Time'      
---FROM msdb.dbo.sysJobs j, msdb.dbo.sysJobHistory jh      
---WHERE j.job_id = jh.job_id      
---AND CONVERT(DATETIME,      
--- SUBSTRING( CONVERT( CHAR(8),Run_Date ),5,2 ) + '/' +       
--- RIGHT( CONVERT( CHAR(8),Run_Date ),2 ) + '/' +       
--- LEFT( CONVERT( CHAR(8),Run_Date ),4) , 101)      
--- BETWEEN @starttime AND @endtime    
-    
-GO
 
+ALTER PROCEDURE [dbo].[sp_sys_MorningStatus1] AS  
+SET NOCOUNT ON  
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED  
+DECLARE @starttime DATETIME  
+DECLARE @endtime DATETIME  
+SELECT @starttime=(CONVERT(VARCHAR(10),GETDATE()-1,120)) + ' 6:00'  
+SELECT @endtime=(CONVERT(VARCHAR(10),GETDATE(),120)) + ' 6:00'  
+  
+PRINT '*************************************************************************************'  
+PRINT 'Questionnaires not FormGen''ed'  
+SELECT strClient_nm AS Client, strSurvey_nm AS Survey, sd.Survey_id AS Survey_ID,   
+       strMailingStep_nm AS MailingStep, LEFT(SurveyType_dsc,15) SurveyType, COUNT(*) total  
+INTO #notfgend  
+ FROM ScheduledMailing schm, MailingStep ms, Survey_def sd, Study s, Client c, SurveyType st  
+ WHERE CONVERT(VARCHAR(10),datGenerate,120) <= DATEADD(d,-1,GETDATE())  
+  AND schm.MailingStep_id = ms.MailingStep_id  
+  AND ms.Survey_id = sd.Survey_id  
+  AND schm.SentMail_id is null  
+  AND bitFormGenRelease = 1  
+  AND sd.Study_id = s.Study_id  
+  AND s.Client_id = c.Client_id  
+  AND schm.ScheduledMailing_id not in (SELECT ScheduledMailing_id FROM FormGenError)  
+  AND sd.SurveyType_id=st.SurveyType_id  
+ GROUP BY strClient_nm, strSurvey_nm, sd.Survey_id, strMailingStep_nm, LEFT(SurveyType_dsc,15)   
+ ORDER BY strClient_nm, strSurvey_nm, sd.Survey_id, strMailingStep_nm  
+   
+PRINT ''  
+PRINT '*************************************************************************************'  
+PRINT 'Number of Questionnaires in PCLNeeded per Survey'  
+PRINT ''  
+SELECT strClient_nm AS Client, c.Client_id, strStudy_nm AS Study, s.Study_id,   
+       strSurvey_nm AS Survey, sd.Survey_id, LEFT(SurveyType_dsc,15) SurveyType, COUNT(*) AS cnt  
+FROM PCLNeeded p, Survey_def sd, Study s, Client c, SurveyType st  
+WHERE p.Survey_id = sd.Survey_id  
+AND sd.Study_id = s.Study_id  
+AND s.Client_id = c.Client_id  
+AND sd.SurveyType_id=st.SurveyType_id  
+GROUP BY strClient_nm, c.Client_id, strStudy_nm, s.Study_id, strSurvey_nm, sd.Survey_id, LEFT(SurveyType_dsc,15)  
+ORDER BY strClient_nm, c.Client_id, strStudy_nm, s.Study_id, strSurvey_nm, sd.Survey_id  
+PRINT '*************************************************************************************'  
+PRINT 'FormGen Errors'  
+SELECT mm.Survey_id, sd.strSurvey_nm, LEFT(SurveyType_dsc,15) SurveyType,   
+       CONVERT(VARCHAR,fge.datGenerated,101) AS 'Date Generated', fget.FGErrorType_dsc, COUNT(*) AS 'Total'  
+ FROM Mailingmethodology mm, Survey_def sd, FormGenError fge, FormGenErrortype fget,   
+      ScheduledMailing schm, SurveyType st  
+ WHERE mm.methodology_id = schm.methodology_id  
+ AND mm.Survey_id = sd.Survey_id  
+ AND fge.ScheduledMailing_id = schm.ScheduledMailing_id  
+ AND fge.FGErrorType_id = fget.FGErrorType_id  
+ AND fge.datGenerated BETWEEN @starttime AND @endtime  
+ AND sd.SurveyType_id=st.SurveyType_id  
+ GROUP BY mm.Survey_id, sd.strSurvey_nm, LEFT(SurveyType_dsc,15),   
+          CONVERT(VARCHAR,fge.datGenerated,101) , fget.FGErrorType_dsc  
+PRINT ''  
+PRINT '*************************************************************************************'  
+PRINT 'Number of Questionnaires Left to FormGen'  
+SELECT COUNT(*) AS Total_Questionnaires  
+FROM   Survey_def SD, SamplePop SP, ScheduledMailing SM, MailingMethodology MM  
+WHERE  SP.SamplePop_id = SM.SamplePop_id   
+ AND SM.SentMail_id IS NULL   
+ AND SM.datGenerate <= @endtime   
+ AND SD.bitFormGenRelease = 1   
+ AND MM.Methodology_id = SM.Methodology_id   
+ AND MM.Survey_id = SD.Survey_id   
+ AND SM.ScheduledMailing_id NOT IN (SELECT DISTINCT ScheduledMailing_id FROM FormGenError  
+      WHERE ScheduledMailing_id IS NOT NULL)  
+PRINT ''  
+PRINT '*************************************************************************************'  
+PRINT 'Number of Questionnaires in PCLNeeded with bitDone = 0'  
+SELECT COUNT(*) AS Total_Questionnaires  
+FROM PCLNeeded  
+WHERE bitDone = 0  
+PRINT ''  
+PRINT '*************************************************************************************'  
+PRINT 'Number of Questionnaires in PCLNeeded with bitDone = 1'  
+SELECT COUNT(*) AS Total_Questionnaires  
+FROM PCLNeeded  
+WHERE bitDone = 1  
+PRINT ''  
+PRINT '*************************************************************************************'  
+PRINT 'Number of Questionnaires PCLGen''ed per Survey'  
+CREATE TABLE #Generated   
+(Ident INT identity(1,1),  
+ Client VARCHAR(60),  
+ Client_id VARCHAR(6),  
+ Study VARCHAR(10),   
+ Study_id VARCHAR(6),  
+ Survey VARCHAR(42),  
+ Survey_id VARCHAR(6),  
+ StrMailingStep VARCHAR(42),  
+ SurveyType VARCHAR(25),  
+ Total_Questionnaires INT)  
+  
+INSERT INTO #Generated(Client, Client_id, Study, Study_id, Survey, Survey_id, strMailingStep,   
+                       SurveyType, Total_Questionnaires)  
+SELECT strClient_nm, c.Client_id, strStudy_nm, s.Study_id, sd.strSurvey_nm, pgl.Survey_id,   
+       strMailingStep_nm, LEFT(SurveyType_dsc,15), COUNT(*)  
+ FROM PCLGenLog pgl, Survey_def sd, Study s, Client c, ScheduledMailing schm,   
+      MailingStep ms, SurveyType st  
+ WHERE pgl.Survey_id = sd.Survey_id  
+  AND datLogged BETWEEN @starttime  AND @endtime   
+  AND pgl.SentMail_id IS NOT NULL  
+  AND sd.Study_id = s.Study_id  
+  AND s.Client_id = c.Client_id  
+  AND pgl.SentMail_id = schm.SentMail_id  
+  AND schm.MailingStep_id = ms.MailingStep_id  
+  AND sd.SurveyType_id=st.SurveyType_id  
+  AND schm.SentMail_id>20000000    
+ GROUP BY strClient_nm, c.Client_id, strStudy_nm, s.Study_id, sd.strSurvey_nm, pgl.Survey_id,   
+          strMailingStep_nm, LEFT(SurveyType_dsc,15)  
+ ORDER BY strClient_nm, c.Client_id, strStudy_nm, s.Study_id, sd.strSurvey_nm, pgl.Survey_id,   
+          strMailingStep_nm  
+  
+INSERT INTO #Generated(Client, Client_id, Study, Study_id, Survey, Survey_id, strMailingStep,   
+                       SurveyType, Total_Questionnaires)  
+SELECT '', '', '', '', '', '', '', '          SUM =', Sum(Total_Questionnaires) FROM #Generated  
+  
+SELECT Client, Client_id, Study, Study_id, Survey, Survey_id, strMailingStep, SurveyType,   
+       Total_Questionnaires  
+ FROM #Generated  
+ORDER BY Ident  
+PRINT ''  
+  
+GO
 
