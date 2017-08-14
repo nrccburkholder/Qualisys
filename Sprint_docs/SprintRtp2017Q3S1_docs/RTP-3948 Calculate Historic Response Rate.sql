@@ -50,8 +50,8 @@ set @PeriodQtr = DATEPART(QUARTER,@PeriodDate)
 -- @PeriodQtr's first month
 set @FirstMonth = (@PeriodQtr * 3) - 2
 
--- first day of @PeriodDate's quarter
-SET @PeriodQtr = CONVERT(VARCHAR,@FirstMonth) + '/1/' + CONVERT(VARCHAR,YEAR(@periodDate))
+-- @PeriodDate is now the first day of its quarter
+SET @PeriodDate = CONVERT(VARCHAR,@FirstMonth) + '/1/' + CONVERT(VARCHAR,YEAR(@periodDate))
 
 
 -- @QuartersToSkip is the number of recent quarters we don't want to use in Response Rate and Volume calculations, because the samplesets aren't mature yet
@@ -67,10 +67,10 @@ BEGIN
 END
 
 -- The response rate and volume window will start (@QuartersToSkip+@QuartersToUse) quarters back
-SELECT @StartDateOut = DATEADD(QUARTER, -(@QuartersToSkip+@QuartersToUse), @PeriodQtr)
+SELECT @StartDateOut = DATEADD(QUARTER, -(@QuartersToSkip+@QuartersToUse), @PeriodDate)
 
 -- and will end (@QuartersToSkip) quarters back, minus a day
-SELECT @EndDateOut = DATEADD(DAY,-1,DATEADD(QUARTER, -@QuartersToSkip, @PeriodQtr))
+SELECT @EndDateOut = DATEADD(DAY,-1,DATEADD(QUARTER, -@QuartersToSkip, @PeriodDate))
 
 GO
 /*
