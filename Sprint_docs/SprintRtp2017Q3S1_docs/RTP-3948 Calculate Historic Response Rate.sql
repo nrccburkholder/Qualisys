@@ -93,9 +93,9 @@ declare @EncDateStart datetime, @EncDateEnd datetime
 exec QCL_CreateCAHPSRollingYear @PeriodDate, @SurveyType_id, @EncDateStart OUTPUT, @EncDateEnd OUTPUT;
 
 
-CREATE TABLE #SampleSets (SampleSet_id INT, datsamplecreate_dt datetime)
+CREATE TABLE #SampleSets (Survey_id INT, SampleSet_id INT, datsamplecreate_dt datetime)
 INSERT INTO #SampleSets
-SELECT	sssu.Sampleset_ID, ss.datsamplecreate_dt
+SELECT	ss.Survey_id, sssu.Sampleset_ID, ss.datsamplecreate_dt
 FROM medicarelookup ml
 JOIN sufacility sf				ON ml.medicareNumber = sf.MedicareNumber 
 JOIN sampleunit su				ON sf.SUFacility_ID = su.SuFacility_ID
@@ -108,22 +108,7 @@ WHERE	su.bithcahps = 1 and
 
 if @indebug = 1
 	select '#SampleSets' as [#SampleSets], * from #SampleSets
-
-CREATE TABLE #SurveyIDs (Survey_ID INT)
-INSERT INTO #SurveyIDs
-SELECT	distinct ss.Survey_ID
-FROM medicarelookup ml
-JOIN sufacility sf				ON ml.medicareNumber = sf.MedicareNumber
-JOIN sampleunit su				ON sf.SUFacility_ID = su.SuFacility_ID
-JOIN samplesetUnitTarget sssu	ON su.sampleunit_ID = sssu.sampleunit_ID
-JOIN sampleset ss				ON ss.sampleset_ID = sssu.sampleset_ID
-WHERE su.bithcahps = 1 and
-		ml.medicareNumber = @MedicareNumber
-
-if @indebug = 1
-	select '#SurveyIDs' as [#SurveyIDs], * from #SurveyIDs
-
-
+	
 
 --Everything from Here can Stay the same
 
@@ -134,7 +119,7 @@ CREATE TABLE #rr (sampleset_id INT, sampleunit_id INT, intreturned INT, intsampl
 insert into #rr
 select sampleset_id, sampleunit_id, intreturned, intsampled, intUD
 from DATAMart.qp_comments.dbo.RespRateCount
-where survey_id in (select survey_Id from #SurveyIDs) and
+where survey_id in (select survey_Id from #SampleSets) and
  sampleunit_id <>0
 
 if @indebug = 1
@@ -166,7 +151,7 @@ BEGIN
 	insert into #rrDays
 	select sampleset_id, sampleunit_id, sum(intreturned) as intreturned
 	from DATAMart.qp_comments.dbo.RR_ReturnCountByDays
-	where survey_id in (select survey_Id from #SurveyIDs)
+	where survey_id in (select survey_Id from #SampleSets)
 	  AND DaysFromFirstMailing<43
 	group by sampleset_id, sampleunit_id
 
