@@ -17,7 +17,6 @@ BEGIN
 		[SurveyType_ID]				[int]					NOT NULL,
 		[MedicareNumber]			[varchar](20) NOT NULL,
 		[Active]								[bit]					NULL,
-		[MedicarePropCalcType_ID] [int]			NOT NULL,
 		[SwitchToCalcDate]			[datetime]		NULL,
 		[EstAnnualVolume]			[int]					NULL,
 		[EstRespRate]					[decimal](8, 4) NULL,
@@ -32,20 +31,16 @@ BEGIN
 		[SurveyType_ID] ASC,
 		[MedicareNumber] ASC
 	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
-	CONSTRAINT FK_MedicareLookupSurveyType_SurveyType_ID FOREIGN KEY (SurveyType_ID) REFERENCES SurveyType(SurveyType_ID),
-	CONSTRAINT FK_MedicareLookupSurveyType_MedicarePropCalcType_ID FOREIGN KEY (MedicarePropCalcType_ID) REFERENCES MedicarePropCalcTypes(MedicarePropCalcType_ID),
+	CONSTRAINT FK_MedicareLookupSurveyType_SurveyType_ID FOREIGN KEY (SurveyType_ID) REFERENCES SurveyType(SurveyType_ID)
 	) ON [PRIMARY]
 		
 	ALTER TABLE [dbo].[MedicareLookupSurveyType] ADD  CONSTRAINT [DF_MedicareLookupSurveyType_Active]  DEFAULT ((1)) FOR [Active]
-	
-	ALTER TABLE [dbo].[MedicareLookupSurveyType] ADD  CONSTRAINT [DF_MedicareLookupSurveyType_MedicarePropCalcType_ID]  DEFAULT ((2)) FOR [MedicarePropCalcType_ID]
-	
 	ALTER TABLE [dbo].[MedicareLookupSurveyType] ADD  CONSTRAINT [DF_MedicareLookupSurveyType_SamplingLocked]  DEFAULT ((0)) FOR [SamplingLocked]
 	
 END
 GO
 
-PRINT 'Move OAS HCAHPS data from MedicareLookup to MedicareLookupSurveyType'
+PRINT 'Move OAS CAHPS data from MedicareLookup to MedicareLookupSurveyType'
 GO
 IF (EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS
     WHERE TABLE_NAME = 'MedicareLookup' AND COLUMN_NAME = 'SystematicSwitchToCalcDate')) AND
@@ -54,12 +49,11 @@ IF (EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS
 	(EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS
     WHERE TABLE_NAME = 'MedicareLookup' AND COLUMN_NAME = 'SystematicEstRespRate'))
 BEGIN
-	DECLARE @surveyType_ID INT, @MedicarePropCalcType_ID INT
+	DECLARE @surveyType_ID INT
 	SELECT @surveyType_ID=16
-	SELECT @MedicarePropCalcType_ID=2
 	
-	INSERT INTO MedicareLookupSurveyType (surveyType_ID,  MedicareNumber, MedicarePropCalcType_ID,SwitchToCalcDate, AnnualReturnTarget, EstRespRate)
-	SELECT @surveyType_ID, MedicareNumber, @MedicarePropCalcType_ID, SystematicSwitchToCalcDate, SystematicAnnualReturnTarget, SystematicEstRespRate 
+	INSERT INTO MedicareLookupSurveyType (surveyType_ID,  MedicareNumber, SwitchToCalcDate, AnnualReturnTarget, EstRespRate)
+	SELECT @surveyType_ID, MedicareNumber, SystematicSwitchToCalcDate, SystematicAnnualReturnTarget, SystematicEstRespRate 
 	FROM MedicareLookup 
 	WHERE SystematicSwitchToCalcDate IS NOT NULL OR SystematicAnnualReturnTarget IS NOT NULL OR SystematicEstRespRate IS NOT NULL
 
@@ -182,7 +176,6 @@ BEGIN
 			HCAHPS.CensusForced, HCAHPS.PENumber, HCAHPS.Active, HCAHPS.NonSubmitting,
 
 		HHCAHPS.Active AS HHCAHPS_Active,
-		COALESCE(	HHCAHPS.MedicarePropCalcType_ID,0) AS HHCAHPS_MedicarePropCalcType_ID,
 		HHCAHPS.SwitchToCalcDate AS HHCAHPS_SwitchToCalcDate,
 		HHCAHPS.EstAnnualVolume AS HHCAHPS_EstAnnualVolume,
 		HHCAHPS.EstRespRate AS HHCAHPS_EstRespRate,
@@ -194,7 +187,6 @@ BEGIN
 		HHCAHPS.NonSubmitting AS HHCAHPS_NonSubmitting,
 
 		OASCAHPS.Active AS OASCAHPS_Active,
-		COALESCE(	OASCAHPS.MedicarePropCalcType_ID,0) AS OASCAHPS_MedicarePropCalcType_ID,
 		OASCAHPS.SwitchToCalcDate AS OASCAHPS_SwitchToCalcDate,
 		OASCAHPS.EstAnnualVolume AS OASCAHPS_EstAnnualVolume,
 		OASCAHPS.EstRespRate AS OASCAHPS_EstRespRate,
@@ -228,7 +220,6 @@ BEGIN
 		HCAHPS.CensusForced, HCAHPS.PENumber, HCAHPS.Active, HCAHPS.NonSubmitting,
 
 		HHCAHPS.Active AS HHCAHPS_Active,
-		COALESCE(	HHCAHPS.MedicarePropCalcType_ID,0) AS HHCAHPS_MedicarePropCalcType_ID,
 		HHCAHPS.SwitchToCalcDate AS HHCAHPS_SwitchToCalcDate,
 		HHCAHPS.EstAnnualVolume AS HHCAHPS_EstAnnualVolume,
 		HHCAHPS.EstRespRate AS HHCAHPS_EstRespRate,
@@ -240,7 +231,6 @@ BEGIN
 		HHCAHPS.NonSubmitting AS HHCAHPS_NonSubmitting,
 
 		OASCAHPS.Active AS OASCAHPS_Active,
-		COALESCE(	OASCAHPS.MedicarePropCalcType_ID,0) AS OASCAHPS_MedicarePropCalcType_ID,
 		OASCAHPS.SwitchToCalcDate AS OASCAHPS_SwitchToCalcDate,
 		OASCAHPS.EstAnnualVolume AS OASCAHPS_EstAnnualVolume,
 		OASCAHPS.EstRespRate AS OASCAHPS_EstRespRate,
@@ -274,7 +264,6 @@ BEGIN
 		HCAHPS.CensusForced, HCAHPS.PENumber, HCAHPS.Active, HCAHPS.NonSubmitting,
 
 		HHCAHPS.Active AS HHCAHPS_Active,
-		COALESCE(	HHCAHPS.MedicarePropCalcType_ID,0) AS HHCAHPS_MedicarePropCalcType_ID,
 		HHCAHPS.SwitchToCalcDate AS HHCAHPS_SwitchToCalcDate,
 		HHCAHPS.EstAnnualVolume AS HHCAHPS_EstAnnualVolume,
 		HHCAHPS.EstRespRate AS HHCAHPS_EstRespRate,
@@ -286,7 +275,6 @@ BEGIN
 		HHCAHPS.NonSubmitting AS HHCAHPS_NonSubmitting,
 
 		OASCAHPS.Active AS OASCAHPS_Active,
-		COALESCE(	OASCAHPS.MedicarePropCalcType_ID,0) AS OASCAHPS_MedicarePropCalcType_ID,
 		OASCAHPS.SwitchToCalcDate AS OASCAHPS_SwitchToCalcDate,
 		OASCAHPS.EstAnnualVolume AS OASCAHPS_EstAnnualVolume,
 		OASCAHPS.EstRespRate AS OASCAHPS_EstRespRate,

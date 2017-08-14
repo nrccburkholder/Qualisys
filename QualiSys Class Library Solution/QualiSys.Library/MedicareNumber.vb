@@ -46,8 +46,6 @@ Public Class MedicareNumber
     Private mMedicareGlobalDates As MedicareGlobalCalcDateCollection
 
     'HHCAHPS
-    Private mHHCAHPS_ProportionCalcTypeID As MedicareProportionCalcTypes
-    Private mHHCAHPS_ProportionCalcType As MedicarePropCalcType
     Private mHHCAHPS_EstAnnualVolume As Integer
     Private mHHCAHPS_EstResponseRate As Decimal
     Private mHHCAHPS_SwitchToCalcDate As Date
@@ -304,28 +302,6 @@ Public Class MedicareNumber
 #End Region
 
 #Region "MedicareLookup HHCAHPS Properties"
-
-    Public Property HHCAHPS_ProportionCalcTypeID() As MedicareProportionCalcTypes
-        Get
-            Return mHHCAHPS_ProportionCalcTypeID
-        End Get
-        Set(ByVal value As MedicareProportionCalcTypes)
-            If Not value = mHHCAHPS_ProportionCalcTypeID Then
-                mHHCAHPS_ProportionCalcTypeID = value
-                PropertyHasChanged("HHCAHPS_ProportionCalcTypeID")
-            End If
-        End Set
-    End Property
-
-    Public ReadOnly Property HHCAHPS_ProportionCalcType() As MedicarePropCalcType
-        Get
-            If mHHCAHPS_ProportionCalcType Is Nothing OrElse mHHCAHPS_ProportionCalcType.MedicarePropCalcTypeId <> mHHCAHPS_ProportionCalcTypeID Then
-                mHHCAHPS_ProportionCalcType = MedicarePropCalcType.Get(mHHCAHPS_ProportionCalcTypeID)
-            End If
-            Return mHHCAHPS_ProportionCalcType
-        End Get
-    End Property
-
     Public Property HHCAHPS_EstAnnualVolume() As Integer
         Get
             Return mHHCAHPS_EstAnnualVolume

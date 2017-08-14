@@ -6,10 +6,10 @@
 Use [QP_Prod]
 GO
 
-PRINT 'Start table changes'
+PRINT 'Beging rollback table changes'
 GO
 
-PRINT 'Modify MedicareLookup table table'
+PRINT 'Rollback MedicareLookup table'
 GO
 IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS
     WHERE TABLE_NAME = 'MedicareLookup' AND COLUMN_NAME = 'SystematicSwitchToCalcDate')
@@ -24,7 +24,7 @@ IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS
     ALTER TABLE [dbo].[MedicareLookup] ADD [SystematicEstRespRate] [decimal](8, 4) NULL
 GO
 
-PRINT 'Drop MedicareLookupSurveyType table'
+PRINT 'Rollback MedicareLookupSurveyType table'
 GO
 IF (OBJECT_ID(N'[dbo].[MedicareLookupSurveyType]') IS NOT NULL)
 BEGIN
@@ -43,7 +43,7 @@ BEGIN
 END
 GO
 
-PRINT 'Modify MedicareGlobalCalcDefaults table'
+PRINT 'Rollback MedicareGlobalCalcDefaults table'
 GO
 IF ((SELECT COUNT(*) FROM [dbo].[MedicareGlobalCalcDefaults])>1)
 BEGIN
@@ -54,7 +54,7 @@ BEGIN
 END
 GO
 
-PRINT 'Modify MedicareProCalcTypes table'
+PRINT 'Rollback MedicareProCalcTypes table'
 GO
 IF EXISTS(SELECT * FROM MedicarePropCalcTypes WHERE MedicarePropCalcTypeName = 'Rate Override')
 BEGIN
@@ -66,7 +66,7 @@ BEGIN
 END
 GO
 
-PRINT 'Modify MedicarePropDataType table'
+PRINT 'Rollback MedicarePropDataType table'
 GO
 IF  EXISTS(SELECT * FROM MedicarePropDataType WHERE MedicarePropDataType_nm = 'Rate Override')
 BEGIN
@@ -77,11 +77,11 @@ BEGIN
 END
 GO
 
-PRINT 'End table changes'
+PRINT 'End rollback table changes'
 GO
 
 
-PRINT 'Start stored procedure changes'
+PRINT 'Start rollback stored procedure changes'
 GO
 
 PRINT 'Rollback stored procedure QCL_SelectMedicareNumbers'
@@ -143,5 +143,5 @@ WHERE ml.MedicareNumber = sf.MedicareNumber
   AND sd.Survey_id = @SurveyID  
   GO
 
- PRINT 'End stored procedure changes'
+ PRINT 'End rollback stored procedure changes'
 GO
