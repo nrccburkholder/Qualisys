@@ -36,7 +36,14 @@ Public Class MedicareProvider
         newObj.NonSubmitting = rdr.GetBoolean("NonSubmitting")
 
         'HHCAHPS
-        newObj.HHCAHPS_ProportionCalcTypeID = If(CInt(rdr("HHCAHPS_MedicarePropCalcType_ID")) = 0, MedicareProportionCalcTypes.Estimated, rdr.GetEnum(Of MedicareProportionCalcTypes)("HHCAHPS_MedicarePropCalcType_ID"))
+        If CInt(rdr("HHCAHPS_MedicarePropCalcType_ID")) > 0 Then
+            newObj.HHCAHPS_ProportionCalcTypeID = rdr.GetEnum(Of MedicareProportionCalcTypes)("HHCAHPS_MedicarePropCalcType_ID")
+        End If
+        'newObj.HHCAHPS_ProportionCalcTypeID = If(CInt(rdr("HHCAHPS_MedicarePropCalcType_ID")) = 0, MedicareProportionCalcTypes.Estimated, rdr.GetEnum(Of MedicareProportionCalcTypes)("HHCAHPS_MedicarePropCalcType_ID"))
+        'If Not IsDBNull(rdr("HHCAHPS_MedicarePropCalcType_ID")) Then
+        '   newObj.HHCAHPS_ProportionCalcTypeID = rdr.GetEnum(Of MedicareProportionCalcTypes)("HHCAHPS_MedicarePropCalcType_ID")
+        'End If
+
         newObj.HHCAHPS_EstAnnualVolume = rdr.GetInteger("HHCAHPS_EstAnnualVolume")
         newObj.HHCAHPS_EstResponseRate = rdr.GetDecimal("HHCAHPS_EstRespRate")
         newObj.HHCAHPS_SwitchToCalcDate = rdr.GetDate("HHCAHPS_SwitchToCalcDate")

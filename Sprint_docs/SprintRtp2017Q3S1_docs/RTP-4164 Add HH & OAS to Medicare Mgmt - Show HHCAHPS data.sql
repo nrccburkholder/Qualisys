@@ -9,21 +9,6 @@ GO
 PRINT 'Start table changes'
 GO
 
-PRINT 'Modify MedicareLookup table'
-GO
-IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS
-    WHERE TABLE_NAME = 'MedicareLookup' AND COLUMN_NAME = 'SystematicSwitchToCalcDate')
-    ALTER TABLE [dbo].[MedicareLookup] DROP COLUMN [SystematicSwitchToCalcDate]
-
-IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS
-    WHERE TABLE_NAME = 'MedicareLookup' AND COLUMN_NAME = 'SystematicAnnualReturnTarget')
-    ALTER TABLE [dbo].[MedicareLookup]  DROP COLUMN [SystematicAnnualReturnTarget]
-
-IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS
-    WHERE TABLE_NAME = 'MedicareLookup' AND COLUMN_NAME = 'SystematicEstRespRate')
-    ALTER TABLE [dbo].[MedicareLookup]  DROP COLUMN [SystematicEstRespRate]
-GO
-
 PRINT 'Add MedicareLookupSurveyType table'
 GO
 IF (OBJECT_ID(N'[dbo].[MedicareLookupSurveyType]') IS NULL)
@@ -31,7 +16,6 @@ BEGIN
 	CREATE TABLE [dbo].[MedicareLookupSurveyType](
 		[SurveyType_ID]				[int]					NOT NULL,
 		[MedicareNumber]			[varchar](20) NOT NULL,
-		[MedicareName]				[varchar](200) NOT NULL,
 		[Active]								[bit]					NULL,
 		[MedicarePropCalcType_ID] [int]			NOT NULL,
 		[SwitchToCalcDate]			[datetime]		NULL,
@@ -60,6 +44,45 @@ BEGIN
 	
 END
 GO
+
+PRINT 'Move OAS HCAHPS data from MedicareLookup to MedicareLookupSurveyType'
+GO
+IF (EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS
+    WHERE TABLE_NAME = 'MedicareLookup' AND COLUMN_NAME = 'SystematicSwitchToCalcDate')) AND
+	(EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS
+    WHERE TABLE_NAME = 'MedicareLookup' AND COLUMN_NAME = 'SystematicAnnualReturnTarget')) AND
+	(EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS
+    WHERE TABLE_NAME = 'MedicareLookup' AND COLUMN_NAME = 'SystematicEstRespRate'))
+BEGIN
+	DECLARE @surveyType_ID INT, @MedicarePropCalcType_ID INT
+	SELECT @surveyType_ID=16
+	SELECT @MedicarePropCalcType_ID=2
+	
+	INSERT INTO MedicareLookupSurveyType (surveyType_ID,  MedicareNumber, MedicarePropCalcType_ID,SwitchToCalcDate, AnnualReturnTarget, EstRespRate)
+	SELECT @surveyType_ID, MedicareNumber, @MedicarePropCalcType_ID, SystematicSwitchToCalcDate, SystematicAnnualReturnTarget, SystematicEstRespRate 
+	FROM MedicareLookup 
+	WHERE SystematicSwitchToCalcDate IS NOT NULL OR SystematicAnnualReturnTarget IS NOT NULL OR SystematicEstRespRate IS NOT NULL
+
+END
+GO
+
+
+PRINT 'Modify MedicareLookup table'
+GO
+IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS
+    WHERE TABLE_NAME = 'MedicareLookup' AND COLUMN_NAME = 'SystematicSwitchToCalcDate')
+    ALTER TABLE [dbo].[MedicareLookup] DROP COLUMN [SystematicSwitchToCalcDate]
+
+IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS
+    WHERE TABLE_NAME = 'MedicareLookup' AND COLUMN_NAME = 'SystematicAnnualReturnTarget')
+    ALTER TABLE [dbo].[MedicareLookup]  DROP COLUMN [SystematicAnnualReturnTarget]
+
+IF EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS
+    WHERE TABLE_NAME = 'MedicareLookup' AND COLUMN_NAME = 'SystematicEstRespRate')
+    ALTER TABLE [dbo].[MedicareLookup]  DROP COLUMN [SystematicEstRespRate]
+GO
+
+
 
 PRINT 'Modify MedicareGlobalCalcDefaults table'
 GO

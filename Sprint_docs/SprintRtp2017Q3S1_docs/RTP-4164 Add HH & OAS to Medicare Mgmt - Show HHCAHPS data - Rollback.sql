@@ -27,8 +27,20 @@ GO
 PRINT 'Drop MedicareLookupSurveyType table'
 GO
 IF (OBJECT_ID(N'[dbo].[MedicareLookupSurveyType]') IS NOT NULL)
-	DROP TABLE [dbo].[MedicareLookupSurveyType]
+BEGIN
+	UPDATE MedicareLookup
+	SET MedicareLookup.SystematicSwitchToCalcDate=MedicareLookupSurveyType.SwitchToCalcDate, 
+		MedicareLookup.SystematicAnnualReturnTarget=MedicareLookupSurveyType.AnnualReturnTarget, 
+		MedicareLookup.SystematicEstRespRate=MedicareLookupSurveyType.EstRespRate
+	FROM MedicareLookup
+	INNER JOIN MedicareLookupSurveyType ON MedicareLookup.medicareNumber=MedicareLookupSurveyType.medicareNumber
+	WHERE MedicareLookupSurveyType.SurveyType_ID=16 AND 
+		(MedicareLookupSurveyType.SwitchToCalcDate IS NOT NULL OR 
+		MedicareLookupSurveyType.AnnualReturnTarget IS NOT NULL OR 
+		MedicareLookupSurveyType.EstRespRate IS NOT NULL)
 
+	DROP TABLE [dbo].[MedicareLookupSurveyType]
+END
 GO
 
 PRINT 'Modify MedicareGlobalCalcDefaults table'
@@ -132,6 +144,4 @@ WHERE ml.MedicareNumber = sf.MedicareNumber
   GO
 
  PRINT 'End stored procedure changes'
-GO
-
 GO
