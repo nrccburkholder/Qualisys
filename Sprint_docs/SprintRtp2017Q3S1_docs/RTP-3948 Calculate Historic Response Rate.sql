@@ -182,20 +182,10 @@ BEGIN
 			JOIN #rrDays r2 ON tt.SampleUnit_id=r2.SampleUnit_id
 			JOIN #SampleSets ss ON r2.sampleset_id=ss.sampleset_id
 			WHERE tt.bitHCAHPS=1
-			AND ss.datSampleCreate_dt>'4/10/2006'
 			GROUP BY tt.SampleUnit_id) a
 	JOIN #r t ON a.SampleUnit_id=t.SampleUnit_id
 
-	INSERT INTO #Update (SampleUnit_id, intReturned)
-	SELECT a.SampleUnit_id, a.intReturned
-	FROM (	SELECT tt.SampleUnit_id, SUM(rrc.intReturned) intReturned
-			FROM #r tt 
-			JOIN #rr rrc ON tt.SampleUnit_id=rrc.SampleUnit_id
-			JOIN #SampleSets ss ON rrc.SampleSet_id=ss.SampleSet_id
-			WHERE tt.bitHCAHPS=1
-			AND ss.datSampleCreate_dt<'4/10/2006'
-			GROUP BY tt.SampleUnit_id) a
-	JOIN #r t ON a.SampleUnit_id=t.SampleUnit_id
+
 
 	if @indebug = 1
 		select '#Update' as [#Update], * from #Update
