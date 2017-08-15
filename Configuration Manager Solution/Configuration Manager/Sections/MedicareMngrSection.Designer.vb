@@ -74,8 +74,8 @@ Partial Class MedicareMngrSection
         Me.AnnualReturnTargetNumericUpDown = New System.Windows.Forms.NumericUpDown()
         Me.AnnualReturnTargetLabel = New System.Windows.Forms.Label()
         Me.HHCAHPS = New System.Windows.Forms.TabPage()
-        Me.DateTimePicker2 = New System.Windows.Forms.DateTimePicker()
-        Me.DateTimePicker1 = New System.Windows.Forms.DateTimePicker()
+        Me.HHCAHPSSwitchFromOverrideDateDateEdit = New DevExpress.XtraEditors.DateEdit()
+        Me.HHCAHPSSwtichFromEstimatedDateDateEdit = New DevExpress.XtraEditors.DateEdit()
         Me.HHCAHPSProportionUsedNumericUpDown = New System.Windows.Forms.NumericUpDown()
         Me.HHCAHPSCalcProportionNumericUpDown = New System.Windows.Forms.NumericUpDown()
         Me.HHCAHPSHistoricResponseRateNumericUpDown = New System.Windows.Forms.NumericUpDown()
@@ -87,12 +87,12 @@ Partial Class MedicareMngrSection
         Me.HHCAHPSMedicareUnlockSamplingButton = New System.Windows.Forms.Button()
         Me.HHCAHPSProportionUsedLabel = New System.Windows.Forms.Label()
         Me.HHCAHPSCalcProportionLabel = New System.Windows.Forms.Label()
-        Me.HHAHPSLastCalcTypeTextBox = New System.Windows.Forms.TextBox()
+        Me.HHCAHPSLastCalcTypeTextBox = New System.Windows.Forms.TextBox()
         Me.HHCAHPSLastCalcDateTextBox = New System.Windows.Forms.TextBox()
         Me.HHCAHPSLastCalcTypeLabel = New System.Windows.Forms.Label()
         Me.HHCAHPSLastCalcDateLabel = New System.Windows.Forms.Label()
         Me.HHCAHPSLastCalculationLabel = New System.Windows.Forms.Label()
-        Me.Label9 = New System.Windows.Forms.Label()
+        Me.HHCAHPSHistoricResponseRateLabel = New System.Windows.Forms.Label()
         Me.HHCAHPSAnnualEligibleVolumeLabel = New System.Windows.Forms.Label()
         Me.HHCAHPSHistoricValuesLabel = New System.Windows.Forms.Label()
         Me.HHCAHPSSamplingLockTextBox = New System.Windows.Forms.TextBox()
@@ -112,8 +112,8 @@ Partial Class MedicareMngrSection
         Me.HHCAHPSAnnualReturnTargetNumericUpDown = New System.Windows.Forms.NumericUpDown()
         Me.HHCAHPSAnnualReturnTargetLabel = New System.Windows.Forms.Label()
         Me.OASCAHPS = New System.Windows.Forms.TabPage()
-        Me.DateTimePicker3 = New System.Windows.Forms.DateTimePicker()
-        Me.DateTimePicker4 = New System.Windows.Forms.DateTimePicker()
+        Me.OASCAHPSSwitchFromOverrideDateDateEdit = New DevExpress.XtraEditors.DateEdit()
+        Me.OASCAHPSSwtichFromEstimatedDateDateEdit = New DevExpress.XtraEditors.DateEdit()
         Me.OASCAHPSProportionUsedNumericUpDown = New System.Windows.Forms.NumericUpDown()
         Me.OASCAHPSCalcProportionNumericUpDown = New System.Windows.Forms.NumericUpDown()
         Me.OASCAHPSHistoricResponseRateNumericUpDown = New System.Windows.Forms.NumericUpDown()
@@ -154,6 +154,7 @@ Partial Class MedicareMngrSection
         Me.MedicareNumberTextBox = New System.Windows.Forms.TextBox()
         Me.MedicareNumberLabel = New System.Windows.Forms.Label()
         Me.SampleLockPanel = New System.Windows.Forms.Panel()
+        Me.MedicareNamePanel = New System.Windows.Forms.Panel()
         Me.MedicareNameTextBox = New System.Windows.Forms.TextBox()
         Me.MedicareNameLabel = New System.Windows.Forms.Label()
         Me.BottomPanel = New System.Windows.Forms.Panel()
@@ -161,7 +162,6 @@ Partial Class MedicareMngrSection
         Me.Cancel_Button = New System.Windows.Forms.Button()
         Me.ApplyButton = New System.Windows.Forms.Button()
         Me.MedicareErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
-        Me.MedicareNamePanel = New System.Windows.Forms.Panel()
         Me.MedicareMngrSectionPanel.SuspendLayout()
         Me.CAHPSTabControl.SuspendLayout()
         Me.HCAHPS.SuspendLayout()
@@ -192,6 +192,10 @@ Partial Class MedicareMngrSection
         Me.AnnualReturnTargetPanel.SuspendLayout()
         CType(Me.AnnualReturnTargetNumericUpDown, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.HHCAHPS.SuspendLayout()
+        CType(Me.HHCAHPSSwitchFromOverrideDateDateEdit.Properties.VistaTimeProperties, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.HHCAHPSSwitchFromOverrideDateDateEdit.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.HHCAHPSSwtichFromEstimatedDateDateEdit.Properties.VistaTimeProperties, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.HHCAHPSSwtichFromEstimatedDateDateEdit.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.HHCAHPSProportionUsedNumericUpDown, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.HHCAHPSCalcProportionNumericUpDown, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.HHCAHPSHistoricResponseRateNumericUpDown, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -202,6 +206,10 @@ Partial Class MedicareMngrSection
         CType(Me.HHCAHPSEstimatedAnnualVolumeNumericUpDown, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.HHCAHPSAnnualReturnTargetNumericUpDown, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.OASCAHPS.SuspendLayout()
+        CType(Me.OASCAHPSSwitchFromOverrideDateDateEdit.Properties.VistaTimeProperties, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.OASCAHPSSwitchFromOverrideDateDateEdit.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.OASCAHPSSwtichFromEstimatedDateDateEdit.Properties.VistaTimeProperties, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.OASCAHPSSwtichFromEstimatedDateDateEdit.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.OASCAHPSProportionUsedNumericUpDown, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.OASCAHPSCalcProportionNumericUpDown, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.OASCAHPSHistoricResponseRateNumericUpDown, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -213,10 +221,10 @@ Partial Class MedicareMngrSection
         CType(Me.OASCAHPSAnnualReturnTargetNumericUpDown, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.CurrentTableLayoutPanel.SuspendLayout()
         Me.MedicareNumberPanel.SuspendLayout()
+        Me.MedicareNamePanel.SuspendLayout()
         Me.BottomPanel.SuspendLayout()
         Me.ButtonPanel.SuspendLayout()
         CType(Me.MedicareErrorProvider, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.MedicareNamePanel.SuspendLayout()
         Me.SuspendLayout()
         '
         'MedicareMngrSectionPanel
@@ -672,7 +680,7 @@ Partial Class MedicareMngrSection
         Me.SwitchToCalcOnDateEdit.Properties.LookAndFeel.UseWindowsXPTheme = True
         Me.SwitchToCalcOnDateEdit.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor
         Me.SwitchToCalcOnDateEdit.Properties.VistaTimeProperties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton()})
-        Me.SwitchToCalcOnDateEdit.Size = New System.Drawing.Size(530, 23)
+        Me.SwitchToCalcOnDateEdit.Size = New System.Drawing.Size(530, 20)
         Me.SwitchToCalcOnDateEdit.TabIndex = 8
         '
         'EstimatedRadioButton
@@ -834,8 +842,8 @@ Partial Class MedicareMngrSection
         '
         'HHCAHPS
         '
-        Me.HHCAHPS.Controls.Add(Me.DateTimePicker2)
-        Me.HHCAHPS.Controls.Add(Me.DateTimePicker1)
+        Me.HHCAHPS.Controls.Add(Me.HHCAHPSSwitchFromOverrideDateDateEdit)
+        Me.HHCAHPS.Controls.Add(Me.HHCAHPSSwtichFromEstimatedDateDateEdit)
         Me.HHCAHPS.Controls.Add(Me.HHCAHPSProportionUsedNumericUpDown)
         Me.HHCAHPS.Controls.Add(Me.HHCAHPSCalcProportionNumericUpDown)
         Me.HHCAHPS.Controls.Add(Me.HHCAHPSHistoricResponseRateNumericUpDown)
@@ -847,12 +855,12 @@ Partial Class MedicareMngrSection
         Me.HHCAHPS.Controls.Add(Me.HHCAHPSMedicareUnlockSamplingButton)
         Me.HHCAHPS.Controls.Add(Me.HHCAHPSProportionUsedLabel)
         Me.HHCAHPS.Controls.Add(Me.HHCAHPSCalcProportionLabel)
-        Me.HHCAHPS.Controls.Add(Me.HHAHPSLastCalcTypeTextBox)
+        Me.HHCAHPS.Controls.Add(Me.HHCAHPSLastCalcTypeTextBox)
         Me.HHCAHPS.Controls.Add(Me.HHCAHPSLastCalcDateTextBox)
         Me.HHCAHPS.Controls.Add(Me.HHCAHPSLastCalcTypeLabel)
         Me.HHCAHPS.Controls.Add(Me.HHCAHPSLastCalcDateLabel)
         Me.HHCAHPS.Controls.Add(Me.HHCAHPSLastCalculationLabel)
-        Me.HHCAHPS.Controls.Add(Me.Label9)
+        Me.HHCAHPS.Controls.Add(Me.HHCAHPSHistoricResponseRateLabel)
         Me.HHCAHPS.Controls.Add(Me.HHCAHPSAnnualEligibleVolumeLabel)
         Me.HHCAHPS.Controls.Add(Me.HHCAHPSHistoricValuesLabel)
         Me.HHCAHPS.Controls.Add(Me.HHCAHPSSamplingLockTextBox)
@@ -879,22 +887,42 @@ Partial Class MedicareMngrSection
         Me.HHCAHPS.Text = "HHCAHPS"
         Me.HHCAHPS.UseVisualStyleBackColor = True
         '
-        'DateTimePicker2
+        'HHCAHPSSwitchFromOverrideDateDateEdit
         '
-        Me.DateTimePicker2.Location = New System.Drawing.Point(175, 249)
-        Me.DateTimePicker2.Name = "DateTimePicker2"
-        Me.DateTimePicker2.Size = New System.Drawing.Size(200, 21)
-        Me.DateTimePicker2.TabIndex = 40
+        Me.HHCAHPSSwitchFromOverrideDateDateEdit.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.HHCAHPSSwitchFromOverrideDateDateEdit.EditValue = Nothing
+        Me.MedicareErrorProvider.SetIconAlignment(Me.HHCAHPSSwitchFromOverrideDateDateEdit, System.Windows.Forms.ErrorIconAlignment.MiddleLeft)
+        Me.HHCAHPSSwitchFromOverrideDateDateEdit.Location = New System.Drawing.Point(175, 245)
+        Me.HHCAHPSSwitchFromOverrideDateDateEdit.Name = "HHCAHPSSwitchFromOverrideDateDateEdit"
+        Me.HHCAHPSSwitchFromOverrideDateDateEdit.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
+        Me.HHCAHPSSwitchFromOverrideDateDateEdit.Properties.LookAndFeel.UseDefaultLookAndFeel = False
+        Me.HHCAHPSSwitchFromOverrideDateDateEdit.Properties.LookAndFeel.UseWindowsXPTheme = True
+        Me.HHCAHPSSwitchFromOverrideDateDateEdit.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor
+        Me.HHCAHPSSwitchFromOverrideDateDateEdit.Properties.VistaTimeProperties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton()})
+        Me.HHCAHPSSwitchFromOverrideDateDateEdit.Size = New System.Drawing.Size(245, 20)
+        Me.HHCAHPSSwitchFromOverrideDateDateEdit.TabIndex = 42
         '
-        'DateTimePicker1
+        'HHCAHPSSwtichFromEstimatedDateDateEdit
         '
-        Me.DateTimePicker1.Location = New System.Drawing.Point(175, 87)
-        Me.DateTimePicker1.Name = "DateTimePicker1"
-        Me.DateTimePicker1.Size = New System.Drawing.Size(200, 21)
-        Me.DateTimePicker1.TabIndex = 39
+        Me.HHCAHPSSwtichFromEstimatedDateDateEdit.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.HHCAHPSSwtichFromEstimatedDateDateEdit.EditValue = Nothing
+        Me.MedicareErrorProvider.SetIconAlignment(Me.HHCAHPSSwtichFromEstimatedDateDateEdit, System.Windows.Forms.ErrorIconAlignment.MiddleLeft)
+        Me.HHCAHPSSwtichFromEstimatedDateDateEdit.Location = New System.Drawing.Point(175, 85)
+        Me.HHCAHPSSwtichFromEstimatedDateDateEdit.Name = "HHCAHPSSwtichFromEstimatedDateDateEdit"
+        Me.HHCAHPSSwtichFromEstimatedDateDateEdit.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
+        Me.HHCAHPSSwtichFromEstimatedDateDateEdit.Properties.LookAndFeel.UseDefaultLookAndFeel = False
+        Me.HHCAHPSSwtichFromEstimatedDateDateEdit.Properties.LookAndFeel.UseWindowsXPTheme = True
+        Me.HHCAHPSSwtichFromEstimatedDateDateEdit.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor
+        Me.HHCAHPSSwtichFromEstimatedDateDateEdit.Properties.VistaTimeProperties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton()})
+        Me.HHCAHPSSwtichFromEstimatedDateDateEdit.Size = New System.Drawing.Size(245, 20)
+        Me.HHCAHPSSwtichFromEstimatedDateDateEdit.TabIndex = 41
         '
         'HHCAHPSProportionUsedNumericUpDown
         '
+        Me.HHCAHPSProportionUsedNumericUpDown.DecimalPlaces = 4
+        Me.HHCAHPSProportionUsedNumericUpDown.Increment = New Decimal(New Integer() {1, 0, 0, 262144})
         Me.HHCAHPSProportionUsedNumericUpDown.Location = New System.Drawing.Point(722, 354)
         Me.HHCAHPSProportionUsedNumericUpDown.Name = "HHCAHPSProportionUsedNumericUpDown"
         Me.HHCAHPSProportionUsedNumericUpDown.ReadOnly = True
@@ -903,6 +931,8 @@ Partial Class MedicareMngrSection
         '
         'HHCAHPSCalcProportionNumericUpDown
         '
+        Me.HHCAHPSCalcProportionNumericUpDown.DecimalPlaces = 4
+        Me.HHCAHPSCalcProportionNumericUpDown.Increment = New Decimal(New Integer() {1, 0, 0, 262144})
         Me.HHCAHPSCalcProportionNumericUpDown.Location = New System.Drawing.Point(722, 316)
         Me.HHCAHPSCalcProportionNumericUpDown.Name = "HHCAHPSCalcProportionNumericUpDown"
         Me.HHCAHPSCalcProportionNumericUpDown.ReadOnly = True
@@ -911,6 +941,8 @@ Partial Class MedicareMngrSection
         '
         'HHCAHPSHistoricResponseRateNumericUpDown
         '
+        Me.HHCAHPSHistoricResponseRateNumericUpDown.DecimalPlaces = 4
+        Me.HHCAHPSHistoricResponseRateNumericUpDown.Increment = New Decimal(New Integer() {1, 0, 0, 262144})
         Me.HHCAHPSHistoricResponseRateNumericUpDown.Location = New System.Drawing.Point(722, 185)
         Me.HHCAHPSHistoricResponseRateNumericUpDown.Name = "HHCAHPSHistoricResponseRateNumericUpDown"
         Me.HHCAHPSHistoricResponseRateNumericUpDown.ReadOnly = True
@@ -990,13 +1022,13 @@ Partial Class MedicareMngrSection
         Me.HHCAHPSCalcProportionLabel.TabIndex = 27
         Me.HHCAHPSCalcProportionLabel.Text = "Calculated Proportion:"
         '
-        'HHAHPSLastCalcTypeTextBox
+        'HHCAHPSLastCalcTypeTextBox
         '
-        Me.HHAHPSLastCalcTypeTextBox.Location = New System.Drawing.Point(722, 276)
-        Me.HHAHPSLastCalcTypeTextBox.Name = "HHAHPSLastCalcTypeTextBox"
-        Me.HHAHPSLastCalcTypeTextBox.ReadOnly = True
-        Me.HHAHPSLastCalcTypeTextBox.Size = New System.Drawing.Size(246, 21)
-        Me.HHAHPSLastCalcTypeTextBox.TabIndex = 26
+        Me.HHCAHPSLastCalcTypeTextBox.Location = New System.Drawing.Point(722, 276)
+        Me.HHCAHPSLastCalcTypeTextBox.Name = "HHCAHPSLastCalcTypeTextBox"
+        Me.HHCAHPSLastCalcTypeTextBox.ReadOnly = True
+        Me.HHCAHPSLastCalcTypeTextBox.Size = New System.Drawing.Size(246, 21)
+        Me.HHCAHPSLastCalcTypeTextBox.TabIndex = 26
         '
         'HHCAHPSLastCalcDateTextBox
         '
@@ -1033,14 +1065,14 @@ Partial Class MedicareMngrSection
         Me.HHCAHPSLastCalculationLabel.TabIndex = 22
         Me.HHCAHPSLastCalculationLabel.Text = "Last Calculation"
         '
-        'Label9
+        'HHCAHPSHistoricResponseRateLabel
         '
-        Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(554, 185)
-        Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(122, 13)
-        Me.Label9.TabIndex = 19
-        Me.Label9.Text = "Historic Response Rate:"
+        Me.HHCAHPSHistoricResponseRateLabel.AutoSize = True
+        Me.HHCAHPSHistoricResponseRateLabel.Location = New System.Drawing.Point(554, 185)
+        Me.HHCAHPSHistoricResponseRateLabel.Name = "HHCAHPSHistoricResponseRateLabel"
+        Me.HHCAHPSHistoricResponseRateLabel.Size = New System.Drawing.Size(122, 13)
+        Me.HHCAHPSHistoricResponseRateLabel.TabIndex = 19
+        Me.HHCAHPSHistoricResponseRateLabel.Text = "Historic Response Rate:"
         '
         'HHCAHPSAnnualEligibleVolumeLabel
         '
@@ -1080,6 +1112,8 @@ Partial Class MedicareMngrSection
         '
         'HHCAHPSChangeThresholdNumericUpDown
         '
+        Me.HHCAHPSChangeThresholdNumericUpDown.DecimalPlaces = 4
+        Me.HHCAHPSChangeThresholdNumericUpDown.Increment = New Decimal(New Integer() {1, 0, 0, 262144})
         Me.HHCAHPSChangeThresholdNumericUpDown.Location = New System.Drawing.Point(722, 16)
         Me.HHCAHPSChangeThresholdNumericUpDown.Name = "HHCAHPSChangeThresholdNumericUpDown"
         Me.HHCAHPSChangeThresholdNumericUpDown.Size = New System.Drawing.Size(246, 21)
@@ -1096,6 +1130,8 @@ Partial Class MedicareMngrSection
         '
         'HHCAHPSSamplingRateNumericUpDown
         '
+        Me.HHCAHPSSamplingRateNumericUpDown.DecimalPlaces = 4
+        Me.HHCAHPSSamplingRateNumericUpDown.Increment = New Decimal(New Integer() {1, 0, 0, 262144})
         Me.HHCAHPSSamplingRateNumericUpDown.Location = New System.Drawing.Point(175, 287)
         Me.HHCAHPSSamplingRateNumericUpDown.Name = "HHCAHPSSamplingRateNumericUpDown"
         Me.HHCAHPSSamplingRateNumericUpDown.Size = New System.Drawing.Size(245, 21)
@@ -1130,6 +1166,8 @@ Partial Class MedicareMngrSection
         '
         'HHCAHPSEstimatedResponseRateNumericUpDown
         '
+        Me.HHCAHPSEstimatedResponseRateNumericUpDown.DecimalPlaces = 4
+        Me.HHCAHPSEstimatedResponseRateNumericUpDown.Increment = New Decimal(New Integer() {1, 0, 0, 262144})
         Me.HHCAHPSEstimatedResponseRateNumericUpDown.Location = New System.Drawing.Point(175, 165)
         Me.HHCAHPSEstimatedResponseRateNumericUpDown.Name = "HHCAHPSEstimatedResponseRateNumericUpDown"
         Me.HHCAHPSEstimatedResponseRateNumericUpDown.Size = New System.Drawing.Size(245, 21)
@@ -1147,6 +1185,7 @@ Partial Class MedicareMngrSection
         'HHCAHPSEstimatedAnnualVolumeNumericUpDown
         '
         Me.HHCAHPSEstimatedAnnualVolumeNumericUpDown.Location = New System.Drawing.Point(175, 125)
+        Me.HHCAHPSEstimatedAnnualVolumeNumericUpDown.Maximum = New Decimal(New Integer() {999999999, 0, 0, 0})
         Me.HHCAHPSEstimatedAnnualVolumeNumericUpDown.Name = "HHCAHPSEstimatedAnnualVolumeNumericUpDown"
         Me.HHCAHPSEstimatedAnnualVolumeNumericUpDown.Size = New System.Drawing.Size(245, 21)
         Me.HHCAHPSEstimatedAnnualVolumeNumericUpDown.TabIndex = 5
@@ -1181,6 +1220,7 @@ Partial Class MedicareMngrSection
         'HHCAHPSAnnualReturnTargetNumericUpDown
         '
         Me.HHCAHPSAnnualReturnTargetNumericUpDown.Location = New System.Drawing.Point(175, 16)
+        Me.HHCAHPSAnnualReturnTargetNumericUpDown.Maximum = New Decimal(New Integer() {99999, 0, 0, 0})
         Me.HHCAHPSAnnualReturnTargetNumericUpDown.Name = "HHCAHPSAnnualReturnTargetNumericUpDown"
         Me.HHCAHPSAnnualReturnTargetNumericUpDown.Size = New System.Drawing.Size(245, 21)
         Me.HHCAHPSAnnualReturnTargetNumericUpDown.TabIndex = 1
@@ -1196,8 +1236,8 @@ Partial Class MedicareMngrSection
         '
         'OASCAHPS
         '
-        Me.OASCAHPS.Controls.Add(Me.DateTimePicker3)
-        Me.OASCAHPS.Controls.Add(Me.DateTimePicker4)
+        Me.OASCAHPS.Controls.Add(Me.OASCAHPSSwitchFromOverrideDateDateEdit)
+        Me.OASCAHPS.Controls.Add(Me.OASCAHPSSwtichFromEstimatedDateDateEdit)
         Me.OASCAHPS.Controls.Add(Me.OASCAHPSProportionUsedNumericUpDown)
         Me.OASCAHPS.Controls.Add(Me.OASCAHPSCalcProportionNumericUpDown)
         Me.OASCAHPS.Controls.Add(Me.OASCAHPSHistoricResponseRateNumericUpDown)
@@ -1241,22 +1281,42 @@ Partial Class MedicareMngrSection
         Me.OASCAHPS.Text = "OASCAHPS"
         Me.OASCAHPS.UseVisualStyleBackColor = True
         '
-        'DateTimePicker3
+        'OASCAHPSSwitchFromOverrideDateDateEdit
         '
-        Me.DateTimePicker3.Location = New System.Drawing.Point(177, 248)
-        Me.DateTimePicker3.Name = "DateTimePicker3"
-        Me.DateTimePicker3.Size = New System.Drawing.Size(201, 21)
-        Me.DateTimePicker3.TabIndex = 77
+        Me.OASCAHPSSwitchFromOverrideDateDateEdit.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.OASCAHPSSwitchFromOverrideDateDateEdit.EditValue = Nothing
+        Me.MedicareErrorProvider.SetIconAlignment(Me.OASCAHPSSwitchFromOverrideDateDateEdit, System.Windows.Forms.ErrorIconAlignment.MiddleLeft)
+        Me.OASCAHPSSwitchFromOverrideDateDateEdit.Location = New System.Drawing.Point(178, 244)
+        Me.OASCAHPSSwitchFromOverrideDateDateEdit.Name = "OASCAHPSSwitchFromOverrideDateDateEdit"
+        Me.OASCAHPSSwitchFromOverrideDateDateEdit.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
+        Me.OASCAHPSSwitchFromOverrideDateDateEdit.Properties.LookAndFeel.UseDefaultLookAndFeel = False
+        Me.OASCAHPSSwitchFromOverrideDateDateEdit.Properties.LookAndFeel.UseWindowsXPTheme = True
+        Me.OASCAHPSSwitchFromOverrideDateDateEdit.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor
+        Me.OASCAHPSSwitchFromOverrideDateDateEdit.Properties.VistaTimeProperties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton()})
+        Me.OASCAHPSSwitchFromOverrideDateDateEdit.Size = New System.Drawing.Size(245, 20)
+        Me.OASCAHPSSwitchFromOverrideDateDateEdit.TabIndex = 79
         '
-        'DateTimePicker4
+        'OASCAHPSSwtichFromEstimatedDateDateEdit
         '
-        Me.DateTimePicker4.Location = New System.Drawing.Point(177, 86)
-        Me.DateTimePicker4.Name = "DateTimePicker4"
-        Me.DateTimePicker4.Size = New System.Drawing.Size(201, 21)
-        Me.DateTimePicker4.TabIndex = 76
+        Me.OASCAHPSSwtichFromEstimatedDateDateEdit.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.OASCAHPSSwtichFromEstimatedDateDateEdit.EditValue = Nothing
+        Me.MedicareErrorProvider.SetIconAlignment(Me.OASCAHPSSwtichFromEstimatedDateDateEdit, System.Windows.Forms.ErrorIconAlignment.MiddleLeft)
+        Me.OASCAHPSSwtichFromEstimatedDateDateEdit.Location = New System.Drawing.Point(177, 85)
+        Me.OASCAHPSSwtichFromEstimatedDateDateEdit.Name = "OASCAHPSSwtichFromEstimatedDateDateEdit"
+        Me.OASCAHPSSwtichFromEstimatedDateDateEdit.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
+        Me.OASCAHPSSwtichFromEstimatedDateDateEdit.Properties.LookAndFeel.UseDefaultLookAndFeel = False
+        Me.OASCAHPSSwtichFromEstimatedDateDateEdit.Properties.LookAndFeel.UseWindowsXPTheme = True
+        Me.OASCAHPSSwtichFromEstimatedDateDateEdit.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor
+        Me.OASCAHPSSwtichFromEstimatedDateDateEdit.Properties.VistaTimeProperties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton()})
+        Me.OASCAHPSSwtichFromEstimatedDateDateEdit.Size = New System.Drawing.Size(245, 20)
+        Me.OASCAHPSSwtichFromEstimatedDateDateEdit.TabIndex = 78
         '
         'OASCAHPSProportionUsedNumericUpDown
         '
+        Me.OASCAHPSProportionUsedNumericUpDown.DecimalPlaces = 4
+        Me.OASCAHPSProportionUsedNumericUpDown.Increment = New Decimal(New Integer() {1, 0, 0, 262144})
         Me.OASCAHPSProportionUsedNumericUpDown.Location = New System.Drawing.Point(724, 353)
         Me.OASCAHPSProportionUsedNumericUpDown.Name = "OASCAHPSProportionUsedNumericUpDown"
         Me.OASCAHPSProportionUsedNumericUpDown.ReadOnly = True
@@ -1265,6 +1325,8 @@ Partial Class MedicareMngrSection
         '
         'OASCAHPSCalcProportionNumericUpDown
         '
+        Me.OASCAHPSCalcProportionNumericUpDown.DecimalPlaces = 4
+        Me.OASCAHPSCalcProportionNumericUpDown.Increment = New Decimal(New Integer() {1, 0, 0, 262144})
         Me.OASCAHPSCalcProportionNumericUpDown.Location = New System.Drawing.Point(724, 315)
         Me.OASCAHPSCalcProportionNumericUpDown.Name = "OASCAHPSCalcProportionNumericUpDown"
         Me.OASCAHPSCalcProportionNumericUpDown.ReadOnly = True
@@ -1273,6 +1335,8 @@ Partial Class MedicareMngrSection
         '
         'OASCAHPSHistoricResponseRateNumericUpDown
         '
+        Me.OASCAHPSHistoricResponseRateNumericUpDown.DecimalPlaces = 4
+        Me.OASCAHPSHistoricResponseRateNumericUpDown.Increment = New Decimal(New Integer() {1, 0, 0, 262144})
         Me.OASCAHPSHistoricResponseRateNumericUpDown.Location = New System.Drawing.Point(724, 184)
         Me.OASCAHPSHistoricResponseRateNumericUpDown.Name = "OASCAHPSHistoricResponseRateNumericUpDown"
         Me.OASCAHPSHistoricResponseRateNumericUpDown.ReadOnly = True
@@ -1442,6 +1506,8 @@ Partial Class MedicareMngrSection
         '
         'OASCAHPSChangeThresholdNumericUpDown
         '
+        Me.OASCAHPSChangeThresholdNumericUpDown.DecimalPlaces = 4
+        Me.OASCAHPSChangeThresholdNumericUpDown.Increment = New Decimal(New Integer() {1, 0, 0, 262144})
         Me.OASCAHPSChangeThresholdNumericUpDown.Location = New System.Drawing.Point(724, 15)
         Me.OASCAHPSChangeThresholdNumericUpDown.Name = "OASCAHPSChangeThresholdNumericUpDown"
         Me.OASCAHPSChangeThresholdNumericUpDown.Size = New System.Drawing.Size(247, 21)
@@ -1458,6 +1524,8 @@ Partial Class MedicareMngrSection
         '
         'OASCAHPSSamplingRateNumericUpDown
         '
+        Me.OASCAHPSSamplingRateNumericUpDown.DecimalPlaces = 4
+        Me.OASCAHPSSamplingRateNumericUpDown.Increment = New Decimal(New Integer() {1, 0, 0, 262144})
         Me.OASCAHPSSamplingRateNumericUpDown.Location = New System.Drawing.Point(177, 286)
         Me.OASCAHPSSamplingRateNumericUpDown.Name = "OASCAHPSSamplingRateNumericUpDown"
         Me.OASCAHPSSamplingRateNumericUpDown.Size = New System.Drawing.Size(246, 21)
@@ -1492,6 +1560,8 @@ Partial Class MedicareMngrSection
         '
         'OASCAHPSEstimatedResponseRateNumericUpDown
         '
+        Me.OASCAHPSEstimatedResponseRateNumericUpDown.DecimalPlaces = 4
+        Me.OASCAHPSEstimatedResponseRateNumericUpDown.Increment = New Decimal(New Integer() {1, 0, 0, 262144})
         Me.OASCAHPSEstimatedResponseRateNumericUpDown.Location = New System.Drawing.Point(177, 164)
         Me.OASCAHPSEstimatedResponseRateNumericUpDown.Name = "OASCAHPSEstimatedResponseRateNumericUpDown"
         Me.OASCAHPSEstimatedResponseRateNumericUpDown.Size = New System.Drawing.Size(246, 21)
@@ -1509,6 +1579,7 @@ Partial Class MedicareMngrSection
         'OASCAHPSEstimatedAnnualVolumeNumericUpDown
         '
         Me.OASCAHPSEstimatedAnnualVolumeNumericUpDown.Location = New System.Drawing.Point(177, 124)
+        Me.OASCAHPSEstimatedAnnualVolumeNumericUpDown.Maximum = New Decimal(New Integer() {999999999, 0, 0, 0})
         Me.OASCAHPSEstimatedAnnualVolumeNumericUpDown.Name = "OASCAHPSEstimatedAnnualVolumeNumericUpDown"
         Me.OASCAHPSEstimatedAnnualVolumeNumericUpDown.Size = New System.Drawing.Size(246, 21)
         Me.OASCAHPSEstimatedAnnualVolumeNumericUpDown.TabIndex = 47
@@ -1543,6 +1614,7 @@ Partial Class MedicareMngrSection
         'OASCAHPSAnnualReturnTargetNumericUpDown
         '
         Me.OASCAHPSAnnualReturnTargetNumericUpDown.Location = New System.Drawing.Point(177, 15)
+        Me.OASCAHPSAnnualReturnTargetNumericUpDown.Maximum = New Decimal(New Integer() {99999, 0, 0, 0})
         Me.OASCAHPSAnnualReturnTargetNumericUpDown.Name = "OASCAHPSAnnualReturnTargetNumericUpDown"
         Me.OASCAHPSAnnualReturnTargetNumericUpDown.Size = New System.Drawing.Size(246, 21)
         Me.OASCAHPSAnnualReturnTargetNumericUpDown.TabIndex = 43
@@ -1616,6 +1688,18 @@ Partial Class MedicareMngrSection
         Me.SampleLockPanel.Size = New System.Drawing.Size(685, 37)
         Me.SampleLockPanel.TabIndex = 1
         '
+        'MedicareNamePanel
+        '
+        Me.CurrentTableLayoutPanel.SetColumnSpan(Me.MedicareNamePanel, 2)
+        Me.MedicareNamePanel.Controls.Add(Me.MedicareNameTextBox)
+        Me.MedicareNamePanel.Controls.Add(Me.MedicareNameLabel)
+        Me.MedicareNamePanel.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.MedicareNamePanel.Location = New System.Drawing.Point(0, 37)
+        Me.MedicareNamePanel.Margin = New System.Windows.Forms.Padding(0)
+        Me.MedicareNamePanel.Name = "MedicareNamePanel"
+        Me.MedicareNamePanel.Size = New System.Drawing.Size(1370, 38)
+        Me.MedicareNamePanel.TabIndex = 2
+        '
         'MedicareNameTextBox
         '
         Me.MedicareNameTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
@@ -1680,18 +1764,6 @@ Partial Class MedicareMngrSection
         Me.MedicareErrorProvider.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink
         Me.MedicareErrorProvider.ContainerControl = Me
         '
-        'MedicareNamePanel
-        '
-        Me.CurrentTableLayoutPanel.SetColumnSpan(Me.MedicareNamePanel, 2)
-        Me.MedicareNamePanel.Controls.Add(Me.MedicareNameTextBox)
-        Me.MedicareNamePanel.Controls.Add(Me.MedicareNameLabel)
-        Me.MedicareNamePanel.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.MedicareNamePanel.Location = New System.Drawing.Point(0, 37)
-        Me.MedicareNamePanel.Margin = New System.Windows.Forms.Padding(0)
-        Me.MedicareNamePanel.Name = "MedicareNamePanel"
-        Me.MedicareNamePanel.Size = New System.Drawing.Size(1370, 38)
-        Me.MedicareNamePanel.TabIndex = 2
-        '
         'MedicareMngrSection
         '
         Me.Controls.Add(Me.MedicareMngrSectionPanel)
@@ -1739,6 +1811,10 @@ Partial Class MedicareMngrSection
         CType(Me.AnnualReturnTargetNumericUpDown, System.ComponentModel.ISupportInitialize).EndInit()
         Me.HHCAHPS.ResumeLayout(False)
         Me.HHCAHPS.PerformLayout()
+        CType(Me.HHCAHPSSwitchFromOverrideDateDateEdit.Properties.VistaTimeProperties, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.HHCAHPSSwitchFromOverrideDateDateEdit.Properties, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.HHCAHPSSwtichFromEstimatedDateDateEdit.Properties.VistaTimeProperties, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.HHCAHPSSwtichFromEstimatedDateDateEdit.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.HHCAHPSProportionUsedNumericUpDown, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.HHCAHPSCalcProportionNumericUpDown, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.HHCAHPSHistoricResponseRateNumericUpDown, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1750,6 +1826,10 @@ Partial Class MedicareMngrSection
         CType(Me.HHCAHPSAnnualReturnTargetNumericUpDown, System.ComponentModel.ISupportInitialize).EndInit()
         Me.OASCAHPS.ResumeLayout(False)
         Me.OASCAHPS.PerformLayout()
+        CType(Me.OASCAHPSSwitchFromOverrideDateDateEdit.Properties.VistaTimeProperties, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.OASCAHPSSwitchFromOverrideDateDateEdit.Properties, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.OASCAHPSSwtichFromEstimatedDateDateEdit.Properties.VistaTimeProperties, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.OASCAHPSSwtichFromEstimatedDateDateEdit.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.OASCAHPSProportionUsedNumericUpDown, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.OASCAHPSCalcProportionNumericUpDown, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.OASCAHPSHistoricResponseRateNumericUpDown, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1762,11 +1842,11 @@ Partial Class MedicareMngrSection
         Me.CurrentTableLayoutPanel.ResumeLayout(False)
         Me.MedicareNumberPanel.ResumeLayout(False)
         Me.MedicareNumberPanel.PerformLayout()
+        Me.MedicareNamePanel.ResumeLayout(False)
+        Me.MedicareNamePanel.PerformLayout()
         Me.BottomPanel.ResumeLayout(False)
         Me.ButtonPanel.ResumeLayout(False)
         CType(Me.MedicareErrorProvider, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.MedicareNamePanel.ResumeLayout(False)
-        Me.MedicareNamePanel.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -1838,7 +1918,7 @@ Partial Class MedicareMngrSection
     Friend WithEvents HHCAHPSAnnualReturnTargetNumericUpDown As NumericUpDown
     Friend WithEvents HHCAHPSAnnualReturnTargetLabel As Label
     Friend WithEvents HHCAHPSSwtichFromEstimatedDateLabel As Label
-    Friend WithEvents Label9 As Label
+    Friend WithEvents HHCAHPSHistoricResponseRateLabel As Label
     Friend WithEvents HHCAHPSAnnualEligibleVolumeLabel As Label
     Friend WithEvents HHCAHPSHistoricValuesLabel As Label
     Friend WithEvents HHCAHPSSamplingLockTextBox As TextBox
@@ -1860,7 +1940,7 @@ Partial Class MedicareMngrSection
     Friend WithEvents HHCAHPSMedicareUnlockSamplingButton As Button
     Friend WithEvents HHCAHPSProportionUsedLabel As Label
     Friend WithEvents HHCAHPSCalcProportionLabel As Label
-    Friend WithEvents HHAHPSLastCalcTypeTextBox As TextBox
+    Friend WithEvents HHCAHPSLastCalcTypeTextBox As TextBox
     Friend WithEvents HHCAHPSLastCalcDateTextBox As TextBox
     Friend WithEvents HHCAHPSLastCalcTypeLabel As Label
     Friend WithEvents HHCAHPSLastCalcDateLabel As Label
@@ -1869,10 +1949,6 @@ Partial Class MedicareMngrSection
     Friend WithEvents HHCAHPSCalcProportionNumericUpDown As NumericUpDown
     Friend WithEvents HHCAHPSHistoricResponseRateNumericUpDown As NumericUpDown
     Friend WithEvents HHCAHPSAnnualEligibleVolumeNumericUpDown As NumericUpDown
-    Friend WithEvents DateTimePicker2 As DateTimePicker
-    Friend WithEvents DateTimePicker1 As DateTimePicker
-    Friend WithEvents DateTimePicker3 As DateTimePicker
-    Friend WithEvents DateTimePicker4 As DateTimePicker
     Friend WithEvents OASCAHPSProportionUsedNumericUpDown As NumericUpDown
     Friend WithEvents OASCAHPSCalcProportionNumericUpDown As NumericUpDown
     Friend WithEvents OASCAHPSHistoricResponseRateNumericUpDown As NumericUpDown
@@ -1912,4 +1988,8 @@ Partial Class MedicareMngrSection
     Friend WithEvents MedicareUnlockSamplingButton As Button
     Friend WithEvents MedicareReCalcButton As Button
     Friend WithEvents MedicareNamePanel As Panel
+    Friend WithEvents HHCAHPSSwitchFromOverrideDateDateEdit As DevExpress.XtraEditors.DateEdit
+    Friend WithEvents HHCAHPSSwtichFromEstimatedDateDateEdit As DevExpress.XtraEditors.DateEdit
+    Friend WithEvents OASCAHPSSwitchFromOverrideDateDateEdit As DevExpress.XtraEditors.DateEdit
+    Friend WithEvents OASCAHPSSwtichFromEstimatedDateDateEdit As DevExpress.XtraEditors.DateEdit
 End Class

@@ -7,6 +7,7 @@ Public Class MedicareMngrSection
     Private WithEvents mNavControl As MedicareMngrNavigator
     Private mMedicareNumber As MedicareNumber
     Private mSampleUnlocked As Boolean
+    Private mHHCAHPS_SampleUnlocked As Boolean
 
 #End Region
 
@@ -194,6 +195,7 @@ Public Class MedicareMngrSection
         Cursor = Cursors.WaitCursor
 
         'Clear the screen and all bindings
+        'Common ones
         With MedicareMngrSectionPanel
             .Caption = "Medicare Number:"
             .Enabled = False
@@ -206,6 +208,20 @@ Public Class MedicareMngrSection
             .DataBindings.Clear()
             .Text = ""
         End With
+
+        PopulateMedicareSection_HCAHPS()
+        PopulateMedicareSection_HHCAHPS()
+
+        'Select the MedicareNumberTextBox
+        MedicareNumberTextBox.Focus()
+
+        'Reset the wait cursor
+        Cursor = DefaultCursor
+
+    End Sub
+
+    Private Sub PopulateMedicareSection_HCAHPS()
+        'Clear the screen and all bindings
         With AnnualReturnTargetNumericUpDown
             .DataBindings.Clear()
             .Value = 0
@@ -214,6 +230,7 @@ Public Class MedicareMngrSection
             .DataBindings.Clear()
             .Value = 0
         End With
+
         With EstimatedAnnualVolumeNumericUpDown
             .DataBindings.Clear()
             .Value = 0
@@ -230,10 +247,12 @@ Public Class MedicareMngrSection
             .DataBindings.Clear()
             .EditValue = Date.MinValue
         End With
+
         With ForceCensusSampleCheckBox
             .DataBindings.Clear()
             .Checked = False
         End With
+
         With InactiveCheckBox
             .DataBindings.Clear()
             .Checked = False
@@ -322,16 +341,110 @@ Public Class MedicareMngrSection
         'Set sample unlock flag
         mSampleUnlocked = False
 
-        'Select the MedicareNumberTextBox
-        MedicareNumberTextBox.Focus()
+    End Sub
 
-        'Reset the wait cursor
-        Cursor = DefaultCursor
+    Private Sub PopulateMedicareSection_HHCAHPS()
+        'Clear the screen and all bindings
+        With HHCAHPSAnnualReturnTargetNumericUpDown
+            .DataBindings.Clear()
+            .Value = 0
+        End With
+        With HHCAHPSChangeThresholdNumericUpDown
+            .DataBindings.Clear()
+            .Value = 0
+        End With
+
+        With HHCAHPSSwtichFromEstimatedDateDateEdit
+            .DataBindings.Clear()
+            .EditValue = Date.MinValue
+        End With
+        With HHCAHPSEstimatedAnnualVolumeNumericUpDown
+            .DataBindings.Clear()
+            .Value = 0
+        End With
+        With HHCAHPSEstimatedResponseRateNumericUpDown
+            .DataBindings.Clear()
+            .Value = 0
+        End With
+
+        With HHCAHPSSwitchFromOverrideDateDateEdit
+            .DataBindings.Clear()
+            .EditValue = Date.MinValue
+        End With
+        With HHCAHPSSamplingRateNumericUpDown
+            .DataBindings.Clear()
+            .Value = 0
+        End With
+
+        With HHCAHPSInactiveCheckBox
+            .DataBindings.Clear()
+            .Checked = False
+        End With
+        With HHCAHPSNonSubmittingCheckbox
+            .DataBindings.Clear()
+            .Checked = False
+        End With
+
+        HHCAHPSSamplingLockTextBox.Text = ""
+
+        HHCAHPSAnnualEligibleVolumeNumericUpDown.Value = 0
+        HHCAHPSHistoricResponseRateNumericUpDown.Value = 0
+
+        HHCAHPSLastCalcDateTextBox.Text = ""
+        HHCAHPSLastCalcTypeTextBox.Text = ""
+        HHCAHPSCalcProportionNumericUpDown.Value = 0
+        HHCAHPSProportionUsedNumericUpDown.Value = 0
+
+        MedicareErrorProvider.DataSource = Nothing
+
+        If mMedicareNumber IsNot Nothing Then
+            'Populate the screen
+            HHCAHPSAnnualReturnTargetNumericUpDown.DataBindings.Add("Value", mMedicareNumber, "HHCAHPS_AnnualReturnTarget", False, DataSourceUpdateMode.OnPropertyChanged)
+            HHCAHPSChangeThresholdNumericUpDown.DataBindings.Add("Value", mMedicareNumber, "HHCAHPS_ProportionChangeThresholdDisplay", False, DataSourceUpdateMode.OnPropertyChanged)
+            HHCAHPSEstimatedAnnualVolumeNumericUpDown.DataBindings.Add("Value", mMedicareNumber, "HHCAHPS_EstAnnualVolume", False, DataSourceUpdateMode.OnPropertyChanged)
+            HHCAHPSEstimatedResponseRateNumericUpDown.DataBindings.Add("Value", mMedicareNumber, "HHCAHPS_EstResponseRateDisplay", False, DataSourceUpdateMode.OnPropertyChanged)
+            HHCAHPSSwtichFromEstimatedDateDateEdit.DataBindings.Add("EditValue", mMedicareNumber, "HHCAHPS_SwitchToCalcDate", False, DataSourceUpdateMode.OnPropertyChanged)
+            HHCAHPSInactiveCheckBox.DataBindings.Add("Checked", mMedicareNumber, "HHCAHPS_IsInactive", False, DataSourceUpdateMode.OnPropertyChanged)
+            HHCAHPSNonSubmittingCheckbox.DataBindings.Add("Checked", mMedicareNumber, "HHCAHPS_NonSubmitting", False, DataSourceUpdateMode.OnPropertyChanged)
+            HHCAHPSSamplingRateNumericUpDown.DataBindings.Add("Value", mMedicareNumber, "HHCAHPS_SamplingRateOverrideDisplay", False, DataSourceUpdateMode.OnPropertyChanged)
+            HHCAHPSSwitchFromOverrideDateDateEdit.DataBindings.Add("EditValue", mMedicareNumber, "HHCAHPS_SwitchFromRateOverrideDate", False, DataSourceUpdateMode.OnPropertyChanged)
+
+            'Unbound controls
+            'TODO: uncomment this once we have the historic data
+            'DisplaySamplingLock_HHCAHPS(mMedicareNumber.HHCAHPS_SamplingLocked)
+            'HHCAHPSAnnualEligibleVolumeNumericUpDown.Value = mMedicareNumber.HHCAHPS_AnnualEligibleVolume
+            'HHCAHPSHistoricResponseRateNumericUpDown.Value = mMedicareNumber.HHCAHPS_HistoricResponseRateDisplay
+
+            'History information
+            'TODO: uncomment this once we have the historic data
+            'If mMedicareNumber.HHCAHPS_LastRecalcDateCalculated = Date.MinValue Then
+            '    HHCAHPSLastCalcDateTextBox.Text = "Never"
+            'Else
+            '    HHCAHPSLastCalcDateTextBox.Text = mMedicareNumber.HHCAHPS_LastRecalcDateCalculated.ToString
+            'End If
+
+            'If mMedicareNumber.HHCAHPS_LastRecalcPropCalcType Is Nothing Then
+            '    HHCAHPSLastCalcTypeTextBox.Text = "Unknown"
+            'Else
+            '    HHCAHPSLastCalcTypeTextBox.Text = mMedicareNumber.HHCAHPS_LastRecalcPropCalcType.MedicarePropCalcTypeName
+            'End If
+
+            'HHCAHPSCalcProportionNumericUpDown.Value = mMedicareNumber.HHCAHPS_LastRecalcProportionDisplay
+
+            'If mMedicareNumber.HHCAHPS_LastRecalcCensusForced Then
+            '    HHCAHPSProportionUsedNumericUpDown.Value = 100
+            'Else
+            '    HHCAHPSProportionUsedNumericUpDown.Value = HHCAHPSCalcProportionNumericUpDown.Value
+            'End If
+
+        End If
+
+        'Set sample unlock flag
+        mHHCAHPS_SampleUnlocked = False
 
     End Sub
 
     Private Sub DisplaySamplingLock(ByVal locked As Boolean)
-
         With SamplingLockTextBox
             If locked Then
                 .Text = "Locked"
@@ -343,16 +456,37 @@ Public Class MedicareMngrSection
         End With
 
         MedicareUnlockSamplingButton.Enabled = locked
+    End Sub
+
+    Private Sub DisplaySamplingLock_HHCAHPS(ByVal locked As Boolean)
+        With HHCAHPSSamplingLockTextBox
+            If locked Then
+                .Text = "Locked"
+                .ForeColor = Color.Red
+            Else
+                .Text = "Unlocked"
+                .ForeColor = System.Drawing.SystemColors.WindowText
+            End If
+        End With
+
+        HHCAHPSMedicareUnlockSamplingButton.Enabled = locked
+    End Sub
+
+    Private Sub CAHPSTabControl_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CAHPSTabControl.SelectedIndexChanged
+        Select Case CAHPSTabControl.SelectedIndex
+            Case 0
+                DisplaySamplingLock(mMedicareNumber.SamplingLocked)
+                MedicareCalcHistoryButton.Enabled = True
+                MedicareReCalcButton.Enabled = True
+            Case 1
+                DisplaySamplingLock_HHCAHPS(mMedicareNumber.HHCAHPS_SamplingLocked)
+                HHCAHPSMedicareCalcHistoryButton.Enabled = True
+                HHCAHPSMedicareReCalcButton.Enabled = True
+            Case Else
+        End Select
 
     End Sub
 
 #End Region
-
-    Private Sub CAHPSTabControl_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CAHPSTabControl.SelectedIndexChanged
-        If CAHPSTabControl.SelectedIndex = 0 Then
-            DisplaySamplingLock(mMedicareNumber.SamplingLocked)
-        Else
-        End If
-    End Sub
 
 End Class
