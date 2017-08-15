@@ -39,6 +39,10 @@ Public Class MedicareProvider
         newObj.HHCAHPS_EstAnnualVolume = rdr.GetInteger("HHCAHPS_EstAnnualVolume")
         newObj.HHCAHPS_EstResponseRate = rdr.GetDecimal("HHCAHPS_EstRespRate")
         newObj.HHCAHPS_SwitchToCalcDate = rdr.GetDate("HHCAHPS_SwitchToCalcDate")
+        If DateTime.Compare(newObj.HHCAHPS_SwitchToCalcDate, #1/1/1900#) < 0 Then
+            newObj.HHCAHPS_SwitchToCalcDate = New Date(1900, 1, 1)
+        End If
+
         newObj.HHCAHPS_AnnualReturnTarget = rdr.GetInteger("HHCAHPS_AnnualReturnTarget")
         If rdr.GetByte("HHCAHPS_SamplingLocked") = 0 Then
             newObj.HHCAHPS_SamplingLocked = False
@@ -49,6 +53,10 @@ Public Class MedicareProvider
         newObj.HHCAHPS_IsActive = rdr.GetBoolean("HHCAHPS_Active")
         newObj.HHCAHPS_NonSubmitting = rdr.GetBoolean("HHCAHPS_NonSubmitting")
         newObj.HHCAHPS_SwitchFromRateOverrideDate = rdr.GetDate("HHCAHPS_SwitchFromRateOverrideDate")
+        If DateTime.Compare(newObj.HHCAHPS_SwitchFromRateOverrideDate, #1/1/1900#) < 0 Then
+            newObj.HHCAHPS_SwitchFromRateOverrideDate = New Date(1900, 1, 1)
+        End If
+
         newObj.HHCAHPS_SamplingRateOverride = rdr.GetDecimal("HHCAHPS_SamplingRateOverride")
 
         'End of population
