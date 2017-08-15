@@ -19,7 +19,6 @@ Partial Class MedicareMngrSection
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
         Me.MedicareMngrSectionPanel = New Nrc.Framework.WinForms.SectionPanel()
         Me.CAHPSTabControl = New System.Windows.Forms.TabControl()
         Me.HCAHPS = New System.Windows.Forms.TabPage()
@@ -74,8 +73,6 @@ Partial Class MedicareMngrSection
         Me.AnnualReturnTargetNumericUpDown = New System.Windows.Forms.NumericUpDown()
         Me.AnnualReturnTargetLabel = New System.Windows.Forms.Label()
         Me.HHCAHPS = New System.Windows.Forms.TabPage()
-        Me.HHCAHPSSwitchFromOverrideDateDateEdit = New DevExpress.XtraEditors.DateEdit()
-        Me.HHCAHPSSwtichFromEstimatedDateDateEdit = New DevExpress.XtraEditors.DateEdit()
         Me.HHCAHPSProportionUsedNumericUpDown = New System.Windows.Forms.NumericUpDown()
         Me.HHCAHPSCalcProportionNumericUpDown = New System.Windows.Forms.NumericUpDown()
         Me.HHCAHPSHistoricResponseRateNumericUpDown = New System.Windows.Forms.NumericUpDown()
@@ -112,8 +109,6 @@ Partial Class MedicareMngrSection
         Me.HHCAHPSAnnualReturnTargetNumericUpDown = New System.Windows.Forms.NumericUpDown()
         Me.HHCAHPSAnnualReturnTargetLabel = New System.Windows.Forms.Label()
         Me.OASCAHPS = New System.Windows.Forms.TabPage()
-        Me.OASCAHPSSwitchFromOverrideDateDateEdit = New DevExpress.XtraEditors.DateEdit()
-        Me.OASCAHPSSwtichFromEstimatedDateDateEdit = New DevExpress.XtraEditors.DateEdit()
         Me.OASCAHPSProportionUsedNumericUpDown = New System.Windows.Forms.NumericUpDown()
         Me.OASCAHPSCalcProportionNumericUpDown = New System.Windows.Forms.NumericUpDown()
         Me.OASCAHPSHistoricResponseRateNumericUpDown = New System.Windows.Forms.NumericUpDown()
@@ -161,7 +156,11 @@ Partial Class MedicareMngrSection
         Me.ButtonPanel = New System.Windows.Forms.Panel()
         Me.Cancel_Button = New System.Windows.Forms.Button()
         Me.ApplyButton = New System.Windows.Forms.Button()
-        Me.MedicareErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
+        Me.MedicareErrorProvider = New System.Windows.Forms.ErrorProvider()
+        Me.HHCAHPSSwtichFromEstimatedDateDateTimePicker = New System.Windows.Forms.DateTimePicker()
+        Me.HHCAHPSSwitchFromOverrideDateDateTimePicker = New System.Windows.Forms.DateTimePicker()
+        Me.OASCAHPSSwtichFromEstimatedDateDateTimePicker = New System.Windows.Forms.DateTimePicker()
+        Me.OASCAHPSSwitchFromOverrideDateDateTimePicker = New System.Windows.Forms.DateTimePicker()
         Me.MedicareMngrSectionPanel.SuspendLayout()
         Me.CAHPSTabControl.SuspendLayout()
         Me.HCAHPS.SuspendLayout()
@@ -192,10 +191,6 @@ Partial Class MedicareMngrSection
         Me.AnnualReturnTargetPanel.SuspendLayout()
         CType(Me.AnnualReturnTargetNumericUpDown, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.HHCAHPS.SuspendLayout()
-        CType(Me.HHCAHPSSwitchFromOverrideDateDateEdit.Properties.VistaTimeProperties, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.HHCAHPSSwitchFromOverrideDateDateEdit.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.HHCAHPSSwtichFromEstimatedDateDateEdit.Properties.VistaTimeProperties, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.HHCAHPSSwtichFromEstimatedDateDateEdit.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.HHCAHPSProportionUsedNumericUpDown, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.HHCAHPSCalcProportionNumericUpDown, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.HHCAHPSHistoricResponseRateNumericUpDown, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -206,10 +201,6 @@ Partial Class MedicareMngrSection
         CType(Me.HHCAHPSEstimatedAnnualVolumeNumericUpDown, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.HHCAHPSAnnualReturnTargetNumericUpDown, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.OASCAHPS.SuspendLayout()
-        CType(Me.OASCAHPSSwitchFromOverrideDateDateEdit.Properties.VistaTimeProperties, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.OASCAHPSSwitchFromOverrideDateDateEdit.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.OASCAHPSSwtichFromEstimatedDateDateEdit.Properties.VistaTimeProperties, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.OASCAHPSSwtichFromEstimatedDateDateEdit.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.OASCAHPSProportionUsedNumericUpDown, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.OASCAHPSCalcProportionNumericUpDown, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.OASCAHPSHistoricResponseRateNumericUpDown, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -842,8 +833,8 @@ Partial Class MedicareMngrSection
         '
         'HHCAHPS
         '
-        Me.HHCAHPS.Controls.Add(Me.HHCAHPSSwitchFromOverrideDateDateEdit)
-        Me.HHCAHPS.Controls.Add(Me.HHCAHPSSwtichFromEstimatedDateDateEdit)
+        Me.HHCAHPS.Controls.Add(Me.HHCAHPSSwitchFromOverrideDateDateTimePicker)
+        Me.HHCAHPS.Controls.Add(Me.HHCAHPSSwtichFromEstimatedDateDateTimePicker)
         Me.HHCAHPS.Controls.Add(Me.HHCAHPSProportionUsedNumericUpDown)
         Me.HHCAHPS.Controls.Add(Me.HHCAHPSCalcProportionNumericUpDown)
         Me.HHCAHPS.Controls.Add(Me.HHCAHPSHistoricResponseRateNumericUpDown)
@@ -886,38 +877,6 @@ Partial Class MedicareMngrSection
         Me.HHCAHPS.TabIndex = 2
         Me.HHCAHPS.Text = "HHCAHPS"
         Me.HHCAHPS.UseVisualStyleBackColor = True
-        '
-        'HHCAHPSSwitchFromOverrideDateDateEdit
-        '
-        Me.HHCAHPSSwitchFromOverrideDateDateEdit.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.HHCAHPSSwitchFromOverrideDateDateEdit.EditValue = Nothing
-        Me.MedicareErrorProvider.SetIconAlignment(Me.HHCAHPSSwitchFromOverrideDateDateEdit, System.Windows.Forms.ErrorIconAlignment.MiddleLeft)
-        Me.HHCAHPSSwitchFromOverrideDateDateEdit.Location = New System.Drawing.Point(175, 245)
-        Me.HHCAHPSSwitchFromOverrideDateDateEdit.Name = "HHCAHPSSwitchFromOverrideDateDateEdit"
-        Me.HHCAHPSSwitchFromOverrideDateDateEdit.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
-        Me.HHCAHPSSwitchFromOverrideDateDateEdit.Properties.LookAndFeel.UseDefaultLookAndFeel = False
-        Me.HHCAHPSSwitchFromOverrideDateDateEdit.Properties.LookAndFeel.UseWindowsXPTheme = True
-        Me.HHCAHPSSwitchFromOverrideDateDateEdit.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor
-        Me.HHCAHPSSwitchFromOverrideDateDateEdit.Properties.VistaTimeProperties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton()})
-        Me.HHCAHPSSwitchFromOverrideDateDateEdit.Size = New System.Drawing.Size(245, 20)
-        Me.HHCAHPSSwitchFromOverrideDateDateEdit.TabIndex = 42
-        '
-        'HHCAHPSSwtichFromEstimatedDateDateEdit
-        '
-        Me.HHCAHPSSwtichFromEstimatedDateDateEdit.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.HHCAHPSSwtichFromEstimatedDateDateEdit.EditValue = Nothing
-        Me.MedicareErrorProvider.SetIconAlignment(Me.HHCAHPSSwtichFromEstimatedDateDateEdit, System.Windows.Forms.ErrorIconAlignment.MiddleLeft)
-        Me.HHCAHPSSwtichFromEstimatedDateDateEdit.Location = New System.Drawing.Point(175, 85)
-        Me.HHCAHPSSwtichFromEstimatedDateDateEdit.Name = "HHCAHPSSwtichFromEstimatedDateDateEdit"
-        Me.HHCAHPSSwtichFromEstimatedDateDateEdit.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
-        Me.HHCAHPSSwtichFromEstimatedDateDateEdit.Properties.LookAndFeel.UseDefaultLookAndFeel = False
-        Me.HHCAHPSSwtichFromEstimatedDateDateEdit.Properties.LookAndFeel.UseWindowsXPTheme = True
-        Me.HHCAHPSSwtichFromEstimatedDateDateEdit.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor
-        Me.HHCAHPSSwtichFromEstimatedDateDateEdit.Properties.VistaTimeProperties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton()})
-        Me.HHCAHPSSwtichFromEstimatedDateDateEdit.Size = New System.Drawing.Size(245, 20)
-        Me.HHCAHPSSwtichFromEstimatedDateDateEdit.TabIndex = 41
         '
         'HHCAHPSProportionUsedNumericUpDown
         '
@@ -1236,8 +1195,8 @@ Partial Class MedicareMngrSection
         '
         'OASCAHPS
         '
-        Me.OASCAHPS.Controls.Add(Me.OASCAHPSSwitchFromOverrideDateDateEdit)
-        Me.OASCAHPS.Controls.Add(Me.OASCAHPSSwtichFromEstimatedDateDateEdit)
+        Me.OASCAHPS.Controls.Add(Me.OASCAHPSSwitchFromOverrideDateDateTimePicker)
+        Me.OASCAHPS.Controls.Add(Me.OASCAHPSSwtichFromEstimatedDateDateTimePicker)
         Me.OASCAHPS.Controls.Add(Me.OASCAHPSProportionUsedNumericUpDown)
         Me.OASCAHPS.Controls.Add(Me.OASCAHPSCalcProportionNumericUpDown)
         Me.OASCAHPS.Controls.Add(Me.OASCAHPSHistoricResponseRateNumericUpDown)
@@ -1280,38 +1239,6 @@ Partial Class MedicareMngrSection
         Me.OASCAHPS.TabIndex = 1
         Me.OASCAHPS.Text = "OASCAHPS"
         Me.OASCAHPS.UseVisualStyleBackColor = True
-        '
-        'OASCAHPSSwitchFromOverrideDateDateEdit
-        '
-        Me.OASCAHPSSwitchFromOverrideDateDateEdit.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.OASCAHPSSwitchFromOverrideDateDateEdit.EditValue = Nothing
-        Me.MedicareErrorProvider.SetIconAlignment(Me.OASCAHPSSwitchFromOverrideDateDateEdit, System.Windows.Forms.ErrorIconAlignment.MiddleLeft)
-        Me.OASCAHPSSwitchFromOverrideDateDateEdit.Location = New System.Drawing.Point(178, 244)
-        Me.OASCAHPSSwitchFromOverrideDateDateEdit.Name = "OASCAHPSSwitchFromOverrideDateDateEdit"
-        Me.OASCAHPSSwitchFromOverrideDateDateEdit.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
-        Me.OASCAHPSSwitchFromOverrideDateDateEdit.Properties.LookAndFeel.UseDefaultLookAndFeel = False
-        Me.OASCAHPSSwitchFromOverrideDateDateEdit.Properties.LookAndFeel.UseWindowsXPTheme = True
-        Me.OASCAHPSSwitchFromOverrideDateDateEdit.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor
-        Me.OASCAHPSSwitchFromOverrideDateDateEdit.Properties.VistaTimeProperties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton()})
-        Me.OASCAHPSSwitchFromOverrideDateDateEdit.Size = New System.Drawing.Size(245, 20)
-        Me.OASCAHPSSwitchFromOverrideDateDateEdit.TabIndex = 79
-        '
-        'OASCAHPSSwtichFromEstimatedDateDateEdit
-        '
-        Me.OASCAHPSSwtichFromEstimatedDateDateEdit.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.OASCAHPSSwtichFromEstimatedDateDateEdit.EditValue = Nothing
-        Me.MedicareErrorProvider.SetIconAlignment(Me.OASCAHPSSwtichFromEstimatedDateDateEdit, System.Windows.Forms.ErrorIconAlignment.MiddleLeft)
-        Me.OASCAHPSSwtichFromEstimatedDateDateEdit.Location = New System.Drawing.Point(177, 85)
-        Me.OASCAHPSSwtichFromEstimatedDateDateEdit.Name = "OASCAHPSSwtichFromEstimatedDateDateEdit"
-        Me.OASCAHPSSwtichFromEstimatedDateDateEdit.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
-        Me.OASCAHPSSwtichFromEstimatedDateDateEdit.Properties.LookAndFeel.UseDefaultLookAndFeel = False
-        Me.OASCAHPSSwtichFromEstimatedDateDateEdit.Properties.LookAndFeel.UseWindowsXPTheme = True
-        Me.OASCAHPSSwtichFromEstimatedDateDateEdit.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor
-        Me.OASCAHPSSwtichFromEstimatedDateDateEdit.Properties.VistaTimeProperties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton()})
-        Me.OASCAHPSSwtichFromEstimatedDateDateEdit.Size = New System.Drawing.Size(245, 20)
-        Me.OASCAHPSSwtichFromEstimatedDateDateEdit.TabIndex = 78
         '
         'OASCAHPSProportionUsedNumericUpDown
         '
@@ -1764,6 +1691,46 @@ Partial Class MedicareMngrSection
         Me.MedicareErrorProvider.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink
         Me.MedicareErrorProvider.ContainerControl = Me
         '
+        'HHCAHPSSwtichFromEstimatedDateDateTimePicker
+        '
+        Me.HHCAHPSSwtichFromEstimatedDateDateTimePicker.CustomFormat = "MM/dd/yyyy"
+        Me.HHCAHPSSwtichFromEstimatedDateDateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.HHCAHPSSwtichFromEstimatedDateDateTimePicker.Location = New System.Drawing.Point(175, 85)
+        Me.HHCAHPSSwtichFromEstimatedDateDateTimePicker.Name = "HHCAHPSSwtichFromEstimatedDateDateTimePicker"
+        Me.HHCAHPSSwtichFromEstimatedDateDateTimePicker.Size = New System.Drawing.Size(245, 21)
+        Me.HHCAHPSSwtichFromEstimatedDateDateTimePicker.TabIndex = 39
+        Me.HHCAHPSSwtichFromEstimatedDateDateTimePicker.Value = New Date(1900, 1, 1, 0, 0, 0, 0)
+        '
+        'HHCAHPSSwitchFromOverrideDateDateTimePicker
+        '
+        Me.HHCAHPSSwitchFromOverrideDateDateTimePicker.CustomFormat = "MM/dd/yyyy"
+        Me.HHCAHPSSwitchFromOverrideDateDateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.HHCAHPSSwitchFromOverrideDateDateTimePicker.Location = New System.Drawing.Point(175, 249)
+        Me.HHCAHPSSwitchFromOverrideDateDateTimePicker.Name = "HHCAHPSSwitchFromOverrideDateDateTimePicker"
+        Me.HHCAHPSSwitchFromOverrideDateDateTimePicker.Size = New System.Drawing.Size(245, 21)
+        Me.HHCAHPSSwitchFromOverrideDateDateTimePicker.TabIndex = 40
+        Me.HHCAHPSSwitchFromOverrideDateDateTimePicker.Value = New Date(1900, 1, 1, 0, 0, 0, 0)
+        '
+        'OASCAHPSSwtichFromEstimatedDateDateTimePicker
+        '
+        Me.OASCAHPSSwtichFromEstimatedDateDateTimePicker.CustomFormat = "MM/dd/yyyy"
+        Me.OASCAHPSSwtichFromEstimatedDateDateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.OASCAHPSSwtichFromEstimatedDateDateTimePicker.Location = New System.Drawing.Point(177, 84)
+        Me.OASCAHPSSwtichFromEstimatedDateDateTimePicker.Name = "OASCAHPSSwtichFromEstimatedDateDateTimePicker"
+        Me.OASCAHPSSwtichFromEstimatedDateDateTimePicker.Size = New System.Drawing.Size(245, 21)
+        Me.OASCAHPSSwtichFromEstimatedDateDateTimePicker.TabIndex = 76
+        Me.OASCAHPSSwtichFromEstimatedDateDateTimePicker.Value = New Date(1900, 1, 1, 0, 0, 0, 0)
+        '
+        'OASCAHPSSwitchFromOverrideDateDateTimePicker
+        '
+        Me.OASCAHPSSwitchFromOverrideDateDateTimePicker.CustomFormat = "MM/dd/yyyy"
+        Me.OASCAHPSSwitchFromOverrideDateDateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.OASCAHPSSwitchFromOverrideDateDateTimePicker.Location = New System.Drawing.Point(178, 248)
+        Me.OASCAHPSSwitchFromOverrideDateDateTimePicker.Name = "OASCAHPSSwitchFromOverrideDateDateTimePicker"
+        Me.OASCAHPSSwitchFromOverrideDateDateTimePicker.Size = New System.Drawing.Size(245, 21)
+        Me.OASCAHPSSwitchFromOverrideDateDateTimePicker.TabIndex = 77
+        Me.OASCAHPSSwitchFromOverrideDateDateTimePicker.Value = New Date(1900, 1, 1, 0, 0, 0, 0)
+        '
         'MedicareMngrSection
         '
         Me.Controls.Add(Me.MedicareMngrSectionPanel)
@@ -1811,10 +1778,6 @@ Partial Class MedicareMngrSection
         CType(Me.AnnualReturnTargetNumericUpDown, System.ComponentModel.ISupportInitialize).EndInit()
         Me.HHCAHPS.ResumeLayout(False)
         Me.HHCAHPS.PerformLayout()
-        CType(Me.HHCAHPSSwitchFromOverrideDateDateEdit.Properties.VistaTimeProperties, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.HHCAHPSSwitchFromOverrideDateDateEdit.Properties, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.HHCAHPSSwtichFromEstimatedDateDateEdit.Properties.VistaTimeProperties, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.HHCAHPSSwtichFromEstimatedDateDateEdit.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.HHCAHPSProportionUsedNumericUpDown, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.HHCAHPSCalcProportionNumericUpDown, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.HHCAHPSHistoricResponseRateNumericUpDown, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1826,10 +1789,6 @@ Partial Class MedicareMngrSection
         CType(Me.HHCAHPSAnnualReturnTargetNumericUpDown, System.ComponentModel.ISupportInitialize).EndInit()
         Me.OASCAHPS.ResumeLayout(False)
         Me.OASCAHPS.PerformLayout()
-        CType(Me.OASCAHPSSwitchFromOverrideDateDateEdit.Properties.VistaTimeProperties, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.OASCAHPSSwitchFromOverrideDateDateEdit.Properties, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.OASCAHPSSwtichFromEstimatedDateDateEdit.Properties.VistaTimeProperties, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.OASCAHPSSwtichFromEstimatedDateDateEdit.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.OASCAHPSProportionUsedNumericUpDown, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.OASCAHPSCalcProportionNumericUpDown, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.OASCAHPSHistoricResponseRateNumericUpDown, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1988,8 +1947,8 @@ Partial Class MedicareMngrSection
     Friend WithEvents MedicareUnlockSamplingButton As Button
     Friend WithEvents MedicareReCalcButton As Button
     Friend WithEvents MedicareNamePanel As Panel
-    Friend WithEvents HHCAHPSSwitchFromOverrideDateDateEdit As DevExpress.XtraEditors.DateEdit
-    Friend WithEvents HHCAHPSSwtichFromEstimatedDateDateEdit As DevExpress.XtraEditors.DateEdit
-    Friend WithEvents OASCAHPSSwitchFromOverrideDateDateEdit As DevExpress.XtraEditors.DateEdit
-    Friend WithEvents OASCAHPSSwtichFromEstimatedDateDateEdit As DevExpress.XtraEditors.DateEdit
+    Friend WithEvents HHCAHPSSwitchFromOverrideDateDateTimePicker As DateTimePicker
+    Friend WithEvents HHCAHPSSwtichFromEstimatedDateDateTimePicker As DateTimePicker
+    Friend WithEvents OASCAHPSSwitchFromOverrideDateDateTimePicker As DateTimePicker
+    Friend WithEvents OASCAHPSSwtichFromEstimatedDateDateTimePicker As DateTimePicker
 End Class
