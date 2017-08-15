@@ -354,9 +354,9 @@ Public Class MedicareMngrSection
             .Value = 0
         End With
 
-        With HHCAHPSSwtichFromEstimatedDateDateEdit
+        With HHCAHPSSwtichFromEstimatedDateDateTimePicker
             .DataBindings.Clear()
-            .EditValue = Date.MinValue
+            .Value = New Date(1900, 1, 1)
         End With
         With HHCAHPSEstimatedAnnualVolumeNumericUpDown
             .DataBindings.Clear()
@@ -367,9 +367,9 @@ Public Class MedicareMngrSection
             .Value = 0
         End With
 
-        With HHCAHPSSwitchFromOverrideDateDateEdit
+        With HHCAHPSSwitchFromOverrideDateDateTimePicker
             .DataBindings.Clear()
-            .EditValue = Date.MinValue
+            .Value = New Date(1900, 1, 1)
         End With
         With HHCAHPSSamplingRateNumericUpDown
             .DataBindings.Clear()
@@ -403,11 +403,11 @@ Public Class MedicareMngrSection
             HHCAHPSChangeThresholdNumericUpDown.DataBindings.Add("Value", mMedicareNumber, "HHCAHPS_ProportionChangeThresholdDisplay", False, DataSourceUpdateMode.OnPropertyChanged)
             HHCAHPSEstimatedAnnualVolumeNumericUpDown.DataBindings.Add("Value", mMedicareNumber, "HHCAHPS_EstAnnualVolume", False, DataSourceUpdateMode.OnPropertyChanged)
             HHCAHPSEstimatedResponseRateNumericUpDown.DataBindings.Add("Value", mMedicareNumber, "HHCAHPS_EstResponseRateDisplay", False, DataSourceUpdateMode.OnPropertyChanged)
-            HHCAHPSSwtichFromEstimatedDateDateEdit.DataBindings.Add("EditValue", mMedicareNumber, "HHCAHPS_SwitchToCalcDate", False, DataSourceUpdateMode.OnPropertyChanged)
+            HHCAHPSSwtichFromEstimatedDateDateTimePicker.DataBindings.Add("Value", mMedicareNumber, "HHCAHPS_SwitchToCalcDate", False, DataSourceUpdateMode.OnPropertyChanged)
             HHCAHPSInactiveCheckBox.DataBindings.Add("Checked", mMedicareNumber, "HHCAHPS_IsInactive", False, DataSourceUpdateMode.OnPropertyChanged)
             HHCAHPSNonSubmittingCheckbox.DataBindings.Add("Checked", mMedicareNumber, "HHCAHPS_NonSubmitting", False, DataSourceUpdateMode.OnPropertyChanged)
             HHCAHPSSamplingRateNumericUpDown.DataBindings.Add("Value", mMedicareNumber, "HHCAHPS_SamplingRateOverrideDisplay", False, DataSourceUpdateMode.OnPropertyChanged)
-            HHCAHPSSwitchFromOverrideDateDateEdit.DataBindings.Add("EditValue", mMedicareNumber, "HHCAHPS_SwitchFromRateOverrideDate", False, DataSourceUpdateMode.OnPropertyChanged)
+            HHCAHPSSwitchFromOverrideDateDateTimePicker.DataBindings.Add("Value", mMedicareNumber, "HHCAHPS_SwitchFromRateOverrideDate", False, DataSourceUpdateMode.OnPropertyChanged)
 
             'Unbound controls
             'TODO: uncomment this once we have the historic data
