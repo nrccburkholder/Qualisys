@@ -54,10 +54,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>A8A4697BDACB912C2DFA2783816C0FCAFA7AFC0A</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>795F1817425D1CCF56850C113956126D214ADE31</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>CreateDefinitionFilesLauncher_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>CreateDefinitionFilesLauncher_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -113,7 +113,7 @@
     </Compile>
     <None Include="app.manifest" />
     <None Include="CreateDefinitionFilesLauncher.nuspec" />
-    <None Include="CreateDefinitionFilesLauncher_1_TemporaryKey.pfx" />
+    <None Include="CreateDefinitionFilesLauncher_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -18,7 +18,7 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
-    <ManifestCertificateThumbprint>2BFA8A6185489F4B977634BF45CBFFB1DB5467F7</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>FE9C6BDE45D6B9E77AFA0E9D4113F08B43AA93A9</ManifestCertificateThumbprint>
     <TargetZone>LocalIntranet</TargetZone>
     <GenerateManifests>true</GenerateManifests>
     <ApplicationIcon>Resources\letter_p.ico</ApplicationIcon>
@@ -171,7 +171,7 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>Pervasive Viewer_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>Pervasive Viewer_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -329,10 +329,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\DeleteRed16.png" />
+    <None Include="Pervasive Viewer_1_TemporaryKey.pfx" />
     <None Include="PervasiveViewer.nuspec">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Pervasive Viewer_TemporaryKey.pfx" />
     <Content Include="Resources\letter_p.ico" />
     <Content Include="Resources\SamplePlan16.png" />
     <Content Include="Resources\YellowLight.png" />
