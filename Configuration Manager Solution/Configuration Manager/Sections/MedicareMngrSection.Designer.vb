@@ -73,6 +73,8 @@ Partial Class MedicareMngrSection
         Me.AnnualReturnTargetNumericUpDown = New System.Windows.Forms.NumericUpDown()
         Me.AnnualReturnTargetLabel = New System.Windows.Forms.Label()
         Me.HHCAHPS = New System.Windows.Forms.TabPage()
+        Me.HHCAHPSSwitchFromOverrideDateDateTimePicker = New System.Windows.Forms.DateTimePicker()
+        Me.HHCAHPSSwtichFromEstimatedDateDateTimePicker = New System.Windows.Forms.DateTimePicker()
         Me.HHCAHPSProportionUsedNumericUpDown = New System.Windows.Forms.NumericUpDown()
         Me.HHCAHPSCalcProportionNumericUpDown = New System.Windows.Forms.NumericUpDown()
         Me.HHCAHPSHistoricResponseRateNumericUpDown = New System.Windows.Forms.NumericUpDown()
@@ -109,6 +111,8 @@ Partial Class MedicareMngrSection
         Me.HHCAHPSAnnualReturnTargetNumericUpDown = New System.Windows.Forms.NumericUpDown()
         Me.HHCAHPSAnnualReturnTargetLabel = New System.Windows.Forms.Label()
         Me.OASCAHPS = New System.Windows.Forms.TabPage()
+        Me.OASCAHPSSwitchFromOverrideDateDateTimePicker = New System.Windows.Forms.DateTimePicker()
+        Me.OASCAHPSSwtichFromEstimatedDateDateTimePicker = New System.Windows.Forms.DateTimePicker()
         Me.OASCAHPSProportionUsedNumericUpDown = New System.Windows.Forms.NumericUpDown()
         Me.OASCAHPSCalcProportionNumericUpDown = New System.Windows.Forms.NumericUpDown()
         Me.OASCAHPSHistoricResponseRateNumericUpDown = New System.Windows.Forms.NumericUpDown()
@@ -157,10 +161,6 @@ Partial Class MedicareMngrSection
         Me.Cancel_Button = New System.Windows.Forms.Button()
         Me.ApplyButton = New System.Windows.Forms.Button()
         Me.MedicareErrorProvider = New System.Windows.Forms.ErrorProvider()
-        Me.HHCAHPSSwtichFromEstimatedDateDateTimePicker = New System.Windows.Forms.DateTimePicker()
-        Me.HHCAHPSSwitchFromOverrideDateDateTimePicker = New System.Windows.Forms.DateTimePicker()
-        Me.OASCAHPSSwtichFromEstimatedDateDateTimePicker = New System.Windows.Forms.DateTimePicker()
-        Me.OASCAHPSSwitchFromOverrideDateDateTimePicker = New System.Windows.Forms.DateTimePicker()
         Me.MedicareMngrSectionPanel.SuspendLayout()
         Me.CAHPSTabControl.SuspendLayout()
         Me.HCAHPS.SuspendLayout()
@@ -878,9 +878,30 @@ Partial Class MedicareMngrSection
         Me.HHCAHPS.Text = "HHCAHPS"
         Me.HHCAHPS.UseVisualStyleBackColor = True
         '
+        'HHCAHPSSwitchFromOverrideDateDateTimePicker
+        '
+        Me.HHCAHPSSwitchFromOverrideDateDateTimePicker.CustomFormat = "MM/dd/yyyy"
+        Me.HHCAHPSSwitchFromOverrideDateDateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.HHCAHPSSwitchFromOverrideDateDateTimePicker.Location = New System.Drawing.Point(175, 249)
+        Me.HHCAHPSSwitchFromOverrideDateDateTimePicker.Name = "HHCAHPSSwitchFromOverrideDateDateTimePicker"
+        Me.HHCAHPSSwitchFromOverrideDateDateTimePicker.Size = New System.Drawing.Size(245, 21)
+        Me.HHCAHPSSwitchFromOverrideDateDateTimePicker.TabIndex = 40
+        Me.HHCAHPSSwitchFromOverrideDateDateTimePicker.Value = New Date(1900, 1, 1, 0, 0, 0, 0)
+        '
+        'HHCAHPSSwtichFromEstimatedDateDateTimePicker
+        '
+        Me.HHCAHPSSwtichFromEstimatedDateDateTimePicker.CustomFormat = "MM/dd/yyyy"
+        Me.HHCAHPSSwtichFromEstimatedDateDateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.HHCAHPSSwtichFromEstimatedDateDateTimePicker.Location = New System.Drawing.Point(175, 85)
+        Me.HHCAHPSSwtichFromEstimatedDateDateTimePicker.Name = "HHCAHPSSwtichFromEstimatedDateDateTimePicker"
+        Me.HHCAHPSSwtichFromEstimatedDateDateTimePicker.Size = New System.Drawing.Size(245, 21)
+        Me.HHCAHPSSwtichFromEstimatedDateDateTimePicker.TabIndex = 39
+        Me.HHCAHPSSwtichFromEstimatedDateDateTimePicker.Value = New Date(1900, 1, 1, 0, 0, 0, 0)
+        '
         'HHCAHPSProportionUsedNumericUpDown
         '
         Me.HHCAHPSProportionUsedNumericUpDown.DecimalPlaces = 4
+        Me.HHCAHPSProportionUsedNumericUpDown.Enabled = False
         Me.HHCAHPSProportionUsedNumericUpDown.Increment = New Decimal(New Integer() {1, 0, 0, 262144})
         Me.HHCAHPSProportionUsedNumericUpDown.Location = New System.Drawing.Point(722, 354)
         Me.HHCAHPSProportionUsedNumericUpDown.Name = "HHCAHPSProportionUsedNumericUpDown"
@@ -891,6 +912,7 @@ Partial Class MedicareMngrSection
         'HHCAHPSCalcProportionNumericUpDown
         '
         Me.HHCAHPSCalcProportionNumericUpDown.DecimalPlaces = 4
+        Me.HHCAHPSCalcProportionNumericUpDown.Enabled = False
         Me.HHCAHPSCalcProportionNumericUpDown.Increment = New Decimal(New Integer() {1, 0, 0, 262144})
         Me.HHCAHPSCalcProportionNumericUpDown.Location = New System.Drawing.Point(722, 316)
         Me.HHCAHPSCalcProportionNumericUpDown.Name = "HHCAHPSCalcProportionNumericUpDown"
@@ -901,6 +923,7 @@ Partial Class MedicareMngrSection
         'HHCAHPSHistoricResponseRateNumericUpDown
         '
         Me.HHCAHPSHistoricResponseRateNumericUpDown.DecimalPlaces = 4
+        Me.HHCAHPSHistoricResponseRateNumericUpDown.Enabled = False
         Me.HHCAHPSHistoricResponseRateNumericUpDown.Increment = New Decimal(New Integer() {1, 0, 0, 262144})
         Me.HHCAHPSHistoricResponseRateNumericUpDown.Location = New System.Drawing.Point(722, 185)
         Me.HHCAHPSHistoricResponseRateNumericUpDown.Name = "HHCAHPSHistoricResponseRateNumericUpDown"
@@ -910,6 +933,7 @@ Partial Class MedicareMngrSection
         '
         'HHCAHPSAnnualEligibleVolumeNumericUpDown
         '
+        Me.HHCAHPSAnnualEligibleVolumeNumericUpDown.Enabled = False
         Me.HHCAHPSAnnualEligibleVolumeNumericUpDown.Location = New System.Drawing.Point(722, 150)
         Me.HHCAHPSAnnualEligibleVolumeNumericUpDown.Name = "HHCAHPSAnnualEligibleVolumeNumericUpDown"
         Me.HHCAHPSAnnualEligibleVolumeNumericUpDown.ReadOnly = True
@@ -1240,9 +1264,30 @@ Partial Class MedicareMngrSection
         Me.OASCAHPS.Text = "OASCAHPS"
         Me.OASCAHPS.UseVisualStyleBackColor = True
         '
+        'OASCAHPSSwitchFromOverrideDateDateTimePicker
+        '
+        Me.OASCAHPSSwitchFromOverrideDateDateTimePicker.CustomFormat = "MM/dd/yyyy"
+        Me.OASCAHPSSwitchFromOverrideDateDateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.OASCAHPSSwitchFromOverrideDateDateTimePicker.Location = New System.Drawing.Point(178, 248)
+        Me.OASCAHPSSwitchFromOverrideDateDateTimePicker.Name = "OASCAHPSSwitchFromOverrideDateDateTimePicker"
+        Me.OASCAHPSSwitchFromOverrideDateDateTimePicker.Size = New System.Drawing.Size(245, 21)
+        Me.OASCAHPSSwitchFromOverrideDateDateTimePicker.TabIndex = 77
+        Me.OASCAHPSSwitchFromOverrideDateDateTimePicker.Value = New Date(1900, 1, 1, 0, 0, 0, 0)
+        '
+        'OASCAHPSSwtichFromEstimatedDateDateTimePicker
+        '
+        Me.OASCAHPSSwtichFromEstimatedDateDateTimePicker.CustomFormat = "MM/dd/yyyy"
+        Me.OASCAHPSSwtichFromEstimatedDateDateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.OASCAHPSSwtichFromEstimatedDateDateTimePicker.Location = New System.Drawing.Point(177, 84)
+        Me.OASCAHPSSwtichFromEstimatedDateDateTimePicker.Name = "OASCAHPSSwtichFromEstimatedDateDateTimePicker"
+        Me.OASCAHPSSwtichFromEstimatedDateDateTimePicker.Size = New System.Drawing.Size(245, 21)
+        Me.OASCAHPSSwtichFromEstimatedDateDateTimePicker.TabIndex = 76
+        Me.OASCAHPSSwtichFromEstimatedDateDateTimePicker.Value = New Date(1900, 1, 1, 0, 0, 0, 0)
+        '
         'OASCAHPSProportionUsedNumericUpDown
         '
         Me.OASCAHPSProportionUsedNumericUpDown.DecimalPlaces = 4
+        Me.OASCAHPSProportionUsedNumericUpDown.Enabled = False
         Me.OASCAHPSProportionUsedNumericUpDown.Increment = New Decimal(New Integer() {1, 0, 0, 262144})
         Me.OASCAHPSProportionUsedNumericUpDown.Location = New System.Drawing.Point(724, 353)
         Me.OASCAHPSProportionUsedNumericUpDown.Name = "OASCAHPSProportionUsedNumericUpDown"
@@ -1253,6 +1298,7 @@ Partial Class MedicareMngrSection
         'OASCAHPSCalcProportionNumericUpDown
         '
         Me.OASCAHPSCalcProportionNumericUpDown.DecimalPlaces = 4
+        Me.OASCAHPSCalcProportionNumericUpDown.Enabled = False
         Me.OASCAHPSCalcProportionNumericUpDown.Increment = New Decimal(New Integer() {1, 0, 0, 262144})
         Me.OASCAHPSCalcProportionNumericUpDown.Location = New System.Drawing.Point(724, 315)
         Me.OASCAHPSCalcProportionNumericUpDown.Name = "OASCAHPSCalcProportionNumericUpDown"
@@ -1263,6 +1309,7 @@ Partial Class MedicareMngrSection
         'OASCAHPSHistoricResponseRateNumericUpDown
         '
         Me.OASCAHPSHistoricResponseRateNumericUpDown.DecimalPlaces = 4
+        Me.OASCAHPSHistoricResponseRateNumericUpDown.Enabled = False
         Me.OASCAHPSHistoricResponseRateNumericUpDown.Increment = New Decimal(New Integer() {1, 0, 0, 262144})
         Me.OASCAHPSHistoricResponseRateNumericUpDown.Location = New System.Drawing.Point(724, 184)
         Me.OASCAHPSHistoricResponseRateNumericUpDown.Name = "OASCAHPSHistoricResponseRateNumericUpDown"
@@ -1272,6 +1319,7 @@ Partial Class MedicareMngrSection
         '
         'OASCAHPSAnnualEligibleVolumeNumericUpDown
         '
+        Me.OASCAHPSAnnualEligibleVolumeNumericUpDown.Enabled = False
         Me.OASCAHPSAnnualEligibleVolumeNumericUpDown.Location = New System.Drawing.Point(724, 149)
         Me.OASCAHPSAnnualEligibleVolumeNumericUpDown.Name = "OASCAHPSAnnualEligibleVolumeNumericUpDown"
         Me.OASCAHPSAnnualEligibleVolumeNumericUpDown.ReadOnly = True
@@ -1690,46 +1738,6 @@ Partial Class MedicareMngrSection
         '
         Me.MedicareErrorProvider.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink
         Me.MedicareErrorProvider.ContainerControl = Me
-        '
-        'HHCAHPSSwtichFromEstimatedDateDateTimePicker
-        '
-        Me.HHCAHPSSwtichFromEstimatedDateDateTimePicker.CustomFormat = "MM/dd/yyyy"
-        Me.HHCAHPSSwtichFromEstimatedDateDateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-        Me.HHCAHPSSwtichFromEstimatedDateDateTimePicker.Location = New System.Drawing.Point(175, 85)
-        Me.HHCAHPSSwtichFromEstimatedDateDateTimePicker.Name = "HHCAHPSSwtichFromEstimatedDateDateTimePicker"
-        Me.HHCAHPSSwtichFromEstimatedDateDateTimePicker.Size = New System.Drawing.Size(245, 21)
-        Me.HHCAHPSSwtichFromEstimatedDateDateTimePicker.TabIndex = 39
-        Me.HHCAHPSSwtichFromEstimatedDateDateTimePicker.Value = New Date(1900, 1, 1, 0, 0, 0, 0)
-        '
-        'HHCAHPSSwitchFromOverrideDateDateTimePicker
-        '
-        Me.HHCAHPSSwitchFromOverrideDateDateTimePicker.CustomFormat = "MM/dd/yyyy"
-        Me.HHCAHPSSwitchFromOverrideDateDateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-        Me.HHCAHPSSwitchFromOverrideDateDateTimePicker.Location = New System.Drawing.Point(175, 249)
-        Me.HHCAHPSSwitchFromOverrideDateDateTimePicker.Name = "HHCAHPSSwitchFromOverrideDateDateTimePicker"
-        Me.HHCAHPSSwitchFromOverrideDateDateTimePicker.Size = New System.Drawing.Size(245, 21)
-        Me.HHCAHPSSwitchFromOverrideDateDateTimePicker.TabIndex = 40
-        Me.HHCAHPSSwitchFromOverrideDateDateTimePicker.Value = New Date(1900, 1, 1, 0, 0, 0, 0)
-        '
-        'OASCAHPSSwtichFromEstimatedDateDateTimePicker
-        '
-        Me.OASCAHPSSwtichFromEstimatedDateDateTimePicker.CustomFormat = "MM/dd/yyyy"
-        Me.OASCAHPSSwtichFromEstimatedDateDateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-        Me.OASCAHPSSwtichFromEstimatedDateDateTimePicker.Location = New System.Drawing.Point(177, 84)
-        Me.OASCAHPSSwtichFromEstimatedDateDateTimePicker.Name = "OASCAHPSSwtichFromEstimatedDateDateTimePicker"
-        Me.OASCAHPSSwtichFromEstimatedDateDateTimePicker.Size = New System.Drawing.Size(245, 21)
-        Me.OASCAHPSSwtichFromEstimatedDateDateTimePicker.TabIndex = 76
-        Me.OASCAHPSSwtichFromEstimatedDateDateTimePicker.Value = New Date(1900, 1, 1, 0, 0, 0, 0)
-        '
-        'OASCAHPSSwitchFromOverrideDateDateTimePicker
-        '
-        Me.OASCAHPSSwitchFromOverrideDateDateTimePicker.CustomFormat = "MM/dd/yyyy"
-        Me.OASCAHPSSwitchFromOverrideDateDateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-        Me.OASCAHPSSwitchFromOverrideDateDateTimePicker.Location = New System.Drawing.Point(178, 248)
-        Me.OASCAHPSSwitchFromOverrideDateDateTimePicker.Name = "OASCAHPSSwitchFromOverrideDateDateTimePicker"
-        Me.OASCAHPSSwitchFromOverrideDateDateTimePicker.Size = New System.Drawing.Size(245, 21)
-        Me.OASCAHPSSwitchFromOverrideDateDateTimePicker.TabIndex = 77
-        Me.OASCAHPSSwitchFromOverrideDateDateTimePicker.Value = New Date(1900, 1, 1, 0, 0, 0, 0)
         '
         'MedicareMngrSection
         '
