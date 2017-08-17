@@ -1456,7 +1456,7 @@ begin
     suffix1 := '_' + Copy(Application.ExeName, length(Application.ExeName)-4, 1);
   suffix2 := ComputerName + suffix1;
 
-  result := '#printfiles' + suffix2;
+  result := '[#printfiles' + suffix2 + ']';
 end;
 
 function tdmPCLGen.GetNextBatch:integer;
