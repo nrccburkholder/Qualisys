@@ -903,7 +903,7 @@ Partial Class MedicareMngrSection
         Me.HHCAHPSProportionUsedNumericUpDown.DecimalPlaces = 4
         Me.HHCAHPSProportionUsedNumericUpDown.Enabled = False
         Me.HHCAHPSProportionUsedNumericUpDown.Increment = New Decimal(New Integer() {1, 0, 0, 262144})
-        Me.HHCAHPSProportionUsedNumericUpDown.Location = New System.Drawing.Point(722, 354)
+        Me.HHCAHPSProportionUsedNumericUpDown.Location = New System.Drawing.Point(622, 352)
         Me.HHCAHPSProportionUsedNumericUpDown.Name = "HHCAHPSProportionUsedNumericUpDown"
         Me.HHCAHPSProportionUsedNumericUpDown.ReadOnly = True
         Me.HHCAHPSProportionUsedNumericUpDown.Size = New System.Drawing.Size(246, 21)
@@ -914,7 +914,7 @@ Partial Class MedicareMngrSection
         Me.HHCAHPSCalcProportionNumericUpDown.DecimalPlaces = 4
         Me.HHCAHPSCalcProportionNumericUpDown.Enabled = False
         Me.HHCAHPSCalcProportionNumericUpDown.Increment = New Decimal(New Integer() {1, 0, 0, 262144})
-        Me.HHCAHPSCalcProportionNumericUpDown.Location = New System.Drawing.Point(722, 316)
+        Me.HHCAHPSCalcProportionNumericUpDown.Location = New System.Drawing.Point(622, 314)
         Me.HHCAHPSCalcProportionNumericUpDown.Name = "HHCAHPSCalcProportionNumericUpDown"
         Me.HHCAHPSCalcProportionNumericUpDown.ReadOnly = True
         Me.HHCAHPSCalcProportionNumericUpDown.Size = New System.Drawing.Size(246, 21)
@@ -925,7 +925,7 @@ Partial Class MedicareMngrSection
         Me.HHCAHPSHistoricResponseRateNumericUpDown.DecimalPlaces = 4
         Me.HHCAHPSHistoricResponseRateNumericUpDown.Enabled = False
         Me.HHCAHPSHistoricResponseRateNumericUpDown.Increment = New Decimal(New Integer() {1, 0, 0, 262144})
-        Me.HHCAHPSHistoricResponseRateNumericUpDown.Location = New System.Drawing.Point(722, 185)
+        Me.HHCAHPSHistoricResponseRateNumericUpDown.Location = New System.Drawing.Point(622, 183)
         Me.HHCAHPSHistoricResponseRateNumericUpDown.Name = "HHCAHPSHistoricResponseRateNumericUpDown"
         Me.HHCAHPSHistoricResponseRateNumericUpDown.ReadOnly = True
         Me.HHCAHPSHistoricResponseRateNumericUpDown.Size = New System.Drawing.Size(246, 21)
@@ -934,7 +934,7 @@ Partial Class MedicareMngrSection
         'HHCAHPSAnnualEligibleVolumeNumericUpDown
         '
         Me.HHCAHPSAnnualEligibleVolumeNumericUpDown.Enabled = False
-        Me.HHCAHPSAnnualEligibleVolumeNumericUpDown.Location = New System.Drawing.Point(722, 150)
+        Me.HHCAHPSAnnualEligibleVolumeNumericUpDown.Location = New System.Drawing.Point(622, 148)
         Me.HHCAHPSAnnualEligibleVolumeNumericUpDown.Name = "HHCAHPSAnnualEligibleVolumeNumericUpDown"
         Me.HHCAHPSAnnualEligibleVolumeNumericUpDown.ReadOnly = True
         Me.HHCAHPSAnnualEligibleVolumeNumericUpDown.Size = New System.Drawing.Size(246, 21)
@@ -971,7 +971,7 @@ Partial Class MedicareMngrSection
         '
         'HHCAHPSMedicareCalcHistoryButton
         '
-        Me.HHCAHPSMedicareCalcHistoryButton.Location = New System.Drawing.Point(722, 393)
+        Me.HHCAHPSMedicareCalcHistoryButton.Location = New System.Drawing.Point(622, 391)
         Me.HHCAHPSMedicareCalcHistoryButton.Name = "HHCAHPSMedicareCalcHistoryButton"
         Me.HHCAHPSMedicareCalcHistoryButton.Size = New System.Drawing.Size(113, 23)
         Me.HHCAHPSMedicareCalcHistoryButton.TabIndex = 31
@@ -980,7 +980,7 @@ Partial Class MedicareMngrSection
         '
         'HHCAHPSMedicareUnlockSamplingButton
         '
-        Me.HHCAHPSMedicareUnlockSamplingButton.Location = New System.Drawing.Point(722, 85)
+        Me.HHCAHPSMedicareUnlockSamplingButton.Location = New System.Drawing.Point(622, 83)
         Me.HHCAHPSMedicareUnlockSamplingButton.Name = "HHCAHPSMedicareUnlockSamplingButton"
         Me.HHCAHPSMedicareUnlockSamplingButton.Size = New System.Drawing.Size(113, 23)
         Me.HHCAHPSMedicareUnlockSamplingButton.TabIndex = 0
@@ -990,7 +990,7 @@ Partial Class MedicareMngrSection
         'HHCAHPSProportionUsedLabel
         '
         Me.HHCAHPSProportionUsedLabel.AutoSize = True
-        Me.HHCAHPSProportionUsedLabel.Location = New System.Drawing.Point(554, 354)
+        Me.HHCAHPSProportionUsedLabel.Location = New System.Drawing.Point(454, 352)
         Me.HHCAHPSProportionUsedLabel.Name = "HHCAHPSProportionUsedLabel"
         Me.HHCAHPSProportionUsedLabel.Size = New System.Drawing.Size(88, 13)
         Me.HHCAHPSProportionUsedLabel.TabIndex = 28
@@ -999,7 +999,7 @@ Partial Class MedicareMngrSection
         'HHCAHPSCalcProportionLabel
         '
         Me.HHCAHPSCalcProportionLabel.AutoSize = True
-        Me.HHCAHPSCalcProportionLabel.Location = New System.Drawing.Point(554, 316)
+        Me.HHCAHPSCalcProportionLabel.Location = New System.Drawing.Point(454, 314)
         Me.HHCAHPSCalcProportionLabel.Name = "HHCAHPSCalcProportionLabel"
         Me.HHCAHPSCalcProportionLabel.Size = New System.Drawing.Size(114, 13)
         Me.HHCAHPSCalcProportionLabel.TabIndex = 27
@@ -1007,7 +1007,7 @@ Partial Class MedicareMngrSection
         '
         'HHCAHPSLastCalcTypeTextBox
         '
-        Me.HHCAHPSLastCalcTypeTextBox.Location = New System.Drawing.Point(722, 276)
+        Me.HHCAHPSLastCalcTypeTextBox.Location = New System.Drawing.Point(622, 274)
         Me.HHCAHPSLastCalcTypeTextBox.Name = "HHCAHPSLastCalcTypeTextBox"
         Me.HHCAHPSLastCalcTypeTextBox.ReadOnly = True
         Me.HHCAHPSLastCalcTypeTextBox.Size = New System.Drawing.Size(246, 21)
@@ -1015,7 +1015,7 @@ Partial Class MedicareMngrSection
         '
         'HHCAHPSLastCalcDateTextBox
         '
-        Me.HHCAHPSLastCalcDateTextBox.Location = New System.Drawing.Point(722, 239)
+        Me.HHCAHPSLastCalcDateTextBox.Location = New System.Drawing.Point(622, 237)
         Me.HHCAHPSLastCalcDateTextBox.Name = "HHCAHPSLastCalcDateTextBox"
         Me.HHCAHPSLastCalcDateTextBox.ReadOnly = True
         Me.HHCAHPSLastCalcDateTextBox.Size = New System.Drawing.Size(246, 21)
@@ -1024,7 +1024,7 @@ Partial Class MedicareMngrSection
         'HHCAHPSLastCalcTypeLabel
         '
         Me.HHCAHPSLastCalcTypeLabel.AutoSize = True
-        Me.HHCAHPSLastCalcTypeLabel.Location = New System.Drawing.Point(554, 279)
+        Me.HHCAHPSLastCalcTypeLabel.Location = New System.Drawing.Point(454, 277)
         Me.HHCAHPSLastCalcTypeLabel.Name = "HHCAHPSLastCalcTypeLabel"
         Me.HHCAHPSLastCalcTypeLabel.Size = New System.Drawing.Size(113, 13)
         Me.HHCAHPSLastCalcTypeLabel.TabIndex = 24
@@ -1033,7 +1033,7 @@ Partial Class MedicareMngrSection
         'HHCAHPSLastCalcDateLabel
         '
         Me.HHCAHPSLastCalcDateLabel.AutoSize = True
-        Me.HHCAHPSLastCalcDateLabel.Location = New System.Drawing.Point(554, 249)
+        Me.HHCAHPSLastCalcDateLabel.Location = New System.Drawing.Point(454, 247)
         Me.HHCAHPSLastCalcDateLabel.Name = "HHCAHPSLastCalcDateLabel"
         Me.HHCAHPSLastCalcDateLabel.Size = New System.Drawing.Size(101, 13)
         Me.HHCAHPSLastCalcDateLabel.TabIndex = 23
@@ -1042,7 +1042,7 @@ Partial Class MedicareMngrSection
         'HHCAHPSLastCalculationLabel
         '
         Me.HHCAHPSLastCalculationLabel.AutoSize = True
-        Me.HHCAHPSLastCalculationLabel.Location = New System.Drawing.Point(554, 216)
+        Me.HHCAHPSLastCalculationLabel.Location = New System.Drawing.Point(454, 214)
         Me.HHCAHPSLastCalculationLabel.Name = "HHCAHPSLastCalculationLabel"
         Me.HHCAHPSLastCalculationLabel.Size = New System.Drawing.Size(82, 13)
         Me.HHCAHPSLastCalculationLabel.TabIndex = 22
@@ -1051,7 +1051,7 @@ Partial Class MedicareMngrSection
         'HHCAHPSHistoricResponseRateLabel
         '
         Me.HHCAHPSHistoricResponseRateLabel.AutoSize = True
-        Me.HHCAHPSHistoricResponseRateLabel.Location = New System.Drawing.Point(554, 185)
+        Me.HHCAHPSHistoricResponseRateLabel.Location = New System.Drawing.Point(454, 183)
         Me.HHCAHPSHistoricResponseRateLabel.Name = "HHCAHPSHistoricResponseRateLabel"
         Me.HHCAHPSHistoricResponseRateLabel.Size = New System.Drawing.Size(122, 13)
         Me.HHCAHPSHistoricResponseRateLabel.TabIndex = 19
@@ -1060,7 +1060,7 @@ Partial Class MedicareMngrSection
         'HHCAHPSAnnualEligibleVolumeLabel
         '
         Me.HHCAHPSAnnualEligibleVolumeLabel.AutoSize = True
-        Me.HHCAHPSAnnualEligibleVolumeLabel.Location = New System.Drawing.Point(554, 156)
+        Me.HHCAHPSAnnualEligibleVolumeLabel.Location = New System.Drawing.Point(454, 154)
         Me.HHCAHPSAnnualEligibleVolumeLabel.Name = "HHCAHPSAnnualEligibleVolumeLabel"
         Me.HHCAHPSAnnualEligibleVolumeLabel.Size = New System.Drawing.Size(119, 13)
         Me.HHCAHPSAnnualEligibleVolumeLabel.TabIndex = 17
@@ -1069,7 +1069,7 @@ Partial Class MedicareMngrSection
         'HHCAHPSHistoricValuesLabel
         '
         Me.HHCAHPSHistoricValuesLabel.AutoSize = True
-        Me.HHCAHPSHistoricValuesLabel.Location = New System.Drawing.Point(554, 125)
+        Me.HHCAHPSHistoricValuesLabel.Location = New System.Drawing.Point(454, 123)
         Me.HHCAHPSHistoricValuesLabel.Name = "HHCAHPSHistoricValuesLabel"
         Me.HHCAHPSHistoricValuesLabel.Size = New System.Drawing.Size(76, 13)
         Me.HHCAHPSHistoricValuesLabel.TabIndex = 16
@@ -1078,7 +1078,7 @@ Partial Class MedicareMngrSection
         'HHCAHPSSamplingLockTextBox
         '
         Me.HHCAHPSSamplingLockTextBox.BackColor = System.Drawing.SystemColors.Control
-        Me.HHCAHPSSamplingLockTextBox.Location = New System.Drawing.Point(722, 49)
+        Me.HHCAHPSSamplingLockTextBox.Location = New System.Drawing.Point(622, 47)
         Me.HHCAHPSSamplingLockTextBox.Name = "HHCAHPSSamplingLockTextBox"
         Me.HHCAHPSSamplingLockTextBox.ReadOnly = True
         Me.HHCAHPSSamplingLockTextBox.Size = New System.Drawing.Size(246, 21)
@@ -1087,7 +1087,7 @@ Partial Class MedicareMngrSection
         'HHCAHPSSampleLockLabel
         '
         Me.HHCAHPSSampleLockLabel.AutoSize = True
-        Me.HHCAHPSSampleLockLabel.Location = New System.Drawing.Point(554, 54)
+        Me.HHCAHPSSampleLockLabel.Location = New System.Drawing.Point(454, 52)
         Me.HHCAHPSSampleLockLabel.Name = "HHCAHPSSampleLockLabel"
         Me.HHCAHPSSampleLockLabel.Size = New System.Drawing.Size(111, 13)
         Me.HHCAHPSSampleLockLabel.TabIndex = 14
@@ -1097,7 +1097,7 @@ Partial Class MedicareMngrSection
         '
         Me.HHCAHPSChangeThresholdNumericUpDown.DecimalPlaces = 4
         Me.HHCAHPSChangeThresholdNumericUpDown.Increment = New Decimal(New Integer() {1, 0, 0, 262144})
-        Me.HHCAHPSChangeThresholdNumericUpDown.Location = New System.Drawing.Point(722, 16)
+        Me.HHCAHPSChangeThresholdNumericUpDown.Location = New System.Drawing.Point(622, 14)
         Me.HHCAHPSChangeThresholdNumericUpDown.Name = "HHCAHPSChangeThresholdNumericUpDown"
         Me.HHCAHPSChangeThresholdNumericUpDown.Size = New System.Drawing.Size(246, 21)
         Me.HHCAHPSChangeThresholdNumericUpDown.TabIndex = 13
@@ -1105,7 +1105,7 @@ Partial Class MedicareMngrSection
         'HHCAHPSChangeThresholdLabel
         '
         Me.HHCAHPSChangeThresholdLabel.AutoSize = True
-        Me.HHCAHPSChangeThresholdLabel.Location = New System.Drawing.Point(554, 18)
+        Me.HHCAHPSChangeThresholdLabel.Location = New System.Drawing.Point(454, 16)
         Me.HHCAHPSChangeThresholdLabel.Name = "HHCAHPSChangeThresholdLabel"
         Me.HHCAHPSChangeThresholdLabel.Size = New System.Drawing.Size(147, 13)
         Me.HHCAHPSChangeThresholdLabel.TabIndex = 12
@@ -1289,7 +1289,7 @@ Partial Class MedicareMngrSection
         Me.OASCAHPSProportionUsedNumericUpDown.DecimalPlaces = 4
         Me.OASCAHPSProportionUsedNumericUpDown.Enabled = False
         Me.OASCAHPSProportionUsedNumericUpDown.Increment = New Decimal(New Integer() {1, 0, 0, 262144})
-        Me.OASCAHPSProportionUsedNumericUpDown.Location = New System.Drawing.Point(724, 353)
+        Me.OASCAHPSProportionUsedNumericUpDown.Location = New System.Drawing.Point(625, 351)
         Me.OASCAHPSProportionUsedNumericUpDown.Name = "OASCAHPSProportionUsedNumericUpDown"
         Me.OASCAHPSProportionUsedNumericUpDown.ReadOnly = True
         Me.OASCAHPSProportionUsedNumericUpDown.Size = New System.Drawing.Size(247, 21)
@@ -1300,7 +1300,7 @@ Partial Class MedicareMngrSection
         Me.OASCAHPSCalcProportionNumericUpDown.DecimalPlaces = 4
         Me.OASCAHPSCalcProportionNumericUpDown.Enabled = False
         Me.OASCAHPSCalcProportionNumericUpDown.Increment = New Decimal(New Integer() {1, 0, 0, 262144})
-        Me.OASCAHPSCalcProportionNumericUpDown.Location = New System.Drawing.Point(724, 315)
+        Me.OASCAHPSCalcProportionNumericUpDown.Location = New System.Drawing.Point(625, 313)
         Me.OASCAHPSCalcProportionNumericUpDown.Name = "OASCAHPSCalcProportionNumericUpDown"
         Me.OASCAHPSCalcProportionNumericUpDown.ReadOnly = True
         Me.OASCAHPSCalcProportionNumericUpDown.Size = New System.Drawing.Size(247, 21)
@@ -1311,7 +1311,7 @@ Partial Class MedicareMngrSection
         Me.OASCAHPSHistoricResponseRateNumericUpDown.DecimalPlaces = 4
         Me.OASCAHPSHistoricResponseRateNumericUpDown.Enabled = False
         Me.OASCAHPSHistoricResponseRateNumericUpDown.Increment = New Decimal(New Integer() {1, 0, 0, 262144})
-        Me.OASCAHPSHistoricResponseRateNumericUpDown.Location = New System.Drawing.Point(724, 184)
+        Me.OASCAHPSHistoricResponseRateNumericUpDown.Location = New System.Drawing.Point(625, 182)
         Me.OASCAHPSHistoricResponseRateNumericUpDown.Name = "OASCAHPSHistoricResponseRateNumericUpDown"
         Me.OASCAHPSHistoricResponseRateNumericUpDown.ReadOnly = True
         Me.OASCAHPSHistoricResponseRateNumericUpDown.Size = New System.Drawing.Size(247, 21)
@@ -1320,7 +1320,7 @@ Partial Class MedicareMngrSection
         'OASCAHPSAnnualEligibleVolumeNumericUpDown
         '
         Me.OASCAHPSAnnualEligibleVolumeNumericUpDown.Enabled = False
-        Me.OASCAHPSAnnualEligibleVolumeNumericUpDown.Location = New System.Drawing.Point(724, 149)
+        Me.OASCAHPSAnnualEligibleVolumeNumericUpDown.Location = New System.Drawing.Point(625, 147)
         Me.OASCAHPSAnnualEligibleVolumeNumericUpDown.Name = "OASCAHPSAnnualEligibleVolumeNumericUpDown"
         Me.OASCAHPSAnnualEligibleVolumeNumericUpDown.ReadOnly = True
         Me.OASCAHPSAnnualEligibleVolumeNumericUpDown.Size = New System.Drawing.Size(247, 21)
@@ -1357,7 +1357,7 @@ Partial Class MedicareMngrSection
         '
         'OASCAHPSMedicareCalcHistoryButton
         '
-        Me.OASCAHPSMedicareCalcHistoryButton.Location = New System.Drawing.Point(724, 392)
+        Me.OASCAHPSMedicareCalcHistoryButton.Location = New System.Drawing.Point(625, 390)
         Me.OASCAHPSMedicareCalcHistoryButton.Name = "OASCAHPSMedicareCalcHistoryButton"
         Me.OASCAHPSMedicareCalcHistoryButton.Size = New System.Drawing.Size(114, 23)
         Me.OASCAHPSMedicareCalcHistoryButton.TabIndex = 68
@@ -1366,7 +1366,7 @@ Partial Class MedicareMngrSection
         '
         'OASCAHPSMedicareUnlockSamplingButton
         '
-        Me.OASCAHPSMedicareUnlockSamplingButton.Location = New System.Drawing.Point(724, 84)
+        Me.OASCAHPSMedicareUnlockSamplingButton.Location = New System.Drawing.Point(625, 82)
         Me.OASCAHPSMedicareUnlockSamplingButton.Name = "OASCAHPSMedicareUnlockSamplingButton"
         Me.OASCAHPSMedicareUnlockSamplingButton.Size = New System.Drawing.Size(114, 23)
         Me.OASCAHPSMedicareUnlockSamplingButton.TabIndex = 42
@@ -1376,7 +1376,7 @@ Partial Class MedicareMngrSection
         'OASCAHPSProportionUsedLabel
         '
         Me.OASCAHPSProportionUsedLabel.AutoSize = True
-        Me.OASCAHPSProportionUsedLabel.Location = New System.Drawing.Point(556, 353)
+        Me.OASCAHPSProportionUsedLabel.Location = New System.Drawing.Point(457, 351)
         Me.OASCAHPSProportionUsedLabel.Name = "OASCAHPSProportionUsedLabel"
         Me.OASCAHPSProportionUsedLabel.Size = New System.Drawing.Size(88, 13)
         Me.OASCAHPSProportionUsedLabel.TabIndex = 67
@@ -1385,7 +1385,7 @@ Partial Class MedicareMngrSection
         'OASCAHPSCalcProportionLabel
         '
         Me.OASCAHPSCalcProportionLabel.AutoSize = True
-        Me.OASCAHPSCalcProportionLabel.Location = New System.Drawing.Point(556, 315)
+        Me.OASCAHPSCalcProportionLabel.Location = New System.Drawing.Point(457, 313)
         Me.OASCAHPSCalcProportionLabel.Name = "OASCAHPSCalcProportionLabel"
         Me.OASCAHPSCalcProportionLabel.Size = New System.Drawing.Size(114, 13)
         Me.OASCAHPSCalcProportionLabel.TabIndex = 66
@@ -1393,7 +1393,7 @@ Partial Class MedicareMngrSection
         '
         'OASCAHPSLastCalcTypeTextBox
         '
-        Me.OASCAHPSLastCalcTypeTextBox.Location = New System.Drawing.Point(724, 275)
+        Me.OASCAHPSLastCalcTypeTextBox.Location = New System.Drawing.Point(625, 273)
         Me.OASCAHPSLastCalcTypeTextBox.Name = "OASCAHPSLastCalcTypeTextBox"
         Me.OASCAHPSLastCalcTypeTextBox.ReadOnly = True
         Me.OASCAHPSLastCalcTypeTextBox.Size = New System.Drawing.Size(247, 21)
@@ -1401,7 +1401,7 @@ Partial Class MedicareMngrSection
         '
         'OASCAHPSLastCalcDateTextBox
         '
-        Me.OASCAHPSLastCalcDateTextBox.Location = New System.Drawing.Point(724, 238)
+        Me.OASCAHPSLastCalcDateTextBox.Location = New System.Drawing.Point(625, 236)
         Me.OASCAHPSLastCalcDateTextBox.Name = "OASCAHPSLastCalcDateTextBox"
         Me.OASCAHPSLastCalcDateTextBox.ReadOnly = True
         Me.OASCAHPSLastCalcDateTextBox.Size = New System.Drawing.Size(247, 21)
@@ -1410,7 +1410,7 @@ Partial Class MedicareMngrSection
         'OASCAHPSLastCalcTypeLabel
         '
         Me.OASCAHPSLastCalcTypeLabel.AutoSize = True
-        Me.OASCAHPSLastCalcTypeLabel.Location = New System.Drawing.Point(556, 278)
+        Me.OASCAHPSLastCalcTypeLabel.Location = New System.Drawing.Point(457, 276)
         Me.OASCAHPSLastCalcTypeLabel.Name = "OASCAHPSLastCalcTypeLabel"
         Me.OASCAHPSLastCalcTypeLabel.Size = New System.Drawing.Size(113, 13)
         Me.OASCAHPSLastCalcTypeLabel.TabIndex = 63
@@ -1419,7 +1419,7 @@ Partial Class MedicareMngrSection
         'OASCAHPSLastCalcDateLabel
         '
         Me.OASCAHPSLastCalcDateLabel.AutoSize = True
-        Me.OASCAHPSLastCalcDateLabel.Location = New System.Drawing.Point(556, 248)
+        Me.OASCAHPSLastCalcDateLabel.Location = New System.Drawing.Point(457, 246)
         Me.OASCAHPSLastCalcDateLabel.Name = "OASCAHPSLastCalcDateLabel"
         Me.OASCAHPSLastCalcDateLabel.Size = New System.Drawing.Size(101, 13)
         Me.OASCAHPSLastCalcDateLabel.TabIndex = 62
@@ -1428,7 +1428,7 @@ Partial Class MedicareMngrSection
         'OASCAHPSLastCalculationLabel
         '
         Me.OASCAHPSLastCalculationLabel.AutoSize = True
-        Me.OASCAHPSLastCalculationLabel.Location = New System.Drawing.Point(556, 215)
+        Me.OASCAHPSLastCalculationLabel.Location = New System.Drawing.Point(457, 213)
         Me.OASCAHPSLastCalculationLabel.Name = "OASCAHPSLastCalculationLabel"
         Me.OASCAHPSLastCalculationLabel.Size = New System.Drawing.Size(82, 13)
         Me.OASCAHPSLastCalculationLabel.TabIndex = 61
@@ -1437,7 +1437,7 @@ Partial Class MedicareMngrSection
         'OASCAHPSHistoricResponseRateLabel
         '
         Me.OASCAHPSHistoricResponseRateLabel.AutoSize = True
-        Me.OASCAHPSHistoricResponseRateLabel.Location = New System.Drawing.Point(556, 184)
+        Me.OASCAHPSHistoricResponseRateLabel.Location = New System.Drawing.Point(457, 182)
         Me.OASCAHPSHistoricResponseRateLabel.Name = "OASCAHPSHistoricResponseRateLabel"
         Me.OASCAHPSHistoricResponseRateLabel.Size = New System.Drawing.Size(122, 13)
         Me.OASCAHPSHistoricResponseRateLabel.TabIndex = 60
@@ -1446,7 +1446,7 @@ Partial Class MedicareMngrSection
         'OASCAHPSAnnualEligibleVolumeLabel
         '
         Me.OASCAHPSAnnualEligibleVolumeLabel.AutoSize = True
-        Me.OASCAHPSAnnualEligibleVolumeLabel.Location = New System.Drawing.Point(556, 155)
+        Me.OASCAHPSAnnualEligibleVolumeLabel.Location = New System.Drawing.Point(457, 153)
         Me.OASCAHPSAnnualEligibleVolumeLabel.Name = "OASCAHPSAnnualEligibleVolumeLabel"
         Me.OASCAHPSAnnualEligibleVolumeLabel.Size = New System.Drawing.Size(119, 13)
         Me.OASCAHPSAnnualEligibleVolumeLabel.TabIndex = 59
@@ -1455,7 +1455,7 @@ Partial Class MedicareMngrSection
         'OASCAHPSHistoricValuesLabel
         '
         Me.OASCAHPSHistoricValuesLabel.AutoSize = True
-        Me.OASCAHPSHistoricValuesLabel.Location = New System.Drawing.Point(556, 124)
+        Me.OASCAHPSHistoricValuesLabel.Location = New System.Drawing.Point(457, 122)
         Me.OASCAHPSHistoricValuesLabel.Name = "OASCAHPSHistoricValuesLabel"
         Me.OASCAHPSHistoricValuesLabel.Size = New System.Drawing.Size(76, 13)
         Me.OASCAHPSHistoricValuesLabel.TabIndex = 58
@@ -1464,7 +1464,7 @@ Partial Class MedicareMngrSection
         'OASCAHPSSamplingLockTextBox
         '
         Me.OASCAHPSSamplingLockTextBox.BackColor = System.Drawing.SystemColors.Control
-        Me.OASCAHPSSamplingLockTextBox.Location = New System.Drawing.Point(724, 48)
+        Me.OASCAHPSSamplingLockTextBox.Location = New System.Drawing.Point(625, 46)
         Me.OASCAHPSSamplingLockTextBox.Name = "OASCAHPSSamplingLockTextBox"
         Me.OASCAHPSSamplingLockTextBox.ReadOnly = True
         Me.OASCAHPSSamplingLockTextBox.Size = New System.Drawing.Size(247, 21)
@@ -1473,7 +1473,7 @@ Partial Class MedicareMngrSection
         'OASCAHPSSampleLockLabel
         '
         Me.OASCAHPSSampleLockLabel.AutoSize = True
-        Me.OASCAHPSSampleLockLabel.Location = New System.Drawing.Point(556, 53)
+        Me.OASCAHPSSampleLockLabel.Location = New System.Drawing.Point(457, 51)
         Me.OASCAHPSSampleLockLabel.Name = "OASCAHPSSampleLockLabel"
         Me.OASCAHPSSampleLockLabel.Size = New System.Drawing.Size(111, 13)
         Me.OASCAHPSSampleLockLabel.TabIndex = 56
@@ -1483,7 +1483,7 @@ Partial Class MedicareMngrSection
         '
         Me.OASCAHPSChangeThresholdNumericUpDown.DecimalPlaces = 4
         Me.OASCAHPSChangeThresholdNumericUpDown.Increment = New Decimal(New Integer() {1, 0, 0, 262144})
-        Me.OASCAHPSChangeThresholdNumericUpDown.Location = New System.Drawing.Point(724, 15)
+        Me.OASCAHPSChangeThresholdNumericUpDown.Location = New System.Drawing.Point(625, 13)
         Me.OASCAHPSChangeThresholdNumericUpDown.Name = "OASCAHPSChangeThresholdNumericUpDown"
         Me.OASCAHPSChangeThresholdNumericUpDown.Size = New System.Drawing.Size(247, 21)
         Me.OASCAHPSChangeThresholdNumericUpDown.TabIndex = 55
@@ -1491,7 +1491,7 @@ Partial Class MedicareMngrSection
         'OASCAHPSChangeThresholdLabel
         '
         Me.OASCAHPSChangeThresholdLabel.AutoSize = True
-        Me.OASCAHPSChangeThresholdLabel.Location = New System.Drawing.Point(556, 17)
+        Me.OASCAHPSChangeThresholdLabel.Location = New System.Drawing.Point(457, 15)
         Me.OASCAHPSChangeThresholdLabel.Name = "OASCAHPSChangeThresholdLabel"
         Me.OASCAHPSChangeThresholdLabel.Size = New System.Drawing.Size(147, 13)
         Me.OASCAHPSChangeThresholdLabel.TabIndex = 54
