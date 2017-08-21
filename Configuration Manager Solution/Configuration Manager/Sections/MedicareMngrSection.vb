@@ -196,7 +196,7 @@ Public Class MedicareMngrSection
 
         'Clear the screen and all bindings
         'Common ones
-        With MedicareMngrSectionPanel
+        With MedicareManagementSectionPanel
             .Caption = "Medicare Number:"
             .Enabled = False
         End With
@@ -210,7 +210,7 @@ Public Class MedicareMngrSection
         End With
 
         PopulateMedicareSection_HCAHPS()
-        PopulateMedicareSection_HHCAHPS()
+        'PopulateMedicareSection_HHCAHPS()
 
         'Select the MedicareNumberTextBox
         MedicareNumberTextBox.Focus()
@@ -276,7 +276,7 @@ Public Class MedicareMngrSection
 
         If mMedicareNumber IsNot Nothing Then
             'Set the section header
-            With MedicareMngrSectionPanel
+            With MedicareManagementSectionPanel
                 .Caption = String.Format("Medicare Number: {0} ({1})", mMedicareNumber.MedicareNumber, mMedicareNumber.Name)
                 .Enabled = True
             End With
@@ -345,69 +345,69 @@ Public Class MedicareMngrSection
 
     Private Sub PopulateMedicareSection_HHCAHPS()
         'Clear the screen and all bindings
-        With HHCAHPSAnnualReturnTargetNumericUpDown
+        With HHCAHPS_AnnualReturnTargetNumericUpDown
             .DataBindings.Clear()
             .Value = 0
         End With
-        With HHCAHPSChangeThresholdNumericUpDown
+        With HHCAHPS_ChangeThresholdNumericUpDown
             .DataBindings.Clear()
             .Value = 0
         End With
 
-        With HHCAHPSSwtichFromEstimatedDateDateTimePicker
+        With HHCAHPS_SwtichFromEstimatedDateDateTimePicker
             .DataBindings.Clear()
             .Value = New Date(1900, 1, 1)
         End With
-        With HHCAHPSEstimatedAnnualVolumeNumericUpDown
+        With HHCAHPS_EstimatedAnnualVolumeNumericUpDown
             .DataBindings.Clear()
             .Value = 0
         End With
-        With HHCAHPSEstimatedResponseRateNumericUpDown
+        With HHCAHPS_EstimatedResponseRateNumericUpDown
             .DataBindings.Clear()
             .Value = 0
         End With
 
-        With HHCAHPSSwitchFromOverrideDateDateTimePicker
+        With HHCAHPS_SwitchFromOverrideDateDateTimePicker
             .DataBindings.Clear()
             .Value = New Date(1900, 1, 1)
         End With
-        With HHCAHPSSamplingRateNumericUpDown
+        With HHCAHPS_SamplingRateNumericUpDown
             .DataBindings.Clear()
             .Value = 0
         End With
 
-        With HHCAHPSInactiveCheckBox
+        With HHCAHPS_InactiveCheckBox
             .DataBindings.Clear()
             .Checked = False
         End With
-        With HHCAHPSNonSubmittingCheckbox
+        With HHCAHPS_NonSubmittingCheckbox
             .DataBindings.Clear()
             .Checked = False
         End With
 
-        HHCAHPSSamplingLockTextBox.Text = ""
+        HHCAHPS_SamplingLockTextBox.Text = ""
 
-        HHCAHPSAnnualEligibleVolumeNumericUpDown.Value = 0
-        HHCAHPSHistoricResponseRateNumericUpDown.Value = 0
+        HHCAHPS_AnnualEligibleVolumeNumericUpDown.Value = 0
+        HHCAHPS_HistoricResponseRateNumericUpDown.Value = 0
 
-        HHCAHPSLastCalcDateTextBox.Text = ""
-        HHCAHPSLastCalcTypeTextBox.Text = ""
-        HHCAHPSCalcProportionNumericUpDown.Value = 0
-        HHCAHPSProportionUsedNumericUpDown.Value = 0
+        HHCAHPS_LastCalcDateTextBox.Text = ""
+        HHCAHPS_LastCalcTypeTextBox.Text = ""
+        HHCAHPS_CalcProportionNumericUpDown.Value = 0
+        HHCAHPS_ProportionUsedNumericUpDown.Value = 0
 
         MedicareErrorProvider.DataSource = Nothing
 
         If mMedicareNumber IsNot Nothing Then
             'Populate the screen
-            HHCAHPSAnnualReturnTargetNumericUpDown.DataBindings.Add("Value", mMedicareNumber, "HHCAHPS_AnnualReturnTarget", False, DataSourceUpdateMode.OnPropertyChanged)
-            HHCAHPSChangeThresholdNumericUpDown.DataBindings.Add("Value", mMedicareNumber, "HHCAHPS_ProportionChangeThresholdDisplay", False, DataSourceUpdateMode.OnPropertyChanged)
-            HHCAHPSEstimatedAnnualVolumeNumericUpDown.DataBindings.Add("Value", mMedicareNumber, "HHCAHPS_EstAnnualVolume", False, DataSourceUpdateMode.OnPropertyChanged)
-            HHCAHPSEstimatedResponseRateNumericUpDown.DataBindings.Add("Value", mMedicareNumber, "HHCAHPS_EstResponseRateDisplay", False, DataSourceUpdateMode.OnPropertyChanged)
-            HHCAHPSSwtichFromEstimatedDateDateTimePicker.DataBindings.Add("Value", mMedicareNumber, "HHCAHPS_SwitchToCalcDate", False, DataSourceUpdateMode.OnPropertyChanged)
-            HHCAHPSInactiveCheckBox.DataBindings.Add("Checked", mMedicareNumber, "HHCAHPS_IsInactive", False, DataSourceUpdateMode.OnPropertyChanged)
-            HHCAHPSNonSubmittingCheckbox.DataBindings.Add("Checked", mMedicareNumber, "HHCAHPS_NonSubmitting", False, DataSourceUpdateMode.OnPropertyChanged)
-            HHCAHPSSamplingRateNumericUpDown.DataBindings.Add("Value", mMedicareNumber, "HHCAHPS_SamplingRateOverrideDisplay", False, DataSourceUpdateMode.OnPropertyChanged)
-            HHCAHPSSwitchFromOverrideDateDateTimePicker.DataBindings.Add("Value", mMedicareNumber, "HHCAHPS_SwitchFromRateOverrideDate", False, DataSourceUpdateMode.OnPropertyChanged)
+            HHCAHPS_AnnualReturnTargetNumericUpDown.DataBindings.Add("Value", mMedicareNumber, "HHCAHPS_AnnualReturnTarget", False, DataSourceUpdateMode.OnPropertyChanged)
+            HHCAHPS_ChangeThresholdNumericUpDown.DataBindings.Add("Value", mMedicareNumber, "HHCAHPS_ProportionChangeThresholdDisplay", False, DataSourceUpdateMode.OnPropertyChanged)
+            HHCAHPS_EstimatedAnnualVolumeNumericUpDown.DataBindings.Add("Value", mMedicareNumber, "HHCAHPS_EstAnnualVolume", False, DataSourceUpdateMode.OnPropertyChanged)
+            HHCAHPS_EstimatedResponseRateNumericUpDown.DataBindings.Add("Value", mMedicareNumber, "HHCAHPS_EstResponseRateDisplay", False, DataSourceUpdateMode.OnPropertyChanged)
+            HHCAHPS_SwtichFromEstimatedDateDateTimePicker.DataBindings.Add("Value", mMedicareNumber, "HHCAHPS_SwitchToCalcDate", False, DataSourceUpdateMode.OnPropertyChanged)
+            Panel25.DataBindings.Add("Checked", mMedicareNumber, "HHCAHPS_IsInactive", False, DataSourceUpdateMode.OnPropertyChanged)
+            Panel23.DataBindings.Add("Checked", mMedicareNumber, "HHCAHPS_NonSubmitting", False, DataSourceUpdateMode.OnPropertyChanged)
+            HHCAHPS_SamplingRateNumericUpDown.DataBindings.Add("Value", mMedicareNumber, "HHCAHPS_SamplingRateOverrideDisplay", False, DataSourceUpdateMode.OnPropertyChanged)
+            HHCAHPS_SwitchFromOverrideDateDateTimePicker.DataBindings.Add("Value", mMedicareNumber, "HHCAHPS_SwitchFromRateOverrideDate", False, DataSourceUpdateMode.OnPropertyChanged)
 
             'Unbound controls
             'TODO: uncomment this once we have the historic data
@@ -459,7 +459,7 @@ Public Class MedicareMngrSection
     End Sub
 
     Private Sub DisplaySamplingLock_HHCAHPS(ByVal locked As Boolean)
-        With HHCAHPSSamplingLockTextBox
+        With HHCAHPS_SamplingLockTextBox
             If locked Then
                 .Text = "Locked"
                 .ForeColor = Color.Red
@@ -469,7 +469,7 @@ Public Class MedicareMngrSection
             End If
         End With
 
-        HHCAHPSMedicareUnlockSamplingButton.Enabled = locked
+        HHCAHPS_MedicareUnlockSamplingButton.Enabled = locked
     End Sub
 
     Private Sub CAHPSTabControl_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CAHPSTabControl.SelectedIndexChanged
@@ -480,12 +480,13 @@ Public Class MedicareMngrSection
                 MedicareReCalcButton.Enabled = True
             Case 1
                 DisplaySamplingLock_HHCAHPS(mMedicareNumber.HHCAHPS_SamplingLocked)
-                HHCAHPSMedicareCalcHistoryButton.Enabled = True
-                HHCAHPSMedicareReCalcButton.Enabled = True
+                HHCAHPS_MedicareCalcHistoryButton.Enabled = True
+                HHCAHPS_MedicareReCalcButton.Enabled = True
             Case Else
         End Select
 
     End Sub
+
 
 #End Region
 
