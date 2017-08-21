@@ -797,21 +797,7 @@ Public Class MedicareNumber
         'Get the global default values
         Dim globalDef As MedicareGlobalCalculationDefault = MedicareGlobalCalculationDefault.GetAll()(0)
 
-        'Set default values
-        ProportionCalcTypeID = MedicareProportionCalcTypes.Historical
-        SwitchToCalcDate = Date.Now.AddYears(1)
-        EstResponseRate = globalDef.RespRate
-        EstIneligibleRate = globalDef.IneligibleRate
-        ProportionChangeThreshold = globalDef.ProportionChangeThreshold
-        AnnualReturnTarget = globalDef.AnnualReturnTarget
-
-        SystematicSwitchToCalcDate = Date.Now.AddMonths(8)
-        SystematicAnnualReturnTarget = AppConfig.Params("SystematicAnnualReturnTarget").IntegerValue
-        SystematicEstRespRate = AppConfig.Params("SystematicEstimatedResponseRate").IntegerValue
-
-        'Validate the object
-        ValidationRules.CheckRules()
-
+        CreateNew(globalDef)
     End Sub
 
     Protected Overloads Sub CreateNew(ByVal globalDef As MedicareGlobalCalculationDefault)
