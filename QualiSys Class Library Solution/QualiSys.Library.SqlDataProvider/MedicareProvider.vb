@@ -4,11 +4,20 @@ Imports Nrc.QualiSys.Library
 Public Class MedicareProvider
     Inherits DataProvider.MedicareProvider
 
+    Private mGlobalDef As MedicareGlobalCalculationDefault
+    Public ReadOnly Property GlobalDef As MedicareGlobalCalculationDefault
+        Get
+            If mGlobalDef Is Nothing Then
+                mGlobalDef = MedicareGlobalCalculationDefault.GetAll()(0)
+            End If
+            Return mGlobalDef
+        End Get
+    End Property
 #Region " Populate Methods "
 
     Private Function PopulateMedicareNumber(ByVal rdr As SafeDataReader) As MedicareNumber
 
-        Dim newObj As MedicareNumber = MedicareNumber.NewMedicareNumber
+        Dim newObj As MedicareNumber = MedicareNumber.NewMedicareNumber(GlobalDef)
         newObj.BeginPopulate()
         newObj.MedicareNumber = rdr.GetString("MedicareNumber")
         newObj.Name = rdr.GetString("MedicareName")

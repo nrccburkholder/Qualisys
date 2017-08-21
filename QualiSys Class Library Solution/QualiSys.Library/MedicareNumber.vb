@@ -692,9 +692,9 @@ Public Class MedicareNumber
 
 #Region " Constructors "
 
-    Private Sub New()
+    Private Sub New(ByVal globalDef As MedicareGlobalCalculationDefault)
 
-        Me.CreateNew()
+        Me.CreateNew(globalDef)
 
     End Sub
 
@@ -796,6 +796,25 @@ Public Class MedicareNumber
 
         'Get the global default values
         Dim globalDef As MedicareGlobalCalculationDefault = MedicareGlobalCalculationDefault.GetAll()(0)
+
+        'Set default values
+        ProportionCalcTypeID = MedicareProportionCalcTypes.Historical
+        SwitchToCalcDate = Date.Now.AddYears(1)
+        EstResponseRate = globalDef.RespRate
+        EstIneligibleRate = globalDef.IneligibleRate
+        ProportionChangeThreshold = globalDef.ProportionChangeThreshold
+        AnnualReturnTarget = globalDef.AnnualReturnTarget
+
+        SystematicSwitchToCalcDate = Date.Now.AddMonths(8)
+        SystematicAnnualReturnTarget = AppConfig.Params("SystematicAnnualReturnTarget").IntegerValue
+        SystematicEstRespRate = AppConfig.Params("SystematicEstimatedResponseRate").IntegerValue
+
+        'Validate the object
+        ValidationRules.CheckRules()
+
+    End Sub
+
+    Protected Overloads Sub CreateNew(ByVal globalDef As MedicareGlobalCalculationDefault)
 
         'Set default values
         ProportionCalcTypeID = MedicareProportionCalcTypes.Historical
@@ -1327,9 +1346,9 @@ Public Class MedicareNumber
 
 #Region " Factory Methods "
 
-    Public Shared Function NewMedicareNumber() As MedicareNumber
+    Public Shared Function NewMedicareNumber(globalDef As MedicareGlobalCalculationDefault) As MedicareNumber
 
-        Return New MedicareNumber
+        Return New MedicareNumber(globalDef)
 
     End Function
 

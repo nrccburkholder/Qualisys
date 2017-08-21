@@ -216,7 +216,9 @@ Public Class MedicareMngrNavigator
         MedicareNavGridView.ClearColumnsFilter()
 
         'Create the new medicare number
-        Dim medNum As MedicareNumber = MedicareNumber.NewMedicareNumber()
+        Dim globalDef As MedicareGlobalCalculationDefault = MedicareGlobalCalculationDefault.GetAll()(0)
+
+        Dim medNum As MedicareNumber = MedicareNumber.NewMedicareNumber(globalDef)
         'medNum.MedicareNumber = "New"
         'medNum.Name = "Medicare Number"
 
