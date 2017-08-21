@@ -21,7 +21,7 @@ GO
 
 /*
 	Modified 8/04/2016 TSB S55 ATL-180  Modified to not schedule phone for seeded mailing recipients
-	Modified 11/15/2016 TSB -- modify TOCL disposition to use disposition_id for "TOCL during Generation" for ACO and PQRS S62 ATL-1103
+	Modified 11/15/2016 TSB -- modify TOCL disposition to use disposition_id for "TOCL during Generation" for ACO and MIPS S62 ATL-1103
 */
 ALTER PROCEDURE [dbo].[SP_FG_NonMailGen]
 AS
@@ -38,10 +38,10 @@ AS
             @CreateDataFileAtGeneration INT,
 			@TOCLDispositionID INT, --S62 ATL-1103
 			@ACOSurveyTypeID int, --S62 ATL-1103
-	        @PQRSSurveyTypeID int --S62 ATL-1103
+	        @MIPSSurveyTypeID int --S62 ATL-1103
 
 	select @ACOSurveyTypeID = SurveyType_id from dbo.SurveyType where SurveyType_dsc = 'ACOCAHPS'
-	select @PQRSSurveyTypeID = SurveyType_id from dbo.SurveyType where SurveyType_dsc = 'PQRS CAHPS'
+	select @MIPSSurveyTypeID = SurveyType_id from dbo.SurveyType where SurveyType_dsc = 'MIPS CAHPS'
 	SELECT @TOCLDispositionID = Disposition_ID FROM dbo.Disposition where [strDispositionLabel] = 'TOCL During Generation'
 
     SELECT @GetDate = CONVERT(VARCHAR, GETDATE(), 110)
@@ -114,7 +114,7 @@ AS
     SELECT -1 [SentMail_id],
            M.[SamplePop_id],
             CASE 
-				WHEN M.SurveyType_ID IN (@ACOSurveyTypeID,@PQRSSurveyTypeID) then @TOCLDispositionID -- S62 ATL-1103  ACO & PQRS
+				WHEN M.SurveyType_ID IN (@ACOSurveyTypeID,@MIPSSurveyTypeID) then @TOCLDispositionID -- S62 ATL-1103  ACO & MIPS
 				ELSE 8
 				END [Disposition_id], -- ATL-1103
            0 [ReceiptType_id],

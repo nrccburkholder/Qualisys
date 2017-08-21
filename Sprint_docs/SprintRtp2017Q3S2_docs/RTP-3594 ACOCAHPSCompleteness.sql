@@ -28,7 +28,7 @@ AS
 -- History: 1.0  1/2014  by Dave Gilsdorf
 --			1.1  10/03/2014 by T. Butler: ACO CAHPS processing -- ATA questions by questionnaire type S10 US 11
 --          2.0  02/04/2015 by T. Butler: modify so blank screener does not invoke skip S18 US 20
---			S59 ATL-862 T.Butler: Update ACO/PQRS Completeness -- added two new question cores to Q1 and Q4 skip checks
+--			S59 ATL-862 T.Butler: Update ACO/MIPS Completeness -- added two new question cores to Q1 and Q4 skip checks
 -- =============================================
 BEGIN
 	-- assumes an #ACOQF table already exists and has the following columns:
@@ -47,25 +47,25 @@ BEGIN
 				from QuestionResult qr, #ACOQF qf, SurveyType st 
 				where qr.QuestionForm_id=qf.QuestionForm_id 
 				and qf.surveytype_id = st.SurveyType_ID
-				and st.surveytype_dsc in ('ACOCAHPS','PQRS CAHPS')
+				and st.surveytype_dsc in ('ACOCAHPS','MIPS CAHPS')
 			union all 
 				select qr.questionform_id, QstnCore,intResponseVal 
 					from QuestionResult2 qr, #ACOQF qf, SurveyType st 
 					where qr.QuestionForm_id=qf.QuestionForm_id 
 					and qf.surveytype_id = st.SurveyType_ID
-					and st.surveytype_dsc in ('ACOCAHPS','PQRS CAHPS')
+					and st.surveytype_dsc in ('ACOCAHPS','MIPS CAHPS')
 	
 	update #ACOQF set ATAcnt=0, ATAcomplete=0, MeasureCnt=0, MeasureComplete=0, Disposition=0 
 	from #ACOQF qf
 	inner join surveytype st on qf.surveytype_id = st.surveytype_id
-	where st.surveytype_dsc in ('ACOCAHPS','PQRS CAHPS')
+	where st.surveytype_dsc in ('ACOCAHPS','MIPS CAHPS')
 
 	update #ACOQF set disposition=255
 	from #ACOQF qf
 	inner join surveytype st on qf.surveytype_id = st.surveytype_id
 	left join #QR qr on qf.questionform_id=qr.questionform_id
 	where qr.questionform_id is null
-	and st.surveytype_dsc in ('ACOCAHPS','PQRS CAHPS')
+	and st.surveytype_dsc in ('ACOCAHPS','MIPS CAHPS')
 
 	-- if Q1 invokes the skip, ignore questions 5 through 43
 	delete q2_43 
@@ -144,7 +144,7 @@ BEGIN
 	inner join SurveyType srt on stqm.SurveyType_id = srt.SurveyType_ID 
 	left join subtype st on stqm.subtype_id=st.subtype_id
 	where stqm.SurveyType_id = srt.SurveyType_ID 
-	and srt.surveytype_dsc in ('ACOCAHPS','PQRS CAHPS')
+	and srt.surveytype_dsc in ('ACOCAHPS','MIPS CAHPS')
 	and stqm.isATA=1
 	group by stqm.surveytype_id, st.subtype_nm
 
@@ -162,7 +162,7 @@ BEGIN
 				left join subtype st on stqm.subtype_id=st.subtype_id
 				where qr.intResponseVal>=0
 				and stqm.SurveyType_id = srt.SurveyType_ID
-				and srt.surveytype_dsc in ('ACOCAHPS','PQRS CAHPS')
+				and srt.surveytype_dsc in ('ACOCAHPS','MIPS CAHPS')
 				and stqm.isATA=1
 				group by st.subtype_nm,stqm.surveytype_id, qr.questionform_id) sub
 		on qf.questionform_id=sub.questionform_id
@@ -179,7 +179,7 @@ BEGIN
 				left join subtype st on stqm.subtype_id=st.subtype_id
 				WHERE qr.intResponseVal >= 0
 				and stqm.SurveyType_id = srt.SurveyType_ID
-				and srt.surveytype_dsc in ('ACOCAHPS','PQRS CAHPS')
+				and srt.surveytype_dsc in ('ACOCAHPS','MIPS CAHPS')
 				and stqm.isMeasure=1
 				group by st.subtype_nm,stqm.surveytype_id, qr.questionform_id) sub
 		on qf.questionform_id=sub.questionform_id

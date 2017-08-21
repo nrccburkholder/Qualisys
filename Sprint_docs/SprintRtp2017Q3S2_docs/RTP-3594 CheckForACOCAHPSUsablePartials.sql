@@ -40,7 +40,7 @@ inner join SurveyType st on sd.SurveyType_id = st.SurveyType_ID
 left join (select sst.Survey_id, sst.Subtype_id, st.Subtype_nm from [dbo].[SurveySubtype] sst INNER JOIN [dbo].[Subtype] st on (st.Subtype_id = sst.Subtype_id)) sstx on sstx.Survey_id = qf.SURVEY_ID --> new: 1.6
 where qf.SamplePop_id in (select SamplePop_id from QuestionForm where unusedreturn_id=5)
 and (qf.datReturned is not null or unusedreturn_id=5)
-and st.SurveyType_dsc in ('ACOCAHPS', 'PQRS CAHPS')
+and st.SurveyType_dsc in ('ACOCAHPS', 'MIPS CAHPS')
 and isnull(sm.datexpire,getdate())<getdate()
 
 if @@rowcount=0

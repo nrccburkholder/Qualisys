@@ -94,7 +94,7 @@ inner join SurveyType st on sd.Surveytype_id=st.Surveytype_id
 left join (select sst.Survey_id, sst.Subtype_id, st.Subtype_nm from [dbo].[SurveySubtype] sst INNER JOIN [dbo].[Subtype] st on (st.Subtype_id = sst.Subtype_id)) sstx on sstx.Survey_id = qf.SURVEY_ID --> new: 1.6
 inner join MailingStep ms on scm.Methodology_id=ms.Methodology_id and scm.MailingStep_id=ms.MailingStep_id
 where qf.datResultsImported is not null
-and st.Surveytype_dsc in ('HCAHPS IP','ACOCAHPS','ICHCAHPS','Home Health CAHPS', 'Hospice CAHPS','PQRS CAHPS','OAS CAHPS') 
+and st.Surveytype_dsc in ('HCAHPS IP','ACOCAHPS','ICHCAHPS','Home Health CAHPS', 'Hospice CAHPS','MIPS CAHPS','OAS CAHPS') 
 and sm.datExpire > ISNULL(qf.DATRETURNED, qf.datUnusedReturn) --S56 ATL-742
 order by qf.datResultsImported desc
 
@@ -116,7 +116,7 @@ select QuestionForm_id, 0 as ATACnt, 0 as ATAComplete, 0 as MeasureCnt, 0 as Mea
 , Subtype_nm, SurveyType_id													--> new: 1.6
 into #ACOQF
 from #TodaysReturns
-where Surveytype_dsc in ('ACOCAHPS','PQRS CAHPS')								--> new line
+where Surveytype_dsc in ('ACOCAHPS','MIPS CAHPS')								--> new line
 
 exec dbo.ACOCAHPSCompleteness
 
@@ -138,7 +138,7 @@ insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_
 select sentmail_id, samplepop_id, (SELECT Disposition_ID FROM SurveyTypeDispositions WHERE SurveyType_ID = 10 and Value = tr.ACODisposition),receipttype_id, @LogTime, 'CheckForCAHPSIncompletes'
 , tr.DaysFromFirst, tr.DaysFromCurrent --	S43 US8
 from #TodaysReturns tr
-where Surveytype_dsc in ('ACOCAHPS','PQRS CAHPS')
+where Surveytype_dsc in ('ACOCAHPS','MIPS CAHPS')
 AND strMailingStep_nm in ('1st Survey','2nd Survey')
 AND ACODisposition in ( 10, 31)
 
@@ -149,7 +149,7 @@ insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_
 select sentmail_id, samplepop_id, 25,receipttype_id, @LogTime, 'CheckForCAHPSIncompletes'
 , tr.DaysFromFirst, tr.DaysFromCurrent --	S43 US8
 from #TodaysReturns tr
-where Surveytype_dsc in ('ACOCAHPS','PQRS CAHPS')
+where Surveytype_dsc in ('ACOCAHPS','MIPS CAHPS')
 AND strMailingStep_nm='1st Survey'
 AND ACODisposition = 34
 
@@ -160,7 +160,7 @@ insert into dispositionlog (SentMail_id,SamplePop_id,Disposition_id,ReceiptType_
 select sentmail_id, samplepop_id, 26,receipttype_id, @LogTime, 'CheckForCAHPSIncompletes'
 , tr.DaysFromFirst, tr.DaysFromCurrent --	S43 US8
 from #TodaysReturns tr
-where Surveytype_dsc in ('ACOCAHPS','PQRS CAHPS')
+where Surveytype_dsc in ('ACOCAHPS','MIPS CAHPS')
 AND strMailingStep_nm='2nd Survey'
 AND ACODisposition = 34
 
@@ -973,7 +973,7 @@ inner join ScheduledMailing SM on MM.Methodology_id = SM.Methodology_id
 inner join MailingStep MS on SM.MailingStep_id=MS.MailingStep_id
 inner join SamplePop SP on SP.SamplePop_id = SM.SamplePop_id 
 left join FormGenError FGE on SM.ScheduledMailing_id = FGE.ScheduledMailing_id 
-WHERE  ST.surveytype_dsc in ('ACOCAHPS','PQRS CAHPS') AND
+WHERE  ST.surveytype_dsc in ('ACOCAHPS','MIPS CAHPS') AND
        SM.SentMail_id IS NULL AND
        SM.datGenerate <= DATEADD(HOUR,6,GETDATE()) AND
        SD.bitFormGenRelease = 1 AND

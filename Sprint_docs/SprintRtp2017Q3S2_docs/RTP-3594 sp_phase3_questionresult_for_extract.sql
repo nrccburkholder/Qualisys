@@ -563,7 +563,7 @@ INSERT INTO drm_tracktimes
 				from [dbo].[SurveySubtype] sst 
 				INNER JOIN [dbo].[Subtype] st on (st.Subtype_id = sst.Subtype_id)
 				) sst on sst.Survey_id = cqw.SURVEY_ID 
-    WHERE  st.SurveyType_dsc in ('ACOCAHPS','PQRS CAHPS')
+    WHERE  st.SurveyType_dsc in ('ACOCAHPS','MIPS CAHPS')
     
     exec dbo.ACOCAHPSCompleteness
         
@@ -668,7 +668,7 @@ INSERT INTO drm_tracktimes
            AND qf.SentMail_id = scm.SentMail_id 
            AND dv.acocahpsvalue = cqw.finalDisposition 
            AND cqw.Surveytype_id = st.SurveyType_ID
-		   and st.SurveyType_dsc in ('ACOCAHPS','PQRS CAHPS')
+		   and st.SurveyType_dsc in ('ACOCAHPS','MIPS CAHPS')
 
     WHILE (SELECT Count(*) FROM #updatedispsql) > 0 
       BEGIN 

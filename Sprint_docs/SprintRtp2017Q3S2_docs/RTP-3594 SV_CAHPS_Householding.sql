@@ -60,8 +60,8 @@ SET @PCMHSubType = 9
 declare @hospiceCAHPS int
 select @hospiceCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'Hospice CAHPS'
 
-declare @pqrsCAHPS int
-select @pqrsCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'PQRS CAHPS'
+declare @MIPSCAHPS int
+select @MIPSCAHPS = SurveyType_Id from SurveyType where SurveyType_dsc = 'MIPS CAHPS'
 
 declare @CIHI int
 select @CIHI = SurveyType_Id from SurveyType where SurveyType_dsc = 'CIHI CPES-IC'
@@ -135,7 +135,7 @@ IF @surveyType_id in (@HCAHPS) or (@surveyType_id in (@CGCAHPS) and @subtype_id 
 
 END
 
-IF @surveyType_id in (@ACOCAHPS, @ICHCAHPS, @hospiceCAHPS, @CIHI, @pqrsCAHPS, @oasCAHPS)
+IF @surveyType_id in (@ACOCAHPS, @ICHCAHPS, @hospiceCAHPS, @CIHI, @MIPSCAHPS, @oasCAHPS)
 	BEGIN
 
 		-- Check for Householding
