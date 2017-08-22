@@ -77,6 +77,27 @@ BEGIN
 END
 GO
 
+PRINT 'Start drop MedicareRecalcSurveyType_History table'
+GO
+IF (OBJECT_ID(N'[dbo].[MedicareRecalcSurveyType_History]') IS NOT NULL)
+	DROP TABLE [dbo].[MedicareRecalcSurveyType_History]
+GO
+PRINT 'End drop MedicareRecalcSurveyType_History table'
+GO
+
+PRINT 'Start rollback SamplingUnlocked_Log table changes'
+GO
+IF  EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS
+    WHERE TABLE_NAME = 'SamplingUnlocked_Log' AND COLUMN_NAME = 'SurveyType_ID')
+BEGIN
+	ALTER TABLE [dbo].[SamplingUnlocked_Log] DROP CONSTRAINT [DF_SamplingUnlocked_Log_SurveyTypeID]
+	ALTER TABLE [dbo].[SamplingUnlocked_Log]  DROP COLUMN [SurveyType_ID]
+END
+GO
+PRINT 'End rollback SamplingUnlocked_Log table changes'
+GO
+
+
 PRINT 'End rollback table changes'
 GO
 
@@ -142,6 +163,62 @@ WHERE ml.MedicareNumber = sf.MedicareNumber
   AND sp.Survey_id = sd.Survey_id  
   AND sd.Survey_id = @SurveyID  
   GO
+
+PRINT 'Rollback stored procedure QCL_InsertMedicareLookupSurveyType'
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[QCL_InsertMedicareLookupSurveyType]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[QCL_InsertMedicareLookupSurveyType]
+GO
+
+PRINT 'Rollback stored procedure QCL_UpdateMedicareLookupSurveyType'
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[QCL_UpdateMedicareLookupSurveyType]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[QCL_UpdateMedicareLookupSurveyType]
+GO
+
+PRINT 'Rollback stored procedure QCL_SelectMedicareLookupSurveyType'
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[QCL_SelectMedicareLookupSurveyType]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[QCL_SelectMedicareLookupSurveyType]
+GO
+
+PRINT 'Rollback stored procedure QCL_DeleteMedicareLookupSurveyType'
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[QCL_DeleteMedicareLookupSurveyType]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[QCL_DeleteMedicareLookupSurveyType]
+GO
+
+PRINT 'Rollback stored procedure QCL_InsertSamplingUnlockedLog'
+GO
+ALTER PROCEDURE [dbo].[QCL_InsertSamplingUnlockedLog]
+@MedicareNumber Varchar(20),
+@MemberID INT,
+@DateUnlocked DATETIME
+AS
+SET NOCOUNT ON
+
+INSERT INTO dbo.SamplingUnlocked_log (MedicareNumber, MemberID, DateUnlocked)
+VALUES (@MedicareNumber, @MemberID, @DateUnlocked)
+
+SELECT SCOPE_IDENTITY()
+
+SET NOCOUNT OFF
+GO
+
+
+PRINT 'Rollback stored procedure QCL_InsertMedicareRecalcSurveyType_History'
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[QCL_InsertMedicareRecalcSurveyType_History]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[QCL_InsertMedicareRecalcSurveyType_History]
+GO
+
+PRINT 'Rollback stored procedure QCL_SelectMedicareRecalcSurveyType_History'
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[QCL_SelectMedicareRecalcSurveyType_History]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[QCL_SelectMedicareRecalcSurveyType_History]
+GO
+
+
 
  PRINT 'End rollback stored procedure changes'
 GO
