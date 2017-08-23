@@ -171,7 +171,6 @@ Public Class MedicareMngrSection
 
                 If mHHCAHPS_MedicareNumber.IsDirty Then
 
-                    Dim isOverrideDateValid As Boolean = True
                     Dim isOverrideDateBlank As Boolean = False
                     Dim isOverrideRateBlank As Boolean = True
                     Dim showInvalidOverrideMessage As Boolean = False
@@ -181,15 +180,6 @@ Public Class MedicareMngrSection
                     End If
                     If mHHCAHPS_MedicareNumber.SamplingRateOverride > 0 Then
                         isOverrideRateBlank = False
-                    End If
-
-                    If (Not isOverrideDateBlank) And (Date.Compare(mHHCAHPS_MedicareNumber.SwitchFromRateOverrideDate.Date, Date.Now().Date) < 0) Then
-                        isOverrideDateValid = False
-                    End If
-
-                    If Not isOverrideDateValid Then
-                        MessageBox.Show("Invalid ""Switch from Overeride Date"" exists.  Please correct and try again.", "Invalid Medicare Number", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                        showInvalidOverrideMessage = True
                     End If
 
                     If ((Not showInvalidOverrideMessage) And ((isOverrideDateBlank And Not isOverrideRateBlank) Or (Not isOverrideDateBlank And isOverrideRateBlank))) Then
