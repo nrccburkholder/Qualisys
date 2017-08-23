@@ -53,6 +53,31 @@ select sampleset_id, sampleunit_id, intreturned, intsampled, intUD
 from DATAMart.qp_comments.dbo.RespRateCount
 where survey_id in (select survey_Id from #SampleSets) and
  sampleunit_id <>0
+ and @SurveyType_id not in (3, 16) -- not HH or OAS
+
+with SamplePops as
+(
+	select ss.SAMPLESET_ID, ss.SAMPLEUNIT_ID, sp.SAMPLEPOP_ID, 
+		sum(case when dl.Disposition_id in (19, 20) then 1 else 0 end) as IsCompleted,
+		sum(case when dl.Disposition_id in (3, 4, 8, 10) then 0 else 1 end) as IsEligible
+	from #SampleSets s
+	inner join SELECTEDSAMPLE ss
+		on ss.SAMPLESET_ID = s.SAMPLESET_ID
+	inner join SAMPLEPOP sp
+		on sp.SAMPLESET_ID = ss.SAMPLESET_ID
+		and sp.POP_ID = ss.POP_ID
+		and sp.STUDY_ID = ss.STUDY_ID
+	inner join DispositionLog dl 
+		on dl.SamplePop_id = sp.SAMPLEPOP_ID 
+	where @SurveyType_id in (3, 16) -- HH or OAS
+	group by ss.SAMPLESET_ID, ss.SAMPLEUNIT_ID, sp.SAMPLEPOP_ID
+)
+insert into #rr
+select SAMPLESET_ID, SAMPLEUNIT_ID, 
+	sum(sign(IsCompleted)) as intreturned, 
+	sum(sign(IsEligible)) as intsampled
+from SamplePops
+group by SAMPLESET_ID, SAMPLEUNIT_ID
 
 if @indebug = 1
 	select '#rr' as [#rr], * from #rr
