@@ -1,5 +1,5 @@
 /*
-	RTP-3949 Modify OAS/HH Response Rate Calculation - Rollback
+	RTP-3949 Modify OAS/HH Response Rate Calculation
 
 	Lanny Boswell
 
@@ -44,9 +44,6 @@ WHERE	su.CAHPSType_id = @SurveyType_id and
 if @indebug = 1
 	select '#SampleSets' as [#SampleSets], * from #SampleSets
 	
-
---Everything from Here can Stay the same
-
 CREATE TABLE #r (SampleUnit_id INT, intSampled INT, intReturned INT, bitCAHPS BIT)
 CREATE TABLE #rr (sampleset_id INT, sampleunit_id INT, intreturned INT, intsampled INT, intUD INT)
 
@@ -70,7 +67,7 @@ GROUP BY SampleUnit_id
 if @indebug = 1
 	select '#r' as [#r], * from #r
 
---Identify HCAHPS units
+--Identify CAHPS units
 UPDATE t
 SET bitCAHPS=1
 FROM #r t, SampleUnit su
@@ -93,7 +90,7 @@ BEGIN
 	if @indebug = 1
 		select '#rrDays' as [#rrDays], * from #rrDays
 
-	--Update the response rate for the HCAHPS unit(s)
+	--Update the response rate for the CAHPS unit(s)
 	INSERT INTO #Update (SampleUnit_id, intReturned)
 	SELECT a.SampleUnit_id, a.intReturned
 	FROM (	SELECT tt.SampleUnit_id, SUM(r2.intReturned) intReturned
