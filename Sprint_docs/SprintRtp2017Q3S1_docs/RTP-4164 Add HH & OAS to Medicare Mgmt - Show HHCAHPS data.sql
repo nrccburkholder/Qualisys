@@ -1,6 +1,28 @@
 /*
 	RTP-4164 Add HH & OAS to Medicare Mgmt - Show HHCAHPS data.sql
 	Jing Fu, 8/10/2017
+	Changes summary:
+	Table:
+		- Add new table MedicareLookupSurveyType
+		- Move Move OAS CAHPS data from MedicareLookup to MedicareLookupSurveyType
+		- Modify MedicareLookup table
+		- Modify MedicareGlobalCalcDefaults table
+		- Modify MedicareProCalcTypes table
+		- Modify MedicarePropDataType table
+		- Add new table MedicareRecalcSurveyType_History 
+	SP:
+	- Modify stored procedure QCL_SelectMedicareNumbers
+	- Modify stored procedure QCL_SelectAllMedicareNumbers
+	- Modify stored procedure QCL_InsertMedicareNumber
+	- Modify stored procedure QCL_UpdateMedicareNumber
+	- Create new stored procedure QCL_InsertMedicareLookupSurveyType
+	- Create new stored procedure QCL_UpdateMedicareLookupSurveyType
+	- Create new stored procedure QCL_SelectMedicareLookupSurveyType
+	- Create new stored procedure QCL_DeleteMedicareLookupSurveyType
+	- Modify stored procedure QCL_InsertSamplingUnlockedLog
+	- Create new stored procedure QCL_InsertMedicareRecalcSurveyType_History
+	- Create new stored procedure QCL_SelectMedicareRecalcSurveyType_History
+
 */
 
 Use [QP_Prod]
@@ -150,8 +172,7 @@ BEGIN
 END
 GO
 
-
-PRINT 'Begin add MedicareRecalcSurveyType_History table'
+PRINT 'Add MedicareRecalcSurveyType_History table'
 GO
 IF (OBJECT_ID(N'[dbo].[MedicareRecalcSurveyType_History]') IS NULL)
 	CREATE TABLE [dbo].[MedicareRecalcSurveyType_History](
@@ -181,21 +202,7 @@ IF (OBJECT_ID(N'[dbo].[MedicareRecalcSurveyType_History]') IS NULL)
 	CONSTRAINT FK_MedicareRecalcSurveyType_History_History_MedicarePropDataType_ID FOREIGN KEY (MedicarePropDataType_ID) REFERENCES MedicarePropDataType(MedicarePropDataType_ID)
 	) ON [PRIMARY]
 GO
-PRINT 'End add MedicareRecalcSurveyType_History table'
-GO
 
-PRINT 'Start SamplingUnlocked_Log table changes'
-GO
-
-IF NOT EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS
-    WHERE TABLE_NAME = 'SamplingUnlocked_Log' AND COLUMN_NAME = 'SurveyType_ID')
-	ALTER TABLE [dbo].[SamplingUnlocked_Log] 
-	ADD [SurveyType_ID] [INT]
-	CONSTRAINT [DF_SamplingUnlocked_Log_SurveyTypeID]  DEFAULT (2) WITH VALUES NOT NULL
-GO
-
-PRINT 'End SamplingUnlocked_Log table changes'
-GO
 
 PRINT 'End table changes'
 GO
@@ -221,39 +228,7 @@ BEGIN
 		   NULL AS SystematicAnnualReturnTarget, NULL AS SystematicEstRespRate, NULL AS SystematicSwitchToCalcDate, NonSubmitting
 	FROM MedicareLookup  
 	WHERE MedicareNumber = @MedicareNumber
-	/*
-	SELECT HCAHPS.MedicareNumber, HCAHPS.MedicareName, HCAHPS.MedicarePropCalcType_ID, HCAHPS.EstAnnualVolume, HCAHPS.EstRespRate, 
-			HCAHPS.EstIneligibleRate, HCAHPS.SwitchToCalcDate, HCAHPS.AnnualReturnTarget, HCAHPS.SamplingLocked, HCAHPS.ProportionChangeThreshold, 
-			HCAHPS.CensusForced, HCAHPS.PENumber, HCAHPS.Active, HCAHPS.NonSubmitting,
-
-		HHCAHPS.Active AS HHCAHPS_Active,
-		HHCAHPS.SwitchToCalcDate AS HHCAHPS_SwitchToCalcDate,
-		HHCAHPS.EstAnnualVolume AS HHCAHPS_EstAnnualVolume,
-		HHCAHPS.EstRespRate AS HHCAHPS_EstRespRate,
-		HHCAHPS.AnnualReturnTarget AS HHCAHPS_AnnualReturnTarget,
-		HHCAHPS.SamplingLocked AS HHCAHPS_SamplingLocked,
-		HHCAHPS.ProportionChangeThreshold AS HHCAHPS_ProportionChangeThreshold,
-		HHCAHPS.SwitchFromRateOverrideDate AS HHCAHPS_SwitchFromRateOverrideDate,
-		HHCAHPS.SamplingRateOverride AS HHCAHPS_SamplingRateOverride,
-		HHCAHPS.NonSubmitting AS HHCAHPS_NonSubmitting,
-
-		OASCAHPS.Active AS OASCAHPS_Active,
-		OASCAHPS.SwitchToCalcDate AS OASCAHPS_SwitchToCalcDate,
-		OASCAHPS.EstAnnualVolume AS OASCAHPS_EstAnnualVolume,
-		OASCAHPS.EstRespRate AS OASCAHPS_EstRespRate,
-		OASCAHPS.AnnualReturnTarget AS OASCAHPS_AnnualReturnTarget,
-		OASCAHPS.SamplingLocked AS OASCAHPS_SamplingLocked,
-		OASCAHPS.ProportionChangeThreshold AS OASCAHPS_ProportionChangeThreshold,
-		OASCAHPS.SwitchFromRateOverrideDate AS OASCAHPS_SwitchFromRateOverrideDate,
-		OASCAHPS.SamplingRateOverride AS OASCAHPS_SamplingRateOverride,
-		OASCAHPS.NonSubmitting AS OASCAHPS_NonSubmitting
-
-	FROM MedicareLookup  AS HCAHPS
-	LEFT OUTER JOIN MedicareLookupSurveyType AS HHCAHPS ON HCAHPS.MedicareNumber=HHCAHPS.MedicareNumber AND HHCAHPS.surveyType_ID=3
-	LEFT OUTER JOIN MedicareLookupSurveyType AS OASCAHPS ON HCAHPS.MedicareNumber=OASCAHPS.MedicareNumber AND OASCAHPS.surveyType_ID=16
-	WHERE HCAHPS.MedicareNumber = @MedicareNumber
-	*/
-
+	
 	SET NOCOUNT OFF      
 	SET TRANSACTION ISOLATION LEVEL READ COMMITTED      
 END
@@ -272,98 +247,89 @@ BEGIN
 		   SamplingLocked, ProportionChangeThreshold, CensusForced, PENumber, Active,
 		   NULL AS SystematicAnnualReturnTarget, NULL AS SystematicEstRespRate, NULL AS SystematicSwitchToCalcDate, NonSubmitting
 	FROM MedicareLookup
-
-    /*
-	SELECT HCAHPS.MedicareNumber, HCAHPS.MedicareName, HCAHPS.MedicarePropCalcType_ID, HCAHPS.EstAnnualVolume, HCAHPS.EstRespRate, 
-		HCAHPS.EstIneligibleRate, HCAHPS.SwitchToCalcDate, HCAHPS.AnnualReturnTarget, HCAHPS.SamplingLocked, HCAHPS.ProportionChangeThreshold, 
-		HCAHPS.CensusForced, HCAHPS.PENumber, HCAHPS.Active, HCAHPS.NonSubmitting,
-
-		HHCAHPS.Active AS HHCAHPS_Active,
-		HHCAHPS.SwitchToCalcDate AS HHCAHPS_SwitchToCalcDate,
-		HHCAHPS.EstAnnualVolume AS HHCAHPS_EstAnnualVolume,
-		HHCAHPS.EstRespRate AS HHCAHPS_EstRespRate,
-		HHCAHPS.AnnualReturnTarget AS HHCAHPS_AnnualReturnTarget,
-		HHCAHPS.SamplingLocked AS HHCAHPS_SamplingLocked,
-		HHCAHPS.ProportionChangeThreshold AS HHCAHPS_ProportionChangeThreshold,
-		HHCAHPS.SwitchFromRateOverrideDate AS HHCAHPS_SwitchFromRateOverrideDate,
-		HHCAHPS.SamplingRateOverride AS HHCAHPS_SamplingRateOverride,
-		HHCAHPS.NonSubmitting AS HHCAHPS_NonSubmitting,
-
-		OASCAHPS.Active AS OASCAHPS_Active,
-		OASCAHPS.SwitchToCalcDate AS OASCAHPS_SwitchToCalcDate,
-		OASCAHPS.EstAnnualVolume AS OASCAHPS_EstAnnualVolume,
-		OASCAHPS.EstRespRate AS OASCAHPS_EstRespRate,
-		OASCAHPS.AnnualReturnTarget AS OASCAHPS_AnnualReturnTarget,
-		OASCAHPS.SamplingLocked AS OASCAHPS_SamplingLocked,
-		OASCAHPS.ProportionChangeThreshold AS OASCAHPS_ProportionChangeThreshold,
-		OASCAHPS.SwitchFromRateOverrideDate AS OASCAHPS_SwitchFromRateOverrideDate,
-		OASCAHPS.SamplingRateOverride AS OASCAHPS_SamplingRateOverride,
-		OASCAHPS.NonSubmitting AS OASCAHPS_NonSubmitting
-
-	FROM MedicareLookup  AS HCAHPS
-	LEFT OUTER JOIN MedicareLookupSurveyType AS HHCAHPS ON HCAHPS.MedicareNumber=HHCAHPS.MedicareNumber AND HHCAHPS.surveyType_ID=3
-	LEFT OUTER JOIN MedicareLookupSurveyType AS OASCAHPS ON HCAHPS.MedicareNumber=OASCAHPS.MedicareNumber AND OASCAHPS.surveyType_ID=16
-	*/
-
+	
 	SET NOCOUNT OFF    
 	SET TRANSACTION ISOLATION LEVEL READ COMMITTED
 END
 GO
 
-/*
-PRINT 'Modify stored procedure QCL_SelectMedicareNumbersBySurveyID'
+PRINT 'Modify stored procedure QCL_InsertMedicareNumber'
 GO
-ALTER PROCEDURE [dbo].[QCL_SelectMedicareNumbersBySurveyID]  
-    @SurveyID int  
+ALTER PROCEDURE [dbo].[QCL_InsertMedicareNumber]  
+    @MedicareNumber					VARCHAR(20),  
+    @MedicareName						VARCHAR(45),
+    @MedicarePropCalcType_ID INT,
+    @EstAnnualVolume					INT,
+    @EstRespRate							DECIMAL(8,4),
+    @EstIneligibleRate					DECIMAL(8,4),
+    @SwitchToCalcDate					DATETIME,
+    @AnnualReturnTarget				INT,
+    @SamplingLocked					TINYINT,
+    @ProportionChangeThreshold DECIMAL(8,4),
+    @CensusForced						TINYINT,
+    @PENumber								VARCHAR(50), 
+    @Active										BIT,
+	@SystematicAnnualReturnTarget INT = NULL,
+	@SystematicEstRespRate		DECIMAL(8,4) = NULL,
+	@SystematicSwitchToCalcDate DATETIME = NULL,
+	@NonSubmitting						BIT
 AS  
 BEGIN 
-	SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED  
-	SET NOCOUNT ON  
+	IF EXISTS (SELECT * FROM MedicareLookup WHERE MedicareNumber=@MedicareNumber)  
+	BEGIN  
+		RAISERROR ('MedicareNumber already exists.',18,1)  
+		RETURN  
+	END  
   
-  	SELECT HCAHPS.MedicareNumber, HCAHPS.MedicareName, HCAHPS.MedicarePropCalcType_ID, HCAHPS.EstAnnualVolume, HCAHPS.EstRespRate, 
-		HCAHPS.EstIneligibleRate, HCAHPS.SwitchToCalcDate, HCAHPS.AnnualReturnTarget, HCAHPS.SamplingLocked, HCAHPS.ProportionChangeThreshold, 
-		HCAHPS.CensusForced, HCAHPS.PENumber, HCAHPS.Active, HCAHPS.NonSubmitting,
+	INSERT INTO MedicareLookup (MedicareNumber, MedicareName, MedicarePropCalcType_ID, EstAnnualVolume, EstRespRate, EstIneligibleRate, 
+							SwitchToCalcDate, AnnualReturnTarget, SamplingLocked, ProportionChangeThreshold, CensusForced, PENumber, Active, NonSubmitting)
+	VALUES (@MedicareNumber, @MedicareName, @MedicarePropCalcType_ID, @EstAnnualVolume, @EstRespRate, @EstIneligibleRate, 
+				@SwitchToCalcDate, @AnnualReturnTarget, @SamplingLocked, @ProportionChangeThreshold, @CensusForced, @PENumber, @Active, @NonSubmitting)
 
-		HHCAHPS.Active AS HHCAHPS_Active,
-		HHCAHPS.SwitchToCalcDate AS HHCAHPS_SwitchToCalcDate,
-		HHCAHPS.EstAnnualVolume AS HHCAHPS_EstAnnualVolume,
-		HHCAHPS.EstRespRate AS HHCAHPS_EstRespRate,
-		HHCAHPS.AnnualReturnTarget AS HHCAHPS_AnnualReturnTarget,
-		HHCAHPS.SamplingLocked AS HHCAHPS_SamplingLocked,
-		HHCAHPS.ProportionChangeThreshold AS HHCAHPS_ProportionChangeThreshold,
-		HHCAHPS.SwitchFromRateOverrideDate AS HHCAHPS_SwitchFromRateOverrideDate,
-		HHCAHPS.SamplingRateOverride AS HHCAHPS_SamplingRateOverride,
-		HHCAHPS.NonSubmitting AS HHCAHPS_NonSubmitting,
-
-		OASCAHPS.Active AS OASCAHPS_Active,
-		OASCAHPS.SwitchToCalcDate AS OASCAHPS_SwitchToCalcDate,
-		OASCAHPS.EstAnnualVolume AS OASCAHPS_EstAnnualVolume,
-		OASCAHPS.EstRespRate AS OASCAHPS_EstRespRate,
-		OASCAHPS.AnnualReturnTarget AS OASCAHPS_AnnualReturnTarget,
-		OASCAHPS.SamplingLocked AS OASCAHPS_SamplingLocked,
-		OASCAHPS.ProportionChangeThreshold AS OASCAHPS_ProportionChangeThreshold,
-		OASCAHPS.SwitchFromRateOverrideDate AS OASCAHPS_SwitchFromRateOverrideDate,
-		OASCAHPS.SamplingRateOverride AS OASCAHPS_SamplingRateOverride,
-		OASCAHPS.NonSubmitting AS OASCAHPS_NonSubmitting
-
-	FROM 
-	(SELECT DISTINCT ml.MedicareNumber, ml.MedicareName, ml.MedicarePropCalcType_ID, ml.EstAnnualVolume,  
-		   ml.EstRespRate, ml.EstIneligibleRate, ml.SwitchToCalcDate, ml.AnnualReturnTarget,  ml.SamplingLocked, 
-		   ml.ProportionChangeThreshold, ml.CensusForced, ml.PENumber, ml.Active, ml.NonSubmitting
-	FROM MedicareLookup ml, SUFacility sf, SampleUnit su, SamplePlan sp, Survey_Def sd   
-	WHERE ml.MedicareNumber = sf.MedicareNumber  
-	  AND sf.SUFacility_id = su.SUFacility_id  
-	  AND su.SamplePlan_id = sp.SamplePlan_id  
-	  AND sp.Survey_id = sd.Survey_id  
-	  AND sd.Survey_id = @SurveyID) AS HCAHPS
-	LEFT OUTER JOIN MedicareLookupSurveyType AS HHCAHPS ON HCAHPS.MedicareNumber=HHCAHPS.MedicareNumber AND HHCAHPS.surveyType_ID=3
-	LEFT OUTER JOIN MedicareLookupSurveyType AS OASCAHPS ON HCAHPS.MedicareNumber=OASCAHPS.MedicareNumber AND OASCAHPS.surveyType_ID=16
-
-	SET NOCOUNT OFF    
-	SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+	SELECT @MedicareNumber
 END
 GO
-*/
+
+
+PRINT 'Modify stored procedure QCL_UpdateMedicareNumber'
+GO
+ALTER PROCEDURE [dbo].[QCL_UpdateMedicareNumber]  
+    @MedicareNumber					VARCHAR(20),  
+    @MedicareName						VARCHAR(45),
+    @MedicarePropCalcType_ID INT,
+    @EstAnnualVolume					INT,
+    @EstRespRate							DECIMAL(8,4),
+    @EstIneligibleRate					DECIMAL(8,4),
+    @SwitchToCalcDate					DATETIME,
+    @AnnualReturnTarget				INT,
+    @SamplingLocked					TINYINT,
+    @ProportionChangeThreshold DECIMAL(8,4),
+    @CensusForced						TINYINT,
+    @PENumber								VARCHAR(50), 
+    @Active										BIT,
+	@SystematicAnnualReturnTarget INT = NULL,
+	@SystematicEspRespRate		DECIMAL(8,4) = NULL,
+	@SystematicSwitchToCalcDate DATETIME = NULL,
+	@NonSubmitting						BIT
+AS  
+BEGIN
+	UPDATE MedicareLookup  
+	SET MedicareName = @MedicareName,  
+		MedicarePropCalcType_ID = @MedicarePropCalcType_ID,
+		EstAnnualVolume = @EstAnnualVolume ,
+		EstRespRate = @EstRespRate ,
+		EstIneligibleRate = @EstIneligibleRate,
+		SwitchToCalcDate = @SwitchToCalcDate ,
+		AnnualReturnTarget = @AnnualReturnTarget,
+		SamplingLocked = @SamplingLocked ,
+		ProportionChangeThreshold = @ProportionChangeThreshold ,
+		CensusForced = @CensusForced,
+		PENumber = @PENumber, 
+		Active = @Active,
+		NonSubmitting = @NonSubmitting
+	WHERE MedicareNumber = @MedicareNumber
+END
+GO
 
 
 PRINT 'Create stored procedure QCL_InsertMedicareLookupSurveyType'
@@ -443,7 +409,6 @@ BEGIN
 END
 GO
 
-
 PRINT 'Create stored procedure QCL_SelectMedicareLookupSurveyType'
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[QCL_SelectMedicareLookupSurveyType]') AND type in (N'P', N'PC'))
@@ -459,6 +424,7 @@ BEGIN
 	SELECT 
 		MedicareLookupSurveyType.MedicareNumber, 
 		MedicareLookup.MedicareName, 
+		MedicareLookupSurveyType.SurveyType_ID as SurveyTypeID, 
 		MedicareLookupSurveyType.Active, 
 		MedicareLookupSurveyType.SwitchToCalcDate, 
 		MedicareLookupSurveyType.EstAnnualVolume, 
@@ -520,7 +486,6 @@ BEGIN
 	SET NOCOUNT OFF
 END
 GO
-
 
 PRINT 'Create stored procedure QCL_InsertMedicareRecalcSurveyType_History'
 GO

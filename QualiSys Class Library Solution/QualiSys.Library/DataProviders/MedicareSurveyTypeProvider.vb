@@ -9,7 +9,7 @@
         Public Shared ReadOnly Property Instance() As MedicareSurveyTypeProvider
             Get
                 If mInstance Is Nothing Then
-                    mInstance = MedicareSurveyTypeProvider.CreateInstance(Of MedicareSurveyTypeProvider)(mProviderName)
+                    mInstance = DataProviderFactory.CreateInstance(Of MedicareSurveyTypeProvider)(mProviderName)
                 End If
 
                 Return mInstance

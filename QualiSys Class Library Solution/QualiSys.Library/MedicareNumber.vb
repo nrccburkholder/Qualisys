@@ -45,22 +45,6 @@ Public Class MedicareNumber
     Private mLastRecalcHistoryUserCensusForced As MedicareRecalcHistory
     Private mMedicareGlobalDates As MedicareGlobalCalcDateCollection
 
-    'HHCAHPS
-    Private mHHCAHPS_EstAnnualVolume As Integer
-    Private mHHCAHPS_EstResponseRate As Decimal
-    Private mHHCAHPS_SwitchToCalcDate As Date
-    Private mHHCAHPS_AnnualReturnTarget As Integer
-    Private mHHCAHPS_SamplingLocked As Boolean
-    Private mHHCAHPS_ProportionChangeThreshold As Decimal
-    Private mHHCAHPS_IsActive As Boolean = True
-    Private mHHCAHPS_NonSubmitting As Boolean = False
-    Private mHHCAHPS_SwitchFromRateOverrideDate As Date
-    Private mHHCAHPS_SamplingRateOverride As Decimal
-
-    Private mHHCAHPS_CalculationErrors As New List(Of String)
-    Private mHHCAHPS_LastRecalcHistory As MedicareRecalcHistory
-    Private mHHCAHPS_MedicareGlobalDates As MedicareGlobalCalcDateCollection
-
 
 #End Region
 
@@ -301,129 +285,6 @@ Public Class MedicareNumber
 
 #End Region
 
-#Region "MedicareLookup HHCAHPS Properties"
-    Public Property HHCAHPS_EstAnnualVolume() As Integer
-        Get
-            Return mHHCAHPS_EstAnnualVolume
-        End Get
-        Set(ByVal value As Integer)
-            If Not value = mHHCAHPS_EstAnnualVolume Then
-                mHHCAHPS_EstAnnualVolume = value
-                PropertyHasChanged("HHCAHPS_EstAnnualVolume")
-            End If
-        End Set
-    End Property
-
-    Public Property HHCAHPS_EstResponseRate() As Decimal
-        Get
-            Return mHHCAHPS_EstResponseRate
-        End Get
-        Set(ByVal value As Decimal)
-            If Not value = mHHCAHPS_EstResponseRate Then
-                mHHCAHPS_EstResponseRate = value
-                PropertyHasChanged("HHCAHPS_EstResponseRate")
-            End If
-        End Set
-    End Property
-
-    Public Property HHCAHPS_SwitchToCalcDate() As Date
-        Get
-            Return mHHCAHPS_SwitchToCalcDate
-        End Get
-        Set(ByVal value As Date)
-            If Not value = mHHCAHPS_SwitchToCalcDate Then
-                mHHCAHPS_SwitchToCalcDate = value
-                PropertyHasChanged("HHCAHPS_SwitchToCalcDate")
-            End If
-        End Set
-    End Property
-
-    Public Property HHCAHPS_AnnualReturnTarget() As Integer
-        Get
-            Return mHHCAHPS_AnnualReturnTarget
-        End Get
-        Set(ByVal value As Integer)
-            If Not value = mHHCAHPS_AnnualReturnTarget Then
-                mHHCAHPS_AnnualReturnTarget = value
-                PropertyHasChanged("HHCAHPS_AnnualReturnTarget")
-            End If
-        End Set
-    End Property
-
-    Public Property HHCAHPS_SamplingLocked() As Boolean
-        Get
-            Return mHHCAHPS_SamplingLocked
-        End Get
-        Set(ByVal value As Boolean)
-            If Not value = mHHCAHPS_SamplingLocked Then
-                mHHCAHPS_SamplingLocked = value
-                PropertyHasChanged("HHCAHPS_SamplingLocked")
-            End If
-        End Set
-    End Property
-
-    Public Property HHCAHPS_ProportionChangeThreshold() As Decimal
-        Get
-            Return mHHCAHPS_ProportionChangeThreshold
-        End Get
-        Set(ByVal value As Decimal)
-            If Not value = mHHCAHPS_ProportionChangeThreshold Then
-                mHHCAHPS_ProportionChangeThreshold = value
-                PropertyHasChanged("HHCAHPS_ProportionChangeThreshold")
-            End If
-        End Set
-    End Property
-
-    Public Property HHCAHPS_IsActive() As Boolean
-        Get
-            Return mHHCAHPS_IsActive
-        End Get
-        Set(ByVal value As Boolean)
-            If Not value = mHHCAHPS_IsActive Then
-                mHHCAHPS_IsActive = value
-                PropertyHasChanged("HHCAHPS_IsActive")
-            End If
-        End Set
-    End Property
-
-    Public Property HHCAHPS_NonSubmitting() As Boolean
-        Get
-            Return mHHCAHPS_NonSubmitting
-        End Get
-        Set(ByVal value As Boolean)
-            If Not value = mHHCAHPS_NonSubmitting Then
-                mHHCAHPS_NonSubmitting = value
-                PropertyHasChanged("HHCAHPS_NonSubmitting")
-            End If
-        End Set
-    End Property
-
-    Public Property HHCAHPS_SwitchFromRateOverrideDate() As Date
-        Get
-            Return mHHCAHPS_SwitchFromRateOverrideDate
-        End Get
-        Set(ByVal value As Date)
-            If Not value = mHHCAHPS_SwitchFromRateOverrideDate Then
-                mHHCAHPS_SwitchFromRateOverrideDate = value
-                PropertyHasChanged("HHCAHPS_SwitchFromRateOverrideDate")
-            End If
-        End Set
-    End Property
-
-    Public Property HHCAHPS_SamplingRateOverride() As Decimal
-        Get
-            Return mHHCAHPS_SamplingRateOverride
-        End Get
-        Set(ByVal value As Decimal)
-            If Not value = mHHCAHPS_SamplingRateOverride Then
-                mHHCAHPS_SamplingRateOverride = value
-                PropertyHasChanged("HHCAHPS_SamplingRateOverride")
-            End If
-        End Set
-    End Property
-
-#End Region
-
 #Region "MedicareLookup HCAHPS Display Properties"
 
     Public ReadOnly Property DisplayLabel() As String
@@ -480,59 +341,6 @@ Public Class MedicareNumber
         End Set
     End Property
 
-
-#End Region
-
-#Region "MedicareLookup HHCAHPS Display Properties"
-
-    Public Property HHCAHPS_EstResponseRateDisplay() As Decimal
-        Get
-            Return HHCAHPS_EstResponseRate * 100
-        End Get
-        Set(ByVal value As Decimal)
-            If Not value = HHCAHPS_EstResponseRate * 100 Then
-                HHCAHPS_EstResponseRate = value / 100
-                PropertyHasChanged("HHCAHPS_EstResponseRateDisplay")
-            End If
-        End Set
-    End Property
-
-    Public Property HHCAHPS_ProportionChangeThresholdDisplay() As Decimal
-        Get
-            Return HHCAHPS_ProportionChangeThreshold * 100
-        End Get
-        Set(ByVal value As Decimal)
-            If Not value = HHCAHPS_ProportionChangeThreshold * 100 Then
-                HHCAHPS_ProportionChangeThreshold = value / 100
-                PropertyHasChanged("HHCAHPS_ProportionChangeThresholdDisplay")
-            End If
-        End Set
-    End Property
-
-    Public Property HHCAHPS_SamplingRateOverrideDisplay() As Decimal
-        Get
-            Return HHCAHPS_SamplingRateOverride * 100
-        End Get
-        Set(ByVal value As Decimal)
-            If Not value = HHCAHPS_SamplingRateOverride * 100 Then
-                HHCAHPS_SamplingRateOverride = value / 100
-                PropertyHasChanged("HHCAHPS_SamplingRateOverrideDisplay")
-            End If
-        End Set
-    End Property
-
-
-    Public Property HHCAHPS_IsInactive() As Boolean
-        Get
-            Return Not HHCAHPS_IsActive
-        End Get
-        Set(ByVal value As Boolean)
-            If Not value = (Not HHCAHPS_IsActive) Then
-                HHCAHPS_IsActive = Not value
-                PropertyHasChanged("HHCAHPS_IsInactive")
-            End If
-        End Set
-    End Property
 
 #End Region
 
@@ -727,18 +535,9 @@ Public Class MedicareNumber
         ValidationRules.AddRule(AddressOf Validation.MinValue(Of Date), New Validation.MinValueRuleArgs(Of Date)("SwitchToCalcDate", CDate("1/1/2000")))
         ValidationRules.AddRule(AddressOf Validation.IntegerMinValue, New Validation.IntegerMinValueRuleArgs("AnnualReturnTarget", 1))
         ValidationRules.AddRule(AddressOf Validation.MinValue(Of Decimal), New Validation.MinValueRuleArgs(Of Decimal)("ProportionChangeThresholdDisplay", CDec(0.99)))
-        ValidationRules.AddRule(AddressOf Validation.IntegerMinValue, New Validation.IntegerMinValueRuleArgs("SystematicAnnualReturnTarget", 1))
-        ValidationRules.AddRule(AddressOf Validation.IntegerMinValue, New Validation.IntegerMinValueRuleArgs("SystematicEstRespRate", 1))
-        ValidationRules.AddRule(AddressOf Validation.MinValue(Of Date), New Validation.MinValueRuleArgs(Of Date)("SystematicSwitchToCalcDate", CDate("1/1/2000")))
-
-        'HHCAHPS
-        ValidationRules.AddRule(AddressOf Validation.IntegerMinValue, New Validation.IntegerMinValueRuleArgs("HHCAHPS_EstAnnualVolume", 1))
-        ValidationRules.AddRule(AddressOf Validation.MinValue(Of Decimal), New Validation.MinValueRuleArgs(Of Decimal)("HHCAHPS_EstResponseRateDisplay", CDec(0.99)))
-        ValidationRules.AddRule(AddressOf Validation.MinValue(Of Date), New Validation.MinValueRuleArgs(Of Date)("HHCAHPS_SwitchToCalcDate", CDate("1/1/2000")))
-        ValidationRules.AddRule(AddressOf Validation.IntegerMinValue, New Validation.IntegerMinValueRuleArgs("HHCAHPS_AnnualReturnTarget", 1))
-        ValidationRules.AddRule(AddressOf Validation.MinValue(Of Decimal), New Validation.MinValueRuleArgs(Of Decimal)("HHCAHPS_ProportionChangeThresholdDisplay", CDec(0.99)))
-        ValidationRules.AddRule(AddressOf Validation.MinValue(Of Decimal), New Validation.MinValueRuleArgs(Of Decimal)("HHCAHPS_SamplingRateOverrideDisplay", CDec(0.99)))
-        ValidationRules.AddRule(AddressOf Validation.MinValue(Of Date), New Validation.MinValueRuleArgs(Of Date)("HHCAHPS_SwitchFromRateOverrideDate", CDate("1/1/2000")))
+        'ValidationRules.AddRule(AddressOf Validation.IntegerMinValue, New Validation.IntegerMinValueRuleArgs("SystematicAnnualReturnTarget", 1))
+        'ValidationRules.AddRule(AddressOf Validation.IntegerMinValue, New Validation.IntegerMinValueRuleArgs("SystematicEstRespRate", 1))
+        'ValidationRules.AddRule(AddressOf Validation.MinValue(Of Date), New Validation.MinValueRuleArgs(Of Date)("SystematicSwitchToCalcDate", CDate("1/1/2000")))
 
     End Sub
 

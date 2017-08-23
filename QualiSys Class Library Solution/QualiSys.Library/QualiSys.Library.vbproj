@@ -221,6 +221,7 @@
     <Compile Include="FacilityRegion.vb" />
     <Compile Include="FacilityState.vb" />
     <Compile Include="FormGenJob.vb" />
+    <Compile Include="MedicareCommon.vb" />
     <Compile Include="MedicareSurveyType.vb" />
     <Compile Include="ODSDBDataAccess\BaseSqlDataProvider.vb" />
     <Compile Include="ODSDBDataAccess\IODSDBRepository.vb" />
@@ -365,6 +366,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
     <None Include="QualisysLibraryClassDiagram.cd" />
     <None Include="Diagrams\ClassDiagram.cd" />

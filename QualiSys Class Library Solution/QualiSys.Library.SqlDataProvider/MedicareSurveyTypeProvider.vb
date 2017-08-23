@@ -6,6 +6,7 @@ Public Class MedicareSurveyTypeProvider
     Inherits DataProvider.MedicareSurveyTypeProvider
 
     Private mGlobalDef As MedicareGlobalCalculationDefault
+
     Public ReadOnly Property GlobalDef As MedicareGlobalCalculationDefault
         Get
             If mGlobalDef Is Nothing Then
@@ -14,21 +15,23 @@ Public Class MedicareSurveyTypeProvider
             Return mGlobalDef
         End Get
     End Property
-#Region " Populate Methods "
 
-    Private Function PopulateMedicareNumber(ByVal rdr As SafeDataReader) As MedicareNumber
+#Region "Populate Method"
 
-        Dim newObj As MedicareNumber = MedicareNumber.NewMedicareNumber(GlobalDef)
+    Private Function PopulateMedicareSurveyType(ByVal rdr As SafeDataReader) As MedicareSurveyType
+
+        Dim newObj As MedicareSurveyType = MedicareSurveyType.NewMedicareSurveyType(GlobalDef)
         newObj.BeginPopulate()
         newObj.MedicareNumber = rdr.GetString("MedicareNumber")
         newObj.Name = rdr.GetString("MedicareName")
+        newObj.SurveyTypeID = rdr.GetInteger("SurveyTypeID")
 
-        'HCAHPS
-        newObj.ProportionCalcTypeID = rdr.GetEnum(Of MedicareProportionCalcTypes)("MedicarePropCalcType_ID")
         newObj.EstAnnualVolume = rdr.GetInteger("EstAnnualVolume")
         newObj.EstResponseRate = rdr.GetDecimal("EstRespRate")
-        newObj.EstIneligibleRate = rdr.GetDecimal("EstIneligibleRate")
         newObj.SwitchToCalcDate = rdr.GetDate("SwitchToCalcDate")
+        If DateTime.Compare(newObj.SwitchToCalcDate, #1/1/1900#) < 0 Then
+            newObj.SwitchToCalcDate = New Date(1900, 1, 1)
+        End If
         newObj.AnnualReturnTarget = rdr.GetInteger("AnnualReturnTarget")
         If rdr.GetByte("SamplingLocked") = 0 Then
             newObj.SamplingLocked = False
@@ -36,40 +39,15 @@ Public Class MedicareSurveyTypeProvider
             newObj.SamplingLocked = True
         End If
         newObj.ProportionChangeThreshold = rdr.GetDecimal("ProportionChangeThreshold")
-        If rdr.GetByte("CensusForced") = 0 Then
-            newObj.CensusForced = False
-        Else
-            newObj.CensusForced = True
-        End If
-        newObj.PENumber = rdr.GetString("PENumber")
         newObj.IsActive = rdr.GetBoolean("Active")
         newObj.NonSubmitting = rdr.GetBoolean("NonSubmitting")
 
-        'HHCAHPS
-        'newObj.HHCAHPS_EstAnnualVolume = rdr.GetInteger("HHCAHPS_EstAnnualVolume")
-        'newObj.HHCAHPS_EstResponseRate = rdr.GetDecimal("HHCAHPS_EstRespRate")
-        'newObj.HHCAHPS_SwitchToCalcDate = rdr.GetDate("HHCAHPS_SwitchToCalcDate")
-        'If DateTime.Compare(newObj.HHCAHPS_SwitchToCalcDate, #1/1/1900#) < 0 Then
-        '    newObj.HHCAHPS_SwitchToCalcDate = New Date(1900, 1, 1)
-        'End If
+        newObj.SwitchFromRateOverrideDate = rdr.GetDate("SwitchFromRateOverrideDate")
+        If DateTime.Compare(newObj.SwitchFromRateOverrideDate, #1/1/1900#) < 0 Then
+            newObj.SwitchFromRateOverrideDate = New Date(1900, 1, 1)
+        End If
 
-        'newObj.HHCAHPS_AnnualReturnTarget = rdr.GetInteger("HHCAHPS_AnnualReturnTarget")
-        'If rdr.GetByte("HHCAHPS_SamplingLocked") = 0 Then
-        '    newObj.HHCAHPS_SamplingLocked = False
-        'Else
-        '    newObj.HHCAHPS_SamplingLocked = True
-        'End If
-        'newObj.HHCAHPS_ProportionChangeThreshold = rdr.GetDecimal("HHCAHPS_ProportionChangeThreshold")
-        'newObj.HHCAHPS_IsActive = rdr.GetBoolean("HHCAHPS_Active")
-        'newObj.HHCAHPS_NonSubmitting = rdr.GetBoolean("HHCAHPS_NonSubmitting")
-        'newObj.HHCAHPS_SwitchFromRateOverrideDate = rdr.GetDate("HHCAHPS_SwitchFromRateOverrideDate")
-        'If DateTime.Compare(newObj.HHCAHPS_SwitchFromRateOverrideDate, #1/1/1900#) < 0 Then
-        '    newObj.HHCAHPS_SwitchFromRateOverrideDate = New Date(1900, 1, 1)
-        'End If
-
-        'newObj.HHCAHPS_SamplingRateOverride = rdr.GetDecimal("HHCAHPS_SamplingRateOverride")
-
-        'End of population
+        newObj.SamplingRateOverride = rdr.GetDecimal("SamplingRateOverride")
 
         newObj.EndPopulate()
 
@@ -79,12 +57,14 @@ Public Class MedicareSurveyTypeProvider
 
 #End Region
 
-    Public Overrides Function [Select](ByVal medicareNumber As String) As MedicareNumber
+#Region "Overrides"
 
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectMedicareNumber, medicareNumber)
+    Public Overrides Function [Select](ByVal medicareNumber As String, ByVal surveyTypeID As Integer) As MedicareSurveyType
+
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectMedicareSurveyType, medicareNumber, surveyTypeID)
         Using rdr As New SafeDataReader(ExecuteReader(cmd))
             If rdr.Read Then
-                Return PopulateMedicareNumber(rdr)
+                Return PopulateMedicareSurveyType(rdr)
             Else
                 Return Nothing
             End If
@@ -92,115 +72,53 @@ Public Class MedicareSurveyTypeProvider
 
     End Function
 
-    Public Overrides Sub Insert(ByVal medicareNum As MedicareNumber)
+    Public Overrides Sub Insert(ByVal medicareSurveyType As MedicareSurveyType)
 
         Dim samplingLocked As Byte
-        Dim censusForced As Byte
 
-        If medicareNum.SamplingLocked Then
+        If medicareSurveyType.SamplingLocked Then
             samplingLocked = 1
         Else
             samplingLocked = 0
         End If
 
-        If medicareNum.CensusForced Then
-            censusForced = 1
-        Else
-            censusForced = 0
-        End If
-
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.InsertMedicareNumber, medicareNum.MedicareNumber, medicareNum.Name,
-                                                       medicareNum.ProportionCalcTypeID, medicareNum.EstAnnualVolume,
-                                                       medicareNum.EstResponseRate, medicareNum.EstIneligibleRate, medicareNum.SwitchToCalcDate,
-                                                       medicareNum.AnnualReturnTarget, samplingLocked, medicareNum.ProportionChangeThreshold,
-                                                       censusForced, medicareNum.PENumber, medicareNum.IsActive,
-                                                       medicareNum.SystematicAnnualReturnTarget, medicareNum.SystematicEstRespRate, medicareNum.SystematicSwitchToCalcDate,
-                                                       medicareNum.NonSubmitting)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.InsertMedicareSurveyType, medicareSurveyType.MedicareNumber, medicareSurveyType.SurveyTypeID,
+                                                       medicareSurveyType.EstAnnualVolume, medicareSurveyType.EstResponseRate, medicareSurveyType.SwitchToCalcDate,
+                                                       medicareSurveyType.AnnualReturnTarget, samplingLocked, medicareSurveyType.ProportionChangeThreshold,
+                                                       medicareSurveyType.IsActive, medicareSurveyType.NonSubmitting,
+                                                       medicareSurveyType.SwitchFromRateOverrideDate, medicareSurveyType.SamplingRateOverride
+                                )
         ExecuteNonQuery(cmd)
 
     End Sub
 
-    Public Overrides Sub Update(ByVal medicareNum As MedicareNumber)
+    Public Overrides Sub Update(ByVal medicareSurveyType As MedicareSurveyType)
 
         Dim samplingLocked As Byte
-        Dim censusForced As Byte
 
-        If medicareNum.SamplingLocked Then
+        If medicareSurveyType.SamplingLocked Then
             samplingLocked = 1
         Else
             samplingLocked = 0
         End If
 
-        If medicareNum.CensusForced Then
-            censusForced = 1
-        Else
-            censusForced = 0
-        End If
-
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.UpdateMedicareNumber, medicareNum.MedicareNumber, medicareNum.Name,
-                                                       medicareNum.ProportionCalcTypeID, medicareNum.EstAnnualVolume,
-                                                       medicareNum.EstResponseRate, medicareNum.EstIneligibleRate, medicareNum.SwitchToCalcDate,
-                                                       medicareNum.AnnualReturnTarget, samplingLocked, medicareNum.ProportionChangeThreshold,
-                                                       censusForced, medicareNum.PENumber, medicareNum.IsActive,
-                                                       medicareNum.SystematicAnnualReturnTarget, medicareNum.SystematicEstRespRate, medicareNum.SystematicSwitchToCalcDate,
-                                                       medicareNum.NonSubmitting)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.UpdateMedicareSurveyType, medicareSurveyType.MedicareNumber, medicareSurveyType.SurveyTypeID,
+                                                       medicareSurveyType.EstAnnualVolume, medicareSurveyType.EstResponseRate, medicareSurveyType.SwitchToCalcDate,
+                                                       medicareSurveyType.AnnualReturnTarget, samplingLocked, medicareSurveyType.ProportionChangeThreshold,
+                                                       medicareSurveyType.IsActive, medicareSurveyType.NonSubmitting,
+                                                       medicareSurveyType.SwitchFromRateOverrideDate, medicareSurveyType.SamplingRateOverride
+                               )
         ExecuteNonQuery(cmd)
 
     End Sub
 
-    Public Overrides Sub Delete(ByVal medicareNumber As String)
+    Public Overrides Sub Delete(ByVal medicareNumber As String, ByVal surveyTypeID As Integer)
 
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.DeleteMedicareNumber, medicareNumber)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.DeleteMedicareSurveyType, medicareNumber, surveyTypeID)
         ExecuteNonQuery(cmd)
 
     End Sub
 
-    Public Overrides Function GetHistoricAnnualVolume(ByVal medicareNumber As String, ByVal propSampleDate As Date) As Integer
-
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.GetHistoricAnnualVolumne, medicareNumber, propSampleDate)
-        Return ExecuteInteger(cmd)
-
-    End Function
-
-    Public Overrides Function GetHistoricRespRate(ByVal medicareNumber As String, ByVal propSampleDate As Date) As Decimal
-
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.GetHistoricRespRate, medicareNumber, propSampleDate, 0)
-        Using rdr As New SafeDataReader(ExecuteReader(cmd))
-            If rdr.Read Then
-                Return CDec(rdr.Item(0)) / 100
-            Else
-                Return 0
-            End If
-        End Using
-
-    End Function
-
-    Public Overrides Function HasHistoricValues(ByVal medicareNumber As String, ByVal propSampleDate As Date) As Boolean
-
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.HasHistoricValues, medicareNumber, propSampleDate)
-        Return ExecuteBoolean(cmd)
-
-    End Function
-
-    Public Overrides Function SelectSamplingLockedBySurveyIDs(ByVal surveyIDs As String) As System.Data.DataTable
-
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectMedicareSamplingLockedBySurveyIDs, surveyIDs)
-        Return ExecuteDataSet(cmd).Tables(0)
-
-    End Function
-
-    Public Overrides Function SelectLockedSampleUnitsByMedicareNumber(ByVal medicareNumber As String) As System.Data.DataTable
-
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectLockedSampleUnitsByMedicareNumber, medicareNumber)
-        Return ExecuteDataSet(cmd).Tables(0)
-
-    End Function
-
-    Public Overrides Sub LogUnlockSample(ByVal medicareNumber As String, ByVal memberId As Integer, ByVal dateUnlocked As Date)
-
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.InsertSamplingUnlockedLog, medicareNumber, memberId, dateUnlocked)
-        ExecuteNonQuery(cmd)
-
-    End Sub
+#End Region
 
 End Class

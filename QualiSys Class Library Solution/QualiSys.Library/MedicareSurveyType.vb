@@ -8,6 +8,9 @@ Public Class MedicareSurveyType
     Inherits BusinessBase(Of MedicareSurveyType)
 
 #Region "Private Fields"
+    Private Const mHCAHPS_SurveyTypeID As Integer = 2
+    Private Const mHHCAHPS_SurveyTypeID As Integer = 3
+    Private Const mOASCAHPS_SurveyTypeID As Integer = 16
 
     Private mLastRecalcLoaded As Boolean
     Private mHistoricLoaded As Boolean
@@ -31,10 +34,12 @@ Public Class MedicareSurveyType
     Private mHistoricResponseRate As Decimal 'for historical
     Private mCanUseHistoric As Boolean 'for historical
 
-
     Private mCalculationErrors As New List(Of String)
     Private mLastRecalcHistory As MedicareRecalcHistory
     Private mMedicareGlobalDates As MedicareGlobalCalcDateCollection
+
+    Private mProportionCalcTypeID As MedicareProportionCalcTypes
+    Private mMedicareCommon As MedicareCommon
 
 #End Region
 
@@ -198,15 +203,20 @@ Public Class MedicareSurveyType
         End Set
     End Property
 
+    Public Property ProportionCalcTypeID() As MedicareProportionCalcTypes
+        Get
+            Return mProportionCalcTypeID
+        End Get
+        Set(ByVal value As MedicareProportionCalcTypes)
+            If Not value = mProportionCalcTypeID Then
+                mProportionCalcTypeID = value
+            End If
+        End Set
+    End Property
+
 #End Region
 
 #Region "MedicareSurveyType Display Properties"
-
-    Public ReadOnly Property DisplayLabel() As String
-        Get
-            Return String.Format("{0} ({1})", mMedicareNumber, mName)
-        End Get
-    End Property
 
     Public Property EstResponseRateDisplay() As Decimal
         Get
@@ -256,11 +266,9 @@ Public Class MedicareSurveyType
         End Set
     End Property
 
-
 #End Region
 
 #Region "MedicareRecalcHistory Properties"
-
     Public ReadOnly Property LastRecalcDateCalculated() As Date
         Get
             If LastRecalcHistory Is Nothing Then
@@ -277,16 +285,6 @@ Public Class MedicareSurveyType
                 Return Nothing
             Else
                 Return MedicarePropCalcType.Get(LastRecalcHistory.MedicarePropCalcTypeID)
-            End If
-        End Get
-    End Property
-
-    Public ReadOnly Property LastRecalcCensusForced() As Boolean
-        Get
-            If LastRecalcHistory Is Nothing Then
-                Return False
-            Else
-                Return LastRecalcHistory.CensusForced
             End If
         End Get
     End Property
@@ -328,7 +326,7 @@ Public Class MedicareSurveyType
     Public ReadOnly Property CanUseHistoric() As Boolean
         Get
             If Not mHistoricLoaded Then
-                mCanUseHistoric = GetHistoricValues(Date.Now, mAnnualEligibleVolume, mHistoricResponseRate)
+                mCanUseHistoric = MedicareCommon.GetHistoricValues(Date.Now, mAnnualEligibleVolume, mHistoricResponseRate)
                 mHistoricLoaded = True
             End If
             Return mCanUseHistoric
@@ -338,7 +336,7 @@ Public Class MedicareSurveyType
     Public ReadOnly Property AnnualEligibleVolume() As Integer
         Get
             If Not mHistoricLoaded Then
-                mCanUseHistoric = GetHistoricValues(Date.Now, mAnnualEligibleVolume, mHistoricResponseRate)
+                mCanUseHistoric = MedicareCommon.GetHistoricValues(Date.Now, mAnnualEligibleVolume, mHistoricResponseRate)
                 mHistoricLoaded = True
             End If
             Return mAnnualEligibleVolume
@@ -348,7 +346,7 @@ Public Class MedicareSurveyType
     Public ReadOnly Property HistoricResponseRate() As Decimal
         Get
             If Not mHistoricLoaded Then
-                mCanUseHistoric = GetHistoricValues(Date.Now, mAnnualEligibleVolume, mHistoricResponseRate)
+                mCanUseHistoric = MedicareCommon.GetHistoricValues(Date.Now, mAnnualEligibleVolume, mHistoricResponseRate)
                 mHistoricLoaded = True
             End If
             Return mHistoricResponseRate
@@ -397,6 +395,15 @@ Public Class MedicareSurveyType
                 mLastRecalcLoaded = True
             End If
             Return mLastRecalcHistory
+        End Get
+    End Property
+
+    Private ReadOnly Property MedicareCommon() As MedicareCommon
+        Get
+            If mMedicareCommon Is Nothing Then
+                mMedicareCommon = New MedicareCommon(MedicareNumber, Name)
+            End If
+            Return mMedicareCommon
         End Get
     End Property
 
@@ -497,7 +504,7 @@ Public Class MedicareSurveyType
     End Sub
 
     ''' <summary>Ignore business rules and recalculate the proportion.</summary>
-    ''' <CreatedBy>Tony Piccoli</CreatedBy>
+    ''' <CreatedBy></CreatedBy>
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Public Function ForceRecalculate(ByVal sampleDate As Date, ByVal memberID As Integer, ByRef sampleLockNotifyFailed As Boolean) As Boolean
 
@@ -518,7 +525,7 @@ Public Class MedicareSurveyType
     End Function
 
     ''' <summary>Recalculate the proportion if business rules allow it.</summary>
-    ''' <CreatedBy>Tony Piccoli</CreatedBy>
+    ''' <CreatedBy></CreatedBy>
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Public Function RecalculateProportion(ByVal sampleDate As Date, ByVal memberID As Integer, ByRef sampleLockNotifyFailed As Boolean) As Boolean
 
@@ -526,7 +533,7 @@ Public Class MedicareSurveyType
         mCalculationErrors = New List(Of String)
 
         'Check to see if we really need to recalculate based on the supplied sample date
-        If NeedToRecalculateProportion(sampleDate) Then
+        If MedicareCommon.NeedToRecalculateProportion(sampleDate, LastRecalcPropSampleCalcDate) Then
             'Calculate the proportion
             Dim retVal As Boolean = CalculateProportion(False, sampleDate, memberID, sampleLockNotifyFailed)
 
@@ -544,110 +551,59 @@ Public Class MedicareSurveyType
 
     End Function
 
-    Public Sub LogUnlockSample(ByVal memberId As Integer)
-
-        MedicareProvider.Instance.LogUnlockSample(MedicareNumber, memberId, Date.Now)
-
-    End Sub
 
 #End Region
 
 #Region "Private Methods"
 
-    Private Function GetPropSampleDate(ByVal sampleDate As Date) As Date
-
-        Dim dateList As List(Of Integer) = GetOrderedRecalcDates()
-        Dim dateNow As Date = CDate(String.Format("{0}/1/{1}", sampleDate.Month, sampleDate.Year))
-
-        'Get the most current date that has alread passed.
-        Dim setCalcDate As Date = dateNow
-        For i As Integer = 0 To dateList.Count - 1
-            Dim dateItem As Date = CDate(String.Format("{0}/1/{1}", dateList(i), sampleDate.Year))
-            If dateNow >= dateItem Then
-                setCalcDate = dateItem
-            End If
-        Next
-
-        Return setCalcDate
-
-    End Function
-
-    ''' <summary>This method determines if the medicare number is ready and able to calculate a new proportion.</summary>
-    ''' <returns></returns>
-    ''' <CreatedBy></CreatedBy>
-    ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
-    Private Function NeedToRecalculateProportion(ByVal sampleDate As Date) As Boolean
-
-        Dim setCalcDate As Date = GetPropSampleDate(sampleDate)
-
-        ' If the last calc'd date is before the set calc date, then you are OK.
-        Return (setCalcDate > LastRecalcPropSampleCalcDate)
-
-    End Function
-
-    ''' <summary>Helper method to order the global recal dates.</summary>
-    ''' <returns></returns>
-    ''' <CreatedBy></CreatedBy>
-    ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
-    Private Function GetOrderedRecalcDates() As List(Of Integer)
-
-        Dim dateList As New List(Of Integer)
-
-        For Each calcDate As MedicareGlobalCalcDate In MedicareGlobalDates
-            dateList.Add(calcDate.ReCalcMonth)
-        Next
-        dateList.Sort()
-
-        Return dateList
-
-    End Function
-
     ''' <summary>Determine which type of calculation to use and calculate the proportion.</summary>
-    ''' <param name="forced"></param>
-    ''' <CreatedBy>Tony Piccoli</CreatedBy>
-    ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Private Function CalculateProportion(ByVal forced As Boolean, ByVal sampleDate As Date, ByVal memberID As Integer, ByRef sampleLockNotifyFailed As Boolean) As Boolean
 
-        If SwitchToCalcDate <= Date.Now Then
-            ProportionCalcTypeID = MedicareProportionCalcTypes.Historical
-        End If
+        Select Case SurveyTypeID
+            Case mHHCAHPS_SurveyTypeID
+                If SamplingRateOverride > 0 And SwitchFromRateOverrideDate > Date.Now Then
+                    ProportionCalcTypeID = MedicareProportionCalcTypes.RateOverride
+                    Return HHCAHPS_CalculateProportionUsingOverride(forced, sampleDate, memberID, sampleLockNotifyFailed)
+                Else
+                    If SwitchToCalcDate <= Date.Now Then
+                        ProportionCalcTypeID = MedicareProportionCalcTypes.Historical
+                        Return HHCAHPS_CalculateProportionUsingHistorical(forced, sampleDate, memberID, sampleLockNotifyFailed)
+                    Else
+                        ProportionCalcTypeID = MedicareProportionCalcTypes.Estimated
+                        Return HHCAHPS_CalculateProportionUsingEstimates(forced, sampleDate, memberID, sampleLockNotifyFailed)
+                    End If
 
-        If ProportionCalcTypeID = MedicareProportionCalcTypes.Historical Then
-            Return CalculateProportionUsingHistorical(forced, sampleDate, memberID, sampleLockNotifyFailed)
-        Else
-            Return CalculateProportionUsingEstimates(forced, sampleDate, memberID, sampleLockNotifyFailed)
-        End If
+                End If
+            Case Else
+                'TODO for OAS
+        End Select
 
     End Function
 
-    ''' <summary>Calculate the historical proportion using historical values.</summary>
-    ''' <param name="forced"></param>
-    ''' <CreatedBy></CreatedBy>
-    ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
-    Private Function CalculateProportionUsingHistorical(ByVal forced As Boolean, ByVal sampleDate As Date, ByVal memberID As Integer, ByRef sampleLockNotifyFailed As Boolean) As Boolean
+    Private Function HHCAHPS_CalculateProportionUsingHistorical(ByVal forced As Boolean, ByVal sampleDate As Date, ByVal memberID As Integer, ByRef sampleLockNotifyFailed As Boolean) As Boolean
 
-        Dim propSampleDate As Date = GetPropSampleDate(sampleDate)
+        Dim propSampleDate As Date = MedicareCommon.GetPropSampleDate(sampleDate)
         Dim annualEligibleVolume As Integer
         Dim historicResponseRate As Decimal
         Dim errorEncountered As Boolean = False
 
-        Dim canUseHistoric As Boolean = GetHistoricValues(sampleDate, annualEligibleVolume, historicResponseRate)
+        Dim canUseHistoric As Boolean = MedicareCommon.GetHistoricValues(sampleDate, annualEligibleVolume, historicResponseRate)
 
         If canUseHistoric Then
             'Validate the parameters for a divide by zero condition
             If annualEligibleVolume <= 0 Then
-                mCalculationErrors.Add("Annual Eligible Volume must be greater then 0.")
+                CalculationErrors.Add("Annual Eligible Volume must be greater then 0.")
                 errorEncountered = True
             End If
             If historicResponseRate <= 0 Then
-                mCalculationErrors.Add("Historic Response Rate must be greater than 0.")
+                CalculationErrors.Add("Historic Response Rate must be greater than 0.")
                 errorEncountered = True
             End If
 
             'If the parameters are good then proceed
             If Not errorEncountered Then
                 'Calculate the proportion.
-                Dim annualProportion As Decimal = CDec((mAnnualReturnTarget / historicResponseRate) / annualEligibleVolume)
+                Dim annualProportion As Decimal = CDec((AnnualReturnTarget / historicResponseRate) / annualEligibleVolume)
 
                 'Check for proportion over 100%
                 If annualProportion > 1 Then annualProportion = 1
@@ -655,56 +611,35 @@ Public Class MedicareSurveyType
                 'Lock sampling if new proportion exceeds threshold.
                 Dim proportionVariation As Decimal = 0
                 proportionVariation = Math.Abs(annualProportion - LastRecalcProportion)
-                If proportionVariation > mProportionChangeThreshold Then
+                If proportionVariation > ProportionChangeThreshold Then
                     SamplingLocked = True
                 End If
 
-                'Determine if the new proportion is greater than the force census limit
-                Dim globalDefaults As MedicareGlobalCalculationDefaultCollection = MedicareGlobalCalculationDefault.GetAll
-                UserCensusForced = memberID
-                If globalDefaults.Count > 0 Then
-                    'Global defaults exist so let's check
-                    If annualProportion > globalDefaults(0).ForceCensusSamplePercentage Then
-                        If CensusForced = False Then
-                            CensusForced = True
-                            UserCensusForced = SystemCensusForced 'indicates system assigned CensusForced not a user
-                        End If
-                    Else 'annual Proportion <= globalDefaults(0).ForceCensusSamplePercentage
-                        If (CensusForced = True) And (LastRecalcHistoryUserCensusForced Is Nothing) Then
-                            CensusForced = False
-                            UserCensusForced = SystemCensusForced 'indicates system assigned CensusForced not a user
-                        End If
-                    End If
-                End If
-
                 'Log proportion History.
-                Dim objLog As MedicareRecalcHistory = MedicareRecalcHistory.NewMedicareRecalcHistory
-                objLog.MedicarePropCalcTypeID = ProportionCalcType.MedicarePropCalcTypeId
+                Dim objLog As MedicareRecalcHistory = MedicareRecalcHistory.NewMedicareRecalcHistory()
+                objLog.MedicarePropCalcTypeID = ProportionCalcTypeID
                 objLog.MedicarePropDataTypeID = MedicareProportionDataTypes.Historical
                 objLog.MedicareName = Name
                 objLog.MedicareNumber = MedicareNumber
                 objLog.EstRespRate = EstResponseRate
-                objLog.EstIneligibleRate = EstIneligibleRate
                 objLog.EstAnnualVolume = EstAnnualVolume
                 objLog.SwitchToCalcDate = SwitchToCalcDate
                 objLog.AnnualReturnTarget = AnnualReturnTarget
                 objLog.ProportionCalcPct = annualProportion
                 objLog.SamplingLocked = SamplingLocked
                 objLog.ProportionChangeThreshold = ProportionChangeThreshold
-                objLog.CensusForced = CensusForced
                 objLog.MemberId = memberID
                 objLog.DateCalculated = Now
                 objLog.HistoricRespRate = historicResponseRate
                 objLog.HistoricAnnualVolume = annualEligibleVolume
                 objLog.PropSampleCalcDate = propSampleDate
                 objLog.ForcedCalculation = forced
-                objLog.UserCensusForced = UserCensusForced
 
                 'Send and email notification if sampling is locked
                 sampleLockNotifyFailed = False
                 If SamplingLocked Then
                     Try
-                        SendSamplingLockNotification(objLog)
+                        MedicareCommon.SendSamplingLockNotification(LastRecalcDateCalculated, LastRecalcProportion, objLog)
                     Catch ex As Exception
                         sampleLockNotifyFailed = True
                     End Try
@@ -720,46 +655,33 @@ Public Class MedicareSurveyType
                 Return False
             End If
         Else
-            'We can't use the historical numbers so we have to calculate using estimates
-            Return CalculateProportionUsingEstimates(forced, sampleDate, memberID, sampleLockNotifyFailed)
+            'We can't use the historical numbers so we have to calculate using estimates or overrides
+            If SamplingRateOverride > 0 And SwitchFromRateOverrideDate < Date.Now Then
+                Return HHCAHPS_CalculateProportionUsingOverride(forced, sampleDate, memberID, sampleLockNotifyFailed)
+            Else
+                Return HHCAHPS_CalculateProportionUsingEstimates(forced, sampleDate, memberID, sampleLockNotifyFailed)
+            End If
         End If
-
     End Function
 
-    ''' <summary>Calculate the proportion using estimated values.</summary>
-    ''' <param name="forced"></param>
-    ''' <CreatedBy>Tony Piccoli</CreatedBy>
-    ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
-    Private Function CalculateProportionUsingEstimates(ByVal forced As Boolean, ByVal sampleDate As Date, ByVal memberID As Integer, ByRef sampleLockNotifyFailed As Boolean) As Boolean
-
-        Dim proportion As Decimal
-        Dim annualSample As Decimal
-        Dim annualProportion As Decimal
-        Dim annualEligibleVolume As Decimal
+    Private Function HHCAHPS_CalculateProportionUsingEstimates(ByVal forced As Boolean, ByVal sampleDate As Date, ByVal memberID As Integer, ByRef sampleLockNotifyFailed As Boolean) As Boolean
         Dim errorEncountered As Boolean = False
-        Dim propSampleDate As Date = GetPropSampleDate(sampleDate)
+        Dim propSampleDate As Date = MedicareCommon.GetPropSampleDate(sampleDate)
 
         'Validate the parameters for a divide by zero condition
-        If mEstAnnualVolume <= 0 Then
-            mCalculationErrors.Add("Estimated Annual Volume must be greater than 0.")
+        If EstAnnualVolume <= 0 Then
+            CalculationErrors.Add("Estimated Annual Volume must be greater than 0.")
             errorEncountered = True
         End If
-        If mEstIneligibleRate >= 1 Then
-            mCalculationErrors.Add("Estimated Ineligible Rate must be less than 100%.")
-            errorEncountered = True
-        End If
-        If mEstResponseRate <= 0 Then
-            mCalculationErrors.Add("Estimated Response Rate must be greater than 0.")
+        If EstResponseRate <= 0 Then
+            CalculationErrors.Add("Estimated Response Rate must be greater than 0.")
             errorEncountered = True
         End If
 
         'If the parameters are good then proceed
         If Not errorEncountered Then
             'Calculate the proportion
-            annualEligibleVolume = mEstAnnualVolume - (mEstAnnualVolume * mEstIneligibleRate)
-            proportion = (1 - mEstIneligibleRate) * mEstResponseRate
-            annualSample = (mAnnualReturnTarget / proportion)
-            annualProportion = (annualSample / annualEligibleVolume)
+            Dim annualProportion As Decimal = CDec((AnnualReturnTarget / EstResponseRate) / EstAnnualVolume)
 
             'Check for proportion over 100%
             If annualProportion > 1 Then annualProportion = 1
@@ -767,56 +689,35 @@ Public Class MedicareSurveyType
             'Lock sampling if new proportion exceeds threshold.
             Dim proportionVariation As Decimal = 0
             proportionVariation = Math.Abs(annualProportion - LastRecalcProportion)
-            If proportionVariation > mProportionChangeThreshold Then
+            If proportionVariation > ProportionChangeThreshold Then
                 SamplingLocked = True
             End If
 
-            'Determine if the new proportion is greater than the force census limit
-            Dim globalDefaults As MedicareGlobalCalculationDefaultCollection = MedicareGlobalCalculationDefault.GetAll
-            UserCensusForced = memberID
-            If globalDefaults.Count > 0 Then
-                'Global defaults exist so let's check
-                If annualProportion > globalDefaults(0).ForceCensusSamplePercentage Then
-                    If CensusForced = False Then
-                        CensusForced = True
-                        UserCensusForced = SystemCensusForced 'indicates system assigned CensusForced not a user
-                    End If
-                Else 'annual Proportion <= globalDefaults(0).ForceCensusSamplePercentage
-                    If (CensusForced = True) And (LastRecalcHistoryUserCensusForced Is Nothing) Then
-                        CensusForced = False
-                        UserCensusForced = SystemCensusForced 'indicates system assigned CensusForced not a user
-                    End If
-                End If
-            End If
-
             'Log proportion History.
-            Dim objLog As MedicareRecalcHistory = MedicareRecalcHistory.NewMedicareRecalcHistory
-            objLog.MedicarePropCalcTypeID = ProportionCalcType.MedicarePropCalcTypeId
+            Dim objLog As MedicareRecalcHistory = MedicareRecalcHistory.NewMedicareRecalcHistory()
+            objLog.MedicarePropCalcTypeID = ProportionCalcTypeID
             objLog.MedicarePropDataTypeID = MedicareProportionDataTypes.Estimated
             objLog.MedicareName = Name
             objLog.MedicareNumber = MedicareNumber
             objLog.EstRespRate = EstResponseRate
-            objLog.EstIneligibleRate = EstIneligibleRate
             objLog.EstAnnualVolume = EstAnnualVolume
             objLog.SwitchToCalcDate = SwitchToCalcDate
             objLog.AnnualReturnTarget = AnnualReturnTarget
             objLog.ProportionCalcPct = annualProportion
             objLog.SamplingLocked = SamplingLocked
             objLog.ProportionChangeThreshold = ProportionChangeThreshold
-            objLog.CensusForced = CensusForced
             objLog.MemberId = memberID
             objLog.DateCalculated = Now
             objLog.HistoricRespRate = 0
             objLog.HistoricAnnualVolume = 0
             objLog.PropSampleCalcDate = propSampleDate
             objLog.ForcedCalculation = forced
-            objLog.UserCensusForced = UserCensusForced
 
             'Send and email notification if sampling is locked
             sampleLockNotifyFailed = False
             If SamplingLocked Then
                 Try
-                    SendSamplingLockNotification(objLog)
+                    MedicareCommon.SendSamplingLockNotification(LastRecalcDateCalculated, LastRecalcProportion, objLog)
                 Catch ex As Exception
                     sampleLockNotifyFailed = True
                 End Try
@@ -834,116 +735,54 @@ Public Class MedicareSurveyType
 
     End Function
 
-    Private Function GetHistoricValues(ByVal sampleDate As Date, ByRef annualEligibleVolume As Integer, ByRef historicResponseRate As Decimal) As Boolean
+    Private Function HHCAHPS_CalculateProportionUsingOverride(ByVal forced As Boolean, ByVal sampleDate As Date, ByVal memberID As Integer, ByRef sampleLockNotifyFailed As Boolean) As Boolean
+        Dim annualProportion As Decimal
+        Dim errorEncountered As Boolean = False
+        Dim propSampleDate As Date = MedicareCommon.GetPropSampleDate(sampleDate)
 
-        Dim propSampleDate As Date = GetPropSampleDate(sampleDate)
-        Dim canUseHistoric As Boolean = MedicareProvider.Instance.HasHistoricValues(mMedicareNumber, propSampleDate)
+        'Calculate the proportion
+        annualProportion = SamplingRateOverride
 
-        If canUseHistoric Then
-            annualEligibleVolume = MedicareProvider.Instance.GetHistoricAnnualVolume(mMedicareNumber, propSampleDate)
-            historicResponseRate = MedicareProvider.Instance.GetHistoricRespRate(mMedicareNumber, propSampleDate)
-        Else
-            annualEligibleVolume = 0
-            historicResponseRate = 0
+        'Check for proportion over 100%
+        If annualProportion > 1 Then annualProportion = 1
+
+        'Log proportion History.
+        Dim objLog As MedicareRecalcHistory = MedicareRecalcHistory.NewMedicareRecalcHistory
+        objLog.MedicarePropCalcTypeID = ProportionCalcTypeID
+        objLog.MedicarePropDataTypeID = MedicareProportionDataTypes.RateOverride
+        objLog.MedicareName = Name
+        objLog.MedicareNumber = MedicareNumber
+        objLog.EstRespRate = EstResponseRate
+        objLog.EstAnnualVolume = EstAnnualVolume
+        objLog.SwitchToCalcDate = SwitchToCalcDate
+        objLog.AnnualReturnTarget = AnnualReturnTarget
+        objLog.ProportionCalcPct = annualProportion
+        objLog.SamplingLocked = SamplingLocked
+        objLog.ProportionChangeThreshold = ProportionChangeThreshold
+        objLog.MemberId = memberID
+        objLog.DateCalculated = Now
+        objLog.HistoricRespRate = 0
+        objLog.HistoricAnnualVolume = 0
+        objLog.PropSampleCalcDate = propSampleDate
+        objLog.ForcedCalculation = forced
+
+        'Send and email notification if sampling is locked
+        sampleLockNotifyFailed = False
+        If SamplingLocked Then
+            Try
+                MedicareCommon.SendSamplingLockNotification(LastRecalcDateCalculated, LastRecalcProportion, objLog)
+            Catch ex As Exception
+                sampleLockNotifyFailed = True
+            End Try
         End If
 
-        Return canUseHistoric
+        'Save the calculation history
+        objLog.Save()
+
+        'All is well
+        Return True
 
     End Function
-
-    Private Sub SendSamplingLockNotification(ByVal currCalc As MedicareRecalcHistory)
-
-        Dim toList As New List(Of String)
-        Dim ccList As New List(Of String)
-        Dim recipientNoteText As String = String.Empty
-        Dim recipientNoteHtml As String = String.Empty
-        Dim environment As String = String.Empty
-
-        'Get the listing of sample unit information for the email
-        Dim lockDataTable As DataTable = MedicareProvider.Instance.SelectLockedSampleUnitsByMedicareNumber(mMedicareNumber)
-
-        'Determine who the recipients are going to be
-        toList.Add("HCAHPSThresholdExceeded@NationalResearch.com")
-
-        'Add the account directors from QualiSys to the CC list
-        Dim studies As New List(Of Integer)
-        For Each row As DataRow In lockDataTable.Rows
-            'Get the study object associated with this row and add the account director email
-            Dim studyID As Integer = CInt(row("StudyID"))
-            If Not studies.Contains(studyID) Then
-                studies.Add(studyID)
-                Dim curStudy As Study = Study.GetStudy(studyID)
-                If Not ccList.Contains(curStudy.AccountDirector.Email) Then
-                    ccList.Add(curStudy.AccountDirector.Email)
-                End If
-            End If
-        Next
-
-        'Determine recipients based on environment
-        If AppConfig.EnvironmentType <> EnvironmentTypes.Production Then
-            'We are not in production
-            'Add the real recipients to the note
-            recipientNoteText = String.Format("{0}{0}Production To:{0}", vbCrLf)
-            For Each email As String In toList
-                recipientNoteText &= email & vbCrLf
-            Next
-            recipientNoteText &= String.Format("{0}Production CC:{0}", vbCrLf)
-            For Each email As String In ccList
-                recipientNoteText &= email & vbCrLf
-            Next
-            recipientNoteHtml = recipientNoteText.Replace(vbCrLf, "<BR/>")
-
-            'Clear the lists
-            toList.Clear()
-            ccList.Clear()
-
-            'Populate the ToList with the Testing group only
-            toList.Add("Testing@NationalResearch.com")
-
-            'Set the environment string
-            environment = String.Format("({0})", AppConfig.EnvironmentName)
-        End If
-
-        'Create the message
-        Dim lockMessage As Message = New Message("MedicareProportionChangeThresholdExceeded", "")
-
-        'Set the message properties
-        With lockMessage
-            'To recipient
-            For Each email As String In toList
-                .To.Add(email)
-            Next
-
-            'CC recipient
-            For Each email As String In ccList
-                .Cc.Add(email)
-            Next
-
-            'Add the replacement values
-            With .ReplacementValues
-                .Add("MedicareNumber", MedicareNumber)
-                .Add("MedicareName", Name)
-                .Add("PrevCalcDate", LastRecalcDateCalculated.ToString)
-                .Add("PrevCalcProp", LastRecalcProportion.ToString("0.0000%"))
-                .Add("CurrCalcDate", currCalc.DateCalculated.ToString)
-                .Add("CurrCalcProp", currCalc.ProportionCalcPct.ToString("0.0000%"))
-                .Add("RecipientNoteText", recipientNoteText)
-                .Add("RecipientNoteHtml", recipientNoteHtml)
-                .Add("Environment", environment)
-                .Add("RecalcHistoryLink", String.Format("{0}&MedicareNumber={1}", AppConfig.Params("CMRecalcHistoryReport").StringValue, MedicareNumber))
-            End With
-
-            'Add the replacement tables
-            With .ReplacementTables
-                .Add("LockedUnits_Text", lockDataTable)
-                .Add("LockedUnits_Html", lockDataTable)
-            End With
-
-            'Send the message
-            .Send()
-        End With
-
-    End Sub
 
 #End Region
 
