@@ -437,8 +437,8 @@ Public Class MedicareSurveyType
         ValidationRules.AddRule(AddressOf Validation.MinValue(Of Date), New Validation.MinValueRuleArgs(Of Date)("SwitchToCalcDate", CDate("1/1/2000")))
         ValidationRules.AddRule(AddressOf Validation.IntegerMinValue, New Validation.IntegerMinValueRuleArgs("AnnualReturnTarget", 1))
         ValidationRules.AddRule(AddressOf Validation.MinValue(Of Decimal), New Validation.MinValueRuleArgs(Of Decimal)("ProportionChangeThresholdDisplay", CDec(0.99)))
-        ValidationRules.AddRule(AddressOf Validation.MinValue(Of Decimal), New Validation.MinValueRuleArgs(Of Decimal)("SamplingRateOverrideDisplay", CDec(0.99)))
-        ValidationRules.AddRule(AddressOf Validation.MinValue(Of Date), New Validation.MinValueRuleArgs(Of Date)("SwitchFromRateOverrideDate", CDate("1/1/2000")))
+        'ValidationRules.AddRule(AddressOf Validation.MinValue(Of Decimal), New Validation.MinValueRuleArgs(Of Decimal)("SamplingRateOverrideDisplay", CDec(0.99)))
+        'ValidationRules.AddRule(AddressOf Validation.MinValue(Of Date), New Validation.MinValueRuleArgs(Of Date)("SwitchFromRateOverrideDate", CDate("1/1/2000")))
 
     End Sub
 
@@ -463,10 +463,16 @@ Public Class MedicareSurveyType
     Protected Overloads Sub CreateNew(ByVal globalDef As MedicareGlobalCalculationDefault)
 
         'Set default values
-        SwitchToCalcDate = Date.Now.AddYears(1)
+
+        Dim quarterNumber As Integer = (Date.Now().Month() - 1) \ 3 + 1
+        Dim firstDayOfQuarterNextYear As New DateTime(Date.Now().Year + 1, (quarterNumber - 1) * 3 + 1, 1)
+
+        SwitchToCalcDate = firstDayOfQuarterNextYear
         EstResponseRate = globalDef.RespRate
         ProportionChangeThreshold = globalDef.ProportionChangeThreshold
         AnnualReturnTarget = globalDef.AnnualReturnTarget
+
+        SwitchFromRateOverrideDate = New Date(1900, 1, 1)
 
         'Validate the object
         ValidationRules.CheckRules()

@@ -88,9 +88,11 @@ Public Class MedicareMngrSection
                 mHHCAHPS_MedicareNumber.Name = mMedicareNumber.Name
                 mHHCAHPS_MedicareNumber.SurveyTypeID = mHHCAHPS_SurveyTypeID
 
-                mHHCAHPS_MedicareNumber.EstAnnualVolume = 0
+                Dim quarterNumber As Integer = (Date.Now().Month() - 1) \ 3 + 1
+                Dim firstDayOfQuarterNextYear As New DateTime(Date.Now().Year + 1, (quarterNumber - 1) * 3 + 1, 1)
+                'mHHCAHPS_MedicareNumber.EstAnnualVolume = 0
                 mHHCAHPS_MedicareNumber.EstResponseRate = globalDef.RespRate
-                mHHCAHPS_MedicareNumber.SwitchToCalcDate = New Date(1900, 1, 1)
+                mHHCAHPS_MedicareNumber.SwitchToCalcDate = firstDayOfQuarterNextYear
                 mHHCAHPS_MedicareNumber.AnnualReturnTarget = globalDef.AnnualReturnTarget
                 mHHCAHPS_MedicareNumber.SamplingLocked = False
                 mHHCAHPS_MedicareNumber.ProportionChangeThreshold = globalDef.ProportionChangeThreshold
@@ -495,6 +497,17 @@ Public Class MedicareMngrSection
             HHCAHPS_SamplingRateNumericUpDown.DataBindings.Add("Value", mHHCAHPS_MedicareNumber, "SamplingRateOverrideDisplay", False, DataSourceUpdateMode.OnPropertyChanged)
             HHCAHPS_SwitchFromOverrideDateDateTimePicker.DataBindings.Add("Value", mHHCAHPS_MedicareNumber, "SwitchFromRateOverrideDate", False, DataSourceUpdateMode.OnPropertyChanged)
 
+            If Date.Compare(mHHCAHPS_MedicareNumber.SwitchToCalcDate, Date.Now) < 0 Then
+                HHCAHPS_SwtichFromEstimatedDateDateTimePicker.Enabled = False
+                HHCAHPS_EstimatedAnnualVolumeNumericUpDown.Enabled = False
+                HHCAHPS_EstimatedResponseRateNumericUpDown.Enabled = False
+            Else
+                HHCAHPS_SwtichFromEstimatedDateDateTimePicker.Enabled = True
+                HHCAHPS_EstimatedAnnualVolumeNumericUpDown.Enabled = True
+                HHCAHPS_EstimatedResponseRateNumericUpDown.Enabled = True
+            End If
+
+
             'Unbound controls
             DisplaySamplingLock_HHCAHPS(mHHCAHPS_MedicareNumber.SamplingLocked)
             'TODO: uncomment this once we have the historic data
@@ -579,7 +592,6 @@ Public Class MedicareMngrSection
         End Select
 
     End Sub
-
 
 #End Region
 

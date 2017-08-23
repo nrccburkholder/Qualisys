@@ -30,7 +30,9 @@ Public Class MedicareSurveyTypeProvider
         newObj.EstResponseRate = rdr.GetDecimal("EstRespRate")
         newObj.SwitchToCalcDate = rdr.GetDate("SwitchToCalcDate")
         If DateTime.Compare(newObj.SwitchToCalcDate, #1/1/1900#) < 0 Then
-            newObj.SwitchToCalcDate = New Date(1900, 1, 1)
+            Dim quarterNumber As Integer = (Date.Now().Month() - 1) \ 3 + 1
+            Dim firstDayOfQuarterNextYear As New DateTime(Date.Now().Year + 1, (quarterNumber - 1) * 3 + 1, 1)
+            newObj.SwitchToCalcDate = firstDayOfQuarterNextYear
         End If
         newObj.AnnualReturnTarget = rdr.GetInteger("AnnualReturnTarget")
         If rdr.GetByte("SamplingLocked") = 0 Then
