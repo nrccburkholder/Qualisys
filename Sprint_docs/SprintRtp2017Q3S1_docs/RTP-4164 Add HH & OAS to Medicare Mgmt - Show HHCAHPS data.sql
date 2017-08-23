@@ -19,7 +19,6 @@
 	- Create new stored procedure QCL_UpdateMedicareLookupSurveyType
 	- Create new stored procedure QCL_SelectMedicareLookupSurveyType
 	- Create new stored procedure QCL_DeleteMedicareLookupSurveyType
-	- Modify stored procedure QCL_InsertSamplingUnlockedLog
 	- Create new stored procedure QCL_InsertMedicareRecalcSurveyType_History
 	- Create new stored procedure QCL_SelectMedicareRecalcSurveyType_History
 
@@ -464,26 +463,6 @@ BEGIN
 
 	DELETE MedicareLookupSurveyType WHERE MedicareNumber=@MedicareNumber AND SurveyType_ID=@surveyType_ID
 
-END
-GO
-
-PRINT 'Modify stored procedure QCL_InsertSamplingUnlockedLog'
-GO
-ALTER PROCEDURE [dbo].[QCL_InsertSamplingUnlockedLog]
-@MedicareNumber		VARCHAR(20),
-@MemberID					INT,
-@DateUnlocked			DATETIME,
-@SurveyType_ID			INT = 2
-AS
-BEGIN
-	SET NOCOUNT ON
-
-	INSERT INTO dbo.SamplingUnlocked_log (MedicareNumber, MemberID, DateUnlocked, SurveyType_ID)
-	VALUES (@MedicareNumber, @MemberID, @DateUnlocked, @SurveyType_ID)
-
-	SELECT SCOPE_IDENTITY()
-
-	SET NOCOUNT OFF
 END
 GO
 
