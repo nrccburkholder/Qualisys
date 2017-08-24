@@ -64,6 +64,9 @@ with SamplePops as
 	from #SampleSets s
 	inner join SELECTEDSAMPLE ss
 		on ss.SAMPLESET_ID = s.SAMPLESET_ID
+	inner join SAMPLEUNIT su
+		on su.SAMPLEUNIT_ID = ss.SAMPLEUNIT_ID
+		and su.CAHPSType_id = @SurveyType_id
 	inner join SAMPLEPOP sp
 		on sp.SAMPLESET_ID = ss.SAMPLESET_ID
 		and sp.POP_ID = ss.POP_ID
@@ -77,8 +80,8 @@ with SamplePops as
 )
 insert into #rr
 select SAMPLESET_ID, SAMPLEUNIT_ID, 
-	sum(sign(IsCompleted)) as intreturned, 
-	sum(sign(IsEligible)) as intsampled,
+	isnull(sum(sign(IsCompleted)), 0) as intreturned, 
+	isnull(sum(sign(IsEligible)), 0) as intsampled,
 	0 as intUD
 from SamplePops
 group by SAMPLESET_ID, SAMPLEUNIT_ID
