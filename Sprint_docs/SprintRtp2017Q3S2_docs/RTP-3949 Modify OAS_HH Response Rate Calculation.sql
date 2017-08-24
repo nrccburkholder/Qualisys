@@ -58,7 +58,8 @@ where survey_id in (select survey_Id from #SampleSets) and
 with SamplePops as
 (
 	select ss.SAMPLESET_ID, ss.SAMPLEUNIT_ID, sp.SAMPLEPOP_ID, 
-		sum(case when dl.Disposition_id in (19, 20) then 1 else 0 end) as IsCompleted,
+		sum(case when dl.Disposition_id in (19, 20) then 1 else 0 end
+			+ cast (qf.bitComplete as int)) as IsCompleted,
 		sum(case when dl.Disposition_id in (3, 4, 8, 10) then 0 else 1 end) as IsEligible
 	from #SampleSets s
 	inner join SELECTEDSAMPLE ss
@@ -67,15 +68,18 @@ with SamplePops as
 		on sp.SAMPLESET_ID = ss.SAMPLESET_ID
 		and sp.POP_ID = ss.POP_ID
 		and sp.STUDY_ID = ss.STUDY_ID
-	inner join DispositionLog dl 
+	left join DispositionLog dl 
 		on dl.SamplePop_id = sp.SAMPLEPOP_ID 
+	left join QUESTIONFORM qf
+		on qf.SAMPLEPOP_ID = sp.SAMPLEPOP_ID
 	where @SurveyType_id in (3, 16) -- HH or OAS
 	group by ss.SAMPLESET_ID, ss.SAMPLEUNIT_ID, sp.SAMPLEPOP_ID
 )
 insert into #rr
 select SAMPLESET_ID, SAMPLEUNIT_ID, 
 	sum(sign(IsCompleted)) as intreturned, 
-	sum(sign(IsEligible)) as intsampled
+	sum(sign(IsEligible)) as intsampled,
+	0 as intUD
 from SamplePops
 group by SAMPLESET_ID, SAMPLEUNIT_ID
 
