@@ -4,9 +4,9 @@ Imports Nrc.Qualisys.Library.DataProvider
 Public Class MedicareMngrSection
 
 #Region "Private Members"
-    Private Const mHCAHPS_SurveyTypeID As Integer = 2
-    Private Const mHHCAHPS_SurveyTypeID As Integer = 3
-    Private Const mOASCAHPS_SurveyTypeID As Integer = 16
+    Private Const const_HCAHPS_SurveyTypeID As Integer = 2
+    Private Const const_HHCAHPS_SurveyTypeID As Integer = 3
+    Private Const const_OASCAHPS_SurveyTypeID As Integer = 16
 
     Private WithEvents mNavControl As MedicareMngrNavigator
     Private mMedicareNumber As MedicareNumber
@@ -71,14 +71,14 @@ Public Class MedicareMngrSection
 
 #End Region
 
-#Region "Event Handlers"
+#Region "Common Event Handlers"
 
     Private Sub mNavControl_MedicareSelectionChanged(ByVal sender As Object, ByVal e As MedicareSelectionChangedEventArgs) Handles mNavControl.MedicareSelectionChanged
 
         'Set member variables
         mMedicareNumber = e.MedicareNumber
         If e.MedicareNumber IsNot Nothing Then
-            mHHCAHPS_MedicareNumber = MedicareSurveyTypeProvider.Instance.Select(mMedicareNumber.MedicareNumber, mHHCAHPS_SurveyTypeID)
+            mHHCAHPS_MedicareNumber = MedicareSurveyTypeProvider.Instance.Select(mMedicareNumber.MedicareNumber, const_HHCAHPS_SurveyTypeID)
             If mHHCAHPS_MedicareNumber Is Nothing Then
                 Dim globalDef As MedicareGlobalCalculationDefault = MedicareGlobalCalculationDefault.GetAll()(1)
 
@@ -86,7 +86,7 @@ Public Class MedicareMngrSection
 
                 mHHCAHPS_MedicareNumber.MedicareNumber = mMedicareNumber.MedicareNumber
                 mHHCAHPS_MedicareNumber.Name = mMedicareNumber.Name
-                mHHCAHPS_MedicareNumber.SurveyTypeID = mHHCAHPS_SurveyTypeID
+                mHHCAHPS_MedicareNumber.SurveyTypeID = const_HHCAHPS_SurveyTypeID
 
                 Dim quarterNumber As Integer = (Date.Now().Month() - 1) \ 3 + 1
                 Dim firstDayOfQuarterNextYear As New DateTime(Date.Now().Year + 1, (quarterNumber - 1) * 3 + 1, 1)
@@ -101,6 +101,8 @@ Public Class MedicareMngrSection
                 mHHCAHPS_MedicareNumber.SwitchFromRateOverrideDate = New Date(1900, 1, 1)
 
             End If
+
+            'TODO: OAS
         End If
 
         'Populate the screen
@@ -115,28 +117,6 @@ Public Class MedicareMngrSection
     Private Sub mNavControl_MedicareSelectionChanging(ByVal sender As Object, ByVal e As MedicareSelectionChangingEventArgs) Handles mNavControl.MedicareSelectionChanging
 
         e.Cancel = Not AllowInactivate()
-
-    End Sub
-
-    Private Sub EstimatedRadioButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EstimatedRadioButton.Click
-
-        If EstimatedRadioButton.Checked Then
-            mMedicareNumber.ProportionCalcTypeID = MedicareProportionCalcTypes.Estimated
-            HistoricRadioButton.Checked = False
-        Else
-            HistoricRadioButton.Checked = True
-        End If
-
-    End Sub
-
-    Private Sub HistoricRadioButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles HistoricRadioButton.Click
-
-        If HistoricRadioButton.Checked Then
-            mMedicareNumber.ProportionCalcTypeID = MedicareProportionCalcTypes.Historical
-            EstimatedRadioButton.Checked = False
-        Else
-            EstimatedRadioButton.Checked = True
-        End If
 
     End Sub
 
@@ -161,7 +141,10 @@ Public Class MedicareMngrSection
             If mMedicareNumber.IsDirty Then
                 mMedicareNumber.ApplyEdit()
                 mMedicareNumber.Save()
-                If mSampleUnlocked Then mMedicareNumber.LogUnlockSample(CurrentUser.MemberID)
+                If mSampleUnlocked Then
+                    mMedicareNumber.LogUnlockSample(CurrentUser.MemberID)
+                    mSampleUnlocked = False
+                End If
                 mMedicareNumber.BeginEdit()
             End If
 
@@ -178,7 +161,7 @@ Public Class MedicareMngrSection
                     If Date.Compare(mHHCAHPS_MedicareNumber.SwitchFromRateOverrideDate.Date, #1/1/1900#) = 0 Then
                         isOverrideDateBlank = True
                     End If
-                    If mHHCAHPS_MedicareNumber.SamplingRateOverride > 0 Then
+                    If mHHCAHPS_MedicareNumber.SamplingRateOverride > CDec(0) Then
                         isOverrideRateBlank = False
                     End If
 
@@ -192,7 +175,11 @@ Public Class MedicareMngrSection
                         mHHCAHPS_MedicareNumber.Name = mMedicareNumber.Name
                         mHHCAHPS_MedicareNumber.ApplyEdit()
                         mHHCAHPS_MedicareNumber.Save()
-                        If mHHCAHPS_SampleUnlocked Then medicareCommon.LogUnlockSample(CurrentUser.MemberID)
+                        If mHHCAHPS_SampleUnlocked Then
+                            medicareCommon.LogUnlockSample(CurrentUser.MemberID, const_HHCAHPS_SurveyTypeID)
+                            mHHCAHPS_SampleUnlocked = False
+                        End If
+
                         mHHCAHPS_MedicareNumber.BeginEdit()
 
                     End If
@@ -248,6 +235,31 @@ Public Class MedicareMngrSection
 
     End Sub
 
+#End Region
+
+#Region "HCAHPS Event Handlers"
+    Private Sub EstimatedRadioButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EstimatedRadioButton.Click
+
+        If EstimatedRadioButton.Checked Then
+            mMedicareNumber.ProportionCalcTypeID = MedicareProportionCalcTypes.Estimated
+            HistoricRadioButton.Checked = False
+        Else
+            HistoricRadioButton.Checked = True
+        End If
+
+    End Sub
+
+    Private Sub HistoricRadioButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles HistoricRadioButton.Click
+
+        If HistoricRadioButton.Checked Then
+            mMedicareNumber.ProportionCalcTypeID = MedicareProportionCalcTypes.Historical
+            EstimatedRadioButton.Checked = False
+        Else
+            EstimatedRadioButton.Checked = True
+        End If
+
+    End Sub
+
     Private Sub MedicareReCalcButton_Click(sender As Object, e As EventArgs) Handles MedicareReCalcButton.Click
         If Not mMedicareNumber.IsValid Then
             MessageBox.Show("Invalid data exists.  Please correct and try again.", "Recalc Proportion", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -295,6 +307,58 @@ Public Class MedicareMngrSection
 
 #End Region
 
+#Region "HHCAHPS Event Handlers"
+
+    Private Sub HHCAHPSMedicareReCalcButton_Click(sender As Object, e As EventArgs) Handles HHCAHPS_MedicareReCalcButton.Click
+        If Not mHHCAHPS_MedicareNumber.IsValid Then
+            MessageBox.Show("Invalid data exists.  Please correct and try again.", "Recalc Proportion", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Exit Sub
+        End If
+
+        If mHHCAHPS_MedicareNumber.IsDirty Then
+            MessageBox.Show("You must save changes before you can recalculate the proportion.", "Recalc Proportion", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Exit Sub
+        End If
+
+        Dim dlg As ForceRecalculate = New ForceRecalculate(mHHCAHPS_MedicareNumber, const_HHCAHPS_SurveyTypeID)
+
+        If dlg.ShowDialog() = DialogResult.OK Then
+            Dim medicareCommon As MedicareCommon = New MedicareCommon(mMedicareNumber.MedicareNumber, mMedicareNumber.Name)
+
+            mHHCAHPS_MedicareNumber.ApplyEdit()
+            mHHCAHPS_MedicareNumber.Save()
+            If mHHCAHPS_SampleUnlocked Then medicareCommon.LogUnlockSample(CurrentUser.MemberID, const_HHCAHPS_SurveyTypeID)
+            mHHCAHPS_MedicareNumber.BeginEdit()
+            PopulateMedicareSection()
+        End If
+    End Sub
+
+    Private Sub HHCAHPSMedicareCalcHistoryButton_Click(sender As Object, e As EventArgs) Handles HHCAHPS_MedicareCalcHistoryButton.Click
+        Dim dlg As PropCalcHistory = New PropCalcHistory(mHHCAHPS_MedicareNumber, const_HHCAHPS_SurveyTypeID)
+        dlg.ShowDialog()
+    End Sub
+
+    Private Sub HHCAHPSMedicareUnlockSamplingButton_Click(sender As Object, e As EventArgs) Handles HHCAHPS_MedicareUnlockSamplingButton.Click
+        If Not mHHCAHPS_MedicareNumber.SamplingLocked Then Exit Sub
+
+        If Not mHHCAHPS_MedicareNumber.IsValid Then
+            MessageBox.Show("Invalid data exists.  Please correct and try again.", "Unlock Sampling", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Exit Sub
+        End If
+
+        'Lets unlock it
+        If MessageBox.Show("Are you sure you wish to unlock sampling for this medicare number?", "Unlock Sampling", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) = DialogResult.Yes Then
+            'User says do it
+            mHHCAHPS_MedicareNumber.SamplingLocked = False
+            'Set sample unlock flag. Written to log table during save.
+            mHHCAHPS_SampleUnlocked = True
+            DisplaySamplingLock_HHCAHPS(mHHCAHPS_MedicareNumber.SamplingLocked)
+        End If
+    End Sub
+
+#End Region
+
+    'TODO: OAS Event Handlers
 #Region "Public Methods"
 
 #End Region

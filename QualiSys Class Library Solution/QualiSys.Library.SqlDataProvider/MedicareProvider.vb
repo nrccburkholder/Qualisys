@@ -208,16 +208,16 @@ Public Class MedicareProvider
 
     End Function
 
-    Public Overrides Function GetHistoricAnnualVolume(ByVal medicareNumber As String, ByVal propSampleDate As Date) As Integer
+    Public Overrides Function GetHistoricAnnualVolume(ByVal medicareNumber As String, ByVal propSampleDate As Date, Optional ByVal surveyTypeID As Integer = 2) As Integer
 
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.GetHistoricAnnualVolumne, medicareNumber, propSampleDate)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.GetHistoricAnnualVolumne, medicareNumber, propSampleDate, surveyTypeID)
         Return ExecuteInteger(cmd)
 
     End Function
 
-    Public Overrides Function GetHistoricRespRate(ByVal medicareNumber As String, ByVal propSampleDate As Date) As Decimal
+    Public Overrides Function GetHistoricRespRate(ByVal medicareNumber As String, ByVal propSampleDate As Date, Optional ByVal surveyTypeID As Integer = 2) As Decimal
 
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.GetHistoricRespRate, medicareNumber, propSampleDate, 0)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.GetHistoricRespRate, medicareNumber, propSampleDate, surveyTypeID, 0)
         Using rdr As New SafeDataReader(ExecuteReader(cmd))
             If rdr.Read Then
                 Return CDec(rdr.Item(0)) / 100
@@ -228,9 +228,9 @@ Public Class MedicareProvider
 
     End Function
 
-    Public Overrides Function HasHistoricValues(ByVal medicareNumber As String, ByVal propSampleDate As Date) As Boolean
+    Public Overrides Function HasHistoricValues(ByVal medicareNumber As String, ByVal propSampleDate As Date, Optional ByVal surveyTypeID As Integer = 2) As Boolean
 
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.HasHistoricValues, medicareNumber, propSampleDate)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.HasHistoricValues, medicareNumber, surveyTypeID, propSampleDate)
         Return ExecuteBoolean(cmd)
 
     End Function
@@ -249,9 +249,9 @@ Public Class MedicareProvider
 
     End Function
 
-    Public Overrides Sub LogUnlockSample(ByVal medicareNumber As String, ByVal memberId As Integer, ByVal dateUnlocked As Date)
+    Public Overrides Sub LogUnlockSample(ByVal medicareNumber As String, ByVal memberId As Integer, ByVal dateUnlocked As Date, Optional ByVal surveyTypeID As Integer = 2)
 
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.InsertSamplingUnlockedLog, medicareNumber, memberId, dateUnlocked)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.InsertSamplingUnlockedLog, medicareNumber, memberId, dateUnlocked, surveyTypeID)
         ExecuteNonQuery(cmd)
 
     End Sub

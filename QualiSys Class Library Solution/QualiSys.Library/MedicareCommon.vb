@@ -95,14 +95,14 @@ Public Class MedicareCommon
 
     End Function
 
-    Public Function GetHistoricValues(ByVal sampleDate As Date, ByRef annualEligibleVolume As Integer, ByRef historicResponseRate As Decimal) As Boolean
+    Public Function GetHistoricValues(ByVal sampleDate As Date, ByRef annualEligibleVolume As Integer, ByRef historicResponseRate As Decimal, Optional ByVal surveyTypeID As Integer = 2) As Boolean
 
         Dim propSampleDate As Date = GetPropSampleDate(sampleDate)
-        Dim canUseHistoric As Boolean = MedicareProvider.Instance.HasHistoricValues(MedicareNumber, propSampleDate)
+        Dim canUseHistoric As Boolean = MedicareProvider.Instance.HasHistoricValues(MedicareNumber, propSampleDate, surveyTypeID)
 
         If canUseHistoric Then
-            annualEligibleVolume = MedicareProvider.Instance.GetHistoricAnnualVolume(MedicareNumber, propSampleDate)
-            historicResponseRate = MedicareProvider.Instance.GetHistoricRespRate(MedicareNumber, propSampleDate)
+            annualEligibleVolume = MedicareProvider.Instance.GetHistoricAnnualVolume(MedicareNumber, propSampleDate, surveyTypeID)
+            historicResponseRate = MedicareProvider.Instance.GetHistoricRespRate(MedicareNumber, propSampleDate, surveyTypeID)
         Else
             annualEligibleVolume = 0
             historicResponseRate = 0
@@ -112,7 +112,7 @@ Public Class MedicareCommon
 
     End Function
 
-    Public Sub SendSamplingLockNotification(ByVal lastRecalcDateCalculated As Date, ByVal lastRecalcProportion As Decimal, ByVal currCalc As MedicareRecalcHistory)
+    Public Sub SendSamplingLockNotification(ByVal lastRecalcDateCalculated As Date, ByVal lastRecalcProportion As Decimal, ByVal currCalc As MedicareRecalcHistory, ByVal surveyTypeID As Integer)
 
         Dim toList As New List(Of String)
         Dim ccList As New List(Of String)
@@ -192,6 +192,8 @@ Public Class MedicareCommon
                 .Add("RecipientNoteHtml", recipientNoteHtml)
                 .Add("Environment", environment)
                 .Add("RecalcHistoryLink", String.Format("{0}&MedicareNumber={1}", AppConfig.Params("CMRecalcHistoryReport").StringValue, MedicareNumber))
+                'TODO: change to use the following URL once Ted is done with the report changes
+                '.Add("RecalcHistoryLink", String.Format("{0}&MedicareNumber={1}&SurveyTypeID={2}", AppConfig.Params("CMRecalcHistoryReport").StringValue, MedicareNumber, surveyTypeID))
             End With
 
             'Add the replacement tables
@@ -206,9 +208,9 @@ Public Class MedicareCommon
 
     End Sub
 
-    Public Sub LogUnlockSample(ByVal memberId As Integer)
+    Public Sub LogUnlockSample(ByVal memberId As Integer, ByVal surveyTypeID As Integer)
 
-        MedicareProvider.Instance.LogUnlockSample(MedicareNumber, memberId, Date.Now)
+        MedicareProvider.Instance.LogUnlockSample(MedicareNumber, memberId, Date.Now, surveyTypeID)
 
     End Sub
 

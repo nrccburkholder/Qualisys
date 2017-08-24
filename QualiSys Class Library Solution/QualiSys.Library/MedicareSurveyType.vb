@@ -8,9 +8,9 @@ Public Class MedicareSurveyType
     Inherits BusinessBase(Of MedicareSurveyType)
 
 #Region "Private Fields"
-    Private Const mHCAHPS_SurveyTypeID As Integer = 2
-    Private Const mHHCAHPS_SurveyTypeID As Integer = 3
-    Private Const mOASCAHPS_SurveyTypeID As Integer = 16
+    Private Const const_HCAHPS_SurveyTypeID As Integer = 2
+    Private Const const_HHCAHPS_SurveyTypeID As Integer = 3
+    Private Const const_OASCAHPS_SurveyTypeID As Integer = 16
 
     Private mLastRecalcLoaded As Boolean
     Private mHistoricLoaded As Boolean
@@ -214,6 +214,15 @@ Public Class MedicareSurveyType
         End Set
     End Property
 
+    Public ReadOnly Property MedicareGlobalDates() As MedicareGlobalCalcDateCollection
+        Get
+            If Me.mMedicareGlobalDates Is Nothing Then
+                Me.mMedicareGlobalDates = MedicareGlobalCalcDate.GetAll()
+            End If
+            Return Me.mMedicareGlobalDates
+        End Get
+    End Property
+
 #End Region
 
 #Region "MedicareSurveyType Display Properties"
@@ -326,7 +335,7 @@ Public Class MedicareSurveyType
     Public ReadOnly Property CanUseHistoric() As Boolean
         Get
             If Not mHistoricLoaded Then
-                mCanUseHistoric = MedicareCommon.GetHistoricValues(Date.Now, mAnnualEligibleVolume, mHistoricResponseRate)
+                mCanUseHistoric = MedicareCommon.GetHistoricValues(Date.Now, mAnnualEligibleVolume, mHistoricResponseRate, SurveyTypeID)
                 mHistoricLoaded = True
             End If
             Return mCanUseHistoric
@@ -336,7 +345,7 @@ Public Class MedicareSurveyType
     Public ReadOnly Property AnnualEligibleVolume() As Integer
         Get
             If Not mHistoricLoaded Then
-                mCanUseHistoric = MedicareCommon.GetHistoricValues(Date.Now, mAnnualEligibleVolume, mHistoricResponseRate)
+                mCanUseHistoric = MedicareCommon.GetHistoricValues(Date.Now, mAnnualEligibleVolume, mHistoricResponseRate, SurveyTypeID)
                 mHistoricLoaded = True
             End If
             Return mAnnualEligibleVolume
@@ -346,7 +355,7 @@ Public Class MedicareSurveyType
     Public ReadOnly Property HistoricResponseRate() As Decimal
         Get
             If Not mHistoricLoaded Then
-                mCanUseHistoric = MedicareCommon.GetHistoricValues(Date.Now, mAnnualEligibleVolume, mHistoricResponseRate)
+                mCanUseHistoric = MedicareCommon.GetHistoricValues(Date.Now, mAnnualEligibleVolume, mHistoricResponseRate, SurveyTypeID)
                 mHistoricLoaded = True
             End If
             Return mHistoricResponseRate
@@ -378,15 +387,6 @@ Public Class MedicareSurveyType
 #End Region
 
 #Region "Private Properties"
-
-    Private ReadOnly Property MedicareGlobalDates() As MedicareGlobalCalcDateCollection
-        Get
-            If Me.mMedicareGlobalDates Is Nothing Then
-                Me.mMedicareGlobalDates = MedicareGlobalCalcDate.GetAll()
-            End If
-            Return Me.mMedicareGlobalDates
-        End Get
-    End Property
 
     Private ReadOnly Property LastRecalcHistory() As MedicareRecalcHistory
         Get
@@ -557,7 +557,6 @@ Public Class MedicareSurveyType
 
     End Function
 
-
 #End Region
 
 #Region "Private Methods"
@@ -566,7 +565,7 @@ Public Class MedicareSurveyType
     Private Function CalculateProportion(ByVal forced As Boolean, ByVal sampleDate As Date, ByVal memberID As Integer, ByRef sampleLockNotifyFailed As Boolean) As Boolean
 
         Select Case SurveyTypeID
-            Case mHHCAHPS_SurveyTypeID
+            Case const_HHCAHPS_SurveyTypeID
                 If SamplingRateOverride > 0 And SwitchFromRateOverrideDate > Date.Now Then
                     ProportionCalcTypeID = MedicareProportionCalcTypes.RateOverride
                     Return HHCAHPS_CalculateProportionUsingOverride(forced, sampleDate, memberID, sampleLockNotifyFailed)
@@ -593,7 +592,7 @@ Public Class MedicareSurveyType
         Dim historicResponseRate As Decimal
         Dim errorEncountered As Boolean = False
 
-        Dim canUseHistoric As Boolean = MedicareCommon.GetHistoricValues(sampleDate, annualEligibleVolume, historicResponseRate)
+        Dim canUseHistoric As Boolean = MedicareCommon.GetHistoricValues(sampleDate, annualEligibleVolume, historicResponseRate, SurveyTypeID)
 
         If canUseHistoric Then
             'Validate the parameters for a divide by zero condition
@@ -645,7 +644,7 @@ Public Class MedicareSurveyType
                 sampleLockNotifyFailed = False
                 If SamplingLocked Then
                     Try
-                        MedicareCommon.SendSamplingLockNotification(LastRecalcDateCalculated, LastRecalcProportion, objLog)
+                        MedicareCommon.SendSamplingLockNotification(LastRecalcDateCalculated, LastRecalcProportion, objLog, SurveyTypeID)
                     Catch ex As Exception
                         sampleLockNotifyFailed = True
                     End Try
@@ -723,7 +722,7 @@ Public Class MedicareSurveyType
             sampleLockNotifyFailed = False
             If SamplingLocked Then
                 Try
-                    MedicareCommon.SendSamplingLockNotification(LastRecalcDateCalculated, LastRecalcProportion, objLog)
+                    MedicareCommon.SendSamplingLockNotification(LastRecalcDateCalculated, LastRecalcProportion, objLog, SurveyTypeID)
                 Catch ex As Exception
                     sampleLockNotifyFailed = True
                 End Try
@@ -776,7 +775,7 @@ Public Class MedicareSurveyType
         sampleLockNotifyFailed = False
         If SamplingLocked Then
             Try
-                MedicareCommon.SendSamplingLockNotification(LastRecalcDateCalculated, LastRecalcProportion, objLog)
+                MedicareCommon.SendSamplingLockNotification(LastRecalcDateCalculated, LastRecalcProportion, objLog, SurveyTypeID)
             Catch ex As Exception
                 sampleLockNotifyFailed = True
             End Try
