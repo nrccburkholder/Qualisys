@@ -159,6 +159,7 @@
     <Compile Include="DataProviders\EmailBlastProvider.vb" />
     <Compile Include="DataProviders\EmailBlastOptionProvider.vb" />
     <Compile Include="DataProviders\MailingStepMethodProvider.vb" />
+    <Compile Include="DataProviders\MedicareSurveyTypeProvider.vb" />
     <Compile Include="DataProviders\ModeSectionMappingProvider.vb" />
     <Compile Include="DataProviders\NavigationProvider.vb">
       <SubType>Code</SubType>
@@ -219,6 +220,8 @@
     <Compile Include="FacilityRegion.vb" />
     <Compile Include="FacilityState.vb" />
     <Compile Include="FormGenJob.vb" />
+    <Compile Include="MedicareCommon.vb" />
+    <Compile Include="MedicareSurveyType.vb" />
     <Compile Include="ODSDBDataAccess\BaseSqlDataProvider.vb" />
     <Compile Include="ODSDBDataAccess\IODSDBRepository.vb" />
     <Compile Include="ODSDBDataAccess\ODSDBRepository.vb" />
@@ -362,6 +365,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
     <None Include="QualisysLibraryClassDiagram.cd" />
     <None Include="Diagrams\ClassDiagram.cd" />
