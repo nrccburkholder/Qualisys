@@ -31,7 +31,6 @@ GO
 PRINT 'Start rollback stored procedure changes'
 GO
 
-
 PRINT 'Rollback stored procedure QCL_InsertSamplingUnlockedLog'
 GO
 ALTER PROCEDURE [dbo].[QCL_InsertSamplingUnlockedLog]
@@ -50,20 +49,39 @@ SELECT SCOPE_IDENTITY()
 SET NOCOUNT OFF
 GO
 
-PRINT 'Rollback stored procedure QCL_SelectAllMedicareGlobalReCalcDates'
+--PRINT 'Rollback stored procedure QCL_SelectAllMedicareGlobalReCalcDates'
+--GO
+--ALTER PROCEDURE [dbo].[QCL_SelectAllMedicareGlobalReCalcDates]
+--AS
+
+--SET NOCOUNT ON
+--SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+
+--SELECT MedicareGlobalReCalcDate_id, MedicareGlobalRecalcDefault_id, ReCalcMonth
+--FROM [dbo].MedicareGlobalReCalcDates
+
+--SET NOCOUNT OFF
+--SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+--GO
+
+PRINT ' Create stored procedure QCL_GetLatestMedicareRecalcSurveyTypeHistoryByMedicareNumber'
 GO
-ALTER PROCEDURE [dbo].[QCL_SelectAllMedicareGlobalReCalcDates]
-AS
-
-SET NOCOUNT ON
-SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
-
-SELECT MedicareGlobalReCalcDate_id, MedicareGlobalRecalcDefault_id, ReCalcMonth
-FROM [dbo].MedicareGlobalReCalcDates
-
-SET NOCOUNT OFF
-SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[QCL_GetLatestMedicareRecalcSurveyTypeHistoryByMedicareNumber]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[QCL_GetLatestMedicareRecalcSurveyTypeHistoryByMedicareNumber]
 GO
+
+PRINT 'Rollback stored procedure QCL_SelectMedicareRecalcSurveyTypeHistoryBySampleDate'
+ GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[QCL_SelectMedicareRecalcSurveyTypeHistoryBySampleDate]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[QCL_SelectMedicareRecalcSurveyTypeHistoryBySampleDate]
+GO
+
+ PRINT 'Rollback stored procedure QCL_SelectAllMedicareRecalcSurveyType_Histories'
+ GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[QCL_GetLatestMedicareRecalcSurveyTypeHistoryByMedicareNumber]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[QCL_GetLatestMedicareRecalcSurveyTypeHistoryByMedicareNumber]
+GO
+
 
 PRINT 'End rollback stored procedure changes'
 GO
