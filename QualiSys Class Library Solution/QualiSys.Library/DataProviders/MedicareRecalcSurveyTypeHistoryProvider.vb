@@ -30,7 +30,7 @@
         Public MustOverride Function Insert(ByVal instance As MedicareRecalcSurveyTypeHistory) As Integer
         'Public MustOverride Sub Update(ByVal instance As MedicareRecalcSurveyTypeHistory)
         'Public MustOverride Sub Delete(ByVal MedicareRecalcSurveyTypeHistoryID As Integer)
-        Public MustOverride Function GetLatestByMedicareNumber(ByVal medicareNumber As String, ByVal latestDate As Date, ByVal userCensusForced As Boolean) As MedicareRecalcSurveyTypeHistory
+        Public MustOverride Function GetLatestByMedicareNumber(ByVal medicareNumber As String, ByVal latestDate As Date) As MedicareRecalcSurveyTypeHistory
         Public MustOverride Function GetLatestBySampleDate(ByVal medicareNumber As String, ByVal sampleDate As Date) As MedicareRecalcSurveyTypeHistory
 
     End Class
