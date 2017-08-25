@@ -77,7 +77,7 @@ Friend Class MedicareRecalcSurveyTypeHistoryProvider
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Public Overrides Function GetAll() As MedicareRecalcSurveyTypeHistoryCollection
 
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectMedicareRecalcSurveyTypeHistory)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectAllMedicareRecalcSurveyTypeHistory)
         Using rdr As New SafeDataReader(ExecuteReader(cmd))
             Return PopulateCollection(Of MedicareRecalcSurveyTypeHistoryCollection, MedicareRecalcSurveyTypeHistory)(rdr, AddressOf PopulateMedicareRecalcSurveyTypeHistory)
         End Using
@@ -91,7 +91,7 @@ Friend Class MedicareRecalcSurveyTypeHistoryProvider
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Public Overrides Function GetLatestByMedicareNumber(ByVal medicareNumber As String, ByVal latestDate As Date, ByVal userCensusForced As Boolean) As MedicareRecalcSurveyTypeHistory
 
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectMedicareRecalcSurveyTypeHistory, medicareNumber, latestDate, userCensusForced)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectMedicareRecalcSurveyTypeHistoryByMedicareNumber, medicareNumber, latestDate, userCensusForced)
         Using rdr As New SafeDataReader(ExecuteReader(cmd))
             If Not rdr.Read Then
                 Return Nothing
@@ -109,7 +109,7 @@ Friend Class MedicareRecalcSurveyTypeHistoryProvider
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Public Overrides Function GetLatestBySampleDate(ByVal medicareNumber As String, ByVal sampleDate As Date) As MedicareRecalcSurveyTypeHistory
 
-        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectMedicareRecalcSurveyTypeHistory, medicareNumber, sampleDate)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectMedicareRecalcSurveyTypeHistoryBySampleDate, medicareNumber, sampleDate)
         Using rdr As New SafeDataReader(ExecuteReader(cmd))
             If Not rdr.Read Then
                 Return Nothing
