@@ -189,6 +189,7 @@ AND ACODisposition = 34
 			, 0 as tempFlag
 			, DaysFromFirst, DaysFromCurrent --	S43 US8
 			, Sampleset_id
+                        , Surveytype_id
 			into #QFResponseCount
 			from #TodaysReturns
 			where Surveytype_dsc in ('ICHCAHPS','Home Health CAHPS','OAS CAHPS')
@@ -304,9 +305,9 @@ AND ACODisposition = 34
 				end
 
 				-- if we're ETLing something, check to see if any other returned mailsteps had more questions answered. If so, ETL the other mailstep
-				insert into #qfresponsecount (Surveytype_dsc, survey_id, QuestionForm_id, sentmail_id, samplepop_id, receipttype_id, strMailingStep_nm, ResponseCount, FutureScheduledMailing,AllMailStepsAreBack,tempFlag,DaysFromFirst,DaysFromCurrent,Sampleset_id)
+				insert into #qfresponsecount (Surveytype_dsc, survey_id, QuestionForm_id, sentmail_id, samplepop_id, receipttype_id, strMailingStep_nm, ResponseCount, FutureScheduledMailing,AllMailStepsAreBack,tempFlag,DaysFromFirst,DaysFromCurrent,Sampleset_id,SurveyType_id)
 				select tr.Surveytype_dsc, tr.survey_id, qf.QuestionForm_id, qf.sentmail_id, qf.samplepop_id, qf.receipttype_id, ms.strmailingStep_nm, 0 as ResponseCount, 0 as FutureScheduledMailing, 1 as AllMailStepsAreBack, 1 as tempFlag
-				, tr.DaysFromFirst, tr.DaysFromCurrent, tr.Sampleset_id
+				, tr.DaysFromFirst, tr.DaysFromCurrent, tr.Sampleset_id, tr.surveyType_id
 				from #TodaysReturns tr
 				inner join questionform qf on tr.samplepop_id=qf.samplepop_id
 				inner join ScheduledMailing scm on qf.sentmail_id=scm.sentmail_id
@@ -628,8 +629,7 @@ AND ACODisposition = 34
 								inner join questionresult2 qr2 on rc.QuestionForm_id=qr2.QuestionForm_id) qr
 						inner join DL_SEL_QSTNS_BySampleSet sq on qr.survey_id = sq.survey_id and qr.qstncore = sq.qstncore and qr.sampleset_id=sq.SampleSet_ID
 						inner join DL_SEL_SCLS_BySampleSet ss on sq.scaleid = ss.qpc_id AND sq.survey_id = ss.survey_id and qr.intresponseval = ss.val and sq.SampleSet_ID=ss.Sampleset_ID
-						where sq.qstncore in (54086,54087,54088,54089,54090,54091,54092,54093,54094,54095,54098,54099,54100,
-											  54101,54102,54103,54104,54105,54106,54107,54108,54109)
+						where sq.qstncore in (SELECT qstnCore FROM SurveyTypeQuestionMappings WHERE SurveyType_id = 16 AND isATA = 1)
 						and sq.subtype = 1 
 						AND sq.language = 1 
 						AND ss.language = 1 
@@ -673,6 +673,7 @@ AND ACODisposition = 34
 	, 0 as tempFlag
 	, DaysFromFirst, DaysFromCurrent --	S43 US8
 	, Sampleset_id
+        , SurveyType_id
 	from #TodaysReturns
 	where Surveytype_dsc in ('HCAHPS IP', 'Hospice CAHPS') -- added Hospice CAHPS 2015-02-19
 
@@ -1067,4 +1068,3 @@ begin
 end
 
 GO
-

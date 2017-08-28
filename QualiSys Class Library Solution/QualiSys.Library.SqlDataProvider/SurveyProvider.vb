@@ -9,7 +9,7 @@ Public Class SurveyProvider
 
     End Function
 
-    Friend Shared Function PopulateSurvey(ByVal rdr As SafeDataReader, ByVal parentStudy As Study) As Survey
+    Friend Shared Function PopulateSurvey(ByVal rdr As SafeDataReader, ByVal parentStudy As Study, Optional ByVal loadSubtypes As Boolean = True) As Survey
 
         Dim newObj As New Survey(parentStudy)
 
@@ -25,8 +25,10 @@ Public Class SurveyProvider
         newObj.CutoffFieldId = rdr.GetInteger("CutoffField_id", -1)
         Dim sampleEncounterTableId As Integer = rdr.GetInteger("SampleEncounterTable_Id", -1)
         Dim sampleEncounterFieldId As Integer = rdr.GetInteger("SampleEncounterField_Id", -1)
-        If (sampleEncounterTableId <> -1 AndAlso sampleEncounterFieldId <> -1) Then
-            newObj.SampleEncounterField = StudyTableColumn.Get(sampleEncounterTableId, sampleEncounterFieldId)
+        If loadSubtypes Then
+            If (sampleEncounterTableId <> -1 AndAlso sampleEncounterFieldId <> -1) Then
+                newObj.SampleEncounterField = StudyTableColumn.Get(sampleEncounterTableId, sampleEncounterFieldId)
+            End If
         End If
         newObj.IsValidated = rdr.GetBoolean("bitValidated_flg")
         newObj.DateValidated = rdr.GetDate("datValidated")
@@ -56,14 +58,16 @@ Public Class SurveyProvider
         newObj.IsHandout = rdr.GetBoolean("IsHandout")
         newObj.IsPointInTime = rdr.GetBoolean("IsPointInTime")
 
-        newObj.QuestionnaireType = SelectSurveyTypeForCategory(survey_id, SubtypeCategories.QuestionnaireType)
-        newObj.QuestionnaireType.ResetDirtyFlag()
+        If loadSubtypes Then
+            newObj.QuestionnaireType = SelectSurveyTypeForCategory(survey_id, SubtypeCategories.QuestionnaireType)
+            newObj.QuestionnaireType.ResetDirtyFlag()
 
-        newObj.ResurveyExclusionType = SelectSurveyTypeForCategory(survey_id, SubtypeCategories.ResurveyExclusionType)
-        newObj.ResurveyExclusionType.ResetDirtyFlag()
+            newObj.ResurveyExclusionType = SelectSurveyTypeForCategory(survey_id, SubtypeCategories.ResurveyExclusionType)
+            newObj.ResurveyExclusionType.ResetDirtyFlag()
 
-        newObj.SurveySubTypes = SelectSurveySubTypes(survey_id, SubtypeCategories.Subtype)
-        newObj.SurveySubTypes.ResetDirtyFlag()
+            newObj.SurveySubTypes = SelectSurveySubTypes(survey_id, SubtypeCategories.Subtype)
+            newObj.SurveySubTypes.ResetDirtyFlag()
+        End If
 
         newObj.ResetDirtyFlag()
 

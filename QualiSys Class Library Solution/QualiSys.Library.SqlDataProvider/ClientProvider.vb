@@ -115,7 +115,7 @@ Public Class ClientProvider
                                 Using surveyRowReader As New DataRowReader(studyRowReader.CurrentRow.GetChildRows("StudySurvey"))
                                     Using surveyReader As New SafeDataReader(surveyRowReader)
                                         While surveyReader.Read
-                                            Dim srvy As Survey = SurveyProvider.PopulateSurvey(surveyReader, stdy)
+                                            Dim srvy As Survey = SurveyProvider.PopulateSurvey(surveyReader, stdy, False)
                                             surveys.Add(srvy)
                                         End While
                                     End Using

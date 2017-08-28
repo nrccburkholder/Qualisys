@@ -202,7 +202,7 @@ Public Class ClientGroupProvider
                                                 Using surveyReader As New SafeDataReader(surveyRowReader)
                                                     While surveyReader.Read
                                                         'Create a new survey object and add it to the survey collection
-                                                        Dim srvy As Survey = SurveyProvider.PopulateSurvey(surveyReader, stdy)
+                                                        Dim srvy As Survey = SurveyProvider.PopulateSurvey(surveyReader, stdy, False)
                                                         surveys.Add(srvy)
                                                     End While
                                                 End Using
