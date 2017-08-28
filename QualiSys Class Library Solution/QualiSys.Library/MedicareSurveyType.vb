@@ -35,7 +35,7 @@ Public Class MedicareSurveyType
     Private mCanUseHistoric As Boolean 'for historical
 
     Private mCalculationErrors As New List(Of String)
-    Private mLastRecalcHistory As MedicareRecalcHistory
+    Private mLastRecalcHistory As MedicareRecalcSurveyTypeHistory
     Private mMedicareGlobalDates As MedicareGlobalCalcDateCollection
 
     Private mProportionCalcTypeID As MedicareProportionCalcTypes
@@ -66,7 +66,6 @@ Public Class MedicareSurveyType
         Set(ByVal value As String)
             If mName <> value Then
                 mName = value
-                PropertyHasChanged("Name")
             End If
         End Set
     End Property
@@ -277,7 +276,7 @@ Public Class MedicareSurveyType
 
 #End Region
 
-#Region "MedicareRecalcHistory Properties"
+#Region "MedicareRecalcSurveyTypeHistory Properties"
     Public ReadOnly Property LastRecalcDateCalculated() As Date
         Get
             If LastRecalcHistory Is Nothing Then
@@ -320,7 +319,7 @@ Public Class MedicareSurveyType
 
 #End Region
 
-#Region "MedicareRecalcHistory Display Properties"
+#Region "MedicareRecalcSurveyTypeHistory Display Properties"
 
     Public ReadOnly Property LastRecalcProportionDisplay() As Decimal
         Get
@@ -388,10 +387,10 @@ Public Class MedicareSurveyType
 
 #Region "Private Properties"
 
-    Private ReadOnly Property LastRecalcHistory() As MedicareRecalcHistory
+    Private ReadOnly Property LastRecalcHistory() As MedicareRecalcSurveyTypeHistory
         Get
             If mLastRecalcHistory Is Nothing AndAlso Not mLastRecalcLoaded Then
-                mLastRecalcHistory = MedicareRecalcHistory.GetLatestByMedicareNumber(mMedicareNumber, Date.Now, False)
+                mLastRecalcHistory = MedicareRecalcSurveyTypeHistory.GetLatestByMedicareNumber(mMedicareNumber, Date.Now)
                 mLastRecalcLoaded = True
             End If
             Return mLastRecalcHistory
@@ -566,11 +565,11 @@ Public Class MedicareSurveyType
 
         Select Case SurveyTypeID
             Case const_HHCAHPS_SurveyTypeID
-                If SamplingRateOverride > 0 And SwitchFromRateOverrideDate > Date.Now Then
+                If SamplingRateOverride > 0 And SwitchFromRateOverrideDate.Date > Date.Now().Date Then
                     ProportionCalcTypeID = MedicareProportionCalcTypes.RateOverride
                     Return HHCAHPS_CalculateProportionUsingOverride(forced, sampleDate, memberID, sampleLockNotifyFailed)
                 Else
-                    If SwitchToCalcDate <= Date.Now Then
+                    If SwitchToCalcDate.Date <= Date.Now().Date Then
                         ProportionCalcTypeID = MedicareProportionCalcTypes.Historical
                         Return HHCAHPS_CalculateProportionUsingHistorical(forced, sampleDate, memberID, sampleLockNotifyFailed)
                     Else
@@ -621,11 +620,12 @@ Public Class MedicareSurveyType
                 End If
 
                 'Log proportion History.
-                Dim objLog As MedicareRecalcHistory = MedicareRecalcHistory.NewMedicareRecalcHistory()
+                Dim objLog As MedicareRecalcSurveyTypeHistory = MedicareRecalcSurveyTypeHistory.NewMedicareRecalcSurveyTypeHistory()
                 objLog.MedicarePropCalcTypeID = ProportionCalcTypeID
                 objLog.MedicarePropDataTypeID = MedicareProportionDataTypes.Historical
                 objLog.MedicareName = Name
                 objLog.MedicareNumber = MedicareNumber
+                objLog.SurveyTypeID = const_HHCAHPS_SurveyTypeID
                 objLog.EstRespRate = EstResponseRate
                 objLog.EstAnnualVolume = EstAnnualVolume
                 objLog.SwitchToCalcDate = SwitchToCalcDate
@@ -639,6 +639,8 @@ Public Class MedicareSurveyType
                 objLog.HistoricAnnualVolume = annualEligibleVolume
                 objLog.PropSampleCalcDate = propSampleDate
                 objLog.ForcedCalculation = forced
+                objLog.SamplingRateOverride = SamplingRateOverride
+                objLog.SwitchFromRateOverrideDate = SwitchFromRateOverrideDate
 
                 'Send and email notification if sampling is locked
                 sampleLockNotifyFailed = False
@@ -661,9 +663,11 @@ Public Class MedicareSurveyType
             End If
         Else
             'We can't use the historical numbers so we have to calculate using estimates or overrides
-            If SamplingRateOverride > 0 And SwitchFromRateOverrideDate < Date.Now Then
+            If SamplingRateOverride > 0 And SwitchFromRateOverrideDate.Date > Date.Now().Date Then
+                ProportionCalcTypeID = MedicareProportionCalcTypes.RateOverride
                 Return HHCAHPS_CalculateProportionUsingOverride(forced, sampleDate, memberID, sampleLockNotifyFailed)
             Else
+                ProportionCalcTypeID = MedicareProportionCalcTypes.Estimated
                 Return HHCAHPS_CalculateProportionUsingEstimates(forced, sampleDate, memberID, sampleLockNotifyFailed)
             End If
         End If
@@ -699,11 +703,12 @@ Public Class MedicareSurveyType
             End If
 
             'Log proportion History.
-            Dim objLog As MedicareRecalcHistory = MedicareRecalcHistory.NewMedicareRecalcHistory()
+            Dim objLog As MedicareRecalcSurveyTypeHistory = MedicareRecalcSurveyTypeHistory.NewMedicareRecalcSurveyTypeHistory()
             objLog.MedicarePropCalcTypeID = ProportionCalcTypeID
             objLog.MedicarePropDataTypeID = MedicareProportionDataTypes.Estimated
             objLog.MedicareName = Name
             objLog.MedicareNumber = MedicareNumber
+            objLog.SurveyTypeID = const_HHCAHPS_SurveyTypeID
             objLog.EstRespRate = EstResponseRate
             objLog.EstAnnualVolume = EstAnnualVolume
             objLog.SwitchToCalcDate = SwitchToCalcDate
@@ -717,6 +722,8 @@ Public Class MedicareSurveyType
             objLog.HistoricAnnualVolume = 0
             objLog.PropSampleCalcDate = propSampleDate
             objLog.ForcedCalculation = forced
+            objLog.SamplingRateOverride = SamplingRateOverride
+            objLog.SwitchFromRateOverrideDate = SwitchFromRateOverrideDate
 
             'Send and email notification if sampling is locked
             sampleLockNotifyFailed = False
@@ -752,11 +759,12 @@ Public Class MedicareSurveyType
         If annualProportion > 1 Then annualProportion = 1
 
         'Log proportion History.
-        Dim objLog As MedicareRecalcHistory = MedicareRecalcHistory.NewMedicareRecalcHistory
+        Dim objLog As MedicareRecalcSurveyTypeHistory = MedicareRecalcSurveyTypeHistory.NewMedicareRecalcSurveyTypeHistory()
         objLog.MedicarePropCalcTypeID = ProportionCalcTypeID
         objLog.MedicarePropDataTypeID = MedicareProportionDataTypes.RateOverride
         objLog.MedicareName = Name
         objLog.MedicareNumber = MedicareNumber
+        objLog.SurveyTypeID = const_HHCAHPS_SurveyTypeID
         objLog.EstRespRate = EstResponseRate
         objLog.EstAnnualVolume = EstAnnualVolume
         objLog.SwitchToCalcDate = SwitchToCalcDate
@@ -770,6 +778,8 @@ Public Class MedicareSurveyType
         objLog.HistoricAnnualVolume = 0
         objLog.PropSampleCalcDate = propSampleDate
         objLog.ForcedCalculation = forced
+        objLog.SamplingRateOverride = SamplingRateOverride
+        objLog.SwitchFromRateOverrideDate = SwitchFromRateOverrideDate
 
         'Send and email notification if sampling is locked
         sampleLockNotifyFailed = False

@@ -112,7 +112,7 @@ Public Class MedicareCommon
 
     End Function
 
-    Public Sub SendSamplingLockNotification(ByVal lastRecalcDateCalculated As Date, ByVal lastRecalcProportion As Decimal, ByVal currCalc As MedicareRecalcHistory, ByVal surveyTypeID As Integer)
+    Public Sub SendSamplingLockNotification(ByVal lastRecalcDateCalculated As Date, ByVal lastRecalcProportion As Decimal, ByVal currCalc As MedicareRecalcSurveyTypeHistory, ByVal surveyTypeID As Integer)
 
         Dim toList As New List(Of String)
         Dim ccList As New List(Of String)

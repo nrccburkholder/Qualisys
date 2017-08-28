@@ -122,6 +122,7 @@
     <Compile Include="Collections\DispositionCollection.vb" />
     <Compile Include="Collections\EmployeeCollection.vb" />
     <Compile Include="Collections\FacilityList.vb" />
+    <Compile Include="Collections\MedicareRecalcSurveyTypeHistoryCollection.vb" />
     <Compile Include="Collections\PracticeSiteList.vb" />
     <Compile Include="Collections\SiteGroupList.vb" />
     <Compile Include="Collections\HCAHPSDispositionCollection.vb" />
@@ -160,6 +161,7 @@
     <Compile Include="DataProviders\EmailBlastProvider.vb" />
     <Compile Include="DataProviders\EmailBlastOptionProvider.vb" />
     <Compile Include="DataProviders\MailingStepMethodProvider.vb" />
+    <Compile Include="DataProviders\MedicareRecalcSurveyTypeHistoryProvider.vb" />
     <Compile Include="DataProviders\MedicareSurveyTypeProvider.vb" />
     <Compile Include="DataProviders\ModeSectionMappingProvider.vb" />
     <Compile Include="DataProviders\NavigationProvider.vb">
@@ -222,6 +224,7 @@
     <Compile Include="FacilityState.vb" />
     <Compile Include="FormGenJob.vb" />
     <Compile Include="MedicareCommon.vb" />
+    <Compile Include="MedicareRecalcSurveyTypeHistory.vb" />
     <Compile Include="MedicareSurveyType.vb" />
     <Compile Include="ODSDBDataAccess\BaseSqlDataProvider.vb" />
     <Compile Include="ODSDBDataAccess\IODSDBRepository.vb" />

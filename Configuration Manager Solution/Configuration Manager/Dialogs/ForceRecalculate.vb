@@ -28,12 +28,6 @@ Public Class ForceRecalculate
                 mOASCAHPS_MedicareNumber = CType(medicareNum, MedicareSurveyType)
         End Select
 
-        'If TypeOf medicareNum Is MedicareNumber Then
-        '    mMedicareNumber = CType(medicareNum, MedicareNumber)
-        'Else
-        '    mHHCAHPS_MedicareNumber = CType(medicareNum, MedicareSurveyType)
-        'End If
-
         mSurveyTypeID = surveyTypeID
         InitMedicareValues()
 

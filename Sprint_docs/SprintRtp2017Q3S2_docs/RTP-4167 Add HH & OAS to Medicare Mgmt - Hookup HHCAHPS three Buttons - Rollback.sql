@@ -8,6 +8,9 @@
 	SP:
 		- Modify stored procedure QCL_InsertSamplingUnlockedLog
 		- Modify stored procedure QCL_SelectAllMedicareGlobalReCalcDates
+		- Create stored procedure QCL_GetLatestMedicareRecalcSurveyTypeHistoryByMedicareNumber
+		- Create stored procedure QCL_GetLatestMedicareRecalcSurveyTypeHistoryByMedicareNumber
+		- Create stored procedure QCL_SelectAllMedicareRecalcSurveyType_Histories
 */
 
 Use [QP_Prod]
@@ -81,7 +84,6 @@ GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[QCL_GetLatestMedicareRecalcSurveyTypeHistoryByMedicareNumber]') AND type in (N'P', N'PC'))
 DROP PROCEDURE [dbo].[QCL_GetLatestMedicareRecalcSurveyTypeHistoryByMedicareNumber]
 GO
-
 
 PRINT 'End rollback stored procedure changes'
 GO

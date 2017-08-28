@@ -93,7 +93,7 @@ BEGIN
 	DECLARE @name VARCHAR(200)
 	SELECT @name = MedicareName FROM MedicareLookup WHERE MedicareNumber=@MedicareNumber
 
-	SELECT Top 1 MedicareReCalcLog_ID, SurveyType_ID, MedicareNumber, @name AS MedicareName, MedicarePropCalcType_ID, 
+	SELECT Top 1 MedicareReCalcLog_ID, SurveyType_ID AS SurveyTypeID, MedicareNumber, @name AS MedicareName, MedicarePropCalcType_ID, 
 	MedicarePropDataType_ID, EstRespRate, EstAnnualVolume, SwitchToCalcDate, AnnualReturnTarget, ProportionCalcPct, SamplingLocked, 
 	ProportionChangeThreshold, Member_ID, DateCalculated, HistoricRespRate, HistoricAnnualVolume, ForcedCalculation, PropSampleCalcDate, 
 	SwitchFromRateOverrideDate, 	SamplingRateOverride
@@ -124,7 +124,7 @@ BEGIN
 	DECLARE @name VARCHAR(200)
 	SELECT @name=MedicareName FROM dbo.MedicareLookup WHERE MedicareNumber=@MedicareNumber
 
-	SELECT Top 1 MedicareReCalcLog_ID, SurveyType_ID, MedicareNumber, @name AS MedicareName, MedicarePropCalcType_ID, 
+	SELECT Top 1 MedicareReCalcLog_ID, SurveyType_ID AS SurveyTypeID, MedicareNumber, @name AS MedicareName, MedicarePropCalcType_ID, 
 	MedicarePropDataType_ID, EstRespRate, EstAnnualVolume, SwitchToCalcDate, AnnualReturnTarget, ProportionCalcPct, SamplingLocked, 
 	ProportionChangeThreshold, Member_ID, DateCalculated, HistoricRespRate, HistoricAnnualVolume, ForcedCalculation, PropSampleCalcDate, 
 	SwitchFromRateOverrideDate, SamplingRateOverride
@@ -149,7 +149,7 @@ BEGIN
 	SET NOCOUNT ON
 	SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 
-	SELECT History.MedicareReCalcLog_ID, History.SurveyType_ID, History.MedicareNumber, MedicareLookup.MedicareName, History.MedicarePropCalcType_ID, 
+	SELECT History.MedicareReCalcLog_ID, History.SurveyType_ID AS SurveyTypeID, History.MedicareNumber, MedicareLookup.MedicareName, History.MedicarePropCalcType_ID, 
 	History.MedicarePropDataType_ID, History.EstRespRate, History.EstAnnualVolume, History.SwitchToCalcDate, History.AnnualReturnTarget, History.ProportionCalcPct, History.SamplingLocked, 
 	History.ProportionChangeThreshold, History.Member_ID, History.DateCalculated, History.HistoricRespRate, History.HistoricAnnualVolume, History.ForcedCalculation, History.PropSampleCalcDate, 
 	History.SwitchFromRateOverrideDate, History.SamplingRateOverride

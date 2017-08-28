@@ -200,18 +200,6 @@ Public Class MedicareMngrSection
 
         End If
 
-        'If mMedicareNumber.IsDirty Then
-        '    If mMedicareNumber.IsValid Then
-        '        mMedicareNumber.ApplyEdit()
-        '        mMedicareNumber.Save()
-        '        If mSampleUnlocked Then mMedicareNumber.LogUnlockSample(CurrentUser.MemberID)
-        '        mMedicareNumber.BeginEdit()
-        '    Else
-        '        'There is invalid data so tell the user to fix it.
-        '        MessageBox.Show("Invalid data exists.  Please correct and try again.", "Invalid Medicare Number", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        '    End If
-        'End If
-
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
