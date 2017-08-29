@@ -618,13 +618,11 @@ Public Class MedicareMngrSection
 
             HHCAHPS_CalcProportionNumericUpDown.Value = mHHCAHPS_MedicareNumber.LastRecalcProportionDisplay
 
-            'TODO: check with Dana on the business rule here
-            HHCAHPS_ProportionUsedNumericUpDown.Value = HHCAHPS_CalcProportionNumericUpDown.Value
-            'If mHHCAHPS_MedicareNumber.LastRecalcCensusForced Then
-            '    HHCAHPS_ProportionUsedNumericUpDown.Value = 100
-            'Else
-            '    HHCAHPS_ProportionUsedNumericUpDown.Value = HHCAHPS_CalcProportionNumericUpDown.Value
-            'End If
+            If mHHCAHPS_MedicareNumber.LastRecalcHistory IsNot Nothing AndAlso mHHCAHPS_MedicareNumber.LastRecalcHistory.MedicarePropDataTypeID = MedicareProportionDataTypes.RateOverride Then
+                HHCAHPS_ProportionUsedNumericUpDown.Value = mHHCAHPS_MedicareNumber.LastRecalcHistory.SamplingRateOverrideDisplay
+            Else
+                HHCAHPS_ProportionUsedNumericUpDown.Value = HHCAHPS_CalcProportionNumericUpDown.Value
+            End If
         Else
             HHCAHPS_SamplingLockTextBox.Text = ""
         End If

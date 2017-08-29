@@ -320,6 +320,15 @@ Public Class MedicareSurveyType
 #End Region
 
 #Region "MedicareRecalcSurveyTypeHistory Display Properties"
+    Public ReadOnly Property LastRecalcHistory() As MedicareRecalcSurveyTypeHistory
+        Get
+            If mLastRecalcHistory Is Nothing AndAlso Not mLastRecalcLoaded Then
+                mLastRecalcHistory = MedicareRecalcSurveyTypeHistory.GetLatestByMedicareNumber(mMedicareNumber, Date.Now)
+                mLastRecalcLoaded = True
+            End If
+            Return mLastRecalcHistory
+        End Get
+    End Property
 
     Public ReadOnly Property LastRecalcProportionDisplay() As Decimal
         Get
@@ -386,16 +395,6 @@ Public Class MedicareSurveyType
 #End Region
 
 #Region "Private Properties"
-
-    Private ReadOnly Property LastRecalcHistory() As MedicareRecalcSurveyTypeHistory
-        Get
-            If mLastRecalcHistory Is Nothing AndAlso Not mLastRecalcLoaded Then
-                mLastRecalcHistory = MedicareRecalcSurveyTypeHistory.GetLatestByMedicareNumber(mMedicareNumber, Date.Now)
-                mLastRecalcLoaded = True
-            End If
-            Return mLastRecalcHistory
-        End Get
-    End Property
 
     Private ReadOnly Property MedicareCommon() As MedicareCommon
         Get
