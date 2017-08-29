@@ -448,6 +448,7 @@ Public Class MedicareMngrSection
         LastCalcTypeTextBox.Text = ""
         CalcProportionNumericUpDown.Value = 0
         ProportionUsedNumericUpDown.Value = 0
+
         MedicareErrorProvider.DataSource = Nothing
 
         If mMedicareNumber IsNot Nothing Then
@@ -571,7 +572,7 @@ Public Class MedicareMngrSection
         HHCAHPS_CalcProportionNumericUpDown.Value = 0
         HHCAHPS_ProportionUsedNumericUpDown.Value = 0
 
-        MedicareErrorProvider.DataSource = Nothing
+        'MedicareErrorProvider.DataSource = Nothing
 
         If mHHCAHPS_MedicareNumber IsNot Nothing Then
             'Populate the screen

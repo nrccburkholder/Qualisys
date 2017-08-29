@@ -54,7 +54,7 @@ Public Class MedicareSurveyType
         Set(ByVal value As String)
             If mMedicareNumber <> value Then
                 mMedicareNumber = value
-                PropertyHasChanged("MedicareNumber")
+                'PropertyHasChanged("MedicareNumber")
             End If
         End Set
     End Property
