@@ -430,11 +430,12 @@ Public Class MedicareSurveyType
     End Function
 
     Protected Overrides Sub AddBusinessRules()
-        ValidationRules.AddRule(AddressOf Validation.IntegerMinValue, New Validation.IntegerMinValueRuleArgs("EstAnnualVolume", 1))
-        ValidationRules.AddRule(AddressOf Validation.MinValue(Of Decimal), New Validation.MinValueRuleArgs(Of Decimal)("EstResponseRateDisplay", CDec(0.99)))
-        ValidationRules.AddRule(AddressOf Validation.MinValue(Of Date), New Validation.MinValueRuleArgs(Of Date)("SwitchToCalcDate", CDate("1/1/2000")))
         ValidationRules.AddRule(AddressOf Validation.IntegerMinValue, New Validation.IntegerMinValueRuleArgs("AnnualReturnTarget", 1))
         ValidationRules.AddRule(AddressOf Validation.MinValue(Of Decimal), New Validation.MinValueRuleArgs(Of Decimal)("ProportionChangeThresholdDisplay", CDec(0.99)))
+
+        'ValidationRules.AddRule(AddressOf Validation.IntegerMinValue, New Validation.IntegerMinValueRuleArgs("EstAnnualVolume", 1))
+        'ValidationRules.AddRule(AddressOf Validation.MinValue(Of Decimal), New Validation.MinValueRuleArgs(Of Decimal)("EstResponseRateDisplay", CDec(0.99)))
+        'ValidationRules.AddRule(AddressOf Validation.MinValue(Of Date), New Validation.MinValueRuleArgs(Of Date)("SwitchToCalcDate", CDate("10/1/2017")))
         'ValidationRules.AddRule(AddressOf Validation.MinValue(Of Decimal), New Validation.MinValueRuleArgs(Of Decimal)("SamplingRateOverrideDisplay", CDec(0.99)))
         'ValidationRules.AddRule(AddressOf Validation.MinValue(Of Date), New Validation.MinValueRuleArgs(Of Date)("SwitchFromRateOverrideDate", CDate("1/1/2000")))
 
