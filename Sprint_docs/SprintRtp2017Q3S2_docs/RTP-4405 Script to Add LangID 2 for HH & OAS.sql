@@ -60,6 +60,13 @@ where sd.SurveyType_id in (3, 16)   --3 = HH, 16 = OAS
 and sq.[LANGUAGE] = 19   --HCAHPS Spanish
 --and sd.SURVEY_ID = 19132
 
+--Delete records for any surveys that already have langid = 2, so we don't get duplicates
+delete tsq 
+from #SelQstns tsq
+join SEL_QSTNS sq
+on tsq.survey_id = sq.SURVEY_ID
+where sq.LANGUAGE = 2
+
 --select * from #SelQstns
 
 
@@ -75,6 +82,13 @@ where sd.SurveyType_id in (3, 16)   --3 = HH, 16 = OAS
 and ss.[LANGUAGE] = 19   --HCAHPS Spanish
 --and sd.SURVEY_ID = 19132
 
+--Delete records for any surveys that already have langid = 2, so we don't get duplicates
+delete tss
+from #SelScls tss
+join SEL_SCLS ss
+on tss.survey_id = ss.SURVEY_ID
+where ss.LANGUAGE = 2
+
 
 --Sel_TextBox
 insert into #SelTextbox (qpc_id, survey_id, coverid, X, Y, width, height,
@@ -88,6 +102,13 @@ where sd.SurveyType_id in (3, 16)   --3 = HH, 16 = OAS
 and st.[LANGUAGE] = 19   --HCAHPS Spanish
 --and sd.SURVEY_ID = 19132
 
+--Delete records for any surveys that already have langid = 2, so we don't get duplicates
+delete tst 
+from #SelTextbox tst
+join SEL_TEXTBOX st
+on tst.survey_id = st.SURVEY_ID
+where st.LANGUAGE = 2
+
 --CodeQstns
 insert into #CodeQstns (selqstns_id, survey_id, code, intstartpos, intlength)
 select cq.SELQSTNS_ID, cq.SURVEY_ID, cq.CODE, cq.INTSTARTPOS, cq.INTLENGTH
@@ -97,6 +118,13 @@ on cq.SURVEY_ID = sd.SURVEY_ID
 where sd.SurveyType_id in (3, 16)   --3 = HH, 16 = OAS
 and cq.[LANGUAGE] = 19   --HCAHPS Spanish
 --and sd.SURVEY_ID = 19132
+
+--Delete records for any surveys that already have langid = 2, so we don't get duplicates
+delete tcq 
+from #CodeQstns tcq
+join CODEQSTNS cq
+on tcq.survey_id = cq.SURVEY_ID
+where cq.LANGUAGE = 2
 
 --CodeTxtBox
 insert into #CodeTxtBox (qpc_id, survey_id, code, intstartpos, intlength)
@@ -108,6 +136,13 @@ where sd.SurveyType_id in (3, 16)   --3 = HH, 16 = OAS
 and ctb.[LANGUAGE] = 19   --HCAHPS Spanish
 --and sd.SURVEY_ID = 19132
 
+--Delete records for any surveys that already have langid = 2, so we don't get duplicates
+delete tctb 
+from #CodeTxtBox tctb
+join CODETXTBOX ctb
+on tctb.survey_id = ctb.SURVEY_ID
+where ctb.LANGUAGE = 2
+
 --SurveyLanguage
 insert into #surveys (survey_id)
 select sl.survey_id
@@ -117,6 +152,13 @@ on sl.Survey_id = sd.SURVEY_ID
 where sd.SurveyType_id in (3, 16)   --3 = HH, 16 = OAS
 and sl.LangID = 19   --HCAHPS Spanish
 --and sd.SURVEY_ID = 19132
+
+--Delete records for any surveys that already have langid = 2, so we don't get duplicates
+delete ts 
+from #surveys ts
+join SurveyLanguage sl
+on ts.survey_id = sl.Survey_id
+where sl.LangID = 2
 
 
 /************** Insert Data into Real Tables ************/
@@ -185,12 +227,12 @@ if @@trancount > 0
 
 /******Tidy Up***************/
 
---drop table #SelQstns
---drop table #SelScls
---drop table #SelTextbox
---drop table #CodeQstns
---drop table #CodeTxtBox
---drop table #surveys
+drop table #SelQstns
+drop table #SelScls
+drop table #SelTextbox
+drop table #CodeQstns
+drop table #CodeTxtBox
+drop table #surveys
 
 /******* Testing ************/
 
