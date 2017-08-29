@@ -23,6 +23,12 @@ AS
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 SET NOCOUNT ON
 
+IF @SurveyType_id IN (3, 16)
+BEGIN
+	EXEC [dbo].[CalculateOasHhResponseRate] @MedicareNumber, @PeriodDate, @SurveyType_id, @indebug
+	RETURN
+END
+
 DECLARE @sql VARCHAR(8000)
 
 declare @EncDateStart datetime, @EncDateEnd datetime
@@ -53,38 +59,6 @@ select sampleset_id, sampleunit_id, intreturned, intsampled, intUD
 from DATAMart.qp_comments.dbo.RespRateCount
 where survey_id in (select survey_Id from #SampleSets) and
  sampleunit_id <>0
- and @SurveyType_id not in (3, 16) -- not HH or OAS
-
-with SamplePops as
-(
-	select ss.SAMPLESET_ID, ss.SAMPLEUNIT_ID, sp.SAMPLEPOP_ID, 
-		sum(case when dl.Disposition_id in (19, 20) then 1 else 0 end
-			+ cast (qf.bitComplete as int)) as IsCompleted,
-		sum(case when dl.Disposition_id in (3, 4, 8, 10) then 0 else 1 end) as IsEligible
-	from #SampleSets s
-	inner join SELECTEDSAMPLE ss
-		on ss.SAMPLESET_ID = s.SAMPLESET_ID
-	inner join SAMPLEUNIT su
-		on su.SAMPLEUNIT_ID = ss.SAMPLEUNIT_ID
-		and su.CAHPSType_id = @SurveyType_id
-	inner join SAMPLEPOP sp
-		on sp.SAMPLESET_ID = ss.SAMPLESET_ID
-		and sp.POP_ID = ss.POP_ID
-		and sp.STUDY_ID = ss.STUDY_ID
-	left join DispositionLog dl 
-		on dl.SamplePop_id = sp.SAMPLEPOP_ID 
-	left join QUESTIONFORM qf
-		on qf.SAMPLEPOP_ID = sp.SAMPLEPOP_ID
-	where @SurveyType_id in (3, 16) -- HH or OAS
-	group by ss.SAMPLESET_ID, ss.SAMPLEUNIT_ID, sp.SAMPLEPOP_ID
-)
-insert into #rr
-select SAMPLESET_ID, SAMPLEUNIT_ID, 
-	isnull(sum(sign(IsCompleted)), 0) as intreturned, 
-	isnull(sum(sign(IsEligible)), 0) as intsampled,
-	0 as intUD
-from SamplePops
-group by SAMPLESET_ID, SAMPLEUNIT_ID
 
 if @indebug = 1
 	select '#rr' as [#rr], * from #rr
@@ -99,7 +73,7 @@ GROUP BY SampleUnit_id
 if @indebug = 1
 	select '#r' as [#r], * from #r
 
---Identify CAHPS units
+--Identify HCAHPS units
 UPDATE t
 SET bitCAHPS=1
 FROM #r t, SampleUnit su
@@ -122,7 +96,7 @@ BEGIN
 	if @indebug = 1
 		select '#rrDays' as [#rrDays], * from #rrDays
 
-	--Update the response rate for the CAHPS unit(s)
+	--Update the response rate for the HCAHPS unit(s)
 	INSERT INTO #Update (SampleUnit_id, intReturned)
 	SELECT a.SampleUnit_id, a.intReturned
 	FROM (	SELECT tt.SampleUnit_id, SUM(r2.intReturned) intReturned
@@ -163,3 +137,4 @@ DROP TABLE #r
 SET TRANSACTION ISOLATION LEVEL READ COMMITTED
 SET NOCOUNT OFF
 GO
+
