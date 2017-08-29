@@ -599,30 +599,31 @@ Public Class MedicareMngrSection
 
             'Unbound controls
             DisplaySamplingLock_HHCAHPS(mHHCAHPS_MedicareNumber.SamplingLocked)
-            'TODO: uncomment this once we have the historic data
-            'HHCAHPSAnnualEligibleVolumeNumericUpDown.Value = mMedicareNumber.HHCAHPS_AnnualEligibleVolume
-            'HHCAHPSHistoricResponseRateNumericUpDown.Value = mMedicareNumber.HHCAHPS_HistoricResponseRateDisplay
 
-            'History information
-            'TODO: uncomment this once we have the historic data
-            'If mMedicareNumber.HHCAHPS_LastRecalcDateCalculated = Date.MinValue Then
-            '    HHCAHPSLastCalcDateTextBox.Text = "Never"
+            HHCAHPS_AnnualEligibleVolumeNumericUpDown.Value = mHHCAHPS_MedicareNumber.AnnualEligibleVolume
+            HHCAHPS_HistoricResponseRateNumericUpDown.Value = mHHCAHPS_MedicareNumber.HistoricResponseRateDisplay
+
+            'History Information
+            If mHHCAHPS_MedicareNumber.LastRecalcDateCalculated = Date.MinValue Then
+                HHCAHPS_LastCalcDateTextBox.Text = "Never"
+            Else
+                HHCAHPS_LastCalcDateTextBox.Text = mHHCAHPS_MedicareNumber.LastRecalcDateCalculated.ToString
+            End If
+
+            If mHHCAHPS_MedicareNumber.LastRecalcPropCalcType Is Nothing Then
+                HHCAHPS_LastCalcTypeTextBox.Text = "Unknown"
+            Else
+                HHCAHPS_LastCalcTypeTextBox.Text = mHHCAHPS_MedicareNumber.LastRecalcPropCalcType.MedicarePropCalcTypeName
+            End If
+
+            HHCAHPS_CalcProportionNumericUpDown.Value = mHHCAHPS_MedicareNumber.LastRecalcProportionDisplay
+
+            'TODO: check with Dana on the business rule here
+            HHCAHPS_ProportionUsedNumericUpDown.Value = HHCAHPS_CalcProportionNumericUpDown.Value
+            'If mHHCAHPS_MedicareNumber.LastRecalcCensusForced Then
+            '    HHCAHPS_ProportionUsedNumericUpDown.Value = 100
             'Else
-            '    HHCAHPSLastCalcDateTextBox.Text = mMedicareNumber.HHCAHPS_LastRecalcDateCalculated.ToString
-            'End If
-
-            'If mMedicareNumber.HHCAHPS_LastRecalcPropCalcType Is Nothing Then
-            '    HHCAHPSLastCalcTypeTextBox.Text = "Unknown"
-            'Else
-            '    HHCAHPSLastCalcTypeTextBox.Text = mMedicareNumber.HHCAHPS_LastRecalcPropCalcType.MedicarePropCalcTypeName
-            'End If
-
-            'HHCAHPSCalcProportionNumericUpDown.Value = mMedicareNumber.HHCAHPS_LastRecalcProportionDisplay
-
-            'If mMedicareNumber.HHCAHPS_LastRecalcCensusForced Then
-            '    HHCAHPSProportionUsedNumericUpDown.Value = 100
-            'Else
-            '    HHCAHPSProportionUsedNumericUpDown.Value = HHCAHPSCalcProportionNumericUpDown.Value
+            '    HHCAHPS_ProportionUsedNumericUpDown.Value = HHCAHPS_CalcProportionNumericUpDown.Value
             'End If
         Else
             HHCAHPS_SamplingLockTextBox.Text = ""
