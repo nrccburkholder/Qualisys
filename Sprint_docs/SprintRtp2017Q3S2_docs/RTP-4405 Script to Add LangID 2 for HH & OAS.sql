@@ -64,7 +64,7 @@ and sq.[LANGUAGE] = 19   --HCAHPS Spanish
 delete tsq 
 from #SelQstns tsq
 join SEL_QSTNS sq
-on tsq.survey_id = sq.SURVEY_ID
+on tsq.survey_id = sq.SURVEY_ID and tsq.SelQstns_id=sq.SELQSTNS_ID 
 where sq.LANGUAGE = 2
 
 --select * from #SelQstns
@@ -86,7 +86,7 @@ and ss.[LANGUAGE] = 19   --HCAHPS Spanish
 delete tss
 from #SelScls tss
 join SEL_SCLS ss
-on tss.survey_id = ss.SURVEY_ID
+on tss.survey_id = ss.SURVEY_ID and tss.qpc_id=ss.qpc_id and tss.item=ss.item
 where ss.LANGUAGE = 2
 
 
@@ -106,7 +106,7 @@ and st.[LANGUAGE] = 19   --HCAHPS Spanish
 delete tst 
 from #SelTextbox tst
 join SEL_TEXTBOX st
-on tst.survey_id = st.SURVEY_ID
+on tst.survey_id = st.SURVEY_ID and tst.qpc_id=st.qpc_id
 where st.LANGUAGE = 2
 
 --CodeQstns
@@ -123,7 +123,7 @@ and cq.[LANGUAGE] = 19   --HCAHPS Spanish
 delete tcq 
 from #CodeQstns tcq
 join CODEQSTNS cq
-on tcq.survey_id = cq.SURVEY_ID
+on tcq.survey_id = cq.SURVEY_ID and tcq.selqstns_id=cq.SELQSTNS_ID and tcq.code=cq.code
 where cq.LANGUAGE = 2
 
 --CodeTxtBox
@@ -140,7 +140,7 @@ and ctb.[LANGUAGE] = 19   --HCAHPS Spanish
 delete tctb 
 from #CodeTxtBox tctb
 join CODETXTBOX ctb
-on tctb.survey_id = ctb.SURVEY_ID
+on tctb.survey_id = ctb.SURVEY_ID and tctb.qpc_id=ctb.qpc_id and tctb.code=ctb.code
 where ctb.LANGUAGE = 2
 
 --SurveyLanguage
