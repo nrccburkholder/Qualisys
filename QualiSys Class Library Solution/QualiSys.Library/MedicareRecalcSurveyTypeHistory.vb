@@ -1,7 +1,7 @@
 ﻿Imports Nrc.Framework.BusinessLogic
 
 ''' <summary>Interface to encapsulate key and allow DAL to do key assignment.</summary>
-''' <CreatedBy>Tony Piccoli</CreatedBy>
+''' <CreatedBy></CreatedBy>
 ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
 Public Interface IMedicareRecalcSurveyTypeHistory
 
@@ -10,7 +10,7 @@ Public Interface IMedicareRecalcSurveyTypeHistory
 End Interface
 
 ''' <summary>This class represents a historical record of when a medicare numbers proportion was recalculated.</summary>
-''' <CreatedBy>Tony Piccoli</CreatedBy>
+''' <CreatedBy></CreatedBy>
 ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
 <Serializable()>
 Public Class MedicareRecalcSurveyTypeHistory
@@ -22,6 +22,7 @@ Public Class MedicareRecalcSurveyTypeHistory
     <NotUndoable()> Private mInstanceGuid As Guid = Guid.NewGuid
     Private mMedicareReCalcLogId As Integer
     Private mMedicareNumber As String = String.Empty
+    Private mMedicareName As String = String.Empty
     Private mSurveyTypeID As Integer
 
     Private mMedicarePropCalcTypeID As Integer
@@ -48,7 +49,7 @@ Public Class MedicareRecalcSurveyTypeHistory
 
     ''' <summary>PK for object.</summary>
     ''' <value></value>
-    ''' <CreatedBy>Tony Piccoli</CreatedBy>
+    ''' <CreatedBy></CreatedBy>
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Public Property MedicareReCalcLogId() As Integer Implements IMedicareRecalcSurveyTypeHistory.MedicareReCalcLogId
         Get
@@ -64,7 +65,7 @@ Public Class MedicareRecalcSurveyTypeHistory
 
     ''' <summary>FK to Medicare Lookup for object.</summary>
     ''' <value></value>
-    ''' <CreatedBy>Tony Piccoli</CreatedBy>
+    ''' <CreatedBy></CreatedBy>
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Public Property MedicareNumber() As String
         Get
@@ -75,6 +76,17 @@ Public Class MedicareRecalcSurveyTypeHistory
             If Not value = mMedicareNumber Then
                 mMedicareNumber = value
                 PropertyHasChanged("MedicareNumber")
+            End If
+        End Set
+    End Property
+
+    Public Property MedicareName() As String
+        Get
+            Return mMedicareName
+        End Get
+        Set(ByVal value As String)
+            If mMedicareName <> value Then
+                mMedicareName = value
             End If
         End Set
     End Property
@@ -97,7 +109,7 @@ Public Class MedicareRecalcSurveyTypeHistory
 
     ''' <summary>Type of calculation to use (estimated or calculated from historic)</summary>
     ''' <value></value>
-    ''' <CreatedBy>Tony Piccoli</CreatedBy>
+    ''' <CreatedBy></CreatedBy>
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Public Property MedicarePropCalcTypeID() As Integer
         Get
@@ -113,7 +125,7 @@ Public Class MedicareRecalcSurveyTypeHistory
 
     ''' <summary>The actual type of calculation used (estimated or calculated from historic).</summary>
     ''' <value></value>
-    ''' <CreatedBy>Keith Charron</CreatedBy>
+    ''' <CreatedBy></CreatedBy>
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Public Property MedicarePropDataTypeID() As Integer
         Get
@@ -129,7 +141,7 @@ Public Class MedicareRecalcSurveyTypeHistory
 
     ''' <summary>Estimate of respose rate used in calculation.</summary>
     ''' <value></value>
-    ''' <CreatedBy>Tony Piccoli</CreatedBy>
+    ''' <CreatedBy></CreatedBy>
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Public Property EstRespRate() As Decimal
         Get
@@ -175,7 +187,7 @@ Public Class MedicareRecalcSurveyTypeHistory
 
     ''' <summary>Estaimate of annual volume used in calcuation.</summary>
     ''' <value></value>
-    ''' <CreatedBy>Tony Piccoli</CreatedBy>
+    ''' <CreatedBy></CreatedBy>
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Public Property EstAnnualVolume() As Integer
         Get
@@ -189,7 +201,7 @@ Public Class MedicareRecalcSurveyTypeHistory
 
     ''' <summary>Date at which to switch from using estimates to using historic rates.</summary>
     ''' <value></value>
-    ''' <CreatedBy>Tony Piccoli</CreatedBy>
+    ''' <CreatedBy></CreatedBy>
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Public Property SwitchToCalcDate() As Date
         Get
@@ -203,7 +215,7 @@ Public Class MedicareRecalcSurveyTypeHistory
 
     ''' <summary>Historic annual return target.</summary>
     ''' <value></value>
-    ''' <CreatedBy>Tony Piccoli</CreatedBy>
+    ''' <CreatedBy></CreatedBy>
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Public Property AnnualReturnTarget() As Integer
         Get
@@ -217,7 +229,7 @@ Public Class MedicareRecalcSurveyTypeHistory
 
     ''' <summary>The proportion that was calculated.</summary>
     ''' <value></value>
-    ''' <CreatedBy>Tony Piccoli</CreatedBy>
+    ''' <CreatedBy></CreatedBy>
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Public Property ProportionCalcPct() As Decimal
         Get
@@ -231,7 +243,7 @@ Public Class MedicareRecalcSurveyTypeHistory
 
     ''' <summary>If threshold percentage is exceeded between calculations, then sampling locks.</summary>
     ''' <value></value>
-    ''' <CreatedBy>Tony Piccoli</CreatedBy>
+    ''' <CreatedBy></CreatedBy>
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Public Property SamplingLocked() As Boolean
         Get
@@ -245,7 +257,7 @@ Public Class MedicareRecalcSurveyTypeHistory
 
     ''' <summary>Percent of change between calculations that will lock sampling.</summary>
     ''' <value></value>
-    ''' <CreatedBy>Tony Piccoli</CreatedBy>
+    ''' <CreatedBy></CreatedBy>
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Public Property ProportionChangeThreshold() As Decimal
         Get
@@ -259,7 +271,7 @@ Public Class MedicareRecalcSurveyTypeHistory
 
     ''' <summary>ID of the signed in user.</summary>
     ''' <value></value>
-    ''' <CreatedBy>Tony Piccoli</CreatedBy>
+    ''' <CreatedBy></CreatedBy>
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Public Property MemberId() As Integer
         Get
@@ -273,7 +285,7 @@ Public Class MedicareRecalcSurveyTypeHistory
 
     ''' <summary>Date the calculation was performed.</summary>
     ''' <value></value>
-    ''' <CreatedBy>Tony Piccoli</CreatedBy>
+    ''' <CreatedBy></CreatedBy>
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Public Property DateCalculated() As Date
         Get
@@ -287,7 +299,7 @@ Public Class MedicareRecalcSurveyTypeHistory
 
     ''' <summary>Historic response rate.</summary>
     ''' <value></value>
-    ''' <CreatedBy>Tony Piccoli</CreatedBy>
+    ''' <CreatedBy></CreatedBy>
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Public Property HistoricRespRate() As Decimal
         Get
@@ -301,7 +313,7 @@ Public Class MedicareRecalcSurveyTypeHistory
 
     ''' <summary>Historic annual volume.</summary>
     ''' <value></value>
-    ''' <CreatedBy>Keith Charron</CreatedBy>
+    ''' <CreatedBy></CreatedBy>
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Public Property HistoricAnnualVolume() As Integer
         Get
@@ -315,7 +327,7 @@ Public Class MedicareRecalcSurveyTypeHistory
 
     ''' <summary>Flags whether calculation was time based or user based.</summary>
     ''' <value></value>
-    ''' <CreatedBy>Tony Piccoli</CreatedBy>
+    ''' <CreatedBy></CreatedBy>
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Public Property ForcedCalculation() As Boolean
         Get
@@ -329,7 +341,7 @@ Public Class MedicareRecalcSurveyTypeHistory
 
     ''' <summary>This is the date for the quarter the calcuation is being done in.</summary>
     ''' <value></value>
-    ''' <CreatedBy>Tony Piccoli</CreatedBy>
+    ''' <CreatedBy></CreatedBy>
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Public Property PropSampleCalcDate() As Date
         Get
@@ -357,7 +369,7 @@ Public Class MedicareRecalcSurveyTypeHistory
 
     ''' <summary>Create a new object.</summary>
     ''' <returns></returns>
-    ''' <CreatedBy>Tony Piccoli</CreatedBy>
+    ''' <CreatedBy></CreatedBy>
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Public Shared Function NewMedicareRecalcSurveyTypeHistory() As MedicareRecalcSurveyTypeHistory
 
@@ -368,7 +380,7 @@ Public Class MedicareRecalcSurveyTypeHistory
     ''' <summary>Get object by its data store id.</summary>
     ''' <param name="medicareReCalcLogId"></param>
     ''' <returns></returns>
-    ''' <CreatedBy>Tony Piccoli</CreatedBy>
+    ''' <CreatedBy></CreatedBy>
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Public Shared Function [Get](ByVal medicareReCalcLogId As Integer) As MedicareRecalcSurveyTypeHistory
 
@@ -378,7 +390,7 @@ Public Class MedicareRecalcSurveyTypeHistory
 
     ''' <summary>Get all recalc history object from data store.</summary>
     ''' <returns></returns>
-    ''' <CreatedBy>Tony Piccoli</CreatedBy>
+    ''' <CreatedBy></CreatedBy>
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Public Shared Function GetAll() As MedicareRecalcSurveyTypeHistoryCollection
 
@@ -389,7 +401,7 @@ Public Class MedicareRecalcSurveyTypeHistory
     ''' <summary>Get the lastest record by medicare number.</summary>
     ''' <param name="medicareNumber"></param>
     ''' <returns></returns>
-    ''' <CreatedBy>Tony Piccoli</CreatedBy>
+    ''' <CreatedBy></CreatedBy>
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Public Shared Function GetLatestByMedicareNumber(ByVal medicareNumber As String, ByVal latestDate As Date) As MedicareRecalcSurveyTypeHistory
 
@@ -400,7 +412,7 @@ Public Class MedicareRecalcSurveyTypeHistory
     ''' <summary>Get the lastest record by medicare number and sample date.</summary>
     ''' <param name="medicareNumber"></param>
     ''' <returns></returns>
-    ''' <CreatedBy>Tony Piccoli</CreatedBy>
+    ''' <CreatedBy></CreatedBy>
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Public Shared Function GetLatestBySampleDate(ByVal medicareNumber As String, ByVal sampleDate As Date) As MedicareRecalcSurveyTypeHistory
 
@@ -446,7 +458,7 @@ Public Class MedicareRecalcSurveyTypeHistory
     End Sub
 
     ''' <summary>Dal insert.</summary>
-    ''' <CreatedBy>Tony Piccoli</CreatedBy>
+    ''' <CreatedBy></CreatedBy>
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Protected Overrides Sub Insert()
 
@@ -454,24 +466,6 @@ Public Class MedicareRecalcSurveyTypeHistory
         Me.MarkOld()
 
     End Sub
-
-    '''' <summary>Dal Update</summary>
-    '''' <CreatedBy>Tony Piccoli</CreatedBy>
-    '''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
-    'Protected Overrides Sub Update()
-
-    '    DataProvider.MedicareRecalcSurveyTypeHistoryProvider.Instance.Update(Me)
-
-    'End Sub
-
-    '''' <summary>Dal Delete</summary>
-    '''' <CreatedBy>Tony Piccoli</CreatedBy>
-    '''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
-    'Protected Overrides Sub DeleteImmediate()
-
-    '    DataProvider.MedicareRecalcSurveyTypeHistoryProvider.Instance.Delete(Me.mMedicareReCalcLogId)
-
-    'End Sub
 
 #End Region
 

@@ -2,18 +2,33 @@ Imports Nrc.Qualisys.Library
 Public Class ForceRecalculate
 
 #Region "Private Members"
+    Private Const const_HCAHPS_SurveyTypeID As Integer = 2
+    Private Const const_HHCAHPS_SurveyTypeID As Integer = 3
+    Private Const const_OASCAHPS_SurveyTypeID As Integer = 16
 
-    Private mMedicareNumber As MedicareNumber
+    Private mMedicareNumber As MedicareNumber = Nothing
+    Private mHHCAHPS_MedicareNumber As MedicareSurveyType = Nothing
+    Private mOASCAHPS_MedicareNumber As MedicareSurveyType = Nothing
+    Private mSurveyTypeID As Integer
 
 #End Region
 
 #Region "Constructors"
 
-    Public Sub New(ByVal medicareNum As MedicareNumber)
+    Public Sub New(ByVal medicareNum As Object, Optional surveyTypeID As Integer = const_HCAHPS_SurveyTypeID)
 
         InitializeComponent()
 
-        mMedicareNumber = medicareNum
+        Select Case surveyTypeID
+            Case const_HCAHPS_SurveyTypeID
+                mMedicareNumber = CType(medicareNum, MedicareNumber)
+            Case const_HHCAHPS_SurveyTypeID
+                mHHCAHPS_MedicareNumber = CType(medicareNum, MedicareSurveyType)
+            Case Else
+                mOASCAHPS_MedicareNumber = CType(medicareNum, MedicareSurveyType)
+        End Select
+
+        mSurveyTypeID = surveyTypeID
         InitMedicareValues()
 
     End Sub
@@ -25,7 +40,16 @@ Public Class ForceRecalculate
     Private Sub ForceRecalculate_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
         'Set the section header
-        Me.Caption = String.Format("Force Recalculation For: {0} ({1})", mMedicareNumber.MedicareNumber, mMedicareNumber.Name)
+        'Me.Caption = String.Format("Force Recalculation For: {0} ({1})", mMedicareNumber.MedicareNumber, mMedicareNumber.Name)
+
+        Select Case mSurveyTypeID
+            Case const_HCAHPS_SurveyTypeID
+                Me.Caption = String.Format("Force Recalculation For: {0} ({1})", mMedicareNumber.MedicareNumber, mMedicareNumber.Name)
+            Case const_HHCAHPS_SurveyTypeID
+                Me.Caption = String.Format("Force Recalculation For: {0} ({1})", mHHCAHPS_MedicareNumber.MedicareNumber, mHHCAHPS_MedicareNumber.Name)
+            Case Else
+                Me.Caption = String.Format("Force Recalculation For: {0} ({1})", mOASCAHPS_MedicareNumber.MedicareNumber, mOASCAHPS_MedicareNumber.Name)
+        End Select
 
     End Sub
 
@@ -42,21 +66,47 @@ Public Class ForceRecalculate
             'Set the wait cursor
             Me.Cursor = Cursors.WaitCursor
 
-            If Not mMedicareNumber.SamplingLocked Then
+            Dim samplingLocked As Boolean
+            Dim calculationErrors As New List(Of String)
+            Select Case mSurveyTypeID
+                Case const_HCAHPS_SurveyTypeID
+                    samplingLocked = mMedicareNumber.SamplingLocked
+                    calculationErrors = mMedicareNumber.CalculationErrors
+                Case const_HHCAHPS_SurveyTypeID
+                    samplingLocked = mHHCAHPS_MedicareNumber.SamplingLocked
+                    calculationErrors = mHHCAHPS_MedicareNumber.CalculationErrors
+                Case Else
+                    samplingLocked = mOASCAHPS_MedicareNumber.SamplingLocked
+                    calculationErrors = mOASCAHPS_MedicareNumber.CalculationErrors
+            End Select
+
+
+            If Not samplingLocked Then
                 Dim message As String = String.Empty
                 Dim sampleLockNotifyFailed As Boolean = False
-                If mMedicareNumber.ForceRecalculate(CDate(cboCalcDates.SelectedItem), CurrentUser.MemberID, sampleLockNotifyFailed) Then
+                Dim forceRecalculate As Boolean = False
+
+                Select Case mSurveyTypeID
+                    Case const_HCAHPS_SurveyTypeID
+                        forceRecalculate = mMedicareNumber.ForceRecalculate(CDate(cboCalcDates.SelectedItem), CurrentUser.MemberID, sampleLockNotifyFailed)
+                    Case const_HHCAHPS_SurveyTypeID
+                        forceRecalculate = mHHCAHPS_MedicareNumber.ForceRecalculate(CDate(cboCalcDates.SelectedItem), CurrentUser.MemberID, sampleLockNotifyFailed)
+                    Case Else
+                        forceRecalculate = mOASCAHPS_MedicareNumber.ForceRecalculate(CDate(cboCalcDates.SelectedItem), CurrentUser.MemberID, sampleLockNotifyFailed)
+                End Select
+
+                If forceRecalculate Then
                     'Display a success message to the user
                     message = "Calculation Successful."
 
                     'Determine if we need to notify the user of a sample lock
-                    If mMedicareNumber.SamplingLocked Then
-                        message &= vbCrLf & vbCrLf & "Sampling has been locked due to the new proportion" & vbCrLf & _
+                    If samplingLocked Then
+                        message &= vbCrLf & vbCrLf & "Sampling has been locked due to the new proportion" & vbCrLf &
                                                      "exceeding the allowable threshold."
 
                         'Determine if we need to display the sample lock notification failed message
                         If sampleLockNotifyFailed Then
-                            message &= vbCrLf & vbCrLf & "The system was unable to send a notification to the" & vbCrLf & _
+                            message &= vbCrLf & vbCrLf & "The system was unable to send a notification to the" & vbCrLf &
                                                          "HCAHPSThresholdExceeded email group."
                         End If
                     End If
@@ -67,7 +117,7 @@ Public Class ForceRecalculate
                 Else
                     'Display an error message to the user
                     message = "Calculation Failed!." & vbCrLf
-                    For Each errString As String In mMedicareNumber.CalculationErrors
+                    For Each errString As String In calculationErrors
                         message &= vbCrLf & errString
                     Next
                     MessageBox.Show(message, "Proportion Calculation Error!", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -96,7 +146,17 @@ Public Class ForceRecalculate
 
         Dim setMonth As Integer = 0
         Dim index As Integer = 0
-        Dim globalRecalcDates As MedicareGlobalCalcDateCollection = MedicareGlobalCalcDate.GetAll()
+        Dim globalRecalcDates As MedicareGlobalCalcDateCollection
+
+        Select Case mSurveyTypeID
+            Case const_HCAHPS_SurveyTypeID
+                globalRecalcDates = mMedicareNumber.MedicareGlobalDates
+            Case const_HHCAHPS_SurveyTypeID
+                globalRecalcDates = mHHCAHPS_MedicareNumber.MedicareGlobalDates
+            Case Else
+                globalRecalcDates = mOASCAHPS_MedicareNumber.MedicareGlobalDates
+        End Select
+
         Dim monthList As New List(Of Integer)
 
         For Each item As MedicareGlobalCalcDate In globalRecalcDates

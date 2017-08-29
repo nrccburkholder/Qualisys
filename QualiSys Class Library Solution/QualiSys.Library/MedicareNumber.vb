@@ -283,6 +283,15 @@ Public Class MedicareNumber
         End Get
     End Property
 
+    Public ReadOnly Property MedicareGlobalDates() As MedicareGlobalCalcDateCollection
+        Get
+            If Me.mMedicareGlobalDates Is Nothing Then
+                Me.mMedicareGlobalDates = MedicareGlobalCalcDate.GetAll()
+            End If
+            Return Me.mMedicareGlobalDates
+        End Get
+    End Property
+
 #End Region
 
 #Region "MedicareLookup HCAHPS Display Properties"
@@ -443,7 +452,6 @@ Public Class MedicareNumber
 #End Region
 
 #Region "Historic Display Properties"
-
     Public ReadOnly Property HistoricResponseRateDisplay() As Decimal
         Get
             Return HistoricResponseRate * 100
@@ -466,15 +474,6 @@ Public Class MedicareNumber
 
 #Region "Private Properties"
 
-    Private ReadOnly Property MedicareGlobalDates() As MedicareGlobalCalcDateCollection
-        Get
-            If Me.mMedicareGlobalDates Is Nothing Then
-                Me.mMedicareGlobalDates = MedicareGlobalCalcDate.GetAll()
-            End If
-            Return Me.mMedicareGlobalDates
-        End Get
-    End Property
-
     Private ReadOnly Property LastRecalcHistory() As MedicareRecalcHistory
         Get
             If mLastRecalcHistory Is Nothing AndAlso Not mLastRecalcLoaded Then
@@ -494,7 +493,6 @@ Public Class MedicareNumber
             Return mLastRecalcHistoryUserCensusForced
         End Get
     End Property
-
 
 #End Region
 
