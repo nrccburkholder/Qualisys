@@ -355,6 +355,14 @@ Public Class MedicareRecalcSurveyTypeHistory
 
 #End Region
 
+#Region "MedicareRecalcSurveyTypeHistory Display Properties"
+    Public ReadOnly Property SamplingRateOverrideDisplay() As Decimal
+        Get
+            Return SamplingRateOverride * 100
+        End Get
+    End Property
+
+#End Region
 #Region " Constructors "
 
     Private Sub New()
