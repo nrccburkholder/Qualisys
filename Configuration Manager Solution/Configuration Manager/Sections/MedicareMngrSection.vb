@@ -10,9 +10,10 @@ Public Class MedicareMngrSection
     Private Const const_Apply_ValidationType As Int16 = 1
     Private Const const_ForceCalc_ValidationType As Int16 = 2
     Private Const const_UnlockSampling_ValidationType As Int16 = 3
-
+    Private Const const_AllowInactivate_ValidationType As Int16 = 4
 
     Private WithEvents mNavControl As MedicareMngrNavigator
+    Private mGlobalDef As MedicareGlobalCalculationDefault
 
     'HCAHPS
     Private mMedicareNumber As MedicareNumber
@@ -27,6 +28,20 @@ Public Class MedicareMngrSection
     Private mOASCAHPS_SampleUnlocked As Boolean
 
 #End Region
+
+
+#Region "Private Properties"
+    Private ReadOnly Property GlobalDef() As MedicareGlobalCalculationDefault
+        Get
+            If mGlobalDef Is Nothing Then
+                mGlobalDef = MedicareGlobalCalculationDefault.GetAll()(1)
+            End If
+            Return mGlobalDef
+        End Get
+    End Property
+
+#End Region
+
 
 #Region "Base Class Overrides"
 
@@ -46,7 +61,7 @@ Public Class MedicareMngrSection
     End Sub
 
     Public Overrides Function AllowInactivate() As Boolean
-
+        'HCAHPS
         If mMedicareNumber Is Nothing Then
             Return True
         ElseIf mMedicareNumber.IsDirty Then
@@ -72,6 +87,52 @@ Public Class MedicareMngrSection
             Return True
         End If
 
+        'HHCAHPS
+        If mHHCAHPS_MedicareNumber Is Nothing Then
+            Return True
+        ElseIf mHHCAHPS_MedicareNumber.IsDirty Then
+            If MessageBox.Show("Do you wish to save the changes to this Medicare Number?", "Save Medicare Number", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) = DialogResult.Yes Then
+                If IsSurveyTypeMedicareInvalid(mHHCAHPS_MedicareNumber, const_AllowInactivate_ValidationType) Then
+                    Return False
+                Else
+                    mHHCAHPS_MedicareNumber.ApplyEdit()
+                    mHHCAHPS_MedicareNumber.Save()
+                    Return True
+
+                End If
+            Else
+                'The user has chosen not to save the changes.
+                mHHCAHPS_MedicareNumber.CancelEdit()
+                Return True
+            End If
+        Else
+            mHHCAHPS_MedicareNumber.CancelEdit()
+            Return True
+        End If
+
+        'OASCAHPS
+        If mOASCAHPS_MedicareNumber Is Nothing Then
+            Return True
+        ElseIf mOASCAHPS_MedicareNumber.IsDirty Then
+            If MessageBox.Show("Do you wish to save the changes to this Medicare Number?", "Save Medicare Number", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) = DialogResult.Yes Then
+                If IsSurveyTypeMedicareInvalid(mOASCAHPS_MedicareNumber, const_AllowInactivate_ValidationType) Then
+                    Return False
+                Else
+                    mOASCAHPS_MedicareNumber.ApplyEdit()
+                    mOASCAHPS_MedicareNumber.Save()
+                    Return True
+
+                End If
+            Else
+                'The user has chosen not to save the changes.
+                mOASCAHPS_MedicareNumber.CancelEdit()
+                Return True
+            End If
+        Else
+            mOASCAHPS_MedicareNumber.CancelEdit()
+            Return True
+        End If
+
     End Function
 
     Public Overrides Sub InactivateSection()
@@ -87,31 +148,8 @@ Public Class MedicareMngrSection
         'Set member variables
         mMedicareNumber = e.MedicareNumber
         If e.MedicareNumber IsNot Nothing Then
-            mHHCAHPS_MedicareNumber = MedicareSurveyTypeProvider.Instance.Select(mMedicareNumber.MedicareNumber, const_HHCAHPS_SurveyTypeID)
-            If mHHCAHPS_MedicareNumber Is Nothing Then
-                Dim globalDef As MedicareGlobalCalculationDefault = MedicareGlobalCalculationDefault.GetAll()(1)
-
-                mHHCAHPS_MedicareNumber = MedicareSurveyType.NewMedicareSurveyType(globalDef)
-
-                mHHCAHPS_MedicareNumber.MedicareNumber = mMedicareNumber.MedicareNumber
-                mHHCAHPS_MedicareNumber.Name = mMedicareNumber.Name
-                mHHCAHPS_MedicareNumber.SurveyTypeID = const_HHCAHPS_SurveyTypeID
-
-                Dim quarterNumber As Integer = (Date.Now().Month() - 1) \ 3 + 1
-                Dim firstDayOfQuarterNextYear As New DateTime(Date.Now().Year + 1, (quarterNumber - 1) * 3 + 1, 1)
-                'mHHCAHPS_MedicareNumber.EstAnnualVolume = 0
-                mHHCAHPS_MedicareNumber.EstResponseRate = globalDef.RespRate
-                mHHCAHPS_MedicareNumber.SwitchToCalcDate = firstDayOfQuarterNextYear
-                mHHCAHPS_MedicareNumber.AnnualReturnTarget = globalDef.AnnualReturnTarget
-                mHHCAHPS_MedicareNumber.SamplingLocked = False
-                mHHCAHPS_MedicareNumber.ProportionChangeThreshold = globalDef.ProportionChangeThreshold
-                mHHCAHPS_MedicareNumber.IsActive = True
-                mHHCAHPS_MedicareNumber.NonSubmitting = False
-                mHHCAHPS_MedicareNumber.SwitchFromRateOverrideDate = New Date(1900, 1, 1)
-
-            End If
-
-            'TODO: OAS
+            mHHCAHPS_MedicareNumber = newMedicareSurveyType(const_HHCAHPS_SurveyTypeID)
+            mOASCAHPS_MedicareNumber = newMedicareSurveyType(const_OASCAHPS_SurveyTypeID)
         End If
 
         'Populate the screen
@@ -123,8 +161,9 @@ Public Class MedicareMngrSection
         If mHHCAHPS_MedicareNumber IsNot Nothing Then
             mHHCAHPS_MedicareNumber.BeginEdit()
         End If
-
-        'TODO: OAS
+        If mOASCAHPS_MedicareNumber IsNot Nothing Then
+            mOASCAHPS_MedicareNumber.BeginEdit()
+        End If
 
     End Sub
 
@@ -265,117 +304,19 @@ Public Class MedicareMngrSection
 #Region "OASCAHPS Event Handlers"
     Private Sub OASCAHPS_MedicareReCalcButton_Click(sender As Object, e As EventArgs) Handles OASCAHPS_MedicareReCalcButton.Click
         SurveyTypeMedicareReCalcButton_Click(mOASCAHPS_MedicareNumber, const_OASCAHPS_SurveyTypeID)
-
-    End Sub
-
-    Private Sub OASCAHPS_MedicareUnlockSamplingButton_Click(sender As Object, e As EventArgs) Handles OASCAHPS_MedicareUnlockSamplingButton.Click
-        Dim dlg As PropCalcHistory = New PropCalcHistory(mOASCAHPS_MedicareNumber, const_OASCAHPS_SurveyTypeID)
-        dlg.ShowDialog()
-
     End Sub
 
     Private Sub OASCAHPS_MedicareCalcHistoryButton_Click(sender As Object, e As EventArgs) Handles OASCAHPS_MedicareCalcHistoryButton.Click
-        If Not mOASCAHPS_MedicareNumber.SamplingLocked Then Exit Sub
+        Dim dlg As PropCalcHistory = New PropCalcHistory(mOASCAHPS_MedicareNumber, const_OASCAHPS_SurveyTypeID)
+        dlg.ShowDialog()
+    End Sub
 
-        If Not mOASCAHPS_MedicareNumber.IsValid Then
-            MessageBox.Show("Invalid data exists.  Please correct and try again.", "Unlock Sampling", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Exit Sub
-        End If
-
-        'Lets unlock it
-        If MessageBox.Show("Are you sure you wish to unlock sampling for this medicare number?", "Unlock Sampling", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) = DialogResult.Yes Then
-            'User says do it
-            mOASCAHPS_MedicareNumber.SamplingLocked = False
-            'Set sample unlock flag. Written to log table during save.
-            mOASCAHPS_SampleUnlocked = True
-            DisplaySamplingLock_OASCAHPS(mOASCAHPS_MedicareNumber.SamplingLocked)
-        End If
+    Private Sub OASCAHPS_MedicareUnlockSamplingButton_Click(sender As Object, e As EventArgs) Handles OASCAHPS_MedicareUnlockSamplingButton.Click
+        SurveyTypeMedicareUnlockSamplingButton_Click(mOASCAHPS_MedicareNumber, const_OASCAHPS_SurveyTypeID)
     End Sub
 
     Private Sub OASCAHPS_ApplyButton_Click(sender As Object, e As EventArgs) Handles OASCAHPS_ApplyButton.Click
-        Dim showInvalidMessage As Boolean = False
-        Dim message As String = ""
-
-        If mOASCAHPS_MedicareNumber IsNot Nothing Then
-            If mOASCAHPS_MedicareNumber.IsDirty And Not mOASCAHPS_MedicareNumber.IsValid Then
-                showInvalidMessage = True
-                For currentPos As Integer = 0 To mOASCAHPS_MedicareNumber.BrokenRulesCollection.Count - 1
-                    Select Case mOASCAHPS_MedicareNumber.BrokenRulesCollection.Item(currentPos).Property.ToLower
-                        Case "annualreturntarget"
-                            message = message + vbCrLf + "Annual Target must be greater than 0."
-                        Case "proportionchangethresholddisplay"
-                            message = message + vbCrLf + "Proportion Change Threshold must be at least 1%."
-                        Case Else
-                    End Select
-                Next
-            End If
-
-            If Date.Compare(mOASCAHPS_MedicareNumber.SwitchFromRateOverrideDate.Date, Date.Now().Date) >= 0 Then
-                If mOASCAHPS_MedicareNumber.SamplingRateOverrideDisplay <= CDec(0.99) Then
-                    message = message + vbCrLf + "If Switch from Override Date is in the future, Sampling Rate must be at least 1%."
-                    showInvalidMessage = True
-                End If
-            Else
-                If Date.Compare(mOASCAHPS_MedicareNumber.SwitchToCalcDate.Date, #1/1/1900#) = 0 OrElse mOASCAHPS_MedicareNumber.EstAnnualVolume <= 0 OrElse mOASCAHPS_MedicareNumber.EstResponseRateDisplay <= CDec(0.99) Then
-                    message = message + vbCrLf + "Switch from Estimated Date must be populated, Estimated Annual Volume must be greater than 0, Estimated Response Rate must be at least 1%."
-                    showInvalidMessage = True
-                End If
-            End If
-        End If
-
-        If showInvalidMessage Then
-            MessageBox.Show(message, "Invalid HHCAHPS Medicare Number", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        Else
-            If mOASCAHPS_MedicareNumber IsNot Nothing Then
-
-                If mOASCAHPS_MedicareNumber.IsDirty Then
-
-                    Dim isOverrideDateBlank As Boolean = False
-                    Dim isOverrideRateBlank As Boolean = True
-                    Dim showInvalidOverrideMessage As Boolean = False
-                    Dim isOverrideDateValid As Boolean = True
-
-                    If Date.Compare(mOASCAHPS_MedicareNumber.SwitchFromRateOverrideDate.Date, #1/1/1900#) = 0 Then
-                        isOverrideDateBlank = True
-                    Else
-                        If Date.Compare(mOASCAHPS_MedicareNumber.SwitchFromRateOverrideDate.Date, Date.Now().Date) < 0 Then
-                            isOverrideDateValid = False
-                        End If
-                    End If
-
-                    If mOASCAHPS_MedicareNumber.SamplingRateOverride > CDec(0) Then
-                        isOverrideRateBlank = False
-                    End If
-
-                    If Not isOverrideDateValid And mOASCAHPS_MedicareNumber.IsNew Then
-                        MessageBox.Show("""Switch from Overeride Date"" can't be in the past for new medicare number.  Please correct and try again.", "Invalid Medicare Number", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                        showInvalidOverrideMessage = True
-                    End If
-
-                    If ((Not showInvalidOverrideMessage) And ((isOverrideDateBlank And Not isOverrideRateBlank) Or (Not isOverrideDateBlank And isOverrideRateBlank))) Then
-                        MessageBox.Show("Invalid ""Switch from Overeride Date"" or ""Sampling Date"" exists.  Please correct and try again.", "Invalid Medicare Number", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                        showInvalidOverrideMessage = True
-                    End If
-
-                    If (Not showInvalidOverrideMessage) Then
-                        mOASCAHPS_MedicareNumber.MedicareNumber = mMedicareNumber.MedicareNumber
-                        mOASCAHPS_MedicareNumber.Name = mMedicareNumber.Name
-                        mOASCAHPS_MedicareNumber.ApplyEdit()
-                        mOASCAHPS_MedicareNumber.Save()
-                        If mHHCAHPS_SampleUnlocked Then
-                            Dim medicareCommon As MedicareCommon = New MedicareCommon(mMedicareNumber.MedicareNumber, mMedicareNumber.Name)
-                            medicareCommon.LogUnlockSample(CurrentUser.MemberID, const_OASCAHPS_SurveyTypeID)
-                            mHHCAHPS_SampleUnlocked = False
-                        End If
-
-                        mOASCAHPS_MedicareNumber.BeginEdit()
-
-                    End If
-
-                End If
-            End If
-
-        End If
+        SurveyTypeApplyButton_Click(mOASCAHPS_MedicareNumber, const_OASCAHPS_SurveyTypeID)
     End Sub
 
     Private Sub OASCAHPS_CancelButton_Click(sender As Object, e As EventArgs) Handles OASCAHPS_CancelButton.Click
@@ -411,7 +352,7 @@ Public Class MedicareMngrSection
 
         PopulateMedicareSection_HCAHPS()
         PopulateMedicareSection_HHCAHPS()
-        'TODO: OAS
+        PopulateMedicareSection_OASCAHPS()
 
         'Select the MedicareNumberTextBox
         MedicareNumberTextBox.Focus()
@@ -657,7 +598,117 @@ Public Class MedicareMngrSection
 
     End Sub
 
-    'TODO: OAS
+    Private Sub PopulateMedicareSection_OASCAHPS()
+        'Clear the screen and all bindings
+        With OASCAHPS_AnnualReturnTargetNumericUpDown
+            .DataBindings.Clear()
+            .Value = 0
+        End With
+        With OASCAHPS_ChangeThresholdNumericUpDown
+            .DataBindings.Clear()
+            .Value = 0
+        End With
+
+        With OASCAHPS_SwtichFromEstimatedDateDateTimePicker
+            .DataBindings.Clear()
+            .Value = New Date(1900, 1, 1)
+        End With
+        With OASCAHPS_EstimatedAnnualVolumeNumericUpDown
+            .DataBindings.Clear()
+            .Value = 0
+        End With
+        With OASCAHPS_EstimatedResponseRateNumericUpDown
+            .DataBindings.Clear()
+            .Value = 0
+        End With
+
+        With OASCAHPS_SwitchFromOverrideDateDateTimePicker
+            .DataBindings.Clear()
+            .Value = New Date(1900, 1, 1)
+        End With
+        With OASCAHPS_SamplingRateNumericUpDown
+            .DataBindings.Clear()
+            .Value = 0
+        End With
+
+        With OASCAHPS_InactiveCheckBox
+            .DataBindings.Clear()
+            .Checked = False
+        End With
+        With OASCAHPS_NonSubmittingCheckbox
+            .DataBindings.Clear()
+            .Checked = False
+        End With
+
+        OASCAHPS_SamplingLockTextBox.Text = ""
+
+        OASCAHPS_AnnualEligibleVolumeNumericUpDown.Value = 0
+        OASCAHPS_HistoricResponseRateNumericUpDown.Value = 0
+
+        OASCAHPS_LastCalcDateTextBox.Text = ""
+        OASCAHPS_LastCalcTypeTextBox.Text = ""
+        OASCAHPS_CalcProportionNumericUpDown.Value = 0
+        OASCAHPS_ProportionUsedNumericUpDown.Value = 0
+
+        'MedicareErrorProvider.DataSource = Nothing
+
+        If mOASCAHPS_MedicareNumber IsNot Nothing Then
+            'Populate the screen
+            OASCAHPS_AnnualReturnTargetNumericUpDown.DataBindings.Add("Value", mOASCAHPS_MedicareNumber, "AnnualReturnTarget", False, DataSourceUpdateMode.OnPropertyChanged)
+            OASCAHPS_ChangeThresholdNumericUpDown.DataBindings.Add("Value", mOASCAHPS_MedicareNumber, "ProportionChangeThresholdDisplay", False, DataSourceUpdateMode.OnPropertyChanged)
+            OASCAHPS_EstimatedAnnualVolumeNumericUpDown.DataBindings.Add("Value", mOASCAHPS_MedicareNumber, "EstAnnualVolume", False, DataSourceUpdateMode.OnPropertyChanged)
+            OASCAHPS_EstimatedResponseRateNumericUpDown.DataBindings.Add("Value", mOASCAHPS_MedicareNumber, "EstResponseRateDisplay", False, DataSourceUpdateMode.OnPropertyChanged)
+            OASCAHPS_SwtichFromEstimatedDateDateTimePicker.DataBindings.Add("Value", mOASCAHPS_MedicareNumber, "SwitchToCalcDate", False, DataSourceUpdateMode.OnPropertyChanged)
+            OASCAHPS_InactiveCheckBox.DataBindings.Add("Checked", mOASCAHPS_MedicareNumber, "IsInactive", False, DataSourceUpdateMode.OnPropertyChanged)
+            OASCAHPS_NonSubmittingCheckbox.DataBindings.Add("Checked", mOASCAHPS_MedicareNumber, "NonSubmitting", False, DataSourceUpdateMode.OnPropertyChanged)
+            OASCAHPS_SamplingRateNumericUpDown.DataBindings.Add("Value", mOASCAHPS_MedicareNumber, "SamplingRateOverrideDisplay", False, DataSourceUpdateMode.OnPropertyChanged)
+            OASCAHPS_SwitchFromOverrideDateDateTimePicker.DataBindings.Add("Value", mOASCAHPS_MedicareNumber, "SwitchFromRateOverrideDate", False, DataSourceUpdateMode.OnPropertyChanged)
+
+            If Date.Compare(mOASCAHPS_MedicareNumber.SwitchToCalcDate, Date.Now) < 0 Then
+                OASCAHPS_SwtichFromEstimatedDateDateTimePicker.Enabled = False
+                OASCAHPS_EstimatedAnnualVolumeNumericUpDown.Enabled = False
+                OASCAHPS_EstimatedResponseRateNumericUpDown.Enabled = False
+            Else
+                OASCAHPS_SwtichFromEstimatedDateDateTimePicker.Enabled = True
+                OASCAHPS_EstimatedAnnualVolumeNumericUpDown.Enabled = True
+                OASCAHPS_EstimatedResponseRateNumericUpDown.Enabled = True
+            End If
+
+
+            'Unbound controls
+            DisplaySamplingLock_OASCAHPS(mOASCAHPS_MedicareNumber.SamplingLocked)
+
+            OASCAHPS_AnnualEligibleVolumeNumericUpDown.Value = mOASCAHPS_MedicareNumber.AnnualEligibleVolume
+            OASCAHPS_HistoricResponseRateNumericUpDown.Value = mOASCAHPS_MedicareNumber.HistoricResponseRateDisplay
+
+            'History Information
+            If mOASCAHPS_MedicareNumber.LastRecalcDateCalculated = Date.MinValue Then
+                OASCAHPS_LastCalcDateTextBox.Text = "Never"
+            Else
+                OASCAHPS_LastCalcDateTextBox.Text = mOASCAHPS_MedicareNumber.LastRecalcDateCalculated.ToString
+            End If
+
+            If mOASCAHPS_MedicareNumber.LastRecalcPropCalcType Is Nothing Then
+                OASCAHPS_LastCalcTypeTextBox.Text = "Unknown"
+            Else
+                OASCAHPS_LastCalcTypeTextBox.Text = mOASCAHPS_MedicareNumber.LastRecalcPropCalcType.MedicarePropCalcTypeName
+            End If
+
+            OASCAHPS_CalcProportionNumericUpDown.Value = mOASCAHPS_MedicareNumber.LastRecalcProportionDisplay
+
+            If mOASCAHPS_MedicareNumber.LastRecalcHistory IsNot Nothing AndAlso mOASCAHPS_MedicareNumber.LastRecalcHistory.MedicarePropDataTypeID = MedicareProportionDataTypes.RateOverride Then
+                OASCAHPS_ProportionUsedNumericUpDown.Value = mOASCAHPS_MedicareNumber.LastRecalcHistory.SamplingRateOverrideDisplay
+            Else
+                OASCAHPS_ProportionUsedNumericUpDown.Value = OASCAHPS_CalcProportionNumericUpDown.Value
+            End If
+        Else
+            OASCAHPS_SamplingLockTextBox.Text = ""
+        End If
+
+        'Set sample unlock flag
+        mOASCAHPS_SampleUnlocked = False
+
+    End Sub
 
     Private Sub DisplaySamplingLock(ByVal locked As Boolean)
         With SamplingLockTextBox
@@ -727,7 +778,7 @@ Public Class MedicareMngrSection
 
     End Sub
 
-    Private Function SurveyTypeMedicareInvalid(ByRef medicareNumber As MedicareSurveyType, validationType As Int16) As Boolean
+    Private Function IsSurveyTypeMedicareInvalid(ByRef medicareNumber As MedicareSurveyType, validationType As Int16) As Boolean
 
         Dim showInvalidMessage As Boolean = False
         Dim message As String = ""
@@ -739,6 +790,8 @@ Public Class MedicareMngrSection
                 caption = "Recalc Proportion"
             Case const_UnlockSampling_ValidationType
                 caption = "Unlock Sampling"
+            Case const_AllowInactivate_ValidationType
+                caption = "Invalid Medicare Number"
             Case Else
                 caption = "Invalid Medicare Number"
         End Select
@@ -781,7 +834,7 @@ Public Class MedicareMngrSection
 
     Private Sub SurveyTypeMedicareReCalcButton_Click(ByRef medicareNumber As MedicareSurveyType, surveyTypeID As Integer)
 
-        If SurveyTypeMedicareInvalid(medicareNumber, const_ForceCalc_ValidationType) Then
+        If IsSurveyTypeMedicareInvalid(medicareNumber, const_ForceCalc_ValidationType) Then
             Exit Sub
         End If
 
@@ -807,7 +860,7 @@ Public Class MedicareMngrSection
     Private Sub SurveyTypeMedicareUnlockSamplingButton_Click(ByRef medicareNumber As MedicareSurveyType, surveyTypeID As Integer)
         If Not medicareNumber.SamplingLocked Then Exit Sub
 
-        If SurveyTypeMedicareInvalid(medicareNumber, const_UnlockSampling_ValidationType) Then
+        If IsSurveyTypeMedicareInvalid(medicareNumber, const_UnlockSampling_ValidationType) Then
             Exit Sub
         End If
 
@@ -828,7 +881,7 @@ Public Class MedicareMngrSection
 
     Private Sub SurveyTypeApplyButton_Click(ByRef medicareNumber As MedicareSurveyType, surveyTypeID As Int16)
 
-        If SurveyTypeMedicareInvalid(medicareNumber, const_Apply_ValidationType) Then
+        If IsSurveyTypeMedicareInvalid(medicareNumber, const_Apply_ValidationType) Then
             Exit Sub
         End If
 
@@ -877,6 +930,35 @@ Public Class MedicareMngrSection
         End If
 
     End Sub
+
+    Private Function newMedicareSurveyType(surveyTypeID As Int16) As MedicareSurveyType
+        Dim medicareNumber As MedicareSurveyType = Nothing
+
+        medicareNumber = MedicareSurveyTypeProvider.Instance.Select(mMedicareNumber.MedicareNumber, surveyTypeID)
+        If medicareNumber Is Nothing Then
+
+            medicareNumber = MedicareSurveyType.NewMedicareSurveyType(GlobalDef)
+
+            medicareNumber.MedicareNumber = mMedicareNumber.MedicareNumber
+            medicareNumber.Name = mMedicareNumber.Name
+            medicareNumber.SurveyTypeID = surveyTypeID
+
+            Dim quarterNumber As Integer = (Date.Now().Month() - 1) \ 3 + 1
+            Dim firstDayOfQuarterNextYear As New DateTime(Date.Now().Year + 1, (quarterNumber - 1) * 3 + 1, 1)
+
+            medicareNumber.EstResponseRate = GlobalDef.RespRate
+            medicareNumber.SwitchToCalcDate = firstDayOfQuarterNextYear
+            medicareNumber.AnnualReturnTarget = GlobalDef.AnnualReturnTarget
+            medicareNumber.SamplingLocked = False
+            medicareNumber.ProportionChangeThreshold = GlobalDef.ProportionChangeThreshold
+            medicareNumber.IsActive = True
+            medicareNumber.NonSubmitting = False
+            medicareNumber.SwitchFromRateOverrideDate = New Date(1900, 1, 1)
+
+        End If
+        Return medicareNumber
+
+    End Function
 #End Region
 
 End Class

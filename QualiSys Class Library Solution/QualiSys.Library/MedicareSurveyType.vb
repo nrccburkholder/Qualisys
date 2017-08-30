@@ -8,9 +8,6 @@ Public Class MedicareSurveyType
     Inherits BusinessBase(Of MedicareSurveyType)
 
 #Region "Private Fields"
-    Private Const const_HCAHPS_SurveyTypeID As Integer = 2
-    Private Const const_HHCAHPS_SurveyTypeID As Integer = 3
-    Private Const const_OASCAHPS_SurveyTypeID As Integer = 16
 
     Private mLastRecalcLoaded As Boolean
     Private mHistoricLoaded As Boolean
@@ -563,28 +560,22 @@ Public Class MedicareSurveyType
     ''' <summary>Determine which type of calculation to use and calculate the proportion.</summary>
     Private Function CalculateProportion(ByVal forced As Boolean, ByVal sampleDate As Date, ByVal memberID As Integer, ByRef sampleLockNotifyFailed As Boolean) As Boolean
 
-        Select Case SurveyTypeID
-            Case const_HHCAHPS_SurveyTypeID
-                If SamplingRateOverride > 0 And SwitchFromRateOverrideDate.Date > Date.Now().Date Then
-                    ProportionCalcTypeID = MedicareProportionCalcTypes.RateOverride
-                    Return HHCAHPS_CalculateProportionUsingOverride(forced, sampleDate, memberID, sampleLockNotifyFailed)
-                Else
-                    If SwitchToCalcDate.Date <= Date.Now().Date Then
-                        ProportionCalcTypeID = MedicareProportionCalcTypes.Historical
-                        Return HHCAHPS_CalculateProportionUsingHistorical(forced, sampleDate, memberID, sampleLockNotifyFailed)
-                    Else
-                        ProportionCalcTypeID = MedicareProportionCalcTypes.Estimated
-                        Return HHCAHPS_CalculateProportionUsingEstimates(forced, sampleDate, memberID, sampleLockNotifyFailed)
-                    End If
-
-                End If
-            Case Else
-                'TODO for OAS
-        End Select
+        If SamplingRateOverride > 0 And SwitchFromRateOverrideDate.Date > Date.Now().Date Then
+            ProportionCalcTypeID = MedicareProportionCalcTypes.RateOverride
+            Return SurveyType_CalculateProportionUsingOverride(forced, sampleDate, memberID, sampleLockNotifyFailed)
+        Else
+            If SwitchToCalcDate.Date <= Date.Now().Date Then
+                ProportionCalcTypeID = MedicareProportionCalcTypes.Historical
+                Return SurveyType_CalculateProportionUsingHistorical(forced, sampleDate, memberID, sampleLockNotifyFailed)
+            Else
+                ProportionCalcTypeID = MedicareProportionCalcTypes.Estimated
+                Return SurveyType_CalculateProportionUsingEstimates(forced, sampleDate, memberID, sampleLockNotifyFailed)
+            End If
+        End If
 
     End Function
 
-    Private Function HHCAHPS_CalculateProportionUsingHistorical(ByVal forced As Boolean, ByVal sampleDate As Date, ByVal memberID As Integer, ByRef sampleLockNotifyFailed As Boolean) As Boolean
+    Private Function SurveyType_CalculateProportionUsingHistorical(ByVal forced As Boolean, ByVal sampleDate As Date, ByVal memberID As Integer, ByRef sampleLockNotifyFailed As Boolean) As Boolean
 
         Dim propSampleDate As Date = MedicareCommon.GetPropSampleDate(sampleDate)
         Dim annualEligibleVolume As Integer
@@ -625,7 +616,7 @@ Public Class MedicareSurveyType
                 objLog.MedicarePropDataTypeID = MedicareProportionDataTypes.Historical
                 objLog.MedicareName = Name
                 objLog.MedicareNumber = MedicareNumber
-                objLog.SurveyTypeID = const_HHCAHPS_SurveyTypeID
+                objLog.SurveyTypeID = SurveyTypeID
                 objLog.EstRespRate = EstResponseRate
                 objLog.EstAnnualVolume = EstAnnualVolume
                 objLog.SwitchToCalcDate = SwitchToCalcDate
@@ -665,15 +656,15 @@ Public Class MedicareSurveyType
             'We can't use the historical numbers so we have to calculate using estimates or overrides
             If SamplingRateOverride > 0 And SwitchFromRateOverrideDate.Date > Date.Now().Date Then
                 ProportionCalcTypeID = MedicareProportionCalcTypes.RateOverride
-                Return HHCAHPS_CalculateProportionUsingOverride(forced, sampleDate, memberID, sampleLockNotifyFailed)
+                Return SurveyType_CalculateProportionUsingOverride(forced, sampleDate, memberID, sampleLockNotifyFailed)
             Else
                 ProportionCalcTypeID = MedicareProportionCalcTypes.Estimated
-                Return HHCAHPS_CalculateProportionUsingEstimates(forced, sampleDate, memberID, sampleLockNotifyFailed)
+                Return SurveyType_CalculateProportionUsingEstimates(forced, sampleDate, memberID, sampleLockNotifyFailed)
             End If
         End If
     End Function
 
-    Private Function HHCAHPS_CalculateProportionUsingEstimates(ByVal forced As Boolean, ByVal sampleDate As Date, ByVal memberID As Integer, ByRef sampleLockNotifyFailed As Boolean) As Boolean
+    Private Function SurveyType_CalculateProportionUsingEstimates(ByVal forced As Boolean, ByVal sampleDate As Date, ByVal memberID As Integer, ByRef sampleLockNotifyFailed As Boolean) As Boolean
         Dim errorEncountered As Boolean = False
         Dim propSampleDate As Date = MedicareCommon.GetPropSampleDate(sampleDate)
 
@@ -708,7 +699,7 @@ Public Class MedicareSurveyType
             objLog.MedicarePropDataTypeID = MedicareProportionDataTypes.Estimated
             objLog.MedicareName = Name
             objLog.MedicareNumber = MedicareNumber
-            objLog.SurveyTypeID = const_HHCAHPS_SurveyTypeID
+            objLog.SurveyTypeID = SurveyTypeID
             objLog.EstRespRate = EstResponseRate
             objLog.EstAnnualVolume = EstAnnualVolume
             objLog.SwitchToCalcDate = SwitchToCalcDate
@@ -747,7 +738,7 @@ Public Class MedicareSurveyType
 
     End Function
 
-    Private Function HHCAHPS_CalculateProportionUsingOverride(ByVal forced As Boolean, ByVal sampleDate As Date, ByVal memberID As Integer, ByRef sampleLockNotifyFailed As Boolean) As Boolean
+    Private Function SurveyType_CalculateProportionUsingOverride(ByVal forced As Boolean, ByVal sampleDate As Date, ByVal memberID As Integer, ByRef sampleLockNotifyFailed As Boolean) As Boolean
         Dim annualProportion As Decimal
         Dim errorEncountered As Boolean = False
         Dim propSampleDate As Date = MedicareCommon.GetPropSampleDate(sampleDate)
@@ -764,7 +755,7 @@ Public Class MedicareSurveyType
         objLog.MedicarePropDataTypeID = MedicareProportionDataTypes.RateOverride
         objLog.MedicareName = Name
         objLog.MedicareNumber = MedicareNumber
-        objLog.SurveyTypeID = const_HHCAHPS_SurveyTypeID
+        objLog.SurveyTypeID = SurveyTypeID
         objLog.EstRespRate = EstResponseRate
         objLog.EstAnnualVolume = EstAnnualVolume
         objLog.SwitchToCalcDate = SwitchToCalcDate
