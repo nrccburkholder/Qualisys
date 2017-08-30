@@ -7,6 +7,10 @@ Public Class MedicareMngrSection
     Private Const const_HCAHPS_SurveyTypeID As Integer = 2
     Private Const const_HHCAHPS_SurveyTypeID As Integer = 3
     Private Const const_OASCAHPS_SurveyTypeID As Integer = 16
+    Private Const const_Apply_ValidationType As Int16 = 1
+    Private Const const_ForceCalc_ValidationType As Int16 = 2
+    Private Const const_UnlockSampling_ValidationType As Int16 = 3
+
 
     Private WithEvents mNavControl As MedicareMngrNavigator
 
@@ -240,53 +244,21 @@ Public Class MedicareMngrSection
     End Sub
 
     Private Sub HHCAHPSMedicareUnlockSamplingButton_Click(sender As Object, e As EventArgs) Handles HHCAHPS_MedicareUnlockSamplingButton.Click
-        If Not mHHCAHPS_MedicareNumber.SamplingLocked Then Exit Sub
-
-        If Not mHHCAHPS_MedicareNumber.IsValid Then
-            MessageBox.Show("Invalid data exists.  Please correct and try again.", "Unlock Sampling", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Exit Sub
-        End If
-
-        'Lets unlock it
-        If MessageBox.Show("Are you sure you wish to unlock sampling for this medicare number?", "Unlock Sampling", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) = DialogResult.Yes Then
-            'User says do it
-            mHHCAHPS_MedicareNumber.SamplingLocked = False
-            'Set sample unlock flag. Written to log table during save.
-            mHHCAHPS_SampleUnlocked = True
-            DisplaySamplingLock_HHCAHPS(mHHCAHPS_MedicareNumber.SamplingLocked)
-        End If
+        SurveyTypeMedicareUnlockSamplingButton_Click(mHHCAHPS_MedicareNumber, const_HHCAHPS_SurveyTypeID)
     End Sub
 
     Private Sub HHCAHPS_ApplyButton_Click(sender As Object, e As EventArgs) Handles HHCAHPS_ApplyButton.Click
-
-        If SurveyTypeMedicareInputValidation(mHHCAHPS_MedicareNumber, 1) Then
-            Exit Sub
-        End If
-
-        If mHHCAHPS_MedicareNumber IsNot Nothing AndAlso mHHCAHPS_MedicareNumber.IsDirty Then
-
-            mHHCAHPS_MedicareNumber.MedicareNumber = mMedicareNumber.MedicareNumber
-            mHHCAHPS_MedicareNumber.Name = mMedicareNumber.Name
-            mHHCAHPS_MedicareNumber.ApplyEdit()
-            mHHCAHPS_MedicareNumber.Save()
-            If mHHCAHPS_SampleUnlocked Then
-                Dim medicareCommon As MedicareCommon = New MedicareCommon(mMedicareNumber.MedicareNumber, mMedicareNumber.Name)
-                medicareCommon.LogUnlockSample(CurrentUser.MemberID, const_HHCAHPS_SurveyTypeID)
-                mHHCAHPS_SampleUnlocked = False
-            End If
-
-            mHHCAHPS_MedicareNumber.BeginEdit()
-
-        End If
+        SurveyTypeApplyButton_Click(mHHCAHPS_MedicareNumber, const_HHCAHPS_SurveyTypeID)
     End Sub
 
     Private Sub HHCAHPS_CancelButton_Click(sender As Object, e As EventArgs) Handles HHCAHPS_CancelButton.Click
-        Dim HHCAHPS_IsDirty As Boolean = False
+        'SurveyTypeCancelButton_Click(mHHCAHPS_MedicareNumber)
+        Dim isDirty As Boolean = False
         If mHHCAHPS_MedicareNumber IsNot Nothing Then
-            HHCAHPS_IsDirty = mHHCAHPS_MedicareNumber.IsDirty
+            isDirty = mHHCAHPS_MedicareNumber.IsDirty
         End If
 
-        If HHCAHPS_IsDirty Then
+        If isDirty Then
             If MessageBox.Show("Are you sure you wish to cancel all changes?", "Cancel Changes", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) = DialogResult.Yes Then
                 'The user has chosen to undo all changes
                 mHHCAHPS_MedicareNumber.CancelEdit()
@@ -418,22 +390,7 @@ Public Class MedicareMngrSection
     End Sub
 
     Private Sub OASCAHPS_CancelButton_Click(sender As Object, e As EventArgs) Handles OASCAHPS_CancelButton.Click
-        Dim OASCAHPS_IsDirty As Boolean = False
-        If mOASCAHPS_MedicareNumber IsNot Nothing Then
-            OASCAHPS_IsDirty = mOASCAHPS_MedicareNumber.IsDirty
-        End If
-
-        If OASCAHPS_IsDirty Then
-            If MessageBox.Show("Are you sure you wish to cancel all changes?", "Cancel Changes", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) = DialogResult.Yes Then
-                'The user has chosen to undo all changes
-                mOASCAHPS_MedicareNumber.CancelEdit()
-
-                PopulateMedicareSection()
-
-                mOASCAHPS_MedicareNumber.BeginEdit()
-
-            End If
-        End If
+        SurveyTypeCancelButton_Click(mOASCAHPS_MedicareNumber)
     End Sub
 #End Region
 
@@ -781,16 +738,18 @@ Public Class MedicareMngrSection
 
     End Sub
 
-    Private Function SurveyTypeMedicareInputValidation(medicareNumber As MedicareSurveyType, validationType As Int16) As Boolean
+    Private Function SurveyTypeMedicareInvalid(ByRef medicareNumber As MedicareSurveyType, validationType As Int16) As Boolean
 
         Dim showInvalidMessage As Boolean = False
         Dim message As String = ""
         Dim caption As String = ""
         Select Case validationType
-            Case 1
+            Case const_Apply_ValidationType
                 caption = "Invalid Medicare Number"
-            Case 2
+            Case const_ForceCalc_ValidationType
                 caption = "Recalc Proportion"
+            Case const_UnlockSampling_ValidationType
+                caption = "Unlock Sampling"
             Case Else
                 caption = "Invalid Medicare Number"
         End Select
@@ -831,9 +790,9 @@ Public Class MedicareMngrSection
 
     End Function
 
-    Private Sub SurveyTypeMedicareReCalcButton_Click(medicareNumber As MedicareSurveyType, surveyTypeID As Integer)
+    Private Sub SurveyTypeMedicareReCalcButton_Click(ByRef medicareNumber As MedicareSurveyType, surveyTypeID As Integer)
 
-        If SurveyTypeMedicareInputValidation(medicareNumber, 2) Then
+        If SurveyTypeMedicareInvalid(medicareNumber, const_ForceCalc_ValidationType) Then
             Exit Sub
         End If
 
@@ -856,6 +815,79 @@ Public Class MedicareMngrSection
 
     End Sub
 
+    Private Sub SurveyTypeMedicareUnlockSamplingButton_Click(ByRef medicareNumber As MedicareSurveyType, surveyTypeID As Integer)
+        If Not medicareNumber.SamplingLocked Then Exit Sub
+
+        If SurveyTypeMedicareInvalid(medicareNumber, const_UnlockSampling_ValidationType) Then
+            Exit Sub
+        End If
+
+        'Lets unlock it
+        If MessageBox.Show("Are you sure you wish to unlock sampling for this medicare number?", "Unlock Sampling", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) = DialogResult.Yes Then
+            'User says do it
+            medicareNumber.SamplingLocked = False
+            'Set sample unlock flag. Written to log table during save.
+            If surveyTypeID = const_HHCAHPS_SurveyTypeID Then
+                mHHCAHPS_SampleUnlocked = True
+                DisplaySamplingLock_HHCAHPS(medicareNumber.SamplingLocked)
+            Else
+                mOASCAHPS_SampleUnlocked = True
+                DisplaySamplingLock_OASCAHPS(medicareNumber.SamplingLocked)
+            End If
+        End If
+    End Sub
+
+    Private Sub SurveyTypeApplyButton_Click(ByRef medicareNumber As MedicareSurveyType, surveyTypeID As Int16)
+
+        If SurveyTypeMedicareInvalid(medicareNumber, const_Apply_ValidationType) Then
+            Exit Sub
+        End If
+
+        If medicareNumber IsNot Nothing AndAlso medicareNumber.IsDirty Then
+
+            medicareNumber.MedicareNumber = mMedicareNumber.MedicareNumber
+            medicareNumber.Name = mMedicareNumber.Name
+            medicareNumber.ApplyEdit()
+            medicareNumber.Save()
+
+            If surveyTypeID = const_HHCAHPS_SurveyTypeID Then
+                If mHHCAHPS_SampleUnlocked Then
+                    Dim medicareCommon As MedicareCommon = New MedicareCommon(mMedicareNumber.MedicareNumber, mMedicareNumber.Name)
+                    medicareCommon.LogUnlockSample(CurrentUser.MemberID, const_HHCAHPS_SurveyTypeID)
+                    mHHCAHPS_SampleUnlocked = False
+                End If
+            Else
+                If mOASCAHPS_SampleUnlocked Then
+                    Dim medicareCommon As MedicareCommon = New MedicareCommon(mMedicareNumber.MedicareNumber, mMedicareNumber.Name)
+                    medicareCommon.LogUnlockSample(CurrentUser.MemberID, const_OASCAHPS_SurveyTypeID)
+                    mOASCAHPS_SampleUnlocked = False
+                End If
+
+            End If
+
+            medicareNumber.BeginEdit()
+
+        End If
+    End Sub
+
+    Private Sub SurveyTypeCancelButton_Click(ByRef medicareNumber As MedicareSurveyType)
+        Dim isDirty As Boolean = False
+        If medicareNumber IsNot Nothing Then
+            isDirty = medicareNumber.IsDirty
+        End If
+
+        If isDirty Then
+            If MessageBox.Show("Are you sure you wish to cancel all changes?", "Cancel Changes", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) = DialogResult.Yes Then
+                'The user has chosen to undo all changes
+                medicareNumber.CancelEdit()
+
+                PopulateMedicareSection()
+                medicareNumber.BeginEdit()
+
+            End If
+        End If
+
+    End Sub
 #End Region
 
 End Class
