@@ -19,7 +19,6 @@ Partial Class MedicareMngrSection
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
         Me.MedicareManagementSectionPanel = New Nrc.Framework.WinForms.SectionPanel()
         Me.CAHPSTabControl = New System.Windows.Forms.TabControl()
         Me.HCAHPS = New System.Windows.Forms.TabPage()
@@ -217,7 +216,7 @@ Partial Class MedicareMngrSection
         Me.MedicareNamePanel = New System.Windows.Forms.Panel()
         Me.MedicareNameTextBox = New System.Windows.Forms.TextBox()
         Me.MedicareNameLabel = New System.Windows.Forms.Label()
-        Me.MedicareErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
+        Me.MedicareErrorProvider = New System.Windows.Forms.ErrorProvider()
         Me.MedicareManagementSectionPanel.SuspendLayout()
         Me.CAHPSTabControl.SuspendLayout()
         Me.HCAHPS.SuspendLayout()
