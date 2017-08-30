@@ -231,9 +231,41 @@ Public Class MedicareMngrSection
 #Region "HHCAHPS Event Handlers"
 
     Private Sub HHCAHPSMedicareReCalcButton_Click(sender As Object, e As EventArgs) Handles HHCAHPS_MedicareReCalcButton.Click
-        If Not mHHCAHPS_MedicareNumber.IsValid Then
-            MessageBox.Show("Invalid data exists.  Please correct and try again.", "Recalc Proportion", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Exit Sub
+
+        Dim showInvalidMessage As Boolean = False
+        Dim message As String = ""
+
+        If mHHCAHPS_MedicareNumber IsNot Nothing Then
+            If mHHCAHPS_MedicareNumber.IsDirty And Not mHHCAHPS_MedicareNumber.IsValid Then
+                showInvalidMessage = True
+                For currentPos As Integer = 0 To mHHCAHPS_MedicareNumber.BrokenRulesCollection.Count - 1
+                    Select Case mHHCAHPS_MedicareNumber.BrokenRulesCollection.Item(currentPos).Property.ToLower
+                        Case "annualreturntarget"
+                            message = message + vbCrLf + "Annual Target must be greater than 0."
+                        Case "proportionchangethresholddisplay"
+                            message = message + vbCrLf + "Proportion Change Threshold must be at least 1%."
+                        Case Else
+                    End Select
+                Next
+            End If
+
+            If Date.Compare(mHHCAHPS_MedicareNumber.SwitchFromRateOverrideDate.Date, Date.Now().Date) >= 0 Then
+                If mHHCAHPS_MedicareNumber.SamplingRateOverrideDisplay <= CDec(0.99) Then
+                    message = message + vbCrLf + "If Switch from Override Date is in the future, Sampling Rate must be at least 1%."
+                    showInvalidMessage = True
+                End If
+            Else
+                If Date.Compare(mHHCAHPS_MedicareNumber.SwitchToCalcDate.Date, #1/1/1900#) = 0 OrElse mHHCAHPS_MedicareNumber.EstAnnualVolume <= 0 OrElse mHHCAHPS_MedicareNumber.EstResponseRateDisplay <= CDec(0.99) Then
+                    message = message + vbCrLf + "Switch from Estimated Date must be populated, Estimated Annual Volume must be greater than 0, Estimated Response Rate must be at least 1%."
+                    showInvalidMessage = True
+                End If
+            End If
+        End If
+
+        If showInvalidMessage Then
+            message = message + vbCrLf + "Please correct and try again."
+            MessageBox.Show(message, "Recalc Proportion", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return
         End If
 
         If mHHCAHPS_MedicareNumber.IsDirty Then
