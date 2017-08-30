@@ -522,7 +522,7 @@ BEGIN
 	SET NOCOUNT ON
 	SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 
-	SELECT history.SurveyType_ID, history.MedicareNumber, history.MedicarePropCalcType_ID, history.MedicarePropDataType_ID, history.EstRespRate, 
+	SELECT history.MedicareReCalcLog_ID, history.SurveyType_ID AS SurveyTypeID, history.MedicareNumber, history.MedicarePropCalcType_ID, history.MedicarePropDataType_ID, history.EstRespRate, 
 			history.EstAnnualVolume, history.SwitchToCalcDate, history.AnnualReturnTarget, history.ProportionCalcPct, history.SamplingLocked, 
 			history.ProportionChangeThreshold, history.Member_ID, history.DateCalculated, history.HistoricRespRate, history.HistoricAnnualVolume, 
 			history.ForcedCalculation, history.PropSampleCalcDate, history.SwitchFromRateOverrideDate, history.SamplingRateOverride
@@ -534,7 +534,6 @@ BEGIN
 	SET NOCOUNT OFF
 END
 GO
-
 
 PRINT 'End stored procedure changes'
 GO

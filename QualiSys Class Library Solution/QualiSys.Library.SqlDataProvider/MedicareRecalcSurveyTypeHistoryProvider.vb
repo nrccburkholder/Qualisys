@@ -12,7 +12,7 @@ Friend Class MedicareRecalcSurveyTypeHistoryProvider
     ''' <summary>Poulates the MedicareRecalcSurveyTypeHistory object from the data store.</summary>
     ''' <param name="rdr"></param>
     ''' <returns></returns>
-    ''' <CreatedBy>Tony Piccoli</CreatedBy>
+    ''' <CreatedBy></CreatedBy>
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Private Function PopulateMedicareRecalcSurveyTypeHistory(ByVal rdr As SafeDataReader) As MedicareRecalcSurveyTypeHistory
 
@@ -21,12 +21,11 @@ Friend Class MedicareRecalcSurveyTypeHistoryProvider
         newObject.BeginPopulate()
         privateInterface.MedicareReCalcLogId = rdr.GetInteger("MedicareReCalcLog_ID")
         newObject.MedicareNumber = rdr.GetString("MedicareNumber")
+        newObject.MedicareName = rdr.GetString("MedicareName")
         newObject.SurveyTypeID = rdr.GetInteger("SurveyTypeID")
         newObject.MedicarePropCalcTypeID = rdr.GetInteger("MedicarePropCalcType_ID")
         newObject.MedicarePropDataTypeID = rdr.GetInteger("MedicarePropDataType_ID")
         newObject.EstRespRate = rdr.GetDecimal("EstRespRate")
-        newObject.SwitchFromRateOverrideDate = rdr.GetDate("SwitchFromRateOverrideDate")
-        newObject.SamplingRateOverride = rdr.GetDecimal("SamplingRateOverride")
         newObject.EstAnnualVolume = rdr.GetInteger("EstAnnualVolume")
         newObject.SwitchToCalcDate = rdr.GetDate("SwitchToCalcDate")
         newObject.AnnualReturnTarget = rdr.GetInteger("AnnualReturnTarget")
@@ -47,6 +46,14 @@ Friend Class MedicareRecalcSurveyTypeHistoryProvider
             newObject.SamplingLocked = True
         End If
         newObject.PropSampleCalcDate = rdr.GetDate("PropSampleCalcDate")
+
+        newObject.SwitchFromRateOverrideDate = rdr.GetDate("SwitchFromRateOverrideDate")
+        If DateTime.Compare(newObject.SwitchFromRateOverrideDate, #1/1/1900#) < 0 Then
+            newObject.SwitchFromRateOverrideDate = New Date(1900, 1, 1)
+        End If
+
+        newObject.SamplingRateOverride = rdr.GetDecimal("SamplingRateOverride")
+
         newObject.EndPopulate()
 
         Return newObject
@@ -56,7 +63,7 @@ Friend Class MedicareRecalcSurveyTypeHistoryProvider
     ''' <summary>Proc call to get record by PK</summary>
     ''' <param name="MedicareRecalcSurveyTypeHistoryID"></param>
     ''' <returns></returns>
-    ''' <CreatedBy>Tony Piccoli</CreatedBy>
+    ''' <CreatedBy></CreatedBy>
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Public Overrides Function [Get](ByVal MedicareRecalcSurveyTypeHistoryID As Integer) As MedicareRecalcSurveyTypeHistory
 
@@ -73,7 +80,7 @@ Friend Class MedicareRecalcSurveyTypeHistoryProvider
 
     ''' <summary>Proc call to get all records.</summary>
     ''' <returns></returns>
-    ''' <CreatedBy>Tony Piccoli</CreatedBy>
+    ''' <CreatedBy></CreatedBy>
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Public Overrides Function GetAll() As MedicareRecalcSurveyTypeHistoryCollection
 
@@ -87,7 +94,7 @@ Friend Class MedicareRecalcSurveyTypeHistoryProvider
     ''' <summary>Proc call to get lastest record by medicare number.</summary>
     ''' <param name="medicareNumber"></param>
     ''' <returns></returns>
-    ''' <CreatedBy>Tony Piccoli</CreatedBy>
+    ''' <CreatedBy></CreatedBy>
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Public Overrides Function GetLatestByMedicareNumber(ByVal medicareNumber As String, ByVal latestDate As Date) As MedicareRecalcSurveyTypeHistory
 
@@ -105,7 +112,7 @@ Friend Class MedicareRecalcSurveyTypeHistoryProvider
     ''' <summary>Proc call to get lastest record by medicare number and sample date.</summary>
     ''' <param name="medicareNumber"></param>
     ''' <returns></returns>
-    ''' <CreatedBy>Tony Piccoli</CreatedBy>
+    ''' <CreatedBy></CreatedBy>
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Public Overrides Function GetLatestBySampleDate(ByVal medicareNumber As String, ByVal sampleDate As Date) As MedicareRecalcSurveyTypeHistory
 
@@ -123,7 +130,7 @@ Friend Class MedicareRecalcSurveyTypeHistoryProvider
     ''' <summary>Proc call for insert.</summary>
     ''' <param name="instance"></param>
     ''' <returns></returns>
-    ''' <CreatedBy>Tony Piccoli</CreatedBy>
+    ''' <CreatedBy></CreatedBy>
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Public Overrides Function Insert(ByVal instance As MedicareRecalcSurveyTypeHistory) As Integer
 

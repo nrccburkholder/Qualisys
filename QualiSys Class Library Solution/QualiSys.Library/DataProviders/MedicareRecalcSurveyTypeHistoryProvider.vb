@@ -1,6 +1,5 @@
 ﻿Namespace DataProvider
     ''' <summary>Abstract class for DAL layer.</summary>
-    ''' <CreatedBy>Tony Piccoli</CreatedBy>
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
     Public MustInherit Class MedicareRecalcSurveyTypeHistoryProvider
 
@@ -28,8 +27,6 @@
         Public MustOverride Function [Get](ByVal MedicareRecalcSurveyTypeHistoryID As Integer) As MedicareRecalcSurveyTypeHistory
         Public MustOverride Function GetAll() As MedicareRecalcSurveyTypeHistoryCollection
         Public MustOverride Function Insert(ByVal instance As MedicareRecalcSurveyTypeHistory) As Integer
-        'Public MustOverride Sub Update(ByVal instance As MedicareRecalcSurveyTypeHistory)
-        'Public MustOverride Sub Delete(ByVal MedicareRecalcSurveyTypeHistoryID As Integer)
         Public MustOverride Function GetLatestByMedicareNumber(ByVal medicareNumber As String, ByVal latestDate As Date) As MedicareRecalcSurveyTypeHistory
         Public MustOverride Function GetLatestBySampleDate(ByVal medicareNumber As String, ByVal sampleDate As Date) As MedicareRecalcSurveyTypeHistory
 

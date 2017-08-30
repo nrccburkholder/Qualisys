@@ -4,9 +4,9 @@ Imports DevExpress.XtraGrid.Views.Grid
 Public Class MedicareMngrNavigator
 
 #Region "Private Members"
-    Private Const mHCAHPS_SurveyTypeID As Integer = 2
-    Private Const mHHCAHPS_SurveyTypeID As Integer = 3
-    Private Const mOASCAHPS_SurveyTypeID As Integer = 16
+    Private Const const_HCAHPS_SurveyTypeID As Integer = 2
+    Private Const const_HHCAHPS_SurveyTypeID As Integer = 3
+    Private Const const_OASCAHPS_SurveyTypeID As Integer = 16
 
     Private mIsLoading As Boolean = False
     Private mTrackChanges As Boolean = True
@@ -198,8 +198,8 @@ Public Class MedicareMngrNavigator
 
                 'Let's delete the row from the database
                 MedicareNumber.DeleteNow(medNum.MedicareNumber)
-                MedicareSurveyType.DeleteNow(medNum.MedicareNumber, mHHCAHPS_SurveyTypeID)
-                MedicareSurveyType.DeleteNow(medNum.MedicareNumber, mOASCAHPS_SurveyTypeID)
+                MedicareSurveyType.DeleteNow(medNum.MedicareNumber, const_HHCAHPS_SurveyTypeID)
+                MedicareSurveyType.DeleteNow(medNum.MedicareNumber, const_OASCAHPS_SurveyTypeID)
 
                 'Now delete the row from the grid
                 MedicareNavGridView.DeleteRow(MedicareNavGridView.FocusedRowHandle)
