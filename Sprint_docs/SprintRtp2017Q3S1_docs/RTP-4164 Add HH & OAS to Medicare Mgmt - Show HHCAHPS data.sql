@@ -512,7 +512,10 @@ GO
 
 PRINT 'Modify stored procedure QCL_SelectMedicareRecalcSurveyType_History'
 GO
-ALTER PROCEDURE [dbo].[QCL_SelectMedicareRecalcSurveyType_History]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[QCL_SelectMedicareRecalcSurveyType_History]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[QCL_SelectMedicareRecalcSurveyType_History]
+GO
+CREATE PROCEDURE [dbo].[QCL_SelectMedicareRecalcSurveyType_History]
 @MedicareReCalcLog_ID INT
 AS
 BEGIN
