@@ -50,16 +50,12 @@ exec QCL_CreateCAHPSRollingYear @PeriodDate, @SurveyType_id, @EncDateStart OUTPU
 		ON su.SAMPLEUNIT_ID = ssut.SAMPLEUNIT_ID
 	inner join SAMPLESET sset
 		ON sset.SAMPLESET_ID = ssut.SAMPLESET_ID 
-	inner join PeriodDates pdates
-		on pdates.SAMPLESET_ID = sset.SAMPLESET_ID 
-	inner join PeriodDef pdef
-		ON pdef.PeriodDef_ID = pdates.PeriodDef_ID
+		and sset.datDateRange_FromDate >= @EncDateStart 
+		and sset.datDateRange_ToDate <= @EncDateEnd
 	inner join SAMPLEPOP sp
 		on sp.SAMPLESET_ID = sset.SAMPLESET_ID
 	where sf.MedicareNumber = @MedicareNumber
 		and su.CAHPSType_id = @SurveyType_id
-		and pdef.datExpectedEncStart >= @EncDateStart 
-		and pdef.datExpectedEncEnd <= @EncDateEnd
 	group by sp.SAMPLEPOP_ID
 )
 select 100.0 * isnull(sum(IsCompleted), 0) / isnull(sum(IsEligible), 0) as RespRate
