@@ -339,55 +339,20 @@ Public Class MedicareMngrSection
         If showInvalidMessage Then
             MessageBox.Show(message, "Invalid HHCAHPS Medicare Number", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Else
-            If mHHCAHPS_MedicareNumber IsNot Nothing Then
+            If mHHCAHPS_MedicareNumber IsNot Nothing AndAlso mHHCAHPS_MedicareNumber.IsDirty Then
 
-                If mHHCAHPS_MedicareNumber.IsDirty Then
-
-                    Dim isOverrideDateBlank As Boolean = False
-                    Dim isOverrideRateBlank As Boolean = True
-                    Dim showInvalidOverrideMessage As Boolean = False
-                    Dim isOverrideDateValid As Boolean = True
-
-                    If Date.Compare(mHHCAHPS_MedicareNumber.SwitchFromRateOverrideDate.Date, #1/1/1900#) = 0 Then
-                        isOverrideDateBlank = True
-                    Else
-                        If Date.Compare(mHHCAHPS_MedicareNumber.SwitchFromRateOverrideDate.Date, Date.Now().Date) < 0 Then
-                            isOverrideDateValid = False
-                        End If
-                    End If
-
-                    If mHHCAHPS_MedicareNumber.SamplingRateOverride > CDec(0) Then
-                        isOverrideRateBlank = False
-                    End If
-
-                    If Not isOverrideDateValid And mHHCAHPS_MedicareNumber.IsNew Then
-                        MessageBox.Show("""Switch from Overeride Date"" can't be in the past for new medicare number.  Please correct and try again.", "Invalid Medicare Number", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                        showInvalidOverrideMessage = True
-                    End If
-
-                    If ((Not showInvalidOverrideMessage) And ((isOverrideDateBlank And Not isOverrideRateBlank) Or (Not isOverrideDateBlank And isOverrideRateBlank))) Then
-                        MessageBox.Show("Invalid ""Switch from Overeride Date"" or ""Sampling Date"" exists.  Please correct and try again.", "Invalid Medicare Number", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                        showInvalidOverrideMessage = True
-                    End If
-
-                    If (Not showInvalidOverrideMessage) Then
-                        mHHCAHPS_MedicareNumber.MedicareNumber = mMedicareNumber.MedicareNumber
-                        mHHCAHPS_MedicareNumber.Name = mMedicareNumber.Name
-                        mHHCAHPS_MedicareNumber.ApplyEdit()
-                        mHHCAHPS_MedicareNumber.Save()
-                        If mHHCAHPS_SampleUnlocked Then
-                            Dim medicareCommon As MedicareCommon = New MedicareCommon(mMedicareNumber.MedicareNumber, mMedicareNumber.Name)
-                            medicareCommon.LogUnlockSample(CurrentUser.MemberID, const_HHCAHPS_SurveyTypeID)
-                            mHHCAHPS_SampleUnlocked = False
-                        End If
-
-                        mHHCAHPS_MedicareNumber.BeginEdit()
-
-                    End If
-
+                mHHCAHPS_MedicareNumber.MedicareNumber = mMedicareNumber.MedicareNumber
+                mHHCAHPS_MedicareNumber.Name = mMedicareNumber.Name
+                mHHCAHPS_MedicareNumber.ApplyEdit()
+                mHHCAHPS_MedicareNumber.Save()
+                If mHHCAHPS_SampleUnlocked Then
+                    Dim medicareCommon As MedicareCommon = New MedicareCommon(mMedicareNumber.MedicareNumber, mMedicareNumber.Name)
+                    medicareCommon.LogUnlockSample(CurrentUser.MemberID, const_HHCAHPS_SurveyTypeID)
+                    mHHCAHPS_SampleUnlocked = False
                 End If
-            End If
 
+                mHHCAHPS_MedicareNumber.BeginEdit()
+            End If
         End If
     End Sub
 
