@@ -120,6 +120,11 @@ Public Class MedicareMngrSection
         If e.MedicareNumber IsNot Nothing Then
             mMedicareNumber.BeginEdit()
         End If
+        If mHHCAHPS_MedicareNumber IsNot Nothing Then
+            mHHCAHPS_MedicareNumber.BeginEdit()
+        End If
+
+        'TODO: OAS
 
     End Sub
 
@@ -252,23 +257,7 @@ Public Class MedicareMngrSection
     End Sub
 
     Private Sub HHCAHPS_CancelButton_Click(sender As Object, e As EventArgs) Handles HHCAHPS_CancelButton.Click
-        'SurveyTypeCancelButton_Click(mHHCAHPS_MedicareNumber)
-        Dim isDirty As Boolean = False
-        If mHHCAHPS_MedicareNumber IsNot Nothing Then
-            isDirty = mHHCAHPS_MedicareNumber.IsDirty
-        End If
-
-        If isDirty Then
-            If MessageBox.Show("Are you sure you wish to cancel all changes?", "Cancel Changes", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) = DialogResult.Yes Then
-                'The user has chosen to undo all changes
-                mHHCAHPS_MedicareNumber.CancelEdit()
-
-                PopulateMedicareSection()
-                mHHCAHPS_MedicareNumber.BeginEdit()
-
-            End If
-        End If
-
+        SurveyTypeCancelButton_Click(mHHCAHPS_MedicareNumber)
     End Sub
 
 #End Region
