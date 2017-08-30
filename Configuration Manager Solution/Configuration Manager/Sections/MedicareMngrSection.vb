@@ -112,6 +112,10 @@ Public Class MedicareMngrSection
             mMedicareNumber.BeginEdit()
         End If
 
+        If mHHCAHPS_MedicareNumber IsNot Nothing Then
+            mHHCAHPS_MedicareNumber.BeginEdit()
+        End If
+
     End Sub
 
     Private Sub mNavControl_MedicareSelectionChanging(ByVal sender As Object, ByVal e As MedicareSelectionChangingEventArgs) Handles mNavControl.MedicareSelectionChanging
