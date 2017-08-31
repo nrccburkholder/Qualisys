@@ -53,7 +53,7 @@ BEGIN
 	UPDATE MedicareLookup
 	SET MedicareLookup.SystematicSwitchToCalcDate=MedicareLookupSurveyType.SwitchToCalcDate, 
 		MedicareLookup.SystematicAnnualReturnTarget=MedicareLookupSurveyType.AnnualReturnTarget, 
-		MedicareLookup.SystematicEstRespRate=MedicareLookupSurveyType.EstRespRate
+		MedicareLookup.SystematicEstRespRate=MedicareLookupSurveyType.EstRespRate*100
 	FROM MedicareLookup
 	INNER JOIN MedicareLookupSurveyType ON MedicareLookup.medicareNumber=MedicareLookupSurveyType.medicareNumber
 	WHERE MedicareLookupSurveyType.SurveyType_ID=16 AND 

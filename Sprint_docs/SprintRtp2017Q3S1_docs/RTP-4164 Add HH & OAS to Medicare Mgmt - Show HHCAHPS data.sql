@@ -74,11 +74,16 @@ BEGIN
 	SELECT @surveyType_ID=16
 	
 	INSERT INTO MedicareLookupSurveyType (surveyType_ID,  MedicareNumber, SwitchToCalcDate, AnnualReturnTarget, EstRespRate)
-	SELECT @surveyType_ID, MedicareNumber, SystematicSwitchToCalcDate, SystematicAnnualReturnTarget, SystematicEstRespRate 
+	SELECT @surveyType_ID, MedicareNumber, SystematicSwitchToCalcDate, SystematicAnnualReturnTarget, SystematicEstRespRate/100 
 	FROM MedicareLookup 
 	WHERE SystematicSwitchToCalcDate IS NOT NULL OR SystematicAnnualReturnTarget IS NOT NULL OR SystematicEstRespRate IS NOT NULL
 
 END
+GO
+
+PRINT 'Fix SystematicEstRespRate data'
+GO
+UPDATE MedicareLookupSurveyType SET EstRespRate=EstRespRate/100 WHERE EstRespRate>1
 GO
 
 PRINT 'Modify MedicareLookup table'
