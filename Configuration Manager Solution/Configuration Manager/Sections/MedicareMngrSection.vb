@@ -59,78 +59,33 @@ Public Class MedicareMngrSection
     End Sub
 
     Public Overrides Function AllowInactivate() As Boolean
-        'HCAHPS
-        If mMedicareNumber Is Nothing Then
-            Return True
-        ElseIf mMedicareNumber.IsDirty Then
-            If MessageBox.Show("Do you wish to save the changes to this Medicare Number?", "Save Medicare Number", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) = DialogResult.Yes Then
-                'Let's check to see if we are valid
-                If mMedicareNumber.IsValid Then
-                    'Everything looks good so go ahead and save it
-                    mMedicareNumber.ApplyEdit()
-                    mMedicareNumber.Save()
-                    Return True
-                Else
-                    'There is invalid data so tell the user to fix it.
-                    MessageBox.Show("Invalid data exists.  Please correct and try again.", "Invalid Medicare Number", MessageBoxButtons.OK)
-                    Return False
-                End If
+        Dim showSaveMessage As Boolean = False
+        Dim tabName As String = ""
+        If mMedicareNumber IsNot Nothing And mMedicareNumber.IsDirty Then
+            showSaveMessage = True
+            tabName = "HCAHPS"
+        ElseIf mHHCAHPS_MedicareNumber IsNot Nothing And mHHCAHPS_MedicareNumber.IsDirty Then
+            showSaveMessage = True
+            If tabName.Length = 0 Then
+                tabName = "HHCAHPS"
             Else
-                'The user has chosen not to save the changes.
-                mMedicareNumber.CancelEdit()
-                Return True
+                tabName = tabName + ", HHCAHPS"
             End If
-        Else
-            mMedicareNumber.CancelEdit()
-            Return True
+        ElseIf mOASCAHPS_MedicareNumber IsNot Nothing And mOASCAHPS_MedicareNumber.IsDirty Then
+            showSaveMessage = True
+            If tabName.Length = 0 Then
+                tabName = "OASCAHPS"
+            Else
+                tabName = tabName + ", OASCAHPS"
+            End If
         End If
 
-        'HHCAHPS
-        If mHHCAHPS_MedicareNumber Is Nothing Then
-            Return True
-        ElseIf mHHCAHPS_MedicareNumber.IsDirty Then
-            If MessageBox.Show("Do you wish to save the changes to this Medicare Number?", "Save Medicare Number", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) = DialogResult.Yes Then
-                If IsSurveyTypeMedicareInvalid(mHHCAHPS_MedicareNumber, const_AllowInactivate_ValidationType) Then
-                    Return False
-                Else
-                    mHHCAHPS_MedicareNumber.ApplyEdit()
-                    mHHCAHPS_MedicareNumber.Save()
-                    Return True
-
-                End If
-            Else
-                'The user has chosen not to save the changes.
-                mHHCAHPS_MedicareNumber.CancelEdit()
-                Return True
-            End If
+        If showSaveMessage Then
+            MessageBox.Show("You have unsaved changes on the following tab(s): " + tabName + ". Please save or cancel.", "Unsaved Changes", MessageBoxButtons.OK)
+            Return False
         Else
-            mHHCAHPS_MedicareNumber.CancelEdit()
             Return True
         End If
-
-        'OASCAHPS
-        If mOASCAHPS_MedicareNumber Is Nothing Then
-            Return True
-        ElseIf mOASCAHPS_MedicareNumber.IsDirty Then
-            If MessageBox.Show("Do you wish to save the changes to this Medicare Number?", "Save Medicare Number", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) = DialogResult.Yes Then
-                If IsSurveyTypeMedicareInvalid(mOASCAHPS_MedicareNumber, const_AllowInactivate_ValidationType) Then
-                    Return False
-                Else
-                    mOASCAHPS_MedicareNumber.ApplyEdit()
-                    mOASCAHPS_MedicareNumber.Save()
-                    Return True
-
-                End If
-            Else
-                'The user has chosen not to save the changes.
-                mOASCAHPS_MedicareNumber.CancelEdit()
-                Return True
-            End If
-        Else
-            mOASCAHPS_MedicareNumber.CancelEdit()
-            Return True
-        End If
-
     End Function
 
     Public Overrides Sub InactivateSection()
