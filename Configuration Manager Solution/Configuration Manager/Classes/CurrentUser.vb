@@ -118,6 +118,11 @@ Public NotInheritable Class CurrentUser
         End Get
     End Property
 
+    Public Shared ReadOnly Property MayOverrideSamplingRate() As Boolean
+        Get
+            Return Member.HasMemberPrivilege("Configuration Manager", "Override Sampling Rate")
+        End Get
+    End Property
 
     Private Sub New()
 

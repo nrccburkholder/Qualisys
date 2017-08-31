@@ -560,6 +560,13 @@ Public Class MedicareMngrSection
                 HHCAHPS_EstimatedResponseRateNumericUpDown.Enabled = True
             End If
 
+            If CurrentUser.MayOverrideSamplingRate Then
+                HHCAHPS_SwitchFromOverrideDateDateTimePicker.Enabled = True
+                HHCAHPS_SamplingRateNumericUpDown.Enabled = True
+            Else
+                HHCAHPS_SwitchFromOverrideDateDateTimePicker.Enabled = False
+                HHCAHPS_SamplingRateNumericUpDown.Enabled = False
+            End If
 
             'Unbound controls
             DisplaySamplingLock_HHCAHPS(mHHCAHPS_MedicareNumber.SamplingLocked)
@@ -672,6 +679,13 @@ Public Class MedicareMngrSection
                 OASCAHPS_EstimatedResponseRateNumericUpDown.Enabled = True
             End If
 
+            If CurrentUser.MayOverrideSamplingRate Then
+                OASCAHPS_SwitchFromOverrideDateDateTimePicker.Enabled = True
+                OASCAHPS_SamplingRateNumericUpDown.Enabled = True
+            Else
+                OASCAHPS_SwitchFromOverrideDateDateTimePicker.Enabled = False
+                OASCAHPS_SamplingRateNumericUpDown.Enabled = False
+            End If
 
             'Unbound controls
             DisplaySamplingLock_OASCAHPS(mOASCAHPS_MedicareNumber.SamplingLocked)
@@ -808,16 +822,24 @@ Public Class MedicareMngrSection
                 Next
             End If
 
-            If Date.Compare(medicareNumber.SwitchFromRateOverrideDate.Date, Date.Now().Date) >= 0 Then
-                If medicareNumber.SamplingRateOverrideDisplay <= CDec(0.99) Then
-                    message = message + "If Switch from Override Date is in the future, Sampling Rate must be at least 1%." + vbCrLf
-                    showInvalidMessage = True
+            If CurrentUser.MayOverrideSamplingRate Then
+                If Date.Compare(medicareNumber.SwitchFromRateOverrideDate.Date, Date.Now().Date) >= 0 Then
+                    If medicareNumber.SamplingRateOverrideDisplay <= CDec(0.99) Then
+                        message = message + "If Switch from Override Date is in the future, Sampling Rate must be at least 1%." + vbCrLf
+                        showInvalidMessage = True
+                    End If
+                Else
+                    If Date.Compare(medicareNumber.SwitchToCalcDate.Date, #1/1/1900#) = 0 OrElse medicareNumber.EstAnnualVolume <= 0 OrElse medicareNumber.EstResponseRateDisplay <= CDec(0.99) Then
+                        message = message + "Switch from Estimated Date must be populated, Estimated Annual Volume must be greater than 0, Estimated Response Rate must be at least 1%." + vbCrLf
+                        showInvalidMessage = True
+                    End If
                 End If
             Else
                 If Date.Compare(medicareNumber.SwitchToCalcDate.Date, #1/1/1900#) = 0 OrElse medicareNumber.EstAnnualVolume <= 0 OrElse medicareNumber.EstResponseRateDisplay <= CDec(0.99) Then
                     message = message + "Switch from Estimated Date must be populated, Estimated Annual Volume must be greater than 0, Estimated Response Rate must be at least 1%." + vbCrLf
                     showInvalidMessage = True
                 End If
+
             End If
         End If
 
