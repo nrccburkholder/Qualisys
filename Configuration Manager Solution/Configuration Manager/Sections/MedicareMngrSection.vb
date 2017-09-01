@@ -61,26 +61,28 @@ Public Class MedicareMngrSection
     Public Overrides Function AllowInactivate() As Boolean
         Dim showSaveMessage As Boolean = False
         Dim tabName As String = ""
-        If mMedicareNumber IsNot Nothing And mMedicareNumber.IsDirty Then
+        If mMedicareNumber Is Nothing Then
+            mHHCAHPS_MedicareNumber = Nothing
+            mOASCAHPS_MedicareNumber = Nothing
+        End If
+
+        If mMedicareNumber IsNot Nothing AndAlso mMedicareNumber.IsDirty Then
             showSaveMessage = True
-            tabName = "HCAHPS"
-        ElseIf mHHCAHPS_MedicareNumber IsNot Nothing And mHHCAHPS_MedicareNumber.IsDirty Then
+            tabName = "HCAHPS, "
+        End If
+
+        If mHHCAHPS_MedicareNumber IsNot Nothing AndAlso mHHCAHPS_MedicareNumber.IsDirty Then
             showSaveMessage = True
-            If tabName.Length = 0 Then
-                tabName = "HHCAHPS"
-            Else
-                tabName = tabName + ", HHCAHPS"
-            End If
-        ElseIf mOASCAHPS_MedicareNumber IsNot Nothing And mOASCAHPS_MedicareNumber.IsDirty Then
+            tabName = tabName + "HHCAHPS, "
+        End If
+
+        If mOASCAHPS_MedicareNumber IsNot Nothing AndAlso mOASCAHPS_MedicareNumber.IsDirty Then
             showSaveMessage = True
-            If tabName.Length = 0 Then
-                tabName = "OASCAHPS"
-            Else
-                tabName = tabName + ", OASCAHPS"
-            End If
+            tabName = tabName + "OASCAHPS, "
         End If
 
         If showSaveMessage Then
+            tabName = tabName.Substring(0, tabName.Length - 2)
             MessageBox.Show("You have unsaved changes on the following tab(s): " + tabName + ". Please save or cancel.", "Unsaved Changes", MessageBoxButtons.OK)
             Return False
         Else
@@ -103,6 +105,9 @@ Public Class MedicareMngrSection
         If e.MedicareNumber IsNot Nothing Then
             mHHCAHPS_MedicareNumber = newMedicareSurveyType(const_HHCAHPS_SurveyTypeID)
             mOASCAHPS_MedicareNumber = newMedicareSurveyType(const_OASCAHPS_SurveyTypeID)
+        Else
+            mHHCAHPS_MedicareNumber = Nothing
+            mOASCAHPS_MedicareNumber = Nothing
         End If
 
         'Populate the screen
@@ -868,8 +873,6 @@ Public Class MedicareMngrSection
 
         If medicareNumber IsNot Nothing AndAlso medicareNumber.IsDirty Then
 
-            medicareNumber.MedicareNumber = mMedicareNumber.MedicareNumber
-            medicareNumber.Name = mMedicareNumber.Name
             medicareNumber.ApplyEdit()
             medicareNumber.Save()
 
@@ -916,9 +919,11 @@ Public Class MedicareMngrSection
         Dim medicareNumber As MedicareSurveyType = Nothing
 
         medicareNumber = MedicareSurveyTypeProvider.Instance.Select(mMedicareNumber.MedicareNumber, surveyTypeID)
+
         If medicareNumber Is Nothing Then
 
             medicareNumber = MedicareSurveyType.NewMedicareSurveyType(GlobalDef)
+            medicareNumber.BeginPopulate()
 
             medicareNumber.MedicareNumber = mMedicareNumber.MedicareNumber
             medicareNumber.Name = mMedicareNumber.Name
@@ -936,7 +941,11 @@ Public Class MedicareMngrSection
             medicareNumber.NonSubmitting = False
             medicareNumber.SwitchFromRateOverrideDate = New Date(1900, 1, 1)
 
+            medicareNumber.EndPopulate()
+            medicareNumber.IsMedicareNew = True
+            medicareNumber.IsMedicareDirty = False
         End If
+
         Return medicareNumber
 
     End Function

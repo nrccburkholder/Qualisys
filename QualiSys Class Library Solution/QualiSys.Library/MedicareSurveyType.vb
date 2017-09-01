@@ -163,6 +163,36 @@ Public Class MedicareSurveyType
         End Set
     End Property
 
+    Public Property IsMedicareNew() As Boolean
+        Get
+            Return IsNew()
+        End Get
+        Set(ByVal value As Boolean)
+            If Not value = IsNew() Then
+                If value = True Then
+                    MarkNew()
+                Else
+                    MarkOld()
+                End If
+            End If
+        End Set
+    End Property
+
+    Public Property IsMedicareDirty() As Boolean
+        Get
+            Return IsDirty()
+        End Get
+        Set(ByVal value As Boolean)
+            If Not value = IsDirty() Then
+                If value = True Then
+                    MarkDirty()
+                Else
+                    MarkClean()
+                End If
+            End If
+        End Set
+    End Property
+
     Public Property NonSubmitting() As Boolean
         Get
             Return mNonSubmitting
