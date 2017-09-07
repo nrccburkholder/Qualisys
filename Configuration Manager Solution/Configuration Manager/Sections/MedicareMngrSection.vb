@@ -948,21 +948,11 @@ Public Class MedicareMngrSection
             medicareNumber.Name = mMedicareNumber.Name
             medicareNumber.SurveyTypeID = surveyTypeID
 
-            Dim quarterNumber As Integer = (Date.Now().Month() - 1) \ 3 + 1
-            Dim firstDayOfQuarterNextYear As New DateTime(Date.Now().Year + 1, (quarterNumber - 1) * 3 + 1, 1)
-
-            medicareNumber.EstResponseRate = GlobalDef.RespRate
-            medicareNumber.SwitchToCalcDate = firstDayOfQuarterNextYear
-            medicareNumber.AnnualReturnTarget = GlobalDef.AnnualReturnTarget
-            medicareNumber.SamplingLocked = False
-            medicareNumber.ProportionChangeThreshold = GlobalDef.ProportionChangeThreshold
-            medicareNumber.IsActive = True
-            medicareNumber.NonSubmitting = False
-            medicareNumber.SwitchFromRateOverrideDate = New Date(1900, 1, 1)
-
             medicareNumber.EndPopulate()
+
             medicareNumber.IsMedicareNew = True
             medicareNumber.IsMedicareDirty = False
+
         End If
 
         Return medicareNumber

@@ -497,8 +497,11 @@ Public Class MedicareSurveyType
         EstResponseRate = globalDef.RespRate
         ProportionChangeThreshold = globalDef.ProportionChangeThreshold
         AnnualReturnTarget = globalDef.AnnualReturnTarget
-
         SwitchFromRateOverrideDate = New Date(1900, 1, 1)
+
+        SamplingLocked = False
+        IsActive = True
+        NonSubmitting = False
 
         'Validate the object
         ValidationRules.CheckRules()
