@@ -420,7 +420,7 @@ begin
 			sampleunit su on suf.SUFacility_id = suf.SUFacility_id and mlst.surveytype_id = su.CAHPSType_id 
 			where su.sampleunit_id = @sampleunit_id
 
-			if GetDate() < @SwitchFromOverrideDate
+			if GetDate() < @SwitchFromRateOverrideDate
 				SET @EstRespRate = @SamplingRateOverride
 		end
 	else
@@ -428,9 +428,7 @@ begin
 			--For CAHPSType_id 3 & 16 (HHCAHPS and OASCAHPS) we should not be in this code block
 			if exists(select 1 from sampleunit where CAHPSType_id in (3,16) and sampleunit_id = @sampleunit_id)
 				begin
-					declare @Error varchar(100) = 'MEDICARE LOOKUP TAB NOT FILLED OUT FOR CAHPSType_id associated with SampleUnit_id: '+convert(varchar, @sampleunit_id)
-					RAISERROR(@Error, 16, 1)
-					RETURN 0 --exit now
+					return cast('MEDICARE LOOKUP TAB NOT FILLED OUT FOR CAHPSType_id associated with SampleUnit_id: '+convert(varchar, @sampleunit_id) as int)
 				end
 			
 			select distinct @estRespRate = ml.estRespRate * 100
