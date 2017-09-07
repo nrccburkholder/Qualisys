@@ -19,6 +19,7 @@ Partial Class MedicareMngrSection
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.MedicareManagementSectionPanel = New Nrc.Framework.WinForms.SectionPanel()
         Me.CAHPSTabControl = New System.Windows.Forms.TabControl()
         Me.HCAHPS = New System.Windows.Forms.TabPage()
@@ -216,7 +217,7 @@ Partial Class MedicareMngrSection
         Me.MedicareNamePanel = New System.Windows.Forms.Panel()
         Me.MedicareNameTextBox = New System.Windows.Forms.TextBox()
         Me.MedicareNameLabel = New System.Windows.Forms.Label()
-        Me.MedicareErrorProvider = New System.Windows.Forms.ErrorProvider()
+        Me.MedicareErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.MedicareManagementSectionPanel.SuspendLayout()
         Me.CAHPSTabControl.SuspendLayout()
         Me.HCAHPS.SuspendLayout()
@@ -1573,7 +1574,7 @@ Partial Class MedicareMngrSection
         Me.HHCAHPS_SampleLockLabel.Name = "HHCAHPS_SampleLockLabel"
         Me.HHCAHPS_SampleLockLabel.Size = New System.Drawing.Size(111, 13)
         Me.HHCAHPS_SampleLockLabel.TabIndex = 16
-        Me.HHCAHPS_SampleLockLabel.Text = "Smapling Lock Status:"
+        Me.HHCAHPS_SampleLockLabel.Text = "Sampling Lock Status:"
         '
         'Panel3
         '
@@ -2297,7 +2298,7 @@ Partial Class MedicareMngrSection
         Me.OASCAHPS_SampleLockLabel.Name = "OASCAHPS_SampleLockLabel"
         Me.OASCAHPS_SampleLockLabel.Size = New System.Drawing.Size(111, 13)
         Me.OASCAHPS_SampleLockLabel.TabIndex = 16
-        Me.OASCAHPS_SampleLockLabel.Text = "Smapling Lock Status:"
+        Me.OASCAHPS_SampleLockLabel.Text = "Sampling Lock Status:"
         '
         'Panel46
         '
