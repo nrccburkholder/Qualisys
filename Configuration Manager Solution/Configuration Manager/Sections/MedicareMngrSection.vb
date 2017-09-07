@@ -1005,9 +1005,6 @@ Public Class MedicareMngrSection
 
     End Function
 
-    Private Sub HHCAHPS_SampleLockLabel_Click(sender As Object, e As EventArgs) Handles HHCAHPS_SampleLockLabel.Click
-
-    End Sub
 #End Region
 
 End Class
