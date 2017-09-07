@@ -894,6 +894,25 @@ Public Class MedicareMngrSection
             medicareNumber.BeginEdit()
 
         End If
+
+        If mMedicareNumber.IsNew() Then
+            mMedicareNumber.ProportionCalcTypeID = MedicareProportionCalcTypes.Estimated
+            mMedicareNumber.EstAnnualVolume = 1
+            mMedicareNumber.IsActive = False
+            mMedicareNumber.ApplyEdit()
+            mMedicareNumber.Save()
+            mMedicareNumber.BeginEdit()
+            With MedicareNumberTextBox
+                .DataBindings.Clear()
+                .Text = ""
+            End With
+            With MedicareNameTextBox
+                .DataBindings.Clear()
+                .Text = ""
+            End With
+            PopulateMedicareSection_HCAHPS()
+        End If
+
     End Sub
 
     Private Sub SurveyTypeCancelButton_Click(ByRef medicareNumber As MedicareSurveyType)
@@ -949,6 +968,7 @@ Public Class MedicareMngrSection
         Return medicareNumber
 
     End Function
+
 #End Region
 
 End Class
