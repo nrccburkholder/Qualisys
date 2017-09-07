@@ -404,7 +404,7 @@ Public Class MedicareSurveyType
 
 #End Region
 
-#Region " Constructors "
+#Region "Constructors"
 
     Private Sub New(ByVal globalDef As MedicareGlobalCalculationDefault)
 
