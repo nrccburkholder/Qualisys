@@ -19,8 +19,11 @@ Public Class MedicareSurveyTypeProvider
 #Region "Populate Method"
 
     Private Function PopulateMedicareSurveyType(ByVal rdr As SafeDataReader) As MedicareSurveyType
+        Dim newMedicareNumber As MedicareNumber = MedicareNumber.NewMedicareNumber(GlobalDef)
+        newMedicareNumber.MedicareNumber = rdr.GetString("MedicareNumber")
+        newMedicareNumber.Name = rdr.GetString("MedicareName")
 
-        Dim newObj As MedicareSurveyType = MedicareSurveyType.NewMedicareSurveyType(GlobalDef)
+        Dim newObj As MedicareSurveyType = MedicareSurveyType.NewMedicareSurveyType(GlobalDef, newMedicareNumber, rdr.GetInteger("SurveyTypeID"))
         newObj.BeginPopulate()
         newObj.MedicareNumber = rdr.GetString("MedicareNumber")
         newObj.Name = rdr.GetString("MedicareName")

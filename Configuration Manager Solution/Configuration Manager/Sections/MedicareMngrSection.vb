@@ -940,19 +940,7 @@ Public Class MedicareMngrSection
         medicareNumber = MedicareSurveyTypeProvider.Instance.Select(mMedicareNumber.MedicareNumber, surveyTypeID)
 
         If medicareNumber Is Nothing Then
-
-            medicareNumber = MedicareSurveyType.NewMedicareSurveyType(GlobalDef)
-            medicareNumber.BeginPopulate()
-
-            medicareNumber.MedicareNumber = mMedicareNumber.MedicareNumber
-            medicareNumber.Name = mMedicareNumber.Name
-            medicareNumber.SurveyTypeID = surveyTypeID
-
-            medicareNumber.EndPopulate()
-
-            medicareNumber.IsMedicareNew = True
-            medicareNumber.IsMedicareDirty = False
-
+            medicareNumber = MedicareSurveyType.NewMedicareSurveyType(GlobalDef, mMedicareNumber, surveyTypeID)
         End If
 
         Return medicareNumber

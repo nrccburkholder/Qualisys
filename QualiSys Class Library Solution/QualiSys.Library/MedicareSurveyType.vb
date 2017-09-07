@@ -163,36 +163,6 @@ Public Class MedicareSurveyType
         End Set
     End Property
 
-    Public Property IsMedicareNew() As Boolean
-        Get
-            Return IsNew()
-        End Get
-        Set(ByVal value As Boolean)
-            If Not value = IsNew() Then
-                If value = True Then
-                    MarkNew()
-                Else
-                    MarkOld()
-                End If
-            End If
-        End Set
-    End Property
-
-    Public Property IsMedicareDirty() As Boolean
-        Get
-            Return IsDirty()
-        End Get
-        Set(ByVal value As Boolean)
-            If Not value = IsDirty() Then
-                If value = True Then
-                    MarkDirty()
-                Else
-                    MarkClean()
-                End If
-            End If
-        End Set
-    End Property
-
     Public Property NonSubmitting() As Boolean
         Get
             Return mNonSubmitting
@@ -436,9 +406,9 @@ Public Class MedicareSurveyType
 
 #Region "Constructors"
 
-    Private Sub New(ByVal globalDef As MedicareGlobalCalculationDefault)
+    Private Sub New(ByVal globalDef As MedicareGlobalCalculationDefault, ByVal medicareNumber As MedicareNumber, ByVal surveyTypeId As Integer)
 
-        Me.CreateNew(globalDef)
+        Me.CreateNew(globalDef, medicareNumber, surveyTypeId)
 
     End Sub
 
@@ -478,17 +448,13 @@ Public Class MedicareSurveyType
 
 #Region "Public Methods"
 
-    Protected Overrides Sub CreateNew()
-
-        'Get the global default values
-        Dim globalDef As MedicareGlobalCalculationDefault = MedicareGlobalCalculationDefault.GetAll()(0)
-
-        CreateNew(globalDef)
-    End Sub
-
-    Protected Overloads Sub CreateNew(ByVal globalDef As MedicareGlobalCalculationDefault)
+    Protected Overloads Sub CreateNew(ByVal globalDef As MedicareGlobalCalculationDefault, ByVal medicareNumber As MedicareNumber, ByVal surveyTypeId As Integer)
 
         'Set default values
+
+        Me.MedicareNumber = medicareNumber.MedicareNumber
+        Name = medicareNumber.Name
+        Me.SurveyTypeID = surveyTypeId
 
         Dim quarterNumber As Integer = (Date.Now().Month() - 1) \ 3 + 1
         Dim firstDayOfQuarterNextYear As New DateTime(Date.Now().Year + 1, (quarterNumber - 1) * 3 + 1, 1)
@@ -506,6 +472,7 @@ Public Class MedicareSurveyType
         'Validate the object
         ValidationRules.CheckRules()
 
+        MarkClean()
     End Sub
 
     Public Shared Function [Get](ByVal medicareNumber As String, ByVal surveyTypeID As Integer) As MedicareSurveyType
@@ -827,9 +794,9 @@ Public Class MedicareSurveyType
 
 #Region " Factory Methods "
 
-    Public Shared Function NewMedicareSurveyType(globalDef As MedicareGlobalCalculationDefault) As MedicareSurveyType
+    Public Shared Function NewMedicareSurveyType(globalDef As MedicareGlobalCalculationDefault, ByVal medicareNumber As MedicareNumber, ByVal surveyTypeID As Integer) As MedicareSurveyType
 
-        Return New MedicareSurveyType(globalDef)
+        Return New MedicareSurveyType(globalDef, medicareNumber, surveyTypeID)
 
     End Function
 
