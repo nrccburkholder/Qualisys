@@ -72,7 +72,7 @@ select dbo.yearqtr(@samplingdate) as SampleQuarter
 	, count(su.SAMPLEUNIT_ID) as numLocations
 	, 4 as SamplingAlgorithmID
 	, case when dbo.yearqtr(min(SwitchToCalcDate)) < dbo.yearqtr(@samplingdate) then 'Historic' else 'Default' end as RespRateType
-	, case when dbo.yearqtr(min(SwitchToCalcDate)) < dbo.yearqtr(@samplingdate) then NULL else min(mlu.EstRespRate / 100.0) end as numResponseRate 
+	, case when dbo.yearqtr(min(SwitchToCalcDate)) < dbo.yearqtr(@samplingdate) then NULL else min(mlu.EstRespRate) end as numResponseRate 
 	, min(mlu.AnnualReturnTarget) as AnnualTarget
 	, ceiling(min(mlu.AnnualReturnTarget)/4.0) as QuarterTarget
 	, ceiling(min(mlu.AnnualReturnTarget)/12.0) as MonthTarget
@@ -81,8 +81,8 @@ inner join sampleunit su on sp.SAMPLEPLAN_ID=su.sampleplan_id
 inner join SUFacility suf on su.SUFacility_id=suf.SUFacility_id
 inner join MedicareLookupSurveyType mlu on suf.medicarenumber=mlu.medicarenumber
 where sp.survey_id=@survey_id
-and su.CAHPSType_id=16
-and mlu.SurveyType_ID=16
+and su.CAHPSType_id=@SurveyTypeId --16
+and mlu.SurveyType_ID=@SurveyTypeID --16
 group by suf.medicarenumber 
 
 if @@rowcount > 1
