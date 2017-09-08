@@ -26,7 +26,9 @@ ALTER procedure [dbo].[QCL_CalculateSystematicSamplingOutgo]
 as
 
 declare @CCN varchar(20)
-select @CCN = suf.medicarenumber
+declare @SurveyTypeId int
+select @CCN = suf.medicarenumber,
+	@SurveyTypeId = su.CAHPSType_id
 from sampleplan sp
 inner join sampleunit su on sp.SAMPLEPLAN_ID=su.sampleplan_id
 inner join SUFacility suf on su.SUFacility_id=suf.SUFacility_id
@@ -43,8 +45,8 @@ begin
 	return
 end
 
-if not exists(select * from MedicareLookupSurveyType where MedicareNumber = @CCN and SurveyType_ID = 16)
-	RAISERROR (N'Surveys using Systematic Sampling must have values on the OAS tab for the CCN in Medicare Management.' ,
+if not exists(select * from MedicareLookupSurveyType where MedicareNumber = @CCN and SurveyType_ID = @SurveyTypeId)
+	RAISERROR (N'Surveys using Systematic Sampling must have values on this sample unit''s particular CAHPS tab for this CCN in Medicare Management.' ,
            10, -- Severity
            1); -- State
 
