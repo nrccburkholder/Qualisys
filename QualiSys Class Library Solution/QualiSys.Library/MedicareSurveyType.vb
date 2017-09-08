@@ -469,9 +469,7 @@ Public Class MedicareSurveyType
         IsActive = True
         NonSubmitting = False
 
-        'Validate the object
-        ValidationRules.CheckRules()
-
+        'We are setting the instance to clean so that it does not require being saved CJB/Jing 9/8/2017
         MarkClean()
     End Sub
 
