@@ -241,6 +241,7 @@ Partial Public Class SampleSet
 
             Dim strtDate As Date
             Dim medRecalc As MedicareRecalcHistory
+            Dim medRecalcST As MedicareRecalcSurveyTypeHistory
             Dim eligibleEncounters As Integer
             Dim proportion As Decimal
             Dim updateSPW As Boolean
@@ -254,7 +255,7 @@ Partial Public Class SampleSet
 
 
             If srvy.IsSystematic Then 'OAS CAHPS block
-                Dim SystematicOutgoSet As Dictionary(Of Integer, Dictionary(Of String, Object)) = _
+                Dim SystematicOutgoSet As Dictionary(Of Integer, Dictionary(Of String, Object)) =
                     SampleSetProvider.Instance.SelectSystematicSamplingOutgo(sampleSetId, srvy.Id, strtDate)
 
                 If Not (SystematicOutgoSet Is Nothing) Then
@@ -282,48 +283,56 @@ Partial Public Class SampleSet
 
                 End If
             Else
-                'Find the HCAHPS units
-                For Each unit As SampleSetUnit In sampleSetUnits.Values
-                    'Modified 02-17-09 JJF - Fixed so it checks to see if the Survey is an HCAHPS survey as well as the unit itself
-                    'If unit.SampUnit.IsHcahps Then
-                    If unit.SampUnit.IsHcahps AndAlso unit.SampUnit.Survey.SurveyTypeName.StartsWith("HCAHPS") Then
-                        'Reset the update flag
-                        updateSPW = False
-                        If sampleHCAHPSUnit Then
-                            'Determine if we are in a period that starts at or after the switch date Q408 (10/01/2008)
-                            '  If not then we just leave things as they are
-                            If period.ExpectedStartDate.HasValue AndAlso period.ExpectedStartDate.Value >= Nrc.Framework.BusinessLogic.Configuration.AppConfig.Params("SwitchToPropSamplingDate").DateValue Then
-                                'We need to get the appropriate proportion calculation
-                                medRecalc = MedicareRecalcHistory.GetLatestBySampleDate(unit.SampUnit.Facility.MedicareNumber.MedicareNumber, strtDate)
+                If srvy.CheckMedicareProportion Then
+                    'Find the CAHPS units
+                    For Each unit As SampleSetUnit In sampleSetUnits.Values
+                        'Modified 02-17-09 JJF - Fixed so it checks to see if the Survey is an HCAHPS survey as well as the unit itself
+                        'If unit.SampUnit.IsHcahps Then
+                        'If unit.SampUnit.IsHcahps AndAlso unit.SampUnit.Survey.SurveyTypeName.StartsWith("HCAHPS") Then
+                        If (unit.SampUnit.CAHPSType > 0) Then
+                            'Reset the update flag
+                            updateSPW = False
+                            If sampleHCAHPSUnit Then
+                                'Determine if we are in a period that starts at or after the switch date Q408 (10/01/2008)
+                                '  If not then we just leave things as they are
+                                If period.ExpectedStartDate.HasValue Then 'AndAlso period.ExpectedStartDate.Value >= Nrc.Framework.BusinessLogic.Configuration.AppConfig.Params("SwitchToPropSamplingDate").DateValue Then
+                                    'We need to get the appropriate proportion calculation
+                                    If srvy.MedicareProportionBySurveyType Then
+                                        medRecalcST = MedicareRecalcSurveyTypeHistory.GetLatestBySampleDate(unit.SampUnit.Facility.MedicareNumber.MedicareNumber, strtDate, srvy.SurveyType)
+                                        SampleSetProvider.Instance.InsertSampleSetMedicareCalcLookup(sampleSetId, unit.SampUnit.Id, medRecalcST.MedicareReCalcLogId) 'TODO: new column? new proc?, new table?
+                                    Else
+                                        medRecalc = MedicareRecalcHistory.GetLatestBySampleDate(unit.SampUnit.Facility.MedicareNumber.MedicareNumber, strtDate)
 
-                                'Save the Medicare Recalc History ID used for this Sample Unit
-                                SampleSetProvider.Instance.InsertSampleSetMedicareCalcLookup(sampleSetId, unit.SampUnit.Id, medRecalc.MedicareReCalcLogId)
+                                        'Save the Medicare Recalc History ID used for this Sample Unit
+                                        SampleSetProvider.Instance.InsertSampleSetMedicareCalcLookup(sampleSetId, unit.SampUnit.Id, medRecalc.MedicareReCalcLogId)
 
-                                'Determine the proportion to use
-                                If medRecalc.CensusForced Then
-                                    proportion = 1
-                                Else
-                                    proportion = medRecalc.ProportionCalcPct
+                                        'Determine the proportion to use
+                                        If medRecalc.CensusForced Then
+                                            proportion = 1
+                                        Else
+                                            proportion = medRecalc.ProportionCalcPct
+                                        End If
+                                    End If
+
+                                    'Let's get the quantity of eligible encounters for this unit
+                                    eligibleEncounters = SampleSetProvider.Instance.SelectHCAHPSEligibleEncountersBySampleSetID(sampleSetId, unit.SampUnit.Id)
+
+                                    'Calculate the OutGoNeeded
+                                    unit.OutGoNeeded = CInt(Decimal.Ceiling(eligibleEncounters * proportion))
+
+                                    'Set the update flag
+                                    updateSPW = True
                                 End If
-
-                                'Let's get the quantity of eligible encounters for this unit
-                                eligibleEncounters = SampleSetProvider.Instance.SelectHCAHPSEligibleEncountersBySampleSetID(sampleSetId, unit.SampUnit.Id)
-
-                                'Calculate the OutGoNeeded
-                                unit.OutGoNeeded = CInt(Decimal.Ceiling(eligibleEncounters * proportion))
-
-                                'Set the update flag
-                                updateSPW = True
+                            Else
+                                'We are not sampling the HCAHPS unit so set the outgo needed to zero
+                                unit.OutGoNeeded = 0
                             End If
-                        Else
-                            'We are not sampling the HCAHPS unit so set the outgo needed to zero
-                            unit.OutGoNeeded = 0
-                        End If
 
-                        'Update the SampleSetUnitTarget table
-                        SampleSetProvider.Instance.UpdateSampleSetUnitTarget(sampleSetId, unit.SampUnit.Id, unit.OutGoNeeded, updateSPW)
-                    End If
-                Next
+                            'Update the SampleSetUnitTarget table
+                            SampleSetProvider.Instance.UpdateSampleSetUnitTarget(sampleSetId, unit.SampUnit.Id, unit.OutGoNeeded, updateSPW)
+                        End If
+                    Next
+                End If
             End If
         End Sub
 

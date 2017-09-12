@@ -68,7 +68,7 @@ Public Class Survey
     Private mIsResurveyMethodDisabled As Boolean = False
     Private mMedicareIdTextMayBeBlank As Boolean = False
     Private mFacilitiesArePracticeSites As Boolean = False
-    Private mCompliesWithSwitchToPropSamplingDate As Boolean = False
+    Private mMedicareProportionBySurveyType As Boolean = False
     Private mAllowOverSample As Boolean = False
     Private mCheckMedicareProportion As Boolean = False
     Private mByPassInitRespRateNumericEnforcement As Boolean = False
@@ -969,10 +969,10 @@ Public Class Survey
         End Get
     End Property
 
-    Public ReadOnly Property CompliesWithSwitchToPropSamplingDate(Optional ByVal override As String = vbNullString) As Boolean
+    Public ReadOnly Property MedicareProportionBySurveyType(Optional ByVal override As String = vbNullString) As Boolean
         Get
-            GetSurveyRule("CompliesWithSwitchToPropSamplingDate", mCompliesWithSwitchToPropSamplingDate, override)
-            Return mCompliesWithSwitchToPropSamplingDate
+            GetSurveyRule("MedicareProportionBySurveyType", mMedicareProportionBySurveyType, override)
+            Return mMedicareProportionBySurveyType
         End Get
     End Property
 

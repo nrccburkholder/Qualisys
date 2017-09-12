@@ -115,7 +115,8 @@ DROP PROCEDURE [dbo].[QCL_SelectMedicareRecalcSurveyTypeHistoryBySampleDate]
 GO
 CREATE PROCEDURE [dbo].[QCL_SelectMedicareRecalcSurveyTypeHistoryBySampleDate]
 @MedicareNumber VARCHAR(20), 
-@SampleDate			DATETIME 
+@SampleDate			DATETIME,
+@SurveyTypeID		int 
 AS
 BEGIN
 	SET NOCOUNT ON
@@ -131,6 +132,7 @@ BEGIN
 	FROM MedicareRecalcSurveyType_History 
 	WHERE MedicareNumber = @MedicareNumber
 		AND PropSampleCalcDate <= @SampleDate
+		AND SurveyType_ID = @SurveyTypeID
 	ORDER BY PropSampleCalcDate DESC, DateCalculated DESC
 
 	SET TRANSACTION ISOLATION LEVEL READ COMMITTED

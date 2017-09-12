@@ -28,7 +28,7 @@
         Public MustOverride Function GetAll() As MedicareRecalcSurveyTypeHistoryCollection
         Public MustOverride Function Insert(ByVal instance As MedicareRecalcSurveyTypeHistory) As Integer
         Public MustOverride Function GetLatestByMedicareNumber(ByVal medicareNumber As String, ByVal latestDate As Date) As MedicareRecalcSurveyTypeHistory
-        Public MustOverride Function GetLatestBySampleDate(ByVal medicareNumber As String, ByVal sampleDate As Date) As MedicareRecalcSurveyTypeHistory
+        Public MustOverride Function GetLatestBySampleDate(ByVal medicareNumber As String, ByVal sampleDate As Date, ByVal surveyTypeId As Integer) As MedicareRecalcSurveyTypeHistory
 
     End Class
 

@@ -60,7 +60,7 @@ begin
 			INNER JOIN medicareLookupSurveyType mlst on ml.medicareNumber = mlst.medicareNumber 
 													and sd.surveytype_id = mlst.surveytype_id
 		WHERE	sp.Survey_ID IN (' + @Survey_IDs + ') and
-				sd.surveytype_id in (2,3,16) and 
+				IsNull(dbo.SurveyProperty(''MedicareProportionBySurveyType'',sd.SurveyType_ID,null),0) = 1 and 
 				mlst.samplingLocked = 1
 '
 

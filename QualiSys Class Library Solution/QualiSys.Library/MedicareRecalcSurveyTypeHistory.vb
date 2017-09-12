@@ -422,9 +422,9 @@ Public Class MedicareRecalcSurveyTypeHistory
     ''' <returns></returns>
     ''' <CreatedBy></CreatedBy>
     ''' <RevisionList><list type="table"><listheader><term>Date Modified - Modified By</term><description>Description</description></listheader><item><term></term><description></description></item><item><term></term><description></description></item></list></RevisionList>
-    Public Shared Function GetLatestBySampleDate(ByVal medicareNumber As String, ByVal sampleDate As Date) As MedicareRecalcSurveyTypeHistory
+    Public Shared Function GetLatestBySampleDate(ByVal medicareNumber As String, ByVal sampleDate As Date, ByVal surveyTypeID As Integer) As MedicareRecalcSurveyTypeHistory
 
-        Return DataProvider.MedicareRecalcSurveyTypeHistoryProvider.Instance.GetLatestBySampleDate(medicareNumber, sampleDate)
+        Return DataProvider.MedicareRecalcSurveyTypeHistoryProvider.Instance.GetLatestBySampleDate(medicareNumber, sampleDate, surveyTypeID)
 
     End Function
 
