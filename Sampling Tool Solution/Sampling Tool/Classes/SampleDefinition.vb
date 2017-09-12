@@ -169,8 +169,8 @@ Public Class SampleDefinition
         End If
 
         'If we are not going to do proportional sampling then we are out of here
-        If mPeriod.ExpectedStartDate.HasValue AndAlso _
-           mPeriod.ExpectedStartDate.Value < AppConfig.Params("SwitchToPropSamplingDate").DateValue Then
+        If mPeriod.ExpectedStartDate.HasValue Then 'AndAlso _
+            'mPeriod.ExpectedStartDate.Value <AppConfig.Params("SwitchToPropSamplingDate").DateValue Then
             Return True
         End If
 
