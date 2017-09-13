@@ -23,11 +23,11 @@ Public Class SurveyProvider
         newObj.CutoffResponseCode = CType(rdr.GetString("strCutoffResponse_cd", CStr(CutoffFieldType.SampleCreate)), CutoffFieldType)
         newObj.CutoffTableId = rdr.GetInteger("CutoffTable_id", -1)
         newObj.CutoffFieldId = rdr.GetInteger("CutoffField_id", -1)
-        Dim sampleEncounterTableId As Integer = rdr.GetInteger("SampleEncounterTable_Id", -1)
-        Dim sampleEncounterFieldId As Integer = rdr.GetInteger("SampleEncounterField_Id", -1)
+        newObj.SampleEncounterTableId = rdr.GetInteger("SampleEncounterTable_Id", -1)
+        newObj.SampleEncounterFieldId = rdr.GetInteger("SampleEncounterField_Id", -1)
         If loadSubtypes Then
-            If (sampleEncounterTableId <> -1 AndAlso sampleEncounterFieldId <> -1) Then
-                newObj.SampleEncounterField = StudyTableColumn.Get(sampleEncounterTableId, sampleEncounterFieldId)
+            If (newObj.SampleEncounterTableId <> -1 AndAlso newObj.SampleEncounterFieldId <> -1) Then
+                newObj.SampleEncounterField = StudyTableColumn.Get(newObj.SampleEncounterTableId, newObj.SampleEncounterFieldId)
             End If
         End If
         newObj.IsValidated = rdr.GetBoolean("bitValidated_flg")

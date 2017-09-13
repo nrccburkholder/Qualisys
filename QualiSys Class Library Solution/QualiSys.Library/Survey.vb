@@ -13,6 +13,8 @@ Public Class Survey
     Private mCutoffResponseCode As CutoffFieldType
     Private mCutoffTableId As Integer
     Private mCutoffFieldId As Integer
+    Private mSampleEncounterFieldId As Integer
+    Private mSampleEncounterTableId As Integer
     Private mSampleEncounterField As StudyTableColumn
     Private mSamplePlanId As Integer
     Private mResponseRateRecalculationPeriod As Integer
@@ -197,6 +199,32 @@ Public Class Survey
         Set(ByVal value As Integer)
             If mCutoffFieldId <> value Then
                 mCutoffFieldId = value
+                mIsDirty = True
+            End If
+        End Set
+    End Property
+
+    <Logable()>
+    Public Property SampleEncounterTableId() As Integer
+        Get
+            Return mSampleEncounterTableId
+        End Get
+        Set(ByVal value As Integer)
+            If mSampleEncounterTableId <> value Then
+                mSampleEncounterTableId = value
+                mIsDirty = True
+            End If
+        End Set
+    End Property
+
+    <Logable()>
+    Public Property SampleEncounterFieldId() As Integer
+        Get
+            Return mSampleEncounterFieldId
+        End Get
+        Set(ByVal value As Integer)
+            If mSampleEncounterFieldId <> value Then
+                mSampleEncounterFieldId = value
                 mIsDirty = True
             End If
         End Set
