@@ -4,11 +4,17 @@ Imports Nrc.Framework.Data
 Public Class SamplePeriodProvider
     Inherits Nrc.QualiSys.Library.DataProvider.SamplePeriodProvider
 
+    Private Surveys As Dictionary(Of Integer, Survey) = New Dictionary(Of Integer, Survey)
+
     Private Function PopulateSamplePeriod(ByVal rdr As SafeDataReader) As SamplePeriod
-        Dim newObj As SamplePeriod = SamplePeriod.NewSamplePeriod
+        Dim survey_id As Integer = rdr.GetInteger("Survey_id")
+        If Not Surveys.ContainsKey(survey_id) Then
+            Surveys.Add(survey_id, SurveyProvider.Instance.Select(survey_id))
+        End If
+        Dim newObj As SamplePeriod = SamplePeriod.NewSamplePeriod(Surveys(survey_id))
         newObj.BeginPopulate()
         ReadOnlyAccessor.SamplePeriodId(newObj) = rdr.GetInteger("PeriodDef_id")
-        ReadOnlyAccessor.SamplePeriodSurveyId(newObj) = rdr.GetInteger("Survey_id")
+        ReadOnlyAccessor.SamplePeriodSurveyId(newObj) = survey_id
         ReadOnlyAccessor.SamplePeriodCreationDate(newObj) = rdr.GetDate("datAdded")
         newObj.ExpectedStartDate = rdr.GetNullableDate("datExpectedEncStart")
         newObj.ExpectedEndDate = rdr.GetNullableDate("datExpectedEncEnd")

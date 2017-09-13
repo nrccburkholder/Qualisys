@@ -32,6 +32,7 @@ Public Class SamplePeriod
     <NotUndoable()> Private mInstanceGuid As Guid = Guid.NewGuid
     Private mId As Integer
     Private mSurveyId As Integer
+    Private mSurvey As Survey
     Private mCreationDate As Date
     Private mName As String
     Private mExpectedSamples As Integer
@@ -163,6 +164,15 @@ Public Class SamplePeriod
         End Get
         Friend Set(ByVal value As Integer)
             mSurveyId = value
+        End Set
+    End Property
+
+    Public Property Survey() As Survey
+        Get
+            Return mSurvey
+        End Get
+        Friend Set(ByVal value As Survey)
+            mSurvey = value
         End Set
     End Property
 
@@ -494,7 +504,9 @@ Public Class SamplePeriod
             Return False
         End If
 
-        Dim survey As Survey = survey.Get(Me.SurveyId)
+        If Me.Survey Is Nothing Then
+            Me.Survey = Survey.Get(Me.SurveyId)
+        End If
 
         ' check for duplicate or overlapping start and end dates 
         If Not Me.Parent Is Nothing Then
@@ -509,17 +521,17 @@ Public Class SamplePeriod
             Next
         End If
 
-        If Not survey Is Nothing AndAlso survey.IsMonthlyOnly AndAlso HasSamplesPulled = False AndAlso _
+        If Not Me.Survey Is Nothing AndAlso Me.Survey.IsMonthlyOnly AndAlso HasSamplesPulled = False AndAlso
             (ExpectedStartDate.HasValue = False OrElse ExpectedEndDate.HasValue = False) Then
             e.Description = "Periods for HCAHPS surveys cannot have null encounter dates"
             Return False
         End If
 
         'Only check HCAHPS setup for periods that have not been sampled for yet
-        If Not survey Is Nothing AndAlso survey.IsMonthlyOnly AndAlso HasSamplesPulled = False AndAlso _
+        If Not Me.Survey Is Nothing AndAlso Me.Survey.IsMonthlyOnly AndAlso HasSamplesPulled = False AndAlso
             (ExpectedStartDate.HasValue = True OrElse ExpectedEndDate.HasValue = True) Then
-            If Me.ExpectedStartDate.Value.Day <> 1 OrElse Me.ExpectedEndDate.Value.AddDays(1).Day <> 1 AndAlso _
-                Me.ExpectedStartDate.Value.Month = Me.ExpectedEndDate.Value.Month AndAlso _
+            If Me.ExpectedStartDate.Value.Day <> 1 OrElse Me.ExpectedEndDate.Value.AddDays(1).Day <> 1 AndAlso
+                Me.ExpectedStartDate.Value.Month = Me.ExpectedEndDate.Value.Month AndAlso
                 Me.ExpectedStartDate.Value.Year = Me.ExpectedEndDate.Value.Year Then
                 e.Description = "Periods for HCAHPS surveys must have encounter dates that start on the first day of a month and end on the last day of the same month"
                 Return False
@@ -590,8 +602,10 @@ Public Class SamplePeriod
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks>This overload should only be called when populating an object from the database.</remarks>
-    Public Shared Function NewSamplePeriod() As SamplePeriod
-        Return New SamplePeriod
+    Public Shared Function NewSamplePeriod(ByVal survey As Survey) As SamplePeriod
+        Dim samplePeriod As New SamplePeriod
+        samplePeriod.Survey = survey
+        Return samplePeriod
     End Function
 
     ''' <summary>
@@ -603,6 +617,7 @@ Public Class SamplePeriod
         Dim samplePeriod As New SamplePeriod
         samplePeriod.SurveyId = survey.Id
         samplePeriod.EmployeeId = employeeId
+        samplePeriod.Survey = survey
 
         Dim override As String = survey.SurveySubTypeOverrideName() 'will retrieve PCMH for example CJB 8/14/2014
 
