@@ -184,24 +184,29 @@ Public Class SampleDefinition
                 Dim medicareNumST As MedicareSurveyType
                 medicareNumST = MedicareSurveyType.Get(medicareNum.MedicareNumber, Survey.SurveyType)
 
-                If medicareNumST.RecalculateProportion(startDate, CurrentUser.Member.MemberId, sampleLockNotifyFailed) Then
-                    If medicareNumST.IsDirty Then
-                        medicareNumST.Save()
-                    End If
+                If medicareNumST IsNot Nothing Then
+                    If medicareNumST.RecalculateProportion(startDate, CurrentUser.Member.MemberId, sampleLockNotifyFailed) Then
+                        If medicareNumST.IsDirty Then
+                            medicareNumST.Save()
+                        End If
 
-                    'Check for notification failure
-                    If sampleLockNotifyFailed Then
-                        sampleLockMessage &= vbCrLf & medicareNum.MedicareNumber
+                        'Check for notification failure
+                        If sampleLockNotifyFailed Then
+                            sampleLockMessage &= vbCrLf & medicareNum.MedicareNumber
+                        End If
+                    Else
+                        'Errors were encountered while calculating the new proportion
+                        errMessage &= String.Format("{0}{0}Medicare Number {1}:", vbCrLf, medicareNum.MedicareNumber)
+                        For Each errString As String In medicareNumST.CalculationErrors
+                            errMessage &= vbCrLf & errString
+                        Next
                     End If
                 Else
-                    'Errors were encountered while calculating the new proportion
-                    errMessage &= String.Format("{0}{0}Medicare Number {1}:", vbCrLf, medicareNum.MedicareNumber)
-                    For Each errString As String In medicareNumST.CalculationErrors
-                        errMessage &= vbCrLf & errString
-                    Next
+                    errMessage &= vbCrLf & String.Format("{0}{0}Medicare Number {1} Missing Info for SurveyType_ID: {2}", vbCrLf, medicareNum.MedicareNumber, Survey.SurveyType)
                 End If
+
             Else 'TODO: once HCAHPS is also MedicareProportionBySurveyType this block may be removed... CJB 9/12/2017
-                If medicareNum.RecalculateProportion(startDate, CurrentUser.Member.MemberId, sampleLockNotifyFailed) Then
+                    If medicareNum.RecalculateProportion(startDate, CurrentUser.Member.MemberId, sampleLockNotifyFailed) Then
                     'Calculation was successful
                     If medicareNum.IsDirty Then
                         medicareNum.Save()
