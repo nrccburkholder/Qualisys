@@ -320,7 +320,7 @@ Public Class MedicareSurveyType
     Public ReadOnly Property LastRecalcHistory() As MedicareRecalcSurveyTypeHistory
         Get
             If mLastRecalcHistory Is Nothing AndAlso Not mLastRecalcLoaded Then
-                mLastRecalcHistory = MedicareRecalcSurveyTypeHistory.GetLatestByMedicareNumber(mMedicareNumber, Date.Now)
+                mLastRecalcHistory = MedicareRecalcSurveyTypeHistory.GetLatestByMedicareNumber(mMedicareNumber, Date.Now, SurveyTypeID)
                 mLastRecalcLoaded = True
             End If
             Return mLastRecalcHistory

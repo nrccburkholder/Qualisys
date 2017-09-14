@@ -299,7 +299,7 @@ Partial Public Class SampleSet
                                     'We need to get the appropriate proportion calculation
                                     If srvy.MedicareProportionBySurveyType Then
                                         medRecalcST = MedicareRecalcSurveyTypeHistory.GetLatestBySampleDate(unit.SampUnit.Facility.MedicareNumber.MedicareNumber, strtDate, srvy.SurveyType)
-                                        SampleSetProvider.Instance.InsertSampleSetMedicareCalcLookup(sampleSetId, unit.SampUnit.Id, medRecalcST.MedicareReCalcLogId) 'TODO: new column? new proc?, new table?
+                                        SampleSetProvider.Instance.InsertSampleSetMedicareCalcLookup(sampleSetId, unit.SampUnit.Id, medRecalcST.MedicareReCalcLogId)
                                         proportion = medRecalcST.ProportionCalcPct
                                     Else
                                         medRecalc = MedicareRecalcHistory.GetLatestBySampleDate(unit.SampUnit.Facility.MedicareNumber.MedicareNumber, strtDate)

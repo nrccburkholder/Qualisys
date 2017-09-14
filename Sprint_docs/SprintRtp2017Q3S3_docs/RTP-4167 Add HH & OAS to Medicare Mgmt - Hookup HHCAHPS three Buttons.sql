@@ -84,7 +84,8 @@ DROP PROCEDURE [dbo].[QCL_GetLatestMedicareRecalcSurveyTypeHistoryByMedicareNumb
 GO
 CREATE PROCEDURE [dbo].[QCL_GetLatestMedicareRecalcSurveyTypeHistoryByMedicareNumber]
 @MedicareNumber		VARCHAR(20), 
-@DateFilter					DATETIME = NULL
+@DateFilter					DATETIME = NULL,
+@SurveyTypeID		INT = NULL
 AS
 BEGIN
 	SET NOCOUNT ON
@@ -99,6 +100,7 @@ BEGIN
 	SwitchFromRateOverrideDate, 	SamplingRateOverride
 	FROM MedicareRecalcSurveyType_History
 	WHERE MedicareNumber = @MedicareNumber 
+	AND ((@SurveyTypeID is NULL) OR (SurveyType_ID = @SurveyTypeID))
 	AND ((@DateFilter IS NULL ) OR (DateCalculated <= @DateFilter))
 	ORDER BY DateCalculated DESC
 
