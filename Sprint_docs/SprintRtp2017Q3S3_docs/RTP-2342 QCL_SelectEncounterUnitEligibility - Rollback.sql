@@ -4,8 +4,345 @@
 	Chris Burkholder
 
 	9/11/2017
+
+	RENAME TABLE [dbo].[SystematicSamplingTargetHistoric] to [SystematicSamplingTarget]
+	ALTER PROCEDURE [dbo].[QCL_DeleteSampleSet]    
+	CREATE procedure [dbo].[QCL_CalculateSystematicSamplingOutgo]
+	ALTER PROCEDURE [dbo].[QCL_SelectEncounterUnitEligibility]
+
 */
 USE [QP_Prod]
+GO
+
+IF OBJECT_ID (N'SystematicSamplingTargetHistoric', N'U') IS NOT NULL
+exec sp_rename 'dbo.SystematicSamplingTargetHistoric', 'SystematicSamplingTarget'
+GO
+
+/****** Object:  StoredProcedure [dbo].[QCL_DeleteSampleSet]    Script Date: 9/15/2017 9:30:41 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+ALTER PROCEDURE [dbo].[QCL_DeleteSampleSet]    
+ @intSampleSet_id INT    
+AS    
+/*    
+Business Purpose:     
+    
+This procedure is used to Remove a SampleSet.  This can only be executed IF the sample    
+has not been Scheduled.    
+    
+Created:  1/30/2006 BY Dan Christensen    
+    
+Modified:    
+   4/13/2010     added logic to delete from HHCAHPS_PatinFileCnt table when sampleset is deleted  
+   4/15/2010     added logic to delete from HHCAHPSEligEncLog table when sampleset is deleted  
+   9/27/2011 DRM added code to delete seeded mailing info
+   5/14/2013 DRM added check for existence of encounter table before deleting from it
+   9/15/2016 CJB added SystematicSamplingTarget / moved SystematicSamplingProportion in here
+*/       
+DECLARE @intStudy_id INT    
+DECLARE @vcSQL VARCHAR(8000)    
+DECLARE @intSurvey_ID INT    
+DECLARE @intNotRollbackSampleSet_id INT    
+    
+SELECT @intStudy_id=SD.Study_id    
+FROM dbo.Survey_def SD, dbo.SampleSet SS    
+WHERE SD.Survey_id=SS.Survey_id    
+AND SS.SampleSet_id=@intSampleSet_id    
+    
+IF EXISTS (SELECT schm.*    
+FROM SamplePop sp, ScheduledMailing schm    
+WHERE sp.SamplePop_id=schm.SamplePop_id    
+AND Study_id=@intStudy_id    
+AND SampleSet_id=@intSampleSet_id)    
+    
+BEGIN     
+ RAISERROR ('This sample set is scheduled and cannot be deleted.', 16, 1)    
+ RETURN    
+END    
+    
+-- SET @vcSQL='DELETE    
+-- FROM S' + CONVERT(varchar, @intStudy_id) + '.Unikeys    
+-- WHERE SampleSet_id=' + CONVERT(varchar, @intSampleSet_id)    
+-- EXECUTE (@vcSQL)    
+    
+INSERT INTO Rollbacks (Survey_id, Study_id, datRollback_dt, Rollbacktype, cnt, datSampleCreate_dt)    
+SELECT ss.Survey_id, sp.Study_id, GETDATE(), 'Sampling' , COUNT(*), datSampleCreate_dt    
+FROM SampleSet ss, SamplePop sp    
+WHERE ss.SampleSet_id=@intSampleSet_id    
+AND ss.SampleSet_id=sp.SampleSet_id    
+GROUP BY ss.Survey_id, sp.Study_id, ss.datSampleCreate_dt    
+    
+IF @@ROWCOUNT=0 -- Implies there was nobody sampled    
+    
+INSERT INTO Rollbacks (Survey_id, Study_id, datRollback_dt, Rollbacktype, cnt, datSampleCreate_dt)    
+SELECT ss.Survey_id, sd.Study_id, GETDATE(), 'Sampling' , 0, datSampleCreate_dt    
+FROM SampleSet ss, Survey_def sd    
+WHERE ss.SampleSet_id=@intSampleSet_id    
+AND ss.Survey_id=sd.Survey_id    
+    
+/*     
+* Update TeamStatus_SampleInfo    
+*/    
+SELECT @intSurvey_ID=Survey_id    
+FROM dbo.SampleSet    
+WHERE SampleSet_id=@intSampleSet_id    
+           
+UPDATE dbo.TeamStatus_SampleInfo    
+SET Rolledback=1    
+WHERE SampleSet_id=@intSampleSet_id    
+    
+UPDATE dbo.TeamStatus_SampleInfo    
+SET SamplesPulled=SamplesPulled - 1    
+WHERE Survey_id=@intSurvey_ID    
+AND SampleSet_id>@intSampleSet_id    
+    
+SELECT @intNotRollbackSampleSet_id=MIN(SampleSet_id)    
+FROM dbo.TeamStatus_SampleInfo    
+WHERE Survey_id=@intSurvey_ID    
+AND SampleSet_id>@intSampleSet_id    
+AND RolledBack=0    
+    
+IF (@intNotRollbackSampleSet_id IS NULL)    
+ UPDATE dbo.TeamStatus_SampleInfo    
+    SET TotalRolledBack=TotalRolledBack+1    
+  WHERE Survey_id=@intSurvey_ID    
+    AND SampleSet_id>@intSampleSet_id    
+ELSE    
+ UPDATE dbo.TeamStatus_SampleInfo    
+    SET TotalRolledBack=TotalRolledBack+1    
+  WHERE Survey_id=@intSurvey_ID    
+    AND SampleSet_id>@intSampleSet_id    
+    AND SampleSet_id<=@intNotRollbackSampleSet_id    
+    
+--DRM 09/23/2011  Remove seeded mailing data if sampleset is rolled back.
+
+--print 'sampleset_id = ' + cast(@intsampleset_id as varchar)
+--print 'survey_id = ' + cast(@intsurvey_id as varchar)
+
+
+select @vcSQL = 'delete s' + cast(@intStudy_id as varchar) + '.population
+where pop_id in 
+(select pop_id from samplepop 
+where pop_id < 0 and sampleset_id = ' + cast(@intSampleSet_id as varchar) + ')'
+--print @vcSQL
+exec (@vcSQL)
+
+--DRM 5/14/2013 Add check for existence of encounter table before deleting from it.
+if exists (select 1 from sys.tables t inner join sys.schemas s on t.schema_id = s.schema_id where s.name = 's' + cast(@intStudy_id as varchar) and t.name = 'encounter')
+begin
+	select @vcSQL = 'delete s' + cast(@intStudy_id as varchar) + '.encounter
+	where pop_id in 
+	(select pop_id from samplepop 
+	where pop_id < 0 and sampleset_id = ' + cast(@intSampleSet_id as varchar) + ')'
+	--print @vcSQL
+	exec (@vcSQL)
+end
+
+delete seedmailingsamplepop
+where samplepop_id in 
+(select samplepop_id from samplepop 
+ where sampleset_id = @intSampleSet_id)
+
+
+update tobeseeded set 
+	isseeded = 0, 
+	datseeded = null
+where survey_id = @intSurvey_ID
+and yearqtr = (select replace(dbo.yearqtr(isnull(datdaterange_fromdate,getdate())),'_','Q') from sampleset where sampleset_id = @intSampleSet_id)
+and isseeded = 1
+
+--End of add DRM
+
+if not exists(select * from SampleSet a 
+	inner join SampleSet b on a.survey_id = b.survey_id
+		and b.sampleset_id = @intSampleSet_id
+		and a.sampleset_id <> @intSampleSet_id
+		and dbo.YearQtr(a.datDateRange_FromDate) = dbo.YearQtr(b.datDateRange_FromDate))
+BEGIN
+	declare @CCN varchar(20)
+	declare @quarterToDelete varchar(20)
+	select @CCN = suf.medicarenumber, @quarterToDelete = dbo.YearQtr(ss.datDateRange_FromDate)
+	from sampleplan sp
+	inner join sampleunit su on sp.SAMPLEPLAN_ID=su.sampleplan_id
+	inner join SUFacility suf on su.SUFacility_id=suf.SUFacility_id
+	inner join sampleset ss on ss.sampleplan_id = sp.SAMPLEPLAN_ID
+	where ss.sampleset_id = @intSampleSet_id 
+	and su.CAHPSType_id>0	
+	group by suf.medicarenumber, dbo.YearQtr(ss.datDateRange_FromDate)
+
+	DELETE FROM dbo.SystematicSamplingTarget 
+	where CCN = @CCN and SampleQuarter = @quarterToDelete
+END
+delete FROM SystematicSamplingProportion 
+WHERE sampleset_id = @intSampleSet_id     
+
+DELETE FROM dbo.SampleDataSet    
+WHERE SampleSet_id=@intSampleSet_id    
+DELETE FROM dbo.SELECTedSample    
+WHERE SampleSet_id=@intSampleSet_id    
+DELETE FROM dbo.SamplePop    
+WHERE SampleSet_id=@intSampleSet_id    
+DELETE FROM dbo.SampleSet    
+WHERE SampleSet_id=@intSampleSet_id    
+DELETE FROM dbo.SamplePlanWorkSheet    
+WHERE SampleSet_id=@intSampleSet_id    
+DELETE FROM dbo.SPWDQCounts    
+WHERE SampleSet_id=@intSampleSet_id    
+DELETE FROM dbo.EligibleEncLog    
+WHERE SampleSet_id=@intSampleSet_id    
+DELETE FROM dbo.CAHPS_PatInfileCount  
+WHERE SampleSet_id = @intSampleSet_id     
+    
+--update the info in PeriodDates IF it's not an oversample    
+--IF this is an oversample, we want to delete the whole record    
+IF EXISTS (SELECT SampleNumber    
+   FROM PeriodDates pds, PeriodDef pd    
+   WHERE pds.SampleSet_id=@intSampleSet_id AND    
+   pds.PeriodDef_id=pd.PeriodDef_id AND    
+   pd.intExpectedSamples<SampleNumber)    
+BEGIN    
+DELETE    
+FROM PeriodDates    
+WHERE SampleSet_id=@intSampleSet_id    
+END    
+ELSE     
+BEGIN    
+UPDATE dbo.PeriodDates    
+SET SampleSet_id=NULL,    
+ datSampleCreate_dt=NULL    
+WHERE SampleSet_id=@intSampleSet_id     
+END
+
+
+GO
+
+IF OBJECT_ID (N'QCL_CalculateSystematicSamplingOutgo', N'P') IS NOT NULL
+DROP Procedure [dbo].[QCL_CalculateSystematicSamplingOutgo]
+GO
+
+CREATE procedure [dbo].[QCL_CalculateSystematicSamplingOutgo]
+@survey_id int, @samplingdate datetime
+as
+
+declare @CCN varchar(20)
+declare @SurveyTypeId int
+select @CCN = suf.medicarenumber,
+	@SurveyTypeId = su.CAHPSType_id
+from sampleplan sp
+inner join sampleunit su on sp.SAMPLEPLAN_ID=su.sampleplan_id
+inner join SUFacility suf on su.SUFacility_id=suf.SUFacility_id
+where sp.survey_id=@survey_id
+and su.CAHPSType_id>0
+
+if @CCN is null
+	RAISERROR (N'Surveys using Systematic Sampling must have at least one unit defined as a CAHPS unit and linked to a CCN.',
+           10, -- Severity
+           1); -- State
+
+if exists (select * from SystematicSamplingTarget where SampleQuarter = dbo.yearqtr(@samplingdate) and CCN=@CCN)
+begin
+	return
+end
+
+if not exists(select * from MedicareLookupSurveyType where MedicareNumber = @CCN and SurveyType_ID = @SurveyTypeId)
+	RAISERROR (N'Surveys using Systematic Sampling must have values on this sample unit''s particular CAHPS tab for this CCN in Medicare Management.' ,
+           10, -- Severity
+           1); -- State
+
+-- declare @survey_id int=19009, @samplingdate datetime = '7/1/16'
+create table #SystematicSamplingTarget
+(	SampleQuarter char(6)
+,	CCN varchar(20)
+,	numLocations smallint
+,	SamplingAlgorithmID int
+,	RespRateType varchar(15)
+,	numResponseRate decimal(5,4)
+,	AnnualTarget int
+,	QuarterTarget int
+,	MonthTarget int
+,	SamplesetsPerMonth smallint
+,	SamplesetTarget numeric(6,2)
+,	OutgoNeededPerSampleset int
+)
+
+insert into #SystematicSamplingTarget (SampleQuarter, CCN, numLocations, SamplingAlgorithmID, RespRateType, numResponseRate, AnnualTarget, QuarterTarget, MonthTarget)
+select dbo.yearqtr(@samplingdate) as SampleQuarter
+	, suf.medicarenumber as CCN
+	, count(su.SAMPLEUNIT_ID) as numLocations
+	, 4 as SamplingAlgorithmID
+	, case when dbo.yearqtr(min(SwitchToCalcDate)) < dbo.yearqtr(@samplingdate) then 'Historic' else 'Default' end as RespRateType
+	, case when dbo.yearqtr(min(SwitchToCalcDate)) < dbo.yearqtr(@samplingdate) then NULL else min(mlu.EstRespRate) end as numResponseRate 
+	, min(mlu.AnnualReturnTarget) as AnnualTarget
+	, ceiling(min(mlu.AnnualReturnTarget)/4.0) as QuarterTarget
+	, ceiling(min(mlu.AnnualReturnTarget)/12.0) as MonthTarget
+from sampleplan sp
+inner join sampleunit su on sp.SAMPLEPLAN_ID=su.sampleplan_id
+inner join SUFacility suf on su.SUFacility_id=suf.SUFacility_id
+inner join MedicareLookupSurveyType mlu on suf.medicarenumber=mlu.medicarenumber
+where sp.survey_id=@survey_id
+and su.CAHPSType_id=@SurveyTypeId --16
+and mlu.SurveyType_ID=@SurveyTypeID --16
+group by suf.medicarenumber 
+
+if @@rowcount > 1
+	RAISERROR (N'Surveys using Systematic Sampling can only reference one CCN.',
+           10, -- Severity
+           1); -- State
+
+-- if MedicareLookup.AnnualReturnTarget isn't evenly divisible by 12, change AnnualTarget and QuarterTarget so that they align with the CEILING'd MonthTarget
+if exists (select * from #SystematicSamplingTarget where AnnualTarget % 12 <> 0)
+	update #SystematicSamplingTarget set AnnualTarget=12*MonthTarget, QuarterTarget=3*MonthTarget
+
+if exists (select * from #SystematicSamplingTarget where RespRateType='Historic')
+begin
+	declare @rr float
+	
+	select @rr=1.0*sum(numReturned)/sum(numSampled)
+	from (	select ss.sampleset_id, count(distinct sp.samplepop_id) as numSampled, count(distinct case when qf.datReturned is not null then qf.samplepop_id end) as numReturned, max(sm.datExpire) as datExpire
+			from sampleset ss
+			inner join samplepop sp on ss.sampleset_id=sp.sampleset_id
+			inner join scheduledmailing scm on sp.samplepop_id=scm.samplepop_id
+			inner join sentmailing sm on scm.sentmail_id=sm.sentmail_id
+			inner join questionform qf on scm.sentmail_id=qf.sentmail_id
+			where ss.survey_id = @survey_id
+			group by ss.sampleset_id
+			having max(sm.datExpire)<getdate()
+		) x
+
+	update #SystematicSamplingTarget set numResponseRate = @rr where RespRateType='Historic'
+end
+
+if exists (select * from #SystematicSamplingTarget where numResponseRate is NULL or numResponseRate=0)
+begin
+	declare @RRtype varchar(15)
+	select @RRType = RespRateType from #SystematicSamplingTarget
+	RAISERROR (N'%s response rate cannot be 0 percent.',
+           10, -- Severity,
+           1, -- State
+		   @RRtype); 
+end
+
+update #SystematicSamplingTarget 
+set SamplesetsPerMonth=(select CEILING(sum(intExpectedSamples)/3.0)
+						from #SystematicSamplingTarget sst
+						inner join PeriodDef pd on sst.samplequarter = dbo.yearqtr(pd.datExpectedEncStart) and pd.survey_id=@survey_id)
+
+update #SystematicSamplingTarget set SamplesetTarget=1.0*MonthTarget/SamplesetsPerMonth
+update #SystematicSamplingTarget set OutgoNeededPerSampleset=CEILING(SamplesetTarget/numResponseRate)
+
+insert into dbo.SystematicSamplingTarget (SampleQuarter, CCN, numLocations, SamplingAlgorithmID, RespRateType, numResponseRate, AnnualTarget, QuarterTarget, MonthTarget, SamplesetsPerMonth, SamplesetTarget, OutgoNeededPerSampleset, DateCalculated)
+select SampleQuarter, CCN, numLocations, SamplingAlgorithmID, RespRateType, numResponseRate, AnnualTarget, QuarterTarget, MonthTarget, SamplesetsPerMonth, SamplesetTarget, OutgoNeededPerSampleset, GetDate()
+from #SystematicSamplingTarget 
+
+drop table #SystematicSamplingTarget
+
+
+
 GO
 
 /****** Object:  StoredProcedure [dbo].[QCL_SelectEncounterUnitEligibility]    Script Date: 9/11/2017 2:55:28 PM ******/
