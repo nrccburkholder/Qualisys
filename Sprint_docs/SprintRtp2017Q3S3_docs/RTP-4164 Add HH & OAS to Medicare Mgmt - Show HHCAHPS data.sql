@@ -74,11 +74,16 @@ BEGIN
 	SELECT @surveyType_ID=16
 	
 	INSERT INTO MedicareLookupSurveyType (surveyType_ID,  MedicareNumber, SwitchToCalcDate, AnnualReturnTarget, EstRespRate)
-	SELECT @surveyType_ID, MedicareNumber, SystematicSwitchToCalcDate, SystematicAnnualReturnTarget, SystematicEstRespRate 
+	SELECT @surveyType_ID, MedicareNumber, SystematicSwitchToCalcDate, SystematicAnnualReturnTarget, SystematicEstRespRate/100 
 	FROM MedicareLookup 
 	WHERE SystematicSwitchToCalcDate IS NOT NULL OR SystematicAnnualReturnTarget IS NOT NULL OR SystematicEstRespRate IS NOT NULL
 
 END
+GO
+
+PRINT 'Fix SystematicEstRespRate data'
+GO
+UPDATE MedicareLookupSurveyType SET EstRespRate=EstRespRate/100 WHERE EstRespRate>1
 GO
 
 PRINT 'Modify MedicareLookup table'
@@ -251,6 +256,27 @@ BEGIN
 	SET TRANSACTION ISOLATION LEVEL READ COMMITTED
 END
 GO
+
+PRINT 'Modify stored procedure QCL_SelectMedicareNumbersBySurveyID'
+GO
+ALTER PROCEDURE [dbo].[QCL_SelectMedicareNumbersBySurveyID]  
+    @SurveyID int  
+AS  
+  
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED  
+SET NOCOUNT ON  
+  
+SELECT DISTINCT ml.MedicareNumber, ml.MedicareName, ml.MedicarePropCalcType_ID, ml.EstAnnualVolume,  
+       ml.EstRespRate, ml.EstIneligibleRate, ml.SwitchToCalcDate, ml.AnnualReturnTarget,  
+       ml.SamplingLocked, ml.ProportionChangeThreshold, ml.CensusForced, ml.PENumber, ml.Active,
+	   NULL as SystematicAnnualReturnTarget, NULL as SystematicEstRespRate, NULL as SystematicSwitchToCalcDate, ml.NonSubmitting
+FROM MedicareLookup ml, SUFacility sf, SampleUnit su, SamplePlan sp, Survey_Def sd   
+WHERE ml.MedicareNumber = sf.MedicareNumber  
+  AND sf.SUFacility_id = su.SUFacility_id  
+  AND su.SamplePlan_id = sp.SamplePlan_id  
+  AND sp.Survey_id = sd.Survey_id  
+  AND sd.Survey_id = @SurveyID  
+  GO
 
 PRINT 'Modify stored procedure QCL_InsertMedicareNumber'
 GO
@@ -522,7 +548,7 @@ BEGIN
 	SET NOCOUNT ON
 	SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 
-	SELECT history.SurveyType_ID, history.MedicareNumber, history.MedicarePropCalcType_ID, history.MedicarePropDataType_ID, history.EstRespRate, 
+	SELECT history.MedicareReCalcLog_ID, history.SurveyType_ID AS SurveyTypeID, history.MedicareNumber, history.MedicarePropCalcType_ID, history.MedicarePropDataType_ID, history.EstRespRate, 
 			history.EstAnnualVolume, history.SwitchToCalcDate, history.AnnualReturnTarget, history.ProportionCalcPct, history.SamplingLocked, 
 			history.ProportionChangeThreshold, history.Member_ID, history.DateCalculated, history.HistoricRespRate, history.HistoricAnnualVolume, 
 			history.ForcedCalculation, history.PropSampleCalcDate, history.SwitchFromRateOverrideDate, history.SamplingRateOverride
@@ -534,7 +560,6 @@ BEGIN
 	SET NOCOUNT OFF
 END
 GO
-
 
 PRINT 'End stored procedure changes'
 GO

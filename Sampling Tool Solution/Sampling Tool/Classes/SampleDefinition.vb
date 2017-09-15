@@ -169,32 +169,60 @@ Public Class SampleDefinition
         End If
 
         'If we are not going to do proportional sampling then we are out of here
-        If mPeriod.ExpectedStartDate.HasValue AndAlso _
-           mPeriod.ExpectedStartDate.Value < AppConfig.Params("SwitchToPropSamplingDate").DateValue Then
-            Return True
-        End If
+        'If mPeriod.ExpectedStartDate.HasValue Then 'AndAlso _
+        'mPeriod.ExpectedStartDate.Value <AppConfig.Params("SwitchToPropSamplingDate").DateValue Then
+        'Return True
+        'End If ... CJB do not want to do this at all any more since never prior to 2009 any more...
 
         'Get all of the medicare numbers associated with this survey
         Dim medicareNumbers As MedicareNumberList = MedicareNumber.GetBySurveyID(mSurvey.Id)
 
         'Recalculate the medicare proportions
         For Each medicareNum As MedicareNumber In medicareNumbers
-            If medicareNum.RecalculateProportion(startDate, CurrentUser.Member.MemberId, sampleLockNotifyFailed) Then
-                'Calculation was successful
-                If medicareNum.IsDirty Then
-                    medicareNum.Save()
+            'Use parent medicareNum to get to correct child medicareNum by SurveyType
+            If mSurvey.MedicareProportionBySurveyType Then
+                Dim medicareNumST As MedicareSurveyType
+                medicareNumST = MedicareSurveyType.Get(medicareNum.MedicareNumber, Survey.SurveyType)
+
+                If medicareNumST IsNot Nothing Then
+                    If medicareNumST.RecalculateProportion(startDate, CurrentUser.Member.MemberId, sampleLockNotifyFailed) Then
+                        If medicareNumST.IsDirty Then
+                            medicareNumST.Save()
+                        End If
+
+                        'Check for notification failure
+                        If sampleLockNotifyFailed Then
+                            sampleLockMessage &= vbCrLf & medicareNum.MedicareNumber
+                        End If
+                    Else
+                        'Errors were encountered while calculating the new proportion
+                        errMessage &= String.Format("{0}{0}Medicare Number {1}:", vbCrLf, medicareNum.MedicareNumber)
+                        For Each errString As String In medicareNumST.CalculationErrors
+                            errMessage &= vbCrLf & errString
+                        Next
+                    End If
+                Else
+                    errMessage &= vbCrLf & String.Format("{0}{0}Medicare Number {1} Missing Info for SurveyType_ID: {2}", vbCrLf, medicareNum.MedicareNumber, Survey.SurveyType)
                 End If
 
-                'Check for notification failure
-                If sampleLockNotifyFailed Then
-                    sampleLockMessage &= vbCrLf & medicareNum.MedicareNumber
+            Else 'TODO: once HCAHPS is also MedicareProportionBySurveyType this block may be removed... CJB 9/12/2017
+                    If medicareNum.RecalculateProportion(startDate, CurrentUser.Member.MemberId, sampleLockNotifyFailed) Then
+                    'Calculation was successful
+                    If medicareNum.IsDirty Then
+                        medicareNum.Save()
+                    End If
+
+                    'Check for notification failure
+                    If sampleLockNotifyFailed Then
+                        sampleLockMessage &= vbCrLf & medicareNum.MedicareNumber
+                    End If
+                Else
+                    'Errors were encountered while calculating the new proportion
+                    errMessage &= String.Format("{0}{0}Medicare Number {1}:", vbCrLf, medicareNum.MedicareNumber)
+                    For Each errString As String In medicareNum.CalculationErrors
+                        errMessage &= vbCrLf & errString
+                    Next
                 End If
-            Else
-                'Errors were encountered while calculating the new proportion
-                errMessage &= String.Format("{0}{0}Medicare Number {1}:", vbCrLf, medicareNum.MedicareNumber)
-                For Each errString As String In medicareNum.CalculationErrors
-                    errMessage &= vbCrLf & errString
-                Next
             End If
         Next
 

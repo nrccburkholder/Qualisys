@@ -130,6 +130,7 @@
     <Compile Include="EmailBlastProvider.vb" />
     <Compile Include="EmailBlastOptionProvider.vb" />
     <Compile Include="MailingStepMethodProvider.vb" />
+    <Compile Include="MedicareRecalcSurveyTypeHistoryProvider.vb" />
     <Compile Include="MedicareSurveyTypeProvider.vb" />
     <Compile Include="ModeSectionMappingProvider.vb" />
     <Compile Include="QDispositionProvider.vb" />
@@ -181,6 +182,7 @@
     <Compile Include="StoredProcs\MedicareNumber_SP.vb" />
     <Compile Include="StoredProcs\MedicarePropCalcType_SP.vb" />
     <Compile Include="StoredProcs\MedicareRecalcHistory_SP.vb" />
+    <Compile Include="StoredProcs\MedicareRecalcSurveyTypeHistory_SP.vb" />
     <Compile Include="StoredProcs\MedicareSurveyType_SP.vb" />
     <Compile Include="StoredProcs\QDisposition_SP.vb" />
     <Compile Include="StoredProcs\ReceiptType_SP.vb" />

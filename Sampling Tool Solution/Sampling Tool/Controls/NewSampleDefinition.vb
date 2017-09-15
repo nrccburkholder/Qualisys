@@ -720,6 +720,9 @@ Public Class NewSampleDefinition
         'Get a list of cutoff date field IDs and field names for the selected surveys
         Dim sampleEncounterFields As New Dictionary(Of Integer, String)
         For Each srvy As Survey In Me.mSurveys
+            If srvy.SampleEncounterField Is Nothing Then
+                srvy.SampleEncounterField = StudyTableColumn.Get(srvy.SampleEncounterTableId, srvy.SampleEncounterFieldId)
+            End If
             If srvy.SampleEncounterField IsNot Nothing Then
                 If Not sampleEncounterFields.ContainsKey(srvy.SampleEncounterField.Id) Then
                     sampleEncounterFields.Add(srvy.SampleEncounterField.Id, srvy.SampleEncounterField.Name)

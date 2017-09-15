@@ -21,26 +21,26 @@ Namespace ODSDBDataAccess
 
             Dim surveys As String = String.Join(",", surveyIDs.Keys.ToArray())
 
-            Dim query As String = String.Format("SELECT " &
-                                                "hss.HoldID, " &
-                                                "ClientID, " &
-                                                "StudyID, " &
-                                                "SurveyID, " &
-                                                "CAST(EncounterHoldDate as date) EncounterHoldDate," &
-                                                "hr.Description as HoldReason," &
-                                                "hst.HoldDescription HoldStatus," &
-                                                "TicketNumber," &
-                                                "Requester, CompletionDate, " &
-                                                "CAST(DateCreated as datetime) DateCreated, CAST(DateModified as datetime)DateModified " &
-                                                "FROM odsdb.dbo.HoldSurveys hss " &
-                                                "INNER JOIN odsdb.dbo.Holds hs on hss.HoldID = hs.HoldID " &
-                                                "INNER JOIN odsdb.dbo.HoldStatus hst on hst.HoldStatusID = hs.HoldStatusID " &
-                                                "INNER JOIN odsdb.dbo.HoldReason hr on hr.HoldReasonID = hs.HoldReasonID " &
-                                                "WHERE hss.ClientID = {0} " &
-                                                "AND hss.StudyID = {1} " &
-                                                "AND hss.SurveyID in ({2}) " &
-                                                "AND CompletionDate IS NULL " &
-                                                "ORDER BY EncounterHoldDate, SurveyID", clientid, studyid, surveys)
+            Dim query As String = String.Format("SELECT  
+                                                hss.HoldID,
+                                                clientid,
+                                                studyid,
+                                                SurveyID,
+                                                CAST(EncounterHoldDate As Date) EncounterHoldDate,
+                                                hr.Description As HoldReason, 
+                                                hst.HoldDescription HoldStatus,
+                                                TicketNumber,
+                                                Requester, CompletionDate,
+                                                CAST(DateCreated As datetime) DateCreated, CAST(DateModified As datetime)DateModified  
+                                                From odsdb.dbo.HoldSurveys hss  
+                                                INNER Join odsdb.dbo.Holds hs on hss.HoldID = hs.HoldID  
+                                                INNER Join odsdb.dbo.HoldStatus hst on hst.HoldStatusID = hs.HoldStatusID  
+                                                INNER Join odsdb.dbo.HoldReason hr on hr.HoldReasonID = hs.HoldReasonID  
+                                                WHERE hss.ClientID = {0} 
+                                                And hss.StudyID = {1} 
+                                                And hss.SurveyID in ({2})  
+                                                And CompletionDate Is NULL  
+                                                ORDER BY EncounterHoldDate, SurveyID", clientid, studyid, surveys)
 
             Dim dt As New DataTable
             Me.Fill(dt, query, CommandType.Text)
@@ -52,15 +52,15 @@ Namespace ODSDBDataAccess
         End Function
 
         Public Function GetMinEncounterHoldDate(clientid As Integer, studyid As Integer, surveyID As Integer) As Date Implements IODSDBRepository.GetMinEncounterHoldDate
-            Dim query As String = String.Format("SELECT " &
-                                                "min(CAST(EncounterHoldDate as date)) EncounterHoldDate " &
-                                                "FROM odsdb.dbo.HoldSurveys hss " &
-                                                "INNER JOIN odsdb.dbo.Holds hs on hss.HoldID = hs.HoldID " &
-                                                "INNER JOIN odsdb.dbo.HoldStatus hst on hst.HoldStatusID = hs.HoldStatusID " &
-                                                "WHERE hss.ClientID = {0} " &
-                                                "AND hss.StudyID = {1} " &
-                                                "AND hss.SurveyID = {2} " &
-                                                "AND CompletionDate IS NULL", clientid, studyid, surveyID)
+            Dim query As String = String.Format("SELECT 
+                                                min(CAST(EncounterHoldDate As Date)) EncounterHoldDate 
+                                                FROM odsdb.dbo.HoldSurveys hss 
+                                                INNER Join odsdb.dbo.Holds hs on hss.HoldID = hs.HoldID 
+                                                INNER JOIN odsdb.dbo.HoldStatus hst on hst.HoldStatusID = hs.HoldStatusID 
+                                                WHERE hss.ClientID = {0} 
+                                                And hss.StudyID = {1} 
+                                                And hss.SurveyID = {2} 
+                                                And CompletionDate Is NULL", clientid, studyid, surveyID)
 
             Dim o As Object = Me.ExecuteScalar(query, CommandType.Text)
 
@@ -72,15 +72,13 @@ Namespace ODSDBDataAccess
         End Function
 
         Public Function GetCustomerSettings(ClientId As Integer, ConnectSurveyTypeId As String) As Dictionary(Of String, Object) Implements IODSDBRepository.GetCustomerSettings
-            Dim query As String = String.Format("SELECT " &
-                                                "IsNull(ContractNumber,'') ContractNumber, " &
-                                                "IsNull(SurveyStartDate, '1/1/1900') SurveyStartDate, " &
-                                                "IsNull(SurveyEndDate, '1/1/1900') SurveyEndDate, " &
-                                                "LocationProviderResurveyDays, " &
-                                                "IntraCustomerResurveyDays " &
-                                                "From ODSDB.dbo.CustomerSurveyConfig " &
-                                                "Where CustomerId = {0} And " &
-                                                "('{1}' = '' or SurveyTypeID = {1})", ClientId, ConnectSurveyTypeId)
+            Dim query As String = String.Format("SELECT 
+                                                IsNull(ContractNumber,'') ContractNumber, 
+                                                IsNull(SurveyStartDate, '1/1/1900') SurveyStartDate, 
+                                                IsNull(SurveyEndDate, '1/1/1900') SurveyEndDate, 
+                                                From ODSDB.dbo.CustomerSurveyConfig 
+                                                Where CustomerId = {0} And 
+                                                ('{1}' = '' or SurveyTypeID = {1})", ClientId, ConnectSurveyTypeId)
 
             Dim dt As New DataTable
             Me.Fill(dt, query, CommandType.Text)
@@ -91,23 +89,25 @@ Namespace ODSDBDataAccess
                 settings.Add("ContractNumber", dt.Rows(0).Item("ContractNumber").ToString())
                 settings.Add("SurveyStartDate", DateTime.Parse(dt.Rows(0).Item("SurveyStartDate").ToString()))
                 settings.Add("SurveyEndDate", DateTime.Parse(dt.Rows(0).Item("SurveyEndDate").ToString()))
-                settings.Add("LocationProviderResurveyDays", Integer.Parse(dt.Rows(0).Item("LocationProviderResurveyDays").ToString()))
-                settings.Add("IntraCustomerResurveyDays", Integer.Parse(dt.Rows(0).Item("IntraCustomerResurveyDays").ToString()))
             End If
 
             Return settings
         End Function
 
-        Public Function GetCustomerQuestionPods(ClientId As Integer) As DataTable Implements IODSDBRepository.GetCustomerQuestionPods
-            Dim query As String = String.Format("SELECT " &
-                                                "QuestionModuleBK, " &
-                                                "QuestionModuleBKID, " &
-                                                "q.QuestionModuleName, " &
-                                                "q.QuestionModuleID " &
-                                                "From [odsdb].[dbo].[QuestionModuleBKs] qbk " &
-                                                "inner Join [odsdb].[dbo].[QuestionModule] q on qbk.questionmoduleid = q.questionmoduleid " &
-                                                "where qbk.IsIgnored = 0 " &
-                                                "Where CustomerId = {0}", ClientId)
+        Public Function GetQuestionPod(QuestionPodIds As List(Of Integer)) As DataTable Implements IODSDBRepository.GetQuestionPod
+            Dim sQuestionPodIds As String = String.Empty
+            For Each intQ As Integer In QuestionPodIds
+                sQuestionPodIds &= intQ.ToString() & ","
+            Next
+            sQuestionPodIds &= "-1"
+            Dim query As String = String.Format("SELECT 
+                                                QuestionModuleName, 
+                                                QuestionModuleID, 
+												LocationProviderResurveyDays,
+												IntraCustomerResurveyDays,
+                                                ResurveyType
+                                                From [odsdb].[dbo].[QuestionModule] 
+                                                where QuestionModuleID in ({0})", sQuestionPodIds)
 
             Dim dt As New DataTable
             Me.Fill(dt, query, CommandType.Text)
@@ -115,6 +115,7 @@ Namespace ODSDBDataAccess
             Using dt
                 Return dt
             End Using
+
         End Function
 
 #End Region

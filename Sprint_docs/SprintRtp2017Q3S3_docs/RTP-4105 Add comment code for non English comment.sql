@@ -26,3 +26,4 @@ BEGIN
        VALUES (1016, 1, 'Non-English Original Comment', 0, 'dgilsdorf', getdate(), 19, NULL)
        SET IDENTITY_INSERT dbo.CommentCodes Off
 END
+GO
