@@ -11,7 +11,7 @@ Namespace ODSDBDataAccess
 
         Function GetCustomerSettings(ByVal ClientId As Integer, ConnectSurveyTypeId As String) As Dictionary(Of String, Object)
 
-        Function GetCustomerQuestionPods(ByVal ClientId As Integer) As DataTable
+        Function GetQuestionPod(QuestionPodIds As List(Of Integer)) As DataTable
 
     End Interface
 
