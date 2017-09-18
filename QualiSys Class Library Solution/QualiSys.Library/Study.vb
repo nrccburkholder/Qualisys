@@ -377,6 +377,12 @@ Public Class Study
 
     End Function
 
+    Public Function GetStudyQuestionPods() As List(Of Integer)
+
+        Return StudyDatasetProvider.Instance.SelectQuestionPodsByStudyId(mId)
+
+    End Function
+
     Public Sub ResetDirtyFlag()
 
         mIsDirty = False

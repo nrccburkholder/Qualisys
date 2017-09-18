@@ -31,6 +31,7 @@ Namespace DataProvider
         Public MustOverride Sub InsertSampleSetInPeriod(ByVal sampleSetId As Integer, ByVal periodId As Integer)
         Public MustOverride Sub InsertSamplePop(ByVal sampleSetId As Integer, ByVal studyId As Integer, ByVal popId As Integer, ByVal badAddress As Boolean, ByVal badPhone As Boolean)
         Public MustOverride Sub InsertSampleDataSet(ByVal sampleSetId As Integer, ByVal dataSetId As Integer)
+        Public MustOverride Sub InsertSampleSetQuestionPods(ByVal sampleSetId As Integer, ByVal resurveyTable As DataTable)
         Public MustOverride Sub ScheduleSampleSetGeneration(ByVal sampleSetId As Integer, ByVal generationDate As Date)
         Public MustOverride Sub UnscheduleSampleSetGeneration(ByVal sampleSetId As Integer)
         Public MustOverride Function SelectOutGoNeeded(ByVal sampleSetId As Integer, ByVal surveyId As Integer, ByVal periodId As Integer, ByVal samplesInPeriod As Integer, ByVal samplesRun As Integer, ByVal sampleMethod As SampleSet.SamplingMethod, ByVal responseRateRecalculationPeriod As Integer, ByVal sampleHCAHPSUnit As Boolean) As Dictionary(Of Integer, Integer)
