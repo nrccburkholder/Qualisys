@@ -9,6 +9,7 @@ Public Class MedicareNumber
 
 #Region "Private Fields"
 
+    Private Const const_HCAHPS_SurveyTypeID As Integer = 2
     Private mLastRecalcLoaded As Boolean
     Private mLastRecalcUserCensusForcedLoaded As Boolean
     Private mHistoricLoaded As Boolean
@@ -1110,7 +1111,7 @@ Public Class MedicareNumber
                 .Add("RecipientNoteText", recipientNoteText)
                 .Add("RecipientNoteHtml", recipientNoteHtml)
                 .Add("Environment", environment)
-                .Add("RecalcHistoryLink", String.Format("{0}&MedicareNumber={1}", AppConfig.Params("CMRecalcHistoryReport").StringValue, MedicareNumber))
+                .Add("RecalcHistoryLink", String.Format("{0}&MedicareNumber={1}&SurveyTypeID={2}", AppConfig.Params("CMRecalcHistoryReport").StringValue, MedicareNumber, const_HCAHPS_SurveyTypeID))
             End With
 
             'Add the replacement tables
