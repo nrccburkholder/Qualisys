@@ -237,6 +237,27 @@ Public Class SampleSetProvider
 
     End Sub
 
+    Public Overrides Sub InsertSampleSetQuestionPods(ByVal sampleSetId As Integer, ByVal resurveyTable As DataTable)
+        Dim questionModuleID As Integer
+        Dim questionModuleName As String
+        Dim locationProviderResurveyDays As Integer
+        Dim intraCustomerResurveyDays As Integer
+        Dim resurveyType As Char
+
+        Dim cmd As DbCommand
+        For Each r As DataRow In resurveyTable.Rows
+            questionModuleID = Integer.Parse(r("QuestionModuleId").ToString())
+            questionModuleName = r("QuestionModuleName").ToString()
+            locationProviderResurveyDays = Integer.Parse(r("LocationProviderResurveyDays").ToString())
+            intraCustomerResurveyDays = Integer.Parse(r("IntraCustomerResurveyDays").ToString())
+            resurveyType = r("ResurveyType").ToString()(1)
+
+            cmd = Db.GetStoredProcCommand(SP.InsertSampleSetQuestionPod, sampleSetId, questionModuleID, questionModuleName, locationProviderResurveyDays, intraCustomerResurveyDays, resurveyType.ToString())
+            ExecuteNonQuery(cmd)
+        Next
+
+    End Sub
+
     ''' <summary>
     ''' Updates the samplesetId column in the perioddates table
     ''' </summary>

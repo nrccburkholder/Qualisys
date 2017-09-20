@@ -55,25 +55,6 @@ Partial Public Class SampleSet
             Dim randomNumber As Integer
             Dim systematicIncrement As Integer
 
-            'RTP-2395 Fill Resurvey Values from ODS at this time, prior to calling Sampling algorithm CJB 5/31/2017
-
-            'If Not (srvy.IsCAHPS) Then
-            '    Dim odsdb As ODSDBDataAccess.ODSDBRepository = New ODSDBDataAccess.ODSDBRepository
-            '    'Dim clientId As Integer = Nrc.QualiSys.Library.Study.GetStudy(srvy.StudyId).ClientId
-            '    'Dim custSettings As Dictionary(Of String, Object) = odsdb.GetCustomerSettings(clientId, AppConfig.Params("MasterSurveyTypeForODSDB").StringValue)
-            '    Dim questionPodId As Integer = Nrc.QualiSys.Library.Study.GetStudy(srvy.StudyId).ClientId
-            '    Dim custSettings As Dictionary(Of String, Object) = odsdb.GetQuestionPod(questionPodId)
-            '    If custSettings.ContainsKey("LocationProviderResurveyDays") Then
-            '        srvy.LocationProviderResurveyDays = Integer.Parse(custSettings("LocationProviderResurveyDays").ToString)
-            '    End If
-            '    If custSettings.ContainsKey("IntraCustomerResurveyDays") Then
-            '        srvy.ResurveyPeriod = Integer.Parse(custSettings("IntraCustomerResurveyDays").ToString())
-            '    End If
-            '    srvy.Update()
-            'End If
-
-            'RTP-2395 End
-
             If specificSampleSeed >= 0 Then
                 'New feature allows specifying sample seed for IT users only - INC0019623
                 randomNumber = specificSampleSeed
@@ -109,6 +90,15 @@ Partial Public Class SampleSet
                 'Create a new sampleset in database
                 sampleSetId = SampleSetProvider.Instance.Insert(srvy.Id, creator.Id, startDate, endDate, isOverSample, isFirstSampleinPeriod, period.Id, srvy.Name, sampleEncounterDateTableId, sampleEncounterDateFieldId, SamplingAlgorithm.StaticPlus, srvy.SamplePlanId, srvy.SurveyType, hcahpsOverSample)
                 If sampleSetId = 0 Then Throw New Exception("Unable to add new record to sampleset table")
+
+                'RTP-2395 Fill Resurvey Values from ODS at this time, prior to calling Sampling algorithm CJB 5/31/2017 [RELOCATED FROM BEGINNING OF PROC]
+                'RTP-3761 Modify the QualiSys sampling code to use the new Question Pod attributes
+                'InsertSampleSetQuestionPods
+                If Not (srvy.IsCAHPS) Then
+                    Dim odsdb As ODSDBDataAccess.ODSDBRepository = New ODSDBDataAccess.ODSDBRepository
+                    Dim questionPodIds As List(Of Integer) = Study.GetStudy(srvy.StudyId).GetStudyQuestionPods()
+                    InsertSampleSetQuestionPods(sampleSetId, odsdb.GetQuestionPods(questionPodIds))
+                End If
 
                 'Get all of the datasets being sampled
                 For Each ds As StudyDataset In datasets
@@ -390,6 +380,12 @@ Partial Public Class SampleSet
         Private Shared Sub InsertSampleDataSet(ByVal samplesetId As Integer, ByVal datasetId As Integer)
 
             SampleSetProvider.Instance.InsertSampleDataSet(samplesetId, datasetId)
+
+        End Sub
+
+        Private Shared Sub InsertSampleSetQuestionPods(ByVal samplesetId As Integer, ByVal resurveyTable As DataTable)
+
+            SampleSetProvider.Instance.InsertSampleSetQuestionPods(samplesetId, resurveyTable)
 
         End Sub
 

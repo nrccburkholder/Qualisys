@@ -49,7 +49,7 @@
     <PublisherName>National Research Corporation</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>5.5.1.0</ApplicationVersion>
+    <ApplicationVersion>5.6.0.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -304,7 +304,9 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
-    <None Include="Sampling Tool.nuspec" />
+    <None Include="Sampling Tool.nuspec">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Sampling Tool_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
