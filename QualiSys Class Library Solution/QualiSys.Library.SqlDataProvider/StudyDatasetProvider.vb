@@ -58,7 +58,9 @@ Public Class StudyDatasetProvider
         Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectQuestionPodsByStudy, studyId)
         Using ds As DataSet = ExecuteDataSet(cmd)
             Using rdr As New SafeDataReader(New DataTableReader(ds.Tables(0)))
-                questionPodIds.Add(rdr.GetInteger("QuestionPodid"))
+                While rdr.Read
+                    questionPodIds.Add(rdr.GetInteger("QuestionPodid"))
+                End While
             End Using
         End Using
         Return questionPodIds
