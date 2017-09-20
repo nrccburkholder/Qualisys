@@ -19,17 +19,17 @@
     <Source>
       <Local>
         <!--<Path>\\superman\DataLoaderFiles\QualisysFileMoverTest</Path>-->
-        <Path>C:\_tmp\src</Path>
+        <Path>C:\TEST\FileMovingService\Source</Path>
       </Local>
     </Source>
     <Destination>
       <Local>
-        <Path>C:\_tmp\dst</Path>
+        <Path>C:\TEST\FileMovingService\Destination</Path>
       </Local>
     </Destination>
     <Backup>
       <Local>
-        <Path>C:\_tmp\bkp</Path>
+        <Path>C:\TEST\FileMovingService\Backup</Path>
       </Local>
     </Backup>
     <Cloud>
