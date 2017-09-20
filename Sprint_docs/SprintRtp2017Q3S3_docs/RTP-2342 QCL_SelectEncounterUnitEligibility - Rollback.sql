@@ -12,6 +12,7 @@
 	CREATE TABLE [dbo].[SampleSetQuestionPod]
 	CREATE PROCEDURE [dbo].[QCL_UpdateOrInsertSampleSetQuestionPod]
 	CREATE PROCEDURE [dbo].[QCL_GetQuestionPodsByStudy]
+	ALTER PROCEDURE [dbo].[QCL_SampleSetResurveyExclusion_StaticPlus]
 */
 USE [QP_Prod]
 GO
