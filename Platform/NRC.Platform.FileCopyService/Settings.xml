@@ -19,19 +19,29 @@
     <Source>
       <Local>
         <!--<Path>\\superman\DataLoaderFiles\QualisysFileMoverTest</Path>-->
-        <Path>C:\TEST\FileMovingService\Source</Path>
+        <Path>C:\_tmp\src</Path>
       </Local>
     </Source>
     <Destination>
       <Local>
-        <Path>C:\TEST\FileMovingService\Destination</Path>
+        <Path>C:\_tmp\dst</Path>
       </Local>
     </Destination>
     <Backup>
       <Local>
-        <Path>C:\TEST\FileMovingService\Backup</Path>
+        <Path>C:\_tmp\bkp</Path>
       </Local>
     </Backup>
+    <Cloud>
+      <S3>
+        <Bucket>nrc-transcription-input</Bucket>
+        <Path>dev</Path>
+        <AwsRegion>us-east-1b</AwsRegion>
+        <AwsAccessKey>AKIAIP6L44IEOYK3JLSQ</AwsAccessKey>
+        <AwsSecretKey>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</AwsSecretKey>
+        <TranscriptionInputQueueUri>https://sqs.us-east-1.amazonaws.com/596397039634/d-transcription-input</TranscriptionInputQueueUri>
+      </S3>
+    </Cloud>
     <Action>Copy</Action>
   </DirectorySyncTask>
 
