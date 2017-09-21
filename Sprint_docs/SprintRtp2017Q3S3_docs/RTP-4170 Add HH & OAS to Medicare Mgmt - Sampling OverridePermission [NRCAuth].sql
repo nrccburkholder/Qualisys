@@ -17,7 +17,7 @@ GO
 DECLARE @Application_id AS INT, @Author AS INT, @PrivilegeLevel_id AS INT, @privilegeID AS INT
 SELECT @Application_id=Application_id FROM [Application] WHERE Lower(strApplication_nm)='configuration manager'
 SELECT @PrivilegeLevel_id=PrivilegeLevel_id FROM PrivilegeLevel WHERE Lower(strPrivilegeLevel_dsc)='member level privilege'
-SELECT @Author=Member_id FROM member WHERE strFName LIKE '%jing%' AND strLName LIKE '%fu%'
+SELECT Top 1 @Author=Member_id FROM member WHERE strFName LIKE '%chris%' AND strLName LIKE '%Burkholder%' ORDER BY datCreated
 
 DECLARE @maxSeed INT
 SELECT @maxSeed=MAX(Privilege_id) FROM Privilege
