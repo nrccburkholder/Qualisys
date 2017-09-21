@@ -250,7 +250,7 @@ Public Class SampleSetProvider
             questionModuleName = r("QuestionModuleName").ToString()
             locationProviderResurveyDays = Integer.Parse(r("LocationProviderResurveyDays").ToString())
             intraCustomerResurveyDays = Integer.Parse(r("IntraCustomerResurveyDays").ToString())
-            resurveyType = r("ResurveyType").ToString()(1)
+            resurveyType = r("ResurveyType").ToString()(0)
 
             cmd = Db.GetStoredProcCommand(SP.InsertSampleSetQuestionPod, sampleSetId, questionModuleID, questionModuleName, locationProviderResurveyDays, intraCustomerResurveyDays, resurveyType.ToString())
             ExecuteNonQuery(cmd)
