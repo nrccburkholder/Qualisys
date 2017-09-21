@@ -6,7 +6,9 @@
 */
 use qp_prod 
 go
-insert into languages (LangID, Language, Dictionary, WebLanguageLabel, QualiSysLanguage, ISO639) values (33, 'Cantonese', 'English.dct', 'Cantonese', 0, 'chi.can')
-insert into languages (LangID, Language, Dictionary, WebLanguageLabel, QualiSysLanguage, ISO639) values (34, 'Mandarin', 'English.dct', 'Mandarin', 0, 'chi.man')
+if not exists (select * from languages where langid=33 and language = 'Cantonese')
+	insert into languages (LangID, Language, Dictionary, WebLanguageLabel, QualiSysLanguage, ISO639) values (33, 'Cantonese', 'English.dct', 'Cantonese', 0, 'chi.can')
+if not exists (select * from languages where langid=34 and language = 'Mandarin')
+	insert into languages (LangID, Language, Dictionary, WebLanguageLabel, QualiSysLanguage, ISO639) values (34, 'Mandarin', 'English.dct', 'Mandarin', 0, 'chi.man')
 
 GO
