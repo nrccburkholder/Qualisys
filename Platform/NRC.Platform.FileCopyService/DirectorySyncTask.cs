@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.IO;
@@ -24,6 +22,10 @@ namespace NRC.Platform.FileCopyService
         [ConfigUse("Backup", IsOptional=true, Default="null")]
         public DirectoryReferenceManager backupTag = null;
         public IDirectoryReference backup = null;
+
+        [ConfigUse("Cloud", IsOptional = true, Default = "null")]
+        public DirectoryReferenceManager cloudTag = null;
+        public IDirectoryReference cloud = null;
 
         [ConfigUse("Filename", IsOptional = true, Default = "")]
         public string filename = "";
@@ -69,6 +71,8 @@ namespace NRC.Platform.FileCopyService
             {
                 backup = null;
             }
+
+            cloud = cloudTag != null ? cloudTag.Which() : null;
 
             if (ShouldRun())
             {
@@ -118,22 +122,29 @@ namespace NRC.Platform.FileCopyService
                         try
                         {
                             destination.Prepare();
+
                             if (backup != null)
                             {
                                 backup.Prepare();
                             }
+
+                            if (cloud != null)
+                            {
+                                cloud.Prepare();
+                            }
+
                             havePrepared = true;
                         }
                         catch (Exception ex)
                         {
                             var detailEx = CreateDetailException(ex, action, fromFullFilename, destFullFilename, backupFullFilename);
                             Program.Log(detailEx);
-                            
+
                             hadError = true;
                             break;
                         }
                     }
-                    
+
                     //generate filenames from original + filematch + toflatlayout [+ timestamp]
                     string rewriteFilename;
                     if (string.IsNullOrEmpty(filename))
@@ -148,8 +159,9 @@ namespace NRC.Platform.FileCopyService
                     destFullFilename = destination.FullFilename(destFilename);
                     string backupFilename = MakeBackupFilename(rewriteFilename, match.Groups);
                     backupFullFilename = backup == null ? "" : backup.FullFilename(backupFilename);
+
                     Debug.WriteLine("DoSync to: " + destFilename);
-                    
+
                     //check exists/overwrite
                     if (destination.Exists(destFilename))
                     {
@@ -172,7 +184,7 @@ namespace NRC.Platform.FileCopyService
                         logger.Error("Failed to backup file: " + backupFullFilename + " already exists");
                         continue;
                     }
-                    
+
                     //copy source to local
                     tmpFilename = System.IO.Path.GetTempFileName();
                     Debug.WriteLine("DoSync tmp: " + tmpFilename);
@@ -184,7 +196,7 @@ namespace NRC.Platform.FileCopyService
                         logger.Info(string.Format("Backing up {0} to {1}", fromFullFilename, backupFullFilename));
                         backup.PutFile(tmpFilename, backupFilename);
                     }
-                    
+
                     //copy local to destination
                     try
                     {
@@ -206,6 +218,15 @@ namespace NRC.Platform.FileCopyService
                         {
                             backup.RemoveFile(backupFilename);
                         }
+                    }
+
+                    string cloudFileName = destFilename;
+                    string cloudFullFileName = cloud == null ? string.Empty : cloud.FullFilename(cloudFileName);
+                    if (cloud != null)
+                    {
+                        //copy local to AWS S3
+                        logger.Info(string.Format("Copying to Amazon S3 up {0} to {1}", fromFullFilename, cloudFullFileName));
+                        cloud.PutFile(tmpFilename, cloudFileName);
                     }
 
                     //remove temp file
@@ -239,9 +260,10 @@ namespace NRC.Platform.FileCopyService
             {
                 destination.Unprepare();
                 if (backup != null)
-                {
                     backup.Unprepare();
-                }
+
+                if (cloud != null)
+                    cloud.Unprepare();
             }
 
             // exited without error, so set lastRun
