@@ -11,6 +11,7 @@ Partial Public NotInheritable Class SP
     Public Const InsertSamplePop As String = "QCL_InsertSamplePop"
     Public Const InsertSelectedSample As String = "QCL_InsertSelectedSample"
     Public Const InsertSampleDataSet As String = "QCL_InsertSampleDataSet"
+    Public Const InsertSampleSetQuestionPod As String = "QCL_UpdateOrInsertSampleSetQuestionPod"
     Public Const InsertSampleSetInPeriod As String = "QCL_InsertSampleSetInPeriod"
     Public Const InsertDQRuleIntoSPWDQCOUNTS As String = "QCL_InsertDQRuleIntoSPWDQCOUNTS"
     Public Const InsertRemovedRulesIntoSPWDQCOUNTS As String = "QCL_InsertRemovedRulesIntoSPWDQCOUNTS"

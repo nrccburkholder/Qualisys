@@ -94,7 +94,7 @@ Namespace ODSDBDataAccess
             Return settings
         End Function
 
-        Public Function GetQuestionPod(QuestionPodIds As List(Of Integer)) As DataTable Implements IODSDBRepository.GetQuestionPod
+        Public Function GetQuestionPods(QuestionPodIds As List(Of Integer)) As DataTable Implements IODSDBRepository.GetQuestionPods
             Dim sQuestionPodIds As String = String.Empty
             For Each intQ As Integer In QuestionPodIds
                 sQuestionPodIds &= intQ.ToString() & ","

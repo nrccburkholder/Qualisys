@@ -191,9 +191,7 @@ Public Class MedicareCommon
                 .Add("RecipientNoteText", recipientNoteText)
                 .Add("RecipientNoteHtml", recipientNoteHtml)
                 .Add("Environment", environment)
-                .Add("RecalcHistoryLink", String.Format("{0}&MedicareNumber={1}", AppConfig.Params("CMRecalcHistoryReport").StringValue, MedicareNumber))
-                'TODO: change to use the following URL once Ted is done with the report changes
-                '.Add("RecalcHistoryLink", String.Format("{0}&MedicareNumber={1}&SurveyTypeID={2}", AppConfig.Params("CMRecalcHistoryReport").StringValue, MedicareNumber, surveyTypeID))
+                .Add("RecalcHistoryLink", String.Format("{0}&MedicareNumber={1}&SurveyTypeID={2}", AppConfig.Params("CMRecalcHistoryReport").StringValue, MedicareNumber, surveyTypeID))
             End With
 
             'Add the replacement tables

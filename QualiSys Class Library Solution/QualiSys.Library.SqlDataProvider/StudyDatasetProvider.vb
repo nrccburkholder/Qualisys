@@ -53,6 +53,19 @@ Public Class StudyDatasetProvider
         Return studyDatasets
     End Function
 
+    Public Overrides Function SelectQuestionPodsByStudyId(ByVal studyId As Integer) As List(Of Integer)
+        Dim questionPodIds As List(Of Integer) = New List(Of Integer)
+        Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.SelectQuestionPodsByStudy, studyId)
+        Using ds As DataSet = ExecuteDataSet(cmd)
+            Using rdr As New SafeDataReader(New DataTableReader(ds.Tables(0)))
+                While rdr.Read
+                    questionPodIds.Add(rdr.GetInteger("QuestionPodid"))
+                End While
+            End Using
+        End Using
+        Return questionPodIds
+    End Function
+
     Public Overrides Sub Delete(ByVal datasetId As Integer)
         Dim cmd As DbCommand = Db.GetStoredProcCommand(SP.DeleteDataset, datasetId)
         ExecuteNonQuery(cmd)

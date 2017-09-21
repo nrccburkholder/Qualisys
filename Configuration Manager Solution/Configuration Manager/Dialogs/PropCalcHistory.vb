@@ -71,9 +71,7 @@ Public Class PropCalcHistory
 
         Caption = String.Format("Recalc History for: {0} ({1})", medicareNumber, name)
 
-        Dim url As New Uri(String.Format("{0}&MedicareNumber={1}", AppConfig.Params("CMRecalcHistoryReport").StringValue, medicareNumber))
-        'TODO: change to use the following URL once Ted is done with the report changes
-        'Dim url As New Uri(String.Format("{0}&MedicareNumber={1}&SurveyTypeID={2}", AppConfig.Params("CMRecalcHistoryReport").StringValue, medicareNumber, SurveyTypeID))
+        Dim url As New Uri(String.Format("{0}&MedicareNumber={1}&SurveyTypeID={2}", AppConfig.Params("CMRecalcHistoryReport").StringValue, medicareNumber, SurveyTypeID))
 
         wbReport.Url = url
 

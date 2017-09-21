@@ -21,6 +21,7 @@ Namespace DataProvider
         End Sub
 
         Public MustOverride Function SelectByStudyId(ByVal studyId As Integer, ByVal creationFilsterStartDate As Nullable(Of Date), ByVal creationFilterEndDate As Nullable(Of Date)) As Collection(Of StudyDataset)
+        Public MustOverride Function SelectQuestionPodsByStudyId(ByVal studyId As Integer) As List(Of Integer)
         Public MustOverride Sub Delete(ByVal datasetId As Integer)
 
         Protected NotInheritable Class ReadOnlyAccessor
