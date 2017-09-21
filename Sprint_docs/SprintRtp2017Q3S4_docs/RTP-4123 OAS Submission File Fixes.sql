@@ -64,7 +64,7 @@ declare @newTemplateID int
 select @newTemplateID = max(exporttemplateid) from cem.ExportTemplate
 
 -- update the old template so its valid end date is september 2017
-update cem.ExportTemplate set validenddate='9/31/2017' where ExportTemplateID=20
+update cem.ExportTemplate set validenddate='9/30/2017' where ExportTemplateID=20
 -- update the new template so its valid start date is october 2017
 update cem.ExportTemplate set validStartDate='10/1/2017' where ExportTemplateID=@newTemplateID
 
