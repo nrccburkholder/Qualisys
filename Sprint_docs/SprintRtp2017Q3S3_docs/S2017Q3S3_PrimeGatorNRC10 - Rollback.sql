@@ -35,3 +35,9 @@ Sprint 2017 Q3 S3 SQLCMD Rollback Script for Prime/Gator/NRC10
 :r "\AtlasReleaseRT2017Q3\SprintRtp2017q3s3_docs\RTP-4167 Add HH & OAS to Medicare Mgmt - Hookup HHCAHPS three Buttons - Rollback.sql" 
 
 --:r "\AtlasReleaseRT2017Q3\SprintRtp2017q3s3_docs\RTP-4170 Add HH & OAS to Medicare Mgmt - Sampling OverridePermission - Rollback.sql"  (NRCAuth not QP_Prod)
+
+:r "\AtlasReleaseRT2017Q3\SprintRtp2017q3s3_docs\RTP-3655 MIPS Updates for New Question - Rollback.sql" 
+
+--:r "\AtlasReleaseRT2017Q3\SprintRtp2017q3s3_docs\RTP-4123 OAS Submission File Fixes - rollback.sql" runs against CATDB2
+
+:r "\AtlasReleaseRT2017Q3\SprintRtp2017q3s3_docs\RTP-4781 add Cantonese & Mandarin to Qualisys - rollback.sql" 
