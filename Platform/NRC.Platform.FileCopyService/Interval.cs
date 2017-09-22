@@ -19,7 +19,7 @@ namespace NRC.Platform.FileCopyService
 
         [ConfigUse("Monthly", IsOptional = true, Default = "null")]
         public MonthlyInterval monthly;
-        
+
         public IInterval Which()
         {
             //If you need to add a new implementation of IInterval, add it to 'all' here

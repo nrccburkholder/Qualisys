@@ -32,6 +32,16 @@
         <Path>C:\TEST\FileMovingService\Backup</Path>
       </Local>
     </Backup>
+    <Cloud>
+      <S3>
+        <Bucket>nrc-transcription-input</Bucket>
+        <Path>dev</Path>
+        <AwsRegion>us-east-1b</AwsRegion>
+        <AwsAccessKey>AKIAIP6L44IEOYK3JLSQ</AwsAccessKey>
+        <AwsSecretKey>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</AwsSecretKey>
+        <TranscriptionInputQueueUri>https://sqs.us-east-1.amazonaws.com/596397039634/d-transcription-input</TranscriptionInputQueueUri>
+      </S3>
+    </Cloud>
     <Action>Copy</Action>
   </DirectorySyncTask>
 

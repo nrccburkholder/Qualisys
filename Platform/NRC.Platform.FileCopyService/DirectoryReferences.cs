@@ -1,16 +1,18 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.IO;
 using System.Net;
 using System.Diagnostics;
-
 using NRC.Common.Configuration;
 using Tamir.SharpSsh;
 using System.Text.RegularExpressions;
 using System.Reflection;
+using Amazon.S3.Model;
+using Amazon.S3;
+using Amazon.S3.IO;
+using Amazon.SQS;
+using Newtonsoft.Json;
 
 namespace NRC.Platform.FileCopyService
 {
@@ -31,10 +33,13 @@ namespace NRC.Platform.FileCopyService
         [ConfigUse("SFTP", IsOptional = true, Default = "null")]
         public SFTPDirectory sftp;
 
+        [ConfigUse("S3", IsOptional = true, Default = "null")]
+        public S3Directory s3;
+
         public IDirectoryReference Which()
         {
             //If you need to add a new implementation of IDirectoryReference, add it to 'all' here
-            IDirectoryReference[] all = { local, unc, ftp, sftp };
+            IDirectoryReference[] all = { local, unc, ftp, sftp, s3 };
             if (all.Where(t => t != null).Count() != 1)
             {
                 throw new ConfigException("Must specify exactly 1 DirectoryReference");
@@ -68,7 +73,7 @@ namespace NRC.Platform.FileCopyService
             System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(Path);
 
             IEnumerable<string> fullFilePaths = dir.GetFiles("*.*", System.IO.SearchOption.AllDirectories)
-                .Where( t => !(t.Attributes & FileAttributes.System).Equals(FileAttributes.System))
+                .Where(t => !(t.Attributes & FileAttributes.System).Equals(FileAttributes.System))
                 .Select(t => t.FullName);
 
             //Let's verify for which of these files we can get an exclusive read/write lock on
@@ -83,7 +88,8 @@ namespace NRC.Platform.FileCopyService
                 string relativeFilePath = fullFilePath.Remove(0, Path.Length);
 
                 // Ensure file would pass the regex filter (null means no filter, it would always pass)
-                if (filter == null || filter.IsMatch(relativeFilePath)) {
+                if (filter == null || filter.IsMatch(relativeFilePath))
+                {
                     try
                     {
                         //string filepath = Path.Combine(path, relFilename);
@@ -113,7 +119,7 @@ namespace NRC.Platform.FileCopyService
         {
             //over write local temp file
             Debug.WriteLine("Local Get " + Path + file);
-            System.IO.File.Copy(Path + file, local, true); 
+            System.IO.File.Copy(Path + file, local, true);
         }
 
         public void PutFile(string local, string file)
@@ -423,7 +429,7 @@ namespace NRC.Platform.FileCopyService
         private IEnumerable<string> ListFilesInternal(string ipath)
         {
             IEnumerable<string> entries =
-                from string entry in sftp.GetFileList( ipath )
+                from string entry in sftp.GetFileList(ipath)
                 select entry;
             List<string> ret = new List<string>();
 
@@ -496,5 +502,170 @@ namespace NRC.Platform.FileCopyService
                 }
             }
         }
+    }
+
+    public class S3Directory : ConfigSection, IDirectoryReference
+    {
+        [ConfigUse("Bucket")]
+        public string Bucket { get; set; }
+
+        [ConfigUse("Path")]
+        public string Path { get; set; }
+
+        [ConfigUse("AwsRegion", IsOptional = true, Default = "")]
+        public string AwsRegion { get; set; }
+
+        [ConfigUse("AwsAccessKey", IsOptional = true, Default = "")]
+        public string AwsAccessKey { get; set; }
+
+        [ConfigUse("AwsSecretKey", IsOptional = true, Default = "")]
+        public string AwsSecretKey { get; set; }
+
+        [ConfigUse("TranscriptionInputQueueUri", IsOptional = true, Default = "")]
+        public string TranscriptionInputQueueUri { get; set; }
+
+        private AmazonS3Client s3Client;
+        private AmazonSQSClient sqsClient;
+
+        public string FullFilename(string file)
+        {
+            return string.Format("https://s3.amazonaws.com/{0}{1}{2}", Bucket, Path, file.Replace("\\", "/"));
+        }
+
+        public void Prepare()
+        {
+            Debug.WriteLine("S3 Prepare");
+            var s3Config = new AmazonS3Config { ServiceURL = "http://s3.amazonaws.com" };
+            var sqsConfig = new AmazonSQSConfig { ServiceURL = new Uri(TranscriptionInputQueueUri).GetLeftPart(UriPartial.Authority) };
+            s3Client = new AmazonS3Client(AwsAccessKey, AwsSecretKey, s3Config);
+            sqsClient = new AmazonSQSClient(AwsAccessKey, AwsSecretKey, sqsConfig);
+        }
+
+        public void Unprepare()
+        {
+            Debug.WriteLine("S3 Unprepare");
+            s3Client.Dispose();
+            s3Client = null;
+            sqsClient.Dispose();
+            sqsClient = null;
+        }
+
+        public IEnumerable<string> ListFiles(Regex regex = null)
+        {
+            return ListFilesInternal(Path);
+        }
+
+        private IEnumerable<string> ListFilesInternal(string ipath)
+        {
+            var request = new ListObjectsV2Request() { BucketName = Bucket, Prefix = Path };
+            var list = s3Client.ListObjectsV2(request);
+            return list.S3Objects.Select(s3o => s3o.Key);
+        }
+
+        public bool Exists(string file)
+        {
+            try
+            {
+                S3FileInfo fileInfo = new S3FileInfo(s3Client, Bucket, file);
+                return fileInfo.Exists;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public void GetFile(string file, string local)
+        {
+            string fullpath = (Path + file).Replace("\\", "/");
+            Debug.WriteLine("S3 Get " + fullpath);
+
+            using (var response = s3Client.GetObject(Bucket, fullpath))
+                response.WriteResponseStreamToFile(local);
+        }
+
+        public void PutFile(string local, string file)
+        {
+            string fullpath = (Path + file).Replace("\\", "/");
+            try
+            {
+                // put file to S3
+                PutObjectRequest putRequest = new PutObjectRequest
+                {
+                    BucketName = Bucket,
+                    Key = fullpath,
+                    FilePath = local,
+                    ContentType = "audio/wav"
+                };
+
+                var putResponse = s3Client.PutObject(putRequest);
+
+                // send message to SQS (Transcription Module)
+                var messageBydyObject = TranscriptionMessage.FromFileName(fullpath);
+                string messageBody = JsonConvert.SerializeObject(messageBydyObject);
+                var sqsResponse = sqsClient.SendMessage(TranscriptionInputQueueUri, messageBody);
+            }
+            catch (AmazonS3Exception ex)
+            {
+                if (ex.ErrorCode != null && (ex.ErrorCode.Equals("InvalidAccessKeyId") || ex.ErrorCode.Equals("InvalidSecurity")))
+                {
+                    Console.WriteLine("Check the provided AWS Credentials.");
+                    Console.WriteLine("For service sign up go to http://aws.amazon.com/s3");
+                }
+                else
+                {
+                    Console.WriteLine("Error occurred. Message:'{0}' when writing an object", ex.Message);
+                }
+            }
+        }
+
+        public void RemoveFile(string file)
+        {
+            string fullpath = (Path + file).Replace("\\", "/");
+            Debug.WriteLine("S3 Remove " + fullpath);
+            s3Client.DeleteObject(Bucket, fullpath);
+        }
+
+        public void EnsureDirectoryExists(string dir)
+        {
+
+        }
+
+        #region
+
+        class TranscriptionMessage
+        {
+            public string Id;
+            public string ProductId;
+            public int QuestionId;
+            public string Language;
+            public string MediaLink;
+            public string MediaType;
+            public long Timestamp;
+
+            public static TranscriptionMessage FromFileName(string fileName)
+            {
+                if (string.IsNullOrEmpty(fileName))
+                    return null;
+
+                string[] tokens = fileName.Split('_');
+
+                if (tokens.Length < 4)
+                    return null;
+
+                return new TranscriptionMessage
+                {
+                    Id = tokens[2],
+                    ProductId = tokens[3].ToUpper().Equals("Q1021") ? "2" : "1",
+                    QuestionId = Int32.Parse(tokens[3].Remove(0, 1)),
+                    Language = tokens[1],
+                    MediaType = "audio",
+                    MediaLink = fileName,
+                    Timestamp = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0)).TotalSeconds
+                };
+            }
+        }
+
+        #endregion
     }
 }
