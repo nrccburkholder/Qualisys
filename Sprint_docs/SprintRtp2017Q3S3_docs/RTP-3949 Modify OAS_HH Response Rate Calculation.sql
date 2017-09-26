@@ -127,7 +127,7 @@ BEGIN
 
 END
 
-select avg(RespRate)
+select IsNull(avg(RespRate), 0)
 FROM SampleUnit su, (SELECT SampleUnit_id, ((intReturned*1.0)/(intSampled)*100) RespRate FROM #r) a
 WHERE su.SampleUnit_id=a.SampleUnit_id
 
