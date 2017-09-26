@@ -69,7 +69,7 @@ SamplePops as
 		on dl.SamplePop_id = sp.SAMPLEPOP_ID
 		and dl.Disposition_id in (19, 20)
 )
-select 100.0 * isnull(sum(IsCompleted), 0) / 
+select isnull(sum(IsCompleted), 0) / 
 	case when count(*) = 0 then 1 else count(*) end as RespRate
 from SamplePops
 
