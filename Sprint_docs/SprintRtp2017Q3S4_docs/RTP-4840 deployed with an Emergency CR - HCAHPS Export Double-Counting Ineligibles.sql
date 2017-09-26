@@ -37,5 +37,6 @@ from (select distinct pop_id
   from EligibleEncLog
   where sampleunit_id=@sampleunit_id
    and SampleEncounterDate between @startDate and dateadd(s,-1,dateadd(d,1,@EndDate))
-   and IneligibleAfterDRGUpdate=0) p
+   --and IneligibleAfterDRGUpdate=0  -- IneligibleAfterDRGUpdate counts are removed in qp_comments..DCL_ExportFileCMSAvailableCount so we want to include them here so that when they're remove there the count will be accurate.
+   ) p
 GO
