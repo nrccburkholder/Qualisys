@@ -1,0 +1,178 @@
+/*
+	RTP-4168 SSRS_MS_GetMedicareReCalcHistory.sql
+
+	Ted Smidberg
+
+	9/26/2017
+
+	ALTER PROCEDURE dbo.SSRS_MS_GetMedicareReCalcHistory
+*/
+USE [QP_Prod]
+GO
+
+/****** Object:  StoredProcedure [dbo].[SSRS_MS_GetMedicareReCalcHistory]    Script Date: 9/26/2017 12:35:01 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+ 
+ALTER  procedure [dbo].[SSRS_MS_GetMedicareReCalcHistory]   @MedicareNumber varchar(20), @SurveyTypeID int
+AS
+
+/*******************************************************************************
+ * Procedure Name:
+ *           SSRS_MS_GetMedicareReCalcHistory
+ * Description:
+ *           Stored Procedure used for SSRS Recalculation History by Survey Type
+ * History:
+ *           1.0  9/15/2017 by Ted S - Derived from SSRS_MS_GetMedicareReCalcHistory.  Joined to new SurveyType tables. Include @SurveyTypeID. Join to MedicareLookup to get MedicareName
+  * To Do:	
+ *			 ( ) 
+ ******************************************************************************/
+     
+--exec SSRS_MS_GetMedicareReCalcHistory '858558',16    
+
+-- DECLARE @MedicareNumber varchar(20),@MinDate datetime,@MaxDate datetime, @SurveyTypeID int
+-- -- SET @MedicareNumber='858558'   SET @SurveyTypeID = 16 -- OAS
+-- SET @MedicareNumber='48484848'   SET @SurveyTypeID = 2 -- HCAHPS
+
+/* HCAHPS */
+IF @SurveyTypeID IN (2)
+BEGIN
+
+		select mrh.MedicareNumber,    
+		  mrh.MedicareName,    
+		  'HCAHPS Proportional Calculation' MedicarePropCalcTypeName, --mpct.MedicarePropCalcTypeName,
+		  isnull(md.MedicarePropDataType_nm,'Unknown') MedicarePropDataType_nm,    
+		  mrh.EstRespRate,    
+		  mrh.EstIneligibleRate,    
+		  mrh.EstAnnualVolume,    
+		  mrh.SwitchToCalcDate,    
+		  mrh.AnnualReturnTarget,    
+		  mrh.ProportionCalcPct,    
+		  case mrh.SamplingLocked when 0 then 'No' when 1 then 'Yes' else 'Unknown' end SamplingLocked,    
+		  mrh.ProportionChangeThreshold,    
+		  case mrh.CensusForced when 0 then 'No' when 1 then 'Yes' else 'Unknown' end CensusForced,        
+		  mrh.DateCalculated,    
+		  mrh.HistoricRespRate,
+		  mrh.historicAnnualVolume,    
+		  case mrh.ForcedCalculation when 0 then 'No' when 1 then 'Yes' else 'Unknown' end ForcedCalculation,    
+		  isnull(convert(varchar,mrh.PropSampleCalcDate,101),'Not Set') PropSampleCalcDate,
+		  m.strMember_nm,
+		  CONVERT(varchar, mrh.DateCalculated,101) as EventDate,    
+		  mrh.DateCalculated as EventDateOrder
+		from MedicareRecalc_History mrh    
+		 --inner join MedicarePropCalcTypes mpct    
+		 -- on (mrh.MedicarePropCalcType_ID=mpct.MedicarePropCalcType_ID)    
+		 inner join Security.NRCAuth.dbo.Member m    
+		  on (mrh.Member_id=m.Member_id)    
+		 left outer join MedicarePropDataType md
+		  on (mrh.MedicarePropDataType_ID = md.MedicarePropDataType_ID) 
+		where mrh.MedicareNumber=@MedicareNumber  
+
+		UNION
+
+		Select	s.MedicareNumber, 
+				MedicareName, 
+				'Sampling Unlocked' MedicarePropCalcTypeName,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				mbr.strMember_nm, 
+				CONVERT(varchar, s.DateUnlocked,101) as EventDate,  
+				DateUnlocked as EventDateOrder   
+		from	SamplingUnlocked_log s, MedicareLookup m, Security.NRCAuth.dbo.Member mbr
+		where	s.MedicareNumber = m.Medicarenumber and
+				s.MemberID = mbr.member_ID and
+				s.MedicareNumber=@MedicareNumber
+		order by EventDateOrder desc    
+END
+ELSE 
+
+/* HHCAHPS, OAS */
+IF @SurveyTypeID IN (3,16)
+BEGIN    
+		select mrh.MedicareNumber,    
+		  ml.MedicareName,    
+		  'Proportional Calculation' MedicarePropCalcTypeName, --mpct.MedicarePropCalcTypeName,
+		  isnull(md.MedicarePropDataType_nm,'Unknown') MedicarePropDataType_nm,    
+		  mrh.EstRespRate,    
+		  NULL AS EstIneligibleRate,    
+		  mrh.EstAnnualVolume,    
+		  mrh.SwitchToCalcDate,    
+		  mrh.AnnualReturnTarget,    
+		  mrh.ProportionCalcPct,    
+		  case mrh.SamplingLocked when 0 then 'No' when 1 then 'Yes' else 'Unknown' end SamplingLocked,    
+		  mrh.ProportionChangeThreshold,    
+		  NULL AS CensusForced,   
+		  mrh.DateCalculated,    
+		  mrh.HistoricRespRate,
+		  mrh.historicAnnualVolume,    
+		  case mrh.ForcedCalculation when 0 then 'No' when 1 then 'Yes' else 'Unknown' end ForcedCalculation,    
+		  isnull(convert(varchar,mrh.PropSampleCalcDate,101),'Not Set') PropSampleCalcDate,
+		  m.strMember_nm,
+		  CONVERT(varchar, mrh.DateCalculated,101) as EventDate,    
+		  mrh.DateCalculated as EventDateOrder
+		from MedicareRecalcSurveyType_History mrh    -- TS new survey type table
+		 --inner join MedicarePropCalcTypes mpct    
+		 -- on (mrh.MedicarePropCalcType_ID=mpct.MedicarePropCalcType_ID)    
+		 inner join Security.NRCAuth.dbo.Member m    
+			on (mrh.Member_id=m.Member_id)    
+		INNER JOIN dbo.MedicareLookup AS ml
+			ON mrh.MedicareNumber = ml.MedicareNumber
+		 left outer join MedicarePropDataType md
+			on (mrh.MedicarePropDataType_ID = md.MedicarePropDataType_ID) 
+		where mrh.MedicareNumber=@MedicareNumber  
+		AND mrh.SurveyType_ID = @SurveyTypeID
+
+		UNION
+
+		Select	s.MedicareNumber, 
+				ml.MedicareName, 
+				'Sampling Unlocked' MedicarePropCalcTypeName,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				mbr.strMember_nm, 
+				CONVERT(varchar, s.DateUnlocked,101) as EventDate,  
+				DateUnlocked as EventDateOrder   
+		from	SamplingUnlocked_log s 
+		inner join MedicareLookupSurveyType m   -- TS new SurveyType table
+			on s.MedicareNumber = m.Medicarenumber
+		INNER JOIN dbo.MedicareLookup AS ml
+			ON m.MedicareNumber = ml.MedicareNumber
+		inner join Security.NRCAuth.dbo.Member mbr
+			on s.MemberID = mbr.member_ID
+		where s.MedicareNumber=@MedicareNumber
+		AND s.SurveyType_ID = @SurveyTypeID
+		order by EventDateOrder desc    
+END
+GO
+
+

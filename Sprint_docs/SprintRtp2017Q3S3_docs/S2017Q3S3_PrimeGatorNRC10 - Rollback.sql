@@ -41,3 +41,5 @@ Sprint 2017 Q3 S3 SQLCMD Rollback Script for Prime/Gator/NRC10
 --:r "\AtlasReleaseRT2017Q3\SprintRtp2017q3s3_docs\RTP-4123 OAS Submission File Fixes - rollback.sql" runs against CATDB2
 
 :r "\AtlasReleaseRT2017Q3\SprintRtp2017q3s3_docs\RTP-4781 add Cantonese & Mandarin to Qualisys - rollback.sql" 
+
+:r "\AtlasReleaseRT2017Q3\SprintRtp2017q3s3_docs\RTP-4168 SSRS_MS_GetMedicareReCalcHistory - Rollback.sql" 
