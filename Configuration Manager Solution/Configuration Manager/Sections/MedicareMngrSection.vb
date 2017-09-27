@@ -532,7 +532,7 @@ Public Class MedicareMngrSection
             DisplaySamplingLock_HHCAHPS(mHHCAHPS_MedicareNumber.SamplingLocked)
 
             HHCAHPS_AnnualEligibleVolumeNumericUpDown.Value = mHHCAHPS_MedicareNumber.AnnualEligibleVolume
-            HHCAHPS_HistoricResponseRateNumericUpDown.Value = mHHCAHPS_MedicareNumber.HistoricResponseRateDisplay
+            HHCAHPS_HistoricResponseRateNumericUpDown.Value = mHHCAHPS_MedicareNumber.HistoricResponseRateDisplay * 100
 
             'History Information
             If mHHCAHPS_MedicareNumber.LastRecalcDateCalculated = Date.MinValue Then
@@ -651,7 +651,7 @@ Public Class MedicareMngrSection
             DisplaySamplingLock_OASCAHPS(mOASCAHPS_MedicareNumber.SamplingLocked)
 
             OASCAHPS_AnnualEligibleVolumeNumericUpDown.Value = mOASCAHPS_MedicareNumber.AnnualEligibleVolume
-            OASCAHPS_HistoricResponseRateNumericUpDown.Value = mOASCAHPS_MedicareNumber.HistoricResponseRateDisplay
+            OASCAHPS_HistoricResponseRateNumericUpDown.Value = mOASCAHPS_MedicareNumber.HistoricResponseRateDisplay * 100
 
             'History Information
             If mOASCAHPS_MedicareNumber.LastRecalcDateCalculated = Date.MinValue Then
