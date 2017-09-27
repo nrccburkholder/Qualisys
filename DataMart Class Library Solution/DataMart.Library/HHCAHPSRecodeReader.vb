@@ -764,7 +764,7 @@ Friend Class HHCAHPSRecodeReader
             Case 1          'English
                 Return 1
 
-            Case 8, 18, 19  'Spanish
+            Case 2, 8, 18, 19  'Spanish
                 Return 2
 
             Case 27         'Chinese
