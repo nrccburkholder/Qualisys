@@ -23,7 +23,7 @@ AS
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 SET NOCOUNT ON
 
-IF @SurveyType_id IN (3, 16)
+IF dbo.SurveyProperty('MedicareProportionBySurveyType',@SurveyType_id,NULL) = 1
 BEGIN
 	EXEC [dbo].[CalculateOasHhResponseRate] @MedicareNumber, @PeriodDate, @SurveyType_id, @indebug
 	RETURN
@@ -50,91 +50,115 @@ WHERE	su.CAHPSType_id = @SurveyType_id and
 if @indebug = 1
 	select '#SampleSets' as [#SampleSets], * from #SampleSets
 	
-CREATE TABLE #r (SampleUnit_id INT, intSampled INT, intReturned INT, bitCAHPS BIT)
-CREATE TABLE #rr (sampleset_id INT, sampleunit_id INT, intreturned INT, intsampled INT, intUD INT)
+CREATE TABLE #SurveyIDs (Survey_ID INT)
+INSERT INTO #SurveyIDs  
+SELECT	distinct ss.Survey_ID
+FROM	medicarelookup ml, sufacility sf, sampleunit su, samplesetUnitTarget sssu, sampleset ss
+WHERE	ml.medicareNumber = sf.MedicareNumber and
+		sf.SUFacility_ID = su.SuFacility_ID and
+		su.sampleunit_ID = sssu.sampleunit_ID and
+		ss.sampleset_ID = sssu.sampleset_ID and
+		su.bithcahps = 1 and
+		ml.medicareNumber = @MedicareNumber
 
---
+if @indebug = 1
+	select '#SurveyIDs' as [#SurveyIDs], * from #SurveyIDs
+
+
+
+--Everything from Here can Stay the same
+
+CREATE TABLE #r (SampleUnit_id INT, intSampled INT, intReturned INT, bitHCAHPS BIT)  
+CREATE TABLE #rr (sampleset_id INT, sampleunit_id INT, intreturned INT, intsampled INT, intUD INT)  
+
+--  
 insert into #rr
-select sampleset_id, sampleunit_id, intreturned, intsampled, intUD
-from DATAMart.qp_comments.dbo.RespRateCount
-where survey_id in (select survey_Id from #SampleSets) and
- sampleunit_id <>0
+select sampleset_id, sampleunit_id, intreturned, intsampled, intUD  
+from DATAMart.qp_comments.dbo.RespRateCount   
+where survey_id in (select survey_Id from #SurveyIDs) and
+ sampleunit_id <>0  
 
 if @indebug = 1
 	select '#rr' as [#rr], * from #rr
 
---SELECT SampleUnit_id, ((SUM(intReturned)*1.0)/(SUM(intSampled)-SUM(intUD))*100) AS RespRate
-INSERT INTO #r (SampleUnit_id, intSampled, intReturned, bitCAHPS)
-SELECT SampleUnit_id, SUM(intSampled), SUM(intReturned), 0
-FROM #rr rrc, #SampleSets ss
-WHERE rrc.SampleSet_id=ss.SampleSet_id
+--SELECT SampleUnit_id, ((SUM(intReturned)*1.0)/(SUM(intSampled)-SUM(intUD))*100) AS RespRate  
+INSERT INTO #r (SampleUnit_id, intSampled, intReturned, bitHCAHPS)  
+SELECT SampleUnit_id, SUM(intSampled), SUM(intReturned), 0  
+FROM #rr rrc, #SampleSets ss  
+WHERE rrc.SampleSet_id=ss.SampleSet_id  
 GROUP BY SampleUnit_id
-
+  
 if @indebug = 1
 	select '#r' as [#r], * from #r
 
---Identify HCAHPS units
-UPDATE t
-SET bitCAHPS=1
-FROM #r t, SampleUnit su
-WHERE t.SampleUnit_id=su.SampleUnit_id
-AND su.CAHPSType_id = @SurveyType_id
+--Identify HCAHPS units  
+UPDATE t  
+SET bitHCAHPS=1  
+FROM #r t, SampleUnit su  
+WHERE t.SampleUnit_id=su.SampleUnit_id  
+AND su.bitHCAHPS=1  
+  
+IF @@ROWCOUNT>0  
+BEGIN  
+  
+CREATE TABLE #Update (SampleUnit_id INT, intReturned INT)  
+CREATE TABLE #rrDays (sampleset_id INT, sampleunit_id INT, intreturned INT)  
 
-IF @@ROWCOUNT>0
-BEGIN
+insert into #rrDays
+select sampleset_id, sampleunit_id, sum(intreturned) as intreturned  
+from DATAMart.qp_comments.dbo.RR_ReturnCountByDays   
+where survey_id in (select survey_Id from #SurveyIDs)  
+  AND DaysFromFirstMailing<43  
+group by sampleset_id, sampleunit_id  
 
-	CREATE TABLE #Update (SampleUnit_id INT, intReturned INT)
-	CREATE TABLE #rrDays (sampleset_id INT, sampleunit_id INT, intreturned INT)
+if @indebug = 1
+	select '#rrDays' as [#rrDays], * from #rrDays
 
-	insert into #rrDays
-	select sampleset_id, sampleunit_id, sum(intreturned) as intreturned
-	from DATAMart.qp_comments.dbo.RR_ReturnCountByDays
-	where survey_id in (select survey_Id from #SampleSets)
-	  AND DaysFromFirstMailing<43
-	group by sampleset_id, sampleunit_id
+ --Update the response rate for the HCAHPS unit(s)  
+ INSERT INTO #Update (SampleUnit_id, intReturned)  
+ SELECT a.SampleUnit_id, a.intReturned  
+ FROM (SELECT tt.SampleUnit_id, SUM(r2.intReturned) intReturned  
+       FROM #rr rrc,   
+       #rrDays r2,   
+       #SampleSets ss, #r tt  
+  WHERE rrc.SampleSet_id=ss.SampleSet_id  
+  AND r2.sampleset_id=ss.sampleset_id  
+  AND tt.SampleUnit_id=rrc.SampleUnit_id  
+  AND tt.bitHCAHPS=1  
+  AND tt.SampleUnit_id=r2.SampleUnit_id  
+--  AND ss.datSampleCreate_dt>'4/10/6'
+  GROUP BY tt.SampleUnit_id) a, #r t  
+  WHERE a.SampleUnit_id=t.SampleUnit_id  
+ 
+if @indebug = 1
+	select '#Update' as [#Update], * from #Update
 
-	if @indebug = 1
-		select '#rrDays' as [#rrDays], * from #rrDays
+ UPDATE t  
+ SET intReturned=u.intReturned  
+ FROM #r t, (SELECT SampleUnit_id, SUM(intReturned) intReturned  
+ FROM #Update  
+ GROUP BY SampleUnit_id) u  
+ WHERE t.SampleUnit_id=u.SampleUnit_id  
+  
+ DROP TABLE #Update  
 
-	--Update the response rate for the HCAHPS unit(s)
-	INSERT INTO #Update (SampleUnit_id, intReturned)
-	SELECT a.SampleUnit_id, a.intReturned
-	FROM (	SELECT tt.SampleUnit_id, SUM(r2.intReturned) intReturned
-			FROM #r TT
-			JOIN #rr rrc ON tt.SampleUnit_id=rrc.SampleUnit_id
-			JOIN #rrDays r2 ON tt.SampleUnit_id=r2.SampleUnit_id
-			JOIN #SampleSets ss ON r2.sampleset_id=ss.sampleset_id
-			WHERE tt.bitCAHPS=1
-			GROUP BY tt.SampleUnit_id) a
-	JOIN #r t ON a.SampleUnit_id=t.SampleUnit_id
+if @indebug = 1  
+	select '#r' as [#r], * from #r
 
+END  
 
-
-	if @indebug = 1
-		select '#Update' as [#Update], * from #Update
-
-	UPDATE t
-	SET intReturned=u.intReturned
-	FROM #r t, (SELECT SampleUnit_id, SUM(intReturned) intReturned
-				FROM #Update
-				GROUP BY SampleUnit_id) u
-	WHERE t.SampleUnit_id=u.SampleUnit_id
-
-	DROP TABLE #Update
-
-	if @indebug = 1
-		select '#r' as [#r], * from #r
-
-END
-
-select IsNull(avg(RespRate), 0)
-FROM SampleUnit su, (SELECT SampleUnit_id, ((intReturned*1.0)/(intSampled)*100) RespRate FROM #r) a
-WHERE su.SampleUnit_id=a.SampleUnit_id
+select avg(RespRate)
+FROM SampleUnit su, (SELECT SampleUnit_id, ((intReturned*1.0)/(intSampled)*100) RespRate FROM #r) a  
+WHERE su.SampleUnit_id=a.SampleUnit_id  
 
 
-DROP TABLE #r
+DROP TABLE #r  
+  
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED  
+SET NOCOUNT OFF  
+  
+  
 
-SET TRANSACTION ISOLATION LEVEL READ COMMITTED
-SET NOCOUNT OFF
 GO
+
 
