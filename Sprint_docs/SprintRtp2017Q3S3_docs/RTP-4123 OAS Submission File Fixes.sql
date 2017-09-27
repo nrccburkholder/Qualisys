@@ -63,14 +63,22 @@ exec cem.CopyExportTemplate 20
 declare @newTemplateID int
 select @newTemplateID = max(exporttemplateid) from cem.ExportTemplate
 
--- update the old template so its valid end date is september 2017
-update cem.ExportTemplate set validenddate='9/30/2017' where ExportTemplateID=20
--- update the new template so its valid start date is october 2017
-update cem.ExportTemplate set validStartDate='10/1/2017' where ExportTemplateID=@newTemplateID
+-- update the new templates minor version to 2
+update cem.ExportTemplate set ExportTemplateVersionMinor=2 where ExportTemplateID=@newTemplateID
 
--- find the "finalstatus not in" disposition
-declare @DispoID int 
-select @DispoID = DispositionProcessID from cem.DispositionProcess_view where ExportTemplateID=@newTemplateID and DispositionAction = 'recode' and ExportColumnName='finalstatus' and strOperator='NOT IN'
+-- update the old template so its valid end date is March 2017
+update cem.ExportTemplate set validenddate='2017-03-31' where ExportTemplateID=20
+-- update the new template so its valid start date is April 2017
+update cem.ExportTemplate set validStartDate='2017-04-01',ValidEndDate='2222-12-31' where ExportTemplateID=@newTemplateID
+
+declare @DispoID int, @col int, @c int
+insert into cem.DispositionProcess (RecodeValue,DispositionActionID) values ('X',1)
+set @DispoID=SCOPE_IDENTITY()
+select @col=exporttemplatecolumnid from cem.ExportTemplate_view where ExportTemplateID=@newTemplateID and ExportColumnName='finalstatus'
+insert into cem.DispositionClause (DispositionProcessID, DispositionPhraseKey, ExportTemplateColumnID, OperatorID) values (@DispoID,1,@col,12)
+set @c=SCOPE_IDENTITY()
+insert into cem.DispositionInList (DispositionClauseID, listvalue) values (@c, '110'), (@c, '120'), (@c,'310')
+
 
 -- find the administration section
 declare @sectionID int

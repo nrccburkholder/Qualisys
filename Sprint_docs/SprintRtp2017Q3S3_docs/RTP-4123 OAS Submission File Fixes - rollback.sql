@@ -8,9 +8,9 @@ use nrc_datamart_extracts
 go
 
 declare @newTemplateID int
-select @newTemplateID = exporttemplateid from cem.ExportTemplate where ExportTemplateName = 'OAS CAHPS' and SurveyTypeID=16 and ValidStartDate='10/1/2017'
+select @newTemplateID = exporttemplateid from cem.ExportTemplate where ExportTemplateName = 'OAS CAHPS' and SurveyTypeID=16 and ExportTemplateVersionMajor='2017Q2' and ExportTemplateVersionMinor=2
 
-if @newTemplateID is null 
+if @newTemplateID is not null 
 begin
 	delete from cem.dispositioninlist where DispositionClauseID in (select DispositionClauseID from cem.DispositionProcess_view where ExportTemplateID=@newTemplateID)
 	delete from cem.DispositionClause where DispositionClauseID in (select DispositionClauseID from cem.DispositionProcess_view where ExportTemplateID=@newTemplateID)
@@ -22,6 +22,10 @@ begin
 	delete from cem.ExportTemplateSection where ExportTemplateID=@newTemplateID
 	delete from cem.ExportTemplate where ExportTemplateID=@newTemplateID
 end
+
+select distinct DispositionClauseID,ListValue into #il from cem.DispositionInList
+truncate table cem.DispositionInList
+insert into cem.DispositionInList (DispositionClauseID,ListValue ) select DispositionClauseID,ListValue  from #IL order by DispositionClauseID,ListValue 
 
 declare @id int
 select @id=max(dispositioninlistid) from cem.DispositionInList
