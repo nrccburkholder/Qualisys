@@ -59,7 +59,6 @@ Begin VB.Form frmMain
          _Version        =   393217
          BackColor       =   -2147483644
          BorderStyle     =   0
-         Enabled         =   -1  'True
          HideSelection   =   0   'False
          ReadOnly        =   -1  'True
          DisableNoScroll =   -1  'True
@@ -790,7 +789,7 @@ Public Sub CheckQueue()
             iOffset = IIf(UCase(Left(vHospitalQueue(3, lQueueCnt), 8)) = "ACOCAHPS", OffsetACOCAHPS, iOffset)
             iOffset = IIf(UCase(Left(vHospitalQueue(3, lQueueCnt), 8)) = "ICHCAHPS", OffsetICHCAHPS, iOffset)
             iOffset = IIf(UCase(Left(vHospitalQueue(3, lQueueCnt), 7)) = "HOSPICE", OffsetHOSPICE, iOffset)
-            iOffset = IIf(UCase(Left(vHospitalQueue(3, lQueueCnt), 10)) = "PQRS CAHPS", OffsetPQRSCAHPS, iOffset)
+            iOffset = IIf(UCase(Left(vHospitalQueue(3, lQueueCnt), 10)) = "MIPS CAHPS", OffsetPQRSCAHPS, iOffset)
             iOffset = IIf(UCase(Left(vHospitalQueue(3, lQueueCnt), 9)) = "OAS CAHPS", OffsetOASCAHPS, iOffset)
             iHospital = conHospital + iOffset
             ' I am hold the description of the node in the
@@ -849,7 +848,7 @@ Public Sub CheckQueue()
             iOffset = IIf(UCase(Left(vHospitalQueue(6, lQueueCnt), 8)) = "ACOCAHPS", OffsetACOCAHPS, iOffset)
             iOffset = IIf(UCase(Left(vHospitalQueue(6, lQueueCnt), 8)) = "ICHCAHPS", OffsetICHCAHPS, iOffset)
             iOffset = IIf(UCase(Left(vHospitalQueue(6, lQueueCnt), 7)) = "HOSPICE", OffsetHOSPICE, iOffset)
-            iOffset = IIf(UCase(Left(vHospitalQueue(6, lQueueCnt), 10)) = "PQRS CAHPS", OffsetPQRSCAHPS, iOffset)
+            iOffset = IIf(UCase(Left(vHospitalQueue(6, lQueueCnt), 10)) = "MIPS CAHPS", OffsetPQRSCAHPS, iOffset)
             iOffset = IIf(UCase(Left(vHospitalQueue(6, lQueueCnt), 9)) = "OAS CAHPS", OffsetOASCAHPS, iOffset)
             iHospital = conHospital + iOffset
             'add the paperconfig node if it isn't already there
@@ -1252,7 +1251,7 @@ Private Sub mnuAddToGroupedPrint_Click()
     iOffset = IIf(UCase(Left(NextValue(strID, vbTab), 8)) = "ACOCAHPS", OffsetACOCAHPS, iOffset)
     iOffset = IIf(UCase(Left(NextValue(strID, vbTab), 8)) = "ICHCAHPS", OffsetICHCAHPS, iOffset)
     iOffset = IIf(UCase(Left(NextValue(strID, vbTab), 7)) = "HOSPICE", OffsetHOSPICE, iOffset)
-    iOffset = IIf(UCase(Left(NextValue(strID, vbTab), 10)) = "PQRS CAHPS", OffsetPQRSCAHPS, iOffset)
+    iOffset = IIf(UCase(Left(NextValue(strID, vbTab), 10)) = "MIPS CAHPS", OffsetPQRSCAHPS, iOffset)
     iOffset = IIf(UCase(Left(NextValue(strID, vbTab), 9)) = "OAS CAHPS", OffsetOASCAHPS, iOffset)
     iHospital = conHospital + iOffset
     
@@ -1453,7 +1452,7 @@ Private Sub mnuRemoveFromGroupedPrint_Click()
     iOffset = IIf(UCase(Left(NextValue(strX, vbTab), 8)) = "ACOCAHPS", OffsetACOCAHPS, iOffset)
     iOffset = IIf(UCase(Left(NextValue(strX, vbTab), 8)) = "ICHCAHPS", OffsetICHCAHPS, iOffset)
     iOffset = IIf(UCase(Left(NextValue(strX, vbTab), 7)) = "HOSPICE", OffsetHOSPICE, iOffset)
-    iOffset = IIf(UCase(Left(NextValue(strX, vbTab), 10)) = "PQRS CAHPS", OffsetPQRSCAHPS, iOffset)
+    iOffset = IIf(UCase(Left(NextValue(strX, vbTab), 10)) = "MIPS CAHPS", OffsetPQRSCAHPS, iOffset)
     iOffset = IIf(UCase(Left(NextValue(strX, vbTab), 9)) = "OAS CAHPS", OffsetOASCAHPS, iOffset)
     iHospital = conHospital + iOffset
     dummy = NextValue(strX, vbTab) ' number of pieces

@@ -1,5 +1,5 @@
 modQueueManager = 210, 148, 1394, 916, 
-frmMain = -381, 12, 962, 870, , 25, 25, 1118, 642, C
+frmMain = -381, 12, 962, 870, Z, 25, 25, 1118, 642, C
 frmAbout = 182, 182, 1305, 810, C, 75, 75, 1168, 692, C
 frmMailingDates = 138, 195, 1280, 818, C, 100, 100, 1193, 717, C
 frmRePrintDates = 157, 216, 1506, 809, C, 125, 125, 1218, 742, C
@@ -7,5 +7,5 @@ frmReprintIndiv = 0, 0, 0, 0, C, 150, 150, 1243, 767, C
 frmRollbackMessage = 0, 0, 0, 0, C, 175, 175, 1268, 792, C
 frmMailRoomSupport = 32, 364, 1217, 930, C, 200, 200, 1293, 817, C
 modMain = 227, 186, 1350, 814, C
-clsQueueManager = 44, 38, 1167, 666, Z
+clsQueueManager = 44, 38, 1167, 666, 
 cMRDataAccess = 158, 278, 1281, 906, C
