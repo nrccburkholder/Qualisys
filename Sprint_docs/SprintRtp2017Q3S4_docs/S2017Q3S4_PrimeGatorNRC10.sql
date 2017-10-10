@@ -11,3 +11,5 @@ Sprint 2017 Q3 S4 SQLCMD Script for Prime/Gator/NRC10
 :r "\AtlasReleaseRT2017Q3HCAHPSRT\SprintRtp2017q3s4_docs\RTP-5056 MakeSurveysFromTemplate TagFields PackageTable Date fixes.sql" 
 
 :r "\AtlasReleaseRT2017Q3HCAHPSRT\SprintRtp2017q3s4_docs\RTP-5056 MakeStudyFromTemplate TagFields PackageTable Date fixes.sql" 
+
+:r "\AtlasReleaseRT2017Q3HCAHPSRT\SprintRtp2017q3s4_docs\RTP-5056 DeleteTemplate logging TagField.sql"
