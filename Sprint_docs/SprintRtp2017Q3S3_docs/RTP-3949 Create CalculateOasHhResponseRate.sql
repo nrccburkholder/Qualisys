@@ -14,65 +14,50 @@ IF OBJECT_ID('[dbo].[CalculateOasHhResponseRate]') IS NOT NULL
 GO
 
 CREATE PROCEDURE [dbo].[CalculateOasHhResponseRate]
-	@MedicareNumber varchar(20), 
-	@PeriodDate datetime, 
-	@SurveyType_id int, 
-	@indebug tinyint = 0
+	@MedicareNumber VARCHAR(20), 
+	@PeriodDate				DATETIME, 
+	@SurveyType_id		INT, 
+	@indebug					TINYINT = 0
 AS
-SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
-SET NOCOUNT ON
+BEGIN
+	SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+	SET NOCOUNT ON
 
-declare @EncDateStart datetime, @EncDateEnd datetime
-exec QCL_CreateCAHPSRollingYear @PeriodDate, @SurveyType_id, @EncDateStart OUTPUT, @EncDateEnd OUTPUT;
+	DECLARE @EncDateStart DATETIME, @EncDateEnd DATETIME
+	EXEC QCL_CreateCAHPSRollingYear @PeriodDate, @SurveyType_id, @EncDateStart OUTPUT, @EncDateEnd OUTPUT;
 
-;with PossibleSamplePops as
-(
-	select distinct sp.SAMPLEPOP_ID
-	from SUFacility sf
-	inner join SAMPLEUNIT su
-		on su.SUFacility_ID = sf.SuFacility_ID
-	inner join SAMPLESETUNITTARGET ssut
-		ON su.SAMPLEUNIT_ID = ssut.SAMPLEUNIT_ID
-	inner join SAMPLESET sset
-		ON sset.SAMPLESET_ID = ssut.SAMPLESET_ID 
-	inner join SAMPLEPOP sp
-		on sp.SAMPLESET_ID = sset.SAMPLESET_ID
-	where sf.MedicareNumber = @MedicareNumber
-		and su.CAHPSType_id = @SurveyType_id
-		and sset.datDateRange_FromDate >= @EncDateStart 
-		and sset.datDateRange_ToDate <= @EncDateEnd
-),
-EligibleSamplePops as
-(
-	select distinct sp.SAMPLEPOP_ID
-	from PossibleSamplePops sp
-	left join DispositionLog dl
-		on dl.SamplePop_id = sp.SAMPLEPOP_ID
-		and dl.Disposition_id in (3, 4, 8, 10)
-	where dl.SamplePop_id is null
-),
-QfSamplePops as
-(
-	select sp.SAMPLEPOP_ID, isnull(max(cast(qf.bitComplete as int)), 0) as IsQfCompleted
-	from EligibleSamplePops sp
-	left join QUESTIONFORM qf
-		on qf.SAMPLEPOP_ID = sp.SAMPLEPOP_ID
-	group by sp.SAMPLEPOP_ID
-),
-SamplePops as
-(
-	select distinct sp.SAMPLEPOP_ID, 
-		case when sp.IsQfCompleted = 1 
-			or dl.SamplePop_id is not null then 1 else 0 end as IsCompleted
-	from QfSamplePops sp
-	left join DispositionLog dl
-		on dl.SamplePop_id = sp.SAMPLEPOP_ID
-		and dl.Disposition_id in (19, 20)
-)
-select 100.0 * isnull(sum(IsCompleted*1.0), 0) /
-	case when count(*) = 0 then 1 else count(*) end as RespRate
-from SamplePops
+	;WITH PossibleSamplePops AS
+	(
+		SELECT DISTINCT sp.SAMPLEPOP_ID
+		FROM SUFacility sf
+		INNER JOIN SAMPLEUNIT su ON su.SUFacility_ID = sf.SuFacility_ID
+		INNER JOIN SAMPLESETUNITTARGET ssut ON su.SAMPLEUNIT_ID = ssut.SAMPLEUNIT_ID
+		INNER JOIN SAMPLESET sset ON sset.SAMPLESET_ID = ssut.SAMPLESET_ID 
+		INNER JOIN SAMPLEPOP sp ON sp.SAMPLESET_ID = sset.SAMPLESET_ID
+		WHERE sf.MedicareNumber = @MedicareNumber
+			AND su.CAHPSType_id = @SurveyType_id
+			AND sset.datDateRange_FromDate >= @EncDateStart 
+			AND sset.datDateRange_ToDate <= @EncDateEnd
+	),
+	EligibleSamplePops AS
+	(
+		SELECT DISTINCT sp.SAMPLEPOP_ID
+		FROM PossibleSamplePops sp
+		LEFT JOIN DispositionLog dl ON dl.SamplePop_id = sp.SAMPLEPOP_ID AND dl.Disposition_id IN (3, 4, 8, 10)
+		WHERE dl.SamplePop_id IS NULL
+	),
+	SamplePops AS
+	(	
+		SELECT DISTINCT EligibleSamplePops.SamplePop_id, (CASE WHEN DispositionLog.SamplePop_id IS NULL THEN 0 ELSE 1 END) AS isCompleted
+		FROM EligibleSamplePops 
+		LEFT OUTER JOIN DispositionLog ON EligibleSamplePops.SAMPLEPOP_ID=DispositionLog.SamplePop_id  AND DispositionLog.Disposition_id IN (19,20)
+	)
 
-SET TRANSACTION ISOLATION LEVEL READ COMMITTED
-SET NOCOUNT OFF
+	SELECT 100.0 * ISNULL(SUM(IsCompleted*1.0), 0) /
+		CASE WHEN COUNT(*) = 0 THEN 1 ELSE COUNT(*) END AS RespRate
+	FROM SamplePops
+
+	SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+	SET NOCOUNT OFF
+END
 GO
